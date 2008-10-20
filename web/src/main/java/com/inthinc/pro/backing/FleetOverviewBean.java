@@ -13,8 +13,8 @@ public class FleetOverviewBean extends BaseBean
 	
 	public FleetOverviewBean()
 	{
-		this.overallScore = 3.1; //Get score from DAO here.
-		ScoreBox sb = new ScoreBox(this.overallScore, ScoreBoxSizes.LARGE);
+		setOverallScore(3.1); //Get score from DAO here.
+		ScoreBox sb = new ScoreBox(getOverallScore(), ScoreBoxSizes.LARGE);
 		setOverallScoreStyle(sb.getScoreStyle());
 	}
 
