@@ -1,0 +1,149 @@
+<chart
+	caption=""
+	xAxisName=""
+	showValues="0"
+	divLineAlpha="100"
+	numVDivLines="4"
+	vDivLineAlpha="0"
+	showAlternateVGridColor="1"
+	alternateVGridAlpha="5"
+	canvasPadding="0"
+	
+	vDivLineColor='#cfcfcf'
+	vDivLineThickness='1'
+	
+	showAlternateHGridColor='1'
+	alternateHGridColor='#f0f0f0'
+	alternateHGridAlpha='100'
+	
+	divLineColor="cfcfcf"
+	divLineIsDashed="1"
+	
+	animation='1'
+	bgColor='#ffffff'
+	borderThickness='1'
+	showToolTips='1'
+	showLegend='0'
+	
+	labelDisplay='Rotate'
+	slantLabels='1'
+	>
+
+<categories>
+<category label=""/>
+<category label="Jan 02"/>
+<category label="Jan 12"/>
+<category label="Jan 23"/>
+<category label="Feb 03"/>
+<category label="Feb 12"/>
+<category label="Feb 29"/>
+<category label="Mar 01"/>
+<category label="Mar 12"/>
+<category label="Apr 05"/>
+<category label="Apr 16"/>
+<category label="Apr 18"/>
+<category label="May 03"/>
+<category label="May 15"/>
+<category label="May 28"/>
+<category label="Jun 02"/>
+<category label="Jun 16"/>
+<category label="Jun 29"/>
+<category label="Jul 09"/>
+<category label="Jul 19"/>
+<category label="Jul 26"/>
+<category label="Aug 06"/>
+<category label="Aug 18"/>
+<category label=""/>
+
+</categories>
+
+<axis title="Miles" titlePos="left" tickWidth="10" divlineisdashed="0" numberSuffix="">
+
+<dataset seriesName="Miles">
+	<set value=""/>
+	<set value="201"/>
+	<set value="180"/>
+	<set value="232"/>
+	<set value="255"/>
+	<set value="186"/>
+	<set value="195"/>
+	<set value="286"/>
+	<set value="253"/>
+	<set value="196"/>
+	<set value="233"/>
+	<set value="255"/>
+	<set value="201"/>
+	<set value="165"/>
+	<set value="188"/>
+	<set value="187"/>
+	<set value="284"/>
+	<set value="265"/>
+	<set value="215"/>
+	<set value="186"/>
+	<set value="248"/>
+	<set value="286"/>
+	<set value="301"/>
+	<set value=""/>
+</dataset>
+</axis>
+
+<axis title="MPG" titlePos="left" numDivLines="10" tickWidth="10" divlineisdashed="0" numberSuffix="">
+
+<dataset seriesName="MPG">
+	<set value=""/>
+	<set value="23"/>
+	<set value="21"/>
+	<set value="26"/>
+	<set value="32"/>
+	<set value="34"/>
+	<set value="28"/>
+	<set value="27"/>
+	<set value="22"/>
+	<set value="25"/>
+	<set value="32"/>
+	<set value="34"/>
+	<set value="38"/>
+	<set value="34"/>
+	<set value="28"/>
+	<set value="22"/>
+	<set value="24"/>
+	<set value="27"/>
+	<set value="32"/>
+	<set value="30"/>
+	<set value="31"/>
+	<set value="36"/>
+	<set value="32"/>
+	<set value=""/>
+</dataset>
+</axis>
+
+<axis title="Cost Per Mile" titlepos="RIGHT" axisOnLeft="0" numDivLines="10" tickWidth="10" divlineisdashed="0" numberPrefix="$">
+
+<dataset seriesName="Cost">
+	<set value=""/>
+	<set value="0.22"/>
+	<set value="0.29"/>
+	<set value="0.23"/>
+	<set value="0.26"/>
+	<set value="0.32"/>
+	<set value="0.29"/>
+	<set value="0.25"/>
+	<set value="0.22"/>
+	<set value="0.31"/>
+	<set value="0.28"/>
+	<set value="0.26"/>
+	<set value="0.26"/>
+	<set value="0.27"/>
+	<set value="0.25"/>
+	<set value="0.29"/>
+	<set value="0.26"/>
+	<set value="0.32"/>
+	<set value="0.31"/>
+	<set value="0.29"/>
+	<set value="0.26"/>
+	<set value="0.23"/>
+	<set value="0.21"/>
+	<set value=""/>
+</dataset>
+</axis>
+</chart>

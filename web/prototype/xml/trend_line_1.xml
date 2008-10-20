@@ -1,0 +1,144 @@
+<chart
+	caption=''
+	subCaption=''
+	lineThickness='4'
+	showValues='0'
+	showBorder='0'
+	drawAnchors='0'
+	
+	 borderColor='#cfcfcf'
+	
+	
+	vDivLineColor='#cfcfcf'
+	vDivLineThickness='1'
+	
+	showAlternateHGridColor='1'
+	alternateHGridColor='#f0f0f0'
+	alternateHGridAlpha='100'
+	
+	divLineColor="cfcfcf"
+	divLineIsDashed="1"
+	 
+	animation='1'
+	bgColor='#ffffff'
+	borderThickness='1'
+	showToolTips='1'
+	showLegend='0'
+	forceDecimals='1'
+	yAxisMaxValue='5'
+	
+	chartLeftMargin='10'
+	chartRightMargin='10'
+	chartTopMargin='10'
+	chartBottomMargin='10'
+	canvasPadding='0'
+
+	setAdaptiveYMin='0'
+	
+	numDivLines='9'
+	adjustDiv='0'
+	>
+
+
+<categories >
+	<category label='' />
+	<category label='JAN' />
+	<category label='FEB' />
+	<category label='MAR' />
+	<category label='APR' />
+	<category label='MAY' />
+	<category label='JUN' />
+	<category label='JUL' />
+	<category label='AUG' />
+	<category label='SEP' />
+	<category label='OCT' />
+	<category label='NOV' />
+	<category label='DEC' />
+	<category label='' />
+</categories>
+
+<dataset seriesName='West Coast' color='D56658'>
+	<set value='' />
+	<set value='4.4' />
+	<set value='4.2' />
+	<set value='4.3' />
+	<set value='4.0' />
+	<set value='4.2' />
+	<set value='3.8' />
+	<set value='4.1' />
+	<set value='4.0' />
+	<set value='4.3' />
+	<set value='3.7' />
+	<set value='3.8' />
+	<set value='4.0' />
+	<set value='' />
+</dataset>
+
+<dataset seriesName='Midwest' color='DDDAC9'>
+	<set value='' />
+	<set value='3.2' />
+	<set value='3.4' />
+	<set value='3.5' />
+	<set value='3.1' />
+	<set value='3.0' />
+	<set value='3.4' />
+	<set value='3.3' />
+	<set value='3.2' />
+	<set value='3.2' />
+	<set value='3.6' />
+	<set value='4.1' />
+	<set value='3.9' />
+	<set value='' />
+</dataset>
+
+<dataset seriesName='Lakes' color='84949F'>
+	<set value='' />
+	<set value='2.1' />
+	<set value='2.5' />
+	<set value='2.2' />
+	<set value='2.7' />
+	<set value='2.2' />
+	<set value='2.8' />
+	<set value='2.4' />
+	<set value='2.1' />
+	<set value='2.9' />
+	<set value='2.2' />
+	<set value='2.2' />
+	<set value='2.0' />
+	<set value='' />
+</dataset>
+
+<dataset seriesName='South' color='A093B4'>
+	<set value='' />
+	<set value='3.6' />
+	<set value='3.2' />
+	<set value='3.8' />
+	<set value='3.3' />
+	<set value='3.6' />
+	<set value='3.0' />
+	<set value='3.2' />
+	<set value='3.5' />
+	<set value='3.9' />
+	<set value='3.4' />
+	<set value='3.6' />
+	<set value='3.2' />
+	<set value='' />
+</dataset>
+
+<dataset seriesName='New England' color='A6B493'>
+	<set value='' />
+	<set value='3.2' />
+	<set value='3.6' />
+	<set value='3.8' />
+	<set value='3.0' />
+	<set value='3.3' />
+	<set value='3.5' />
+	<set value='3.8' />
+	<set value='3.5' />
+	<set value='3.3' />
+	<set value='3.0' />
+	<set value='3.4' />
+	<set value='3.2' />
+	<set value='' />
+</dataset>
+</chart>

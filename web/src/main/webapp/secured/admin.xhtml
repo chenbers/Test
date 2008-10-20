@@ -1,0 +1,36 @@
+<ui:composition template="/layout/layout.xhtml" 
+			xmlns="http://www.w3.org/1999/xhtml" 
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+  			xmlns:h="http://java.sun.com/jsf/html" 
+  			xmlns:f="http://java.sun.com/jsf/core"
+  			xmlns:security="http://pro.tiwi.com/jsf/security">
+
+	<ui:param name="adminSelected" value="current" />
+
+
+	<ui:define name="content">
+		<p style="font-size:20px;text-align:center;">Admin Page</p>	
+		<p>User name: <security:authentication operation="username"/></p>
+		<p>Roles:
+		<security:authorize ifAnyGranted="ROLE_USER">
+			ROLE_USER
+		</security:authorize>	
+		<security:authorize ifAnyGranted="ROLE_ADMIN">
+			ROLE_ADMIN
+		</security:authorize>	
+		<security:authorize ifAnyGranted="ROLE_MANAGER">
+			ROLE_MANAGER
+		</security:authorize>	
+		<security:authorize ifAnyGranted="ROLE_SUPERUSER">
+			ROLE_SUPERUSER
+		</security:authorize>	
+		</p>
+		<h:form>
+			<h:commandButton action="#{testBean.errorAction}" value="Sample Error Dialog" immediate="true"/>
+		</h:form>	
+	
+	</ui:define>
+
+
+
+</ui:composition>

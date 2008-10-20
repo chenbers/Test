@@ -1,0 +1,16 @@
+<ui:composition template="/layout/layout.xhtml" 
+			xmlns="http://www.w3.org/1999/xhtml" 
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+  			xmlns:h="http://java.sun.com/jsf/html" 
+  			xmlns:f="http://java.sun.com/jsf/core">
+
+
+	<ui:define name="content">
+	
+		<h:form>
+			<h:commandButton action="#{testBean.errorAction}" value="Show Error Dialog" immediate="true"/>
+		</h:form>	
+	
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,22 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+  	xmlns:h="http://java.sun.com/jsf/html" 
+  	xmlns:f="http://java.sun.com/jsf/core" 
+  	xmlns:a4j="http://richfaces.org/a4j"
+  	xmlns:rich="http://richfaces.org/rich">
+  	
+<rich:modalPanel id="errorPanel" styleClass="errorPopup" showWhenRendered="#{not empty errorBean.errorMessage}" width="300" height="200" zindex="2000">
+    <f:facet name="header">
+      <h:outputText value="#{messages.error_title}" />
+    </f:facet>
+    <p>
+      <h:outputText value="#{messages.error_baseMsg}"/><br/><br/>
+      <h:outputText value="#{messages.error_detailsTitle}"/><br/>
+      <h:outputText value="#{errorBean.errorMessage}"/>
+    </p>
+    <h:form>
+    	<h:commandButton onclick="Richfaces.hideModalPanel('errorPanel')" value="#{messages.button_ok}" action="#{errorBean.clearErrorAction}" style="float:right"/>
+	</h:form>
+</rich:modalPanel>    
+
+</ui:composition>

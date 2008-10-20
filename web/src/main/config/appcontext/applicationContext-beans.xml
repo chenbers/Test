@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+   <!-- Message Bundles -->
+   <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+      <property name="basename" value="com.inthinc.pro.resources.Messages" />
+   </bean>
+   <!-- Backing Beans -->
+   <bean id="errorBean" class="com.inthinc.pro.backing.ErrorBean" >
+   </bean>
+   <bean id="baseBean" abstract="true" class="com.inthinc.pro.backing.BaseBean">
+		<property name="errorBean" ref="errorBean" />
+   </bean>
+   <bean id="testBean" class="com.inthinc.pro.backing.TestBean" scope="session" parent="baseBean">
+   </bean>
+   
+   <bean id="versionBean" class="com.inthinc.pro.backing.VersionBean" init-method="init">
+   </bean>
+   <!-- Beans used in fusion chart displays -->
+   <bean id="trendBean" class="com.inthinc.pro.backing.TrendBean" scope="session" parent="baseBean">
+   </bean>
+   <bean id="trendTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request">
+   </bean>
+   <bean id="overviewBean" class="com.inthinc.pro.backing.OverviewBean" scope="session" parent="baseBean">
+   </bean>  
+   <bean id="breakdownBean" class="com.inthinc.pro.backing.BreakdownBean" scope="session" parent="baseBean">
+   </bean>
+   <bean id="fuelBean" class="com.inthinc.pro.backing.FuelBean" scope="session" parent="baseBean">
+   </bean> 
+   <bean id="fleetOverviewBean" class="com.inthinc.pro.backing.FleetOverviewBean" scope="session" parent="baseBean">
+   </bean> 
+</beans>
+   

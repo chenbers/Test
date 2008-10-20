@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:v="urn:schemas-microsoft-com:vml"
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:a4j="http://richfaces.org/a4j" 
+	xmlns:rich="http://richfaces.org/rich">
+
+<f:view contentType="text/html"> 
+<f:loadBundle basename="com.inthinc.pro.resources.Messages" var="messages"/>
+
+<head>
+<title>${messages.title}</title>
+<link media="screen" type="text/css" href="#{facesContext.externalContext.requestContextPath}/css/main.css" rel="stylesheet" />
+<link rel="icon" href="#{facesContext.externalContext.requestContextPath}/favicon.ico" type="image/x-icon"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<!-- Override "scripts" to include any javascript needed for individual pages -->
+
+<ui:insert name="scripts" />
+
+</head>
+<body>
+<ui:insert name="header">
+  <ui:include src="/includes/header.xhtml"/>
+</ui:insert>
+<ui:insert name="navigation">
+  <ui:include src="/includes/navigation.xhtml"/>
+</ui:insert>
+<ui:insert name="subnavigation">
+</ui:insert>
+
+
+<div id="wrapper">
+<div class="wrapper_top"></div>
+	<ui:insert name="content">
+	</ui:insert>
+	<ui:insert name="footer">
+		<ui:include src="/includes/footer.xhtml"/>
+	</ui:insert>
+<div class="wrapper_bottom"></div>
+</div>
+
+<ui:insert name="errorPopup">
+		<ui:include src="/includes/errorPopup.xhtml"/>
+</ui:insert>
+
+</body>
+</f:view>
+</html>

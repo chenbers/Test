@@ -1,0 +1,329 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>tiwipro : Edit Columns</title>
+<link rel="stylesheet" type="text/css" href="css/main.css" />
+
+<style media="all" type="text/css">
+
+body {
+	margin: 0;
+	padding: 0;
+	background: #fff;
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	}
+
+table.days {
+	border: 1px solid #8BAD37;
+	border-collapse: collapse;
+	}
+	
+table.days td {
+	border: 1px solid #8BAD37;
+	border-collapse: collapse;
+	}
+	
+table.days th {
+	background: #EBFFCA;
+	font-weight: normal;
+	border: 1px solid #8BAD37;
+	border-collapse: collapse;
+	}
+
+table.days a {
+	color: #333;
+	text-decoration: none;
+	}
+
+</style>
+
+<script type="text/javascript">
+
+function selectToggle(toggle, form) {
+     var myForm = document.forms[form];
+     for( var i=0; i < myForm.length; i++ ) { 
+          if(toggle) {
+               myForm.elements[i].checked = "checked";
+          } 
+          else {
+               myForm.elements[i].checked = "";
+          }
+     }
+}
+
+</script>
+
+<script type="text/JavaScript">
+
+<!--
+function show(id)
+{
+     if (document.getElementById(id).style.display == 'none')
+     {
+          document.getElementById(id).style.display = '';
+     }
+}
+//-->
+
+<!--
+function hide(id)
+{
+          document.getElementById(id).style.display = 'none';
+}
+//-->
+</script>
+
+
+</head>
+
+<body>
+
+<div id="popupTitleBar">
+	<div id="popupTitle">Create a New Zone Alert</div>
+	<div id="popupControls" style="display: none;"><a href="#" onclick="parent.hidePopWin(false);"><img src="/images/modal_close.png" border="0" /></a></div>
+</div>
+
+<table width="680" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td rowspan="4" width="10">&nbsp;</td>
+    <td><div id="popupsubtitle" style="width: 325px;">Alert</div></td>
+    <td rowspan="4" width="10">&nbsp;</td>
+    <td>
+      <div id="popupsubtitle" style="width: 325px;">Zone</div>
+    </td>
+    <td rowspan="4" width="10">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>
+      <table width="100%" border="0" cellspacing="0" cellpadding="4">
+        <tr>
+          <td width="31%" align="right">Name:</td>
+          <td width="69%"><span class="middle">
+            <input name="textfield2" type="text" class="text" size="35" width="150" />
+          </span></td>
+        </tr>
+        <tr>
+          <td align="right" valign="top">Notify By: </td>
+          <td>
+            <table border="0" cellspacing="0" cellpadding="4">
+              <tr>
+                <td>
+                  <input type="checkbox" name="checkbox" value="checkbox" />
+                </td>
+                <td><img src="images/ico_telephone.png" width="16" height="16" /></td>
+                <td>Phone</td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" name="checkbox2" value="checkbox" />
+                </td>
+                <td><img src="images/ico_email.png" width="16" height="16" /></td>
+                <td>Email</td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" name="checkbox3" value="checkbox" />
+                </td>
+                <td><img src="images/ico_cell.png" width="16" height="16" /></td>
+                <td>Text Msg </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div id="popupsubtitle" style="width: 325px;">When</div></td>
+    <td>
+      <div id="popupsubtitle" style="width: 325px;">Drivers</div>
+    </td>
+  </tr>
+  <tr>
+    <td rowspan="4">
+      <table width="100%" border="0" cellspacing="0" cellpadding="4">
+        <tr>
+          <td width="31%" align="right">Days:</td>
+          <td width="69%">
+		  	<form name="theForm">
+            <table border="0" cellspacing="0" cellpadding="2" class="days">
+              <tr>
+                <th align="center">&nbsp;</th>
+                <th align="center">S</th>
+                <th align="center">M</th>
+                <th align="center">T</th>
+                <th align="center">W</th>
+                <th align="center">T</th>
+                <th align="center">F</th>
+                <th align="center">S</th>
+              </tr>
+              <tr>
+                <td align="center"><a href="javascript:selectToggle(true, 'theForm');">All</a></td>
+                <td align="center">
+                  <input type="checkbox" name="checkbox5" value="checkbox" />
+                </td>
+                <td align="center">
+                  <input type="checkbox" name="checkbox6" value="checkbox" />
+                </td>
+                <td align="center">
+                  <input type="checkbox" name="checkbox7" value="checkbox" />
+                </td>
+                <td align="center">
+                  <input type="checkbox" name="checkbox8" value="checkbox" />
+                </td>
+                <td align="center">
+                  <input type="checkbox" name="checkbox9" value="checkbox" />
+                </td>
+                <td align="center">
+                  <input type="checkbox" name="checkbox10" value="checkbox" />
+                </td>
+                <td align="center">
+                  <input type="checkbox" name="checkbox11" value="checkbox" />
+                </td>
+              </tr>
+            </table>
+			</form>
+          </td>
+        </tr>
+        <tr>
+          <td align="right" valign="top">Time: </td>
+          <td>
+            <table border="0" cellspacing="0" cellpadding="4">
+              <tr>
+                <td width="20">
+                  <input name="when" type="radio" value="anytime" onFocus="hide('timetable');return true;" />
+                </td>
+                <td width="170">Anytime</td>
+              </tr>
+              <tr>
+                <td>
+                  <input name="when" type="radio" value="between" onFocus="show('timetable');return true;" />
+                </td>
+                <td>Between</td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>
+                  <table border="0" cellspacing="0" cellpadding="2" id="timetable" style=" display: none;">
+                    <tr>
+                      <td>
+                        <select name="select" class="text">
+                          <option>1</option>
+                          <option>2</option>
+                          <option>3</option>
+                          <option>4</option>
+                          <option>5</option>
+                          <option>6</option>
+                          <option selected="selected">7</option>
+                          <option>8</option>
+                          <option>9</option>
+                          <option>10</option>
+                          <option>11</option>
+                          <option>12</option>
+                        </select>
+                      </td>
+                      <td>
+                        <select name="select2" class="text">
+                          <option>00</option>
+                          <option>05</option>
+                          <option>10</option>
+                          <option>15</option>
+                          <option>20</option>
+                          <option>25</option>
+                          <option>30</option>
+                          <option>35</option>
+                          <option>40</option>
+                          <option>45</option>
+                          <option>50</option>
+                          <option>55</option>
+                        </select>
+                      </td>
+                      <td>
+                        <select name="select3" class="text">
+                          <option>AM</option>
+                          <option>PM</option>
+                        </select>
+                      </td>
+                      <td>and</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <select name="select4" class="text">
+                          <option>1</option>
+                          <option>2</option>
+                          <option>3</option>
+                          <option>4</option>
+                          <option selected="selected">5</option>
+                          <option>6</option>
+                          <option>7</option>
+                          <option>8</option>
+                          <option>9</option>
+                          <option>10</option>
+                          <option>11</option>
+                          <option>12</option>
+                        </select>
+                      </td>
+                      <td>
+                        <select name="select5" class="text">
+                          <option>00</option>
+                          <option>05</option>
+                          <option>10</option>
+                          <option>15</option>
+                          <option>20</option>
+                          <option>25</option>
+                          <option>30</option>
+                          <option>35</option>
+                          <option>40</option>
+                          <option>45</option>
+                          <option>50</option>
+                          <option>55</option>
+                        </select>
+                      </td>
+                      <td>
+                        <select name="select6" class="text">
+                          <option>AM</option>
+                          <option selected="selected">PM</option>
+                        </select>
+                      </td>
+                      <td>&nbsp;</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+    <td rowspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+
+
+
+
+<div id="popupactions">
+
+<button value="submit" class="left" onclick="parent.hidePopWin(false);"><span class="cancel">Cancel</span></button><button value="submit" class="left" onclick="parent.hidePopWin(false);"><span class="save">Save</span></button>	
+
+</div>
+
+</body>
+</html>

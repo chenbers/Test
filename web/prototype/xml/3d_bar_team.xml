@@ -1,0 +1,14 @@
+<chart
+	caption=''
+	xAxisName=''
+	yAxisName=''
+	showValues='0'
+	decimals='0'
+	formatNumberScale='0'
+	numberSuffix='%'
+	yAxisMaxValue='100'
+	>
+
+<set label='Vegas' value='89' color='7FC0CE' />
+
+</chart>	

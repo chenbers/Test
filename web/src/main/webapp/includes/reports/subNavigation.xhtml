@@ -1,0 +1,34 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+  	xmlns:h="http://java.sun.com/jsf/html" 
+  	xmlns:f="http://java.sun.com/jsf/core" 
+  	xmlns:a4j="http://richfaces.org/a4j"
+  	xmlns:rich="http://richfaces.org/rich">
+  	
+  	<div class="sub_nav">
+	<div class="sub_nav-bg">
+		<ul>
+			<li>			
+			<h:outputLink styleClass="#{safetySelected}" value="#{facesContext.externalContext.requestContextPath}/secured/reports/safety.faces">
+				<span>#{messages.subNavigation_safety}</span>
+			</h:outputLink>
+			</li>	
+			<li>			
+			<h:outputLink styleClass="#{driversSelected}" value="#{facesContext.externalContext.requestContextPath}/secured/reports/drivers.faces">
+				<span>#{messages.subNavigation_drivers}</span>
+			</h:outputLink>
+			</li>	
+			<li>			
+			<h:outputLink styleClass="#{assetsSelected}" value="#{facesContext.externalContext.requestContextPath}/secured/reports/assets.faces">
+				<span>#{messages.subNavigation_assets}</span>
+			</h:outputLink>
+			</li>	
+			<li>			
+			<h:outputLink styleClass="#{efficiencySelected}" value="#{facesContext.externalContext.requestContextPath}/secured/reports/efficiency.faces">
+				<span>#{messages.subNavigation_efficiency}</span>
+			</h:outputLink>
+			</li>	
+		</ul>
+	</div>
+	</div>
+</ui:composition>

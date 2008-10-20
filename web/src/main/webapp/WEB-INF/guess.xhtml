@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+  	xmlns:f="http://java.sun.com/jsf/core"
+  	xmlns:h="http://java.sun.com/jsf/html"  
+  	xmlns:s="http://jboss.com/products/seam/taglib">
+  <head>
+    <title>Guess a number...</title>
+    <link href="niceforms.css" rel="stylesheet" type="text/css" />
+    <script language="javascript" type="text/javascript" src="niceforms.js"><!--  --></script>
+  </head>
+  <body>
+    <h1>Guess a number...</h1>
+    <f:view>
+	  <h:form styleClass="niceform">
+	    
+	    <div>
+	    <h:messages globalOnly="true"/>
+	    <h:outputText value="Higher!" 
+	                  rendered="#{numberGuess.randomNumber gt numberGuess.currentGuess}"/>
+	    <h:outputText value="Lower!" 
+	                  rendered="#{numberGuess.randomNumber lt numberGuess.currentGuess}"/>
+		</div>
+		
+		<div>
+        I'm thinking of a number between <h:outputText value="#{numberGuess.smallest}"/> and 
+        <h:outputText value="#{numberGuess.biggest}"/>. You have 
+        <h:outputText value="#{numberGuess.remainingGuesses}"/> guesses.
+        </div>		
+		
+		<div>
+		<h:outputText value="Your guess: "></h:outputText><h:inputText id="guess" value="#{numberGuess.currentGuess}" required="true" size="30"></h:inputText>
+		</div>
+        
+	  </h:form>
+    </f:view>
+  </body>
+  </html>

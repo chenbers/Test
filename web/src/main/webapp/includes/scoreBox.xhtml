@@ -1,0 +1,23 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html">
+<!-- 
+	#{scoreStyle} params
+    ==============
+	score_lg_1
+	score_lg_2
+	score_lg_3
+	score_lg_4
+	score_lg_5
+	
+	To use:
+	==============
+	<ui:include src="../includes/scoreBox.xhtml">
+            <ui:param name="score" value="#{ Score Value }" />
+            <ui:param name="scoreStyle" value="#{ Score Style }" />
+	</ui:include>
+	
+ -->
+      <div class="#{scoreStyle}" onclick="location.href='#';">
+            <div class="score"><h:outputText value="#{score}"/></div>
+      </div>
+</ui:composition>

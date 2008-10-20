@@ -1,0 +1,17 @@
+<chart
+	caption=''
+	xAxisName=''
+	yAxisName=''
+	showValues='0'
+	decimals='0'
+	formatNumberScale='0'
+	numberSuffix='%'
+	yAxisMaxValue='100'
+	>
+<set label='West Coast' value='93' color='7FC0CE' />
+<set label='Midwwest' value='98' color='DDDAC9' />
+<set label='Lakes' value='89' color='84949F' />
+<set label='South' value='92' color='A093B4' />
+<set label='New England' value='85' color='A6B493' />
+
+</chart>	

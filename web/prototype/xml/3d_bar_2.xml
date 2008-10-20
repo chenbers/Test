@@ -1,0 +1,24 @@
+<chart
+	caption=''
+	xAxisName=''
+	yAxisName=''
+	showValues='0'
+	decimals='0'
+	formatNumberScale='0'
+	numberSuffix='%'
+	yAxisMaxValue='100'
+	
+	labelDisplay='Rotate'
+	slantLabels='1'
+	>
+<set label='Washington' value='93' color='D56658' />
+<set label='Oregon' value='98' color='DFAA76' />
+<set label='Vegas' value='89' color='7FC0CE' />
+<set label='Phoenix' value='92' color='8C93D3' />
+<set label='Salt Lake' value='85' color='C2C2C2' />
+<set label='Sacramento/Bay Area' value='98' color='BAE0AF' />
+<set label='Los Angeles/San Diego' value='89' color='A3C1E7' />
+<set label='Idaho' value='92' color='D3D3D3' />
+<set label='Montana' value='85' color='E49FD5' />
+
+</chart>	

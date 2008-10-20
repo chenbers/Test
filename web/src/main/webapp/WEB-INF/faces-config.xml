@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config version="1.2"
+   xmlns="http://java.sun.com/xml/ns/javaee"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd">
+
+	<!-- converters -->
+	
+	<!-- managed beans -->
+	
+	<!-- navigation -->
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>go_test</from-outcome>
+			<to-view-id>/pages/testPage.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>go_todo</from-outcome>
+			<to-view-id>/pages/todo.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>go_home</from-outcome>
+			<to-view-id>/secured/home.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>go_reports</from-outcome>
+			<to-view-id>/secured/reports.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>go_redFlags</from-outcome>
+			<to-view-id>/secured/redFlags.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>go_liveFleet</from-outcome>
+			<to-view-id>/secured/liveFleet.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>go_admin</from-outcome>
+			<to-view-id>/secured/admin.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>go_region</from-outcome>
+			<to-view-id>/secured/region.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>go_homeFleet</from-outcome>
+			<to-view-id>/secured/homeFleet.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<!-- validators -->
+	
+	<!-- components -->
+	<component>
+   		<component-type>com.inthinc.pro.security.jsftaglib.Authorize</component-type>
+		<component-class>com.inthinc.pro.security.jsftaglib.Authorize</component-class>
+	</component> 
+	<component>
+		<component-type>com.inthinc.pro.security.jsftaglib.Authentication</component-type>
+		<component-class>com.inthinc.pro.security.jsftaglib.Authentication</component-class>
+	</component>
+ 
+	<!-- render kits -->
+ 
+    <!-- Facelets support -->
+    <application>
+        <view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
+		<locale-config>
+			<default-locale>en</default-locale>
+			<supported-locale>en_US</supported-locale>
+		</locale-config>
+		<resource-bundle>
+			<base-name>com.inthinc.pro.resources.Messages</base-name>
+			<var>messages</var>
+		</resource-bundle>
+		<message-bundle>com.inthinc.pro.resources.Messages</message-bundle>
+		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+    </application>
+    
+</faces-config>

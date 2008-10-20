@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"> 
+<head> 
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/> 
+<title>Simple Google map</title> 
+<!-- //Change the following line to use your own key available from http://www.google.com/apis/maps/signup.html -->
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAhbZHv-gY87wBPFjHur5deBQynebNGJuV0yWPcLLxheW-zsnZoBQ9Ro7WjD_EDPMnYXPzv4hukWmjAQ" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+var map;
+var icon0; //red
+var icon1; //orange
+var icon2; //pink
+var icon3; //teal
+var icon4; //gray
+var icon5; //black
+var icon6; //purple
+var icon7; //green
+var icon8; //blue
+var icon9; //marker
+var newpoints = new Array();
+ 
+function addLoadEvent(func) { 
+	var oldonload = window.onload; 
+	if (typeof window.onload != 'function'){ 
+		window.onload = func	
+	} else { 
+		window.onload = function() {
+			oldonload();
+			func();
+		}
+	}
+}
+ 
+addLoadEvent(loadMap);
+addLoadEvent(addPoints);
+ 
+function loadMap() {
+	map = new GMap2(document.getElementById("map"));
+	map.addControl(new GLargeMapControl());
+	map.addControl(new GMapTypeControl());
+	map.addControl(new GOverviewMapControl()); //my addition the zoomer?
+	map.setCenter(new GLatLng( 34, -118), 7);
+	map.setMapType(G_MAP_TYPE);
+ 
+	icon0 = new GIcon(); icon0.image = "http://tiwipro.uixd.com/images/gmap_ico_red.png"; icon0.iconSize = new GSize(25, 30); icon0.iconAnchor = new GPoint(9, 34); icon0.infoWindowAnchor = new GPoint(9, 2); icon0.infoShadowAnchor = new GPoint(18, 25);
+	icon1 = new GIcon(); icon1.image = "http://tiwipro.uixd.com/images/gmap_ico_or.png"; icon1.iconSize = new GSize(25, 30); icon1.iconAnchor = new GPoint(9, 34); icon1.infoWindowAnchor = new GPoint(9, 2); icon1.infoShadowAnchor = new GPoint(18, 25);
+	icon2 = new GIcon(); icon2.image = "http://tiwipro.uixd.com/images/gmap_ico_pink.png"; icon2.iconSize = new GSize(25, 30); icon2.iconAnchor = new GPoint(9, 34); icon2.infoWindowAnchor = new GPoint(9, 2); icon2.infoShadowAnchor = new GPoint(18, 25);
+	icon3 = new GIcon(); icon3.image = "http://tiwipro.uixd.com/images/gmap_ico_teal.png"; icon3.iconSize = new GSize(25, 30); icon3.iconAnchor = new GPoint(9, 34); icon3.infoWindowAnchor = new GPoint(9, 2); icon3.infoShadowAnchor = new GPoint(18, 25);
+	icon4 = new GIcon(); icon4.image = "http://tiwipro.uixd.com/images/gmap_ico_gray.png"; icon4.iconSize = new GSize(25, 30); icon4.iconAnchor = new GPoint(9, 34); icon4.infoWindowAnchor = new GPoint(9, 2); icon4.infoShadowAnchor = new GPoint(18, 25);
+	icon5 = new GIcon(); icon5.image = "http://tiwipro.uixd.com/images/gmap_ico_blk.png"; icon5.iconSize = new GSize(25, 30); icon5.iconAnchor = new GPoint(9, 34); icon5.infoWindowAnchor = new GPoint(9, 2); icon5.infoShadowAnchor = new GPoint(18, 25);
+	icon6 = new GIcon(); icon6.image = "http://tiwipro.uixd.com/images/gmap_ico_purp.png"; icon6.iconSize = new GSize(25, 30); icon6.iconAnchor = new GPoint(9, 34); icon6.infoWindowAnchor = new GPoint(9, 2); icon6.infoShadowAnchor = new GPoint(18, 25);
+	icon7 = new GIcon(); icon7.image = "http://tiwipro.uixd.com/images/gmap_ico_grn.png"; icon7.iconSize = new GSize(25, 30); icon7.iconAnchor = new GPoint(9, 34); icon7.infoWindowAnchor = new GPoint(9, 2); icon7.infoShadowAnchor = new GPoint(18, 25);
+	icon8 = new GIcon(); icon8.image = "http://tiwipro.uixd.com/images/gmap_ico_blue.png"; icon8.iconSize = new GSize(25, 30); icon8.iconAnchor = new GPoint(9, 34); icon8.infoWindowAnchor = new GPoint(9, 2); icon8.infoShadowAnchor = new GPoint(18, 25);
+	
+	icon9 = new GIcon(); icon9.image = "http://tiwipro.uixd.com/images/marker.png"; icon9.iconSize = new GSize(20, 34); icon9.iconAnchor = new GPoint(9, 34); icon9.infoWindowAnchor = new GPoint(9, 2); icon9.infoShadowAnchor = new GPoint(18, 25);
+}
+ 
+function addPoints() {
+ 
+	newpoints[0] = new Array(47.517200697839414, -121.4208984375, icon0, 'WA5236', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[1] = new Array(47.05515408550348, -122.54150390625, icon0, 'WA6234', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[2] = new Array(47.54687159892238, -121.99218753455, icon0, 'WA2356', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	
+	newpoints[3] = new Array(44.449467536006935, -123.046875, icon1, 'OR2363', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[4] = new Array(44.276671273775186, -123.046875, icon1, 'OR1236', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[5] = new Array(44.26093725039923, -122.93701171875, icon1, 'OR2346', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[6] = new Array(42.24478535602799, -121.728515625, icon1, 'OR1677', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+
+	newpoints[7] = new Array(46.92025531537451, -114.01611328125, icon2, 'MT6364', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>');
+	newpoints[8] = new Array(45.82879925192134, -108.56689453125, icon2, 'MT3477', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	
+	newpoints[9] = new Array(36.06686213257888, -115.048828125, icon3, 'LV', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[10] = new Array(35.94243575255426, -115.07080078125, icon3, 'LV', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[11] = new Array(35.817813158696616, -115.2685546875, icon3, 'LV', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>');
+	
+	newpoints[12] = new Array(43.389081939117496, -116.015625, icon4, 'ID', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>');
+	newpoints[13] = new Array(43.691707903073805, -116.630859375, icon4, 'ID', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[14] = new Array(43.58039085560784, -116.2353515625, icon4, 'ID', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>');
+	
+	newpoints[15] = new Array(40.83043687764923, -111.86279296875, icon5, 'UT', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[16] = new Array(40.12849105685408, -111.62109375, icon5, 'UT', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[17] = new Array(40.66397287638688, -112.1484375, icon5, 'UT', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[18] = new Array(41.78769700539063, -111.97265625, icon5, 'UT', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[19] = new Array(42.924251753870685, -112.52197265625, icon5, 'UT', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	
+	newpoints[20] = new Array(35.17380831799959, -111.708984375, icon6, 'AZ', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[21] = new Array(37.77071473849608, -113.115234375, icon6, 'AZ', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>');
+	
+	newpoints[22] = new Array(38.685509760012, -121.57470703125, icon7, 'CA-N', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[23] = new Array(38.65119833229951, -121.5087890625, icon7, 'CA-N', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[24] = new Array(38.255436376379464, -121.39892578125, icon7, 'CA-N', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[25] = new Array(38.479394673276445, -121.8603515625, icon7, 'CA-N', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[26] = new Array(38.013476231041935, -121.26708984375, icon7, 'CA-N', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[27] = new Array(37.85750715625203, -122.519531252344, icon7, 'CA-N', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[28] = new Array(37.71859032558813, -122.29980468754, icon7, 'CA-N', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[29] = new Array(36.75649032950515, -119.8388671875, icon7, 'CA-N', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[30] = new Array(37.49229399862877, -122.1240234375, icon7, 'CA-N', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>');
+	 
+	newpoints[31] = new Array(34.415973384481866, -119.6630859375, icon8, 'CA-S', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[32] = new Array(34.32529192442733, -119.1796875, icon8, 'CA-S', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[33] = new Array(34.21634468843465, -118.5205078125, icon8, 'CA-S', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[34] = new Array(34.161818161230386, -118.27880859375, icon8, 'CA-S', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[35] = new Array(34.016241889667015, -118.30078125, icon8, 'CA-S', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[36] = new Array(33.90689555128866, -117.2900390625, icon8, 'CA-S', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>');
+	newpoints[37] = new Array(32.731840896865684, -115.48828125, icon8, 'CA-S', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[38] = new Array(32.7503226078097, -117.24609375, icon8, 'CA-S', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>'); 
+	newpoints[39] = new Array(33.742612777346885, -116.91650390625, icon8, 'CA-S', '<span><strong>Vehicle:</strong> <a href="#">A5236</a><br /><strong>Driver:</strong> <a href="#">Nick N.</a><br /><strong>Fleet:</strong> <a href="#">Washington</a><br />All sorts of other cool stuff.</span>');
+	
+	newpoints[40] = new Array(34, -118, icon9, 'CA-S', '<span><strong>Address:</strong> <br /> 356 Hollywood Blvd 90210</span>'); 
+	
+	
+	
+	 
+ 
+	for(var i = 0; i < newpoints.length; i++) {
+		var point = new GPoint(newpoints[i][1],newpoints[i][0]);
+		var popuphtml = newpoints[i][4] ;
+		var marker = createMarker(point,newpoints[i][2],popuphtml);
+		map.addOverlay(marker);
+	}
+}
+ 
+function createMarker(point, icon, popuphtml) {
+	var popuphtml = "<div id=\"popup\">" + popuphtml + "<\/div>";
+	var marker = new GMarker(point, icon);
+	GEvent.addListener(marker, "click", function() {
+		marker.openInfoWindowHtml(popuphtml);
+	});
+	return marker;
+}
+//]]>
+</script>
+ 
+<style type="text/css">
+body {
+	margin: 0;
+	padding: 0;
+	}
+
+div#popup {
+	background:#fff;
+	margin:0px;
+	padding:5px;
+	width:200px;
+	}
+	
+div#popup span {
+	font: 10px Verdana, Arial, Helvetica, sans-serif;
+	color: #333;
+	}
+</style>
+</head>
+<body>
+<div id="map" style="width:580px;height:700px"></div>
+</body>
+</html>

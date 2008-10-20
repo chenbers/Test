@@ -1,0 +1,66 @@
+<ui:composition template="/layout/layout.xhtml" 
+			xmlns="http://www.w3.org/1999/xhtml" 
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+  			xmlns:h="http://java.sun.com/jsf/html" 
+  			xmlns:f="http://java.sun.com/jsf/core"
+			xmlns:rich="http://richfaces.org/rich"
+  			xmlns:security="http://www.springframework.org/security/tags">
+
+	<ui:define name="scripts">
+	</ui:define>
+	<ui:define name="header">
+  		<ui:include src="/includes/loginHeader.xhtml"/>
+	</ui:define>
+	<ui:define name="navigation">
+  		<ui:include src="/includes/loginNavigation.xhtml"/>
+	</ui:define>
+	<ui:define name="content">
+	<div class="" style="width: 300px; margin: 50px auto 50px auto;">
+	<div class="panel_nw">
+		<div class="panel_title"><span class="login">#{messages.login_title}</span></div>
+	</div>
+	<div class="panel_w">
+	  <div class="panel_content">
+		<form action="j_spring_security_check" method="post">
+		<table width="100%" border="0" cellspacing="0" cellpadding="4">
+		  <tr>
+			<td><h:outputText value="#{messages.login_username}:"/></td>
+			<td><h:inputText id="j_username" styleClass="txt" /></td>
+		  </tr>
+		  <tr>
+			<td><h:outputText value="#{messages.login_password}:"/></td>
+			<td><h:inputSecret id="j_password" styleClass="txt" /></td>
+		  </tr>
+		  <tr>
+			<td colspan="2" align="center"><button type="submit" id="login_btn" class="left"><span class="login">#{messages.login_button}</span></button></td>
+			</tr>
+		</table>
+		</form>
+		<h:form>
+			<h:commandLink title="#{messages.login_forgotLink}" value="#{messages.login_forgotLink}"/>
+		</h:form>
+	  </div>
+	</div>
+	<div class="panel_sw">
+		<div class="panel_statusbar"></div>
+	</div>
+	</div>
+	<rich:jQuery selector="document" query="ready(function(){jQuery('#j_username').focus()})"/>
+	</ui:define>
+
+
+	<ui:define name="errorPopup">
+		<rich:modalPanel id="errorPanel" styleClass="errorPopup" showWhenRendered="#{not empty authErrorBean.errorMessage}" width="300" height="200" zindex="2000">
+		    <f:facet name="header">
+		      <h:outputText value="#{messages.login_error_title}"/>
+		    </f:facet>
+		    <p>
+		      <h:outputText value="#{authErrorBean.errorMessage}" escape="false"/>
+		    </p>
+		    <h:form>
+		    	<h:commandButton onclick="Richfaces.hideModalPanel('errorPanel')" value="#{messages.button_ok}" style="float:right"/>
+			</h:form>
+		</rich:modalPanel> 
+	</ui:define>  
+
+</ui:composition>

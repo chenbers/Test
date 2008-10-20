@@ -1,0 +1,93 @@
+button {
+	border:0;
+	cursor:pointer;
+	font-weight:normal;
+	padding:0 10px 0 0;
+	margin-right: 2px;
+	text-align: left;
+	float: left;
+	width: auto;
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	color: #333;
+	/* ie7 only */
+	overflow: visible
+	}
+	
+button.on {
+	background: url(/images/tab_right_on.png) right no-repeat;
+	}
+	
+button.off {
+	background: url(/images/tab_right_off.png) right no-repeat;
+	}
+
+button span {
+	position: relative;
+	display: block;
+	white-space: nowrap;
+	padding: 0 0 0 24px;
+	height: 30px;
+	line-height: 30px;
+	/* ie7 only */
+	margin-top: 2px;
+	width:auto;
+	overflow: visible;
+	}
+
+span.overall_on {
+	background: url(/images/tab_overall_on.png) left no-repeat;
+	}
+	
+span.overall_off {
+	background: url(/images/tab_overall_off.png) left no-repeat;
+	}
+	
+span.drivestyle_on {
+	background: url(/images/tab_drivestyle_on.png) left no-repeat;
+	}
+	
+span.drivestyle_off {
+	background: url(/images/tab_drivestyle_off.png) left no-repeat;
+	}
+
+span.speed_on {
+	background: url(/images/tab_speed_on.png) left no-repeat;
+	}
+	
+span.speed_off {
+	background: url(/images/tab_speed_off.png) left no-repeat;
+	}
+	
+span.seatbelt_on {
+	background: url(/images/tab_seatbelt_on.png) left no-repeat;
+	}
+	
+span.seatbelt_off {
+	background: url(/images/tab_seatbelt_off.png) left no-repeat;
+	}
+	
+span.coach_on {
+	background: url(/images/tab_coach_on.png) left no-repeat;
+	}
+	
+span.coach_off {
+	background: url(/images/tab_coach_off.png) left no-repeat;
+	}
+	
+#tab_nav {
+	border-bottom: 1px solid #ccc;
+	width: 922px;
+	height: 27px;
+	margin: 0;
+	padding: 0;
+	background: #efefef;
+	}
+
+.tab_content_container {
+	width: 920px;
+	height: 450px;
+	margin: 0;
+	border-bottom: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	}
