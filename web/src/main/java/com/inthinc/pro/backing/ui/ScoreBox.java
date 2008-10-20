@@ -47,8 +47,8 @@ public class ScoreBox
 	}
 
 	public void setScore(Double score) {
-		CalculateScoreColor();
 		this.score = score;
+		CalculateScoreColor();
 	}
 
 	public String getScoreStyle() {
