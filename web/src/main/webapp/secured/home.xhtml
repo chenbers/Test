@@ -85,112 +85,18 @@
 					<div class="spacer"></div>
 					
 		<!-- START PANEL -->
-					<div class="">
-						
-						<div class="panel_nw">
-							<div class="panel_title">
-								<span class="line">Trend</span>
-								<span class="panel_links">	
-      								<a4j:form id="days-back-form">        
-  
-          								<a4j:commandLink title="#{messages.duration_days}" immediate="true"
-            								styleClass="#{(trendBean.duration eq 'DAYS') ? 'on' : ''}" action="#{trendBean.changeDurationAction}"
-            								reRender="days-back-form,hiddenField1,xypanel,items"
-            								value="#{messages.duration_days}">
-            								<a4j:actionparam name="duration" assignTo="#{trendBean.duration}" value="DAYS" />
-          								</a4j:commandLink><rich:spacer width="5"></rich:spacer> 
-          								<a4j:commandLink title="#{messages.duration_three}" immediate="true"
-            								styleClass="#{(trendBean.duration eq 'THREE') ? 'on' : ''}" action="#{trendBean.changeDurationAction}"
-            								reRender="days-back-form,hiddenField1,xypanel,items"            								
-            								value="#{messages.duration_three}">
-            								<a4j:actionparam name="duration" assignTo="#{trendBean.duration}" value="THREE" />
-          								</a4j:commandLink><rich:spacer width="5"></rich:spacer> 
-          								<a4j:commandLink title="#{messages.duration_six}" immediate="true"
-            								styleClass="#{(trendBean.duration eq 'SIX') ? 'on' : ''}" action="#{trendBean.changeDurationAction}"
-            								reRender="days-back-form,hiddenField1,xypanel,items"
-            								value="#{messages.duration_six}">
-            								<a4j:actionparam name="duration" assignTo="#{trendBean.duration}" value="SIX" />
-          								</a4j:commandLink> <rich:spacer width="5"></rich:spacer>  
-          								<a4j:commandLink title="#{messages.duration_twelve}" immediate="true"
-            								styleClass="#{(trendBean.duration eq 'TWELVE') ? 'on' : ''}" action="#{trendBean.changeDurationAction}"
-            								reRender="days-back-form,hiddenField1,xypanel,items"
-            								value="#{messages.duration_twelve}">
-            								<a4j:actionparam name="duration" assignTo="#{trendBean.duration}" value="TWELVE" />
-          								</a4j:commandLink>    
-      								</a4j:form>									
-								</span>
-							</div>
-						</div>
-						
-					
-						<div class="panel_w">
-					  		<div class="panel_content">
-					  		<!-- Start xy graph -->
-					  		<rich:panel id="xypanel" style="height:300;width:445">
-					  			<h:inputHidden value="#{trendBean.lineDef}" id="hiddenField1"/>
-					  																										  					  		
-									<div id="chartdiv2" align="center"></div>							
-									<script type="text/javascript">
-										var targetElement = document.getElementById("hiddenField1");
-							
-						   				var chart = new FusionCharts("/tiwipro/fusioncharts/MSLine.swf", "ChartId", "445", "300", "0", "0");						   						   		
-						   				chart.setDataXML(targetElement.value);
-					   			   
-						   				chart.render("chartdiv2");
-									</script>
-							</rich:panel>					
-							<!-- End xy graph -->					
-					
-								<div class="spacer"></div>
-																												
-								<div class="datagrid">
-							<!-- Start Trend table -->
-							<h:form id="trendTable">
-							<rich:dataTable					  
-								value="#{trendBean.scoreableEntities}" id="items"
-								var="item" styleClass="datagrid" rowClasses="trendTableOdd,trendTableEven"
-								cellspacing="1" rows="10" width="100%"
-    							binding="#{trendTable.table}">
-				    						
-    							<!-- Data -->		
-								<rich:column width="20">
-									<f:facet name="header">
-                						<h:outputText value=" " />
-                					</f:facet>	
-									<rich:spacer width="17" height="17" style="background-color:#{item.colorKey};border-style:solid;border-width:1px;border-color:#000000"></rich:spacer>	    							
-								</rich:column>
-								<rich:column sortBy="#{item.identifier}">
-									<f:facet name="header">
-                						<h:outputText value="Region" />
-                					</f:facet>	
-                					<h:commandLink             								
-            								value="#{item.identifier}"
-            								action="go_region">
-          							</h:commandLink>    
-									
-								</rich:column>
-								<rich:column width="73" sortBy="#{item.score}">
-									<f:facet name="header">         								
-                						<h:outputText value="Score" />
-                					</f:facet>
-									<iwi:scoreBox style="#{item.style}" score="#{item.score}"/>
-								</rich:column>
-			
-							</rich:dataTable>
-							
-							</h:form>
-								<!-- End Trend table -->
-						</div>
-									
-					  </div>
-
-					</div>
-			
-				<div class="panel_sw">
-					<div class="panel_statusbar"></div>
-				</div>
-				
-			</div>
+		<ui:include src="/includes/trendxychart.xhtml">
+			<ui:param name="thirtyDaysOn" value="#{trendBean.styleClass30Days}"/>
+			<ui:param name="threeMonthsOn" value="#{trendBean.styleClass3Months}"/>
+			<ui:param name="sixMonthsOn" value="#{trendBean.styleClass6Months}"/>
+			<ui:param name="twelveMonthsOn" value="#{trendBean.styleClass12Months}"/>
+            <ui:param name="duration" value="#{trendBean.duration}" />
+            <ui:param name="xyheight" value="300"/>
+            <ui:param name="xywidth" value="445"/>
+            <ui:param name="lineDef" value="#{trendBean.lineDef}"/>
+            <ui:param name="scores" value="#{trendBean.scoreableEntities}"/>
+            <ui:param name="table" value="#{trendTable.table}"/>
+		</ui:include>
 		<!-- END PANEL -->
 	</td>
 	
