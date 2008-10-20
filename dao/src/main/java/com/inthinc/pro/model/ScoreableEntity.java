@@ -10,6 +10,7 @@ public class ScoreableEntity extends BaseEntity {
 	private String score;
 	private String style;
 	private String colorKey;
+	private String goTo;
 	
 	public Integer getEntityID() {
 		return entityID;
@@ -41,5 +42,13 @@ public class ScoreableEntity extends BaseEntity {
 	public void setColorKey(String colorKey) {
 		this.colorKey = colorKey;
 	}
-
+	public String getGoTo() {
+		return goTo;
+	}
+	public void setGoTo(String goTo) {
+		this.goTo = goTo;
+	}
+	public String goTo() {
+		return this.goTo;
+	}
 }
