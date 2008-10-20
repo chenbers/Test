@@ -15,9 +15,11 @@ public class ScoreBox
 	
 	public ScoreBox(double _score, ScoreBoxSizes _size)
 	{
-		this.score = _score;
 		this.size = _size.toString();
-		CalculateScoreColor();
+		
+		setScore(_score);
+		
+		
 	}
 	
 	private void CalculateScoreColor()
@@ -45,11 +47,12 @@ public class ScoreBox
 	}
 
 	public void setScore(Double score) {
+		CalculateScoreColor();
 		this.score = score;
 	}
 
 	public String getScoreStyle() {
-		CalculateScoreColor();
+		
 		return scoreStyle;
 	}
 
