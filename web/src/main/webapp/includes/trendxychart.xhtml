@@ -66,7 +66,8 @@
 
 	<div class="spacer"></div>
 
-	<div class="datagrid"><!-- Start Trend table --> <h:form
+	<div class="datagrid"><!-- Start Trend table --> 
+	<h:form
 		id="trendTable">
 		<rich:dataTable value="#{scores}" id="items"
 			var="item" styleClass="datagrid"
@@ -74,18 +75,18 @@
 			width="100%" binding="#{table}">
 
 			<!-- Data -->
-			<rich:column width="20">
-				<f:facet name="header">
-					<h:outputText value=" " />
-				</f:facet>
-				<rich:spacer width="17" height="17"
-					style="background-color:#{item.colorKey};border-style:solid;border-width:1px;border-color:#000000"></rich:spacer>
-			</rich:column>
-			<rich:column sortBy="#{item.identifier}">
+					<rich:column width="20">
+						<f:facet name="header">
+							<h:outputText value=" " />
+						</f:facet>
+						<rich:spacer width="17" height="17"
+							style="background-color:#{item.colorKey};border-style:solid;border-width:1px;border-color:#000000"></rich:spacer>
+					</rich:column>
+					<rich:column sortBy="#{item.identifier}">
 						<f:facet name="header">
 							<h:outputText value="Region" />
 						</f:facet>
-						<h:commandLink value="#{item.identifier}" action="go_region">
+						<h:commandLink value="#{item.identifier}" action="#{item.goTo}">
 						</h:commandLink>
 
 					</rich:column>
