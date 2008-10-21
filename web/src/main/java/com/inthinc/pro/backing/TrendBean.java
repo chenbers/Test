@@ -1,20 +1,8 @@
 package com.inthinc.pro.backing;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
-import javax.imageio.ImageIO;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.security.context.SecurityContextHolder;
@@ -31,12 +19,16 @@ public class TrendBean extends BaseBean {
 	private static final Logger logger = Logger.getLogger(TrendBean.class);
 	
 	private String lineDef;	
-    private Duration duration = Duration.DAYS;
+
 	private List <ScoreableEntity> scoreableEntities = new ArrayList<ScoreableEntity>();
+	
+	//The following five may need to be placed in BaseBean
+    private Duration duration = Duration.DAYS;
 	private String styleClass30Days = "on";
 	private String styleClass3Months = "";
 	private String styleClass6Months = "";
 	private String styleClass12Months = "";
+	
 	private String goTo = "go_region";
 		
     public TrendBean()

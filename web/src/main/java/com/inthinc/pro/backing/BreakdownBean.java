@@ -16,6 +16,13 @@ public class BreakdownBean extends BaseBean {
 	
 	private String pieDef;	
 	
+	//The following five may need to be placed in BaseBean
+	private Duration duration = Duration.DAYS;
+	private String styleClass30Days = "on";
+	private String styleClass3Months = "";
+	private String styleClass6Months = "";
+	private String styleClass12Months = "";
+	
 	public String getPieDef() {		
 		pieDef = createPieDef();
 		logger.debug("returned string: " + pieDef);
@@ -39,5 +46,74 @@ public class BreakdownBean extends BaseBean {
 		
 		return sb.toString();
 	}
+	
+
+	public Duration getDuration() {
+		return duration;
+	}
+
+	public void setDuration(Duration duration) {
+		this.duration = duration;
+	}
+	
+	public String getStyleClass30Days() {
+		reset();
+		if ( this.duration.toString().equalsIgnoreCase(Duration.DAYS.toString()) ) {
+			styleClass30Days = "on";
+		}
+	
+		return styleClass30Days;
+	}
+
+	public void setStyleClass30Days(String styleClass30Days) {
+		this.styleClass30Days = styleClass30Days;
+	}
+
+	public String getStyleClass3Months() {
+		reset();
+		if ( this.duration.toString().equalsIgnoreCase(Duration.THREE.toString()) ) {
+			styleClass3Months = "on";
+		}
+	
+		return styleClass3Months;
+	}
+
+	public void setStyleClass3Months(String styleClass3Months) {
+		this.styleClass3Months = styleClass3Months;
+	}
+
+	public String getStyleClass6Months() {
+		reset();
+		if ( this.duration.toString().equalsIgnoreCase(Duration.SIX.toString()) ) {
+			styleClass6Months = "on";
+		}
+	
+		return styleClass6Months;
+	}
+
+	public void setStyleClass6Months(String styleClass6Months) {
+		this.styleClass6Months = styleClass6Months;
+	}
+
+	public String getStyleClass12Months() {
+		reset();
+		if ( this.duration.toString().equalsIgnoreCase(Duration.TWELVE.toString()) ) {
+			styleClass12Months = "on";
+		}
+	
+		return styleClass12Months;
+	}
+
+	public void setStyleClass12Months(String styleClass12Months) {
+		this.styleClass12Months = styleClass12Months;
+	}
+	
+	private void reset() {
+		this.styleClass30Days = "";
+		this.styleClass3Months = "";
+		this.styleClass6Months = "";
+		this.styleClass12Months = "";
+	}
+
 
 }
