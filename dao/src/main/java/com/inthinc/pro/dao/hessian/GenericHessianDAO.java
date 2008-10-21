@@ -303,7 +303,7 @@ public abstract class GenericHessianDAO<T, ID, S extends HessianService> impleme
   protected ID getReturnKey(Map<String, Object> map)
   {
     String name = null;
-    for (Field f : modelClass.getFields())
+    for (Field f : modelClass.getDeclaredFields())
     {
       if (f.isAnnotationPresent(com.inthinc.pro.dao.annotations.ID.class))
       {
