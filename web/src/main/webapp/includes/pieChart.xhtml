@@ -10,8 +10,22 @@
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
+					
 						<span class="line">#{title}</span>
-						<span class="panel_links"><a href="#">details</a></span>
+						
+						<span class="panel_links">
+													
+							<ui:include src="/includes/dateLinks.xhtml">
+								<ui:param name="ajaxForm" value="pieForm"/>
+								<ui:param name="reRenderList" value="#{reRenderList}"/>			
+								<ui:param name="thirtyDaysOn" value="#{thirtyDaysOn}"/>
+								<ui:param name="threeMonthsOn" value="#{threeMonthsOn}"/>
+								<ui:param name="sixMonthsOn" value="#{sixMonthsOn}"/>
+								<ui:param name="twelveMonthsOn" value="#{twelveMonthsOn}"/>
+        	    				<ui:param name="duration" value="#{duration}" />
+							</ui:include>								
+						
+						</span>
 					</div>
 				</div>
 
