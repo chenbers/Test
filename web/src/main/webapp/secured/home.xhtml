@@ -86,6 +86,8 @@
 					
 		<!-- START PANEL -->
 		<ui:include src="/includes/trendxychart.xhtml">
+			<ui:param name="column_one" value="Fleet"/>
+			<ui:param name="column_two" value="Score"/>
 			<ui:param name="thirtyDaysOn" value="#{trendBean.styleClass30Days}"/>
 			<ui:param name="threeMonthsOn" value="#{trendBean.styleClass3Months}"/>
 			<ui:param name="sixMonthsOn" value="#{trendBean.styleClass6Months}"/>
@@ -104,82 +106,25 @@
 	
     <td width="465" valign="top">
 
-		<!-- START PANEL -->
-			<div class="">
-				<div class="panel_nw">
-					<div class="panel_title">
-						<span class="line">Score Breakdown</span>
-						<span class="panel_links"><a href="#">details</a></span>
-					</div>
-				</div>
-
-					<div class="panel_w">
-					  <div class="panel_content">
-					  
-						<table width="455" border="0" cellspacing="0" cellpadding="0">
-							<tr>
-								<td width="74" valign="top" align="center"><img src="/tiwipro/images/legend_pie1to5.png" width="54" height="137" style="margin-top: 10px;" /></td>
-								<td width="381" valign="top">
-									<!-- Start pie chart -->
-					  				<rich:panel id="piepanel" style="height:300;width:381">
-					  					<h:inputHidden value="#{breakdownBean.pieDef}" id="hiddenField2"/>
-					  													  										
-										<div id="chartdiv" align="center"></div>									
-										<script type="text/javascript">
-											var targetElement1 = document.getElementById("hiddenField2");
-							
-											var chart2 = new FusionCharts("/tiwipro/fusioncharts/Pie2D.swf", "ChartId", "381", "300", "0", "0");										
-											chart2.setDataXML(targetElement1.value);									   	   
-											
-											chart2.render("chartdiv");
-										</script>
-									</rich:panel>
-								</td>
-							</tr>
-						</table>
-						
-					  </div>
-					</div>
-				<div class="panel_sw">
-					<div class="panel_statusbar"></div>
-				</div>
-			</div>
+		<!-- START SCORE BREAKDOWN PANEL -->
+		<ui:include src="/includes/pieChart.xhtml">	
+			<ui:param name="title" value="Score Breakdown"/>		
+            <ui:param name="pieheight" value="300"/>
+            <ui:param name="piewidth" value="381"/>
+            <ui:param name="pieDef" value="#{breakdownBean.pieDef}"/>            
+		</ui:include>
 
 		<!-- END PANEL -->
 		
 		<div class="spacer"></div>
 		
-		<!-- START PANEL -->
-			<div class="">
-				<div class="panel_nw">
-					<div class="panel_title">
-						<span class="gas">Estimated Fuel Efficiency</span>
-						<span class="panel_links"><a href="#">3 months</a> <a href="#">6 months</a> <a href="#" class="on">12 months</a></span>
-
-					</div>
-				</div>
-					<div class="panel_w">
-					  <div class="panel_content">
-					  <rich:panel id="barpanel" style="height:440;width:350">
-	  					<h:inputHidden value="#{fuelBean.barDef}" id="hiddenField3"/>
-					  				
-						<div id="chartdiv3" align="center"></div>
-						<script type="text/javascript">
-							var targetElement2 = document.getElementById("hiddenField3");
-							
-							var chart = new FusionCharts("/tiwipro/fusioncharts/Column3D.swf", "ChartId", "440", "350", "0", "0");
-							chart.setDataXML(targetElement2.value);	
-							   
-							chart.render("chartdiv3");
-						</script>
-					  </rich:panel>
-					  </div>
-					</div>
-
-				<div class="panel_sw">
-					<div class="panel_statusbar"></div>
-				</div>
-			</div>
+		<!-- START FUEL EFFICIENCY PANEL -->
+		<ui:include src="/includes/fuelEfficiencyChart.xhtml">	
+			<ui:param name="title" value="Estimated Fuel Efficiency"/>		
+            <ui:param name="barheight" value="440"/>
+            <ui:param name="barwidth" value="350"/>
+            <ui:param name="barDef" value="#{fuelBean.barDef}"/>            
+		</ui:include>
 		<!-- END PANEL -->
 	</td>
   </tr>
