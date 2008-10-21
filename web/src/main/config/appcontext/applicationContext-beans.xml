@@ -17,15 +17,19 @@
    <bean id="versionBean" class="com.inthinc.pro.backing.VersionBean" init-method="init">
    </bean>
    <!-- Beans used in fusion chart displays -->
-   <bean id="trendBean" class="com.inthinc.pro.backing.TrendBean" scope="session" parent="baseBean">
+   <bean id="trendBean" class="com.inthinc.pro.backing.TrendBean" 
+		scope="request" parent="baseBean">
    </bean>
    <bean id="trendTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request">
    </bean>
-   <bean id="breakdownBean" class="com.inthinc.pro.backing.BreakdownBean" scope="session" parent="baseBean">
+   <bean id="breakdownBean" class="com.inthinc.pro.backing.BreakdownBean" 
+   		scope="request" parent="baseBean">
    </bean>
-   <bean id="fuelBean" class="com.inthinc.pro.backing.FuelBean" scope="session" parent="baseBean">
+   <bean id="fuelBean" class="com.inthinc.pro.backing.FuelBean" 
+   		scope="request" parent="baseBean">
    </bean> 
-   <bean id="fleetOverviewBean" class="com.inthinc.pro.backing.FleetOverviewBean" scope="session" parent="baseBean">
+   <bean id="fleetOverviewBean" class="com.inthinc.pro.backing.FleetOverviewBean" 
+   		scope="request" parent="baseBean">
    </bean> 
 </beans>
    
