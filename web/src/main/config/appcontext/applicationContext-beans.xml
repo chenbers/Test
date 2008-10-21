@@ -28,8 +28,6 @@
    <bean id="fuelBean" class="com.inthinc.pro.backing.FuelBean" 
    		scope="request" parent="baseBean">
    </bean> 
-   <bean id="fleetOverviewBean" class="com.inthinc.pro.backing.FleetOverviewBean" 
-   		scope="request" parent="baseBean">
-   </bean> 
+
 </beans>
    
