@@ -1,0 +1,45 @@
+<ui:composition 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:f="http://java.sun.com/jsf/core"
+  	xmlns:iwi="http://pro.tiwi.com/jsf"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+	<a4j:form id="#{ajaxForm}">
+
+		<a4j:commandLink title="#{messages.duration_days}" immediate="true"
+			styleClass="#{thirtyDaysOn}"			
+			reRender="#{reRenderList}"
+			value="#{messages.duration_days}">
+			<a4j:actionparam name="duration" assignTo="#{duration}"
+				value="DAYS" />
+		</a4j:commandLink>
+		<rich:spacer width="5"></rich:spacer>
+		<a4j:commandLink title="#{messages.duration_three}" immediate="true"
+			styleClass="#{threeMonthsOn}"	
+			reRender="#{reRenderList}"
+			value="#{messages.duration_three}">
+			<a4j:actionparam name="duration" assignTo="#{duration}"
+				value="THREE" />
+		</a4j:commandLink>
+		<rich:spacer width="5"></rich:spacer>
+		<a4j:commandLink title="#{messages.duration_six}" immediate="true"
+			styleClass="#{sixMonthsOn}"	
+			reRender="#{reRenderList}"
+			value="#{messages.duration_six}">
+			<a4j:actionparam name="duration" assignTo="#{duration}"
+				value="SIX" />
+		</a4j:commandLink>
+		<rich:spacer width="5"></rich:spacer>
+		<a4j:commandLink title="#{messages.duration_twelve}" immediate="true"
+			styleClass="#{twelveMonthsOn}"	
+			reRender="#{reRenderList}"
+			value="#{messages.duration_twelve}">
+			<a4j:actionparam name="duration" assignTo="#{duration}"
+				value="TWELVE" />
+		</a4j:commandLink>
+		
+	</a4j:form>
+	
+</ui:composition>			
