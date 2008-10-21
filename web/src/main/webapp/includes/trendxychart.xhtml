@@ -84,7 +84,7 @@
 					</rich:column>
 					<rich:column sortBy="#{item.identifier}">
 						<f:facet name="header">
-							<h:outputText value="Region" />
+							<h:outputText value="#{column_one}" />
 						</f:facet>
 						<h:commandLink value="#{item.identifier}" action="#{item.goTo}">
 						</h:commandLink>
@@ -92,7 +92,7 @@
 					</rich:column>
 					<rich:column width="73" sortBy="#{item.score}">
 						<f:facet name="header">
-							<h:outputText value="Score" />
+							<h:outputText value="#{column_two}" />
 						</f:facet>
 						<iwi:scoreBox style="#{item.style}" score="#{item.score}" />
 						</rich:column>
