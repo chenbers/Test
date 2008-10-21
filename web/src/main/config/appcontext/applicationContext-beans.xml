@@ -21,8 +21,6 @@
    </bean>
    <bean id="trendTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request">
    </bean>
-   <bean id="overviewBean" class="com.inthinc.pro.backing.OverviewBean" scope="session" parent="baseBean">
-   </bean>  
    <bean id="breakdownBean" class="com.inthinc.pro.backing.BreakdownBean" scope="session" parent="baseBean">
    </bean>
    <bean id="fuelBean" class="com.inthinc.pro.backing.FuelBean" scope="session" parent="baseBean">
