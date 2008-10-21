@@ -1,0 +1,39 @@
+<ui:composition 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:f="http://java.sun.com/jsf/core"
+  	xmlns:iwi="http://pro.tiwi.com/jsf"
+	xmlns:h="http://java.sun.com/jsf/html">
+	
+		<div class="">
+				<div class="panel_nw">
+					<div class="panel_title">
+						<span class="map">Fleet Map</span>
+					</div>
+				</div>
+				<div class="panel_w">
+					
+					<div class="panel_content">
+						<h:panelGroup styleClass="map-border" layout="block">
+							<div id="map-canvas" style="#{mapwidth};#{mapheight};border:0"></div>
+					  	</h:panelGroup>
+					    <script type="text/javascript">
+      						if (GBrowserIsCompatible()) {
+        						map = new GMap2(document.getElementById("map-canvas"));
+        						map.addControl(new GLargeMapControl());
+        						map.addControl(new GMapTypeControl());
+        						map.addControl(new GOverviewMapControl()); 
+								map.setCenter(new GLatLng(#{mapxcenter}, #{mapycenter}), 5);
+								map.setMapType(G_MAP_TYPE);
+      						}
+    					</script>
+					 </div>
+				</div>
+				
+				<div class="panel_sw">
+					<div class="panel_statusbar"></div>
+				</div>
+		</div>	
+		
+</ui:composition>	

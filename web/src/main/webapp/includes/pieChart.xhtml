@@ -1,0 +1,53 @@
+<ui:composition 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:f="http://java.sun.com/jsf/core"
+  	xmlns:iwi="http://pro.tiwi.com/jsf"
+	xmlns:h="http://java.sun.com/jsf/html">
+	
+	
+			<div class="">
+				<div class="panel_nw">
+					<div class="panel_title">
+						<span class="line">#{title}</span>
+						<span class="panel_links"><a href="#">details</a></span>
+					</div>
+				</div>
+
+					<div class="panel_w">
+					  <div class="panel_content">
+					  
+						<table width="455" border="0" cellspacing="0" cellpadding="0">
+							<tr>
+								<td width="74" valign="top" align="center"><img src="/tiwipro/images/legend_pie1to5.png" width="54" height="137" style="margin-top: 10px;" /></td>
+								<td width="381" valign="top">
+									<!-- Start pie chart -->
+					  				<rich:panel id="piepanel" style="#{pieheight};#{piewidth}">
+					  					<h:inputHidden value="#{pieDef}" id="hiddenField2"/>
+					  													  										
+										<div id="chartdiv" align="center"></div>									
+										<script type="text/javascript">
+											var targetElement1 = document.getElementById("hiddenField2");
+							
+											var chart2 = new FusionCharts("/tiwipro/fusioncharts/Pie2D.swf", "ChartId", "#{piewidth}", "#{pieheight}", "0", "0");										
+											chart2.setDataXML(targetElement1.value);									   	   
+											
+											chart2.render("chartdiv");
+										</script>
+									</rich:panel>
+								</td>
+							</tr>
+						</table>
+						
+					  </div>
+					</div>
+				<div class="panel_sw">
+					<div class="panel_statusbar"></div>
+				</div>
+			</div>
+
+	
+	
+	
+</ui:composition>	
