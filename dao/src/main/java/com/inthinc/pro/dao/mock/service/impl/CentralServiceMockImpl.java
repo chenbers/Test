@@ -1,5 +1,6 @@
 package com.inthinc.pro.dao.mock.service.impl;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.inthinc.pro.ProDAOException;
@@ -41,6 +42,20 @@ public class CentralServiceMockImpl implements CentralService
         if (returnMap == null)
         {
             throw new EmptyResultSetException("No user for username: " + username, "getUserIDByUsername", 0);
+        }
+        return returnMap;
+    }
+
+    @Override
+    public Map<String, Object> getOverallScore(Integer userID, Integer levelID, Integer startDate, Integer endDate)
+            throws ProDAOException
+    {
+ //       Map<String, Object> returnMap =  mockData.lookup(OverallScore.class, "userID", userID);
+        Map<String, Object> returnMap =  new HashMap<String, Object>();
+        returnMap.put("score", Integer.valueOf(50));
+        if (returnMap == null)
+        {
+            throw new EmptyResultSetException("No overall score for: " + userID, "getOverallScore", 0);
         }
         return returnMap;
     }
