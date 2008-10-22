@@ -13,6 +13,7 @@ import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.util.GraphicUtil;
+import com.inthinc.pro.wrapper.ScoreableEntityPkg;
 
 public class TrendBean extends BaseBean {
 
@@ -20,7 +21,7 @@ public class TrendBean extends BaseBean {
 	
 	private String lineDef;	
 
-	private List <ScoreableEntity> scoreableEntities = new ArrayList<ScoreableEntity>();
+	private List <ScoreableEntityPkg> scoreableEntities = new ArrayList<ScoreableEntityPkg>();
 	
 	//The following five may need to be placed in BaseBean
     private Duration duration = Duration.DAYS;
@@ -158,7 +159,7 @@ public class TrendBean extends BaseBean {
 		return sb.toString();
 	}
 
-	public List<ScoreableEntity> getScoreableEntities() {		
+	public List<ScoreableEntityPkg> getScoreableEntities() {		
 		User u = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
 		logger.debug("getting scoreable entities, user is: " + u.getUsername());
@@ -168,52 +169,52 @@ public class TrendBean extends BaseBean {
 			scoreableEntities.clear();
 		}
 		
-		ScoreableEntity se = new ScoreableEntity();
+		ScoreableEntityPkg se = new ScoreableEntityPkg();
 		ScoreBox sb = new ScoreBox(0.d,ScoreBoxSizes.SMALL);
 		//The fake scores are strings with one decimal place
-		se.setEntityID(0);
-		se.setIdentifier("New England");
-		se.setScore("0.9");
+		se.getSe().setEntityID(0);
+		se.getSe().setIdentifier("New England");
+		se.getSe().setScore("0.9");
 		sb.setScore(0.9d);
 		se.setStyle(sb.getScoreStyle());
 		se.setColorKey(GraphicUtil.entityColorKey.get(0));
 		se.setGoTo(goTo);
 		scoreableEntities.add(se);
 		
-		se = new ScoreableEntity();
-		se.setEntityID(1);
-		se.setIdentifier("South");
-		se.setScore("1.8");		
+		se = new ScoreableEntityPkg();
+		se.getSe().setEntityID(1);
+		se.getSe().setIdentifier("South");
+		se.getSe().setScore("1.8");		
 		sb.setScore(1.8d);
 		se.setStyle(sb.getScoreStyle());
 		se.setColorKey(GraphicUtil.entityColorKey.get(1));
 		se.setGoTo(goTo);
 		scoreableEntities.add(se);
 		
-		se = new ScoreableEntity();
-		se.setEntityID(2);
-		se.setIdentifier("Lakes");
-		se.setScore("2.9");
+		se = new ScoreableEntityPkg();
+		se.getSe().setEntityID(2);
+		se.getSe().setIdentifier("Lakes");
+		se.getSe().setScore("2.9");
 		sb.setScore(2.9d);
 		se.setStyle(sb.getScoreStyle());
 		se.setColorKey(GraphicUtil.entityColorKey.get(2));
 		se.setGoTo(goTo);
 		scoreableEntities.add(se);
 		
-		se = new ScoreableEntity();
-		se.setEntityID(3);
-		se.setIdentifier("Midwest");
-		se.setScore("3.9");
+		se = new ScoreableEntityPkg();
+		se.getSe().setEntityID(3);
+		se.getSe().setIdentifier("Midwest");
+		se.getSe().setScore("3.9");
 		sb.setScore(3.9d);
 		se.setStyle(sb.getScoreStyle());
 		se.setColorKey(GraphicUtil.entityColorKey.get(3));
 		se.setGoTo(goTo);
 		scoreableEntities.add(se);
 
-		se = new ScoreableEntity();
-		se.setEntityID(4);
-		se.setIdentifier("West Coast");
-		se.setScore("4.6");
+		se = new ScoreableEntityPkg();
+		se.getSe().setEntityID(4);
+		se.getSe().setIdentifier("West Coast");
+		se.getSe().setScore("4.6");
 		sb.setScore(4.6d);
 		se.setStyle(sb.getScoreStyle());
 		se.setColorKey(GraphicUtil.entityColorKey.get(4));
@@ -223,7 +224,7 @@ public class TrendBean extends BaseBean {
 		return scoreableEntities;
 	}
 
-	public void setScoreableEntities(List<ScoreableEntity> scoreableEntities) {
+	public void setScoreableEntities(List<ScoreableEntityPkg> scoreableEntities) {
 		this.scoreableEntities = scoreableEntities;
 	}	
 
