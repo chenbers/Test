@@ -35,6 +35,9 @@ public class FuelBean extends BaseBean {
 		sb.append(GraphicUtil.getBarControlParameters());
 			
 		//Bar parameters
+		//MAKE SURE YOU LOAD REAL DATA SO, IF THERE IS FEWER OBSERVATIONS
+		//THAN THE REQUESTED INTERVAL I.E. 22 DAYS WHEN YOU NEED 30, YOU 
+		//PAD THE FRONT WITH ZEROES
 		sb.append(GraphicUtil.createFakeBarData());		
 		
 		sb.append("</chart>");
