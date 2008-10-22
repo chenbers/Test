@@ -4,8 +4,9 @@ import java.util.Map;
 
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.annotations.Converter;
-import com.inthinc.pro.dao.hessian.proserver.CentralService;
+import com.inthinc.pro.dao.service.CentralService;
 import com.inthinc.pro.model.User;
+import com.inthinc.pro.model.Role;
 
 public class UserHessianDAO extends GenericHessianDAO<User, Integer, CentralService> implements UserDAO
 {
@@ -52,6 +53,17 @@ public class UserHessianDAO extends GenericHessianDAO<User, Integer, CentralServ
         user.setPrimaryPhone(smsNumbers[0]);
       if (smsNumbers.length > 1)
         user.setSecondaryPhone(smsNumbers[1]);
+    }
+  }
+  @Converter(columnName = "role")
+  public void setRole(User user, Object value)
+  {
+    if (user == null || value == null)
+      return;
+
+    if (value instanceof Integer)
+    {
+        user.setRole(Role.getRole((Integer)value));
     }
   }
   

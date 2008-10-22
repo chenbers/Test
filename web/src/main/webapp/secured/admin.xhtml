@@ -12,17 +12,21 @@
 		<p style="font-size:20px;text-align:center;">Admin Page</p>	
 		<p>User name: <security:authentication operation="username"/></p>
 		<p>Roles:
-		<security:authorize ifAnyGranted="ROLE_USER">
-			ROLE_USER
+		ROLE_READONLY,ROLE_NORMAL_USER,ROLE_SUPERVISOR,ROLE_CUSTOM_USER,ROLE_SUPER_USER
+		<security:authorize ifAnyGranted="ROLE_NORMAL_USER">
+			ROLE_NORMAL_USER
 		</security:authorize>	
-		<security:authorize ifAnyGranted="ROLE_ADMIN">
-			ROLE_ADMIN
+		<security:authorize ifAnyGranted="ROLE_READONLY">
+			ROLE_READONLY
 		</security:authorize>	
-		<security:authorize ifAnyGranted="ROLE_MANAGER">
-			ROLE_MANAGER
+		<security:authorize ifAnyGranted="ROLE_SUPERVISOR">
+			ROLE_SUPERVISOR
 		</security:authorize>	
-		<security:authorize ifAnyGranted="ROLE_SUPERUSER">
-			ROLE_SUPERUSER
+		<security:authorize ifAnyGranted="ROLE_CUSTOM_USER">
+			ROLE_CUSTOM_USER
+		</security:authorize>	
+		<security:authorize ifAnyGranted="ROLE_SUPER_USER">
+			ROLE_SUPER_USER
 		</security:authorize>	
 		</p>
 		<h:form>

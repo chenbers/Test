@@ -8,10 +8,11 @@ import java.util.Map;
 public enum Role
 {
 
-    ROLE_ADMIN(1, "ROLE_ADMIN"),
-    ROLE_MANAGER(2, "ROLE_MANAGER"),
-    ROLE_SUPERUSER(3, "ROLE_SUPERUSER"),
-    ROLE_USER(4, "ROLE_USER");
+    ROLE_READONLY(1, "ROLE_READONLY"),
+    ROLE_NORMAL_USER(2, "ROLE_NORMAL_USER"),
+    ROLE_SUPERVISOR(3, "ROLE_SUPERVISOR"),
+    ROLE_CUSTOM_USER(4, "ROLE_CUSTOM_USER"),
+    ROLE_SUPER_USER(5, "ROLE_SUPER_USER");
 
     private String description;
     private int code;

@@ -22,11 +22,11 @@ import com.inthinc.pro.dao.annotations.Converter;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.HessianException;
 import com.inthinc.pro.dao.hessian.exceptions.MappingException;
-import com.inthinc.pro.dao.hessian.proserver.HessianService;
-import com.inthinc.pro.dao.hessian.proserver.ServiceCreator;
-import com.inthinc.pro.dao.hessian.proserver.SiloService;
+import com.inthinc.pro.dao.service.DAOService;
+import com.inthinc.pro.dao.service.ServiceCreator;
+import com.inthinc.pro.dao.service.SiloService;
 
-public abstract class GenericHessianDAO<T, ID, S extends HessianService> implements GenericDAO<T, ID>
+public abstract class GenericHessianDAO<T, ID, S extends DAOService> implements GenericDAO<T, ID>
 {
   private static final Logger logger = Logger.getLogger(GenericHessianDAO.class);
   private ServiceCreator<SiloService> siloServiceCreator;
@@ -46,6 +46,7 @@ public abstract class GenericHessianDAO<T, ID, S extends HessianService> impleme
   @SuppressWarnings("unchecked")
   public GenericHessianDAO()
   {
+logger.debug("GenericHessianDAO constructor");      
     this.modelClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     this.idClass = (Class<ID>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
     this.serviceClass = (Class<S>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
@@ -316,6 +317,7 @@ public abstract class GenericHessianDAO<T, ID, S extends HessianService> impleme
         {
           name = f.getName();
         }
+        break;
       }
     }
 
@@ -563,6 +565,10 @@ public abstract class GenericHessianDAO<T, ID, S extends HessianService> impleme
       {
         Integer seconds = (Integer) value;
         value = new Date(seconds.longValue() * 1000l);
+      }
+      else if (propertyType != null && propertyType.equals(Boolean.class) && value instanceof Integer)
+      {
+        value = ((Integer)value).equals(Integer.valueOf(0)) ? Boolean.FALSE : Boolean.TRUE;
       }
       PropertyUtils.setProperty(bean, name, value);
     }

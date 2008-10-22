@@ -1,26 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans 	xmlns="http://www.springframework.org/schema/beans"
-		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-	<bean id="userDaoBean" class="com.inthinc.pro.dao.hessian.UserHessianDAO">
-		<property name="siloServiceCreator" ref="siloServiceCreator"></property>
-		<property name="serviceCreator" ref="centralServiceCreator"></property>
-	</bean>
-
-	<bean id="siloServiceCreator"
-		class="com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator">
-		<constructor-arg value="testteen.iwiglobal.com" />
-		<constructor-arg value="8099" />
-	</bean>
-
-	<bean id="centralServiceCreator"
-		class="com.inthinc.pro.dao.hessian.proserver.CentralServiceCreator">
-		<constructor-arg value="testteen.iwiglobal.com" />
-		<constructor-arg value="8095" />
-	</bean>
-	
-	<bean id="fleetOverviewBean" class="com.inthinc.pro.backing.FleetOverviewBean" scope="request" parent="baseBean">
-   		<property name="userDao" ref="userDaoBean"></property>
-   	</bean> 
+   <bean id="centralServiceCreator" class="com.inthinc.pro.dao.hessian.proserver.CentralServiceCreator">
+		<property name="host" value="${proxy.centralDataAccessHost}"/>
+		<property name="port" value="${proxy.centralDataAccessPort}"/>
+   </bean>
+   <bean id="siloServiceCreator" class="com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator">
+		<property name="host" value="${proxy.siloDataAccessHost}"/>
+		<property name="port" value="${proxy.siloDataAccessPort}"/>
+   </bean>
+   
 </beans>
+   

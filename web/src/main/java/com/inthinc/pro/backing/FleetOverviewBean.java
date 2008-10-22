@@ -49,7 +49,10 @@ public class FleetOverviewBean extends BaseBean
 	public void setDuration(Duration duration) {
 		this.duration = duration;
 		
-		com.inthinc.pro.model.User newUser = userDao.findByEmail("rabyma@gmail.com");
+		com.inthinc.pro.model.User user = this.getUser();
+        com.inthinc.pro.model.User newUser = userDao.findByEmail(user.getEmail());
+		
+//		com.inthinc.pro.model.User newUser = userDao.findByEmail("rabyma@gmail.com");
 		
 		logger.debug("DAO Test " + newUser.getUsername());
 		

@@ -11,7 +11,7 @@ public class User extends BaseEntity
   private String username;
   private String password;
   private Role role;
-  private boolean active;
+  private Boolean active;
   
   // private Account account;
   private String first;
@@ -22,7 +22,6 @@ public class User extends BaseEntity
   private String secondarySms;
   private String email;
   private Integer spam;
-  private Integer roleID;
   private Integer enabled;
   private Integer expired;
 
@@ -31,6 +30,19 @@ public class User extends BaseEntity
 
   @Column(name = "tzName")
   private String timeZone;
+  
+  public User()
+  {
+      
+  }
+  public User(Integer userID, String username, String password, Role role, boolean active)
+  {
+      this.userID = userID;
+      this.username = username;
+      this.password = password;
+      this.role = role;
+      this.active = active;
+  }
 
   public Integer getUserID()
   {
@@ -152,16 +164,6 @@ public class User extends BaseEntity
     this.spam = spam;
   }
 
-  public Integer getRoleID()
-  {
-    return roleID;
-  }
-
-  public void setRoleID(Integer roleID)
-  {
-    this.roleID = roleID;
-  }
-
   public Integer getEnabled()
   {
     return enabled;
@@ -202,12 +204,12 @@ public void setRole(Role role)
     this.role = role;
 }
 
-public boolean isActive()
+public Boolean isActive()
 {
     return active;
 }
 
-public void setActive(boolean active)
+public void setActive(Boolean active)
 {
     this.active = active;
 }
