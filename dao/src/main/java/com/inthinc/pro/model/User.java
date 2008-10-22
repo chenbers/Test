@@ -204,7 +204,7 @@ public void setRole(Role role)
     this.role = role;
 }
 
-public Boolean isActive()
+public Boolean getActive()
 {
     return active;
 }

@@ -22,7 +22,7 @@ public class ProUser extends org.springframework.security.userdetails.User
     {
         this(   user.getUsername(),
                 user.getPassword(),
-                user.isActive(), // boolean enabled,
+                user.getActive(), // boolean enabled,
                 true, // boolean accountNonExpired,
                 true, // boolean credentialsNonExpired
                 true, // boolean accountNonLocked,
