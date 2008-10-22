@@ -58,12 +58,6 @@
 			<to-view-id>/secured/region.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
-	<navigation-rule>
-		<navigation-case>
-			<from-outcome>go_homeFleet</from-outcome>
-			<to-view-id>/secured/homeFleet.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
 	
 	<!-- validators -->
 	
