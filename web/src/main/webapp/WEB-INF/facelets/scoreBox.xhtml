@@ -1,7 +1,11 @@
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-				xmlns:h="http://java.sun.com/jsf/html" >
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:h="http://java.sun.com/jsf/html">
 	<div class="#{style}" onclick="location.href='#';">
-		<div class="score"><h:outputText value="#{score}"/></div>
+		<div class="score">
+			<h:outputText value="#{score}">
+				<f:convertNumber minFractionDigits="1" maxFractionDigits="1" />
+			</h:outputText>
+		</div>
 	</div>
 </ui:composition>
-
