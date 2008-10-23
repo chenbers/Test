@@ -58,6 +58,12 @@
 			<to-view-id>/secured/region.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+		<navigation-rule>
+		<navigation-case>
+			<from-outcome>go_driver</from-outcome>
+			<to-view-id>/secured/driver.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 	
 	<!-- validators -->
 	
