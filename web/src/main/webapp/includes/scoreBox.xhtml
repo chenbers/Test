@@ -1,7 +1,7 @@
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html">
 <!-- 
-	#{scoreStyle} params
+	Score Styles - specifies which color to use for the box.
     ==============
 	score_lg_1
 	score_lg_2
@@ -12,8 +12,8 @@
 	To use:
 	==============
 	<ui:include src="../includes/scoreBox.xhtml">
-            <ui:param name="score" value="#{ Score Value }" />
-            <ui:param name="scoreStyle" value="#{ Score Style }" />
+            <ui:param name="score" value="#{yourBean.Score}" />
+            <ui:param name="scoreStyle" value="#{yourBean.ScoreCSSStyle}" /> 
 	</ui:include>
 	
  -->
