@@ -8,27 +8,28 @@
   			xmlns:iwi="http://pro.tiwi.com/jsf">
 
 	<ui:define name="scripts">
-		<script src="/tiwipro/js/FusionCharts.js" type="text/javascript"></script>		
+		<script src="/tiwipro/js/FusionCharts.js" type="text/javascript"></script>	
+		<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAyQYKk4__l80DyIsqLPvvuxTRFLl8Tcq3arEgFHYFeOMvEMiJ8RQehhrYXPIDrf1muScWAd1MXrlVkQ" type="text/javascript"></script>	
 	</ui:define>
 
 	<ui:param name="homeSelected" value="current" />
-
 	<ui:define name="content">
-	
-		<div id="wrapper">
-
+		<div id="subnavigation" style="background:#000;">
+		<ui:include src="/includes/driverSubNavigation.xhtml"/>
+		</div>
+<div id="wrapper">
 <div class="wrapper_top"></div>
 
 <ul id="grid_nav">
 	<li class="l grid_icon"><img src="images/ico_line.png" /></li>
-	<li class="l grid_title">Driver Performance: Amy Johnson </li>
+	<li class="l grid_title">Driver Performance: <h:outputText> #{driverBean.driverName}</h:outputText></li>
 	<li class="l divider"><img src="/images/grid_nav_divider.png" /></li>
 	<li class="l">
 	
 		<ul id="breadcrumb">
-			<li class="first"><a href="dash_exec.html">Home</a></li>
+			<li class="first"><a href="/">Home</a></li>
 			<li><a href="drivers.html">Drivers</a></li>
-			<li class="last">Amy Johnson</li>
+			<li class="last"><h:outputText>#{driverBean.driverName}</h:outputText></li>
 		</ul>
 	</li>
 </ul>
@@ -50,7 +51,7 @@
 					  <tr>
 						<td valign="top" width="600">
 							<div id="overall_chart"></div>
-							<h:inputHidden value="#{driverBean.overallHistory}" id="hiddenField"/>
+							<h:inputHidden value="#{driverBean.overallScoreHistory}" id="hiddenField"/>
 								<script type="text/javascript">
 									var targetElement1 = document.getElementById("hiddenField");
 									var chart = new FusionCharts("/fusioncharts/Area2D.swf", "ChartId", "650", "200", "0", "0");
@@ -66,9 +67,7 @@
 									<div style="margin-top: 8px;"><a href="#" class="ls_tab_email">Email</a></div>
 								</td>
 								<td width="80" align="center">
-									<div class="score_med_45" onclick="location.href='#';">
-										<div class="score">4.0</div>
-									</div>
+									<iwi:scoreBox style="#{driverBean.overallScoreStyle}" score="#{driverBean.overallScore}"/>
 								</td>
 							  </tr>
 							</table>
@@ -103,16 +102,16 @@
                           <tr>
                             <td width="373">
 								<div id="speed_chart"></div>
+								<h:inputHidden value="#{driverBean.speedScoreHistory}" id="hiddenField2"/>
 								<script type="text/javascript">
+									var targetElement2 = document.getElementById("hiddenField2");
 									var chart = new FusionCharts("/swf/Area2D.swf", "ChartId", "380", "200", "0", "0");
-									chart.setDataURL("/xml/line_driveq_speed_mini.xml");		   
+									chart.setDataXML(targetElement2.value);			   
 									chart.render("speed_chart");
 								</script>
 							</td>
                             <td width="80" align="center">
-								<div class="score_med_3" onclick="location.href='#';">
-									<div class="score">3.2</div>
-								</div>
+								<iwi:scoreBox style="#{driverBean.speedScoreStyle}" score="#{driverBean.speedScore}"/>
 							</td>
                           </tr>
                         </table>
@@ -140,16 +139,16 @@
                           <tr>
                             <td width="373">
                               <div id="style_chart"></div>
-                              <script type="text/javascript">
+                             	<h:inputHidden value="#{driverBean.drivingScoreHistory}" id="hiddenField3"/>
+								<script type="text/javascript">
+									var targetElement3 = document.getElementById("hiddenField3");
 									var chart = new FusionCharts("/swf/Area2D.swf", "ChartId", "380", "200", "0", "0");
-									chart.setDataURL("/xml/line_driveq_style_mini.xml");		   
+									chart.setDataXML(targetElement3.value);			   
 									chart.render("style_chart");
 								</script>
                             </td>
                             <td width="80" align="center">
-                              <div class="score_med_3" onclick="location.href='#';">
-                                <div class="score">3.4</div>
-                              </div>
+                              <iwi:scoreBox style="#{driverBean.drivingScoreStyle}" score="#{driverBean.drivingScore}"/>
                             </td>
                           </tr>
                         </table>
@@ -176,16 +175,16 @@
                           <tr>
                             <td width="373">
                               <div id="seatbelt_chart"></div>
-                              <script type="text/javascript">
+                           		<h:inputHidden value="#{driverBean.seatBeltScoreHistory}" id="hiddenField4"/>
+								<script type="text/javascript">
+									var targetElement4 = document.getElementById("hiddenField4");
 									var chart = new FusionCharts("/swf/Area2D.swf", "ChartId", "380", "200", "0", "0");
-									chart.setDataURL("/xml/line_driveq_seatbelt_mini.xml");		   
+									chart.setDataXML(targetElement4.value);			   
 									chart.render("seatbelt_chart");
 								</script>
                             </td>
                             <td width="80" align="center">
-                              <div class="score_med_12" onclick="location.href='#';">
-                                <div class="score">2.9</div>
-                              </div>
+                        	 <iwi:scoreBox style="#{driverBean.seatBeltScoreStyle}" score="#{driverBean.seatBeltScore}"/>
                             </td>
                           </tr>
                         </table>
@@ -211,7 +210,19 @@
 				</div>
 					<div class="panel_w">
 					  <div class="panel_content">
-					    <iframe height="300" width="458" id="fleetmap" frameborder="0" name="teammap" style="width:458px;height:300px" src="trip_map.html" scrolling="no"></iframe>
+					  	<h:panelGroup styleClass="map-border" layout="block">
+							<div id="map-canvas" style="width:458px;height:300px;border:0"></div>
+					  	</h:panelGroup>
+					    <script type="text/javascript">
+      						if (GBrowserIsCompatible()) {
+        						map = new GMap2(document.getElementById("map-canvas"));
+        						map.addControl(new GLargeMapControl());
+        						map.addControl(new GMapTypeControl());
+        						map.addControl(new GOverviewMapControl()); 
+								map.setCenter(new GLatLng(41.0,-116.0 ), 5);
+								map.setMapType(G_MAP_TYPE);
+      						}
+    					</script>
 					  </div>
 					</div>
 				<div class="panel_sw">
@@ -227,7 +238,7 @@
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="coaching">Coaching Events </span>
-						<span class="panel_links">&nbsp;</span>					</div>
+						<span class="panel_links">_</span>					</div>
 				</div>
 					<div class="panel_w">
 					  <div class="panel_content">
@@ -235,9 +246,11 @@
                           <tr>
                             <td>
                               <div id="coaching_chart"></div>
-                              <script type="text/javascript">
-									var chart = new FusionCharts("/swf/Area2D.swf", "ChartId", "450", "200", "0", "0");
-									chart.setDataURL("/xml/line_driveq_coach_mini.xml");		   
+                            <h:inputHidden value="#{driverBean.coachingHistory}" id="hiddenField5"/>
+								<script type="text/javascript">
+									var targetElement5 = document.getElementById("hiddenField5");
+									var chart = new FusionCharts("/swf/Area2D.swf", "ChartId", "380", "200", "0", "0");
+									chart.setDataXML(targetElement5.value);			   
 									chart.render("coaching_chart");
 								</script>
                             </td>
@@ -253,7 +266,7 @@
 	</td>
   </tr>
 </table>
-
-	</ui:define>
+</div>
+</ui:define>
 
 </ui:composition>
