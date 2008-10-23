@@ -13,6 +13,8 @@ public class User extends BaseEntity
   private Role role;
   private Boolean active;
   
+  private Integer companyID;
+  
   // private Account account;
   private String first;
   private String last;
@@ -35,13 +37,15 @@ public class User extends BaseEntity
   {
       
   }
-  public User(Integer userID, String username, String password, Role role, boolean active)
+  public User(Integer userID, Integer companyID, String username, String email, String password, Role role, Boolean active)
   {
       this.userID = userID;
       this.username = username;
       this.password = password;
       this.role = role;
       this.active = active;
+      this.email = email;
+      this.companyID = companyID;
   }
 
   public Integer getUserID()
@@ -212,5 +216,13 @@ public Boolean getActive()
 public void setActive(Boolean active)
 {
     this.active = active;
+}
+public Integer getCompanyID()
+{
+    return companyID;
+}
+public void setCompanyID(Integer companyID)
+{
+    this.companyID = companyID;
 }
 }

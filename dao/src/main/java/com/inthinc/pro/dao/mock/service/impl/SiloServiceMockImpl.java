@@ -5,13 +5,14 @@ import java.util.Map;
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.mock.data.MockData;
+import com.inthinc.pro.dao.mock.data.MockDataContainer;
 import com.inthinc.pro.dao.service.SiloService;
 import com.inthinc.pro.model.User;
 
 public class SiloServiceMockImpl implements SiloService
 {
 
-    MockData mockData = new MockData();
+    MockDataContainer mockDataContainer = new MockDataContainer();
     
     @Override
     public Map<String, Object> createUser(Integer acctID, Map<String, Object> userMap) throws ProDAOException
@@ -23,8 +24,7 @@ public class SiloServiceMockImpl implements SiloService
     @Override
     public Map<String, Object> getUser(Integer userID) throws ProDAOException
     {
-//        Map<String, Object> returnMap =  mockData.allUsersByIDMap.get(userID);
-        Map<String, Object> returnMap =  mockData.lookup(User.class, "userID", userID);
+        Map<String, Object> returnMap =  mockDataContainer.lookup(User.class, "userID", userID);
 
         if (returnMap == null)
         {

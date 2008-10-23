@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public enum Role
+public enum Role implements BaseEnum
 {
 
     ROLE_READONLY(1, "ROLE_READONLY"),
