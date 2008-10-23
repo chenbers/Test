@@ -31,7 +31,9 @@
    
     <bean id="fleetOverviewBean" class="com.inthinc.pro.backing.FleetOverviewBean" scope="request" parent="baseBean">
    		<property name="userDao" ref="userDAO"></property>
-   </bean> 
+   </bean>
+
+   <bean id="usersBean" class="com.inthinc.pro.backing.UsersBean" scope="session">
+   </bean>
 
 </beans>
-   

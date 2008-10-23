@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:" SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::0" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="go_test::#pages#testPage.xhtml"
+    NAME="output" PATH="/pages/testPage.xhtml"
+    TARGET="rules:#pages#testPage.xhtml" TITLE="go_test" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::1" SHAPE="32,129,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::1" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="go_todo::#pages#todo.xhtml" NAME="output"
+    PATH="/pages/todo.xhtml" TARGET="rules:#pages#todo.xhtml"
+    TITLE="go_todo" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::2" SHAPE="32,241,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::2" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="go_home::#secured#home.xhtml" NAME="output"
+    PATH="/secured/home.xhtml" TARGET="rules:#secured#home.xhtml"
+    TITLE="go_home" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::3" SHAPE="32,353,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::3" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="go_reports::#secured#reports.xhtml"
+    NAME="output" PATH="/secured/reports.xhtml"
+    TARGET="rules:#secured#reports.xhtml" TITLE="go_reports" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::4" SHAPE="32,465,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::4" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="go_redFlags::#secured#redFlags.xhtml"
+    NAME="output" PATH="/secured/redFlags.xhtml"
+    TARGET="rules:#secured#redFlags.xhtml" TITLE="go_redFlags" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::5" SHAPE="32,577,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::5" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="go_liveFleet::#secured#liveFleet.xhtml"
+    NAME="output" PATH="/secured/liveFleet.xhtml"
+    TARGET="rules:#secured#liveFleet.xhtml" TITLE="go_liveFleet" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::6" SHAPE="32,689,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::6" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="go_admin::#secured#admin#people.xhtml"
+    NAME="output" PATH="/secured/admin/people.xhtml"
+    TARGET="rules:#secured#admin#people.xhtml" TITLE="go_admin" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::7" SHAPE="32,801,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::7" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="go_region::#secured#region.xhtml"
+    NAME="output" PATH="/secured/region.xhtml"
+    TARGET="rules:#secured#region.xhtml" TITLE="go_region" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::8" SHAPE="32,913,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::8" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="go_homeFleet::#secured#homeFleet.xhtml"
+    NAME="output" PATH="/secured/homeFleet.xhtml"
+    TARGET="rules:#secured#homeFleet.xhtml" TITLE="go_homeFleet" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#secured#liveFleet.xhtml"
+  PATH="/secured/liveFleet.xhtml" SHAPE="240,593,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#todo.xhtml" PATH="/pages/todo.xhtml"
+  SHAPE="240,145,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#pages#testPage.xhtml"
+  PATH="/pages/testPage.xhtml" SHAPE="240,33,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#secured#homeFleet.xhtml"
+  PATH="/secured/homeFleet.xhtml" SHAPE="240,929,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#secured#home.xhtml"
+  PATH="/secured/home.xhtml" SHAPE="240,257,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#secured#redFlags.xhtml"
+  PATH="/secured/redFlags.xhtml" SHAPE="240,481,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#secured#region.xhtml"
+  PATH="/secured/region.xhtml" SHAPE="240,817,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#secured#reports.xhtml"
+  PATH="/secured/reports.xhtml" SHAPE="240,369,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#secured#admin#people.xhtml"
+  PATH="/secured/admin/people.xhtml" SHAPE="240,705,0,0" model-entity="JSFProcessGroup"/>
+</PROCESS>

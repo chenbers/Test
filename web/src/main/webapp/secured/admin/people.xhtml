@@ -1,0 +1,90 @@
+<ui:composition template="/layout/layout.xhtml" 
+              xmlns="http://www.w3.org/1999/xhtml" 
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:rich="http://richfaces.org/rich"
+              xmlns:a4j="http://richfaces.org/a4j"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:security="http://pro.tiwi.com/jsf/security"
+              xmlns:iwi="http://pro.tiwi.com/jsf">
+              
+
+  <ui:param name="adminSelected" value="current" />
+
+  <ui:define name="content">
+
+    <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+      <tr>
+      <td valign="top" width="130">
+        <ui:include src="../../includes/sideNav.xhtml" />
+      </td>
+      <td valign="top">
+        <!-- START PANEL -->
+          <div class="">
+            <a4j:form id="overall-form">
+
+              <iwi:adminTable recordCount="#{usersBean.userCount}" items="#{usersBean.filteredUsers}" filterValue="#{usersBean.filterValue}">
+                <ui:define name="columns">
+                  <rich:column visible="#{!empty usersBean.columns['userID']}" sortBy="#{item.userID}">
+                    <f:facet name="header"><h:outputText value="#{messages.usersHeader_userID}" /></f:facet>
+                    <h:outputText value="#{item.userID}" />
+                  </rich:column>
+                  <rich:column visible="#{!empty usersBean.columns['score']}" sortBy="#{item.score}">
+                    <f:facet name="header"><h:outputText value="#{messages.usersHeader_score}" /></f:facet>
+                    <iwi:scoreBox style="#{item.scoreStyle}" score="#{item.score}" />
+                  </rich:column>
+                  <rich:column visible="#{!empty usersBean.columns['fullName']}" sortBy="#{item.first}">
+                    <f:facet name="header"><h:outputText value="#{messages.usersHeader_fullName}" /></f:facet>
+<!-- TODO: link for viewing the employee's report -->
+                    <h:outputText value="#{item.first}" /><h:outputText value=" " /><h:outputText value="#{item.last}" />
+                  </rich:column>
+                  <rich:column visible="#{!empty usersBean.columns['active']}" sortBy="#{item.active}">
+                    <f:facet name="header"><h:outputText value="#{messages.usersHeader_active}" /></f:facet>
+                    <h:outputText value="#{item.active ? messages.users_active : messages.users_inactive}" />
+                  </rich:column>
+                  <rich:column visible="#{!(empty usersBean.columns['username'])}" sortBy="#{item.username}">
+                    <f:facet name="header"><h:outputText value="#{messages.usersHeader_username}" /></f:facet>
+                    <h:outputText value="#{item.username}" />
+                  </rich:column>
+                  <rich:column visible="#{!empty usersBean.columns['role']}" sortBy="#{item.role}">
+                    <f:facet name="header"><h:outputText value="#{messages.usersHeader_role}" /></f:facet>
+                    <h:outputText value="#{item.role}" />
+                  </rich:column>
+                  <rich:column visible="#{!empty usersBean.columns['primaryPhone']}" sortBy="#{item.primaryPhone}">
+                    <f:facet name="header"><h:outputText value="#{messages.usersHeader_primaryPhone}" /></f:facet>
+                    <h:outputText value="#{item.primaryPhone}" />
+                  </rich:column>
+                  <rich:column visible="#{!empty usersBean.columns['secondaryPhone']}" sortBy="#{item.secondaryPhone}">
+                    <f:facet name="header"><h:outputText value="#{messages.usersHeader_secondaryPhone}" /></f:facet>
+                    <h:outputText value="#{item.secondaryPhone}" />
+                  </rich:column>
+                  <rich:column visible="#{!empty usersBean.columns['primarySms']}" sortBy="#{item.primarySms}">
+                    <f:facet name="header"><h:outputText value="#{messages.usersHeader_primarySms}" /></f:facet>
+                    <h:outputText value="#{item.primarySms}" />
+                  </rich:column>
+                  <rich:column visible="#{!empty usersBean.columns['secondarySms']}" sortBy="#{item.secondarySms}">
+                    <f:facet name="header"><h:outputText value="#{messages.usersHeader_secondarySms}" /></f:facet>
+                    <h:outputText value="#{item.secondarySms}" />
+                  </rich:column>
+                  <rich:column visible="#{!empty usersBean.columns['email']}" sortBy="#{item.email}">
+                    <f:facet name="header"><h:outputText value="#{messages.usersHeader_email}" /></f:facet>
+                    <a href="mailto:#{item.email}"><h:outputText value="#{item.email}" /></a>
+                  </rich:column>
+                  <rich:column visible="#{!empty usersBean.columns['timeZone']}" sortBy="#{item.timeZone}">
+                    <f:facet name="header"><h:outputText value="#{messages.usersHeader_timeZone}" /></f:facet>
+                    <h:outputText value="#{item.timeZone}" />
+                  </rich:column>
+                </ui:define>
+              </iwi:adminTable>
+
+              </a4j:form>
+            </div>
+          <!-- END PANEL -->            
+        </td>
+
+      </tr>
+    </table>
+
+  </ui:define>
+
+</ui:composition>

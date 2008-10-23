@@ -1,0 +1,95 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+  Required parameters:
+    recordCount: The number of displayed items--if a filter is in effect the number of filtered records.
+    items: The items to include in the table, filtered by filterValue.
+    filterValue: A value to filter by, displayed in the search box.
+  Optional parameters:
+    rows: The number of rows to display at a time.
+
+  <ui:composition>
+
+    <c:if test="${empty rows}">
+      <c:set var="rows" value="10" />
+    </c:if>
+
+    <div class="panel_nw">
+      <div class="panel_title">
+        <span class="admin">Admin: People</span>
+        <span class="panel_links"></span>
+      </div>
+    </div>
+      <div class="panel_w">
+        <div class="panel_content">
+          <ul id="grid_nav" style="margin: 0;">
+            <li class="l"><button value="submit" class="left"><span class="cancel">Delete</span></button></li>
+            <li class="l"><button value="submit" class="left"><span class="edit">Batch Edit</span></button></li>
+            <li class="l">
+
+              <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
+                <tr>
+                  <td><h:outputText value="#{messages.gridNavigation_search}"/></td>
+                  <td>
+                    <h:inputText id="filterTable" value="#{filterValue}" class="text" size="25">
+                      <a4j:support event="onkeyup" reRender="dataTable,recordCounts,topScroller,bottomScroller" ignoreDupResponses="true" requestDelay="700" focus="input" />
+                    </h:inputText>
+                  </td>
+                </tr>
+              </table>
+
+            </li>
+            <li class="l"><button value="submit" class="left"><span class="search">Search</span></button></li>
+            <li class="l text"><a href="#" class="ls_tab_edit_columns" onclick="showPopWin('edit_columns_drivers.html', 500, 360, null);">Edit Columns</a></li>
+        
+            <li class="r text">
+              <h:outputFormat id="recordCounts" value="#{messages.record_counts}">
+                <f:param value="#{dataTable.first + 1}"/>
+                <f:param value="#{dataTable.first + rows}"/>
+                <f:param value="#{recordCount}"/>
+              </h:outputFormat>
+            </li>
+          </ul>
+        
+          <div class="spacer"></div>
+      
+          <div class="datagrid">
+
+            <rich:datascroller id="topScroller" for="dataTable" reRender="recordCounts,dataTable,bottomScroller" />
+
+            <rich:dataTable id="dataTable" value="#{items}" var="item" styleClass="datagrid"
+              rows="#{rows}" rowClasses="tableOdd,tableEven" width="100%">
+              <rich:column>
+                <f:facet name="header">
+                  <h:outputText value=" " />
+                </f:facet>
+                <h:selectBooleanCheckbox value="#{item.selected}" />
+              </rich:column>
+              <ui:insert name="columns" />
+              <rich:column>
+                <f:facet name="header">
+                  <h:outputText value=" " />
+                </f:facet>
+                <h:commandLink action="#{editAction}">edit</h:commandLink>
+              </rich:column>
+            </rich:dataTable>
+
+            <rich:datascroller id="bottomScroller" for="dataTable" reRender="recordCounts,dataTable,topScroller" />
+
+          </div>
+      
+        </div>
+      </div>
+
+      <div class="panel_sw">
+        <div class="panel_statusbar"></div>
+      </div>
+
+  </ui:composition>
+
+</html>

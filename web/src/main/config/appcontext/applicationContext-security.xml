@@ -10,6 +10,7 @@
 		<!--  error if user logs in concurrently (only one login allowed at a time)  -->
 		<concurrent-session-control max-sessions="1" exception-if-maximum-exceeded="true" />
 		<intercept-url pattern="/login.faces" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<intercept-url pattern="/secured/admin/**" access="ROLE_CUSTOM_USER,ROLE_SUPER_USER" />
 		<intercept-url pattern="/secured/**" access="ROLE_READONLY,ROLE_NORMAL_USER,ROLE_SUPERVISOR,ROLE_CUSTOM_USER,ROLE_SUPER_USER" />
 		<form-login login-page="/login.faces" authentication-failure-url="/login.faces" default-target-url="/secured/home.faces" />
 		<logout logout-success-url="/login.faces"/>

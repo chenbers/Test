@@ -9,4 +9,8 @@
 		<tag-name>scoreBox</tag-name>
 		<source>scoreBox.xhtml</source>
 	</tag>
+	<tag>
+		<tag-name>adminTable</tag-name>
+		<source>adminTable.xhtml</source>
+	</tag>
 </facelet-taglib>

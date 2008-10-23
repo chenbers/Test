@@ -1689,6 +1689,15 @@ color: #fff;
 	background: #EBFFCA;
 }
 
+/* Regular table definitions */
+
+.tableOdd {
+	background: #ffffff;
+}
+.tableEven {
+	background: #EBFFCA;
+}
+
 /*  NEW AND IMPROVED DATA GRID STYLES */
 
 .datagrid table {
