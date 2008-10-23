@@ -32,7 +32,8 @@ public class UsersBean extends BaseBean
     private List<UserView> users;
     private List<UserView> filteredUsers;
     private String filterValue;
-    private Map<String, String> columns;
+    private int page;
+    private Map<String, Boolean> columns;
 
     public UsersBean()
     {
@@ -58,9 +59,10 @@ public class UsersBean extends BaseBean
 
         // init the filtered users
         filteredUsers = new LinkedList<UserView>();
-        setFilterValue(null);
+        filteredUsers.addAll(users);
 
-        // columns
+        // page, columns
+        page = 1;
         columns = getDefaultColumns();
     }
 
@@ -182,23 +184,57 @@ public class UsersBean extends BaseBean
      */
     public void setFilterValue(String filterValue)
     {
-        filteredUsers.clear();
+        boolean changed = false;
         if ((filterValue != null) && (filterValue.length() > 0))
         {
-            this.filterValue = filterValue.toLowerCase();
-            for (final UserView user : users)
-                if (user.getFirst().toLowerCase().startsWith(this.filterValue)
-                        || user.getLast().toLowerCase().startsWith(this.filterValue))
-                    filteredUsers.add(user);
+            filterValue = filterValue.toLowerCase();
+            changed = !filterValue.equals(this.filterValue);
         }
         else
         {
-            this.filterValue = null;
-            filteredUsers.addAll(users);
+            filterValue = null;
+            changed = this.filterValue != null;
+        }
+
+        if (changed)
+        {
+            setPage(1);
+
+            filteredUsers.clear();
+            this.filterValue = filterValue;
+            if (filterValue != null)
+            {
+                for (final UserView user : users)
+                    if (user.getFirst().toLowerCase().startsWith(filterValue)
+                            || user.getLast().toLowerCase().startsWith(filterValue)
+                            || String.valueOf(user.getUserID()).startsWith(filterValue))
+                        filteredUsers.add(user);
+            }
+            else
+                filteredUsers.addAll(users);
         }
     }
 
-    public static List<String> getAvailableColumns()
+    /**
+     * @return the page
+     */
+    public int getPage()
+    {
+        return page;
+    }
+
+    /**
+     * @param page
+     *            the page to set
+     */
+    public void setPage(int page)
+    {
+        this.page = page;
+        for (final UserView user : users)
+            user.setSelected(false);
+    }
+
+    public List<String> getAvailableColumns()
     {
         final ArrayList<String> columns = new ArrayList<String>();
         columns.add("userID");
@@ -237,19 +273,19 @@ public class UsersBean extends BaseBean
         return columns;
     }
 
-    public static Map<String, String> getDefaultColumns()
+    public Map<String, Boolean> getDefaultColumns()
     {
-        final HashMap<String, String> columns = new HashMap<String, String>();
+        final HashMap<String, Boolean> columns = new HashMap<String, Boolean>();
         final List<String> availableColumns = getAvailableColumns();
         for (int i : DEFAULT_COLUMN_INDICES)
-            columns.put(availableColumns.get(i), availableColumns.get(i));
+            columns.put(availableColumns.get(i), true);
         return columns;
     }
 
     /**
      * @return the columns
      */
-    public Map<String, String> getColumns()
+    public Map<String, Boolean> getColumns()
     {
         return columns;
     }
@@ -258,9 +294,19 @@ public class UsersBean extends BaseBean
      * @param columns
      *            the columns to set
      */
-    public void setColumns(Map<String, String> columns)
+    public void setColumns(Map<String, Boolean> columns)
     {
         this.columns = columns;
+    }
+
+    public String edit()
+    {
+        return "go_adminUserEdit";
+    }
+
+    public String delete()
+    {
+        return "go_adminUsersDelete";
     }
 
     public class UserView extends User

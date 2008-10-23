@@ -1,0 +1,171 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+<!--
+  A table that supports picking columns, sorting, searching, editing, batch editing and batch deleting.
+
+  Required parameters:
+  ==============
+        recordCount:  The number of displayed items - if a filter is in effect the number of filtered records.
+              items:  The items to include in the table, filtered by filterValue.
+        filterValue:  A value to filter by, displayed in the search box.
+               page:  The scroller page index, starting with 0.
+         editorBean:  A bean that has methods named edit() and delete().
+         allColumns:  A list of column names.
+    selectedColumns:  A Map with String keys and Boolean values for which columns are selected.
+
+  Optional parameters:
+  ==============
+               rows:  The number of rows to display at a time; if not provided 10 is used.
+
+  To use:
+  ==============
+  1. Create an include (we'll call it myTable.xhtml) that defines the columns:
+      <ui:composition template="adminTable.xhtml"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:rich="http://richfaces.org/rich"
+        xmlns:security="http://www.springframework.org/security/tags">
+
+        <ui:define name="columns">
+          <rich:column sortBy="#{item.score}">
+            <f:facet name="header"><h:outputText value="Score" /></f:facet>
+            <ui:include src="scoreBox.xhtml">
+              <ui:param name="score" value="#{item.score}" />
+              <ui:param name="scoreStyle" value="#{item.scoreStyle}" />
+            </ui:include>
+          </rich:column>
+          <rich:column sortBy="#{item.name}">
+            <f:facet name="header"><h:outputText value="Name" /></f:facet>
+            <h:outputText value="#{item.name}" />
+          </rich:column>
+        </ui:define>
+
+      </ui:composition>
+
+  2. Include it:
+      <ui:include src="/includes/myTable.xhtml">
+        <ui:param name="recordCount" value="#{myBean.myCount}" />
+        <ui:param name="items" value="#{myBean.filteredItems}" />
+        <ui:param name="filterValue" value="#{myBean.filterValue}" />
+        <ui:param name="page" value="#{myBean.page}" />
+        <ui:param name="editorBean" value="#{myBean}" />
+        <ui:param name="allColumns" value="#{myBean.availableColumns}" />
+        <ui:param name="selectedColumns" value="#{myBean.columns}" />
+      </ui:include>
+-->
+
+  <ui:composition>
+
+    <c:if test="#{empty rows}">
+      <c:set var="rows" value="10" />
+    </c:if>
+    <c:set var="firstRecord" value="#{rows * (page - 1)}" />
+
+    <div class="panel_nw">
+      <div class="panel_title">
+        <span class="admin">Admin: People</span>
+        <span class="panel_links"></span>
+      </div>
+    </div>
+
+    <div class="panel_w">
+      <div class="panel_content">
+        <ul id="grid_nav" style="margin: 0;">
+          <li class="l"><h:commandLink action="#{editorBean['delete']}"><button value="submit" class="left"><span class="cancel">Delete</span></button></h:commandLink></li>
+          <li class="l"><h:commandLink action="#{editorBean['edit']}"><button value="submit" class="left"><span class="edit">Batch Edit</span></button></h:commandLink></li>
+          <li class="l">
+            <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
+              <tr>
+                <td><h:outputText value="#{messages.gridNavigation_search}"/></td>
+                <td>
+                  <h:inputText id="filterTable" value="#{filterValue}" class="text" size="25" />
+                </td>
+              </tr>
+            </table>
+          </li>
+          <li class="l"><ui:fragment><button value="submit" class="left"><span class="search">Search</span><a4j:support event="onclick" reRender="dataTable,recordCounts,topScroller,bottomScroller" ignoreDupResponses="true" focus="filterTable" /></button></ui:fragment></li>
+          <li class="l text"><a href="#" class="ls_tab_edit_columns" onclick="Richfaces.showModalPanel('editColumns');">Edit Columns</a></li>
+      
+          <li class="r text">
+            <h:outputFormat id="recordCounts" value="#{messages.record_counts}">
+              <f:param value="#{(recordCount gt 0) ? (firstRecord + 1) : 0}"/>
+              <f:param value="#{((firstRecord + rows) lt recordCount) ? (firstRecord + rows) : recordCount}"/>
+              <f:param value="#{recordCount}"/>
+            </h:outputFormat>
+          </li>
+        </ul>
+
+        <div class="spacer"></div>
+
+        <div class="datagrid">
+
+          <rich:datascroller id="topScroller" for="dataTable" reRender="recordCounts,dataTable,bottomScroller" page="#{page}" />
+
+          <rich:dataTable id="dataTable" value="#{items}" var="item" styleClass="datagrid"
+            rows="#{rows}" rowClasses="tableOdd,tableEven" width="100%">
+            <rich:column>
+              <f:facet name="header">
+                <h:outputText value=" " />
+              </f:facet>
+              <h:selectBooleanCheckbox value="#{item.selected}" />
+            </rich:column>
+            <ui:insert name="columns" />
+            <rich:column>
+              <f:facet name="header">
+                <h:outputText value=" " />
+              </f:facet>
+              <h:commandLink action="#{editorBean['edit']}">edit</h:commandLink>
+            </rich:column>
+          </rich:dataTable>
+
+          <rich:datascroller id="bottomScroller" for="dataTable" reRender="recordCounts,dataTable,topScroller" page="#{page}" />
+
+        </div>
+    
+      </div>
+    </div>
+
+    <div class="panel_sw">
+      <div class="panel_statusbar"></div>
+    </div>
+
+    <rich:modalPanel id="editColumns" headerClass="popupHeader" width="500" zindex="2000">
+      <f:facet name="header">
+        <h:outputText value="Edit Columns"/>
+      </f:facet>
+      <f:facet name="controls">
+        <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('editColumns')" />
+      </f:facet>
+
+      <div class="popupsubtitle">The following columns will be displayed</div>
+
+      <h:form>
+        <h:dataTable value="#{allColumns}" var="col">
+          <h:column>
+            <c:set var="columnName" value="usersHeader_#{col}" />
+            <h:outputLabel>
+              <h:selectBooleanCheckbox value="#{selectedColumns[col]}" />
+              <h:outputText value="#{messages[columnName]}" />
+            </h:outputLabel>
+          </h:column>
+        </h:dataTable>
+
+        <div class="popupactions">
+          <button value="submit" class="left" onclick="Richfaces.hideModalPanel('editColumns')"><span class="cancel">Cancel</span></button><button value="submit" class="left" onclick="Richfaces.hideModalPanel('editColumns')"><span class="save">Save</span></button>  
+        </div>
+
+      </h:form>
+
+    </rich:modalPanel>
+
+  </ui:composition>
+
+</html>
