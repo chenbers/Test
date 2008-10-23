@@ -10,6 +10,7 @@ import org.springframework.security.userdetails.User;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
+import com.inthinc.pro.dao.GraphicDAO;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.util.GraphicUtil;
@@ -18,6 +19,8 @@ import com.inthinc.pro.wrapper.ScoreableEntityPkg;
 public class TrendBean extends BaseBean {
 
 	private static final Logger logger = Logger.getLogger(TrendBean.class);
+	
+	private GraphicDAO graphicDAO;
 	
 	private String lineDef;	
 
@@ -160,21 +163,27 @@ public class TrendBean extends BaseBean {
 	}
 
 	public List<ScoreableEntityPkg> getScoreableEntities() {		
-		User u = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
+		User u = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();		
 		logger.debug("getting scoreable entities, user is: " + u.getUsername());
-				
-		//Keep it clean...		
+		
+		//Keep it clean
 		if ( scoreableEntities.size() > 0 ) {
 			scoreableEntities.clear();
 		}
 		
+		//Fetch, qualifier is who is logged-in, where in the system, 
+		//date from, date to
+		List s = null;
+		try {						
+			s = graphicDAO.getScores(new Integer(1),new Integer(1),new Integer(1),new Integer(1));
+		} catch (Exception e) {
+			logger.debug("graphicDao error: " + e.getMessage());
+		}		
+		
 		ScoreableEntityPkg se = new ScoreableEntityPkg();
 		ScoreBox sb = new ScoreBox(0.d,ScoreBoxSizes.SMALL);
-		//The fake scores are strings with one decimal place
-		se.getSe().setEntityID(0);
-		se.getSe().setIdentifier("New England");
-		se.getSe().setScore("0.9");
+		
+		se.setSe((ScoreableEntity)s.get(0));
 		sb.setScore(0.9d);
 		se.setStyle(sb.getScoreStyle());
 		se.setColorKey(GraphicUtil.entityColorKey.get(0));
@@ -182,9 +191,7 @@ public class TrendBean extends BaseBean {
 		scoreableEntities.add(se);
 		
 		se = new ScoreableEntityPkg();
-		se.getSe().setEntityID(1);
-		se.getSe().setIdentifier("South");
-		se.getSe().setScore("1.8");		
+		se.setSe((ScoreableEntity)s.get(1));
 		sb.setScore(1.8d);
 		se.setStyle(sb.getScoreStyle());
 		se.setColorKey(GraphicUtil.entityColorKey.get(1));
@@ -192,19 +199,15 @@ public class TrendBean extends BaseBean {
 		scoreableEntities.add(se);
 		
 		se = new ScoreableEntityPkg();
-		se.getSe().setEntityID(2);
-		se.getSe().setIdentifier("Lakes");
-		se.getSe().setScore("2.9");
+		se.setSe((ScoreableEntity)s.get(2));
 		sb.setScore(2.9d);
 		se.setStyle(sb.getScoreStyle());
 		se.setColorKey(GraphicUtil.entityColorKey.get(2));
 		se.setGoTo(goTo);
 		scoreableEntities.add(se);
-		
+
 		se = new ScoreableEntityPkg();
-		se.getSe().setEntityID(3);
-		se.getSe().setIdentifier("Midwest");
-		se.getSe().setScore("3.9");
+		se.setSe((ScoreableEntity)s.get(3));
 		sb.setScore(3.9d);
 		se.setStyle(sb.getScoreStyle());
 		se.setColorKey(GraphicUtil.entityColorKey.get(3));
@@ -212,9 +215,7 @@ public class TrendBean extends BaseBean {
 		scoreableEntities.add(se);
 
 		se = new ScoreableEntityPkg();
-		se.getSe().setEntityID(4);
-		se.getSe().setIdentifier("West Coast");
-		se.getSe().setScore("4.6");
+		se.setSe((ScoreableEntity)s.get(4));
 		sb.setScore(4.6d);
 		se.setStyle(sb.getScoreStyle());
 		se.setColorKey(GraphicUtil.entityColorKey.get(4));
@@ -301,5 +302,13 @@ public class TrendBean extends BaseBean {
 
 	public void setGoTo(String goTo) {
 		this.goTo = goTo;
+	}
+
+	public GraphicDAO getGraphicDAO() {
+		return graphicDAO;
+	}
+
+	public void setGraphicDAO(GraphicDAO graphicDAO) {
+		this.graphicDAO = graphicDAO;
 	}
 }
