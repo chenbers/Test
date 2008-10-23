@@ -7,7 +7,9 @@ import com.inthinc.pro.ProDAOException;
 public interface SiloService extends DAOService
 {
 
-  // Methods related to the User type
+  //Methods related to the User type
+  Map<String, Object> deleteUser(Integer userID) throws ProDAOException;
+  
   Map<String, Object> getUser(Integer userID) throws ProDAOException;
 
   Map<String, Object> updateUser(Integer userID, Map<String, Object> userMap) throws ProDAOException;
