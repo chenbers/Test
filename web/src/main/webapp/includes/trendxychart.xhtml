@@ -66,19 +66,19 @@
 						<rich:spacer width="17" height="17"
 							style="background-color:#{item.colorKey};border-style:solid;border-width:1px;border-color:#000000"></rich:spacer>
 					</rich:column>
-					<rich:column sortBy="#{item.identifier}">
+					<rich:column sortBy="#{item.se.identifier}">
 						<f:facet name="header">
 							<h:outputText value="#{column_one}" />
 						</f:facet>
-						<h:commandLink value="#{item.identifier}" action="#{item.goTo}">
+						<h:commandLink value="#{item.se.identifier}" action="#{item.goTo}">
 						</h:commandLink>
 
 					</rich:column>
-					<rich:column width="73" sortBy="#{item.score}">
+					<rich:column width="73" sortBy="#{item.se.score}">
 						<f:facet name="header">
 							<h:outputText value="#{column_two}" />
 						</f:facet>
-						<iwi:scoreBox style="#{item.style}" score="#{item.score}" />
+						<iwi:scoreBox style="#{item.style}" score="#{item.se.score}" />
 						</rich:column>
 
 					</rich:dataTable>
