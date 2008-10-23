@@ -36,4 +36,7 @@
    <bean id="usersBean" class="com.inthinc.pro.backing.UsersBean" scope="session">
    </bean>
 
+   <bean id="driverBean" class="com.inthinc.pro.backing.DriverBean" scope="session">
+   </bean>
+   
 </beans>
