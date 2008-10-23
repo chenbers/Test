@@ -2,6 +2,8 @@ package com.inthinc.pro.dao.hessian;
 
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.annotations.Converter;
 import com.inthinc.pro.dao.service.CentralService;
@@ -10,6 +12,7 @@ import com.inthinc.pro.model.Role;
 
 public class UserHessianDAO extends GenericHessianDAO<User, Integer, CentralService> implements UserDAO
 {
+  private static final Logger logger = Logger.getLogger(UserHessianDAO.class);
   @Override
   public User findByEmail(String email)
   {
@@ -20,6 +23,7 @@ public class UserHessianDAO extends GenericHessianDAO<User, Integer, CentralServ
   @Override
   public User findByUserName(String username)
   {
+	  logger.debug("getting user by name: " + username);
     Integer userId = getReturnKey(getService().getUserIDByName(username));
     return findByID(userId);
   }
