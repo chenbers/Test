@@ -15,6 +15,7 @@ body {
 	float: left;
 	margin: 0;
 	padding: 0;
+	background: url(../images/logo_main.png) no-repeat top left;
 	}
 
 #wrapper {
@@ -32,36 +33,36 @@ body {
 	
 .wrapper_bottom {
 	width: 960px;
-	background: url(../images/wrapper_bottom.png) top left no-repeat;
+	background: #000 url(../images/wrapper_bottom.png) top left repeat-x;
 	height: 10px;
 	}
 
 #footer {
-	width: 960px;
-	height:30px;
+	width: 500px;
 	margin: 20px auto 0 auto;
 	padding: 10px 0 0 0;
 	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
-}
+	text-align: center;
+	}
 
 /* GRAY PANEL */
 .panel_nw {
-	background: transparent url(../images/top_left.png) no-repeat;
+	background: #fff url(../images/top_left.gif) no-repeat;
 	height: 30px;
 	}     
 
 .panel_w {
-	border-left:1px solid #e1e1e1;  
+	border-left: 1px solid #e1e1e1;  
 	margin: 0px;
 	}
 
 .panel_sw {
-	background: transparent url(../images/bottom_left.png) no-repeat;
+	background: #fff url(../images/bottom_left.gif) no-repeat;
 	height: 7px;
 	}
 
 .panel_title {
-	background: url(../images/top_right.png) repeat-x right top;
+	background: url(../images/top_right.gif) repeat-x right top;
 	color: #333;
 	font: bold 14px "Trebuchet MS", Verdana, Tahoma, Arial, sans-serif;
 	height: 31px;
@@ -115,6 +116,11 @@ body {
 .panel_title span.gas {
 	padding: 0 0 0 20px;
 	background: transparent url(../images/ico_gas.png) no-repeat center left;
+	}
+	
+.panel_title span.legend {
+	padding: 0 0 0 20px;
+	background: transparent url(../images/ico_legend.png) no-repeat center left;
 	}
 	
 .panel_title span.map {
@@ -227,7 +233,7 @@ body {
 	}
 
 .panel_statusbar {
-	background: transparent url(../images/bottom_right.png) repeat-x right top;
+	background: #fff url(../images/bottom_right.gif) no-repeat right top;
 	font-size: 8px;
 	height: 7px;
 	margin-left: 11px;
@@ -290,13 +296,12 @@ body {
 	display: block;
 	padding: 0 18px 0 0;
 	}
-	
-.main_nav-bg li a.current{
+.main_nav-bg li.current a{
 	color: #333;
 	background: url(../images/main_nav_hover_l.gif) no-repeat left 5px;
 	font-weight: bold;
 	}
-.main_nav-bg li a.current span{
+.main_nav-bg li.current a span{
 	color: #333;
 	background: url(../images/main_nav_hover_r.gif) no-repeat right 5px;
 	}
@@ -377,13 +382,13 @@ body {
 	padding: 0 18px 0 0;
 	}
 	
-.sub_nav-bg li a.current{
+.sub_nav-bg li.current a{
 	color: #333;
 	background: url(../images/sub_nav_hover_l.gif) no-repeat left 5px;
 	font-weight: bold;
 	}
 	
-.sub_nav-bg li a.current span{
+.sub_nav-bg li.current a span{
 	color: #333;
 	background: url(../images/sub_nav_hover_r.gif) no-repeat right 5px;
 	}
@@ -461,19 +466,12 @@ form {
 	padding: 0;
 	}
 
-/*
-The follow margin spacing was interfering with rich faces a4j componets.
-<form> tags are now located where they
-originally werent intended to be.
-*/
-/*
 form div {
 	padding: 10px 0 10px 0;
 	clear: left;
 	margin: 5px 0 5px 10px;
 	padding: 0;
 	}
-*/	
 
 form div label {
 	float: left;
@@ -485,7 +483,6 @@ form input.txt {
 	display: block;
 	margin-top: 3px;
 	padding: 4px;
-	width: 180px;
 	font: 10px Verdana, Arial, Helvetica, sans-serif;
 	}
 
@@ -618,15 +615,15 @@ span.apply {
 /*  GRID NAV */
 
 ul#grid_nav {
-height: 36px;
-border-top: 1px solid #8BAD37;
-border-bottom: 1px solid #8BAD37;
-background: url(../images/bg_grid_nav.png);
-list-style: none;
-padding: 0;
-margin: 0 10px 0 10px;
-font: normal 10px Verdana, Arial, Helvetica, sans-serif;
-}
+	height: 36px;
+	border-top: 1px solid #8BAD37;
+	border-bottom: 1px solid #8BAD37;
+	background: url(../images/bg_grid_nav.png);
+	list-style: none;
+	padding: 0;
+	margin: 0 10px 0 10px;
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	}
 
 ul#grid_nav li {
 list-style: none;
@@ -802,7 +799,7 @@ ul#grid_nav li.text a:visited {
 	font: bold 18px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	color: #333;
 	padding: 8px 0 0 5px;
-	}		
+	}
 
 .score_five {
 	border: 1px solid #6B9D1B;
@@ -944,64 +941,6 @@ h2 {
 	background: #fff;
 	color: #fff;
 	}
-	
-/*  the green table */
-
-.green_table .enhancedtable {
-	border-collapse: collapse;
-	border: 0px solid #ADAAAD;
-	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
-	background: #fff;
-	}
-	
-.green_table .enhancedtable th {
-	border-top:  1px solid #3E4951;
-	border-bottom: 1px solid #3E4951;
-	border-left: 0px solid #ADAAAD;
-	border-right: 0px solid #ADAAAD;
-	background: #8BAD37;
-	padding: 4px;
-	cursor: pointer;
-	text-align: left;
-	color: #fff;
-	}
-
-.green_table .enhancedtable td {
-	border-bottom: 1px solid #8BAD37;
-	border-left: 0px solid #ADAAAD;
-	border-right: 0px solid #ADAAAD;
-	padding: 4px;
-	}
-
-.green_table .enhancedtable a:link {
-	color: #333;
-	text-decoration: underline;
-	}
-	
-.green_table .enhancedtable a:visited {
-	color: #333;
-	text-decoration: underline;
-	}
-	
-.green_table .enhancedtable a:active {
-	color: #333;
-	text-decoration: underline;
-	}
-	
-.green_table .enhancedtable a:hover {
-	color: #333;
-	text-decoration: underline;
-	}
-
-.green_table .enhancedtablecolouredrow {
-	background: #EBFFCA;
-	}
-	
-.green_table .enhancedtableactive {
-	background: #fff;
-	color: #fff;
-	}
-
 
 /* LEFT SIDE TABS */
 
@@ -1326,6 +1265,28 @@ a.ls_tab_mile {
 	padding: 0;
 	margin: 0 0 0 10px;
 	}
+	
+
+
+.scorebox_lg {
+	width: 320px;
+	height: 120px;
+	background: #f0f0f0;
+	border: 1px solid #cfcfcf;
+	margin: 0 0 0 0;
+	}
+
+.scorebox_lg h4 {
+	color: #333;
+	font: bold 14px "Trebuchet MS", Verdana, Tahoma, Arial, sans-serif;
+	padding: 0;
+	margin: 0 0 0 10px;
+	}
+
+.scorebox_lg span {
+	padding: 0;
+	margin: 0 0 0 10px;
+	}
 
 
 
@@ -1493,6 +1454,91 @@ color: #fff;
 
 /* MODAL WINDOW */
 
+#popupMask {
+	display:none;
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	z-index:200;
+	background-color:#000;
+	-moz-opacity: 0.7;
+	opacity:.70;
+	filter: alpha(opacity=70);
+	}
+	
+#popupContainer {
+	position: absolute;
+	z-index: 201;
+	top: 0px;
+	left: 0px;
+	display:none;
+	padding: 0px;
+	}
+	
+#popupInner {
+	border: 1px solid #000000;
+	background-color: #FFFFFF;
+	}
+
+#popupFrame {
+	margin: 0px;
+	width: 100%;
+	height: 100%;
+	position: relative;
+	z-index: 202;
+	}
+
+#popupTitleBar {
+	background: #8BAD37;
+	color: #333;
+	font-weight: normal;
+	height: 30px;
+	padding: 9px 5px 0 0;
+	border-bottom: 1px solid #000000;
+	position: relative;
+	z-index: 203;
+	}
+
+#popupTitle {
+	float:left;
+	font: bold 14px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	padding: 4px 0 0 10px;
+	color: #fff;	
+	}
+
+#popupsubtitle {
+	border-top: 1px solid #8BAD37;
+	border-bottom: 1px solid #8BAD37;
+	padding: 5px;
+	margin: 5px;
+	background: #EBFFCA;
+	font: normal 12px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	color: #333;
+	}
+	
+#popupactions {
+	border-top: 1px solid #8BAD37;
+	padding: 5px;
+	margin: 5px;
+	background: #fff;
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	color: #333;
+	}
+
+#popupactions button {
+	float: right;
+	}
+
+#popupControls {
+	float: right;
+	cursor: pointer;
+	cursor: hand;
+	}
+
+/* MODAL WINDOW  - DAVID*/
+/******************
 .popupHeader {
 	background: #8BAD37;
 	font-weight: normal;
@@ -1526,7 +1572,7 @@ color: #fff;
 .popupactions button {
 	float: right;
 	}
-
+**************/
 
 /* STYLES FOR THE DRIVEQ CHARTS */
 
@@ -1631,23 +1677,6 @@ color: #fff;
 	border: 1px solid #a0bf4e;
 	color: #277822;
 	}
-/*  Trend table definitions */
-
-.trendTableOdd {
-	background: #ffffff;
-}
-.trendTableEven {
-	background: #EBFFCA;
-}
-
-/* Regular table definitions */
-
-.tableOdd {
-	background: #ffffff;
-}
-.tableEven {
-	background: #EBFFCA;
-}
 
 /*  NEW AND IMPROVED DATA GRID STYLES */
 
@@ -1689,7 +1718,7 @@ color: #fff;
         /* text-transform: uppercase; */
         text-align: left;
         padding: 8px 12px 4px 12px;
-        background: #CAE8EA url(../images/bg_header.jpg) no-repeat;
+        background: #8EAF3C url(../images/bg_header.jpg) no-repeat;
         vertical-align:middle;
         }
 		
@@ -1720,16 +1749,16 @@ color: #fff;
 .datagrid th.sortable-sortAlphaNumeric,
 .datagrid th.sortable-sortEnglishDateTime {
         cursor:pointer;
-        background: #CAE8EA url(../images/bg_header_sortable.jpg) no-repeat;
+        background: #8EAF3C url(../images/bg_header_sortable.jpg) no-repeat;
         padding: 8px 12px 4px 16px;
         }
 		
 .datagrid th.forwardSort {
-        background:#CAE8EA url(../images/bg_header_down.jpg) no-repeat 0 0;
+        background:#8EAF3C url(../images/bg_header_down.jpg) no-repeat 0 0;
         }
 		
 .datagrid th.reverseSort {
-        background:#CAE8EA url(../images/bg_header_up.jpg) no-repeat 0 0;
+        background:#8EAF3C url(../images/bg_header_up.jpg) no-repeat 0 0;
         }
 		
 .datagrid table thead th.forwardSort a,
@@ -1740,7 +1769,7 @@ color: #fff;
 /*
 These styles should be added when very long tables are expected
 .datagrid th.sort-active {
-        background:#CAE8EA url(../images/bg_header_sorting.jpg) no-repeat 0 0;
+        background:#8EAF3C url(../images/bg_header_sorting.jpg) no-repeat 0 0;
         cursor:wait;
         }
 .datagrid th.sort-active a {
@@ -1782,7 +1811,7 @@ These styles should be added when very long tables are expected
         text-align:left;
         }
 .datagrid tr.alt {
-        background: #F5FAFA;
+        background: #EBFFCA;
         color: #333;
         }
 
@@ -1790,14 +1819,14 @@ These styles should be added when very long tables are expected
    as it trys to download the image each and every time that it is used (which means a 1000 row table
    will produce 1000 http requests for the image in question) */
 .datagrid tr[class="alt"] td {
-        background: #F5FAFA url(../images/td_alt.jpg) no-repeat;
+        background: #EBFFCA url(../images/td_alt.jpg) no-repeat;
         }
 .datagrid td[class~="alt"] {
-        background: #edf3f3 url(../images/col_alt.jpg) no-repeat !important;
+        background: #CADF9A url(../images/col_alt.jpg) no-repeat !important;
         }
 /* Poor old Internet Explorer won't see the next two rules either as it doesn't get :first-child 
 .datagrid tbody tr.alt td:first-child {
-        background: #F5FAFA url(../images/bullet2.gif) no-repeat;
+        background: #EBFFCA url(../images/bullet2.gif) no-repeat;
         font-weight:bold;
         }
 .datagrid tbody tr td:first-child {
@@ -1806,11 +1835,11 @@ These styles should be added when very long tables are expected
         }*/
 /* Image free rules for Internet Explorer < 7 */
 * html .datagrid tr.alt td {
-        background-color:#F5FAFA;
+        background-color:#EBFFCA;
         }
 * html .datagrid tr td.alt,
 * html .datagrid tr.alt td.alt {
-        background-color:#edf3f3;
+        background-color:#CADF9A;
         }
  
 /* Pagination list styles */
@@ -1934,6 +1963,7 @@ Search box in the menu
 #menu_search_box {
 	height: 26px;
 	margin-top: 6px;
+	border: 0;
 	}
 
 #menu_search_box td.left {
@@ -2184,75 +2214,78 @@ table.notification_table td {
 	
 table.clearit {
 	border: 0;
-	padding: 0;
-	margin: 0;
+	/* padding: 0;
+	margin: 0; */
 	}
 	
 table.clearit td {
 	border: 0;
-	padding: 5px;
-	margin: 0;
+	/* padding: 5px;
+	margin: 0; */
 	}
 
+table {
+	border: 0;
+	/* padding: 0;
+	margin: 0; */
+	}
+	
+table td {
+	border: 0;
+	/* padding: 5px;
+	margin: 0; */
+	}
 
-#footer_copyright {
-	float:left;
-	width:30%;
-	margin-left: 20px;
-	margin-right: 0;
-	margin-top: 0;
-	margin-bottom: 0;
-	padding: 0;
-	display: block;
-}
+/*  MAP CAR LEGEND */
 
-#footer_horz_nav {
-	float:right;
-	margin-right: 20px;
-	margin-left: 0;
-	margin-top: 0;
-	margin-bottom: 0;
+ul.legend {
+	margin: 0 0 0 10px;
 	padding: 0;
-	display: block;
-}
+	}
 
-#footer_horz_nav ul {
-	margin: 0;
-	padding: 0;
+.legend li {
 	list-style: none;
-	font-size: 10px;
-}
-	
-#footer_horz_nav ul li {
-	margin: 0;
-	padding: 0 10px 0 10px;
-	list-style: none;
-	display: inline;
-}
-	
-#footer_horz_nav ul a {
-	padding: 0;
-	text-decoration: none;
-	border-bottom: none;
-	color: #000;
-	display: inline;
-}
-	
-#footer_horz_nav ul a:hover, #footer_horz_nav ul a.active {
-	color: #000;
-	text-decoration: underline;
-}
+	padding: 5px 0 5px 20px;
+	float: left;
+	width: 125px;
+	}
 
-.errorPopup {
-	text-align: left;
-	font: normal 12px Verdana, Arial, Helvetica, sans-serif;
-}
+.legend li.red {
+	background: url(../images/ico_car_red.png) no-repeat 0 50%;
+	}
 	
-.version {
-	font-size:9px;
-	color: gray;
-	padding-top: 5px;
-}
+.legend li.orange {
+	background: url(../images/ico_car_orange.png) no-repeat 0 50%;
+	}
+	
+.legend li.lt_blue {
+	background: url(../images/ico_car_lt_blue.png) no-repeat 0 50%;
+	}
+
+.legend li.purple {
+	background: url(../images/ico_car_purple.png) no-repeat 0 50%;
+	}
+	
+.legend li.gray {
+	background: url(../images/ico_car_gray.png) no-repeat 0 50%;
+	}
+	
+.legend li.green {
+	background: url(../images/ico_car_green.png) no-repeat 0 50%;
+	}
+
+.legend li.blue {
+	background: url(../images/ico_car_blue.png) no-repeat 0 50%;
+	}
+	
+.legend li.lt_gray {
+	background: url(../images/ico_car_lt_gray.png) no-repeat 0 50%;
+	}
+	
+.legend li.pink {
+	background: url(../images/ico_car_pink.png) no-repeat 0 50%;
+	}
+
 
 
 /*
@@ -2272,11 +2305,3 @@ to display: none.  Example ...
 #zones_table-fdtablePaginaterWrapTop { display: none; }
 #trips_table-fdtablePaginaterWrapTop { display: none; }
 #trip_detail-fdtablePaginaterWrapTop { display: none; }
-
-
-/*
-A4J Overrides
-*/
-
-.dr-pnl{border-width:0px;padding:0px;}
-.dr-pnl-b{padding: 0px;}

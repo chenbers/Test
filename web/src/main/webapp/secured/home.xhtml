@@ -71,11 +71,43 @@
 						</div>
 						<div class="panel_w">
 					  		<rich:panel bodyClass="panel_content" id="overallPanel" border="0">
-					  			 <br />
-					  			 	<ui:include src="../includes/scoreBox.xhtml">
+					  	<table width="455" height="100" border="0" cellspacing="0" cellpadding="0" align="center">
+                          <tr>
+                            <td colspan="2" align="right" valign="top">
+                              <table border="0" cellspacing="0" cellpadding="0" class="scorebox_lg">
+                                <tr>
+
+                                  <td width="188">
+                                    <h4>Overall Score</h4>
+                                    <span>(last 30 days)</span> </td>
+                                  <td width="130" align="center">
+                                    <ui:include src="../includes/scoreBox.xhtml">
 								            <ui:param name="score" value="#{fleetOverviewBean.overallScore}" />
 								            <ui:param name="scoreStyle" value="#{fleetOverviewBean.overallScoreStyle}" />
 									</ui:include>
+
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td width="64" valign="top" align="center"><img src="/images/legend_pie1to5.png" width="54" height="137" style="margin-top: 10px;" /></td>
+                            <td width="381" valign="top">
+                              <div id="chartdiv" align="center"></div>
+			  					<h:inputHidden value="#{breakdownBean.pieDef}" id="hiddenField3"/>
+										<script type="text/javascript">
+											var targetElement3 = document.getElementById("hiddenField3");
+											var chart2 = new FusionCharts("/tiwipro/fusioncharts/Pie2D.swf", "ChartId", "381", "300", "0", "0");										
+											chart2.setDataXML(targetElement3.value);									   	   
+											chart2.render("chartdiv");
+										</script>
+									
+                            </td>
+                          </tr>
+                        </table>
+					  			 
+					  			 	
 					  		</rich:panel>
 						</div>
 						<div class="panel_sw">
@@ -86,6 +118,13 @@
 		
 					<div class="spacer"></div>
 					
+
+	</td>
+	
+    <td width="10"><img src="/tiwipro/images/x.gif" width="10" /></td>
+	
+    <td width="465" valign="top">
+
 		<!-- START TREND PANEL -->
 		<!-- leave reRenderList alone -->
 		<ui:include src="/includes/trendxychart.xhtml">
@@ -103,28 +142,6 @@
             <ui:param name="scores" value="#{trendBean.scoreableEntities}"/>
             <ui:param name="table" value="#{trendTable.table}"/>
 		</ui:include>
-		<!-- END PANEL -->
-	</td>
-	
-    <td width="10"><img src="/tiwipro/images/x.gif" width="10" /></td>
-	
-    <td width="465" valign="top">
-
-		<!-- START SCORE BREAKDOWN PANEL -->
-		<!-- leave reRenderList alone -->
-		<ui:include src="/includes/pieChart.xhtml">	
-			<ui:param name="reRenderList" value="pieForm,piepanel,hiddenField2"/>
-			<ui:param name="title" value="Score Breakdown"/>		
-            <ui:param name="pieheight" value="300"/>
-            <ui:param name="piewidth" value="381"/>
-            <ui:param name="pieDef" value="#{breakdownBean.pieDef}"/>   
-            <ui:param name="duration" value="#{breakdownBean.duration}" />   
-            <ui:param name="thirtyDaysOn" value="#{breakdownBean.styleClass30Days}"/>
-			<ui:param name="threeMonthsOn" value="#{breakdownBean.styleClass3Months}"/>
-			<ui:param name="sixMonthsOn" value="#{breakdownBean.styleClass6Months}"/>
-			<ui:param name="twelveMonthsOn" value="#{breakdownBean.styleClass12Months}"/>      
-		</ui:include>
-
 		<!-- END PANEL -->
 		
 		<div class="spacer"></div>
