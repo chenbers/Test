@@ -14,7 +14,6 @@ import java.util.TimeZone;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.richfaces.component.html.HtmlDatascroller;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
@@ -34,7 +33,6 @@ public class UsersBean extends BaseBean
     private List<UserView> filteredUsers;
     private String filterValue;
     private Map<String, String> columns;
-    private HtmlDatascroller scroller;
 
     public UsersBean()
     {
@@ -62,9 +60,8 @@ public class UsersBean extends BaseBean
         filteredUsers = new LinkedList<UserView>();
         setFilterValue(null);
 
-        // columns, scroller
+        // columns
         columns = getDefaultColumns();
-        scroller = new HtmlDatascroller();
     }
 
     @Deprecated
@@ -264,23 +261,6 @@ public class UsersBean extends BaseBean
     public void setColumns(Map<String, String> columns)
     {
         this.columns = columns;
-    }
-
-    /**
-     * @return the scroller
-     */
-    public HtmlDatascroller getScroller()
-    {
-        return scroller;
-    }
-
-    /**
-     * @param scroller
-     *            the scroller to set
-     */
-    public void setScroller(HtmlDatascroller scroller)
-    {
-        this.scroller = scroller;
     }
 
     public class UserView extends User
