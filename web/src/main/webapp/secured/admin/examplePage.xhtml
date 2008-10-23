@@ -1,4 +1,4 @@
-<ui:composition
+<ui:composition template="/layout/layout.xhtml"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -6,10 +6,13 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:security="http://www.springframework.org/security/tags">
 
-		<rich:dataTable id="dataTable" value="#{items}" var="item">
+	<ui:define name="content">
+	other content
+	<br />
 
-			<ui:insert name="columns" />
+		<ui:include src="exampleTable.xhtml" />
 
-		</rich:dataTable>
 
+
+	</ui:define>
 </ui:composition>
