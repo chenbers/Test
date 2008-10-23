@@ -4,9 +4,8 @@
   			xmlns:h="http://java.sun.com/jsf/html" 
   			xmlns:rich="http://richfaces.org/rich"
   			xmlns:a4j="http://richfaces.org/a4j"
-  			xmlns:f="http://java.sun.com/jsf/core"
-  			xmlns:iwi="http://pro.tiwi.com/jsf">
-
+  			xmlns:f="http://java.sun.com/jsf/core">
+  			
 	<ui:define name="scripts">
 		<script src="/tiwipro/js/FusionCharts.js" type="text/javascript"></script>		
 	</ui:define>
@@ -73,7 +72,10 @@
 						<div class="panel_w">
 					  		<rich:panel bodyClass="panel_content" id="overallPanel" border="0">
 					  			 <br />
-					  			 <iwi:scoreBox style="#{fleetOverviewBean.overallScoreStyle}" score="#{fleetOverviewBean.overallScore}"/> 
+					  			 	<ui:include src="../includes/scoreBox.xhtml">
+								            <ui:param name="score" value="#{fleetOverviewBean.overallScore}" />
+								            <ui:param name="scoreStyle" value="#{fleetOverviewBean.overallScoreStyle}" />
+									</ui:include>
 					  		</rich:panel>
 						</div>
 						<div class="panel_sw">
@@ -127,21 +129,6 @@
 		
 		<div class="spacer"></div>
 		
-		<!-- START FUEL EFFICIENCY PANEL -->
-		<!-- leave reRenderList alone -->
-		<ui:include src="/includes/fuelEfficiencyChart.xhtml">	
-			<ui:param name="reRenderList" value="fuelForm,barpanel,hiddenField3"/>
-			<ui:param name="title" value="Estimated Fuel Efficiency"/>		
-            <ui:param name="barheight" value="440"/>
-            <ui:param name="barwidth" value="350"/>
-            <ui:param name="barDef" value="#{fuelBean.barDef}"/>  
-            <ui:param name="duration" value="#{fuelBean.duration}" />   
-            <ui:param name="thirtyDaysOn" value="#{fuelBean.styleClass30Days}"/>
-			<ui:param name="threeMonthsOn" value="#{fuelBean.styleClass3Months}"/>
-			<ui:param name="sixMonthsOn" value="#{fuelBean.styleClass6Months}"/>
-			<ui:param name="twelveMonthsOn" value="#{fuelBean.styleClass12Months}"/>       
-		</ui:include>
-		<!-- END PANEL -->
 	</td>
   </tr>
 </table>
