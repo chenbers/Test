@@ -34,29 +34,17 @@ public class DriverBean extends BaseBean
 
 	public DriverBean()
 	{
-		overallScoreHistory = createLineDef();
+		
 		
 	}
 	
 	private String createLineDef() {
 		StringBuffer sb = new StringBuffer();
 		//Control parameters
-		sb.append(GraphicUtil.getXYControlParameters());
-		
-		//X-axis
-		sb.append("<categories>");
-		sb.append(GraphicUtil.createMonthsString(duration));		
-		sb.append("</categories>");
-		
-		//Y-axii
-		
-//	Test one
-		sb.append("<dataset seriesName=\'\' color=\'");
-		sb.append((GraphicUtil.entityColorKey.get(0)).substring(1));
-		sb.append("\'>");
-		sb.append(GraphicUtil.createFakeXYData(3));		
-		sb.append("</dataset>");
+		sb.append(GraphicUtil.createLineControlParameters());
+		sb.append(GraphicUtil.createFakeLineData());		
 		sb.append("</chart>");
+		
 		return sb.toString();
 	}
 	
@@ -69,7 +57,7 @@ public class DriverBean extends BaseBean
 	}
 	public String getOverallScoreHistory() {
 		
-		
+		setOverallScoreHistory(createLineDef()); // Get Chart data from DAO
 		return overallScoreHistory;
 	}
 	public void setOverallScoreHistory(String overallScoreHistory) {
@@ -90,6 +78,7 @@ public class DriverBean extends BaseBean
 		this.speedScore = speedScore;
 	}
 	public String getSpeedScoreHistory() {
+		setSpeedScoreHistory(createLineDef());
 		return speedScoreHistory;
 	}
 	public void setSpeedScoreHistory(String speedScoreHistory) {
@@ -116,6 +105,8 @@ public class DriverBean extends BaseBean
 		this.drivingScoreStyle = drivingScoreStyle;
 	}
 	public String getDrivingScoreHistory() {
+		
+		setDrivingScoreHistory(createLineDef());
 		return drivingScoreHistory;
 	}
 	public void setDrivingScoreHistory(String drivingScoreHistory) {
@@ -130,6 +121,7 @@ public class DriverBean extends BaseBean
 		this.seatBeltScore = seatBeltScore;
 	}
 	public String getSeatBeltScoreHistory() {
+		setSeatBeltScoreHistory(createLineDef());
 		return seatBeltScoreHistory;
 	}
 	public void setSeatBeltScoreHistory(String seatBeltScoreHistory) {
@@ -144,6 +136,7 @@ public class DriverBean extends BaseBean
 	
 	//COACHING properties
 	public String getCoachingHistory() {
+		setCoachingHistory(createLineDef());
 		return coachingHistory;
 	}
 	public void setCoachingHistory(String coachingHistory) {

@@ -135,6 +135,52 @@ public class GraphicUtil {
 		return sb.toString();
 	}
 	
+	public static String createLineControlParameters()
+	{
+		StringBuffer sb = new StringBuffer();
+		sb.append("<chart ");
+		sb.append("caption=\'\' ");
+		sb.append("subcaption=\'\' ");
+		sb.append("xAxisName=\'\' ");
+		sb.append("yAxisMinValue=\'0\' ");
+		sb.append("yAxisName=\'\' ");
+		sb.append("numberPrefix=\'\' ");
+		sb.append("showValues=\'0\' ");
+		sb.append("adjustDiv=\'0\' ");
+		sb.append("setAdaptiveYMin='0' ");
+		sb.append("borderColor=\'#cfcfcf\' ");
+		sb.append("vDivLineColor=\'#cfcfcf\' ");
+		sb.append("vDivLineThickness=\'1\' ");
+		sb.append("showAlternateHGridColor=\'1\' ");
+		sb.append("alternateHGridColor=\'#f0f0f0\' ");
+		sb.append("alternateHGridAlpha=\'100\' ");
+		sb.append("forceDecimals=\'1\' ");
+		sb.append("yAxisMaxValue=\'5\' ");
+		sb.append("bgColor=\'#ffffff\' ");
+		sb.append("showBorder=\'0\' ");
+		sb.append("lineColor=\'#93C034\' ");
+		sb.append("lineThickness=\'2\' ");
+		sb.append("drawAnchors=\'0\' ");
+		sb.append("numVDivLines=\'4\' ");
+		sb.append("plotFillColor=\'#A8C634\' >");
+		
+		return sb.toString();
+	}
+	
+	public static String createFakeLineData()
+	{
+		StringBuffer sb = new StringBuffer();
+		
+		sb.append("<set value=\'3.3\' label=\'15000mi\' />");
+		sb.append("<set value=\'3.7\' label=\'25000mi\' />");
+		sb.append("<set value=\'3.9\' label=\'30000mi\' />");
+		sb.append("<set value=\'4.1\' label=\'35000mi\' />");
+		sb.append("<set value=\'5.0\' label=\'40145mi\' />");
+		
+		return sb.toString();
+		
+	}
+	
 	public static String createFakePieData() {
 		StringBuffer sb = new StringBuffer();
 		

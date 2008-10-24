@@ -1,12 +1,10 @@
 package com.inthinc.pro.backing;
 
 import org.apache.log4j.Logger;
-import org.springframework.security.context.SecurityContextHolder;
-import org.springframework.security.userdetails.User;
 import com.inthinc.pro.backing.ui.*;
-import java.util.Random;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.dao.*;
+import com.inthinc.pro.model.OverallScore;
 
 public class FleetOverviewBean extends BaseBean
 {
@@ -15,15 +13,12 @@ public class FleetOverviewBean extends BaseBean
 	private Duration duration = Duration.DAYS;
 	private static final Logger logger = Logger.getLogger(TrendBean.class);
 	private UserDAO userDao;
+	private ScoreBox sb;
 	
 	public FleetOverviewBean()
 	{
-		User u = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		logger.debug("getting overall score, user is: " + u.getUsername());
-		
-		setOverallScore(3.1); //Get score from DAO here.
-		ScoreBox sb = new ScoreBox(getOverallScore(), ScoreBoxSizes.LARGE);
-		setOverallScoreStyle(sb.getScoreStyle());
+		setOverallScore(3.3d);  //get from DAO
+
 	}
 
 	public Double getOverallScore() {
@@ -32,6 +27,8 @@ public class FleetOverviewBean extends BaseBean
 
 	public void setOverallScore(Double overallScore) {
 		this.overallScore = overallScore;
+		sb = new ScoreBox(this.overallScore, ScoreBoxSizes.LARGE);
+		setOverallScoreStyle(sb.getScoreStyle());
 	}
 
 	public String getOverallScoreStyle() {
@@ -49,30 +46,9 @@ public class FleetOverviewBean extends BaseBean
 	public void setDuration(Duration duration) {
 		this.duration = duration;
 		
-		com.inthinc.pro.model.User user = this.getUser();
-        com.inthinc.pro.model.User newUser = userDao.findByEmail(user.getEmail());
-		
-//		com.inthinc.pro.model.User newUser = userDao.findByEmail("rabyma@gmail.com");
-		
-		logger.debug("DAO Test " + newUser.getUsername());
-		
-		
-		// TODO recalculate score. user changed time range
-		Random r = new Random();
-		Double d = r.nextDouble();
-		
-		d = d * 5.0;
-		d = this.roundDouble(d, 1);
-		this.setOverallScore(d);
-		
-		ScoreBox sb = new ScoreBox(this.overallScore, ScoreBoxSizes.LARGE);
+		sb = new ScoreBox(this.overallScore, ScoreBoxSizes.LARGE);
 		setOverallScoreStyle(sb.getScoreStyle());
 	}
-
-	   public static final double roundDouble(double d, int places) {
-	        return Math.round(d * Math.pow(10, (double) places)) / Math.pow(10,
-	            (double) places);
-	    }
 
 	public UserDAO getUserDao() {
 		return userDao;

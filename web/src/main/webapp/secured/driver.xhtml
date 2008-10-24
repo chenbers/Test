@@ -13,12 +13,14 @@
 	</ui:define>
 
 	<ui:param name="homeSelected" value="current" />
+	
+	<ui:define name="subnavigation">
+		<ui:include src="/includes/reports/subNavigation.xhtml" />
+	</ui:define>
+	
 	<ui:define name="content">
-		<div id="subnavigation" style="background:#000;">
-		<ui:include src="/includes/driverSubNavigation.xhtml"/>
-		</div>
 <div id="wrapper">
-<div class="wrapper_top"></div>
+
 
 <ul id="grid_nav">
 	<li class="l grid_icon"><img src="images/ico_line.png" /></li>
@@ -54,7 +56,7 @@
 							<h:inputHidden value="#{driverBean.overallScoreHistory}" id="hiddenField"/>
 								<script type="text/javascript">
 									var targetElement1 = document.getElementById("hiddenField");
-									var chart = new FusionCharts("/fusioncharts/Area2D.swf", "ChartId", "650", "200", "0", "0");
+									var chart = new FusionCharts("../fusioncharts/Area2D.swf", "ChartId", "650", "200", "0", "0");
 									chart.setDataXML(targetElement1.value);		   
 									chart.render("overall_chart");
 								</script>
@@ -105,7 +107,7 @@
 								<h:inputHidden value="#{driverBean.speedScoreHistory}" id="hiddenField2"/>
 								<script type="text/javascript">
 									var targetElement2 = document.getElementById("hiddenField2");
-									var chart = new FusionCharts("/swf/Area2D.swf", "ChartId", "380", "200", "0", "0");
+									var chart = new FusionCharts("../fusioncharts/Area2D.swf", "ChartId", "380", "200", "0", "0");
 									chart.setDataXML(targetElement2.value);			   
 									chart.render("speed_chart");
 								</script>
@@ -142,7 +144,7 @@
                              	<h:inputHidden value="#{driverBean.drivingScoreHistory}" id="hiddenField3"/>
 								<script type="text/javascript">
 									var targetElement3 = document.getElementById("hiddenField3");
-									var chart = new FusionCharts("/swf/Area2D.swf", "ChartId", "380", "200", "0", "0");
+									var chart = new FusionCharts("../fusioncharts/Area2D.swf", "ChartId", "380", "200", "0", "0");
 									chart.setDataXML(targetElement3.value);			   
 									chart.render("style_chart");
 								</script>
@@ -178,7 +180,7 @@
                            		<h:inputHidden value="#{driverBean.seatBeltScoreHistory}" id="hiddenField4"/>
 								<script type="text/javascript">
 									var targetElement4 = document.getElementById("hiddenField4");
-									var chart = new FusionCharts("/swf/Area2D.swf", "ChartId", "380", "200", "0", "0");
+									var chart = new FusionCharts("../fusioncharts/Area2D.swf", "ChartId", "380", "200", "0", "0");
 									chart.setDataXML(targetElement4.value);			   
 									chart.render("seatbelt_chart");
 								</script>
@@ -249,7 +251,7 @@
                             <h:inputHidden value="#{driverBean.coachingHistory}" id="hiddenField5"/>
 								<script type="text/javascript">
 									var targetElement5 = document.getElementById("hiddenField5");
-									var chart = new FusionCharts("/swf/Area2D.swf", "ChartId", "380", "200", "0", "0");
+									var chart = new FusionCharts("../fusioncharts/Area2D.swf", "ChartId", "380", "200", "0", "0");
 									chart.setDataXML(targetElement5.value);			   
 									chart.render("coaching_chart");
 								</script>
