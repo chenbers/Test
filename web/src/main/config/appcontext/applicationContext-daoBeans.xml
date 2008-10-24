@@ -8,5 +8,7 @@
    </bean>
    <bean id="userDAO" class="com.inthinc.pro.dao.hessian.UserHessianDAO" parent="genericDAO">
    </bean>
+   <bean id="graphicDAO" class="com.inthinc.pro.dao.hessian.GraphicHessianDAO" parent="genericDAO">
+   </bean>
    
 </beans>
