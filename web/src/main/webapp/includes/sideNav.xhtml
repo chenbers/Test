@@ -40,14 +40,16 @@
           </td>
         </tr>
         <ui:fragment rendered="#{action == parentAction}">
-          <ui:repeat value="#{fn:split(childActions, ',')}" var="childAction" varStatus="childIndex">
-            <tr>
-              <td valign="top" class="#{(childAction == selectedAction) ? 'ls_tab_sub_active' : 'ls_tab_sub'}">
-                <c:set var="messageKey" value="#{messagesPrefix}#{childAction}" />
-                <h:commandLink action="#{childAction}" value="#{messages[messageKey]}" styleClass="ls_tab_#{action}" />
-              </td>
-            </tr>
-          </ui:repeat>
+          <tr>
+            <td valign="top" class="sub_wrapper">
+              <ui:repeat value="#{fn:split(childActions, ',')}" var="childAction" varStatus="childIndex">
+                <div class="#{(childAction == selectedAction) ? 'ls_tab_sub_active' : 'ls_tab_sub'}">
+                  <c:set var="messageKey" value="#{messagesPrefix}#{childAction}" />
+                  <h:commandLink action="#{childAction}" value="#{messages[messageKey]}" styleClass="ls_tab_#{action}" />
+                </div>
+              </ui:repeat>
+            </td>
+          </tr>
         </ui:fragment>
       </ui:repeat>
     </table>
