@@ -38,12 +38,12 @@ body {
 	}
 
 #footer {
-	width: 500px;
+	width: 960px;
+	height:30px;
 	margin: 20px auto 0 auto;
 	padding: 10px 0 0 0;
 	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
-	text-align: center;
-	}
+}
 
 /* GRAY PANEL */
 .panel_nw {
@@ -466,13 +466,15 @@ form {
 	padding: 0;
 	}
 
+/* form div - interfering with rich:faces components. */
+/*
 form div {
 	padding: 10px 0 10px 0;
 	clear: left;
 	margin: 5px 0 5px 10px;
 	padding: 0;
 	}
-
+*/
 form div label {
 	float: left;
 	width: 40%;
@@ -2207,8 +2209,82 @@ ul.legend {
 	background: url(../images/ico_car_pink.png) no-repeat 0 50%;
 	}
 
+#footer_copyright {
+	float:left;
+	width:30%;
+	margin-left: 20px;
+	margin-right: 0;
+	margin-top: 0;
+	margin-bottom: 0;
+	padding: 0;
+	display: block;
+}
 
+#footer_horz_nav {
+	float:right;
+	margin-right: 20px;
+	margin-left: 0;
+	margin-top: 0;
+	margin-bottom: 0;
+	padding: 0;
+	display: block;
+}
 
+#footer_horz_nav ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	font-size: 10px;
+}
+	
+#footer_horz_nav ul li {
+	margin: 0;
+	padding: 0 10px 0 10px;
+	list-style: none;
+	display: inline;
+}
+	
+#footer_horz_nav ul a {
+	padding: 0;
+	text-decoration: none;
+	border-bottom: none;
+	color: #000;
+	display: inline;
+}
+	
+#footer_horz_nav ul a:hover, #footer_horz_nav ul a.active {
+	color: #000;
+	text-decoration: underline;
+}
+
+.errorPopup {
+	text-align: left;
+	font: normal 12px Verdana, Arial, Helvetica, sans-serif;
+}
+	
+.version {
+	font-size:9px;
+	color: gray;
+	padding-top: 5px;
+}
+
+/*  Trend table definitions */
+
+.trendTableOdd {
+	background: #ffffff;
+}
+.trendTableEven {
+	background: #EBFFCA;
+}
+
+/* Regular table definitions */
+
+.tableOdd {
+	background: #ffffff;
+}
+.tableEven {
+	background: #EBFFCA;
+}
 /*
 
 ok, so sometimes, do not show that top pagination navigation!!!
