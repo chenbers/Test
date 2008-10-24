@@ -2,9 +2,7 @@ package com.inthinc.pro.dao.hessian;
 
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.inthinc.pro.dao.GraphicDAO;
 import com.inthinc.pro.dao.service.CentralService;
@@ -14,10 +12,10 @@ public class GraphicHessianDAO extends GenericHessianDAO<ScoreableEntity, Intege
   private static final Logger logger = Logger.getLogger(GraphicHessianDAO.class);
 	 	
   @Override
-  public List getScores(Integer userID, Integer levelID, Integer startDate, Integer endDate) {
+  public List<ScoreableEntity>  getScores(Integer userID, Integer levelID, Integer startDate, Integer endDate) {
 	  logger.debug("in getscores graphichessiandao");
   
-	  List<ScoreableEntity> l = getService().getScores(userID,levelID,startDate,endDate);
+	  List<ScoreableEntity> l = convertToModelObject(getService().getScores(userID,levelID,startDate,endDate));
 	  logger.debug("l found, size: " + l.size());
 	  return l;
   }		

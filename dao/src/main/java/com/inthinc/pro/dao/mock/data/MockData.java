@@ -9,6 +9,7 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Company;
 import com.inthinc.pro.model.OverallScore;
 import com.inthinc.pro.model.Role;
+import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.User;
 
 public class MockData
@@ -60,6 +61,16 @@ public class MockData
                     new User(0, companyID, "supervisor", "supervisor@email.com", PASSWORD, Role.ROLE_SUPERVISOR, Boolean.TRUE)
         };
 
+        String[] regions = {
+                "New England",
+                "South",
+                "Lakes",
+                "MidWest",
+                "West Coast"
+        };
+        int[] monthsBack = {
+                0, 3, 6, 12
+        };
         
         for (int userCnt = 0; userCnt < users.length; userCnt++)
         {
@@ -68,18 +79,32 @@ public class MockData
             mockData.storeObject(users[userCnt]);
             
             // add other data that has userID as a foreign key
+            // TODO: Refactor this once the group stuff is worked out
             Integer dateNow = DateUtil.getTodaysDate();
-            mockData.storeObject(new OverallScore(userID, randomInt(0,50), dateNow));   // past 30 days
-            mockData.storeObject(new OverallScore(userID, randomInt(0,50), DateUtil.getDaysBackDate(dateNow, 30 * 3)));   // past 3 months
-            mockData.storeObject(new OverallScore(userID, randomInt(0,50), DateUtil.getDaysBackDate(dateNow, 30 * 6)));   // past 6 months
-            mockData.storeObject(new OverallScore(userID, randomInt(0,50), DateUtil.getDaysBackDate(dateNow, 30 * 12)));   // past 12 months
-            
+            for (int monthsBackCnt = 0; monthsBackCnt < monthsBack.length; monthsBackCnt++)
+            {
+                mockData.storeObject(new OverallScore(userID, randomInt(0,50), DateUtil.getDaysBackDate(dateNow, 30 * monthsBack[monthsBackCnt])));   
+            }
+            for (int regionCnt = 0; regionCnt < regions.length; regionCnt++)
+            {
+                for (int monthsBackCnt = 0; monthsBackCnt < monthsBack.length; monthsBackCnt++)
+                {
+                    mockData.storeObject(new ScoreableEntity(userID, regions[regionCnt], randomScore(), userID, DateUtil.getDaysBackDate(dateNow, 30 * monthsBack[monthsBackCnt])));
+                }
+            }
         }
     }
 
 
     // helper Utility methods
     
+    static String randomScore()
+    {
+        int score = randomInt(0, 4);
+        int decimal = randomInt(0, 9);
+        
+        return (score + "." + decimal);
+    }
     static int randomInt(int min, int max)
     {
         return (int) (Math.random() * ((max - min) + 1)) + min;

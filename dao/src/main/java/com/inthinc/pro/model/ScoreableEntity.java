@@ -8,9 +8,27 @@ public class ScoreableEntity extends BaseEntity {
 	  
 	private String identifier;
 	private String score;
-
 	
-	public Integer getEntityID() {
+	
+    private Integer userID;
+    private Integer date;
+
+    public ScoreableEntity()
+    {
+        
+    }
+	
+	public ScoreableEntity(Integer entityID, String identifier, String score, Integer userID, Integer date)
+    {
+        super();
+        this.entityID = entityID;
+        this.identifier = identifier;
+        this.score = score;
+        this.userID = userID;
+        this.date = date;
+    }
+	
+    public Integer getEntityID() {
 		return entityID;
 	}
 	public void setEntityID(Integer entityID) {
@@ -28,5 +46,21 @@ public class ScoreableEntity extends BaseEntity {
 	public void setScore(String score) {
 		this.score = score;
 	}
+    public Integer getUserID()
+    {
+        return userID;
+    }
+    public void setUserID(Integer userID)
+    {
+        this.userID = userID;
+    }
+    public Integer getDate()
+    {
+        return date;
+    }
+    public void setDate(Integer date)
+    {
+        this.date = date;
+    }
 
 }

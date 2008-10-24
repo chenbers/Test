@@ -11,6 +11,7 @@ import org.springframework.security.userdetails.User;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.GraphicDAO;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.util.GraphicUtil;
@@ -173,9 +174,11 @@ public class TrendBean extends BaseBean {
 		
 		//Fetch, qualifier is who is logged-in, where in the system, 
 		//date from, date to
-		List s = null;
-		try {						
-			s = graphicDAO.getScores(new Integer(1),new Integer(1),new Integer(1),new Integer(1));
+		List<ScoreableEntity> s = null;
+		try {
+		    Integer endDate = DateUtil.getTodaysDate();
+		    Integer startDate = DateUtil.getDaysBackDate(endDate, duration.getNumberOfDays());
+			s = graphicDAO.getScores(getUser().getUserID(),new Integer(1),startDate, endDate);
 		} catch (Exception e) {
 			logger.debug("graphicDao error: " + e.getMessage());
 		}		

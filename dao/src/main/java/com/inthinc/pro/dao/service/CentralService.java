@@ -17,6 +17,6 @@ public interface CentralService extends DAOService
   
   Map<String, Object> getOverallScore(Integer userID, Integer levelID, Integer startDate, Integer endDate ) throws ProDAOException;
   
-  List<ScoreableEntity> getScores(Integer userID, Integer levelID, Integer startDate, Integer endDate ) throws ProDAOException;
+  List<Map<String, Object>> getScores(Integer userID, Integer levelID, Integer startDate, Integer endDate ) throws ProDAOException;
 
 }

@@ -6,6 +6,6 @@ import com.inthinc.pro.model.ScoreableEntity;
 
 public interface GraphicDAO extends GenericDAO<ScoreableEntity, Integer>
 {
-	List getScores(Integer userID, Integer levelID, Integer startDate, Integer endDate);
+	List<ScoreableEntity>  getScores(Integer userID, Integer levelID, Integer startDate, Integer endDate);
 
 }

@@ -71,11 +71,24 @@ public class CentralServiceMockImpl extends MockImpl implements CentralService
     }
 
     @Override
-    public List<ScoreableEntity> getScores(Integer userID, Integer levelID, Integer startDate, Integer endDate)
+    public List<Map<String, Object>> getScores(Integer userID, Integer levelID, Integer startDate, Integer endDate)
             throws ProDAOException
     {
     	logger.debug("getting trend table");
-       
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("userID", userID);
+//        searchCriteria.addKeyValue("levelID", levelID);
+        searchCriteria.addKeyValueRange("date", startDate, endDate);
+
+        List<Map<String, Object>> returnList =  mockDataContainer.lookupList(ScoreableEntity.class, searchCriteria);
+        if (returnList == null)
+        {
+            throw new EmptyResultSetException("No score for: " + userID, "getScore", 0);
+        }
+        return returnList;
+/*        
+
+        
         ArrayList <ScoreableEntity> scoreableEntities = new ArrayList<ScoreableEntity>();
         
         ScoreableEntity se = new ScoreableEntity();
@@ -116,5 +129,6 @@ public class CentralServiceMockImpl extends MockImpl implements CentralService
             throw new EmptyResultSetException("No table data for: " + userID, "getScores", 0);
         }
         return scoreableEntities;
+*/        
     }
 }

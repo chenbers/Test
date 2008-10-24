@@ -47,6 +47,24 @@ public class MockDataContainer
     }
 
     // lookup using multiple key/value pairs ANDed together
+    
+    public List<Map<String, Object>> lookupList(Class clas, SearchCriteria searchCriteria)
+    {
+        List<Object> objList = retrieveObjectList(clas, searchCriteria);
+        if (objList != null && objList.size() > 0)
+        {
+            List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+            for (Object obj : objList)
+            {
+                returnList.add(createMapFromObject(obj));
+            }
+            
+            return returnList;
+        }
+        return null;
+    }
+
+
     public Map<String, Object> lookup(Class clas, SearchCriteria searchCriteria)
     {
         Object obj = retrieveObject(clas, searchCriteria);
@@ -213,6 +231,50 @@ public class MockDataContainer
 
 
         return null;
+    }
+    public <T> List<T> retrieveObjectList(Class<T> clas, SearchCriteria searchCriteria)
+    {
+        List<T> returnObjList = new ArrayList<T>();
+        
+        Map<String, Object> searchMap = searchCriteria.getCriteriaMap();
+        List<Object> objList = dataMap.get(clas);
+        if (objList == null)
+        {
+            return null;
+        }
+        for (Object obj : objList)
+        {
+            boolean isMatch = true;
+            for (Map.Entry<String,Object> searchItem : searchMap.entrySet())
+            {
+                Object fieldValue = getFieldValue(obj, searchItem.getKey().toString());
+                
+                if (searchItem.getValue() instanceof ValueRange)
+                {
+                    ValueRange valueRange = (ValueRange)searchItem.getValue();
+                    if (valueRange.low.compareTo(fieldValue) > 0 ||
+                            valueRange.high.compareTo(fieldValue) < 0)
+                    {
+                        isMatch = false;
+                        break;
+                    }
+                            
+                }
+                else if (!fieldValue.equals(searchItem.getValue()))
+                {
+                    isMatch = false;
+                    break;
+                }
+            }
+            
+            if (isMatch)
+            {
+                returnObjList.add((T)obj);
+            }
+        }
+
+
+        return returnObjList;
     }
 
     public <T> Object getFieldValue(T object, String field)
