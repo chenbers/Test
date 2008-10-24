@@ -6,6 +6,15 @@
   xmlns:rich="http://richfaces.org/rich"
   xmlns:security="http://www.springframework.org/security/tags">
 
+  <ui:param name="recordCount" value="#{usersBean.userCount}" />
+  <ui:param name="items" value="#{usersBean.filteredUsers}" />
+  <ui:param name="filterValue" value="#{usersBean.filterValue}" />
+  <ui:param name="page" value="#{usersBean.page}" />
+  <ui:param name="editorBean" value="#{usersBean}" />
+  <ui:param name="allColumns" value="#{usersBean.availableColumns}" />
+  <ui:param name="selectedColumns" value="#{usersBean.columns}" />
+  <ui:param name="messagesPrefix" value="usersHeader_" />
+
   <ui:define name="columns">
     <rich:column rendered="#{usersBean.columns['score']}" sortBy="#{item.score}">
       <f:facet name="header"><h:outputText value="#{messages.usersHeader_score}" /></f:facet>

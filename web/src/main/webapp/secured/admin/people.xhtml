@@ -11,33 +11,33 @@
 
   <ui:define name="content">
 
-    <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
-      <tr>
-      <td valign="top" width="130">
-        <ui:include src="/includes/sideNav.xhtml" />
-      </td>
-      <td valign="top">
-        <!-- START PANEL -->
-          <div class="">
-            <a4j:form id="overall-form">
+    <a4j:form id="overall-form">
 
-              <ui:include src="/includes/usersTable.xhtml">
-                <ui:param name="recordCount" value="#{usersBean.userCount}" />
-                <ui:param name="items" value="#{usersBean.filteredUsers}" />
-                <ui:param name="filterValue" value="#{usersBean.filterValue}" />
-                <ui:param name="page" value="#{usersBean.page}" />
-                <ui:param name="editorBean" value="#{usersBean}" />
-                <ui:param name="allColumns" value="#{usersBean.availableColumns}" />
-                <ui:param name="selectedColumns" value="#{usersBean.columns}" />
-              </ui:include>
-
-            </a4j:form>
-          </div>
-          <!-- END PANEL -->            
+      <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+        <tr>
+        <td valign="top" width="130">
+          <ui:include src="/includes/sideNav.xhtml">
+            <ui:param name="messagesPrefix" value="adminSideNav_" />
+            <ui:param name="actions" value="adminPeople,adminVehicles,adminTrailers,adminDevices,adminZones,adminZoneAlerts,adminRedFlags" />
+            <ui:param name="selectedAction" value="adminPeople" />
+            <ui:param name="parentAction" value="adminPeople" />
+            <ui:param name="childActions" value="adminAddPerson" />
+          </ui:include>
         </td>
+        <td valign="top">
+          <!-- START PANEL -->
+            <div class="">
 
-      </tr>
-    </table>
+              <ui:include src="/includes/usersTable.xhtml" />
+
+            </div>
+            <!-- END PANEL -->            
+          </td>
+
+        </tr>
+      </table>
+
+    </a4j:form>
 
   </ui:define>
 

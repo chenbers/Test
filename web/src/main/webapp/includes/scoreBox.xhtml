@@ -1,6 +1,7 @@
-<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html">
+
 <!-- 
 	Score Styles - specifies which color to use for the box.
     ==============
@@ -18,11 +19,13 @@
 	</ui:include>
 	
  -->
-      <div class="#{scoreStyle}" onclick="location.href='#';">
+	<ui:composition>
+	<div class="#{scoreStyle}" onclick="location.href='#';">
 		<div class="score">
 			<h:outputText value="#{score}">
 				<f:convertNumber minFractionDigits="1" maxFractionDigits="1" />
 			</h:outputText>
 		</div>
-      </div>
-</ui:composition>
+	</div>
+	</ui:composition>
+</html>

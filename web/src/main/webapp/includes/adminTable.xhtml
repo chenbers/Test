@@ -18,6 +18,7 @@
          editorBean:  A bean that has methods named edit() and delete().
          allColumns:  A list of column names.
     selectedColumns:  A Map with String keys and Boolean values for which columns are selected.
+     messagesPrefix:  A prefix to prepend to the action to obtain a user-friendly message.
 
   Optional parameters:
   ==============
@@ -137,7 +138,7 @@
       <div class="panel_statusbar"></div>
     </div>
 
-    <rich:modalPanel id="editColumns" headerClass="popupHeader" width="500" zindex="2000">
+    <rich:modalPanel id="editColumns" headerClass="popupHeader" controlsClass="popupControls" width="500" height="370" zindex="2000">
       <f:facet name="header">
         <h:outputText value="Edit Columns"/>
       </f:facet>
@@ -148,9 +149,10 @@
       <div class="popupsubtitle">The following columns will be displayed</div>
 
       <h:form>
+
         <h:dataTable value="#{allColumns}" var="col">
           <h:column>
-            <c:set var="columnName" value="usersHeader_#{col}" />
+            <c:set var="columnName" value="#{messagesPrefix}#{col}" />
             <h:outputLabel>
               <h:selectBooleanCheckbox value="#{selectedColumns[col]}" />
               <h:outputText value="#{messages[columnName]}" />
