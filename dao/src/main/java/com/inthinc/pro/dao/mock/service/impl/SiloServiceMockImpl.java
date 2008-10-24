@@ -14,6 +14,14 @@ public class SiloServiceMockImpl implements SiloService
 
     MockDataContainer mockDataContainer = new MockDataContainer();
     
+    
+    @Override
+    public Map<String, Object> deleteUser(Integer userID) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
     @Override
     public Map<String, Object> createUser(Integer acctID, Map<String, Object> userMap) throws ProDAOException
     {
