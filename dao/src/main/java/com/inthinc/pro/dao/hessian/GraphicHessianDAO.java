@@ -17,7 +17,7 @@ public class GraphicHessianDAO extends GenericHessianDAO<ScoreableEntity, Intege
   public List getScores(Integer userID, Integer levelID, Integer startDate, Integer endDate) {
 	  logger.debug("in getscores graphichessiandao");
   
-	  List l = getService().getScores(userID,levelID,startDate,endDate);
+	  List<ScoreableEntity> l = getService().getScores(userID,levelID,startDate,endDate);
 	  logger.debug("l found, size: " + l.size());
 	  return l;
   }		
