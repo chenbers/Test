@@ -16,7 +16,10 @@
         filterValue:  A value to filter by, displayed in the search box.
                page:  The scroller page index, starting with 0.
          editorBean:  A bean that has methods named edit() and delete().
+
+Note: The following parameters are required by the included editColumns.xhtml
          allColumns:  A list of column names.
+    allColumnsCount:  The number of column names in allColumns.
     selectedColumns:  A Map with String keys and Boolean values for which columns are selected.
      messagesPrefix:  A prefix to prepend to the action to obtain a user-friendly message.
 
@@ -59,7 +62,9 @@
         <ui:param name="page" value="#{myBean.page}" />
         <ui:param name="editorBean" value="#{myBean}" />
         <ui:param name="allColumns" value="#{myBean.availableColumns}" />
+        <ui:param name="allColumnsCount" value="#{myBean.availableColumnCount}" />
         <ui:param name="selectedColumns" value="#{myBean.columns}" />
+        <ui:param name="messagesPrefix" value="myPrefix_" />
       </ui:include>
 -->
 
@@ -138,35 +143,9 @@
       <div class="panel_statusbar"></div>
     </div>
 
-    <rich:modalPanel id="editColumns" headerClass="popupHeader" controlsClass="popupControls" width="500" height="370" zindex="2000">
-      <f:facet name="header">
-        <h:outputText value="Edit Columns"/>
-      </f:facet>
-      <f:facet name="controls">
-        <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('editColumns')" />
-      </f:facet>
-
-      <div class="popupsubtitle">The following columns will be displayed</div>
-
-      <h:form>
-
-        <h:dataTable value="#{allColumns}" var="col">
-          <h:column>
-            <c:set var="columnName" value="#{messagesPrefix}#{col}" />
-            <h:outputLabel>
-              <h:selectBooleanCheckbox value="#{selectedColumns[col]}" />
-              <h:outputText value="#{messages[columnName]}" />
-            </h:outputLabel>
-          </h:column>
-        </h:dataTable>
-
-        <div class="popupactions">
-          <button value="submit" class="left" onclick="Richfaces.hideModalPanel('editColumns')"><span class="cancel">Cancel</span></button><button value="submit" class="left" onclick="Richfaces.hideModalPanel('editColumns')"><span class="save">Save</span></button>  
-        </div>
-
-      </h:form>
-
-    </rich:modalPanel>
+    <ui:include src="editColumns.xhtml">
+      <ui:param name="reRender" value="dataTable" />
+    </ui:include>
 
   </ui:composition>
 

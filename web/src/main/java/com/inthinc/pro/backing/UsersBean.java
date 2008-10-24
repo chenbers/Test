@@ -273,6 +273,11 @@ public class UsersBean extends BaseBean
         return columns;
     }
 
+    public int getAvailableColumnCount()
+    {
+        return 33;
+    }
+
     public Map<String, Boolean> getDefaultColumns()
     {
         final HashMap<String, Boolean> columns = new HashMap<String, Boolean>();
@@ -297,6 +302,11 @@ public class UsersBean extends BaseBean
     public void setColumns(Map<String, Boolean> columns)
     {
         this.columns = columns;
+    }
+
+    public void saveColumns()
+    {
+        // TODO: save the columns
     }
 
     public String edit()
