@@ -1,5 +1,6 @@
 
 /* Rich Faces overrides */
 
-.dr-pnl{border-width:0px;padding:0px;}
-.dr-pnl-b{padding: 0px;}
+.dr-pnl			{border-width:0px;padding:0px;}
+.dr-pnl-b		{padding: 0px;}
+.dr-table-cell	{padding: 0px;}
