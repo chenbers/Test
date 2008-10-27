@@ -6,6 +6,7 @@ public class ScoreBox
 	private String scoreStyle;
 	private String size;
 	
+	// TODO: Is this correct? or is it 0-.9, 1 - 1.9, etc)
 	// Color boxes define in PRD
 	//0-1   red
 	//1.1-2 orange
