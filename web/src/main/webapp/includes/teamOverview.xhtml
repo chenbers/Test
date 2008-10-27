@@ -1,0 +1,135 @@
+<ui:composition 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:f="http://java.sun.com/jsf/core"
+  	xmlns:iwi="http://pro.tiwi.com/jsf"
+	xmlns:h="http://java.sun.com/jsf/html">
+	
+		<!-- START PANEL -->
+			<div class="">
+				<div class="panel_nw">
+					<div class="panel_title">
+						<span class="line">#{messages.team_overview}</span>
+						<span class="panel_links">&nbsp;</span>
+					</div>
+				</div>
+				<div class="panel_w">
+				  <div class="panel_content">
+					<table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
+					  <tr>
+						<td valign="top" width="130" class="ls_tabs">
+							<ui:include src="/includes/sideNav.xhtml">
+            					<ui:param name="messagesPrefix" value="teamOverviewSideNav_" />
+            					<ui:param name="actions" value="overall,drivestyle,speed,seatbelt,coaching" />
+            					<ui:param name="selectedAction" value="driverScore" />
+            					<ui:param name="parentAction" value="driverScore" />
+            					<ui:param name="childActions" value="" />
+          					</ui:include>
+						</td>
+						<td valign="top">
+						  <table width="790" border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                              <td width="320" valign="top" style="border-right: 1px solid #e1e1e1;">
+                                <table width="320" border="0" cellspacing="0" cellpadding="4">
+                                  <tr>
+                                    <td align="right">
+										<table width="220" border="0" cellspacing="0" cellpadding="0" class="scorebox">
+										  <tr>
+			                                  <td width="188">
+			                                    <h4>#{messages.team_overallScore}</h4>
+			                                    <span>#{messages.team_durationLabel}</span> 
+			                                  </td>
+			                                  <td width="130" align="center">
+			                                    <ui:include src="../includes/scoreBox.xhtml">
+													<ui:param name="score" value="#{teamOverviewBean.overallScore}" />
+											        <ui:param name="scoreStyle" value="#{teamOverviewBean.overallScoreStyle}" />
+												</ui:include>
+			                                  </td>
+										  </tr>
+										</table>
+									</td>
+                                  </tr>
+                                  <tr>
+                                    <td>
+									<div id="chartdiv" align="center"></div>
+
+										<script type="text/javascript">
+										   var chart = new FusionCharts("/swf/Pie2D.swf", "ChartId", "300", "240", "0", "0");
+										   chart.setDataURL("/xml/3d_pie_1.xml");		   
+										   chart.render("chartdiv");
+										</script>
+									</td>
+                                  </tr>
+                                  <tr>
+                                    <td align="center"><img src="images/legend_1to5_horizontal.png" width="138" height="54" /></td>
+                                  </tr>
+                                </table>
+                              </td>
+
+                              <td width="470" valign="top">
+                                <table width="450" height="410" border="0" cellpadding="0" cellspacing="0" class="piegrid">
+                                  <tr>
+                                    <td valign="top" class="piegrid_1">
+										<div class="piegrid_label"><a href="#" class="ls_tab_drivestyle">Driving Style</a></div>
+										<div id="piegrid_drivestyle"></div>
+										<script type="text/javascript">
+										   var chart = new FusionCharts("/swf/Pie2D.swf", "ChartId", "220", "180", "0", "0");
+										   chart.setDataURL("/xml/3d_pie_1.xml");		   
+										   chart.render("piegrid_drivestyle");
+										</script>
+									</td>
+
+                                    <td valign="top" class="piegrid_2">
+										<div class="piegrid_label"><a href="#" class="ls_tab_speed">Speed</a></div>
+										<div id="piegrid_speed"></div>
+										<script type="text/javascript">
+										   var chart = new FusionCharts("/swf/Pie2D.swf", "ChartId", "220", "180", "0", "0");
+										   chart.setDataURL("/xml/3d_pie_1.xml");		   
+										   chart.render("piegrid_speed");
+										</script>
+									</td>
+                                  </tr>
+                                  <tr>
+                                    <td valign="top" class="piegrid_4">
+
+										<div class="piegrid_label"><a href="#" class="ls_tab_seatbelt">Seat Belt</a></div>
+										<div id="piegrid_seatbelt"></div>
+										<script type="text/javascript">
+										   var chart = new FusionCharts("/swf/Pie2D.swf", "ChartId", "220", "180", "0", "0");
+										   chart.setDataURL("/xml/3d_pie_1.xml");		   
+										   chart.render("piegrid_seatbelt");
+										</script>
+									</td>
+                                    <td valign="top" class="piegrid_3">
+										<div class="piegrid_label"><a href="#" class="ls_tab_coaching">Coaching Events</a></div>
+										<div id="piegrid_coaching"></div>
+
+										<script type="text/javascript">
+										   var chart = new FusionCharts("/swf/Pie2D.swf", "ChartId", "220", "180", "0", "0");
+										   chart.setDataURL("/xml/3d_pie_1.xml");		   
+										   chart.render("piegrid_coaching");
+										</script>
+									</td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                          </table>
+						</td>
+
+					  </tr>
+					</table>
+
+					
+				  </div>
+				</div>
+				<div class="panel_sw">
+					<div class="panel_statusbar"></div>
+				</div>
+			</div>
+
+		<!-- END PANEL -->
+	
+	
+</ui:composition>
