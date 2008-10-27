@@ -1,6 +1,10 @@
 package com.inthinc.pro.dao;
 
-public interface VehicleDAO 
-{
+import java.util.List;
 
+import com.inthinc.pro.model.Vehicle;
+
+public interface VehicleDAO extends GenericDAO<Vehicle, Integer>
+{
+    List<Vehicle> getVehiclesByAcctID(Integer accountID);
 }

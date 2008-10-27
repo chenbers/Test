@@ -16,6 +16,9 @@ public interface SiloService extends DAOService
   Map<String, Object> updateUser(Integer userID, Map<String, Object> userMap) throws ProDAOException;
 
   Map<String, Object> createUser(Integer acctID, Map<String, Object> userMap) throws ProDAOException;
+  
+  //Methods related to the Vehicle type
+  List<Map<String, Object>> getVehiclesByAcctID(Integer acctID) throws ProDAOException;
 
   
   //Methods related to the Scores/Reporting

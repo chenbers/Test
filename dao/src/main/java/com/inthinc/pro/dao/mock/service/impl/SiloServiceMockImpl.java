@@ -8,12 +8,9 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
-import com.inthinc.pro.dao.mock.data.MockData;
-import com.inthinc.pro.dao.mock.data.MockDataContainer;
 import com.inthinc.pro.dao.mock.data.SearchCriteria;
 import com.inthinc.pro.dao.service.SiloService;
 import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.OverallScore;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.User;
 
@@ -106,6 +103,15 @@ public class SiloServiceMockImpl extends MockImpl implements SiloService
         }
         return returnList;
     }
+
+    @Override
+    public List<Map<String, Object>> getVehiclesByAcctID(Integer acctID) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+
     
 
 }

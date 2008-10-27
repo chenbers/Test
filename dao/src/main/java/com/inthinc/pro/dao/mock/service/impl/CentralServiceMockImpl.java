@@ -1,17 +1,12 @@
 package com.inthinc.pro.dao.mock.service.impl;
 
-import org.apache.log4j.Logger;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.inthinc.pro.ProDAOException;
-import com.inthinc.pro.dao.hessian.GraphicHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
-import com.inthinc.pro.dao.mock.data.MockData;
-import com.inthinc.pro.dao.mock.data.MockDataContainer;
 import com.inthinc.pro.dao.mock.data.SearchCriteria;
 import com.inthinc.pro.dao.service.CentralService;
 import com.inthinc.pro.model.OverallScore;
@@ -52,5 +47,6 @@ public class CentralServiceMockImpl extends MockImpl implements CentralService
         }
         return returnMap;
     }
+
 
 }

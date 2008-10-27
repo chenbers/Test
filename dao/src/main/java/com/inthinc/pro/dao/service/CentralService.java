@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.inthinc.pro.ProDAOException;
-import com.inthinc.pro.model.ScoreableEntity;
 
 public interface CentralService extends DAOService
 {
