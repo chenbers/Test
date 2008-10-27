@@ -78,6 +78,11 @@ public class FleetOverviewBean extends BaseBean
         return duration;
     }
 
+    public String getDurationAsString()
+    {
+    	return duration.toString();
+    }
+    
     public void setDuration(Duration duration)
     {
         this.duration = duration;

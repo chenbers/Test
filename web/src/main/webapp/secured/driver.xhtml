@@ -92,7 +92,10 @@
 									<div style="margin-top: 8px;"><a href="#" class="ls_tab_email">Email</a></div>
 								</td>
 								<td width="80" align="center">
-									<iwi:scoreBox style="#{driverBean.overallScoreStyle}" score="#{driverBean.overallScore}"/>
+									<ui:include src="../includes/scoreBox.xhtml">
+								            <ui:param name="score" value="#{driverBean.overallScore}" />
+								            <ui:param name="scoreStyle" value="#{driverBean.overallScoreStyle}" />
+									</ui:include>
 								</td>
 							  </tr>
 							</table>
@@ -137,7 +140,10 @@
 								</script>
 							</td>
                             <td width="80" align="center">
-								<iwi:scoreBox style="#{driverBean.speedScoreStyle}" score="#{driverBean.speedScore}"/>
+								                                    <ui:include src="../includes/scoreBox.xhtml">
+								            <ui:param name="score" value="#{driverBean.speedScore}" />
+								            <ui:param name="scoreStyle" value="#{driverBean.speedScoreStyle}" />
+									</ui:include>
 							</td>
                           </tr>
                         </table>
@@ -174,7 +180,10 @@
 								</script>
                             </td>
                             <td width="80" align="center">
-                              <iwi:scoreBox style="#{driverBean.drivingScoreStyle}" score="#{driverBean.drivingScore}"/>
+                                    <ui:include src="../includes/scoreBox.xhtml">
+								            <ui:param name="score" value="#{driverBean.drivingScore}" />
+								            <ui:param name="scoreStyle" value="#{driverBean.drivingScoreStyle}" />
+									</ui:include>
                             </td>
                           </tr>
                         </table>
@@ -210,7 +219,10 @@
 								</script>
                             </td>
                             <td width="80" align="center">
-                        	 <iwi:scoreBox style="#{driverBean.seatBeltScoreStyle}" score="#{driverBean.seatBeltScore}"/>
+                        	        <ui:include src="../includes/scoreBox.xhtml">
+								            <ui:param name="score" value="#{driverBean.seatBeltScore}" />
+								            <ui:param name="scoreStyle" value="#{driverBean.seatBeltScoreStyle}" />
+									</ui:include>
                             </td>
                           </tr>
                         </table>

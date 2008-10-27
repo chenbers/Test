@@ -4,32 +4,31 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
-import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.model.Duration;
 
 public class DriverBean extends BaseBean
 {
-	private static final Logger logger = Logger.getLogger(BreakdownBean.class);
+	private static final Logger logger = Logger.getLogger(DriverBean.class);
 	
 	// Get scores from DAO instead
 	
 	private String driverName = "Amy Johnson";
 	private String duration = "500";
 	
-	private String overallScore;
+	private Integer overallScore;
 	private String overallScoreHistory;
 	private String overallScoreStyle = "score_med_2";
 	
-	private String speedScore = GraphicUtil.getRandomScore().toString();
+	private Integer speedScore = GraphicUtil.getRandomScore();
 	private String speedScoreHistory;
 	private String speedScoreStyle = "score_med_3";
 
-	private String drivingScore = GraphicUtil.getRandomScore().toString();
+	private Integer drivingScore = GraphicUtil.getRandomScore();
 	private String drivingScoreHistory;
 	private String drivingScoreStyle = "score_med_1";
 	
-	private String seatBeltScore = GraphicUtil.getRandomScore().toString();
+	private Integer seatBeltScore = GraphicUtil.getRandomScore();
 	private String seatBeltScoreHistory;
 	private String seatBeltScoreStyle = "score_med_4";
 	
@@ -39,8 +38,7 @@ public class DriverBean extends BaseBean
 	public DriverBean()
 	{
 	      Integer score = GraphicUtil.getRandomScore();
-	      setOverallScore(score.toString());
-	      overallScoreStyle = new ScoreBox(score, ScoreBoxSizes.MEDIUM).getScoreStyle();
+	      setOverallScore(score);
 	}
 	
 	private String createLineDef() {
@@ -54,12 +52,14 @@ public class DriverBean extends BaseBean
 	}
 	
 	//OVERALL SCORE properties
-	public String getOverallScore() {
+	public Integer getOverallScore() {
 
 	    return overallScore;
 	}
 	
-	public void setOverallScore(String overallScore) {
+	public void setOverallScore(Integer overallScore) 
+	{
+		this.overallScoreStyle = new ScoreBox(overallScore, ScoreBoxSizes.MEDIUM).getScoreStyle();
 		this.overallScore = overallScore;
 	}
 	public String getOverallScoreHistory() {
@@ -78,10 +78,10 @@ public class DriverBean extends BaseBean
 	}
 	
 	//SPEED properties
-	public String getSpeedScore() {
+	public Integer getSpeedScore() {
 		return speedScore;
 	}
-	public void setSpeedScore(String speedScore) {
+	public void setSpeedScore(Integer speedScore) {
 		this.speedScore = speedScore;
 	}
 	public String getSpeedScoreHistory() {
@@ -99,10 +99,10 @@ public class DriverBean extends BaseBean
 	}
 
 	//DRIVING STYLE properties
-	public String getDrivingScore() {
+	public Integer getDrivingScore() {
 		return drivingScore;
 	}
-	public void setDrivingScore(String drivingScore) {
+	public void setDrivingScore(Integer drivingScore) {
 		this.drivingScore = drivingScore;
 	}
 	public String getDrivingScoreStyle() {
@@ -121,10 +121,10 @@ public class DriverBean extends BaseBean
 	}
 	
 	//SEAT BELT properties
-	public String getSeatBeltScore() {
+	public Integer getSeatBeltScore() {
 		return seatBeltScore;
 	}
-	public void setSeatBeltScore(String seatBeltScore) {
+	public void setSeatBeltScore(Integer seatBeltScore) {
 		this.seatBeltScore = seatBeltScore;
 	}
 	public String getSeatBeltScoreHistory() {
@@ -167,8 +167,7 @@ public class DriverBean extends BaseBean
     public void setDuration(String duration)
     {
         Integer score = GraphicUtil.getRandomScore(); //Get score from DAO
-        setOverallScore(score.toString());
-        overallScoreStyle = new ScoreBox(score, ScoreBoxSizes.MEDIUM).getScoreStyle();
+        setOverallScore(score);
         this.duration = duration;
     }
 }
