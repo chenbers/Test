@@ -729,7 +729,7 @@ ul#grid_nav li.text a:visited {
 .score_lg_1 div.score, .score_lg_2 div.score, .score_lg_3 div.score, .score_lg_4 div.score, .score_lg_5 div.score {
 	font: bold 32px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	color: #333;
-	padding: 22px 0 0 20px;
+	padding: 22px 0 0 0px;
 	}
 
 .score_med_1 {
