@@ -4,6 +4,23 @@ import com.inthinc.pro.dao.mock.data.MockDataContainer;
 
 public class MockImpl
 {
-    protected MockDataContainer mockDataContainer = new MockDataContainer();
+    private MockDataContainer mockDataContainer;
+
+    public MockDataContainer getMockDataContainer()
+    {
+        if (mockDataContainer == null)
+        {
+            mockDataContainer = new MockDataContainer();
+        }
+        return mockDataContainer;
+    }
+
+    public void setMockDataContainer(MockDataContainer mockDataContainer)
+    {
+        this.mockDataContainer = mockDataContainer;
+    }
+    
+    
+    
 
 }

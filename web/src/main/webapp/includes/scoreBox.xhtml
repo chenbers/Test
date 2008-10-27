@@ -22,9 +22,7 @@
 	<ui:composition>
 	<div class="#{scoreStyle}" onclick="location.href='#';">
 		<div class="score">
-			<h:outputText value="#{score}">
-				<f:convertNumber minFractionDigits="1" maxFractionDigits="1" />
-			</h:outputText>
+			<h:outputText value="#{score}" converter="ScoreConverter"/>
 		</div>
 	</div>
 	</ui:composition>

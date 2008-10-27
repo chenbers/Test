@@ -6,15 +6,17 @@ public class OverallScore
     Integer score;
     
     Integer userID;
+    Integer groupID;
     Integer date;
     
 
-    public OverallScore(Integer userID, Integer score, Integer date)
+    public OverallScore(Integer userID, Integer groupID, Integer score, Integer date)
     {
         super();
         this.score = score;
         this.userID = userID;
         this.date = date;
+        this.groupID = groupID;
     }
 
     public Integer getUserID()
@@ -45,6 +47,16 @@ public class OverallScore
     public void setDate(Integer date)
     {
         this.date = date;
+    }
+
+    public Integer getGroupID()
+    {
+        return groupID;
+    }
+
+    public void setGroupID(Integer groupID)
+    {
+        this.groupID = groupID;
     }
     
     

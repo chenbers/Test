@@ -32,7 +32,7 @@ public class CentralServiceMockImpl extends MockImpl implements CentralService
     @Override
     public Map<String, Object> getUserIDByEmail(String email) throws ProDAOException
     {
-        Map<String, Object> returnMap =  mockDataContainer.lookup(User.class, "email", email);
+        Map<String, Object> returnMap =  getMockDataContainer().lookup(User.class, "email", email);
 
         if (returnMap == null)
         {
@@ -44,7 +44,7 @@ public class CentralServiceMockImpl extends MockImpl implements CentralService
     @Override
     public Map<String, Object> getUserIDByName(String username) throws ProDAOException
     {
-        Map<String, Object> returnMap =  mockDataContainer.lookup(User.class, "username", username);
+        Map<String, Object> returnMap =  getMockDataContainer().lookup(User.class, "username", username);
         
         if (returnMap == null)
         {
@@ -53,82 +53,4 @@ public class CentralServiceMockImpl extends MockImpl implements CentralService
         return returnMap;
     }
 
-    @Override
-    public Map<String, Object> getOverallScore(Integer userID, Integer levelID, Integer startDate, Integer endDate)
-            throws ProDAOException
-    {
-        SearchCriteria searchCriteria = new SearchCriteria();
-        searchCriteria.addKeyValue("userID", userID);
-//        searchCriteria.addKeyValue("levelID", levelID);
-        searchCriteria.addKeyValueRange("date", startDate, endDate);
-        
-        Map<String, Object> returnMap =  mockDataContainer.lookup(OverallScore.class, searchCriteria);
-        if (returnMap == null)
-        {
-            throw new EmptyResultSetException("No overall score for: " + userID, "getOverallScore", 0);
-        }
-        return returnMap;
-    }
-
-    @Override
-    public List<Map<String, Object>> getScores(Integer userID, Integer levelID, Integer startDate, Integer endDate)
-            throws ProDAOException
-    {
-    	logger.debug("getting trend table");
-        SearchCriteria searchCriteria = new SearchCriteria();
-        searchCriteria.addKeyValue("userID", userID);
-//        searchCriteria.addKeyValue("levelID", levelID);
-        searchCriteria.addKeyValueRange("date", startDate, endDate);
-
-        List<Map<String, Object>> returnList =  mockDataContainer.lookupList(ScoreableEntity.class, searchCriteria);
-        if (returnList == null)
-        {
-            throw new EmptyResultSetException("No score for: " + userID, "getScore", 0);
-        }
-        return returnList;
-/*        
-
-        
-        ArrayList <ScoreableEntity> scoreableEntities = new ArrayList<ScoreableEntity>();
-        
-        ScoreableEntity se = new ScoreableEntity();
-		se.setEntityID(0);
-		se.setIdentifier("New England");
-		se.setScore("0.9");
-		scoreableEntities.add(se);
-		
-		se = new ScoreableEntity();
-		se.setEntityID(1);
-		se.setIdentifier("South");
-		se.setScore("1.8");	
-		scoreableEntities.add(se);
-        
-		se = new ScoreableEntity();	
-		se.setEntityID(2);
-		se.setIdentifier("Lakes");
-		se.setScore("2.9");
-		scoreableEntities.add(se);
-		
-		se = new ScoreableEntity();	
-		se.setEntityID(3);
-		se.setIdentifier("Midwest");
-		se.setScore("3.9");
-		scoreableEntities.add(se);
-		
-		se = new ScoreableEntity();	
-		se.setEntityID(4);
-		se.setIdentifier("West Coast");
-		se.setScore("4.6");
-		scoreableEntities.add(se);		
-		
-		logger.debug("size of trendtable: " + scoreableEntities.size());		
-
-        
-        if (scoreableEntities == null)
-        {
-            throw new EmptyResultSetException("No table data for: " + userID, "getScores", 0);
-        }
-        return scoreableEntities;
-*/        
-    }
 }

@@ -5,12 +5,10 @@ import com.inthinc.pro.dao.annotations.ID;
 public class ScoreableEntity extends BaseEntity {
 	@ID
 	private Integer entityID;
-	  
+
+	private EntityType entityType;
 	private String identifier;
-	private String score;
-	
-	
-    private Integer userID;
+	private Integer score;
     private Integer date;
 
     public ScoreableEntity()
@@ -18,13 +16,13 @@ public class ScoreableEntity extends BaseEntity {
         
     }
 	
-	public ScoreableEntity(Integer entityID, String identifier, String score, Integer userID, Integer date)
+	public ScoreableEntity(Integer entityID, EntityType entityType, String identifier, Integer score, Integer date)
     {
         super();
         this.entityID = entityID;
+        this.entityType = entityType;
         this.identifier = identifier;
         this.score = score;
-        this.userID = userID;
         this.date = date;
     }
 	
@@ -40,20 +38,12 @@ public class ScoreableEntity extends BaseEntity {
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
 	}
-	public String getScore() {
+	public Integer getScore() {
 		return score;
 	}
-	public void setScore(String score) {
+	public void setScore(Integer score) {
 		this.score = score;
 	}
-    public Integer getUserID()
-    {
-        return userID;
-    }
-    public void setUserID(Integer userID)
-    {
-        this.userID = userID;
-    }
     public Integer getDate()
     {
         return date;
@@ -61,6 +51,15 @@ public class ScoreableEntity extends BaseEntity {
     public void setDate(Integer date)
     {
         this.date = date;
+    }
+    public EntityType getEntityType()
+    {
+        return entityType;
+    }
+
+    public void setEntityType(EntityType entityType)
+    {
+        this.entityType = entityType;
     }
 
 }

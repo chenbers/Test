@@ -55,10 +55,10 @@ public class UserHessianDAOTest
         assertNull("expected no user to be returned" , user);
         assertNotNull("expected an empty result set" , ex);
         
-        user = userHessianDAO.findByEmail("custom@email.com");
+        user = userHessianDAO.findByEmail("custom101@email.com");
         
-        assertNotNull("expected to retreive a user record", user);
-        
+        assertNotNull("expected to retrieve a user record", user);
+        assertEquals("custom101", user.getUsername());
     }
 
 }

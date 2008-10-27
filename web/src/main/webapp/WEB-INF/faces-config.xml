@@ -5,6 +5,10 @@
    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd">
 
 	<!-- converters -->
+	<converter>
+		<converter-id>ScoreConverter</converter-id>
+		<converter-class>com.inthinc.pro.convert.ScoreConverter</converter-class>
+	</converter>
 	
 	<!-- managed beans -->
 	

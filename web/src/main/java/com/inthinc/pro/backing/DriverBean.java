@@ -38,7 +38,7 @@ public class DriverBean extends BaseBean
 
 	public DriverBean()
 	{
-	      Double score = GraphicUtil.getRandomScore();
+	      Integer score = GraphicUtil.getRandomScore();
 	      setOverallScore(score.toString());
 	      overallScoreStyle = new ScoreBox(score, ScoreBoxSizes.MEDIUM).getScoreStyle();
 	}
@@ -166,7 +166,7 @@ public class DriverBean extends BaseBean
 
     public void setDuration(String duration)
     {
-        Double score = GraphicUtil.getRandomScore(); //Get score from DAO
+        Integer score = GraphicUtil.getRandomScore(); //Get score from DAO
         setOverallScore(score.toString());
         overallScoreStyle = new ScoreBox(score, ScoreBoxSizes.MEDIUM).getScoreStyle();
         this.duration = duration;

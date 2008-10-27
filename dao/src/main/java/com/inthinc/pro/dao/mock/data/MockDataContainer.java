@@ -31,7 +31,7 @@ public class MockDataContainer
 */
     public MockDataContainer()
     {
-        MockData.initializeStaticData(this);
+        new MockData().initializeStaticData(this);
 
     }
 
@@ -46,8 +46,28 @@ public class MockDataContainer
         return null;
     }
 
+    // get full list of a class
+    public <T> List<T> lookupObjectList(Class clas, T object)
+    {
+        return (List<T>)dataMap.get(clas);
+    }
+    public List<Map<String, Object>> lookupList(Class clas)
+    {
+        List<Object> objList = dataMap.get(clas);
+        if (objList != null && objList.size() > 0)
+        {
+            List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+            for (Object obj : objList)
+            {
+                returnList.add(createMapFromObject(obj));
+            }
+            
+            return returnList;
+        }
+        return null;
+    }
+
     // lookup using multiple key/value pairs ANDed together
-    
     public List<Map<String, Object>> lookupList(Class clas, SearchCriteria searchCriteria)
     {
         List<Object> objList = retrieveObjectList(clas, searchCriteria);

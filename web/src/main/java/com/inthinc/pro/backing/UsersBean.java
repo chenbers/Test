@@ -50,7 +50,7 @@ public class UsersBean extends BaseBean
             try
             {
                 // TODO: get the score from some place real
-                users.add(createUserView(user, Math.random() * 5));
+                users.add(createUserView(user, (int)(Math.random() * 50)));
             }
             catch (Exception e)
             {
@@ -134,7 +134,7 @@ public class UsersBean extends BaseBean
      * @throws InvocationTargetException
      */
     @SuppressWarnings("unchecked")
-    private UserView createUserView(User user, double score) throws IllegalAccessException, InvocationTargetException
+    private UserView createUserView(User user, Integer score) throws IllegalAccessException, InvocationTargetException
     {
         final UserView userView = new UserView();
 
@@ -321,14 +321,14 @@ public class UsersBean extends BaseBean
 
     public class UserView extends User
     {
-        private double score;
+        private Integer score;
         private String scoreStyle;
         private boolean selected;
 
         /**
          * @return the score
          */
-        public double getScore()
+        public Integer getScore()
         {
             return score;
         }
@@ -337,7 +337,7 @@ public class UsersBean extends BaseBean
          * @param score
          *            the score to set
          */
-        public void setScore(double score)
+        public void setScore(Integer score)
         {
             this.score = score;
             this.scoreStyle = new ScoreBox(score, ScoreBoxSizes.SMALL).getScoreStyle();

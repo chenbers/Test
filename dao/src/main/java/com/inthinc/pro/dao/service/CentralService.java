@@ -15,8 +15,4 @@ public interface CentralService extends DAOService
 
   Map<String, Object> getUserIDByEmail(String email) throws ProDAOException;
   
-  Map<String, Object> getOverallScore(Integer userID, Integer levelID, Integer startDate, Integer endDate ) throws ProDAOException;
-  
-  List<Map<String, Object>> getScores(Integer userID, Integer levelID, Integer startDate, Integer endDate ) throws ProDAOException;
-
 }

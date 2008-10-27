@@ -3,60 +3,94 @@ package com.inthinc.pro.backing;
 import org.apache.log4j.Logger;
 import com.inthinc.pro.backing.ui.*;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.dao.*;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.OverallScore;
 import com.inthinc.pro.util.GraphicUtil;
 
 public class FleetOverviewBean extends BaseBean
 {
-	private double overallScore;
-	private String overallScoreStyle;
-	private Duration duration = Duration.DAYS;
-	private static final Logger logger = Logger.getLogger(TrendBean.class);
-	private UserDAO userDao;
-	private ScoreBox sb;
-	
-	public FleetOverviewBean()
-	{
-		setOverallScore(com.inthinc.pro.util.GraphicUtil.getRandomScore());  //get from DAO
+    private Integer             overallScore;
+    private String              overallScoreStyle;
+    private Duration            duration = Duration.DAYS;
+    private static final Logger logger   = Logger.getLogger(FleetOverviewBean.class);
 
-	}
+    private GraphicDAO          graphicDAO;
 
-	public Double getOverallScore() {
-		return overallScore;
-	}
+    public FleetOverviewBean()
+    {
 
-	public void setOverallScore(Double overallScore) {
-		this.overallScore = overallScore;
-		sb = new ScoreBox(this.overallScore, ScoreBoxSizes.LARGE);
-		setOverallScoreStyle(sb.getScoreStyle());
-	}
+    }
 
-	public String getOverallScoreStyle() {
-		return overallScoreStyle;
-	}
+    private void initStyle()
+    {
+        if (overallScore == null)
+        {
+            init();
+        }
 
-	public void setOverallScoreStyle(String overallScoreStyle) {
-		this.overallScoreStyle = overallScoreStyle;
-	}
-	
-	public Duration getDuration() {
-		return duration;
-	}
+        ScoreBox sb = new ScoreBox(getOverallScore(), ScoreBoxSizes.LARGE);
+        setOverallScoreStyle(sb.getScoreStyle());
+    }
 
-	public void setDuration(Duration duration) {
-		this.duration = duration;
-		
-		setOverallScore(com.inthinc.pro.util.GraphicUtil.getRandomScore());  //Get new score duration changed.
-		sb = new ScoreBox(this.overallScore, ScoreBoxSizes.LARGE);
-		setOverallScoreStyle(sb.getScoreStyle());
-	}
+    private void init()
+    {
+        Integer endDate = DateUtil.getTodaysDate();
+        Integer startDate = DateUtil.getDaysBackDate(endDate, duration.getNumberOfDays());
+        ScoreableEntity scoreableEntity = graphicDAO.getOverallScore(getUser().getGroupID(), startDate, endDate);
+        setOverallScore(scoreableEntity.getScore());
+    }
 
-	public UserDAO getUserDao() {
-		return userDao;
-	}
+    public Integer getOverallScore()
+    {
 
-	public void setUserDao(UserDAO userDao) {
-		this.userDao = userDao;
-	}
+        if (overallScore == null)
+        {
+            init();
+        }
+        return overallScore;
+    }
+
+    public void setOverallScore(Integer overallScore)
+    {
+        this.overallScore = overallScore;
+        initStyle();
+    }
+
+    public String getOverallScoreStyle()
+    {
+        if (overallScoreStyle == null)
+        {
+            initStyle();
+        }
+        logger.debug("overallScoreStyle = " + overallScoreStyle);
+        return overallScoreStyle;
+    }
+
+    public void setOverallScoreStyle(String overallScoreStyle)
+    {
+        this.overallScoreStyle = overallScoreStyle;
+    }
+
+    public Duration getDuration()
+    {
+        return duration;
+    }
+
+    public void setDuration(Duration duration)
+    {
+        this.duration = duration;
+        overallScore = null;
+    }
+
+    public GraphicDAO getGraphicDAO()
+    {
+        return graphicDAO;
+    }
+
+    public void setGraphicDAO(GraphicDAO graphicDAO)
+    {
+        this.graphicDAO = graphicDAO;
+    }
 }

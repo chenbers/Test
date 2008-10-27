@@ -14,6 +14,7 @@ import com.inthinc.pro.dao.mock.data.MockDataContainer;
 import com.inthinc.pro.dao.mock.data.SearchCriteria;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.OverallScore;
+import com.inthinc.pro.model.ScoreableEntity;
 
 public class MockDataTest
 {
@@ -34,13 +35,12 @@ public class MockDataTest
         MockDataContainer mockDataContainer = new MockDataContainer();
         
         SearchCriteria searchCriteria = new SearchCriteria();
-        searchCriteria.addKeyValue("userID", new Integer(1));
-//        searchCriteria.addKeyValue("levelID", levelID);
+        searchCriteria.addKeyValue("entityID", new Integer(101));
         Integer endDate = DateUtil.getTodaysDate();
         Integer startDate = DateUtil.getDaysBackDate(endDate, 30);
         searchCriteria.addKeyValueRange("date", startDate, endDate);
         
-        Map<String, Object> returnMap =  mockDataContainer.lookup(OverallScore.class, searchCriteria);
+        Map<String, Object> returnMap =  mockDataContainer.lookup(ScoreableEntity.class, searchCriteria);
         
         assertNotNull(returnMap);
         

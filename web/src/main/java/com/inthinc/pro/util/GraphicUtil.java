@@ -223,14 +223,17 @@ public class GraphicUtil {
 		return sb.toString();
 	}
 	
-	public static Double getRandomScore()
+	public static Integer getRandomScore()
 	{
-	    Random r = new Random();
-        Double d = r.nextDouble();
-        d = d * 5.0;
-        return roundDouble(d, 1);
+        return randomInt(0, 50);
 	    
 	}
+	
+    static int randomInt(int min, int max)
+    {
+        return (int) (Math.random() * ((max - min) + 1)) + min;
+    }
+
 	public static final double roundDouble(double d, int places) 
 	{
 	    return Math.round(d * Math.pow(10, (double) places)) / Math.pow(10, (double) places);

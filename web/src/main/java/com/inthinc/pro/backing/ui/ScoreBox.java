@@ -2,7 +2,7 @@ package com.inthinc.pro.backing.ui;
 
 public class ScoreBox 
 {
-	private Double score;
+	private Integer score; // value is 0 to 50 -- will be displayed divided by 10
 	private String scoreStyle;
 	private String size;
 	
@@ -13,28 +13,27 @@ public class ScoreBox
 	//3.1-4 blue
 	//4.1-5 green
 	
-	public ScoreBox(double _score, ScoreBoxSizes _size)
+	public ScoreBox(Integer score, ScoreBoxSizes _size)
 	{
 		this.size = _size.toString();
-		
-		setScore(_score);
-		
+		this.score = score;
+        calculateScoreColor();
 		
 	}
 	
-	private void CalculateScoreColor()
+	private void calculateScoreColor()
 	{
 		//Determine CSS Style
-		if(		this.score <= 1.0){
+		if( score <= 10){
 			setScoreStyle("score_" + size + "_1");
 		}
-		else if(this.score  > 1.0 && this.score <= 1.9) {
+		else if(score <= 20) {
 			setScoreStyle("score_" + size + "_2");
 		}
-		else if(this.score >= 2.0 && this.score <= 2.9) {
+		else if(score <= 30) {
 			setScoreStyle("score_" + size + "_3");
 		}
-		else if(this.score >= 3.0 && this.score <= 3.9) {
+		else if(score <= 40) {
 			setScoreStyle("score_" + size + "_4");
 		}
 		else {
@@ -42,13 +41,13 @@ public class ScoreBox
 		}
 	}
 	
-	public Double getScore() {
+	public Integer getScore() {
 		return score;
 	}
 
-	public void setScore(Double score) {
+	public void setScore(Integer score) {
 		this.score = score;
-		CalculateScoreColor();
+		calculateScoreColor();
 	}
 
 	public String getScoreStyle() {

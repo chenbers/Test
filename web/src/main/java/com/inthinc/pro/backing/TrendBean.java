@@ -178,13 +178,33 @@ public class TrendBean extends BaseBean {
 		try {
 		    Integer endDate = DateUtil.getTodaysDate();
 		    Integer startDate = DateUtil.getDaysBackDate(endDate, duration.getNumberOfDays());
-			s = graphicDAO.getScores(getUser().getUserID(),new Integer(1),startDate, endDate);
+		    
+		    // TODO: This is not correct.  getUser().getGroupID() needs to be changed to the current group in the navigation
+logger.debug("getting scores for groupID: " + getUser().getGroupID());
+		    
+			s = graphicDAO.getScores(getUser().getGroupID(), startDate, endDate);
 		} catch (Exception e) {
 			logger.debug("graphicDao error: " + e.getMessage());
 		}		
 		
+        ScoreBox sb = new ScoreBox(0,ScoreBoxSizes.SMALL);
+        int cnt = 0;
+		for (ScoreableEntity score : s)
+		{
+	        ScoreableEntityPkg se = new ScoreableEntityPkg();
+	        se.setSe(score);
+	        sb.setScore(score.getScore());
+	        se.setStyle(sb.getScoreStyle());
+	        se.setColorKey(GraphicUtil.entityColorKey.get(cnt++));
+	        se.setGoTo(goTo);
+	        scoreableEntities.add(se);
+		    
+		}
+/*		
 		ScoreableEntityPkg se = new ScoreableEntityPkg();
 		ScoreBox sb = new ScoreBox(0.d,ScoreBoxSizes.SMALL);
+		
+		
 		
 		se.setSe((ScoreableEntity)s.get(0));
 		sb.setScore(0.9d);
@@ -224,7 +244,7 @@ public class TrendBean extends BaseBean {
 		se.setColorKey(GraphicUtil.entityColorKey.get(4));
 		se.setGoTo(goTo);
 		scoreableEntities.add(se);
-		
+*/		
 		return scoreableEntities;
 	}
 
