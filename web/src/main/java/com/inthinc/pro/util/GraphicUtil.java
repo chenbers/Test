@@ -171,11 +171,13 @@ public class GraphicUtil {
 	{
 		StringBuffer sb = new StringBuffer();
 		
-		sb.append("<set value=\'3.3\' label=\'15000mi\' />");
-		sb.append("<set value=\'3.7\' label=\'25000mi\' />");
-		sb.append("<set value=\'3.9\' label=\'30000mi\' />");
-		sb.append("<set value=\'4.1\' label=\'35000mi\' />");
-		sb.append("<set value=\'5.0\' label=\'40145mi\' />");
+		sb.append("<set value=\'" + getRandomScore().toString() + "' label=\'APR\' />");
+		sb.append("<set value=\'" + getRandomScore().toString() + "' label=\'MAY\' />");
+		sb.append("<set value=\'" + getRandomScore().toString() + "' label=\'JUN\' />");
+		sb.append("<set value=\'" + getRandomScore().toString() + "' label=\'JUL\' />");
+	    sb.append("<set value=\'" + getRandomScore().toString() + "' label=\'AUG\' />");
+	    sb.append("<set value=\'" + getRandomScore().toString() + "' label=\'SEP\' />");
+	    sb.append("<set value=\'" + getRandomScore().toString() + "' label=\'OCT\' />");
 		
 		return sb.toString();
 		
@@ -221,4 +223,16 @@ public class GraphicUtil {
 		return sb.toString();
 	}
 	
+	public static Double getRandomScore()
+	{
+	    Random r = new Random();
+        Double d = r.nextDouble();
+        d = d * 5.0;
+        return roundDouble(d, 1);
+	    
+	}
+	public static final double roundDouble(double d, int places) 
+	{
+	    return Math.round(d * Math.pow(10, (double) places)) / Math.pow(10, (double) places);
+	}
 }

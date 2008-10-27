@@ -5,6 +5,7 @@ import com.inthinc.pro.backing.ui.*;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.dao.*;
 import com.inthinc.pro.model.OverallScore;
+import com.inthinc.pro.util.GraphicUtil;
 
 public class FleetOverviewBean extends BaseBean
 {
@@ -17,7 +18,7 @@ public class FleetOverviewBean extends BaseBean
 	
 	public FleetOverviewBean()
 	{
-		setOverallScore(3.3d);  //get from DAO
+		setOverallScore(com.inthinc.pro.util.GraphicUtil.getRandomScore());  //get from DAO
 
 	}
 
@@ -46,6 +47,7 @@ public class FleetOverviewBean extends BaseBean
 	public void setDuration(Duration duration) {
 		this.duration = duration;
 		
+		setOverallScore(com.inthinc.pro.util.GraphicUtil.getRandomScore());  //Get new score duration changed.
 		sb = new ScoreBox(this.overallScore, ScoreBoxSizes.LARGE);
 		setOverallScoreStyle(sb.getScoreStyle());
 	}

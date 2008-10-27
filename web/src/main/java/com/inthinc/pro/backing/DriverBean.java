@@ -2,6 +2,8 @@ package com.inthinc.pro.backing;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.backing.ui.ScoreBox;
+import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.model.Duration;
@@ -10,22 +12,24 @@ public class DriverBean extends BaseBean
 {
 	private static final Logger logger = Logger.getLogger(BreakdownBean.class);
 	
-	private String driverName = "Amy Johnson";
-	private Duration duration = Duration.THREE;
+	// Get scores from DAO instead
 	
-	private String overallScore = "2.6";
+	private String driverName = "Amy Johnson";
+	private String duration = "500";
+	
+	private String overallScore;
 	private String overallScoreHistory;
 	private String overallScoreStyle = "score_med_2";
 	
-	private String speedScore = "3.3";
+	private String speedScore = GraphicUtil.getRandomScore().toString();
 	private String speedScoreHistory;
 	private String speedScoreStyle = "score_med_3";
 
-	private String drivingScore = "1.5";
+	private String drivingScore = GraphicUtil.getRandomScore().toString();
 	private String drivingScoreHistory;
 	private String drivingScoreStyle = "score_med_1";
 	
-	private String seatBeltScore = "4.7";
+	private String seatBeltScore = GraphicUtil.getRandomScore().toString();
 	private String seatBeltScoreHistory;
 	private String seatBeltScoreStyle = "score_med_4";
 	
@@ -34,8 +38,9 @@ public class DriverBean extends BaseBean
 
 	public DriverBean()
 	{
-		
-		
+	      Double score = GraphicUtil.getRandomScore();
+	      setOverallScore(score.toString());
+	      overallScoreStyle = new ScoreBox(score, ScoreBoxSizes.MEDIUM).getScoreStyle();
 	}
 	
 	private String createLineDef() {
@@ -50,8 +55,10 @@ public class DriverBean extends BaseBean
 	
 	//OVERALL SCORE properties
 	public String getOverallScore() {
-		return overallScore;
+
+	    return overallScore;
 	}
+	
 	public void setOverallScore(String overallScore) {
 		this.overallScore = overallScore;
 	}
@@ -150,4 +157,18 @@ public class DriverBean extends BaseBean
 	public void setDriverName(String driverName) {
 		this.driverName = driverName;
 	}
+
+	//DURATION PROPERTIES
+    public String getDuration()
+    {
+        return duration;
+    }
+
+    public void setDuration(String duration)
+    {
+        Double score = GraphicUtil.getRandomScore(); //Get score from DAO
+        setOverallScore(score.toString());
+        overallScoreStyle = new ScoreBox(score, ScoreBoxSizes.MEDIUM).getScoreStyle();
+        this.duration = duration;
+    }
 }
