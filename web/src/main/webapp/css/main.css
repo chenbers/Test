@@ -1112,7 +1112,7 @@ a.ls_tab_cost {
 	margin: 0 0 0 8px;
 	}
 	
-a.ls_tab_go_adminRedflags {
+a.ls_tab_go_adminRedFlags {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_red_flag.png) no-repeat center left;
 	text-decoration: none;
@@ -1120,7 +1120,7 @@ a.ls_tab_go_adminRedflags {
 	margin: 0 0 0 8px;
 	}
 	
-a.ls_tab_go_adminAddRedflag {
+a.ls_tab_go_adminAddRedFlag {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_add_redflag.png) no-repeat center left;
 	text-decoration: none;
