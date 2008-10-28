@@ -16,10 +16,18 @@
    
    <bean id="versionBean" class="com.inthinc.pro.backing.VersionBean" init-method="init">
    </bean>
+   
+   <!-- Navigation bean -->
+   <bean id="navigationBean" class="com.inthinc.pro.backing.NavigationBean" 
+		scope="session" parent="baseBean">
+		<property name="location" value="home"></property>
+   </bean>
+   
    <!-- Beans used in fusion chart displays -->
    <bean id="trendBean" class="com.inthinc.pro.backing.TrendBean" 
 		scope="request" parent="baseBean">
 		<property name="graphicDAO" ref="graphicDAO"></property>
+		<property name="navigation" ref="navigationBean"></property>
    </bean>
    <bean id="trendTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request">
    </bean>
