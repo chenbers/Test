@@ -32,11 +32,11 @@
 		<div class="panel_w">
 			<div class="panel_content">
 				<rich:panel id="barpanel" style="#{height};#{width}">
-	  				<h:inputHidden value="#{barDef}" id="hiddenField3"/>
+	  				<h:inputHidden value="#{barDef}" id="hiddenField4"/>
 					  				
 					<div id="chartdiv3" align="center"></div>
 					<script type="text/javascript">
-							var targetElement2 = document.getElementById("hiddenField3");
+							var targetElement2 = document.getElementById("hiddenField4");
 							
 							var chart = new FusionCharts("/tiwipro/fusioncharts/Column3D.swf", "ChartId", "440", "350", "0", "0");
 							chart.setDataXML(targetElement2.value);	
