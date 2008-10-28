@@ -22,6 +22,7 @@ public class TrendBean extends BaseBean {
 	private static final Logger logger = Logger.getLogger(TrendBean.class);
 	
 	private GraphicDAO graphicDAO;
+	private NavigationBean navigation;
 	
 	private String lineDef;	
 
@@ -33,8 +34,9 @@ public class TrendBean extends BaseBean {
 	private String styleClass3Months = "";
 	private String styleClass6Months = "";
 	private String styleClass12Months = "";
+	private boolean pageChange = false;
 	
-	private String goTo = "go_region";
+	private String goTo = "";
 		
     public TrendBean()
 	{
@@ -44,7 +46,7 @@ public class TrendBean extends BaseBean {
 
 	public String getLineDef() {		
 		lineDef = createLineDef();
-		logger.debug("returned string: " + lineDef);
+//		logger.debug("returned string: " + lineDef);
 		return lineDef;
 	}
 
@@ -172,6 +174,16 @@ public class TrendBean extends BaseBean {
 			scoreableEntities.clear();
 		}
 		
+		//Handle navigation
+		logger.debug("location is: " + navigation.getLocation());
+		if (	this.pageChange ) {
+			if (         this.navigation.getLocation().equalsIgnoreCase("home") ) {
+			    this.navigation.setLocation("region");
+			} else if (  this.navigation.getLocation().equalsIgnoreCase("region") ) {
+			    this.navigation.setLocation("team");
+			}
+        }
+		
 		//Fetch, qualifier is who is logged-in, where in the system, 
 		//date from, date to
 		List<ScoreableEntity> s = null;
@@ -187,64 +199,69 @@ logger.debug("getting scores for groupID: " + getUser().getGroupID());
 			logger.debug("graphicDao error: " + e.getMessage());
 		}		
 		
-        ScoreBox sb = new ScoreBox(0,ScoreBoxSizes.SMALL);
-        int cnt = 0;
-		for (ScoreableEntity score : s)
-		{
-	        ScoreableEntityPkg se = new ScoreableEntityPkg();
-	        se.setSe(score);
-	        sb.setScore(score.getScore());
-	        se.setStyle(sb.getScoreStyle());
-	        se.setColorKey(GraphicUtil.entityColorKey.get(cnt++));
-	        se.setGoTo(goTo);
-	        scoreableEntities.add(se);
+		ScoreBox sb = new ScoreBox(0,ScoreBoxSizes.SMALL);
+		if (		navigation.getLocation().equalsIgnoreCase("home") ) {	
+		    logger.debug("loading home");
+			int cnt = 0;
+			for (ScoreableEntity score : s)
+			{
+				ScoreableEntityPkg se = new ScoreableEntityPkg();
+				se.setSe(score);
+				sb.setScore(score.getScore());
+				se.setStyle(sb.getScoreStyle());
+				se.setColorKey(GraphicUtil.entityColorKey.get(cnt++));
+				se.setGoTo("go_region");
+				scoreableEntities.add(se);		 				
+			}
+						
+		} else if (	navigation.getLocation().equalsIgnoreCase("region") ) {
+		    logger.debug("loading region");
+		    ScoreableEntityPkg se = new ScoreableEntityPkg();
+		    ScoreableEntity score = new ScoreableEntity();
 		    
-		}
-/*		
-		ScoreableEntityPkg se = new ScoreableEntityPkg();
-		ScoreBox sb = new ScoreBox(0.d,ScoreBoxSizes.SMALL);
-		
-		
-		
-		se.setSe((ScoreableEntity)s.get(0));
-		sb.setScore(0.9d);
-		se.setStyle(sb.getScoreStyle());
-		se.setColorKey(GraphicUtil.entityColorKey.get(0));
-		se.setGoTo(goTo);
-		scoreableEntities.add(se);
-		
-		se = new ScoreableEntityPkg();
-		se.setSe((ScoreableEntity)s.get(1));
-		sb.setScore(1.8d);
-		se.setStyle(sb.getScoreStyle());
-		se.setColorKey(GraphicUtil.entityColorKey.get(1));
-		se.setGoTo(goTo);
-		scoreableEntities.add(se);
-		
-		se = new ScoreableEntityPkg();
-		se.setSe((ScoreableEntity)s.get(2));
-		sb.setScore(2.9d);
-		se.setStyle(sb.getScoreStyle());
-		se.setColorKey(GraphicUtil.entityColorKey.get(2));
-		se.setGoTo(goTo);
-		scoreableEntities.add(se);
+		    score.setEntityID(0);
+		    score.setIdentifier("Sacramento/Bay Area");
+		    score.setScore(48);
+		    
+            se.setSe(score);
+            sb.setScore(score.getScore());
+            se.setStyle(sb.getScoreStyle());
+            se.setColorKey(GraphicUtil.entityColorKey.get(0));
+            se.setGoTo("go_team");
+            scoreableEntities.add(se);  
+            
+            se = new ScoreableEntityPkg();
+            score = new ScoreableEntity();
+            
+            score.setEntityID(1);
+            score.setIdentifier("Salt Lake");
+            score.setScore(50);
+            
+            se.setSe(score);
+            sb.setScore(score.getScore());
+            se.setStyle(sb.getScoreStyle());
+            se.setColorKey(GraphicUtil.entityColorKey.get(1));
+            se.setGoTo("go_team");
+            scoreableEntities.add(se);
+            
+            se = new ScoreableEntityPkg();
+            score = new ScoreableEntity();
+            
+            score.setEntityID(2);
+            score.setIdentifier("Vegas");
+            score.setScore(39);
+                        
+            se.setSe(score);
+            sb.setScore(score.getScore());
+            se.setStyle(sb.getScoreStyle());
+            se.setColorKey(GraphicUtil.entityColorKey.get(2));
+            se.setGoTo("go_team");
+            scoreableEntities.add(se);            
+		} 
 
-		se = new ScoreableEntityPkg();
-		se.setSe((ScoreableEntity)s.get(3));
-		sb.setScore(3.9d);
-		se.setStyle(sb.getScoreStyle());
-		se.setColorKey(GraphicUtil.entityColorKey.get(3));
-		se.setGoTo(goTo);
-		scoreableEntities.add(se);
-
-		se = new ScoreableEntityPkg();
-		se.setSe((ScoreableEntity)s.get(4));
-		sb.setScore(4.6d);
-		se.setStyle(sb.getScoreStyle());
-		se.setColorKey(GraphicUtil.entityColorKey.get(4));
-		se.setGoTo(goTo);
-		scoreableEntities.add(se);
-*/		
+		logger.debug("location is: " + navigation.getLocation());
+		this.pageChange = true;
+		
 		return scoreableEntities;
 	}
 
@@ -257,6 +274,7 @@ logger.debug("getting scores for groupID: " + getUser().getGroupID());
 	}
 
 	public void setDuration(Duration duration) {
+	    pageChange = false;
 		this.duration = duration;
 	}
 
@@ -320,10 +338,12 @@ logger.debug("getting scores for groupID: " + getUser().getGroupID());
 	}
 
 	public String getGoTo() {
+	    logger.debug("in getgoto");
 		return goTo;
 	}
 
 	public void setGoTo(String goTo) {
+	    logger.debug("in setgoto");
 		this.goTo = goTo;
 	}
 
@@ -334,4 +354,14 @@ logger.debug("getting scores for groupID: " + getUser().getGroupID());
 	public void setGraphicDAO(GraphicDAO graphicDAO) {
 		this.graphicDAO = graphicDAO;
 	}
+
+    public NavigationBean getNavigation()
+    {
+        return navigation;
+    }
+
+    public void setNavigation(NavigationBean navigation)
+    {
+        this.navigation = navigation;
+    }
 }
