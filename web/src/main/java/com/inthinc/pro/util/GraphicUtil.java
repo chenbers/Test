@@ -45,29 +45,27 @@ public class GraphicUtil {
 		String lbl = new String();
 		StringBuffer sb = new StringBuffer();
 		
-		//How many to show?
-		int num = duration.getNumberOfDays();
-		//Months
-		if ( num < 13 ) {
-		//What month is it? Remember, implemented with jan as 0. Also,
-		//add 12 so the short date ranges work...
-			GregorianCalendar calendar = new GregorianCalendar();	    
-			int currentMonth = calendar.get(GregorianCalendar.MONTH)+1;
-	    
-		//Start there
-			for ( int i = currentMonth + 12 - num; i < currentMonth + 12 ; i++ ) {
-				sb.append("<category label=\'");
-				sb.append(monthLbls.get(i));
-				sb.append("\'/>");
-			}
-		//Days
-		} else {
-			for ( int i = 1; i < 31; i++ ) {
-				sb.append("<category label=\'");
-				sb.append(String.valueOf(i));
-				sb.append("\'/>");
-			}
-		}
+        if ( duration == Duration.DAYS ) {
+            for ( int i = 1; i < 31; i++ ) {
+                sb.append("<category label=\'");
+                sb.append(String.valueOf(i));
+                sb.append("\'/>");
+            }       
+        } else {
+            int num = duration.getNumberOfDays();
+                        
+            //What month is it? Remember, implemented with jan as 0. Also,
+            //add 12 so the short date ranges work...
+            GregorianCalendar calendar = new GregorianCalendar();       
+            int currentMonth = calendar.get(GregorianCalendar.MONTH)+1;
+            
+            //Start there
+            for ( int i = currentMonth + 12 - num; i < currentMonth + 12 ; i++ ) {
+                sb.append("<category label=\'");
+                sb.append(monthLbls.get(i));
+                sb.append("\'/>");
+            }           
+        }
 		
 		return sb.toString();
 	}	
