@@ -1,25 +1,26 @@
 package com.inthinc.pro.model;
 
+import java.util.List;
+
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
 public class Vehicle extends BaseEntity
 {
     @ID
-    private Integer vehicleID;
+    private Integer    vehicleID;
     @Column(name = "acctID")
-    private Integer accountID;
-    private Integer status;
-    private Integer advanced;
-    @Column(name = "mcmid")
-    private String  imei;
-    private Integer year;
-    private String  make;
-    private String  model;
-    private String  color;
-    private String  vin;
+    private Integer    accountID;
+    private Boolean    active;
+    private String     timeZone;
+    private Integer    startOdometer;
     @Column(updateable = false)
-    private Integer driverID;
+    private Integer    assignedDriverID;
+    List<SafetyDevice> safetyDevices;
+    VehicleCompanyInfo companyInfo;
+    VehicleDescription description;
+    VehicleLicense     license;
+    VehicleSensitivity sensitivity;
 
     public Integer getVehicleID()
     {
@@ -41,94 +42,93 @@ public class Vehicle extends BaseEntity
         this.accountID = accountID;
     }
 
-    public Integer getStatus()
+    public Boolean getActive()
     {
-        return status;
+        return active;
     }
 
-    public void setStatus(Integer status)
+    public void setActive(Boolean active)
     {
-        this.status = status;
+        this.active = active;
     }
 
-    public Integer getAdvanced()
+    public String getTimeZone()
     {
-        return advanced;
+        return timeZone;
     }
 
-    public void setAdvanced(Integer advanced)
+    public void setTimeZone(String timeZone)
     {
-        this.advanced = advanced;
+        this.timeZone = timeZone;
     }
 
-    public String getImei()
+    public Integer getStartOdometer()
     {
-        return imei;
+        return startOdometer;
     }
 
-    public void setImei(String imei)
+    public void setStartOdometer(Integer startOdometer)
     {
-        this.imei = imei;
+        this.startOdometer = startOdometer;
     }
 
-    public Integer getYear()
+    public Integer getAssignedDriverID()
     {
-        return year;
+        return assignedDriverID;
     }
 
-    public void setYear(Integer year)
+    public void setAssignedDriverID(Integer driverID)
     {
-        this.year = year;
+        this.assignedDriverID = driverID;
     }
 
-    public String getMake()
+    public List<SafetyDevice> getSafetyDevices()
     {
-        return make;
+        return safetyDevices;
     }
 
-    public void setMake(String make)
+    public void setSafetyDevices(List<SafetyDevice> safetyDevices)
     {
-        this.make = make;
+        this.safetyDevices = safetyDevices;
     }
 
-    public String getModel()
+    public VehicleCompanyInfo getCompanyInfo()
     {
-        return model;
+        return companyInfo;
     }
 
-    public void setModel(String model)
+    public void setCompanyInfo(VehicleCompanyInfo companyInfo)
     {
-        this.model = model;
+        this.companyInfo = companyInfo;
     }
 
-    public String getColor()
+    public VehicleDescription getDescription()
     {
-        return color;
+        return description;
     }
 
-    public void setColor(String color)
+    public void setDescription(VehicleDescription description)
     {
-        this.color = color;
+        this.description = description;
     }
 
-    public String getVin()
+    public VehicleLicense getLicense()
     {
-        return vin;
+        return license;
     }
 
-    public void setVin(String vin)
+    public void setLicense(VehicleLicense license)
     {
-        this.vin = vin;
+        this.license = license;
     }
 
-    public Integer getDriverID()
+    public VehicleSensitivity getSensitivity()
     {
-        return driverID;
+        return sensitivity;
     }
 
-    public void setDriverID(Integer driverID)
+    public void setSensitivity(VehicleSensitivity sensitivity)
     {
-        this.driverID = driverID;
+        this.sensitivity = sensitivity;
     }
-
 }
