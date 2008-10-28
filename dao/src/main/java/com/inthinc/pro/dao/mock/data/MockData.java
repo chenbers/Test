@@ -2,6 +2,7 @@ package com.inthinc.pro.dao.mock.data;
 
 
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Role;
+import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.User;
 
@@ -184,7 +186,10 @@ public class MockData
         };
         for (int monthsBackCnt = 0; monthsBackCnt < monthsBack.length; monthsBackCnt++)
         {
-            mockData.storeObject(new ScoreableEntity(entityID, entityType, entityName, randomInt(0,50), DateUtil.getDaysBackDate(dateNow, 30 * monthsBack[monthsBackCnt])));   
+            for (ScoreType scoreType : EnumSet.allOf(ScoreType.class))
+            {
+                mockData.storeObject(new ScoreableEntity(entityID, entityType, entityName, randomInt(0,50), DateUtil.getDaysBackDate(dateNow, 30 * monthsBack[monthsBackCnt]),scoreType));
+            }
         }
     }
 

@@ -11,6 +11,7 @@
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="line">#{messages.team_overview}</span>
+						<span class="panel_links"/>
 					</div>
 				</div>
 				<div class="panel_w">
@@ -19,13 +20,13 @@
 				  	<table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
 					  <tr>
 						<td valign="top" width="130" class="ls_tabs">
-							<ui:include src="/includes/sideNav.xhtml">
+							<ui:include src="/includes/sideNav2.xhtml">
             					<ui:param name="messagesPrefix" value="teamOverviewSideNav_" />
             					<ui:param name="actions" value="overall,drivestyle,speed,seatbelt,coaching" />
             					<ui:param name="selectedAction" value="overall" />
-            					<ui:param name="parentAction" value="overall" />
-            					<ui:param name="childActions" value="" />
           					</ui:include>
+          					
+          					
 						</td>
 						<td valign="top">
 						  <table width="790" border="0" cellpadding="0" cellspacing="0">
@@ -36,11 +37,11 @@
                                     <td align="right">
 										<table width="220" border="0" cellspacing="0" cellpadding="0" class="scorebox">
 										  <tr>
-			                                  <td width="188">
+			                                  <td>
 			                                    <h4>#{messages.team_overallScore}</h4>
 			                                    <span>#{messages.team_durationLabel}</span> 
 			                                  </td>
-			                                  <td width="130" align="center">
+			                                  <td width="80" align="center">
 			                                    <ui:include src="../includes/scoreBox.xhtml">
 													<ui:param name="score" value="#{teamOverviewBean.overallScore}" />
 											        <ui:param name="scoreStyle" value="#{teamOverviewBean.overallScoreStyle}" />
@@ -50,25 +51,27 @@
 										</table>
 									</td>
                                   </tr>
-                                  <tr>
-                                    <td>
-									<div id="chartdiv" align="center"></div>
-
+								  <tr>
+                            		<td width="300" valign="top">
+                              			<div id="chartdiv" align="center"></div>
+			  							<h:inputHidden value="#{teamOverviewBean.overallPieDef}" id="hiddenField3"/>
 										<script type="text/javascript">
-										   var chart = new FusionCharts("/swf/Pie2D.swf", "ChartId", "300", "240", "0", "0");
-										   chart.setDataURL("/xml/3d_pie_1.xml");		   
-										   chart.render("chartdiv");
+											var targetElement3 = document.getElementById("overview-form:hiddenField3");
+											var chart2 = new FusionCharts("/tiwipro/fusioncharts/Pie2D.swf", "ChartId", "300", "240", "0", "0");										
+											chart2.setDataXML(targetElement3.value);									   	   
+											chart2.render("chartdiv");
 										</script>
-									</td>
+		                            </td>
+        		                   </tr>
+	       		                    <tr>
+                                    <td align="center"><img src="../images/legend_1to5_horizontal.png" width="138" height="54" /></td>
                                   </tr>
-                                  <tr>
-                                    <td align="center"><img src="images/legend_1to5_horizontal.png" width="138" height="54" /></td>
-                                  </tr>
+        		                   
                                 </table>
                               </td>
 
                               <td width="470" valign="top">
-                                <table width="450" height="410" border="0" cellpadding="0" cellspacing="0" class="piegrid">
+                                <table width="450" border="0" cellpadding="0" cellspacing="0" class="piegrid">
                                   <tr>
                                     <td valign="top" class="piegrid_1">
 										<div class="piegrid_label"><a href="#" class="ls_tab_drivestyle">Driving Style</a></div>

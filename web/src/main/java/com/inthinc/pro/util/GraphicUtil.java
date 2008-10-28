@@ -225,14 +225,10 @@ public class GraphicUtil {
 	
 	public static Integer getRandomScore()
 	{
-        return randomInt(0, 50);
+        return MiscUtil.randomInt(0, 50);
 	    
 	}
 	
-    static int randomInt(int min, int max)
-    {
-        return (int) (Math.random() * ((max - min) + 1)) + min;
-    }
 
 	public static final double roundDouble(double d, int places) 
 	{

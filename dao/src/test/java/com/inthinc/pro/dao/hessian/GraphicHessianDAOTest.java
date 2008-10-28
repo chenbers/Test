@@ -10,6 +10,7 @@ import org.junit.Test;
 import com.inthinc.pro.dao.mock.proserver.CentralServiceCreator;
 import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 
 public class GraphicHessianDAOTest
@@ -32,7 +33,7 @@ public class GraphicHessianDAOTest
     {
         Integer endDate = DateUtil.getTodaysDate();
         Integer startDate = DateUtil.getDaysBackDate(endDate, 30);
-        List<ScoreableEntity> scoreList = graphicHessianDAO.getScores(TOP_GROUP_ID, startDate, endDate);
+        List<ScoreableEntity> scoreList = graphicHessianDAO.getScores(TOP_GROUP_ID, startDate, endDate, ScoreType.SCORE_OVERALL);
         
         assertNotNull(scoreList);
         

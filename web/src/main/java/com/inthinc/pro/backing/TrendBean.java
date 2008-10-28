@@ -13,6 +13,7 @@ import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.GraphicDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.wrapper.ScoreableEntityPkg;
@@ -194,7 +195,7 @@ public class TrendBean extends BaseBean {
 		    // TODO: This is not correct.  getUser().getGroupID() needs to be changed to the current group in the navigation
 logger.debug("getting scores for groupID: " + getUser().getGroupID());
 		    
-			s = graphicDAO.getScores(getUser().getGroupID(), startDate, endDate);
+			s = graphicDAO.getScores(getUser().getGroupID(), startDate, endDate, ScoreType.SCORE_OVERALL);
 		} catch (Exception e) {
 			logger.debug("graphicDao error: " + e.getMessage());
 		}		

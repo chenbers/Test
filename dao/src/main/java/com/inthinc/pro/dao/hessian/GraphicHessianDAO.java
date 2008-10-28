@@ -8,6 +8,7 @@ import com.inthinc.pro.dao.GraphicDAO;
 import com.inthinc.pro.dao.annotations.Converter;
 import com.inthinc.pro.dao.service.CentralService;
 import com.inthinc.pro.model.EntityType;
+import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 
 
@@ -31,13 +32,15 @@ public class GraphicHessianDAO extends GenericHessianDAO<ScoreableEntity, Intege
     }
     
     @Override
-    public List<ScoreableEntity> getScores(Integer groupID, Integer startDate, Integer endDate)
+    public List<ScoreableEntity> getScores(Integer groupID, Integer startDate, Integer endDate, ScoreType scoreType)
     {
         logger.debug("getScores() groupID = " + groupID);
-        List<ScoreableEntity> scoreList = convertToModelObject(this.getSiloService().getOverallScores(groupID,startDate,endDate));
+        List<ScoreableEntity> scoreList = convertToModelObject(this.getSiloService().getScores(groupID,startDate,endDate, scoreType.getCode()));
         return scoreList;
     }		
 	
+    
+    // TODO: Look at a better way to do these enum converters because it is pretty standard across the board
     @Converter(columnName = "entityType")
     public void setEntityType(ScoreableEntity scoreableEntity, Object value)
     {
@@ -47,6 +50,17 @@ public class GraphicHessianDAO extends GenericHessianDAO<ScoreableEntity, Intege
       if (value instanceof Integer)
       {
           scoreableEntity.setEntityType(EntityType.getEntityType((Integer)value));
+      }
+    }
+    @Converter(columnName = "scoreType")
+    public void setScoreType(ScoreableEntity scoreableEntity, Object value)
+    {
+      if (scoreableEntity == null || value == null)
+        return;
+
+      if (value instanceof Integer)
+      {
+          scoreableEntity.setScoreType(ScoreType.getScoreType((Integer)value));
       }
     }
 

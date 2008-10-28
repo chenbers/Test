@@ -10,7 +10,9 @@ import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.mock.data.SearchCriteria;
 import com.inthinc.pro.dao.service.SiloService;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.User;
 
@@ -72,7 +74,7 @@ public class SiloServiceMockImpl extends MockImpl implements SiloService
     }
 
     @Override
-    public List<Map<String, Object>> getOverallScores(Integer groupID, Integer startDate, Integer endDate)
+    public List<Map<String, Object>> getScores(Integer groupID, Integer startDate, Integer endDate, Integer scoreType)
             throws ProDAOException
     {
         logger.debug("mock IMPL getOverallScores groupID = " + groupID);
@@ -83,23 +85,58 @@ public class SiloServiceMockImpl extends MockImpl implements SiloService
         List<Map<String, Object>> entityList =  getMockDataContainer().lookupList(Group.class, searchCriteria);
         
         List<Map<String, Object>> returnList =  new ArrayList<Map<String, Object>>();
-        
-        for (Map<String, Object> groupMap : entityList)
+        if (entityList != null)
+        {
+            for (Map<String, Object> groupMap : entityList)
+            {
+                searchCriteria = new SearchCriteria();
+                searchCriteria.addKeyValue("entityID", groupMap.get("groupID"));
+                searchCriteria.addKeyValue("scoreType", ScoreType.getScoreType(scoreType));
+                searchCriteria.addKeyValueRange("date", startDate, endDate);
+                
+                Map<String, Object> scoreMap = getMockDataContainer().lookup(ScoreableEntity.class, searchCriteria);
+                
+                if (scoreMap != null)
+                {
+                    returnList.add(scoreMap);
+                }
+                else
+                {
+                    logger.error("score missing for groupID " + groupMap.get("groupID"));
+                }
+            }
+        }
+        else
         {
             searchCriteria = new SearchCriteria();
-            searchCriteria.addKeyValue("entityID", groupMap.get("groupID"));
-            searchCriteria.addKeyValueRange("date", startDate, endDate);
-            
-            Map<String, Object> scoreMap = getMockDataContainer().lookup(ScoreableEntity.class, searchCriteria);
-            
-            if (scoreMap != null)
+            searchCriteria.addKeyValue("groupID", groupID);
+
+            // get list of drivers that are in the specified group
+            entityList =  getMockDataContainer().lookupList(Driver.class, searchCriteria);
+            if (entityList == null)
             {
-                returnList.add(scoreMap);
+                return returnList;
             }
-            else
+            for (Map<String, Object> driverMap : entityList)
             {
-                logger.error("score missing for groupID " + groupMap.get("groupID"));
+                searchCriteria = new SearchCriteria();
+                searchCriteria.addKeyValue("entityID", driverMap.get("driverID"));
+                searchCriteria.addKeyValue("scoreType", ScoreType.getScoreType(scoreType));
+                searchCriteria.addKeyValueRange("date", startDate, endDate);
+                
+                Map<String, Object> scoreMap = getMockDataContainer().lookup(ScoreableEntity.class, searchCriteria);
+                
+                if (scoreMap != null)
+                {
+                    returnList.add(scoreMap);
+                }
+                else
+                {
+                    logger.error("score missing for driverID " + driverMap.get("driverID"));
+                }
             }
+            
+            
         }
         return returnList;
     }

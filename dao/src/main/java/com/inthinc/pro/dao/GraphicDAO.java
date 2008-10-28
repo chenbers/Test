@@ -2,6 +2,7 @@ package com.inthinc.pro.dao;
 
 import java.util.List;
 
+import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 
 public interface GraphicDAO extends GenericDAO<ScoreableEntity, Integer>
@@ -25,5 +26,6 @@ public interface GraphicDAO extends GenericDAO<ScoreableEntity, Integer>
      * @param endDate
      * @return
      */
-    List<ScoreableEntity> getScores(Integer groupID, Integer startDate, Integer endDate);
+    List<ScoreableEntity> getScores(Integer groupID, Integer startDate, Integer endDate, ScoreType scoreType);
+
 }
