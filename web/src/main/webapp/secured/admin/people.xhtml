@@ -25,7 +25,18 @@
           <!-- START PANEL -->
             <div class="">
 
+              <div class="panel_nw">
+                <div class="panel_title">
+                  <span class="admin"><h:outputText value="#{messages.adminHeader_people}" /></span>
+                  <span class="panel_links"></span>
+                </div>
+              </div>
+
               <ui:include src="/includes/usersTable.xhtml" />
+
+              <div class="panel_sw">
+                <div class="panel_statusbar"></div>
+              </div>
 
             </div>
             <!-- END PANEL -->            

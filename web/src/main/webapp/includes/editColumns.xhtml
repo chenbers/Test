@@ -45,13 +45,13 @@
 
     <rich:modalPanel id="editColumns" headerClass="popupHeader" controlsClass="popupControls" width="500" height="500" zindex="2000">
       <f:facet name="header">
-        <h:outputText value="Edit Columns"/>
+        <h:outputText value="#{messages.editColumns_title}" />
       </f:facet>
       <f:facet name="controls">
         <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('editColumns')" />
       </f:facet>
 
-      <div class="popupsubtitle">The following columns will be displayed</div>
+      <div class="popupsubtitle"><h:outputText value="#{messages.editColumns_explanation}" /></div>
 
       <a4j:form id="editColumnsForm">
 
@@ -80,9 +80,9 @@
         </rich:dataTable>
 
         <div class="popupactions">
-          <button value="submit" class="left" onclick="Richfaces.hideModalPanel('editColumns'); return false;"><span class="cancel">Cancel</span></button>
-          <a4j:commandLink rendered="#{!empty saveBean}" action="#{saveBean['saveColumns']}" onclick="Richfaces.hideModalPanel('editColumns')" reRender="#{reRender}"><button value="submit" class="left"><span class="save">Save</span></button></a4j:commandLink>
-          <a4j:commandLink rendered="#{empty saveBean}" onclick="Richfaces.hideModalPanel('editColumns')" reRender="#{reRender}"><button value="submit" class="left"><span class="save">Save</span></button></a4j:commandLink>
+          <button value="submit" class="left" onclick="Richfaces.hideModalPanel('editColumns'); return false;"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button>
+          <a4j:commandLink rendered="#{!empty saveBean}" action="#{saveBean['saveColumns']}" onclick="Richfaces.hideModalPanel('editColumns')" reRender="#{reRender}"><button value="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></a4j:commandLink>
+          <a4j:commandLink rendered="#{empty saveBean}" onclick="Richfaces.hideModalPanel('editColumns')" reRender="#{reRender}"><button value="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></a4j:commandLink>
         </div>
 
       </a4j:form>

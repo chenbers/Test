@@ -75,30 +75,23 @@ Note: The following parameters are required by the included editColumns.xhtml
     </c:if>
     <c:set var="firstRecord" value="#{rows * (page - 1)}" />
 
-    <div class="panel_nw">
-      <div class="panel_title">
-        <span class="admin">Admin: People</span>
-        <span class="panel_links"></span>
-      </div>
-    </div>
-
     <div class="panel_w">
       <div class="panel_content">
         <ul id="grid_nav" style="margin: 0;">
-          <li class="l"><h:commandLink action="#{editorBean['delete']}"><button value="submit" class="left"><span class="cancel">Delete</span></button></h:commandLink></li>
-          <li class="l"><h:commandLink action="#{editorBean['edit']}"><button value="submit" class="left"><span class="edit">Batch Edit</span></button></h:commandLink></li>
+          <li class="l"><h:commandLink action="#{editorBean['delete']}"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></button></h:commandLink></li>
+          <li class="l"><h:commandLink action="#{editorBean['edit']}"><button value="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_batchEdit}" /></span></button></h:commandLink></li>
           <li class="l">
             <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
               <tr>
-                <td><h:outputText value="#{messages.gridNavigation_search}"/></td>
+                <td><h:outputText value="#{messages.button_search}" /></td>
                 <td>
                   <h:inputText id="filterTable" value="#{filterValue}" class="text" size="25" />
                 </td>
               </tr>
             </table>
           </li>
-          <li class="l"><ui:fragment><button value="submit" class="left"><span class="search">Search</span><a4j:support event="onclick" reRender="dataTable,recordCounts,topScroller,bottomScroller" ignoreDupResponses="true" focus="filterTable" /></button></ui:fragment></li>
-          <li class="l text"><a href="#" class="ls_tab_edit_columns" onclick="Richfaces.showModalPanel('editColumns');">Edit Columns</a></li>
+          <li class="l"><ui:fragment><button value="submit" class="left"><span class="search"><h:outputText value="#{messages.button_search}" /></span><a4j:support event="onclick" reRender="dataTable,recordCounts,topScroller,bottomScroller" ignoreDupResponses="true" focus="filterTable" /></button></ui:fragment></li>
+          <li class="l text"><a href="#" class="ls_tab_edit_columns" onclick="Richfaces.showModalPanel('editColumns');"><h:outputText value="#{messages.button_editColumns}" /></a></li>
       
           <li class="r text">
             <h:outputFormat id="recordCounts" value="#{messages.record_counts}">
@@ -128,7 +121,7 @@ Note: The following parameters are required by the included editColumns.xhtml
               <f:facet name="header">
                 <h:outputText value=" " />
               </f:facet>
-              <h:commandLink action="#{editorBean['edit']}">edit</h:commandLink>
+              <h:commandLink action="#{editorBean['edit']}"><h:outputText value="#{messages.adminTable_edit}" /></h:commandLink>
             </rich:column>
           </rich:dataTable>
 
@@ -137,10 +130,6 @@ Note: The following parameters are required by the included editColumns.xhtml
         </div>
     
       </div>
-    </div>
-
-    <div class="panel_sw">
-      <div class="panel_statusbar"></div>
     </div>
 
     <ui:include src="editColumns.xhtml">
