@@ -1,0 +1,116 @@
+<html xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+<!-- 
+  Parameters:
+  ==============
+    selectedAction: The action that's selected; may be a child action.
+      parentAction: The action whose child actions are visible; optional.
+
+  To use:
+  ==============
+  <ui:include src="/includes/sideNav.xhtml">
+    <ui:param name="selectedAction" value="action2_a" />
+    <ui:param name="parentAction" value="action2" />
+  </ui:include>
+
+ -->
+  <ui:composition>
+
+    <table width="130" border="0" cellpadding="0" cellspacing="0" style="margin-top: 40px;">
+      <tr>
+        <td valign="top" class="#{(selectedAction == 'go_adminPeople') ? 'ls_tab_on' : 'ls_tab_off'}">
+          <h:commandLink action="go_adminPeople" value="#{messages.adminSideNav_go_adminPeople}" styleClass="ls_tab_go_adminPeople" />
+        </td>
+      </tr>
+      <ui:fragment rendered="#{parentAction == 'go_adminPeople'}">
+        <tr>
+          <td valign="top" class="sub_wrapper">
+            <div class="#{(selectedAction == 'go_adminAddPerson') ? 'ls_tab_sub_active' : 'ls_tab_sub'}">
+              <h:commandLink action="go_adminAddPerson" value="#{messages.adminSideNav_go_adminAddPerson}" styleClass="ls_tab_go_adminAddPerson" />
+            </div>
+          </td>
+        </tr>
+      </ui:fragment>
+      <tr>
+        <td valign="top" class="#{(selectedAction == 'go_adminVehicles') ? 'ls_tab_on' : 'ls_tab_off'}">
+          <h:commandLink action="go_adminVehicles" value="#{messages.adminSideNav_go_adminVehicles}" styleClass="ls_tab_go_adminVehicles" />
+        </td>
+      </tr>
+      <ui:fragment rendered="#{parentAction == 'go_adminVehicles'}">
+        <tr>
+          <td valign="top" class="sub_wrapper">
+            <div class="#{(selectedAction == 'go_adminAddVehicle') ? 'ls_tab_sub_active' : 'ls_tab_sub'}">
+              <h:commandLink action="go_adminAddVehicle" value="#{messages.adminSideNav_go_adminAddVehicle}" styleClass="ls_tab_go_adminAddVehicle" />
+            </div>
+          </td>
+        </tr>
+      </ui:fragment>
+      <tr>
+        <td valign="top" class="#{(selectedAction == 'go_adminTrailers') ? 'ls_tab_on' : 'ls_tab_off'}">
+          <h:commandLink action="go_adminTrailers" value="#{messages.adminSideNav_go_adminTrailers}" styleClass="ls_tab_go_adminTrailers" />
+        </td>
+      </tr>
+      <ui:fragment rendered="#{parentAction == 'go_adminTrailers'}">
+        <tr>
+          <td valign="top" class="sub_wrapper">
+            <div class="#{(selectedAction == 'go_adminAddTrailer') ? 'ls_tab_sub_active' : 'ls_tab_sub'}">
+              <h:commandLink action="go_adminAddTrailer" value="#{messages.adminSideNav_go_adminAddTrailer}" styleClass="ls_tab_go_adminAddTrailer" />
+            </div>
+          </td>
+        </tr>
+      </ui:fragment>
+      <tr>
+        <td valign="top" class="#{(selectedAction == 'go_adminDevices') ? 'ls_tab_on' : 'ls_tab_off'}">
+          <h:commandLink action="go_adminDevices" value="#{messages.adminSideNav_go_adminDevices}" styleClass="ls_tab_go_adminDevices" />
+        </td>
+      </tr>
+      <ui:fragment rendered="#{parentAction == 'go_adminDevices'}">
+        <tr>
+          <td valign="top" class="sub_wrapper">
+            <div class="#{(selectedAction == 'go_adminAddDevice') ? 'ls_tab_sub_active' : 'ls_tab_sub'}">
+              <h:commandLink action="go_adminAddDevice" value="#{messages.adminSideNav_go_adminAddDevice}" styleClass="ls_tab_go_adminAddDevice" />
+            </div>
+          </td>
+        </tr>
+      </ui:fragment>
+      <tr>
+        <td valign="top" class="#{(selectedAction == 'go_adminZones') ? 'ls_tab_on' : 'ls_tab_off'}">
+          <h:commandLink action="go_adminZones" value="#{messages.adminSideNav_go_adminZones}" styleClass="ls_tab_go_adminZones" />
+        </td>
+      </tr>
+      <tr>
+        <td valign="top" class="#{(selectedAction == 'go_adminZoneAlerts') ? 'ls_tab_on' : 'ls_tab_off'}">
+          <h:commandLink action="go_adminZoneAlerts" value="#{messages.adminSideNav_go_adminZoneAlerts}" styleClass="ls_tab_go_adminZoneAlerts" />
+        </td>
+      </tr>
+      <ui:fragment rendered="#{parentAction == 'go_adminZoneAlerts'}">
+        <tr>
+          <td valign="top" class="sub_wrapper">
+            <div class="#{(selectedAction == 'go_adminAddZoneAlert') ? 'ls_tab_sub_active' : 'ls_tab_sub'}">
+              <h:commandLink action="go_adminAddZoneAlert" value="#{messages.adminSideNav_go_adminAddZoneAlert}" styleClass="ls_tab_go_adminAddZoneAlert" />
+            </div>
+          </td>
+        </tr>
+      </ui:fragment>
+      <tr>
+        <td valign="top" class="#{(selectedAction == 'go_adminRedFlags') ? 'ls_tab_on' : 'ls_tab_off'}">
+          <h:commandLink action="go_adminRedFlags" value="#{messages.adminSideNav_go_adminRedFlags}" styleClass="ls_tab_go_adminRedFlags" />
+        </td>
+      </tr>
+      <ui:fragment rendered="#{parentAction == 'go_adminRedFlags'}">
+        <tr>
+          <td valign="top" class="sub_wrapper">
+            <div class="#{(selectedAction == 'go_adminAddRedFlag') ? 'ls_tab_sub_active' : 'ls_tab_sub'}">
+              <h:commandLink action="go_adminAddRedFlag" value="#{messages.adminSideNav_go_adminAddRedFlag}" styleClass="ls_tab_go_adminAddRedFlag" />
+            </div>
+          </td>
+        </tr>
+      </ui:fragment>
+    </table>
+
+  </ui:composition>
+</html>

@@ -1040,7 +1040,7 @@ a.ls_tab_seatbelt {
 	margin: 0 0 0 8px;
 	}
 
-a.ls_tab_adminAddPerson {
+a.ls_tab_go_adminAddPerson {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_add_driver.png) no-repeat center left;
 	text-decoration: none;
@@ -1048,7 +1048,7 @@ a.ls_tab_adminAddPerson {
 	margin: 0 0 0 8px;
 	}
 	
-a.ls_tab_adminAddVehicle {
+a.ls_tab_go_adminAddVehicle {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_add_vehicle.png) no-repeat center left;
 	text-decoration: none;
@@ -1072,7 +1072,7 @@ a.ls_tab_search {
 	margin: 0 0 0 8px;
 	}
 	
-a.ls_tab_adminPeople {
+a.ls_tab_go_adminPeople {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_driver.png) no-repeat center left;
 	text-decoration: none;
@@ -1080,7 +1080,7 @@ a.ls_tab_adminPeople {
 	margin: 0 0 0 8px;
 	}
 	
-a.ls_tab_adminVehicles {
+a.ls_tab_go_adminVehicles {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_vehicle.png) no-repeat center left;
 	text-decoration: none;
@@ -1112,7 +1112,7 @@ a.ls_tab_cost {
 	margin: 0 0 0 8px;
 	}
 	
-a.ls_tab_adminRedflags {
+a.ls_tab_go_adminRedflags {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_red_flag.png) no-repeat center left;
 	text-decoration: none;
@@ -1120,7 +1120,7 @@ a.ls_tab_adminRedflags {
 	margin: 0 0 0 8px;
 	}
 	
-a.ls_tab_adminAddRedflag {
+a.ls_tab_go_adminAddRedflag {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_add_redflag.png) no-repeat center left;
 	text-decoration: none;
@@ -1128,7 +1128,7 @@ a.ls_tab_adminAddRedflag {
 	margin: 0 0 0 8px;
 	}
 	
-a.ls_tab_adminZones {
+a.ls_tab_go_adminZones {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_zones.png) no-repeat center left;
 	text-decoration: none;
@@ -1136,7 +1136,7 @@ a.ls_tab_adminZones {
 	margin: 0 0 0 8px;
 	}
 	
-a.ls_tab_adminZoneAlerts {
+a.ls_tab_go_adminZoneAlerts {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_zone_alerts.png) no-repeat center left;
 	text-decoration: none;
@@ -1144,7 +1144,7 @@ a.ls_tab_adminZoneAlerts {
 	margin: 0 0 0 8px;
 	}
 	
-a.ls_tab_adminAddAoneAlert {
+a.ls_tab_go_adminAddAoneAlert {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_add_zone_alerts.png) no-repeat center left;
 	text-decoration: none;
@@ -1160,7 +1160,7 @@ a.ls_tab_asset {
 	margin: 0 0 0 8px;
 	}
 	
-a.ls_tab_adminDevices {
+a.ls_tab_go_adminDevices {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_tiwi.png) no-repeat center left;
 	text-decoration: none;
@@ -1168,7 +1168,7 @@ a.ls_tab_adminDevices {
 	margin: 0 0 0 8px;
 	}
 	
-a.ls_tab_adminAddDevice {
+a.ls_tab_go_adminAddDevice {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_add_tiwi.png) no-repeat center left;
 	text-decoration: none;
@@ -1176,7 +1176,7 @@ a.ls_tab_adminAddDevice {
 	margin: 0 0 0 8px;
 	}
 	
-a.ls_tab_adminTrailers {
+a.ls_tab_go_adminTrailers {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_trailer.png) no-repeat center left;
 	text-decoration: none;
@@ -1184,7 +1184,7 @@ a.ls_tab_adminTrailers {
 	margin: 0 0 0 8px;
 	}
 	
-a.ls_tab_adminAddTrailer {
+a.ls_tab_go_adminAddTrailer {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_add_trailer.png) no-repeat center left;
 	text-decoration: none;

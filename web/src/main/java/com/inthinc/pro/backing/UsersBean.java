@@ -23,17 +23,50 @@ import com.inthinc.pro.model.User;
 /**
  * @author David Gileadi
  */
-public class UsersBean extends BaseBean
+public class UsersBean extends BaseAdminBean<UsersBean.UserView>
 {
-    private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 3 };
+    private static final Logger       logger                 = LogManager.getLogger(UsersBean.class);
 
-    private static final Logger logger = LogManager.getLogger(UsersBean.class);
+    private static final List<String> AVAILABLE_COLUMNS;
+    private static final int[]        DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 3 };
 
-    private List<UserView> users;
-    private List<UserView> filteredUsers;
-    private String filterValue;
-    private int page;
-    private Map<String, Boolean> columns;
+    static
+    {
+        AVAILABLE_COLUMNS = new ArrayList<String>();
+        AVAILABLE_COLUMNS.add("userID");
+        AVAILABLE_COLUMNS.add("score");
+        AVAILABLE_COLUMNS.add("fullName");
+        AVAILABLE_COLUMNS.add("active");
+        AVAILABLE_COLUMNS.add("username");
+        AVAILABLE_COLUMNS.add("role");
+        AVAILABLE_COLUMNS.add("primaryPhone");
+        AVAILABLE_COLUMNS.add("secondaryPhone");
+        AVAILABLE_COLUMNS.add("primarySms");
+        AVAILABLE_COLUMNS.add("secondarySms");
+        AVAILABLE_COLUMNS.add("email");
+        AVAILABLE_COLUMNS.add("timeZone");
+        AVAILABLE_COLUMNS.add("group");
+        AVAILABLE_COLUMNS.add("manager");
+        AVAILABLE_COLUMNS.add("title");
+        AVAILABLE_COLUMNS.add("department");
+        AVAILABLE_COLUMNS.add("vehicle");
+        AVAILABLE_COLUMNS.add("dob");
+        AVAILABLE_COLUMNS.add("address.street1");
+        AVAILABLE_COLUMNS.add("address.street2");
+        AVAILABLE_COLUMNS.add("address.city");
+        AVAILABLE_COLUMNS.add("address.state");
+        AVAILABLE_COLUMNS.add("address.zip");
+        AVAILABLE_COLUMNS.add("gender");
+        AVAILABLE_COLUMNS.add("height");
+        AVAILABLE_COLUMNS.add("weight");
+        AVAILABLE_COLUMNS.add("driversLicense.number");
+        AVAILABLE_COLUMNS.add("driversLicense.class");
+        AVAILABLE_COLUMNS.add("driversLicense.expiration");
+        AVAILABLE_COLUMNS.add("certifications");
+        AVAILABLE_COLUMNS.add("dot");
+        AVAILABLE_COLUMNS.add("citations");
+        AVAILABLE_COLUMNS.add("points");
+    }
 
     public UsersBean()
     {
@@ -45,12 +78,12 @@ public class UsersBean extends BaseBean
             plainUsers.add(createDummyUser());
 
         // convert the users to UserViews
-        users = new LinkedList<UserView>();
+        items = new LinkedList<UserView>();
         for (final User user : plainUsers)
             try
             {
                 // TODO: get the score from some place real
-                users.add(createUserView(user, (int)(Math.random() * 50)));
+                items.add(createUserView(user, (int)(Math.random() * 50)));
             }
             catch (Exception e)
             {
@@ -58,12 +91,7 @@ public class UsersBean extends BaseBean
             }
 
         // init the filtered users
-        filteredUsers = new LinkedList<UserView>();
-        filteredUsers.addAll(users);
-
-        // page, columns
-        page = 1;
-        columns = getDefaultColumns();
+        filteredItems.addAll(items);
     }
 
     @Deprecated
@@ -97,8 +125,7 @@ public class UsersBean extends BaseBean
     private String createDummyPhone()
     {
         final String numbers = "1234567890";
-        return createDummyString(numbers, 3) + '-' + createDummyString(numbers, 3) + '-'
-                + createDummyString(numbers, 4);
+        return createDummyString(numbers, 3) + '-' + createDummyString(numbers, 3) + '-' + createDummyString(numbers, 4);
     }
 
     @Deprecated
@@ -146,138 +173,20 @@ public class UsersBean extends BaseBean
         return userView;
     }
 
-    /**
-     * @return the users
-     */
-    public List<UserView> getUsers()
+    @Override
+    protected boolean matchesFilter(UserView user, String filterWord)
     {
-        return users;
+        return user.getFirst().toLowerCase().startsWith(filterWord) || user.getLast().toLowerCase().startsWith(filterWord)
+                || String.valueOf(user.getUserID()).startsWith(filterWord);
     }
 
-    /**
-     * @return the filteredUsers
-     */
-    public List<UserView> getFilteredUsers()
-    {
-        return filteredUsers;
-    }
-
-    /**
-     * @return the number of filtered users.
-     */
-    public int getUserCount()
-    {
-        return filteredUsers.size();
-    }
-
-    /**
-     * @return the filterValue
-     */
-    public String getFilterValue()
-    {
-        return filterValue;
-    }
-
-    /**
-     * @param filterValue
-     *            the filterValue to set
-     */
-    public void setFilterValue(String filterValue)
-    {
-        boolean changed = false;
-        if ((filterValue != null) && (filterValue.length() > 0))
-        {
-            filterValue = filterValue.toLowerCase();
-            changed = !filterValue.equals(this.filterValue);
-        }
-        else
-        {
-            filterValue = null;
-            changed = this.filterValue != null;
-        }
-
-        if (changed)
-        {
-            setPage(1);
-
-            filteredUsers.clear();
-            this.filterValue = filterValue;
-            if (filterValue != null)
-            {
-                for (final UserView user : users)
-                    if (user.getFirst().toLowerCase().startsWith(filterValue)
-                            || user.getLast().toLowerCase().startsWith(filterValue)
-                            || String.valueOf(user.getUserID()).startsWith(filterValue))
-                        filteredUsers.add(user);
-            }
-            else
-                filteredUsers.addAll(users);
-        }
-    }
-
-    /**
-     * @return the page
-     */
-    public int getPage()
-    {
-        return page;
-    }
-
-    /**
-     * @param page
-     *            the page to set
-     */
-    public void setPage(int page)
-    {
-        this.page = page;
-        for (final UserView user : users)
-            user.setSelected(false);
-    }
-
+    @Override
     public List<String> getAvailableColumns()
     {
-        final ArrayList<String> columns = new ArrayList<String>();
-        columns.add("userID");
-        columns.add("score");
-        columns.add("fullName");
-        columns.add("active");
-        columns.add("username");
-        columns.add("role");
-        columns.add("primaryPhone");
-        columns.add("secondaryPhone");
-        columns.add("primarySms");
-        columns.add("secondarySms");
-        columns.add("email");
-        columns.add("timeZone");
-        columns.add("group");
-        columns.add("manager");
-        columns.add("title");
-        columns.add("department");
-        columns.add("vehicle");
-        columns.add("dob");
-        columns.add("address.street1");
-        columns.add("address.street2");
-        columns.add("address.city");
-        columns.add("address.state");
-        columns.add("address.zip");
-        columns.add("gender");
-        columns.add("height");
-        columns.add("weight");
-        columns.add("driversLicense.number");
-        columns.add("driversLicense.class");
-        columns.add("driversLicense.expiration");
-        columns.add("certifications");
-        columns.add("dot");
-        columns.add("citations");
-        columns.add("points");
-        return columns;
+        return AVAILABLE_COLUMNS;
     }
 
-    public int getAvailableColumnCount()
-    {
-        return 33;
-    }
-
+    @Override
     public Map<String, Boolean> getDefaultColumns()
     {
         final HashMap<String, Boolean> columns = new HashMap<String, Boolean>();
@@ -287,42 +196,28 @@ public class UsersBean extends BaseBean
         return columns;
     }
 
-    /**
-     * @return the columns
-     */
-    public Map<String, Boolean> getColumns()
-    {
-        return columns;
-    }
-
-    /**
-     * @param columns
-     *            the columns to set
-     */
-    public void setColumns(Map<String, Boolean> columns)
-    {
-        this.columns = columns;
-    }
-
+    @Override
     public void saveColumns()
     {
         // TODO: save the columns
     }
 
+    @Override
     public String edit()
     {
         return "go_adminUserEdit";
     }
 
+    @Override
     public String delete()
     {
         return "go_adminUsersDelete";
     }
 
-    public class UserView extends User
+    public static class UserView extends User implements Selectable
     {
-        private Integer score;
-        private String scoreStyle;
+        private Integer  score;
+        private String  scoreStyle;
         private boolean selected;
 
         /**

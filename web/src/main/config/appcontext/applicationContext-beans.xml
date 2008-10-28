@@ -45,6 +45,9 @@
    <bean id="usersBean" class="com.inthinc.pro.backing.UsersBean" scope="session">
    </bean>
 
+   <bean id="vehiclesBean" class="com.inthinc.pro.backing.VehiclesBean" scope="session">
+   </bean>
+
    <bean id="driverBean" class="com.inthinc.pro.backing.DriverBean" scope="session">
    		<property name="graphicDAO" ref="graphicDAO"></property>
    </bean>

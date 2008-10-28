@@ -58,6 +58,12 @@
 	</navigation-rule>
 	<navigation-rule>
 		<navigation-case>
+			<from-outcome>go_adminVehicles</from-outcome>
+			<to-view-id>/secured/admin/vehicles.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
 			<from-outcome>go_region</from-outcome>
 			<to-view-id>/secured/region.xhtml</to-view-id>
 		</navigation-case>

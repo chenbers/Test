@@ -1,0 +1,116 @@
+<ui:composition template="adminTable.xhtml"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:rich="http://richfaces.org/rich"
+  xmlns:security="http://www.springframework.org/security/tags">
+
+  <ui:param name="recordCount" value="#{vehiclesBean.itemCount}" />
+  <ui:param name="items" value="#{vehiclesBean.filteredItems}" />
+  <ui:param name="filterValue" value="#{vehiclesBean.filterValue}" />
+  <ui:param name="page" value="#{vehiclesBean.page}" />
+  <ui:param name="editorBean" value="#{vehiclesBean}" />
+  <ui:param name="allColumns" value="#{vehiclesBean.availableColumns}" />
+  <ui:param name="allColumnsCount" value="#{vehiclesBean.availableColumnCount}" />
+  <ui:param name="selectedColumns" value="#{vehiclesBean.columns}" />
+  <ui:param name="messagesPrefix" value="vehiclesHeader_" />
+
+  <ui:define name="columns">
+    <rich:column rendered="#{vehiclesBean.columns['score']}" sortBy="#{item.score}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_score}" /></f:facet>
+      <ui:include src="scoreBox.xhtml">
+        <ui:param name="score" value="#{item.score}" />
+        <ui:param name="scoreStyle" value="#{item.scoreStyle}" />
+      </ui:include>
+    </rich:column>
+    <rich:column rendered="#{vehiclesBean.columns['vehicleID']}" sortBy="#{item.companyInfo.vehicleIdentification}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_vehicleID}" /></f:facet>
+      <h:outputText value="#{item.companyInfo.vehicleIdentification}" />
+    </rich:column>
+    <rich:column rendered="#{vehiclesBean.columns['driver']}" sortBy="#{item.driver}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_driver}" /></f:facet>
+<!-- TODO: link to driver something -->
+      <h:outputText value="#{item.driver}" />
+    </rich:column>
+<!-- TODO: include once we have groups
+    <rich:column rendered="#{vehiclesBean.columns['group']}" sortBy="#{item.group}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_group}" /></f:facet>
+      <h:outputText value="#{item.group}" />
+    </rich:column>
+-->
+    <rich:column rendered="#{vehiclesBean.columns['year']}" sortBy="#{item.description.year}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_year}" /></f:facet>
+      <h:outputText value="#{item.description.year}" />
+    </rich:column>
+    <rich:column rendered="#{vehiclesBean.columns['make']}" sortBy="#{item.description.make}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_make}" /></f:facet>
+      <h:outputText value="#{item.description.make}" />
+    </rich:column>
+    <rich:column rendered="#{vehiclesBean.columns['model']}" sortBy="#{item.description.model}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_model}" /></f:facet>
+      <h:outputText value="#{item.description.model}" />
+    </rich:column>
+    <rich:column rendered="#{vehiclesBean.columns['color']}" sortBy="#{item.description.color}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_color}" /></f:facet>
+      <h:outputText value="#{item.description.color}" />
+    </rich:column>
+    <rich:column rendered="#{vehiclesBean.columns['description']}" sortBy="#{item.description.description}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_description}" /></f:facet>
+      <h:outputText value="#{item.description.description}" />
+    </rich:column>
+    <rich:column rendered="#{vehiclesBean.columns['VIN']}" sortBy="#{item.description.VIN}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_VIN}" /></f:facet>
+      <h:outputText value="#{item.description.VIN}" />
+    </rich:column>
+    <rich:column rendered="#{vehiclesBean.columns['weight']}" sortBy="#{item.description.weight}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_weight}" /></f:facet>
+      <h:outputText value="#{item.description.weight}" />
+    </rich:column>
+    <rich:column rendered="#{vehiclesBean.columns['licenseNumber']}" sortBy="#{item.license.number}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_licenseNumber}" /></f:facet>
+      <h:outputText value="#{item.license.number}" />
+    </rich:column>
+    <rich:column rendered="#{vehiclesBean.columns['state']}" sortBy="#{item.license.state}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_state}" /></f:facet>
+      <h:outputText value="#{item.license.state}" />
+    </rich:column>
+    <rich:column rendered="#{vehiclesBean.columns['timeZone']}" sortBy="#{item.timeZone}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_timeZone}" /></f:facet>
+      <h:outputText value="#{item.timeZone}" />
+    </rich:column>
+    <rich:column rendered="#{vehiclesBean.columns['costPerHour']}" sortBy="#{item.companyInfo.costPerHour}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_costPerHour}" /></f:facet>
+      <h:outputText value="#{item.companyInfo.costPerHour}" />
+    </rich:column>
+    <rich:column rendered="#{vehiclesBean.columns['startOdometer']}" sortBy="#{item.startOdometer}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_startOdometer}" /></f:facet>
+      <h:outputText value="#{item.startOdometer}" />
+    </rich:column>
+    <rich:column rendered="#{vehiclesBean.columns['active']}" sortBy="#{item.active}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_active}" /></f:facet>
+      <h:outputText value="#{item.active ? messages.active : messages.inactive}" />
+    </rich:column>
+    <rich:column rendered="#{vehiclesBean.columns['hardAccelerationLevel']}" sortBy="#{item.sensitivity.hardAccelerationLevel}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_hardAccelerationLevel}" /></f:facet>
+<!-- TODO: a graphical display for this -->
+      <h:outputText value="#{item.sensitivity.hardAccelerationLevel}" />
+    </rich:column>
+    <rich:column rendered="#{vehiclesBean.columns['hardBrakeLevel']}" sortBy="#{item.sensitivity.hardBrakeLevel}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_hardBrakeLevel}" /></f:facet>
+<!-- TODO: a graphical display for this -->
+      <h:outputText value="#{item.sensitivity.hardBrakeLevel}" />
+    </rich:column>
+    <rich:column rendered="#{vehiclesBean.columns['hardTurnLevel']}" sortBy="#{item.sensitivity.hardTurnLevel}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_hardTurnLevel}" /></f:facet>
+<!-- TODO: a graphical display for this -->
+      <h:outputText value="#{item.sensitivity.hardTurnLevel}" />
+    </rich:column>
+    <rich:column rendered="#{vehiclesBean.columns['hardVerticalLevel']}" sortBy="#{item.sensitivity.hardVerticalLevel}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_hardVerticalLevel}" /></f:facet>
+<!-- TODO: a graphical display for this -->
+      <h:outputText value="#{item.sensitivity.hardVerticalLevel}" />
+    </rich:column>
+  </ui:define>
+
+</ui:composition>

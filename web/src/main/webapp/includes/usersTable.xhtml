@@ -6,8 +6,8 @@
   xmlns:rich="http://richfaces.org/rich"
   xmlns:security="http://www.springframework.org/security/tags">
 
-  <ui:param name="recordCount" value="#{usersBean.userCount}" />
-  <ui:param name="items" value="#{usersBean.filteredUsers}" />
+  <ui:param name="recordCount" value="#{usersBean.itemCount}" />
+  <ui:param name="items" value="#{usersBean.filteredItems}" />
   <ui:param name="filterValue" value="#{usersBean.filterValue}" />
   <ui:param name="page" value="#{usersBean.page}" />
   <ui:param name="editorBean" value="#{usersBean}" />
@@ -35,7 +35,7 @@
     </rich:column>
     <rich:column rendered="#{usersBean.columns['active']}" sortBy="#{item.active}">
       <f:facet name="header"><h:outputText value="#{messages.usersHeader_active}" /></f:facet>
-      <h:outputText value="#{item.active ? messages.users_active : messages.users_inactive}" />
+      <h:outputText value="#{item.active ? messages.active : messages.inactive}" />
     </rich:column>
     <rich:column rendered="#{usersBean.columns['username']}" sortBy="#{item.username}">
       <f:facet name="header"><h:outputText value="#{messages.usersHeader_username}" /></f:facet>
