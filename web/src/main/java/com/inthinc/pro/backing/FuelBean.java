@@ -20,7 +20,7 @@ public class FuelBean extends BaseBean {
 	
 	public String getBarDef() {		
 		barDef = createBarDef();
-		logger.debug("returned string: " + barDef);
+//		logger.debug("returned string: " + barDef);
 		return barDef;
 	}
 
