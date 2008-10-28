@@ -65,7 +65,7 @@
     </rich:column>
     <rich:column rendered="#{vehiclesBean.columns['weight']}" sortBy="#{item.description.weight}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_weight}" /></f:facet>
-      <h:outputText value="#{item.description.weight}" />
+      <h:outputText value="#{item.description.weight}"><f:convertNumber /></h:outputText>
     </rich:column>
     <rich:column rendered="#{vehiclesBean.columns['licenseNumber']}" sortBy="#{item.license.number}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_licenseNumber}" /></f:facet>
@@ -81,11 +81,11 @@
     </rich:column>
     <rich:column rendered="#{vehiclesBean.columns['costPerHour']}" sortBy="#{item.companyInfo.costPerHour}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_costPerHour}" /></f:facet>
-      <h:outputText value="#{item.companyInfo.costPerHour}" />
+      <h:outputText value="#{item.companyInfo.costPerHour}"><f:convertNumber type="currency" currencySymbol="$" /></h:outputText>
     </rich:column>
     <rich:column rendered="#{vehiclesBean.columns['startOdometer']}" sortBy="#{item.startOdometer}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_startOdometer}" /></f:facet>
-      <h:outputText value="#{item.startOdometer}" />
+      <h:outputText value="#{item.startOdometer}"><f:convertNumber /></h:outputText>
     </rich:column>
     <rich:column rendered="#{vehiclesBean.columns['active']}" sortBy="#{item.active}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_active}" /></f:facet>
