@@ -122,7 +122,7 @@
 		<!-- leave reRenderList alone -->												
 					<ui:include src="/includes/trendxychart.xhtml">
 						<ui:param name="reRenderList" value="trendForm,hiddenField1,xypanel,items"/>
-						<ui:param name="column_one" value="Region"/>
+						<ui:param name="column_one" value="Fleet"/>
 						<ui:param name="column_two" value="Score"/>
 						<ui:param name="thirtyDaysOn" value="#{trendBean.styleClass30Days}"/>
 						<ui:param name="threeMonthsOn" value="#{trendBean.styleClass3Months}"/>
@@ -148,7 +148,7 @@
 
 		<!-- START FLEET MAP PANEL -->
 		<ui:include src="/includes/liveFleetMap.xhtml">
-			<ui:param name="mapheight" value="height:800px"/>
+			<ui:param name="mapheight" value="height:360px"/>
 			<ui:param name="mapwidth" value="width:435px"/>
 			<ui:param name="mapxcenter" value="41.0"/>
 			<ui:param name="mapycenter" value="-116.0"/>
@@ -159,18 +159,18 @@
 		
 		<!-- START ESTIMATED FUEL EFFICIENCY PANEL -->
 		<!-- leave reRenderList alone -->
-<!-- 	<ui:include src="/includes/fuelEfficiencyChart.xhtml"> -->	
-<!-- 		<ui:param name="reRenderList" value="barForm,barpanel,hiddenField3"/> -->
-<!-- 		<ui:param name="title" value="Estimated Fuel Efficiency"/> -->
-<!--        <ui:param name="barheight" value="440"/> -->
-<!--        <ui:param name="barwidth" value="350"/> -->
-<!--        <ui:param name="barDef" value="#{fuelBean.barDef}"/> -->   
-<!--        <ui:param name="duration" value="#{fuelBean.duration}" /> -->  
-<!--        <ui:param name="thirtyDaysOn" value="#{fuelBean.styleClass30Days}"/> -->
-<!-- 		<ui:param name="threeMonthsOn" value="#{fuelBean.styleClass3Months}"/> -->
-<!-- 		<ui:param name="sixMonthsOn" value="#{fuelBean.styleClass6Months}"/> -->
-<!-- 		<ui:param name="twelveMonthsOn" value="#{fuelBean.styleClass12Months}"/> -->       
-<!-- 		</ui:include> -->
+	 	<ui:include src="/includes/fuelEfficiencyChart.xhtml">
+	 		<ui:param name="reRenderList" value="barForm,barpanel,hiddenField3"/>
+	 		<ui:param name="title" value="Estimated Fuel Efficiency"/>
+	        <ui:param name="barheight" value="440"/>
+	        <ui:param name="barwidth" value="350"/>
+	        <ui:param name="barDef" value="#{fuelBean.barDef}"/>  
+	        <ui:param name="duration" value="#{fuelBean.duration}" />
+	        <ui:param name="thirtyDaysOn" value="#{fuelBean.styleClass30Days}"/>
+	 		<ui:param name="threeMonthsOn" value="#{fuelBean.styleClass3Months}"/>
+	 		<ui:param name="sixMonthsOn" value="#{fuelBean.styleClass6Months}"/>
+	 		<ui:param name="twelveMonthsOn" value="#{fuelBean.styleClass12Months}"/>       
+		</ui:include>
 		<!-- END PANEL -->
 	</td>
   </tr>
