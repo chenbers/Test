@@ -1,13 +1,8 @@
 package com.inthinc.pro.backing;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
-import org.springframework.security.context.SecurityContextHolder;
-import org.springframework.security.userdetails.User;
 
 import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.util.GraphicUtil;
 
 public class BreakdownBean extends BaseBean {
@@ -25,7 +20,7 @@ public class BreakdownBean extends BaseBean {
 	
 	public String getPieDef() {		
 		pieDef = createPieDef();
-		logger.debug("returned string: " + pieDef);
+//		logger.debug("returned string: " + pieDef);
 		return pieDef;
 	}
 
