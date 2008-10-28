@@ -48,22 +48,22 @@
 						<span class="panel_links"><h:outputText>Graph the last:&#160;</h:outputText> 
 							       
   										<a4j:commandLink title="#{messages.miles500}" immediate="true"
-            								styleClass="#{(driverBean.duration eq '500') ? 'on' : ''}"
+            								styleClass="#{(driverBean.distance eq 'FIVEHUNDRED') ? 'on' : ''}"
             								reRender="overall-form,overallPanel"
             								value="#{messages.miles500}">
-            								<a4j:actionparam name="duration" assignTo="#{driverBean.duration}" value="500" />
+            								<a4j:actionparam name="distance" assignTo="#{driverBean.distance}" value="FIVEHUNDRED" />
           								</a4j:commandLink><h:outputText value=" "></h:outputText>
           								<a4j:commandLink title="#{messages.miles1000}" immediate="true"
-            								styleClass="#{(driverBean.duration eq '1000') ? 'on' : ''}"
+            								styleClass="#{(driverBean.distance eq 'ONETHOUSAND') ? 'on' : ''}"
             								reRender="overall-form,overallPanel"            								
             								value="#{messages.miles1000}">
-            								<a4j:actionparam name="duration" assignTo="#{driverBean.duration}" value="1000" />
+            								<a4j:actionparam name="distance" assignTo="#{driverBean.distance}" value="ONETHOUSAND" />
           								</a4j:commandLink><h:outputText value=" "></h:outputText>
           								<a4j:commandLink title="#{messages.miles10000}" immediate="true"
-            								styleClass="#{(driverBean.duration eq '10000') ? 'on' : ''}"
+            								styleClass="#{(driverBean.distance eq 'TENTHOUSAND') ? 'on' : ''}"
             								reRender="overall-form,overallPanel"
             								value="#{messages.miles10000}">
-            								<a4j:actionparam name="duration" assignTo="#{driverBean.duration}" value="10000" />
+            								<a4j:actionparam name="distance" assignTo="#{driverBean.distance}" value="TENTHOUSAND" />
           								</a4j:commandLink><h:outputText value=" "></h:outputText>
       							
 								</span>

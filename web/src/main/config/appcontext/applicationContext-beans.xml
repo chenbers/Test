@@ -38,6 +38,7 @@
    </bean>
 
    <bean id="driverBean" class="com.inthinc.pro.backing.DriverBean" scope="session">
+   		<property name="graphicDAO" ref="graphicDAO"></property>
    </bean>
 
     <bean id="teamOverviewBean" class="com.inthinc.pro.backing.TeamOverviewBean" scope="request" parent="baseBean">

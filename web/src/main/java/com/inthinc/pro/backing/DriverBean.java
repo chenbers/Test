@@ -4,8 +4,11 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
+import com.inthinc.pro.dao.GraphicDAO;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.util.GraphicUtil;
-import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.ScoreableEntity;
+import com.inthinc.pro.model.Distance;
 
 public class DriverBean extends BaseBean
 {
@@ -14,7 +17,6 @@ public class DriverBean extends BaseBean
 	// Get scores from DAO instead
 	
 	private String driverName = "Amy Johnson";
-	private String duration = "500";
 	
 	private Integer overallScore;
 	private String overallScoreHistory;
@@ -34,6 +36,8 @@ public class DriverBean extends BaseBean
 	
 	private String coachingHistory;
 	
+	private GraphicDAO     graphicDAO;
+	private Distance       distance = Distance.FIVEHUNDRED;
 
 	public DriverBean()
 	{
@@ -41,7 +45,7 @@ public class DriverBean extends BaseBean
 	      setOverallScore(score);
 	}
 	
-	private String createLineDef() {
+    private String createLineDef() {
 		StringBuffer sb = new StringBuffer();
 		//Control parameters
 		sb.append(GraphicUtil.createLineControlParameters());
@@ -51,16 +55,40 @@ public class DriverBean extends BaseBean
 		return sb.toString();
 	}
 	
-	//OVERALL SCORE properties
-	public Integer getOverallScore() {
+    private void init()
+    {
+        //TODO get overall score for DRIVER not group.
+        Integer endDate = DateUtil.getTodaysDate();
+        Integer startDate = DateUtil.getDaysBackDate(endDate, distance.getNumberOfMiles());
+        ScoreableEntity scoreableEntity = graphicDAO.getOverallScore(getUser().getGroupID(), startDate, endDate);
+        setOverallScore(scoreableEntity.getScore());
+    }
+    
+    private void initStyle()
+    {
+        if (overallScore == null)
+        {
+            init();
+        }
 
-	    return overallScore;
+        ScoreBox sb = new ScoreBox(getOverallScore(), ScoreBoxSizes.LARGE);
+        setOverallScoreStyle(sb.getScoreStyle());
+    }
+    
+	//OVERALL SCORE properties
+	public Integer getOverallScore()
+	{
+        if (overallScore == null)
+        {
+            init();
+        }
+        return overallScore;
 	}
 	
 	public void setOverallScore(Integer overallScore) 
 	{
-		this.overallScoreStyle = new ScoreBox(overallScore, ScoreBoxSizes.MEDIUM).getScoreStyle();
 		this.overallScore = overallScore;
+		initStyle();
 	}
 	public String getOverallScoreHistory() {
 		
@@ -71,7 +99,12 @@ public class DriverBean extends BaseBean
 		this.overallScoreHistory = overallScoreHistory;
 	}
 	public String getOverallScoreStyle() {
-		return overallScoreStyle;
+	    if (overallScoreStyle == null)
+        {
+            initStyle();
+        }
+        logger.debug("overallScoreStyle = " + overallScoreStyle);
+        return overallScoreStyle;
 	}
 	public void setOverallScoreStyle(String overallScoreStyle) {
 		this.overallScoreStyle = overallScoreStyle;
@@ -157,17 +190,29 @@ public class DriverBean extends BaseBean
 	public void setDriverName(String driverName) {
 		this.driverName = driverName;
 	}
-
-	//DURATION PROPERTIES
-    public String getDuration()
+    //DISTANCE properties
+    public Distance getDistance()
     {
-        return duration;
+        return distance;
+    }
+    public String getDistanceAsString()
+    {   
+        return distance.toString();
     }
 
-    public void setDuration(String duration)
+    public void setDistance(Distance distance)
     {
-        Integer score = GraphicUtil.getRandomScore(); //Get score from DAO
-        setOverallScore(score);
-        this.duration = duration;
+        this.distance = distance;
+    }
+
+    //GRAPHIC DAO PROPERTIES
+    public GraphicDAO getGraphicDAO()
+    {
+        return graphicDAO;
+    }
+
+    public void setGraphicDAO(GraphicDAO graphicDAO)
+    {
+        this.graphicDAO = graphicDAO;
     }
 }
