@@ -16,6 +16,7 @@ import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleCompanyInfo;
 import com.inthinc.pro.model.VehicleDescription;
 import com.inthinc.pro.model.VehicleLicense;
 
@@ -89,6 +90,9 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     {
         final Vehicle vehicle = new Vehicle();
         vehicle.setVehicleID((int) (Math.random() * Integer.MAX_VALUE));
+        vehicle.setCompanyInfo(new VehicleCompanyInfo());
+        vehicle.getCompanyInfo().setVehicleIdentification(String.valueOf((int) (Math.random() * Integer.MAX_VALUE)));
+        vehicle.getCompanyInfo().setCostPerHour(randomInt(200));
         vehicle.setDescription(new VehicleDescription());
         vehicle.getDescription().setYear(String.valueOf(randomInt(39) + 1970));
         vehicle.getDescription().setMake(createDummyName());
