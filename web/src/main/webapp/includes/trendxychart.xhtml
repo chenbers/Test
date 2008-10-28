@@ -71,7 +71,9 @@
 								<f:facet name="header">
 									<h:outputText value="#{column_one}" />
 								</f:facet>
-								<h:commandLink value="#{item.se.identifier}" action="#{item.goTo}">
+								<h:commandLink value="#{item.se.identifier}" 
+									actionListener="#{navigationBean.listener}" action="#{item.goTo}">
+									<f:param name="selectedGroup" value="#{item.se.entityID}" />
 								</h:commandLink>
 
 							</rich:column>
