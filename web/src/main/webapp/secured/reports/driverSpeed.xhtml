@@ -1,0 +1,283 @@
+<ui:composition template="/layout/layout.xhtml" 
+			xmlns="http://www.w3.org/1999/xhtml" 
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+  			xmlns:h="http://java.sun.com/jsf/html" 
+  			xmlns:rich="http://richfaces.org/rich"
+  			xmlns:a4j="http://richfaces.org/a4j"
+  			xmlns:f="http://java.sun.com/jsf/core"
+  			xmlns:iwi="http://pro.tiwi.com/jsf">
+
+	<ui:define name="scripts">
+		<script src="/tiwipro/js/FusionCharts.js" type="text/javascript"></script>	
+	</ui:define>
+
+	<ui:param name="reportsSelected" value="current" />
+	
+	<ui:define name="subnavigation">
+		<ui:include src="/includes/reports/subNavigation.xhtml" />
+	</ui:define>
+	
+	<ui:define name="content">
+<div id="wrapper">
+
+<ul id="grid_nav">
+	<li class="l grid_icon"><img src="images/ico_line.png" /></li>
+	<li class="l grid_title">Driver Performance: <h:outputText> #{driverBean.driverName}</h:outputText></li>
+	<li class="l divider"><img src="/images/grid_nav_divider.png" /></li>
+	<li class="l">
+	
+		<ul id="breadcrumb">
+			<li class="first"><a href="/">Home</a></li>
+			<li><a href="drivers.html">Drivers</a></li>
+			<li class="last"><h:outputText>#{driverBean.driverName}</h:outputText></li>
+		</ul>
+	</li>
+</ul>
+
+<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" class="dash_table">
+  <tr>
+    <td colspan="3" valign="top">
+		<!-- START PANEL -->
+			<div class="">
+				<div class="panel_nw">
+					<div class="panel_title">
+						<span class="line">Speed</span>
+						<a4j:form id="overall-form"> 
+						<span class="panel_links"><h:outputText>Graph the last:&#160;</h:outputText> 
+							       
+  										<a4j:commandLink title="#{messages.miles500}" immediate="true"
+            								styleClass="#{(driverBean.distance eq 'FIVEHUNDRED') ? 'on' : ''}"
+            								reRender="overall-form,overallPanel"
+            								value="#{messages.miles500}">
+            								<a4j:actionparam name="distance" assignTo="#{driverBean.distance}" value="FIVEHUNDRED" />
+          								</a4j:commandLink><h:outputText value=" "></h:outputText>
+          								<a4j:commandLink title="#{messages.miles1000}" immediate="true"
+            								styleClass="#{(driverBean.distance eq 'ONETHOUSAND') ? 'on' : ''}"
+            								reRender="overall-form,overallPanel"            								
+            								value="#{messages.miles1000}">
+            								<a4j:actionparam name="distance" assignTo="#{driverBean.distance}" value="ONETHOUSAND" />
+          								</a4j:commandLink><h:outputText value=" "></h:outputText>
+          								<a4j:commandLink title="#{messages.miles10000}" immediate="true"
+            								styleClass="#{(driverBean.distance eq 'TENTHOUSAND') ? 'on' : ''}"
+            								reRender="overall-form,overallPanel"
+            								value="#{messages.miles10000}">
+            								<a4j:actionparam name="distance" assignTo="#{driverBean.distance}" value="TENTHOUSAND" />
+          								</a4j:commandLink><h:outputText value=" "></h:outputText>
+      							
+								</span>
+									</a4j:form>
+						</div>
+				</div>
+				<div class="panel_w">
+				  <rich:panel bodyClass="panel_content" id="overallPanel" border="0">
+				  <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
+					  <tr>
+						<td valign="top" width="600">
+						   <ui:include src="../includes/lineChart.xhtml">
+						            <ui:param name="lineChartDef" value="#{driverBean.speedScoreHistory}" />
+						            <ui:param name="hiddenFieldID" value="HiddenField" />
+						            <ui:param name="width" value="650" /> 
+						            <ui:param name="height" value="200" />  
+						            <ui:param name="tartgetElementVar" value="targetElement" />
+						            <ui:param name="ChartDivID" value="overall_chart" />
+							</ui:include>
+						</td>
+						<td valign="top" align="right">
+							<table width="220" border="0" cellspacing="0" cellpadding="0" class="scorebox" style="margin: 20px 20px 0 0;">
+							  <tr>
+								<td>
+									<h4>Overall Score</h4>
+									<div style="margin-top: 8px;"><a href="#" class="ls_tab_email">Email</a></div>
+								</td>
+								<td width="80" align="center">
+									<ui:include src="../includes/scoreBox.xhtml">
+								            <ui:param name="score" value="#{driverBean.overallScore}" />
+								            <ui:param name="scoreStyle" value="#{driverBean.overallScoreStyle}" />
+									</ui:include>
+								</td>
+							  </tr>
+							</table>
+						</td>
+					  </tr>
+					</table>
+				  
+				  </rich:panel>
+				</div>
+				<div class="panel_sw">
+					<div class="panel_statusbar"></div>
+				</div>
+			</div>
+			<div class="spacer"></div>
+		<!-- END PANEL -->
+	</td>
+    </tr>
+  <tr>
+    <td colspan="3" valign="top"><img src="images/x.gif" width="10" height="10" /></td>
+    </tr>
+  <tr>
+    <td width="465" valign="top">
+<!-- END PANEL -->
+	</td>
+    </tr>
+  <tr>
+    <td colspan="3" valign="top"><img src="images/x.gif" width="10" height="10" /></td>
+    </tr>
+  <tr>
+    <td width="465" valign="top">
+		<!-- START PANEL -->
+			<div class="">
+				<div class="panel_nw">
+					<div class="panel_title">
+						<span class="speed">Breakdown by Speed Limit   </span>
+						<span class="panel_links"></span></div>
+				</div>
+				<div class="panel_w">
+				  <div class="panel_content">
+				  
+					<table width="920" height="200px" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
+					  <tr>
+					    <td valign="top" class="tiny_selected">
+						  <div class="tiny_title">Overall</div>
+							<table width="300" border="0" cellspacing="0" cellpadding="0">
+							  <tr>
+								<td>
+									<div id="speed_chart_tiny_overall"></div>
+									<script type="text/javascript">
+										var chart = new FusionCharts("/swf/Area2D.swf", "ChartId", "220", "90", "0", "0");
+										chart.setDataURL("/xml/line_driveq_speed_tiny_overall.xml");		   
+										chart.render("speed_chart_tiny_overall");
+										chart.addParam('wmode', 'transparent');
+									</script>
+								</td>
+								<td align="center">
+									<div class="score_med_3" onclick="location.href='#';">
+										<div class="score">3.2</div>
+									</div>
+								</td>
+							  </tr>
+							</table>
+						</td>
+					    <td valign="top" class="tiny_chart">
+							<div class="tiny_title"><a href="driverq_speed_21-30.html">21-30mph</a></div>
+							<table width="300" border="0" cellspacing="0" cellpadding="0">
+							  <tr>
+								<td>
+									<div id="speed_chart_tiny_21-30"></div>
+									<script type="text/javascript">
+										var chart = new FusionCharts("/swf/Area2D.swf", "ChartId", "220", "90", "0", "0");
+										chart.setDataURL("/xml/line_driveq_speed_tiny_21-30.xml");		   
+										chart.render("speed_chart_tiny_21-30");
+										chart.addParam('wmode', 'transparent');
+									</script>
+								</td>
+								<td align="center">
+									<div class="score_med_3" onclick="location.href='#';">
+										<div class="score">3.4</div>
+									</div>
+								</td>
+							  </tr>
+							</table>
+						</td>
+					    <td valign="top" class="tiny_chart">
+							<div class="tiny_title"><a href="driverq_speed_31-40.html">31-40mph</a></div>
+							<table width="300" border="0" cellspacing="0" cellpadding="0">
+							  <tr>
+								<td>
+									<div id="speed_chart_tiny_31-40"></div>
+									<script type="text/javascript">
+										var chart = new FusionCharts("/swf/Area2D.swf", "ChartId", "220", "90", "0", "0");
+										chart.setDataURL("/xml/line_driveq_speed_tiny_31-40.xml");		   
+										chart.render("speed_chart_tiny_31-40");
+										chart.addParam('wmode', 'transparent');
+									</script>
+								</td>
+								<td align="center">
+									<div class="score_med_45" onclick="location.href='#';">
+										<div class="score">4.1</div>
+									</div>
+								</td>
+							  </tr>
+							</table>
+						</td>
+				      </tr>
+					  <tr>
+						<td valign="top" class="tiny_chart">
+							<div class="tiny_title"><a href="driverq_speed_41-54.html">41-54mph</a></div>
+							<table width="300" border="0" cellspacing="0" cellpadding="0">
+							  <tr>
+								<td>
+									<div id="speed_chart_tiny_41-54"></div>
+									<script type="text/javascript">
+										var chart = new FusionCharts("/swf/Area2D.swf", "ChartId", "220", "90", "0", "0");
+										chart.setDataURL("/xml/line_driveq_speed_tiny_41-54.xml");		   
+										chart.render("speed_chart_tiny_41-54");
+										chart.addParam('wmode', 'transparent');
+									</script>
+								</td>
+								<td align="center">
+									<div class="score_med_45" onclick="location.href='#';">
+										<div class="score">4.8</div>
+									</div>
+								</td>
+							  </tr>
+							</table>
+						</td>
+						<td valign="top" class="tiny_chart">
+							<div class="tiny_title"><a href="driverq_speed_55-64.html">55-64mph</a></div>
+							<table width="300" border="0" cellspacing="0" cellpadding="0">
+							  <tr>
+								<td>
+									<div id="speed_chart_tiny_55-64"></div>
+									<script type="text/javascript">
+										var chart = new FusionCharts("/swf/Area2D.swf", "ChartId", "220", "90", "0", "0");
+										chart.setDataURL("/xml/line_driveq_speed_tiny_55-64.xml");		   
+										chart.render("speed_chart_tiny_55-64");
+										chart.addParam('wmode', 'transparent');
+									</script>
+								</td>
+								<td align="center">
+									<div class="score_med_3" onclick="location.href='#';">
+										<div class="score">3.1</div>
+									</div>
+								</td>
+							  </tr>
+							</table>
+						</td>
+					    <td valign="top" class="tiny_chart">
+							<div class="tiny_title"><a href="driverq_speed_65-80.html">65-80mph</a></div>
+							<table width="300" border="0" cellspacing="0" cellpadding="0">
+							  <tr>
+								<td>
+									<div id="speed_chart_tiny_65-80"></div>
+									<script type="text/javascript">
+										var chart = new FusionCharts("/swf/Area2D.swf", "ChartId", "220", "90", "0", "0");
+										chart.setDataURL("/xml/line_driveq_speed_tiny_65-80.xml");		   
+										chart.render("speed_chart_tiny_65-80");
+										chart.addParam('wmode', 'transparent');
+									</script>
+								</td>
+								<td align="center">
+									<div class="score_med_45" onclick="location.href='#';">
+										<div class="score">4.3</div>
+									</div>
+								</td>
+							  </tr>
+							</table>
+						</td>
+					  </tr>
+					</table>
+				  </div>
+				</div>
+				<div class="panel_sw">
+					<div class="panel_statusbar"></div>
+				</div>
+			</div>
+		<!-- END PANEL -->
+		
+	</td>
+  </tr>
+</table>
+</div>
+</ui:define>
+
+</ui:composition>

@@ -1,0 +1,27 @@
+<!-- 
+	To use:
+	
+	<ui:include src="../includes/lineChart.xhtml">
+            <ui:param name="lineChartDef" value="#{yourBean.lineDef}" />
+            <ui:param name="hiddenFieldID" value="HiddenField3" />
+            <ui:param name="width" value="380" /> 
+            <ui:param name="height" value="200" />  
+            <ui:param name="tartgetElementVar" value="targetElement6" />
+            <ui:param name="ChartDivID" value="style_chart" />
+	</ui:include>
+-->
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:rich="http://richfaces.org/rich">
+
+	<rich:panel id="#{ChartDivID}" style="height: #{height};"></rich:panel>
+	<h:inputHidden value="#{lineChartDef}" id="#{hiddenFieldID}" />
+	<script type="text/javascript">
+		var #{tartgetElementVar} = document.getElementById("#{hiddenFieldID}");
+		var chart = new FusionCharts("../fusioncharts/Area2D.swf", "ChartId", "#{width}", "#{height}", "0", "0");
+		chart.setDataXML(#{tartgetElementVar}.value);			   
+		chart.render("#{ChartDivID}");
+	</script>
+
+</ui:composition>

@@ -71,7 +71,7 @@ public class DriverBean extends BaseBean
             init();
         }
 
-        ScoreBox sb = new ScoreBox(getOverallScore(), ScoreBoxSizes.LARGE);
+        ScoreBox sb = new ScoreBox(getOverallScore(), ScoreBoxSizes.MEDIUM);
         setOverallScoreStyle(sb.getScoreStyle());
     }
     

@@ -75,14 +75,14 @@
 				  <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
 					  <tr>
 						<td valign="top" width="600">
-							<div id="overall_chart"></div>
-							<h:inputHidden value="#{driverBean.overallScoreHistory}" id="hiddenField"/>
-								<script type="text/javascript">
-									var targetElement1 = document.getElementById("hiddenField");
-									var chart = new FusionCharts("../fusioncharts/Area2D.swf", "ChartId", "650", "200", "0", "0");
-									chart.setDataXML(targetElement1.value);		   
-									chart.render("overall_chart");
-								</script>
+						   <ui:include src="../includes/lineChart.xhtml">
+						            <ui:param name="lineChartDef" value="#{driverBean.overallScoreHistory}" />
+						            <ui:param name="hiddenFieldID" value="HiddenField" />
+						            <ui:param name="width" value="650" /> 
+						            <ui:param name="height" value="200" />  
+						            <ui:param name="tartgetElementVar" value="targetElement" />
+						            <ui:param name="ChartDivID" value="overall_chart" />
+							</ui:include>
 						</td>
 						<td valign="top" align="right">
 							<table width="220" border="0" cellspacing="0" cellpadding="0" class="scorebox" style="margin: 20px 20px 0 0;">
@@ -109,6 +109,7 @@
 					<div class="panel_statusbar"></div>
 				</div>
 			</div>
+			<div class="spacer"></div>
 		<!-- END PANEL -->
 	</td>
     </tr>
@@ -130,20 +131,20 @@
 					    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">                        
                           <tr>
                             <td width="373">
-								<div id="speed_chart"></div>
-								<h:inputHidden value="#{driverBean.speedScoreHistory}" id="hiddenField2"/>
-								<script type="text/javascript">
-									var targetElement2 = document.getElementById("hiddenField2");
-									var chart = new FusionCharts("../fusioncharts/Area2D.swf", "ChartId", "380", "200", "0", "0");
-									chart.setDataXML(targetElement2.value);			   
-									chart.render("speed_chart");
-								</script>
+				            <ui:include src="../includes/lineChart.xhtml">
+						            <ui:param name="lineChartDef" value="#{driverBean.speedScoreHistory}" />
+						            <ui:param name="hiddenFieldID" value="HiddenField1" />
+						            <ui:param name="width" value="380" /> 
+						            <ui:param name="height" value="200" />  
+						            <ui:param name="tartgetElementVar" value="targetElement1" />
+						            <ui:param name="ChartDivID" value="speed_chart" />
+							</ui:include>
 							</td>
                             <td width="80" align="center">
-								                                    <ui:include src="../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverBean.speedScore}" />
-								            <ui:param name="scoreStyle" value="#{driverBean.speedScoreStyle}" />
-									</ui:include>
+							    <ui:include src="../includes/scoreBox.xhtml">
+							            <ui:param name="score" value="#{driverBean.speedScore}" />
+							            <ui:param name="scoreStyle" value="#{driverBean.speedScoreStyle}" />
+								</ui:include>
 							</td>
                           </tr>
                         </table>
@@ -170,20 +171,20 @@
 					    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
                           <tr>
                             <td width="373">
-                              <div id="style_chart"></div>
-                             	<h:inputHidden value="#{driverBean.drivingScoreHistory}" id="hiddenField3"/>
-								<script type="text/javascript">
-									var targetElement3 = document.getElementById("hiddenField3");
-									var chart = new FusionCharts("../fusioncharts/Area2D.swf", "ChartId", "380", "200", "0", "0");
-									chart.setDataXML(targetElement3.value);			   
-									chart.render("style_chart");
-								</script>
+                      		<ui:include src="../includes/lineChart.xhtml">
+						            <ui:param name="lineChartDef" value="#{driverBean.drivingScoreHistory}" />
+						            <ui:param name="hiddenFieldID" value="HiddenField2" />
+						            <ui:param name="width" value="380" /> 
+						            <ui:param name="height" value="200" />  
+						            <ui:param name="tartgetElementVar" value="targetElement2" />
+						            <ui:param name="ChartDivID" value="style_chart" />
+							</ui:include>
                             </td>
                             <td width="80" align="center">
-                                    <ui:include src="../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverBean.drivingScore}" />
-								            <ui:param name="scoreStyle" value="#{driverBean.drivingScoreStyle}" />
-									</ui:include>
+                                <ui:include src="../includes/scoreBox.xhtml">
+							            <ui:param name="score" value="#{driverBean.drivingScore}" />
+							            <ui:param name="scoreStyle" value="#{driverBean.drivingScoreStyle}" />
+								</ui:include>
                             </td>
                           </tr>
                         </table>
@@ -210,19 +211,20 @@
                           <tr>
                             <td width="373">
                               <div id="seatbelt_chart"></div>
-                           		<h:inputHidden value="#{driverBean.seatBeltScoreHistory}" id="hiddenField4"/>
-								<script type="text/javascript">
-									var targetElement4 = document.getElementById("hiddenField4");
-									var chart = new FusionCharts("../fusioncharts/Area2D.swf", "ChartId", "380", "200", "0", "0");
-									chart.setDataXML(targetElement4.value);			   
-									chart.render("seatbelt_chart");
-								</script>
+                      		<ui:include src="../includes/lineChart.xhtml">
+						            <ui:param name="lineChartDef" value="#{driverBean.seatBeltScoreHistory}" />
+						            <ui:param name="hiddenFieldID" value="HiddenField3" />
+						            <ui:param name="width" value="380" /> 
+						            <ui:param name="height" value="200" />
+						            <ui:param name="tartgetElementVar" value="targetElement3" />
+						            <ui:param name="ChartDivID" value="seatBelt_chart" />
+							</ui:include>
                             </td>
                             <td width="80" align="center">
-                        	        <ui:include src="../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverBean.seatBeltScore}" />
-								            <ui:param name="scoreStyle" value="#{driverBean.seatBeltScoreStyle}" />
-									</ui:include>
+                       	        <ui:include src="../includes/scoreBox.xhtml">
+							            <ui:param name="score" value="#{driverBean.seatBeltScore}" />
+							            <ui:param name="scoreStyle" value="#{driverBean.seatBeltScoreStyle}" />
+								</ui:include>
                             </td>
                           </tr>
                         </table>
@@ -283,14 +285,14 @@
 					    <table width="450" border="0" align="center" cellpadding="0" cellspacing="0">
                           <tr>
                             <td>
-                              <div id="coaching_chart"></div>
-                            <h:inputHidden value="#{driverBean.coachingHistory}" id="hiddenField5"/>
-								<script type="text/javascript">
-									var targetElement5 = document.getElementById("hiddenField5");
-									var chart = new FusionCharts("../fusioncharts/Area2D.swf", "ChartId", "380", "200", "0", "0");
-									chart.setDataXML(targetElement5.value);			   
-									chart.render("coaching_chart");
-								</script>
+                            <ui:include src="../includes/lineChart.xhtml">
+						            <ui:param name="lineChartDef" value="#{driverBean.coachingHistory}" />
+						            <ui:param name="hiddenFieldID" value="HiddenField4" />
+						            <ui:param name="width" value="450" /> 
+						            <ui:param name="height" value="200" />
+						            <ui:param name="tartgetElementVar" value="targetElement4" />
+						            <ui:param name="ChartDivID" value="coaching_chart" />
+							</ui:include>
                             </td>
                           </tr>
                         </table>
