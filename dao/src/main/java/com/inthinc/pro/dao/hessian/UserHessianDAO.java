@@ -29,7 +29,7 @@ public class UserHessianDAO extends GenericHessianDAO<User, Integer, CentralServ
   }
 
   @Converter(columnName = "phone")
-  public void setPhoneNumbers(User user, Object value)
+  public void phoneNumbersToModel(User user, Object value)
   {
     if (user == null || value == null)
       return;
@@ -42,6 +42,17 @@ public class UserHessianDAO extends GenericHessianDAO<User, Integer, CentralServ
       if (phoneNumbers.length > 1)
         user.setSecondaryPhone(phoneNumbers[1]);
     }
+  }
+  
+  @Converter(fieldNames={"primaryPhone","secondaryPhone"})
+  public void phoneNumbersToMap(Map<String, Object> map, User user)
+  {
+      if(map == null || user == null)
+          return;
+      StringBuffer phoneBuffer = new StringBuffer();
+      phoneBuffer.append((user.getPrimaryPhone() == null || user.getPrimaryPhone().isEmpty()) ? "" : user.getPrimaryPhone());
+      phoneBuffer.append(";");
+      phoneBuffer.append((user.getSecondaryPhone() == null || user.getSecondaryPhone().isEmpty()) ? "" : user.getSecondaryPhone());
   }
 
   @Converter(columnName = "sms")

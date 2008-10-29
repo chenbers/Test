@@ -13,5 +13,5 @@ public @interface Converter
 {
   String fieldName() default "";
   String[] fieldNames() default {""};
-  String columnName();
+  String columnName() default "";
 }
