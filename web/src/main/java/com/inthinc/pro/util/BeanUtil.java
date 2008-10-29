@@ -33,7 +33,7 @@ public class BeanUtil
     }
 
     /**
-     * Deep copies the source object into the target object.
+     * Deep copies the source object into the target object. Requires that all complex members must have a no-argument constructor.
      * 
      * @param source
      *            The source bean.
