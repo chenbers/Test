@@ -1,5 +1,8 @@
 package com.inthinc.pro.backing;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
@@ -9,6 +12,7 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.Distance;
+import com.inthinc.pro.model.SpeedingEvent;
 
 public class DriverBean extends BaseBean
 {
@@ -38,6 +42,8 @@ public class DriverBean extends BaseBean
 	
 	private GraphicDAO     graphicDAO;
 	private Distance       distance = Distance.FIVEHUNDRED;
+	
+	private List<SpeedingEvent> speedingEvents = new ArrayList<SpeedingEvent>();
 
 	public DriverBean()
 	{
@@ -215,4 +221,34 @@ public class DriverBean extends BaseBean
     {
         this.graphicDAO = graphicDAO;
     }
+    
+    //SPEEDING EVENTS LIST
+	public List<SpeedingEvent> getSpeedingEvents() {
+		
+		SpeedingEvent s = new SpeedingEvent();
+		s.setLatitude(90.000);
+		s.setLongitude(-110.0000);
+		s.setTime(456655);
+		s.setSpeed(87);
+		s.setAvgSpeed(65);
+		s.setTopSpeed(91);
+		s.setDistance(32);
+		
+		speedingEvents.add(s);
+		s = new SpeedingEvent();
+		s.setLatitude(85.000);
+		s.setLongitude(-119.0000);
+		s.setTime(47054);
+		s.setSpeed(87);
+		s.setAvgSpeed(64);
+		s.setTopSpeed(78);
+		s.setDistance(22);
+		speedingEvents.add(s);
+		
+		return speedingEvents;
+	}
+
+	public void setSpeedingEvents(List<SpeedingEvent> speedingEvents) {
+		this.speedingEvents = speedingEvents;
+	}
 }

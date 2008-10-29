@@ -80,6 +80,12 @@
 			<to-view-id>/secured/driver.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>go_reportDriverSpeed</from-outcome>
+			<to-view-id>/secured/reports/driverSpeed.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 	
 	<!-- validators -->
 	
