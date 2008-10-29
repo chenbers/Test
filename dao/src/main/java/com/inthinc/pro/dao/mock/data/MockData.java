@@ -190,7 +190,26 @@ public class MockData
         {
             for (ScoreType scoreType : EnumSet.allOf(ScoreType.class))
             {
-                mockData.storeObject(new ScoreableEntity(entityID, entityType, entityName, randomInt(0,50), DateUtil.getDaysBackDate(dateNow, 30 * monthsBack[monthsBackCnt]),scoreType));
+                if ( scoreType != ScoreType.SCORE_OVERALL_TIME ) {
+                    mockData.storeObject(
+                        new ScoreableEntity(entityID, 
+                                entityType, 
+                                entityName, 
+                                randomInt(0,50), 
+                                DateUtil.getDaysBackDate(dateNow, 30 * monthsBack[monthsBackCnt]),
+                                scoreType));
+                } else {
+                    //Create three dates per range
+                    for ( int i = 0; i < 4; i++ ) {
+                        mockData.storeObject(
+                            new ScoreableEntity(entityID, 
+                                entityType, 
+                                entityName, 
+                                randomInt(0,50), 
+                                DateUtil.getDaysBackDate(dateNow, 30 * monthsBack[monthsBackCnt]+ i),
+                                scoreType));
+                    }
+                }
             }
         }
     }
