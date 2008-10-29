@@ -33,6 +33,8 @@
    </bean>
    <bean id="breakdownBean" class="com.inthinc.pro.backing.BreakdownBean" 
    		scope="request" parent="baseBean">
+		<property name="graphicDAO" ref="graphicDAO"></property>
+		<property name="navigation" ref="navigationBean"></property>   		
    </bean>
    <bean id="fuelBean" class="com.inthinc.pro.backing.FuelBean" 
    		scope="request" parent="baseBean">
