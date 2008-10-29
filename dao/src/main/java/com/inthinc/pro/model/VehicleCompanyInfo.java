@@ -2,18 +2,18 @@ package com.inthinc.pro.model;
 
 public class VehicleCompanyInfo extends BaseEntity
 {
-    int    vehicleId;
+    int    vehicleID;
     String vehicleIdentification; // name/id used by company
     int    costPerHour;          // in cents
 
-    public int getVehicleId()
+    public int getVehicleID()
     {
-        return vehicleId;
+        return vehicleID;
     }
 
-    public void setVehicleId(int vehicleId)
+    public void setVehicleID(int vehicleId)
     {
-        this.vehicleId = vehicleId;
+        this.vehicleID = vehicleId;
     }
 
     public String getVehicleIdentification()
