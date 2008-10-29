@@ -56,114 +56,68 @@ public class TrendBean extends BaseBean {
 	}
 	
 	private String createLineDef() {
-		StringBuffer sb = new StringBuffer();
-		//Control parameters
-		sb.append(GraphicUtil.getXYControlParameters());
-		
-		//X-axis
-		sb.append("<categories>");
-		sb.append(GraphicUtil.createMonthsString(duration));		
-		sb.append("</categories>");
-		
-		//Y-axii
-		
-//	Test one
-		sb.append("<dataset seriesName=\'\' color=\'");
-		sb.append((GraphicUtil.entityColorKey.get(0)).substring(1));
-		sb.append("\'>");
-		if (		this.duration.toString().equalsIgnoreCase(Duration.THREE.toString()) ) {
-			sb.append(GraphicUtil.createFakeXYData(3));		
-		}
-		else if (	this.duration.toString().equalsIgnoreCase(Duration.SIX.toString()) ) {
-			sb.append(GraphicUtil.createFakeXYData(6));	
-		}
-		else if (	this.duration.toString().equalsIgnoreCase(Duration.TWELVE.toString()) ) {
-			sb.append(GraphicUtil.createFakeXYData(12));	
-		}
-		else {
-			sb.append(GraphicUtil.createFakeXYData(30));	
-		}
-		
-		sb.append("</dataset>");
-		
-//	Test two
-		sb.append("<dataset seriesName=\'\' color=\'");
-		sb.append((GraphicUtil.entityColorKey.get(1)).substring(1));
-		sb.append("\'>");
-		if (		this.duration.toString().equalsIgnoreCase(Duration.THREE.toString()) ) {
-			sb.append(GraphicUtil.createFakeXYData(3));		
-		}
-		else if (	this.duration.toString().equalsIgnoreCase(Duration.SIX.toString()) ) {
-			sb.append(GraphicUtil.createFakeXYData(6));	
-		}
-		else if (	this.duration.toString().equalsIgnoreCase(Duration.TWELVE.toString()) ) {
-			sb.append(GraphicUtil.createFakeXYData(12));	
-		}
-		else {
-			sb.append(GraphicUtil.createFakeXYData(30));	
-		}
-		
-		sb.append("</dataset>");
-		
-//	Test three
-		sb.append("<dataset seriesName=\'\' color=\'");
-		sb.append((GraphicUtil.entityColorKey.get(2)).substring(1));
-		sb.append("\'>");
-		if (		this.duration.toString().equalsIgnoreCase(Duration.THREE.toString()) ) {
-			sb.append(GraphicUtil.createFakeXYData(3));		
-		}
-		else if (	this.duration.toString().equalsIgnoreCase(Duration.SIX.toString()) ) {
-			sb.append(GraphicUtil.createFakeXYData(6));	
-		}
-		else if (	this.duration.toString().equalsIgnoreCase(Duration.TWELVE.toString()) ) {
-			sb.append(GraphicUtil.createFakeXYData(12));	
-		}
-		else {
-			sb.append(GraphicUtil.createFakeXYData(30));	
-		}
-		
-		sb.append("</dataset>");
-		
-//	Test four
-		sb.append("<dataset seriesName=\'\' color=\'");
-		sb.append((GraphicUtil.entityColorKey.get(3)).substring(1));
-		sb.append("\'>");
-		if (		this.duration.toString().equalsIgnoreCase(Duration.THREE.toString()) ) {
-			sb.append(GraphicUtil.createFakeXYData(3));		
-		}
-		else if (	this.duration.toString().equalsIgnoreCase(Duration.SIX.toString()) ) {
-			sb.append(GraphicUtil.createFakeXYData(6));	
-		}
-		else if (	this.duration.toString().equalsIgnoreCase(Duration.TWELVE.toString()) ) {
-			sb.append(GraphicUtil.createFakeXYData(12));	
-		}
-		else {
-			sb.append(GraphicUtil.createFakeXYData(30));	
-		}
-		
-		sb.append("</dataset>");
-		
-//	Test five
-		sb.append("<dataset seriesName=\'\' color=\'");
-		sb.append((GraphicUtil.entityColorKey.get(4)).substring(1));
-		sb.append("\'>");
-		if (		this.duration.toString().equalsIgnoreCase(Duration.THREE.toString()) ) {
-			sb.append(GraphicUtil.createFakeXYData(3));		
-		}
-		else if (	this.duration.toString().equalsIgnoreCase(Duration.SIX.toString()) ) {
-			sb.append(GraphicUtil.createFakeXYData(6));	
-		}
-		else if (	this.duration.toString().equalsIgnoreCase(Duration.TWELVE.toString()) ) {
-			sb.append(GraphicUtil.createFakeXYData(12));	
-		}
-		else {
-			sb.append(GraphicUtil.createFakeXYData(30));	
-		}		
-		sb.append("</dataset>");					
-		
-		sb.append("</chart>");
-		
-		return sb.toString();
+        StringBuffer sb = new StringBuffer();
+        
+        //Control parameters
+        sb.append(GraphicUtil.getXYControlParameters());
+        
+        //Is the group id initialized?
+        if ( this.navigation.getGroupID() == -1 ) {
+            this.navigation.setGroupID(getUser().getGroupID());
+        }       
+
+        //Date range qualifiers
+        Integer endDate = DateUtil.getTodaysDate();
+        Integer startDate = DateUtil.getDaysBackDate(endDate, duration.getNumberOfDays());
+        
+        //Fetch, qualifier is groupId (parent), date from, date to
+        List<ScoreableEntity> s = null;
+        try {          
+            // TODO: This is not correct.  getUser().getGroupID() needs to be changed to the current group in the navigation
+            logger.debug("getting scores for groupID: " + this.navigation.getGroupID());            
+            s = graphicDAO.getScores(this.navigation.getGroupID()
+                    ,startDate, endDate, ScoreType.SCORE_OVERALL);
+        } catch (Exception e) {
+            logger.debug("graphicDao error: " + e.getMessage());
+        }       
+        
+        //X-coordinates
+        sb.append("<categories>");
+        sb.append(GraphicUtil.createMonthsString(duration));        
+        sb.append("</categories>");
+        
+        //Loop over returned set of group ids
+        List<ScoreableEntity> ss = null;
+        for ( int i = 0; i < s.size(); i++ ) {
+            ScoreableEntity se = (ScoreableEntity)s.get(i);            
+            ss = graphicDAO.getScores(se.getEntityID(),
+                    startDate, endDate, ScoreType.SCORE_OVERALL_TIME);
+            
+            //Y-coordinates
+            sb.append("<dataset seriesName=\'\' color=\'");
+            sb.append((GraphicUtil.entityColorKey.get(i)).substring(1));
+            sb.append("\'>");
+            
+            int holes = duration.getNumberOfDays() - ss.size() + 1;
+            for ( int k = 0; k < holes; k++ ) {
+                sb.append("<set value=\'0.0\'/>");
+            }
+            
+            ScoreableEntity sss = null;
+            for ( int j = 0; j < ss.size(); j++ ) {                
+                sss = (ScoreableEntity)ss.get(j);
+
+                sb.append("<set value=\'");
+                Float score = new Float(sss.getScore()/10.0);
+                sb.append(score.toString()).substring(0,3);
+                sb.append("'/>");
+            }
+            sb.append("</dataset>");
+        }
+        
+        sb.append("</chart>");
+        
+        return sb.toString();
 	}
 
 	public List<ScoreableEntityPkg> getScoreableEntities() {		
