@@ -14,23 +14,26 @@
 		pieChart.setDataXML(pieDef.value);									   	   
 		pieChart.render(pieDiv);
 	}
+	function renderTypePie(type, width, height)
+	{
+		renderPie('tab_'+type+'Def', 'tab_'+type+'Div', width, height); 
+	}
 </script>
 		
-		<!-- START PANEL -->
-			<div class="">
-				<div class="panel_nw">
-					<div class="panel_title">
-						<span class="line">#{messages.team_overview}</span>
-						<span class="panel_links"/>
-					</div>
-				</div>
-				<div class="panel_w">
-				  <div class="panel_content">
-				  	<table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
-					  <tr>
-						<td valign="top" width="130" class="ls_tabs">
-						    <table width="130" border="0" cellpadding="0" cellspacing="0">
-						  	<a4j:form id="overview-form">
+<!-- START PANEL -->
+<h:panelGroup layout="block">
+	<h:panelGroup layout="block" styleClass="panel_nw">
+		<h:panelGroup layout="block" styleClass="panel_title">
+			<span class="line">#{messages.team_overview}</span>
+			<span class="panel_links"/>
+		</h:panelGroup>				
+	</h:panelGroup>				
+	<h:panelGroup layout="block" styleClass="panel_w">
+		<h:panelGroup layout="block" styleClass="panel_content">
+			<h:panelGrid width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;" columns="2">
+				<h:panelGroup style="">
+					<table width="130" border="0" cellpadding="0" cellspacing="0" class="ls_tabs" style="vertical-align:top">
+						<a4j:form id="overview-form">
 						      <ui:repeat value="#{teamOverviewBean.actions}" var="action" id="menu">
 						        <tr>
 						          <td valign="top" class="#{(action.key == teamOverviewBean.selectedAction.key) ? 'ls_tab_on' : 'ls_tab_off'}">
@@ -41,117 +44,31 @@
 						          </td>
 						        </tr>
 						      </ui:repeat>
-						    </a4j:form>
-						    </table>
-						</td>
-						<td valign="top">
-						
-<a4j:region id="overall" rendered="#{teamOverviewBean.selectedAction.key == 'overall'}">
-							
-						  <table width="790" border="0" cellpadding="0" cellspacing="0">
-                            <tr>
-                              <td width="320" valign="top" style="border-right: 1px solid #e1e1e1;">
-                                <table width="320" border="0" cellspacing="0" cellpadding="4">
-                                  <tr>
-                                    <td align="right">
-										<table width="220" border="0" cellspacing="0" cellpadding="0" class="scorebox">
-										  <tr>
-			                                  <td>
-			                                    <h4>#{messages.team_overallScore}</h4>
-			                                    <span>#{messages.team_durationLabel}</span> 
-			                                  </td>
-			                                  <td width="80" align="center">
-			                                    <ui:include src="../includes/scoreBox.xhtml">
-													<ui:param name="score" value="#{teamOverviewBean.overallScore}" />
-											        <ui:param name="scoreStyle" value="#{teamOverviewBean.overallScoreStyle}" />
-												</ui:include>
-			                                  </td>
-										  </tr>
-										</table>
-									</td>
-                                  </tr>
-								  <tr>
-                            		<td width="300" valign="top">
-                              			<div id="overallPieDiv" align="center"></div>
-			  							<h:inputHidden value="#{teamOverviewBean.overallPieDef}" id="overallPieDef"/>
-										<script type="text/javascript">
-											renderPie("overallPieDef", "overallPieDiv", "300", "240");
-										</script>
-		                            </td>
-        		                   </tr>
-	       		                    <tr>
-                                    <td align="center"><img src="../images/legend_1to5_horizontal.png" width="138" height="54" /></td>
-                                  </tr>
-                                </table>
-                              </td>
-                              <td width="470" valign="top">
-                                <table width="450" border="0" cellpadding="0" cellspacing="0" class="piegrid">
-                                  <tr>
-                                    <td valign="top" class="piegrid_1">
-										<div class="piegrid_label"><a href="#" class="ls_tab_drivestyle">#{messages.teamOverviewSideNav_drivestyle}</a></div>
-										<div id="driveStylePieDiv"></div>
-			  							<h:inputHidden value="#{teamOverviewBean.driveStylePieDef}"  id="driveStylePieDef"/>
-										<script type="text/javascript">
-											renderPie("driveStylePieDef", "driveStylePieDiv", "220", "180");
-										</script>
-									</td>
-
-                                    <td valign="top" class="piegrid_2">
-										<div class="piegrid_label"><a href="#" class="ls_tab_speed">#{messages.teamOverviewSideNav_speed}</a></div>
-										<div id="speedPieDiv"></div>
-			  							<h:inputHidden value="#{teamOverviewBean.speedPieDef}"  id="speedPieDef"/>
-										<script type="text/javascript">
-											renderPie("speedPieDef", "speedPieDiv", "220", "180");
-										</script>
-									</td>
-                                  </tr>
-                                  <tr>
-                                    <td valign="top" class="piegrid_4">
-
-										<div class="piegrid_label"><a href="#" class="ls_tab_seatbelt">#{messages.teamOverviewSideNav_seatbelt}</a></div>
-										<div id="seatbeltPieDiv"></div>
-			  							<h:inputHidden value="#{teamOverviewBean.seatbeltPieDef}"  id="seatbeltPieDef"/>
-										<script type="text/javascript">
-											renderPie("seatbeltPieDef", "seatbeltPieDiv", "220", "180");
-										</script>
-									</td>
-                                    <td valign="top" class="piegrid_3">
-										<div class="piegrid_label"><a href="#" class="ls_tab_coaching">#{messages.teamOverviewSideNav_coaching}</a></div>
-										<div id="coachingPieDiv"></div>
-			  							<h:inputHidden value="#{teamOverviewBean.coachingPieDef}"  id="coachingPieDef"/>
-										<script type="text/javascript">
-											renderPie("coachingPieDef", "coachingPieDiv", "220", "180");
-										</script>
-									</td>
-                                  </tr>
-                                </table>
-                              </td>
-                            </tr>
-                          </table>
-                          
-</a4j:region>
-<a4j:region id="drivestyle" rendered="#{teamOverviewBean.selectedAction.key == 'drivestyle'}">
-						  <table width="790" border="0" cellpadding="0" cellspacing="0">
-                            <tr>
-                            	<td>DRIVER STYLE</td>
-							</tr>
-							</table>
-
-</a4j:region>
-                          
-                          <!-- end content table -->
-						</td>
-					  </tr>
-					</table>
-					<!--  end outer table -->
-				  </div>
-				</div>
-				<div class="panel_sw">
-					<div class="panel_statusbar"></div>
-				</div>
-			</div>
-
-		<!-- END PANEL -->
+						</a4j:form>
+						</table>
+				</h:panelGroup>
+				<h:panelGroup>
+					<a4j:region id="overall" rendered="#{teamOverviewBean.selectedAction.key == 'overall'}">
+						<ui:include src="/includes/teamOverviewTab_overall.xhtml" />
+					</a4j:region>
+					<ui:repeat value="#{teamOverviewBean.actions}" var="tab" id="tabs">
+						<a4j:region rendered="#{teamOverviewBean.selectedAction.key != 'overall' and teamOverviewBean.selectedAction.key == tab.key}">
+							<ui:include src="/includes/teamOverviewTab.xhtml">
+								<ui:param name="style" value="#{tab.style}" />
+								<ui:param name="title" value="#{tab.displayString}" />
+								<ui:param name="type" value="#{tab.key}" />
+							</ui:include>
+						</a4j:region>
+					</ui:repeat>
+				</h:panelGroup>
+			</h:panelGrid>
+		</h:panelGroup>
+	</h:panelGroup>
+	<h:panelGroup layout="block" styleClass="panel_sw">
+		<h:panelGroup layout="block" styleClass="panel_statusbar"/>
+	</h:panelGroup>
+</h:panelGroup>
+<!-- END PANEL -->
 	
 	
 </ui:composition>

@@ -30,6 +30,7 @@ public class TeamOverviewBean extends BaseBean
     private List<TabAction>  actions;
     private TabAction selectedAction;
     private NavigationBean navigation;
+    private Map<ScoreType, TabAction> actionScoreTypeMap;
     
     private Integer groupID;
     
@@ -41,7 +42,6 @@ public class TeamOverviewBean extends BaseBean
         Integer endDate = DateUtil.getTodaysDate();
         Integer startDate = DateUtil.getDaysBackDate(endDate, Duration.DAYS.getNumberOfDays());
 
-        // TODO: should be passing in the team's groupID
         ScoreableEntity scoreableEntity = graphicDAO.getOverallScore(getGroupID(), startDate, endDate);
         setOverallScore(scoreableEntity.getScore());
     }
@@ -99,6 +99,21 @@ public class TeamOverviewBean extends BaseBean
     public String getCoachingPieDef()
     {
         return getPieDefMap().get(ScoreType.SCORE_COACHING_EVENTS);
+    }
+
+    public String getSelectedPieDef()
+    {
+logger.debug("getSelectedPieDef() ");        
+        TabAction action = getSelectedAction();
+        if (action == null)
+        {
+logger.debug("selected action is null");        
+            
+            return "";
+        }
+        
+        
+        return getPieDefMap().get(action.getScoreType());
     }
 
     public String getPieDef(Integer type)
@@ -172,10 +187,12 @@ public class TeamOverviewBean extends BaseBean
         if (actions == null)
         {
             String[] actionKeys = {"overall","drivestyle","speed","seatbelt","coaching"};
+            ScoreType[] scoreTypes = {ScoreType.SCORE_OVERALL, ScoreType.SCORE_DRIVING_STYLE, ScoreType.SCORE_SPEEDING, ScoreType.SCORE_SEATBELT, ScoreType.SCORE_COACHING_EVENTS};
             actions = new ArrayList<TabAction>();
+            
             for (int i = 0; i < actionKeys.length; i++)
             {
-                actions.add(new TabAction(actionKeys[i], actionKeys[i], MessageUtil.getMessageString("teamOverviewSideNav_"+actionKeys[i]), "ls_tab_"+actionKeys[i]));
+                actions.add(new TabAction(actionKeys[i], actionKeys[i], MessageUtil.getMessageString("teamOverviewSideNav_"+actionKeys[i]), "ls_tab_"+actionKeys[i], scoreTypes[i]));
             }
         }
         return actions;
