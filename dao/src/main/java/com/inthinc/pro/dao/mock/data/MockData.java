@@ -190,27 +190,54 @@ public class MockData
         {
             for (ScoreType scoreType : EnumSet.allOf(ScoreType.class))
             {
-                if ( scoreType != ScoreType.SCORE_OVERALL_TIME ) {
+                if (        scoreType == ScoreType.SCORE_OVERALL_TIME ) {
+                    createOverallScoreOverTime(
+                            entityID, entityType, entityName, scoreType, monthsBack[monthsBackCnt]);
+                  
+                } else if ( scoreType == ScoreType.SCORE_OVERALL_PERCENTAGES ) {
+                    createOverallScorePercentages(
+                            entityID, entityType, entityName, scoreType, monthsBack[monthsBackCnt]);
+                } else {                    
                     mockData.storeObject(
-                        new ScoreableEntity(entityID, 
-                                entityType, 
-                                entityName, 
-                                randomInt(0,50), 
-                                DateUtil.getDaysBackDate(dateNow, 30 * monthsBack[monthsBackCnt]),
-                                scoreType));
-                } else {
-                    //Create three dates per range
-                    for ( int i = 0; i < 4; i++ ) {
-                        mockData.storeObject(
                             new ScoreableEntity(entityID, 
-                                entityType, 
-                                entityName, 
-                                randomInt(0,50), 
-                                DateUtil.getDaysBackDate(dateNow, 30 * monthsBack[monthsBackCnt]+ i),
-                                scoreType));
-                    }
+                                    entityType, 
+                                    entityName, 
+                                    randomInt(0,50), 
+                                    DateUtil.getDaysBackDate(dateNow, 30 * monthsBack[monthsBackCnt]),
+                                    scoreType));
                 }
             }
+        }
+    }
+    
+    private void createOverallScoreOverTime(Integer entityID, 
+            EntityType entityType, String entityName, ScoreType scoreType, int monthsBack) {
+      //Create four dates per range
+        for ( int i = 0; i < 4; i++ ) {
+            mockData.storeObject(
+                new ScoreableEntity(entityID, 
+                    entityType, 
+                    entityName, 
+                    randomInt(0,50), 
+                    DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), 
+                            30 * monthsBack+ i),
+                    scoreType));
+        }
+    }
+    
+    
+    private void createOverallScorePercentages(Integer entityID, 
+            EntityType entityType, String entityName, ScoreType scoreType, int monthsBack) {
+      //Create the five values per date range
+        for ( int i = 0; i < 5; i++ ) {
+            mockData.storeObject(
+                new ScoreableEntity(entityID, 
+                    entityType, 
+                    entityName, 
+                    randomInt(0,50), 
+                    DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), 
+                            30 * monthsBack),
+                    scoreType));
         }
     }
 
