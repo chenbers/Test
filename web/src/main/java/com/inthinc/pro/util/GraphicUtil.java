@@ -52,7 +52,7 @@ public class GraphicUtil {
                 sb.append("\'/>");
             }       
         } else {
-            int num = duration.getNumberOfDays();
+            int num = convertToMonths(duration);
                         
             //What month is it? Remember, implemented with jan as 0. Also,
             //add 12 so the short date ranges work...
@@ -69,6 +69,20 @@ public class GraphicUtil {
 		
 		return sb.toString();
 	}	
+	
+	private static int convertToMonths(Duration duration) {
+	    int months = 0;
+	    
+	    if (           duration.equals(Duration.THREE) ) {
+	        return 3;
+	    } else if (    duration.equals(Duration.SIX) ) {
+	        return 6;
+	    } else if (    duration.equals(Duration.TWELVE) ) {
+	        return 12;
+	    }
+	    
+	    return months;
+	}
 	
 	public static String getXYControlParameters() {
 		StringBuffer sb = new StringBuffer();
