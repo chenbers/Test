@@ -66,56 +66,48 @@
             								<a4j:actionparam name="duration" assignTo="#{fleetOverviewBean.duration}" value="TWELVE" />
           								</a4j:commandLink>    
       								</a4j:form>
-								</span>
+      							</span>
 							</div>
 						</div>
 						<div class="panel_w">
-					  		<rich:panel bodyClass="panel_content" id="overallPanel" border="0">
-					  	<table width="455" height="100" border="0" cellspacing="0" cellpadding="0" align="center">
-                          <tr>
-                            <td colspan="2" align="center" valign="top">
-                              <table border="0" cellspacing="0" cellpadding="0" class="scorebox_lg">
-                                <tr>
-
-                                   <td width="188">
-                                    <h4>Overall Score</h4>
-                                    <a4j:status id="commonstatus"  startText="(In progress...)" stopText="(#{fleetOverviewBean.durationAsString})"/>
-                                    </td>
-                                  <td width="130" align="center">
-                                    <ui:include src="../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{fleetOverviewBean.overallScore}" />
-								            <ui:param name="scoreStyle" value="#{fleetOverviewBean.overallScoreStyle}" />
-									</ui:include>
-
-                                  </td>
-                                </tr>
-                              </table>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td width="64" valign="top" align="center"><img src="../images/legend_pie1to5.png" width="54" height="137" style="margin-top: 10px;" /></td>
-                            <td width="381" valign="top">
-                              <div id="chartdiv" align="center"></div>
-			  					<h:inputHidden value="#{breakdownBean.pieDef}" id="hiddenField3"/>
+							<rich:panel bodyClass="panel_content" id="overallPanel" border="0">
+					  		<table width="455" height="100" border="0" cellspacing="0" cellpadding="0" align="center">
+	                          <tr>
+	                            <td colspan="2" align="right" valign="top">&#160;</td>
+	                          </tr>
+	                          <tr>
+	                            <td align="center" valign="top" width="120">
+									<div class="#{fleetOverviewBean.overallScoreStyle}">
+										<div class="score">
+											<h:outputText value="#{fleetOverviewBean.overallScore}" converter="ScoreConverter"/>
+										</div>
+									</div>
+								</td>
+	                            <td rowspan="2" width="">
+	                     			<div id="chartdiv" align="center"></div>
+				  					<h:inputHidden value="#{breakdownBean.pieDef}" id="hiddenField3"/>
 										<script type="text/javascript">
 											var targetElement3 = document.getElementById("hiddenField3");
-											var chart2 = new FusionCharts("/tiwipro/fusioncharts/Pie2D.swf", "ChartId", "381", "300", "0", "0");										
+											var chart2 = new FusionCharts("/tiwipro/fusioncharts/Pie2D.swf", "ChartId", "320", "300", "0", "0");										
 											chart2.setDataXML(targetElement3.value);									   	   
 											chart2.render("chartdiv");
 										</script>
-									
-                            </td>
-                          </tr>
-                        </table>
-					  			 
-					  			 	
-					  		</rich:panel>
+	                            </td>
+	                          </tr>
+	                          <tr>
+	                            <td align="center" valign="top" width="120">
+	                              <p><img src="../images/legend2_vert.png" style="margin-top: 10px;" width="98" height="137" /></p>
+	                            </td>
+	                          </tr>
+                        	</table>
+                        	</rich:panel>
+					  		
 						</div>
 						<div class="panel_sw">
 							<div class="panel_statusbar"></div>
 						</div>
 					</div>
-		<!-- END PANEL -->
+				<!-- END PANEL -->
 		
 				<div class="spacer"></div>		
 		<!-- START TREND PANEL -->		
