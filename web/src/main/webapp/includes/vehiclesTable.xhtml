@@ -17,13 +17,6 @@
   <ui:param name="messagesPrefix" value="vehiclesHeader_" />
 
   <ui:define name="columns">
-    <rich:column rendered="#{vehiclesBean.columns['score']}" sortBy="#{item.score}">
-      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_score}" /></f:facet>
-      <ui:include src="scoreBox.xhtml">
-        <ui:param name="score" value="#{item.score}" />
-        <ui:param name="scoreStyle" value="#{item.scoreStyle}" />
-      </ui:include>
-    </rich:column>
     <rich:column rendered="#{vehiclesBean.columns['vehicleID']}" sortBy="#{item.companyInfo.vehicleIdentification}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_vehicleID}" /></f:facet>
       <h:outputText value="#{item.companyInfo.vehicleIdentification}" />

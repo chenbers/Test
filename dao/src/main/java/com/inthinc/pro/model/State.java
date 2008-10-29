@@ -106,10 +106,4 @@ public enum State
     {
         return lookup.get(abbrev);
     }
-
-    @Override
-    public String toString()
-    {
-        return this.name;
-    }
 }

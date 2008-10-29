@@ -15,7 +15,7 @@
               items:  The items to include in the table, filtered by filterValue.
         filterValue:  A value to filter by, displayed in the search box.
                page:  The scroller page index, starting with 0.
-         editorBean:  A bean that has methods named edit() and delete().
+         editorBean:  A child of BaseAdminBean.
 
 Note: The following parameters are required by the included editColumns.xhtml
          allColumns:  A list of column names.
@@ -79,7 +79,7 @@ Note: The following parameters are required by the included editColumns.xhtml
       <div class="panel_content">
         <ul id="grid_nav" style="margin: 0;">
           <li class="l"><h:commandLink action="#{editorBean['delete']}"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></button></h:commandLink></li>
-          <li class="l"><h:commandLink action="#{editorBean['edit']}"><button value="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_batchEdit}" /></span></button></h:commandLink></li>
+          <li class="l"><h:commandLink action="#{editorBean['batchEdit']}"><button value="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_batchEdit}" /></span></button></h:commandLink></li>
           <li class="l">
             <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
               <tr>
@@ -108,7 +108,7 @@ Note: The following parameters are required by the included editColumns.xhtml
 
           <rich:datascroller id="topScroller" for="dataTable" reRender="recordCounts,dataTable,bottomScroller" page="#{page}" />
 
-          <rich:dataTable id="dataTable" value="#{items}" var="item" styleClass="datagrid"
+          <rich:dataTable id="dataTable" value="#{items}" var="item" rowKeyVar="index" styleClass="datagrid"
             rows="#{rows}" rowClasses="tableOdd,tableEven" width="100%">
             <rich:column>
               <f:facet name="header">
@@ -121,7 +121,9 @@ Note: The following parameters are required by the included editColumns.xhtml
               <f:facet name="header">
                 <h:outputText value=" " />
               </f:facet>
-              <h:commandLink action="#{editorBean['edit']}"><h:outputText value="#{messages.adminTable_edit}" /></h:commandLink>
+              <h:commandLink action="#{editorBean['edit']}" value="#{messages.adminTable_edit}">
+                <f:param name="editIndex" value="#{index}" />
+              </h:commandLink>
             </rich:column>
           </rich:dataTable>
 

@@ -3,7 +3,6 @@
  */
 package com.inthinc.pro.backing;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -11,12 +10,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import javax.faces.model.SelectItem;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.backing.ui.ScoreBox;
-import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.User;
 
@@ -28,13 +27,15 @@ public class UsersBean extends BaseAdminBean<UsersBean.UserView>
     private static final Logger       logger                 = LogManager.getLogger(UsersBean.class);
 
     private static final List<String> AVAILABLE_COLUMNS;
-    private static final int[]        DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 3 };
+    private static final int[]        DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2 };
+
+    private static final SelectItem[] TIMEZONES;
 
     static
     {
+        // available columns
         AVAILABLE_COLUMNS = new ArrayList<String>();
         AVAILABLE_COLUMNS.add("userID");
-        AVAILABLE_COLUMNS.add("score");
         AVAILABLE_COLUMNS.add("fullName");
         AVAILABLE_COLUMNS.add("active");
         AVAILABLE_COLUMNS.add("username");
@@ -66,6 +67,12 @@ public class UsersBean extends BaseAdminBean<UsersBean.UserView>
         AVAILABLE_COLUMNS.add("dot");
         AVAILABLE_COLUMNS.add("citations");
         AVAILABLE_COLUMNS.add("points");
+
+        // time zones
+        final String[] timezones = TimeZone.getAvailableIDs();
+        TIMEZONES = new SelectItem[timezones.length];
+        for (int i = 0; i < timezones.length; i++)
+            TIMEZONES[i] = new SelectItem(timezones[i], TimeZone.getTimeZone(timezones[i]).getDisplayName());
     }
 
     public UsersBean()
@@ -80,15 +87,7 @@ public class UsersBean extends BaseAdminBean<UsersBean.UserView>
         // convert the users to UserViews
         items = new LinkedList<UserView>();
         for (final User user : plainUsers)
-            try
-            {
-                // TODO: get the score from some place real
-                items.add(createUserView(user, (int)(Math.random() * 50)));
-            }
-            catch (Exception e)
-            {
-                logger.error("Error converting User to UserView", e);
-            }
+            items.add(createUserView(user));
 
         // init the filtered users
         filteredItems.addAll(items);
@@ -157,17 +156,20 @@ public class UsersBean extends BaseAdminBean<UsersBean.UserView>
      * @param score
      *            The user's overall score.
      * @return The new UserView object.
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
      */
-    @SuppressWarnings("unchecked")
-    private UserView createUserView(User user, Integer score) throws IllegalAccessException, InvocationTargetException
+    private UserView createUserView(User user)
     {
         final UserView userView = new UserView();
 
-        BeanUtils.copyProperties(userView, user);
+        try
+        {
+            BeanUtils.copyProperties(userView, user);
+        }
+        catch (Exception e)
+        {
+            logger.error("Error converting User to UserView", e);
+        }
 
-        userView.setScore(score);
         userView.setSelected(false);
 
         return userView;
@@ -203,48 +205,44 @@ public class UsersBean extends BaseAdminBean<UsersBean.UserView>
     }
 
     @Override
-    public String edit()
+    protected UserView createAddItem()
     {
-        return "go_adminUserEdit";
+        // TODO: if User has child objects, create them too
+        return createUserView(new User());
     }
 
     @Override
-    public String delete()
+    protected void doDelete(List<UserView> deleteItems)
     {
-        return "go_adminUsersDelete";
+        // TODO delete the items
+    }
+
+    @Override
+    protected void doSave(List<UserView> saveItems)
+    {
+        // TODO save the items
+    }
+
+    @Override
+    protected String getEditRedirect()
+    {
+        return "go_adminEditPerson";
+    }
+
+    @Override
+    protected String getFinishedRedirect()
+    {
+        return "go_adminPeople";
+    }
+
+    public SelectItem[] getTimeZones()
+    {
+        return TIMEZONES;
     }
 
     public static class UserView extends User implements Selectable
     {
-        private Integer  score;
-        private String  scoreStyle;
         private boolean selected;
-
-        /**
-         * @return the score
-         */
-        public Integer getScore()
-        {
-            return score;
-        }
-
-        /**
-         * @param score
-         *            the score to set
-         */
-        public void setScore(Integer score)
-        {
-            this.score = score;
-            this.scoreStyle = new ScoreBox(score, ScoreBoxSizes.SMALL).getScoreStyle();
-        }
-
-        /**
-         * @return the scoreStyle
-         */
-        public String getScoreStyle()
-        {
-            return scoreStyle;
-        }
 
         /**
          * @return the selected

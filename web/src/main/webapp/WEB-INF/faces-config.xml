@@ -58,10 +58,40 @@
 	</navigation-rule>
 	<navigation-rule>
 		<navigation-case>
+			<from-outcome>go_adminPeople</from-outcome>
+			<to-view-id>/secured/admin/people.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+    <navigation-rule>
+      <navigation-case>
+        <from-outcome>go_adminAddPerson</from-outcome>
+        <to-view-id>/secured/admin/editPerson.xhtml</to-view-id>
+      </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+      <navigation-case>
+        <from-outcome>go_adminEditPerson</from-outcome>
+        <to-view-id>/secured/admin/editPerson.xhtml</to-view-id>
+      </navigation-case>
+    </navigation-rule>
+	<navigation-rule>
+		<navigation-case>
 			<from-outcome>go_adminVehicles</from-outcome>
 			<to-view-id>/secured/admin/vehicles.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+    <navigation-rule>
+      <navigation-case>
+        <from-outcome>go_adminAddVehicle</from-outcome>
+        <to-view-id>/secured/admin/editVehicle.xhtml</to-view-id>
+      </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+      <navigation-case>
+        <from-outcome>go_adminEditVehicle</from-outcome>
+        <to-view-id>/secured/admin/editVehicle.xhtml</to-view-id>
+      </navigation-case>
+    </navigation-rule>
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>go_region</from-outcome>

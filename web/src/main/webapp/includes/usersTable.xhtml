@@ -17,13 +17,6 @@
   <ui:param name="messagesPrefix" value="usersHeader_" />
 
   <ui:define name="columns">
-    <rich:column rendered="#{usersBean.columns['score']}" sortBy="#{item.score}">
-      <f:facet name="header"><h:outputText value="#{messages.usersHeader_score}" /></f:facet>
-      <ui:include src="scoreBox.xhtml">
-        <ui:param name="score" value="#{item.score}" />
-        <ui:param name="scoreStyle" value="#{item.scoreStyle}" />
-      </ui:include>
-    </rich:column>
     <rich:column rendered="#{usersBean.columns['userID']}" sortBy="#{item.userID}">
       <f:facet name="header"><h:outputText value="#{messages.usersHeader_userID}" /></f:facet>
       <h:outputText value="#{item.userID}" />

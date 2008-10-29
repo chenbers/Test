@@ -1,24 +1,26 @@
 package com.inthinc.pro.backing;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import javax.faces.model.SelectItem;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.backing.ui.ScoreBox;
-import com.inthinc.pro.backing.ui.ScoreBoxSizes;
+import com.inthinc.pro.model.SafetyDevice;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleCompanyInfo;
 import com.inthinc.pro.model.VehicleDescription;
 import com.inthinc.pro.model.VehicleLicense;
+import com.inthinc.pro.model.VehicleSensitivity;
 
 /**
  * @author David Gileadi
@@ -28,12 +30,15 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     private static final Logger       logger                 = LogManager.getLogger(VehiclesBean.class);
 
     private static final List<String> AVAILABLE_COLUMNS;
-    private static final int[]        DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 9, 15, 16 };
+    private static final int[]        DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 8, 14, 15 };
+
+    private static final SelectItem[] YEARS;
+    private static final SelectItem[] STATES;
 
     static
     {
+        // available columns
         AVAILABLE_COLUMNS = new ArrayList<String>();
-        AVAILABLE_COLUMNS.add("score");
         AVAILABLE_COLUMNS.add("vehicleID");
         AVAILABLE_COLUMNS.add("driver");
         AVAILABLE_COLUMNS.add("group");
@@ -54,6 +59,20 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         AVAILABLE_COLUMNS.add("hardBrakeLevel");
         AVAILABLE_COLUMNS.add("hardTurnLevel");
         AVAILABLE_COLUMNS.add("hardVerticalLevel");
+
+        // years
+        final Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.YEAR, 1);
+        final int nextYear = cal.get(Calendar.YEAR);
+        YEARS = new SelectItem[nextYear - 1969];
+        for (int year = 1970; year <= nextYear; year++)
+            YEARS[nextYear - year] = new SelectItem(String.valueOf(year));
+
+        // states
+        final State[] states = State.values();
+        STATES = new SelectItem[states.length];
+        for (int i = 0; i < states.length; i++)
+            STATES[i] = new SelectItem(states[i].getAbbrev(), states[i].getName());
     }
 
     public VehiclesBean()
@@ -68,14 +87,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         // convert the Vehicles to VehicleViews
         items = new LinkedList<VehicleView>();
         for (final Vehicle vehicle : plainVehicles)
-            try
-            {
-                items.add(createVehicleView(vehicle, (int) (Math.random() * 50)));
-            }
-            catch (Exception e)
-            {
-                logger.error("Error converting Vehicle to VehicleView", e);
-            }
+            items.add(createVehicleView(vehicle));
 
         // init the filtered items
         filteredItems.addAll(items);
@@ -102,7 +114,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         vehicle.getDescription().setVIN(createDummyString("abcdefghijklmnoprstuvwyz1234567890", 17));
         vehicle.setLicense(new VehicleLicense());
         vehicle.getLicense().setNumber(createDummyString("abcdefghijklmnoprstuvwyz", randomInt(2) + 6));
-//        vehicle.getLicense().setState(new State(1, "Arizona", "AZ"));
         vehicle.getLicense().setState(State.AZ);
         final String[] timeZones = TimeZone.getAvailableIDs();
         vehicle.setTimeZone(timeZones[randomInt(timeZones.length)]);
@@ -147,17 +158,20 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
      * @param score
      *            The vehicle's overall score.
      * @return The new VehicleView object.
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
      */
-    @SuppressWarnings("unchecked")
-    private VehicleView createVehicleView(Vehicle vehicle, Integer score) throws IllegalAccessException, InvocationTargetException
+    private VehicleView createVehicleView(Vehicle vehicle)
     {
         final VehicleView vehicleView = new VehicleView();
 
-        BeanUtils.copyProperties(vehicleView, vehicle);
+        try
+        {
+            BeanUtils.copyProperties(vehicleView, vehicle);
+        }
+        catch (Exception e)
+        {
+            logger.error("Error converting Vehicle to VehicleView", e);
+        }
 
-        vehicleView.setScore(score);
         // TODO: look up the driver by driverID instead
         vehicleView.setDriver(createDummyName() + ' ' + createDummyName());
         vehicleView.setSelected(false);
@@ -196,49 +210,55 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     }
 
     @Override
-    public String edit()
+    protected VehicleView createAddItem()
     {
-        return "go_adminVehicleEdit";
+        final Vehicle vehicle = new Vehicle();
+        vehicle.setSafetyDevices(new ArrayList<SafetyDevice>());
+        vehicle.setCompanyInfo(new VehicleCompanyInfo());
+        vehicle.setDescription(new VehicleDescription());
+        vehicle.setLicense(new VehicleLicense());
+        vehicle.setSensitivity(new VehicleSensitivity());
+        return createVehicleView(vehicle);
     }
 
     @Override
-    public String delete()
+    protected void doDelete(List<VehicleView> deleteItems)
     {
-        return "go_adminVehiclesDelete";
+        // TODO delete the items
+    }
+
+    @Override
+    protected void doSave(List<VehicleView> saveItems)
+    {
+        // TODO save the items
+    }
+
+    @Override
+    protected String getEditRedirect()
+    {
+        return "go_adminEditVehicle";
+    }
+
+    @Override
+    protected String getFinishedRedirect()
+    {
+        return "go_adminVehicles";
+    }
+
+    public SelectItem[] getYears()
+    {
+        return YEARS;
+    }
+
+    public SelectItem[] getStates()
+    {
+        return STATES;
     }
 
     public static class VehicleView extends Vehicle implements Selectable
     {
-        private Integer score;
-        private String  scoreStyle;
         private String  driver;
         private boolean selected;
-
-        /**
-         * @return the score
-         */
-        public Integer getScore()
-        {
-            return score;
-        }
-
-        /**
-         * @param score
-         *            the score to set
-         */
-        public void setScore(Integer score)
-        {
-            this.score = score;
-            this.scoreStyle = new ScoreBox(score, ScoreBoxSizes.SMALL).getScoreStyle();
-        }
-
-        /**
-         * @return the scoreStyle
-         */
-        public String getScoreStyle()
-        {
-            return scoreStyle;
-        }
 
         public String getDriver()
         {
