@@ -38,8 +38,9 @@
    		scope="request" parent="baseBean">
    </bean> 
    
-    <bean id="fleetOverviewBean" class="com.inthinc.pro.backing.FleetOverviewBean" scope="request" parent="baseBean">
+    <bean id="fleetOverviewBean" class="com.inthinc.pro.backing.FleetOverviewBean"  scope="request" parent="baseBean">
 		<property name="graphicDAO" ref="graphicDAO"></property>
+		<property name="navigation" ref="navigationBean"></property>
    </bean>
 
    <bean id="usersBean" class="com.inthinc.pro.backing.UsersBean" scope="session">
@@ -52,8 +53,9 @@
    		<property name="graphicDAO" ref="graphicDAO"></property>
    </bean>
 
-    <bean id="teamOverviewBean" class="com.inthinc.pro.backing.TeamOverviewBean" scope="request" parent="baseBean">
+    <bean id="teamOverviewBean" class="com.inthinc.pro.backing.TeamOverviewBean" scope="session" parent="baseBean">
 		<property name="graphicDAO" ref="graphicDAO"></property>
+		<property name="navigation" ref="navigationBean"></property>
    </bean>
    
 </beans>

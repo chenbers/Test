@@ -1,7 +1,10 @@
 package com.inthinc.pro.backing;
 
+import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 
@@ -9,29 +12,37 @@ import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.ScoreBreakdown;
 import com.inthinc.pro.backing.ui.ScoreCategory;
+import com.inthinc.pro.backing.ui.TabAction;
 import com.inthinc.pro.charts.Pie;
 import com.inthinc.pro.dao.GraphicDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
-import com.inthinc.pro.util.GraphicUtil;
+import com.inthinc.pro.util.MessageUtil;
 
 public class TeamOverviewBean extends BaseBean
 {
 
     private Integer             overallScore;
     private GraphicDAO          graphicDAO;
-    private String              overallPieDef;
+    private Map<ScoreType, String>        pieDefMap;
+    private List<TabAction>  actions;
+    private TabAction selectedAction;
+    private NavigationBean navigation;
+    
+    private Integer groupID;
+    
     private static final Logger logger = Logger.getLogger(TeamOverviewBean.class);
 
     private void init()
     {
+        
         Integer endDate = DateUtil.getTodaysDate();
         Integer startDate = DateUtil.getDaysBackDate(endDate, Duration.DAYS.getNumberOfDays());
 
         // TODO: should be passing in the team's groupID
-        ScoreableEntity scoreableEntity = graphicDAO.getOverallScore(getUser().getGroupID(), startDate, endDate);
+        ScoreableEntity scoreableEntity = graphicDAO.getOverallScore(getGroupID(), startDate, endDate);
         setOverallScore(scoreableEntity.getScore());
     }
 
@@ -67,20 +78,35 @@ public class TeamOverviewBean extends BaseBean
 
     public String getOverallPieDef()
     {
-        if (overallPieDef == null)
-        {
-            overallPieDef = createPieDef();
-        }
-        logger.debug("returned string: " + overallPieDef);
-        return overallPieDef;
+        return getPieDefMap().get(ScoreType.SCORE_OVERALL);
     }
-
-    public void setOverallPieDef(String overallPieDef)
+    
+    public String getDriveStylePieDef()
     {
-        this.overallPieDef = overallPieDef;
+        return getPieDefMap().get(ScoreType.SCORE_DRIVING_STYLE);
     }
 
-    public String createPieDef()
+    public String getSpeedPieDef()
+    {
+        return getPieDefMap().get(ScoreType.SCORE_SPEEDING);
+    }
+    
+    public String getSeatbeltPieDef()
+    {
+        return getPieDefMap().get(ScoreType.SCORE_SEATBELT);
+    }
+    
+    public String getCoachingPieDef()
+    {
+        return getPieDefMap().get(ScoreType.SCORE_COACHING_EVENTS);
+    }
+
+    public String getPieDef(Integer type)
+    {
+        return getPieDefMap().get(ScoreType.getScoreType(type));
+    }
+
+    public String createPieDef(ScoreType scoreType)
     {
         StringBuffer sb = new StringBuffer();
         Pie pie = new Pie();
@@ -90,7 +116,7 @@ public class TeamOverviewBean extends BaseBean
 
         Integer endDate = DateUtil.getTodaysDate();
         Integer startDate = DateUtil.getDaysBackDate(endDate, Duration.DAYS.getNumberOfDays());
-        List<ScoreableEntity> scoreList = graphicDAO.getScores(getUser().getGroupID(), startDate, endDate, ScoreType.SCORE_OVERALL);
+        List<ScoreableEntity> scoreList = graphicDAO.getScores(getGroupID(), startDate, endDate, scoreType);
         ScoreBreakdown scoreBreakdown = new ScoreBreakdown(scoreList);
         Integer numScores = scoreBreakdown.getNumScores();
         if (numScores == 0)
@@ -116,6 +142,82 @@ public class TeamOverviewBean extends BaseBean
         sb.append(pie.getClose());
 
         return sb.toString();
+    }
+
+    public Map<ScoreType, String> getPieDefMap()
+    {
+        if (pieDefMap == null)
+        {
+            pieDefMap = new HashMap<ScoreType, String>();
+            for (ScoreType scoreType : EnumSet.allOf(ScoreType.class))
+            {
+                pieDefMap.put(scoreType, createPieDef(scoreType));
+            }
+        }
+        return pieDefMap;
+    }
+
+    public void setPieDefMap(Map<ScoreType, String> pieDefMap)
+    {
+        this.pieDefMap = pieDefMap;
+    }
+
+    public void setActions(List<TabAction> actions)
+    {
+        this.actions = actions;
+    }
+
+    public List<TabAction> getActions()
+    {
+        if (actions == null)
+        {
+            String[] actionKeys = {"overall","drivestyle","speed","seatbelt","coaching"};
+            actions = new ArrayList<TabAction>();
+            for (int i = 0; i < actionKeys.length; i++)
+            {
+                actions.add(new TabAction(actionKeys[i], actionKeys[i], MessageUtil.getMessageString("teamOverviewSideNav_"+actionKeys[i]), "ls_tab_"+actionKeys[i]));
+            }
+        }
+        return actions;
+    }
+
+    public TabAction getSelectedAction()
+    {
+        if (selectedAction == null)
+        {
+            setSelectedAction(getActions().get(0));
+        }
+        return selectedAction;
+    }
+
+    public void setSelectedAction(TabAction selectedAction)
+    {
+        this.selectedAction = selectedAction;
+    }
+
+    public NavigationBean getNavigation()
+    {
+        return navigation;
+    }
+
+    public void setNavigation(NavigationBean navigation)
+    {
+        this.navigation = navigation;
+    }
+
+    public Integer getGroupID()
+    {
+        setGroupID(navigation.getGroupID());
+        if (groupID == null)
+        {
+            setGroupID(getUser().getGroupID());
+        }
+        return groupID;
+    }
+
+    public void setGroupID(Integer groupID)
+    {
+        this.groupID = groupID;
     }
 
 }

@@ -102,7 +102,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         vehicle.getDescription().setVIN(createDummyString("abcdefghijklmnoprstuvwyz1234567890", 17));
         vehicle.setLicense(new VehicleLicense());
         vehicle.getLicense().setNumber(createDummyString("abcdefghijklmnoprstuvwyz", randomInt(2) + 6));
-        vehicle.getLicense().setState(new State(1, "Arizona", "AZ"));
+//        vehicle.getLicense().setState(new State(1, "Arizona", "AZ"));
+        vehicle.getLicense().setState(State.AZ);
         final String[] timeZones = TimeZone.getAvailableIDs();
         vehicle.setTimeZone(timeZones[randomInt(timeZones.length)]);
         vehicle.setStartOdometer(randomInt(200000));

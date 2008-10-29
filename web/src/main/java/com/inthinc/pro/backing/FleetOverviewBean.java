@@ -16,6 +16,8 @@ public class FleetOverviewBean extends BaseBean
     private static final Logger logger   = Logger.getLogger(FleetOverviewBean.class);
 
     private GraphicDAO          graphicDAO;
+    private NavigationBean navigation;
+
 
     public FleetOverviewBean()
     {
@@ -35,9 +37,15 @@ public class FleetOverviewBean extends BaseBean
 
     private void init()
     {
+        logger.debug("FleetOverviewBean:init()");
         Integer endDate = DateUtil.getTodaysDate();
         Integer startDate = DateUtil.getDaysBackDate(endDate, duration.getNumberOfDays());
-        ScoreableEntity scoreableEntity = graphicDAO.getOverallScore(getUser().getGroupID(), startDate, endDate);
+        Integer groupID = navigation.getGroupID();
+        if (groupID == null)
+        {
+            groupID = getUser().getGroupID();
+        }
+        ScoreableEntity scoreableEntity = graphicDAO.getOverallScore(groupID, startDate, endDate);
         setOverallScore(scoreableEntity.getScore());
     }
 
@@ -97,4 +105,14 @@ public class FleetOverviewBean extends BaseBean
     {
         this.graphicDAO = graphicDAO;
     }
+    public NavigationBean getNavigation()
+    {
+        return navigation;
+    }
+
+    public void setNavigation(NavigationBean navigation)
+    {
+        this.navigation = navigation;
+    }
+
 }

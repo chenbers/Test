@@ -22,6 +22,8 @@ public class MockData
 {
     private static final Logger logger = Logger.getLogger(MockData.class);
     
+    public static Integer TOP_GROUP_ID = 101; 
+    
     static int NUM_COMPANIES = 1;
     static int MAX_GROUPS = 100;
     static int MAX_DRIVERS_IN_GROUP = 10;

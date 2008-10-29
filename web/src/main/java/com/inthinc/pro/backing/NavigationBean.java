@@ -10,8 +10,12 @@ public class NavigationBean extends BaseBean {
     private static final Logger logger = Logger.getLogger(NavigationBean.class);    
     
 	private String location = "home";
-	private Integer groupID = -1;
+	private Integer groupID;
 
+	public NavigationBean()
+	{
+	    
+	}
 	public String getLocation() {
 		return location;
 	}
