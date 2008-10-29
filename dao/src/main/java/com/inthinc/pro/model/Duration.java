@@ -6,7 +6,7 @@ import java.util.Map;
 
 public enum Duration
 {
-    DAYS("30 days", 30), THREE("3 months", 3), SIX("6 months", 6), TWELVE("12 months", 12);
+    DAYS("30 days", 30), THREE("3 months", 90), SIX("6 months", 180), TWELVE("12 months", 360);
 
     private final int numberOfDays;
     private String durationValue;
