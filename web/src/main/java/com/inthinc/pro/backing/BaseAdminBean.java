@@ -1,7 +1,5 @@
 package com.inthinc.pro.backing;
 
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,8 +9,8 @@ import javax.faces.context.FacesContext;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.FatalBeanException;
+
+import com.inthinc.pro.util.BeanUtil;
 
 /**
  * @author David Gileadi
@@ -263,7 +261,7 @@ public abstract class BaseAdminBean<T extends Selectable> extends BaseBean
 
             // copy properties
             for (final T item : selected)
-                deepCopy(editItem, item, ignoreFields);
+                BeanUtil.deepCopy(editItem, item, ignoreFields);
         }
         else
         {
@@ -303,48 +301,10 @@ public abstract class BaseAdminBean<T extends Selectable> extends BaseBean
         if ((updateField == null) && (items.size() > 0))
         {
             updateField = new HashMap<String, Boolean>();
-            initUpdateField(items.get(0), "");
+            for (final String name : BeanUtil.getPropertyNames(items.get(0)))
+                updateField.put(name, false);
         }
         return updateField;
-    }
-
-    /**
-     * Initializes the updateField map with property names from the given item.
-     * 
-     * @param item
-     *            The item to populate with.
-     * @param prefix
-     *            A prefix to prepend to property names, used for calling recursively.
-     */
-    protected void initUpdateField(Object item, String prefix)
-    {
-        for (final PropertyDescriptor descriptor : BeanUtils.getPropertyDescriptors(item.getClass()))
-        {
-            final Class<?> clazz = descriptor.getPropertyType();
-            if (clazz != null)
-            {
-                try
-                {
-                    if (BeanUtils.isSimpleProperty(clazz) || clazz.isEnum())
-                        updateField.put(prefix + descriptor.getName(), false);
-                    else
-                    {
-                        // get or create the container
-                        final Method readMethod = descriptor.getReadMethod();
-                        if (readMethod != null)
-                        {
-                            final Object targetProperty = readMethod.invoke(item, new Object[0]);
-                            if (targetProperty != null)
-                                initUpdateField(targetProperty, prefix + descriptor.getName() + '.');
-                        }
-                    }
-                }
-                catch (Throwable ex)
-                {
-                    throw new FatalBeanException("Could not init update field properties", ex);
-                }
-            }
-        }
     }
 
     /**
@@ -375,137 +335,14 @@ public abstract class BaseAdminBean<T extends Selectable> extends BaseBean
             {
                 batchEdit = true;
                 editItem = createAddItem();
-                deepCopy(selection, editItem, null);
+                BeanUtil.deepCopy(selection, editItem, null);
 
                 // null out properties that are not common
                 for (T item : items)
-                    compareAndNull(editItem, item);
+                    BeanUtil.compareAndInit(editItem, item);
             }
         }
         return editItem;
-    }
-
-    /**
-     * Deep copies the source object into the target object.
-     * 
-     * @param source
-     *            The source bean.
-     * @param target
-     *            The target bean.
-     * @param ignoreProperties
-     *            List of property names to ignore. Child property names are separated by dots, e.g. "property.child".
-     */
-    protected void deepCopy(Object source, Object target, List<String> ignoreProperties)
-    {
-        // deep-copy children
-        for (final PropertyDescriptor descriptor : BeanUtils.getPropertyDescriptors(source.getClass()))
-        {
-            if ((ignoreProperties != null) && ignoreProperties.contains(descriptor.getName()))
-                continue;
-
-            final Class<?> clazz = descriptor.getPropertyType();
-            if (clazz != null)
-            {
-                final Method readMethod = descriptor.getReadMethod();
-                final PropertyDescriptor targetDescriptor = BeanUtils.getPropertyDescriptor(target.getClass(), descriptor.getName());
-                final Method writeMethod = targetDescriptor.getWriteMethod();
-                if ((readMethod != null) && (writeMethod != null))
-                {
-                    try
-                    {
-                        // create a destination
-                        final Object sourceProperty = readMethod.invoke(source, new Object[0]);
-                        if (sourceProperty != null)
-                        {
-                            // simple or deep copy
-                            if (BeanUtils.isSimpleProperty(clazz) || clazz.isEnum())
-                                writeMethod.invoke(target, new Object[] { sourceProperty });
-                            else
-                            {
-                                // get or create the container
-                                Object targetProperty = null;
-                                final Method targetReader = targetDescriptor.getReadMethod();
-                                if (targetReader != null)
-                                    targetProperty = targetReader.invoke(target, new Object[0]);
-                                if (targetProperty == null)
-                                {
-                                    targetProperty = BeanUtils.instantiateClass(sourceProperty.getClass());
-                                    writeMethod.invoke(target, targetProperty);
-                                }
-
-                                // filter ignore properties by this property's prefix
-                                final String prefix = descriptor.getName() + '.';
-                                final LinkedList<String> childIgnore = new LinkedList<String>();
-                                if (ignoreProperties != null)
-                                    for (final String key : ignoreProperties)
-                                        if (key.startsWith(prefix))
-                                            childIgnore.add(key.substring(prefix.length()));
-
-                                // recurse
-                                deepCopy(sourceProperty, targetProperty, childIgnore);
-                            }
-                        }
-                    }
-                    catch (Throwable ex)
-                    {
-                        throw new FatalBeanException("Could not copy properties from source to target", ex);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Compares all properties of the editItem to the given item, nulling the property of the item if they aren't equal. Ignores null properties in the item.
-     * 
-     * @param item
-     *            The item to compare and null.
-     * @param compareTo
-     *            The item to compare it to.
-     */
-    protected void compareAndNull(Object item, Object compareTo)
-    {
-        try
-        {
-            for (final PropertyDescriptor descriptor : BeanUtils.getPropertyDescriptors(item.getClass()))
-            {
-                final Method read1 = descriptor.getReadMethod();
-                final Method read2 = BeanUtils.getPropertyDescriptor(compareTo.getClass(), descriptor.getName()).getReadMethod();
-                if ((read1 != null) && (read2 != null))
-                {
-                    final Object o1 = read1.invoke(item, new Object[0]);
-                    if (o1 != null)
-                    {
-                        final Object o2 = read2.invoke(compareTo, new Object[0]);
-                        if (o2 != null)
-                        {
-                            // recursive or simple compare
-                            final Class<?> clazz = descriptor.getPropertyType();
-                            if (clazz != null)
-                            {
-                                if (!BeanUtils.isSimpleProperty(clazz) && !clazz.isEnum())
-                                    compareAndNull(o1, o2);
-                                else if (!o1.equals(o2))
-                                {
-                                    final Method write = descriptor.getWriteMethod();
-                                    if (write != null)
-                                    {
-                                        if (clazz.isPrimitive())
-                                            write.invoke(item, new Object[] { BeanUtils.instantiateClass(o1.getClass().getConstructor(String.class), new Object[] { "0" }) });
-                                        else
-                                            write.invoke(item, new Object[] { null });
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        catch (Throwable ex)
-        {
-            throw new FatalBeanException("Could not compare and null properties", ex);
-        }
     }
 
     /**
