@@ -62,7 +62,7 @@ public class TrendBean extends BaseBean {
         sb.append(GraphicUtil.getXYControlParameters());
         
         //Is the group id initialized?
-        if ( this.navigation.getGroupID() == -1 ) {
+        if ( this.navigation.getGroupID() == null ) {
             this.navigation.setGroupID(getUser().getGroupID());
         }       
 
