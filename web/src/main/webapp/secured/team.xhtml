@@ -206,209 +206,16 @@
 	
     <td width="465" valign="top">
 		<!-- START PANEL -->
+   			<ui:include src="/includes/teamTop.xhtml">	
+             <ui:param name="topScores" value="#{teamTopBean.topDrivers}"/>
+             <ui:param name="bottomScores" value="#{teamTopBean.bottomDrivers}"/>
+             <ui:param name="table" value="#{trendTable.table}"/>
+    		</ui:include>
+    	</td>
+	  
+	  </tr>
+	  </table>
 
-			<div class="">
-				<div class="panel_nw">
-					<div class="panel_title">
-						<span class="top5">Top 5 Drivers </span>
-						<span class="panel_links"><a href="#">show all</a></span>
-					</div>
-				</div>
-					<div class="panel_w">
-
-					  <div class="panel_content">
-					  
-					  	<div class="datagrid">
-								<table width="100%" cellpadding="0" cellspacing="0" class="sortable-onload-0 no-arrow rowstyle-alt colstyle-alt paginate-15 max-pages-4 paginationcallback-callbackTest-calculateTotalRating sortcompletecallback-callbackTest-calculateTotalRating" id="theTable3">
-								  <thead>
-								  <tr>
-									<th width="38" height="27" class="sortable-numeric">#</th>
-									<th width="197" class="sortable-text">Driver</th>
-									<th width="68" class="sortable-numeric">Score</th>
-
-									<th width="81" class="sortable-text">Group</th>
-									<th width="62"><h:outputText value=" "></h:outputText></th>
-								  </tr>
-								  </thead>
-								  <tbody>
-								  <tr>
-								    <td>1</td>
-								    <td><a href="driverq_overview.html">Stephen Colbert</a> </td>
-
-								    <td>
-                                      <div class="score_sm_45" onclick="location.href='#';">
-                                        <div class="score">5.0</div>
-                                      </div>
-							        </td>
-								    <td>Alpha</td>
-								    <td><a href="#">details</a></td>
-
-								  </tr>
-								  <tr>
-								    <td>2</td>
-								    <td><a href="driverq_overview.html">John Stewart</a> </td>
-								    <td>
-                                      <div class="score_sm_45" onclick="location.href='#';">
-                                        <div class="score">4.8</div>
-
-                                      </div>
-							        </td>
-								    <td>Foxtrot</td>
-								    <td><a href="#">details</a></td>
-								  </tr>
-								  <tr>
-								    <td>3</td>
-
-								    <td><a href="driverq_overview.html">Carlos Mancina</a> </td>
-								    <td>
-                                      <div class="score_sm_3" onclick="location.href='#';">
-                                        <div class="score">3.9</div>
-                                      </div>
-							        </td>
-								    <td>Echo</td>
-
-								    <td><a href="#">details</a></td>
-								  </tr>
-								  <tr>
-								    <td>4</td>
-								    <td><a href="driverq_overview.html">Tommy Ringstad</a> </td>
-								    <td>
-                                      <div class="score_sm_12" onclick="location.href='#';">
-
-                                        <div class="score">2.8</div>
-                                      </div>
-							        </td>
-								    <td>Romeo</td>
-								    <td><a href="#">details</a></td>
-								  </tr>
-								  <tr>
-
-								    <td>5</td>
-								    <td><a href="driverq_overview.html">Dave Ross</a> </td>
-								    <td>
-                                      <div class="score_sm_45" onclick="location.href='#';">
-                                        <div class="score">5.0</div>
-                                      </div>
-							        </td>
-
-								    <td>Delta</td>
-								    <td><a href="#">details</a></td>
-								  </tr>
-								  </tbody>
-								</table>
-						</div>
-					  
-				      </div>
-					</div>
-
-				<div class="panel_sw">
-					<div class="panel_statusbar"></div>
-				</div>
-			</div>
-		<!-- END PANEL -->
-		
-		<div class="spacer"></div>
-		
-		<!-- START PANEL -->
-			<div class="">
-				<div class="panel_nw">
-
-					<div class="panel_title">
-						<span class="thumbsdown">Bottom 5 Drivers </span>
-						<span class="panel_links"><a href="#">show all</a></span>
-					</div>
-				</div>
-					<div class="panel_w">
-					  <div class="panel_content">
-					  
-					  	<div class="datagrid">
-
-					  	  <table width="100%" cellpadding="0" cellspacing="0" class="sortable-onload-0 no-arrow rowstyle-alt colstyle-alt paginate-15 max-pages-4 paginationcallback-callbackTest-calculateTotalRating sortcompletecallback-callbackTest-calculateTotalRating" id="theTable4">
-                            <thead>
-                              <tr>
-                                <th width="38" height="27" class="sortable-numeric">#</th>
-                                <th width="197" class="sortable-text">Driver</th>
-                                <th width="68" class="sortable-numeric">Score</th>
-                                <th width="81" class="sortable-text">Group</th>
-
-                                <th width="62"><h:outputText value=" "></h:outputText></th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>1</td>
-                                <td><a href="driverq_overview.html">Johnny Lingo</a> </td>
-
-                                <td>
-                                  <div class="score_sm_12" onclick="location.href='#';">
-                                    <div class="score">1.2</div>
-                                  </div>
-                                </td>
-                                <td>Alpha</td>
-                                <td><a href="#">details</a></td>
-
-                              </tr>
-                              <tr>
-                                <td>2</td>
-                                <td><a href="driverq_overview.html">Bart Simpson</a> </td>
-                                <td>
-                                  <div class="score_sm_12" onclick="location.href='#';">
-                                    <div class="score">1.5</div>
-
-                                  </div>
-                                </td>
-                                <td>Foxtrot</td>
-                                <td><a href="#">details</a></td>
-                              </tr>
-                              <tr>
-                                <td>3</td>
-
-                                <td><a href="driverq_overview.html">Sammy Hagar</a> </td>
-                                <td>
-                                  <div class="score_sm_12" onclick="location.href='#';">
-                                    <div class="score">1.9</div>
-                                  </div>
-                                </td>
-                                <td>Echo</td>
-
-                                <td><a href="#">details</a></td>
-                              </tr>
-                              <tr>
-                                <td>4</td>
-                                <td><a href="driverq_overview.html">Cameron Day</a> </td>
-                                <td>
-                                  <div class="score_sm_12" onclick="location.href='#';">
-
-                                    <div class="score">2.0</div>
-                                  </div>
-                                </td>
-                                <td>Romeo</td>
-                                <td><a href="#">details</a></td>
-                              </tr>
-                              <tr>
-
-                                <td>5</td>
-                                <td><a href="driverq_overview.html">Danny Moll</a> </td>
-                                <td>
-                                  <div class="score_sm_12" onclick="location.href='#';">
-                                    <div class="score">2.1</div>
-                                  </div>
-                                </td>
-
-                                <td>Delta</td>
-                                <td><a href="#">details</a></td>
-                              </tr>
-                            </tbody>
-                          </table>
-					  	</div>
-					  
-					    </div>
-					</div>
-
-				<div class="panel_sw">
-					<div class="panel_statusbar"></div>
-				</div>
-			</div>
 		<!-- END PANEL -->
 		
 		<div class="spacer"></div>
@@ -429,10 +236,7 @@
 <!--		</ui:include> -->
 		<!-- END PANEL -->
 
-	</td>
-  </tr>
-	  
-	</table>
+	
 	</ui:define>
 
 </ui:composition>

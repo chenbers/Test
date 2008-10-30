@@ -11,6 +11,17 @@ public class ScoreableEntity extends BaseEntity {
 	private Integer score;
     private Integer date;
     private ScoreType scoreType;
+    private Integer position;
+
+    public Integer getPosition()
+    {
+        return position;
+    }
+
+    public void setPosition(Integer position)
+    {
+        this.position = position;
+    }
 
     public ScoreableEntity()
     {
