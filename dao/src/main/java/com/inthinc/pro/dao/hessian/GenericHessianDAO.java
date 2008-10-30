@@ -462,7 +462,7 @@ public abstract class GenericHessianDAO<T, ID, S extends DAOService> implements 
         return returnList;
     }
 
-    private Map<String, Object> convertToMap(Object modelObject)
+    protected Map<String, Object> convertToMap(Object modelObject)
     {
         Map<String, Object> map = new HashMap<String, Object>();
 

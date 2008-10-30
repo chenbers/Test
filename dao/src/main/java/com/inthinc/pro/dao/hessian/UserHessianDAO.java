@@ -1,15 +1,12 @@
 package com.inthinc.pro.dao.hessian;
 
-import java.util.Map;
-
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.UserDAO;
-import com.inthinc.pro.dao.annotations.ConvertFieldToColumn;
 import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.dao.service.CentralService;
-import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Role;
+import com.inthinc.pro.model.User;
 
 public class UserHessianDAO extends GenericHessianDAO<User, Integer, CentralService> implements UserDAO
 {
@@ -44,13 +41,6 @@ public class UserHessianDAO extends GenericHessianDAO<User, Integer, CentralServ
             if (phoneNumbers.length > 1)
                 user.setSecondaryPhone(phoneNumbers[1]);
         }
-    }
-
-    @ConvertFieldToColumn(fieldName = "primaryPhone")
-    public void phoneNumbersToMap(Object o, Map<String, Object> map)
-    {
-        if (map == null || o == null)
-            return;
     }
 
     @ConvertColumnToField(columnName = "sms")
