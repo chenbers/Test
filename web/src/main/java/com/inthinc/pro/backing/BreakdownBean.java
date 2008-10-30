@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.backing.ui.ScoreBox;
+import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.GraphicDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Duration;
@@ -28,6 +30,8 @@ public class BreakdownBean extends BaseBean {
     private NavigationBean navigation;
 	
 	private String pieDef;	
+    private Integer overallScore;
+    private String overallScoreStyle;
 	
 	//The following five may need to be placed in BaseBean
 	private Duration duration = Duration.DAYS;
@@ -96,6 +100,66 @@ public class BreakdownBean extends BaseBean {
 		return sb.toString();
 	}
 	
+    private void initStyle()
+    {
+        if (overallScore == null)
+        {
+            init();
+        }
+
+        ScoreBox sb = new ScoreBox(getOverallScore(), ScoreBoxSizes.LARGE);
+        setOverallScoreStyle(sb.getScoreStyle());
+    }
+
+    private void init()
+    {
+        logger.debug("init()");
+        Integer endDate = DateUtil.getTodaysDate();
+        Integer startDate = DateUtil.getDaysBackDate(endDate, duration.getNumberOfDays());
+        Integer groupID = navigation.getGroupID();
+        if (groupID == null)
+        {
+            groupID = getUser().getGroupID();
+        }
+        ScoreableEntity scoreableEntity = graphicDAO.getOverallScore(groupID, startDate, endDate);
+        setOverallScore(scoreableEntity.getScore());
+    }
+
+    public Integer getOverallScore()
+    {
+
+        if (overallScore == null)
+        {
+            init();
+        }
+        return overallScore;
+    }
+
+    public void setOverallScore(Integer overallScore)
+    {
+        this.overallScore = overallScore;
+        initStyle();
+    }
+
+    public String getOverallScoreStyle()
+    {
+        if (overallScoreStyle == null)
+        {
+            initStyle();
+        }
+        logger.debug("overallScoreStyle = " + overallScoreStyle);
+        return overallScoreStyle;
+    }
+
+    public void setOverallScoreStyle(String overallScoreStyle)
+    {
+        this.overallScoreStyle = overallScoreStyle;
+    }
+
+    public String getDurationAsString()
+    {
+        return duration.toString();
+    }
 
 	public Duration getDuration() {
 		return duration;
