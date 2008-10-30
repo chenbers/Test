@@ -948,8 +948,9 @@ h2 {
 
 .ls_tabs {
 	border-right: 1px solid #8BAD37;
-
+	vertical-align:top;
 	}
+	
 
 .ls_tab_on {
 	height: 31px;
@@ -1309,24 +1310,32 @@ a.ls_tab_mile {
 	border-right: 1px solid #e1e1e1;
 	width: 225px;
 	height: 205px;
+	vertical-align:top;
+	
 	}
 
 .piegrid_2 {
 	border-bottom: 1px solid #e1e1e1;
 	width: 225px;
 	height: 205px;
+	vertical-align:top;
+	
 	}
 	
 .piegrid_3 {
 	border-left: 1px solid #e1e1e1;
 	width: 225px;
 	height: 205px;
+	vertical-align:top;
+	
 	}
 	
 .piegrid_4 {
 	border-top: 1px solid #e1e1e1;
 	width: 225px;
 	height: 205px;
+	vertical-align:top;
+	
 	}
 
 /* BREAD CRUMBS */

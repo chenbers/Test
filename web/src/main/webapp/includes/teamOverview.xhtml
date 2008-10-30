@@ -30,9 +30,8 @@
 	</h:panelGroup>				
 	<h:panelGroup layout="block" styleClass="panel_w">
 		<h:panelGroup layout="block" styleClass="panel_content">
-			<h:panelGrid width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;" columns="2">
-				<h:panelGroup style="">
-					<table width="130" border="0" cellpadding="0" cellspacing="0" class="ls_tabs" style="vertical-align:top">
+			<h:panelGrid width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;" columns="2" columnClasses="ls_tabs">
+					<table width="130" border="0" cellpadding="0" cellspacing="0">
 						<a4j:form id="overview-form">
 						      <ui:repeat value="#{teamOverviewBean.actions}" var="action" id="menu">
 						        <tr>
@@ -46,7 +45,6 @@
 						      </ui:repeat>
 						</a4j:form>
 						</table>
-				</h:panelGroup>
 				<h:panelGroup>
 					<a4j:region id="overall" rendered="#{teamOverviewBean.selectedAction.key == 'overall'}">
 						<ui:include src="/includes/teamOverviewTab_overall.xhtml" />
