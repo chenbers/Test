@@ -2,13 +2,13 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-
-import javax.faces.model.SelectItem;
+import java.util.TreeMap;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.LogManager;
@@ -27,13 +27,13 @@ import com.inthinc.pro.model.VehicleSensitivity;
  */
 public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
 {
-    private static final Logger       logger                 = LogManager.getLogger(VehiclesBean.class);
+    private static final Logger                  logger                 = LogManager.getLogger(VehiclesBean.class);
 
-    private static final List<String> AVAILABLE_COLUMNS;
-    private static final int[]        DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 8, 14, 15 };
+    private static final List<String>            AVAILABLE_COLUMNS;
+    private static final int[]                   DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 8, 14, 15 };
 
-    private static final SelectItem[] YEARS;
-    private static final SelectItem[] STATES;
+    private static final TreeMap<String, String> YEARS;
+    private static final TreeMap<String, State>  STATES;
 
     static
     {
@@ -64,15 +64,22 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         final Calendar cal = Calendar.getInstance();
         cal.add(Calendar.YEAR, 1);
         final int nextYear = cal.get(Calendar.YEAR);
-        YEARS = new SelectItem[nextYear - 1969];
+        YEARS = new TreeMap<String, String>(new Comparator<String>()
+        {
+            @Override
+            public int compare(String o1, String o2)
+            {
+                return o2.compareTo(o1);
+            }
+        });
         for (int year = 1970; year <= nextYear; year++)
-            YEARS[nextYear - year] = new SelectItem(String.valueOf(year));
+            YEARS.put(String.valueOf(year), String.valueOf(year));
 
         // states
         final State[] states = State.values();
-        STATES = new SelectItem[states.length];
+        STATES = new TreeMap<String, State>();
         for (int i = 0; i < states.length; i++)
-            STATES[i] = new SelectItem(states[i].getAbbrev(), states[i].getName());
+            STATES.put(states[i].getName(), states[i]);
     }
 
     public VehiclesBean()
@@ -245,12 +252,12 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         return "go_adminVehicles";
     }
 
-    public SelectItem[] getYears()
+    public TreeMap<String, String> getYears()
     {
         return YEARS;
     }
 
-    public SelectItem[] getStates()
+    public TreeMap<String, State> getStates()
     {
         return STATES;
     }
