@@ -11,6 +11,7 @@ public class Vehicle extends BaseEntity
     private Integer    vehicleID;
     @Column(name = "acctID")
     private Integer    accountID;
+    private Integer    groupID;
     private Boolean    active;
     private String     timeZone;
     private Integer    startOdometer;
@@ -40,6 +41,16 @@ public class Vehicle extends BaseEntity
     public void setAccountID(Integer accountID)
     {
         this.accountID = accountID;
+    }
+
+    public Integer getGroupID()
+    {
+        return groupID;
+    }
+
+    public void setGroupID(Integer groupID)
+    {
+        this.groupID = groupID;
     }
 
     public Boolean getActive()

@@ -1564,6 +1564,7 @@ color: #fff;
 .msg {
 	margin: 5px;
 	padding: 0;
+	list-style: none;
 	}
 
 .msg p {
@@ -1573,41 +1574,74 @@ color: #fff;
 	color: none;
 	}
 
-#warning {
+.msg li {
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	padding: 10px 5px 17px 35px;
+	background: none;
+	color: none;
+	list-style: none;
+	}
+
+.warning {
 	background: #ffffcc url(../images/icon_msg_warn.png) top left no-repeat;
 	border: 1px solid #eca031;
 	color: #c26b06;
 	}
 	
-#redflag {
+.redflag {
 	background: #fce9e9 url(../images/icon_msg_redflag.png) top left no-repeat;
 	border: 1px solid #f46666;
 	color: #c44d34;
 	}
 	
-#redflag a:active,
-#redflag a:link,
-#redflag a:hover,
-#redflag a:visited {
+.redflag a:active,
+.redflag a:link,
+.redflag a:hover,
+.redflag a:visited {
 	color: #c44d34;
 	}
 	
-#info {
+.info {
 	background: #ebf0fa url(../images/icon_msg_info.png) top left no-repeat;
 	border: 1px solid #75a3ed;
 	color: #395898;
 	}
 	
-#error {
+.error {
 	background: #fce9e9 url(../images/icon_msg_err.png) top left no-repeat;
 	border: 1px solid #f46666;
 	color: #c44d34;
 	}
 	
-#success {
+.success {
 	background: #eefcd2 url(../images/icon_msg_success.png) top left no-repeat;
 	border: 1px solid #a0bf4e;
 	color: #277822;
+	}
+
+.field-msg {
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	margin: 0px;
+	padding: 1px 1px 1px 16px;
+	display: block;
+	}
+
+.field-warning {
+	background: #ffffcc url(../images/icon_msg_warn_small.png) top left no-repeat;
+	border: 1px solid #eca031;
+	color: #c26b06;
+	}
+	
+.field-info {
+	background: #ebf0fa url(../images/icon_msg_info_small.png) top left no-repeat;
+	border: 1px solid #75a3ed;
+	color: #395898;
+	}
+	
+.field-error {
+	background: #fce9e9 url(../images/icon_msg_err_small.png) top left no-repeat;
+	border: 1px solid #f46666;
+	color: #c44d34;
 	}
 
 /*  NEW AND IMPROVED DATA GRID STYLES */

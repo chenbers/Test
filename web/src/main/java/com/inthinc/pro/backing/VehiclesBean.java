@@ -27,13 +27,14 @@ import com.inthinc.pro.model.VehicleSensitivity;
  */
 public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
 {
-    private static final Logger                  logger                 = LogManager.getLogger(VehiclesBean.class);
+    private static final Logger                   logger                 = LogManager.getLogger(VehiclesBean.class);
 
-    private static final List<String>            AVAILABLE_COLUMNS;
-    private static final int[]                   DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 8, 14, 15 };
+    private static final List<String>             AVAILABLE_COLUMNS;
+    private static final int[]                    DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 8, 14, 15 };
 
-    private static final TreeMap<String, String> YEARS;
-    private static final TreeMap<String, State>  STATES;
+    private static final TreeMap<String, String>  YEARS;
+    private static final TreeMap<String, State>   STATES;
+    private static final TreeMap<String, Integer> GROUPS;
 
     static
     {
@@ -80,6 +81,15 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         STATES = new TreeMap<String, State>();
         for (int i = 0; i < states.length; i++)
             STATES.put(states[i].getName(), states[i]);
+
+        // groups
+        GROUPS = new TreeMap<String, Integer>();
+        // TODO: populate this from some place real
+        GROUPS.put("North", 1);
+        GROUPS.put("East", 2);
+        GROUPS.put("South", 3);
+        GROUPS.put("West", 4);
+        GROUPS.put("Down Town", 5);
     }
 
     public VehiclesBean()
@@ -220,6 +230,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     protected VehicleView createAddItem()
     {
         final Vehicle vehicle = new Vehicle();
+        vehicle.setActive(true);
         vehicle.setSafetyDevices(new ArrayList<SafetyDevice>());
         vehicle.setCompanyInfo(new VehicleCompanyInfo());
         vehicle.setDescription(new VehicleDescription());
@@ -260,6 +271,11 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     public TreeMap<String, State> getStates()
     {
         return STATES;
+    }
+
+    public TreeMap<String, Integer> getGroups()
+    {
+        return GROUPS;
     }
 
     public static class VehicleView extends Vehicle implements Selectable

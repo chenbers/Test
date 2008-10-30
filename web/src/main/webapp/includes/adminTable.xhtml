@@ -94,7 +94,7 @@ Note: The following parameters are required by the included editColumns.xhtml
           <li class="l text"><a href="#" class="ls_tab_edit_columns" onclick="Richfaces.showModalPanel('editColumns');"><h:outputText value="#{messages.button_editColumns}" /></a></li>
       
           <li class="r text">
-            <h:outputFormat id="recordCounts" value="#{messages.record_counts}">
+            <h:outputFormat id="recordCounts" value="#{messages.recordCounts}">
               <f:param value="#{(recordCount gt 0) ? (firstRecord + 1) : 0}"/>
               <f:param value="#{((firstRecord + rows) lt recordCount) ? (firstRecord + rows) : recordCount}"/>
               <f:param value="#{recordCount}"/>
