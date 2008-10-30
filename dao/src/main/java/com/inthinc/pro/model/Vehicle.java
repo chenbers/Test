@@ -13,14 +13,18 @@ public class Vehicle extends BaseEntity
     private Integer    accountID;
     private Integer    groupID;
     private Boolean    active;
-    private String     timeZone;
-    private Integer    startOdometer;
+    private String     name;
+    private String     make;
+    private String     model;
+    private String     year;
+    private String     color;
+    private String     unitType;     // e.g. sedan, suv, etc
+    private String     VIN;          // 17 chars
+    private Integer    weight;
+    private String     license;
+    private State      state;
     @Column(updateable = false)
-    private Integer    assignedDriverID;
     List<SafetyDevice> safetyDevices;
-    VehicleCompanyInfo companyInfo;
-    VehicleDescription description;
-    VehicleLicense     license;
     VehicleSensitivity sensitivity;
 
     public Integer getVehicleID()
@@ -63,34 +67,104 @@ public class Vehicle extends BaseEntity
         this.active = active;
     }
 
-    public String getTimeZone()
+    public String getName()
     {
-        return timeZone;
+        return name;
     }
 
-    public void setTimeZone(String timeZone)
+    public void setName(String name)
     {
-        this.timeZone = timeZone;
+        this.name = name;
     }
 
-    public Integer getStartOdometer()
+    public String getMake()
     {
-        return startOdometer;
+        return make;
     }
 
-    public void setStartOdometer(Integer startOdometer)
+    public void setMake(String make)
     {
-        this.startOdometer = startOdometer;
+        this.make = make;
     }
 
-    public Integer getAssignedDriverID()
+    public String getModel()
     {
-        return assignedDriverID;
+        return model;
     }
 
-    public void setAssignedDriverID(Integer driverID)
+    public void setModel(String model)
     {
-        this.assignedDriverID = driverID;
+        this.model = model;
+    }
+
+    public String getYear()
+    {
+        return year;
+    }
+
+    public void setYear(String year)
+    {
+        this.year = year;
+    }
+
+    public String getColor()
+    {
+        return color;
+    }
+
+    public void setColor(String color)
+    {
+        this.color = color;
+    }
+
+    public String getUnitType()
+    {
+        return unitType;
+    }
+
+    public void setUnitType(String unitType)
+    {
+        this.unitType = unitType;
+    }
+
+    public String getVIN()
+    {
+        return VIN;
+    }
+
+    public void setVIN(String vin)
+    {
+        VIN = vin;
+    }
+
+    public Integer getWeight()
+    {
+        return weight;
+    }
+
+    public void setWeight(Integer weight)
+    {
+        this.weight = weight;
+    }
+
+    public String getLicense()
+    {
+        return license;
+    }
+
+    public void setLicense(String license)
+    {
+        this.license = license;
+    }
+
+    public State getState()
+    {
+        return state;
+    }
+
+    public void setState(State state)
+    {
+        this.state = state;
     }
 
     public List<SafetyDevice> getSafetyDevices()
@@ -101,36 +175,6 @@ public class Vehicle extends BaseEntity
     public void setSafetyDevices(List<SafetyDevice> safetyDevices)
     {
         this.safetyDevices = safetyDevices;
-    }
-
-    public VehicleCompanyInfo getCompanyInfo()
-    {
-        return companyInfo;
-    }
-
-    public void setCompanyInfo(VehicleCompanyInfo companyInfo)
-    {
-        this.companyInfo = companyInfo;
-    }
-
-    public VehicleDescription getDescription()
-    {
-        return description;
-    }
-
-    public void setDescription(VehicleDescription description)
-    {
-        this.description = description;
-    }
-
-    public VehicleLicense getLicense()
-    {
-        return license;
-    }
-
-    public void setLicense(VehicleLicense license)
-    {
-        this.license = license;
     }
 
     public VehicleSensitivity getSensitivity()

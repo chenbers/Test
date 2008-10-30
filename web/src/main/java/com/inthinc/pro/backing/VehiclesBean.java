@@ -7,19 +7,16 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.TreeMap;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.SafetyDevice;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.VehicleCompanyInfo;
-import com.inthinc.pro.model.VehicleDescription;
-import com.inthinc.pro.model.VehicleLicense;
 import com.inthinc.pro.model.VehicleSensitivity;
 
 /**
@@ -30,7 +27,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     private static final Logger                   logger                 = LogManager.getLogger(VehiclesBean.class);
 
     private static final List<String>             AVAILABLE_COLUMNS;
-    private static final int[]                    DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 8, 14, 15 };
+    private static final int[]                    DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 8, 12 };
 
     private static final TreeMap<String, String>  YEARS;
     private static final TreeMap<String, State>   STATES;
@@ -40,24 +37,20 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     {
         // available columns
         AVAILABLE_COLUMNS = new ArrayList<String>();
-        AVAILABLE_COLUMNS.add("vehicleID");
+        AVAILABLE_COLUMNS.add("name");
         AVAILABLE_COLUMNS.add("driver");
         AVAILABLE_COLUMNS.add("group");
         AVAILABLE_COLUMNS.add("year");
         AVAILABLE_COLUMNS.add("make");
         AVAILABLE_COLUMNS.add("model");
         AVAILABLE_COLUMNS.add("color");
-        AVAILABLE_COLUMNS.add("description");
+        AVAILABLE_COLUMNS.add("unitType");
         AVAILABLE_COLUMNS.add("VIN");
         AVAILABLE_COLUMNS.add("weight");
-        AVAILABLE_COLUMNS.add("licenseNumber");
+        AVAILABLE_COLUMNS.add("license");
         AVAILABLE_COLUMNS.add("state");
-        AVAILABLE_COLUMNS.add("timeZone");
-        AVAILABLE_COLUMNS.add("costPerHour");
-        AVAILABLE_COLUMNS.add("startOdometer");
         AVAILABLE_COLUMNS.add("active");
         AVAILABLE_COLUMNS.add("hardAccelerationLevel");
-        AVAILABLE_COLUMNS.add("hardBrakeLevel");
         AVAILABLE_COLUMNS.add("hardTurnLevel");
         AVAILABLE_COLUMNS.add("hardVerticalLevel");
 
@@ -92,14 +85,18 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         GROUPS.put("Down Town", 5);
     }
 
+    private VehicleDAO                            vehicleDAO;
+
     public VehiclesBean()
     {
         super();
 
-        List<Vehicle> plainVehicles = new LinkedList<Vehicle>();
-        // TODO: get the vehicles from some place real
+        // get the vehicles
+        final List<Vehicle> plainVehicles = new LinkedList<Vehicle>();
         for (int i = 0; i < 110; i++)
             plainVehicles.add(createDummyVehicle());
+        // TODO: use the commented line below instead
+        // final List<Vehicle> plainVehicles = vehicleDAO.getVehiclesByAcctID(getUser().getAccountID());
 
         // convert the Vehicles to VehicleViews
         items = new LinkedList<VehicleView>();
@@ -114,28 +111,25 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         columns = getDefaultColumns();
     }
 
+    public void setVehicleDAO(VehicleDAO vehicleDAO)
+    {
+        this.vehicleDAO = vehicleDAO;
+    }
+
     @Deprecated
     private Vehicle createDummyVehicle()
     {
         final Vehicle vehicle = new Vehicle();
         vehicle.setVehicleID((int) (Math.random() * Integer.MAX_VALUE));
-        vehicle.setCompanyInfo(new VehicleCompanyInfo());
-        vehicle.getCompanyInfo().setVehicleIdentification(String.valueOf((int) (Math.random() * Integer.MAX_VALUE)));
-        vehicle.getCompanyInfo().setCostPerHour(randomInt(200));
-        vehicle.setDescription(new VehicleDescription());
-        vehicle.getDescription().setYear(String.valueOf(randomInt(39) + 1970));
-        vehicle.getDescription().setMake(createDummyName());
-        vehicle.getDescription().setModel(createDummyName());
-        vehicle.getDescription().setColor(createDummyName());
-        vehicle.getDescription().setWeight(randomInt(20000) + 5000);
-        vehicle.getDescription().setVIN(createDummyString("abcdefghijklmnoprstuvwyz1234567890", 17));
-        vehicle.setLicense(new VehicleLicense());
-        vehicle.getLicense().setNumber(createDummyString("abcdefghijklmnoprstuvwyz", randomInt(2) + 6));
-        vehicle.getLicense().setState(State.AZ);
-        final String[] timeZones = TimeZone.getAvailableIDs();
-        vehicle.setTimeZone(timeZones[randomInt(timeZones.length)]);
-        vehicle.setStartOdometer(randomInt(200000));
-        // vehicle.setTotalOdometer(vehicle.getStartOdometer() + randomInt(100000));
+        vehicle.setName(String.valueOf((int) (Math.random() * Integer.MAX_VALUE)));
+        vehicle.setYear(String.valueOf(randomInt(39) + 1970));
+        vehicle.setMake(createDummyName());
+        vehicle.setModel(createDummyName());
+        vehicle.setColor(createDummyName());
+        vehicle.setWeight(randomInt(20000) + 5000);
+        vehicle.setVIN(createDummyString("ABCDEFGHIJKLMNOPRSTUVWYZ1234567890", 17));
+        vehicle.setLicense(createDummyString("ABCDEFGHIJKLMNOPRSTUVWYZ1234567890", randomInt(2) + 6));
+        vehicle.setState(State.AZ);
         vehicle.setActive(Math.random() < .75);
         return vehicle;
     }
@@ -191,6 +185,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
 
         // TODO: look up the driver by driverID instead
         vehicleView.setDriver(createDummyName() + ' ' + createDummyName());
+        // TODO: look up by groupID instead
+        vehicleView.setGroup(createDummyName());
         vehicleView.setSelected(false);
 
         return vehicleView;
@@ -199,9 +195,10 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     @Override
     protected boolean matchesFilter(VehicleView item, String filterWord)
     {
-        return String.valueOf(item.getCompanyInfo().getVehicleIdentification()).startsWith(filterWord) || String.valueOf(item.getDescription().getYear()).startsWith(filterWord)
-                || item.getDescription().getMake().toLowerCase().startsWith(filterWord) || item.getDescription().getModel().toLowerCase().startsWith(filterWord)
-                || item.getDescription().getVIN().toLowerCase().startsWith(filterWord) || item.getLicense().getNumber().toLowerCase().startsWith(filterWord);
+        return String.valueOf(item.getName()).startsWith(filterWord) || String.valueOf(item.getYear()).startsWith(filterWord)
+                || ((item.getUnitType() != null) && item.getUnitType().startsWith(filterWord)) || item.getMake().toLowerCase().startsWith(filterWord)
+                || item.getModel().toLowerCase().startsWith(filterWord) || item.getVIN().toLowerCase().startsWith(filterWord)
+                || item.getLicense().toLowerCase().startsWith(filterWord);
     }
 
     @Override
@@ -232,9 +229,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         final Vehicle vehicle = new Vehicle();
         vehicle.setActive(true);
         vehicle.setSafetyDevices(new ArrayList<SafetyDevice>());
-        vehicle.setCompanyInfo(new VehicleCompanyInfo());
-        vehicle.setDescription(new VehicleDescription());
-        vehicle.setLicense(new VehicleLicense());
         vehicle.setSensitivity(new VehicleSensitivity());
         return createVehicleView(vehicle);
     }
@@ -281,6 +275,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     public static class VehicleView extends Vehicle implements Selectable
     {
         private String  driver;
+        private String  group;
         private boolean selected;
 
         public String getDriver()
@@ -291,6 +286,16 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         public void setDriver(String driver)
         {
             this.driver = driver;
+        }
+
+        public String getGroup()
+        {
+            return group;
+        }
+
+        public void setGroup(String group)
+        {
+            this.group = group;
         }
 
         /**

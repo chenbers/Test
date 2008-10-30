@@ -4,7 +4,6 @@ public class VehicleSensitivity extends BaseEntity
 {
     Integer vehicleId;
     Integer hardAccelerationLevel;
-    Integer hardBrakeLevel;
     Integer hardTurnLevel;
     Integer hardVerticalLevel;
 
@@ -26,16 +25,6 @@ public class VehicleSensitivity extends BaseEntity
     public void setHardAccelerationLevel(Integer hardAccelerationLevel)
     {
         this.hardAccelerationLevel = hardAccelerationLevel;
-    }
-
-    public Integer getHardBrakeLevel()
-    {
-        return hardBrakeLevel;
-    }
-
-    public void setHardBrakeLevel(Integer hardBrakeLevel)
-    {
-        this.hardBrakeLevel = hardBrakeLevel;
     }
 
     public Integer getHardTurnLevel()

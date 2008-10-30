@@ -70,7 +70,7 @@
               <h:outputText value="#{messages[columnName]}" />
             </h:outputLabel>
           </rich:column>
-          <rich:column width="33%" rendered="#{(index + (columnCount * 2)) lt (allColumnsCount - 1)}">
+          <rich:column width="33%" rendered="#{(index + (columnCount * 2)) lt allColumnsCount}">
             <c:set var="columnName" value="#{messagesPrefix}#{allColumns[(index + (columnCount * 2))]}" />
             <h:outputLabel>
               <h:selectBooleanCheckbox value="#{selectedColumns[allColumns[(index + (columnCount * 2))]]}" />
