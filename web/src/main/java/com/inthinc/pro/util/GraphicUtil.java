@@ -70,7 +70,7 @@ public class GraphicUtil {
 		return sb.toString();
 	}	
 	
-	private static int convertToMonths(Duration duration) {
+	public static int convertToMonths(Duration duration) {
 	    int months = 0;
 	    
 	    if (           duration.equals(Duration.THREE) ) {
