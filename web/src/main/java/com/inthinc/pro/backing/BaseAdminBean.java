@@ -67,9 +67,9 @@ public abstract class BaseAdminBean<T extends Selectable> extends BaseBean
     public void setFilterValue(String filterValue)
     {
         boolean changed = false;
-        if ((filterValue != null) && (filterValue.length() > 0))
+        if ((filterValue != null) && (filterValue.trim().length() > 0))
         {
-            filterValue = filterValue.toLowerCase();
+            filterValue = filterValue.trim().toLowerCase();
             changed = !filterValue.equals(this.filterValue);
         }
         else
@@ -80,33 +80,41 @@ public abstract class BaseAdminBean<T extends Selectable> extends BaseBean
 
         if (changed)
         {
-            setPage(1);
-
-            filteredItems.clear();
             this.filterValue = filterValue;
-            if (filterValue != null)
-            {
-                final boolean matchAllWords = matchAllFilterWords();
-                final String[] filterWords = filterValue.split("\\s+");
-                for (final T item : items)
-                {
-                    boolean matched = false;
-                    for (final String word : filterWords)
-                    {
-                        matched = matchesFilter(item, word);
-
-                        // we can break if we didn't match and we're required to match all words,
-                        // or if we did match and we're only required to match one word
-                        if (matched ^ matchAllWords)
-                            break;
-                    }
-                    if (matched)
-                        filteredItems.add(item);
-                }
-            }
-            else
-                filteredItems.addAll(items);
+            applyFilter();
         }
+    }
+
+    /**
+     * Applies the filter.
+     */
+    protected void applyFilter()
+    {
+        setPage(1);
+
+        filteredItems.clear();
+        if (filterValue != null)
+        {
+            final boolean matchAllWords = matchAllFilterWords();
+            final String[] filterWords = filterValue.split("\\s+");
+            for (final T item : items)
+            {
+                boolean matched = false;
+                for (final String word : filterWords)
+                {
+                    matched = matchesFilter(item, word);
+
+                    // we can break if we didn't match and we're required to match all words,
+                    // or if we did match and we're only required to match one word
+                    if (matched ^ matchAllWords)
+                        break;
+                }
+                if (matched)
+                    filteredItems.add(item);
+            }
+        }
+        else
+            filteredItems.addAll(items);
     }
 
     /**
@@ -195,6 +203,8 @@ public abstract class BaseAdminBean<T extends Selectable> extends BaseBean
     {
         batchEdit = false;
         editItem = createAddItem();
+        editItem.setSelected(false);
+
         return getEditRedirect();
     }
 
@@ -205,14 +215,15 @@ public abstract class BaseAdminBean<T extends Selectable> extends BaseBean
      */
     public String edit()
     {
-        batchEdit = false;
-
         // select only the item to be edited
         final Map<String, String> parameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         final int editIndex = Integer.parseInt(parameterMap.get("editIndex"));
         for (final T item : items)
             item.setSelected(false);
         filteredItems.get(editIndex).setSelected(true);
+
+        editItem = null;
+        getEditItem();
 
         return getEditRedirect();
     }
@@ -224,9 +235,12 @@ public abstract class BaseAdminBean<T extends Selectable> extends BaseBean
      */
     public String batchEdit()
     {
-        batchEdit = true;
+        editItem = null;
+        getEditItem();
+
         for (final String key : getUpdateField().keySet())
             updateField.put(key, false);
+
         return getEditRedirect();
     }
 
@@ -265,8 +279,14 @@ public abstract class BaseAdminBean<T extends Selectable> extends BaseBean
         }
         else
         {
+            final boolean add = !editItem.isSelected();
             editItem.setSelected(false);
             doSave(selected);
+            if (add)
+            {
+                items.add(editItem);
+                applyFilter();
+            }
         }
         editItem = null;
         return getFinishedRedirect();
@@ -283,6 +303,14 @@ public abstract class BaseAdminBean<T extends Selectable> extends BaseBean
         doDelete(selected);
         items.removeAll(selected);
         return getFinishedRedirect();
+    }
+
+    /**
+     * @return Whether the current edit operation is an item add.
+     */
+    public boolean isAdd()
+    {
+        return !isBatchEdit() && (editItem != null) && !editItem.isSelected();
     }
 
     /**

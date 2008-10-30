@@ -30,7 +30,7 @@
         <tr>
           <td valign="top" class="sub_wrapper">
             <div class="#{(selectedAction == 'go_adminAddPerson') ? 'ls_tab_sub_active' : 'ls_tab_sub'}">
-              <h:commandLink action="go_adminAddPerson" value="#{messages.adminSideNav_go_adminAddPerson}" styleClass="ls_tab_go_adminAddPerson" />
+              <h:commandLink action="#{usersBean.add}" value="#{messages.adminSideNav_go_adminAddPerson}" styleClass="ls_tab_go_adminAddPerson" />
             </div>
           </td>
         </tr>
@@ -44,7 +44,7 @@
         <tr>
           <td valign="top" class="sub_wrapper">
             <div class="#{(selectedAction == 'go_adminAddVehicle') ? 'ls_tab_sub_active' : 'ls_tab_sub'}">
-              <h:commandLink action="go_adminAddVehicle" value="#{messages.adminSideNav_go_adminAddVehicle}" styleClass="ls_tab_go_adminAddVehicle" />
+              <h:commandLink action="#{vehiclesBean.add}" value="#{messages.adminSideNav_go_adminAddVehicle}" styleClass="ls_tab_go_adminAddVehicle" />
             </div>
           </td>
         </tr>
@@ -58,7 +58,7 @@
         <tr>
           <td valign="top" class="sub_wrapper">
             <div class="#{(selectedAction == 'go_adminAddTrailer') ? 'ls_tab_sub_active' : 'ls_tab_sub'}">
-              <h:commandLink action="go_adminAddTrailer" value="#{messages.adminSideNav_go_adminAddTrailer}" styleClass="ls_tab_go_adminAddTrailer" />
+              <h:commandLink action="#{trailersBean.add}" value="#{messages.adminSideNav_go_adminAddTrailer}" styleClass="ls_tab_go_adminAddTrailer" />
             </div>
           </td>
         </tr>
@@ -72,7 +72,7 @@
         <tr>
           <td valign="top" class="sub_wrapper">
             <div class="#{(selectedAction == 'go_adminAddDevice') ? 'ls_tab_sub_active' : 'ls_tab_sub'}">
-              <h:commandLink action="go_adminAddDevice" value="#{messages.adminSideNav_go_adminAddDevice}" styleClass="ls_tab_go_adminAddDevice" />
+              <h:commandLink action="#{devicesBean.add}" value="#{messages.adminSideNav_go_adminAddDevice}" styleClass="ls_tab_go_adminAddDevice" />
             </div>
           </td>
         </tr>
@@ -91,7 +91,7 @@
         <tr>
           <td valign="top" class="sub_wrapper">
             <div class="#{(selectedAction == 'go_adminAddZoneAlert') ? 'ls_tab_sub_active' : 'ls_tab_sub'}">
-              <h:commandLink action="go_adminAddZoneAlert" value="#{messages.adminSideNav_go_adminAddZoneAlert}" styleClass="ls_tab_go_adminAddZoneAlert" />
+              <h:commandLink action="#{zoneAlertsBean.add}" value="#{messages.adminSideNav_go_adminAddZoneAlert}" styleClass="ls_tab_go_adminAddZoneAlert" />
             </div>
           </td>
         </tr>
@@ -105,7 +105,7 @@
         <tr>
           <td valign="top" class="sub_wrapper">
             <div class="#{(selectedAction == 'go_adminAddRedFlag') ? 'ls_tab_sub_active' : 'ls_tab_sub'}">
-              <h:commandLink action="go_adminAddRedFlag" value="#{messages.adminSideNav_go_adminAddRedFlag}" styleClass="ls_tab_go_adminAddRedFlag" />
+              <h:commandLink action="#{redFlagsBean.add}" value="#{messages.adminSideNav_go_adminAddRedFlag}" styleClass="ls_tab_go_adminAddRedFlag" />
             </div>
           </td>
         </tr>

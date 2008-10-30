@@ -17,7 +17,7 @@
         <tr>
         <td valign="top" width="130">
           <ui:include src="/includes/adminSideNav.xhtml">
-            <ui:param name="selectedAction" value="#{(empty vehiclesBean.editItem.vehicleID) ? 'go_adminAddVehicle' : 'go_adminVehicles'}" />
+            <ui:param name="selectedAction" value="#{(vehiclesBean.add) ? 'go_adminAddVehicle' : 'go_adminVehicles'}" />
             <ui:param name="parentAction" value="go_adminVehicles" />
           </ui:include>
         </td>
@@ -26,9 +26,8 @@
             <div class="">
               <div class="panel_nw">
                 <div class="panel_title">
-                  <span class="admin"><h:outputText value="#{(empty vehiclesBean.editItem.vehicleID) ? messages.adminHeader_addVehicle : ((empty vehiclesBean.batchEdit) ? messages.adminHeader_editVehicle : messages.adminHeader_editVehicles)}" /></span>
+                  <span class="admin"><h:outputText value="#{vehiclesBean.add ? messages.adminHeader_addVehicle : (vehiclesBean.batchEdit ? messages.adminHeader_editVehicles : messages.adminHeader_editVehicle)}" /></span>
                   <span class="panel_links"></span>
-
                 </div>
               </div>
                 <div class="panel_w">
@@ -95,15 +94,14 @@
                             <h:inputText value="#{vehiclesBean.editItem.description.description}" onchange="checkMultiple('description_description')" styleClass="text" size="30" />
                           </td>
                         </tr>
+                        <ui:fragment rendered="#{not vehiclesBean.batchEdit}">
                         <tr>
-                          <td width="100">
-                            <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="description_VIN" value="#{vehiclesBean.updateField['description.VIN']}" />
-                            <h:outputText value="#{messages.editVehicle_VIN}" />
-                          </td>
+                          <td width="100"><h:outputText value="#{messages.editVehicle_VIN}" /></td>
                           <td>
                             <h:inputText value="#{vehiclesBean.editItem.description.VIN}" onchange="checkMultiple('description_VIN')" styleClass="text" size="30" />
                           </td>
                         </tr>
+                        </ui:fragment>
                         <tr>
                           <td width="100">
                             <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="description_weight" value="#{vehiclesBean.updateField['description.weight']}" />
@@ -143,16 +141,14 @@
                     <div class="add_section_title"><h:outputText value="#{messages.editVehicle_vehicleProfile}" /></div>
 
                       <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
-
+                        <ui:fragment rendered="#{not vehiclesBean.batchEdit}">
                         <tr>
-                          <td width="100">
-                            <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="companyInfo_vehicleIdentification" value="#{vehiclesBean.updateField['companyInfo.vehicleIdentification']}" />
-                            <h:outputText value="#{messages.editVehicle_vehicleIdentification}" />
-                          </td>
+                          <td width="100"><h:outputText value="#{messages.editVehicle_vehicleIdentification}" /></td>
                           <td>
                             <h:inputText value="#{vehiclesBean.editItem.companyInfo.vehicleIdentification}" onchange="checkMultiple('companyInfo_vehicleIdentification')" styleClass="text" size="30" />
                           </td>
                         </tr>
+                        </ui:fragment>
                         <tr>
                           <td width="100">
                             <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="companyInfo_costPerHour" value="#{vehiclesBean.updateField['companyInfo.costPerHour']}" />
@@ -162,15 +158,14 @@
                             <h:inputText value="#{vehiclesBean.editItem.companyInfo.costPerHour}" onchange="checkMultiple('companyInfo_costPerHour')" styleClass="text" size="30" />
                           </td>
                         </tr>
+                        <ui:fragment rendered="#{not vehiclesBean.batchEdit}">
                         <tr>
-                          <td width="100">
-                            <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="startOdometer" value="#{vehiclesBean.updateField['startOdometer']}" />
-                            <h:outputText value="#{messages.editVehicle_startOdometer}" />
-                          </td>
+                          <td width="100"><h:outputText value="#{messages.editVehicle_startOdometer}" /></td>
                           <td>
                             <h:inputText value="#{vehiclesBean.editItem.startOdometer}" onchange="checkMultiple('startOdometer')" styleClass="text" size="30" />
                           </td>
                         </tr>
+                        </ui:fragment>
                         <tr>
                           <td width="100">
                             <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="active" value="#{vehiclesBean.updateField['active']}" />
