@@ -66,11 +66,11 @@ public enum State
     private String  name;
     private String  abbrev;
 
-    private State(Integer stateID, String name, String abbrev)
+    private State(Integer stateID, String abbrev, String name)
     {
         this.stateID = stateID;
-        this.name = name;
         this.abbrev = abbrev;
+        this.name = name;
     }
 
     public String getAbbrev()
