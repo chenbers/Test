@@ -19,6 +19,20 @@ import com.inthinc.pro.model.User;
 public class SiloServiceMockImpl extends MockImpl implements SiloService
 {
     private static final Logger logger = Logger.getLogger(SiloServiceMockImpl.class);
+
+    // helper method
+    private Map<String, Object>doMockLookup(Class clazz, String key, Object searchValue, String emptyResultSetMsg, String methodName)
+    {
+        Map<String, Object> returnMap =  getMockDataContainer().lookup(clazz, key, searchValue);
+
+        if (returnMap == null)
+        {
+            throw new EmptyResultSetException(emptyResultSetMsg, methodName, 0);
+        }
+        return returnMap;
+        
+    }
+
     
     @Override
     public Map<String, Object> deleteUser(Integer userID) throws ProDAOException
@@ -37,13 +51,7 @@ public class SiloServiceMockImpl extends MockImpl implements SiloService
     @Override
     public Map<String, Object> getUser(Integer userID) throws ProDAOException
     {
-        Map<String, Object> returnMap =  getMockDataContainer().lookup(User.class, "userID", userID);
-
-        if (returnMap == null)
-        {
-            throw new EmptyResultSetException("No user for ID: " + userID, "getUserIDByEmail", 0);
-        }
-        return returnMap;
+        return doMockLookup(User.class, "userID", userID, "No user for ID: " + userID, "getUser");
 
     }
 
@@ -146,6 +154,69 @@ public class SiloServiceMockImpl extends MockImpl implements SiloService
     {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public Map<String, Object> createGroup(Integer acctID, Map<String, Object> groupMap) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> deleteGroup(Integer groupID) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> getGroup(Integer groupID) throws ProDAOException
+    {
+        return doMockLookup(Group.class, "groupID", groupID, "No group for ID: " + groupID, "getGroup");
+    }
+
+    @Override
+    public Map<String, Object> updateGroup(Integer groupID, Map<String, Object> groupMap) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+
+    @Override
+    public List<Map<String, Object>> getGroupHierarchy(Integer groupID) throws ProDAOException
+    {
+        Group topGroup= getMockDataContainer().lookupObject(Group.class, "groupID", groupID);
+
+        List<Group> hierarchyGroups = new ArrayList<Group>();
+        hierarchyGroups.add(topGroup);
+        
+        // filter out just the ones in the hierarchy
+        List<Group> allGroups = getMockDataContainer().lookupObjectList(Group.class, new Group());
+        addChildren(hierarchyGroups, allGroups, groupID);
+        
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+        for (Group group : hierarchyGroups)
+        {
+            returnList.add(getMockDataContainer().createMapFromObject(group));
+        }
+        
+        return returnList;
+    }
+
+
+    private void addChildren(List<Group> hierarchyGroups, List<Group> allGroups, Integer groupID)
+    {
+        for (Group group : allGroups)
+        {
+            if (group.getParentID().equals(groupID))
+            { 
+                hierarchyGroups.add(group);
+                addChildren(hierarchyGroups, allGroups, group.getGroupID());
+            }
+        }
+        
     }
 
 

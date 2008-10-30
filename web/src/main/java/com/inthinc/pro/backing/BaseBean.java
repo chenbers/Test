@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.springframework.security.Authentication;
 import org.springframework.security.context.SecurityContextHolder;
 
+import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.security.userdetails.ProUser;
 
@@ -35,6 +36,11 @@ public class BaseBean
     public User getUser()
     {
         return getProUser().getUser();
+    }
+    
+    public GroupHierarchy getGroupHierarchy()
+    {
+        return getProUser().getGroupHierarchy();
     }
     
     public ProUser getProUser()

@@ -13,6 +13,7 @@ import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.GraphicDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.util.GraphicUtil;
@@ -37,7 +38,7 @@ public class TrendBean extends BaseBean {
 	private String styleClass12Months = "";
 	private boolean pageChange = false;
 	
-	private String goTo = "";
+//	private String goTo = "";
 		
     public TrendBean()
 	{
@@ -141,6 +142,7 @@ public class TrendBean extends BaseBean {
 		}
 		
 		//Handle navigation
+/*		
 		logger.debug("location is: " + navigation.getLocation());
 		if (	this.pageChange ) {
 		    logger.debug(" page changed: " + this.navigation.getLocation());
@@ -152,7 +154,7 @@ public class TrendBean extends BaseBean {
 			    goTo = "go_team";
 			}
         } 
-		
+*/		
 		//Fetch, qualifier is groupId, date from, date to
 		List<ScoreableEntity> s = null;
 		try {
@@ -178,11 +180,14 @@ public class TrendBean extends BaseBean {
 		    sb.setScore(score.getScore());
 		    se.setStyle(sb.getScoreStyle());
 		    se.setColorKey(GraphicUtil.entityColorKey.get(cnt++));
-		    se.setGoTo(goTo);
+		    if (score.getEntityType().equals(EntityType.ENTITY_GROUP))
+		    {
+		        se.setGoTo(getGroupHierarchy().getGroupLevel(score.getEntityID()).getLocation());
+		    }
 		    scoreableEntities.add(se);		 				
 		}
 
-		logger.debug("location is: " + navigation.getLocation());
+//		logger.debug("location is: " + navigation.getLocation());
 		this.pageChange = true;
 		
 		return scoreableEntities;
@@ -259,7 +264,7 @@ public class TrendBean extends BaseBean {
 		this.styleClass6Months = "";
 		this.styleClass12Months = "";
 	}
-
+/*
 	public String getGoTo() {
 		return goTo;
 	}
@@ -267,7 +272,7 @@ public class TrendBean extends BaseBean {
 	public void setGoTo(String goTo) {
 		this.goTo = goTo;
 	}
-
+*/
 	public GraphicDAO getGraphicDAO() {
 		return graphicDAO;
 	}
@@ -284,11 +289,12 @@ public class TrendBean extends BaseBean {
     public void setNavigation(NavigationBean navigation)
     {
         this.navigation = navigation;
-        
+/*        
         if (         this.navigation.getLocation().equalsIgnoreCase("home") ) {                
             goTo = "go_region";
         } else if (  this.navigation.getLocation().equalsIgnoreCase("region") ) {
             goTo = "go_team";
-        }                       
+        }
+*/                               
     }
 }

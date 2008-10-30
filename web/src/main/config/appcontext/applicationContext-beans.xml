@@ -20,7 +20,6 @@
    <!-- Navigation bean -->
    <bean id="navigationBean" class="com.inthinc.pro.backing.NavigationBean" 
 		scope="session" parent="baseBean">
-		<property name="location" value="home"></property>
    </bean>
    
    <!-- Beans used in fusion chart displays -->

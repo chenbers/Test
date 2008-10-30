@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.GrantedAuthorityImpl;
 
+import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.model.User;
 
 public class ProUser extends org.springframework.security.userdetails.User
@@ -17,6 +18,7 @@ public class ProUser extends org.springframework.security.userdetails.User
     private static final Logger logger = Logger.getLogger(ProUser.class);
 
     private User user;
+    private GroupHierarchy groupHierarchy;
     
     public ProUser(User user, String roleName)
     {
@@ -46,6 +48,16 @@ public class ProUser extends org.springframework.security.userdetails.User
     public void setUser(User user)
     {
         this.user = user;
+    }
+
+    public GroupHierarchy getGroupHierarchy()
+    {
+        return groupHierarchy;
+    }
+
+    public void setGroupHierarchy(GroupHierarchy groupHierarchy)
+    {
+        this.groupHierarchy = groupHierarchy;
     }
 
 }

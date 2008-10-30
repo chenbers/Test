@@ -45,6 +45,11 @@ public class MockDataContainer
         }
         return null;
     }
+    public <T> T lookupObject(Class clas, String primaryKey, Object searchValue)
+    {
+       return (T)retrieveObject(clas, primaryKey, searchValue);
+        
+    }
 
     // get full list of a class
     public <T> List<T> lookupObjectList(Class clas, T object)

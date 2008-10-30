@@ -240,7 +240,7 @@ public class MockData
       //Create the five values per date range
         for ( int i = 0; i < 5; i++ ) {
             try {
-            Thread.sleep(5000);
+//            Thread.sleep(5000);
             mockData.storeObject(
                 new ScoreableEntity(entityID, 
                     entityType, 

@@ -111,7 +111,7 @@ public class TeamTopBean extends BaseBean
             topDrivers.add(se);                      
         }
 
-        logger.debug("location is: " + navigation.getLocation());
+//        logger.debug("location is: " + navigation.getLocation());
         this.pageChange = true;
        return topDrivers;
     }
@@ -198,7 +198,7 @@ public class TeamTopBean extends BaseBean
             bottomDrivers.add(se);                      
         }
 
-        logger.debug("location is: " + navigation.getLocation());
+//        logger.debug("location is: " + navigation.getLocation());
         this.pageChange = true;
        
         return bottomDrivers;
