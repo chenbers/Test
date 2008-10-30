@@ -70,12 +70,18 @@ public abstract class GenericHessianDAO<T, ID, S extends DAOService> implements 
 
     private void populateColumnMap()
     {
-        for (Field field : modelClass.getDeclaredFields())
+        Class<?> clazz = modelClass;
+
+        while (clazz != null)
         {
-            if (field.isAnnotationPresent(Column.class))
+            for (Field field : modelClass.getDeclaredFields())
             {
-                columnMap.put(field.getAnnotation(Column.class).name(), field.getName());
+                if (field.isAnnotationPresent(Column.class))
+                {
+                    columnMap.put(field.getAnnotation(Column.class).name(), field.getName());
+                }
             }
+            clazz = clazz.getSuperclass();
         }
     }
 
@@ -382,9 +388,8 @@ public abstract class GenericHessianDAO<T, ID, S extends DAOService> implements 
             else
                 key = columnName;
 
-            // Check to see if the key/value pair in the map is associated with a custom converter. If so, invoke the converter. If not, do normal mapping from map key/value to
-            // field in
-            // modelObject
+            // Check to see if the key/value pair in the map is associated with a custom converter.
+            // If so, invoke the converter. If not, do normal mapping from map key/value to field in modelObject
             if (convertToFieldMap.containsKey(columnName))
             {
                 Method method = convertToFieldMap.get(columnName);
@@ -400,42 +405,32 @@ public abstract class GenericHessianDAO<T, ID, S extends DAOService> implements 
                 {
                     throw new MappingException(e);
                 }
+                continue;
             }
-            else if (value instanceof Map)
+
+            //If a converter was not found, get the Field object for later use
+            Field field = null;
+            try
             {
-                try
-                {
-                    Field field = modelObject.getClass().getDeclaredField(key);
-                    Class<?> fieldType = field.getType();
-                    setProperty(modelObject, key, convertToModelObject((Map<String, Object>) value, fieldType));
-                }
-                catch (NoSuchFieldException e)
-                {
-                    // If the field doesn't exist, continue
-                    if (logger.isDebugEnabled())
-                    {
-                        logger.debug("The field \"" + key + "\" does not exist for class: " + value.getClass().getName(), e);
-                    }
-
-                }
-
+                field = modelObject.getClass().getDeclaredField(key);
             }
-            else if (value instanceof List)
+            catch (NoSuchFieldException e)
             {
-                try
+                // If the field doesn't exist, continue
+                if (logger.isDebugEnabled())
                 {
-                    Field field = modelObject.getClass().getDeclaredField(key);
-                    Column column = field.getAnnotation(Column.class);
-                    setProperty(modelObject, key, convertToModelObject((List<Map<String, Object>>) value, column.type()));
+                    logger.debug("The field \"" + key + "\" does not exist for class: " + value.getClass().getName(), e);
                 }
-                catch (NoSuchFieldException e)
-                {
-                    // If the field doesn't exist, continue
-                    if (logger.isDebugEnabled())
-                    {
-                        logger.debug("The field \"" + key + "\" does not exist for class: " + value.getClass().getName(), e);
-                    }
-                }
+            }
+
+            //Check if the value is a Map or a List and handle it or just set the value in the object to be returned
+            if (Map.class.isInstance(value))
+            {
+                setProperty(modelObject, key, convertToModelObject((Map<String, Object>) value, field.getType()));
+            }
+            else if (List.class.isInstance(value))
+            {
+                setProperty(modelObject, key, convertToModelObject((List<Map<String, Object>>) value, field.getAnnotation(Column.class).type()));
             }
             else
             {
