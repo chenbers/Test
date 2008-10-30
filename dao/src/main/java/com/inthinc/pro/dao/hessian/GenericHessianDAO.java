@@ -505,9 +505,12 @@ public abstract class GenericHessianDAO<T, ID, S extends DAOService> implements 
                                 + "\" caused an exception", e);
                     }
                 }
+
                 if (value == null)
                     continue;
-                else if (Class.class.isInstance(value))
+
+                // Start checking the value for special cases. If a case doesn't exist, just put the field name and value in the map
+                if (Class.class.isInstance(value))
                     continue;
                 else if (convertToColumnMap.containsKey(field.getName()))
                 {
@@ -543,6 +546,11 @@ public abstract class GenericHessianDAO<T, ID, S extends DAOService> implements 
                 else if (List.class.isInstance(value))
                 {
                     map.put(name, convertList((List<?>) value));
+                }
+                // if the field type is Date, convert to integer
+                if (Date.class.isInstance(value))
+                {
+                    map.put(name, (int) (((Date) value).getTime() / 1000l));
                 }
                 // if the property is not a standardProperty it must be some kind of bean/pojo/object. convert the property to a map
                 else if (!isStandardProperty(value))
