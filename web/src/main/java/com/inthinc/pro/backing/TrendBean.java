@@ -45,9 +45,8 @@ public class TrendBean extends BaseBean {
 		logger.debug("creating trend bean");
 	}    
 
-	public String getLineDef() {		
+	public String getLineDef() {	
 		lineDef = createLineDef();
-//		logger.debug("returned string: " + lineDef);
 		return lineDef;
 	}
 
@@ -70,17 +69,18 @@ public class TrendBean extends BaseBean {
         Integer endDate = DateUtil.getTodaysDate();
         Integer startDate = DateUtil.getDaysBackDate(endDate, duration.getNumberOfDays());
         
-        //Fetch, qualifier is groupId (parent), date from, date to
+        //Fetch to get parents children, qualifier is groupId (parent), 
+        //date from, date to
         List<ScoreableEntity> s = null;
         try {          
             // TODO: This is not correct.  getUser().getGroupID() needs to be changed to the current group in the navigation
             logger.debug("getting scores for groupID: " + this.navigation.getGroupID());            
-            s = graphicDAO.getScores(this.navigation.getGroupID()
-                    ,startDate, endDate, ScoreType.SCORE_OVERALL);
+            s = graphicDAO.getScores(
+                    this.navigation.getGroupID(),startDate, endDate, ScoreType.SCORE_OVERALL);
         } catch (Exception e) {
             logger.debug("graphicDao error: " + e.getMessage());
-        }       
-        
+        }      
+                
         //X-coordinates
         sb.append("<categories>");
         sb.append(GraphicUtil.createMonthsString(duration));        
@@ -89,21 +89,28 @@ public class TrendBean extends BaseBean {
         //Loop over returned set of group ids
         List<ScoreableEntity> ss = null;
         for ( int i = 0; i < s.size(); i++ ) {
-            ScoreableEntity se = (ScoreableEntity)s.get(i);            
-            ss = graphicDAO.getScores(se.getEntityID(),
-                    startDate, endDate, ScoreType.SCORE_OVERALL_TIME);
+            ScoreableEntity se = (ScoreableEntity)s.get(i);
+            //Fetch to get children's observations
+            ss = graphicDAO.getScores(
+                    se.getEntityID(),startDate, endDate, ScoreType.SCORE_OVERALL_TIME);
             
             //Y-coordinates
             sb.append("<dataset seriesName=\'\' color=\'");
             sb.append((GraphicUtil.entityColorKey.get(i)).substring(1));
             sb.append("\'>");
             
-            int holes = duration.getNumberOfDays() - ss.size() + 1;
+            //Not a full range, pad w/ zero
+            int holes = 0;
+            if ( duration == Duration.DAYS ) {
+                holes = duration.getNumberOfDays() - ss.size();
+            } else {
+                holes = GraphicUtil.convertToMonths(duration) - ss.size();
+            }
             for ( int k = 0; k < holes; k++ ) {
                 sb.append("<set value=\'0.0\'/>");
             }
             
-            ScoreableEntity sss = null;
+            ScoreableEntity sss = null;          
             for ( int j = 0; j < ss.size(); j++ ) {                
                 sss = (ScoreableEntity)ss.get(j);
 
@@ -155,8 +162,8 @@ public class TrendBean extends BaseBean {
 		    // TODO: This is not correct.  getUser().getGroupID() needs to be changed to the current group in the navigation
 		    logger.debug("getting scores for groupID: " + this.navigation.getGroupID());
 		    
-			s = graphicDAO.getScores(this.navigation.getGroupID()
-			        ,startDate, endDate, ScoreType.SCORE_OVERALL);
+			s = graphicDAO.getScores(
+			        this.navigation.getGroupID(),startDate, endDate, ScoreType.SCORE_OVERALL);
 		} catch (Exception e) {
 			logger.debug("graphicDao error: " + e.getMessage());
 		}		
