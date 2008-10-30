@@ -9,9 +9,7 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Converter
+public @interface ConvertFieldToColumn
 {
-  String fieldName() default "";
-  String[] fieldNames() default {""};
-  String columnName() default "";
+    String fieldName();
 }

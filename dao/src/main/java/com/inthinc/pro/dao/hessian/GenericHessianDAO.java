@@ -16,7 +16,8 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.GenericDAO;
 import com.inthinc.pro.dao.annotations.Column;
-import com.inthinc.pro.dao.annotations.Converter;
+import com.inthinc.pro.dao.annotations.ConvertFieldToColumn;
+import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.HessianException;
 import com.inthinc.pro.dao.hessian.exceptions.MappingException;
@@ -36,7 +37,8 @@ public abstract class GenericHessianDAO<T, ID, S extends DAOService> implements 
     private Method createMethod;
     private Method updateMethod;
 
-    private Map<String, Method> converterMap = new HashMap<String, Method>();
+    private Map<String, Method> convertToFieldMap = new HashMap<String, Method>();
+    private Map<String, Method> convertToColumnMap = new HashMap<String, Method>();
     private Map<String, String> columnMap = new HashMap<String, String>();
 
     @SuppressWarnings("unchecked")
@@ -45,18 +47,22 @@ public abstract class GenericHessianDAO<T, ID, S extends DAOService> implements 
         logger.debug("GenericHessianDAO constructor");
         this.modelClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         this.idClass = (Class<ID>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
-        populateConverterMethods();
+        populateConverterMaps();
         populateColumnMap();
         populateCRUDMethods();
     }
 
-    private void populateConverterMethods()
+    private void populateConverterMaps()
     {
         for (Method method : this.getClass().getDeclaredMethods())
         {
-            if (method.isAnnotationPresent(Converter.class))
+            if (method.isAnnotationPresent(ConvertColumnToField.class))
             {
-                converterMap.put(method.getAnnotation(Converter.class).columnName(), method);
+                convertToFieldMap.put(method.getAnnotation(ConvertColumnToField.class).columnName(), method);
+            }
+            else if (method.isAnnotationPresent(ConvertFieldToColumn.class))
+            {
+                convertToColumnMap.put(method.getAnnotation(ConvertFieldToColumn.class).fieldName(), method);
             }
         }
 
@@ -379,9 +385,9 @@ public abstract class GenericHessianDAO<T, ID, S extends DAOService> implements 
             // Check to see if the key/value pair in the map is associated with a custom converter. If so, invoke the converter. If not, do normal mapping from map key/value to
             // field in
             // modelObject
-            if (converterMap.containsKey(columnName))
+            if (convertToFieldMap.containsKey(columnName))
             {
-                Method method = converterMap.get(columnName);
+                Method method = convertToFieldMap.get(columnName);
                 try
                 {
                     method.invoke(this, modelObject, value);
@@ -456,23 +462,26 @@ public abstract class GenericHessianDAO<T, ID, S extends DAOService> implements 
         return returnList;
     }
 
-    protected Map<String, Object> convertToMap(Object entity)
+    private Map<String, Object> convertToMap(Object modelObject)
     {
         Map<String, Object> map = new HashMap<String, Object>();
 
-        Class<?> clazz = entity.getClass();
+        Class<?> clazz = modelObject.getClass();
         while (clazz != null)
         {
             for (Field field : clazz.getDeclaredFields())
             {
-                // If the field has been annotated with the @Column(updateable=false), then skip
-                if (field.isAnnotationPresent(Column.class) && !field.getAnnotation(Column.class).updateable())
-                    continue;
                 field.setAccessible(true);
+
+                Column column = null;
                 String name = null;
                 if (field.isAnnotationPresent(Column.class))
+                    column = field.getAnnotation(Column.class);
+                if (column != null)
                 {
-                    Column column = field.getAnnotation(Column.class);
+                    // If the field has been annotated with the @Column(updateable=false), then skip
+                    if (!column.updateable())
+                        continue;
                     if (!column.name().isEmpty())
                         name = column.name();
                     else
@@ -486,19 +495,37 @@ public abstract class GenericHessianDAO<T, ID, S extends DAOService> implements 
                 Object value = null;
                 try
                 {
-                    value = field.get(entity);
+                    value = field.get(modelObject);
                 }
                 catch (IllegalAccessException e)
                 {
                     if (logger.isDebugEnabled())
                     {
-                        logger.debug("Attempt to access the property \"" + field.getName() + "\" on object of type \"" + entity.getClass().getName() + "\" caused an exception", e);
+                        logger.debug("Attempt to access the property \"" + field.getName() + "\" on object of type \"" + modelObject.getClass().getName()
+                                + "\" caused an exception", e);
                     }
                 }
                 if (value == null)
                     continue;
-                if (Class.class.isInstance(value))
+                else if (Class.class.isInstance(value))
                     continue;
+                else if (convertToColumnMap.containsKey(field.getName()))
+                {
+                    Method method = convertToColumnMap.get(field.getName());
+                    try
+                    {
+                        method.invoke(this, modelObject, map);
+                    }
+                    catch (IllegalAccessException e)
+                    {
+                        throw new MappingException(e);
+                    }
+                    catch (InvocationTargetException e)
+                    {
+                        throw new MappingException(e);
+                    }
+
+                }
 
                 // if the property is a Map, convert the objects in the Map to Map<String,Object>. i'm not sure if this will ever occur
                 // i didn't want to make the assumption that the Map object represented by the value variable is a Map<String, Object> so i'm

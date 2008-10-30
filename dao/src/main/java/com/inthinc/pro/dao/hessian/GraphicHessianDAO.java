@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 import java.util.List;
 
 import com.inthinc.pro.dao.GraphicDAO;
-import com.inthinc.pro.dao.annotations.Converter;
+import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.dao.service.CentralService;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.ScoreType;
@@ -41,7 +41,7 @@ public class GraphicHessianDAO extends GenericHessianDAO<ScoreableEntity, Intege
 	
     
     // TODO: Look at a better way to do these enum converters because it is pretty standard across the board
-    @Converter(columnName = "entityType")
+    @ConvertColumnToField(columnName = "entityType")
     public void setEntityType(ScoreableEntity scoreableEntity, Object value)
     {
       if (scoreableEntity == null || value == null)
@@ -52,7 +52,7 @@ public class GraphicHessianDAO extends GenericHessianDAO<ScoreableEntity, Intege
           scoreableEntity.setEntityType(EntityType.getEntityType((Integer)value));
       }
     }
-    @Converter(columnName = "scoreType")
+    @ConvertColumnToField(columnName = "scoreType")
     public void setScoreType(ScoreableEntity scoreableEntity, Object value)
     {
       if (scoreableEntity == null || value == null)
