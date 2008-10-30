@@ -32,6 +32,7 @@
 			<div class="">
 				
 			<!-- START FLEET MAP PANEL -->
+			<!-- leave reRenderList alone -->	
 				<ui:include src="/includes/liveFleetMap.xhtml">
 					<ui:param name="mapheight" value="height:580px"/>
 					<ui:param name="mapwidth" value="width:458px"/>
@@ -46,7 +47,7 @@
 		<div class="spacer"></div>
 		
 		<!-- START PANEL -->
-
+	
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
@@ -412,20 +413,20 @@
 		
 		<div class="spacer"></div>
 		
-<!-- START FUEL EFFICIENCY PANEL -->
+		<!-- START FUEL EFFICIENCY PANEL -->
 		<!-- leave reRenderList alone -->
-		<ui:include src="/includes/fuelEfficiencyChart.xhtml">	
-			<ui:param name="reRenderList" value="fuelForm,barpanel,hiddenField4"/>
-			<ui:param name="title" value="Estimated Fuel Efficiency"/>		
-            <ui:param name="barheight" value="440"/>
-            <ui:param name="barwidth" value="350"/>
-            <ui:param name="barDef" value="#{fuelBean.barDef}"/>  
-            <ui:param name="duration" value="#{fuelBean.duration}" />   
-            <ui:param name="thirtyDaysOn" value="#{fuelBean.styleClass30Days}"/>
-			<ui:param name="threeMonthsOn" value="#{fuelBean.styleClass3Months}"/>
-			<ui:param name="sixMonthsOn" value="#{fuelBean.styleClass6Months}"/>
-			<ui:param name="twelveMonthsOn" value="#{fuelBean.styleClass12Months}"/>       
-		</ui:include>
+<!--		<ui:include src="/includes/fuelEfficiencyChart.xhtml"> -->	
+<!--			<ui:param name="reRenderList" value="fuelForm,barpanel,hiddenField4"/> -->
+<!--			<ui:param name="title" value="Estimated Fuel Efficiency"/> -->		
+<!--            <ui:param name="barheight" value="440"/> -->
+<!--            <ui:param name="barwidth" value="350"/> -->
+<!--            <ui:param name="barDef" value="#{fuelBean.barDef}"/> -->  
+<!--            <ui:param name="duration" value="#{fuelBean.duration}" /> -->   
+<!--            <ui:param name="thirtyDaysOn" value="#{fuelBean.styleClass30Days}"/> -->
+<!--			<ui:param name="threeMonthsOn" value="#{fuelBean.styleClass3Months}"/> -->
+<!--			<ui:param name="sixMonthsOn" value="#{fuelBean.styleClass6Months}"/> -->
+<!--			<ui:param name="twelveMonthsOn" value="#{fuelBean.styleClass12Months}"/> -->       
+<!--		</ui:include> -->
 		<!-- END PANEL -->
 
 	</td>
