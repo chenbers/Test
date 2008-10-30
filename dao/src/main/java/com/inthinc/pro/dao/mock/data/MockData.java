@@ -192,14 +192,23 @@ public class MockData
             {
                 if (        scoreType == ScoreType.SCORE_OVERALL_TIME ) {
                     createOverallScoreOverTime(
-                            entityID, entityType, entityName, scoreType, monthsBack[monthsBackCnt]);
+                            entityID, 
+                            entityType, 
+                            entityName, 
+                            scoreType, 
+                            monthsBack[monthsBackCnt]);
                   
                 } else if ( scoreType == ScoreType.SCORE_OVERALL_PERCENTAGES ) {
                     createOverallScorePercentages(
-                            entityID, entityType, entityName, scoreType, monthsBack[monthsBackCnt]);
+                            entityID, 
+                            entityType, 
+                            entityName, 
+                            scoreType, 
+                            monthsBack[monthsBackCnt]);
                 } else {                    
                     mockData.storeObject(
-                            new ScoreableEntity(entityID, 
+                            new ScoreableEntity(
+                                    entityID, 
                                     entityType, 
                                     entityName, 
                                     randomInt(0,50), 
@@ -212,15 +221,15 @@ public class MockData
     
     private void createOverallScoreOverTime(Integer entityID, 
             EntityType entityType, String entityName, ScoreType scoreType, int monthsBack) {
-      //Create four dates per range
-        for ( int i = 0; i < 4; i++ ) {
+      //Create dates per range
+        for ( int i = 0; i < 30; i++ ) {
             mockData.storeObject(
                 new ScoreableEntity(entityID, 
                     entityType, 
                     entityName, 
                     randomInt(0,50), 
                     DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), 
-                            30 * monthsBack+ i),
+                            (30 * monthsBack) - i * DateUtil.SECONDS_IN_DAY),
                     scoreType));
         }
     }
@@ -230,14 +239,17 @@ public class MockData
             EntityType entityType, String entityName, ScoreType scoreType, int monthsBack) {
       //Create the five values per date range
         for ( int i = 0; i < 5; i++ ) {
+            try {
+            Thread.sleep(5000);
             mockData.storeObject(
                 new ScoreableEntity(entityID, 
                     entityType, 
                     entityName, 
                     randomInt(0,50), 
                     DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), 
-                            30 * monthsBack),
+                            (30 * monthsBack)),
                     scoreType));
+            } catch (Exception e) {}
         }
     }
 
