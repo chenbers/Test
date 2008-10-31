@@ -166,7 +166,8 @@
                         <tr>
                           <td width="100" valign="top"><h:outputText value="#{messages.editVehicle_name}" /></td>
                           <td>
-                            <h:inputText value="#{vehiclesBean.editItem.name}" id="name" onchange="checkMultiple(this)" styleClass="text" size="30" />
+                            <h:inputText value="#{vehiclesBean.editItem.name}" id="name" onchange="checkMultiple(this)" styleClass="text" size="30"
+                              maxlength="30" required="true" requiredMessage="#{messages.required}" />
                             <rich:message for="name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                           </td>
                         </tr>
