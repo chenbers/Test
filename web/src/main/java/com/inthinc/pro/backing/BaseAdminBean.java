@@ -313,15 +313,13 @@ public abstract class BaseAdminBean<T extends Selectable> extends BaseBean
 
     /**
      * Called when the user chooses to delete one or more selected items.
-     * 
-     * @return The result of calling {@link #getFinishedRedirect()}.
      */
-    public String delete()
+    public void delete()
     {
         final List<T> selected = getSelectedItems();
         doDelete(selected);
         items.removeAll(selected);
-        return getFinishedRedirect();
+        filteredItems.removeAll(selected);
     }
 
     /**

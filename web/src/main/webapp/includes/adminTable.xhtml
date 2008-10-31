@@ -80,7 +80,7 @@ Note: The following parameters are required by the included editColumns.xhtml
       <div class="panel_w">
         <div class="panel_content">
           <ul id="grid_nav" style="margin: 0;">
-            <li class="l"><h:commandLink action="#{editorBean['delete']}"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></button></h:commandLink></li>
+            <li class="l"><a4j:commandLink><button value="submit" class="left" onclick="Richfaces.showModalPanel('deleteItems'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink></li>
             <li class="l"><h:commandLink action="#{editorBean['batchEdit']}"><button value="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_batchEdit}" /></span></button></h:commandLink></li>
             <li class="l">
               <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
@@ -138,10 +138,12 @@ Note: The following parameters are required by the included editColumns.xhtml
     </a4j:form>
 
     <ui:include src="deleteItems.xhtml">
+      <ui:param name="deleteBean" value="#{editorBean}" />
       <ui:param name="reRender" value="dataTable" />
     </ui:include>
 
     <ui:include src="editColumns.xhtml">
+      <ui:param name="saveBean" value="#{editorBean}" />
       <ui:param name="reRender" value="dataTable" />
     </ui:include>
 
