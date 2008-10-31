@@ -14,7 +14,7 @@ import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.util.GraphicUtil;
 
-public class BreakdownBean extends BaseBean {
+public class BreakdownBean extends BaseDurationBean {
 
 	private static final Logger logger = Logger.getLogger(BreakdownBean.class);
 	
@@ -32,13 +32,6 @@ public class BreakdownBean extends BaseBean {
 	private String pieDef;	
     private Integer overallScore;
     private String overallScoreStyle;
-	
-	//The following five may need to be placed in BaseBean
-	private Duration duration = Duration.DAYS;
-	private String styleClass30Days = "on";
-	private String styleClass3Months = "";
-	private String styleClass6Months = "";
-	private String styleClass12Months = "";
 	
 	public String getPieDef() {		
 		pieDef = createPieDef();
@@ -63,7 +56,7 @@ public class BreakdownBean extends BaseBean {
 
         //Date range qualifiers
         Integer endDate = DateUtil.getTodaysDate();
-        Integer startDate = DateUtil.getDaysBackDate(endDate, duration.getNumberOfDays());
+        Integer startDate = DateUtil.getDaysBackDate(endDate, getDuration().getNumberOfDays());
         
         //Fetch, qualifier is groupId (parent), date from, date to
         List<ScoreableEntity> s = null;
@@ -115,7 +108,7 @@ public class BreakdownBean extends BaseBean {
     {
         logger.debug("init()");
         Integer endDate = DateUtil.getTodaysDate();
-        Integer startDate = DateUtil.getDaysBackDate(endDate, duration.getNumberOfDays());
+        Integer startDate = DateUtil.getDaysBackDate(endDate, getDuration().getNumberOfDays());
         Integer groupID = navigation.getGroupID();
         if (groupID == null)
         {
@@ -158,76 +151,8 @@ public class BreakdownBean extends BaseBean {
 
     public String getDurationAsString()
     {
-        return duration.toString();
+        return getDuration().toString();
     }
-
-	public Duration getDuration() {
-		return duration;
-	}
-
-	public void setDuration(Duration duration) {
-		this.duration = duration;
-	}
-	
-	public String getStyleClass30Days() {
-		reset();
-		if ( this.duration.toString().equalsIgnoreCase(Duration.DAYS.toString()) ) {
-			styleClass30Days = "on";
-		}
-	
-		return styleClass30Days;
-	}
-
-	public void setStyleClass30Days(String styleClass30Days) {
-		this.styleClass30Days = styleClass30Days;
-	}
-
-	public String getStyleClass3Months() {
-		reset();
-		if ( this.duration.toString().equalsIgnoreCase(Duration.THREE.toString()) ) {
-			styleClass3Months = "on";
-		}
-	
-		return styleClass3Months;
-	}
-
-	public void setStyleClass3Months(String styleClass3Months) {
-		this.styleClass3Months = styleClass3Months;
-	}
-
-	public String getStyleClass6Months() {
-		reset();
-		if ( this.duration.toString().equalsIgnoreCase(Duration.SIX.toString()) ) {
-			styleClass6Months = "on";
-		}
-	
-		return styleClass6Months;
-	}
-
-	public void setStyleClass6Months(String styleClass6Months) {
-		this.styleClass6Months = styleClass6Months;
-	}
-
-	public String getStyleClass12Months() {
-		reset();
-		if ( this.duration.toString().equalsIgnoreCase(Duration.TWELVE.toString()) ) {
-			styleClass12Months = "on";
-		}
-	
-		return styleClass12Months;
-	}
-
-	public void setStyleClass12Months(String styleClass12Months) {
-		this.styleClass12Months = styleClass12Months;
-	}
-	
-	private void reset() {
-		this.styleClass30Days = "";
-		this.styleClass3Months = "";
-		this.styleClass6Months = "";
-		this.styleClass12Months = "";
-	}
-
 
     public ScoreDAO getScoreDAO()
     {
