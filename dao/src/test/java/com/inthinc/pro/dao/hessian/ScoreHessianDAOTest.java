@@ -13,18 +13,18 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 
-public class GraphicHessianDAOTest
+public class ScoreHessianDAOTest
 {
-    GraphicHessianDAO graphicHessianDAO;
+    ScoreHessianDAO scoreHessianDAO;
     
     static final Integer TOP_GROUP_ID = 101;
     
     @Before
     public void setUp() throws Exception
     {
-        graphicHessianDAO = new GraphicHessianDAO();
-        graphicHessianDAO.setServiceCreator(new CentralServiceCreator());
-        graphicHessianDAO.setSiloServiceCreator(new SiloServiceCreator());
+        scoreHessianDAO = new ScoreHessianDAO();
+        scoreHessianDAO.setServiceCreator(new CentralServiceCreator());
+        scoreHessianDAO.setSiloServiceCreator(new SiloServiceCreator());
         
     }
     
@@ -33,7 +33,7 @@ public class GraphicHessianDAOTest
     {
         Integer endDate = DateUtil.getTodaysDate();
         Integer startDate = DateUtil.getDaysBackDate(endDate, 30);
-        List<ScoreableEntity> scoreList = graphicHessianDAO.getScores(TOP_GROUP_ID, startDate, endDate, ScoreType.SCORE_OVERALL);
+        List<ScoreableEntity> scoreList = scoreHessianDAO.getScores(TOP_GROUP_ID, startDate, endDate, ScoreType.SCORE_OVERALL);
         
         assertNotNull(scoreList);
         

@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 
 import java.util.List;
 
-import com.inthinc.pro.dao.GraphicDAO;
+import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.dao.service.CentralService;
 import com.inthinc.pro.model.EntityType;
@@ -13,8 +13,8 @@ import com.inthinc.pro.model.ScoreableEntity;
 
 
 //public class GraphicHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer, CentralService> implements GraphicDAO{
-public class GraphicHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer, CentralService> implements GraphicDAO{
-  private static final Logger logger = Logger.getLogger(GraphicHessianDAO.class);
+public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer, CentralService> implements ScoreDAO{
+  private static final Logger logger = Logger.getLogger(ScoreHessianDAO.class);
 	 	
 //  @Override
 //  public List<ScoreableEntity>  getScores(Integer userID, Integer levelID, Integer startDate, Integer endDate) {

@@ -5,7 +5,7 @@ import java.util.List;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 
-public interface GraphicDAO extends GenericDAO<ScoreableEntity, Integer>
+public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
 {
     /**
      * Retrieve the overall score for the specified group and date range.
