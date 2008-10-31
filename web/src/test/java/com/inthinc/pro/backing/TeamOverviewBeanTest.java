@@ -27,7 +27,7 @@ public class TeamOverviewBeanTest extends BaseBeanTest
     {
         // TODO: look into why spring isn't doing the injection for us
         TeamOverviewBean teamOverviewBean = new TeamOverviewBean();
-        teamOverviewBean.setGraphicDAO(getGraphicDAO());
+        teamOverviewBean.setScoreDAO(getScoreDAO());
 //        teamOverviewBean.setNavigation((NavigationBean)applicationContext.getBean("navigationBean"));
         NavigationBean navigationBean = new NavigationBean();
         navigationBean.setGroupID(MockData.TOP_GROUP_ID);

@@ -2,9 +2,6 @@ package com.inthinc.pro.backing;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -12,12 +9,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.security.providers.ProviderManager;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.inthinc.pro.dao.ScoreDAO;
-import com.inthinc.pro.security.userdetails.ProUser;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 
@@ -49,9 +44,9 @@ public class BaseBeanTest implements ApplicationContextAware
         
     }
     
-    protected ScoreDAO getGraphicDAO()
+    protected ScoreDAO getScoreDAO()
     {
-        return (ScoreDAO)applicationContext.getBean("graphicDAO");
+        return (ScoreDAO)applicationContext.getBean("scoreDAO");
     }
 
     @Test

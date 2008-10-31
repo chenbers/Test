@@ -25,7 +25,7 @@ public class TeamOverviewBean extends BaseBean
 {
 
     private Integer             overallScore;
-    private ScoreDAO          graphicDAO;
+    private ScoreDAO          scoreDAO;
     private Map<ScoreType, String>        pieDefMap;
     private List<TabAction>  actions;
     private TabAction selectedAction;
@@ -42,7 +42,7 @@ public class TeamOverviewBean extends BaseBean
         Integer endDate = DateUtil.getTodaysDate();
         Integer startDate = DateUtil.getDaysBackDate(endDate, Duration.DAYS.getNumberOfDays());
 
-        ScoreableEntity scoreableEntity = graphicDAO.getOverallScore(getGroupID(), startDate, endDate);
+        ScoreableEntity scoreableEntity = scoreDAO.getOverallScore(getGroupID(), startDate, endDate);
         setOverallScore(scoreableEntity.getScore());
     }
 
@@ -66,14 +66,14 @@ public class TeamOverviewBean extends BaseBean
         return sb.getScoreStyle();
     }
 
-    public ScoreDAO getGraphicDAO()
+    public ScoreDAO getScoreDAO()
     {
-        return graphicDAO;
+        return scoreDAO;
     }
 
-    public void setGraphicDAO(ScoreDAO graphicDAO)
+    public void setScoreDAO(ScoreDAO graphicDAO)
     {
-        this.graphicDAO = graphicDAO;
+        this.scoreDAO = graphicDAO;
     }
 
     public String getOverallPieDef()
@@ -131,7 +131,7 @@ logger.debug("selected action is null");
 
         Integer endDate = DateUtil.getTodaysDate();
         Integer startDate = DateUtil.getDaysBackDate(endDate, Duration.DAYS.getNumberOfDays());
-        List<ScoreableEntity> scoreList = graphicDAO.getScores(getGroupID(), startDate, endDate, scoreType);
+        List<ScoreableEntity> scoreList = scoreDAO.getScores(getGroupID(), startDate, endDate, scoreType);
         ScoreBreakdown scoreBreakdown = new ScoreBreakdown(scoreList);
         Integer numScores = scoreBreakdown.getNumScores();
         if (numScores == 0)
