@@ -9,11 +9,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.springframework.beans.BeanUtils;
 
+import com.inthinc.pro.backing.model.GroupHierarchy;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.SafetyDevice;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Vehicle;
@@ -24,14 +25,11 @@ import com.inthinc.pro.model.VehicleSensitivity;
  */
 public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
 {
-    private static final Logger                   logger                 = LogManager.getLogger(VehiclesBean.class);
+    private static final List<String>            AVAILABLE_COLUMNS;
+    private static final int[]                   DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 8, 12 };
 
-    private static final List<String>             AVAILABLE_COLUMNS;
-    private static final int[]                    DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 8, 12 };
-
-    private static final TreeMap<String, String>  YEARS;
-    private static final TreeMap<String, State>   STATES;
-    private static final TreeMap<String, Integer> GROUPS;
+    private static final TreeMap<String, String> YEARS;
+    private static final TreeMap<String, State>  STATES;
 
     static
     {
@@ -74,46 +72,38 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         STATES = new TreeMap<String, State>();
         for (int i = 0; i < states.length; i++)
             STATES.put(states[i].getName(), states[i]);
-
-        // groups
-        GROUPS = new TreeMap<String, Integer>();
-        // TODO: populate this from some place real
-        GROUPS.put("North", 1);
-        GROUPS.put("East", 2);
-        GROUPS.put("South", 3);
-        GROUPS.put("West", 4);
-        GROUPS.put("Down Town", 5);
     }
 
-    private VehicleDAO                            vehicleDAO;
-
-    public VehiclesBean()
-    {
-        super();
-
-        // get the vehicles
-        final List<Vehicle> plainVehicles = new LinkedList<Vehicle>();
-        for (int i = 0; i < 110; i++)
-            plainVehicles.add(createDummyVehicle());
-        // TODO: use the commented line below instead
-        // final List<Vehicle> plainVehicles = vehicleDAO.getVehiclesByAcctID(getUser().getAccountID());
-
-        // convert the Vehicles to VehicleViews
-        items = new LinkedList<VehicleView>();
-        for (final Vehicle vehicle : plainVehicles)
-            items.add(createVehicleView(vehicle));
-
-        // init the filtered items
-        filteredItems.addAll(items);
-
-        // page, columns
-        page = 1;
-        columns = getDefaultColumns();
-    }
+    private VehicleDAO                           vehicleDAO;
+    private GroupDAO                             groupDAO;
+    private TreeMap<String, Integer>             groups;
 
     public void setVehicleDAO(VehicleDAO vehicleDAO)
     {
         this.vehicleDAO = vehicleDAO;
+    }
+
+    public void setGroupDAO(GroupDAO groupDAO)
+    {
+        this.groupDAO = groupDAO;
+    }
+
+    @Override
+    protected List<VehicleView> loadItems()
+    {
+        // get the vehicles
+        List<Vehicle> plainVehicles = new LinkedList<Vehicle>();
+        for (int i = 0; i < 110; i++)
+            plainVehicles.add(createDummyVehicle());
+        // TODO: use the commented line below instead
+        // final List<Vehicle> plainVehicles = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
+
+        // convert the Vehicles to VehicleViews
+        final LinkedList<VehicleView> items = new LinkedList<VehicleView>();
+        for (final Vehicle vehicle : plainVehicles)
+            items.add(createVehicleView(vehicle));
+
+        return items;
     }
 
     @Deprecated
@@ -121,6 +111,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     {
         final Vehicle vehicle = new Vehicle();
         vehicle.setVehicleID((int) (Math.random() * Integer.MAX_VALUE));
+        vehicle.setGroupID((int) (Math.random() * 5) + 110);
         vehicle.setName(String.valueOf((int) (Math.random() * Integer.MAX_VALUE)));
         vehicle.setYear(String.valueOf(randomInt(39) + 1970));
         vehicle.setMake(createDummyName());
@@ -173,20 +164,11 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     private VehicleView createVehicleView(Vehicle vehicle)
     {
         final VehicleView vehicleView = new VehicleView();
-
-        try
-        {
-            BeanUtils.copyProperties(vehicleView, vehicle);
-        }
-        catch (Exception e)
-        {
-            logger.error("Error converting Vehicle to VehicleView", e);
-        }
+        BeanUtils.copyProperties(vehicle, vehicleView);
 
         // TODO: look up the driver by driverID instead
         vehicleView.setDriver(createDummyName() + ' ' + createDummyName());
-        // TODO: look up by groupID instead
-        vehicleView.setGroup(createDummyName());
+        vehicleView.setGroup(groupDAO.findByID(vehicle.getGroupID()));
         vehicleView.setSelected(false);
 
         return vehicleView;
@@ -236,13 +218,17 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     @Override
     protected void doDelete(List<VehicleView> deleteItems)
     {
-        // TODO delete the items
+        // TODO: uncomment the below
+        // for (final VehicleView vehicle : deleteItems)
+        // vehicleDAO.deleteByID(vehicle.getVehicleID());
     }
 
     @Override
     protected void doSave(List<VehicleView> saveItems)
     {
-        // TODO save the items
+        // TODO: uncomment the below
+        // for (final VehicleView vehicle : saveItems)
+        // vehicleDAO.update(vehicle);
     }
 
     @Override
@@ -269,13 +255,20 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
 
     public TreeMap<String, Integer> getGroups()
     {
-        return GROUPS;
+        if (groups == null)
+        {
+            groups = new TreeMap<String, Integer>();
+            final GroupHierarchy hierarchy = getProUser().getGroupHierarchy();
+            for (final Group group : hierarchy.getGroupList())
+                groups.put(group.getName(), group.getGroupID());
+        }
+        return groups;
     }
 
     public static class VehicleView extends Vehicle implements Selectable
     {
         private String  driver;
-        private String  group;
+        private Group   group;
         private boolean selected;
 
         public String getDriver()
@@ -288,12 +281,12 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
             this.driver = driver;
         }
 
-        public String getGroup()
+        public Group getGroup()
         {
             return group;
         }
 
-        public void setGroup(String group)
+        public void setGroup(Group group)
         {
             this.group = group;
         }

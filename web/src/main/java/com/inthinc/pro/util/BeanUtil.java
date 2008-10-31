@@ -39,8 +39,23 @@ public class BeanUtil
      *            The source bean.
      * @param target
      *            The target bean.
+     * @throws BeanInitializationException
+     * @throws FatalBeanException
+     */
+    public static void deepCopy(Object source, Object target)
+    {
+        deepCopy(source, target, null);
+    }
+
+    /**
+     * Deep copies the source object into the target object. Requires that all complex members must have a no-argument constructor.
+     * 
+     * @param source
+     *            The source bean.
+     * @param target
+     *            The target bean.
      * @param ignoreProperties
-     *            List of property names to ignore. Child property names are separated by dots, e.g. "property.child".
+     *            Optional list of property names to ignore. Child property names are separated by dots, e.g. "property.child".
      * @throws BeanInitializationException
      * @throws FatalBeanException
      */

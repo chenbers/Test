@@ -26,9 +26,9 @@
 <!-- TODO: link to driver something -->
       <h:outputText value="#{item.driver}" />
     </rich:column>
-    <rich:column rendered="#{vehiclesBean.columns['group']}" sortBy="#{item.group}">
+    <rich:column rendered="#{vehiclesBean.columns['group']}" sortBy="#{item.group.name}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_group}" /></f:facet>
-      <h:outputText value="#{item.group}" />
+      <h:outputText value="#{item.group.name}" />
     </rich:column>
     <rich:column rendered="#{vehiclesBean.columns['year']}" sortBy="#{item.year}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_year}" /></f:facet>

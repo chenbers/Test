@@ -11,18 +11,19 @@
 
   <ui:define name="content">
 
-    <a4j:form id="overall-form">
-
-      <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
-        <tr>
-        <td valign="top" width="130">
-          <ui:include src="/includes/adminSideNav.xhtml">
-            <ui:param name="selectedAction" value="#{(vehiclesBean.add) ? 'go_adminAddVehicle' : 'go_adminVehicles'}" />
-            <ui:param name="parentAction" value="go_adminVehicles" />
-          </ui:include>
-        </td>
-        <td valign="top">
+    <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+      <tr>
+      <td valign="top" width="130">
+        <ui:include src="/includes/adminSideNav.xhtml">
+          <ui:param name="selectedAction" value="#{(vehiclesBean.add) ? 'go_adminAddVehicle' : 'go_adminVehicles'}" />
+          <ui:param name="parentAction" value="go_adminVehicles" />
+        </ui:include>
+      </td>
+      <td valign="top">
           <!-- START PANEL -->
+
+        <a4j:form id="edit-form">
+
             <div class="">
               <div class="panel_nw">
                 <div class="panel_title">
@@ -223,13 +224,14 @@
               </div>
 
             </div>
+            
+          </a4j:form>
+
           <!-- END PANEL -->
-          </td>
+        </td>
 
-        </tr>
-      </table>
-
-    </a4j:form>
+      </tr>
+    </table>
 
     <script type="text/javascript">
   function checkMultiple(item)

@@ -9,14 +9,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.TreeMap;
 
-import javax.faces.model.SelectItem;
+import org.springframework.beans.BeanUtils;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
+import com.inthinc.pro.backing.model.GroupHierarchy;
+import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.UserDAO;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Role;
+import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.User;
 
 /**
@@ -24,12 +26,11 @@ import com.inthinc.pro.model.User;
  */
 public class UsersBean extends BaseAdminBean<UsersBean.UserView>
 {
-    private static final Logger       logger                 = LogManager.getLogger(UsersBean.class);
+    private static final List<String>            AVAILABLE_COLUMNS;
+    private static final int[]                   DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2 };
 
-    private static final List<String> AVAILABLE_COLUMNS;
-    private static final int[]        DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2 };
-
-    private static final SelectItem[] TIMEZONES;
+    private static final TreeMap<String, String> TIMEZONES;
+    private static final TreeMap<String, State>  STATES;
 
     static
     {
@@ -70,27 +71,47 @@ public class UsersBean extends BaseAdminBean<UsersBean.UserView>
 
         // time zones
         final String[] timezones = TimeZone.getAvailableIDs();
-        TIMEZONES = new SelectItem[timezones.length];
+        TIMEZONES = new TreeMap<String, String>();
         for (int i = 0; i < timezones.length; i++)
-            TIMEZONES[i] = new SelectItem(timezones[i], TimeZone.getTimeZone(timezones[i]).getDisplayName());
+            TIMEZONES.put(TimeZone.getTimeZone(timezones[i]).getDisplayName(), timezones[i]);
+
+        // states
+        final State[] states = State.values();
+        STATES = new TreeMap<String, State>();
+        for (int i = 0; i < states.length; i++)
+            STATES.put(states[i].getName(), states[i]);
     }
 
-    public UsersBean()
-    {
-        super();
+    private UserDAO                              userDAO;
+    private GroupDAO                             groupDAO;
+    private TreeMap<String, Integer>             groups;
 
+    public void setUserDAO(UserDAO userDAO)
+    {
+        this.userDAO = userDAO;
+    }
+
+    public void setGroupDAO(GroupDAO groupDAO)
+    {
+        this.groupDAO = groupDAO;
+    }
+
+    @Override
+    protected List<UserView> loadItems()
+    {
+        // get the users
         List<User> plainUsers = new LinkedList<User>();
-        // TODO: get the users from some place real
         for (int i = 0; i < 120; i++)
             plainUsers.add(createDummyUser());
+        // TODO: use the commented line below instead
+        // final List<Vehicle> plainUsers = userDAO.getUsersInGroupHierarchy(getUser().getGroupID());
 
         // convert the users to UserViews
-        items = new LinkedList<UserView>();
+        final LinkedList<UserView> items = new LinkedList<UserView>();
         for (final User user : plainUsers)
             items.add(createUserView(user));
 
-        // init the filtered users
-        filteredItems.addAll(items);
+        return items;
     }
 
     @Deprecated
@@ -160,16 +181,9 @@ public class UsersBean extends BaseAdminBean<UsersBean.UserView>
     private UserView createUserView(User user)
     {
         final UserView userView = new UserView();
+        BeanUtils.copyProperties(user, userView);
 
-        try
-        {
-            BeanUtils.copyProperties(userView, user);
-        }
-        catch (Exception e)
-        {
-            logger.error("Error converting User to UserView", e);
-        }
-
+        userView.setGroup(groupDAO.findByID(user.getGroupID()));
         userView.setSelected(false);
 
         return userView;
@@ -235,14 +249,42 @@ public class UsersBean extends BaseAdminBean<UsersBean.UserView>
         return "go_adminPeople";
     }
 
-    public SelectItem[] getTimeZones()
+    public TreeMap<String, String> getTimeZones()
     {
         return TIMEZONES;
     }
 
+    public TreeMap<String, State> getStates()
+    {
+        return STATES;
+    }
+
+    public TreeMap<String, Integer> getGroups()
+    {
+        if (groups == null)
+        {
+            groups = new TreeMap<String, Integer>();
+            final GroupHierarchy hierarchy = getProUser().getGroupHierarchy();
+            for (final Group group : hierarchy.getGroupList())
+                groups.put(group.getName(), group.getGroupID());
+        }
+        return groups;
+    }
+
     public static class UserView extends User implements Selectable
     {
+        private Group   group;
         private boolean selected;
+
+        public Group getGroup()
+        {
+            return group;
+        }
+
+        public void setGroup(Group group)
+        {
+            this.group = group;
+        }
 
         /**
          * @return the selected

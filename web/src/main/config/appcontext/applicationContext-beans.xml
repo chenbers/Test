@@ -45,10 +45,13 @@
    </bean>
 
    <bean id="usersBean" class="com.inthinc.pro.backing.UsersBean" scope="session">
+    <property name="userDAO" ref="userDAO"></property>
+    <property name="groupDAO" ref="groupDAO"></property>
    </bean>
 
    <bean id="vehiclesBean" class="com.inthinc.pro.backing.VehiclesBean" scope="session">
 		<property name="vehicleDAO" ref="vehicleDAO"></property>
+		<property name="groupDAO" ref="groupDAO"></property>
    </bean>
 
    <bean id="driverBean" class="com.inthinc.pro.backing.DriverBean" scope="session">

@@ -23,7 +23,7 @@ public abstract class BaseAdminBean<T extends Selectable> extends BaseBean
     protected List<T>              filteredItems = new LinkedList<T>();
     protected String               filterValue;
     protected int                  page          = 1;
-    protected Map<String, Boolean> columns       = getDefaultColumns();
+    protected Map<String, Boolean> columns;
     private T                      editItem;
     private boolean                batchEdit;
     private Map<String, Boolean>   updateField;
@@ -33,6 +33,11 @@ public abstract class BaseAdminBean<T extends Selectable> extends BaseBean
      */
     public List<T> getItems()
     {
+        if (items == null)
+        {
+            items = loadItems();
+            applyFilter();
+        }
         return items;
     }
 
@@ -41,8 +46,20 @@ public abstract class BaseAdminBean<T extends Selectable> extends BaseBean
      */
     public List<T> getFilteredItems()
     {
+        if (items == null)
+        {
+            items = loadItems();
+            applyFilter();
+        }
         return filteredItems;
     }
+
+    /**
+     * Load the list of items.
+     * 
+     * @return The list of items to use.
+     */
+    protected abstract List<T> loadItems();
 
     /**
      * @return the number of filtered items.
@@ -177,6 +194,8 @@ public abstract class BaseAdminBean<T extends Selectable> extends BaseBean
      */
     public Map<String, Boolean> getColumns()
     {
+        if (columns == null)
+            columns = getDefaultColumns();
         return columns;
     }
 
@@ -363,7 +382,7 @@ public abstract class BaseAdminBean<T extends Selectable> extends BaseBean
             {
                 batchEdit = true;
                 editItem = createAddItem();
-                BeanUtil.deepCopy(selection, editItem, null);
+                BeanUtil.deepCopy(selection, editItem);
 
                 // null out properties that are not common
                 for (T item : items)
