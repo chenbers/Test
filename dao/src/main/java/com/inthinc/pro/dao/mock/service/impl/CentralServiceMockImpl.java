@@ -1,19 +1,16 @@
 package com.inthinc.pro.dao.mock.service.impl;
 
-import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
-import com.inthinc.pro.dao.mock.data.SearchCriteria;
+import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.service.CentralService;
-import com.inthinc.pro.model.OverallScore;
-import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.User;
 
-public class CentralServiceMockImpl extends MockImpl implements CentralService
+public class CentralServiceMockImpl implements CentralService
 {
 	private static final Logger logger = Logger.getLogger(CentralServiceMockImpl.class);
 
@@ -27,7 +24,7 @@ public class CentralServiceMockImpl extends MockImpl implements CentralService
     @Override
     public Map<String, Object> getUserIDByEmail(String email) throws ProDAOException
     {
-        Map<String, Object> returnMap =  getMockDataContainer().lookup(User.class, "email", email);
+        Map<String, Object> returnMap =  MockData.getInstance().lookup(User.class, "email", email);
 
         if (returnMap == null)
         {
@@ -39,7 +36,7 @@ public class CentralServiceMockImpl extends MockImpl implements CentralService
     @Override
     public Map<String, Object> getUserIDByName(String username) throws ProDAOException
     {
-        Map<String, Object> returnMap =  getMockDataContainer().lookup(User.class, "username", username);
+        Map<String, Object> returnMap =  MockData.getInstance().lookup(User.class, "username", username);
         
         if (returnMap == null)
         {

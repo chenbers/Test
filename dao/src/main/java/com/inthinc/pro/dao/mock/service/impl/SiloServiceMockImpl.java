@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
+import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.mock.data.SearchCriteria;
 import com.inthinc.pro.dao.service.SiloService;
 import com.inthinc.pro.model.Driver;
@@ -16,14 +17,14 @@ import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.User;
 
-public class SiloServiceMockImpl extends MockImpl implements SiloService
+public class SiloServiceMockImpl implements SiloService
 {
     private static final Logger logger = Logger.getLogger(SiloServiceMockImpl.class);
 
     // helper method
     private Map<String, Object>doMockLookup(Class clazz, String key, Object searchValue, String emptyResultSetMsg, String methodName)
     {
-        Map<String, Object> returnMap =  getMockDataContainer().lookup(clazz, key, searchValue);
+        Map<String, Object> returnMap =  MockData.getInstance().lookup(clazz, key, searchValue);
 
         if (returnMap == null)
         {
@@ -71,9 +72,10 @@ public class SiloServiceMockImpl extends MockImpl implements SiloService
     {
         SearchCriteria searchCriteria = new SearchCriteria();
         searchCriteria.addKeyValue("entityID", groupID);
+        searchCriteria.addKeyValue("scoreType", ScoreType.SCORE_OVERALL);
         searchCriteria.addKeyValueRange("date", startDate, endDate);
         
-        Map<String, Object> returnMap =  getMockDataContainer().lookup(ScoreableEntity.class, searchCriteria);
+        Map<String, Object> returnMap =  MockData.getInstance().lookup(ScoreableEntity.class, searchCriteria);
         if (returnMap == null)
         {
             throw new EmptyResultSetException("No overall score for: " + groupID, "getOverallScore", 0);
@@ -90,7 +92,7 @@ public class SiloServiceMockImpl extends MockImpl implements SiloService
         searchCriteria.addKeyValue("parentID", groupID);
 
         // get list of groups that have the specified groupID as the parent
-        List<Map<String, Object>> entityList =  getMockDataContainer().lookupList(Group.class, searchCriteria);
+        List<Map<String, Object>> entityList =  MockData.getInstance().lookupList(Group.class, searchCriteria);
         
         List<Map<String, Object>> returnList =  new ArrayList<Map<String, Object>>();
         if (entityList != null)
@@ -102,7 +104,7 @@ public class SiloServiceMockImpl extends MockImpl implements SiloService
                 searchCriteria.addKeyValue("scoreType", ScoreType.getScoreType(scoreType));
                 searchCriteria.addKeyValueRange("date", startDate, endDate);
                 
-                Map<String, Object> scoreMap = getMockDataContainer().lookup(ScoreableEntity.class, searchCriteria);
+                Map<String, Object> scoreMap = MockData.getInstance().lookup(ScoreableEntity.class, searchCriteria);
                 
                 if (scoreMap != null)
                 {
@@ -120,7 +122,7 @@ public class SiloServiceMockImpl extends MockImpl implements SiloService
             searchCriteria.addKeyValue("groupID", groupID);
 
             // get list of drivers that are in the specified group
-            entityList =  getMockDataContainer().lookupList(Driver.class, searchCriteria);
+            entityList =  MockData.getInstance().lookupList(Driver.class, searchCriteria);
             if (entityList == null)
             {
                 return returnList;
@@ -132,7 +134,7 @@ public class SiloServiceMockImpl extends MockImpl implements SiloService
                 searchCriteria.addKeyValue("scoreType", ScoreType.getScoreType(scoreType));
                 searchCriteria.addKeyValueRange("date", startDate, endDate);
                 
-                Map<String, Object> scoreMap = getMockDataContainer().lookup(ScoreableEntity.class, searchCriteria);
+                Map<String, Object> scoreMap = MockData.getInstance().lookup(ScoreableEntity.class, searchCriteria);
                 
                 if (scoreMap != null)
                 {
@@ -187,19 +189,19 @@ public class SiloServiceMockImpl extends MockImpl implements SiloService
     @Override
     public List<Map<String, Object>> getGroupHierarchy(Integer groupID) throws ProDAOException
     {
-        Group topGroup= getMockDataContainer().lookupObject(Group.class, "groupID", groupID);
+        Group topGroup= MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
 
         List<Group> hierarchyGroups = new ArrayList<Group>();
         hierarchyGroups.add(topGroup);
         
         // filter out just the ones in the hierarchy
-        List<Group> allGroups = getMockDataContainer().lookupObjectList(Group.class, new Group());
+        List<Group> allGroups = MockData.getInstance().lookupObjectList(Group.class, new Group());
         addChildren(hierarchyGroups, allGroups, groupID);
         
         List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
         for (Group group : hierarchyGroups)
         {
-            returnList.add(getMockDataContainer().createMapFromObject(group));
+            returnList.add(MockData.getInstance().createMapFromObject(group));
         }
         
         return returnList;

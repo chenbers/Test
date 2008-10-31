@@ -8,16 +8,13 @@
 							
 	<h:panelGrid width="790" border="0" cellpadding="0" cellspacing="0" columns="2">
         <h:panelGrid width="320" border="0" cellspacing="0" cellpadding="4" style="border-right: 1px solid #e1e1e1;">
-			<h:panelGrid columns="2" width="220" border="0" cellspacing="0" cellpadding="0" class="scorebox">
-				<h:panelGroup>
-					<h4>#{messages.team_overallScore}</h4>
-			        <span>#{messages.team_durationLabel}</span> 
-				</h:panelGroup>
-				<h:panelGroup style="text-align:center;">
-			    	<ui:include src="../includes/scoreBox.xhtml">
-						<ui:param name="score" value="#{teamOverviewBean.overallScore}" />
-						<ui:param name="scoreStyle" value="#{teamOverviewBean.overallScoreStyle}" />
-					</ui:include>
+			<h:panelGrid columns="1" width="120" border="0" cellspacing="0" cellpadding="0" class="scorebox">
+				<h:panelGroup style="text-align:center;vertical-align:top;width:120">
+					<h:panelGroup layout="block" styleClass="#{teamOverviewBean.overallScoreStyle}">
+						<h:panelGroup layout="block" styleClass="score">
+							<h:outputText value="#{teamOverviewBean.overallScore}" converter="ScoreConverter"/>
+						</h:panelGroup>
+					</h:panelGroup>
 				</h:panelGroup>
 			</h:panelGrid>
 			<h:panelGroup >

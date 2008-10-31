@@ -9,11 +9,9 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
-import com.inthinc.pro.dao.mock.data.MockDataContainer;
+import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.mock.data.SearchCriteria;
 import com.inthinc.pro.dao.util.DateUtil;
-import com.inthinc.pro.model.OverallScore;
 import com.inthinc.pro.model.ScoreableEntity;
 
 public class MockDataTest
@@ -32,15 +30,13 @@ public class MockDataTest
     @Test
     public void mockDataLookup() throws Exception
     {
-        MockDataContainer mockDataContainer = new MockDataContainer();
-        
         SearchCriteria searchCriteria = new SearchCriteria();
         searchCriteria.addKeyValue("entityID", new Integer(101));
         Integer endDate = DateUtil.getTodaysDate();
         Integer startDate = DateUtil.getDaysBackDate(endDate, 30);
         searchCriteria.addKeyValueRange("date", startDate, endDate);
         
-        Map<String, Object> returnMap =  mockDataContainer.lookup(ScoreableEntity.class, searchCriteria);
+        Map<String, Object> returnMap =  MockData.getInstance().lookup(ScoreableEntity.class, searchCriteria);
         
         assertNotNull(returnMap);
         

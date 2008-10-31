@@ -21,7 +21,7 @@ import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.util.MessageUtil;
 
-public class TeamOverviewBean extends BaseBean
+public class TeamOverviewBean extends BaseDurationBean
 {
 
     private Integer             overallScore;
@@ -40,7 +40,7 @@ public class TeamOverviewBean extends BaseBean
     {
         
         Integer endDate = DateUtil.getTodaysDate();
-        Integer startDate = DateUtil.getDaysBackDate(endDate, Duration.DAYS.getNumberOfDays());
+        Integer startDate = DateUtil.getDaysBackDate(endDate, getDuration().getNumberOfDays());
 
         ScoreableEntity scoreableEntity = scoreDAO.getOverallScore(getGroupID(), startDate, endDate);
         setOverallScore(scoreableEntity.getScore());
@@ -57,12 +57,13 @@ public class TeamOverviewBean extends BaseBean
 
     public void setOverallScore(Integer overallScore)
     {
+logger.debug("##### setOverallScore: " + overallScore);        
         this.overallScore = overallScore;
     }
 
     public String getOverallScoreStyle()
     {
-        ScoreBox sb = new ScoreBox(getOverallScore(), ScoreBoxSizes.MEDIUM);
+        ScoreBox sb = new ScoreBox(getOverallScore(), ScoreBoxSizes.LARGE);
         return sb.getScoreStyle();
     }
 
@@ -130,7 +131,7 @@ logger.debug("selected action is null");
         sb.append(pie.getControlParameters());
 
         Integer endDate = DateUtil.getTodaysDate();
-        Integer startDate = DateUtil.getDaysBackDate(endDate, Duration.DAYS.getNumberOfDays());
+        Integer startDate = DateUtil.getDaysBackDate(endDate, getDuration().getNumberOfDays());
         List<ScoreableEntity> scoreList = scoreDAO.getScores(getGroupID(), startDate, endDate, scoreType);
         ScoreBreakdown scoreBreakdown = new ScoreBreakdown(scoreList);
         Integer numScores = scoreBreakdown.getNumScores();
@@ -235,6 +236,16 @@ logger.debug("selected action is null");
     public void setGroupID(Integer groupID)
     {
         this.groupID = groupID;
+    }
+
+    @Override
+    public void setDuration(Duration duration)
+    {
+        super.setDuration(duration);
+        
+        setOverallScore(null);
+        setPieDefMap(null);
+        
     }
 
 }

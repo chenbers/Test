@@ -25,27 +25,37 @@
 	<h:panelGroup layout="block" styleClass="panel_nw">
 		<h:panelGroup layout="block" styleClass="panel_title">
 			<span class="line">#{messages.team_overview}</span>
-			<span class="panel_links"/>
+			<span class="panel_links"> 
+				<ui:include src="/includes/dateLinks.xhtml">
+					<ui:param name="ajaxForm" value="overviewDates-form"/>
+					<ui:param name="reRenderList" value="overviewDates-form,overview-content"/>			
+					<ui:param name="thirtyDaysOn" value="#{teamOverviewBean.styleClass30Days}"/>
+					<ui:param name="threeMonthsOn" value="#{teamOverviewBean.styleClass3Months}"/>
+					<ui:param name="sixMonthsOn" value="#{teamOverviewBean.styleClass6Months}"/>
+					<ui:param name="twelveMonthsOn" value="#{teamOverviewBean.styleClass12Months}"/>
+					<ui:param name="duration" value="#{teamOverviewBean.duration}" />
+				</ui:include>	
+			</span>
 		</h:panelGroup>				
 	</h:panelGroup>				
 	<h:panelGroup layout="block" styleClass="panel_w">
 		<h:panelGroup layout="block" styleClass="panel_content">
 			<h:panelGrid width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;" columns="2" columnClasses="ls_tabs">
-					<table width="130" border="0" cellpadding="0" cellspacing="0">
-						<a4j:form id="overview-form">
-						      <ui:repeat value="#{teamOverviewBean.actions}" var="action" id="menu">
-						        <tr>
-						          <td valign="top" class="#{(action.key == teamOverviewBean.selectedAction.key) ? 'ls_tab_on' : 'ls_tab_off'}">
-						            <h:commandLink value="#{action.displayString}" styleClass="#{action.style}">
-						            	<f:setPropertyActionListener target="#{teamOverviewBean.selectedAction}" value="#{action}" />
-            							<a4j:support event="oncomplete" reRender="menu,overall,drivestyle" />
-						            </h:commandLink>	
-						          </td>
-						        </tr>
-						      </ui:repeat>
-						</a4j:form>
-						</table>
-				<h:panelGroup>
+				<table width="130" border="0" cellpadding="0" cellspacing="0">
+					<a4j:form id="overview-form">
+					      <ui:repeat value="#{teamOverviewBean.actions}" var="action" id="menu">
+					        <tr>
+					          <td valign="top" class="#{(action.key == teamOverviewBean.selectedAction.key) ? 'ls_tab_on' : 'ls_tab_off'}">
+					            <h:commandLink value="#{action.displayString}" styleClass="#{action.style}">
+					            	<f:setPropertyActionListener target="#{teamOverviewBean.selectedAction}" value="#{action}" />
+           							<a4j:support event="oncomplete" reRender="menu,overall,drivestyle" />
+					            </h:commandLink>	
+					          </td>
+					        </tr>
+					      </ui:repeat>
+					</a4j:form>
+				</table>
+				<h:panelGroup id="overview-content">
 					<a4j:region id="overall" rendered="#{teamOverviewBean.selectedAction.key == 'overall'}">
 						<ui:include src="/includes/teamOverviewTab_overall.xhtml" />
 					</a4j:region>

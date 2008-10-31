@@ -1,15 +1,11 @@
 package com.inthinc.pro.security;
 
 import java.util.List;
-import java.util.Map;
-
-import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.ui.webapp.AuthenticationProcessingFilter;
 
-import com.inthinc.pro.backing.NavigationBean;
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.model.GroupLevel;
 import com.inthinc.pro.dao.GroupDAO;
@@ -33,7 +29,7 @@ public class ProAuthenticationProcessingFilter extends AuthenticationProcessingF
         {
             return url;
         }
-logger.debug("Default Target URL: " + url);        
+        logger.debug("Default Target URL: " + url);        
         return super.getDefaultTargetUrl();
     }
 
