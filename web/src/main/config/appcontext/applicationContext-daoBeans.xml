@@ -12,7 +12,7 @@
    <bean id="groupDAO" class="com.inthinc.pro.dao.hessian.GroupHessianDAO" 
    		parent="genericDAO">
    </bean>
-   <bean id="graphicDAO" class="com.inthinc.pro.dao.hessian.GraphicHessianDAO" 
+   <bean id="scoreDAO" class="com.inthinc.pro.dao.hessian.ScoreHessianDAO" 
    		parent="genericDAO">
    </bean>
    <bean id="vehicleDAO" class="com.inthinc.pro.dao.hessian.VehicleHessianDAO" 
