@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
-import com.inthinc.pro.dao.GraphicDAO;
+import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.ScoreType;
@@ -26,7 +26,7 @@ public class BreakdownBean extends BaseBean {
 	        }
 	    };
     
-    private GraphicDAO graphicDAO;
+    private ScoreDAO scoreDAO;
     private NavigationBean navigation;
 	
 	private String pieDef;	
@@ -70,7 +70,7 @@ public class BreakdownBean extends BaseBean {
         try {          
             // TODO: This is not correct.  getUser().getGroupID() needs to be changed to the current group in the navigation
             logger.debug("getting scores for groupID: " + this.navigation.getGroupID());            
-            s = graphicDAO.getScores(this.navigation.getGroupID(),
+            s = scoreDAO.getScores(this.navigation.getGroupID(),
                     startDate, endDate, ScoreType.SCORE_OVERALL_PERCENTAGES);
         } catch (Exception e) {
             logger.debug("graphicDao error: " + e.getMessage());
@@ -121,7 +121,7 @@ public class BreakdownBean extends BaseBean {
         {
             groupID = getUser().getGroupID();
         }
-        ScoreableEntity scoreableEntity = graphicDAO.getOverallScore(groupID, startDate, endDate);
+        ScoreableEntity scoreableEntity = scoreDAO.getOverallScore(groupID, startDate, endDate);
         setOverallScore(scoreableEntity.getScore());
     }
 
@@ -228,14 +228,15 @@ public class BreakdownBean extends BaseBean {
 		this.styleClass12Months = "";
 	}
 
-    public GraphicDAO getGraphicDAO()
+
+    public ScoreDAO getScoreDAO()
     {
-        return graphicDAO;
+        return scoreDAO;
     }
 
-    public void setGraphicDAO(GraphicDAO graphicDAO)
+    public void setScoreDAO(ScoreDAO scoreDAO)
     {
-        this.graphicDAO = graphicDAO;
+        this.scoreDAO = scoreDAO;
     }
 
     public NavigationBean getNavigation()
