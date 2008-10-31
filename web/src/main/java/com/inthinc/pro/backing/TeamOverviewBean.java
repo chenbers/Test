@@ -14,7 +14,7 @@ import com.inthinc.pro.backing.ui.ScoreBreakdown;
 import com.inthinc.pro.backing.ui.ScoreCategory;
 import com.inthinc.pro.backing.ui.TabAction;
 import com.inthinc.pro.charts.Pie;
-import com.inthinc.pro.dao.GraphicDAO;
+import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.ScoreType;
@@ -25,7 +25,7 @@ public class TeamOverviewBean extends BaseBean
 {
 
     private Integer             overallScore;
-    private GraphicDAO          graphicDAO;
+    private ScoreDAO          graphicDAO;
     private Map<ScoreType, String>        pieDefMap;
     private List<TabAction>  actions;
     private TabAction selectedAction;
@@ -66,12 +66,12 @@ public class TeamOverviewBean extends BaseBean
         return sb.getScoreStyle();
     }
 
-    public GraphicDAO getGraphicDAO()
+    public ScoreDAO getGraphicDAO()
     {
         return graphicDAO;
     }
 
-    public void setGraphicDAO(GraphicDAO graphicDAO)
+    public void setGraphicDAO(ScoreDAO graphicDAO)
     {
         this.graphicDAO = graphicDAO;
     }

@@ -16,7 +16,7 @@ import org.springframework.security.providers.ProviderManager;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.inthinc.pro.dao.GraphicDAO;
+import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.security.userdetails.ProUser;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -49,9 +49,9 @@ public class BaseBeanTest implements ApplicationContextAware
         
     }
     
-    protected GraphicDAO getGraphicDAO()
+    protected ScoreDAO getGraphicDAO()
     {
-        return (GraphicDAO)applicationContext.getBean("graphicDAO");
+        return (ScoreDAO)applicationContext.getBean("graphicDAO");
     }
 
     @Test

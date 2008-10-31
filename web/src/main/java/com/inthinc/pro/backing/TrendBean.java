@@ -10,7 +10,7 @@ import org.springframework.security.userdetails.User;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
-import com.inthinc.pro.dao.GraphicDAO;
+import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
@@ -23,7 +23,7 @@ public class TrendBean extends BaseBean {
 
 	private static final Logger logger = Logger.getLogger(TrendBean.class);
 	
-	private GraphicDAO graphicDAO;
+	private ScoreDAO graphicDAO;
 	private NavigationBean navigation;
 	
 	private String lineDef;	
@@ -273,11 +273,11 @@ public class TrendBean extends BaseBean {
 		this.goTo = goTo;
 	}
 */
-	public GraphicDAO getGraphicDAO() {
+	public ScoreDAO getGraphicDAO() {
 		return graphicDAO;
 	}
 
-	public void setGraphicDAO(GraphicDAO graphicDAO) {
+	public void setGraphicDAO(ScoreDAO graphicDAO) {
 		this.graphicDAO = graphicDAO;
 	}
 

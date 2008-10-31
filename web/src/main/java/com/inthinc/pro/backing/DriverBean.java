@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
-import com.inthinc.pro.dao.GraphicDAO;
+import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.model.ScoreableEntity;
@@ -40,7 +40,7 @@ public class DriverBean extends BaseBean
 	
 	private String coachingHistory;
 	
-	private GraphicDAO     graphicDAO;
+	private ScoreDAO     graphicDAO;
 	private Distance       distance = Distance.FIVEHUNDRED;
 	
 	private List<SpeedingEvent> speedingEvents = new ArrayList<SpeedingEvent>();
@@ -212,12 +212,12 @@ public class DriverBean extends BaseBean
     }
 
     //GRAPHIC DAO PROPERTIES
-    public GraphicDAO getGraphicDAO()
+    public ScoreDAO getGraphicDAO()
     {
         return graphicDAO;
     }
 
-    public void setGraphicDAO(GraphicDAO graphicDAO)
+    public void setGraphicDAO(ScoreDAO graphicDAO)
     {
         this.graphicDAO = graphicDAO;
     }

@@ -5,7 +5,7 @@ import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.ScoreableEntity;
-import com.inthinc.pro.dao.GraphicDAO;
+import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 
 public class FleetOverviewBean extends BaseBean
@@ -15,7 +15,7 @@ public class FleetOverviewBean extends BaseBean
     private Duration            duration = Duration.DAYS;
     private static final Logger logger   = Logger.getLogger(FleetOverviewBean.class);
 
-    private GraphicDAO          graphicDAO;
+    private ScoreDAO          graphicDAO;
     private NavigationBean navigation;
 
 
@@ -96,12 +96,12 @@ public class FleetOverviewBean extends BaseBean
         overallScore = null;
     }
 
-    public GraphicDAO getGraphicDAO()
+    public ScoreDAO getGraphicDAO()
     {
         return graphicDAO;
     }
 
-    public void setGraphicDAO(GraphicDAO graphicDAO)
+    public void setGraphicDAO(ScoreDAO graphicDAO)
     {
         this.graphicDAO = graphicDAO;
     }

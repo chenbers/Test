@@ -5,12 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.springframework.security.context.SecurityContextHolder;
-import org.springframework.security.userdetails.User;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
-import com.inthinc.pro.dao.GraphicDAO;
+import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
@@ -23,7 +21,7 @@ public class TeamTopBean extends BaseBean
 {
    private static final Logger logger = Logger.getLogger(TeamTopBean.class);
     
-    private GraphicDAO graphicDAO;
+    private ScoreDAO scoreDAO;
     private NavigationBean navigation;
     private boolean pageChange = false;
     private Duration duration = Duration.DAYS;
