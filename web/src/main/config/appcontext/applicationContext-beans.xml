@@ -25,7 +25,7 @@
    <!-- Beans used in fusion chart displays -->
    <bean id="trendBean" class="com.inthinc.pro.backing.TrendBean" 
 		scope="request" parent="baseBean">
-		<property name="graphicDAO" ref="graphicDAO"></property>
+		<property name="scoreDAO" ref="scoreDAO"></property>
 		<property name="navigation" ref="navigationBean"></property>
    </bean>
    <bean id="trendTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request">

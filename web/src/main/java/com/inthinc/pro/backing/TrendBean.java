@@ -23,7 +23,7 @@ public class TrendBean extends BaseBean {
 
 	private static final Logger logger = Logger.getLogger(TrendBean.class);
 	
-	private ScoreDAO graphicDAO;
+	private ScoreDAO scoreDAO;
 	private NavigationBean navigation;
 	
 	private String lineDef;	
@@ -76,7 +76,7 @@ public class TrendBean extends BaseBean {
         try {          
             // TODO: This is not correct.  getUser().getGroupID() needs to be changed to the current group in the navigation
             logger.debug("getting scores for groupID: " + this.navigation.getGroupID());            
-            s = graphicDAO.getScores(
+            s = scoreDAO.getScores(
                     this.navigation.getGroupID(),startDate, endDate, ScoreType.SCORE_OVERALL);
         } catch (Exception e) {
             logger.debug("graphicDao error: " + e.getMessage());
@@ -92,7 +92,7 @@ public class TrendBean extends BaseBean {
         for ( int i = 0; i < s.size(); i++ ) {
             ScoreableEntity se = (ScoreableEntity)s.get(i);
             //Fetch to get children's observations
-            ss = graphicDAO.getScores(
+            ss = scoreDAO.getScores(
                     se.getEntityID(),startDate, endDate, ScoreType.SCORE_OVERALL_TIME);
             
             //Y-coordinates
@@ -164,7 +164,7 @@ public class TrendBean extends BaseBean {
 		    // TODO: This is not correct.  getUser().getGroupID() needs to be changed to the current group in the navigation
 		    logger.debug("getting scores for groupID: " + this.navigation.getGroupID());
 		    
-			s = graphicDAO.getScores(
+			s = scoreDAO.getScores(
 			        this.navigation.getGroupID(),startDate, endDate, ScoreType.SCORE_OVERALL);
 		} catch (Exception e) {
 			logger.debug("graphicDao error: " + e.getMessage());
@@ -273,12 +273,12 @@ public class TrendBean extends BaseBean {
 		this.goTo = goTo;
 	}
 */
-	public ScoreDAO getGraphicDAO() {
-		return graphicDAO;
+	public ScoreDAO getScoreDAO() {
+		return scoreDAO;
 	}
 
-	public void setGraphicDAO(ScoreDAO graphicDAO) {
-		this.graphicDAO = graphicDAO;
+	public void setScoreDAO(ScoreDAO graphicDAO) {
+		this.scoreDAO = graphicDAO;
 	}
 
     public NavigationBean getNavigation()
