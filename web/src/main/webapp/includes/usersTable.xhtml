@@ -21,10 +21,10 @@
       <f:facet name="header"><h:outputText value="#{messages.usersHeader_userID}" /></f:facet>
       <h:outputText value="#{item.userID}" />
     </rich:column>
-    <rich:column rendered="#{usersBean.columns['fullName']}" sortBy="#{item.first}" sortOrder="ASCENDING">
+    <rich:column rendered="#{usersBean.columns['fullName']}" sortBy="#{item.person.first}" sortOrder="ASCENDING">
       <f:facet name="header"><h:outputText value="#{messages.usersHeader_fullName}" /></f:facet>
 <!-- TODO: link for viewing the employee's report -->
-      <h:outputText value="#{item.first}" /><h:outputText value=" " /><h:outputText value="#{item.last}" />
+      <h:outputText value="#{item.person.first}" /><h:outputText value=" " /><h:outputText value="#{item.person.last}" />
     </rich:column>
     <rich:column rendered="#{usersBean.columns['active']}" sortBy="#{item.active}">
       <f:facet name="header"><h:outputText value="#{messages.usersHeader_active}" /></f:facet>
@@ -38,29 +38,21 @@
       <f:facet name="header"><h:outputText value="#{messages.usersHeader_role}" /></f:facet>
       <h:outputText value="#{item.role}" />
     </rich:column>
-    <rich:column rendered="#{usersBean.columns['primaryPhone']}" sortBy="#{item.primaryPhone}">
-      <f:facet name="header"><h:outputText value="#{messages.usersHeader_primaryPhone}" /></f:facet>
-      <h:outputText value="#{item.primaryPhone}" />
+    <rich:column rendered="#{usersBean.columns['workPhone']}" sortBy="#{item.person.workPhone}">
+      <f:facet name="header"><h:outputText value="#{messages.usersHeader_workPhone}" /></f:facet>
+      <h:outputText value="#{item.person.workPhone}" />
     </rich:column>
-    <rich:column rendered="#{usersBean.columns['secondaryPhone']}" sortBy="#{item.secondaryPhone}">
-      <f:facet name="header"><h:outputText value="#{messages.usersHeader_secondaryPhone}" /></f:facet>
-      <h:outputText value="#{item.secondaryPhone}" />
+    <rich:column rendered="#{usersBean.columns['homePhone']}" sortBy="#{item.person.homePhone}">
+      <f:facet name="header"><h:outputText value="#{messages.usersHeader_homePhone}" /></f:facet>
+      <h:outputText value="#{item.person.homePhone}" />
     </rich:column>
-    <rich:column rendered="#{usersBean.columns['primarySms']}" sortBy="#{item.primarySms}">
-      <f:facet name="header"><h:outputText value="#{messages.usersHeader_primarySms}" /></f:facet>
-      <h:outputText value="#{item.primarySms}" />
-    </rich:column>
-    <rich:column rendered="#{usersBean.columns['secondarySms']}" sortBy="#{item.secondarySms}">
-      <f:facet name="header"><h:outputText value="#{messages.usersHeader_secondarySms}" /></f:facet>
-      <h:outputText value="#{item.secondarySms}" />
-    </rich:column>
-    <rich:column rendered="#{usersBean.columns['email']}" sortBy="#{item.email}">
+    <rich:column rendered="#{usersBean.columns['email']}" sortBy="#{item.person.email}">
       <f:facet name="header"><h:outputText value="#{messages.usersHeader_email}" /></f:facet>
-      <a href="mailto:#{item.email}"><h:outputText value="#{item.email}" /></a>
+      <a href="mailto:#{item.person.email}"><h:outputText value="#{item.person.email}" /></a>
     </rich:column>
-    <rich:column rendered="#{usersBean.columns['timeZone']}" sortBy="#{item.timeZone}">
+    <rich:column rendered="#{usersBean.columns['timeZone']}" sortBy="#{item.person.timeZone}">
       <f:facet name="header"><h:outputText value="#{messages.usersHeader_timeZone}" /></f:facet>
-      <h:outputText value="#{item.timeZone}" />
+      <h:outputText value="#{item.person.timeZone.displayName}" />
     </rich:column>
 <!-- TODO: more columns once the User object has 'em -->
   </ui:define>
