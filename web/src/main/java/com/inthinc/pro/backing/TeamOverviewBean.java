@@ -132,25 +132,26 @@ logger.debug("selected action is null");
 
         Integer endDate = DateUtil.getTodaysDate();
         Integer startDate = DateUtil.getDaysBackDate(endDate, getDuration().getNumberOfDays());
-        List<ScoreableEntity> scoreList = scoreDAO.getScores(getGroupID(), startDate, endDate, scoreType);
+        List<ScoreableEntity> scoreList = scoreDAO.getScoreBreakdown(getGroupID(), startDate, endDate, scoreType);
+//        s = scoreDAO.getScoreBreakdown(this.navigation.getGroupID(),
+//                startDate, endDate, ScoreType.SCORE_OVERALL);
+
         ScoreBreakdown scoreBreakdown = new ScoreBreakdown(scoreList);
-        Integer numScores = scoreBreakdown.getNumScores();
-        if (numScores == 0)
+        if (scoreList.size() == 0)
         {
             // TODO:  What color/text (see use case)?
             sb.append(pie.getChartItem(new Object[] {100, "No Data To Display", "F6B305"}));
         }
         else
         {
-            Map<ScoreCategory, Integer> countMap = scoreBreakdown.getCountMap();
-            for (Map.Entry<ScoreCategory, Integer> item : countMap.entrySet())
+            Map<ScoreCategory, Integer> valueMap = scoreBreakdown.getValueMap();
+            for (Map.Entry<ScoreCategory, Integer> item : valueMap.entrySet())
             {
                 if (item.getValue().intValue() == 0)
                 {
                     continue;
                 }
-                Integer value = (item.getValue() * 100 / numScores);
-                sb.append(pie.getChartItem(new Object[] {value, "", item.getKey().getColor()}));
+                sb.append(pie.getChartItem(new Object[] {item.getValue(), "", item.getKey().getColor()}));
 
             }
 

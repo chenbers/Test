@@ -14,6 +14,7 @@ import com.inthinc.pro.dao.service.SiloService;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.ScoreType;
+import com.inthinc.pro.model.ScoreValueType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.User;
 
@@ -73,6 +74,7 @@ public class SiloServiceMockImpl implements SiloService
         SearchCriteria searchCriteria = new SearchCriteria();
         searchCriteria.addKeyValue("entityID", groupID);
         searchCriteria.addKeyValue("scoreType", ScoreType.SCORE_OVERALL);
+        searchCriteria.addKeyValue("scoreValueType", ScoreValueType.SCORE_SCALE_0_50);
         searchCriteria.addKeyValueRange("date", startDate, endDate);
         
         Map<String, Object> returnMap =  MockData.getInstance().lookup(ScoreableEntity.class, searchCriteria);
@@ -102,6 +104,7 @@ public class SiloServiceMockImpl implements SiloService
                 searchCriteria = new SearchCriteria();
                 searchCriteria.addKeyValue("entityID", groupMap.get("groupID"));
                 searchCriteria.addKeyValue("scoreType", ScoreType.getScoreType(scoreType));
+                searchCriteria.addKeyValue("scoreValueType", ScoreValueType.SCORE_SCALE_0_50);
                 searchCriteria.addKeyValueRange("date", startDate, endDate);
                 
                 Map<String, Object> scoreMap = MockData.getInstance().lookup(ScoreableEntity.class, searchCriteria);
@@ -133,6 +136,7 @@ public class SiloServiceMockImpl implements SiloService
                 searchCriteria.addKeyValue("entityID", driverMap.get("driverID"));
                 searchCriteria.addKeyValue("scoreType", ScoreType.getScoreType(scoreType));
                 searchCriteria.addKeyValueRange("date", startDate, endDate);
+                searchCriteria.addKeyValue("scoreValueType", ScoreValueType.SCORE_SCALE_0_50);
                 
                 Map<String, Object> scoreMap = MockData.getInstance().lookup(ScoreableEntity.class, searchCriteria);
                 
@@ -149,6 +153,17 @@ public class SiloServiceMockImpl implements SiloService
             
         }
         return returnList;
+    }
+    @Override
+    public List<Map<String, Object>> getScoreBreakdown(Integer groupID, Integer startDate, Integer endDate, Integer scoreType) throws ProDAOException
+    {
+        
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("entityID", groupID);
+        searchCriteria.addKeyValue("scoreType", ScoreType.getScoreType(scoreType));
+        searchCriteria.addKeyValueRange("date", startDate, endDate);
+        searchCriteria.addKeyValue("scoreValueType", ScoreValueType.SCORE_PERCENTAGE);
+        return MockData.getInstance().lookupList(ScoreableEntity.class, searchCriteria);
     }
 
     @Override
@@ -220,6 +235,8 @@ public class SiloServiceMockImpl implements SiloService
         }
         
     }
+
+
 
 
     

@@ -12,6 +12,7 @@ public class ScoreableEntity extends BaseEntity {
     private Integer date;
     private ScoreType scoreType;
     private Integer position;
+    private ScoreValueType scoreValueType;
 
     public Integer getPosition()
     {
@@ -28,7 +29,7 @@ public class ScoreableEntity extends BaseEntity {
         
     }
 	
-	public ScoreableEntity(Integer entityID, EntityType entityType, String identifier, Integer score, Integer date, ScoreType scoreType)
+	public ScoreableEntity(Integer entityID, EntityType entityType, String identifier, Integer score, Integer date, ScoreType scoreType, ScoreValueType scoreValueType)
     {
         super();
         this.entityID = entityID;
@@ -37,6 +38,7 @@ public class ScoreableEntity extends BaseEntity {
         this.score = score;
         this.date = date;
         this.scoreType = scoreType;
+        this.scoreValueType = scoreValueType;
     }
 	
     public Integer getEntityID() {
@@ -83,6 +85,16 @@ public class ScoreableEntity extends BaseEntity {
     public void setScoreType(ScoreType scoreType)
     {
         this.scoreType = scoreType;
+    }
+
+    public ScoreValueType getScoreValueType()
+    {
+        return scoreValueType;
+    }
+
+    public void setScoreValueType(ScoreValueType scoreValueType)
+    {
+        this.scoreValueType = scoreValueType;
     }
 
 }

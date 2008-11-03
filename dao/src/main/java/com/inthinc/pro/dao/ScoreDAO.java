@@ -24,8 +24,26 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      * @param groupID
      * @param startDate
      * @param endDate
+     * @param scoreType
      * @return
      */
     List<ScoreableEntity> getScores(Integer groupID, Integer startDate, Integer endDate, ScoreType scoreType);
 
+    
+    /**
+     * Retrieve the list of 5 percentage scores for the specified group.  The list contains the following:
+     *          0 - the percentage of drivers in the group whose overall score is between 0 - 1.0
+     *          1 - the percentage of drivers in the group whose overall score is between 1.1 - 2.0
+     *          2 - the percentage of drivers in the group whose overall score is between 2.1 - 3.0
+     *          3 - the percentage of drivers in the group whose overall score is between 3.1 - 4.0
+     *          4 - the percentage of drivers in the group whose overall score is between 4.1 - 5.0
+ 
+     * 
+     * @param groupID
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    List<ScoreableEntity> getScoreBreakdown(Integer groupID, Integer startDate, Integer endDate, ScoreType scoreType);
+    
 }

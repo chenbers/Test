@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.inthinc.pro.ProDAOException;
+import com.inthinc.pro.model.ScoreableEntity;
 
 public interface SiloService extends DAOService
 {
@@ -71,4 +72,22 @@ public interface SiloService extends DAOService
      */
     List<Map<String, Object>> getScores(Integer groupID, Integer startDate, Integer endDate, Integer scoreType) throws ProDAOException;
 
+    
+    /**
+     * getScoreBreakdown -- retrieves the scores for the specified group, scoreType and dateRange broken down into 5 percentages (0-100)
+     *  
+     *          0 - the percentage of drivers in the group whose overall score is between 0 - 1.0
+     *          1 - the percentage of drivers in the group whose overall score is between 1.1 - 2.0
+     *          2 - the percentage of drivers in the group whose overall score is between 2.1 - 3.0
+     *          3 - the percentage of drivers in the group whose overall score is between 3.1 - 4.0
+     *          4 - the percentage of drivers in the group whose overall score is between 4.1 - 5.0
+     * 
+     * @param groupID
+     * @param startDate
+     * @param endDate
+     * @return
+     * @throws ProDAOException
+     */
+    List<Map<String, Object>> getScoreBreakdown(Integer groupID, Integer startDate, Integer endDate, Integer scoreType) throws ProDAOException;
+    
 }

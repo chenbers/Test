@@ -63,8 +63,10 @@ public class BreakdownBean extends BaseDurationBean {
         try {          
             // TODO: This is not correct.  getUser().getGroupID() needs to be changed to the current group in the navigation
             logger.debug("getting scores for groupID: " + this.navigation.getGroupID());            
-            s = scoreDAO.getScores(this.navigation.getGroupID(),
-                    startDate, endDate, ScoreType.SCORE_OVERALL_PERCENTAGES);
+//            s = scoreDAO.getScores(this.navigation.getGroupID(),
+//                    startDate, endDate, ScoreType.SCORE_OVERALL_PERCENTAGES);
+            s = scoreDAO.getScoreBreakdown(this.navigation.getGroupID(),
+                    startDate, endDate, ScoreType.SCORE_OVERALL);
         } catch (Exception e) {
             logger.debug("graphicDao error: " + e.getMessage());
         }    
@@ -73,6 +75,7 @@ public class BreakdownBean extends BaseDurationBean {
         //Calculate total observations and set the pie data
         // this may change to be actual percentages
         ScoreableEntity se = null;
+/*        
         int total = 0;
         for ( int i = 0; i < s.size(); i++ ) {            
             se = (ScoreableEntity)s.get(i);
@@ -87,7 +90,13 @@ public class BreakdownBean extends BaseDurationBean {
             sb.append("<set value=\'" + percent.toString() + "\' " + "label=\'\' color=\'" +                
                     (BreakdownBean.entityColorKey.get(i)) + "\'/>");
         }
-
+*/
+        for ( int i = 0; i < s.size(); i++ ) {
+            se = (ScoreableEntity)s.get(i);
+            Integer percent = se.getScore();
+            sb.append("<set value=\'" + percent.toString() + "\' " + "label=\'\' color=\'" +                
+                    (BreakdownBean.entityColorKey.get(i)) + "\'/>");
+        }
 		sb.append("</chart>");
 		
 		return sb.toString();

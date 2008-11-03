@@ -9,6 +9,7 @@ import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.dao.service.CentralService;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.ScoreType;
+import com.inthinc.pro.model.ScoreValueType;
 import com.inthinc.pro.model.ScoreableEntity;
 
 
@@ -38,7 +39,13 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer,
         List<ScoreableEntity> scoreList = convertToModelObject(this.getSiloService().getScores(groupID,startDate,endDate, scoreType.getCode()));
         return scoreList;
     }		
-	
+
+    @Override
+    public List<ScoreableEntity> getScoreBreakdown(Integer groupID, Integer startDate, Integer endDate, ScoreType scoreType)
+    {
+        return convertToModelObject(getSiloService().getScoreBreakdown(groupID,startDate,endDate, scoreType.getCode()));
+    }
+    
     
     // TODO: Look at a better way to do these enum converters because it is pretty standard across the board
     @ConvertColumnToField(columnName = "entityType")
@@ -63,5 +70,17 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer,
           scoreableEntity.setScoreType(ScoreType.getScoreType((Integer)value));
       }
     }
+    @ConvertColumnToField(columnName = "scoreValueType")
+    public void setScoreValueType(ScoreableEntity scoreableEntity, Object value)
+    {
+      if (scoreableEntity == null || value == null)
+        return;
+
+      if (value instanceof Integer)
+      {
+          scoreableEntity.setScoreValueType(ScoreValueType.getScoreValueType((Integer)value));
+      }
+    }
+
 
 }

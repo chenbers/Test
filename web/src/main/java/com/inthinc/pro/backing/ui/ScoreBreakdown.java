@@ -12,54 +12,29 @@ import com.inthinc.pro.model.ScoreableEntity;
 public class ScoreBreakdown
 {
     private static final Logger logger = Logger.getLogger(ScoreBreakdown.class);
-    Map <ScoreCategory, Integer> countMap;
-    Integer numScores;
+    Map <ScoreCategory, Integer> valueMap;
     
     public ScoreBreakdown(List<ScoreableEntity> scoreList)
     {
-        countMap = new HashMap<ScoreCategory, Integer>();
+        valueMap = new HashMap<ScoreCategory, Integer>();
         
+        int idx = 0;
         for (ScoreCategory p : EnumSet.allOf(ScoreCategory.class))
         {
-            countMap.put(p, 0);
+            valueMap.put(p, scoreList.get(idx++).getScore());
         }
-        numScores = 0;
         
-        for (ScoreableEntity score : scoreList)
-        {
-            ScoreCategory scoreCategory = ScoreCategory.getCategoryForScore(score.getScore());
-            
-            if (scoreCategory == null)
-            {
-                logger.error("Invalid Score");
-            }
-            else
-            {
-                numScores++;
-                Integer scoreCnt = countMap.get(scoreCategory);
-                scoreCnt++;
-                countMap.put(scoreCategory, scoreCnt);
-            }
-        }
+        
     }
 
-    public Map<ScoreCategory, Integer> getCountMap()
+    public Map<ScoreCategory, Integer> getValueMap()
     {
-        return countMap;
+        return valueMap;
     }
 
-    public void setCountMap(Map<ScoreCategory, Integer> countMap)
+    public void setValueMap(Map<ScoreCategory, Integer> valueMap)
     {
-        this.countMap = countMap;
+        this.valueMap = valueMap;
     }
 
-    public Integer getNumScores()
-    {
-        return numScores;
-    }
-
-    public void setNumScores(Integer numScores)
-    {
-        this.numScores = numScores;
-    }
 }

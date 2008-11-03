@@ -26,6 +26,7 @@ import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.ScoreType;
+import com.inthinc.pro.model.ScoreValueType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.User;
 
@@ -47,10 +48,13 @@ public class MockData
     
     private Map<Class, List<Object>> dataMap = new HashMap<Class, List<Object>>();
 
-    
+    //  base all dates in the mock data after this, so that it is easier to unit test
+    public Integer dateNow;    
     private static MockData mockData;
     private MockData()
     {
+        dateNow = DateUtil.getTodaysDate();
+        logger.debug("MockData current time:" + dateNow);
         initializeStaticData();
     }
     
@@ -169,10 +173,7 @@ public class MockData
 
     private void addScores(Integer entityID, EntityType entityType, String entityName)
     {
-        // add other data that has userID as a foreign key
-        Integer dateNow = DateUtil.getTodaysDate();
 
-        // TODO: fix this
         // create in reverse order -- this is a kludge so date range matches correctly
 
         int[] monthsBack = {
@@ -183,7 +184,7 @@ public class MockData
         {
             for (ScoreType scoreType : EnumSet.allOf(ScoreType.class))
             {
-                if (        scoreType == ScoreType.SCORE_OVERALL_TIME ) {
+                if (scoreType == ScoreType.SCORE_OVERALL_TIME ) {
                     createOverallScoreOverTime(
                             entityID, 
                             entityType, 
@@ -191,14 +192,7 @@ public class MockData
                             scoreType, 
                             monthsBack[monthsBackCnt]);
                   
-                } else if ( scoreType == ScoreType.SCORE_OVERALL_PERCENTAGES ) {
-                    createOverallScorePercentages(
-                            entityID, 
-                            entityType, 
-                            entityName, 
-                            scoreType, 
-                            monthsBack[monthsBackCnt]);
-                } else {                    
+                } else {
                     storeObject(
                             new ScoreableEntity(
                                     entityID, 
@@ -206,8 +200,18 @@ public class MockData
                                     entityName, 
                                     randomInt(0,50), 
                                     DateUtil.getDaysBackDate(dateNow, 30 * monthsBack[monthsBackCnt]),
-                                    scoreType));
+                                    scoreType,
+                                    ScoreValueType.SCORE_SCALE_0_50));
                 }
+
+                // percentages
+                createScorePercentages(
+                        entityID, 
+                        entityType, 
+                        entityName, 
+                        scoreType, 
+                        monthsBack[monthsBackCnt]);
+
             }
         }
     }
@@ -221,26 +225,39 @@ public class MockData
                     entityType, 
                     entityName, 
                     randomInt(0,50), 
-                    DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), 
+                    DateUtil.getDaysBackDate(dateNow, 
                             (30 * monthsBack) - i * DateUtil.SECONDS_IN_DAY),
-                    scoreType));
+                    scoreType,
+                    ScoreValueType.SCORE_SCALE_0_50));
         }
     }
     
     
-    private void createOverallScorePercentages(Integer entityID, 
+    private void createScorePercentages(Integer entityID, 
             EntityType entityType, String entityName, ScoreType scoreType, int monthsBack) {
       //Create the five values per date range
+        int total = 0;
         for ( int i = 0; i < 5; i++ ) {
             try {
+                
+            int score = 0;
+            if (i == 4)
+            {
+                score = 100-total;
+            }
+            else
+            {
+                score = randomInt(0, 25);
+                total += score;
+            }
             storeObject(
                 new ScoreableEntity(entityID, 
                     entityType, 
-                    entityName, 
-                    randomInt(0,50), 
-                    DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), 
-                            (30 * monthsBack)),
-                    scoreType));
+                    (i+1) + "",     // name will be 1 to 5 for the 5 different score breakdowns 
+                    score, 
+                    DateUtil.getDaysBackDate(dateNow, (30 * monthsBack)),
+                    scoreType,
+                    ScoreValueType.SCORE_PERCENTAGE));
             } catch (Exception e) {}
         }
     }
