@@ -8,6 +8,7 @@ import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.service.CentralService;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.User;
 
 public class CentralServiceMockImpl implements CentralService
@@ -24,7 +25,12 @@ public class CentralServiceMockImpl implements CentralService
     @Override
     public Map<String, Object> getUserIDByEmail(String email) throws ProDAOException
     {
-        Map<String, Object> returnMap =  MockData.getInstance().lookup(User.class, "email", email);
+        Map<String, Object> returnMap = null;
+        Person person = MockData.getInstance().retrieveObject(Person.class, "email", email);
+        if ((person != null) && (person.getUser() != null))
+        {
+            returnMap = MockData.createMapFromObject(person.getUser());
+        }
 
         if (returnMap == null)
         {

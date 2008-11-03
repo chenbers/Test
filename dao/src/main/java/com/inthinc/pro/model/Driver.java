@@ -1,100 +1,98 @@
 package com.inthinc.pro.model;
 
+import java.util.Date;
+
 import com.inthinc.pro.dao.annotations.ID;
 
 public class Driver extends BaseEntity
 {
-
     @ID
     private Integer driverID;
-
-    private Integer companyID;
-    private Integer groupID;
-    private String firstName;
-    private String lastName;
-    private DOTType dot;
-
-    public Driver(Integer driverID, Integer companyID, Integer groupID, String firstName, String lastName)
-    {
-        super();
-        this.driverID = driverID;
-        this.companyID = companyID;
-        this.groupID = groupID;
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
+    private Integer personID;
+    private Boolean active;
+    private Integer RFID;
+    private String  license;
+    private State   state;
+    private String  licenseClass;
+    private Date    expiration;
 
     public Integer getDriverID()
     {
         return driverID;
     }
 
-
     public void setDriverID(Integer driverID)
     {
         this.driverID = driverID;
     }
 
-
-    public Integer getCompanyID()
+    public Integer getPersonID()
     {
-        return companyID;
+        return personID;
     }
 
-
-    public void setCompanyID(Integer companyID)
+    public void setPersonID(Integer personID)
     {
-        this.companyID = companyID;
+        this.personID = personID;
     }
 
-
-    public Integer getGroupID()
+    public Boolean getActive()
     {
-        return groupID;
+        return active;
     }
 
-
-    public void setGroupID(Integer groupID)
+    public void setActive(Boolean active)
     {
-        this.groupID = groupID;
+        this.active = active;
     }
 
-
-    public String getFirstName()
+    public Integer getRFID()
     {
-        return firstName;
+        return RFID;
     }
 
-
-    public void setFirstName(String firstName)
+    public void setRFID(Integer rfid)
     {
-        this.firstName = firstName;
+        this.RFID = rfid;
     }
 
-
-    public String getLastName()
+    public String getLicense()
     {
-        return lastName;
+        return license;
     }
 
-
-    public void setLastName(String lastName)
+    public void setLicense(String license)
     {
-        this.lastName = lastName;
+        this.license = license;
     }
 
-
-    public DOTType getDot()
+    public State getState()
     {
-        return dot;
+        return state;
     }
 
-
-    public void setDot(DOTType dot)
+    public void setState(State state)
     {
-        this.dot = dot;
+        this.state = state;
     }
 
+    public String getLicenseClass()
+    {
+        return licenseClass;
+    }
 
-        
+    public void setLicenseClass(String licenseClass)
+    {
+        this.licenseClass = licenseClass;
+    }
+
+    public Date getExpiration()
+    {
+        return expiration;
+    }
+
+    public void setExpiration(Date expiration)
+    {
+        this.expiration = expiration;
+    }
 }

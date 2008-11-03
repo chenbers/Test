@@ -24,6 +24,7 @@ import com.inthinc.pro.model.BaseEnum;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreValueType;
@@ -157,18 +158,36 @@ public class MockData
         
         User[] users = 
                 {
-                    new User(idOffset+1, accountID, groupID, "expired"+groupID, "expired"+groupID+"@email.com", PASSWORD, Role.ROLE_NORMAL_USER, Boolean.FALSE),
-                    new User(idOffset+2, accountID, groupID, "custom"+groupID, "custom"+groupID+"@email.com", PASSWORD, Role.ROLE_CUSTOM_USER, Boolean.TRUE),
-                    new User(idOffset+3, accountID, groupID, "normal"+groupID, "normal"+groupID+"@email.com", PASSWORD, Role.ROLE_NORMAL_USER, Boolean.TRUE),
-                    new User(idOffset+4, accountID, groupID, "readonly"+groupID, "readonly"+groupID+"@email.com", PASSWORD, Role.ROLE_READONLY, Boolean.TRUE),
-                    new User(idOffset+5, accountID, groupID, "superuser"+groupID, "superuser"+groupID+"@email.com", PASSWORD, Role.ROLE_SUPER_USER, Boolean.TRUE),
-                    new User(idOffset+6, accountID, groupID, "supervisor"+groupID, "supervisor"+groupID+"@email.com", PASSWORD, Role.ROLE_SUPERVISOR, Boolean.TRUE)
+                    createUser(idOffset+1, accountID, groupID, "expired"+groupID, "expired"+groupID+"@email.com", PASSWORD, Role.ROLE_NORMAL_USER, Boolean.FALSE),
+                    createUser(idOffset+2, accountID, groupID, "custom"+groupID, "custom"+groupID+"@email.com", PASSWORD, Role.ROLE_CUSTOM_USER, Boolean.TRUE),
+                    createUser(idOffset+3, accountID, groupID, "normal"+groupID, "normal"+groupID+"@email.com", PASSWORD, Role.ROLE_NORMAL_USER, Boolean.TRUE),
+                    createUser(idOffset+4, accountID, groupID, "readonly"+groupID, "readonly"+groupID+"@email.com", PASSWORD, Role.ROLE_READONLY, Boolean.TRUE),
+                    createUser(idOffset+5, accountID, groupID, "superuser"+groupID, "superuser"+groupID+"@email.com", PASSWORD, Role.ROLE_SUPER_USER, Boolean.TRUE),
+                    createUser(idOffset+6, accountID, groupID, "supervisor"+groupID, "supervisor"+groupID+"@email.com", PASSWORD, Role.ROLE_SUPERVISOR, Boolean.TRUE)
         };
 
         for (int userCnt = 0; userCnt < users.length; userCnt++)
         {
             storeObject(users[userCnt]);
+            storeObject(users[userCnt].getPerson());
         }
+    }
+
+    private User createUser(Integer id, Integer accountID, Integer groupID, String username, String email, String password, Role role, Boolean active)
+    {
+        User user = new User();
+        user.setUserID(id);
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setRole(role);
+        user.setActive(active);
+        user.setPerson(new Person());
+        user.getPerson().setPersonID(id);
+        user.getPerson().setAccountID(accountID);
+        user.getPerson().setGroupID(groupID);
+        user.getPerson().setEmail(email);
+        user.getPerson().setUser(user);
+        return user;
     }
 
     private void addScores(Integer entityID, EntityType entityType, String entityName)
@@ -269,13 +288,33 @@ public class MockData
         for (int i = 0; i < numDriversInGroup; i++)
         {
             int id = idOffset+i+1;
-            Driver driver = new Driver(id, accountID, groupID, "John", "Driver"+id);
+            Driver driver = createDriver(id, accountID, groupID, "John", "Driver"+id);
             storeObject(driver);
-            addScores(driver.getDriverID(), EntityType.ENTITY_DRIVER, driver.getFirstName() + driver.getLastName());
+            Person person = retrieveObject(Person.class, "personID", id);
+            addScores(driver.getDriverID(), EntityType.ENTITY_DRIVER, person.getFirst() + person.getLast());
         }
-        
     }
 
+    private Driver createDriver(Integer id, Integer accountID, Integer groupID, String first, String last)
+    {
+        Person person = retrieveObject(Person.class, "personID", id);
+        if (person == null)
+        {
+            person = new Person();
+            storeObject(person);
+        }
+        person.setPersonID(id);
+        person.setAccountID(accountID);
+        person.setGroupID(groupID);
+        person.setFirst(first);
+        person.setLast(last);
+        person.setEmail(first.toLowerCase() + '.' + last.toLowerCase() + "@email.com");
+        Driver driver = new Driver();
+        driver.setDriverID(id);
+        driver.setPersonID(person.getPersonID());
+        person.setDriver(driver);
+        return driver;
+    }
 
     private boolean groupIsParent(Group[] groups, Integer groupID)
     {

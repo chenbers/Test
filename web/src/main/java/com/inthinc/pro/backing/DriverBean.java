@@ -84,7 +84,7 @@ public class DriverBean extends BaseBean
         //TODO get overall score for DRIVER not group.
         Integer endDate = DateUtil.getTodaysDate();
         Integer startDate = DateUtil.getDaysBackDate(endDate, distance.getNumberOfMiles());
-        ScoreableEntity scoreableEntity = scoreDAO.getOverallScore(getUser().getGroupID(), startDate, endDate);
+        ScoreableEntity scoreableEntity = scoreDAO.getOverallScore(getUser().getPerson().getGroupID(), startDate, endDate);
         setOverallScore(scoreableEntity.getScore());
     }
     

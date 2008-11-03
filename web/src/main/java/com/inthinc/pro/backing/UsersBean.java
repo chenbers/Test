@@ -17,6 +17,7 @@ import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.User;
@@ -41,10 +42,8 @@ public class UsersBean extends BaseAdminBean<UsersBean.UserView>
         AVAILABLE_COLUMNS.add("active");
         AVAILABLE_COLUMNS.add("username");
         AVAILABLE_COLUMNS.add("role");
-        AVAILABLE_COLUMNS.add("primaryPhone");
-        AVAILABLE_COLUMNS.add("secondaryPhone");
-        AVAILABLE_COLUMNS.add("primarySms");
-        AVAILABLE_COLUMNS.add("secondarySms");
+        AVAILABLE_COLUMNS.add("workPhone");
+        AVAILABLE_COLUMNS.add("homePhone");
         AVAILABLE_COLUMNS.add("email");
         AVAILABLE_COLUMNS.add("timeZone");
         AVAILABLE_COLUMNS.add("group");
@@ -122,16 +121,16 @@ public class UsersBean extends BaseAdminBean<UsersBean.UserView>
         final Role[] roles = Role.values();
         user.setRole(roles[randomInt(roles.length)]);
         user.setActive(Math.random() < .75);
-        user.setFirst(createDummyName());
-        user.setLast(createDummyName());
-        user.setUsername((user.getFirst().charAt(0) + user.getLast()).toLowerCase());
-        user.setPrimaryPhone(createDummyPhone());
-        user.setSecondaryPhone(createDummyPhone());
-        user.setPrimarySms(createDummyPhone());
-        user.setSecondarySms(createDummyPhone());
-        user.setEmail(user.getFirst() + '.' + user.getLast() + "@nowhere.com");
+        user.setPerson(new Person());
+        user.getPerson().setUser(user);
+        user.getPerson().setFirst(createDummyName());
+        user.getPerson().setLast(createDummyName());
+        user.setUsername((user.getPerson().getFirst().charAt(0) + user.getPerson().getLast()).toLowerCase());
+        user.getPerson().setWorkPhone(createDummyPhone());
+        user.getPerson().setHomePhone(createDummyPhone());
+        user.getPerson().setEmail(user.getPerson().getFirst() + '.' + user.getPerson().getLast() + "@nowhere.com");
         final String[] timeZones = TimeZone.getAvailableIDs();
-        user.setTimeZone(timeZones[randomInt(timeZones.length)]);
+        user.getPerson().setTimeZone(TimeZone.getTimeZone(timeZones[randomInt(timeZones.length)]));
         return user;
     }
 
@@ -183,7 +182,7 @@ public class UsersBean extends BaseAdminBean<UsersBean.UserView>
         final UserView userView = new UserView();
         BeanUtils.copyProperties(user, userView);
 
-        userView.setGroup(groupDAO.findByID(user.getGroupID()));
+        userView.setGroup(groupDAO.findByID(user.getPerson().getGroupID()));
         userView.setSelected(false);
 
         return userView;
@@ -192,7 +191,8 @@ public class UsersBean extends BaseAdminBean<UsersBean.UserView>
     @Override
     protected boolean matchesFilter(UserView user, String filterWord)
     {
-        return user.getFirst().toLowerCase().startsWith(filterWord) || user.getLast().toLowerCase().startsWith(filterWord)
+        // TODO: match by visible columns instead
+        return user.getPerson().getFirst().toLowerCase().startsWith(filterWord) || user.getPerson().getLast().toLowerCase().startsWith(filterWord)
                 || String.valueOf(user.getUserID()).startsWith(filterWord);
     }
 

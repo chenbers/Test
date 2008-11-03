@@ -37,25 +37,9 @@ public class UserHessianDAO extends GenericHessianDAO<User, Integer, CentralServ
         {
             String[] phoneNumbers = ((String) value).split(";", 2);
             if (phoneNumbers.length > 0)
-                user.setPrimaryPhone(phoneNumbers[0]);
+                user.getPerson().setWorkPhone(phoneNumbers[0]);
             if (phoneNumbers.length > 1)
-                user.setSecondaryPhone(phoneNumbers[1]);
-        }
-    }
-
-    @ConvertColumnToField(columnName = "sms")
-    public void setSMSNumbers(User user, Object value)
-    {
-        if (user == null || value == null)
-            return;
-
-        if (value instanceof String)
-        {
-            String[] smsNumbers = ((String) value).split(";", 2);
-            if (smsNumbers.length > 0)
-                user.setPrimaryPhone(smsNumbers[0]);
-            if (smsNumbers.length > 1)
-                user.setSecondaryPhone(smsNumbers[1]);
+                user.getPerson().setHomePhone(phoneNumbers[1]);
         }
     }
 

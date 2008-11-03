@@ -47,7 +47,7 @@ public class ProAuthenticationProcessingFilter extends AuthenticationProcessingF
     {
         ProUser proUser = (ProUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         
-        Integer topGroupID = proUser.getUser().getGroupID();
+        Integer topGroupID = proUser.getUser().getPerson().getGroupID();
         
         List<Group> groupList = groupDAO.getGroupHierarchy(topGroupID);
         

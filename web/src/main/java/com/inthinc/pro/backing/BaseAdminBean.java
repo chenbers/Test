@@ -257,6 +257,11 @@ public abstract class BaseAdminBean<T extends Selectable> extends BaseBean
         editItem = null;
         getEditItem();
 
+        // take off if nothing was selected
+        if (isAdd())
+            return getFinishedRedirect();
+
+        // select no fields for update
         for (final String key : getUpdateField().keySet())
             updateField.put(key, false);
 

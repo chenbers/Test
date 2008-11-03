@@ -2,9 +2,9 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 
@@ -229,7 +229,7 @@ logger.debug("selected action is null");
         setGroupID(navigation.getGroupID());
         if (groupID == null)
         {
-            setGroupID(getUser().getGroupID());
+            setGroupID(getUser().getPerson().getGroupID());
         }
         return groupID;
     }

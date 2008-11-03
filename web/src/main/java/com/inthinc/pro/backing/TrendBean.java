@@ -51,7 +51,7 @@ public class TrendBean extends BaseDurationBean {
         
         //Is the group id initialized?
         if ( this.navigation.getGroupID() == null ) {
-            this.navigation.setGroupID(getUser().getGroupID());
+            this.navigation.setGroupID(getUser().getPerson().getGroupID());
         }       
 
         //Date range qualifiers
@@ -78,7 +78,7 @@ public class TrendBean extends BaseDurationBean {
         //Loop over returned set of group ids
         List<ScoreableEntity> ss = null;
         for ( int i = 0; i < s.size(); i++ ) {
-            ScoreableEntity se = (ScoreableEntity)s.get(i);
+            ScoreableEntity se = s.get(i);
             //Fetch to get children's observations
             ss = scoreDAO.getScores(
                     se.getEntityID(),startDate, endDate, ScoreType.SCORE_OVERALL_TIME);
@@ -101,7 +101,7 @@ public class TrendBean extends BaseDurationBean {
             
             ScoreableEntity sss = null;          
             for ( int j = 0; j < ss.size(); j++ ) {                
-                sss = (ScoreableEntity)ss.get(j);
+                sss = ss.get(j);
 
                 sb.append("<set value=\'");
                 Float score = new Float(sss.getScore()/10.0);
@@ -124,7 +124,7 @@ public class TrendBean extends BaseDurationBean {
 		
 		//Is the group id initialized?
 		if ( this.navigation.getGroupID() == null) {
-		    this.navigation.setGroupID(getUser().getGroupID());
+		    this.navigation.setGroupID(getUser().getPerson().getGroupID());
 		}
 		
 		//Fetch, qualifier is groupId, date from, date to

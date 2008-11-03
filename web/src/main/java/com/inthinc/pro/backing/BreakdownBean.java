@@ -9,7 +9,6 @@ import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
-import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.util.GraphicUtil;
@@ -51,7 +50,7 @@ public class BreakdownBean extends BaseDurationBean {
         
         //Is the group id initialized?
         if ( this.navigation.getGroupID() == null ) {
-            this.navigation.setGroupID(getUser().getGroupID());
+            this.navigation.setGroupID(getUser().getPerson().getGroupID());
         }       
 
         //Date range qualifiers
@@ -121,7 +120,7 @@ public class BreakdownBean extends BaseDurationBean {
         Integer groupID = navigation.getGroupID();
         if (groupID == null)
         {
-            groupID = getUser().getGroupID();
+            groupID = getUser().getPerson().getGroupID();
         }
         ScoreableEntity scoreableEntity = scoreDAO.getOverallScore(groupID, startDate, endDate);
         setOverallScore(scoreableEntity.getScore());
