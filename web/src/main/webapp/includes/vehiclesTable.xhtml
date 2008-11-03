@@ -17,7 +17,7 @@
   <ui:param name="messagesPrefix" value="vehiclesHeader_" />
 
   <ui:define name="columns">
-    <rich:column rendered="#{vehiclesBean.columns['name']}" sortBy="#{item.name}">
+    <rich:column rendered="#{vehiclesBean.columns['name']}" sortBy="#{item.name}" sortOrder="ASCENDING">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_name}" /></f:facet>
       <h:outputText value="#{item.name}" />
     </rich:column>

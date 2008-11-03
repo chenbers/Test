@@ -21,7 +21,7 @@
       <f:facet name="header"><h:outputText value="#{messages.usersHeader_userID}" /></f:facet>
       <h:outputText value="#{item.userID}" />
     </rich:column>
-    <rich:column rendered="#{usersBean.columns['fullName']}" sortBy="#{item.first}">
+    <rich:column rendered="#{usersBean.columns['fullName']}" sortBy="#{item.first}" sortOrder="ASCENDING">
       <f:facet name="header"><h:outputText value="#{messages.usersHeader_fullName}" /></f:facet>
 <!-- TODO: link for viewing the employee's report -->
       <h:outputText value="#{item.first}" /><h:outputText value=" " /><h:outputText value="#{item.last}" />
