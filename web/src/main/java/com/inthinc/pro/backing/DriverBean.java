@@ -13,12 +13,29 @@ import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.Distance;
 import com.inthinc.pro.model.SpeedingEvent;
+import com.inthinc.pro.model.LatLng;
 
 public class DriverBean extends BaseBean
 {
 	private static final Logger logger = Logger.getLogger(DriverBean.class);
 	
-	// Get scores from DAO instead
+	/* Overall Score
+	 * Overall Scores for X Miles
+	 *
+	 * Driver's Speed Score
+	 * Driver's Speed Scores for X Miles
+	 * 
+	 * Driving Style Score
+	 * Driving Style Scores for X Miles
+	 * 
+	 * Seat Belt Score
+	 * Seat Belt Scores for X Miles
+	 * 
+	 * Coaching Events for X Miles.
+	 * 
+	 * Last Trip or Last Location
+	 * 		
+	 */
 	
 	private String driverName = "Amy Johnson";
 	
@@ -40,8 +57,9 @@ public class DriverBean extends BaseBean
 	
 	private String coachingHistory;
 	
-	private ScoreDAO     graphicDAO;
-	private Distance       distance = Distance.FIVEHUNDRED;
+	private ScoreDAO 		scoreDAO;
+	private Distance 		distance = Distance.FIVEHUNDRED;
+	private LatLng 			lastLocation;
 	
 	private List<SpeedingEvent> speedingEvents = new ArrayList<SpeedingEvent>();
 
@@ -66,7 +84,7 @@ public class DriverBean extends BaseBean
         //TODO get overall score for DRIVER not group.
         Integer endDate = DateUtil.getTodaysDate();
         Integer startDate = DateUtil.getDaysBackDate(endDate, distance.getNumberOfMiles());
-        ScoreableEntity scoreableEntity = graphicDAO.getOverallScore(getUser().getGroupID(), startDate, endDate);
+        ScoreableEntity scoreableEntity = scoreDAO.getOverallScore(getUser().getGroupID(), startDate, endDate);
         setOverallScore(scoreableEntity.getScore());
     }
     
@@ -212,14 +230,14 @@ public class DriverBean extends BaseBean
     }
 
     //GRAPHIC DAO PROPERTIES
-    public ScoreDAO getGraphicDAO()
+    public ScoreDAO getScoreDAO()
     {
-        return graphicDAO;
+        return scoreDAO;
     }
 
-    public void setGraphicDAO(ScoreDAO graphicDAO)
+    public void setScoreDAO(ScoreDAO scoreDAO)
     {
-        this.graphicDAO = graphicDAO;
+        this.scoreDAO = scoreDAO;
     }
     
     //SPEEDING EVENTS LIST
@@ -250,5 +268,14 @@ public class DriverBean extends BaseBean
 
 	public void setSpeedingEvents(List<SpeedingEvent> speedingEvents) {
 		this.speedingEvents = speedingEvents;
+	}
+	
+	//LAST LOCATION PROPERTIES
+	public LatLng getLastLocation() {
+		return lastLocation;
+	}
+
+	public void setLastLocation(LatLng lastLocation) {
+		this.lastLocation = lastLocation;
 	}
 }
