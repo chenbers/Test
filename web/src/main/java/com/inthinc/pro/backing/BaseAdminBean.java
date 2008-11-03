@@ -383,7 +383,7 @@ public abstract class BaseAdminBean<T extends Selectable> extends BaseBean
                 BeanUtil.deepCopy(selection, editItem);
 
                 // null out properties that are not common
-                for (T item : items)
+                for (T item : getSelectedItems())
                     BeanUtil.compareAndInit(editItem, item);
             }
         }
