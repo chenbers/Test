@@ -67,6 +67,7 @@
    <bean id="teamBottomDriversTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request" >
    </bean>
    <bean id="teamTopBean" class="com.inthinc.pro.backing.TeamTopBean" scope="request" parent="baseBean">
+ 		<property name="scoreDAO" ref="scoreDAO"></property>
  		<property name="navigation" ref="navigationBean"></property>
    </bean>
 </beans>

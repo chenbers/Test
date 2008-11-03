@@ -72,6 +72,22 @@ public interface SiloService extends DAOService
      */
     List<Map<String, Object>> getScores(Integer groupID, Integer startDate, Integer endDate, Integer scoreType) throws ProDAOException;
 
+    /**
+     * getTopFiveScores -- retrieves the top five overall scores for the drivers of the specified group over the last thirty days.
+     * 
+     * @param groupID
+     * @return
+     * @throws ProDAOException
+     */
+    List<Map<String, Object>> getTopFiveScores(Integer groupID);
+    /**
+     * getBottomFiveScores -- retrieves the bottom five overall scores for the drivers of the specified group over the last thirty days. 
+     * 
+     * @param groupID
+     * @return
+     * @throws ProDAOException
+     */
+    List<Map<String, Object>> getBottomFiveScores(Integer groupID);
     
     /**
      * getScoreBreakdown -- retrieves the scores for the specified group, scoreType and dateRange broken down into 5 percentages (0-100)

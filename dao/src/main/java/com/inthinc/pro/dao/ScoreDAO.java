@@ -29,6 +29,20 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      */
     List<ScoreableEntity> getScores(Integer groupID, Integer startDate, Integer endDate, ScoreType scoreType);
 
+    /**
+     * Retrieve the list of overall scores for top five drivers for the last 30 days
+     * 
+     * @param groupID
+     * @return
+     */
+    List<ScoreableEntity> getTopFiveScores(Integer groupID);
+    /**
+     * Retrieve the list of overall scores for bottom five drivers for the last 30 days
+     * 
+     * @param groupID
+     * @return
+     */
+    List<ScoreableEntity> getBottomFiveScores(Integer groupID);
     
     /**
      * Retrieve the list of 5 percentage scores for the specified group.  The list contains the following:

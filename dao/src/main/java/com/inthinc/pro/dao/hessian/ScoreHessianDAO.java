@@ -15,7 +15,23 @@ import com.inthinc.pro.model.ScoreableEntity;
 
 //public class GraphicHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer, CentralService> implements GraphicDAO{
 public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer, CentralService> implements ScoreDAO{
-  private static final Logger logger = Logger.getLogger(ScoreHessianDAO.class);
+
+    @Override
+    public List<ScoreableEntity> getTopFiveScores(Integer groupID)
+    {
+        List<ScoreableEntity> scoreList = convertToModelObject(this.getSiloService().getTopFiveScores(groupID));
+        return scoreList;
+       // TODO Auto-generated method stub
+    }
+    
+    @Override
+    public List<ScoreableEntity> getBottomFiveScores(Integer groupID)
+    {
+        List<ScoreableEntity> scoreList = convertToModelObject(this.getSiloService().getBottomFiveScores(groupID));
+        return scoreList;
+     }
+
+private static final Logger logger = Logger.getLogger(ScoreHessianDAO.class);
 	 	
 //  @Override
 //  public List<ScoreableEntity>  getScores(Integer userID, Integer levelID, Integer startDate, Integer endDate) {

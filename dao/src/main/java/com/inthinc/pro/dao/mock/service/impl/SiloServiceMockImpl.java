@@ -11,6 +11,7 @@ import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.mock.data.SearchCriteria;
 import com.inthinc.pro.dao.service.SiloService;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.ScoreType;
@@ -20,6 +21,8 @@ import com.inthinc.pro.model.User;
 
 public class SiloServiceMockImpl implements SiloService
 {
+
+
     private static final Logger logger = Logger.getLogger(SiloServiceMockImpl.class);
 
     // helper method
@@ -164,6 +167,105 @@ public class SiloServiceMockImpl implements SiloService
         searchCriteria.addKeyValueRange("date", startDate, endDate);
         searchCriteria.addKeyValue("scoreValueType", ScoreValueType.SCORE_PERCENTAGE);
         return MockData.getInstance().lookupList(ScoreableEntity.class, searchCriteria);
+    }
+
+    @Override
+    public List<Map<String, Object>> getBottomFiveScores(Integer groupID)
+    {
+        logger.debug("mock IMPL getBottomFiveScores groupID = " + groupID);
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("parentID", groupID);
+
+        // get list of drivers that have the specified groupID as the parent
+        List<Map<String, Object>> entityList;
+        
+        List<Map<String, Object>> returnList =  new ArrayList<Map<String, Object>>();
+
+        searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("groupID", groupID);
+
+        // get list of drivers that are in the specified group
+        entityList =  MockData.getInstance().lookupList(Driver.class, searchCriteria);
+        if (entityList == null)
+        {
+            return returnList;
+        }
+        Integer endDate = DateUtil.getTodaysDate();
+        Integer startDate = DateUtil.getDaysBackDate(endDate, 30);
+        
+        for (Map<String, Object> driverMap : entityList)
+        {
+            searchCriteria = new SearchCriteria();
+            searchCriteria.addKeyValue("entityID", driverMap.get("driverID"));
+            searchCriteria.addKeyValue("scoreType", ScoreType.SCORE_OVERALL);
+            searchCriteria.addKeyValueRange("date", startDate, endDate);
+            
+
+            searchCriteria.addKeyValueRange("date", startDate, endDate);
+            
+            Map<String, Object> scoreMap = MockData.getInstance().lookup(ScoreableEntity.class, searchCriteria);
+            
+            if (scoreMap != null)
+            {
+                returnList.add(scoreMap);
+            }
+            else
+            {
+                logger.error("score missing for driverID " + driverMap.get("driverID"));
+            }
+        }
+        //TODO sort in score order and return bottom 5 and refactor to eliminate duplicate code.   
+        return returnList;
+    }
+
+
+    @Override
+    public List<Map<String, Object>> getTopFiveScores(Integer groupID)
+    {
+        logger.debug("mock IMPL getBottomFiveScores groupID = " + groupID);
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("parentID", groupID);
+
+        // get list of drivers that have the specified groupID as the parent
+        List<Map<String, Object>> entityList;
+        
+        List<Map<String, Object>> returnList =  new ArrayList<Map<String, Object>>();
+
+        searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("groupID", groupID);
+
+        // get list of drivers that are in the specified group
+        entityList =  MockData.getInstance().lookupList(Driver.class, searchCriteria);
+        if (entityList == null)
+        {
+            return returnList;
+        }
+        Integer endDate = DateUtil.getTodaysDate();
+        Integer startDate = DateUtil.getDaysBackDate(endDate, 30);
+        
+        for (Map<String, Object> driverMap : entityList)
+        {
+            searchCriteria = new SearchCriteria();
+            searchCriteria.addKeyValue("entityID", driverMap.get("driverID"));
+            searchCriteria.addKeyValue("scoreType", ScoreType.SCORE_OVERALL);
+            searchCriteria.addKeyValueRange("date", startDate, endDate);
+           
+
+            searchCriteria.addKeyValueRange("date", startDate, endDate);
+            
+            Map<String, Object> scoreMap = MockData.getInstance().lookup(ScoreableEntity.class, searchCriteria);
+            
+            if (scoreMap != null)
+            {
+                returnList.add(scoreMap);
+            }
+            else
+            {
+                logger.error("score missing for driverID " + driverMap.get("driverID"));
+            }
+        }
+        //TODO sort list in score order and return top 5  and refactor to eliminate duplicate code.   
+        return returnList;
     }
 
     @Override
