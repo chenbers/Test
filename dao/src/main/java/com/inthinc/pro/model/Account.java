@@ -1,96 +1,64 @@
 package com.inthinc.pro.model;
 
-public class Account extends BaseEntity {
+import com.inthinc.pro.dao.annotations.ID;
 
-  private Integer accountID;
-  private Integer timeZone;
-  private String externalID;
-  private Integer provider;
-  private Integer pin;
-  private Address mailingAddress;
-  private Address billingAddress;
-  private Integer enabled;
-  private Integer expired;
-  private Integer spam;
+public class Account extends BaseEntity
+{
 
-  public Integer getAccountID() {
-    return accountID;
-  }
+    @ID
+    private Integer       acctID;
 
-  public void setAccountID(Integer accountID) {
-    this.accountID = accountID;
-  }
+    private Integer       mailID;
+    private Integer       billID;
+    private AccountStatus status;
 
-  public Integer getTimeZone() {
-    return timeZone;
-  }
+    public Account(Integer acctID, Integer mailID, Integer billID, AccountStatus status)
+    {
+        super();
+        this.acctID = acctID;
+        this.mailID = mailID;
+        this.billID = billID;
+        this.status = status;
+    }
 
-  public void setTimeZone(Integer timeZone) {
-    this.timeZone = timeZone;
-  }
+    public Integer getAcctID()
+    {
+        return acctID;
+    }
 
-  public String getExternalID() {
-    return externalID;
-  }
+    public void setAcctID(Integer acctID)
+    {
+        this.acctID = acctID;
+    }
 
-  public void setExternalID(String externalID) {
-    this.externalID = externalID;
-  }
+    public Integer getMailID()
+    {
+        return mailID;
+    }
 
-  public Integer getProvider() {
-    return provider;
-  }
+    public void setMailID(Integer mailID)
+    {
+        this.mailID = mailID;
+    }
 
-  public void setProvider(Integer provider) {
-    this.provider = provider;
-  }
+    public Integer getBillID()
+    {
+        return billID;
+    }
 
-  public Integer getPin() {
-    return pin;
-  }
+    public void setBillID(Integer billID)
+    {
+        this.billID = billID;
+    }
 
-  public void setPin(Integer pin) {
-    this.pin = pin;
-  }
+    public AccountStatus getStatus()
+    {
+        return status;
+    }
 
-  public Address getMailingAddress() {
-    return mailingAddress;
-  }
-
-  public void setMailingAddress(Address mailingAddress) {
-    this.mailingAddress = mailingAddress;
-  }
-
-  public Address getBillingAddress() {
-    return billingAddress;
-  }
-
-  public void setBillingAddress(Address billingAddress) {
-    this.billingAddress = billingAddress;
-  }
-
-  public Integer getEnabled() {
-    return enabled;
-  }
-
-  public void setEnabled(Integer enabled) {
-    this.enabled = enabled;
-  }
-
-  public Integer getExpired() {
-    return expired;
-  }
-
-  public void setExpired(Integer expired) {
-    this.expired = expired;
-  }
-
-  public Integer getSpam() {
-    return spam;
-  }
-
-  public void setSpam(Integer spam) {
-    this.spam = spam;
-  }
+    public void setStatus(AccountStatus status)
+    {
+        this.status = status;
+    }
 
 }

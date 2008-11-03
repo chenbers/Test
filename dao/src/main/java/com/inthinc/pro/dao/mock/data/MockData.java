@@ -18,8 +18,9 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.AccountStatus;
 import com.inthinc.pro.model.BaseEnum;
-import com.inthinc.pro.model.Company;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
@@ -32,9 +33,8 @@ public class MockData
 {
     private static final Logger logger = Logger.getLogger(MockData.class);
     
-    public static Integer TOP_GROUP_ID = 101; 
-    
-    static int NUM_COMPANIES = 1;
+    public static final Integer TOP_GROUP_ID = 101; 
+    static int NUM_ACCOUNTS = 1;
     static int MAX_GROUPS = 100;
     static int MAX_DRIVERS_IN_GROUP = 10;
     static int MAX_USERS_IN_GROUP = 10;
@@ -66,13 +66,13 @@ public class MockData
 
     private void initializeStaticData()
     {
-        for (int i = 0; i < NUM_COMPANIES; i++)
+        for (int i = 0; i < NUM_ACCOUNTS; i++)
         {
-            Integer companyID = i+1;
-            System.out.println("COMPANY: " + companyID);
+            Integer accountID = i+1;
+            System.out.println("ACCOUNT: " + accountID);
             
-            // company
-            addCompanyData(companyID);
+            // account
+            addAccountData(accountID);
 // Un-comment this block if you want to see the data that is generated.            
 //          dumpData(companyID);
 //
@@ -86,16 +86,16 @@ public class MockData
     
     //------------ DATA GENERATION METHODS ----------------
     
-    private void addCompanyData(Integer companyID)
+    private void addAccountData(Integer accountID)
     {
-        Company company = new Company(companyID, "Company " + companyID);
-        storeObject(company);
-        addGroupData(companyID);
+        Account account = new Account(accountID, 0, 0, AccountStatus.ACCOUNT_ACTIVE);
+        storeObject(account);
+        addGroupData(accountID);
     }
     
-    private void addGroupData(Integer companyID)
+    private void addGroupData(Integer accountID)
     {
-        Integer idOffset = companyID * MAX_GROUPS;
+        Integer idOffset = accountID * MAX_GROUPS;
         // groups in company
         // structure:
         //                                                  United States 
@@ -105,25 +105,25 @@ public class MockData
         // D1   D1  D1 D2                               D1 D2   D1 D2               
         Group[] groups =
         {
-                new Group(idOffset+1, companyID, "United States", 0),       // top level group (executive)
+                new Group(idOffset+1, accountID, "United States", 0),       // top level group (executive)
                 
-                new Group(idOffset+2, companyID, "Western", idOffset+1),    // region level
-                new Group(idOffset+3, companyID, "Eastern", idOffset+1),
-                new Group(idOffset+4, companyID, "Miscellaneous", idOffset+1),     
+                new Group(idOffset+2, accountID, "Western", idOffset+1),    // region level
+                new Group(idOffset+3, accountID, "Eastern", idOffset+1),
+                new Group(idOffset+4, accountID, "Miscellaneous", idOffset+1),     
                 
-                new Group(idOffset+5, companyID, "Montana", idOffset+2),    // parent Western
-                new Group(idOffset+6, companyID, "Utah", idOffset+2),
-                new Group(idOffset+7, companyID, "Colorado", idOffset+2),
+                new Group(idOffset+5, accountID, "Montana", idOffset+2),    // parent Western
+                new Group(idOffset+6, accountID, "Utah", idOffset+2),
+                new Group(idOffset+7, accountID, "Colorado", idOffset+2),
                 
-                new Group(idOffset+8, companyID, "New York", idOffset+3),   // parent Eastern
-                new Group(idOffset+9, companyID, "Maine", idOffset+3),
+                new Group(idOffset+8, accountID, "New York", idOffset+3),   // parent Eastern
+                new Group(idOffset+9, accountID, "Maine", idOffset+3),
                 
-                new Group(idOffset+10, companyID, "MT Team 1", idOffset+5), // parent Western/Montana
-                new Group(idOffset+11, companyID, "MT Team 2", idOffset+5),
-                new Group(idOffset+12, companyID, "MT Team 3", idOffset+5),
+                new Group(idOffset+10, accountID, "MT Team 1", idOffset+5), // parent Western/Montana
+                new Group(idOffset+11, accountID, "MT Team 2", idOffset+5),
+                new Group(idOffset+12, accountID, "MT Team 3", idOffset+5),
 
-                new Group(idOffset+13, companyID, "NY Team 1", idOffset+8), // parent Eastern/New York
-                new Group(idOffset+14, companyID, "NY Team 2", idOffset+8),
+                new Group(idOffset+13, accountID, "NY Team 1", idOffset+8), // parent Eastern/New York
+                new Group(idOffset+14, accountID, "NY Team 2", idOffset+8),
 
         };
         
@@ -132,13 +132,13 @@ public class MockData
             storeObject(groups[cnt]);
             
             // users are people who can log in with various roles
-            addUsersToGroup(companyID, groups[cnt].getGroupID());
+            addUsersToGroup(accountID, groups[cnt].getGroupID());
             
             addScores(groups[cnt].getGroupID(), EntityType.ENTITY_GROUP, groups[cnt].getName());
             
             if (!groupIsParent(groups, groups[cnt].getGroupID()))
             {
-                addDriversToGroup(companyID, groups[cnt].getGroupID(), randomInt(1, MAX_DRIVERS_IN_GROUP));
+                addDriversToGroup(accountID, groups[cnt].getGroupID(), randomInt(1, MAX_DRIVERS_IN_GROUP));
             }
         }
         
@@ -147,18 +147,18 @@ public class MockData
     
 
 
-    private void addUsersToGroup(Integer companyID, Integer groupID)
+    private void addUsersToGroup(Integer accountID, Integer groupID)
     {
-        Integer idOffset = companyID * MAX_GROUPS + groupID * MAX_USERS_IN_GROUP;
+        Integer idOffset = accountID * MAX_GROUPS + groupID * MAX_USERS_IN_GROUP;
         
         User[] users = 
                 {
-                    new User(idOffset+1, companyID, groupID, "expired"+groupID, "expired"+groupID+"@email.com", PASSWORD, Role.ROLE_NORMAL_USER, Boolean.FALSE),
-                    new User(idOffset+2, companyID, groupID, "custom"+groupID, "custom"+groupID+"@email.com", PASSWORD, Role.ROLE_CUSTOM_USER, Boolean.TRUE),
-                    new User(idOffset+3, companyID, groupID, "normal"+groupID, "normal"+groupID+"@email.com", PASSWORD, Role.ROLE_NORMAL_USER, Boolean.TRUE),
-                    new User(idOffset+4, companyID, groupID, "readonly"+groupID, "readonly"+groupID+"@email.com", PASSWORD, Role.ROLE_READONLY, Boolean.TRUE),
-                    new User(idOffset+5, companyID, groupID, "superuser"+groupID, "superuser"+groupID+"@email.com", PASSWORD, Role.ROLE_SUPER_USER, Boolean.TRUE),
-                    new User(idOffset+6, companyID, groupID, "supervisor"+groupID, "supervisor"+groupID+"@email.com", PASSWORD, Role.ROLE_SUPERVISOR, Boolean.TRUE)
+                    new User(idOffset+1, accountID, groupID, "expired"+groupID, "expired"+groupID+"@email.com", PASSWORD, Role.ROLE_NORMAL_USER, Boolean.FALSE),
+                    new User(idOffset+2, accountID, groupID, "custom"+groupID, "custom"+groupID+"@email.com", PASSWORD, Role.ROLE_CUSTOM_USER, Boolean.TRUE),
+                    new User(idOffset+3, accountID, groupID, "normal"+groupID, "normal"+groupID+"@email.com", PASSWORD, Role.ROLE_NORMAL_USER, Boolean.TRUE),
+                    new User(idOffset+4, accountID, groupID, "readonly"+groupID, "readonly"+groupID+"@email.com", PASSWORD, Role.ROLE_READONLY, Boolean.TRUE),
+                    new User(idOffset+5, accountID, groupID, "superuser"+groupID, "superuser"+groupID+"@email.com", PASSWORD, Role.ROLE_SUPER_USER, Boolean.TRUE),
+                    new User(idOffset+6, accountID, groupID, "supervisor"+groupID, "supervisor"+groupID+"@email.com", PASSWORD, Role.ROLE_SUPERVISOR, Boolean.TRUE)
         };
 
         for (int userCnt = 0; userCnt < users.length; userCnt++)
@@ -245,14 +245,14 @@ public class MockData
         }
     }
 
-    private void addDriversToGroup(Integer companyID, Integer groupID, int numDriversInGroup)
+    private void addDriversToGroup(Integer accountID, Integer groupID, int numDriversInGroup)
     {
-        Integer idOffset = companyID * MAX_GROUPS + groupID * MAX_DRIVERS_IN_GROUP;
+        Integer idOffset = accountID * MAX_GROUPS + groupID * MAX_DRIVERS_IN_GROUP;
         
         for (int i = 0; i < numDriversInGroup; i++)
         {
             int id = idOffset+i+1;
-            Driver driver = new Driver(id, companyID, groupID, "John", "Driver"+id);
+            Driver driver = new Driver(id, accountID, groupID, "John", "Driver"+id);
             storeObject(driver);
             addScores(driver.getDriverID(), EntityType.ENTITY_DRIVER, driver.getFirstName() + driver.getLastName());
         }
@@ -661,10 +661,10 @@ public class MockData
     }
 
 
-    private void dumpData(Integer companyID)
+    private void dumpData(Integer accountID)
     {
-        Company company = retrieveObject(Company.class, "companyID", companyID);
-        dumpObject(company,"");
+        Account account = retrieveObject(Account.class, "accountID", accountID);
+        dumpObject(account,"");
         
         // get all groups
         List<Group> groups = lookupObjectList(Group.class, new Group());
