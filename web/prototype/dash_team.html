@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>tiwi pro</title>
+<title>dashboard team</title>
 
 <script type="text/javascript" src="/js/tablesort.js"></script>
 <script type="text/javascript" src="/js/paginate.js"></script>
@@ -13,47 +13,26 @@
 
 <link rel="stylesheet" type="text/css" href="css/main.css" />
 
+<!--[if IE 6]>
+<link rel="stylesheet" type="text/css" href="css/ie6.css" />
+<![endif]--> 
 
-<!--[if IE]>
-<style type="text/css">
-/* style exceptions for all IE browsers */
-button {
-	width:auto;
-	overflow: visible;
-	}
-	
-button span {
-	margin-top: 2px;
-	}
-    
-ul#grid_nav li {
-	list-style: none;
-	padding: 2px 4px 2px 4px;
-	margin: 0;
-	}
-	
-ul#grid_nav li.divider {
-	list-style: none;
-	padding: 6px 0 0 0;
-	margin: 0;
-	}
-    
-</style>
-<![endif]-->
-<!-- /BUTTON TUTORIAL STYLES -->
+<!--[if IE 7]>
+<link rel="stylesheet" type="text/css" href="css/ie7.css" />
+<![endif]--> 
 
 </head>
 
 <body>
 
 <div id="header">
-	<div id="logo"><a href="/dash_exec.html"><img src="/images/logo_main.png" border="0" /></a></div>
+	<div id="logo"><a href="/dash_exec.html"><img src="/images/x.gif" width="80" height="80" border="0" /></a></div>
 
 	<div id="horz_nav">
 		<ul>
-			<li id="tb-help"><a href="help.html">Help</a></li>
 			<li id="tb-account"><a href="myaccount.html">My Account</a></li>
-			<li id="tb-logout"><a href="/">Logout</a></li>
+<li id="tb-logout"><a href="/">Log Out</a></li>
+<li id="tb-help"><a href="help.html">Help</a></li>
 		</ul>
 	</div>
 
@@ -80,12 +59,12 @@ ul#grid_nav li.divider {
 					</td>
 					<td class="middle">
 					  <select name="select" class="text" style="width: 95px;">
-					    <option>drivers</option>
+					    <option>Select One</option><option>drivers</option>
 					    <option>vehicles</option>
 					    <option>devices</option>
 				      </select>
 					</td>
-					<td class="middle" width="25" align="center"><img src="images/ico_search.png" width="15" height="15" style="margin: 5px;" /></td>
+					<td class="middle" width="25" align="center"><img src="images/ico_search.gif" width="15" height="15" style="margin: 5px;" /></td>
 					<td class="right"><img src="images/search_box_right.png" /></td>
 				  </tr>
 			  </table>
@@ -105,8 +84,8 @@ ul#grid_nav li.divider {
 	<li class="l">
 	
 		<ul id="breadcrumb">
-			<li class="first"><a href="dash_exec.html">Executive</a></li>
-			<li><a href="dash_fleet.html">Fleet</a></li>
+			<li class="first"><a href="dash_exec.html">Fleet</a></li>
+			<li><a href="dash_fleet.html">Region</a></li>
 			<li class="last">Team</li>
 		</ul>
 	
@@ -157,19 +136,9 @@ ul#grid_nav li.divider {
                                 <table width="320" border="0" cellspacing="0" cellpadding="4">
                                   <tr>
                                     <td align="right">
-										<table width="220" border="0" cellspacing="0" cellpadding="0" class="scorebox">
-										  <tr>
-											<td>
-												<h4>Overall Score</h4>
-												<span>(last 30 days)</span>
-											</td>
-											<td width="80" align="center">
-												<div class="score_med_45" onclick="location.href='#';">
-													<div class="score">4.0</div>
-												</div>
-											</td>
-										  </tr>
-										</table>
+										<div class="score_lg_45" onclick="location.href='#';" style="margin-top: 10px;">
+											<div class="score">5.0&nbsp;&nbsp;</div>
+										</div>
 									</td>
                                   </tr>
                                   <tr>
@@ -183,7 +152,7 @@ ul#grid_nav li.divider {
 									</td>
                                   </tr>
                                   <tr>
-                                    <td align="center"><img src="images/legend_1to5_horizontal.png" width="138" height="54" /></td>
+                                    <td align="center"><img src="images/legend2_horz.png" width="290" height="62" /></td>
                                   </tr>
                                 </table>
                               </td>
@@ -211,7 +180,7 @@ ul#grid_nav li.divider {
                                   </tr>
                                   <tr>
                                     <td valign="top" class="piegrid_4">
-										<div class="piegrid_label"><a href="#" class="ls_tab_seatbelt">Seatbelt</a></div>
+										<div class="piegrid_label"><a href="#" class="ls_tab_seatbelt">Seat Belt</a></div>
 										<div id="piegrid_seatbelt"></div>
 										<script type="text/javascript">
 										   var chart = new FusionCharts("/swf/Pie2D.swf", "ChartId", "220", "180", "0", "0");
@@ -219,14 +188,8 @@ ul#grid_nav li.divider {
 										   chart.render("piegrid_seatbelt");
 										</script>
 									</td>
-                                    <td valign="top" class="piegrid_3">
-										<div class="piegrid_label"><a href="#" class="ls_tab_coaching">Coaching Events</a></div>
-										<div id="piegrid_coaching"></div>
-										<script type="text/javascript">
-										   var chart = new FusionCharts("/swf/Pie2D.swf", "ChartId", "220", "180", "0", "0");
-										   chart.setDataURL("/xml/3d_pie_1.xml");		   
-										   chart.render("piegrid_coaching");
-										</script>
+                                    <td valign="top" class="piegrid_3">&nbsp;
+										
 									</td>
                                   </tr>
                                 </table>
@@ -257,6 +220,7 @@ ul#grid_nav li.divider {
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="map">Fleet Map</span>
+						<span class="panel_links"><a href="#">refresh</a></span>
 					</div>
 				</div>
 					<div class="panel_w">
@@ -598,11 +562,11 @@ ul#grid_nav li.divider {
 		<div class="spacer"></div>
 		
 		<!-- START PANEL -->
-			<div class="">
+			<div>
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="gas">Estimated Fuel Efficiency</span>
-						<span class="panel_links"><a href="#">3 months</a> <a href="#">6 months</a> <a href="#" class="on">12 months</a></span>
+						<span class="gas">Miles Per Gallon </span>
+						<span class="panel_links"><a href="#" class="on">30 days</a> <a href="#">3 months</a> <a href="#">6 months</a> <a href="#">12 months</a></span>
 					</div>
 				</div>
 					<div class="panel_w">
@@ -610,7 +574,7 @@ ul#grid_nav li.divider {
 					  
 						<div id="fuel_chart" align="center"></div>
 						<script type="text/javascript">
-						var chart = new FusionCharts("/swf/Column3D.swf", "ChartId", "440", "350", "0", "0");
+						var chart = new FusionCharts("/swf/ScrollColumn2D.swf", "ChartId", "440", "350", "0", "0");
 						chart.setDataURL("/xml/3d_bar_team.xml");		   
 						chart.render("fuel_chart");
 						</script>

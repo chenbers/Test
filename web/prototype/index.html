@@ -2,45 +2,28 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>tiwi pro</title>
+<title>login</title>
 
-<script src="/js/domtableenhance.js" type="text/javascript"></script>
+
 
 <link rel="stylesheet" type="text/css" href="css/main.css" />
 
-<!--[if IE]>
-<style type="text/css">
-/* style exceptions for all IE browsers */
-button {
-	width:auto;
-	overflow: visible;
-	}
-	
-button span {
-	margin-top: 2px;
-	}
-    
-ul#grid_nav li {
-	list-style: none;
-	padding: 2px 4px 2px 4px;
-	margin: 0;
-	}
-	
-ul#grid_nav li.divider {
-	list-style: none;
-	padding: 6px 0 0 0;
-	margin: 0;
-	}
-    
-</style>
-<![endif]-->
-<!-- /BUTTON TUTORIAL STYLES -->
+<!--[if IE 6]>
+<link rel="stylesheet" type="text/css" href="css/ie6.css" />
+<![endif]--> 
+
+<!--[if IE 7]>
+<link rel="stylesheet" type="text/css" href="css/ie7.css" />
+<![endif]--> 
+
+
 </head>
 
 <body>
 
 <div id="header">
-	<div id="logo"><a href="/dash_exec.html"><img src="/images/logo_main.png" border="0" /></a></div></div>
+	<div id="logo"><img src="/images/x.gif" width="80" height="80" border="0" /></div>
+</div>
 
 <div id="nav" style="display: none"><!-- just keeping this here for scrap -->
 	<div id="topnav" style="display: none"><!-- just keeping this here for scrap -->
@@ -91,26 +74,23 @@ ul#grid_nav li.divider {
 		
 		<table width="100%" border="0" cellspacing="0" cellpadding="4">
 		  <tr>
-			<td><label for="username">Username:</label></td>
-			<td><input name="username" type="text" class="txt" value="amy.johnson" /></td>
+			<td><label for="username">User Name:</label></td>
+			<td><input name="username" type="text" class="txt" value="amy.johnson" size="30" />
+			</td>
 		  </tr>
 		  <tr>
 			<td><label for="password">Password:</label></td>
-			<td><input name="password" type="password" class="txt" value="123456789" /></td>
+			<td><input name="password" type="password" class="txt" value="123456789" size="30" />
+			</td>
 		  </tr>
 		  <tr>
-			<td colspan="2" align="center"><button value="" class="left" onclick="parent.location.href='dash_exec.html'; return false;"><span class="login">Login</span></button></td>
+			<td colspan="2" align="center"><button value="" class="left" onclick="parent.location.href='dash_exec.html'; return false;"><span class="login">Log In</span></button></td>
+			</tr>
+			<tr>
+			<td colspan="2" align="left"><a href="#">Forgot your user name or password?</a></td>
 			</tr>
 		</table>
 
-		
-		<!--
-			<div><label for="username">Username:</label><input type="text" name="username" value="" /></div>
-			<div><label for="password">Password:</label><input type="password" name="password" value="" /></div>
-			<button value="submit" class="left"><span class="login">Login</span></button>
-			<br class="clearfix" />
-			<br />
-		-->
 		</form>
 		
 	  </div>

@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>popup - edit columns</title>
+<script type="text/javascript" src="/js/tablesort.js"></script>
+<script type="text/javascript" src="/js/paginate.js"></script>
+
+<script language="JavaScript" src="js/fusioncharts.js"></script>
+
+<script type="text/javascript" src="/js/submodalsource.js"></script>
+<link rel="stylesheet" type="text/css" href="css/main.css" />
+
+<!--[if IE 6]>
+<link rel="stylesheet" type="text/css" href="css/ie6.css" />
+<![endif]--> 
+
+<!--[if IE 7]>
+<link rel="stylesheet" type="text/css" href="css/ie7.css" />
+<![endif]--> 
+
+<style media="all" type="text/css">
+
+body {
+	margin: 0;
+	padding: 0;
+	background: #fff;
+	}
+
+</style>
+
+</head>
+
+<body>
+
+			<table width="900" border="0" cellspacing="0" cellpadding="0" align="center">
+			<tr>
+			<td>
+			
+			<!-- START PANEL -->
+			<div class="">
+				<div class="panel_nw">
+					<div class="panel_title">
+						<span class="line">Trend</span>
+						<span class="panel_links_ico"><a href="#" class="on">30 days</a> <a href="#">3 months</a> <a href="#">6 months</a> <a href="#">12 months</a></span>
+						<span class="panel_ico"><a href="#" class=""  onclick="parent.hidePopWin(false);"><img src="/images/ico_minimize.png" width="16" height="16" border="0" /></a></span>					</div>
+				</div>
+					<div class="panel_w">
+					  <div class="panel_content">
+					  
+						<div id="chartdiv3" align="center"></div>
+						<script type="text/javascript">
+						   var chart = new FusionCharts("/swf/MSLine.swf", "ChartId", "880", "600", "0", "0");
+						   chart.setDataURL("/xml/trend_line_2.xml");		   
+						   chart.render("chartdiv3");
+						</script>
+					
+					
+						<div class="spacer"></div>
+						
+						<div class="datagrid">
+								<table width="100%" cellpadding="0" cellspacing="0" class="sortable-onload-1 no-arrow rowstyle-alt colstyle-alt paginate-15 max-pages-4 paginationcallback-callbackTest-calculateTotalRating sortcompletecallback-callbackTest-calculateTotalRating" id="theTable">
+								  <thead>
+								  <tr>
+									<th height="27">&nbsp;</th>
+									<th width="718" class="sortable-text">Fleet</th>
+									<th width="88" class="sortable-numeric">Score</th>
+									</tr>
+								  </thead>
+								  <tbody>
+								  <tr>
+								    <td width="80" align="center"><img src="images/legend_ico_2_1.png" width="17" height="17" border="0" /></td>
+								    <td><a href="dash_team.html">Washington</a></td>
+								    <td>
+                                      <div class="score_sm_45" onclick="location.href='#';">
+                                        <div class="score">5.0</div>
+                                      </div>
+							        </td>
+								  </tr>
+								  <tr>
+								    <td width="80" align="center"><img src="images/legend_ico_2_2.png" width="17" height="17" border="0" /></td>
+								    <td><a href="dash_team.html">Oregon</a></td>
+								    <td>
+                                      <div class="score_sm_45" onclick="location.href='#';">
+                                        <div class="score">4.8</div>
+                                      </div>
+							        </td>
+								  </tr>
+								  <tr>
+								    <td width="80" align="center"><img src="images/legend_ico_2_3.png" width="17" height="17" border="0" /></td>
+								    <td><a href="dash_team.html">Vegas</a></td>
+								    <td>
+                                      <div class="score_sm_3" onclick="location.href='#';">
+                                        <div class="score">3.9</div>
+                                      </div>
+							        </td>
+								  </tr>
+								  <tr>
+								    <td width="80" align="center"><img src="images/legend_ico_2_4.png" width="17" height="17" border="0" /></td>
+								    <td><a href="dash_team.html">Phoenix</a></td>
+								    <td>
+                                      <div class="score_sm_12" onclick="location.href='#';">
+                                        <div class="score">2.8</div>
+                                      </div>
+							        </td>
+								  </tr>
+								  <tr>
+								    <td width="80" align="center"><img src="images/legend_ico_2_5.png" width="17" height="17" border="0" /></td>
+								    <td><a href="dash_team.html">Salt Lake</a> </td>
+								    <td>
+                                      <div class="score_sm_45" onclick="location.href='#';">
+                                        <div class="score">5.0</div>
+                                      </div>
+							        </td>
+								  </tr>
+								  <tr>
+								    <td width="80" align="center"><img src="images/legend_ico_2_6.png" width="17" height="17" border="0" /></td>
+								    <td><a href="dash_team.html">Sacramento/Bay Area</a> </td>
+								    <td>
+                                      <div class="score_sm_45" onclick="location.href='#';">
+                                        <div class="score">4.8</div>
+                                      </div>
+							        </td>
+								  </tr>
+								  <tr>
+								    <td width="80" align="center"><img src="images/legend_ico_2_7.png" width="17" height="17" border="0" /></td>
+								    <td><a href="dash_team.html">Los Angeles/San Diego</a> </td>
+								    <td>
+                                      <div class="score_sm_3" onclick="location.href='#';">
+                                        <div class="score">3.9</div>
+                                      </div>
+							        </td>
+								  </tr>
+								  <tr>
+								    <td width="80" align="center"><img src="images/legend_ico_2_8.png" width="17" height="17" border="0" /></td>
+								    <td><a href="dash_team.html">Idaho</a></td>
+								    <td>
+                                      <div class="score_sm_12" onclick="location.href='#';">
+                                        <div class="score">2.8</div>
+                                      </div>
+							        </td>
+								  </tr>
+								  <tr>
+								    <td width="80" align="center"><img src="images/legend_ico_2_9.png" width="17" height="17" border="0" /></td>
+								    <td><a href="dash_team.html">Montana</a></td>
+								    <td>
+                                      <div class="score_sm_12" onclick="location.href='#';">
+                                        <div class="score">1.9</div>
+                                      </div>
+							        </td>
+								  </tr>
+								  </tbody>
+								</table>
+						</div>
+						
+					  </div>
+					</div>
+				<div class="panel_sw">
+					<div class="panel_statusbar"></div>
+				</div>
+			</div>
+		<!-- END PANEL -->
+		
+		</td>
+		</tr>
+		</table>
+
+</div>
+
+</body>
+</html>

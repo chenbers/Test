@@ -24,7 +24,7 @@
 	animation='1'
 	bgColor='#ffffff'
 	borderThickness='1'
-	showToolTips='1'
+	showToolTips='0'
 	showLegend='0'
 	forceDecimals='1'
 	yAxisMaxValue='5'
@@ -61,7 +61,7 @@
 </dataset>
 
 <dataset seriesName='Oregon' color='DFAA76'>
-	<set value='' /><set value='3.2' /><set value='3.4' /><set value='3.5' /><set value='3.1' /><set value='3.0' /><set value='3.4' /><set value='3.3' /><set value='3.2' /><set value='3.2' /><set value='3.6' /><set value='4.1' /><set value='3.9' /><set value='' />
+	<set value='' /><set value='3.2' /><set value='3.4' /><set value='3.5' /><set value='3.1' /><set value='3.0' /><set value='3.4' /><set value='3.3' /><set value='3.2' /><set value='3.2' /><set value='3.6' /><set value='3.7' /><set value='3.5' /><set value='' />
 </dataset>
 
 <dataset seriesName='Vegas' color='7FC0CE'>
@@ -69,23 +69,23 @@
 </dataset>
 
 <dataset seriesName='Phoenix' color='8C93D3'>
-	<set value='' /><set value='3.6' /><set value='3.2' /><set value='3.8' /><set value='3.3' /><set value='3.6' /><set value='3.0' /><set value='3.2' /><set value='3.5' /><set value='3.9' /><set value='3.4' /><set value='3.6' /><set value='3.2' /><set value='' />
+	<set value='' /><set value='3.6' /><set value='3.5' /><set value='3.8' /><set value='3.7' /><set value='3.6' /><set value='3.7' /><set value='3.5' /><set value='3.5' /><set value='3.7' /><set value='3.6' /><set value='3.6' /><set value='3.6' /><set value='' />
 </dataset>
 
 <dataset seriesName='Salt Lake' color='C2C2C2'>
-	<set value='' /><set value='3.2' /><set value='3.6' /><set value='3.8' /><set value='3.0' /><set value='3.3' /><set value='3.5' /><set value='3.8' /><set value='3.5' /><set value='3.3' /><set value='3.0' /><set value='3.4' /><set value='3.2' /><set value='' />
+	<set value='' /><set value='3.2' /><set value='3.1' /><set value='3.0' /><set value='3.0' /><set value='3.2' /><set value='3.3' /><set value='3.4' /><set value='3.5' /><set value='3.3' /><set value='3.2' /><set value='3.3' /><set value='3.2' /><set value='' />
 </dataset>
 
 <dataset seriesName='Sacramento/Bay Area' color='BAE0AF'>
-	<set value='' /><set value='1.2' /><set value='2.4' /><set value='3.5' /><set value='4.1' /><set value='3.0' /><set value='4.4' /><set value='3.3' /><set value='2.2' /><set value='1.2' /><set value='1.6' /><set value='2.1' /><set value='2.9' /><set value='' />
+	<set value='' /><set value='1.2' /><set value='1.5' /><set value='1.5' /><set value='1.8' /><set value='2.0' /><set value='2.4' /><set value='2.3' /><set value='2.5' /><set value='2.2' /><set value='2.6' /><set value='2.5' /><set value='2.6' /><set value='' />
 </dataset>
 
 <dataset seriesName='Los Angeles/San Diego' color='A3C1E7'>
-	<set value='' /><set value='3.2' /><set value='3.5' /><set value='3.2' /><set value='4.7' /><set value='4.2' /><set value='3.8' /><set value='3.4' /><set value='3.1' /><set value='2.9' /><set value='4.2' /><set value='3.2' /><set value='3.0' /><set value='' />
+	<set value='' /><set value='3.2' /><set value='3.5' /><set value='3.2' /><set value='3.6' /><set value='3.7' /><set value='3.8' /><set value='3.4' /><set value='3.1' /><set value='2.9' /><set value='3.0' /><set value='3.2' /><set value='3.0' /><set value='' />
 </dataset>
 
 <dataset seriesName='Idaho' color='D3D3D3'>
-	<set value='' /><set value='2.6' /><set value='2.2' /><set value='2.8' /><set value='2.3' /><set value='2.6' /><set value='2.0' /><set value='2.2' /><set value='4.5' /><set value='4.9' /><set value='3.4' /><set value='2.6' /><set value='1.2' /><set value='' />
+	<set value='' /><set value='2.6' /><set value='2.2' /><set value='2.8' /><set value='2.3' /><set value='2.6' /><set value='2.0' /><set value='2.2' /><set value='2.8' /><set value='2.9' /><set value='2.4' /><set value='2.6' /><set value='1.2' /><set value='' />
 </dataset>
 
 <dataset seriesName='Montana' color='E49FD5'>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>tiwi pro</title>
+<title>admin - add zone step 4</title>
 
 <script language="JavaScript" src="js/fusioncharts.js"></script>
 
@@ -14,46 +14,29 @@
 
 <link rel="stylesheet" type="text/css" href="css/main.css" />
 
+<!--[if IE 6]>
+<link rel="stylesheet" type="text/css" href="css/ie6.css" />
+<![endif]--> 
 
-<!--[if IE]>
-<style type="text/css">
-/* style exceptions for all IE browsers */
-button {
-	width:auto;
-	overflow: visible;
-	}
-	
-button span {
-	margin-top: 2px;
-	}
-    
-ul#grid_nav li {
-	list-style: none;
-	padding: 2px 4px 2px 4px;
-	margin: 0;
-	}
-	
-ul#grid_nav li.divider {
-	list-style: none;
-	padding: 6px 0 0 0;
-	margin: 0;
-	}
-    
-</style>
-<![endif]-->
-<!-- /BUTTON TUTORIAL STYLES -->
+<!--[if IE 7]>
+<link rel="stylesheet" type="text/css" href="css/ie7.css" />
+<![endif]--> 
+
+
+
+
 </head>
 
 <body>
 
 <div id="header">
-	<div id="logo"><a href="/dash_exec.html"><img src="/images/logo_main.png" border="0" /></a></div>
+	<div id="logo"><a href="/dash_exec.html"><img src="/images/x.gif" width="80" height="80" border="0" /></a></div>
 
 	<div id="horz_nav">
 		<ul>
-			<li id="tb-help"><a href="help.html">Help</a></li>
 			<li id="tb-account"><a href="myaccount.html">My Account</a></li>
-			<li id="tb-logout"><a href="/">Logout</a></li>
+<li id="tb-logout"><a href="/">Log Out</a></li>
+<li id="tb-help"><a href="help.html">Help</a></li>
 		</ul>
 	</div>
 
@@ -80,12 +63,12 @@ ul#grid_nav li.divider {
 					</td>
 					<td class="middle">
 					  <select name="select" class="text" style="width: 95px;">
-					    <option>drivers</option>
+					    <option>Select One</option><option>drivers</option>
 					    <option>vehicles</option>
 					    <option>devices</option>
 				      </select>
 					</td>
-					<td class="middle" width="25" align="center"><img src="images/ico_search.png" width="15" height="15" style="margin: 5px;" /></td>
+					<td class="middle" width="25" align="center"><img src="images/ico_search.gif" width="15" height="15" style="margin: 5px;" /></td>
 					<td class="right"><img src="images/search_box_right.png" /></td>
 				  </tr>
 			  </table>
@@ -101,16 +84,14 @@ ul#grid_nav li.divider {
 <table width="920" height="430" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
 	  <tr>
 		<td valign="top" width="130">
-		  <table width="130" border="0" cellpadding="0" cellspacing="0" style="margin-top: 40px;">
+		  <table width="130" border="0" cellpadding="0" cellspacing="0"  style="margin-top: 40px;">
             <tr>
-              <td valign="top" class="ls_tab_off"><a href="admin.html" class="ls_tab_driver">People</a></td>
+              <td valign="top" class="ls_tab_off"><a href="admin.html" class="ls_tab_driver">Users</a></td>
             </tr>
             <tr>
               <td valign="top" class="ls_tab_off"><a href="admin_vehicles.html" class="ls_tab_vehicle">Vehicles</a></td>
             </tr>
-            <tr>
-              <td valign="top" class="ls_tab_off"><a href="admin_trailers.html" class="ls_tab_trailer">Trailers</a></td>
-            </tr>
+            
             <tr>
               <td valign="top" class="ls_tab_off"><a href="admin_tiwi.html" class="ls_tab_tiwi">Devices</a></td>
             </tr>

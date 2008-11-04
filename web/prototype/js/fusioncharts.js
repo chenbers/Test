@@ -32,6 +32,7 @@ infosoftglobal.FusionCharts = function(swf, id, w, h, debugMode, registerWithJS,
 	
 	//Add scripting access parameter
 	this.addParam('allowScriptAccess', 'always');
+	this.addParam('wmode', 'transparent');
 	
 	//Pass width and height to be appended as chartWidth and chartHeight
 	this.addVariable('chartWidth', w);

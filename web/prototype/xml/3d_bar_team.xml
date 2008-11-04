@@ -5,10 +5,96 @@
 	showValues='0'
 	decimals='0'
 	formatNumberScale='0'
-	numberSuffix='%'
-	yAxisMaxValue='100'
+	numberSuffix=''
+	
+	animation='1'
+	bgColor='#ffffff'
+	borderThickness='1'
+	showToolTips='1'
+	showLegend='1'
+	legendBorderThickness='0'
+	legendShadow='0'
+	
+	labelDisplay='Rotate'
+	slantLabels='1'
+	
+	canvasBorderColor='#ffffff'
+	canvasBorderThickness='0'
+	
+	showPlotBorder='0'
+	plotFillRatio='100'
 	>
 
-<set label='Vegas' value='89' color='7FC0CE' />
+<categories>
+<category label="Steve Jenkins"/>
+<category label="Paul Donner"/>
+<category label="Andy Maxwell"/>
+<category label="George Dean"/>
+<category label="Jose Monoz"/>
+<category label="Pat Reed"/>
+<category label="John Houser"/>
+<category label="Bill Daniels"/>
+<category label="Herb Stone"/>
+<category label="Ronald Sacks"/>
+<category label="Tom Steele"/>
+<category label="Dan Patrick"/>
+<category label="Joshua Alan"/>
+<category label="Robert Ethan"/>
+<category label="Mike Jones"/>
+</categories>
+
+<dataset seriesName="Light">
+<set value="36"/>
+<set value="39"/>
+<set value="38"/>
+<set value="0"/>
+<set value="39"/>
+<set value="38"/>
+<set value="36"/>
+<set value="39"/>
+<set value="38"/>
+<set value="36"/>
+<set value="39"/>
+<set value="38"/>
+<set value="36"/>
+<set value="39"/>
+<set value="38"/>
+</dataset>
+
+<dataset seriesName="Medium">
+<set value="25"/>
+<set value="23"/>
+<set value="21"/>
+<set value="25"/>
+<set value="0"/>
+<set value="21"/>
+<set value="25"/>
+<set value="23"/>
+<set value="21"/>
+<set value="0"/>
+<set value="23"/>
+<set value="21"/>
+<set value="25"/>
+<set value="23"/>
+<set value="21"/>
+</dataset>
+
+<dataset seriesName="Heavy">
+<set value="18"/>
+<set value="16"/>
+<set value="0"/>
+<set value="18"/>
+<set value="16"/>
+<set value="18"/>
+<set value="0"/>
+<set value="0"/>
+<set value="18"/>
+<set value="18"/>
+<set value="16"/>
+<set value="0"/>
+<set value="0"/>
+<set value="0"/>
+<set value="18"/>
+</dataset>
 
 </chart>	
