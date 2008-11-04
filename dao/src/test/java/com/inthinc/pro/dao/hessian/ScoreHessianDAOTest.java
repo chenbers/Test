@@ -33,6 +33,7 @@ public class ScoreHessianDAOTest
 
     }
 
+/*    
     @Test
     public void getScores()
     {
@@ -72,7 +73,7 @@ public class ScoreHessianDAOTest
             }
         }
     }
-
+*/
     @Test
     public void getPercentScores()
     {
