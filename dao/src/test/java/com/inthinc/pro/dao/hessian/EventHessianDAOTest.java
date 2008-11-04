@@ -49,7 +49,8 @@ public class EventHessianDAOTest
         // make sure they are in decending order by date
         for (int i = 0 ; i < 4; i++)
         {
-            assertTrue(eventList.get(i).getTime().compareTo(eventList.get(i+1).getTime()) > 0);
+            assertTrue("Time Compare failed for event " + i  + " " + eventList.get(i).getTime() + " and " + (i+1) + " " + eventList.get(i+1).getTime(), 
+                    eventList.get(i).getTime().compareTo(eventList.get(i+1).getTime()) >= 0);
         }
     }
 
