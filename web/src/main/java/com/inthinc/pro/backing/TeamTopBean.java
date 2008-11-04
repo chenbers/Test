@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -22,14 +23,14 @@ public class TeamTopBean extends BaseBean
     private boolean pageChange = false;
     private Duration duration = Duration.DAYS;
     
-    private List<ScoreableEntityPkg> topDrivers;
-    private List<ScoreableEntityPkg> bottomDrivers;
+    private List<ScoreableEntityPkg> topDrivers = new ArrayList<ScoreableEntityPkg>();
+    private List<ScoreableEntityPkg> bottomDrivers = new ArrayList<ScoreableEntityPkg>();
    
     private String goTo = "";
 
     public List<ScoreableEntityPkg> getTopDrivers()
     {
-        User u = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();      
+//        User u = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();      
         
         //Clear the returned data, if present
         if ( topDrivers.size() > 0 ) {
@@ -37,7 +38,7 @@ public class TeamTopBean extends BaseBean
         }
         
         //Is the group id initialized?
-        if ( this.navigation.getGroupID() == -1 ) {
+        if ( this.navigation.getGroupID() == null ) {
             this.navigation.setGroupID(getUser().getPerson().getGroupID());
         }
         
@@ -103,7 +104,7 @@ public class TeamTopBean extends BaseBean
 
     public List<ScoreableEntityPkg> getBottomDrivers()
     {
-        User u = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();      
+//        User u = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();      
         
         //Clear the returned data, if present
         if ( bottomDrivers.size() > 0 ) {

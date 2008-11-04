@@ -212,27 +212,49 @@ public class MockData
                             monthsBack[monthsBackCnt]);
                   
                 } else {
-                    storeObject(
-                            new ScoreableEntity(
-                                    entityID, 
-                                    entityType, 
-                                    entityName, 
-                                    randomInt(0,50), 
-                                    DateUtil.getDaysBackDate(dateNow, 30 * monthsBack[monthsBackCnt]),
-                                    scoreType,
-                                    ScoreValueType.SCORE_SCALE_0_50));
+//                    storeObject(
+//                            new ScoreableEntity(
+//                                    entityID, 
+//                                    entityType, 
+//                                    entityName, 
+//                                    randomInt(0,50), 
+//                                    DateUtil.getDaysBackDate(dateNow, 30 * monthsBack[monthsBackCnt]),
+//                                    scoreType,
+//                                    ScoreValueType.SCORE_SCALE_0_50));
                 }
 
                 // percentages
-                createScorePercentages(
-                        entityID, 
-                        entityType, 
-                        entityName, 
-                        scoreType, 
-                        monthsBack[monthsBackCnt]);
+//                createScorePercentages(
+//                        entityID, 
+//                        entityType, 
+//                        entityName, 
+//                        scoreType, 
+//                        monthsBack[monthsBackCnt]);
 
             }
         }
+        
+        // create a score entity of each score type 1 per month
+        for (int month = 0; month < 14; month++)
+        {
+            for (ScoreType scoreType : EnumSet.allOf(ScoreType.class))
+            {
+                if (scoreType != ScoreType.SCORE_OVERALL_TIME ) 
+                {
+                  storeObject(
+                      new ScoreableEntity(
+                              entityID, 
+                              entityType, 
+                              entityName, 
+                              randomInt(0,50), 
+                              DateUtil.getDaysBackDate(dateNow, 30 * month),
+                              scoreType,
+                              ScoreValueType.SCORE_SCALE_0_50));
+                }
+            }
+        }
+        
+        
     }
     
     private void createOverallScoreOverTime(Integer entityID, 

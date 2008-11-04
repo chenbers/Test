@@ -1,5 +1,6 @@
 package com.inthinc.pro.dao.util;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -121,5 +122,12 @@ public class DateUtil
         GregorianCalendar cal = new GregorianCalendar(TimeZone.getDefault());
         cal.setTime(new Date());
         return cal.get(GregorianCalendar.DAY_OF_MONTH);
+    }
+    
+    public static String getDisplayDate(Integer dateSec)
+    {
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd h:mm a (z)");
+        
+        return format.format(convertTimeInSecondsToDate(dateSec));
     }
 }

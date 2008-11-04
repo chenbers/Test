@@ -13,6 +13,7 @@ import com.inthinc.pro.dao.mock.data.SearchCriteria;
 import com.inthinc.pro.dao.mock.proserver.CentralServiceCreator;
 import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreValueType;
 import com.inthinc.pro.model.ScoreableEntity;
@@ -33,15 +34,16 @@ public class ScoreHessianDAOTest
 
     }
 
-/*    
     @Test
     public void getScores()
     {
-        int[] monthsBack = { 12, 6, 3, 0 };
+        int[] monthsBack = { 12, 6, 3, 1 };
 
         Integer testGroupID = SUB_GROUP_ID;
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("parentID", TOP_GROUP_ID);
+        int totalChildGroups = MockData.getInstance().retrieveObjectList(Group.class, searchCriteria).size();
 
-        Integer currentDate = MockData.getInstance().dateNow;
         for (ScoreType scoreType : EnumSet.allOf(ScoreType.class))
         {
             if (scoreType.equals(ScoreType.SCORE_OVERALL_TIME))
@@ -52,28 +54,14 @@ public class ScoreHessianDAOTest
             {
                 Integer endDate = DateUtil.getTodaysDate();
                 Integer startDate = DateUtil.getDaysBackDate(endDate, monthsBack[i] * 30);
-                List<ScoreableEntity> scoreList = scoreHessianDAO.getScores(TOP_GROUP_ID, startDate, endDate, ScoreType.SCORE_OVERALL);
+                List<ScoreableEntity> scoreList = scoreHessianDAO.getScores(TOP_GROUP_ID, startDate, endDate, scoreType);
     
-                assertNotNull(scoreList);
-    
-                SearchCriteria searchCriteria = new SearchCriteria();
-                searchCriteria.addKeyValue("entityID", testGroupID);
-                searchCriteria.addKeyValue("scoreValueType", ScoreValueType.SCORE_SCALE_0_50);
-                searchCriteria.addKeyValue("date", DateUtil.getDaysBackDate(currentDate, monthsBack[i] * 30));
-                ScoreableEntity expectedScore = MockData.getInstance().retrieveObject(ScoreableEntity.class, searchCriteria);
-    
-                for (ScoreableEntity score : scoreList)
-                {
-                    if (score.getEntityID().equals(testGroupID))
-                    {
-                        System.out.println("score " + score.getEntityID() + " " + score.getEntityType().toString() + " " + score.getScore());
-                        assertEquals(expectedScore.getScore(), score.getScore());
-                    }
-                }
+                assertNotNull("Months Back: " + monthsBack[i] + " " + scoreType.toString(), scoreList);
+                assertEquals("Months Back: " + monthsBack[i] + " " + scoreType.toString(), totalChildGroups, scoreList.size());
             }
         }
     }
-*/
+
     @Test
     public void getPercentScores()
     {

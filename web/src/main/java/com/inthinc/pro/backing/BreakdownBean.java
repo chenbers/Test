@@ -90,6 +90,13 @@ public class BreakdownBean extends BaseDurationBean {
                     (BreakdownBean.entityColorKey.get(i)) + "\'/>");
         }
 */
+    logger.error(DateUtil.getDisplayDate(startDate) + " - " + DateUtil.getDisplayDate(endDate) );
+    logger.error("RETURNED " + s.size() + "  SCORES!!!");
+    for ( int i = 0; i < s.size(); i++ ) 
+    {
+        logger.error("Date: " + DateUtil.getDisplayDate(s.get(i).getDate()) + " Score: " + s.get(i).getScore());
+        
+    }
         for ( int i = 0; i < s.size(); i++ ) {
             se = (ScoreableEntity)s.get(i);
             Integer percent = se.getScore();

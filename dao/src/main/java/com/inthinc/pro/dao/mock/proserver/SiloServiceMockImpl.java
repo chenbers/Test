@@ -13,6 +13,7 @@ import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.mock.data.SearchCriteria;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreValueType;
@@ -77,16 +78,19 @@ public class SiloServiceMockImpl implements SiloService
         SearchCriteria searchCriteria = new SearchCriteria();
         searchCriteria.addKeyValue("entityID", groupID);
         searchCriteria.addKeyValue("scoreType", ScoreType.SCORE_OVERALL);
-        searchCriteria.addKeyValue("scoreValueType", ScoreValueType.SCORE_SCALE_0_50);
         searchCriteria.addKeyValueRange("date", startDate, endDate);
         
-        Map<String, Object> returnMap =  MockData.getInstance().lookup(ScoreableEntity.class, searchCriteria);
-        if (returnMap == null)
+        // get all scores of the time period and average them
+        List<ScoreableEntity> allScores = MockData.getInstance().retrieveObjectList(ScoreableEntity.class, searchCriteria);
+        if (allScores.size() == 0)
         {
             throw new EmptyResultSetException("No overall score for: " + groupID, "getOverallScore", 0);
         }
-        return returnMap;
+            
+        return getAverageScore(startDate, allScores);
+        
     }
+
 
     @Override
     public List<Map<String, Object>> getScores(Integer groupID, Integer startDate, Integer endDate, Integer scoreType)
@@ -107,14 +111,13 @@ public class SiloServiceMockImpl implements SiloService
                 searchCriteria = new SearchCriteria();
                 searchCriteria.addKeyValue("entityID", groupMap.get("groupID"));
                 searchCriteria.addKeyValue("scoreType", ScoreType.getScoreType(scoreType));
-                searchCriteria.addKeyValue("scoreValueType", ScoreValueType.SCORE_SCALE_0_50);
+//                searchCriteria.addKeyValue("scoreValueType", ScoreValueType.SCORE_SCALE_0_50);
                 searchCriteria.addKeyValueRange("date", startDate, endDate);
                 
-                Map<String, Object> scoreMap = MockData.getInstance().lookup(ScoreableEntity.class, searchCriteria);
-                
-                if (scoreMap != null)
+                List<ScoreableEntity> allScores = MockData.getInstance().retrieveObjectList(ScoreableEntity.class, searchCriteria);
+                if (allScores.size() > 0)
                 {
-                    returnList.add(scoreMap);
+                    returnList.add(getAverageScore(startDate, allScores));
                 }
                 else
                 {
@@ -139,13 +142,11 @@ public class SiloServiceMockImpl implements SiloService
                 searchCriteria.addKeyValue("entityID", driverMap.get("driverID"));
                 searchCriteria.addKeyValue("scoreType", ScoreType.getScoreType(scoreType));
                 searchCriteria.addKeyValueRange("date", startDate, endDate);
-                searchCriteria.addKeyValue("scoreValueType", ScoreValueType.SCORE_SCALE_0_50);
                 
-                Map<String, Object> scoreMap = MockData.getInstance().lookup(ScoreableEntity.class, searchCriteria);
-                
-                if (scoreMap != null)
+                List<ScoreableEntity> allScores = MockData.getInstance().retrieveObjectList(ScoreableEntity.class, searchCriteria);
+                if (allScores.size() > 0)
                 {
-                    returnList.add(scoreMap);
+                    returnList.add(getAverageScore(startDate, allScores));
                 }
                 else
                 {
@@ -161,13 +162,52 @@ public class SiloServiceMockImpl implements SiloService
     public List<Map<String, Object>> getScoreBreakdown(Integer groupID, Integer startDate, Integer endDate, Integer scoreType) throws ProDAOException
     {
         
-        SearchCriteria searchCriteria = new SearchCriteria();
-        searchCriteria.addKeyValue("entityID", groupID);
-        searchCriteria.addKeyValue("scoreType", ScoreType.getScoreType(scoreType));
-        searchCriteria.addKeyValueRange("date", startDate, endDate);
-        searchCriteria.addKeyValue("scoreValueType", ScoreValueType.SCORE_PERCENTAGE);
-        return MockData.getInstance().lookupList(ScoreableEntity.class, searchCriteria);
+        Group topGroup= MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
+
+        List<Driver> allDriversInGroup = getAllDriversInGroup(topGroup);
+        
+        int totals[] = new int[5];
+        for (Driver driver : allDriversInGroup)
+        {
+            SearchCriteria searchCriteria = new SearchCriteria();
+            searchCriteria.addKeyValue("entityID", driver.getDriverID());
+            searchCriteria.addKeyValue("scoreType", ScoreType.getScoreType(scoreType));
+            searchCriteria.addKeyValueRange("date", startDate, endDate);
+            List<ScoreableEntity> allScores = MockData.getInstance().retrieveObjectList(ScoreableEntity.class, searchCriteria);
+            Map<String, Object> scoreMap = getAverageScore(startDate, allScores);
+            
+            Integer score = (Integer)scoreMap.get("score");
+            int idx = (score-1)/10;
+            totals[idx]++;
+        }
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+        int totalDrivers = allDriversInGroup.size();
+        int percentTotal = 0;
+        for ( int i = 0; i < 5; i++ ) 
+        {
+                int percent = 0;
+                if (i < 4)
+                {
+                    percent = Math.round((float)((float)totals[i]*100f)/(float)totalDrivers);
+                    percentTotal += percent;
+                }
+                else
+                {
+                    percent = 100 - percentTotal;
+                }
+                returnList.add(MockData.createMapFromObject(new ScoreableEntity(groupID, 
+                    EntityType.ENTITY_GROUP, 
+                    (i+1) + "",     // name will be 1 to 5 for the 5 different score breakdowns 
+                    new Integer(percent), 
+                    startDate,
+                    ScoreType.getScoreType(scoreType),
+                    ScoreValueType.SCORE_PERCENTAGE)));
+        }
+
+        
+        return returnList;
     }
+
 
     @Override
     public List<Map<String, Object>> getBottomFiveScores(Integer groupID)
@@ -318,10 +358,28 @@ public class SiloServiceMockImpl implements SiloService
         List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
         for (Group group : hierarchyGroups)
         {
-            returnList.add(MockData.getInstance().createMapFromObject(group));
+            returnList.add(MockData.createMapFromObject(group));
         }
         
         return returnList;
+    }
+
+    
+    //----------- HELPER METHODS ---------------------
+
+    
+    private Map<String, Object> getAverageScore(Integer startDate, List<ScoreableEntity> allScores)
+    {
+        int total = 0;
+        ScoreableEntity firstEntity = allScores.get(0);
+        ScoreableEntity returnEntity = new ScoreableEntity(firstEntity.getEntityID(), EntityType.ENTITY_GROUP, firstEntity.getIdentifier(), 0, startDate, firstEntity.getScoreType(), ScoreValueType.SCORE_SCALE_0_50);
+        for (ScoreableEntity entity : allScores)
+        {
+            total += entity.getScore();
+        }
+        returnEntity.setScore(total/allScores.size());
+
+        return MockData.createMapFromObject(returnEntity);
     }
 
 
@@ -338,9 +396,28 @@ public class SiloServiceMockImpl implements SiloService
         
     }
 
-
-
-
-    
-
+    // get all drivers that are under the specified group -- children, grandchildren, etc.
+    private List<Driver> getAllDriversInGroup(Group topGroup)
+    {
+        // TODO Auto-generated method stub
+        List<Group> hierarchyGroups = new ArrayList<Group>();
+        hierarchyGroups.add(topGroup);
+        
+        // filter out just the ones in the hierarchy
+        List<Group> allGroups = MockData.getInstance().lookupObjectList(Group.class, new Group());
+        addChildren(hierarchyGroups, allGroups, topGroup.getGroupID());
+        
+        List<Driver> returnDriverList = new ArrayList<Driver>();
+        for (Group group : hierarchyGroups )
+        {
+            SearchCriteria searchCriteria = new SearchCriteria();
+            searchCriteria.addKeyValue("groupID", group.getGroupID());
+            
+            List<Driver> driverList = MockData.getInstance().retrieveObjectList(Driver.class, searchCriteria);
+            returnDriverList.addAll(driverList);
+            
+        }
+        
+        return returnDriverList;
+    }
 }
