@@ -40,7 +40,7 @@
       <c:set var="columnCount" value="#{allColumnsCount / 3}" />
     </c:if>
     <c:if test="#{(allColumnsCount % 3) != 0}">
-      <c:set var="columnCount" value="#{(allColumnsCount / 3) + 1}" />
+      <c:set var="columnCount" value="#{((allColumnsCount - (allColumnsCount % 3)) / 3) + 1}" />
     </c:if>
 
     <rich:modalPanel id="editColumns" headerClass="popupHeader" controlsClass="popupControls" width="500" height="500" zindex="2000">
@@ -55,7 +55,7 @@
 
       <a4j:form id="editColumnsForm">
 
-        <rich:dataTable value="#{allColumns}" rows="#{columnCount}" var="col" rowKeyVar="index">
+        <rich:dataTable value="#{allColumns}" rows="#{columnCount}" var="col" rowKeyVar="index" width="100%">
           <rich:column width="33%">
             <c:set var="columnName" value="#{messagesPrefix}#{col}" />
             <h:outputLabel>

@@ -104,6 +104,29 @@ public class SiloServiceMockImpl implements SiloService
     
 
     @Override
+    public List<Map<String, Object>> getPersonIDsInGroupHierarchy(Integer groupID)
+    {
+        final List<Map<String, Object>> personIDs = new LinkedList<Map<String,Object>>();
+    
+        final List<Map<String, Object>> hierarchy = new SiloServiceCreator().getService().getGroupHierarchy(groupID);
+        for (final Map<String, Object> map : hierarchy)
+        {
+            final Integer id = (Integer) map.get("groupID");
+            if (id != null)
+            {
+                final SearchCriteria criteria = new SearchCriteria();
+                criteria.addKeyValue("groupID", id);
+                final List<Map<String, Object>> matches = MockData.getInstance().lookupList(Person.class, criteria);
+                if (matches != null)
+                    personIDs.addAll(matches);
+            }
+        }
+    
+        return personIDs;
+    }
+
+
+    @Override
     public Map<String, Object> getOverallScore(Integer groupID, Integer startDate, Integer endDate)
             throws ProDAOException
     {
@@ -348,6 +371,28 @@ public class SiloServiceMockImpl implements SiloService
     }
 
     @Override
+    public List<Map<String, Object>> getVehiclesInGroupHierarchy(Integer groupID)
+    {
+        final List<Map<String, Object>> vehicles = new LinkedList<Map<String,Object>>();
+
+        final List<Map<String, Object>> hierarchy = new SiloServiceCreator().getService().getGroupHierarchy(groupID);
+        for (final Map<String, Object> map : hierarchy)
+        {
+            final Integer id = (Integer) map.get("groupID");
+            if (id != null)
+            {
+                final SearchCriteria criteria = new SearchCriteria();
+                criteria.addKeyValue("groupID", id);
+                final List<Map<String, Object>> matches = MockData.getInstance().lookupList(Vehicle.class, criteria);
+                if (matches != null)
+                    vehicles.addAll(matches);
+            }
+        }
+
+        return vehicles;
+    }
+
+    @Override
     public Map<String, Object> deleteVehicle(Integer vehicleID) throws ProDAOException
     {
         // TODO Auto-generated method stub
@@ -481,25 +526,5 @@ public class SiloServiceMockImpl implements SiloService
         }
         
         return returnDriverList;
-    }
-
-    @Override
-    public List<Map<String, Object>> getPersonIDsInGroupHierarchy(Integer groupID)
-    {
-        final List<Map<String, Object>> personIDs = new LinkedList<Map<String,Object>>();
-
-        final List<Map<String, Object>> hierarchy = new SiloServiceCreator().getService().getGroupHierarchy(groupID);
-        for (final Map<String, Object> map : hierarchy)
-        {
-            final Integer id = (Integer) map.get("groupID");
-            if (id != null)
-            {
-                final SearchCriteria criteria = new SearchCriteria();
-                criteria.addKeyValue("groupID", id);
-                personIDs.addAll(MockData.getInstance().lookupList(Person.class, criteria));
-            }
-        }
-
-        return personIDs;
     }
 }

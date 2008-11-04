@@ -25,4 +25,17 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer, Centr
 
     }
 
+    @Override
+    public List<Vehicle> getVehiclesInGroupHierarchy(Integer groupID)
+    {
+        try
+        {
+            return convertToModelObject(getSiloService().getVehiclesInGroupHierarchy(groupID));
+        }
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
+    }
+
 }

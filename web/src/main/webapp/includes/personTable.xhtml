@@ -14,47 +14,120 @@
   <ui:param name="allColumns" value="#{personBean.availableColumns}" />
   <ui:param name="allColumnsCount" value="#{personBean.availableColumnCount}" />
   <ui:param name="selectedColumns" value="#{personBean.columns}" />
-  <ui:param name="messagesPrefix" value="usersHeader_" />
+  <ui:param name="messagesPrefix" value="personHeader_" />
 
   <ui:define name="columns">
-    <rich:column rendered="#{personBean.columns['userID']}" sortBy="#{item.user.userID}">
-      <f:facet name="header"><h:outputText value="#{messages.usersHeader_userID}" /></f:facet>
-      <h:outputText value="#{item.user.userID}" />
+    <rich:column rendered="#{personBean.columns['empid']}" sortBy="#{item.empid}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_empid}" /></f:facet>
+      <h:outputText value="#{item.empid}" />
     </rich:column>
     <rich:column rendered="#{personBean.columns['fullName']}" sortBy="#{item.first}" sortOrder="ASCENDING">
-      <f:facet name="header"><h:outputText value="#{messages.usersHeader_fullName}" /></f:facet>
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_fullName}" /></f:facet>
 <!-- TODO: link for viewing the employee's report -->
       <h:outputText value="#{item.first}" /><h:outputText value=" " /><h:outputText value="#{item.last}" />
     </rich:column>
-    <rich:column rendered="#{personBean.columns['active']}" sortBy="#{item.user.active}">
-      <f:facet name="header"><h:outputText value="#{messages.usersHeader_active}" /></f:facet>
+    <rich:column rendered="#{personBean.columns['user_active']}" sortBy="#{item.user.active}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_user_active}" /></f:facet>
       <h:outputText value="#{item.user.active ? messages.active : messages.inactive}" />
     </rich:column>
-    <rich:column rendered="#{personBean.columns['username']}" sortBy="#{item.user.username}">
-      <f:facet name="header"><h:outputText value="#{messages.usersHeader_username}" /></f:facet>
+    <rich:column rendered="#{personBean.columns['user_username']}" sortBy="#{item.user.username}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_user_username}" /></f:facet>
       <h:outputText value="#{item.user.username}" />
     </rich:column>
-    <rich:column rendered="#{personBean.columns['role']}" sortBy="#{item.user.role}">
-      <f:facet name="header"><h:outputText value="#{messages.usersHeader_role}" /></f:facet>
+    <rich:column rendered="#{personBean.columns['user_role']}" sortBy="#{item.user.role}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_user_role}" /></f:facet>
       <h:outputText value="#{item.user.role}" />
     </rich:column>
     <rich:column rendered="#{personBean.columns['workPhone']}" sortBy="#{item.workPhone}">
-      <f:facet name="header"><h:outputText value="#{messages.usersHeader_workPhone}" /></f:facet>
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_workPhone}" /></f:facet>
       <h:outputText value="#{item.workPhone}" />
     </rich:column>
     <rich:column rendered="#{personBean.columns['homePhone']}" sortBy="#{item.homePhone}">
-      <f:facet name="header"><h:outputText value="#{messages.usersHeader_homePhone}" /></f:facet>
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_homePhone}" /></f:facet>
       <h:outputText value="#{item.homePhone}" />
     </rich:column>
     <rich:column rendered="#{personBean.columns['email']}" sortBy="#{item.email}">
-      <f:facet name="header"><h:outputText value="#{messages.usersHeader_email}" /></f:facet>
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_email}" /></f:facet>
       <a href="mailto:#{item.email}"><h:outputText value="#{item.email}" /></a>
     </rich:column>
-    <rich:column rendered="#{personBean.columns['timeZone']}" sortBy="#{item.timeZone}">
-      <f:facet name="header"><h:outputText value="#{messages.usersHeader_timeZone}" /></f:facet>
+    <rich:column rendered="#{personBean.columns['timeZone']}" sortBy="#{item.timeZone.displayName}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_timeZone}" /></f:facet>
       <h:outputText value="#{item.timeZone.displayName}" />
     </rich:column>
-<!-- TODO: more columns once the Person object has 'em -->
+    <rich:column rendered="#{personBean.columns['group']}" sortBy="#{item.group.name}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_group}" /></f:facet>
+      <h:outputText value="#{item.group.name}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.columns['reportsTo']}" sortBy="#{item.reportsToPerson.first}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_reportsTo}" /></f:facet>
+      <h:outputText value="#{item.reportsToPerson.first}" /><h:outputText value=" " /><h:outputText value="#{item.reportsToPerson.last}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.columns['title']}" sortBy="#{item.title}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_title}" /></f:facet>
+      <h:outputText value="#{item.title}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.columns['department']}" sortBy="#{item.department}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_department}" /></f:facet>
+      <h:outputText value="#{item.department}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.columns['dob']}" sortBy="#{item.dob}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_dob}" /></f:facet>
+      <h:outputText value="#{item.dob}">
+        <f:convertDateTime dateStyle="long" />
+      </h:outputText>
+    </rich:column>
+    <rich:column rendered="#{personBean.columns['gender']}" sortBy="#{item.gender}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_gender}" /></f:facet>
+      <h:outputText value="#{item.gender}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.columns['height']}" sortBy="#{item.height}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_height}" /></f:facet>
+      <h:outputText value="#{item.height}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.columns['weight']}" sortBy="#{item.weight}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_weight}" /></f:facet>
+      <h:outputText value="#{item.weight}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.columns['address_street1']}" sortBy="#{item.address.street1}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_address_street1}" /></f:facet>
+      <h:outputText value="#{item.address.street1}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.columns['address_street2']}" sortBy="#{item.address.street2}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_address_street2}" /></f:facet>
+      <h:outputText value="#{item.address.street2}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.columns['address_city']}" sortBy="#{item.address.city}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_address_city}" /></f:facet>
+      <h:outputText value="#{item.address.city}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.columns['address_state']}" sortBy="#{item.address.state}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_address_state}" /></f:facet>
+      <h:outputText value="#{item.address.state}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.columns['address_zip']}" sortBy="#{item.address.zip}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_address_zip}" /></f:facet>
+      <h:outputText value="#{item.address.zip}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.columns['driver_active']}" sortBy="#{item.driver.active}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_active}" /></f:facet>
+      <h:outputText value="#{item.driver.active ? messages.active : messages.inactive}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.columns['driver_license']}" sortBy="#{item.driver.license}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_license}" /></f:facet>
+      <h:outputText value="#{item.driver.license}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.columns['driver_licenseClass']}" sortBy="#{item.driver.licenseClass}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_licenseClass}" /></f:facet>
+      <h:outputText value="#{item.driver.licenseClass}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.columns['driver_state']}" sortBy="#{item.driver.state}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_state}" /></f:facet>
+      <h:outputText value="#{item.driver.state}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.columns['driver_expiration']}" sortBy="#{item.driver.expiration}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_expiration}" /></f:facet>
+      <h:outputText value="#{item.driver.expiration}" />
+    </rich:column>
   </ui:define>
 
 </ui:composition>

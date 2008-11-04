@@ -26,8 +26,19 @@ public interface SiloService extends HessianService
 
     Map<String, Object> createPerson(Integer acctID, Map<String, Object> personMap) throws ProDAOException;
 
+    /**
+     * Retrieves the IDs of all people in the hierarchy for the given group ID--that is, the matching group plus all groups beneath it.
+     * 
+     * @param groupID
+     *            The ID of the group at the top of the hierarchy.
+     * @return A list of maps of personIDs.
+     */
+    List<Map<String, Object>> getPersonIDsInGroupHierarchy(Integer groupID);
+
     // Methods related to the Vehicle type
     List<Map<String, Object>> getVehiclesByAcctID(Integer acctID) throws ProDAOException;
+
+    List<Map<String, Object>> getVehiclesInGroupHierarchy(Integer groupID) throws ProDAOException;
 
     Map<String, Object> deleteVehicle(Integer vehicleID) throws ProDAOException;
 
@@ -121,13 +132,4 @@ public interface SiloService extends HessianService
      * @throws ProDAOException
      */
     List<Map<String, Object>> getScoreBreakdown(Integer groupID, Integer startDate, Integer endDate, Integer scoreType) throws ProDAOException;
-
-    /**
-     * Retrieves the IDs of all people in the hierarchy for the given group ID--that is, the matching group plus all groups beneath it.
-     * 
-     * @param groupID
-     *            The ID of the group at the top of the hierarchy.
-     * @return A list of maps of personIDs.
-     */
-    List<Map<String, Object>> getPersonIDsInGroupHierarchy(Integer groupID);
 }

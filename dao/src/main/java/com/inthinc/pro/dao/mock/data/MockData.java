@@ -29,7 +29,9 @@ import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreValueType;
 import com.inthinc.pro.model.ScoreableEntity;
+import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.User;
+import com.inthinc.pro.model.Vehicle;
 
 public class MockData
 {
@@ -39,6 +41,7 @@ public class MockData
     static int NUM_ACCOUNTS = 1;
     static int MAX_GROUPS = 100;
     static int MAX_DRIVERS_IN_GROUP = 10;
+    static int MAX_VEHICLES_IN_GROUP = 10;
     static int MAX_USERS_IN_GROUP = 10;
     static long timeNow = new Date().getTime();
     static int baseTimeSec = DateUtil.convertMillisecondsToSeconds(new Date().getTime());
@@ -144,6 +147,7 @@ public class MockData
             if (!groupIsParent(groups, groups[cnt].getGroupID()))
             {
                 addDriversToGroup(accountID, groups[cnt].getGroupID(), randomInt(1, MAX_DRIVERS_IN_GROUP));
+                addVehiclesToGroup(accountID, groups[cnt].getGroupID(), randomInt(1, MAX_VEHICLES_IN_GROUP));
             }
         }
         
@@ -341,6 +345,38 @@ public class MockData
         driver.setPersonID(person.getPersonID());
         person.setDriver(driver);
         return driver;
+    }
+
+    private void addVehiclesToGroup(Integer accountID, Integer groupID, int numVehiclesInGroup)
+    {
+        Integer idOffset = accountID * MAX_GROUPS + groupID * MAX_VEHICLES_IN_GROUP;
+        
+        for (int i = 0; i < numVehiclesInGroup; i++)
+        {
+            int id = idOffset+i+1;
+            Vehicle vehicle = createVehicle(id, accountID, groupID, "Ford", "F" + (randomInt(1, 15) * 1000), "Red", randomInt(5, 50) * 1000, "00000000000000000", "ABC-123", State
+                    .values()[randomInt(0, State.values().length - 1)], randomInt(0, 10) < 8);
+            storeObject(vehicle);
+            addScores(vehicle.getVehicleID(), EntityType.ENTITY_VEHICLE, vehicle.getName());
+        }
+    }
+
+    private Vehicle createVehicle(int id, Integer accountID, Integer groupID, String make, String model, String color, int weight, String VIN, String license, State state, boolean active)
+    {
+        final Vehicle vehicle = new Vehicle();
+        vehicle.setVehicleID(id);
+        vehicle.setGroupID(groupID);
+        vehicle.setName(String.valueOf(id));
+        vehicle.setYear(String.valueOf(randomInt(1970, 2009)));
+        vehicle.setMake(make);
+        vehicle.setModel(model);
+        vehicle.setColor(color);
+        vehicle.setWeight(weight);
+        vehicle.setVIN(VIN);
+        vehicle.setLicense(license);
+        vehicle.setState(state);
+        vehicle.setActive(active);
+        return vehicle;
     }
 
     private boolean groupIsParent(Group[] groups, Integer groupID)
@@ -789,5 +825,4 @@ public class MockData
         
     }
 
-    
 }

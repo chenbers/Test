@@ -19,6 +19,7 @@ import com.inthinc.pro.model.SafetyDevice;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleSensitivity;
+import com.inthinc.pro.util.MessageUtil;
 
 /**
  * @author David Gileadi
@@ -92,11 +93,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     protected List<VehicleView> loadItems()
     {
         // get the vehicles
-        List<Vehicle> plainVehicles = new LinkedList<Vehicle>();
-        for (int i = 0; i < 110; i++)
-            plainVehicles.add(createDummyVehicle());
-        // TODO: use the commented line below instead
-        // final List<Vehicle> plainVehicles = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
+        final List<Vehicle> plainVehicles = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getPerson().getGroupID());
 
         // convert the Vehicles to VehicleViews
         final LinkedList<VehicleView> items = new LinkedList<VehicleView>();
@@ -106,23 +103,26 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         return items;
     }
 
-    @Deprecated
-    private Vehicle createDummyVehicle()
+    /**
+     * Creates a VehicleView object from the given Vehicle object.
+     * 
+     * @param vehicle
+     *            The vehicle.
+     * @param score
+     *            The vehicle's overall score.
+     * @return The new VehicleView object.
+     */
+    private VehicleView createVehicleView(Vehicle vehicle)
     {
-        final Vehicle vehicle = new Vehicle();
-        vehicle.setVehicleID((int) (Math.random() * Integer.MAX_VALUE));
-        vehicle.setGroupID((int) (Math.random() * 5) + 110);
-        vehicle.setName(String.valueOf((int) (Math.random() * Integer.MAX_VALUE)));
-        vehicle.setYear(String.valueOf(randomInt(39) + 1970));
-        vehicle.setMake(createDummyName());
-        vehicle.setModel(createDummyName());
-        vehicle.setColor(createDummyName());
-        vehicle.setWeight(randomInt(20000) + 5000);
-        vehicle.setVIN(createDummyString("ABCDEFGHIJKLMNOPRSTUVWYZ1234567890", 17));
-        vehicle.setLicense(createDummyString("ABCDEFGHIJKLMNOPRSTUVWYZ1234567890", randomInt(2) + 6));
-        vehicle.setState(State.AZ);
-        vehicle.setActive(Math.random() < .75);
-        return vehicle;
+        final VehicleView vehicleView = new VehicleView();
+        BeanUtils.copyProperties(vehicle, vehicleView);
+
+        // TODO: look up the driver by driverID instead
+        vehicleView.setDriver(createDummyName() + ' ' + createDummyName());
+        vehicleView.setGroup(groupDAO.findByID(vehicle.getGroupID()));
+        vehicleView.setSelected(false);
+
+        return vehicleView;
     }
 
     @Deprecated
@@ -152,35 +152,36 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         return (int) (Math.random() * limit);
     }
 
-    /**
-     * Creates a VehicleView object from the given Vehicle object.
-     * 
-     * @param vehicle
-     *            The vehicle.
-     * @param score
-     *            The vehicle's overall score.
-     * @return The new VehicleView object.
-     */
-    private VehicleView createVehicleView(Vehicle vehicle)
-    {
-        final VehicleView vehicleView = new VehicleView();
-        BeanUtils.copyProperties(vehicle, vehicleView);
-
-        // TODO: look up the driver by driverID instead
-        vehicleView.setDriver(createDummyName() + ' ' + createDummyName());
-        vehicleView.setGroup(groupDAO.findByID(vehicle.getGroupID()));
-        vehicleView.setSelected(false);
-
-        return vehicleView;
-    }
-
     @Override
-    protected boolean matchesFilter(VehicleView item, String filterWord)
+    protected boolean matchesFilter(VehicleView vehicle, String filterWord)
     {
-        return String.valueOf(item.getName()).startsWith(filterWord) || String.valueOf(item.getYear()).startsWith(filterWord)
-                || ((item.getUnitType() != null) && item.getUnitType().startsWith(filterWord)) || item.getMake().toLowerCase().startsWith(filterWord)
-                || item.getModel().toLowerCase().startsWith(filterWord) || item.getVIN().toLowerCase().startsWith(filterWord)
-                || item.getLicense().toLowerCase().startsWith(filterWord);
+        for (final String column : columns.keySet())
+            if (columns.get(column))
+            {
+                boolean matches = false;
+                if (column.equals("driver"))
+                    matches = (vehicle.getDriver() != null) && vehicle.getDriver().toLowerCase().startsWith(filterWord);
+                else if (column.equals("group"))
+                    matches = (vehicle.getGroup() != null) && vehicle.getGroup().getName().toLowerCase().startsWith(filterWord);
+                else if (column.equals("active"))
+                    matches = (vehicle.getActive() != null)
+                            && ((vehicle.getActive() && MessageUtil.getMessageString("active").toLowerCase().startsWith(filterWord)) || ((!vehicle.getActive() && MessageUtil
+                                    .getMessageString("inactive").toLowerCase().startsWith(filterWord))));
+                else
+                    try
+                    {
+                        matches = String.valueOf(org.apache.commons.beanutils.BeanUtils.getProperty(vehicle, column.replace('_', '.'))).toLowerCase().startsWith(filterWord);
+                    }
+                    catch (Exception e)
+                    {
+                        logger.error("Error filtering on column " + column, e);
+                    }
+
+                if (matches)
+                    return true;
+            }
+
+        return false;
     }
 
     @Override
@@ -218,17 +219,15 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     @Override
     protected void doDelete(List<VehicleView> deleteItems)
     {
-        // TODO: uncomment the below
-        // for (final VehicleView vehicle : deleteItems)
-        // vehicleDAO.deleteByID(vehicle.getVehicleID());
+        for (final VehicleView vehicle : deleteItems)
+            vehicleDAO.deleteByID(vehicle.getVehicleID());
     }
 
     @Override
     protected void doSave(List<VehicleView> saveItems)
     {
-        // TODO: uncomment the below
-        // for (final VehicleView vehicle : saveItems)
-        // vehicleDAO.update(vehicle);
+        for (final VehicleView vehicle : saveItems)
+            vehicleDAO.update(vehicle);
     }
 
     @Override
