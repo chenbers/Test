@@ -38,7 +38,7 @@ public class TeamTopBean extends BaseBean
         
         //Is the group id initialized?
         if ( this.navigation.getGroupID() == -1 ) {
-            this.navigation.setGroupID(getUser().getGroupID());
+            this.navigation.setGroupID(getUser().getPerson().getGroupID());
         }
         
         //Fetch, qualifier is groupId, date from, date to
