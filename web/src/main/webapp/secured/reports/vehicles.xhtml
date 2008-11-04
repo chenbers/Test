@@ -1,0 +1,95 @@
+<ui:composition template="/layout/layout.xhtml" 
+			xmlns="http://www.w3.org/1999/xhtml" 
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+  			xmlns:h="http://java.sun.com/jsf/html" 
+  			xmlns:f="http://java.sun.com/jsf/core">
+
+	<ui:param name="reportsSelected" value="current" />
+	<ui:param name="driversSelected" value="current" />
+	
+
+	<ui:define name="subnavigation">
+		<ui:include src="/includes/reports/subNavigation.xhtml" />
+	</ui:define>
+	
+	<ui:define name="content">
+<div id="wrapper">
+
+
+					<table width="940" height="430" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+					  <tr>
+						<td valign="top">
+							<!-- START PANEL -->
+								<div class="">
+									<div class="panel_nw">
+										<div class="panel_title">
+
+											<span class="vehicle">Vehicles</span>										</div>
+									</div>
+										<div class="panel_w">
+										  <div class="panel_content">
+										  		
+												<div class="msg" >
+													<p id="redflag">There are 26 red flags. (<a href="red_flags.html">view</a>) </p>
+
+												</div>
+												
+												<ul id="grid_nav" style="margin: 0;">
+													<li class="l">
+														<table width="300" border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
+															<tr>
+																<td>Search</td>
+																<td>
+																	<input name="textfield2" type="text" class="text" size="50" />
+
+																</td>
+															</tr>
+														</table>
+													</li>
+													<li class="l"><button value="submit" class="left"><span class="search">Search</span></button></li>
+													<li class="l text"><a href="#" class="ls_tab_edit_columns">Edit Columns</a></li>
+													
+													<li class="r text">Showing 1 to 10 of 120 records </li>
+
+												</ul>
+												
+												<div class="datagrid" id="vehicles_table_table-paginationListWrapBottom">
+													<table width="100%" id="vehicles_table" cellpadding="0" cellspacing="0" class="sortable-onload-0 no-arrow rowstyle-alt colstyle-alt paginate-10 max-pages-7 paginationcallback-callbackTest-calculateTotalRating sortcompletecallback-callbackTest-calculateTotalRating">
+													  <thead>
+													  <tr>
+														<th class="sortable-numeric">Group/Team</th>
+														<th class="sortable-text">VehicleID</th>
+														<th class="sortable-text">Make/Model/Year</th>
+
+														<th class="sortable-numeric">Driver</th>
+														<th class="">Miles Driven </th>
+													    <th class="sortable-numeric">Overall</th>
+													    <th class="">Speed</th>
+													    <th class="">Driving Style </th>
+													  </tr>
+
+													  </thead>
+													  <tbody>
+													  </tbody>
+													</table>
+												</div>
+										  </div>
+										</div>
+									<div class="panel_sw">
+										<div class="panel_statusbar"></div>
+									</div>
+								</div>
+
+							<!-- END PANEL -->						
+						</td>
+					  </tr>
+					</table>
+
+
+</div>
+
+	
+	</ui:define>
+	
+
+</ui:composition>
