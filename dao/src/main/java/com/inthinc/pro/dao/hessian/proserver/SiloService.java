@@ -132,4 +132,20 @@ public interface SiloService extends HessianService
      * @throws ProDAOException
      */
     List<Map<String, Object>> getScoreBreakdown(Integer groupID, Integer startDate, Integer endDate, Integer scoreType) throws ProDAOException;
+
+    
+    
+    
+    // Methods related to the Event type
+    /**
+     * getMostRecentEvents 
+     * 
+     * @param groupID -- groupID to retrieve events for
+     * @param eventCnt  -- max events to retrieve
+     * @param types -- valid event types to retrieve
+     * @return
+     * @throws ProDAOException
+     */
+    List<Map<String, Object>> getMostRecentEvents(Integer groupID, Integer eventCnt, Integer types[])  throws ProDAOException;
+
 }

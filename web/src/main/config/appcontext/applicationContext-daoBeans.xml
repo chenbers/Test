@@ -21,5 +21,8 @@
    <bean id="vehicleDAO" class="com.inthinc.pro.dao.hessian.VehicleHessianDAO" 
    		parent="genericDAO">
    </bean>
+   <bean id="eventDAO" class="com.inthinc.pro.dao.hessian.EventHessianDAO" 
+   		parent="genericDAO">
+   </bean>
    
 </beans>

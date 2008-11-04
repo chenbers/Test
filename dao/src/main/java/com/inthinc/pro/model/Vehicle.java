@@ -27,6 +27,11 @@ public class Vehicle extends BaseEntity
     List<SafetyDevice> safetyDevices;
     VehicleSensitivity sensitivity;
 
+    
+    public Vehicle()
+    {
+        super();
+    }
     public Integer getVehicleID()
     {
         return vehicleID;

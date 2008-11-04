@@ -5,18 +5,20 @@
 	xmlns:f="http://java.sun.com/jsf/core"
   	xmlns:iwi="http://pro.tiwi.com/jsf"
 	xmlns:h="http://java.sun.com/jsf/html">
-	
-<h:panelGroup layout="block">
+<h:panelGroup layout="block" styleClass="">
 	<h:panelGroup layout="block" styleClass="panel_nw">
 		<h:panelGroup layout="block" styleClass="panel_title">
 			<span class="line">#{messages.team_recentEvents}</span>
 			<span class="panel_links"><a href="#">show all</a></span>
 		</h:panelGroup>	
-		<h:panelGroup layout="block" styleClass="panel_w">
-			<h:panelGroup layout="block" styleClass="panel_content">
-			<rich:dataTable value="#{recentEvents}" id="items"
+	</h:panelGroup>					
+	<h:panelGroup layout="block" styleClass="panel_w">
+		<h:panelGroup layout="block" styleClass="panel_content">
+			<h:panelGroup layout="block" styleClass="datagrid">
+			<h:form id="teamRecentEventsForm">
+			<rich:dataTable value="#{teamRecentEventsBean.recentEvents}" id="teamRecentEvents"
 						var="event" styleClass="datagrid"
-						rowClasses="trendTableOdd,trendTableEven" cellspacing="1" rows="5"
+						rowClasses="trendTableOdd,trendTableEven" cellspacing="0" rows="5"
 						width="100%">
 					<rich:column sortBy="#{event.type}" width="133" height="27" >
 						<f:facet name="header">
@@ -24,15 +26,15 @@
 						</f:facet>
 						<h:outputText value="#{event.type}"/>
 					</rich:column>
-					<rich:column sortBy="#{event.vehicleID}" width="135" height="27" >
+					<rich:column sortBy="#{event.driverID}" width="135" height="27" >
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_recentEventsDriver}" />
 						</f:facet>
-						<h:outputText value="#{event.vehicleID}"/>
+						<h:outputText value="#{event.driverID}"/>
 					</rich:column>
 					<rich:column sortBy="#{event.time}" width="124" height="27" >
 						<f:facet name="header">
-							<h:outputText value="#{messages.team_recentEventsTime}" />
+							<h:outputText value="#{messages.team_recentEventsWhen}" />
 						</f:facet>
 						<h:outputText value="#{event.time}"/>
 					</rich:column>
@@ -42,13 +44,13 @@
 						</f:facet>
 						<h:outputText value="#{messages.team_recentEventsDetails}"/>
 					</rich:column>
-			</rich:dataTable>					
+			</rich:dataTable>
+			</h:form>		
 			</h:panelGroup>					
-		</h:panelGroup>					
+			</h:panelGroup>					
 	</h:panelGroup>					
 	<h:panelGroup layout="block" styleClass="panel_sw">
 		<h:panelGroup layout="block" styleClass="panel_statusbar"/>
 	</h:panelGroup>
-	
-</h:panelGroup>		
+</h:panelGroup>
 </ui:composition>

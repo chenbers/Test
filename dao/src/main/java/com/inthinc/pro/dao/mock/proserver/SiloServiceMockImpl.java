@@ -2,6 +2,7 @@ package com.inthinc.pro.dao.mock.proserver;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import com.inthinc.pro.dao.mock.data.SearchCriteria;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
+import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.ScoreType;
@@ -471,6 +473,43 @@ public class SiloServiceMockImpl implements SiloService
         return returnList;
     }
 
+    @Override
+    public List<Map<String, Object>> getMostRecentEvents(Integer groupID, Integer eventCnt, Integer[] types) throws ProDAOException
+    {
+        Group group = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
+        
+        List<Driver> drivers = getAllDriversInGroup(group);
+        
+        List<Event> allEventsForGroup = new ArrayList<Event>();
+        
+        List<Object> typeList = new ArrayList<Object>();
+        Collections.addAll(typeList, types);
+        for (Driver driver : drivers)
+        {
+            SearchCriteria searchCriteria  = new SearchCriteria();
+            searchCriteria.addKeyValue("driverID", driver.getDriverID());
+            searchCriteria.addKeyValueInList("type", typeList);
+            
+            allEventsForGroup.addAll(MockData.getInstance().retrieveObjectList(Event.class, searchCriteria));
+        }
+        
+        Collections.sort(allEventsForGroup); // Make sure events are in ascending order
+        Collections.reverse(allEventsForGroup); // descending order (i.e. most recent first)
+
+        // to do: first sort my date
+        int cnt = 0;
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+        for (Event event : allEventsForGroup)
+        {
+            returnList.add(MockData.createMapFromObject(event));
+            cnt++;
+            if (cnt == eventCnt.intValue())
+                break;
+        }
+        
+        
+        return returnList;
+    }
     
     //----------- HELPER METHODS ---------------------
 
@@ -527,4 +566,6 @@ public class SiloServiceMockImpl implements SiloService
         
         return returnDriverList;
     }
+
+
 }

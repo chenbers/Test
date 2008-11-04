@@ -15,6 +15,7 @@ public class DateUtil
 	public static int SECONDS_IN_DAY = 86400;
     public static int MILLISECONDS_IN_MINUTE = 60000;
     public static int MINUTES_IN_DAY = 1440;
+    public static int SECONDS_IN_MINUTE = 60;
 
     public static final String[] dayOfWeek = { "TODAY", "SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT", };
 

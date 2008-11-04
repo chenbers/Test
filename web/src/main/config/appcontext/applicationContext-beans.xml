@@ -71,6 +71,7 @@
  		<property name="navigation" ref="navigationBean"></property>
    </bean>
    <bean id="teamRecentEventsBean" class="com.inthinc.pro.backing.TeamRecentEventsBean" scope="request" parent="baseBean">
+		<property name="eventDAO" ref="eventDAO"></property>
  		<property name="navigation" ref="navigationBean"></property>
    </bean>
 </beans>

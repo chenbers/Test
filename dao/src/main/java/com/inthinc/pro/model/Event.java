@@ -23,6 +23,8 @@ public class Event implements Comparable<Event>, Serializable
     private Integer type;
     private transient Vehicle vehicle;
     private Integer vehicleID;
+    private transient Driver driver;
+    private Integer driverID;
 
     public Event()
     {
@@ -232,6 +234,26 @@ public class Event implements Comparable<Event>, Serializable
     public void setVehicleID(Integer vehicleID)
     {
         this.vehicleID = vehicleID;
+    }
+
+    public Driver getDriver()
+    {
+        return driver;
+    }
+
+    public void setDriver(Driver driver)
+    {
+        this.driver = driver;
+    }
+
+    public Integer getDriverID()
+    {
+        return driverID;
+    }
+
+    public void setDriverID(Integer driverID)
+    {
+        this.driverID = driverID;
     }
 
 }

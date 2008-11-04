@@ -19,6 +19,11 @@ public class Driver extends BaseEntity
     
     // cj - temporarily added this back in until we can sort out the driver/user/person stuff -- this was breaking us
     private Integer groupID;
+    
+    public Driver()
+    {
+        super();
+    }
 
     public Integer getDriverID()
     {
