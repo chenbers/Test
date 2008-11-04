@@ -21,11 +21,11 @@ import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.HessianException;
 import com.inthinc.pro.dao.hessian.exceptions.MappingException;
-import com.inthinc.pro.dao.service.DAOService;
-import com.inthinc.pro.dao.service.ServiceCreator;
-import com.inthinc.pro.dao.service.SiloService;
+import com.inthinc.pro.dao.hessian.proserver.HessianService;
+import com.inthinc.pro.dao.hessian.proserver.ServiceCreator;
+import com.inthinc.pro.dao.hessian.proserver.SiloService;
 
-public abstract class GenericHessianDAO<T, ID, S extends DAOService> implements GenericDAO<T, ID>
+public abstract class GenericHessianDAO<T, ID, S extends HessianService> implements GenericDAO<T, ID>
 {
     private static final Logger logger = Logger.getLogger(GenericHessianDAO.class);
     private ServiceCreator<SiloService> siloServiceCreator;

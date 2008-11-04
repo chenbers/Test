@@ -1,7 +1,7 @@
 package com.inthinc.pro.dao.hessian;
 
 import com.inthinc.pro.dao.AccountDAO;
-import com.inthinc.pro.dao.service.CentralService;
+import com.inthinc.pro.dao.hessian.proserver.CentralService;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.User;
 

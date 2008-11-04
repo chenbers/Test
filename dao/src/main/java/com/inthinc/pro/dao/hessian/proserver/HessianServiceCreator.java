@@ -5,10 +5,8 @@ import java.net.MalformedURLException;
 
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
-import com.inthinc.pro.dao.service.DAOService;
-import com.inthinc.pro.dao.service.ServiceCreator;
 
-public class HessianServiceCreator<T extends DAOService> implements ServiceCreator<T>
+public class HessianServiceCreator<T extends HessianService> implements ServiceCreator<T>
 {
   private Integer port;
   private String host;

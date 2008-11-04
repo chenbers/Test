@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
-import com.inthinc.pro.dao.service.CentralService;
+import com.inthinc.pro.dao.hessian.proserver.CentralService;
 import com.inthinc.pro.model.Vehicle;
 
 public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer, CentralService> implements VehicleDAO

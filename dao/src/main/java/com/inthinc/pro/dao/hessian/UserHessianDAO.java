@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.annotations.ConvertColumnToField;
-import com.inthinc.pro.dao.service.CentralService;
+import com.inthinc.pro.dao.hessian.proserver.CentralService;
 import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.User;
 

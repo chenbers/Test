@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.annotations.ConvertColumnToField;
-import com.inthinc.pro.dao.service.CentralService;
+import com.inthinc.pro.dao.hessian.proserver.CentralService;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreValueType;

@@ -1,4 +1,4 @@
-package com.inthinc.pro.dao.service;
+package com.inthinc.pro.dao.hessian.proserver;
 
 import java.util.List;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Map;
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.model.ScoreableEntity;
 
-public interface SiloService extends DAOService
+public interface SiloService extends HessianService
 {
 
     // Methods related to the User type

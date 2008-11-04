@@ -6,8 +6,8 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
+import com.inthinc.pro.dao.hessian.proserver.CentralService;
 import com.inthinc.pro.dao.mock.data.MockData;
-import com.inthinc.pro.dao.service.CentralService;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.User;
 

@@ -1,6 +1,5 @@
 package com.inthinc.pro.dao.hessian.proserver;
 
-import com.inthinc.pro.dao.service.SiloService;
 
 public class SiloServiceCreator extends HessianServiceCreator<SiloService>
 {
