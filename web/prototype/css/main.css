@@ -2294,7 +2294,7 @@ to display: none.  Example ...
 
 */
 
-
+#theTable-fdtablePaginaterWrapTop { display: none; } /** use  id="theTable_table-paginationListWrapBottom" **/
 #idiling_table-fdtablePaginaterWrapTop { display: none; }
 #vehicles_table-fdtablePaginaterWrapTop { display: none; }
 #driver_table-fdtablePaginaterWrapTop { display: none; }
