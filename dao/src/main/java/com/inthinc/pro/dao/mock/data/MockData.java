@@ -311,6 +311,7 @@ public class MockData
         person.setEmail(first.toLowerCase() + '.' + last.toLowerCase() + "@email.com");
         Driver driver = new Driver();
         driver.setDriverID(id);
+        driver.setGroupID(groupID);
         driver.setPersonID(person.getPersonID());
         person.setDriver(driver);
         return driver;
