@@ -7,25 +7,23 @@
   	
   	<div class="sub_nav">
 	<div class="sub_nav-bg">
-		<ul>
+		<ul>	
 			<li>			
-			<h:outputLink styleClass="#{safetySelected}" value="#{facesContext.externalContext.requestContextPath}/secured/reports/safety.faces">
-				<span>#{messages.subNavigation_safety}</span>
-			</h:outputLink>
-			</li>	
-			<li>			
-			<h:outputLink styleClass="#{driversSelected}" value="#{facesContext.externalContext.requestContextPath}/secured/reports/drivers.faces">
+			<h:outputLink styleClass="#{driversSelected}" 
+				value="#{facesContext.externalContext.requestContextPath}/secured/reports/drivers.faces">
 				<span>#{messages.subNavigation_drivers}</span>
 			</h:outputLink>
 			</li>	
 			<li>			
-			<h:outputLink styleClass="#{assetsSelected}" value="#{facesContext.externalContext.requestContextPath}/secured/reports/assets.faces">
-				<span>#{messages.subNavigation_assets}</span>
+			<h:outputLink styleClass="#{vehiclesSelected}" 
+				value="#{facesContext.externalContext.requestContextPath}/secured/reports/vehicles.faces">
+				<span>#{messages.subNavigation_vehicles}</span>
 			</h:outputLink>
 			</li>	
 			<li>			
-			<h:outputLink styleClass="#{efficiencySelected}" value="#{facesContext.externalContext.requestContextPath}/secured/reports/efficiency.faces">
-				<span>#{messages.subNavigation_efficiency}</span>
+			<h:outputLink styleClass="#{idlingSelected}" 
+				value="#{facesContext.externalContext.requestContextPath}/secured/reports/idling.faces">
+				<span>#{messages.subNavigation_idling}</span>
 			</h:outputLink>
 			</li>	
 		</ul>
