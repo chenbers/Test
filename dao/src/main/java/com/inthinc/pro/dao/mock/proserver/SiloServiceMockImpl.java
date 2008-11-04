@@ -21,6 +21,7 @@ import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreValueType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.User;
+import com.inthinc.pro.model.Vehicle;
 
 public class SiloServiceMockImpl implements SiloService
 {
@@ -341,6 +342,34 @@ public class SiloServiceMockImpl implements SiloService
 
     @Override
     public List<Map<String, Object>> getVehiclesByAcctID(Integer acctID) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> deleteVehicle(Integer vehicleID) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    public Map<String, Object> createVehicle(Integer acctID, Map<String, Object> vehicleMap) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> getVehicle(Integer vehicleID) throws ProDAOException
+    {
+        return doMockLookup(Vehicle.class, "vehicleID", vehicleID, "No vehicle for ID: " + vehicleID, "getVehicle");
+
+    }
+
+    @Override
+    public Map<String, Object> updateVehicle(Integer vehicleID, Map<String, Object> vehicleMap) throws ProDAOException
     {
         // TODO Auto-generated method stub
         return null;

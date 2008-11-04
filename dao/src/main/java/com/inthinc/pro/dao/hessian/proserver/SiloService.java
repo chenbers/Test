@@ -28,7 +28,15 @@ public interface SiloService extends HessianService
 
     // Methods related to the Vehicle type
     List<Map<String, Object>> getVehiclesByAcctID(Integer acctID) throws ProDAOException;
-    
+
+    Map<String, Object> deleteVehicle(Integer vehicleID) throws ProDAOException;
+
+    Map<String, Object> getVehicle(Integer vehicleID) throws ProDAOException;
+
+    Map<String, Object> updateVehicle(Integer vehicleID, Map<String, Object> vehicleMap) throws ProDAOException;
+
+    Map<String, Object> createVehicle(Integer acctID, Map<String, Object> vehicleMap) throws ProDAOException;
+
     // Methods related to the Group type
     Map<String, Object> deleteGroup(Integer groupID) throws ProDAOException;
 
