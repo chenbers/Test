@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -246,7 +247,7 @@ public class DriverBean extends BaseBean
 		SpeedingEvent s = new SpeedingEvent();
 		s.setLatitude(90.000);
 		s.setLongitude(-110.0000);
-		s.setTime(456655);
+		s.setTime(new Date(456655000l));
 		s.setSpeed(87);
 		s.setAvgSpeed(65);
 		s.setTopSpeed(91);
@@ -256,7 +257,7 @@ public class DriverBean extends BaseBean
 		s = new SpeedingEvent();
 		s.setLatitude(85.000);
 		s.setLongitude(-119.0000);
-		s.setTime(47054);
+		s.setTime(new Date(47054000l));
 		s.setSpeed(87);
 		s.setAvgSpeed(64);
 		s.setTopSpeed(78);

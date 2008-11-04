@@ -1,5 +1,7 @@
 package com.inthinc.pro.model;
 
+import java.util.Date;
+
 public class SpeedingEvent extends Event
 {
 	/**
@@ -16,7 +18,7 @@ public class SpeedingEvent extends Event
 	{
 		super();
 	}
-	public SpeedingEvent(Long noteID, Integer vehicleID, Integer type, Integer time, Integer speed, Integer odometer, Double latitude, Double longitude,
+	public SpeedingEvent(Long noteID, Integer vehicleID, Integer type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude,
 						Integer topSpeed, Integer avgSpeed, Integer speedLimit, Integer distance, Integer avgRPM)
 	{
 		super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude);

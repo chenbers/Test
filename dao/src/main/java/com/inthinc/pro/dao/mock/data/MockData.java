@@ -33,7 +33,6 @@ import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.ScoreType;
-import com.inthinc.pro.model.ScoreValueType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SeatBeltEvent;
 import com.inthinc.pro.model.SpeedingEvent;
@@ -258,8 +257,7 @@ public class MockData
                               entityName, 
                               randomInt(0,50), 
                               DateUtil.getDaysBackDate(dateNow, 30 * month),
-                              scoreType,
-                              ScoreValueType.SCORE_SCALE_0_50));
+                              scoreType));
                 }
             }
         }
@@ -278,8 +276,7 @@ public class MockData
                     randomInt(0,50), 
                     DateUtil.getDaysBackDate(dateNow, 
                             (30 * monthsBack) - i * DateUtil.SECONDS_IN_DAY),
-                    scoreType,
-                    ScoreValueType.SCORE_SCALE_0_50));
+                    scoreType));
         }
     }
     
@@ -384,6 +381,7 @@ public class MockData
             Event event = null;
             Long id = new Long(idOffset+trip.getTripID() * MAX_EVENTS + eventCnt);
             int dateInSeconds = randomInt(trip.getStartTime(), trip.getEndTime());
+            Date date = DateUtil.convertTimeInSecondsToDate(dateInSeconds);
             int addressIdx  = randomInt(0, trip.getRoute().size()-1);
             double lat = trip.getRoute().get(addressIdx).getLat();
             double lng = trip.getRoute().get(addressIdx).getLng();
@@ -391,7 +389,7 @@ public class MockData
             switch (eventCategory) {
             case 1:
                 event =  new SeatBeltEvent(id, vehicleID, EventMapper.TIWIPRO_EVENT_SEATBELT, 
-                        dateInSeconds,
+                        date,
                         randomInt(15, 70), randomInt(10, 50), lat, lng, randomInt(50, 70),
                         randomInt(70, 90), randomInt(5, 20));
                 break;
@@ -428,7 +426,7 @@ public class MockData
                 
                 int severity = randomInt(0, 100);
                 event = new AggressiveDrivingEvent(id, vehicleID, EventMapper.TIWIPRO_EVENT_NOTEEVENT,
-                            dateInSeconds,
+                            date,
                         randomInt(15, 70), randomInt(10, 50), lat, lng,
                         randomInt(50, 70), deltaVx, deltaVy, deltaVz, severity);
                 break;
@@ -437,7 +435,7 @@ public class MockData
                 int avgSpeed = randomInt(speedLimit, 80);
                 int topSpeed = randomInt(avgSpeed, 100);
                 event = new SpeedingEvent(id, vehicleID, EventMapper.TIWIPRO_EVENT_SPEEDING_EX3, 
-                            dateInSeconds,
+                            date,
                             randomInt(15, 70), randomInt(10, 50), lat, lng, topSpeed, avgSpeed,
                             speedLimit, randomInt(5, 70), randomInt(10, 50));
                 break;

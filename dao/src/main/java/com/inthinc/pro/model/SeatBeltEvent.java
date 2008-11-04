@@ -1,5 +1,7 @@
 package com.inthinc.pro.model;
 
+import java.util.Date;
+
 public class SeatBeltEvent extends Event
 {
 
@@ -14,7 +16,7 @@ public class SeatBeltEvent extends Event
 	{
 		super();
 	}
-	public SeatBeltEvent(Long noteID, Integer vehicleID, Integer type, Integer time, Integer speed, Integer odometer, Double latitude, Double longitude,
+	public SeatBeltEvent(Long noteID, Integer vehicleID, Integer type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude,
 						Integer avgSpeed, Integer topSpeed, Integer distance)
 	{
 		super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude);

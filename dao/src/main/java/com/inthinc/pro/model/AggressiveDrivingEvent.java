@@ -1,5 +1,7 @@
 package com.inthinc.pro.model;
 
+import java.util.Date;
+
 public class AggressiveDrivingEvent extends Event
 {
     /**
@@ -19,7 +21,7 @@ public class AggressiveDrivingEvent extends Event
         super();
     }
 
-    public AggressiveDrivingEvent(Long noteID, Integer vehicleID, Integer type, Integer time, Integer speed,
+    public AggressiveDrivingEvent(Long noteID, Integer vehicleID, Integer type, Date time, Integer speed,
             Integer odometer, Double latitude, Double longitude, Integer avgSpeed, Integer deltaVx, Integer deltaVy,
             Integer deltaVz, Integer severity)
     {

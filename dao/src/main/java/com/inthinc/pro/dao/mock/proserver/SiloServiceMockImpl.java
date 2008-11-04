@@ -20,7 +20,6 @@ import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.ScoreType;
-import com.inthinc.pro.model.ScoreValueType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
@@ -257,8 +256,7 @@ public class SiloServiceMockImpl implements SiloService
                     (i+1) + "",     // name will be 1 to 5 for the 5 different score breakdowns 
                     new Integer(percent), 
                     startDate,
-                    ScoreType.getScoreType(scoreType),
-                    ScoreValueType.SCORE_PERCENTAGE)));
+                    ScoreType.getScoreType(scoreType))));
         }
 
         
@@ -518,7 +516,7 @@ public class SiloServiceMockImpl implements SiloService
     {
         int total = 0;
         ScoreableEntity firstEntity = allScores.get(0);
-        ScoreableEntity returnEntity = new ScoreableEntity(firstEntity.getEntityID(), EntityType.ENTITY_GROUP, firstEntity.getIdentifier(), 0, startDate, firstEntity.getScoreType(), ScoreValueType.SCORE_SCALE_0_50);
+        ScoreableEntity returnEntity = new ScoreableEntity(firstEntity.getEntityID(), EntityType.ENTITY_GROUP, firstEntity.getIdentifier(), 0, startDate, firstEntity.getScoreType());
         for (ScoreableEntity entity : allScores)
         {
             total += entity.getScore();

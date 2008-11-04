@@ -1,5 +1,7 @@
 package com.inthinc.pro.model;
 
+import java.util.Date;
+
 public class ZoneArrivalEvent extends Event
 {
 
@@ -14,7 +16,7 @@ public class ZoneArrivalEvent extends Event
 
     }
 
-    public ZoneArrivalEvent(Long noteID, Integer vehicleID, Integer type, Integer time, Integer speed,
+    public ZoneArrivalEvent(Long noteID, Integer vehicleID, Integer type, Date time, Integer speed,
             Integer odometer, Double latitude, Double longitude, Integer zoneID)
     {
         super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude);

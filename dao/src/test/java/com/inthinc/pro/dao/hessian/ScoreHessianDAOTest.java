@@ -15,7 +15,6 @@ import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.ScoreType;
-import com.inthinc.pro.model.ScoreValueType;
 import com.inthinc.pro.model.ScoreableEntity;
 
 public class ScoreHessianDAOTest

@@ -30,7 +30,7 @@ public class TeamOverviewBean extends BaseDurationBean
     private List<TabAction>  actions;
     private TabAction selectedAction;
     private NavigationBean navigation;
-    private Map<ScoreType, TabAction> actionScoreTypeMap;
+    //private Map<ScoreType, TabAction> actionScoreTypeMap;
     
     private Integer groupID;
     

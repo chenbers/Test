@@ -9,7 +9,6 @@ import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.dao.hessian.proserver.CentralService;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.ScoreType;
-import com.inthinc.pro.model.ScoreValueType;
 import com.inthinc.pro.model.ScoreableEntity;
 
 
@@ -84,17 +83,6 @@ private static final Logger logger = Logger.getLogger(ScoreHessianDAO.class);
       if (value instanceof Integer)
       {
           scoreableEntity.setScoreType(ScoreType.getScoreType((Integer)value));
-      }
-    }
-    @ConvertColumnToField(columnName = "scoreValueType")
-    public void setScoreValueType(ScoreableEntity scoreableEntity, Object value)
-    {
-      if (scoreableEntity == null || value == null)
-        return;
-
-      if (value instanceof Integer)
-      {
-          scoreableEntity.setScoreValueType(ScoreValueType.getScoreValueType((Integer)value));
       }
     }
 

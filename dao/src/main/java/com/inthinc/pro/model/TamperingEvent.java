@@ -1,5 +1,7 @@
 package com.inthinc.pro.model;
 
+import java.util.Date;
+
 public class TamperingEvent extends Event{
     /**
      * 
@@ -11,7 +13,7 @@ public class TamperingEvent extends Event{
         super();
     }
     
-    public TamperingEvent(Long noteID, Integer vehicleID, Integer type, Integer time, Integer speed, Integer odometer, Double latitude, Double longitude)
+    public TamperingEvent(Long noteID, Integer vehicleID, Integer type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude)
     {
         super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude);
     }

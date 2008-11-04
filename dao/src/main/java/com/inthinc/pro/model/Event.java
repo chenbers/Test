@@ -1,6 +1,7 @@
 package com.inthinc.pro.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Event implements Comparable<Event>, Serializable
 {
@@ -19,7 +20,7 @@ public class Event implements Comparable<Event>, Serializable
     private Integer odometer;
     private Integer sats;
     private Integer speed;
-    private Integer time;
+    private Date time;
     private Integer type;
     private transient Vehicle vehicle;
     private Integer vehicleID;
@@ -31,7 +32,7 @@ public class Event implements Comparable<Event>, Serializable
         super();
     }
 
-    public Event(Long noteID, Integer vehicleID, Integer type, Integer time, Integer speed, Integer odometer, Double latitude, Double longitude)
+    public Event(Long noteID, Integer vehicleID, Integer type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude)
     {
         super();
         this.noteID = noteID;
@@ -132,7 +133,7 @@ public class Event implements Comparable<Event>, Serializable
         return speed;
     }
 
-    public Integer getTime()
+    public Date getTime()
     {
         return time;
     }
@@ -157,7 +158,7 @@ public class Event implements Comparable<Event>, Serializable
     {
         int result = 17;
         result = 31 * result + (int) (noteID ^ (noteID>>>32));
-        result = 31 * result + time;
+        result = 31 * result + (int)(time.getTime()/1000);
         return result;
     }
 
@@ -216,7 +217,7 @@ public class Event implements Comparable<Event>, Serializable
         this.speed = speed;
     }
 
-    public void setTime(Integer time)
+    public void setTime(Date time)
     {
         this.time = time;
     }
