@@ -6,8 +6,6 @@ import com.inthinc.pro.dao.hessian.proserver.CentralService;
 import com.inthinc.pro.dao.hessian.proserver.HessianService;
 import com.inthinc.pro.dao.hessian.proserver.ServiceCreator;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
-import com.inthinc.pro.dao.mock.service.impl.CentralServiceMockImpl;
-import com.inthinc.pro.dao.mock.service.impl.SiloServiceMockImpl;
 
 public class MockServiceCreator<T extends HessianService> implements ServiceCreator<T>
 {

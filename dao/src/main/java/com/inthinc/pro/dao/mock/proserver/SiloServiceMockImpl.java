@@ -1,4 +1,4 @@
-package com.inthinc.pro.dao.mock.service.impl;
+package com.inthinc.pro.dao.mock.proserver;
 
 import java.util.ArrayList;
 import java.util.List;
