@@ -1,0 +1,60 @@
+<ui:composition template="adminTable.xhtml"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:rich="http://richfaces.org/rich"
+  xmlns:security="http://www.springframework.org/security/tags">
+
+  <ui:param name="recordCount" value="#{personBean.itemCount}" />
+  <ui:param name="items" value="#{personBean.filteredItems}" />
+  <ui:param name="filterValue" value="#{personBean.filterValue}" />
+  <ui:param name="page" value="#{personBean.page}" />
+  <ui:param name="editorBean" value="#{personBean}" />
+  <ui:param name="allColumns" value="#{personBean.availableColumns}" />
+  <ui:param name="allColumnsCount" value="#{personBean.availableColumnCount}" />
+  <ui:param name="selectedColumns" value="#{personBean.columns}" />
+  <ui:param name="messagesPrefix" value="usersHeader_" />
+
+  <ui:define name="columns">
+    <rich:column rendered="#{personBean.columns['userID']}" sortBy="#{item.user.userID}">
+      <f:facet name="header"><h:outputText value="#{messages.usersHeader_userID}" /></f:facet>
+      <h:outputText value="#{item.user.userID}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.columns['fullName']}" sortBy="#{item.first}" sortOrder="ASCENDING">
+      <f:facet name="header"><h:outputText value="#{messages.usersHeader_fullName}" /></f:facet>
+<!-- TODO: link for viewing the employee's report -->
+      <h:outputText value="#{item.first}" /><h:outputText value=" " /><h:outputText value="#{item.last}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.columns['active']}" sortBy="#{item.user.active}">
+      <f:facet name="header"><h:outputText value="#{messages.usersHeader_active}" /></f:facet>
+      <h:outputText value="#{item.user.active ? messages.active : messages.inactive}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.columns['username']}" sortBy="#{item.user.username}">
+      <f:facet name="header"><h:outputText value="#{messages.usersHeader_username}" /></f:facet>
+      <h:outputText value="#{item.user.username}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.columns['role']}" sortBy="#{item.user.role}">
+      <f:facet name="header"><h:outputText value="#{messages.usersHeader_role}" /></f:facet>
+      <h:outputText value="#{item.user.role}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.columns['workPhone']}" sortBy="#{item.workPhone}">
+      <f:facet name="header"><h:outputText value="#{messages.usersHeader_workPhone}" /></f:facet>
+      <h:outputText value="#{item.workPhone}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.columns['homePhone']}" sortBy="#{item.homePhone}">
+      <f:facet name="header"><h:outputText value="#{messages.usersHeader_homePhone}" /></f:facet>
+      <h:outputText value="#{item.homePhone}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.columns['email']}" sortBy="#{item.email}">
+      <f:facet name="header"><h:outputText value="#{messages.usersHeader_email}" /></f:facet>
+      <a href="mailto:#{item.email}"><h:outputText value="#{item.email}" /></a>
+    </rich:column>
+    <rich:column rendered="#{personBean.columns['timeZone']}" sortBy="#{item.timeZone}">
+      <f:facet name="header"><h:outputText value="#{messages.usersHeader_timeZone}" /></f:facet>
+      <h:outputText value="#{item.timeZone.displayName}" />
+    </rich:column>
+<!-- TODO: more columns once the Person object has 'em -->
+  </ui:define>
+
+</ui:composition>

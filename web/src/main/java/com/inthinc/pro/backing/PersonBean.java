@@ -15,17 +15,15 @@ import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.GroupDAO;
-import com.inthinc.pro.dao.UserDAO;
+import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
-import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.State;
-import com.inthinc.pro.model.User;
 
 /**
  * @author David Gileadi
  */
-public class UsersBean extends BaseAdminBean<UsersBean.UserView>
+public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
 {
     private static final List<String>            AVAILABLE_COLUMNS;
     private static final int[]                   DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2 };
@@ -52,21 +50,18 @@ public class UsersBean extends BaseAdminBean<UsersBean.UserView>
         AVAILABLE_COLUMNS.add("department");
         AVAILABLE_COLUMNS.add("vehicle");
         AVAILABLE_COLUMNS.add("dob");
+        AVAILABLE_COLUMNS.add("gender");
+        AVAILABLE_COLUMNS.add("height");
+        AVAILABLE_COLUMNS.add("weight");
         AVAILABLE_COLUMNS.add("address.street1");
         AVAILABLE_COLUMNS.add("address.street2");
         AVAILABLE_COLUMNS.add("address.city");
         AVAILABLE_COLUMNS.add("address.state");
         AVAILABLE_COLUMNS.add("address.zip");
-        AVAILABLE_COLUMNS.add("gender");
-        AVAILABLE_COLUMNS.add("height");
-        AVAILABLE_COLUMNS.add("weight");
-        AVAILABLE_COLUMNS.add("driversLicense.number");
-        AVAILABLE_COLUMNS.add("driversLicense.class");
-        AVAILABLE_COLUMNS.add("driversLicense.expiration");
-        AVAILABLE_COLUMNS.add("certifications");
-        AVAILABLE_COLUMNS.add("dot");
-        AVAILABLE_COLUMNS.add("citations");
-        AVAILABLE_COLUMNS.add("points");
+        AVAILABLE_COLUMNS.add("driver.license");
+        AVAILABLE_COLUMNS.add("driver.licenseClass");
+        AVAILABLE_COLUMNS.add("driver.state");
+        AVAILABLE_COLUMNS.add("driver.expiration");
 
         // time zones
         final String[] timezones = TimeZone.getAvailableIDs();
@@ -81,13 +76,13 @@ public class UsersBean extends BaseAdminBean<UsersBean.UserView>
             STATES.put(states[i].getName(), states[i]);
     }
 
-    private UserDAO                              userDAO;
+    private PersonDAO                            personDAO;
     private GroupDAO                             groupDAO;
     private TreeMap<String, Integer>             groups;
 
-    public void setUserDAO(UserDAO userDAO)
+    public void setPersonDAO(PersonDAO personDAO)
     {
-        this.userDAO = userDAO;
+        this.personDAO = personDAO;
     }
 
     public void setGroupDAO(GroupDAO groupDAO)
@@ -96,104 +91,43 @@ public class UsersBean extends BaseAdminBean<UsersBean.UserView>
     }
 
     @Override
-    protected List<UserView> loadItems()
+    protected List<PersonView> loadItems()
     {
-        // get the users
-        List<User> plainUsers = new LinkedList<User>();
-        for (int i = 0; i < 120; i++)
-            plainUsers.add(createDummyUser());
-        // TODO: use the commented line below instead
-        // final List<Vehicle> plainUsers = userDAO.getUsersInGroupHierarchy(getUser().getGroupID());
+        // get the people
+        final List<Person> plainPeople = personDAO.getPeopleInGroupHierarchy(getUser().getPerson().getGroupID());
 
-        // convert the users to UserViews
-        final LinkedList<UserView> items = new LinkedList<UserView>();
-        for (final User user : plainUsers)
-            items.add(createUserView(user));
+        // convert the people to PersonViews
+        final LinkedList<PersonView> items = new LinkedList<PersonView>();
+        for (final Person person : plainPeople)
+            items.add(createPersonView(person));
 
         return items;
     }
 
-    @Deprecated
-    private User createDummyUser()
-    {
-        final User user = new User();
-        user.setUserID((int) (Math.random() * Integer.MAX_VALUE));
-        final Role[] roles = Role.values();
-        user.setRole(roles[randomInt(roles.length)]);
-        user.setActive(Math.random() < .75);
-        user.setPerson(new Person());
-        user.getPerson().setUser(user);
-        user.getPerson().setFirst(createDummyName());
-        user.getPerson().setLast(createDummyName());
-        user.setUsername((user.getPerson().getFirst().charAt(0) + user.getPerson().getLast()).toLowerCase());
-        user.getPerson().setWorkPhone(createDummyPhone());
-        user.getPerson().setHomePhone(createDummyPhone());
-        user.getPerson().setEmail(user.getPerson().getFirst() + '.' + user.getPerson().getLast() + "@nowhere.com");
-        final String[] timeZones = TimeZone.getAvailableIDs();
-        user.getPerson().setTimeZone(TimeZone.getTimeZone(timeZones[randomInt(timeZones.length)]));
-        return user;
-    }
-
-    @Deprecated
-    private String createDummyName()
-    {
-        return createDummyString("abcdefghijklmnoprstuvwyz", randomInt(9) + 2);
-    }
-
-    @Deprecated
-    private String createDummyPhone()
-    {
-        final String numbers = "1234567890";
-        return createDummyString(numbers, 3) + '-' + createDummyString(numbers, 3) + '-' + createDummyString(numbers, 4);
-    }
-
-    @Deprecated
-    private String createDummyString(final String letters, final int length)
-    {
-        final StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < length; i++)
-        {
-            final char letter = letters.charAt(randomInt(letters.length()));
-            if (i == 0)
-                sb.append(String.valueOf(letter).toUpperCase());
-            else
-                sb.append(letter);
-        }
-        return sb.toString();
-    }
-
-    @Deprecated
-    private int randomInt(int limit)
-    {
-        return (int) (Math.random() * limit);
-    }
-
     /**
-     * Creates a UserView object from the given User object and score.
+     * Creates a PersonView object from the given Person object and score.
      * 
-     * @param user
-     *            The user.
-     * @param score
-     *            The user's overall score.
-     * @return The new UserView object.
+     * @param person
+     *            The person.
+     * @return The new PersonView object.
      */
-    private UserView createUserView(User user)
+    private PersonView createPersonView(Person person)
     {
-        final UserView userView = new UserView();
-        BeanUtils.copyProperties(user, userView);
+        final PersonView personView = new PersonView();
+        BeanUtils.copyProperties(person, personView);
 
-        userView.setGroup(groupDAO.findByID(user.getPerson().getGroupID()));
-        userView.setSelected(false);
+        personView.setGroup(groupDAO.findByID(person.getGroupID()));
+        personView.setSelected(false);
 
-        return userView;
+        return personView;
     }
 
     @Override
-    protected boolean matchesFilter(UserView user, String filterWord)
+    protected boolean matchesFilter(PersonView person, String filterWord)
     {
         // TODO: match by visible columns instead
-        return user.getPerson().getFirst().toLowerCase().startsWith(filterWord) || user.getPerson().getLast().toLowerCase().startsWith(filterWord)
-                || String.valueOf(user.getUserID()).startsWith(filterWord);
+        return person.getFirst().toLowerCase().startsWith(filterWord) || person.getLast().toLowerCase().startsWith(filterWord)
+                || String.valueOf(person.getUser().getUserID()).startsWith(filterWord);
     }
 
     @Override
@@ -219,20 +153,20 @@ public class UsersBean extends BaseAdminBean<UsersBean.UserView>
     }
 
     @Override
-    protected UserView createAddItem()
+    protected PersonView createAddItem()
     {
-        // TODO: if User has child objects, create them too
-        return createUserView(new User());
+        // TODO: if Person has child objects, create them too
+        return createPersonView(new Person());
     }
 
     @Override
-    protected void doDelete(List<UserView> deleteItems)
+    protected void doDelete(List<PersonView> deleteItems)
     {
         // TODO delete the items
     }
 
     @Override
-    protected void doSave(List<UserView> saveItems)
+    protected void doSave(List<PersonView> saveItems)
     {
         // TODO save the items
     }
@@ -271,7 +205,7 @@ public class UsersBean extends BaseAdminBean<UsersBean.UserView>
         return groups;
     }
 
-    public static class UserView extends User implements Selectable
+    public static class PersonView extends Person implements Selectable
     {
         private Group   group;
         private boolean selected;

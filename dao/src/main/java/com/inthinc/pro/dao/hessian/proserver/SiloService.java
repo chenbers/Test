@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.inthinc.pro.ProDAOException;
-import com.inthinc.pro.model.ScoreableEntity;
 
 public interface SiloService extends HessianService
 {
@@ -17,6 +16,15 @@ public interface SiloService extends HessianService
     Map<String, Object> updateUser(Integer userID, Map<String, Object> userMap) throws ProDAOException;
 
     Map<String, Object> createUser(Integer acctID, Map<String, Object> userMap) throws ProDAOException;
+
+    // Methods related to the Person type
+    Map<String, Object> deletePerson(Integer personID) throws ProDAOException;
+
+    Map<String, Object> getPerson(Integer personID) throws ProDAOException;
+
+    Map<String, Object> updatePerson(Integer personID, Map<String, Object> personMap) throws ProDAOException;
+
+    Map<String, Object> createPerson(Integer acctID, Map<String, Object> personMap) throws ProDAOException;
 
     // Methods related to the Vehicle type
     List<Map<String, Object>> getVehiclesByAcctID(Integer acctID) throws ProDAOException;
@@ -105,5 +113,13 @@ public interface SiloService extends HessianService
      * @throws ProDAOException
      */
     List<Map<String, Object>> getScoreBreakdown(Integer groupID, Integer startDate, Integer endDate, Integer scoreType) throws ProDAOException;
-    
+
+    /**
+     * Retrieves the IDs of all people in the hierarchy for the given group ID--that is, the matching group plus all groups beneath it.
+     * 
+     * @param groupID
+     *            The ID of the group at the top of the hierarchy.
+     * @return A list of maps of personIDs.
+     */
+    List<Map<String, Object>> getPersonIDsInGroupHierarchy(Integer groupID);
 }

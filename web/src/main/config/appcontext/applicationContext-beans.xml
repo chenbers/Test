@@ -44,8 +44,8 @@
 		<property name="navigation" ref="navigationBean"></property>
    </bean>
 
-   <bean id="usersBean" class="com.inthinc.pro.backing.UsersBean" scope="session">
-    <property name="userDAO" ref="userDAO"></property>
+   <bean id="personBean" class="com.inthinc.pro.backing.PersonBean" scope="session">
+    <property name="personDAO" ref="personDAO"></property>
     <property name="groupDAO" ref="groupDAO"></property>
    </bean>
 

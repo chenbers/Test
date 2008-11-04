@@ -9,6 +9,9 @@
    <bean id="userDAO" class="com.inthinc.pro.dao.hessian.UserHessianDAO" 
    		parent="genericDAO">
    </bean>
+   <bean id="personDAO" class="com.inthinc.pro.dao.hessian.PersonHessianDAO" 
+      parent="genericDAO">
+   </bean>
    <bean id="groupDAO" class="com.inthinc.pro.dao.hessian.GroupHessianDAO" 
    		parent="genericDAO">
    </bean>

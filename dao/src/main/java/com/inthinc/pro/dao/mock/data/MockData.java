@@ -186,6 +186,8 @@ public class MockData
         user.getPerson().setAccountID(accountID);
         user.getPerson().setGroupID(groupID);
         user.getPerson().setEmail(email);
+        user.getPerson().setFirst(username.substring(0, username.length() / 2));
+        user.getPerson().setLast(username.substring(username.length() / 2));
         user.getPerson().setUser(user);
         return user;
     }

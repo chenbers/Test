@@ -1,6 +1,7 @@
 package com.inthinc.pro.dao.mock.proserver;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreValueType;
 import com.inthinc.pro.model.ScoreableEntity;
@@ -27,7 +29,7 @@ public class SiloServiceMockImpl implements SiloService
     private static final Logger logger = Logger.getLogger(SiloServiceMockImpl.class);
 
     // helper method
-    private Map<String, Object>doMockLookup(Class clazz, String key, Object searchValue, String emptyResultSetMsg, String methodName)
+    private Map<String, Object>doMockLookup(Class<?> clazz, String key, Object searchValue, String emptyResultSetMsg, String methodName)
     {
         Map<String, Object> returnMap =  MockData.getInstance().lookup(clazz, key, searchValue);
 
@@ -63,6 +65,35 @@ public class SiloServiceMockImpl implements SiloService
 
     @Override
     public Map<String, Object> updateUser(Integer userID, Map<String, Object> userMap) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    
+    @Override
+    public Map<String, Object> deletePerson(Integer personID) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    public Map<String, Object> createPerson(Integer acctID, Map<String, Object> personMap) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> getPerson(Integer personID) throws ProDAOException
+    {
+        return doMockLookup(Person.class, "personID", personID, "No person for ID: " + personID, "getPerson");
+
+    }
+
+    @Override
+    public Map<String, Object> updatePerson(Integer personID, Map<String, Object> personMap) throws ProDAOException
     {
         // TODO Auto-generated method stub
         return null;
@@ -347,6 +378,8 @@ public class SiloServiceMockImpl implements SiloService
     public List<Map<String, Object>> getGroupHierarchy(Integer groupID) throws ProDAOException
     {
         Group topGroup= MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
+        if (topGroup == null)
+            return new ArrayList<Map<String, Object>>();
 
         List<Group> hierarchyGroups = new ArrayList<Group>();
         hierarchyGroups.add(topGroup);
@@ -419,5 +452,25 @@ public class SiloServiceMockImpl implements SiloService
         }
         
         return returnDriverList;
+    }
+
+    @Override
+    public List<Map<String, Object>> getPersonIDsInGroupHierarchy(Integer groupID)
+    {
+        final List<Map<String, Object>> personIDs = new LinkedList<Map<String,Object>>();
+
+        final List<Map<String, Object>> hierarchy = new SiloServiceCreator().getService().getGroupHierarchy(groupID);
+        for (final Map<String, Object> map : hierarchy)
+        {
+            final Integer id = (Integer) map.get("groupID");
+            if (id != null)
+            {
+                final SearchCriteria criteria = new SearchCriteria();
+                criteria.addKeyValue("groupID", id);
+                personIDs.addAll(MockData.getInstance().lookupList(Person.class, criteria));
+            }
+        }
+
+        return personIDs;
     }
 }
