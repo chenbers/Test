@@ -253,6 +253,7 @@
 				</div>
 					<div class="panel_w">
 					  <div class="panel_content">
+							
 					  	<h:panelGroup styleClass="map-border" layout="block">
 							<div id="map-canvas" style="width:458px;height:300px;border:0"></div>
 					  	</h:panelGroup>
@@ -266,6 +267,39 @@
 								map.setMapType(G_MAP_TYPE);
       						}
     					</script>
+					  </div>
+					</div>
+				<div class="panel_sw">
+					<div class="panel_statusbar"></div>
+				</div>
+			</div>
+		<!-- END PANEL -->
+		
+		<div class="spacer"></div>
+				
+		<!-- START PANEL -->
+			<div class="">
+				<div class="panel_nw">
+					<div class="panel_title">
+						<span class="coaching">Miles Per Gallon</span>
+						<span class="panel_links">_</span>					</div>
+				</div>
+					<div class="panel_w">
+					  <div class="panel_content">
+					    <table width="450" border="0" align="center" cellpadding="0" cellspacing="0">
+                          <tr>
+                            <td>
+                            <rich:panel id="mpg_chart"></rich:panel>
+                            <h:inputHidden value="#{driverBean.mpg}" id="hiddenField5" />
+							<script type="text/javascript">
+								var targetElement5 = document.getElementById("hiddenField5");
+								var chart = new FusionCharts("../fusioncharts/MSArea.swf", "ChartId", "450", "300", "0", "0");
+								chart.setDataXML(targetElement5.value);
+								chart.render("mpg_chart");
+							</script>
+                            </td>
+                          </tr>
+                        </table>
 					  </div>
 					</div>
 				<div class="panel_sw">
@@ -313,3 +347,8 @@
 </ui:define>
 
 </ui:composition>
+
+ <div id="mpg_chart"></div>
+
+
+
