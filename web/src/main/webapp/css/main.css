@@ -1588,16 +1588,16 @@ color: #fff;
 	color: #c26b06;
 	}
 	
-.redflag {
+#redflag {
 	background: #fce9e9 url(../images/icon_msg_redflag.png) top left no-repeat;
 	border: 1px solid #f46666;
 	color: #c44d34;
 	}
 	
-.redflag a:active,
-.redflag a:link,
-.redflag a:hover,
-.redflag a:visited {
+#redflag a:active,
+#redflag a:link,
+#redflag a:hover,
+#redflag a:visited {
 	color: #c44d34;
 	}
 	
