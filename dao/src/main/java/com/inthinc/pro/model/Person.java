@@ -18,6 +18,7 @@ public class Person extends BaseEntity
     private String   workPhone;
     private String   email;
     // employee information
+    private String   empid;
     private Integer  reportsTo; // userID
     private String   title;
     private String   dept;
@@ -112,6 +113,16 @@ public class Person extends BaseEntity
     public void setEmail(String email)
     {
         this.email = email;
+    }
+
+    public String getEmpid()
+    {
+        return empid;
+    }
+
+    public void setEmpid(String empid)
+    {
+        this.empid = empid;
     }
 
     public Integer getReportsTo()

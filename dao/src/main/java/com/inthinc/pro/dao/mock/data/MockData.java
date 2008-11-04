@@ -47,7 +47,7 @@ public class MockData
     static final String PASSWORD="nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7"; // password
 
     
-    private Map<Class, List<Object>> dataMap = new HashMap<Class, List<Object>>();
+    private Map<Class<?>, List<Object>> dataMap = new HashMap<Class<?>, List<Object>>();
 
     //  base all dates in the mock data after this, so that it is easier to unit test
     public Integer dateNow;    
@@ -183,6 +183,7 @@ public class MockData
         user.setActive(active);
         user.setPerson(new Person());
         user.getPerson().setPersonID(id);
+        user.getPerson().setEmpid(String.valueOf(id));
         user.getPerson().setAccountID(accountID);
         user.getPerson().setGroupID(groupID);
         user.getPerson().setEmail(email);
@@ -327,6 +328,7 @@ public class MockData
             person = new Person();
             storeObject(person);
         }
+        person.setEmpid(String.valueOf(id));
         person.setPersonID(id);
         person.setAccountID(accountID);
         person.setGroupID(groupID);
