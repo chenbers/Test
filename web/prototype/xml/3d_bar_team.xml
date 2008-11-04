@@ -23,6 +23,9 @@
 	
 	showPlotBorder='0'
 	plotFillRatio='100'
+	
+	useRoundEdges='1'
+	palette='2'
 	>
 
 <categories>
