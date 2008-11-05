@@ -1,0 +1,169 @@
+package com.inthinc.pro.backing;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+
+import com.inthinc.pro.backing.ui.ScoreBox;
+import com.inthinc.pro.backing.ui.ScoreBoxSizes;
+import com.inthinc.pro.model.DriverReportItem;
+
+public class DriverReportBean extends BaseBean
+{
+    private static final Logger logger = Logger.getLogger(DriverReportBean.class);
+    
+    private List <DriverReportItem> driverData = new ArrayList<DriverReportItem>();
+    private static final List<String> AVAILABLE_COLUMNS;
+    private Map<String, Boolean> driverColumns = new HashMap<String, Boolean>();
+    
+    private DriverReportItem drt = null;
+    
+    static
+    {
+        // available columns
+        AVAILABLE_COLUMNS = new ArrayList<String>();
+        AVAILABLE_COLUMNS.add("group");
+        AVAILABLE_COLUMNS.add("employeeID");
+        AVAILABLE_COLUMNS.add("employee");
+        AVAILABLE_COLUMNS.add("vehicleID");
+        AVAILABLE_COLUMNS.add("milesDriven");
+        AVAILABLE_COLUMNS.add("overall");
+        AVAILABLE_COLUMNS.add("speed");
+        AVAILABLE_COLUMNS.add("style");
+        AVAILABLE_COLUMNS.add("seatBelt");
+    }
+    
+    public void init() {               
+        ScoreBox sb = new ScoreBox(0,ScoreBoxSizes.SMALL);
+//Replace this with DAO for a "search" for all drivers for a given logged-in user                
+        drt = new DriverReportItem();
+        drt.setEmployee("John Doe");
+        drt.setEmployeeID(123456);
+        drt.setGroup("North");
+        drt.setMilesDriven(202114);
+        drt.setOverallScore(43);
+        drt.setSeatBeltScore(22);
+        drt.setSpeedScore(12);
+        drt.setStyleScore(34);
+        setStyles();
+        drt.setVehicleID("AE-114");
+        driverData.add(drt);
+
+        drt = new DriverReportItem();        
+        drt.setEmployee("Mary Doe");
+        drt.setEmployeeID(64321);
+        drt.setGroup("South");
+        drt.setMilesDriven(111114);
+        drt.setOverallScore(23);
+        drt.setSeatBeltScore(42);
+        drt.setSpeedScore(42);
+        drt.setStyleScore(14);
+        setStyles();
+        drt.setVehicleID("DD-432");
+        driverData.add(drt);
+
+        drt = new DriverReportItem();
+        drt.setEmployee("Hyrum Doe");
+        drt.setEmployeeID(45631);
+        drt.setGroup("Central");
+        drt.setMilesDriven(2114);
+        drt.setOverallScore(22);               
+        drt.setSeatBeltScore(15);
+        drt.setSpeedScore(49);
+        drt.setStyleScore(33);
+        setStyles();
+        drt.setVehicleID("JKD-324");
+        driverData.add(drt);
+
+        drt = new DriverReportItem();
+        drt.setEmployee("Frank Zappa");
+        drt.setEmployeeID(666666);
+        drt.setGroup("East");
+        drt.setMilesDriven(224561114);
+        drt.setOverallScore(11);               
+        drt.setSeatBeltScore(45);
+        drt.setSpeedScore(29);
+        drt.setStyleScore(50);
+        setStyles();
+        drt.setVehicleID("FZ-109");
+        driverData.add(drt);               
+        
+        for ( int i = 0; i < DriverReportBean.AVAILABLE_COLUMNS.size(); i++ ) {
+            this.driverColumns.put(DriverReportBean.AVAILABLE_COLUMNS.get(i),true);
+        }
+    }
+        
+
+    public List<DriverReportItem> getDriverData()
+    {
+        logger.debug("getting");   
+        if ( driverData.size() > 0 ) {
+            return driverData;
+        } else {
+            return new ArrayList<DriverReportItem>();
+        }
+    }
+
+    public void setDriverData(List<DriverReportItem> driverData)
+    {
+        this.driverData = driverData;
+    }
+    
+    public void search() {     
+        logger.debug("searching");
+        
+        if ( this.driverData.size() > 0 ) {
+            this.driverData.clear();
+        }
+        
+        ScoreBox sb = new ScoreBox(0,ScoreBoxSizes.SMALL);
+
+        drt = new DriverReportItem();
+        drt.setEmployee("Ivebeen Searchedfor");
+        drt.setEmployeeID(123456789);
+        drt.setGroup("Hidden");
+        drt.setMilesDriven(112233);
+        drt.setOverallScore(12);
+        drt.setSeatBeltScore(23);
+        drt.setSpeedScore(34);
+        drt.setStyleScore(45);
+        setStyles();
+        drt.setVehicleID("AA-123");                
+        driverData.add(drt);      
+    }
+    
+    public Map<String, Boolean> getDriverColumns()    
+    {
+        //Need to do the check to prevent odd access behavior
+        if ( driverColumns.size() > 0 ) {     
+            return driverColumns;
+        } else {
+            return new HashMap<String, Boolean>();
+        }
+    }
+
+    public void setDriverColumns(Map<String, Boolean> driverColumns)
+    {
+        this.driverColumns = driverColumns;
+    }
+    
+    private void setStyles() {
+        ScoreBox sb = new ScoreBox(0,ScoreBoxSizes.SMALL);  
+        
+        sb.setScore(drt.getOverallScore());
+        drt.setStyleOverall(sb.getScoreStyle());
+        
+        sb.setScore(drt.getSeatBeltScore());
+        drt.setStyleSeatBelt(sb.getScoreStyle());
+        
+        sb.setScore(drt.getSpeedScore());
+        drt.setStyleSpeed(sb.getScoreStyle());
+        
+        sb.setScore(drt.getStyleScore());
+        drt.setStyleStyle(sb.getScoreStyle());
+        
+    }
+}
