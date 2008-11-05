@@ -1,0 +1,95 @@
+<ui:composition 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:f="http://java.sun.com/jsf/core"
+  	xmlns:iwi="http://pro.tiwi.com/jsf"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+	<h:form id="driverReportTable">
+		
+		<div class="datagrid">
+
+        	<rich:datascroller id="topScroller" for="items" 
+        		reRender="bottomScroller,items" />
+		
+				<rich:dataTable value="#{driverData}" id="items"
+					var="item" styleClass="datagrid"
+					rowClasses="trendTableOdd,trendTableEven" cellspacing="1" rows="25"
+					width="100%" binding="#{driverTable}">
+
+					<!-- Data -->
+					<rich:column rendered="#{driverColumns['group']}" 
+						sortBy="#{item.group}">
+						<f:facet name="header">
+							<h:outputText value="Group" />
+						</f:facet>
+						<h:outputText value="#{item.group}" />
+    				</rich:column>
+    				<rich:column rendered="#{driverColumns['employeeID']}" 
+    					sortBy="#{item.employeeID}">
+      					<f:facet name="header">
+      						<h:outputText value="EmployeeID" />
+      					</f:facet>
+						<h:outputText value="#{item.employeeID}" />      
+    				</rich:column>
+    				<rich:column rendered="#{driverColumns['employee']}" 
+    					sortBy="#{item.employee}">
+      					<f:facet name="header">
+      						<h:outputText value="Employee" />
+      					</f:facet>
+      					<h:outputText value="#{item.employee}" />
+    				</rich:column>
+    				<rich:column rendered="#{driverColumns['vehicleID']}" 
+    					sortBy="#{item.vehicleID}">
+      					<f:facet name="header">
+      						<h:outputText value="Vehicle" />
+      					</f:facet>
+      					<h:outputText value="#{item.vehicleID}" />
+    				</rich:column>
+    				<rich:column rendered="#{driverColumns['milesDriven']}" 
+    					sortBy="#{item.milesDriven}">
+      					<f:facet name="header">
+      						<h:outputText value="Miles Driven" />
+      					</f:facet>
+      					<h:outputText value="#{item.milesDriven}" />
+    				</rich:column>
+    				<rich:column rendered="#{driverColumns['overall']}" 
+    					>
+      					<f:facet name="header">
+      						<h:outputText value="Overall" />
+      					</f:facet>
+      					<iwi:scoreBox style="#{item.styleOverall}" score="#{item.overallScore}"/>      					
+    				</rich:column>
+    				<rich:column rendered="#{driverColumns['speed']}" 
+    					>
+      					<f:facet name="header">
+      						<h:outputText value="Speed" />
+      					</f:facet>
+      					<iwi:scoreBox style="#{item.styleSpeed}" score="#{item.speedScore}"/>
+    				</rich:column>
+    				<rich:column rendered="#{driverColumns['style']}" 
+    					>
+      					<f:facet name="header">
+      						<h:outputText value="Style" />
+      					</f:facet>
+      					<iwi:scoreBox style="#{item.styleStyle}" score="#{item.styleScore}"/>
+    				</rich:column>
+    				<rich:column rendered="#{driverColumns['seatBelt']}" 
+    					>
+      					<f:facet name="header">
+      						<h:outputText value="Seat Belt" />
+      					</f:facet>      					
+      					<iwi:scoreBox style="#{item.styleSeatBelt}" score="#{item.seatBeltScore}"/>
+    				</rich:column>
+    			</rich:dataTable>
+    		
+    			<rich:datascroller id="bottomScroller" for="items" 
+    				reRender="topScroller,items"  />
+
+			</div>	
+
+		</h:form> 
+	
+
+</ui:composition>
