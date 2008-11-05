@@ -71,8 +71,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         // states
         final State[] states = State.values();
         STATES = new TreeMap<String, State>();
-        for (int i = 0; i < states.length; i++)
-            STATES.put(states[i].getName(), states[i]);
+        for (final State state : states)
+            STATES.put(state.getName(), state);
     }
 
     private VehicleDAO                           vehicleDAO;

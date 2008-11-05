@@ -24,27 +24,27 @@
 
         <a4j:form id="edit-form">
 
-            <div class="">
-              <div class="panel_nw">
-                <div class="panel_title">
-                  <span class="admin"><h:outputText value="#{vehiclesBean.add ? messages.adminHeader_addVehicle : (vehiclesBean.batchEdit ? messages.adminHeader_editVehicles : messages.adminHeader_editVehicle)}" /></span>
-                  <span class="panel_links"></span>
-                </div>
+          <div class="">
+            <div class="panel_nw">
+              <div class="panel_title">
+                <span class="admin"><h:outputText value="#{vehiclesBean.add ? messages.adminHeader_addVehicle : (vehiclesBean.batchEdit ? messages.adminHeader_editVehicles : messages.adminHeader_editVehicle)}" /></span>
+                <span class="panel_links"></span>
               </div>
-                <div class="panel_w">
-                  <div class="panel_content">
+            </div>
+            <div class="panel_w">
+              <div class="panel_content">
 
-                  <ul id="grid_nav" style="margin: 0;">
-                    <li class="r"><h:commandLink action="#{vehiclesBean.cancelEdit}" immediate="true"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
-                    <li class="r"><h:commandLink action="#{vehiclesBean.save}"><button value="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink></li>
-                  </ul>
+                <ul id="grid_nav" style="margin: 0;">
+                  <li class="r"><h:commandLink action="#{vehiclesBean.cancelEdit}" immediate="true"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
+                  <li class="r"><h:commandLink action="#{vehiclesBean.save}"><button value="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink></li>
+                </ul>
 
-                  <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
+                <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
 
-                  <div class="spacer"></div>
+                <div class="spacer"></div>
 
-                  <table width="790" border="0" cellspacing="0" cellpadding="0">
-                    <tr>
+                <table width="790" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
                     <td width="390" valign="top">
 
                       <div class="add_section_title"><h:outputText value="#{messages.editVehicle_vehicleInformation}" /></div>
@@ -236,7 +236,7 @@
     <script type="text/javascript">
   function checkMultiple(item)
   {
-    var box = document.getElementById("overall-form:update_" + item.id);
+    var box = document.getElementById("edit-form:update_" + item.id);
     if (box)
       box.checked = true;
   }
