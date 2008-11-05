@@ -6,7 +6,7 @@ import java.util.Map;
 
 public enum Gender implements BaseEnum
 {
-    MALE(1, "Male"), FEMALE(2, "Female");
+    MALE(1, "MALE"), FEMALE(2, "FEMALE");
 
     private int    code;
     private String description;

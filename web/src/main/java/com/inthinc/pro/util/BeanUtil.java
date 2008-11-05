@@ -2,8 +2,12 @@ package com.inthinc.pro.util;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.FatalBeanException;
@@ -61,6 +65,27 @@ public class BeanUtil
      */
     public static void deepCopy(Object source, Object target, List<String> ignoreProperties)
     {
+        final HashMap<Object, Object> map = new HashMap<Object, Object>();
+        map.put(source, target);
+        deepCopy(source, target, ignoreProperties, map);
+    }
+
+    /**
+     * Deep copies the source object into the target object. Requires that all complex members must have a no-argument constructor.
+     * 
+     * @param source
+     *            The source bean.
+     * @param target
+     *            The target bean.
+     * @param ignoreProperties
+     *            Optional list of property names to ignore. Child property names are separated by dots, e.g. "property.child".
+     * @param map
+     *            A map of source-to-target copies we've already made, to handle circular references.
+     * @throws BeanInitializationException
+     * @throws FatalBeanException
+     */
+    private static void deepCopy(Object source, Object target, List<String> ignoreProperties, Map<Object, Object> map)
+    {
         // deep-copy children
         for (final PropertyDescriptor descriptor : BeanUtils.getPropertyDescriptors(source.getClass()))
         {
@@ -81,9 +106,13 @@ public class BeanUtil
                         final Object sourceProperty = readMethod.invoke(source, new Object[0]);
                         if (sourceProperty != null)
                         {
-                            // simple or deep copy
+                            // simple copy
                             if (BeanUtils.isSimpleProperty(clazz) || clazz.isEnum())
                                 writeMethod.invoke(target, new Object[] { sourceProperty });
+                            // circular reference: simply store the target reference
+                            else if (map.get(sourceProperty) != null)
+                                writeMethod.invoke(target, new Object[] { map.get(sourceProperty) });
+                            // deep copy
                             else
                             {
                                 // get or create the container
@@ -106,7 +135,9 @@ public class BeanUtil
                                             childIgnore.add(key.substring(prefix.length()));
 
                                 // recurse
-                                deepCopy(sourceProperty, targetProperty, childIgnore);
+                                map.put(sourceProperty, targetProperty);
+                                deepCopy(sourceProperty, targetProperty, childIgnore, map);
+                                map.remove(sourceProperty);
                             }
                         }
                     }
@@ -131,35 +162,64 @@ public class BeanUtil
      */
     public static void compareAndInit(Object item, Object compareTo)
     {
+        final HashSet<Object> compared = new HashSet<Object>();
+        compared.add(item);
+        compareAndInit(item, compareTo, compared);
+    }
+
+    /**
+     * Deeply compares all properties of the item to the given compare item, nulling the property of the item if they aren't equal. Ignores already-null properties in the item.
+     * 
+     * @param item
+     *            The item to compare and init.
+     * @param compareTo
+     *            The item to compare it to.
+     * @param compared
+     *            A map of objects we've already compared, to handle circular references.
+     * @throws BeanInitializationException
+     * @throws FatalBeanException
+     */
+    private static void compareAndInit(Object item, Object compareTo, Set<Object> compared)
+    {
         try
         {
             for (final PropertyDescriptor descriptor : BeanUtils.getPropertyDescriptors(item.getClass()))
             {
                 final Method read1 = descriptor.getReadMethod();
-                final Method read2 = BeanUtils.getPropertyDescriptor(compareTo.getClass(), descriptor.getName()).getReadMethod();
-                if ((read1 != null) && (read2 != null))
+                final PropertyDescriptor compareDescriptor = BeanUtils.getPropertyDescriptor(compareTo.getClass(), descriptor.getName());
+                if (compareDescriptor != null)
                 {
-                    final Object o1 = read1.invoke(item, new Object[0]);
-                    if (o1 != null)
+                    final Method read2 = compareDescriptor.getReadMethod();
+                    if ((read1 != null) && (read2 != null))
                     {
-                        final Object o2 = read2.invoke(compareTo, new Object[0]);
-                        if (o2 != null)
+                        final Object o1 = read1.invoke(item, new Object[0]);
+                        if (o1 != null)
                         {
-                            // recursive or simple compare
-                            final Class<?> clazz = descriptor.getPropertyType();
-                            if (clazz != null)
+                            if (compared.contains(o1))
+                                continue;
+
+                            final Object o2 = read2.invoke(compareTo, new Object[0]);
+                            if (o2 != null)
                             {
-                                if (!BeanUtils.isSimpleProperty(clazz) && !clazz.isEnum())
-                                    compareAndInit(o1, o2);
-                                else if (!o1.equals(o2))
+                                // recursive or simple compare
+                                final Class<?> clazz = descriptor.getPropertyType();
+                                if (clazz != null)
                                 {
-                                    final Method write = descriptor.getWriteMethod();
-                                    if (write != null)
+                                    if (!BeanUtils.isSimpleProperty(clazz) && !clazz.isEnum())
                                     {
-                                        if (clazz.isPrimitive())
-                                            write.invoke(item, new Object[] { BeanUtils.instantiateClass(o1.getClass().getConstructor(String.class), new Object[] { "0" }) });
-                                        else
-                                            write.invoke(item, new Object[] { null });
+                                        compared.add(o1);
+                                        compareAndInit(o1, o2, compared);
+                                    }
+                                    else if (!o1.equals(o2))
+                                    {
+                                        final Method write = descriptor.getWriteMethod();
+                                        if (write != null)
+                                        {
+                                            if (clazz.isPrimitive())
+                                                write.invoke(item, new Object[] { BeanUtils.instantiateClass(o1.getClass().getConstructor(String.class), new Object[] { "0" }) });
+                                            else
+                                                write.invoke(item, new Object[] { null });
+                                        }
                                     }
                                 }
                             }
@@ -184,7 +244,9 @@ public class BeanUtil
     public static String[] getPropertyNames(Object item)
     {
         final LinkedList<String> names = new LinkedList<String>();
-        populatePropertyNames(item, "", names);
+        final HashSet<Object> handled = new HashSet<Object>();
+        handled.add(item);
+        populatePropertyNames(item, "", names, handled);
         return names.toArray(new String[names.size()]);
     }
 
@@ -197,8 +259,10 @@ public class BeanUtil
      *            A prefix to prepend to property names, used for calling recursively.
      * @param names
      *            A list to append names to.
+     * @param handled
+     *            A set of objects we've already handled, for circular references.
      */
-    private static void populatePropertyNames(Object item, String prefix, LinkedList<String> names)
+    private static void populatePropertyNames(Object item, String prefix, LinkedList<String> names, HashSet<Object> handled)
     {
         for (final PropertyDescriptor descriptor : BeanUtils.getPropertyDescriptors(item.getClass()))
         {
@@ -219,8 +283,11 @@ public class BeanUtil
                         if (readMethod != null)
                         {
                             final Object targetProperty = readMethod.invoke(item, new Object[0]);
-                            if (targetProperty != null)
-                                populatePropertyNames(targetProperty, prefix + descriptor.getName() + '.', names);
+                            if ((targetProperty != null) && !handled.contains(targetProperty))
+                            {
+                                handled.add(targetProperty);
+                                populatePropertyNames(targetProperty, prefix + descriptor.getName() + '.', names, handled);
+                            }
                         }
                     }
                 }

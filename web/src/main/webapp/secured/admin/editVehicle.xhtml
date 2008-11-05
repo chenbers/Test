@@ -236,7 +236,18 @@
     <script type="text/javascript">
   function checkMultiple(item)
   {
-    var box = document.getElementById("edit-form:update_" + item.id);
+    var id;
+    if (typeof(item) == "string")
+      id = item;
+    else
+      id = item.id;
+
+    var box;
+    var index = id.indexOf(":");
+    if (index > 0)
+      box = document.getElementById("edit-form:update_" + id.substring(index + 1));
+    else
+      box = document.getElementById("edit-form:update_" + id);
     if (box)
       box.checked = true;
   }

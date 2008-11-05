@@ -1,7 +1,9 @@
 package com.inthinc.pro.backing;
 
-public interface Selectable
+public interface EditItem
 {
+    public Integer getId();
+
     public boolean isSelected();
 
     public void setSelected(boolean selected);

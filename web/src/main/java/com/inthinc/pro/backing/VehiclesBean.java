@@ -119,7 +119,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
 
         // TODO: look up the driver by driverID instead
         vehicleView.setDriver(createDummyName() + ' ' + createDummyName());
-        vehicleView.setGroup(groupDAO.findByID(vehicle.getGroupID()));
         vehicleView.setSelected(false);
 
         return vehicleView;
@@ -264,11 +263,16 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         return groups;
     }
 
-    public static class VehicleView extends Vehicle implements Selectable
+    public class VehicleView extends Vehicle implements EditItem
     {
         private String  driver;
         private Group   group;
         private boolean selected;
+
+        public Integer getId()
+        {
+            return getVehicleID();
+        }
 
         public String getDriver()
         {
@@ -280,14 +284,18 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
             this.driver = driver;
         }
 
-        public Group getGroup()
+        @Override
+        public void setGroupID(Integer groupID)
         {
-            return group;
+            super.setGroupID(groupID);
+            group = null;
         }
 
-        public void setGroup(Group group)
+        public Group getGroup()
         {
-            this.group = group;
+            if (group == null)
+                group = groupDAO.findByID(getGroupID());
+            return group;
         }
 
         /**

@@ -95,7 +95,8 @@
                         <tr>
                           <td width="100" valign="top"><h:outputText value="#{messages.editPerson_dob}" /></td>
                           <td>
-                            <rich:calendar value="#{personBean.editItem.dob}" id="dob" onchanged="checkMultiple(this)" todayControlMode="hidden" required="#{(not personBean.batchEdit) or personBean.updateField['dob']}" requiredMessage="#{messages.required}" />
+                            <rich:calendar value="#{personBean.editItem.dob}" id="dob" todayControlMode="hidden" required="#{(not personBean.batchEdit) or personBean.updateField['dob']}" requiredMessage="#{messages.required}" />
+                            <rich:message for="dob" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                           </td>
                         </tr>
                         </ui:fragment>
@@ -127,9 +128,9 @@
                             <h:outputText value="#{messages.editPerson_weight}" />
                           </td>
                           <td>
-                            <h:selectOneMenu value="#{personBean.editItem.weight}" id="weight" onchange="checkMultiple(this)" required="#{(not personBean.batchEdit) or personBean.updateField['weight']}" requiredMessage="#{messages.required}">
-                              <f:selectItems value="#{personBean.weights}" />
-                            </h:selectOneMenu>
+                            <rich:inputNumberSpinner value="#{personBean.editItem.weight}" id="weight" onchange="checkMultiple('weight')" minValue="50" maxValue="400" step="1"
+                             required="#{(not personBean.batchEdit) or personBean.updateField['weight']}" requiredMessage="#{messages.required}" />
+                            <rich:message for="weight" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                           </td>
                         </tr>
                       </table>
@@ -232,23 +233,12 @@
                       <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                         <tr>
                           <td width="100" valign="top">
-                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_reportsTo" value="#{personBean.updateField['reportsTo']}" />
-                            <h:outputText value="#{messages.editPerson_reportsTo}" />
-                          </td>
-                          <td>
-                            <h:selectOneMenu value="#{personBean.editItem.reportsTo}" id="reportsTo" onchange="checkMultiple(this)" required="#{(not personBean.batchEdit) or personBean.updateField['reportsTo']}" requiredMessage="#{messages.required}">
-                              <f:selectItem itemLabel="#{messages.editPerson_reportsToNobody}" />
-                              <f:selectItems value="#{personBean.reportsToOptions}" />
-                            </h:selectOneMenu>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td width="100" valign="top">
-                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_group" value="#{personBean.updateField['group']}" />
+                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_groupID" value="#{personBean.updateField['groupID']}" />
                             <h:outputText value="#{messages.editPerson_group}" />
                           </td>
                           <td>
-                            <h:selectOneMenu value="#{personBean.editItem.groupID}" id="groupID" onchange="checkMultiple(this)" required="#{(not personBean.batchEdit) or personBean.updateField['groupID']}" requiredMessage="#{messages.required}">
+                            <h:selectOneMenu value="#{personBean.editItem.groupID}" id="groupID" required="#{(not personBean.batchEdit) or personBean.updateField['groupID']}" requiredMessage="#{messages.required}">
+                              <a4j:support event="onchange" reRender="reportsTo" limitToList="true" ajaxSingle="true" onsubmit="checkMultiple(this);showSection('edit-form:reportsToSpinner', true)" oncomplete="showSection('edit-form:reportsToSpinner', false)" />
                               <f:selectItem itemLabel="#{messages.editPerson_selectGroup}" />
                               <f:selectItems value="#{personBean.groups}" />
                             </h:selectOneMenu>
@@ -257,13 +247,24 @@
                         </tr>
                         <tr>
                           <td width="100" valign="top">
+                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_reportsTo" value="#{personBean.updateField['reportsTo']}" />
+                            <h:outputText value="#{messages.editPerson_reportsTo}" />
+                          </td>
+                          <td>
+                            <h:selectOneMenu value="#{personBean.editItem.reportsTo}" id="reportsTo" onchange="checkMultiple(this)">
+                              <f:selectItem itemLabel="#{messages.editPerson_reportsToNobody}" />
+                              <f:selectItems value="#{personBean.reportsToOptions}" />
+                            </h:selectOneMenu>
+                            <h:graphicImage id="reportsToSpinner" value="/images/spinner.gif" style="display:none" />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="100" valign="top">
                             <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_title" value="#{personBean.updateField['title']}" />
                             <h:outputText value="#{messages.editPerson_title}" />
                           </td>
                           <td>
-                            <h:inputText value="#{personBean.editItem.title}" id="title" onchange="checkMultiple(this)" styleClass="text" size="30"
-                              maxlength="30" required="#{(not personBean.batchEdit) or personBean.updateField['title']}" requiredMessage="#{messages.required}" />
-                            <rich:message for="title" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{personBean.editItem.title}" id="title" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="30" />
                           </td>
                         </tr>
                         <tr>
@@ -272,7 +273,8 @@
                             <h:outputText value="#{messages.editPerson_timeZone}" />
                           </td>
                           <td>
-                            <h:selectOneMenu value="#{personBean.editItem.timeZone}" onchange="checkMultiple('timeZone')" style="width:200px">
+                            <h:selectOneMenu value="#{personBean.editItem.timeZone}" onchange="checkMultiple(this)" style="width:200px">
+                              <f:converter  converterId="TimeZoneConverter" />
                               <f:selectItems value="#{personBean.timeZones}" />
                             </h:selectOneMenu>
                           </td>
@@ -282,17 +284,19 @@
                       <div class="spacer"></div>
 
                       <div class="add_section_title">
-                        <h:selectBooleanCheckbox rendered="#{not personBean.batchEdit}" id="isUser" value="#{personBean.user}" onclick="document.getElementById('userTable').style.display = (this.checked ? 'table' : 'none')" />
+                        <h:selectBooleanCheckbox rendered="#{not personBean.batchEdit}" id="isUser" value="#{personBean.editItem.userSelected}" onclick="showSection('userTable', this.checked)">
+                          <a4j:support event="onchange" ajaxSingle="true" reRender="isUser" limitToList="true" />
+                        </h:selectBooleanCheckbox>
                         <h:outputText value="#{messages.editPerson_userInformation}" />
                       </div>
 
-                      <table id="userTable" width="370" border="0" cellspacing="2" cellpadding="4" align="center" style="#{personBean.user ? '' : 'display:none'}">
+                      <table id="userTable" width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                         <ui:fragment rendered="#{not personBean.batchEdit}">
                         <tr>
                           <td width="100" valign="top"><h:outputText value="#{messages.editPerson_user_username}" /></td>
                           <td>
                             <h:inputText value="#{personBean.editItem.user.username}" id="user_username" onchange="checkMultiple(this)" styleClass="text" size="30"
-                              maxlength="30" required="#{personBean.user and ((not personBean.batchEdit) or personBean.updateField['user.username'])}" requiredMessage="#{messages.required}" />
+                              maxlength="30" required="#{personBean.editItem.userSelected and ((not personBean.batchEdit) or personBean.updateField['user.username'])}" requiredMessage="#{messages.required}" />
                             <rich:message for="user_username" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <!-- TODO: validate a unique username -->
                           </td>
@@ -300,16 +304,16 @@
                         <tr>
                           <td width="100" valign="top"><h:outputText value="#{messages.editPerson_user_password}" /></td>
                           <td>
-                            <h:inputSecret value="#{personBean.editItem.user.password}" id="user_password" onchange="checkMultiple(this)" styleClass="text" size="30"
-                              maxlength="30" required="#{personBean.user and ((not personBean.batchEdit) or personBean.updateField['user.password'])}" requiredMessage="#{messages.required}" />
+                            <h:inputSecret value="#{personBean.editItem.user.password}" id="user_password" redisplay="true" onchange="checkMultiple(this)" styleClass="text" size="30"
+                              maxlength="30" required="#{personBean.editItem.userSelected and ((not personBean.batchEdit) or personBean.updateField['user.password'])}" requiredMessage="#{messages.required}" />
                             <rich:message for="user_password" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                           </td>
                         </tr>
                         <tr>
                           <td width="100" valign="top"><h:outputText value="#{messages.editPerson_confirmPassword}" /></td>
                           <td>
-                            <h:inputSecret value="#{personBean.editItem.confirmPassword}" id="confirmPassword" onchange="checkMultiple(this)" styleClass="text" size="30"
-                              maxlength="30" required="#{personBean.user and ((not personBean.batchEdit) or personBean.updateField['confirmPassword'])}" requiredMessage="#{messages.required}" />
+                            <h:inputSecret value="#{personBean.editItem.confirmPassword}" id="confirmPassword" redisplay="true" onchange="checkMultiple(this)" styleClass="text" size="30"
+                              maxlength="30" required="#{personBean.editItem.userSelected and ((not personBean.batchEdit) or personBean.updateField['confirmPassword'])}" requiredMessage="#{messages.required}" />
                             <rich:message for="confirmPassword" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <!-- TODO: validate passwords -->
                           </td>
@@ -332,17 +336,19 @@
                       <div class="spacer"></div>
 
                       <div class="add_section_title">
-                        <h:selectBooleanCheckbox rendered="#{not personBean.batchEdit}" id="isDriver" value="#{personBean.driver}" onclick="document.getElementById('driverTable').style.display = (this.checked ? 'table' : 'none')" />
+                        <h:selectBooleanCheckbox rendered="#{not personBean.batchEdit}" id="isDriver" value="#{personBean.editItem.driverSelected}" onclick="showSection('driverTable', this.checked)">
+                          <a4j:support event="onchange" ajaxSingle="true" reRender="isDriver" limitToList="true" />
+                        </h:selectBooleanCheckbox>
                         <h:outputText value="#{messages.editPerson_driverInformation}" />
                       </div>
 
-                      <table id="driverTable" width="370" border="0" cellspacing="2" cellpadding="4" align="center" style="#{personBean.driver ? '' : 'display:none'}">
+                      <table id="driverTable" width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                         <ui:fragment rendered="#{not personBean.batchEdit}">
                         <tr>
                           <td width="100" valign="top"><h:outputText value="#{messages.editPerson_driver_license}" /></td>
                           <td>
                             <h:inputText value="#{personBean.editItem.driver.license}" id="driver_license" onchange="checkMultiple(this)" styleClass="text" size="30"
-                              maxlength="10" required="#{personBean.driver and ((not personBean.batchEdit) or personBean.updateField['driver.license'])}" requiredMessage="#{messages.required}" />
+                              maxlength="10" required="#{personBean.editItem.driverSelected and ((not personBean.batchEdit) or personBean.updateField['driver.license'])}" requiredMessage="#{messages.required}" />
                             <rich:message for="driver_license" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                           </td>
                         </tr>
@@ -364,7 +370,7 @@
                             <h:outputText value="#{messages.editPerson_driver_state}" />
                           </td>
                           <td>
-                            <h:selectOneMenu value="#{personBean.editItem.driver.state}" id="driver_state" onchange="checkMultiple(this)" required="#{personBean.driver and ((not personBean.batchEdit) or personBean.updateField['driver.state'])}" requiredMessage="#{messages.required}">
+                            <h:selectOneMenu value="#{personBean.editItem.driver.state}" id="driver_state" onchange="checkMultiple(this)" required="#{personBean.editItem.driverSelected and ((not personBean.batchEdit) or personBean.updateField['driver.state'])}" requiredMessage="#{messages.required}">
                               <f:selectItem itemLabel="#{messages.editPerson_selectState}" />
                               <f:selectItems value="#{personBean.states}" />
                             </h:selectOneMenu>
@@ -377,7 +383,8 @@
                             <h:outputText value="#{messages.editPerson_driver_expiration}" />
                           </td>
                           <td>
-                            <rich:calendar value="#{personBean.editItem.driver.expiration}" id="driver_expiration" onchanged="checkMultiple(this)" required="#{personBean.driver and ((not personBean.batchEdit) or personBean.updateField['driver.expiration'])}" requiredMessage="#{messages.required}" />
+                            <rich:calendar value="#{personBean.editItem.driver.expiration}" id="driver_expiration" onchanged="checkMultiple('driver_expiration')" required="#{personBean.editItem.driverSelected and ((not personBean.batchEdit) or personBean.updateField['driver.expiration'])}" requiredMessage="#{messages.required}" />
+                            <rich:message for="driver_expiration" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                           </td>
                         </tr>
                         <tr>
@@ -422,9 +429,32 @@
     <script type="text/javascript">
   function checkMultiple(item)
   {
-    var box = document.getElementById("edit-form:update_" + item.id);
+    var id;
+    if (typeof(item) == "string")
+      id = item;
+    else
+      id = item.id;
+
+    var box;
+    var index = id.indexOf(":");
+    if (index > 0)
+      box = document.getElementById("edit-form:update_" + id.substring(index + 1));
+    else
+      box = document.getElementById("edit-form:update_" + id);
     if (box)
       box.checked = true;
+  }
+
+  function showSection(id, show)
+  {
+    document.getElementById(id).style.display = show ? "" : "none";
+  }
+
+  var isUser = document.getElementById("edit-form:isUser");
+  if (isUser)
+  {
+    showSection("userTable", isUser.checked);
+    showSection("driverTable", document.getElementById("edit-form:isDriver").checked);
   }
     </script>
 

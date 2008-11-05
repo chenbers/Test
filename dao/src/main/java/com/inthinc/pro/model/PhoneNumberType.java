@@ -6,7 +6,7 @@ import java.util.Map;
 
 public enum PhoneNumberType implements BaseEnum
 {
-    WORK(1, "Work"), HOME(2, "Home"), CELL(3, "Cell"), OTHER(4, "Other");
+    WORK(1, "WORK"), HOME(2, "HOME"), CELL(3, "CELL"), OTHER(4, "OTHER");
 
     private String description;
     private int    code;

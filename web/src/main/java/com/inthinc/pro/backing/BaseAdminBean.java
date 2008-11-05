@@ -15,7 +15,7 @@ import com.inthinc.pro.util.BeanUtil;
 /**
  * @author David Gileadi
  */
-public abstract class BaseAdminBean<T extends Selectable> extends BaseBean
+public abstract class BaseAdminBean<T extends EditItem> extends BaseBean
 {
     protected static final Logger  logger        = LogManager.getLogger(BaseAdminBean.class);
 
@@ -236,10 +236,9 @@ public abstract class BaseAdminBean<T extends Selectable> extends BaseBean
     {
         // select only the item to be edited
         final Map<String, String> parameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        final int editIndex = Integer.parseInt(parameterMap.get("editIndex"));
+        final int editID = Integer.parseInt(parameterMap.get("editID"));
         for (final T item : items)
-            item.setSelected(false);
-        filteredItems.get(editIndex).setSelected(true);
+            item.setSelected(item.getId().equals(editID));
 
         editItem = null;
         getEditItem();

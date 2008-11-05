@@ -34,21 +34,21 @@ import com.inthinc.pro.util.MessageUtil;
  */
 public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
 {
-    private static final List<String>                  AVAILABLE_COLUMNS;
-    private static final int[]                         DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2 };
+    private static final List<String>                    AVAILABLE_COLUMNS;
+    private static final int[]                           DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 6, 19 };
 
-    private static final TreeMap<String, Gender>       GENDERS;
-    private static final TreeMap<String, Integer>      HEIGHTS;
-    private static final int                           MIN_HEIGHT             = 48;
-    private static final int                           MAX_HEIGHT             = 86;
-    private static final TreeMap<String, Integer>      WEIGHTS;
-    private static final int                           MIN_WEIGHT             = 75;
-    private static final int                           MAX_WEIGHT             = 300;
-    private static final LinkedHashMap<String, String> TIMEZONES;
-    private static final int                           MILLIS_PER_MINUTE      = 1000 * 60;
-    private static final int                           MILLIS_PER_HOUR        = MILLIS_PER_MINUTE * 60;
-    private static final TreeMap<String, String>       LICENSE_CLASSES;
-    private static final TreeMap<String, State>        STATES;
+    private static final TreeMap<String, Gender>         GENDERS;
+    private static final LinkedHashMap<String, Integer>  HEIGHTS;
+    private static final int                             MIN_HEIGHT             = 48;
+    private static final int                             MAX_HEIGHT             = 86;
+    private static final TreeMap<String, Integer>        WEIGHTS;
+    private static final int                             MIN_WEIGHT             = 75;
+    private static final int                             MAX_WEIGHT             = 300;
+    private static final LinkedHashMap<String, TimeZone> TIMEZONES;
+    private static final int                             MILLIS_PER_MINUTE      = 1000 * 60;
+    private static final int                             MILLIS_PER_HOUR        = MILLIS_PER_MINUTE * 60;
+    private static final TreeMap<String, String>         LICENSE_CLASSES;
+    private static final TreeMap<String, State>          STATES;
 
     static
     {
@@ -56,9 +56,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         AVAILABLE_COLUMNS = new ArrayList<String>();
         AVAILABLE_COLUMNS.add("empid");
         AVAILABLE_COLUMNS.add("fullName");
-        AVAILABLE_COLUMNS.add("user_active");
-        AVAILABLE_COLUMNS.add("user_username");
-        AVAILABLE_COLUMNS.add("user_role");
         AVAILABLE_COLUMNS.add("workPhone");
         AVAILABLE_COLUMNS.add("homePhone");
         AVAILABLE_COLUMNS.add("email");
@@ -76,6 +73,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         AVAILABLE_COLUMNS.add("address_city");
         AVAILABLE_COLUMNS.add("address_state");
         AVAILABLE_COLUMNS.add("address_zip");
+        AVAILABLE_COLUMNS.add("user_active");
+        AVAILABLE_COLUMNS.add("user_username");
+        AVAILABLE_COLUMNS.add("user_role");
         AVAILABLE_COLUMNS.add("driver_active");
         AVAILABLE_COLUMNS.add("driver_license");
         AVAILABLE_COLUMNS.add("driver_licenseClass");
@@ -89,7 +89,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
             GENDERS.put(gender.getDescription(), gender);
 
         // heights
-        HEIGHTS = new TreeMap<String, Integer>();
+        HEIGHTS = new LinkedHashMap<String, Integer>();
         for (int i = MIN_HEIGHT; i < MAX_HEIGHT; i++)
             if ((i % 12) != 0)
                 HEIGHTS.put((i / 12) + "' " + (i % 12) + '"', i);
@@ -101,7 +101,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         for (int i = MIN_WEIGHT; i < MAX_WEIGHT; i++)
             WEIGHTS.put(String.valueOf(i), i);
 
-        // get all time zones
+        // time zones
         final List<String> timeZones = new ArrayList<String>();
         for (final String id : TimeZone.getAvailableIDs())
             if (!id.startsWith("Etc/"))
@@ -117,7 +117,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
                 return t1.getRawOffset() - t2.getRawOffset();
             }
         });
-        TIMEZONES = new LinkedHashMap<String, String>();
+        TIMEZONES = new LinkedHashMap<String, TimeZone>();
         final NumberFormat format = NumberFormat.getIntegerInstance();
         format.setMinimumIntegerDigits(2);
         for (final String id : timeZones)
@@ -126,9 +126,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
             final int offsetHours = timeZone.getRawOffset() / MILLIS_PER_HOUR;
             final int offsetMinutes = Math.abs((timeZone.getRawOffset() % MILLIS_PER_HOUR) / MILLIS_PER_MINUTE);
             if (offsetHours < 0)
-                TIMEZONES.put(timeZone.getDisplayName() + " (GMT" + offsetHours + ':' + format.format(offsetMinutes) + ')', id);
+                TIMEZONES.put(timeZone.getDisplayName() + " (GMT" + offsetHours + ':' + format.format(offsetMinutes) + ')', timeZone);
             else
-                TIMEZONES.put(timeZone.getDisplayName() + " (GMT+" + offsetHours + ':' + format.format(offsetMinutes) + ')', id);
+                TIMEZONES.put(timeZone.getDisplayName() + " (GMT+" + offsetHours + ':' + format.format(offsetMinutes) + ')', timeZone);
         }
 
         // license classes
@@ -143,10 +143,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
             STATES.put(state.getName(), state);
     }
 
-    private PersonDAO                                  personDAO;
-    private GroupDAO                                   groupDAO;
-    private TreeMap<String, Integer>                   groups;
-    private TreeMap<String, Integer>                   reportsToOptions;
+    private PersonDAO                                    personDAO;
+    private GroupDAO                                     groupDAO;
+    private TreeMap<String, Integer>                     groups;
+    private TreeMap<String, Integer>                     reportsToOptions;
 
     public void setPersonDAO(PersonDAO personDAO)
     {
@@ -186,9 +186,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
 
         if (personView.getAddress() == null)
             personView.setAddress(new Address());
-        personView.setGroup(groupDAO.findByID(person.getGroupID()));
-        personView.setReportsToPerson(personDAO.findByID(person.getReportsTo()));
+        personView.setUserSelected(person.getUser() != null);
+        personView.setDriverSelected(person.getDriver() != null);
         personView.setSelected(false);
+        if (person.getUser() != null)
+            personView.setConfirmPassword(person.getUser().getPassword());
 
         return personView;
     }
@@ -267,71 +269,26 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         person.setAddress(new Address());
         person.getUser().setPerson(person);
         person.setDriver(new Driver());
+        person.setUserSelected(true);
+        person.setDriverSelected(true);
         return person;
     }
 
-    /**
-     * @return Whether the person is also a user.
-     */
-    public boolean isUser()
+    @Override
+    public PersonView getEditItem()
     {
-        final PersonView editItem = getEditItem();
-        if (editItem != null)
-            return editItem.getUser() != null;
-        return false;
-    }
-
-    /**
-     * Sets whether the person is also a user--creating or nulling a User object for the person as necessary.
-     * 
-     * @param user
-     *            Whether the person is also a user.
-     */
-    public void setUser(boolean user)
-    {
-        final PersonView editItem = getEditItem();
-        if (editItem != null)
+        final PersonView item = super.getEditItem();
+        if (item.getUser() == null)
         {
-            if (user && (editItem.getUser() == null))
-            {
-                editItem.setUser(new User());
-                editItem.getUser().setPerson(editItem);
-            }
-            else if (!user && (editItem.getUser() != null))
-                editItem.setUser(null);
+            item.setUser(new User());
+            item.getUser().setPerson(item);
         }
-    }
-
-    /**
-     * @return Whether the person is also a driver.
-     */
-    public boolean isDriver()
-    {
-        final PersonView editItem = getEditItem();
-        if (editItem != null)
-            return editItem.getDriver() != null;
-        return false;
-    }
-
-    /**
-     * Sets whether the person is also a driver--creating or nulling a Driver object for the person as necessary.
-     * 
-     * @param driver
-     *            Whether the person is also a driver.
-     */
-    public void setDriver(boolean driver)
-    {
-        final PersonView editItem = getEditItem();
-        if (editItem != null)
+        if (item.getDriver() == null)
         {
-            if (driver && (editItem.getDriver() == null))
-            {
-                editItem.setDriver(new Driver());
-                editItem.getDriver().setPersonID(editItem.getPersonID());
-            }
-            else if (!driver && (editItem.getDriver() != null))
-                editItem.setDriver(null);
+            item.setDriver(new Driver());
+            item.getDriver().setPersonID(item.getPersonID());
         }
+        return item;
     }
 
     @Override
@@ -351,7 +308,14 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
             reportsToOptions = null;
 
         for (final PersonView person : saveItems)
+        {
+            if (!person.isUserSelected())
+                person.setUser(null);
+            if (!person.isDriverSelected())
+                person.setDriver(null);
+
             personDAO.update(person);
+        }
     }
 
     @Override
@@ -371,7 +335,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         return GENDERS;
     }
 
-    public TreeMap<String, Integer> getHeights()
+    public LinkedHashMap<String, Integer> getHeights()
     {
         return HEIGHTS;
     }
@@ -379,17 +343,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     public TreeMap<String, Integer> getWeights()
     {
         return WEIGHTS;
-    }
-
-    public TreeMap<String, Integer> getReportsToOptions()
-    {
-        if (reportsToOptions == null)
-        {
-            reportsToOptions = new TreeMap<String, Integer>();
-            for (final PersonView person : items)
-                reportsToOptions.put(person.getFirst() + " " + person.getLast(), person.getPersonID());
-        }
-        return reportsToOptions;
     }
 
     public TreeMap<String, Integer> getGroups()
@@ -404,7 +357,27 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         return groups;
     }
 
-    public LinkedHashMap<String, String> getTimeZones()
+    public TreeMap<String, Integer> getReportsToOptions()
+    {
+        if (reportsToOptions == null)
+        {
+            // find all people in the same group and in all parent groups
+            reportsToOptions = new TreeMap<String, Integer>();
+            Integer groupID = getEditItem().getGroupID();
+            while ((groupID != null) && (groupID > 0))
+            {
+                for (final PersonView person : items)
+                    if (groupID.equals(person.getGroupID()) && !person.getPersonID().equals(getEditItem().getPersonID()))
+                        reportsToOptions.put(person.getFirst() + " " + person.getLast(), person.getPersonID());
+                final Group group = groupDAO.findByID(groupID);
+                if (group != null)
+                    groupID = group.getParentID();
+            }
+        }
+        return reportsToOptions;
+    }
+
+    public LinkedHashMap<String, TimeZone> getTimeZones()
     {
         return TIMEZONES;
     }
@@ -419,31 +392,47 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         return STATES;
     }
 
-    public static class PersonView extends Person implements Selectable
+    public class PersonView extends Person implements EditItem
     {
         private Group   group;
         private Person  reportsToPerson;
         private String  confirmPassword;
+        private boolean userSelected;
+        private boolean driverSelected;
         private boolean selected;
+
+        public Integer getId()
+        {
+            return getPersonID();
+        }
+
+        @Override
+        public void setGroupID(Integer groupID)
+        {
+            super.setGroupID(groupID);
+            group = null;
+            reportsToOptions = null;
+        }
 
         public Group getGroup()
         {
+            if (group == null)
+                group = groupDAO.findByID(getGroupID());
             return group;
         }
 
-        public void setGroup(Group group)
+        @Override
+        public void setReportsTo(Integer reportsTo)
         {
-            this.group = group;
+            super.setReportsTo(reportsTo);
+            reportsToPerson = null;
         }
 
         public Person getReportsToPerson()
         {
+            if (reportsToPerson == null)
+                reportsToPerson = personDAO.findByID(getReportsTo());
             return reportsToPerson;
-        }
-
-        public void setReportsToPerson(Person reportsToPerson)
-        {
-            this.reportsToPerson = reportsToPerson;
         }
 
         public String getConfirmPassword()
@@ -454,6 +443,26 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         public void setConfirmPassword(String confirmPassword)
         {
             this.confirmPassword = confirmPassword;
+        }
+
+        public boolean isUserSelected()
+        {
+            return userSelected;
+        }
+
+        public void setUserSelected(boolean userSelected)
+        {
+            this.userSelected = userSelected;
+        }
+
+        public boolean isDriverSelected()
+        {
+            return driverSelected;
+        }
+
+        public void setDriverSelected(boolean driverSelected)
+        {
+            this.driverSelected = driverSelected;
         }
 
         public boolean isSelected()

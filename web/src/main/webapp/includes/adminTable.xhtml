@@ -123,7 +123,7 @@ Note: The following parameters are required by the included editColumns.xhtml
                   <h:outputText value=" " />
                 </f:facet>
                 <h:commandLink action="#{editorBean['edit']}" value="#{messages.adminTable_edit}">
-                  <f:param name="editIndex" value="#{index}" />
+                  <f:param name="editID" value="#{item.id}" />
                 </h:commandLink>
               </rich:column>
             </rich:dataTable>
