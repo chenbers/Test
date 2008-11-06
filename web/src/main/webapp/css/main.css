@@ -1582,6 +1582,14 @@ color: #fff;
 	list-style: none;
 	}
 
+.msg dt {
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	padding: 10px 5px 17px 35px;
+	background: none;
+	color: none;
+	list-style: none;
+	}
+
 .warning {
 	background: #ffffcc url(../images/icon_msg_warn.png) top left no-repeat;
 	border: 1px solid #eca031;

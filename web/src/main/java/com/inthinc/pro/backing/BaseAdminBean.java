@@ -330,6 +330,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean
     public String save()
     {
         final List<T> selected = getSelectedItems();
+
         if (batchEdit)
         {
             // get the fields to update
@@ -362,6 +363,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean
     public String delete()
     {
         final List<T> selected = getSelectedItems();
+
         doDelete(selected);
         items.removeAll(selected);
         filteredItems.removeAll(selected);
@@ -449,6 +451,10 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean
         for (final T item : filteredItems)
             if (item.isSelected())
                 selected.add(item);
+
+        if ((selected.size() == 0) && (editItem != null))
+            selected.add(editItem);
+
         return selected;
     }
 

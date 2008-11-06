@@ -1,6 +1,7 @@
 package com.inthinc.pro.dao.mock.proserver;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Collections;
 import java.util.List;
@@ -44,48 +45,50 @@ public class SiloServiceMockImpl implements SiloService
         
     }
 
-    
+    private Map<String, Object> createReturnValue(String key, Integer value)
+    {
+        Map<String, Object> returnMap = new HashMap<String, Object>();
+        returnMap.put(key, value);
+        return returnMap;
+    }
+
     @Override
     public Map<String, Object> deleteUser(Integer userID) throws ProDAOException
     {
-        // TODO Auto-generated method stub
-        return null;
+        return createReturnValue("count", 0);
     }
     
     @Override
     public Map<String, Object> createUser(Integer acctID, Map<String, Object> userMap) throws ProDAOException
     {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO: actually store the object to the mock data
+        return createReturnValue("userID", (int) (Math.random() * Integer.MAX_VALUE));
     }
 
     @Override
     public Map<String, Object> getUser(Integer userID) throws ProDAOException
     {
         return doMockLookup(User.class, "userID", userID, "No user for ID: " + userID, "getUser");
-
     }
 
     @Override
     public Map<String, Object> updateUser(Integer userID, Map<String, Object> userMap) throws ProDAOException
     {
-        // TODO Auto-generated method stub
-        return null;
+        return createReturnValue("count", 1);
     }
 
     
     @Override
     public Map<String, Object> deletePerson(Integer personID) throws ProDAOException
     {
-        // TODO Auto-generated method stub
-        return null;
+        return createReturnValue("count", 0);
     }
     
     @Override
     public Map<String, Object> createPerson(Integer acctID, Map<String, Object> personMap) throws ProDAOException
     {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO: actually store the object to the mock data
+        return createReturnValue("personID", (int) (Math.random() * Integer.MAX_VALUE));
     }
 
     @Override
@@ -98,8 +101,7 @@ public class SiloServiceMockImpl implements SiloService
     @Override
     public Map<String, Object> updatePerson(Integer personID, Map<String, Object> personMap) throws ProDAOException
     {
-        // TODO Auto-generated method stub
-        return null;
+        return createReturnValue("count", 1);
     }
     
     
@@ -396,15 +398,14 @@ public class SiloServiceMockImpl implements SiloService
     @Override
     public Map<String, Object> deleteVehicle(Integer vehicleID) throws ProDAOException
     {
-        // TODO Auto-generated method stub
-        return null;
+        return createReturnValue("count", 0);
     }
     
     @Override
     public Map<String, Object> createVehicle(Integer acctID, Map<String, Object> vehicleMap) throws ProDAOException
     {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO: actually store the object to the mock data
+        return createReturnValue("userID", (int) (Math.random() * Integer.MAX_VALUE));
     }
 
     @Override
@@ -417,22 +418,20 @@ public class SiloServiceMockImpl implements SiloService
     @Override
     public Map<String, Object> updateVehicle(Integer vehicleID, Map<String, Object> vehicleMap) throws ProDAOException
     {
-        // TODO Auto-generated method stub
-        return null;
+        return createReturnValue("count", 1);
     }
 
     @Override
     public Map<String, Object> createGroup(Integer acctID, Map<String, Object> groupMap) throws ProDAOException
     {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO: actually store the object to the mock data
+        return createReturnValue("userID", (int) (Math.random() * Integer.MAX_VALUE));
     }
 
     @Override
     public Map<String, Object> deleteGroup(Integer groupID) throws ProDAOException
     {
-        // TODO Auto-generated method stub
-        return null;
+        return createReturnValue("count", 0);
     }
 
     @Override
@@ -444,8 +443,7 @@ public class SiloServiceMockImpl implements SiloService
     @Override
     public Map<String, Object> updateGroup(Integer groupID, Map<String, Object> groupMap) throws ProDAOException
     {
-        // TODO Auto-generated method stub
-        return null;
+        return createReturnValue("count", 1);
     }
 
 
