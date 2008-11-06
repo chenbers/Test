@@ -24,8 +24,10 @@ public class Event implements Comparable<Event>, Serializable
     private Integer type;
     private transient Vehicle vehicle;
     private Integer vehicleID;
-    private transient Driver driver;
+    private Driver driver;
     private Integer driverID;
+
+    private transient LatLng latLng;
 
     public Event()
     {

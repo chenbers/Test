@@ -33,8 +33,8 @@ public class Person extends BaseEntity
     private Integer  weight;     // pounds
     private Date     dob;
     // user, driver (may be null)
-    private User     user;
-    private Driver   driver;
+    private transient User     user;
+    private transient Driver   driver;
 
     public Integer getPersonID()
     {
@@ -265,4 +265,5 @@ public class Person extends BaseEntity
     {
         this.driver = driver;
     }
+    
 }

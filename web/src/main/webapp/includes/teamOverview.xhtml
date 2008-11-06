@@ -46,9 +46,9 @@
 					      <ui:repeat value="#{teamOverviewBean.actions}" var="action" id="menu">
 					        <tr>
 					          <td valign="top" class="#{(action.key == teamOverviewBean.selectedAction.key) ? 'ls_tab_on' : 'ls_tab_off'}">
-					            <h:commandLink value="#{action.displayString}" styleClass="#{action.style}">
+					            <h:commandLink value="#{action.displayString}" styleClass="#{action.style}" >
 					            	<f:setPropertyActionListener target="#{teamOverviewBean.selectedAction}" value="#{action}" />
-           							<a4j:support event="oncomplete" reRender="menu,overall,drivestyle" />
+           							<a4j:support event="oncomplete" reRender="menu,overall,tabs" />
 					            </h:commandLink>	
 					          </td>
 					        </tr>

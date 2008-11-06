@@ -20,25 +20,25 @@
 						var="event" styleClass="datagrid"
 						rowClasses="trendTableOdd,trendTableEven" cellspacing="0" rows="5"
 						width="100%">
-					<rich:column sortBy="#{event.type}" width="133" height="27" >
+					<rich:column sortBy="#{event.eventType}" width="20%" height="27" >
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_recentEventsEvent}" />
 						</f:facet>
-						<h:outputText value="#{event.type}"/>
+						<h:outputText value="#{event.eventType}"/>
 					</rich:column>
-					<rich:column sortBy="#{event.driverID}" width="135" height="27" >
+					<rich:column sortBy="#{event.driverName}" width="40%" height="27" >
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_recentEventsDriver}" />
 						</f:facet>
-						<h:outputText value="#{event.driverID}"/>
+						<h:outputText value="#{event.driverName}"/>
 					</rich:column>
-					<rich:column sortBy="#{event.time}" width="124" height="27" >
+					<rich:column sortBy="#{event.time}" width="40%" height="27" >
 						<f:facet name="header">
-							<h:outputText value="#{messages.team_recentEventsWhen}" />
+							<h:outputText value="#{messages.team_recentEventsWhen}"/>
 						</f:facet>
-						<h:outputText value="#{event.time}"/>
+						<h:outputText value="#{event.dateStr}"/>
 					</rich:column>
-					<rich:column width="64" height="27" >
+					<rich:column width="10%" height="27" >
 						<f:facet name="header">
 							<h:outputText value="" />
 						</f:facet>

@@ -15,7 +15,6 @@ public class ScoreConverter extends BaseConverter
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException
     {
-        logger.debug("Score converter getAsObject: " + value);
         return new Integer(value);
     }
     
@@ -26,7 +25,6 @@ public class ScoreConverter extends BaseConverter
         format.setMaximumFractionDigits(1);
         format.setMinimumFractionDigits(1);
 
-        logger.debug("Score converter getAsString: " + format.format((double)((double)score/(double)10.0)));
     
         return format.format((double)((double)score/(double)10.0));
 

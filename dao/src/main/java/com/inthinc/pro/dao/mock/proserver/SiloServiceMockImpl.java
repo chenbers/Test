@@ -486,8 +486,8 @@ public class SiloServiceMockImpl implements SiloService
             SearchCriteria searchCriteria  = new SearchCriteria();
             searchCriteria.addKeyValue("driverID", driver.getDriverID());
             searchCriteria.addKeyValueInList("type", typeList);
-            
-            allEventsForGroup.addAll(MockData.getInstance().retrieveObjectList(Event.class, searchCriteria));
+            List<Event> eventList = MockData.getInstance().retrieveObjectList(Event.class, searchCriteria);
+            allEventsForGroup.addAll(eventList);
         }
         
         Collections.sort(allEventsForGroup); // Make sure events are in ascending order

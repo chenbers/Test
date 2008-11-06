@@ -86,9 +86,10 @@ public class AggressiveDrivingEvent extends Event
                 eventType = EventType.HARD_ACCEL;
             else if (Math.abs(deltaVx / 10.0f) > (Math.abs(deltaVy / 10.0f) * 1.1f) && deltaVx / 10.0f < 0f)
                 eventType = EventType.HARD_BRAKE;
+            // TODO: Distinguish between hard left and hard right
             else if (Math.abs(deltaVy / 10.0f) * 1.1f > Math.abs(deltaVx / 10.0f)
                     && Math.abs(deltaVy / 10.0f) > Math.abs(deltaVz / 10.0f))
-                eventType = EventType.HARD_TURN;
+                eventType = EventType.HARD_LEFT_TURN;
         }
 
         return eventType;

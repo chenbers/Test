@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.NotImplementedException;
@@ -470,7 +471,7 @@ public abstract class GenericHessianDAO<T, ID, S extends HessianService> impleme
                 // If the field doesn't exist, continue
                 if (logger.isDebugEnabled())
                 {
-                    logger.debug("The field \"" + key + "\" does not exist for class: " + value.getClass().getName(), e);
+                    logger.debug("The field \"" + key + "\" does not exist for class: " + value.getClass().getName());
                 }
             }
         }
@@ -583,6 +584,11 @@ public abstract class GenericHessianDAO<T, ID, S extends HessianService> impleme
                 {
                     map.put(name, (int) (((Date) value).getTime() / 1000l));
                 }
+                // if the field type is TimeZone, convert to string
+                else if (TimeZone.class.isInstance(value))
+                {
+                    map.put(name, ((TimeZone) value).getID());
+                }
                 // if the property is not a standardProperty it must be some kind of bean/pojo/object. convert the property to a map
                 else if (!isStandardProperty(value))
                 {
@@ -620,6 +626,11 @@ public abstract class GenericHessianDAO<T, ID, S extends HessianService> impleme
                 Integer seconds = (Integer) value;
                 value = new Date(seconds.longValue() * 1000l);
             }
+            if (propertyType != null && propertyType == TimeZone.class && value instanceof String)
+            {
+                String tzID = (String) value;
+                value = TimeZone.getTimeZone(tzID);
+            }
             else if (propertyType != null && propertyType.equals(Boolean.class) && value instanceof Integer)
             {
                 value = ((Integer) value).equals(Integer.valueOf(0)) ? Boolean.FALSE : Boolean.TRUE;
@@ -646,14 +657,14 @@ public abstract class GenericHessianDAO<T, ID, S extends HessianService> impleme
         {
             if (logger.isDebugEnabled())
             {
-                logger.debug("The property \"" + name + "\" could not be set to the value \"" + value + "\"", e);
+                logger.debug("The property \"" + name + "\" could not be set to the value \"" + value + "\"");
             }
         }
         catch (NoSuchMethodException e)
         {
             if (logger.isDebugEnabled())
             {
-                logger.debug("The property \"" + name + "\" does not exist for class: " + value.getClass().getName(), e);
+                logger.debug("The property \"" + name + "\" does not exist for class: " + value.getClass().getName());
             }
         }
     }

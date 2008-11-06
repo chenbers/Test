@@ -13,6 +13,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
@@ -68,7 +69,14 @@ public class MockData
         "3100 W 2249 S West Valley City, UT 84119", "3601 S 2700 W West Valley City, UT 84119", };
     static double lat[] = { 40.723871753812f, 40.704246f, 40.69416956554945f};
     static double lng[] = { -111.92932452647742f, -111.948613f, -111.95694072816069f};
-
+    static String tzName[] =
+    {
+        "US/Mountain",
+        "US/Central",
+        "US/Eastern",
+        "US/Hawaii",
+        "US/Pacific"
+    };
     
     private Map<Class<?>, List<Object>> dataMap = new HashMap<Class<?>, List<Object>>();
 
@@ -343,7 +351,7 @@ public class MockData
     
             storeObject(trip);
             
-            addEventsForTrip(driverID, vehicleID, trip, idOffset);
+            addEventsForTrip(driver, vehicleID, trip, idOffset);
 //            addZoneEvent(xml, driverID, vehicleID, trip.getEndLoc());
 //            if (tripCnt == (numTrips-1) && driverID == numVehicles)
 //            {
@@ -370,7 +378,7 @@ public class MockData
             endDate = hourInDaysBack(day, minute);
         }
     }
-    private void addEventsForTrip(int driverID, Integer vehicleID, Trip trip, int idOffset)
+    private void addEventsForTrip(Driver driver, Integer vehicleID, Trip trip, int idOffset)
     {
         int numEvents = randomInt(MIN_EVENTS, MAX_EVENTS);
 
@@ -439,7 +447,8 @@ public class MockData
                             speedLimit, randomInt(5, 70), randomInt(10, 50));
                 break;
             }
-            event.setDriverID(driverID);
+            event.setDriverID(driver.getDriverID());
+            event.setDriver(driver);
             storeObject(event, Event.class);
         }
                 
@@ -516,12 +525,20 @@ public class MockData
         person.setFirst(first);
         person.setLast(last);
         person.setEmail(first.toLowerCase() + '.' + last.toLowerCase() + "@email.com");
+        person.setTimeZone(getRandomTimezone());
         Driver driver = new Driver();
         driver.setDriverID(id);
         driver.setGroupID(groupID);
         driver.setPersonID(person.getPersonID());
+        driver.setPerson(person);
         person.setDriver(driver);
         return driver;
+    }
+
+    private TimeZone getRandomTimezone()
+    {
+        int tz = randomInt(0, 4);
+        return TimeZone.getTimeZone(tzName[tz]);
     }
 
     private void addVehiclesToGroup(Integer accountID, Integer groupID, int numVehiclesInGroup)
@@ -690,6 +707,7 @@ public class MockData
         return null;
     }
 
+    
     
     public <T> void storeObject(T obj)
     {
@@ -874,6 +892,16 @@ public class MockData
         }
 
         return value;
+    }
+    private static boolean isStandardProperty(Object o)
+    {
+        if (Number.class.isInstance(o))
+            return true;
+        if (Character.class.isInstance(o))
+            return true;
+        if (String.class.isInstance(o))
+            return true;
+        return false;
     }
 
     //------------ DEBUG METHODS ----------------
