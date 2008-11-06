@@ -8,12 +8,17 @@
 		
 		<div class="datagrid">
 
-        	<rich:datascroller id="topScroller" for="items" 
-        		reRender="bottomScroller,items" />
+        	<rich:datascroller id="topScroller" for="items" immediate="true"
+        		scrollerListener="#{driverReportBean.scrollerListener}"
+        		reRender="bottomScroller,items,start,end,max">
+        	</rich:datascroller>
+        		
+        		
 				<h:form id="driverReportTableForm">
 				<rich:dataTable value="#{driverData}" id="items"
 					var="item" styleClass="datagrid"
-					rowClasses="trendTableOdd,trendTableEven" cellspacing="1" rows="25"
+					rowClasses="trendTableOdd,trendTableEven" cellspacing="1" 
+					rows="#{numRowsPerPg}"
 					width="100%" binding="#{driverTable}">
 
 					<!-- Data -->
@@ -43,11 +48,7 @@
       					<f:facet name="header">
       						<h:outputText value="Vehicle" />
       					</f:facet>
-      					<h:commandLink value="#{item.vehicleID}" 
-							actionListener="#{navigationBean.listener}" 
-							action="go_vehicle">
-							<f:param name="selectedGroup" value="#{item.vehicleID}" />
-						</h:commandLink>      					
+      					<a href="/tiwipro/secured/vehicle.faces">#{item.vehicleID}</a>    					
     				</rich:column>
     				<rich:column rendered="#{driverColumns['milesDriven']}" 
     					sortBy="#{item.milesDriven}">
@@ -82,8 +83,11 @@
     				</rich:column>
     			</rich:dataTable>
     			</h:form>
-    			<rich:datascroller id="bottomScroller" for="items" 
-    				reRender="topScroller,items"  />
+    			
+    			<rich:datascroller id="bottomScroller" for="items" immediate="true"    			
+    				scrollerListener="#{driverReportBean.scrollerListener}"
+        			reRender="topScroller,items,start,end,max">        			
+        		</rich:datascroller>
 
 			</div>	
 
