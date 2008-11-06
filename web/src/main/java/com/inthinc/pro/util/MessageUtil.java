@@ -1,5 +1,6 @@
 package com.inthinc.pro.util;
 
+import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -27,6 +28,18 @@ public class MessageUtil
         return getBundleString(bundle, key);
     }
 
+    public static String formatMessageString(String key, Object... values)
+    {
+        return formatMessageString(FacesContext.getCurrentInstance(), key, values);
+    }
+
+    public static String formatMessageString(FacesContext facesContext, String key, Object... values)
+    {
+        final String message = getMessageString(facesContext, key);
+        if (message != null)
+            return MessageFormat.format(message, values);
+        return null;
+    }
 
     public static String getBundleString(ResourceBundle bundle, String key)
     {

@@ -15,6 +15,9 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.TreeMap;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
@@ -25,6 +28,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Gender;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.util.MessageUtil;
@@ -34,21 +38,21 @@ import com.inthinc.pro.util.MessageUtil;
  */
 public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
 {
-    private static final List<String>                    AVAILABLE_COLUMNS;
-    private static final int[]                           DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 6, 19 };
+    private static final List<String>          AVAILABLE_COLUMNS;
+    private static final int[]                 DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 6, 19 };
 
-    private static final TreeMap<String, Gender>         GENDERS;
-    private static final LinkedHashMap<String, Integer>  HEIGHTS;
-    private static final int                             MIN_HEIGHT             = 48;
-    private static final int                             MAX_HEIGHT             = 86;
-    private static final TreeMap<String, Integer>        WEIGHTS;
-    private static final int                             MIN_WEIGHT             = 75;
-    private static final int                             MAX_WEIGHT             = 300;
-    private static final LinkedHashMap<String, TimeZone> TIMEZONES;
-    private static final int                             MILLIS_PER_MINUTE      = 1000 * 60;
-    private static final int                             MILLIS_PER_HOUR        = MILLIS_PER_MINUTE * 60;
-    private static final TreeMap<String, String>         LICENSE_CLASSES;
-    private static final TreeMap<String, State>          STATES;
+    private static final Map<String, Gender>   GENDERS;
+    private static final Map<String, Integer>  HEIGHTS;
+    private static final int                   MIN_HEIGHT             = 48;
+    private static final int                   MAX_HEIGHT             = 86;
+    private static final Map<String, Integer>  WEIGHTS;
+    private static final int                   MIN_WEIGHT             = 75;
+    private static final int                   MAX_WEIGHT             = 300;
+    private static final Map<String, TimeZone> TIMEZONES;
+    private static final int                   MILLIS_PER_MINUTE      = 1000 * 60;
+    private static final int                   MILLIS_PER_HOUR        = MILLIS_PER_MINUTE * 60;
+    private static final Map<String, String>   LICENSE_CLASSES;
+    private static final Map<String, State>    STATES;
 
     static
     {
@@ -143,10 +147,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
             STATES.put(state.getName(), state);
     }
 
-    private PersonDAO                                    personDAO;
-    private GroupDAO                                     groupDAO;
-    private TreeMap<String, Integer>                     groups;
-    private TreeMap<String, Integer>                     reportsToOptions;
+    private PersonDAO                          personDAO;
+    private GroupDAO                           groupDAO;
+    private Map<String, Integer>               groups;
+    private Map<String, Integer>               reportsToOptions;
+    private Map<String, Role>                  roles;
 
     public void setPersonDAO(PersonDAO personDAO)
     {
@@ -297,10 +302,18 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     @Override
     protected void doDelete(List<PersonView> deleteItems)
     {
+        final FacesContext context = FacesContext.getCurrentInstance();
         reportsToOptions = null;
 
         for (final PersonView person : deleteItems)
+        {
             personDAO.deleteByID(person.getPersonID());
+
+            // add a message
+            final String summary = MessageUtil.formatMessageString("person_deleted", person.getFirst(), person.getLast());
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
+            context.addMessage(null, message);
+        }
     }
 
     @Override
@@ -310,6 +323,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         if (isAdd())
             reportsToOptions = null;
 
+        final FacesContext context = FacesContext.getCurrentInstance();
+
         for (final PersonView person : saveItems)
         {
             if (!person.isUserSelected())
@@ -318,6 +333,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
                 person.setDriver(null);
 
             personDAO.update(person);
+
+            // add a message
+            final String summary = MessageUtil.formatMessageString(isAdd() ? "person_added" : "person_updated", person.getFirst(), person.getLast());
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
+            context.addMessage(null, message);
         }
     }
 
@@ -339,22 +359,22 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         return "go_adminPeople";
     }
 
-    public TreeMap<String, Gender> getGenders()
+    public Map<String, Gender> getGenders()
     {
         return GENDERS;
     }
 
-    public LinkedHashMap<String, Integer> getHeights()
+    public Map<String, Integer> getHeights()
     {
         return HEIGHTS;
     }
 
-    public TreeMap<String, Integer> getWeights()
+    public Map<String, Integer> getWeights()
     {
         return WEIGHTS;
     }
 
-    public TreeMap<String, Integer> getGroups()
+    public Map<String, Integer> getGroups()
     {
         if (groups == null)
         {
@@ -366,7 +386,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         return groups;
     }
 
-    public TreeMap<String, Integer> getReportsToOptions()
+    public Map<String, Integer> getReportsToOptions()
     {
         if (reportsToOptions == null)
         {
@@ -386,17 +406,32 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         return reportsToOptions;
     }
 
-    public LinkedHashMap<String, TimeZone> getTimeZones()
+    public Map<String, TimeZone> getTimeZones()
     {
         return TIMEZONES;
     }
 
-    public TreeMap<String, String> getLicenseClasses()
+    public Map<String, Role> getRoles()
+    {
+        if (roles == null)
+        {
+            roles = new LinkedHashMap<String, Role>();
+            for (final Role role : Role.values())
+            {
+                roles.put(role.getDescription(), role);
+                if (role.equals(getUser().getRole()))
+                    break;
+            }
+        }
+        return roles;
+    }
+
+    public Map<String, String> getLicenseClasses()
     {
         return LICENSE_CLASSES;
     }
 
-    public TreeMap<String, State> getStates()
+    public Map<String, State> getStates()
     {
         return STATES;
     }
@@ -442,6 +477,19 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
             if (reportsToPerson == null)
                 reportsToPerson = personDAO.findByID(getReportsTo());
             return reportsToPerson;
+        }
+
+        public Double getCostPerHourDollars()
+        {
+            if (getCostPerHour() != null)
+                return ((double) getCostPerHour()) / 100;
+            return null;
+        }
+
+        public void setCostPerHourDollars(Double costPerHourDollars)
+        {
+            if ((costPerHourDollars != null) && (costPerHourDollars > 0))
+                setCostPerHour((int) (costPerHourDollars * 100));
         }
 
         public String getConfirmPassword()

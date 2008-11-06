@@ -183,6 +183,17 @@
                             </h:selectOneMenu>
                           </td>
                         </tr>
+                        <tr>
+                          <td width="100" valign="top">
+                            <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_costPerHour" value="#{vehiclesBean.updateField['costPerHour']}" />
+                            <h:outputText value="#{messages.editVehicle_costPerHour}" />
+                          </td>
+                          <td>
+                            $<h:inputText value="#{vehiclesBean.editItem.costPerHourDollars}" id="costPerHour" onchange="checkMultiple(this)" styleClass="text" size="10"
+                              required="#{(not vehiclesBean.batchEdit) or vehiclesBean.updateField['costPerHour']}" requiredMessage="#{messages.required}" converter="javax.faces.Double" converterMessage="#{messages.editVehicle_costPerHourFormat}" />
+                            <rich:message for="costPerHour" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                          </td>
+                        </tr>
                       </table>
 
                       <div class="spacer"></div>

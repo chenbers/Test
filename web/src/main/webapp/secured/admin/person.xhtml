@@ -1,0 +1,236 @@
+<ui:composition template="/layout/layout.xhtml" 
+              xmlns="http://www.w3.org/1999/xhtml" 
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:rich="http://richfaces.org/rich"
+              xmlns:a4j="http://richfaces.org/a4j"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:security="http://pro.tiwi.com/jsf/security">
+
+  <ui:param name="adminSelected" value="current" />
+
+  <ui:define name="content">
+
+    <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+      <tr>
+        <td valign="top" width="130">
+          <ui:include src="/includes/adminSideNav.xhtml">
+            <ui:param name="selectedAction" value="go_adminPeople" />
+            <ui:param name="parentAction" value="go_adminPeople" />
+          </ui:include>
+        </td>
+        <td valign="top">
+          <!-- START PANEL -->
+
+          <a4j:form id="display-form">
+
+            <div class="">
+              <div class="panel_nw">
+                <div class="panel_title">
+                  <span class="admin"><h:outputText value="#{messages.adminHeader_personDetails}" /><h:outputText value=" " /><h:outputText value="#{personBean.editItem.first}" /><h:outputText value=" " /><h:outputText value="#{personBean.editItem.last}" /></span>
+                  <span class="panel_links"></span>
+                </div>
+              </div>
+
+              <div class="panel_w">
+
+                <div class="panel_content">
+
+                  <ul id="grid_nav" style="margin: 0;">
+                    <li class="l text"><h:commandLink action="#{personBean.cancelDisplay}" value="#{messages.person_backToPeople}" /></li>
+                    <li class="r"><h:commandLink action="#{personBean.edit}"><button value="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></h:commandLink></li>
+                    <li class="r"><a4j:commandLink><button value="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink></li>
+                  </ul>
+
+                  <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
+              
+                  <table width="790" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td width="390" valign="top">
+                
+                        <div class="add_section_title"><h:outputText value="#{messages.editPerson_personalInformation}" /></div>
+                  
+                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_empid}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.empid}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_first}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.first}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_middle}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.middle}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_last}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.last}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_suffix}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.suffix}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_dob}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.dob}"><f:convertDateTime dateStyle="long" /></h:outputText></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_gender}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.gender}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_height}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.height / 12}"><f:convertNumber integerOnly="true" /></h:outputText><h:outputText value="' " /><h:outputText value="#{personBean.editItem.height % 12}" /><h:outputText value="&quot;" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_weight}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.weight}" /></td>
+                          </tr>
+                        </table>
+
+                        <div class="spacer"></div>
+
+                        <div class="add_section_title"><h:outputText value="#{messages.editPerson_contactInformation}" /></div>
+
+                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_address_addr1}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.address.addr1}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_address_addr2}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.address.addr2}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_address_city}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.address.city}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_address_state}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.address.state.name}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_address_zip}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.address.zip}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_homePhone }" /></td>
+                            <td><h:outputText value="#{personBean.editItem.homePhone}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_workPhone}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.workPhone}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_email}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.email}" /></td>
+                          </tr>
+                        </table>
+
+                      </td>
+                      <td width="10"><img src="images/x.gif" width="10" /></td>
+                      <td width="390" valign="top">
+
+                        <div class="add_section_title"><h:outputText value="#{messages.editPerson_employeeInformation}" /></div>
+
+                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_group}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.group.name}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_reportsTo}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.reportsToPerson.first}" /><h:outputText value=" " /><h:outputText value="#{personBean.editItem.reportsToPerson.last}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_title}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.title}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_timeZone}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.timeZone.displayName}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_costPerHour}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.costPerHour / 100}"><f:convertNumber type="currency" currencySymbol="$" /></h:outputText></td>
+                          </tr>
+                        </table>
+
+                        <ui:fragment rendered="#{personBean.editItem.userSelected}">
+
+                        <div class="spacer"></div>
+
+                        <div class="add_section_title"><h:outputText value="#{messages.editPerson_userInformation}" /></div>
+
+                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_user_username}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.user.username}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_user_active}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.user.active ? messages.active : messages.inactive}" /></td>
+                          </tr>
+                        </table>
+
+                        </ui:fragment>
+
+                        <ui:fragment rendered="#{personBean.editItem.driverSelected}">
+
+                        <div class="spacer"></div>
+
+                        <div class="add_section_title">Driver Information</div>
+                  
+                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_driver_license}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.driver.license}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_driver_licenseClass}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.driver.licenseClass}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_driver_state}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.driver.state}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_driver_expiration}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.driver.expiration}"><f:convertDateTime dateStyle="long" /></h:outputText></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_driver_active}" /></td>
+                            <td><h:outputText value="#{personBean.editItem.driver.active ? messages.active : messages.inactive}" /></td>
+                          </tr>
+                        </table>
+
+                        </ui:fragment>
+
+                      </td>
+                    </tr>
+                  </table>
+
+                </div>
+              </div>
+
+              <div class="panel_sw">
+                <div class="panel_statusbar"></div>
+              </div>
+            </div>
+
+          </a4j:form>
+
+          <!-- END PANEL -->
+        </td>
+      </tr>
+    </table>
+
+    <ui:include src="../../includes/confirmDelete.xhtml">
+      <ui:param name="deleteBean" value="#{personBean}" />
+      <ui:param name="explanation" value="#{messages.person_confirmDelete}" />
+    </ui:include>
+
+  </ui:define>
+
+</ui:composition>

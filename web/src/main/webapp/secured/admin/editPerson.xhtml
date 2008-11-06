@@ -269,14 +269,25 @@
                         </tr>
                         <tr>
                           <td width="100" valign="top">
-                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="timeZone" value="#{personBean.updateField['timeZone']}" />
+                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_timeZone" value="#{personBean.updateField['timeZone']}" />
                             <h:outputText value="#{messages.editPerson_timeZone}" />
                           </td>
                           <td>
-                            <h:selectOneMenu value="#{personBean.editItem.timeZone}" onchange="checkMultiple(this)" style="width:200px">
+                            <h:selectOneMenu value="#{personBean.editItem.timeZone}" id="timeZone" onchange="checkMultiple(this)" style="width:200px">
                               <f:converter  converterId="TimeZoneConverter" />
                               <f:selectItems value="#{personBean.timeZones}" />
                             </h:selectOneMenu>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="100" valign="top">
+                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_costPerHour" value="#{personBean.updateField['costPerHour']}" />
+                            <h:outputText value="#{messages.editPerson_costPerHour}" />
+                          </td>
+                          <td>
+                            $<h:inputText value="#{personBean.editItem.costPerHourDollars}" id="costPerHour" onchange="checkMultiple(this)" styleClass="text" size="10"
+                              required="#{(not personBean.batchEdit) or personBean.updateField['costPerHour']}" requiredMessage="#{messages.required}" converter="javax.faces.Double" converterMessage="#{messages.editPerson_costPerHourFormat}" />
+                            <rich:message for="costPerHour" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                           </td>
                         </tr>
                       </table>
@@ -319,6 +330,17 @@
                           </td>
                         </tr>
                         </ui:fragment>
+                        <tr>
+                          <td width="100" valign="top">
+                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_user_role" value="#{personBean.updateField['user.role']}" />
+                            <h:outputText value="#{messages.editPerson_user_role}" />
+                          </td>
+                          <td>
+                            <h:selectOneMenu value="#{personBean.editItem.user.role}" id="user_role" onchange="checkMultiple(this)">
+                              <f:selectItems value="#{personBean.roles}" />
+                            </h:selectOneMenu>
+                          </td>
+                        </tr>
                         <tr>
                           <td width="100" valign="top">
                             <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_user_active" value="#{personBean.updateField['user.active']}" />

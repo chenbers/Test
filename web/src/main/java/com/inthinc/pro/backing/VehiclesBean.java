@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
@@ -218,15 +221,33 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     @Override
     protected void doDelete(List<VehicleView> deleteItems)
     {
+        final FacesContext context = FacesContext.getCurrentInstance();
+
         for (final VehicleView vehicle : deleteItems)
+        {
             vehicleDAO.deleteByID(vehicle.getVehicleID());
+
+            // add a message
+            final String summary = MessageUtil.formatMessageString("vehicle_deleted", vehicle.getName());
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
+            context.addMessage(null, message);
+        }
     }
 
     @Override
     protected void doSave(List<VehicleView> saveItems)
     {
+        final FacesContext context = FacesContext.getCurrentInstance();
+
         for (final VehicleView vehicle : saveItems)
+        {
             vehicleDAO.update(vehicle);
+
+            // add a message
+            final String summary = MessageUtil.formatMessageString(isAdd() ? "vehicle_added" : "vehicle_updated", vehicle.getName());
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
+            context.addMessage(null, message);
+        }
     }
 
     @Override
@@ -304,18 +325,24 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
             return group;
         }
 
-        /**
-         * @return the selected
-         */
+        public Double getCostPerHourDollars()
+        {
+            if (getCostPerHour() != null)
+                return ((double) getCostPerHour()) / 100;
+            return null;
+        }
+
+        public void setCostPerHourDollars(Double costPerHourDollars)
+        {
+            if ((costPerHourDollars != null) && (costPerHourDollars > 0))
+                setCostPerHour((int) (costPerHourDollars * 100));
+        }
+
         public boolean isSelected()
         {
             return selected;
         }
 
-        /**
-         * @param selected
-         *            the selected to set
-         */
         public void setSelected(boolean selected)
         {
             this.selected = selected;

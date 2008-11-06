@@ -36,18 +36,18 @@
       <c:set var="title" value="#{messages.confirmDelete_title}" />
     </c:if>
     <c:if test="#{empty explanation}">
-      <c:set var="title" value="#{messages.confirmDelete_explanation}" />
+      <c:set var="explanation" value="#{messages.confirmDelete_explanation}" />
     </c:if>
 
     <rich:modalPanel id="confirmDelete" headerClass="popupHeader" controlsClass="popupControls" width="500" height="140" zindex="2001">
       <f:facet name="header">
-        <h:outputText value="#{messages.confirmDelete_title}" />
+        <h:outputText value="#{title}" />
       </f:facet>
       <f:facet name="controls">
         <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('confirmDelete')" />
       </f:facet>
 
-      <div class="popupsubtitle"><h:outputText value="#{messages.confirmDelete_explanation}" /></div>
+      <div class="popupsubtitle"><h:outputText value="#{explanation}" /></div>
 
       <a4j:form id="confirmDeleteForm">
 
