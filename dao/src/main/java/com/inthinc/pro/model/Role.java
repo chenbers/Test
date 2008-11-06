@@ -37,6 +37,11 @@ public enum Role implements BaseEnum
         return this.code;
     }
 
+    public String getDescription()
+    {
+        return description;
+    }
+
     public static Role valueOf(Integer code)
     {
         return lookup.get(code);
