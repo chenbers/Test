@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.inthinc.pro.dao.annotations.ID;
 
-public enum State
+public enum State implements BaseEnum
 {
     AK(1, "AK", "Alaska"),
     AL(2, "AL", "Alabama"),
@@ -73,24 +73,20 @@ public enum State
         this.name = name;
     }
 
+    @Override
+    public Integer getCode()
+    {
+        return stateID;
+    }
+
     public String getAbbrev()
     {
         return abbrev;
     }
 
-    public void setAbbrev(String abbrev)
-    {
-        this.abbrev = abbrev;
-    }
-
     public String getName()
     {
         return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
     }
 
     private static final Map<String, State> lookup = new HashMap<String, State>();
