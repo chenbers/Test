@@ -16,6 +16,7 @@
 	</ui:define>
 	
 	<ui:define name="content">
+		<a4j:form id="outerDriverReport">
 		<div id="wrapper">
 			<table width="940" height="430" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
 				<tr>
@@ -58,7 +59,13 @@
             											<h:outputText value="#{messages.button_search}" />
             										</span>
             									</button>
-            								</a4j:commandLink>
+            								</a4j:commandLink>            								
+            							</li>
+            							<li class="l text">
+            								<a href="#" class="ls_tab_edit_columns" 
+            									onclick="Richfaces.showModalPanel('editDriverColumns');">
+            									<h:outputText value="#{messages.button_editColumns}" />
+            								</a>
             							</li>
             							
           							</ul>
@@ -72,6 +79,11 @@
              					<ui:param name="driverColumns" value="#{driverReportBean.driverColumns}"/>
              					<ui:param name="driverTable" value="#{driverReportTable.table}"/>
     						</ui:include>
+    						
+							<ui:include src="/includes/editDriverColumns.xhtml">
+								<ui:param name="driverColumns" value="#{driverReportBean.driverColumns}"/>	
+								<ui:param name="reRender" value="dataTable" />
+							</ui:include>    						
     					
     					
     						<div class="panel_sw">
@@ -84,5 +96,7 @@
 				</tr>
 			</table>
 		</div>
+		</a4j:form>
 	</ui:define>
+	
 </ui:composition>
