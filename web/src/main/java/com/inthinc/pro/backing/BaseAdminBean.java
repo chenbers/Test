@@ -354,7 +354,10 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean
             }
         }
 
-        return getDisplayRedirect();
+        if (isBatchEdit())
+            return getFinishedRedirect();
+        else
+            return getDisplayRedirect();
     }
 
     /**
