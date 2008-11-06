@@ -12,6 +12,7 @@ public class Person extends BaseEntity
     private Integer  accountID;
     private Integer  groupID;
     private TimeZone timeZone;
+    private Integer  costPerHour; // in cents
     // contact information
     private Address  address;
     private String   homePhone;
@@ -19,7 +20,7 @@ public class Person extends BaseEntity
     private String   email;
     // employee information
     private String   empid;
-    private Integer  reportsTo; // userID
+    private Integer  reportsTo;  // userID
     private String   title;
     private String   dept;
     // personal information
@@ -28,8 +29,8 @@ public class Person extends BaseEntity
     private String   last;
     private String   suffix;
     private Gender   gender;
-    private Integer  height;   // inches
-    private Integer  weight;   // pounds
+    private Integer  height;     // inches
+    private Integer  weight;     // pounds
     private Date     dob;
     // user, driver (may be null)
     private User     user;
@@ -73,6 +74,16 @@ public class Person extends BaseEntity
     public void setTimeZone(TimeZone timeZone)
     {
         this.timeZone = timeZone;
+    }
+
+    public Integer getCostPerHour()
+    {
+        return costPerHour;
+    }
+
+    public void setCostPerHour(Integer costPerHour)
+    {
+        this.costPerHour = costPerHour;
     }
 
     public Address getAddress()

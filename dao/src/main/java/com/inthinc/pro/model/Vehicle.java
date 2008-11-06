@@ -12,6 +12,7 @@ public class Vehicle extends BaseEntity
     @Column(name = "acctID")
     private Integer    accountID;
     private Integer    groupID;
+    private Integer    costPerHour;  // in cents
     private Boolean    active;
     private String     name;
     private String     make;
@@ -27,11 +28,11 @@ public class Vehicle extends BaseEntity
     List<SafetyDevice> safetyDevices;
     VehicleSensitivity sensitivity;
 
-    
     public Vehicle()
     {
         super();
     }
+
     public Integer getVehicleID()
     {
         return vehicleID;
@@ -60,6 +61,16 @@ public class Vehicle extends BaseEntity
     public void setGroupID(Integer groupID)
     {
         this.groupID = groupID;
+    }
+
+    public Integer getCostPerHour()
+    {
+        return costPerHour;
+    }
+
+    public void setCostPerHour(Integer costPerHour)
+    {
+        this.costPerHour = costPerHour;
     }
 
     public Boolean getActive()
