@@ -9,7 +9,7 @@ import org.richfaces.component.html.HtmlDatascroller;
 
 public class DriverReportTable
 {
-    private static final Logger logger = Logger.getLogger(TrendTable.class);
+    private static final Logger logger = Logger.getLogger(DriverReportTable.class);
 
     private HtmlDataTable table = new HtmlDataTable();
     private HtmlDatascroller driverReportScroller;
