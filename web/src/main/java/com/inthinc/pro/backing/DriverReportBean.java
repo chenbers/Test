@@ -5,7 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+
 import org.apache.log4j.Logger;
+import org.richfaces.event.DataScrollerEvent;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
@@ -20,6 +25,13 @@ public class DriverReportBean extends BaseBean
     private Map<String, Boolean> driverColumns = new HashMap<String, Boolean>();
     
     private DriverReportItem drt = null;
+    
+    private Integer numRowsPerPg = 2;
+    
+    private Integer maxCount = null;
+    private Integer start = 1;
+    private Integer end = numRowsPerPg;
+
     
     static
     {
@@ -89,7 +101,22 @@ public class DriverReportBean extends BaseBean
         drt.setStyleScore(50);
         setStyles();
         drt.setVehicleID("FZ-109");
-        driverData.add(drt);               
+        driverData.add(drt);     
+
+        drt = new DriverReportItem();
+        drt.setEmployee("Onemore PieceOfData");
+        drt.setEmployeeID(99999);
+        drt.setGroup("West");
+        drt.setMilesDriven(4561114);
+        drt.setOverallScore(31);               
+        drt.setSeatBeltScore(15);
+        drt.setSpeedScore(23);
+        drt.setStyleScore(40);
+        setStyles();
+        drt.setVehicleID("ZZ-0999");
+        driverData.add(drt);     
+        
+        maxCount = driverData.size();
         
         for ( int i = 0; i < DriverReportBean.AVAILABLE_COLUMNS.size(); i++ ) {
             this.driverColumns.put(DriverReportBean.AVAILABLE_COLUMNS.get(i),true);
@@ -133,6 +160,8 @@ public class DriverReportBean extends BaseBean
         setStyles();
         drt.setVehicleID("AA-123");                
         driverData.add(drt);      
+        
+        this.maxCount = driverData.size();
     }
     
     public Map<String, Boolean> getDriverColumns()    
@@ -165,5 +194,68 @@ public class DriverReportBean extends BaseBean
         sb.setScore(drt.getStyleScore());
         drt.setStyleStyle(sb.getScoreStyle());
         
+    }
+
+
+    public Integer getMaxCount()
+    {
+        return maxCount;
+    }
+
+
+    public void setMaxCount(Integer maxCount)
+    {
+        logger.debug("maxCount is: " + this.maxCount);
+        this.maxCount = maxCount;
+    }
+    
+    public void scrollerListener(DataScrollerEvent se)     
+    {        
+        logger.debug("scoll event page: " + se.getPage() + 
+                " old " + se.getOldScrolVal() + " new " + se.getNewScrolVal() +
+                " total " + this.driverData.size());
+        
+        this.start = (se.getPage()-1)*this.numRowsPerPg + 1;
+        this.end = (se.getPage())*this.numRowsPerPg;
+        //Partial page
+        if ( this.end > this.driverData.size() ) {
+            this.end = this.start + ( this.end - this.driverData.size() ) - 1;
+        }
+    }
+
+
+    public Integer getStart()
+    {
+        return start;
+    }
+
+
+    public void setStart(Integer start)
+    {
+        this.start = start;
+    }
+
+
+    public Integer getEnd()
+    {
+        return end;
+    }
+
+
+    public void setEnd(Integer end)
+    {
+        this.end = end;
+    }
+
+
+    public Integer getNumRowsPerPg()
+    {
+        return numRowsPerPg;
+    }
+
+
+    public void setNumRowsPerPg(Integer numRowsPerPg)
+    {
+        this.numRowsPerPg = numRowsPerPg;
     }
 }
