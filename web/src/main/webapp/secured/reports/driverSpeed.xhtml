@@ -33,6 +33,30 @@
 	</li>
 </ul>
 
+<script type="text/javascript">
+
+var selected = 'OVERALL';
+
+function SelectBreakDown(region)
+	{
+		//Un-Select last component.
+		document.getElementById(selected).className="tiny_chart";
+		
+		//Set selected component.  //not working when using selected var with getElementById
+		selected = region;
+		
+		//change style to selected.
+		document.getElementById(region).className="tiny_selected";
+		
+		
+		chart21.attributes.width = 650;
+		chart21.attributes.height = 200;
+		
+		
+		chart21.render('overall_chart');
+	}
+</script>
+
 <table width="940" border="0" cellspacing="0" cellpadding="0" align="center" class="dash_table">
   <tr>
     <td colspan="3" valign="top">
@@ -78,6 +102,7 @@
 						            <ui:param name="height" value="200" />  
 						            <ui:param name="tartgetElementVar" value="targetElement" />
 						            <ui:param name="ChartDivID" value="overall_chart" />
+						            <ui:param name="chartVar" value="overallChart" />
 							</ui:include>
 						</td>
 						<td valign="top" align="right">
@@ -130,12 +155,13 @@
 						<span class="panel_links"></span></div>
 				</div>
 				<div class="panel_w">
-				  <div class="panel_content">
-				  
-					<table width="920" height="200px" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
+				  <rich:panel bodyClass="panel_content" id="breakdown_panel" border="0">
+					<table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
 					  <tr>
-					    <td valign="top" class="tiny_selected">
-						  <div class="tiny_title">Overall</div>
+					    <td id="OVERALL" valign="top" class="selected_chart">
+						  <div class="tiny_title">
+								<a href="#" onclick="SelectBreakDown('OVERALL')">Overall</a>
+						  </div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
@@ -146,6 +172,7 @@
 								            <ui:param name="height" value="90" />  
 								            <ui:param name="tartgetElementVar" value="targetElement1" />
 								            <ui:param name="ChartDivID" value="speed_chart_tiny_overall" />
+								            <ui:param name="chartVar" value="overallChart2" />
 									</ui:include>
 								</td>
 								<td align="center">
@@ -157,8 +184,10 @@
 							  </tr>
 							</table>
 						</td>
-					    <td valign="top" class="tiny_chart">
-							<div class="tiny_title"><a href="driverq_speed_21-30.html">21-30mph</a></div>
+					    <td id="TWENTYONE" valign="top" class="tiny_chart">
+							<div class="tiny_title">
+								<a href="#" onclick="SelectBreakDown('TWENTYONE')">21-30mph</a>
+							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
@@ -169,6 +198,7 @@
 									            <ui:param name="height" value="90" />  
 									            <ui:param name="tartgetElementVar" value="targetElement2" />
 									            <ui:param name="ChartDivID" value="speed_chart_tiny_21-30" />
+									            <ui:param name="chartVar" value="chart21" />
 									</ui:include>
 								</td>
 								<td align="center">
@@ -180,8 +210,9 @@
 							  </tr>
 							</table>
 						</td>
-					    <td valign="top" class="tiny_chart">
-							<div class="tiny_title"><a href="driverq_speed_31-40.html">31-40mph</a></div>
+					    <td id="THIRTYONE" valign="top" class="tiny_chart">
+							<div class="tiny_title">
+								<a href="#" onclick="SelectBreakDown('THIRTYONE')">31-40mph</a></div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
@@ -192,6 +223,7 @@
 								            <ui:param name="height" value="90" />  
 								            <ui:param name="tartgetElementVar" value="targetElement3" />
 								            <ui:param name="ChartDivID" value="speed_chart_tiny_31-40" />
+								            <ui:param name="chartVar" value="chart31" />
 									</ui:include>
 									</td>
 									<td align="center">
@@ -205,8 +237,9 @@
 						</td>
 				      </tr>
 					  <tr>
-						<td valign="top" class="tiny_chart">
-							<div class="tiny_title"><a href="driverq_speed_41-54.html">41-54mph</a></div>
+						<td id="FORTYONE" valign="top" class="tiny_chart">
+							<div class="tiny_title">
+							<a href="#" onclick="SelectBreakDown('FORTYONE')">41-54mph</a></div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
@@ -217,6 +250,7 @@
 								            <ui:param name="height" value="90" />  
 								            <ui:param name="tartgetElementVar" value="targetElement4" />
 								            <ui:param name="ChartDivID" value="speed_chart_tiny_41-54" />
+								            <ui:param name="chartVar" value="chart41" />
 									</ui:include>
 								</td>
 								<td align="center">
@@ -228,8 +262,9 @@
 							  </tr>
 							</table>
 						</td>
-						<td valign="top" class="tiny_chart">
-							<div class="tiny_title"><a href="driverq_speed_55-64.html">55-64mph</a></div>
+						<td id="FIFTYFIVE" valign="top" class="tiny_chart">
+							<div class="tiny_title">
+							<a href="#" onclick="SelectBreakDown('FIFTYFIVE')">55-64mph</a></div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
@@ -240,6 +275,7 @@
 								            <ui:param name="height" value="90" />  
 								            <ui:param name="tartgetElementVar" value="targetElement5" />
 								            <ui:param name="ChartDivID" value="speed_chart_tiny_55-64" />
+								            <ui:param name="chartVar" value="chart55" />
 									</ui:include>
 								</td>
 								<td align="center">
@@ -251,8 +287,9 @@
 							  </tr>
 							</table>
 						</td>
-					    <td valign="top" class="tiny_chart">
-							<div class="tiny_title"><a href="driverq_speed_65-80.html">65-80mph</a></div>
+					    <td id="SIXTYFIVE" valign="top" class="tiny_chart">
+							<div class="tiny_title">
+							<a href="#" onclick="SelectBreakDown('SIXTYFIVE')">65-80mph</a></div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
@@ -263,6 +300,7 @@
 								            <ui:param name="height" value="90" />  
 								            <ui:param name="tartgetElementVar" value="targetElement6" />
 								            <ui:param name="ChartDivID" value="speed_chart_tiny_65-80" />
+								            <ui:param name="chartVar" value="chart65" />
 									</ui:include>
 								</td>
 								<td align="center">
@@ -276,7 +314,7 @@
 						</td>
 					  </tr>
 					</table>
-				  </div>
+				  </rich:panel>
 				</div>
 				<div class="panel_sw">
 					<div class="panel_statusbar"></div>
@@ -314,15 +352,21 @@
 								<f:facet name="header">
 									<h:outputText value="Location" />
 								</f:facet>
-									<h:outputText value="#{item.latitude}" />
+									<h:outputText value="1232 Coleman Ave Santa Clara, CA 95110 " />
+							</rich:column>
+							
+							<rich:column sortBy="#{item.latitude}">
+								<f:facet name="header">
+									<h:outputText value="Time" />
+								</f:facet>
+									<h:outputText value="Fri, Apr 25, 2008 11:22 AM (MST)" />
 							</rich:column>
 							
 							<rich:column width="73" sortBy="#{item.speedLimit}">
 								<f:facet name="header">
 									<h:outputText value="Posted Speed" />
 								</f:facet>
-								<h:outputText value="#{item.speedLimit}" />
-												
+								<h:outputText value="#{item.speedLimit}" />		
 							</rich:column>
 							
 							<rich:column width="73" sortBy="#{item.avgSpeed}">

@@ -178,18 +178,87 @@ public class GraphicUtil {
 		
 		return sb.toString();
 	}
+
+    public static String createMiniLineControlParameters()
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append("<chart ");
+        sb.append("caption=\'\' ");
+        sb.append("subcaption=\'\' ");
+        sb.append("xAxisName=\'\' ");
+        sb.append("yAxisMinValue=\'0\' ");
+        sb.append("yAxisName=\'\' ");
+        sb.append("numberPrefix=\'\' ");
+        sb.append("showValues=\'0\' ");
+        sb.append("adjustDiv=\'0\' ");
+        sb.append("setAdaptiveYMin='0' ");
+        sb.append("borderColor=\'#cfcfcf\' ");
+        sb.append("vDivLineColor=\'#cfcfcf\' ");
+        sb.append("vDivLineThickness=\'1\' ");
+        sb.append("showAlternateHGridColor=\'1\' ");
+        sb.append("alternateHGridColor=\'#f0f0f0\' ");
+        sb.append("alternateHGridAlpha=\'100\' ");
+        sb.append("forceDecimals=\'1\' ");
+        sb.append("yAxisMaxValue=\'5\' ");
+        sb.append("bgColor=\'#ffffff\' ");
+        sb.append("showBorder=\'0\' ");
+        sb.append("lineColor=\'#93C034\' ");
+        sb.append("lineThickness=\'2\' ");
+        sb.append("drawAnchors=\'0\' ");
+        sb.append("numVDivLines=\'4\' >");
+
+        return sb.toString();
+    }
+
+    public static String createFakeMiniLineData()
+    {
+        StringBuffer sb = new StringBuffer();
+
+        sb.append("<categories>");
+        sb.append(" <category label=\"\"/>");
+        sb.append(" <category label=\"\"/>");
+        sb.append(" <category label=\"\"/>");
+        sb.append(" <category label=\"\"/>");
+        sb.append(" <category label=\"\"/>");
+        sb.append("</categories>");
+
+        sb.append("<dataset seriesName=\"Light\" color=\"B1D1DC\" plotBorderColor=\"B1D1DC\"> ");
+        sb.append("<set value=\"42\"/>");
+        sb.append("<set value=\"45\"/>");
+        sb.append("<set value=\"33\"/>");
+        sb.append("<set value=\"29\"/>");
+        sb.append("<set value=\"36\"/>");
+        sb.append("</dataset>");
+
+        sb.append("<dataset seriesName=\"Medium\" color=\"C8A1D1\" plotBorderColor=\"C8A1D1\"> ");
+        sb.append("<set value=\"22\"/>");
+        sb.append("<set value=\"27\"/>");
+        sb.append("<set value=\"33\"/>");
+        sb.append("<set value=\"37\"/>");
+        sb.append("<set value=\"33\"/>");
+        sb.append("</dataset>");
+
+        sb.append("<dataset seriesName=\"Heavy\" color=\"A8C634\" plotBorderColor=\"A8C634\"> ");
+        sb.append("<set value=\"17\"/>");
+        sb.append("<set value=\"22\"/>");
+        sb.append("<set value=\"26\"/>");
+        sb.append("<set value=\"22\"/>");
+        sb.append("<set value=\"23\"/>");
+        sb.append("</dataset>");
+
+        return sb.toString();
+
+    }
 	
 	public static String createFakeLineData()
 	{
 		StringBuffer sb = new StringBuffer();
 		
-		sb.append("<set value=\'" + getRandomScore().toString() + "' label=\'APR\' />");
-		sb.append("<set value=\'" + getRandomScore().toString() + "' label=\'MAY\' />");
-		sb.append("<set value=\'" + getRandomScore().toString() + "' label=\'JUN\' />");
-		sb.append("<set value=\'" + getRandomScore().toString() + "' label=\'JUL\' />");
-	    sb.append("<set value=\'" + getRandomScore().toString() + "' label=\'AUG\' />");
-	    sb.append("<set value=\'" + getRandomScore().toString() + "' label=\'SEP\' />");
-	    sb.append("<set value=\'" + getRandomScore().toString() + "' label=\'OCT\' />");
+		sb.append("<set value=\'" + getRandomScore().toString() + "' label=\'19600\' />");
+		sb.append("<set value=\'" + getRandomScore().toString() + "' label=\'19700\' />");
+	    sb.append("<set value=\'" + getRandomScore().toString() + "' label=\'20000\' />");
+	    sb.append("<set value=\'" + getRandomScore().toString() + "' label=\'21000\' />");
+	    sb.append("<set value=\'" + getRandomScore().toString() + "' label=\'21135\' />");
 		
 		return sb.toString();
 		

@@ -8,6 +8,7 @@
             <ui:param name="height" value="200" />  
             <ui:param name="tartgetElementVar" value="targetElement6" />
             <ui:param name="ChartDivID" value="style_chart" />
+            <ui:param name="chartVar" value="overallChart" />
 	</ui:include>
 -->
 
@@ -19,10 +20,10 @@
 	<h:inputHidden value="#{lineChartDef}" id="#{hiddenFieldID}" />
 	<script type="text/javascript">
 		var #{tartgetElementVar} = document.getElementById("#{hiddenFieldID}");
-		var chart = new FusionCharts("/tiwipro/fusioncharts/Area2D.swf", "ChartId", "#{width}", "#{height}", "0", "0");
-		chart.setDataXML(#{tartgetElementVar}.value);			   
-		chart.render("#{ChartDivID}");
-		chart.addParam('wmode', 'transparent');
+		var #{chartVar} = new FusionCharts("/tiwipro/fusioncharts/Area2D.swf", "ChartId", "#{width}", "#{height}", "0", "0");
+		#{chartVar}.setDataXML(#{tartgetElementVar}.value);			   
+		#{chartVar}.render("#{ChartDivID}");
+		#{chartVar}.addParam('wmode', 'transparent');
 	</script>
 
 </ui:composition>

@@ -82,6 +82,7 @@
 						            <ui:param name="height" value="200" />  
 						            <ui:param name="tartgetElementVar" value="targetElement" />
 						            <ui:param name="ChartDivID" value="overall_chart" />
+						            <ui:param name="chartVar" value="overallChart" />
 							</ui:include>
 						</td>
 						<td valign="top" align="right">
@@ -125,7 +126,7 @@
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="speed">Speed</span>
-						<span class="panel_links"><h:form id="speed_report_link"><h:commandLink value="report" action="go_reportDriverSpeed" /></h:form></span>
+						<span class="panel_links"><h:form id="speed_report_link"><h:commandLink value="view report" action="go_reportDriverSpeed" /></h:form></span>
 					</div>
 				</div>
 					<div class="panel_w">
@@ -140,6 +141,7 @@
 						            <ui:param name="height" value="200" />  
 						            <ui:param name="tartgetElementVar" value="targetElement1" />
 						            <ui:param name="ChartDivID" value="speed_chart" />
+						            <ui:param name="chartVar" value="speed_chart" />
 							</ui:include>
 							</td>
                             <td width="80" align="center">
@@ -181,6 +183,7 @@
 						            <ui:param name="height" value="200" />  
 						            <ui:param name="tartgetElementVar" value="targetElement2" />
 						            <ui:param name="ChartDivID" value="style_chart" />
+						            <ui:param name="chartVar" value="style_chart" />
 							</ui:include>
                             </td>
                             <td width="80" align="center">
@@ -221,6 +224,7 @@
 						            <ui:param name="height" value="200" />
 						            <ui:param name="tartgetElementVar" value="targetElement3" />
 						            <ui:param name="ChartDivID" value="seatBelt_chart" />
+						            <ui:param name="chartVar" value="seatBelt_chart" />
 							</ui:include>
                             </td>
                             <td width="80" align="center">
@@ -290,7 +294,7 @@
                           <tr>
                             <td>
                             <rich:panel id="mpg_chart"></rich:panel>
-                            <h:inputHidden value="#{driverBean.mpg}" id="hiddenField5" />
+                            <h:inputHidden value="#{driverBean.mpgHistory}" id="hiddenField5" />
 							<script type="text/javascript">
 								var targetElement5 = document.getElementById("hiddenField5");
 								var chart = new FusionCharts("../fusioncharts/MSArea.swf", "ChartId", "450", "300", "0", "0");
@@ -329,6 +333,7 @@
 						            <ui:param name="height" value="200" />
 						            <ui:param name="tartgetElementVar" value="targetElement4" />
 						            <ui:param name="ChartDivID" value="coaching_chart" />
+						            <ui:param name="chartVar" value="coaching_chart" />
 							</ui:include>
                             </td>
                           </tr>
@@ -348,7 +353,6 @@
 
 </ui:composition>
 
- <div id="mpg_chart"></div>
 
 
 

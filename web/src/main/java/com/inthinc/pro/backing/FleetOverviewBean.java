@@ -15,7 +15,7 @@ public class FleetOverviewBean extends BaseBean
     private Duration            duration = Duration.DAYS;
     private static final Logger logger   = Logger.getLogger(FleetOverviewBean.class);
 
-    private ScoreDAO          graphicDAO;
+    private ScoreDAO          scoreDAO;
     private NavigationBean navigation;
 
 
@@ -30,9 +30,8 @@ public class FleetOverviewBean extends BaseBean
         {
             init();
         }
-
-        ScoreBox sb = new ScoreBox(getOverallScore(), ScoreBoxSizes.LARGE);
-        setOverallScoreStyle(sb.getScoreStyle());
+     
+        setOverallScoreStyle(ScoreBox.GetStyleFromScore(getOverallScore(), ScoreBoxSizes.LARGE));
     }
 
     private void init()
@@ -45,7 +44,7 @@ public class FleetOverviewBean extends BaseBean
         {
             groupID = getUser().getPerson().getGroupID();
         }
-        ScoreableEntity scoreableEntity = graphicDAO.getOverallScore(groupID, startDate, endDate);
+        ScoreableEntity scoreableEntity = scoreDAO.getOverallScore(groupID, startDate, endDate);
         setOverallScore(scoreableEntity.getScore());
     }
 
@@ -96,14 +95,14 @@ public class FleetOverviewBean extends BaseBean
         overallScore = null;
     }
 
-    public ScoreDAO getGraphicDAO()
+    public ScoreDAO getScoreDAO()
     {
-        return graphicDAO;
+        return scoreDAO;
     }
 
-    public void setGraphicDAO(ScoreDAO graphicDAO)
+    public void setScoreDAO(ScoreDAO scoreDAO)
     {
-        this.graphicDAO = graphicDAO;
+        this.scoreDAO = scoreDAO;
     }
     public NavigationBean getNavigation()
     {

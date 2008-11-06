@@ -21,7 +21,8 @@ public class ScoreBox
 		
 	}
 	
-	private void calculateScoreColor()
+	
+	private void calculateScoreColor()  //To be removed.
 	{
 		//Determine CSS Style
 		if( score <= 10){
@@ -39,6 +40,30 @@ public class ScoreBox
 		else {
 			setScoreStyle("score_" + size + "_5");
 		}
+	}
+	
+	public static String GetStyleFromScore(Integer score, ScoreBoxSizes size)
+	{
+	    String style;
+	    
+	    //Determine CSS Style
+        if( score <= 10){
+            style = "score_" + size.toString() + "_1";
+        }
+        else if(score <= 20) {
+            style = "score_" + size.toString() + "_2";
+        }
+        else if(score <= 30) {
+            style = "score_" + size.toString() + "_3";
+        }
+        else if(score <= 40) {
+            style = "score_" + size.toString() + "_4";
+        }
+        else {
+            style = "score_" + size.toString() + "_5";
+        }
+        
+        return style;
 	}
 	
 	public Integer getScore() {

@@ -3,28 +3,37 @@ package com.inthinc.pro.backing;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.backing.ui.BreakdownSelections;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
+import com.inthinc.pro.backing.ui.ScoreBreakdown;
+import com.inthinc.pro.backing.ui.ScoreCategory;
+import com.inthinc.pro.charts.Pie;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.util.GraphicUtil;
+import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.Distance;
 import com.inthinc.pro.model.SpeedingEvent;
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.charts.Line;
 
 public class DriverBean extends BaseBean
 {
 	private static final Logger logger = Logger.getLogger(DriverBean.class);
 	
-	/* Overall Score
+	/* DATA NEEDED for a Driver
+	 * 
+	 * Overall Score
 	 * Overall Scores for X Miles
 	 *
-	 * Driver's Speed Score
-	 * Driver's Speed Scores for X Miles
+	 * Speed Score
+	 * Speed Scores for X Miles
 	 * 
 	 * Driving Style Score
 	 * Driving Style Scores for X Miles
@@ -35,69 +44,69 @@ public class DriverBean extends BaseBean
 	 * Coaching Events for X Miles.
 	 * 
 	 * Last Trip or Last Location
-	 * 		
+	 * 
+	 * Miles Per Gallon data for chart
 	 */
 	
-	private String driverName = "Amy Johnson";
-	
-	private Integer overallScore;
-	private String overallScoreHistory;
-	private String overallScoreStyle = "score_med_2";
-	
-	private Integer speedScore = GraphicUtil.getRandomScore();
-	private String speedScoreHistory;
-	private String speedScoreStyle = "score_med_3";
-
-	private Integer drivingScore = GraphicUtil.getRandomScore();
-	private String drivingScoreHistory;
-	private String drivingScoreStyle = "score_med_1";
-	
-	private Integer seatBeltScore = GraphicUtil.getRandomScore();
-	private String seatBeltScoreHistory;
-	private String seatBeltScoreStyle = "score_med_4";
-	
-	private String coachingHistory;
-	
-	private ScoreDAO 		scoreDAO;
-	private Distance 		distance = Distance.FIVEHUNDRED;
-	private LatLng 			lastLocation;
+    private ScoreDAO    scoreDAO;
+    private Distance    distance = Distance.FIVEHUNDRED;
+    private LatLng      lastLocation;
+    
+    private String      driverName;
+    
+    private Integer     overallScore;
+    private String      overallScoreHistory;
+    private String      overallScoreStyle;
+    
+    private Integer     speedScore;
+    private String      speedScoreHistory;
+    private String      speedScoreStyle;
+    
+    private Integer     drivingScore;
+    private String      drivingScoreHistory;
+    private String      drivingScoreStyle;
+    
+    private Integer     seatBeltScore;
+    private String      seatBeltScoreHistory;
+    private String      seatBeltScoreStyle;
+    
+    private String      mpgHistory;
+    private String      coachingHistory;
 	
 	private List<SpeedingEvent> speedingEvents = new ArrayList<SpeedingEvent>();
-
+	private BreakdownSelections breakdownSelected = BreakdownSelections.OVERALL;
+	
+	Integer endDate = DateUtil.getTodaysDate();
+    Integer startDate = DateUtil.getDaysBackDate(endDate, 30);
+    
 	public DriverBean()
 	{
-	      Integer score = GraphicUtil.getRandomScore();
-	      setOverallScore(score);
+	   
 	}
-	
-    private String createLineDef() {
-		StringBuffer sb = new StringBuffer();
-		//Control parameters
-		sb.append(GraphicUtil.createLineControlParameters());
-		sb.append(GraphicUtil.createFakeLineData());		
-		sb.append("</chart>");
-		
-		return sb.toString();
-	}
-	
-    private void init()
+
+	//INIT SCORES
+    private void initOverallScore()
     {
-        //TODO get overall score for DRIVER not group.
-        Integer endDate = DateUtil.getTodaysDate();
-        Integer startDate = DateUtil.getDaysBackDate(endDate, distance.getNumberOfMiles());
-        ScoreableEntity scoreableEntity = scoreDAO.getOverallScore(getUser().getPerson().getGroupID(), startDate, endDate);
-        setOverallScore(scoreableEntity.getScore());
+        ScoreableEntity overallSe = scoreDAO.getOverallScore(getUser().getPerson().getGroupID(), startDate, endDate);
+        setOverallScore(overallSe.getScore());
+    }
+    private void initSpeed()
+    {
+        
+        ScoreableEntity speedSe = scoreDAO.getOverallScore(getUser().getPerson().getGroupID(), startDate, endDate); //Replace with correct DAO
+        setSpeedScore(speedSe.getScore());
     }
     
-    private void initStyle()
+    private void initSeatBelt()
     {
-        if (overallScore == null)
-        {
-            init();
-        }
-
-        ScoreBox sb = new ScoreBox(getOverallScore(), ScoreBoxSizes.MEDIUM);
-        setOverallScoreStyle(sb.getScoreStyle());
+        ScoreableEntity seatBeltSe = scoreDAO.getOverallScore(getUser().getPerson().getGroupID(), startDate, endDate); //Replace with correct DAO
+        setSeatBeltScore(seatBeltSe.getScore());
+    }
+    
+    private void initDrivingScore()
+    {
+        ScoreableEntity drivingSe = scoreDAO.getOverallScore(getUser().getPerson().getGroupID(), startDate, endDate); //Replace with correct DAO
+        setDrivingScore(drivingSe.getScore());
     }
     
 	//OVERALL SCORE properties
@@ -105,7 +114,7 @@ public class DriverBean extends BaseBean
 	{
         if (overallScore == null)
         {
-            init();
+            initOverallScore();
         }
         return overallScore;
 	}
@@ -113,20 +122,23 @@ public class DriverBean extends BaseBean
 	public void setOverallScore(Integer overallScore) 
 	{
 		this.overallScore = overallScore;
-		initStyle();
+		setOverallScoreStyle(ScoreBox.GetStyleFromScore(overallScore, ScoreBoxSizes.MEDIUM));
 	}
+	
 	public String getOverallScoreHistory() {
 		
-		setOverallScoreHistory(createLineDef()); // Get Chart data from DAO
+		setOverallScoreHistory(createLineDef(ScoreType.SCORE_OVERALL)); // Get Chart data from DAO
 		return overallScoreHistory;
 	}
+	
 	public void setOverallScoreHistory(String overallScoreHistory) {
 		this.overallScoreHistory = overallScoreHistory;
 	}
+	
 	public String getOverallScoreStyle() {
 	    if (overallScoreStyle == null)
         {
-            initStyle();
+            initOverallScore();
         }
         logger.debug("overallScoreStyle = " + overallScoreStyle);
         return overallScoreStyle;
@@ -137,19 +149,26 @@ public class DriverBean extends BaseBean
 	
 	//SPEED properties
 	public Integer getSpeedScore() {
-		return speedScore;
+		if(speedScore == null)
+		    initSpeed();
+	    
+	    return speedScore;
 	}
 	public void setSpeedScore(Integer speedScore) {
 		this.speedScore = speedScore;
+		setSpeedScoreStyle(ScoreBox.GetStyleFromScore(speedScore, ScoreBoxSizes.MEDIUM));
 	}
 	public String getSpeedScoreHistory() {
-		setSpeedScoreHistory(createLineDef());
+		setSpeedScoreHistory(createLineDef(ScoreType.SCORE_SPEEDING));
 		return speedScoreHistory;
 	}
 	public void setSpeedScoreHistory(String speedScoreHistory) {
 		this.speedScoreHistory = speedScoreHistory;
 	}
 	public String getSpeedScoreStyle() {
+	    if(speedScoreStyle == null)
+	        initSpeed();
+	    
 		return speedScoreStyle;
 	}
 	public void setSpeedScoreStyle(String speedScoreStyle) {
@@ -158,20 +177,27 @@ public class DriverBean extends BaseBean
 
 	//DRIVING STYLE properties
 	public Integer getDrivingScore() {
-		return drivingScore;
+		if(drivingScore == null)
+		    initDrivingScore();
+	    
+	    return drivingScore;
 	}
 	public void setDrivingScore(Integer drivingScore) {
+	    setDrivingScoreStyle(ScoreBox.GetStyleFromScore(drivingScore, ScoreBoxSizes.MEDIUM));
 		this.drivingScore = drivingScore;
 	}
 	public String getDrivingScoreStyle() {
-		return drivingScoreStyle;
+	    if(drivingScoreStyle == null)
+	        initDrivingScore();
+	        
+	    return drivingScoreStyle;
 	}
 	public void setDrivingScoreStyle(String drivingScoreStyle) {
 		this.drivingScoreStyle = drivingScoreStyle;
 	}
 	public String getDrivingScoreHistory() {
 		
-		setDrivingScoreHistory(createLineDef());
+		setDrivingScoreHistory(createLineDef(ScoreType.SCORE_DRIVING_STYLE));
 		return drivingScoreHistory;
 	}
 	public void setDrivingScoreHistory(String drivingScoreHistory) {
@@ -180,19 +206,25 @@ public class DriverBean extends BaseBean
 	
 	//SEAT BELT properties
 	public Integer getSeatBeltScore() {
-		return seatBeltScore;
+		if(seatBeltScore == null)
+		    initSeatBelt();
+	    
+	    return seatBeltScore;
 	}
 	public void setSeatBeltScore(Integer seatBeltScore) {
-		this.seatBeltScore = seatBeltScore;
+	    setSeatBeltScoreStyle(ScoreBox.GetStyleFromScore(seatBeltScore, ScoreBoxSizes.MEDIUM));
+	    this.seatBeltScore = seatBeltScore;
 	}
 	public String getSeatBeltScoreHistory() {
-		setSeatBeltScoreHistory(createLineDef());
+		setSeatBeltScoreHistory(createLineDef(ScoreType.SCORE_SEATBELT));
 		return seatBeltScoreHistory;
 	}
 	public void setSeatBeltScoreHistory(String seatBeltScoreHistory) {
 		this.seatBeltScoreHistory = seatBeltScoreHistory;
 	}
 	public String getSeatBeltScoreStyle() {
+	    if(seatBeltScoreStyle == null)
+	        initSeatBelt();
 		return seatBeltScoreStyle;
 	}
 	public void setSeatBeltScoreStyle(String seatBeltScoreStyle) {
@@ -201,7 +233,7 @@ public class DriverBean extends BaseBean
 	
 	//COACHING properties
 	public String getCoachingHistory() {
-		setCoachingHistory(createLineDef());
+		setCoachingHistory(createLineDef(ScoreType.SCORE_COACHING_EVENTS));
 		return coachingHistory;
 	}
 	public void setCoachingHistory(String coachingHistory) {
@@ -210,7 +242,10 @@ public class DriverBean extends BaseBean
 	
 	//DRIVER properties
 	public String getDriverName() {
-		return driverName;
+		if(driverName == null)
+		    driverName = getUser().getPerson().getFirst() + " " + getUser().getPerson().getLast();
+	    
+	    return driverName;
 	}
 	public void setDriverName(String driverName) {
 		this.driverName = driverName;
@@ -230,7 +265,7 @@ public class DriverBean extends BaseBean
         this.distance = distance;
     }
 
-    //GRAPHIC DAO PROPERTIES
+    //SCORE DAO PROPERTIES
     public ScoreDAO getScoreDAO()
     {
         return scoreDAO;
@@ -273,10 +308,90 @@ public class DriverBean extends BaseBean
 	
 	//LAST LOCATION PROPERTIES
 	public LatLng getLastLocation() {
-		return lastLocation;
+		if(lastLocation == null)
+		    lastLocation = new LatLng(90.00, -120.00); // Get from DAO 
+	    
+	    return lastLocation;
 	}
 
 	public void setLastLocation(LatLng lastLocation) {
 		this.lastLocation = lastLocation;
 	}
+
+    //BREAKDOWN SELECTION PROPERTIES
+    public BreakdownSelections getBreakdownSelected()
+    {
+        return breakdownSelected;
+    }
+
+    public void setBreakdownSelected(BreakdownSelections breakdownSelected)
+    {
+        this.breakdownSelected = breakdownSelected;
+    }
+	
+	//MPG PROPERTIES
+    public String getMpgHistory()
+    {
+        if(mpgHistory == null)
+            mpgHistory = this.createMiniLineDef();
+        
+        return mpgHistory;
+    }
+
+    public void setMpgHistory(String mpgHistory)
+    {
+        this.mpgHistory = mpgHistory;
+    }
+
+    
+    private String createMiniLineDef()
+    {
+        StringBuffer sb = new StringBuffer();
+        //Control parameters
+        sb.append(GraphicUtil.createMiniLineControlParameters());
+        sb.append(GraphicUtil.createFakeMiniLineData());        
+        sb.append("</chart>");
+        
+        return sb.toString();
+    }
+    
+    public String createLineDef(ScoreType scoreType)
+    {
+        StringBuffer sb = new StringBuffer();
+        Line line = new Line();
+
+        // Control parameters
+        sb.append(line.getControlParameters());
+
+        Integer endDate = DateUtil.getTodaysDate();
+        Integer startDate = DateUtil.getDaysBackDate(endDate, 30);
+        
+        List<ScoreableEntity> scoreList = scoreDAO.getScoreBreakdown(101, startDate, endDate, scoreType);
+
+        ScoreBreakdown scoreBreakdown = new ScoreBreakdown(scoreList);
+        if (scoreList.size() == 0)
+        {
+            // TODO:  What color/text (see use case)?
+            sb.append(line.getChartItem(new Object[] {100, "No Data To Display", "F6B305"}));
+        }
+        else
+        {
+            Map<ScoreCategory, Integer> valueMap = scoreBreakdown.getValueMap();
+            for (Map.Entry<ScoreCategory, Integer> item : valueMap.entrySet())
+            {
+                if (item.getValue().intValue() == 0)
+                {
+                    continue;
+                }
+                
+                double temp = (double)(item.getValue() / 10);
+                sb.append(line.getChartItem(new Object[] {temp, item.getKey().toString()}));
+
+            }
+
+        }
+        sb.append(line.getClose());
+
+        return sb.toString();
+    }
 }
