@@ -38,7 +38,7 @@ public enum ScoreType implements BaseEnum
         return this.code;
     }
 
-    public static ScoreType getScoreType(Integer code)
+    public static ScoreType valueOf(Integer code)
     {
         return lookup.get(code);
     }

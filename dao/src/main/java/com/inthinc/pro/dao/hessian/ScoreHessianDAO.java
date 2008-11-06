@@ -71,7 +71,7 @@ private static final Logger logger = Logger.getLogger(ScoreHessianDAO.class);
 
       if (value instanceof Integer)
       {
-          scoreableEntity.setEntityType(EntityType.getEntityType((Integer)value));
+          scoreableEntity.setEntityType(EntityType.valueOf((Integer)value));
       }
     }
     @ConvertColumnToField(columnName = "scoreType")
@@ -82,7 +82,7 @@ private static final Logger logger = Logger.getLogger(ScoreHessianDAO.class);
 
       if (value instanceof Integer)
       {
-          scoreableEntity.setScoreType(ScoreType.getScoreType((Integer)value));
+          scoreableEntity.setScoreType(ScoreType.valueOf((Integer)value));
       }
     }
 

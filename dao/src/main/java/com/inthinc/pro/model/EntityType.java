@@ -34,7 +34,7 @@ public enum EntityType implements BaseEnum
         return this.code;
     }
 
-    public static EntityType getEntityType(Integer code)
+    public static EntityType valueOf(Integer code)
     {
         return lookup.get(code);
     }

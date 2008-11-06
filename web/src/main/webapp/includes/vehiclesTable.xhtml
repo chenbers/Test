@@ -66,7 +66,7 @@
     </rich:column>
     <rich:column rendered="#{vehiclesBean.columns['state']}" sortBy="#{item.state}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_state}" /></f:facet>
-      <h:outputText value="#{item.state}" />
+      <h:outputText value="#{item.state.name}" />
     </rich:column>
     <rich:column rendered="#{vehiclesBean.columns['active']}" sortBy="#{item.active}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_active}" /></f:facet>

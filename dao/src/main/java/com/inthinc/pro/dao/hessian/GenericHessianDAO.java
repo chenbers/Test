@@ -24,6 +24,7 @@ import com.inthinc.pro.dao.hessian.exceptions.MappingException;
 import com.inthinc.pro.dao.hessian.proserver.HessianService;
 import com.inthinc.pro.dao.hessian.proserver.ServiceCreator;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
+import com.inthinc.pro.model.BaseEnum;
 
 public abstract class GenericHessianDAO<T, ID, S extends HessianService> implements GenericDAO<T, ID>
 {
@@ -579,7 +580,7 @@ public abstract class GenericHessianDAO<T, ID, S extends HessianService> impleme
         {
             Class<?> propertyType = PropertyUtils.getPropertyType(bean, name);
             // if the property type is Date, convert the integer returned in the hash map that represents seconds to a long and create a Date object
-            if (propertyType != null && propertyType == Date.class && value instanceof Integer)
+            if (propertyType != null && propertyType.equals(Date.class) && value instanceof Integer)
             {
                 Integer seconds = (Integer) value;
                 value = new Date(seconds.longValue() * 1000l);
@@ -587,6 +588,18 @@ public abstract class GenericHessianDAO<T, ID, S extends HessianService> impleme
             else if (propertyType != null && propertyType.equals(Boolean.class) && value instanceof Integer)
             {
                 value = ((Integer) value).equals(Integer.valueOf(0)) ? Boolean.FALSE : Boolean.TRUE;
+            }
+            else if (propertyType != null && BaseEnum.class.isAssignableFrom(propertyType) && value instanceof Integer)
+            {
+                Method valueOf = propertyType.getMethod("valueOf", Integer.class);
+                if (valueOf != null)
+                    value = valueOf.invoke(null, value);
+            }
+            else if (propertyType != null && Enum.class.isAssignableFrom(propertyType) && value instanceof String)
+            {
+                Method valueOf = propertyType.getMethod("valueOf", String.class);
+                if (valueOf != null)
+                    value = valueOf.invoke(null, value);
             }
             PropertyUtils.setProperty(bean, name, value);
         }

@@ -33,7 +33,7 @@ public enum AccountStatus implements BaseEnum
         return this.code;
     }
 
-    public static AccountStatus getAccountStatus(Integer code)
+    public static AccountStatus valueOf(Integer code)
     {
         return lookup.get(code);
     }

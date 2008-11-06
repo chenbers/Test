@@ -31,7 +31,7 @@ public enum PhoneNumberType implements BaseEnum
         return this.code;
     }
 
-    public static PhoneNumberType getPhoneNumberType(Integer code)
+    public static PhoneNumberType valueOf(Integer code)
     {
         return lookup.get(code);
     }

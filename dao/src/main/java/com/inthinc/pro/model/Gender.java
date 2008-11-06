@@ -37,7 +37,7 @@ public enum Gender implements BaseEnum
         }
     }
 
-    public static Gender getGender(Integer code)
+    public static Gender valueOf(Integer code)
     {
         return lookup.get(code);
     }

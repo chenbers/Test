@@ -2,64 +2,79 @@ package com.inthinc.pro.model;
 
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.Map;
 
 import com.inthinc.pro.dao.annotations.ID;
 
 public enum State implements BaseEnum
 {
-    AK(1, "AK", "Alaska"),
-    AL(2, "AL", "Alabama"),
-    AR(3, "AR", "Arkansas"),
-    AZ(4, "AZ", "Arizona"),
+    AL(1, "AL", "Alabama"),
+    AK(2, "AK", "Alaska"),
+    AZ(3, "AZ", "Arizona"),
+    AR(4, "AR", "Arkansas"),
     CA(5, "CA", "California"),
     CO(6, "CO", "Colorado"),
     CT(7, "CT", "Connecticut"),
-    DC(8, "DC", "Washington D.C."),
-    DE(9, "DE", "Delaware"),
+    DE(8, "DE", "Delaware"),
+    DC(9, "DC", "District of Columbia"),
     FL(10, "FL", "Florida"),
     GA(11, "GA", "Georgia"),
     HI(12, "HI", "Hawaii"),
-    IA(13, "IA", "Iowa"),
-    ID(14, "ID", "Idaho"),
-    IL(15, "IL", "Illinois"),
-    IN(16, "IN", "Indiana"),
+    ID(13, "ID", "Idaho"),
+    IL(14, "IL", "Illinois"),
+    IN(15, "IN", "Indiana"),
+    IA(16, "IA", "Iowa"),
     KS(17, "KS", "Kansas"),
     KY(18, "KY", "Kentucky"),
     LA(19, "LA", "Louisiana"),
-    MA(20, "MA", "Massachusetts"),
+    ME(20, "ME", "Maine"),
     MD(21, "MD", "Maryland"),
-    ME(22, "ME", "Maine"),
+    MA(22, "MA", "Massachusetts"),
     MI(23, "MI", "Michigan"),
     MN(24, "MN", "Minnesota"),
-    MO(25, "MO", "Missourri"),
-    MS(26, "MS", "Mississippi"),
+    MS(25, "MS", "Mississippi"),
+    MO(26, "MO", "Missouri"),
     MT(27, "MT", "Montana"),
-    NC(28, "NC", "North Carolina"),
-    ND(29, "ND", "North Dakota"),
-    NE(30, "NE", "Nebraska"),
-    NH(31, "NH", "New Hampshire"),
-    NJ(32, "NJ", "New Jersey"),
-    NM(33, "NM", "New Mexico"),
-    NV(34, "NV", "Nevada"),
-    NY(35, "NY", "New York"),
+    NE(28, "NE", "Nebraska"),
+    NV(29, "NV", "Nevada"),
+    NH(30, "NH", "New Hampshire"),
+    NJ(31, "NJ", "New Jersey"),
+    NM(32, "NM", "New Mexico"),
+    NY(33, "NY", "New York"),
+    NC(34, "NC", "North Carolina"),
+    ND(35, "ND", "North Dakota"),
     OH(36, "OH", "Ohio"),
     OK(37, "OK", "Oklahoma"),
     OR(38, "OR", "Oregon"),
     PA(39, "PA", "Pennsylvania"),
-    PR(40, "PR", "Puerto Rico"),
-    RI(41, "RI", "Rhode Island"),
-    SC(42, "SC", "South Carolina"),
-    SD(43, "SD", "South Dakota"),
-    TN(44, "TN", "Tennessee"),
-    TX(45, "TX", "Texas"),
-    UT(46, "UT", "Utah"),
+    RI(40, "RI", "Rhode Island"),
+    SC(41, "SC", "South Carolina"),
+    SD(42, "SD", "South Dakota"),
+    TN(43, "TN", "Tennessee"),
+    TX(44, "TX", "Texas"),
+    UT(45, "UT", "Utah"),
+    VT(46, "VT", "Vermont"),
     VA(47, "VA", "Virginia"),
-    VT(48, "VT", "Vermont"),
-    WA(49, "WA", "Washington"),
+    WA(48, "WA", "Washington"),
+    WV(49, "WV", "West Virginia"),
     WI(50, "WI", "Wisconsin"),
-    WV(51, "WV", "West Virginia"),
-    WY(52, "WY", "Wyoming");
+    WY(51, "WY", "Wyoming"),
+
+    AS(52, "AS", "American Samoa"),
+    FM(53, "FM", "Federated States of Micronesia"),
+    GU(54, "GU", "Guam"),
+    MH(55, "MH", "Marshall Islands"),
+    MP(56, "MP", "Northern Mariana Islands"),
+    PW(57, "PW", "Palau"),
+    PR(58, "PR", "Puerto Rico"),
+    VI(59, "VI", "Virgin Islands"),
+    UM(60, "UM", "U.S. Minor Outlying Islands"),
+
+    AE_A(61, "AE", "Armed Forces Africa"),
+    AA(62, "AA", "Armed Forces Americas"),
+    AE_C(63, "AE", "Armed Forces Canada"),
+    AE_E(64, "AE", "Armed Forces Europe"),
+    AE_ME(65, "AE", "Armed Forces Middle East"),
+    AP(66, "AP", "Armed Forces Pacific");
 
     @ID
     private Integer stateID;
@@ -89,17 +104,17 @@ public enum State implements BaseEnum
         return name;
     }
 
-    private static final Map<String, State> lookup = new HashMap<String, State>();
+    private static final HashMap<Integer, State> lookup = new HashMap<Integer, State>();
     static
     {
         for (State p : EnumSet.allOf(State.class))
         {
-            lookup.put(p.abbrev, p);
+            lookup.put(p.stateID, p);
         }
     }
 
-    public static State getState(String abbrev)
+    public static State valueOf(Integer stateID)
     {
-        return lookup.get(abbrev);
+        return lookup.get(stateID);
     }
 }

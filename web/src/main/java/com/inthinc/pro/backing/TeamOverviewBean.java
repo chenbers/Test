@@ -119,7 +119,7 @@ logger.debug("selected action is null");
 
     public String getPieDef(Integer type)
     {
-        return getPieDefMap().get(ScoreType.getScoreType(type));
+        return getPieDefMap().get(ScoreType.valueOf(type));
     }
 
     public String createPieDef(ScoreType scoreType)

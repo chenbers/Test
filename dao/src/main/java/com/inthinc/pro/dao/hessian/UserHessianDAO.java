@@ -51,7 +51,7 @@ public class UserHessianDAO extends GenericHessianDAO<User, Integer, CentralServ
 
         if (value instanceof Integer)
         {
-            user.setRole(Role.getRole((Integer) value));
+            user.setRole(Role.valueOf((Integer) value));
         }
     }
 

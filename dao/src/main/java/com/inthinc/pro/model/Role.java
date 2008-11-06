@@ -37,7 +37,7 @@ public enum Role implements BaseEnum
         return this.code;
     }
 
-    public static Role getRole(Integer code)
+    public static Role valueOf(Integer code)
     {
         return lookup.get(code);
     }

@@ -166,7 +166,7 @@ public class SiloServiceMockImpl implements SiloService
             {
                 searchCriteria = new SearchCriteria();
                 searchCriteria.addKeyValue("entityID", groupMap.get("groupID"));
-                searchCriteria.addKeyValue("scoreType", ScoreType.getScoreType(scoreType));
+                searchCriteria.addKeyValue("scoreType", ScoreType.valueOf(scoreType));
 //                searchCriteria.addKeyValue("scoreValueType", ScoreValueType.SCORE_SCALE_0_50);
                 searchCriteria.addKeyValueRange("date", startDate, endDate);
                 
@@ -196,7 +196,7 @@ public class SiloServiceMockImpl implements SiloService
             {
                 searchCriteria = new SearchCriteria();
                 searchCriteria.addKeyValue("entityID", driverMap.get("driverID"));
-                searchCriteria.addKeyValue("scoreType", ScoreType.getScoreType(scoreType));
+                searchCriteria.addKeyValue("scoreType", ScoreType.valueOf(scoreType));
                 searchCriteria.addKeyValueRange("date", startDate, endDate);
                 
                 List<ScoreableEntity> allScores = MockData.getInstance().retrieveObjectList(ScoreableEntity.class, searchCriteria);
@@ -227,7 +227,7 @@ public class SiloServiceMockImpl implements SiloService
         {
             SearchCriteria searchCriteria = new SearchCriteria();
             searchCriteria.addKeyValue("entityID", driver.getDriverID());
-            searchCriteria.addKeyValue("scoreType", ScoreType.getScoreType(scoreType));
+            searchCriteria.addKeyValue("scoreType", ScoreType.valueOf(scoreType));
             searchCriteria.addKeyValueRange("date", startDate, endDate);
             List<ScoreableEntity> allScores = MockData.getInstance().retrieveObjectList(ScoreableEntity.class, searchCriteria);
             Map<String, Object> scoreMap = getAverageScore(startDate, allScores);
@@ -256,7 +256,7 @@ public class SiloServiceMockImpl implements SiloService
                     (i+1) + "",     // name will be 1 to 5 for the 5 different score breakdowns 
                     new Integer(percent), 
                     startDate,
-                    ScoreType.getScoreType(scoreType))));
+                    ScoreType.valueOf(scoreType))));
         }
 
         
