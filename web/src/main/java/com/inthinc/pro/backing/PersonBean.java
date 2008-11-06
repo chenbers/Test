@@ -315,10 +315,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     }
 
     @Override
-    protected void doSave(List<PersonView> saveItems)
+    protected void doSave(List<PersonView> saveItems, boolean create)
     {
         // if adding a user, reset the potential supervisor list
-        if (isAdd())
+        if (create)
             reportsToOptions = null;
 
         final FacesContext context = FacesContext.getCurrentInstance();
@@ -330,13 +330,13 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
             if (!person.isDriverSelected())
                 person.setDriver(null);
 
-            if (isAdd())
+            if (create)
                 person.setPersonID(personDAO.create(getUser().getPerson().getAccountID(), person));
             else
                 personDAO.update(person);
 
             // add a message
-            final String summary = MessageUtil.formatMessageString(isAdd() ? "person_added" : "person_updated", person.getFirst(), person.getLast());
+            final String summary = MessageUtil.formatMessageString(create ? "person_added" : "person_updated", person.getFirst(), person.getLast());
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
             context.addMessage(null, message);
         }

@@ -242,19 +242,19 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     }
 
     @Override
-    protected void doSave(List<VehicleView> saveItems)
+    protected void doSave(List<VehicleView> saveItems, boolean create)
     {
         final FacesContext context = FacesContext.getCurrentInstance();
 
         for (final VehicleView vehicle : saveItems)
         {
-            if (isAdd())
+            if (create)
                 vehicle.setVehicleID(vehicleDAO.create(getUser().getPerson().getAccountID(), vehicle));
             else
                 vehicleDAO.update(vehicle);
 
             // add a message
-            final String summary = MessageUtil.formatMessageString(isAdd() ? "vehicle_added" : "vehicle_updated", vehicle.getName());
+            final String summary = MessageUtil.formatMessageString(create ? "vehicle_added" : "vehicle_updated", vehicle.getName());
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
             context.addMessage(null, message);
         }

@@ -346,7 +346,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean
         else
         {
             final boolean add = isAdd();
-            doSave(selected);
+            doSave(selected, add);
             if (add)
             {
                 items.add(editItem);
@@ -468,8 +468,9 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean
      * 
      * @param saveItems
      *            The items to save.
+     * @param create TODO
      */
-    protected abstract void doSave(List<T> saveItems);
+    protected abstract void doSave(List<T> saveItems, boolean create);
 
     /**
      * Delete the given list of items.
