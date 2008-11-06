@@ -121,5 +121,4 @@ public class DriverReportItem extends BaseEntity
         this.styleSeatBelt = styleSeatBelt;
     }
 
-
 }
