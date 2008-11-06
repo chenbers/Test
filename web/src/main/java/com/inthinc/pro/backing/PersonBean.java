@@ -190,7 +190,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         personView.setDriverSelected(person.getDriver() != null);
         personView.setSelected(false);
         if (person.getUser() != null)
+        {
+            personView.getUser().setPerson(personView);
             personView.setConfirmPassword(person.getUser().getPassword());
+        }
 
         return personView;
     }
@@ -316,6 +319,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
 
             personDAO.update(person);
         }
+    }
+
+    @Override
+    protected String getDisplayRedirect()
+    {
+        return "go_adminPerson";
     }
 
     @Override

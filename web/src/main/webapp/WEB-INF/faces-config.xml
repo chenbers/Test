@@ -68,6 +68,12 @@
 	</navigation-rule>
     <navigation-rule>
       <navigation-case>
+        <from-outcome>go_adminPerson</from-outcome>
+        <to-view-id>/secured/admin/person.xhtml</to-view-id>
+      </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+      <navigation-case>
         <from-outcome>go_adminAddPerson</from-outcome>
         <to-view-id>/secured/admin/editPerson.xhtml</to-view-id>
       </navigation-case>
@@ -84,6 +90,12 @@
 			<to-view-id>/secured/admin/vehicles.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+    <navigation-rule>
+      <navigation-case>
+        <from-outcome>go_adminVehicle</from-outcome>
+        <to-view-id>/secured/admin/vehicle.xhtml</to-view-id>
+      </navigation-case>
+    </navigation-rule>
     <navigation-rule>
       <navigation-case>
         <from-outcome>go_adminAddVehicle</from-outcome>

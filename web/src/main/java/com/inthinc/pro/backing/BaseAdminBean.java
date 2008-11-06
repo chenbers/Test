@@ -24,6 +24,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean
     protected String               filterValue;
     protected int                  page          = 1;
     protected Map<String, Boolean> columns;
+    private boolean                displayed;
     private T                      editItem;
     private boolean                batchEdit;
     private Map<String, Boolean>   updateField;
@@ -214,12 +215,37 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean
     public abstract void saveColumns();
 
     /**
+     * Called when the user chooses to display an item.
+     * 
+     * @return The result of calling {@link #getDisplayRedirect()}.
+     */
+    public String display()
+    {
+        displayed = true;
+        selectEditItem("displayID");
+        return getDisplayRedirect();
+    }
+
+    /**
+     * Called when the user chooses to cancel editing.
+     * 
+     * @return The result of calling {@link #getFinishedRedirect()}.
+     */
+    public String cancelDisplay()
+    {
+        displayed = false;
+        editItem = null;
+        return getFinishedRedirect();
+    }
+
+    /**
      * Called when the user chooses to add an item.
      * 
      * @return The result of calling {@link #getEditRedirect()}.
      */
     public String add()
     {
+        displayed = false;
         batchEdit = false;
         editItem = createAddItem();
         editItem.setSelected(false);
@@ -234,16 +260,30 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean
      */
     public String edit()
     {
-        // select only the item to be edited
-        final Map<String, String> parameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        final int editID = Integer.parseInt(parameterMap.get("editID"));
-        for (final T item : items)
-            item.setSelected(item.getId().equals(editID));
-
-        editItem = null;
-        getEditItem();
-
+        displayed = !selectEditItem("editID");
         return getEditRedirect();
+    }
+
+    /**
+     * Populates the edit item based on the value in the given param name.
+     * 
+     * @param paramName
+     *            The name of a param containing the edit item's ID.
+     */
+    private boolean selectEditItem(String paramName)
+    {
+        final Map<String, String> parameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        if (parameterMap.get(paramName) != null)
+        {
+            final int editID = Integer.parseInt(parameterMap.get(paramName));
+            for (final T item : items)
+                item.setSelected(item.getId().equals(editID));
+
+            editItem = null;
+            getEditItem();
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -253,6 +293,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean
      */
     public String batchEdit()
     {
+        displayed = false;
         editItem = null;
         getEditItem();
 
@@ -274,10 +315,10 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean
      */
     public String cancelEdit()
     {
-        if (!batchEdit)
-            editItem.setSelected(false);
-        editItem = null;
-        return getFinishedRedirect();
+        if (displayed)
+            return getDisplayRedirect();
+        else
+            return getFinishedRedirect();
     }
 
     /**
@@ -311,19 +352,24 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean
                 applyFilter();
             }
         }
-        editItem = null;
-        return getFinishedRedirect();
+
+        return getDisplayRedirect();
     }
 
     /**
      * Called when the user chooses to delete one or more selected items.
      */
-    public void delete()
+    public String delete()
     {
         final List<T> selected = getSelectedItems();
         doDelete(selected);
         items.removeAll(selected);
         filteredItems.removeAll(selected);
+
+        if (displayed)
+            return getFinishedRedirect();
+        else
+            return null;
     }
 
     /**
@@ -426,6 +472,11 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean
      *            The items to delete.
      */
     protected abstract void doDelete(List<T> deleteItems);
+
+    /**
+     * @return A redirect to navigate to for displaying an item.
+     */
+    protected abstract String getDisplayRedirect();
 
     /**
      * @return A redirect to navigate to for editing items.

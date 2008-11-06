@@ -1,0 +1,150 @@
+<ui:composition template="/layout/layout.xhtml" 
+              xmlns="http://www.w3.org/1999/xhtml" 
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:rich="http://richfaces.org/rich"
+              xmlns:a4j="http://richfaces.org/a4j"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:security="http://pro.tiwi.com/jsf/security">
+
+  <ui:param name="adminSelected" value="current" />
+
+  <ui:define name="content">
+
+    <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+      <tr>
+      <td valign="top" width="130">
+        <ui:include src="/includes/adminSideNav.xhtml">
+          <ui:param name="selectedAction" value="#{(vehiclesBean.add) ? 'go_adminAddVehicle' : 'go_adminVehicles'}" />
+          <ui:param name="parentAction" value="go_adminVehicles" />
+        </ui:include>
+      </td>
+      <td valign="top">
+        <!-- START PANEL -->
+
+        <a4j:form id="edit-form">
+
+          <div class="">
+            <div class="panel_nw">
+              <div class="panel_title">
+                <span class="admin"><h:outputText value="#{messages.adminHeader_vehicleDetails}" /></span>
+                <span class="panel_links"></span>
+              </div>
+            </div>
+            <div class="panel_w">
+
+              <div class="panel_content">
+
+              <ul id="grid_nav" style="margin: 0;">
+                <li class="l text"><h:commandLink action="#{vehiclesBean.cancelDisplay}" value="#{messages.vehicle_backToVehicles}" /></li>
+                <li class="r"><h:commandLink action="#{vehiclesBean.edit}"><button value="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></h:commandLink></li>
+                <li class="r"><a4j:commandLink><button value="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink></li>
+              </ul>
+
+              <div class="spacer"></div>
+
+              <table width="790" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                <td width="390" valign="top">
+                
+                  <div class="add_section_title"><h:outputText value="#{messages.editVehicle_vehicleInformation}" /></div>
+                  
+                  <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                    <tr>
+                      <td width="100"><h:outputText value="#{messages.editVehicle_year}" /></td>
+                      <td><h:outputText value="#{vehiclesBean.editItem.year}" /></td>
+                    </tr>
+                    <tr>
+                      <td width="100"><h:outputText value="#{messages.editVehicle_make}" /></td>
+                      <td><h:outputText value="#{vehiclesBean.editItem.make}" /></td>
+                    </tr>
+                    <tr>
+                      <td width="100"><h:outputText value="#{messages.editVehicle_model}" /></td>
+                      <td><h:outputText value="#{vehiclesBean.editItem.model}" /></td>
+                    </tr>
+                    <tr>
+                      <td width="100"><h:outputText value="#{messages.editVehicle_color}" /></td>
+                      <td><h:outputText value="#{vehiclesBean.editItem.color}" /></td>
+                    </tr>
+                    <tr>
+                      <td width="100"><h:outputText value="#{messages.editVehicle_unitType}" /></td>
+                      <td><h:outputText value="#{vehiclesBean.editItem.unitType}" /></td>
+                    </tr>
+                    <tr>
+                      <td width="100"><h:outputText value="#{messages.editVehicle_VIN}" /></td>
+                      <td><h:outputText value="#{vehiclesBean.editItem.VIN}" /></td>
+                    </tr>
+                    <tr>
+                      <td width="100"><h:outputText value="#{messages.editVehicle_weight}" /></td>
+                      <td><h:outputText value="#{vehiclesBean.editItem.weight}"><f:convertNumber /></h:outputText></td>
+                    </tr>
+                    <tr>
+                      <td width="100"><h:outputText value="#{messages.editVehicle_license}" /></td>
+                      <td><h:outputText value="#{vehiclesBean.editItem.license}" /></td>
+                    </tr>
+                    <tr>
+                      <td width="100"><h:outputText value="#{messages.editVehicle_state}" /></td>
+                      <td><h:outputText value="#{vehiclesBean.editItem.state}" /></td>
+                    </tr>
+                  </table>
+
+                </td>
+                <td width="10"><img src="images/x.gif" width="10" /></td>
+                <td width="390" valign="top">
+
+                  <div class="add_section_title"><h:outputText value="#{messages.editVehicle_vehicleProfile}" /></div>
+                  
+                  <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                    <tr>
+                      <td width="100"><h:outputText value="#{messages.editVehicle_name}" /></td>
+                      <td><h:outputText value="#{vehiclesBean.editItem.name}" /></td>
+                    </tr>
+                    <tr>
+                      <td width="100"><h:outputText value="#{messages.editVehicle_active}" /></td>
+                      <td><h:outputText value="#{vehiclesBean.editItem.active ? messages.active : messages.inactive}" /></td>
+                    </tr>
+                  </table>
+
+                  <div class="spacer"></div>
+
+                  <div class="add_section_title"><h:outputText value="#{messages.editVehicle_vehicleAssignment}" /></div>
+
+                  <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                    <tr>
+                      <td width="100">Assigned Driver:</td>
+                      <td><a href="#">assign</a></td>
+                    </tr>
+                    <tr>
+                      <td width="100"><h:outputText value="#{messages.editVehicle_groupID}" /></td>
+                      <td><h:outputText value="#{vehiclesBean.editItem.group.name}" /></td>
+                    </tr>
+                  </table>
+                  
+                </td>
+                </tr>
+              </table>
+
+                </div>
+              </div>
+
+              <div class="panel_sw">
+                <div class="panel_statusbar"></div>
+              </div>
+            </div>
+      <!-- END PANEL -->
+
+          </a4j:form>
+
+        </td>
+
+      </tr>
+    </table>
+
+    <ui:include src="../../includes/confirmDelete.xhtml">
+      <ui:param name="deleteBean" value="#{vehiclesBean}" />
+      <ui:param name="explanation" value="#{messages.vehicle_confirmDelete}" />
+    </ui:include>
+
+  </ui:define>
+
+</ui:composition>

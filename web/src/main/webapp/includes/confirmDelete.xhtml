@@ -1,0 +1,65 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+<!--
+  A pop-up modal form that allows confirming a delete.
+
+  Required Parameters:
+  ==============
+           reRender:  Id['s] (in format of call UIComponent.findComponent()) of components, rendered in case
+                      of AjaxRequest caused by this component. Can be single id, comma-separated list of Id's,
+                      or EL Expression with array or Collection.
+         deleteBean:  A bean that has a method named delete(), called when the delete button is clicked.
+
+  Optional Parameters:
+  ==============
+              title:  A title for the dialog.  If not provided, messages.confirmDelete_title will be used.
+        explanation:  Explanatory text for the dialog.  If not provided, messages.confirmDelete_explanation will
+                      be used.
+
+  To use:
+  ==============
+      <ui:include src="/includes/confirmDelete.xhtml">
+        <ui:param name="reRender" value="myStuff" />
+        <ui:param name="deleteBean" value="#{myBean}" />
+      </ui:include>
+-->
+
+  <ui:composition>
+
+    <c:if test="#{empty title}">
+      <c:set var="title" value="#{messages.confirmDelete_title}" />
+    </c:if>
+    <c:if test="#{empty explanation}">
+      <c:set var="title" value="#{messages.confirmDelete_explanation}" />
+    </c:if>
+
+    <rich:modalPanel id="confirmDelete" headerClass="popupHeader" controlsClass="popupControls" width="500" height="140" zindex="2001">
+      <f:facet name="header">
+        <h:outputText value="#{messages.confirmDelete_title}" />
+      </f:facet>
+      <f:facet name="controls">
+        <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('confirmDelete')" />
+      </f:facet>
+
+      <div class="popupsubtitle"><h:outputText value="#{messages.confirmDelete_explanation}" /></div>
+
+      <a4j:form id="confirmDeleteForm">
+
+        <div class="popupactions">
+          <button value="submit" class="left" onclick="Richfaces.hideModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button>
+          <a4j:commandLink action="#{deleteBean['delete']}" onclick="Richfaces.hideModalPanel('confirmDelete')" reRender="#{reRender}"><button value="submit" class="left"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink>
+        </div>
+
+      </a4j:form>
+
+    </rich:modalPanel>
+
+  </ui:composition>
+
+</html>

@@ -23,8 +23,10 @@
     </rich:column>
     <rich:column rendered="#{personBean.columns['fullName']}" sortBy="#{item.first}" sortOrder="ASCENDING">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_fullName}" /></f:facet>
-<!-- TODO: link for viewing the employee's report -->
-      <h:outputText value="#{item.first}" /><h:outputText value=" " /><h:outputText value="#{item.last}" />
+      <h:commandLink action="#{personBean.display}">
+        <f:param name="displayID" value="#{item.id}" />
+        <h:outputText value="#{item.first}" /><h:outputText value=" " /><h:outputText value="#{item.last}" />
+      </h:commandLink>
     </rich:column>
     <rich:column rendered="#{personBean.columns['user_active']}" sortBy="#{item.user.active}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_user_active}" /></f:facet>

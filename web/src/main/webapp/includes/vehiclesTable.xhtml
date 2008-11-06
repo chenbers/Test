@@ -19,7 +19,9 @@
   <ui:define name="columns">
     <rich:column rendered="#{vehiclesBean.columns['name']}" sortBy="#{item.name}" sortOrder="ASCENDING">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_name}" /></f:facet>
-      <h:outputText value="#{item.name}" />
+      <h:commandLink action="#{vehiclesBean.display}" value="#{item.name}">
+        <f:param name="displayID" value="#{item.id}" />
+      </h:commandLink>
     </rich:column>
     <rich:column rendered="#{vehiclesBean.columns['driver']}" sortBy="#{item.driver}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_driver}" /></f:facet>

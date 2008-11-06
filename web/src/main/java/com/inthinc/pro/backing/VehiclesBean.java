@@ -230,6 +230,12 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     }
 
     @Override
+    protected String getDisplayRedirect()
+    {
+        return "go_adminVehicle";
+    }
+
+    @Override
     protected String getEditRedirect()
     {
         return "go_adminEditVehicle";
