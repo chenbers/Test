@@ -1,13 +1,11 @@
 package com.inthinc.pro.dao.hessian;
 
-import org.apache.log4j.Logger;
-
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.inthinc.pro.dao.ScoreDAO;
-import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.dao.hessian.proserver.CentralService;
-import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 
@@ -60,31 +58,4 @@ private static final Logger logger = Logger.getLogger(ScoreHessianDAO.class);
     {
         return convertToModelObject(getSiloService().getScoreBreakdown(groupID,startDate,endDate, scoreType.getCode()));
     }
-    
-    
-    // TODO: Look at a better way to do these enum converters because it is pretty standard across the board
-    @ConvertColumnToField(columnName = "entityType")
-    public void setEntityType(ScoreableEntity scoreableEntity, Object value)
-    {
-      if (scoreableEntity == null || value == null)
-        return;
-
-      if (value instanceof Integer)
-      {
-          scoreableEntity.setEntityType(EntityType.valueOf((Integer)value));
-      }
-    }
-    @ConvertColumnToField(columnName = "scoreType")
-    public void setScoreType(ScoreableEntity scoreableEntity, Object value)
-    {
-      if (scoreableEntity == null || value == null)
-        return;
-
-      if (value instanceof Integer)
-      {
-          scoreableEntity.setScoreType(ScoreType.valueOf((Integer)value));
-      }
-    }
-
-
 }
