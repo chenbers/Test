@@ -54,7 +54,11 @@
 		<property name="groupDAO" ref="groupDAO"></property>
    </bean>
 
-   <bean id="driverBean" class="com.inthinc.pro.backing.DriverBean" scope="session">
+   <bean id="driverBean" class="com.inthinc.pro.backing.DriverBean" scope="request">
+   		<property name="scoreDAO" ref="scoreDAO"></property>
+   </bean>
+   
+   <bean id="driverSpeedBean" class="com.inthinc.pro.backing.DriverSpeedBean" scope="request">
    		<property name="scoreDAO" ref="scoreDAO"></property>
    </bean>
 

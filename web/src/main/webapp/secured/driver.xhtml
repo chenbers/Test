@@ -135,7 +135,7 @@
                           <tr>
                             <td width="373">
 				            <ui:include src="../includes/lineChart.xhtml">
-						            <ui:param name="lineChartDef" value="#{driverBean.speedScoreHistory}" />
+						            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistoryLarge}" />
 						            <ui:param name="hiddenFieldID" value="HiddenField1" />
 						            <ui:param name="width" value="380" /> 
 						            <ui:param name="height" value="200" />  
@@ -146,8 +146,8 @@
 							</td>
                             <td width="80" align="center">
 							    <ui:include src="../includes/scoreBox.xhtml">
-							            <ui:param name="score" value="#{driverBean.speedScore}" />
-							            <ui:param name="scoreStyle" value="#{driverBean.speedScoreStyle}" />
+							            <ui:param name="score" value="#{driverSpeedBean.speedScore}" />
+							            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreStyle}" />
 								</ui:include>
 							</td>
                           </tr>

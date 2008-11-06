@@ -35,9 +35,10 @@
 
 <script type="text/javascript">
 
+//Set default selected box.
 var selected = 'OVERALL';
 
-function SelectBreakDown(region)
+function SelectBreakDown(region, chartVar)
 	{
 		//Un-Select last component.
 		document.getElementById(selected).className="tiny_chart";
@@ -48,12 +49,10 @@ function SelectBreakDown(region)
 		//change style to selected.
 		document.getElementById(region).className="tiny_selected";
 		
-		
-		chart21.attributes.width = 650;
-		chart21.attributes.height = 200;
-		
-		
-		chart21.render('overall_chart');
+		//resize chart and render it in the top box.
+		chartVar.attributes.width = 650;
+		chartVar.attributes.height = 200;
+		chartVar.render('overall_chart');
 	}
 </script>
 
@@ -68,22 +67,22 @@ function SelectBreakDown(region)
 						<a4j:form id="overall-form"> 
 									<span class="panel_links"><h:outputText>Graph the last:&#160;</h:outputText>
 								<a4j:commandLink title="#{messages.miles500}" immediate="true"
-									styleClass="#{(driverBean.distance eq 'FIVEHUNDRED') ? 'on' : ''}"
+									styleClass="#{(driverSpeedBean.distance eq 'FIVEHUNDRED') ? 'on' : ''}"
 									reRender="overall-form,overallPanel" value="#{messages.miles500}">
-									<a4j:actionparam name="distance" assignTo="#{driverBean.distance}"
+									<a4j:actionparam name="distance" assignTo="#{driverSpeedBean.distance}"
 										value="FIVEHUNDRED" />
 								</a4j:commandLink><h:outputText value=" "></h:outputText> <a4j:commandLink
 									title="#{messages.miles1000}" immediate="true"
-									styleClass="#{(driverBean.distance eq 'ONETHOUSAND') ? 'on' : ''}"
+									styleClass="#{(driverSpeedBean.distance eq 'ONETHOUSAND') ? 'on' : ''}"
 									reRender="overall-form,overallPanel" value="#{messages.miles1000}">
-									<a4j:actionparam name="distance" assignTo="#{driverBean.distance}"
+									<a4j:actionparam name="distance" assignTo="#{driverSpeedBean.distance}"
 										value="ONETHOUSAND" />
 								</a4j:commandLink><h:outputText value=" "></h:outputText> <a4j:commandLink
 									title="#{messages.miles10000}" immediate="true"
-									styleClass="#{(driverBean.distance eq 'TENTHOUSAND') ? 'on' : ''}"
+									styleClass="#{(driverSpeedBean.distance eq 'TENTHOUSAND') ? 'on' : ''}"
 									reRender="overall-form,overallPanel"
 									value="#{messages.miles10000}">
-									<a4j:actionparam name="distance" assignTo="#{driverBean.distance}"
+									<a4j:actionparam name="distance" assignTo="#{driverSpeedBean.distance}"
 										value="TENTHOUSAND" />
 								</a4j:commandLink><h:outputText value=" "></h:outputText>
 									</span>
@@ -96,7 +95,7 @@ function SelectBreakDown(region)
 					  <tr>
 						<td valign="top" width="600">
 						   <ui:include src="../../includes/lineChart.xhtml">
-						            <ui:param name="lineChartDef" value="#{driverBean.overallScoreHistory}" />
+						            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistoryLarge}" />
 						            <ui:param name="hiddenFieldID" value="HiddenField" />
 						            <ui:param name="width" value="650" /> 
 						            <ui:param name="height" value="200" />  
@@ -114,8 +113,8 @@ function SelectBreakDown(region)
 								</td>
 								<td width="80" align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverBean.speedScore}" />
-								            <ui:param name="scoreStyle" value="#{driverBean.overallScoreStyle}" />
+								            <ui:param name="score" value="#{driverSpeedBean.speedScore}" />
+								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreStyle}" />
 									</ui:include>
 								</td>
 							  </tr>
@@ -158,16 +157,16 @@ function SelectBreakDown(region)
 				  <rich:panel bodyClass="panel_content" id="breakdown_panel" border="0">
 					<table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
 					  <tr>
-					    <td id="OVERALL" valign="top" class="selected_chart">
+					    <td id="OVERALL" valign="top" class="tiny_selected">
 						  <div class="tiny_title">
-								<a href="#" onclick="SelectBreakDown('OVERALL')">Overall</a>
+								<a href="#" onclick="SelectBreakDown('OVERALL', overallChart2)">Overall</a>
 						  </div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-								            <ui:param name="lineChartDef" value="#{driverBean.speedScoreHistory}" />
-								            <ui:param name="hiddenFieldID" value="HiddenField1" />
+								            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistorySmall}" />
+								            <ui:param name="hiddenFieldID" value="HiddenOverall" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
 								            <ui:param name="tartgetElementVar" value="targetElement1" />
@@ -177,8 +176,8 @@ function SelectBreakDown(region)
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverBean.speedScore}" />
-								            <ui:param name="scoreStyle" value="#{driverBean.overallScoreStyle}" /> 
+								            <ui:param name="score" value="#{driverSpeedBean.speedScore}" />
+								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreStyle}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -186,14 +185,14 @@ function SelectBreakDown(region)
 						</td>
 					    <td id="TWENTYONE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-								<a href="#" onclick="SelectBreakDown('TWENTYONE')">21-30mph</a>
+								<a href="#" onclick="SelectBreakDown('TWENTYONE', chart21)">21-30mph</a>
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-									            <ui:param name="lineChartDef" value="#{driverBean.speedScoreHistory}" />
-									            <ui:param name="hiddenFieldID" value="HiddenField2" />
+									            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistorySmall}" />
+									            <ui:param name="hiddenFieldID" value="HiddenTWENTYONE" />
 									            <ui:param name="width" value="220" /> 
 									            <ui:param name="height" value="90" />  
 									            <ui:param name="tartgetElementVar" value="targetElement2" />
@@ -203,8 +202,8 @@ function SelectBreakDown(region)
 								</td>
 								<td align="center">
 								<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverBean.speedScore}" />
-								            <ui:param name="scoreStyle" value="#{driverBean.speedScoreStyle}" /> 
+								            <ui:param name="score" value="#{driverSpeedBean.speedScore}" />
+								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreStyle}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -212,13 +211,13 @@ function SelectBreakDown(region)
 						</td>
 					    <td id="THIRTYONE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-								<a href="#" onclick="SelectBreakDown('THIRTYONE')">31-40mph</a></div>
+								<a href="#" onclick="SelectBreakDown('THIRTYONE', chart31)">31-40mph</a></div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-								            <ui:param name="lineChartDef" value="#{driverBean.speedScoreHistory}" />
-								            <ui:param name="hiddenFieldID" value="HiddenField3" />
+								            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistorySmall}" />
+								            <ui:param name="hiddenFieldID" value="HiddenTHIRTYONE" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
 								            <ui:param name="tartgetElementVar" value="targetElement3" />
@@ -228,8 +227,8 @@ function SelectBreakDown(region)
 									</td>
 									<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverBean.speedScore}" />
-								            <ui:param name="scoreStyle" value="#{driverBean.speedScoreStyle}" /> 
+								            <ui:param name="score" value="#{driverSpeedBean.speedScore}" />
+								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreStyle}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -239,13 +238,13 @@ function SelectBreakDown(region)
 					  <tr>
 						<td id="FORTYONE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-							<a href="#" onclick="SelectBreakDown('FORTYONE')">41-54mph</a></div>
+							<a href="#" onclick="SelectBreakDown('FORTYONE', chart41)">41-54mph</a></div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-								            <ui:param name="lineChartDef" value="#{driverBean.speedScoreHistory}" />
-								            <ui:param name="hiddenFieldID" value="HiddenField4" />
+								            <ui:param name="lineChartDef" value="##{driverSpeedBean.speedScoreHistorySmall}" />
+								            <ui:param name="hiddenFieldID" value="HiddenFORTYONE" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
 								            <ui:param name="tartgetElementVar" value="targetElement4" />
@@ -255,8 +254,8 @@ function SelectBreakDown(region)
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverBean.speedScore}" />
-								            <ui:param name="scoreStyle" value="#{driverBean.speedScoreStyle}" /> 
+								            <ui:param name="score" value="#{driverSpeedBean.speedScore}" />
+								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreStyle}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -264,13 +263,13 @@ function SelectBreakDown(region)
 						</td>
 						<td id="FIFTYFIVE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-							<a href="#" onclick="SelectBreakDown('FIFTYFIVE')">55-64mph</a></div>
+							<a href="#" onclick="SelectBreakDown('FIFTYFIVE', chart55)">55-64mph</a></div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-								            <ui:param name="lineChartDef" value="#{driverBean.speedScoreHistory}" />
-								            <ui:param name="hiddenFieldID" value="HiddenField5" />
+								            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistorySmall}" />
+								            <ui:param name="hiddenFieldID" value="HiddenFIFTYFIVE" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
 								            <ui:param name="tartgetElementVar" value="targetElement5" />
@@ -280,8 +279,8 @@ function SelectBreakDown(region)
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverBean.speedScore}" />
-								            <ui:param name="scoreStyle" value="#{driverBean.speedScoreStyle}" /> 
+								            <ui:param name="score" value="#{driverSpeedBean.speedScore}" />
+								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreStyle}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -289,13 +288,13 @@ function SelectBreakDown(region)
 						</td>
 					    <td id="SIXTYFIVE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-							<a href="#" onclick="SelectBreakDown('SIXTYFIVE')">65-80mph</a></div>
+							<a href="#" onclick="SelectBreakDown('SIXTYFIVE', chart65)">65-80mph</a></div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-								            <ui:param name="lineChartDef" value="#{driverBean.speedScoreHistory}" />
-								            <ui:param name="hiddenFieldID" value="HiddenField6" />
+								            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistorySmall}" />
+								            <ui:param name="hiddenFieldID" value="HiddenSIXTYFIVE" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
 								            <ui:param name="tartgetElementVar" value="targetElement6" />
@@ -305,8 +304,8 @@ function SelectBreakDown(region)
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverBean.speedScore}" />
-								            <ui:param name="scoreStyle" value="#{driverBean.speedScoreStyle}" /> 
+								            <ui:param name="score" value="#{driverSpeedBean.speedScore}" />
+								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreStyle}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -362,25 +361,46 @@ function SelectBreakDown(region)
 									<h:outputText value="Fri, Apr 25, 2008 11:22 AM (MST)" />
 							</rich:column>
 							
-							<rich:column width="73" sortBy="#{item.speedLimit}">
+							<rich:column sortBy="#{item.speedLimit}">
 								<f:facet name="header">
 									<h:outputText value="Posted Speed" />
 								</f:facet>
 								<h:outputText value="#{item.speedLimit}" />		
 							</rich:column>
 							
-							<rich:column width="73" sortBy="#{item.avgSpeed}">
+							<rich:column sortBy="#{item.avgSpeed}">
 								<f:facet name="header">
 									<h:outputText value="Avg. Speed" />
 								</f:facet>
 								<h:outputText value="#{item.avgSpeed}" />
 							</rich:column>
 							
-							<rich:column width="73" sortBy="#{item.time}">
+							<rich:column sortBy="#{item.topSpeed}">
+								<f:facet name="header">
+									<h:outputText value="Top Speed" />
+								</f:facet>
+								<h:outputText value="#{item.topSpeed}" />
+							</rich:column>
+							
+							<rich:column sortBy="#{item.distance}">
+								<f:facet name="header">
+									<h:outputText value="Distance" />
+								</f:facet>
+								<h:outputText value="#{item.distance}" />
+							</rich:column>
+							
+							<rich:column sortBy="#{item.time}">
 								<f:facet name="header">
 									<h:outputText value="Severity" />
 								</f:facet>
 									<div class="sev_bar_med"></div>
+							</rich:column>
+							
+							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="" />
+								</f:facet>
+								<a href="#">forgive</a>
 							</rich:column>
 							
 						</rich:dataTable>
