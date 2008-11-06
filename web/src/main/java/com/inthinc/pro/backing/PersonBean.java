@@ -87,9 +87,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         AVAILABLE_COLUMNS.add("driver_expiration");
 
         // genders
-        Gender[] genders = Gender.values();
         GENDERS = new TreeMap<String, Gender>();
-        for (final Gender gender : genders)
+        for (final Gender gender : Gender.values())
             GENDERS.put(gender.getDescription(), gender);
 
         // heights
@@ -141,9 +140,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
             LICENSE_CLASSES.put(String.valueOf(c), String.valueOf(c));
 
         // states
-        final State[] states = State.values();
         STATES = new TreeMap<String, State>();
-        for (final State state : states)
+        for (final State state : State.values())
             STATES.put(state.getName(), state);
     }
 
@@ -332,7 +330,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
             if (!person.isDriverSelected())
                 person.setDriver(null);
 
-            personDAO.update(person);
+            if (isAdd())
+                person.setPersonID(personDAO.create(getUser().getPerson().getAccountID(), person));
+            else
+                personDAO.update(person);
 
             // add a message
             final String summary = MessageUtil.formatMessageString(isAdd() ? "person_added" : "person_updated", person.getFirst(), person.getLast());

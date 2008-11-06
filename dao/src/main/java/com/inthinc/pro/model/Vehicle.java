@@ -8,25 +8,25 @@ import com.inthinc.pro.dao.annotations.ID;
 public class Vehicle extends BaseEntity
 {
     @ID
-    private Integer    vehicleID;
+    private Integer     vehicleID;
     @Column(name = "acctID")
-    private Integer    accountID;
-    private Integer    groupID;
-    private Integer    costPerHour;  // in cents
-    private Boolean    active;
-    private String     name;
-    private String     make;
-    private String     model;
-    private String     year;
-    private String     color;
-    private String     unitType;     // e.g. sedan, suv, etc
-    private String     VIN;          // 17 chars
-    private Integer    weight;
-    private String     license;
-    private State      state;
+    private Integer     accountID;
+    private Integer     groupID;
+    private Integer     costPerHour;  // in cents
+    private Boolean     active;
+    private String      name;
+    private String      make;
+    private String      model;
+    private String      year;
+    private String      color;
+    private VehicleType type;
+    private String      VIN;          // 17 chars
+    private Integer     weight;
+    private String      license;
+    private State       state;
     @Column(updateable = false)
-    List<SafetyDevice> safetyDevices;
-    VehicleSensitivity sensitivity;
+    List<SafetyDevice>  safetyDevices;
+    VehicleSensitivity  sensitivity;
 
     public Vehicle()
     {
@@ -133,14 +133,14 @@ public class Vehicle extends BaseEntity
         this.color = color;
     }
 
-    public String getUnitType()
+    public VehicleType getType()
     {
-        return unitType;
+        return type;
     }
 
-    public void setUnitType(String unitType)
+    public void setType(VehicleType type)
     {
-        this.unitType = unitType;
+        this.type = type;
     }
 
     public String getVIN()

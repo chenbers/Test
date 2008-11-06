@@ -7,7 +7,6 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.EnumSet;
@@ -18,12 +17,12 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.dao.hessian.GenericHessianDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.AccountStatus;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.AggressiveDrivingEvent;
-import com.inthinc.pro.model.BaseEnum;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Event;
@@ -611,7 +610,7 @@ public class MockData
         Object obj = retrieveObject(clas, primaryKey, searchValue);
         if (obj != null)
         {
-            return createMapFromObject(obj);
+            return GenericHessianDAO.createMapFromObject(obj);
         }
         return null;
     }
@@ -655,7 +654,7 @@ public class MockData
             List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
             for (Object obj : objList)
             {
-                returnList.add(createMapFromObject(obj));
+                returnList.add(GenericHessianDAO.createMapFromObject(obj));
             }
             
             return returnList;
@@ -672,7 +671,7 @@ public class MockData
             List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
             for (Object obj : objList)
             {
-                returnList.add(createMapFromObject(obj));
+                returnList.add(GenericHessianDAO.createMapFromObject(obj));
             }
             
             return returnList;
@@ -686,91 +685,11 @@ public class MockData
         Object obj = retrieveObject(clas, searchCriteria);
         if (obj != null)
         {
-            return createMapFromObject(obj);
+            return GenericHessianDAO.createMapFromObject(obj);
         }
         return null;
     }
 
-    
-    public static <T> Map<String, Object> createMapFromObject(T object)
-    {
-        Map<String, Object> objMap = new HashMap<String, Object>();
-
-        Class cls = object.getClass();
-        BeanInfo beanInfo;
-        try
-        {
-            beanInfo = Introspector.getBeanInfo(object.getClass());
-        }
-        catch (IntrospectionException e)
-        {
-            e.printStackTrace();
-            return objMap;
-        }
-
-        PropertyDescriptor propertyDescriptors[] = beanInfo.getPropertyDescriptors();
-        for (int i = 0; i < propertyDescriptors.length; i++)
-        {
-            String key = propertyDescriptors[i].getName();
-            if (key.equals("class"))
-                continue;
-
-            // if the field represented by key is transient, skip it            
-            try
-            {
-                //getDeclaredFields will not resolve inherited fields. It will throw
-                //a NoSuchFieldException.
-                if (Modifier.isTransient(cls.getDeclaredField(key).getModifiers()))
-                    continue;
-            }
-            catch (NoSuchFieldException e)
-            {
-                //if the declared field doesn't exist, we don't care. Move on.
-            }
-
-            Method getMethod = propertyDescriptors[i].getReadMethod();
-            Object value;
-            try
-            {
-                value = getMethod.invoke(object);
-                
-                if (value == null)
-                    continue;
-                
-                // backend represents booleans as integers
-                if (value instanceof Boolean)
-                {
-                    value = new Integer((Boolean)value ? 1 : 0);
-                }
-                // backend represents enums as integers
-                else if (value.getClass().isEnum())
-                {
-                    if (value instanceof BaseEnum)
-                    {
-                        value = new Integer(((BaseEnum)value).getCode());
-                    }
-                    else
-                    {
-                        // we can only handle enums derived from our BaseEnum
-                        continue;
-                    }
-                }
-                objMap.put(key, value);
-            }
-            catch (IllegalAccessException e)
-            {
-                System.out.println("IllegalAccessException occured while trying to invoke the method " + getMethod.getName());
-                e.printStackTrace();
-            }
-            catch (InvocationTargetException e)
-            {
-                System.out.println("InvocationTargetExcpetion occured while trying to invoke the method " + getMethod.getName());
-                e.printStackTrace();
-            }
-        }
-
-        return objMap;
-    }
     
     public <T> void storeObject(T obj)
     {
@@ -1010,7 +929,7 @@ public class MockData
 
     private <T> void dumpObject(T obj, String indent)
     {
-        Map<String, Object> objMap = createMapFromObject(obj);
+        Map<String, Object> objMap = GenericHessianDAO.createMapFromObject(obj);
         logger.debug(indent + obj.getClass().getName());
         StringBuffer buffer = new StringBuffer(indent);
         for (Map.Entry<String, Object> item : objMap.entrySet())

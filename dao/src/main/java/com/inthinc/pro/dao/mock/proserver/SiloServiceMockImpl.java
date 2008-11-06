@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.ProDAOException;
+import com.inthinc.pro.dao.hessian.GenericHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.mock.data.MockData;
@@ -251,7 +252,7 @@ public class SiloServiceMockImpl implements SiloService
                 {
                     percent = 100 - percentTotal;
                 }
-                returnList.add(MockData.createMapFromObject(new ScoreableEntity(groupID, 
+                returnList.add(GenericHessianDAO.createMapFromObject(new ScoreableEntity(groupID, 
                     EntityType.ENTITY_GROUP, 
                     (i+1) + "",     // name will be 1 to 5 for the 5 different score breakdowns 
                     new Integer(percent), 
@@ -465,7 +466,7 @@ public class SiloServiceMockImpl implements SiloService
         List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
         for (Group group : hierarchyGroups)
         {
-            returnList.add(MockData.createMapFromObject(group));
+            returnList.add(GenericHessianDAO.createMapFromObject(group));
         }
         
         return returnList;
@@ -499,7 +500,7 @@ public class SiloServiceMockImpl implements SiloService
         List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
         for (Event event : allEventsForGroup)
         {
-            returnList.add(MockData.createMapFromObject(event));
+            returnList.add(GenericHessianDAO.createMapFromObject(event));
             cnt++;
             if (cnt == eventCnt.intValue())
                 break;
@@ -523,7 +524,7 @@ public class SiloServiceMockImpl implements SiloService
         }
         returnEntity.setScore(total/allScores.size());
 
-        return MockData.createMapFromObject(returnEntity);
+        return GenericHessianDAO.createMapFromObject(returnEntity);
     }
 
 

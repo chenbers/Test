@@ -1,8 +1,13 @@
 package com.inthinc.pro.dao.hessian;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,19 +33,19 @@ import com.inthinc.pro.model.BaseEnum;
 
 public abstract class GenericHessianDAO<T, ID, S extends HessianService> implements GenericDAO<T, ID>
 {
-    private static final Logger logger = Logger.getLogger(GenericHessianDAO.class);
+    private static final Logger         logger             = Logger.getLogger(GenericHessianDAO.class);
     private ServiceCreator<SiloService> siloServiceCreator;
-    private ServiceCreator<S> serviceCreator;
-    private Class<T> modelClass;
-    private Class<ID> idClass;
-    private Method findMethod;
-    private Method deleteMethod;
-    private Method createMethod;
-    private Method updateMethod;
+    private ServiceCreator<S>           serviceCreator;
+    private Class<T>                    modelClass;
+    private Class<ID>                   idClass;
+    private Method                      findMethod;
+    private Method                      deleteMethod;
+    private Method                      createMethod;
+    private Method                      updateMethod;
 
-    private Map<String, Method> convertToFieldMap = new HashMap<String, Method>();
-    private Map<String, Method> convertToColumnMap = new HashMap<String, Method>();
-    private Map<String, String> columnMap = new HashMap<String, String>();
+    private Map<String, Method>         convertToFieldMap  = new HashMap<String, Method>();
+    private Map<String, Method>         convertToColumnMap = new HashMap<String, Method>();
+    private Map<String, String>         columnMap          = new HashMap<String, String>();
 
     @SuppressWarnings("unchecked")
     public GenericHessianDAO()
@@ -260,7 +265,7 @@ public abstract class GenericHessianDAO<T, ID, S extends HessianService> impleme
 
         try
         {
-            return getReturnKey((Map) createMethod.invoke(getSiloService(), id));
+            return getReturnKey((Map) createMethod.invoke(getSiloService(), id, createMapFromObject(entity)));
         }
         catch (IllegalAccessException e)
         {
@@ -288,13 +293,8 @@ public abstract class GenericHessianDAO<T, ID, S extends HessianService> impleme
 
         try
         {
-            return getChangedCount((Map) updateMethod.invoke(getSiloService(), entity));
-        }
-        catch (IllegalAccessException e)
-        {
-            if (logger.isDebugEnabled())
-                logger.debug(e);
-            return 0;
+            ID entityID = getID(entity);
+            return getChangedCount((Map) updateMethod.invoke(getSiloService(), entityID, createMapFromObject(entity)));
         }
         catch (InvocationTargetException e)
         {
@@ -307,6 +307,42 @@ public abstract class GenericHessianDAO<T, ID, S extends HessianService> impleme
                 logger.debug("Error invoking the DAO update method of " + this.getClass().getName(), e);
             return 0;
         }
+        catch (Exception e)
+        {
+            if (logger.isDebugEnabled())
+                logger.debug(e);
+            return 0;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private ID getID(T entity) throws IllegalArgumentException, IntrospectionException, IllegalAccessException, InvocationTargetException
+    {
+        ID id = null;
+        for (Field f : modelClass.getDeclaredFields())
+        {
+            if (f.isAnnotationPresent(com.inthinc.pro.dao.annotations.ID.class))
+            {
+                try
+                {
+                    id = (ID) f.get(entity);
+                }
+                catch (Exception e)
+                {
+                    if (logger.isDebugEnabled())
+                        logger.debug(e);
+
+                    for (PropertyDescriptor property : Introspector.getBeanInfo(modelClass).getPropertyDescriptors())
+                        if (property.getName().equals(f.getName()))
+                        {
+                            id = (ID) property.getReadMethod().invoke(entity, new Object[0]);
+                            break;
+                        }
+                }
+                break;
+            }
+        }
+        return id;
     }
 
     protected ID getReturnKey(Map<String, Object> map)
@@ -409,11 +445,25 @@ public abstract class GenericHessianDAO<T, ID, S extends HessianService> impleme
                 continue;
             }
 
-            //If a converter was not found, get the Field object for later use
+            // If a converter was not found, get the Field object for later use
             Field field = null;
             try
             {
                 field = modelObject.getClass().getDeclaredField(key);
+
+                // Check if the value is a Map or a List and handle it or just set the value in the object to be returned
+                if (Map.class.isInstance(value))
+                {
+                    setProperty(modelObject, key, convertToModelObject((Map<String, Object>) value, field.getType()));
+                }
+                else if (List.class.isInstance(value))
+                {
+                    setProperty(modelObject, key, convertToModelObject((List<Map<String, Object>>) value, field.getAnnotation(Column.class).type()));
+                }
+                else
+                {
+                    setProperty(modelObject, key, value);
+                }
             }
             catch (NoSuchFieldException e)
             {
@@ -423,21 +473,6 @@ public abstract class GenericHessianDAO<T, ID, S extends HessianService> impleme
                     logger.debug("The field \"" + key + "\" does not exist for class: " + value.getClass().getName(), e);
                 }
             }
-
-            //Check if the value is a Map or a List and handle it or just set the value in the object to be returned
-            if (Map.class.isInstance(value))
-            {
-                setProperty(modelObject, key, convertToModelObject((Map<String, Object>) value, field.getType()));
-            }
-            else if (List.class.isInstance(value))
-            {
-                setProperty(modelObject, key, convertToModelObject((List<Map<String, Object>>) value, field.getAnnotation(Column.class).type()));
-            }
-            else
-            {
-                setProperty(modelObject, key, value);
-            }
-
         }
 
         return modelObject;
@@ -621,6 +656,86 @@ public abstract class GenericHessianDAO<T, ID, S extends HessianService> impleme
                 logger.debug("The property \"" + name + "\" does not exist for class: " + value.getClass().getName(), e);
             }
         }
+    }
+
+    public static <T> Map<String, Object> createMapFromObject(T object)
+    {
+        Map<String, Object> objMap = new HashMap<String, Object>();
+
+        Class<?> cls = object.getClass();
+        BeanInfo beanInfo;
+        try
+        {
+            beanInfo = Introspector.getBeanInfo(object.getClass());
+        }
+        catch (IntrospectionException e)
+        {
+            e.printStackTrace();
+            return objMap;
+        }
+
+        PropertyDescriptor propertyDescriptors[] = beanInfo.getPropertyDescriptors();
+        for (int i = 0; i < propertyDescriptors.length; i++)
+        {
+            String key = propertyDescriptors[i].getName();
+            if (key.equals("class"))
+                continue;
+
+            // if the field represented by key is transient, skip it
+            try
+            {
+                // getDeclaredFields will not resolve inherited fields. It will throw
+                // a NoSuchFieldException.
+                if (Modifier.isTransient(cls.getDeclaredField(key).getModifiers()))
+                    continue;
+            }
+            catch (NoSuchFieldException e)
+            {
+                // if the declared field doesn't exist, we don't care. Move on.
+            }
+
+            Method getMethod = propertyDescriptors[i].getReadMethod();
+            Object value;
+            try
+            {
+                value = getMethod.invoke(object);
+
+                if (value == null)
+                    continue;
+
+                // backend represents booleans as integers
+                if (value instanceof Boolean)
+                {
+                    value = new Integer((Boolean) value ? 1 : 0);
+                }
+                // backend represents enums as integers
+                else if (value.getClass().isEnum())
+                {
+                    if (value instanceof BaseEnum)
+                    {
+                        value = new Integer(((BaseEnum) value).getCode());
+                    }
+                    else
+                    {
+                        // we can only handle enums derived from our BaseEnum
+                        continue;
+                    }
+                }
+                objMap.put(key, value);
+            }
+            catch (IllegalAccessException e)
+            {
+                System.out.println("IllegalAccessException occured while trying to invoke the method " + getMethod.getName());
+                e.printStackTrace();
+            }
+            catch (InvocationTargetException e)
+            {
+                System.out.println("InvocationTargetExcpetion occured while trying to invoke the method " + getMethod.getName());
+                e.printStackTrace();
+            }
+        }
+
+        return objMap;
     }
 
     private static boolean isStandardProperty(Object o)

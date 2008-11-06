@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ import com.inthinc.pro.model.SafetyDevice;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleSensitivity;
+import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.util.MessageUtil;
 
 /**
@@ -29,11 +31,12 @@ import com.inthinc.pro.util.MessageUtil;
  */
 public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
 {
-    private static final List<String>            AVAILABLE_COLUMNS;
-    private static final int[]                   DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 8, 12 };
+    private static final List<String>             AVAILABLE_COLUMNS;
+    private static final int[]                    DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 8, 12 };
 
-    private static final TreeMap<String, String> YEARS;
-    private static final TreeMap<String, State>  STATES;
+    private static final Map<String, String>      YEARS;
+    private static final Map<String, VehicleType> TYPES;
+    private static final Map<String, State>       STATES;
 
     static
     {
@@ -46,7 +49,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         AVAILABLE_COLUMNS.add("make");
         AVAILABLE_COLUMNS.add("model");
         AVAILABLE_COLUMNS.add("color");
-        AVAILABLE_COLUMNS.add("unitType");
+        AVAILABLE_COLUMNS.add("type");
         AVAILABLE_COLUMNS.add("VIN");
         AVAILABLE_COLUMNS.add("weight");
         AVAILABLE_COLUMNS.add("license");
@@ -71,16 +74,20 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         for (int year = 1970; year <= nextYear; year++)
             YEARS.put(String.valueOf(year), String.valueOf(year));
 
+        // types
+        TYPES = new LinkedHashMap<String, VehicleType>();
+        for (final VehicleType type : VehicleType.values())
+            TYPES.put(type.getDescription(), type);
+
         // states
-        final State[] states = State.values();
         STATES = new TreeMap<String, State>();
-        for (final State state : states)
+        for (final State state : State.values())
             STATES.put(state.getName(), state);
     }
 
-    private VehicleDAO                           vehicleDAO;
-    private GroupDAO                             groupDAO;
-    private TreeMap<String, Integer>             groups;
+    private VehicleDAO                            vehicleDAO;
+    private GroupDAO                              groupDAO;
+    private TreeMap<String, Integer>              groups;
 
     public void setVehicleDAO(VehicleDAO vehicleDAO)
     {
@@ -241,7 +248,10 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
 
         for (final VehicleView vehicle : saveItems)
         {
-            vehicleDAO.update(vehicle);
+            if (isAdd())
+                vehicle.setVehicleID(vehicleDAO.create(getUser().getPerson().getAccountID(), vehicle));
+            else
+                vehicleDAO.update(vehicle);
 
             // add a message
             final String summary = MessageUtil.formatMessageString(isAdd() ? "vehicle_added" : "vehicle_updated", vehicle.getName());
@@ -268,12 +278,17 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         return "go_adminVehicles";
     }
 
-    public TreeMap<String, String> getYears()
+    public Map<String, String> getYears()
     {
         return YEARS;
     }
 
-    public TreeMap<String, State> getStates()
+    public Map<String, VehicleType> getTypes()
+    {
+        return TYPES;
+    }
+
+    public Map<String, State> getStates()
     {
         return STATES;
     }

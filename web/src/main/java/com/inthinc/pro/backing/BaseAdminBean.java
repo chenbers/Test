@@ -281,6 +281,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean
 
             editItem = null;
             getEditItem();
+            editItem.setSelected(false);
             return true;
         }
         return false;
@@ -343,8 +344,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean
         }
         else
         {
-            final boolean add = !editItem.isSelected();
-            editItem.setSelected(false);
+            final boolean add = isAdd();
             doSave(selected);
             if (add)
             {
@@ -377,7 +377,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean
      */
     public boolean isAdd()
     {
-        return !isBatchEdit() && (editItem != null) && !editItem.isSelected();
+        return !isBatchEdit() && (editItem != null) && (editItem.getId() == null);
     }
 
     /**

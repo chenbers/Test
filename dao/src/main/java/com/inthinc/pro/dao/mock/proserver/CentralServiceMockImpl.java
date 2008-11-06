@@ -5,6 +5,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.ProDAOException;
+import com.inthinc.pro.dao.hessian.GenericHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.proserver.CentralService;
 import com.inthinc.pro.dao.mock.data.MockData;
@@ -29,7 +30,7 @@ public class CentralServiceMockImpl implements CentralService
         Person person = MockData.getInstance().retrieveObject(Person.class, "email", email);
         if ((person != null) && (person.getUser() != null))
         {
-            returnMap = MockData.createMapFromObject(person.getUser());
+            returnMap = GenericHessianDAO.createMapFromObject(person.getUser());
         }
 
         if (returnMap == null)
