@@ -16,7 +16,7 @@ public class DriverReportTable
     
     public void actionListener(ActionEvent event) {
         HtmlDataTable table = getTable();
-        
+        logger.debug("driverreporttable");
         if (table != null)
         {
             Object row = table.getRowKey();
@@ -48,11 +48,11 @@ public class DriverReportTable
     
     public void setDriverReportScroller(HtmlDatascroller driverReportScroller)
     {
-//      this.tiwiScroller = tiwiScroller;
+        this.driverReportScroller = driverReportScroller;
     }   
     
-    public void trendChangeListener(ValueChangeEvent event)
+    public void driverReportChangeListener(ValueChangeEvent event)
     {
-//      tiwiScroller.setPage("first");
+
     }
 }
