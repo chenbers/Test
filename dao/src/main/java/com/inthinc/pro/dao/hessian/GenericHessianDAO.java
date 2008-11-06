@@ -316,7 +316,7 @@ public abstract class GenericHessianDAO<T, ID, S extends HessianService> impleme
     }
 
     @SuppressWarnings("unchecked")
-    private ID getID(T entity) throws IllegalArgumentException, IntrospectionException, IllegalAccessException, InvocationTargetException
+    protected ID getID(T entity) throws IllegalArgumentException, IntrospectionException, IllegalAccessException, InvocationTargetException
     {
         ID id = null;
         for (Field f : modelClass.getDeclaredFields())
