@@ -7,18 +7,24 @@ import java.util.Date;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.Vehicle;
 
 public class EventDisplay
 {
     String driverName;
+    String vehicleName;
     String dateStr;
     String eventType;
     Date time;
+    
+    Event event;
     
     private static DateFormat dateFormatter = new SimpleDateFormat("E, MMM d, yyyy h:mm a (z)");
     
     public EventDisplay(Event event)
     {
+        this.event = event;
+        
         Driver driver = event.getDriver();
         if (driver != null)
         {
@@ -28,6 +34,11 @@ public class EventDisplay
                 setDriverName(person.getFirst() + " " + person.getLast());
                 dateFormatter.setTimeZone(person.getTimeZone());
             }
+        }
+        Vehicle vehicle = event.getVehicle();
+        if (vehicle != null)
+        {
+            setVehicleName(vehicle.getName());
         }
         
         setDateStr(dateFormatter.format(event.getTime()));
@@ -67,6 +78,26 @@ public class EventDisplay
     public void setTime(Date time)
     {
         this.time = time;
+    }
+
+    public String getVehicleName()
+    {
+        return vehicleName;
+    }
+
+    public void setVehicleName(String vehicleName)
+    {
+        this.vehicleName = vehicleName;
+    }
+
+    public Event getEvent()
+    {
+        return event;
+    }
+
+    public void setEvent(Event event)
+    {
+        this.event = event;
     }
     
     

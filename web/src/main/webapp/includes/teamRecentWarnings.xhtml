@@ -5,85 +5,65 @@
 	xmlns:f="http://java.sun.com/jsf/core"
   	xmlns:iwi="http://pro.tiwi.com/jsf"
 	xmlns:h="http://java.sun.com/jsf/html">
-
-		<!-- START PANEL -->
-			<div class="">
-				<div class="panel_nw">
-
-					<div class="panel_title">
-						<span class="warning">Warnings </span>
-						<span class="panel_links"><h:outputText value=" "></h:outputText></span>
-					</div>
-				</div>
-					<div class="panel_w">
-					  <div class="panel_content">
-					  
-					  	<div class="datagrid">
-
-								<table width="100%" cellpadding="0" cellspacing="0" class="sortable-onload-3 no-arrow rowstyle-alt colstyle-alt paginate-15 max-pages-4 paginationcallback-callbackTest-calculateTotalRating sortcompletecallback-callbackTest-calculateTotalRating" id="theTable2">
-								  <thead>
-								  <tr>
-									<th width="103" height="27" class="sortable-text">Warning</th>
-									<th width="78" class="sortable-text">Vehicle</th>
-									<th width="131" class="sortable-numeric">Driver</th>
-									<th width="83" class="sortable-numeric">When</th>
-
-									<th width="61"><h:outputText value=" "></h:outputText></th>
-								  </tr>
-								  </thead>
-								  <tbody>
-								  <tr>
-								    <td>Battery Low </td>
-								    <td><a href="#">LV-1253</a></td>
-								    <td><a href="driverq_overview.html">Johnny Goode</a> </td>
-
-								    <td>4:34 AM </td>
-								    <td><a href="#">details</a></td>
-								  </tr>
-								  <tr>
-								    <td>Warning</td>
-								    <td><a href="#">LV-4754</a></td>
-								    <td><a href="driverq_overview.html">Bart Simpson</a> </td>
-
-								    <td>6:23 AM </td>
-								    <td><a href="#">details</a></td>
-								  </tr>
-								  <tr>
-								    <td>Warning</td>
-								    <td><a href="#">LV-7845</a></td>
-								    <td><a href="driverq_overview.html">Danny Moll</a> </td>
-
-								    <td>8:05 AM </td>
-								    <td><a href="#">details</a></td>
-								  </tr>
-								  <tr>
-								    <td>Warning</td>
-								    <td><a href="#">LV-4567</a></td>
-								    <td><a href="driverq_overview.html">Tommy Ringstad</a> </td>
-
-								    <td>12:55 PM </td>
-								    <td><a href="#">details</a></td>
-								  </tr>
-								  <tr>
-								    <td>Warning</td>
-								    <td><a href="#">LV-9900</a></td>
-								    <td><a href="driverq_overview.html">Dave Ross</a> </td>
-
-								    <td>4:45 PM </td>
-								    <td><a href="#">details</a></td>
-								  </tr>
-								  </tbody>
-								</table>
-						</div>
-						
-				      </div>
-					</div>
-
-				<div class="panel_sw">
-					<div class="panel_statusbar"></div>
-				</div>
-			</div>
-		<!-- END PANEL -->
-
-
+<h:panelGroup layout="block" styleClass="">
+	<h:panelGroup layout="block" styleClass="panel_nw">
+		<h:panelGroup layout="block" styleClass="panel_title">
+			<span class="line">#{messages.team_warnings}</span>
+			<span class="panel_links"><a href="#">show all</a></span>
+		</h:panelGroup>	
+	</h:panelGroup>					
+	<h:panelGroup layout="block" styleClass="panel_w">
+		<h:panelGroup layout="block" styleClass="panel_content">
+			<h:panelGroup layout="block" styleClass="datagrid">
+			<h:form id="teamWarningsForm">
+			<rich:dataTable value="#{teamWarningsBean.warnings}" id="teamWarnings"
+						var="event" styleClass="datagrid"
+						rowClasses="trendTableOdd,trendTableEven" cellspacing="0" rows="5"
+						width="100%">
+					<rich:column sortBy="#{event.eventType}" width="15%" height="27" >
+						<f:facet name="header">
+							<h:outputText value="#{messages.team_warningWarning}" />
+						</f:facet>
+						<h:outputText value="#{event.eventType}"/>
+					</rich:column>
+					<rich:column sortBy="#{event.vehicleName}" width="10%" height="27" >
+						<f:facet name="header">
+							<h:outputText value="#{messages.team_warningVehicle}" />
+						</f:facet>
+						<!-- TODO:  hook up vehicle link to correct page -->
+						<h:commandLink action="go_team" value="#{event.vehicleName}">
+<!-- 						<f:setPropertyActionListener value="#{event.event.vehicle}" target="#{vehicleBean.vehicle}" />  -->	
+						</h:commandLink>
+					</rich:column>
+					<rich:column sortBy="#{event.driverName}" width="30%" height="27" >
+						<f:facet name="header">
+							<h:outputText value="#{messages.team_warningDriver}" />
+						</f:facet>
+						<h:commandLink action="go_driver" value="#{event.driverName}">
+							<f:setPropertyActionListener value="#{event.event.driver}" target="#{driverBean.driver}" />
+						</h:commandLink>
+					</rich:column>
+					<rich:column sortBy="#{event.time}" width="40%" height="27" >
+						<f:facet name="header">
+							<h:outputText value="#{messages.team_warningWhen}"/>
+						</f:facet>
+						<h:outputText value="#{event.dateStr}"/>
+					</rich:column>
+					<rich:column width="5%" height="27" >
+						<f:facet name="header">
+							<h:outputText value="" />
+						</f:facet>
+						<h:commandLink action="go_driver" value="#{messages.team_warningDetails}">
+							<f:setPropertyActionListener value="#{event.event.driver}" target="#{driverBean.driver}" />
+						</h:commandLink>
+					</rich:column>
+			</rich:dataTable>
+			</h:form>		
+			</h:panelGroup>					
+			</h:panelGroup>					
+	</h:panelGroup>					
+	<h:panelGroup layout="block" styleClass="panel_sw">
+		<h:panelGroup layout="block" styleClass="panel_statusbar"/>
+	</h:panelGroup>
+</h:panelGroup>
 </ui:composition>

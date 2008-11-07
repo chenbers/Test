@@ -7,6 +7,7 @@ import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.proserver.CentralService;
 import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
 
 public class EventHessianDAO extends GenericHessianDAO<Event, Integer, CentralService> implements EventDAO
@@ -18,20 +19,9 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer, CentralSe
     {
         try
         {
-            Integer[] recentEventTypes = {
-                    EventMapper.TIWIPRO_EVENT_NOTEEVENT,
-                    EventMapper.TIWIPRO_EVENT_SEATBELT,
-                    EventMapper.TIWIPRO_EVENT_SPEEDING,
-                    EventMapper.TIWIPRO_EVENT_SPEEDING_EX3,
-                    EventMapper.TIWIPRO_EVENT_WSZONES_ARRIVAL,
-                    EventMapper.TIWIPRO_EVENT_WSZONES_ARRIVAL_EX,
-                    EventMapper.TIWIPRO_EVENT_WSZONES_DEPARTURE,
-                    EventMapper.TIWIPRO_EVENT_WSZONES_DEPARTURE_EX,
-                    EventMapper.TIWIPRO_EVENT_ZONE_ENTER_ALERTED,
-                    EventMapper.TIWIPRO_EVENT_ZONE_EXIT_ALERTED
-            };
+            Integer[] eventTypes = EventMapper.getEventTypesInCategory(EventCategory.VIOLATION).toArray(new Integer[0]);
 
-            return convertToModelObject(getSiloService().getMostRecentEvents(groupID, eventCnt, recentEventTypes));
+            return convertToModelObject(getSiloService().getMostRecentEvents(groupID, eventCnt, eventTypes));
         }
         catch (EmptyResultSetException e)
         {
@@ -39,4 +29,18 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer, CentralSe
         }
     }
 
+    @Override
+    public List<Event> getMostRecentWarnings(Integer groupID, Integer eventCnt)
+    {
+        try
+        {
+            Integer[] eventTypes = EventMapper.getEventTypesInCategory(EventCategory.WARNING).toArray(new Integer[0]);
+
+            return convertToModelObject(getSiloService().getMostRecentEvents(groupID, eventCnt, eventTypes));
+        }
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
+    }
 }

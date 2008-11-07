@@ -13,8 +13,17 @@ public interface EventDAO  extends GenericDAO<Event, Integer>
      * 
      * @param groupID
      * @param eventCnt  -- max events to retrieve
-     * @param types[] -- list of event types to retrieve
      * @return
      */
     List<Event> getMostRecentEvents(Integer groupID, Integer eventCnt);
+
+
+    /**
+     * getMostRecentWarnings -- get a list of the most recent warnings for a group 
+     * 
+     * @param groupID
+     * @param eventCnt  -- max events to retrieve
+     * @return
+     */
+    List<Event> getMostRecentWarnings(Integer groupID, Integer eventCnt);
 }

@@ -30,19 +30,23 @@
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_recentEventsDriver}" />
 						</f:facet>
-						<h:outputText value="#{event.driverName}"/>
+						<h:commandLink action="go_driver" value="#{event.driverName}">
+							<f:setPropertyActionListener value="#{event.event.driver}" target="#{driverBean.driver}" />
+						</h:commandLink>
 					</rich:column>
-					<rich:column sortBy="#{event.time}" width="40%" height="27" >
+					<rich:column sortBy="#{event.time}" width="45%" height="27" >
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_recentEventsWhen}"/>
 						</f:facet>
 						<h:outputText value="#{event.dateStr}"/>
 					</rich:column>
-					<rich:column width="10%" height="27" >
+					<rich:column width="5%" height="27" >
 						<f:facet name="header">
 							<h:outputText value="" />
 						</f:facet>
-						<h:outputText value="#{messages.team_recentEventsDetails}"/>
+						<h:commandLink action="go_driver" value="#{messages.team_recentEventsDetails}">
+							<f:setPropertyActionListener value="#{event.event.driver}" target="#{driverBean.driver}" />
+						</h:commandLink>
 					</rich:column>
 			</rich:dataTable>
 			</h:form>		

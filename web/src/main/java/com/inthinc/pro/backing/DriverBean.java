@@ -16,6 +16,7 @@ import com.inthinc.pro.backing.ui.ScoreCategory;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.util.GraphicUtil;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.Distance;
@@ -48,6 +49,8 @@ public class DriverBean extends BaseBean
 	 * 
 	 * Miles Per Gallon data for chart
 	 */
+	
+	private Driver     driver;
 	
     private ScoreDAO    scoreDAO;
     private Distance    distance = Distance.FIVEHUNDRED;
@@ -357,6 +360,18 @@ public class DriverBean extends BaseBean
         sb.append(line.getClose());
 
         return sb.toString();
+    }
+
+    public Driver getDriver()
+    {
+        return driver;
+    }
+
+    public void setDriver(Driver driver)
+    {
+logger.debug("set Driver Called " + driver.getDriverID()); 
+        setDriverName(driver.getPerson().getFirst() + " " + driver.getPerson().getLast());
+        this.driver = driver;
     }
 
 

@@ -1,6 +1,8 @@
 package com.inthinc.pro.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -64,6 +66,24 @@ public class EventMapper
         typeMap.put(TIWIPRO_EVENT_ZONE_EXIT_ALERTED, ZoneDepartureEvent.class);
         typeMap.put(TIWIPRO_EVENT_LOCATION, Event.class);
     }
+    @SuppressWarnings("unchecked")
+    private static final Map<EventCategory, List<Integer>> categoryMap = new HashMap<EventCategory, List<Integer>> (); 
+    static
+    {
+        List<Integer> violationList = new ArrayList<Integer>();
+        violationList.add(TIWIPRO_EVENT_NOTEEVENT);
+        violationList.add(TIWIPRO_EVENT_SPEEDING);
+        violationList.add(TIWIPRO_EVENT_SPEEDING_EX3);
+        violationList.add(TIWIPRO_EVENT_SEATBELT);
+        categoryMap.put(EventCategory.VIOLATION, violationList);
+        
+        List<Integer> warningList = new ArrayList<Integer>();
+        warningList.add(TIWIPRO_EVENT_LOW_BATTERY);
+        warningList.add(TIWIPRO_EVENT_LOW_TIWI_BATTERY);
+        warningList.add(TIWIPRO_EVENT_UNPLUGGED);
+        categoryMap.put(EventCategory.WARNING, warningList);
+    }
+    
     
     
     @SuppressWarnings("unchecked")
@@ -78,5 +98,8 @@ public class EventMapper
         return typeMap.get(proEventType);
     }
 
-
+    public static List<Integer> getEventTypesInCategory(EventCategory category)
+    {
+        return categoryMap.get(category);
+    }
 }

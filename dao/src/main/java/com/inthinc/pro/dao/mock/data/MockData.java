@@ -37,6 +37,7 @@ import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SeatBeltEvent;
 import com.inthinc.pro.model.SpeedingEvent;
 import com.inthinc.pro.model.State;
+import com.inthinc.pro.model.TamperingEvent;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
@@ -174,8 +175,11 @@ public class MockData
             
             if (!groupIsParent(groups, groups[cnt].getGroupID()))
             {
-                addDriversToGroup(accountID, groups[cnt].getGroupID(), randomInt(1, MAX_DRIVERS_IN_GROUP));
-                addVehiclesToGroup(accountID, groups[cnt].getGroupID(), randomInt(1, MAX_VEHICLES_IN_GROUP));
+                List<Driver> driversInGroup = addDriversToGroup(accountID, groups[cnt].getGroupID(), randomInt(1, MAX_DRIVERS_IN_GROUP));
+                List<Vehicle> vehiclesInGroup = addVehiclesToGroup(accountID, groups[cnt].getGroupID(), randomInt(1, MAX_VEHICLES_IN_GROUP));
+
+                addTripsAndEvents(driversInGroup, vehiclesInGroup, idOffset);
+
             }
         }
         
@@ -288,8 +292,9 @@ public class MockData
     }
     
     
-    private void addDriversToGroup(Integer accountID, Integer groupID, int numDriversInGroup)
+    private List<Driver> addDriversToGroup(Integer accountID, Integer groupID, int numDriversInGroup)
     {
+        List<Driver> driverList = new ArrayList<Driver>();
         Integer idOffset = accountID * MAX_GROUPS + groupID * MAX_DRIVERS_IN_GROUP;
         
         for (int i = 0; i < numDriversInGroup; i++)
@@ -299,86 +304,119 @@ public class MockData
             storeObject(driver);
             Person person = retrieveObject(Person.class, "personID", id);
             addScores(driver.getDriverID(), EntityType.ENTITY_DRIVER, person.getFirst() + person.getLast());
-            
-            addTripsAndEvents(driver, idOffset);
+            driverList.add(driver);
         }
+        
+        return driverList;
     }
 
-    private void addTripsAndEvents(Driver driver, int idOffset)
+    private void addTripsAndEvents(List<Driver> driverList, List<Vehicle> vehicleList, int idOffset)
     {
-        int numTrips = randomInt(30, MAX_TRIPS);
-        int driverID = driver.getDriverID();
-        
-        int day = 30;
-        int minute = 0;
-        Integer startDate = hourInDaysBack(day, minute);
-        minute+=15;
-        Integer endDate = hourInDaysBack(day, minute);
-        int dayBreak = (numTrips/day);
-        for (int tripCnt = 0; tripCnt < numTrips; tripCnt++)
+        for (Driver driver : driverList)
         {
-            int id = idOffset+driverID * MAX_TRIPS + tripCnt;
-//            Integer vehicleID = idOffset+randomInt(1, numVehicles);
-            Integer vehicleID = 0;
-            int startAddressIdx = randomInt(0, MAX_ADDRESS - 1);
-            int endAddressIdx = randomInt(0, MAX_ADDRESS - 1);
+            int numTrips = randomInt(30, MAX_TRIPS);
             
-            List <LatLng> route = null;
-            if (tripCnt == (numTrips-1))
+            int day = 30;
+            int minute = 0;
+            Integer startDate = hourInDaysBack(day, minute);
+            minute+=15;
+            Integer endDate = hourInDaysBack(day, minute);
+            int dayBreak = (numTrips/day);
+            for (int tripCnt = 0; tripCnt < numTrips; tripCnt++)
             {
-                vehicleID = driverID; // do this so that last trip is always vehicle assigned to driver
-                if (day != 1)
+                // randomly select a vehicle for the trip
+                Vehicle vehicle = vehicleList.get(randomInt(0, vehicleList.size()-1));
+                int id = idOffset+driver.getDriverID() * MAX_TRIPS + tripCnt;
+                int eventIdOffset = id;
+    //            Integer vehicleID = idOffset+randomInt(1, numVehicles);
+                Integer vehicleID = 0;
+                int startAddressIdx = randomInt(0, MAX_ADDRESS - 1);
+                int endAddressIdx = randomInt(0, MAX_ADDRESS - 1);
+                
+                List <LatLng> route = null;
+                if (tripCnt == (numTrips-1))
                 {
-                    day = 1;
-                    minute = 0;
+                    if (day != 1)
+                    {
+                        day = 1;
+                        minute = 0;
+                    }
+                    route = getHardCodedRoute();
+                    startDate = hourInDaysBack(day, minute);
+                    minute+=15;
+                    endDate = hourInDaysBack(day, minute);
                 }
-                route = getHardCodedRoute();
+                else
+                {
+                    route = new ArrayList<LatLng>(2);
+                    route.add(new LatLng(lat[startAddressIdx], lng[startAddressIdx]));
+                    route.add(new LatLng(lat[endAddressIdx], lng[endAddressIdx]));
+                }
+                Trip trip = new Trip(id, vehicleID, 
+                        startDate, endDate, 
+                        randomInt(500, 10000), route, addressStr[startAddressIdx], addressStr[endAddressIdx]);
+                if (trip.getEndTime() > baseTimeSec)
+                        System.out.println("ERROR:: end time excedes base time");
+        
+                storeObject(trip);
+                
+                int eventCnt = addEventsForTrip(driver, vehicle, trip, eventIdOffset);
+    //            addZoneEvent(xml, driverID, vehicleID, trip.getEndLoc());
+                eventIdOffset += eventCnt;
+                if (tripCnt == (numTrips-1))
+                {
+                    addWarnings(driver, vehicle, trip.getEndLoc(), eventIdOffset);
+                }
+                
+                
+                if (((tripCnt+1) % dayBreak) == 0)
+                {
+                    day--;
+                    if (day < 2) 
+                        day = 2;
+                    else minute = 0;
+                }
+                minute+=15;
                 startDate = hourInDaysBack(day, minute);
                 minute+=15;
+                if (minute > 1440)
+                    System.out.println("ERROR: minute: " + minute);            
                 endDate = hourInDaysBack(day, minute);
             }
-            else
-            {
-                route = new ArrayList<LatLng>(2);
-                route.add(new LatLng(lat[startAddressIdx], lng[startAddressIdx]));
-                route.add(new LatLng(lat[endAddressIdx], lng[endAddressIdx]));
-            }
-            Trip trip = new Trip(id, vehicleID, 
-                    startDate, endDate, 
-                    randomInt(500, 10000), route, addressStr[startAddressIdx], addressStr[endAddressIdx]);
-            if (trip.getEndTime() > baseTimeSec)
-                    System.out.println("ERROR:: end time excedes base time");
-    
-            storeObject(trip);
-            
-            addEventsForTrip(driver, vehicleID, trip, idOffset);
-//            addZoneEvent(xml, driverID, vehicleID, trip.getEndLoc());
-//            if (tripCnt == (numTrips-1) && driverID == numVehicles)
-//            {
-//                addLowBatteryEvent(xml, results, driverID, vehicleID, trip.getEndLoc());
-//                addTamperingEvent(xml, results, driverID, vehicleID, trip.getEndLoc());
-//                List<Event> eventList = eventMap.get(driverID);
-//
-//                eventList.add(addZeroLatLngEvent(xml, results, driverID, vehicleID));
-//            }
-//            
-            
-            if (((tripCnt+1) % dayBreak) == 0)
-            {
-                day--;
-                if (day < 2) 
-                    day = 2;
-                else minute = 0;
-            }
-            minute+=15;
-            startDate = hourInDaysBack(day, minute);
-            minute+=15;
-            if (minute > 1440)
-                System.out.println("ERROR: minute: " + minute);            
-            endDate = hourInDaysBack(day, minute);
         }
     }
-    private void addEventsForTrip(Driver driver, Integer vehicleID, Trip trip, int idOffset)
+    
+    private void addWarnings(Driver driver, Vehicle vehicle, LatLng loc, int idOffset)
+    {
+        Date date = DateUtil.convertTimeInSecondsToDate(baseTimeSec - randomInt(1, 2880));
+        Event event =  new Event((long)idOffset+1, vehicle.getVehicleID(), EventMapper.TIWIPRO_EVENT_LOW_BATTERY,
+                date,
+                randomInt(15, 70), randomInt(10, 50), loc.getLat(), loc.getLng());
+        event.setDriverID(driver.getDriverID());
+        event.setDriver(driver);
+        event.setVehicle(vehicle);
+        storeObject(event, Event.class);
+
+        event =  new Event((long)idOffset+2, vehicle.getVehicleID(), EventMapper.TIWIPRO_EVENT_LOW_TIWI_BATTERY,
+                date,
+                randomInt(15, 70), randomInt(10, 50), loc.getLat(), loc.getLng());
+        event.setDriverID(driver.getDriverID());
+        event.setDriver(driver);
+        event.setVehicle(vehicle);
+        storeObject(event, Event.class);
+
+        event =  new TamperingEvent((long)idOffset+3, vehicle.getVehicleID(), EventMapper.TIWIPRO_EVENT_UNPLUGGED,
+                date,
+                randomInt(15, 70), randomInt(10, 50), loc.getLat(), loc.getLng());
+        event.setDriverID(driver.getDriverID());
+        event.setDriver(driver);
+        event.setVehicle(vehicle);
+        storeObject(event, Event.class);
+
+    }
+    
+    
+    private int addEventsForTrip(Driver driver, Vehicle vehicle, Trip trip, int idOffset)
     {
         int numEvents = randomInt(MIN_EVENTS, MAX_EVENTS);
 
@@ -395,7 +433,7 @@ public class MockData
        
             switch (eventCategory) {
             case 1:
-                event =  new SeatBeltEvent(id, vehicleID, EventMapper.TIWIPRO_EVENT_SEATBELT, 
+                event =  new SeatBeltEvent(id, vehicle.getVehicleID(), EventMapper.TIWIPRO_EVENT_SEATBELT, 
                         date,
                         randomInt(15, 70), randomInt(10, 50), lat, lng, randomInt(50, 70),
                         randomInt(70, 90), randomInt(5, 20));
@@ -432,7 +470,7 @@ public class MockData
                 }
                 
                 int severity = randomInt(0, 100);
-                event = new AggressiveDrivingEvent(id, vehicleID, EventMapper.TIWIPRO_EVENT_NOTEEVENT,
+                event = new AggressiveDrivingEvent(id, vehicle.getVehicleID(), EventMapper.TIWIPRO_EVENT_NOTEEVENT,
                             date,
                         randomInt(15, 70), randomInt(10, 50), lat, lng,
                         randomInt(50, 70), deltaVx, deltaVy, deltaVz, severity);
@@ -441,7 +479,7 @@ public class MockData
                 int speedLimit = randomInt(35, 75);
                 int avgSpeed = randomInt(speedLimit, 80);
                 int topSpeed = randomInt(avgSpeed, 100);
-                event = new SpeedingEvent(id, vehicleID, EventMapper.TIWIPRO_EVENT_SPEEDING_EX3, 
+                event = new SpeedingEvent(id, vehicle.getVehicleID(), EventMapper.TIWIPRO_EVENT_SPEEDING_EX3, 
                             date,
                             randomInt(15, 70), randomInt(10, 50), lat, lng, topSpeed, avgSpeed,
                             speedLimit, randomInt(5, 70), randomInt(10, 50));
@@ -449,10 +487,11 @@ public class MockData
             }
             event.setDriverID(driver.getDriverID());
             event.setDriver(driver);
+            event.setVehicle(vehicle);
             storeObject(event, Event.class);
         }
                 
-        
+        return numEvents;
     }
 
     private static List <LatLng>  getHardCodedRoute()
@@ -541,8 +580,9 @@ public class MockData
         return TimeZone.getTimeZone(tzName[tz]);
     }
 
-    private void addVehiclesToGroup(Integer accountID, Integer groupID, int numVehiclesInGroup)
+    private List<Vehicle> addVehiclesToGroup(Integer accountID, Integer groupID, int numVehiclesInGroup)
     {
+        List<Vehicle> vehicleList = new ArrayList<Vehicle>();
         Integer idOffset = accountID * MAX_GROUPS + groupID * MAX_VEHICLES_IN_GROUP;
         
         for (int i = 0; i < numVehiclesInGroup; i++)
@@ -552,7 +592,9 @@ public class MockData
                     .values()[randomInt(0, State.values().length - 1)], randomInt(0, 10) < 8);
             storeObject(vehicle);
             addScores(vehicle.getVehicleID(), EntityType.ENTITY_VEHICLE, vehicle.getName());
+            vehicleList.add(vehicle);
         }
+        return vehicleList;
     }
 
     private Vehicle createVehicle(int id, Integer accountID, Integer groupID, String make, String model, String color, int weight, String VIN, String license, State state, boolean active)
@@ -952,7 +994,6 @@ public class MockData
                 dumpObject(driver, "    ");
             }
         }
-        
     }
 
     private <T> void dumpObject(T obj, String indent)

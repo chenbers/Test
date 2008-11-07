@@ -14,6 +14,8 @@ import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.mock.proserver.CentralServiceCreator;
 import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
 import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.EventCategory;
+import com.inthinc.pro.model.EventMapper;
 
 public class EventHessianDAOTest
 {
@@ -46,12 +48,41 @@ public class EventHessianDAOTest
         assertNotNull(eventList);
         assertEquals(5, eventList.size());
         
+        List<Integer> validEventTypes = EventMapper.getEventTypesInCategory(EventCategory.VIOLATION);
+        // make sure they are in decending order by date
+        for (int i = 0 ; i < 4; i++)
+        {
+            assertTrue("Time Compare failed for event " + i  + " " + eventList.get(i).getTime() + " and " + (i+1) + " " + eventList.get(i+1).getTime(), 
+                    eventList.get(i).getTime().compareTo(eventList.get(i+1).getTime()) >= 0);
+            
+        }
+
+        for (int i = 0 ; i < 5; i++)
+        {
+            assertTrue("Event type is not valid", validEventTypes.contains(eventList.get(i).getType()));
+        }
+
+    }
+
+    @Test
+    public void recentWarnings() throws Exception
+    {
+        List<Event> eventList = eventHessianDAO.getMostRecentWarnings(MockData.TOP_GROUP_ID, 5);
+        
+        assertNotNull(eventList);
+        assertEquals(5, eventList.size());
+
+        List<Integer> validEventTypes = EventMapper.getEventTypesInCategory(EventCategory.WARNING);
+        
         // make sure they are in decending order by date
         for (int i = 0 ; i < 4; i++)
         {
             assertTrue("Time Compare failed for event " + i  + " " + eventList.get(i).getTime() + " and " + (i+1) + " " + eventList.get(i+1).getTime(), 
                     eventList.get(i).getTime().compareTo(eventList.get(i+1).getTime()) >= 0);
         }
+        for (int i = 0 ; i < 5; i++)
+        {
+            assertTrue("Event type is not valid", validEventTypes.contains(eventList.get(i).getType()));
+        }
     }
-
 }
