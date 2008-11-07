@@ -74,6 +74,21 @@
  		<property name="scoreDAO" ref="scoreDAO"></property>
  		<property name="navigation" ref="navigationBean"></property>
    </bean>
+
+
+   <!-- Map Backing Beans -->
+   <bean id="gmBean" class="com.inthinc.pro.map.google.GoogleMapBacking">
+      <property name="googleMapKeys" ref="googleMapKey" />
+      <property name="webUtil" ref="webUtil" />
+   </bean>
+   <bean id="googleMapKey" class="com.inthinc.pro.map.google.GoogleMapKeys">
+      <property name="googleMapKeyPropertiesFile" value="classpath:googleMapKeys.properties" />
+   </bean>
+   
+   <!-- Web Util Beans - wraps access to servlet  -->
+   <bean id="webUtil" class="com.inthinc.pro.util.WebUtil"></bean>
+
+
    <bean id="teamRecentEventsBean" class="com.inthinc.pro.backing.TeamRecentEventsBean" scope="request" parent="baseBean">
 		<property name="eventDAO" ref="eventDAO"></property>
  		<property name="navigation" ref="navigationBean"></property>
