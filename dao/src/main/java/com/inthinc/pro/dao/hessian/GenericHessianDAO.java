@@ -487,9 +487,12 @@ public abstract class GenericHessianDAO<T, ID, S extends HessianService> impleme
     private <E> List<E> convertToModelObject(List<Map<String, Object>> list, Class<E> type)
     {
         List<E> returnList = new ArrayList<E>();
-        for (Map<String, Object> map : list)
+        if (list != null)
         {
-            returnList.add(convertToModelObject(map, type));
+            for (Map<String, Object> map : list)
+            {
+                returnList.add(convertToModelObject(map, type));
+            }
         }
         return returnList;
     }
