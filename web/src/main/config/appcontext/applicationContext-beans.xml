@@ -82,11 +82,17 @@
 		<property name="eventDAO" ref="eventDAO"></property>
  		<property name="navigation" ref="navigationBean"></property>
    </bean>
-      
+   <!-- Report beans -->   
    <bean id="driverReportBean" class="com.inthinc.pro.backing.DriverReportBean" 
 		scope="session" parent="baseBean" init-method="init">
    </bean>
    <bean id="driverReportTable" class="com.inthinc.pro.backing.ui.DriverReportTable" 
+   		scope="session">
+   </bean>         
+   <bean id="vehicleReportBean" class="com.inthinc.pro.backing.VehicleReportBean" 
+		scope="session" parent="baseBean" init-method="init">
+   </bean>
+   <bean id="vehicleReportTable" class="com.inthinc.pro.backing.ui.VehicleReportTable" 
    		scope="session">
    </bean>
 </beans>
