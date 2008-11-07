@@ -69,7 +69,7 @@
 							<h:outputText value="#{messages.button_cancel}" />
 						</span>
 					</button>
-          			<a4j:commandLink rendered="true"           				
+          			<a4j:commandLink rendered="true" action="#{driverReportBean.saveColumns}"           				
           				onclick="Richfaces.hideModalPanel('editDriverColumns')" 
           				reRender="items">
           				<button value="submit" class="left">
