@@ -1,0 +1,45 @@
+package com.inthinc.pro.dao.hessian;
+
+
+import static org.junit.Assert.*;
+
+import java.util.List;
+
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import com.inthinc.pro.dao.mock.data.MockData;
+import com.inthinc.pro.dao.mock.proserver.CentralServiceCreator;
+import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
+import com.inthinc.pro.model.Device;
+
+public class DeviceHessianDAOTest
+{
+    DeviceHessianDAO deviceHessianDAO;
+    @BeforeClass
+    public static void setUpBeforeClass() throws Exception
+    {
+    }
+
+    @AfterClass
+    public static void tearDownAfterClass() throws Exception
+    {
+    }
+    
+    @Before
+    public void setUp() throws Exception
+    {
+        deviceHessianDAO = new DeviceHessianDAO();
+        deviceHessianDAO.setServiceCreator(new CentralServiceCreator());
+        deviceHessianDAO.setSiloServiceCreator(new SiloServiceCreator());
+    }
+
+    @Test
+    public void hierarchy() throws Exception
+    {
+        List<Device> deviceList = deviceHessianDAO.getDevicesByAcctID(MockData.NUM_ACCOUNTS);
+        assertTrue("No devices were found", deviceList.size() > 0);
+    }
+}

@@ -3,38 +3,41 @@ package com.inthinc.pro.model;
 import java.util.Date;
 import java.util.TimeZone;
 
+import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
 public class Person extends BaseEntity
 {
     @ID
-    private Integer  personID;
-    private Integer  accountID;
-    private Integer  groupID;
-    private TimeZone timeZone;
-    private Integer  costPerHour; // in cents
+    private Integer          personID;
+    @Column(name = "acctID")
+    private Integer          accountID;
+    private Integer          groupID;
+    @Column(name = "tzID")
+    private TimeZone         timeZone;
+    private Integer          costPerHour; // in cents
     // contact information
-    private Address  address;
-    private String   homePhone;
-    private String   workPhone;
-    private String   email;
+    private Address          address;
+    private String           homePhone;
+    private String           workPhone;
+    private String           email;
     // employee information
-    private String   empid;
-    private Integer  reportsTo;  // userID
-    private String   title;
-    private String   dept;
+    private String           empid;
+    private Integer          reportsTo;  // userID
+    private String           title;
+    private String           dept;
     // personal information
-    private String   first;
-    private String   middle;
-    private String   last;
-    private String   suffix;
-    private Gender   gender;
-    private Integer  height;     // inches
-    private Integer  weight;     // pounds
-    private Date     dob;
+    private String           first;
+    private String           middle;
+    private String           last;
+    private String           suffix;
+    private Gender           gender;
+    private Integer          height;     // inches
+    private Integer          weight;     // pounds
+    private Date             dob;
     // user, driver (may be null)
-    private transient User     user;
-    private transient Driver   driver;
+    private transient User   user;
+    private transient Driver driver;
 
     public Integer getPersonID()
     {
@@ -265,5 +268,5 @@ public class Person extends BaseEntity
     {
         this.driver = driver;
     }
-    
+
 }

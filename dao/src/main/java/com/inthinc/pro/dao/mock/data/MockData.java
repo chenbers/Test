@@ -24,6 +24,8 @@ import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.AccountStatus;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.AggressiveDrivingEvent;
+import com.inthinc.pro.model.Device;
+import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Event;
@@ -47,15 +49,16 @@ public class MockData
     private static final Logger logger = Logger.getLogger(MockData.class);
     
     public static final Integer TOP_GROUP_ID = 101; 
-    static int NUM_ACCOUNTS = 1;
-    static int MAX_GROUPS = 100;
-    static int MAX_DRIVERS_IN_GROUP = 10;
-    static int MAX_VEHICLES_IN_GROUP = 10;
-    static int MAX_USERS_IN_GROUP = 10;
-    static int MAX_TRIPS = 75;
-    static int MAX_ADDRESS = 3;
-    static int MIN_EVENTS = 0;
-    static int MAX_EVENTS = 10;
+    public static final int NUM_ACCOUNTS = 1;
+    static final int MAX_GROUPS = 100;
+    static final int MAX_DRIVERS_IN_GROUP = 10;
+    static final int MAX_VEHICLES_IN_GROUP = 10;
+    static final int MAX_USERS_IN_GROUP = 10;
+    static final int MAX_TRIPS = 75;
+    static final int MAX_ADDRESS = 3;
+    static final int MIN_EVENTS = 0;
+    static final int MAX_EVENTS = 10;
+    static final int MAX_DEVICES = 200;
 
     static long timeNow = new Date().getTime();
     static int baseTimeSec = DateUtil.convertMillisecondsToSeconds(new Date().getTime());
@@ -128,6 +131,7 @@ public class MockData
         Account account = new Account(accountID, 0, 0, AccountStatus.ACCOUNT_ACTIVE);
         storeObject(account);
         addGroupData(accountID);
+        addDevices(accountID, randomInt(MAX_DEVICES / 2, MAX_DEVICES));
     }
     
     private void addGroupData(Integer accountID)
@@ -194,12 +198,12 @@ public class MockData
         
         User[] users = 
                 {
-                    createUser(idOffset+1, accountID, groupID, "expired"+groupID, "expired"+groupID+"@email.com", PASSWORD, Role.ROLE_NORMAL_USER, Boolean.FALSE),
-                    createUser(idOffset+2, accountID, groupID, "custom"+groupID, "custom"+groupID+"@email.com", PASSWORD, Role.ROLE_CUSTOM_USER, Boolean.TRUE),
-                    createUser(idOffset+3, accountID, groupID, "normal"+groupID, "normal"+groupID+"@email.com", PASSWORD, Role.ROLE_NORMAL_USER, Boolean.TRUE),
-                    createUser(idOffset+4, accountID, groupID, "readonly"+groupID, "readonly"+groupID+"@email.com", PASSWORD, Role.ROLE_READONLY, Boolean.TRUE),
-                    createUser(idOffset+5, accountID, groupID, "superuser"+groupID, "superuser"+groupID+"@email.com", PASSWORD, Role.ROLE_SUPER_USER, Boolean.TRUE),
-                    createUser(idOffset+6, accountID, groupID, "supervisor"+groupID, "supervisor"+groupID+"@email.com", PASSWORD, Role.ROLE_SUPERVISOR, Boolean.TRUE)
+                    createUser(idOffset+1, accountID, groupID, "expired"+groupID, PASSWORD, randomPhone(), randomPhone(), "expired"+groupID+"@email.com", Role.ROLE_NORMAL_USER, Boolean.FALSE),
+                    createUser(idOffset+2, accountID, groupID, "custom"+groupID, PASSWORD, randomPhone(), randomPhone(), "custom"+groupID+"@email.com", Role.ROLE_CUSTOM_USER, Boolean.TRUE),
+                    createUser(idOffset+3, accountID, groupID, "normal"+groupID, PASSWORD, randomPhone(), randomPhone(), "normal"+groupID+"@email.com", Role.ROLE_NORMAL_USER, Boolean.TRUE),
+                    createUser(idOffset+4, accountID, groupID, "readonly"+groupID, PASSWORD, randomPhone(), randomPhone(), "readonly"+groupID+"@email.com", Role.ROLE_READONLY, Boolean.TRUE),
+                    createUser(idOffset+5, accountID, groupID, "superuser"+groupID, PASSWORD, randomPhone(), randomPhone(), "superuser"+groupID+"@email.com", Role.ROLE_SUPER_USER, Boolean.TRUE),
+                    createUser(idOffset+6, accountID, groupID, "supervisor"+groupID, PASSWORD, randomPhone(), randomPhone(), "supervisor"+groupID+"@email.com", Role.ROLE_SUPERVISOR, Boolean.TRUE)
         };
 
         for (int userCnt = 0; userCnt < users.length; userCnt++)
@@ -209,7 +213,8 @@ public class MockData
         }
     }
 
-    private User createUser(Integer id, Integer accountID, Integer groupID, String username, String email, String password, Role role, Boolean active)
+    private User createUser(Integer id, Integer accountID, Integer groupID, String username, String password, String homePhone, String workPhone, String email, Role role,
+            Boolean active)
     {
         User user = new User();
         user.setUserID(id);
@@ -222,6 +227,8 @@ public class MockData
         user.getPerson().setEmpid(String.valueOf(id));
         user.getPerson().setAccountID(accountID);
         user.getPerson().setGroupID(groupID);
+        user.getPerson().setHomePhone(homePhone);
+        user.getPerson().setWorkPhone(workPhone);
         user.getPerson().setEmail(email);
         user.getPerson().setFirst(username.substring(0, username.length() / 2));
         user.getPerson().setLast(username.substring(username.length() / 2));
@@ -563,6 +570,8 @@ public class MockData
         person.setGroupID(groupID);
         person.setFirst(first);
         person.setLast(last);
+        person.setHomePhone(randomPhone());
+        person.setWorkPhone(randomPhone());
         person.setEmail(first.toLowerCase() + '.' + last.toLowerCase() + "@email.com");
         person.setTimeZone(getRandomTimezone());
         Driver driver = new Driver();
@@ -626,6 +635,38 @@ public class MockData
         return false;
     }
 
+    private List<Device> addDevices(Integer accountID, int numDevices)
+    {
+        List<Device> deviceList = new ArrayList<Device>();
+        Integer idOffset = accountID * MAX_DEVICES;
+        
+        for (int i = 0; i < numDevices; i++)
+        {
+            int id = idOffset+i+1;
+            Device device = createDevice(id, accountID, randomInt(0, Integer.MAX_VALUE), DeviceStatus.values()[randomInt(0, 2)], "DEVICE" + id, String.valueOf(randomInt(10000,
+                    Integer.MAX_VALUE)), String.valueOf(randomInt(10000, Integer.MAX_VALUE)), randomPhone(), randomPhone(), new Date());
+            storeObject(device);
+            deviceList.add(device);
+        }
+        return deviceList;
+    }
+
+    private Device createDevice(Integer id, Integer accountID, Integer baselineID, DeviceStatus status, String name, String mcmid, String sim, String phone, String ephone,
+            Date activated)
+    {
+        final Device device = new Device();
+        device.setDeviceID(id);
+        device.setAccountID(accountID);
+        device.setBaselineID(baselineID);
+        device.setStatus(status);
+        device.setName(name);
+        device.setMcmid(mcmid);
+        device.setSim(sim);
+        device.setPhone(phone);
+        device.setEphone(ephone);
+        device.setActivated(activated);
+        return device;
+    }
 
 
     //------------ UTILITY METHODS ----------------
@@ -656,6 +697,12 @@ public class MockData
 
         return base + ((float) randomInt(0, 15000) / 1000.0f);
     }
+
+    private static String randomPhone()
+    {
+        return randomInt(100, 999) + "-" + randomInt(100, 999) + "-" + randomInt(1000, 9999);
+    }
+
     private static Integer hourInDaysBack(int day, int minute)
     {
         int daysBackDate = DateUtil.getDaysBackDate(baseTimeSec, day, MST_TZ);

@@ -52,20 +52,6 @@
           </tr>
         </ui:fragment>
         <tr>
-          <td valign="top" class="#{(selectedAction == 'go_adminTrailers') ? 'ls_tab_on' : 'ls_tab_off'}">
-            <h:commandLink action="go_adminTrailers" value="#{messages.adminSideNav_go_adminTrailers}" styleClass="ls_tab_go_adminTrailers" immediate="true" />
-          </td>
-        </tr>
-        <ui:fragment rendered="#{parentAction == 'go_adminTrailers'}">
-          <tr>
-            <td valign="top" class="sub_wrapper">
-              <div class="#{(selectedAction == 'go_adminAddTrailer') ? 'ls_tab_sub_active' : 'ls_tab_sub'}">
-                <h:commandLink action="#{trailersBean.add}" value="#{messages.adminSideNav_go_adminAddTrailer}" styleClass="ls_tab_go_adminAddTrailer" immediate="true" />
-              </div>
-            </td>
-          </tr>
-        </ui:fragment>
-        <tr>
           <td valign="top" class="#{(selectedAction == 'go_adminDevices') ? 'ls_tab_on' : 'ls_tab_off'}">
             <h:commandLink action="go_adminDevices" value="#{messages.adminSideNav_go_adminDevices}" styleClass="ls_tab_go_adminDevices" immediate="true" />
           </td>

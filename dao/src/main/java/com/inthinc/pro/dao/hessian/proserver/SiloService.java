@@ -148,4 +148,15 @@ public interface SiloService extends HessianService
      */
     List<Map<String, Object>> getMostRecentEvents(Integer groupID, Integer eventCnt, Integer types[])  throws ProDAOException;
 
+
+    // Methods related to the Device type
+    List<Map<String, Object>> getDevicesByAcctID(Integer accountID) throws ProDAOException;
+
+    Map<String, Object> deleteDevice(Integer deviceID) throws ProDAOException;
+
+    Map<String, Object> getDevice(Integer deviceID) throws ProDAOException;
+
+    Map<String, Object> updateDevice(Integer deviceID, Map<String, Object> deviceMap) throws ProDAOException;
+
+    Map<String, Object> createDevice(Integer acctID, Map<String, Object> deviceMap) throws ProDAOException;
 }

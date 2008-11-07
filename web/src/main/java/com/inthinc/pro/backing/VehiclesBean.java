@@ -118,8 +118,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
      * 
      * @param vehicle
      *            The vehicle.
-     * @param score
-     *            The vehicle's overall score.
      * @return The new VehicleView object.
      */
     private VehicleView createVehicleView(Vehicle vehicle)

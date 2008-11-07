@@ -19,10 +19,13 @@ public class Vehicle extends BaseEntity
     private String      model;
     private String      year;
     private String      color;
+    @Column(name = "vtype")
     private VehicleType type;
+    @Column(name = "vin")
     private String      VIN;          // 17 chars
     private Integer     weight;
     private String      license;
+    @Column(name = "stateID")
     private State       state;
     @Column(updateable = false)
     List<SafetyDevice>  safetyDevices;

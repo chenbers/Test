@@ -1,9 +1,9 @@
 package com.inthinc.pro.dao.mock.proserver;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +16,7 @@ import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.mock.data.SearchCriteria;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Event;
@@ -405,7 +406,7 @@ public class SiloServiceMockImpl implements SiloService
     public Map<String, Object> createVehicle(Integer acctID, Map<String, Object> vehicleMap) throws ProDAOException
     {
         // TODO: actually store the object to the mock data
-        return createReturnValue("userID", (int) (Math.random() * Integer.MAX_VALUE));
+        return createReturnValue("vehicleID", (int) (Math.random() * Integer.MAX_VALUE));
     }
 
     @Override
@@ -425,7 +426,7 @@ public class SiloServiceMockImpl implements SiloService
     public Map<String, Object> createGroup(Integer acctID, Map<String, Object> groupMap) throws ProDAOException
     {
         // TODO: actually store the object to the mock data
-        return createReturnValue("userID", (int) (Math.random() * Integer.MAX_VALUE));
+        return createReturnValue("groupID", (int) (Math.random() * Integer.MAX_VALUE));
     }
 
     @Override
@@ -565,4 +566,37 @@ public class SiloServiceMockImpl implements SiloService
     }
 
 
+    @Override
+    public List<Map<String, Object>> getDevicesByAcctID(Integer acctID) throws ProDAOException
+    {
+        final SearchCriteria criteria = new SearchCriteria();
+        criteria.addKeyValue("accountID", acctID);
+        return MockData.getInstance().lookupList(Device.class, criteria);
+    }
+
+    @Override
+    public Map<String, Object> deleteDevice(Integer deviceID) throws ProDAOException
+    {
+        return createReturnValue("count", 0);
+    }
+    
+    @Override
+    public Map<String, Object> createDevice(Integer acctID, Map<String, Object> deviceMap) throws ProDAOException
+    {
+        // TODO: actually store the object to the mock data
+        return createReturnValue("deviceID", (int) (Math.random() * Integer.MAX_VALUE));
+    }
+
+    @Override
+    public Map<String, Object> getDevice(Integer deviceID) throws ProDAOException
+    {
+        return doMockLookup(Device.class, "deviceID", deviceID, "No device for ID: " + deviceID, "getDevice");
+
+    }
+
+    @Override
+    public Map<String, Object> updateDevice(Integer deviceID, Map<String, Object> deviceMap) throws ProDAOException
+    {
+        return createReturnValue("count", 1);
+    }
 }
