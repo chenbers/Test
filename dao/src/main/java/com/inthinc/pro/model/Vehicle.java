@@ -30,6 +30,8 @@ public class Vehicle extends BaseEntity
     @Column(updateable = false)
     List<SafetyDevice>  safetyDevices;
     VehicleSensitivity  sensitivity;
+    private Integer     driverID;
+    private Integer     deviceID;
 
     public Vehicle()
     {
@@ -204,5 +206,25 @@ public class Vehicle extends BaseEntity
     public void setSensitivity(VehicleSensitivity sensitivity)
     {
         this.sensitivity = sensitivity;
+    }
+
+    public Integer getDriverID()
+    {
+        return driverID;
+    }
+
+    public void setDriverID(Integer driverID)
+    {
+        this.driverID = driverID;
+    }
+
+    public Integer getDeviceID()
+    {
+        return deviceID;
+    }
+
+    public void setDeviceID(Integer deviceID)
+    {
+        this.deviceID = deviceID;
     }
 }
