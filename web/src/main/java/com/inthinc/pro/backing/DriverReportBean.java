@@ -31,6 +31,8 @@ public class DriverReportBean extends BaseBean
     private Integer maxCount = null;
     private Integer start = 1;
     private Integer end = numRowsPerPg;
+    
+    private String searchFor = null;
 
     
     static
@@ -49,8 +51,16 @@ public class DriverReportBean extends BaseBean
     }
     
     public void init() {               
-        ScoreBox sb = new ScoreBox(0,ScoreBoxSizes.SMALL);
-//Replace this with DAO for a "search" for all drivers for a given logged-in user                
+
+//Replace this with DAO for a "search" for all drivers for a given logged-in user 
+        initData();
+        
+        for ( int i = 0; i < DriverReportBean.AVAILABLE_COLUMNS.size(); i++ ) {
+            this.driverColumns.put(DriverReportBean.AVAILABLE_COLUMNS.get(i),true);
+        }
+    }
+    
+    private void initData() {
         drt = new DriverReportItem();
         drt.setEmployee("John Doe");
         drt.setEmployeeID(123456);
@@ -117,10 +127,6 @@ public class DriverReportBean extends BaseBean
         driverData.add(drt);     
         
         maxCount = driverData.size();
-        
-        for ( int i = 0; i < DriverReportBean.AVAILABLE_COLUMNS.size(); i++ ) {
-            this.driverColumns.put(DriverReportBean.AVAILABLE_COLUMNS.get(i),true);
-        }
     }
         
 
@@ -146,22 +152,34 @@ public class DriverReportBean extends BaseBean
             this.driverData.clear();
         }
         
-        ScoreBox sb = new ScoreBox(0,ScoreBoxSizes.SMALL);
-
-        drt = new DriverReportItem();
-        drt.setEmployee("Ivebeen Searchedfor");
-        drt.setEmployeeID(123456789);
-        drt.setGroup("Hidden");
-        drt.setMilesDriven(112233);
-        drt.setOverallScore(12);
-        drt.setSeatBeltScore(23);
-        drt.setSpeedScore(34);
-        drt.setStyleScore(45);
-        setStyles();
-        drt.setVehicleID("AA-123");                
-        driverData.add(drt);      
+        //Test search reset
+        logger.debug("searching for: " + this.searchFor);
         
-        this.maxCount = driverData.size();
+        if ( this.searchFor.trim().length() != 0 ) {
+            drt = new DriverReportItem();
+            drt.setEmployee("Ivebeen Searchedfor");
+            drt.setEmployeeID(123456789);
+            drt.setGroup("Hidden");
+            drt.setMilesDriven(112233);
+            drt.setOverallScore(12);
+            drt.setSeatBeltScore(23);
+            drt.setSpeedScore(34);
+            drt.setStyleScore(45);
+            setStyles();
+            drt.setVehicleID("AA-123");                
+            driverData.add(drt);
+            
+            this.maxCount = driverData.size();
+        } else {
+            initData();
+        }
+        
+        //Reset count parameters
+        this.start = 1;
+        this.end = this.numRowsPerPg;
+        if ( this.driverData.size() <= this.end ) {
+            this.end = this.driverData.size();
+        }        
     }
     
     public Map<String, Boolean> getDriverColumns()    
@@ -257,5 +275,17 @@ public class DriverReportBean extends BaseBean
     public void setNumRowsPerPg(Integer numRowsPerPg)
     {
         this.numRowsPerPg = numRowsPerPg;
+    }
+
+
+    public String getSearchFor()
+    {
+        return searchFor;
+    }
+
+
+    public void setSearchFor(String searchFor)
+    {
+        this.searchFor = searchFor;
     }
 }
