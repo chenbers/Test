@@ -127,6 +127,7 @@ public class DriverReportBean extends BaseBean
         driverData.add(drt);     
         
         maxCount = driverData.size();
+        resetCounts();
     }
         
 
@@ -172,12 +173,15 @@ public class DriverReportBean extends BaseBean
             initData();
         }
         
-        //Reset count parameters
+        resetCounts();       
+    }
+    
+    private void resetCounts() {
         this.start = 1;
         this.end = this.numRowsPerPg;
         if ( this.driverData.size() <= this.end ) {
             this.end = this.driverData.size();
-        }        
+        } 
     }
     
     public void saveColumns() {  
