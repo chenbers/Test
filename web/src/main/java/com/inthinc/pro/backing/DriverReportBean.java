@@ -52,9 +52,9 @@ public class DriverReportBean extends BaseBean
     
     public void init() {               
 
-//Replace this with DAO for a "search" for all drivers for a given logged-in user 
+//--->Replace this with DAO for a "search" for all drivers for a given logged-in user 
         initData();
-        
+//--->Replace this with DAO for a "load" of the preferences for this particular table        
         for ( int i = 0; i < DriverReportBean.AVAILABLE_COLUMNS.size(); i++ ) {
             this.driverColumns.put(DriverReportBean.AVAILABLE_COLUMNS.get(i),true);
         }
@@ -151,7 +151,7 @@ public class DriverReportBean extends BaseBean
         if ( this.driverData.size() > 0 ) {
             this.driverData.clear();
         }
-        
+//--->Replace this with DAO for searching
         //Test search reset                
         if ( this.searchFor.trim().length() != 0 ) {
             drt = new DriverReportItem();
@@ -178,6 +178,11 @@ public class DriverReportBean extends BaseBean
         if ( this.driverData.size() <= this.end ) {
             this.end = this.driverData.size();
         }        
+    }
+    
+    public void saveColumns() {  
+        //In here for saving the column preferences 
+        logger.debug("save columns");
     }
     
     public Map<String, Boolean> getDriverColumns()    
