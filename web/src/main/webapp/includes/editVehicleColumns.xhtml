@@ -1,0 +1,86 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+	<ui:composition>
+
+		<rich:modalPanel id="editVehicleColumns" headerClass="popupHeader" 
+			controlsClass="popupControls" width="420" height="200" zindex="2000">
+			<f:facet name="header">
+        		<h:outputText value="#{messages.editColumns_title}" />
+      		</f:facet>
+      		<f:facet name="controls">
+        		<h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('editVehicleColumns')" />
+      		</f:facet>
+
+			<div class="popupsubtitle">
+				<h:outputText value="#{messages.editColumns_explanation}" />
+			</div>
+
+			
+				<rich:panel id="vehicleColumnPanel">
+				<h:panelGrid columns="11" width="100%">						
+					<h:selectBooleanCheckbox style="width:20px;" value="#{vehicleColumns['group']}" />
+					<rich:spacer width="20"/>
+					<h:outputText style="width:80px;" value="Group" />
+					<rich:spacer width="20"/>					
+					<h:selectBooleanCheckbox style="width:20px;" value="#{vehicleColumns['vehicleID']}" />
+					<rich:spacer width="20"/>
+					<h:outputText style="width:80px;" value="VehicleID" />
+					<rich:spacer width="20"/>	
+					<h:selectBooleanCheckbox style="width:20px;" value="#{vehicleColumns['makeModelYear']}" />
+					<rich:spacer width="20"/>	
+					<h:outputText style="width:80px;" value="Make/Model/Year" /> 
+					
+					<h:selectBooleanCheckbox style="width:20px;" value="#{vehicleColumns['driver']}" />
+					<rich:spacer width="20"/>
+					<h:outputText style="width:80px;" value="Driver" />
+					<rich:spacer width="20"/>
+					<h:selectBooleanCheckbox style="width:20px;" value="#{vehicleColumns['milesDriven']}" />
+					<rich:spacer width="20"/>
+					<h:outputText style="width:80px;" value="Miles Driven" />
+					<rich:spacer width="20"/>
+					<h:selectBooleanCheckbox style="width:20px;" value="#{vehicleColumns['overall']}" />
+					<rich:spacer width="20"/>
+					<h:outputText style="width:80px;" value="Overall" />    
+					
+					<h:selectBooleanCheckbox style="width:20px;" value="#{vehicleColumns['speed']}" />
+					<rich:spacer width="20"/>
+					<h:outputText style="width:80px;" value="Speed" />
+					<rich:spacer width="20"/>
+					<h:selectBooleanCheckbox style="width:20px;" value="#{vehicleColumns['style']}" />
+					<rich:spacer width="20"/>
+					<h:outputText style="width:80px;" value="Style" />
+					<rich:spacer width="20"/>
+					<rich:spacer width="20"/>
+					<rich:spacer width="20"/>
+					<rich:spacer width="80"/>   				 		
+				</h:panelGrid>
+				</rich:panel>
+			
+				<div class="popupactions">
+					<button value="submit" class="left" 
+						onclick="Richfaces.hideModalPanel('editVehicleColumns'); return false;">
+						<span class="cancel">
+							<h:outputText value="#{messages.button_cancel}" />
+						</span>
+					</button>
+          			<a4j:commandLink rendered="true" action="#{vehicleReportBean.saveColumns}"           				
+          				onclick="Richfaces.hideModalPanel('editVehicleColumns')" 
+          				reRender="items">
+          				<button value="submit" class="left">
+          					<span class="save">
+          						<h:outputText value="#{messages.button_save}" />
+          					</span>
+          				</button>
+          			</a4j:commandLink>          			
+        		</div>
+      		
+    	</rich:modalPanel>
+	</ui:composition>
+
+</html>
