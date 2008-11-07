@@ -24,35 +24,43 @@
 			
 				<rich:panel id="vehicleColumnPanel">
 				<h:panelGrid columns="11" width="100%">						
-					<h:selectBooleanCheckbox style="width:20px;" value="#{vehicleColumns['group']}" />
+					<h:selectBooleanCheckbox style="width:20px;" 
+						value="#{vehicleColumns['group']}" />
 					<rich:spacer width="20"/>
 					<h:outputText style="width:80px;" value="Group" />
 					<rich:spacer width="20"/>					
-					<h:selectBooleanCheckbox style="width:20px;" value="#{vehicleColumns['vehicleID']}" />
+					<h:selectBooleanCheckbox style="width:20px;" 
+						value="#{vehicleColumns['vehicleID']}" />
 					<rich:spacer width="20"/>
 					<h:outputText style="width:80px;" value="VehicleID" />
 					<rich:spacer width="20"/>	
-					<h:selectBooleanCheckbox style="width:20px;" value="#{vehicleColumns['makeModelYear']}" />
+					<h:selectBooleanCheckbox style="width:20px;" 
+						value="#{vehicleColumns['makeModelYear']}" />
 					<rich:spacer width="20"/>	
 					<h:outputText style="width:80px;" value="Make/Model/Year" /> 
 					
-					<h:selectBooleanCheckbox style="width:20px;" value="#{vehicleColumns['driver']}" />
+					<h:selectBooleanCheckbox style="width:20px;" 
+						value="#{vehicleColumns['driver']}" />
 					<rich:spacer width="20"/>
 					<h:outputText style="width:80px;" value="Driver" />
 					<rich:spacer width="20"/>
-					<h:selectBooleanCheckbox style="width:20px;" value="#{vehicleColumns['milesDriven']}" />
+					<h:selectBooleanCheckbox style="width:20px;" 
+						value="#{vehicleColumns['milesDriven']}" />
 					<rich:spacer width="20"/>
 					<h:outputText style="width:80px;" value="Miles Driven" />
 					<rich:spacer width="20"/>
-					<h:selectBooleanCheckbox style="width:20px;" value="#{vehicleColumns['overall']}" />
+					<h:selectBooleanCheckbox style="width:20px;" 
+						value="#{vehicleColumns['overall']}" />
 					<rich:spacer width="20"/>
 					<h:outputText style="width:80px;" value="Overall" />    
 					
-					<h:selectBooleanCheckbox style="width:20px;" value="#{vehicleColumns['speed']}" />
+					<h:selectBooleanCheckbox style="width:20px;" 
+						value="#{vehicleColumns['speed']}" />
 					<rich:spacer width="20"/>
 					<h:outputText style="width:80px;" value="Speed" />
 					<rich:spacer width="20"/>
-					<h:selectBooleanCheckbox style="width:20px;" value="#{vehicleColumns['style']}" />
+					<h:selectBooleanCheckbox style="width:20px;" 
+						value="#{vehicleColumns['style']}" />
 					<rich:spacer width="20"/>
 					<h:outputText style="width:80px;" value="Style" />
 					<rich:spacer width="20"/>
@@ -69,7 +77,8 @@
 							<h:outputText value="#{messages.button_cancel}" />
 						</span>
 					</button>
-          			<a4j:commandLink rendered="true" action="#{vehicleReportBean.saveColumns}"           				
+          			<a4j:commandLink rendered="true" 
+          				action="#{vehicleReportBean.saveColumns}"           				
           				onclick="Richfaces.hideModalPanel('editVehicleColumns')" 
           				reRender="items">
           				<button value="submit" class="left">
