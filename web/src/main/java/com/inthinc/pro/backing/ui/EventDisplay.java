@@ -43,6 +43,7 @@ public class EventDisplay
         
         setDateStr(dateFormatter.format(event.getTime()));
         setEventType(event.getEventType().toString());
+        setTime(event.getTime());
     }
     
     public String getDriverName()
