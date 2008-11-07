@@ -106,13 +106,6 @@ logger.debug("##### setOverallScore: " + overallScore);
     {
 logger.debug("getSelectedPieDef() ");        
         TabAction action = getSelectedAction();
-        if (action == null)
-        {
-logger.debug("selected action is null");        
-            
-            return "";
-        }
-        
         
         return getPieDefMap().get(action.getScoreType());
     }

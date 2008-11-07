@@ -491,6 +491,11 @@ public class SiloServiceMockImpl implements SiloService
             allEventsForGroup.addAll(eventList);
         }
         
+        if (allEventsForGroup.size() == 0)
+        {
+            throw new EmptyResultSetException("no events for group", "getMostRecentEvents", 0);
+        }
+        
         Collections.sort(allEventsForGroup); // Make sure events are in ascending order
         Collections.reverse(allEventsForGroup); // descending order (i.e. most recent first)
 

@@ -19,7 +19,8 @@ import com.inthinc.pro.model.EventMapper;
 
 public class EventHessianDAOTest
 {
-
+    private static final Integer BOGUS_GROUP_ID = 1;
+    
     EventHessianDAO eventHessianDAO;
     @BeforeClass
     public static void setUpBeforeClass() throws Exception
@@ -62,6 +63,8 @@ public class EventHessianDAOTest
             assertTrue("Event type is not valid", validEventTypes.contains(eventList.get(i).getType()));
         }
 
+        eventList = eventHessianDAO.getMostRecentEvents(MockData.EMPTY_GROUP_ID, 5);
+        assertEquals(0, eventList.size());
     }
 
     @Test
@@ -84,5 +87,12 @@ public class EventHessianDAOTest
         {
             assertTrue("Event type is not valid", validEventTypes.contains(eventList.get(i).getType()));
         }
+
+        eventList = eventHessianDAO.getMostRecentWarnings(MockData.EMPTY_GROUP_ID, 5);
+        assertEquals(0, eventList.size());
+
     }
+
+
+
 }

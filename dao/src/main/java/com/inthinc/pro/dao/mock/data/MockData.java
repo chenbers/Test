@@ -48,7 +48,12 @@ public class MockData
 {
     private static final Logger logger = Logger.getLogger(MockData.class);
     
+    // used for unit testing
     public static final Integer TOP_GROUP_ID = 101; 
+    public static final Integer REGION_GROUP_ID = 102;
+    public static final Integer EMPTY_GROUP_ID = 1;
+    
+    
     public static final int NUM_ACCOUNTS = 1;
     static final int MAX_GROUPS = 100;
     static final int MAX_DRIVERS_IN_GROUP = 10;
@@ -121,6 +126,12 @@ public class MockData
 //            dumpGroupHierarchy(topGroup, "");
 //            logger.debug("-------------------------------------------------------");
         }
+        
+        
+        // create an empty group (just for testing)
+        Group emptyGroup = new Group(1, NUM_ACCOUNTS, "EMPTY GROUP", 0);
+        storeObject(emptyGroup);
+
 
     }
     
@@ -981,16 +992,6 @@ public class MockData
         }
 
         return value;
-    }
-    private static boolean isStandardProperty(Object o)
-    {
-        if (Number.class.isInstance(o))
-            return true;
-        if (Character.class.isInstance(o))
-            return true;
-        if (String.class.isInstance(o))
-            return true;
-        return false;
     }
 
     //------------ DEBUG METHODS ----------------
