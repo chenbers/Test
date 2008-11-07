@@ -152,9 +152,7 @@ public class DriverReportBean extends BaseBean
             this.driverData.clear();
         }
         
-        //Test search reset
-        logger.debug("searching for: " + this.searchFor);
-        
+        //Test search reset                
         if ( this.searchFor.trim().length() != 0 ) {
             drt = new DriverReportItem();
             drt.setEmployee("Ivebeen Searchedfor");
@@ -213,19 +211,6 @@ public class DriverReportBean extends BaseBean
         drt.setStyleStyle(sb.getScoreStyle());
         
     }
-
-
-    public Integer getMaxCount()
-    {
-        return maxCount;
-    }
-
-
-    public void setMaxCount(Integer maxCount)
-    {
-        logger.debug("maxCount is: " + this.maxCount);
-        this.maxCount = maxCount;
-    }
     
     public void scrollerListener(DataScrollerEvent se)     
     {        
@@ -239,6 +224,18 @@ public class DriverReportBean extends BaseBean
         if ( this.end > this.driverData.size() ) {
             this.end = this.start + ( this.end - this.driverData.size() ) - 1;
         }
+    }
+    
+
+    public Integer getMaxCount()
+    {
+        return maxCount;
+    }
+
+
+    public void setMaxCount(Integer maxCount)
+    {        
+        this.maxCount = maxCount;
     }
 
 
