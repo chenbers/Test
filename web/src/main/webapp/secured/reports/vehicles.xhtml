@@ -2,93 +2,98 @@
 			xmlns="http://www.w3.org/1999/xhtml" 
 			xmlns:ui="http://java.sun.com/jsf/facelets"
   			xmlns:h="http://java.sun.com/jsf/html" 
+            xmlns:rich="http://richfaces.org/rich"
+            xmlns:a4j="http://richfaces.org/a4j"  			
   			xmlns:f="http://java.sun.com/jsf/core">
 
 	<ui:param name="reportsSelected" value="current" />
-	<ui:param name="driversSelected" value="current" />
+	<ui:param name="vehiclesSelected" value="current" />
 	
 
 	<ui:define name="subnavigation">
 		<ui:include src="/includes/reports/subNavigation.xhtml" />
 	</ui:define>
 	
+	
 	<ui:define name="content">
-<div id="wrapper">
-
-
-					<table width="940" height="430" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
-					  <tr>
-						<td valign="top">
-							<!-- START PANEL -->
-								<div class="">
-									<div class="panel_nw">
-										<div class="panel_title">
-
-											<span class="vehicle">Vehicles</span>										</div>
-									</div>
-										<div class="panel_w">
-										  <div class="panel_content">
-										  		
-												<div class="msg" >
-													<p id="redflag">There are 26 red flags. (<a href="red_flags.html">view</a>) </p>
-
-												</div>
-												
-												<ul id="grid_nav" style="margin: 0;">
-													<li class="l">
-														<table width="300" border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
-															<tr>
-																<td>Search</td>
-																<td>
-																	<input name="textfield2" type="text" class="text" size="50" />
-
-																</td>
-															</tr>
-														</table>
-													</li>
-													<li class="l"><button value="submit" class="left"><span class="search">Search</span></button></li>
-													<li class="l text"><a href="#" class="ls_tab_edit_columns">Edit Columns</a></li>
-													
-													<li class="r text">Showing 1 to 10 of 120 records </li>
-
-												</ul>
-												
-												<div class="datagrid" id="vehicles_table_table-paginationListWrapBottom">
-													<table width="100%" id="vehicles_table" cellpadding="0" cellspacing="0" class="sortable-onload-0 no-arrow rowstyle-alt colstyle-alt paginate-10 max-pages-7 paginationcallback-callbackTest-calculateTotalRating sortcompletecallback-callbackTest-calculateTotalRating">
-													  <thead>
-													  <tr>
-														<th class="sortable-numeric">Group/Team</th>
-														<th class="sortable-text">VehicleID</th>
-														<th class="sortable-text">Make/Model/Year</th>
-
-														<th class="sortable-numeric">Driver</th>
-														<th class="">Miles Driven </th>
-													    <th class="sortable-numeric">Overall</th>
-													    <th class="">Speed</th>
-													    <th class="">Driving Style </th>
-													  </tr>
-
-													  </thead>
-													  <tbody>
-													  </tbody>
-													</table>
-												</div>
-										  </div>
-										</div>
-									<div class="panel_sw">
-										<div class="panel_statusbar"></div>
+		<a4j:form id="outerVehicleReport">
+		<div id="wrapper">
+			<table width="940" height="430" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+				<tr>
+					<td valign="top">
+						<a4j:form id="vehicleSearch">							
+							<div class="">
+								<div class="panel_nw">
+									<div class="panel_title">
+										<span class="vehicle">Vehicle Report</span>
+										<span class="panel_links"></span>
 									</div>
 								</div>
-
-							<!-- END PANEL -->						
-						</td>
-					  </tr>
-					</table>
-
-
-</div>
-
-	
+									<div class="panel_w">
+									<div class="panel_content">												
+										<div class="msg">
+											<p id="redflag">There are 26 red flags. (<a href="/tiwipro/secured/redFlags.faces">view</a>) </p>
+										</div>									  	
+										<ul id="grid_nav" style="margin: 0;">            							
+            								<li class="l">
+              									<table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
+                									<tr>
+                  										<td>
+                  											<h:outputText value="#{messages.button_search}" />
+                  										</td>
+                  										<td>
+                    										<h:inputText id="filterTable" value="#{vehicleReportBean.searchFor}" class="text" size="25" />
+                  										</td>
+                									</tr>
+              									</table>
+            								</li>
+            								<li class="l">
+            									<a4j:commandLink action="#{vehicleReportBean.search}" 
+            										reRender="items,topScroller,bottomScroller,start,end,max">
+            										<button value="submit" class="left">
+            											<span class="search">
+            												<h:outputText value="#{messages.button_search}" />
+            											</span>
+            										</button>
+            									</a4j:commandLink>            								
+            								</li>
+            								<li class="l text">
+            									<a href="#" class="ls_tab_edit_columns" 
+            										onclick="Richfaces.showModalPanel('editVehicleColumns');">
+            										<h:outputText value="#{messages.button_editColumns}" />
+            									</a>
+            								</li>  
+            								<li class="r text">
+              									<h:outputFormat id="showing" value="Showing "/> 
+              									<h:outputFormat id="start" value="#{vehicleReportBean.start}"/>
+              									<h:outputFormat id="to" value=" to "/>
+              									<h:outputFormat id="end" value="#{vehicleReportBean.end}"/>
+              									<h:outputFormat id="of" value=" of "/>           					              
+              									<h:outputFormat id="max" value="#{vehicleReportBean.maxCount}"/>
+            								</li>          							
+          								</ul>																																	
+									</div>
+								</div>
+								<ui:include src="/includes/vehiclesReport.xhtml">	
+									<ui:param name="numRowsPerPg" value="#{vehicleReportBean.numRowsPerPg}"/>									
+             						<ui:param name="vehicleData" value="#{vehicleReportBean.vehicleData}"/>             						
+             						<ui:param name="vehicleColumns" value="#{vehicleReportBean.vehicleColumns}"/>
+             						<ui:param name="vehicleTable" value="#{vehicleReportTable.table}"/>
+    							</ui:include>    							
+    							<ui:include src="/includes/editVehicleColumns.xhtml">
+									<ui:param name="vehicleColumns" value="#{vehicleReportBean.vehicleColumns}"/>	
+									<ui:param name="reRender" value="dataTable" />
+								</ui:include>    						
+    					    	<div class="panel_sw">
+									<div class="panel_statusbar"></div>
+								</div>
+							</div>
+						</a4j:form>									
+					</td>
+				</tr>
+			</table>
+		</div>
+		</a4j:form>
 	</ui:define>
 	
 
