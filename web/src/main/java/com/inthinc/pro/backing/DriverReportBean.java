@@ -5,10 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
@@ -23,7 +19,7 @@ public class DriverReportBean extends BaseBean
     private List <DriverReportItem> driverData = new ArrayList<DriverReportItem>();
     private static final List<String> AVAILABLE_COLUMNS;
     private Map<String, Boolean> driverColumns = new HashMap<String, Boolean>();
-    
+   
     private DriverReportItem drt = null;
     
     private Integer numRowsPerPg = 2;
@@ -233,9 +229,9 @@ public class DriverReportBean extends BaseBean
         if ( this.end > this.driverData.size() ) {
             this.end = this.start + ( this.end - this.driverData.size() ) - 1;
         }
-    }
-    
+    }  
 
+    
     public Integer getMaxCount()
     {
         return maxCount;
