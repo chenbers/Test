@@ -24,6 +24,9 @@
    <bean id="eventDAO" class="com.inthinc.pro.dao.hessian.EventHessianDAO" 
    		parent="genericDAO">
    </bean>
+   <bean id="tripDAO" class="com.inthinc.pro.dao.hessian.TripHessianDAO" 
+   		parent="genericDAO">
+   </bean>
    <bean id="deviceDAO" class="com.inthinc.pro.dao.hessian.DeviceHessianDAO" 
    		parent="genericDAO">
    </bean>

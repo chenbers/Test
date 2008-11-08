@@ -125,8 +125,6 @@ public class DriverSpeedBean extends BaseBean
     {
         return distance;
     }
-
-
     public void setDistance(Distance distance)
     {
         this.distance = distance;

@@ -61,6 +61,10 @@
    <bean id="driverSpeedBean" class="com.inthinc.pro.backing.DriverSpeedBean" scope="request">
    		<property name="scoreDAO" ref="scoreDAO"></property>
    </bean>
+   
+   <bean id="driverTripsBean" class="com.inthinc.pro.backing.DriverTripsBean" scope="request">
+   		
+   </bean>
 
     <bean id="teamOverviewBean" class="com.inthinc.pro.backing.TeamOverviewBean" scope="session" parent="baseBean">
 		<property name="scoreDAO" ref="scoreDAO"></property>

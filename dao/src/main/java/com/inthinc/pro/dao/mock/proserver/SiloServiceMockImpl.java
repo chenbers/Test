@@ -26,6 +26,7 @@ import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.Trip;
 
 public class SiloServiceMockImpl implements SiloService
 {
@@ -469,6 +470,29 @@ public class SiloServiceMockImpl implements SiloService
     }
 
     @Override
+    public List<Map<String, Object>> getTrips(Integer driverID, Integer startDate, Integer endDate) throws ProDAOException
+    {
+        final List<Map<String, Object>> tripIDs = new LinkedList<Map<String,Object>>();
+        
+        final List<Map<String, Object>> trips = new SiloServiceCreator().getService().getTrips(driverID, startDate, endDate);
+        for (final Map<String, Object> map : trips)
+        {
+            final Integer id = (Integer) map.get("tripID");
+            if (id != null)
+            {
+                final SearchCriteria criteria = new SearchCriteria();
+                criteria.addKeyValue("tripID", id);
+                final List<Map<String, Object>> matches = MockData.getInstance().lookupList(Trip.class, criteria);
+                if (matches != null)
+                    tripIDs.addAll(matches);
+            }
+        }
+    
+        return tripIDs;
+        
+    }
+    
+    @Override
     public List<Map<String, Object>> getMostRecentEvents(Integer groupID, Integer eventCnt, Integer[] types) throws ProDAOException
     {
         Group group = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
@@ -601,4 +625,6 @@ public class SiloServiceMockImpl implements SiloService
     {
         return createReturnValue("count", 1);
     }
+    
+
 }
