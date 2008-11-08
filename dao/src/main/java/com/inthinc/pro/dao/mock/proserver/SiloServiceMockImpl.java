@@ -326,7 +326,6 @@ public class SiloServiceMockImpl implements SiloService
         searchCriteria.addKeyValue("parentID", groupID);
 
         // get list of drivers that have the specified groupID as the parent
-        List<Map<String, Object>> entityList;
         
         List<Map<String, Object>> returnList =  new ArrayList<Map<String, Object>>();
 
@@ -334,33 +333,31 @@ public class SiloServiceMockImpl implements SiloService
         searchCriteria.addKeyValue("groupID", groupID);
 
         // get list of drivers that are in the specified group
-        entityList =  MockData.getInstance().lookupList(Driver.class, searchCriteria);
-        if (entityList == null)
+        List<Driver>driverList =  MockData.getInstance().retrieveObjectList(Driver.class, searchCriteria);
+        if (driverList == null)
         {
             return returnList;
         }
         Integer endDate = DateUtil.getTodaysDate();
         Integer startDate = DateUtil.getDaysBackDate(endDate, 30);
         
-        for (Map<String, Object> driverMap : entityList)
+        for (Driver driver : driverList)
         {
             searchCriteria = new SearchCriteria();
-            searchCriteria.addKeyValue("entityID", driverMap.get("driverID"));
+            searchCriteria.addKeyValue("entityID", driver.getDriverID());
             searchCriteria.addKeyValue("scoreType", ScoreType.SCORE_OVERALL);
-            searchCriteria.addKeyValueRange("date", startDate, endDate);
-           
-
             searchCriteria.addKeyValueRange("date", startDate, endDate);
             
             Map<String, Object> scoreMap = MockData.getInstance().lookup(ScoreableEntity.class, searchCriteria);
             
             if (scoreMap != null)
             {
+                scoreMap.put("identifier", driver.getPerson().getFirst() + " " + driver.getPerson().getLast());
                 returnList.add(scoreMap);
             }
             else
             {
-                logger.error("score missing for driverID " + driverMap.get("driverID"));
+                logger.error("score missing for driverID " + driver.getDriverID());
             }
         }
         //TODO sort list in score order and return top 5  and refactor to eliminate duplicate code.   
