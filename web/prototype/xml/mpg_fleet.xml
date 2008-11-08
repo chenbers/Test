@@ -26,15 +26,11 @@
 	>
 
 <categories>
-<category label="Washington"/>
-<category label="Phoenix"/>
-<category label="LA/San Diego"/>
-<category label="Oregon"/>
-<category label="SLC"/>
-<category label="Idaho"/>
-<category label="Vegas"/>
-<category label="Sac/Bay"/>
-<category label="Montana"/>
+<category label="New England"/>
+<category label="South"/>
+<category label="Lakes"/>
+<category label="Midwest"/>
+<category label="West Coast"/>
 </categories>
 
 <dataset seriesName="Light">
@@ -43,10 +39,6 @@
 <set value="38"/>
 <set value="40"/>
 <set value="39"/>
-<set value="38"/>
-<set value="36"/>
-<set value="39"/>
-<set value="38"/>
 </dataset>
 
 <dataset seriesName="Medium">
@@ -55,10 +47,6 @@
 <set value="21"/>
 <set value="25"/>
 <set value="24"/>
-<set value="21"/>
-<set value="25"/>
-<set value="23"/>
-<set value="21"/>
 </dataset>
 
 <dataset seriesName="Heavy">
@@ -67,10 +55,6 @@
 <set value="20"/>
 <set value="18"/>
 <set value="16"/>
-<set value="18"/>
-<set value="0"/>
-<set value="21"/>
-<set value="18"/>
 </dataset>
 
 </chart>	

@@ -288,7 +288,38 @@
 				</div>
 			</div>
 		<!-- END PANEL -->
+        
+		<div class="spacer"></div>
 		
+		<!-- START PANEL -->
+			<div>
+				<div class="panel_nw">
+					<div class="panel_title">
+						<span class="gas">Miles Per Gallon </span>
+						<span class="panel_links_ico"><a href="#" class="on">30 days</a> <a href="#">3 months</a> <a href="#">6 months</a> <a href="#">12 months</a></span>
+                        <span class="panel_ico">
+                        	<a href="#" title="" onclick="c_show('PopupMenu1',event); return false;" onmouseout="c_hide(); return false;"><img src="/images/ico_tools.png" border="0" /></a>
+                            <a href="#" class="" onClick="show('mpg_full_screen');hide('dash');return true;"><img src="/images/ico_expand.png" border="0" /></a>
+                        </span>
+					</div>
+				</div>
+					<div class="panel_w">
+					  <div class="panel_content">
+					  
+						<div id="fuel_chart" align="center"></div>
+						<script type="text/javascript">
+						var chart = new FusionCharts("/swf/ScrollColumn2D.swf", "ChartId", "440", "350", "0", "0");
+						chart.setDataURL("/xml/mpg_fleet.xml");		   
+						chart.render("fuel_chart");
+						</script>
+					  
+					  </div>
+					</div>
+				<div class="panel_sw">
+					<div class="panel_statusbar"></div>
+				</div>
+			</div>
+		<!-- END PANEL -->
 	</td>
   </tr>
 </table>
