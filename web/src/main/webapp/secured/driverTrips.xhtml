@@ -54,32 +54,32 @@
 							  <tr>
 								<td width="73">Start Date </td>
 								<td width="178">
-									<!-- <a4j:outputPanel id="calendarStart" layout="block">
+									<a4j:outputPanel id="calendarStart" layout="block">
 				                    	<rich:calendar value="#{driverTripsBean.startDate}"
 				                        	locale="en/US"
 				                        	popup="true"
 				                        	datePattern="MMM d, yyyy"
 				                        	showApplyButton="false" cellWidth="24px" cellHeight="22px" style="width:200px"/>
-				           			</a4j:outputPanel> -->
+				           			</a4j:outputPanel> 
 								</td>
 								<td width="51">to</td>
 							  </tr>
 							  <tr>
 								<td>End Date </td>
 								<td>
-								  <!-- <a4j:outputPanel id="calendarEnd" layout="block">
+								  <a4j:outputPanel id="calendarEnd" layout="block">
 				                    	<rich:calendar value="#{driverTripsBean.endDate}"
 				                        	locale="en/US"
 				                        	popup="true"
 				                        	datePattern="MMM d, yyyy"
 				                        	showApplyButton="false" cellWidth="24px" cellHeight="22px" style="width:200px"/>
-				           			</a4j:outputPanel> -->
+				           			</a4j:outputPanel>
 								</td>
 								<td></td>
 							  </tr>
 							  <tr>
 							    <td> </td>
-							    <td><button value="" class="left" onclick="parent.location.href='#'; return false;"><span class="apply">Apply Date Range</span></button></td>
+							    <td> <h:commandButton value="submit"><span class="apply">Apply Date Range</span></h:commandButton></td>
 							    <td> </td>
 							    </tr>
 							  </tbody>
@@ -352,7 +352,19 @@
 			</div>
 			<div class="panel_w">
 			  <div class="panel_content" align="center">
-					<img src="images/trips_map.png"	 />		  
+			  <h:panelGroup styleClass="map-border" layout="block">
+							<div id="map-canvas" style="width:458px;height:300px;border:0"></div>
+					  	</h:panelGroup>
+					    <script type="text/javascript">
+      						if (GBrowserIsCompatible()) {
+        						map = new GMap2(document.getElementById("map-canvas"));
+        						map.addControl(new GLargeMapControl());
+        						map.addControl(new GMapTypeControl());
+        						map.addControl(new GOverviewMapControl()); 
+								map.setCenter(new GLatLng(41.0,-116.0 ), 5);
+								map.setMapType(G_MAP_TYPE);
+      						}
+    					</script>  
 			  </div>
 			</div>
 			<div class="panel_sw">
