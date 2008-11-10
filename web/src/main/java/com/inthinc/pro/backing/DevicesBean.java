@@ -1,0 +1,219 @@
+package com.inthinc.pro.backing;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
+import org.springframework.beans.BeanUtils;
+
+import com.inthinc.pro.dao.DeviceDAO;
+import com.inthinc.pro.model.Device;
+import com.inthinc.pro.model.DeviceStatus;
+import com.inthinc.pro.util.MessageUtil;
+
+/**
+ * @author David Gileadi
+ */
+public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
+{
+    private static final List<String>              AVAILABLE_COLUMNS;
+    private static final int[]                     DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 3, 5, 8 };
+
+    private static final Map<String, DeviceStatus> STATUSES;
+
+    static
+    {
+        // available columns
+        AVAILABLE_COLUMNS = new ArrayList<String>();
+        AVAILABLE_COLUMNS.add("name");
+        AVAILABLE_COLUMNS.add("vehicle");
+        AVAILABLE_COLUMNS.add("baselineID");
+        AVAILABLE_COLUMNS.add("mcmid");
+        AVAILABLE_COLUMNS.add("sim");
+        AVAILABLE_COLUMNS.add("phone");
+        AVAILABLE_COLUMNS.add("ephone");
+        AVAILABLE_COLUMNS.add("activated");
+        AVAILABLE_COLUMNS.add("status");
+
+        // statuses
+        STATUSES = new LinkedHashMap<String, DeviceStatus>();
+        for (final DeviceStatus status : DeviceStatus.values())
+            STATUSES.put(status.getDescription(), status);
+    }
+
+    private DeviceDAO                              deviceDAO;
+
+    public void setDeviceDAO(DeviceDAO deviceDAO)
+    {
+        this.deviceDAO = deviceDAO;
+    }
+
+    @Override
+    protected List<DeviceView> loadItems()
+    {
+        // get the devices
+        final List<Device> plainDevices = deviceDAO.getDevicesByAcctID(getUser().getPerson().getAccountID());
+
+        // convert the Devices to DeviceViews
+        final LinkedList<DeviceView> items = new LinkedList<DeviceView>();
+        for (final Device device : plainDevices)
+            items.add(createDeviceView(device));
+
+        return items;
+    }
+
+    /**
+     * Creates a DeviceView object from the given Device object.
+     * 
+     * @param device
+     *            The device.
+     * @return The new DeviceView object.
+     */
+    private DeviceView createDeviceView(Device device)
+    {
+        final DeviceView deviceView = new DeviceView();
+        BeanUtils.copyProperties(device, deviceView);
+        deviceView.setSelected(false);
+        return deviceView;
+    }
+
+    @Override
+    protected boolean matchesFilter(DeviceView device, String filterWord)
+    {
+        for (final String column : columns.keySet())
+            if (columns.get(column))
+            {
+                boolean matches = false;
+                if (column.equals("status"))
+                    matches = (device.getStatus() != null) && MessageUtil.getMessageString(device.getStatus().getDescription().toLowerCase()).toLowerCase().startsWith(filterWord);
+                else
+                    try
+                    {
+                        matches = String.valueOf(org.apache.commons.beanutils.BeanUtils.getProperty(device, column.replace('_', '.'))).toLowerCase().startsWith(filterWord);
+                    }
+                    catch (Exception e)
+                    {
+                        logger.error("Error filtering on column " + column, e);
+                    }
+
+                if (matches)
+                    return true;
+            }
+
+        return false;
+    }
+
+    @Override
+    public List<String> getAvailableColumns()
+    {
+        return AVAILABLE_COLUMNS;
+    }
+
+    @Override
+    public Map<String, Boolean> getDefaultColumns()
+    {
+        final HashMap<String, Boolean> columns = new HashMap<String, Boolean>();
+        final List<String> availableColumns = getAvailableColumns();
+        for (int i : DEFAULT_COLUMN_INDICES)
+            columns.put(availableColumns.get(i), true);
+        return columns;
+    }
+
+    @Override
+    public void saveColumns()
+    {
+        // TODO: save the columns
+    }
+
+    @Override
+    protected DeviceView createAddItem()
+    {
+        final Device device = new Device();
+        device.setStatus(DeviceStatus.NEW);
+        return createDeviceView(device);
+    }
+
+    @Override
+    protected void doDelete(List<DeviceView> deleteItems)
+    {
+        final FacesContext context = FacesContext.getCurrentInstance();
+
+        for (final DeviceView device : deleteItems)
+        {
+            deviceDAO.deleteByID(device.getDeviceID());
+
+            // add a message
+            final String summary = MessageUtil.formatMessageString("device_deleted", device.getName());
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
+            context.addMessage(null, message);
+        }
+    }
+
+    @Override
+    protected void doSave(List<DeviceView> saveItems, boolean create)
+    {
+        final FacesContext context = FacesContext.getCurrentInstance();
+
+        for (final DeviceView device : saveItems)
+        {
+            if (create)
+                device.setDeviceID(deviceDAO.create(getUser().getPerson().getAccountID(), device));
+            else
+                deviceDAO.update(device);
+
+            // add a message
+            final String summary = MessageUtil.formatMessageString(create ? "device_added" : "device_updated", device.getName());
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
+            context.addMessage(null, message);
+        }
+    }
+
+    @Override
+    protected String getDisplayRedirect()
+    {
+        return "go_adminDevice";
+    }
+
+    @Override
+    protected String getEditRedirect()
+    {
+        return "go_adminEditDevice";
+    }
+
+    @Override
+    protected String getFinishedRedirect()
+    {
+        return "go_adminDevices";
+    }
+
+    public Map<String, DeviceStatus> getStatuses()
+    {
+        return STATUSES;
+    }
+
+    public class DeviceView extends Device implements EditItem
+    {
+        private boolean selected;
+
+        public Integer getId()
+        {
+            return getDeviceID();
+        }
+
+        public boolean isSelected()
+        {
+            return selected;
+        }
+
+        public void setSelected(boolean selected)
+        {
+            this.selected = selected;
+        }
+    }
+}

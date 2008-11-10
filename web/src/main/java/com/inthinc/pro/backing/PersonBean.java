@@ -18,6 +18,7 @@ import java.util.TreeMap;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
+import org.jasypt.util.password.PasswordEncryptor;
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
@@ -147,6 +148,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
 
     private PersonDAO                          personDAO;
     private GroupDAO                           groupDAO;
+    private PasswordEncryptor                  passwordEncryptor;
     private Map<String, Integer>               groups;
     private Map<String, Integer>               reportsToOptions;
     private Map<String, Role>                  roles;
@@ -159,6 +161,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     public void setGroupDAO(GroupDAO groupDAO)
     {
         this.groupDAO = groupDAO;
+    }
+
+    public void setPasswordEncryptor(PasswordEncryptor passwordEncryptor)
+    {
+        this.passwordEncryptor = passwordEncryptor;
     }
 
     @Override
@@ -193,10 +200,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         personView.setDriverSelected(person.getDriver() != null);
         personView.setSelected(false);
         if (person.getUser() != null)
-        {
             personView.getUser().setPerson(personView);
-            personView.setConfirmPassword(person.getUser().getPassword());
-        }
 
         return personView;
     }
@@ -315,6 +319,24 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     }
 
     @Override
+    protected boolean validate(List<PersonView> saveItems)
+    {
+        boolean passed = true;
+        final FacesContext context = FacesContext.getCurrentInstance();
+        for (final PersonView person : saveItems)
+            if ((person.getPassword() != null) && (person.getPassword().length() > 0) && !person.getPassword().equals(person.getConfirmPassword()))
+            {
+                final FacesMessage message = new FacesMessage();
+                message.setSummary(MessageUtil.getMessageString("editPerson_passwordsMismatched"));
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                context.addMessage("edit-form:user_password", message);
+                passed = false;
+                break;
+            }
+        return passed;
+    }
+
+    @Override
     protected void doSave(List<PersonView> saveItems, boolean create)
     {
         // if adding a user, reset the potential supervisor list
@@ -325,6 +347,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
 
         for (final PersonView person : saveItems)
         {
+            if ((person.getPassword() != null) && (person.getPassword().length() > 0))
+                person.getUser().setPassword(passwordEncryptor.encryptPassword(person.getPassword()));
+
             if (!person.isUserSelected())
                 person.setUser(null);
             if (!person.isDriverSelected())
@@ -441,6 +466,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     {
         private Group   group;
         private Person  reportsToPerson;
+        private String  password;
         private String  confirmPassword;
         private boolean userSelected;
         private boolean driverSelected;
@@ -491,6 +517,16 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         {
             if ((costPerHourDollars != null) && (costPerHourDollars > 0))
                 setCostPerHour((int) (costPerHourDollars * 100));
+        }
+
+        public String getPassword()
+        {
+            return password;
+        }
+
+        public void setPassword(String password)
+        {
+            this.password = password;
         }
 
         public String getConfirmPassword()

@@ -331,6 +331,10 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean
     {
         final List<T> selected = getSelectedItems();
 
+        // validate
+        if (!validate(selected))
+            return null;
+
         if (batchEdit)
         {
             // get the fields to update
@@ -467,11 +471,30 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean
     protected abstract T createAddItem();
 
     /**
+     * Perform custom validation on the list of items to save. If invalid, messages may be displayed via code similar to:
+     * 
+     * <pre>
+     * final String summary = MessageUtil.getMessageString(&quot;error_message&quot;);
+     * final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+     * context.addMessage(&quot;my-form:component-id&quot;, message);
+     * </pre>
+     * 
+     * @param saveItems
+     *            The items to save.
+     * @return Whether the items passed validation.
+     */
+    protected boolean validate(List<T> saveItems)
+    {
+        return true;
+    }
+
+    /**
      * Save the given list of items.
      * 
      * @param saveItems
      *            The items to save.
-     * @param create TODO
+     * @param create
+     *            Whether the items are to be created (<code>true</code>) or updated (<code>false</code>).
      */
     protected abstract void doSave(List<T> saveItems, boolean create);
 

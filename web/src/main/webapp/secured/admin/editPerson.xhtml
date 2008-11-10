@@ -315,18 +315,15 @@
                         <tr>
                           <td width="100" valign="top"><h:outputText value="#{messages.editPerson_user_password}" /></td>
                           <td>
-                            <h:inputSecret value="#{personBean.editItem.user.password}" id="user_password" redisplay="true" onchange="checkMultiple(this)" styleClass="text" size="30"
-                              maxlength="30" required="#{personBean.editItem.userSelected and ((not personBean.batchEdit) or personBean.updateField['user.password'])}" requiredMessage="#{messages.required}" />
+                            <h:inputSecret value="#{personBean.editItem.password}" id="user_password" onchange="checkMultiple(this)" styleClass="text" size="30"
+                              maxlength="30" />
                             <rich:message for="user_password" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                           </td>
                         </tr>
                         <tr>
                           <td width="100" valign="top"><h:outputText value="#{messages.editPerson_confirmPassword}" /></td>
                           <td>
-                            <h:inputSecret value="#{personBean.editItem.confirmPassword}" id="confirmPassword" redisplay="true" onchange="checkMultiple(this)" styleClass="text" size="30"
-                              maxlength="30" required="#{personBean.editItem.userSelected and ((not personBean.batchEdit) or personBean.updateField['confirmPassword'])}" requiredMessage="#{messages.required}" />
-                            <rich:message for="confirmPassword" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <!-- TODO: validate passwords -->
+                            <h:inputSecret value="#{personBean.editItem.confirmPassword}" id="confirmPassword" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="30" />
                           </td>
                         </tr>
                         </ui:fragment>
