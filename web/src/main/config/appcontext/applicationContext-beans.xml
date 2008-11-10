@@ -109,12 +109,16 @@
    <!-- Report beans -->   
    <bean id="driverReportBean" class="com.inthinc.pro.backing.DriverReportBean" 
 		scope="session" parent="baseBean" init-method="init">
+		<property name="scoreDAO" ref="scoreDAO"></property>
+		<property name="driverDAO" ref="driverDAO"></property>
    </bean>
    <bean id="driverReportTable" class="com.inthinc.pro.backing.ui.DriverReportTable" 
    		scope="session">
    </bean>         
    <bean id="vehicleReportBean" class="com.inthinc.pro.backing.VehicleReportBean" 
 		scope="session" parent="baseBean" init-method="init">
+		<property name="scoreDAO" ref="scoreDAO"></property>
+		<property name="vehicleDAO" ref="vehicleDAO"></property>
    </bean>
    <bean id="vehicleReportTable" class="com.inthinc.pro.backing.ui.VehicleReportTable" 
    		scope="session">
