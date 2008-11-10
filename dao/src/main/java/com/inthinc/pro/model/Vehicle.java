@@ -30,7 +30,9 @@ public class Vehicle extends BaseEntity
     @Column(updateable = false)
     List<SafetyDevice>  safetyDevices;
     VehicleSensitivity  sensitivity;
+    @Column(updateable = false)
     private Integer     driverID;
+    @Column(updateable = false)
     private Integer     deviceID;
 
     public Vehicle()
