@@ -106,7 +106,7 @@
       <f:facet name="header"><h:outputText value="#{messages.personHeader_address_city}" /></f:facet>
       <h:outputText value="#{item.address.city}" />
     </rich:column>
-    <rich:column rendered="#{personBean.columns['address_state']}" sortBy="#{item.address.state.name}">
+    <rich:column rendered="#{personBean.columns['address_state']}" sortBy="#{item.address.state}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_address_state}" /></f:facet>
       <h:outputText value="#{item.address.state.name}" />
     </rich:column>
@@ -128,13 +128,17 @@
     </rich:column>
     <rich:column rendered="#{personBean.columns['driver_state']}" sortBy="#{item.driver.state}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_state}" /></f:facet>
-      <h:outputText value="#{item.driver.state}" />
+      <h:outputText value="#{item.driver.state.name}" />
     </rich:column>
     <rich:column rendered="#{personBean.columns['driver_expiration']}" sortBy="#{item.driver.expiration}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_expiration}" /></f:facet>
       <h:outputText value="#{item.driver.expiration}">
         <f:convertDateTime dateStyle="long" />
       </h:outputText>
+    </rich:column>
+    <rich:column rendered="#{personBean.columns['driver_RFID']}" sortBy="#{item.driver.RFID}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_RFID}" /></f:facet>
+      <h:outputText value="#{item.driver.RFID}" />
     </rich:column>
   </ui:define>
 

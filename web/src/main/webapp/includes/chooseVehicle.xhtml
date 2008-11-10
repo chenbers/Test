@@ -28,7 +28,7 @@
 
   <ui:composition>
 
-    <rich:modalPanel id="chooseVehicle" headerClass="popupHeader" controlsClass="popupControls" width="500" height="140" zindex="2001">
+    <rich:modalPanel id="chooseVehicle" headerClass="popupHeader" controlsClass="popupControls" width="500" height="380" zindex="2001">
       <f:facet name="header">
         <h:outputText value="#{messages.chooseVehicle_title}" />
       </f:facet>
@@ -62,9 +62,9 @@
             <f:facet name="header">
               <h:outputText value=" " />
             </f:facet>
-            <h:commandLink rendered="#{item.vehicleID != chosenID}" action="#{editorBean.chooseVehicle}" value="#{messages.chooseVehicle_choose}">
+            <a4j:commandLink rendered="#{item.vehicleID != chosenID}" action="#{editorBean.chooseVehicle}" onclick="Richfaces.hideModalPanel('chooseVehicle')" reRender="#{reRender}" value="#{messages.chooseVehicle_choose}">
               <f:param name="vehicleID" value="#{item.vehicleID}" />
-            </h:commandLink>
+            </a4j:commandLink>
             <h:outputText rendered="#{item.vehicleID == chosenID}" value="#{messages.chooseVehicle_chosen}" />
           </rich:column>
         </rich:dataTable>

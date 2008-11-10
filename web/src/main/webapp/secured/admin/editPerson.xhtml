@@ -406,6 +406,16 @@
                             <rich:message for="driver_expiration" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                           </td>
                         </tr>
+                        <ui:fragment rendered="#{not personBean.batchEdit}">
+                        <tr>
+                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_driver_RFID}" /></td>
+                          <td>
+                            <h:inputText value="#{personBean.editItem.driver.RFID}" id="driver_RFID" onchange="checkMultiple(this)" styleClass="text" size="30"
+                              maxlength="10" required="#{personBean.editItem.driverSelected and ((not personBean.batchEdit) or personBean.updateField['driver.RFID'])}" requiredMessage="#{messages.required}" />
+                            <rich:message for="driver_RFID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                          </td>
+                        </tr>
+                        </ui:fragment>
                         <tr>
                           <td width="100" valign="top">
                             <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_driver_active" value="#{personBean.updateField['driver.active']}" />

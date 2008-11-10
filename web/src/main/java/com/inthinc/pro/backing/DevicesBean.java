@@ -178,6 +178,9 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         final String vehicleID = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("vehicleID");
         if (vehicleID != null)
             getEditItem().setVehicleID(Integer.parseInt(vehicleID));
+
+        if (!isAdd() && !isBatchEdit())
+            assignVehicle(getEditItem());
     }
 
     @Override
@@ -193,17 +196,21 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
                 deviceDAO.update(device);
 
             if (device.isVehicleChanged())
-            {
-                vehicleDAO.setVehicleDevice(device.getOldVehicleID(), null);
-                vehicleDAO.setVehicleDevice(device.getVehicleID(), device.getDeviceID());
-                device.setOldVehicleID(device.getVehicleID());
-            }
+                assignVehicle(device);
 
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "device_added" : "device_updated", device.getName());
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
             context.addMessage(null, message);
         }
+    }
+
+    private void assignVehicle(final DeviceView device)
+    {
+        if (device.getOldVehicleID() != null)
+            vehicleDAO.setVehicleDevice(device.getOldVehicleID(), null);
+        vehicleDAO.setVehicleDevice(device.getVehicleID(), device.getDeviceID());
+        device.setOldVehicleID(device.getVehicleID());
     }
 
     @Override
