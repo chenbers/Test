@@ -15,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
+import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.MessageUtil;
 
 /**
@@ -79,6 +80,8 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     {
         final DeviceView deviceView = new DeviceView();
         BeanUtils.copyProperties(device, deviceView);
+        // TODO: replace the below with something sensible
+        // deviceView.setVehicle(vehicle);
         deviceView.setSelected(false);
         return deviceView;
     }
@@ -199,11 +202,22 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 
     public class DeviceView extends Device implements EditItem
     {
+        private Vehicle vehicle;
         private boolean selected;
 
         public Integer getId()
         {
             return getDeviceID();
+        }
+
+        public Vehicle getVehicle()
+        {
+            return vehicle;
+        }
+
+        public void setVehicle(Vehicle vehicle)
+        {
+            this.vehicle = vehicle;
         }
 
         public boolean isSelected()

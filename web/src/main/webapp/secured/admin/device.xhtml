@@ -52,40 +52,28 @@
                   
                         <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editDevice_year}" /></td>
-                            <td><h:outputText value="#{devicesBean.editItem.year}" /></td>
+                            <td width="100"><h:outputText value="#{messages.editDevice_name}" /></td>
+                            <td><h:outputText value="#{devicesBean.editItem.name}" /></td>
                           </tr>
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editDevice_make}" /></td>
-                            <td><h:outputText value="#{devicesBean.editItem.make}" /></td>
+                            <td width="100"><h:outputText value="#{messages.editDevice_baselineID}" /></td>
+                            <td><h:outputText value="#{devicesBean.editItem.baselineID}" /></td>
                           </tr>
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editDevice_model}" /></td>
-                            <td><h:outputText value="#{devicesBean.editItem.model}" /></td>
+                            <td width="100"><h:outputText value="#{messages.editDevice_mcmid}" /></td>
+                            <td><h:outputText value="#{devicesBean.editItem.mcmid}" /></td>
                           </tr>
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editDevice_color}" /></td>
-                            <td><h:outputText value="#{devicesBean.editItem.color}" /></td>
+                            <td width="100"><h:outputText value="#{messages.editDevice_sim}" /></td>
+                            <td><h:outputText value="#{devicesBean.editItem.sim}" /></td>
                           </tr>
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editDevice_type}" /></td>
-                            <td><h:outputText value="#{devicesBean.editItem.type.description}" /></td>
+                            <td width="100"><h:outputText value="#{messages.editDevice_phone}" /></td>
+                            <td><h:outputText value="#{devicesBean.editItem.phone}" /></td>
                           </tr>
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editDevice_VIN}" /></td>
-                            <td><h:outputText value="#{devicesBean.editItem.VIN}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editDevice_weight}" /></td>
-                            <td><h:outputText value="#{devicesBean.editItem.weight}"><f:convertNumber /></h:outputText></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editDevice_license}" /></td>
-                            <td><h:outputText value="#{devicesBean.editItem.license}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editDevice_state}" /></td>
-                            <td><h:outputText value="#{devicesBean.editItem.state.name}" /></td>
+                            <td width="100"><h:outputText value="#{messages.editDevice_ephone}" /></td>
+                            <td><h:outputText value="#{devicesBean.editItem.ephone}" /></td>
                           </tr>
                         </table>
 
@@ -97,17 +85,15 @@
                   
                         <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editDevice_name}" /></td>
-                            <td><h:outputText value="#{devicesBean.editItem.name}" /></td>
+                            <td width="100"><h:outputText value="#{messages.editDevice_status}" /></td>
+                            <td><h:outputText value="#{devicesBean.editItem.status}" /></td>
                           </tr>
+                          <ui:fragment rendered="#{not empty devicesBean.editItem.activated}">
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editDevice_active}" /></td>
-                            <td><h:outputText value="#{devicesBean.editItem.active ? messages.active : messages.inactive}" /></td>
+                            <td width="100"><h:outputText value="#{messages.editDevice_activated}" /></td>
+                            <td><h:outputText value="#{devicesBean.editItem.activated}" /></td>
                           </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editDevice_costPerHour}" /></td>
-                            <td><h:outputText value="#{devicesBean.editItem.costPerHour / 100}"><f:convertNumber type="currency" currencySymbol="$" /></h:outputText></td>
-                          </tr>
+                          </ui:fragment>
                         </table>
 
                         <div class="spacer"></div>
@@ -116,12 +102,8 @@
 
                         <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                           <tr>
-                            <td width="100">Assigned Driver:</td>
-                            <td><a href="#">assign</a></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editDevice_groupID}" /></td>
-                            <td><h:outputText value="#{devicesBean.editItem.group.name}" /></td>
+                            <td width="100"><h:outputText value="#{messages.editDevice_vehicle}" /></td>
+                            <td><h:outputText value="#{devicesBean.editItem.vehicle}" /><h:outputText value=" " /><h:commandLink value="#{messages.editDevice_assign}" /></td>
                           </tr>
                         </table>
                   

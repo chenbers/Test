@@ -114,6 +114,30 @@
     </navigation-rule>
 	<navigation-rule>
 		<navigation-case>
+			<from-outcome>go_adminDevices</from-outcome>
+			<to-view-id>/secured/admin/devices.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+    <navigation-rule>
+      <navigation-case>
+        <from-outcome>go_adminDevice</from-outcome>
+        <to-view-id>/secured/admin/device.xhtml</to-view-id>
+      </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+      <navigation-case>
+        <from-outcome>go_adminAddDevice</from-outcome>
+        <to-view-id>/secured/admin/editDevice.xhtml</to-view-id>
+      </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+      <navigation-case>
+        <from-outcome>go_adminEditDevice</from-outcome>
+        <to-view-id>/secured/admin/editDevice.xhtml</to-view-id>
+      </navigation-case>
+    </navigation-rule>
+	<navigation-rule>
+		<navigation-case>
 			<from-outcome>go_region</from-outcome>
 			<to-view-id>/secured/region.xhtml</to-view-id>
 		</navigation-case>

@@ -23,68 +23,37 @@
         <f:param name="displayID" value="#{item.id}" />
       </h:commandLink>
     </rich:column>
-    <rich:column rendered="#{devicesBean.columns['vehicle']}" sortBy="#{item.vehicle}">
+    <rich:column rendered="#{devicesBean.columns['vehicle']}" sortBy="#{item.vehicle.name}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_vehicle}" /></f:facet>
-      <h:outputText value="#{item.vehicle}" />
+      <h:outputText value="#{item.vehicle.name}" />
     </rich:column>
-    <rich:column rendered="#{devicesBean.columns['group']}" sortBy="#{item.group.name}">
-      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_group}" /></f:facet>
-      <h:outputText value="#{item.group.name}" />
+    <rich:column rendered="#{devicesBean.columns['baselineID']}" sortBy="#{item.baselineID}">
+      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_baselineID}" /></f:facet>
+      <h:outputText value="#{item.baselineID}" />
     </rich:column>
-    <rich:column rendered="#{devicesBean.columns['year']}" sortBy="#{item.year}">
-      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_year}" /></f:facet>
-      <h:outputText value="#{item.year}" />
+    <rich:column rendered="#{devicesBean.columns['mcmid']}" sortBy="#{item.mcmid}">
+      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_mcmid}" /></f:facet>
+      <h:outputText value="#{item.mcmid}" />
     </rich:column>
-    <rich:column rendered="#{devicesBean.columns['make']}" sortBy="#{item.make}">
-      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_make}" /></f:facet>
-      <h:outputText value="#{item.make}" />
+    <rich:column rendered="#{devicesBean.columns['sim']}" sortBy="#{item.sim}">
+      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_sim}" /></f:facet>
+      <h:outputText value="#{item.sim}" />
     </rich:column>
-    <rich:column rendered="#{devicesBean.columns['model']}" sortBy="#{item.model}">
-      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_model}" /></f:facet>
-      <h:outputText value="#{item.model}" />
+    <rich:column rendered="#{devicesBean.columns['phone']}" sortBy="#{item.phone}">
+      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_phone}" /></f:facet>
+      <h:outputText value="#{item.phone}" />
     </rich:column>
-    <rich:column rendered="#{devicesBean.columns['color']}" sortBy="#{item.color}">
-      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_color}" /></f:facet>
-      <h:outputText value="#{item.color}" />
+    <rich:column rendered="#{devicesBean.columns['ephone']}" sortBy="#{item.ephone}">
+      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_ephone}" /></f:facet>
+      <h:outputText value="#{item.ephone}" />
     </rich:column>
-    <rich:column rendered="#{devicesBean.columns['type']}" sortBy="#{item.type.description}">
-      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_type}" /></f:facet>
-      <h:outputText value="#{item.type.description}" />
+    <rich:column rendered="#{devicesBean.columns['activated']}" sortBy="#{item.activated}">
+      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_activated}" /></f:facet>
+      <h:outputText value="#{item.activated}"><f:convertDateTime dateStyle="long" /></h:outputText>
     </rich:column>
-    <rich:column rendered="#{devicesBean.columns['VIN']}" sortBy="#{item.VIN}">
-      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_VIN}" /></f:facet>
-      <h:outputText value="#{item.VIN}" />
-    </rich:column>
-    <rich:column rendered="#{devicesBean.columns['weight']}" sortBy="#{item.weight}">
-      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_weight}" /></f:facet>
-      <h:outputText value="#{item.weight}"><f:convertNumber /></h:outputText>
-    </rich:column>
-    <rich:column rendered="#{devicesBean.columns['license']}" sortBy="#{item.license}">
-      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_license}" /></f:facet>
-      <h:outputText value="#{item.license}" />
-    </rich:column>
-    <rich:column rendered="#{devicesBean.columns['state']}" sortBy="#{item.state}">
-      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_state}" /></f:facet>
-      <h:outputText value="#{item.state.name}" />
-    </rich:column>
-    <rich:column rendered="#{devicesBean.columns['active']}" sortBy="#{item.active}">
-      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_active}" /></f:facet>
-      <h:outputText value="#{item.active ? messages.active : messages.inactive}" />
-    </rich:column>
-    <rich:column rendered="#{devicesBean.columns['hardAccelerationLevel']}" sortBy="#{item.sensitivity.hardAccelerationLevel}">
-      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_hardAccelerationLevel}" /></f:facet>
-<!-- TODO: a graphical display for this -->
-      <h:outputText value="#{item.sensitivity.hardAccelerationLevel}" />
-    </rich:column>
-    <rich:column rendered="#{devicesBean.columns['hardTurnLevel']}" sortBy="#{item.sensitivity.hardTurnLevel}">
-      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_hardTurnLevel}" /></f:facet>
-<!-- TODO: a graphical display for this -->
-      <h:outputText value="#{item.sensitivity.hardTurnLevel}" />
-    </rich:column>
-    <rich:column rendered="#{devicesBean.columns['hardVerticalLevel']}" sortBy="#{item.sensitivity.hardVerticalLevel}">
-      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_hardVerticalLevel}" /></f:facet>
-<!-- TODO: a graphical display for this -->
-      <h:outputText value="#{item.sensitivity.hardVerticalLevel}" />
+    <rich:column rendered="#{devicesBean.columns['status']}" sortBy="#{item.status.description}">
+      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_status}" /></f:facet>
+      <h:outputText value="#{item.status.description}" />
     </rich:column>
   </ui:define>
 
