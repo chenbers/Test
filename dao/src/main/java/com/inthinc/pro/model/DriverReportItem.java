@@ -129,7 +129,4 @@ public class DriverReportItem extends BaseEntity
     {
         this.driver = driver;
     }
-    public String goTo() {
-        return "go_driver";
-    }
 }
