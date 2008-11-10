@@ -10,6 +10,17 @@ import org.richfaces.event.DataScrollerEvent;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
+import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.ScoreDAO;
+import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.DriverReportItem;
+import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.ScoreType;
+import com.inthinc.pro.model.ScoreableEntity;
+import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleReportItem;
 
 public class VehicleReportBean extends BaseBean
@@ -20,9 +31,12 @@ public class VehicleReportBean extends BaseBean
     private static final List<String> AVAILABLE_COLUMNS;
     private Map<String, Boolean> vehicleColumns = new HashMap<String, Boolean>();
     
+    private VehicleDAO vehicleDAO;
+    private ScoreDAO scoreDAO;
+    
     private VehicleReportItem vrt = null;
     
-    private Integer numRowsPerPg = 2;
+    private Integer numRowsPerPg = 25;
     
     private Integer maxCount = null;
     private Integer start = 1;
@@ -46,9 +60,8 @@ public class VehicleReportBean extends BaseBean
     }
     
     public void init() {               
-
-//--->Replace this with DAO for a "search" for all drivers for a given logged-in user 
         initData();
+        
 //--->Replace this with DAO for a "load" of the preferences for this particular table        
         for ( int i = 0; i < VehicleReportBean.AVAILABLE_COLUMNS.size(); i++ ) {
             this.vehicleColumns.put(VehicleReportBean.AVAILABLE_COLUMNS.get(i),true);
@@ -56,17 +69,43 @@ public class VehicleReportBean extends BaseBean
     }
     
     private void initData() {
+        List <Vehicle> vehiclesData = new ArrayList<Vehicle>();
+        vehiclesData = vehicleDAO.getVehiclesInGroupHierarchy(
+                getUser().getPerson().getGroupID());
+     
+        Vehicle v = null;
+       
+        ScoreableEntity s = null;        
         vrt = new VehicleReportItem();
-        vrt.setGroup("North");
-        vrt.setVehicleID(123456);
-        vrt.setMakeModelYear("Porsche/911/2008");
-        vrt.setDriver("John Doe");
-        vrt.setMilesDriven(202114);
-        vrt.setOverallScore(43);
-        vrt.setSpeedScore(12);
-        vrt.setStyleScore(34);
-        setStyles();
-        vehicleData.add(vrt);
+                
+        for ( int i = 0; i < vehiclesData.size(); i++ ) {
+            v = (Vehicle)vehiclesData.get(i);            
+            
+            //Vehicle
+            vrt = new VehicleReportItem();
+            vrt.setVehicleID(v.getVehicleID());
+            vrt.setMakeModelYear(v.getMake() + "/" + v.getModel() + "/" + v.getYear());         
+            
+            //Scores, full year
+            Integer endDate = DateUtil.getTodaysDate();
+            Integer startDate = DateUtil.getDaysBackDate(
+                    endDate, 
+                    Duration.TWELVE.getNumberOfDays());                                            
+            s = scoreDAO.getAverageScoreByType(v.getGroupID(),startDate,endDate,ScoreType.SCORE_OVERALL);
+            vrt.setOverallScore(s.getScore());
+            s = scoreDAO.getAverageScoreByType(v.getGroupID(),startDate,endDate,ScoreType.SCORE_SPEEDING);
+            vrt.setSpeedScore(s.getScore());
+            s = scoreDAO.getAverageScoreByType(v.getGroupID(),startDate,endDate,ScoreType.SCORE_DRIVING_STYLE);
+            vrt.setStyleScore(s.getScore());
+            setStyles();
+            
+            //Needed
+            vrt.setGroup("North"); 
+            vrt.setDriver("John Doe");
+            vrt.setMilesDriven(202114);
+            
+            vehicleData.add(vrt);            
+        }        
         
         maxCount = vehicleData.size();
         resetCounts();
@@ -169,7 +208,7 @@ public class VehicleReportBean extends BaseBean
         this.end = (se.getPage())*this.numRowsPerPg;
         //Partial page
         if ( this.end > this.vehicleData.size() ) {
-            this.end = this.start + ( this.end - this.vehicleData.size() ) - 1;
+            this.end = this.vehicleData.size();
         }
     }
     
@@ -231,6 +270,26 @@ public class VehicleReportBean extends BaseBean
     public void setSearchFor(String searchFor)
     {
         this.searchFor = searchFor;
+    }
+
+    public VehicleDAO getVehicleDAO()
+    {
+        return vehicleDAO;
+    }
+
+    public void setVehicleDAO(VehicleDAO vehicleDAO)
+    {
+        this.vehicleDAO = vehicleDAO;
+    }
+
+    public ScoreDAO getScoreDAO()
+    {
+        return scoreDAO;
+    }
+
+    public void setScoreDAO(ScoreDAO scoreDAO)
+    {
+        this.scoreDAO = scoreDAO;
     }
 
 }
