@@ -58,9 +58,8 @@ public class DriverReportBean extends BaseBean
     }
     
     public void init() {               
-
-//--->Replace this with DAO for a "search" for all drivers for a given logged-in user 
         initData();
+        
 //--->Replace this with DAO for a "load" of the preferences for this particular table        
         for ( int i = 0; i < DriverReportBean.AVAILABLE_COLUMNS.size(); i++ ) {
             this.driverColumns.put(DriverReportBean.AVAILABLE_COLUMNS.get(i),true);
@@ -69,10 +68,8 @@ public class DriverReportBean extends BaseBean
     
     private void initData() {
         List <Driver> driversData = new ArrayList<Driver>();
-        logger.debug("getting drivers for: " + 
-                getUser().getPerson().getGroupID());
         driversData = driverDAO.getAllDrivers(getUser().getPerson().getGroupID());
-        logger.debug("driversData " + driversData.size());
+     
         Driver d = null;
         Person p = null;
         ScoreableEntity s = null;
@@ -81,99 +78,35 @@ public class DriverReportBean extends BaseBean
             d = (Driver)driversData.get(i);
             p = d.getPerson();
             
+            //Employee and driver
             drt = new DriverReportItem();
             drt.setEmployee(p.getFirst() + " " + p.getLast());
             drt.setEmployeeID(new Integer(p.getEmpid()));
             drt.setDriver(d);
             
-            //Snag scores, full year
+            //Scores, full year
             Integer endDate = DateUtil.getTodaysDate();
             Integer startDate = DateUtil.getDaysBackDate(
                     endDate, 
                     Duration.TWELVE.getNumberOfDays());                                            
-            s = scoreDAO.getAverageScoreByType(
-                    d.getGroupID(), 
-                    startDate, 
-                    endDate,
-                    ScoreType.SCORE_OVERALL);
+            s = scoreDAO.getAverageScoreByType(d.getGroupID(),startDate,endDate,ScoreType.SCORE_OVERALL);
             drt.setOverallScore(s.getScore());
-            drt.setSeatBeltScore(22);
-            drt.setSpeedScore(12);
-            drt.setStyleScore(34);
+            s = scoreDAO.getAverageScoreByType(d.getGroupID(),startDate,endDate,ScoreType.SCORE_SEATBELT);
+            drt.setSeatBeltScore(s.getScore());
+            s = scoreDAO.getAverageScoreByType(d.getGroupID(),startDate,endDate,ScoreType.SCORE_SPEEDING);
+            drt.setSpeedScore(s.getScore());
+            s = scoreDAO.getAverageScoreByType(d.getGroupID(),startDate,endDate,ScoreType.SCORE_DRIVING_STYLE);
+            drt.setStyleScore(s.getScore());
             setStyles();
             
-            drt.setGroup("Mock");
+            //Needed            
             drt.setMilesDriven(202114);
             drt.setVehicleID("AE-114");
+            drt.setGroup("Mock");
+            
             driverData.add(drt);            
         }
-        
-/* Fakin' it...        
-        drt = new DriverReportItem();
-        drt.setEmployee("John Doe");
-        drt.setEmployeeID(123456);
-        drt.setGroup("North");
-        drt.setMilesDriven(202114);
-        drt.setOverallScore(43);
-        drt.setSeatBeltScore(22);
-        drt.setSpeedScore(12);
-        drt.setStyleScore(34);
-        setStyles();
-        drt.setVehicleID("AE-114");
-        driverData.add(drt);
 
-        drt = new DriverReportItem();        
-        drt.setEmployee("Mary Doe");
-        drt.setEmployeeID(64321);
-        drt.setGroup("South");
-        drt.setMilesDriven(111114);
-        drt.setOverallScore(23);
-        drt.setSeatBeltScore(42);
-        drt.setSpeedScore(42);
-        drt.setStyleScore(14);
-        setStyles();
-        drt.setVehicleID("DD-432");
-        driverData.add(drt);
-
-        drt = new DriverReportItem();
-        drt.setEmployee("Hyrum Doe");
-        drt.setEmployeeID(45631);
-        drt.setGroup("Central");
-        drt.setMilesDriven(2114);
-        drt.setOverallScore(22);               
-        drt.setSeatBeltScore(15);
-        drt.setSpeedScore(49);
-        drt.setStyleScore(33);
-        setStyles();
-        drt.setVehicleID("JKD-324");
-        driverData.add(drt);
-
-        drt = new DriverReportItem();
-        drt.setEmployee("Frank Zappa");
-        drt.setEmployeeID(666666);
-        drt.setGroup("East");
-        drt.setMilesDriven(224561114);
-        drt.setOverallScore(11);               
-        drt.setSeatBeltScore(45);
-        drt.setSpeedScore(29);
-        drt.setStyleScore(50);
-        setStyles();
-        drt.setVehicleID("FZ-109");
-        driverData.add(drt);     
-
-        drt = new DriverReportItem();
-        drt.setEmployee("Onemore PieceOfData");
-        drt.setEmployeeID(99999);
-        drt.setGroup("West");
-        drt.setMilesDriven(4561114);
-        drt.setOverallScore(31);               
-        drt.setSeatBeltScore(15);
-        drt.setSpeedScore(23);
-        drt.setStyleScore(40);
-        setStyles();
-        drt.setVehicleID("ZZ-0999");
-        driverData.add(drt);     
-*/        
         maxCount = driverData.size();
         resetCounts();
     }
