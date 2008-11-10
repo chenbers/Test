@@ -59,7 +59,7 @@
 				                        	locale="en/US"
 				                        	popup="true"
 				                        	datePattern="MMM d, yyyy"
-				                        	showApplyButton="false" cellWidth="24px" cellHeight="22px" style="width:200px"/>
+				                        	showApplyButton="false" cellWidth="24px" cellHeight="22px"/>
 				           			</a4j:outputPanel> 
 								</td>
 								<td width="51">to</td>
@@ -72,14 +72,14 @@
 				                        	locale="en/US"
 				                        	popup="true"
 				                        	datePattern="MMM d, yyyy"
-				                        	showApplyButton="false" cellWidth="24px" cellHeight="22px" style="width:200px"/>
+				                        	showApplyButton="false" cellWidth="24px" cellHeight="22px"/>
 				           			</a4j:outputPanel>
 								</td>
 								<td></td>
 							  </tr>
 							  <tr>
 							    <td> </td>
-							    <td> <h:commandButton value="submit"><span class="apply">Apply Date Range</span></h:commandButton></td>
+							    <td> <h:commandButton value="Apply Date Range" /></td>
 							    <td> </td>
 							    </tr>
 							  </tbody>
@@ -100,7 +100,7 @@
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="">Stats: 01 Jul 08 - 07 Jul 08</span>
+						<span class="">Stats: #{driverTripsBean.startDateAsShortString} - #{driverTripsBean.endDateAsShortString}</span>
 						<span class="panel_links"></span>
 					</div>
 				</div>
@@ -250,21 +250,21 @@
 								<table width="320" id="legend" cellpadding="4" cellspacing="0" class="sortable-onload-show no-arrow colstyle-alt paginate-15 max-pages-4">
 								  <tbody>
 								  <tr>
-									<td width="25"><img src="images/ico_start.png" width="21" height="20" /></td>
+									<td width="25"><img src="../images/ico_start.png" width="21" height="20" /></td>
 									<td width="120">Start</td>
-								    <td width="30"><img src="images/ico_stop.png" width="20" height="20" /></td>
+								    <td width="30"><img src="../images/ico_stop.png" width="20" height="20" /></td>
 								    <td width="119">Engine Stop</td>
 								  </tr>
 								  <tr>
-									<td><img src="images/ico_idle.png" width="20" height="20" /></td>
+									<td><img src="../images/ico_idle.png" width="20" height="20" /></td>
 									<td>Engine Idle</td>
-								    <td><img src="images/ico_new_trip.png" width="21" height="20" /></td>
+								    <td><img src="../images/ico_new_trip.png" width="21" height="20" /></td>
 								    <td>New Trip</td>
 								  </tr>
 								  <tr>
-								    <td><img src="images/ico_violation.png" width="20" height="20" /></td>
+								    <td><img src="../images/ico_violation.png" width="20" height="20" /></td>
 								    <td>Violation</td>
-								    <td><img src="images/ico_end_trip.png" width="21" height="20" /></td>
+								    <td><img src="../images/ico_end_trip.png" width="21" height="20" /></td>
 								    <td>End</td>
 								    </tr>
 								  </tbody>
@@ -285,54 +285,68 @@
 		<div class="" style="width:600px; margin: 0 auto 0 auto;">
 			<div class="panel_nw">
 				<div class="panel_title">
-					<span class="vehicle">Trips by Amy Johnson on 16 July 2008</span>
-					<span class="panel_links">__</span></div>
+					<span class="vehicle">Trips by #{driverBean.driverName}</span>
+					<span class="panel_links"></span></div>
 			</div>
 			<div class="panel_w">
 			  <div class="panel_content" align="center">
-							<div class="datagrid" id="trip_detail-paginationListWrapBottom">
-								<table width="590" id="trip_detail" cellpadding="0" cellspacing="0" class="sortable-onload-0 no-arrow rowstyle-alt colstyle-alt paginate-5 max-pages-8">
-								  <thead>
-								  <tr>
-									<th width="59" height="27" class="">Date</th>
-									<th width="74" class="">Time</th>
-									<th width="68" class="sortable-numeric">Dist</th>
-								    <th width="168" class="sortable-numeric">Start</th>
-								    <th width="150" class="sortable-numeric">End</th>
-								    <th width="67" class="sortable-numeric">Dur</th>
-								    </tr>
-								  </thead>
-								  <tbody>
-								  <tr>
-									<td>01 Jul</td>
-									<td>8:15am</td>
-									<td>3.2 mi</td>
-								    <td>154 S 10th St</td>
-								    <td>188 S 11th St</td>
-								    <td>1:46</td>
-								  </tr>
-								  <tr>
-									<td>01 Jul</td>
-									<td>7:05am</td>
-									<td>0.3 mi</td>
-								    <td>188 S 11th St</td>
-								    <td>213 S 14th St</td>
-								    <td>0:28</td>
-								  </tr>
-								  <tr>
-									<td>01 Jul</td>
-									<td>9:28pm</td>
-									<td>0.5 mi</td>
-								    <td>213 S 14th St</td>
-								    <td>21 S 14th St</td>
-								    <td>1:12</td>
-								  </tr>
-								
-								  </tbody>
-							  </table>
-							</div>
+				<!-- Start Trip table --> 
+					<h:form id="trendTable">
+						<rich:dataTable 
+						value="#{driverTripsBean.trips}" 
+						id="items"
+						var="item" styleClass="datagrid"
+						rowClasses="trendTableOdd,trendTableEven" cellspacing="1" rows="10"  
+						width="100%"
+						binding="#{trendTable.table}">  <!-- //TODO: Make generic Odd Even CSS -->
 
-			  
+							<!-- Data -->
+										
+							<rich:column sortBy="#{item.startTime}" width="59">
+								<f:facet name="header">
+									<h:outputText value="Date" />
+								</f:facet>
+									<h:outputText value="#{item.startTime}" />
+							</rich:column>
+							
+							<rich:column sortBy="#{item.startTime}" width="74">
+								<f:facet name="header">
+									<h:outputText value="Time" />
+								</f:facet>
+									<h:outputText value="#{item.startTime}" />
+							</rich:column>
+							
+							<rich:column sortBy="#{item.mileage}" width="68">
+								<f:facet name="header">
+									<h:outputText value="Dist" />
+								</f:facet>
+								<h:outputText value="#{item.mileage}" />		
+							</rich:column>
+							
+							<rich:column sortBy="#{item.mileage}" wdith="168">
+								<f:facet name="header">
+									<h:outputText value="Start" />
+								</f:facet>
+								<h:outputText value="{item.mileage}" />
+							</rich:column>
+							
+							<rich:column sortBy="#{item.endAddressStr}" width="150">
+								<f:facet name="header">
+									<h:outputText value="End" />
+								</f:facet>
+								<h:outputText value="#{item.endAddressStr}" />
+							</rich:column>
+							
+							<rich:column sortBy="#{item.mileage}" width="67">
+								<f:facet name="header">
+									<h:outputText value="Duration" />
+								</f:facet>
+								<h:outputText value="#{item.mileage}" />
+							</rich:column>
+						</rich:dataTable>
+					</h:form> 
+				<!-- End Trip table -->
+
 			  </div>
 			</div>
 			<div class="panel_sw">
@@ -353,7 +367,7 @@
 			<div class="panel_w">
 			  <div class="panel_content" align="center">
 			  <h:panelGroup styleClass="map-border" layout="block">
-							<div id="map-canvas" style="width:458px;height:300px;border:0"></div>
+							<div id="map-canvas" style="width:588px;height:500px;border:0"></div>
 					  	</h:panelGroup>
 					    <script type="text/javascript">
       						if (GBrowserIsCompatible()) {
@@ -379,7 +393,3 @@
 </ui:define>
 
 </ui:composition>
-
-
-
-

@@ -131,4 +131,12 @@ public class DateUtil
         
         return format.format(convertTimeInSecondsToDate(dateSec));
     }
+    
+    public static String getDisplayDateShort(Integer dateSec)
+    {
+        DateFormat format = new SimpleDateFormat("MM-dd-yyyy");
+        
+        return format.format(convertTimeInSecondsToDate(dateSec));
+    	
+    }
 }

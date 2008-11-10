@@ -168,7 +168,7 @@
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="vehicle">Driving Style</span>
-						<span class="panel_links"><a href="driverq_style.html">view report</a></span>
+						<span class="panel_links"><h:form id="style_report_link"><h:commandLink value="view report" action="go_reportDriverSpeed" /></h:form></span>
 					</div>
 				</div>
 					<div class="panel_w">
@@ -209,7 +209,7 @@
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="seatbelt">Seatbelt</span>
-						<span class="panel_links"><a href="driverq_seatbelt.html">view report</a></span>					</div>
+						<span class="panel_links"><h:form id="seatBelt_report_link"><h:commandLink value="view report" action="go_reportDriverSpeed" /></h:form></span></div>
 				</div>
 					<div class="panel_w">
 					  <div class="panel_content">
@@ -268,7 +268,7 @@
         						map.addControl(new GLargeMapControl());
         						map.addControl(new GMapTypeControl());
         						map.addControl(new GOverviewMapControl()); 
-								map.setCenter(new GLatLng(41.0,-116.0 ), 5);
+								map.setCenter(new GLatLng(41.0,-116.0 ), 9);
 								map.setMapType(G_MAP_TYPE);
       						}
     					</script>

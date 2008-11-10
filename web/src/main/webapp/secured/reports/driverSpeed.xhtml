@@ -38,18 +38,19 @@
 //Set default selected box.
 var selected = 'OVERALL';
 
-function SelectBreakDown(region, chartVar)
+	function SelectBreakDown(region, chartVar)
 	{
-		//Un-Select last component.
+		//Un-Select last component in CSS.
 		document.getElementById(selected).className="tiny_chart";
 		
-		//Set selected component.  //not working when using selected var with getElementById
+		//remember current selected region.
 		selected = region;
 		
-		//change style to selected.
+		//change style to new selected region.
 		document.getElementById(region).className="tiny_selected";
 		
 		//resize chart and render it in the top box.
+		// TODO: turn on X and Y axis labels.
 		chartVar.attributes.width = 650;
 		chartVar.attributes.height = 200;
 		chartVar.render('overall_chart');
@@ -404,8 +405,6 @@ function SelectBreakDown(region, chartVar)
 							</rich:column>
 							
 						</rich:dataTable>
-						
-
 					</h:form> 
 				<!-- End Event table -->
 				</div>
