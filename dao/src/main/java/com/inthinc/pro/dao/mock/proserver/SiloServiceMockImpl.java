@@ -133,12 +133,13 @@ public class SiloServiceMockImpl implements SiloService
 
 
     @Override
-    public Map<String, Object> getOverallScore(Integer groupID, Integer startDate, Integer endDate)
+    public Map<String, Object> getAverageScoreByType(
+            Integer groupID, Integer startDate, Integer endDate, ScoreType st)
             throws ProDAOException
     {
         SearchCriteria searchCriteria = new SearchCriteria();
         searchCriteria.addKeyValue("entityID", groupID);
-        searchCriteria.addKeyValue("scoreType", ScoreType.SCORE_OVERALL);
+        searchCriteria.addKeyValue("scoreType", st);
         searchCriteria.addKeyValueRange("date", startDate, endDate);
         
         // get all scores of the time period and average them
