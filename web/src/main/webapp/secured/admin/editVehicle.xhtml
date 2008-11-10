@@ -205,15 +205,23 @@
                         <tr>
                           <td width="100" valign="top">
                             <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_groupID" value="#{vehiclesBean.updateField['groupID']}" />
-                            <h:outputText value="#{messages.editVehicle_groupID}" />
+                            <h:outputText value="#{messages.editVehicle_group}" />
                           </td>
                           <td>
-                            <h:selectOneMenu value="#{vehiclesBean.editItem.groupID}" id="groupID" onchange="checkMultiple(this)" required="#{(not vehiclesBean.batchEdit) or vehiclesBean.updateField['groupID']}" requiredMessage="#{messages.required}">
+                            <h:selectOneMenu value="#{vehiclesBean.editItem.groupID}" id="groupID" required="#{(not vehiclesBean.batchEdit) or vehiclesBean.updateField['groupID']}" requiredMessage="#{messages.required}">
+                              <a4j:support event="onchange" reRender="driver,assign-form:driversTable" limitToList="true" ajaxSingle="true" onsubmit="checkMultiple(this);showSection('edit-form:reportsToSpinner', true)" oncomplete="showSection('edit-form:reportsToSpinner', false)" />
                               <f:selectItem itemLabel="#{messages.editVehicle_selectGroup}" />
                               <f:selectItems value="#{vehiclesBean.groups}" />
                             </h:selectOneMenu>
                             <rich:message for="groupID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                           </td>
+                        </tr>
+                        <tr>
+                          <td width="100">
+                            <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_driverID" value="#{vehiclesBean.updateField['driverID']}" />
+                            <h:outputText value="#{messages.editVehicle_driverID}" />
+                          </td>
+                          <td><ui:fragment id="driver"><h:outputText value="#{vehiclesBean.editItem.driver.person.first}" /><h:outputText value=" " /><h:outputText value="#{vehiclesBean.editItem.driver.person.last}" /></ui:fragment><h:outputText value=" " /><h:commandLink value="#{messages.editVehicle_assign}" /></td>
                         </tr>
                       </table>
 

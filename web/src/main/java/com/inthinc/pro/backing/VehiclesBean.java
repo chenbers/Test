@@ -16,8 +16,10 @@ import javax.faces.context.FacesContext;
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
+import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.SafetyDevice;
 import com.inthinc.pro.model.State;
@@ -86,12 +88,19 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     }
 
     private VehicleDAO                            vehicleDAO;
+    private DriverDAO                             driverDAO;
     private GroupDAO                              groupDAO;
     private TreeMap<String, Integer>              groups;
+    private List<Driver>                          drivers;
 
     public void setVehicleDAO(VehicleDAO vehicleDAO)
     {
         this.vehicleDAO = vehicleDAO;
+    }
+
+    public void setDriverDAO(DriverDAO driverDAO)
+    {
+        this.driverDAO = driverDAO;
     }
 
     public void setGroupDAO(GroupDAO groupDAO)
@@ -124,39 +133,9 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     {
         final VehicleView vehicleView = new VehicleView();
         BeanUtils.copyProperties(vehicle, vehicleView);
-
-        // TODO: look up the driver by driverID instead
-        vehicleView.setDriver(createDummyName() + ' ' + createDummyName());
+        vehicleView.setOldDriverID(vehicle.getDriverID());
         vehicleView.setSelected(false);
-
         return vehicleView;
-    }
-
-    @Deprecated
-    private String createDummyName()
-    {
-        return createDummyString("abcdefghijklmnoprstuvwyz", randomInt(9) + 2);
-    }
-
-    @Deprecated
-    private String createDummyString(final String letters, final int length)
-    {
-        final StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < length; i++)
-        {
-            final char letter = letters.charAt(randomInt(letters.length()));
-            if (i == 0)
-                sb.append(String.valueOf(letter).toUpperCase());
-            else
-                sb.append(letter);
-        }
-        return sb.toString();
-    }
-
-    @Deprecated
-    private int randomInt(int limit)
-    {
-        return (int) (Math.random() * limit);
     }
 
     @Override
@@ -167,7 +146,10 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
             {
                 boolean matches = false;
                 if (column.equals("driver"))
-                    matches = (vehicle.getDriver() != null) && vehicle.getDriver().toLowerCase().startsWith(filterWord);
+                    matches = (vehicle.getDriver() != null)
+                            && (vehicle.getDriver().getPerson() != null)
+                            && (vehicle.getDriver().getPerson().getFirst().toLowerCase().startsWith(filterWord) || vehicle.getDriver().getPerson().getLast().toLowerCase()
+                                    .startsWith(filterWord));
                 else if (column.equals("group"))
                     matches = (vehicle.getGroup() != null) && vehicle.getGroup().getName().toLowerCase().startsWith(filterWord);
                 else if (column.equals("active"))
@@ -239,6 +221,20 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         }
     }
 
+    public List<Driver> getDrivers()
+    {
+        if (drivers == null)
+            drivers = driverDAO.getAllDrivers(getEditItem().getGroupID());
+        return drivers;
+    }
+
+    public void chooseDriver()
+    {
+        final String driverID = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("driverID");
+        if (driverID != null)
+            getEditItem().setDriverID(Integer.parseInt(driverID));
+    }
+
     @Override
     protected void doSave(List<VehicleView> saveItems, boolean create)
     {
@@ -250,6 +246,12 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
                 vehicle.setVehicleID(vehicleDAO.create(getUser().getPerson().getAccountID(), vehicle));
             else
                 vehicleDAO.update(vehicle);
+
+            if (vehicle.isDriverChanged())
+            {
+                vehicleDAO.setVehicleDriver(vehicle.getVehicleID(), vehicle.getDriverID());
+                vehicle.setOldDriverID(vehicle.getDriverID());
+            }
 
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "vehicle_added" : "vehicle_updated", vehicle.getName());
@@ -305,23 +307,14 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
 
     public class VehicleView extends Vehicle implements EditItem
     {
-        private String  driver;
-        private Group   group;
-        private boolean selected;
+        private transient Group   group;
+        private transient Integer oldDriverID;
+        private transient Driver  driver;
+        private transient boolean selected;
 
         public Integer getId()
         {
             return getVehicleID();
-        }
-
-        public String getDriver()
-        {
-            return driver;
-        }
-
-        public void setDriver(String driver)
-        {
-            this.driver = driver;
         }
 
         @Override
@@ -329,6 +322,13 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         {
             super.setGroupID(groupID);
             group = null;
+
+            if ((driver != null) && !driver.getGroupID().equals(groupID))
+            {
+                setDriverID(null);
+                drivers = null;
+            }
+            driver = null;
         }
 
         public Group getGroup()
@@ -336,6 +336,35 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
             if (group == null)
                 group = groupDAO.findByID(getGroupID());
             return group;
+        }
+
+        Integer getOldDriverID()
+        {
+            return oldDriverID;
+        }
+
+        void setOldDriverID(Integer oldDriverID)
+        {
+            this.oldDriverID = oldDriverID;
+        }
+
+        public boolean isDriverChanged()
+        {
+            return (oldDriverID != getDriverID()) && ((getDriverID() == null) || !getDriverID().equals(oldDriverID));
+        }
+
+        @Override
+        public void setDriverID(Integer driverID)
+        {
+            super.setDriverID(driverID);
+            driver = null;
+        }
+
+        public Driver getDriver()
+        {
+            if (driver == null)
+                driver = driverDAO.findByID(getDriverID());
+            return driver;
         }
 
         public Double getCostPerHourDollars()

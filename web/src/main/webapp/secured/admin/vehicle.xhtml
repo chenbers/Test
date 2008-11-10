@@ -116,8 +116,8 @@
 
                         <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editVehicle_driver}" /></td>
-                            <td><h:outputText value="#{vehiclesBean.editItem.driver}" /><h:outputText value=" " /><h:commandLink value="#{messages.editVehicle_assign}" /></td>
+                            <td width="100"><h:outputText value="#{messages.editVehicle_driverID}" /></td>
+                            <td><h:outputText value="#{vehiclesBean.editItem.driver.person.first}" /><h:outputText value=" " /><h:outputText value="#{vehiclesBean.editItem.driver.person.last}" /><h:outputText value=" " /><h:commandLink value="#{messages.editVehicle_assign}" /></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editVehicle_groupID}" /></td>

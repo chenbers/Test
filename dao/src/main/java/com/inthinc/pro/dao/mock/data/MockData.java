@@ -622,6 +622,7 @@ public class MockData
     {
         final Vehicle vehicle = new Vehicle();
         vehicle.setVehicleID(id);
+        vehicle.setAccountID(accountID);
         vehicle.setGroupID(groupID);
         vehicle.setName(String.valueOf(id));
         vehicle.setYear(String.valueOf(randomInt(1970, 2009)));

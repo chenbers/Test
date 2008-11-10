@@ -25,8 +25,7 @@
     </rich:column>
     <rich:column rendered="#{vehiclesBean.columns['driver']}" sortBy="#{item.driver}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_driver}" /></f:facet>
-<!-- TODO: link to driver something -->
-      <h:outputText value="#{item.driver}" />
+      <h:outputText value="#{item.driver.person.first}" /><h:outputText value=" " /><h:outputText value="#{item.driver.person.last}" />
     </rich:column>
     <rich:column rendered="#{vehiclesBean.columns['group']}" sortBy="#{item.group.name}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_group}" /></f:facet>

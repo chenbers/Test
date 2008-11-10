@@ -38,4 +38,18 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer, Centr
         }
     }
 
+    @Override
+    public Integer setVehicleDriver(Integer vehicleID, Integer driverID)
+    {
+        findByID(vehicleID).setDriverID(driverID);
+        return 1;
+    }
+
+    @Override
+    public Integer setVehicleDevice(Integer vehicleID, Integer deviceID)
+    {
+        findByID(vehicleID).setDeviceID(deviceID);
+        return 1;
+    }
+
 }

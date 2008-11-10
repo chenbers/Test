@@ -464,13 +464,13 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
 
     public class PersonView extends Person implements EditItem
     {
-        private Group   group;
-        private Person  reportsToPerson;
-        private String  password;
-        private String  confirmPassword;
-        private boolean userSelected;
-        private boolean driverSelected;
-        private boolean selected;
+        private transient Group   group;
+        private transient Person  reportsToPerson;
+        private transient String  password;
+        private transient String  confirmPassword;
+        private transient boolean userSelected;
+        private transient boolean driverSelected;
+        private transient boolean selected;
 
         public Integer getId()
         {

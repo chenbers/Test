@@ -102,8 +102,11 @@
 
                         <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editDevice_vehicle}" /></td>
-                            <td><h:outputText value="#{devicesBean.editItem.vehicle}" /><h:outputText value=" " /><h:commandLink value="#{messages.editDevice_assign}" /></td>
+                            <td width="100"><h:outputText value="#{messages.editDevice_vehicleID}" /></td>
+                            <td>
+                              <h:outputText value="#{devicesBean.editItem.vehicle.name}" /><h:outputText value=" " />
+                              <a href="#" onclick="Richfaces.showModalPanel('chooseVehicle'); return false;"><h:outputText value="#{messages.editDevice_assign}" /></a>
+                            </td>
                           </tr>
                         </table>
                   
@@ -126,6 +129,9 @@
       </tr>
     </table>
 
+    <ui:include src="../../includes/chooseVehicle.xhtml">
+      <ui:param name="editorBean" value="#{devicesBean}" />
+    </ui:include>
     <ui:include src="../../includes/confirmDelete.xhtml">
       <ui:param name="deleteBean" value="#{devicesBean}" />
       <ui:param name="explanation" value="#{messages.device_confirmDelete}" />

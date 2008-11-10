@@ -13,6 +13,7 @@ import javax.faces.context.FacesContext;
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.dao.DeviceDAO;
+import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.Vehicle;
@@ -49,10 +50,17 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     }
 
     private DeviceDAO                              deviceDAO;
+    private VehicleDAO                             vehicleDAO;
+    private List<Vehicle>                          vehicles;
 
     public void setDeviceDAO(DeviceDAO deviceDAO)
     {
         this.deviceDAO = deviceDAO;
+    }
+
+    public void setVehicleDAO(VehicleDAO vehicleDAO)
+    {
+        this.vehicleDAO = vehicleDAO;
     }
 
     @Override
@@ -80,8 +88,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     {
         final DeviceView deviceView = new DeviceView();
         BeanUtils.copyProperties(device, deviceView);
-        // TODO: replace the below with something sensible
-        // deviceView.setVehicle(vehicle);
         deviceView.setSelected(false);
         return deviceView;
     }
@@ -93,7 +99,9 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             if (columns.get(column))
             {
                 boolean matches = false;
-                if (column.equals("status"))
+                if (column.equals("vehicle"))
+                    matches = (device.getVehicle() != null) && (device.getVehicle().getName() != null) && device.getVehicle().getName().toLowerCase().startsWith(filterWord);
+                else if (column.equals("status"))
                     matches = (device.getStatus() != null) && MessageUtil.getMessageString(device.getStatus().getDescription().toLowerCase()).toLowerCase().startsWith(filterWord);
                 else
                     try
@@ -158,6 +166,20 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         }
     }
 
+    public List<Vehicle> getVehicles()
+    {
+        if (vehicles == null)
+            vehicles = vehicleDAO.getVehiclesByAcctID(getUser().getPerson().getAccountID());
+        return vehicles;
+    }
+
+    public void chooseVehicle()
+    {
+        final String vehicleID = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("vehicleID");
+        if (vehicleID != null)
+            getEditItem().setVehicleID(Integer.parseInt(vehicleID));
+    }
+
     @Override
     protected void doSave(List<DeviceView> saveItems, boolean create)
     {
@@ -169,6 +191,13 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
                 device.setDeviceID(deviceDAO.create(getUser().getPerson().getAccountID(), device));
             else
                 deviceDAO.update(device);
+
+            if (device.isVehicleChanged())
+            {
+                vehicleDAO.setVehicleDevice(device.getOldVehicleID(), null);
+                vehicleDAO.setVehicleDevice(device.getVehicleID(), device.getDeviceID());
+                device.setOldVehicleID(device.getVehicleID());
+            }
 
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "device_added" : "device_updated", device.getName());
@@ -202,22 +231,42 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 
     public class DeviceView extends Device implements EditItem
     {
-        private Vehicle vehicle;
-        private boolean selected;
+        private transient Integer oldVehicleID;
+        private transient Vehicle vehicle;
+        private transient boolean selected;
 
         public Integer getId()
         {
             return getDeviceID();
         }
 
-        public Vehicle getVehicle()
+        Integer getOldVehicleID()
         {
-            return vehicle;
+            return oldVehicleID;
         }
 
-        public void setVehicle(Vehicle vehicle)
+        void setOldVehicleID(Integer oldVehicleID)
         {
-            this.vehicle = vehicle;
+            this.oldVehicleID = oldVehicleID;
+        }
+
+        public boolean isVehicleChanged()
+        {
+            return (oldVehicleID != getVehicleID()) && ((getVehicleID() == null) || !getVehicleID().equals(oldVehicleID));
+        }
+
+        @Override
+        public void setVehicleID(Integer vehicleID)
+        {
+            super.setVehicleID(vehicleID);
+            vehicle = null;
+        }
+
+        public Vehicle getVehicle()
+        {
+            if (vehicle == null)
+                vehicle = vehicleDAO.findByID(getVehicleID());
+            return vehicle;
         }
 
         public boolean isSelected()

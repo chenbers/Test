@@ -43,7 +43,7 @@
       <c:set var="columnCount" value="#{((allColumnsCount - (allColumnsCount % 3)) / 3) + 1}" />
     </c:if>
 
-    <rich:modalPanel id="editColumns" headerClass="popupHeader" controlsClass="popupControls" width="500" height="500" zindex="2000">
+    <rich:modalPanel id="editColumns" headerClass="popupHeader" controlsClass="popupControls" width="500" height="350" zindex="2000">
       <f:facet name="header">
         <h:outputText value="#{messages.editColumns_title}" />
       </f:facet>

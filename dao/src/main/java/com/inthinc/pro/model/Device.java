@@ -11,6 +11,8 @@ public class Device extends BaseEntity
     private Integer      deviceID;
     @Column(name = "acctID")
     private Integer      accountID;
+    @Column(updateable = false)
+    private Integer      vehicleID;
     @Column(name = "baseID")
     private Integer      baselineID;
     private DeviceStatus status;
@@ -39,6 +41,16 @@ public class Device extends BaseEntity
     public void setAccountID(Integer accountID)
     {
         this.accountID = accountID;
+    }
+
+    public Integer getVehicleID()
+    {
+        return vehicleID;
+    }
+
+    public void setVehicleID(Integer vehicleID)
+    {
+        this.vehicleID = vehicleID;
     }
 
     public Integer getBaselineID()

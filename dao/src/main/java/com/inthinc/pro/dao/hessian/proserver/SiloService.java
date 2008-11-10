@@ -163,6 +163,8 @@ public interface SiloService extends HessianService
     
     //Methods related to Trips
     List<Map<String, Object>> getTrips(Integer driverID, Integer startDate, Integer endDate) throws ProDAOException;
+
+    // Methods related to the Driver type
     /**
      * getDrivers -- retrieves all drivers associated to a groupID.
      * 
@@ -170,5 +172,13 @@ public interface SiloService extends HessianService
      * @return
      * @throws ProDAOException
      */
-    List<Map<String, Object>> getAllDrivers(Integer groupID);    
+    List<Map<String, Object>> getAllDrivers(Integer groupID);  
+
+    Map<String, Object> deleteDriver(Integer driverID) throws ProDAOException;
+
+    Map<String, Object> getDriver(Integer driverID) throws ProDAOException;
+
+    Map<String, Object> updateDriver(Integer driverID, Map<String, Object> driverMap) throws ProDAOException;
+
+    Map<String, Object> createDriver(Integer acctID, Map<String, Object> driverMap) throws ProDAOException;
 }

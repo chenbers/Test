@@ -369,8 +369,9 @@ public class SiloServiceMockImpl implements SiloService
     @Override
     public List<Map<String, Object>> getVehiclesByAcctID(Integer acctID) throws ProDAOException
     {
-        // TODO Auto-generated method stub
-        return null;
+        final SearchCriteria criteria = new SearchCriteria();
+        criteria.addKeyValue("accountID", acctID);
+        return MockData.getInstance().lookupList(Vehicle.class, criteria);
     }
 
     @Override
@@ -630,5 +631,30 @@ public class SiloServiceMockImpl implements SiloService
         }
         
         return returnList;
+    }
+
+    @Override
+    public Map<String, Object> deleteDriver(Integer driverID) throws ProDAOException
+    {
+        return createReturnValue("count", 0);
+    }
+    
+    @Override
+    public Map<String, Object> createDriver(Integer acctID, Map<String, Object> driverMap) throws ProDAOException
+    {
+        // TODO: actually store the object to the mock data
+        return createReturnValue("driverID", (int) (Math.random() * Integer.MAX_VALUE));
+    }
+
+    @Override
+    public Map<String, Object> getDriver(Integer driverID) throws ProDAOException
+    {
+        return doMockLookup(Driver.class, "driverID", driverID, "No driver for ID: " + driverID, "getDriver");
+    }
+
+    @Override
+    public Map<String, Object> updateDriver(Integer driverID, Map<String, Object> driverMap) throws ProDAOException
+    {
+        return createReturnValue("count", 1);
     }
 }

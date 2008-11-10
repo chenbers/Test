@@ -91,7 +91,7 @@
                           </td>
                           <td>
                             <h:inputText value="#{devicesBean.editItem.phone}" id="phone" onchange="checkMultiple(this)" styleClass="text" size="30"
-                              maxlength="12" required="#{(not devicesBean.batchEdit) or devicesBean.updateField['phone']}" requiredMessage="#{messages.required}" />
+                              maxlength="22" required="#{(not devicesBean.batchEdit) or devicesBean.updateField['phone']}" requiredMessage="#{messages.required}" />
                             <rich:message for="phone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                           </td>
                         </tr>
@@ -103,7 +103,7 @@
                           </td>
                           <td>
                             <h:inputText value="#{devicesBean.editItem.ephone}" id="ephone" onchange="checkMultiple(this)" styleClass="text" size="30"
-                              maxlength="12" required="#{(not devicesBean.batchEdit) or devicesBean.updateField['ephone']}" requiredMessage="#{messages.required}" />
+                              maxlength="22" required="#{(not devicesBean.batchEdit) or devicesBean.updateField['ephone']}" requiredMessage="#{messages.required}" />
                             <rich:message for="ephone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                           </td>
                         </tr>
@@ -135,8 +135,14 @@
 
                       <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                         <tr>
-                          <td width="100"><h:outputText value="#{messages.editDevice_vehicle}" /></td>
-                          <td><h:outputText value="#{devicesBean.editItem.vehicle}" /><h:outputText value=" " /><h:commandLink value="#{messages.editDevice_assign}" /></td>
+                          <td width="100">
+                            <h:selectBooleanCheckbox rendered="#{devicesBean.batchEdit}" id="update_vehicleID" value="#{devicesBean.updateField['vehicleID']}" />
+                            <h:outputText value="#{messages.editDevice_vehicleID}" />
+                          </td>
+                          <td>
+                            <h:outputText value="#{devicesBean.editItem.vehicle.name}" /><h:outputText value=" " />
+                            <a href="#" onclick="Richfaces.showModalPanel('chooseVehicle'); return false;"><h:outputText value="#{messages.editDevice_assign}" /></a>
+                          </td>
                         </tr>
                       </table>
 
@@ -167,6 +173,10 @@
 
       </tr>
     </table>
+
+    <ui:include src="../../includes/chooseVehicle.xhtml">
+      <ui:param name="editorBean" value="#{devicesBean}" />
+    </ui:include>
 
     <script type="text/javascript">
   function checkMultiple(item)
