@@ -727,7 +727,7 @@ public class MockData
         Object obj = retrieveObject(clas, primaryKey, searchValue);
         if (obj != null)
         {
-            return GenericHessianDAO.createMapFromObject(obj);
+            return GenericHessianDAO.createMapFromObject(obj, true);
         }
         return null;
     }
@@ -771,7 +771,7 @@ public class MockData
             List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
             for (Object obj : objList)
             {
-                returnList.add(GenericHessianDAO.createMapFromObject(obj));
+                returnList.add(GenericHessianDAO.createMapFromObject(obj, true));
             }
             
             return returnList;
@@ -788,7 +788,7 @@ public class MockData
             List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
             for (Object obj : objList)
             {
-                returnList.add(GenericHessianDAO.createMapFromObject(obj));
+                returnList.add(GenericHessianDAO.createMapFromObject(obj, true));
             }
             
             return returnList;
@@ -802,7 +802,7 @@ public class MockData
         Object obj = retrieveObject(clas, searchCriteria);
         if (obj != null)
         {
-            return GenericHessianDAO.createMapFromObject(obj);
+            return GenericHessianDAO.createMapFromObject(obj, true);
         }
         return null;
     }
@@ -1046,7 +1046,7 @@ public class MockData
 
     private <T> void dumpObject(T obj, String indent)
     {
-        Map<String, Object> objMap = GenericHessianDAO.createMapFromObject(obj);
+        Map<String, Object> objMap = GenericHessianDAO.createMapFromObject(obj, true);
         logger.debug(indent + obj.getClass().getName());
         StringBuffer buffer = new StringBuffer(indent);
         for (Map.Entry<String, Object> item : objMap.entrySet())

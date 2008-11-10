@@ -674,6 +674,11 @@ public abstract class GenericHessianDAO<T, ID, S extends HessianService> impleme
 
     public static <T> Map<String, Object> createMapFromObject(T object)
     {
+        return createMapFromObject(object, false);
+    }
+
+    public static <T> Map<String, Object> createMapFromObject(T object, boolean includeTransients)
+    {
         Map<String, Object> objMap = new HashMap<String, Object>();
 
         Class<?> cls = object.getClass();
@@ -696,16 +701,19 @@ public abstract class GenericHessianDAO<T, ID, S extends HessianService> impleme
                 continue;
 
             // if the field represented by key is transient, skip it
-            try
+            if (!includeTransients)
             {
-                // getDeclaredFields will not resolve inherited fields. It will throw
-                // a NoSuchFieldException.
-                if (Modifier.isTransient(cls.getDeclaredField(key).getModifiers()))
-                    continue;
-            }
-            catch (NoSuchFieldException e)
-            {
-                // if the declared field doesn't exist, we don't care. Move on.
+                try
+                {
+                    // getDeclaredFields will not resolve inherited fields. It will throw
+                    // a NoSuchFieldException.
+                    if (Modifier.isTransient(cls.getDeclaredField(key).getModifiers()))
+                        continue;
+                }
+                catch (NoSuchFieldException e)
+                {
+                    // if the declared field doesn't exist, we don't care. Move on.
+                }
             }
 
             Method getMethod = propertyDescriptors[i].getReadMethod();
