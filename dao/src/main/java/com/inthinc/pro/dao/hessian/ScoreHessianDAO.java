@@ -29,9 +29,9 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer,
     }
 
     @Override
-    public ScoreableEntity getOverallScore(Integer groupID, Integer startDate, Integer endDate)
+    public ScoreableEntity getAverageScoreByType(Integer groupID, Integer startDate, Integer endDate, ScoreType st)
     {
-        return convertToModelObject(this.getSiloService().getOverallScore(groupID, startDate, endDate));
+        return convertToModelObject(this.getSiloService().getAverageScoreByType(groupID, startDate, endDate, st));
     }
 
     @Override
