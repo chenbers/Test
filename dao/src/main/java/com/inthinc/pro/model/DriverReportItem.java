@@ -15,6 +15,7 @@ public class DriverReportItem extends BaseEntity
     private String styleSpeed;
     private String styleStyle;
     private String styleSeatBelt;
+    private Driver driver;    
     
     public String getGroup()
     {
@@ -120,5 +121,15 @@ public class DriverReportItem extends BaseEntity
     {
         this.styleSeatBelt = styleSeatBelt;
     }
-
+    public Driver getDriver()
+    {
+        return driver;
+    }
+    public void setDriver(Driver driver)
+    {
+        this.driver = driver;
+    }
+    public String goTo() {
+        return "go_driver";
+    }
 }
