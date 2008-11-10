@@ -30,5 +30,7 @@
    <bean id="deviceDAO" class="com.inthinc.pro.dao.hessian.DeviceHessianDAO" 
    		parent="genericDAO">
    </bean>
-   
+   <bean id="driverDAO" class="com.inthinc.pro.dao.hessian.DriverHessianDAO" 
+   		parent="genericDAO">
+   </bean>   
 </beans>
