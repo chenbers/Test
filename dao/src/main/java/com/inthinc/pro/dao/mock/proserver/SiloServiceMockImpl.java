@@ -613,5 +613,21 @@ public class SiloServiceMockImpl implements SiloService
         return createReturnValue("count", 1);
     }
     
+    
+    @Override
+    public List<Map<String, Object>> getAllDrivers(Integer groupID)
+    {
+        logger.debug("mock IMPL getAllDrivers groupID = " + groupID);
+        Group group = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
+        
+        List<Driver> drivers = getAllDriversInGroup(group);
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
 
+        for (Driver driver : drivers)
+        {
+            returnList.add(GenericHessianDAO.createMapFromObject(driver));            
+        }
+        
+        return returnList;
+    }
 }
