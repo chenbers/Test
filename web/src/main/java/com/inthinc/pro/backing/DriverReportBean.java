@@ -10,7 +10,10 @@ import org.richfaces.event.DataScrollerEvent;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
+import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverReportItem;
+import com.inthinc.pro.model.Person;
 
 public class DriverReportBean extends BaseBean
 {
@@ -19,10 +22,12 @@ public class DriverReportBean extends BaseBean
     private List <DriverReportItem> driverData = new ArrayList<DriverReportItem>();
     private static final List<String> AVAILABLE_COLUMNS;
     private Map<String, Boolean> driverColumns = new HashMap<String, Boolean>();
+    
+    private DriverDAO driverDAO;
    
     private DriverReportItem drt = null;
     
-    private Integer numRowsPerPg = 2;
+    private Integer numRowsPerPg = 25;
     
     private Integer maxCount = null;
     private Integer start = 1;
@@ -57,6 +62,34 @@ public class DriverReportBean extends BaseBean
     }
     
     private void initData() {
+        List <Driver> driversData = new ArrayList<Driver>();
+        logger.debug("getting drivers for: " + 
+                getUser().getPerson().getGroupID());
+        driversData = driverDAO.getAllDrivers(getUser().getPerson().getGroupID());
+        logger.debug("driversData " + driversData.size());
+        Driver d = null;
+        Person p = null;
+       
+        for ( int i = 0; i < driversData.size(); i++ ) {
+            d = (Driver)driversData.get(i);
+            p = d.getPerson();
+            
+            drt = new DriverReportItem();
+            drt.setEmployee(p.getFirst() + " " + p.getLast());
+            drt.setEmployeeID(new Integer(p.getEmpid()));
+            
+            drt.setGroup("Mock");
+            drt.setMilesDriven(202114);
+            drt.setOverallScore(43);
+            drt.setSeatBeltScore(22);
+            drt.setSpeedScore(12);
+            drt.setStyleScore(34);
+            setStyles();
+            drt.setVehicleID("AE-114");
+            driverData.add(drt);            
+        }
+        
+/* Fakin' it...        
         drt = new DriverReportItem();
         drt.setEmployee("John Doe");
         drt.setEmployeeID(123456);
@@ -121,7 +154,7 @@ public class DriverReportBean extends BaseBean
         setStyles();
         drt.setVehicleID("ZZ-0999");
         driverData.add(drt);     
-        
+*/        
         maxCount = driverData.size();
         resetCounts();
     }
@@ -227,7 +260,7 @@ public class DriverReportBean extends BaseBean
         this.end = (se.getPage())*this.numRowsPerPg;
         //Partial page
         if ( this.end > this.driverData.size() ) {
-            this.end = this.start + ( this.end - this.driverData.size() ) - 1;
+            this.end = this.driverData.size();
         }
     }  
 
@@ -290,4 +323,15 @@ public class DriverReportBean extends BaseBean
     {
         this.searchFor = searchFor;
     }
+
+    public DriverDAO getDriverDAO()
+    {
+        return driverDAO;
+    }
+
+    public void setDriverDAO(DriverDAO driverDAO)
+    {
+        this.driverDAO = driverDAO;
+    }
+
 }
