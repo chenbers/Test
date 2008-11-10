@@ -15,7 +15,7 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      * @param endDate
      * @return
      */
-    ScoreableEntity getOverallScore(Integer groupID, Integer startDate, Integer endDate);
+    ScoreableEntity getAverageScoreByType(Integer groupID, Integer startDate, Integer endDate, ScoreType st);
     
     
     /**
