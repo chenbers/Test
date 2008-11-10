@@ -39,7 +39,7 @@ public class ScoreHessianDAOTest
         {
             Integer endDate = DateUtil.getTodaysDate();
             Integer startDate = DateUtil.getDaysBackDate(endDate, monthsBack[i] * 30);
-            ScoreableEntity score = scoreHessianDAO.getOverallScore(MockData.TOP_GROUP_ID, startDate, endDate);
+            ScoreableEntity score = scoreHessianDAO.getAverageScoreByType(MockData.TOP_GROUP_ID, startDate, endDate, ScoreType.SCORE_OVERALL);
 
             assertNotNull("Months Back: " + monthsBack[i] + " " + score.toString(), score);
             assertEquals(MockData.TOP_GROUP_ID, score.getEntityID());
