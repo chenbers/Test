@@ -2,6 +2,7 @@ package com.inthinc.pro.model;
 
 import java.util.List;
 
+import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
 public class Trip extends BaseEntity
@@ -9,9 +10,11 @@ public class Trip extends BaseEntity
     @ID
     private Integer tripID;
     private Integer vehicleID;
+    private Integer driverID;
     private Integer startTime;
     private Integer endTime;
     private Integer mileage;
+    @Column(name="route", type=com.inthinc.pro.model.LatLng.class)
     private List<LatLng> route;
     
     private String startAddressStr;
@@ -131,6 +134,14 @@ public class Trip extends BaseEntity
     public void setTripID(Integer tripID)
     {
         this.tripID = tripID;
+    }
+    public Integer getDriverID()
+    {
+        return driverID;
+    }
+    public void setDriverID(Integer driverID)
+    {
+        this.driverID = driverID;
     }
 
 }

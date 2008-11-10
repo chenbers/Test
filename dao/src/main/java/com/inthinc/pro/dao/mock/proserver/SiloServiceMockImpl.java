@@ -472,23 +472,10 @@ public class SiloServiceMockImpl implements SiloService
     @Override
     public List<Map<String, Object>> getTrips(Integer driverID, Integer startDate, Integer endDate) throws ProDAOException
     {
-        final List<Map<String, Object>> tripIDs = new LinkedList<Map<String,Object>>();
-        
-        final List<Map<String, Object>> trips = new SiloServiceCreator().getService().getTrips(driverID, startDate, endDate);
-        for (final Map<String, Object> map : trips)
-        {
-            final Integer id = (Integer) map.get("tripID");
-            if (id != null)
-            {
-                final SearchCriteria criteria = new SearchCriteria();
-                criteria.addKeyValue("tripID", id);
-                final List<Map<String, Object>> matches = MockData.getInstance().lookupList(Trip.class, criteria);
-                if (matches != null)
-                    tripIDs.addAll(matches);
-            }
-        }
-    
-        return tripIDs;
+        SearchCriteria criteria = new SearchCriteria();
+        criteria.addKeyValue("driverID", driverID);
+        List<Map<String, Object>> matches = MockData.getInstance().lookupList(Trip.class, criteria);
+        return matches;
         
     }
     

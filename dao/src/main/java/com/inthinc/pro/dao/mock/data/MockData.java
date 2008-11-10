@@ -375,7 +375,7 @@ public class MockData
                         randomInt(500, 10000), route, addressStr[startAddressIdx], addressStr[endAddressIdx]);
                 if (trip.getEndTime() > baseTimeSec)
                         System.out.println("ERROR:: end time excedes base time");
-        
+                trip.setDriverID(driver.getDriverID());
                 storeObject(trip);
                 
                 int eventCnt = addEventsForTrip(driver, vehicle, trip, eventIdOffset);
