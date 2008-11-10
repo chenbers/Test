@@ -11,9 +11,14 @@ import org.richfaces.event.DataScrollerEvent;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.ScoreDAO;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverReportItem;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.ScoreableEntity;
+import com.inthinc.pro.model.ScoreType;
 
 public class DriverReportBean extends BaseBean
 {
@@ -24,6 +29,7 @@ public class DriverReportBean extends BaseBean
     private Map<String, Boolean> driverColumns = new HashMap<String, Boolean>();
     
     private DriverDAO driverDAO;
+    private ScoreDAO scoreDAO;
    
     private DriverReportItem drt = null;
     
@@ -69,6 +75,7 @@ public class DriverReportBean extends BaseBean
         logger.debug("driversData " + driversData.size());
         Driver d = null;
         Person p = null;
+        ScoreableEntity s = null;
        
         for ( int i = 0; i < driversData.size(); i++ ) {
             d = (Driver)driversData.get(i);
@@ -77,14 +84,26 @@ public class DriverReportBean extends BaseBean
             drt = new DriverReportItem();
             drt.setEmployee(p.getFirst() + " " + p.getLast());
             drt.setEmployeeID(new Integer(p.getEmpid()));
+            drt.setDriver(d);
             
-            drt.setGroup("Mock");
-            drt.setMilesDriven(202114);
-            drt.setOverallScore(43);
+            //Snag scores, full year
+            Integer endDate = DateUtil.getTodaysDate();
+            Integer startDate = DateUtil.getDaysBackDate(
+                    endDate, 
+                    Duration.TWELVE.getNumberOfDays());                                            
+            s = scoreDAO.getAverageScoreByType(
+                    d.getGroupID(), 
+                    startDate, 
+                    endDate,
+                    ScoreType.SCORE_OVERALL);
+            drt.setOverallScore(s.getScore());
             drt.setSeatBeltScore(22);
             drt.setSpeedScore(12);
             drt.setStyleScore(34);
             setStyles();
+            
+            drt.setGroup("Mock");
+            drt.setMilesDriven(202114);
             drt.setVehicleID("AE-114");
             driverData.add(drt);            
         }
@@ -332,6 +351,16 @@ public class DriverReportBean extends BaseBean
     public void setDriverDAO(DriverDAO driverDAO)
     {
         this.driverDAO = driverDAO;
+    }
+
+    public ScoreDAO getScoreDAO()
+    {
+        return scoreDAO;
+    }
+
+    public void setScoreDAO(ScoreDAO scoreDAO)
+    {
+        this.scoreDAO = scoreDAO;
     }
 
 }

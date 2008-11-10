@@ -5,6 +5,7 @@ import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.ScoreableEntity;
+import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 
@@ -44,7 +45,7 @@ public class FleetOverviewBean extends BaseBean
         {
             groupID = getUser().getPerson().getGroupID();
         }
-        ScoreableEntity scoreableEntity = scoreDAO.getOverallScore(groupID, startDate, endDate);
+        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(groupID, startDate, endDate, ScoreType.SCORE_OVERALL);
         setOverallScore(scoreableEntity.getScore());
     }
 

@@ -31,7 +31,7 @@ public class DriverSpeedBean extends BaseBean
     private void initSpeed()
     {
         
-        ScoreableEntity speedSe = scoreDAO.getOverallScore(getUser().getPerson().getGroupID(), startDate, endDate); //Replace with correct DAO
+        ScoreableEntity speedSe = scoreDAO.getAverageScoreByType(getUser().getPerson().getGroupID(), startDate, endDate, ScoreType.SCORE_OVERALL); //Replace with correct DAO
         setSpeedScore(speedSe.getScore());
     }
     

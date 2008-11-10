@@ -42,7 +42,7 @@ public class TeamOverviewBean extends BaseDurationBean
         Integer endDate = DateUtil.getTodaysDate();
         Integer startDate = DateUtil.getDaysBackDate(endDate, getDuration().getNumberOfDays());
 
-        ScoreableEntity scoreableEntity = scoreDAO.getOverallScore(getGroupID(), startDate, endDate);
+        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(getGroupID(), startDate, endDate, ScoreType.SCORE_OVERALL);
         setOverallScore(scoreableEntity.getScore());
     }
 

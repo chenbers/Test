@@ -87,20 +87,20 @@ public class DriverBean extends BaseBean
 	//INIT SCORES
     private void initOverallScore()
     {
-        ScoreableEntity overallSe = scoreDAO.getOverallScore(getUser().getPerson().getGroupID(), startDate, endDate);
+        ScoreableEntity overallSe = scoreDAO.getAverageScoreByType(getUser().getPerson().getGroupID(), startDate, endDate, ScoreType.SCORE_OVERALL);
         setOverallScore(overallSe.getScore());
     }
 
     
     private void initSeatBelt()
     {
-        ScoreableEntity seatBeltSe = scoreDAO.getOverallScore(getUser().getPerson().getGroupID(), startDate, endDate); //Replace with correct DAO
+        ScoreableEntity seatBeltSe = scoreDAO.getAverageScoreByType(getUser().getPerson().getGroupID(), startDate, endDate, ScoreType.SCORE_OVERALL); //Replace with correct DAO
         setSeatBeltScore(seatBeltSe.getScore());
     }
     
     private void initDrivingScore()
     {
-        ScoreableEntity drivingSe = scoreDAO.getOverallScore(getUser().getPerson().getGroupID(), startDate, endDate); //Replace with correct DAO
+        ScoreableEntity drivingSe = scoreDAO.getAverageScoreByType(getUser().getPerson().getGroupID(), startDate, endDate, ScoreType.SCORE_OVERALL); //Replace with correct DAO
         setDrivingScore(drivingSe.getScore());
     }
     
