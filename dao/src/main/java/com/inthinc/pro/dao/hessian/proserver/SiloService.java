@@ -162,4 +162,12 @@ public interface SiloService extends HessianService
     
     //Methods related to Trips
     List<Map<String, Object>> getTrips(Integer driverID, Integer startDate, Integer endDate) throws ProDAOException;
+    /**
+     * getDrivers -- retrieves all drivers associated to a groupID.
+     * 
+     * @param groupID
+     * @return
+     * @throws ProDAOException
+     */
+    List<Map<String, Object>> getAllDrivers(Integer groupID);    
 }
