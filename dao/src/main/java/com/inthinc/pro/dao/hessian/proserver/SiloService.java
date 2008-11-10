@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.inthinc.pro.ProDAOException;
+import com.inthinc.pro.model.ScoreType;
 
 public interface SiloService extends HessianService
 {
@@ -80,7 +81,7 @@ public interface SiloService extends HessianService
     List<Map<String, Object>> getGroupHierarchy(Integer groupID) throws ProDAOException;
 
     // ------------- Methods related to the Scores/Reporting
-    Map<String, Object> getOverallScore(Integer groupID, Integer startDate, Integer endDate) throws ProDAOException;
+    Map<String, Object> getAverageScoreByType(Integer groupID, Integer startDate, Integer endDate, ScoreType st) throws ProDAOException;
 
     /**
      * getScores -- retrieves the scores for direct children of the specified group 
