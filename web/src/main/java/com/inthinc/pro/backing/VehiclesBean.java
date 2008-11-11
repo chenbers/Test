@@ -285,6 +285,14 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
 
     private void assignDriver(final VehicleView vehicle)
     {
+        if (vehicle.getDriverID() != null)
+            for (final VehicleView otherVehicle : getItems())
+                if (vehicle.getDriverID().equals(otherVehicle.getDriverID()))
+                {
+                    vehicleDAO.setVehicleDriver(otherVehicle.getVehicleID(), null);
+                    break;
+                }
+
         vehicleDAO.setVehicleDriver(vehicle.getVehicleID(), vehicle.getDriverID());
         vehicle.setOldDriverID(vehicle.getDriverID());
     }
