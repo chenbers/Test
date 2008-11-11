@@ -292,58 +292,9 @@ public class SiloServiceMockImpl implements SiloService
         return returnList;
     }
 
-    @Override
-    public List<Map<String, Object>> getBottomFiveScores(Integer groupID)
+    private List<Map<String, Object>> getDriversScores(Integer groupID)
     {
-        logger.debug("mock IMPL getBottomFiveScores groupID = " + groupID);
-        SearchCriteria searchCriteria = new SearchCriteria();
-        searchCriteria.addKeyValue("parentID", groupID);
-
-        // get list of drivers that have the specified groupID as the parent
-        List<Map<String, Object>> entityList;
-
-        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
-
-        searchCriteria = new SearchCriteria();
-        searchCriteria.addKeyValue("groupID", groupID);
-
-        // get list of drivers that are in the specified group
-        entityList = MockData.getInstance().lookupList(Driver.class, searchCriteria);
-        if (entityList == null)
-        {
-            return returnList;
-        }
-        Integer endDate = DateUtil.getTodaysDate();
-        Integer startDate = DateUtil.getDaysBackDate(endDate, 30);
-
-        for (Map<String, Object> driverMap : entityList)
-        {
-            searchCriteria = new SearchCriteria();
-            searchCriteria.addKeyValue("entityID", driverMap.get("driverID"));
-            searchCriteria.addKeyValue("scoreType", ScoreType.SCORE_OVERALL);
-            searchCriteria.addKeyValueRange("date", startDate, endDate);
-
-            searchCriteria.addKeyValueRange("date", startDate, endDate);
-
-            Map<String, Object> scoreMap = MockData.getInstance().lookup(ScoreableEntity.class, searchCriteria);
-
-            if (scoreMap != null)
-            {
-                returnList.add(scoreMap);
-            }
-            else
-            {
-                logger.error("score missing for driverID " + driverMap.get("driverID"));
-            }
-        }
-        // TODO sort in score order and return bottom 5 and refactor to eliminate duplicate code.
-        return returnList;
-    }
-
-    @Override
-    public List<Map<String, Object>> getTopFiveScores(Integer groupID)
-    {
-        logger.debug("mock IMPL getBottomFiveScores groupID = " + groupID);
+        logger.debug("mock IMPL getDriversScores groupID = " + groupID);
         SearchCriteria searchCriteria = new SearchCriteria();
         searchCriteria.addKeyValue("parentID", groupID);
 
@@ -374,6 +325,7 @@ public class SiloServiceMockImpl implements SiloService
 
             if (scoreMap != null)
             {
+            	logger.debug("mock IMPL getDriversScores - scoreMap "+driver.getPerson().getFirst());
                 scoreMap.put("identifier", driver.getPerson().getFirst() + " " + driver.getPerson().getLast());
                 returnList.add(scoreMap);
             }
@@ -386,6 +338,32 @@ public class SiloServiceMockImpl implements SiloService
         return returnList;
     }
 
+    @Override
+    public List<Map<String, Object>> getBottomFiveScores(Integer groupID)
+    {
+    	List<Map<String, Object>> returnList =  getDriversScores(groupID);
+    	//TODO  return top 5.   
+    	if (returnList.size() > 5){
+    		for (int i=0;returnList.size() > 5;){
+    			
+    			returnList.remove(i);
+    		}
+    	}
+        return returnList;
+    }
+    @Override
+    public List<Map<String, Object>> getTopFiveScores(Integer groupID)
+    {
+    	List<Map<String, Object>> returnList =  getDriversScores(groupID);
+    	//TODO  return top 5.   
+    	if (returnList.size() > 5){
+    		for (int i=5;returnList.size() > 5;){
+    			
+    			returnList.remove(i);
+    		}
+    	}
+        return returnList;
+    }
     @Override
     public List<Map<String, Object>> getVehiclesByAcctID(Integer acctID) throws ProDAOException
     {
