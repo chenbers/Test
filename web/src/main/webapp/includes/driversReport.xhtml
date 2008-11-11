@@ -6,22 +6,19 @@
   	xmlns:iwi="http://pro.tiwi.com/jsf"
 	xmlns:h="http://java.sun.com/jsf/html">
 		
-		<div class="datagrid">
+		<h:form id="driverReportTableForm">
 
-        	<rich:datascroller id="topScroller" for="items" immediate="true"
+        	<rich:datascroller id="topScroller" for="items" 
         		scrollerListener="#{driverReportBean.scrollerListener}"
         		reRender="bottomScroller,items,start,end,max">
         	</rich:datascroller>
-        		
-        		
-				<h:form id="driverReportTableForm">
+        		        						
 				<rich:dataTable value="#{driverData}" id="items"
 					var="item" styleClass="datagrid"
 					rowClasses="trendTableOdd,trendTableEven" cellspacing="1" 
 					rows="#{numRowsPerPg}"
 					width="100%" binding="#{driverTable}">
 
-					<!-- Data -->
 					<rich:column rendered="#{driverColumns['group']}" 
 						sortBy="#{item.group}">
 						<f:facet name="header">
@@ -37,11 +34,16 @@
 						<h:outputText value="#{item.employeeID}" />      
     				</rich:column>
     				<rich:column rendered="#{driverColumns['employee']}" 
-    					sortBy="#{item.employee}">
+    					sortBy="#{item.employee}">    					
       					<f:facet name="header">
       						<h:outputText value="Employee" />
       					</f:facet>
-      					<a href="/tiwipro/secured/driver.faces">#{item.employee}</a>
+      					<a4j:commandLink action="go_driver" value="#{item.employee}">      					
+							<f:setPropertyActionListener 
+								value="#{item.driver}" 
+								target="#{driverBean.driver}">
+							</f:setPropertyActionListener>
+						</a4j:commandLink>      					
     				</rich:column>
     				<rich:column rendered="#{driverColumns['vehicleID']}" 
     					sortBy="#{item.vehicleID}">
@@ -61,34 +63,61 @@
       					<f:facet name="header">
       						<h:outputText value="Overall" />
       					</f:facet>
-      					<iwi:scoreBox style="#{item.styleOverall}" score="#{item.overallScore}"/>      					
+      					<a4j:commandLink reRender="items" action="go_driver">
+      						<iwi:scoreBox style="#{item.styleOverall}" 
+      							score="#{item.overallScore}"/>      					      					
+							<f:setPropertyActionListener 
+								value="#{item.driver}" 
+								target="#{driverBean.driver}">
+							</f:setPropertyActionListener>
+						</a4j:commandLink>  
     				</rich:column>
     				<rich:column rendered="#{driverColumns['speed']}">
       					<f:facet name="header">
       						<h:outputText value="Speed" />
       					</f:facet>
-      					<iwi:scoreBox style="#{item.styleSpeed}" score="#{item.speedScore}"/>
+      					<a4j:commandLink action="go_reportDriverSpeed">
+      						<iwi:scoreBox style="#{item.styleSpeed}" 
+      							score="#{item.speedScore}"/>      					      					
+							<f:setPropertyActionListener 
+								value="#{item.driver}" 
+								target="#{driverBean.driver}">
+							</f:setPropertyActionListener>
+						</a4j:commandLink>
     				</rich:column>
     				<rich:column rendered="#{driverColumns['style']}">
       					<f:facet name="header">
       						<h:outputText value="Style" />
       					</f:facet>
-      					<iwi:scoreBox style="#{item.styleStyle}" score="#{item.styleScore}"/>
+      					<a4j:commandLink action="go_reportDriverSpeed">
+      						<iwi:scoreBox style="#{item.styleStyle}" 
+      							score="#{item.styleScore}"/>      					      					
+							<f:setPropertyActionListener 
+								value="#{item.driver}" 
+								target="#{driverBean.driver}">
+							</f:setPropertyActionListener>
+						</a4j:commandLink>
     				</rich:column>
     				<rich:column rendered="#{driverColumns['seatBelt']}">
       					<f:facet name="header">
       						<h:outputText value="Seat Belt" />
       					</f:facet>      					
-      					<iwi:scoreBox style="#{item.styleSeatBelt}" score="#{item.seatBeltScore}"/>
+      					<a4j:commandLink action="go_reportDriverSpeed">
+      						<iwi:scoreBox style="#{item.styleSeatBelt}" 
+      							score="#{item.seatBeltScore}"/>      					      					
+							<f:setPropertyActionListener 
+								value="#{item.driver}" 
+								target="#{driverBean.driver}">
+							</f:setPropertyActionListener>
+						</a4j:commandLink>
     				</rich:column>
-    			</rich:dataTable>
-    			</h:form>
+    			</rich:dataTable>    	
     			
     			<rich:datascroller id="bottomScroller" for="items" immediate="true"    			
     				scrollerListener="#{driverReportBean.scrollerListener}"
         			reRender="topScroller,items,start,end,max">        			
         		</rich:datascroller>
 
-			</div>	
+		</h:form>	
 
 </ui:composition>

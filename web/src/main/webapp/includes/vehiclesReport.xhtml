@@ -6,15 +6,13 @@
   	xmlns:iwi="http://pro.tiwi.com/jsf"
 	xmlns:h="http://java.sun.com/jsf/html">
 		
-		<div class="datagrid">
+		<h:form id="vehicleReportTableForm">
 
-        	<rich:datascroller id="topScroller" for="items" immediate="true"
+        	<rich:datascroller id="topScroller" for="items" 
         		scrollerListener="#{vehicleReportBean.scrollerListener}"
         		reRender="bottomScroller,items,start,end,max">
         	</rich:datascroller>
-        		
-        		
-				<h:form id="vehicleReportTableForm">
+        						
 				<rich:dataTable value="#{vehicleData}" id="items"
 					var="item" styleClass="datagrid"
 					rowClasses="trendTableOdd,trendTableEven" cellspacing="1" 
@@ -34,7 +32,12 @@
       					<f:facet name="header">
       						<h:outputText value="VehicleID" />
       					</f:facet>
-						<h:outputText value="#{item.vehicleID}" />      
+						<a4j:commandLink action="go_vehicle" value="#{item.vehicleID}">      						   					      					
+							<f:setPropertyActionListener 
+								value="#{item.driver}" 
+								target="#{driverBean.driver}">
+							</f:setPropertyActionListener>
+						</a4j:commandLink>  
     				</rich:column>
     				<rich:column rendered="#{vehicleColumns['makeModelYear']}" 
     					sortBy="#{item.makeModelYear}">
@@ -48,7 +51,13 @@
       					<f:facet name="header">
       						<h:outputText value="Driver" />
       					</f:facet>
-      					<a href="/tiwipro/secured/driver.faces">#{item.driver}</a>    					
+      					<a4j:commandLink value="#{item.driver.person.first} #{item.driver.person.last}" 
+      						reRender="items" action="go_driver">      						    					      					
+							<f:setPropertyActionListener 
+								value="#{item.driver}" 
+								target="#{driverBean.driver}">
+							</f:setPropertyActionListener>
+						</a4j:commandLink>    					
     				</rich:column>
     				<rich:column rendered="#{vehicleColumns['milesDriven']}" 
     					sortBy="#{item.milesDriven}">
@@ -61,28 +70,48 @@
       					<f:facet name="header">
       						<h:outputText value="Overall" />
       					</f:facet>
-      					<iwi:scoreBox style="#{item.styleOverall}" score="#{item.overallScore}"/>      					
+      					<a4j:commandLink reRender="items" action="go_vehicle">
+      						<iwi:scoreBox style="#{item.styleOverall}" 
+      							score="#{item.overallScore}"/>      					      					
+							<f:setPropertyActionListener 
+								value="#{item.driver}" 
+								target="#{driverBean.driver}">
+							</f:setPropertyActionListener>
+						</a4j:commandLink>  
     				</rich:column>
     				<rich:column rendered="#{vehicleColumns['speed']}">
       					<f:facet name="header">
       						<h:outputText value="Speed" />
       					</f:facet>
-      					<iwi:scoreBox style="#{item.styleSpeed}" score="#{item.speedScore}"/>
+            			<a4j:commandLink action="go_vehicle">
+      						<iwi:scoreBox style="#{item.styleSpeed}" 
+      							score="#{item.speedScore}"/>      					      					
+							<f:setPropertyActionListener 
+								value="#{item.driver}" 
+								target="#{driverBean.driver}">
+							</f:setPropertyActionListener>
+						</a4j:commandLink>
     				</rich:column>
     				<rich:column rendered="#{vehicleColumns['style']}">
       					<f:facet name="header">
       						<h:outputText value="Style" />
       					</f:facet>
-      					<iwi:scoreBox style="#{item.styleStyle}" score="#{item.styleScore}"/>
+      					<a4j:commandLink action="go_vehicle">
+      						<iwi:scoreBox style="#{item.styleStyle}" 
+      							score="#{item.styleScore}"/>      					      					
+							<f:setPropertyActionListener 
+								value="#{item.driver}" 
+								target="#{driverBean.driver}">
+							</f:setPropertyActionListener>
+						</a4j:commandLink>
     				</rich:column>
-    			</rich:dataTable>
-    			</h:form>
+    			</rich:dataTable>    			
     			
-    			<rich:datascroller id="bottomScroller" for="items" immediate="true"    			
-    				scrollerListener="#{vehicleReportBean.scrollerListener}"
-        			reRender="topScroller,items,start,end,max">        			
-        		</rich:datascroller>
+    		<rich:datascroller id="bottomScroller" for="items" immediate="true"    			
+    			scrollerListener="#{vehicleReportBean.scrollerListener}"
+        		reRender="topScroller,items,start,end,max">        			
+        	</rich:datascroller>
 
-			</div>	
+		</h:form>
 
 </ui:composition>
