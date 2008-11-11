@@ -15,7 +15,8 @@ public class DriverReportItem extends BaseEntity
     private String styleSpeed;
     private String styleStyle;
     private String styleSeatBelt;
-    private Driver driver;    
+    private Driver driver;   
+    private Integer groupID;
     
     public String getGroup()
     {
@@ -128,5 +129,13 @@ public class DriverReportItem extends BaseEntity
     public void setDriver(Driver driver)
     {
         this.driver = driver;
+    }
+    public Integer getGroupID()
+    {
+        return groupID;
+    }
+    public void setGroupID(Integer groupID)
+    {
+        this.groupID = groupID;
     }
 }
