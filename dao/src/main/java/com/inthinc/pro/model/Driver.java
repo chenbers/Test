@@ -2,6 +2,7 @@ package com.inthinc.pro.model;
 
 import java.util.Date;
 
+import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
 public class Driver extends BaseEntity
@@ -15,8 +16,9 @@ public class Driver extends BaseEntity
     private State   state;
     private String  licenseClass;
     private Date    expiration;
-    
-    private transient Person person;
+
+    @Column(updateable = false)
+    private Person person;
 
     
     // cj - temporarily added this back in until we can sort out the driver/user/person stuff -- this was breaking us

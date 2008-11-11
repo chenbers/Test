@@ -19,6 +19,7 @@ import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.SafetyDevice;
@@ -361,11 +362,16 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
 
     public class VehicleView extends Vehicle implements EditItem
     {
-        private transient Integer oldGroupID;
-        private transient Group   group;
-        private transient Integer oldDriverID;
-        private transient Driver  driver;
-        private transient boolean selected;
+        @Column(updateable = false)
+        private Integer oldGroupID;
+        @Column(updateable = false)
+        private Group   group;
+        @Column(updateable = false)
+        private Integer oldDriverID;
+        @Column(updateable = false)
+        private Driver  driver;
+        @Column(updateable = false)
+        private boolean selected;
 
         public Integer getId()
         {

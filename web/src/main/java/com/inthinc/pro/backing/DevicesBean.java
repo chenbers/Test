@@ -15,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import com.inthinc.pro.backing.VehiclesBean.VehicleView;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.Vehicle;
@@ -279,9 +280,12 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 
     public class DeviceView extends Device implements EditItem
     {
-        private transient Integer oldVehicleID;
-        private transient Vehicle vehicle;
-        private transient boolean selected;
+        @Column(updateable = false)
+        private Integer oldVehicleID;
+        @Column(updateable = false)
+        private Vehicle vehicle;
+        @Column(updateable = false)
+        private boolean selected;
 
         public Integer getId()
         {

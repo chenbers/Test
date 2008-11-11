@@ -24,6 +24,7 @@ import org.springframework.beans.BeanUtils;
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.PersonDAO;
+import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Gender;
@@ -464,13 +465,20 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
 
     public class PersonView extends Person implements EditItem
     {
-        private transient Group   group;
-        private transient Person  reportsToPerson;
-        private transient String  password;
-        private transient String  confirmPassword;
-        private transient boolean userSelected;
-        private transient boolean driverSelected;
-        private transient boolean selected;
+        @Column(updateable = false)
+        private Group   group;
+        @Column(updateable = false)
+        private Person  reportsToPerson;
+        @Column(updateable = false)
+        private String  password;
+        @Column(updateable = false)
+        private String  confirmPassword;
+        @Column(updateable = false)
+        private boolean userSelected;
+        @Column(updateable = false)
+        private boolean driverSelected;
+        @Column(updateable = false)
+        private boolean selected;
 
         public Integer getId()
         {

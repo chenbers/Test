@@ -36,8 +36,10 @@ public class Person extends BaseEntity
     private Integer          weight;     // pounds
     private Date             dob;
     // user, driver (may be null)
-    private transient User   user;
-    private transient Driver driver;
+    @Column(updateable = false)
+    private User   user;
+    @Column(updateable = false)
+    private Driver driver;
 
     public Integer getPersonID()
     {
