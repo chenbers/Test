@@ -60,7 +60,7 @@
 				  <tr>
 					<td class="left"><img src="images/search_box_left.png" /></td>
 					<td width="105" height="100" class="middle">
-					  <input name="textfield2" type="text" class="text" size="15" width="100" />
+					  <input name="textfield2" type="text" class="text" size="15" width="100" value="Amy Johnson, LV-5150" onfocus="if (this.value=='Amy Johnson, LV-5150') {this.value = '';}" onblur="if(this.value=='') {this.value = 'Amy Johnson, LV-5150';}" />
 					</td>
 					<td class="middle">
 					  <select name="select" class="text" style="width: 95px;">
@@ -97,7 +97,7 @@
 			  <tr>
 				<td>Find Address: </td>
 				<td>
-				  <input name="textfield" type="text" class="text" value="356 Hollywood Blvd 90210" size="100" />
+				  <input name="textfield" type="text" class="text" size="100" value="address, city, state, zip code" onfocus="if (this.value=='address, city, state, zip code') {this.value = '';}" onblur="if(this.value=='') {this.value = 'address, city, state, zip code';}" />
 				</td>
 				<td><button value="" class="left" onclick="parent.location.href='live_fleet_dispatch.html'; return false;"><span class="search">Locate</span></button></td>
 			  </tr>
