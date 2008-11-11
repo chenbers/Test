@@ -677,7 +677,8 @@ public class SiloServiceMockImpl implements SiloService
     public Map<String, Object> setVehicleDriver(Integer vehicleID, Integer driverID) throws ProDAOException
     {
         final Vehicle vehicle = MockData.getInstance().lookupObject(Vehicle.class, "vehicleID", vehicleID);
-        vehicle.setDriverID(driverID);
+        if (vehicle != null)
+            vehicle.setDriverID(driverID);
 
         return createReturnValue("count", 1);
     }
@@ -686,12 +687,14 @@ public class SiloServiceMockImpl implements SiloService
     public Map<String, Object> setVehicleDevice(Integer vehicleID, Integer deviceID) throws ProDAOException
     {
         final Vehicle vehicle = MockData.getInstance().lookupObject(Vehicle.class, "vehicleID", vehicleID);
-        vehicle.setDeviceID(deviceID);
+        if (vehicle != null)
+            vehicle.setDeviceID(deviceID);
 
         if (deviceID != null)
         {
             final Device device = MockData.getInstance().lookupObject(Device.class, "deviceID", deviceID);
-            device.setVehicleID(vehicleID);
+            if (device != null)
+                device.setVehicleID(vehicleID);
         }
 
         return createReturnValue("count", 1);
