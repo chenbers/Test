@@ -731,7 +731,7 @@ public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>
                     List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
                     for (Object o : (List<?>) value)
                     {
-                        returnList.add(createMapFromObject(o));
+                        returnList.add(createMapFromObject(o, includeTransients));
                     }
                     value = returnList;
                 }
