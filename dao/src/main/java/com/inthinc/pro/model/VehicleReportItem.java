@@ -13,6 +13,7 @@ public class VehicleReportItem
     private String styleSpeed;
     private String styleStyle;
     private Driver driver;
+    private Integer groupID;
     
     public String getGroup()
     {
@@ -101,6 +102,14 @@ public class VehicleReportItem
     public void setStyleStyle(String styleStyle)
     {
         this.styleStyle = styleStyle;
+    }
+    public Integer getGroupID()
+    {
+        return groupID;
+    }
+    public void setGroupID(Integer groupID)
+    {
+        this.groupID = groupID;
     }
 
 }
