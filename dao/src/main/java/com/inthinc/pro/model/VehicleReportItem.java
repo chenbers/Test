@@ -12,7 +12,7 @@ public class VehicleReportItem
     private String styleOverall;
     private String styleSpeed;
     private String styleStyle;
-    private String driver;
+    private Driver driver;
     
     public String getGroup()
     {
@@ -38,11 +38,11 @@ public class VehicleReportItem
     {
         this.makeModelYear = makeModelYear;
     }
-    public String getDriver()
+    public Driver getDriver()
     {
         return driver;
     }
-    public void setDriver(String driver)
+    public void setDriver(Driver driver)
     {
         this.driver = driver;
     }
