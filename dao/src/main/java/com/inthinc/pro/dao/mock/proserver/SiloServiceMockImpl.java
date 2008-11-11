@@ -25,9 +25,9 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
+import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.Trip;
 
 public class SiloServiceMockImpl implements SiloService
 {
@@ -291,70 +291,34 @@ public class SiloServiceMockImpl implements SiloService
 
         return returnList;
     }
-
-    private List<Map<String, Object>> getDriversScores(Integer groupID)
-    {
-        logger.debug("mock IMPL getDriversScores groupID = " + groupID);
-        SearchCriteria searchCriteria = new SearchCriteria();
-        searchCriteria.addKeyValue("parentID", groupID);
-
-        // get list of drivers that have the specified groupID as the parent
-
-        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
-
-        searchCriteria = new SearchCriteria();
-        searchCriteria.addKeyValue("groupID", groupID);
-
-        // get list of drivers that are in the specified group
-        List<Driver> driverList = MockData.getInstance().retrieveObjectList(Driver.class, searchCriteria);
-        if (driverList == null)
-        {
-            return returnList;
-        }
-        Integer endDate = DateUtil.getTodaysDate();
-        Integer startDate = DateUtil.getDaysBackDate(endDate, 30);
-
-        for (Driver driver : driverList)
-        {
-            searchCriteria = new SearchCriteria();
-            searchCriteria.addKeyValue("entityID", driver.getDriverID());
-            searchCriteria.addKeyValue("scoreType", ScoreType.SCORE_OVERALL);
-            searchCriteria.addKeyValueRange("date", startDate, endDate);
-
-            Map<String, Object> scoreMap = MockData.getInstance().lookup(ScoreableEntity.class, searchCriteria);
-
-            if (scoreMap != null)
-            {
-            	logger.debug("mock IMPL getDriversScores - scoreMap "+driver.getPerson().getFirst());
-                scoreMap.put("identifier", driver.getPerson().getFirst() + " " + driver.getPerson().getLast());
-                returnList.add(scoreMap);
-            }
-            else
-            {
-                logger.error("score missing for driverID " + driver.getDriverID());
-            }
-        }
-        // TODO sort list in score order and return top 5 and refactor to eliminate duplicate code.
-        return returnList;
-    }
-
+ 
     @Override
     public List<Map<String, Object>> getBottomFiveScores(Integer groupID)
     {
-    	List<Map<String, Object>> returnList =  getDriversScores(groupID);
-    	//TODO  return top 5.   
-    	if (returnList.size() > 5){
-    		for (int i=0;returnList.size() > 5;){
-    			
-    			returnList.remove(i);
-    		}
-    	}
-        return returnList;
+        Integer endDate = DateUtil.getTodaysDate();
+        Integer startDate = DateUtil.getDaysBackDate(endDate, 30);
+        try {
+	    	List<Map<String, Object>> returnList =  getScores(groupID, startDate, endDate, ScoreType.SCORE_OVERALL.getCode());
+	    	//TODO  return top 5.   
+	    	if (returnList.size() > 5){
+	    		for (int i=0;returnList.size() > 5;){
+	    			
+	    			returnList.remove(i);
+	    		}
+	    	}
+	        return returnList;
+        }
+        catch(ProDAOException pdaoe){
+        	
+        	return null;
+        }
     }
     @Override
     public List<Map<String, Object>> getTopFiveScores(Integer groupID)
     {
-    	List<Map<String, Object>> returnList =  getDriversScores(groupID);
+        Integer endDate = DateUtil.getTodaysDate();
+        Integer startDate = DateUtil.getDaysBackDate(endDate, 30);
+    	List<Map<String, Object>> returnList =  getScores(groupID, startDate, endDate, ScoreType.SCORE_OVERALL.getCode());
     	//TODO  return top 5.   
     	if (returnList.size() > 5){
     		for (int i=5;returnList.size() > 5;){

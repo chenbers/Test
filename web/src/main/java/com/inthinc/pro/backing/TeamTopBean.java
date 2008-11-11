@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.springframework.security.context.SecurityContextHolder;
 
+import com.inthinc.pro.backing.ui.ScoreBox;
+import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
-import com.inthinc.pro.model.User;
+import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.wrapper.ScoreableEntityPkg;
 
 public class TeamTopBean extends BaseBean
@@ -77,20 +77,20 @@ public class TeamTopBean extends BaseBean
 //        s.get(3).setIdentifier("Jack O'Lantern");
 //        s.get(4).setIdentifier("Herman Munster");
 //        //Populate the table
-//        ScoreBox sb = new ScoreBox(0,ScoreBoxSizes.SMALL);  
-//        int cnt = 0;
-//        topDrivers = new ArrayList<ScoreableEntityPkg>();
-//        for (ScoreableEntity score : s)
-//        {
-//            ScoreableEntityPkg se = new ScoreableEntityPkg();
-//            score.setPosition(cnt+1);
-//            se.setSe(score);
-//            sb.setScore(score.getScore());
-//            se.setStyle(sb.getScoreStyle());
-//            se.setColorKey(GraphicUtil.entityColorKey.get(cnt++));
-//            se.setGoTo("go_team");
-//            topDrivers.add(se);                      
-//        }
+        ScoreBox sb = new ScoreBox(0,ScoreBoxSizes.SMALL);  
+        int cnt = 0;
+        topDrivers = new ArrayList<ScoreableEntityPkg>();
+        for (ScoreableEntity score : s)
+        {
+            ScoreableEntityPkg se = new ScoreableEntityPkg();
+            score.setPosition(cnt+1);
+            se.setSe(score);
+            sb.setScore(score.getScore());
+            se.setStyle(sb.getScoreStyle());
+            se.setColorKey(GraphicUtil.entityColorKey.get(cnt++));
+            se.setGoTo("go_team");
+            topDrivers.add(se);                      
+        }
 
 //        logger.debug("location is: " + navigation.getLocation());
         this.pageChange = true;
@@ -163,20 +163,20 @@ public class TeamTopBean extends BaseBean
 //        s.get(3).setIdentifier("Lurch");
 //        s.get(4).setIdentifier("Thing");
 //        //Populate the table
-//        ScoreBox sb = new ScoreBox(0,ScoreBoxSizes.SMALL);  
-//        int cnt = 0;
-//        bottomDrivers = new ArrayList<ScoreableEntityPkg>();
-//       for (ScoreableEntity score : s)
-//        {
-//            ScoreableEntityPkg se = new ScoreableEntityPkg();
-//            score.setPosition(cnt+1);
-//            se.setSe(score);
-//            sb.setScore(score.getScore());
-//            se.setStyle(sb.getScoreStyle());
-//            se.setColorKey(GraphicUtil.entityColorKey.get(cnt++));
-//            se.setGoTo("go_team");
-//            bottomDrivers.add(se);                      
-//        }
+        ScoreBox sb = new ScoreBox(0,ScoreBoxSizes.SMALL);  
+        int cnt = 0;
+        bottomDrivers = new ArrayList<ScoreableEntityPkg>();
+       for (ScoreableEntity score : s)
+        {
+            ScoreableEntityPkg se = new ScoreableEntityPkg();
+            score.setPosition(cnt+1);
+            se.setSe(score);
+            sb.setScore(score.getScore());
+            se.setStyle(sb.getScoreStyle());
+            se.setColorKey(GraphicUtil.entityColorKey.get(cnt++));
+            se.setGoTo("go_team");
+            bottomDrivers.add(se);                      
+        }
 
 //        logger.debug("location is: " + navigation.getLocation());
         this.pageChange = true;
