@@ -5,7 +5,6 @@ public class VehicleReportItem
     private String group;
     private Integer vehicleID;
     private String makeModelYear;
-    private String driver;
     private Integer milesDriven;
     private Integer overallScore;
     private Integer speedScore;
@@ -13,6 +12,7 @@ public class VehicleReportItem
     private String styleOverall;
     private String styleSpeed;
     private String styleStyle;
+    private String driver;
     
     public String getGroup()
     {
