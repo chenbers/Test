@@ -28,7 +28,7 @@
 
   <ui:composition>
 
-    <rich:modalPanel id="chooseVehicle" headerClass="popupHeader" controlsClass="popupControls" width="500" height="380" zindex="2001">
+    <rich:modalPanel id="chooseVehicle" headerClass="popupHeader" controlsClass="popupControls" width="600" height="380" zindex="2001">
       <f:facet name="header">
         <h:outputText value="#{messages.chooseVehicle_title}" />
       </f:facet>
@@ -56,7 +56,11 @@
             <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_active}" /></f:facet>
             <h:outputText value="#{item.active ? messages.active : messages.inactive}" />
           </rich:column>
-          <rich:column filterExpression="#{empty item.deviceID}">
+          <rich:column sortBy="#{empty item.deviceID}">
+            <f:facet name="header"><h:outputText value="#{messages.chooseVehicle_assigned}" /></f:facet>
+            <h:outputText value="#{(empty item.deviceID) ? messages.chooseVehicle_unassigned : messages.chooseVehicle_assigned}" />
+          </rich:column>
+          <rich:column filterExpression="#{item.deviceID != editorBean.editItem.deviceID}">
             <f:facet name="header">
               <h:outputText value=" " />
             </f:facet>
