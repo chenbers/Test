@@ -55,27 +55,6 @@ public class TeamTopBean extends BaseBean
         } catch (Exception e) {
             logger.debug("graphicDao error: " + e.getMessage());
         }       
-//        List<ScoreableEntity> s = new ArrayList<ScoreableEntity>();
-//        for (int i=0;i <5;i++){
-//            
-//          ScoreableEntity se = new ScoreableEntity();
-//          se.setCreated(new Date());
-//          se.setDate(DateUtil.getTodaysDate());
-//          se.setEntityID(i);
-//          se.setEntityType(EntityType.ENTITY_DRIVER);
-//          se.setIdentifier("Fred");
-//          se.setModified(new Date());
-//          se.setPosition(i);
-//          se.setScore((5-i)*10);
-//          se.setScoreType(ScoreType.SCORE_OVERALL);
-//          s.add(se);
-//
-//        }
-//        s.get(0).setIdentifier("Frankenstein");
-//        s.get(1).setIdentifier("Dracula");
-//        s.get(2).setIdentifier("Casper");
-//        s.get(3).setIdentifier("Jack O'Lantern");
-//        s.get(4).setIdentifier("Herman Munster");
 //        //Populate the table
         ScoreBox sb = new ScoreBox(0,ScoreBoxSizes.SMALL);  
         int cnt = 0;
@@ -111,10 +90,10 @@ public class TeamTopBean extends BaseBean
             bottomDrivers.clear();
         }
         
-//        //Is the group id initialized?
-//        if ( this.navigation.getGroupID() == -1 ) {
-//            this.navigation.setGroupID(getUser().getGroupID());
-//        }
+        //Is the group id initialized?
+        if ( this.navigation.getGroupID() == -1 ) {
+            this.navigation.setGroupID(getUser().getPerson().getGroupID());
+        }
 //        
 //        //Handle navigation
 //        logger.debug("location is: " + navigation.getLocation());
@@ -142,27 +121,8 @@ public class TeamTopBean extends BaseBean
         } catch (Exception e) {
             logger.debug("graphicDao error: " + e.getMessage());
         }       
-//        List<ScoreableEntity> s = new ArrayList<ScoreableEntity>();
-//        for (int i=0;i <5;i++){
-//            
-//          ScoreableEntity se = new ScoreableEntity();
-//          se.setCreated(new Date());
-//          se.setDate(DateUtil.getTodaysDate());
-//          se.setEntityID(i);
-//          se.setEntityType(EntityType.ENTITY_DRIVER);
-//          se.setIdentifier("Sid");
-//          se.setModified(new Date());
-//          se.setPosition(i+5);
-//          se.setScore((5-i)*10);
-//          se.setScoreType(ScoreType.SCORE_OVERALL);
-//          s.add(se);
-//        }
-//        s.get(0).setIdentifier("Harry Potter");
-//        s.get(1).setIdentifier("Morticia Adams");
-//        s.get(2).setIdentifier("Uncle Festus");
-//        s.get(3).setIdentifier("Lurch");
-//        s.get(4).setIdentifier("Thing");
-//        //Populate the table
+
+        //Populate the table
         ScoreBox sb = new ScoreBox(0,ScoreBoxSizes.SMALL);  
         int cnt = 0;
         bottomDrivers = new ArrayList<ScoreableEntityPkg>();
