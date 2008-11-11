@@ -114,6 +114,7 @@
 		scope="session" parent="baseBean" init-method="init">
 		<property name="scoreDAO" ref="scoreDAO"></property>
 		<property name="driverDAO" ref="driverDAO"></property>
+		<property name="groupDAO" ref="groupDAO"></property>
    </bean>
    <bean id="driverReportTable" class="com.inthinc.pro.backing.ui.DriverReportTable" 
    		scope="session">
@@ -122,6 +123,7 @@
 		scope="session" parent="baseBean" init-method="init">
 		<property name="scoreDAO" ref="scoreDAO"></property>
 		<property name="vehicleDAO" ref="vehicleDAO"></property>
+		<property name="groupDAO" ref="groupDAO"></property>
    </bean>
    <bean id="vehicleReportTable" class="com.inthinc.pro.backing.ui.VehicleReportTable" 
    		scope="session">
