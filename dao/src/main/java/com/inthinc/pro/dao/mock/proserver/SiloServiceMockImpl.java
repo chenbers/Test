@@ -706,5 +706,17 @@ public class SiloServiceMockImpl implements SiloService
             throw new EmptyResultSetException("No group for groupID: " + groupID, "getGroupByID", 0);
         }
         return returnMap;
+    }    
+    
+    @Override
+    public Map<String, Object> getVehicleByID(Integer vehicleID) throws ProDAOException
+    {
+        Map<String, Object> returnMap = MockData.getInstance().lookup(Vehicle.class, "vehicleID", vehicleID);
+
+        if (returnMap == null)
+        {
+            throw new EmptyResultSetException("No vehicle for vehicleID: " + vehicleID, "getVehicleByID", 0);
+        }
+        return returnMap;        
     }
 }
