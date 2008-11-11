@@ -11,11 +11,13 @@ import org.richfaces.event.DataScrollerEvent;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.ScoreType;
@@ -30,6 +32,7 @@ public class DriverReportBean extends BaseBean
     
     private DriverDAO driverDAO;
     private ScoreDAO scoreDAO;
+    private GroupDAO groupDAO;
    
     private DriverReportItem drt = null;
     
@@ -39,7 +42,7 @@ public class DriverReportBean extends BaseBean
     private Integer start = 1;
     private Integer end = numRowsPerPg;
     
-    private String searchFor = null;
+    private String searchFor = "";
 
     
     static
@@ -67,47 +70,10 @@ public class DriverReportBean extends BaseBean
     }
     
     private void initData() {
-        List <Driver> driversData = new ArrayList<Driver>();
-        driversData = driverDAO.getAllDrivers(getUser().getPerson().getGroupID());
-     
-        Driver d = null;
-        Person p = null;
-        ScoreableEntity s = null;
-       
-        for ( int i = 0; i < driversData.size(); i++ ) {
-            d = (Driver)driversData.get(i);
-            p = d.getPerson();
-            
-            //Employee and driver
-            drt = new DriverReportItem();
-            drt.setEmployee(p.getFirst() + " " + p.getLast());
-            drt.setEmployeeID(new Integer(p.getEmpid()));
-            drt.setDriver(d);
-            
-            //Scores, full year
-            Integer endDate = DateUtil.getTodaysDate();
-            Integer startDate = DateUtil.getDaysBackDate(
-                    endDate, 
-                    Duration.TWELVE.getNumberOfDays());                                            
-            s = scoreDAO.getAverageScoreByType(d.getGroupID(),startDate,endDate,ScoreType.SCORE_OVERALL);
-            drt.setOverallScore(s.getScore());
-            s = scoreDAO.getAverageScoreByType(d.getGroupID(),startDate,endDate,ScoreType.SCORE_SEATBELT);
-            drt.setSeatBeltScore(s.getScore());
-            s = scoreDAO.getAverageScoreByType(d.getGroupID(),startDate,endDate,ScoreType.SCORE_SPEEDING);
-            drt.setSpeedScore(s.getScore());
-            s = scoreDAO.getAverageScoreByType(d.getGroupID(),startDate,endDate,ScoreType.SCORE_DRIVING_STYLE);
-            drt.setStyleScore(s.getScore());
-            setStyles();
-            
-            //Needed            
-            drt.setMilesDriven(202114);
-            drt.setVehicleID("AE-114");
-            drt.setGroup("Mock");
-            
-            driverData.add(drt);            
-        }
-
-        maxCount = driverData.size();
+        List <Driver> driversData = new ArrayList<Driver>();        
+        driversData = driverDAO.getAllDrivers(getUser().getPerson().getGroupID());        
+        loadResults(driversData);     
+        maxCount = driverData.size();        
         resetCounts();
     }
         
@@ -155,6 +121,51 @@ public class DriverReportBean extends BaseBean
         }
         
         resetCounts();       
+    }
+    
+    private void loadResults(List <Driver> driversData)
+    {
+        Driver d = null;
+        Person p = null;
+        ScoreableEntity s = null;
+        Group g = null;
+       
+        for ( int i = 0; i < driversData.size(); i++ ) {
+            d = (Driver)driversData.get(i);
+            p = d.getPerson();
+            
+            //Employee and driver
+            drt = new DriverReportItem();
+            drt.setEmployee(p.getFirst() + " " + p.getLast());
+            drt.setEmployeeID(new Integer(p.getEmpid()));
+            drt.setDriver(d);
+            
+            //Scores, full year
+            Integer endDate = DateUtil.getTodaysDate();
+            Integer startDate = DateUtil.getDaysBackDate(
+                    endDate, 
+                    Duration.TWELVE.getNumberOfDays());                                            
+            s = scoreDAO.getAverageScoreByType(d.getGroupID(),startDate,endDate,ScoreType.SCORE_OVERALL);
+            drt.setOverallScore(s.getScore());
+            s = scoreDAO.getAverageScoreByType(d.getGroupID(),startDate,endDate,ScoreType.SCORE_SEATBELT);
+            drt.setSeatBeltScore(s.getScore());
+            s = scoreDAO.getAverageScoreByType(d.getGroupID(),startDate,endDate,ScoreType.SCORE_SPEEDING);
+            drt.setSpeedScore(s.getScore());
+            s = scoreDAO.getAverageScoreByType(d.getGroupID(),startDate,endDate,ScoreType.SCORE_DRIVING_STYLE);
+            drt.setStyleScore(s.getScore());
+            setStyles();
+            
+            //Group
+            g = groupDAO.getGroupByID(d.getGroupID());
+            drt.setGroup(g.getName());
+            drt.setGroupID(g.getGroupID());
+            
+            //Needed            
+            drt.setMilesDriven(202114);
+            drt.setVehicleID("AE-114");           
+            
+            driverData.add(drt);            
+        }
     }
     
     private void resetCounts() {
@@ -294,6 +305,16 @@ public class DriverReportBean extends BaseBean
     public void setScoreDAO(ScoreDAO scoreDAO)
     {
         this.scoreDAO = scoreDAO;
+    }
+
+    public GroupDAO getGroupDAO()
+    {
+        return groupDAO;
+    }
+
+    public void setGroupDAO(GroupDAO groupDAO)
+    {
+        this.groupDAO = groupDAO;
     }
 
 }

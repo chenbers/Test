@@ -11,12 +11,14 @@ import org.richfaces.event.DataScrollerEvent;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
@@ -33,6 +35,7 @@ public class VehicleReportBean extends BaseBean
     
     private VehicleDAO vehicleDAO;
     private ScoreDAO scoreDAO;
+    private GroupDAO groupDAO;
     
     private VehicleReportItem vrt = null;
     
@@ -42,7 +45,7 @@ public class VehicleReportBean extends BaseBean
     private Integer start = 1;
     private Integer end = numRowsPerPg;
     
-    private String searchFor = null;
+    private String searchFor = "";
 
     
     static
@@ -72,47 +75,7 @@ public class VehicleReportBean extends BaseBean
         List <Vehicle> vehiclesData = new ArrayList<Vehicle>();
         vehiclesData = vehicleDAO.getVehiclesInGroupHierarchy(
                 getUser().getPerson().getGroupID());
-     
-        Vehicle v = null;
-        
-        Driver d = new Driver();
-        Person p = new Person();
-        p.setFirst("Need");
-        p.setLast("Data");
-        d.setPerson(p);
-       
-        ScoreableEntity s = null;        
-        vrt = new VehicleReportItem();
-                
-        for ( int i = 0; i < vehiclesData.size(); i++ ) {
-            v = (Vehicle)vehiclesData.get(i);            
-            
-            //Vehicle
-            vrt = new VehicleReportItem();
-            vrt.setVehicleID(v.getVehicleID());
-            vrt.setMakeModelYear(v.getMake() + "/" + v.getModel() + "/" + v.getYear());         
-            
-            //Scores, full year
-            Integer endDate = DateUtil.getTodaysDate();
-            Integer startDate = DateUtil.getDaysBackDate(
-                    endDate, 
-                    Duration.TWELVE.getNumberOfDays());                                            
-            s = scoreDAO.getAverageScoreByType(v.getGroupID(),startDate,endDate,ScoreType.SCORE_OVERALL);
-            vrt.setOverallScore(s.getScore());
-            s = scoreDAO.getAverageScoreByType(v.getGroupID(),startDate,endDate,ScoreType.SCORE_SPEEDING);
-            vrt.setSpeedScore(s.getScore());
-            s = scoreDAO.getAverageScoreByType(v.getGroupID(),startDate,endDate,ScoreType.SCORE_DRIVING_STYLE);
-            vrt.setStyleScore(s.getScore());
-            setStyles();
-            
-            //Needed
-            vrt.setGroup("North");  
-            vrt.setDriver(d);
-            vrt.setMilesDriven(202114);
-            
-            vehicleData.add(vrt);            
-        }        
-        
+        loadResults(vehiclesData);
         maxCount = vehicleData.size();
         resetCounts();
     }
@@ -166,6 +129,54 @@ public class VehicleReportBean extends BaseBean
         }
         
         resetCounts();       
+    }
+    
+    private void loadResults(List <Vehicle> vehiclesData) 
+    {
+        Vehicle v = null;
+        Group g = null;
+        
+        Driver d = new Driver();
+        Person p = new Person();
+        p.setFirst("Need");
+        p.setLast("Data");
+        d.setPerson(p);
+       
+        ScoreableEntity s = null;        
+        vrt = new VehicleReportItem();
+                
+        for ( int i = 0; i < vehiclesData.size(); i++ ) {
+            v = (Vehicle)vehiclesData.get(i);            
+            
+            //Vehicle
+            vrt = new VehicleReportItem();
+            vrt.setVehicleID(v.getVehicleID());
+            vrt.setMakeModelYear(v.getMake() + "/" + v.getModel() + "/" + v.getYear());         
+            
+            //Scores, full year
+            Integer endDate = DateUtil.getTodaysDate();
+            Integer startDate = DateUtil.getDaysBackDate(
+                    endDate, 
+                    Duration.TWELVE.getNumberOfDays());                                            
+            s = scoreDAO.getAverageScoreByType(v.getGroupID(),startDate,endDate,ScoreType.SCORE_OVERALL);
+            vrt.setOverallScore(s.getScore());
+            s = scoreDAO.getAverageScoreByType(v.getGroupID(),startDate,endDate,ScoreType.SCORE_SPEEDING);
+            vrt.setSpeedScore(s.getScore());
+            s = scoreDAO.getAverageScoreByType(v.getGroupID(),startDate,endDate,ScoreType.SCORE_DRIVING_STYLE);
+            vrt.setStyleScore(s.getScore());
+            setStyles();
+                        
+            //Group
+            g = groupDAO.getGroupByID(v.getGroupID());
+            vrt.setGroup(g.getName());
+            vrt.setGroupID(g.getGroupID());
+                        
+            //Needed         
+            vrt.setDriver(d);
+            vrt.setMilesDriven(202114);
+            
+            vehicleData.add(vrt);            
+        }     
     }
     
     private void resetCounts() {
@@ -302,6 +313,16 @@ public class VehicleReportBean extends BaseBean
     public void setScoreDAO(ScoreDAO scoreDAO)
     {
         this.scoreDAO = scoreDAO;
+    }
+
+    public GroupDAO getGroupDAO()
+    {
+        return groupDAO;
+    }
+
+    public void setGroupDAO(GroupDAO groupDAO)
+    {
+        this.groupDAO = groupDAO;
     }
 
 }
