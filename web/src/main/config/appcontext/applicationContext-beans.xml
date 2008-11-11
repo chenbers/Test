@@ -69,7 +69,7 @@
    		<property name="scoreDAO" ref="scoreDAO"></property>
    </bean>
    
-   <bean id="driverTripsBean" class="com.inthinc.pro.backing.DriverTripsBean" scope="request">
+   <bean id="driverTripsBean" class="com.inthinc.pro.backing.DriverTripsBean" scope="request" parent="baseBean" init-method="init">
    		<property name="tripDAO" ref="tripDAO"></property>
    </bean>
 

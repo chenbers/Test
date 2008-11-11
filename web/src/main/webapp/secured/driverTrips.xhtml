@@ -22,7 +22,7 @@
 
 <ul id="grid_nav">
 	<li class="l grid_icon"><img src="images/ico_line.png" /></li>
-	<li class="l grid_title">Driver Performance: <h:outputText> NAME</h:outputText></li>
+	<li class="l grid_title">Driver Performance: <h:outputText>#{driverBean.driverName}</h:outputText></li>
 	<li class="l divider"><img src="/images/grid_nav_divider.png" /></li>
 	<li class="l">
 	
@@ -33,7 +33,7 @@
 		</ul>
 	</li>
 </ul>
-
+<div class="spacer"></div>
 <table width="940" border="0" cellspacing="0" cellpadding="0" align="center">
   <tr>
     <td width="330" valign="top">
@@ -111,23 +111,23 @@
 								  <tbody>
 								  <tr>
 									<td width="240">Total Miles Driven:</td>
-									<td width="70">268</td>
+									<td width="70"><h:outputText>#{driverTripsBean.milesDriven}</h:outputText></td>
 								  </tr>
 								  <tr>
 									<td>Total Stops: </td>
-									<td>52</td>
+									<td><h:outputText>#{driverTripsBean.numStops}</h:outputText></td>
 								  </tr>
 								  <tr>
 								    <td>Total Idle Time: </td>
-								    <td>32:12</td>
+								    <td><h:outputText>#{driverTripsBean.idleTime}</h:outputText></td>
 								    </tr>
 								  <tr>
 								    <td>Total Trips:</td>
-								    <td>58</td>
+								    <td><h:outputText>#{driverTripsBean.numTrips}</h:outputText></td>
 								    </tr>
 								  <tr>
 								    <td>Total Drive Time:</td>
-								    <td>6:38:22</td>
+								    <td><h:outputText>#{driverTripsBean.totalDriveTime}</h:outputText></td>
 								    </tr>
 								  </tbody>
 						  </table>
@@ -146,41 +146,39 @@
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="">Trips (58)</span>
+						<span class="">Trip # 1</span>
 						<span class="panel_links"></span>
 					</div>
 				</div>
 					<div class="panel_w">
 					  <div class="panel_content">
-					    <div class="datagrid" id="trips_table-paginationListWrapBottom">
-					      <table width="320" cellpadding="0" cellspacing="0" class="sortable-onload-0 no-arrow rowstyle-alt colstyle-alt paginate-10 max-pages-5" id="trips_table">
-                            <thead>
-                              <tr>
-                                <th width="45" class=""> ;</th>
-                                <th width="226" height="27" class="">Address</th>
-                                <th width="55" class="">Time</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td><img src="images/ico_start.png" width="21" height="20" /></td>
-                                <td>154 S 10th St</td>
-                                <td>1:46</td>
-                              </tr>
-                              <tr>
-                                <td><img src="images/ico_idle.png" width="20" height="20" /></td>
-                                <td>188 S 11th St</td>
-                                <td>0:28</td>
-                              </tr>
-                              <tr>
-                                <td><img src="images/ico_idle.png" width="20" height="20" /></td>
-                                <td>213 S 14th St</td>
-                                <td>1:12</td>
-                              </tr>
- 
-                            </tbody>
-                          </table>
-					    </div>
+				<!-- Start Trip table --> 
+					
+						<rich:dataTable 
+						value="#{driverTripsBean.trips}" 
+						id="tripTableSmall"
+						var="item" styleClass="datagrid"
+						rowClasses="trendTableOdd,trendTableEven" cellspacing="1" rows="10"  
+						width="100%">  <!-- //TODO: Make generic Odd Even CSS -->
+
+							<!-- Data -->
+							<rich:column sortBy="#{item.endAddress}">
+								<f:facet name="header">
+									<h:outputText value="Address" />
+								</f:facet>
+								<h:outputText value="#{item.endAddress}" />
+							</rich:column>
+							
+							<rich:column sortBy="#{item.duration}">
+								<f:facet name="header">
+									<h:outputText value="Time" />
+								</f:facet>
+								<h:outputText value="#{item.duration}" />
+							</rich:column>
+						</rich:dataTable>
+					 
+				<!-- End Trip table -->
+					    
 					  </div>
 					</div>
 				<div class="panel_sw">
@@ -202,28 +200,30 @@
 					<div class="panel_w">
 					  <div class="panel_content">
 					    <div class="" id="">
+					    <h:form>
 							<table width="320" cellpadding="4" cellspacing="0" class="" id="settings">
 								  <tbody>
 								  <tr>
 									<td width="290">Show all Trips on this map</td>
 								    <td width="20">
-								      <input type="checkbox" name="checkbox" value="checkbox" />
+								      <h:selectBooleanCheckbox value="#{driverTripsBean.showAllTrips}" />
 								    </td>
 								    </tr>
 								  <tr>
 									<td>Show idle markers</td>
 								    <td>
-								      <input type="checkbox" name="checkbox2" value="checkbox" />
+								      <h:selectBooleanCheckbox value="#{driverTripsBean.showIdleMarkers}" />
 								    </td>
 								    </tr>
 								  <tr>
 								    <td>Show warnings</td>
 								    <td>
-								      <input name="checkbox3" type="checkbox" value="checkbox" checked="checked" />
+								      <h:selectBooleanCheckbox value="#{driverTripsBean.showWarnings}" />
 								    </td>
 								    </tr>
 								  </tbody>
 								</table>
+						    </h:form>
 						</div>
 					  </div>
 					</div>
@@ -293,60 +293,60 @@
 				<!-- Start Trip table --> 
 					<h:form id="trendTable">
 						<rich:dataTable 
-						value="#{driverTripsBean.trips}" 
-						id="items"
+						value="#{driverTripsBean.trips}" id="items"
 						var="item" styleClass="datagrid"
-						rowClasses="trendTableOdd,trendTableEven" cellspacing="1" rows="10"  
-						width="100%"
-						binding="#{trendTable.table}">  <!-- //TODO: Make generic Odd Even CSS -->
+						rowClasses="trendTableOdd,trendTableEven" cellspacing="1" rows="5"  
+						width="100%">  <!-- //TODO: Make generic Odd Even CSS -->
 
 							<!-- Data -->
 										
-							<rich:column sortBy="#{item.startTime}" width="59">
+							<rich:column sortBy="#{item.dateShort}">
 								<f:facet name="header">
 									<h:outputText value="Date" />
 								</f:facet>
-									<h:outputText value="#{item.startTime}" />
+									<h:outputText value="#{item.dateShort}" />
 							</rich:column>
 							
-							<rich:column sortBy="#{item.startTime}" width="74">
+							<rich:column sortBy="#{item.timeShort}">
 								<f:facet name="header">
 									<h:outputText value="Time" />
 								</f:facet>
-									<h:outputText value="#{item.startTime}" />
+									<h:outputText value="#{item.timeShort}" />
 							</rich:column>
 							
-							<rich:column sortBy="#{item.mileage}" width="68">
+							<rich:column sortBy="#{item.distance}">
 								<f:facet name="header">
 									<h:outputText value="Dist" />
 								</f:facet>
-								<h:outputText value="#{item.mileage}" />		
+								<h:outputText value="#{item.distance}" />		
 							</rich:column>
 							
-							<rich:column sortBy="#{item.mileage}" wdith="168">
+							<rich:column sortBy="#{item.startAddress}">
 								<f:facet name="header">
 									<h:outputText value="Start" />
 								</f:facet>
-								<h:outputText value="{item.mileage}" />
+								<h:outputText value="#{item.startAddress}" />
 							</rich:column>
 							
-							<rich:column sortBy="#{item.endAddressStr}" width="150">
+							<rich:column sortBy="#{item.endAddress}">
 								<f:facet name="header">
 									<h:outputText value="End" />
 								</f:facet>
-								<h:outputText value="#{item.endAddressStr}" />
+								<h:outputText value="#{item.endAddress}" />
 							</rich:column>
 							
-							<rich:column sortBy="#{item.mileage}" width="67">
+							<rich:column sortBy="#{item.duration}">
 								<f:facet name="header">
-									<h:outputText value="Duration" />
+									<h:outputText value="Dur" />
 								</f:facet>
-								<h:outputText value="#{item.mileage}" />
+								<h:outputText value="#{item.duration}" />
 							</rich:column>
 						</rich:dataTable>
+						<div class="spacer"></div>
+						<rich:datascroller align="center" for="items" maxPages="20"
+           				 page="#{driverTripsBean.tripsPager}" id="scroller" reRender="items" />
 					</h:form> 
 				<!-- End Trip table -->
-
 			  </div>
 			</div>
 			<div class="panel_sw">
