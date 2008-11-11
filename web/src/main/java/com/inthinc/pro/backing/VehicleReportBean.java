@@ -74,6 +74,12 @@ public class VehicleReportBean extends BaseBean
                 getUser().getPerson().getGroupID());
      
         Vehicle v = null;
+        
+        Driver d = new Driver();
+        Person p = new Person();
+        p.setFirst("Need");
+        p.setLast("Data");
+        d.setPerson(p);
        
         ScoreableEntity s = null;        
         vrt = new VehicleReportItem();
@@ -100,8 +106,8 @@ public class VehicleReportBean extends BaseBean
             setStyles();
             
             //Needed
-            vrt.setGroup("North"); 
-            vrt.setDriver("John Doe");
+            vrt.setGroup("North");  
+            vrt.setDriver(d);
             vrt.setMilesDriven(202114);
             
             vehicleData.add(vrt);            
@@ -130,6 +136,12 @@ public class VehicleReportBean extends BaseBean
     public void search() {     
         logger.debug("searching");
         
+        Driver d = new Driver();
+        Person p = new Person();
+        p.setFirst("Need");
+        p.setLast("Data");
+        d.setPerson(p);
+        
         if ( this.vehicleData.size() > 0 ) {
             this.vehicleData.clear();
         }
@@ -140,7 +152,7 @@ public class VehicleReportBean extends BaseBean
             vrt.setGroup("Hidden");
             vrt.setVehicleID(123456);
             vrt.setMakeModelYear("Studebaker/S20/1908");
-            vrt.setDriver("Old Guy");
+            vrt.setDriver(d);
             vrt.setMilesDriven(190833);
             vrt.setOverallScore(34);
             vrt.setSpeedScore(21);
