@@ -9,7 +9,7 @@ import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.proserver.CentralService;
 import com.inthinc.pro.model.Vehicle;
 
-public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer, CentralService> implements VehicleDAO
+public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> implements VehicleDAO
 {
 
     @Override

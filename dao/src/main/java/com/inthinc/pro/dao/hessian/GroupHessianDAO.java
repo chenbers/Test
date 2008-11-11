@@ -8,7 +8,7 @@ import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.proserver.CentralService;
 import com.inthinc.pro.model.Group;
 
-public class GroupHessianDAO extends GenericHessianDAO<Group, Integer, CentralService> implements GroupDAO
+public class GroupHessianDAO extends GenericHessianDAO<Group, Integer> implements GroupDAO
 {
 
     @Override

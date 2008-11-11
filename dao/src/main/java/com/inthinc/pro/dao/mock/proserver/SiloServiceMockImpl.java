@@ -32,20 +32,19 @@ import com.inthinc.pro.model.Trip;
 public class SiloServiceMockImpl implements SiloService
 {
 
-
     private static final Logger logger = Logger.getLogger(SiloServiceMockImpl.class);
 
     // helper method
-    private Map<String, Object>doMockLookup(Class<?> clazz, String key, Object searchValue, String emptyResultSetMsg, String methodName)
+    private Map<String, Object> doMockLookup(Class<?> clazz, String key, Object searchValue, String emptyResultSetMsg, String methodName)
     {
-        Map<String, Object> returnMap =  MockData.getInstance().lookup(clazz, key, searchValue);
+        Map<String, Object> returnMap = MockData.getInstance().lookup(clazz, key, searchValue);
 
         if (returnMap == null)
         {
             throw new EmptyResultSetException(emptyResultSetMsg, methodName, 0);
         }
         return returnMap;
-        
+
     }
 
     private Map<String, Object> createReturnValue(String key, Integer value)
@@ -60,7 +59,7 @@ public class SiloServiceMockImpl implements SiloService
     {
         return createReturnValue("count", 0);
     }
-    
+
     @Override
     public Map<String, Object> createUser(Integer acctID, Map<String, Object> userMap) throws ProDAOException
     {
@@ -80,13 +79,48 @@ public class SiloServiceMockImpl implements SiloService
         return createReturnValue("count", 1);
     }
 
-    
+    @Override
+    public Map<String, Object> getUserByAccountID(Integer accountID) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> getUserIDByEmail(String email) throws ProDAOException
+    {
+        Map<String, Object> returnMap = null;
+        Person person = MockData.getInstance().retrieveObject(Person.class, "email", email);
+        if ((person != null) && (person.getUser() != null))
+        {
+            returnMap = GenericHessianDAO.createMapFromObject(person.getUser());
+        }
+
+        if (returnMap == null)
+        {
+            throw new EmptyResultSetException("No user for email: " + email, "getUserIDByEmail", 0);
+        }
+        return returnMap;
+    }
+
+    @Override
+    public Map<String, Object> getUserIDByName(String username) throws ProDAOException
+    {
+        Map<String, Object> returnMap = MockData.getInstance().lookup(User.class, "username", username);
+
+        if (returnMap == null)
+        {
+            throw new EmptyResultSetException("No user for username: " + username, "getUserIDByUsername", 0);
+        }
+        return returnMap;
+    }
+
     @Override
     public Map<String, Object> deletePerson(Integer personID) throws ProDAOException
     {
         return createReturnValue("count", 0);
     }
-    
+
     @Override
     public Map<String, Object> createPerson(Integer acctID, Map<String, Object> personMap) throws ProDAOException
     {
@@ -106,15 +140,12 @@ public class SiloServiceMockImpl implements SiloService
     {
         return createReturnValue("count", 1);
     }
-    
-    
-    
 
     @Override
     public List<Map<String, Object>> getPersonIDsInGroupHierarchy(Integer groupID)
     {
-        final List<Map<String, Object>> personIDs = new LinkedList<Map<String,Object>>();
-    
+        final List<Map<String, Object>> personIDs = new LinkedList<Map<String, Object>>();
+
         final List<Map<String, Object>> hierarchy = new SiloServiceCreator().getService().getGroupHierarchy(groupID);
         for (final Map<String, Object> map : hierarchy)
         {
@@ -128,45 +159,40 @@ public class SiloServiceMockImpl implements SiloService
                     personIDs.addAll(matches);
             }
         }
-    
+
         return personIDs;
     }
 
-
     @Override
-    public Map<String, Object> getAverageScoreByType(
-            Integer groupID, Integer startDate, Integer endDate, ScoreType st)
-            throws ProDAOException
+    public Map<String, Object> getAverageScoreByType(Integer groupID, Integer startDate, Integer endDate, ScoreType st) throws ProDAOException
     {
         SearchCriteria searchCriteria = new SearchCriteria();
         searchCriteria.addKeyValue("entityID", groupID);
         searchCriteria.addKeyValue("scoreType", st);
         searchCriteria.addKeyValueRange("date", startDate, endDate);
-        
+
         // get all scores of the time period and average them
         List<ScoreableEntity> allScores = MockData.getInstance().retrieveObjectList(ScoreableEntity.class, searchCriteria);
         if (allScores.size() == 0)
         {
             throw new EmptyResultSetException("No overall score for: " + groupID, "getOverallScore", 0);
         }
-            
+
         return getAverageScore(startDate, allScores);
-        
+
     }
 
-
     @Override
-    public List<Map<String, Object>> getScores(Integer groupID, Integer startDate, Integer endDate, Integer scoreType)
-            throws ProDAOException
+    public List<Map<String, Object>> getScores(Integer groupID, Integer startDate, Integer endDate, Integer scoreType) throws ProDAOException
     {
         logger.debug("mock IMPL getOverallScores groupID = " + groupID);
         SearchCriteria searchCriteria = new SearchCriteria();
         searchCriteria.addKeyValue("parentID", groupID);
 
         // get list of groups that have the specified groupID as the parent
-        List<Map<String, Object>> entityList =  MockData.getInstance().lookupList(Group.class, searchCriteria);
-        
-        List<Map<String, Object>> returnList =  new ArrayList<Map<String, Object>>();
+        List<Map<String, Object>> entityList = MockData.getInstance().lookupList(Group.class, searchCriteria);
+
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
         if (entityList != null)
         {
             for (Map<String, Object> groupMap : entityList)
@@ -174,9 +200,9 @@ public class SiloServiceMockImpl implements SiloService
                 searchCriteria = new SearchCriteria();
                 searchCriteria.addKeyValue("entityID", groupMap.get("groupID"));
                 searchCriteria.addKeyValue("scoreType", ScoreType.valueOf(scoreType));
-//                searchCriteria.addKeyValue("scoreValueType", ScoreValueType.SCORE_SCALE_0_50);
+                // searchCriteria.addKeyValue("scoreValueType", ScoreValueType.SCORE_SCALE_0_50);
                 searchCriteria.addKeyValueRange("date", startDate, endDate);
-                
+
                 List<ScoreableEntity> allScores = MockData.getInstance().retrieveObjectList(ScoreableEntity.class, searchCriteria);
                 if (allScores.size() > 0)
                 {
@@ -194,7 +220,7 @@ public class SiloServiceMockImpl implements SiloService
             searchCriteria.addKeyValue("groupID", groupID);
 
             // get list of drivers that are in the specified group
-            entityList =  MockData.getInstance().lookupList(Driver.class, searchCriteria);
+            entityList = MockData.getInstance().lookupList(Driver.class, searchCriteria);
             if (entityList == null)
             {
                 return returnList;
@@ -205,7 +231,7 @@ public class SiloServiceMockImpl implements SiloService
                 searchCriteria.addKeyValue("entityID", driverMap.get("driverID"));
                 searchCriteria.addKeyValue("scoreType", ScoreType.valueOf(scoreType));
                 searchCriteria.addKeyValueRange("date", startDate, endDate);
-                
+
                 List<ScoreableEntity> allScores = MockData.getInstance().retrieveObjectList(ScoreableEntity.class, searchCriteria);
                 if (allScores.size() > 0)
                 {
@@ -216,19 +242,19 @@ public class SiloServiceMockImpl implements SiloService
                     logger.error("score missing for driverID " + driverMap.get("driverID"));
                 }
             }
-            
-            
+
         }
         return returnList;
     }
+
     @Override
     public List<Map<String, Object>> getScoreBreakdown(Integer groupID, Integer startDate, Integer endDate, Integer scoreType) throws ProDAOException
     {
-        
-        Group topGroup= MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
+
+        Group topGroup = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
 
         List<Driver> allDriversInGroup = getAllDriversInGroup(topGroup);
-        
+
         int totals[] = new int[5];
         for (Driver driver : allDriversInGroup)
         {
@@ -238,38 +264,33 @@ public class SiloServiceMockImpl implements SiloService
             searchCriteria.addKeyValueRange("date", startDate, endDate);
             List<ScoreableEntity> allScores = MockData.getInstance().retrieveObjectList(ScoreableEntity.class, searchCriteria);
             Map<String, Object> scoreMap = getAverageScore(startDate, allScores);
-            
-            Integer score = (Integer)scoreMap.get("score");
-            int idx = (score-1)/10;
+
+            Integer score = (Integer) scoreMap.get("score");
+            int idx = (score - 1) / 10;
             totals[idx]++;
         }
         List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
         int totalDrivers = allDriversInGroup.size();
         int percentTotal = 0;
-        for ( int i = 0; i < 5; i++ ) 
+        for (int i = 0; i < 5; i++)
         {
-                int percent = 0;
-                if (i < 4)
-                {
-                    percent = Math.round((float)((float)totals[i]*100f)/(float)totalDrivers);
-                    percentTotal += percent;
-                }
-                else
-                {
-                    percent = 100 - percentTotal;
-                }
-                returnList.add(GenericHessianDAO.createMapFromObject(new ScoreableEntity(groupID, 
-                    EntityType.ENTITY_GROUP, 
-                    (i+1) + "",     // name will be 1 to 5 for the 5 different score breakdowns 
-                    new Integer(percent), 
-                    startDate,
-                    ScoreType.valueOf(scoreType))));
+            int percent = 0;
+            if (i < 4)
+            {
+                percent = Math.round((float) ((float) totals[i] * 100f) / (float) totalDrivers);
+                percentTotal += percent;
+            }
+            else
+            {
+                percent = 100 - percentTotal;
+            }
+            returnList.add(GenericHessianDAO.createMapFromObject(new ScoreableEntity(groupID, EntityType.ENTITY_GROUP, (i + 1) + "", // name will be 1 to 5 for the 5 different
+                                                                                                                                        // score breakdowns
+                    new Integer(percent), startDate, ScoreType.valueOf(scoreType))));
         }
 
-        
         return returnList;
     }
-
 
     @Override
     public List<Map<String, Object>> getBottomFiveScores(Integer groupID)
@@ -280,33 +301,32 @@ public class SiloServiceMockImpl implements SiloService
 
         // get list of drivers that have the specified groupID as the parent
         List<Map<String, Object>> entityList;
-        
-        List<Map<String, Object>> returnList =  new ArrayList<Map<String, Object>>();
+
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
 
         searchCriteria = new SearchCriteria();
         searchCriteria.addKeyValue("groupID", groupID);
 
         // get list of drivers that are in the specified group
-        entityList =  MockData.getInstance().lookupList(Driver.class, searchCriteria);
+        entityList = MockData.getInstance().lookupList(Driver.class, searchCriteria);
         if (entityList == null)
         {
             return returnList;
         }
         Integer endDate = DateUtil.getTodaysDate();
         Integer startDate = DateUtil.getDaysBackDate(endDate, 30);
-        
+
         for (Map<String, Object> driverMap : entityList)
         {
             searchCriteria = new SearchCriteria();
             searchCriteria.addKeyValue("entityID", driverMap.get("driverID"));
             searchCriteria.addKeyValue("scoreType", ScoreType.SCORE_OVERALL);
             searchCriteria.addKeyValueRange("date", startDate, endDate);
-            
 
             searchCriteria.addKeyValueRange("date", startDate, endDate);
-            
+
             Map<String, Object> scoreMap = MockData.getInstance().lookup(ScoreableEntity.class, searchCriteria);
-            
+
             if (scoreMap != null)
             {
                 returnList.add(scoreMap);
@@ -316,10 +336,9 @@ public class SiloServiceMockImpl implements SiloService
                 logger.error("score missing for driverID " + driverMap.get("driverID"));
             }
         }
-        //TODO sort in score order and return bottom 5 and refactor to eliminate duplicate code.   
+        // TODO sort in score order and return bottom 5 and refactor to eliminate duplicate code.
         return returnList;
     }
-
 
     @Override
     public List<Map<String, Object>> getTopFiveScores(Integer groupID)
@@ -329,30 +348,30 @@ public class SiloServiceMockImpl implements SiloService
         searchCriteria.addKeyValue("parentID", groupID);
 
         // get list of drivers that have the specified groupID as the parent
-        
-        List<Map<String, Object>> returnList =  new ArrayList<Map<String, Object>>();
+
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
 
         searchCriteria = new SearchCriteria();
         searchCriteria.addKeyValue("groupID", groupID);
 
         // get list of drivers that are in the specified group
-        List<Driver>driverList =  MockData.getInstance().retrieveObjectList(Driver.class, searchCriteria);
+        List<Driver> driverList = MockData.getInstance().retrieveObjectList(Driver.class, searchCriteria);
         if (driverList == null)
         {
             return returnList;
         }
         Integer endDate = DateUtil.getTodaysDate();
         Integer startDate = DateUtil.getDaysBackDate(endDate, 30);
-        
+
         for (Driver driver : driverList)
         {
             searchCriteria = new SearchCriteria();
             searchCriteria.addKeyValue("entityID", driver.getDriverID());
             searchCriteria.addKeyValue("scoreType", ScoreType.SCORE_OVERALL);
             searchCriteria.addKeyValueRange("date", startDate, endDate);
-            
+
             Map<String, Object> scoreMap = MockData.getInstance().lookup(ScoreableEntity.class, searchCriteria);
-            
+
             if (scoreMap != null)
             {
                 scoreMap.put("identifier", driver.getPerson().getFirst() + " " + driver.getPerson().getLast());
@@ -363,7 +382,7 @@ public class SiloServiceMockImpl implements SiloService
                 logger.error("score missing for driverID " + driver.getDriverID());
             }
         }
-        //TODO sort list in score order and return top 5  and refactor to eliminate duplicate code.   
+        // TODO sort list in score order and return top 5 and refactor to eliminate duplicate code.
         return returnList;
     }
 
@@ -378,7 +397,7 @@ public class SiloServiceMockImpl implements SiloService
     @Override
     public List<Map<String, Object>> getVehiclesInGroupHierarchy(Integer groupID)
     {
-        final List<Map<String, Object>> vehicles = new LinkedList<Map<String,Object>>();
+        final List<Map<String, Object>> vehicles = new LinkedList<Map<String, Object>>();
 
         final List<Map<String, Object>> hierarchy = new SiloServiceCreator().getService().getGroupHierarchy(groupID);
         for (final Map<String, Object> map : hierarchy)
@@ -402,7 +421,7 @@ public class SiloServiceMockImpl implements SiloService
     {
         return createReturnValue("count", 0);
     }
-    
+
     @Override
     public Map<String, Object> createVehicle(Integer acctID, Map<String, Object> vehicleMap) throws ProDAOException
     {
@@ -448,27 +467,26 @@ public class SiloServiceMockImpl implements SiloService
         return createReturnValue("count", 1);
     }
 
-
     @Override
     public List<Map<String, Object>> getGroupHierarchy(Integer groupID) throws ProDAOException
     {
-        Group topGroup= MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
+        Group topGroup = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
         if (topGroup == null)
             return new ArrayList<Map<String, Object>>();
 
         List<Group> hierarchyGroups = new ArrayList<Group>();
         hierarchyGroups.add(topGroup);
-        
+
         // filter out just the ones in the hierarchy
         List<Group> allGroups = MockData.getInstance().lookupObjectList(Group.class, new Group());
         addChildren(hierarchyGroups, allGroups, groupID);
-        
+
         List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
         for (Group group : hierarchyGroups)
         {
             returnList.add(GenericHessianDAO.createMapFromObject(group));
         }
-        
+
         return returnList;
     }
 
@@ -479,34 +497,34 @@ public class SiloServiceMockImpl implements SiloService
         criteria.addKeyValue("driverID", driverID);
         List<Map<String, Object>> matches = MockData.getInstance().lookupList(Trip.class, criteria);
         return matches;
-        
+
     }
-    
+
     @Override
     public List<Map<String, Object>> getMostRecentEvents(Integer groupID, Integer eventCnt, Integer[] types) throws ProDAOException
     {
         Group group = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
-        
+
         List<Driver> drivers = getAllDriversInGroup(group);
-        
+
         List<Event> allEventsForGroup = new ArrayList<Event>();
-        
+
         List<Object> typeList = new ArrayList<Object>();
         Collections.addAll(typeList, types);
         for (Driver driver : drivers)
         {
-            SearchCriteria searchCriteria  = new SearchCriteria();
+            SearchCriteria searchCriteria = new SearchCriteria();
             searchCriteria.addKeyValue("driverID", driver.getDriverID());
             searchCriteria.addKeyValueInList("type", typeList);
             List<Event> eventList = MockData.getInstance().retrieveObjectList(Event.class, searchCriteria);
             allEventsForGroup.addAll(eventList);
         }
-        
+
         if (allEventsForGroup.size() == 0)
         {
             throw new EmptyResultSetException("no events for group", "getMostRecentEvents", 0);
         }
-        
+
         Collections.sort(allEventsForGroup); // Make sure events are in ascending order
         Collections.reverse(allEventsForGroup); // descending order (i.e. most recent first)
 
@@ -520,40 +538,38 @@ public class SiloServiceMockImpl implements SiloService
             if (cnt == eventCnt.intValue())
                 break;
         }
-        
-        
+
         return returnList;
     }
-    
-    //----------- HELPER METHODS ---------------------
 
-    
+    // ----------- HELPER METHODS ---------------------
+
     private Map<String, Object> getAverageScore(Integer startDate, List<ScoreableEntity> allScores)
     {
         int total = 0;
         ScoreableEntity firstEntity = allScores.get(0);
-        ScoreableEntity returnEntity = new ScoreableEntity(firstEntity.getEntityID(), EntityType.ENTITY_GROUP, firstEntity.getIdentifier(), 0, startDate, firstEntity.getScoreType());
+        ScoreableEntity returnEntity = new ScoreableEntity(firstEntity.getEntityID(), EntityType.ENTITY_GROUP, firstEntity.getIdentifier(), 0, startDate, firstEntity
+                .getScoreType());
         for (ScoreableEntity entity : allScores)
         {
             total += entity.getScore();
         }
-        returnEntity.setScore(total/allScores.size());
+        returnEntity.setScore(total / allScores.size());
 
         return GenericHessianDAO.createMapFromObject(returnEntity);
     }
-
 
     private void addChildren(List<Group> hierarchyGroups, List<Group> allGroups, Integer groupID)
     {
         for (Group group : allGroups)
         {
             if (group.getParentID().equals(groupID))
-            { 
+            {
                 hierarchyGroups.add(group);
                 addChildren(hierarchyGroups, allGroups, group.getGroupID());
             }
         }
-        
+
     }
 
     // get all drivers that are under the specified group -- children, grandchildren, etc.
@@ -562,25 +578,24 @@ public class SiloServiceMockImpl implements SiloService
         // TODO Auto-generated method stub
         List<Group> hierarchyGroups = new ArrayList<Group>();
         hierarchyGroups.add(topGroup);
-        
+
         // filter out just the ones in the hierarchy
         List<Group> allGroups = MockData.getInstance().lookupObjectList(Group.class, new Group());
         addChildren(hierarchyGroups, allGroups, topGroup.getGroupID());
-        
+
         List<Driver> returnDriverList = new ArrayList<Driver>();
-        for (Group group : hierarchyGroups )
+        for (Group group : hierarchyGroups)
         {
             SearchCriteria searchCriteria = new SearchCriteria();
             searchCriteria.addKeyValue("groupID", group.getGroupID());
-            
+
             List<Driver> driverList = MockData.getInstance().retrieveObjectList(Driver.class, searchCriteria);
             returnDriverList.addAll(driverList);
-            
+
         }
-        
+
         return returnDriverList;
     }
-
 
     @Override
     public List<Map<String, Object>> getDevicesByAcctID(Integer acctID) throws ProDAOException
@@ -595,7 +610,7 @@ public class SiloServiceMockImpl implements SiloService
     {
         return createReturnValue("count", 0);
     }
-    
+
     @Override
     public Map<String, Object> createDevice(Integer acctID, Map<String, Object> deviceMap) throws ProDAOException
     {
@@ -615,22 +630,21 @@ public class SiloServiceMockImpl implements SiloService
     {
         return createReturnValue("count", 1);
     }
-    
-    
+
     @Override
     public List<Map<String, Object>> getAllDrivers(Integer groupID)
     {
         logger.debug("mock IMPL getAllDrivers groupID = " + groupID);
         Group group = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
-        
+
         List<Driver> drivers = getAllDriversInGroup(group);
         List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
 
         for (Driver driver : drivers)
         {
-            returnList.add(GenericHessianDAO.createMapFromObject(driver, true));            
+            returnList.add(GenericHessianDAO.createMapFromObject(driver, true));
         }
-        
+
         return returnList;
     }
 
@@ -639,7 +653,7 @@ public class SiloServiceMockImpl implements SiloService
     {
         return createReturnValue("count", 0);
     }
-    
+
     @Override
     public Map<String, Object> createDriver(Integer acctID, Map<String, Object> driverMap) throws ProDAOException
     {
@@ -682,11 +696,12 @@ public class SiloServiceMockImpl implements SiloService
 
         return createReturnValue("count", 1);
     }
+
     @Override
     public List<Map<String, Object>> getRedFlags(Integer groupID) throws ProDAOException
     {
         Group group = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
-        
+
         List<Driver> drivers = getAllDriversInGroup(group);
         List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
 
@@ -694,17 +709,17 @@ public class SiloServiceMockImpl implements SiloService
         {
             SearchCriteria searchCriteria = new SearchCriteria();
             searchCriteria.addKeyValue("event:driverID", driver.getDriverID());
-            returnList.addAll(MockData.getInstance().lookupList(RedFlag.class, searchCriteria)); 
+            returnList.addAll(MockData.getInstance().lookupList(RedFlag.class, searchCriteria));
         }
-        
+
         return returnList;
     }
- 
+
     @Override
     public Map<String, Object> getGroupByID(Integer groupID) throws ProDAOException
     {
-        Map<String, Object> returnMap =  MockData.getInstance().lookup(Group.class, "groupID", groupID);
-        
+        Map<String, Object> returnMap = MockData.getInstance().lookup(Group.class, "groupID", groupID);
+
         if (returnMap == null)
         {
             throw new EmptyResultSetException("No group for groupID: " + groupID, "getGroupByID", 0);

@@ -6,7 +6,7 @@ import com.inthinc.pro.dao.RedFlagDAO;
 import com.inthinc.pro.dao.hessian.proserver.CentralService;
 import com.inthinc.pro.model.RedFlag;
 
-public class RedFlagHessianDAO extends GenericHessianDAO<RedFlag, Integer, CentralService> implements RedFlagDAO
+public class RedFlagHessianDAO extends GenericHessianDAO<RedFlag, Integer> implements RedFlagDAO
 {
 
     @Override

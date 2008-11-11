@@ -16,41 +16,41 @@ public class CentralServiceMockImpl implements CentralService
 {
 	private static final Logger logger = Logger.getLogger(CentralServiceMockImpl.class);
 
-    @Override
-    public Map<String, Object> getUserByAccountID(Integer accountID) throws ProDAOException
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Map<String, Object> getUserIDByEmail(String email) throws ProDAOException
-    {
-        Map<String, Object> returnMap = null;
-        Person person = MockData.getInstance().retrieveObject(Person.class, "email", email);
-        if ((person != null) && (person.getUser() != null))
-        {
-            returnMap = GenericHessianDAO.createMapFromObject(person.getUser());
-        }
-
-        if (returnMap == null)
-        {
-            throw new EmptyResultSetException("No user for email: " + email, "getUserIDByEmail", 0);
-        }
-        return returnMap;
-    }
-
-    @Override
-    public Map<String, Object> getUserIDByName(String username) throws ProDAOException
-    {
-        Map<String, Object> returnMap =  MockData.getInstance().lookup(User.class, "username", username);
-        
-        if (returnMap == null)
-        {
-            throw new EmptyResultSetException("No user for username: " + username, "getUserIDByUsername", 0);
-        }
-        return returnMap;
-    }
+//    @Override
+//    public Map<String, Object> getUserByAccountID(Integer accountID) throws ProDAOException
+//    {
+//        // TODO Auto-generated method stub
+//        return null;
+//    }
+//
+//    @Override
+//    public Map<String, Object> getUserIDByEmail(String email) throws ProDAOException
+//    {
+//        Map<String, Object> returnMap = null;
+//        Person person = MockData.getInstance().retrieveObject(Person.class, "email", email);
+//        if ((person != null) && (person.getUser() != null))
+//        {
+//            returnMap = GenericHessianDAO.createMapFromObject(person.getUser());
+//        }
+//
+//        if (returnMap == null)
+//        {
+//            throw new EmptyResultSetException("No user for email: " + email, "getUserIDByEmail", 0);
+//        }
+//        return returnMap;
+//    }
+//
+//    @Override
+//    public Map<String, Object> getUserIDByName(String username) throws ProDAOException
+//    {
+//        Map<String, Object> returnMap =  MockData.getInstance().lookup(User.class, "username", username);
+//        
+//        if (returnMap == null)
+//        {
+//            throw new EmptyResultSetException("No user for username: " + username, "getUserIDByUsername", 0);
+//        }
+//        return returnMap;
+//    }
 
 
 }

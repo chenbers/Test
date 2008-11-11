@@ -3,7 +3,6 @@
    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
    <bean id="genericDAO" class="com.inthinc.pro.dao.hessian.GenericHessianDAO" abstract="true" >
-		<property name="serviceCreator" ref="centralServiceCreator" />
 		<property name="siloServiceCreator" ref="siloServiceCreator" />
    </bean>
    <bean id="userDAO" class="com.inthinc.pro.dao.hessian.UserHessianDAO" 

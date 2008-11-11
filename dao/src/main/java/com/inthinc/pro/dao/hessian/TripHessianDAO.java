@@ -8,7 +8,7 @@ import com.inthinc.pro.dao.TripDAO;
 import com.inthinc.pro.dao.hessian.proserver.CentralService;
 import com.inthinc.pro.model.Trip;
 
-public class TripHessianDAO extends GenericHessianDAO<Trip, Integer, CentralService> implements TripDAO
+public class TripHessianDAO extends GenericHessianDAO<Trip, Integer> implements TripDAO
 {
     private static final Logger logger = Logger.getLogger(TripHessianDAO.class);
     

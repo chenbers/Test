@@ -8,7 +8,7 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.hessian.proserver.CentralService;
 import com.inthinc.pro.model.Driver;
 
-public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer, CentralService> implements DriverDAO
+public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> implements DriverDAO
 {
     private static final Logger logger = Logger.getLogger(DriverHessianDAO.class);
     

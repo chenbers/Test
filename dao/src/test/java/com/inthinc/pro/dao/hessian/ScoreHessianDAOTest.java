@@ -26,7 +26,6 @@ public class ScoreHessianDAOTest
     public void setUp() throws Exception
     {
         scoreHessianDAO = new ScoreHessianDAO();
-        scoreHessianDAO.setServiceCreator(new CentralServiceCreator());
         scoreHessianDAO.setSiloServiceCreator(new SiloServiceCreator());
 
     }

@@ -22,21 +22,19 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.GenericDAO;
 import com.inthinc.pro.dao.annotations.Column;
-import com.inthinc.pro.dao.annotations.ConvertFieldToColumn;
 import com.inthinc.pro.dao.annotations.ConvertColumnToField;
+import com.inthinc.pro.dao.annotations.ConvertFieldToColumn;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.HessianException;
 import com.inthinc.pro.dao.hessian.exceptions.MappingException;
-import com.inthinc.pro.dao.hessian.proserver.HessianService;
 import com.inthinc.pro.dao.hessian.proserver.ServiceCreator;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.model.BaseEnum;
 
-public abstract class GenericHessianDAO<T, ID, S extends HessianService> implements GenericDAO<T, ID>
+public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>
 {
     private static final Logger         logger             = Logger.getLogger(GenericHessianDAO.class);
     private ServiceCreator<SiloService> siloServiceCreator;
-    private ServiceCreator<S>           serviceCreator;
     private Class<T>                    modelClass;
     private Class<ID>                   idClass;
     private Method                      findMethod;
@@ -164,21 +162,6 @@ public abstract class GenericHessianDAO<T, ID, S extends HessianService> impleme
     public void setSiloServiceCreator(ServiceCreator<SiloService> siloServiceCreator)
     {
         this.siloServiceCreator = siloServiceCreator;
-    }
-
-    public S getService()
-    {
-        return serviceCreator.getService();
-    }
-
-    public ServiceCreator<S> getServiceCreator()
-    {
-        return serviceCreator;
-    }
-
-    public void setServiceCreator(ServiceCreator<S> serviceCreator)
-    {
-        this.serviceCreator = serviceCreator;
     }
 
     @Override

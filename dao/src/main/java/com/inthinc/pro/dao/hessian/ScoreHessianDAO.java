@@ -9,7 +9,7 @@ import com.inthinc.pro.dao.hessian.proserver.CentralService;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 
-public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer, CentralService> implements ScoreDAO
+public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer> implements ScoreDAO
 {
     private static final Logger logger = Logger.getLogger(ScoreHessianDAO.class);
 

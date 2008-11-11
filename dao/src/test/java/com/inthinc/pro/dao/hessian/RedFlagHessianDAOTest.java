@@ -24,7 +24,6 @@ public class RedFlagHessianDAOTest
     public void setUp() throws Exception
     {
         redFlagHessianDAO = new RedFlagHessianDAO();
-        redFlagHessianDAO.setServiceCreator(new CentralServiceCreator());
         redFlagHessianDAO.setSiloServiceCreator(new SiloServiceCreator());
     }
 

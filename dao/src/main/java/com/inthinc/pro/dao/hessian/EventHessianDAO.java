@@ -10,7 +10,7 @@ import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
 
-public class EventHessianDAO extends GenericHessianDAO<Event, Integer, CentralService> implements EventDAO
+public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implements EventDAO
 {
     
 

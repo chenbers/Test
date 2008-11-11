@@ -36,7 +36,6 @@ public class EventHessianDAOTest
     public void setUp() throws Exception
     {
         eventHessianDAO = new EventHessianDAO();
-        eventHessianDAO.setServiceCreator(new CentralServiceCreator());
         eventHessianDAO.setSiloServiceCreator(new SiloServiceCreator());
 
     }

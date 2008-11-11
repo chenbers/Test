@@ -10,7 +10,7 @@ import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.hessian.proserver.CentralService;
 import com.inthinc.pro.model.Person;
 
-public class PersonHessianDAO extends GenericHessianDAO<Person, Integer, CentralService> implements PersonDAO
+public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> implements PersonDAO
 {
     private static final Logger logger = Logger.getLogger(PersonHessianDAO.class);
 

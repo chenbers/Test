@@ -8,7 +8,7 @@ import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.proserver.CentralService;
 import com.inthinc.pro.model.Device;
 
-public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer, CentralService> implements DeviceDAO
+public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer> implements DeviceDAO
 {
     @Override
     public List<Device> getDevicesByAcctID(Integer accountID)

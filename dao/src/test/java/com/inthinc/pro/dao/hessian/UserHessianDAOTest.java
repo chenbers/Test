@@ -34,7 +34,6 @@ public class UserHessianDAOTest
     public void setUp() throws Exception
     {
         userHessianDAO = new UserHessianDAO();
-        userHessianDAO.setServiceCreator(new CentralServiceCreator());
         userHessianDAO.setSiloServiceCreator(new SiloServiceCreator());
         
     }
