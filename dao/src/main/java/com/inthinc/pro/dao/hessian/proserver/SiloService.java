@@ -185,4 +185,15 @@ public interface SiloService extends HessianService
     Map<String, Object> setVehicleDriver(Integer vehicleID, Integer driverID) throws ProDAOException;
 
     Map<String, Object> setVehicleDevice(Integer vehicleID, Integer deviceID) throws ProDAOException;
+    
+    
+    /**
+     * getRedFlags -- retrieves all red flags for drivers in the groupID.
+     * 
+     * @param groupID
+     * @return
+     * @throws ProDAOException
+     */
+    List<Map<String, Object>> getRedFlags(Integer groupID) throws ProDAOException;
+
 }

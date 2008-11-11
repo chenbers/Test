@@ -22,6 +22,7 @@ import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.User;
@@ -681,4 +682,22 @@ public class SiloServiceMockImpl implements SiloService
 
         return createReturnValue("count", 1);
     }
+    @Override
+    public List<Map<String, Object>> getRedFlags(Integer groupID) throws ProDAOException
+    {
+        Group group = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
+        
+        List<Driver> drivers = getAllDriversInGroup(group);
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+
+        for (Driver driver : drivers)
+        {
+            SearchCriteria searchCriteria = new SearchCriteria();
+            searchCriteria.addKeyValue("event:driverID", driver.getDriverID());
+            returnList.addAll(MockData.getInstance().lookupList(RedFlag.class, searchCriteria)); 
+        }
+        
+        return returnList;
+    }
+    
 }

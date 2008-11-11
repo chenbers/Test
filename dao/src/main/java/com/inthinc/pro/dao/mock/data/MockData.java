@@ -33,6 +33,8 @@ import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.RedFlag;
+import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
@@ -51,7 +53,11 @@ public class MockData
     // used for unit testing
     public static final Integer TOP_GROUP_ID = 101; 
     public static final Integer REGION_GROUP_ID = 102;
+    public static final Integer UNIT_TEST_GROUP_ID = 114;
     public static final Integer EMPTY_GROUP_ID = 1;
+    
+    // if using the unit test group id in unit test, these counters can be used
+    public static int totalRedFlags = 0;
     
     
     public static final int NUM_ACCOUNTS = 1;
@@ -64,6 +70,9 @@ public class MockData
     static final int MIN_EVENTS = 0;
     static final int MAX_EVENTS = 10;
     static final int MAX_DEVICES = 200;
+    
+    
+    
 
     static long timeNow = new Date().getTime();
     static int baseTimeSec = DateUtil.convertMillisecondsToSeconds(new Date().getTime());
@@ -379,7 +388,7 @@ public class MockData
                 trip.setDriverID(driver.getDriverID());
                 storeObject(trip);
                 
-                int eventCnt = addEventsForTrip(driver, vehicle, trip, eventIdOffset);
+                int eventCnt = addEventsAndRedFlagsForTrip(driver, vehicle, trip, eventIdOffset);
     //            addZoneEvent(xml, driverID, vehicleID, trip.getEndLoc());
                 eventIdOffset += eventCnt;
                 if (tripCnt == (numTrips-1))
@@ -435,7 +444,7 @@ public class MockData
     }
     
     
-    private int addEventsForTrip(Driver driver, Vehicle vehicle, Trip trip, int idOffset)
+    private int addEventsAndRedFlagsForTrip(Driver driver, Vehicle vehicle, Trip trip, int idOffset)
     {
         int numEvents = randomInt(MIN_EVENTS, MAX_EVENTS);
 
@@ -508,10 +517,20 @@ public class MockData
             event.setDriver(driver);
             event.setVehicle(vehicle);
             storeObject(event, Event.class);
+            Integer redFlagID = new Integer(idOffset+trip.getTripID() * MAX_EVENTS + eventCnt);
+            RedFlag redFlag = new RedFlag(redFlagID, RedFlagLevel.valueOf(randomInt(1,3)), randomInt(0, 1) == 1, false, event);
+            
+            storeObject(redFlag);
+            
+            if (driver.getGroupID().equals(UNIT_TEST_GROUP_ID))
+            {
+                totalRedFlags++;
+            }
         }
                 
         return numEvents;
     }
+
 
     private static List <LatLng>  getHardCodedRoute()
     {
@@ -930,8 +949,17 @@ public class MockData
             boolean isMatch = true;
             for (Map.Entry<String,Object> searchItem : searchMap.entrySet())
             {
-                Object fieldValue = getFieldValue(obj, searchItem.getKey().toString());
                 
+                
+                Object fieldValue = null;
+                if (searchItem.getKey().indexOf(":") != -1)
+                {
+                    fieldValue = getFieldValue(obj, searchItem.getKey().split(":"));
+                }
+                else
+                {
+                    fieldValue = getFieldValue(obj, searchItem.getKey());
+                }
                 if (!searchItemMatch(searchItem, fieldValue))
                 {
                     isMatch = false;
@@ -949,6 +977,18 @@ public class MockData
         return returnObjList;
     }
 
+    public <T> Object getFieldValue(T object, String field[])
+    {
+        for (int i = 0; i < field.length; i++)
+        {
+            Object obj = getFieldValue(object, field[i]);
+            if (obj != null)
+            {
+                object = (T)obj;
+            }
+        }
+        return object;
+    }
     public <T> Object getFieldValue(T object, String field)
     {
         Object value = null;
