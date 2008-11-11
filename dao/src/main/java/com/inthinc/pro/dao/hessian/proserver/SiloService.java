@@ -79,6 +79,14 @@ public interface SiloService extends HessianService
      * @throws ProDAOException
      */
     List<Map<String, Object>> getGroupHierarchy(Integer groupID) throws ProDAOException;
+    
+    /**
+     * 
+     * @param groupID
+     * @return 
+     * @throws ProDAOException
+     */
+    Map<String, Object> getGroupByID(Integer groupID) throws ProDAOException;
 
     // ------------- Methods related to the Scores/Reporting
     Map<String, Object> getAverageScoreByType(Integer groupID, Integer startDate, Integer endDate, ScoreType st) throws ProDAOException;
