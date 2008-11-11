@@ -10,8 +10,7 @@ import com.caucho.hessian.io.HessianRemoteObject;
 public class HessianTCPProxyFactory extends HessianProxyFactory
 {
 
-    @SuppressWarnings("unchecked")
-    public Object create(Class api, String hostName, int port) throws MalformedURLException
+    public Object create(Class<?> api, String hostName, int port) throws MalformedURLException
     {
 
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
