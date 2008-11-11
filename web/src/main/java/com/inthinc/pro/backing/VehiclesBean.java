@@ -93,6 +93,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     private TreeMap<String, Integer>              groups;
     private TreeMap<Integer, String>              groupNames;
     private List<Driver>                          drivers;
+    private TreeMap<Integer, Boolean>             driverAssigned;
 
     public void setVehicleDAO(VehicleDAO vehicleDAO)
     {
@@ -250,6 +251,18 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         return groupNames;
     }
 
+    public TreeMap<Integer, Boolean> getDriverAssigned()
+    {
+        if (driverAssigned == null)
+        {
+            driverAssigned = new TreeMap<Integer, Boolean>();
+            for (final VehicleView vehicle : getItems())
+                if (vehicle.getDriverID() != null)
+                    driverAssigned.put(vehicle.getDriverID(), true);
+        }
+        return driverAssigned;
+    }
+
     public void chooseDriver()
     {
         final Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
@@ -287,14 +300,18 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     {
         if (vehicle.getDriverID() != null)
             for (final VehicleView otherVehicle : getItems())
-                if (vehicle.getDriverID().equals(otherVehicle.getDriverID()))
+                if (vehicle.getDriverID().equals(otherVehicle.getDriverID()) && !otherVehicle.getVehicleID().equals(vehicle.getVehicleID()))
                 {
                     vehicleDAO.setVehicleDriver(otherVehicle.getVehicleID(), null);
+                    otherVehicle.setDriverID(null);
                     break;
                 }
 
         vehicleDAO.setVehicleDriver(vehicle.getVehicleID(), vehicle.getDriverID());
         vehicle.setOldDriverID(vehicle.getDriverID());
+
+        if (vehicle.getDriverID() != null)
+            getDriverAssigned().put(vehicle.getDriverID(), true);
     }
 
     @Override

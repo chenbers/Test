@@ -28,7 +28,7 @@
 
   <ui:composition>
 
-    <rich:modalPanel id="chooseDriver" headerClass="popupHeader" controlsClass="popupControls" width="600" height="380" zindex="2001">
+    <rich:modalPanel id="chooseDriver" headerClass="popupHeader" controlsClass="popupControls" width="650" height="380" zindex="2001">
       <f:facet name="header">
         <h:outputText value="#{messages.chooseDriver_title}" />
       </f:facet>
@@ -55,6 +55,10 @@
           <rich:column sortBy="#{item.active}">
             <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_active}" /></f:facet>
             <h:outputText value="#{item.active ? messages.active : messages.inactive}" />
+          </rich:column>
+          <rich:column sortBy="#{editorBean.driverAssigned[item.driverID]}">
+            <f:facet name="header"><h:outputText value="#{messages.chooseDriver_assigned}" /></f:facet>
+            <h:outputText value="#{editorBean.driverAssigned[item.driverID] ? messages.chooseDriver_assigned : messages.chooseDriver_unassigned}" />
           </rich:column>
           <rich:column filterExpression="#{item.driverID != editorBean.editItem.driverID}">
             <f:facet name="header">
