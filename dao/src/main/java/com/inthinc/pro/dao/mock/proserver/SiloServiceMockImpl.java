@@ -10,11 +10,11 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.ProDAOException;
-import com.inthinc.pro.dao.hessian.GenericHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.mock.data.SearchCriteria;
+import com.inthinc.pro.dao.mock.data.TempConversionUtil;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
@@ -93,7 +93,7 @@ public class SiloServiceMockImpl implements SiloService
         Person person = MockData.getInstance().retrieveObject(Person.class, "email", email);
         if ((person != null) && (person.getUser() != null))
         {
-            returnMap = GenericHessianDAO.createMapFromObject(person.getUser());
+            returnMap = TempConversionUtil.createMapFromObject(person.getUser());
         }
 
         if (returnMap == null)
@@ -284,7 +284,7 @@ public class SiloServiceMockImpl implements SiloService
             {
                 percent = 100 - percentTotal;
             }
-            returnList.add(GenericHessianDAO.createMapFromObject(new ScoreableEntity(groupID, EntityType.ENTITY_GROUP, (i + 1) + "", // name will be 1 to 5 for the 5 different
+            returnList.add(TempConversionUtil.createMapFromObject(new ScoreableEntity(groupID, EntityType.ENTITY_GROUP, (i + 1) + "", // name will be 1 to 5 for the 5 different
                                                                                                                                         // score breakdowns
                     new Integer(percent), startDate, ScoreType.valueOf(scoreType))));
         }
@@ -484,7 +484,7 @@ public class SiloServiceMockImpl implements SiloService
         List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
         for (Group group : hierarchyGroups)
         {
-            returnList.add(GenericHessianDAO.createMapFromObject(group));
+            returnList.add(TempConversionUtil.createMapFromObject(group));
         }
 
         return returnList;
@@ -533,7 +533,7 @@ public class SiloServiceMockImpl implements SiloService
         List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
         for (Event event : allEventsForGroup)
         {
-            returnList.add(GenericHessianDAO.createMapFromObject(event, true));
+            returnList.add(TempConversionUtil.createMapFromObject(event, true));
             cnt++;
             if (cnt == eventCnt.intValue())
                 break;
@@ -556,7 +556,7 @@ public class SiloServiceMockImpl implements SiloService
         }
         returnEntity.setScore(total / allScores.size());
 
-        return GenericHessianDAO.createMapFromObject(returnEntity);
+        return TempConversionUtil.createMapFromObject(returnEntity);
     }
 
     private void addChildren(List<Group> hierarchyGroups, List<Group> allGroups, Integer groupID)
@@ -642,7 +642,7 @@ public class SiloServiceMockImpl implements SiloService
 
         for (Driver driver : drivers)
         {
-            returnList.add(GenericHessianDAO.createMapFromObject(driver, true));
+            returnList.add(TempConversionUtil.createMapFromObject(driver, true));
         }
 
         return returnList;
