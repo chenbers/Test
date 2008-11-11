@@ -51,4 +51,8 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
         return getChangedCount(getSiloService().setVehicleDevice(vehicleID, deviceID));
     }
 
+    public Vehicle getVehicleByID(Integer vehicleID)
+    {
+        return convertToModelObject(this.getSiloService().getVehicleByID(vehicleID));
+    }
 }
