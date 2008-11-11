@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.mock.data.MockData;
+import com.inthinc.pro.dao.mock.data.UnitTestStats;
 import com.inthinc.pro.dao.mock.proserver.CentralServiceCreator;
 import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
 import com.inthinc.pro.model.RedFlag;
@@ -31,10 +32,10 @@ public class RedFlagHessianDAOTest
     @Test
     public void getRedFlags()
     {
-        List<RedFlag>  redFlagList = redFlagHessianDAO.getRedFlags(MockData.UNIT_TEST_GROUP_ID);
+        List<RedFlag>  redFlagList = redFlagHessianDAO.getRedFlags(UnitTestStats.UNIT_TEST_GROUP_ID);
         
         assertNotNull(redFlagList);
-        assertEquals(MockData.totalRedFlags, redFlagList.size());
+        assertEquals(MockData.unitTestStats.totalRedFlags, redFlagList.size());
         
         System.out.println("Red flags found: " + redFlagList.size());
         

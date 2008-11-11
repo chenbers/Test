@@ -12,7 +12,7 @@ public enum EventType implements BaseEnum
 	HARD_ACCEL(4, "Rapid Acceleration"), 
 	HARD_BRAKE(5, "Hard Brake"), 
 	HARD_LEFT_TURN(6, "Unsafe Left Turn"),
-    HARD_RIGHT_TURN(7, "Unsafe Left Turn"),
+    HARD_RIGHT_TURN(7, "Unsafe Right Turn"),
 	HARD_VERT(8, "Hard Dip/Bump"),
 	ZONES_ARRIVAL(9, "Zone Arrival"),
 	ZONES_DEPARTURE(10, "Zone Departure"),

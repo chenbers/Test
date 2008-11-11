@@ -53,11 +53,10 @@ public class MockData
     // used for unit testing
     public static final Integer TOP_GROUP_ID = 101; 
     public static final Integer REGION_GROUP_ID = 102;
-    public static final Integer UNIT_TEST_GROUP_ID = 114;
     public static final Integer EMPTY_GROUP_ID = 1;
     
     // if using the unit test group id in unit test, these counters can be used
-    public static int totalRedFlags = 0;
+    public static UnitTestStats unitTestStats = new UnitTestStats();
     
     
     public static final int NUM_ACCOUNTS = 1;
@@ -522,9 +521,9 @@ public class MockData
             
             storeObject(redFlag);
             
-            if (driver.getGroupID().equals(UNIT_TEST_GROUP_ID))
+            if (driver.getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID))
             {
-                totalRedFlags++;
+                unitTestStats.totalRedFlags++;
             }
         }
                 

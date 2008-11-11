@@ -7,19 +7,17 @@ import java.util.Map;
 public enum RedFlagLevel implements BaseEnum
 {
 
-    CRITICAL(1, "CRITICAL", "critical"),
-    INFO(2, "INFO", "info"),
-    WARNING(3, "WARNING", "warning");
+    CRITICAL(1, "critical"),
+    INFO(2, "info"),
+    WARNING(3, "warning");
 
     private String description;
     private int code;
-    private String style;
 
-    private RedFlagLevel(int code, String description, String style)
+    private RedFlagLevel(int code, String description)
     {
         this.code = code;
         this.description = description;
-        this.style = style;
     }
 
     private static final Map<Integer, RedFlagLevel> lookup = new HashMap<Integer, RedFlagLevel>();
@@ -34,11 +32,6 @@ public enum RedFlagLevel implements BaseEnum
     public Integer getCode()
     {
         return this.code;
-    }
-
-    public String getStyle()
-    {
-        return this.style;
     }
 
     public static RedFlagLevel valueOf(Integer code)
