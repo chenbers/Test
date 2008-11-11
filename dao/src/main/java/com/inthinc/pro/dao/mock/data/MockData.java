@@ -190,7 +190,7 @@ public class MockData
             
             if (!groupIsParent(groups, groups[cnt].getGroupID()))
             {
-                List<Driver> driversInGroup = addDriversToGroup(accountID, groups[cnt].getGroupID(),10);                
+                List<Driver> driversInGroup = addDriversToGroup(accountID, groups[cnt].getGroupID(),5);                
 //                List<Driver> driversInGroup = addDriversToGroup(accountID, groups[cnt].getGroupID(), randomInt(1, MAX_DRIVERS_IN_GROUP));
                 List<Vehicle> vehiclesInGroup = addVehiclesToGroup(accountID, groups[cnt].getGroupID(), randomInt(1, MAX_VEHICLES_IN_GROUP));
 
