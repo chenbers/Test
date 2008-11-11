@@ -1,0 +1,78 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+<!--
+  A pop-up modal form that allows choosing a vehicle's driver.
+
+  Required Parameters:
+  ==============
+           reRender:  Id['s] (in format of call UIComponent.findComponent()) of components, rendered in case
+                      of AjaxRequest caused by this component. Can be single id, comma-separated list of Id's,
+                      or EL Expression with array or Collection.
+         editorBean:  A bean that has a List<Driver> named drivers and a method named chooseDriver(),
+                      called when the "choose" link is clicked for a driver (the driverID will be passed as
+                      a request parameter).
+
+  To use:
+  ==============
+      <ui:include src="/includes/chooseDriver.xhtml">
+        <ui:param name="reRender" value="myStuff" />
+        <ui:param name="editorBean" value="#{myBean}" />
+      </ui:include>
+-->
+
+  <ui:composition>
+
+    <rich:modalPanel id="chooseDriver" headerClass="popupHeader" controlsClass="popupControls" width="600" height="380" zindex="2001">
+      <f:facet name="header">
+        <h:outputText value="#{messages.chooseDriver_title}" />
+      </f:facet>
+      <f:facet name="controls">
+        <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('chooseDriver')" />
+      </f:facet>
+
+      <a4j:form id="chooseDriverForm">
+
+        <rich:dataTable id="chooseDriverTable" value="#{editorBean.drivers}" var="item" rowKeyVar="index" styleClass="datagrid"
+          rows="10" rowClasses="tableOdd,tableEven" width="100%">
+          <rich:column sortBy="#{item.person.empid}" sortOrder="ASCENDING">
+            <f:facet name="header"><h:outputText value="#{messages.personHeader_empid}" /></f:facet>
+            <h:outputText value="#{item.person.empid}" />
+          </rich:column>
+          <rich:column sortBy="#{item.person.first}">
+            <f:facet name="header"><h:outputText value="#{messages.personHeader_fullName}" /></f:facet>
+            <h:outputText value="#{item.person.first}" /><h:outputText value=" " /><h:outputText value="#{item.person.last}" />
+          </rich:column>
+          <rich:column sortBy="#{editorBean.groupNames[item.person.groupID]}">
+            <f:facet name="header"><h:outputText value="#{messages.personHeader_group}" /></f:facet>
+            <h:outputText value="#{editorBean.groupNames[item.person.groupID]}" />
+          </rich:column>
+          <rich:column sortBy="#{item.active}">
+            <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_active}" /></f:facet>
+            <h:outputText value="#{item.active ? messages.active : messages.inactive}" />
+          </rich:column>
+          <rich:column filterExpression="#{item.driverID != editorBean.editItem.driverID}">
+            <f:facet name="header">
+              <h:outputText value=" " />
+            </f:facet>
+            <a4j:commandLink action="#{editorBean.chooseDriver}" onclick="Richfaces.hideModalPanel('chooseDriver')" reRender="chooseDriverTable,#{reRender}" value="#{messages.chooseDriver_choose}">
+              <f:param name="driverID" value="#{item.driverID}" />
+              <f:param name="immediate" value="#{immediate}" />
+            </a4j:commandLink>
+          </rich:column>
+        </rich:dataTable>
+
+        <rich:datascroller id="chooseDriverScroller" for="chooseDriverTable" reRender="chooseDriverTable" />
+
+      </a4j:form>
+
+    </rich:modalPanel>
+
+  </ui:composition>
+
+</html>

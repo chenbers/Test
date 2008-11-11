@@ -514,7 +514,7 @@ public class SiloServiceMockImpl implements SiloService
         List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
         for (Event event : allEventsForGroup)
         {
-            returnList.add(GenericHessianDAO.createMapFromObject(event));
+            returnList.add(GenericHessianDAO.createMapFromObject(event, true));
             cnt++;
             if (cnt == eventCnt.intValue())
                 break;
@@ -627,7 +627,7 @@ public class SiloServiceMockImpl implements SiloService
 
         for (Driver driver : drivers)
         {
-            returnList.add(GenericHessianDAO.createMapFromObject(driver));            
+            returnList.add(GenericHessianDAO.createMapFromObject(driver, true));            
         }
         
         return returnList;

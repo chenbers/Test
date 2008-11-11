@@ -14,9 +14,9 @@
            reRender:  Id['s] (in format of call UIComponent.findComponent()) of components, rendered in case
                       of AjaxRequest caused by this component. Can be single id, comma-separated list of Id's,
                       or EL Expression with array or Collection.
-         editorBean:  A bean that has a method named chooseVehicle(), called when the "choose" link is clicked
-                      for a vehicle (the vehicleID will be passed as a request parameter).
-           chosenID:  ID of the currently-chosen vehicle.
+         editorBean:  A bean that has a List<VehicleView> named vehicles and a method named chooseVehicle(),
+                      called when the "choose" link is clicked for a vehicle (the vehicleID will be passed as
+                      a request parameter).
 
   To use:
   ==============
@@ -38,9 +38,7 @@
 
       <a4j:form id="chooseVehicleForm">
 
-        <rich:datascroller id="topChooseVehicleScroller" for="chooseVehicleTable" reRender="chooseVehicleTable,bottomChooseVehicleScroller" />
-
-        <rich:dataTable id="chooseVehicleTable" value="#{vehiclesBean.items}" var="item" rowKeyVar="index" styleClass="datagrid"
+        <rich:dataTable id="chooseVehicleTable" value="#{editorBean.vehicles}" var="item" rowKeyVar="index" styleClass="datagrid"
           rows="10" rowClasses="tableOdd,tableEven" width="100%">
           <rich:column sortBy="#{item.name}" sortOrder="ASCENDING">
             <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_name}" /></f:facet>
@@ -58,18 +56,18 @@
             <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_active}" /></f:facet>
             <h:outputText value="#{item.active ? messages.active : messages.inactive}" />
           </rich:column>
-          <rich:column>
+          <rich:column filterExpression="#{empty item.deviceID}">
             <f:facet name="header">
               <h:outputText value=" " />
             </f:facet>
-            <a4j:commandLink rendered="#{item.vehicleID != chosenID}" action="#{editorBean.chooseVehicle}" onclick="Richfaces.hideModalPanel('chooseVehicle')" reRender="#{reRender}" value="#{messages.chooseVehicle_choose}">
+            <a4j:commandLink action="#{editorBean.chooseVehicle}" onclick="Richfaces.hideModalPanel('chooseVehicle')" reRender="chooseVehicleTable,#{reRender}" value="#{messages.chooseVehicle_choose}">
               <f:param name="vehicleID" value="#{item.vehicleID}" />
+              <f:param name="immediate" value="#{immediate}" />
             </a4j:commandLink>
-            <h:outputText rendered="#{item.vehicleID == chosenID}" value="#{messages.chooseVehicle_chosen}" />
           </rich:column>
         </rich:dataTable>
 
-        <rich:datascroller id="bottomChooseVehicleScroller" for="chooseVehicleTable" reRender="chooseVehicleTable,topChooseVehicleScroller" />
+        <rich:datascroller id="chooseVehicleScroller" for="chooseVehicleTable" reRender="chooseVehicleTable" />
 
       </a4j:form>
 

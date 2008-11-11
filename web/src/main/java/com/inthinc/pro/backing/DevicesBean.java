@@ -12,6 +12,7 @@ import javax.faces.context.FacesContext;
 
 import org.springframework.beans.BeanUtils;
 
+import com.inthinc.pro.backing.VehiclesBean.VehicleView;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Device;
@@ -51,7 +52,8 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 
     private DeviceDAO                              deviceDAO;
     private VehicleDAO                             vehicleDAO;
-    private List<Vehicle>                          vehicles;
+    private VehiclesBean                           vehiclesBean;
+    private List<VehicleView>                      vehicles;
 
     public void setDeviceDAO(DeviceDAO deviceDAO)
     {
@@ -61,6 +63,11 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     public void setVehicleDAO(VehicleDAO vehicleDAO)
     {
         this.vehicleDAO = vehicleDAO;
+    }
+
+    public void setVehiclesBean(VehiclesBean vehiclesBean)
+    {
+        this.vehiclesBean = vehiclesBean;
     }
 
     @Override
@@ -151,12 +158,22 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     }
 
     @Override
+    public String cancelEdit()
+    {
+        getEditItem().setVehicleID(getEditItem().getOldVehicleID());
+        return super.cancelEdit();
+    }
+
+    @Override
     protected void doDelete(List<DeviceView> deleteItems)
     {
         final FacesContext context = FacesContext.getCurrentInstance();
 
         for (final DeviceView device : deleteItems)
         {
+            if (device.getVehicleID() != null)
+                setVehicleDevice(device.getVehicleID(), null);
+
             deviceDAO.deleteByID(device.getDeviceID());
 
             // add a message
@@ -166,20 +183,21 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         }
     }
 
-    public List<Vehicle> getVehicles()
+    public List<VehicleView> getVehicles()
     {
         if (vehicles == null)
-            vehicles = vehicleDAO.getVehiclesByAcctID(getUser().getPerson().getAccountID());
+            vehicles = new LinkedList<VehicleView>(vehiclesBean.getItems());
         return vehicles;
     }
 
     public void chooseVehicle()
     {
-        final String vehicleID = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("vehicleID");
+        final Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        final String vehicleID = params.get("vehicleID");
         if (vehicleID != null)
             getEditItem().setVehicleID(Integer.parseInt(vehicleID));
 
-        if (!isAdd() && !isBatchEdit())
+        if (Boolean.parseBoolean(params.get("immediate")) && !isAdd() && !isBatchEdit())
             assignVehicle(getEditItem());
     }
 
@@ -208,9 +226,24 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     private void assignVehicle(final DeviceView device)
     {
         if (device.getOldVehicleID() != null)
+        {
             vehicleDAO.setVehicleDevice(device.getOldVehicleID(), null);
+            setVehicleDevice(device.getOldVehicleID(), null);
+        }
+
         vehicleDAO.setVehicleDevice(device.getVehicleID(), device.getDeviceID());
+        setVehicleDevice(device.getVehicleID(), device.getDeviceID());
         device.setOldVehicleID(device.getVehicleID());
+    }
+
+    private void setVehicleDevice(Integer vehicleID, Integer deviceID)
+    {
+        for (final VehicleView vehicle : getVehicles())
+            if (vehicleID.equals(vehicle.getVehicleID()))
+            {
+                vehicle.setDeviceID(deviceID);
+                break;
+            }
     }
 
     @Override

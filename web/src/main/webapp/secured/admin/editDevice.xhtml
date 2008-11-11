@@ -140,8 +140,10 @@
                             <h:outputText value="#{messages.editDevice_vehicleID}" />
                           </td>
                           <td>
-                            <h:outputText value="#{devicesBean.editItem.vehicle.name}" /><h:outputText value=" " />
-                            <a href="#" onclick="Richfaces.showModalPanel('chooseVehicle'); return false;"><h:outputText value="#{messages.editDevice_assign}" /></a>
+                            <h:panelGroup id="vehicleID">
+                              <h:outputText value="#{devicesBean.editItem.vehicle.name}" /><h:outputText value=" " />
+                              <a href="#" onclick="Richfaces.showModalPanel('chooseVehicle'); return false;"><h:outputText value="#{messages.editDevice_assign}" /></a>
+                            </h:panelGroup>
                           </td>
                         </tr>
                       </table>
@@ -176,6 +178,7 @@
 
     <ui:include src="../../includes/chooseVehicle.xhtml">
       <ui:param name="editorBean" value="#{devicesBean}" />
+      <ui:param name="reRender" value="edit-form:vehicleID" />
     </ui:include>
 
     <script type="text/javascript">

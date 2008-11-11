@@ -116,12 +116,17 @@
 
                         <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editVehicle_driverID}" /></td>
-                            <td><h:outputText value="#{vehiclesBean.editItem.driver.person.first}" /><h:outputText value=" " /><h:outputText value="#{vehiclesBean.editItem.driver.person.last}" /><h:outputText value=" " /><h:commandLink value="#{messages.editVehicle_assign}" /></td>
-                          </tr>
-                          <tr>
                             <td width="100"><h:outputText value="#{messages.editVehicle_groupID}" /></td>
                             <td><h:outputText value="#{vehiclesBean.editItem.group.name}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editVehicle_driverID}" /></td>
+                            <td>
+                              <h:panelGroup id="driverID">
+                                <h:outputText value="#{vehiclesBean.editItem.driver.person.first}" /><h:outputText value=" " /><h:outputText value="#{vehiclesBean.editItem.driver.person.last}" /><h:outputText value=" " />
+                                <a href="#" onclick="Richfaces.showModalPanel('chooseDriver'); return false;"><h:outputText value="#{messages.editVehicle_assign}" /></a>
+                              </h:panelGroup>
+                            </td>
                           </tr>
                         </table>
                   
@@ -144,6 +149,11 @@
       </tr>
     </table>
 
+    <ui:include src="../../includes/chooseDriver.xhtml">
+      <ui:param name="editorBean" value="#{vehiclesBean}" />
+      <ui:param name="reRender" value="display-form:driverID" />
+      <ui:param name="immediate" value="true" />
+    </ui:include>
     <ui:include src="../../includes/confirmDelete.xhtml">
       <ui:param name="deleteBean" value="#{vehiclesBean}" />
       <ui:param name="explanation" value="#{messages.vehicle_confirmDelete}" />

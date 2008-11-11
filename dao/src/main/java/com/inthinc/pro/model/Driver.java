@@ -16,7 +16,7 @@ public class Driver extends BaseEntity
     private String  licenseClass;
     private Date    expiration;
     
-    private Person person;
+    private transient Person person;
 
     
     // cj - temporarily added this back in until we can sort out the driver/user/person stuff -- this was breaking us

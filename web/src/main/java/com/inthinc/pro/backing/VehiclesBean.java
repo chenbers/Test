@@ -91,6 +91,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     private DriverDAO                             driverDAO;
     private GroupDAO                              groupDAO;
     private TreeMap<String, Integer>              groups;
+    private TreeMap<Integer, String>              groupNames;
     private List<Driver>                          drivers;
 
     public void setVehicleDAO(VehicleDAO vehicleDAO)
@@ -133,6 +134,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     {
         final VehicleView vehicleView = new VehicleView();
         BeanUtils.copyProperties(vehicle, vehicleView);
+        vehicleView.setOldGroupID(vehicle.getGroupID());
         vehicleView.setOldDriverID(vehicle.getDriverID());
         vehicleView.setSelected(false);
         return vehicleView;
@@ -206,6 +208,14 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     }
 
     @Override
+    public String cancelEdit()
+    {
+        getEditItem().setGroupID(getEditItem().getOldGroupID());
+        getEditItem().setDriverID(getEditItem().getOldDriverID());
+        return super.cancelEdit();
+    }
+
+    @Override
     protected void doDelete(List<VehicleView> deleteItems)
     {
         final FacesContext context = FacesContext.getCurrentInstance();
@@ -223,16 +233,32 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
 
     public List<Driver> getDrivers()
     {
-        if (drivers == null)
+        if ((drivers == null) && (getEditItem().getGroupID() != null))
             drivers = driverDAO.getAllDrivers(getEditItem().getGroupID());
         return drivers;
     }
 
+    public TreeMap<Integer, String> getGroupNames()
+    {
+        if (groupNames == null)
+        {
+            groupNames = new TreeMap<Integer, String>();
+            final GroupHierarchy hierarchy = getProUser().getGroupHierarchy();
+            for (final Group group : hierarchy.getGroupList())
+                groupNames.put(group.getGroupID(), group.getName());
+        }
+        return groupNames;
+    }
+
     public void chooseDriver()
     {
-        final String driverID = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("driverID");
+        final Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        final String driverID = params.get("driverID");
         if (driverID != null)
             getEditItem().setDriverID(Integer.parseInt(driverID));
+
+        if (Boolean.parseBoolean(params.get("immediate")) && !isAdd() && !isBatchEdit())
+            assignDriver(getEditItem());
     }
 
     @Override
@@ -248,16 +274,19 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
                 vehicleDAO.update(vehicle);
 
             if (vehicle.isDriverChanged())
-            {
-                vehicleDAO.setVehicleDriver(vehicle.getVehicleID(), vehicle.getDriverID());
-                vehicle.setOldDriverID(vehicle.getDriverID());
-            }
+                assignDriver(vehicle);
 
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "vehicle_added" : "vehicle_updated", vehicle.getName());
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
             context.addMessage(null, message);
         }
+    }
+
+    private void assignDriver(final VehicleView vehicle)
+    {
+        vehicleDAO.setVehicleDriver(vehicle.getVehicleID(), vehicle.getDriverID());
+        vehicle.setOldDriverID(vehicle.getDriverID());
     }
 
     @Override
@@ -307,6 +336,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
 
     public class VehicleView extends Vehicle implements EditItem
     {
+        private transient Integer oldGroupID;
         private transient Group   group;
         private transient Integer oldDriverID;
         private transient Driver  driver;
@@ -317,6 +347,16 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
             return getVehicleID();
         }
 
+        Integer getOldGroupID()
+        {
+            return oldGroupID;
+        }
+
+        void setOldGroupID(Integer oldGroupID)
+        {
+            this.oldGroupID = oldGroupID;
+        }
+
         @Override
         public void setGroupID(Integer groupID)
         {
@@ -324,11 +364,9 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
             group = null;
 
             if ((driver != null) && !driver.getGroupID().equals(groupID))
-            {
                 setDriverID(null);
-                drivers = null;
-            }
             driver = null;
+            drivers = null;
         }
 
         public Group getGroup()
