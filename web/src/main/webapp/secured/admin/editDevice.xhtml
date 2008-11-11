@@ -129,16 +129,14 @@
                         </tr>
                       </table>
 
+                      <ui:fragment rendered="#{not devicesBean.batchEdit}">
                       <div class="spacer"></div>
 
                       <div class="add_section_title"><h:outputText value="#{messages.editDevice_deviceAssignment}" /></div>
 
                       <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                         <tr>
-                          <td width="100">
-                            <h:selectBooleanCheckbox rendered="#{devicesBean.batchEdit}" id="update_vehicleID" value="#{devicesBean.updateField['vehicleID']}" />
-                            <h:outputText value="#{messages.editDevice_vehicleID}" />
-                          </td>
+                          <td width="100"><h:outputText value="#{messages.editDevice_vehicleID}" /></td>
                           <td>
                             <h:panelGroup id="vehicleID">
                               <h:outputText value="#{devicesBean.editItem.vehicle.name}" /><h:outputText value=" " />
@@ -147,6 +145,7 @@
                           </td>
                         </tr>
                       </table>
+                      </ui:fragment>
 
                     </td>
                     </tr>
