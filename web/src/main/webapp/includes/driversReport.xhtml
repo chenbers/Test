@@ -14,7 +14,7 @@
         	</rich:datascroller>
         		        						
 				<rich:dataTable value="#{driverData}" id="items"
-					var="item" styleClass="datagrid"
+					var="item" styleClass="datagrid" 
 					rowClasses="trendTableOdd,trendTableEven" cellspacing="1" 
 					rows="#{numRowsPerPg}"
 					width="100%" binding="#{driverTable}">
@@ -24,7 +24,12 @@
 						<f:facet name="header">
 							<h:outputText value="Group" />
 						</f:facet>
-						<h:outputText value="#{item.group}" />
+						<a4j:commandLink action="go_team" value="#{item.group}">      					
+							<f:setPropertyActionListener 
+								value="#{item.groupID}" 
+								target="#{navigationBean.groupID}">
+							</f:setPropertyActionListener>
+						</a4j:commandLink>  
     				</rich:column>
     				<rich:column rendered="#{driverColumns['employeeID']}" 
     					sortBy="#{item.employeeID}">
