@@ -44,6 +44,12 @@ public enum RedFlagLevel implements BaseEnum
     {
         return this.description;
     }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
 }
 
 

@@ -14,11 +14,12 @@ public class Trip extends BaseEntity
     private Integer startTime;
     private Integer endTime;
     private Integer mileage;
-    @Column(name="route", type=com.inthinc.pro.model.LatLng.class)
+    @Column(name="route", type=com.inthinc.pro.model.LatLng.class, updateable=false)
     private List<LatLng> route;
     
     private String startAddressStr;
     private String endAddressStr;
+    @Column(name="events", type=com.inthinc.pro.model.Event.class, updateable=false)
     private List<Event> events;
 
     public Trip()

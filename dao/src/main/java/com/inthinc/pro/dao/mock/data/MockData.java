@@ -348,6 +348,10 @@ public class MockData
             minute+=15;
             Integer endDate = hourInDaysBack(day, minute);
             int dayBreak = (numTrips/day);
+            if (driver.getDriverID().equals(UnitTestStats.UNIT_TEST_DRIVER_ID))
+            {
+                unitTestStats.totalTripsForDriver = numTrips;
+            }
             for (int tripCnt = 0; tripCnt < numTrips; tripCnt++)
             {
                 // randomly select a vehicle for the trip
@@ -384,14 +388,19 @@ public class MockData
                 if (trip.getEndTime() > baseTimeSec)
                         System.out.println("ERROR:: end time excedes base time");
                 trip.setDriverID(driver.getDriverID());
-                storeObject(trip);
                 
                 int eventCnt = addEventsAndRedFlagsForTrip(driver, vehicle, trip, eventIdOffset);
-    //            addZoneEvent(xml, driverID, vehicleID, trip.getEndLoc());
+                storeObject(trip);
+
+                //            addZoneEvent(xml, driverID, vehicleID, trip.getEndLoc());
                 eventIdOffset += eventCnt;
                 if (tripCnt == (numTrips-1))
                 {
-                    addWarnings(driver, vehicle, trip.getEndLoc(), eventIdOffset);
+                    int warningCnt = addWarnings(driver, vehicle, trip.getEndLoc(), eventIdOffset);
+                    if (driver.getDriverID().equals(UnitTestStats.UNIT_TEST_DRIVER_ID))
+                    {
+                        unitTestStats.totalEventsInLastTripForDriver = eventCnt;
+                    }
                 }
                 
                 
@@ -412,7 +421,7 @@ public class MockData
         }
     }
     
-    private void addWarnings(Driver driver, Vehicle vehicle, LatLng loc, int idOffset)
+    private int addWarnings(Driver driver, Vehicle vehicle, LatLng loc, int idOffset)
     {
         Date date = DateUtil.convertTimeInSecondsToDate(baseTimeSec - randomInt(1, 2880));
         Event event =  new Event((long)idOffset+1, vehicle.getVehicleID(), EventMapper.TIWIPRO_EVENT_LOW_BATTERY,
@@ -438,6 +447,8 @@ public class MockData
         event.setDriver(driver);
         event.setVehicle(vehicle);
         storeObject(event, Event.class);
+        
+        return 3;
 
     }
     
@@ -446,6 +457,7 @@ public class MockData
     {
         int numEvents = randomInt(MIN_EVENTS, MAX_EVENTS);
 
+        trip.setEvents(new ArrayList<Event>());
         for (int eventCnt = 0; eventCnt < numEvents; eventCnt++)
         {
             int eventCategory = randomInt(1, 3);
@@ -524,6 +536,7 @@ public class MockData
             {
                 unitTestStats.totalRedFlags++;
             }
+            trip.getEvents().add(event);
         }
                 
         return numEvents;
