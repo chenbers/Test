@@ -23,5 +23,17 @@ public class GroupHessianDAO extends GenericHessianDAO<Group, Integer, CentralSe
             return Collections.emptyList();
         }
     }
+    
+    public Group getGroupByID(Integer groupID)
+    {
+        try
+        {
+            return convertToModelObject(this.getSiloService().getGroupByID(groupID));
+        }
+        catch (EmptyResultSetException e)
+        {
+            return null;
+        }
+    }
 
 }
