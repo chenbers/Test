@@ -17,11 +17,11 @@
 	
 	<ui:define name="content">
 		<a4j:form id="outerDriverReport">
-		<div id="wrapper">
+
 			<table width="940" height="430" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
 				<tr>
 					<td valign="top">
-						<a4j:form id="driverSearch">							
+												
 							<div class="">
 								<div class="panel_nw">
 									<div class="panel_title">
@@ -73,26 +73,29 @@
             								</li>          							
           								</ul>																																	
 									</div>
-								</div>
+									</div>
+								
 								<ui:include src="/includes/driversReport.xhtml">	
 									<ui:param name="numRowsPerPg" value="#{driverReportBean.numRowsPerPg}"/>									
              						<ui:param name="driverData" value="#{driverReportBean.driverData}"/>             						
              						<ui:param name="driverColumns" value="#{driverReportBean.driverColumns}"/>
              						<ui:param name="driverTable" value="#{driverReportTable.table}"/>
-    							</ui:include>    							
+    							</ui:include>   
+    							 							
     							<ui:include src="/includes/editDriverColumns.xhtml">
 									<ui:param name="driverColumns" value="#{driverReportBean.driverColumns}"/>	
 									<ui:param name="reRender" value="dataTable" />
-								</ui:include>    						
+								</ui:include>    
+														
     					    	<div class="panel_sw">
 									<div class="panel_statusbar"></div>
 								</div>
 							</div>
-						</a4j:form>									
+														
 					</td>
 				</tr>
 			</table>
-		</div>
+		
 		</a4j:form>
 	</ui:define>
 	
