@@ -2,6 +2,7 @@ package com.inthinc.pro.dao.hessian;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
@@ -41,15 +42,13 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer, Centr
     @Override
     public Integer setVehicleDriver(Integer vehicleID, Integer driverID)
     {
-        findByID(vehicleID).setDriverID(driverID);
-        return 1;
+        return getChangedCount(getSiloService().setVehicleDriver(vehicleID, driverID));
     }
 
     @Override
     public Integer setVehicleDevice(Integer vehicleID, Integer deviceID)
     {
-        findByID(vehicleID).setDeviceID(deviceID);
-        return 1;
+        return getChangedCount(getSiloService().setVehicleDevice(vehicleID, deviceID));
     }
 
 }
