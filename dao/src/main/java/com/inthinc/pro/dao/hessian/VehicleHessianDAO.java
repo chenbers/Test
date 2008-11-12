@@ -53,6 +53,13 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
 
     public Vehicle getVehicleByID(Integer vehicleID)
     {
-        return convertToModelObject(this.getSiloService().getVehicleByID(vehicleID));
+        try
+        {
+            return convertToModelObject(this.getSiloService().getVehicleByID(vehicleID));
+        }
+        catch (EmptyResultSetException e)
+        {
+                return null;
+        }
     }
 }
