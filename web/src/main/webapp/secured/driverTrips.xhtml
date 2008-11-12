@@ -155,25 +155,25 @@
 				<!-- Start Trip table --> 
 					
 						<rich:dataTable 
-						value="#{driverTripsBean.trips}" 
-						id="tripTableSmall"
+						value="#{driverTripsBean.selectedTrip.trip.events}" 
+						id="selectedTripTable"
 						var="item" styleClass="datagrid"
 						rowClasses="trendTableOdd,trendTableEven" cellspacing="1" rows="10"  
 						width="100%">  <!-- //TODO: Make generic Odd Even CSS -->
 
 							<!-- Data -->
-							<rich:column sortBy="#{item.endAddress}">
+							<rich:column sortBy="#{item.addressStr}">
 								<f:facet name="header">
 									<h:outputText value="Address" />
 								</f:facet>
-								<h:outputText value="#{item.endAddress}" />
+								<h:outputText value="#{item.addressStr}" />
 							</rich:column>
 							
-							<rich:column sortBy="#{item.duration}">
+							<rich:column sortBy="#{item.time}">
 								<f:facet name="header">
 									<h:outputText value="Time" />
 								</f:facet>
-								<h:outputText value="#{item.duration}" />
+								<h:outputText value="#{item.time}" />
 							</rich:column>
 						</rich:dataTable>
 					 
@@ -291,7 +291,7 @@
 			<div class="panel_w">
 			  <div class="panel_content" align="center">
 				<!-- Start Trip table --> 
-					<h:form id="trendTable">
+					<a4j:form id="trendTable">
 						<rich:dataTable 
 						value="#{driverTripsBean.trips}" id="items"
 						var="item" styleClass="datagrid"
@@ -304,7 +304,11 @@
 								<f:facet name="header">
 									<h:outputText value="Date" />
 								</f:facet>
-									<h:outputText value="#{item.dateShort}" />
+								 <!--  <a4j:commandLink title="#{item.dateShort}" immediate="true"
+	   								reRender="selectedTrip"
+	   								value="#{item.dateShort}">
+	   								<a4j:actionparam assignTo="#{driverTripsBean.selectedTrip}" value="#{item}" />
+	          					</a4j:commandLink> -->
 							</rich:column>
 							
 							<rich:column sortBy="#{item.timeShort}">
@@ -345,7 +349,7 @@
 						<div class="spacer"></div>
 						<rich:datascroller align="center" for="items" maxPages="20"
            				 page="#{driverTripsBean.tripsPager}" id="scroller" reRender="items" />
-					</h:form> 
+					</a4j:form> 
 				<!-- End Trip table -->
 			  </div>
 			</div>
@@ -369,16 +373,27 @@
 			  <h:panelGroup styleClass="map-border" layout="block">
 							<div id="map-canvas" style="width:588px;height:500px;border:0"></div>
 					  	</h:panelGroup>
-					    <script type="text/javascript">
+					   					    <script type="text/javascript">
       						if (GBrowserIsCompatible()) {
         						map = new GMap2(document.getElementById("map-canvas"));
         						map.addControl(new GLargeMapControl());
         						map.addControl(new GMapTypeControl());
         						map.addControl(new GOverviewMapControl()); 
-								map.setCenter(new GLatLng(41.0,-116.0 ), 5);
-								map.setMapType(G_MAP_TYPE);
+								map.setCenter(new GLatLng(#{driverTripsBean.selectedTrip.routeLastStep.lat}, #{driverTripsBean.selectedTrip.routeLastStep.lng}), 14);
+								map.setMapType(G_NORMAL_MAP);
+								
+								var polyline = new GPolyline([
+								
+									<ui:repeat value="#{driverTripsBean.selectedTrip.route}" var="route">
+										new GLatLng(#{route.lat}, #{route.lng}),
+								  	</ui:repeat>
+								  		  //Repeating the last step to finish JS array.
+								  		  new GLatLng(#{driverTripsBean.selectedTrip.routeLastStep.lat}, #{driverTripsBean.selectedTrip.routeLastStep.lng})
+									], "#0000ff", 6);
+									map.addOverlay(polyline);
+								
       						}
-    					</script>  
+    					</script> 
 			  </div>
 			</div>
 			<div class="panel_sw">

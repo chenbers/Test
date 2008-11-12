@@ -20,7 +20,7 @@ public class DriverTripsBean extends BaseBean
     
     private Integer milesDriven = new Integer(0);
     private Integer numStops = 0;
-    private String idleTime;
+    private String idleTime = "0:45";
     private Integer numTrips = 0;
     private Integer totalDriveTime;
     
@@ -29,8 +29,11 @@ public class DriverTripsBean extends BaseBean
     private boolean showWarnings = true;
     
     private List<TripDisplay> trips;
-    private Integer tripsPager;
-    private Integer tripPager;
+    private TripDisplay lastTrip;
+    private TripDisplay selectedTrip;
+    
+    private Integer tripsPager = 0;
+    private Integer tripPager = 0;
     private TripDAO tripDAO;
     
     public void init()
@@ -41,24 +44,30 @@ public class DriverTripsBean extends BaseBean
     
     public void initTrips()
     {
-       
+        logger.debug("## initTrips()");
+        
         List<Trip> tempTrips = new ArrayList<Trip>();
         tempTrips = tripDAO.getTrips(1222, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate) - 10000);
 
         trips = new ArrayList<TripDisplay>();
         for (Trip trip : tempTrips)
         {
-           
             trips.add(new TripDisplay(trip));
             
             milesDriven += trip.getMileage();
-           // totalDriveTime += ( trip.getEndTime() - trip.getStartTime() );
+            //totalDriveTime += ( trip.getEndTime() - trip.getStartTime() );
             
             //numStops =  ? 
             //idleTime =  ?
         }
         
         numTrips = trips.size();
+        
+        if(trips.size() > 0)
+        {
+            lastTrip = trips.get(numTrips-1);
+            setSelectedTrip( trips.get(0) );
+        }
         
     }
  
@@ -189,5 +198,25 @@ public class DriverTripsBean extends BaseBean
     public void setTripPager(Integer tripPager)
     {
         this.tripPager = tripPager;
+    }
+
+    //LAST TRIP PROPERTIES
+    public TripDisplay getLastTrip()
+    {
+        return lastTrip;
+    }
+    public void setLastTrip(TripDisplay lastTrip)
+    {
+        this.lastTrip = lastTrip;
+    }
+
+    //SELECTED TRIP PROPERTIES
+    public TripDisplay getSelectedTrip()
+    {
+        return selectedTrip;
+    }
+    public void setSelectedTrip(TripDisplay selectedTrip)
+    {
+        this.selectedTrip = selectedTrip;
     }
 }

@@ -37,7 +37,8 @@ public class FleetOverviewBean extends BaseBean
 
     private void init()
     {
-        logger.debug("FleetOverviewBean:init()");
+        logger.debug("## FleetOverviewBean - init()");
+        
         Integer endDate = DateUtil.getTodaysDate();
         Integer startDate = DateUtil.getDaysBackDate(endDate, duration.getNumberOfDays());
         Integer groupID = navigation.getGroupID();
@@ -71,7 +72,6 @@ public class FleetOverviewBean extends BaseBean
         {
             initStyle();
         }
-        logger.debug("overallScoreStyle = " + overallScoreStyle);
         return overallScoreStyle;
     }
 

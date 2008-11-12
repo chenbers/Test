@@ -3,6 +3,8 @@ package com.inthinc.pro.backing;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.ScoreBreakdown;
@@ -17,6 +19,8 @@ import com.inthinc.pro.model.ScoreableEntity;
 
 public class DriverSpeedBean extends BaseBean
 {
+    private static final Logger logger = Logger.getLogger(DriverSpeedBean.class);
+    
     private ScoreDAO    scoreDAO;
     private Distance    distance = Distance.FIVEHUNDRED;
     
@@ -30,6 +34,8 @@ public class DriverSpeedBean extends BaseBean
     
     private void initSpeed()
     {
+        
+        logger.debug("## initSpeed()");
         
         ScoreableEntity speedSe = scoreDAO.getAverageScoreByType(getUser().getPerson().getGroupID(), startDate, endDate, ScoreType.SCORE_OVERALL); //Replace with correct DAO
         setSpeedScore(speedSe.getScore());

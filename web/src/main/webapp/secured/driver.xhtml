@@ -268,8 +268,19 @@
         						map.addControl(new GLargeMapControl());
         						map.addControl(new GMapTypeControl());
         						map.addControl(new GOverviewMapControl()); 
-								map.setCenter(new GLatLng(41.0,-116.0 ), 9);
-								map.setMapType(G_MAP_TYPE);
+								map.setCenter(new GLatLng(#{driverTripsBean.lastTrip.routeLastStep.lat}, #{driverTripsBean.lastTrip.routeLastStep.lng}), 14);
+								map.setMapType(G_NORMAL_MAP);
+								
+								var polyline = new GPolyline([
+								
+									<ui:repeat value="#{driverTripsBean.lastTrip.route}" var="route">
+										new GLatLng(#{route.lat}, #{route.lng}),
+								  	</ui:repeat>
+								  		  //Repeating the last step to finish JS array.
+								  		  new GLatLng(#{driverTripsBean.lastTrip.routeLastStep.lat}, #{driverTripsBean.lastTrip.routeLastStep.lng})
+									], "#0000ff", 6);
+									map.addOverlay(polyline);
+								
       						}
     					</script>
 					  </div>

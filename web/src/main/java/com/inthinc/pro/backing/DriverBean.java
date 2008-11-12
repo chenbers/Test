@@ -87,6 +87,7 @@ public class DriverBean extends BaseBean
 	//INIT SCORES
     private void initOverallScore()
     {
+        logger.debug("## initOverallScore()");
         ScoreableEntity overallSe = scoreDAO.getAverageScoreByType(getUser().getPerson().getGroupID(), startDate, endDate, ScoreType.SCORE_OVERALL);
         setOverallScore(overallSe.getScore());
     }
@@ -94,12 +95,14 @@ public class DriverBean extends BaseBean
     
     private void initSeatBelt()
     {
+        logger.debug("## initSeatBeltScore()");
         ScoreableEntity seatBeltSe = scoreDAO.getAverageScoreByType(getUser().getPerson().getGroupID(), startDate, endDate, ScoreType.SCORE_OVERALL); //Replace with correct DAO
         setSeatBeltScore(seatBeltSe.getScore());
     }
     
     private void initDrivingScore()
     {
+        logger.debug("## initDrivingScore()");
         ScoreableEntity drivingSe = scoreDAO.getAverageScoreByType(getUser().getPerson().getGroupID(), startDate, endDate, ScoreType.SCORE_OVERALL); //Replace with correct DAO
         setDrivingScore(drivingSe.getScore());
     }
@@ -135,7 +138,6 @@ public class DriverBean extends BaseBean
         {
             initOverallScore();
         }
-        logger.debug("overallScoreStyle = " + overallScoreStyle);
         return overallScoreStyle;
 	}
 	public void setOverallScoreStyle(String overallScoreStyle) {
@@ -369,7 +371,7 @@ public class DriverBean extends BaseBean
 
     public void setDriver(Driver driver)
     {
-logger.debug("set Driver Called " + driver.getDriverID()); 
+        logger.debug("## setDriver() called " + driver.getDriverID()); 
         setDriverName(driver.getPerson().getFirst() + " " + driver.getPerson().getLast());
         this.driver = driver;
     }

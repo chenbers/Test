@@ -2,7 +2,10 @@ package com.inthinc.pro.backing.ui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
+import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.dao.util.DateUtil;
 
@@ -14,6 +17,8 @@ public class TripDisplay
     String startAddress;    // 123 Street
     String endAddress;      // 188 S 11th St
     String duration;        // 1:32
+    List<LatLng> route;
+    LatLng routeLastStep;
     
     Trip trip;
     
@@ -23,22 +28,25 @@ public class TripDisplay
     {
         this.trip = trip;
         
+        route = trip.getRoute();
+        
         dateFormatter = new SimpleDateFormat("dd MMM");
         setDateShort(dateFormatter.format(DateUtil.convertTimeInSecondsToDate(trip.getEndTime() )));
         
         dateFormatter = new SimpleDateFormat("h:mm");
         setTimeShort(dateFormatter.format(DateUtil.convertTimeInSecondsToDate(trip.getEndTime() )));
         
+        int diff = trip.getEndTime() - trip.getStartTime();
+        setDuration(dateFormatter.format(DateUtil.convertTimeInSecondsToDate(diff)));
+        
         Double mileageDouble = (double)trip.getMileage() / 100;
         setDistance(mileageDouble.toString() + "mi");
         
         setStartAddress(trip.getStartAddressStr());
-        
         setEndAddress(trip.getEndAddressStr());
         
-        int diff = trip.getEndTime() - trip.getStartTime();
-        Double durationDouble = (double)diff / 60;
-        setDuration(durationDouble.toString());   // TODO: Format as 1:32
+        if(route.size() > 0)
+            routeLastStep = route.get(route.size()-1);
         
     }
 
@@ -110,6 +118,26 @@ public class TripDisplay
     public void setTrip(Trip trip)
     {
         this.trip = trip;
+    }
+
+    public List<LatLng> getRoute()
+    {
+        return route;
+    }
+
+    public void setRoute(List<LatLng> route)
+    {
+        this.route = route;
+    }
+
+    public LatLng getRouteLastStep()
+    {
+        return routeLastStep;
+    }
+
+    public void setRouteLastStep(LatLng routeLastStep)
+    {
+        this.routeLastStep = routeLastStep;
     }
     
 }
