@@ -7,7 +7,7 @@
 	xmlns:h="http://java.sun.com/jsf/html">
 		
 		<h:form id="vehicleReportTableForm">
-
+			<div class="datagrid">
         	<rich:datascroller id="topScroller" for="items" 
         		scrollerListener="#{vehicleReportBean.scrollerListener}"
         		reRender="bottomScroller,items,start,end,max">
@@ -116,7 +116,7 @@
     			scrollerListener="#{vehicleReportBean.scrollerListener}"
         		reRender="topScroller,items,start,end,max">        			
         	</rich:datascroller>
-
+			</div>
 		</h:form>
 
 </ui:composition>
