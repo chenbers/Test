@@ -26,7 +26,10 @@ public class DriverReportBean extends BaseBean
 {
     private static final Logger logger = Logger.getLogger(DriverReportBean.class);
     
+    //driversData is the ONE read from the db, driverData is what is displayed
+    private List <Driver> driversData = new ArrayList<Driver>(); 
     private List <DriverReportItem> driverData = new ArrayList<DriverReportItem>();
+    
     private static final List<String> AVAILABLE_COLUMNS;
     private Map<String, Boolean> driverColumns = new HashMap<String, Boolean>();
     
@@ -69,8 +72,7 @@ public class DriverReportBean extends BaseBean
         }
     }
     
-    private void initData() {
-        List <Driver> driversData = new ArrayList<Driver>();        
+    private void initData() {           
         driversData = driverDAO.getAllDrivers(getUser().getPerson().getGroupID());        
         loadResults(driversData);     
         maxCount = driverData.size();        
@@ -99,25 +101,32 @@ public class DriverReportBean extends BaseBean
         if ( this.driverData.size() > 0 ) {
             this.driverData.clear();
         }
-//--->Replace this with DAO for searching
-        //Test search reset                
+
+        //Search by last name             
         if ( this.searchFor.trim().length() != 0 ) {
-            drt = new DriverReportItem();
-            drt.setEmployee("Ivebeen Searchedfor");
-            drt.setEmployeeID(123456789);
-            drt.setGroup("Hidden");
-            drt.setMilesDriven(112233);
-            drt.setOverallScore(12);
-            drt.setSeatBeltScore(23);
-            drt.setSpeedScore(34);
-            drt.setStyleScore(45);
-            setStyles();
-            drt.setVehicleID("AA-123");                
-            driverData.add(drt);
+            String trimmedSearch = this.searchFor.trim();            
+            List <Driver> matchedDrivers = new ArrayList<Driver>();    
             
-            this.maxCount = driverData.size();
+            for ( int i = 0; i < driversData.size(); i++ ) {
+                Driver d = (Driver)driversData.get(i);
+                Person p = d.getPerson();
+                
+                //Fuzzy
+                if ( p != null ) {   
+                    String lowerCaseLast = p.getLast().toLowerCase();
+                    int index1 = lowerCaseLast.indexOf(trimmedSearch);                    
+                    if (index1 != -1) {                        
+                        matchedDrivers.add(d);
+                    }
+                }
+            }
+            
+            loadResults(matchedDrivers);             
+            this.maxCount = matchedDrivers.size();
+        //Nothing entered, show them all
         } else {
-            initData();
+            loadResults(driversData);
+            this.maxCount = driversData.size();
         }
         
         resetCounts();       
@@ -168,12 +177,22 @@ public class DriverReportBean extends BaseBean
         }
     }
     
-    private void resetCounts() {
+    private void resetCounts() {        
         this.start = 1;
+        
+        //None found
+        if ( this.driverData.size() < 1 ) {
+            this.start = 0;
+        }
+        
         this.end = this.numRowsPerPg;
+        
+        //Fewer than a page
         if ( this.driverData.size() <= this.end ) {
             this.end = this.driverData.size();
-        } 
+        } else if ( this.start == 0 ) {
+            this.end = 0;
+        }
     }
     
     public void saveColumns() {  
