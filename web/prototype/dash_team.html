@@ -108,29 +108,27 @@
 				<div class="panel_w">
 				  <div class="panel_content">
 				  
-					<table width="920" height="430" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
+					<table width="920" height="" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
 					  <tr>
-						<td valign="top" width="130" class="ls_tabs">
-						  <table width="130" border="0" cellpadding="0" cellspacing="0">
-                            <tr>
-                              <td valign="top" class="ls_tab_on"><a href="#" class="ls_tab_overall">Overall Score</a></td>
-                            </tr>
-                            <tr>
-                              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_drivestyle">Driving Style</a></td>
-                            </tr>
-                            <tr>
-                              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_speed">Speed</a></td>
-                            </tr>
-                            <tr>
-                              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_seatbelt">Seat Belt</a></td>
-                            </tr>
-                          </table>
-						</td>
+					    <td colspan="2" valign="" class="">
+                        
+                        	<ul class="htabs">
+                            
+                            	<li class="overall_on"><img src="/images/x.gif" width="108" height="27" /></li>
+                                <li class="driving_off"><img src="/images/x.gif" width="104" height="27" /></li>
+                                <li class="speed_off"><img src="/images/x.gif" width="70" height="27" /></li>
+                                <li class="seatbelt_off"><img src="/images/x.gif" width="85" height="27" /></li>
+                            
+                            </ul>
+                        
+                        </td>
+				      </tr>
+					  <tr>
 						<td valign="top">
-						  <table width="675" height="" border="0" align="center" cellpadding="0" cellspacing="0">
+						  <table width="920" border="0" align="center" cellpadding="0" cellspacing="0">
                             <tr>
-                              <td colspan="3" valign="top" style="border-bottom: 1px solid #e1e1e1;">
-                                <table width="455" height="100" border="0" cellspacing="0" cellpadding="0" align="center">
+                              <td width="" valign="top">
+                                <table width="920" height="" border="0" cellspacing="0" cellpadding="0" align="center">
                                   <tr>
                                     <td colspan="2" align="right" valign="top"> </td>
                                   </tr>
@@ -176,43 +174,14 @@
                                     <td width="">
                                       <div id="chartdiv" align="center"></div>
                                       <script type="text/javascript">
-									   var chart = new FusionCharts("/swf/Pie2D.swf", "ChartId", "320", "300", "0", "0");
-									   chart.setDataURL("/xml/3d_pie_2.xml");		   
+									   var chart = new FusionCharts("/swf/MSCombi3D.swf", "ChartId", "720", "500", "0", "0");
+									   chart.setDataURL("/xml/overview_team_combo.xml");		   
 									   chart.render("chartdiv");
 									</script>
                                     </td>
                                   </tr>
                                 </table>
                                 <p>&nbsp;</p>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td width="225" valign="top" style="border-right: 1px solid #e1e1e1;">
-                              			<div class="piegrid_label"><a href="#" class="ls_tab_drivestyle">Driving Style</a></div>
-                                      <div id="piegrid_drivestyle"></div>
-                                      <script type="text/javascript">
-										   var chart = new FusionCharts("/swf/Pie2D.swf", "ChartId", "220", "180", "0", "0");
-										   chart.setDataURL("/xml/3d_pie_1.xml");		   
-										   chart.render("piegrid_drivestyle");
-										</script>
-                              </td>
-                              <td width="225" valign="top" style="border-right: 1px solid #e1e1e1;">
-                              <div class="piegrid_label"><a href="#" class="ls_tab_seatbelt">Seat Belt</a></div>
-                                      <div id="piegrid_seatbelt"></div>
-                                      <script type="text/javascript">
-										   var chart = new FusionCharts("/swf/Pie2D.swf", "ChartId", "220", "180", "0", "0");
-										   chart.setDataURL("/xml/3d_pie_1.xml");		   
-										   chart.render("piegrid_seatbelt");
-										</script>
-                              </td>
-                              <td width="225" valign="top" style="border-right: 1px solid #e1e1e1;">
-                              <div class="piegrid_label"><a href="#" class="ls_tab_speed">Speed</a></div>
-                                      <div id="piegrid_speed"></div>
-                                      <script type="text/javascript">
-										   var chart = new FusionCharts("/swf/Pie2D.swf", "ChartId", "220", "180", "0", "0");
-										   chart.setDataURL("/xml/3d_pie_1.xml");		   
-										   chart.render("piegrid_speed");
-										</script>
                               </td>
                             </tr>
                           </table>

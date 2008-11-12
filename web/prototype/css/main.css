@@ -815,7 +815,13 @@ ul#grid_nav li.text a:visited {
 	background: url(/images/score_med_5.png) no-repeat;
 	}
 
-.score_med_12 div.score, .score_med_3 div.score, .score_med_45 div.score .score_med_1 div.score, .score_med_2 div.score, .score_med_4 div.score, .score_med_5 div.score, {
+.score_med_12 div.score,
+.score_med_3 div.score,
+.score_med_45 div.score,
+.score_med_1 div.score,
+.score_med_2 div.score,
+.score_med_4 div.score,
+.score_med_5 div.score {
 	font: bold 24px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	color: #333;
 	padding: 15px 0 0 2px;
@@ -2295,6 +2301,65 @@ ul.legend {
 	border-top: 1px solid #ccc;
 	border-bottom: 1px solid #ccc;
 	}
+
+
+/* HORIZONTAL TABS FOR THE TEAMS PAGE, MAYBE OTHERS ... */
+
+ul.htabs {
+	border-bottom: 1px solid #8BAD37;
+	margin: 0;
+	padding: 0;
+	height: 28px;
+	}
+
+ul.htabs li {
+	list-style: none;
+	float: left;
+	margin: 0;
+	padding: 0 2px 0 0;
+	}
+	
+ul.htabs li.overall_off {
+	width: 108px;
+	background: url(/images/htab_over_off.png) no-repeat;
+	}
+	
+ul.htabs li.overall_on {
+	width: 108px;
+	background: url(/images/htab_over_on.png) no-repeat;
+	}
+	
+ul.htabs li.driving_off {
+	width: 104px;
+	background: url(/images/htab_driving_off.png) no-repeat;
+	}
+	
+ul.htabs li.driving_on {
+	width: 104px;
+	background: url(/images/htab_driving_on.png) no-repeat;
+	}
+	
+ul.htabs li.speed_off {
+	width: 70px;
+	background: url(/images/htab_speed_off.png) no-repeat;
+	}
+	
+ul.htabs li.speed_on {
+	width: 70px;
+	background: url(/images/htab_speed_on.png) no-repeat;
+	}
+	
+ul.htabs li.seatbelt_off {
+	width: 85px;
+	background: url(/images/htab_seatbelt_off.png) no-repeat;
+	}
+	
+ul.htabs li.seatbelt_on {
+	width: 85px;
+	background: url(/images/htab_seatbelt_on.png) no-repeat;
+	}
+	
+
 
 
 /*
