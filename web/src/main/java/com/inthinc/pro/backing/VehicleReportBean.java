@@ -99,6 +99,8 @@ public class VehicleReportBean extends BaseBean
     public void search() {     
         logger.debug("searching");
         
+        List <Vehicle> vehiclesData = new ArrayList<Vehicle>();
+        
         Driver d = new Driver();
         Person p = new Person();
         p.setFirst("Need");
@@ -108,22 +110,21 @@ public class VehicleReportBean extends BaseBean
         if ( this.vehicleData.size() > 0 ) {
             this.vehicleData.clear();
         }
-//--->Replace this with DAO for searching
-        //Test search reset                
-        if ( this.searchFor.trim().length() != 0 ) {
-            vrt = new VehicleReportItem();
-            vrt.setGroup("Hidden");
-            vrt.setVehicleID(123456);
-            vrt.setMakeModelYear("Studebaker/S20/1908");
-            vrt.setDriver(d);
-            vrt.setMilesDriven(190833);
-            vrt.setOverallScore(34);
-            vrt.setSpeedScore(21);
-            vrt.setStyleScore(45);
-            setStyles();                
-            vehicleData.add(vrt);
+                      
+        if ( this.searchFor.trim().length() != 0 ) {     
+            try { 
+                Integer id = Integer.parseInt(this.searchFor.trim());            
+                Vehicle v = vehicleDAO.getVehicleByID(id);
             
-            this.maxCount = vehicleData.size();
+                if ( v != null ) {
+                    vehiclesData.add(v);
+                    loadResults(vehiclesData);
+                    maxCount = vehicleData.size();
+                    resetCounts();
+                }
+            //Looking for non-integer error for input search string
+            } catch (Exception e) {}
+
         } else {
             initData();
         }
