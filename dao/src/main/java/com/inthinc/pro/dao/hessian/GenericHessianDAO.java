@@ -480,7 +480,17 @@ public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>
 
     protected Map<String, Object> convertToMap(Object modelObject)
     {
+        Map<Object, Map<String, Object>> handled = new HashMap<Object, Map<String,Object>>();
+        return convertToMap(modelObject, handled);
+    }
+
+    protected Map<String, Object> convertToMap(Object modelObject, Map<Object, Map<String, Object>> handled)
+    {
         Map<String, Object> map = new HashMap<String, Object>();
+        if (handled.get(modelObject) != null)
+            return handled.get(modelObject);
+        else
+            handled.put(modelObject, map);
 
         Class<?> clazz = modelObject.getClass();
         while (clazz != null)
@@ -554,7 +564,14 @@ public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>
                     Map<Object, Map<String, Object>> valueMap = new HashMap<Object, Map<String, Object>>();
                     for (Map.Entry<Object, Object> entry : ((Map<Object, Object>) value).entrySet())
                     {
-                        valueMap.put(entry.getKey(), convertToMap(entry.getValue()));
+                        if (handled.containsKey(entry.getValue()))
+                        {
+                            valueMap.put(entry.getKey(), handled.get(entry.getValue()));
+                        }
+                        else
+                        {
+                            valueMap.put(entry.getKey(), convertToMap(entry.getValue(), handled));
+                        }
                     }
                     map.put(name, valueMap);
                 }
@@ -576,7 +593,14 @@ public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>
                 // if the property is not a standardProperty it must be some kind of bean/pojo/object. convert the property to a map
                 else if (!isStandardProperty(value))
                 {
-                    map.put(name, convertToMap(value));
+                    if (handled.containsKey(value))
+                    {
+                        map.put(name, handled.get(value));
+                    }
+                    else
+                    {
+                        map.put(name, convertToMap(value, handled));
+                    }
                 }
                 // if we have made it this far, the value must be a String or a primitive type. Just put it in the map.
                 else
