@@ -8,11 +8,12 @@
 		
 		<h:form id="driverReportTableForm">
 			<div class="datagrid">
+			<div class="spacer"></div> 
         	<rich:datascroller id="topScroller" for="items" 
         		scrollerListener="#{driverReportBean.scrollerListener}"
         		reRender="bottomScroller,items,start,end,max">
         	</rich:datascroller>
-        		        						
+			      		        						
 				<rich:dataTable value="#{driverData}" id="items"
 					var="item" styleClass="datagrid" 
 					rowClasses="trendTableOdd,trendTableEven" cellspacing="1" 
@@ -118,7 +119,7 @@
     				</rich:column>
     			</rich:dataTable>    	
     			
-    			<rich:datascroller id="bottomScroller" for="items" immediate="true"    			
+    			<rich:datascroller id="bottomScroller" for="items" styleClass="datagrid" 
     				scrollerListener="#{driverReportBean.scrollerListener}"
         			reRender="topScroller,items,start,end,max">        			
         		</rich:datascroller>

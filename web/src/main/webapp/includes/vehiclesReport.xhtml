@@ -8,6 +8,7 @@
 		
 		<h:form id="vehicleReportTableForm">
 			<div class="datagrid">
+			<div class="spacer"></div> 
         	<rich:datascroller id="topScroller" for="items" 
         		scrollerListener="#{vehicleReportBean.scrollerListener}"
         		reRender="bottomScroller,items,start,end,max">
@@ -112,7 +113,7 @@
     				</rich:column>
     			</rich:dataTable>    			
     			
-    		<rich:datascroller id="bottomScroller" for="items" immediate="true"    			
+    		<rich:datascroller id="bottomScroller" for="items" 
     			scrollerListener="#{vehicleReportBean.scrollerListener}"
         		reRender="topScroller,items,start,end,max">        			
         	</rich:datascroller>

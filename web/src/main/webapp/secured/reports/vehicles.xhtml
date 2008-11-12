@@ -72,18 +72,23 @@
               									<h:outputFormat id="max" value="#{vehicleReportBean.maxCount}"/>
             								</li>          							
           								</ul>																																	
-									</div>
-								</div>
+								
+								<div class="datagrid">
 								<ui:include src="/includes/vehiclesReport.xhtml">	
 									<ui:param name="numRowsPerPg" value="#{vehicleReportBean.numRowsPerPg}"/>									
              						<ui:param name="vehicleData" value="#{vehicleReportBean.vehicleData}"/>             						
              						<ui:param name="vehicleColumns" value="#{vehicleReportBean.vehicleColumns}"/>
              						<ui:param name="vehicleTable" value="#{vehicleReportTable.table}"/>
-    							</ui:include>    							
+    							</ui:include>    		
+    							</div>	    										
     							<ui:include src="/includes/editVehicleColumns.xhtml">
 									<ui:param name="vehicleColumns" value="#{vehicleReportBean.vehicleColumns}"/>	
 									<ui:param name="reRender" value="dataTable" />
-								</ui:include>    						
+								</ui:include>   
+								
+								</div>
+								</div>	
+								 						
     					    	<div class="panel_sw">
 									<div class="panel_statusbar"></div>
 								</div>
