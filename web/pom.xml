@@ -194,6 +194,12 @@
          <version>0.0.1-SNAPSHOT</version>
          <scope>compile</scope>
       </dependency>
+      <dependency>
+      	<groupId>org.apache.shale</groupId>
+      	<artifactId>shale-test</artifactId>
+      	<version>1.0.5</version>
+      	<scope>test</scope>
+      </dependency>
   </dependencies>
    <properties>
       <webapp.dir>${env.CATALINA_HOME}/webapps</webapp.dir>

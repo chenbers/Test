@@ -1,11 +1,12 @@
 package com.inthinc.pro.backing;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.apache.shale.test.base.AbstractJsfTestCase;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,9 +42,18 @@ import com.inthinc.pro.security.userdetails.ProUser;
 
                                  
 // implementing ApplicationContextAware give the test class access to the ApplicationContext                            
-public class BaseBeanTest implements ApplicationContextAware
+public class BaseBeanTest extends AbstractJsfTestCase implements ApplicationContextAware
 {
-    
+    public BaseBeanTest()
+    {
+        super(null);
+    }
+
+    public BaseBeanTest(String name)
+    {
+        super(name);
+    }
+
     private static final Logger logger = Logger.getLogger(BaseBeanTest.class);
     protected ApplicationContext applicationContext;
     
@@ -54,8 +64,20 @@ public class BaseBeanTest implements ApplicationContextAware
         
         // initializes the mock data
         MockData.getInstance();
-        
-        
+    }
+
+    @Before
+    @Override
+    public void setUp() throws Exception
+    {
+        super.setUp();
+    }
+
+    @After
+    @Override
+    public void tearDown() throws Exception
+    {
+        super.tearDown();
     }
 
     @Override
@@ -80,7 +102,7 @@ public class BaseBeanTest implements ApplicationContextAware
 
         // AUTHENTICATION PROVIDER
         ProviderManager providerManager = (ProviderManager) applicationContext.getBean("authenticationManager");
-        List list = new ArrayList();
+        List<TestingAuthenticationProvider> list = new ArrayList<TestingAuthenticationProvider>();
         list.add(new TestingAuthenticationProvider());
         providerManager.setProviders(list);
         
