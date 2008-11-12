@@ -29,13 +29,17 @@ public class VehicleReportBean extends BaseBean
 {
     private static final Logger logger = Logger.getLogger(VehicleReportBean.class);
     
+    //vehiclesData is the ONE read from the db, vehicleData is what is displayed
+    private List <Vehicle> vehiclesData = new ArrayList<Vehicle>();
     private List <VehicleReportItem> vehicleData = new ArrayList<VehicleReportItem>();
+    
     private static final List<String> AVAILABLE_COLUMNS;
     private Map<String, Boolean> vehicleColumns = new HashMap<String, Boolean>();
     
     private VehicleDAO vehicleDAO;
     private ScoreDAO scoreDAO;
     private GroupDAO groupDAO;
+    private DriverDAO driverDAO;
     
     private VehicleReportItem vrt = null;
     
@@ -71,10 +75,8 @@ public class VehicleReportBean extends BaseBean
         }
     }
     
-    private void initData() {
-        List <Vehicle> vehiclesData = new ArrayList<Vehicle>();
-        vehiclesData = vehicleDAO.getVehiclesInGroupHierarchy(
-                getUser().getPerson().getGroupID());
+    private void initData() {        
+        vehiclesData = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getPerson().getGroupID());
         loadResults(vehiclesData);
         maxCount = vehicleData.size();
         resetCounts();
@@ -96,11 +98,7 @@ public class VehicleReportBean extends BaseBean
         this.vehicleData = vehicleData;
     }
     
-    public void search() {     
-        logger.debug("searching");
-        
-        List <Vehicle> vehiclesData = new ArrayList<Vehicle>();
-        
+    public void search() {             
         Driver d = new Driver();
         Person p = new Person();
         p.setFirst("Need");
@@ -113,20 +111,30 @@ public class VehicleReportBean extends BaseBean
                       
         if ( this.searchFor.trim().length() != 0 ) {     
             try { 
-                Integer id = Integer.parseInt(this.searchFor.trim());            
-                Vehicle v = vehicleDAO.getVehicleByID(id);
-            
-                if ( v != null ) {
-                    vehiclesData.add(v);
-                    loadResults(vehiclesData);
-                    maxCount = vehicleData.size();
-                    resetCounts();
+                Integer id = Integer.parseInt(this.searchFor.trim());   
+                String compareToID = Integer.toString(id.intValue());
+                List <Vehicle> matchedVehicles = new ArrayList<Vehicle>();    
+                
+                for ( int i = 0; i < vehiclesData.size(); i++ ) {
+                    Vehicle v = (Vehicle)vehiclesData.get(i);                   
+                    String localID = Integer.toString(v.getVehicleID());
+                    
+                    //Fuzzy
+                    int index1 = localID.indexOf(compareToID);                    
+                    if (index1 != -1) {                        
+                        matchedVehicles.add(v);
+                    }
                 }
+                
+                loadResults(matchedVehicles);             
+                this.maxCount = matchedVehicles.size();
+                
             //Looking for non-integer error for input search string
             } catch (Exception e) {}
 
         } else {
-            initData();
+            loadResults(vehiclesData);
+            this.maxCount = vehiclesData.size();
         }
         
         resetCounts();       
@@ -135,13 +143,8 @@ public class VehicleReportBean extends BaseBean
     private void loadResults(List <Vehicle> vehiclesData) 
     {
         Vehicle v = null;
-        Group g = null;
-        
-        Driver d = new Driver();
-        Person p = new Person();
-        p.setFirst("Need");
-        p.setLast("Data");
-        d.setPerson(p);
+        Group g = null;        
+        Driver d = new Driver();        
        
         ScoreableEntity s = null;        
         vrt = new VehicleReportItem();
@@ -171,9 +174,20 @@ public class VehicleReportBean extends BaseBean
             g = groupDAO.getGroupByID(v.getGroupID());
             vrt.setGroup(g.getName());
             vrt.setGroupID(g.getGroupID());
-                        
-            //Needed         
+            
+            //Driver
+            if ( v.getDriverID() != null ) {
+                d = driverDAO.getDriverByID(v.getDriverID());
+            //None assigned
+            } else {
+                Person p = new Person();
+                p.setFirst("None");
+                p.setLast("Assigned");
+                d.setPerson(p);
+            }
             vrt.setDriver(d);
+                        
+            //Needed                    
             vrt.setMilesDriven(202114);
             
             vehicleData.add(vrt);            
@@ -182,10 +196,20 @@ public class VehicleReportBean extends BaseBean
     
     private void resetCounts() {
         this.start = 1;
+        
+        //None found
+        if ( this.vehicleData.size() < 1 ) {
+            this.start = 0;
+        }
+        
         this.end = this.numRowsPerPg;
+        
+        //Fewer than a page
         if ( this.vehicleData.size() <= this.end ) {
             this.end = this.vehicleData.size();
-        } 
+        } else if ( this.start == 0 ) {
+            this.end = 0;
+        }
     }
     
     public void saveColumns() {  
@@ -324,6 +348,16 @@ public class VehicleReportBean extends BaseBean
     public void setGroupDAO(GroupDAO groupDAO)
     {
         this.groupDAO = groupDAO;
+    }
+
+    public DriverDAO getDriverDAO()
+    {
+        return driverDAO;
+    }
+
+    public void setDriverDAO(DriverDAO driverDAO)
+    {
+        this.driverDAO = driverDAO;
     }
 
 }
