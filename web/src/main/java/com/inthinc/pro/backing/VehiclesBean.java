@@ -145,7 +145,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     @Override
     protected boolean matchesFilter(VehicleView vehicle, String filterWord)
     {
-        for (final String column : columns.keySet())
+        for (final String column : getColumns().keySet())
             if (columns.get(column))
             {
                 boolean matches = false;

@@ -270,7 +270,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean
      * @param paramName
      *            The name of a param containing the edit item's ID.
      */
-    private boolean selectEditItem(String paramName)
+    protected boolean selectEditItem(String paramName)
     {
         final Map<String, String> parameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         if (parameterMap.get(paramName) != null)

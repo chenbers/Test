@@ -209,7 +209,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     @Override
     protected boolean matchesFilter(PersonView person, String filterWord)
     {
-        for (final String column : columns.keySet())
+        for (final String column : getColumns().keySet())
             if (columns.get(column))
             {
                 boolean matches = false;

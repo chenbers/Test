@@ -103,7 +103,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     @Override
     protected boolean matchesFilter(DeviceView device, String filterWord)
     {
-        for (final String column : columns.keySet())
+        for (final String column : getColumns().keySet())
             if (columns.get(column))
             {
                 boolean matches = false;
