@@ -13,6 +13,4 @@ public interface VehicleDAO extends GenericDAO<Vehicle, Integer>
     Integer setVehicleDriver(Integer vehicleID, Integer driverID);
 
     Integer setVehicleDevice(Integer vehicleID, Integer deviceID);
-    
-    Vehicle getVehicleByID(Integer vehicleID);
 }
