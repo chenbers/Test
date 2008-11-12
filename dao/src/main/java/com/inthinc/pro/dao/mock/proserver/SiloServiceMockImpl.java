@@ -683,4 +683,17 @@ public class SiloServiceMockImpl implements SiloService
         }
         return returnMap;        
     }
+    
+    
+    @Override
+    public Map<String, Object> getDriverByID(Integer driverID) throws ProDAOException
+    {
+        Map<String, Object> returnMap = MockData.getInstance().lookup(Driver.class, "driverID", driverID);
+
+        if (returnMap == null)
+        {
+            throw new EmptyResultSetException("No driver for driverID: " + driverID, "getDriverByID", 0);
+        }
+        return returnMap;        
+    }
 }

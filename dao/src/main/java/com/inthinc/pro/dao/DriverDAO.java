@@ -8,4 +8,6 @@ import com.inthinc.pro.model.ScoreableEntity;
 public interface DriverDAO extends GenericDAO<Driver, Integer>
 {
     List<Driver> getAllDrivers(Integer groupID);
+    
+    Driver getDriverByID(Integer driverID);
 }
