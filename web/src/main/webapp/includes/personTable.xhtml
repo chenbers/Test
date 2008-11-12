@@ -68,10 +68,6 @@
       <f:facet name="header"><h:outputText value="#{messages.personHeader_title}" /></f:facet>
       <h:outputText value="#{item.title}" />
     </rich:column>
-    <rich:column rendered="#{personBean.columns['department']}" sortBy="#{item.department}">
-      <f:facet name="header"><h:outputText value="#{messages.personHeader_department}" /></f:facet>
-      <h:outputText value="#{item.department}" />
-    </rich:column>
     <rich:column rendered="#{personBean.columns['costPerHour']}" sortBy="#{item.costPerHour}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_costPerHour}" /></f:facet>
       <h:outputText value="#{item.costPerHour / 100}"><f:convertNumber type="currency" currencySymbol="$" /></h:outputText>

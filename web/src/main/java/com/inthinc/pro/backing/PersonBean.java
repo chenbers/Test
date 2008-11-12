@@ -41,7 +41,7 @@ import com.inthinc.pro.util.MessageUtil;
 public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
 {
     private static final List<String>          AVAILABLE_COLUMNS;
-    private static final int[]                 DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 6, 19 };
+    private static final int[]                 DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 6, 18 };
 
     private static final Map<String, Gender>   GENDERS;
     private static final Map<String, Integer>  HEIGHTS;
@@ -69,7 +69,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         AVAILABLE_COLUMNS.add("group");
         AVAILABLE_COLUMNS.add("reportsTo");
         AVAILABLE_COLUMNS.add("title");
-        AVAILABLE_COLUMNS.add("department");
         AVAILABLE_COLUMNS.add("dob");
         AVAILABLE_COLUMNS.add("gender");
         AVAILABLE_COLUMNS.add("height");
