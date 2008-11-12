@@ -32,4 +32,7 @@
    <bean id="driverDAO" class="com.inthinc.pro.dao.hessian.DriverHessianDAO" 
    		parent="genericDAO">
    </bean>   
+   <bean id="redFlagDAO" class="com.inthinc.pro.dao.hessian.RedFlagHessianDAO" 
+   		parent="genericDAO">
+   </bean>   
 </beans>

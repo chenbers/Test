@@ -21,9 +21,12 @@ import org.springframework.security.providers.TestingAuthenticationToken;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.inthinc.pro.backing.model.GroupHierarchy;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.mock.data.MockData;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.security.userdetails.ProUser;
 
@@ -95,9 +98,28 @@ public class BaseBeanTest implements ApplicationContextAware
         String roleName = user.getRole().toString();
         ProUser proUser = new ProUser(user,roleName);
         mockLogin(proUser);
+        // TODO: this is a bit of a kludge -- probably can include our authentication provider in the list when logging in here
+        initGroupHierarchy();
         return proUser;
         
     }
+    
+    private GroupHierarchy initGroupHierarchy()
+    {
+        ProUser proUser = (ProUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        
+        Integer topGroupID = proUser.getUser().getPerson().getGroupID();
+        
+        GroupDAO groupDAO = (GroupDAO)applicationContext.getBean("groupDAO");
+        List<Group> groupList = groupDAO.getGroupHierarchy(topGroupID);
+        
+        GroupHierarchy groupHierarchy = new GroupHierarchy(groupList);
+        
+        proUser.setGroupHierarchy(groupHierarchy);
+        
+        return groupHierarchy;
+    }
+
     
     // returns the logged on user 
     public User getUser()

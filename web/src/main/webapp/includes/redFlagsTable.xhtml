@@ -1,0 +1,83 @@
+<ui:composition 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:f="http://java.sun.com/jsf/core"
+  	xmlns:iwi="http://pro.tiwi.com/jsf"
+	xmlns:h="http://java.sun.com/jsf/html">
+		
+		<div class="datagrid">
+
+        	<rich:datascroller id="topScroller" for="items" immediate="true"
+        		scrollerListener="#{redFlagsBean.scrollerListener}"
+        		reRender="bottomScroller,items,header">
+        	</rich:datascroller>
+        		
+        		
+			<h:form id="redFlagsTableForm">
+				<rich:dataTable value="#{tableData}" id="items"
+					var="item" styleClass="datagrid"
+					rowClasses="trendTableOdd,trendTableEven" cellspacing="1" 
+					rows="#{numRowsPerPg}"
+					width="100%">
+					
+					<!-- Data -->
+					<rich:column rendered="#{tableColumns['level']}" 
+						sortBy="#{item.level}">
+						<f:facet name="header">
+							<h:outputText value="#{messages.redflags_level}" />
+						</f:facet>
+						<h:outputLink value="#" styleClass="ls_tab_#{item.redFlag.level}">#{item.redFlag.level.description}</h:outputLink>
+    				</rich:column>
+    				<rich:column rendered="#{tableColumns['alerts']}" 
+    					sortBy="#{item.redFlag.alert}">
+      					<f:facet name="header">
+      						<h:outputText value="#{messages.redflags_alerts}" />
+      					</f:facet>
+						<h:outputText value="#{(item.redFlag.alert) ? 'yes' : 'no'}" />      
+    				</rich:column>
+    				<rich:column rendered="#{tableColumns['date']}" 
+    					sortBy="#{item.date}">
+      					<f:facet name="header">
+      						<h:outputText value="#{messages.redflags_date}" />
+      					</f:facet>
+      					<h:outputText value="#{item.date}"/>
+    				</rich:column>
+    				<rich:column rendered="#{tableColumns['group']}" 
+    					sortBy="#{item.group}">
+      					<f:facet name="header">
+      						<h:outputText value="#{messages.redflags_group}" />
+      					</f:facet>
+      					<h:outputText value="#{item.group}"/>
+    				</rich:column>
+    				<rich:column rendered="#{tableColumns['category']}" 
+    					sortBy="#{item.category}">
+      					<f:facet name="header">
+      						<h:outputText value="#{messages.redflags_category}" />
+      					</f:facet>
+      					<h:outputText value="#{item.category}" />
+    				</rich:column>
+    				<rich:column rendered="#{tableColumns['detail']}"
+    					sortBy="#{item.detail}">
+      					<f:facet name="header">
+      						<h:outputText value="#{messages.redflags_detail}" />
+      					</f:facet>
+      					<h:outputText value="#{item.detail}" />
+    				</rich:column>
+    				<rich:column rendered="#{tableColumns['clear']}">
+      					<f:facet name="header">
+      						<h:outputText value="" />
+      					</f:facet>
+		 				<h:outputText value="#{messages.redflags_clear}"/>
+    				</rich:column>
+    			</rich:dataTable>
+    			</h:form>
+    			
+    			<rich:datascroller id="bottomScroller" for="items" immediate="true"    			
+    				scrollerListener="#{redFlagsBean.scrollerListener}"
+        			reRender="topScroller,items,header">        			
+        		</rich:datascroller>
+
+			</div>	
+
+</ui:composition>

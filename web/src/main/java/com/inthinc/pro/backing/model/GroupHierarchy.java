@@ -43,6 +43,17 @@ public class GroupHierarchy
         }
         return null;
     }
+    public Group getGroup(Integer groupID)
+    {
+        for (Group group : groupList)
+        {
+            if (group.getGroupID().equals(groupID))
+            {
+                return group;
+            }
+        }
+        return null;
+    }
 
     public GroupLevel getGroupLevel(Group group)
     {

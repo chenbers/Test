@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	xmlns:aop="http://www.springframework.org/schema/aop"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
    <!-- Message Bundles -->
    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
       <property name="basename" value="com.inthinc.pro.resources.Messages" />
@@ -18,8 +19,7 @@
    </bean>
    
    <!-- Navigation bean -->
-   <bean id="navigationBean" class="com.inthinc.pro.backing.NavigationBean" 
-		scope="session" parent="baseBean">
+   <bean id="navigationBean" class="com.inthinc.pro.backing.NavigationBean" scope="session" parent="baseBean">
    </bean>
    
    <!-- Beans used in fusion chart displays -->
@@ -128,4 +128,8 @@
    <bean id="vehicleReportTable" class="com.inthinc.pro.backing.ui.VehicleReportTable" 
    		scope="session">
    </bean>
+   <bean id="redFlagsBean" class="com.inthinc.pro.backing.RedFlagsBean" scope="session" parent="baseBean" >
+   		<property name="redFlagDAO" ref="redFlagDAO"></property>
+   </bean>
+
 </beans>
