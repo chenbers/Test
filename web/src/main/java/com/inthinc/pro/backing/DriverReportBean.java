@@ -2,17 +2,23 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.faces.component.html.HtmlSelectBooleanCheckbox;
+import javax.faces.event.ValueChangeEvent;
 
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
+import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.ScoreDAO;
+import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverReportItem;
@@ -21,6 +27,9 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.ScoreType;
+import com.inthinc.pro.model.TablePreference;
+import com.inthinc.pro.model.TableType;
+import com.inthinc.pro.util.MessageUtil;
 
 public class DriverReportBean extends BaseBean
 {
@@ -31,15 +40,19 @@ public class DriverReportBean extends BaseBean
     private List <DriverReportItem> driverData = new ArrayList<DriverReportItem>();
     
     private static final List<String> AVAILABLE_COLUMNS;
-    private Map<String, Boolean> driverColumns = new HashMap<String, Boolean>();
+    private Map<String,TableColumn> driverColumns = new HashMap<String, TableColumn>();
+    
+    private TablePreference tablePref;
     
     private DriverDAO driverDAO;
     private ScoreDAO scoreDAO;
     private GroupDAO groupDAO;
+    private TablePreferenceDAO tablePreferenceDAO;
    
     private DriverReportItem drt = null;
     
     private Integer numRowsPerPg = 25;
+    private final static String COLUMN_LABEL_PREFIX = "driverreport_";
     
     private Integer maxCount = null;
     private Integer start = 1;
@@ -64,15 +77,6 @@ public class DriverReportBean extends BaseBean
     }
     
     public void init() {               
-        initData();
-        
-//--->Replace this with DAO for a "load" of the preferences for this particular table        
-        for ( int i = 0; i < DriverReportBean.AVAILABLE_COLUMNS.size(); i++ ) {
-            this.driverColumns.put(DriverReportBean.AVAILABLE_COLUMNS.get(i),true);
-        }
-    }
-    
-    private void initData() {           
         driversData = driverDAO.getAllDrivers(getUser().getPerson().getGroupID());        
         loadResults(driversData);     
         maxCount = driverData.size();        
@@ -197,20 +201,77 @@ public class DriverReportBean extends BaseBean
     
     public void saveColumns() {  
         //In here for saving the column preferences 
-        logger.debug("save columns");
+        logger.debug("***************** save columns");
+        
+        TablePreference pref = getTablePref();
+        int cnt = 0;
+        for (String column : AVAILABLE_COLUMNS)
+        {
+            pref.getVisible().set(cnt, driverColumns.get(column).getVisible());
+        }
+        setTablePref(pref);
+     // TODO: currently throws a not implemented exception        
+//      tablePreferenceDAO.update(pref);
     }
     
-    public Map<String, Boolean> getDriverColumns()    
+
+    public TablePreference getTablePref()
+    {
+        if (tablePref == null)
+        {
+            // TODO: refactor -- could probably keep in a session bean
+            List<TablePreference> tablePreferenceList = tablePreferenceDAO.getTablePreferencesByUserID(getUser().getUserID());
+            for (TablePreference pref : tablePreferenceList)
+            {
+                if (pref.getTableType().equals(TableType.DRIVER_REPORT))
+                {
+                    setTablePref(pref);
+                    return tablePref;
+                }
+            }
+            tablePref = new TablePreference();
+            tablePref.setUserID(getUser().getUserID());
+            tablePref.setTableType(TableType.DRIVER_REPORT);
+            List<Boolean>visibleList = new ArrayList<Boolean>();
+            for (String column : AVAILABLE_COLUMNS)
+            {
+                visibleList.add(new Boolean(true));
+            }
+            tablePref.setVisible(visibleList);
+            
+        }
+        
+        
+        return tablePref;
+    }
+    
+    public void setTablePref(TablePreference tablePref)
+    {
+        this.tablePref = tablePref;
+    }
+    
+    public Map<String,TableColumn> getDriverColumns()    
     {
         //Need to do the check to prevent odd access behavior
         if ( driverColumns.size() > 0 ) {     
-            return driverColumns;
-        } else {
-            return new HashMap<String, Boolean>();
-        }
+            List<Boolean> visibleList = getTablePref().getVisible();
+            driverColumns = new HashMap<String, TableColumn>();
+            int cnt = 0;
+            for (String column : AVAILABLE_COLUMNS)
+            {
+                TableColumn tableColumn = new TableColumn(visibleList.get(cnt++), MessageUtil.getMessageString(COLUMN_LABEL_PREFIX+column));
+                if (column.equals("clear"))
+                    tableColumn.setCanHide(false);
+                    
+                driverColumns.put(column, tableColumn);
+                        
+            }
+        } 
+        
+        return driverColumns;
     }
 
-    public void setDriverColumns(Map<String, Boolean> driverColumns)
+    public void setDriverColumns(Map<String,  TableColumn> driverColumns)
     {
         this.driverColumns = driverColumns;
     }
