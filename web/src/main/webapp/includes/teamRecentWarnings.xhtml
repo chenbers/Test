@@ -20,22 +20,22 @@
 						var="event" styleClass="datagrid"
 						rowClasses="trendTableOdd,trendTableEven" cellspacing="0" rows="5"
 						width="100%">
-					<rich:column sortBy="#{event.eventType}" width="15%" height="27" >
+					<rich:column sortBy="#{event.eventType}" width="20%" height="27" >
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_warningWarning}" />
 						</f:facet>
 						<h:outputText value="#{event.eventType}"/>
 					</rich:column>
-					<rich:column sortBy="#{event.vehicleName}" width="10%" height="27" >
+					<rich:column sortBy="#{event.vehicleName}" width="15%" height="27" >
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_warningVehicle}" />
 						</f:facet>
 						<!-- TODO:  hook up vehicle link to correct page -->
-						<h:commandLink action="go_team" value="#{event.vehicleName}">
+						<h:commandLink action="go_vehicle" value="#{event.vehicleName}">
 <!-- 						<f:setPropertyActionListener value="#{event.event.vehicle}" target="#{vehicleBean.vehicle}" />  -->	
 						</h:commandLink>
 					</rich:column>
-					<rich:column sortBy="#{event.driverName}" width="30%" height="27" >
+					<rich:column sortBy="#{event.driverName}" width="45%" height="27" >
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_warningDriver}" />
 						</f:facet>
@@ -43,7 +43,7 @@
 							<f:setPropertyActionListener value="#{event.event.driver}" target="#{driverBean.driver}" />
 						</h:commandLink>
 					</rich:column>
-					<rich:column sortBy="#{event.time}" width="40%" height="27" >
+					<rich:column sortBy="#{event.time}" width="15%" height="27" >
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_warningWhen}"/>
 						</f:facet>
@@ -53,7 +53,8 @@
 						<f:facet name="header">
 							<h:outputText value="" />
 						</f:facet>
-						<h:commandLink action="go_driver" value="#{messages.team_warningDetails}">
+						<!-- TODO:  should go to a page based on the event type -->
+						<h:commandLink action="go_reportDriverSpeed" value="#{messages.team_warningDetails}">
 							<f:setPropertyActionListener value="#{event.event.driver}" target="#{driverBean.driver}" />
 						</h:commandLink>
 					</rich:column>

@@ -44,7 +44,8 @@
 						<f:facet name="header">
 							<h:outputText value="" />
 						</f:facet>
-						<h:commandLink action="go_driver" value="#{messages.team_recentEventsDetails}">
+						<!-- TODO:  should go to a page based on the event type -->
+						<h:commandLink action="go_reportDriverSpeed" value="#{messages.team_recentEventsDetails}">
 							<f:setPropertyActionListener value="#{event.event.driver}" target="#{driverBean.driver}" />
 						</h:commandLink>
 					</rich:column>
