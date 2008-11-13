@@ -40,7 +40,7 @@ public class DriverReportBean extends BaseBean
     private List <DriverReportItem> driverData = new ArrayList<DriverReportItem>();
     
     private static final List<String> AVAILABLE_COLUMNS;
-    private Map<String,TableColumn> driverColumns = new HashMap<String, TableColumn>();
+    private Map<String,TableColumn> driverColumns;
     
     private TablePreference tablePref;
     
@@ -253,7 +253,7 @@ public class DriverReportBean extends BaseBean
     public Map<String,TableColumn> getDriverColumns()    
     {
         //Need to do the check to prevent odd access behavior
-        if ( driverColumns.size() > 0 ) {     
+        if ( driverColumns == null ) {     
             List<Boolean> visibleList = getTablePref().getVisible();
             driverColumns = new HashMap<String, TableColumn>();
             int cnt = 0;
@@ -395,6 +395,18 @@ public class DriverReportBean extends BaseBean
     public void setGroupDAO(GroupDAO groupDAO)
     {
         this.groupDAO = groupDAO;
+    }
+
+
+    public TablePreferenceDAO getTablePreferenceDAO()
+    {
+        return tablePreferenceDAO;
+    }
+
+
+    public void setTablePreferenceDAO(TablePreferenceDAO tablePreferenceDAO)
+    {
+        this.tablePreferenceDAO = tablePreferenceDAO;
     }
 
 }

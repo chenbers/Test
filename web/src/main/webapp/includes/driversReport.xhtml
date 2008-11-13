@@ -20,7 +20,7 @@
 					rows="#{numRowsPerPg}"
 					width="100%" binding="#{driverTable}">
 
-					<rich:column rendered="#{driverColumns['group']}" 
+					<rich:column rendered="#{driverColumns['group'].visible}" 
 						sortBy="#{item.group}">
 						<f:facet name="header">
 							<h:outputText value="Group" />
@@ -32,14 +32,14 @@
 							</f:setPropertyActionListener>
 						</a4j:commandLink>  
     				</rich:column>
-    				<rich:column rendered="#{driverColumns['employeeID']}" 
+    				<rich:column rendered="#{driverColumns['employeeID'].visible}" 
     					sortBy="#{item.employeeID}">
       					<f:facet name="header">
       						<h:outputText value="EmployeeID" />
       					</f:facet>
 						<h:outputText value="#{item.employeeID}" />      
     				</rich:column>
-    				<rich:column rendered="#{driverColumns['employee']}" 
+    				<rich:column rendered="#{driverColumns['employee'].visible}" 
     					sortBy="#{item.employee}">    					
       					<f:facet name="header">
       						<h:outputText value="Employee" />
@@ -51,21 +51,21 @@
 							</f:setPropertyActionListener>
 						</a4j:commandLink>      					
     				</rich:column>
-    				<rich:column rendered="#{driverColumns['vehicleID']}" 
+    				<rich:column rendered="#{driverColumns['vehicleID'].visible}" 
     					sortBy="#{item.vehicleID}">
       					<f:facet name="header">
       						<h:outputText value="Vehicle" />
       					</f:facet>
       					<a href="/tiwipro/secured/vehicle.faces">#{item.vehicleID}</a>    					
     				</rich:column>
-    				<rich:column rendered="#{driverColumns['milesDriven']}" 
+    				<rich:column rendered="#{driverColumns['milesDriven'].visible}" 
     					sortBy="#{item.milesDriven}">
       					<f:facet name="header">
       						<h:outputText value="Miles Driven" />
       					</f:facet>
       					<h:outputText value="#{item.milesDriven}" />
     				</rich:column>
-    				<rich:column rendered="#{driverColumns['overall']}">
+    				<rich:column rendered="#{driverColumns['overall'].visible}">
       					<f:facet name="header">
       						<h:outputText value="Overall" />
       					</f:facet>
@@ -78,7 +78,7 @@
 							</f:setPropertyActionListener>
 						</a4j:commandLink>  
     				</rich:column>
-    				<rich:column rendered="#{driverColumns['speed']}">
+    				<rich:column rendered="#{driverColumns['speed'].visible}">
       					<f:facet name="header">
       						<h:outputText value="Speed" />
       					</f:facet>
@@ -91,7 +91,7 @@
 							</f:setPropertyActionListener>
 						</a4j:commandLink>
     				</rich:column>
-    				<rich:column rendered="#{driverColumns['style']}">
+    				<rich:column rendered="#{driverColumns['style'].visible}">
       					<f:facet name="header">
       						<h:outputText value="Style" />
       					</f:facet>
@@ -104,7 +104,7 @@
 							</f:setPropertyActionListener>
 						</a4j:commandLink>
     				</rich:column>
-    				<rich:column rendered="#{driverColumns['seatBelt']}">
+    				<rich:column rendered="#{driverColumns['seatBelt'].visible}">
       					<f:facet name="header">
       						<h:outputText value="Seat Belt" />
       					</f:facet>      					
