@@ -11,77 +11,73 @@
   <ui:param name="filterValue" value="#{vehiclesBean.filterValue}" />
   <ui:param name="page" value="#{vehiclesBean.page}" />
   <ui:param name="editorBean" value="#{vehiclesBean}" />
-  <ui:param name="allColumns" value="#{vehiclesBean.availableColumns}" />
-  <ui:param name="allColumnsCount" value="#{vehiclesBean.availableColumnCount}" />
-  <ui:param name="selectedColumns" value="#{vehiclesBean.columns}" />
-  <ui:param name="messagesPrefix" value="vehiclesHeader_" />
 
   <ui:define name="columns">
-    <rich:column rendered="#{vehiclesBean.columns['name']}" sortBy="#{item.name}" sortOrder="ASCENDING">
+    <rich:column rendered="#{vehiclesBean.tableColumns['name'].visible}" sortBy="#{item.name}" sortOrder="ASCENDING">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_name}" /></f:facet>
       <h:commandLink action="#{vehiclesBean.display}" value="#{item.name}">
         <f:param name="displayID" value="#{item.id}" />
       </h:commandLink>
     </rich:column>
-    <rich:column rendered="#{vehiclesBean.columns['driver']}" sortBy="#{item.driver}">
+    <rich:column rendered="#{vehiclesBean.tableColumns['driver'].visible}" sortBy="#{item.driver}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_driver}" /></f:facet>
       <h:outputText value="#{item.driver.person.first}" /><h:outputText value=" " /><h:outputText value="#{item.driver.person.last}" />
     </rich:column>
-    <rich:column rendered="#{vehiclesBean.columns['group']}" sortBy="#{item.group.name}">
+    <rich:column rendered="#{vehiclesBean.tableColumns['group'].visible}" sortBy="#{item.group.name}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_group}" /></f:facet>
       <h:outputText value="#{item.group.name}" />
     </rich:column>
-    <rich:column rendered="#{vehiclesBean.columns['year']}" sortBy="#{item.year}">
+    <rich:column rendered="#{vehiclesBean.tableColumns['year'].visible}" sortBy="#{item.year}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_year}" /></f:facet>
       <h:outputText value="#{item.year}" />
     </rich:column>
-    <rich:column rendered="#{vehiclesBean.columns['make']}" sortBy="#{item.make}">
+    <rich:column rendered="#{vehiclesBean.tableColumns['make'].visible}" sortBy="#{item.make}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_make}" /></f:facet>
       <h:outputText value="#{item.make}" />
     </rich:column>
-    <rich:column rendered="#{vehiclesBean.columns['model']}" sortBy="#{item.model}">
+    <rich:column rendered="#{vehiclesBean.tableColumns['model'].visible}" sortBy="#{item.model}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_model}" /></f:facet>
       <h:outputText value="#{item.model}" />
     </rich:column>
-    <rich:column rendered="#{vehiclesBean.columns['color']}" sortBy="#{item.color}">
+    <rich:column rendered="#{vehiclesBean.tableColumns['color'].visible}" sortBy="#{item.color}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_color}" /></f:facet>
       <h:outputText value="#{item.color}" />
     </rich:column>
-    <rich:column rendered="#{vehiclesBean.columns['type']}" sortBy="#{item.type.description}">
+    <rich:column rendered="#{vehiclesBean.tableColumns['type'].visible}" sortBy="#{item.type.description}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_type}" /></f:facet>
       <h:outputText value="#{item.type.description}" />
     </rich:column>
-    <rich:column rendered="#{vehiclesBean.columns['VIN']}" sortBy="#{item.VIN}">
+    <rich:column rendered="#{vehiclesBean.tableColumns['VIN'].visible}" sortBy="#{item.VIN}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_VIN}" /></f:facet>
       <h:outputText value="#{item.VIN}" />
     </rich:column>
-    <rich:column rendered="#{vehiclesBean.columns['weight']}" sortBy="#{item.weight}">
+    <rich:column rendered="#{vehiclesBean.tableColumns['weight'].visible}" sortBy="#{item.weight}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_weight}" /></f:facet>
       <h:outputText value="#{item.weight}"><f:convertNumber /></h:outputText>
     </rich:column>
-    <rich:column rendered="#{vehiclesBean.columns['license']}" sortBy="#{item.license}">
+    <rich:column rendered="#{vehiclesBean.tableColumns['license'].visible}" sortBy="#{item.license}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_license}" /></f:facet>
       <h:outputText value="#{item.license}" />
     </rich:column>
-    <rich:column rendered="#{vehiclesBean.columns['state']}" sortBy="#{item.state}">
+    <rich:column rendered="#{vehiclesBean.tableColumns['state'].visible}" sortBy="#{item.state}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_state}" /></f:facet>
       <h:outputText value="#{item.state.name}" />
     </rich:column>
-    <rich:column rendered="#{vehiclesBean.columns['active']}" sortBy="#{item.active}">
+    <rich:column rendered="#{vehiclesBean.tableColumns['active'].visible}" sortBy="#{item.active}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_active}" /></f:facet>
       <h:outputText value="#{item.active ? messages.active : messages.inactive}" />
     </rich:column>
-    <rich:column rendered="#{vehiclesBean.columns['hardAccelerationLevel']}" sortBy="#{item.sensitivity.hardAccelerationLevel}">
+    <rich:column rendered="#{vehiclesBean.tableColumns['hardAccelerationLevel'].visible}" sortBy="#{item.sensitivity.hardAccelerationLevel}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_hardAccelerationLevel}" /></f:facet>
 <!-- TODO: a graphical display for this -->
       <h:outputText value="#{item.sensitivity.hardAccelerationLevel}" />
     </rich:column>
-    <rich:column rendered="#{vehiclesBean.columns['hardTurnLevel']}" sortBy="#{item.sensitivity.hardTurnLevel}">
+    <rich:column rendered="#{vehiclesBean.tableColumns['hardTurnLevel'].visible}" sortBy="#{item.sensitivity.hardTurnLevel}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_hardTurnLevel}" /></f:facet>
 <!-- TODO: a graphical display for this -->
       <h:outputText value="#{item.sensitivity.hardTurnLevel}" />
     </rich:column>
-    <rich:column rendered="#{vehiclesBean.columns['hardVerticalLevel']}" sortBy="#{item.sensitivity.hardVerticalLevel}">
+    <rich:column rendered="#{vehiclesBean.tableColumns['hardVerticalLevel'].visible}" sortBy="#{item.sensitivity.hardVerticalLevel}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_hardVerticalLevel}" /></f:facet>
 <!-- TODO: a graphical display for this -->
       <h:outputText value="#{item.sensitivity.hardVerticalLevel}" />

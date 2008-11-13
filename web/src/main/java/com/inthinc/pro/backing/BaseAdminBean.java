@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,24 +11,37 @@ import javax.faces.context.FacesContext;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.backing.ui.EditableColumns;
+import com.inthinc.pro.backing.ui.TableColumn;
+import com.inthinc.pro.dao.TablePreferenceDAO;
+import com.inthinc.pro.model.TablePreference;
+import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.util.BeanUtil;
+import com.inthinc.pro.util.MessageUtil;
 
 /**
  * @author David Gileadi
  */
-public abstract class BaseAdminBean<T extends EditItem> extends BaseBean
+public abstract class BaseAdminBean<T extends EditItem> extends BaseBean implements EditableColumns
 {
-    protected static final Logger  logger        = LogManager.getLogger(BaseAdminBean.class);
+    protected static final Logger    logger        = LogManager.getLogger(BaseAdminBean.class);
 
-    protected List<T>              items;
-    protected List<T>              filteredItems = new LinkedList<T>();
-    protected String               filterValue;
-    protected int                  page          = 1;
-    protected Map<String, Boolean> columns;
-    private boolean                displayed;
-    private T                      editItem;
-    private boolean                batchEdit;
-    private Map<String, Boolean>   updateField;
+    protected List<T>                items;
+    protected List<T>                filteredItems = new LinkedList<T>();
+    protected String                 filterValue;
+    protected int                    page          = 1;
+    private boolean                  displayed;
+    private T                        editItem;
+    private boolean                  batchEdit;
+    private Map<String, Boolean>     updateField;
+    private Map<String, TableColumn> tableColumns;
+    protected TablePreferenceDAO     tablePreferenceDAO;
+    protected TablePreference        tablePreference;
+
+    public void setTablePreferenceDAO(TablePreferenceDAO tablePreferenceDAO)
+    {
+        this.tablePreferenceDAO = tablePreferenceDAO;
+    }
 
     /**
      * @return the items
@@ -191,28 +205,84 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean
     public abstract Map<String, Boolean> getDefaultColumns();
 
     /**
-     * @return the columns
+     * @return The prefix to prepend to the column name to find the header label in Mesages.properties, e.g. <code>myPage_</code>.
      */
-    public Map<String, Boolean> getColumns()
-    {
-        if (columns == null)
-            columns = getDefaultColumns();
-        return columns;
-    }
+    public abstract String getColumnLabelPrefix();
 
     /**
-     * @param columns
-     *            the columns to set
+     * @return The TableType for this table, used to load/store preferences.
      */
-    public void setColumns(Map<String, Boolean> columns)
+    public abstract TableType getTableType();
+
+    @Override
+    public Map<String, TableColumn> getTableColumns()
     {
-        this.columns = columns;
+        if (tableColumns == null)
+        {
+            List<Boolean> visibleList = getTablePreference().getVisible();
+            tableColumns = new HashMap<String, TableColumn>();
+            int cnt = 0;
+            for (String column : getAvailableColumns())
+            {
+                TableColumn tableColumn = new TableColumn(visibleList.get(cnt++), MessageUtil.getMessageString(getColumnLabelPrefix() + column));
+                if (column.equals("clear"))
+                    tableColumn.setCanHide(false);
+
+                tableColumns.put(column, tableColumn);
+            }
+        }
+        return tableColumns;
+    }
+
+    @Override
+    public void setTableColumns(Map<String, TableColumn> tableColumns)
+    {
+        this.tableColumns = tableColumns;
     }
 
     /**
      * Called when the user chooses new visible columns.
      */
-    public abstract void saveColumns();
+    public String saveColumns()
+    {
+        final TablePreference pref = getTablePreference();
+        int cnt = 0;
+        for (String column : getAvailableColumns())
+            pref.getVisible().set(cnt++, tableColumns.get(column).getVisible());
+        // TODO: currently throws a not implemented exception
+        // tablePreferenceDAO.update(pref);
+        return null;
+    }
+
+    public TablePreference getTablePreference()
+    {
+        if (tablePreference == null)
+        {
+            // TODO: refactor -- could probably keep in a session bean
+            final List<TablePreference> tablePreferenceList = tablePreferenceDAO.getTablePreferencesByUserID(getUser().getUserID());
+            for (TablePreference pref : tablePreferenceList)
+                if (pref.getTableType().equals(getTableType()))
+                {
+                    tablePreference = pref;
+                    return tablePreference;
+                }
+
+            // create if not found
+            tablePreference = new TablePreference();
+            tablePreference.setUserID(getUser().getUserID());
+            tablePreference.setTableType(getTableType());
+            final List<Boolean> visibleList = new ArrayList<Boolean>();
+            final Map<String, Boolean> defaultColumns = getDefaultColumns();
+            for (final String column : getAvailableColumns())
+            {
+                Boolean visible = defaultColumns.get(column);
+                visibleList.add((visible == null) ? false : visible);
+            }
+            tablePreference.setVisible(visibleList);
+        }
+
+        return tablePreference;
+    }
 
     /**
      * Called when the user chooses to display an item.

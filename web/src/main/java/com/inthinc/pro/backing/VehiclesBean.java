@@ -24,6 +24,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.SafetyDevice;
 import com.inthinc.pro.model.State;
+import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleSensitivity;
 import com.inthinc.pro.model.VehicleType;
@@ -145,8 +146,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     @Override
     protected boolean matchesFilter(VehicleView vehicle, String filterWord)
     {
-        for (final String column : getColumns().keySet())
-            if (columns.get(column))
+        for (final String column : getTableColumns().keySet())
+            if (getTableColumns().get(column).getVisible())
             {
                 boolean matches = false;
                 if (column.equals("driver"))
@@ -194,9 +195,15 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     }
 
     @Override
-    public void saveColumns()
+    public String getColumnLabelPrefix()
     {
-        // TODO: save the columns
+        return "vehiclesHeader_";
+    }
+
+    @Override
+    public TableType getTableType()
+    {
+        return TableType.ADMIN_VEHICLES;
     }
 
     @Override

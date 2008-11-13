@@ -9,10 +9,13 @@ public enum TableType implements BaseEnum
 
     RED_FLAG(1, "RED_FLAG"),
     DRIVER_REPORT(2, "DRIVER_REPORT"),
-    VEHICLE_REPORT(3, "VEHICLE_REPORT");
+    VEHICLE_REPORT(3, "VEHICLE_REPORT"),
+    ADMIN_PEOPLE(4, "ADMIN_PEOPLE"),
+    ADMIN_VEHICLES(5, "ADMIN_VEHICLES"),
+    ADMIN_DEVICES(6, "ADMIN_DEVICES");
 
     private String description;
-    private int code;
+    private int    code;
 
     private TableType(int code, String description)
     {
@@ -51,5 +54,3 @@ public enum TableType implements BaseEnum
     }
 
 }
-
-

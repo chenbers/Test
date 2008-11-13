@@ -32,6 +32,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.State;
+import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.util.MessageUtil;
 
@@ -208,8 +209,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     @Override
     protected boolean matchesFilter(PersonView person, String filterWord)
     {
-        for (final String column : getColumns().keySet())
-            if (columns.get(column))
+        for (final String column : getTableColumns().keySet())
+            if (getTableColumns().get(column).getVisible())
             {
                 boolean matches = false;
                 if (column.equals("fullName"))
@@ -264,9 +265,15 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     }
 
     @Override
-    public void saveColumns()
+    public String getColumnLabelPrefix()
     {
-        // TODO: save the columns
+        return "personHeader_";
+    }
+
+    @Override
+    public TableType getTableType()
+    {
+        return TableType.ADMIN_PEOPLE;
     }
 
     @Override

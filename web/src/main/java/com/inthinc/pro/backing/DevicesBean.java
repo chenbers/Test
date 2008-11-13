@@ -18,6 +18,7 @@ import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
+import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.MessageUtil;
 
@@ -103,8 +104,8 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     @Override
     protected boolean matchesFilter(DeviceView device, String filterWord)
     {
-        for (final String column : getColumns().keySet())
-            if (columns.get(column))
+        for (final String column : getTableColumns().keySet())
+            if (getTableColumns().get(column).getVisible())
             {
                 boolean matches = false;
                 if (column.equals("vehicle"))
@@ -145,9 +146,15 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     }
 
     @Override
-    public void saveColumns()
+    public String getColumnLabelPrefix()
     {
-        // TODO: save the columns
+        return "devicesHeader_";
+    }
+
+    @Override
+    public TableType getTableType()
+    {
+        return TableType.ADMIN_DEVICES;
     }
 
     @Override

@@ -11,47 +11,43 @@
   <ui:param name="filterValue" value="#{devicesBean.filterValue}" />
   <ui:param name="page" value="#{devicesBean.page}" />
   <ui:param name="editorBean" value="#{devicesBean}" />
-  <ui:param name="allColumns" value="#{devicesBean.availableColumns}" />
-  <ui:param name="allColumnsCount" value="#{devicesBean.availableColumnCount}" />
-  <ui:param name="selectedColumns" value="#{devicesBean.columns}" />
-  <ui:param name="messagesPrefix" value="devicesHeader_" />
 
   <ui:define name="columns">
-    <rich:column rendered="#{devicesBean.columns['name']}" sortBy="#{item.name}" sortOrder="ASCENDING">
+    <rich:column rendered="#{devicesBean.tableColumns['name'].visible}" sortBy="#{item.name}" sortOrder="ASCENDING">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_name}" /></f:facet>
       <h:commandLink action="#{devicesBean.display}" value="#{item.name}">
         <f:param name="displayID" value="#{item.id}" />
       </h:commandLink>
     </rich:column>
-    <rich:column rendered="#{devicesBean.columns['vehicle']}" sortBy="#{item.vehicle.name}">
+    <rich:column rendered="#{devicesBean.tableColumns['vehicle'].visible}" sortBy="#{item.vehicle.name}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_vehicle}" /></f:facet>
       <h:outputText value="#{item.vehicle.name}" />
     </rich:column>
-    <rich:column rendered="#{devicesBean.columns['baselineID']}" sortBy="#{item.baselineID}">
+    <rich:column rendered="#{devicesBean.tableColumns['baselineID'].visible}" sortBy="#{item.baselineID}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_baselineID}" /></f:facet>
       <h:outputText value="#{item.baselineID}" />
     </rich:column>
-    <rich:column rendered="#{devicesBean.columns['mcmid']}" sortBy="#{item.mcmid}">
+    <rich:column rendered="#{devicesBean.tableColumns['mcmid'].visible}" sortBy="#{item.mcmid}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_mcmid}" /></f:facet>
       <h:outputText value="#{item.mcmid}" />
     </rich:column>
-    <rich:column rendered="#{devicesBean.columns['sim']}" sortBy="#{item.sim}">
+    <rich:column rendered="#{devicesBean.tableColumns['sim'].visible}" sortBy="#{item.sim}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_sim}" /></f:facet>
       <h:outputText value="#{item.sim}" />
     </rich:column>
-    <rich:column rendered="#{devicesBean.columns['phone']}" sortBy="#{item.phone}">
+    <rich:column rendered="#{devicesBean.tableColumns['phone'].visible}" sortBy="#{item.phone}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_phone}" /></f:facet>
       <h:outputText value="#{item.phone}" />
     </rich:column>
-    <rich:column rendered="#{devicesBean.columns['ephone']}" sortBy="#{item.ephone}">
+    <rich:column rendered="#{devicesBean.tableColumns['ephone'].visible}" sortBy="#{item.ephone}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_ephone}" /></f:facet>
       <h:outputText value="#{item.ephone}" />
     </rich:column>
-    <rich:column rendered="#{devicesBean.columns['activated']}" sortBy="#{item.activated}">
+    <rich:column rendered="#{devicesBean.tableColumns['activated'].visible}" sortBy="#{item.activated}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_activated}" /></f:facet>
       <h:outputText value="#{item.activated}"><f:convertDateTime dateStyle="long" /></h:outputText>
     </rich:column>
-    <rich:column rendered="#{devicesBean.columns['status']}" sortBy="#{item.status.description}">
+    <rich:column rendered="#{devicesBean.tableColumns['status'].visible}" sortBy="#{item.status.description}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_status}" /></f:facet>
       <h:outputText value="#{item.status.description}" />
     </rich:column>

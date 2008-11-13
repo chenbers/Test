@@ -17,12 +17,6 @@
                page:  The scroller page index, starting with 0.
          editorBean:  A child of BaseAdminBean.
 
-Note: The following parameters are required by the included editColumns.xhtml
-         allColumns:  A list of column names.
-    allColumnsCount:  The number of column names in allColumns.
-    selectedColumns:  A Map with String keys and Boolean values for which columns are selected.
-     messagesPrefix:  A prefix to prepend to the action to obtain a user-friendly message.
-
   Optional parameters:
   ==============
                rows:  The number of rows to display at a time; if not provided 10 is used.
@@ -61,10 +55,6 @@ Note: The following parameters are required by the included editColumns.xhtml
         <ui:param name="filterValue" value="#{myBean.filterValue}" />
         <ui:param name="page" value="#{myBean.page}" />
         <ui:param name="editorBean" value="#{myBean}" />
-        <ui:param name="allColumns" value="#{myBean.availableColumns}" />
-        <ui:param name="allColumnsCount" value="#{myBean.availableColumnCount}" />
-        <ui:param name="selectedColumns" value="#{myBean.columns}" />
-        <ui:param name="messagesPrefix" value="myPrefix_" />
       </ui:include>
 -->
 
@@ -147,8 +137,8 @@ TODO: the top scroller doesn't work right with filtering
       <ui:param name="reRender" value="dataTable" />
     </ui:include>
 
-    <ui:include src="editColumns.xhtml">
-      <ui:param name="saveBean" value="#{editorBean}" />
+    <ui:include src="editColumnsPopup.xhtml">
+      <ui:param name="bean" value="#{editorBean}" />
       <ui:param name="reRender" value="dataTable" />
     </ui:include>
 

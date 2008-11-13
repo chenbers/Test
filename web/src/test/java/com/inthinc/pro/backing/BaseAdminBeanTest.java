@@ -3,11 +3,15 @@ package com.inthinc.pro.backing;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.BeanUtils;
+
+import com.inthinc.pro.backing.ui.TableColumn;
 
 public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
 {
@@ -75,16 +79,16 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         // default columns
         assertNotNull(adminBean.getDefaultColumns());
         assertTrue(adminBean.getDefaultColumns().size() > 0);
-        assertEquals(adminBean.getDefaultColumns().keySet(), adminBean.getColumns().keySet());
+        assertEquals(adminBean.getDefaultColumns().keySet(), getVisibleColumns(adminBean.getTableColumns()));
 
         // add a column
         for (final String column : adminBean.getAvailableColumns())
-            if (!adminBean.getColumns().containsKey(column) || !adminBean.getColumns().get(column))
+            if (!adminBean.getTableColumns().containsKey(column) || !adminBean.getTableColumns().get(column).getVisible())
             {
-                adminBean.getColumns().put(column, true);
+                adminBean.getTableColumns().get(column).setVisible(true);
                 break;
             }
-        assertFalse(adminBean.getDefaultColumns().keySet().equals(adminBean.getColumns().keySet()));
+        assertFalse(adminBean.getDefaultColumns().keySet().equals(getVisibleColumns(adminBean.getTableColumns())));
 
         // untested: saveColumns
 
@@ -98,6 +102,15 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         assertNotNull(adminBean.getSelectedItems());
         // we may have one selected item if we have an edit item
         assertTrue(adminBean.getSelectedItems().size() <= 1);
+    }
+
+    protected Set<String> getVisibleColumns(Map<String, TableColumn> columns)
+    {
+        final Set<String> visible = new HashSet<String>();
+        for (final String column : columns.keySet())
+            if (columns.get(column).getVisible())
+                visible.add(column);
+        return visible;
     }
 
     protected void selectItems(BaseAdminBean<T> adminBean, int maxItems)
