@@ -58,7 +58,7 @@
 				                    	<rich:calendar value="#{driverTripsBean.startDate}"
 				                        	locale="en/US"
 				                        	popup="true"
-				                        	datePattern="MMM d, yyyy"
+				                        	datePattern="MMMMM d, yyyy"
 				                        	showApplyButton="false" cellWidth="24px" cellHeight="22px"/>
 				           			</a4j:outputPanel> 
 								</td>
@@ -71,7 +71,7 @@
 				                    	<rich:calendar value="#{driverTripsBean.endDate}"
 				                        	locale="en/US"
 				                        	popup="true"
-				                        	datePattern="MMM d, yyyy"
+				                        	datePattern="MMMMM d, yyyy"
 				                        	showApplyButton="false" cellWidth="24px" cellHeight="22px"/>
 				           			</a4j:outputPanel>
 								</td>
@@ -146,13 +146,14 @@
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="">Trip # 1</span>
+						<span class="">Events</span>
 						<span class="panel_links"></span>
 					</div>
 				</div>
 					<div class="panel_w">
 					  <div class="panel_content">
 				<!-- Start Trip table --> 
+				<rich:panel id="selectedTrip">
 					
 						<rich:dataTable 
 						value="#{driverTripsBean.selectedTrip.trip.events}" 
@@ -167,6 +168,7 @@
 									<h:outputText value="Address" />
 								</f:facet>
 								<h:outputText value="#{item.addressStr}" />
+								
 							</rich:column>
 							
 							<rich:column sortBy="#{item.time}">
@@ -176,7 +178,7 @@
 								<h:outputText value="#{item.time}" />
 							</rich:column>
 						</rich:dataTable>
-					 
+					 </rich:panel>
 				<!-- End Trip table -->
 					    
 					  </div>
@@ -304,11 +306,9 @@
 								<f:facet name="header">
 									<h:outputText value="Date" />
 								</f:facet>
-								 <!--  <a4j:commandLink title="#{item.dateShort}" immediate="true"
-	   								reRender="selectedTrip"
-	   								value="#{item.dateShort}">
-	   								<a4j:actionparam assignTo="#{driverTripsBean.selectedTrip}" value="#{item}" />
-	          					</a4j:commandLink> -->
+									<a4j:commandLink value="#{item.dateShort}" reRender="selectedTrip,selectedTripMap">
+										<f:setPropertyActionListener value="#{item}" target="#{driverTripsBean.selectedTrip}" />
+									</a4j:commandLink>
 							</rich:column>
 							
 							<rich:column sortBy="#{item.timeShort}">
@@ -369,7 +369,7 @@
 					<span class="panel_links"></span></div>
 			</div>
 			<div class="panel_w">
-			  <div class="panel_content" align="center">
+			  <rich:panel bodyClass="panel_content" id="selectedTripMap">
 			  <h:panelGroup styleClass="map-border" layout="block">
 							<div id="map-canvas" style="width:588px;height:500px;border:0"></div>
 					  	</h:panelGroup>
@@ -394,7 +394,7 @@
 								
       						}
     					</script> 
-			  </div>
+			  </rich:panel>
 			</div>
 			<div class="panel_sw">
 				<div class="panel_statusbar"></div>

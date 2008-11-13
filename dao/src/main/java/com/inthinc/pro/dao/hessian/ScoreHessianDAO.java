@@ -47,4 +47,12 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     {
         return convertToModelObject(getSiloService().getScoreBreakdown(groupID, startDate, endDate, scoreType.getCode()));
     }
+
+    @Override
+    public List<ScoreableEntity> getDriverScoreHistoryByMiles(Integer driverID, Integer milesBack, ScoreType scoreType)
+    {
+        return convertToModelObject(getSiloService().getDriverScoreHistoryByMiles(driverID, milesBack, scoreType.getCode()));
+        
+        
+    }
 }

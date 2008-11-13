@@ -65,8 +65,8 @@ public class DriverTripsBean extends BaseBean
         
         if(trips.size() > 0)
         {
-            lastTrip = trips.get(numTrips-1);
-            setSelectedTrip( trips.get(0) );
+            lastTrip = trips.get( numTrips-1 );
+            setSelectedTrip( trips.get(numTrips-1) );
         }
         
     }

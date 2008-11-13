@@ -7,11 +7,11 @@ import java.util.Map;
 
 public enum ScoreCategory
 {
-    CAT_1(1, "CAT_1", 0, 10, "FF0101"),
-    CAT_2(2, "CAT_2", 11, 20, "FF6601"),
-    CAT_3(3, "CAT_3", 21, 30, "F6B305"),
-    CAT_4(4, "CAT_4", 31, 40, "1E88C8"),
-    CAT_5(5, "CAT_5", 41, 50, "6B9D1B");
+    CAT_1(1, "0mi", 0, 10, "FF0101"),
+    CAT_2(2, "500mi", 11, 20, "FF6601"),
+    CAT_3(3, "1,000mi", 21, 30, "F6B305"),
+    CAT_4(4, "5,000mi", 31, 40, "1E88C8"),
+    CAT_5(5, "10,000mi", 41, 50, "6B9D1B");
 
     private String description;
     private int code;

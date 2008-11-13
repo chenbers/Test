@@ -17,75 +17,76 @@ import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Distance;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SpeedingEvent;
 
-public class DriverSpeedBean extends BaseBean
+public class DriverStyleBean extends BaseBean
 {
-    private Driver      driver;
+    private Driver     driver;
     private String      driverName;
-    private DriverBean  driverBean;
     
     private static final Logger logger = Logger.getLogger(DriverSpeedBean.class);
     
     private ScoreDAO    scoreDAO;
-    private Distance    distance = Distance.FIVEHUNDRED;
+    private DriverBean  driverBean;
+ 
     
-    private Integer     speedScore;
-    private String      speedScoreHistorySmall;
-    private String      speedScoreHistoryLarge;
-    private String      speedScoreStyle;
+    private Integer     styleScore;
+    private String      styleScoreHistorySmall;
+    private String      styleScoreHistoryLarge;
+    private String      styleScoreStyle;
     
-    private List<SpeedingEvent> speedingEvents = new ArrayList<SpeedingEvent>();
+    private List<Event> styleEvents = new ArrayList<Event>();
     
     Integer endDate = DateUtil.getTodaysDate();
     Integer startDate = DateUtil.getDaysBackDate(endDate, 30);
     
-    private void initSpeed()
+    private void initStyle()
     {
         
-        logger.debug("## initSpeed()");
+        logger.debug("## initStyle()");
         
-        ScoreableEntity speedSe = scoreDAO.getAverageScoreByType(getUser().getPerson().getGroupID(), startDate, endDate, ScoreType.SCORE_SPEEDING); //Replace with correct DAO
-        setSpeedScore(speedSe.getScore());
+        ScoreableEntity styleSe = scoreDAO.getAverageScoreByType(getUser().getPerson().getGroupID(), startDate, endDate, ScoreType.SCORE_SPEEDING); //Replace with correct DAO
+        setStyleScore(styleSe.getScore());
     }
     
   
-    public Integer getSpeedScore() {
-        if(speedScore == null)
-            initSpeed();
+    public Integer getStyleScore() {
+        if(styleScore == null)
+            initStyle();
         
-        return speedScore;
+        return styleScore;
     }
-    public void setSpeedScore(Integer speedScore) {
-        this.speedScore = speedScore;
-        setSpeedScoreStyle(ScoreBox.GetStyleFromScore(speedScore, ScoreBoxSizes.MEDIUM));
+    public void setStyleScore(Integer styleScore) {
+        this.styleScore = styleScore;
+        setStyleScoreStyle(ScoreBox.GetStyleFromScore(styleScore, ScoreBoxSizes.MEDIUM));
     }
-    public String getSpeedScoreHistoryLarge() {
-        setSpeedScoreHistoryLarge(createLineDef(ScoreType.SCORE_SPEEDING, ChartSizes.LARGE));
-        return speedScoreHistoryLarge;
+    public String getStyleScoreHistoryLarge() {
+        setStyleScoreHistoryLarge(createLineDef(ScoreType.SCORE_DRIVING_STYLE, ChartSizes.LARGE));
+        return styleScoreHistoryLarge;
     }
-    public void setSpeedScoreHistoryLarge(String speedScoreHistoryLarge) {
-        this.speedScoreHistoryLarge = speedScoreHistoryLarge;
+    public void setStyleScoreHistoryLarge(String styleScoreHistoryLarge) {
+        this.styleScoreHistoryLarge = styleScoreHistoryLarge;
     }
  
-    public String getSpeedScoreHistorySmall() {
-        setSpeedScoreHistorySmall(createLineDef(ScoreType.SCORE_SPEEDING, ChartSizes.SMALL));
-        return speedScoreHistorySmall;
+    public String getStyleScoreHistorySmall() {
+        setStyleScoreHistorySmall(createLineDef(ScoreType.SCORE_DRIVING_STYLE, ChartSizes.SMALL));
+        return styleScoreHistorySmall;
     }
-    public void setSpeedScoreHistorySmall(String speedScoreHistorySmall) {
-        this.speedScoreHistorySmall = speedScoreHistorySmall;
+    public void setStyleScoreHistorySmall(String styleScoreHistorySmall) {
+        this.styleScoreHistorySmall = styleScoreHistorySmall;
     }
     
-    public String getSpeedScoreStyle() {
-        if(speedScoreStyle == null)
-            initSpeed();
+    public String getStyleScoreStyle() {
+        if(styleScoreStyle == null)
+            initStyle();
         
-        return speedScoreStyle;
+        return styleScoreStyle;
     }
-    public void setSpeedScoreStyle(String speedScoreStyle) {
-        this.speedScoreStyle = speedScoreStyle;
+    public void setStyleScoreStyle(String styleScoreStyle) {
+        this.styleScoreStyle = styleScoreStyle;
     }
     
     public String createLineDef(ScoreType scoreType, ChartSizes size)
@@ -119,18 +120,8 @@ public class DriverSpeedBean extends BaseBean
         this.scoreDAO = scoreDAO;
     }
 
-    //DISTANCE PROPERTIES
-    public Distance getDistance()
-    {
-        return distance;
-    }
-    public void setDistance(Distance distance)
-    {
-        this.distance = distance;
-    }
-
-    //SPEEDING EVENTS LIST
-    public List<SpeedingEvent> getSpeedingEvents() {
+    //STYLE EVENTS LIST
+    public List<Event> getStyleEvents() {
         
         SpeedingEvent s = new SpeedingEvent();
         s.setLatitude(90.000);
@@ -140,7 +131,7 @@ public class DriverSpeedBean extends BaseBean
         s.setAvgSpeed(65);
         s.setTopSpeed(91);
         s.setDistance(32);
-        speedingEvents.add(s);
+        styleEvents.add(s);
 
         SpeedingEvent s2 = new SpeedingEvent();
         s2.setLatitude(85.000);
@@ -150,13 +141,13 @@ public class DriverSpeedBean extends BaseBean
         s2.setAvgSpeed(64);
         s2.setTopSpeed(78);
         s2.setDistance(22);
-        speedingEvents.add(s2);
-        
-        return speedingEvents;
+        styleEvents.add(s2);
+         
+        return styleEvents;
     }
 
-    public void setSpeedingEvents(List<SpeedingEvent> speedingEvents) {
-        this.speedingEvents = speedingEvents;
+    public void setStyleEvents(List<Event> styleEvents) {
+        this.styleEvents = styleEvents;
     }
     
     //DRIVER PROPERTIES
@@ -179,7 +170,7 @@ public class DriverSpeedBean extends BaseBean
         setDriverName(driver.getPerson().getFirst() + " " + driver.getPerson().getLast());
         this.driver = driver;
     }
-
+    
     //DRIVER BEAN PROPERTIES used by Spring Injection
     public DriverBean getDriverBean()
     {

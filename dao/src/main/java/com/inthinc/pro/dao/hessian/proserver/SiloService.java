@@ -135,6 +135,17 @@ public interface SiloService extends HessianService
      */
     List<Map<String, Object>> getScoreBreakdown(Integer groupID, Integer startDate, Integer endDate, Integer scoreType) throws ProDAOException;
 
+    /**
+     * getScoreHistory -- retrieves the scores available associated with mileage. 
+     * 
+     * @param driverID
+     * @param milesBack
+     * @param scoreType
+     * @return
+     * @throws ProDAOException
+     */
+    List<Map<String, Object>> getDriverScoreHistoryByMiles(Integer driverID, Integer milesBack, Integer scoreType) throws ProDAOException;
+    
     // Methods related to the Event type
     /**
      * getMostRecentEvents

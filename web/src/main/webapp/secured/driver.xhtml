@@ -24,7 +24,7 @@
 
 <ul id="grid_nav">
 	<li class="l grid_icon"><img src="images/ico_line.png" /></li>
-	<li class="l grid_title">Driver Performance: <h:outputText> #{driverBean.driverName}</h:outputText></li>
+	<li class="l grid_title">Driver Performance: <h:outputText>#{driverBean.driverName}</h:outputText></li>
 	<li class="l divider"><img src="/images/grid_nav_divider.png" /></li>
 	<li class="l">
 	
@@ -49,25 +49,25 @@
 							       
   										<a4j:commandLink title="#{messages.miles500}" immediate="true"
             								styleClass="#{(driverBean.distance eq 'FIVEHUNDRED') ? 'on' : ''}"
-            								reRender="overall-form,overallPanel"
+            								reRender="overall-form,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
             								value="#{messages.miles500}">
             								<a4j:actionparam name="distance" assignTo="#{driverBean.distance}" value="FIVEHUNDRED" />
           								</a4j:commandLink><h:outputText value=" "></h:outputText>
           								<a4j:commandLink title="#{messages.miles1000}" immediate="true"
             								styleClass="#{(driverBean.distance eq 'ONETHOUSAND') ? 'on' : ''}"
-            								reRender="overall-form,overallPanel"            								
+            								reRender="overall-form,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
             								value="#{messages.miles1000}">
             								<a4j:actionparam name="distance" assignTo="#{driverBean.distance}" value="ONETHOUSAND" />
           								</a4j:commandLink><h:outputText value=" "></h:outputText>
           								<a4j:commandLink title="#{messages.miles10000}" immediate="true"
             								styleClass="#{(driverBean.distance eq 'TENTHOUSAND') ? 'on' : ''}"
-            								reRender="overall-form,overallPanel"
+            								reRender="overall-form,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
             								value="#{messages.miles10000}">
             								<a4j:actionparam name="distance" assignTo="#{driverBean.distance}" value="TENTHOUSAND" />
           								</a4j:commandLink><h:outputText value=" "></h:outputText>
       							
 								</span>
-									</a4j:form>
+							</a4j:form>
 						</div>
 				</div>
 				<div class="panel_w">
@@ -126,11 +126,15 @@
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="speed">Speed</span>
-						<span class="panel_links"><h:form id="speed_report_link"><h:commandLink value="view report" action="go_reportDriverSpeed" /></h:form></span>
+						<span class="panel_links">
+							<h:form id="speed_report_link">
+							<h:commandLink action="go_reportDriverSpeed" value="view report" />
+							</h:form>
+						</span>
 					</div>
 				</div>
 					<div class="panel_w">
-					  <div class="panel_content">
+					  <rich:panel bodyClass="panel_content" id="speedPanel" border="0">
 					    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">                        
                           <tr>
                             <td width="373">
@@ -152,7 +156,7 @@
 							</td>
                           </tr>
                         </table>
-					  </div>
+					  </rich:panel>
 					</div>
 				<div class="panel_sw">
 					<div class="panel_statusbar"></div>
@@ -168,16 +172,25 @@
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="vehicle">Driving Style</span>
-						<span class="panel_links"><h:form id="style_report_link"><h:commandLink value="view report" action="go_reportDriverSpeed" /></h:form></span>
+						<span class="panel_links">
+							<h:form id="style_report_link">
+							<h:commandLink action="go_reportDriverStyle" value="view report">
+						      <!-- <f:setPropertyActionListener 
+							       value="#{driverBean.driver}" 
+							       target="#{driverStyleBean.driver}">
+						      </f:setPropertyActionListener> -->
+						     </h:commandLink>
+							</h:form>
+						</span>
 					</div>
 				</div>
 					<div class="panel_w">
-					  <div class="panel_content">
+					  <rich:panel bodyClass="panel_content" id="stylePanel" border="0">
 					    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
                           <tr>
                             <td width="373">
                       		<ui:include src="../includes/lineChart.xhtml">
-						            <ui:param name="lineChartDef" value="#{driverBean.drivingScoreHistory}" />
+						            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistoryLarge}" />
 						            <ui:param name="hiddenFieldID" value="HiddenField2" />
 						            <ui:param name="width" value="380" /> 
 						            <ui:param name="height" value="200" />  
@@ -188,13 +201,13 @@
                             </td>
                             <td width="80" align="center">
                                 <ui:include src="../includes/scoreBox.xhtml">
-							            <ui:param name="score" value="#{driverBean.drivingScore}" />
-							            <ui:param name="scoreStyle" value="#{driverBean.drivingScoreStyle}" />
+							            <ui:param name="score" value="#{driverStyleBean.styleScore}" />
+							            <ui:param name="scoreStyle" value="#{driverStyleBean.styleScoreStyle}" />
 								</ui:include>
                             </td>
                           </tr>
                         </table>
-					  </div>
+					  </rich:panel>
 					</div>
 				<div class="panel_sw">
 					<div class="panel_statusbar"></div>
@@ -212,7 +225,7 @@
 						<span class="panel_links"><h:form id="seatBelt_report_link"><h:commandLink value="view report" action="go_reportDriverSpeed" /></h:form></span></div>
 				</div>
 					<div class="panel_w">
-					  <div class="panel_content">
+					  <rich:panel bodyClass="panel_content" id="seatBeltPanel" border="0">
 					    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
                           <tr>
                             <td width="373">
@@ -235,7 +248,7 @@
                             </td>
                           </tr>
                         </table>
-					  </div>
+					  </rich:panel>
 					</div>
 				<div class="panel_sw">
 					<div class="panel_statusbar"></div>
@@ -301,7 +314,7 @@
 						<span class="panel_links">_</span>					</div>
 				</div>
 					<div class="panel_w">
-					  <div class="panel_content">
+					  <rich:panel bodyClass="panel_content" id="mpgPanel" border="0">
 					    <table width="450" border="0" align="center" cellpadding="0" cellspacing="0">
                           <tr>
                             <td>
@@ -316,7 +329,7 @@
                             </td>
                           </tr>
                         </table>
-					  </div>
+					  </rich:panel>
 					</div>
 				<div class="panel_sw">
 					<div class="panel_statusbar"></div>
@@ -334,7 +347,7 @@
 						<span class="panel_links">_</span>					</div>
 				</div>
 					<div class="panel_w">
-					  <div class="panel_content">
+					  <rich:panel bodyClass="panel_content" id="coachingPanel" border="0">
 					    <table width="450" border="0" align="center" cellpadding="0" cellspacing="0">
                           <tr>
                             <td>
@@ -350,7 +363,7 @@
                             </td>
                           </tr>
                         </table>
-					  </div>
+					  </rich:panel>
 					</div>
 				<div class="panel_sw">
 					<div class="panel_statusbar"></div>

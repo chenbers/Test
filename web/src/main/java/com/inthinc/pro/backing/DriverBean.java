@@ -62,18 +62,15 @@ public class DriverBean extends BaseBean
     private String      overallScoreHistory;
     private String      overallScoreStyle;
    
-    private Integer     drivingScore;
-    private String      drivingScoreHistory;
-    private String      drivingScoreStyle;
-    
     private Integer     seatBeltScore;
     private String      seatBeltScoreHistory;
     private String      seatBeltScoreStyle;
     
     private String      mpgHistory;
     private String      coachingHistory;
-	
-	private List<SpeedingEvent> speedingEvents = new ArrayList<SpeedingEvent>();
+    
+    private NavigationBean navigation;
+    	
 	private BreakdownSelections breakdownSelected = BreakdownSelections.OVERALL;
 	
     Integer endDate = DateUtil.getTodaysDate();
@@ -99,14 +96,7 @@ public class DriverBean extends BaseBean
         ScoreableEntity seatBeltSe = scoreDAO.getAverageScoreByType(getUser().getPerson().getGroupID(), startDate, endDate, ScoreType.SCORE_OVERALL); //Replace with correct DAO
         setSeatBeltScore(seatBeltSe.getScore());
     }
-    
-    private void initDrivingScore()
-    {
-        logger.debug("## initDrivingScore()");
-        ScoreableEntity drivingSe = scoreDAO.getAverageScoreByType(getUser().getPerson().getGroupID(), startDate, endDate, ScoreType.SCORE_OVERALL); //Replace with correct DAO
-        setDrivingScore(drivingSe.getScore());
-    }
-    
+ 
 	//OVERALL SCORE properties
 	public Integer getOverallScore()
 	{
@@ -142,36 +132,6 @@ public class DriverBean extends BaseBean
 	}
 	public void setOverallScoreStyle(String overallScoreStyle) {
 		this.overallScoreStyle = overallScoreStyle;
-	}
-	
-	
-	//DRIVING STYLE properties
-	public Integer getDrivingScore() {
-		if(drivingScore == null)
-		    initDrivingScore();
-	    
-	    return drivingScore;
-	}
-	public void setDrivingScore(Integer drivingScore) {
-	    setDrivingScoreStyle(ScoreBox.GetStyleFromScore(drivingScore, ScoreBoxSizes.MEDIUM));
-		this.drivingScore = drivingScore;
-	}
-	public String getDrivingScoreStyle() {
-	    if(drivingScoreStyle == null)
-	        initDrivingScore();
-	        
-	    return drivingScoreStyle;
-	}
-	public void setDrivingScoreStyle(String drivingScoreStyle) {
-		this.drivingScoreStyle = drivingScoreStyle;
-	}
-	public String getDrivingScoreHistory() {
-		
-		setDrivingScoreHistory(createLineDef(ScoreType.SCORE_DRIVING_STYLE, ChartSizes.LARGE));
-		return drivingScoreHistory;
-	}
-	public void setDrivingScoreHistory(String drivingScoreHistory) {
-		this.drivingScoreHistory = drivingScoreHistory;
 	}
 	
 	//SEAT BELT properties
@@ -210,11 +170,9 @@ public class DriverBean extends BaseBean
 		this.coachingHistory = coachingHistory;
 	}
 	
-	//DRIVER properties
+	//DRIVER NAME properties
 	public String getDriverName() {
-		if(driverName == null)
-		    driverName = getUser().getPerson().getFirst() + " " + getUser().getPerson().getLast();
-	    
+	    //setDriverName(navigation.getDriver().getPerson().getFirst() + " " + navigation.getDriver().getPerson().getLast());
 	    return driverName;
 	}
 	public void setDriverName(String driverName) {
@@ -232,6 +190,7 @@ public class DriverBean extends BaseBean
 
     public void setDistance(Distance distance)
     {
+      
         this.distance = distance;
     }
 
@@ -246,35 +205,7 @@ public class DriverBean extends BaseBean
         this.scoreDAO = scoreDAO;
     }
     
-    //SPEEDING EVENTS LIST
-	public List<SpeedingEvent> getSpeedingEvents() {
-		
-		SpeedingEvent s = new SpeedingEvent();
-		s.setLatitude(90.000);
-		s.setLongitude(-110.0000);
-		s.setTime(new Date(456655000l));
-		s.setSpeed(87);
-		s.setAvgSpeed(65);
-		s.setTopSpeed(91);
-		s.setDistance(32);
-		
-		speedingEvents.add(s);
-		s = new SpeedingEvent();
-		s.setLatitude(85.000);
-		s.setLongitude(-119.0000);
-		s.setTime(new Date(47054000l));
-		s.setSpeed(87);
-		s.setAvgSpeed(64);
-		s.setTopSpeed(78);
-		s.setDistance(22);
-		speedingEvents.add(s);
-		
-		return speedingEvents;
-	}
-
-	public void setSpeedingEvents(List<SpeedingEvent> speedingEvents) {
-		this.speedingEvents = speedingEvents;
-	}
+  
 	
 	//LAST LOCATION PROPERTIES
 	public LatLng getLastLocation() {
@@ -330,35 +261,16 @@ public class DriverBean extends BaseBean
         StringBuffer sb = new StringBuffer();
         Line line = new Line();
 
-        // Control parameters
+        //Start XML Data
         sb.append(line.getControlParameters(size));
-
-
         
-        List<ScoreableEntity> scoreList = scoreDAO.getScoreBreakdown(101, startDate, endDate, scoreType);
-
-        ScoreBreakdown scoreBreakdown = new ScoreBreakdown(scoreList);
-        if (scoreList.size() == 0)
+        List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistoryByMiles(101, distance.getNumberOfMiles(), scoreType);
+        for(ScoreableEntity e : scoreList)
         {
-            // TODO:  What color/text (see use case)?
-            sb.append(line.getChartItem(new Object[] {100, "No Data To Display", "F6B305"}));
+            sb.append(line.getChartItem(new Object[] {(double)(e.getScore() / 10.0d), e.getIdentifier()}));
         }
-        else
-        {
-            Map<ScoreCategory, Integer> valueMap = scoreBreakdown.getValueMap();
-            for (Map.Entry<ScoreCategory, Integer> item : valueMap.entrySet())
-            {
-                if (item.getValue().intValue() == 0)
-                {
-                    continue;
-                }
-                
-                double temp = (double)(item.getValue() / 10);
-                sb.append(line.getChartItem(new Object[] {temp, item.getKey().toString()}));
 
-            }
-
-        }
+        //End XML Data
         sb.append(line.getClose());
 
         return sb.toString();
@@ -374,6 +286,16 @@ public class DriverBean extends BaseBean
         logger.debug("## setDriver() called " + driver.getDriverID()); 
         setDriverName(driver.getPerson().getFirst() + " " + driver.getPerson().getLast());
         this.driver = driver;
+    }
+
+    //NAVIGATION BEAN PROPERTIES
+    public NavigationBean getNavigation()
+    {
+        return navigation;
+    }
+    public void setNavigation(NavigationBean navigation)
+    {
+        this.navigation = navigation;
     }
 
 
