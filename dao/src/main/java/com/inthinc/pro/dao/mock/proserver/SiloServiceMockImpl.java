@@ -25,6 +25,7 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
+import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
@@ -696,4 +697,21 @@ public class SiloServiceMockImpl implements SiloService
         }
         return returnMap;        
     }
+    
+    
+    @Override
+    public List<Map<String, Object>> getTablePreferencesByUserID(Integer userID) throws ProDAOException
+    {
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("userID", userID);
+        List<Map<String, Object>> returnList= MockData.getInstance().lookupList(TablePreference.class, searchCriteria);
+
+        if (returnList == null)
+        {
+            throw new EmptyResultSetException("No table preferences for userID: " + userID, "getTablePreferencesByUserID", 0);
+        }
+
+        return returnList;
+    }
+
 }

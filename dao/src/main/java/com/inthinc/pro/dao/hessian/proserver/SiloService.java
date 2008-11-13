@@ -205,4 +205,7 @@ public interface SiloService extends HessianService
     List<Map<String, Object>> getRedFlags(Integer groupID) throws ProDAOException;
 
     Map<String, Object> getVehicleByID(Integer vehicleID) throws ProDAOException;
+    
+    
+    List<Map<String, Object>> getTablePreferencesByUserID(Integer userID) throws ProDAOException;
 }
