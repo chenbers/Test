@@ -21,7 +21,7 @@
 					width="100%" binding="#{vehicleTable}">
 
 					<!-- Data -->
-					<rich:column rendered="#{vehicleColumns['group']}" 
+					<rich:column rendered="#{vehicleColumns['group'].visible}" 
 						sortBy="#{item.group}">
 						<f:facet name="header">
 							<h:outputText value="Group" />
@@ -33,7 +33,7 @@
 							</f:setPropertyActionListener>
 						</a4j:commandLink>  
     				</rich:column>
-    				<rich:column rendered="#{vehicleColumns['vehicleID']}" 
+    				<rich:column rendered="#{vehicleColumns['vehicleID'].visible}" 
     					sortBy="#{item.vehicleID}">
       					<f:facet name="header">
       						<h:outputText value="VehicleID" />
@@ -45,14 +45,14 @@
 							</f:setPropertyActionListener>
 						</a4j:commandLink>  
     				</rich:column>
-    				<rich:column rendered="#{vehicleColumns['makeModelYear']}" 
+    				<rich:column rendered="#{vehicleColumns['makeModelYear'].visible}" 
     					sortBy="#{item.makeModelYear}">
       					<f:facet name="header">
       						<h:outputText value="Make/Model/Year" />
       					</f:facet>
       					<h:outputText value="#{item.makeModelYear}" />     
     				</rich:column>
-    				<rich:column rendered="#{vehicleColumns['driver']}" 
+    				<rich:column rendered="#{vehicleColumns['driver'].visible}" 
     					sortBy="#{item.driver}">
       					<f:facet name="header">
       						<h:outputText value="Driver" />
@@ -65,14 +65,14 @@
 							</f:setPropertyActionListener>
 						</a4j:commandLink>    					
     				</rich:column>
-    				<rich:column rendered="#{vehicleColumns['milesDriven']}" 
+    				<rich:column rendered="#{vehicleColumns['milesDriven'].visible}" 
     					sortBy="#{item.milesDriven}">
       					<f:facet name="header">
       						<h:outputText value="Miles Driven" />
       					</f:facet>
       					<h:outputText value="#{item.milesDriven}" />
     				</rich:column>
-    				<rich:column rendered="#{vehicleColumns['overall']}">
+    				<rich:column rendered="#{vehicleColumns['overall'].visible}">
       					<f:facet name="header">
       						<h:outputText value="Overall" />
       					</f:facet>
@@ -85,7 +85,7 @@
 							</f:setPropertyActionListener>
 						</a4j:commandLink>  
     				</rich:column>
-    				<rich:column rendered="#{vehicleColumns['speed']}">
+    				<rich:column rendered="#{vehicleColumns['speed'].visible}">
       					<f:facet name="header">
       						<h:outputText value="Speed" />
       					</f:facet>
@@ -98,7 +98,7 @@
 							</f:setPropertyActionListener>
 						</a4j:commandLink>
     				</rich:column>
-    				<rich:column rendered="#{vehicleColumns['style']}">
+    				<rich:column rendered="#{vehicleColumns['style'].visible}">
       					<f:facet name="header">
       						<h:outputText value="Style" />
       					</f:facet>

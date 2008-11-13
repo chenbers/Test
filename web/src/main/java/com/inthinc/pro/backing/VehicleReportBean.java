@@ -10,9 +10,11 @@ import org.richfaces.event.DataScrollerEvent;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
+import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.ScoreDAO;
+import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
@@ -22,8 +24,11 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
+import com.inthinc.pro.model.TablePreference;
+import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleReportItem;
+import com.inthinc.pro.util.MessageUtil;
 
 public class VehicleReportBean extends BaseBean
 {
@@ -34,16 +39,20 @@ public class VehicleReportBean extends BaseBean
     private List <VehicleReportItem> vehicleData = new ArrayList<VehicleReportItem>();
     
     private static final List<String> AVAILABLE_COLUMNS;
-    private Map<String, Boolean> vehicleColumns = new HashMap<String, Boolean>();
+    private Map<String,TableColumn> vehicleColumns;
+    
+    private TablePreference tablePref;
     
     private VehicleDAO vehicleDAO;
     private ScoreDAO scoreDAO;
     private GroupDAO groupDAO;
     private DriverDAO driverDAO;
+    private TablePreferenceDAO tablePreferenceDAO;
     
     private VehicleReportItem vrt = null;
     
     private Integer numRowsPerPg = 25;
+    private final static String COLUMN_LABEL_PREFIX = "vehiclereport_";
     
     private Integer maxCount = null;
     private Integer start = 1;
@@ -67,21 +76,12 @@ public class VehicleReportBean extends BaseBean
     }
     
     public void init() {               
-        initData();
-        
-//--->Replace this with DAO for a "load" of the preferences for this particular table        
-        for ( int i = 0; i < VehicleReportBean.AVAILABLE_COLUMNS.size(); i++ ) {
-            this.vehicleColumns.put(VehicleReportBean.AVAILABLE_COLUMNS.get(i),true);
-        }
-    }
-    
-    private void initData() {        
         vehiclesData = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getPerson().getGroupID());
         loadResults(vehiclesData);
         maxCount = vehicleData.size();
         resetCounts();
     }
-        
+    
 
     public List<VehicleReportItem> getVehicleData()
     {
@@ -215,19 +215,75 @@ public class VehicleReportBean extends BaseBean
     public void saveColumns() {  
         //In here for saving the column preferences 
         logger.debug("save columns");
+        
+        TablePreference pref = getTablePref();
+        int cnt = 0;
+        for (String column : AVAILABLE_COLUMNS)
+        {
+            pref.getVisible().set(cnt, vehicleColumns.get(column).getVisible());
+        }
+        setTablePref(pref);
+     // TODO: currently throws a not implemented exception        
+//      tablePreferenceDAO.update(pref);        
     }
     
-    public Map<String, Boolean> getVehicleColumns()    
+    public TablePreference getTablePref()
+    {
+        if (tablePref == null)
+        {
+            // TODO: refactor -- could probably keep in a session bean
+            List<TablePreference> tablePreferenceList = tablePreferenceDAO.getTablePreferencesByUserID(getUser().getUserID());
+            for (TablePreference pref : tablePreferenceList)
+            {
+                if (pref.getTableType().equals(TableType.VEHICLE_REPORT))
+                {
+                    setTablePref(pref);
+                    return tablePref;
+                }
+            }
+            tablePref = new TablePreference();
+            tablePref.setUserID(getUser().getUserID());
+            tablePref.setTableType(TableType.VEHICLE_REPORT);
+            List<Boolean>visibleList = new ArrayList<Boolean>();
+            for (String column : AVAILABLE_COLUMNS)
+            {
+                visibleList.add(new Boolean(true));
+            }
+            tablePref.setVisible(visibleList);
+            
+        }
+        
+        
+        return tablePref;
+    }
+    
+    public void setTablePref(TablePreference tablePref)
+    {
+        this.tablePref = tablePref;
+    }
+    
+    public Map<String,TableColumn> getVehicleColumns()    
     {
         //Need to do the check to prevent odd access behavior
-        if ( vehicleColumns.size() > 0 ) {     
-            return vehicleColumns;
-        } else {
-            return new HashMap<String, Boolean>();
-        }
+        if ( vehicleColumns == null ) {     
+            List<Boolean> visibleList = getTablePref().getVisible();
+            vehicleColumns = new HashMap<String, TableColumn>();
+            int cnt = 0;
+            for (String column : AVAILABLE_COLUMNS)
+            {
+                TableColumn tableColumn = new TableColumn(visibleList.get(cnt++), MessageUtil.getMessageString(COLUMN_LABEL_PREFIX+column));
+                if (column.equals("clear"))
+                    tableColumn.setCanHide(false);
+                    
+                vehicleColumns.put(column, tableColumn);
+                        
+            }
+        } 
+        
+        return vehicleColumns;
     }
 
-    public void setVehicleColumns(Map<String, Boolean> vehicleColumns)
+    public void setVehicleColumns(Map<String,  TableColumn> vehicleColumns)
     {
         this.vehicleColumns = vehicleColumns;
     }
@@ -358,6 +414,16 @@ public class VehicleReportBean extends BaseBean
     public void setDriverDAO(DriverDAO driverDAO)
     {
         this.driverDAO = driverDAO;
+    }
+
+    public TablePreferenceDAO getTablePreferenceDAO()
+    {
+        return tablePreferenceDAO;
+    }
+
+    public void setTablePreferenceDAO(TablePreferenceDAO tablePreferenceDAO)
+    {
+        this.tablePreferenceDAO = tablePreferenceDAO;
     }
 
 }
