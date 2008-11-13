@@ -4,31 +4,21 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.wrapper.ScoreableEntityPkg;
 
 public class NavigationBean extends BaseBean
 {
     private static final Logger logger   = Logger.getLogger(NavigationBean.class);
 
-//    private String              location = "home";
     private Integer             groupID;
+    private Driver              driver;
 
     public NavigationBean()
     {
 
     }
-/*    
 
-    public String getLocation()
-    {
-        return location;
-    }
-
-    public void setLocation(String location)
-    {
-        this.location = location;
-    }
-*/
     public Integer getGroupID()
     {
         return groupID;
@@ -46,5 +36,15 @@ public class NavigationBean extends BaseBean
 
         logger.debug("#############selected groupID is: " + groupID);
         this.groupID = new Integer(groupID);
+    }
+
+    public Driver getDriver()
+    {
+        return driver;
+    }
+
+    public void setDriver(Driver driver)
+    {
+        this.driver = driver;
     }
 }
