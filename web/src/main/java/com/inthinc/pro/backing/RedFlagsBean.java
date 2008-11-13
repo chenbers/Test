@@ -205,8 +205,7 @@ public class RedFlagsBean extends BaseBean implements EditableColumns
             pref.getVisible().set(cnt, tableColumns.get(column).getVisible());
         }
         setRedFlagTablePref(pref);
-// TODO: currently throws a not implemented exception        
-//        tablePreferenceDAO.update(pref);
+        tablePreferenceDAO.update(pref);
         return null;
     
     }

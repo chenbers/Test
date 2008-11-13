@@ -18,7 +18,6 @@ import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
@@ -116,7 +115,7 @@ public class VehicleReportBean extends BaseBean
                 List <Vehicle> matchedVehicles = new ArrayList<Vehicle>();    
                 
                 for ( int i = 0; i < vehiclesData.size(); i++ ) {
-                    Vehicle v = (Vehicle)vehiclesData.get(i);                   
+                    Vehicle v = vehiclesData.get(i);                   
                     String localID = Integer.toString(v.getVehicleID());
                     
                     //Fuzzy
@@ -150,7 +149,7 @@ public class VehicleReportBean extends BaseBean
         vrt = new VehicleReportItem();
                 
         for ( int i = 0; i < vehiclesData.size(); i++ ) {
-            v = (Vehicle)vehiclesData.get(i);            
+            v = vehiclesData.get(i);            
             
             //Vehicle
             vrt = new VehicleReportItem();
@@ -223,8 +222,7 @@ public class VehicleReportBean extends BaseBean
             pref.getVisible().set(cnt, vehicleColumns.get(column).getVisible());
         }
         setTablePref(pref);
-     // TODO: currently throws a not implemented exception        
-//      tablePreferenceDAO.update(pref);        
+        tablePreferenceDAO.update(pref);        
     }
     
     public TablePreference getTablePref()

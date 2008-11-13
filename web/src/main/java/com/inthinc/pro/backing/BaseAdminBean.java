@@ -249,8 +249,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         int cnt = 0;
         for (String column : getAvailableColumns())
             pref.getVisible().set(cnt++, tableColumns.get(column).getVisible());
-        // TODO: currently throws a not implemented exception
-        // tablePreferenceDAO.update(pref);
+        tablePreferenceDAO.update(pref);
         return null;
     }
 
@@ -258,7 +257,6 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     {
         if (tablePreference == null)
         {
-            // TODO: refactor -- could probably keep in a session bean
             final List<TablePreference> tablePreferenceList = tablePreferenceDAO.getTablePreferencesByUserID(getUser().getUserID());
             for (TablePreference pref : tablePreferenceList)
                 if (pref.getTableType().equals(getTableType()))

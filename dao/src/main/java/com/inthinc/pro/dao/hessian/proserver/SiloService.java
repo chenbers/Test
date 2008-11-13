@@ -208,4 +208,12 @@ public interface SiloService extends HessianService
     
     
     List<Map<String, Object>> getTablePreferencesByUserID(Integer userID) throws ProDAOException;
+
+    public Map<String, Object> deleteTablePreference(Integer tablePrefID) throws ProDAOException;
+
+    public Map<String, Object> createTablePreference(Integer acctID, Map<String, Object> tablePreferenceMap) throws ProDAOException;
+
+    public Map<String, Object> getTablePreference(Integer tablePrefID) throws ProDAOException;
+
+    public Map<String, Object> updateTablePreference(Integer tablePrefID, Map<String, Object> tablePreferenceMap) throws ProDAOException;
 }

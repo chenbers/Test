@@ -2,12 +2,8 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import javax.faces.component.html.HtmlSelectBooleanCheckbox;
-import javax.faces.event.ValueChangeEvent;
 
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
@@ -25,8 +21,8 @@ import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
-import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.ScoreType;
+import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.util.MessageUtil;
@@ -112,7 +108,7 @@ public class DriverReportBean extends BaseBean
             List <Driver> matchedDrivers = new ArrayList<Driver>();    
             
             for ( int i = 0; i < driversData.size(); i++ ) {
-                Driver d = (Driver)driversData.get(i);
+                Driver d = driversData.get(i);
                 Person p = d.getPerson();
                 
                 //Fuzzy
@@ -144,7 +140,7 @@ public class DriverReportBean extends BaseBean
         Group g = null;
        
         for ( int i = 0; i < driversData.size(); i++ ) {
-            d = (Driver)driversData.get(i);
+            d = driversData.get(i);
             p = d.getPerson();
             
             //Employee and driver
@@ -210,8 +206,7 @@ public class DriverReportBean extends BaseBean
             pref.getVisible().set(cnt, driverColumns.get(column).getVisible());
         }
         setTablePref(pref);
-     // TODO: currently throws a not implemented exception        
-//      tablePreferenceDAO.update(pref);
+        tablePreferenceDAO.update(pref);
     }
     
 
