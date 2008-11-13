@@ -18,17 +18,55 @@
 						<h:panelGroup styleClass="map-border" layout="block">
 							<div id="map-canvas" style="#{mapwidth};#{mapheight};border:0"></div>
 					  	</h:panelGroup>
+					  	<h:form >
 					    <script type="text/javascript">
       						if (GBrowserIsCompatible()) {
         						map = new GMap2(document.getElementById("map-canvas"));
         						map.addControl(new GLargeMapControl());
         						map.addControl(new GMapTypeControl());
         						map.addControl(new GOverviewMapControl()); 
-								map.setCenter(new GLatLng(#{mapxcenter}, #{mapycenter}), 5);
-								map.setMapType(G_MAP_TYPE);
-      						}
-    					</script>
-					 </div>
+								map.setCenter(new GLatLng(#{driverLocationBean.center.lat}, #{driverLocationBean.center.lng}), 5);
+								map.setMapType(G_NORMAL_MAP);
+ 
+						        // Create a base icon for all of our markers that specifies the
+						        // shadow, icon dimensions, etc.
+						        var baseIcon = new GIcon(G_DEFAULT_ICON);
+						        baseIcon.shadow = "http://www.google.com/mapfiles/shadow50.png";
+						        baseIcon.iconSize = new GSize(20, 34);
+						        baseIcon.shadowSize = new GSize(37, 34);
+						        baseIcon.iconAnchor = new GPoint(9, 34);
+						        baseIcon.infoWindowAnchor = new GPoint(9, 2);
+						        
+ 								// Creates a marker whose info window displays the letter corresponding
+						        // to the given index.
+						        function createMarker(point, index, name,link) {
+						          // Create a lettered icon for this point using our icon class
+						          var letter = String.fromCharCode("A".charCodeAt(0) + index);
+						          var letteredIcon = new GIcon(baseIcon);
+						          letteredIcon.image = "http://www.google.com/mapfiles/marker" + letter + ".png";
+						
+						          // Set up our GMarkerOptions object
+						          markerOptions = { icon:letteredIcon };
+						          var marker = new GMarker(point, markerOptions);
+						
+						          GEvent.addListener(marker, "click", function() {
+								            marker.openInfoWindowHtml('Driver &#160;<a href="/tiwipro/secured/driver.faces">'+name+'</a>');
+						            
+						          });
+						          return marker;
+						        }
+ 								var i=0;
+								<ui:repeat value="#{driverLocationBean.driverBeans}" var="driver">
+								
+									var latlng = new GLatLng(#{driver.lastLocation.lat}, #{driver.lastLocation.lng});
+						        		map.addOverlay(createMarker(latlng, i++,  "#{driver.driverName}"));
+	        						
+								
+							  	</ui:repeat>
+							}	
+    					</script> 
+    					</h:form>
+ 					 </div>
 				</div>		
 																					
 				<div class="panel_sw">

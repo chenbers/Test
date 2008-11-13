@@ -67,7 +67,7 @@ public class TeamTopBean extends BaseBean
             sb.setScore(score.getScore());
             se.setStyle(sb.getScoreStyle());
             se.setColorKey(GraphicUtil.entityColorKey.get(cnt++));
-            se.setGoTo("go_team");
+            se.setGoTo("go_driver");
             topDrivers.add(se);                      
         }
 
@@ -134,7 +134,7 @@ public class TeamTopBean extends BaseBean
             sb.setScore(score.getScore());
             se.setStyle(sb.getScoreStyle());
             se.setColorKey(GraphicUtil.entityColorKey.get(cnt++));
-            se.setGoTo("go_team");
+            se.setGoTo("go_driver");
             bottomDrivers.add(se);                      
         }
 
