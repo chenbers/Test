@@ -2,6 +2,7 @@ package com.inthinc.pro.dao.mock.proserver;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -329,6 +330,39 @@ public class SiloServiceMockImpl implements SiloService
     	}
         return returnList;
     }
+    
+    @Override
+    public List<Map<String, Object>> getDriverScoreHistoryByMiles(Integer driverID, Integer milesBack, Integer scoreType) throws ProDAOException
+    {
+        Integer currentOdometer = 9923;
+        Integer numScoreRecords = 10;
+        
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+        
+        for (int i = 0; i < numScoreRecords; i++)
+        {
+            ScoreableEntity se = new ScoreableEntity();
+            
+            if(i==numScoreRecords) //No room for label on last data point.  Place it next to last.
+                se.setIdentifier(currentOdometer.toString() + "mi"); //Mileage at time the score was calculated.
+     
+            if(i==0)
+            {
+                Integer temp = milesBack > currentOdometer ? 0 : currentOdometer - milesBack; 
+                se.setIdentifier(temp.toString() + "mi");
+            }
+            else
+                se.setIdentifier("");
+            
+            se.setScore((int) (Math.random() * ((50 - 0) + 1)) + 0);
+            
+            returnList.add(TempConversionUtil.createMapFromObject(se));          
+        }
+        
+        return returnList;
+    }
+    
+    
     @Override
     public List<Map<String, Object>> getVehiclesByAcctID(Integer acctID) throws ProDAOException
     {
@@ -738,4 +772,5 @@ public class SiloServiceMockImpl implements SiloService
     {
         return createReturnValue("count", 1);
     }
+
 }
