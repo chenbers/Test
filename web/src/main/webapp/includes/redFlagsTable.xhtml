@@ -7,6 +7,7 @@
 	xmlns:h="http://java.sun.com/jsf/html">
 		
 		<div class="datagrid">
+			<h:form id="redFlagsTableForm">
 
         	<rich:datascroller id="topScroller" for="items" immediate="true"
         		scrollerListener="#{redFlagsBean.scrollerListener}"
@@ -14,7 +15,6 @@
         	</rich:datascroller>
         		
         		
-			<h:form id="redFlagsTableForm">
 				<rich:dataTable value="#{tableData}" id="items"
 					var="item" styleClass="datagrid"
 					rowClasses="trendTableOdd,trendTableEven" cellspacing="1" 
@@ -22,61 +22,61 @@
 					width="100%">
 					
 					<!-- Data -->
-					<rich:column rendered="#{tableColumns['level']}" 
+					<rich:column rendered="#{tableColumns['level'].visible}" 
 						sortBy="#{item.level}">
 						<f:facet name="header">
 							<h:outputText value="#{messages.redflags_level}" />
 						</f:facet>
 						<h:outputLink value="#" styleClass="ls_tab_#{item.redFlag.level}">#{item.redFlag.level.description}</h:outputLink>
     				</rich:column>
-    				<rich:column rendered="#{tableColumns['alerts']}" 
+    				<rich:column rendered="#{tableColumns['alerts'].visible}" 
     					sortBy="#{item.redFlag.alert}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.redflags_alerts}" />
       					</f:facet>
 						<h:outputText value="#{(item.redFlag.alert) ? 'yes' : 'no'}" />      
     				</rich:column>
-    				<rich:column rendered="#{tableColumns['date']}" 
+    				<rich:column rendered="#{tableColumns['date'].visible}" 
     					sortBy="#{item.date}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.redflags_date}" />
       					</f:facet>
       					<h:outputText value="#{item.date}"/>
     				</rich:column>
-    				<rich:column rendered="#{tableColumns['group']}" 
+    				<rich:column rendered="#{tableColumns['group'].visible}" 
     					sortBy="#{item.group}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.redflags_group}" />
       					</f:facet>
       					<h:outputText value="#{item.group}"/>
     				</rich:column>
-    				<rich:column rendered="#{tableColumns['category']}" 
+    				<rich:column rendered="#{tableColumns['category'].visible}" 
     					sortBy="#{item.category}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.redflags_category}" />
       					</f:facet>
       					<h:outputText value="#{item.category}" />
     				</rich:column>
-    				<rich:column rendered="#{tableColumns['detail']}"
+    				<rich:column rendered="#{tableColumns['detail'].visible}"
     					sortBy="#{item.detail}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.redflags_detail}" />
       					</f:facet>
       					<h:outputText value="#{item.detail}" />
     				</rich:column>
-    				<rich:column rendered="#{tableColumns['clear']}">
+    				<rich:column rendered="#{tableColumns['clear'].visible}">
       					<f:facet name="header">
       						<h:outputText value="" />
       					</f:facet>
 		 				<h:outputText value="#{messages.redflags_clear}"/>
     				</rich:column>
     			</rich:dataTable>
-    			</h:form>
     			
     			<rich:datascroller id="bottomScroller" for="items" immediate="true"    			
     				scrollerListener="#{redFlagsBean.scrollerListener}"
         			reRender="topScroller,items,header">        			
         		</rich:datascroller>
+    			</h:form>
 
 			</div>	
 

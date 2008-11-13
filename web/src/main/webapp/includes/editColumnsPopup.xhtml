@@ -1,0 +1,66 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+  	xmlns:h="http://java.sun.com/jsf/html" 
+  	xmlns:f="http://java.sun.com/jsf/core" 
+  	xmlns:a4j="http://richfaces.org/a4j"
+  	xmlns:rich="http://richfaces.org/rich">
+
+<!--
+  A pop-up modal form that allows choosing the visible columns to appear.
+  
+
+  Required Parameters:
+  ==============
+         bean:  Backing bean that implements the interface EditableColumns
+     reRender:  Id['s] (in format of call UIComponent.findComponent()) of components, rendered in case
+                      of AjaxRequest caused by this component. Can be single id, comma-separated list of Id's,
+                      or EL Expression with array or Collection.
+  To use:
+  ==============
+      <ui:include src="/includes/editColumnsPopup.xhtml">
+        <ui:param name="bean" value="#{myBean}" />
+        <ui:param name="reRender" value="myStuff" />
+      </ui:include>
+-->
+
+    <rich:modalPanel id="editColumns" headerClass="popupHeader" controlsClass="popupControls" width="500" height="350" zindex="2000">
+      <f:facet name="header">
+        <h:outputText value="#{messages.editColumns_title}" />
+      </f:facet>
+      <f:facet name="controls">
+        <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('editColumns')" />
+      </f:facet>
+
+      <h:panelGroup layout="block" styleClass="popupsubtitle">
+      	<h:outputText value="#{messages.editColumns_explanation}"/>
+      </h:panelGroup>
+
+      <a4j:form id="editColumnsForm">
+
+		<rich:dataGrid columns="3" value="#{bean.availableColumns}" var="col" width="100%" style="border:0">
+            <h:outputLabel rendered="#{bean.tableColumns[col].canHide}">
+   	          <h:selectBooleanCheckbox label="#{col}" value="#{bean.tableColumns[col].visible}" />
+   	          <h:outputText value="#{bean.tableColumns[col].colLabel}" />
+   	          
+           	</h:outputLabel>
+		</rich:dataGrid>
+	
+        <div class="popupactions">
+          <button value="submit" class="left" onclick="Richfaces.hideModalPanel('editColumns'); return false;"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button>
+          <a4j:commandLink 
+          				action="#{bean.saveColumns}"         				
+          				oncomplete="Richfaces.hideModalPanel('editColumns')" 
+          				reRender="#{reRender}">
+          				<button value="submit" class="left">
+          					<span class="save">
+          						<h:outputText value="#{messages.button_save}" />
+          					</span>
+          				</button>
+			</a4j:commandLink>          			
+        </div>
+
+      </a4j:form>
+
+    </rich:modalPanel>
+
+</ui:composition>

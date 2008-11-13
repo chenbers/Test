@@ -8,28 +8,36 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
+import com.inthinc.pro.backing.ui.EditableColumns;
 import com.inthinc.pro.backing.ui.RedFlagReportItem;
+import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.RedFlagDAO;
+import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.model.RedFlag;
+import com.inthinc.pro.model.TablePreference;
+import com.inthinc.pro.model.TableType;
+import com.inthinc.pro.util.MessageUtil;
 
-public class RedFlagsBean extends BaseBean
+public class RedFlagsBean extends BaseBean implements EditableColumns
 {
-    private static final Logger logger = Logger.getLogger(RedFlagsBean.class);
-    
-    Integer DEFAULT_ROWS_PER_PAGE = 25;
-    
-    private Integer numRowsPerPg;
-    private Integer start;
-    private Integer end;
-    private Integer maxCount;
-    private Map<String, Boolean> tableColumns;
-    private List <RedFlagReportItem> tableData;
-    
-    private RedFlagDAO redFlagDAO;
+    private static final Logger     logger                  = Logger.getLogger(RedFlagsBean.class);
 
+    Integer                         DEFAULT_ROWS_PER_PAGE   = 25;
+    private final static String COLUMN_LABEL_PREFIX = "redflags_";
 
+    private Integer                 numRowsPerPg;
+    private Integer                 start;
+    private Integer                 end;
+    private Integer                 maxCount;
+    private List<RedFlagReportItem> tableData;
+
+    private RedFlagDAO              redFlagDAO;
+    private Map<String, TableColumn>    tableColumns;
+    private TablePreferenceDAO      tablePreferenceDAO;
+    private TablePreference redFlagTablePref;
+    
     // package level -- so unit test can get it
-    static final List<String> AVAILABLE_COLUMNS;
+    static final List<String>       AVAILABLE_COLUMNS;
     static
     {
         // available columns
@@ -41,44 +49,20 @@ public class RedFlagsBean extends BaseBean
         AVAILABLE_COLUMNS.add("category");
         AVAILABLE_COLUMNS.add("detail");
         AVAILABLE_COLUMNS.add("clear");
-        
+
     }
-    static final Integer AVAILABLE_COLUMNS_COUNT = 7;
-    
-//    private List<String> availableColumns;
-//    private Integer availableColumnsCount;
-    
-    public List<String> getAvailableColumns()
+
+
+    public void scrollerListener(DataScrollerEvent event)
     {
-        return AVAILABLE_COLUMNS;
-    }
 
-//    public void setAvailableColumns(List<String> availableColumns)
-//    {
-//        this.availableColumns = availableColumns;
-//    }
+        logger.debug("scroll event page: " + event.getPage() + " old " + event.getOldScrolVal() + " new " + event.getNewScrolVal());
 
-    public Integer getAvailableColumnsCount()
-    {
-        return AVAILABLE_COLUMNS_COUNT;
-    }
-
-//    public void setAvailableColumnsCount(Integer availableColumnsCount)
-//    {
-//        this.availableColumnsCount = availableColumnsCount;
-//    }
-
-    public void scrollerListener(DataScrollerEvent event)     
-    {        
-        
-        logger.debug("scroll event page: " + event.getPage() + 
-                " old " + event.getOldScrolVal() + " new " + event.getNewScrolVal());
-//                " total " + this.driverData.size());
-        
-        this.start = (event.getPage()-1)*this.numRowsPerPg + 1;
-        this.end = (event.getPage())*this.numRowsPerPg;
-        //Partial page
-        if ( this.end > getTableData().size() ) {
+        this.start = (event.getPage() - 1) * this.numRowsPerPg + 1;
+        this.end = (event.getPage()) * this.numRowsPerPg;
+        // Partial page
+        if (this.end > getTableData().size())
+        {
             this.end = getTableData().size();
         }
     }
@@ -98,34 +82,13 @@ public class RedFlagsBean extends BaseBean
         this.numRowsPerPg = numRowsPerPg;
     }
 
-    public Map<String, Boolean> getTableColumns()
-    {
-        if (tableColumns == null)
-        {
-            tableColumns = new HashMap<String, Boolean>();
-            // TODO: Replace this with DAO for a "load" of the preferences for this particular table        
-            for ( String column : AVAILABLE_COLUMNS) 
-            {
-                tableColumns.put(column,true);
-            }
-      
-            
-        }
-        return tableColumns;
-    }
-
-    public void setTableColumns(Map<String, Boolean> tableColumns)
-    {
-        this.tableColumns = tableColumns;
-    }
-
     public List<RedFlagReportItem> getTableData()
     {
         if (tableData == null)
         {
             initTableData();
         }
-        
+
         return tableData;
     }
 
@@ -141,7 +104,7 @@ public class RedFlagsBean extends BaseBean
         setMaxCount(redFlagReportItemList.size());
         setStart(redFlagReportItemList.size() > 0 ? 1 : 0);
         setEnd(redFlagReportItemList.size() > getNumRowsPerPg() ? getNumRowsPerPg() : redFlagReportItemList.size());
-        
+
     }
 
     public void setTableData(List<RedFlagReportItem> tableData)
@@ -201,5 +164,96 @@ public class RedFlagsBean extends BaseBean
         this.maxCount = maxCount;
     }
 
+    // ---   Editable Columns Interface implementation  -- 
+    public List<String> getAvailableColumns()
+    {
+        return AVAILABLE_COLUMNS;
+    }
+    public Map<String, TableColumn> getTableColumns()
+    {
+        if (tableColumns == null)
+        {
+            List<Boolean> visibleList = getRedFlagTablePref().getVisible();
+            tableColumns = new HashMap<String, TableColumn>();
+            int cnt = 0;
+            for (String column : AVAILABLE_COLUMNS)
+            {
+                TableColumn tableColumn = new TableColumn(visibleList.get(cnt++), MessageUtil.getMessageString(COLUMN_LABEL_PREFIX+column));
+                if (column.equals("clear"))
+                    tableColumn.setCanHide(false);
+                    
+                tableColumns.put(column, tableColumn);
+                        
+            }
+
+        }
+        return tableColumns;
+    }
+
+    public void setTableColumns(Map<String, TableColumn> tableColumns)
+    {
+        this.tableColumns = tableColumns;
+    }
+    
+    public String saveColumns()
+    {
+        logger.debug("saveColumns RedFlagsBean");
+        TablePreference pref = getRedFlagTablePref();
+        int cnt = 0;
+        for (String column : AVAILABLE_COLUMNS)
+        {
+            pref.getVisible().set(cnt, tableColumns.get(column).getVisible());
+        }
+        setRedFlagTablePref(pref);
+// TODO: currently throws a not implemented exception        
+//        tablePreferenceDAO.update(pref);
+        return null;
+    
+    }
+
+    public TablePreference getRedFlagTablePref()
+    {
+        if (redFlagTablePref == null)
+        {
+            // TODO: refactor -- could probably keep in a session bean
+            List<TablePreference> tablePreferenceList = tablePreferenceDAO.getTablePreferencesByUserID(getUser().getUserID());
+            for (TablePreference pref : tablePreferenceList)
+            {
+                if (pref.getTableType().equals(TableType.RED_FLAG))
+                {
+                    setRedFlagTablePref(pref);
+                    return redFlagTablePref;
+                }
+            }
+            redFlagTablePref = new TablePreference();
+            redFlagTablePref.setUserID(getUser().getUserID());
+            redFlagTablePref.setTableType(TableType.RED_FLAG);
+            List<Boolean>visibleList = new ArrayList<Boolean>();
+            for (String column : AVAILABLE_COLUMNS)
+            {
+                visibleList.add(new Boolean(true));
+            }
+            redFlagTablePref.setVisible(visibleList);
+            
+        }
+        
+        
+        return redFlagTablePref;
+    }
+
+    public void setRedFlagTablePref(TablePreference redFlagTablePref)
+    {
+        this.redFlagTablePref = redFlagTablePref;
+    }
+
+    public TablePreferenceDAO getTablePreferenceDAO()
+    {
+        return tablePreferenceDAO;
+    }
+
+    public void setTablePreferenceDAO(TablePreferenceDAO tablePreferenceDAO)
+    {
+        this.tablePreferenceDAO = tablePreferenceDAO;
+    }
     
 }

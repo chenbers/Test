@@ -6,16 +6,15 @@ import static org.junit.Assert.*;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.component.UIComponent;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.richfaces.component.UIDatascroller;
 import org.richfaces.component.html.HtmlDatascroller;
 import org.richfaces.event.DataScrollerEvent;
 
 import com.inthinc.pro.backing.ui.RedFlagReportItem;
+import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.mock.data.UnitTestStats;
 
@@ -43,7 +42,7 @@ public class RedFlagsBeanTest extends BaseBeanTest
         assertNotNull(redFlagsBean);
         assertNotNull(redFlagsBean.getRedFlagDAO());
         
-        Map<String, Boolean> columnMap = redFlagsBean.getTableColumns();
+        Map<String, TableColumn> columnMap = redFlagsBean.getTableColumns();
         assertEquals(RedFlagsBean.AVAILABLE_COLUMNS.size(), columnMap.size());
         
         List<RedFlagReportItem> tableData = redFlagsBean.getTableData();

@@ -19,10 +19,10 @@
           <div class="panel_title"> <span class="redflag">#{messages.redflags_title}</span><span class="panel_links"></span> </div>
         </h:panelGroup>
 
-		<a4j:form id="redFlagSearch">							
         <h:panelGroup layout="block" styleClass="panel_w">
           <h:panelGroup layout="block" styleClass="panel_content">
 
+			<a4j:form id="redFlagSearch">							
             <ul id="grid_nav" style="margin: 0;">
               <li class="l">
                 <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
@@ -53,7 +53,8 @@
 				</h:outputFormat>
                </li>          							
             </ul>
-            
+    		</a4j:form>
+    		        
 			<div class="spacer"></div>
 			
             <h:panelGroup layout="block" styleClass="datagrid">
@@ -67,14 +68,10 @@
           </h:panelGroup>
 		</h:panelGroup>
 
-		<ui:include src="/includes/editColumns.xhtml">
-			<ui:param name="allColumns" value="#{redFlagsBean.availableColumns}"/>	
-			<ui:param name="allColumnsCount" value="#{redFlagsBean.availableColumnsCount}"/>	
-			<ui:param name="selectedColumns" value="#{redFlagsBean.tableColumns}"/>	
-			<ui:param name="messagesPrefix" value="redflags_"/>	
-			<ui:param name="reRender" value="redFlagSearch:redFlagsTableForm:items" />
+		<ui:include src="/includes/editColumnsPopup.xhtml">
+			<ui:param name="bean" value="#{redFlagsBean}"/>	
+			<ui:param name="reRender" value="redFlagsTableForm:items" />
 		</ui:include>    
-		</a4j:form>
 		
         <h:panelGroup layout="block" styleClass="panel_sw">
           <h:panelGroup layout="block" styleClass="panel_statusbar"/>

@@ -35,4 +35,7 @@
    <bean id="redFlagDAO" class="com.inthinc.pro.dao.hessian.RedFlagHessianDAO" 
    		parent="genericDAO">
    </bean>   
+   <bean id="tablePreferenceDAO" class="com.inthinc.pro.dao.hessian.TablePreferenceHessianDAO" 
+   		parent="genericDAO">
+   </bean>   
 </beans>

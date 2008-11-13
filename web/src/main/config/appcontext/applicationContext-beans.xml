@@ -131,6 +131,7 @@
    </bean>
    <bean id="redFlagsBean" class="com.inthinc.pro.backing.RedFlagsBean" scope="session" parent="baseBean" >
    		<property name="redFlagDAO" ref="redFlagDAO"></property>
+   		<property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
    </bean>
 
 </beans>
