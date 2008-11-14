@@ -110,7 +110,7 @@
                           <td width="100" valign="top"><h:outputText value="#{messages.editVehicle_VIN}" /></td>
                           <td>
                             <h:inputText value="#{vehiclesBean.editItem.VIN}" id="VIN" onchange="checkMultiple(this)" styleClass="text" size="30"
-                              maxlength="14" required="true" requiredMessage="#{messages.required}" validatorMessage="#{messages.editVehicle_VINlength}">
+                              maxlength="17" required="true" requiredMessage="#{messages.required}" validatorMessage="#{messages.editVehicle_VINlength}">
                                 <f:validateLength minimum="17" maximum="17" />
                             </h:inputText>
                             <rich:message for="VIN" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
