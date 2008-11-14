@@ -97,6 +97,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     {
         final DeviceView deviceView = new DeviceView();
         BeanUtils.copyProperties(device, deviceView);
+        deviceView.setVehicleDAO(vehicleDAO);
         deviceView.setSelected(false);
         return deviceView;
     }
@@ -285,8 +286,10 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         return STATUSES;
     }
 
-    public class DeviceView extends Device implements EditItem
+    public static class DeviceView extends Device implements EditItem
     {
+        @Column(updateable = false)
+        private VehicleDAO vehicleDAO;
         @Column(updateable = false)
         private Integer oldVehicleID;
         @Column(updateable = false)
@@ -297,6 +300,11 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         public Integer getId()
         {
             return getDeviceID();
+        }
+
+        public void setVehicleDAO(VehicleDAO vehicleDAO)
+        {
+            this.vehicleDAO = vehicleDAO;
         }
 
         Integer getOldVehicleID()

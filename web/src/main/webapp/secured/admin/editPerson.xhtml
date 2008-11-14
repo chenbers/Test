@@ -316,14 +316,15 @@
                           <td width="100" valign="top"><h:outputText value="#{messages.editPerson_user_password}" /></td>
                           <td>
                             <h:inputSecret value="#{personBean.editItem.password}" id="user_password" onchange="checkMultiple(this)" styleClass="text" size="30"
-                              maxlength="30" />
+                              maxlength="30" required="#{personBean.add}" requiredMessage="#{messages.required}" />
                             <rich:message for="user_password" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                           </td>
                         </tr>
                         <tr>
                           <td width="100" valign="top"><h:outputText value="#{messages.editPerson_confirmPassword}" /></td>
                           <td>
-                            <h:inputSecret value="#{personBean.editItem.confirmPassword}" id="confirmPassword" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="30" />
+                            <h:inputSecret value="#{personBean.editItem.confirmPassword}" id="confirmPassword" onchange="checkMultiple(this)" styleClass="text" size="30"
+                              maxlength="30" required="#{personBean.add}" requiredMessage="#{messages.required}" />
                           </td>
                         </tr>
                         </ui:fragment>

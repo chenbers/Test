@@ -136,6 +136,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     private VehicleView createVehicleView(Vehicle vehicle)
     {
         final VehicleView vehicleView = new VehicleView();
+        vehicleView.bean = this;
         BeanUtils.copyProperties(vehicle, vehicleView);
         vehicleView.setOldGroupID(vehicle.getGroupID());
         vehicleView.setOldDriverID(vehicle.getDriverID());
@@ -367,8 +368,10 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         return groups;
     }
 
-    public class VehicleView extends Vehicle implements EditItem
+    public static class VehicleView extends Vehicle implements EditItem
     {
+        @Column(updateable = false)
+        private VehiclesBean bean;
         @Column(updateable = false)
         private Integer oldGroupID;
         @Column(updateable = false)
@@ -404,13 +407,13 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
             if ((driver != null) && !driver.getGroupID().equals(groupID))
                 setDriverID(null);
             driver = null;
-            drivers = null;
+            bean.drivers = null;
         }
 
         public Group getGroup()
         {
             if (group == null)
-                group = groupDAO.findByID(getGroupID());
+                group = bean.groupDAO.findByID(getGroupID());
             return group;
         }
 
@@ -439,7 +442,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         public Driver getDriver()
         {
             if (driver == null)
-                driver = driverDAO.findByID(getDriverID());
+                driver = bean.driverDAO.findByID(getDriverID());
             return driver;
         }
 

@@ -486,6 +486,9 @@ public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>
 
     protected Map<String, Object> convertToMap(Object modelObject, Map<Object, Map<String, Object>> handled)
     {
+        if (modelObject == null)
+            return null;
+
         Map<String, Object> map = new HashMap<String, Object>();
         if (handled.get(modelObject) != null)
             return handled.get(modelObject);

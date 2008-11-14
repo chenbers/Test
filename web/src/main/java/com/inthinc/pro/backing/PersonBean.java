@@ -193,6 +193,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     private PersonView createPersonView(Person person)
     {
         final PersonView personView = new PersonView();
+        personView.bean = this;
         BeanUtils.copyProperties(person, personView);
 
         if (personView.getAddress() == null)
@@ -280,6 +281,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     protected PersonView createAddItem()
     {
         final PersonView person = new PersonView();
+        person.bean = this;
         person.setUser(new User());
         // TODO: maybe use the browser's time zone instead, if possible...
         person.setTimeZone(TimeZone.getDefault());
@@ -469,8 +471,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         return STATES;
     }
 
-    public class PersonView extends Person implements EditItem
+    public static class PersonView extends Person implements EditItem
     {
+        @Column(updateable = false)
+        private PersonBean bean;
         @Column(updateable = false)
         private Group   group;
         @Column(updateable = false)
@@ -496,13 +500,13 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         {
             super.setGroupID(groupID);
             group = null;
-            reportsToOptions = null;
+            bean.reportsToOptions = null;
         }
 
         public Group getGroup()
         {
             if (group == null)
-                group = groupDAO.findByID(getGroupID());
+                group = bean.groupDAO.findByID(getGroupID());
             return group;
         }
 
@@ -516,7 +520,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         public Person getReportsToPerson()
         {
             if (reportsToPerson == null)
-                reportsToPerson = personDAO.findByID(getReportsTo());
+                reportsToPerson = bean.personDAO.findByID(getReportsTo());
             return reportsToPerson;
         }
 
