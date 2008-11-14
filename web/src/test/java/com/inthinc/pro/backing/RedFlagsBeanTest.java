@@ -17,6 +17,8 @@ import com.inthinc.pro.backing.ui.RedFlagReportItem;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.mock.data.UnitTestStats;
+import com.inthinc.pro.model.TablePreference;
+import com.inthinc.pro.model.TableType;
 
 public class RedFlagsBeanTest extends BaseBeanTest
 {
@@ -39,8 +41,10 @@ public class RedFlagsBeanTest extends BaseBeanTest
         // get the bean from the applicationContext (initialized by Spring injection)
         RedFlagsBean redFlagsBean = (RedFlagsBean)applicationContext.getBean("redFlagsBean");
         
+        // test the spring creation/injection
         assertNotNull(redFlagsBean);
         assertNotNull(redFlagsBean.getRedFlagDAO());
+        assertNotNull(redFlagsBean.getTablePreferenceDAO());
         
         Map<String, TableColumn> columnMap = redFlagsBean.getTableColumns();
         assertEquals(RedFlagsBean.AVAILABLE_COLUMNS.size(), columnMap.size());
@@ -61,6 +65,24 @@ public class RedFlagsBeanTest extends BaseBeanTest
         int lastPage = redFlagItems.size()/redFlagsBean.getNumRowsPerPg();
         lastPage = (redFlagItems.size() % redFlagsBean.getNumRowsPerPg() != 0) ? 1 : 0;
         checkScrolling(lastPage, redFlagsBean);
+        assertEquals(redFlagsBean.DEFAULT_ROWS_PER_PAGE, redFlagsBean.getNumRowsPerPg());
+        
+        // clear
+        int size = tableData.size();
+        redFlagsBean.setClearItem(redFlagsBean.getTableData().get(0));
+        redFlagsBean.clearItemAction();
+        tableData = redFlagsBean.getTableData();
+        assertEquals(size-1, tableData.size());
+        
+        // table Preferences
+        TablePreference tablePref = redFlagsBean.getRedFlagTablePref();
+        assertEquals(TableType.RED_FLAG, tablePref.getTableType());
+        int cnt = 0;
+        for (Boolean visible : tablePref.getVisible())
+        {
+            assertTrue(redFlagsBean.getAvailableColumns().get(cnt++), visible);
+        }
+        
         
     }
 

@@ -7,13 +7,12 @@
 	xmlns:h="http://java.sun.com/jsf/html">
 		
 		<div class="datagrid">
-			<h:form id="redFlagsTableForm">
-
-        	<rich:datascroller id="topScroller" for="items" immediate="true"
-        		scrollerListener="#{redFlagsBean.scrollerListener}"
-        		reRender="bottomScroller,items,header">
-        	</rich:datascroller>
-        		
+				<h:form id="redFlagsTableForm">
+	
+    	    	<rich:datascroller id="topScroller" for="items" immediate="true"
+        			scrollerListener="#{redFlagsBean.scrollerListener}"
+        			reRender="bottomScroller,items,header">
+        		</rich:datascroller>
         		
 				<rich:dataTable value="#{tableData}" id="items"
 					var="item" styleClass="datagrid"
@@ -68,7 +67,10 @@
       					<f:facet name="header">
       						<h:outputText value="" />
       					</f:facet>
-		 				<h:outputText value="#{messages.redflags_clear}"/>
+						<a4j:commandLink title="#{messages.redflags_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearRedFlagPanel')" reRender="clearItemForm:clearItem" >
+							<h:outputText value="#{messages.redflags_clear}" />
+							<f:setPropertyActionListener target="#{redFlagsBean.clearItem}" value="#{item}" />
+						</a4j:commandLink>
     				</rich:column>
     			</rich:dataTable>
     			
@@ -79,5 +81,45 @@
     			</h:form>
 
 			</div>	
+			
+    <rich:modalPanel id="clearRedFlagPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="350" zindex="2000">
+      <f:facet name="header">
+        <h:outputText value="#{messages.redflags_clearTitle}" />
+      </f:facet>
+      <f:facet name="controls">
+        <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('clearRedFlagPanel')" />
+      </f:facet>
+
+      <h:panelGroup layout="block" styleClass="popupsubtitle">
+      	<h:outputText value="#{messages.redflags_clearInst}"/>
+      </h:panelGroup>
+
+      <a4j:form id="clearItemForm">
+		<h:panelGroup layout="block"  styleClass="popupcontent">
+      		<h:outputFormat id="clearItem" value="#{messages.redflags_clearDesc}">
+      			<a4j:actionparam value="#{redFlagsBean.clearItem.detail}"/>
+      			<a4j:actionparam value="#{redFlagsBean.clearItem.date}"/>
+      		</h:outputFormat>
+      	</h:panelGroup>
+	
+        <div class="popupactions">
+          <button value="submit" class="left" onclick="Richfaces.hideModalPanel('clearRedFlagPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_no}" /></span></button>
+          <a4j:commandLink 
+          				action="#{redFlagsBean.clearItemAction}"         				
+          				oncomplete="Richfaces.hideModalPanel('clearRedFlagPanel')" 
+          				reRender="items">
+          				<button value="submit" class="left">
+          					<span class="apply">
+          						<h:outputText value="#{messages.button_yes}" />
+          					</span>
+          				</button>
+			</a4j:commandLink>          			
+        </div>
+
+      </a4j:form>
+
+    </rich:modalPanel>
+
+			
 
 </ui:composition>

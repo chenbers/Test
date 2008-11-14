@@ -22,7 +22,7 @@ public class RedFlagsBean extends BaseBean implements EditableColumns
 {
     private static final Logger     logger                  = Logger.getLogger(RedFlagsBean.class);
 
-    Integer                         DEFAULT_ROWS_PER_PAGE   = 25;
+    Integer        DEFAULT_ROWS_PER_PAGE   = 25;
     private final static String COLUMN_LABEL_PREFIX = "redflags_";
 
     private Integer                 numRowsPerPg;
@@ -35,6 +35,8 @@ public class RedFlagsBean extends BaseBean implements EditableColumns
     private Map<String, TableColumn>    tableColumns;
     private TablePreferenceDAO      tablePreferenceDAO;
     private TablePreference redFlagTablePref;
+    
+    private RedFlagReportItem   clearItem;
     
     // package level -- so unit test can get it
     static final List<String>       AVAILABLE_COLUMNS;
@@ -98,7 +100,10 @@ public class RedFlagsBean extends BaseBean implements EditableColumns
         List<RedFlagReportItem> redFlagReportItemList = new ArrayList<RedFlagReportItem>();
         for (RedFlag redFlag : redFlagList)
         {
-            redFlagReportItemList.add(new RedFlagReportItem(redFlag, getGroupHierarchy()));
+            if (!redFlag.getCleared())
+            {
+                redFlagReportItemList.add(new RedFlagReportItem(redFlag, getGroupHierarchy()));
+            }
         }
         setTableData(redFlagReportItemList);
         setMaxCount(redFlagReportItemList.size());
@@ -152,7 +157,7 @@ public class RedFlagsBean extends BaseBean implements EditableColumns
 
     public Integer getMaxCount()
     {
-        if (maxCount == null)
+        if (maxCount == null) 
         {
             initTableData();
         }
@@ -253,6 +258,23 @@ public class RedFlagsBean extends BaseBean implements EditableColumns
     public void setTablePreferenceDAO(TablePreferenceDAO tablePreferenceDAO)
     {
         this.tablePreferenceDAO = tablePreferenceDAO;
+    }
+
+    public RedFlagReportItem getClearItem()
+    {
+        return clearItem;
+    }
+
+    public void setClearItem(RedFlagReportItem clearItem)
+    {
+        this.clearItem = clearItem;
+    }
+    
+    public void clearItemAction()
+    {
+        clearItem.getRedFlag().setCleared(true);
+        tableData.remove(clearItem);
+        // todo: persist in DAO
     }
     
 }
