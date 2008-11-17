@@ -48,11 +48,6 @@ public class BreakdownBean extends BaseDurationBean {
 		//Control parameters
 		sb.append(GraphicUtil.getPieControlParameters());
         
-        //Is the group id initialized?
-        if ( this.navigation.getGroupID() == null ) {
-            this.navigation.setGroupID(getUser().getPerson().getGroupID());
-        }       
-
         //Date range qualifiers
         Integer endDate = DateUtil.getTodaysDate();
         Integer startDate = DateUtil.getDaysBackDate(endDate, getDuration().getNumberOfDays());

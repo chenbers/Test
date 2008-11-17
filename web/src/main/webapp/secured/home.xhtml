@@ -11,8 +11,12 @@
 	</ui:define>
 
 	<ui:param name="homeSelected" value="current" />
-
 	<ui:define name="content">
+	
+	<h:form id="setupGroup">
+		<h:inputHidden value="#{groupLevelBean.testNumber}" />
+	</h:form>
+	
 			
 		<ul id="grid_nav">
 			<li class="l grid_icon"><img src="/tiwipro/images/ico_line.png" /></li>

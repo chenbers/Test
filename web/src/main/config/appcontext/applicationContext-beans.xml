@@ -12,10 +12,13 @@
    <bean id="baseBean" abstract="true" class="com.inthinc.pro.backing.BaseBean">
 		<property name="errorBean" ref="errorBean" />
    </bean>
-   <bean id="testBean" class="com.inthinc.pro.backing.TestBean" scope="session" parent="baseBean">
-   </bean>
-   
+    <bean id="testBean" class="com.inthinc.pro.backing.TestBean" scope="session" parent="baseBean">
+    </bean>   
    <bean id="versionBean" class="com.inthinc.pro.backing.VersionBean" init-method="init">
+   </bean>
+
+   <bean id="groupLevelBean" class="com.inthinc.pro.backing.GroupLevelBean" scope="request" parent="baseBean" init-method="initGroupID">
+   		<property name="navigationBean" ref="navigationBean"></property>   		
    </bean>
    
    <!-- Navigation bean -->

@@ -1,11 +1,8 @@
 package com.inthinc.pro.backing;
 
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.wrapper.ScoreableEntityPkg;
 
 public class NavigationBean extends BaseBean
 {
@@ -26,17 +23,10 @@ public class NavigationBean extends BaseBean
 
     public void setGroupID(Integer groupID)
     {
+        logger.debug("Navigation setGroupID: " + groupID);
         this.groupID = groupID;
     }
 
-    public void listener(ActionEvent evt)
-    {
-        FacesContext ctx = FacesContext.getCurrentInstance();
-        String groupID = (String) ctx.getExternalContext().getRequestParameterMap().get("selectedGroup");
-
-        logger.debug("#############selected groupID is: " + groupID);
-        this.groupID = new Integer(groupID);
-    }
 
     public Driver getDriver()
     {

@@ -54,6 +54,7 @@
 				<div class="datagrid">
 				<!-- Start Trend table --> 
 					<h:form id="trendTable">
+			
 						<rich:dataTable value="#{scores}" id="items"
 							var="item" styleClass="datagrid"
 							rowClasses="trendTableOdd,trendTableEven" cellspacing="1" rows="10"
@@ -71,10 +72,9 @@
 								<f:facet name="header">
 									<h:outputText value="#{column_one}" />
 								</f:facet>
-								<h:commandLink value="#{item.se.identifier}" 
-									actionListener="#{navigationBean.listener}" action="#{item.goTo}">
-									<f:param name="selectedGroup" value="#{item.se.entityID}" />
-								</h:commandLink>
+								<h:outputLink value="#{item.goTo}">
+									<h:outputText value="#{item.se.identifier}" />
+								</h:outputLink>
 
 							</rich:column>
 							<rich:column width="73" sortBy="#{item.se.score}">

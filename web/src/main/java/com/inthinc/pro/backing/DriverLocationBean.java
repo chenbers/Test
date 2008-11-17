@@ -24,10 +24,6 @@ public class DriverLocationBean extends BaseBean {
 
 	public List<DriverBean> getDriverBeans() {
 
-        //Is the group id initialized?
-        if ( this.navigation.getGroupID() == null ) {
-            this.navigation.setGroupID(getUser().getPerson().getGroupID());
-        }
         List<Driver> drivers = driverDAO.getAllDrivers(this.navigation.getGroupID());
         // Do something to get driverBeans or last trips to get location
         driverBeans = new ArrayList<DriverBean>();

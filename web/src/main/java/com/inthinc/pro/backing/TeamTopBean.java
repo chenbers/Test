@@ -37,11 +37,6 @@ public class TeamTopBean extends BaseBean
             topDrivers.clear();
         }
         
-        //Is the group id initialized?
-        if ( this.navigation.getGroupID() == null ) {
-            this.navigation.setGroupID(getUser().getPerson().getGroupID());
-        }
-        
         //Fetch, qualifier is groupId, date from, date to
         List<ScoreableEntity> s = null;
         try {
@@ -90,10 +85,6 @@ public class TeamTopBean extends BaseBean
             bottomDrivers.clear();
         }
         
-        //Is the group id initialized?
-        if ( this.navigation.getGroupID() == -1 ) {
-            this.navigation.setGroupID(getUser().getPerson().getGroupID());
-        }
 //        
 //        //Handle navigation
 //        logger.debug("location is: " + navigation.getLocation());
