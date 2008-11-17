@@ -3,7 +3,6 @@ package com.inthinc.pro.dao.hessian.mapper;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -186,7 +185,20 @@ public abstract class AbstractMapper implements Mapper
 
     public Map<String, Object> convertToMap(Object modelObject)
     {
+        Map<Object, Map<String, Object>> handled = new HashMap<Object, Map<String,Object>>();
+        return convertToMap(modelObject, handled);
+    }
+
+    protected Map<String, Object> convertToMap(Object modelObject, Map<Object, Map<String, Object>> handled)
+    {
+        if (modelObject == null)
+            return null;
+
         Map<String, Object> map = new HashMap<String, Object>();
+        if (handled.get(modelObject) != null)
+            return handled.get(modelObject);
+        else
+            handled.put(modelObject, map);
 
         Class<?> clazz = modelObject.getClass();
         while (clazz != null)
@@ -260,7 +272,14 @@ public abstract class AbstractMapper implements Mapper
                     Map<Object, Map<String, Object>> valueMap = new HashMap<Object, Map<String, Object>>();
                     for (Map.Entry<Object, Object> entry : ((Map<Object, Object>) value).entrySet())
                     {
-                        valueMap.put(entry.getKey(), convertToMap(entry.getValue()));
+                        if (handled.containsKey(entry.getValue()))
+                        {
+                            valueMap.put(entry.getKey(), handled.get(entry.getValue()));
+                        }
+                        else
+                        {
+                            valueMap.put(entry.getKey(), convertToMap(entry.getValue(), handled));
+                        }
                     }
                     map.put(name, valueMap);
                 }
@@ -282,7 +301,14 @@ public abstract class AbstractMapper implements Mapper
                 // if the property is not a standardProperty it must be some kind of bean/pojo/object. convert the property to a map
                 else if (!isStandardProperty(value))
                 {
-                    map.put(name, convertToMap(value));
+                    if (handled.containsKey(value))
+                    {
+                        map.put(name, handled.get(value));
+                    }
+                    else
+                    {
+                        map.put(name, convertToMap(value, handled));
+                    }
                 }
                 // if we have made it this far, the value must be a String or a primitive type. Just put it in the map.
                 else
