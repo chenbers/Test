@@ -4,12 +4,11 @@ import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.util.DebugUtil;
 
 public class GroupLevelBean extends BaseBean
 {
     private static final Logger logger = Logger.getLogger(TestBean.class);
-    private String              testNumber;
+    private String              ping;
     private NavigationBean      navigationBean;
 
     public GroupLevelBean()
@@ -17,21 +16,22 @@ public class GroupLevelBean extends BaseBean
 
     }
 
-    public String getTestNumber()
-    {
 
-        logger.debug("Test Bean - returning testNumber");
-        return testNumber;
+    public String getPing()
+    {
+        return ping;
     }
 
-    public void setTestNumber(String testNumber)
+
+    public void setPing(String ping)
     {
-        this.testNumber = testNumber;
+        this.ping = ping;
     }
+
 
     public void initGroupID()
     {
-        DebugUtil.dumpRequestParameterMap();
+//        DebugUtil.dumpRequestParameterMap();
 
         FacesContext ctx = FacesContext.getCurrentInstance();
         String groupID = (String) ctx.getExternalContext().getRequestParameterMap().get("groupID");
