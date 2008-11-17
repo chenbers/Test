@@ -13,7 +13,7 @@ public class TablePreferenceHessianDAO extends GenericHessianDAO<TablePreference
     {
         try
         {
-            return convertToModelObject(getSiloService().getTablePreferencesByUserID(userID));
+            return getMapper().convertToModelObject(getSiloService().getTablePreferencesByUserID(userID), TablePreference.class);
         }
         catch (EmptyResultSetException e)
         {

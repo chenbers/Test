@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.TripDAO;
-import com.inthinc.pro.dao.hessian.proserver.CentralService;
 import com.inthinc.pro.model.Trip;
 
 public class TripHessianDAO extends GenericHessianDAO<Trip, Integer> implements TripDAO
@@ -16,7 +15,7 @@ public class TripHessianDAO extends GenericHessianDAO<Trip, Integer> implements 
     public List<Trip> getTrips(Integer driverID, Integer startDate, Integer endDate)
     {
         logger.debug("getTrips() driverID = " + driverID);
-        List<Trip> tripList = convertToModelObject(this.getSiloService().getTrips(driverID, startDate, endDate));
+        List<Trip> tripList = getMapper().convertToModelObject(this.getSiloService().getTrips(driverID, startDate, endDate), Trip.class);
         return tripList;
     }
 }

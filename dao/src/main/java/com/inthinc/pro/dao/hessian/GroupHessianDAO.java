@@ -16,19 +16,19 @@ public class GroupHessianDAO extends GenericHessianDAO<Group, Integer> implement
     {
         try
         {
-            return convertToModelObject(getSiloService().getGroupHierarchy(groupID));
+            return getMapper().convertToModelObject(getSiloService().getGroupHierarchy(groupID), Group.class);
         }
         catch (EmptyResultSetException e)
         {
             return Collections.emptyList();
         }
     }
-    
+
     public Group getGroupByID(Integer groupID)
     {
         try
         {
-            return convertToModelObject(this.getSiloService().getGroupByID(groupID));
+            return getMapper().convertToModelObject(this.getSiloService().getGroupByID(groupID), Group.class);
         }
         catch (EmptyResultSetException e)
         {

@@ -15,7 +15,7 @@ public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer> impleme
     {
         try
         {
-            return convertToModelObject(getSiloService().getDevicesByAcctID(accountID));
+            return getMapper().convertToModelObject(getSiloService().getDevicesByAcctID(accountID), Device.class);
         }
         catch (EmptyResultSetException e)
         {

@@ -15,7 +15,7 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
     {
         try
         {
-            return convertToModelObject(getSiloService().getVehiclesByAcctID(accountID));
+            return getMapper().convertToModelObject(getSiloService().getVehiclesByAcctID(accountID), Vehicle.class);
         }
         catch (EmptyResultSetException e)
         {
@@ -29,7 +29,7 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
     {
         try
         {
-            return convertToModelObject(getSiloService().getVehiclesInGroupHierarchy(groupID));
+            return getMapper().convertToModelObject(getSiloService().getVehiclesInGroupHierarchy(groupID), Vehicle.class);
         }
         catch (EmptyResultSetException e)
         {
