@@ -43,7 +43,7 @@
 	<!-- FACELET DEBUG PARAMETERS Special Debug Output for Development (not sure if needed)-->
  	<context-param>
   		<param-name>facelets.DEVELOPMENT</param-name>
-  		<param-value>${facelets.development}</param-value>
+  		<param-value>true</param-value>
  	</context-param>
  	
 	<!-- Optional JSF-RI Parameters to Help Debug -->
@@ -106,7 +106,7 @@
 
 	<!-- not sure if we want this here -->
 	<session-config>
-    	<session-timeout>10</session-timeout> 
+    	<session-timeout>30</session-timeout> 
 	</session-config> 	
 	
 </web-app>
