@@ -5,12 +5,20 @@ import java.util.List;
 
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
+import com.inthinc.pro.dao.hessian.mapper.EventHessianMapper;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
 
 public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implements EventDAO
 {
+    
+
+    public EventHessianDAO()
+    {
+        super();
+        super.setMapper(new EventHessianMapper());
+    }
 
     @Override
     public List<Event> getMostRecentEvents(Integer groupID, Integer eventCnt)

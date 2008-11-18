@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -22,14 +23,14 @@ import com.inthinc.pro.model.BaseEnum;
 public abstract class AbstractMapper implements Mapper
 {
     private static final Logger logger = Logger.getLogger(AbstractMapper.class);
-//    private Class<T> modelClass;
+    // private Class<T> modelClass;
     private Map<String, Method> convertToFieldMap = new HashMap<String, Method>();
     private Map<String, Method> convertToColumnMap = new HashMap<String, Method>();
 
     @SuppressWarnings("unchecked")
     public AbstractMapper()
     {
-//        this.modelClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        // this.modelClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         populateConverterMaps();
     }
 
@@ -49,26 +50,25 @@ public abstract class AbstractMapper implements Mapper
 
     }
 
-
-//    public T convertToModelObject(Map<String, Object> map)
-//    {
-//
-//        T modelObject;
-//        try
-//        {
-//            modelObject = modelClass.newInstance();
-//        }
-//        catch (InstantiationException e)
-//        {
-//            throw new MappingException(e);
-//        }
-//        catch (IllegalAccessException e)
-//        {
-//            throw new MappingException(e);
-//        }
-//
-//        return convertToModelObject(map, modelObject);
-//    }
+    // public T convertToModelObject(Map<String, Object> map)
+    // {
+    //
+    // T modelObject;
+    // try
+    // {
+    // modelObject = modelClass.newInstance();
+    // }
+    // catch (InstantiationException e)
+    // {
+    // throw new MappingException(e);
+    // }
+    // catch (IllegalAccessException e)
+    // {
+    // throw new MappingException(e);
+    // }
+    //
+    // return convertToModelObject(map, modelObject);
+    // }
 
     public <E> E convertToModelObject(Map<String, Object> map, Class<E> type)
     {
@@ -90,6 +90,7 @@ public abstract class AbstractMapper implements Mapper
 
     private <E> E convertToModelObject(Map<String, Object> map, E modelObject)
     {
+        List<Field> fieldList = getAllFields(modelObject.getClass());
 
         for (Map.Entry<String, Object> entry : map.entrySet())
         {
@@ -97,7 +98,7 @@ public abstract class AbstractMapper implements Mapper
             Object value = entry.getValue();
             String key = null;
 
-            for (Field field : modelObject.getClass().getDeclaredFields())
+            for (Field field : fieldList)
             {
                 if (field.isAnnotationPresent(Column.class))
                 {
@@ -136,7 +137,7 @@ public abstract class AbstractMapper implements Mapper
             Field field = null;
             try
             {
-                field = modelObject.getClass().getDeclaredField(key);
+                field = getField(key, fieldList);
 
                 // Check if the value is a Map or a List and handle it or just set the value in the object to be returned
                 if (Map.class.isInstance(value))
@@ -165,10 +166,10 @@ public abstract class AbstractMapper implements Mapper
         return modelObject;
     }
 
-//    public List<T> convertToModelObject(List<Map<String, Object>> list)
-//    {
-//        return convertToModelObject(list, modelClass);
-//    }
+    // public List<T> convertToModelObject(List<Map<String, Object>> list)
+    // {
+    // return convertToModelObject(list, modelClass);
+    // }
 
     public <E> List<E> convertToModelObject(List<Map<String, Object>> list, Class<E> type)
     {
@@ -183,9 +184,10 @@ public abstract class AbstractMapper implements Mapper
         return returnList;
     }
 
+    @Override
     public Map<String, Object> convertToMap(Object modelObject)
     {
-        Map<Object, Map<String, Object>> handled = new HashMap<Object, Map<String,Object>>();
+        Map<Object, Map<String, Object>> handled = new HashMap<Object, Map<String, Object>>();
         return convertToMap(modelObject, handled);
     }
 
@@ -394,6 +396,34 @@ public abstract class AbstractMapper implements Mapper
         if (String.class.isInstance(o))
             return true;
         return false;
+    }
+
+    private static List<Field> getAllFields(Class<?> type)
+    {
+        List<Field> fieldList = new ArrayList<Field>();
+        Class<?> clazz = type;
+        while (clazz != null)
+        {
+            fieldList.addAll(Arrays.asList(clazz.getDeclaredFields()));
+            clazz = clazz.getSuperclass();
+        }
+        return fieldList;
+    }
+
+    private static Field getField(String fieldName, Class<?> type) throws NoSuchFieldException
+    {
+        return getField(fieldName, getAllFields(type));
+    }
+
+    private static Field getField(String fieldName, List<Field> fieldList) throws NoSuchFieldException
+    {
+        for (Field field : fieldList)
+        {
+            if (field.getName().equals(fieldName))
+                return field;
+        }
+        throw new NoSuchFieldException();
+
     }
 
 }
