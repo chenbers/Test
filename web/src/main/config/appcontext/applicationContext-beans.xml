@@ -68,6 +68,10 @@
     <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
    </bean>
 
+   <bean id="zonesBean" class="com.inthinc.pro.backing.ZonesBean" scope="session">
+    <property name="zoneDAO" ref="zoneDAO"></property>
+   </bean>
+
    <bean id="driverBean" class="com.inthinc.pro.backing.DriverBean" scope="request">
    		<property name="scoreDAO" ref="scoreDAO"></property>
    		<property name="navigation" ref="navigationBean"></property>

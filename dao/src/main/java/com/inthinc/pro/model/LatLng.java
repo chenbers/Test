@@ -36,7 +36,8 @@ public class LatLng implements Serializable
 	{
 		this.lng = lng;
 	}
-	public String toString()
+	@Override
+    public String toString()
 	{
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("(");

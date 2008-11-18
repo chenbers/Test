@@ -44,6 +44,8 @@ import com.inthinc.pro.model.TamperingEvent;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.Zone;
+import com.inthinc.pro.model.ZoneType;
 
 public class MockData
 {
@@ -63,6 +65,7 @@ public class MockData
     static final int MAX_DRIVERS_IN_GROUP = 10;
     static final int MAX_VEHICLES_IN_GROUP = 10;
     static final int MAX_USERS_IN_GROUP = 10;
+    static final int MAX_ZONES_IN_GROUP = 10;
     static final int MAX_TRIPS = 75;
     static final int MAX_ADDRESS = 3;
     static final int MIN_EVENTS = 0;
@@ -204,6 +207,8 @@ public class MockData
                 addTripsAndEvents(driversInGroup, vehiclesInGroup, idOffset);
 
             }
+
+            addZonesToGroup(accountID, groups[cnt].getGroupID(), randomInt(MAX_ZONES_IN_GROUP / 2, MAX_ZONES_IN_GROUP));
         }
         
         
@@ -542,6 +547,44 @@ public class MockData
         return numEvents;
     }
 
+    private List<Zone> addZonesToGroup(Integer accountID, Integer groupID, int numZones)
+    {
+        List<Zone> zoneList = new ArrayList<Zone>();
+        Integer idOffset = accountID * MAX_GROUPS + groupID * MAX_ZONES_IN_GROUP;
+        for (int i = 0; i < numZones; i++)
+        {
+            int id = idOffset+i+1;
+            Zone zone = new Zone();
+            zone.setAccountID(accountID);
+            zone.setGroupID(groupID);
+            zone.setZoneID(id);
+            zone.setCreated(new Date());
+            zone.setName("Zone" + id);
+            zone.setZoneType(ZoneType.values()[randomInt(0, ZoneType.values().length - 1)]);
+            zone.setAddress("4225 West Lake Park Blvd. Suite 100 West Valley City UT 84120");
+            addPoints(zone, new LatLng(40.711435, -111.991518));
+            storeObject(zone);
+            zoneList.add(zone);
+        }
+        
+        return zoneList;
+    }
+
+    private void addPoints(Zone zone, LatLng center)
+    {
+        final ArrayList<LatLng> points = new ArrayList<LatLng>();
+        if ((zone.getZoneType() == ZoneType.RECTANGLE) || (zone.getZoneType() == ZoneType.CIRCLE))
+        {
+            points.add(new LatLng(randomLat(), randomLng()));
+            points.add(new LatLng(randomLat(), randomLng()));
+        }
+        else if (zone.getZoneType() == ZoneType.POLYGON)
+        {
+            for (int i = 0; i < randomInt(3, 9); i++)
+                points.add(new LatLng(randomLat(), randomLng()));
+        }
+        zone.setPoints(points);
+    }
 
     private static List <LatLng>  getHardCodedRoute()
     {

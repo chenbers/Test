@@ -28,6 +28,16 @@
         <ui:param name="reRender" value="myStuff" />
         <ui:param name="deleteBean" value="#{myBean}" />
       </ui:include>
+
+  Elsewhere:
+
+      <a href="#" onclick="Richfaces.showModalPanel('confirmDelete'); return false;">Delete</a>
+  or
+      <a href="#" onclick="Richfaces.showModalPanel('confirmDelete', {}, {deleteID:#{item.ID}}); return false;">Delete</a>
+
+  The first link is for when the delete() method has its own way of determining which item(s) to delete.
+  The second link is for when the delete() method needs the deleteID passed to it as a request parameter.
+
 -->
 
   <ui:composition>
@@ -39,7 +49,7 @@
       <c:set var="explanation" value="#{messages.confirmDelete_explanation}" />
     </c:if>
 
-    <rich:modalPanel id="confirmDelete" headerClass="popupHeader" controlsClass="popupControls" width="500" height="140" zindex="2001">
+    <rich:modalPanel id="confirmDelete" headerClass="popupHeader" controlsClass="popupControls" width="500" height="140" zindex="2001" onshow="if (event.parameters.deleteID) document.getElementById('confirmDeleteID').value = event.parameters.deleteID">
       <f:facet name="header">
         <h:outputText value="#{title}" />
       </f:facet>
@@ -50,6 +60,8 @@
       <div class="popupsubtitle"><h:outputText value="#{explanation}" /></div>
 
       <a4j:form id="confirmDeleteForm">
+
+        <input type="hidden" id="confirmDeleteID" name="deleteID" />
 
         <div class="popupactions">
           <button value="submit" class="left" onclick="Richfaces.hideModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button>

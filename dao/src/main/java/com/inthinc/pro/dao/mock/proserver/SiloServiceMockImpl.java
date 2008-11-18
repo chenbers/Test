@@ -2,7 +2,6 @@ package com.inthinc.pro.dao.mock.proserver;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,6 +29,7 @@ import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.Zone;
 
 public class SiloServiceMockImpl implements SiloService
 {
@@ -802,4 +802,51 @@ public class SiloServiceMockImpl implements SiloService
         return createReturnValue("count", 1);
     }
 
+    @Override
+    public List<Map<String, Object>> getZoneIDsInGroupHierarchy(Integer groupID)
+    {
+        final List<Map<String, Object>> zoneIDs = new LinkedList<Map<String, Object>>();
+    
+        final List<Map<String, Object>> hierarchy = new SiloServiceCreator().getService().getGroupHierarchy(groupID);
+        for (final Map<String, Object> map : hierarchy)
+        {
+            final Integer id = (Integer) map.get("groupID");
+            if (id != null)
+            {
+                final SearchCriteria criteria = new SearchCriteria();
+                criteria.addKeyValue("groupID", id);
+                final List<Map<String, Object>> matches = MockData.getInstance().lookupList(Zone.class, criteria);
+                if (matches != null)
+                    zoneIDs.addAll(matches);
+            }
+        }
+    
+        return zoneIDs;
+    }
+
+    @Override
+    public Map<String, Object> deleteZone(Integer zoneID) throws ProDAOException
+    {
+        return createReturnValue("count", 0);
+    }
+
+    @Override
+    public Map<String, Object> createZone(Integer acctID, Map<String, Object> zoneMap) throws ProDAOException
+    {
+        // TODO: actually store the object to the mock data
+        return createReturnValue("zoneID", (int) (Math.random() * Integer.MAX_VALUE));
+    }
+
+    @Override
+    public Map<String, Object> getZone(Integer zoneID) throws ProDAOException
+    {
+        return doMockLookup(Zone.class, "zoneID", zoneID, "No zone for ID: " + zoneID, "getZone");
+
+    }
+
+    @Override
+    public Map<String, Object> updateZone(Integer zoneID, Map<String, Object> zoneMap) throws ProDAOException
+    {
+        return createReturnValue("count", 1);
+    }
 }

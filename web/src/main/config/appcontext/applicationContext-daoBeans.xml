@@ -37,5 +37,8 @@
    </bean>   
    <bean id="tablePreferenceDAO" class="com.inthinc.pro.dao.hessian.TablePreferenceHessianDAO" 
    		parent="genericDAO">
+   </bean>
+   <bean id="zoneDAO" class="com.inthinc.pro.dao.hessian.ZoneHessianDAO" 
+   		parent="genericDAO">
    </bean>   
 </beans>

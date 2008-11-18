@@ -232,4 +232,22 @@ public interface SiloService extends HessianService
     public Map<String, Object> getTablePreference(Integer tablePrefID) throws ProDAOException;
 
     public Map<String, Object> updateTablePreference(Integer tablePrefID, Map<String, Object> tablePreferenceMap) throws ProDAOException;
+
+    // Methods related to the Zone type
+    Map<String, Object> deleteZone(Integer zoneID) throws ProDAOException;
+
+    Map<String, Object> getZone(Integer zoneID) throws ProDAOException;
+
+    Map<String, Object> updateZone(Integer zoneID, Map<String, Object> zoneMap) throws ProDAOException;
+
+    Map<String, Object> createZone(Integer acctID, Map<String, Object> zoneMap) throws ProDAOException;
+
+    /**
+     * Retrieves the IDs of all people in the hierarchy for the given group ID--that is, the matching group plus all groups beneath it.
+     * 
+     * @param groupID
+     *            The ID of the group at the top of the hierarchy.
+     * @return A list of maps of zoneIDs.
+     */
+    List<Map<String, Object>> getZoneIDsInGroupHierarchy(Integer groupID);
 }
