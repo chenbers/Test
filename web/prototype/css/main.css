@@ -478,7 +478,7 @@ body {
 /* END NAVIGATION BLOCK */
 
 
-/* FORMS */
+/*
 
 form {
 	margin: 0;
@@ -552,6 +552,8 @@ form label.field-checkbox {
 	margin: 0px 0px 0px 25px;
 	padding: 0px 0px 15px 0px;
 	}
+
+*/
 
 /* BUTTONs */
 
@@ -2298,8 +2300,6 @@ ul.legend {
 .lgnd td.o_score {
 	background: url(/images/lgnd_label.png) no-repeat left center;
 	padding: 10px 0 10px 0;
-	border-top: 1px solid #ccc;
-	border-bottom: 1px solid #ccc;
 	}
 
 
