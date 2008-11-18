@@ -15,4 +15,6 @@ public interface TripDAO extends GenericDAO<Trip, Integer>
      * @return
      */
     List<Trip> getTrips(Integer driverID, Integer startDate, Integer endDate);
+    
+    Trip getLastTrip(Integer driverID);
 }

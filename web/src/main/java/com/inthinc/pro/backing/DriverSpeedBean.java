@@ -23,12 +23,10 @@ import com.inthinc.pro.model.SpeedingEvent;
 
 public class DriverSpeedBean extends BaseBean
 {
-    private Driver      driver;
-    private String      driverName;
-    private DriverBean  driverBean;
-    
     private static final Logger logger = Logger.getLogger(DriverSpeedBean.class);
     
+    private String      driverName;
+    private NavigationBean navigation;
     private ScoreDAO    scoreDAO;
     private Distance    distance = Distance.FIVEHUNDRED;
     
@@ -39,18 +37,13 @@ public class DriverSpeedBean extends BaseBean
     
     private List<SpeedingEvent> speedingEvents = new ArrayList<SpeedingEvent>();
     
-    Integer endDate = DateUtil.getTodaysDate();
-    Integer startDate = DateUtil.getDaysBackDate(endDate, 30);
-    
     private void initSpeed()
     {
-        
         logger.debug("## initSpeed()");
         
-        ScoreableEntity speedSe = scoreDAO.getAverageScoreByType(getUser().getPerson().getGroupID(), startDate, endDate, ScoreType.SCORE_SPEEDING); //Replace with correct DAO
+        ScoreableEntity speedSe = scoreDAO.getAverageScoreByTypeAndMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), ScoreType.SCORE_SPEEDING); //Replace with correct DAO
         setSpeedScore(speedSe.getScore());
     }
-    
   
     public Integer getSpeedScore() {
         if(speedScore == null)
@@ -96,7 +89,7 @@ public class DriverSpeedBean extends BaseBean
         //Start XML Data
         sb.append(line.getControlParameters(size));
         
-        List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistoryByMiles(101, driverBean.getDistance().getNumberOfMiles(), scoreType);
+        List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistoryByMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), scoreType);
         for(ScoreableEntity e : scoreList)
         {
             sb.append(line.getChartItem(new Object[] {(double)(e.getScore() / 10.0d), e.getIdentifier()}));
@@ -113,7 +106,6 @@ public class DriverSpeedBean extends BaseBean
     {
         return scoreDAO;
     }
-
     public void setScoreDAO(ScoreDAO scoreDAO)
     {
         this.scoreDAO = scoreDAO;
@@ -159,36 +151,22 @@ public class DriverSpeedBean extends BaseBean
         this.speedingEvents = speedingEvents;
     }
     
-    //DRIVER PROPERTIES
+    //DRIVER NAME PROPERTIES
     public String getDriverName() {
-        //setDriverName(driverBean.getDriverName());
+        setDriverName(navigation.getDriver().getPerson().getFirst() + " " + navigation.getDriver().getPerson().getLast());
         return driverName;
     }
     public void setDriverName(String driverName) {
         this.driverName = driverName;
     }
-    
-    //DRIVER PROPERTIES
-    public Driver getDriver()
-    {
-        return driver;
-    }
-    public void setDriver(Driver driver)
-    {
-        logger.debug("## setDriver() called " + driver.getDriverID()); 
-        setDriverName(driver.getPerson().getFirst() + " " + driver.getPerson().getLast());
-        this.driver = driver;
-    }
 
-    //DRIVER BEAN PROPERTIES used by Spring Injection
-    public DriverBean getDriverBean()
+    //NAVIGATION PROPERTIES
+    public NavigationBean getNavigation()
     {
-        return driverBean;
+        return navigation;
     }
-    public void setDriverBean(DriverBean driverBean)
+    public void setNavigation(NavigationBean navigation)
     {
-        this.driverBean = driverBean;
+        this.navigation = navigation;
     }
-
-
 }

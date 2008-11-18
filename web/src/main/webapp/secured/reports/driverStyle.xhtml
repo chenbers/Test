@@ -12,10 +12,6 @@
 
 	<ui:param name="reportsSelected" value="current" />
 	
-	<ui:define name="subnavigation">
-		<ui:include src="/includes/reports/subNavigation.xhtml" />
-	</ui:define>
-	
 	<ui:define name="content">
 <div id="wrapper">
 
@@ -64,29 +60,27 @@ var selected = 'OVERALL';
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="line">Style</span>
+						<span class="line">Driving Style</span>
 						<a4j:form id="overall-form"> 
-									<span class="panel_links"><h:outputText>Graph the last:&#160;</h:outputText>
+							<span class="panel_links"><h:outputText>Graph the last:&#160;</h:outputText>
 								<a4j:commandLink title="#{messages.miles500}" immediate="true"
-									styleClass="#{(driverBean.distance eq 'FIVEHUNDRED') ? 'on' : ''}"
+									styleClass="#{(driverStyleBean.distance eq 'FIVEHUNDRED') ? 'on' : ''}"
 									reRender="overall-form,overallPanel" value="#{messages.miles500}">
-									<a4j:actionparam name="distance" assignTo="#{driverBean.distance}"
-										value="FIVEHUNDRED" />
-								</a4j:commandLink><h:outputText value=" "></h:outputText> <a4j:commandLink
-									title="#{messages.miles1000}" immediate="true"
-									styleClass="#{(driverBean.distance eq 'ONETHOUSAND') ? 'on' : ''}"
+									<a4j:actionparam name="distance" assignTo="#{driverStyleBean.distance}"	value="FIVEHUNDRED" />
+								</a4j:commandLink>
+							<h:outputText value=" " />
+								<a4j:commandLink title="#{messages.miles1000}" immediate="true"
+									styleClass="#{(driverStyleBean.distance eq 'ONETHOUSAND') ? 'on' : ''}"
 									reRender="overall-form,overallPanel" value="#{messages.miles1000}">
-									<a4j:actionparam name="distance" assignTo="#{driverBean.distance}"
-										value="ONETHOUSAND" />
-								</a4j:commandLink><h:outputText value=" "></h:outputText> <a4j:commandLink
-									title="#{messages.miles10000}" immediate="true"
-									styleClass="#{(driverBean.distance eq 'TENTHOUSAND') ? 'on' : ''}"
-									reRender="overall-form,overallPanel"
-									value="#{messages.miles10000}">
-									<a4j:actionparam name="distance" assignTo="#{driverBean.distance}"
-										value="TENTHOUSAND" />
-								</a4j:commandLink><h:outputText value=" "></h:outputText>
-									</span>
+									<a4j:actionparam name="distance" assignTo="#{driverStyleBean.distance}"	value="ONETHOUSAND" />
+								</a4j:commandLink>
+							<h:outputText value=" " />
+								 <a4j:commandLink title="#{messages.miles10000}" immediate="true"
+									styleClass="#{(driverStyleBean.distance eq 'TENTHOUSAND') ? 'on' : ''}"
+									reRender="overall-form,overallPanel" value="#{messages.miles10000}">
+									<a4j:actionparam name="distance" assignTo="#{driverStyleBean.distance}"	value="TENTHOUSAND" />
+								</a4j:commandLink>
+							</span>
 						</a4j:form>
 					</div>
 				</div>
@@ -160,7 +154,7 @@ var selected = 'OVERALL';
 					  <tr>
 					    <td id="OVERALL" valign="top" class="tiny_selected">
 						  <div class="tiny_title">
-								<a href="#" onclick="SelectBreakDown('OVERALL', overallChart2)">Overall</a>
+							  <a href="#" onclick="SelectBreakDown('OVERALL', overallChart2)">Overall</a>
 						  </div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
@@ -345,9 +339,7 @@ var selected = 'OVERALL';
 						rowClasses="trendTableOdd,trendTableEven" cellspacing="1" rows="10"  
 						width="100%"
 						binding="#{trendTable.table}">  <!-- TODO: Make generic Odd Even CSS -->
-
-							<!-- Data -->
-										
+						<!-- Data -->
 							<rich:column sortBy="#{item.latitude}">
 								<f:facet name="header">
 									<h:outputText value="Location" />

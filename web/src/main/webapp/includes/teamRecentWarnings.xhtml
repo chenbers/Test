@@ -40,7 +40,7 @@
 							<h:outputText value="#{messages.team_warningDriver}" />
 						</f:facet>
 						<h:commandLink action="go_driver" value="#{event.driverName}">
-							<f:setPropertyActionListener value="#{event.event.driver}" target="#{driverBean.driver}" />
+							<f:setPropertyActionListener value="#{event.event.driver}" target="#{teamWarningsBean.navigation.driver}" />
 						</h:commandLink>
 					</rich:column>
 					<rich:column sortBy="#{event.time}" width="15%" height="27" >
@@ -55,7 +55,7 @@
 						</f:facet>
 						<!-- TODO:  should go to a page based on the event type -->
 						<h:commandLink action="go_reportDriverSpeed" value="#{messages.team_warningDetails}">
-							<f:setPropertyActionListener value="#{event.event.driver}" target="#{driverBean.driver}" />
+							<f:setPropertyActionListener value="#{event.event.driver}" target="#{teamWarningsBean.navigation.driver}" />
 						</h:commandLink>
 					</rich:column>
 			</rich:dataTable>

@@ -13,10 +13,6 @@
 
 	<ui:param name="homeSelected" value="current" />
 	
-	<ui:define name="subnavigation">
-		<ui:include src="../includes/reports/subNavigation.xhtml" />
-	</ui:define>
-	
 	<ui:define name="content">
 <div id="wrapper">
 
@@ -100,7 +96,14 @@
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="">Stats: #{driverTripsBean.startDateAsShortString} - #{driverTripsBean.endDateAsShortString}</span>
+						<span class=""><h:outputText>Stats: </h:outputText>
+						<h:outputText value="#{driverTripsBean.startDate}">
+							<f:convertDateTime pattern="MMM dd, yyyy" />
+						</h:outputText> to 
+						<h:outputText value="#{driverTripsBean.endDate}">
+							<f:convertDateTime pattern="MMM dd, yyyy" />
+						</h:outputText>
+						</span>
 						<span class="panel_links"></span>
 					</div>
 				</div>
@@ -159,7 +162,7 @@
 						value="#{driverTripsBean.selectedTrip.trip.events}" 
 						id="selectedTripTable"
 						var="item" styleClass="datagrid"
-						rowClasses="trendTableOdd,trendTableEven" cellspacing="1" rows="10"  
+						rowClasses="tableOdd,tableEven" cellspacing="1" rows="10"  
 						width="100%">  <!-- //TODO: Make generic Odd Even CSS -->
 
 							<!-- Data -->

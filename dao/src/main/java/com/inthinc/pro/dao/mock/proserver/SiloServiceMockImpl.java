@@ -183,6 +183,25 @@ public class SiloServiceMockImpl implements SiloService
         return getAverageScore(startDate, allScores);
 
     }
+    
+    @Override
+    public Map<String, Object> getAverageScoreByTypeAndMiles(Integer driverID, Integer milesBack, ScoreType st) throws ProDAOException
+    {
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("entityID", driverID);
+        searchCriteria.addKeyValue("scoreType", st);
+        
+
+        // get all scores of the time period and average them
+        List<ScoreableEntity> allScores = MockData.getInstance().retrieveObjectList(ScoreableEntity.class, searchCriteria);
+        if (allScores.size() == 0)
+        {
+            throw new EmptyResultSetException("No overall score for: " + driverID, "getOverallScore", 0);
+        }
+
+        return getAverageScore(milesBack, allScores);
+
+    }
 
     @Override
     public List<Map<String, Object>> getScores(Integer groupID, Integer startDate, Integer endDate, Integer scoreType) throws ProDAOException
@@ -475,6 +494,16 @@ public class SiloServiceMockImpl implements SiloService
         List<Map<String, Object>> matches = MockData.getInstance().lookupList(Trip.class, criteria);
         return matches;
 
+    }
+    
+    @Override
+    public Map<String, Object> getLastTrip(Integer driverID)
+    {
+        SearchCriteria criteria = new SearchCriteria();
+        criteria.addKeyValue("driverID", driverID);
+        Map<String, Object> matches = MockData.getInstance().lookup(Trip.class, criteria);
+        return matches;
+        
     }
 
     @Override

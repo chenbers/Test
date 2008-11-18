@@ -50,8 +50,6 @@ public class DriverBean extends BaseBean
 	 * Miles Per Gallon data for chart
 	 */
 	
-	private Driver     driver;
-	
     private ScoreDAO    scoreDAO;
     private Distance    distance = Distance.FIVEHUNDRED;
     private LatLng      lastLocation;
@@ -85,7 +83,7 @@ public class DriverBean extends BaseBean
     private void initOverallScore()
     {
         logger.debug("## initOverallScore()");
-        ScoreableEntity overallSe = scoreDAO.getAverageScoreByType(getUser().getPerson().getGroupID(), startDate, endDate, ScoreType.SCORE_OVERALL);
+        ScoreableEntity overallSe = scoreDAO.getAverageScoreByTypeAndMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), ScoreType.SCORE_OVERALL);
         setOverallScore(overallSe.getScore());
     }
 
@@ -93,7 +91,7 @@ public class DriverBean extends BaseBean
     private void initSeatBelt()
     {
         logger.debug("## initSeatBeltScore()");
-        ScoreableEntity seatBeltSe = scoreDAO.getAverageScoreByType(getUser().getPerson().getGroupID(), startDate, endDate, ScoreType.SCORE_OVERALL); //Replace with correct DAO
+        ScoreableEntity seatBeltSe = scoreDAO.getAverageScoreByTypeAndMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), ScoreType.SCORE_SEATBELT);
         setSeatBeltScore(seatBeltSe.getScore());
     }
  
@@ -171,8 +169,9 @@ public class DriverBean extends BaseBean
 	}
 	
 	//DRIVER NAME properties
-	public String getDriverName() {
-	    //setDriverName(navigation.getDriver().getPerson().getFirst() + " " + navigation.getDriver().getPerson().getLast());
+	public String getDriverName()
+	{
+	    setDriverName(navigation.getDriver().getPerson().getFirst() + " " + navigation.getDriver().getPerson().getLast());
 	    return driverName;
 	}
 	public void setDriverName(String driverName) {
@@ -258,13 +257,17 @@ public class DriverBean extends BaseBean
     
     public String createLineDef(ScoreType scoreType, ChartSizes size)
     {
+        
         StringBuffer sb = new StringBuffer();
         Line line = new Line();
 
         //Start XML Data
         sb.append(line.getControlParameters(size));
         
-        List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistoryByMiles(101, distance.getNumberOfMiles(), scoreType);
+        if(navigation.getDriver() == null)
+            logger.debug("Driver is null");
+        
+        List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistoryByMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), scoreType);
         for(ScoreableEntity e : scoreList)
         {
             sb.append(line.getChartItem(new Object[] {(double)(e.getScore() / 10.0d), e.getIdentifier()}));
@@ -276,18 +279,6 @@ public class DriverBean extends BaseBean
         return sb.toString();
     }
 
-    public Driver getDriver()
-    {
-        return driver;
-    }
-
-    public void setDriver(Driver driver)
-    {
-        logger.debug("## setDriver() called " + driver.getDriverID()); 
-        setDriverName(driver.getPerson().getFirst() + " " + driver.getPerson().getLast());
-        this.driver = driver;
-    }
-
     //NAVIGATION BEAN PROPERTIES
     public NavigationBean getNavigation()
     {
@@ -297,8 +288,4 @@ public class DriverBean extends BaseBean
     {
         this.navigation = navigation;
     }
-
-
-
-
 }

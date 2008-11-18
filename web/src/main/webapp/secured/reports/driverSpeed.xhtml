@@ -11,17 +11,14 @@
 	</ui:define>
 
 	<ui:param name="reportsSelected" value="current" />
-	
-	<ui:define name="subnavigation">
-		<ui:include src="/includes/reports/subNavigation.xhtml" />
-	</ui:define>
+
 	
 	<ui:define name="content">
 <div id="wrapper">
 
 <ul id="grid_nav">
 	<li class="l grid_icon"><img src="images/ico_line.png" /></li>
-	<li class="l grid_title">Driver Performance: <h:outputText> #{driverBean.driver.person.first} #{driverBean.driver.person.last}</h:outputText></li>
+	<li class="l grid_title">Driver Performance:&#160;<h:outputText>#{driverSpeedBean.driverName}</h:outputText></li>
 	<li class="l divider"><img src="/images/grid_nav_divider.png" /></li>
 	<li class="l">
 	
@@ -68,22 +65,22 @@ var selected = 'OVERALL';
 						<a4j:form id="overall-form"> 
 									<span class="panel_links"><h:outputText>Graph the last:&#160;</h:outputText>
 								<a4j:commandLink title="#{messages.miles500}" immediate="true"
-									styleClass="#{(driverBean.distance eq 'FIVEHUNDRED') ? 'on' : ''}"
+									styleClass="#{(driverSpeedBean.distance eq 'FIVEHUNDRED') ? 'on' : ''}"
 									reRender="overall-form,overallPanel,breakdown_panel,eventsTable" value="#{messages.miles500}">
-									<a4j:actionparam name="distance" assignTo="#{driverBean.distance}"
+									<a4j:actionparam name="distance" assignTo="#{driverSpeedBean.distance}"
 										value="FIVEHUNDRED" />
 								</a4j:commandLink><h:outputText value=" "></h:outputText> <a4j:commandLink
 									title="#{messages.miles1000}" immediate="true"
-									styleClass="#{(driverBean.distance eq 'ONETHOUSAND') ? 'on' : ''}"
+									styleClass="#{(driverSpeedBean.distance eq 'ONETHOUSAND') ? 'on' : ''}"
 									reRender="overall-form,overallPanel,breakdown_panel,eventsTable" value="#{messages.miles1000}">
-									<a4j:actionparam name="distance" assignTo="#{driverBean.distance}"
+									<a4j:actionparam name="distance" assignTo="#{driverSpeedBean.distance}"
 										value="ONETHOUSAND" />
 								</a4j:commandLink><h:outputText value=" "></h:outputText> <a4j:commandLink
 									title="#{messages.miles10000}" immediate="true"
-									styleClass="#{(driverBean.distance eq 'TENTHOUSAND') ? 'on' : ''}"
+									styleClass="#{(driverSpeedBean.distance eq 'TENTHOUSAND') ? 'on' : ''}"
 									reRender="overall-form,overallPanel,breakdown_panel,eventsTable"
 									value="#{messages.miles10000}">
-									<a4j:actionparam name="distance" assignTo="#{driverBean.distance}"
+									<a4j:actionparam name="distance" assignTo="#{driverSpeedBean.distance}"
 										value="TENTHOUSAND" />
 								</a4j:commandLink><h:outputText value=" "></h:outputText>
 									</span>

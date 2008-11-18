@@ -30,7 +30,8 @@ public class DriverLocationBean extends BaseBean {
         for (Driver driver:drivers){
 
         	DriverBean db = new DriverBean();
-        	db.setDriver(driver);
+        	db.setNavigation(navigation);
+        	db.getNavigation().setDriver(driver);
         	db.setLastLocation(new LatLng(center.getLat()+Math.random()/10, center.getLng()+Math.random()/10));
         	driverBeans.add(db);
         }

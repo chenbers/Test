@@ -18,6 +18,8 @@ public class DriverTripsBean extends BaseBean
     private Date startDate = new Date();
     private Date endDate = new Date();
     
+    private NavigationBean navigation;
+    
     private Integer milesDriven = new Integer(0);
     private Integer numStops = 0;
     private String idleTime = "0:45";
@@ -35,6 +37,7 @@ public class DriverTripsBean extends BaseBean
     private Integer tripsPager = 0;
     private Integer tripPager = 0;
     private TripDAO tripDAO;
+    private DriverBean driverBean;
     
     public void init()
     {
@@ -47,7 +50,7 @@ public class DriverTripsBean extends BaseBean
         logger.debug("## initTrips()");
         
         List<Trip> tempTrips = new ArrayList<Trip>();
-        tempTrips = tripDAO.getTrips(1222, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate) - 10000);
+        tempTrips = tripDAO.getTrips(navigation.getDriver().getDriverID(), DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate) - 10000);
 
         trips = new ArrayList<TripDisplay>();
         for (Trip trip : tempTrips)
@@ -77,10 +80,6 @@ public class DriverTripsBean extends BaseBean
     {
         return startDate;
     }   
-    public String getStartDateAsShortString()
-    {
-    	return DateUtil.getDisplayDateShort(DateUtil.convertDateToSeconds(startDate));
-    }
     public void setStartDate(Date startDate)
     {
         this.startDate = startDate;
@@ -88,10 +87,6 @@ public class DriverTripsBean extends BaseBean
     public Date getEndDate()
     {
         return endDate;
-    }
-    public String getEndDateAsShortString()
-    {
-    	return DateUtil.getDisplayDateShort(DateUtil.convertDateToSeconds(endDate));
     }
     public void setEndDate(Date endDate)
     {
@@ -218,5 +213,25 @@ public class DriverTripsBean extends BaseBean
     public void setSelectedTrip(TripDisplay selectedTrip)
     {
         this.selectedTrip = selectedTrip;
+    }
+
+    //DRIVER PROPERTIES
+    public DriverBean getDriverBean()
+    {
+        return driverBean;
+    }
+    public void setDriverBean(DriverBean driverBean)
+    {
+        this.driverBean = driverBean;
+    }
+
+    //NAVIGATION PROPERTIES
+    public NavigationBean getNavigation()
+    {
+        return navigation;
+    }
+    public void setNavigation(NavigationBean navigation)
+    {
+        this.navigation = navigation;
     }
 }

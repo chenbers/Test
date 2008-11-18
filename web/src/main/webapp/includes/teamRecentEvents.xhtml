@@ -31,7 +31,7 @@
 							<h:outputText value="#{messages.team_recentEventsDriver}" />
 						</f:facet>
 						<h:commandLink action="go_driver" value="#{event.driverName}">
-							<f:setPropertyActionListener value="#{event.event.driver}" target="#{driverBean.driver}" />
+							<f:setPropertyActionListener value="#{event.event.driver}" target="#{teamRecentEventsBean.navigation.driver}" />
 						</h:commandLink>
 					</rich:column>
 					<rich:column sortBy="#{event.time}" width="45%" height="27" >
@@ -46,7 +46,7 @@
 						</f:facet>
 						<!-- TODO:  should go to a page based on the event type -->
 						<h:commandLink action="go_reportDriverSpeed" value="#{messages.team_recentEventsDetails}">
-							<f:setPropertyActionListener value="#{event.event.driver}" target="#{driverBean.driver}" />
+							<f:setPropertyActionListener value="#{event.event.driver}" target="#{teamRecentEventsBean.navigation.driver}" />
 						</h:commandLink>
 					</rich:column>
 			</rich:dataTable>

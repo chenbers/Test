@@ -75,16 +75,17 @@
    
    <bean id="driverSpeedBean" class="com.inthinc.pro.backing.DriverSpeedBean" scope="request">
    		<property name="scoreDAO" ref="scoreDAO"></property>
-   		<property name="driverBean" ref="driverBean"></property>
+   		<property name="navigation" ref="navigationBean"></property>
    </bean>
    
    <bean id="driverStyleBean" class="com.inthinc.pro.backing.DriverStyleBean" scope="request">
    		<property name="scoreDAO" ref="scoreDAO"></property>
-   		<property name="driverBean" ref="driverBean"></property>
+   		<property name="navigation" ref="navigationBean"></property>
    </bean>
    
    <bean id="driverTripsBean" class="com.inthinc.pro.backing.DriverTripsBean" scope="request" parent="baseBean" init-method="init">
    		<property name="tripDAO" ref="tripDAO"></property>
+   		<property name="navigation" ref="navigationBean"></property>
    </bean>
 
     <bean id="teamOverviewBean" class="com.inthinc.pro.backing.TeamOverviewBean" scope="session" parent="baseBean">

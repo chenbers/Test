@@ -87,8 +87,11 @@ public interface SiloService extends HessianService
     Map<String, Object> getGroupByID(Integer groupID) throws ProDAOException;
 
     // ------------- Methods related to the Scores/Reporting
+    
     Map<String, Object> getAverageScoreByType(Integer groupID, Integer startDate, Integer endDate, ScoreType st) throws ProDAOException;
 
+    Map<String, Object> getAverageScoreByTypeAndMiles(Integer driverID, Integer milesBack, ScoreType st) throws ProDAOException;
+    
     /**
      * getScores -- retrieves the scores for direct children of the specified group
      * 
@@ -175,6 +178,8 @@ public interface SiloService extends HessianService
     // Methods related to Trips
     List<Map<String, Object>> getTrips(Integer driverID, Integer startDate, Integer endDate) throws ProDAOException;
 
+    Map<String, Object> getLastTrip(Integer driverID) throws ProDAOException;
+    
     // Methods related to the Driver type
     /**
      * getDrivers -- retrieves all drivers associated to a groupID.

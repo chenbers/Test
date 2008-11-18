@@ -17,6 +17,15 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      */
     ScoreableEntity getAverageScoreByType(Integer groupID, Integer startDate, Integer endDate, ScoreType st);
     
+    /**
+     * Retrieve the overall score by the specified driver and mileage.
+     * 
+     * @param driverID
+     * @param milesBack
+     * @param st
+     * @return
+     */
+    ScoreableEntity getAverageScoreByTypeAndMiles(Integer driverID, Integer milesBack, ScoreType st);
     
     /**
      * Retrieve the list of scores for the sub groups or drivers (one level down) under the specified group.
@@ -51,7 +60,6 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      *          2 - the percentage of drivers in the group whose overall score is between 2.1 - 3.0
      *          3 - the percentage of drivers in the group whose overall score is between 3.1 - 4.0
      *          4 - the percentage of drivers in the group whose overall score is between 4.1 - 5.0
- 
      * 
      * @param groupID
      * @param startDate
@@ -62,6 +70,10 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
     
     /**
      * Retrieve the scores and mileage.
+     * 
+     * @param driverID
+     * @param milesBack
+     * @param scoreType
      */
     List<ScoreableEntity> getDriverScoreHistoryByMiles(Integer driverID, Integer milesBack, ScoreType scoreType);
     

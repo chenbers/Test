@@ -14,23 +14,18 @@
 
 	<ui:param name="homeSelected" value="current" />
 	
-	<ui:define name="subnavigation">
-		<ui:include src="/includes/reports/subNavigation.xhtml" />
-	</ui:define>
-	
 	<ui:define name="content">
 <div id="wrapper">
 
 
 <ul id="grid_nav">
 	<li class="l grid_icon"><img src="images/ico_line.png" /></li>
-	<li class="l grid_title">Driver Performance: <h:outputText>#{driverBean.driverName}</h:outputText></li>
+	<li class="l grid_title">Driver Performance:&#160;<h:outputText>#{driverBean.driverName}</h:outputText></li>
 	<li class="l divider"><img src="/images/grid_nav_divider.png" /></li>
 	<li class="l">
 	
 		<ul id="breadcrumb">
-			<li class="first"><a href="/">Home</a></li>
-			<li><a href="drivers.html">Drivers</a></li>
+			<li class="first"><a href="/tiwipro/">Home</a></li>
 			<li class="last"><h:outputText>#{driverBean.driverName}</h:outputText></li>
 		</ul>
 	</li>
@@ -52,18 +47,24 @@
             								reRender="overall-form,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
             								value="#{messages.miles500}">
             								<a4j:actionparam name="distance" assignTo="#{driverBean.distance}" value="FIVEHUNDRED" />
+            								<a4j:actionparam name="distance" assignTo="#{driverSpeedBean.distance}" value="FIVEHUNDRED" />
+            								<a4j:actionparam name="distance" assignTo="#{driverStyleBean.distance}" value="FIVEHUNDRED" />
           								</a4j:commandLink><h:outputText value=" "></h:outputText>
           								<a4j:commandLink title="#{messages.miles1000}" immediate="true"
             								styleClass="#{(driverBean.distance eq 'ONETHOUSAND') ? 'on' : ''}"
             								reRender="overall-form,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
             								value="#{messages.miles1000}">
             								<a4j:actionparam name="distance" assignTo="#{driverBean.distance}" value="ONETHOUSAND" />
+            								<a4j:actionparam name="distance" assignTo="#{driverSpeedBean.distance}" value="ONETHOUSAND" />
+            								<a4j:actionparam name="distance" assignTo="#{driverStyleBean.distance}" value="ONETHOUSAND" />
           								</a4j:commandLink><h:outputText value=" "></h:outputText>
           								<a4j:commandLink title="#{messages.miles10000}" immediate="true"
             								styleClass="#{(driverBean.distance eq 'TENTHOUSAND') ? 'on' : ''}"
             								reRender="overall-form,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
             								value="#{messages.miles10000}">
             								<a4j:actionparam name="distance" assignTo="#{driverBean.distance}" value="TENTHOUSAND" />
+            								<a4j:actionparam name="distance" assignTo="#{driverSpeedBean.distance}" value="TENTHOUSAND" />
+            								<a4j:actionparam name="distance" assignTo="#{driverStyleBean.distance}" value="TENTHOUSAND" />
           								</a4j:commandLink><h:outputText value=" "></h:outputText>
       							
 								</span>
@@ -90,7 +91,7 @@
 							  <tr>
 								<td>
 									<h4>Overall Score</h4>
-									<div style="margin-top: 8px;"><a href="#" class="ls_tab_email">Email</a></div>
+									<div style="margin-top: 8px;"><a href="#" class="ls_tab_email">E-mail</a></div>
 								</td>
 								<td width="80" align="center">
 									<ui:include src="../includes/scoreBox.xhtml">
@@ -174,12 +175,7 @@
 						<span class="vehicle">Driving Style</span>
 						<span class="panel_links">
 							<h:form id="style_report_link">
-							<h:commandLink action="go_reportDriverStyle" value="view report">
-						      <!-- <f:setPropertyActionListener 
-							       value="#{driverBean.driver}" 
-							       target="#{driverStyleBean.driver}">
-						      </f:setPropertyActionListener> -->
-						     </h:commandLink>
+							<h:commandLink action="go_reportDriverStyle" value="view report" />
 							</h:form>
 						</span>
 					</div>

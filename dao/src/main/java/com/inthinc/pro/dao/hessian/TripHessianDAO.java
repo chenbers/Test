@@ -18,4 +18,12 @@ public class TripHessianDAO extends GenericHessianDAO<Trip, Integer> implements 
         List<Trip> tripList = getMapper().convertToModelObject(this.getSiloService().getTrips(driverID, startDate, endDate), Trip.class);
         return tripList;
     }
+    
+    @Override
+    public Trip getLastTrip(Integer driverID)
+    {
+        logger.debug("getTrips() driverID = " + driverID);
+        Trip trip = getMapper().convertToModelObject(this.getSiloService().getLastTrip(driverID), Trip.class);
+        return trip;
+    }
 }
