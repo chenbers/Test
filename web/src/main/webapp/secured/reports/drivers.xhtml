@@ -16,7 +16,7 @@
 	</ui:define>
 	
 	<ui:define name="content">
-		<a4j:form id="outerDriverReport">
+		
 
 			<table width="920" height="430" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
 				<tr>
@@ -29,8 +29,11 @@
 										<span class="panel_links"></span>
 									</div>
 								</div>
+									
 									<div class="panel_w">
-									<div class="panel_content">												
+									<div class="panel_content">		
+									
+									<a4j:form id="outerDriverReport">										
 										<div class="msg">
 											<p id="redflag">There are #{redFlagsBean.maxCount} red flags. (<a href="/tiwipro/secured/redFlags.faces">view</a>) </p>
 										</div>									  	
@@ -81,9 +84,9 @@
              						<ui:param name="driverTable" value="#{driverReportTable.table}"/>
     							</ui:include>   
     							</div>	
+    							</a4j:form>
     							<ui:include src="/includes/editDriverColumns.xhtml">
-									<ui:param name="driverColumns" value="#{driverReportBean.driverColumns}"/>	
-									<ui:param name="reRender" value="dataTable" />
+									<ui:param name="driverColumns" value="#{driverReportBean.driverColumns}"/>										
 								</ui:include>    
 								
 								</div>
@@ -98,7 +101,7 @@
 				</tr>
 			</table>
 		
-		</a4j:form>
+		
 	</ui:define>
 	
 </ui:composition>
