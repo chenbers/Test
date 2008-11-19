@@ -143,5 +143,8 @@
         <property name="redFlagDAO" ref="redFlagDAO"></property>
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
     </bean>
-
+    <bean id="idlingReportBean" class="com.inthinc.pro.backing.IdlingReportBean" scope="session" parent="baseBean" init-method="init">
+        <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
+    </bean>
+    <bean id="idlingReportTable" class="com.inthinc.pro.backing.ui.IdlingReportTable" scope="session"></bean>
 </beans>
