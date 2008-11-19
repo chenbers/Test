@@ -61,6 +61,12 @@ public class EventHessianDAOTest
         {
             assertTrue("Event type is not valid", validEventTypes.contains(eventList.get(i).getType()));
         }
+        
+        for(Event event : eventList)
+        {
+            Class<?> eventType = EventMapper.getEventType(event.getType());
+            assertTrue("The Event was not properly constructed as the " + eventType.getSimpleName() + " subclass", eventType.isAssignableFrom(event.getClass()));
+        }
 
         eventList = eventHessianDAO.getMostRecentEvents(MockData.EMPTY_GROUP_ID, 5);
         assertEquals(0, eventList.size());

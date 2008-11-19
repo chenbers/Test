@@ -1,165 +1,147 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:aop="http://www.springframework.org/schema/aop"
-   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
-   <!-- Message Bundles -->
-   <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-      <property name="basename" value="com.inthinc.pro.resources.Messages" />
-   </bean>
-   <!-- Backing Beans -->
-   <bean id="errorBean" class="com.inthinc.pro.backing.ErrorBean" >
-   </bean>
-   <bean id="baseBean" abstract="true" class="com.inthinc.pro.backing.BaseBean">
-		<property name="errorBean" ref="errorBean" />
-   </bean>
-    <bean id="testBean" class="com.inthinc.pro.backing.TestBean" scope="session" parent="baseBean">
-    </bean>   
-   <bean id="versionBean" class="com.inthinc.pro.backing.VersionBean" init-method="init">
-   </bean>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+    <!-- Message Bundles -->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="com.inthinc.pro.resources.Messages" />
+    </bean>
+    <!-- Backing Beans -->
+    <bean id="errorBean" class="com.inthinc.pro.backing.ErrorBean"></bean>
+    <bean id="baseBean" abstract="true" class="com.inthinc.pro.backing.BaseBean">
+        <property name="errorBean" ref="errorBean" />
+    </bean>
+    <bean id="testBean" class="com.inthinc.pro.backing.TestBean" scope="session" parent="baseBean"></bean>
+    <bean id="versionBean" class="com.inthinc.pro.backing.VersionBean" init-method="init"></bean>
 
-   <bean id="groupLevelBean" class="com.inthinc.pro.backing.GroupLevelBean" scope="request" parent="baseBean" init-method="initGroupID">
-   		<property name="navigationBean" ref="navigationBean"></property>   		
-   </bean>
-   
-   <!-- Navigation bean -->
-   <bean id="navigationBean" class="com.inthinc.pro.backing.NavigationBean" scope="session" parent="baseBean">
-   </bean>
-   
-   <!-- Beans used in fusion chart displays -->
-   <bean id="trendBean" class="com.inthinc.pro.backing.TrendBean" 
-		scope="request" parent="baseBean">
-		<property name="scoreDAO" ref="scoreDAO"></property>
-		<property name="navigation" ref="navigationBean"></property>
-   </bean>
-   <bean id="trendTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request">
-   </bean>
-   <bean id="breakdownBean" class="com.inthinc.pro.backing.BreakdownBean" 
-   		scope="request" parent="baseBean">
-		<property name="scoreDAO" ref="scoreDAO"></property>
-		<property name="navigation" ref="navigationBean"></property>   		
-   </bean>
-   <bean id="fuelBean" class="com.inthinc.pro.backing.FuelBean" 
-   		scope="request" parent="baseBean">
-   </bean> 
-   
-    <bean id="fleetOverviewBean" class="com.inthinc.pro.backing.FleetOverviewBean"  scope="request" parent="baseBean">
-		<property name="scoreDAO" ref="scoreDAO"></property>
-		<property name="navigation" ref="navigationBean"></property>
-   </bean>
+    <bean id="groupLevelBean" class="com.inthinc.pro.backing.GroupLevelBean" scope="request" parent="baseBean" init-method="initGroupID">
+        <property name="navigationBean" ref="navigationBean"></property>
+    </bean>
 
-   <bean id="personBean" class="com.inthinc.pro.backing.PersonBean" scope="session">
-    <property name="personDAO" ref="personDAO"></property>
-    <property name="groupDAO" ref="groupDAO"></property>
-    <property name="passwordEncryptor" ref="jasyptPasswordEncryptor"></property>
-    <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
-   </bean>
+    <!-- Navigation bean -->
+    <bean id="navigationBean" class="com.inthinc.pro.backing.NavigationBean" scope="session" parent="baseBean"></bean>
 
-   <bean id="vehiclesBean" class="com.inthinc.pro.backing.VehiclesBean" scope="session">
-    <property name="vehicleDAO" ref="vehicleDAO"></property>
-    <property name="driverDAO" ref="driverDAO"></property>
-    <property name="groupDAO" ref="groupDAO"></property>
-    <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
-   </bean>
+    <!-- Beans used in fusion chart displays -->
+    <bean id="trendBean" class="com.inthinc.pro.backing.TrendBean" scope="request" parent="baseBean">
+        <property name="scoreDAO" ref="scoreDAO"></property>
+        <property name="navigation" ref="navigationBean"></property>
+    </bean>
+    <bean id="trendTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request"></bean>
+    <bean id="breakdownBean" class="com.inthinc.pro.backing.BreakdownBean" scope="request" parent="baseBean">
+        <property name="scoreDAO" ref="scoreDAO"></property>
+        <property name="navigation" ref="navigationBean"></property>
+    </bean>
+    <bean id="fuelBean" class="com.inthinc.pro.backing.FuelBean" scope="request" parent="baseBean"></bean>
 
-   <bean id="devicesBean" class="com.inthinc.pro.backing.DevicesBean" scope="session">
-    <property name="deviceDAO" ref="deviceDAO"></property>
-    <property name="vehicleDAO" ref="vehicleDAO"></property>
-    <property name="vehiclesBean" ref="vehiclesBean"></property>
-    <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
-   </bean>
+    <bean id="fleetOverviewBean" class="com.inthinc.pro.backing.FleetOverviewBean" scope="request" parent="baseBean">
+        <property name="scoreDAO" ref="scoreDAO"></property>
+        <property name="navigation" ref="navigationBean"></property>
+    </bean>
 
-   <bean id="zonesBean" class="com.inthinc.pro.backing.ZonesBean" scope="session">
-    <property name="zoneDAO" ref="zoneDAO"></property>
-   </bean>
+    <bean id="personBean" class="com.inthinc.pro.backing.PersonBean" scope="session">
+        <property name="personDAO" ref="personDAO"></property>
+        <property name="groupDAO" ref="groupDAO"></property>
+        <property name="passwordEncryptor" ref="jasyptPasswordEncryptor"></property>
+        <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
+    </bean>
 
-   <bean id="driverBean" class="com.inthinc.pro.backing.DriverBean" scope="request">
-   		<property name="scoreDAO" ref="scoreDAO"></property>
-   		<property name="navigation" ref="navigationBean"></property>
-   	</bean>
-   
-   <bean id="driverSpeedBean" class="com.inthinc.pro.backing.DriverSpeedBean" scope="request">
-   		<property name="scoreDAO" ref="scoreDAO"></property>
-   		<property name="navigation" ref="navigationBean"></property>
-   </bean>
-   
-   <bean id="driverStyleBean" class="com.inthinc.pro.backing.DriverStyleBean" scope="request">
-   		<property name="scoreDAO" ref="scoreDAO"></property>
-   		<property name="navigation" ref="navigationBean"></property>
-   </bean>
-   
-      <bean id="driverSeatBeltBean" class="com.inthinc.pro.backing.DriverSeatBeltBean" scope="request">
-   		<property name="scoreDAO" ref="scoreDAO"></property>
-   		<property name="navigation" ref="navigationBean"></property>
-   </bean>
-   
-   <bean id="driverTripsBean" class="com.inthinc.pro.backing.DriverTripsBean" scope="request" parent="baseBean" init-method="init">
-   		<property name="tripDAO" ref="tripDAO"></property>
-   		<property name="navigation" ref="navigationBean"></property>
-   </bean>
+    <bean id="vehiclesBean" class="com.inthinc.pro.backing.VehiclesBean" scope="session">
+        <property name="vehicleDAO" ref="vehicleDAO"></property>
+        <property name="driverDAO" ref="driverDAO"></property>
+        <property name="groupDAO" ref="groupDAO"></property>
+        <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
+    </bean>
+
+    <bean id="devicesBean" class="com.inthinc.pro.backing.DevicesBean" scope="session">
+        <property name="deviceDAO" ref="deviceDAO"></property>
+        <property name="vehicleDAO" ref="vehicleDAO"></property>
+        <property name="vehiclesBean" ref="vehiclesBean"></property>
+        <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
+    </bean>
+
+    <bean id="zonesBean" class="com.inthinc.pro.backing.ZonesBean" scope="session">
+        <property name="zoneDAO" ref="zoneDAO"></property>
+    </bean>
+
+    <bean id="driverBean" class="com.inthinc.pro.backing.DriverBean" scope="request">
+        <property name="scoreDAO" ref="scoreDAO"></property>
+        <property name="navigation" ref="navigationBean"></property>
+    </bean>
+
+    <bean id="driverSpeedBean" class="com.inthinc.pro.backing.DriverSpeedBean" scope="request">
+        <property name="scoreDAO" ref="scoreDAO"></property>
+        <property name="navigation" ref="navigationBean"></property>
+    </bean>
+
+    <bean id="driverStyleBean" class="com.inthinc.pro.backing.DriverStyleBean" scope="request">
+        <property name="scoreDAO" ref="scoreDAO"></property>
+        <property name="navigation" ref="navigationBean"></property>
+    </bean>
+
+    <bean id="driverSeatBeltBean" class="com.inthinc.pro.backing.DriverSeatBeltBean" scope="request">
+        <property name="scoreDAO" ref="scoreDAO"></property>
+        <property name="navigation" ref="navigationBean"></property>
+    </bean>
+
+    <bean id="driverTripsBean" class="com.inthinc.pro.backing.DriverTripsBean" scope="request" parent="baseBean" init-method="init">
+        <property name="tripDAO" ref="tripDAO"></property>
+        <property name="navigation" ref="navigationBean"></property>
+    </bean>
 
     <bean id="teamOverviewBean" class="com.inthinc.pro.backing.TeamOverviewBean" scope="session" parent="baseBean">
-		<property name="scoreDAO" ref="scoreDAO"></property>
-		<property name="navigation" ref="navigationBean"></property>
-   </bean>
-   <bean id="teamTopDriversTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request" >
-   </bean>
-   <bean id="teamBottomDriversTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request" >
-   </bean>
-   <bean id="teamTopBean" class="com.inthinc.pro.backing.TeamTopBean" scope="request" parent="baseBean">
- 		<property name="scoreDAO" ref="scoreDAO"></property>
- 		<property name="navigation" ref="navigationBean"></property>
-   </bean>
-   <bean id="driverLocationBean" class="com.inthinc.pro.backing.DriverLocationBean" scope="request" parent="baseBean">
- 		<property name="driverDAO" ref="driverDAO"></property>
- 		<property name="navigation" ref="navigationBean"></property>
-   </bean>
+        <property name="scoreDAO" ref="scoreDAO"></property>
+        <property name="navigation" ref="navigationBean"></property>
+    </bean>
+    <bean id="teamTopDriversTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request"></bean>
+    <bean id="teamBottomDriversTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request"></bean>
+    <bean id="teamTopBean" class="com.inthinc.pro.backing.TeamTopBean" scope="request" parent="baseBean">
+        <property name="scoreDAO" ref="scoreDAO"></property>
+        <property name="navigation" ref="navigationBean"></property>
+    </bean>
+    <bean id="driverLocationBean" class="com.inthinc.pro.backing.DriverLocationBean" scope="request" parent="baseBean">
+        <property name="driverDAO" ref="driverDAO"></property>
+        <property name="navigation" ref="navigationBean"></property>
+    </bean>
 
-   <!-- Map Backing Beans -->
-   <bean id="gmBean" class="com.inthinc.pro.map.google.GoogleMapBacking">
-      <property name="googleMapKeys" ref="googleMapKey" />
-      <property name="webUtil" ref="webUtil" />
-   </bean>
-   <bean id="googleMapKey" class="com.inthinc.pro.map.google.GoogleMapKeys">
-      <property name="googleMapKeyPropertiesFile" value="classpath:googleMapKeys.properties" />
-   </bean>
-   
-   <!-- Web Util Beans - wraps access to servlet  -->
-   <bean id="webUtil" class="com.inthinc.pro.util.WebUtil"></bean>
+    <!-- Map Backing Beans -->
+    <bean id="gmBean" class="com.inthinc.pro.map.google.GoogleMapBacking">
+        <property name="googleMapKeys" ref="googleMapKey" />
+        <property name="webUtil" ref="webUtil" />
+    </bean>
+    <bean id="googleMapKey" class="com.inthinc.pro.map.google.GoogleMapKeys">
+        <property name="googleMapKeyPropertiesFile" value="classpath:googleMapKeys.properties" />
+    </bean>
+
+    <!-- Web Util Beans - wraps access to servlet  -->
+    <bean id="webUtil" class="com.inthinc.pro.util.WebUtil"></bean>
 
 
-   <bean id="teamRecentEventsBean" class="com.inthinc.pro.backing.TeamRecentEventsBean" scope="request" parent="baseBean">
-		<property name="eventDAO" ref="eventDAO"></property>
- 		<property name="navigation" ref="navigationBean"></property>
-   </bean>
-   <bean id="teamWarningsBean" class="com.inthinc.pro.backing.TeamWarningsBean" scope="request" parent="baseBean">
-		<property name="eventDAO" ref="eventDAO"></property>
- 		<property name="navigation" ref="navigationBean"></property>
-   </bean>
-   <!-- Report beans -->   
-   <bean id="driverReportBean" class="com.inthinc.pro.backing.DriverReportBean" 
-		scope="session" parent="baseBean" init-method="init">
-		<property name="scoreDAO" ref="scoreDAO"></property>
-		<property name="driverDAO" ref="driverDAO"></property>
-		<property name="groupDAO" ref="groupDAO"></property>
-   		<property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
-   </bean>
-   <bean id="driverReportTable" class="com.inthinc.pro.backing.ui.DriverReportTable" 
-   		scope="session">
-   </bean>         
-   <bean id="vehicleReportBean" class="com.inthinc.pro.backing.VehicleReportBean" 
-		scope="session" parent="baseBean" init-method="init">
-		<property name="scoreDAO" ref="scoreDAO"></property>
-		<property name="vehicleDAO" ref="vehicleDAO"></property>
-		<property name="groupDAO" ref="groupDAO"></property>
-		<property name="driverDAO" ref="driverDAO"></property>
-		<property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
-   </bean>
-   <bean id="vehicleReportTable" class="com.inthinc.pro.backing.ui.VehicleReportTable" 
-   		scope="session">
-   </bean>
-   <bean id="redFlagsBean" class="com.inthinc.pro.backing.RedFlagsBean" scope="session" parent="baseBean" >
-   		<property name="redFlagDAO" ref="redFlagDAO"></property>
-   		<property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
-   </bean>
+    <bean id="teamRecentEventsBean" class="com.inthinc.pro.backing.TeamRecentEventsBean" scope="request" parent="baseBean">
+        <property name="eventDAO" ref="eventDAO"></property>
+        <property name="navigation" ref="navigationBean"></property>
+    </bean>
+    <bean id="teamWarningsBean" class="com.inthinc.pro.backing.TeamWarningsBean" scope="request" parent="baseBean">
+        <property name="eventDAO" ref="eventDAO"></property>
+        <property name="navigation" ref="navigationBean"></property>
+    </bean>
+    <!-- Report beans -->
+    <bean id="driverReportBean" class="com.inthinc.pro.backing.DriverReportBean" scope="session" parent="baseBean" init-method="init">
+        <property name="scoreDAO" ref="scoreDAO"></property>
+        <property name="driverDAO" ref="driverDAO"></property>
+        <property name="groupDAO" ref="groupDAO"></property>
+        <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
+    </bean>
+    <bean id="driverReportTable" class="com.inthinc.pro.backing.ui.DriverReportTable" scope="session"></bean>
+    <bean id="vehicleReportBean" class="com.inthinc.pro.backing.VehicleReportBean" scope="session" parent="baseBean" init-method="init">
+        <property name="scoreDAO" ref="scoreDAO"></property>
+        <property name="vehicleDAO" ref="vehicleDAO"></property>
+        <property name="groupDAO" ref="groupDAO"></property>
+        <property name="driverDAO" ref="driverDAO"></property>
+        <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
+    </bean>
+    <bean id="vehicleReportTable" class="com.inthinc.pro.backing.ui.VehicleReportTable" scope="session"></bean>
+    <bean id="redFlagsBean" class="com.inthinc.pro.backing.RedFlagsBean" scope="session" parent="baseBean">
+        <property name="redFlagDAO" ref="redFlagDAO"></property>
+        <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
+    </bean>
 
 </beans>
