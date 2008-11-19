@@ -221,6 +221,19 @@ body {
 	top: 9px;
 	right: 8px;
 	}
+	
+.panel_links_ico {
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	position: absolute;
+	top: 10px;
+	right: 50px;
+	}
+	
+.panel_ico {
+	position: absolute;
+	top: 7px;
+	right: 8px;
+	}
 
 .panel_content {
 	background: #fff;
