@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-    <!-- Generic Service Related Beans -->
+    <!-- Service Related Beans -->
     <bean id="siloServiceBean" factory-bean="siloServiceCreator" factory-method="getService" />
     <bean id="reportServiceBean" factory-bean="reportServiceCreator" factory-method="getService" />
 
