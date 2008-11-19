@@ -1,0 +1,109 @@
+<ui:composition 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:f="http://java.sun.com/jsf/core"
+  	xmlns:iwi="http://pro.tiwi.com/jsf"
+	xmlns:h="http://java.sun.com/jsf/html">
+		
+		
+			<div class="datagrid">
+			<div class="spacer"></div> 
+			
+        	<rich:datascroller id="topScroller" for="items" immediate="true" 
+        		scrollerListener="#{idlingReportBean.scrollerListener}"
+        		reRender="bottomScroller,items,start,end,max">
+        	</rich:datascroller>
+			      		        						
+				<rich:dataTable value="#{idlingData}" id="items"
+					var="item" styleClass="datagrid" 
+					rowClasses="trendTableOdd,trendTableEven" cellspacing="1" 
+					rows="#{numRowsPerPg}"
+					width="100%" binding="#{idlingTable}">
+
+					<rich:column rendered="#{idlingColumns['group'].visible}" 
+						sortBy="#{item.group}">
+						<f:facet name="header">
+							<h:outputText value="Group" />
+						</f:facet>
+						<h:outputText value="#{item.group}" />   
+    				</rich:column>
+    				<rich:column rendered="#{idlingColumns['driver'].visible}" 
+    					sortBy="#{item.driver}">
+      					<f:facet name="header">
+      						<h:outputText value="Driver" />
+      					</f:facet>
+						<h:outputText value="#{item.driver}" />      
+    				</rich:column>
+    				<rich:column rendered="#{idlingColumns['drivetime'].visible}" 
+    					sortBy="#{item.driveTimeSort}">    					
+      					<f:facet name="header">
+      						<h:outputText value="Drive Time" />
+      					</f:facet>
+      					<h:outputText value="#{item.driveTime}" />        					
+    				</rich:column>
+    				<rich:column rendered="#{idlingColumns['miles'].visible}" 
+    					sortBy="#{item.miles}">
+      					<f:facet name="header">
+      						<h:outputText value="Miles" />
+      					</f:facet>
+      					<h:outputText value="#{item.miles}" />   					
+    				</rich:column>
+    				<rich:column rendered="#{idlingColumns['lowhrs'].visible}" 
+    					sortBy="#{item.lowPerSort}">
+      					<f:facet name="header">
+      						<h:outputText value="Low hrs." />
+      					</f:facet>
+      					<h:outputText value="#{item.lowHrs}" />
+    				</rich:column>
+    				<rich:column rendered="#{idlingColumns['lowpercent'].visible}">    					
+      					<f:facet name="header">
+      						<h:outputText value="Low %" />
+      					</f:facet>
+      					<h:outputText value="#{item.lowPercent}" /> 
+    				</rich:column>
+    				<rich:column rendered="#{idlingColumns['highhrs'].visible}"
+    					sortBy="#{item.highPerSort}">
+      					<f:facet name="header">
+      						<h:outputText value="High hrs." />
+      					</f:facet>
+      					<h:outputText value="#{item.highHrs}" /> 
+    				</rich:column>
+    				<rich:column rendered="#{idlingColumns['highpercent'].visible}">
+      					<f:facet name="header">
+      						<h:outputText value="High %" />
+      					</f:facet>
+      					<h:outputText value="#{item.highPercent}" /> 
+    				</rich:column>
+    				<rich:column rendered="#{idlingColumns['totalhrs'].visible}"
+    					sortBy="#{item.totalPerSort}">
+      					<f:facet name="header">
+      						<h:outputText value="Total hrs." />
+      					</f:facet>      					
+      					<h:outputText value="#{item.totalHrs}" /> 
+    				</rich:column>
+    				
+    				<rich:column rendered="#{idlingColumns['totalpercent'].visible}">    					
+      					<f:facet name="header">
+      						<h:outputText value="Total %" />
+      					</f:facet>      					
+      					<h:outputText value="#{item.totalPercent}" /> 
+    				</rich:column>    				
+    				<rich:column>
+      					<f:facet name="header">
+      						<h:outputText value="" />
+      					</f:facet>      					
+      					<a4j:commandLink action="go_trips" value="Details">      					
+							
+						</a4j:commandLink> 
+    				</rich:column>
+    			</rich:dataTable>    	
+    			
+    			<rich:datascroller id="bottomScroller" for="items" immediate="true" 
+    				scrollerListener="#{idlingReportBean.scrollerListener}"
+        			reRender="topScroller,items,start,end,max">        			
+        		</rich:datascroller>
+				</div>
+		
+
+</ui:composition>
