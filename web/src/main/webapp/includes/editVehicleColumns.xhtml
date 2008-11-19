@@ -21,6 +21,7 @@
 				<h:outputText value="#{messages.editColumns_explanation}" />
 			</div>
 
+			<a4j:form id="editColumnsForm">
 			
 				<rich:panel id="vehicleColumnPanel">
 				<h:panelGrid columns="11" width="100%">						
@@ -88,8 +89,11 @@
           				</button>
           			</a4j:commandLink>          			
         		</div>
+        		
+			</a4j:form>        		
       		
     	</rich:modalPanel>
+    	
 	</ui:composition>
 
 </html>

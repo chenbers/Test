@@ -16,12 +16,12 @@
 	
 	
 	<ui:define name="content">
-		<a4j:form id="outerVehicleReport">
-		<div id="wrapper">
+		
+		
 			<table width="940" height="430" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
 				<tr>
 					<td valign="top">
-						<a4j:form id="vehicleSearch">							
+												
 							<div class="">
 								<div class="panel_nw">
 									<div class="panel_title">
@@ -30,7 +30,9 @@
 									</div>
 								</div>
 									<div class="panel_w">
-									<div class="panel_content">												
+									<div class="panel_content">		
+									
+									<a4j:form id="outerVehicleReport">										
 										<div class="msg">
 											<p id="redflag">There are #{redFlagsBean.maxCount} red flags. (<a href="/tiwipro/secured/redFlags.faces">view</a>) </p>
 										</div>									  	
@@ -80,10 +82,10 @@
              						<ui:param name="vehicleColumns" value="#{vehicleReportBean.vehicleColumns}"/>
              						<ui:param name="vehicleTable" value="#{vehicleReportTable.table}"/>
     							</ui:include>    		
-    							</div>	    										
+    							</div>	   
+    							</a4j:form> 										
     							<ui:include src="/includes/editVehicleColumns.xhtml">
-									<ui:param name="vehicleColumns" value="#{vehicleReportBean.vehicleColumns}"/>	
-									<ui:param name="reRender" value="dataTable" />
+									<ui:param name="vehicleColumns" value="#{vehicleReportBean.vehicleColumns}"/>										
 								</ui:include>   
 								
 								</div>
@@ -93,12 +95,11 @@
 									<div class="panel_statusbar"></div>
 								</div>
 							</div>
-						</a4j:form>									
+													
 					</td>
 				</tr>
 			</table>
-		</div>
-		</a4j:form>
+		
 	</ui:define>
 	
 
