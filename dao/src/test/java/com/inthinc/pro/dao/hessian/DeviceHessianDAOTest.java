@@ -31,7 +31,7 @@ public class DeviceHessianDAOTest
     public void setUp() throws Exception
     {
         deviceHessianDAO = new DeviceHessianDAO();
-        deviceHessianDAO.setSiloServiceCreator(new SiloServiceCreator());
+        deviceHessianDAO.setSiloService(new SiloServiceCreator().getService());
     }
 
     @Test

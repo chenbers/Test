@@ -33,7 +33,7 @@ public class VehicleHessianDAOTest
     public void setUp() throws Exception
     {
         vehicleHessianDAO = new VehicleHessianDAO();
-        vehicleHessianDAO.setSiloServiceCreator(new SiloServiceCreator());
+        vehicleHessianDAO.setSiloService(new SiloServiceCreator().getService());
     }
 
     @Test

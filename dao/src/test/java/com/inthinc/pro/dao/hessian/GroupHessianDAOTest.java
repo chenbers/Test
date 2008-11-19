@@ -32,7 +32,7 @@ public class GroupHessianDAOTest
     public void setUp() throws Exception
     {
         groupHessianDAO = new GroupHessianDAO();
-        groupHessianDAO.setSiloServiceCreator(new SiloServiceCreator());
+        groupHessianDAO.setSiloService(new SiloServiceCreator().getService());
     }
 
     @Test

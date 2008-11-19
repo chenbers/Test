@@ -31,7 +31,7 @@ public class ZoneHessianDAOTest
     public void setUp() throws Exception
     {
         zoneHessianDAO = new ZoneHessianDAO();
-        zoneHessianDAO.setSiloServiceCreator(new SiloServiceCreator());
+        zoneHessianDAO.setSiloService(new SiloServiceCreator().getService());
     }
 
     @Test

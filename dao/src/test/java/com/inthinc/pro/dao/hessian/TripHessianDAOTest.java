@@ -22,7 +22,7 @@ public class TripHessianDAOTest
     public void setUp() throws Exception
     {
         tripDAO = new TripHessianDAO();
-        tripDAO.setSiloServiceCreator(new SiloServiceCreator());
+        tripDAO.setSiloService(new SiloServiceCreator().getService());
 
     }
     
