@@ -13,11 +13,13 @@ import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.ScoreBreakdown;
 import com.inthinc.pro.backing.ui.ScoreCategory;
 import com.inthinc.pro.backing.ui.TabAction;
+import com.inthinc.pro.charts.Bar3D;
 import com.inthinc.pro.charts.Pie;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.ScoreType;
+import com.inthinc.pro.model.ScoreTypeBreakdown;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.util.MessageUtil;
 
@@ -26,11 +28,10 @@ public class TeamOverviewBean extends BaseDurationBean
 
     private Integer             overallScore;
     private ScoreDAO          scoreDAO;
-    private Map<ScoreType, String>        pieDefMap;
+    private Map<ScoreType, String>        barDefMap;
     private List<TabAction>  actions;
     private TabAction selectedAction;
     private NavigationBean navigation;
-    //private Map<ScoreType, TabAction> actionScoreTypeMap;
     
     private Integer groupID;
     
@@ -77,99 +78,72 @@ logger.debug("##### setOverallScore: " + overallScore);
         this.scoreDAO = graphicDAO;
     }
 
-    public String getOverallPieDef()
+    public String getSelectedBarDef()
     {
-        return getPieDefMap().get(ScoreType.SCORE_OVERALL);
-    }
-    
-    public String getDriveStylePieDef()
-    {
-        return getPieDefMap().get(ScoreType.SCORE_DRIVING_STYLE);
-    }
-
-    public String getSpeedPieDef()
-    {
-        return getPieDefMap().get(ScoreType.SCORE_SPEEDING);
-    }
-    
-    public String getSeatbeltPieDef()
-    {
-        return getPieDefMap().get(ScoreType.SCORE_SEATBELT);
-    }
-    
-    public String getCoachingPieDef()
-    {
-        return getPieDefMap().get(ScoreType.SCORE_COACHING_EVENTS);
-    }
-
-    public String getSelectedPieDef()
-    {
-logger.debug("getSelectedPieDef() ");        
+logger.debug("getSelectedBarDef() ");        
         TabAction action = getSelectedAction();
         
-        return getPieDefMap().get(action.getScoreType());
+        ScoreType scoreType = action.getScoreType();
+        if (getBarDefMap().get(scoreType) == null)
+        {
+                barDefMap.put(scoreType, createBar3DChart(scoreType));
+        }
+        
+        return getBarDefMap().get(scoreType);
     }
 
-    public String getPieDef(Integer type)
+    public String getBarDef(Integer type)
     {
-        return getPieDefMap().get(ScoreType.valueOf(type));
+        return getBarDefMap().get(ScoreType.valueOf(type));
     }
 
-    public String createPieDef(ScoreType scoreType)
+    public String createBar3DChart(ScoreType scoreType)
     {
-        StringBuffer sb = new StringBuffer();
-        Pie pie = new Pie();
-
-        // Control parameters
-        sb.append(pie.getControlParameters());
-
         Integer endDate = DateUtil.getTodaysDate();
         Integer startDate = DateUtil.getDaysBackDate(endDate, getDuration().getNumberOfDays());
-        List<ScoreableEntity> scoreList = scoreDAO.getScoreBreakdown(getGroupID(), startDate, endDate, scoreType);
-//        s = scoreDAO.getScoreBreakdown(this.navigation.getGroupID(),
-//                startDate, endDate, ScoreType.SCORE_OVERALL);
-
-        ScoreBreakdown scoreBreakdown = new ScoreBreakdown(scoreList);
-        if (scoreList.size() == 0)
+        
+        List<ScoreTypeBreakdown> scoreDataList = scoreDAO.getScoreBreakdownByType(getGroupID(), startDate, endDate, scoreType);
+        
+        List<String>categoryLabelList = new ArrayList<String>();
+        for (ScoreType subType : scoreType.getSubTypes())
         {
-            // TODO:  What color/text (see use case)?
-            sb.append(pie.getChartItem(new Object[] {100, "No Data To Display", "F6B305"}));
+            categoryLabelList.add(MessageUtil.getMessageString(subType.toString()));
         }
-        else
+        
+        StringBuffer sb = new StringBuffer();
+        Bar3D bar3d = new Bar3D();
+        
+        // Control parameters
+        sb.append(bar3d.getControlParameters());
+        sb.append(bar3d.getCategories(categoryLabelList));
+        for (ScoreCategory category : EnumSet.allOf(ScoreCategory.class))
         {
-            Map<ScoreCategory, Integer> valueMap = scoreBreakdown.getValueMap();
-            for (Map.Entry<ScoreCategory, Integer> item : valueMap.entrySet())
+            List<Object> valueList = new ArrayList<Object>();
+            for (ScoreTypeBreakdown scoreTypeBreakdown : scoreDataList)
             {
-                if (item.getValue().intValue() == 0)
-                {
-                    continue;
-                }
-                sb.append(pie.getChartItem(new Object[] {item.getValue(), "", item.getKey().getColor()}));
-
+                valueList.add(scoreTypeBreakdown.getPercentageList().get(category.getCode()-1).getScore());
             }
-
+            sb.append(bar3d.getChartDataSet(category.getRange(), category.getColor(), valueList.toArray(new Object[0])));
         }
-        sb.append(pie.getClose());
+        
+        sb.append(bar3d.getClose());
 
         return sb.toString();
     }
 
-    public Map<ScoreType, String> getPieDefMap()
+    public Map<ScoreType, String> getBarDefMap()
     {
-        if (pieDefMap == null)
+        if (barDefMap == null)
         {
-            pieDefMap = new HashMap<ScoreType, String>();
-            for (ScoreType scoreType : EnumSet.allOf(ScoreType.class))
-            {
-                pieDefMap.put(scoreType, createPieDef(scoreType));
-            }
+            barDefMap = new HashMap<ScoreType, String>();
         }
-        return pieDefMap;
+        
+        return barDefMap;
     }
 
-    public void setPieDefMap(Map<ScoreType, String> pieDefMap)
+    public void setBarDefMap(Map<ScoreType, String> barDefMap)
     {
-        this.pieDefMap = pieDefMap;
+        this.barDefMap = barDefMap;
     }
 
     public void setActions(List<TabAction> actions)
@@ -181,13 +155,14 @@ logger.debug("getSelectedPieDef() ");
     {
         if (actions == null)
         {
-            String[] actionKeys = {"overall","drivestyle","speed","seatbelt","coaching"};
-            ScoreType[] scoreTypes = {ScoreType.SCORE_OVERALL, ScoreType.SCORE_DRIVING_STYLE, ScoreType.SCORE_SPEEDING, ScoreType.SCORE_SEATBELT, ScoreType.SCORE_COACHING_EVENTS};
+            String[] actionKeys = {"overall","driving","speed","seatbelt"};
+            int[]width = {108,104,70,85};
+            ScoreType[] scoreTypes = {ScoreType.SCORE_OVERALL, ScoreType.SCORE_DRIVING_STYLE, ScoreType.SCORE_SPEEDING, ScoreType.SCORE_SEATBELT};
             actions = new ArrayList<TabAction>();
             
             for (int i = 0; i < actionKeys.length; i++)
             {
-                actions.add(new TabAction(actionKeys[i], actionKeys[i], MessageUtil.getMessageString("teamOverviewSideNav_"+actionKeys[i]), "ls_tab_"+actionKeys[i], scoreTypes[i]));
+                actions.add(new TabAction(actionKeys[i], actionKeys[i], MessageUtil.getMessageString("teamOverviewSideNav_"+actionKeys[i]), actionKeys[i]+"_on", actionKeys[i]+"_off", scoreTypes[i], width[i]));
             }
         }
         return actions;
@@ -238,7 +213,7 @@ logger.debug("getSelectedPieDef() ");
         super.setDuration(duration);
         
         setOverallScore(null);
-        setPieDefMap(null);
+        setBarDefMap(null);
         
     }
 

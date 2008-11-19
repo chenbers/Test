@@ -2345,6 +2345,66 @@ ul.legend {
 .tableEven {
 	background: #EBFFCA;
 }
+
+
+/* HORIZONTAL TABS FOR THE TEAMS PAGE, MAYBE OTHERS ... */
+
+ul.htabs {
+	border-bottom: 1px solid #8BAD37;
+	margin: 0;
+	padding: 0;
+	height: 28px;
+	}
+
+ul.htabs li {
+	list-style: none;
+	float: left;
+	margin: 0;
+	padding: 0 2px 0 0;
+	}
+	
+ul.htabs li.overall_off {
+	width: 108px;
+	background: url(../images/htab_over_off.png) no-repeat;
+	}
+	
+ul.htabs li.overall_on {
+	width: 108px;
+	background: url(../images/htab_over_on.png) no-repeat;
+	}
+	
+ul.htabs li.driving_off {
+	width: 104px;
+	background: url(../images/htab_driving_off.png) no-repeat;
+	}
+	
+ul.htabs li.driving_on {
+	width: 104px;
+	background: url(../images/htab_driving_on.png) no-repeat;
+	}
+	
+ul.htabs li.speed_off {
+	width: 70px;
+	background: url(../images/htab_speed_off.png) no-repeat;
+	}
+	
+ul.htabs li.speed_on {
+	width: 70px;
+	background: url(../images/htab_speed_on.png) no-repeat;
+	}
+	
+ul.htabs li.seatbelt_off {
+	width: 85px;
+	background: url(../images/htab_seatbelt_off.png) no-repeat;
+	}
+	
+ul.htabs li.seatbelt_on {
+	width: 85px;
+	background: url(../images/htab_seatbelt_on.png) no-repeat;
+	}
+	
+
+
 /*
 
 ok, so sometimes, do not show that top pagination navigation!!!

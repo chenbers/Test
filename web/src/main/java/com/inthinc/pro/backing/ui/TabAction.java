@@ -7,17 +7,29 @@ public class TabAction
     String key;
     String action;
     String displayString;
-    String style;
+    String onStyle;
+    String offStyle;
     ScoreType scoreType;
+    int width;
     
     
-    public TabAction(String key, String action, String displayString, String style, ScoreType scoreType)
+    public int getWidth()
+    {
+        return width;
+    }
+    public void setWidth(int width)
+    {
+        this.width = width;
+    }
+    public TabAction(String key, String action, String displayString, String onStyle, String offStyle, ScoreType scoreType, int width)
     {
         this.key = key;
         this.action = action;
         this.displayString = displayString;
-        this.style = style;
+        this.onStyle = onStyle;
+        this.offStyle = offStyle;
         this.scoreType = scoreType;
+        this.width = width;
     }
     public String getKey()
     {
@@ -43,14 +55,6 @@ public class TabAction
     {
         this.displayString = displayString;
     }
-    public String getStyle()
-    {
-        return style;
-    }
-    public void setStyle(String style)
-    {
-        this.style = style;
-    }
     public ScoreType getScoreType()
     {
         return scoreType;
@@ -58,6 +62,22 @@ public class TabAction
     public void setScoreType(ScoreType scoreType)
     {
         this.scoreType = scoreType;
+    }
+    public String getOnStyle()
+    {
+        return onStyle;
+    }
+    public void setOnStyle(String onStyle)
+    {
+        this.onStyle = onStyle;
+    }
+    public String getOffStyle()
+    {
+        return offStyle;
+    }
+    public void setOffStyle(String offStyle)
+    {
+        this.offStyle = offStyle;
     }
     
 }

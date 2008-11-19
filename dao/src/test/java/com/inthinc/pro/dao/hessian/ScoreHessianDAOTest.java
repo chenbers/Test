@@ -17,6 +17,7 @@ import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.ScoreType;
+import com.inthinc.pro.model.ScoreTypeBreakdown;
 import com.inthinc.pro.model.ScoreableEntity;
 
 public class ScoreHessianDAOTest
@@ -98,4 +99,47 @@ public class ScoreHessianDAOTest
 
     }
 
+    @Test
+    public void getScoreBreakdownByType()
+    {
+        Integer testGroupID = MockData.unitTestStats.UNIT_TEST_GROUP_ID;
+        Integer endDate = DateUtil.getTodaysDate();
+        Integer startDate = DateUtil.getDaysBackDate(endDate, 30);
+        
+        
+        checkBreakdown(testGroupID, endDate, startDate, ScoreType.SCORE_OVERALL, 4);
+        checkBreakdown(testGroupID, endDate, startDate, ScoreType.SCORE_SPEEDING, 6);
+        checkBreakdown(testGroupID, endDate, startDate, ScoreType.SCORE_SEATBELT, 5);
+        checkBreakdown(testGroupID, endDate, startDate, ScoreType.SCORE_DRIVING_STYLE, 6);
+        
+        
+    }
+
+    private void checkBreakdown(Integer testGroupID, Integer endDate, Integer startDate, ScoreType scoreType, int expectedBreakdownSize)
+    {
+        List<ScoreTypeBreakdown> scoreBreakdownList = scoreHessianDAO.getScoreBreakdownByType(testGroupID, startDate, endDate, scoreType);
+        assertEquals(expectedBreakdownSize, scoreBreakdownList.size());
+        List<ScoreType> subTypeList = scoreType.getSubTypes();
+        assertEquals(subTypeList.size(), scoreBreakdownList.size());
+        for (ScoreType subType : subTypeList)
+        {
+           boolean found = false;
+           for (ScoreTypeBreakdown breakdown : scoreBreakdownList)
+           {
+               if (breakdown.getScoreType().equals(subType))
+               {
+                   found = true;
+                   assertEquals(5, breakdown.getPercentageList().size());
+                   System.out.println(subType.toString() + " Scores:");
+                   for (int i = 0; i < 5; i++)
+                   {
+                       System.out.println(breakdown.getPercentageList().get(i).getScore());
+                   }
+                   break;
+               }
+           }
+           
+           assertTrue(scoreType + " SubType: " + subType + " not found", found);
+        }
+    }
 }

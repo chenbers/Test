@@ -7,16 +7,16 @@
 	xmlns:h="http://java.sun.com/jsf/html">
 	
 <script type="text/javascript">
-	function renderPie(pieElement, pieDiv, width, height)
+	function renderBar(barElement, barDiv, width, height)
 	{
-		var pieDef = document.getElementById(pieElement);
-		var pieChart = new FusionCharts("/tiwipro/fusioncharts/Pie2D.swf", "ChartId", width, height, "0", "0");										
-		pieChart.setDataXML(pieDef.value);									   	   
-		pieChart.render(pieDiv);
+		var barDef = document.getElementById(barElement);
+		var barChart = new FusionCharts("/tiwipro/fusioncharts/MSCombi3D.swf", "ChartId", width, height, "0", "0");										
+		barChart.setDataXML(barDef.value);									   	   
+		barChart.render(barDiv);
 	}
-	function renderTypePie(type, width, height)
+	function renderTypeBar(type, width, height)
 	{
-		renderPie('tab_'+type+'Def', 'tab_'+type+'Div', width, height); 
+		renderBar('tab_'+type+'Def', 'tab_'+type+'Div', width, height); 
 	}
 </script>
 		
@@ -40,34 +40,38 @@
 	</h:panelGroup>				
 	<h:panelGroup layout="block" styleClass="panel_w">
 		<h:panelGroup layout="block" styleClass="panel_content">
-			<h:panelGrid width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;" columns="2" columnClasses="ls_tabs">
-				<table width="130" border="0" cellpadding="0" cellspacing="0">
+			<h:panelGrid width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;" >
+				<h:panelGroup>
 					<a4j:form id="overview-form">
-					      <ui:repeat value="#{teamOverviewBean.actions}" var="action" id="menu">
-					        <tr>
-					          <td valign="top" class="#{(action.key == teamOverviewBean.selectedAction.key) ? 'ls_tab_on' : 'ls_tab_off'}">
-					            <h:commandLink value="#{action.displayString}" styleClass="#{action.style}" >
-					            	<f:setPropertyActionListener target="#{teamOverviewBean.selectedAction}" value="#{action}" />
-           							<a4j:support event="oncomplete" reRender="menu,overall,tabs" />
-					            </h:commandLink>	
-					          </td>
-					        </tr>
-					      </ui:repeat>
+					<ul class="htabs">
+				      <ui:repeat value="#{teamOverviewBean.actions}" var="action" id="menu">
+                    	<li class="#{(action.key == teamOverviewBean.selectedAction.key) ? action.onStyle : action.offStyle}">
+				            <a4j:commandLink title="#{action.displayString}" reRender="menu,overall,tabs">
+								<h:graphicImage value="/images/x.gif" width="#{action.width}" height="27"  style="border:none"/>
+				            	<f:setPropertyActionListener target="#{teamOverviewBean.selectedAction}" value="#{action}" />
+				            </a4j:commandLink>	
+                    	</li>
+				      </ui:repeat>
+ 					</ul>
 					</a4j:form>
-				</table>
+				</h:panelGroup>
+				
+				
 				<h:panelGroup id="overview-content">
 					<a4j:region id="overall" rendered="#{teamOverviewBean.selectedAction.key == 'overall'}">
 						<ui:include src="/includes/teamOverviewTab_overall.xhtml" />
 					</a4j:region>
+<!-- 					
 					<ui:repeat value="#{teamOverviewBean.actions}" var="tab" id="tabs">
 						<a4j:region rendered="#{teamOverviewBean.selectedAction.key != 'overall' and teamOverviewBean.selectedAction.key == tab.key}">
 							<ui:include src="/includes/teamOverviewTab.xhtml">
-								<ui:param name="style" value="#{tab.style}" />
+								<ui:param name="style" value="#{tab.onStyle}" />
 								<ui:param name="title" value="#{tab.displayString}" />
 								<ui:param name="type" value="#{tab.key}" />
 							</ui:include>
 						</a4j:region>
 					</ui:repeat>
+ -->					
 				</h:panelGroup>
 			</h:panelGrid>
 		</h:panelGroup>

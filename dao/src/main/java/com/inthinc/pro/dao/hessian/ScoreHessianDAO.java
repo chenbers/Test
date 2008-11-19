@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
 import com.inthinc.pro.model.ScoreType;
+import com.inthinc.pro.model.ScoreTypeBreakdown;
 import com.inthinc.pro.model.ScoreableEntity;
 
 public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer> implements ScoreDAO
@@ -55,7 +56,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     @Override
     public List<ScoreableEntity> getScores(Integer groupID, Integer startDate, Integer endDate, ScoreType scoreType)
     {
-        logger.debug("getScores() groupID = " + groupID);
+//        logger.debug("getScores() groupID = " + groupID);
         List<ScoreableEntity> scoreList = getMapper().convertToModelObject(reportService.getScores(groupID, startDate, endDate, scoreType.getCode()), ScoreableEntity.class);
         return scoreList;
     }
@@ -72,5 +73,12 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         return getMapper().convertToModelObject(reportService.getDriverScoreHistoryByMiles(driverID, milesBack, scoreType.getCode()), ScoreableEntity.class);
         
         
+    }
+
+    @Override
+    public List<ScoreTypeBreakdown> getScoreBreakdownByType(Integer groupID, Integer startDate, Integer endDate, ScoreType scoreType)
+    {
+        List<ScoreTypeBreakdown> scoreList = getMapper().convertToModelObject(reportService.getScoreBreakdownByType(groupID, startDate, endDate, scoreType.getCode()), ScoreTypeBreakdown.class);
+        return scoreList;
     }
 }

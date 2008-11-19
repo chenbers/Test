@@ -17,11 +17,13 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.ScoreType;
+import com.inthinc.pro.model.ScoreTypeBreakdown;
 import com.inthinc.pro.model.ScoreableEntity;
 
 public class ReportServiceMockImpl extends AbstractServiceMockImpl implements ReportService
 {
     private static final Logger logger = Logger.getLogger(ReportServiceMockImpl.class);
+
     @Override
     public Map<String, Object> getAverageScoreByType(Integer groupID, Integer startDate, Integer endDate, ScoreType st) throws ProDAOException
     {
@@ -62,7 +64,7 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
     @Override
     public List<Map<String, Object>> getScores(Integer groupID, Integer startDate, Integer endDate, Integer scoreType) throws ProDAOException
     {
-        logger.debug("mock IMPL getOverallScores groupID = " + groupID);
+//        logger.debug("mock IMPL getOverallScores groupID = " + groupID);
         SearchCriteria searchCriteria = new SearchCriteria();
         searchCriteria.addKeyValue("parentID", groupID);
 
@@ -132,20 +134,7 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
 
         List<Driver> allDriversInGroup = getAllDriversInGroup(topGroup);
 
-        int totals[] = new int[5];
-        for (Driver driver : allDriversInGroup)
-        {
-            SearchCriteria searchCriteria = new SearchCriteria();
-            searchCriteria.addKeyValue("entityID", driver.getDriverID());
-            searchCriteria.addKeyValue("scoreType", ScoreType.valueOf(scoreType));
-            searchCriteria.addKeyValueRange("date", startDate, endDate);
-            List<ScoreableEntity> allScores = MockData.getInstance().retrieveObjectList(ScoreableEntity.class, searchCriteria);
-            Map<String, Object> scoreMap = getAverageScore(startDate, allScores);
-
-            Integer score = (Integer) scoreMap.get("score");
-            int idx = (score - 1) / 10;
-            totals[idx]++;
-        }
+        int[] totals = getScoreCatCntsForAllDrivers(startDate, endDate, scoreType, allDriversInGroup);
         List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
         int totalDrivers = allDriversInGroup.size();
         int percentTotal = 0;
@@ -257,6 +246,69 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
         returnEntity.setScore(total / allScores.size());
 
         return TempConversionUtil.createMapFromObject(returnEntity);
+    }
+
+    @Override
+    public List<Map<String, Object>> getScoreBreakdownByType(Integer groupID, Integer startDate, Integer endDate, Integer scoreType) throws ProDAOException
+    {
+        Group topGroup = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
+        List<Driver> allDriversInGroup = getAllDriversInGroup(topGroup);
+        
+        List<ScoreType> scoreTypeList = ScoreType.valueOf(scoreType).getSubTypes();
+        
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+        for (ScoreType subType : scoreTypeList)
+        {
+            ScoreTypeBreakdown scoreTypeBreakdown = new ScoreTypeBreakdown();
+            scoreTypeBreakdown.setScoreType(subType);
+            List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
+            scoreTypeBreakdown.setPercentageList(scoreList);
+            
+            int[] totals = getScoreCatCntsForAllDrivers(startDate, endDate, scoreType, allDriversInGroup);
+            int totalDrivers = allDriversInGroup.size();
+            int percentTotal = 0;
+            for (int i = 0; i < 5; i++)
+            {
+                int percent = 0;
+                if (i < 4)
+                {
+                    percent = Math.round((float) ((float) totals[i] * 100f) / (float) totalDrivers);
+                    percentTotal += percent;
+                }
+                else
+                {
+                    percent = 100 - percentTotal;
+                }
+                ScoreableEntity scoreableEntity = new ScoreableEntity(groupID, EntityType.ENTITY_GROUP, 
+                            (i + 1) + "", // name will be 1 to 5 for the 5 different score breakdowns
+                        new Integer(percent), startDate, ScoreType.valueOf(scoreType));
+                scoreList.add(scoreableEntity);
+            }
+            
+            returnList.add(TempConversionUtil.createMapFromObject(scoreTypeBreakdown));
+            
+        }
+
+        return returnList;
+    }
+
+    private int[] getScoreCatCntsForAllDrivers(Integer startDate, Integer endDate, Integer scoreType, List<Driver> allDriversInGroup)
+    {
+        int totals[] = new int[5];
+        for (Driver driver : allDriversInGroup)
+        {
+            SearchCriteria searchCriteria = new SearchCriteria();
+            searchCriteria.addKeyValue("entityID", driver.getDriverID());
+            searchCriteria.addKeyValue("scoreType", ScoreType.valueOf(scoreType));
+            searchCriteria.addKeyValueRange("date", startDate, endDate);
+            List<ScoreableEntity> allScores = MockData.getInstance().retrieveObjectList(ScoreableEntity.class, searchCriteria);
+            Map<String, Object> scoreMap = getAverageScore(startDate, allScores);
+
+            Integer score = (Integer) scoreMap.get("score");
+            int idx = (score - 1) / 10;
+            totals[idx]++;
+        }
+        return totals;
     }
 
 
