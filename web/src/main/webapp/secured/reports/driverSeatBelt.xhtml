@@ -1,0 +1,227 @@
+<ui:composition template="/layout/layout.xhtml" 
+				xmlns="http://www.w3.org/1999/xhtml" 
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+  				xmlns:h="http://java.sun.com/jsf/html" 
+  				xmlns:rich="http://richfaces.org/rich"
+  				xmlns:a4j="http://richfaces.org/a4j"
+  				xmlns:f="http://java.sun.com/jsf/core">
+
+	<ui:define name="scripts">
+		<script src="/tiwipro/js/FusionCharts.js" type="text/javascript"></script>	
+	</ui:define>
+
+	<ui:param name="reportsSelected" value="current" />
+	
+	<ui:define name="content">
+<div id="wrapper">
+
+<ul id="grid_nav">
+	<li class="l grid_icon"><img src="images/ico_line.png" /></li>
+	<li class="l grid_title">Driver Performance: <h:outputText> #{driverBean.driverName}</h:outputText></li>
+	<li class="l divider"><img src="/images/grid_nav_divider.png" /></li>
+	<li class="l">
+	
+		<ul id="breadcrumb">
+			<li class="first"><a href="/">Home</a></li>
+			<li><a href="drivers.html">Drivers</a></li>
+			<li class="last"><h:outputText>#{driverBean.driverName}</h:outputText></li>
+		</ul>
+	</li>
+</ul>
+
+<script type="text/javascript">
+
+//Set default selected box.
+var selected = 'OVERALL';
+
+	function SelectBreakDown(region, chartVar)
+	{
+		//Un-Select last component in CSS.
+		document.getElementById(selected).className="tiny_chart";
+		
+		//remember current selected region.
+		selected = region;
+		
+		//change style to new selected region.
+		document.getElementById(region).className="tiny_selected";
+		
+		//resize chart and render it in the top box.
+		// TODO: turn on X and Y axis labels.
+		chartVar.attributes.width = 650;
+		chartVar.attributes.height = 200;
+		chartVar.render('overall_chart');
+	}
+</script>
+
+<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" class="dash_table">
+  <tr>
+    <td colspan="3" valign="top">
+		<!-- START PANEL -->
+			<div class="">
+				<div class="panel_nw">
+					<div class="panel_title">
+						<span class="line">Driving Style</span>
+						<a4j:form id="overall-form"> 
+							<span class="panel_links"><h:outputText>Graph the last:&#160;</h:outputText>
+								<a4j:commandLink title="#{messages.miles500}" immediate="true"
+									styleClass="#{(driverStyleBean.distance eq 'FIVEHUNDRED') ? 'on' : ''}"
+									reRender="overall-form,overallPanel" value="#{messages.miles500}">
+									<a4j:actionparam name="distance" assignTo="#{driverStyleBean.distance}"	value="FIVEHUNDRED" />
+								</a4j:commandLink>
+							<h:outputText value=" " />
+								<a4j:commandLink title="#{messages.miles1000}" immediate="true"
+									styleClass="#{(driverStyleBean.distance eq 'ONETHOUSAND') ? 'on' : ''}"
+									reRender="overall-form,overallPanel" value="#{messages.miles1000}">
+									<a4j:actionparam name="distance" assignTo="#{driverStyleBean.distance}"	value="ONETHOUSAND" />
+								</a4j:commandLink>
+							<h:outputText value=" " />
+								 <a4j:commandLink title="#{messages.miles10000}" immediate="true"
+									styleClass="#{(driverStyleBean.distance eq 'TENTHOUSAND') ? 'on' : ''}"
+									reRender="overall-form,overallPanel" value="#{messages.miles10000}">
+									<a4j:actionparam name="distance" assignTo="#{driverStyleBean.distance}"	value="TENTHOUSAND" />
+								</a4j:commandLink>
+							</span>
+						</a4j:form>
+					</div>
+				</div>
+				<div class="panel_w">
+				  <rich:panel bodyClass="panel_content" id="overallPanel" border="0">
+				  <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
+					  <tr>
+						<td valign="top" width="600">
+						   <ui:include src="../../includes/lineChart.xhtml">
+						            <ui:param name="lineChartDef" value="#{driverStyleBean.styleScoreHistoryLarge}" />
+						            <ui:param name="hiddenFieldID" value="HiddenField" />
+						            <ui:param name="width" value="650" /> 
+						            <ui:param name="height" value="200" />  
+						            <ui:param name="tartgetElementVar" value="targetElement" />
+						            <ui:param name="ChartDivID" value="overall_chart" />
+						            <ui:param name="chartVar" value="overallChart" />
+							</ui:include>
+						</td>
+						<td valign="top" align="right">
+							<table width="220" border="0" cellspacing="0" cellpadding="0" class="scorebox" style="margin: 20px 20px 0 0;">
+							  <tr>
+								<td>
+									<h4>Overall Score</h4>
+									<div style="margin-top: 8px;"><a href="#" class="ls_tab_email">Email</a></div>
+								</td>
+								<td width="80" align="center">
+									<ui:include src="../../includes/scoreBox.xhtml">
+								            <ui:param name="score" value="#{driverStyleBean.styleScore}" />
+								            <ui:param name="scoreStyle" value="#{driverStyleBean.styleScoreStyle}" />
+									</ui:include>
+								</td>
+							  </tr>
+							</table>
+						</td>
+					  </tr>
+					</table>
+				  
+				  </rich:panel>
+				</div>
+				<div class="panel_sw">
+					<div class="panel_statusbar"></div>
+				</div>
+			</div>
+			<div class="spacer"></div>
+		<!-- END PANEL -->
+	</td>
+    </tr>
+  <tr>
+    <td colspan="3" valign="top"><img src="images/x.gif" width="10" height="10" /></td>
+    </tr>
+  <tr>
+    <td width="465" valign="top">
+<!-- END PANEL -->
+	</td>
+    </tr>
+  <tr>
+    <td colspan="3" valign="top"><img src="images/x.gif" width="10" height="10" /></td>
+    </tr>
+  <tr>
+    <td width="465" valign="top">
+		<!-- START PANEL -->
+			<div class="">
+				<div class="panel_nw">
+					<div class="panel_title">
+						<span class="details">Details</span>
+						<span class="panel_links"></span>
+					</div>
+				</div>
+				<div class="panel_w">
+				  <div class="panel_content">
+				     
+
+			<div class="datagrid">
+				<!-- Start Event table --> 
+					<h:form id="eventTable">
+						<rich:dataTable 
+						value="#{driverSeatBeltBean.seatBeltEvents}" 
+						id="items"
+						var="item" styleClass="datagrid"
+						rowClasses="tableOdd,tableEven" cellspacing="1" rows="10"  
+						width="100%"> 
+						<!-- Data -->
+							<rich:column sortBy="#{item.latitude}">
+								<f:facet name="header">
+									<h:outputText value="Location" />
+								</f:facet>
+									<h:outputText value="1232 Coleman Ave Santa Clara, CA 95110 " />
+							</rich:column>
+							
+							<rich:column sortBy="#{item.latitude}">
+								<f:facet name="header">
+									<h:outputText value="Time" />
+								</f:facet>
+									<h:outputText value="Fri, Apr 25, 2008 11:22 AM (MST)" />
+							</rich:column>
+							
+							<rich:column sortBy="#{item.avgSpeed}">
+								<f:facet name="header">
+									<h:outputText value="Avg. Speed" />
+								</f:facet>
+								<h:outputText value="#{item.avgSpeed}" />
+							</rich:column>
+							
+							<rich:column sortBy="#{item.topSpeed}">
+								<f:facet name="header">
+									<h:outputText value="Top Speed" />
+								</f:facet>
+								<h:outputText value="#{item.topSpeed}" />
+							</rich:column>
+							
+							<rich:column sortBy="#{item.distance}">
+								<f:facet name="header">
+									<h:outputText value="Distance" />
+								</f:facet>
+								<h:outputText value="#{item.distance}" />
+							</rich:column>
+							
+							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="" />
+								</f:facet>
+								<a href="#">forgive</a>
+							</rich:column>
+							
+						</rich:dataTable>
+					</h:form> 
+				<!-- End Event table -->
+				</div>
+				</div>
+				</div>
+				</div>
+		</td>
+    </tr>
+</table>
+ </div>
+				
+				<div class="panel_sw">
+					<div class="panel_statusbar"></div>
+				</div>
+			
+		<!-- END PANEL -->
+		
+</ui:define>
+</ui:composition>
