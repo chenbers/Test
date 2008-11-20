@@ -77,12 +77,12 @@
                 <tr>
                   <td><h:outputText value="#{messages.button_search}" /></td>
                   <td>
-                    <h:inputText id="filterTable" value="#{filterValue}" class="text" size="25" />
+                    <h:inputText id="filterTable" value="#{filterValue}" class="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('admin-table-form:searchButton').onclick(); return false; } return true;" />
                   </td>
                 </tr>
               </table>
             </li>
-            <li class="l"><a4j:commandLink reRender="dataTable,recordCounts,bottomScroller"><button value="submit" class="left"><span class="search"><h:outputText value="#{messages.button_search}" /></span></button></a4j:commandLink></li>
+            <li class="l"><a4j:commandLink id="searchButton" reRender="dataTable,recordCounts,bottomScroller"><button value="submit" class="left"><span class="search"><h:outputText value="#{messages.button_search}" /></span></button></a4j:commandLink></li>
             <li class="l text"><a href="#" class="ls_tab_edit_columns" onclick="Richfaces.showModalPanel('editColumns');"><h:outputText value="#{messages.button_editColumns}" /></a></li>
             <li class="r text">
               <h:outputFormat id="recordCounts" value="#{messages.recordCounts}">
