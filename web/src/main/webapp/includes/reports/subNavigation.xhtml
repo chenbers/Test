@@ -8,20 +8,20 @@
   	<div class="sub_nav">
 	<div class="sub_nav-bg">
 		<ul>	
-			<li>			
-			<h:outputLink styleClass="#{driversSelected}" 
+			<li class="#{driversSelected}">			
+			<h:outputLink 
 				value="#{facesContext.externalContext.requestContextPath}/secured/reports/drivers.faces">
 				<span>#{messages.subNavigation_drivers}</span>
 			</h:outputLink>
 			</li>	
-			<li>			
-			<h:outputLink styleClass="#{vehiclesSelected}" 
+			<li class="#{vehiclesSelected}">			
+			<h:outputLink 
 				value="#{facesContext.externalContext.requestContextPath}/secured/reports/vehicles.faces">
 				<span>#{messages.subNavigation_vehicles}</span>
 			</h:outputLink>
 			</li>	
-			<li>			
-			<h:outputLink styleClass="#{idlingSelected}" 
+			<li class="#{idlingSelected}">			
+			<h:outputLink 
 				value="#{facesContext.externalContext.requestContextPath}/secured/reports/idling.faces">
 				<span>#{messages.subNavigation_idling}</span>
 			</h:outputLink>
