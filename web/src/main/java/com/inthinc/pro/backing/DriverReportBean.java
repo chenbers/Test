@@ -95,8 +95,6 @@ public class DriverReportBean extends BaseBean
     }
     
     public void search() {     
-        logger.debug("searching");
-        
         if ( this.driverData.size() > 0 ) {
             this.driverData.clear();
         }
@@ -168,6 +166,9 @@ public class DriverReportBean extends BaseBean
             drt.setGroup(g.getName());
             drt.setGroupID(g.getGroupID());
             
+            //Where to go
+            drt.setGoTo("/tiwipro/secured/team.faces?groupID="+g.getGroupID());
+            
             //Needed            
             drt.setMilesDriven(202114);
             drt.setVehicleID("AE-114");           
@@ -195,9 +196,6 @@ public class DriverReportBean extends BaseBean
     }
     
     public void saveColumns() {  
-        //In here for saving the column preferences 
-        logger.debug("***************** save columns");
-        
         //To data store
         TablePreference pref = getTablePref();
         int cnt = 0;
@@ -225,10 +223,7 @@ public class DriverReportBean extends BaseBean
     }
     
     
-    public void cancelColumns() {  
-        //In here for saving the column preferences 
-        logger.debug("***************** cancel columns");
-        
+    public void cancelColumns() {        
         //Update live
         Iterator it = this.driverColumns.keySet().iterator();
         while ( it.hasNext() ) {
@@ -282,7 +277,6 @@ public class DriverReportBean extends BaseBean
     
     public Map<String,TableColumn> getDriverColumns()    
     {
-        //Need to do the check to prevent odd access behavior
         if ( driverColumns == null ) {     
             List<Boolean> visibleList = getTablePref().getVisible();
             driverColumns = new HashMap<String, TableColumn>();
@@ -325,13 +319,10 @@ public class DriverReportBean extends BaseBean
     }
     
     public void scrollerListener(DataScrollerEvent se)     
-    {        
-        logger.debug("scoll event page: " + se.getPage() + 
-                " old " + se.getOldScrolVal() + " new " + se.getNewScrolVal() +
-                " total " + this.driverData.size());
-        
+    {               
         this.start = (se.getPage()-1)*this.numRowsPerPg + 1;
         this.end = (se.getPage())*this.numRowsPerPg;
+        
         //Partial page
         if ( this.end > this.driverData.size() ) {
             this.end = this.driverData.size();
