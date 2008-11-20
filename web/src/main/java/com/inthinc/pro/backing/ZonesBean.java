@@ -287,7 +287,17 @@ public class ZonesBean extends BaseBean
     public void setPointsString(String pointsString)
     {
         if (editing && (item != null) && (pointsString != null))
-            item.setPointsString(pointsString);
+            try
+            {
+                item.setPointsString(pointsString);
+            }
+            catch (IllegalArgumentException e)
+            {
+                final String summary = MessageUtil.formatMessageString("zone_missingPoints", item.getName());
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                FacesContext.getCurrentInstance().addMessage(null, message);
+                throw e;
+            }
     }
 
     public String getAddress()
@@ -341,6 +351,13 @@ public class ZonesBean extends BaseBean
             else if ((item.getPoints() == null) || (item.getPoints().size() == 0))
             {
                 final String summary = MessageUtil.formatMessageString("zone_missing", item.getName());
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                context.addMessage(null, message);
+                return false;
+            }
+            else if ((item.getType() == ZoneType.POLYGON) && (item.getPoints().size() <= 3))
+            {
+                final String summary = MessageUtil.formatMessageString("zone_missingPoints", item.getName());
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
                 context.addMessage(null, message);
                 return false;

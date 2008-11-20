@@ -68,13 +68,13 @@
 
                   <div class="datagrid" id="zones_table-paginationListWrapBottom">
 
-                    <rich:dataTable id="dataTable" value="#{zonesBean.items}" var="item" rowKeyVar="index" styleClass="datagrid"
+                    <rich:dataTable id="dataTable" value="#{zonesBean.filteredItems}" var="item" rowKeyVar="index" styleClass="datagrid"
                       rows="5" rowClasses="tableOdd,tableEven" width="100%">
                       <rich:column sortBy="#{item.name}" sortOrder="ASCENDING">
                         <f:facet name="header">
                           <h:outputText value="#{messages.zonesHeader_name}" />
                         </f:facet>
-                        <a4j:commandLink action="#{zonesBean.display}" value="#{item.name}" reRender="zoneType,points,address,editZone" oncomplete="map.clearOverlays();centerMapAtZone(restoreZone());">
+                        <a4j:commandLink action="#{zonesBean.display}" value="#{item.name}" reRender="dataTable,zoneType,points,address,editZone" oncomplete="map.clearOverlays();centerMapAtZone(restoreZone());" style="#{(item.zoneID == zonesBean.item.zoneID) ? 'font-weight:bold' : ''}">
                           <f:param name="zoneID" value="#{item.zoneID}" />
                         </a4j:commandLink>
                       </rich:column>
@@ -90,7 +90,7 @@
                         <f:facet name="header">
                           <h:outputText value=" " />
                         </f:facet>
-                        <a4j:commandLink action="#{zonesBean.edit}" value="#{messages.adminTable_edit}" reRender="zoneType,points,address,editZone,zoneName,zoneAddress" oncomplete="map.clearOverlays();centerMapAtZone(restoreZone());">
+                        <a4j:commandLink action="#{zonesBean.edit}" value="#{messages.adminTable_edit}" reRender="dataTable,zoneType,points,address,editZone,zoneName,zoneAddress" oncomplete="map.clearOverlays();centerMapAtZone(restoreZone());">
                           <f:param name="zoneID" value="#{item.zoneID}" />
                         </a4j:commandLink>
                       </rich:column>
