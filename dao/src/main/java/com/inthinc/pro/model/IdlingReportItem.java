@@ -4,8 +4,8 @@ public class IdlingReportItem extends BaseEntity
 {
     private String group;
     private Driver driver;
+    private String vehicle;
     private String driveTime;
-    private Integer miles;
     private String lowHrs;
     private Integer lowPercent;
     private String highHrs;
@@ -34,6 +34,14 @@ public class IdlingReportItem extends BaseEntity
     {
         this.driver = driver;
     }
+    public String getVehicle()
+    {
+        return vehicle;
+    }
+    public void setVehicle(String vehicle)
+    {
+        this.vehicle = vehicle;
+    }
     public String getDriveTime()
     {
         return driveTime;
@@ -41,14 +49,6 @@ public class IdlingReportItem extends BaseEntity
     public void setDriveTime(String driveTime)
     {
         this.driveTime = driveTime;
-    }
-    public Integer getMiles()
-    {
-        return miles;
-    }
-    public void setMiles(Integer miles)
-    {
-        this.miles = miles;
     }
     public String getLowHrs()
     {
