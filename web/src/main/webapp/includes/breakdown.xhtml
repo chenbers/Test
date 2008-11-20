@@ -37,12 +37,12 @@
 	                </tr>
 	                <tr>
 	                    <td align="center" valign="top" width="120">
-							<div class="#{overallScoreStyle}">
-								<div class="score">
-									<h:outputText value="#{overallScore}" converter="ScoreConverter"/>
-								</div>
-							</div>
+	    					<ui:include src="/includes/overallScoreBox.xhtml">	
+								<ui:param name="scoreStyle" value="#{overallScoreStyle}"/>									
+        	  					<ui:param name="score" value="#{overallScore}"/>             						
+    						</ui:include>    							
 						</td>
+							
 	                    <td rowspan="2" width="">
 	                    	<div id="chartdiv" align="center"></div>
 				  			<h:inputHidden value="#{pieDef}" id="hiddenField3"/>
@@ -55,8 +55,9 @@
 	                    </td>
 	                 </tr>
 	                 <tr>
+	                 	
 	                    <td align="center" valign="top" width="120">
-	                        <p><img src="../images/legend2_vert.png" style="margin-top: 10px;" width="98" height="137" /></p>
+							<ui:include src="/includes/scoreBoxLegend.xhtml"/>
 	                    </td>
 	                 </tr>
 				</table>

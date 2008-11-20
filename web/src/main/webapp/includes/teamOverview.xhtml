@@ -46,7 +46,7 @@
 					<ul class="htabs">
 				      <ui:repeat value="#{teamOverviewBean.actions}" var="action" id="menu">
                     	<li class="#{(action.key == teamOverviewBean.selectedAction.key) ? action.onStyle : action.offStyle}">
-				            <a4j:commandLink title="#{action.displayString}" reRender="menu,overall,tabs">
+				            <a4j:commandLink title="#{action.displayString}" reRender="overview-form,overview-content">
 								<h:graphicImage value="/images/x.gif" width="#{action.width}" height="27"  style="border:none"/>
 				            	<f:setPropertyActionListener target="#{teamOverviewBean.selectedAction}" value="#{action}" />
 				            </a4j:commandLink>	
@@ -56,22 +56,14 @@
 					</a4j:form>
 				</h:panelGroup>
 				
-				
 				<h:panelGroup id="overview-content">
-					<a4j:region id="overall" rendered="#{teamOverviewBean.selectedAction.key == 'overall'}">
-						<ui:include src="/includes/teamOverviewTab_overall.xhtml" />
-					</a4j:region>
-<!-- 					
 					<ui:repeat value="#{teamOverviewBean.actions}" var="tab" id="tabs">
-						<a4j:region rendered="#{teamOverviewBean.selectedAction.key != 'overall' and teamOverviewBean.selectedAction.key == tab.key}">
+						<a4j:region rendered="#{teamOverviewBean.selectedAction.key == tab.key}">
 							<ui:include src="/includes/teamOverviewTab.xhtml">
-								<ui:param name="style" value="#{tab.onStyle}" />
-								<ui:param name="title" value="#{tab.displayString}" />
 								<ui:param name="type" value="#{tab.key}" />
 							</ui:include>
 						</a4j:region>
 					</ui:repeat>
- -->					
 				</h:panelGroup>
 			</h:panelGrid>
 		</h:panelGroup>

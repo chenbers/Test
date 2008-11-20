@@ -3,6 +3,7 @@ package com.inthinc.pro.backing;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -116,6 +117,8 @@ logger.debug("getSelectedBarDef() ");
         // Control parameters
         sb.append(bar3d.getControlParameters());
         sb.append(bar3d.getCategories(categoryLabelList));
+        
+        // TODO: reverse order
         for (ScoreCategory category : EnumSet.allOf(ScoreCategory.class))
         {
             List<Object> valueList = new ArrayList<Object>();
@@ -125,7 +128,6 @@ logger.debug("getSelectedBarDef() ");
             }
             sb.append(bar3d.getChartDataSet(category.getRange(), category.getColor(), valueList.toArray(new Object[0])));
         }
-        
         sb.append(bar3d.getClose());
 
         return sb.toString();

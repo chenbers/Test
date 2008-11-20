@@ -6,19 +6,22 @@
   	xmlns:iwi="http://pro.tiwi.com/jsf"
 	xmlns:h="http://java.sun.com/jsf/html">
 							
-<h:panelGrid columns="1" width="790" border="0" cellpadding="0" cellspacing="0">
-	<h:panelGrid columns="1" width="320" border="0" cellpadding="4" cellspacing="0" style="border-right: 1px solid #e1e1e1;">
-		<h:panelGroup>
-			<div class="piegrid_label"><a href="#" class="#{style}">#{title}</a></div>
-			<div id="tab_#{type}Div"></div>
-  			<input type="hidden" id="tab_#{type}Def" value="#{teamOverviewBean.selectedPieDef}"/>
-			<script type="text/javascript">
-				renderTypePie("#{type}", "300", "180");
-			</script>
+	<h:panelGrid width="920" border="0" cellpadding="0" cellspacing="0" columns="2">
+        <h:panelGrid width="120" border="0" cellspacing="0" cellpadding="4" style="border-right: 1px solid #e1e1e1;">
+        	<ui:include src="/includes/overallScoreBox.xhtml">	
+				<ui:param name="scoreStyle" value="#{teamOverviewBean.overallScoreStyle}"/>									
+          		<ui:param name="score" value="#{teamOverviewBean.overallScore}"/>             						
+    		</ui:include>    							
+			<ui:include src="/includes/scoreBoxLegend.xhtml"/>
+		</h:panelGrid>   
+		<h:panelGroup >
+				<div id="tab_#{type}Div" align="center"></div>
+		  		<input type="hidden" id="tab_#{type}Def" value="#{teamOverviewBean.selectedBarDef}"/>
+				<script type="text/javascript">
+					renderTypeBar("#{type}", "720", "500");
+				</script>
 		</h:panelGroup>
-         <h:graphicImage value="/images/legend2_horz.png" width="290" height="62"/>
-	</h:panelGrid>
-</h:panelGrid>	
+	</h:panelGrid>                          
 
                           
 </ui:composition>

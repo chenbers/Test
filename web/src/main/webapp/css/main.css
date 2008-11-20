@@ -718,37 +718,43 @@ ul#grid_nav li.text a:visited {
 	width: 90px;
 	height: 90px;
 	background: url(../images/score_lg_1.png) no-repeat;
-	margin: 0 auto 0 auto;
+	margin: 0;
 	}
 .score_lg_2 {
 	width: 90px;
 	height: 90px;
 	background: url(../images/score_lg_2.png) no-repeat;
-	margin: 0 auto 0 auto;
+	margin: 0;
 	}
 .score_lg_3 {
 	width: 90px;
 	height: 90px;
 	background: url(../images/score_lg_3.png) no-repeat;
-	margin: 0 auto 0 auto;
+	margin: 0;
 	}
 .score_lg_4 {
 	width: 90px;
 	height: 90px;
 	background: url(../images/score_lg_4.png) no-repeat;
-	margin: 0 auto 0 auto;
+	margin: 0;
 	}
+	
 .score_lg_5 {
 	width: 90px;
 	height: 90px;
 	background: url(../images/score_lg_5.png) no-repeat;
-	margin: 0 auto 0 auto;
+	margin: 0;
 	}
 	
-.score_lg_1 div.score, .score_lg_2 div.score, .score_lg_3 div.score, .score_lg_4 div.score, .score_lg_5 div.score {
+	
+.score_lg_1 div.score, 
+.score_lg_2 div.score, 
+.score_lg_3 div.score, 
+.score_lg_4 div.score, 
+.score_lg_5 div.score {
 	font: bold 32px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	color: #333;
-	padding: 22px 0 0 0px;
+	padding: 22px 0 0 20px;
 	}
 
 .score_med_1 {
@@ -2286,6 +2292,35 @@ ul.legend {
 .legend li.pink {
 	background: url(../images/ico_car_pink.png) no-repeat 0 50%;
 	}
+
+
+.lgnd {
+	width: 140px;
+	}
+	
+.lgnd td.top,
+.lgnd tr.top {
+	background: url(../images/lgnd_top.png) no-repeat bottom left;
+	height: 10px;
+	}
+	
+.lgnd td.mid,
+.lgnd tr.mid{
+	background: url(../images/lgnd_mid.png);
+	}
+	
+.lgnd td.bot,
+.lgnd tr.bot {
+	background: url(../images/lgnd_bot.png) no-repeat top left;
+	height: 10px;
+	}
+
+
+.lgnd td.o_score {
+	background: url(../images/lgnd_label.png) no-repeat left center;
+	padding: 10px 0 10px 30px;
+	}
+
 
 #footer_copyright {
 	float:left;
