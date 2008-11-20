@@ -27,13 +27,10 @@
 						sortBy="#{item.group}">
 						<f:facet name="header">
 							<h:outputText value="Group" />
-						</f:facet>	
-						<h:commandLink action="go_team" value="#{item.group}">
-							<f:setPropertyActionListener 
-								value="#{item.groupID}" 
-								target="#{navigationBean.groupID}">
-							</f:setPropertyActionListener>
-						</h:commandLink>  											
+						</f:facet>							
+						<h:outputLink value="#{item.goTo}">
+							<h:outputText value="#{item.group}" />
+						</h:outputLink>											
     				</rich:column>
     				<rich:column rendered="#{driverColumns['employeeID'].visible}" 
     					sortBy="#{item.employeeID}">
