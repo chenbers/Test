@@ -58,6 +58,7 @@ public class IdlingReportBean extends BaseBean
     private String startDate = "";
     private String endDate = "";
 
+    private DriverDAO driverDAO;
     
     static
     {
@@ -79,51 +80,66 @@ public class IdlingReportBean extends BaseBean
 //        idlingsData = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getPerson().getGroupID());
         idlingsData = new ArrayList<IdlingReportItem>();
         iri = new IdlingReportItem();
+        Driver d = new Driver();        
         
         //Snag the data and then convert the trip string to seconds for compare
-        iri.setGroup("North"); iri.setDriver("Jimmie Johnson"); iri.setDriveTime("38:52:22"); 
+        
+        //This is fake in that I'm just grabbing all the drivers and 
+        //putting some other stats in there with them
+        List <Driver> driversData = driverDAO.getAllDrivers(getUser().getPerson().getGroupID());
+        for ( int i = 0; i < driversData.size(); i++ ) {
+            d = driversData.get(i);           
+            
+            //Real            
+            iri.setDriver(d);
+            
+            //Fake
+            if ( i % 2 == 0 ) {
+            iri.setGroup("North"); iri.setDriveTime("38:52:22"); 
             iri.setMiles(1234); iri.setLowHrs("02:22:14"); iri.setLowPercent(22);
             iri.setHighHrs("10:48:11"); iri.setHighPercent(98); iri.setTotalHrs("41:16:36");
             iri.setTotalPercent(17);
-        iri.setLowPerSort(this.convertToSeconds(iri.getLowHrs()));
-            iri.setHighPerSort(this.convertToSeconds(iri.getHighHrs()));
-            iri.setTotalPerSort(this.convertToSeconds(iri.getTotalHrs()));
-            iri.setDriveTimeSort(this.convertToSeconds(iri.getDriveTime()));
-        idlingsData.add(iri);
-        
-        iri = new IdlingReportItem();
-        iri.setGroup("South"); iri.setDriver("Dale Earnhardt"); iri.setDriveTime("18:32:22"); 
+            
+            iri.setLowPerSort(this.convertToSeconds(iri.getLowHrs()));
+                iri.setHighPerSort(this.convertToSeconds(iri.getHighHrs()));
+                iri.setTotalPerSort(this.convertToSeconds(iri.getTotalHrs()));
+                iri.setDriveTimeSort(this.convertToSeconds(iri.getDriveTime()));
+            } else if ( i % 3 == 0 ) {
+            iri.setGroup("South"); iri.setDriveTime("18:32:22"); 
             iri.setMiles(31234); iri.setLowHrs("01:32:54"); iri.setLowPercent(12);
             iri.setHighHrs("20:18:31"); iri.setHighPercent(42); iri.setTotalHrs("11:36:46");
-            iri.setTotalPercent(22);
-        iri.setLowPerSort(this.convertToSeconds(iri.getLowHrs()));
-            iri.setHighPerSort(this.convertToSeconds(iri.getHighHrs()));
-            iri.setTotalPerSort(this.convertToSeconds(iri.getTotalHrs()));
-            iri.setDriveTimeSort(this.convertToSeconds(iri.getDriveTime()));
-        idlingsData.add(iri);
-        
-        iri = new IdlingReportItem();
-        iri.setGroup("East"); iri.setDriver("Tony Stewart"); iri.setDriveTime("42:12:52"); 
+            iri.setTotalPercent(22); 
+            
+            iri.setLowPerSort(this.convertToSeconds(iri.getLowHrs()));
+                iri.setHighPerSort(this.convertToSeconds(iri.getHighHrs()));
+                iri.setTotalPerSort(this.convertToSeconds(iri.getTotalHrs()));
+                iri.setDriveTimeSort(this.convertToSeconds(iri.getDriveTime()));    
+            } else if ( i % 4 == 0 ) {
+            iri.setGroup("East"); iri.setDriveTime("42:12:52"); 
             iri.setMiles(421234); iri.setLowHrs("04:21:44"); iri.setLowPercent(2);
             iri.setHighHrs("15:58:41"); iri.setHighPercent(66); iri.setTotalHrs("41:16:36");
             iri.setTotalPercent(42);
-        iri.setLowPerSort(this.convertToSeconds(iri.getLowHrs()));
-            iri.setHighPerSort(this.convertToSeconds(iri.getHighHrs()));
-            iri.setTotalPerSort(this.convertToSeconds(iri.getTotalHrs()));
-            iri.setDriveTimeSort(this.convertToSeconds(iri.getDriveTime()));
-        idlingsData.add(iri);
-        
-        iri = new IdlingReportItem();
-        iri.setGroup("West"); iri.setDriver("Kyle Busch"); iri.setDriveTime("118:12:42"); 
+            
+            iri.setLowPerSort(this.convertToSeconds(iri.getLowHrs()));
+                iri.setHighPerSort(this.convertToSeconds(iri.getHighHrs()));
+                iri.setTotalPerSort(this.convertToSeconds(iri.getTotalHrs()));
+                iri.setDriveTimeSort(this.convertToSeconds(iri.getDriveTime()));    
+            } else {
+            iri.setGroup("West"); iri.setDriveTime("118:12:42"); 
             iri.setMiles(314); iri.setLowHrs("03:12:54"); iri.setLowPercent(32);
             iri.setHighHrs("50:18:51"); iri.setHighPercent(12); iri.setTotalHrs("33:46:36");
             iri.setTotalPercent(55);
-        iri.setLowPerSort(this.convertToSeconds(iri.getLowHrs()));
-            iri.setHighPerSort(this.convertToSeconds(iri.getHighHrs()));
-            iri.setTotalPerSort(this.convertToSeconds(iri.getTotalHrs()));
-            iri.setDriveTimeSort(this.convertToSeconds(iri.getDriveTime()));
-        idlingsData.add(iri);
-        
+            
+            iri.setLowPerSort(this.convertToSeconds(iri.getLowHrs()));
+                iri.setHighPerSort(this.convertToSeconds(iri.getHighHrs()));
+                iri.setTotalPerSort(this.convertToSeconds(iri.getTotalHrs()));
+                iri.setDriveTimeSort(this.convertToSeconds(iri.getDriveTime()));
+            }
+                
+            idlingsData.add(iri);
+            iri = new IdlingReportItem();
+        }
+
         maxCount = idlingsData.size();
         loadResults(idlingsData);
         resetCounts();
@@ -132,12 +148,9 @@ public class IdlingReportBean extends BaseBean
 
     public List<IdlingReportItem> getIdlingData()
     {
-        logger.debug("getting");   
-        if ( idlingData.size() > 0 ) {
-            return idlingData;
-        } else {
-            return new ArrayList<IdlingReportItem>();
-        }
+        logger.debug("getting");           
+        return idlingData;
+        
     }
 
     public void setIdlingData(List<IdlingReportItem> idlingData)
@@ -150,15 +163,15 @@ public class IdlingReportBean extends BaseBean
         if ( this.idlingData.size() > 0 ) {
             this.idlingData.clear();
         }
-                  
+        // TODO: Always hit the database, no matter what, too much data to hold,
+        // watch for date range as well....
         String ID = this.searchFor.trim();
+        List <IdlingReportItem> matchedIdlers = new ArrayList<IdlingReportItem>();    
         if ( ID.length() != 0 ) {     
-            try {                                 
-                List <IdlingReportItem> matchedIdlers = new ArrayList<IdlingReportItem>();    
-                
+            try {                                                                 
                 for ( int i = 0; i < idlingsData.size(); i++ ) {
                     iri = (IdlingReportItem)idlingsData.get(i);                   
-                    String localID = iri.getDriver();
+                    String localID = Integer.toString((iri.getDriver().getDriverID()).intValue());
                     logger.debug(ID + " compared to " + localID);
                     //Fuzzy
                     int index1 = localID.indexOf(ID);                    
@@ -400,6 +413,18 @@ public class IdlingReportBean extends BaseBean
         total += (Integer.valueOf(st.nextToken()));
         
         return total;
+    }
+
+
+    public DriverDAO getDriverDAO()
+    {
+        return driverDAO;
+    }
+
+
+    public void setDriverDAO(DriverDAO driverDAO)
+    {
+        this.driverDAO = driverDAO;
     }
 }
 
