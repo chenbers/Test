@@ -1,6 +1,8 @@
 package com.inthinc.pro.model;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
@@ -8,15 +10,15 @@ import com.inthinc.pro.dao.annotations.ID;
 public class Zone extends BaseEntity
 {
     @ID
-    private Integer      zoneID;
+    private Integer             zoneID;
     @Column(name = "acctID")
-    private Integer      accountID;
-    private Integer      groupID;
-    private String       name;
-    private String       address;
-    private ZoneType     zoneType;
+    private Integer             accountID;
+    private Integer             groupID;
+    private String              name;
+    private String              address;
+    private ZoneType            type;
     @Column(type = LatLng.class)
-    private List<LatLng> points;
+    private List<LatLng>        points;
 
     public Integer getZoneID()
     {
@@ -68,14 +70,14 @@ public class Zone extends BaseEntity
         this.address = address;
     }
 
-    public ZoneType getZoneType()
+    public ZoneType getType()
     {
-        return zoneType;
+        return type;
     }
 
-    public void setZoneType(ZoneType zoneType)
+    public void setType(ZoneType zoneType)
     {
-        this.zoneType = zoneType;
+        this.type = zoneType;
     }
 
     public List<LatLng> getPoints()
@@ -83,21 +85,45 @@ public class Zone extends BaseEntity
         return points;
     }
 
-    public String getPointsString(String delim)
+    public void setPoints(List<LatLng> points)
+    {
+        this.points = points;
+    }
+
+    /**
+     * @return The points formatted as <code>(lat,lng);(lat,lng),...</code>
+     */
+    public String getPointsString()
     {
         StringBuilder sb = new StringBuilder();
         if (points != null)
             for (final LatLng point : points)
             {
                 if (sb.length() > 0)
-                    sb.append(delim);
+                    sb.append(';');
                 sb.append(point);
             }
         return sb.toString();
     }
 
-    public void setPoints(List<LatLng> points)
+    /**
+     * @param pointsString
+     *            The points formatted as <code>(lat,lng);(lat,lng),...</code>
+     */
+    public void setPointsString(String pointsString)
     {
-        this.points = points;
+        points = new ArrayList<LatLng>();
+
+        final StringTokenizer tokenizer = new StringTokenizer(pointsString, ";");
+        while (tokenizer.hasMoreTokens())
+        {
+            final String latlngToken = tokenizer.nextToken();
+            final int idx = latlngToken.indexOf(',');
+            if (idx == -1)
+                throw new IllegalArgumentException("invalid point pair string: " + latlngToken);
+            final float lat = new Float(latlngToken.substring(1, idx));
+            final float lng = new Float(latlngToken.substring(idx + 1, latlngToken.length() - 1));
+            points.add(new LatLng(lat, lng));
+        }
     }
 }

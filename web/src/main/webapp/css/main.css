@@ -587,7 +587,11 @@ button span {
 span.login {
 	background: url(../images/btn_login.png) left no-repeat;
 	}
-	
+
+span.add {
+	background: url(../images/btn_add.png) left no-repeat;
+	}
+
 span.save {
 	background: url(../images/btn_save.png) left no-repeat;
 	}
@@ -617,6 +621,7 @@ span.apply {
 	background: url(../images/btn_apply.png) left no-repeat;
 	padding: 0 0 0 25px;
 	}
+
 
 
 /* HACKS */

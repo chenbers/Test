@@ -7,22 +7,19 @@ import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.model.Zone;
+import com.inthinc.pro.model.ZoneType;
 import com.inthinc.pro.util.MessageUtil;
 
 public class ZonesBean extends BaseBean
 {
-    private static final Logger logger        = LogManager.getLogger(ZonesBean.class);
-
-    private List<Zone>          items;
-    private List<Zone>          filteredItems = new LinkedList<Zone>();
-    private String              filterValue;
-    private Zone                editItem;
-    private ZoneDAO             zoneDAO;
+    private List<Zone> items;
+    private List<Zone> filteredItems = new LinkedList<Zone>();
+    private String     filterValue;
+    private Zone       item;
+    private boolean    editing;
+    private ZoneDAO    zoneDAO;
 
     public void setZoneDAO(ZoneDAO zoneDAO)
     {
@@ -149,7 +146,7 @@ public class ZonesBean extends BaseBean
                 if (word.startsWith(filterWord))
                     return true;
         }
-        if ((item.getZoneType() != null) && item.getZoneType().getName().toLowerCase().startsWith(filterWord))
+        if ((item.getType() != null) && item.getType().getName().toLowerCase().startsWith(filterWord))
             return true;
 
         return false;
@@ -160,7 +157,33 @@ public class ZonesBean extends BaseBean
      */
     public void add()
     {
-        editItem = new Zone();
+        item = new Zone();
+        editing = true;
+    }
+
+    /**
+     * Called when the user chooses to display an item.
+     */
+    public void display()
+    {
+        selectItem("zoneID");
+        editing = false;
+    }
+
+    private void selectItem(String idKey)
+    {
+        item = null;
+        final Map<String, String> parameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        if (parameterMap.get(idKey) != null)
+        {
+            final int editID = Integer.parseInt(parameterMap.get(idKey));
+            for (final Zone testItem : items)
+                if (testItem.getZoneID().equals(editID))
+                {
+                    item = testItem;
+                    break;
+                }
+        }
     }
 
     /**
@@ -168,17 +191,8 @@ public class ZonesBean extends BaseBean
      */
     public void edit()
     {
-        final Map<String, String> parameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        if (parameterMap.get("editID") != null)
-        {
-            final int editID = Integer.parseInt(parameterMap.get("editID"));
-            for (final Zone item : items)
-                if (item.getZoneID().equals(editID))
-                {
-                    editItem = item;
-                    break;
-                }
-        }
+        selectItem("zoneID");
+        editing = true;
     }
 
     /**
@@ -186,7 +200,7 @@ public class ZonesBean extends BaseBean
      */
     public void cancelEdit()
     {
-        editItem = null;
+        editing = false;
     }
 
     /**
@@ -203,20 +217,22 @@ public class ZonesBean extends BaseBean
         final FacesContext context = FacesContext.getCurrentInstance();
 
         if (add)
-            editItem.setZoneID(zoneDAO.create(getUser().getPerson().getAccountID(), editItem));
+            item.setZoneID(zoneDAO.create(getUser().getPerson().getAccountID(), item));
         else
-            zoneDAO.update(editItem);
+            zoneDAO.update(item);
 
         // add a message
-        final String summary = MessageUtil.formatMessageString(add ? "zone_added" : "zone_updated", editItem.getName());
+        final String summary = MessageUtil.formatMessageString(add ? "zone_added" : "zone_updated", item.getName());
         final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
         context.addMessage(null, message);
 
         if (add)
         {
-            items.add(editItem);
+            items.add(item);
             applyFilter();
         }
+
+        editing = false;
     }
 
     /**
@@ -228,16 +244,60 @@ public class ZonesBean extends BaseBean
 
         // TODO: disconnect from zone alerts
 
-        zoneDAO.deleteByID(editItem.getZoneID());
+        selectItem("deleteID");
+        zoneDAO.deleteByID(item.getZoneID());
 
         // add a message
-        final String summary = MessageUtil.formatMessageString("zone_deleted", editItem.getName());
+        final String summary = MessageUtil.formatMessageString("zone_deleted", item.getName());
         final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
         context.addMessage(null, message);
 
-        items.remove(editItem);
-        filteredItems.remove(editItem);
-        editItem = null;
+        items.remove(item);
+        filteredItems.remove(item);
+        item = null;
+    }
+
+    public Zone getItem()
+    {
+        return item;
+    }
+
+    public Integer getZoneTypeCode()
+    {
+        if ((item != null) && (item.getType() != null))
+            return item.getType().getCode();
+        return null;
+    }
+
+    public void setZoneTypeCode(Integer zoneTypeCode)
+    {
+        if (editing && (item != null) && (zoneTypeCode != null))
+            item.setType(ZoneType.valueOf(zoneTypeCode));
+    }
+
+    public String getPointsString()
+    {
+        if (item != null)
+            return item.getPointsString();
+        return null;
+    }
+
+    public void setPointsString(String pointsString)
+    {
+        if (editing && (item != null) && (pointsString != null))
+            item.setPointsString(pointsString);
+    }
+
+    public String getAddress()
+    {
+        if (item != null)
+            return item.getAddress();
+        return null;
+    }
+
+    public void setAddress(String address)
+    {
+        // the address isn't settable from the hidden field
     }
 
     /**
@@ -245,15 +305,12 @@ public class ZonesBean extends BaseBean
      */
     public boolean isAdd()
     {
-        return (editItem != null) && (editItem.getZoneID() == null);
+        return (item != null) && (item.getZoneID() == null);
     }
 
-    /**
-     * @return An item that the user can edit. Either returns a new item to be added, a single item to be edited, or an item that represents multiple items being batch edited.
-     */
-    public Zone getEditItem()
+    public boolean isEditing()
     {
-        return editItem;
+        return editing;
     }
 
     /**
@@ -269,6 +326,24 @@ public class ZonesBean extends BaseBean
      */
     private boolean validate()
     {
+        if (item != null)
+        {
+            final FacesContext context = FacesContext.getCurrentInstance();
+            if ((item.getType() == null) || (item.getType() == ZoneType.NONE))
+            {
+                final String summary = MessageUtil.formatMessageString("zone_missingType", item.getName());
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                context.addMessage(null, message);
+                return false;
+            }
+            else if ((item.getPoints() == null) || (item.getPoints().size() == 0))
+            {
+                final String summary = MessageUtil.formatMessageString("zone_missing", item.getName());
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                context.addMessage(null, message);
+                return false;
+            }
+        }
         return true;
     }
 }

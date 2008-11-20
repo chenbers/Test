@@ -11,6 +11,14 @@
 
   <ui:define name="scripts">
     <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{gmBean.key}" type="text/javascript"></script>
+    <script src="#{facesContext.externalContext.requestContextPath}/js/jsBaseClass.js" type="text/javascript"></script>
+    <script src="#{facesContext.externalContext.requestContextPath}/js/googleMap.js" type="text/javascript"></script>
+    <script src="#{facesContext.externalContext.requestContextPath}/js/mapGeocode.js" type="text/javascript"></script>
+    <script src="#{facesContext.externalContext.requestContextPath}/js/mapIcons.js" type="text/javascript"></script>
+    <script src="#{facesContext.externalContext.requestContextPath}/js/zone.js" type="text/javascript"></script>
+    <script type="text/javascript">    
+      var map;
+    </script>
   </ui:define>
 
   <ui:define name="content">
@@ -36,10 +44,13 @@
             <div class="panel_w">
               <div class="panel_content">
 
-                <a4j:form id="zones-table-form">
+                <a4j:form id="zones-form">
+                  <h:inputHidden id="zoneType" value="#{zonesBean.zoneTypeCode}" />
+                  <h:inputHidden id="points" value="#{zonesBean.pointsString}" />
+                  <h:inputHidden id="address" value="#{zonesBean.address}" />
 
                   <ul id="grid_nav" style="margin: 0;">
-                    <li class="l"><h:commandLink action="#{zonesBean.add}"><button value="submit" class="left"><span class="add"><h:outputText value="#{messages.zones_addZone}" /></span></button></h:commandLink></li>
+                    <li class="l"><a4j:commandLink action="#{zonesBean.add}" onclick="map.clearOverlays()" reRender="editZone"><button value="submit" class="left"><span class="add"><h:outputText value="#{messages.zones_addZone}" /></span></button></a4j:commandLink></li>
                     <li class="l">
                       <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
                         <tr>
@@ -59,15 +70,15 @@
 
                     <rich:dataTable id="dataTable" value="#{zonesBean.items}" var="item" rowKeyVar="index" styleClass="datagrid"
                       rows="5" rowClasses="tableOdd,tableEven" width="100%">
-                      <rich:column>
+                      <rich:column sortBy="#{item.name}" sortOrder="ASCENDING">
                         <f:facet name="header">
                           <h:outputText value="#{messages.zonesHeader_name}" />
                         </f:facet>
-                        <a4j:commandLink action="#{zonesBean.edit}" value="#{item.name}" reRender="zoneName,zoneAddress" oncomplete="/*update the map*/">
-                          <f:param name="editID" value="#{item.zoneID}" />
+                        <a4j:commandLink action="#{zonesBean.display}" value="#{item.name}" reRender="zoneType,points,address,editZone" oncomplete="map.clearOverlays();centerMapAtZone(restoreZone());">
+                          <f:param name="zoneID" value="#{item.zoneID}" />
                         </a4j:commandLink>
                       </rich:column>
-                      <rich:column>
+                      <rich:column sortBy="#{item.created}">
                         <f:facet name="header">
                           <h:outputText value="#{messages.zonesHeader_created}" />
                         </f:facet>
@@ -79,7 +90,15 @@
                         <f:facet name="header">
                           <h:outputText value=" " />
                         </f:facet>
-                        <a href="#" onclick="Richfaces.showModalPanel('confirmDelete', {}, {deleteID:#{item.zoneID}}); return false;"><h:outputText value="#{messages.adminTable_delete}" /></a>
+                        <a4j:commandLink action="#{zonesBean.edit}" value="#{messages.adminTable_edit}" reRender="zoneType,points,address,editZone,zoneName,zoneAddress" oncomplete="map.clearOverlays();centerMapAtZone(restoreZone());">
+                          <f:param name="zoneID" value="#{item.zoneID}" />
+                        </a4j:commandLink>
+                      </rich:column>
+                      <rich:column>
+                        <f:facet name="header">
+                          <h:outputText value=" " />
+                        </f:facet>
+                        <a href="#" onclick="Richfaces.showModalPanel('confirmDelete', {deleteID:#{item.zoneID}}); return false;"><h:outputText value="#{messages.adminTable_delete}" /></a>
                       </rich:column>
                     </rich:dataTable>
 
@@ -87,102 +106,83 @@
 
                   </div>
 
-                </a4j:form>
+                  <a4j:outputPanel id="editZone">
 
-                <a4j:form id="zones-edit-form">
+                    <h:panelGroup rendered="#{zonesBean.editing}">
 
-                  <ul id="grid_nav" style="margin: 0;">
-                    <li class="l">
-                      <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
-                        <tr>
-                          <td><h:outputText value="#{messages.zones_name}" /></td>
-                          <td>
-                            <h:inputText id="zoneName" value="#{zonesBean.editItem.name}" class="text" size="30" maxlength="30" required="#{not empty zonesBean.editItem}" requiredMessage="#{messages.required}" />
-                            <rich:message for="zoneName" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                          </td>
-                        </tr>
-                      </table>
-                    </li>
-                    <li class="l divider"><img src="/images/grid_nav_divider.png" /></li>
-                    <li class="l">
-                      <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
-                        <tr>
-                          <td><h:outputText value="#{messages.zones_address}" /></td>
-                          <td>
-                            <h:inputText id="zoneAddress" value="#{zonesBean.editItem.address}" class="text" size="30" maxlength="64" required="#{not empty zonesBean.editItem}" requiredMessage="#{messages.required}" />
-                            <rich:message for="zoneAddress" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                          </td>
-                        </tr>
-                      </table>
-                    </li>
-                    <li class="l"><a4j:commandLink><button value="submit" class="left"><span class="search"><h:outputText value="#{messages.zones_locate}" /></span></button></a4j:commandLink></li>
-                  </ul>
-                  <ul id="grid_nav" style="margin: 0;">
-                    <li class="l">
-                      <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
-                        <tr>
-                          <td><h:outputText value="#{messages.zones_type}" /></td>
-                          <td>
-                            [zone type buttons]
-                          </td>
-                        </tr>
-                      </table>
-                    </li>
-                    <li class="r"><a4j:commandLink action="#{zonesBean.save}" reRender="dataTable"><button value="submit" class="left"><span class="save"><h:outputText value="#{messages.zones_save}" /></span></button></a4j:commandLink></li>
-                  </ul>
+                        <ul id="grid_nav" style="margin: 0;">
+                          <li class="l">
+                            <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
+                              <tr>
+                                <td><h:outputText value="#{messages.zones_name}" /></td>
+                                <td>
+                                  <h:inputText id="zoneName" value="#{zonesBean.item.name}" class="text" size="30" maxlength="30" required="#{zonesBean.editing}" requiredMessage="#{messages.required}" />
+                                  <rich:message for="zoneName" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                </td>
+                              </tr>
+                            </table>
+                          </li>
+                          <li class="l divider"><img src="/images/grid_nav_divider.png" /></li>
+                          <li class="l">
+                            <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
+                              <tr>
+                                <td><h:outputText value="#{messages.zones_address}" /></td>
+                                <td>
+                                  <h:inputText id="zoneAddress" value="#{zonesBean.item.address}" class="text" size="30" maxlength="64" required="#{zonesBean.editing}" requiredMessage="#{messages.required}" />
+                                  <rich:message for="zoneAddress" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                </td>
+                              </tr>
+                            </table>
+                          </li>
+                          <li class="l"><button value="submit" class="left" onclick="showAddress(document.getElementById('zones-form:zoneAddress').value); return false;"><span class="search"><h:outputText value="#{messages.zones_locate}" /></span></button></li>
+                        </ul>
+                        <ul id="grid_nav" style="margin: 0;">
+                          <li class="l" id="zone-type">
+                            <h:outputText value="#{messages.zones_type}" />
+                            <a href="#" onclick="onZoneDrawingModeSelected(RECT_MODE); return false;"><h:graphicImage value="/images/btn_rectangle.png" style="border:none;vertical-align:middle;" /></a>
+                            <rich:spacer width="0" />
+                            <a href="#" onclick="onZoneDrawingModeSelected(POLYGON_MODE); return false;"><h:graphicImage value="/images/btn_polygon.png" style="border:none;vertical-align:middle;" /></a>
+                            <rich:spacer width="0" />
+                            <a href="#" onclick="onZoneDrawingModeSelected(CIRCLE_MODE); return false;"><h:graphicImage value="/images/btn_circle.png" style="border:none;vertical-align:middle;" /></a>
+                          </li>
+                          <li class="l" id="RECT_MODE" style="display:none">
+                            <h:outputText value="#{messages.zones_drawRectangle}" />
+                          </li>
+                          <li class="l" id="POLYGON_MODE" style="display:none">
+                            <h:outputText value="#{messages.zones_drawPolygon}" />
+                          </li>
+                          <li class="l" id="CIRCLE_MODE" style="display:none">
+                            <h:outputText value="#{messages.zones_drawCircle}" />
+                          </li>
+                          <li class="l" id="draw-buttons" style="display:none">
+                            <button value="submit" class="left" onclick="onZoneDrawingModeSelected(NONE_MODE); return false;"><span class="cancel"><h:outputText value="#{messages.zones_undo}" /></span></button>
+                          </li>
+                          <li class="r">
+                            <a4j:commandLink action="#{zonesBean.save}" onclick="if(selectedDrawingMode)onZoneDrawingModeSelected()" reRender="dataTable,editZone"><button value="submit" class="left"><span class="save"><h:outputText value="#{messages.zones_save}" /></span></button></a4j:commandLink>
+                            <a4j:commandLink action="#{zonesBean.cancelEdit}" onclick="if(selectedDrawingMode)onZoneDrawingModeSelected(NONE_MODE)" reRender="dataTable,editZone" oncomplete="map.clearOverlays();centerMapAtZone(restoreZone());" immediate="true"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></a4j:commandLink>
+                          </li>
+                        </ul>
 
-                  <div class="spacer"></div>
+                        <div class="spacer"></div>
 
-                  <h:panelGroup styleClass="map-border" layout="block">
-                    <div id="map-canvas" style="height:100%;height:700px;border:0"></div>
-                  </h:panelGroup>
+                    </h:panelGroup>
 
-                  <script type="text/javascript">
-                    if (GBrowserIsCompatible())
-                    {
-                      map = new GMap2(document.getElementById("map-canvas"));
-                      map.addControl(new GLargeMapControl());
-                      map.addControl(new GMapTypeControl());
-                      map.addControl(new GOverviewMapControl());
-                      map.setCenter(new GLatLng(#{driverLocationBean.center.lat}, #{driverLocationBean.center.lng}), 5);
-                      map.setMapType(G_NORMAL_MAP);
-
-                      // Create a base icon for all of our markers that specifies the
-                      // shadow, icon dimensions, etc.
-                      var baseIcon = new GIcon(G_DEFAULT_ICON);
-                      baseIcon.shadow = "http://www.google.com/mapfiles/shadow50.png";
-                      baseIcon.iconSize = new GSize(20, 34);
-                      baseIcon.shadowSize = new GSize(37, 34);
-                      baseIcon.iconAnchor = new GPoint(9, 34);
-                      baseIcon.infoWindowAnchor = new GPoint(9, 2);
-
-                      // Creates a marker whose info window displays the letter corresponding
-                      // to the given index.
-                      function createMarker(point, index, name,link)
-                      {
-                        // Create a lettered icon for this point using our icon class
-                        var letter = String.fromCharCode("A".charCodeAt(0) + index);
-                        var letteredIcon = new GIcon(baseIcon);
-                        letteredIcon.image = "http://www.google.com/mapfiles/marker" + letter + ".png";
-
-                        // Set up our GMarkerOptions object
-                        markerOptions = { icon:letteredIcon };
-                        var marker = new GMarker(point, markerOptions);
-
-                        GEvent.addListener(marker, "click", function() {
-                              marker.openInfoWindowHtml('Driver &#160;<a href="/tiwipro/secured/driver.faces">'+name+'</a>');
-                        });
-                        return marker;
-                      }
-                      var i=0;
-                      <ui:repeat value="#{driverLocationBean.driverBeans}" var="driver">
-                        var latlng = new GLatLng(#{driver.lastLocation.lat}, #{driver.lastLocation.lng});
-                        map.addOverlay(createMarker(latlng, i++,  "#{driver.driverName}"));
-                      </ui:repeat>
-                    }
-                  </script>
+                  </a4j:outputPanel>
 
                 </a4j:form>
+
+                <h:panelGroup styleClass="map-border" layout="block">
+                  <div id="map-canvas" style="height:100%;height:700px;border:0"></div>
+                </h:panelGroup>
+
+                <script type="text/javascript">
+                  if (GBrowserIsCompatible())
+                  {
+                    map = new GMap2(document.getElementById("map-canvas"));
+                    map.addControl(new GLargeMapControl());
+                    map.addControl(new GMapTypeControl());
+                  }
+                </script>
 
               </div>
             </div>
