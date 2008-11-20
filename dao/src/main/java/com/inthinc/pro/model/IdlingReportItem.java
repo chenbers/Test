@@ -3,7 +3,7 @@ package com.inthinc.pro.model;
 public class IdlingReportItem extends BaseEntity
 {
     private String group;
-    private String driver;
+    private Driver driver;
     private String driveTime;
     private Integer miles;
     private String lowHrs;
@@ -12,7 +12,7 @@ public class IdlingReportItem extends BaseEntity
     private Integer highPercent;
     private String totalHrs;
     private Integer totalPercent;
-    
+
     private Integer lowPerSort;
     private Integer highPerSort;
     private Integer totalPerSort;
@@ -26,11 +26,11 @@ public class IdlingReportItem extends BaseEntity
     {
         this.group = group;
     }
-    public String getDriver()
+    public Driver getDriver()
     {
         return driver;
     }
-    public void setDriver(String driver)
+    public void setDriver(Driver driver)
     {
         this.driver = driver;
     }
