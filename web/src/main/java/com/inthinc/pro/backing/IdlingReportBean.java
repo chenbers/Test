@@ -166,7 +166,9 @@ public class IdlingReportBean extends BaseBean
         // TODO: Always hit the database, no matter what, too much data to hold,
         // watch for date range as well....
         String ID = this.searchFor.trim();
-        List <IdlingReportItem> matchedIdlers = new ArrayList<IdlingReportItem>();    
+        List <IdlingReportItem> matchedIdlers = new ArrayList<IdlingReportItem>(); 
+        
+        // TODO: Date range check in here
         if ( ID.length() != 0 ) {     
             try {                                                                 
                 for ( int i = 0; i < idlingsData.size(); i++ ) {
