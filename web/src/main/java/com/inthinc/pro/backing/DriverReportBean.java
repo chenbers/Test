@@ -72,7 +72,8 @@ public class DriverReportBean extends BaseBean
         AVAILABLE_COLUMNS.add("seatBelt");
     }
     
-    public void init() {               
+    public void init() {  
+        logger.debug("init");
         driversData = driverDAO.getAllDrivers(getUser().getPerson().getGroupID());        
         loadResults(driversData);     
         maxCount = driverData.size();        
@@ -81,13 +82,8 @@ public class DriverReportBean extends BaseBean
         
 
     public List<DriverReportItem> getDriverData()
-    {
-        logger.debug("getting");   
-        if ( driverData.size() > 0 ) {
-            return driverData;
-        } else {
-            return new ArrayList<DriverReportItem>();
-        }
+    {             
+        return driverData;
     }
 
     public void setDriverData(List<DriverReportItem> driverData)
