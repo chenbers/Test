@@ -7,7 +7,7 @@
   			xmlns:f="http://java.sun.com/jsf/core">
 
 	<ui:param name="reportsSelected" value="current" />
-	<ui:param name="driversSelected" value="current" />
+	<ui:param name="idlingSelected" value="current" />
 	
 
 	<ui:define name="subnavigation">
@@ -18,7 +18,7 @@
 	<ui:define name="content">
 		
 
-			<table width="840" height="430" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+			<table width="940" height="430" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
 				<tr>
 					<td valign="top">
 												
@@ -60,15 +60,15 @@
             										</button>
             									</a4j:commandLink>            								
             								</li>            									
-            								<li class="l text">
-            									<h:outputText value="Date Range " />
+            								<li class="l text">            									
+            									<h:outputText value="Date Range " />            									
             									<rich:calendar inputSize="10"
             										value="#{idlingReportBean.startDate}" 
-            										datePattern="MM/dd/yy"/>
+            										datePattern="dd MMM yy"/>
             									<rich:spacer width="5"/>
             									<rich:calendar inputSize="10"  
             										value="#{idlingReportBean.endDate}" 
-            										datePattern="MM/dd/yy"/>
+            										datePattern="dd MMM yy"/>
             								</li>
             								<li class="l text">
             									<a href="#" class="ls_tab_edit_columns" 
