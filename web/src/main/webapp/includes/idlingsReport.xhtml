@@ -29,11 +29,17 @@
 						<h:outputText value="#{item.group}" />   
     				</rich:column>
     				<rich:column rendered="#{idlingColumns['driver'].visible}" 
-    					sortBy="#{item.driver}">
+    					sortBy="#{item.driver.person.last}">
       					<f:facet name="header">
       						<h:outputText value="Driver" />
       					</f:facet>
-						<h:outputText value="#{item.driver}" />      
+						<h:commandLink action="go_driver" 
+							value="#{item.driver.person.first} #{item.driver.person.last}">
+      						<f:setPropertyActionListener 
+								value="#{item.driver}" 
+								target="#{navigationBean.driver}">
+							</f:setPropertyActionListener>
+      					</h:commandLink>       
     				</rich:column>
     				<rich:column rendered="#{idlingColumns['drivetime'].visible}" 
     					sortBy="#{item.driveTimeSort}">    					
@@ -92,10 +98,13 @@
     				<rich:column>
       					<f:facet name="header">
       						<h:outputText value="" />
-      					</f:facet>      					
-      					<a4j:commandLink action="go_trips" value="Details">      					
-							
-						</a4j:commandLink> 
+      					</f:facet>    
+      					<h:commandLink action="go_driverTrips" value="Details">
+      						<f:setPropertyActionListener 
+      							value="#{item.driver}" 
+      							target="#{navigationBean.driver}">
+      						</f:setPropertyActionListener>
+      					</h:commandLink>  					      					
     				</rich:column>
     			</rich:dataTable>    	
     			
