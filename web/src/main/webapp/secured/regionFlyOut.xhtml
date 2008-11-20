@@ -1,15 +1,41 @@
 <ui:composition template="/layout/layout.xhtml" 
-			xmlns="http://www.w3.org/1999/xhtml" 
-			xmlns:ui="http://java.sun.com/jsf/facelets"
-  			xmlns:h="http://java.sun.com/jsf/html" 
-  			xmlns:rich="http://richfaces.org/rich"
-  			xmlns:a4j="http://richfaces.org/a4j"
-  			xmlns:iwi="http://pro.tiwi.com/jsf"
-  			xmlns:f="http://java.sun.com/jsf/core">
+					xmlns="http://www.w3.org/1999/xhtml" 
+					xmlns:ui="http://java.sun.com/jsf/facelets"
+		  			xmlns:h="http://java.sun.com/jsf/html" 
+		  			xmlns:rich="http://richfaces.org/rich"
+		  			xmlns:a4j="http://richfaces.org/a4j"
+		  			xmlns:iwi="http://pro.tiwi.com/jsf"
+		  			xmlns:f="http://java.sun.com/jsf/core">
   			
 	<ui:define name="scripts">
-		<script src="/tiwipro/js/FusionCharts.js" type="text/javascript"></script>	
-		<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{gmBean.key}" type="text/javascript"></script>			
+ 		<script src="/tiwipro/js/FusionCharts.js" type="text/javascript"></script>	
+		<!--<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{gmBean.key}" type="text/javascript"></script>
+	
+ 	<script type="text/javascript" src="/tiwipro/js/submodalsource.js"></script>
+		<script type="text/javascript" src="/tiwipro/js/c_config.js"></script>
+		<script type="text/javascript" src="/tiwipro/js/c_smartmenus.js"></script>
+		<script type="text/javascript" src="/tiwipro/js/c_addon_popup_menus.js"></script> -->
+							
+							
+		<script type="text/JavaScript">
+		<!--
+		function t_show(id)
+		{
+		     if (document.getElementById(id).style.display == 'none')
+		     {
+		          document.getElementById(id).style.display = '';
+		          
+		     }
+		}
+		//-->
+		
+		<!--
+		function t_hide(id)
+		{
+		          document.getElementById(id).style.display = 'none';
+		}
+		//-->
+		</script>
 	</ui:define>  			
 
 	<ui:param name="homeSelected" value="current" />
@@ -34,18 +60,18 @@
 			  <td valign="top">
 			  <table width="130" border="0" cellpadding="0" cellspacing="0"  style="margin-top: 40px;">
             <tr>
-              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_line" onclick="hide('mpg_full_screen');hide('overall_full_screen');hide('fleet_full_screen');show('trend_full_screen');return true;">Trend</a></td>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_line" onclick="t_hide('mpg_full_screen');t_hide('overall_full_screen');t_hide('fleet_full_screen');t_show('trend_full_screen');return true;">Trend</a></td>
 
             </tr>
             <tr>
-              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_overall" onclick="hide('mpg_full_screen');hide('trend_full_screen');hide('fleet_full_screen');show('overall_full_screen');return true;">Overall Score </a></td>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_overall" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('fleet_full_screen');t_show('overall_full_screen');return true;">Overall Score </a></td>
             </tr>
             <tr>
-              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_map" onclick="hide('mpg_full_screen');hide('trend_full_screen');hide('overall_full_screen');show('fleet_full_screen');return true;">Fleet Map </a></td>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_map" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('fleet_full_screen');return true;">Fleet Map </a></td>
             </tr>
             <tr>
 
-              <td valign="top" class="ls_tab_on"><a href="#" class="ls_tab_gas" onclick="hide('fleet_full_screen');hide('trend_full_screen');hide('overall_full_screen');show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
+              <td valign="top" class="ls_tab_on"><a href="#" class="ls_tab_gas" onclick="t_hide('fleet_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
             </tr>
         </table>
 			  </td>
@@ -59,9 +85,9 @@
 						<span class="gas">Miles Per Gallon</span>
 						<span class="panel_links_ico"><a href="#" class="on">30 days</a> <a href="#">3 months</a> <a href="#">6 months</a> <a href="#">12 months</a></span>
 						<span class="panel_ico">
-                        	<a href="#" title="" onclick="c_show('PopupMenu1',event); return false;" onmouseout="c_hide(); return false;"><img src="/images/ico_tools.png" border="0" /></a>
+                        	<a href="#" title="" onclick="c_t_show('PopupMenu1',event); return false;" onmouseout="c_t_hide(); return false;"><img src="/images/ico_tools.png" border="0" /></a>
 
-                        	<a href="#" class=""  onclick="hide('trend_full_screen');hide('overall_full_screen');hide('fleet_full_screen');hide('mpg_full_screen'); show('dash');return true;"><img src="/images/ico_minimize.png" width="16" height="16" border="0" /></a>
+                        	<a href="#" class=""  onclick="t_hide('trend_full_screen');t_hide('overall_full_screen');t_hide('fleet_full_screen');t_hide('mpg_full_screen'); t_show('dash');return true;"><img src="/images/ico_minimize.png" width="16" height="16" border="0" /></a>
                         </span>
                     </div>
 				</div>
@@ -95,18 +121,18 @@
 			  <td valign="top">
 			  <table width="130" border="0" cellpadding="0" cellspacing="0"  style="margin-top: 40px;">
             <tr>
-              <td valign="top" class="ls_tab_on"><a href="#" class="ls_tab_line" onclick="hide('mpg_full_screen');hide('overall_full_screen');hide('fleet_full_screen');show('trend_full_screen');return true;">Trend</a></td>
+              <td valign="top" class="ls_tab_on"><a href="#" class="ls_tab_line" onclick="t_hide('mpg_full_screen');t_hide('overall_full_screen');t_hide('fleet_full_screen');t_show('trend_full_screen');return true;">Trend</a></td>
 
             </tr>
             <tr>
-              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_overall" onclick="hide('mpg_full_screen');hide('trend_full_screen');hide('fleet_full_screen');show('overall_full_screen');return true;">Overall Score </a></td>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_overall" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('fleet_full_screen');t_show('overall_full_screen');return true;">Overall Score </a></td>
             </tr>
             <tr>
-              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_map" onclick="hide('mpg_full_screen');hide('trend_full_screen');hide('overall_full_screen');show('fleet_full_screen');return true;">Fleet Map </a></td>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_map" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('fleet_full_screen');return true;">Fleet Map </a></td>
             </tr>
             <tr>
 
-              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_gas" onclick="hide('fleet_full_screen');hide('trend_full_screen');hide('overall_full_screen');show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_gas" onclick="t_hide('fleet_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
             </tr>
         </table>
 			  </td>
@@ -121,60 +147,54 @@
 						<span class="panel_links_ico"><a href="#" class="on">30 days</a> <a href="#">3 months</a> <a href="#">6 months</a> <a href="#">12 months</a></span>
 						<span class="panel_ico">
                         	<a href="#" title="" onclick="c_show('PopupMenu1',event); return false;" onmouseout="c_hide(); return false;"><img src="/images/ico_tools.png" border="0" /></a>
-
-                        	<a href="#" class=""  onclick="hide('trend_full_screen');hide('overall_full_screen');hide('fleet_full_screen'); show('dash');return true;"><img src="/images/ico_minimize.png" width="16" height="16" border="0" /></a>
+                            <a href="#" class="" onclick="t_show('trend_full_screen');t_hide('dash');return true;"><img src="/images/ico_expand.png" border="0" /></a>
                         </span>
                     </div>
 				</div>
 					<div class="panel_w">
 					  <div class="panel_content">
 					  
-						<div id="chartdiv5" align="center"></div>
+						<div id="chartdiv2" align="center"></div>
 						<script type="text/javascript">
-						   var chart = new FusionCharts("/swf/MSLine.swf", "ChartId", "800", "600", "0", "0");
+						   var chart = new FusionCharts("/swf/MSLine.swf", "ChartId", "445", "300", "0", "0");
 						   chart.setDataURL("/xml/trend_line_2.xml");		   
-						   chart.render("chartdiv5");
+						   chart.render("chartdiv2");
 						</script>
-
 					
 					
 						<div class="spacer"></div>
 						
 						<div class="datagrid">
-								<table width="100%" cellpadding="0" cellspacing="0" class="sortable-onload-1 no-arrow rowstyle-alt colstyle-alt paginate-15 max-pages-4 paginationcallback-callbackTest-calculateTotalRating sortcompletecallback-callbackTest-calculateTotalRating" id="theTable">
+								<table width="100%" cellpadding="0" cellspacing="0" class="sortable-onload-1 no-arrow rowstyle-alt colstyle-alt paginate-15 max-pages-4 paginationcallback-callbackTest-calculateTotalRating sortcompletecallback-callbackTest-calculateTotalRating" id="theTable2">
 								  <thead>
 								  <tr>
-									<th height="27">###</th>
-									<th width="718" class="sortable-text">Fleet</th>
-									<th width="88" class="sortable-numeric">Score</th>
-
+									<th height="27">&#160;</th>
+									<th width="335" class="sortable-text">Team</th>
+									<th width="73" class="sortable-numeric">Score</th>
 									</tr>
 								  </thead>
 								  <tbody>
 								  <tr>
-								    <td width="80" align="center"><img src="images/legend_ico_2_1.png" width="17" height="17" border="0" /></td>
+								    <td width="19" align="center"><img src="images/legend_ico_2_1.png" width="17" height="17" border="0" /></td>
 								    <td><a href="dash_team.html">Washington</a></td>
 								    <td>
                                       <div class="score_sm_5" onclick="location.href='#';">
-
                                         <div class="score">5.0</div>
                                       </div>
 							        </td>
 								  </tr>
 								  <tr>
-								    <td width="80" align="center"><img src="images/legend_ico_2_2.png" width="17" height="17" border="0" /></td>
+								    <td width="19" align="center"><img src="images/legend_ico_2_2.png" width="17" height="17" border="0" /></td>
 								    <td><a href="dash_team.html">Oregon</a></td>
 								    <td>
-
                                       <div class="score_sm_5" onclick="location.href='#';">
                                         <div class="score">4.8</div>
                                       </div>
 							        </td>
 								  </tr>
 								  <tr>
-								    <td width="80" align="center"><img src="images/legend_ico_2_3.png" width="17" height="17" border="0" /></td>
+								    <td width="19" align="center"><img src="images/legend_ico_2_3.png" width="17" height="17" border="0" /></td>
 								    <td><a href="dash_team.html">Vegas</a></td>
-
 								    <td>
                                       <div class="score_sm_4" onclick="location.href='#';">
                                         <div class="score">3.9</div>
@@ -182,70 +202,63 @@
 							        </td>
 								  </tr>
 								  <tr>
-								    <td width="80" align="center"><img src="images/legend_ico_2_4.png" width="17" height="17" border="0" /></td>
-
+								    <td width="19" align="center"><img src="images/legend_ico_2_4.png" width="17" height="17" border="0" /></td>
 								    <td><a href="dash_team.html">Phoenix</a></td>
 								    <td>
-                                      <div class="score_sm_2" onclick="location.href='#';">
+                                      <div class="score_sm_3" onclick="location.href='#';">
                                         <div class="score">2.8</div>
                                       </div>
 							        </td>
 								  </tr>
 								  <tr>
-
-								    <td width="80" align="center"><img src="images/legend_ico_2_5.png" width="17" height="17" border="0" /></td>
+								    <td width="19" align="center"><img src="images/legend_ico_2_5.png" width="17" height="17" border="0" /></td>
 								    <td><a href="dash_team.html">Salt Lake</a> </td>
 								    <td>
                                       <div class="score_sm_5" onclick="location.href='#';">
                                         <div class="score">5.0</div>
                                       </div>
 							        </td>
-
 								  </tr>
 								  <tr>
-								    <td width="80" align="center"><img src="images/legend_ico_2_6.png" width="17" height="17" border="0" /></td>
+								    <td width="19" align="center"><img src="images/legend_ico_2_6.png" width="17" height="17" border="0" /></td>
 								    <td><a href="dash_team.html">Sacramento/Bay Area</a> </td>
 								    <td>
                                       <div class="score_sm_5" onclick="location.href='#';">
                                         <div class="score">4.8</div>
-
                                       </div>
 							        </td>
 								  </tr>
 								  <tr>
-								    <td width="80" align="center"><img src="images/legend_ico_2_7.png" width="17" height="17" border="0" /></td>
+								    <td width="19" align="center"><img src="images/legend_ico_2_7.png" width="17" height="17" border="0" /></td>
 								    <td><a href="dash_team.html">Los Angeles/San Diego</a> </td>
 								    <td>
-                                      <div class="score_sm_3" onclick="location.href='#';">
-
+                                      <div class="score_sm_4" onclick="location.href='#';">
                                         <div class="score">3.9</div>
                                       </div>
 							        </td>
 								  </tr>
 								  <tr>
-								    <td width="80" align="center"><img src="images/legend_ico_2_8.png" width="17" height="17" border="0" /></td>
+								    <td width="19" align="center"><img src="images/legend_ico_2_8.png" width="17" height="17" border="0" /></td>
 								    <td><a href="dash_team.html">Idaho</a></td>
 								    <td>
-
-                                      <div class="score_sm_2" onclick="location.href='#';">
+                                      <div class="score_sm_5" onclick="location.href='#';">
                                         <div class="score">2.8</div>
                                       </div>
 							        </td>
 								  </tr>
 								  <tr>
-								    <td width="80" align="center"><img src="images/legend_ico_2_9.png" width="17" height="17" border="0" /></td>
+								    <td width="19" align="center"><img src="images/legend_ico_2_9.png" width="17" height="17" border="0" /></td>
 								    <td><a href="dash_team.html">Montana</a></td>
-
 								    <td>
-                                      <div class="score_sm_1" onclick="location.href='#';">
+                                      <div class="score_sm_2" onclick="location.href='#';">
                                         <div class="score">1.9</div>
                                       </div>
 							        </td>
 								  </tr>
 								  </tbody>
 								</table>
-
 						</div>
+						
 					  </div>
 					</div>
 				<div class="panel_sw">
@@ -258,22 +271,22 @@
 		</tr>
 		</table>        
 		
-		<table width="820" border="0" cellspacing="0" cellpadding="0" align="center" id="overall_full_screen" style="margin-top: 10px; display: none;">
+		<table width="820" border="0" cellspacing="0" cellpadding="0" align="center" id="overall_full_screen" style="margin-top: 10px;">
 			<tr>
 			  <td valign="top">
 			  <table width="130" border="0" cellpadding="0" cellspacing="0"  style="margin-top: 40px;">
             <tr>
-              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_line" onclick="hide('mpg_full_screen');hide('overall_full_screen');hide('fleet_full_screen');show('trend_full_screen');return true;">Trend</a></td>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_line" onclick="t_hide('mpg_full_screen');t_hide('overall_full_screen');t_hide('fleet_full_screen');t_show('trend_full_screen');return true;">Trend</a></td>
             </tr>
 
             <tr>
-              <td valign="top" class="ls_tab_on"><a href="#" class="ls_tab_overall" onclick="hide('mpg_full_screen');hide('trend_full_screen');hide('fleet_full_screen');show('overall_full_screen');return true;">Overall Score </a></td>
+              <td valign="top" class="ls_tab_on"><a href="#" class="ls_tab_overall" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('fleet_full_screen');t_show('overall_full_screen');return true;">Overall Score </a></td>
             </tr>
             <tr>
-              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_map" onclick="hide('mpg_full_screen');hide('trend_full_screen');hide('overall_full_screen');show('fleet_full_screen');return true;">Fleet Map </a></td>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_map" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('fleet_full_screen');return false;">Fleet Map </a></td>
             </tr>
             <tr>
-              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_gas" onclick="hide('fleet_full_screen');hide('trend_full_screen');hide('overall_full_screen');show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_gas" onclick="t_hide('fleet_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
 
             </tr>
           </table>
@@ -288,8 +301,8 @@
 
 						<span class="panel_links_ico"><a href="#" class="on">30 days</a> <a href="#">3 months</a> <a href="#">6 months</a> <a href="#">12 months</a></span>
 						<span class="panel_ico">
-                        	<a href="#" title="" onclick="c_show('PopupMenu1',event); return false;" onmouseout="c_hide(); return false;"><img src="/images/ico_tools.png" border="0" /></a>
-                        	<a href="#" class=""  onclick="hide('trend_full_screen');hide('overall_full_screen');hide('fleet_full_screen');show('dash');return true;"><img src="/images/ico_minimize.png" width="16" height="16" border="0" /></a>
+                        	<a href="#" title="" onclick="c_t_show('PopupMenu1',event); return false;" onmouseout="c_t_hide(); return false;"><img src="/images/ico_tools.png" border="0" /></a>
+                        	<a href="#" class=""  onclick="t_hide('trend_full_screen');t_hide('overall_full_screen');t_hide('fleet_full_screen');t_show('dash');return true;"><img src="/images/ico_minimize.png" width="16" height="16" border="0" /></a>
                         </span>
 
                     </div>
@@ -408,23 +421,23 @@
 		</tr>
 		</table>
 		
-		<table width="820" border="0" cellspacing="0" cellpadding="0" align="center" id="fleet_full_screen" style="margin-top: 10px; display: none;">
+		<table width="820" border="0" cellspacing="0" cellpadding="0" align="center" id="fleet_full_screen" style="margin-top: 10px;">
 			<tr>
 			  <td valign="top">
 			  <table width="130" border="0" cellpadding="0" cellspacing="0"  style="margin-top: 40px;">
             <tr>
 
-              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_line" onclick="hide('mpg_full_screen');hide('overall_full_screen');hide('fleet_full_screen');show('trend_full_screen');return true;">Trend</a></td>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_line" onclick="t_hide('mpg_full_screen');t_hide('overall_full_screen');t_hide('fleet_full_screen');t_show('trend_full_screen');return true;">Trend</a></td>
             </tr>
             <tr>
-              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_overall" onclick="hide('mpg_full_screen');hide('trend_full_screen');hide('fleet_full_screen');show('overall_full_screen');return true;">Overall Score </a></td>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_overall" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('fleet_full_screen');t_show('overall_full_screen');return true;">Overall Score </a></td>
             </tr>
             <tr>
-              <td valign="top" class="ls_tab_on"><a href="#" class="ls_tab_map" onclick="hide('mpg_full_screen');hide('trend_full_screen');hide('overall_full_screen');show('fleet_full_screen');return true;">Fleet Map </a></td>
+              <td valign="top" class="ls_tab_on"><a href="#" class="ls_tab_map" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('fleet_full_screen');return true;">Fleet Map </a></td>
 
             </tr>
             <tr>
-              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_gas" onclick="hide('fleet_full_screen');hide('trend_full_screen');hide('overall_full_screen');show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_gas" onclick="t_hide('fleet_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
             </tr>
           </table>
 			  </td>
@@ -438,8 +451,8 @@
 						<span class="line">Fleet Map </span>
 						<span class="panel_links_ico"><a href="#">refresh</a></span>
 						<span class="panel_ico">
-                        	<a href="#" title="" onclick="c_show('PopupMenu1',event); return false;" onmouseout="c_hide(); return false;"><img src="/images/ico_tools.png" border="0" /></a>
-                            <a href="#" class=""  onclick="hide('trend_full_screen');hide('overall_full_screen');hide('fleet_full_screen');show('dash');return true;"><img src="/images/ico_minimize.png" width="16" height="16" border="0" /></a>
+                        	<a href="#" title="" onclick="c_t_show('PopupMenu1',event); return false;" onmouseout="c_t_hide(); return false;"><img src="/images/ico_tools.png" border="0" /></a>
+                            <a href="#" class=""  onclick="t_hide('trend_full_screen');t_hide('overall_full_screen');t_hide('fleet_full_screen');t_show('dash');return true;"><img src="/images/ico_minimize.png" width="16" height="16" border="0" /></a>
 
                         </span>
                     </div>
@@ -447,8 +460,7 @@
 					<div class="panel_w">
 					  <div class="panel_content">
 					  
-					  <iframe height="580" width="800" id="fleetmap_full" frameborder="0" name="fleetmap_full" style="width:800px;height:600px" src="fleet_map_full.html"></iframe>
-						
+					 						
 						<div class="spacer"></div>
 							<div class="panel_title" style="background: none; width: 250px;">
 
@@ -479,6 +491,25 @@
 		</tr>
 
 		</table>
+		
+	<script type="text/JavaScript">
+	
+		//Start page with the following tab. -- TODO: get from Request param.
+		t_show('overall_full_screen');
+	
+		//mpg_full_screen
+		//trend_full_screen
+		//fleet_full_screen
+	
+		
+	</script>
+
+<!-- PopupMenu1 definition -->
+<ul id="PopupMenu1" class="Popup" style="width:150px;">
+  <li><a href="#" onclick="t_showDiv('panel_suggestions'); return false;"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td width="16" height="16"><img src="/images/ico_email.png" border="0" /></td><td>&#160;E-mail this report</td></tr></table></a></li>
+  <li><a href="#" onclick="t_showDiv('panel_person'); return false;"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td width="16"><img src="/images/ico_print.png" border="0" /></td><td>&#160;Print Report</td></tr></table></a></li>
+  <li><a href="#" onclick="t_showDiv('panel_person'); return false;"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td width="16"><img src="/images/ico_excel.png" border="0" /></td><td>&#160;Export to Excel</td></tr></table></a></li>
+</ul>
 
 </ui:define>
 
