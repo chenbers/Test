@@ -19,6 +19,26 @@
 
     <!-- Navigation bean -->
     <bean id="navigationBean" class="com.inthinc.pro.backing.NavigationBean" scope="session" parent="baseBean"></bean>
+    
+    
+   
+   <!-- Forgot username/password Beans -->
+    <bean id="mailSenderBean" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+    	<property name="host" value="testteen.iwiglobal.com" />
+    </bean>
+    <bean id="retrieveCredentialsBean" class="com.inthinc.pro.backing.RetrieveCredentialsBean" scope="request" parent="baseBean">
+        <property name="from"><value><![CDATA[tiwi support <unknown@unknown.com>]]></value></property>
+        <property name="mailSender" ref="mailSenderBean" />
+        <property name="encryptPassword" value="j$2yptt3xt3ncrypt0r23cr3tp422w0rd" />
+        <property name="messageSource" ref="messageSource" />
+        <property name="userDAO" ref="userDAO" />
+    </bean>
+    <bean id="updateCredentialsBean" class="com.inthinc.pro.backing.UpdateCredentialsBean" scope="session" parent="baseBean">
+        <property name="encryptPassword" value="j$2yptt3xt3ncrypt0r23cr3tp422w0rd" />
+        <property name="daysValid" value="2" />
+        <property name="messageSource" ref="messageSource" />
+        <property name="userDAO" ref="userDAO" />
+    </bean>
 
     <!-- Beans used in fusion chart displays -->
     <bean id="trendBean" class="com.inthinc.pro.backing.TrendBean" scope="request" parent="baseBean">

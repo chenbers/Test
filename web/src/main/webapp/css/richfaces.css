@@ -4,3 +4,7 @@
 .dr-pnl			{border-width:0px;padding:0px;}
 .dr-pnl-b		{padding: 0px;}
 .dr-table-cell	{border: 0px;padding: 0px;}
+
+.rich-message {margin-left: 5px;}
+.rich-message-marker { margin-right: 5px; }
+.rich-message-label {}

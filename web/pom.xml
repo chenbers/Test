@@ -200,6 +200,11 @@
       	<version>1.0.5</version>
       	<scope>test</scope>
       </dependency>
+      <dependency>
+      	<groupId>javax.mail</groupId>
+      	<artifactId>mail</artifactId>
+      	<version>1.4.1</version>
+      </dependency>
   </dependencies>
    <properties>
       <webapp.dir>${env.CATALINA_HOME}/webapps</webapp.dir>

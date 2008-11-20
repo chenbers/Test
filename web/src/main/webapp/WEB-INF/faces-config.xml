@@ -13,10 +13,12 @@
 		<converter-id>TimeZoneConverter</converter-id>
 		<converter-class>com.inthinc.pro.convert.TimeZoneConverter</converter-class>
 	</converter>
+	
+	<!-- Remove? - class file doesn't exist
 	<converter>
 		<converter-id>ProDateTimeConverter</converter-id>
 		<converter-class>com.inthinc.pro.convert.ProDateTimeConverter</converter-class>
-	</converter>
+	</converter> -->
 	
 	<!-- managed beans -->
 	
@@ -38,6 +40,13 @@
 			<from-outcome>go_home</from-outcome>
 			<to-view-id>/secured/home.xhtml</to-view-id>
 			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>go_retrieveCredentialsComplete</from-outcome>
+			<to-view-id>/retrieveCredentialsComplete.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
