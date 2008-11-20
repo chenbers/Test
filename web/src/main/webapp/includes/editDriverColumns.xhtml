@@ -74,13 +74,17 @@
 				</h:panelGrid>
 				</rich:panel>
 			
-				<div class="popupactions">
-					<button value="submit" class="left" 
-						onclick="Richfaces.hideModalPanel('editDriverColumns'); return false;">
-						<span class="cancel">
-							<h:outputText value="#{messages.button_cancel}" />
-						</span>
-					</button>
+				<div class="popupactions">					
+					<a4j:commandLink rendered="true" 
+          				action="#{driverReportBean.cancelColumns}"           				
+          				onclick="Richfaces.hideModalPanel('editDriverColumns')" 
+          				reRender="items">
+          				<button value="submit" class="left">
+          					<span class="save">
+          						<h:outputText value="#{messages.button_cancel}" />
+          					</span>
+          				</button>
+          			</a4j:commandLink>  
           			<a4j:commandLink rendered="true" 
           				action="#{driverReportBean.saveColumns}"           				
           				onclick="Richfaces.hideModalPanel('editDriverColumns')" 

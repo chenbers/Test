@@ -2,8 +2,10 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
@@ -37,6 +39,7 @@ public class DriverReportBean extends BaseBean
     
     private static final List<String> AVAILABLE_COLUMNS;
     private Map<String,TableColumn> driverColumns;
+    private Vector tmpColumns = new Vector();    
     
     private TablePreference tablePref;
     
@@ -195,6 +198,7 @@ public class DriverReportBean extends BaseBean
         //In here for saving the column preferences 
         logger.debug("***************** save columns");
         
+        //To data store
         TablePreference pref = getTablePref();
         int cnt = 0;
         for (String column : AVAILABLE_COLUMNS)
@@ -203,8 +207,43 @@ public class DriverReportBean extends BaseBean
         }
         setTablePref(pref);
         tablePreferenceDAO.update(pref);
+        
+        //Update tmp
+        Iterator it = this.driverColumns.keySet().iterator();
+        while ( it.hasNext() ) {
+            Object key = it.next(); 
+            Object value = this.driverColumns.get(key);  
+
+            for ( int i = 0; i < tmpColumns.size(); i++ ) {
+                TempColumns tc = (TempColumns)tmpColumns.get(i);
+                if ( tc.getColName().equalsIgnoreCase((String)key) ) {
+                    Boolean b = ((TableColumn)value).getVisible();
+                    tc.setColValue(b);
+                }
+            }
+        }
     }
     
+    
+    public void cancelColumns() {  
+        //In here for saving the column preferences 
+        logger.debug("***************** cancel columns");
+        
+        //Update live
+        Iterator it = this.driverColumns.keySet().iterator();
+        while ( it.hasNext() ) {
+            Object key = it.next(); 
+            Object value = this.driverColumns.get(key);  
+  
+            for ( int i = 0; i < tmpColumns.size(); i++ ) {
+                TempColumns tc = (TempColumns)tmpColumns.get(i);
+                if ( tc.getColName().equalsIgnoreCase((String)key) ) {
+                    this.driverColumns.get(key).setVisible(tc.getColValue());
+                }
+            }
+        }
+
+    }
 
     public TablePreference getTablePref()
     {
@@ -255,6 +294,7 @@ public class DriverReportBean extends BaseBean
                     tableColumn.setCanHide(false);
                     
                 driverColumns.put(column, tableColumn);
+                tmpColumns.add(new TempColumns(column,tableColumn.getVisible()));
                         
             }
         } 
@@ -398,6 +438,36 @@ public class DriverReportBean extends BaseBean
     public void setTablePreferenceDAO(TablePreferenceDAO tablePreferenceDAO)
     {
         this.tablePreferenceDAO = tablePreferenceDAO;
+    }
+    
+    private class TempColumns {
+       String colName;
+       Boolean colValue;
+       
+       public TempColumns(String colName, Boolean colValue) {
+           this.colName = colName;
+           this.colValue = colValue;
+       }
+
+       public String getColName()
+       {
+         return colName;
+       }
+
+       public void setColName(String colName)
+       {
+           this.colName = colName;
+       }
+
+       public Boolean getColValue()
+       {
+           return colValue;
+       }
+
+       public void setColValue(Boolean colValue)
+       {
+           this.colValue = colValue;
+       }
     }
 
 }
