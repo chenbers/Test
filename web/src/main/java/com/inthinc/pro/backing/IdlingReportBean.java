@@ -66,8 +66,8 @@ public class IdlingReportBean extends BaseBean
         AVAILABLE_COLUMNS = new ArrayList<String>();
         AVAILABLE_COLUMNS.add("group");
         AVAILABLE_COLUMNS.add("driver");
+        AVAILABLE_COLUMNS.add("vehicle");
         AVAILABLE_COLUMNS.add("drivetime");
-        AVAILABLE_COLUMNS.add("miles");
         AVAILABLE_COLUMNS.add("lowhrs");
         AVAILABLE_COLUMNS.add("lowpercent");
         AVAILABLE_COLUMNS.add("highhrs");
@@ -95,8 +95,8 @@ public class IdlingReportBean extends BaseBean
             
             //Fake
             if ( i % 2 == 0 ) {
-            iri.setGroup("North"); iri.setDriveTime("38:52:22"); 
-            iri.setMiles(1234); iri.setLowHrs("02:22:14"); iri.setLowPercent(22);
+            iri.setGroup("North"); iri.setVehicle("AE-1122"); iri.setDriveTime("38:52:22"); 
+            iri.setLowHrs("02:22:14"); iri.setLowPercent(22);
             iri.setHighHrs("10:48:11"); iri.setHighPercent(98); iri.setTotalHrs("41:16:36");
             iri.setTotalPercent(17);
             
@@ -105,8 +105,8 @@ public class IdlingReportBean extends BaseBean
                 iri.setTotalPerSort(this.convertToSeconds(iri.getTotalHrs()));
                 iri.setDriveTimeSort(this.convertToSeconds(iri.getDriveTime()));
             } else if ( i % 3 == 0 ) {
-            iri.setGroup("South"); iri.setDriveTime("18:32:22"); 
-            iri.setMiles(31234); iri.setLowHrs("01:32:54"); iri.setLowPercent(12);
+            iri.setGroup("South");  iri.setVehicle("ZZ-2132"); iri.setDriveTime("18:32:22"); 
+            iri.setLowHrs("01:32:54"); iri.setLowPercent(12);
             iri.setHighHrs("20:18:31"); iri.setHighPercent(42); iri.setTotalHrs("11:36:46");
             iri.setTotalPercent(22); 
             
@@ -115,8 +115,8 @@ public class IdlingReportBean extends BaseBean
                 iri.setTotalPerSort(this.convertToSeconds(iri.getTotalHrs()));
                 iri.setDriveTimeSort(this.convertToSeconds(iri.getDriveTime()));    
             } else if ( i % 4 == 0 ) {
-            iri.setGroup("East"); iri.setDriveTime("42:12:52"); 
-            iri.setMiles(421234); iri.setLowHrs("04:21:44"); iri.setLowPercent(2);
+            iri.setGroup("East");  iri.setVehicle("LL-4231"); iri.setDriveTime("42:12:52"); 
+            iri.setLowHrs("04:21:44"); iri.setLowPercent(2);
             iri.setHighHrs("15:58:41"); iri.setHighPercent(66); iri.setTotalHrs("41:16:36");
             iri.setTotalPercent(42);
             
@@ -125,8 +125,8 @@ public class IdlingReportBean extends BaseBean
                 iri.setTotalPerSort(this.convertToSeconds(iri.getTotalHrs()));
                 iri.setDriveTimeSort(this.convertToSeconds(iri.getDriveTime()));    
             } else {
-            iri.setGroup("West"); iri.setDriveTime("118:12:42"); 
-            iri.setMiles(314); iri.setLowHrs("03:12:54"); iri.setLowPercent(32);
+            iri.setGroup("West");  iri.setVehicle("JK-9917"); iri.setDriveTime("118:12:42"); 
+            iri.setLowHrs("03:12:54"); iri.setLowPercent(32);
             iri.setHighHrs("50:18:51"); iri.setHighPercent(12); iri.setTotalHrs("33:46:36");
             iri.setTotalPercent(55);
             
