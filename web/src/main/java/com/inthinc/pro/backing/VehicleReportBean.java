@@ -83,13 +83,8 @@ public class VehicleReportBean extends BaseBean
     
 
     public List<VehicleReportItem> getVehicleData()
-    {
-        logger.debug("getting");   
-        if ( vehicleData.size() > 0 ) {
-            return vehicleData;
-        } else {
-            return new ArrayList<VehicleReportItem>();
-        }
+    {        
+        return vehicleData;
     }
 
     public void setDriverData(List<VehicleReportItem> vehicleData)
