@@ -150,6 +150,12 @@
 	</navigation-rule>
 	<navigation-rule>
 		<navigation-case>
+			<from-outcome>go_regionFlyOut</from-outcome>
+			<to-view-id>/secured/regionFlyOut.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
 			<from-outcome>go_team</from-outcome>
 			<to-view-id>/secured/team.xhtml</to-view-id>
 		</navigation-case>

@@ -1,0 +1,485 @@
+<ui:composition template="/layout/layout.xhtml" 
+			xmlns="http://www.w3.org/1999/xhtml" 
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+  			xmlns:h="http://java.sun.com/jsf/html" 
+  			xmlns:rich="http://richfaces.org/rich"
+  			xmlns:a4j="http://richfaces.org/a4j"
+  			xmlns:iwi="http://pro.tiwi.com/jsf"
+  			xmlns:f="http://java.sun.com/jsf/core">
+  			
+	<ui:define name="scripts">
+		<script src="/tiwipro/js/FusionCharts.js" type="text/javascript"></script>	
+		<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{gmBean.key}" type="text/javascript"></script>			
+	</ui:define>  			
+
+	<ui:param name="homeSelected" value="current" />
+
+	<ui:define name="content">
+	
+		<h:form id="setupGroup">
+			<h:inputHidden value="#{groupLevelBean.ping}" />
+		</h:form>
+	
+		<ul id="grid_nav">
+			<li class="l grid_icon"><img src="images/ico_line.png" /></li>
+			<li class="l grid_title">Overview</li>
+			<li class="l divider"><img src="/images/grid_nav_divider.png" /></li>
+			<li class="l"></li>
+			<li class="r grid_icon"><img src="images/ico_help.png" /></li>
+			<li class="r divider"><img src="/images/grid_nav_divider.png" /></li>
+		</ul>
+
+<table width="820" border="0" cellspacing="0" cellpadding="0" align="center" id="mpg_full_screen" style="margin-top: 10px; display: none;">
+			<tr>
+			  <td valign="top">
+			  <table width="130" border="0" cellpadding="0" cellspacing="0"  style="margin-top: 40px;">
+            <tr>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_line" onclick="hide('mpg_full_screen');hide('overall_full_screen');hide('fleet_full_screen');show('trend_full_screen');return true;">Trend</a></td>
+
+            </tr>
+            <tr>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_overall" onclick="hide('mpg_full_screen');hide('trend_full_screen');hide('fleet_full_screen');show('overall_full_screen');return true;">Overall Score </a></td>
+            </tr>
+            <tr>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_map" onclick="hide('mpg_full_screen');hide('trend_full_screen');hide('overall_full_screen');show('fleet_full_screen');return true;">Fleet Map </a></td>
+            </tr>
+            <tr>
+
+              <td valign="top" class="ls_tab_on"><a href="#" class="ls_tab_gas" onclick="hide('fleet_full_screen');hide('trend_full_screen');hide('overall_full_screen');show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
+            </tr>
+        </table>
+			  </td>
+			<td>
+			
+			<!-- START PANEL -->
+			<div class="">
+				<div class="panel_nw">
+
+					<div class="panel_title">
+						<span class="gas">Miles Per Gallon</span>
+						<span class="panel_links_ico"><a href="#" class="on">30 days</a> <a href="#">3 months</a> <a href="#">6 months</a> <a href="#">12 months</a></span>
+						<span class="panel_ico">
+                        	<a href="#" title="" onclick="c_show('PopupMenu1',event); return false;" onmouseout="c_hide(); return false;"><img src="/images/ico_tools.png" border="0" /></a>
+
+                        	<a href="#" class=""  onclick="hide('trend_full_screen');hide('overall_full_screen');hide('fleet_full_screen');hide('mpg_full_screen'); show('dash');return true;"><img src="/images/ico_minimize.png" width="16" height="16" border="0" /></a>
+                        </span>
+                    </div>
+				</div>
+					<div class="panel_w">
+					  <div class="panel_content">
+					  
+						<!-- MPG CHART START -->
+
+						<!-- MPG CHART END -->
+					
+						<div class="spacer"></div>
+						
+						<!-- MPG DATA TABLE START -->
+						
+						<!-- MPG DATA TABLE END -->
+						
+					  </div>
+					</div>
+				<div class="panel_sw">
+					<div class="panel_statusbar"></div>
+				</div>
+			</div>
+		<!-- END PANEL -->
+		</td>
+
+		</tr>
+		</table>
+        
+		<table width="820" border="0" cellspacing="0" cellpadding="0" align="center" id="trend_full_screen" style="margin-top: 10px; display: none;">
+			<tr>
+			  <td valign="top">
+			  <table width="130" border="0" cellpadding="0" cellspacing="0"  style="margin-top: 40px;">
+            <tr>
+              <td valign="top" class="ls_tab_on"><a href="#" class="ls_tab_line" onclick="hide('mpg_full_screen');hide('overall_full_screen');hide('fleet_full_screen');show('trend_full_screen');return true;">Trend</a></td>
+
+            </tr>
+            <tr>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_overall" onclick="hide('mpg_full_screen');hide('trend_full_screen');hide('fleet_full_screen');show('overall_full_screen');return true;">Overall Score </a></td>
+            </tr>
+            <tr>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_map" onclick="hide('mpg_full_screen');hide('trend_full_screen');hide('overall_full_screen');show('fleet_full_screen');return true;">Fleet Map </a></td>
+            </tr>
+            <tr>
+
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_gas" onclick="hide('fleet_full_screen');hide('trend_full_screen');hide('overall_full_screen');show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
+            </tr>
+        </table>
+			  </td>
+			<td>
+			
+			<!-- START PANEL -->
+			<div class="">
+				<div class="panel_nw">
+
+					<div class="panel_title">
+						<span class="line">Trend</span>
+						<span class="panel_links_ico"><a href="#" class="on">30 days</a> <a href="#">3 months</a> <a href="#">6 months</a> <a href="#">12 months</a></span>
+						<span class="panel_ico">
+                        	<a href="#" title="" onclick="c_show('PopupMenu1',event); return false;" onmouseout="c_hide(); return false;"><img src="/images/ico_tools.png" border="0" /></a>
+
+                        	<a href="#" class=""  onclick="hide('trend_full_screen');hide('overall_full_screen');hide('fleet_full_screen'); show('dash');return true;"><img src="/images/ico_minimize.png" width="16" height="16" border="0" /></a>
+                        </span>
+                    </div>
+				</div>
+					<div class="panel_w">
+					  <div class="panel_content">
+					  
+						<div id="chartdiv5" align="center"></div>
+						<script type="text/javascript">
+						   var chart = new FusionCharts("/swf/MSLine.swf", "ChartId", "800", "600", "0", "0");
+						   chart.setDataURL("/xml/trend_line_2.xml");		   
+						   chart.render("chartdiv5");
+						</script>
+
+					
+					
+						<div class="spacer"></div>
+						
+						<div class="datagrid">
+								<table width="100%" cellpadding="0" cellspacing="0" class="sortable-onload-1 no-arrow rowstyle-alt colstyle-alt paginate-15 max-pages-4 paginationcallback-callbackTest-calculateTotalRating sortcompletecallback-callbackTest-calculateTotalRating" id="theTable">
+								  <thead>
+								  <tr>
+									<th height="27">###</th>
+									<th width="718" class="sortable-text">Fleet</th>
+									<th width="88" class="sortable-numeric">Score</th>
+
+									</tr>
+								  </thead>
+								  <tbody>
+								  <tr>
+								    <td width="80" align="center"><img src="images/legend_ico_2_1.png" width="17" height="17" border="0" /></td>
+								    <td><a href="dash_team.html">Washington</a></td>
+								    <td>
+                                      <div class="score_sm_5" onclick="location.href='#';">
+
+                                        <div class="score">5.0</div>
+                                      </div>
+							        </td>
+								  </tr>
+								  <tr>
+								    <td width="80" align="center"><img src="images/legend_ico_2_2.png" width="17" height="17" border="0" /></td>
+								    <td><a href="dash_team.html">Oregon</a></td>
+								    <td>
+
+                                      <div class="score_sm_5" onclick="location.href='#';">
+                                        <div class="score">4.8</div>
+                                      </div>
+							        </td>
+								  </tr>
+								  <tr>
+								    <td width="80" align="center"><img src="images/legend_ico_2_3.png" width="17" height="17" border="0" /></td>
+								    <td><a href="dash_team.html">Vegas</a></td>
+
+								    <td>
+                                      <div class="score_sm_4" onclick="location.href='#';">
+                                        <div class="score">3.9</div>
+                                      </div>
+							        </td>
+								  </tr>
+								  <tr>
+								    <td width="80" align="center"><img src="images/legend_ico_2_4.png" width="17" height="17" border="0" /></td>
+
+								    <td><a href="dash_team.html">Phoenix</a></td>
+								    <td>
+                                      <div class="score_sm_2" onclick="location.href='#';">
+                                        <div class="score">2.8</div>
+                                      </div>
+							        </td>
+								  </tr>
+								  <tr>
+
+								    <td width="80" align="center"><img src="images/legend_ico_2_5.png" width="17" height="17" border="0" /></td>
+								    <td><a href="dash_team.html">Salt Lake</a> </td>
+								    <td>
+                                      <div class="score_sm_5" onclick="location.href='#';">
+                                        <div class="score">5.0</div>
+                                      </div>
+							        </td>
+
+								  </tr>
+								  <tr>
+								    <td width="80" align="center"><img src="images/legend_ico_2_6.png" width="17" height="17" border="0" /></td>
+								    <td><a href="dash_team.html">Sacramento/Bay Area</a> </td>
+								    <td>
+                                      <div class="score_sm_5" onclick="location.href='#';">
+                                        <div class="score">4.8</div>
+
+                                      </div>
+							        </td>
+								  </tr>
+								  <tr>
+								    <td width="80" align="center"><img src="images/legend_ico_2_7.png" width="17" height="17" border="0" /></td>
+								    <td><a href="dash_team.html">Los Angeles/San Diego</a> </td>
+								    <td>
+                                      <div class="score_sm_3" onclick="location.href='#';">
+
+                                        <div class="score">3.9</div>
+                                      </div>
+							        </td>
+								  </tr>
+								  <tr>
+								    <td width="80" align="center"><img src="images/legend_ico_2_8.png" width="17" height="17" border="0" /></td>
+								    <td><a href="dash_team.html">Idaho</a></td>
+								    <td>
+
+                                      <div class="score_sm_2" onclick="location.href='#';">
+                                        <div class="score">2.8</div>
+                                      </div>
+							        </td>
+								  </tr>
+								  <tr>
+								    <td width="80" align="center"><img src="images/legend_ico_2_9.png" width="17" height="17" border="0" /></td>
+								    <td><a href="dash_team.html">Montana</a></td>
+
+								    <td>
+                                      <div class="score_sm_1" onclick="location.href='#';">
+                                        <div class="score">1.9</div>
+                                      </div>
+							        </td>
+								  </tr>
+								  </tbody>
+								</table>
+
+						</div>
+					  </div>
+					</div>
+				<div class="panel_sw">
+					<div class="panel_statusbar"></div>
+				</div>
+			</div>
+		<!-- END PANEL -->
+		</td>
+
+		</tr>
+		</table>        
+		
+		<table width="820" border="0" cellspacing="0" cellpadding="0" align="center" id="overall_full_screen" style="margin-top: 10px; display: none;">
+			<tr>
+			  <td valign="top">
+			  <table width="130" border="0" cellpadding="0" cellspacing="0"  style="margin-top: 40px;">
+            <tr>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_line" onclick="hide('mpg_full_screen');hide('overall_full_screen');hide('fleet_full_screen');show('trend_full_screen');return true;">Trend</a></td>
+            </tr>
+
+            <tr>
+              <td valign="top" class="ls_tab_on"><a href="#" class="ls_tab_overall" onclick="hide('mpg_full_screen');hide('trend_full_screen');hide('fleet_full_screen');show('overall_full_screen');return true;">Overall Score </a></td>
+            </tr>
+            <tr>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_map" onclick="hide('mpg_full_screen');hide('trend_full_screen');hide('overall_full_screen');show('fleet_full_screen');return true;">Fleet Map </a></td>
+            </tr>
+            <tr>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_gas" onclick="hide('fleet_full_screen');hide('trend_full_screen');hide('overall_full_screen');show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
+
+            </tr>
+          </table>
+			  </td>
+			<td>
+			
+			<!-- START PANEL -->
+			<div class="">
+				<div class="panel_nw">
+					<div class="panel_title">
+						<span class="overall">Overall Score </span>
+
+						<span class="panel_links_ico"><a href="#" class="on">30 days</a> <a href="#">3 months</a> <a href="#">6 months</a> <a href="#">12 months</a></span>
+						<span class="panel_ico">
+                        	<a href="#" title="" onclick="c_show('PopupMenu1',event); return false;" onmouseout="c_hide(); return false;"><img src="/images/ico_tools.png" border="0" /></a>
+                        	<a href="#" class=""  onclick="hide('trend_full_screen');hide('overall_full_screen');hide('fleet_full_screen');show('dash');return true;"><img src="/images/ico_minimize.png" width="16" height="16" border="0" /></a>
+                        </span>
+
+                    </div>
+				</div>
+					<div class="panel_w">
+					  <div class="panel_content">
+					  
+					  <table width="800" height="" border="0" align="center" cellpadding="0" cellspacing="0">
+                            <tr>
+                              <td colspan="3" valign="top" style="border-bottom: 1px solid #e1e1e1;">
+                                <table width="100%" height="100" border="0" cellspacing="0" cellpadding="0" align="center">
+                                  <tr>
+
+                                    <td colspan="2" align="right" valign="top"> </td>
+                                  </tr>
+                                  <tr>
+                                    <td width="200" align="center" valign="middle">
+                                      <table width="200" border="0" cellspacing="0" cellpadding="0" class="lgnd">
+                                        <tr>
+                                          <td width="200" class="top">###</td>
+                                        </tr>
+
+                                        <tr>
+                                          <td class="mid">
+                                            <table width="120" border="0" cellspacing="0" cellpadding="2" align="center">
+                                              <tr>
+                                                <td align="right"><img src="images/lgnd_5.png" width="90" height="20" /></td>
+                                              </tr>
+                                              <tr>
+                                                <td align="right" class="o_score">
+                                                  <div class="score_lg_45" onclick="location.href='#';">
+
+                                                    <div class="score">4.1</div>
+                                                  </div>
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <td align="right"><img src="images/lgnd_4.png" width="90" height="20" /></td>
+                                              </tr>
+                                              <tr>
+
+                                                <td align="right"><img src="images/lgnd_3.png" width="90" height="20" /></td>
+                                              </tr>
+                                              <tr>
+                                                <td align="right"><img src="images/lgnd_2.png" width="90" height="20" /></td>
+                                              </tr>
+                                              <tr>
+                                                <td align="right"><img src="images/lgnd_1.png" width="90" height="20" /></td>
+                                              </tr>
+                                            </table>
+
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td class="bot">##</td>
+                                        </tr>
+                                      </table>
+                                    </td>
+                                    <td width="">
+                                      <div id="chartdivoverall" align="center"></div>
+
+                                      <script type="text/javascript">
+									   var chart = new FusionCharts("/swf/Pie2D.swf", "ChartId", "450", "450", "0", "0");
+									   chart.setDataURL("/xml/3d_pie_2.xml");		   
+									   chart.render("chartdivoverall");
+									</script>
+                                    </td>
+                                  </tr>
+                                </table>
+                                <p>###</p>
+                              </td>
+                            </tr>
+                            <tr>
+
+                              <td width="225" valign="top" style="border-right: 1px solid #e1e1e1;">
+                              			<div class="piegrid_label"><a href="#" class="ls_tab_drivestyle">Driving Style</a></div>
+                                      <div id="piegrid_drivestyle"></div>
+                                      <script type="text/javascript">
+										   var chart = new FusionCharts("/swf/Pie2D.swf", "ChartId", "220", "180", "0", "0");
+										   chart.setDataURL("/xml/3d_pie_1.xml");		   
+										   chart.render("piegrid_drivestyle");
+										</script>
+                              </td>
+                              <td width="225" valign="top" style="border-right: 1px solid #e1e1e1;">
+                              <div class="piegrid_label"><a href="#" class="ls_tab_seatbelt">Seat Belt</a></div>
+
+                                      <div id="piegrid_seatbelt"></div>
+                                      <script type="text/javascript">
+										   var chart = new FusionCharts("/swf/Pie2D.swf", "ChartId", "220", "180", "0", "0");
+										   chart.setDataURL("/xml/3d_pie_1.xml");		   
+										   chart.render("piegrid_seatbelt");
+										</script>
+                              </td>
+                              <td width="225" valign="top" style="border-right: 1px solid #e1e1e1;">
+                              <div class="piegrid_label"><a href="#" class="ls_tab_speed">Speed</a></div>
+                                      <div id="piegrid_speed"></div>
+                                      <script type="text/javascript">
+										   var chart = new FusionCharts("/swf/Pie2D.swf", "ChartId", "220", "180", "0", "0");
+										   chart.setDataURL("/xml/3d_pie_1.xml");		   
+										   chart.render("piegrid_speed");
+										</script>
+
+                              </td>
+                            </tr>
+                          </table>
+					  
+					  </div>
+					</div>
+				<div class="panel_sw">
+					<div class="panel_statusbar"></div>
+				</div>
+			</div>
+
+		<!-- END PANEL -->
+		</td>
+		</tr>
+		</table>
+		
+		<table width="820" border="0" cellspacing="0" cellpadding="0" align="center" id="fleet_full_screen" style="margin-top: 10px; display: none;">
+			<tr>
+			  <td valign="top">
+			  <table width="130" border="0" cellpadding="0" cellspacing="0"  style="margin-top: 40px;">
+            <tr>
+
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_line" onclick="hide('mpg_full_screen');hide('overall_full_screen');hide('fleet_full_screen');show('trend_full_screen');return true;">Trend</a></td>
+            </tr>
+            <tr>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_overall" onclick="hide('mpg_full_screen');hide('trend_full_screen');hide('fleet_full_screen');show('overall_full_screen');return true;">Overall Score </a></td>
+            </tr>
+            <tr>
+              <td valign="top" class="ls_tab_on"><a href="#" class="ls_tab_map" onclick="hide('mpg_full_screen');hide('trend_full_screen');hide('overall_full_screen');show('fleet_full_screen');return true;">Fleet Map </a></td>
+
+            </tr>
+            <tr>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_gas" onclick="hide('fleet_full_screen');hide('trend_full_screen');hide('overall_full_screen');show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
+            </tr>
+          </table>
+			  </td>
+			<td>
+			
+			<!-- START PANEL -->
+
+			<div class="">
+				<div class="panel_nw">
+					<div class="panel_title">
+						<span class="line">Fleet Map </span>
+						<span class="panel_links_ico"><a href="#">refresh</a></span>
+						<span class="panel_ico">
+                        	<a href="#" title="" onclick="c_show('PopupMenu1',event); return false;" onmouseout="c_hide(); return false;"><img src="/images/ico_tools.png" border="0" /></a>
+                            <a href="#" class=""  onclick="hide('trend_full_screen');hide('overall_full_screen');hide('fleet_full_screen');show('dash');return true;"><img src="/images/ico_minimize.png" width="16" height="16" border="0" /></a>
+
+                        </span>
+                    </div>
+				</div>
+					<div class="panel_w">
+					  <div class="panel_content">
+					  
+					  <iframe height="580" width="800" id="fleetmap_full" frameborder="0" name="fleetmap_full" style="width:800px;height:600px" src="fleet_map_full.html"></iframe>
+						
+						<div class="spacer"></div>
+							<div class="panel_title" style="background: none; width: 250px;">
+
+								<span>Fleet Legend</span>
+							</div>
+						<ul class="legend clearfix">
+							<li class="red">Washington</li>
+						    <li class="orange">Oregon</li>
+						    <li class="lt_blue">Vegas</li>
+						    <li class="purple">Phoenix</li>
+
+						    <li class="gray">SLC</li>
+						    <li class="green">Sac/Bay</li>
+						    <li class="blue">LA/San Diego</li>
+						    <li class="lt_gray">Idaho</li>
+						    <li class="pink">Montana </li>
+						</ul>
+
+						
+					  </div>
+					</div>
+				<div class="panel_sw">
+					<div class="panel_statusbar"></div>
+				</div>
+			</div>
+		<!-- END PANEL -->
+		</td>
+		</tr>
+
+		</table>
+
+</ui:define>
+
+</ui:composition>
