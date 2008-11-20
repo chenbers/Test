@@ -973,21 +973,20 @@ h2 {
 
 .ls_tabs {
 	border-right: 1px solid #8BAD37;
-	vertical-align:top;
+
 	}
-	
 
 .ls_tab_on {
 	height: 31px;
 	padding: 8px 0 0 0;
-	background: url(../images/ls_tab_on.png) no-repeat;
+	background: url(..//images/ls_tab_on.png) no-repeat;
 	font: bold 10px Verdana, Arial, Helvetica, sans-serif;
 	}
 	
 .ls_tab_off {
 	height: 31px;
 	padding: 8px 0 0 0;
-	background: url(../images/ls_tab_off.png) no-repeat;
+	background: url(..//images/ls_tab_off.png) no-repeat;
 	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
 	}
 
@@ -1066,7 +1065,7 @@ a.ls_tab_seatbelt {
 	margin: 0 0 0 8px;
 	}
 
-a.ls_tab_go_adminAddPerson {
+a.ls_tab_add_driver {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_add_driver.png) no-repeat center left;
 	text-decoration: none;
@@ -1074,7 +1073,7 @@ a.ls_tab_go_adminAddPerson {
 	margin: 0 0 0 8px;
 	}
 	
-a.ls_tab_go_adminAddVehicle {
+a.ls_tab_add_vehicle {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_add_vehicle.png) no-repeat center left;
 	text-decoration: none;
@@ -1098,7 +1097,7 @@ a.ls_tab_search {
 	margin: 0 0 0 8px;
 	}
 	
-a.ls_tab_go_adminPeople {
+a.ls_tab_driver {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_driver.png) no-repeat center left;
 	text-decoration: none;
@@ -1106,7 +1105,7 @@ a.ls_tab_go_adminPeople {
 	margin: 0 0 0 8px;
 	}
 	
-a.ls_tab_go_adminVehicles {
+a.ls_tab_vehicle {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_vehicle.png) no-repeat center left;
 	text-decoration: none;
@@ -1138,7 +1137,7 @@ a.ls_tab_cost {
 	margin: 0 0 0 8px;
 	}
 	
-a.ls_tab_go_adminRedFlags {
+a.ls_tab_redflag {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_red_flag.png) no-repeat center left;
 	text-decoration: none;
@@ -1146,7 +1145,7 @@ a.ls_tab_go_adminRedFlags {
 	margin: 0 0 0 8px;
 	}
 	
-a.ls_tab_go_adminAddRedFlag {
+a.ls_tab_add_redflag {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_add_redflag.png) no-repeat center left;
 	text-decoration: none;
@@ -1154,7 +1153,7 @@ a.ls_tab_go_adminAddRedFlag {
 	margin: 0 0 0 8px;
 	}
 	
-a.ls_tab_go_adminZones {
+a.ls_tab_zones {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_zones.png) no-repeat center left;
 	text-decoration: none;
@@ -1162,7 +1161,7 @@ a.ls_tab_go_adminZones {
 	margin: 0 0 0 8px;
 	}
 	
-a.ls_tab_go_adminZoneAlerts {
+a.ls_tab_zone_alerts {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_zone_alerts.png) no-repeat center left;
 	text-decoration: none;
@@ -1170,7 +1169,7 @@ a.ls_tab_go_adminZoneAlerts {
 	margin: 0 0 0 8px;
 	}
 	
-a.ls_tab_go_adminAddAoneAlert {
+a.ls_tab_add_zone_alerts {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_add_zone_alerts.png) no-repeat center left;
 	text-decoration: none;
@@ -1186,7 +1185,7 @@ a.ls_tab_asset {
 	margin: 0 0 0 8px;
 	}
 	
-a.ls_tab_go_adminDevices {
+a.ls_tab_tiwi {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_tiwi.png) no-repeat center left;
 	text-decoration: none;
@@ -1194,7 +1193,7 @@ a.ls_tab_go_adminDevices {
 	margin: 0 0 0 8px;
 	}
 	
-a.ls_tab_go_adminAddDevice {
+a.ls_tab_add_tiwi {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_add_tiwi.png) no-repeat center left;
 	text-decoration: none;
@@ -1202,7 +1201,7 @@ a.ls_tab_go_adminAddDevice {
 	margin: 0 0 0 8px;
 	}
 	
-a.ls_tab_go_adminTrailers {
+a.ls_tab_trailer {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_trailer.png) no-repeat center left;
 	text-decoration: none;
@@ -1210,7 +1209,7 @@ a.ls_tab_go_adminTrailers {
 	margin: 0 0 0 8px;
 	}
 	
-a.ls_tab_go_adminAddTrailer {
+a.ls_tab_add_trailer {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_add_trailer.png) no-repeat center left;
 	text-decoration: none;
@@ -1266,8 +1265,22 @@ a.ls_tab_mile {
 	color: #000;
 	margin: 0 0 0 8px;
 	}
-
-
+	
+a.ls_tab_line {
+	padding: 6px 10px 7px 20px;
+	background: transparent url(../images/ico_line.png) no-repeat center left;
+	text-decoration: none;
+	color: #000;
+	margin: 0 0 0 8px;
+	}
+	
+a.ls_tab_overall {
+	padding: 6px 10px 7px 20px;
+	background: transparent url(../images/ico_overall.png) no-repeat center left;
+	text-decoration: none;
+	color: #000;
+	margin: 0 0 0 8px;
+	}
 
 
 
