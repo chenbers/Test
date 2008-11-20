@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -158,6 +159,7 @@ public class ZonesBean extends BaseBean
     public void add()
     {
         item = new Zone();
+        item.setCreated(new Date());
         editing = true;
     }
 
