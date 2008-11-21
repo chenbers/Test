@@ -2,8 +2,10 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
@@ -28,6 +30,7 @@ import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleReportItem;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.TempColumns;
 
 public class VehicleReportBean extends BaseBean
 {
@@ -39,6 +42,7 @@ public class VehicleReportBean extends BaseBean
     
     private static final List<String> AVAILABLE_COLUMNS;
     private Map<String,TableColumn> vehicleColumns;
+    private Vector tmpColumns = new Vector(); 
     
     private TablePreference tablePref;
     
@@ -207,9 +211,7 @@ public class VehicleReportBean extends BaseBean
     }
     
     public void saveColumns() {  
-        //In here for saving the column preferences 
-        logger.debug("save columns");
-        
+        //To data store
         TablePreference pref = getTablePref();
         int cnt = 0;
         for (String column : AVAILABLE_COLUMNS)
@@ -217,8 +219,40 @@ public class VehicleReportBean extends BaseBean
             pref.getVisible().set(cnt, vehicleColumns.get(column).getVisible());
         }
         setTablePref(pref);
-        tablePreferenceDAO.update(pref);        
+        tablePreferenceDAO.update(pref);
+        
+        //Update tmp
+        Iterator it = this.vehicleColumns.keySet().iterator();
+        while ( it.hasNext() ) {
+            Object key = it.next(); 
+            Object value = this.vehicleColumns.get(key);  
+
+            for ( int i = 0; i < tmpColumns.size(); i++ ) {
+                TempColumns tc = (TempColumns)tmpColumns.get(i);
+                if ( tc.getColName().equalsIgnoreCase((String)key) ) {
+                    Boolean b = ((TableColumn)value).getVisible();
+                    tc.setColValue(b);
+                }
+            }
+        }       
     }
+    
+    public void cancelColumns() {        
+        //Update live
+        Iterator it = this.vehicleColumns.keySet().iterator();
+        while ( it.hasNext() ) {
+            Object key = it.next(); 
+            Object value = this.vehicleColumns.get(key);  
+  
+            for ( int i = 0; i < tmpColumns.size(); i++ ) {
+                TempColumns tc = (TempColumns)tmpColumns.get(i);
+                if ( tc.getColName().equalsIgnoreCase((String)key) ) {
+                    this.vehicleColumns.get(key).setVisible(tc.getColValue());
+                }
+            }
+        }
+
+    }    
     
     public TablePreference getTablePref()
     {
@@ -269,6 +303,7 @@ public class VehicleReportBean extends BaseBean
                     tableColumn.setCanHide(false);
                     
                 vehicleColumns.put(column, tableColumn);
+                tmpColumns.add(new TempColumns(column,tableColumn.getVisible()));
                         
             }
         } 
