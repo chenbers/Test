@@ -2,9 +2,11 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
@@ -30,6 +32,7 @@ import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleReportItem;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.TempColumns;
 
 public class IdlingReportBean extends BaseBean
 {
@@ -41,6 +44,7 @@ public class IdlingReportBean extends BaseBean
     
     private static final List<String> AVAILABLE_COLUMNS;
     private Map<String,TableColumn> idlingColumns;
+    private Vector tmpColumns = new Vector();  
     
     private TablePreference tablePref;   
     private TablePreferenceDAO tablePreferenceDAO;
@@ -225,9 +229,7 @@ public class IdlingReportBean extends BaseBean
     }
     
     public void saveColumns() {  
-        //In here for saving the column preferences 
-        logger.debug("save columns");
-        
+        //To data store
         TablePreference pref = getTablePref();
         int cnt = 0;
         for (String column : AVAILABLE_COLUMNS)
@@ -235,7 +237,39 @@ public class IdlingReportBean extends BaseBean
             pref.getVisible().set(cnt, idlingColumns.get(column).getVisible());
         }
         setTablePref(pref);
-        tablePreferenceDAO.update(pref);        
+        tablePreferenceDAO.update(pref);
+        
+        //Update tmp
+        Iterator it = this.idlingColumns.keySet().iterator();
+        while ( it.hasNext() ) {
+            Object key = it.next(); 
+            Object value = this.idlingColumns.get(key);  
+
+            for ( int i = 0; i < tmpColumns.size(); i++ ) {
+                TempColumns tc = (TempColumns)tmpColumns.get(i);
+                if ( tc.getColName().equalsIgnoreCase((String)key) ) {
+                    Boolean b = ((TableColumn)value).getVisible();
+                    tc.setColValue(b);
+                }
+            }
+        }     
+    }
+    
+    public void cancelColumns() {        
+        //Update live
+        Iterator it = this.idlingColumns.keySet().iterator();
+        while ( it.hasNext() ) {
+            Object key = it.next(); 
+            Object value = this.idlingColumns.get(key);  
+  
+            for ( int i = 0; i < tmpColumns.size(); i++ ) {
+                TempColumns tc = (TempColumns)tmpColumns.get(i);
+                if ( tc.getColName().equalsIgnoreCase((String)key) ) {
+                    this.idlingColumns.get(key).setVisible(tc.getColValue());
+                }
+            }
+        }
+
     }
     
     public TablePreference getTablePref()
@@ -287,6 +321,7 @@ public class IdlingReportBean extends BaseBean
                     tableColumn.setCanHide(false);
                     
                 idlingColumns.put(column, tableColumn);
+                tmpColumns.add(new TempColumns(column,tableColumn.getVisible()));
                         
             }
         } 
