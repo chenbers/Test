@@ -25,7 +25,7 @@
 							<div class="">
 								<div class="panel_nw">
 									<div class="panel_title">
-										<span class="driver">Driver Report</span>
+										<span class="driver">#{messages.reports_driverreporttitle}</span>
 										<span class="panel_links"></span>
 									</div>
 								</div>
@@ -35,7 +35,13 @@
 									
 									<a4j:form id="outerDriverReport">										
 										<div class="msg">
-											<p id="redflag">There are #{redFlagsBean.maxCount} red flags. (<a href="/tiwipro/secured/redFlags.faces">view</a>) </p>
+											<p id="redflag">
+												<h:outputFormat id="headerRedDriver" 
+													value="#{messages.reports_redflagscountheader}">
+													<a4j:actionparam value="#{redFlagsBean.maxCount}"/>
+												</h:outputFormat>												
+												(<a href="/tiwipro/secured/redFlags.faces">#{messages.reports_view}</a>) 
+											</p>
 										</div>									  	
 										<ul id="grid_nav" style="margin: 0;">            							
             								<li class="l">
@@ -70,12 +76,11 @@
             									</a4j:commandLink>
             								</li>  
             								<li class="r text">
-              									<h:outputFormat id="showing" value="Showing "/> 
-              									<h:outputFormat id="start" value="#{driverReportBean.start}"/>
-              									<h:outputFormat id="to" value=" to "/>
-              									<h:outputFormat id="end" value="#{driverReportBean.end}"/>
-              									<h:outputFormat id="of" value=" of "/>           					              
-              									<h:outputFormat id="max" value="#{driverReportBean.maxCount}"/>
+            									<h:outputFormat id="header" value="#{messages.redflags_recordCountHeader}">
+													<a4j:actionparam value="#{driverReportBean.start}"/>
+													<a4j:actionparam value="#{driverReportBean.end}"/>
+													<a4j:actionparam value="#{driverReportBean.maxCount}"/>
+												</h:outputFormat>              									
             								</li>          							
           								</ul>																																	
 									
