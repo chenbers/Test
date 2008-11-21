@@ -28,6 +28,7 @@ import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.TempColumns;
 
 public class DriverReportBean extends BaseBean
 {
@@ -76,7 +77,6 @@ public class DriverReportBean extends BaseBean
     }
     
     public void init() {  
-        logger.debug("init");
         driversData = driverDAO.getAllDrivers(getUser().getPerson().getGroupID());        
         loadResults(driversData);     
         maxCount = driverData.size();        
@@ -429,36 +429,6 @@ public class DriverReportBean extends BaseBean
     public void setTablePreferenceDAO(TablePreferenceDAO tablePreferenceDAO)
     {
         this.tablePreferenceDAO = tablePreferenceDAO;
-    }
-    
-    private class TempColumns {
-       String colName;
-       Boolean colValue;
-       
-       public TempColumns(String colName, Boolean colValue) {
-           this.colName = colName;
-           this.colValue = colValue;
-       }
-
-       public String getColName()
-       {
-         return colName;
-       }
-
-       public void setColName(String colName)
-       {
-           this.colName = colName;
-       }
-
-       public Boolean getColValue()
-       {
-           return colValue;
-       }
-
-       public void setColValue(Boolean colValue)
-       {
-           this.colValue = colValue;
-       }
-    }
+    }    
 
 }
