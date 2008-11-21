@@ -72,12 +72,16 @@
 				</rich:panel>
 			
 				<div class="popupactions">
-					<button value="submit" class="left" 
-						onclick="Richfaces.hideModalPanel('editVehicleColumns'); return false;">
-						<span class="cancel">
-							<h:outputText value="#{messages.button_cancel}" />
-						</span>
-					</button>
+					<a4j:commandLink rendered="true" 
+          				action="#{vehicleReportBean.cancelColumns}"           				
+          				onclick="Richfaces.hideModalPanel('editVehicleColumns')" 
+          				reRender="items">
+          				<button value="submit" class="left">
+          					<span class="save">
+          						<h:outputText value="#{messages.button_cancel}" />
+          					</span>
+          				</button>
+          			</a4j:commandLink>  
           			<a4j:commandLink rendered="true" 
           				action="#{vehicleReportBean.saveColumns}"           				
           				onclick="Richfaces.hideModalPanel('editVehicleColumns')" 
