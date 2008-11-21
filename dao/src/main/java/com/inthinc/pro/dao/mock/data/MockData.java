@@ -201,7 +201,12 @@ public class MockData
             
             if (!groupIsParent(groups, groups[cnt].getGroupID()))
             {
-                List<Driver> driversInGroup = addDriversToGroup(accountID, groups[cnt].getGroupID(),5);                
+                List<Driver> driversInGroup = addDriversToGroup(accountID, groups[cnt].getGroupID(),5);
+                if (groups[cnt].getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID))
+                {
+                    unitTestStats.totalDrivers = driversInGroup.size();
+                }
+
 //                List<Driver> driversInGroup = addDriversToGroup(accountID, groups[cnt].getGroupID(), randomInt(1, MAX_DRIVERS_IN_GROUP));
                 List<Vehicle> vehiclesInGroup = addVehiclesToGroup(accountID, groups[cnt].getGroupID(), randomInt(1, MAX_VEHICLES_IN_GROUP));
 
@@ -263,6 +268,10 @@ public class MockData
 
     private void addScores(Integer entityID, EntityType entityType, String entityName)
     {
+        addScores(entityID, entityType, entityName, 0);
+    }
+    private void addScores(Integer entityID, EntityType entityType, String entityName, Integer groupID)
+    {
 
         // create in reverse order -- this is a kludge so date range matches correctly
 
@@ -293,14 +302,22 @@ public class MockData
             {
                 if (scoreType != ScoreType.SCORE_OVERALL_TIME ) 
                 {
-                  storeObject(
-                      new ScoreableEntity(
+                    ScoreableEntity scoreableEntity = new ScoreableEntity(
                               entityID, 
                               entityType, 
                               entityName, 
                               randomInt(0,50), 
-                              DateUtil.getDaysBackDate(dateNow, 30 * month),
-                              scoreType));
+                              DateUtil.getDaysBackDate(dateNow, 30 * month)-1,
+                              scoreType);
+//if (scoreType.equals(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL) && month == 0)
+//{
+//    System.out.println(DateUtil.getDaysBackDate(dateNow, 30 * month));
+//}
+                     storeObject(scoreableEntity);
+                     if (groupID.equals(UnitTestStats.UNIT_TEST_GROUP_ID) && month == 0 && scoreType.getSubTypes() == null)
+                     {
+                         unitTestStats.addToTotalScore(scoreType, scoreableEntity.getScore());
+                     }
                 }
             }
         }
@@ -335,8 +352,13 @@ public class MockData
             Driver driver = createDriver(id, accountID, groupID, "John", "Driver"+id);
             storeObject(driver);
             Person person = retrieveObject(Person.class, "personID", id);
-            addScores(driver.getDriverID(), EntityType.ENTITY_DRIVER, person.getFirst() + person.getLast());
+            addScores(driver.getDriverID(), EntityType.ENTITY_DRIVER, person.getFirst() + person.getLast(), groupID);
             driverList.add(driver);
+        }
+        
+        if (groupID.equals(UnitTestStats.UNIT_TEST_GROUP_ID))
+        {
+            unitTestStats.fixupTotalScores();
         }
         
         return driverList;

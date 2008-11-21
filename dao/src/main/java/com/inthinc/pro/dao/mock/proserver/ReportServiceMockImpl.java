@@ -1,6 +1,7 @@
 package com.inthinc.pro.dao.mock.proserver;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import com.inthinc.pro.dao.mock.data.SearchCriteria;
 import com.inthinc.pro.dao.mock.data.TempConversionUtil;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.ScoreType;
@@ -134,7 +136,8 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
 
         List<Driver> allDriversInGroup = getAllDriversInGroup(topGroup);
 
-        int[] totals = getScoreCatCntsForAllDrivers(startDate, endDate, scoreType, allDriversInGroup);
+        int totals[] = new int[5];
+        totals = getScoreCategoryTotals(totals, startDate, endDate, ScoreType.valueOf(scoreType), allDriversInGroup);
         List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
         int totalDrivers = allDriversInGroup.size();
         int percentTotal = 0;
@@ -233,83 +236,53 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
         return returnList;
     }
 
-    private Map<String, Object> getAverageScore(Integer startDate, List<ScoreableEntity> allScores)
-    {
-        int total = 0;
-        ScoreableEntity firstEntity = allScores.get(0);
-        ScoreableEntity returnEntity = new ScoreableEntity(firstEntity.getEntityID(), EntityType.ENTITY_GROUP, firstEntity.getIdentifier(), 0, startDate, firstEntity
-                .getScoreType());
-        for (ScoreableEntity entity : allScores)
-        {
-            total += entity.getScore();
-        }
-        returnEntity.setScore(total / allScores.size());
-
-        return TempConversionUtil.createMapFromObject(returnEntity);
-    }
+    static Map<String, List<Map<String, Object>> >scoreBreakdownByTypeCache = new HashMap<String, List<Map<String, Object>> >();
 
     @Override
-    public List<Map<String, Object>> getScoreBreakdownByType(Integer groupID, Integer startDate, Integer endDate, Integer scoreType) throws ProDAOException
+    public List<Map<String, Object>> getScoreBreakdownByType(Integer groupID, Integer duration, Integer scoreType) throws ProDAOException
     {
+        String cacheKey = groupID + "_" + duration + "_" + scoreType;
+        if (scoreBreakdownByTypeCache.get(cacheKey) != null)
+        {
+            System.out.println("found in cache");        
+            
+            return scoreBreakdownByTypeCache.get(cacheKey);
+        }
+        
+        Integer endDate = MockData.getInstance().dateNow;
+        Integer startDate = DateUtil.getDaysBackDate(endDate, Duration.valueOf(duration).getNumberOfDays());
+        
         Group topGroup = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
         List<Driver> allDriversInGroup = getAllDriversInGroup(topGroup);
         
         List<ScoreType> scoreTypeList = ScoreType.valueOf(scoreType).getSubTypes();
         
-        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+        List<ScoreTypeBreakdown> scoreTypeBreakdownList = new ArrayList<ScoreTypeBreakdown>();
+        
         for (ScoreType subType : scoreTypeList)
         {
             ScoreTypeBreakdown scoreTypeBreakdown = new ScoreTypeBreakdown();
             scoreTypeBreakdown.setScoreType(subType);
             List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
             scoreTypeBreakdown.setPercentageList(scoreList);
+            scoreTypeBreakdownList.add(scoreTypeBreakdown);
             
-            int[] totals = getScoreCatCntsForAllDrivers(startDate, endDate, scoreType, allDriversInGroup);
-            int totalDrivers = allDriversInGroup.size();
-            int percentTotal = 0;
+            int totals[] = new int[5];
+            totals = getScoreCategoryTotals(totals, startDate, endDate, subType, allDriversInGroup);
+            int scoreCnt = 0;
             for (int i = 0; i < 5; i++)
-            {
-                int percent = 0;
-                if (i < 4)
-                {
-                    percent = Math.round((float) ((float) totals[i] * 100f) / (float) totalDrivers);
-                    percentTotal += percent;
-                }
-                else
-                {
-                    percent = 100 - percentTotal;
-                }
-                ScoreableEntity scoreableEntity = new ScoreableEntity(groupID, EntityType.ENTITY_GROUP, 
-                            (i + 1) + "", // name will be 1 to 5 for the 5 different score breakdowns
-                        new Integer(percent), startDate, ScoreType.valueOf(scoreType));
-                scoreList.add(scoreableEntity);
-            }
-            
-            returnList.add(TempConversionUtil.createMapFromObject(scoreTypeBreakdown));
+                scoreCnt += totals[i];
+            computePercentages(groupID, startDate, subType.getCode(), scoreList, totals, scoreCnt);
             
         }
 
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+        for (ScoreTypeBreakdown scoreTypeBreakdown : scoreTypeBreakdownList)
+        {
+            returnList.add(TempConversionUtil.createMapFromObject(scoreTypeBreakdown));
+        }
+        
+        scoreBreakdownByTypeCache.put(cacheKey, returnList);
         return returnList;
     }
-
-    private int[] getScoreCatCntsForAllDrivers(Integer startDate, Integer endDate, Integer scoreType, List<Driver> allDriversInGroup)
-    {
-        int totals[] = new int[5];
-        for (Driver driver : allDriversInGroup)
-        {
-            SearchCriteria searchCriteria = new SearchCriteria();
-            searchCriteria.addKeyValue("entityID", driver.getDriverID());
-            searchCriteria.addKeyValue("scoreType", ScoreType.valueOf(scoreType));
-            searchCriteria.addKeyValueRange("date", startDate, endDate);
-            List<ScoreableEntity> allScores = MockData.getInstance().retrieveObjectList(ScoreableEntity.class, searchCriteria);
-            Map<String, Object> scoreMap = getAverageScore(startDate, allScores);
-
-            Integer score = (Integer) scoreMap.get("score");
-            int idx = (score - 1) / 10;
-            totals[idx]++;
-        }
-        return totals;
-    }
-
-
 }

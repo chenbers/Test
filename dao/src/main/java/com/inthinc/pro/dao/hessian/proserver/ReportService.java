@@ -143,12 +143,12 @@ public interface ReportService extends HessianService
      *          SCORE_DRIVING_STYLE_HARD_BUMP(20)
      * 
      * @param groupID
-     * @param startDate
-     * @param endDate
+     * @param duration
+     *          1 - 30 days, 2 - 3 months, 3 - 6 months, 4 - 12 months
      * @param scoreType
      *            SCORE_OVERALL = 1, SCORE_SPEEDING=2, SCORE_SEATBELT=3, SCORE_DRIVING_STYLE=4
      * @return List<Map<String, Object>>  that maps to List of ScoreTypeBreakdown objects 
      */
-    List<Map<String, Object>> getScoreBreakdownByType(Integer groupID, Integer startDate, Integer endDate, Integer scoreType) throws ProDAOException;
+    List<Map<String, Object>> getScoreBreakdownByType(Integer groupID, Integer duration, Integer scoreType) throws ProDAOException;
     
 }

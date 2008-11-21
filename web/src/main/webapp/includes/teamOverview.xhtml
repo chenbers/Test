@@ -23,10 +23,11 @@
 <!-- START PANEL -->
 <h:panelGroup layout="block">
 	<h:panelGroup layout="block" styleClass="panel_nw">
-		<h:panelGroup layout="block" styleClass="panel_title">
+		<h:panelGroup layout="block" styleClass="panel_title" >
 			<span class="line">#{messages.team_overview}</span>
-			<span class="panel_links"> 
-				<ui:include src="/includes/dateLinks.xhtml">
+			<a4j:outputPanel id="duration-links" styleClass="panel_links">
+				<a4j:region rendered="#{teamOverviewBean.selectedAction.key != 'seatbelt'}" >
+				<ui:include src="/includes/dateLinks.xhtml" >
 					<ui:param name="ajaxForm" value="overviewDates-form"/>
 					<ui:param name="reRenderList" value="overviewDates-form,overview-content"/>			
 					<ui:param name="thirtyDaysOn" value="#{teamOverviewBean.styleClass30Days}"/>
@@ -34,8 +35,9 @@
 					<ui:param name="sixMonthsOn" value="#{teamOverviewBean.styleClass6Months}"/>
 					<ui:param name="twelveMonthsOn" value="#{teamOverviewBean.styleClass12Months}"/>
 					<ui:param name="duration" value="#{teamOverviewBean.duration}" />
-				</ui:include>	
-			</span>
+				</ui:include>
+				</a4j:region>	
+			</a4j:outputPanel>
 		</h:panelGroup>				
 	</h:panelGroup>				
 	<h:panelGroup layout="block" styleClass="panel_w">
@@ -46,7 +48,7 @@
 					<ul class="htabs">
 				      <ui:repeat value="#{teamOverviewBean.actions}" var="action" id="menu">
                     	<li class="#{(action.key == teamOverviewBean.selectedAction.key) ? action.onStyle : action.offStyle}">
-				            <a4j:commandLink title="#{action.displayString}" reRender="overview-form,overview-content">
+				            <a4j:commandLink title="#{action.displayString}" reRender="overview-form,overview-content,duration-links">
 								<h:graphicImage value="/images/x.gif" width="#{action.width}" height="27"  style="border:none"/>
 				            	<f:setPropertyActionListener target="#{teamOverviewBean.selectedAction}" value="#{action}" />
 				            </a4j:commandLink>	

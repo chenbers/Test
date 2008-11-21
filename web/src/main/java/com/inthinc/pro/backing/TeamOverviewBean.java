@@ -1,9 +1,9 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -11,11 +11,9 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
-import com.inthinc.pro.backing.ui.ScoreBreakdown;
 import com.inthinc.pro.backing.ui.ScoreCategory;
 import com.inthinc.pro.backing.ui.TabAction;
 import com.inthinc.pro.charts.Bar3D;
-import com.inthinc.pro.charts.Pie;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Duration;
@@ -27,9 +25,9 @@ import com.inthinc.pro.util.MessageUtil;
 public class TeamOverviewBean extends BaseDurationBean
 {
 
-    private Integer             overallScore;
     private ScoreDAO          scoreDAO;
     private Map<ScoreType, String>        barDefMap;
+    private Map<ScoreType, Integer>       overallScoreMap;
     private List<TabAction>  actions;
     private TabAction selectedAction;
     private NavigationBean navigation;
@@ -38,34 +36,19 @@ public class TeamOverviewBean extends BaseDurationBean
     
     private static final Logger logger = Logger.getLogger(TeamOverviewBean.class);
 
-    private void init()
+    private Integer initOverallScore(ScoreType scoreType)
     {
         
         Integer endDate = DateUtil.getTodaysDate();
         Integer startDate = DateUtil.getDaysBackDate(endDate, getDuration().getNumberOfDays());
 
-        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(getGroupID(), startDate, endDate, ScoreType.SCORE_OVERALL);
-        setOverallScore(scoreableEntity.getScore());
-    }
-
-    public Integer getOverallScore()
-    {
-        if (overallScore == null)
-        {
-            init();
-        }
-        return overallScore;
-    }
-
-    public void setOverallScore(Integer overallScore)
-    {
-logger.debug("##### setOverallScore: " + overallScore);        
-        this.overallScore = overallScore;
+        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(getGroupID(), startDate, endDate, scoreType);
+        return scoreableEntity.getScore();
     }
 
     public String getOverallScoreStyle()
     {
-        ScoreBox sb = new ScoreBox(getOverallScore(), ScoreBoxSizes.LARGE);
+        ScoreBox sb = new ScoreBox(getSelectedOverallScore(), ScoreBoxSizes.LARGE);
         return sb.getScoreStyle();
     }
 
@@ -74,9 +57,9 @@ logger.debug("##### setOverallScore: " + overallScore);
         return scoreDAO;
     }
 
-    public void setScoreDAO(ScoreDAO graphicDAO)
+    public void setScoreDAO(ScoreDAO scoreDAO)
     {
-        this.scoreDAO = graphicDAO;
+        this.scoreDAO = scoreDAO;
     }
 
     public String getSelectedBarDef()
@@ -100,15 +83,21 @@ logger.debug("getSelectedBarDef() ");
 
     public String createBar3DChart(ScoreType scoreType)
     {
-        Integer endDate = DateUtil.getTodaysDate();
-        Integer startDate = DateUtil.getDaysBackDate(endDate, getDuration().getNumberOfDays());
-        
-        List<ScoreTypeBreakdown> scoreDataList = scoreDAO.getScoreBreakdownByType(getGroupID(), startDate, endDate, scoreType);
+        List<ScoreTypeBreakdown> scoreDataList = scoreDAO.getScoreBreakdownByType(getGroupID(), getDuration(), scoreType);
         
         List<String>categoryLabelList = new ArrayList<String>();
+        boolean first = true;
         for (ScoreType subType : scoreType.getSubTypes())
         {
-            categoryLabelList.add(MessageUtil.getMessageString(subType.toString()));
+            if (first)
+            {
+                categoryLabelList.add(MessageUtil.getMessageString(ScoreType.SCORE_OVERALL.toString()));
+                first = false;
+            }
+            else
+            {
+                categoryLabelList.add(MessageUtil.getMessageString(subType.toString()));
+            }
         }
         
         StringBuffer sb = new StringBuffer();
@@ -118,8 +107,9 @@ logger.debug("getSelectedBarDef() ");
         sb.append(bar3d.getControlParameters());
         sb.append(bar3d.getCategories(categoryLabelList));
         
-        // TODO: reverse order
-        for (ScoreCategory category : EnumSet.allOf(ScoreCategory.class))
+        List<ScoreCategory> categoryList = Collections.list(Collections.enumeration(EnumSet.allOf(ScoreCategory.class)));
+        Collections.reverse(categoryList);
+        for (ScoreCategory category : categoryList)
         {
             List<Object> valueList = new ArrayList<Object>();
             for (ScoreTypeBreakdown scoreTypeBreakdown : scoreDataList)
@@ -146,6 +136,34 @@ logger.debug("getSelectedBarDef() ");
     public void setBarDefMap(Map<ScoreType, String> barDefMap)
     {
         this.barDefMap = barDefMap;
+    }
+
+    public Map<ScoreType, Integer> getOverallScoreMap()
+    {
+        if (overallScoreMap == null)
+        {
+            overallScoreMap = new HashMap<ScoreType, Integer>();
+        }
+        return overallScoreMap;
+    }
+
+    public void setOverallScoreMap(Map<ScoreType, Integer> overallScoreMap)
+    {
+        this.overallScoreMap = overallScoreMap;
+    }
+
+    public Integer getSelectedOverallScore()
+    {
+logger.debug("getSelectedOverallScore() ");        
+        TabAction action = getSelectedAction();
+        
+        ScoreType scoreType = action.getScoreType();
+        if (getOverallScoreMap().get(scoreType) == null)
+        {
+                overallScoreMap.put(scoreType, initOverallScore(scoreType));
+        }
+        
+        return getOverallScoreMap().get(scoreType);
     }
 
     public void setActions(List<TabAction> actions)
@@ -214,9 +232,10 @@ logger.debug("getSelectedBarDef() ");
     {
         super.setDuration(duration);
         
-        setOverallScore(null);
+        setOverallScoreMap(null);
         setBarDefMap(null);
         
     }
+
 
 }

@@ -31,7 +31,7 @@ public class TeamOverviewBeanTest extends BaseBeanTest
     @Test
     public void bean()
     {
-        // just test the bean successfully creates all of the required pies
+        // just test the bean successfully creates all of the required bars
         
         // team level login
         loginUser("custom114");
@@ -43,40 +43,34 @@ public class TeamOverviewBeanTest extends BaseBeanTest
         assertNotNull(teamOverviewBean.getScoreDAO());
         assertNotNull(teamOverviewBean.getNavigation());
         
-        // overall score
-        assertNotNull(teamOverviewBean.getOverallScore());
-        teamOverviewBean.setOverallScore(new Integer(20));
-        assertEquals(20, teamOverviewBean.getOverallScore().intValue());
-        
-        // style
-        assertEquals("score_lg_2", teamOverviewBean.getOverallScoreStyle());
-        
         // simulates the web page clicking on the tabs to get the various pies 
         List<TabAction> actionList = teamOverviewBean.getActions();
         for (TabAction action : actionList)
         {
             teamOverviewBean.setSelectedAction(action);
-//            String pieDef = teamOverviewBean.getSelectedPieDef();
-//            assertNotNull("Pie missing for action: " + action.getDisplayString(), pieDef);
-//            assertEquals(pieDef, teamOverviewBean.getPieDef(action.getScoreType().getCode()));
-//            
-//            if (action.getScoreType() == ScoreType.SCORE_OVERALL)
-//                    assertEquals(pieDef, teamOverviewBean.getOverallPieDef());
-//            else if (action.getScoreType() == ScoreType.SCORE_DRIVING_STYLE)
-//                    assertEquals(pieDef, teamOverviewBean.getDriveStylePieDef());
-//            else if (action.getScoreType() == ScoreType.SCORE_SPEEDING)
-//                    assertEquals(pieDef, teamOverviewBean.getSpeedPieDef());
-//            else if (action.getScoreType() == ScoreType.SCORE_SEATBELT)
-//                    assertEquals(pieDef, teamOverviewBean.getSeatbeltPieDef());
+            
+            // bar graph
+            String barDef = teamOverviewBean.getSelectedBarDef();
+            assertNotNull("Bar missing for action: " + action.getDisplayString(), barDef);
+            assertEquals(barDef, teamOverviewBean.getBarDef(action.getScoreType().getCode()));
+            
+            // overall score
+            assertNotNull(teamOverviewBean.getSelectedOverallScore());
+            
+            // style
+            assertEquals("score_lg_" + (((teamOverviewBean.getSelectedOverallScore()-1)/10)+1), teamOverviewBean.getOverallScoreStyle());
         }
 
         
-        // make sure when the duration changes the pies, score get set to null so they are reinitialized
+        // make sure when the duration changes the bar, score get set to null so they are reinitialized
         teamOverviewBean.setDuration(Duration.THREE);
-//        assertNotNull(teamOverviewBean.getPieDefMap());
-        assertNotNull(teamOverviewBean.getOverallScore());
+        assertNotNull(teamOverviewBean.getBarDefMap());
+        assertNotNull(teamOverviewBean.getOverallScoreMap());
         
         teamOverviewBean.setSelectedAction(null);
         assertEquals(actionList.get(0), teamOverviewBean.getSelectedAction());
+
+        
+    
     }
 }

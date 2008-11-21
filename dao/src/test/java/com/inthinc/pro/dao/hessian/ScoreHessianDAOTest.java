@@ -8,6 +8,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.mock.data.MockData;
@@ -15,6 +16,7 @@ import com.inthinc.pro.dao.mock.data.SearchCriteria;
 import com.inthinc.pro.dao.mock.proserver.ReportServiceCreator;
 import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreTypeBreakdown;
@@ -103,37 +105,50 @@ public class ScoreHessianDAOTest
     public void getScoreBreakdownByType()
     {
         Integer testGroupID = MockData.unitTestStats.UNIT_TEST_GROUP_ID;
-        Integer endDate = DateUtil.getTodaysDate();
-        Integer startDate = DateUtil.getDaysBackDate(endDate, 30);
         
-        
-        checkBreakdown(testGroupID, endDate, startDate, ScoreType.SCORE_OVERALL, 4);
-        checkBreakdown(testGroupID, endDate, startDate, ScoreType.SCORE_SPEEDING, 6);
-        checkBreakdown(testGroupID, endDate, startDate, ScoreType.SCORE_SEATBELT, 5);
-        checkBreakdown(testGroupID, endDate, startDate, ScoreType.SCORE_DRIVING_STYLE, 6);
-        
-        
+        checkBreakdown(testGroupID, Duration.DAYS, ScoreType.SCORE_OVERALL, 4);
+        checkBreakdown(testGroupID, Duration.DAYS, ScoreType.SCORE_SPEEDING, 6);
+        checkBreakdown(testGroupID, Duration.DAYS, ScoreType.SCORE_SEATBELT, 5);
+        checkBreakdown(testGroupID, Duration.DAYS, ScoreType.SCORE_DRIVING_STYLE, 6);
     }
 
-    private void checkBreakdown(Integer testGroupID, Integer endDate, Integer startDate, ScoreType scoreType, int expectedBreakdownSize)
+    private void checkBreakdown(Integer testGroupID, Duration duration, ScoreType scoreType, int expectedBreakdownSize)
     {
-        List<ScoreTypeBreakdown> scoreBreakdownList = scoreHessianDAO.getScoreBreakdownByType(testGroupID, startDate, endDate, scoreType);
+        Integer totalDrivers = MockData.getInstance().unitTestStats.totalDrivers;
+        List<ScoreTypeBreakdown> scoreBreakdownList = scoreHessianDAO.getScoreBreakdownByType(testGroupID, duration, scoreType);
         assertEquals(expectedBreakdownSize, scoreBreakdownList.size());
         List<ScoreType> subTypeList = scoreType.getSubTypes();
         assertEquals(subTypeList.size(), scoreBreakdownList.size());
         for (ScoreType subType : subTypeList)
         {
+           
+           List<Integer> valueList = MockData.getInstance().unitTestStats.totalScoreCntPerType.get(subType);
            boolean found = false;
            for (ScoreTypeBreakdown breakdown : scoreBreakdownList)
            {
                if (breakdown.getScoreType().equals(subType))
                {
                    found = true;
-                   assertEquals(5, breakdown.getPercentageList().size());
-                   System.out.println(subType.toString() + " Scores:");
+                   assertEquals(" " + subType , 5, breakdown.getPercentageList().size());
+                   int total = 0; 
                    for (int i = 0; i < 5; i++)
                    {
-                       System.out.println(breakdown.getPercentageList().get(i).getScore());
+                       total += valueList.get(i);
+                   }
+                   int percentTotal = 0;
+                   for (int i = 0; i < 5; i++)
+                   {
+                       Integer expected = null;
+                       if (i == 4)
+                       {
+                           expected = 100 - percentTotal;
+                       }
+                       else
+                       {
+                           expected = Math.round((float) ((float) valueList.get(i) * 100f) / (float) total);
+                           percentTotal += expected;
+                       }
+                       assertEquals(expected, breakdown.getPercentageList().get(i).getScore());
                    }
                    break;
                }

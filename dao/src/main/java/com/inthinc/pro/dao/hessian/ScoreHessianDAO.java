@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreTypeBreakdown;
 import com.inthinc.pro.model.ScoreableEntity;
@@ -76,9 +77,9 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     }
 
     @Override
-    public List<ScoreTypeBreakdown> getScoreBreakdownByType(Integer groupID, Integer startDate, Integer endDate, ScoreType scoreType)
+    public List<ScoreTypeBreakdown> getScoreBreakdownByType(Integer groupID, Duration duration, ScoreType scoreType)
     {
-        List<ScoreTypeBreakdown> scoreList = getMapper().convertToModelObject(reportService.getScoreBreakdownByType(groupID, startDate, endDate, scoreType.getCode()), ScoreTypeBreakdown.class);
+        List<ScoreTypeBreakdown> scoreList = getMapper().convertToModelObject(reportService.getScoreBreakdownByType(groupID, duration.getCode(), scoreType.getCode()), ScoreTypeBreakdown.class);
         return scoreList;
     }
 }

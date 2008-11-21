@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.backing.ui.ScoreCategory;
 
 public class Bar3D implements BaseChart
 {
@@ -52,7 +51,6 @@ public class Bar3D implements BaseChart
     @Override
     public String getChartItem(Object[] params)
     {
-        logger.debug("bar 3d getchartitem");
         String item = MessageFormat.format(BAR3D_CHART_DATASET_ITEM, params);
         return item;
     }
