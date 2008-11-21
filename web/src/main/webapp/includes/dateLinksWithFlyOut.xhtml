@@ -6,8 +6,16 @@
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:h="http://java.sun.com/jsf/html">
 
+	<a4j:region id="#{ajaxForm}_region">
 	<a4j:form id="#{ajaxForm}">
-	<span class="panel_links_ico">
+		<span class="panel_links_ico">
+		<a4j:status id="#{ajaxStatusID}" for="#{ajaxForm}_region">
+			<f:facet name="start">
+				<h:outputText><img src="/tiwipro/images/progress2.gif" align="top" />&#160;</h:outputText>
+			</f:facet>
+		</a4j:status>
+		<rich:spacer width="10" />
+	
 		<a4j:commandLink title="#{messages.duration_days}" immediate="true"
 			styleClass="#{thirtyDaysOn}"			
 			reRender="#{reRenderList}"
@@ -41,9 +49,10 @@
 		</a4j:commandLink>
 		</span>
 		<span class="panel_ico">
-     			<img src="/tiwipro/images/ico_tools.png" border="0" />
-     			<h:commandLink action="#{rule}"><img src="/tiwipro/images/ico_expand.png" border="0" /></h:commandLink>
+   			<img src="/tiwipro/images/ico_tools.png" border="0" /><rich:spacer width="3" />
+   			<a4j:commandLink action="#{flyNavRule}"><img src="/tiwipro/images/ico_expand.png" border="0" /></a4j:commandLink>
 		</span>
-	</a4j:form>
+		</a4j:form>
+	</a4j:region>
 	
 </ui:composition>			

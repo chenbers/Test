@@ -28,21 +28,25 @@ public class BreakdownBean extends BaseDurationBean {
     private ScoreDAO scoreDAO;
     private NavigationBean navigation;
 	
-	private String pieDef;	
+	private String overallPieDef;	
     private Integer overallScore;
     private String overallScoreStyle;
+    
+    private String stylePieDef;
+    private String speedPieDef;
+    private String seatBeltPieDef;
 	
-	public String getPieDef() {		
-		pieDef = createPieDef();
+	public String getOverallPieDef() {		
+        overallPieDef = createPieDef(ScoreType.SCORE_OVERALL);
 //		logger.debug("returned string: " + pieDef);
-		return pieDef;
+		return overallPieDef;
 	}
 
-	public void setPieDef(String pieDef) {
-		this.pieDef = pieDef;
+	public void setOverallPieDef(String overallPieDef) {
+		this.overallPieDef = overallPieDef;
 	}
 	
-	public String createPieDef() {
+	public String createPieDef(ScoreType scoreType) {
 		StringBuffer sb = new StringBuffer();
 		
 		//Control parameters
@@ -60,7 +64,7 @@ public class BreakdownBean extends BaseDurationBean {
 //            s = scoreDAO.getScores(this.navigation.getGroupID(),
 //                    startDate, endDate, ScoreType.SCORE_OVERALL_PERCENTAGES);
             s = scoreDAO.getScoreBreakdown(this.navigation.getGroupID(),
-                    startDate, endDate, ScoreType.SCORE_OVERALL);
+                    startDate, endDate, scoreType);
         } catch (Exception e) {
             logger.debug("graphicDao error: " + e.getMessage());
         }    
@@ -154,34 +158,67 @@ public class BreakdownBean extends BaseDurationBean {
         return overallScoreStyle;
     }
 
+    //OVERALL SCORE STYLE PROPERTIES
     public void setOverallScoreStyle(String overallScoreStyle)
     {
         this.overallScoreStyle = overallScoreStyle;
     }
-
     public String getDurationAsString()
     {
         return getDuration().toString();
     }
 
+    //DAO PROPERTIES
     public ScoreDAO getScoreDAO()
     {
         return scoreDAO;
     }
-
     public void setScoreDAO(ScoreDAO scoreDAO)
     {
         this.scoreDAO = scoreDAO;
     }
 
+    //NAVIGATION BEAN PROPERTIES
     public NavigationBean getNavigation()
     {
         return navigation;
     }
-
     public void setNavigation(NavigationBean navigation)
     {
         this.navigation = navigation;
+    }
+
+    //DRIVING STYLE PIE PROPERTIES
+    public String getStylePieDef()
+    {
+        stylePieDef = createPieDef(ScoreType.SCORE_DRIVING_STYLE);
+        return stylePieDef;
+    }
+    public void setStylePieDef(String stylePieDef)
+    {
+        this.stylePieDef = stylePieDef;
+    }
+
+    //SPEED PIE PROPERTIES
+    public String getSpeedPieDef()
+    {
+        speedPieDef = createPieDef(ScoreType.SCORE_SPEEDING);
+        return speedPieDef;
+    }
+    public void setSpeedPieDef(String speedPieDef)
+    {
+        this.speedPieDef = speedPieDef;
+    }
+
+    //SEAT BELT PIE PROPERTIES
+    public String getSeatBeltPieDef()
+    {
+        seatBeltPieDef = createPieDef(ScoreType.SCORE_SEATBELT);
+        return seatBeltPieDef;
+    }
+    public void setSeatBeltPieDef(String seatBeltPieDef)
+    {
+        this.seatBeltPieDef = seatBeltPieDef;
     }
 
 

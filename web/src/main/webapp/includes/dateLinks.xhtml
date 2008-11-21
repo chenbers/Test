@@ -6,8 +6,16 @@
   	xmlns:iwi="http://pro.tiwi.com/jsf"
 	xmlns:h="http://java.sun.com/jsf/html">
 
+	<a4j:region id="#{ajaxForm}_region">
 	<a4j:form id="#{ajaxForm}">
-
+	<span class="panel_links">
+		<a4j:status id="#{ajaxStatusID}" for="#{ajaxForm}_region">
+			<f:facet name="start">
+				<h:outputText><img src="/tiwipro/images/progress2.gif" align="top" />&#160;</h:outputText>
+			</f:facet>
+		</a4j:status>
+		<rich:spacer width="10" />
+		
 		<a4j:commandLink title="#{messages.duration_days}" immediate="true"
 			styleClass="#{thirtyDaysOn}"			
 			reRender="#{reRenderList}"
@@ -39,7 +47,8 @@
 			<a4j:actionparam name="duration" assignTo="#{duration}"
 				value="TWELVE" />
 		</a4j:commandLink>
-		
+		</span>
 	</a4j:form>
+	</a4j:region>
 	
 </ui:composition>			

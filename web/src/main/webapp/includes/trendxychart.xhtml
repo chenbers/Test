@@ -11,11 +11,9 @@
 		<div class="panel_nw">
 			<div class="panel_title">
 				<span class="line">Trend</span> 
-	
-				<span class="panel_links"> 
-	
-					<ui:include src="/includes/dateLinks.xhtml">
-						<ui:param name="ajaxForm" value="trendForm"/>
+					<ui:include src="/includes/dateLinksWithFlyOut.xhtml">
+						<ui:param name="ajaxForm" value="#{ajaxForm}"/>
+						<ui:param name="ajaxStatusID" value="#{ajaxStatusID}"/>
 						<ui:param name="reRenderList" value="#{reRenderList}"/>			
 						<ui:param name="thirtyDaysOn" value="#{thirtyDaysOn}"/>
 						<ui:param name="threeMonthsOn" value="#{threeMonthsOn}"/>
@@ -23,8 +21,6 @@
 						<ui:param name="twelveMonthsOn" value="#{twelveMonthsOn}"/>
             			<ui:param name="duration" value="#{duration}" />
 					</ui:include>	
-
-				</span>
 			</div>
 		
 		</div>

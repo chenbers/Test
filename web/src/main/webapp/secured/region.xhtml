@@ -37,6 +37,8 @@
 				<!-- leave reRenderList alone -->												
 				<ui:include src="/includes/trendxychart.xhtml">
 					<ui:param name="reRenderList" value="trendForm,hiddenField1,xypanel,items"/>
+					<ui:param name="ajaxForm" value="trend_form" />
+					<ui:param name="ajaxStatusID" value="trend_status" /> 
 					<ui:param name="column_one" value="Fleet"/>
 					<ui:param name="column_two" value="Score"/>
 					<ui:param name="thirtyDaysOn" value="#{trendBean.styleClass30Days}"/>
@@ -63,14 +65,16 @@
 				<!-- leave reRenderList alone -->	
 				<ui:include src="/includes/breakdown.xhtml">	
 					<ui:param name="reRenderList" value="breakdownForm,overallPanel,hiddenField3"/>
-					<ui:param name="pieDef" value="#{breakdownBean.pieDef}"/>
+					<ui:param name="ajaxStatusID" value="overall_status" /> 
+					<ui:param name="pieDef" value="#{breakdownBean.overallPieDef}"/>
 					<ui:param name="overallScoreStyle" value="#{breakdownBean.overallScoreStyle}"/>
 					<ui:param name="overallScore" value="#{breakdownBean.overallScore}"/>
 					<ui:param name="duration" value="#{breakdownBean.duration}" />   
             		<ui:param name="thirtyDaysOn" value="#{breakdownBean.styleClass30Days}"/>
 					<ui:param name="threeMonthsOn" value="#{breakdownBean.styleClass3Months}"/>
 					<ui:param name="sixMonthsOn" value="#{breakdownBean.styleClass6Months}"/>
-					<ui:param name="twelveMonthsOn" value="#{breakdownBean.styleClass12Months}"/>       
+					<ui:param name="twelveMonthsOn" value="#{breakdownBean.styleClass12Months}"/>
+					<ui:param name="flyNavRule" value="go_regionFlyOut" />      
 					
 				</ui:include>	
 				<!-- END PANEL -->

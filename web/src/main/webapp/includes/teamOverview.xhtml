@@ -25,10 +25,10 @@
 	<h:panelGroup layout="block" styleClass="panel_nw">
 		<h:panelGroup layout="block" styleClass="panel_title" >
 			<span class="line">#{messages.team_overview}</span>
-			<a4j:outputPanel id="duration-links" styleClass="panel_links">
 				<a4j:region rendered="#{teamOverviewBean.selectedAction.key != 'seatbelt'}" >
 				<ui:include src="/includes/dateLinks.xhtml" >
 					<ui:param name="ajaxForm" value="overviewDates-form"/>
+					<ui:param name="ajaxStatusID" value="overviewStatus"/>
 					<ui:param name="reRenderList" value="overviewDates-form,overview-content"/>			
 					<ui:param name="thirtyDaysOn" value="#{teamOverviewBean.styleClass30Days}"/>
 					<ui:param name="threeMonthsOn" value="#{teamOverviewBean.styleClass3Months}"/>
@@ -37,7 +37,6 @@
 					<ui:param name="duration" value="#{teamOverviewBean.duration}" />
 				</ui:include>
 				</a4j:region>	
-			</a4j:outputPanel>
 		</h:panelGroup>				
 	</h:panelGroup>				
 	<h:panelGroup layout="block" styleClass="panel_w">
