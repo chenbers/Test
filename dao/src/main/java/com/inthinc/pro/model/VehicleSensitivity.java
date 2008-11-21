@@ -1,11 +1,18 @@
 package com.inthinc.pro.model;
 
+import com.inthinc.pro.dao.annotations.Column;
+
 public class VehicleSensitivity extends BaseEntity
 {
     Integer vehicleId;
-    Integer hardAccelerationLevel;
-    Integer hardTurnLevel;
-    Integer hardVerticalLevel;
+    @Column(name = "accel")
+    Integer hardAcceleration;
+    @Column(name = "brake")
+    Integer hardBrake;
+    @Column(name = "turn")
+    Integer hardTurn;
+    @Column(name = "vert")
+    Integer hardVertical;
 
     public Integer getVehicleId()
     {
@@ -17,33 +24,43 @@ public class VehicleSensitivity extends BaseEntity
         this.vehicleId = vehicleId;
     }
 
-    public Integer getHardAccelerationLevel()
+    public Integer getHardAcceleration()
     {
-        return hardAccelerationLevel;
+        return hardAcceleration;
     }
 
-    public void setHardAccelerationLevel(Integer hardAccelerationLevel)
+    public void setHardAcceleration(Integer hardAccelerationLevel)
     {
-        this.hardAccelerationLevel = hardAccelerationLevel;
+        this.hardAcceleration = hardAccelerationLevel;
     }
 
-    public Integer getHardTurnLevel()
+    public Integer getHardBrake()
     {
-        return hardTurnLevel;
+        return hardBrake;
     }
 
-    public void setHardTurnLevel(Integer hardTurnLevel)
+    public void setHardBrake(Integer hardBrakeLevel)
     {
-        this.hardTurnLevel = hardTurnLevel;
+        this.hardBrake = hardBrakeLevel;
     }
 
-    public Integer getHardVerticalLevel()
+    public Integer getHardTurn()
     {
-        return hardVerticalLevel;
+        return hardTurn;
     }
 
-    public void setHardVerticalLevel(Integer hardVerticalLevel)
+    public void setHardTurn(Integer hardTurnLevel)
     {
-        this.hardVerticalLevel = hardVerticalLevel;
+        this.hardTurn = hardTurnLevel;
+    }
+
+    public Integer getHardVertical()
+    {
+        return hardVertical;
+    }
+
+    public void setHardVertical(Integer hardVerticalLevel)
+    {
+        this.hardVertical = hardVerticalLevel;
     }
 }

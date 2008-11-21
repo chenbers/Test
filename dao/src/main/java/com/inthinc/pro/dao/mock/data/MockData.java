@@ -44,6 +44,7 @@ import com.inthinc.pro.model.TamperingEvent;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleSensitivity;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneType;
 
@@ -708,6 +709,12 @@ public class MockData
         vehicle.setLicense(license);
         vehicle.setState(state);
         vehicle.setActive(active);
+        VehicleSensitivity sensitivity = new VehicleSensitivity();
+        vehicle.setSensitivity(sensitivity);
+        sensitivity.setHardBrake(randomInt(0, 2));
+        sensitivity.setHardAcceleration(randomInt(0, 2));
+        sensitivity.setHardTurn(randomInt(0, 2));
+        sensitivity.setHardVertical(randomInt(0, 2));
         return vehicle;
     }
 
