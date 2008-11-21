@@ -26,14 +26,14 @@
 					<rich:column rendered="#{vehicleColumns['group'].visible}" 
 						sortBy="#{item.group}">
 						<f:facet name="header">
-							<h:outputText value="Group" />
+							<h:outputText value="#{messages.reports_group}" />
 						</f:facet>						
 						<h:outputText value="#{item.group}" />  							
     				</rich:column>
     				<rich:column rendered="#{vehicleColumns['vehicleID'].visible}" 
     					sortBy="#{item.vehicleID}">
       					<f:facet name="header">
-      						<h:outputText value="VehicleID" />
+      						<h:outputText value="#{messages.reports_vehicleID}" />
       					</f:facet>
       					<h:commandLink action="go_vehicle" 
       						value="#{item.vehicleID}">
@@ -43,14 +43,14 @@
     				<rich:column rendered="#{vehicleColumns['makeModelYear'].visible}" 
     					sortBy="#{item.makeModelYear}">
       					<f:facet name="header">
-      						<h:outputText value="Make/Model/Year" />
+      						<h:outputText value="#{messages.reports_makemodelyear}" />
       					</f:facet>
       					<h:outputText value="#{item.makeModelYear}" />     
     				</rich:column>
     				<rich:column rendered="#{vehicleColumns['driver'].visible}" 
     					sortBy="#{item.driver}">
       					<f:facet name="header">
-      						<h:outputText value="Driver" />
+      						<h:outputText value="#{messages.reports_driver}" />
       					</f:facet>
       					<h:commandLink action="go_driver" 
       						value="#{item.driver.person.first} #{item.driver.person.last}">
@@ -63,13 +63,13 @@
     				<rich:column rendered="#{vehicleColumns['milesDriven'].visible}" 
     					sortBy="#{item.milesDriven}">
       					<f:facet name="header">
-      						<h:outputText value="Miles Driven" />
+      						<h:outputText value="#{messages.reports_milesdriven}" />
       					</f:facet>
       					<h:outputText value="#{item.milesDriven}" />
     				</rich:column>
     				<rich:column rendered="#{vehicleColumns['overall'].visible}">
       					<f:facet name="header">
-      						<h:outputText value="Overall" />
+      						<h:outputText value="#{messages.reports_overall}" />
       					</f:facet>
       					<h:commandLink action="go_vehicle">
       						<iwi:scoreBox style="#{item.styleOverall}" 
@@ -79,7 +79,7 @@
     				</rich:column>
     				<rich:column rendered="#{vehicleColumns['speed'].visible}">
       					<f:facet name="header">
-      						<h:outputText value="Speed" />
+      						<h:outputText value="#{messages.reports_speed}" />
       					</f:facet>
       					<h:commandLink action="go_vehicle">
       						<iwi:scoreBox style="#{item.styleSpeed}" 
@@ -89,7 +89,7 @@
     				</rich:column>
     				<rich:column rendered="#{vehicleColumns['style'].visible}">
       					<f:facet name="header">
-      						<h:outputText value="Style" />
+      						<h:outputText value="#{messages.reports_style}" />
       					</f:facet>
       					<h:commandLink action="go_vehicle">
       						<iwi:scoreBox style="#{item.styleStyle}" 
