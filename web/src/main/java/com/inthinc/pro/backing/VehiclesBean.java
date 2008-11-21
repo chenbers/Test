@@ -373,15 +373,15 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         @Column(updateable = false)
         private VehiclesBean bean;
         @Column(updateable = false)
-        private Integer oldGroupID;
+        private Integer      oldGroupID;
         @Column(updateable = false)
-        private Group   group;
+        private Group        group;
         @Column(updateable = false)
-        private Integer oldDriverID;
+        private Integer      oldDriverID;
         @Column(updateable = false)
-        private Driver  driver;
+        private Driver       driver;
         @Column(updateable = false)
-        private boolean selected;
+        private boolean      selected;
 
         public Integer getId()
         {

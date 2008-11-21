@@ -737,6 +737,10 @@ public class MockData
         sensitivity.setHardAcceleration(randomInt(0, 2));
         sensitivity.setHardTurn(randomInt(0, 2));
         sensitivity.setHardVertical(randomInt(0, 2));
+        final Integer[] speedSettings = new Integer[15];
+        for (int i = 0; i < speedSettings.length; i++)
+            speedSettings[i] = randomInt(0, 5) * 5;
+        vehicle.setSpeedSettings(speedSettings);
         return vehicle;
     }
 

@@ -5,6 +5,7 @@
               xmlns:rich="http://richfaces.org/rich"
               xmlns:a4j="http://richfaces.org/a4j"
               xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:c="http://java.sun.com/jstl/core"
               xmlns:security="http://pro.tiwi.com/jsf/security">
 
   <ui:param name="adminSelected" value="current" />
@@ -36,103 +37,127 @@
 
                 <div class="panel_content">
 
-                  <ul id="grid_nav" style="margin: 0;">
-                    <li class="l text"><h:commandLink action="#{vehiclesBean.cancelDisplay}" value="#{messages.vehicle_backToVehicles}" /></li>
-                    <li class="r"><h:commandLink action="#{vehiclesBean.edit}"><button value="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></h:commandLink></li>
-                    <li class="r"><a4j:commandLink><button value="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink></li>
-                  </ul>
+                  <rich:tabPanel switchType="client">
 
-                  <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
+                    <rich:tab id="details" label="#{messages.vehicle_details}">
 
-                  <table width="790" border="0" cellspacing="0" cellpadding="0">
-                    <tr>
-                      <td width="390" valign="top">
-                
-                        <div class="add_section_title"><h:outputText value="#{messages.editVehicle_vehicleInformation}" /></div>
-                  
-                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editVehicle_year}" /></td>
-                            <td><h:outputText value="#{vehiclesBean.editItem.year}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editVehicle_make}" /></td>
-                            <td><h:outputText value="#{vehiclesBean.editItem.make}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editVehicle_model}" /></td>
-                            <td><h:outputText value="#{vehiclesBean.editItem.model}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editVehicle_color}" /></td>
-                            <td><h:outputText value="#{vehiclesBean.editItem.color}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editVehicle_type}" /></td>
-                            <td><h:outputText value="#{vehiclesBean.editItem.type.description}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editVehicle_VIN}" /></td>
-                            <td><h:outputText value="#{vehiclesBean.editItem.VIN}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editVehicle_weight}" /></td>
-                            <td><h:outputText value="#{vehiclesBean.editItem.weight}"><f:convertNumber /></h:outputText></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editVehicle_license}" /></td>
-                            <td><h:outputText value="#{vehiclesBean.editItem.license}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editVehicle_state}" /></td>
-                            <td><h:outputText value="#{vehiclesBean.editItem.state.name}" /></td>
-                          </tr>
-                        </table>
+                      <ul id="grid_nav" style="margin: 0;">
+                        <li class="l text"><h:commandLink action="#{vehiclesBean.cancelDisplay}" value="#{messages.vehicle_backToVehicles}" /></li>
+                        <li class="r"><h:commandLink action="#{vehiclesBean.edit}"><button value="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></h:commandLink></li>
+                        <li class="r"><a4j:commandLink><button value="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink></li>
+                      </ul>
 
-                      </td>
-                      <td width="10"><img src="images/x.gif" width="10" /></td>
-                      <td width="390" valign="top">
+                      <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
 
-                        <div class="add_section_title"><h:outputText value="#{messages.editVehicle_vehicleProfile}" /></div>
-                  
-                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editVehicle_name}" /></td>
-                            <td><h:outputText value="#{vehiclesBean.editItem.name}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editVehicle_active}" /></td>
-                            <td><h:outputText value="#{vehiclesBean.editItem.active ? messages.active : messages.inactive}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editVehicle_costPerHour}" /></td>
-                            <td><h:outputText value="#{vehiclesBean.editItem.costPerHour / 100}"><f:convertNumber type="currency" currencySymbol="$" /></h:outputText></td>
-                          </tr>
-                        </table>
+                      <table width="790" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="390" valign="top">
+                    
+                            <div class="add_section_title"><h:outputText value="#{messages.editVehicle_vehicleInformation}" /></div>
+                      
+                            <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_year}" /></td>
+                                <td><h:outputText value="#{vehiclesBean.editItem.year}" /></td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_make}" /></td>
+                                <td><h:outputText value="#{vehiclesBean.editItem.make}" /></td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_model}" /></td>
+                                <td><h:outputText value="#{vehiclesBean.editItem.model}" /></td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_color}" /></td>
+                                <td><h:outputText value="#{vehiclesBean.editItem.color}" /></td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_type}" /></td>
+                                <td><h:outputText value="#{vehiclesBean.editItem.type.description}" /></td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_VIN}" /></td>
+                                <td><h:outputText value="#{vehiclesBean.editItem.VIN}" /></td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_weight}" /></td>
+                                <td><h:outputText value="#{vehiclesBean.editItem.weight}"><f:convertNumber /></h:outputText></td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_license}" /></td>
+                                <td><h:outputText value="#{vehiclesBean.editItem.license}" /></td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_state}" /></td>
+                                <td><h:outputText value="#{vehiclesBean.editItem.state.name}" /></td>
+                              </tr>
+                            </table>
 
-                        <div class="spacer"></div>
+                          </td>
+                          <td width="10"><img src="images/x.gif" width="10" /></td>
+                          <td width="390" valign="top">
 
-                        <div class="add_section_title"><h:outputText value="#{messages.editVehicle_vehicleAssignment}" /></div>
+                            <div class="add_section_title"><h:outputText value="#{messages.editVehicle_vehicleProfile}" /></div>
 
-                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editVehicle_groupID}" /></td>
-                            <td><h:outputText value="#{vehiclesBean.editItem.group.name}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editVehicle_driverID}" /></td>
-                            <td>
-                              <h:panelGroup id="driverID">
-                                <h:outputText value="#{vehiclesBean.editItem.driver.person.first}" /><h:outputText value=" " /><h:outputText value="#{vehiclesBean.editItem.driver.person.last}" /><h:outputText value=" " />
-                                <a href="#" onclick="Richfaces.showModalPanel('chooseDriver'); return false;"><h:outputText value="#{messages.editVehicle_assign}" /></a>
-                              </h:panelGroup>
-                            </td>
-                          </tr>
-                        </table>
-                  
-                      </td>
-                    </tr>
-                  </table>
+                            <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_name}" /></td>
+                                <td><h:outputText value="#{vehiclesBean.editItem.name}" /></td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_active}" /></td>
+                                <td><h:outputText value="#{vehiclesBean.editItem.active ? messages.active : messages.inactive}" /></td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_costPerHour}" /></td>
+                                <td><h:outputText value="#{vehiclesBean.editItem.costPerHour / 100}"><f:convertNumber type="currency" currencySymbol="$" /></h:outputText></td>
+                              </tr>
+                            </table>
+
+                            <div class="spacer"></div>
+
+                            <div class="add_section_title"><h:outputText value="#{messages.editVehicle_vehicleAssignment}" /></div>
+
+                            <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_groupID}" /></td>
+                                <td><h:outputText value="#{vehiclesBean.editItem.group.name}" /></td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_driverID}" /></td>
+                                <td>
+                                  <h:panelGroup id="driverID">
+                                    <h:outputText value="#{vehiclesBean.editItem.driver.person.first}" /><h:outputText value=" " /><h:outputText value="#{vehiclesBean.editItem.driver.person.last}" /><h:outputText value=" " />
+                                    <a href="#" onclick="Richfaces.showModalPanel('chooseDriver'); return false;"><h:outputText value="#{messages.editVehicle_assign}" /></a>
+                                  </h:panelGroup>
+                                </td>
+                              </tr>
+                            </table>
+
+                          </td>
+                        </tr>
+                      </table>
+
+                    </rich:tab>
+
+                    <rich:tab id="speedSensitivity" label="#{messages.vehicle_speedSensitivity}">
+
+                      <ul id="grid_nav" style="margin: 0;">
+                        <li class="l text"><h:commandLink action="#{vehiclesBean.cancelDisplay}" value="#{messages.vehicle_backToVehicles}" /></li>
+                        <li class="r"><h:commandLink action="#{vehiclesBean.edit}"><button value="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></h:commandLink></li>
+                        <li class="r"><a4j:commandLink><button value="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink></li>
+                      </ul>
+
+                      <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
+
+                      <ui:include src="../../includes/speedSensitivity.xhtml">
+                        <ui:param name="disabled" value="true" />
+                      </ui:include>
+
+                    </rich:tab>
+
+                  </rich:tabPanel>
 
                 </div>
               </div>
