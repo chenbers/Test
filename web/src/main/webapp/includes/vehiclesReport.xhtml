@@ -28,19 +28,15 @@
 						<f:facet name="header">
 							<h:outputText value="Group" />
 						</f:facet>						
-						<h:commandLink action="go_team" value="#{item.group}">
-							<f:setPropertyActionListener 
-								value="#{item.groupID}" 
-								target="#{navigationBean.groupID}">
-							</f:setPropertyActionListener>
-						</h:commandLink> 						
+						<h:outputText value="#{item.group}" />  							
     				</rich:column>
     				<rich:column rendered="#{vehicleColumns['vehicleID'].visible}" 
     					sortBy="#{item.vehicleID}">
       					<f:facet name="header">
       						<h:outputText value="VehicleID" />
       					</f:facet>
-      					<h:commandLink action="go_vehicle" value="#{item.vehicleID}">
+      					<h:commandLink action="go_vehicle" 
+      						value="#{item.vehicleID}">
 							
 						</h:commandLink>  						
     				</rich:column>
