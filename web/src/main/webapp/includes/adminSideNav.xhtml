@@ -25,75 +25,75 @@
       <table width="130" border="0" cellpadding="0" cellspacing="0" style="margin-top: 40px;">
         <tr>
           <td valign="top" class="#{(selectedAction == 'go_adminPeople') ? 'ls_tab_on' : 'ls_tab_off'}">
-            <h:commandLink action="go_adminPeople" value="#{messages.adminSideNav_go_adminPeople}" styleClass="ls_tab_go_adminPeople" immediate="true" />
+            <h:commandLink action="go_adminPeople" value="#{messages.adminSideNav_go_adminPeople}" styleClass="ls_tab_driver" immediate="true" />
           </td>
         </tr>
         <ui:fragment rendered="#{parentAction == 'go_adminPeople'}">
           <tr>
             <td valign="top" class="sub_wrapper">
               <div class="#{(selectedAction == 'go_adminAddPerson') ? 'ls_tab_sub_active' : 'ls_tab_sub'}">
-                <h:commandLink action="#{personBean.add}" value="#{messages.adminSideNav_go_adminAddPerson}" styleClass="ls_tab_go_adminAddPerson" immediate="true" />
+                <h:commandLink action="#{personBean.add}" value="#{messages.adminSideNav_go_adminAddPerson}" styleClass="ls_tab_add_driver" immediate="true" />
               </div>
             </td>
           </tr>
         </ui:fragment>
         <tr>
           <td valign="top" class="#{(selectedAction == 'go_adminVehicles') ? 'ls_tab_on' : 'ls_tab_off'}">
-            <h:commandLink action="go_adminVehicles" value="#{messages.adminSideNav_go_adminVehicles}" styleClass="ls_tab_go_adminVehicles" immediate="true" />
+            <h:commandLink action="go_adminVehicles" value="#{messages.adminSideNav_go_adminVehicles}" styleClass="ls_tab_vehicle" immediate="true" />
           </td>
         </tr>
         <ui:fragment rendered="#{parentAction == 'go_adminVehicles'}">
           <tr>
             <td valign="top" class="sub_wrapper">
               <div class="#{(selectedAction == 'go_adminAddVehicle') ? 'ls_tab_sub_active' : 'ls_tab_sub'}">
-                <h:commandLink action="#{vehiclesBean.add}" value="#{messages.adminSideNav_go_adminAddVehicle}" styleClass="ls_tab_go_adminAddVehicle" immediate="true" />
+                <h:commandLink action="#{vehiclesBean.add}" value="#{messages.adminSideNav_go_adminAddVehicle}" styleClass="ls_tab_add_vehicle" immediate="true" />
               </div>
             </td>
           </tr>
         </ui:fragment>
         <tr>
           <td valign="top" class="#{(selectedAction == 'go_adminDevices') ? 'ls_tab_on' : 'ls_tab_off'}">
-            <h:commandLink action="go_adminDevices" value="#{messages.adminSideNav_go_adminDevices}" styleClass="ls_tab_go_adminDevices" immediate="true" />
+            <h:commandLink action="go_adminDevices" value="#{messages.adminSideNav_go_adminDevices}" styleClass="ls_tab_tiwi" immediate="true" />
           </td>
         </tr>
         <ui:fragment rendered="#{parentAction == 'go_adminDevices'}">
           <tr>
             <td valign="top" class="sub_wrapper">
               <div class="#{(selectedAction == 'go_adminAddDevice') ? 'ls_tab_sub_active' : 'ls_tab_sub'}">
-                <h:commandLink action="#{devicesBean.add}" value="#{messages.adminSideNav_go_adminAddDevice}" styleClass="ls_tab_go_adminAddDevice" immediate="true" />
+                <h:commandLink action="#{devicesBean.add}" value="#{messages.adminSideNav_go_adminAddDevice}" styleClass="ls_tab_add_tiwi" immediate="true" />
               </div>
             </td>
           </tr>
         </ui:fragment>
         <tr>
           <td valign="top" class="#{(selectedAction == 'go_adminZones') ? 'ls_tab_on' : 'ls_tab_off'}">
-            <h:commandLink action="go_adminZones" value="#{messages.adminSideNav_go_adminZones}" styleClass="ls_tab_go_adminZones" immediate="true" />
+            <h:commandLink action="go_adminZones" value="#{messages.adminSideNav_go_adminZones}" styleClass="ls_tab_zones" immediate="true" />
           </td>
         </tr>
         <tr>
           <td valign="top" class="#{(selectedAction == 'go_adminZoneAlerts') ? 'ls_tab_on' : 'ls_tab_off'}">
-            <h:commandLink action="go_adminZoneAlerts" value="#{messages.adminSideNav_go_adminZoneAlerts}" styleClass="ls_tab_go_adminZoneAlerts" immediate="true" />
+            <h:commandLink action="go_adminZoneAlerts" value="#{messages.adminSideNav_go_adminZoneAlerts}" styleClass="ls_tab_zone_alerts" immediate="true" />
           </td>
         </tr>
         <ui:fragment rendered="#{parentAction == 'go_adminZoneAlerts'}">
           <tr>
             <td valign="top" class="sub_wrapper">
               <div class="#{(selectedAction == 'go_adminAddZoneAlert') ? 'ls_tab_sub_active' : 'ls_tab_sub'}">
-                <h:commandLink action="#{zoneAlertsBean.add}" value="#{messages.adminSideNav_go_adminAddZoneAlert}" styleClass="ls_tab_go_adminAddZoneAlert" immediate="true" />
+                <h:commandLink action="#{zoneAlertsBean.add}" value="#{messages.adminSideNav_go_adminAddZoneAlert}" styleClass="ls_tab_add_zone_alerts" immediate="true" />
               </div>
             </td>
           </tr>
         </ui:fragment>
         <tr>
           <td valign="top" class="#{(selectedAction == 'go_adminRedFlags') ? 'ls_tab_on' : 'ls_tab_off'}">
-            <h:commandLink action="go_adminRedFlags" value="#{messages.adminSideNav_go_adminRedFlags}" styleClass="ls_tab_go_adminRedFlags" immediate="true" />
+            <h:commandLink action="go_adminRedFlags" value="#{messages.adminSideNav_go_adminRedFlags}" styleClass="ls_tab_redflag" immediate="true" />
           </td>
         </tr>
         <ui:fragment rendered="#{parentAction == 'go_adminRedFlags'}">
           <tr>
             <td valign="top" class="sub_wrapper">
               <div class="#{(selectedAction == 'go_adminAddRedFlag') ? 'ls_tab_sub_active' : 'ls_tab_sub'}">
-                <h:commandLink action="#{redFlagsBean.add}" value="#{messages.adminSideNav_go_adminAddRedFlag}" styleClass="ls_tab_go_adminAddRedFlag" immediate="true" />
+                <h:commandLink action="#{redFlagsBean.add}" value="#{messages.adminSideNav_go_adminAddRedFlag}" styleClass="ls_tab_add_redflag" immediate="true" />
               </div>
             </td>
           </tr>
