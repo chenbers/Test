@@ -9,7 +9,7 @@
 	<ui:composition>
 
 		<rich:modalPanel id="editIdlingColumns" headerClass="popupHeader" 
-			controlsClass="popupControls" width="400" height="200" zindex="2000">
+			controlsClass="popupControls" width="400" height="240" zindex="2000">
 			<f:facet name="header">
         		<h:outputText value="#{messages.editColumns_title}" />
       		</f:facet>
@@ -38,49 +38,59 @@
 					<h:outputText style="width:80px;" value="Driver" />
 					<rich:spacer width="20"/>	
 					<h:selectBooleanCheckbox style="width:20px;" 
-						value="#{idlingColumns['drivetime'].visible}" />
+						value="#{idlingColumns['vehicle'].visible}" />					
 					<rich:spacer width="20"/>	
-					<h:outputText style="width:80px;" value="Drive Time" /> 
+					<h:outputText style="width:80px;" value="Vehicle" /> 
 					
 					<h:selectBooleanCheckbox style="width:20px;" 
-						value="#{idlingColumns['miles'].visible}" />
+						value="#{idlingColumns['drivetime'].visible}" />
 					<rich:spacer width="20"/>
-					<h:outputText style="width:80px;" value="Miles" />
+					<h:outputText style="width:80px;" value="Drive Time" />
 					<rich:spacer width="20"/>
 					<h:selectBooleanCheckbox style="width:20px;" 
 						value="#{idlingColumns['lowhrs'].visible}" />
 					<rich:spacer width="20"/>
-					<h:outputText style="width:80px;" value="Low hrs." />
+					<h:outputText style="width:80px;" value="Low Idle Hrs." />
 					<rich:spacer width="20"/>
 					<h:selectBooleanCheckbox style="width:20px;" 
 						value="#{idlingColumns['lowpercent'].visible}" />
 					<rich:spacer width="20"/>
-					<h:outputText style="width:80px;" value="Low %" />    
+					<h:outputText style="width:80px;" value="%" />    
 					
 					<h:selectBooleanCheckbox style="width:20px;" 
 						value="#{idlingColumns['highhrs'].visible}" />
 					<rich:spacer width="20"/>
-					<h:outputText style="width:80px;" value="High hrs." />
+					<h:outputText style="width:80px;" value="High Idle Hrs." />
 					<rich:spacer width="20"/>
 					<h:selectBooleanCheckbox style="width:20px;" 
 						value="#{idlingColumns['highpercent'].visible}" />
 					<rich:spacer width="20"/>
-					<h:outputText style="width:80px;" value="High %" />
+					<h:outputText style="width:80px;" value="%" />
 					<rich:spacer width="20"/>
+					<h:selectBooleanCheckbox style="width:20px;" 
+						value="#{idlingColumns['totalhrs'].visible}" />
+					<rich:spacer width="20"/>
+					<h:outputText style="width:80px;" value="Total Idle Hrs." />  
+					
 					<h:selectBooleanCheckbox style="width:20px;" 
 						value="#{idlingColumns['totalpercent'].visible}" />
 					<rich:spacer width="20"/>
-					<h:outputText style="width:80px;" value="Total %" />    				 		
+					<h:outputText style="width:80px;" value="%" /> 
+							 		
 				</h:panelGrid>
 				</rich:panel>
 			
 				<div class="popupactions">
-					<button value="submit" class="left" 
-						onclick="Richfaces.hideModalPanel('editIdlingColumns'); return false;">
-						<span class="cancel">
-							<h:outputText value="#{messages.button_cancel}" />
-						</span>
-					</button>
+					<a4j:commandLink rendered="true" 
+          				action="#{idlingReportBean.cancelColumns}"           				
+          				onclick="Richfaces.hideModalPanel('editIdlingColumns')" 
+          				reRender="items">
+          				<button value="submit" class="left">
+          					<span class="save">
+          						<h:outputText value="#{messages.button_cancel}" />
+          					</span>
+          				</button>
+          			</a4j:commandLink> 				
           			<a4j:commandLink rendered="true" 
           				action="#{idlingReportBean.saveColumns}"           				
           				onclick="Richfaces.hideModalPanel('editIdlingColumns')" 
