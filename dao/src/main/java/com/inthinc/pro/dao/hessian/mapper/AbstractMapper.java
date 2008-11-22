@@ -24,8 +24,8 @@ public abstract class AbstractMapper implements Mapper
 {
     private static final Logger logger = Logger.getLogger(AbstractMapper.class);
     // private Class<T> modelClass;
-    private Map<String, Method> convertToFieldMap = new HashMap<String, Method>();
-    private Map<String, Method> convertToColumnMap = new HashMap<String, Method>();
+    private transient Map<String, Method> convertToFieldMap = new HashMap<String, Method>();
+    private transient Map<String, Method> convertToColumnMap = new HashMap<String, Method>();
 
     @SuppressWarnings("unchecked")
     public AbstractMapper()

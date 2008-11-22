@@ -92,10 +92,10 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     private VehicleDAO                            vehicleDAO;
     private DriverDAO                             driverDAO;
     private GroupDAO                              groupDAO;
-    private TreeMap<String, Integer>              groups;
-    private TreeMap<Integer, String>              groupNames;
-    private List<Driver>                          drivers;
-    private TreeMap<Integer, Boolean>             driverAssigned;
+    private transient TreeMap<String, Integer>              groups;
+    private transient TreeMap<Integer, String>              groupNames;
+    private transient List<Driver>                          drivers;
+    private transient TreeMap<Integer, Boolean>             driverAssigned;
 
     public void setVehicleDAO(VehicleDAO vehicleDAO)
     {

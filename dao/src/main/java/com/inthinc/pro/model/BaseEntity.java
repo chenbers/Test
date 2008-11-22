@@ -1,11 +1,12 @@
 package com.inthinc.pro.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.inthinc.pro.dao.annotations.Column;
 
 
-public abstract class BaseEntity {
+public abstract class BaseEntity implements Serializable {
 
   @Column(updateable=false)
   private Date modified;

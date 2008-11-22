@@ -1,6 +1,8 @@
 package com.inthinc.pro.dao.hessian.proserver;
 
-public interface HessianService
+import java.io.Serializable;
+
+public interface HessianService extends Serializable
 {
 
 }

@@ -1,9 +1,10 @@
 package com.inthinc.pro.dao.hessian.mapper;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public interface Mapper
+public interface Mapper extends Serializable
 {
     // T convertToModelObject(Map<String, Object> map);
 

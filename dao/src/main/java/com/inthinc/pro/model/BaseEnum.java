@@ -1,5 +1,7 @@
 package com.inthinc.pro.model;
 
+import java.io.Serializable;
+
 /**
  * Enums that extend BaseEnum should also have a static method valueOf(Integer), like below:
  * 
@@ -19,7 +21,7 @@ package com.inthinc.pro.model;
  * }
  * </pre>
  */
-public interface BaseEnum
+public interface BaseEnum extends Serializable
 {
     public Integer getCode();
 
