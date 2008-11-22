@@ -259,4 +259,14 @@ public class Event implements Comparable<Event>, Serializable
         this.driverID = driverID;
     }
 
+    public EventCategory getEventCategory()
+    {
+        return EventCategory.NONE;
+    }
+    
+    public String getDetails(String formatStr)
+    {
+        return formatStr;
+    }
+
 }

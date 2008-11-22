@@ -6,25 +6,29 @@ import java.util.Map;
 
 public enum EventType implements BaseEnum 
 {
-	TAMPERING(1, "Tampering"),
-	SEATBELT(2, "Seat Belt"), 
-	SPEEDING(3, "Speeding"), 
-	HARD_ACCEL(4, "Rapid Acceleration"), 
-	HARD_BRAKE(5, "Hard Brake"), 
-	HARD_LEFT_TURN(6, "Unsafe Left Turn"),
-    HARD_RIGHT_TURN(7, "Unsafe Right Turn"),
-	HARD_VERT(8, "Hard Dip/Bump"),
-	ZONES_ARRIVAL(9, "Zone Arrival"),
-	ZONES_DEPARTURE(10, "Zone Departure"),
-	UNKNOWN(11, "Unknown");
+	TAMPERING(1, "Tampering", "TAMPERING"),
+	SEATBELT(2, "Seat Belt", "SEATBELT"), 
+	SPEEDING(3, "Speeding", "SPEEDING"), 
+	HARD_ACCEL(4, "Rapid Acceleration", "HARD_ACCEL"), 
+	HARD_BRAKE(5, "Hard Brake", "HARD_BRAKE"),
+	HARD_LEFT_TURN(6, "Unsafe Left Turn", "HARD_LEFT_TURN"),
+    HARD_RIGHT_TURN(7, "Unsafe Right Turn", "HARD_RIGHT_TURN"),
+	HARD_VERT(8, "Hard Dip/Bump", "HARD_VERT"),
+	ZONES_ARRIVAL(9, "Zone Arrival", "ZONES_ARRIVAL"),
+	ZONES_DEPARTURE(10, "Zone Departure", "ZONES_DEPARTURE"),
+	LOW_BATTERY(11, "Low Battery", "LOW_BATTERY"),
+	DEVICE_LOW_BATTERY(12, "tiwi Low Battery", "DEVICE_LOW_BATTERY"),
+	UNKNOWN(13, "Unknown", "UNKNOWN");
 
     private String description;
     private int code;
+    private String key;
 
-    private EventType(int code, String description)
+    private EventType(int code, String description, String key)
     {
         this.code = code;
         this.description = description;
+        this.key = key;
     }
 
     private static final Map<Integer, EventType> lookup = new HashMap<Integer, EventType>();
@@ -50,5 +54,10 @@ public enum EventType implements BaseEnum
     public String toString()
     {
         return this.description;
+    }
+
+    public String getKey()
+    {
+        return key;
     }
 }

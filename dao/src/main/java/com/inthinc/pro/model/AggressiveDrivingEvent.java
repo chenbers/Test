@@ -1,5 +1,6 @@
 package com.inthinc.pro.model;
 
+import java.text.MessageFormat;
 import java.util.Date;
 
 public class AggressiveDrivingEvent extends Event
@@ -103,6 +104,14 @@ public class AggressiveDrivingEvent extends Event
     public void setSeverity(Integer severity)
     {
         this.severity = severity;
+    }
+    public EventCategory getEventCategory()
+    {
+        return EventCategory.VIOLATION;
+    }
+    public String getDetails(String formatStr)
+    {
+        return MessageFormat.format(formatStr, new Object[] {avgSpeed});
     }
 
 }

@@ -13,6 +13,9 @@ import com.inthinc.pro.backing.ui.RedFlagReportItem;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.RedFlagDAO;
 import com.inthinc.pro.dao.TablePreferenceDAO;
+import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.EventCategory;
+import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.TableType;
@@ -22,14 +25,14 @@ public class RedFlagsBean extends BaseBean implements EditableColumns
 {
     private static final Logger     logger                  = Logger.getLogger(RedFlagsBean.class);
 
-    Integer        DEFAULT_ROWS_PER_PAGE   = 25;
     private final static String COLUMN_LABEL_PREFIX = "redflags_";
 
-    private Integer                 numRowsPerPg;
+    private static final Integer                 numRowsPerPg = 25;
     private Integer                 start;
     private Integer                 end;
     private Integer                 maxCount;
     private List<RedFlagReportItem> tableData;
+    private List<RedFlagReportItem> filteredTableData;
 
     private RedFlagDAO              redFlagDAO;
     private Map<String, TableColumn>    tableColumns;
@@ -37,6 +40,9 @@ public class RedFlagsBean extends BaseBean implements EditableColumns
     private TablePreference redFlagTablePref;
     
     private RedFlagReportItem   clearItem;
+    
+    private EventCategory categoryFilter;
+    private Event eventFilter;
     
     // package level -- so unit test can get it
     static final List<String>       AVAILABLE_COLUMNS;
@@ -63,39 +69,78 @@ public class RedFlagsBean extends BaseBean implements EditableColumns
         this.start = (event.getPage() - 1) * this.numRowsPerPg + 1;
         this.end = (event.getPage()) * this.numRowsPerPg;
         // Partial page
-        if (this.end > getTableData().size())
+        if (this.end > getFilteredTableData().size())
         {
-            this.end = getTableData().size();
+            this.end = getFilteredTableData().size();
         }
     }
 
     public Integer getNumRowsPerPg()
     {
-        if (numRowsPerPg == null)
-        {
-            // TODO: Should this be a user preference?
-            numRowsPerPg = DEFAULT_ROWS_PER_PAGE;
-        }
         return numRowsPerPg;
     }
 
-    public void setNumRowsPerPg(Integer numRowsPerPg)
-    {
-        this.numRowsPerPg = numRowsPerPg;
-    }
 
     public List<RedFlagReportItem> getTableData()
+    {
+        init();
+        return getFilteredTableData();
+    }
+
+    private void init()
     {
         if (tableData == null)
         {
             initTableData();
         }
+        if (filteredTableData == null)
+        {
+            filterTableData();
+        }
 
-        return tableData;
+    }
+    private void filterTableData()
+    {
+        setFilteredTableData(tableData); 
+        if (getCategoryFilter() != null)
+        {    
+            List<Integer> validEventTypes = EventMapper.getEventTypesInCategory(getCategoryFilter());
+            if (validEventTypes != null)
+            {
+                filteredTableData = new ArrayList<RedFlagReportItem>();
+        
+                for (RedFlagReportItem item : tableData)
+                {
+                    if (validEventTypes.contains(item.getRedFlag().getEvent().getType()))
+                    {
+                        filteredTableData.add(item);
+                    }
+                }
+            }
+        }
+        else if (getEventFilter() != null)
+        {    
+            filteredTableData = new ArrayList<RedFlagReportItem>();
+    
+            for (RedFlagReportItem item : tableData)
+            {
+                if (item.getRedFlag().getEvent().getNoteID().equals(eventFilter.getNoteID()))
+                {
+                    filteredTableData.add(item);
+                    break;
+                }
+            }
+        }
+        
+        setMaxCount(filteredTableData.size());
+        setStart(filteredTableData.size() > 0 ? 1 : 0);
+        setEnd(filteredTableData.size() > getNumRowsPerPg() ? getNumRowsPerPg() : filteredTableData.size());
     }
 
     private void initTableData()
     {
+        setFilteredTableData(null);
+        
         List<RedFlag> redFlagList = redFlagDAO.getRedFlags(getUser().getPerson().getGroupID());
         List<RedFlagReportItem> redFlagReportItemList = new ArrayList<RedFlagReportItem>();
         for (RedFlag redFlag : redFlagList)
@@ -106,9 +151,6 @@ public class RedFlagsBean extends BaseBean implements EditableColumns
             }
         }
         setTableData(redFlagReportItemList);
-        setMaxCount(redFlagReportItemList.size());
-        setStart(redFlagReportItemList.size() > 0 ? 1 : 0);
-        setEnd(redFlagReportItemList.size() > getNumRowsPerPg() ? getNumRowsPerPg() : redFlagReportItemList.size());
 
     }
 
@@ -131,7 +173,7 @@ public class RedFlagsBean extends BaseBean implements EditableColumns
     {
         if (start == null)
         {
-            initTableData();
+            init();
         }
         return start;
     }
@@ -145,7 +187,7 @@ public class RedFlagsBean extends BaseBean implements EditableColumns
     {
         if (end == null)
         {
-            initTableData();
+            init();
         }
         return end;
     }
@@ -159,7 +201,7 @@ public class RedFlagsBean extends BaseBean implements EditableColumns
     {
         if (maxCount == null) 
         {
-            initTableData();
+            init();
         }
         return maxCount;
     }
@@ -274,7 +316,50 @@ public class RedFlagsBean extends BaseBean implements EditableColumns
     {
         clearItem.getRedFlag().setCleared(true);
         tableData.remove(clearItem);
+        filteredTableData.remove(clearItem);
         // todo: persist in DAO
+    }
+
+    public EventCategory getCategoryFilter()
+    {
+        return categoryFilter;
+    }
+
+    private void reinit()
+    {
+        setTableData(null);
+        setStart(null);
+        setEnd(null);
+        setMaxCount(null);
+    }
+    public void setCategoryFilter(EventCategory categoryFilter)
+    {
+        reinit();
+        this.eventFilter = null;
+        this.categoryFilter = categoryFilter;
+    }
+
+    public List<RedFlagReportItem> getFilteredTableData()
+    {
+        return filteredTableData;
+    }
+
+    public void setFilteredTableData(List<RedFlagReportItem> filteredTableData)
+    {
+        this.filteredTableData = filteredTableData;
+    }
+
+    public Event getEventFilter()
+    {
+        return eventFilter;
+    }
+
+    public void setEventFilter(Event eventFilter)
+    {
+        // force table data to reinit
+        reinit();
+        this.categoryFilter = null;
+        this.eventFilter = eventFilter;
     }
     
 }

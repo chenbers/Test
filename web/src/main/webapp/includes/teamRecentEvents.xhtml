@@ -20,13 +20,13 @@
 						var="event" styleClass="datagrid"
 						rowClasses="trendTableOdd,trendTableEven" cellspacing="0" rows="5"
 						width="100%">
-					<rich:column sortBy="#{event.eventType}" width="20%" height="27" >
+					<rich:column sortBy="#{event.eventType}" width="35%" height="27" >
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_recentEventsEvent}" />
 						</f:facet>
 						<h:outputText value="#{event.eventType}"/>
 					</rich:column>
-					<rich:column sortBy="#{event.driverName}" width="40%" height="27" >
+					<rich:column sortBy="#{event.driverName}" width="35%" height="27" >
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_recentEventsDriver}" />
 						</f:facet>
@@ -34,19 +34,20 @@
 							<f:setPropertyActionListener value="#{event.event.driver}" target="#{teamRecentEventsBean.navigation.driver}" />
 						</h:commandLink>
 					</rich:column>
-					<rich:column sortBy="#{event.time}" width="45%" height="27" >
+					<rich:column sortBy="#{event.time}" width="20%" height="27" >
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_recentEventsWhen}"/>
 						</f:facet>
 						<h:outputText value="#{event.dateStr}"/>
 					</rich:column>
-					<rich:column width="5%" height="27" >
+					<rich:column width="10%" height="27" >
 						<f:facet name="header">
 							<h:outputText value="" />
 						</f:facet>
 						<!-- TODO:  should go to a page based on the event type -->
-						<h:commandLink action="go_reportDriverSpeed" value="#{messages.team_recentEventsDetails}">
+						<h:commandLink action="#{teamRecentEventsBean.detailsAction}" value="#{messages.team_recentEventsDetails}">
 							<f:setPropertyActionListener value="#{event.event.driver}" target="#{teamRecentEventsBean.navigation.driver}" />
+							<f:setPropertyActionListener value="#{event}" target="#{teamRecentEventsBean.selectedEvent}" />
 						</h:commandLink>
 					</rich:column>
 			</rich:dataTable>

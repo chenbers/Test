@@ -2,30 +2,31 @@ package com.inthinc.pro.model;
 
 import java.util.Date;
 
-public class TamperingEvent extends Event{
+public class LowBatteryEvent extends Event
+{
     /**
      * 
      */
     private static final long serialVersionUID = 1L;
     
-    public TamperingEvent()
+    public LowBatteryEvent()
     {
         super();
     }
     
-    public TamperingEvent(Long noteID, Integer vehicleID, Integer type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude)
+    public LowBatteryEvent(Long noteID, Integer vehicleID, Integer type, Date time, Integer speed, Integer odometer, Double latitude, Double longitude)
     {
         super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude);
     }
     
     public EventType getEventType()
     {
-        return EventType.TAMPERING;
+        return EventType.LOW_BATTERY;
     }   
     
     public EventCategory getEventCategory()
     {
         return EventCategory.WARNING;
     }
-    
+
 }

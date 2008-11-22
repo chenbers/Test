@@ -6,22 +6,21 @@ import java.util.List;
 import com.inthinc.pro.backing.ui.EventDisplay;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.EventCategory;
 
 public class TeamWarningsBean extends BaseBean
 {
-    private List<EventDisplay> warnings;
-    
     private NavigationBean navigation;
     private EventDAO eventDAO;
-    
+    private List<EventDisplay> warnings;
     private Integer groupID;
+    private static final EventCategory category = EventCategory.WARNING;
 
     public List<EventDisplay> getWarnings()
     {
         if (warnings == null)
         {
-            // TODO: get warnings
-            List<Event> events = eventDAO.getMostRecentEvents(getGroupID(), 5);
+            List<Event> events = eventDAO.getMostRecentWarnings(getGroupID(), 5);
             
             warnings = new ArrayList<EventDisplay>();
             for (Event event : events)
@@ -31,11 +30,6 @@ public class TeamWarningsBean extends BaseBean
             
         }
         return warnings;
-    }
-
-    public void setWarnings(List<EventDisplay> warnings)
-    {
-        this.warnings = warnings;
     }
 
     public NavigationBean getNavigation()
@@ -70,6 +64,11 @@ public class TeamWarningsBean extends BaseBean
     public void setGroupID(Integer groupID)
     {
         this.groupID = groupID;
+    }
+
+    public EventCategory getCategory()
+    {
+        return category;
     }
 
 

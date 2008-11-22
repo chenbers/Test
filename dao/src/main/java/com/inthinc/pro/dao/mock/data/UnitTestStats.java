@@ -18,6 +18,7 @@ public class UnitTestStats
 
     // stats for the test group
     public int totalRedFlags = 0;
+    public int totalWarningRedFlags = 0;
     public int totalTripsForDriver = 0;
     public int totalEventsInLastTripForDriver = 0;
     public int totalDrivers = 0;

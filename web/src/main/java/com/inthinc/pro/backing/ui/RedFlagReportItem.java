@@ -1,14 +1,19 @@
 package com.inthinc.pro.backing.ui;
 
 import java.text.DateFormat;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.EventCategory;
+import com.inthinc.pro.model.EventType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.RedFlag;
+import com.inthinc.pro.model.SpeedingEvent;
+import com.inthinc.pro.util.MessageUtil;
 
 public class RedFlagReportItem
 {
@@ -46,11 +51,10 @@ public class RedFlagReportItem
             setGroup(group.getName());
         }
         
-        // TODO: change to Category: Type  -- right now only have Type
-        setCategory(redFlag.getEvent().getEventType().toString());
+        String catFormat = MessageUtil.getMessageString("redflags_cat" + redFlag.getEvent().getEventCategory().toString());
+        setCategory(MessageFormat.format(catFormat, new Object[] {redFlag.getEvent().getEventType().toString()}));
         
-        // TODO: event details
-        setDetail(redFlag.getEvent().getEventType().toString());
+        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + redFlag.getEvent().getEventType().getKey())));
 
     }
     

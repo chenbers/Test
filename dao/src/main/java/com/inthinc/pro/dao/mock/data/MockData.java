@@ -24,6 +24,7 @@ import com.inthinc.pro.model.AccountStatus;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.AggressiveDrivingEvent;
 import com.inthinc.pro.model.Device;
+import com.inthinc.pro.model.DeviceLowBatteryEvent;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
@@ -31,6 +32,7 @@ import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.LowBatteryEvent;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagLevel;
@@ -452,22 +454,36 @@ public class MockData
     private int addWarnings(Driver driver, Vehicle vehicle, LatLng loc, int idOffset)
     {
         Date date = DateUtil.convertTimeInSecondsToDate(baseTimeSec - randomInt(1, 2880));
-        Event event =  new Event((long)idOffset+1, vehicle.getVehicleID(), EventMapper.TIWIPRO_EVENT_LOW_BATTERY,
+        Event event =  new LowBatteryEvent((long)idOffset+1, vehicle.getVehicleID(), EventMapper.TIWIPRO_EVENT_LOW_BATTERY,
                 date,
                 randomInt(15, 70), randomInt(10, 50), loc.getLat(), loc.getLng());
         event.setDriverID(driver.getDriverID());
         event.setDriver(driver);
         event.setVehicle(vehicle);
         storeObject(event, Event.class);
+        RedFlag redFlag = new RedFlag(idOffset+1, RedFlagLevel.valueOf(randomInt(1,3)), randomInt(0, 1) == 1, false, event);
+        storeObject(redFlag);
+        if (driver.getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID))
+        {
+            unitTestStats.totalRedFlags++;
+            unitTestStats.totalWarningRedFlags++;
+        }
 
-        event =  new Event((long)idOffset+2, vehicle.getVehicleID(), EventMapper.TIWIPRO_EVENT_LOW_TIWI_BATTERY,
+        event =  new DeviceLowBatteryEvent((long)idOffset+2, vehicle.getVehicleID(), EventMapper.TIWIPRO_EVENT_LOW_TIWI_BATTERY,
                 date,
                 randomInt(15, 70), randomInt(10, 50), loc.getLat(), loc.getLng());
         event.setDriverID(driver.getDriverID());
         event.setDriver(driver);
         event.setVehicle(vehicle);
         storeObject(event, Event.class);
-
+        redFlag = new RedFlag(idOffset+2, RedFlagLevel.valueOf(randomInt(1,3)), randomInt(0, 1) == 1, false, event);
+        storeObject(redFlag);
+        if (driver.getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID))
+        {
+            unitTestStats.totalRedFlags++;
+            unitTestStats.totalWarningRedFlags++;
+        }
+        
         event =  new TamperingEvent((long)idOffset+3, vehicle.getVehicleID(), EventMapper.TIWIPRO_EVENT_UNPLUGGED,
                 date,
                 randomInt(15, 70), randomInt(10, 50), loc.getLat(), loc.getLng());
@@ -475,6 +491,13 @@ public class MockData
         event.setDriver(driver);
         event.setVehicle(vehicle);
         storeObject(event, Event.class);
+        redFlag = new RedFlag(idOffset+3, RedFlagLevel.valueOf(randomInt(1,3)), randomInt(0, 1) == 1, false, event);
+        storeObject(redFlag);
+        if (driver.getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID))
+        {
+            unitTestStats.totalRedFlags++;
+            unitTestStats.totalWarningRedFlags++;
+        }
         
         return 3;
 

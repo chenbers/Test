@@ -9,7 +9,13 @@
 	<h:panelGroup layout="block" styleClass="panel_nw">
 		<h:panelGroup layout="block" styleClass="panel_title">
 			<span class="line">#{messages.team_warnings}</span>
-			<span class="panel_links"><a href="#">show all</a></span>
+			<span class="panel_links">
+			<h:form id="teamWarningsShowAllForm">
+				<h:commandLink action="go_redFlags" value="#{messages.team_warningsShowAll}">
+					<f:setPropertyActionListener value="#{teamWarningsBean.category}" target="#{redFlagsBean.categoryFilter}" />
+				</h:commandLink>
+			</h:form>	
+			</span>
 		</h:panelGroup>	
 	</h:panelGroup>					
 	<h:panelGroup layout="block" styleClass="panel_w">
@@ -53,9 +59,8 @@
 						<f:facet name="header">
 							<h:outputText value="" />
 						</f:facet>
-						<!-- TODO:  should go to a page based on the event type -->
-						<h:commandLink action="go_reportDriverSpeed" value="#{messages.team_warningDetails}">
-							<f:setPropertyActionListener value="#{event.event.driver}" target="#{teamWarningsBean.navigation.driver}" />
+						<h:commandLink action="go_redFlags" value="#{messages.team_warningDetails}">
+							<f:setPropertyActionListener value="#{event.event}" target="#{redFlagsBean.eventFilter}" />
 						</h:commandLink>
 					</rich:column>
 			</rich:dataTable>

@@ -14,6 +14,8 @@ import org.junit.Test;
 import com.inthinc.pro.backing.ui.EventDisplay;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.EventCategory;
+import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.Vehicle;
 
 public class TeamWarningsBeanTest extends BaseBeanTest
@@ -28,12 +30,14 @@ public class TeamWarningsBeanTest extends BaseBeanTest
         TeamWarningsBean teamWarningsBean = (TeamWarningsBean)applicationContext.getBean("teamWarningsBean");
         assertNotNull(teamWarningsBean.getEventDAO());
         assertNotNull(teamWarningsBean.getNavigation());
+        assertEquals(EventCategory.WARNING, teamWarningsBean.getCategory());
         
         
         List<EventDisplay> eventList = teamWarningsBean.getWarnings();
         
         assertTrue(eventList.size() <= 5);
         
+        List<Integer> validEventTypes = EventMapper.getEventTypesInCategory(EventCategory.WARNING);
         for (EventDisplay eventDisplay : eventList)
         {
             Event event = eventDisplay.getEvent();
@@ -45,6 +49,8 @@ public class TeamWarningsBeanTest extends BaseBeanTest
             
             Vehicle vehicle = event.getVehicle();
             assertEquals(eventDisplay.getVehicleName(), vehicle.getName());
+            
+            assertTrue(validEventTypes.contains(eventDisplay.getEvent().getType()));
         }
         
         
