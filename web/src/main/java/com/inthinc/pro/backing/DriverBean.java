@@ -171,6 +171,14 @@ public class DriverBean extends BaseBean
 	//DRIVER NAME properties
 	public String getDriverName()
 	{
+//		if(logger.isDebugEnabled()){
+//			logger.debug("getDriverName" + navigation.toString());
+//			logger.debug("getDriverName" + navigation.getDriver().toString());
+//			logger.debug("getDriverName" + navigation.getDriver().getPerson().toString());
+//			logger.debug("getDriverName" + navigation.getDriver().getPerson().getFirst());
+//			logger.debug("getDriverName" + navigation.getDriver().getPerson().getLast());
+//		}
+		logger.debug("getDriverName" + navigation.getDriver().toString());
 	    setDriverName(navigation.getDriver().getPerson().getFirst() + " " + navigation.getDriver().getPerson().getLast());
 	    return driverName;
 	}

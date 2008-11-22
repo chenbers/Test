@@ -4,6 +4,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 public class WebUtil
@@ -50,4 +51,15 @@ public class WebUtil
         return FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
     }
 
+    public String getRealPath(String virtualPath){
+    	
+    	ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+    	return servletContext.getRealPath(virtualPath);
+    	
+    }
+    public String getFullRequestContextPath(){
+    	
+		return "http://"+getRequestServerName()+":"+String.valueOf(getRequestServerPort())+getRequestContextPath();
+
+    }
 }

@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.inthinc.pro.model.Group;
@@ -71,6 +72,20 @@ public class GroupHierarchy
         return GroupLevel.REGION;
         
     }
+    public List<Group> getChildren(Group parent){
+    	
+    	List<Group> children = new ArrayList<Group>();
+        for (Group group : groupList)
+        {
+            if (group.getParentID().equals(parent.getGroupID()))
+            {
+            	children.add(group);
+            }
+        }
+        
+        return children.size()>0?children:null;
+    }
+    
     private boolean groupHasChildren(Group groupToCheck)
     {
         for (Group group : groupList)
@@ -82,5 +97,5 @@ public class GroupHierarchy
         }
         return false;
     }
-
+    
 }

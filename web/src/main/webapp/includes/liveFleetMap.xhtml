@@ -6,66 +6,102 @@
   	xmlns:iwi="http://pro.tiwi.com/jsf"
 	xmlns:h="http://java.sun.com/jsf/html">
 	
+	<script src="http://gmaps-utility-library.googlecode.com/svn/trunk/markermanager/release/src/markermanager.js">	
+	</script>
+	
 		<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="map">Fleet Map</span>
+						<span class="panel_links">
+						<a4j:form id="refresh">
+						<a4j:commandLink title="Refresh" immediate="true"
+							reRender="map"
+							value="#{messages.refresh}">
+						</a4j:commandLink>
+						</a4j:form>
+						</span>
 					</div>
 				</div>
 				<div class="panel_w">
 					
 					<div class="panel_content">
+			  			<rich:panel bodyClass="panel_content" id="map">
 						<h:panelGroup styleClass="map-border" layout="block">
 							<div id="map-canvas" style="#{mapwidth};#{mapheight};border:0"></div>
 					  	</h:panelGroup>
-					  	<h:form >
 					    <script type="text/javascript">
+					    	var markerClicked=false;
       						if (GBrowserIsCompatible()) {
         						map = new GMap2(document.getElementById("map-canvas"));
         						map.addControl(new GLargeMapControl());
         						map.addControl(new GMapTypeControl());
         						map.addControl(new GOverviewMapControl()); 
-								map.setCenter(new GLatLng(#{driverLocationBean.center.lat}, #{driverLocationBean.center.lng}), 5);
+								map.setCenter(new GLatLng(#{driverLocationBean.center.lat}, #{driverLocationBean.center.lng}), 10);
 								map.setMapType(G_NORMAL_MAP);
- 
+ 								var mgr = new MarkerManager(map);
+ 								
 						        // Create a base icon for all of our markers that specifies the
 						        // shadow, icon dimensions, etc.
-						        var baseIcon = new GIcon(G_DEFAULT_ICON);
-						        baseIcon.shadow = "http://www.google.com/mapfiles/shadow50.png";
-						        baseIcon.iconSize = new GSize(20, 34);
-						        baseIcon.shadowSize = new GSize(37, 34);
-						        baseIcon.iconAnchor = new GPoint(9, 34);
-						        baseIcon.infoWindowAnchor = new GPoint(9, 2);
+//						        var baseIcon = new GIcon(G_DEFAULT_ICON);
+//						        baseIcon.shadow = "http://www.google.com/mapfiles/shadow50.png";
+//						        baseIcon.iconSize = new GSize(20, 34);
+//						        baseIcon.shadowSize = new GSize(37, 34);
+//						        baseIcon.iconAnchor = new GPoint(9, 34);
+//						        baseIcon.infoWindowAnchor = new GPoint(9, 2);
 						        
  								// Creates a marker whose info window displays the letter corresponding
 						        // to the given index.
-						        function createMarker(point, index, name,link) {
-						          // Create a lettered icon for this point using our icon class
-						          var letter = String.fromCharCode("A".charCodeAt(0) + index);
-						          var letteredIcon = new GIcon(baseIcon);
-						          letteredIcon.image = "http://www.google.com/mapfiles/marker" + letter + ".png";
+						        function createMarker(point, index, name,iconImage) {
+						          // Create a colored icon for this point using our icon class
+						        coloredIcon = new GIcon(G_DEFAULT_ICON); 
+						        coloredIcon.image = iconImage; 
+						        coloredIcon.iconSize = new GSize(25, 30); 
+						        coloredIcon.iconAnchor = new GPoint(9, 34); 
+						        coloredIcon.infoWindowAnchor = new GPoint(9, 2); 
+						        coloredIcon.infoShadowAnchor = new GPoint(18, 25);
+						        
+//						          var letteredIcon = new GIcon(baseIcon);
+//						          letteredIcon.image = "http://www.google.com/mapfiles/marker" + icon + ".png";
 						
 						          // Set up our GMarkerOptions object
-						          markerOptions = { icon:letteredIcon };
+						          markerOptions = { icon:coloredIcon };
 						          var marker = new GMarker(point, markerOptions);
 						
+						          GEvent.addListener(marker, "mouseover", function() {
+								            if (!markerClicked) marker.openInfoWindowHtml('Driver &#160;<a href="/tiwipro/secured/driver.faces?'+name+'">'+name+'</a>');
+								            
+						            
+						          });
 						          GEvent.addListener(marker, "click", function() {
-								            marker.openInfoWindowHtml('Driver &#160;<a href="/tiwipro/secured/driver.faces">'+name+'</a>');
+								            if (markerClicked) marker.openInfoWindowHtml('Driver &#160;<a href="/tiwipro/secured/driver.faces?'+name+'">'+name+'</a>');
+								            markerClicked =true;
+						            
+						          });
+						          GEvent.addListener(marker, "mouseout", function() {
+								            if (!markerClicked) marker.closeInfoWindow();
+								            
+						            
+						          });
+						          GEvent.addListener(marker, "infowindowclose", function() {
+								            markerClicked = false;
 						            
 						          });
 						          return marker;
 						        }
  								var i=0;
-								<ui:repeat value="#{driverLocationBean.driverBeans}" var="driver">
+								<ui:repeat value="#{driverLocationBean.driverBeans}" var="driverBean">
 								
-									var latlng = new GLatLng(#{driver.lastLocation.lat}, #{driver.lastLocation.lng});
-						        		map.addOverlay(createMarker(latlng, i++,  "#{driver.driverName}"));
+									var latlng = new GLatLng(#{driverBean.lastLocation.lat}, #{driverBean.lastLocation.lng});
+						        		mgr.addMarker(createMarker(latlng, i++, 
+						        		 "#{driverBean.driverName}", 
+						        		 "#{driverLocationBean.legend.icons[driverBean.navigation.groupID]}"),10);
 	        						
 								
 							  	</ui:repeat>
 							}	
     					</script> 
-    					</h:form>
+    					</rich:panel>
  					 </div>
 				</div>		
 																					
