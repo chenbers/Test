@@ -227,7 +227,7 @@
                             <td width="373">
                               <div id="seatbelt_chart"></div>
                       		<ui:include src="../includes/lineChart.xhtml">
-						            <ui:param name="lineChartDef" value="#{driverBean.seatBeltScoreHistory}" />
+						            <ui:param name="lineChartDef" value="#{driverSeatBeltBean.seatBeltScoreHistoryLarge}" />
 						            <ui:param name="hiddenFieldID" value="HiddenField3" />
 						            <ui:param name="width" value="380" /> 
 						            <ui:param name="height" value="200" />
@@ -238,8 +238,8 @@
                             </td>
                             <td width="80" align="center">
                        	        <ui:include src="../includes/scoreBox.xhtml">
-							            <ui:param name="score" value="#{driverBean.seatBeltScore}" />
-							            <ui:param name="scoreStyle" value="#{driverBean.seatBeltScoreStyle}" />
+							            <ui:param name="score" value="#{driverSeatBeltBean.seatBeltScore}" />
+							            <ui:param name="scoreStyle" value="#{driverSeatBeltBean.seatBeltScoreStyle}" />
 								</ui:include>
                             </td>
                           </tr>

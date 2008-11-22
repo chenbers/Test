@@ -29,27 +29,6 @@ public class DriverBean extends BaseBean
 {
 	private static final Logger logger = Logger.getLogger(DriverBean.class);
 	
-	/* DATA NEEDED for a Driver
-	 * 
-	 * Overall Score
-	 * Overall Scores for X Miles
-	 *
-	 * Speed Score
-	 * Speed Scores for X Miles
-	 * 
-	 * Driving Style Score
-	 * Driving Style Scores for X Miles
-	 * 
-	 * Seat Belt Score
-	 * Seat Belt Scores for X Miles
-	 * 
-	 * Coaching Events for X Miles.
-	 * 
-	 * Last Trip or Last Location
-	 * 
-	 * Miles Per Gallon data for chart
-	 */
-	
     private ScoreDAO    scoreDAO;
     private Distance    distance = Distance.FIVEHUNDRED;
     private LatLng      lastLocation;
@@ -59,10 +38,6 @@ public class DriverBean extends BaseBean
     private Integer     overallScore;
     private String      overallScoreHistory;
     private String      overallScoreStyle;
-   
-    private Integer     seatBeltScore;
-    private String      seatBeltScoreHistory;
-    private String      seatBeltScoreStyle;
     
     private String      mpgHistory;
     private String      coachingHistory;
@@ -71,9 +46,6 @@ public class DriverBean extends BaseBean
     	
 	private BreakdownSelections breakdownSelected = BreakdownSelections.OVERALL;
 	
-    Integer endDate = DateUtil.getTodaysDate();
-    Integer startDate = DateUtil.getDaysBackDate(endDate, 30);
-    
 	public DriverBean()
 	{
 	   
@@ -87,14 +59,6 @@ public class DriverBean extends BaseBean
         setOverallScore(overallSe.getScore());
     }
 
-    
-    private void initSeatBelt()
-    {
-        logger.debug("## initSeatBeltScore()");
-        ScoreableEntity seatBeltSe = scoreDAO.getAverageScoreByTypeAndMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), ScoreType.SCORE_SEATBELT);
-        setSeatBeltScore(seatBeltSe.getScore());
-    }
- 
 	//OVERALL SCORE properties
 	public Integer getOverallScore()
 	{
@@ -132,33 +96,6 @@ public class DriverBean extends BaseBean
 		this.overallScoreStyle = overallScoreStyle;
 	}
 	
-	//SEAT BELT properties
-	public Integer getSeatBeltScore() {
-		if(seatBeltScore == null)
-		    initSeatBelt();
-	    
-	    return seatBeltScore;
-	}
-	public void setSeatBeltScore(Integer seatBeltScore) {
-	    setSeatBeltScoreStyle(ScoreBox.GetStyleFromScore(seatBeltScore, ScoreBoxSizes.MEDIUM));
-	    this.seatBeltScore = seatBeltScore;
-	}
-	public String getSeatBeltScoreHistory() {
-		setSeatBeltScoreHistory(createLineDef(ScoreType.SCORE_SEATBELT, ChartSizes.LARGE));
-		return seatBeltScoreHistory;
-	}
-	public void setSeatBeltScoreHistory(String seatBeltScoreHistory) {
-		this.seatBeltScoreHistory = seatBeltScoreHistory;
-	}
-	public String getSeatBeltScoreStyle() {
-	    if(seatBeltScoreStyle == null)
-	        initSeatBelt();
-		return seatBeltScoreStyle;
-	}
-	public void setSeatBeltScoreStyle(String seatBeltScoreStyle) {
-		this.seatBeltScoreStyle = seatBeltScoreStyle;
-	}
-	
 	//COACHING properties
 	public String getCoachingHistory() {
 		setCoachingHistory(createLineDef(ScoreType.SCORE_COACHING_EVENTS, ChartSizes.LARGE));
@@ -194,7 +131,6 @@ public class DriverBean extends BaseBean
     {   
         return distance.toString();
     }
-
     public void setDistance(Distance distance)
     {
       
@@ -212,8 +148,6 @@ public class DriverBean extends BaseBean
         this.scoreDAO = scoreDAO;
     }
     
-  
-	
 	//LAST LOCATION PROPERTIES
 	public LatLng getLastLocation() {
 		if(lastLocation == null)
@@ -221,7 +155,6 @@ public class DriverBean extends BaseBean
 	    
 	    return lastLocation;
 	}
-
 	public void setLastLocation(LatLng lastLocation) {
 		this.lastLocation = lastLocation;
 	}
