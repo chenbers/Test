@@ -16,8 +16,7 @@
 		<script type="text/javascript" src="/tiwipro/js/c_config.js"></script>
 		<script type="text/javascript" src="/tiwipro/js/c_smartmenus.js"></script>
 		<script type="text/javascript" src="/tiwipro/js/c_addon_popup_menus.js"></script>
-		-->
-							
+		-->			
 							
 	<script type="text/JavaScript">
 		//The following functions show/hide the tables associated with each tab.
@@ -146,119 +145,77 @@
 
 					<div class="panel_title">
 						<span class="line">Trend</span>
-						<span class="panel_links_ico"><a href="#" class="on">30 days</a> <a href="#">3 months</a> <a href="#">6 months</a> <a href="#">12 months</a></span>
-						<span class="panel_ico">
-                        	<a href="#" title="" onclick="c_show('PopupMenu1',event); return false;" onmouseout="c_hide(); return false;"><img src="/images/ico_tools.png" border="0" /></a>
-                            <a href="#" class="" onclick="t_show('trend_full_screen');t_hide('dash');return true;"><img src="/images/ico_expand.png" border="0" /></a>
-                        </span>
+							<ui:include src="/includes/dateLinksWithFlyIn.xhtml">
+								<ui:param name="ajaxForm" value="trendDateLinks"/>
+								<ui:param name="ajaxStatusID" value="trendStatus"/>
+								<ui:param name="reRenderList" value="xypanel,trendTable"/>			
+								<ui:param name="thirtyDaysOn" value="#{trendBean.styleClass30Days}"/>
+								<ui:param name="threeMonthsOn" value="#{trendBean.styleClass3Months}"/>
+								<ui:param name="sixMonthsOn" value="#{trendBean.styleClass6Months}"/>
+								<ui:param name="twelveMonthsOn" value="#{trendBean.styleClass12Months}"/>
+		            			<ui:param name="duration" value="#{trendBean.duration}" />
+							</ui:include>	
                     </div>
 				</div>
 					<div class="panel_w">
 					  <div class="panel_content">
-					  
-						<div id="chartdiv2" align="center"></div>
-						<script type="text/javascript">
-						   var chart = new FusionCharts("/swf/MSLine.swf", "ChartId", "445", "300", "0", "0");
-						   chart.setDataURL("/xml/trend_line_2.xml");		   
-						   chart.render("chartdiv2");
-						</script>
-					
-					
-						<div class="spacer"></div>
+					  <!-- Start xy graph --> 
+				<rich:panel id="xypanel" style="height:600;width:800;">
+					<h:inputHidden value="#{trendBean.lineDef}" id="trendHiddenField1" />
+
+					<div id="chartdiv2" align="center"></div>
+					<script type="text/javascript">
+						var targetElement = document.getElementById("trendHiddenField1");
+							
+						var chart = new FusionCharts("/tiwipro/fusioncharts/MSLine.swf", "ChartId", "800", "600", "0", "0");						   						   		
+						chart.setDataXML(targetElement.value);
+					   			   
+						chart.render("chartdiv2");
+					</script>
+				</rich:panel> 
+				<!-- End xy graph -->
+
+				<div class="spacer"></div>
+
+				<div class="datagrid">
+				<!-- Start Trend table --> 
+					<h:form id="trendTableForm">
+			
+						<rich:dataTable value="#{trendBean.scoreableEntities}" id="trendDataTable"
+							var="item" styleClass="datagrid"
+							rowClasses="trendTableOdd,trendTableEven" cellspacing="1" rows="10"
+							width="100%" binding="#{trendTable.table}">
+
+							<!-- Data -->
+							<rich:column width="20">
+								<f:facet name="header">
+									<h:outputText value=" " />
+								</f:facet>
+								<rich:spacer width="17" height="17"
+									style="background-color:#{item.colorKey};border-style:solid;border-width:1px;border-color:#000000"></rich:spacer>
+							</rich:column>
+							<rich:column sortBy="#{item.se.identifier}">
+								<f:facet name="header">
+									<h:outputText value="#{column_one}" />
+								</f:facet>
+								<h:outputLink value="#{item.goTo}">
+									<h:outputText value="#{item.se.identifier}" />
+								</h:outputLink>
+
+							</rich:column>
+							<rich:column width="73" sortBy="#{item.se.score}">
+								<f:facet name="header">
+									<h:outputText value="#{column_two}" />
+								</f:facet>
+								<iwi:scoreBox style="#{item.style}" score="#{item.se.score}"/>
+												
+							</rich:column>
+
+						</rich:dataTable>
+
+					</h:form> 
+				<!-- End Trend table -->
 						
-						<div class="datagrid">
-								<table width="100%" cellpadding="0" cellspacing="0" class="sortable-onload-1 no-arrow rowstyle-alt colstyle-alt paginate-15 max-pages-4 paginationcallback-callbackTest-calculateTotalRating sortcompletecallback-callbackTest-calculateTotalRating" id="theTable2">
-								  <thead>
-								  <tr>
-									<th height="27">&#160;</th>
-									<th width="335" class="sortable-text">Team</th>
-									<th width="73" class="sortable-numeric">Score</th>
-									</tr>
-								  </thead>
-								  <tbody>
-								  <tr>
-								    <td width="19" align="center"><img src="images/legend_ico_2_1.png" width="17" height="17" border="0" /></td>
-								    <td><a href="dash_team.html">Washington</a></td>
-								    <td>
-                                      <div class="score_sm_5" onclick="location.href='#';">
-                                        <div class="score">5.0</div>
-                                      </div>
-							        </td>
-								  </tr>
-								  <tr>
-								    <td width="19" align="center"><img src="images/legend_ico_2_2.png" width="17" height="17" border="0" /></td>
-								    <td><a href="dash_team.html">Oregon</a></td>
-								    <td>
-                                      <div class="score_sm_5" onclick="location.href='#';">
-                                        <div class="score">4.8</div>
-                                      </div>
-							        </td>
-								  </tr>
-								  <tr>
-								    <td width="19" align="center"><img src="images/legend_ico_2_3.png" width="17" height="17" border="0" /></td>
-								    <td><a href="dash_team.html">Vegas</a></td>
-								    <td>
-                                      <div class="score_sm_4" onclick="location.href='#';">
-                                        <div class="score">3.9</div>
-                                      </div>
-							        </td>
-								  </tr>
-								  <tr>
-								    <td width="19" align="center"><img src="images/legend_ico_2_4.png" width="17" height="17" border="0" /></td>
-								    <td><a href="dash_team.html">Phoenix</a></td>
-								    <td>
-                                      <div class="score_sm_3" onclick="location.href='#';">
-                                        <div class="score">2.8</div>
-                                      </div>
-							        </td>
-								  </tr>
-								  <tr>
-								    <td width="19" align="center"><img src="images/legend_ico_2_5.png" width="17" height="17" border="0" /></td>
-								    <td><a href="dash_team.html">Salt Lake</a> </td>
-								    <td>
-                                      <div class="score_sm_5" onclick="location.href='#';">
-                                        <div class="score">5.0</div>
-                                      </div>
-							        </td>
-								  </tr>
-								  <tr>
-								    <td width="19" align="center"><img src="images/legend_ico_2_6.png" width="17" height="17" border="0" /></td>
-								    <td><a href="dash_team.html">Sacramento/Bay Area</a> </td>
-								    <td>
-                                      <div class="score_sm_5" onclick="location.href='#';">
-                                        <div class="score">4.8</div>
-                                      </div>
-							        </td>
-								  </tr>
-								  <tr>
-								    <td width="19" align="center"><img src="images/legend_ico_2_7.png" width="17" height="17" border="0" /></td>
-								    <td><a href="dash_team.html">Los Angeles/San Diego</a> </td>
-								    <td>
-                                      <div class="score_sm_4" onclick="location.href='#';">
-                                        <div class="score">3.9</div>
-                                      </div>
-							        </td>
-								  </tr>
-								  <tr>
-								    <td width="19" align="center"><img src="images/legend_ico_2_8.png" width="17" height="17" border="0" /></td>
-								    <td><a href="dash_team.html">Idaho</a></td>
-								    <td>
-                                      <div class="score_sm_5" onclick="location.href='#';">
-                                        <div class="score">2.8</div>
-                                      </div>
-							        </td>
-								  </tr>
-								  <tr>
-								    <td width="19" align="center"><img src="images/legend_ico_2_9.png" width="17" height="17" border="0" /></td>
-								    <td><a href="dash_team.html">Montana</a></td>
-								    <td>
-                                      <div class="score_sm_2" onclick="location.href='#';">
-                                        <div class="score">1.9</div>
-                                      </div>
-							        </td>
-								  </tr>
-								  </tbody>
-								</table>
 						</div>
 						
 					  </div>
@@ -300,7 +257,7 @@
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="overall">Overall Score </span>
-						<ui:include src="/includes/dateLinksWithFlyOut.xhtml">
+						<ui:include src="/includes/dateLinksWithFlyIn.xhtml">
 							<ui:param name="ajaxForm" value="dateLinksFormForm"/>
 							<ui:param name="ajaxStatusID" value="overall_status" /> 
 							<ui:param name="reRenderList" value="overallPanel"/>			
