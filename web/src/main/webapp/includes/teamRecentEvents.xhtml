@@ -9,7 +9,13 @@
 	<h:panelGroup layout="block" styleClass="panel_nw">
 		<h:panelGroup layout="block" styleClass="panel_title">
 			<span class="line">#{messages.team_recentEvents}</span>
-			<span class="panel_links"><a href="#">show all</a></span>
+			<span class="panel_links">
+			<h:form id="teamEventsShowAllForm">
+				<h:commandLink action="go_redFlags" value="#{messages.team_recentEventsShowAll}">
+					<f:setPropertyActionListener value="#{teamRecentEventsBean.category}" target="#{redFlagsBean.categoryFilter}" />
+				</h:commandLink>
+			</h:form>	
+			</span>
 		</h:panelGroup>	
 	</h:panelGroup>					
 	<h:panelGroup layout="block" styleClass="panel_w">

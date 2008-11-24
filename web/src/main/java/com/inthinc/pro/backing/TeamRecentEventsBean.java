@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.backing.ui.EventDisplay;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventType;
 
 public class TeamRecentEventsBean extends BaseBean
@@ -20,6 +21,8 @@ public class TeamRecentEventsBean extends BaseBean
     private EventDAO eventDAO;
     private Integer groupID;
     private EventDisplay selectedEvent;
+    private static final EventCategory category = EventCategory.VIOLATION;
+
 
     public EventDisplay getSelectedEvent()
     {
@@ -97,6 +100,11 @@ public class TeamRecentEventsBean extends BaseBean
             return "go_reportDriverStyle";
         }
         return "";
+    }
+
+    public EventCategory getCategory()
+    {
+        return category;
     }
 
 }

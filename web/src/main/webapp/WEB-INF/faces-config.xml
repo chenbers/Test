@@ -13,13 +13,7 @@
 		<converter-id>TimeZoneConverter</converter-id>
 		<converter-class>com.inthinc.pro.convert.TimeZoneConverter</converter-class>
 	</converter>
-	
-	<!-- Remove? - class file doesn't exist
-	<converter>
-		<converter-id>ProDateTimeConverter</converter-id>
-		<converter-class>com.inthinc.pro.convert.ProDateTimeConverter</converter-class>
-	</converter> -->
-	
+
 	<!-- managed beans -->
 	
 	<!-- navigation -->

@@ -132,6 +132,50 @@ public class RedFlagsBeanTest extends BaseBeanTest
         
         
     }
+    
+    @Test
+    public void search()
+    {
+        loginUser(UnitTestStats.UNIT_TEST_LOGIN);
+        
+        // get the bean from the applicationContext (initialized by Spring injection)
+        RedFlagsBean redFlagsBean = (RedFlagsBean)applicationContext.getBean("redFlagsBean");
+        
+        // test the spring creation/injection
+        assertNotNull(redFlagsBean);
+        assertNotNull(redFlagsBean.getRedFlagDAO());
+        assertNotNull(redFlagsBean.getTablePreferenceDAO());
+        
+        List<RedFlagReportItem> tableData = redFlagsBean.getTableData();
+        assertNotNull(tableData);
+        int totalRows = tableData.size();
+        
+        
+        redFlagsBean.setSearchText("info");
+        redFlagsBean.searchAction();
+        tableData = redFlagsBean.getTableData();
+        int infoRows = tableData.size();
+        
+        redFlagsBean.setSearchText("warning");
+        redFlagsBean.searchAction();
+        tableData = redFlagsBean.getTableData();
+        int warningRows = tableData.size();
+        
+        redFlagsBean.setSearchText("critical");
+        redFlagsBean.searchAction();
+        tableData = redFlagsBean.getTableData();
+        int criticalRows = tableData.size();
+        
+        assertEquals(new Integer(totalRows), new Integer(infoRows+warningRows+criticalRows));
+        
+        redFlagsBean.setSearchText("");
+        redFlagsBean.searchAction();
+        tableData = redFlagsBean.getTableData();
+        int noSearchRows = tableData.size();
+        
+        assertEquals(new Integer(totalRows), new Integer(noSearchRows));
+    }
+    
     private void checkScrolling(int page, RedFlagsBean redFlagsBean)
     {
         List<RedFlagReportItem> redFlagItems = redFlagsBean.getTableData();

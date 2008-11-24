@@ -44,6 +44,9 @@ public class RedFlagsBean extends BaseBean implements EditableColumns
     private EventCategory categoryFilter;
     private Event eventFilter;
     
+    private String searchText;
+    
+    
     // package level -- so unit test can get it
     static final List<String>       AVAILABLE_COLUMNS;
     static
@@ -118,7 +121,7 @@ public class RedFlagsBean extends BaseBean implements EditableColumns
                 }
             }
         }
-        else if (getEventFilter() != null)
+        if (getEventFilter() != null)
         {    
             filteredTableData = new ArrayList<RedFlagReportItem>();
     
@@ -131,7 +134,22 @@ public class RedFlagsBean extends BaseBean implements EditableColumns
                 }
             }
         }
-        
+        if (searchText != null && !searchText.trim().isEmpty())
+        {
+            ArrayList<RedFlagReportItem> searchTableData = new ArrayList<RedFlagReportItem>();
+            
+            for (RedFlagReportItem item : filteredTableData)
+            {
+                if (item.getCategory().startsWith(searchText) ||
+                    item.getGroup().startsWith(searchText) ||
+                    item.getDetail().startsWith(searchText) ||
+                    item.getRedFlag().getLevel().toString().startsWith(searchText))
+                {
+                    searchTableData.add(item);
+                }
+            }
+            setFilteredTableData(searchTableData);
+        }
         setMaxCount(filteredTableData.size());
         setStart(filteredTableData.size() > 0 ? 1 : 0);
         setEnd(filteredTableData.size() > getNumRowsPerPg() ? getNumRowsPerPg() : filteredTableData.size());
@@ -327,7 +345,8 @@ public class RedFlagsBean extends BaseBean implements EditableColumns
 
     private void reinit()
     {
-        setTableData(null);
+        //setTableData(null);
+        setFilteredTableData(null);
         setStart(null);
         setEnd(null);
         setMaxCount(null);
@@ -361,5 +380,31 @@ public class RedFlagsBean extends BaseBean implements EditableColumns
         this.categoryFilter = null;
         this.eventFilter = eventFilter;
     }
+
+    public String getSearchText()
+    {
+        return searchText;
+    }
+
+    public void setSearchText(String searchText)
+    {
+        if (searchText == null || searchText.isEmpty())
+        {
+            setCategoryFilter(null);
+            setEventFilter(null);
+        }
+        this.searchText = searchText;
+    }
     
+    public void searchAction()
+    {
+        filterTableData();
+    }
+    public void showAllAction()
+    {
+        setCategoryFilter(null);
+        setEventFilter(null);
+        
+        filterTableData();
+    }
 }
