@@ -51,6 +51,9 @@
             		<ui:param name="lineDef" value="#{trendBean.lineDef}"/>
             		<ui:param name="scores" value="#{trendBean.scoreableEntities}"/>
             		<ui:param name="table" value="#{trendTable.table}"/>
+            		<ui:param name="flyNavRule" value="go_overviewFlyOut" />
+					<ui:param name="flyReturnNavRule" value="go_region" />
+					<ui:param name="flySelectedTab" value="trend_full_screen" />  
 				</ui:include>											 
 				<!-- END PANEL -->
 		
@@ -74,7 +77,9 @@
 					<ui:param name="threeMonthsOn" value="#{breakdownBean.styleClass3Months}"/>
 					<ui:param name="sixMonthsOn" value="#{breakdownBean.styleClass6Months}"/>
 					<ui:param name="twelveMonthsOn" value="#{breakdownBean.styleClass12Months}"/>
-					<ui:param name="flyNavRule" value="#{flyOutBean.regionNavRule}"/>  
+					<ui:param name="flyNavRule" value="go_overviewFlyOut" />
+					<ui:param name="flyReturnNavRule" value="go_region" />
+					<ui:param name="flySelectedTab" value="overall_full_screen" />   
 				</ui:include>	
 				<!-- END PANEL -->
 

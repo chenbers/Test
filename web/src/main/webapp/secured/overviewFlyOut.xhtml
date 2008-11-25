@@ -17,8 +17,8 @@
 					
 							
 	<script type="text/JavaScript">
-		//The following functions show/hide the tables associated with each tab.
-		<!--
+
+		// Show and Hide Tabs.
 		function t_show(id)
 		{
 		     if (document.getElementById(id).style.display == 'none')
@@ -26,14 +26,12 @@
 		          document.getElementById(id).style.display = '';
 		     }
 		}
-		//-->
-		
-		<!--
+	
 		function t_hide(id)
 		{
 			document.getElementById(id).style.display = 'none';
 		}
-		//-->
+	
 	</script>
 	</ui:define>  			
 
@@ -60,7 +58,6 @@
 			  <table width="130" border="0" cellpadding="0" cellspacing="0"  style="margin-top: 40px;">
             <tr>
               <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_line" onclick="t_hide('mpg_full_screen');t_hide('overall_full_screen');t_hide('fleet_full_screen');t_show('trend_full_screen');return true;">Trend</a></td>
-
             </tr>
             <tr>
               <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_overall" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('fleet_full_screen');t_show('overall_full_screen');return true;">Overall Score </a></td>
@@ -69,7 +66,6 @@
               <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_map" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('fleet_full_screen');return true;">Fleet Map </a></td>
             </tr>
             <tr>
-
               <td valign="top" class="ls_tab_on"><a href="#" class="ls_tab_gas" onclick="t_hide('fleet_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
             </tr>
         </table>
@@ -159,13 +155,15 @@
 				</div>
 					<div class="panel_w">
 					  <div class="panel_content">
-					  <!-- Start xy graph --> 
-				<rich:panel id="xypanel" style="height:600;width:800;">
-					<h:inputHidden value="#{trendBean.lineDef}" id="trendHiddenField1" />
+					  	<!-- Start xy graph --> 
+				<rich:panel id="xypanel" 
+					style="height:300;width:445">
+					<h:inputHidden value="#{trendBean.lineDef}" 
+						id="hiddenField12" />
 
 					<div id="chartdiv2" align="center"></div>
 					<script type="text/javascript">
-						var targetElement = document.getElementById("trendHiddenField1");
+						var targetElement = document.getElementById("hiddenField12");
 							
 						var chart = new FusionCharts("/tiwipro/fusioncharts/MSLine.swf", "ChartId", "800", "600", "0", "0");						   						   		
 						chart.setDataXML(targetElement.value);
@@ -175,15 +173,32 @@
 				</rich:panel> 
 				<!-- End xy graph -->
 
-				<div class="spacer"></div>
-
+				<div class="spacer"></div>			
+				
+				<div style="border: 1px solid black; height: 40px; width: 100%;">
+				<rich:panel>	
+					<rich:spacer height="10"/>
+					<div style="text-align: right;">													
+						<h:outputText 
+							id="countString" value="#{trendBean.countString}"/>
+						<rich:spacer width="10"/>
+					</div>									
+				</rich:panel>
+				</div>
+				
 				<div class="datagrid">
-				<!-- Start Trend table --> 
-					<h:form id="trendTableForm">
+				
+				<h:form id="trendTable">	
+								
+        		<rich:datascroller id="topScroller" for="items" immediate="true"
+        			scrollerListener="#{trendBean.scrollerListener}"
+        			reRender="bottomScroller,countString,starter,items,xypanel">
+        		</rich:datascroller>					
 			
-						<rich:dataTable value="#{trendBean.scoreableEntities}" id="trendDataTable"
+						<rich:dataTable value="#{trendBean.scoreableEntities}" id="items"
 							var="item" styleClass="datagrid"
-							rowClasses="trendTableOdd,trendTableEven" cellspacing="1" rows="10"
+							rowClasses="trendTableOdd,trendTableEven" 
+							cellspacing="1" rows="25"
 							width="100%" binding="#{trendTable.table}">
 
 							<!-- Data -->
@@ -196,7 +211,7 @@
 							</rich:column>
 							<rich:column sortBy="#{item.se.identifier}">
 								<f:facet name="header">
-									<h:outputText value="#{column_one}" />
+									<h:outputText value="Region" />
 								</f:facet>
 								<h:outputLink value="#{item.goTo}">
 									<h:outputText value="#{item.se.identifier}" />
@@ -205,16 +220,26 @@
 							</rich:column>
 							<rich:column width="73" sortBy="#{item.se.score}">
 								<f:facet name="header">
-									<h:outputText value="#{column_two}" />
+									<h:outputText value="Score" />
 								</f:facet>
 								<iwi:scoreBox style="#{item.style}" score="#{item.se.score}"/>
 												
 							</rich:column>
 
 						</rich:dataTable>
-
+						
+				<rich:datascroller id="bottomScroller" for="items" immediate="true"
+    				scrollerListener="#{trendBean.scrollerListener}"
+        			reRender="topScroller,countString,starter,items,xypanel">        			
+        		</rich:datascroller>
+        		
+        		
 					</h:form> 
 				<!-- End Trend table -->
+
+					<!-- leave reRenderList alone -->
+
+					<!-- END PANEL -->
 						
 						</div>
 						
@@ -266,7 +291,7 @@
 							<ui:param name="sixMonthsOn" value="#{breakdownBean.styleClass6Months}"/>
 							<ui:param name="twelveMonthsOn" value="#{breakdownBean.styleClass12Months}"/>
 	            			<ui:param name="duration" value="#{breakdownBean.duration}" />
-	            			<ui:param name="flyNavRule" value="go_home" />
+	            			<ui:param name="flyNavRule" value="#{flyOutBean.returnNavRule}" />
 	            			<ui:param name="popupMenuID" value="PopupMenuOverall" />
 						</ui:include>	
                     </div>
