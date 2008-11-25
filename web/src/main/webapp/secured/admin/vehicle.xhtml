@@ -39,7 +39,7 @@
 
                   <rich:tabPanel switchType="client">
 
-                    <rich:tab id="details" label="#{messages.vehicle_details}">
+                    <rich:tab id="details" label="#{messages.device_details}">
 
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="l text"><h:commandLink action="#{vehiclesBean.cancelDisplay}" value="#{messages.vehicle_backToVehicles}" /></li>
@@ -58,39 +58,39 @@
                             <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editVehicle_year}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.editItem.year}" /></td>
+                                <td><h:outputText value="#{vehiclesBean.item.year}" /></td>
                               </tr>
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editVehicle_make}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.editItem.make}" /></td>
+                                <td><h:outputText value="#{vehiclesBean.item.make}" /></td>
                               </tr>
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editVehicle_model}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.editItem.model}" /></td>
+                                <td><h:outputText value="#{vehiclesBean.item.model}" /></td>
                               </tr>
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editVehicle_color}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.editItem.color}" /></td>
+                                <td><h:outputText value="#{vehiclesBean.item.color}" /></td>
                               </tr>
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editVehicle_type}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.editItem.type.description}" /></td>
+                                <td><h:outputText value="#{vehiclesBean.item.type.description}" /></td>
                               </tr>
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editVehicle_VIN}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.editItem.VIN}" /></td>
+                                <td><h:outputText value="#{vehiclesBean.item.VIN}" /></td>
                               </tr>
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editVehicle_weight}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.editItem.weight}"><f:convertNumber /></h:outputText></td>
+                                <td><h:outputText value="#{vehiclesBean.item.weight}"><f:convertNumber /></h:outputText></td>
                               </tr>
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editVehicle_license}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.editItem.license}" /></td>
+                                <td><h:outputText value="#{vehiclesBean.item.license}" /></td>
                               </tr>
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editVehicle_state}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.editItem.state.name}" /></td>
+                                <td><h:outputText value="#{vehiclesBean.item.state.name}" /></td>
                               </tr>
                             </table>
 
@@ -103,15 +103,15 @@
                             <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editVehicle_name}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.editItem.name}" /></td>
+                                <td><h:outputText value="#{vehiclesBean.item.name}" /></td>
                               </tr>
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editVehicle_active}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.editItem.active ? messages.active : messages.inactive}" /></td>
+                                <td><h:outputText value="#{vehiclesBean.item.active ? messages.active : messages.inactive}" /></td>
                               </tr>
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editVehicle_costPerHour}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.editItem.costPerHour / 100}"><f:convertNumber type="currency" currencySymbol="$" /></h:outputText></td>
+                                <td><h:outputText value="#{vehiclesBean.item.costPerHour / 100}"><f:convertNumber type="currency" currencySymbol="$" /></h:outputText></td>
                               </tr>
                             </table>
 
@@ -122,13 +122,13 @@
                             <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editVehicle_groupID}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.editItem.group.name}" /></td>
+                                <td><h:outputText value="#{vehiclesBean.item.group.name}" /></td>
                               </tr>
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editVehicle_driverID}" /></td>
                                 <td>
                                   <h:panelGroup id="driverID">
-                                    <h:outputText value="#{vehiclesBean.editItem.driver.person.first}" /><h:outputText value=" " /><h:outputText value="#{vehiclesBean.editItem.driver.person.last}" /><h:outputText value=" " />
+                                    <h:outputText value="#{vehiclesBean.item.driver.person.first}" /><h:outputText value=" " /><h:outputText value="#{vehiclesBean.item.driver.person.last}" /><h:outputText value=" " />
                                     <a href="#" onclick="Richfaces.showModalPanel('chooseDriver'); return false;"><h:outputText value="#{messages.editVehicle_assign}" /></a>
                                   </h:panelGroup>
                                 </td>
@@ -141,7 +141,7 @@
 
                     </rich:tab>
 
-                    <rich:tab id="speedSensitivity" label="#{messages.vehicle_speedSensitivity}">
+                    <rich:tab id="speedSensitivity" label="#{messages.device_speedSensitivity}">
 
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="l text"><h:commandLink action="#{vehiclesBean.cancelDisplay}" value="#{messages.vehicle_backToVehicles}" /></li>
@@ -151,9 +151,18 @@
 
                       <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
 
-                      <ui:include src="../../includes/speedSensitivity.xhtml">
-                        <ui:param name="disabled" value="true" />
-                      </ui:include>
+                      <ui:fragment rendered="#{empty vehiclesBean.item.device}">
+                        <div class="msg" >
+                          <p class="warning"><h:outputText value="#{messages.vehicle_noDevice}" /></p>
+                        </div>
+                      </ui:fragment>
+
+                      <ui:fragment rendered="#{not empty vehiclesBean.item.device}">
+                        <ui:include src="../../includes/speedSensitivity.xhtml">
+                          <ui:param name="device" value="#{vehiclesBean.item.device}" />
+                          <ui:param name="disabled" value="true" />
+                        </ui:include>
+                      </ui:fragment>
 
                     </rich:tab>
 

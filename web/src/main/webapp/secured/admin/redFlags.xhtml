@@ -1,0 +1,114 @@
+<ui:composition template="/layout/layout.xhtml"
+              xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:rich="http://richfaces.org/rich"
+              xmlns:a4j="http://richfaces.org/a4j"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:security="http://pro.tiwi.com/jsf/security">
+
+  <ui:param name="adminSelected" value="current" />
+
+  <ui:define name="content">
+
+    <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+      <tr>
+        <td valign="top" width="130">
+          <ui:include src="/includes/adminSideNav.xhtml">
+            <ui:param name="selectedAction" value="go_adminRedFlags" />
+            <ui:param name="parentAction" value="go_adminRedFlags" />
+          </ui:include>
+        </td>
+        <td valign="top">
+          <!-- START PANEL -->
+          <div class="">
+            <div class="panel_nw">
+              <div class="panel_title">
+                <span class="redflag"><h:outputText value="#{messages.adminHeader_redFlags}" /></span>
+                <span class="panel_links"></span>
+              </div>
+            </div>
+
+            <div class="panel_w">
+              <div class="panel_content">
+
+                <a4j:form id="redflags-form">
+
+                  <ul id="grid_nav" style="margin: 0;">
+                    <li class="l">
+                      <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
+                        <tr>
+                          <td><h:outputText value="#{messages.button_search}" /></td>
+                          <td><h:inputText id="filterTable" value="#{redFlagsBean.filterValue}" class="text" size="30" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('redflags-form:searchButton').onclick(); return false; } return true;" /></td>
+                        </tr>
+                      </table>
+                    </li>
+                    <li class="l"><a4j:commandLink id="searchButton" reRender="dataTable,bottomScroller"><button value="submit" class="left"><span class="search"><h:outputText value="#{messages.button_search}" /></span></button></a4j:commandLink></li>
+                  </ul>
+
+                  <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
+
+                  <div class="spacer"></div>
+
+                  <rich:dataTable id="dataTable" value="#{redFlagsBean.filteredItems}" var="item" rowKeyVar="index" styleClass="datagrid"
+                    rows="5" rowClasses="tableOdd,tableEven" width="100%">
+                    <rich:column sortBy="#{item.name}" sortOrder="ASCENDING">
+                      <f:facet name="header">
+                        <h:outputText value="#{messages.redFlagsHeader_name}" />
+                      </f:facet>
+                      <a4j:commandLink action="#{redFlagsBean.display}" value="#{item.name}" reRender="dataTable,redFlagType,points,address,editredFlag" oncomplete="map.clearOverlays();centerMapAtZone(restoreZone());" style="#{(item.zoneID == zonesBean.item.zoneID) ? 'font-weight:bold' : ''}">
+                        <f:param name="redFlagID" value="#{item.redFlagID}" />
+                      </a4j:commandLink>
+                    </rich:column>
+                    <rich:column sortBy="#{item.created}">
+                      <f:facet name="header">
+                        <h:outputText value="#{messages.redFlagsHeader_created}" />
+                      </f:facet>
+                      <h:outputText value="#{item.created}">
+                        <f:convertDateTime dateStyle="long" type="both" />
+                      </h:outputText>
+                    </rich:column>
+                    <rich:column>
+                      <f:facet name="header">
+                        <h:outputText value=" " />
+                      </f:facet>
+                      <a4j:commandLink action="#{redFlagsBean.edit}" value="#{messages.adminTable_edit}" reRender="dataTable,zoneType,points,address,editZone,zoneName,zoneAddress" oncomplete="map.clearOverlays();centerMapAtZone(restoreZone());">
+                        <f:param name="redFlagID" value="#{item.redFlagID}" />
+                      </a4j:commandLink>
+                    </rich:column>
+                    <rich:column>
+                      <f:facet name="header">
+                        <h:outputText value=" " />
+                      </f:facet>
+                      <a href="#" onclick="Richfaces.showModalPanel('confirmDelete', {deleteID:#{item.redFlagID}}); return false;"><h:outputText value="#{messages.adminTable_delete}" /></a>
+                    </rich:column>
+                  </rich:dataTable>
+
+                  <rich:datascroller id="bottomScroller" for="dataTable" reRender="dataTable" />
+
+                </a4j:form>
+
+              </div>
+            </div>
+
+            <div class="panel_sw">
+              <div class="panel_statusbar"></div>
+            </div>
+
+            <ui:include src="../../includes/confirmDelete.xhtml">
+              <ui:param name="deleteBean" value="#{redFlagsBean}" />
+              <ui:param name="reRender" value="dataTable" />
+              <ui:param name="explanation" value="#{messages.redFlag_confirmDelete}" />
+            </ui:include>
+
+          </div>
+
+          <!-- END PANEL -->
+        </td>
+
+      </tr>
+    </table>
+
+  </ui:define>
+
+</ui:composition>

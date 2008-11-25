@@ -141,8 +141,8 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         assertEquals(adminBean.display(), adminBean.getDisplayRedirect());
 
         // edit item (used for display)
-        assertNotNull(adminBean.getEditItem());
-        assertEquals(adminBean.getEditItem().getId(), adminBean.getItems().get(0).getId());
+        assertNotNull(adminBean.getItem());
+        assertEquals(adminBean.getItem().getId(), adminBean.getItems().get(0).getId());
 
         // cancel display
         assertEquals(adminBean.cancelDisplay(), adminBean.getFinishedRedirect());
@@ -166,8 +166,8 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         assertFalse(adminBean.isBatchEdit());
 
         // edit item (used for adding)
-        assertNotNull(adminBean.getEditItem());
-        assertNull(adminBean.getEditItem().getId());
+        assertNotNull(adminBean.getItem());
+        assertNull(adminBean.getItem().getId());
 
         // cancel it
         assertEquals(adminBean.cancelEdit(), adminBean.getFinishedRedirect());
@@ -177,13 +177,13 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         assertTrue(adminBean.isAdd());
 
         // populate
-        populate(adminBean.getEditItem());
-        assertNull(adminBean.getEditItem().getId());
+        populate(adminBean.getItem());
+        assertNull(adminBean.getItem().getId());
 
         // save
         int count = adminBean.getItemCount();
         assertEquals(adminBean.save(), adminBean.getDisplayRedirect());
-        assertNotNull(adminBean.getEditItem().getId());
+        assertNotNull(adminBean.getItem().getId());
         assertEquals(adminBean.getItemCount(), count + 1);
     }
 
@@ -207,8 +207,8 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         assertFalse(adminBean.isBatchEdit());
 
         // edit item
-        assertNotNull(adminBean.getEditItem());
-        assertEquals(adminBean.getEditItem().getId(), adminBean.getItems().get(adminBean.getItemCount() - 1).getId());
+        assertNotNull(adminBean.getItem());
+        assertEquals(adminBean.getItem().getId(), adminBean.getItems().get(adminBean.getItemCount() - 1).getId());
 
         // cancel edit
         assertEquals(adminBean.cancelEdit(), adminBean.getFinishedRedirect());
@@ -217,7 +217,7 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         adminBean.edit();
 
         // populate
-        populate(adminBean.getEditItem());
+        populate(adminBean.getItem());
 
         // save
         int count = adminBean.getItemCount();
@@ -245,8 +245,8 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         assertTrue(adminBean.isBatchEdit());
 
         // edit item
-        assertNotNull(adminBean.getEditItem());
-        assertNull(adminBean.getEditItem().getId());
+        assertNotNull(adminBean.getItem());
+        assertNull(adminBean.getItem().getId());
 
         // cancel edit
         assertEquals(adminBean.cancelEdit(), adminBean.getFinishedRedirect());
@@ -255,7 +255,7 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         adminBean.batchEdit();
 
         // populate
-        populate(adminBean.getEditItem());
+        populate(adminBean.getItem());
         for (final String field : getBatchUpdateFields())
             adminBean.getUpdateField().put(field, true);
 
@@ -269,7 +269,7 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
             for (final String field : getBatchUpdateFields())
             {
                 final PropertyDescriptor descriptor = BeanUtils.getPropertyDescriptor(item.getClass(), field);
-                assertEquals(descriptor.getReadMethod().invoke(item, new Object[0]), descriptor.getReadMethod().invoke(adminBean.getEditItem(), new Object[0]));
+                assertEquals(descriptor.getReadMethod().invoke(item, new Object[0]), descriptor.getReadMethod().invoke(adminBean.getItem(), new Object[0]));
             }
     }
 

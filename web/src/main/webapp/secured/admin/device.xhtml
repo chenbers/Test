@@ -36,85 +36,110 @@
 
                 <div class="panel_content">
 
-                  <ul id="grid_nav" style="margin: 0;">
-                    <li class="l text"><h:commandLink action="#{devicesBean.cancelDisplay}" value="#{messages.device_backToDevices}" /></li>
-                    <li class="r"><h:commandLink action="#{devicesBean.edit}"><button value="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></h:commandLink></li>
-                    <li class="r"><a4j:commandLink><button value="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink></li>
-                  </ul>
+                  <rich:tabPanel switchType="client">
 
-                  <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
+                    <rich:tab id="details" label="#{messages.device_details}">
 
-                  <table width="790" border="0" cellspacing="0" cellpadding="0">
-                    <tr>
-                      <td width="390" valign="top">
+                      <ul id="grid_nav" style="margin: 0;">
+                        <li class="l text"><h:commandLink action="#{devicesBean.cancelDisplay}" value="#{messages.device_backToDevices}" /></li>
+                        <li class="r"><h:commandLink action="#{devicesBean.edit}"><button value="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></h:commandLink></li>
+                        <li class="r"><a4j:commandLink><button value="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink></li>
+                      </ul>
+
+                      <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
+
+                      <table width="790" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="390" valign="top">
                 
-                        <div class="add_section_title"><h:outputText value="#{messages.editDevice_deviceInformation}" /></div>
+                            <div class="add_section_title"><h:outputText value="#{messages.editDevice_deviceInformation}" /></div>
                   
-                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editDevice_name}" /></td>
-                            <td><h:outputText value="#{devicesBean.editItem.name}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editDevice_baselineID}" /></td>
-                            <td><h:outputText value="#{devicesBean.editItem.baselineID}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editDevice_mcmid}" /></td>
-                            <td><h:outputText value="#{devicesBean.editItem.mcmid}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editDevice_sim}" /></td>
-                            <td><h:outputText value="#{devicesBean.editItem.sim}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editDevice_phone}" /></td>
-                            <td><h:outputText value="#{devicesBean.editItem.phone}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editDevice_ephone}" /></td>
-                            <td><h:outputText value="#{devicesBean.editItem.ephone}" /></td>
-                          </tr>
-                        </table>
+                            <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editDevice_name}" /></td>
+                                <td><h:outputText value="#{devicesBean.item.name}" /></td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editDevice_baselineID}" /></td>
+                                <td><h:outputText value="#{devicesBean.item.baselineID}" /></td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editDevice_mcmid}" /></td>
+                                <td><h:outputText value="#{devicesBean.item.mcmid}" /></td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editDevice_sim}" /></td>
+                                <td><h:outputText value="#{devicesBean.item.sim}" /></td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editDevice_phone}" /></td>
+                                <td><h:outputText value="#{devicesBean.item.phone}" /></td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editDevice_ephone}" /></td>
+                                <td><h:outputText value="#{devicesBean.item.ephone}" /></td>
+                              </tr>
+                            </table>
 
-                      </td>
-                      <td width="10"><img src="images/x.gif" width="10" /></td>
-                      <td width="390" valign="top">
+                          </td>
+                          <td width="10"><img src="images/x.gif" width="10" /></td>
+                          <td width="390" valign="top">
 
-                        <div class="add_section_title"><h:outputText value="#{messages.editDevice_deviceProfile}" /></div>
+                            <div class="add_section_title"><h:outputText value="#{messages.editDevice_deviceProfile}" /></div>
                   
-                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editDevice_status}" /></td>
-                            <td><h:outputText value="#{devicesBean.editItem.status}" /></td>
-                          </tr>
-                          <ui:fragment rendered="#{not empty devicesBean.editItem.activated}">
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editDevice_activated}" /></td>
-                            <td><h:outputText value="#{devicesBean.editItem.activated}"><f:convertDateTime dateStyle="long" /></h:outputText></td>
-                          </tr>
-                          </ui:fragment>
-                        </table>
+                            <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editDevice_status}" /></td>
+                                <td><h:outputText value="#{devicesBean.item.status}" /></td>
+                              </tr>
+                              <ui:fragment rendered="#{not empty devicesBean.item.activated}">
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editDevice_activated}" /></td>
+                                <td><h:outputText value="#{devicesBean.item.activated}"><f:convertDateTime dateStyle="long" /></h:outputText></td>
+                              </tr>
+                              </ui:fragment>
+                            </table>
 
-                        <div class="spacer"></div>
+                            <div class="spacer"></div>
 
-                        <div class="add_section_title"><h:outputText value="#{messages.editDevice_deviceAssignment}" /></div>
+                            <div class="add_section_title"><h:outputText value="#{messages.editDevice_deviceAssignment}" /></div>
 
-                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editDevice_vehicleID}" /></td>
-                            <td>
-                              <h:panelGroup id="vehicleID">
-                                <h:outputText value="#{devicesBean.editItem.vehicle.name}" /><h:outputText value=" " />
-                                <a href="#" onclick="Richfaces.showModalPanel('chooseVehicle'); return false;"><h:outputText value="#{messages.editDevice_assign}" /></a>
-                              </h:panelGroup>
-                            </td>
-                          </tr>
-                        </table>
+                            <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editDevice_vehicleID}" /></td>
+                                <td>
+                                  <h:panelGroup id="vehicleID">
+                                    <h:outputText value="#{devicesBean.item.vehicle.name}" /><h:outputText value=" " />
+                                    <a href="#" onclick="Richfaces.showModalPanel('chooseVehicle'); return false;"><h:outputText value="#{messages.editDevice_assign}" /></a>
+                                  </h:panelGroup>
+                                </td>
+                              </tr>
+                            </table>
                   
-                      </td>
-                    </tr>
-                  </table>
+                          </td>
+                        </tr>
+                      </table>
+
+                    </rich:tab>
+
+                    <rich:tab id="speedSensitivity" label="#{messages.device_speedSensitivity}">
+
+                      <ul id="grid_nav" style="margin: 0;">
+                        <li class="l text"><h:commandLink action="#{devicesBean.cancelDisplay}" value="#{messages.device_backToDevices}" /></li>
+                        <li class="r"><h:commandLink action="#{devicesBean.edit}"><button value="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></h:commandLink></li>
+                        <li class="r"><a4j:commandLink><button value="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink></li>
+                      </ul>
+
+                      <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
+
+                      <ui:include src="../../includes/speedSensitivity.xhtml">
+                        <ui:param name="device" value="#{devicesBean.item}" />
+                        <ui:param name="disabled" value="true" />
+                      </ui:include>
+
+                    </rich:tab>
+
+                  </rich:tabPanel>
 
                 </div>
               </div>

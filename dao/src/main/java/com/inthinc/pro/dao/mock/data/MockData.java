@@ -46,7 +46,6 @@ import com.inthinc.pro.model.TamperingEvent;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.VehicleSensitivity;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneType;
 
@@ -754,22 +753,11 @@ public class MockData
         vehicle.setLicense(license);
         vehicle.setState(state);
         vehicle.setActive(active);
-        VehicleSensitivity sensitivity = new VehicleSensitivity();
-        vehicle.setSensitivity(sensitivity);
-        sensitivity.setHardBrake(randomInt(0, 2));
-        sensitivity.setHardAcceleration(randomInt(0, 2));
-        sensitivity.setHardTurn(randomInt(0, 2));
-        sensitivity.setHardVertical(randomInt(0, 2));
-        final Integer[] speedSettings = new Integer[15];
-        for (int i = 0; i < speedSettings.length; i++)
-            speedSettings[i] = randomInt(0, 5) * 5;
-        vehicle.setSpeedSettings(speedSettings);
         return vehicle;
     }
 
     private boolean groupIsParent(Group[] groups, Integer groupID)
     {
-     
         for (Group group : groups)
         {
             if (group.getParentID().equals(groupID))
@@ -808,6 +796,14 @@ public class MockData
         device.setPhone(phone);
         device.setEphone(ephone);
         device.setActivated(activated);
+        device.setHardBrake(randomInt(0, 2));
+        device.setHardAcceleration(randomInt(0, 2));
+        device.setHardTurn(randomInt(0, 2));
+        device.setHardVertical(randomInt(0, 2));
+        final Integer[] speedSettings = new Integer[15];
+        for (int i = 0; i < speedSettings.length; i++)
+            speedSettings[i] = randomInt(0, 5) * 5;
+        device.setSpeedSettings(speedSettings);
         return device;
     }
 

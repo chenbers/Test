@@ -60,7 +60,7 @@
             <f:facet name="header"><h:outputText value="#{messages.chooseDriver_assigned}" /></f:facet>
             <h:outputText value="#{editorBean.driverAssigned[item.driverID] ? messages.chooseDriver_assigned : messages.chooseDriver_unassigned}" />
           </rich:column>
-          <rich:column filterExpression="#{(empty editorBean.editItem.driverID) or (item.driverID != editorBean.editItem.driverID)}">
+          <rich:column filterExpression="#{(empty editorBean.item.driverID) or (item.driverID != editorBean.item.driverID)}">
             <f:facet name="header">
               <h:outputText value=" " />
             </f:facet>

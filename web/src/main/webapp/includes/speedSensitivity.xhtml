@@ -7,40 +7,56 @@
                 xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 
 <!-- 
+  Required Parameters:
+  ======================
+          device: The device to show the settings for.
+
   Optional Parameters:
-  ==============
+  ======================
           disabled: Whether the number sliders are disabled for input or not.
+         batchEdit: Whether the device is being batch-edited.
+       updateField: A map of field name to boolean values for which fields to update; required if batchEdit
+                    is true.
 
   To use:
   ==============
   <ui:include src="/includes/speedSensitivity.xhtml">
+    <ui:param name="device" value="#{myBean.device}" />
     <ui:param name="disabled" value="true" />
   </ui:include>
 
  -->
   <ui:composition>
 
+    <c:if test="empty device">
+      <c:set var="disabled" value="true" />
+    </c:if>
+
                       <table width="790" border="0" cellspacing="0" cellpadding="0">
                         <tr>
                           <td width="390" valign="top">
 
-                            <div class="add_section_title"><h:outputText value="#{messages.editVehicle_speedNotification}" /></div>
+                            <div class="add_section_title"><h:outputText value="#{messages.editDevice_speedNotification}" /></div>
                             <div class="spacer"></div>
 
                             <table width="100%" border="0" cellpadding="2" cellspacing="0">
                               <tr class="datagrid">
-                                <th><h:outputText value="#{messages.editVehicle_speedHeader}" /></th>
-                                <th colspan="2"><h:outputText value="#{messages.editVehicle_speedSettingHeader}" /></th>
+                                <th><h:outputText value="#{messages.editDevice_speedHeader}" /></th>
+                                <th colspan="2"><h:outputText value="#{messages.editDevice_speedSettingHeader}" /></th>
                               </tr>
 
-                              <c:forEach id="speeds" begin="0" var="index" end="14">
+                              <c:forEach begin="0" var="index" end="14">
+                                <c:set var="id" value="speed#{index}" />
                                 <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
-                                  <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;"><h:outputText value="#{(index * 5) + 5}" /></td>
+                                  <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                    <h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{id}" value="#{updateField[id]}" />
+                                    <h:outputText value="#{(index * 5) + 5}" />
+                                  </td>
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" align="right">
-                                    <rich:inputNumberSlider disabled="#{disabled}" id="speed#{index}" value="#{vehiclesBean.editItem.speedSettings[index]}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="0" maxValue="25" step="5" onchange="document.getElementById(this.mainTable.id + 'MPH').innerHTML = this.value" />
+                                    <rich:inputNumberSlider disabled="#{disabled}" id="#{id}" value="#{device.speedSettings[index]}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="0" maxValue="25" step="5" onchange="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById(this.mainTable.id + 'MPH').innerHTML = this.value" />
                                   </td>
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:outputText id="speed#{index}MPH" value="#{vehiclesBean.editItem.speedSettings[index]}" /><h:outputText value=" mph" />
+                                    <h:outputText id="#{id}MPH" value="#{device.speedSettings[index]}" /><h:outputText value=" mph" />
                                   </td>
                                 </tr>
                               </c:forEach>
@@ -52,87 +68,44 @@
                           <td width="390" valign="top">
 
                             <script type="text/javascript">
-                              var sensitivities = ['<h:outputText value="#{messages.editVehicle_sensitivity0}" />',
-                                  '<h:outputText value="#{messages.editVehicle_sensitivity1}" />',
-                                  '<h:outputText value="#{messages.editVehicle_sensitivity2}" />'];
+                              var sensitivities = new Array();
+                              <c:forEach begin="20" var="sensitivity" end="90">
+                                sensitivities[#{sensitivity}] = '<h:outputText value="#{(sensitivity le 43) ? messages.editDevice_sensitivityLess : ((sensitivity le 67) ? messages.editDevice_sensitivityAverage : messages.editDevice_sensitivityMore)}" />';
+                              </c:forEach>
                             </script>
 
-                            <div class="add_section_title"><h:outputText value="#{messages.editVehicle_sensitivityTitle}" /></div>
+                            <div class="add_section_title"><h:outputText value="#{messages.editDevice_sensitivityTitle}" /></div>
                             <div class="spacer"></div>
 
                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
                               <tr class="datagrid">
-                                <th><h:outputText value="#{messages.editVehicle_sensitivityHeader}" /></th>
-                                <th colspan="3"><h:outputText value="#{messages.editVehicle_sensitivitySettingHeader}" /></th>
+                                <th><h:outputText value="#{messages.editDevice_sensitivityHeader}" /></th>
+                                <th colspan="3"><h:outputText value="#{messages.editDevice_sensitivitySettingHeader}" /></th>
                               </tr>
-                              <tr class="tableOdd">
-                                <td></td>
-                                <td style="padding: 6px 12px 0px 12px" colspan="2" align="right">
-                                  <h:outputText value="#{messages.editVehicle_currentSensitivity}" />
-                                  <c:set var="sensitivityLevel" value="editVehicle_sensitivity#{vehiclesBean.editItem.sensitivity.hardBrake}" />
-                                  <h:outputText id="hardBrakeLevel" style="font-weight:bold" value="#{messages[sensitivityLevel]}" />
-                                </td>
-                                <td></td>
-                              </tr>
-                              <tr class="tableOdd">
-                                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;"><h:outputText value="#{messages.editVehicle_hardBrake}" /></td>
-                                <td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;"><h:outputText value="#{messages.editVehicle_sensitivity0}" /></td>
-                                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                  <rich:inputNumberSlider id="hardBrake" disabled="#{disabled}" value="#{vehiclesBean.editItem.sensitivity.hardBrake}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="0" maxValue="2" onchange="document.getElementById(this.mainTable.id + 'Level').innerHTML = sensitivities[this.value]" />
-                                </td>
-                                <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;"><h:outputText value="#{messages.editVehicle_sensitivity2}" /></td>
-                              </tr>
-                              <tr class="tableEven">
-                                <td></td>
-                                <td style="padding: 6px 12px 0px 12px" colspan="2" align="right">
-                                  <h:outputText value="#{messages.editVehicle_currentSensitivity}" />
-                                  <c:set var="sensitivityLevel" value="editVehicle_sensitivity#{vehiclesBean.editItem.sensitivity.hardAcceleration}" />
-                                  <h:outputText id="hardAccelerationLevel" style="font-weight:bold" value="#{messages[sensitivityLevel]}" />
-                                </td>
-                                <td></td>
-                              </tr>
-                              <tr class="tableEven">
-                                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;"><h:outputText value="#{messages.editVehicle_hardAcceleration}" /></td>
-                                <td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;"><h:outputText value="#{messages.editVehicle_sensitivity0}" /></td>
-                                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                  <rich:inputNumberSlider id="hardAcceleration" disabled="#{disabled}" value="#{vehiclesBean.editItem.sensitivity.hardAcceleration}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="0" maxValue="2" onchange="document.getElementById(this.mainTable.id + 'Level').innerHTML = sensitivities[this.value]" />
-                                </td>
-                                <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;"><h:outputText value="#{messages.editVehicle_sensitivity2}" /></td>
-                              </tr>
-                              <tr class="tableOdd">
-                                <td></td>
-                                <td style="padding: 6px 12px 0px 12px" colspan="2" align="right">
-                                  <h:outputText value="#{messages.editVehicle_currentSensitivity}" />
-                                  <c:set var="sensitivityLevel" value="editVehicle_sensitivity#{vehiclesBean.editItem.sensitivity.hardTurn}" />
-                                  <h:outputText id="hardTurnLevel" style="font-weight:bold" value="#{messages[sensitivityLevel]}" />
-                                </td>
-                                <td></td>
-                              </tr>
-                              <tr class="tableOdd">
-                                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;"><h:outputText value="#{messages.editVehicle_hardTurn}" /></td>
-                                <td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;"><h:outputText value="#{messages.editVehicle_sensitivity0}" /></td>
-                                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                  <rich:inputNumberSlider id="hardTurn" disabled="#{disabled}" value="#{vehiclesBean.editItem.sensitivity.hardTurn}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="0" maxValue="2" onchange="document.getElementById(this.mainTable.id + 'Level').innerHTML = sensitivities[this.value]" />
-                                </td>
-                                <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;"><h:outputText value="#{messages.editVehicle_sensitivity2}" /></td>
-                              </tr>
-                              <tr class="tableEven">
-                                <td></td>
-                                <td style="padding: 6px 12px 0px 12px" colspan="2" align="right">
-                                  <h:outputText value="#{messages.editVehicle_currentSensitivity}" />
-                                  <c:set var="sensitivityLevel" value="editVehicle_sensitivity#{vehiclesBean.editItem.sensitivity.hardVertical}" />
-                                  <h:outputText id="hardVerticalLevel" style="font-weight:bold" value="#{messages[sensitivityLevel]}" />
-                                </td>
-                                <td></td>
-                              </tr>
-                              <tr class="tableEven">
-                                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;"><h:outputText value="#{messages.editVehicle_hardVertical}" /></td>
-                                <td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;"><h:outputText value="#{messages.editVehicle_sensitivity0}" /></td>
-                                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                  <rich:inputNumberSlider id="hardVertical" disabled="#{disabled}" value="#{vehiclesBean.editItem.sensitivity.hardVertical}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="0" maxValue="2" onchange="document.getElementById(this.mainTable.id + 'Level').innerHTML = sensitivities[this.value]" />
-                                </td>
-                                <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;"><h:outputText value="#{messages.editVehicle_sensitivity2}" /></td>
-                              </tr>
+                              <c:forEach begin="0" var="index" end="3">
+                                <c:set var="sensitivityItem" value="#{(index == 0) ? 'hardBrake' : ((index == 1) ? 'hardAcceleration' : ((index == 2) ? 'hardTurn' : 'hardVertical'))}" />
+                                <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
+                                  <td></td>
+                                  <td style="padding: 6px 12px 0px 12px" colspan="2" align="right">
+                                    <h:outputText value="#{messages.editDevice_currentSensitivity}" />
+                                    <c:set var="sensitivityLevel" value="#{(device[sensitivityItem] ge 67) ? messages.editDevice_sensitivityMore : ((device[sensitivityItem] ge 43) ? messages.editDevice_sensitivityAverage : messages.editDevice_sensitivityLess)}" />
+                                    <h:outputText id="#{sensitivityItem}Level" style="font-weight:bold" value="#{sensitivityLevel}" />
+                                  </td>
+                                  <td></td>
+                                </tr>
+                                <tr class="tableOdd">
+                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                    <h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{sensitivityItem}" value="#{updateField[sensitivityItem]}" />
+                                    <c:set var="sensitivityLabel" value="editDevice_#{sensitivityItem}" />
+                                    <h:outputText value="#{messages[sensitivityLabel]}" />
+                                  </td>
+                                  <td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;"><h:outputText value="#{messages.editDevice_sensitivityLess}" /></td>
+                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                    <rich:inputNumberSlider id="#{sensitivityItem}" disabled="#{disabled}" value="#{device[sensitivityItem]}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="20" maxValue="90" onchange="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById(this.mainTable.id + 'Level').innerHTML = sensitivities[this.value]" />
+                                  </td>
+                                  <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;"><h:outputText value="#{messages.editDevice_sensitivityMore}" /></td>
+                                </tr>
+                              </c:forEach>
                             </table>
 
                           </td>

@@ -294,9 +294,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     }
 
     @Override
-    public PersonView getEditItem()
+    public PersonView getItem()
     {
-        final PersonView item = super.getEditItem();
+        final PersonView item = super.getItem();
         if (item.getUser() == null)
         {
             item.setUser(new User());
@@ -427,11 +427,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         {
             // find all people in the same group and in all parent groups
             reportsToOptions = new TreeMap<String, Integer>();
-            Integer groupID = getEditItem().getGroupID();
+            Integer groupID = getItem().getGroupID();
             while ((groupID != null) && (groupID > 0))
             {
                 for (final PersonView person : items)
-                    if (groupID.equals(person.getGroupID()) && !person.getPersonID().equals(getEditItem().getPersonID()))
+                    if (groupID.equals(person.getGroupID()) && !person.getPersonID().equals(getItem().getPersonID()))
                         reportsToOptions.put(person.getFirst() + " " + person.getLast(), person.getPersonID());
                 final Group group = groupDAO.findByID(groupID);
                 if (group != null)

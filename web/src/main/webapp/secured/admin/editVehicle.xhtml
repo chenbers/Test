@@ -36,11 +36,12 @@
 
                   <rich:tabPanel id="vehicleTabs" switchType="client">
 
-                    <rich:tab id="details" label="#{messages.vehicle_details}">
+                    <rich:tab id="details" label="#{messages.device_details}">
 
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="r"><h:commandLink action="#{vehiclesBean.cancelEdit}" immediate="true"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
-                        <li class="r"><button value="submit" class="right next" onclick="document.getElementById('edit-form:speedSensitivity_shifted').onclick();return false;"><span class="left"><h:outputText value="#{messages.button_next}" /></span></button></li>
+                        <ui:fragment rendered="#{not empty vehiclesBean.item.device}"><li class="r"><button value="submit" class="right next" onclick="document.getElementById('edit-form:speedSensitivity_shifted').onclick();return false;"><span class="left"><h:outputText value="#{messages.button_next}" /></span></button></li></ui:fragment>
+                        <ui:fragment rendered="#{empty vehiclesBean.item.device}"><li class="r"><h:commandLink action="#{vehiclesBean.save}"><button value="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink></li></ui:fragment>
                       </ul>
 
                       <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
@@ -60,7 +61,7 @@
                                   <h:outputText value="#{messages.editVehicle_year}" />
                                 </td>
                                 <td>
-                                  <h:selectOneMenu value="#{vehiclesBean.editItem.year}" id="year" onchange="checkMultiple(this)">
+                                  <h:selectOneMenu value="#{vehiclesBean.item.year}" id="year" onchange="checkMultiple(this)">
                                     <f:selectItems value="#{vehiclesBean.years}" />
                                   </h:selectOneMenu>
                                 </td>
@@ -71,7 +72,7 @@
                                   <h:outputText value="#{messages.editVehicle_make}" />
                                 </td>
                                 <td>
-                                  <h:inputText value="#{vehiclesBean.editItem.make}" id="make" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                  <h:inputText value="#{vehiclesBean.item.make}" id="make" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     maxlength="22" required="#{(not vehiclesBean.batchEdit) or vehiclesBean.updateField['make']}" requiredMessage="#{messages.required}" />
                                   <rich:message for="make" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                 </td>
@@ -82,7 +83,7 @@
                                   <h:outputText value="#{messages.editVehicle_model}" />
                                 </td>
                                 <td>
-                                  <h:inputText value="#{vehiclesBean.editItem.model}" id="model" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                  <h:inputText value="#{vehiclesBean.item.model}" id="model" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     maxlength="22" required="#{(not vehiclesBean.batchEdit) or vehiclesBean.updateField['model']}" requiredMessage="#{messages.required}" />
                                   <rich:message for="model" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                 </td>
@@ -93,7 +94,7 @@
                                   <h:outputText value="#{messages.editVehicle_color}" />
                                 </td>
                                 <td>
-                                  <h:inputText value="#{vehiclesBean.editItem.color}" id="color" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                  <h:inputText value="#{vehiclesBean.item.color}" id="color" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     maxlength="14" required="#{(not vehiclesBean.batchEdit) or vehiclesBean.updateField['color']}" requiredMessage="#{messages.required}" />
                                   <rich:message for="color" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                 </td>
@@ -104,7 +105,7 @@
                                   <h:outputText value="#{messages.editVehicle_type}" />
                                 </td>
                                 <td>
-                                  <h:selectOneMenu value="#{vehiclesBean.editItem.type}" id="type" onchange="checkMultiple(this)">
+                                  <h:selectOneMenu value="#{vehiclesBean.item.type}" id="type" onchange="checkMultiple(this)">
                                     <f:selectItems value="#{vehiclesBean.types}" />
                                   </h:selectOneMenu>
                                 </td>
@@ -113,7 +114,7 @@
                               <tr>
                                 <td width="100" valign="top"><h:outputText value="#{messages.editVehicle_VIN}" /></td>
                                 <td>
-                                  <h:inputText value="#{vehiclesBean.editItem.VIN}" id="VIN" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                  <h:inputText value="#{vehiclesBean.item.VIN}" id="VIN" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     maxlength="17" required="true" requiredMessage="#{messages.required}" validatorMessage="#{messages.editVehicle_VINlength}">
                                       <f:validateLength minimum="17" maximum="17" />
                                   </h:inputText>
@@ -127,7 +128,7 @@
                                   <h:outputText value="#{messages.editVehicle_weight}" />
                                 </td>
                                 <td>
-                                  <h:inputText value="#{vehiclesBean.editItem.weight}" id="weight" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                  <h:inputText value="#{vehiclesBean.item.weight}" id="weight" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     required="#{(not vehiclesBean.batchEdit) or vehiclesBean.updateField['weight']}" requiredMessage="#{messages.required}" converterMessage="#{messages.editVehicle_weightFormat}" validatorMessage="#{messages.editVehicle_weightFormat}">
                                     <f:validateLongRange minimum="1" />
                                   </h:inputText>
@@ -138,7 +139,7 @@
                               <tr>
                                 <td width="100" valign="top"><h:outputText value="#{messages.editVehicle_license}" /></td>
                                 <td>
-                                  <h:inputText value="#{vehiclesBean.editItem.license}" id="license" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                  <h:inputText value="#{vehiclesBean.item.license}" id="license" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     maxlength="10" required="true" requiredMessage="#{messages.required}" />
                                   <rich:message for="license" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                 </td>
@@ -150,7 +151,7 @@
                                   <h:outputText value="#{messages.editVehicle_state}" />
                                 </td>
                                 <td>
-                                  <h:selectOneMenu value="#{vehiclesBean.editItem.state}" id="state" onchange="checkMultiple(this)" required="#{(not vehiclesBean.batchEdit) or vehiclesBean.updateField['state']}" requiredMessage="#{messages.required}">
+                                  <h:selectOneMenu value="#{vehiclesBean.item.state}" id="state" onchange="checkMultiple(this)" required="#{(not vehiclesBean.batchEdit) or vehiclesBean.updateField['state']}" requiredMessage="#{messages.required}">
                                     <f:selectItem itemLabel="#{messages.editVehicle_selectState}" />
                                     <f:selectItems value="#{vehiclesBean.states}" />
                                   </h:selectOneMenu>
@@ -170,7 +171,7 @@
                               <tr>
                                 <td width="100" valign="top"><h:outputText value="#{messages.editVehicle_name}" /></td>
                                 <td>
-                                  <h:inputText value="#{vehiclesBean.editItem.name}" id="name" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                  <h:inputText value="#{vehiclesBean.item.name}" id="name" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     maxlength="30" required="true" requiredMessage="#{messages.required}" />
                                   <rich:message for="name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                 </td>
@@ -182,7 +183,7 @@
                                   <h:outputText value="#{messages.editVehicle_active}" />
                                 </td>
                                 <td>
-                                  <h:selectOneMenu value="#{vehiclesBean.editItem.active}" id="active" onchange="checkMultiple(this)">
+                                  <h:selectOneMenu value="#{vehiclesBean.item.active}" id="active" onchange="checkMultiple(this)">
                                     <f:selectItem itemValue="true" itemLabel="#{messages.active}" />
                                     <f:selectItem itemValue="false" itemLabel="#{messages.inactive}" />
                                   </h:selectOneMenu>
@@ -194,7 +195,7 @@
                                   <h:outputText value="#{messages.editVehicle_costPerHour}" />
                                 </td>
                                 <td>
-                                  $<h:inputText value="#{vehiclesBean.editItem.costPerHourDollars}" id="costPerHour" onchange="checkMultiple(this)" styleClass="text" size="10"
+                                  $<h:inputText value="#{vehiclesBean.item.costPerHourDollars}" id="costPerHour" onchange="checkMultiple(this)" styleClass="text" size="10"
                                     required="#{(not vehiclesBean.batchEdit) or vehiclesBean.updateField['costPerHour']}" requiredMessage="#{messages.required}" converter="javax.faces.Double" converterMessage="#{messages.editVehicle_costPerHourFormat}" />
                                   <rich:message for="costPerHour" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                 </td>
@@ -212,7 +213,7 @@
                                   <h:outputText value="#{messages.editVehicle_groupID}" />
                                 </td>
                                 <td>
-                                  <h:selectOneMenu value="#{vehiclesBean.editItem.groupID}" id="groupID" required="#{(not vehiclesBean.batchEdit) or vehiclesBean.updateField['groupID']}" requiredMessage="#{messages.required}">
+                                  <h:selectOneMenu value="#{vehiclesBean.item.groupID}" id="groupID" required="#{(not vehiclesBean.batchEdit) or vehiclesBean.updateField['groupID']}" requiredMessage="#{messages.required}">
                                     <a4j:support event="onchange" reRender="driverID,chooseDriverForm:chooseDriverTable" limitToList="true" ajaxSingle="true" onsubmit="checkMultiple(this)" />
                                     <f:selectItem itemLabel="#{messages.editVehicle_selectGroup}" />
                                     <f:selectItems value="#{vehiclesBean.groups}" />
@@ -225,7 +226,7 @@
                                 <td width="100"><h:outputText value="#{messages.editVehicle_driverID}" /></td>
                                 <td>
                                   <h:panelGroup id="driverID">
-                                    <h:outputText value="#{vehiclesBean.editItem.driver.person.first}" /><h:outputText value=" " /><h:outputText value="#{vehiclesBean.editItem.driver.person.last}" /><h:outputText value=" " />
+                                    <h:outputText value="#{vehiclesBean.item.driver.person.first}" /><h:outputText value=" " /><h:outputText value="#{vehiclesBean.item.driver.person.last}" /><h:outputText value=" " />
                                     <a href="#" onclick="Richfaces.showModalPanel('chooseDriver'); return false;"><h:outputText value="#{messages.editVehicle_assign}" /></a>
                                   </h:panelGroup>
                                 </td>
@@ -241,12 +242,13 @@
 
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="r"><h:commandLink action="#{vehiclesBean.cancelEdit}" immediate="true"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
-                        <li class="r"><button value="submit" class="right next" onclick="document.getElementById('edit-form:speedSensitivity_shifted').onclick();return false;"><span class="left"><h:outputText value="#{messages.button_next}" /></span></button></li>
+                        <ui:fragment rendered="#{not empty vehiclesBean.item.device}"><li class="r"><button value="submit" class="right next" onclick="document.getElementById('edit-form:speedSensitivity_shifted').onclick();return false;"><span class="left"><h:outputText value="#{messages.button_next}" /></span></button></li></ui:fragment>
+                        <ui:fragment rendered="#{empty vehiclesBean.item.device}"><li class="r"><h:commandLink action="#{vehiclesBean.save}"><button value="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink></li></ui:fragment>
                       </ul>
 
                     </rich:tab>
 
-                    <rich:tab id="speedSensitivity" label="#{messages.vehicle_speedSensitivity}">
+                    <rich:tab id="speedSensitivity" label="#{messages.device_speedSensitivity}">
 
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="r"><h:commandLink action="#{vehiclesBean.cancelEdit}" immediate="true"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
@@ -255,7 +257,19 @@
 
                       <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
 
-                      <ui:include src="../../includes/speedSensitivity.xhtml" />
+                      <ui:fragment rendered="#{empty vehiclesBean.item.device}">
+                        <div class="msg" >
+                          <p class="warning"><h:outputText value="#{messages.editVehicle_noDevice}" /></p>
+                        </div>
+                      </ui:fragment>
+
+                      <ui:fragment rendered="#{not empty vehiclesBean.item.device}">
+                        <ui:include src="../../includes/speedSensitivity.xhtml">
+                          <ui:param name="device" value="#{vehiclesBean.item.device}" />
+                          <ui:param name="batchEdit" value="#{vehiclesBean.batchEdit}" />
+                          <ui:param name="updateField" value="#{vehiclesBean.updateField}" />
+                        </ui:include>
+                      </ui:fragment>
 
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="r"><h:commandLink action="#{vehiclesBean.cancelEdit}" immediate="true"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>

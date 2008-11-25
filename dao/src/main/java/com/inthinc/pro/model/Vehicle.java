@@ -1,42 +1,37 @@
 package com.inthinc.pro.model;
 
-import java.util.List;
-
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
 public class Vehicle extends BaseEntity
 {
+    @Column(updateable = false)
+    private static final long serialVersionUID = 6102998742224160619L;
+
     @ID
-    private Integer     vehicleID;
+    private Integer           vehicleID;
     @Column(name = "acctID")
-    private Integer     accountID;
-    private Integer     groupID;
-    private Integer     costPerHour;  // in cents
-    private Boolean     active;
-    private String      name;
-    private String      make;
-    private String      model;
-    private String      year;
-    private String      color;
+    private Integer           accountID;
+    private Integer           groupID;
+    private Integer           costPerHour;                            // in cents
+    private Boolean           active;
+    private String            name;
+    private String            make;
+    private String            model;
+    private String            year;
+    private String            color;
     @Column(name = "vtype")
-    private VehicleType type;
+    private VehicleType       type;
     @Column(name = "vin")
-    private String      VIN;          // 17 chars
-    private Integer     weight;
-    private String      license;
+    private String            VIN;                                    // 17 chars
+    private Integer           weight;
+    private String            license;
     @Column(name = "stateID")
-    private State       state;
+    private State             state;
     @Column(updateable = false)
-    List<SafetyDevice>  safetyDevices;
-    VehicleSensitivity  sensitivity;
-    private String      speedSet;
+    private Integer           driverID;
     @Column(updateable = false)
-    private Integer[]   speedSettings;
-    @Column(updateable = false)
-    private Integer     driverID;
-    @Column(updateable = false)
-    private Integer     deviceID;
+    private Integer           deviceID;
 
     public Vehicle()
     {
@@ -191,70 +186,6 @@ public class Vehicle extends BaseEntity
     public void setState(State state)
     {
         this.state = state;
-    }
-
-    public List<SafetyDevice> getSafetyDevices()
-    {
-        return safetyDevices;
-    }
-
-    public void setSafetyDevices(List<SafetyDevice> safetyDevices)
-    {
-        this.safetyDevices = safetyDevices;
-    }
-
-    public VehicleSensitivity getSensitivity()
-    {
-        return sensitivity;
-    }
-
-    public void setSensitivity(VehicleSensitivity sensitivity)
-    {
-        this.sensitivity = sensitivity;
-    }
-
-    public String getSpeedSet()
-    {
-        return speedSet;
-    }
-
-    public void setSpeedSet(String speedSet)
-    {
-        this.speedSet = speedSet;
-        this.speedSettings = null;
-    }
-
-    public Integer[] getSpeedSettings()
-    {
-        if ((speedSettings == null) && (speedSet != null))
-        {
-            final String[] speeds = speedSet.split(" ");
-            speedSettings = new Integer[speeds.length];
-            for (int i = 0; i < speeds.length; i++)
-                speedSettings[i] = new Integer(speeds[i]);
-        }
-        return speedSettings;
-    }
-
-    public void setSpeedSettings(Integer[] speedSettings)
-    {
-        this.speedSettings = speedSettings;
-        if (speedSettings == null)
-            this.speedSet = null;
-        else
-        {
-            if (speedSettings.length != 15)
-                throw new IllegalArgumentException("speedSettings.length must be 15");
-
-            final StringBuilder sb = new StringBuilder();
-            for (final Integer speed : speedSettings)
-            {
-                if (sb.length() > 0)
-                    sb.append(' ');
-                sb.append(speed);
-            }
-            this.speedSet = sb.toString();
-        }
     }
 
     public Integer getDriverID()

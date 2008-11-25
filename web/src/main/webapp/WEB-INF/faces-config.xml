@@ -145,6 +145,30 @@
         <to-view-id>/secured/admin/zones.xhtml</to-view-id>
       </navigation-case>
     </navigation-rule>
+    <navigation-rule>
+      <navigation-case>
+        <from-outcome>go_adminRedFlags</from-outcome>
+        <to-view-id>/secured/admin/redFlags.xhtml</to-view-id>
+      </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+      <navigation-case>
+        <from-outcome>go_adminRedFlag</from-outcome>
+        <to-view-id>/secured/admin/redFlag.xhtml</to-view-id>
+      </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+      <navigation-case>
+        <from-outcome>go_adminAddRedFlag</from-outcome>
+        <to-view-id>/secured/admin/editRedFlag.xhtml</to-view-id>
+      </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+      <navigation-case>
+        <from-outcome>go_adminEditRedFlag</from-outcome>
+        <to-view-id>/secured/admin/editRedFlag.xhtml</to-view-id>
+      </navigation-case>
+    </navigation-rule>
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>go_region</from-outcome>

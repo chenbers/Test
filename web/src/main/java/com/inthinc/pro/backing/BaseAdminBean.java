@@ -31,7 +31,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     protected String                 filterValue;
     protected int                    page          = 1;
     private boolean                  displayed;
-    private T                        editItem;
+    private T                        item;
     private boolean                  batchEdit;
     private Map<String, Boolean>     updateField;
     private Map<String, TableColumn> tableColumns;
@@ -129,12 +129,12 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         {
             final boolean matchAllWords = matchAllFilterWords();
             final String[] filterWords = filterValue.split("\\s+");
-            for (final T item : items)
+            for (final T t : items)
             {
                 boolean matched = false;
                 for (final String word : filterWords)
                 {
-                    matched = matchesFilter(item, word);
+                    matched = matchesFilter(t, word);
 
                     // we can break if we didn't match and we're required to match all words,
                     // or if we did match and we're only required to match one word
@@ -142,7 +142,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
                         break;
                 }
                 if (matched)
-                    filteredItems.add(item);
+                    filteredItems.add(t);
             }
         }
         else
@@ -181,8 +181,8 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     public void setPage(int page)
     {
         this.page = page;
-        for (final T item : items)
-            item.setSelected(false);
+        for (final T t : items)
+            t.setSelected(false);
     }
 
     /**
@@ -290,7 +290,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     public String display()
     {
         displayed = true;
-        selectEditItem("displayID");
+        selectItem("displayID");
         return getDisplayRedirect();
     }
 
@@ -302,7 +302,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     public String cancelDisplay()
     {
         displayed = false;
-        editItem = null;
+        item = null;
         return getFinishedRedirect();
     }
 
@@ -315,8 +315,8 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     {
         displayed = false;
         batchEdit = false;
-        editItem = createAddItem();
-        editItem.setSelected(false);
+        item = createAddItem();
+        item.setSelected(false);
 
         return getEditRedirect();
     }
@@ -328,7 +328,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
      */
     public String edit()
     {
-        displayed = !selectEditItem("editID");
+        displayed = !selectItem("editID");
         return getEditRedirect();
     }
 
@@ -338,18 +338,18 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
      * @param paramName
      *            The name of a param containing the edit item's ID.
      */
-    protected boolean selectEditItem(String paramName)
+    protected boolean selectItem(String paramName)
     {
         final Map<String, String> parameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         if (parameterMap.get(paramName) != null)
         {
             final int editID = Integer.parseInt(parameterMap.get(paramName));
-            for (final T item : items)
-                item.setSelected(item.getId().equals(editID));
+            for (final T t : items)
+                t.setSelected(t.getId().equals(editID));
 
-            editItem = null;
-            getEditItem();
-            editItem.setSelected(false);
+            item = null;
+            getItem();
+            item.setSelected(false);
             return true;
         }
         return false;
@@ -363,8 +363,8 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     public String batchEdit()
     {
         displayed = false;
-        editItem = null;
-        getEditItem();
+        item = null;
+        getItem();
 
         // take off if nothing was selected
         if (isAdd())
@@ -412,18 +412,17 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
                     ignoreFields.add(key);
 
             // copy properties
-            for (final T item : selected)
-                BeanUtil.deepCopy(editItem, item, ignoreFields);
+            for (final T t : selected)
+                BeanUtil.deepCopy(item, t, ignoreFields);
         }
-        else
+
+        final boolean add = isAdd();
+        doSave(selected, add);
+
+        if (add)
         {
-            final boolean add = isAdd();
-            doSave(selected, add);
-            if (add)
-            {
-                items.add(editItem);
-                applyFilter();
-            }
+            items.add(item);
+            applyFilter();
         }
 
         if (isBatchEdit())
@@ -454,7 +453,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
      */
     public boolean isAdd()
     {
-        return !isBatchEdit() && (editItem != null) && (editItem.getId() == null);
+        return !isBatchEdit() && (item != null) && (item.getId() == null);
     }
 
     /**
@@ -483,38 +482,38 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
      * @return An item that the user can edit. Either returns a new item to be added, a single item to be edited, or an item that represents multiple items being batch edited.
      */
     @SuppressWarnings("unchecked")
-    public T getEditItem()
+    public T getItem()
     {
-        if (editItem == null)
+        if (item == null)
         {
             batchEdit = false;
 
             int selected = 0;
             T selection = null;
-            for (T item : items)
-                if (item.isSelected())
+            for (T t : items)
+                if (t.isSelected())
                 {
-                    selection = item;
+                    selection = t;
                     selected++;
                     if (selected > 1)
                         break;
                 }
             if (selected == 0)
-                editItem = createAddItem();
+                item = createAddItem();
             else if (selected == 1)
-                editItem = selection;
+                item = selection;
             else
             {
                 batchEdit = true;
-                editItem = createAddItem();
-                BeanUtil.deepCopy(selection, editItem);
+                item = createAddItem();
+                BeanUtil.deepCopy(selection, item);
 
                 // null out properties that are not common
-                for (T item : getSelectedItems())
-                    BeanUtil.compareAndInit(editItem, item);
+                for (T t : getSelectedItems())
+                    BeanUtil.compareAndInit(item, t);
             }
         }
-        return editItem;
+        return item;
     }
 
     /**
@@ -523,12 +522,12 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     protected List<T> getSelectedItems()
     {
         final LinkedList<T> selected = new LinkedList<T>();
-        for (final T item : filteredItems)
-            if (item.isSelected())
-                selected.add(item);
+        for (final T t : filteredItems)
+            if (t.isSelected())
+                selected.add(t);
 
-        if ((selected.size() == 0) && (editItem != null))
-            selected.add(editItem);
+        if ((selected.size() == 0) && (item != null))
+            selected.add(item);
 
         return selected;
     }

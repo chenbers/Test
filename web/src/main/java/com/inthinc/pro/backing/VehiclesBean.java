@@ -16,17 +16,17 @@ import javax.faces.context.FacesContext;
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
+import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.SafetyDevice;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.VehicleSensitivity;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.util.MessageUtil;
 
@@ -91,11 +91,12 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
 
     private VehicleDAO                            vehicleDAO;
     private DriverDAO                             driverDAO;
+    private DeviceDAO                             deviceDAO;
     private GroupDAO                              groupDAO;
-    private transient TreeMap<String, Integer>              groups;
-    private transient TreeMap<Integer, String>              groupNames;
-    private transient List<Driver>                          drivers;
-    private transient TreeMap<Integer, Boolean>             driverAssigned;
+    private transient TreeMap<String, Integer>    groups;
+    private transient TreeMap<Integer, String>    groupNames;
+    private transient List<Driver>                drivers;
+    private transient TreeMap<Integer, Boolean>   driverAssigned;
 
     public void setVehicleDAO(VehicleDAO vehicleDAO)
     {
@@ -105,6 +106,11 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     public void setDriverDAO(DriverDAO driverDAO)
     {
         this.driverDAO = driverDAO;
+    }
+
+    public void setDeviceDAO(DeviceDAO deviceDAO)
+    {
+        this.deviceDAO = deviceDAO;
     }
 
     public void setGroupDAO(GroupDAO groupDAO)
@@ -212,16 +218,49 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     {
         final Vehicle vehicle = new Vehicle();
         vehicle.setActive(true);
-        vehicle.setSafetyDevices(new ArrayList<SafetyDevice>());
-        vehicle.setSensitivity(new VehicleSensitivity());
         return createVehicleView(vehicle);
+    }
+
+    @Override
+    public VehicleView getItem()
+    {
+        final VehicleView item = super.getItem();
+        final Device device = item.getDevice();
+        if (device != null)
+        {
+            if (device.getSpeedSettings() == null)
+                device.setSpeedSettings(new Integer[15]);
+            if (!device.isSensitivitiesInverted())
+                device.invertSensitivities();
+        }
+        return item;
+    }
+
+    @Override
+    public String batchEdit()
+    {
+        final String redirect = super.batchEdit();
+        if (getItem().getDevice() == null)
+            for (final VehicleView vehicle : getSelectedItems())
+                if (vehicle.getDevice() != null)
+                {
+                    final Device device = new Device();
+                    device.setHardAcceleration(Device.MIN_SENSITIVITY);
+                    device.setHardBrake(Device.MIN_SENSITIVITY);
+                    device.setHardTurn(Device.MIN_SENSITIVITY);
+                    device.setHardVertical(Device.MIN_SENSITIVITY);
+                    device.invertSensitivities();
+                    getItem().device = device;
+                    break;
+                }
+        return redirect;
     }
 
     @Override
     public String cancelEdit()
     {
-        getEditItem().setGroupID(getEditItem().getOldGroupID());
-        getEditItem().setDriverID(getEditItem().getOldDriverID());
+        getItem().setGroupID(getItem().getOldGroupID());
+        getItem().setDriverID(getItem().getOldDriverID());
         return super.cancelEdit();
     }
 
@@ -243,8 +282,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
 
     public List<Driver> getDrivers()
     {
-        if ((drivers == null) && (getEditItem().getGroupID() != null))
-            drivers = driverDAO.getAllDrivers(getEditItem().getGroupID());
+        if ((drivers == null) && (getItem().getGroupID() != null))
+            drivers = driverDAO.getAllDrivers(getItem().getGroupID());
         return drivers;
     }
 
@@ -277,10 +316,25 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         final Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         final String driverID = params.get("driverID");
         if (driverID != null)
-            getEditItem().setDriverID(Integer.parseInt(driverID));
+            getItem().setDriverID(Integer.parseInt(driverID));
 
         if (Boolean.parseBoolean(params.get("immediate")) && !isAdd() && !isBatchEdit())
-            assignDriver(getEditItem());
+            assignDriver(getItem());
+    }
+
+    @Override
+    public String save()
+    {
+        // prefix the sensitivity settings with "device."
+        final Map<String, Boolean> updateField = getUpdateField();
+        for (final String key : updateField.keySet())
+            if (key.startsWith("hard"))
+                updateField.put("device." + key, updateField.get(key));
+
+        if ((getItem().getDevice() != null) && getItem().getDevice().isSensitivitiesInverted())
+            getItem().getDevice().invertSensitivities();
+
+        return super.save();
     }
 
     @Override
@@ -297,6 +351,23 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
 
             if (vehicle.isDriverChanged())
                 assignDriver(vehicle);
+
+            if (vehicle.getDevice() != null)
+            {
+                // if batch editing, copy individual speed settings by hand
+                if (isBatchEdit())
+                {
+                    final Map<String, Boolean> updateField = getUpdateField();
+                    for (final String key : updateField.keySet())
+                        if (key.startsWith("speed") && (key.length() <= 7) && (updateField.get(key) == true))
+                        {
+                            final int index = Integer.parseInt(key.substring(5));
+                            vehicle.getDevice().getSpeedSettings()[index] = getItem().getDevice().getSpeedSettings()[index];
+                        }
+                }
+
+                deviceDAO.update(vehicle.getDevice());
+            }
 
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "vehicle_added" : "vehicle_updated", vehicle.getName());
@@ -371,17 +442,22 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     public static class VehicleView extends Vehicle implements EditItem
     {
         @Column(updateable = false)
-        private VehiclesBean bean;
+        private static final long serialVersionUID = -2051727502162908991L;
+
         @Column(updateable = false)
-        private Integer      oldGroupID;
+        private VehiclesBean      bean;
         @Column(updateable = false)
-        private Group        group;
+        private Integer           oldGroupID;
         @Column(updateable = false)
-        private Integer      oldDriverID;
+        private Group             group;
         @Column(updateable = false)
-        private Driver       driver;
+        private Integer           oldDriverID;
         @Column(updateable = false)
-        private boolean      selected;
+        private Driver            driver;
+        @Column(updateable = false)
+        private Device            device;
+        @Column(updateable = false)
+        private boolean           selected;
 
         public Integer getId()
         {
@@ -444,6 +520,13 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
             if (driver == null)
                 driver = bean.driverDAO.findByID(getDriverID());
             return driver;
+        }
+
+        public Device getDevice()
+        {
+            if (device == null)
+                device = bean.deviceDAO.findByID(getDeviceID());
+            return device;
         }
 
         public Double getCostPerHourDollars()

@@ -163,13 +163,25 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     {
         final Device device = new Device();
         device.setStatus(DeviceStatus.NEW);
+        device.setSpeedSettings(new Integer[15]);
         return createDeviceView(device);
+    }
+
+    @Override
+    public DeviceView getItem()
+    {
+        final DeviceView item = super.getItem();
+        if (item.getSpeedSettings() == null)
+            item.setSpeedSettings(new Integer[15]);
+        if (!item.isSensitivitiesInverted())
+            item.invertSensitivities();
+        return item;
     }
 
     @Override
     public String cancelEdit()
     {
-        getEditItem().setVehicleID(getEditItem().getOldVehicleID());
+        getItem().setVehicleID(getItem().getOldVehicleID());
         return super.cancelEdit();
     }
 
@@ -204,10 +216,19 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         final Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         final String vehicleID = params.get("vehicleID");
         if (vehicleID != null)
-            getEditItem().setVehicleID(Integer.parseInt(vehicleID));
+            getItem().setVehicleID(Integer.parseInt(vehicleID));
 
         if (Boolean.parseBoolean(params.get("immediate")) && !isAdd() && !isBatchEdit())
-            assignVehicle(getEditItem());
+            assignVehicle(getItem());
+    }
+
+    @Override
+    public String save()
+    {
+        if (getItem().isSensitivitiesInverted())
+            getItem().invertSensitivities();
+
+        return super.save();
     }
 
     @Override
@@ -217,6 +238,18 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 
         for (final DeviceView device : saveItems)
         {
+            // if batch editing, copy individual speed settings by hand
+            if (isBatchEdit())
+            {
+                final Map<String, Boolean> updateField = getUpdateField();
+                for (final String key : updateField.keySet())
+                    if (key.startsWith("speed") && (key.length() <= 7) && (updateField.get(key) == true))
+                    {
+                        final int index = Integer.parseInt(key.substring(5));
+                        device.getSpeedSettings()[index] = getItem().getSpeedSettings()[index];
+                    }
+            }
+
             if (create)
                 device.setDeviceID(deviceDAO.create(getUser().getPerson().getAccountID(), device));
             else
@@ -289,13 +322,16 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     public static class DeviceView extends Device implements EditItem
     {
         @Column(updateable = false)
-        private VehicleDAO vehicleDAO;
+        private static final long serialVersionUID = 8372507838051791866L;
+
         @Column(updateable = false)
-        private Integer oldVehicleID;
+        private VehicleDAO        vehicleDAO;
         @Column(updateable = false)
-        private Vehicle vehicle;
+        private Integer           oldVehicleID;
         @Column(updateable = false)
-        private boolean selected;
+        private Vehicle           vehicle;
+        @Column(updateable = false)
+        private boolean           selected;
 
         public Integer getId()
         {
