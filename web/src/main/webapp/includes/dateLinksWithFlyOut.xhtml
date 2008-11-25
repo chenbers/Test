@@ -3,7 +3,6 @@
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:h="http://java.sun.com/jsf/html">
 
 	<a4j:region id="#{ajaxForm}_region">
@@ -50,9 +49,14 @@
 		</span>
 		<span class="panel_ico">
    			<img src="/tiwipro/images/ico_tools.png" border="0" /><rich:spacer width="3" />
-   			<a4j:commandLink action="#{flyNavRule}"><img src="/tiwipro/images/ico_expand.png" border="0" /></a4j:commandLink>
+   			
+   			<h:commandLink action="#{flyOutBean.flyNavRuleAction}">
+   				<img src="/tiwipro/images/ico_expand.png" border="0" />
+   				<f:setPropertyActionListener value="#{flyNavRule}" target="#{flyOutBean.navigationRule}" />
+   				<f:setPropertyActionListener value="#{flyReturnNavRule}" target="#{flyOutBean.returnNavRule}" />
+   				<f:setPropertyActionListener value="#{flySelectedTab}" target="#{flyOutBean.selectedTab}" />
+   			</h:commandLink>
 		</span>
 		</a4j:form>
 	</a4j:region>
-	
-</ui:composition>			
+</ui:composition>

@@ -48,8 +48,10 @@
             			<ui:param name="thirtyDaysOn" value="#{breakdownBean.styleClass30Days}"/>
 						<ui:param name="threeMonthsOn" value="#{breakdownBean.styleClass3Months}"/>
 						<ui:param name="sixMonthsOn" value="#{breakdownBean.styleClass6Months}"/>
-						<ui:param name="twelveMonthsOn" value="#{breakdownBean.styleClass12Months}"/>  
-						<ui:param name="flyNavRule" value="go_regionFlyOut" />       					
+						<ui:param name="twelveMonthsOn" value="#{breakdownBean.styleClass12Months}" />  
+						<ui:param name="flyNavRule" value="go_overviewFlyOut" />
+						<ui:param name="flyReturnNavRule" value="go_home" />
+						<ui:param name="flySelectedTab" value="overall_full_screen" />  
 					</ui:include>		
 					<!-- END PANEL -->
 					<div class="spacer"></div>
@@ -90,6 +92,15 @@
 						<ui:param name="sixMonthsOn" value="#{trendBean.styleClass6Months}"/>
 						<ui:param name="twelveMonthsOn" value="#{trendBean.styleClass12Months}"/>
 			            <ui:param name="duration" value="#{trendBean.duration}" />
+    	    		    <ui:param name="xyheight" value="300"/>
+			            <ui:param name="xywidth" value="445"/>
+        			    <ui:param name="lineDef" value="#{trendBean.lineDef}"/>
+		        	    <ui:param name="scores" value="#{trendBean.scoreableEntities}"/>
+        		    	<ui:param name="table" value="#{trendTable.table}"/>
+        		    	<ui:param name="flyNavRule" value="go_overviewFlyOut" />
+						<ui:param name="flyReturnNavRule" value="go_home" />
+						<ui:param name="flySelectedTab" value="trend_full_screen" />  
+
 					</ui:include>	
 			</div>
 		
@@ -118,8 +129,7 @@
 				</rich:panel> 
 				<!-- End xy graph -->
 
-				<div class="spacer"></div>
-				<div class="spacer"></div>				
+				<div class="spacer"></div>			
 				
 				<div style="border: 1px solid black; height: 40px; width:445px;">
 				<rich:panel>	

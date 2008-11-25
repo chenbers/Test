@@ -21,6 +21,12 @@
 		<param-name>facelets.LIBRARIES</param-name>
 		<param-value>/META-INF/security.taglib.xml;/WEB-INF/facelets/iwi-tiwipro.taglib.xml</param-value>
 	</context-param>
+	
+	<context-param>
+		<param-name>facelets.SKIP_COMMENTS</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	
  
 <!--
 	TODO: Determine whether it is better to remove the richfaces

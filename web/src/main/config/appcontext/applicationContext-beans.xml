@@ -57,6 +57,8 @@
         <property name="navigation" ref="navigationBean"></property>
     </bean>
 
+	<bean id="flyOutBean" class="com.inthinc.pro.backing.FlyOutBean" scope="request" />
+
     <bean id="personBean" class="com.inthinc.pro.backing.PersonBean" scope="session">
         <property name="personDAO" ref="personDAO"></property>
         <property name="groupDAO" ref="groupDAO"></property>
