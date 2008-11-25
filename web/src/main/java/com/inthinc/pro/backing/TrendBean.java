@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 import org.apache.log4j.Logger;
+import org.richfaces.component.html.HtmlDatascroller;
 import org.richfaces.event.DataScrollerEvent;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
@@ -23,16 +25,16 @@ import com.inthinc.pro.wrapper.ScoreableEntityPkg;
 public class TrendBean extends BaseDurationBean
 {
 
-    private static final Logger      logger            = Logger.getLogger(TrendBean.class);
+    private static final Logger logger = Logger.getLogger(TrendBean.class);
 
-    private ScoreDAO                 scoreDAO;
-    private NavigationBean           navigation;
+    private ScoreDAO scoreDAO;
+    private NavigationBean navigation;
 
-    private String                   lineDef = new String();
+    private String lineDef = new String();
 
     private List<ScoreableEntityPkg> scoreableEntities = new ArrayList<ScoreableEntityPkg>();
     
-    private Integer numRowsPerPg = 1;
+    private Integer numRowsPerPg = 2;
     private Integer maxCount = 0;
     private Integer start = 1;
     private Integer end = numRowsPerPg;
@@ -41,12 +43,11 @@ public class TrendBean extends BaseDurationBean
 
     public TrendBean()
     {
-        super();
-        logger.debug("creating trend bean");
+        super();        
     }
 
     public String getLineDef()
-    {   logger.debug("fetching linedef");      
+    {       
         lineDef = createLineDef();
         return lineDef;
     }
@@ -66,15 +67,14 @@ public class TrendBean extends BaseDurationBean
 
         // Date range qualifiers
         Integer endDate = DateUtil.getTodaysDate();
-        Integer startDate = DateUtil.getDaysBackDate(endDate, getDuration().getNumberOfDays());
+        Integer startDate = DateUtil.getDaysBackDate(endDate, navigation.getDuration().getNumberOfDays());
 
         // Fetch to get parents children, qualifier is groupId (parent),
         // date from, date to
         List<ScoreableEntity> s = null;
         try
         {
-            // TODO: This is not correct. getUser().getGroupID() needs to be changed to the current group in the navigation
-            logger.debug("createLineDef: getting scores for groupID: " + this.navigation.getGroupID());
+            // TODO: This is not correct. getUser().getGroupID() needs to be changed to the current group in the navigation         
             s = scoreDAO.getScores(this.navigation.getGroupID(), startDate, endDate, ScoreType.SCORE_OVERALL);
         }
         catch (Exception e)
@@ -84,13 +84,12 @@ public class TrendBean extends BaseDurationBean
 
         // X-coordinates
         sb.append("<categories>");
-        sb.append(GraphicUtil.createMonthsString(getDuration()));
+        sb.append(GraphicUtil.createMonthsString(navigation.getDuration()));
         sb.append("</categories>");
 
         // Loop over returned set of group ids, controlled by scroller
         List<ScoreableEntity> ss = null;
-        for ( int i = this.start; i < this.start + this.numRowsPerPg; i++ ) 
-//        for (int i = 0; i < s.size(); i++)
+        for ( int i = this.start; i <= this.end; i++ )             
         {
             ScoreableEntity se = s.get(i-1);
             // Fetch to get children's observations
@@ -103,13 +102,13 @@ public class TrendBean extends BaseDurationBean
 
             // Not a full range, pad w/ zero
             int holes = 0;
-            if (getDuration() == Duration.DAYS)
+            if (navigation.getDuration() == Duration.DAYS)
             {
-                holes = getDuration().getNumberOfDays() - ss.size();
+                holes = navigation.getDuration().getNumberOfDays() - ss.size();            
             }
             else
             {
-                holes = GraphicUtil.convertToMonths(getDuration()) - ss.size();
+                holes = GraphicUtil.convertToMonths(navigation.getDuration()) - ss.size();
             }
             for (int k = 0; k < holes; k++)
             {
@@ -135,7 +134,7 @@ public class TrendBean extends BaseDurationBean
     }
 
     public List<ScoreableEntityPkg> getScoreableEntities()
-    {   logger.debug("fetching scoreableentities");  
+    {   
         createScoreableEntities();
         return scoreableEntities;
     }
@@ -152,10 +151,7 @@ public class TrendBean extends BaseDurationBean
         try
         {
             Integer endDate = DateUtil.getTodaysDate();
-            Integer startDate = DateUtil.getDaysBackDate(endDate, getDuration().getNumberOfDays());
-
-            logger.debug("getScoreableEntities: getting scores for groupID: " + this.navigation.getGroupID());
-
+            Integer startDate = DateUtil.getDaysBackDate(endDate, navigation.getDuration().getNumberOfDays());
             s = scoreDAO.getScores(this.navigation.getGroupID(), startDate, endDate, ScoreType.SCORE_OVERALL);
         }
         catch (Exception e)
@@ -183,8 +179,6 @@ public class TrendBean extends BaseDurationBean
         }
         this.maxCount = this.scoreableEntities.size();        
         return this.scoreableEntities;
-
-        // logger.debug("location is: " + navigation.getLocation());
     }
         
     public void scrollerListener(DataScrollerEvent se)     
@@ -196,9 +190,9 @@ public class TrendBean extends BaseDurationBean
         if ( this.end > this.scoreableEntities.size() ) {
             this.end = this.scoreableEntities.size();
         }
-       
-        logger.debug("start " + this.start + " end " + this.end
-                + " max " + this.maxCount);        
+
+        navigation.setStart(this.start);
+        navigation.setEnd(this.end);
     }  
 
     public ScoreDAO getScoreDAO()
@@ -219,6 +213,17 @@ public class TrendBean extends BaseDurationBean
     public void setNavigation(NavigationBean navigation)
     {
         this.navigation = navigation;
+        if ( this.navigation != null ) {
+            if ( this.navigation.getDuration() == null ) {
+                this.navigation.setDuration(Duration.DAYS);
+            }
+            if ( this.navigation.getStart() != 0 ) {              
+                this.start = this.navigation.getStart();
+            }
+            if ( this.navigation.getEnd() != 0 ) {              
+                this.end = this.navigation.getEnd();
+            }
+        }
     }
 
     public Integer getMaxCount()
@@ -273,4 +278,5 @@ public class TrendBean extends BaseDurationBean
     {
         this.numRowsPerPg = numRowsPerPg;
     }
+
 }
