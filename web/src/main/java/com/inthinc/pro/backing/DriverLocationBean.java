@@ -42,7 +42,7 @@ public class DriverLocationBean extends BaseBean {
          	
 	        for (Group group:childGroups){
 	        		         	
-	         	legend.addIcon(group.getGroupID(), mapIconIt.next().getUrl());
+//	         	legend.addIcon(group.getGroupID(), mapIconIt.next().getUrl());
 		        List<Driver> drivers = driverDAO.getAllDrivers(group.getGroupID());
 		        // Do something to get driverBeans or last trips to get location
 		        for (Driver driver:drivers){
@@ -66,7 +66,7 @@ public class DriverLocationBean extends BaseBean {
          	MapIconFactory mif = new MapIconFactory();
          	List<MapIcon> mapIcons = mif.makeMapIcons(1);
 	        // Do something to get driverBeans or last trips to get location
-         	legend.addIcon(navigation.getGroupID(), mapIcons.get(0).getUrl());
+//         	legend.addIcon(navigation.getGroupID(), mapIcons.get(0).getUrl());
 	        for (Driver driver:drivers){
 	
 	        	DriverBean db = new DriverBean();
