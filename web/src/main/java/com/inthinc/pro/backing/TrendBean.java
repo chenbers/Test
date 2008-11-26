@@ -228,6 +228,7 @@ public class TrendBean extends BaseDurationBean
 
     public Integer getMaxCount()
     {
+        this.maxCount = this.scoreableEntities.size();     
         return maxCount;
     }
 

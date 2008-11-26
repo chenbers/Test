@@ -167,30 +167,16 @@
 
 				<div class="spacer"></div>			
 				
-				<div style="border: 1px solid black; height: 40px; width: 100%;">
-				<rich:panel>	
-					<rich:spacer height="10"/>
-					<div style="text-align: right;">													
-						<h:outputText 
-							id="countString" value="#{trendBean.countString}"/>
-						<rich:spacer width="10"/>
-					</div>									
-				</rich:panel>
-				</div>
+				
+				
 				
 				<div class="datagrid">
-				
 				<h:form id="trendTable">	
-								
-        		<rich:datascroller id="topScroller" for="items" immediate="true"
-        			scrollerListener="#{trendBean.scrollerListener}"
-        			reRender="bottomScroller,countString,starter,items,xypanel">
-        		</rich:datascroller>					
 			
 						<rich:dataTable value="#{trendBean.scoreableEntities}" id="items"
-							var="item" styleClass="datagrid"
-							rowClasses="trendTableOdd,trendTableEven" 
-							cellspacing="1" rows="25" width="100%">
+										var="item" styleClass="datagrid"
+										rowClasses="trendTableOdd,trendTableEven" 
+										cellspacing="1" width="100%">
 
 							<!-- Data -->
 							<rich:column width="20">
@@ -200,6 +186,7 @@
 								<rich:spacer width="17" height="17"
 									style="background-color:#{item.colorKey};border-style:solid;border-width:1px;border-color:#000000"></rich:spacer>
 							</rich:column>
+
 							<rich:column sortBy="#{item.se.identifier}">
 								<f:facet name="header">
 									<h:outputText value="Region" />
@@ -207,30 +194,28 @@
 								<h:outputLink value="#{item.goTo}">
 									<h:outputText value="#{item.se.identifier}" />
 								</h:outputLink>
-
 							</rich:column>
+
 							<rich:column width="73" sortBy="#{item.se.score}">
 								<f:facet name="header">
 									<h:outputText value="Score" />
 								</f:facet>
 								<iwi:scoreBox style="#{item.style}" score="#{item.se.score}"/>
-												
 							</rich:column>
 
 						</rich:dataTable>
-						
-				<rich:datascroller id="bottomScroller" for="items" immediate="true"
-			    				scrollerListener="#{trendBean.scrollerListener}"
-			        			reRender="topScroller,countString,starter,items,xypanel">        			
-        		</rich:datascroller>
-        		
-        		
 					</h:form> 
+				
+				<rich:panel style="border: 1px solid #ccc; height: 24px; width: 100%;">	
+					<div style="text-align: right;">													
+						<h:outputText id="totalString" value="Showing #{trendBean.maxCount} records."/>
+						<rich:spacer width="10"/>
+					</div>									
+				</rich:panel>
+					
 				<!-- End Trend table -->
 
-					<!-- leave reRenderList alone -->
-
-					<!-- END PANEL -->
+				<!-- END PANEL -->
 						
 						</div>
 						
@@ -269,7 +254,7 @@
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="overall">Overall Score </span>
-						<ui:include src="/includes/dateLinksWithFlyIn.xhtml">
+						<ui:include src="/includes/dateLinksWithFlyOut.xhtml">
 							<ui:param name="ajaxForm" value="dateLinksFormForm"/>
 							<ui:param name="ajaxStatusID" value="overall_status" /> 
 							<ui:param name="reRenderList" value="overallPanel"/>			
