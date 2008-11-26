@@ -6,6 +6,8 @@ import com.inthinc.pro.model.Group;
 
 public interface GroupDAO extends GenericDAO<Group, Integer>
 {
-    List<Group> getGroupHierarchy(Integer groupID);
-    Group getGroupByID(Integer groupID);
+    List<Group> getGroupHierarchy(Integer acctID, Integer groupID);
+    
+    List<Group> getGroupsByAcctID(Integer acctID);
+
 }

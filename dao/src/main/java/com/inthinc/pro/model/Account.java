@@ -1,7 +1,9 @@
 package com.inthinc.pro.model;
 
 import com.inthinc.pro.dao.annotations.ID;
+import com.inthinc.pro.dao.annotations.SimpleName;
 
+@SimpleName(simpleName="Acct")
 public class Account extends BaseEntity
 {
 
@@ -12,6 +14,10 @@ public class Account extends BaseEntity
     private Integer       billID;
     private AccountStatus status;
 
+    public Account()
+    {
+        super();
+    }
     public Account(Integer acctID, Integer mailID, Integer billID, AccountStatus status)
     {
         super();

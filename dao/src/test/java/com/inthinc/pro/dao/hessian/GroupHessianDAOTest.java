@@ -38,7 +38,7 @@ public class GroupHessianDAOTest
     @Test
     public void hierarchy() throws Exception
     {
-        List<Group> groupList = groupHessianDAO.getGroupHierarchy(MockData.TOP_GROUP_ID);
+        List<Group> groupList = groupHessianDAO.getGroupHierarchy(MockData.TOP_ACCOUNT_ID, MockData.TOP_GROUP_ID);
         
         assertEquals(14, groupList.size());
     }

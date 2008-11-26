@@ -33,16 +33,21 @@ public abstract class AbstractServiceMockImpl
         }
     
     }
+    protected List<Group> getGroupHierarchy(Group topGroup)
+    {
+        List<Group> hierarchyGroups = new ArrayList<Group>();
+        hierarchyGroups.add(topGroup);
+
+        List<Group> allGroups = MockData.getInstance().lookupObjectList(Group.class, topGroup);
+        addChildren(hierarchyGroups, allGroups, topGroup.getGroupID());
+        
+        return hierarchyGroups;
+        
+    }
 
     protected List<Driver> getAllDriversInGroup(Group topGroup)
     {
-        // TODO Auto-generated method stub
-        List<Group> hierarchyGroups = new ArrayList<Group>();
-        hierarchyGroups.add(topGroup);
-    
-        // filter out just the ones in the hierarchy
-        List<Group> allGroups = MockData.getInstance().lookupObjectList(Group.class, new Group());
-        addChildren(hierarchyGroups, allGroups, topGroup.getGroupID());
+        List<Group> hierarchyGroups = getGroupHierarchy(topGroup);
     
         List<Driver> returnDriverList = new ArrayList<Driver>();
         for (Group group : hierarchyGroups)

@@ -133,7 +133,7 @@ public class BaseBeanTest extends AbstractJsfTestCase implements ApplicationCont
         Integer topGroupID = proUser.getUser().getPerson().getGroupID();
         
         GroupDAO groupDAO = (GroupDAO)applicationContext.getBean("groupDAO");
-        List<Group> groupList = groupDAO.getGroupHierarchy(topGroupID);
+        List<Group> groupList = groupDAO.getGroupHierarchy(proUser.getUser().getPerson().getAccountID(), topGroupID);
         
         GroupHierarchy groupHierarchy = new GroupHierarchy(groupList);
         

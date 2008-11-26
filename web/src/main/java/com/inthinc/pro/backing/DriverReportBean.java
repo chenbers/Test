@@ -162,7 +162,7 @@ public class DriverReportBean extends BaseBean
             setStyles();
             
             //Group
-            g = groupDAO.getGroupByID(d.getGroupID());
+            g = groupDAO.findByID(d.getGroupID());
             drt.setGroup(g.getName());
             drt.setGroupID(g.getGroupID());
             

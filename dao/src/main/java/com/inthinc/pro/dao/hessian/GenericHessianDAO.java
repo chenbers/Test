@@ -18,6 +18,7 @@ import com.inthinc.pro.dao.GenericDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.dao.annotations.ConvertFieldToColumn;
+import com.inthinc.pro.dao.annotations.SimpleName;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.HessianException;
 import com.inthinc.pro.dao.hessian.mapper.Mapper;
@@ -88,7 +89,15 @@ public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>
 
     private void populateCRUDMethods()
     {
-        String className = modelClass.getSimpleName();
+        String className = null;
+        if (modelClass.isAnnotationPresent(SimpleName.class))
+        {
+            className = modelClass.getAnnotation(SimpleName.class).simpleName();
+        }
+        else
+        {
+            className = modelClass.getSimpleName();
+        }
         String findMethodString = "get" + className;
         String deleteMethodString = "delete" + className;
         String createMethodString = "create" + className;

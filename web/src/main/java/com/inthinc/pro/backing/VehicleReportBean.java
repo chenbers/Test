@@ -169,7 +169,7 @@ public class VehicleReportBean extends BaseBean
             setStyles();
                         
             //Group
-            g = groupDAO.getGroupByID(v.getGroupID());
+            g = groupDAO.findByID(v.getGroupID());
             vrt.setGroup(g.getName());
             vrt.setGroupID(g.getGroupID());
             

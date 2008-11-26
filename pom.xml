@@ -74,6 +74,40 @@
           <downloadJavadocs>true</downloadJavadocs>
         </configuration>
       </plugin>
+      <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+               <excludes>
+                  <exclude>**/it/*Test.java</exclude>
+               </excludes>
+            </configuration>
+            <executions>
+               <execution>
+                  <id>integration-tests</id>
+                  <phase>integration-test</phase>
+                  <goals>
+                     <goal>test</goal>
+                  </goals>
+                  <configuration>
+                     <skip>false</skip>
+                     <excludes>
+                        <exclude>none</exclude>
+                     </excludes>
+                     <includes>
+                        <include>**/it/*Test.java</include>
+                     </includes>
+                     <systemProperties>
+                        <property>
+                           <name>log4j.configuration</name>
+                           <value>file:${basedir}/src/test/resources/log4j.properties</value>
+                        </property>
+                     </systemProperties>
+                  </configuration>
+               </execution>
+            </executions>
+      </plugin>
+      
       <!--  TODO: This seems wrong to have this here, but it didn't clean out the tiwipro webapp directory in the tomcat dir if it was only in the web pom -->
       <plugin>
             <artifactId>maven-clean-plugin</artifactId>

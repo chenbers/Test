@@ -143,11 +143,16 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     public List<Map<String, Object>> getPersonIDsInGroupHierarchy(Integer groupID)
     {
         final List<Map<String, Object>> personIDs = new LinkedList<Map<String, Object>>();
+        
+        Group topGroup = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
+        if (topGroup == null)
+            return personIDs;
+        
+        List<Group> groupHierarchy = getGroupHierarchy(topGroup);
 
-        final List<Map<String, Object>> hierarchy = new SiloServiceCreator().getService().getGroupHierarchy(groupID);
-        for (final Map<String, Object> map : hierarchy)
+        for (Group group : groupHierarchy)
         {
-            final Integer id = (Integer) map.get("groupID");
+            final Integer id = group.getGroupID();
             if (id != null)
             {
                 final SearchCriteria criteria = new SearchCriteria();
@@ -390,11 +395,13 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     public List<Map<String, Object>> getVehiclesInGroupHierarchy(Integer groupID)
     {
         final List<Map<String, Object>> vehicles = new LinkedList<Map<String, Object>>();
+        Group topGroup = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
+        
+        List<Group> groupHierarchy = getGroupHierarchy(topGroup);
 
-        final List<Map<String, Object>> hierarchy = new SiloServiceCreator().getService().getGroupHierarchy(groupID);
-        for (final Map<String, Object> map : hierarchy)
+        for (Group group : groupHierarchy)
         {
-            final Integer id = (Integer) map.get("groupID");
+            final Integer id = group.getGroupID();
             if (id != null)
             {
                 final SearchCriteria criteria = new SearchCriteria();
@@ -459,28 +466,6 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         return createReturnValue("count", 1);
     }
 
-    @Override
-    public List<Map<String, Object>> getGroupHierarchy(Integer groupID) throws ProDAOException
-    {
-        Group topGroup = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
-        if (topGroup == null)
-            return new ArrayList<Map<String, Object>>();
-
-        List<Group> hierarchyGroups = new ArrayList<Group>();
-        hierarchyGroups.add(topGroup);
-
-        // filter out just the ones in the hierarchy
-        List<Group> allGroups = MockData.getInstance().lookupObjectList(Group.class, new Group());
-        addChildren(hierarchyGroups, allGroups, groupID);
-
-        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
-        for (Group group : hierarchyGroups)
-        {
-            returnList.add(TempConversionUtil.createMapFromObject(group));
-        }
-
-        return returnList;
-    }
 
     @Override
     public List<Map<String, Object>> getTrips(Integer driverID, Integer startDate, Integer endDate) throws ProDAOException
@@ -683,18 +668,6 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
-    public Map<String, Object> getGroupByID(Integer groupID) throws ProDAOException
-    {
-        Map<String, Object> returnMap = MockData.getInstance().lookup(Group.class, "groupID", groupID);
-
-        if (returnMap == null)
-        {
-            throw new EmptyResultSetException("No group for groupID: " + groupID, "getGroupByID", 0);
-        }
-        return returnMap;
-    }    
-    
-    @Override
     public Map<String, Object> getVehicleByID(Integer vehicleID) throws ProDAOException
     {
         Map<String, Object> returnMap = MockData.getInstance().lookup(Vehicle.class, "vehicleID", vehicleID);
@@ -765,10 +738,17 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     {
         final List<Map<String, Object>> zoneIDs = new LinkedList<Map<String, Object>>();
     
-        final List<Map<String, Object>> hierarchy = new SiloServiceCreator().getService().getGroupHierarchy(groupID);
-        for (final Map<String, Object> map : hierarchy)
+        Group topGroup = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
+        if (topGroup == null)
         {
-            final Integer id = (Integer) map.get("groupID");
+            return zoneIDs;
+        }
+        
+        List<Group> groupHierarchy = getGroupHierarchy(topGroup);
+
+        for (Group group : groupHierarchy)
+        {
+            final Integer id = group.getGroupID();
             if (id != null)
             {
                 final SearchCriteria criteria = new SearchCriteria();
@@ -806,6 +786,68 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     public Map<String, Object> updateZone(Integer zoneID, Map<String, Object> zoneMap) throws ProDAOException
     {
         return createReturnValue("count", 1);
+    }
+
+    @Override
+    public Map<String, Object> createAcct(Integer siloID, Map<String, Object> acctMap) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> createAddr(Integer acctID, Map<String, Object> addrMap) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> getAcct(Integer acctID) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> getAccts(Integer siloID) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> getAddr(Integer addrID) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> getStates()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> updateAcct(Integer acctID, Map<String, Object> acctMap) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> updateAddr(Integer addrID, Map<String, Object> addrMap) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> getGroupsByAcctID(Integer acctID) throws ProDAOException
+    {
+        return  MockData.getInstance().lookupList(Group.class);
     }
 
 }

@@ -1,7 +1,10 @@
 package com.inthinc.pro.model;
 
+import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
+import com.inthinc.pro.dao.annotations.SimpleName;
 
+@SimpleName(simpleName="Addr")
 public class Address extends BaseEntity
 {
 
@@ -11,7 +14,9 @@ public class Address extends BaseEntity
     String  addr1;
     String  addr2;
     String  city;
-    State   state;
+
+    @Column(name = "stateID")
+    State state;
     String  zip;
     
     public Address()
@@ -60,14 +65,6 @@ public class Address extends BaseEntity
     {
         this.city = city;
     }
-    public State getState()
-    {
-        return state;
-    }
-    public void setState(State state)
-    {
-        this.state = state;
-    }
     public String getZip()
     {
         return zip;
@@ -75,5 +72,13 @@ public class Address extends BaseEntity
     public void setZip(String zip)
     {
         this.zip = zip;
+    }
+    public State getState()
+    {
+        return state;
+    }
+    public void setState(State state)
+    {
+        this.state = state;
     }
 }

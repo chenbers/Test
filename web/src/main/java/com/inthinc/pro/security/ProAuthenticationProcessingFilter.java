@@ -49,7 +49,7 @@ public class ProAuthenticationProcessingFilter extends AuthenticationProcessingF
         
         Integer topGroupID = proUser.getUser().getPerson().getGroupID();
         
-        List<Group> groupList = groupDAO.getGroupHierarchy(topGroupID);
+        List<Group> groupList = groupDAO.getGroupHierarchy(proUser.getUser().getPerson().getAccountID(), topGroupID);
         
         GroupHierarchy groupHierarchy = new GroupHierarchy(groupList);
         

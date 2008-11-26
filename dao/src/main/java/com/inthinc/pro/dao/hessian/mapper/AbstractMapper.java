@@ -105,7 +105,7 @@ public abstract class AbstractMapper implements Mapper
                     Column column = field.getAnnotation(Column.class);
                     if (column.name().equals(columnName))
                     {
-                        key = column.name();
+                        key = field.getName();
                         break;
                     }
                 }
@@ -299,6 +299,10 @@ public abstract class AbstractMapper implements Mapper
                 else if (TimeZone.class.isInstance(value))
                 {
                     map.put(name, ((TimeZone) value).getID());
+                }
+                else if (BaseEnum.class.isInstance(value))
+                {
+                    map.put(name, ((BaseEnum) value).getCode());
                 }
                 // if the property is not a standardProperty it must be some kind of bean/pojo/object. convert the property to a map
                 else if (!isStandardProperty(value))

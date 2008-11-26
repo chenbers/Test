@@ -1,8 +1,11 @@
 package com.inthinc.pro.dao.hessian;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
+import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.proserver.CentralService;
@@ -12,28 +15,59 @@ public class GroupHessianDAO extends GenericHessianDAO<Group, Integer> implement
 {
 
     @Override
-    public List<Group> getGroupHierarchy(Integer groupID)
+    public List<Group> getGroupHierarchy(Integer acctID, Integer groupID)
     {
         try
         {
-            return getMapper().convertToModelObject(getSiloService().getGroupHierarchy(groupID), Group.class);
+            List <Group> allGroups = getGroupsByAcctID(acctID);
+System.out.println("all Groups size" + allGroups.size());            
+            List <Group> groupHierarchy = new ArrayList<Group>();
+            for (Group group : allGroups)
+            {
+                if (group.getGroupID().equals(groupID))
+                {
+                    groupHierarchy.add(group);
+                    addChildren(allGroups, groupHierarchy, group.getGroupID());
+                    break;
+                }
+            }
+            
+            
+            return groupHierarchy;
+            
         }
         catch (EmptyResultSetException e)
         {
             return Collections.emptyList();
         }
     }
-
-    public Group getGroupByID(Integer groupID)
+    
+    private void addChildren(List<Group> allGroups , List<Group> groupHierarchy, Integer parentID)
+    {
+        for (Group group : allGroups)
+        {
+            if (group.getParentID().equals(parentID))
+            {
+                groupHierarchy.add(group);
+                addChildren(allGroups, groupHierarchy, group.getGroupID());
+            }
+        }
+        
+    }
+    
+    @Override
+    public List<Group> getGroupsByAcctID(Integer acctID)
     {
         try
         {
-            return getMapper().convertToModelObject(this.getSiloService().getGroupByID(groupID), Group.class);
+            return getMapper().convertToModelObject(getSiloService().getGroupsByAcctID(acctID), Group.class);
         }
         catch (EmptyResultSetException e)
         {
-            return null;
+            return Collections.emptyList();
         }
+        
     }
+
 
 }

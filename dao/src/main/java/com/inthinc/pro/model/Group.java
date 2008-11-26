@@ -1,5 +1,6 @@
 package com.inthinc.pro.model;
 
+import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
 public class Group extends BaseEntity
@@ -7,21 +8,24 @@ public class Group extends BaseEntity
     @ID
     private Integer groupID;
     
-    private Integer companyID;
+    @Column(name = "acctID")
+    private Integer accountID;
     private String name;
     private Integer parentID;
+    private GroupStatus status;
     
     public Group()
     {
         super();
     }
-    public Group(Integer groupID, Integer companyID, String name, Integer parentID)
+    public Group(Integer groupID, Integer accountID, String name, Integer parentID)
     {
         super();
         this.groupID = groupID;
-        this.companyID = companyID;
+        this.accountID = accountID;
         this.name = name;
         this.parentID = parentID;
+        this.status = GroupStatus.GROUP_ACTIVE;
     }
     
     public Integer getGroupID()
@@ -32,13 +36,13 @@ public class Group extends BaseEntity
     {
         this.groupID = groupID;
     }
-    public Integer getCompanyID()
+    public Integer getAccountID()
     {
-        return companyID;
+        return accountID;
     }
-    public void setCompanyID(Integer companyID)
+    public void setAccountID(Integer accountID)
     {
-        this.companyID = companyID;
+        this.accountID = accountID;
     }
     public String getName()
     {
@@ -56,7 +60,12 @@ public class Group extends BaseEntity
     {
         this.parentID = parentID;
     }
-    
-    
-    
+    public GroupStatus getStatus()
+    {
+        return status;
+    }
+    public void setStatus(GroupStatus status)
+    {
+        this.status = status;
+    }
 }
