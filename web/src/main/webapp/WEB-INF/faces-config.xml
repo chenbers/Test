@@ -177,8 +177,14 @@
 	</navigation-rule>
 	<navigation-rule>
 		<navigation-case>
-			<from-outcome>go_overviewFlyOut</from-outcome>
-			<to-view-id>/secured/overviewFlyOut.xhtml</to-view-id>
+			<from-outcome>go_fleetFlyOut</from-outcome>
+			<to-view-id>/secured/fleetFlyOut.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>go_regionFlyOut</from-outcome>
+			<to-view-id>/secured/regionFlyOut.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>

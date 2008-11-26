@@ -116,18 +116,16 @@
 			  <td valign="top">
 			  <table width="130" border="0" cellpadding="0" cellspacing="0"  style="margin-top: 40px;">
             <tr>
-              <td valign="top" class="ls_tab_on"><a href="" class="ls_tab_line" onclick="t_hide('mpg_full_screen');t_hide('overall_full_screen');t_hide('fleet_full_screen');t_show('trend_full_screen');return true;">Trend</a></td>
-
+              <td valign="top" class="ls_tab_on"><a href="#" class="ls_tab_line" onclick="t_hide('mpg_full_screen');t_hide('overall_full_screen');t_hide('fleet_full_screen');t_show('trend_full_screen');return true;">Trend</a></td>
             </tr>
             <tr>
-              <td valign="top" class="ls_tab_off"><a href="" class="ls_tab_overall" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('fleet_full_screen');t_show('overall_full_screen');return true;">Overall Score </a></td>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_overall" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('fleet_full_screen');t_show('overall_full_screen');return true;">Overall Score </a></td>
             </tr>
             <tr>
-              <td valign="top" class="ls_tab_off"><a href="" class="ls_tab_map" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('fleet_full_screen');return true;">Fleet Map </a></td>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_map" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('fleet_full_screen');return true;">Fleet Map </a></td>
             </tr>
             <tr>
-
-              <td valign="top" class="ls_tab_off"><a href="" class="ls_tab_gas" onclick="t_hide('fleet_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_gas" onclick="t_hide('fleet_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
             </tr>
         </table>
 			  </td>
@@ -139,7 +137,7 @@
 
 					<div class="panel_title">
 						<span class="line">Trend</span>
-							<ui:include src="/includes/dateLinksWithFlyIn.xhtml">
+							<ui:include src="/includes/dateLinksWithFlyOut.xhtml">
 								<ui:param name="ajaxForm" value="trendDateLinks"/>
 								<ui:param name="ajaxStatusID" value="trendStatus"/>
 								<ui:param name="reRenderList" value="xypanel,trendTable"/>			
@@ -148,7 +146,8 @@
 								<ui:param name="sixMonthsOn" value="#{trendBean.styleClass6Months}"/>
 								<ui:param name="twelveMonthsOn" value="#{trendBean.styleClass12Months}"/>
 		            			<ui:param name="duration" value="#{trendBean.duration}" />
-		            			<ui:param name="flyNavRule" value="#{flyOutBean.returnNavRule}" />
+		            			<ui:param name="flyNavRule" value="go_region" />
+		            			<ui:param name="flyOutImage" value="ico_minimize.png" />
 		            			<ui:param name="popupMenuID" value="PopupMenuTrend" />
 							</ui:include>	
                     </div>
@@ -188,18 +187,17 @@
 				
 				<div class="datagrid">
 				
-				<h:form id="trendTable">	
+			<h:form id="trendTable">	
 								
         		<rich:datascroller id="topScroller" for="items" immediate="true"
-        			scrollerListener="#{trendBean.scrollerListener}"
-        			reRender="bottomScroller,countString,starter,items,xypanel">
+        			scrollerListener="#{trendBean.scrollerListener}" 
+        			reRender="bottomScroller,countString,starter,items,xypanel">        			
         		</rich:datascroller>					
 			
 						<rich:dataTable value="#{trendBean.scoreableEntities}" id="items"
 							var="item" styleClass="datagrid"
 							rowClasses="trendTableOdd,trendTableEven" 
-							cellspacing="1" rows="25"
-							width="100%" binding="#{trendTable.table}">
+							cellspacing="1" rows="25" width="100%">
 
 							<!-- Data -->
 							<rich:column width="20">
@@ -236,6 +234,7 @@
         		
 					</h:form> 
 				<!-- End Trend table -->
+				<!-- End Trend table -->
 
 					<!-- leave reRenderList alone -->
 
@@ -260,17 +259,16 @@
 			  <td valign="top">
 			  <table width="130" border="0" cellpadding="0" cellspacing="0"  style="margin-top: 40px;">
             <tr>
-              <td valign="top" class="ls_tab_off"><a href="" class="ls_tab_line" onclick="t_hide('mpg_full_screen');t_hide('overall_full_screen');t_hide('fleet_full_screen');t_show('trend_full_screen');return true;">Trend</a></td>
-            </tr>
-
-            <tr>
-              <td valign="top" class="ls_tab_on"><a href="" class="ls_tab_overall" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('fleet_full_screen');t_show('overall_full_screen');return true;">Overall Score </a></td>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_line" onclick="t_hide('mpg_full_screen');t_hide('overall_full_screen');t_hide('fleet_full_screen');t_show('trend_full_screen');return true;">Trend</a></td>
             </tr>
             <tr>
-              <td valign="top" class="ls_tab_off"><a href="" class="ls_tab_map" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('fleet_full_screen');return false;">Fleet Map </a></td>
+              <td valign="top" class="ls_tab_on"><a href="#" class="ls_tab_overall" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('fleet_full_screen');t_show('overall_full_screen');return true;">Overall Score </a></td>
             </tr>
             <tr>
-              <td valign="top" class="ls_tab_off"><a href="" class="ls_tab_gas" onclick="t_hide('fleet_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_map" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('fleet_full_screen');return false;">Fleet Map </a></td>
+            </tr>
+            <tr>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_gas" onclick="t_hide('fleet_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
 
             </tr>
           </table>
@@ -282,7 +280,7 @@
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="overall">Overall Score </span>
-						<ui:include src="/includes/dateLinksWithFlyIn.xhtml">
+						<ui:include src="/includes/dateLinksWithFlyOut.xhtml">
 							<ui:param name="ajaxForm" value="dateLinksFormForm"/>
 							<ui:param name="ajaxStatusID" value="overall_status" /> 
 							<ui:param name="reRenderList" value="overallPanel"/>			
@@ -291,7 +289,8 @@
 							<ui:param name="sixMonthsOn" value="#{breakdownBean.styleClass6Months}"/>
 							<ui:param name="twelveMonthsOn" value="#{breakdownBean.styleClass12Months}"/>
 	            			<ui:param name="duration" value="#{breakdownBean.duration}" />
-	            			<ui:param name="flyNavRule" value="#{flyOutBean.returnNavRule}" />
+	            			<ui:param name="flyNavRule" value="go_region" />
+	            			<ui:param name="flyOutImage" value="ico_minimize.png" />
 	            			<ui:param name="popupMenuID" value="PopupMenuOverall" />
 						</ui:include>	
                     </div>
@@ -390,18 +389,16 @@
 			  <td valign="top">
 			  <table width="130" border="0" cellpadding="0" cellspacing="0"  style="margin-top: 40px;">
             <tr>
-
-              <td valign="top" class="ls_tab_off"><a href="" class="ls_tab_line" onclick="t_hide('mpg_full_screen');t_hide('overall_full_screen');t_hide('fleet_full_screen');t_show('trend_full_screen');return true;">Trend</a></td>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_line" onclick="t_hide('mpg_full_screen');t_hide('overall_full_screen');t_hide('fleet_full_screen');t_show('trend_full_screen');return true;">Trend</a></td>
             </tr>
             <tr>
-              <td valign="top" class="ls_tab_off"><a href="" class="ls_tab_overall" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('fleet_full_screen');t_show('overall_full_screen');return true;">Overall Score </a></td>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_overall" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('fleet_full_screen');t_show('overall_full_screen');return true;">Overall Score </a></td>
             </tr>
             <tr>
-              <td valign="top" class="ls_tab_on"><a href="" class="ls_tab_map" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('fleet_full_screen');return true;">Fleet Map </a></td>
-
+              <td valign="top" class="ls_tab_on"><a href="#" class="ls_tab_map" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('fleet_full_screen');return true;">Fleet Map </a></td>
             </tr>
             <tr>
-              <td valign="top" class="ls_tab_off"><a href="" class="ls_tab_gas" onclick="t_hide('fleet_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_gas" onclick="t_hide('fleet_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
             </tr>
           </table>
 			  </td>
@@ -415,7 +412,7 @@
 						<span class="line">Fleet Map </span>
 						<span class="panel_links_ico"><a href="#">refresh</a></span>
 						<span class="panel_ico">
-                        	<a href="#" title="" onclick="c_show('PopupMenu1',event); return false;" onmouseout="c_t_hide(); return false;"><img src="/images/ico_tools.png" border="0" /></a>
+                        	<a href="#" title="" onclick="c_show('PopupMenu1',event); return false;" onmouseout="c_hide(); return false;"><img src="/images/ico_tools.png" border="0" /></a>
                             <a href="#" class=""><img src="/images/ico_minimize.png" width="16" height="16" border="0" /></a>
 
                         </span>
@@ -424,7 +421,8 @@
 					<div class="panel_w">
 					  <div class="panel_content">
 					  
-					 						
+					  <iframe height="580" width="800" id="fleetmap_full" frameborder="0" name="fleetmap_full" style="width:800px;height:600px" src="fleet_map_full.html"></iframe>
+						
 						<div class="spacer"></div>
 							<div class="panel_title" style="background: none; width: 250px;">
 
@@ -455,13 +453,14 @@
 		</tr>
 
 		</table>
+		
 
 	<script type="text/JavaScript">
 	
-		//Start page with the following tab. -- TODO: get from Request param.
+		//Start page with the following tab.
 		t_show('#{flyOutBean.selectedTab}');
 	
-		// The four tabs on this fly-out are the folloowing:
+		// The four tabs on this fly-out are the following:
 		//
 		// overall_full_screen
 		// mpg_full_screen

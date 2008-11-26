@@ -96,10 +96,10 @@
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class=""><h:outputText>Stats: </h:outputText>
+						<span class=""><h:outputText>Stats:&#160;</h:outputText>
 						<h:outputText value="#{driverTripsBean.startDate}">
 							<f:convertDateTime pattern="MMM dd, yyyy" />
-						</h:outputText> to 
+						</h:outputText>:&#160;to:&#160; 
 						<h:outputText value="#{driverTripsBean.endDate}">
 							<f:convertDateTime pattern="MMM dd, yyyy" />
 						</h:outputText>
@@ -178,7 +178,9 @@
 								<f:facet name="header">
 									<h:outputText value="Time" />
 								</f:facet>
-								<h:outputText value="#{item.time}" />
+								<h:outputText value="#{item.time}">
+									<f:convertDateTime pattern="MMM dd, yyyy hh:mm" />
+								</h:outputText>
 							</rich:column>
 						</rich:dataTable>
 					 </rich:panel>

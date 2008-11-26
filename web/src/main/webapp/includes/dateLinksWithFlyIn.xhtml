@@ -48,7 +48,7 @@
 		</a4j:commandLink>
 		</span>
 		<span class="panel_ico">
-   			<a href="" title="" onclick="c_show('#{popupMenuID}',event); return false;"><img src="/tiwipro/images/ico_tools.png" border="0" /></a>
+   			<img src="/tiwipro/images/ico_tools.png" border="0" />
    			<rich:spacer width="3" />
    			<h:commandLink action="#{flyOutBean.flyNavRuleAction}">
    				<img src="/tiwipro/images/ico_minimize.png" border="0" />
@@ -57,12 +57,5 @@
 		</span>
 		</a4j:form>
 	</a4j:region>
-	
-		<!-- Popup definition -->
-	<ul id="#{popupMenuID}" class="Popup" style="width:150px; display: none;">
-	  <li><a href="#" onclick="showDiv('panel_suggestions'); return false;"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td width="16" height="16"><img src="/tiwipro/images/ico_email.png" border="0" /></td><td>&#160;E-mail this report</td></tr></table></a></li>
-	  <li><a href="#" onclick="showDiv('panel_person'); return false;"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td width="16"><img src="/tiwipro/images/ico_print.png" border="0" /></td><td>&#160;Print Report</td></tr></table></a></li>
-	  <li><a href="#" onclick="showDiv('panel_person'); return false;"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td width="16"><img src="/tiwipro/images/ico_excel.png" border="0" /></td><td>&#160;Export to Excel</td></tr></table></a></li>
-	</ul>
 	
 </ui:composition>			

@@ -35,24 +35,27 @@
     			<td width="465" valign="top">
     			<!-- START TREND PANEL -->		
 				<!-- leave reRenderList alone -->												
-					<div class="">
+		<div class="">
+		<div class="panel_nw">
+			<div class="panel_title">
+				<span class="line">Trend</span> 
+					<ui:include src="/includes/dateLinksWithFlyOut.xhtml">
+						<ui:param name="ajaxForm" value="trend_form" />
+						<ui:param name="ajaxStatusID" value="trend_status" /> 
+						<ui:param name="reRenderList" value="hiddenField1,xypanel,items"/>
+						<ui:param name="thirtyDaysOn" value="#{trendBean.styleClass30Days}"/>
+						<ui:param name="threeMonthsOn" value="#{trendBean.styleClass3Months}"/>
+						<ui:param name="sixMonthsOn" value="#{trendBean.styleClass6Months}"/>
+						<ui:param name="twelveMonthsOn" value="#{trendBean.styleClass12Months}"/>
+			            <ui:param name="duration" value="#{navigationBean.duration}" />
+			            <ui:param name="flyNavRule" value="go_regionFlyOut" />
+						<ui:param name="flySelectedTab" value="trend_full_screen" />  
+						<ui:param name="flyOutImage" value="ico_expand.png" />
+					</ui:include>	
+			</div>
 
-						<div class="panel_nw">
-							<div class="panel_title">
-								<span class="line">Trend</span> 
-								<ui:include src="/includes/dateLinksWithFlyOut.xhtml">
-									<ui:param name="ajaxForm" value="trend_form" />
-									<ui:param name="ajaxStatusID" value="trend_status" /> 
-									<ui:param name="reRenderList" value="hiddenField1,xypanel,items"/>
-									<ui:param name="thirtyDaysOn" value="#{trendBean.styleClass30Days}"/>
-									<ui:param name="threeMonthsOn" value="#{trendBean.styleClass3Months}"/>
-									<ui:param name="sixMonthsOn" value="#{trendBean.styleClass6Months}"/>
-									<ui:param name="twelveMonthsOn" value="#{trendBean.styleClass12Months}"/>
-			            			<ui:param name="duration" value="#{navigationBean.duration}" />
-								</ui:include>	
-							</div>
 		
-					</div>
+		</div>
 
 
 					<div class="panel_w">
@@ -104,11 +107,11 @@
         								reRender="bottomScroller,countString,starter,items,xypanel">        			
         							</rich:datascroller>					
 			
-										<rich:dataTable value="#{trendBean.scoreableEntities}" id="items"
-											var="item" styleClass="datagrid"
-											rowClasses="trendTableOdd,trendTableEven" 
-											cellspacing="1" rows="#{trendBean.numRowsPerPg}"
-											width="100%" binding="#{trendTable.table}">
+
+						<rich:dataTable value="#{trendBean.scoreableEntities}" id="items"
+							var="item" styleClass="datagrid"
+							rowClasses="trendTableOdd,trendTableEven" 
+							cellspacing="1" rows="#{trendBean.numRowsPerPg}" width="100%">
 
 											<rich:column width="20">
 												<f:facet name="header">
@@ -155,6 +158,7 @@
 					</div>
 	
 				</div>							 
+
 				<!-- END PANEL -->
 		
 				<div class="spacer"></div>		
@@ -177,9 +181,9 @@
 					<ui:param name="threeMonthsOn" value="#{breakdownBean.styleClass3Months}"/>
 					<ui:param name="sixMonthsOn" value="#{breakdownBean.styleClass6Months}"/>
 					<ui:param name="twelveMonthsOn" value="#{breakdownBean.styleClass12Months}"/>
-					<ui:param name="flyNavRule" value="go_overviewFlyOut" />
-					<ui:param name="flyReturnNavRule" value="go_region" />
-					<ui:param name="flySelectedTab" value="overall_full_screen" />   
+					<ui:param name="flyNavRule" value="go_regionFlyOut" />
+					<ui:param name="flySelectedTab" value="overall_full_screen" />
+					<ui:param name="flyOutImage" value="ico_expand.png" />   
 				</ui:include>	
 				<!-- END PANEL -->
 
