@@ -11,7 +11,7 @@
 	bgColor='#ffffff'
 	borderThickness='1'
 	showToolTips='1'
-	showLegend='1'
+	showLegend='0'
 	legendBorderThickness='0'
 	legendShadow='0'
 	

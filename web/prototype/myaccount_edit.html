@@ -83,8 +83,8 @@
 <div class="wrapper_top"></div>
 
 <ul id="grid_nav">
-	<li class="r"><button value="submit" class="left" onclick="parent.location.href='myaccount_edit.html'; return false;"><span class="edit">Edit</span></button></li>
-    <li class="r"><button value="submit" class="left" onclick="showPopWin('change_password.html', 420, 180, null);"><span class="login">Change Password</span></button></li>
+	<li class="r"><button value="submit" class="left" onclick="parent.location.href='myaccount.html'; return false;"><span class="cancel">Cancel</span></button></li>
+    <li class="r"><button value="submit" class="left" onclick="parent.location.href='myaccount.html'; return false;"><span class="save">Save</span></button></li>
 </ul>
 
 
@@ -166,17 +166,54 @@
                           <tr>
                             <td width="5%"><img src="images/ico_info.png" width="16" height="16" /></td>
                             <td width="38%">Information:</td>
-                            <td width="57%">Email - Primary</td>
+                            <td width="38%">
+                              <select name="select2" class="text" id="select">
+                                <option selected="selected">Email</option>
+                                <option>Text</option>
+                                <option>Phone</option>
+                              </select>
+                            </td>
+                            <td width="57%">
+                              <select name="select5" class="text" id="select4">
+                                <option>Primary - amy.johnson@acme.com</option>
+                                <option>Secondary - ajohnson@gmail.com</option>
+                              </select>
+                            </td>
                           </tr>
                           <tr>
                             <td><img src="images/ico_warning.png" width="16" height="16" /></td>
                             <td>Warning:</td>
-                            <td>Text Message - Primary</td>
+                            <td>
+                              <select name="select3" class="text" id="select2">
+                                <option>Email</option>
+                                <option selected="selected">Text</option>
+                                <option>Phone</option>
+                              </select>
+							</td>
+                            <td>
+                              <select name="select6" class="text" id="select5">
+                                <option>Primary -  	4589855@mobile.att.com</option>
+                                <option>Secondary - ajohnsonmobile@gmail.com</option>
+                              </select>
+                            </td>
                           </tr>
                           <tr>
                             <td><img src="images/ico_critical.png" width="16" height="16" /></td>
                             <td>Critical:</td>
-                            <td>Phone - Cell</td>
+                            <td>
+                              <select name="select4" class="text" id="select3">
+                                <option>Email</option>
+                                <option>Text</option>
+                                <option selected="selected">Phone</option>
+                              </select>
+</td>
+                            <td>
+                              <select name="select7" class="text" id="select6">
+                                <option>Primary - (801) 568-5655</option>
+                                <option>Secondary (801) 458-8599</option>
+                                <option>Cell (801) 865-4851</option>
+                              </select>
+                            </td>
                           </tr>
                         </table>
 					  </div>
@@ -204,11 +241,15 @@
                                 <table width="100%" border="0" cellspacing="0" cellpadding="4">
                                   <tr>
                                     <td>Primary:</td>
-                                    <td>amy.johnson@acme.com</td>
+                                    <td>
+                                      <input name="textfield" type="text" class="text" id="textfield" value="amy.johnson@acme.com" size="40" />
+                                    </td>
                                   </tr>
                                   <tr>
                                     <td>Secondary:</td>
-                                    <td>ajohnson@gmail.com</td>
+                                    <td>
+                                      <input name="textfield3" type="text" class="text" id="textfield2" value="ajohnson@gmail.com" size="40" />
+                                    </td>
                                   </tr>
                                 </table>
                            
@@ -216,15 +257,21 @@
                                 <table width="100%" border="0" cellspacing="0" cellpadding="4">
                                   <tr>
                                     <td>Primary:</td>
-                                    <td>(801) 568-5665</td>
+                                    <td>
+                                      <input name="textfield4" type="text" class="text" id="textfield3" value="(801) 568-5665" size="40" />
+                                    </td>
                                   </tr>
                                   <tr>
                                     <td>Secondary:</td>
-                                    <td>(801) 458-8599</td>
+                                    <td>
+                                      <input name="textfield5" type="text" class="text" id="textfield4" value="(801) 458-8599" size="40" />
+                                    </td>
                                   </tr>
                                   <tr>
                                     <td>Cell:</td>
-                                    <td>(801) 865-4851</td>
+                                    <td>
+                                      <input name="textfield6" type="text" class="text" id="textfield5" value="(801) 865-4851" size="40" />
+                                    </td>
                                   </tr>
                                 </table>
                                 
@@ -232,11 +279,15 @@
                                 <table width="100%" border="0" cellspacing="0" cellpadding="4">
                                   <tr>
                                     <td>Primary:</td>
-                                    <td>4589855@mobile.att.com</td>
+                                    <td>
+                                      <input name="textfield7" type="text" class="text" id="textfield6" value="4589855@mobile.att.com" size="40" />
+                                    </td>
                                   </tr>
                                   <tr>
                                     <td>Secondary:</td>
-                                    <td>ajohnsonmobile@gmail.com</td>
+                                    <td>
+                                      <input name="textfield8" type="text" class="text" id="textfield7" value="ajohnsonmobile@gmail.com" size="40" />
+                                    </td>
                                   </tr>
                                 </table>
 					  </div>

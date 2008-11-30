@@ -192,6 +192,21 @@ body {
 	padding: 0 0 0 20px;
 	background: transparent url(/images/ico_zones.png) no-repeat center left;
 	}
+	
+.panel_title span.account {
+	padding: 0 0 0 20px;
+	background: transparent url(/images/ico_account.png) no-repeat center left;
+	}
+	
+.panel_title span.contact {
+	padding: 0 0 0 20px;
+	background: transparent url(/images/ico_contact.png) no-repeat center left;
+	}
+	
+.panel_title span.notify {
+	padding: 0 0 0 20px;
+	background: transparent url(/images/ico_notification.png) no-repeat center left;
+	}
 
 .panel_title span.panel_links a:link {
 	color: #333;
@@ -1936,7 +1951,7 @@ ul.fdtablePaginater li .last-page span {
 
 .add_section_title {
 	font: bold 10px Verdana, Arial, Helvetica, sans-serif;
-	border-bottom: 1px solid #333;
+	border-bottom: 1px solid #ababab;
 	padding: 5px;
 	text-align: left;
 	}
