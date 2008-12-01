@@ -40,7 +40,7 @@ public class VehicleReportBean extends BaseBean
     private List <Vehicle> vehiclesData = new ArrayList<Vehicle>();
     private List <VehicleReportItem> vehicleData = new ArrayList<VehicleReportItem>();
     
-    private static final List<String> AVAILABLE_COLUMNS;
+            static final List<String> AVAILABLE_COLUMNS;
     private Map<String,TableColumn> vehicleColumns;
     private Vector tmpColumns = new Vector(); 
     
