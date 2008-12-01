@@ -78,14 +78,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
-    public Map<String, Object> getUserByAccountID(Integer accountID) throws ProDAOException
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Map<String, Object> getUserIDByEmail(String email) throws ProDAOException
+    public Map<String, Object> getUserByEmail(String email) throws ProDAOException
     {
         Map<String, Object> returnMap = null;
         Person person = MockData.getInstance().retrieveObject(Person.class, "email", email);
@@ -96,19 +89,19 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
 
         if (returnMap == null)
         {
-            throw new EmptyResultSetException("No user for email: " + email, "getUserIDByEmail", 0);
+            throw new EmptyResultSetException("No user for email: " + email, "getUserByEmail", 0);
         }
         return returnMap;
     }
 
     @Override
-    public Map<String, Object> getUserIDByName(String username) throws ProDAOException
+    public Map<String, Object> getUserByName(String username) throws ProDAOException
     {
         Map<String, Object> returnMap = MockData.getInstance().lookup(User.class, "username", username);
 
         if (returnMap == null)
         {
-            throw new EmptyResultSetException("No user for username: " + username, "getUserIDByUsername", 0);
+            throw new EmptyResultSetException("No user for username: " + username, "getUserByUsername", 0);
         }
         return returnMap;
     }
@@ -140,7 +133,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
-    public List<Map<String, Object>> getPersonIDsInGroupHierarchy(Integer groupID)
+    public List<Map<String, Object>> getPersonsByGroupID(Integer groupID)
     {
         final List<Map<String, Object>> personIDs = new LinkedList<Map<String, Object>>();
         
@@ -383,16 +376,16 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
 //    }
     
     
-    @Override
-    public List<Map<String, Object>> getVehiclesByAcctID(Integer acctID) throws ProDAOException
-    {
-        final SearchCriteria criteria = new SearchCriteria();
-        criteria.addKeyValue("accountID", acctID);
-        return MockData.getInstance().lookupList(Vehicle.class, criteria);
-    }
+    //@Override
+//    public List<Map<String, Object>> getVehiclesByAcctID(Integer acctID) throws ProDAOException
+//    {
+//        final SearchCriteria criteria = new SearchCriteria();
+//        criteria.addKeyValue("accountID", acctID);
+//        return MockData.getInstance().lookupList(Vehicle.class, criteria);
+//    }
 
     @Override
-    public List<Map<String, Object>> getVehiclesInGroupHierarchy(Integer groupID)
+    public List<Map<String, Object>> getVehiclesByGroupID(Integer groupID)
     {
         final List<Map<String, Object>> vehicles = new LinkedList<Map<String, Object>>();
         Group topGroup = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
@@ -581,7 +574,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
-    public List<Map<String, Object>> getAllDrivers(Integer groupID)
+    public List<Map<String, Object>> getDriversByGroupID(Integer groupID)
     {
         logger.debug("mock IMPL getAllDrivers groupID = " + groupID);
         Group group = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
@@ -848,6 +841,20 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     public List<Map<String, Object>> getGroupsByAcctID(Integer acctID) throws ProDAOException
     {
         return  MockData.getInstance().lookupList(Group.class);
+    }
+
+    @Override
+    public Map<String, Object> deleteAcct(Integer acctID) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> getUsersByGroupID(Integer groupID)
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

@@ -10,26 +10,26 @@ import com.inthinc.pro.model.Vehicle;
 public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> implements VehicleDAO
 {
 
-    @Override
-    public List<Vehicle> getVehiclesByAcctID(Integer accountID)
-    {
-        try
-        {
-            return getMapper().convertToModelObject(getSiloService().getVehiclesByAcctID(accountID), Vehicle.class);
-        }
-        catch (EmptyResultSetException e)
-        {
-            return Collections.emptyList();
-        }
-
-    }
+//    @Override
+//    public List<Vehicle> getVehiclesByAcctID(Integer accountID)
+//    {
+//        try
+//        {
+//            return getMapper().convertToModelObject(getSiloService().getVehiclesByAcctID(accountID), Vehicle.class);
+//        }
+//        catch (EmptyResultSetException e)
+//        {
+//            return Collections.emptyList();
+//        }
+//
+//    }
 
     @Override
     public List<Vehicle> getVehiclesInGroupHierarchy(Integer groupID)
     {
         try
         {
-            return getMapper().convertToModelObject(getSiloService().getVehiclesInGroupHierarchy(groupID), Vehicle.class);
+            return getMapper().convertToModelObject(getSiloService().getVehiclesByGroupID(groupID), Vehicle.class);
         }
         catch (EmptyResultSetException e)
         {

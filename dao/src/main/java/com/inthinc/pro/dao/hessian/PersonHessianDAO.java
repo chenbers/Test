@@ -17,7 +17,7 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
     @Override
     public List<Person> getPeopleInGroupHierarchy(Integer groupID)
     {
-        final List<Map<String, Object>> personIDs = getSiloService().getPersonIDsInGroupHierarchy(groupID);
+        final List<Map<String, Object>> personIDs = getSiloService().getPersonsByGroupID(groupID);
         final ArrayList<Person> people = new ArrayList<Person>(personIDs.size());
         for (final Map<String, Object> map : personIDs)
         {

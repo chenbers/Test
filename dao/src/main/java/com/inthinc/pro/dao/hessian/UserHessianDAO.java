@@ -15,7 +15,7 @@ public class UserHessianDAO extends GenericHessianDAO<User, Integer> implements 
     @Override
     public User findByEmail(String email)
     {
-        Integer userId = getReturnKey(getSiloService().getUserIDByEmail(email));
+        Integer userId = getReturnKey(getSiloService().getUserByEmail(email));
         return findByID(userId);
     }
 
@@ -23,7 +23,7 @@ public class UserHessianDAO extends GenericHessianDAO<User, Integer> implements 
     public User findByUserName(String username)
     {
         logger.debug("getting user by name: " + username);
-        Integer userId = getReturnKey(getSiloService().getUserIDByName(username));
+        Integer userId = getReturnKey(getSiloService().getUserByName(username));
         return findByID(userId);
     }
 

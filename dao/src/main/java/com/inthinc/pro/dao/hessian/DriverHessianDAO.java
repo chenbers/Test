@@ -14,7 +14,7 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
     @Override
     public List<Driver> getAllDrivers(Integer groupID)
     {
-        List<Driver> driverList = getMapper().convertToModelObject(this.getSiloService().getAllDrivers(groupID), Driver.class);
+        List<Driver> driverList = getMapper().convertToModelObject(this.getSiloService().getDriversByGroupID(groupID), Driver.class);
         return driverList;
     }
 
