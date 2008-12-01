@@ -155,13 +155,13 @@ public class DriverReportBean extends BaseBean
             Integer startDate = DateUtil.getDaysBackDate(
                     endDate, 
                     Duration.TWELVE.getNumberOfDays());            
-            s = scoreDAO.getAverageScoreByTypeAndMiles(d.getGroupID(),startDate,ScoreType.SCORE_OVERALL);
+            s = scoreDAO.getAverageScoreByTypeAndMiles(d.getDriverID(),startDate,ScoreType.SCORE_OVERALL);
             drt.setOverallScore(s.getScore());
-            s = scoreDAO.getAverageScoreByTypeAndMiles(d.getGroupID(),startDate,ScoreType.SCORE_SEATBELT);
+            s = scoreDAO.getAverageScoreByTypeAndMiles(d.getDriverID(),startDate,ScoreType.SCORE_SEATBELT);
             drt.setSeatBeltScore(s.getScore());
-            s = scoreDAO.getAverageScoreByTypeAndMiles(d.getGroupID(),startDate,ScoreType.SCORE_SPEEDING);
+            s = scoreDAO.getAverageScoreByTypeAndMiles(d.getDriverID(),startDate,ScoreType.SCORE_SPEEDING);
             drt.setSpeedScore(s.getScore());
-            s = scoreDAO.getAverageScoreByTypeAndMiles(d.getGroupID(),startDate,ScoreType.SCORE_DRIVING_STYLE);
+            s = scoreDAO.getAverageScoreByTypeAndMiles(d.getDriverID(),startDate,ScoreType.SCORE_DRIVING_STYLE);
             drt.setStyleScore(s.getScore());
             setStyles();
             
