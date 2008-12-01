@@ -1,6 +1,8 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -11,26 +13,14 @@ import java.util.Vector;
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
-import com.inthinc.pro.backing.ui.ScoreBox;
-import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.DriverDAO;
-import com.inthinc.pro.dao.GroupDAO;
-import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.TablePreferenceDAO;
-import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.IdlingReportItem;
-import com.inthinc.pro.model.Person;
-import com.inthinc.pro.model.ScoreType;
-import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.TableType;
-import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.VehicleReportItem;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.TempColumns;
 
@@ -59,8 +49,8 @@ public class IdlingReportBean extends BaseBean
     private Integer end = numRowsPerPg;
     
     private String searchFor = "";
-    private String startDate = "";
-    private String endDate = "";
+    private Date startDate = new Date();
+    private Date endDate = new Date();
 
     private DriverDAO driverDAO;
     
@@ -80,8 +70,12 @@ public class IdlingReportBean extends BaseBean
         AVAILABLE_COLUMNS.add("totalpercent");
     }
     
-    public void init() {               
-//        idlingsData = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getPerson().getGroupID());
+    public void init() {   
+        // end initialized to today, start
+        //  seven days back
+        startDate.setTime(this.endDate.getTime()
+                - (7 * 24 * 60 * 60 * 1000));
+
         idlingsData = new ArrayList<IdlingReportItem>();
         iri = new IdlingReportItem();
         Driver d = new Driver();        
@@ -167,31 +161,35 @@ public class IdlingReportBean extends BaseBean
         if ( this.idlingData.size() > 0 ) {
             this.idlingData.clear();
         }
+        
+        logger.debug("start date: " + 
+                this.startDate.toString());
+        logger.debug("end date: " + 
+                this.endDate.toString());        
+        
         // TODO: Always hit the database, no matter what, too much data to hold,
         // watch for date range as well....
-        String ID = this.searchFor.trim();
+        String name = this.searchFor.trim();
         List <IdlingReportItem> matchedIdlers = new ArrayList<IdlingReportItem>(); 
         
-        // TODO: Date range check in here
-        if ( ID.length() != 0 ) {     
-            try {                                                                 
-                for ( int i = 0; i < idlingsData.size(); i++ ) {
-                    iri = (IdlingReportItem)idlingsData.get(i);                   
-                    String localID = Integer.toString((iri.getDriver().getDriverID()).intValue());
-                    logger.debug(ID + " compared to " + localID);
-                    //Fuzzy
-                    int index1 = localID.indexOf(ID);                    
-                    if (index1 != -1) {                        
-                        matchedIdlers.add(iri);
-                    }
-                }
-                loadResults(matchedIdlers);
-                          
-                this.maxCount = matchedIdlers.size();
-                
-            //Looking for non-integer error for input search string
-            } catch (Exception e) {}
+        // TODO: Date range check in here, something like all the idling between
+        // the from date to the to date.  Maybe check for no date specified?
+        if ( name.length() != 0 ) {     
+                                                                         
+            for ( int i = 0; i < idlingsData.size(); i++ ) {
+                iri = (IdlingReportItem)idlingsData.get(i);                   
+   
+                String localName = iri.getDriver().getPerson().getLast();
 
+                //Fuzzy
+                int index1 = localName.indexOf(name);                    
+                if (index1 != -1) {                        
+                    matchedIdlers.add(iri);
+                }
+            }
+            loadResults(matchedIdlers);                        
+            this.maxCount = matchedIdlers.size();
+                           
         } else {
             loadResults(idlingsData);
             this.maxCount = idlingsData.size();
@@ -415,25 +413,25 @@ public class IdlingReportBean extends BaseBean
     }
 
 
-    public String getStartDate()
+    public Date getStartDate()
     {
         return startDate;
     }
 
 
-    public void setStartDate(String startDate)
+    public void setStartDate(Date startDate)
     {
         this.startDate = startDate;
     }
 
 
-    public String getEndDate()
+    public Date getEndDate()
     {
         return endDate;
     }
 
 
-    public void setEndDate(String endDate)
+    public void setEndDate(Date endDate)
     {
         this.endDate = endDate;
     }
