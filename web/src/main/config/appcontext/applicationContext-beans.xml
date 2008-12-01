@@ -80,6 +80,10 @@
         <property name="vehiclesBean" ref="vehiclesBean"></property>
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
     </bean>
+    
+    <bean id="organizationBean" class="com.inthinc.pro.backing.OrganizationBean" scope="session">
+        <property name="groupDAO" ref="groupDAO"></property>
+    </bean>
 
     <bean id="zonesBean" class="com.inthinc.pro.backing.ZonesBean" scope="session">
         <property name="zoneDAO" ref="zoneDAO"></property>

@@ -1,12 +1,14 @@
 package com.inthinc.pro.backing.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.inthinc.pro.model.Group;
 
-public class GroupHierarchy
+public class GroupHierarchy implements Serializable
 {
+	
     List<Group> groupList;
 
     public GroupHierarchy()
@@ -84,6 +86,17 @@ public class GroupHierarchy
         }
         
         return children.size()>0?children:null;
+    }
+    
+    public Group getParentGroup(Group childGroup){
+    	Group parentGroup = null;
+    	for(Group group: groupList){
+    		if(group.getGroupID() == childGroup.getParentID()){
+    			parentGroup = group;
+    		}
+    	}
+    	
+    	return parentGroup;
     }
     
     private boolean groupHasChildren(Group groupToCheck)

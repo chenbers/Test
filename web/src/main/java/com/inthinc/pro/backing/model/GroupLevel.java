@@ -67,4 +67,9 @@ public enum GroupLevel
     {
         this.location = location;
     }
+    
+    public String getDescription(){
+    	return this.description;
+    }
+
 }

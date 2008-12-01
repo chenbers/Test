@@ -1285,6 +1285,14 @@ a.ls_tab_overall {
 	color: #000;
 	margin: 0 0 0 8px;
 	}
+	
+a.ls_tab_organization {
+	padding: 6px 10px 7px 20px;
+	background: transparent url(../images/ico_building.png) no-repeat center left;
+	text-decoration: none;
+	color: #000;
+	margin: 0 0 0 8px;
+	}
 
 
 
@@ -2492,3 +2500,11 @@ to display: none.  Example ...
 #zones_table-fdtablePaginaterWrapTop { display: none; }
 #trips_table-fdtablePaginaterWrapTop { display: none; }
 #trip_detail-fdtablePaginaterWrapTop { display: none; }
+
+/*
+Tree View
+*/
+.selectedNode
+{
+	border: 1px solid red
+}

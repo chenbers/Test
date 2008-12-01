@@ -98,6 +98,11 @@
             </td>
           </tr>
         </ui:fragment>
+        <tr>
+          <td valign="top" class="#{(selectedAction == 'go_adminOrganization') ? 'ls_tab_on' : 'ls_tab_off'}">
+            <h:commandLink action="go_adminOrganization" value="#{messages.adminSideNav_go_adminOrganization}" styleClass="ls_tab_organization" immediate="true" />
+          </td>
+        </tr>
       </table>
 
     </h:form>

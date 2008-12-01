@@ -1,0 +1,80 @@
+<ui:composition template="/layout/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:security="http://pro.tiwi.com/jsf/security">
+
+	<ui:param name="adminSelected" value="current" />
+
+	<ui:define name="content">
+
+		<table width="920" border="0" cellspacing="0" cellpadding="0"
+			align="center" style="margin: 0 auto 0 auto;">
+			<tr>
+				<td valign="top" width="130"><ui:include
+					src="/includes/adminSideNav.xhtml">
+					<ui:param name="selectedAction" value="go_adminOrganization" />
+				</ui:include></td>
+				<td valign="top"><!-- START PANEL --> <a4j:form
+					id="display-form">
+
+					<div class="">
+					<div class="panel_nw">
+					<div class="panel_title"><span class="admin"><h:outputText
+						value="#{messages.adminHeader_organization}" /></span> <span
+						class="panel_links"></span></div>
+					</div>
+
+					<div class="panel_w">
+
+					<div class="panel_content">
+					<table>
+						<tr>
+							<td>
+							<div style="width: 235px">
+							<ul id="grid_nav">
+								<li class="l grid_title">#{organizationBean.accountName}</li>
+							</ul>
+							
+
+							<rich:tree switchType="ajax" selectedClass="selectedNode"
+								style="overflow: scroll;width:210px;height:200px;border-left:1px solid #A1C667;border-right:1px solid #A1C667;border-bottom:1px solid #A1C667; margin-left: 11px"
+								value="#{organizationBean.topLevelNode}" var="group"
+								nodeFace="#{group.data.groupLevel.description}">
+								<rich:treeNode type="FLEET" iconLeaf="/images/ico_truck.png" icon="/images/ico_truck.png">
+									<h:outputText
+										value="#{group.group.name} - Fleet" />
+								</rich:treeNode>
+								<rich:treeNode type="REGION" iconLeaf="/images/ico_trucks.png" icon="/images/ico_trucks.png">
+									<h:outputText
+										value="#{group.group.name} - Region" />
+								</rich:treeNode>
+								<rich:treeNode type="TEAM" iconLeaf="/images/ico_team.png" icon="/images/ico_team.png">
+									<h:outputText
+										value="#{group.group.name} - Team" />
+								</rich:treeNode>
+							</rich:tree></div>
+							</td>
+						</tr>
+					</table>
+					</div>
+					</div>
+					</div>
+					<div class="panel_sw">
+					<div class="panel_statusbar"></div>
+					</div>
+				</a4j:form> <!-- END PANEL --></td>
+			</tr>
+
+
+		</table>
+
+
+
+	</ui:define>
+
+</ui:composition>
