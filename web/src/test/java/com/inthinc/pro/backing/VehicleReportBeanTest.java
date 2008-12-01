@@ -34,6 +34,20 @@ public class VehicleReportBeanTest extends BaseBeanTest
         // make sure the spring injection worked
         assertNotNull(vehicleReportBean.getScoreDAO());
         assertNotNull(vehicleReportBean.getGroupDAO());
-        assertNotNull(vehicleReportBean.getVehicleDAO());
+        assertNotNull(vehicleReportBean.getVehicleDAO());        
+        
+        // try grabbing some vehicles based on above, should be ?? 
+        //  for normal101
+        
+        // commented-out tests cannot be set, other developers
+        //  are causing volatility
+//        assertEquals(36,
+//                vehicleReportBean.getVehicleData().size());        
+        assertEquals( 1,
+                (new Integer(vehicleReportBean.getStart())).intValue());
+        assertEquals(25,
+                (new Integer(vehicleReportBean.getEnd()).intValue()));
+//        assertEquals(36,
+//                (new Integer(vehicleReportBean.getMaxCount()).intValue()));        
     }
 }
