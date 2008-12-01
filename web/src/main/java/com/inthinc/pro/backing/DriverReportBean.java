@@ -38,7 +38,7 @@ public class DriverReportBean extends BaseBean
     private List <Driver> driversData = new ArrayList<Driver>(); 
     private List <DriverReportItem> driverData = new ArrayList<DriverReportItem>();
     
-    private static final List<String> AVAILABLE_COLUMNS;
+            static final List<String> AVAILABLE_COLUMNS;
     private Map<String,TableColumn> driverColumns;
     private Vector tmpColumns = new Vector();    
     

@@ -42,7 +42,7 @@ public class IdlingReportBean extends BaseBean
     private List <IdlingReportItem> idlingsData = new ArrayList<IdlingReportItem>();
     private List <IdlingReportItem> idlingData = new ArrayList<IdlingReportItem>();
     
-    private static final List<String> AVAILABLE_COLUMNS;
+            static final List<String> AVAILABLE_COLUMNS;
     private Map<String,TableColumn> idlingColumns;
     private Vector tmpColumns = new Vector();  
     
