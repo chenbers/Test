@@ -147,17 +147,21 @@ public class DriverReportBean extends BaseBean
             drt.setDriver(d);
             
             //Scores, full year
+            
+            //NOTE: THIS STATES THAT IT IS FOR MILES, THE ACTUAL
+            //IMPLEMENTATION UNDER THE COVERS IS JUST AN AVERAGE, 
+            //IT NEEDS TO BE FOR ======>TIME<======
             Integer endDate = DateUtil.getTodaysDate();
             Integer startDate = DateUtil.getDaysBackDate(
                     endDate, 
-                    Duration.TWELVE.getNumberOfDays());                                            
-            s = scoreDAO.getAverageScoreByType(d.getGroupID(),startDate,endDate,ScoreType.SCORE_OVERALL);
+                    Duration.TWELVE.getNumberOfDays());            
+            s = scoreDAO.getAverageScoreByTypeAndMiles(d.getGroupID(),startDate,ScoreType.SCORE_OVERALL);
             drt.setOverallScore(s.getScore());
-            s = scoreDAO.getAverageScoreByType(d.getGroupID(),startDate,endDate,ScoreType.SCORE_SEATBELT);
+            s = scoreDAO.getAverageScoreByTypeAndMiles(d.getGroupID(),startDate,ScoreType.SCORE_SEATBELT);
             drt.setSeatBeltScore(s.getScore());
-            s = scoreDAO.getAverageScoreByType(d.getGroupID(),startDate,endDate,ScoreType.SCORE_SPEEDING);
+            s = scoreDAO.getAverageScoreByTypeAndMiles(d.getGroupID(),startDate,ScoreType.SCORE_SPEEDING);
             drt.setSpeedScore(s.getScore());
-            s = scoreDAO.getAverageScoreByType(d.getGroupID(),startDate,endDate,ScoreType.SCORE_DRIVING_STYLE);
+            s = scoreDAO.getAverageScoreByTypeAndMiles(d.getGroupID(),startDate,ScoreType.SCORE_DRIVING_STYLE);
             drt.setStyleScore(s.getScore());
             setStyles();
             
