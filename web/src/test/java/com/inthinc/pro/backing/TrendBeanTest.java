@@ -50,6 +50,9 @@ public class TrendBeanTest extends BaseBeanTest
                 (new Integer(trendBean.getEnd()).intValue()));
         assertEquals( 3,
                 (new Integer(trendBean.getMaxCount()).intValue()));
-        
+       
+        // create xy chart
+        assertNotNull(trendBean.getLineDef());
+       
     }
 }
