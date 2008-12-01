@@ -35,6 +35,17 @@ public class DriverReportBeanTest extends BaseBeanTest
         assertNotNull(driverReportBean.getScoreDAO());
         assertNotNull(driverReportBean.getGroupDAO());
         assertNotNull(driverReportBean.getDriverDAO());
+                
+        // try grabbing some drivers based on above, should be 45 
+        //  for normal101
+        assertEquals(45,
+                driverReportBean.getDriverData().size());        
+        assertEquals( 1,
+                (new Integer(driverReportBean.getStart())).intValue());
+        assertEquals(25,
+                (new Integer(driverReportBean.getEnd()).intValue()));
+        assertEquals(45,
+                (new Integer(driverReportBean.getMaxCount()).intValue()));        
     }
 }
 
