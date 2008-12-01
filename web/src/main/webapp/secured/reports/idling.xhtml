@@ -58,7 +58,7 @@
             								</li>
             								<li class="l">
             									<a4j:commandLink action="#{idlingReportBean.search}" 
-            										reRender="items,topScroller,bottomScroller,start,end,max">
+            										reRender="items,topScroller,bottomScroller,headerIdlings">
             										<button value="submit" class="left">
             											<span class="search">
             												<h:outputText value="#{messages.button_search}" />
@@ -95,7 +95,7 @@
             									</a4j:commandLink>            									
             								</li>  
             								<li class="r text">
-              									<h:outputFormat id="header" value="#{messages.redflags_recordCountHeader}">
+              									<h:outputFormat id="headerIdlings" value="#{messages.redflags_recordCountHeader}">
 													<a4j:actionparam value="#{idlingReportBean.start}"/>
 													<a4j:actionparam value="#{idlingReportBean.end}"/>
 													<a4j:actionparam value="#{idlingReportBean.maxCount}"/>

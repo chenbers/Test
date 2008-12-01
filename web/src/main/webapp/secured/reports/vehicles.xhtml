@@ -57,7 +57,7 @@
             								</li>
             								<li class="l">
             									<a4j:commandLink action="#{vehicleReportBean.search}" 
-            										reRender="items,topScroller,bottomScroller,start,end,max">
+            										reRender="items,topScroller,bottomScroller,headerVehicles">
             										<button value="submit" class="left">
             											<span class="search">
             												<h:outputText value="#{messages.button_search}" />
@@ -75,7 +75,7 @@
             									</a4j:commandLink>            									
             								</li>  
             								<li class="r text">
-              									<h:outputFormat id="header" value="#{messages.redflags_recordCountHeader}">
+              									<h:outputFormat id="headerVehicles" value="#{messages.redflags_recordCountHeader}">
 													<a4j:actionparam value="#{vehicleReportBean.start}"/>
 													<a4j:actionparam value="#{vehicleReportBean.end}"/>
 													<a4j:actionparam value="#{vehicleReportBean.maxCount}"/>
