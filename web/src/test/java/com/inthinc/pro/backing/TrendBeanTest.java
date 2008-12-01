@@ -6,6 +6,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.inthinc.pro.model.Duration;
+
 public class TrendBeanTest extends BaseBeanTest
 {
 
@@ -33,5 +35,21 @@ public class TrendBeanTest extends BaseBeanTest
         // make sure the spring injection worked
         assertNotNull(trendBean.getScoreDAO());
         assertNotNull(trendBean.getNavigation());
+                
+        // try grabbing some regions based on above, should be 3 
+        //  for normal101
+        trendBean.setDuration(Duration.DAYS);
+        trendBean.getNavigation().setGroupID(101);
+        Integer start = trendBean.getStart();   
+        
+        assertEquals(3,
+                trendBean.getScoreableEntities().size());        
+        assertEquals( 1,
+                (new Integer(trendBean.getStart())).intValue());
+        assertEquals( 2,
+                (new Integer(trendBean.getEnd()).intValue()));
+        assertEquals( 3,
+                (new Integer(trendBean.getMaxCount()).intValue()));
+        
     }
 }
