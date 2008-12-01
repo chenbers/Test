@@ -2,9 +2,15 @@ package com.inthinc.pro.backing;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.util.List;
+import java.util.Map;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.inthinc.pro.backing.ui.RedFlagReportItem;
+import com.inthinc.pro.backing.ui.TableColumn;
 
 public class DriverReportBeanTest extends BaseBeanTest
 {
@@ -45,7 +51,11 @@ public class DriverReportBeanTest extends BaseBeanTest
         assertEquals(25,
                 (new Integer(driverReportBean.getEnd()).intValue()));
         assertEquals(45,
-                (new Integer(driverReportBean.getMaxCount()).intValue()));        
+                (new Integer(driverReportBean.getMaxCount()).intValue()));
+        
+        // column map
+        Map<String, TableColumn> columnMap = driverReportBean.getDriverColumns();
+        assertEquals(DriverReportBean.AVAILABLE_COLUMNS.size(), columnMap.size());
     }
 }
 

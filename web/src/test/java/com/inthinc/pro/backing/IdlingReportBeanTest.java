@@ -1,8 +1,12 @@
 package com.inthinc.pro.backing;
 
+import java.util.Map;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.inthinc.pro.backing.ui.TableColumn;
 
 public class IdlingReportBeanTest extends BaseBeanTest
 {
@@ -47,5 +51,10 @@ public class IdlingReportBeanTest extends BaseBeanTest
         // make sure the seconds converter is working correctly
         assertEquals(9863,
                 idlingReportBean.convertToSeconds("02:44:23"));
+                
+        // column map
+        Map<String, TableColumn> columnMap = idlingReportBean.getIdlingColumns();
+        assertEquals(idlingReportBean.AVAILABLE_COLUMNS.size(), columnMap.size());
+        
     }
 }

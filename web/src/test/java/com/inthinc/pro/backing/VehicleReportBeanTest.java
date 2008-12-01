@@ -2,9 +2,13 @@ package com.inthinc.pro.backing;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.util.Map;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.inthinc.pro.backing.ui.TableColumn;
 
 public class VehicleReportBeanTest extends BaseBeanTest
 {
@@ -48,6 +52,11 @@ public class VehicleReportBeanTest extends BaseBeanTest
         assertEquals(25,
                 (new Integer(vehicleReportBean.getEnd()).intValue()));
 //        assertEquals(36,
-//                (new Integer(vehicleReportBean.getMaxCount()).intValue()));        
+//                (new Integer(vehicleReportBean.getMaxCount()).intValue()));
+                
+        // column map
+        Map<String, TableColumn> columnMap = vehicleReportBean.getVehicleColumns();
+        assertEquals(VehicleReportBean.AVAILABLE_COLUMNS.size(), columnMap.size());
+
     }
 }
