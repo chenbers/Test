@@ -438,7 +438,7 @@ public class IdlingReportBean extends BaseBean
         this.endDate = endDate;
     }
 
-    private int convertToSeconds(String trip) {
+    public int convertToSeconds(String trip) {
         StringTokenizer st = new StringTokenizer(trip,":");
 
         int total = 0;
