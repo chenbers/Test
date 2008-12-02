@@ -57,6 +57,8 @@ public class IdlingReportBean extends BaseBean
     private final static String NO_START_DATE = " * No start date, reset";
     private final static String NO_END_DATE = " * No end date, reset";
     private final static String START_BEFORE_END = " * Start before end, reset";
+    // set to SEVEN days back
+    private final static int DAYS_BACK = 7 * 24 * 60 * 60 * 1000;
 
     private DriverDAO driverDAO;
     
@@ -80,8 +82,7 @@ public class IdlingReportBean extends BaseBean
         // end initialized to today, start
         //  seven days back
         defaultEndDate = endDate;
-        startDate.setTime(this.endDate.getTime()
-                - (7 * 24 * 60 * 60 * 1000));
+        startDate.setTime(this.endDate.getTime() - DAYS_BACK);
         defaultStartDate = startDate;
 
         idlingsData = new ArrayList<IdlingReportItem>();
