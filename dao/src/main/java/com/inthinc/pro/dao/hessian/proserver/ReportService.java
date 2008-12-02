@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.inthinc.pro.ProDAOException;
+import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreTypeBreakdown;
 
@@ -11,6 +12,18 @@ public interface ReportService extends HessianService
 {
   // ------------- Methods related to the Scores/Reporting
     
+
+    /**
+     * retrieves the mpg values (light, medium, heavy) for direct children of the specified group
+     * 
+     * @param groupID
+     * @param startDate
+     * @param endDate
+     * @return
+     * @throws ProDAOException
+     */
+    List<Map<String, Object>> getMpgValues(Integer groupID, Integer startDate, Integer endDate) throws ProDAOException;
+	
     /**
      * Return the average score for the specified group and time range.
      * 

@@ -18,6 +18,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreTypeBreakdown;
 import com.inthinc.pro.model.ScoreableEntity;
@@ -25,6 +26,68 @@ import com.inthinc.pro.model.ScoreableEntity;
 public class ReportServiceMockImpl extends AbstractServiceMockImpl implements ReportService
 {
     private static final Logger logger = Logger.getLogger(ReportServiceMockImpl.class);
+    
+    @Override
+    public List<Map<String, Object>> getMpgValues(Integer groupID, Integer startDate, Integer endDate) throws ProDAOException
+    {
+//        logger.debug("mock IMPL getOverallScores groupID = " + groupID);
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("parentID", groupID);
+
+        // get list of groups that have the specified groupID as the parent
+        List<Map<String, Object>> entityList = MockData.getInstance().lookupList(Group.class, searchCriteria);
+
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+        if (entityList != null)
+        {
+            for (Map<String, Object> groupMap : entityList) // child groups
+            {
+                searchCriteria = new SearchCriteria();
+                searchCriteria.addKeyValue("entityID", groupMap.get("groupID"));
+                searchCriteria.addKeyValueRange("date", startDate, endDate);
+
+                MpgEntity mpg = MockData.getInstance().retrieveObject(MpgEntity.class, searchCriteria);
+                if (mpg != null)
+                {
+                    returnList.add(TempConversionUtil.createMapFromObject(mpg));
+                }
+                else
+                {
+                    logger.error("mpg missing for groupID " + groupMap.get("groupID"));
+                }
+            }
+        }
+        else
+        {
+            searchCriteria = new SearchCriteria();
+            searchCriteria.addKeyValue("groupID", groupID);
+
+            // get list of drivers that are in the specified group
+            entityList = MockData.getInstance().lookupList(Driver.class, searchCriteria);
+            if (entityList == null)
+            {
+                return returnList;
+            }
+            for (Map<String, Object> driverMap : entityList)
+            {
+                searchCriteria = new SearchCriteria();
+                searchCriteria.addKeyValue("entityID", driverMap.get("driverID"));
+                searchCriteria.addKeyValueRange("date", startDate, endDate);
+
+                MpgEntity mpg = MockData.getInstance().retrieveObject(MpgEntity.class, searchCriteria);
+                if (mpg != null)
+                {
+                	returnList.add(TempConversionUtil.createMapFromObject(mpg));
+                }
+                else
+                {
+                    logger.error("mpg missing for driverID " + driverMap.get("driverID"));
+                }
+            }
+
+        }
+        return returnList;
+    }
 
     @Override
     public Map<String, Object> getAverageScoreByType(Integer groupID, Integer startDate, Integer endDate, ScoreType st) throws ProDAOException

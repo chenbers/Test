@@ -51,8 +51,10 @@
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
     </bean>
-    <bean id="fuelBean" class="com.inthinc.pro.backing.FuelBean" scope="request" parent="baseBean"></bean>
-
+    <bean id="mpgBean" class="com.inthinc.pro.backing.MpgBean" scope="request" parent="baseBean">
+        <property name="mpgDAO" ref="mpgDAO"></property>
+        <property name="navigation" ref="navigationBean"></property>
+    </bean>
     <bean id="fleetOverviewBean" class="com.inthinc.pro.backing.FleetOverviewBean" scope="request" parent="baseBean">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="navigation" ref="navigationBean"></property>

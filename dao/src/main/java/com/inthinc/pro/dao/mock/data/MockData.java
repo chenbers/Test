@@ -8,8 +8,10 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +20,7 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.dao.hessian.exceptions.MappingException;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.AccountStatus;
@@ -33,6 +36,7 @@ import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.LowBatteryEvent;
+import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagLevel;
@@ -202,6 +206,8 @@ public class MockData
             
             addScores(groups[cnt].getGroupID(), EntityType.ENTITY_GROUP, groups[cnt].getName());
             
+            addMpg(groups[cnt].getGroupID(), groups[cnt].getGroupID());
+            
             if (!groupIsParent(groups, groups[cnt].getGroupID()))
             {
                 List<Driver> driversInGroup = addDriversToGroup(accountID, groups[cnt].getGroupID(),5);
@@ -342,6 +348,29 @@ public class MockData
         }
     }
     
+
+    private void addMpg(Integer entityID, Integer groupID)
+    {
+        int[] monthsBack = {
+                12, 6, 3, 0
+        };
+        
+        for (int monthsBackCnt = 0; monthsBackCnt < monthsBack.length; monthsBackCnt++)
+        {
+        	Calendar date = new GregorianCalendar();
+        	date.add(Calendar.MONTH, (0 - monthsBack[monthsBackCnt]));
+        	int daysBack = (int) (date.getTimeInMillis() - System.currentTimeMillis()) / 1000 / 60 / 60 / 24;
+        	MpgEntity mapEntity = new MpgEntity(
+        			entityID,
+        			groupID,
+        			randomInt(0, 50),
+        			randomInt(0, 50),
+        			randomInt(0, 50),
+                    DateUtil.getDaysBackDate(dateNow, monthsBack[monthsBackCnt]*30)-1);
+           storeObject(mapEntity);
+        }
+    }
+    
     
     private List<Driver> addDriversToGroup(Integer accountID, Integer groupID, int numDriversInGroup)
     {
@@ -355,6 +384,7 @@ public class MockData
             storeObject(driver);
             Person person = retrieveObject(Person.class, "personID", id);
             addScores(driver.getDriverID(), EntityType.ENTITY_DRIVER, person.getFirst() + person.getLast(), groupID);
+            addMpg(driver.getDriverID(), groupID);
             driverList.add(driver);
         }
         

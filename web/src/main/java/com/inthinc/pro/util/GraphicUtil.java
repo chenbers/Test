@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.MpgEntity;
 
 public class GraphicUtil {
 	private static List <String> monthLbls = new ArrayList<String>() {
@@ -146,38 +147,38 @@ public class GraphicUtil {
 		
 		return sb.toString();
 	}
-	
-	public static String createLineControlParameters()
-	{
-		StringBuffer sb = new StringBuffer();
-		sb.append("<chart ");
-		sb.append("caption=\'\' ");
-		sb.append("subcaption=\'\' ");
-		sb.append("xAxisName=\'\' ");
-		sb.append("yAxisMinValue=\'0\' ");
-		sb.append("yAxisName=\'\' ");
-		sb.append("numberPrefix=\'\' ");
-		sb.append("showValues=\'0\' ");
-		sb.append("adjustDiv=\'0\' ");
-		sb.append("setAdaptiveYMin='0' ");
-		sb.append("borderColor=\'#cfcfcf\' ");
-		sb.append("vDivLineColor=\'#cfcfcf\' ");
-		sb.append("vDivLineThickness=\'1\' ");
-		sb.append("showAlternateHGridColor=\'1\' ");
-		sb.append("alternateHGridColor=\'#f0f0f0\' ");
-		sb.append("alternateHGridAlpha=\'100\' ");
-		sb.append("forceDecimals=\'1\' ");
-		sb.append("yAxisMaxValue=\'5\' ");
-		sb.append("bgColor=\'#ffffff\' ");
-		sb.append("showBorder=\'0\' ");
-		sb.append("lineColor=\'#93C034\' ");
-		sb.append("lineThickness=\'2\' ");
-		sb.append("drawAnchors=\'0\' ");
-		sb.append("numVDivLines=\'4\' ");
-		sb.append("plotFillColor=\'#A8C634\' >");
-		
-		return sb.toString();
-	}
+    
+    public static String createLineControlParameters()
+    {
+        StringBuffer sb = new StringBuffer();
+        sb.append("<chart ");
+        sb.append("caption=\'\' ");
+        sb.append("subcaption=\'\' ");
+        sb.append("xAxisName=\'\' ");
+        sb.append("yAxisMinValue=\'0\' ");
+        sb.append("yAxisName=\'\' ");
+        sb.append("numberPrefix=\'\' ");
+        sb.append("showValues=\'0\' ");
+        sb.append("adjustDiv=\'0\' ");
+        sb.append("setAdaptiveYMin='0' ");
+        sb.append("borderColor=\'#cfcfcf\' ");
+        sb.append("vDivLineColor=\'#cfcfcf\' ");
+        sb.append("vDivLineThickness=\'1\' ");
+        sb.append("showAlternateHGridColor=\'1\' ");
+        sb.append("alternateHGridColor=\'#f0f0f0\' ");
+        sb.append("alternateHGridAlpha=\'100\' ");
+        sb.append("forceDecimals=\'1\' ");
+        sb.append("yAxisMaxValue=\'5\' ");
+        sb.append("bgColor=\'#ffffff\' ");
+        sb.append("showBorder=\'0\' ");
+        sb.append("lineColor=\'#93C034\' ");
+        sb.append("lineThickness=\'2\' ");
+        sb.append("drawAnchors=\'0\' ");
+        sb.append("numVDivLines=\'4\' ");
+        sb.append("plotFillColor=\'#A8C634\' >");
+        
+        return sb.toString();
+    }
 
     public static String createMiniLineControlParameters()
     {
@@ -277,30 +278,101 @@ public class GraphicUtil {
 	}
 		
 	public static String getBarControlParameters() {
-		StringBuffer sb = new StringBuffer();
-		
-		sb.append("<chart ");				
-		sb.append("caption=\'\' ");
-		sb.append("xAxisName=\'\' ");
-		sb.append("yAxisName=\'\' ");
-		sb.append("showValues=\'0\' ");
-		sb.append("decimals=\'0\' ");
-		sb.append("formatNumberScale=\'0\' ");
-		sb.append("numberSuffix=\'%\' ");
-		sb.append("yAxisMaxValue=\'100\'>");
-		
-		return sb.toString();
+        StringBuffer sb = new StringBuffer();
+        sb.append("<chart ");
+        sb.append("caption=\'\' ");
+        sb.append("xAxisName=\'\' ");
+        sb.append("yAxisName=\'\' ");
+        sb.append("showValues=\'0\' ");
+        sb.append("decimals=\'0\' ");
+        sb.append("formatNumberScale=\'0\' ");
+        sb.append("numberSuffix=\'\' ");
+        sb.append("animation=\'1\' ");
+        sb.append("bgColor=\'#ffffff\' ");
+        sb.append("borderThickness=\'1\' ");
+        sb.append("showToolTips=\'1\' ");
+        sb.append("showLegend=\'0\' ");
+        sb.append("legendBorderThickness=\'0\' ");
+        sb.append("legendShadow=\'0\' ");
+        sb.append("labelDisplay=\'\' ");
+        sb.append("slantLabels=\'\' ");
+        sb.append("canvasBorderColor=\'#ffffff\' ");
+        sb.append("canvasBorderThickness=\'0\' ");
+        sb.append("showPlotBorder=\'0\' ");
+        sb.append("plotFillRatio=\'100\' ");
+        sb.append(">");
+        return sb.toString();
 	}	
+	
+	public static String createMpgXML(List<MpgEntity> entities)
+	{
+	    StringBuffer sb = new StringBuffer();
+	    int numEntities = entities.size();
+	    Integer[] light = new Integer[numEntities];
+	    Integer[] medium = new Integer[numEntities];
+	    Integer[] heavy = new Integer[numEntities];
+
+        sb.append("<categories>");
+        for (int i = 0; i < numEntities; i++)
+        {
+            MpgEntity entity = entities.get(i);
+            light[i] = entity.getLightValue();
+            medium[i] = entity.getMediumValue();
+            heavy[i] = entity.getHeavyValue();
+            sb.append("<category label=\'" + entity.getGroupID() + "\'/>");
+        }
+        sb.append("</categories>");
+        
+        sb.append("<dataset seriesName=\'Light\'>");
+        for (Integer value : light)
+        {
+            sb.append("<set value=\'" + (value != null ? value.toString() : "0") + "\'/>");
+        }
+        sb.append("</dataset>");
+        
+        sb.append("<dataset seriesName=\'Medium\'>");
+        for (Integer value : medium)
+        {
+            sb.append("<set value=\'" + (value != null ? value.toString() : "0") + "\'/>");
+        }
+        sb.append("</dataset>");
+        
+        sb.append("<dataset seriesName=\'Heavy\'>");
+        for (Integer value : heavy)
+        {
+            sb.append("<set value=\'" + (value != null ? value.toString() : "0") + "\'/>");
+        }
+        sb.append("</dataset>");
+        return sb.toString();
+	}
 		
 	public static String createFakeBarData() {
 		StringBuffer sb = new StringBuffer();
-		
-		sb.append("<set label=\'West Coast\' value=\'93\' color=\'7FC0CE\' />");
-		sb.append("<set label=\'Midwest\' value=\'98\' color=\'DDDAC9\' />");
-		sb.append("<set label=\'Lakes\' value=\'89\' color=\'84949F\' />");
-		sb.append("<set label=\'South\' value=\'92\' color=\'A093B4\' />");
-		sb.append("<set label=\'New England\' value=\'85\' color=\'A6B493\' />");
-		
+
+        sb.append("<categories>");
+        sb.append("<category label=\'One\'/>");
+        sb.append("<category label=\'Two\'/>");
+        sb.append("<category label=\'Three\'/>");
+        sb.append("</categories>");
+
+
+        sb.append("<dataset seriesName=\'Light\'>");
+        sb.append("<set value=\'23\'/>");
+        sb.append("<set value=\'45\'/>");
+        sb.append("<set value=\'33\'/>");
+        sb.append("</dataset>");
+
+        sb.append("<dataset seriesName=\'Medium\'>");
+        sb.append("<set value=\'33\'/>");
+        sb.append("<set value=\'55\'/>");
+        sb.append("<set value=\'43\'/>");
+        sb.append("</dataset>");
+
+        sb.append("<dataset seriesName=\'Heavy\'>");
+        sb.append("<set value=\'55\'/>");
+        sb.append("<set value=\'12\'/>");
+        sb.append("<set value=\'38\'/>");
+        sb.append("</dataset>");
 		return sb.toString();
 	}
 	
