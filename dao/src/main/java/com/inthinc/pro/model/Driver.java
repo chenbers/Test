@@ -10,15 +10,35 @@ public class Driver extends BaseEntity
     @ID
     private Integer driverID;
     private Integer personID;
-    private Boolean active;
+    private DriverStatus status;
+    
+    @Column(name = "rfid")
     private Integer RFID;
     private String  license;
+
+    @Column(name = "stateID")
     private State   state;
+
+    @Column(name = "class")
     private String  licenseClass;
+    
     private Date    expiration;
 
     @Column(updateable = false)
     private Person person;
+
+    public Driver(Integer driverID, Integer personID, DriverStatus status, Integer rfid, String license, State state, String licenseClass, Date expiration)
+    {
+        super();
+        this.driverID = driverID;
+        this.personID = personID;
+        this.status = status;
+        RFID = rfid;
+        this.license = license;
+        this.state = state;
+        this.licenseClass = licenseClass;
+        this.expiration = expiration;
+    }
 
     public Driver()
     {
@@ -43,16 +63,6 @@ public class Driver extends BaseEntity
     public void setPersonID(Integer personID)
     {
         this.personID = personID;
-    }
-
-    public Boolean getActive()
-    {
-        return active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
     }
 
     public Integer getRFID()
@@ -113,5 +123,20 @@ public class Driver extends BaseEntity
     public void setPerson(Person person)
     {
         this.person = person;
+    }
+
+    public DriverStatus getStatus()
+    {
+        return status;
+    }
+
+    public void setStatus(DriverStatus status)
+    {
+        this.status = status;
+    }
+    
+    public Boolean getActive()
+    {
+        return status != null && status.equals(DriverStatus.ACTIVE);
     }
 }

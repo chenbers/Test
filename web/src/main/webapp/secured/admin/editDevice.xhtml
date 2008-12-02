@@ -72,7 +72,7 @@
                                   <h:outputText value="#{messages.editDevice_mcmid}" />
                                 </td>
                                 <td>
-                                  <h:inputText value="#{devicesBean.item.mcmid}" id="mcmid" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                  <h:inputText value="#{devicesBean.item.imei}" id="mcmid" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     maxlength="26" required="#{(not devicesBean.batchEdit) or devicesBean.updateField['mcmid']}" requiredMessage="#{messages.required}" />
                                   <rich:message for="mcmid" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                 </td>

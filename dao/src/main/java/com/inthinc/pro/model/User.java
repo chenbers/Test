@@ -89,7 +89,7 @@ public class User extends BaseEntity
 
     public Boolean getActive()
     {
-        return status.equals(UserStatus.ACTIVE);
+        return status != null && status.equals(UserStatus.ACTIVE);
     }
 
     public UserStatus getStatus()
@@ -111,5 +111,6 @@ public class User extends BaseEntity
     {
         this.personID = personID;
     }
+    
 
 }

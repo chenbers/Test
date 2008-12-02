@@ -27,9 +27,9 @@
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_baselineID}" /></f:facet>
       <h:outputText value="#{item.baselineID}" />
     </rich:column>
-    <rich:column rendered="#{devicesBean.tableColumns['mcmid'].visible}" sortBy="#{item.mcmid}">
+    <rich:column rendered="#{devicesBean.tableColumns['mcmid'].visible}" sortBy="#{item.imei}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_mcmid}" /></f:facet>
-      <h:outputText value="#{item.mcmid}" />
+      <h:outputText value="#{item.imei}" />
     </rich:column>
     <rich:column rendered="#{devicesBean.tableColumns['sim'].visible}" sortBy="#{item.sim}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_sim}" /></f:facet>

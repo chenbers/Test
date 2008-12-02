@@ -218,4 +218,9 @@ public class Vehicle extends BaseEntity
     {
         this.vtype = vtype;
     }
+    
+    public Boolean getActive()
+    {
+        return (status != null && status.equals(VehicleStatus.ACTIVE));
+    }
 }
