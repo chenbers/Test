@@ -98,7 +98,7 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
         else
         {
             searchCriteria = new SearchCriteria();
-            searchCriteria.addKeyValue("groupID", groupID);
+            searchCriteria.addKeyValue("person:groupID", groupID);
 
             // get list of drivers that are in the specified group
             entityList = MockData.getInstance().lookupList(Driver.class, searchCriteria);
