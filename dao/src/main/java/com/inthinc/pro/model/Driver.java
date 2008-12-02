@@ -14,13 +14,13 @@ public class Driver extends BaseEntity
     
     @Column(name = "rfid")
     private Integer RFID;
-    private String  license;
+    private String  license;            // max 10 characters
 
     @Column(name = "stateID")
     private State   state;
 
     @Column(name = "class")
-    private String  licenseClass;
+    private String  licenseClass;       // max 4 characters
     
     private Date    expiration;
 
@@ -57,6 +57,10 @@ public class Driver extends BaseEntity
 
     public Integer getPersonID()
     {
+        if (person != null)
+        {
+            setPersonID(person.getPersonID());
+        }
         return personID;
     }
 

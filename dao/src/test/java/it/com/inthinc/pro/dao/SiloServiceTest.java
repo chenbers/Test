@@ -4,6 +4,8 @@ package it.com.inthinc.pro.dao;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +37,10 @@ import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.DriverStatus;
+import com.inthinc.pro.model.ForwardCommand;
+import com.inthinc.pro.model.ForwardCommandID;
+import com.inthinc.pro.model.ForwardCommandStatus;
 import com.inthinc.pro.model.Gender;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
@@ -62,9 +68,10 @@ public class SiloServiceTest
     private List<Device> deviceList = new ArrayList<Device>();
     private List<Vehicle> vehicleList = new ArrayList<Vehicle>();
     private List<Person> personList = new ArrayList<Person>();
-    private User user;
-    private Driver driver;
+    private List<User> userList = new ArrayList<User>();
+    private List<Driver> driverList = new ArrayList<Driver>();
     
+    private static final Integer TESTING_SILO = 0;  // this silo can be wiped out/restored at anytime
     private static final Integer DEVICE_COUNT = 5;
     private static final Integer VEHICLE_COUNT = 3;
     private static final Integer PERSON_COUNT = 3;
@@ -84,6 +91,26 @@ public class SiloServiceTest
 //        HessianDebug.debugIn = true;
 //        HessianDebug.debugOut = true;
         HessianDebug.debugRequest = true;
+        
+/*        
+        Date epoch = new Date(0l);
+        
+        DateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
+        logger.debug(dateFormatter.format(epoch));
+        
+        Date beforeEpoch = new Date(-1203955588l);
+        
+        logger.debug(dateFormatter.format(beforeEpoch));
+
+        Date max = new Date(Integer.MAX_VALUE*1000l);
+        
+        logger.debug(dateFormatter.format(max));
+
+        Date min= new Date(Integer.MIN_VALUE*1000l);
+        
+        logger.debug(dateFormatter.format(min));
+        logger.debug("--");
+*/        
     }
 
     @AfterClass
@@ -124,28 +151,36 @@ public class SiloServiceTest
         // test all create, find, update and any other methods (not delete yet though)
         account();
         Integer acctID = account.getAcctID();
-//        Integer acctID = 8;
         groupHierarchy(acctID);
         
         // devices
         devices(acctID);
         
+        // forward commands to devices
+        forwardCommands();
+        
         // vehicles
         vehicles(team1Group.getGroupID());
         vehicles(team2Group.getGroupID());
         regionVehicles(regionGroup.getGroupID());
-/*        
+
+        // assign devices to vehicles in team1 group 
+        assignDevicesToVehicles(team1Group.getGroupID());
+
         // person
         persons(team1Group.getGroupID());
         persons(team2Group.getGroupID());
         
         // user
-        users(acctID);
+        users(team2Group.getGroupID());
         
         // driver
-        drivers(acctID);
-*/        
+        drivers(team1Group.getGroupID());
+        
+        // assign drivers to vehicles
+        assignDriversToVehicles(team1Group.getGroupID());
     }
+
 
     private void account()
     {
@@ -155,7 +190,7 @@ public class SiloServiceTest
         account = new Account(null, null, null, AccountStatus.ACCOUNT_ACTIVE);
         
         // create
-        Integer siloID = 0;
+        Integer siloID = TESTING_SILO;
         Integer acctID = accountDAO.create(siloID, account);
         assertNotNull("Create Account failed", acctID);
         account.setAcctID(acctID);
@@ -296,8 +331,7 @@ logger.debug("TEAM 2: " + groupID);
             assertEquals("Device update count " + device.getName(), Integer.valueOf(1), changedCount);
         }
         
-//TODO: UPDATE ALL FIELDS
-        
+       
         // find
         String ignoreFields[] = {"modified"};
         for (Device device : deviceList)
@@ -326,7 +360,47 @@ logger.debug("TEAM 2: " + groupID);
             assertTrue("Not Returned in list for account Device " + device.getName(), found);
         }
         
+        
+    }
+    private void forwardCommands()
+    {
+        DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
+        deviceDAO.setSiloService(siloService);
+        
+        Device device = deviceList.get(0);
+        ForwardCommand stringDataCmd = new ForwardCommand(0, ForwardCommandID.ADD_VALID_CALLER, "1 555555123"+Util.randomInt(1,9), ForwardCommandStatus.STATUS_QUEUED);
+        ForwardCommand intDataCmd = new ForwardCommand(0, ForwardCommandID.SET_MSGS_PER_NOTIFICATION, Util.randomInt(1, 4), ForwardCommandStatus.STATUS_QUEUED);
+        ForwardCommand noDataCmd = new ForwardCommand(0, ForwardCommandID.BUZZER_SEATBELT_DISABLE, 0, ForwardCommandStatus.STATUS_QUEUED);
 
+        deviceDAO.queueForwardCommand(device.getDeviceID(), stringDataCmd);
+        deviceDAO.queueForwardCommand(device.getDeviceID(), intDataCmd);
+        deviceDAO.queueForwardCommand(device.getDeviceID(), noDataCmd);
+        
+        List<ForwardCommand> queuedCommands = deviceDAO.getForwardCommands(device.getDeviceID(), ForwardCommandStatus.STATUS_QUEUED);
+        assertEquals("queued forward commands", 3, queuedCommands.size());
+
+        String ignoreFields[] = {"modified", "fwdID"};
+        for (ForwardCommand forwardCommand : queuedCommands)
+        {
+            if (forwardCommand.getCmd().equals(ForwardCommandID.ADD_VALID_CALLER))
+            {
+                Util.compareObjects(stringDataCmd, forwardCommand, ignoreFields);
+            }
+            else if (forwardCommand.getCmd().equals(ForwardCommandID.SET_MSGS_PER_NOTIFICATION))
+            {
+                Util.compareObjects(intDataCmd, forwardCommand, ignoreFields);
+                
+            } 
+            else if (forwardCommand.getCmd().equals(ForwardCommandID.BUZZER_SEATBELT_DISABLE))
+            {
+                Util.compareObjects(noDataCmd, forwardCommand, ignoreFields);
+                
+            }
+            else
+            {
+                fail("Unexpected queued forward command" + forwardCommand.getFwdID());
+            }
+        }
     }
 
     private void vehicles(Integer groupID)
@@ -356,8 +430,6 @@ logger.debug("TEAM 2: " + groupID);
                 assertEquals("Vehicle update count " + vehicle.getName(), Integer.valueOf(1), changedCount);
             }
         }
-      //TODO: UPDATE ALL FIELDS
-        
         
         // TODO: find out if we need this field (costPerHour) -- not in the backend
         String ignoreFields[] = {"costPerHour", "modified"};
@@ -420,20 +492,24 @@ logger.debug("TEAM 2: " + groupID);
 
     private void persons(Integer groupID)
     {
+logger.debug("Persons GroupID: " + groupID);                
         PersonHessianDAO personDAO = new PersonHessianDAO();
         personDAO.setSiloService(siloService);
         
         // create
         for (int i = 0; i < PERSON_COUNT; i++)
         {
-            Person person = new Person(0, groupID, TimeZone.getDefault(), 10, address.getAddrID(), "555555555"+i, "555555555"+i, 
+            Date dob = Util.genDate(1959, 8, 30);
+            Person person = new Person(0, groupID, TimeZone.getDefault(), null, address.getAddrID(), "555555555"+i, "555555555"+i, 
                             "email_"+groupID+"_"+i+"@yahoo.com",
-                            "emp"+i, null, "title"+i, "dept" + i, "first"+i, "m"+i, "last"+i, "", Gender.MALE, 65, 180, null);
+                            "emp"+i, null, "title"+i, "dept" + i, "first"+i, "m"+i, "last"+i, "jr", Gender.MALE, 65, 180, dob);
             Integer personID = personDAO.create(groupID, person);
+logger.debug("Create Person: " + personID);                
             assertNotNull(personID);
             person.setPersonID(personID);
             personList.add(person);
         }
+
         
         // update all to female
         for (Person person : personList)
@@ -441,18 +517,21 @@ logger.debug("TEAM 2: " + groupID);
             if (person.getGroupID().equals(groupID))
             {
                 person.setGender(Gender.FEMALE);
+                person.setMiddle("middle");
+logger.debug("Update Person: " + person.getPersonID());                
                 Integer changedCount = personDAO.update(person);
                 assertEquals("Person update count " + person.getPersonID(), Integer.valueOf(1), changedCount);
             }
         }
-      //TODO: UPDATE ALL FIELDS
-        
+
+        String ignoreFields[] = {"costPerHour"};
         for (Person person : personList)
         {
             if (person.getGroupID().equals(groupID))
             {
+logger.debug("Find Person: " + person.getPersonID());                
                 Person returnedPerson = personDAO.findByID(person.getPersonID());
-                Util.compareObjects(person, returnedPerson);
+                Util.compareObjects(person, returnedPerson, ignoreFields);
             }
         }
         
@@ -468,9 +547,12 @@ logger.debug("TEAM 2: " + groupID);
                 boolean found = false;
                 for (Person groupPerson : groupPersonList)
                 {
-                    Util.compareObjects(person, groupPerson);
-                    found = true;
-                    break;
+                    if (groupPerson.getPersonID().equals(person.getPersonID()))
+                    {
+                        Util.compareObjects(person, groupPerson);
+                        found = true;
+                        break;
+                    }
                 }
                 assertTrue("Person " + person.getPersonID(), found);
             }
@@ -479,105 +561,181 @@ logger.debug("TEAM 2: " + groupID);
 
 
 
-    private void users(Integer acctID)
+    private void users(Integer groupID)
     {
         UserHessianDAO userDAO = new UserHessianDAO();
         userDAO.setSiloService(siloService);
 
-        // make the 1st person in the list a user
-        Person person = personList.get(0);
+        PersonHessianDAO personDAO = new PersonHessianDAO();
+        personDAO.setSiloService(siloService);
         
-        user = new User(0, person.getPersonID(), Role.ROLE_CUSTOM_USER, UserStatus.ACTIVE, "user_"+acctID, PASSWORD);
-
-        // create
-        Integer userID = userDAO.create(acctID, user);
-        assertNotNull("user", userID);
-        user.setUserID(userID);
-
-        Person person2 = personList.get(1);
-        User editUser = new User(0, person2.getPersonID(), Role.ROLE_CUSTOM_USER, UserStatus.ACTIVE, "edituser_"+acctID, PASSWORD);
-        userID = userDAO.create(acctID, editUser);
-        assertNotNull("user", userID);
-        editUser.setUserID(userID);
-
-        // update
-        editUser.setStatus(UserStatus.DISABLED);
-        editUser.setRole(Role.ROLE_READONLY);
-        Integer changedCount = userDAO.update(editUser);
-        assertEquals("User update count " + editUser.getUserID(), Integer.valueOf(1), changedCount);
+        List<Person> groupPersonList = personDAO.getPeopleInGroupHierarchy(groupID);
+        assertEquals("people count for group", Integer.valueOf(PERSON_COUNT), new Integer(groupPersonList.size()));
         
-        // find User by ID
-        User returnedUser = userDAO.findByID(editUser.getUserID());
-        Util.compareObjects(editUser, returnedUser);
-        
-        // find User by user name
-        returnedUser = userDAO.findByUserName("user_"+acctID);
-        Util.compareObjects(editUser, returnedUser);
+        for (Person person : groupPersonList)
+        {
+
+            User user = new User(0, person.getPersonID(), Role.ROLE_CUSTOM_USER, UserStatus.ACTIVE, "user_"+person.getPersonID(), PASSWORD);
+            // create
+            Integer userID = userDAO.create(person.getPersonID(), user);
+            assertNotNull("user", userID);
+            user.setUserID(userID);
+            
+
+            // update
+            user.setRole(Role.ROLE_READONLY);
+            Integer changedCount = userDAO.update(user);
+            assertEquals("user update count " + user.getUserID(), Integer.valueOf(1), changedCount);
+            
+            // find user by ID
+            String ignoreFields[] = {"modified", "person"};
+
+            User returnedUser = userDAO.findByID(user.getUserID());
+            Util.compareObjects(user, returnedUser, ignoreFields);
+
+            userList.add(user);
+
+        }
+
         
         // get all for group
-        List<User> userList = userDAO.getUsersInGroupHierarchy(person.getGroupID());
-        assertEquals("number of users in group: " + person.getGroupID(), 2, userList.size());
+        List<User> groupUserList = userDAO.getUsersInGroupHierarchy(groupID);
+        assertEquals("number of users in group: " + groupID, groupPersonList.size(), groupUserList.size());
         
-        // delete 
-        changedCount = userDAO.deleteByID(editUser.getUserID());
-        assertEquals("User delete count " + editUser.getUserID(), Integer.valueOf(1), changedCount);
+        // delete all 
+        for (User user : groupUserList)
+        {
+            Integer changedCount = userDAO.deleteByID(user.getUserID());
+            assertEquals("User delete count " + user.getUserID(), Integer.valueOf(1), changedCount);
+        }
         
-        // user list should have decreased by 1
-        userList = userDAO.getUsersInGroupHierarchy(person.getGroupID());
-        assertEquals("number of users in group: " + person.getGroupID(), 1, userList.size());
+        // user list should be empty
+        groupUserList = userDAO.getUsersInGroupHierarchy(groupID);
+        assertEquals("number of users in group: " + groupID, 0, groupUserList.size());
         
+        // restore all 
+        for (User user : userList)
+        {
+            user.setStatus(UserStatus.ACTIVE);
+            Integer changedCount = userDAO.update(user);
+            assertEquals("User update count " + user.getUserID(), Integer.valueOf(1), changedCount);
+        }
         
+        // user  list should be same
+        groupUserList = userDAO.getUsersInGroupHierarchy(groupID);
+        assertEquals("number of users in group: " + groupID, groupPersonList.size(), groupUserList.size());
+
     }
 
-    private void drivers(Integer acctID)
+    private void drivers(Integer groupID)
     {
         DriverHessianDAO driverDAO = new DriverHessianDAO();
         driverDAO.setSiloService(siloService);
-
-        // make the last person in the list a driver
-        int idx = personList.size()-1;
-        Person person = personList.get(idx);
         
-        driver = new Driver();
-/*
-        // create
-        Integer userID = userDAO.create(acctID, user);
-        assertNotNull("user", userID);
-        user.setUserID(userID);
-
-        Person person2 = personList.get(idx-1);
-        User editUser = new User(0, person2.getPersonID(), Role.ROLE_CUSTOM_USER, UserStatus.ACTIVE, "edituser_"+acctID, PASSWORD);
-        userID = userDAO.create(acctID, editUser);
-        assertNotNull("user", userID);
-        editUser.setUserID(userID);
-
-        // update
-        editUser.setStatus(UserStatus.DISABLED);
-        editUser.setRole(Role.ROLE_READONLY);
-        Integer changedCount = userDAO.update(editUser);
-        assertEquals("User update count " + editUser.getUserID(), Integer.valueOf(1), changedCount);
+        PersonHessianDAO personDAO = new PersonHessianDAO();
+        personDAO.setSiloService(siloService);
         
-        // find User by ID
-        User returnedUser = userDAO.findByID(editUser.getUserID());
-        Util.compareObjects(editUser, returnedUser);
+        List<Person> groupPersonList = personDAO.getPeopleInGroupHierarchy(groupID);
+        assertEquals("people count for group", Integer.valueOf(PERSON_COUNT), new Integer(groupPersonList.size()));
         
-        // find User by user name
-        returnedUser = userDAO.findByUserName("user_"+acctID);
-        Util.compareObjects(editUser, returnedUser);
+        String ignoreFields[] = {"modified", "person"};
+        for (Person person : groupPersonList)
+        {
+            Date expired = Util.genDate(2010, 9, 30);
+        
+            Driver driver = new Driver(0, person.getPersonID(), DriverStatus.ACTIVE, 100+person.getPersonID(), "l"+person.getPersonID(), 
+                            State.valueOf(Util.randomInt(1, State.values().length - 1)), "ABCD", expired);
+
+            // create
+            Integer driverID = driverDAO.create(person.getPersonID(), driver);
+            assertNotNull("driver", driverID);
+            driver.setDriverID(driverID);
+            
+
+            // update
+            driver.setRFID(200+person.getPersonID());
+            Integer changedCount = driverDAO.update(driver);
+            assertEquals("Driver update count " + driver.getDriverID(), Integer.valueOf(1), changedCount);
+            
+            // find Driver by ID
+            Driver returnedDriver = driverDAO.findByID(driver.getDriverID());
+            Util.compareObjects(driver, returnedDriver, ignoreFields);
+
+            driverList.add(driver);
+
+        }
+
         
         // get all for group
-        List<User> userList = userDAO.getUsersInGroupHierarchy(person.getGroupID());
-        assertEquals("number of users in group: " + person.getGroupID(), 2, userList.size());
+        List<Driver> groupDriverList = driverDAO.getAllDrivers(groupID);
+        assertEquals("number of drivers in group: " + groupID, groupPersonList.size(), groupDriverList.size());
         
-        // delete 
-        changedCount = userDAO.deleteByID(editUser.getUserID());
-        assertEquals("User delete count " + editUser.getUserID(), Integer.valueOf(1), changedCount);
+        // delete all 
+        for (Driver driver : groupDriverList)
+        {
+            Integer changedCount = driverDAO.deleteByID(driver.getDriverID());
+            assertEquals("User delete count " + driver.getDriverID(), Integer.valueOf(1), changedCount);
+        }
         
-        // user list should have decreased by 1
-        userList = userDAO.getUsersInGroupHierarchy(person.getGroupID());
-        assertEquals("number of users in group: " + person.getGroupID(), 1, userList.size());
-*/       
+        // driver list should be empty
+        groupDriverList = driverDAO.getAllDrivers(groupID);
+        assertEquals("number of drivers in group: " + groupID, 0, groupDriverList.size());
         
+        // restore all 
+        for (Driver driver : driverList)
+        {
+            driver.setStatus(DriverStatus.ACTIVE);
+            Integer changedCount = driverDAO.update(driver);
+            assertEquals("User update count " + driver.getDriverID(), Integer.valueOf(1), changedCount);
+        }
+        
+        // driver  list should be same
+        groupDriverList = driverDAO.getAllDrivers(groupID);
+        assertEquals("number of drivers in group: " + groupID, groupPersonList.size(), groupDriverList.size());
+    }
+    private void assignDevicesToVehicles(Integer groupID)
+    {
+        VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
+        vehicleDAO.setSiloService(siloService);
+
+        List<Vehicle> groupVehicles = vehicleDAO.getVehiclesInGroupHierarchy(groupID);
+        assertEquals(Integer.valueOf(VEHICLE_COUNT), Integer.valueOf(groupVehicles.size()));
+        
+        int deviceIdx = 0;
+        for (Vehicle vehicle : groupVehicles)
+        {
+            Integer deviceID = deviceList.get(deviceIdx++).getDeviceID();
+            vehicleDAO.setVehicleDevice(vehicle.getVehicleID(), deviceID);
+//            assertEquals("Vehicle setDevice count", Integer.valueOf(1), changedCount);
+            
+            Vehicle returnedVehicle = vehicleDAO.findByID(vehicle.getVehicleID());
+            
+            assertEquals("setVehicleDevice failed", deviceID, returnedVehicle.getDeviceID());
+            
+        }
+    }
+
+    private void assignDriversToVehicles(Integer groupID)
+    {
+        VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
+        vehicleDAO.setSiloService(siloService);
+
+        List<Vehicle> groupVehicles = vehicleDAO.getVehiclesInGroupHierarchy(groupID);
+        assertEquals(Integer.valueOf(VEHICLE_COUNT), Integer.valueOf(groupVehicles.size()));
+        
+        int driverIdx = 0;
+        for (Vehicle vehicle : groupVehicles)
+        {
+            Integer driverID = driverList.get(driverIdx++).getDriverID();
+            vehicleDAO.setVehicleDriver(vehicle.getVehicleID(), driverID);
+// TODO:  ask David if this should return a change count             
+//            assertEquals("Vehicle setDriver count", Integer.valueOf(1), changedCount);
+            
+            Vehicle returnedVehicle = vehicleDAO.findByID(vehicle.getVehicleID());
+            
+            assertEquals("setVehicleDriver failed", driverID, returnedVehicle.getDriverID());
+            
+        }
     }
 
 }

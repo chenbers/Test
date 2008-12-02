@@ -104,6 +104,10 @@ public class User extends BaseEntity
 
     public Integer getPersonID()
     {
+        if (personID == null && person != null)
+        {
+            setPersonID(person.getPersonID());
+        }
         return personID;
     }
 

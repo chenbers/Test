@@ -824,4 +824,25 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         return null;
     }
 
+    @Override
+    public List<Map<String, Object>> getFwdCmds(Integer deviceID, Integer status)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> queueFwdCmd(Integer deviceID, Map<String, Object> fwdMap)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> updateFwdCmd(Integer fwdID, Integer status)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

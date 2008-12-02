@@ -103,7 +103,16 @@ public interface SiloService extends HessianService
 
     List<Map<String, Object>> getUsersByGroupID(Integer groupID);
 
- // Methods currently supported in back end in the central service:    
+    // ------- Forward Commands  ----------
+    List<Map<String, Object>> getFwdCmds(Integer deviceID, Integer status);
+    
+    Map<String, Object> queueFwdCmd(Integer deviceID, Map<String, Object> fwdMap);
+    
+    // TODO: do we need this one??  
+    Map<String, Object> updateFwdCmd(Integer fwdID,Integer status);
+
+    
+// Methods currently supported in back end in the central service:    
     List<Map<String, Object>> getStates();
     
     
@@ -115,7 +124,7 @@ public interface SiloService extends HessianService
 //    mcmid - deviceID
 //    vin   - vehicleID
     Map<String, Object> getID(String name, String value);
-  //--------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------
 
     
 // Additional Methods we added    

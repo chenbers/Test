@@ -7,6 +7,8 @@ import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.proserver.CentralService;
 import com.inthinc.pro.model.Device;
+import com.inthinc.pro.model.ForwardCommand;
+import com.inthinc.pro.model.ForwardCommandStatus;
 
 public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer> implements DeviceDAO
 {
@@ -21,5 +23,24 @@ public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer> impleme
         {
             return Collections.emptyList();
         }
+    }
+
+    @Override
+    public List<ForwardCommand> getForwardCommands(Integer deviceID, ForwardCommandStatus status)
+    {
+        try
+        {
+            return getMapper().convertToModelObject(getSiloService().getFwdCmds(deviceID, status.getCode()), ForwardCommand.class);
+        }
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public Integer queueForwardCommand(Integer deviceID, ForwardCommand forwardCommand)
+    {
+        return getChangedCount(getSiloService().queueFwdCmd(deviceID, getMapper().convertToMap(forwardCommand)));
     }
 }

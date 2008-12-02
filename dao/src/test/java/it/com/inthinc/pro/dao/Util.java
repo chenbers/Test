@@ -11,8 +11,11 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import com.inthinc.pro.model.BaseEnum;
 
@@ -65,7 +68,15 @@ public class Util
                     {
                         compareObjects(value1List.get(v), value2List.get(v));
                     }
-                        
+                }
+                else if (Date.class.isInstance(value1))
+                {
+                    long diff = ((Date)value1).getTime() - ((Date)value2).getTime();
+                    
+                    if (diff > 3000 || diff < -3000)
+                    {
+                        assertEquals(value1.getClass().getSimpleName() + " Field: " + key + " ", ((Date)value1).getTime(), ((Date)value2).getTime());
+                    }
                 }
                 else
                 {
@@ -97,6 +108,17 @@ public class Util
                 fail("InvocationTargetException");
             }
         }
+        
+    }
+
+    public static Date genDate(Integer year, Integer month, Integer day)
+    {
+        GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+        cal.set(year, month, day, 0, 0, 1);
+        cal.setTimeInMillis((cal.getTimeInMillis()/1000l) * 1000l);
+        
+        
+        return cal.getTime();
         
     }
 
