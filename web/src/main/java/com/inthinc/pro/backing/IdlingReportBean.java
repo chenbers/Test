@@ -53,6 +53,10 @@ public class IdlingReportBean extends BaseBean
     private Date endDate = new Date();
     private Date defaultStartDate = new Date();
     private Date defaultEndDate = new Date();
+    private String badDates = "Search dates: * Okay.";
+    private final static String NO_START_DATE = " * No start date, reset";
+    private final static String NO_END_DATE = " * No end date, reset";
+    private final static String START_BEFORE_END = " * Start before end, reset";
 
     private DriverDAO driverDAO;
     
@@ -164,11 +168,12 @@ public class IdlingReportBean extends BaseBean
         
         if ( this.idlingData.size() > 0 ) {
             this.idlingData.clear();
-        }      
+        }  
         
         // TODO: Always hit the database, no matter what, too much data to hold,
         // watch for date range as well....
         String name = this.searchFor.trim();
+        checkDates();
         List <IdlingReportItem> matchedIdlers = new ArrayList<IdlingReportItem>(); 
         
         // TODO: Date range check in here, something like all the idling between
@@ -195,6 +200,40 @@ public class IdlingReportBean extends BaseBean
         }
         
         resetCounts();       
+    }
+    
+    private void checkDates() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("Search Dates: ");
+        boolean good = true;
+        
+        // null?
+        if ( startDate == null ) {
+            startDate = defaultStartDate;
+            sb.append(NO_START_DATE);
+            good = false;
+        }
+        if ( endDate == null ) {
+            endDate = defaultEndDate;
+            sb.append(NO_END_DATE);
+            good = false;
+        }
+        
+        // start after end?
+        if ( startDate.getTime() > endDate.getTime() ) {
+            startDate = defaultStartDate;
+            endDate = defaultEndDate;
+            sb.append(START_BEFORE_END);
+            good = false;
+        }
+        
+        // all good?
+        if ( good ) {
+            sb.append("Okay");
+        }
+        sb.append(".");
+        
+        badDates = sb.toString();
     }
     
     private void loadResults(List <IdlingReportItem> idlingsData) 
@@ -483,6 +522,18 @@ public class IdlingReportBean extends BaseBean
     public void setDefaultEndDate(Date defaultEndDate)
     {
         this.defaultEndDate = defaultEndDate;
+    }
+
+
+    public String getBadDates()
+    {
+        return badDates;
+    }
+
+
+    public void setBadDates(String badDates)
+    {
+        this.badDates = badDates;
     }
 }
 

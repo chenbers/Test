@@ -9,6 +9,13 @@
 		
 			<div class="datagrid">
 			<div class="spacer"></div> 
+						        	        	
+        	<table border="0">
+        		<tr>
+        			<td><h:outputText id="errMsg" value="#{idlingReportBean.badDates}"/>
+        			</td>
+        		</tr>
+        	</table>					
 			
         	<rich:datascroller id="topScroller" for="items" immediate="true" 
         		scrollerListener="#{idlingReportBean.scrollerListener}"
