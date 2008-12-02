@@ -175,7 +175,7 @@ public class VehicleReportBean extends BaseBean
             
             //Driver
             if ( v.getDriverID() != null ) {
-                d = driverDAO.getDriverByID(v.getDriverID());
+                d = driverDAO.findByID(v.getDriverID());
             //None assigned
             } else {
                 Person p = new Person();

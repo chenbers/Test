@@ -18,8 +18,4 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
         return driverList;
     }
 
-    public Driver getDriverByID(Integer driverID)
-    {
-        return getMapper().convertToModelObject(this.getSiloService().getDriverByID(driverID), Driver.class);
-    }
 }

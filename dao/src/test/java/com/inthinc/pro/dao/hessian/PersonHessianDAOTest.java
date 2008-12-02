@@ -1,5 +1,8 @@
 package com.inthinc.pro.dao.hessian;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -9,9 +12,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.mock.proserver.CentralServiceCreator;
 import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.User;
 
 public class PersonHessianDAOTest
 {
@@ -54,4 +59,28 @@ public class PersonHessianDAOTest
             throw t;
         }
     }
+    
+    @Test
+    public void findByEmail()
+    {
+        
+        Exception ex = null;
+        Person person= null;
+        try
+        {
+            person = personHessianDAO.findByEmail("hello@yahoo.com");
+        }
+        catch (EmptyResultSetException e)
+        {
+            ex = e;
+        }
+
+        assertNull("expected no user to be returned" , person);
+        assertNotNull("expected an empty result set" , ex);
+        
+        person = personHessianDAO.findByEmail("custom101@email.com");
+        
+        assertNotNull("expected to retrieve a user record", person);
+    }
+    
 }

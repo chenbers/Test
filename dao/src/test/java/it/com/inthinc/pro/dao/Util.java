@@ -75,7 +75,7 @@ public class Util
                     }
                     else if (value1 == null)
                     {
-                        assertNotNull(value1.getClass().getSimpleName() + " Field: " + key + " ", value1 );
+                        assertNotNull(value2.getClass().getSimpleName() + " Field: " + key + " ", value1 );
                     }
                     else if (value2 == null)
                     {

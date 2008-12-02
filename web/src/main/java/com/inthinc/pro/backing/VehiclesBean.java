@@ -27,6 +27,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleStatus;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.util.MessageUtil;
 
@@ -165,8 +166,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
                 else if (column.equals("group"))
                     matches = (vehicle.getGroup() != null) && vehicle.getGroup().getName().toLowerCase().startsWith(filterWord);
                 else if (column.equals("active"))
-                    matches = (vehicle.getActive() != null)
-                            && ((vehicle.getActive() && MessageUtil.getMessageString("active").toLowerCase().startsWith(filterWord)) || ((!vehicle.getActive() && MessageUtil
+                    matches = (vehicle.getStatus() != null)
+                            && ((vehicle.getStatus().equals(VehicleStatus.ACTIVE) && MessageUtil.getMessageString("active").toLowerCase().startsWith(filterWord)) || ((!vehicle.getStatus().equals(VehicleStatus.ACTIVE) && MessageUtil
                                     .getMessageString("inactive").toLowerCase().startsWith(filterWord))));
                 else
                     try
@@ -217,7 +218,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     protected VehicleView createAddItem()
     {
         final Vehicle vehicle = new Vehicle();
-        vehicle.setActive(true);
+        vehicle.setStatus(VehicleStatus.ACTIVE);
         return createVehicleView(vehicle);
     }
 
@@ -345,7 +346,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         for (final VehicleView vehicle : saveItems)
         {
             if (create)
-                vehicle.setVehicleID(vehicleDAO.create(getUser().getPerson().getAccountID(), vehicle));
+                vehicle.setVehicleID(vehicleDAO.create(getUser().getPerson().getGroupID(), vehicle));
             else
                 vehicleDAO.update(vehicle);
 
@@ -480,7 +481,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
             super.setGroupID(groupID);
             group = null;
 
-            if ((driver != null) && !driver.getGroupID().equals(groupID))
+            if ((driver != null) && !driver.getPerson().getGroupID().equals(groupID))
                 setDriverID(null);
             driver = null;
             bean.drivers = null;

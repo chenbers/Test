@@ -1,9 +1,12 @@
 package com.inthinc.pro.dao.hessian;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.UserDAO;
-import com.inthinc.pro.dao.hessian.mapper.SimpleMapper;
+import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.model.User;
 
 public class UserHessianDAO extends GenericHessianDAO<User, Integer> implements UserDAO
@@ -13,33 +16,29 @@ public class UserHessianDAO extends GenericHessianDAO<User, Integer> implements 
     
 
     @Override
-    public User findByEmail(String email)
-    {
-        Integer userId = getReturnKey(getSiloService().getUserByEmail(email));
-        return findByID(userId);
-    }
-
-    @Override
     public User findByUserName(String username)
     {
         logger.debug("getting user by name: " + username);
-        Integer userId = getReturnKey(getSiloService().getUserByName(username));
+        
+        
+        Integer userId = getReturnKey(getSiloService().getID("username", username));
         return findByID(userId);
     }
 
-//    @ConvertColumnToField(columnName = "phone")
-//    public void phoneNumbersToModel(User user, Object value)
-//    {
-//        if (user == null || value == null)
-//            return;
-//
-//        if (value instanceof String)
-//        {
-//            String[] phoneNumbers = ((String) value).split(";", 2);
-//            if (phoneNumbers.length > 0)
-//                user.getPerson().setWorkPhone(phoneNumbers[0]);
-//            if (phoneNumbers.length > 1)
-//                user.getPerson().setHomePhone(phoneNumbers[1]);
-//        }
-//    }
+
+
+    @Override
+    public List<User> getUsersInGroupHierarchy(Integer groupID)
+    {
+        
+        try
+        {
+            return getMapper().convertToModelObject(getSiloService().getUsersByGroupID(groupID), User.class);
+        }
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
+
+    }
 }

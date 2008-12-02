@@ -62,7 +62,7 @@ public class OrganizationBean extends BaseBean{
 	}
 	
 	public String getAccountName(){
-		return getUser().getPerson().getAccountID().toString();
+		return getAccountID().toString();
 	}
 	
 	

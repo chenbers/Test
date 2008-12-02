@@ -78,30 +78,23 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
-    public Map<String, Object> getUserByEmail(String email) throws ProDAOException
+    public Map<String, Object> getID(String name, String value) throws ProDAOException
     {
         Map<String, Object> returnMap = null;
-        Person person = MockData.getInstance().retrieveObject(Person.class, "email", email);
-        if ((person != null) && (person.getUser() != null))
+        if (name.equals("email"))
         {
-            returnMap = TempConversionUtil.createMapFromObject(person.getUser());
+            returnMap = MockData.getInstance().lookup(Person.class, name, value);
         }
+        else if (name.equals("username"))
+        {
+            returnMap = MockData.getInstance().lookup(User.class, name, value);
+            
+        }
+            
 
         if (returnMap == null)
         {
-            throw new EmptyResultSetException("No user for email: " + email, "getUserByEmail", 0);
-        }
-        return returnMap;
-    }
-
-    @Override
-    public Map<String, Object> getUserByName(String username) throws ProDAOException
-    {
-        Map<String, Object> returnMap = MockData.getInstance().lookup(User.class, "username", username);
-
-        if (returnMap == null)
-        {
-            throw new EmptyResultSetException("No user for username: " + username, "getUserByUsername", 0);
+            throw new EmptyResultSetException("No ID for name/value: " + name + "/" + value, "getID", 0);
         }
         return returnMap;
     }
@@ -660,32 +653,6 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         return returnList;
     }
 
-    @Override
-    public Map<String, Object> getVehicleByID(Integer vehicleID) throws ProDAOException
-    {
-        Map<String, Object> returnMap = MockData.getInstance().lookup(Vehicle.class, "vehicleID", vehicleID);
-
-        if (returnMap == null)
-        {
-            throw new EmptyResultSetException("No vehicle for vehicleID: " + vehicleID, "getVehicleByID", 0);
-        }
-        return returnMap;        
-    }
-    
-    
-    @Override
-    public Map<String, Object> getDriverByID(Integer driverID) throws ProDAOException
-    {
-        Map<String, Object> returnMap = MockData.getInstance().lookup(Driver.class, "driverID", driverID);
-
-        if (returnMap == null)
-        {
-            throw new EmptyResultSetException("No driver for driverID: " + driverID, "getDriverByID", 0);
-        }
-        return returnMap;        
-    }
-    
-    
     @Override
     public List<Map<String, Object>> getTablePreferencesByUserID(Integer userID) throws ProDAOException
     {

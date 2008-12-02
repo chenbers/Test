@@ -20,7 +20,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 
+import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.UserDAO;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.validators.EmailValidator;
 
@@ -38,6 +40,7 @@ public class RetrieveCredentialsBean extends BaseBean
     private UIInput                       emailInput;
     private User                          validUser;
     private UserDAO                       userDAO;
+    private PersonDAO                       personDAO;
 
     private boolean                       success   = false;
 
@@ -125,7 +128,8 @@ public class RetrieveCredentialsBean extends BaseBean
             String emailStr = value.toString();
             if (new EmailValidator().isEmailValid(emailStr))
             {
-                validUser = userDAO.findByEmail(emailStr);
+                Person person = personDAO.findByEmail(emailStr);
+                validUser = person.getUser();
             }
             
             if (validUser == null)
@@ -194,5 +198,15 @@ public class RetrieveCredentialsBean extends BaseBean
         
         return "go_retrieveCredentialsComplete";
 
+    }
+
+    public PersonDAO getPersonDAO()
+    {
+        return personDAO;
+    }
+
+    public void setPersonDAO(PersonDAO personDAO)
+    {
+        this.personDAO = personDAO;
     }
 }

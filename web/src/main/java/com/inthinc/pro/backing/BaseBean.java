@@ -43,6 +43,12 @@ public class BaseBean
         return getProUser().getGroupHierarchy();
     }
     
+    public Integer getAccountID()
+    {
+        return getProUser().getGroupHierarchy().getTopGroup().getAccountID();
+        
+    }
+    
     public ProUser getProUser()
     {
         return (ProUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

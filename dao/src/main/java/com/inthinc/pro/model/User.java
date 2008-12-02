@@ -1,16 +1,41 @@
 package com.inthinc.pro.model;
 
+import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
 public class User extends BaseEntity
 {
     @ID
     private Integer userID;
+
+    private Integer personID;
+    
+    @Column(updateable = false)
     private Person  person;
+    
+    @Column(name = "roleID")
     private Role    role;
-    private Boolean active;
+    
+    private UserStatus status;
+    
     private String  username;
     private String  password;
+    
+    public User(Integer userID, Integer personID, Role role, UserStatus status, String username, String password)
+    {
+        super();
+        this.userID = userID;
+        this.personID = personID;
+        this.role = role;
+        this.status = status;
+        this.username = username;
+        this.password = password;
+    }
+
+    public User()
+    {
+        super();
+    }
 
     public Integer getUserID()
     {
@@ -64,11 +89,27 @@ public class User extends BaseEntity
 
     public Boolean getActive()
     {
-        return active;
+        return status.equals(UserStatus.ACTIVE);
     }
 
-    public void setActive(Boolean active)
+    public UserStatus getStatus()
     {
-        this.active = active;
+        return status;
     }
+
+    public void setStatus(UserStatus status)
+    {
+        this.status = status;
+    }
+
+    public Integer getPersonID()
+    {
+        return personID;
+    }
+
+    public void setPersonID(Integer personID)
+    {
+        this.personID = personID;
+    }
+
 }

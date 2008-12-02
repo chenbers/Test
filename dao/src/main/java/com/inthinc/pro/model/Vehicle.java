@@ -10,18 +10,17 @@ public class Vehicle extends BaseEntity
 
     @ID
     private Integer           vehicleID;
-    @Column(name = "acctID")
-    private Integer           accountID;
+
     private Integer           groupID;
+    // costPerHour?? not in db
     private Integer           costPerHour;                            // in cents
-    private Boolean           active;
+    private VehicleStatus   status;
     private String            name;
     private String            make;
     private String            model;
-    private String            year;
+    private Integer            year;
     private String            color;
-    @Column(name = "vtype")
-    private VehicleType       type;
+    private VehicleType       vtype;
     @Column(name = "vin")
     private String            VIN;                                    // 17 chars
     private Integer           weight;
@@ -48,16 +47,6 @@ public class Vehicle extends BaseEntity
         this.vehicleID = vehicleID;
     }
 
-    public Integer getAccountID()
-    {
-        return accountID;
-    }
-
-    public void setAccountID(Integer accountID)
-    {
-        this.accountID = accountID;
-    }
-
     public Integer getGroupID()
     {
         return groupID;
@@ -76,16 +65,6 @@ public class Vehicle extends BaseEntity
     public void setCostPerHour(Integer costPerHour)
     {
         this.costPerHour = costPerHour;
-    }
-
-    public Boolean getActive()
-    {
-        return active;
-    }
-
-    public void setActive(Boolean active)
-    {
-        this.active = active;
     }
 
     public String getName()
@@ -118,12 +97,12 @@ public class Vehicle extends BaseEntity
         this.model = model;
     }
 
-    public String getYear()
+    public Integer getYear()
     {
         return year;
     }
 
-    public void setYear(String year)
+    public void setYear(Integer year)
     {
         this.year = year;
     }
@@ -138,15 +117,6 @@ public class Vehicle extends BaseEntity
         this.color = color;
     }
 
-    public VehicleType getType()
-    {
-        return type;
-    }
-
-    public void setType(VehicleType type)
-    {
-        this.type = type;
-    }
 
     public String getVIN()
     {
@@ -206,5 +176,46 @@ public class Vehicle extends BaseEntity
     public void setDeviceID(Integer deviceID)
     {
         this.deviceID = deviceID;
+    }
+
+    public Vehicle(Integer vehicleID, Integer groupID, Integer costPerHour, VehicleStatus status, String name, String make, String model, 
+            Integer year, String color,
+            VehicleType vtype, String vin, Integer weight, String license, State state)
+    {
+        super();
+        this.vehicleID = vehicleID;
+        this.groupID = groupID;
+        this.costPerHour = costPerHour;
+        this.status = status;
+        this.name = name;
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.color = color;
+        this.vtype = vtype;
+        VIN = vin;
+        this.weight = weight;
+        this.license = license;
+        this.state = state;
+    }
+
+    public VehicleStatus getStatus()
+    {
+        return status;
+    }
+
+    public void setStatus(VehicleStatus status)
+    {
+        this.status = status;
+    }
+
+    public VehicleType getVtype()
+    {
+        return vtype;
+    }
+
+    public void setVtype(VehicleType vtype)
+    {
+        this.vtype = vtype;
     }
 }

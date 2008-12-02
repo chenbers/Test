@@ -26,7 +26,8 @@ public class Device extends BaseEntity
     private Integer           baselineID;
     private DeviceStatus      status;
     private String            name;
-    private String            mcmid;
+    @Column(name = "mcmid")
+    private String            imei;
     private String            sim;
     private String            phone;
     private String            ephone;
@@ -44,6 +45,24 @@ public class Device extends BaseEntity
     private Integer           hardTurn;
     @Column(name = "vert")
     private Integer           hardVertical;
+
+    public Device()
+    {
+        super();
+    }
+    public Device(Integer deviceID, Integer accountID, Integer baselineID, DeviceStatus status, String name, String imei, String sim, String phone, String ephone)
+    {
+        super();
+        this.deviceID = deviceID;
+        this.accountID = accountID;
+        this.baselineID = baselineID;
+        this.status = status;
+        this.name = name;
+        this.imei = imei;
+        this.sim = sim;
+        this.phone = phone;
+        this.ephone = ephone;
+    }
 
     public Integer getDeviceID()
     {
@@ -105,15 +124,6 @@ public class Device extends BaseEntity
         this.name = name;
     }
 
-    public String getMcmid()
-    {
-        return mcmid;
-    }
-
-    public void setMcmid(String mcmid)
-    {
-        this.mcmid = mcmid;
-    }
 
     public String getSim()
     {
@@ -269,4 +279,13 @@ public class Device extends BaseEntity
             this.speedSet = sb.toString();
         }
     }
+    public String getImei()
+    {
+        return imei;
+    }
+    public void setImei(String imei)
+    {
+        this.imei = imei;
+    }
+
 }

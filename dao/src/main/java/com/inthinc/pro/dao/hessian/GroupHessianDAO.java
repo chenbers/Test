@@ -60,7 +60,8 @@ System.out.println("all Groups size" + allGroups.size());
     {
         try
         {
-            return getMapper().convertToModelObject(getSiloService().getGroupsByAcctID(acctID), Group.class);
+            List<Map<String, Object>> groups = getSiloService().getGroupsByAcctID(acctID);
+            return getMapper().convertToModelObject(groups, Group.class);
         }
         catch (EmptyResultSetException e)
         {

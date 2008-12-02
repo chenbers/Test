@@ -38,29 +38,6 @@ public class UserHessianDAOTest
         
     }
     
-    @Test
-    public void findByEmail()
-    {
-        
-        Exception ex = null;
-        User user = null;
-        try
-        {
-            user = userHessianDAO.findByEmail("hello@yahoo.com");
-        }
-        catch (EmptyResultSetException e)
-        {
-            ex = e;
-        }
-
-        assertNull("expected no user to be returned" , user);
-        assertNotNull("expected an empty result set" , ex);
-        
-        user = userHessianDAO.findByEmail("custom101@email.com");
-        
-        assertNotNull("expected to retrieve a user record", user);
-        assertEquals("custom101", user.getUsername());
-    }
 
     @Test
     public void findByUsername()

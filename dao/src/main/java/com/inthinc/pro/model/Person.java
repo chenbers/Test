@@ -10,13 +10,14 @@ public class Person extends BaseEntity
 {
     @ID
     private Integer          personID;
-    @Column(name = "acctID")
-    private Integer          accountID;
     private Integer          groupID;
-    @Column(name = "tzID")
+    @Column(name = "tzName")
     private TimeZone         timeZone;
     private Integer          costPerHour; // in cents
     // contact information
+    @Column(name = "addrID")
+    private Integer          addressID;
+    @Column(updateable = false)
     private Address          address;
     private String           homePhone;
     private String           workPhone;
@@ -41,6 +42,38 @@ public class Person extends BaseEntity
     @Column(updateable = false)
     private Driver driver;
 
+    public Person()
+    {
+        super();
+    }
+    
+    public Person(Integer personID, Integer groupID, TimeZone timeZone, Integer costPerHour, Integer addressID, String homePhone, String workPhone, String email,
+            String empid, Integer reportsTo, String title, String dept, String first, String middle, String last, String suffix, Gender gender, Integer height, Integer weight,
+            Date dob)
+    {
+        super();
+        this.personID = personID;
+        this.groupID = groupID;
+        this.timeZone = timeZone;
+        this.costPerHour = costPerHour;
+        this.addressID = addressID;
+        this.homePhone = homePhone;
+        this.workPhone = workPhone;
+        this.email = email;
+        this.empid = empid;
+        this.reportsTo = reportsTo;
+        this.title = title;
+        this.dept = dept;
+        this.first = first;
+        this.middle = middle;
+        this.last = last;
+        this.suffix = suffix;
+        this.gender = gender;
+        this.height = height;
+        this.weight = weight;
+        this.dob = dob;
+    }
+
     public Integer getPersonID()
     {
         return personID;
@@ -49,16 +82,6 @@ public class Person extends BaseEntity
     public void setPersonID(Integer personID)
     {
         this.personID = personID;
-    }
-
-    public Integer getAccountID()
-    {
-        return accountID;
-    }
-
-    public void setAccountID(Integer accountID)
-    {
-        this.accountID = accountID;
     }
 
     public Integer getGroupID()
@@ -269,6 +292,16 @@ public class Person extends BaseEntity
     public void setDriver(Driver driver)
     {
         this.driver = driver;
+    }
+
+    public Integer getAddressID()
+    {
+        return addressID;
+    }
+
+    public void setAddressID(Integer addressID)
+    {
+        this.addressID = addressID;
     }
 
 }

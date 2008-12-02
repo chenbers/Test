@@ -20,10 +20,6 @@ public class Driver extends BaseEntity
     @Column(updateable = false)
     private Person person;
 
-    
-    // cj - temporarily added this back in until we can sort out the driver/user/person stuff -- this was breaking us
-    private Integer groupID;
-    
     public Driver()
     {
         super();
@@ -107,16 +103,6 @@ public class Driver extends BaseEntity
     public void setExpiration(Date expiration)
     {
         this.expiration = expiration;
-    }
-
-    public Integer getGroupID()
-    {
-        return groupID;
-    }
-
-    public void setGroupID(Integer groupID)
-    {
-        this.groupID = groupID;
     }
 
     public Person getPerson()

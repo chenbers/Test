@@ -53,7 +53,7 @@ public abstract class AbstractServiceMockImpl
         for (Group group : hierarchyGroups)
         {
             SearchCriteria searchCriteria = new SearchCriteria();
-            searchCriteria.addKeyValue("groupID", group.getGroupID());
+            searchCriteria.addKeyValue("person:groupID", group.getGroupID());
     
             List<Driver> driverList = MockData.getInstance().retrieveObjectList(Driver.class, searchCriteria);
             returnDriverList.addAll(driverList);

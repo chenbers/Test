@@ -365,7 +365,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
                 person.setDriver(null);
 
             if (create)
-                person.setPersonID(personDAO.create(getUser().getPerson().getAccountID(), person));
+                person.setPersonID(personDAO.create(getUser().getPerson().getGroupID(), person));
             else
                 personDAO.update(person);
 

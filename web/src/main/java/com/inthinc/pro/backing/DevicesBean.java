@@ -76,7 +76,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     protected List<DeviceView> loadItems()
     {
         // get the devices
-        final List<Device> plainDevices = deviceDAO.getDevicesByAcctID(getUser().getPerson().getAccountID());
+        final List<Device> plainDevices = deviceDAO.getDevicesByAcctID(getAccountID());
 
         // convert the Devices to DeviceViews
         final LinkedList<DeviceView> items = new LinkedList<DeviceView>();
@@ -251,7 +251,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             }
 
             if (create)
-                device.setDeviceID(deviceDAO.create(getUser().getPerson().getAccountID(), device));
+                device.setDeviceID(deviceDAO.create(getAccountID(), device));
             else
                 deviceDAO.update(device);
 

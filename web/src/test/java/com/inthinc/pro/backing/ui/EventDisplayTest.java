@@ -26,14 +26,12 @@ public class EventDisplayTest
         Person person = new Person();
         person.setEmpid(String.valueOf(100));
         person.setPersonID(100);
-        person.setAccountID(1);
         person.setGroupID(1);
         person.setFirst("John");
         person.setLast("Doe");
         person.setTimeZone(TimeZone.getTimeZone("US/Pacific"));
         Driver driver = new Driver();
         driver.setDriverID(200);
-        driver.setGroupID(1);
         driver.setPersonID(100);
         driver.setPerson(person);
         person.setDriver(driver);

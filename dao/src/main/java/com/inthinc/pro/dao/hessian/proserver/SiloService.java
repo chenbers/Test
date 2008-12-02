@@ -59,12 +59,14 @@ public interface SiloService extends HessianService
 
     Map<String, Object> updateVehicle(Integer vehicleID, Map<String, Object> vehicleMap) throws ProDAOException;
   
-// ?? TODO: should backend support this one    
-//    List<Map<String, Object>> getVehiclesByAcctID(Integer acctID) throws ProDAOException;
-
 // ?? TODO: does this get the entire group hierarchy or just the one group?    
     List<Map<String, Object>> getVehiclesByGroupID(Integer groupID) throws ProDAOException;
 
+    Map<String, Object> setVehicleDriver(Integer vehicleID, Integer driverID) throws ProDAOException;
+
+    Map<String, Object> setVehicleDevice(Integer vehicleID, Integer deviceID) throws ProDAOException;
+
+    
     // ------- Person  ----------
     Map<String, Object> createPerson(Integer acctID, Map<String, Object> personMap) throws ProDAOException;
 
@@ -74,7 +76,6 @@ public interface SiloService extends HessianService
     Map<String, Object> getPerson(Integer personID) throws ProDAOException;
 
     Map<String, Object> updatePerson(Integer personID, Map<String, Object> personMap) throws ProDAOException;
-
 
     List<Map<String, Object>> getPersonsByGroupID(Integer groupID);
 
@@ -102,16 +103,18 @@ public interface SiloService extends HessianService
 
     List<Map<String, Object>> getUsersByGroupID(Integer groupID);
 
-// TODO: ask David to add these
-    Map<String, Object> getUserByName(String username) throws ProDAOException;
-
-    Map<String, Object> getUserByEmail(String email) throws ProDAOException;
-
-
-
  // Methods currently supported in back end in the central service:    
     List<Map<String, Object>> getStates();
-
+    
+    
+//    used by Portal and custServer to see if the value for
+//    this named data has an ID associated with it.
+//    The names and IDs returned are listed below:
+//    username - userID
+//    email - personID
+//    mcmid - deviceID
+//    vin   - vehicleID
+    Map<String, Object> getID(String name, String value);
   //--------------------------------------------------------------------------------------------------------
 
     
@@ -126,18 +129,7 @@ public interface SiloService extends HessianService
 
     Map<String, Object> getLastTrip(Integer driverID) throws ProDAOException;
     
-    Map<String, Object> setVehicleDriver(Integer vehicleID, Integer driverID) throws ProDAOException;
-
-    Map<String, Object> setVehicleDevice(Integer vehicleID, Integer deviceID) throws ProDAOException;
     
-    /**
-     * 
-     * @param driverID
-     * @return
-     * @throws ProDAOException
-     */
-    
-    Map<String, Object> getDriverByID(Integer driverID) throws ProDAOException;
 
     /**
      * getRedFlags -- retrieves all red flags for drivers in the groupID.
@@ -148,8 +140,6 @@ public interface SiloService extends HessianService
      */
     List<Map<String, Object>> getRedFlags(Integer groupID) throws ProDAOException;
 
-    Map<String, Object> getVehicleByID(Integer vehicleID) throws ProDAOException;
-    
     
     List<Map<String, Object>> getTablePreferencesByUserID(Integer userID) throws ProDAOException;
 

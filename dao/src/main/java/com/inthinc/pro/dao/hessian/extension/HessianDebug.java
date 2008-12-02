@@ -95,6 +95,10 @@ public class HessianDebug
                 {
                     dumpParams((Map<String, Object>) args[i]);
                 }
+                else if (args[i] != null)
+                {
+                    System.out.println("arg[" + i + "] " + args[i].toString());
+                }
             }
         }
         

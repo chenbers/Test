@@ -32,6 +32,7 @@
         <property name="encryptPassword" value="j$2yptt3xt3ncrypt0r23cr3tp422w0rd" />
         <property name="messageSource" ref="messageSource" />
         <property name="userDAO" ref="userDAO" />
+        <property name="personDAO" ref="personDAO" />
     </bean>
     <bean id="updateCredentialsBean" class="com.inthinc.pro.backing.UpdateCredentialsBean" scope="session" parent="baseBean">
         <property name="encryptPassword" value="j$2yptt3xt3ncrypt0r23cr3tp422w0rd" />

@@ -64,7 +64,7 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         adminBean.setFilterValue(getFilterValue());
         assertNotNull(adminBean.getFilteredItems());
         assertTrue(adminBean.getFilteredItems().size() > 0);
-        assertTrue(adminBean.getFilteredItems().size() < adminBean.getItems().size());
+        assertTrue(adminBean.getFilteredItems().size() <= adminBean.getItems().size());
         assertEquals(adminBean.getFilteredItems().size(), adminBean.getItemCount());
 
         // clear filter

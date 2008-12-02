@@ -45,7 +45,9 @@ import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.TamperingEvent;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.User;
+import com.inthinc.pro.model.UserStatus;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleStatus;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneType;
 
@@ -253,11 +255,10 @@ public class MockData
         user.setUsername(username);
         user.setPassword(password);
         user.setRole(role);
-        user.setActive(active);
+        user.setStatus(UserStatus.ACTIVE);
         user.setPerson(new Person());
         user.getPerson().setPersonID(id);
         user.getPerson().setEmpid(String.valueOf(id));
-        user.getPerson().setAccountID(accountID);
         user.getPerson().setGroupID(groupID);
         user.getPerson().setHomePhone(homePhone);
         user.getPerson().setWorkPhone(workPhone);
@@ -463,7 +464,7 @@ public class MockData
         storeObject(event, Event.class);
         RedFlag redFlag = new RedFlag(idOffset+1, RedFlagLevel.valueOf(randomInt(1,3)), randomInt(0, 1) == 1, false, event);
         storeObject(redFlag);
-        if (driver.getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID))
+        if (driver.getPerson().getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID))
         {
             unitTestStats.totalRedFlags++;
             unitTestStats.totalWarningRedFlags++;
@@ -478,7 +479,7 @@ public class MockData
         storeObject(event, Event.class);
         redFlag = new RedFlag(idOffset+2, RedFlagLevel.valueOf(randomInt(1,3)), randomInt(0, 1) == 1, false, event);
         storeObject(redFlag);
-        if (driver.getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID))
+        if (driver.getPerson().getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID))
         {
             unitTestStats.totalRedFlags++;
             unitTestStats.totalWarningRedFlags++;
@@ -493,7 +494,7 @@ public class MockData
         storeObject(event, Event.class);
         redFlag = new RedFlag(idOffset+3, RedFlagLevel.valueOf(randomInt(1,3)), randomInt(0, 1) == 1, false, event);
         storeObject(redFlag);
-        if (driver.getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID))
+        if (driver.getPerson().getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID))
         {
             unitTestStats.totalRedFlags++;
             unitTestStats.totalWarningRedFlags++;
@@ -583,7 +584,7 @@ public class MockData
             
             storeObject(redFlag);
             
-            if (driver.getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID))
+            if (driver.getPerson().getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID))
             {
                 unitTestStats.totalRedFlags++;
             }
@@ -698,7 +699,6 @@ public class MockData
         }
         person.setEmpid(String.valueOf(id));
         person.setPersonID(id);
-        person.setAccountID(accountID);
         person.setGroupID(groupID);
         person.setFirst(first);
         person.setLast(last);
@@ -708,7 +708,6 @@ public class MockData
         person.setTimeZone(getRandomTimezone());
         Driver driver = new Driver();
         driver.setDriverID(id);
-        driver.setGroupID(groupID);
         driver.setPersonID(person.getPersonID());
         driver.setPerson(person);
         person.setDriver(driver);
@@ -742,10 +741,9 @@ public class MockData
     {
         final Vehicle vehicle = new Vehicle();
         vehicle.setVehicleID(id);
-        vehicle.setAccountID(accountID);
         vehicle.setGroupID(groupID);
         vehicle.setName(String.valueOf(id));
-        vehicle.setYear(String.valueOf(randomInt(1970, 2009)));
+        vehicle.setYear(randomInt(1970, 2009));
         vehicle.setMake(make);
         vehicle.setModel(model);
         vehicle.setColor(color);
@@ -753,7 +751,7 @@ public class MockData
         vehicle.setVIN(VIN);
         vehicle.setLicense(license);
         vehicle.setState(state);
-        vehicle.setActive(active);
+        vehicle.setStatus(VehicleStatus.ACTIVE);
         return vehicle;
     }
 
@@ -783,7 +781,7 @@ public class MockData
         return deviceList;
     }
 
-    private Device createDevice(Integer id, Integer accountID, Integer baselineID, DeviceStatus status, String name, String mcmid, String sim, String phone, String ephone,
+    private Device createDevice(Integer id, Integer accountID, Integer baselineID, DeviceStatus status, String name, String imei, String sim, String phone, String ephone,
             Date activated)
     {
         final Device device = new Device();
@@ -792,7 +790,7 @@ public class MockData
         device.setBaselineID(baselineID);
         device.setStatus(status);
         device.setName(name);
-        device.setMcmid(mcmid);
+        device.setImei(imei);
         device.setSim(sim);
         device.setPhone(phone);
         device.setEphone(ephone);

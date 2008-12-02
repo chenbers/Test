@@ -219,7 +219,7 @@ public class ZonesBean extends BaseBean
         final FacesContext context = FacesContext.getCurrentInstance();
 
         if (add)
-            item.setZoneID(zoneDAO.create(getUser().getPerson().getAccountID(), item));
+            item.setZoneID(zoneDAO.create(getUser().getPerson().getGroupID(), item));
         else
             zoneDAO.update(item);
 
