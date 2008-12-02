@@ -58,7 +58,7 @@
             								</li>
             								<li class="l">
             									<a4j:commandLink action="#{idlingReportBean.search}" 
-            										reRender="items,topScroller,bottomScroller,headerIdlings">
+            										reRender="items,topScroller,bottomScroller,headerIdlings,startCalendar,endCalendar,errMsg">
             										<button value="submit" class="left">
             											<span class="search">
             												<h:outputText value="#{messages.button_search}" />
@@ -73,17 +73,15 @@
             												<h:outputText value="Date Range " />
             											</td>
             											<td>            									
-            												<rich:calendar inputSize="10" 
+            												<rich:calendar id="startCalendar" inputSize="10" 
             													value="#{idlingReportBean.startDate}" 
-            													currentDate="#{idlingReportBean.startDate}"
-            													defaultTime="#{idlingReportBean.defaultStartDate}"
+            													currentDate="#{idlingReportBean.startDate}"            												
             													datePattern="dd MMM yy"/>
             											</td>
             											<td>
-            												<rich:calendar inputSize="10" 
+            												<rich:calendar id="endCalendar" inputSize="10" 
             													value="#{idlingReportBean.endDate}" 
-            													currendDate="#{idlingReportBean.endDate}"
-            													defaultTime="#{idlingReportBean.defaultEndDate}"
+            													currendDate="#{idlingReportBean.endDate}"            													
             													datePattern="dd MMM yy"/>
             											</td>
             										</tr>
