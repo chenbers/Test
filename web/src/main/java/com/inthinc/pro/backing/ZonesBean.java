@@ -10,7 +10,6 @@ import javax.faces.context.FacesContext;
 
 import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.model.Zone;
-import com.inthinc.pro.model.ZoneType;
 import com.inthinc.pro.util.MessageUtil;
 
 public class ZonesBean extends BaseBean
@@ -147,8 +146,6 @@ public class ZonesBean extends BaseBean
                 if (word.startsWith(filterWord))
                     return true;
         }
-        if ((item.getType() != null) && item.getType().getName().toLowerCase().startsWith(filterWord))
-            return true;
 
         return false;
     }
@@ -264,19 +261,6 @@ public class ZonesBean extends BaseBean
         return item;
     }
 
-    public Integer getZoneTypeCode()
-    {
-        if ((item != null) && (item.getType() != null))
-            return item.getType().getCode();
-        return null;
-    }
-
-    public void setZoneTypeCode(Integer zoneTypeCode)
-    {
-        if (editing && (item != null) && (zoneTypeCode != null))
-            item.setType(ZoneType.valueOf(zoneTypeCode));
-    }
-
     public String getPointsString()
     {
         if (item != null)
@@ -341,21 +325,14 @@ public class ZonesBean extends BaseBean
         if (item != null)
         {
             final FacesContext context = FacesContext.getCurrentInstance();
-            if ((item.getType() == null) || (item.getType() == ZoneType.NONE))
-            {
-                final String summary = MessageUtil.formatMessageString("zone_missingType", item.getName());
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                context.addMessage(null, message);
-                return false;
-            }
-            else if ((item.getPoints() == null) || (item.getPoints().size() == 0))
+            if ((item.getPoints() == null) || (item.getPoints().size() == 0))
             {
                 final String summary = MessageUtil.formatMessageString("zone_missing", item.getName());
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
                 context.addMessage(null, message);
                 return false;
             }
-            else if ((item.getType() == ZoneType.POLYGON) && (item.getPoints().size() <= 3))
+            else if (item.getPoints().size() <= 3)
             {
                 final String summary = MessageUtil.formatMessageString("zone_missingPoints", item.getName());
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);

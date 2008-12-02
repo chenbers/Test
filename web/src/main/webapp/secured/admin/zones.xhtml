@@ -11,11 +11,8 @@
 
   <ui:define name="scripts">
     <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{gmBean.key}" type="text/javascript"></script>
-    <script src="#{facesContext.externalContext.requestContextPath}/js/jsBaseClass.js" type="text/javascript"></script>
-    <script src="#{facesContext.externalContext.requestContextPath}/js/googleMap.js" type="text/javascript"></script>
     <script src="#{facesContext.externalContext.requestContextPath}/js/mapGeocode.js" type="text/javascript"></script>
-    <script src="#{facesContext.externalContext.requestContextPath}/js/mapIcons.js" type="text/javascript"></script>
-    <script src="#{facesContext.externalContext.requestContextPath}/js/zone.js" type="text/javascript"></script>
+    <script src="#{facesContext.externalContext.requestContextPath}/js/drawZone.js" type="text/javascript"></script>
     <script type="text/javascript">    
       var map;
     </script>
@@ -45,7 +42,6 @@
               <div class="panel_content">
 
                 <a4j:form id="zones-form">
-                  <h:inputHidden id="zoneType" value="#{zonesBean.zoneTypeCode}" />
                   <h:inputHidden id="points" value="#{zonesBean.pointsString}" />
                   <h:inputHidden id="address" value="#{zonesBean.address}" />
 
@@ -74,7 +70,7 @@
                         <f:facet name="header">
                           <h:outputText value="#{messages.zonesHeader_name}" />
                         </f:facet>
-                        <a4j:commandLink action="#{zonesBean.display}" value="#{item.name}" reRender="dataTable,zoneType,points,address,editZone" oncomplete="map.clearOverlays();centerMapAtZone(restoreZone());" style="#{(item.zoneID == zonesBean.item.zoneID) ? 'font-weight:bold' : ''}">
+                        <a4j:commandLink action="#{zonesBean.display}" value="#{item.name}" reRender="dataTable,points,address,editZone" oncomplete="showZone(false)" style="#{(item.zoneID == zonesBean.item.zoneID) ? 'font-weight:bold' : ''}">
                           <f:param name="zoneID" value="#{item.zoneID}" />
                         </a4j:commandLink>
                       </rich:column>
@@ -90,7 +86,7 @@
                         <f:facet name="header">
                           <h:outputText value=" " />
                         </f:facet>
-                        <a4j:commandLink action="#{zonesBean.edit}" value="#{messages.adminTable_edit}" reRender="dataTable,zoneType,points,address,editZone,zoneName,zoneAddress" oncomplete="map.clearOverlays();centerMapAtZone(restoreZone());">
+                        <a4j:commandLink action="#{zonesBean.edit}" value="#{messages.adminTable_edit}" reRender="dataTable,points,address,editZone,zoneName,zoneAddress" oncomplete="showZone(true)">
                           <f:param name="zoneID" value="#{item.zoneID}" />
                         </a4j:commandLink>
                       </rich:column>
@@ -137,29 +133,19 @@
                           <li class="l"><button value="submit" class="left" onclick="showAddress(document.getElementById('zones-form:zoneAddress').value); return false;"><span class="search"><h:outputText value="#{messages.zones_locate}" /></span></button></li>
                         </ul>
                         <ul id="grid_nav" style="margin: 0;">
-                          <li class="l" id="zone-type">
-                            <h:outputText value="#{messages.zones_type}" />
-                            <a href="#" onclick="onZoneDrawingModeSelected(RECT_MODE); return false;"><h:graphicImage value="/images/btn_rectangle.png" style="border:none;vertical-align:middle;" /></a>
-                            <rich:spacer width="0" />
-                            <a href="#" onclick="onZoneDrawingModeSelected(POLYGON_MODE); return false;"><h:graphicImage value="/images/btn_polygon.png" style="border:none;vertical-align:middle;" /></a>
-                            <rich:spacer width="0" />
-                            <a href="#" onclick="onZoneDrawingModeSelected(CIRCLE_MODE); return false;"><h:graphicImage value="/images/btn_circle.png" style="border:none;vertical-align:middle;" /></a>
-                          </li>
-                          <li class="l" id="RECT_MODE" style="display:none">
-                            <h:outputText value="#{messages.zones_drawRectangle}" />
-                          </li>
-                          <li class="l" id="POLYGON_MODE" style="display:none">
-                            <h:outputText value="#{messages.zones_drawPolygon}" />
-                          </li>
-                          <li class="l" id="CIRCLE_MODE" style="display:none">
-                            <h:outputText value="#{messages.zones_drawCircle}" />
-                          </li>
-                          <li class="l" id="draw-buttons" style="display:none">
-                            <button value="submit" class="left" onclick="onZoneDrawingModeSelected(NONE_MODE); return false;"><span class="cancel"><h:outputText value="#{messages.zones_undo}" /></span></button>
+                          <li class="l">
+                            <table>
+                              <tr>
+                                <td><a href="#" onclick="stopDrawing(); return false;"><h:graphicImage id="hand_b" value="/images/btn_hand_on.png" width="26" height="26" style="border:none" /></a></td>
+                                <td><a href="#" onclick="startRect(); return false;"><h:graphicImage id="rectangle_b" value="/images/btn_rectangle.png" width="26" height="26" style="border:none" /></a></td>
+                                <td><a href="#" onclick="startCircle(); return false;"><h:graphicImage id="circle_b" value="/images/btn_circle.png" width="26" height="26" style="border:none" /></a></td>
+                                <td><a href="#" onclick="startPolygon(); return false;"><h:graphicImage id="polygon_b" value="/images/btn_polygon.png" width="26" height="26" style="border:none" /></a></td>
+                              </tr>
+                            </table>
                           </li>
                           <li class="r">
-                            <a4j:commandLink action="#{zonesBean.save}" onclick="if(selectedDrawingMode)onZoneDrawingModeSelected()" reRender="dataTable,editZone"><button value="submit" class="left"><span class="save"><h:outputText value="#{messages.zones_save}" /></span></button></a4j:commandLink>
-                            <a4j:commandLink action="#{zonesBean.cancelEdit}" onclick="if(selectedDrawingMode)onZoneDrawingModeSelected(NONE_MODE)" reRender="dataTable,editZone" oncomplete="map.clearOverlays();centerMapAtZone(restoreZone());" immediate="true"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></a4j:commandLink>
+                            <a4j:commandLink action="#{zonesBean.save}" onclick="stopDrawing()" reRender="dataTable,editZone" oncomplete="disableEditing()"><button value="submit" class="left"><span class="save"><h:outputText value="#{messages.zones_save}" /></span></button></a4j:commandLink>
+                            <a4j:commandLink action="#{zonesBean.cancelEdit}" onclick="stopDrawing(); map.clearOverlays();" reRender="points,dataTable,editZone" oncomplete="showZone(false)" immediate="true"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></a4j:commandLink>
                           </li>
                         </ul>
 
@@ -173,14 +159,80 @@
 
                 <h:panelGroup styleClass="map-border" layout="block">
                   <div id="map-canvas" style="height:100%;height:700px;border:0"></div>
+                  <div id="map-cover" style="position:absolute; display:none; overflow:hidden; cursor:crosshair; zIndex:101;">
+                    <div id="rect-outline" style="position:absolute; display:none; border:2px dotted #0033FF"></div>
+                    <div id="circle-outline" style="display:none"></div>
+                  </div>
                 </h:panelGroup>
 
                 <script type="text/javascript">
-                  if (GBrowserIsCompatible())
+                  function showZone(editable)
                   {
-                    map = new GMap2(document.getElementById("map-canvas"));
-                    map.addControl(new GLargeMapControl());
-                    map.addControl(new GMapTypeControl());
+                    map.clearOverlays();
+                    var outline = fromOutlineString(document.getElementById("zones-form:points").value);
+                    if (outline)
+                    {
+                      centerMapAtZone(getLatLngBounds(outline));
+                      loadZone(outline, editable);
+                    }
+                  }
+
+                  function storeOutline()
+                  {
+                      document.getElementById("zones-form:points").value = toOutlineString(getPolygonOutline());
+                  }
+
+                  function select(type)
+                  {
+                    applyImage("hand", type);
+                    applyImage("rectangle", type);
+                    applyImage("circle", type);
+                    applyImage("polygon", type);
+                  }
+
+                  function applyImage(type, selectedType)
+                  {
+                    var image = document.getElementById("zones-form:" + type + "_b");
+                    if (type == selectedType)
+                      image.src = "#{facesContext.externalContext.requestContextPath}/images/btn_" + type + "_on.png";
+                    else
+                      image.src = "#{facesContext.externalContext.requestContextPath}/images/btn_" + type + ".png";
+                  }
+
+                  function bodyLoad()
+                  {
+                    if (GBrowserIsCompatible())
+                    {
+                      map = new GMap2(document.getElementById("map-canvas"));
+                      map.addControl(new GLargeMapControl());
+                      map.addControl(new GMapTypeControl());
+
+                      GEvent.addListener(drawZone, "startZone", function(type)
+                      {
+                        select(type);
+                        storeOutline();
+                        if (polygon)
+                          map.removeOverlay(polygon);
+                      });
+                      GEvent.addListener(drawZone, "endZone", function(type, points)
+                      {
+                        select("hand");
+                        storeOutline();
+                      });
+                      GEvent.addListener(drawZone, "cancelZone", function(type)
+                      {
+                        select("hand");
+                      });
+                      GEvent.addListener(drawZone, "updateZone", function(points)
+                      {
+                        storeOutline();
+                      });
+                    }
+                  }
+
+                  function bodyUnload()
+                  {
+                    GUnload();
                   }
                 </script>
 

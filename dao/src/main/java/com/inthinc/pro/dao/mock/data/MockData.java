@@ -49,7 +49,6 @@ import com.inthinc.pro.model.UserStatus;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleStatus;
 import com.inthinc.pro.model.Zone;
-import com.inthinc.pro.model.ZoneType;
 
 public class MockData
 {
@@ -607,7 +606,6 @@ public class MockData
             zone.setZoneID(id);
             zone.setCreated(new Date());
             zone.setName("Zone" + id);
-            zone.setType(ZoneType.values()[randomInt(1, ZoneType.values().length - 1)]);
             zone.setAddress("4225 West Lake Park Blvd. Suite 100 West Valley City UT 84120");
             addPoints(zone, new LatLng(40.711435, -111.991518));
             storeObject(zone);
@@ -620,17 +618,9 @@ public class MockData
     private void addPoints(Zone zone, LatLng center)
     {
         final ArrayList<LatLng> points = new ArrayList<LatLng>();
-        if ((zone.getType() == ZoneType.RECTANGLE) || (zone.getType() == ZoneType.CIRCLE))
-        {
+        for (int i = 0; i < randomInt(3, 9); i++)
             points.add(new LatLng(randomLat(), randomLng()));
-            points.add(new LatLng(randomLat(), randomLng()));
-        }
-        else if (zone.getType() == ZoneType.POLYGON)
-        {
-            for (int i = 0; i < randomInt(3, 9); i++)
-                points.add(new LatLng(randomLat(), randomLng()));
-            points.add(new LatLng(points.get(0).getLat(), points.get(0).getLng()));
-        }
+        points.add(new LatLng(points.get(0).getLat(), points.get(0).getLng()));
         zone.setPoints(points);
     }
 

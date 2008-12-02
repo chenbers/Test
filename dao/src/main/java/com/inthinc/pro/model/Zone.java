@@ -9,6 +9,9 @@ import com.inthinc.pro.dao.annotations.ID;
 
 public class Zone extends BaseEntity
 {
+    @Column(updateable = false)
+    private static final long serialVersionUID = 7505601232108995094L;
+
     @ID
     private Integer             zoneID;
     @Column(name = "acctID")
@@ -16,7 +19,6 @@ public class Zone extends BaseEntity
     private Integer             groupID;
     private String              name;
     private String              address;
-    private ZoneType            type;
     @Column(type = LatLng.class)
     private List<LatLng>        points;
 
@@ -68,16 +70,6 @@ public class Zone extends BaseEntity
     public void setAddress(String address)
     {
         this.address = address;
-    }
-
-    public ZoneType getType()
-    {
-        return type;
-    }
-
-    public void setType(ZoneType zoneType)
-    {
-        this.type = zoneType;
     }
 
     public List<LatLng> getPoints()

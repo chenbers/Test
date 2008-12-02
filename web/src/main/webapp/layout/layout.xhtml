@@ -33,7 +33,7 @@
 <ui:insert name="scripts" />
 
 </head>
-<body>
+<body onload="if (typeof bodyLoad != 'undefined') bodyLoad()" onunload="if (typeof bodyUnload != 'undefined') bodyUnload()">
 <ui:insert name="header">
   <ui:include src="/includes/header.xhtml"/>
 </ui:insert>
