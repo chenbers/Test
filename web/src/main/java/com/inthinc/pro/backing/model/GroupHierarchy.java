@@ -34,6 +34,17 @@ public class GroupHierarchy implements Serializable
     {
         return groupList.get(0);
     }
+    
+    public List<Group> getGroupsByLevel(GroupLevel groupLevel){
+    	List<Group> filteredList = new ArrayList<Group>();
+    	for(Group group: groupList){
+    		if(getGroupLevel(group) == groupLevel){
+    			filteredList.add(group);
+    		}
+    	}
+    	
+    	return filteredList;
+    }
 
     public GroupLevel getGroupLevel(Integer groupID)
     {
@@ -74,6 +85,7 @@ public class GroupHierarchy implements Serializable
         return GroupLevel.REGION;
         
     }
+    
     public List<Group> getChildren(Group parent){
     	
     	List<Group> children = new ArrayList<Group>();

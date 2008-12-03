@@ -36,28 +36,117 @@
 						<tr>
 							<td>
 							<div style="width: 235px">
-							<ul id="grid_nav">
-								<li class="l grid_title">#{organizationBean.accountName}</li>
-							</ul>
-							
+								<ul id="grid_nav">
+									<li class="l grid_icon"><h:graphicImage
+										value="/images/ico_building.png" /></li>
+									<li class="l grid_title">#{organizationBean.accountName}</li>
+								</ul>
+								<h:panelGroup id="organizationTreePanel">
+									<rich:tree switchType="client" selectedClass="selectedNode"
+										style="overflow: scroll;width:210px;height:400px;border-left:1px solid #A1C667;border-right:1px solid #A1C667;border-bottom:1px solid #A1C667; margin-left: 11px"
+										value="#{organizationBean.topLevelNode}" var="group"
+										nodeFace="#{group.data.groupLevel.description}"
+										reRender="groupPanel"
+										nodeSelectListener="#{organizationBean.selectNode}"
+										adviseNodeSelected="#{organizationBean.adviseNodeSelected}"
+										adviseNodeOpened="#{organizationBean.adviseNodeExpanded}"
+										ajaxSubmitSelection="true">
+										<rich:treeNode type="FLEET" iconLeaf="/images/ico_truck.png"
+											icon="/images/ico_truck.png">
+											<h:outputText value="#{group.group.name} - #{messages.group_fleet}" />
+										</rich:treeNode>
+										<rich:treeNode type="REGION" iconLeaf="/images/ico_trucks.png"
+											icon="/images/ico_trucks.png">
+											<h:outputText value="#{group.group.name} - #{messages.group_region}" />
+										</rich:treeNode>
+										<rich:treeNode type="TEAM" iconLeaf="/images/ico_team.png"
+											icon="/images/ico_team.png">
+											<h:outputText value="#{group.group.name} - #{messages.group_team}" />
+										</rich:treeNode>
+									</rich:tree> 
+								</h:panelGroup>
+							</div>
+							</td>
+							<td>
+							<div
+								style="text-align: top; height: 450px; padding-top: 10px; width: 550px">
+							<h:panelGroup id="groupPanel">
+								<h:panelGroup
+									rendered="#{organizationBean.selectedGroupNode ne null}">
+									<ul id="grid_nav">
+										<li class="l">
+									
+										<ul id="breadcrumb">
+											<ui:repeat
+												value="#{organizationBean.selectedGroupNode.groupBreadCrumb}"
+												var="crumb" >
+												<li class="last">
+													<a4j:commandLink value="#{crumb.group.name}" reRender="groupPanel,groupContent,organizationTreePanel">
+														<a4j:actionparam  converter="SimpleBeanConverter" name="groupNode" value="#{crumb}" actionListener="#{organizationBean.changeSelectedGroup}" assignTo="#{organizationBean.selectedGroupNode}"/>
+													</a4j:commandLink>
+												</li>
+											</ui:repeat>
+										</ul>
+										
+										</li>
+										<li class="r"><h:panelGroup id="buttonPanel">
 
-							<rich:tree switchType="ajax" selectedClass="selectedNode"
-								style="overflow: scroll;width:210px;height:200px;border-left:1px solid #A1C667;border-right:1px solid #A1C667;border-bottom:1px solid #A1C667; margin-left: 11px"
-								value="#{organizationBean.topLevelNode}" var="group"
-								nodeFace="#{group.data.groupLevel.description}">
-								<rich:treeNode type="FLEET" iconLeaf="/images/ico_truck.png" icon="/images/ico_truck.png">
-									<h:outputText
-										value="#{group.group.name} - Fleet" />
-								</rich:treeNode>
-								<rich:treeNode type="REGION" iconLeaf="/images/ico_trucks.png" icon="/images/ico_trucks.png">
-									<h:outputText
-										value="#{group.group.name} - Region" />
-								</rich:treeNode>
-								<rich:treeNode type="TEAM" iconLeaf="/images/ico_team.png" icon="/images/ico_team.png">
-									<h:outputText
-										value="#{group.group.name} - Team" />
-								</rich:treeNode>
-							</rich:tree></div>
+											<!-- If mode param is null then the conent from this page is being used and we are in view mode
+														 -->
+											<a4j:commandLink
+												rendered="#{organizationBean.groupState eq 'VIEW'}"
+												action="#{organizationBean.changeState}"
+												reRender="groupContent,buttonPanel">
+												<f:param name="state" value="EDIT" />
+												<button value="submit" class="left"><span
+													class="edit"><h:outputText
+													value="#{messages.button_edit}" /></span></button>
+											</a4j:commandLink>
+											<a4j:commandLink
+												rendered="#{organizationBean.groupState eq 'VIEW'}"
+												action="#{organizationBean.changeState}"
+												reRender="groupContent,buttonPanel">
+												<f:param name="state" value="ADD" />
+												<button value="submit" class="left"><span
+													class="add"><h:outputText
+													value="#{messages.button_add}" /></span></button>
+											</a4j:commandLink>
+
+											<a4j:commandLink
+												rendered="#{organizationBean.groupState eq 'ADD'}"
+												action="#{organizationBean.changeState}"
+												reRender="groupContent,buttonPanel">
+												<f:param name="state" value="VIEW" />
+												<button value="submit" class="left"><span
+													class="add"><h:outputText
+													value="#{messages.button_create_unit}" /></span></button>
+											</a4j:commandLink>
+											<a4j:commandLink
+												rendered="#{organizationBean.groupState ne 'VIEW'}"
+												action="#{organizationBean.changeState}"
+												reRender="groupContent,buttonPanel">
+												<f:param name="state" value="VIEW" />
+												<button value="submit" class="left"><span
+													class="cancel"><h:outputText
+													value="#{messages.button_cancel}" /></span></button>
+											</a4j:commandLink>
+
+										</h:panelGroup></li>
+									</ul>
+									<div style="padding-left: 11px"><h:panelGroup
+										id="groupContent">
+										<h:outputText
+											rendered="#{organizationBean.groupState eq 'VIEW'}">
+											<ui:include src="/includes/group.xhtml" />
+										</h:outputText>
+
+										<h:outputText
+											rendered="#{organizationBean.groupState ne 'VIEW'}">
+											<ui:include src="/includes/editGroup.xhtml" />
+										</h:outputText>
+									</h:panelGroup></div>
+								</h:panelGroup>
+							</h:panelGroup></div>
 							</td>
 						</tr>
 					</table>
@@ -70,10 +159,7 @@
 				</a4j:form> <!-- END PANEL --></td>
 			</tr>
 
-
 		</table>
-
-
 
 	</ui:define>
 

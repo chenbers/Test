@@ -1,17 +1,25 @@
 package com.inthinc.pro.backing.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.inthinc.pro.model.Group;
 
-public class GroupNode {
-
+public class GroupNode implements Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8051275693741193596L;
+	
 	private Group group;
 	private GroupNode parentGroupNode;
 	private List<GroupNode> childGroupNodes;
 	private GroupHierarchy groupHierarchyUtil;
 	private GroupLevel groupLevel;
+	private GroupNode fleetNode;
 
 	public GroupNode(Group group, GroupHierarchy groupHierarchy) {
 		this.group = group;
@@ -70,6 +78,31 @@ public class GroupNode {
 		}
 		childGroupNodes = childNodes;
 	}
+	
+	public List<GroupNode> getGroupBreadCrumb(){
+		List<GroupNode> breadCrumbList = new ArrayList<GroupNode>();
+		loadBreadCrumbs(this, breadCrumbList);
+		Collections.reverse(breadCrumbList);
+		return breadCrumbList;
+	}
+	
+	private void loadBreadCrumbs(GroupNode node,List<GroupNode> breadCrumbList){
+		breadCrumbList.add(node);
+		if(node.getParentGroupNode() != null){
+			loadBreadCrumbs(node.getParentGroupNode(),breadCrumbList);
+		}
+	}
+	
+	private GroupNode getFleet(GroupNode groupNode){
+		GroupNode result = null;
+		if(groupNode.getGroup().getParentID() == 0){
+			result = groupNode;
+		}else{
+			result = getFleet(groupNode.getParentGroupNode());
+		}	
+		
+		return result;
+	}
 
 	public Group getGroup() {
 		return group;
@@ -104,5 +137,18 @@ public class GroupNode {
 
 	public void setChildGroupNodes(List<GroupNode> childGroupNodes) {
 		this.childGroupNodes = childGroupNodes;
+	}
+	
+	public GroupNode getFleetNode() {
+		if(fleetNode == null){
+			fleetNode = getFleet(this);
+		}
+		return fleetNode;
+	}
+	
+	
+
+	public void setFleetNode(GroupNode fleet) {
+		this.fleetNode = fleet;
 	}
 }

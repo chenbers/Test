@@ -1,5 +1,7 @@
 package com.inthinc.pro.backing;
 
+import javax.faces.context.FacesContext;
+
 import org.apache.log4j.Logger;
 import org.springframework.security.Authentication;
 import org.springframework.security.context.SecurityContextHolder;
@@ -27,6 +29,9 @@ public class BaseBean
         this.errorBean = errorBean;
     }
     
+    public Object getParameter(String name){
+    	return FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("state");
+    }
     
     public boolean isLoggedIn()
     {

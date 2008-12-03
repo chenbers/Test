@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:security="http://pro.tiwi.com/jsf/security">
+
+
+
+	<table>
+		<tr>
+			<td width="275" valign="top">
+			<div class="add_section_title">
+				<h:outputFormat value="#{messages.group_summary_title}">
+					<f:param value="#{organizationBean.selectedGroupNode.group.name}" />
+				</h:outputFormat>
+			</div>
+			<table width="240" cellspacing="2" cellpadding="4" border="0"
+				align="center">
+				<tbody>
+					<tr>
+						<td width="100">#{messages.group_fleet}</td>
+						<td align="left">
+						#{organizationBean.selectedGroupNode.fleetNode.group.name}</td>
+
+					</tr>
+					<tr>
+						<td>#{messages.group_manager}</td>
+						<td>Jake Morley</td>
+					</tr>
+					<tr>
+						<td>#{messages.group_contact}</td>
+						<td>Mary Higgins</td>
+					</tr>
+					<h:outputText
+						rendered="#{organizationBean.selectedGroupNode.groupLevel.description eq 'TEAM'}">
+						<tr>
+							<td>#{messages.group_number_of_vehicles}</td>
+							<td>125</td>
+						</tr>
+						<tr>
+							<td>#{messages.group_number_of_drivers}</td>
+							<td>243</td>
+						</tr>
+					</h:outputText>
+				</tbody>
+
+			</table>
+
+			<div class="add_section_title">#{messages.group_other_data_to_see}</div>
+			<table width="240" cellspacing="2" cellpadding="4" border="0"
+				align="center">
+				<tbody>
+					<tr>
+						<td style="font-weight: bold" width="100">Label</td>
+						<td align="left">Data</td>
+
+					</tr>
+
+
+				</tbody>
+
+			</table>
+			</td>
+			<td>
+			<div style="padding-top: 5px"><h:graphicImage
+				value="/images/map_small.PNG" /></div>
+			</td>
+		</tr>
+	</table>
+</ui:composition>

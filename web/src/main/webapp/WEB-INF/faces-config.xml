@@ -13,6 +13,10 @@
 		<converter-id>TimeZoneConverter</converter-id>
 		<converter-class>com.inthinc.pro.convert.TimeZoneConverter</converter-class>
 	</converter>
+	<converter>
+		<converter-id>SimpleBeanConverter</converter-id>
+		<converter-class>com.inthinc.pro.convert.SimpleBeanConverter</converter-class>
+	</converter>
 
 	<!-- managed beans -->
 	
@@ -149,6 +153,12 @@
       <navigation-case>
         <from-outcome>go_adminOrganization</from-outcome>
         <to-view-id>/secured/admin/organization.xhtml</to-view-id>
+      </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+      <navigation-case>
+        <from-outcome>go_adminEditGroup</from-outcome>
+        <to-view-id>/secured/admin/editGroup.xhtml</to-view-id>
       </navigation-case>
     </navigation-rule>
     <navigation-rule>

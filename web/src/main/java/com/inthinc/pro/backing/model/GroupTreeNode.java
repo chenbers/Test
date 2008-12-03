@@ -16,6 +16,14 @@ public class GroupTreeNode extends SwingTreeNodeImpl{
 	private Group group;
 	private GroupLevel groupLevel;
 	private GroupNode groupNode;
+	public GroupNode getGroupNode() {
+		return groupNode;
+	}
+
+	public void setGroupNode(GroupNode groupNode) {
+		this.groupNode = groupNode;
+	}
+
 	private static final Logger logger = Logger.getLogger(GroupTreeNode.class);
 	
 	//Child going to loaded lazily
@@ -30,7 +38,6 @@ public class GroupTreeNode extends SwingTreeNodeImpl{
 		this.group = groupNode.getGroup();
 		this.groupNode = groupNode;
 		this.setData(this);
-		
 	}
 
 	public void setGroup(Group group) {
