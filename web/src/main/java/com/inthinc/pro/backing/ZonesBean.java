@@ -14,9 +14,12 @@ import com.inthinc.pro.util.MessageUtil;
 
 public class ZonesBean extends BaseBean
 {
+    private static final int ROWS_PER_PAGE = 10;
+
     private List<Zone> items;
     private List<Zone> filteredItems = new LinkedList<Zone>();
     private String     filterValue;
+    protected int      page          = 1;
     private Zone       item;
     private boolean    editing;
     private ZoneDAO    zoneDAO;
@@ -151,6 +154,23 @@ public class ZonesBean extends BaseBean
     }
 
     /**
+     * @return the current page
+     */
+    public int getPage()
+    {
+        return page;
+    }
+
+    /**
+     * @param page
+     *            the current page to set
+     */
+    public void setPage(int page)
+    {
+        this.page = page;
+    }
+
+    /**
      * Called when the user chooses to add an item.
      */
     public void add()
@@ -176,10 +196,11 @@ public class ZonesBean extends BaseBean
         if (parameterMap.get(idKey) != null)
         {
             final int editID = Integer.parseInt(parameterMap.get(idKey));
-            for (final Zone testItem : items)
-                if (testItem.getZoneID().equals(editID))
+            for (int i = 0; i < filteredItems.size(); i++)
+                if (filteredItems.get(i).getZoneID().equals(editID))
                 {
-                    item = testItem;
+                    item = filteredItems.get(i);
+                    page = (i / ROWS_PER_PAGE) + 1;
                     break;
                 }
         }
@@ -190,7 +211,6 @@ public class ZonesBean extends BaseBean
      */
     public void edit()
     {
-        selectItem("zoneID");
         editing = true;
     }
 
@@ -243,7 +263,6 @@ public class ZonesBean extends BaseBean
 
         // TODO: disconnect from zone alerts
 
-        selectItem("deleteID");
         zoneDAO.deleteByID(item.getZoneID());
 
         // add a message

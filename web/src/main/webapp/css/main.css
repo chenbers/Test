@@ -2429,6 +2429,9 @@ ul.legend {
 .tableEven {
 	background: #EBFFCA;
 }
+.selectedRow {
+	background: #f7d673;
+}
 
 
 /* HORIZONTAL TABS FOR THE TEAMS PAGE, MAYBE OTHERS ... */

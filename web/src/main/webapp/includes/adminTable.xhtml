@@ -97,12 +97,12 @@
 
           <div class="spacer"></div>
 
-          <div class="datagrid">
-
 <!--
 TODO: the top scroller doesn't work right with filtering
-            <rich:datascroller id="topScroller" for="dataTable" reRender="recordCounts,dataTable,bottomScroller" page="#{page}" />
+          <rich:datascroller id="topScroller" for="dataTable" reRender="recordCounts,dataTable,bottomScroller" page="#{page}" />
 -->
+
+          <div class="datagrid">
 
             <rich:dataTable id="dataTable" value="#{items}" var="item" rowKeyVar="index" styleClass="datagrid"
               rows="#{rows}" rowClasses="tableOdd,tableEven" width="100%">
@@ -123,10 +123,10 @@ TODO: the top scroller doesn't work right with filtering
               </rich:column>
             </rich:dataTable>
 
-            <rich:datascroller id="bottomScroller" for="dataTable" reRender="recordCounts,dataTable" page="#{page}" />
-
           </div>
     
+          <rich:datascroller id="bottomScroller" for="dataTable" reRender="recordCounts,dataTable" page="#{page}" />
+
         </div>
       </div>
 
