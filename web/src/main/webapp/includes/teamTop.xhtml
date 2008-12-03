@@ -35,7 +35,9 @@
 						<f:facet name="header">
 							<h:outputText value="Driver" />
 						</f:facet>
-						<h:commandLink value="#{item.se.identifier}" action="#{item.goTo}">
+						<h:commandLink value="#{item.se.identifier}" action="#{teamTopBean.driverAction}">
+							<f:param name="id" value="#{item.se.entityID}"/>
+						 	
 						</h:commandLink>
 
 					</rich:column>
@@ -92,7 +94,8 @@
 						<f:facet name="header">
 							<h:outputText value="Driver" />
 						</f:facet>
-						<h:commandLink value="#{item.se.identifier}" action="#{item.goTo}">
+						<h:commandLink value="#{item.se.identifier}" action="#{teamTopBean.driverAction}">
+							<f:param name="id" value="#{item.se.entityID}"/>
 						</h:commandLink>
 
 					</rich:column>

@@ -19,6 +19,8 @@ import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.util.ColorSelector;
+import com.inthinc.pro.util.ColorSelectorStandard;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.wrapper.ScoreableEntityPkg;
 
@@ -89,7 +91,9 @@ public class TrendBean extends BaseDurationBean
 
         // Loop over returned set of group ids, controlled by scroller
         List<ScoreableEntity> ss = null;
-        for ( int i = this.start; i <= this.end; i++ )             
+        ColorSelectorStandard cs = new ColorSelectorStandard();
+        
+        for (int i = this.start; i <= this.end; i++)
         {
             ScoreableEntity se = s.get(i-1);
             // Fetch to get children's observations
@@ -97,7 +101,8 @@ public class TrendBean extends BaseDurationBean
 
             // Y-coordinates
             sb.append("<dataset seriesName=\'\' color=\'");
-            sb.append((GraphicUtil.entityColorKey.get(i-1)).substring(1));
+            sb.append(cs.getEntityColorKey(i-1).substring(1));
+//            sb.append((GraphicUtil.entityColorKey.get(i)).substring(1));
             sb.append("\'>");
 
             // Not a full range, pad w/ zero
@@ -163,13 +168,15 @@ public class TrendBean extends BaseDurationBean
         String contextPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
         ScoreBox sb = new ScoreBox(0, ScoreBoxSizes.SMALL);
         int cnt = 0;                
-        for (ScoreableEntity score : s)
+        ColorSelectorStandard cs = new ColorSelectorStandard();
+       for (ScoreableEntity score : s)
         {
             ScoreableEntityPkg se = new ScoreableEntityPkg();
             se.setSe(score);
             sb.setScore(score.getScore());
             se.setStyle(sb.getScoreStyle());
-            se.setColorKey(GraphicUtil.entityColorKey.get(cnt++));
+            se.setColorKey(cs.getEntityColorKey(cnt++));
+//            se.setColorKey(GraphicUtil.entityColorKey.get(cnt++));
             if (score.getEntityType().equals(EntityType.ENTITY_GROUP))
             {
                 se.setGoTo(contextPath + getGroupHierarchy().getGroupLevel(score.getEntityID()).getUrl() + "?groupID=" + score.getEntityID());

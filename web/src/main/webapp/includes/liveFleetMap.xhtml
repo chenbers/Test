@@ -8,6 +8,7 @@
 	
 	<script src="http://gmaps-utility-library.googlecode.com/svn/trunk/markermanager/release/src/markermanager.js">	
 	</script>
+		<div class="spacer"></div>		
 	
 		<div class="">
 				<div class="panel_nw">
@@ -15,16 +16,26 @@
 						<span class="map">Fleet Map</span>
 						<span class="panel_links">
 						<a4j:form id="refresh">
-						<a4j:commandLink title="Refresh" immediate="true"
+						<a4j:commandButton image="/images/ico_refresh.png" immediate="true"
 							reRender="map"
 							value="#{messages.refresh}">
-						</a4j:commandLink>
+						</a4j:commandButton>
 						</a4j:form>
 						</span>
 					</div>
 				</div>
 				<div class="panel_w">
 					
+								<ui:repeat value="#{driverLocationBean.driverLastLocationBeans}" var="driverLastLocationBean">
+									<div id="#{driverLastLocationBean.driver.driverID}" style="display:none">
+										<h:form id="mapLinks">
+											<h:commandLink value="#{driverLastLocationBean.driverName}" action="#{driverLocationBean.driverAction}">
+												<f:param name="id" value="#{driverLastLocationBean.driver.driverID}"/>
+											</h:commandLink>
+										</h:form>
+									</div>
+							  	</ui:repeat>
+							  	
 					<div class="panel_content">
 			  			<rich:panel bodyClass="panel_content" id="map">
 						<h:panelGroup styleClass="map-border" layout="block">
@@ -52,7 +63,7 @@
 						        
  								// Creates a marker whose info window displays the letter corresponding
 						        // to the given index.
-						        function createMarker(point, index, name,iconImage) {
+						        function createMarker(point, index, driverId, iconImage) {
 						          // Create a colored icon for this point using our icon class
 						        coloredIcon = new GIcon(G_DEFAULT_ICON); 
 						        coloredIcon.image = iconImage; 
@@ -67,14 +78,17 @@
 						          // Set up our GMarkerOptions object
 						          markerOptions = { icon:coloredIcon };
 						          var marker = new GMarker(point, markerOptions);
-						
+						          
 						          GEvent.addListener(marker, "mouseover", function() {
-								            if (!markerClicked) marker.openInfoWindowHtml('Driver &#160;<a href="/tiwipro/secured/driver.faces?'+name+'">'+name+'</a>');
-								            
+						          			var node = document.getElementById(driverId).cloneNode(true);
+						          			node.style.display = 'block';
+								            if (!markerClicked) marker.openInfoWindow(node);
 						            
 						          });
 						          GEvent.addListener(marker, "click", function() {
-								            if (markerClicked) marker.openInfoWindowHtml('Driver &#160;<a href="/tiwipro/secured/driver.faces?'+name+'">'+name+'</a>');
+						          			var node = document.getElementById(driverId).cloneNode(true);
+						          			node.style.display = 'block';
+								            if (markerClicked) marker.openInfoWindow(node);
 								            markerClicked =true;
 						            
 						          });
@@ -90,14 +104,11 @@
 						          return marker;
 						        }
  								var i=0;
-								<ui:repeat value="#{driverLocationBean.driverBeans}" var="driverBean">
-								
-									var latlng = new GLatLng(#{driverBean.lastLocation.lat}, #{driverBean.lastLocation.lng});
-						        		mgr.addMarker(createMarker(latlng, i++, 
-						        		 "#{driverBean.driverName}", 
-						        		 "#{driverLocationBean.legend.icons[driverBean.navigation.groupID]}"),10);
+								<ui:repeat value="#{driverLocationBean.driverLastLocationBeans}" var="driverLastLocationBean">
+									var latlng = new GLatLng(#{driverLastLocationBean.lastLocation.lat}, #{driverLastLocationBean.lastLocation.lng});
+						        		mgr.addMarker(createMarker(latlng, i++,  "#{driverLastLocationBean.driver.driverID}",
+						        		 "#{driverLocationBean.mapIconMap.icons[driverLastLocationBean.groupID]}"),10);
 	        						
-								
 							  	</ui:repeat>
 							}	
     					</script> 
@@ -109,36 +120,30 @@
 					<div class="panel_statusbar"></div>
 				</div>
 				
+				<rich:panel rendered="#{driverLocationBean.showLegend}">					
 				<div class="spacer"></div>		
 				
-				<div class="panel_nw">
-					<div class="panel_title">
-						<span class="legend">Fleet Legend</span>
-						<span class="panel_links"></span>
+					<div class="panel_nw">
+						<div class="panel_title">
+							<span class="legend">Fleet Legend</span>
+							<span class="panel_links"></span>
+						</div>
+					</div>	
+	 				<div class="panel_w">
+						<div class="panel_content">
+						  
+						  <rich:dataList value="#{driverLocationBean.childGroups}" var="group" styleClass="legend clearfix">
+						  	<h:graphicImage value="#{driverLocationBean.legendIconMap.icons[group.groupID]}"></h:graphicImage>
+						  	<h:outputText value="#{group.name}"></h:outputText>
+						  </rich:dataList>
+						  
+	  					</div>
 					</div>
-				</div>						
-				
-				<div class="panel_w">
-					<div class="panel_content">
-					  
-						<ul class="legend clearfix">
-							<li class="red">Washington</li>
-						    <li class="orange">Oregon</li>
-						    <li class="lt_blue">Vegas</li>
-						    <li class="purple">Phoenix</li>
-						    <li class="gray">SLC</li>
-						    <li class="green">Sac/Bay</li>
-						    <li class="blue">LA/San Diego</li>
-						    <li class="lt_gray">Idaho</li>
-						    <li class="pink">Montana </li>
-						</ul>
-					  
+	
+					<div class="panel_sw">
+						<div class="panel_statusbar"></div>
 					</div>
-				</div>
-													
-				<div class="panel_sw">
-					<div class="panel_statusbar"></div>
-				</div>
+				</rich:panel>				
 		</div>	
-		
+			
 </ui:composition>	

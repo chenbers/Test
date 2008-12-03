@@ -13,6 +13,8 @@ import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.util.ColorSelector;
+import com.inthinc.pro.util.ColorSelectorStandard;
 import com.inthinc.pro.util.WebUtil;
 
 public class MapIconFactory {
@@ -21,26 +23,18 @@ public class MapIconFactory {
 	
 	private IconCreator ic;
 	
-	public List<MapIcon> makeMapIcons(int count){
+	public List<MapIcon> makeMapIcons(String baseURL, String seedIcon, int count){
 		
 		ic = new IconCreatorFromURL();
 		
 		List<MapIcon> icons = new ArrayList<MapIcon>();
 		
-		for (int i=1; i<=count; i++){
+		for (int i=0; i<count; i++){
 			
-			icons.add(ic.getMapIcon(i));
+			icons.add(ic.getMapIcon(baseURL, seedIcon, i));
 		}
 		return icons;
 	}
-	
-//	public MapIcon makeMapIcon(){
-//		
-//		MapIcon mapIcon = new MapIcon();
-//		mapIcon.setUrl(makeImage());
-//		
-//		return mapIcon;
-//	}
 		
 	public  BufferedImage loadImage(String ref) throws IOException{ 
 		
@@ -72,38 +66,21 @@ public class MapIconFactory {
 		}
 		return dimg;
 	}
-	/**
-	 * Saves a BufferedImage to the given file, pathname must not have any
-	 * periods "." in it except for the one before the format, i.e. C:/images/fooimage.png
-	 * @param img
-	 * @param saveFile
-	 */
-	public void saveImage(BufferedImage img, String savePath) {
-		try {
-		    String format = (savePath.endsWith(".png")) ? "png" : (savePath.endsWith(".gif"))?"gif":"jpg";
-		    logger.debug("saveImage - ref is: "+savePath);
-		    logger.debug("realPath is: "+new WebUtil().getRealPath(savePath));
-		    logger.debug("images realPath is: "+new WebUtil().getRealPath("/"));
-			ImageIO.write(img, format, new File(new WebUtil().getRealPath("/")+savePath));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 	
 	private abstract class IconCreator {
 		
-		public abstract MapIcon getMapIcon(int number);
+		public abstract MapIcon getMapIcon(String baseURL, String seedIcon, int number);
 	}
 	
 	private class IconCreatorFromURL extends IconCreator{
 		
-		public MapIcon getMapIcon(int number){
+		public MapIcon getMapIcon(String baseURL, String seedIcon, int number){
 			
 			try {
 				// try to to Load the img
 				WebUtil webUtil = new WebUtil();
 				StringBuffer pathBuffer = new StringBuffer(webUtil.getFullRequestContextPath());
-				pathBuffer.append("/images/googleMapIcons/icon_"+number+".png");
+				pathBuffer.append("/"+baseURL+number+".png");
 				String path = pathBuffer.toString();
 				logger.debug("IconCreatorFromURL path is "+path);
 				
@@ -116,14 +93,14 @@ public class MapIconFactory {
 				
 				logger.debug("IconCreatorFromURL transferring to IconCreatorFromScratch");
 				ic = new IconCreatorFromScratch();
-				return ic.getMapIcon(number);
+				return ic.getMapIcon(baseURL, seedIcon, number);
 			}
 		}
 		
 	}
 	private class IconCreatorFromScratch extends IconCreator{
 		
-		public MapIcon getMapIcon(int number){
+		public MapIcon getMapIcon(String baseURL, String seedIcon, int number){
 				
 			// Load the image to copy from
 			try{
@@ -131,10 +108,17 @@ public class MapIconFactory {
 				String path = webUtil.getFullRequestContextPath();
 				StringBuffer pathBuffer = new StringBuffer(path);
 				logger.debug("IconCreatorFromScratch path is "+path);
-				pathBuffer.append("/images/icon_1.png");
+				pathBuffer.append(seedIcon);
 				BufferedImage loadImg = loadImage(pathBuffer.toString());
-				BufferedImage newImage = changeColor(loadImg, new Color(0xCC0000), new Color(0xffe6e6),getForegroundColor(number), getBackgroundColor(number));
-				String savePath = "images/googleMapIcons/icon_"+number+".png";
+				ColorSelector cs = new ColorSelectorStandard();
+				Color main = cs.makeColor(number);
+				float[] mainhsb = Color.RGBtoHSB(main.getRed(), main.getGreen(), main.getBlue(), null);
+				BufferedImage newImage = changeColor(loadImg, 
+													new Color(0x0000FF), 
+													new Color(0xCCCCFF),
+													main, 
+													Color.getHSBColor(mainhsb[0], mainhsb[1]*0.2f, mainhsb[2]));
+				String savePath = baseURL+number+".png";
 				logger.debug("IconCreatorFromScratch save path is "+savePath);
 				saveImage(newImage,savePath);
 				
@@ -168,5 +152,48 @@ public class MapIconFactory {
 			
 			return Color.getHSBColor(h, s, b);
 		}
+		/**
+		 * Saves a BufferedImage to the given file, pathname must not have any
+		 * periods "." in it except for the one before the format, i.e. C:/images/fooimage.png
+		 * @param img
+		 * @param saveFile
+		 */
+		private void saveImage(BufferedImage img, String savePath) {
+			try {
+			    String format = (savePath.endsWith(".png")) ? "png" : (savePath.endsWith(".gif"))?"gif":"jpg";
+			    logger.debug("saveImage - ref is: "+savePath);
+			    logger.debug("realPath is: "+new WebUtil().getRealPath(savePath));
+			    logger.debug("images realPath is: "+new WebUtil().getRealPath("/"));
+				ImageIO.write(img, format, new File(new WebUtil().getRealPath("/")+savePath));
+				checkWritten(savePath);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		private void checkWritten(String savePath){
+			
+			while(true){
+				try {
+					// try to to Load the img
+					WebUtil webUtil = new WebUtil();
+					StringBuffer pathBuffer = new StringBuffer(webUtil.getFullRequestContextPath());
+//					pathBuffer.append("/");
+					pathBuffer.append(savePath);
+					String path = pathBuffer.toString();
+					logger.debug("IconCreatorFromURL path is "+path);
+					
+					// Will trigger the exception that continues the loop.
+					BufferedImage loadImg = loadImage(path);
+					
+					logger.debug("IconCreatorFromURL path is written: "+path);
+					return;
+				}
+				catch (IOException ioe){
+					//try again
+					logger.debug("path does not exist yet");
+				}
+			}
+		}
+
 	}
 }

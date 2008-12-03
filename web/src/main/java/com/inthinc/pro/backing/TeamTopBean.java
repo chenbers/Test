@@ -2,16 +2,20 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
+import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.util.GraphicUtil;
+import com.inthinc.pro.util.WebUtil;
 import com.inthinc.pro.wrapper.ScoreableEntityPkg;
 
 public class TeamTopBean extends BaseBean
@@ -19,6 +23,7 @@ public class TeamTopBean extends BaseBean
    private static final Logger logger = Logger.getLogger(TeamTopBean.class);
     
     private ScoreDAO scoreDAO;
+    private DriverDAO driverDAO;
     private NavigationBean navigation;
     private boolean pageChange = false;
     private Duration duration = Duration.DAYS;
@@ -26,7 +31,7 @@ public class TeamTopBean extends BaseBean
     private List<ScoreableEntityPkg> topDrivers = new ArrayList<ScoreableEntityPkg>();
     private List<ScoreableEntityPkg> bottomDrivers = new ArrayList<ScoreableEntityPkg>();
    
-    private String goTo = "";
+    private String goTo = "go_driver";
 
     public List<ScoreableEntityPkg> getTopDrivers()
     {
@@ -84,21 +89,7 @@ public class TeamTopBean extends BaseBean
         if ( bottomDrivers.size() > 0 ) {
             bottomDrivers.clear();
         }
-        
-//        
-//        //Handle navigation
-//        logger.debug("location is: " + navigation.getLocation());
-//        if (    this.pageChange ) {
-//            logger.debug(" page changed: " + this.navigation.getLocation());
-//            if (         this.navigation.getLocation().equalsIgnoreCase("home") ) {
-//                this.navigation.setLocation("region");
-//                goTo = "go_region";
-//            } else if (  this.navigation.getLocation().equalsIgnoreCase("region") ) {
-//                this.navigation.setLocation("team");
-//                goTo = "go_team";
-//            }
-//        } 
-        
+                
         //Fetch, qualifier is groupId, date from, date to
         List<ScoreableEntity> s = null;
         try {
@@ -134,7 +125,14 @@ public class TeamTopBean extends BaseBean
        
         return bottomDrivers;
     }
-
+//    public void setupNavigation(int driverID){
+//    	
+//    	logger.debug("setupNavigation driverID is: " + driverID);
+//    	Driver driver = driverDAO.getDriverByID(driverID);
+//    	navigation.setDriver(driver);
+//    	navigation.setGroupID(driverID);
+//    	
+//    }
     public void setBottomDrivers(List<ScoreableEntityPkg> bottomDrivers)
     {
         this.bottomDrivers = bottomDrivers;
@@ -169,5 +167,20 @@ public class TeamTopBean extends BaseBean
     {
         this.scoreDAO = scoreDAO;
     }
+    public String driverAction(){
+    	
+    	Map<String,String> requestMap = new WebUtil().getRequestParameterMap();
+    	String driverID = requestMap.get("id");
+    	navigation.setDriver(driverDAO.findByID(new Integer(driverID)));
+    	
+    	return "go_driver";
+    }
 
+	public DriverDAO getDriverDAO() {
+		return driverDAO;
+	}
+
+	public void setDriverDAO(DriverDAO driverDAO) {
+		this.driverDAO = driverDAO;
+	}
 }
