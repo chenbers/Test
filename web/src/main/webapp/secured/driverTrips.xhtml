@@ -4,7 +4,9 @@
 	  			xmlns:h="http://java.sun.com/jsf/html" 
 	  			xmlns:rich="http://richfaces.org/rich"
 	  			xmlns:a4j="http://richfaces.org/a4j"
-	  			xmlns:f="http://java.sun.com/jsf/core">
+	  			xmlns:c="http://java.sun.com/jstl/core"
+	  			xmlns:f="http://java.sun.com/jsf/core"
+	  			>
 
 	<ui:define name="scripts">
 		<script src="/tiwipro/js/FusionCharts.js" type="text/javascript"></script>	
@@ -207,13 +209,12 @@
 					<div class="panel_w">
 					  <div class="panel_content">
 					    <div class="" id="">
-					    <h:form>
 							<table width="320" cellpadding="4" cellspacing="0" class="" id="settings">
 								  <tbody>
 								  <tr>
 									<td width="290">Show all Trips on this map</td>
 								    <td width="20">
-								      <h:selectBooleanCheckbox value="#{driverTripsBean.showAllTrips}" />
+									    <h:selectBooleanCheckbox id="showAllCheckBox" value="#{driverTripsBean.showAllTrips}"  onchange="showAllChanged();" />
 								    </td>
 								    </tr>
 								  <tr>
@@ -230,7 +231,6 @@
 								    </tr>
 								  </tbody>
 								</table>
-						    </h:form>
 						</div>
 					  </div>
 					</div>
@@ -311,7 +311,7 @@
 								<f:facet name="header">
 									<h:outputText value="Date" />
 								</f:facet>
-									<a4j:commandLink value="#{item.dateShort}" reRender="selectedTrip,selectedTripMap">
+									<a4j:commandLink value="#{item.dateShort}" reRender="selectedTripTable,selectedTripMap">
 										<f:setPropertyActionListener value="#{item}" target="#{driverTripsBean.selectedTrip}" />
 									</a4j:commandLink>
 							</rich:column>
@@ -376,29 +376,76 @@
 			<div class="panel_w">
 			  <rich:panel bodyClass="panel_content" id="selectedTripMap">
 			  <h:panelGroup styleClass="map-border" layout="block">
-							<div id="map-canvas" style="width:588px;height:500px;border:0"></div>
-					  	</h:panelGroup>
-					   					    <script type="text/javascript">
-      						if (GBrowserIsCompatible()) {
-        						map = new GMap2(document.getElementById("map-canvas"));
-        						map.addControl(new GLargeMapControl());
-        						map.addControl(new GMapTypeControl());
-        						map.addControl(new GOverviewMapControl()); 
-								map.setCenter(new GLatLng(#{driverTripsBean.selectedTrip.routeLastStep.lat}, #{driverTripsBean.selectedTrip.routeLastStep.lng}), 14);
-								map.setMapType(G_NORMAL_MAP);
-								
-								var polyline = new GPolyline([
-								
-									<ui:repeat value="#{driverTripsBean.selectedTrip.route}" var="route">
-										new GLatLng(#{route.lat}, #{route.lng}),
-								  	</ui:repeat>
-								  		  //Repeating the last step to finish JS array.
-								  		  new GLatLng(#{driverTripsBean.selectedTrip.routeLastStep.lat}, #{driverTripsBean.selectedTrip.routeLastStep.lng})
-									], "#0000ff", 6);
-									map.addOverlay(polyline);
-								
-      						}
-    					</script> 
+				<div id="map-canvas" style="width:588px;height:500px;border:0"></div>
+				</h:panelGroup>
+			   		<script type="text/javascript">
+			   		function drawAllTrips()
+			   		{
+			   			if (GBrowserIsCompatible()) 
+        				{
+			   				map = new GMap2(document.getElementById("map-canvas"));
+      						map.addControl(new GLargeMapControl());
+      						map.addControl(new GMapTypeControl());
+      						map.addControl(new GOverviewMapControl()); 
+							map.setCenter(new GLatLng(#{driverTripsBean.selectedTrip.routeLastStep.lat}, #{driverTripsBean.selectedTrip.routeLastStep.lng}), 14);
+							map.setMapType(G_NORMAL_MAP);
+
+							var polyline;
+
+			   				<ui:repeat value="#{driverTripsBean.trips}" var="trip">
+								polyline = new GPolyline([
+								<ui:repeat value="#{trip.route}" var="rt">
+										new GLatLng(#{rt.lat}, #{rt.lng}),
+								</ui:repeat>
+
+			 					//Repeating the last step to finish JS array.
+		    			  		new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng})
+
+								], "#0000ff", 6);
+								map.addOverlay(polyline);
+			  				</ui:repeat>
+        				}
+			   			
+				    }
+
+				    function drawSelectedTrip()
+				    {
+				    	if (GBrowserIsCompatible()) 
+        				{
+				    		map = new GMap2(document.getElementById("map-canvas"));
+      						map.addControl(new GLargeMapControl());
+      						map.addControl(new GMapTypeControl());
+      						map.addControl(new GOverviewMapControl()); 
+      						map.setCenter(new GLatLng(#{driverTripsBean.selectedTrip.routeLastStep.lat}, #{driverTripsBean.selectedTrip.routeLastStep.lng}), 14);
+							map.setMapType(G_NORMAL_MAP);
+
+							var polyline = new GPolyline([
+				  										
+				 										<ui:repeat value="#{driverTripsBean.selectedTrip.route}" var="rt">
+				 											new GLatLng(#{rt.lat}, #{rt.lng}),
+				 									  	</ui:repeat>
+
+				 	 									  	//Repeating the last step to finish JS array.
+				 									  	new GLatLng(#{driverTripsBean.selectedTrip.routeLastStep.lat}, #{driverTripsBean.selectedTrip.routeLastStep.lng})
+
+				 										], "#0000ff", 6);
+				 										map.addOverlay(polyline);
+				 										
+        				}
+        				
+					}
+
+				    function showAllChanged()
+				    {
+				    	if(document.getElementById('showAllCheckBox').checked == true)
+				    		drawAllTrips();
+				    	else
+				    		drawSelectedTrip();
+					}
+
+				    showAllChanged();
+    				
+  					</script> 
 			  </rich:panel>
 			</div>
 			<div class="panel_sw">

@@ -37,7 +37,6 @@ public class DriverTripsBean extends BaseBean
     private Integer tripsPager = 0;
     private Integer tripPager = 0;
     private TripDAO tripDAO;
-    private DriverBean driverBean;
     
     public void init()
     {
@@ -213,16 +212,6 @@ public class DriverTripsBean extends BaseBean
     public void setSelectedTrip(TripDisplay selectedTrip)
     {
         this.selectedTrip = selectedTrip;
-    }
-
-    //DRIVER PROPERTIES
-    public DriverBean getDriverBean()
-    {
-        return driverBean;
-    }
-    public void setDriverBean(DriverBean driverBean)
-    {
-        this.driverBean = driverBean;
     }
 
     //NAVIGATION PROPERTIES
