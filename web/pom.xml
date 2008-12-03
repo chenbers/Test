@@ -223,6 +223,7 @@
                            <directory>${basedir}/src/main/config/appcontext</directory>
                            <includes>
                               <include>applicationContext-mockdao.xml</include>
+                              <include>applicationContext-appBeans.xml</include>
                               <include>applicationContext-beans.xml</include>
                               <include>applicationContext-daoBeans.xml</include>
                               <include>applicationContext-security.xml</include>

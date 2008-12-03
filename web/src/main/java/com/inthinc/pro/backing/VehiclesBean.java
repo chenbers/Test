@@ -29,6 +29,7 @@ import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleStatus;
 import com.inthinc.pro.model.VehicleType;
+import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.util.MessageUtil;
 
 /**
@@ -86,7 +87,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
 
         // states
         STATES = new TreeMap<String, State>();
-        for (final State state : State.values())
+        for (final State state : States.getStates().values())
             STATES.put(state.getName(), state);
     }
 

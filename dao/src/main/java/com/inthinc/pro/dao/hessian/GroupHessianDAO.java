@@ -20,7 +20,6 @@ public class GroupHessianDAO extends GenericHessianDAO<Group, Integer> implement
         try
         {
             List <Group> allGroups = getGroupsByAcctID(acctID);
-System.out.println("all Groups size" + allGroups.size());            
             List <Group> groupHierarchy = new ArrayList<Group>();
             for (Group group : allGroups)
             {

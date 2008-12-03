@@ -9,8 +9,8 @@
 	<http auto-config="false" session-fixation-protection="newSession" entry-point-ref="authenticationProcessingFilterEntryPoint">
 		<!--  error if user logs in concurrently (only one login allowed at a time)  -->
 		<concurrent-session-control max-sessions="1" exception-if-maximum-exceeded="true" />
-		<intercept-url pattern="/secured/admin/**" access="ROLE_CUSTOM_USER,ROLE_SUPER_USER" />
-		<intercept-url pattern="/secured/**" access="ROLE_READONLY,ROLE_NORMAL_USER,ROLE_SUPERVISOR,ROLE_CUSTOM_USER,ROLE_SUPER_USER" />
+		<intercept-url pattern="/secured/admin/**" access="ROLE_CUSTOMUSER,ROLE_SUPERUSER" />
+		<intercept-url pattern="/secured/**" access="ROLE_READONLY,ROLE_NORMALUSER,ROLE_SUPERVISOR,ROLE_CUSTOMUSER,ROLE_SUPERUSER" />
 		<logout logout-success-url="/login.faces"/>
 	</http>
 

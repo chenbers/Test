@@ -8,7 +8,7 @@ import com.inthinc.pro.ProDAOException;
 public interface SiloService extends HessianService
 {
 //--------------------------------------------------------------------------------------------------------
-// Methods currently supported in back end in the cust service:    
+    // --------------cust service -----------------------    
 
     // ------- Address  ----------
     Map<String, Object> createAddr(Integer acctID, Map<String, Object> addrMap) throws ProDAOException;
@@ -108,23 +108,35 @@ public interface SiloService extends HessianService
     
     Map<String, Object> queueFwdCmd(Integer deviceID, Map<String, Object> fwdMap);
     
-    // TODO: do we need this one??  
     Map<String, Object> updateFwdCmd(Integer fwdID,Integer status);
 
     
-// Methods currently supported in back end in the central service:    
+    // --------------central service -----------------------    
+    
+    List<Map<String, Object>> getAllAcctIDs();
+    
+    Map<String, Object> getNextSilo();
+    
+    List<Map<String, Object>> getRoles();
+    
+    List<Map<String, Object>> getSensitivityMaps();
+    
     List<Map<String, Object>> getStates();
     
+    List<Map<String, Object>> getTimezones();
     
-//    used by Portal and custServer to see if the value for
-//    this named data has an ID associated with it.
-//    The names and IDs returned are listed below:
-//    username - userID
-//    email - personID
-//    mcmid - deviceID
-//    vin   - vehicleID
+    
+    //    used by Portal and custServer to see if the value for
+    //    this named data has an ID associated with it.
+    //    The names and IDs returned are listed below:
+    //    username - userID
+    //    email - personID
+    //    mcmid - deviceID
+    //    vin   - vehicleID
     Map<String, Object> getID(String name, String value);
-//--------------------------------------------------------------------------------------------------------
+
+    
+    //--------------------------------------------------------------------------------------------------------
 
     
 // Additional Methods we added    

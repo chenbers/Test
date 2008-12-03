@@ -1,3 +1,4 @@
+
 package com.inthinc.pro.backing;
 
 
@@ -5,18 +6,18 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.TabAction;
-import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.ScoreType;
 
 public class TeamOverviewBeanTest extends BaseBeanTest
 {
+    
+    private static final Logger logger = Logger.getLogger(TeamOverviewBeanTest.class);
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception
@@ -47,18 +48,22 @@ public class TeamOverviewBeanTest extends BaseBeanTest
         List<TabAction> actionList = teamOverviewBean.getActions();
         for (TabAction action : actionList)
         {
+//logger.info("setSelectedAction: " + action.getAction());            
             teamOverviewBean.setSelectedAction(action);
             
             // bar graph
+//logger.info("getSelectedBarDef");            
             String barDef = teamOverviewBean.getSelectedBarDef();
             assertNotNull("Bar missing for action: " + action.getDisplayString(), barDef);
             assertEquals(barDef, teamOverviewBean.getBarDef(action.getScoreType().getCode()));
             
             // overall score
+//logger.info("getOverall");            
             assertNotNull(teamOverviewBean.getSelectedOverallScore());
             
             // style
             assertEquals("score_lg_" + (((teamOverviewBean.getSelectedOverallScore()-1)/10)+1), teamOverviewBean.getOverallScoreStyle());
+//logger.info("done with action: " + action.getAction());            
         }
 
         

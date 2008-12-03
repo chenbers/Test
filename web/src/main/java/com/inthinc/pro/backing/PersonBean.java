@@ -34,6 +34,9 @@ import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.User;
+import com.inthinc.pro.model.app.Roles;
+import com.inthinc.pro.model.app.States;
+import com.inthinc.pro.model.app.SupportedTimeZones;
 import com.inthinc.pro.util.MessageUtil;
 
 /**
@@ -107,10 +110,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
             WEIGHTS.put(String.valueOf(i), i);
 
         // time zones
-        final List<String> timeZones = new ArrayList<String>();
-        for (final String id : TimeZone.getAvailableIDs())
-            if (!id.startsWith("Etc/"))
-                timeZones.add(id);
+//        final List<String> timeZones = new ArrayList<String>();
+//        for (final String id : TimeZone.getAvailableIDs())
+//            if (!id.startsWith("Etc/"))
+//                timeZones.add(id);
+        List<String> timeZones = SupportedTimeZones.getSupportedTimeZones();
         // sort by offset from GMT
         Collections.sort(timeZones, new Comparator<String>()
         {
@@ -143,7 +147,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
 
         // states
         STATES = new TreeMap<String, State>();
-        for (final State state : State.values())
+        for (final State state : States.getStates().values())
             STATES.put(state.getName(), state);
     }
 
@@ -451,9 +455,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         if (roles == null)
         {
             roles = new LinkedHashMap<String, Role>();
-            for (final Role role : Role.values())
+            for (final Role role : Roles.getRoles().values())
             {
-                roles.put(role.getDescription(), role);
+                roles.put(role.getName(), role);
                 if (role.equals(getUser().getRole()))
                     break;
             }

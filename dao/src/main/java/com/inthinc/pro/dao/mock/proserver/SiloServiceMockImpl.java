@@ -13,6 +13,9 @@ import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.mock.data.MockData;
+import com.inthinc.pro.dao.mock.data.MockRoles;
+import com.inthinc.pro.dao.mock.data.MockStates;
+import com.inthinc.pro.dao.mock.data.MockTimeZones;
 import com.inthinc.pro.dao.mock.data.SearchCriteria;
 import com.inthinc.pro.dao.mock.data.TempConversionUtil;
 import com.inthinc.pro.model.Device;
@@ -786,8 +789,13 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     @Override
     public List<Map<String, Object>> getStates()
     {
-        // TODO Auto-generated method stub
-        return null;
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+        for (Object obj : MockStates.getAll())
+        {
+            returnList.add(TempConversionUtil.createMapFromObject(obj, true));
+        }
+        
+        return returnList;
     }
 
     @Override
@@ -840,6 +848,51 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
 
     @Override
     public Map<String, Object> updateFwdCmd(Integer fwdID, Integer status)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> getTimezones()
+    {
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+        for (Object obj : MockTimeZones.getAll())
+        {
+            returnList.add(TempConversionUtil.createMapFromObject(obj, true));
+        }
+        
+        return returnList;
+    }
+
+    @Override
+    public List<Map<String, Object>> getAllAcctIDs()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> getNextSilo()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> getRoles()
+    {
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+        for (Object obj : MockRoles.getAll())
+        {
+            returnList.add(TempConversionUtil.createMapFromObject(obj, true));
+        }
+        
+        return returnList;
+    }
+
+    @Override
+    public List<Map<String, Object>> getSensitivityMaps()
     {
         // TODO Auto-generated method stub
         return null;

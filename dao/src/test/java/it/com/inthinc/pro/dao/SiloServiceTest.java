@@ -4,8 +4,6 @@ package it.com.inthinc.pro.dao;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +23,9 @@ import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.DriverHessianDAO;
 import com.inthinc.pro.dao.hessian.GroupHessianDAO;
 import com.inthinc.pro.dao.hessian.PersonHessianDAO;
+import com.inthinc.pro.dao.hessian.RoleHessianDAO;
 import com.inthinc.pro.dao.hessian.StateHessianDAO;
+import com.inthinc.pro.dao.hessian.TimeZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.UserHessianDAO;
 import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
 import com.inthinc.pro.dao.hessian.extension.HessianDebug;
@@ -46,12 +46,14 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.State;
-import com.inthinc.pro.model.StateObj;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.UserStatus;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleStatus;
 import com.inthinc.pro.model.VehicleType;
+import com.inthinc.pro.model.app.Roles;
+import com.inthinc.pro.model.app.States;
+import com.inthinc.pro.model.app.SupportedTimeZones;
 
 public class SiloServiceTest
 {
@@ -92,25 +94,26 @@ public class SiloServiceTest
 //        HessianDebug.debugOut = true;
         HessianDebug.debugRequest = true;
         
-/*        
-        Date epoch = new Date(0l);
+        initApp();
         
-        DateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
-        logger.debug(dateFormatter.format(epoch));
-        
-        Date beforeEpoch = new Date(-1203955588l);
-        
-        logger.debug(dateFormatter.format(beforeEpoch));
+    }
 
-        Date max = new Date(Integer.MAX_VALUE*1000l);
+    private static void initApp()
+    {
+        StateHessianDAO stateDAO = new StateHessianDAO();
+        stateDAO.setSiloService(siloService);
         
-        logger.debug(dateFormatter.format(max));
+        States states = new States();
+        states.setStateDAO(stateDAO);
+        states.init();
 
-        Date min= new Date(Integer.MIN_VALUE*1000l);
+        RoleHessianDAO roleDAO = new RoleHessianDAO();
+        roleDAO.setSiloService(siloService);
+
+        Roles roles = new Roles();
+        roles.setRoleDAO(roleDAO);
+        roles.init();
         
-        logger.debug(dateFormatter.format(min));
-        logger.debug("--");
-*/        
     }
 
     @AfterClass
@@ -119,35 +122,50 @@ public class SiloServiceTest
     }
     
     @Test
-    @Ignore
     public void states()
     {
-        // TODO:
-        // this just tests if our State enum matches the state list from the database
-        // this seems like a bad idea we need some sort of mapper
         StateHessianDAO stateDAO = new StateHessianDAO();
         stateDAO.setSiloService(siloService);
-        try
-        {
-        List<StateObj> statesList = stateDAO.getStates();
+        
+        States states = new States();
+        states.setStateDAO(stateDAO);
+        states.init();
+        
+        assertTrue(States.getStates().size() >= 50);
+    }
+    
+    @Test
+    public void roles()
+    {
+        RoleHessianDAO roleDAO = new RoleHessianDAO();
+        roleDAO.setSiloService(siloService);
 
-        for (StateObj stateObj : statesList)
-        {
-            State state = State.valueOf(stateObj.getStateID());
-            
-            assertEquals(stateObj.getName(), state.getName());
-            assertEquals(stateObj.getAbbrev(), state.getAbbrev());
-        }
-        }
-        catch (Throwable t)
-        {
-            t.printStackTrace();
-        }
+        Roles roles = new Roles();
+        roles.setRoleDAO(roleDAO);
+        roles.init();
+        
+        assertTrue(Roles.getRoles().size() > 0);
+    }
+    
+    @Test
+    public void supportedTimeZones()
+    {
+        TimeZoneHessianDAO timeZoneDAO = new TimeZoneHessianDAO();
+        timeZoneDAO.setSiloService(siloService);
+        
+        SupportedTimeZones supportedTimeZones = new SupportedTimeZones();
+        supportedTimeZones.setTimeZoneDAO(timeZoneDAO);
+        supportedTimeZones.init();
+        
+        assertTrue(SupportedTimeZones.getSupportedTimeZones().size() > 0);
+        
     }
     
     @Test
     public void siloService()
     {
+// TODO: add all of the empty result set cases
+        
         // test all create, find, update and any other methods (not delete yet though)
         account();
         Integer acctID = account.getAcctID();
@@ -219,14 +237,15 @@ public class SiloServiceTest
         addressDAO.setSiloService(siloService);
         
         // create
-        address = new Address(null, Util.randomInt(100, 999) + " Street", null, "City " + Util.randomInt(10,99), State.valueOf(Util.randomInt(1, State.values().length - 1)), "12345");
+        address = new Address(null, Util.randomInt(100, 999) + " Street", null, "City " + Util.randomInt(10,99),
+                            randomState(), "12345");
         Integer addrID = addressDAO.create(acctID, address);
         address.setAddrID(addrID);
 
         // find
         Address savedAddress= addressDAO.findByID(address.getAddrID());
         Util.compareObjects(address, savedAddress);
-        
+                
         // update
         address.setAddr1(Util.randomInt(100, 999) + " Update Street");
         address.setCity("Update City " + Util.randomInt(10,99));
@@ -412,7 +431,8 @@ logger.debug("TEAM 2: " + groupID);
         for (int i = 0; i < VEHICLE_COUNT; i++)
         {
             Vehicle vehicle = new Vehicle(0, groupID, 10, VehicleStatus.DISABLED, "Vehicle " + i, "Make " + i, "Model " + i, 2000 + i, "COLOR " + i, 
-                    VehicleType.valueOf(Util.randomInt(0, VehicleType.values().length-1)), "VIN_" + groupID + "_"+ i, 1000, "License " + i, State.valueOf(Util.randomInt(1, State.values().length - 1)));
+                    VehicleType.valueOf(Util.randomInt(0, VehicleType.values().length-1)), "VIN_" + groupID + "_"+ i, 1000, "License " + i, 
+                    randomState());
             Integer vehicleID = vehicleDAO.create(groupID, vehicle);
             assertNotNull(vehicleID);
             vehicle.setVehicleID(vehicleID);
@@ -475,7 +495,8 @@ logger.debug("TEAM 2: " + groupID);
         for (int i = 0; i < VEHICLE_COUNT; i++)
         {
             Vehicle vehicle = new Vehicle(0, groupID, 10, VehicleStatus.ACTIVE, "Vehicle " + i, "Make " + i, "Model " + i, 2000 + i, "COLOR " + i, 
-                    VehicleType.valueOf(Util.randomInt(0, VehicleType.values().length-1)), "VIN_" + groupID + "_" + i, 1000, "License " + i, State.valueOf(Util.randomInt(1, State.values().length - 1)));
+                    VehicleType.valueOf(Util.randomInt(0, VehicleType.values().length-1)), "VIN_" + groupID + "_" + i, 1000, "License " + i, 
+                    randomState());
             Integer vehicleID = vehicleDAO.create(groupID, vehicle);
             assertNotNull(vehicleID);
             vehicle.setVehicleID(vehicleID);
@@ -575,15 +596,14 @@ logger.debug("Find Person: " + person.getPersonID());
         for (Person person : groupPersonList)
         {
 
-            User user = new User(0, person.getPersonID(), Role.ROLE_CUSTOM_USER, UserStatus.ACTIVE, "user_"+person.getPersonID(), PASSWORD);
+            User user = new User(0, person.getPersonID(), randomRole(), UserStatus.ACTIVE, "user_"+person.getPersonID(), PASSWORD);
             // create
             Integer userID = userDAO.create(person.getPersonID(), user);
             assertNotNull("user", userID);
             user.setUserID(userID);
-            
 
             // update
-            user.setRole(Role.ROLE_READONLY);
+            user.setRole(randomRole());
             Integer changedCount = userDAO.update(user);
             assertEquals("user update count " + user.getUserID(), Integer.valueOf(1), changedCount);
             
@@ -644,7 +664,7 @@ logger.debug("Find Person: " + person.getPersonID());
             Date expired = Util.genDate(2010, 9, 30);
         
             Driver driver = new Driver(0, person.getPersonID(), DriverStatus.ACTIVE, 100+person.getPersonID(), "l"+person.getPersonID(), 
-                            State.valueOf(Util.randomInt(1, State.values().length - 1)), "ABCD", expired);
+                                        randomState(), "ABCD", expired);
 
             // create
             Integer driverID = driverDAO.create(person.getPersonID(), driver);
@@ -706,7 +726,6 @@ logger.debug("Find Person: " + person.getPersonID());
         {
             Integer deviceID = deviceList.get(deviceIdx++).getDeviceID();
             vehicleDAO.setVehicleDevice(vehicle.getVehicleID(), deviceID);
-//            assertEquals("Vehicle setDevice count", Integer.valueOf(1), changedCount);
             
             Vehicle returnedVehicle = vehicleDAO.findByID(vehicle.getVehicleID());
             
@@ -728,8 +747,6 @@ logger.debug("Find Person: " + person.getPersonID());
         {
             Integer driverID = driverList.get(driverIdx++).getDriverID();
             vehicleDAO.setVehicleDriver(vehicle.getVehicleID(), driverID);
-// TODO:  ask David if this should return a change count             
-//            assertEquals("Vehicle setDriver count", Integer.valueOf(1), changedCount);
             
             Vehicle returnedVehicle = vehicleDAO.findByID(vehicle.getVehicleID());
             
@@ -737,5 +754,30 @@ logger.debug("Find Person: " + person.getPersonID());
             
         }
     }
+    
+    private State randomState()
+    {
+        int idx = Util.randomInt(0, States.getStates().size()-1);
+        int cnt = 0;
+        for (State state : States.getStates().values())
+        {
+            if (cnt++ == idx)
+                return state;
+        }
+        
+        return null;
+    }
 
+    private Role randomRole()
+    {
+        int idx = Util.randomInt(0, Roles.getRoles().size()-1);
+        int cnt = 0;
+        for (Role role : Roles.getRoles().values())
+        {
+            if (cnt++ == idx)
+                return role;
+        }
+        
+        return null;
+    }
 }

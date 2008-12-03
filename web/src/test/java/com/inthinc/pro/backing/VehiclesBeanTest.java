@@ -4,6 +4,7 @@ import com.inthinc.pro.backing.VehiclesBean.VehicleView;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.VehicleStatus;
 import com.inthinc.pro.model.VehicleType;
+import com.inthinc.pro.model.app.States;
 
 public class VehiclesBeanTest extends BaseAdminBeanTest<VehiclesBean.VehicleView>
 {
@@ -33,7 +34,7 @@ public class VehiclesBeanTest extends BaseAdminBeanTest<VehiclesBean.VehicleView
         editItem.setVIN("12345678901234567");
         editItem.setWeight(5000);
         editItem.setLicense("ABC123");
-        editItem.setState(State.HI);
+        editItem.setState(States.getStateByAbbrev("HI"));
     }
 
     @Override

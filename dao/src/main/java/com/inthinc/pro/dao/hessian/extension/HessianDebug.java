@@ -1,5 +1,6 @@
 package com.inthinc.pro.dao.hessian.extension;
 
+
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -7,6 +8,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+
+import org.apache.log4j.Logger;
 
 import com.caucho.hessian.client.HessianProxyFactory;
 import com.caucho.hessian.io.AbstractHessianOutput;
@@ -18,11 +21,15 @@ public class HessianDebug
     public static boolean debugRequest = false;
     public static String debugInFileNamePrefix = "c:/debugHessianReq" ; 
     public static String debugOutFileNamePrefix = "c:/debugHessianOut" ; 
+    
+    private static final Logger logger = Logger.getLogger(HessianDebug.class);
+
 
 
     public static void debugInput(String methodName, Object[] args, HessianProxyFactory factory) throws IOException
     {
-        System.out.println("methodName: " + methodName);
+        
+        logger.debug("methodName: " + methodName);
 
         FileOutputStream fos = null;
         try
@@ -41,6 +48,7 @@ public class HessianDebug
 
     public static InputStream debugOutput(String methodName, InputStream ins)
     {
+        
         String fileName = debugOutFileNamePrefix + methodName + ".dmp";
         BufferedInputStream is = new BufferedInputStream(ins);
         FileOutputStream fos = null;
@@ -86,7 +94,8 @@ public class HessianDebug
 
     public static void debugRequest(String methodName, Object[] args)
     {
-        System.out.println("methodName: " + methodName);
+        
+        logger.debug("methodName: " + methodName);
         if (args != null)
         {
             for (int i = 0; i < args.length; i++)
@@ -97,18 +106,17 @@ public class HessianDebug
                 }
                 else if (args[i] != null)
                 {
-                    System.out.println("arg[" + i + "] " + args[i].toString());
+                    logger.debug("arg[" + i + "] " + args[i].toString());
                 }
             }
         }
-        
     }
     public static void dumpParams(Map<String, Object> params)
     {
         for (String param : params.keySet())
         {
             Object value = params.get(param);
-            System.out.println(param + " = " + ((value == null) ? "<null>" : value.toString()));
+            logger.debug(param + " = " + ((value == null) ? "<null>" : value.toString()));
         }
     }
 

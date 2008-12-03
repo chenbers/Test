@@ -1,55 +1,61 @@
 package com.inthinc.pro.model;
 
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
 
+import com.inthinc.pro.dao.annotations.ID;
+import com.inthinc.pro.model.app.Roles;
 
-public enum Role implements BaseEnum
+public class Role extends BaseEntity implements ReferenceEntity
 {
-
-    ROLE_READONLY(1, "ROLE_READONLY"),
-    ROLE_NORMAL_USER(2, "ROLE_NORMAL_USER"),
-    ROLE_SUPERVISOR(3, "ROLE_SUPERVISOR"),
-    ROLE_CUSTOM_USER(4, "ROLE_CUSTOM_USER"),
-    ROLE_SUPER_USER(5, "ROLE_SUPER_USER");
-
-    private String description;
-    private int code;
-
-    private Role(int code, String description)
+    @ID
+    Integer roleID;
+    
+    String name;
+    
+    public Role()
     {
-        this.code = code;
-        this.description = description;
+        
+    }
+    public Role(Integer roleID, String name)
+    {
+        this.roleID = roleID;
+        this.name = name;
+        
     }
 
-    private static final Map<Integer, Role> lookup = new HashMap<Integer, Role>();
-    static
+    public Integer getRoleID()
     {
-        for (Role p : EnumSet.allOf(Role.class))
-        {
-            lookup.put(p.code, p);
-        }
+        return roleID;
     }
 
-    public Integer getCode()
+    public void setRoleID(Integer roleID)
     {
-        return this.code;
+        this.roleID = roleID;
     }
 
-    public String getDescription()
+    public String getName()
     {
-        return description;
+        return name;
     }
 
-    public static Role valueOf(Integer code)
+    public void setName(String name)
     {
-        return lookup.get(code);
+        this.name = name;
     }
-
-    @Override
+    
+    public static Role valueOf(Integer ID)
+    {
+        return Roles.getRoleById(ID);
+    }
+    
     public String toString()
     {
-        return this.description;
+        return "ROLE_" + getName().toUpperCase();
     }
+    @Override
+    public Integer getID()
+    {
+        return roleID;
+    }
+ 
+    
 }

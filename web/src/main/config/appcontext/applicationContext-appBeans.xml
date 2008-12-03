@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+   <!-- Global Application Context (singleton scoped) beans -->
+   <bean id="roles" class="com.inthinc.pro.model.app.Roles" init-method="init">
+		<property name="roleDAO" ref="roleDAO"></property>
+   </bean>
+   <bean id="states" class="com.inthinc.pro.model.app.States" init-method="init">
+		<property name="stateDAO" ref="stateDAO"></property>
+   </bean>
+   <bean id="supportedTimeZones" class="com.inthinc.pro.model.app.SupportedTimeZones" init-method="init">
+		<property name="timeZoneDAO" ref="timeZoneDAO"></property>
+   </bean>
+
+</beans>

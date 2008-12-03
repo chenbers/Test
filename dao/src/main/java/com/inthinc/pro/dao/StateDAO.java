@@ -2,10 +2,10 @@ package com.inthinc.pro.dao;
 
 import java.util.List;
 
-import com.inthinc.pro.model.StateObj;
+import com.inthinc.pro.model.State;
 
-public interface StateDAO extends GenericDAO<StateObj, Integer>
+public interface StateDAO extends GenericDAO<State, Integer>
 {
-    List<StateObj> getStates();
+    List<State> getStates();
     
 }

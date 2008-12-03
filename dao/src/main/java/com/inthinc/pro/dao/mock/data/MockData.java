@@ -80,33 +80,31 @@ public class MockData
     static final int MAX_EVENTS = 10;
     static final int MAX_DEVICES = 200;
     
-    
-    
 
     static long timeNow = new Date().getTime();
     static int baseTimeSec = DateUtil.convertMillisecondsToSeconds(new Date().getTime());
 
     static String MST_TZ = "US/Mountain";
     static final String PASSWORD="nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7"; // password
-
-    static Address address[] = { new Address(1, "2200 S 1345 W", "", "Salt Lake City", State.UT, "84119"),
-        new Address(2, "3100 W 2249 S", "", "West Valley City", State.UT, "84119"),
-        new Address(3, "3601 S 2700 W", "", "West Valley City", State.UT, "84119"), };
+    static final State UT = MockStates.getByAbbrev("UT");
+    static Address address[] = { new Address(1, "2200 S 1345 W", "", "Salt Lake City", UT, "84119"),
+        new Address(2, "3100 W 2249 S", "", "West Valley City", UT, "84119"),
+        new Address(3, "3601 S 2700 W", "", "West Valley City", UT, "84119"), };
     static String addressStr[] = { "2200 S 1345 W, Salt Lake City, UT 84119",
         "3100 W 2249 S West Valley City, UT 84119", "3601 S 2700 W West Valley City, UT 84119", };
     static double lat[] = { 40.723871753812f, 40.704246f, 40.69416956554945f};
     static double lng[] = { -111.92932452647742f, -111.948613f, -111.95694072816069f};
-    static String tzName[] =
-    {
-        "US/Mountain",
-        "US/Central",
-        "US/Eastern",
-        "US/Hawaii",
-        "US/Pacific"
-    };
+//    static String tzName[] =
+//    {
+//        "US/Mountain",
+//        "US/Central",
+//        "US/Eastern",
+//        "US/Hawaii",
+//        "US/Pacific"
+//    };
     
     private Map<Class<?>, List<Object>> dataMap = new HashMap<Class<?>, List<Object>>();
-
+    
     //  base all dates in the mock data after this, so that it is easier to unit test
     public Integer dateNow;    
     private static MockData mockData;
@@ -237,12 +235,20 @@ public class MockData
         
         User[] users = 
                 {
-                    createUser(idOffset+1, accountID, groupID, "expired"+groupID, PASSWORD, randomPhone(), randomPhone(), "expired"+groupID+"@email.com", Role.ROLE_NORMAL_USER, Boolean.FALSE),
-                    createUser(idOffset+2, accountID, groupID, "custom"+groupID, PASSWORD, randomPhone(), randomPhone(), "custom"+groupID+"@email.com", Role.ROLE_CUSTOM_USER, Boolean.TRUE),
-                    createUser(idOffset+3, accountID, groupID, "normal"+groupID, PASSWORD, randomPhone(), randomPhone(), "normal"+groupID+"@email.com", Role.ROLE_NORMAL_USER, Boolean.TRUE),
-                    createUser(idOffset+4, accountID, groupID, "readonly"+groupID, PASSWORD, randomPhone(), randomPhone(), "readonly"+groupID+"@email.com", Role.ROLE_READONLY, Boolean.TRUE),
-                    createUser(idOffset+5, accountID, groupID, "superuser"+groupID, PASSWORD, randomPhone(), randomPhone(), "superuser"+groupID+"@email.com", Role.ROLE_SUPER_USER, Boolean.TRUE),
-                    createUser(idOffset+6, accountID, groupID, "supervisor"+groupID, PASSWORD, randomPhone(), randomPhone(), "supervisor"+groupID+"@email.com", Role.ROLE_SUPERVISOR, Boolean.TRUE)
+/*
+ * TODO: roles stuff isn't complete -- deal with it when we add permissions                
+                allRoles.put(key, new Role(key++, "readOnly"));
+                allRoles.put(key, new Role(key++, "normalUser"));
+                allRoles.put(key, new Role(key++, "supervisor"));
+                allRoles.put(key, new Role(key++, "customUser"));
+                allRoles.put(key, new Role(key++, "superUser"));
+*/                
+                    createUser(idOffset+1, accountID, groupID, "expired"+groupID, PASSWORD, randomPhone(), randomPhone(), "expired"+groupID+"@email.com", MockRoles.getNormalUser(), Boolean.FALSE),
+                    createUser(idOffset+2, accountID, groupID, "custom"+groupID, PASSWORD, randomPhone(), randomPhone(), "custom"+groupID+"@email.com", MockRoles.getCustomUser(), Boolean.TRUE),
+                    createUser(idOffset+3, accountID, groupID, "normal"+groupID, PASSWORD, randomPhone(), randomPhone(), "normal"+groupID+"@email.com", MockRoles.getNormalUser(), Boolean.TRUE),
+                    createUser(idOffset+4, accountID, groupID, "readonly"+groupID, PASSWORD, randomPhone(), randomPhone(), "readonly"+groupID+"@email.com", MockRoles.getReadOnlyUser(), Boolean.TRUE),
+                    createUser(idOffset+5, accountID, groupID, "superuser"+groupID, PASSWORD, randomPhone(), randomPhone(), "superuser"+groupID+"@email.com", MockRoles.getSuperUser(), Boolean.TRUE),
+                    createUser(idOffset+6, accountID, groupID, "supervisor"+groupID, PASSWORD, randomPhone(), randomPhone(), "supervisor"+groupID+"@email.com", MockRoles.getSupervisor(), Boolean.TRUE)
         };
 
         for (int userCnt = 0; userCnt < users.length; userCnt++)
@@ -725,7 +731,7 @@ public class MockData
         person.setHomePhone(randomPhone());
         person.setWorkPhone(randomPhone());
         person.setEmail(first.toLowerCase() + '.' + last.toLowerCase() + "@email.com");
-        person.setTimeZone(getRandomTimezone());
+        person.setTimeZone(MockTimeZones.getRandomTimezone());
         Driver driver = new Driver();
         driver.setDriverID(id);
         driver.setPersonID(person.getPersonID());
@@ -734,11 +740,6 @@ public class MockData
         return driver;
     }
 
-    private TimeZone getRandomTimezone()
-    {
-        int tz = randomInt(0, 4);
-        return TimeZone.getTimeZone(tzName[tz]);
-    }
 
     private List<Vehicle> addVehiclesToGroup(Integer accountID, Integer groupID, int numVehiclesInGroup)
     {
@@ -748,8 +749,8 @@ public class MockData
         for (int i = 0; i < numVehiclesInGroup; i++)
         {
             int id = idOffset+i+1;
-            Vehicle vehicle = createVehicle(id, accountID, groupID, "Ford", "F" + (randomInt(1, 15) * 1000), "Red", randomInt(5, 50) * 1000, "00000000000000000", "ABC-123", State
-                    .values()[randomInt(0, State.values().length - 1)], randomInt(0, 10) < 8);
+            Vehicle vehicle = createVehicle(id, accountID, groupID, "Ford", "F" + (randomInt(1, 15) * 1000), "Red", randomInt(5, 50) * 1000, "00000000000000000", "ABC-123", 
+                    MockStates.randomState(), randomInt(0, 10) < 8);
             storeObject(vehicle);
             addScores(vehicle.getVehicleID(), EntityType.ENTITY_VEHICLE, vehicle.getName());
             vehicleList.add(vehicle);

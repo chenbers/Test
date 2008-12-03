@@ -19,6 +19,7 @@ import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.dao.annotations.ConvertFieldToColumn;
 import com.inthinc.pro.dao.hessian.exceptions.MappingException;
 import com.inthinc.pro.model.BaseEnum;
+import com.inthinc.pro.model.ReferenceEntity;
 
 public abstract class AbstractMapper implements Mapper
 {
@@ -300,6 +301,10 @@ public abstract class AbstractMapper implements Mapper
                 {
                     map.put(name, ((TimeZone) value).getID());
                 }
+                else if (ReferenceEntity.class.isInstance(value))
+                {
+                    map.put(name, ((ReferenceEntity) value).getID());
+                }
                 else if (BaseEnum.class.isInstance(value))
                 {
                     map.put(name, ((BaseEnum) value).getCode());
@@ -356,6 +361,12 @@ public abstract class AbstractMapper implements Mapper
             else if (propertyType != null && propertyType.equals(Boolean.class) && value instanceof Integer)
             {
                 value = ((Integer) value).equals(Integer.valueOf(0)) ? Boolean.FALSE : Boolean.TRUE;
+            }
+            else if (propertyType != null && ReferenceEntity.class.isAssignableFrom(propertyType) && value instanceof Integer)
+            {
+                Method valueOf = propertyType.getMethod("valueOf", Integer.class);
+                if (valueOf != null)
+                    value = valueOf.invoke(null, value);
             }
             else if (propertyType != null && BaseEnum.class.isAssignableFrom(propertyType) && value instanceof Integer)
             {
