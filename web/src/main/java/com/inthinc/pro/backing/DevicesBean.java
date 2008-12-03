@@ -39,7 +39,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         AVAILABLE_COLUMNS.add("name");
         AVAILABLE_COLUMNS.add("vehicle");
         AVAILABLE_COLUMNS.add("baselineID");
-        AVAILABLE_COLUMNS.add("mcmid");
+        AVAILABLE_COLUMNS.add("imei");
         AVAILABLE_COLUMNS.add("sim");
         AVAILABLE_COLUMNS.add("phone");
         AVAILABLE_COLUMNS.add("ephone");

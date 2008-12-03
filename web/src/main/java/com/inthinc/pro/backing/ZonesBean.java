@@ -14,8 +14,6 @@ import com.inthinc.pro.util.MessageUtil;
 
 public class ZonesBean extends BaseBean
 {
-    private static final int ROWS_PER_PAGE = 10;
-
     private List<Zone> items;
     private List<Zone> filteredItems = new LinkedList<Zone>();
     private String     filterValue;
@@ -196,11 +194,10 @@ public class ZonesBean extends BaseBean
         if (parameterMap.get(idKey) != null)
         {
             final int editID = Integer.parseInt(parameterMap.get(idKey));
-            for (int i = 0; i < filteredItems.size(); i++)
-                if (filteredItems.get(i).getZoneID().equals(editID))
+            for (final Zone zone : items)
+                if (zone.getZoneID().equals(editID))
                 {
-                    item = filteredItems.get(i);
-                    page = (i / ROWS_PER_PAGE) + 1;
+                    item = zone;
                     break;
                 }
         }

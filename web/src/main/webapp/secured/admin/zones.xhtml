@@ -101,7 +101,7 @@
                           <li class="l"><a4j:commandLink id="searchButton" reRender="dataTable,recordCounts,scroller"><button value="submit" class="left"><span class="search"><h:outputText value="#{messages.button_search}" /></span></button></a4j:commandLink></li>
                         </ul>
 
-                        <a4j:commandLink action="#{zonesBean.edit}" value="#{messages.adminTable_edit}" reRender="dataTable,recordCounts,scroller,points,address,editZone,zoneName,zoneAddress" oncomplete="showZone(true)" />
+                        <a4j:commandLink action="#{zonesBean.edit}" value="#{messages.adminTable_edit}" reRender="editZone,zoneName,zoneAddress" oncomplete="showZone(true)" />
                         <a href="#" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><h:outputText value="#{messages.adminTable_delete}" /></a>
 
                       </td>
