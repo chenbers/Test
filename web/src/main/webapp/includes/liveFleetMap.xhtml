@@ -4,12 +4,10 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:f="http://java.sun.com/jsf/core"
   	xmlns:iwi="http://pro.tiwi.com/jsf"
-	xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:h="http://java.sun.com/jsf/html"
 	
 	<script src="http://gmaps-utility-library.googlecode.com/svn/trunk/markermanager/release/src/markermanager.js">	
 	</script>
-		<div class="spacer"></div>		
-	
 		<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
@@ -20,6 +18,11 @@
 							reRender="map"
 							value="#{messages.refresh}">
 						</a4j:commandButton>
+			   			<h:commandLink action="#{flyOutBean.flyNavRuleAction}">
+			   				<img src="/tiwipro/images/#{flyOutImage}" border="0" />
+			   				<f:setPropertyActionListener value="#{flyNavRule}" target="#{flyOutBean.navigationRule}" />
+			   				<f:setPropertyActionListener value="#{flySelectedTab}" target="#{flyOutBean.selectedTab}" />
+			   			</h:commandLink>
 						</a4j:form>
 						</span>
 					</div>
@@ -52,18 +55,10 @@
 								map.setMapType(G_NORMAL_MAP);
  								var mgr = new MarkerManager(map);
  								
-						        // Create a base icon for all of our markers that specifies the
-						        // shadow, icon dimensions, etc.
-//						        var baseIcon = new GIcon(G_DEFAULT_ICON);
-//						        baseIcon.shadow = "http://www.google.com/mapfiles/shadow50.png";
-//						        baseIcon.iconSize = new GSize(20, 34);
-//						        baseIcon.shadowSize = new GSize(37, 34);
-//						        baseIcon.iconAnchor = new GPoint(9, 34);
-//						        baseIcon.infoWindowAnchor = new GPoint(9, 2);
 						        
- 								// Creates a marker whose info window displays the letter corresponding
+ 								// Creates a marker whose info window displays the link tot the driver corresponding
 						        // to the given index.
-						        function createMarker(point, index, driverId, iconImage) {
+						        function createMarker(point, /*index,*/ driverId, iconImage) {
 						          // Create a colored icon for this point using our icon class
 						        coloredIcon = new GIcon(G_DEFAULT_ICON); 
 						        coloredIcon.image = iconImage; 
@@ -106,7 +101,7 @@
  								var i=0;
 								<ui:repeat value="#{driverLocationBean.driverLastLocationBeans}" var="driverLastLocationBean">
 									var latlng = new GLatLng(#{driverLastLocationBean.lastLocation.lat}, #{driverLastLocationBean.lastLocation.lng});
-						        		mgr.addMarker(createMarker(latlng, i++,  "#{driverLastLocationBean.driver.driverID}",
+						        		mgr.addMarker(createMarker(latlng, /*i++, */ "#{driverLastLocationBean.driver.driverID}",
 						        		 "#{driverLocationBean.mapIconMap.icons[driverLastLocationBean.groupID]}"),10);
 	        						
 							  	</ui:repeat>
