@@ -34,11 +34,11 @@ import com.inthinc.pro.security.userdetails.ProUser;
 @RunWith(SpringJUnit4ClassRunner.class)
 
 // any classes that extend this one will also have access to these configurations
-@ContextConfiguration(locations={"file:./src/main/config/appcontext/applicationContext-mockdao.xml",
-                                 "file:./src/main/config/appcontext/applicationContext-daoBeans.xml",
-                                 "file:./src/main/config/appcontext/applicationContext-appBeans.xml",
-                                 "file:./src/main/config/appcontext/applicationContext-beans.xml",
-                                 "file:./src/main/config/appcontext/applicationContext-security.xml"}, 
+@ContextConfiguration(locations={"file:src/main/config/appcontext/applicationContext-mockdao.xml",
+                                 "file:src/main/config/appcontext/applicationContext-daoBeans.xml",
+                                 "file:src/main/config/appcontext/applicationContext-appBeans.xml",
+                                 "file:src/main/config/appcontext/applicationContext-beans.xml",
+                                 "file:src/main/config/appcontext/applicationContext-security.xml"}, 
                                  loader=com.inthinc.pro.spring.test.WebSessionContextLoader.class)
 
                                  
