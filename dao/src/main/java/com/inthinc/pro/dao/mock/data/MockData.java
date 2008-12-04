@@ -497,6 +497,7 @@ public class MockData
         event.setDriverID(driver.getDriverID());
         event.setDriver(driver);
         event.setVehicle(vehicle);
+        event.setAddressStr(addressStr[randomInt(0,2)]);
         storeObject(event, Event.class);
         RedFlag redFlag = new RedFlag(idOffset+1, RedFlagLevel.valueOf(randomInt(1,3)), randomInt(0, 1) == 1, false, event);
         storeObject(redFlag);
@@ -512,6 +513,7 @@ public class MockData
         event.setDriverID(driver.getDriverID());
         event.setDriver(driver);
         event.setVehicle(vehicle);
+        event.setAddressStr(addressStr[randomInt(0,2)]);
         storeObject(event, Event.class);
         redFlag = new RedFlag(idOffset+2, RedFlagLevel.valueOf(randomInt(1,3)), randomInt(0, 1) == 1, false, event);
         storeObject(redFlag);
@@ -527,6 +529,7 @@ public class MockData
         event.setDriverID(driver.getDriverID());
         event.setDriver(driver);
         event.setVehicle(vehicle);
+        event.setAddressStr(addressStr[randomInt(0,2)]);
         storeObject(event, Event.class);
         redFlag = new RedFlag(idOffset+3, RedFlagLevel.valueOf(randomInt(1,3)), randomInt(0, 1) == 1, false, event);
         storeObject(redFlag);
@@ -563,6 +566,7 @@ public class MockData
                         date,
                         randomInt(15, 70), randomInt(10, 50), lat, lng, randomInt(50, 70),
                         randomInt(70, 90), randomInt(5, 20));
+                event.setAddressStr(addressStr[randomInt(0,2)]);
                 break;
             case 2:
                 Integer deltaVx = 0;
@@ -600,6 +604,7 @@ public class MockData
                             date,
                         randomInt(15, 70), randomInt(10, 50), lat, lng,
                         randomInt(50, 70), deltaVx, deltaVy, deltaVz, severity);
+                event.setAddressStr(addressStr[randomInt(0,2)]);
                 break;
             case 3:
                 int speedLimit = randomInt(35, 75);
@@ -609,6 +614,7 @@ public class MockData
                             date,
                             randomInt(15, 70), randomInt(10, 50), lat, lng, topSpeed, avgSpeed,
                             speedLimit, randomInt(5, 70), randomInt(10, 50));
+                event.setAddressStr(addressStr[randomInt(0,2)]);
                 break;
             }
             event.setDriverID(driver.getDriverID());
