@@ -32,7 +32,7 @@ public class DriverTripsBean extends BaseBean
     private Integer totalDriveTime;
     
     private boolean showAllTrips = false;
-    private boolean showIdleMarkers = false;
+    private boolean showIdleMarkers = true;
     private boolean showWarnings = true;
     
     private List<TripDisplay> trips;
@@ -79,8 +79,7 @@ public class DriverTripsBean extends BaseBean
             
             milesDriven += trip.getMileage();
             //totalDriveTime += ( trip.getEndTime() - trip.getStartTime() );
-            
-            //numStops =  ? 
+
             //idleTime =  ?
         }
         

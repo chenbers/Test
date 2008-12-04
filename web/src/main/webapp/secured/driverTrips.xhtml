@@ -20,16 +20,8 @@
 
 <ul id="grid_nav">
 	<li class="l grid_icon"><img src="images/ico_line.png" /></li>
-	<li class="l grid_title">Driver Performance: <h:outputText>#{driverBean.driverName}</h:outputText></li>
+	<li class="l grid_title">Driver Performance:&#160;<h:outputText>#{driverBean.driverName}</h:outputText></li>
 	<li class="l divider"><img src="/images/grid_nav_divider.png" /></li>
-	<li class="l">
-	
-		<ul id="breadcrumb">
-			<li class="first"><a href="/">Home</a></li>
-			<li><a href="drivers.html">Drivers</a></li>
-			<li class="last"><h:outputText></h:outputText></li>
-		</ul>
-	</li>
 </ul>
 <div class="spacer"></div>
 <table width="940" border="0" cellspacing="0" cellpadding="0" align="center">
@@ -101,7 +93,7 @@
 						<span class=""><h:outputText>Stats:&#160;</h:outputText>
 						<h:outputText value="#{driverTripsBean.startDate}">
 							<f:convertDateTime pattern="MMM dd, yyyy" />
-						</h:outputText>:&#160;to:&#160; 
+						</h:outputText>&#160;to&#160; 
 						<h:outputText value="#{driverTripsBean.endDate}">
 							<f:convertDateTime pattern="MMM dd, yyyy" />
 						</h:outputText>
@@ -117,10 +109,6 @@
 								  <tr>
 									<td width="240">Total Miles Driven:</td>
 									<td width="70"><h:outputText>#{driverTripsBean.milesDriven}</h:outputText></td>
-								  </tr>
-								  <tr>
-									<td>Total Stops: </td>
-									<td><h:outputText>#{driverTripsBean.numStops}</h:outputText></td>
 								  </tr>
 								  <tr>
 								    <td>Total Idle Time: </td>
@@ -168,12 +156,16 @@
 						width="100%">  <!-- //TODO: Make generic Odd Even CSS -->
 
 							<!-- Data -->
+							
+							<rich:column sortBy="#{item.addressStr}">
+								<img src="../images/ico_violation.png" width="20" height="20" />
+							</rich:column>
+
 							<rich:column sortBy="#{item.addressStr}">
 								<f:facet name="header">
 									<h:outputText value="Address" />
 								</f:facet>
 								<h:outputText value="#{item.addressStr}" />
-								
 							</rich:column>
 							
 							<rich:column sortBy="#{item.time}">
@@ -214,19 +206,19 @@
 								  <tr>
 									<td width="290">Show last 10 Trips on map.</td>
 								    <td width="20">
-									    <h:selectBooleanCheckbox id="showAllCheckBox" value="#{driverTripsBean.showAllTrips}" onchange="showAllChanged();" />
+									    <h:selectBooleanCheckbox id="showAllCheckBox" value="#{driverTripsBean.showAllTrips}" onchange="updateMap();" />
 								    </td>
 								    </tr>
 								  <tr>
 									<td>Show idle markers</td>
 								    <td>
-								      <h:selectBooleanCheckbox value="#{driverTripsBean.showIdleMarkers}" />
+								      <h:selectBooleanCheckbox id="showIdleCheckBox" value="#{driverTripsBean.showIdleMarkers}" onchange="showIdleChanged();"/>
 								    </td>
 								    </tr>
 								  <tr>
 								    <td>Show warnings</td>
 								    <td>
-								      <h:selectBooleanCheckbox value="#{driverTripsBean.showWarnings}" />
+								      <h:selectBooleanCheckbox id="showWarningsCheckBox" value="#{driverTripsBean.showWarnings}" onchange="showWarningsChanged();"/>
 								    </td>
 								    </tr>
 								  </tbody>
@@ -373,12 +365,22 @@
 				<div id="map-canvas" style="width:588px;height:400px;border:0"></div>
 				</h:panelGroup>
 			   		<script type="text/javascript">
+			   		
+					var showWarnings = new Boolean(true);
+					var showIdleMarkers = new Boolean(true);
 					
 					var baseIcon = new GIcon();
 						baseIcon.iconSize = new GSize(21, 20);
 						baseIcon.iconAnchor = new GPoint(6, 20);
 						baseIcon.infoWindowAnchor = new GPoint(5, 1);
 
+				 		map = new GMap2(document.getElementById("map-canvas"));
+  						map.addControl(new GLargeMapControl());
+  						map.addControl(new GMapTypeControl());
+  						map.addControl(new GOverviewMapControl()); 
+  						map.setCenter(new GLatLng(#{driverTripsBean.selectedTrip.routeLastStep.lat}, #{driverTripsBean.selectedTrip.routeLastStep.lng}), 14);
+  						map.setMapType(G_NORMAL_MAP);
+						
 				        // Creates a marker whose info window displays the letter corresponding
 				        // to the given index.
 				    function createMarker(point, message, iconImage)
@@ -400,37 +402,50 @@
 			   		{
 			   			if (GBrowserIsCompatible()) 
         				{
-			   				map = new GMap2(document.getElementById("map-canvas"));
-      						map.addControl(new GLargeMapControl());
-      						map.addControl(new GMapTypeControl());
-      						map.addControl(new GOverviewMapControl()); 
-							map.setCenter(new GLatLng(#{driverTripsBean.selectedTrip.routeLastStep.lat}, #{driverTripsBean.selectedTrip.routeLastStep.lng}), 14);
-							map.setMapType(G_NORMAL_MAP);
+			   				map.clearOverlays(); 
 							var polyline;
-							
 			   				<ui:repeat value="#{driverTripsBean.trips}" var="trip">
 								polyline = new GPolyline([
 								<ui:repeat value="#{trip.route}" var="rt">
 										new GLatLng(#{rt.lat}, #{rt.lng}),
 								</ui:repeat>
-
-			 					//Repeating the last step to finish JS array.
 		    			  		new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng})
 
 								], "#0000ff", 6);
 								map.addOverlay(polyline);
 
-								//Add Start trip icon to map.
+								//Add trip Start and Stop icons to map
 								var startlatlng = new GLatLng(#{trip.route[0].lat}, #{trip.route[0].lng});
 								map.addOverlay(createMarker(startlatlng, "Start of trip.<br />" + "#{trip.trip.startTime}<br />#{trip.startAddress}",
 															"#{facesContext.externalContext.request.contextPath}/images/ico_start.png"));
 
-								//Add End trip icon to map.
 								var endlatlng = new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng});
 								map.addOverlay(createMarker(endlatlng, "End of trip.<br />" + "#{trip.trip.endTime}<br />#{trip.endAddress}",
 															"#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png"));
-				        		 
+
 			  				</ui:repeat>
+
+			  				if(showWarnings == true)
+							{
+				  				var violation;
+								<ui:repeat value="#{driverTripsBean.violationEvents}" var="violation">
+									violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
+									map.addOverlay(createMarker(violation, "TYPE Violation.<br />#{violation.time}",
+													"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png"));
+								</ui:repeat>
+							}
+
+							var idleMarker;
+							if(showIdleMarkers == true)  //TODO Get Idle Events from DAO 
+							{
+								idleMarker = new GLatLng(32.961299896240234, -117.1980972290039);
+								map.addOverlay(createMarker(idleMarker, "Vehicle Idle.<br />Dec 04, 2008 07:06<br />Duration 3.45 minutes.",
+								"#{facesContext.externalContext.request.contextPath}/images/ico_idle.png"));
+
+								idleMarker = new GLatLng(32.9817008972168, -117.1593017578125);
+								map.addOverlay(createMarker(idleMarker, "Vehicle Idle.<br />Dec 04, 2008 07:01<br />Duration 13.02 minutes.",
+								"#{facesContext.externalContext.request.contextPath}/images/ico_idle.png"));
+							}	
         				}
 			   			
 				    }
@@ -439,13 +454,7 @@
 				    {
 				    	if (GBrowserIsCompatible()) 
         				{
-				    		map = new GMap2(document.getElementById("map-canvas"));
-      						map.addControl(new GLargeMapControl());
-      						map.addControl(new GMapTypeControl());
-      						map.addControl(new GOverviewMapControl()); 
-      						map.setCenter(new GLatLng(#{driverTripsBean.selectedTrip.routeLastStep.lat}, #{driverTripsBean.selectedTrip.routeLastStep.lng}), 14);
-							map.setMapType(G_NORMAL_MAP);
-							
+				    		map.clearOverlays(); 
 							var polyline = new GPolyline([
 				  										
 				 										<ui:repeat value="#{driverTripsBean.selectedTrip.route}" var="rt">
@@ -466,17 +475,33 @@
 							map.addOverlay(createMarker(endlatlng, "End of trip.<br />" + "#{driverTripsBean.selectedTrip.trip.endTime}<br />#{driverTripsBean.selectedTrip.endAddress}",
 											"#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png"));
 
-							var violation;
-							<ui:repeat value="#{driverTripsBean.violationEvents}" var="violation">
-								violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
-								map.addOverlay(createMarker(violation, "TYPE Violation.<br />DATE TIME",
-												"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png"));
-							</ui:repeat>						
+							if(showWarnings == true)
+							{
+								var violation;
+								<ui:repeat value="#{driverTripsBean.violationEvents}" var="violation">
+									violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
+									map.addOverlay(createMarker(violation, "TYPE Violation.<br />#{violation.time}",
+													"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png"));
+								</ui:repeat>
+							}
+
+							var idleMarker;
+							if(showIdleMarkers == true)  //TODO Get Idle Events from DAO 
+							{
+								idleMarker = new GLatLng(32.961299896240234, -117.1980972290039);
+								map.addOverlay(createMarker(idleMarker, "Vehicle Idle.<br />Dec 04, 2008 07:06<br />Duration 3.45 minutes.",
+								"#{facesContext.externalContext.request.contextPath}/images/ico_idle.png"));
+
+								idleMarker = new GLatLng(32.9817008972168, -117.1593017578125);
+								map.addOverlay(createMarker(idleMarker, "Vehicle Idle.<br />Dec 04, 2008 07:01<br />Duration 13.02 minutes.",
+								"#{facesContext.externalContext.request.contextPath}/images/ico_idle.png"));
+								
+							}							
         				}
         				
 					}
-
-				    function showAllChanged()
+					//Update Map.
+				    function updateMap()
 				    {
 				    	if(document.getElementById('showAllCheckBox').checked == true)
 				    	{
@@ -488,7 +513,38 @@
 				    	}
 					}
 
-				    showAllChanged();
+				    // Show Warnings Checkbox changed    EASIER WAY TO DO THIS?
+				    function showWarningsChanged()
+				    {
+				    	if(document.getElementById('showWarningsCheckBox').checked == true)
+				    	{
+							showWarnings = true;
+							updateMap();
+				    	}
+				    	else
+				    	{
+							showWarnings = false;
+				    		updateMap();
+				    	}
+					}
+
+					// Show Idle Markers Checkbox changed
+				    function showIdleChanged()
+				    {
+				      	if(document.getElementById('showIdleCheckBox').checked == true)
+				    	{
+				      		showIdleMarkers = true;
+							updateMap();
+				    	}
+				    	else
+				    	{
+				    		showIdleMarkers = false;
+				    		updateMap();
+				    	}
+					}
+
+					//Onload
+				    updateMap();
     				
   					</script> 
 			  </rich:panel>
