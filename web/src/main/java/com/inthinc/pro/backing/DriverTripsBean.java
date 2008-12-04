@@ -1,8 +1,11 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import javax.management.timer.Timer;
 
 import org.apache.log4j.Logger;
 
@@ -40,7 +43,12 @@ public class DriverTripsBean extends BaseBean
     
     public void init()
     {
-        initTrips();
+    	Calendar calendar = Calendar.getInstance();
+    	calendar.add(Calendar.DAY_OF_MONTH, -7);
+    	
+    	startDate = calendar.getTime();
+    	
+    	initTrips();
 
     }
     
@@ -49,7 +57,7 @@ public class DriverTripsBean extends BaseBean
         logger.debug("## initTrips()");
         
         List<Trip> tempTrips = new ArrayList<Trip>();
-        tempTrips = tripDAO.getTrips(navigation.getDriver().getDriverID(), DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate) - 10000);
+        tempTrips = tripDAO.getTrips(navigation.getDriver().getDriverID(), DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate));
 
         trips = new ArrayList<TripDisplay>();
         for (Trip trip : tempTrips)

@@ -212,9 +212,9 @@
 							<table width="320" cellpadding="4" cellspacing="0" class="" id="settings">
 								  <tbody>
 								  <tr>
-									<td width="290">Show all Trips on this map</td>
+									<td width="290">Show last 10 Trips on map.</td>
 								    <td width="20">
-									    <h:selectBooleanCheckbox id="showAllCheckBox" value="#{driverTripsBean.showAllTrips}"  onchange="showAllChanged();" />
+									    <h:selectBooleanCheckbox id="showAllCheckBox" value="#{driverTripsBean.showAllTrips}" onchange="showAllChanged();" />
 								    </td>
 								    </tr>
 								  <tr>
@@ -259,21 +259,15 @@
 								  <tr>
 									<td width="25"><img src="../images/ico_start.png" width="21" height="20" /></td>
 									<td width="120">Start</td>
-								    <td width="30"><img src="../images/ico_stop.png" width="20" height="20" /></td>
-								    <td width="119">Engine Stop</td>
+								    <td width="30"><img src="../images/ico_idle.png" width="20" height="20" /></td>
+								    <td width="119">Engine Idle</td>
 								  </tr>
 								  <tr>
-									<td><img src="../images/ico_idle.png" width="20" height="20" /></td>
-									<td>Engine Idle</td>
-								    <td><img src="../images/ico_new_trip.png" width="21" height="20" /></td>
-								    <td>New Trip</td>
-								  </tr>
-								  <tr>
-								    <td><img src="../images/ico_violation.png" width="20" height="20" /></td>
-								    <td>Violation</td>
+									<td><img src="../images/ico_violation.png" width="20" height="20" /></td>
+									<td>Violation</td>
 								    <td><img src="../images/ico_end_trip.png" width="21" height="20" /></td>
 								    <td>End</td>
-								    </tr>
+								  </tr>
 								  </tbody>
 								</table>
 							</div>
@@ -376,9 +370,32 @@
 			<div class="panel_w">
 			  <rich:panel bodyClass="panel_content" id="selectedTripMap">
 			  <h:panelGroup styleClass="map-border" layout="block">
-				<div id="map-canvas" style="width:588px;height:500px;border:0"></div>
+				<div id="map-canvas" style="width:588px;height:400px;border:0"></div>
 				</h:panelGroup>
 			   		<script type="text/javascript">
+					
+					var baseIcon = new GIcon();
+						baseIcon.iconSize = new GSize(21, 20);
+						baseIcon.iconAnchor = new GPoint(6, 20);
+						baseIcon.infoWindowAnchor = new GPoint(5, 1);
+
+				        // Creates a marker whose info window displays the letter corresponding
+				        // to the given index.
+				    function createMarker(point, message, iconImage)
+				        {
+				          var markerIcon = new GIcon(baseIcon);
+				          markerIcon.image = iconImage;
+	
+				          // Set up our GMarkerOptions object
+				          markerOptions = { icon:markerIcon };
+				          var marker = new GMarker(point, markerOptions);
+	
+				          GEvent.addListener(marker, "click", function() {
+				            marker.openInfoWindowHtml("<b>" + message + "</b>");
+				          });
+				          return marker;
+				        }
+
 			   		function drawAllTrips()
 			   		{
 			   			if (GBrowserIsCompatible()) 
@@ -389,9 +406,8 @@
       						map.addControl(new GOverviewMapControl()); 
 							map.setCenter(new GLatLng(#{driverTripsBean.selectedTrip.routeLastStep.lat}, #{driverTripsBean.selectedTrip.routeLastStep.lng}), 14);
 							map.setMapType(G_NORMAL_MAP);
-
 							var polyline;
-
+							
 			   				<ui:repeat value="#{driverTripsBean.trips}" var="trip">
 								polyline = new GPolyline([
 								<ui:repeat value="#{trip.route}" var="rt">
@@ -403,6 +419,17 @@
 
 								], "#0000ff", 6);
 								map.addOverlay(polyline);
+
+								//Add Start trip icon to map.
+								var startlatlng = new GLatLng(#{trip.route[0].lat}, #{trip.route[0].lng});
+								map.addOverlay(createMarker(startlatlng, "Start of trip.<br />" + "#{trip.trip.startTime}<br />#{trip.startAddress}",
+															"#{facesContext.externalContext.request.contextPath}/images/ico_start.png"));
+
+								//Add End trip icon to map.
+								var endlatlng = new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng});
+								map.addOverlay(createMarker(endlatlng, "End of trip.<br />" + "#{trip.trip.endTime}<br />#{trip.endAddress}",
+															"#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png"));
+				        		 
 			  				</ui:repeat>
         				}
 			   			
@@ -418,18 +445,26 @@
       						map.addControl(new GOverviewMapControl()); 
       						map.setCenter(new GLatLng(#{driverTripsBean.selectedTrip.routeLastStep.lat}, #{driverTripsBean.selectedTrip.routeLastStep.lng}), 14);
 							map.setMapType(G_NORMAL_MAP);
-
+							
 							var polyline = new GPolyline([
 				  										
 				 										<ui:repeat value="#{driverTripsBean.selectedTrip.route}" var="rt">
 				 											new GLatLng(#{rt.lat}, #{rt.lng}),
 				 									  	</ui:repeat>
-
-				 	 									  	//Repeating the last step to finish JS array.
-				 									  	new GLatLng(#{driverTripsBean.selectedTrip.routeLastStep.lat}, #{driverTripsBean.selectedTrip.routeLastStep.lng})
+					 									  	new GLatLng(#{driverTripsBean.selectedTrip.routeLastStep.lat}, #{driverTripsBean.selectedTrip.routeLastStep.lng})
 
 				 										], "#0000ff", 6);
 				 										map.addOverlay(polyline);
+
+							//Add Start trip icon to map.
+							var startlatlng = new GLatLng(#{driverTripsBean.selectedTrip.route[0].lat}, #{driverTripsBean.selectedTrip.route[0].lng});
+							map.addOverlay(createMarker(startlatlng, "Start of trip.<br />" + "#{driverTripsBean.selectedTrip.trip.startTime}<br />#{driverTripsBean.selectedTrip.startAddress}",
+											"#{facesContext.externalContext.request.contextPath}/images/ico_start.png"));
+
+							//Add End trip icon to map.
+							var endlatlng = new GLatLng(#{driverTripsBean.selectedTrip.routeLastStep.lat}, #{driverTripsBean.selectedTrip.routeLastStep.lng});
+							map.addOverlay(createMarker(endlatlng, "End of trip.<br />" + "#{driverTripsBean.selectedTrip.trip.endTime}<br />#{driverTripsBean.selectedTrip.endAddress}",
+											"#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png"));
 				 										
         				}
         				
@@ -438,9 +473,13 @@
 				    function showAllChanged()
 				    {
 				    	if(document.getElementById('showAllCheckBox').checked == true)
+				    	{
 				    		drawAllTrips();
+				    	}
 				    	else
+				    	{
 				    		drawSelectedTrip();
+				    	}
 					}
 
 				    showAllChanged();
