@@ -204,7 +204,7 @@ public class MockData
             
             addScores(groups[cnt].getGroupID(), EntityType.ENTITY_GROUP, groups[cnt].getName());
             
-            addMpg(groups[cnt].getGroupID(), groups[cnt].getGroupID());
+            addMpg(groups[cnt].getGroupID(), groups[cnt].getName(), groups[cnt].getGroupID());
             
             if (!groupIsParent(groups, groups[cnt].getGroupID()))
             {
@@ -355,7 +355,7 @@ public class MockData
     }
     
 
-    private void addMpg(Integer entityID, Integer groupID)
+    private void addMpg(Integer entityID, String entityName, Integer groupID)
     {
         int[] monthsBack = {
                 12, 6, 3, 0
@@ -368,6 +368,7 @@ public class MockData
         	int daysBack = (int) (date.getTimeInMillis() - System.currentTimeMillis()) / 1000 / 60 / 60 / 24;
         	MpgEntity mapEntity = new MpgEntity(
         			entityID,
+        			entityName,
         			groupID,
         			randomInt(0, 50),
         			randomInt(0, 50),
@@ -390,7 +391,7 @@ public class MockData
             storeObject(driver);
             Person person = retrieveObject(Person.class, "personID", id);
             addScores(driver.getDriverID(), EntityType.ENTITY_DRIVER, person.getFirst() + person.getLast(), groupID);
-            addMpg(driver.getDriverID(), groupID);
+            addMpg(driver.getDriverID(), person.getFirst() + person.getLast(), groupID);
             driverList.add(driver);
         }
         

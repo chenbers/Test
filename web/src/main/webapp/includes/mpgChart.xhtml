@@ -15,14 +15,12 @@
     <c:when test="#{inFlyOut == 'true'}">
       <c:set var="displayLegend" value="false" />
       <c:set var="displayTable" value="true" />
-      <c:set var="flyNavRule" value="go_home" />
-      <ui:param name="flyOutImage" value="ico_minimize.png" />
+      <c:set var="flyOutImage" value="ico_minimize.png" />
     </c:when>
     <c:otherwise>
       <c:set var="displayLegend" value="true" />
       <c:set var="displayTable" value="false" />
-      <c:set var="flyNavRule" value="go_fleetFlyOut" />
-      <ui:param name="flyOutImage" value="ico_expand.png" />
+      <c:set var="flyOutImage" value="ico_expand.png" />
     </c:otherwise>
   </c:choose>
   
@@ -31,20 +29,36 @@
 
       <div class="panel_title">
         <span class="gas">#{title}</span>
-			<ui:include src="/includes/dateLinksWithFlyOut.xhtml">
-				<ui:param name="ajaxForm" value="#{ajaxForm}"/>
-				<ui:param name="ajaxStatusID" value="#{ajaxStatusID}"/>
-				<ui:param name="reRenderList" value="#{reRenderList}"/>			
-				<ui:param name="thirtyDaysOn" value="#{thirtyDaysOn}"/>
-				<ui:param name="threeMonthsOn" value="#{threeMonthsOn}"/>
-				<ui:param name="sixMonthsOn" value="#{sixMonthsOn}"/>
-				<ui:param name="twelveMonthsOn" value="#{twelveMonthsOn}"/>
-        		<ui:param name="duration" value="#{duration}" />
-                <ui:param name="flyNavRule" value="#{flyNavRule}" />  
-                <ui:param name="flyOutImage" value="#{flyOutImage}" />
-                <ui:param name="flySelectedTab" value="mpg_full_screen" />
-			</ui:include>	
-        </div>
+        <c:choose>
+          <c:when test="#{empty flyNavRule}">
+            <ui:include src="/includes/dateLinks.xhtml">
+              <ui:param name="ajaxForm" value="#{ajaxForm}"/>
+              <ui:param name="ajaxStatusID" value="#{ajaxStatusID}"/>
+              <ui:param name="reRenderList" value="#{reRenderList}"/>     
+              <ui:param name="thirtyDaysOn" value="#{thirtyDaysOn}"/>
+              <ui:param name="threeMonthsOn" value="#{threeMonthsOn}"/>
+              <ui:param name="sixMonthsOn" value="#{sixMonthsOn}"/>
+              <ui:param name="twelveMonthsOn" value="#{twelveMonthsOn}"/>
+              <ui:param name="duration" value="#{duration}" />
+            </ui:include>
+          </c:when>
+          <c:otherwise>
+    	    <ui:include src="/includes/dateLinksWithFlyOut.xhtml">
+    	      <ui:param name="ajaxForm" value="#{ajaxForm}"/>
+    	      <ui:param name="ajaxStatusID" value="#{ajaxStatusID}"/>
+    	      <ui:param name="reRenderList" value="#{reRenderList}"/>			
+    	      <ui:param name="thirtyDaysOn" value="#{thirtyDaysOn}"/>
+    	      <ui:param name="threeMonthsOn" value="#{threeMonthsOn}"/>
+    	      <ui:param name="sixMonthsOn" value="#{sixMonthsOn}"/>
+    	      <ui:param name="twelveMonthsOn" value="#{twelveMonthsOn}"/>
+        	  <ui:param name="duration" value="#{duration}" />
+              <ui:param name="flyNavRule" value="#{flyNavRule}" />  
+              <ui:param name="flyOutImage" value="#{flyOutImage}" />
+              <ui:param name="flySelectedTab" value="mpg_full_screen" />
+			</ui:include>
+          </c:otherwise>
+        </c:choose>
+      </div>
     </div>
     <div class="panel_w">
       <div class="panel_content">
@@ -79,34 +93,34 @@
                 var="item" styleClass="datagrid"
                 cellspacing="1" width="100%">
 
-                <rich:column sortBy="#{item.groupID}" styleClass="alt">
+                <rich:column sortBy="#{item.entity.entityName}" styleClass="alt">
                   <f:facet name="header">
                     <h:outputText value="Fleet" />
                   </f:facet>
-                  <h:outputLink value="test">
-                    <h:outputText value="#{item.groupID}" />
+                  <h:outputLink value="#{item.goTo}">
+                    <h:outputText value="#{item.entity.entityName}" />
                   </h:outputLink>
                 </rich:column>
           
-                <rich:column width="73" sortBy="#{item.lightValue}">
+                <rich:column width="73" sortBy="#{item.entity.lightValue}">
                   <f:facet name="header">
                     <h:outputText value="Light" />
                   </f:facet>
-                  <h:outputText value="#{item.lightValue}" />
+                  <h:outputText value="#{item.entity.lightValue}" />
                 </rich:column>
           
-                <rich:column width="73" sortBy="#{item.mediumValue}">
+                <rich:column width="73" sortBy="#{item.entity.mediumValue}">
                   <f:facet name="header">
                     <h:outputText value="Medium" />
                   </f:facet>
-                  <h:outputText value="#{item.mediumValue}" />
+                  <h:outputText value="#{item.entity.mediumValue}" />
                 </rich:column>
           
-                <rich:column width="73" sortBy="#{item.heavyValue}">
+                <rich:column width="73" sortBy="#{item.entity.heavyValue}">
                   <f:facet name="header">
                     <h:outputText value="Heavy" />
                   </f:facet>
-                  <h:outputText value="#{item.heavyValue}" />
+                  <h:outputText value="#{item.entity.heavyValue}" />
                 </rich:column>
 
               </rich:dataTable>

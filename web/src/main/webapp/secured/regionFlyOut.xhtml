@@ -72,40 +72,26 @@
 			  </td>
 			<td>
 			
-			<!-- START PANEL -->
-			<div class="">
-				<div class="panel_nw">
-
-					<div class="panel_title">
-						<span class="gas">Miles Per Gallon</span>
-						<span class="panel_links_ico"><a href="#" class="on">30 days</a> <a href="#">3 months</a> <a href="#">6 months</a> <a href="#">12 months</a></span>
-						<span class="panel_ico">
-                        	<a href="#" title="" onclick="c_show('PopupMenu1',event); return false;" onmouseout="c_hide(); return false;"><img src="/images/ico_tools.png" border="0" /></a>
-
-                        	<a href="#" class=""  onclick="t_hide('trend_full_screen');t_hide('overall_full_screen');t_hide('fleet_full_screen');t_hide('mpg_full_screen'); t_show('dash');return true;"><img src="/images/ico_minimize.png" width="16" height="16" border="0" /></a>
-                        </span>
-                    </div>
-				</div>
-					<div class="panel_w">
-					  <div class="panel_content">
-					  
-						<!-- MPG CHART START -->
-
-						<!-- MPG CHART END -->
-					
-						<div class="spacer"></div>
-						
-						<!-- MPG DATA TABLE START -->
-						
-						<!-- MPG DATA TABLE END -->
-						
-					  </div>
-					</div>
-				<div class="panel_sw">
-					<div class="panel_statusbar"></div>
-				</div>
-			</div>
-		<!-- END PANEL -->
+              <!-- START PANEL -->
+              <div>
+                <ui:include src="/includes/mpgChart.xhtml"> 
+                  <ui:param name="reRenderList" value="mpgForm,mpgDataElement,mpgPanel"/>
+                  <ui:param name="title" value="#{messages.mpg_title}"/>  
+                  <ui:param name="ajaxForm" value="mpg_form" />
+                  <ui:param name="ajaxStatusID" value="mpg_status" /> 
+                  <ui:param name="barDef" value="#{mpgBean.barDef}"/>  
+                  <ui:param name="duration" value="#{mpgBean.duration}" />   
+                  <ui:param name="thirtyDaysOn" value="#{mpgBean.styleClass30Days}"/>
+                  <ui:param name="threeMonthsOn" value="#{mpgBean.styleClass3Months}"/>
+                  <ui:param name="sixMonthsOn" value="#{mpgBean.styleClass6Months}"/>
+                  <ui:param name="twelveMonthsOn" value="#{mpgBean.styleClass12Months}"/>   
+                  <ui:param name="xyheight" value="600"/>
+                  <ui:param name="xywidth" value="800"/>  
+                  <ui:param name="flyNavRule" value="go_region" />
+                  <ui:param name="inFlyOut" value="true" />
+                </ui:include>
+              </div>
+              <!-- END PANEL -->
 		</td>
 
 		</tr>

@@ -7,6 +7,7 @@ import java.util.Random;
 
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.MpgEntity;
+import com.inthinc.pro.wrapper.MpgEntityPkg;
 
 public class GraphicUtil {
 	private static List <String> monthLbls = new ArrayList<String>() {
@@ -304,7 +305,7 @@ public class GraphicUtil {
         return sb.toString();
 	}	
 	
-	public static String createMpgXML(List<MpgEntity> entities)
+	public static String createMpgXML(List<MpgEntityPkg> entities)
 	{
 	    StringBuffer sb = new StringBuffer();
 	    int numEntities = entities.size();
@@ -315,11 +316,12 @@ public class GraphicUtil {
         sb.append("<categories>");
         for (int i = 0; i < numEntities; i++)
         {
-            MpgEntity entity = entities.get(i);
+            MpgEntityPkg pkg = entities.get(i);
+            MpgEntity entity = pkg.getEntity();
             light[i] = entity.getLightValue();
             medium[i] = entity.getMediumValue();
             heavy[i] = entity.getHeavyValue();
-            sb.append("<category label=\'" + entity.getGroupID() + "\'/>");
+            sb.append("<category label=\'" + entity.getEntityName() + "\'/>");
         }
         sb.append("</categories>");
         

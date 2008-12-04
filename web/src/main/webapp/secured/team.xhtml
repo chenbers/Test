@@ -75,6 +75,27 @@
              <ui:param name="bottomScores" value="#{teamTopBean.bottomDrivers}"/>
              <ui:param name="table" value="#{trendTable.table}"/>
     		</ui:include>
+        
+        
+        <div class="spacer"></div>
+
+        <!-- START MPG PANEL -->
+        <ui:include src="/includes/mpgChart.xhtml"> 
+          <ui:param name="reRenderList" value="mpg_form,mpgDataElement,mpgPanel"/>
+          <ui:param name="title" value="#{messages.mpg_title}"/>  
+          <ui:param name="ajaxForm" value="mpg_form" />
+          <ui:param name="ajaxStatusID" value="mpg_status" /> 
+          <ui:param name="barDef" value="#{mpgBean.barDef}"/>  
+          <ui:param name="duration" value="#{mpgBean.duration}" />   
+          <ui:param name="thirtyDaysOn" value="#{mpgBean.styleClass30Days}"/>
+          <ui:param name="threeMonthsOn" value="#{mpgBean.styleClass3Months}"/>
+          <ui:param name="sixMonthsOn" value="#{mpgBean.styleClass6Months}"/>
+          <ui:param name="twelveMonthsOn" value="#{mpgBean.styleClass12Months}"/>   
+          <ui:param name="xyheight" value="350"/>
+          <ui:param name="xywidth" value="440"/>
+        </ui:include>
+        <!-- END MPG -->  
+        
     	</td>
 	  
 	  </tr>
@@ -82,23 +103,6 @@
 
 		<!-- END PANEL -->
 		
-		<div class="spacer"></div>
-		
-		<!-- START FUEL EFFICIENCY PANEL -->
-		<!-- leave reRenderList alone -->
-<!--		<ui:include src="/includes/fuelEfficiencyChart.xhtml"> -->	
-<!--			<ui:param name="reRenderList" value="fuelForm,barpanel,hiddenField4"/> -->
-<!--			<ui:param name="title" value="Estimated Fuel Efficiency"/> -->		
-<!--            <ui:param name="barheight" value="440"/> -->
-<!--            <ui:param name="barwidth" value="350"/> -->
-<!--            <ui:param name="barDef" value="#{fuelBean.barDef}"/> -->  
-<!--            <ui:param name="duration" value="#{fuelBean.duration}" /> -->   
-<!--            <ui:param name="thirtyDaysOn" value="#{fuelBean.styleClass30Days}"/> -->
-<!--			<ui:param name="threeMonthsOn" value="#{fuelBean.styleClass3Months}"/> -->
-<!--			<ui:param name="sixMonthsOn" value="#{fuelBean.styleClass6Months}"/> -->
-<!--			<ui:param name="twelveMonthsOn" value="#{fuelBean.styleClass12Months}"/> -->       
-<!--		</ui:include> -->
-		<!-- END PANEL -->
 
 	
 	</ui:define>

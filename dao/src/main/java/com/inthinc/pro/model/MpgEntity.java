@@ -8,6 +8,7 @@ import com.inthinc.pro.dao.util.DateUtil;
 public class MpgEntity extends BaseEntity {
 	@ID
 	private Integer entityID;
+	private String entityName;
 	private Integer groupID;
 	private Integer lightValue;
 	private Integer mediumValue;
@@ -18,10 +19,11 @@ public class MpgEntity extends BaseEntity {
     {
     }
 	
-	public MpgEntity(Integer entityID, Integer groupID, Integer lightValue, Integer mediumValue, Integer heavyValue, Integer date)
+	public MpgEntity(Integer entityID, String entityName, Integer groupID, Integer lightValue, Integer mediumValue, Integer heavyValue, Integer date)
     {
         super();
         this.entityID = entityID;
+        this.entityName = entityName;
         this.groupID = groupID;
         this.lightValue = lightValue;
         this.mediumValue = mediumValue;
@@ -43,6 +45,14 @@ public class MpgEntity extends BaseEntity {
 
 	public void setEntityID(Integer entityID) {
 		this.entityID = entityID;
+	}
+
+	public String getEntityName() {
+		return entityName;
+	}
+
+	public void setEntityName(String entityName) {
+		this.entityName = entityName;
 	}
 
 	public Integer getGroupID() {

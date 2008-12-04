@@ -57,9 +57,8 @@
 					<div class="spacer"></div>
 				
 					<!-- START MPG PANEL -->
-					<!-- leave reRenderList alone -->
 					<ui:include src="/includes/mpgChart.xhtml">	
-						<ui:param name="reRenderList" value="mpgForm,mpgDataElement,mpgPanel"/>
+						<ui:param name="reRenderList" value="mpg_form,mpgDataElement,mpgPanel"/>
 						<ui:param name="title" value="#{messages.mpg_title}"/>	
                         <ui:param name="ajaxForm" value="mpg_form" />
                         <ui:param name="ajaxStatusID" value="mpg_status" /> 
@@ -71,6 +70,7 @@
 						<ui:param name="twelveMonthsOn" value="#{mpgBean.styleClass12Months}"/>   
                         <ui:param name="xyheight" value="350"/>
                         <ui:param name="xywidth" value="440"/>  
+                        <ui:param name="flyNavRule" value="go_fleetFlyOut" />
                         <ui:param name="inFlyOut" value="false" /> 
 					</ui:include>
 					<!-- END MPG -->	

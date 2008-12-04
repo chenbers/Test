@@ -3,12 +3,24 @@ package com.inthinc.pro.backing;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.context.FacesContext;
+
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.backing.model.GroupHierarchy;
+import com.inthinc.pro.backing.model.GroupLevel;
+import com.inthinc.pro.backing.ui.ScoreBox;
+import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.MpgEntity;
+import com.inthinc.pro.model.ScoreableEntity;
+import com.inthinc.pro.util.ColorSelectorStandard;
 import com.inthinc.pro.util.GraphicUtil;
+import com.inthinc.pro.wrapper.MpgEntityPkg;
+import com.inthinc.pro.wrapper.ScoreableEntityPkg;
 
 public class MpgBean extends BaseDurationBean {
 
@@ -16,7 +28,7 @@ public class MpgBean extends BaseDurationBean {
 
     private MpgDAO mpgDAO;
     private NavigationBean navigation;
-    private List<MpgEntity> mpgEntities = new ArrayList<MpgEntity>();
+    private List<MpgEntityPkg> mpgEntities = new ArrayList<MpgEntityPkg>();
     
 	
 	private String barDef;	
@@ -41,7 +53,7 @@ public class MpgBean extends BaseDurationBean {
 		sb.append(GraphicUtil.getBarControlParameters());
 
         // get the data
-        List<MpgEntity> entities = null;
+        List<MpgEntityPkg> entities = null;
         try
         {
             // TODO: This is not correct. getUser().getGroupID() needs to be changed to the current group in the navigation
@@ -85,17 +97,40 @@ public class MpgBean extends BaseDurationBean {
         this.mpgDAO = mpgDAO;
     }
     
-    public List<MpgEntity> getMpgEntities()
+    public List<MpgEntityPkg> getMpgEntities()
     {
-        // Date range qualifiers
-        int numDaysBack = getDuration().getNumberOfDays();
-        Integer endDate = DateUtil.getTodaysDate();
-        Integer startDate = DateUtil.getDaysBackDate(endDate, numDaysBack);
-        
-        return mpgDAO.getEntities(this.getNavigation().getGroupID(), startDate, endDate);
+        if (mpgEntities.size() == 0)
+        {
+            // Date range qualifiers
+            int numDaysBack = getDuration().getNumberOfDays();
+            Integer endDate = DateUtil.getTodaysDate();
+            Integer startDate = DateUtil.getDaysBackDate(endDate, numDaysBack);
+            
+            List<MpgEntity> tempEntities = mpgDAO.getEntities(this.getNavigation().getGroupID(), startDate, endDate);
+    
+            // Populate the table
+            String contextPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+            for (MpgEntity entity : tempEntities)
+            {
+                MpgEntityPkg pkg = new MpgEntityPkg();
+                pkg.setEntity(entity);
+                GroupHierarchy groupHierarchy = getGroupHierarchy();
+                GroupLevel groupLevel = groupHierarchy.getGroupLevel(entity.getEntityID());
+                if (groupLevel == null)
+                {
+                    groupLevel = groupHierarchy.getGroupLevel(entity.getGroupID());
+                }
+                if (groupLevel != null)
+                {
+                    pkg.setGoTo(contextPath + groupLevel.getUrl() + "?groupID=" + entity.getEntityID());
+                    this.mpgEntities.add(pkg);
+                }
+            }
+        }
+        return this.mpgEntities;
     }
     
-    public void setMpgEntities(List<MpgEntity> mpgEntities)
+    public void setMpgEntities(List<MpgEntityPkg> mpgEntities)
     {
         this.mpgEntities = mpgEntities;
     }
