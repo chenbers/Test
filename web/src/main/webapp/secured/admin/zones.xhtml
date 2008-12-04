@@ -21,8 +21,6 @@
 
   <ui:define name="content">
 
-    <c:set var="rows" value="10" />
-
     <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
       <tr>
         <td valign="top" width="130">
@@ -50,129 +48,90 @@
 
                   <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
 
-                  <table width="100%" border="0" cellspacing="5" cellpadding="0" style="margin: 0 auto 0 auto;">
-                    <tr>
-                      <td valign="top" width="200">
+                  <a4j:outputPanel id="displayZone">
+                    <h:panelGroup rendered="#{not zonesBean.editing}">
 
-                        <ul id="grid_nav" style="margin: 0;">
-                          <li class="l"><a4j:commandLink action="#{zonesBean.add}" onclick="map.clearOverlays()" reRender="editZone"><button value="submit" class="left"><span class="add"><h:outputText value="#{messages.zones_addZone}" /></span></button></a4j:commandLink></li>
-                        </ul>
+                      <ul id="grid_nav" style="margin: 0;">
+                        <li class="l">
+                          <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
+                            <tr>
+                              <td><h:outputText value="#{messages.zones_zone}" /></td>
+                              <td>
+                                <h:selectOneMenu value="#{zonesBean.itemID}" id="zone">
+                                  <f:selectItems value="#{zonesBean.zoneIDs}" />
+                                  <a4j:support event="onchange" reRender="points,address,displayZone,editZone" oncomplete="showZone(false)" />
+                                </h:selectOneMenu>
+                              </td>
+                            </tr>
+                          </table>
+                        </li>
+                        <li class="l"><a4j:commandLink action="#{zonesBean.edit}" reRender="displayZone,editZone,zoneName,zoneAddress" oncomplete="showZone(true)"><button value="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></a4j:commandLink></li>
+                        <li class="l"><button value="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></button></li>
+                        <li class="r"><a4j:commandLink action="#{zonesBean.add}" onclick="map.clearOverlays()" reRender="displayZone,editZone"><button value="submit" class="left"><span class="add"><h:outputText value="#{messages.zones_addZone}" /></span></button></a4j:commandLink></li>
+                      </ul>
 
-                        <div class="spacer"></div>
+                    </h:panelGroup>
+                  </a4j:outputPanel>
 
-                        <div class="datagrid" id="zones_table-paginationListWrapBottom">
+                  <a4j:outputPanel id="editZone">
+                    <h:panelGroup rendered="#{zonesBean.editing}">
 
-                          <rich:dataTable id="dataTable" value="#{zonesBean.filteredItems}" var="item" rowKeyVar="index" styleClass="datagrid"
-                            rows="#{rows}" rowClasses="tableOdd,tableEven" width="100%">
-                            <rich:column sortBy="#{item.name}" sortOrder="ASCENDING" styleClass="#{(item.zoneID == zonesBean.item.zoneID) ? 'selectedRow' : ''}">
-                              <f:facet name="header">
-                                <h:outputText value="#{messages.zonesHeader_name}" />
-                              </f:facet>
-                              <a4j:commandLink action="#{zonesBean.display}" value="#{item.name}" reRender="dataTable,points,address,editZone" oncomplete="showZone(false)" style="#{(item.zoneID == zonesBean.item.zoneID) ? 'font-weight:bold' : ''}">
-                                <f:param name="zoneID" value="#{item.zoneID}" />
-                              </a4j:commandLink>
-                            </rich:column>
-                          </rich:dataTable>
+                      <input type="hidden" id="backupPoints" value="#{zonesBean.pointsString}" />
 
-                        </div>
+                      <ul id="grid_nav" style="margin: 0;">
+                        <li class="l">
+                          <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
+                            <tr>
+                              <td><h:outputText value="#{messages.zones_name}" /></td>
+                              <td>
+                                <h:inputText id="zoneName" value="#{zonesBean.item.name}" class="text" size="30" maxlength="30" required="#{zonesBean.editing}" requiredMessage="#{messages.required}" />
+                                <rich:message for="zoneName" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                              </td>
+                            </tr>
+                          </table>
+                        </li>
+                        <li class="r">
+                          <a4j:commandLink action="#{zonesBean.save}" onclick="stopDrawing()" reRender="displayZone,editZone" oncomplete="disableEditing()"><button value="submit" class="left"><span class="save"><h:outputText value="#{messages.zones_save}" /></span></button></a4j:commandLink>
+                          <a4j:commandLink action="#{zonesBean.cancelEdit}" onclick="cancelEdit()" reRender="points,displayZone,editZone" oncomplete="showZone(false)" immediate="true"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></a4j:commandLink>
+                        </li>
+                      </ul>
 
-                        <c:set var="firstRecord" value="#{rows * (zonesBean.page - 1)}" />
-                        <h:outputFormat id="recordCounts" value="#{messages.recordCounts}">
-                          <f:param value="#{(zonesBean.itemCount gt 0) ? (firstRecord + 1) : 0}"/>
-                          <f:param value="#{((firstRecord + rows) lt zonesBean.itemCount) ? (firstRecord + rows) : zonesBean.itemCount}"/>
-                          <f:param value="#{zonesBean.itemCount}"/>
-                        </h:outputFormat>
+                      <ul id="grid_nav" style="margin: 0;">
+                        <li class="l">
+                          <table>
+                            <tr>
+                              <td><a href="#" onclick="stopDrawing(); return false;"><h:graphicImage id="hand_b" value="/images/btn_hand_on.png" width="26" height="26" style="border:none" /></a></td>
+                              <td><a href="#" onclick="if (polygon) map.removeOverlay(polygon); startRect(); return false;"><h:graphicImage id="rectangle_b" value="/images/btn_rectangle.png" width="26" height="26" style="border:none" /></a></td>
+                              <td><a href="#" onclick="if (polygon) map.removeOverlay(polygon); startCircle(); return false;"><h:graphicImage id="circle_b" value="/images/btn_circle.png" width="26" height="26" style="border:none" /></a></td>
+                              <td><a href="#" onclick="if (polygon) map.removeOverlay(polygon); startPolygon(); return false;"><h:graphicImage id="polygon_b" value="/images/btn_polygon.png" width="26" height="26" style="border:none" /></a></td>
+                            </tr>
+                          </table>
+                        </li>
+                        <li class="l">
+                          <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
+                            <tr>
+                              <td><h:outputText value="#{messages.zones_address}" /></td>
+                              <td>
+                                <h:inputText id="zoneAddress" value="#{zonesBean.item.address}" class="text" size="30" maxlength="64" onkeypress="if (event &amp;&amp; event.keyCode == 13) { showAddress(this.value); return false; } return true;" />
+                              </td>
+                            </tr>
+                          </table>
+                        </li>
+                        <li class="l"><button value="submit" class="left" onclick="showAddress(document.getElementById('zones-form:zoneAddress').value); return false;"><span class="search"><h:outputText value="#{messages.zones_locate}" /></span></button></li>
+                      </ul>
 
-                        <div class="spacer"></div>
+                    </h:panelGroup>
+                  </a4j:outputPanel>
 
-                        <rich:datascroller id="scroller" for="dataTable" reRender="dataTable,recordCounts" maxPages="3" stepControls="hide" page="#{zonesBean.page}" />
+                  <div class="spacer"></div>
 
-                        <div class="spacer"></div>
-
-                        <ul id="grid_nav" style="margin: 0;">
-                          <li class="l">
-                            <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
-                              <tr>
-                                <td><h:outputText value="#{messages.button_search}" /></td>
-                                <td><h:inputText id="filterTable" value="#{zonesBean.filterValue}" class="text" size="15" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('zones-form:searchButton').onclick(); return false; } return true;" /></td>
-                              </tr>
-                            </table>
-                          </li>
-                          <li class="l"><a4j:commandLink id="searchButton" reRender="dataTable,recordCounts,scroller"><button value="submit" class="left"><span class="search"><h:outputText value="#{messages.button_search}" /></span></button></a4j:commandLink></li>
-                        </ul>
-
-                        <a4j:commandLink action="#{zonesBean.edit}" value="#{messages.adminTable_edit}" reRender="editZone,zoneName,zoneAddress" oncomplete="showZone(true)" />
-                        <a href="#" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><h:outputText value="#{messages.adminTable_delete}" /></a>
-
-                      </td>
-                      <td valign="top">
-
-                        <a4j:outputPanel id="editZone">
-
-                          <h:panelGroup rendered="#{zonesBean.editing}">
-
-                            <input type="hidden" id="backupPoints" value="#{zonesBean.pointsString}" />
-
-                              <ul id="grid_nav" style="margin: 0;">
-                                <li class="l">
-                                  <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
-                                    <tr>
-                                      <td><h:outputText value="#{messages.zones_name}" /></td>
-                                      <td>
-                                        <h:inputText id="zoneName" value="#{zonesBean.item.name}" class="text" size="30" maxlength="30" required="#{zonesBean.editing}" requiredMessage="#{messages.required}" />
-                                        <rich:message for="zoneName" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                                      </td>
-                                    </tr>
-                                  </table>
-                                </li>
-                                <li class="l divider"><img src="/images/grid_nav_divider.png" /></li>
-                                <li class="l">
-                                  <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
-                                    <tr>
-                                      <td><h:outputText value="#{messages.zones_address}" /></td>
-                                      <td>
-                                        <h:inputText id="zoneAddress" value="#{zonesBean.item.address}" class="text" size="30" maxlength="64" required="#{zonesBean.editing}" requiredMessage="#{messages.required}" />
-                                        <rich:message for="zoneAddress" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                                      </td>
-                                    </tr>
-                                  </table>
-                                </li>
-                                <li class="l"><button value="submit" class="left" onclick="showAddress(document.getElementById('zones-form:zoneAddress').value); return false;"><span class="search"><h:outputText value="#{messages.zones_locate}" /></span></button></li>
-                              </ul>
-                              <ul id="grid_nav" style="margin: 0;">
-                                <li class="l">
-                                  <table>
-                                    <tr>
-                                      <td><a href="#" onclick="stopDrawing(); return false;"><h:graphicImage id="hand_b" value="/images/btn_hand_on.png" width="26" height="26" style="border:none" /></a></td>
-                                      <td><a href="#" onclick="if (polygon) map.removeOverlay(polygon); startRect(); return false;"><h:graphicImage id="rectangle_b" value="/images/btn_rectangle.png" width="26" height="26" style="border:none" /></a></td>
-                                      <td><a href="#" onclick="if (polygon) map.removeOverlay(polygon); startCircle(); return false;"><h:graphicImage id="circle_b" value="/images/btn_circle.png" width="26" height="26" style="border:none" /></a></td>
-                                      <td><a href="#" onclick="if (polygon) map.removeOverlay(polygon); startPolygon(); return false;"><h:graphicImage id="polygon_b" value="/images/btn_polygon.png" width="26" height="26" style="border:none" /></a></td>
-                                    </tr>
-                                  </table>
-                                </li>
-                                <li class="r">
-                                  <a4j:commandLink action="#{zonesBean.save}" onclick="stopDrawing()" reRender="dataTable,editZone" oncomplete="disableEditing()"><button value="submit" class="left"><span class="save"><h:outputText value="#{messages.zones_save}" /></span></button></a4j:commandLink>
-                                  <a4j:commandLink action="#{zonesBean.cancelEdit}" onclick="cancelEdit()" reRender="points,dataTable,editZone" oncomplete="showZone(false)" immediate="true"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></a4j:commandLink>
-                                </li>
-                              </ul>
-
-                              <div class="spacer"></div>
-
-                          </h:panelGroup>
-
-                        </a4j:outputPanel>
-
-                        <h:panelGroup styleClass="map-border" layout="block">
-                          <div id="map-canvas" style="height:100%;height:400px;border:0"></div>
-                          <div id="map-cover" style="position:absolute; display:none; overflow:hidden; cursor:crosshair; zIndex:101;">
-                            <div id="rect-outline" style="position:absolute; display:none; border:2px dotted #0033FF"></div>
-                            <div id="circle-outline" style="display:none"></div>
-                          </div>
-                        </h:panelGroup>
-
-                      </td>
-                    </tr>
-                  </table>
+                  <h:panelGroup styleClass="map-border" layout="block">
+                    <div id="map-canvas" style="height:100%;height:700px;border:0"></div>
+                    <div id="map-cover" style="position:absolute; display:none; overflow:hidden; cursor:crosshair; zIndex:101;">
+                      <div id="rect-outline" style="position:absolute; display:none; border:2px dotted #0033FF"></div>
+                      <div id="circle-outline" style="display:none"></div>
+                    </div>
+                  </h:panelGroup>
 
                 </a4j:form>
 
@@ -242,6 +201,8 @@
                       {
                         storeOutline();
                       });
+
+                      showZone(false);
                     }
                   }
 
@@ -260,7 +221,7 @@
 
             <ui:include src="../../includes/confirmDelete.xhtml">
               <ui:param name="deleteBean" value="#{zonesBean}" />
-              <ui:param name="reRender" value="dataTable" />
+              <ui:param name="reRender" value="displayZone" />
               <ui:param name="explanation" value="#{messages.zones_confirmDelete}" />
             </ui:include>
 

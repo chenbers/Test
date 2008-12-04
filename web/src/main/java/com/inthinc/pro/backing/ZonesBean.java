@@ -1,7 +1,9 @@
 package com.inthinc.pro.backing;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
-import java.util.LinkedList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,158 +16,40 @@ import com.inthinc.pro.util.MessageUtil;
 
 public class ZonesBean extends BaseBean
 {
-    private List<Zone> items;
-    private List<Zone> filteredItems = new LinkedList<Zone>();
-    private String     filterValue;
-    protected int      page          = 1;
-    private Zone       item;
-    private boolean    editing;
-    private ZoneDAO    zoneDAO;
+    private List<Zone>           zones;
+    private Map<String, Integer> zoneIDs;
+    private Zone                 item;
+    private boolean              editing;
+    private ZoneDAO              zoneDAO;
 
     public void setZoneDAO(ZoneDAO zoneDAO)
     {
         this.zoneDAO = zoneDAO;
     }
 
-    /**
-     * @return the items
-     */
-    public List<Zone> getItems()
+    public Map<String, Integer> getZoneIDs()
     {
-        if (items == null)
+        if (zones == null)
         {
-            items = zoneDAO.getZonesInGroupHierarchy(getUser().getPerson().getGroupID());
-            applyFilter();
-        }
-        return items;
-    }
-
-    /**
-     * @return the filteredItems
-     */
-    public List<Zone> getFilteredItems()
-    {
-        if (items == null)
-            getItems();
-        return filteredItems;
-    }
-
-    /**
-     * @return the number of filtered items.
-     */
-    public int getItemCount()
-    {
-        return filteredItems.size();
-    }
-
-    /**
-     * @return the filterValue
-     */
-    public String getFilterValue()
-    {
-        return filterValue;
-    }
-
-    /**
-     * @param filterValue
-     *            the filterValue to set
-     */
-    public void setFilterValue(String filterValue)
-    {
-        boolean changed = false;
-        if ((filterValue != null) && (filterValue.trim().length() > 0))
-        {
-            filterValue = filterValue.trim().toLowerCase();
-            changed = !filterValue.equals(this.filterValue);
-        }
-        else
-        {
-            filterValue = null;
-            changed = this.filterValue != null;
-        }
-
-        if (changed)
-        {
-            this.filterValue = filterValue;
-            applyFilter();
-        }
-    }
-
-    /**
-     * Applies the filter.
-     */
-    private void applyFilter()
-    {
-        filteredItems.clear();
-        if (filterValue != null)
-        {
-            final boolean matchAllWords = matchAllFilterWords();
-            final String[] filterWords = filterValue.split("\\s+");
-            for (final Zone item : items)
+            zones = zoneDAO.getZonesInGroupHierarchy(getUser().getPerson().getGroupID());
+            Collections.sort(zones, new Comparator<Zone>()
             {
-                boolean matched = false;
-                for (final String word : filterWords)
+                @Override
+                public int compare(Zone o1, Zone o2)
                 {
-                    matched = matchesFilter(item, word);
-
-                    // we can break if we didn't match and we're required to match all words,
-                    // or if we did match and we're only required to match one word
-                    if (matched ^ matchAllWords)
-                        break;
+                    return o1.getName().compareToIgnoreCase(o2.getName());
                 }
-                if (matched)
-                    filteredItems.add(item);
-            }
+            });
         }
-        else
-            filteredItems.addAll(items);
-    }
 
-    /**
-     * @return Whether matching all filter words is required to match an item. The default is <code>true</code>.
-     */
-    private boolean matchAllFilterWords()
-    {
-        return true;
-    }
-
-    /**
-     * @param item
-     *            The item to filter in or out of the results.
-     * @param filterWord
-     *            The lowercase filter word. If there are multiple words in the filter string this method will be called once for each word.
-     * @return Whether the item matches the filter string.
-     */
-    private boolean matchesFilter(Zone item, String filterWord)
-    {
-        if ((item.getName() != null) && item.getName().toLowerCase().startsWith(filterWord))
-            return true;
-        if (item.getAddress() != null)
+        if (zoneIDs == null)
         {
-            String[] words = item.getAddress().toLowerCase().split("\\s+");
-            for (final String word : words)
-                if (word.startsWith(filterWord))
-                    return true;
+            zoneIDs = new LinkedHashMap<String, Integer>();
+            for (final Zone zone : zones)
+                zoneIDs.put(zone.getName(), zone.getZoneID());
         }
 
-        return false;
-    }
-
-    /**
-     * @return the current page
-     */
-    public int getPage()
-    {
-        return page;
-    }
-
-    /**
-     * @param page
-     *            the current page to set
-     */
-    public void setPage(int page)
-    {
-        this.page = page;
+        return zoneIDs;
     }
 
     /**
@@ -176,31 +60,6 @@ public class ZonesBean extends BaseBean
         item = new Zone();
         item.setCreated(new Date());
         editing = true;
-    }
-
-    /**
-     * Called when the user chooses to display an item.
-     */
-    public void display()
-    {
-        selectItem("zoneID");
-        editing = false;
-    }
-
-    private void selectItem(String idKey)
-    {
-        item = null;
-        final Map<String, String> parameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        if (parameterMap.get(idKey) != null)
-        {
-            final int editID = Integer.parseInt(parameterMap.get(idKey));
-            for (final Zone zone : items)
-                if (zone.getZoneID().equals(editID))
-                {
-                    item = zone;
-                    break;
-                }
-        }
     }
 
     /**
@@ -244,8 +103,8 @@ public class ZonesBean extends BaseBean
 
         if (add)
         {
-            items.add(item);
-            applyFilter();
+            zones.add(item);
+            zoneIDs = null;
         }
 
         editing = false;
@@ -267,19 +126,40 @@ public class ZonesBean extends BaseBean
         final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
         context.addMessage(null, message);
 
-        items.remove(item);
-        filteredItems.remove(item);
+        zones.remove(item);
+        zoneIDs = null;
         item = null;
+    }
+
+    public Integer getItemID()
+    {
+        if (getItem() != null)
+            return item.getZoneID();
+        return null;
+    }
+
+    public void setItemID(Integer itemID)
+    {
+        item = null;
+        if (itemID != null)
+            for (final Zone zone : zones)
+                if (zone.getZoneID().equals(itemID))
+                {
+                    item = zone;
+                    break;
+                }
     }
 
     public Zone getItem()
     {
+        if ((item == null) && (getZoneIDs().size() > 0))
+            item = zones.get(0);
         return item;
     }
 
     public String getPointsString()
     {
-        if (item != null)
+        if (getItem() != null)
             return item.getPointsString();
         return null;
     }
@@ -302,7 +182,7 @@ public class ZonesBean extends BaseBean
 
     public String getAddress()
     {
-        if (item != null)
+        if (getItem() != null)
             return item.getAddress();
         return null;
     }
