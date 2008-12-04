@@ -81,7 +81,7 @@ public class MockData
     static final int MAX_DEVICES = 200;
     
 
-    static long timeNow = new Date().getTime();
+    public static long timeNow = new Date().getTime();
     static int baseTimeSec = DateUtil.convertMillisecondsToSeconds(new Date().getTime());
 
     static String MST_TZ = "US/Mountain";

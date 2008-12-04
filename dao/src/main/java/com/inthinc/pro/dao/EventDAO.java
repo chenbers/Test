@@ -1,5 +1,6 @@
 package com.inthinc.pro.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import com.inthinc.pro.model.Event;
@@ -26,4 +27,11 @@ public interface EventDAO  extends GenericDAO<Event, Integer>
      * @return
      */
     List<Event> getMostRecentWarnings(Integer groupID, Integer eventCnt);
+
+    List<Event> getViolationEventsForDriver(Integer driverID, Date startDate, Date endDate);
+
+    List<Event> getWarningEventsForDriver(Integer driverID, Date startDate, Date endDate);
+
+    List<Event> getEventsForDriver(Integer driverID, Date startDate, Date endDate, List<Integer> eventTypes);
+
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
+import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Vehicle;
 
 public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> implements VehicleDAO
@@ -34,5 +35,18 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
     public void setVehicleDevice(Integer vehicleID, Integer deviceID)
     {
         getSiloService().setVehicleDevice(vehicleID, deviceID);
+    }
+
+    @Override
+    public LastLocation getLastLocation(Integer vehicleID)
+    {
+        try
+        {
+            return getMapper().convertToModelObject(this.getSiloService().getLastLoc(LastLocation.VEHICLE_TYPE, vehicleID), LastLocation.class);
+        }
+        catch (EmptyResultSetException e)
+        {
+            return null;
+        }
     }
 }

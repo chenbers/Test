@@ -3,6 +3,7 @@ package com.inthinc.pro.dao.hessian;
 
 import static org.junit.Assert.*;
 
+import java.util.Date;
 import java.util.List;
 
 import org.junit.AfterClass;
@@ -11,6 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.mock.data.MockData;
+import com.inthinc.pro.dao.mock.data.UnitTestStats;
 import com.inthinc.pro.dao.mock.proserver.CentralServiceCreator;
 import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
 import com.inthinc.pro.model.Event;
@@ -95,6 +97,29 @@ public class EventHessianDAOTest
 
         eventList = eventHessianDAO.getMostRecentWarnings(MockData.EMPTY_GROUP_ID, 5);
         assertEquals(0, eventList.size());
+
+    }
+    @Test
+    public void events() throws Exception
+    {
+        Date startTime = new Date(MockData.timeNow);
+        Date endTime = new  Date();
+        List<Event> eventList = eventHessianDAO.getViolationEventsForDriver(UnitTestStats.UNIT_TEST_DRIVER_ID, startTime, endTime);
+        
+        assertNotNull(eventList);
+        
+        List<Integer> validEventTypes = EventMapper.getEventTypesInCategory(EventCategory.VIOLATION);
+        // make sure they are in decending order by date
+        for (Event event : eventList)
+        {
+            assertTrue("Event type is not valid", validEventTypes.contains(event.getType()));
+        }
+        
+        for(Event event : eventList)
+        {
+            Class<?> eventType = EventMapper.getEventType(event.getType());
+            assertTrue("The Event was not properly constructed as the " + eventType.getSimpleName() + " subclass", eventType.isAssignableFrom(event.getClass()));
+        }
 
     }
 

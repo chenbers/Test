@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.LastLocation;
 
 public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> implements DriverDAO
 {
@@ -27,6 +28,19 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
             return Collections.emptyList();
         }
 
+    }
+
+    @Override
+    public LastLocation getLastLocation(Integer driverID)
+    {
+        try
+        {
+            return getMapper().convertToModelObject(this.getSiloService().getLastLoc(LastLocation.DRIVER_TYPE, driverID), LastLocation.class);
+        }
+        catch (EmptyResultSetException e)
+        {
+            return null;
+        }
     }
 
 }

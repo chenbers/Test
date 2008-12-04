@@ -53,6 +53,12 @@ public class DateUtil
     {
         return endDate - (daysBack * SECONDS_IN_DAY);
     }
+    public static Date getDaysBackDate(Date endDate, int daysBack)
+    {
+        int sec = DateUtil.convertDateToSeconds(endDate) - (daysBack * SECONDS_IN_DAY);
+        
+        return DateUtil.convertTimeInSecondsToDate(sec);
+    }
 
     public static int getDaysBackDate(int nowUTCSec, int daysBack, String timeZone)
     {

@@ -109,6 +109,48 @@ public interface SiloService extends HessianService
     Map<String, Object> queueFwdCmd(Integer deviceID, Map<String, Object> fwdMap);
     
     Map<String, Object> updateFwdCmd(Integer fwdID,Integer status);
+    
+    
+    // ------- Locations  ----------
+    /**
+     * @param reqType  
+     *          1=driver, 2=vehicle
+     * @param id 
+     *       driverID or vehicleID
+     * @return
+     *      map[driverID,vehicleID,time,lat,lng]
+     */
+    Map<String, Object> getLastLoc(Integer reqType, Integer id);
+
+    // ------------------------- Events/Notes  -----------------------------------------------
+    
+    /**
+     * @param driverID
+     *          driverID to get notes for
+     * @param startDate
+     *          start of date range
+     * @param endDate
+     *          end of date range
+     * @param types
+     *          list of note/event types (see EventMapper)
+     * @return
+     */
+    List<Map<String, Object>> getNote(Integer driverID, Integer startDate, Integer endDate, Integer types[]);
+
+    /**
+     * getMostRecentEvents
+     * 
+     * @param groupID --
+     *            groupID to retrieve events for  (should be a team level group that contains only drivers)
+     * @param eventCnt --
+     *            max events to retrieve
+     * @param types --
+     *            valid event types to retrieve
+     * @return
+     *      List of event maps 
+     * @throws ProDAOException
+     */
+    List<Map<String, Object>> getMostRecentEvents(Integer groupID, Integer eventCnt, Integer types[]) throws ProDAOException;
 
     
     // --------------central service -----------------------    
@@ -192,20 +234,6 @@ public interface SiloService extends HessianService
 
 
 
-    // Methods related to the Event type
-    /**
-     * getMostRecentEvents
-     * 
-     * @param groupID --
-     *            groupID to retrieve events for
-     * @param eventCnt --
-     *            max events to retrieve
-     * @param types --
-     *            valid event types to retrieve
-     * @return
-     * @throws ProDAOException
-     */
-    List<Map<String, Object>> getMostRecentEvents(Integer groupID, Integer eventCnt, Integer types[]) throws ProDAOException;
     
     
     

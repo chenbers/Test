@@ -18,6 +18,7 @@ import com.inthinc.pro.dao.mock.data.MockStates;
 import com.inthinc.pro.dao.mock.data.MockTimeZones;
 import com.inthinc.pro.dao.mock.data.SearchCriteria;
 import com.inthinc.pro.dao.mock.data.TempConversionUtil;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
@@ -896,6 +897,38 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public Map<String, Object> getLastLoc(Integer reqType, Integer id)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> getNote(Integer driverID, Integer startDate, Integer endDate, Integer[] types)
+    {
+        List<Event> driverEvents = new ArrayList<Event>();
+
+        List<Object> typeList = new ArrayList<Object>();
+        Collections.addAll(typeList, types);
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("driverID", driverID);
+        searchCriteria.addKeyValueInList("type", typeList);
+        searchCriteria.addKeyValueRange("time", DateUtil.convertTimeInSecondsToDate(startDate), DateUtil.convertTimeInSecondsToDate(endDate));
+
+        List<Event> eventList = MockData.getInstance().retrieveObjectList(Event.class, searchCriteria);
+        Collections.sort(eventList); // Make sure events are in ascending order
+        Collections.reverse(eventList); // descending order (i.e. most recent first)
+
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+        for (Event event : eventList)
+        {
+            returnList.add(TempConversionUtil.createMapFromObject(event, true));
+        }
+
+        return returnList;
     }
 
 }

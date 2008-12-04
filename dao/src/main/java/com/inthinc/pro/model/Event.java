@@ -3,31 +3,42 @@ package com.inthinc.pro.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Event implements Comparable<Event>, Serializable
+import com.inthinc.pro.dao.annotations.Column;
+
+public class Event extends BaseEntity implements Comparable<Event>, Serializable
 {
     /**
      * 
      */
     private static final long serialVersionUID = 1L;
-    private transient String addressStr;
-    private transient Integer created;
+
+    private Long noteID;
+
     private Integer forgiven = 0;
-    private Integer heading;
+    private Integer flags;
     private Double latitude;
     private Double longitude;
     private Integer maprev;
-    private Long noteID;
     private Integer odometer;
-    private Integer sats;
     private Integer speed;
     private Date time;
     private Integer type;
-    private transient Vehicle vehicle;
+    
+    @Column(updateable = false)
+    private Vehicle vehicle;
+    
     private Integer vehicleID;
+
+    @Column(updateable = false)
     private Driver driver;
+    
     private Integer driverID;
 
-    private transient LatLng latLng;
+    @Column(updateable = false)
+    private String addressStr;
+    
+    @Column(updateable = false)
+    private LatLng latLng;
 
     public Event()
     {
@@ -75,11 +86,6 @@ public class Event implements Comparable<Event>, Serializable
         return addressStr;
     }
 
-    public Integer getCreated()
-    {
-        return created;
-    }
-
     public EventType getEventType()
     {
         return EventType.UNKNOWN;
@@ -90,10 +96,6 @@ public class Event implements Comparable<Event>, Serializable
         return forgiven;
     }
 
-    public Integer getHeading()
-    {
-        return heading;
-    }
 
     public Double getLatitude()
     {
@@ -125,10 +127,6 @@ public class Event implements Comparable<Event>, Serializable
         return odometer;
     }
 
-    public Integer getSats()
-    {
-        return sats;
-    }
 
     public Integer getSpeed()
     {
@@ -169,20 +167,12 @@ public class Event implements Comparable<Event>, Serializable
         this.addressStr = addressStr;
     }
 
-    public void setCreated(Integer created)
-    {
-        this.created = created;
-    }
 
     public void setForgiven(Integer forgiven)
     {
         this.forgiven = forgiven;
     }
 
-    public void setHeading(Integer heading)
-    {
-        this.heading = heading;
-    }
 
     public void setLatitude(Double latitude)
     {
@@ -209,10 +199,6 @@ public class Event implements Comparable<Event>, Serializable
         this.odometer = odometer;
     }
 
-    public void setSats(Integer sats)
-    {
-        this.sats = sats;
-    }
 
     public void setSpeed(Integer speed)
     {
@@ -267,6 +253,16 @@ public class Event implements Comparable<Event>, Serializable
     public String getDetails(String formatStr)
     {
         return formatStr;
+    }
+
+    public Integer getFlags()
+    {
+        return flags;
+    }
+
+    public void setFlags(Integer flags)
+    {
+        this.flags = flags;
     }
 
 }
