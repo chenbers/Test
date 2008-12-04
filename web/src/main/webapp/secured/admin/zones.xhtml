@@ -65,8 +65,10 @@
                             </tr>
                           </table>
                         </li>
-                        <li class="l"><a4j:commandLink action="#{zonesBean.edit}" reRender="displayZone,editZone,zoneName,zoneAddress" oncomplete="showZone(true)"><button value="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></a4j:commandLink></li>
-                        <li class="l"><button value="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></button></li>
+                        <ui:fragment rendered="#{zonesBean.zonesCount gt 0}">
+                          <li class="l"><a4j:commandLink action="#{zonesBean.edit}" reRender="displayZone,editZone,zoneName,zoneAddress" oncomplete="showZone(true)"><button value="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></a4j:commandLink></li>
+                          <li class="l"><button value="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></button></li>
+                        </ui:fragment>
                         <li class="r"><a4j:commandLink action="#{zonesBean.add}" onclick="map.clearOverlays()" reRender="displayZone,editZone"><button value="submit" class="left"><span class="add"><h:outputText value="#{messages.zones_addZone}" /></span></button></a4j:commandLink></li>
                       </ul>
 

@@ -52,6 +52,11 @@ public class ZonesBean extends BaseBean
         return zoneIDs;
     }
 
+    public int getZonesCount()
+    {
+        return getZoneIDs().size();
+    }
+
     /**
      * Called when the user chooses to add an item.
      */
