@@ -11,7 +11,9 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.TripDisplay;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.Trip;
+import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.TripDAO;
 
 public class DriverTripsBean extends BaseBean
@@ -36,12 +38,16 @@ public class DriverTripsBean extends BaseBean
     private List<TripDisplay> trips;
     private TripDisplay lastTrip;
     private TripDisplay selectedTrip;
-    
-    private Integer tripsPager = 0;
+    private List<Event> violationEvents;
+
+	private Integer tripsPager = 0;
     private Integer tripPager = 0;
     private TripDAO tripDAO;
+    private EventDAO eventDAO;
     
-    public void init()
+
+
+	public void init()
     {
     	Calendar calendar = Calendar.getInstance();
     	calendar.add(Calendar.DAY_OF_MONTH, -7);
@@ -49,7 +55,14 @@ public class DriverTripsBean extends BaseBean
     	startDate = calendar.getTime();
     	
     	initTrips();
+    	
+    	initViolations();
 
+    }
+    
+    public void initViolations()
+    {
+    	violationEvents = eventDAO.getMostRecentEvents(getUser().getPerson().getGroupID(), 25); //Change to more appropriate DAO method.
     }
     
     public void initTrips()
@@ -231,4 +244,21 @@ public class DriverTripsBean extends BaseBean
     {
         this.navigation = navigation;
     }
+    
+    //VIOLATIONS PROPERTIES
+    public List<Event> getViolationEvents() {
+		return violationEvents;
+	}
+
+	public void setViolationEvents(List<Event> violationEvents) {
+		this.violationEvents = violationEvents;
+	}
+	//EVENT DAO PROPERTIES
+    public EventDAO getEventDAO() {
+		return eventDAO;
+	}
+
+	public void setEventDAO(EventDAO eventDAO) {
+		this.eventDAO = eventDAO;
+	}
 }

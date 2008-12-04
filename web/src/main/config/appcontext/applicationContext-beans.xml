@@ -115,6 +115,7 @@
     <bean id="driverTripsBean" class="com.inthinc.pro.backing.DriverTripsBean" scope="request" parent="baseBean" init-method="init">
         <property name="tripDAO" ref="tripDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
+        <property name="eventDAO" ref="eventDAO"></property>
     </bean>
 
     <bean id="teamOverviewBean" class="com.inthinc.pro.backing.TeamOverviewBean" scope="session" parent="baseBean">

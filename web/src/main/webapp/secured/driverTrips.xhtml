@@ -465,7 +465,13 @@
 							var endlatlng = new GLatLng(#{driverTripsBean.selectedTrip.routeLastStep.lat}, #{driverTripsBean.selectedTrip.routeLastStep.lng});
 							map.addOverlay(createMarker(endlatlng, "End of trip.<br />" + "#{driverTripsBean.selectedTrip.trip.endTime}<br />#{driverTripsBean.selectedTrip.endAddress}",
 											"#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png"));
-				 										
+
+							var violation;
+							<ui:repeat value="#{driverTripsBean.violationEvents}" var="violation">
+								violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
+								map.addOverlay(createMarker(violation, "TYPE Violation.<br />DATE TIME",
+												"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png"));
+							</ui:repeat>						
         				}
         				
 					}
