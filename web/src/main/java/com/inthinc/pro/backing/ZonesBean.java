@@ -32,14 +32,7 @@ public class ZonesBean extends BaseBean
         if (zones == null)
         {
             zones = zoneDAO.getZonesInGroupHierarchy(getUser().getPerson().getGroupID());
-            Collections.sort(zones, new Comparator<Zone>()
-            {
-                @Override
-                public int compare(Zone o1, Zone o2)
-                {
-                    return o1.getName().compareToIgnoreCase(o2.getName());
-                }
-            });
+            sortZones();
         }
 
         if (zoneIDs == null)
@@ -50,6 +43,18 @@ public class ZonesBean extends BaseBean
         }
 
         return zoneIDs;
+    }
+
+    private void sortZones()
+    {
+        Collections.sort(zones, new Comparator<Zone>()
+        {
+            @Override
+            public int compare(Zone o1, Zone o2)
+            {
+                return o1.getName().compareToIgnoreCase(o2.getName());
+            }
+        });
     }
 
     public int getZonesCount()
@@ -109,6 +114,7 @@ public class ZonesBean extends BaseBean
         if (add)
         {
             zones.add(item);
+            sortZones();
             zoneIDs = null;
         }
 

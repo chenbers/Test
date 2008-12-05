@@ -161,6 +161,7 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         adminBean.getItems();
 
         // add
+        assertFalse(adminBean.isAdd());
         assertEquals(adminBean.add(), adminBean.getEditRedirect());
         assertTrue(adminBean.isAdd());
         assertFalse(adminBean.isBatchEdit());
@@ -173,6 +174,7 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         assertEquals(adminBean.cancelEdit(), adminBean.getFinishedRedirect());
 
         // start another add
+        assertFalse(adminBean.isAdd());
         adminBean.add();
         assertTrue(adminBean.isAdd());
 
@@ -240,6 +242,7 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         assertEquals(adminBean.getSelectedItems().size(), 3);
 
         // edit
+        assertFalse(adminBean.isBatchEdit());
         assertEquals(adminBean.batchEdit(), adminBean.getEditRedirect());
         assertFalse(adminBean.isAdd());
         assertTrue(adminBean.isBatchEdit());
