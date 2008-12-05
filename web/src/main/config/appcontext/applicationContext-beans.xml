@@ -92,6 +92,11 @@
         <property name="zoneDAO" ref="zoneDAO"></property>
     </bean>
 
+    <bean id="redFlagsAdminBean" class="com.inthinc.pro.backing.RedFlagsAdminBean" scope="session">
+        <property name="redFlagPrefDAO" ref="redFlagPrefDAO"></property>
+        <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
+    </bean>
+
     <bean id="driverBean" class="com.inthinc.pro.backing.DriverBean" scope="request">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="navigation" ref="navigationBean"></property>

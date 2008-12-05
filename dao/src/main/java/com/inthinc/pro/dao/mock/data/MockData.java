@@ -15,12 +15,10 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.dao.hessian.exceptions.MappingException;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.AccountStatus;
@@ -40,6 +38,8 @@ import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagLevel;
+import com.inthinc.pro.model.RedFlagPref;
+import com.inthinc.pro.model.RedFlagType;
 import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
@@ -74,6 +74,7 @@ public class MockData
     static final int MAX_VEHICLES_IN_GROUP = 10;
     static final int MAX_USERS_IN_GROUP = 10;
     static final int MAX_ZONES_IN_GROUP = 10;
+    static final int MAX_RED_FLAG_PREFS_IN_GROUP = 10;
     static final int MAX_TRIPS = 75;
     static final int MAX_ADDRESS = 3;
     static final int MIN_EVENTS = 0;
@@ -222,6 +223,7 @@ public class MockData
             }
 
             addZonesToGroup(accountID, groups[cnt].getGroupID(), randomInt(MAX_ZONES_IN_GROUP / 2, MAX_ZONES_IN_GROUP));
+            addRedFlagPrefsToGroup(accountID, groups[cnt].getGroupID(), randomInt(MAX_RED_FLAG_PREFS_IN_GROUP / 2, MAX_RED_FLAG_PREFS_IN_GROUP));
         }
         
         
@@ -665,6 +667,37 @@ public class MockData
             points.add(new LatLng(randomLat(), randomLng()));
         points.add(new LatLng(points.get(0).getLat(), points.get(0).getLng()));
         zone.setPoints(points);
+    }
+
+    private List<RedFlagPref> addRedFlagPrefsToGroup(Integer accountID, Integer groupID, int numRedFlagPrefs)
+    {
+        List<RedFlagPref> flags = new ArrayList<RedFlagPref>();
+        Integer idOffset = accountID * MAX_GROUPS + groupID * MAX_RED_FLAG_PREFS_IN_GROUP;
+        for (int i = 0; i < numRedFlagPrefs; i++)
+        {
+            int id = idOffset+i+1;
+            RedFlagPref flag = new RedFlagPref();
+            flag.setAccountID(accountID);
+            flag.setGroupID(groupID);
+            flag.setRedFlagPrefID(id);
+            flag.setType(RedFlagType.values()[randomInt(0, RedFlagType.values().length - 1)]);
+            flag.setCreated(new Date());
+            flag.setName("RedFlagPref" + id);
+            flag.setDescription("Don't step on my blue suede shoes!");
+            flag.setHardBrake(randomInt(0, 2));
+            flag.setHardAcceleration(randomInt(0, 2));
+            flag.setHardTurn(randomInt(0, 2));
+            flag.setHardVertical(randomInt(0, 2));
+            final Integer[] speedSettings = new Integer[15];
+            for (int j = 0; j < speedSettings.length; j++)
+                speedSettings[j] = randomInt(0, 5) * 5;
+            flag.setSpeedSettings(speedSettings);
+// TODO: more
+            storeObject(flag);
+            flags.add(flag);
+        }
+
+        return flags;
     }
 
     private static List <LatLng>  getHardCodedRoute()

@@ -232,10 +232,21 @@ public interface SiloService extends HessianService
      */
     List<Map<String, Object>> getZoneIDsInGroupHierarchy(Integer groupID);
 
+    // Methods related to the RedFlagPref type
+    Map<String, Object> deleteRedFlagPref(Integer redFlagPrefID) throws ProDAOException;
 
+    Map<String, Object> getRedFlagPref(Integer redFlagPrefID) throws ProDAOException;
 
-    
-    
-    
+    Map<String, Object> updateRedFlagPref(Integer redFlagPrefID, Map<String, Object> redFlagPrefMap) throws ProDAOException;
 
+    Map<String, Object> createRedFlagPref(Integer acctID, Map<String, Object> redFlagPrefMap) throws ProDAOException;
+
+    /**
+     * Retrieves the IDs of all people in the hierarchy for the given group ID--that is, the matching group plus all groups beneath it.
+     * 
+     * @param groupID
+     *            The ID of the group at the top of the hierarchy.
+     * @return A list of maps of redFlagPrefIDs.
+     */
+    List<Map<String, Object>> getRedFlagPrefIDsInGroupHierarchy(Integer groupID);
 }

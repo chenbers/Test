@@ -1,0 +1,32 @@
+<ui:composition template="adminTable.xhtml"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:rich="http://richfaces.org/rich"
+  xmlns:security="http://www.springframework.org/security/tags">
+
+  <ui:param name="recordCount" value="#{redFlagsAdminBean.itemCount}" />
+  <ui:param name="items" value="#{redFlagsAdminBean.filteredItems}" />
+  <ui:param name="filterValue" value="#{redFlagsAdminBean.filterValue}" />
+  <ui:param name="page" value="#{redFlagsAdminBean.page}" />
+  <ui:param name="editorBean" value="#{redFlagsAdminBean}" />
+
+  <ui:define name="columns">
+    <rich:column rendered="#{redFlagsAdminBean.tableColumns['name'].visible}" sortBy="#{item.name}" sortOrder="ASCENDING">
+      <f:facet name="header"><h:outputText value="#{messages.redFlagsHeader_name}" /></f:facet>
+      <h:commandLink action="#{redFlagsAdminBean.display}" value="#{item.name}">
+        <f:param name="displayID" value="#{item.id}" />
+      </h:commandLink>
+    </rich:column>
+    <rich:column rendered="#{redFlagsAdminBean.tableColumns['description'].visible}" sortBy="#{item.description}">
+      <f:facet name="header"><h:outputText value="#{messages.redFlagsHeader_description}" /></f:facet>
+      <h:outputText value="#{item.description}" />
+    </rich:column>
+    <rich:column rendered="#{redFlagsAdminBean.tableColumns['type'].visible}" sortBy="#{item.type}">
+      <f:facet name="header"><h:outputText value="#{messages.redFlagsHeader_type}" /></f:facet>
+      <h:outputText value="#{item.type}" />
+    </rich:column>
+  </ui:define>
+
+</ui:composition>

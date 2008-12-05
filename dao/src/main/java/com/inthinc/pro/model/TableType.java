@@ -12,7 +12,8 @@ public enum TableType implements BaseEnum
     VEHICLE_REPORT(3, "VEHICLE_REPORT"),
     ADMIN_PEOPLE(4, "ADMIN_PEOPLE"),
     ADMIN_VEHICLES(5, "ADMIN_VEHICLES"),
-    ADMIN_DEVICES(6, "ADMIN_DEVICES");
+    ADMIN_DEVICES(6, "ADMIN_DEVICES"),
+    ADMIN_RED_FLAG_PREFS(7, "ADMIN_RED_FLAG_PREFS");
 
     private String description;
     private int    code;
