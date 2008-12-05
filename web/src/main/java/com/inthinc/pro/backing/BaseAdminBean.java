@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 import org.apache.log4j.LogManager;
@@ -368,7 +369,15 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
 
         // take off if nothing was selected
         if (isAdd())
+        {
+            final FacesContext context = FacesContext.getCurrentInstance();
+            final String summary = MessageUtil.getMessageString("adminTable_noneSelected");
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, summary, null);
+            context.addMessage(null, message);
+
+            item = null;
             return getFinishedRedirect();
+        }
 
         // select no fields for update
         for (final String key : getUpdateField().keySet())
@@ -437,6 +446,14 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     public String delete()
     {
         final List<T> selected = getSelectedItems();
+        if (selected.size() == 0)
+        {
+            final FacesContext context = FacesContext.getCurrentInstance();
+            final String summary = MessageUtil.getMessageString("adminTable_noneSelected");
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, summary, null);
+            context.addMessage(null, message);
+            return null;
+        }
 
         doDelete(selected);
         items.removeAll(selected);
