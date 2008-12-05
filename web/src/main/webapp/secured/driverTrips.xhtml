@@ -374,6 +374,8 @@
 						baseIcon.iconAnchor = new GPoint(6, 20);
 						baseIcon.infoWindowAnchor = new GPoint(5, 1);
 
+					var bounds = new GLatLngBounds();
+
 				 		map = new GMap2(document.getElementById("map-canvas"));
   						map.addControl(new GLargeMapControl());
   						map.addControl(new GMapTypeControl());
@@ -404,6 +406,10 @@
         				{
 			   				map.clearOverlays(); 
 							var polyline;
+							var marker;
+							var startlatlng;
+							var endlatlng;
+							
 			   				<ui:repeat value="#{driverTripsBean.trips}" var="trip">
 								polyline = new GPolyline([
 								<ui:repeat value="#{trip.route}" var="rt">
@@ -414,14 +420,19 @@
 								], "#0000ff", 6);
 								map.addOverlay(polyline);
 
-								//Add trip Start and Stop icons to map
-								var startlatlng = new GLatLng(#{trip.route[0].lat}, #{trip.route[0].lng});
-								map.addOverlay(createMarker(startlatlng, "Start of trip.<br />" + "#{trip.trip.startTime}<br />#{trip.startAddress}",
-															"#{facesContext.externalContext.request.contextPath}/images/ico_start.png"));
+								//Start Marker
+								startlatlng = new GLatLng(#{trip.route[0].lat}, #{trip.route[0].lng});
+								marker = createMarker(startlatlng, "Start of trip.<br />" + "#{trip.trip.startTime}<br />#{trip.startAddress}",
+														"#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
+								map.addOverlay(marker);
+								bounds.extend(marker.getPoint());
 
-								var endlatlng = new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng});
-								map.addOverlay(createMarker(endlatlng, "End of trip.<br />" + "#{trip.trip.endTime}<br />#{trip.endAddress}",
-															"#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png"));
+								//Stop Marker
+								endlatlng = new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng});
+								marker = createMarker(endlatlng, "End of trip.<br />" + "#{trip.trip.endTime}<br />#{trip.endAddress}",
+														"#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
+								map.addOverlay(marker);
+								bounds.extend(marker.getPoint());
 
 			  				</ui:repeat>
 
@@ -455,8 +466,8 @@
 				    	if (GBrowserIsCompatible()) 
         				{
 				    		map.clearOverlays(); 
+				    		var marker;
 							var polyline = new GPolyline([
-				  										
 				 										<ui:repeat value="#{driverTripsBean.selectedTrip.route}" var="rt">
 				 											new GLatLng(#{rt.lat}, #{rt.lng}),
 				 									  	</ui:repeat>
@@ -467,13 +478,17 @@
 
 							//Add Start trip icon to map.
 							var startlatlng = new GLatLng(#{driverTripsBean.selectedTrip.route[0].lat}, #{driverTripsBean.selectedTrip.route[0].lng});
-							map.addOverlay(createMarker(startlatlng, "Start of trip.<br />" + "#{driverTripsBean.selectedTrip.trip.startTime}<br />#{driverTripsBean.selectedTrip.startAddress}",
-											"#{facesContext.externalContext.request.contextPath}/images/ico_start.png"));
-
+							marker = createMarker(startlatlng, "Start of trip.<br />" + "#{driverTripsBean.selectedTrip.trip.startTime}<br />#{driverTripsBean.selectedTrip.startAddress}",
+													"#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
+							map.addOverlay(marker);
+							bounds.extend(marker.getPoint());
+							
 							//Add End trip icon to map.
 							var endlatlng = new GLatLng(#{driverTripsBean.selectedTrip.routeLastStep.lat}, #{driverTripsBean.selectedTrip.routeLastStep.lng});
-							map.addOverlay(createMarker(endlatlng, "End of trip.<br />" + "#{driverTripsBean.selectedTrip.trip.endTime}<br />#{driverTripsBean.selectedTrip.endAddress}",
-											"#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png"));
+							marker = createMarker(endlatlng, "End of trip.<br />" + "#{driverTripsBean.selectedTrip.trip.endTime}<br />#{driverTripsBean.selectedTrip.endAddress}",
+													"#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
+							map.addOverlay(marker);
+							bounds.extend(marker.getPoint());
 
 							if(showWarnings == true)
 							{
@@ -506,14 +521,18 @@
 				    	if(document.getElementById('showAllCheckBox').checked == true)
 				    	{
 				    		drawAllTrips();
+				    		 map.setZoom(map.getBoundsZoomLevel(bounds));
+							 map.setCenter(bounds.getCenter());
 				    	}
 				    	else
 				    	{
 				    		drawSelectedTrip();
+				    		 map.setZoom(map.getBoundsZoomLevel(bounds));
+							 map.setCenter(bounds.getCenter());
 				    	}
 					}
 
-				    // Show Warnings Checkbox changed    EASIER WAY TO DO THIS?
+				    // Show Warnings Checkbox changed   //TODO: CLEANER WAY TO DO THIS??
 				    function showWarningsChanged()
 				    {
 				    	if(document.getElementById('showWarningsCheckBox').checked == true)
@@ -545,6 +564,9 @@
 
 					//Onload
 				    updateMap();
+
+				    map.setZoom(map.getBoundsZoomLevel(bounds));
+				    map.setCenter(bounds.getCenter());
     				
   					</script> 
 			  </rich:panel>
