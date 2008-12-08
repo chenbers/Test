@@ -246,4 +246,15 @@ public interface SiloService extends HessianService
      * @return A list of maps of redFlagPrefIDs.
      */
     List<Map<String, Object>> getRedFlagPrefIDsInGroupHierarchy(Integer groupID);
+
+    // Methods related to the ZoneAlert type
+    Map<String, Object> deleteZoneAlert(Integer zoneAlertID) throws ProDAOException;
+
+    Map<String, Object> getZoneAlert(Integer zoneAlertID) throws ProDAOException;
+
+    Map<String, Object> updateZoneAlert(Integer zoneAlertID, Map<String, Object> zoneAlertMap) throws ProDAOException;
+
+    Map<String, Object> createZoneAlert(Integer acctID, Map<String, Object> zoneAlertMap) throws ProDAOException;
+
+    List<Map<String, Object>> getZoneAlertIDsInGroupHierarchy(Integer groupID);
 }

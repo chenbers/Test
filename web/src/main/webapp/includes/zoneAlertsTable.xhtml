@@ -1,0 +1,32 @@
+<ui:composition template="adminTable.xhtml"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:rich="http://richfaces.org/rich"
+  xmlns:security="http://www.springframework.org/security/tags">
+
+  <ui:param name="recordCount" value="#{zoneAlertsBean.itemCount}" />
+  <ui:param name="items" value="#{zoneAlertsBean.filteredItems}" />
+  <ui:param name="filterValue" value="#{zoneAlertsBean.filterValue}" />
+  <ui:param name="page" value="#{zoneAlertsBean.page}" />
+  <ui:param name="editorBean" value="#{zoneAlertsBean}" />
+
+  <ui:define name="columns">
+    <rich:column rendered="#{zoneAlertsBean.tableColumns['name'].visible}" sortBy="#{item.name}" sortOrder="ASCENDING">
+      <f:facet name="header"><h:outputText value="#{messages.zoneAlertsHeader_name}" /></f:facet>
+      <h:commandLink action="#{zoneAlertsBean.display}" value="#{item.name}">
+        <f:param name="displayID" value="#{item.id}" />
+      </h:commandLink>
+    </rich:column>
+    <rich:column rendered="#{zoneAlertsBean.tableColumns['description'].visible}" sortBy="#{item.description}">
+      <f:facet name="header"><h:outputText value="#{messages.zoneAlertsHeader_description}" /></f:facet>
+      <h:outputText value="#{item.description}" />
+    </rich:column>
+    <rich:column rendered="#{zoneAlertsBean.tableColumns['zone'].visible}" sortBy="#{item.zone.name}">
+      <f:facet name="header"><h:outputText value="#{messages.zoneAlertsHeader_zone}" /></f:facet>
+      <h:outputText value="#{item.zone.name}" />
+    </rich:column>
+  </ui:define>
+
+</ui:composition>

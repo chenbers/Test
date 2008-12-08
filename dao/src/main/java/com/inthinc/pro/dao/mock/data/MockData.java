@@ -53,6 +53,7 @@ import com.inthinc.pro.model.UserStatus;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleStatus;
 import com.inthinc.pro.model.Zone;
+import com.inthinc.pro.model.ZoneAlert;
 
 public class MockData
 {
@@ -74,6 +75,7 @@ public class MockData
     static final int MAX_VEHICLES_IN_GROUP = 10;
     static final int MAX_USERS_IN_GROUP = 10;
     static final int MAX_ZONES_IN_GROUP = 10;
+    static final int MAX_ZONE_ALERTS_PER_ZONE = 5;
     static final int MAX_RED_FLAG_PREFS_IN_GROUP = 10;
     static final int MAX_TRIPS = 75;
     static final int MAX_ADDRESS = 3;
@@ -653,6 +655,8 @@ public class MockData
             addPoints(zone, new LatLng(40.711435, -111.991518));
             storeObject(zone);
             zoneList.add(zone);
+
+            addZoneAlertsToZone(id, accountID, groupID, randomInt(1, MAX_ZONE_ALERTS_PER_ZONE));
         }
         
         return zoneList;
@@ -665,6 +669,42 @@ public class MockData
             points.add(new LatLng(randomLat(), randomLng()));
         points.add(new LatLng(points.get(0).getLat(), points.get(0).getLng()));
         zone.setPoints(points);
+    }
+
+    private List<ZoneAlert> addZoneAlertsToZone(Integer zoneID, Integer accountID, Integer groupID, int numZoneAlerts)
+    {
+        final List<ZoneAlert> alerts = new ArrayList<ZoneAlert>();
+        final Integer idOffset = accountID * MAX_GROUPS + groupID * MAX_RED_FLAG_PREFS_IN_GROUP;
+        for (int i = 0; i < numZoneAlerts; i++)
+        {
+            int id = idOffset+i+1;
+            final ZoneAlert alert = new ZoneAlert();
+            alert.setAccountID(accountID);
+            alert.setGroupID(groupID);
+            alert.setZoneID(zoneID);
+            alert.setZoneAlertID(id);
+            alert.setCreated(new Date());
+            alert.setName("Zone Alert " + id);
+            alert.setDescription("Toolin' around the zone");
+            alert.setArrival(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
+            alert.setDeparture(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
+            alert.setDriverIDViolation(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
+            alert.setIgnitionOn(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
+            alert.setIgnitionOff(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
+            alert.setPosition(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
+            alert.setSeatbeltViolation(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
+            alert.setSpeedLimit(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
+            alert.setSpeedViolation(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
+            alert.setMasterBuzzer(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
+            alert.setCautionArea(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
+            alert.setDisableRF(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
+            alert.setMonitorIdle(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
+// TODO: vehicles, recipients
+            storeObject(alert);
+            alerts.add(alert);
+        }
+
+        return alerts;
     }
 
     private List<RedFlagPref> addRedFlagPrefsToGroup(Integer accountID, Integer groupID, int numRedFlagPrefs)
@@ -690,7 +730,7 @@ public class MockData
             for (int j = 0; j < speedSettings.length; j++)
                 speedSettings[j] = randomInt(0, 5) * 5;
             flag.setSpeedSettings(speedSettings);
-// TODO: more
+// TODO: more, vehicles/drivers, recipients
             storeObject(flag);
             flags.add(flag);
         }

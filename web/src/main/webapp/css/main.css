@@ -598,6 +598,10 @@ span.add {
 	background: url(../images/btn_add.png) left no-repeat;
 	}
 
+span.addZoneAlert {
+	background: url(../images/btn_add_zone_alerts.png) left no-repeat;
+	}
+
 span.save {
 	background: url(../images/btn_save.png) left no-repeat;
 	}

@@ -5,21 +5,13 @@ import java.util.List;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
-public class RedFlagPref extends BaseEntity
+public class RedFlagPref extends BaseAlert
 {
     @Column(updateable = false)
     private static final long serialVersionUID = -1621262257747114161L;
 
-    public static final int   MIN_TOD          = 0;
-    public static final int   MAX_TOD          = 1439;
-
     @ID
     private Integer           redFlagPrefID;
-    @Column(name = "acctID")
-    private Integer           accountID;
-    private Integer           groupID;
-    private String            name;
-    private String            description;
     private List<Integer>     driverIDs;
     private List<Integer>     vehicleIDs;
     private RedFlagType       type;
@@ -37,15 +29,7 @@ public class RedFlagPref extends BaseEntity
     @Column(name = "vert")
     private Integer           hardVertical;
 
-
     private Integer           zoneID;
-    private Integer           startTOD;
-    private Integer           stopTOD;
-    private List              dayOfWeek;
-
-
-    private List<Integer>     notifyUserIDs;
-    private List<String>      emailTo;
 
     public Integer getRedFlagPrefID()
     {
@@ -55,46 +39,6 @@ public class RedFlagPref extends BaseEntity
     public void setRedFlagPrefID(Integer redFlagPrefID)
     {
         this.redFlagPrefID = redFlagPrefID;
-    }
-
-    public Integer getAccountID()
-    {
-        return accountID;
-    }
-
-    public void setAccountID(Integer accountID)
-    {
-        this.accountID = accountID;
-    }
-
-    public Integer getGroupID()
-    {
-        return groupID;
-    }
-
-    public void setGroupID(Integer groupID)
-    {
-        this.groupID = groupID;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
     public List<Integer> getDriverIDs()
@@ -240,25 +184,5 @@ public class RedFlagPref extends BaseEntity
         if (sensitivity != null)
             return Device.MAX_SENSITIVITY + ((Device.MIN_SENSITIVITY - Device.MAX_SENSITIVITY) - (sensitivity - Device.MAX_SENSITIVITY));
         return null;
-    }
-
-    public List<Integer> getNotifyUserIDs()
-    {
-        return notifyUserIDs;
-    }
-
-    public void setNotifyUserIDs(List<Integer> notifyUserIDs)
-    {
-        this.notifyUserIDs = notifyUserIDs;
-    }
-
-    public List<String> getEmailTo()
-    {
-        return emailTo;
-    }
-
-    public void setEmailTo(List<String> emailTo)
-    {
-        this.emailTo = emailTo;
     }
 }

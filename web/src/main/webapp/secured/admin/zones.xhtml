@@ -55,7 +55,10 @@
                         <li class="l">
                           <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
                             <tr>
-                              <td><h:outputText value="#{messages.zones_zone}" /></td>
+                              <td>
+                                <h:graphicImage value="/images/ico_zone.png" style="vertical-align:-30%" />
+                                <strong><h:outputText value="#{messages.zones_zone}" /></strong>
+                              </td>
                               <td>
                                 <h:selectOneMenu value="#{zonesBean.itemID}" id="zone">
                                   <f:selectItems value="#{zonesBean.zoneIDs}" />
@@ -69,7 +72,15 @@
                           <li class="l"><a4j:commandLink action="#{zonesBean.edit}" reRender="displayZone,editZone,zoneName,zoneAddress" oncomplete="showZone(true)"><button value="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></a4j:commandLink></li>
                           <li class="l"><button value="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></button></li>
                         </ui:fragment>
-                        <li class="r"><a4j:commandLink action="#{zonesBean.add}" onclick="map.clearOverlays()" reRender="displayZone,editZone"><button value="submit" class="left"><span class="add"><h:outputText value="#{messages.zones_addZone}" /></span></button></a4j:commandLink></li>
+                        <li class="r">
+                          <a4j:commandLink action="#{zonesBean.add}" onclick="map.clearOverlays()" reRender="displayZone,editZone"><button value="submit" class="left"><span class="add"><h:outputText value="#{messages.zones_addZone}" /></span></button></a4j:commandLink>
+                          <ui:fragment rendered="#{zonesBean.zonesCount gt 0}">
+                            <a4j:commandLink action="#{zoneAlertsBean.add}">
+                              <f:param name="zoneID" value="#{zonesBean.item.zoneID}" />
+                              <button value="submit" class="left"><span class="addZoneAlert"><h:outputText value="#{messages.zones_addZoneAlert}" /></span></button>
+                            </a4j:commandLink>
+                          </ui:fragment>
+                        </li>
                       </ul>
 
                     </h:panelGroup>
@@ -84,7 +95,10 @@
                         <li class="l">
                           <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
                             <tr>
-                              <td><h:outputText value="#{messages.zones_name}" /></td>
+                              <td>
+                                <h:graphicImage value="/images/ico_zone.png" style="vertical-align:-30%" />
+                                <strong><h:outputText value="#{messages.zones_name}" /></strong>
+                              </td>
                               <td>
                                 <h:inputText id="zoneName" value="#{zonesBean.item.name}" class="text" size="30" maxlength="30" required="#{zonesBean.editing}" requiredMessage="#{messages.required}" />
                                 <rich:message for="zoneName" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
