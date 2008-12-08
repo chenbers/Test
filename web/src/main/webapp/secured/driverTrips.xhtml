@@ -201,33 +201,43 @@
 					<div class="panel_w">
 					  <div class="panel_content">
 					    <div class="" id="">
+					    <a4j:region id="optionsRegion">
 							<table width="320" cellpadding="4" cellspacing="0" class="" id="settings">
 								  <tbody>
 								  <tr>
 									<td width="290">Show last 10 Trips on map.</td>
-								    <td width="20">
-								    <a4j:form id="showAllForm" reRender="selectedTripMap">
-									    <h:selectBooleanCheckbox id="showAllCheckBox" value="#{driverTripsBean.showAllTrips}">
-									    	<a4j:support event="onchange" reRender="selectedTripMap" />
-									    </h:selectBooleanCheckbox>
-									    
-									    </a4j:form>
+								    <td width="25">
+									    <a4j:status id="showLastTenStatus" for="optionsRegion">
+											<f:facet name="start">
+												<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
+											</f:facet>
+										</a4j:status>
+									</td>
+									<td width="20">
+									    <a4j:form id="showAllForm" reRender="selectedTripMap">
+										    <h:selectBooleanCheckbox id="showAllCheckBox" value="#{driverTripsBean.showAllTrips}">
+										    	<a4j:support event="onchange" reRender="selectedTripMap" />
+										    </h:selectBooleanCheckbox>
+										</a4j:form>
 								    </td>
 								    </tr>
 								  <tr>
 									<td>Show idle markers</td>
+									<td></td>
 								    <td>
 								      <h:selectBooleanCheckbox id="showIdleCheckBox" value="#{driverTripsBean.showIdleMarkers}" onchange="showIdleChanged();"/>
 								    </td>
 								    </tr>
 								  <tr>
 								    <td>Show warnings</td>
+								    <td></td>
 								    <td>
 								      <h:selectBooleanCheckbox id="showWarningsCheckBox" value="#{driverTripsBean.showWarnings}" onchange="showWarningsChanged();"/>
 								    </td>
 								    </tr>
 								  </tbody>
 								</table>
+							</a4j:region>
 						</div>
 					  </div>
 					</div>
