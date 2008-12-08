@@ -46,7 +46,7 @@ public class TrendBeanTest extends BaseBeanTest
                 trendBean.getScoreableEntities().size());        
         assertEquals( 1,
                 (new Integer(trendBean.getStart())).intValue());
-        assertEquals( 2,
+        assertEquals( 1,
                 (new Integer(trendBean.getEnd()).intValue()));
         assertEquals( 3,
                 (new Integer(trendBean.getMaxCount()).intValue()));
