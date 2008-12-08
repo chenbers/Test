@@ -86,6 +86,7 @@
     
     <bean id="organizationBean" class="com.inthinc.pro.backing.OrganizationBean" scope="session">
         <property name="groupDAO" ref="groupDAO"></property>
+        <property name="personDAO" ref="personDAO"></property>
     </bean>
 
     <bean id="zonesBean" class="com.inthinc.pro.backing.ZonesBean" scope="session">

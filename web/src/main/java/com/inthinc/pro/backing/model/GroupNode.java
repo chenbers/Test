@@ -103,6 +103,14 @@ public class GroupNode implements Serializable{
 		
 		return result;
 	}
+	
+	public void addChildNode(GroupNode groupNode){
+		if(childGroupNodes == null){
+			loadChildGroupNodes(groupHierarchyUtil.getChildren(group));
+		}
+		
+		childGroupNodes.add(groupNode);
+	}
 
 	public Group getGroup() {
 		return group;
@@ -132,6 +140,8 @@ public class GroupNode implements Serializable{
 	}
 
 	public void setParentGroupNode(GroupNode parentGroupNode) {
+		this.group.setParentID(parentGroupNode.getGroup().getGroupID());
+		parentGroupNode.addChildNode(this);
 		this.parentGroupNode = parentGroupNode;
 	}
 
@@ -146,8 +156,6 @@ public class GroupNode implements Serializable{
 		return fleetNode;
 	}
 	
-	
-
 	public void setFleetNode(GroupNode fleet) {
 		this.fleetNode = fleet;
 	}

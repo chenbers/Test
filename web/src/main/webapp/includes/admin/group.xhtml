@@ -23,16 +23,20 @@
 					<tr>
 						<td width="100">#{messages.group_fleet}</td>
 						<td align="left">
-						#{organizationBean.selectedGroupNode.fleetNode.group.name}</td>
+						#{groupTreeNode.fleetNode.group.name}</td>
 
 					</tr>
 					<tr>
-						<td>#{messages.group_manager}</td>
-						<td>Jake Morley</td>
+						<td>#{messages.group_name}</td>
+						<td>#{groupTreeNode.group.name}</td>
 					</tr>
 					<tr>
-						<td>#{messages.group_contact}</td>
-						<td>Mary Higgins</td>
+						<td>#{messages.group_description}</td>
+						<td>#{groupTreeNode.group.description}</td>
+					</tr>
+					<tr>
+						<td>#{messages.group_manager}</td>
+						<td>#{organizationBean.selectedPerson.first} #{organizationBean.selectedPerson.last}</td>
 					</tr>
 					<h:outputText
 						rendered="#{organizationBean.selectedGroupNode.groupLevel.description eq 'TEAM'}">
@@ -45,21 +49,6 @@
 							<td>243</td>
 						</tr>
 					</h:outputText>
-				</tbody>
-
-			</table>
-
-			<div class="add_section_title">#{messages.group_other_data_to_see}</div>
-			<table width="240" cellspacing="2" cellpadding="4" border="0"
-				align="center">
-				<tbody>
-					<tr>
-						<td style="font-weight: bold" width="100">Label</td>
-						<td align="left">Data</td>
-
-					</tr>
-
-
 				</tbody>
 
 			</table>

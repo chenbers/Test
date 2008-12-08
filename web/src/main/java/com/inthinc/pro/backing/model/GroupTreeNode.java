@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -10,33 +11,35 @@ import org.apache.log4j.Logger;
 import org.richfaces.model.SwingTreeNodeImpl;
 
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.LatLng;
 
-public class GroupTreeNode extends SwingTreeNodeImpl{
+public class GroupTreeNode extends SwingTreeNodeImpl implements Serializable{
+	
+	private static final long serialVersionUID = 6735997209608844223L;
 	
 	private Group group;
+	private GroupTreeNode parentGroupTreeNode;
+	private List<GroupTreeNode> childGroupTreeNodes;
+	private GroupHierarchy groupHierarchyUtil;
 	private GroupLevel groupLevel;
-	private GroupNode groupNode;
-	public GroupNode getGroupNode() {
-		return groupNode;
-	}
-
-	public void setGroupNode(GroupNode groupNode) {
-		this.groupNode = groupNode;
-	}
+	private GroupTreeNode fleetNode;
 
 	private static final Logger logger = Logger.getLogger(GroupTreeNode.class);
-	
-	//Child going to loaded lazily
-	private List<GroupTreeNode> childrenNodes;
 	
 	/*
 	 * Make sure that any group that is passed in has a parent. For some reason the tree view doesn't render
 	 * correctly if there is no parent.
 	 */
-	public GroupTreeNode(GroupNode groupNode){
-		this.groupLevel = groupNode.getGroupLevel();
-		this.group = groupNode.getGroup();
-		this.groupNode = groupNode;
+	public GroupTreeNode(Group group, GroupHierarchy groupHierarchy){
+		this.group = group;
+		this.groupHierarchyUtil = groupHierarchy;
+		this.setData(this);
+	}
+	
+	public GroupTreeNode(Group group, GroupHierarchy groupHierarchy,GroupTreeNode parent) {
+		this.group = group;
+		this.groupHierarchyUtil = groupHierarchy;
+		this.parentGroupTreeNode = parent;
 		this.setData(this);
 	}
 
@@ -55,26 +58,82 @@ public class GroupTreeNode extends SwingTreeNodeImpl{
 	}
 	
 	public GroupLevel getGroupLevel(){
-		return this.groupLevel;
+		if(groupLevel == null && group != null){
+			groupLevel = groupHierarchyUtil.getGroupLevel(group);
+		}
+		return groupLevel;
 	}
 //	
 	public Group getGroup() {
 		return group;
 	}
 	
-	//TreeNode implementation
+	public List<GroupTreeNode> getGroupBreadCrumb(){
+		List<GroupTreeNode> breadCrumbList = new ArrayList<GroupTreeNode>();
+		loadBreadCrumbs(this, breadCrumbList);
+		Collections.reverse(breadCrumbList);
+		return breadCrumbList;
+	}
+	
+	private void loadBreadCrumbs(GroupTreeNode node,List<GroupTreeNode> breadCrumbList){
+		breadCrumbList.add(node);
+		if(node.getParent() != null){
+			loadBreadCrumbs(node.getParent(),breadCrumbList);
+		}
+	}
+	
+	public GroupTreeNode getFleetNode() {
+		if(fleetNode == null){
+			fleetNode = getFleet(this);
+		}
+		return fleetNode;
+	}
+	
+	private GroupTreeNode getFleet(GroupTreeNode groupTreeNode){
+		GroupTreeNode result = null;
+		if(groupTreeNode.getGroup().getParentID() == 0){
+			result = groupTreeNode;
+		}else{
+			result = getFleet(groupTreeNode.getParent());
+		}	
+		
+		return result;
+	}
+	
+	public void addChildNode(GroupTreeNode groupTreeNode){
+		if(childGroupTreeNodes == null){
+			loadChildNodes();
+		}
+		
+		childGroupTreeNodes.add(groupTreeNode);
+	}
+	
+	public void setParent(GroupTreeNode parentGroupTreeNode) {
+		if(parentGroupTreeNode.getGroup() != null){
+			this.group.setParentID(parentGroupTreeNode.getGroup().getGroupID());
+			parentGroupTreeNode.addChildNode(this);
+			this.parentGroupTreeNode = parentGroupTreeNode;
+		}
+	}
+	
+	/**
+	 * TreeNode Implementation
+	 */
 	
 	@Override
 	public Enumeration children() {
-		if(childrenNodes == null){
+		if(childGroupTreeNodes == null){
 			loadChildNodes();
 		}
-		return Collections.enumeration(childrenNodes);
+		return Collections.enumeration(childGroupTreeNodes);
 	}
 	
 	@Override
 	public boolean getAllowsChildren() {
 		boolean result;
+		if(groupLevel == null){
+			getGroupLevel();
+		}
 		if(groupLevel == GroupLevel.TEAM){
 			result = false;
 		}else{
@@ -85,16 +144,18 @@ public class GroupTreeNode extends SwingTreeNodeImpl{
 	
 	@Override
 	public GroupTreeNode getChildAt(int childIndex) {
-		if(childrenNodes == null){
+		if(childGroupTreeNodes == null){
 			loadChildNodes();
 		}
-		
-		return childrenNodes.get(childIndex);
+		return childGroupTreeNodes.get(childIndex);
 	}
 	
 	@Override
 	public int getChildCount() {
-		return groupNode.getChildCount();
+		if(childGroupTreeNodes == null){
+			loadChildNodes();
+		}
+		return childGroupTreeNodes.size();
 	}
 	
 	@Override
@@ -106,19 +167,16 @@ public class GroupTreeNode extends SwingTreeNodeImpl{
 	@Override
 	public GroupTreeNode getParent() {
 		
-		GroupTreeNode gn = null;
-		
-		if(groupNode != null)	{		
-			GroupNode parentGroup = groupNode.getParentGroupNode();
+		if (parentGroupTreeNode == null && group != null) {
+			Group parentGroup = groupHierarchyUtil.getParentGroup(group);
 			if(parentGroup != null){
-				gn = new GroupTreeNode(parentGroup);
-			} else {
-				//This should mean that the current node is the root node and for some reason the tree control
-				//won't render if there is no parent to the node tied to the "value" attribute"
-				gn = new GroupTreeNode(new GroupNode(null,groupNode.getGroupHierarchyUtil()));
+				parentGroupTreeNode = new GroupTreeNode(parentGroup, groupHierarchyUtil);
+			}else{
+				parentGroupTreeNode = new GroupTreeNode(null,groupHierarchyUtil);
 			}
-		}	
-		return gn;
+		}
+			
+		return parentGroupTreeNode;
 		
 	}
 	
@@ -128,16 +186,31 @@ public class GroupTreeNode extends SwingTreeNodeImpl{
 		if(group == null){
 			result = true;
 		} else {
-			result = groupNode.hasChildren()?false:true;
+			if(childGroupTreeNodes == null){
+				loadChildNodes();
+			}
+			result = childGroupTreeNodes.size()>0?false:true;
 		}
 		return result;
 	}
 	
-	private void loadChildNodes(){
-		childrenNodes = new ArrayList<GroupTreeNode>();
-		for(GroupNode group:groupNode.getChildGroupNodes()){
-			childrenNodes.add(new GroupTreeNode(group));
+	private List<GroupTreeNode> loadChildNodes(){
+		List<GroupTreeNode> childNodes = new ArrayList<GroupTreeNode>();
+		 if(group == null && groupHierarchyUtil.getGroupList().size() > 0){
+			 childNodes.add(new GroupTreeNode(groupHierarchyUtil.getTopGroup(),groupHierarchyUtil));		 }
+
+		List<Group> groupList = groupHierarchyUtil.getChildren(group);
+		if (groupList != null) {
+			for (Group g : groupList) {
+				if(g.getMapCenter() == null){ //Set the initial view to that of the parent
+					g.setMapCenter(new LatLng(group.getMapCenter().getLat(),group.getMapCenter().getLng()));
+					g.setMapZoom(group.getMapZoom());
+				}
+				childNodes.add(new GroupTreeNode(g, groupHierarchyUtil,this));
+			}
 		}
+		childGroupTreeNodes = childNodes;
+		return childGroupTreeNodes;
 	}
 	
 	
