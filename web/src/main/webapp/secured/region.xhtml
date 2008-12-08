@@ -107,10 +107,12 @@
         							</rich:datascroller>					
 			
 
-						<rich:dataTable value="#{trendBean.scoreableEntities}" id="items"
-							var="item" styleClass="datagrid"
-							rowClasses="trendTableOdd,trendTableEven" 
-							cellspacing="1" rows="#{trendBean.numRowsPerPg}" width="100%">
+										<rich:dataTable value="#{trendBean.scoreableEntities}" id="items"
+											var="item" styleClass="datagrid"
+											rowClasses="trendTableOdd,trendTableEven" 
+											cellspacing="1" rows="#{trendBean.numRowsPerPg}" width="100%">
+											
+											<h:inputHidden id="hiddenGroupID" value="#{navigationBean.groupID}" />
 
 											<rich:column width="20">
 												<f:facet name="header">

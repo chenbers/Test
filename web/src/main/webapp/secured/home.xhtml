@@ -152,7 +152,9 @@
         							<rich:datascroller id="topScroller" for="items" immediate="true"
         								scrollerListener="#{trendBean.scrollerListener}" 
         								reRender="bottomScroller,countString,starter,items,xypanel">        			
-        							</rich:datascroller>					
+        							</rich:datascroller>	
+        							
+   										<h:inputHidden id="hiddenGroupID" value="#{navigationBean.groupID}" />				
 			
 										<rich:dataTable value="#{trendBean.scoreableEntities}" id="items"
 											var="item" styleClass="datagrid"
