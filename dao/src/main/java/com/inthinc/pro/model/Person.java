@@ -8,7 +8,15 @@ import com.inthinc.pro.dao.annotations.ID;
 
 public class Person extends BaseEntity
 {
-    @ID
+	
+	
+	
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7162580776394490873L;
+	
+	@ID
     private Integer          personID;
     private Integer          groupID;
     @Column(name = "tzName")

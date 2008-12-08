@@ -7,10 +7,16 @@ import com.inthinc.pro.dao.annotations.SimpleName;
 public class Account extends BaseEntity
 {
 
-    @ID
-    private Integer       acctID;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2388000038869935798L;
 
-    private Integer       mailID;
+	@ID
+    private Integer       acctID;
+	private String        acctName;
+
+	private Integer       mailID;
     private Integer       billID;
     private AccountStatus status;
 
@@ -18,6 +24,7 @@ public class Account extends BaseEntity
     {
         super();
     }
+    
     public Account(Integer acctID, Integer mailID, Integer billID, AccountStatus status)
     {
         super();
@@ -66,5 +73,11 @@ public class Account extends BaseEntity
     {
         this.status = status;
     }
+    public String getAcctName() {
+		return acctName;
+	}
+	public void setAcctName(String acctName) {
+		this.acctName = acctName;
+	}
 
 }
