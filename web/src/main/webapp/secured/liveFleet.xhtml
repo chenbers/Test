@@ -5,9 +5,72 @@
   			xmlns:f="http://java.sun.com/jsf/core">
 
 	<ui:param name="liveFleetSelected" value="current" />
+	
+	<ui:define name="scripts">
+		<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{gmBean.key}" type="text/javascript"></script>		
+	</ui:define>
+	
 	<ui:define name="content">
-		<p style="font-size:20px;text-align:center;">Live Fleet Page</p>	
+		<div class="" style="width:940px; margin: 0 auto 0 auto;">
+		<div class="panel_nw">
+			<div class="panel_title">
+				<span class="map">Live Fleet</span>
+				<span class="panel_links"><a href="#">refresh</a></span>
+			</div>
+
+		</div>
+		<div class="panel_w">
+		  <div class="panel_content" align="center">
+		  
+		  	<table border="0" cellspacing="0" cellpadding="4">
+			  <tr>
+				<td>Find Address: </td>
+				<td>
+				  <input name="textfield" type="text" class="text" size="100" value="address, city, state, zip code" onfocus="if (this.value=='address, city, state, zip code') {this.value = '';}" onblur="if(this.value=='') {this.value = 'address, city, state, zip code';}" />
+
+				</td>
+				<td><button value="" class="left" onclick="parent.location.href='live_fleet_dispatch.html'; return false;"><span class="search">Locate</span></button></td>
+			  </tr>
+			</table>
+		  	
+		  	<h:panelGroup styleClass="map-border" layout="block">
+				<div id="map-canvas" style="width:920px;height:600px;border:0"></div>
+	  		</h:panelGroup>
+				<script type="text/javascript">
+  						if (GBrowserIsCompatible()) 
+  	  						{
+    						map = new GMap2(document.getElementById("map-canvas"));
+    						map.addControl(new GLargeMapControl());
+    						map.addControl(new GMapTypeControl());
+    						map.addControl(new GOverviewMapControl()); 
+							map.setCenter(new GLatLng(#{driverTripsBean.selectedTrips[0].routeLastStep.lat}, #{driverTripsBean.selectedTrips[0].routeLastStep.lng}), 14);
+							map.setMapType(G_NORMAL_MAP);
+				
+						var polyline = new GPolyline([
+						
+							<ui:repeat value="#{driverTripsBean.selectedTrips[0].route}" var="route">
+								new GLatLng(#{route.lat}, #{route.lng}),
+						  	</ui:repeat>
+						  		  //Repeating the last step to finish JS array.
+						  		  new GLatLng(#{driverTripsBean.selectedTrips[0].routeLastStep.lat}, #{driverTripsBean.selectedTrips[0].routeLastStep.lng})
+							], "#0000ff", 6);
+							map.addOverlay(polyline);
+						
+		  				}
+					</script>
+		  
+		  </div>
+		</div>
+		<div class="panel_sw">
+
+			<div class="panel_statusbar"></div>
+		</div>
+	</div>
 	
 	</ui:define>
+
+
+
+	
 
 </ui:composition>
