@@ -31,7 +31,7 @@
 					  
 						<table width="455" border="0" cellspacing="0" cellpadding="0">
 							<tr>
-								<td width="74" valign="top" align="center"><img src="/tiwipro/images/legend_pie1to5.png" width="54" height="137" style="margin-top: 10px;" /></td>
+								<td width="74" valign="top" align="center"><img src="#{facesContext.externalContext.request.contextPath}/images/legend_pie1to5.png" width="54" height="137" style="margin-top: 10px;" /></td>
 								<td width="381" valign="top">
 									<!-- Start pie chart -->
 					  				<rich:panel id="piepanel" style="#{pieheight};#{piewidth}">
@@ -41,7 +41,7 @@
 										<script type="text/javascript">
 											var targetElement1 = document.getElementById("hiddenField2");
 							
-											var chart2 = new FusionCharts("/tiwipro/fusioncharts/Pie2D.swf", "ChartId", "#{piewidth}", "#{pieheight}", "0", "0");										
+											var chart2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "#{piewidth}", "#{pieheight}", "0", "0");										
 											chart2.setDataXML(targetElement1.value);									   	   
 											
 											chart2.render("chartdiv");

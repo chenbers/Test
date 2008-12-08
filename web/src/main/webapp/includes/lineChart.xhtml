@@ -20,7 +20,7 @@
 	<h:inputHidden value="#{lineChartDef}" id="#{hiddenFieldID}" />
 	<script type="text/javascript">
 		var #{tartgetElementVar} = document.getElementById("#{hiddenFieldID}");
-		var #{chartVar} = new FusionCharts("/tiwipro/fusioncharts/Area2D.swf", "ChartId", "#{width}", "#{height}", "0", "1");
+		var #{chartVar} = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Area2D.swf", "ChartId", "#{width}", "#{height}", "0", "1");
 		#{chartVar}.setDataXML(#{tartgetElementVar}.value);			   
 		#{chartVar}.render("#{ChartDivID}");
 		#{chartVar}.addParam('wmode', 'transparent');

@@ -46,7 +46,7 @@
 				  			<h:inputHidden value="#{pieDef}" id="hiddenField3"/>
 							<script type="text/javascript">
 								var targetElement3 = document.getElementById("hiddenField3");
-								var chart2 = new FusionCharts("/tiwipro/fusioncharts/Pie2D.swf", "ChartId", "320", "300", "0", "0");										
+								var chart2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "320", "300", "0", "0");										
 								chart2.setDataXML(targetElement3.value);									   	   
 								chart2.render("chartdiv");
 							</script>

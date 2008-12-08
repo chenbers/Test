@@ -34,7 +34,7 @@
 					<script type="text/javascript">
 							var targetElement2 = document.getElementById("hiddenField4");
 							
-							var chart = new FusionCharts("/tiwipro/fusioncharts/Column3D.swf", "ChartId", "440", "350", "0", "0");
+							var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Column3D.swf", "ChartId", "440", "350", "0", "0");
 							chart.setDataXML(targetElement2.value);	
 							   
 							chart.render("chartdiv3");

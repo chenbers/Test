@@ -56,7 +56,7 @@
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_vehicle}" />
       					</f:facet>
-      					<a href="/tiwipro/secured/vehicle.faces">#{item.vehicleID}</a>    					
+      					<a href="#{facesContext.externalContext.request.contextPath}/secured/vehicle.faces">#{item.vehicleID}</a>    					
     				</rich:column>
     				<rich:column rendered="#{driverColumns['milesDriven'].visible}" 
     					sortBy="#{item.milesDriven}">

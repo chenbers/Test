@@ -71,7 +71,7 @@
           <script type="text/javascript">
             var targetElement = document.getElementById("mpgDataElement");
               
-            var chart = new FusionCharts("../fusioncharts/ScrollColumn2D.swf", "ChartId", "#{xywidth}", "#{xyheight}", "0", "0");                                
+            var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/ScrollColumn2D.swf", "ChartId", "#{xywidth}", "#{xyheight}", "0", "0");                                
             chart.setDataXML(targetElement.value);
                      
             chart.render("mpgChartDiv");
@@ -80,7 +80,7 @@
         <!-- End xy graph -->
       
         <rich:panel rendered="#{displayLegend}">
-          <div align="center"><img src="../images/legend_mpg.png" width="332" height="44"/></div>
+          <div align="center"><img src="#{facesContext.externalContext.request.contextPath}/images/legend_mpg.png" width="332" height="44"/></div>
         </rich:panel>
         
         <rich:panel rendered="#{displayTable}">
