@@ -19,11 +19,13 @@ import com.inthinc.pro.dao.TripDAO;
 public class DriverTripsBean extends BaseBean
 {
     private static final Logger logger = Logger.getLogger(DriverTripsBean.class);
+
+    private NavigationBean navigation;
+    private TripDAO tripDAO;
+    private EventDAO eventDAO;
     
     private Date startDate = new Date();
     private Date endDate = new Date();
-    
-    private NavigationBean navigation;
     
     private Integer milesDriven = new Integer(0);
     private Integer numStops = 0;
@@ -36,17 +38,14 @@ public class DriverTripsBean extends BaseBean
     private boolean showWarnings = true;
     
     private List<TripDisplay> trips;
-    private TripDisplay lastTrip;
-    private TripDisplay selectedTrip;
-    private List<Event> violationEvents;
+    private List<TripDisplay> selectedTrips;
+    private TripDisplay selectedTrip;	
+	private List<Event> violationEvents;
 
 	private Integer tripsPager = 0;
     private Integer tripPager = 0;
-    private TripDAO tripDAO;
-    private EventDAO eventDAO;
+
     
-
-
 	public void init()
     {
     	Calendar calendar = Calendar.getInstance();
@@ -62,20 +61,20 @@ public class DriverTripsBean extends BaseBean
     
     public void initViolations()
     {
-    	violationEvents = eventDAO.getMostRecentEvents(getUser().getPerson().getGroupID(), 25); //Change to more appropriate DAO method.
+    	violationEvents = eventDAO.getMostRecentEvents(getUser().getPerson().getGroupID(), 25); //Change to more appropriate DAO method with dates.
     }
     
     public void initTrips()
     {
-        logger.debug("## initTrips()");
-        
         List<Trip> tempTrips = new ArrayList<Trip>();
         tempTrips = tripDAO.getTrips(navigation.getDriver().getDriverID(), DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate));
 
         trips = new ArrayList<TripDisplay>();
+        selectedTrips = new ArrayList<TripDisplay>();
+        
         for (Trip trip : tempTrips)
         {
-            trips.add(new TripDisplay(trip));
+            trips.add( 0, new TripDisplay(trip) );
             
             milesDriven += trip.getMileage();
             //totalDriveTime += ( trip.getEndTime() - trip.getStartTime() );
@@ -87,8 +86,7 @@ public class DriverTripsBean extends BaseBean
         
         if(trips.size() > 0)
         {
-            lastTrip = trips.get( numTrips-1 );
-            setSelectedTrip( trips.get(numTrips-1) );
+            selectedTrips.add( trips.get(0) );
         }
         
     }
@@ -164,8 +162,27 @@ public class DriverTripsBean extends BaseBean
 	public boolean isShowAllTrips() {
 		return showAllTrips;
 	}
-	public void setShowAllTrips(boolean showAllTrips) {
+	public void setShowAllTrips(boolean showAllTrips) 
+	{
 		this.showAllTrips = showAllTrips;
+		selectedTrips.clear();
+
+		if (showAllTrips) {
+
+			int count = 0;
+			for (TripDisplay trip : trips) {
+				if (count == 10)
+					break;
+
+				selectedTrips.add(trip);
+				count++;
+			}
+		} else {
+			if (selectedTrip == null) {
+				selectedTrips.add(trips.get(0));
+			} else
+				selectedTrips.add(selectedTrip);
+		}	
 	}
 	
 	//SHOW IDLE MARKERS SETTING PROPERTIES
@@ -214,24 +231,16 @@ public class DriverTripsBean extends BaseBean
         this.tripPager = tripPager;
     }
 
-    //LAST TRIP PROPERTIES
-    public TripDisplay getLastTrip()
-    {
-        return lastTrip;
-    }
-    public void setLastTrip(TripDisplay lastTrip)
-    {
-        this.lastTrip = lastTrip;
-    }
-
-    //SELECTED TRIP PROPERTIES
-    public TripDisplay getSelectedTrip()
-    {
-        return selectedTrip;
-    }
+    //SELECTD TRIP PROPERTIES
+	public TripDisplay getSelectedTrip() 
+	{
+		return selectedTrip;
+	}
     public void setSelectedTrip(TripDisplay selectedTrip)
     {
-        this.selectedTrip = selectedTrip;
+        selectedTrips.clear();
+        selectedTrips.add(selectedTrip);
+        //turn off select all checkbox
     }
 
     //NAVIGATION PROPERTIES
@@ -259,5 +268,14 @@ public class DriverTripsBean extends BaseBean
 
 	public void setEventDAO(EventDAO eventDAO) {
 		this.eventDAO = eventDAO;
+	}
+	
+	//SELECTED TRIPS PROPERTIES
+    public List<TripDisplay> getSelectedTrips() {
+		return selectedTrips;
+	}
+
+	public void setSelectedTrips(List<TripDisplay> selectedTrips) {
+		this.selectedTrips = selectedTrips;
 	}
 }

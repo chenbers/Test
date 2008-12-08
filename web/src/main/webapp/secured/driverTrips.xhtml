@@ -9,7 +9,7 @@
 	  			>
 
 	<ui:define name="scripts">
-		<script src="/tiwipro/js/FusionCharts.js" type="text/javascript"></script>	
+		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>	
 		<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAyQYKk4__l80DyIsqLPvvuxTRFLl8Tcq3arEgFHYFeOMvEMiJ8RQehhrYXPIDrf1muScWAd1MXrlVkQ" type="text/javascript"></script>	
 	</ui:define>
 
@@ -149,7 +149,7 @@
 				<rich:panel id="selectedTrip">
 					
 						<rich:dataTable 
-						value="#{driverTripsBean.selectedTrip.trip.events}" 
+						value="#{driverTripsBean.selectedTrips[0].trip.events}" 
 						id="selectedTripTable"
 						var="item" styleClass="datagrid"
 						rowClasses="tableOdd,tableEven" cellspacing="1" rows="10"  
@@ -206,7 +206,12 @@
 								  <tr>
 									<td width="290">Show last 10 Trips on map.</td>
 								    <td width="20">
-									    <h:selectBooleanCheckbox id="showAllCheckBox" value="#{driverTripsBean.showAllTrips}" onchange="updateMap();" />
+								    <a4j:form id="showAllForm" reRender="selectedTripMap">
+									    <h:selectBooleanCheckbox id="showAllCheckBox" value="#{driverTripsBean.showAllTrips}">
+									    	<a4j:support event="onchange" reRender="selectedTripMap" />
+									    </h:selectBooleanCheckbox>
+									    
+									    </a4j:form>
 								    </td>
 								    </tr>
 								  <tr>
@@ -380,11 +385,9 @@
   						map.addControl(new GLargeMapControl());
   						map.addControl(new GMapTypeControl());
   						map.addControl(new GOverviewMapControl()); 
-  						map.setCenter(new GLatLng(#{driverTripsBean.selectedTrip.routeLastStep.lat}, #{driverTripsBean.selectedTrip.routeLastStep.lng}), 14);
+  						map.setCenter(new GLatLng(#{driverTripsBean.selectedTrips[0].routeLastStep.lat}, #{driverTripsBean.selectedTrips[0].routeLastStep.lng}), 14);
   						map.setMapType(G_NORMAL_MAP);
 						
-				        // Creates a marker whose info window displays the letter corresponding
-				        // to the given index.
 				    function createMarker(point, message, iconImage)
 				        {
 				          var markerIcon = new GIcon(baseIcon);
@@ -400,7 +403,7 @@
 				          return marker;
 				        }
 
-			   		function drawAllTrips()
+			   		function drawSelectedTrips()
 			   		{
 			   			if (GBrowserIsCompatible()) 
         				{
@@ -410,7 +413,7 @@
 							var startlatlng;
 							var endlatlng;
 							
-			   				<ui:repeat value="#{driverTripsBean.trips}" var="trip">
+			   				<ui:repeat value="#{driverTripsBean.selectedTrips}" var="trip">
 								polyline = new GPolyline([
 								<ui:repeat value="#{trip.route}" var="rt">
 										new GLatLng(#{rt.lat}, #{rt.lng}),
@@ -420,14 +423,14 @@
 								], "#0000ff", 6);
 								map.addOverlay(polyline);
 
-								//Start Marker
+								//Start of trip marker
 								startlatlng = new GLatLng(#{trip.route[0].lat}, #{trip.route[0].lng});
 								marker = createMarker(startlatlng, "Start of trip.<br />" + "#{trip.trip.startTime}<br />#{trip.startAddress}",
 														"#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
 								map.addOverlay(marker);
 								bounds.extend(marker.getPoint());
 
-								//Stop Marker
+								//End of trip marker
 								endlatlng = new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng});
 								marker = createMarker(endlatlng, "End of trip.<br />" + "#{trip.trip.endTime}<br />#{trip.endAddress}",
 														"#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
@@ -459,77 +462,12 @@
 							}	
         				}
 			   			
-				    }
-
-				    function drawSelectedTrip()
-				    {
-				    	if (GBrowserIsCompatible()) 
-        				{
-				    		map.clearOverlays(); 
-				    		var marker;
-							var polyline = new GPolyline([
-				 										<ui:repeat value="#{driverTripsBean.selectedTrip.route}" var="rt">
-				 											new GLatLng(#{rt.lat}, #{rt.lng}),
-				 									  	</ui:repeat>
-					 									  	new GLatLng(#{driverTripsBean.selectedTrip.routeLastStep.lat}, #{driverTripsBean.selectedTrip.routeLastStep.lng})
-
-				 										], "#0000ff", 6);
-				 										map.addOverlay(polyline);
-
-							//Add Start trip icon to map.
-							var startlatlng = new GLatLng(#{driverTripsBean.selectedTrip.route[0].lat}, #{driverTripsBean.selectedTrip.route[0].lng});
-							marker = createMarker(startlatlng, "Start of trip.<br />" + "#{driverTripsBean.selectedTrip.trip.startTime}<br />#{driverTripsBean.selectedTrip.startAddress}",
-													"#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
-							map.addOverlay(marker);
-							bounds.extend(marker.getPoint());
-							
-							//Add End trip icon to map.
-							var endlatlng = new GLatLng(#{driverTripsBean.selectedTrip.routeLastStep.lat}, #{driverTripsBean.selectedTrip.routeLastStep.lng});
-							marker = createMarker(endlatlng, "End of trip.<br />" + "#{driverTripsBean.selectedTrip.trip.endTime}<br />#{driverTripsBean.selectedTrip.endAddress}",
-													"#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
-							map.addOverlay(marker);
-							bounds.extend(marker.getPoint());
-
-							if(showWarnings == true)
-							{
-								var violation;
-								<ui:repeat value="#{driverTripsBean.violationEvents}" var="violation">
-									violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
-									map.addOverlay(createMarker(violation, "TYPE Violation.<br />#{violation.time}",
-													"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png"));
-								</ui:repeat>
-							}
-
-							var idleMarker;
-							if(showIdleMarkers == true)  //TODO Get Idle Events from DAO 
-							{
-								idleMarker = new GLatLng(32.961299896240234, -117.1980972290039);
-								map.addOverlay(createMarker(idleMarker, "Vehicle Idle.<br />Dec 04, 2008 07:06<br />Duration 3.45 minutes.",
-								"#{facesContext.externalContext.request.contextPath}/images/ico_idle.png"));
-
-								idleMarker = new GLatLng(32.9817008972168, -117.1593017578125);
-								map.addOverlay(createMarker(idleMarker, "Vehicle Idle.<br />Dec 04, 2008 07:01<br />Duration 13.02 minutes.",
-								"#{facesContext.externalContext.request.contextPath}/images/ico_idle.png"));
-								
-							}							
-        				}
-        				
 					}
-					//Update Map.
+
+						//Update Map.
 				    function updateMap()
 				    {
-				    	if(document.getElementById('showAllCheckBox').checked == true)
-				    	{
-				    		drawAllTrips();
-				    		 map.setZoom(map.getBoundsZoomLevel(bounds));
-							 map.setCenter(bounds.getCenter());
-				    	}
-				    	else
-				    	{
-				    		drawSelectedTrip();
-				    		 map.setZoom(map.getBoundsZoomLevel(bounds));
-							 map.setCenter(bounds.getCenter());
-				    	}
+				    	drawSelectedTrips();
 					}
 
 				    // Show Warnings Checkbox changed   //TODO: CLEANER WAY TO DO THIS??
@@ -562,9 +500,8 @@
 				    	}
 					}
 
-					//Onload
+					//On page load and A4J Re-render
 				    updateMap();
-
 				    map.setZoom(map.getBoundsZoomLevel(bounds));
 				    map.setCenter(bounds.getCenter());
     				
