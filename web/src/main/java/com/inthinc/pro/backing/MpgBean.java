@@ -97,6 +97,11 @@ public class MpgBean extends BaseDurationBean {
         this.mpgDAO = mpgDAO;
     }
     
+    public Integer getGroupID()
+    {
+        return this.getNavigation().getGroupID();
+    }
+    
     public List<MpgEntityPkg> getMpgEntities()
     {
         if (mpgEntities.size() == 0)
@@ -106,7 +111,8 @@ public class MpgBean extends BaseDurationBean {
             Integer endDate = DateUtil.getTodaysDate();
             Integer startDate = DateUtil.getDaysBackDate(endDate, numDaysBack);
             
-            List<MpgEntity> tempEntities = mpgDAO.getEntities(this.getNavigation().getGroupID(), startDate, endDate);
+            Integer parentGroupId = this.getNavigation().getGroupID();
+            List<MpgEntity> tempEntities = mpgDAO.getEntities(parentGroupId, startDate, endDate);
     
             // Populate the table
             String contextPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();

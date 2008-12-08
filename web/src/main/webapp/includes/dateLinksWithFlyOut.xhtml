@@ -3,10 +3,12 @@
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:h="http://java.sun.com/jsf/html">
 
 	<a4j:region id="#{ajaxForm}_region">
 	<a4j:form id="#{ajaxForm}">
+        
 		<span class="panel_links_ico">
 		<a4j:status id="#{ajaxStatusID}" for="#{ajaxForm}_region">
 			<f:facet name="start">
@@ -19,23 +21,31 @@
 			styleClass="#{thirtyDaysOn}"			
 			reRender="#{reRenderList}"
 			value="#{messages.duration_days}">
-			<a4j:actionparam name="duration" assignTo="#{duration}"
+            <f:setPropertyActionListener value="#{flyNavRule}" target="#{flyOutBean.navigationRule}" />
+            <f:setPropertyActionListener value="#{flySelectedTab}" target="#{flyOutBean.selectedTab}" />
+            <a4j:actionparam name="duration" assignTo="#{duration}"
 				value="DAYS" />
 		</a4j:commandLink>
 		<rich:spacer width="5"></rich:spacer>
+    
 		<a4j:commandLink title="#{messages.duration_three}" immediate="true"
 			styleClass="#{threeMonthsOn}"	
 			reRender="#{reRenderList}"
 			value="#{messages.duration_three}">
-			<a4j:actionparam name="duration" assignTo="#{duration}"
+			<f:setPropertyActionListener value="#{flyNavRule}" target="#{flyOutBean.navigationRule}" />
+            <f:setPropertyActionListener value="#{flySelectedTab}" target="#{flyOutBean.selectedTab}" />
+            <a4j:actionparam name="duration" assignTo="#{duration}"
 				value="THREE" />
 		</a4j:commandLink>
 		<rich:spacer width="5"></rich:spacer>
+    
 		<a4j:commandLink title="#{messages.duration_six}" immediate="true"
 			styleClass="#{sixMonthsOn}"	
 			reRender="#{reRenderList}"
 			value="#{messages.duration_six}">
-			<a4j:actionparam name="duration" assignTo="#{duration}"
+			<f:setPropertyActionListener value="#{flyNavRule}" target="#{flyOutBean.navigationRule}" />
+            <f:setPropertyActionListener value="#{flySelectedTab}" target="#{flyOutBean.selectedTab}" />
+            <a4j:actionparam name="duration" assignTo="#{duration}"
 				value="SIX" />
 		</a4j:commandLink>
 		<rich:spacer width="5"></rich:spacer>
@@ -43,16 +53,22 @@
 			styleClass="#{twelveMonthsOn}"	
 			reRender="#{reRenderList}"
 			value="#{messages.duration_twelve}">
-			<a4j:actionparam name="duration" assignTo="#{duration}"
+			<f:setPropertyActionListener value="#{flyNavRule}" target="#{flyOutBean.navigationRule}" />
+            <f:setPropertyActionListener value="#{flySelectedTab}" target="#{flyOutBean.selectedTab}" />
+            <a4j:actionparam name="duration" assignTo="#{duration}"
 				value="TWELVE" />
 		</a4j:commandLink>
 		</span>
+    
 		<span class="panel_ico">
    			<img src="#{facesContext.externalContext.request.contextPath}/images/ico_tools.png" border="0" /><rich:spacer width="2" />
    			<h:commandLink action="#{flyOutBean.flyNavRuleAction}">
    				<img src="#{facesContext.externalContext.request.contextPath}/images/#{flyOutImage}" border="0" />
    				<f:setPropertyActionListener value="#{flyNavRule}" target="#{flyOutBean.navigationRule}" />
    				<f:setPropertyActionListener value="#{flySelectedTab}" target="#{flyOutBean.selectedTab}" />
+                <c:if test="#{!empty groupID}">
+                  <f:param name="groupID" value="#{groupID}"/>
+                </c:if>
    			</h:commandLink>
 		</span>
 		</a4j:form>
