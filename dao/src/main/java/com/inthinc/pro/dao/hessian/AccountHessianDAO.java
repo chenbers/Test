@@ -21,10 +21,4 @@ public class AccountHessianDAO extends GenericHessianDAO<Account, Integer> imple
         return super.create(id, entity);
     }
 
-    @Override
-    public Account getAccountByUser(User user)
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
 }

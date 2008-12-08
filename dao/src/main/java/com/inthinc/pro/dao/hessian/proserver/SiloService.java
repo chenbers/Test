@@ -111,7 +111,7 @@ public interface SiloService extends HessianService
     Map<String, Object> updateFwdCmd(Integer fwdID,Integer status);
     
     
-    // ------- Locations  ----------
+    // ------------------------- Locations  -----------------------------------------------
     /**
      * @param reqType  
      *          1=driver, 2=vehicle
@@ -152,6 +152,12 @@ public interface SiloService extends HessianService
      */
     List<Map<String, Object>> getMostRecentEvents(Integer groupID, Integer eventCnt, Integer types[]) throws ProDAOException;
 
+
+    // -------------------------    Trips   -----------------------------------------------
+    List<Map<String, Object>> getTrips(Integer driverID, Integer startDate, Integer endDate) throws ProDAOException;
+
+    Map<String, Object> getLastTrip(Integer driverID) throws ProDAOException;
+
     
     // --------------central service -----------------------    
     
@@ -182,15 +188,6 @@ public interface SiloService extends HessianService
 
     
 // Additional Methods we added    
-    
-
-
-
-
-    // Methods related to Trips
-    List<Map<String, Object>> getTrips(Integer driverID, Integer startDate, Integer endDate) throws ProDAOException;
-
-    Map<String, Object> getLastTrip(Integer driverID) throws ProDAOException;
     
     
 

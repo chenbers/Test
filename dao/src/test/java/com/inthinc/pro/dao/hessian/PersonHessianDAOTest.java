@@ -64,19 +64,9 @@ public class PersonHessianDAOTest
     public void findByEmail()
     {
         
-        Exception ex = null;
-        Person person= null;
-        try
-        {
-            person = personHessianDAO.findByEmail("hello@yahoo.com");
-        }
-        catch (EmptyResultSetException e)
-        {
-            ex = e;
-        }
+        Person person = personHessianDAO.findByEmail("hello@yahoo.com");
 
         assertNull("expected no user to be returned" , person);
-        assertNotNull("expected an empty result set" , ex);
         
         person = personHessianDAO.findByEmail("custom101@email.com");
         

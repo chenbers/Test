@@ -1,10 +1,8 @@
 package com.inthinc.pro.dao.hessian;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.inthinc.pro.dao.TimeZoneDAO;
-import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.model.SupportedTimeZone;
 
 public class TimeZoneHessianDAO extends GenericHessianDAO<SupportedTimeZone, Integer> implements TimeZoneDAO
@@ -13,14 +11,8 @@ public class TimeZoneHessianDAO extends GenericHessianDAO<SupportedTimeZone, Int
     @Override
     public List<SupportedTimeZone> getSupportedTimeZones()
     {
-        try
-        {
-            return getMapper().convertToModelObject(getSiloService().getTimezones(), SupportedTimeZone.class);
-        }
-        catch (EmptyResultSetException e)
-        {
-            return Collections.emptyList();
-        }
+        // don't catch the empty result set exception for this, because an empty result set in this case is a real error
+        return getMapper().convertToModelObject(getSiloService().getTimezones(), SupportedTimeZone.class);
     }
 
 }

@@ -1,10 +1,8 @@
 package com.inthinc.pro.dao.hessian;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.inthinc.pro.dao.RoleDAO;
-import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.model.Role;
 
 public class RoleHessianDAO extends GenericHessianDAO<Role, Integer> implements RoleDAO
@@ -13,15 +11,8 @@ public class RoleHessianDAO extends GenericHessianDAO<Role, Integer> implements 
     @Override
     public List<Role> getRoles()
     {
-        try
-        {
-            return getMapper().convertToModelObject(getSiloService().getRoles(), Role.class);
-        }
-        catch (EmptyResultSetException e)
-        {
-            return Collections.emptyList();
-        }
-        
+        // don't catch the empty result set exception for this, because an empty result set in this case is a real error
+        return getMapper().convertToModelObject(getSiloService().getRoles(), Role.class);
     }
 
 }

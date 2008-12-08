@@ -44,19 +44,8 @@ public class UserHessianDAOTest
     public void findByUsername()
     {
         
-        Exception ex = null;
-        User user = null;
-        try
-        {
-            user = userHessianDAO.findByUserName("bogus");
-        }
-        catch (EmptyResultSetException e)
-        {
-            ex = e;
-        }
-
+        User user = userHessianDAO.findByUserName("bogus");
         assertNull("expected no user to be returned" , user);
-        assertNotNull("expected an empty result set" , ex);
         
         user = userHessianDAO.findByUserName("custom101");
         

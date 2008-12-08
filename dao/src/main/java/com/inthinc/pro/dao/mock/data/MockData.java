@@ -413,9 +413,9 @@ public class MockData
             
             int day = 30;
             int minute = 0;
-            Integer startDate = hourInDaysBack(day, minute);
+            Date startDate = DateUtil.convertTimeInSecondsToDate(hourInDaysBack(day, minute));
             minute+=15;
-            Integer endDate = hourInDaysBack(day, minute);
+            Date endDate = DateUtil.convertTimeInSecondsToDate(hourInDaysBack(day, minute));
             int dayBreak = (numTrips/day);
             if (driver.getDriverID().equals(UnitTestStats.UNIT_TEST_DRIVER_ID))
             {
@@ -441,9 +441,9 @@ public class MockData
                         minute = 0;
                     }
                     route = getHardCodedRoute();
-                    startDate = hourInDaysBack(day, minute);
+                    startDate = DateUtil.convertTimeInSecondsToDate(hourInDaysBack(day, minute));
                     minute+=15;
-                    endDate = hourInDaysBack(day, minute);
+                    endDate = DateUtil.convertTimeInSecondsToDate(hourInDaysBack(day, minute));
                 }
                 else
                 {
@@ -454,8 +454,6 @@ public class MockData
                 Trip trip = new Trip(id, vehicleID, 
                         startDate, endDate, 
                         randomInt(500, 10000), route, addressStr[startAddressIdx], addressStr[endAddressIdx]);
-                if (trip.getEndTime() > baseTimeSec)
-                        System.out.println("ERROR:: end time excedes base time");
                 trip.setDriverID(driver.getDriverID());
                 
                 int eventCnt = addEventsAndRedFlagsForTrip(driver, vehicle, trip, eventIdOffset);
@@ -481,11 +479,11 @@ public class MockData
                     else minute = 0;
                 }
                 minute+=15;
-                startDate = hourInDaysBack(day, minute);
+                startDate = DateUtil.convertTimeInSecondsToDate(hourInDaysBack(day, minute));
                 minute+=15;
                 if (minute > 1440)
                     System.out.println("ERROR: minute: " + minute);            
-                endDate = hourInDaysBack(day, minute);
+                endDate = DateUtil.convertTimeInSecondsToDate(hourInDaysBack(day, minute));
             }
         }
     }
@@ -556,7 +554,7 @@ public class MockData
             int eventCategory = randomInt(1, 3);
             Event event = null;
             Long id = new Long(idOffset+trip.getTripID() * MAX_EVENTS + eventCnt);
-            int dateInSeconds = randomInt(trip.getStartTime(), trip.getEndTime());
+            int dateInSeconds = randomInt(DateUtil.convertDateToSeconds(trip.getStartTime()), DateUtil.convertDateToSeconds(trip.getEndTime()));
             Date date = DateUtil.convertTimeInSecondsToDate(dateInSeconds);
             int addressIdx  = randomInt(0, trip.getRoute().size()-1);
             double lat = trip.getRoute().get(addressIdx).getLat();

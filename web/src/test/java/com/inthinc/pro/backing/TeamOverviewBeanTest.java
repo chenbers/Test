@@ -4,6 +4,7 @@ package com.inthinc.pro.backing;
 
 import static org.junit.Assert.*;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -52,14 +53,18 @@ public class TeamOverviewBeanTest extends BaseBeanTest
             teamOverviewBean.setSelectedAction(action);
             
             // bar graph
-//logger.info("getSelectedBarDef");            
+long time = new Date().getTime();        
+logger.info("getSelectedBarDef");            
             String barDef = teamOverviewBean.getSelectedBarDef();
+logger.info("time: " + (new Date().getTime()-time));            
             assertNotNull("Bar missing for action: " + action.getDisplayString(), barDef);
             assertEquals(barDef, teamOverviewBean.getBarDef(action.getScoreType().getCode()));
             
             // overall score
-//logger.info("getOverall");            
+time = new Date().getTime();        
+logger.info("getOverall");            
             assertNotNull(teamOverviewBean.getSelectedOverallScore());
+logger.info("time: " + (new Date().getTime()-time));            
             
             // style
             assertEquals("score_lg_" + (((teamOverviewBean.getSelectedOverallScore()-1)/10)+1), teamOverviewBean.getOverallScoreStyle());

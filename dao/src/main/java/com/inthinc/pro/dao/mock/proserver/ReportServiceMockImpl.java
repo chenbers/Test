@@ -301,6 +301,9 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
 
     static Map<String, List<Map<String, Object>> >scoreBreakdownByTypeCache = new HashMap<String, List<Map<String, Object>> >();
 
+    static Map<String, ScoreTypeBreakdown> scoreBreakdownCache = new HashMap<String, ScoreTypeBreakdown >();
+
+    
     @Override
     public List<Map<String, Object>> getScoreBreakdownByType(Integer groupID, Integer duration, Integer scoreType) throws ProDAOException
     {
@@ -324,7 +327,14 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
         
         for (ScoreType subType : scoreTypeList)
         {
-            ScoreTypeBreakdown scoreTypeBreakdown = new ScoreTypeBreakdown();
+            ScoreTypeBreakdown scoreTypeBreakdown = scoreBreakdownCache.get(cacheKey+ "_" + subType);
+            if (scoreTypeBreakdown  == null)
+                scoreTypeBreakdown = new ScoreTypeBreakdown();
+            else
+            {
+                scoreTypeBreakdownList.add(scoreTypeBreakdown);
+                continue;
+            }
             scoreTypeBreakdown.setScoreType(subType);
             List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
             scoreTypeBreakdown.setPercentageList(scoreList);
@@ -336,7 +346,7 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
             for (int i = 0; i < 5; i++)
                 scoreCnt += totals[i];
             computePercentages(groupID, startDate, subType.getCode(), scoreList, totals, scoreCnt);
-            
+            scoreBreakdownCache.put(cacheKey+"_subType", scoreTypeBreakdown);
         }
 
         List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();

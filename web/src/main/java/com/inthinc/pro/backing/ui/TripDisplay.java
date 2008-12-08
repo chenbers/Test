@@ -2,6 +2,7 @@ package com.inthinc.pro.backing.ui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import com.inthinc.pro.model.Event;
@@ -31,13 +32,14 @@ public class TripDisplay
         route = trip.getRoute();
         
         dateFormatter = new SimpleDateFormat("dd MMM");
-        setDateShort(dateFormatter.format(DateUtil.convertTimeInSecondsToDate(trip.getEndTime() )));
+        setDateShort(dateFormatter.format(trip.getEndTime()));
         
         dateFormatter = new SimpleDateFormat("h:mm");
-        setTimeShort(dateFormatter.format(DateUtil.convertTimeInSecondsToDate(trip.getEndTime() )));
+        setTimeShort(dateFormatter.format(trip.getEndTime() ));
         
-        int diff = trip.getEndTime() - trip.getStartTime();
-        setDuration(dateFormatter.format(DateUtil.convertTimeInSecondsToDate(diff)));
+        
+        long diff = trip.getEndTime().getTime()-trip.getStartTime().getTime();
+        setDuration(dateFormatter.format(new Date(diff)));
         
         Double mileageDouble = (double)trip.getMileage() / 100;
         setDistance(mileageDouble.toString() + "mi");

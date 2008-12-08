@@ -2,6 +2,7 @@ package com.inthinc.pro.dao.hessian;
 
 import static org.junit.Assert.*;
 
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -29,8 +30,8 @@ public class TripHessianDAOTest
     @Test
     public void getTrips()
     {
-        Integer endDate = DateUtil.getTodaysDate();
-        Integer startDate = DateUtil.getDaysBackDate(endDate, 7);
+        Date endDate = new Date();
+        Date startDate = DateUtil.getDaysBackDate(endDate, 7);
 
         List<Trip>  tripList = tripDAO.getTrips(UnitTestStats.UNIT_TEST_DRIVER_ID, startDate, endDate);
         

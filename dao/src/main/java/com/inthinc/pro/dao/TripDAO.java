@@ -1,5 +1,6 @@
 package com.inthinc.pro.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import com.inthinc.pro.model.Trip;
@@ -14,7 +15,7 @@ public interface TripDAO extends GenericDAO<Trip, Integer>
      * @param endDate
      * @return
      */
-    List<Trip> getTrips(Integer driverID, Integer startDate, Integer endDate);
+    List<Trip> getTrips(Integer driverID, Date startDate, Date endDate);
     
     Trip getLastTrip(Integer driverID);
 }

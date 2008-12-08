@@ -88,19 +88,29 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         Map<String, Object> returnMap = null;
         if (name.equals("email"))
         {
-            returnMap = MockData.getInstance().lookup(Person.class, name, value);
+            Person person = MockData.getInstance().lookupObject(Person.class, name, value);
+            if (person != null)
+            {
+                returnMap = new HashMap<String,Object>();
+                returnMap.put("id", person.getPersonID());
+            }
         }
         else if (name.equals("username"))
         {
-            returnMap = MockData.getInstance().lookup(User.class, name, value);
-            
+            User user = MockData.getInstance().lookupObject(User.class, name, value);
+            if (user != null)
+            {
+                returnMap = new HashMap<String,Object>();
+                returnMap.put("id", user.getUserID());
+            }
+        }
+        
+        if (returnMap == null)
+        {
+            throw new EmptyResultSetException("getID() returned no value for name=" + name + " value=" + value, "getID", 0);
         }
             
 
-        if (returnMap == null)
-        {
-            throw new EmptyResultSetException("No ID for name/value: " + name + "/" + value, "getID", 0);
-        }
         return returnMap;
     }
 

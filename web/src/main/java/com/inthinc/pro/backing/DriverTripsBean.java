@@ -67,7 +67,7 @@ public class DriverTripsBean extends BaseBean
     public void initTrips()
     {
         List<Trip> tempTrips = new ArrayList<Trip>();
-        tempTrips = tripDAO.getTrips(navigation.getDriver().getDriverID(), DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate));
+        tempTrips = tripDAO.getTrips(navigation.getDriver().getDriverID(), startDate, endDate);
 
         trips = new ArrayList<TripDisplay>();
         selectedTrips = new ArrayList<TripDisplay>();

@@ -1,5 +1,6 @@
 package com.inthinc.pro.model;
 
+import java.util.Date;
 import java.util.List;
 
 import com.inthinc.pro.dao.annotations.Column;
@@ -11,14 +12,15 @@ public class Trip extends BaseEntity
     private Integer tripID;
     private Integer vehicleID;
     private Integer driverID;
-    private Integer startTime;
-    private Integer endTime;
+    private Date startTime;
+    private Date endTime;
     private Integer mileage;
     @Column(name="route", type=com.inthinc.pro.model.LatLng.class, updateable=false)
     private List<LatLng> route;
     
     private String startAddressStr;
     private String endAddressStr;
+    
     @Column(name="events", type=com.inthinc.pro.model.Event.class, updateable=false)
     private List<Event> events;
 
@@ -26,7 +28,7 @@ public class Trip extends BaseEntity
     {
         super();
     }
-    public Trip(Integer tripID, Integer vehicleID, Integer startTime, Integer endTime, Integer mileage, List<LatLng> route, String startAddressStr, String endAddressStr)
+    public Trip(Integer tripID, Integer vehicleID, Date startTime, Date endTime, Integer mileage, List<LatLng> route, String startAddressStr, String endAddressStr)
     {
         super();
         this.tripID = tripID;
@@ -38,11 +40,11 @@ public class Trip extends BaseEntity
         this.startAddressStr = startAddressStr;
         this.endAddressStr = endAddressStr;
     }
-    public Integer getEndTime()
+    public Date getEndTime()
     {
         return endTime;
     }
-    public void setEndTime(Integer endTime)
+    public void setEndTime(Date endTime)
     {
         this.endTime = endTime;
     }
@@ -62,11 +64,11 @@ public class Trip extends BaseEntity
     {
         this.route = route;
     }
-    public Integer getStartTime()
+    public Date getStartTime()
     {
         return startTime;
     }
-    public void setStartTime(Integer startTime)
+    public void setStartTime(Date startTime)
     {
         this.startTime = startTime;
     }
@@ -113,7 +115,7 @@ public class Trip extends BaseEntity
     }
     public int compareTo(Trip trip)
     {
-        return trip.getStartTime()-getStartTime();
+        return trip.getStartTime().compareTo(getStartTime());
     }
     public List<Event> getEvents()
     {

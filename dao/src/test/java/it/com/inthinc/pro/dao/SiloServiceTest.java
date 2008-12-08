@@ -17,20 +17,25 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.inthinc.pro.dao.FindByKey;
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
 import com.inthinc.pro.dao.hessian.AddressHessianDAO;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.DriverHessianDAO;
+import com.inthinc.pro.dao.hessian.EventHessianDAO;
 import com.inthinc.pro.dao.hessian.GroupHessianDAO;
 import com.inthinc.pro.dao.hessian.PersonHessianDAO;
 import com.inthinc.pro.dao.hessian.RoleHessianDAO;
 import com.inthinc.pro.dao.hessian.StateHessianDAO;
 import com.inthinc.pro.dao.hessian.TimeZoneHessianDAO;
+import com.inthinc.pro.dao.hessian.TripHessianDAO;
 import com.inthinc.pro.dao.hessian.UserHessianDAO;
 import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
+import com.inthinc.pro.dao.hessian.exceptions.DuplicateIMEIException;
 import com.inthinc.pro.dao.hessian.extension.HessianDebug;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.AccountStatus;
 import com.inthinc.pro.model.Address;
@@ -38,14 +43,19 @@ import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverStatus;
+import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.EventCategory;
+import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.ForwardCommand;
 import com.inthinc.pro.model.ForwardCommandID;
 import com.inthinc.pro.model.ForwardCommandStatus;
 import com.inthinc.pro.model.Gender;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.State;
+import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.UserStatus;
 import com.inthinc.pro.model.Vehicle;
@@ -78,8 +88,11 @@ public class SiloServiceTest
     private static final Integer VEHICLE_COUNT = 3;
     private static final Integer PERSON_COUNT = 3;
     
-    static final String PASSWORD="nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7"; // password
+    private static final String PASSWORD="nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7"; // password
 
+    private static final Integer TESTING_DRIVER_ID = 1; // speedracer
+    private static final Integer TESTING_VEHICLE_ID = 1; // speedracer
+    private static final Integer TESTING_GROUP_ID = 1; // speedracer
     
     @BeforeClass
     public static void setUpBeforeClass() throws Exception
@@ -162,7 +175,107 @@ public class SiloServiceTest
     }
     
     @Test
-    public void siloService()
+    public void lastLocation()
+    {
+        DriverHessianDAO driverDAO = new DriverHessianDAO();
+        driverDAO.setSiloService(siloService);
+
+        LastLocation loc = driverDAO.getLastLocation(TESTING_DRIVER_ID);
+        assertNotNull(loc);
+        
+        assertEquals(TESTING_DRIVER_ID, loc.getDriverID());
+        assertNotNull(loc.getTime());
+        assertNotNull(loc.getLat());
+        assertNotNull(loc.getLng());
+
+        VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
+        vehicleDAO.setSiloService(siloService);
+        
+        LastLocation vloc = vehicleDAO.getLastLocation(TESTING_VEHICLE_ID);
+        assertNotNull(vloc);
+        assertEquals(TESTING_VEHICLE_ID, vloc.getVehicleID());
+        assertNotNull(vloc.getTime());
+        assertNotNull(vloc.getLat());
+        assertNotNull(vloc.getLng());
+        
+    }
+
+    @Test
+    public void events()
+    {
+        EventHessianDAO eventDAO = new EventHessianDAO();
+        eventDAO.setSiloService(siloService);
+        
+        // year time frame from today back
+        Date endDate = new Date();
+        Date startDate = DateUtil.getDaysBackDate(endDate, 365);
+        
+        List<Event> violationEventsList  = eventDAO.getViolationEventsForDriver(TESTING_DRIVER_ID, startDate, endDate);
+        assertTrue("expected some events to be returned", violationEventsList.size() > 0);
+        validateEvents(EventMapper.getEventTypesInCategory(EventCategory.VIOLATION), violationEventsList, startDate, endDate);
+
+        List<Event> warningEventsList  = eventDAO.getWarningEventsForDriver(TESTING_DRIVER_ID, startDate, endDate);
+//  TODO: ask David to generate some of these types
+//        assertTrue("expected some events to be returned", warningEventsList.size() > 0);
+        validateEvents(EventMapper.getEventTypesInCategory(EventCategory.WARNING), warningEventsList, startDate, endDate);
+
+/*
+ * TODO: NOT IMPLEMENTED ON BACK END YET
+        List<Event> recentEventsList  = eventDAO.getMostRecentEvents(TESTING_GROUP_ID, 5);
+        assertTrue("expected some events to be returned", (recentEventsList.size() > 0 && recentEventsList.size() < 6));
+        validateEvents(EventMapper.getEventTypesInCategory(EventCategory.VIOLATION), recentEventsList);
+
+        List<Event> recentWarningsList  = eventDAO.getMostRecentWarnings(TESTING_GROUP_ID, 5);
+    //  TODO: ask David to generate some of these types
+//        assertTrue("expected some events to be returned", (recentWarningsList.size() > 0 && recentWarningsList.size() < 6));
+        validateEvents(EventMapper.getEventTypesInCategory(EventCategory.WARNING), recentWarningsList);
+ */        
+    }
+    
+    private void validateEvents(List<Integer> expectedTypes, List<Event> eventList, Date startDate, Date endDate)
+    {
+        for (Event violation : eventList)
+        {
+            assertTrue(expectedTypes.contains(violation.getType()));
+            assertTrue(startDate.before(violation.getTime()));
+            assertTrue(endDate.after(violation.getTime()));
+        }
+    }
+    private void validateEvents(List<Integer> expectedTypes, List<Event> eventList)
+    {
+        for (Event violation : eventList)
+        {
+            assertTrue(expectedTypes.contains(violation.getType()));
+        }
+    }
+    
+    @Test
+    public void trips()
+    {
+        TripHessianDAO tripDAO = new TripHessianDAO();
+        tripDAO.setSiloService(siloService);
+        
+        // year time frame from today back
+        Date endDate = new Date();
+        Date startDate = DateUtil.getDaysBackDate(endDate, 365);
+        
+        
+        List<Trip> tripList = tripDAO.getTrips(TESTING_DRIVER_ID, startDate, endDate);
+        assertNotNull(tripList);
+        assertTrue(tripList.size() > 0);
+        
+        for (Trip trip : tripList)
+        {
+            assertEquals(TESTING_VEHICLE_ID, trip.getVehicleID());
+            assertTrue(startDate.before(trip.getStartTime()));
+            assertTrue(endDate.after(trip.getEndTime()));
+            assertTrue(trip.getMileage() > 0);
+        }
+        
+        
+    }
+    @Test
+    public void admin()
     {
 // TODO: add all of the empty result set cases
         
@@ -197,6 +310,9 @@ public class SiloServiceTest
         
         // assign drivers to vehicles
         assignDriversToVehicles(team1Group.getGroupID());
+        
+        // various find methods
+        find();
     }
 
 
@@ -266,27 +382,23 @@ public class SiloServiceTest
         Integer groupID = groupDAO.create(acctID, fleetGroup);
         assertNotNull(groupID);
         fleetGroup.setGroupID(groupID);
-logger.debug("FLEET: " + groupID);        
         
         // region
         regionGroup = new Group(0, acctID, "Region", fleetGroup.getGroupID());
         groupID = groupDAO.create(acctID, regionGroup);
         assertNotNull(groupID);
         regionGroup.setGroupID(groupID);
-logger.debug("REGION: " + groupID);        
         
         // team
         team1Group = new Group(0, acctID, "Team", regionGroup.getGroupID());
         groupID = groupDAO.create(acctID, team1Group);
         assertNotNull(groupID);
         team1Group.setGroupID(groupID);
-logger.debug("TEAM 1: " + groupID);        
 
         team2Group = new Group(0, acctID, "Team 2", regionGroup.getGroupID());
         groupID = groupDAO.create(acctID, team2Group);
         assertNotNull(groupID);
         team2Group.setGroupID(groupID);
-logger.debug("TEAM 2: " + groupID);        
         
         // find individual
         Group returnedGroup = groupDAO.findByID(fleetGroup.getGroupID());
@@ -328,7 +440,11 @@ logger.debug("TEAM 2: " + groupID);
     {
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
+
         
+        List<Device> emptyDeviceList = deviceDAO.getDevicesByAcctID(acctID);
+        assertEquals("no devices yet for account", 0, emptyDeviceList.size());
+
 
         // create all as new
         for (int i = 0; i < DEVICE_COUNT; i++)
@@ -340,7 +456,18 @@ logger.debug("TEAM 2: " + groupID);
             deviceList.add(device);
         }
 
-//TODO: TEST DUPLICATE imei -- should throw exception
+        // duplicate imei -- should throw exception
+        boolean exceptionThrown = false;
+        try
+        {
+            Device dupDevice = new Device(0, acctID, 1, DeviceStatus.NEW, "Device " + 0, "IMEI " + acctID + 0, "SIM " + 0, "PHONE " + 0, "EPHONE " + 0);
+            deviceDAO.create(acctID, dupDevice);
+        }
+        catch (DuplicateIMEIException e)
+        {
+            exceptionThrown = true;
+        }
+        assertTrue("excepted a DuplicateIMEIException", exceptionThrown);
         
         // update all to activated
         for (Device device : deviceList)
@@ -387,6 +514,9 @@ logger.debug("TEAM 2: " + groupID);
         deviceDAO.setSiloService(siloService);
         
         Device device = deviceList.get(0);
+        List<ForwardCommand> emptyQueuedCommands = deviceDAO.getForwardCommands(device.getDeviceID(), ForwardCommandStatus.STATUS_QUEUED);
+        assertEquals("expected no forward commands", 0, emptyQueuedCommands.size());
+        
         ForwardCommand stringDataCmd = new ForwardCommand(0, ForwardCommandID.ADD_VALID_CALLER, "1 555555123"+Util.randomInt(1,9), ForwardCommandStatus.STATUS_QUEUED);
         ForwardCommand intDataCmd = new ForwardCommand(0, ForwardCommandID.SET_MSGS_PER_NOTIFICATION, Util.randomInt(1, 4), ForwardCommandStatus.STATUS_QUEUED);
         ForwardCommand noDataCmd = new ForwardCommand(0, ForwardCommandID.BUZZER_SEATBELT_DISABLE, 0, ForwardCommandStatus.STATUS_QUEUED);
@@ -426,6 +556,9 @@ logger.debug("TEAM 2: " + groupID);
     {
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
         vehicleDAO.setSiloService(siloService);
+
+        List<Vehicle> emptyVehicleList = vehicleDAO.getVehiclesInGroupHierarchy(groupID);
+        assertEquals("vehicle list should be empty", Integer.valueOf(0), new Integer(emptyVehicleList.size()));
         
         // create
         for (int i = 0; i < VEHICLE_COUNT; i++)
@@ -437,6 +570,11 @@ logger.debug("TEAM 2: " + groupID);
             assertNotNull(vehicleID);
             vehicle.setVehicleID(vehicleID);
             vehicleList.add(vehicle);
+
+            // get last loc (should be empty);
+// TODO: this should be returning an empty result set exception            
+//            LastLocation loc = vehicleDAO.getLastLocation(vehicle.getVehicleID());
+//            assertNull("no location expected for new vehicle", loc);
         }
         
         
@@ -516,16 +654,19 @@ logger.debug("TEAM 2: " + groupID);
 logger.debug("Persons GroupID: " + groupID);                
         PersonHessianDAO personDAO = new PersonHessianDAO();
         personDAO.setSiloService(siloService);
-        
+
+        List<Person> emptyPersonList = personDAO.getPeopleInGroupHierarchy(groupID);
+        assertEquals("expected no people in group", Integer.valueOf(0), new Integer(emptyPersonList.size()));
+
         // create
         for (int i = 0; i < PERSON_COUNT; i++)
         {
             Date dob = Util.genDate(1959, 8, 30);
+            String email =  "email_"+groupID+"_"+i+"@yahoo.com";
             Person person = new Person(0, groupID, TimeZone.getDefault(), null, address.getAddrID(), "555555555"+i, "555555555"+i, 
-                            "email_"+groupID+"_"+i+"@yahoo.com",
+                            email,
                             "emp"+i, null, "title"+i, "dept" + i, "first"+i, "m"+i, "last"+i, "jr", Gender.MALE, 65, 180, dob);
             Integer personID = personDAO.create(groupID, person);
-logger.debug("Create Person: " + personID);                
             assertNotNull(personID);
             person.setPersonID(personID);
             personList.add(person);
@@ -539,7 +680,6 @@ logger.debug("Create Person: " + personID);
             {
                 person.setGender(Gender.FEMALE);
                 person.setMiddle("middle");
-logger.debug("Update Person: " + person.getPersonID());                
                 Integer changedCount = personDAO.update(person);
                 assertEquals("Person update count " + person.getPersonID(), Integer.valueOf(1), changedCount);
             }
@@ -550,7 +690,6 @@ logger.debug("Update Person: " + person.getPersonID());
         {
             if (person.getGroupID().equals(groupID))
             {
-logger.debug("Find Person: " + person.getPersonID());                
                 Person returnedPerson = personDAO.findByID(person.getPersonID());
                 Util.compareObjects(person, returnedPerson, ignoreFields);
             }
@@ -578,6 +717,7 @@ logger.debug("Find Person: " + person.getPersonID());
                 assertTrue("Person " + person.getPersonID(), found);
             }
         }
+        
     }
 
 
@@ -592,7 +732,9 @@ logger.debug("Find Person: " + person.getPersonID());
         
         List<Person> groupPersonList = personDAO.getPeopleInGroupHierarchy(groupID);
         assertEquals("people count for group", Integer.valueOf(PERSON_COUNT), new Integer(groupPersonList.size()));
-        
+
+        String ignoreFields[] = {"modified", "person"};
+
         for (Person person : groupPersonList)
         {
 
@@ -608,7 +750,6 @@ logger.debug("Find Person: " + person.getPersonID());
             assertEquals("user update count " + user.getUserID(), Integer.valueOf(1), changedCount);
             
             // find user by ID
-            String ignoreFields[] = {"modified", "person"};
 
             User returnedUser = userDAO.findByID(user.getUserID());
             Util.compareObjects(user, returnedUser, ignoreFields);
@@ -645,6 +786,9 @@ logger.debug("Find Person: " + person.getPersonID());
         groupUserList = userDAO.getUsersInGroupHierarchy(groupID);
         assertEquals("number of users in group: " + groupID, groupPersonList.size(), groupUserList.size());
 
+        
+        
+        
     }
 
     private void drivers(Integer groupID)
@@ -682,6 +826,12 @@ logger.debug("Find Person: " + person.getPersonID());
             Util.compareObjects(driver, returnedDriver, ignoreFields);
 
             driverList.add(driver);
+            
+            // get last loc (should be empty);
+// TODO: should give a 304 error            
+//            LastLocation loc = driverDAO.getLastLocation(driver.getDriverID());
+//            assertNull("no location expected for new driver", loc);
+            
 
         }
 
@@ -754,6 +904,56 @@ logger.debug("Find Person: " + person.getPersonID());
             
         }
     }
+
+    private void find()
+    {
+        // do these last to allow back end more time to update it's cache (can take up to 5 min)
+        
+        UserHessianDAO userDAO = new UserHessianDAO();
+        userDAO.setSiloService(siloService);
+
+        PersonHessianDAO personDAO = new PersonHessianDAO();
+        personDAO.setSiloService(siloService);
+
+        findByKey(personDAO, personList.get(0), personList.get(0).getEmail(), new String[] {"modified"});
+
+        findByKey(userDAO, userList.get(0), userList.get(0).getUsername(), new String[]{"modified", "person"});
+    }
+
+    private <T> void findByKey(FindByKey<T> dao, T objectToFind, String keyField, String[] ignoreFields)
+    {
+        T foundObject = null;
+        for (int i = 0; i < 300; i++)
+        {
+            foundObject = dao.findByKey(keyField);
+            if (foundObject == null)
+            {
+                if (i == 299)
+                {
+                    fail("findByKey " + keyField + " failed even after waiting 5 min");
+                }
+                try
+                {
+                    
+                    Thread.sleep(1000l);
+                }
+                catch (InterruptedException e)
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    break;
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
+        Util.compareObjects(objectToFind, foundObject, ignoreFields);
+    }
+    
+    
+    
     
     private State randomState()
     {

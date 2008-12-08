@@ -60,7 +60,7 @@ public class ScoreHessianDAOTest
 
         Integer testGroupID = MockData.REGION_GROUP_ID;
         SearchCriteria searchCriteria = new SearchCriteria();
-        searchCriteria.addKeyValue("parentID", MockData.TOP_GROUP_ID);
+        searchCriteria.addKeyValue("parentID",testGroupID);
         int totalChildGroups = MockData.getInstance().retrieveObjectList(Group.class, searchCriteria).size();
 
         for (ScoreType scoreType : EnumSet.allOf(ScoreType.class))
@@ -73,7 +73,7 @@ public class ScoreHessianDAOTest
             {
                 Integer endDate = DateUtil.getTodaysDate();
                 Integer startDate = DateUtil.getDaysBackDate(endDate, monthsBack[i] * 30);
-                List<ScoreableEntity> scoreList = scoreHessianDAO.getScores(MockData.TOP_GROUP_ID, startDate, endDate, scoreType);
+                List<ScoreableEntity> scoreList = scoreHessianDAO.getScores(testGroupID, startDate, endDate, scoreType);
     
                 assertNotNull("Months Back: " + monthsBack[i] + " " + scoreType.toString(), scoreList);
                 assertEquals("Months Back: " + monthsBack[i] + " " + scoreType.toString(), totalChildGroups, scoreList.size());
