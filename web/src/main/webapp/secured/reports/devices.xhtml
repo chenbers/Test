@@ -1,0 +1,115 @@
+<ui:composition template="/layout/layout.xhtml" 
+              xmlns="http://www.w3.org/1999/xhtml" 
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:rich="http://richfaces.org/rich"
+              xmlns:a4j="http://richfaces.org/a4j"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:security="http://pro.tiwi.com/jsf/security">
+
+	<ui:param name="reportsSelected" value="current" />
+	<ui:param name="devicesSelected" value="current" />
+	
+
+	<ui:define name="subnavigation">
+		<ui:include src="/includes/reports/subNavigation.xhtml" />
+	</ui:define>
+
+
+	<ui:define name="content">
+		
+
+			<table width="920" height="430" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+				<tr>
+					<td valign="top">
+												
+							<div class="">
+								<div class="panel_nw">
+									<div class="panel_title">
+										<span class="driver">#{messages.reports_devicereporttitle}</span>
+										<span class="panel_links"></span>
+									</div>
+								</div>
+									
+								<div class="panel_w">
+								<div class="panel_content">		
+									
+								<a4j:form id="outerDeviceReport">										
+									<div class="msg">
+										<p id="redflag">
+											<h:outputFormat id="headerRedAsset" 
+												value="#{messages.reports_redflagscountheader}">
+												<a4j:actionparam value="#{redFlagsBean.maxCount}"/>
+											</h:outputFormat>												
+											(<a href="#{facesContext.externalContext.request.contextPath}/secured/redFlags.faces">#{messages.reports_view}</a>) 
+										</p>
+									</div>									  	
+									<ul id="grid_nav" style="margin: 0;">            							
+            							<li class="l">
+              								<table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
+                								<tr>
+                  									<td>
+                  										<h:outputText value="#{messages.button_search}" />
+                  									</td>
+                  									<td>
+                    									<h:inputText id="filterTable" value="#{deviceReportBean.searchFor}" class="text" size="25" />
+                  									</td>
+                								</tr>
+              								</table>
+            							</li>
+            							<li class="l">
+            								<a4j:commandLink action="#{deviceReportBean.search}" 
+            									reRender="items,topScroller,bottomScroller,headerAssets">
+            									<button value="submit" class="left">
+            										<span class="search">
+            											<h:outputText value="#{messages.button_search}" />
+            										</span>
+            									</button>
+            								</a4j:commandLink>            								
+            							</li>
+            							<li class="l text">
+            								<a4j:commandLink 
+            									reRender="assetColumnPanel"
+            									action="#"
+            								 	styleClass="ls_tab_edit_columns"
+            									onclick="Richfaces.showModalPanel('editDeviceColumns');">            									
+            									<h:outputText value="#{messages.button_editColumns}" />
+            								</a4j:commandLink>
+            							</li>  
+            							<li class="r text">
+            								<h:outputFormat id="headerDevices" value="#{messages.redflags_recordCountHeader}">
+												<a4j:actionparam value="#{deviceReportBean.start}"/>
+												<a4j:actionparam value="#{deviceReportBean.end}"/>
+												<a4j:actionparam value="#{deviceReportBean.maxCount}"/>
+											</h:outputFormat>              									
+            							</li>          							
+          							</ul>																																	
+									
+									<div class="datagrid">
+										<ui:include src="/includes/devicesReport.xhtml">	
+											<ui:param name="numRowsPerPg" value="#{deviceReportBean.numRowsPerPg}"/>									
+             								<ui:param name="deviceData" value="#{deviceReportBean.deviceData}"/>             						
+             								<ui:param name="deviceColumns" value="#{deviceReportBean.deviceColumns}"/>             								
+    									</ui:include>   
+    								</div>	
+    							</a4j:form>
+    							<ui:include src="/includes/editDeviceColumns.xhtml">
+									<ui:param name="deviceColumns" value="#{deviceReportBean.deviceColumns}"/>										
+								</ui:include>    
+								
+								</div>
+								</div>
+														
+    					    	<div class="panel_sw">
+									<div class="panel_statusbar"></div>
+								</div>
+							</div>
+														
+					</td>
+				</tr>
+			</table>
+		
+		
+	</ui:define>
+
+</ui:composition>

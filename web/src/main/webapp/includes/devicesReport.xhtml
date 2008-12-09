@@ -1,0 +1,73 @@
+<ui:composition 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:f="http://java.sun.com/jsf/core"
+  	xmlns:iwi="http://pro.tiwi.com/jsf"
+	xmlns:h="http://java.sun.com/jsf/html">
+		
+		
+			<div class="datagrid">
+			<div class="spacer"></div> 
+			
+		
+			
+        	<rich:datascroller id="topScroller" for="items" immediate="true"
+        		scrollerListener="#{deviceReportBean.scrollerListener}"
+        		reRender="bottomScroller,items,headerDevices">
+        	</rich:datascroller>
+			      		        						
+				<rich:dataTable value="#{deviceData}" id="items"
+					var="item" styleClass="datagrid" 
+					rowClasses="trendTableOdd,trendTableEven" cellspacing="1" 
+					rows="#{numRowsPerPg}"
+					width="100%">
+
+					<rich:column rendered="#{deviceColumns['tiwiproID'].visible}" 
+						sortBy="#{item.device.deviceID}">
+						<f:facet name="header">
+							<h:outputText value="#{messages.reports_tiwiproid}" />
+						</f:facet>							
+						<h:outputText value="#{item.device.deviceID}"/>										
+    				</rich:column>
+    				<rich:column rendered="#{deviceColumns['assignedVehicle'].visible}" 
+    					sortBy="#{item.device.vehicleID}">
+      					<f:facet name="header">
+      						<h:outputText value="#{messages.reports_assignedvehicle}" />
+      					</f:facet>
+						<h:outputText value="#{item.device.vehicleID}" />      
+    				</rich:column>
+    				<rich:column rendered="#{deviceColumns['IMEI'].visible}" 
+    					sortBy="#{item.device.imei}">    					
+      					<f:facet name="header">
+      						<h:outputText value="#{messages.reports_imei}" />
+      					</f:facet>
+      					<h:outputText value="#{item.device.imei}" />    					     					
+    				</rich:column>
+    				<rich:column rendered="#{deviceColumns['phoneNbr'].visible}" 
+    					sortBy="#{item.device.phone}">
+      					<f:facet name="header">
+      						<h:outputText value="#{messages.reports_phonenumber}" />
+      					</f:facet>
+      					<h:outputText value="#{item.device.phone}" />   
+    				</rich:column>
+    				<rich:column rendered="#{deviceColumns['status'].visible}" 
+    					sortBy="#{item.device.status}">
+      					<f:facet name="header">
+      						<h:outputText value="#{messages.reports_status}" />
+      					</f:facet>
+      					<h:outputText value="#{item.device.status}" />
+    				</rich:column>    		
+    			</rich:dataTable>    	
+    			
+    			<rich:datascroller id="bottomScroller" for="items" immediate="true"
+    				scrollerListener="#{deviceReportBean.scrollerListener}"
+        			reRender="topScroller,items,headerDevices">        			
+        		</rich:datascroller>
+        		
+        	
+        		
+			</div>
+		
+
+</ui:composition>

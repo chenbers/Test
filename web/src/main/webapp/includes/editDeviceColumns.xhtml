@@ -1,0 +1,91 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+	<ui:composition>
+
+		<rich:modalPanel id="editDeviceColumns" headerClass="popupHeader" 
+			controlsClass="popupControls" width="400" height="200" zindex="2000">
+			<f:facet name="header">
+        		<h:outputText value="#{messages.editColumns_title}" />
+      		</f:facet>
+      		<f:facet name="controls">
+        		<h:graphicImage value="/images/modal_close.png" style="cursor:pointer" 
+        			onclick="Richfaces.hideModalPanel('editDeviceColumns')" />
+      		</f:facet>
+
+			<div class="popupsubtitle">
+				<h:outputText value="#{messages.editColumns_explanation}" />
+			</div>
+
+			<a4j:form id="editColumnsForm">
+			
+				<rich:panel id="assetColumnPanel">
+				<h:panelGrid columns="11" width="100%">	
+											
+					<h:selectBooleanCheckbox style="width:20px;" 
+						value="#{assetColumns['tiwiproID'].visible}" />
+					<rich:spacer width="20"/>
+					<h:outputText style="width:80px;" value="#{messages.reports_tiwiproid}" />
+					<rich:spacer width="20"/>					
+					<h:selectBooleanCheckbox style="width:20px;" 
+						value="#{assetColumns['assignedVehicle'].visible}" />
+					<rich:spacer width="20"/>
+					<h:outputText style="width:80px;" value="#{messages.reports_assignedvehicle}" />
+					<rich:spacer width="20"/>	
+					<h:selectBooleanCheckbox style="width:20px;" 
+						value="#{assetColumns['IMEI'].visible}" />
+					<rich:spacer width="20"/>	
+					<h:outputText style="width:80px;" value="#{messages.reports_imei}" /> 
+					
+					<h:selectBooleanCheckbox style="width:20px;" 
+						value="#{assetColumns['phoneNbr'].visible}" />
+					<rich:spacer width="20"/>
+					<h:outputText style="width:80px;" value="#{messages.reports_phonenumber}" />
+					<rich:spacer width="20"/>
+					<h:selectBooleanCheckbox style="width:20px;" 
+						value="#{assetColumns['status'].visible}" />
+					<rich:spacer width="20"/>
+					<h:outputText style="width:80px;" value="#{messages.reports_status}" />
+					<rich:spacer width="20"/>
+					<rich:spacer width="20"/> 						
+					<rich:spacer width="20"/>
+					<rich:spacer width="80"/>    
+							
+				</h:panelGrid>
+				</rich:panel>
+			
+				<div class="popupactions">					
+					<a4j:commandLink rendered="true" 
+          				action="#{deviceReportBean.cancelColumns}"           				
+          				onclick="Richfaces.hideModalPanel('editDeviceColumns')" 
+          				reRender="items">
+          				<button value="submit" class="left">
+          					<span class="save">
+          						<h:outputText value="#{messages.button_cancel}" />
+          					</span>
+          				</button>
+          			</a4j:commandLink>  
+          			<a4j:commandLink rendered="true" 
+          				action="#{deviceReportBean.saveColumns}"           				
+          				onclick="Richfaces.hideModalPanel('editDeviceColumns')" 
+          				reRender="items">
+          				<button value="submit" class="left">
+          					<span class="save">
+          						<h:outputText value="#{messages.button_save}" />
+          					</span>
+          				</button>
+          			</a4j:commandLink>          			
+        		</div>
+      		
+      		</a4j:form>
+      		
+    	</rich:modalPanel>    	
+    	
+	</ui:composition>
+
+</html>
