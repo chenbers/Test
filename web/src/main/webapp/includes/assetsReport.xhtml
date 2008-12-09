@@ -26,42 +26,42 @@
 					<rich:column rendered="#{assetColumns['tiwiproID'].visible}" 
 						sortBy="#{item.asset.tiwiproID}">
 						<f:facet name="header">
-							<h:outputText value="Tiwi Pro ID" />
+							<h:outputText value="#{messages.reports_tiwiproid}" />
 						</f:facet>							
 						<h:outputText value="#{item.asset.tiwiproID}"/>										
     				</rich:column>
     				<rich:column rendered="#{assetColumns['assignedVehicle'].visible}" 
     					sortBy="#{item.asset.assignedVehicle}">
       					<f:facet name="header">
-      						<h:outputText value="Assigned Vehicle" />
+      						<h:outputText value="#{messages.reports_assignedvehicle}" />
       					</f:facet>
 						<h:outputText value="#{item.asset.assignedVehicle}" />      
     				</rich:column>
     				<rich:column rendered="#{assetColumns['IMEI'].visible}" 
     					sortBy="#{item.asset.IMEI}">    					
       					<f:facet name="header">
-      						<h:outputText value="IMEI" />
+      						<h:outputText value="#{messages.reports_imei}" />
       					</f:facet>
       					<h:outputText value="#{item.asset.IMEI}" />    					     					
     				</rich:column>
     				<rich:column rendered="#{assetColumns['phoneNbr'].visible}" 
     					sortBy="#{item.asset.phoneNbr}">
       					<f:facet name="header">
-      						<h:outputText value="Phone Number" />
+      						<h:outputText value="#{messages.reports_phonenumber}" />
       					</f:facet>
       					<h:outputText value="#{item.asset.phoneNbr}" />   
     				</rich:column>
     				<rich:column rendered="#{assetColumns['status'].visible}" 
     					sortBy="#{item.asset.status}">
       					<f:facet name="header">
-      						<h:outputText value="Status" />
+      						<h:outputText value="#{messages.reports_status}" />
       					</f:facet>
       					<h:outputText value="#{item.asset.status}" />
     				</rich:column>    		
     			</rich:dataTable>    	
     			
     			<rich:datascroller id="bottomScroller" for="items" immediate="true"
-    				scrollerListener="#{driverReportBean.scrollerListener}"
+    				scrollerListener="#{assetReportBean.scrollerListener}"
         			reRender="topScroller,items,headerDrivers">        			
         		</rich:datascroller>
         		
