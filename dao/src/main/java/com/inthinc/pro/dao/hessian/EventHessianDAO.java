@@ -29,7 +29,7 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
         {
             Integer[] eventTypes = EventMapper.getEventTypesInCategory(EventCategory.VIOLATION).toArray(new Integer[0]);
 
-            return getMapper().convertToModelObject(getSiloService().getMostRecentEvents(groupID, eventCnt, eventTypes), Event.class);
+            return getMapper().convertToModelObject(getSiloService().getRecentNotes(groupID, eventCnt, eventTypes), Event.class);
         }
         catch (EmptyResultSetException e)
         {
@@ -44,7 +44,7 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
         {
             Integer[] eventTypes = EventMapper.getEventTypesInCategory(EventCategory.WARNING).toArray(new Integer[0]);
 
-            return getMapper().convertToModelObject(getSiloService().getMostRecentEvents(groupID, eventCnt, eventTypes), Event.class);
+            return getMapper().convertToModelObject(getSiloService().getRecentNotes(groupID, eventCnt, eventTypes), Event.class);
         }
         catch (EmptyResultSetException e)
         {

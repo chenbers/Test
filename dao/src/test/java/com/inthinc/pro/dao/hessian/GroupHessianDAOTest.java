@@ -11,7 +11,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.mock.data.MockData;
-import com.inthinc.pro.dao.mock.proserver.CentralServiceCreator;
 import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
 import com.inthinc.pro.model.Group;
 

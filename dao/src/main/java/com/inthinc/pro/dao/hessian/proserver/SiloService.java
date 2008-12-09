@@ -150,7 +150,7 @@ public interface SiloService extends HessianService
      *      List of event maps 
      * @throws ProDAOException
      */
-    List<Map<String, Object>> getMostRecentEvents(Integer groupID, Integer eventCnt, Integer types[]) throws ProDAOException;
+    List<Map<String, Object>> getRecentNotes(Integer groupID, Integer eventCnt, Integer types[]) throws ProDAOException;
 
 
     // -------------------------    Trips   -----------------------------------------------

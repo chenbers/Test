@@ -43,6 +43,7 @@ public class EventMapper
     public static final int TIWIPRO_EVENT_SMTOOLS_SILICON_ID = 146;
     public static final int TIWIPRO_EVENT_POWER_ON = 150;
     public static final int TIWIPRO_EVENT_DIAGNOSTICS_REPORT = 200;
+    public static final int TIWIPRO_EVENT_START_SPEEDING = 201;
     public static final int TIWIPRO_EVENT_UNPLUGGED = 202;
     public static final int TIWIPRO_EVENT_LOW_TIWI_BATTERY = 207;
     public static final int TIWIPRO_EVENT_STRIPPED_ACKNOWLEDGE_ID_WITH_DATA    = 246;

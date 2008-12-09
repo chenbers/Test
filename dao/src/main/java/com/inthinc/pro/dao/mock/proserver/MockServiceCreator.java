@@ -2,7 +2,6 @@ package com.inthinc.pro.dao.mock.proserver;
 
 import java.lang.reflect.ParameterizedType;
 
-import com.inthinc.pro.dao.hessian.proserver.CentralService;
 import com.inthinc.pro.dao.hessian.proserver.HessianService;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
 import com.inthinc.pro.dao.hessian.proserver.ServiceCreator;
@@ -26,11 +25,7 @@ public class MockServiceCreator<T extends HessianService> implements ServiceCrea
     {
       if (service == null)
       {
-          if (serviceType.equals(CentralService.class))
-          {
-              service = (T) new CentralServiceMockImpl();
-          }
-          else if (serviceType.equals(SiloService.class))
+          if (serviceType.equals(SiloService.class))
           {
               service = (T) new SiloServiceMockImpl();
           }

@@ -42,7 +42,19 @@ public class TeamOverviewBean extends BaseDurationBean
         Integer endDate = DateUtil.getTodaysDate();
         Integer startDate = DateUtil.getDaysBackDate(endDate, getDuration().getNumberOfDays());
 
-        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(getGroupID(), startDate, endDate, scoreType);
+        ScoreableEntity scoreableEntity = null;
+        try 
+        {
+            scoreableEntity = scoreDAO.getAverageScoreByType(getGroupID(), startDate, endDate, scoreType);
+        }
+        catch (Exception ex)
+        {
+            // TODO: handle this 
+            logger.error(ex);
+            
+        }
+        if (scoreableEntity == null)
+            return 0;
         return scoreableEntity.getScore();
     }
 
@@ -83,7 +95,16 @@ logger.debug("getSelectedBarDef() ");
 
     public String createBar3DChart(ScoreType scoreType)
     {
-        List<ScoreTypeBreakdown> scoreDataList = scoreDAO.getScoreBreakdownByType(getGroupID(), getDuration(), scoreType);
+        List<ScoreTypeBreakdown> scoreDataList = null;
+        
+        try
+        {
+            scoreDataList = scoreDAO.getScoreBreakdownByType(getGroupID(), getDuration(), scoreType);
+        }
+        catch (Exception e)
+        {
+            scoreDataList = new ArrayList<ScoreTypeBreakdown>();
+        }
         
         List<String>categoryLabelList = new ArrayList<String>();
         boolean first = true;

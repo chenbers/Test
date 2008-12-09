@@ -33,8 +33,13 @@ public class TripHessianDAO extends GenericHessianDAO<Trip, Integer> implements 
     @Override
     public Trip getLastTrip(Integer driverID)
     {
-        logger.debug("getLastTrips driverID = " + driverID);
-        Trip trip = getMapper().convertToModelObject(this.getSiloService().getLastTrip(driverID), Trip.class);
-        return trip;
+        try
+        {
+            return getMapper().convertToModelObject(this.getSiloService().getLastTrip(driverID), Trip.class);
+        }
+        catch (EmptyResultSetException e)
+        {
+            return null;
+        }
     }
 }

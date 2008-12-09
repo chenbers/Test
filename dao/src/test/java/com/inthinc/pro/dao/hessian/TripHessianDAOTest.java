@@ -10,7 +10,6 @@ import org.junit.Test;
 
 import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.mock.data.UnitTestStats;
-import com.inthinc.pro.dao.mock.proserver.CentralServiceCreator;
 import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Trip;

@@ -11,7 +11,6 @@ import org.junit.Test;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.mock.data.MockRoles;
-import com.inthinc.pro.dao.mock.proserver.CentralServiceCreator;
 import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
 import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.User;

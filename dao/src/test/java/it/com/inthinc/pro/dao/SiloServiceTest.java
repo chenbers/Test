@@ -31,6 +31,7 @@ import com.inthinc.pro.dao.hessian.TimeZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.TripHessianDAO;
 import com.inthinc.pro.dao.hessian.UserHessianDAO;
 import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
+import com.inthinc.pro.dao.hessian.exceptions.DuplicateEntryException;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateIMEIException;
 import com.inthinc.pro.dao.hessian.extension.HessianDebug;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
@@ -209,7 +210,7 @@ public class SiloServiceTest
         // year time frame from today back
         Date endDate = new Date();
         Date startDate = DateUtil.getDaysBackDate(endDate, 365);
-        
+
         List<Event> violationEventsList  = eventDAO.getViolationEventsForDriver(TESTING_DRIVER_ID, startDate, endDate);
         assertTrue("expected some events to be returned", violationEventsList.size() > 0);
         validateEvents(EventMapper.getEventTypesInCategory(EventCategory.VIOLATION), violationEventsList, startDate, endDate);
@@ -219,8 +220,6 @@ public class SiloServiceTest
 //        assertTrue("expected some events to be returned", warningEventsList.size() > 0);
         validateEvents(EventMapper.getEventTypesInCategory(EventCategory.WARNING), warningEventsList, startDate, endDate);
 
-/*
- * TODO: NOT IMPLEMENTED ON BACK END YET
         List<Event> recentEventsList  = eventDAO.getMostRecentEvents(TESTING_GROUP_ID, 5);
         assertTrue("expected some events to be returned", (recentEventsList.size() > 0 && recentEventsList.size() < 6));
         validateEvents(EventMapper.getEventTypesInCategory(EventCategory.VIOLATION), recentEventsList);
@@ -229,7 +228,6 @@ public class SiloServiceTest
     //  TODO: ask David to generate some of these types
 //        assertTrue("expected some events to be returned", (recentWarningsList.size() > 0 && recentWarningsList.size() < 6));
         validateEvents(EventMapper.getEventTypesInCategory(EventCategory.WARNING), recentWarningsList);
- */        
     }
     
     private void validateEvents(List<Integer> expectedTypes, List<Event> eventList, Date startDate, Date endDate)
@@ -272,12 +270,15 @@ public class SiloServiceTest
             assertTrue(trip.getMileage() > 0);
         }
         
+// TODO: getLastTrip not impl on back end yet        
+//        Trip trip = tripDAO.getLastTrip(TESTING_DRIVER_ID);
+//        assertNotNull(trip);
         
     }
     @Test
     public void admin()
     {
-// TODO: add all of the empty result set cases
+
         
         // test all create, find, update and any other methods (not delete yet though)
         account();
@@ -433,7 +434,8 @@ public class SiloServiceTest
         returnedGroup = groupDAO.findByID(regionGroup.getGroupID());
         Util.compareObjects(regionGroup, returnedGroup);
 
-        // TODO: try changing group status
+        List<Group> emptyGroupList = groupDAO.getGroupHierarchy(acctID, 0);
+        assertEquals("group list size", 0, emptyGroupList.size());
     }
 
     private void devices(Integer acctID)
@@ -467,8 +469,12 @@ public class SiloServiceTest
         {
             exceptionThrown = true;
         }
-        assertTrue("excepted a DuplicateIMEIException", exceptionThrown);
-        
+        catch (DuplicateEntryException ex)
+        {
+            exceptionThrown = true;
+        }
+        assertTrue("excepted a DuplicateException", exceptionThrown);
+
         // update all to activated
         for (Device device : deviceList)
         {
@@ -551,7 +557,7 @@ public class SiloServiceTest
             }
         }
     }
-
+        
     private void vehicles(Integer groupID)
     {
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
@@ -572,9 +578,9 @@ public class SiloServiceTest
             vehicleList.add(vehicle);
 
             // get last loc (should be empty);
-// TODO: this should be returning an empty result set exception            
-//            LastLocation loc = vehicleDAO.getLastLocation(vehicle.getVehicleID());
-//            assertNull("no location expected for new vehicle", loc);
+     
+            LastLocation loc = vehicleDAO.getLastLocation(vehicle.getVehicleID());
+            assertNull("no location expected for new vehicle", loc);
         }
         
         
@@ -799,6 +805,13 @@ logger.debug("Persons GroupID: " + groupID);
         PersonHessianDAO personDAO = new PersonHessianDAO();
         personDAO.setSiloService(siloService);
         
+        TripHessianDAO tripDAO = new TripHessianDAO();
+        tripDAO.setSiloService(siloService);
+        
+        // year time frame from today back
+        Date endDate = new Date();
+        Date startDate = DateUtil.getDaysBackDate(endDate, 365);
+       
         List<Person> groupPersonList = personDAO.getPeopleInGroupHierarchy(groupID);
         assertEquals("people count for group", Integer.valueOf(PERSON_COUNT), new Integer(groupPersonList.size()));
         
@@ -828,10 +841,13 @@ logger.debug("Persons GroupID: " + groupID);
             driverList.add(driver);
             
             // get last loc (should be empty);
-// TODO: should give a 304 error            
-//            LastLocation loc = driverDAO.getLastLocation(driver.getDriverID());
-//            assertNull("no location expected for new driver", loc);
-            
+            LastLocation loc = driverDAO.getLastLocation(driver.getDriverID());
+            assertNull("no location expected for new driver", loc);
+
+            // trips list should be empty
+            List<Trip> emptyTripList = tripDAO.getTrips(driver.getDriverID(), startDate, endDate);
+            assertNotNull(emptyTripList);
+            assertTrue(emptyTripList.size() == 0);
 
         }
 
@@ -874,13 +890,23 @@ logger.debug("Persons GroupID: " + groupID);
         int deviceIdx = 0;
         for (Vehicle vehicle : groupVehicles)
         {
-            Integer deviceID = deviceList.get(deviceIdx++).getDeviceID();
+            Device device = deviceList.get(deviceIdx++);
+            Integer deviceID = device.getDeviceID();
             vehicleDAO.setVehicleDevice(vehicle.getVehicleID(), deviceID);
             
             Vehicle returnedVehicle = vehicleDAO.findByID(vehicle.getVehicleID());
-            
             assertEquals("setVehicleDevice failed", deviceID, returnedVehicle.getDeviceID());
             
+            // update the lists that are kept globally
+            device.setVehicleID(vehicle.getVehicleID());
+            for (Vehicle lVehicle : vehicleList)
+            {
+                if (lVehicle.getVehicleID().equals(vehicle.getVehicleID()))
+                {
+                    lVehicle.setDeviceID(deviceID);
+                }
+            }
+            logger.debug(vehicle.getVehicleID() + " assigned to " + deviceID);
         }
     }
 
@@ -895,29 +921,54 @@ logger.debug("Persons GroupID: " + groupID);
         int driverIdx = 0;
         for (Vehicle vehicle : groupVehicles)
         {
-            Integer driverID = driverList.get(driverIdx++).getDriverID();
+            Driver driver = driverList.get(driverIdx++);
+            Integer driverID = driver.getDriverID();
             vehicleDAO.setVehicleDriver(vehicle.getVehicleID(), driverID);
             
             Vehicle returnedVehicle = vehicleDAO.findByID(vehicle.getVehicleID());
             
             assertEquals("setVehicleDriver failed", driverID, returnedVehicle.getDriverID());
-            
+            // update the lists that are kept globally
+//            driver.setVehicleID(vehicle.getVehicleID());
+            for (Vehicle lVehicle : vehicleList)
+            {
+                if (lVehicle.getVehicleID().equals(vehicle.getVehicleID()))
+                {
+                    lVehicle.setDriverID(driverID);
+                }
+            }
         }
     }
 
     private void find()
     {
         // do these last to allow back end more time to update it's cache (can take up to 5 min)
-        
-        UserHessianDAO userDAO = new UserHessianDAO();
-        userDAO.setSiloService(siloService);
-
         PersonHessianDAO personDAO = new PersonHessianDAO();
         personDAO.setSiloService(siloService);
-
         findByKey(personDAO, personList.get(0), personList.get(0).getEmail(), new String[] {"modified"});
+        findByKeyExpectNoResult(personDAO, "BAD_EMAIL");
 
+        UserHessianDAO userDAO = new UserHessianDAO();
+        userDAO.setSiloService(siloService);
         findByKey(userDAO, userList.get(0), userList.get(0).getUsername(), new String[]{"modified", "person"});
+        findByKeyExpectNoResult(userDAO, "BAD_USER");
+
+        DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
+        deviceDAO.setSiloService(siloService);
+        findByKey(deviceDAO, deviceList.get(0), deviceList.get(0).getImei(), new String[]{"modified"});
+        findByKeyExpectNoResult(deviceDAO, "BAD_DEVICE");
+
+        VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
+        vehicleDAO.setSiloService(siloService);
+        findByKey(vehicleDAO, vehicleList.get(0), vehicleList.get(0).getVIN(), new String[]{"modified", "costPerHour"});
+        findByKeyExpectNoResult(vehicleDAO, "BAD_VEHICLE");
+
+    }
+
+    private <T> void findByKeyExpectNoResult(FindByKey<T> dao, String keyField)
+    {
+        T foundObject = dao.findByKey(keyField);
+        assertNull("expected a null result", foundObject);
     }
 
     private <T> void findByKey(FindByKey<T> dao, T objectToFind, String keyField, String[] ignoreFields)
@@ -939,7 +990,6 @@ logger.debug("Persons GroupID: " + groupID);
                 }
                 catch (InterruptedException e)
                 {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                     break;
                 }

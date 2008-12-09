@@ -45,7 +45,6 @@ public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>
     @SuppressWarnings("unchecked")
     public GenericHessianDAO()
     {
-        logger.debug("GenericHessianDAO constructor");
         this.modelClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         this.idClass = (Class<ID>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
         mapper = new SimpleMapper();
@@ -323,8 +322,8 @@ public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>
                 }
                 catch (Exception e)
                 {
-                    if (logger.isDebugEnabled())
-                        logger.debug(e);
+//                    if (logger.isDebugEnabled())
+//                        logger.debug(e);
 
                     for (PropertyDescriptor property : Introspector.getBeanInfo(modelClass).getPropertyDescriptors())
                         if (property.getName().equals(f.getName()))

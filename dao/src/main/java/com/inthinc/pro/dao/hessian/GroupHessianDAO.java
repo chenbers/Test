@@ -8,7 +8,6 @@ import java.util.Map;
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
-import com.inthinc.pro.dao.hessian.proserver.CentralService;
 import com.inthinc.pro.model.Group;
 
 public class GroupHessianDAO extends GenericHessianDAO<Group, Integer> implements GroupDAO

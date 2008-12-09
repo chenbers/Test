@@ -5,12 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.inthinc.pro.dao.DeviceDAO;
+import com.inthinc.pro.dao.FindByKey;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.ForwardCommand;
 import com.inthinc.pro.model.ForwardCommandStatus;
 
-public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer> implements DeviceDAO
+public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer> implements DeviceDAO, FindByKey<Device>
 {
     private static final String CENTRAL_ID_KEY = "mcmid";
 
@@ -25,6 +26,11 @@ public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer> impleme
         {
             return Collections.emptyList();
         }
+    }
+    @Override
+    public Device findByKey(String key)
+    {
+        return findByIMEI(key);
     }
     @Override
     public Device findByIMEI(String imei)
@@ -42,9 +48,7 @@ public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer> impleme
         {
             return null;
         }
-        
     }
-
     @Override
     public List<ForwardCommand> getForwardCommands(Integer deviceID, ForwardCommandStatus status)
     {

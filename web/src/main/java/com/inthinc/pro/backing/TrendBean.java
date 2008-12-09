@@ -109,6 +109,9 @@ public class TrendBean extends BaseDurationBean
         
         for (int i = this.start; i <= this.end; i++)
         {
+            if (s.size() < i)
+                continue;
+            
             ScoreableEntity se = s.get(i-1);
             // Fetch to get children's observations
             ss = scoreDAO.getScores(se.getEntityID(), startDate, endDate, ScoreType.SCORE_OVERALL_TIME);

@@ -105,6 +105,24 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
                 returnMap.put("id", user.getUserID());
             }
         }
+        else if (name.equals("vin"))
+        {
+            Vehicle vehicle = MockData.getInstance().lookupObject(Vehicle.class, name, value);
+            if (vehicle != null)
+            {
+                returnMap = new HashMap<String,Object>();
+                returnMap.put("id", vehicle.getVehicleID());
+            }
+        }
+        else if (name.equals("mcmid"))
+        {
+            Device device = MockData.getInstance().lookupObject(Device.class, name, value);
+            if (device != null)
+            {
+                returnMap = new HashMap<String,Object>();
+                returnMap.put("id", device.getDeviceID());
+            }
+        }
         
         if (returnMap == null)
         {
@@ -490,7 +508,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
-    public List<Map<String, Object>> getMostRecentEvents(Integer groupID, Integer eventCnt, Integer[] types) throws ProDAOException
+    public List<Map<String, Object>> getRecentNotes(Integer groupID, Integer eventCnt, Integer[] types) throws ProDAOException
     {
         Group group = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
 

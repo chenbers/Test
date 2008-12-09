@@ -12,7 +12,10 @@ public interface VehicleDAO extends GenericDAO<Vehicle, Integer>
     void setVehicleDriver(Integer vehicleID, Integer driverID);
 
     void setVehicleDevice(Integer vehicleID, Integer deviceID);
+
+    Vehicle findByVIN(String vin);
     
     LastLocation getLastLocation(Integer vehicleID);
+    
 
 }
