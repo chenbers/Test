@@ -11,9 +11,11 @@ import javax.faces.context.FacesContext;
 
 import org.springframework.beans.BeanUtils;
 
+import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.ZoneAlertDAO;
 import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
@@ -33,8 +35,14 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView>
         AVAILABLE_COLUMNS.add("zone");
     }
 
+    private PersonDAO                 personDAO;
     private ZoneAlertDAO              zoneAlertDAO;
     private ZoneDAO                   zoneDAO;
+
+    public void setPersonDAO(PersonDAO personDAO)
+    {
+        this.personDAO = personDAO;
+    }
 
     public void setZoneAlertDAO(ZoneAlertDAO zoneAlertDAO)
     {
@@ -71,6 +79,7 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView>
     {
         final ZoneAlertView alertView = new ZoneAlertView();
         BeanUtils.copyProperties(alert, alertView);
+        alertView.setPersonDAO(personDAO);
         alertView.setZoneDAO(zoneDAO);
         alertView.setSelected(false);
         return alertView;
@@ -197,15 +206,24 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView>
         private static final long serialVersionUID = 8372507838051791866L;
 
         @Column(updateable = false)
+        private PersonDAO         personDAO;
+        @Column(updateable = false)
         private ZoneDAO           zoneDAO;
         @Column(updateable = false)
         private Zone              zone;
+        @Column(updateable = false)
+        private List<Person>      notifyPeople;
         @Column(updateable = false)
         private boolean           selected;
 
         public Integer getId()
         {
             return getZoneAlertID();
+        }
+
+        void setPersonDAO(PersonDAO personDAO)
+        {
+            this.personDAO = personDAO;
         }
 
         void setZoneDAO(ZoneDAO zoneDAO)
@@ -225,6 +243,21 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView>
             if (zone == null)
                 zone = zoneDAO.findByID(getZoneID());
             return zone;
+        }
+
+        public List<Person> getNotifyPeople()
+        {
+            if ((notifyPeople == null) && (getNotifyPersonIDs() != null))
+            {
+                notifyPeople = new ArrayList<Person>();
+                for (final Integer id : getNotifyPersonIDs())
+                {
+                    final Person person = personDAO.findByID(id);
+                    if (person != null)
+                        notifyPeople.add(person);
+                }
+            }
+            return notifyPeople;
         }
 
         public boolean isSelected()

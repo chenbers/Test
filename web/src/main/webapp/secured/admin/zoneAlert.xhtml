@@ -1,0 +1,266 @@
+<ui:composition template="/layout/layout.xhtml" 
+              xmlns="http://www.w3.org/1999/xhtml" 
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:rich="http://richfaces.org/rich"
+              xmlns:a4j="http://richfaces.org/a4j"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:security="http://pro.tiwi.com/jsf/security">
+
+  <ui:param name="adminSelected" value="current" />
+
+  <ui:define name="scripts">
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{gmBean.key}" type="text/javascript"></script>
+    <script src="#{facesContext.externalContext.requestContextPath}/js/mapGeocode.js" type="text/javascript"></script>
+    <script src="#{facesContext.externalContext.requestContextPath}/js/drawZone.js" type="text/javascript"></script>
+    <script type="text/javascript">    
+      var map;
+    </script>
+  </ui:define>
+
+  <ui:define name="content">
+
+    <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+      <tr>
+        <td valign="top" width="130">
+          <ui:include src="/includes/adminSideNav.xhtml">
+            <ui:param name="selectedAction" value="go_adminZoneAlerts" />
+            <ui:param name="parentAction" value="go_adminZoneAlerts" />
+          </ui:include>
+        </td>
+        <td valign="top">
+          <!-- START PANEL -->
+
+          <a4j:form id="display-form">
+
+            <h:inputHidden id="zonePoints" value="#{zoneAlertsBean.item.zone.pointsString}" />
+
+            <div class="">
+              <div class="panel_nw">
+                <div class="panel_title">
+                  <span class="admin"><h:outputText value="#{messages.adminHeader_zoneAlertDetails}" /><h:outputText value=" " /><h:outputText value="#{zoneAlertsBean.item.name}" /></span>
+                  <span class="panel_links"></span>
+                </div>
+              </div>
+
+              <div class="panel_w">
+
+                <div class="panel_content">
+
+                  <ul id="grid_nav" style="margin: 0;">
+                    <li class="l text"><h:commandLink action="#{zoneAlertsBean.cancelDisplay}" value="#{messages.zoneAlert_backToZoneAlerts}" /></li>
+                    <li class="r"><h:commandLink action="#{zoneAlertsBean.edit}"><button value="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></h:commandLink></li>
+                    <li class="r"><a4j:commandLink><button value="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink></li>
+                  </ul>
+
+                  <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
+
+                  <div class="add_section_title"><h:outputText value="#{messages.editZoneAlert_nameDescriptionZone}" /></div>
+
+                  <div class="spacer"></div>
+
+                  <table width="790" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td width="400" valign="top">
+
+                        <table width="400" border="0" cellspacing="2" cellpadding="4" align="right" style="background-color: #f2efe9; border: 1px solid #acacac; border-right-width: 0px;">
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editZoneAlert_zone}" /></td>
+                            <td><h:outputText value="#{zoneAlertsBean.item.zone.name}" /></td>
+                          </tr>
+                        </table>
+
+                        <table width="400" border="0" cellspacing="2" cellpadding="4" align="center" style="border-right: 1px solid #acacac;">
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editZoneAlert_name}" /></td>
+                            <td><h:outputText value="#{zoneAlertsBean.item.name}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editZoneAlert_description}" /></td>
+                            <td><h:outputText value="#{zoneAlertsBean.item.description}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editZoneAlert_dayOfWeek}" /></td>
+                            <td><h:outputText value="#{zoneAlertsBean.item.dayOfWeek}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editZoneAlert_timeframe}" /></td>
+                            <td><h:outputText value="#{zoneAlertsBean.item.startTOD}" /></td>
+                          </tr>
+                        </table>
+
+                      </td>
+                      <td width="390" valign="top" style="background-color: #f2efe9; border: 1px solid #acacac; border-left-width: 0px;">
+                        <div id="map-canvas" style="height:100%;height:200px;border:0"></div>
+                      </td>
+                    </tr>
+                  </table>
+
+                  <div class="spacer"></div>
+
+                  <table width="790" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td width="390" valign="top">
+
+                        <div class="add_section_title"><h:outputText value="#{messages.editZoneAlert_defineAlerts}" /></div>
+
+                        <table width="380" border="0" cellspacing="2" cellpadding="4" align="center">
+                          <tr>
+                            <td width="50%">
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.speedLimit}" disabled="true" />
+                              <h:outputText value="#{messages.editZoneAlert_speedLimit}" />
+                            </td>
+                            <td width="50%">
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.seatbeltViolation}" disabled="true" />
+                              <h:outputText value="#{messages.editZoneAlert_seatbeltViolation}" />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td width="50%">
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.cautionArea}" disabled="true" />
+                              <h:outputText value="#{messages.editZoneAlert_cautionArea}" />
+                            </td>
+                            <td width="50%">
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.speedViolation}" disabled="true" />
+                              <h:outputText value="#{messages.editZoneAlert_speedViolation}" />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td width="50%">
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.arrival}" disabled="true" />
+                              <h:outputText value="#{messages.editZoneAlert_arrival}" />
+                            </td>
+                            <td width="50%">
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.driverIDViolation}" disabled="true" />
+                              <h:outputText value="#{messages.editZoneAlert_driverIDViolation}" />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td width="50%">
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.departure}" disabled="true" />
+                              <h:outputText value="#{messages.editZoneAlert_departure}" />
+                            </td>
+                            <td width="50%">
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.position}" disabled="true" />
+                              <h:outputText value="#{messages.editZoneAlert_position}" />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td width="50%">
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.ignitionOn}" disabled="true" />
+                              <h:outputText value="#{messages.editZoneAlert_ignitionOn}" />
+                            </td>
+                            <td width="50%">
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.masterBuzzer}" disabled="true" />
+                              <h:outputText value="#{messages.editZoneAlert_masterBuzzer}" />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td width="50%">
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.ignitionOff}" disabled="true" />
+                              <h:outputText value="#{messages.editZoneAlert_ignitionOff}" />
+                            </td>
+                            <td width="50%">
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.monitorIdle}" disabled="true" />
+                              <h:outputText value="#{messages.editZoneAlert_monitorIdle}" />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td width="50%">
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.disableRF}" disabled="true" />
+                              <h:outputText value="#{messages.editZoneAlert_disableRF}" />
+                            </td>
+                          </tr>
+                        </table>
+
+                      </td>
+                      <td width="10"><img src="images/x.gif" width="10" /></td>
+                      <td width="390" valign="top">
+
+                        <div class="add_section_title"><h:outputText value="#{messages.editZoneAlert_assignVehicles}" /></div>
+
+                        TODO: list vehicles, or maybe list fleets/regions/teams?
+
+                      </td>
+                    </tr>
+                  </table>
+
+                  <div class="spacer"></div>
+
+                  <table width="790" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td width="390" valign="top">
+
+                        <div class="add_section_title"><h:outputText value="#{messages.editZoneAlert_notificationsByName}" /></div>
+
+                        <div>
+                          <ui:repeat value="#{zoneAlertsBean.item.notifyPeople}" var="person" varStatus="index">
+                            <h:outputText value="#{(index > 0) ? ', ' : ''}" />
+                            <h:outputText value="#{person.first}" />
+                            <h:outputText value=" " />
+                            <h:outputText value="#{person.last}" />
+                          </ui:repeat>
+                        </div>
+
+                      </td>
+                      <td width="10"><img src="images/x.gif" width="10" /></td>
+                      <td width="390" valign="top">
+
+                        <div class="add_section_title"><h:outputText value="#{messages.editZoneAlert_notificationsByEmail}" /></div>
+
+                        <div><h:outputText value="#{zoneAlertsBean.item.emailTo}" /></div>
+
+                      </td>
+                    </tr>
+                  </table>
+
+                </div>
+              </div>
+
+              <div class="panel_sw">
+                <div class="panel_statusbar"></div>
+              </div>
+            </div>
+
+          </a4j:form>
+
+          <script type="text/javascript">
+            function showZone()
+            {
+              map.clearOverlays();
+              var outline = fromOutlineString(document.getElementById("display-form:zonePoints").value);
+              if (outline)
+              {
+                centerMapAtZone(getLatLngBounds(outline));
+                loadZone(outline, false);
+              }
+            }
+
+            function bodyLoad()
+            {
+              if (GBrowserIsCompatible())
+              {
+                map = new GMap2(document.getElementById("map-canvas"));
+                showZone();
+              }
+            }
+
+            function bodyUnload()
+            {
+              GUnload();
+            }
+          </script>
+
+          <!-- END PANEL -->
+        </td>
+      </tr>
+    </table>
+
+    <ui:include src="../../includes/confirmDelete.xhtml">
+      <ui:param name="deleteBean" value="#{zoneAlertsBean}" />
+      <ui:param name="explanation" value="#{messages.zoneAlert_confirmDelete}" />
+    </ui:include>
+
+  </ui:define>
+
+</ui:composition>

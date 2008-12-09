@@ -674,7 +674,7 @@ public class MockData
     private List<ZoneAlert> addZoneAlertsToZone(Integer zoneID, Integer accountID, Integer groupID, int numZoneAlerts)
     {
         final List<ZoneAlert> alerts = new ArrayList<ZoneAlert>();
-        final Integer idOffset = accountID * MAX_GROUPS + groupID * MAX_RED_FLAG_PREFS_IN_GROUP;
+        final Integer idOffset = accountID * MAX_GROUPS + groupID * MAX_ZONES_IN_GROUP + zoneID * MAX_ZONE_ALERTS_PER_ZONE;
         for (int i = 0; i < numZoneAlerts; i++)
         {
             int id = idOffset+i+1;

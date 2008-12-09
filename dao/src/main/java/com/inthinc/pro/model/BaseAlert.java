@@ -19,7 +19,7 @@ public abstract class BaseAlert extends BaseEntity
     private Integer         startTOD;
     private Integer         stopTOD;
     private List<Integer>   dayOfWeek;
-    private List<Integer>   notifyUserIDs;
+    private List<Integer>   notifyPersonIDs;
     private List<String>    emailTo;
 
     public Integer getAccountID()
@@ -92,14 +92,14 @@ public abstract class BaseAlert extends BaseEntity
         this.dayOfWeek = dayOfWeek;
     }
 
-    public List<Integer> getNotifyUserIDs()
+    public List<Integer> getNotifyPersonIDs()
     {
-        return notifyUserIDs;
+        return notifyPersonIDs;
     }
 
-    public void setNotifyUserIDs(List<Integer> notifyUserIDs)
+    public void setNotifyPersonIDs(List<Integer> notifyUserIDs)
     {
-        this.notifyUserIDs = notifyUserIDs;
+        this.notifyPersonIDs = notifyUserIDs;
     }
 
     public List<String> getEmailTo()
