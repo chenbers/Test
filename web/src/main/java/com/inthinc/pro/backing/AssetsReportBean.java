@@ -40,7 +40,7 @@ public class AssetsReportBean extends BaseBean
    
     private AssetReportItem art = null;
     
-    private Integer numRowsPerPg = 2;
+    private Integer numRowsPerPg = 1;
     private final static String COLUMN_LABEL_PREFIX = "assetreport_";
     
     private Integer maxCount = null;
