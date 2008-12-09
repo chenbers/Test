@@ -1,8 +1,11 @@
 <ui:composition template="/layout/layout.xhtml" 
-			xmlns="http://www.w3.org/1999/xhtml" 
-			xmlns:ui="http://java.sun.com/jsf/facelets"
-  			xmlns:h="http://java.sun.com/jsf/html" 
-  			xmlns:f="http://java.sun.com/jsf/core">
+              xmlns="http://www.w3.org/1999/xhtml" 
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:rich="http://richfaces.org/rich"
+              xmlns:a4j="http://richfaces.org/a4j"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:security="http://pro.tiwi.com/jsf/security">
 
 	<ui:param name="reportsSelected" value="current" />
 	<ui:param name="assetsSelected" value="current" />
@@ -14,8 +17,100 @@
 
 
 	<ui:define name="content">
-		<p style="font-size:20px;text-align:center;">Assets Reports Page</p>	
-	
+		
+
+			<table width="920" height="430" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+				<tr>
+					<td valign="top">
+												
+							<div class="">
+								<div class="panel_nw">
+									<div class="panel_title">
+										<span class="driver">Assets Report</span>
+										<span class="panel_links"></span>
+									</div>
+								</div>
+									
+									<div class="panel_w">
+									<div class="panel_content">		
+									
+									<a4j:form id="outerAssetReport">										
+										<div class="msg">
+											<p id="redflag">
+												<h:outputFormat id="headerRedAsset" 
+													value="#{messages.reports_redflagscountheader}">
+													<a4j:actionparam value="#{redFlagsBean.maxCount}"/>
+												</h:outputFormat>												
+												(<a href="#{facesContext.externalContext.request.contextPath}/secured/redFlags.faces">#{messages.reports_view}</a>) 
+											</p>
+										</div>									  	
+										<ul id="grid_nav" style="margin: 0;">            							
+            								<li class="l">
+              									<table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
+                									<tr>
+                  										<td>
+                  											<h:outputText value="#{messages.button_search}" />
+                  										</td>
+                  										<td>
+                    										<h:inputText id="filterTable" value="#{assetReportBean.searchFor}" class="text" size="25" />
+                  										</td>
+                									</tr>
+              									</table>
+            								</li>
+            								<li class="l">
+            									<a4j:commandLink action="#{assetReportBean.search}" 
+            										reRender="items,topScroller,bottomScroller,headerAssets">
+            										<button value="submit" class="left">
+            											<span class="search">
+            												<h:outputText value="#{messages.button_search}" />
+            											</span>
+            										</button>
+            									</a4j:commandLink>            								
+            								</li>
+            								<li class="l text">
+            									<a4j:commandLink 
+            										reRender="assetColumnPanel"
+            										action="#"
+            									 	styleClass="ls_tab_edit_columns"
+            										onclick="Richfaces.showModalPanel('editAssetColumns');">            									
+            										<h:outputText value="#{messages.button_editColumns}" />
+            									</a4j:commandLink>
+            								</li>  
+            								<li class="r text">
+            									<h:outputFormat id="headerAssets" value="#{messages.redflags_recordCountHeader}">
+													<a4j:actionparam value="#{assetReportBean.start}"/>
+													<a4j:actionparam value="#{assetReportBean.end}"/>
+													<a4j:actionparam value="#{assetReportBean.maxCount}"/>
+												</h:outputFormat>              									
+            								</li>          							
+          								</ul>																																	
+									
+								<div class="datagrid">
+								<ui:include src="/includes/assetsReport.xhtml">	
+									<ui:param name="numRowsPerPg" value="#{assetReportBean.numRowsPerPg}"/>									
+             						<ui:param name="assetData" value="#{assetReportBean.assetData}"/>             						
+             						<ui:param name="assetColumns" value="#{assetReportBean.assetColumns}"/>
+             						<ui:param name="assetTable" value="#{assetReportTable.table}"/>
+    							</ui:include>   
+    							</div>	
+    							</a4j:form>
+    							<ui:include src="/includes/editAssetColumns.xhtml">
+									<ui:param name="assetColumns" value="#{assetReportBean.assetColumns}"/>										
+								</ui:include>    
+								
+								</div>
+								</div>
+														
+    					    	<div class="panel_sw">
+									<div class="panel_statusbar"></div>
+								</div>
+							</div>
+														
+					</td>
+				</tr>
+			</table>
+		
+		
 	</ui:define>
 
 </ui:composition>
