@@ -98,11 +98,7 @@ function loadZone(outline, editable)
 
   if (outline)
   {
-    polygon = createGPolygon_(outline);
-
-    if (editable == false)
-      disableEditing();
-
+    polygon = createGPolygon_(outline, editable != false);
     return true;
   }
   return false;
@@ -317,11 +313,12 @@ function endShape_(e, getMapPoints)
   }
 }
 
-function createGPolygon_(points)
+function createGPolygon_(points, editable)
 {
   var poly = new GPolygon(points, ZONE_COLOR, 2, 0.7, ZONE_COLOR, 0.2);
   map.addOverlay(poly);
-  poly.enableEditing({onEvent: "mouseover", maxVertices: MAX_VERTICES});
+  if (editable)
+    poly.enableEditing({onEvent: "mouseover", maxVertices: MAX_VERTICES});
   poly.disableEditing({onEvent: "mouseout"});
   addEditEvents_(poly);
   return poly;
