@@ -74,11 +74,11 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     }
 
     @Override
-    public ScoreableEntity getAverageScoreByType(Integer groupID, Integer startDate, Integer endDate, ScoreType st)
+    public ScoreableEntity getAverageScoreByType(Integer groupID, Duration duration, ScoreType st)
     {
         try
         {
-            return getMapper().convertToModelObject(reportService.getAverageScoreByType(groupID, startDate, endDate, st), ScoreableEntity.class);
+            return getMapper().convertToModelObject(reportService.getAverageScoreByType(groupID, duration.getCode(), st), ScoreableEntity.class);
         }
         catch (EmptyResultSetException e)
         {
@@ -114,12 +114,12 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     }
 
     @Override
-    public List<ScoreableEntity> getScores(Integer groupID, Integer startDate, Integer endDate, ScoreType scoreType)
+    public List<ScoreableEntity> getScores(Integer groupID, Duration duration, ScoreType scoreType)
     {
         // logger.debug("getScores() groupID = " + groupID);
         try
         {
-            List<ScoreableEntity> scoreList = getMapper().convertToModelObject(reportService.getScores(groupID, startDate, endDate, scoreType.getCode()), ScoreableEntity.class);
+            List<ScoreableEntity> scoreList = getMapper().convertToModelObject(reportService.getScores(groupID, duration.getCode(), scoreType.getCode()), ScoreableEntity.class);
             return scoreList;
         }
         catch (EmptyResultSetException e)
@@ -137,11 +137,11 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     }
 
     @Override
-    public List<ScoreableEntity> getScoreBreakdown(Integer groupID, Integer startDate, Integer endDate, ScoreType scoreType)
+    public List<ScoreableEntity> getScoreBreakdown(Integer groupID, Duration duration, ScoreType scoreType)
     {
         try
         {
-            return getMapper().convertToModelObject(reportService.getScoreBreakdown(groupID, startDate, endDate, scoreType.getCode()), ScoreableEntity.class);
+            return getMapper().convertToModelObject(reportService.getScoreBreakdown(groupID, duration.getCode(), scoreType.getCode()), ScoreableEntity.class);
         }
         catch (EmptyResultSetException e)
         {

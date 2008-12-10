@@ -32,6 +32,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.State;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.app.Roles;
@@ -59,6 +60,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     private static final int                   MILLIS_PER_HOUR        = MILLIS_PER_MINUTE * 60;
     private static final Map<String, String>   LICENSE_CLASSES;
     private static final Map<String, State>    STATES;
+    private static final Map<String, Status>    STATUSES;
 
     static
     {
@@ -149,6 +151,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         STATES = new TreeMap<String, State>();
         for (final State state : States.getStates().values())
             STATES.put(state.getName(), state);
+
+        // statuses
+        STATUSES = new TreeMap<String, Status>();
+        STATUSES.put(Status.ACTIVE.toString(), Status.ACTIVE);
+        STATUSES.put(Status.INACTIVE.toString(), Status.INACTIVE);
+
     }
 
     private PersonDAO                          personDAO;
@@ -222,14 +230,14 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
                     matches = person.getFirst().toLowerCase().startsWith(filterWord) || person.getLast().toLowerCase().startsWith(filterWord);
                 else if (column.equals("user_active"))
                     matches = (person.getUser() != null)
-                            && (person.getUser().getActive() != null)
-                            && ((person.getUser().getActive() && MessageUtil.getMessageString("active").toLowerCase().startsWith(filterWord)) || ((!person.getUser().getActive() && MessageUtil
+                            && (person.getUser().getStatus() != null)
+                            && ((person.getUser().getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("active").toLowerCase().startsWith(filterWord)) || ((!person.getUser().getStatus().equals(Status.ACTIVE) && MessageUtil
                                     .getMessageString("inactive").toLowerCase().startsWith(filterWord))));
                 else if (column.equals("driver_active"))
                     matches = (person.getDriver() != null)
-                            && (person.getDriver().getActive() != null)
-                            && ((person.getDriver().getActive() && MessageUtil.getMessageString("active").toLowerCase().startsWith(filterWord)) || ((!person.getDriver()
-                                    .getActive() && MessageUtil.getMessageString("inactive").toLowerCase().startsWith(filterWord))));
+                            && (person.getDriver().getStatus() != null)
+                            && ((person.getDriver().getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("active").toLowerCase().startsWith(filterWord)) || ((!person.getDriver()
+                                    .getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("inactive").toLowerCase().startsWith(filterWord))));
                 else if (column.equals("group"))
                     matches = (person.getGroup() != null) && person.getGroup().getName().toLowerCase().startsWith(filterWord);
                 else if (column.equals("reportsTo"))
@@ -474,6 +482,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     {
         return STATES;
     }
+    public Map<String, Status> getStatuses()
+    {
+        return STATUSES;
+    }
 
     public static class PersonView extends Person implements EditItem
     {
@@ -523,7 +535,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
 
         public Person getReportsToPerson()
         {
-            if (reportsToPerson == null)
+            if (reportsToPerson == null && getReportsTo() != null)
                 reportsToPerson = bean.personDAO.findByID(getReportsTo());
             return reportsToPerson;
         }

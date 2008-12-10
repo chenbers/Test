@@ -17,25 +17,25 @@ public interface ReportService extends HessianService
      * retrieves the mpg values (light, medium, heavy) for direct children of the specified group
      * 
      * @param groupID
-     * @param startDate
-     * @param endDate
+     * @param duration
+     *          1 - 30 days, 2 - 3 months, 3 - 6 months, 4 - 12 months
      * @return
      * @throws ProDAOException
      */
-    List<Map<String, Object>> getMpgValues(Integer groupID, Integer startDate, Integer endDate) throws ProDAOException;
+    List<Map<String, Object>> getMpgValues(Integer groupID, Integer duration) throws ProDAOException;
 	
     /**
      * Return the average score for the specified group and time range.
      * 
      * @param groupID
-     * @param startDate
-     * @param endDate
+     * @param duration
+     *          1 - 30 days, 2 - 3 months, 3 - 6 months, 4 - 12 months
      * @param scoreType
      *            SCORE_OVERALL = 1, SCORE_SPEEDING=2, SCORE_SEATBELT=3, SCORE_DRIVING_STYLE=4, SCORE_COACHING_EVENTS=5
      * @return Map<String,Object> that maps to a ScoreableEntity
      * @throws ProDAOException
      */
-    Map<String, Object> getAverageScoreByType(Integer groupID, Integer startDate, Integer endDate, ScoreType scoreType) throws ProDAOException;
+    Map<String, Object> getAverageScoreByType(Integer groupID, Integer duration, ScoreType scoreType) throws ProDAOException;
 
 
     /**
@@ -55,14 +55,14 @@ public interface ReportService extends HessianService
      * getScores -- retrieves the scores for direct children of the specified group
      * 
      * @param groupID
-     * @param startDate
-     * @param endDate
+     * @param duration
+     *          1 - 30 days, 2 - 3 months, 3 - 6 months, 4 - 12 months
      * @param scoreType
      *            SCORE_OVERALL = 1, SCORE_SPEEDING=2, SCORE_SEATBELT=3, SCORE_DRIVING_STYLE=4, SCORE_COACHING_EVENTS=5
      * @return List<Map<String,Object>> that maps to a List of ScoreableEntity
      * @throws ProDAOException
      */
-    List<Map<String, Object>> getScores(Integer groupID, Integer startDate, Integer endDate, Integer scoreType) throws ProDAOException;
+    List<Map<String, Object>> getScores(Integer groupID, Integer duration,Integer scoreType) throws ProDAOException;
 
     /**
      * getTopFiveScores -- retrieves the top five overall scores for the drivers of the specified group over the last thirty days.
@@ -99,7 +99,7 @@ public interface ReportService extends HessianService
      * @return List<Map<String,Object>> that maps to a List of ScoreableEntity
      * @throws ProDAOException
      */
-    List<Map<String, Object>> getScoreBreakdown(Integer groupID, Integer startDate, Integer endDate, Integer scoreType) throws ProDAOException;
+    List<Map<String, Object>> getScoreBreakdown(Integer groupID,  Integer duration, Integer scoreType) throws ProDAOException;
 
     /**
      * getDriverScoreHistoryByMiles -- retrieves a list of scores for the specified driverID and milesBack.   

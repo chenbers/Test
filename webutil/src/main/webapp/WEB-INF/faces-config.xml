@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<faces-config version="1.2" xmlns="http://java.sun.com/xml/ns/javaee"
+ xmlns:xi="http://www.w3.org/2001/XInclude"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd">
+ <navigation-rule>
+  <navigation-case>
+   <from-outcome>go_home</from-outcome>
+   <to-view-id>/home.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule> 
+ <navigation-rule>
+  <navigation-case>
+   <from-outcome>go_newAccount</from-outcome>
+   <to-view-id>/newAccount.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
+
+  <!-- =========== FULL CONFIGURATION FILE ================================== -->
+ <application>
+  <view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
+  <locale-config>
+   <default-locale>en</default-locale>
+   <supported-locale>en_US</supported-locale>
+  </locale-config>
+  <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+ </application>
+</faces-config>

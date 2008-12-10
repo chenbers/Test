@@ -156,15 +156,11 @@ public class VehicleReportBean extends BaseBean
             vrt.setMakeModelYear(v.getMake() + "/" + v.getModel() + "/" + v.getYear());         
             
             //Scores, full year
-            Integer endDate = DateUtil.getTodaysDate();
-            Integer startDate = DateUtil.getDaysBackDate(
-                    endDate, 
-                    Duration.TWELVE.getNumberOfDays());                                            
-            s = scoreDAO.getAverageScoreByType(v.getGroupID(),startDate,endDate,ScoreType.SCORE_OVERALL);
+            s = scoreDAO.getAverageScoreByType(v.getGroupID(),Duration.TWELVE,ScoreType.SCORE_OVERALL);
             vrt.setOverallScore(s.getScore());
-            s = scoreDAO.getAverageScoreByType(v.getGroupID(),startDate,endDate,ScoreType.SCORE_SPEEDING);
+            s = scoreDAO.getAverageScoreByType(v.getGroupID(),Duration.TWELVE,ScoreType.SCORE_SPEEDING);
             vrt.setSpeedScore(s.getScore());
-            s = scoreDAO.getAverageScoreByType(v.getGroupID(),startDate,endDate,ScoreType.SCORE_DRIVING_STYLE);
+            s = scoreDAO.getAverageScoreByType(v.getGroupID(),Duration.TWELVE,ScoreType.SCORE_DRIVING_STYLE);
             vrt.setStyleScore(s.getScore());
             setStyles();
                         

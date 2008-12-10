@@ -1,0 +1,41 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:h="http://java.sun.com/jsf/html"
+	 xmlns:f="http://java.sun.com/jsf/core" 
+	 xmlns:a4j="http://richfaces.org/a4j" 
+	 xmlns:rich="http://richfaces.org/rich">
+
+<head>
+<title>tiwipro Utilities</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<style>
+	body {
+		background: #EEE;
+		background-position: top center;
+		margin: 0;
+		padding: 0;
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 12px;
+		text-align: left;
+	}
+	.mainmenu{
+		font-size: 16px;
+	}
+	
+</style>
+
+</head>
+<f:view contentType="text/html" >
+<body>
+    <rich:panel id="util-panel" styleClass="mainmenu">
+      <f:facet name="header">
+        <h:outputText value="tiwipro Utility Pages" />
+      </f:facet>
+      <h:form  styleClass="mainmenu">
+        <ul class="mainmenu">
+            <li><h:commandLink value="Create New Account" action="go_newAccount"/></li>
+        </ul>
+      </h:form>
+	</rich:panel>
+</body>
+</f:view>
+</html>

@@ -52,9 +52,9 @@
             <f:facet name="header"><h:outputText value="#{messages.personHeader_group}" /></f:facet>
             <h:outputText value="#{editorBean.groupNames[item.person.groupID]}" />
           </rich:column>
-          <rich:column sortBy="#{item.active}">
+          <rich:column sortBy="#{item.status}">
             <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_active}" /></f:facet>
-            <h:outputText value="#{item.active ? messages.active : messages.inactive}" />
+            <h:outputText value="#{(item.status == 1) ? messages.active : messages.inactive}" />
           </rich:column>
           <rich:column sortBy="#{editorBean.driverAssigned[item.driverID]}">
             <f:facet name="header"><h:outputText value="#{messages.chooseDriver_assigned}" /></f:facet>

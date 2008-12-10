@@ -13,11 +13,14 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      * Retrieve the overall score for the specified group and date range.
      * 
      * @param groupID
-     * @param startDate
-     * @param endDate
+     * @param duration
+     *        1 -   30 days
+     *        2 -   3 months
+     *        3 -   6 months
+     *        4 -   12 months
      * @return
      */
-    ScoreableEntity getAverageScoreByType(Integer groupID, Integer startDate, Integer endDate, ScoreType st);
+    ScoreableEntity getAverageScoreByType(Integer groupID, Duration duration,  ScoreType st);
     
     /**
      * Retrieve the overall score by the specified driver and mileage.
@@ -33,12 +36,15 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      * Retrieve the list of scores for the sub groups or drivers (one level down) under the specified group.
      * 
      * @param groupID
-     * @param startDate
-     * @param endDate
+     * @param duration
+     *        1 -   30 days
+     *        2 -   3 months
+     *        3 -   6 months
+     *        4 -   12 months
      * @param scoreType
      * @return
      */
-    List<ScoreableEntity> getScores(Integer groupID, Integer startDate, Integer endDate, ScoreType scoreType);
+    List<ScoreableEntity> getScores(Integer groupID, Duration duration, ScoreType scoreType);
 
     /**
      * Retrieve the list of overall scores for top five drivers for the last 30 days
@@ -64,11 +70,14 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      *          4 - the percentage of drivers in the group whose overall score is between 4.1 - 5.0
      * 
      * @param groupID
-     * @param startDate
-     * @param endDate
+     * @param duration
+     *        1 -   30 days
+     *        2 -   3 months
+     *        3 -   6 months
+     *        4 -   12 months
      * @return
      */
-    List<ScoreableEntity> getScoreBreakdown(Integer groupID, Integer startDate, Integer endDate, ScoreType scoreType);
+    List<ScoreableEntity> getScoreBreakdown(Integer groupID, Duration duration, ScoreType scoreType);
 
     
     /**
@@ -111,8 +120,11 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      *          SCORE_DRIVING_STYLE_HARD_BUMP(20)
      * 
      * @param groupID
-     * @param startDate
-     * @param endDate
+     * @param duration
+     *        1 -   30 days
+     *        2 -   3 months
+     *        3 -   6 months
+     *        4 -   12 months
      * @return List of ScoreTypeBreakdown objects 
      */
     List<ScoreTypeBreakdown> getScoreBreakdownByType(Integer groupID, Duration duration, ScoreType scoreType);

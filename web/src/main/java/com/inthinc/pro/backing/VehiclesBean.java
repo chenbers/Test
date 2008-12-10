@@ -25,9 +25,9 @@ import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.State;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.VehicleStatus;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.util.MessageUtil;
@@ -43,6 +43,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     private static final Map<String, String>      YEARS;
     private static final Map<String, VehicleType> TYPES;
     private static final Map<String, State>       STATES;
+    private static final Map<String, Status>    STATUSES;
 
     static
     {
@@ -89,6 +90,12 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         STATES = new TreeMap<String, State>();
         for (final State state : States.getStates().values())
             STATES.put(state.getName(), state);
+        
+        // statuses
+        STATUSES = new TreeMap<String, Status>();
+        STATUSES.put(Status.ACTIVE.toString(), Status.ACTIVE);
+        STATUSES.put(Status.INACTIVE.toString(), Status.INACTIVE);
+        
     }
 
     private VehicleDAO                            vehicleDAO;
@@ -168,7 +175,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
                     matches = (vehicle.getGroup() != null) && vehicle.getGroup().getName().toLowerCase().startsWith(filterWord);
                 else if (column.equals("active"))
                     matches = (vehicle.getStatus() != null)
-                            && ((vehicle.getStatus().equals(VehicleStatus.ACTIVE) && MessageUtil.getMessageString("active").toLowerCase().startsWith(filterWord)) || ((!vehicle.getStatus().equals(VehicleStatus.ACTIVE) && MessageUtil
+                            && ((vehicle.getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("active").toLowerCase().startsWith(filterWord)) || ((!vehicle.getStatus().equals(Status.ACTIVE) && MessageUtil
                                     .getMessageString("inactive").toLowerCase().startsWith(filterWord))));
                 else
                     try
@@ -219,7 +226,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     protected VehicleView createAddItem()
     {
         final Vehicle vehicle = new Vehicle();
-        vehicle.setStatus(VehicleStatus.ACTIVE);
+        vehicle.setStatus(Status.ACTIVE);
         return createVehicleView(vehicle);
     }
 
@@ -427,6 +434,11 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     public Map<String, State> getStates()
     {
         return STATES;
+    }
+
+    public Map<String, Status> getStatuses()
+    {
+        return STATUSES;
     }
 
     public TreeMap<String, Integer> getGroups()

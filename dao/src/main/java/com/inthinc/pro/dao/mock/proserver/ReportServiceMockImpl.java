@@ -41,8 +41,10 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
     private static final Logger logger = Logger.getLogger(ReportServiceMockImpl.class);
     
     @Override
-    public List<Map<String, Object>> getMpgValues(Integer groupID, Integer startDate, Integer endDate) throws ProDAOException
+    public List<Map<String, Object>> getMpgValues(Integer groupID, Integer duration) throws ProDAOException
     {
+        Integer endDate = getEndDate(duration);
+        Integer startDate = getStartDate(duration);
 //        logger.debug("mock IMPL getOverallScores groupID = " + groupID);
         SearchCriteria searchCriteria = new SearchCriteria();
         searchCriteria.addKeyValue("parentID", groupID);
@@ -90,7 +92,7 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
                 MpgEntity mpg = MockData.getInstance().retrieveObject(MpgEntity.class, searchCriteria);
                 if (mpg != null)
                 {
-                	returnList.add(TempConversionUtil.createMapFromObject(mpg));
+                    returnList.add(TempConversionUtil.createMapFromObject(mpg));
                 }
                 else
                 {
@@ -103,8 +105,10 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
     }
 
     @Override
-    public Map<String, Object> getAverageScoreByType(Integer groupID, Integer startDate, Integer endDate, ScoreType st) throws ProDAOException
+    public Map<String, Object> getAverageScoreByType(Integer groupID, Integer duration, ScoreType st) throws ProDAOException
     {
+        Integer endDate = getEndDate(duration);
+        Integer startDate = getStartDate(duration);
         SearchCriteria searchCriteria = new SearchCriteria();
         searchCriteria.addKeyValue("entityID", groupID);
         searchCriteria.addKeyValue("scoreType", st);
@@ -140,9 +144,10 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
     }
 
     @Override
-    public List<Map<String, Object>> getScores(Integer groupID, Integer startDate, Integer endDate, Integer scoreType) throws ProDAOException
+    public List<Map<String, Object>> getScores(Integer groupID, Integer duration, Integer scoreType) throws ProDAOException
     {
-//        logger.debug("mock IMPL getOverallScores groupID = " + groupID);
+        Integer endDate = getEndDate(duration);
+        Integer startDate = getStartDate(duration);
         SearchCriteria searchCriteria = new SearchCriteria();
         searchCriteria.addKeyValue("parentID", groupID);
 
@@ -205,9 +210,11 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
     }
 
     @Override
-    public List<Map<String, Object>> getScoreBreakdown(Integer groupID, Integer startDate, Integer endDate, Integer scoreType) throws ProDAOException
+    public List<Map<String, Object>> getScoreBreakdown(Integer groupID, Integer duration, Integer scoreType) throws ProDAOException
     {
 
+        Integer endDate = getEndDate(duration);
+        Integer startDate = getStartDate(duration);
         Group topGroup = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
 
         List<Driver> allDriversInGroup = getAllDriversInGroup(topGroup);
@@ -240,11 +247,9 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
     @Override
     public List<Map<String, Object>> getBottomFiveScores(Integer groupID)
     {
-        Integer endDate = DateUtil.getTodaysDate();
-        Integer startDate = DateUtil.getDaysBackDate(endDate, 30);
         try
         {
-            List<Map<String, Object>> returnList = getScores(groupID, startDate, endDate, ScoreType.SCORE_OVERALL.getCode());
+            List<Map<String, Object>> returnList = getScores(groupID, Duration.DAYS.getCode(), ScoreType.SCORE_OVERALL.getCode());
             // TODO return top 5.
             if (returnList.size() > 5)
             {
@@ -266,9 +271,7 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
     @Override
     public List<Map<String, Object>> getTopFiveScores(Integer groupID)
     {
-        Integer endDate = DateUtil.getTodaysDate();
-        Integer startDate = DateUtil.getDaysBackDate(endDate, 30);
-        List<Map<String, Object>> returnList = getScores(groupID, startDate, endDate, ScoreType.SCORE_OVERALL.getCode());
+        List<Map<String, Object>> returnList = getScores(groupID, Duration.DAYS.getCode(), ScoreType.SCORE_OVERALL.getCode());
         // TODO return top 5.
         if (returnList.size() > 5)
         {
@@ -328,8 +331,8 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
             return scoreBreakdownByTypeCache.get(cacheKey);
         }
         
-        Integer endDate = MockData.getInstance().dateNow;
-        Integer startDate = DateUtil.getDaysBackDate(endDate, Duration.valueOf(duration).getNumberOfDays());
+        Integer endDate = getEndDate(duration);
+        Integer startDate = getStartDate(duration);
         
         Group topGroup = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
         List<Driver> allDriversInGroup = getAllDriversInGroup(topGroup);
@@ -372,6 +375,16 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
         return returnList;
     }
     
+    private Integer getEndDate(Integer duration)
+    {
+        return MockData.getInstance().dateNow;
+    }
+    private Integer getStartDate(Integer duration)
+    {
+        Integer endDate = MockData.getInstance().dateNow;
+        Integer startDate = DateUtil.getDaysBackDate(endDate, Duration.valueOf(duration).getNumberOfDays());
+        return startDate;
+    }
 //Methods currently supported on REAL back end         
     @Override
     public Map<String, Object> getDScoreByDM(Integer driverID, Integer mileage)

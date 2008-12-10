@@ -367,7 +367,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 
         public Vehicle getVehicle()
         {
-            if (vehicle == null)
+            if (vehicle == null && getVehicleID() != null)
                 vehicle = vehicleDAO.findByID(getVehicleID());
             return vehicle;
         }

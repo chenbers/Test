@@ -4,25 +4,25 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum AccountStatus implements BaseEnum
+public enum Status implements BaseEnum
 {
-    ACCOUNT_ACTIVE(1, "ACCOUNT_ACTIVE"),
-    ACCOUNT_DISABLED(2, "ACCOUNT_DISABLED"),
-    ACCOUNT_DELETED(3, "ACCOUNT_DELETED");
+    ACTIVE(1, "ACTIVE"),
+    INACTIVE(2, "INACTIVE"),
+    DELETED(3, "DELETED");
 
     private String description;
     private int code;
 
-    private AccountStatus(int code, String description)
+    private Status(int code, String description)
     {
         this.code = code;
         this.description = description;
     }
 
-    private static final Map<Integer, AccountStatus> lookup = new HashMap<Integer, AccountStatus>();
+    private static final Map<Integer, Status> lookup = new HashMap<Integer, Status>();
     static
     {
-        for (AccountStatus p : EnumSet.allOf(AccountStatus.class))
+        for (Status p : EnumSet.allOf(Status.class))
         {
             lookup.put(p.code, p);
         }
@@ -33,7 +33,7 @@ public enum AccountStatus implements BaseEnum
         return this.code;
     }
 
-    public static AccountStatus valueOf(Integer code)
+    public static Status valueOf(Integer code)
     {
         return lookup.get(code);
     }
@@ -42,6 +42,11 @@ public enum AccountStatus implements BaseEnum
     public String toString()
     {
         return this.description;
+    }
+
+    public String getDescription()
+    {
+        return description;
     }
 
 }

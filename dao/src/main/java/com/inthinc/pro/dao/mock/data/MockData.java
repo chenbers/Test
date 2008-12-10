@@ -21,7 +21,6 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
-import com.inthinc.pro.model.AccountStatus;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.AggressiveDrivingEvent;
 import com.inthinc.pro.model.Device;
@@ -50,9 +49,8 @@ import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.TamperingEvent;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.User;
-import com.inthinc.pro.model.UserStatus;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.VehicleStatus;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
 
@@ -159,7 +157,7 @@ public class MockData
     
     private void addAccountData(Integer accountID)
     {
-        Account account = new Account(accountID, 0, 0, AccountStatus.ACCOUNT_ACTIVE);
+        Account account = new Account(accountID, 0, 0, Status.ACTIVE);
         storeObject(account);
         addGroupData(accountID);
         addDevices(accountID, randomInt(MAX_DEVICES / 2, MAX_DEVICES));
@@ -271,7 +269,7 @@ public class MockData
         user.setUsername(username);
         user.setPassword(password);
         user.setRole(role);
-        user.setStatus(UserStatus.ACTIVE);
+        user.setStatus(Status.ACTIVE);
         user.setPerson(new Person());
         user.getPerson().setPersonID(id);
         user.getPerson().setEmpid(String.valueOf(id));
@@ -851,7 +849,7 @@ public class MockData
         vehicle.setVIN(VIN);
         vehicle.setLicense(license);
         vehicle.setState(state);
-        vehicle.setStatus(VehicleStatus.ACTIVE);
+        vehicle.setStatus(Status.ACTIVE);
         return vehicle;
     }
 

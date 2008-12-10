@@ -17,6 +17,14 @@
 		<converter-id>SimpleBeanConverter</converter-id>
 		<converter-class>com.inthinc.pro.convert.SimpleBeanConverter</converter-class>
 	</converter>
+	<converter>
+		<converter-id>StateConverter</converter-id>
+		<converter-class>com.inthinc.pro.convert.StateConverter</converter-class>
+	</converter>
+	<converter>
+		<converter-id>RoleConverter</converter-id>
+		<converter-class>com.inthinc.pro.convert.RoleConverter</converter-class>
+	</converter>
 
 	<!-- managed beans -->
 	

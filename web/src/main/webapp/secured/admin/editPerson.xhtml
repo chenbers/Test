@@ -175,6 +175,7 @@
                           <td>
                             <h:selectOneMenu value="#{personBean.item.address.state}" id="address_state" onchange="checkMultiple(this)" required="#{(not personBean.batchEdit) or personBean.updateField['address.state']}" requiredMessage="#{messages.required}">
                               <f:selectItem itemLabel="#{messages.editPerson_selectState}" />
+                              <f:converter  converterId="StateConverter"/>
                               <f:selectItems value="#{personBean.states}" />
                             </h:selectOneMenu>
                             <rich:message for="address_state" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -335,19 +336,19 @@
                           </td>
                           <td>
                             <h:selectOneMenu value="#{personBean.item.user.role}" id="user_role" onchange="checkMultiple(this)">
+                              <f:converter  converterId="RoleConverter"/>
                               <f:selectItems value="#{personBean.roles}" />
                             </h:selectOneMenu>
                           </td>
                         </tr>
                         <tr>
                           <td width="100" valign="top">
-                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_user_active" value="#{personBean.updateField['user.active']}" />
+                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_user_active" value="#{personBean.updateField['user.status']}" />
                             <h:outputText value="#{messages.editPerson_user_active}" />
                           </td>
                           <td>
-                            <h:selectOneMenu value="#{personBean.item.user.active}" id="user_active" onchange="checkMultiple(this)">
-                              <f:selectItem itemValue="true" itemLabel="#{messages.active}" />
-                              <f:selectItem itemValue="false" itemLabel="#{messages.inactive}" />
+                            <h:selectOneMenu value="#{personBean.item.user.status}" id="user_active" onchange="checkMultiple(this)">
+                              <f:selectItems value="#{personBean.statuses}"/>
                             </h:selectOneMenu>
                           </td>
                         </tr>
@@ -391,7 +392,8 @@
                           </td>
                           <td>
                             <h:selectOneMenu value="#{personBean.item.driver.state}" id="driver_state" onchange="checkMultiple(this)" required="#{personBean.item.driverSelected and ((not personBean.batchEdit) or personBean.updateField['driver.state'])}" requiredMessage="#{messages.required}">
-                              <f:selectItem itemLabel="#{messages.editPerson_selectState}" />
+					          <f:selectItem itemLabel="#{messages.editPerson_selectState}" />
+					          <f:converter  converterId="StateConverter"/>
                               <f:selectItems value="#{personBean.states}" />
                             </h:selectOneMenu>
                             <rich:message for="driver_state" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -419,13 +421,12 @@
                         </ui:fragment>
                         <tr>
                           <td width="100" valign="top">
-                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_driver_active" value="#{personBean.updateField['driver.active']}" />
+                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_driver_active" value="#{personBean.updateField['driver.status']}" />
                             <h:outputText value="#{messages.editPerson_driver_active}" />
                           </td>
                           <td>
-                            <h:selectOneMenu value="#{personBean.item.driver.active}" id="driver_active" onchange="checkMultiple(this)">
-                              <f:selectItem itemValue="true" itemLabel="#{messages.active}" />
-                              <f:selectItem itemValue="false" itemLabel="#{messages.inactive}" />
+                            <h:selectOneMenu value="#{personBean.item.driver.status}" id="driver_active" onchange="checkMultiple(this)">
+                              <f:selectItems value="#{personBean.statuses}"/>
                             </h:selectOneMenu>
                           </td>
                         </tr>

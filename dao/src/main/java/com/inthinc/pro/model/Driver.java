@@ -10,7 +10,7 @@ public class Driver extends BaseEntity
     @ID
     private Integer driverID;
     private Integer personID;
-    private DriverStatus status;
+    private Status status;
     
     @Column(name = "rfid")
     private Integer RFID;
@@ -27,7 +27,7 @@ public class Driver extends BaseEntity
     @Column(updateable = false)
     private Person person;
 
-    public Driver(Integer driverID, Integer personID, DriverStatus status, Integer rfid, String license, State state, String licenseClass, Date expiration)
+    public Driver(Integer driverID, Integer personID, Status status, Integer rfid, String license, State state, String licenseClass, Date expiration)
     {
         super();
         this.driverID = driverID;
@@ -129,18 +129,14 @@ public class Driver extends BaseEntity
         this.person = person;
     }
 
-    public DriverStatus getStatus()
+    public Status getStatus()
     {
         return status;
     }
 
-    public void setStatus(DriverStatus status)
+    public void setStatus(Status status)
     {
         this.status = status;
     }
     
-    public Boolean getActive()
-    {
-        return status != null && status.equals(DriverStatus.ACTIVE);
-    }
 }

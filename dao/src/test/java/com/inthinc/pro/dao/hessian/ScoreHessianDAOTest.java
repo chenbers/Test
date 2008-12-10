@@ -40,23 +40,19 @@ public class ScoreHessianDAOTest
     @Test
     public void getOverallScore()
     {
-        int[] monthsBack = { 12, 6, 3, 1 };
-        for (int i = 0; i < monthsBack.length; i++)
+        for (Duration d : EnumSet.allOf(Duration.class))
         {
-            Integer endDate = DateUtil.getTodaysDate();
-            Integer startDate = DateUtil.getDaysBackDate(endDate, monthsBack[i] * 30);
-            ScoreableEntity score = scoreHessianDAO.getAverageScoreByType(MockData.TOP_GROUP_ID, startDate, endDate, ScoreType.SCORE_OVERALL);
+            ScoreableEntity score = scoreHessianDAO.getAverageScoreByType(MockData.TOP_GROUP_ID, d, ScoreType.SCORE_OVERALL);
 
-            assertNotNull("Months Back: " + monthsBack[i] + " " + score.toString(), score);
+            assertNotNull(d.name() + " " + score.toString(), score);
             assertEquals(MockData.TOP_GROUP_ID, score.getEntityID());
-            assertTrue("Months Back: " + monthsBack[i] + " " + score.toString(), (score.getScore() >= 0 && score.getScore() <= 50));
+            assertTrue(d.name() + " " + score.toString(), (score.getScore() >= 0 && score.getScore() <= 50));
         }
     }
 
     @Test
     public void getScores()
     {
-        int[] monthsBack = { 12, 6, 3, 1 };
 
         Integer testGroupID = MockData.REGION_GROUP_ID;
         SearchCriteria searchCriteria = new SearchCriteria();
@@ -69,14 +65,12 @@ public class ScoreHessianDAOTest
             {
                 continue;
             }
-            for (int i = 0; i < monthsBack.length; i++)
+            for (Duration d : EnumSet.allOf(Duration.class))
             {
-                Integer endDate = DateUtil.getTodaysDate();
-                Integer startDate = DateUtil.getDaysBackDate(endDate, monthsBack[i] * 30);
-                List<ScoreableEntity> scoreList = scoreHessianDAO.getScores(testGroupID, startDate, endDate, scoreType);
+                List<ScoreableEntity> scoreList = scoreHessianDAO.getScores(testGroupID, d, scoreType);
     
-                assertNotNull("Months Back: " + monthsBack[i] + " " + scoreType.toString(), scoreList);
-                assertEquals("Months Back: " + monthsBack[i] + " " + scoreType.toString(), totalChildGroups, scoreList.size());
+                assertNotNull(d.name() + " " + scoreType.toString(), scoreList);
+                assertEquals(d.name() + " " + scoreType.toString(), totalChildGroups, scoreList.size());
             }
         }
     }
@@ -85,9 +79,7 @@ public class ScoreHessianDAOTest
     public void getPercentScores()
     {
         Integer testGroupID = MockData.REGION_GROUP_ID;
-        Integer endDate = DateUtil.getTodaysDate();
-        Integer startDate = DateUtil.getDaysBackDate(endDate, 30);
-        List<ScoreableEntity> scoreList = scoreHessianDAO.getScoreBreakdown(testGroupID, startDate, endDate, ScoreType.SCORE_OVERALL);
+        List<ScoreableEntity> scoreList = scoreHessianDAO.getScoreBreakdown(testGroupID, Duration.DAYS, ScoreType.SCORE_OVERALL);
 
         assertNotNull(scoreList);
         assertEquals(5, scoreList.size());

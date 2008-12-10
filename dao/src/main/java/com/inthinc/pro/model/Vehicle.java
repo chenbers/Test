@@ -14,7 +14,7 @@ public class Vehicle extends BaseEntity
     private Integer           groupID;
     // costPerHour?? not in db
     private Integer           costPerHour;                            // in cents
-    private VehicleStatus   status;
+    private Status   status;
     private String            name;
     private String            make;
     private String            model;
@@ -178,7 +178,7 @@ public class Vehicle extends BaseEntity
         this.deviceID = deviceID;
     }
 
-    public Vehicle(Integer vehicleID, Integer groupID, Integer costPerHour, VehicleStatus status, String name, String make, String model, 
+    public Vehicle(Integer vehicleID, Integer groupID, Integer costPerHour, Status status, String name, String make, String model, 
             Integer year, String color,
             VehicleType vtype, String vin, Integer weight, String license, State state)
     {
@@ -199,12 +199,12 @@ public class Vehicle extends BaseEntity
         this.state = state;
     }
 
-    public VehicleStatus getStatus()
+    public Status getStatus()
     {
         return status;
     }
 
-    public void setStatus(VehicleStatus status)
+    public void setStatus(Status status)
     {
         this.status = status;
     }
@@ -219,8 +219,4 @@ public class Vehicle extends BaseEntity
         this.vtype = vtype;
     }
     
-    public Boolean getActive()
-    {
-        return (status != null && status.equals(VehicleStatus.ACTIVE));
-    }
 }

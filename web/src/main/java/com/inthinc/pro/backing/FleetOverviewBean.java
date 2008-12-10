@@ -39,14 +39,12 @@ public class FleetOverviewBean extends BaseBean
     {
         logger.debug("## FleetOverviewBean - init()");
         
-        Integer endDate = DateUtil.getTodaysDate();
-        Integer startDate = DateUtil.getDaysBackDate(endDate, duration.getNumberOfDays());
         Integer groupID = navigation.getGroupID();
         if (groupID == null)
         {
             groupID = getUser().getPerson().getGroupID();
         }
-        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(groupID, startDate, endDate, ScoreType.SCORE_OVERALL);
+        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(groupID, duration, ScoreType.SCORE_OVERALL);
         setOverallScore(scoreableEntity.getScore());
     }
 

@@ -141,7 +141,7 @@
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_reportsTo}" /></td>
-                            <td><h:outputText value="#{personBean.item.reportsToPerson.first}" /><h:outputText value=" " /><h:outputText value="#{personBean.item.reportsToPerson.last}" /></td>
+                            <td><h:outputText value="#{personBean.item.reportsToPerson != null ? personBean.item.reportsToPerson.first : null}" /><h:outputText value=" " /><h:outputText value="#{personBean.item.reportsToPerson != null ? personBean.item.reportsToPerson.last : null}" /></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_title}" /></td>
@@ -170,7 +170,7 @@
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_user_active}" /></td>
-                            <td><h:outputText value="#{personBean.item.user.active ? messages.active : messages.inactive}" /></td>
+                            <td><h:outputText value="#{personBean.item.user.status}" /></td>
                           </tr>
                         </table>
 
@@ -205,7 +205,7 @@
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_active}" /></td>
-                            <td><h:outputText value="#{personBean.item.driver.active ? messages.active : messages.inactive}" /></td>
+                            <td><h:outputText value="#{personBean.item.driver.status}" /></td>
                           </tr>
                         </table>
 

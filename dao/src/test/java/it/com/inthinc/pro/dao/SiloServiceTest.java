@@ -38,12 +38,10 @@ import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
-import com.inthinc.pro.model.AccountStatus;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.DriverStatus;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
@@ -56,11 +54,10 @@ import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.State;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.User;
-import com.inthinc.pro.model.UserStatus;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.VehicleStatus;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.app.Roles;
 import com.inthinc.pro.model.app.States;
@@ -322,7 +319,7 @@ public class SiloServiceTest
         AccountHessianDAO accountDAO = new AccountHessianDAO();
         accountDAO.setSiloService(siloService);
         
-        account = new Account(null, null, null, AccountStatus.ACCOUNT_ACTIVE);
+        account = new Account(null, null, null, Status.ACTIVE);
         
         // create
         Integer siloID = TESTING_SILO;
@@ -569,7 +566,7 @@ public class SiloServiceTest
         // create
         for (int i = 0; i < VEHICLE_COUNT; i++)
         {
-            Vehicle vehicle = new Vehicle(0, groupID, 10, VehicleStatus.DISABLED, "Vehicle " + i, "Make " + i, "Model " + i, 2000 + i, "COLOR " + i, 
+            Vehicle vehicle = new Vehicle(0, groupID, 10, Status.INACTIVE, "Vehicle " + i, "Make " + i, "Model " + i, 2000 + i, "COLOR " + i, 
                     VehicleType.valueOf(Util.randomInt(0, VehicleType.values().length-1)), "VIN_" + groupID + "_"+ i, 1000, "License " + i, 
                     randomState());
             Integer vehicleID = vehicleDAO.create(groupID, vehicle);
@@ -589,7 +586,7 @@ public class SiloServiceTest
         {
             if (vehicle.getGroupID().equals(groupID))
             {
-                vehicle.setStatus(VehicleStatus.ACTIVE);
+                vehicle.setStatus(Status.ACTIVE);
                 Integer changedCount = vehicleDAO.update(vehicle);
                 assertEquals("Vehicle update count " + vehicle.getName(), Integer.valueOf(1), changedCount);
             }
@@ -638,7 +635,7 @@ public class SiloServiceTest
         // create
         for (int i = 0; i < VEHICLE_COUNT; i++)
         {
-            Vehicle vehicle = new Vehicle(0, groupID, 10, VehicleStatus.ACTIVE, "Vehicle " + i, "Make " + i, "Model " + i, 2000 + i, "COLOR " + i, 
+            Vehicle vehicle = new Vehicle(0, groupID, 10, Status.ACTIVE, "Vehicle " + i, "Make " + i, "Model " + i, 2000 + i, "COLOR " + i, 
                     VehicleType.valueOf(Util.randomInt(0, VehicleType.values().length-1)), "VIN_" + groupID + "_" + i, 1000, "License " + i, 
                     randomState());
             Integer vehicleID = vehicleDAO.create(groupID, vehicle);
@@ -744,7 +741,7 @@ logger.debug("Persons GroupID: " + groupID);
         for (Person person : groupPersonList)
         {
 
-            User user = new User(0, person.getPersonID(), randomRole(), UserStatus.ACTIVE, "user_"+person.getPersonID(), PASSWORD);
+            User user = new User(0, person.getPersonID(), randomRole(), Status.ACTIVE, "user_"+person.getPersonID(), PASSWORD);
             // create
             Integer userID = userDAO.create(person.getPersonID(), user);
             assertNotNull("user", userID);
@@ -783,7 +780,7 @@ logger.debug("Persons GroupID: " + groupID);
         // restore all 
         for (User user : userList)
         {
-            user.setStatus(UserStatus.ACTIVE);
+            user.setStatus(Status.ACTIVE);
             Integer changedCount = userDAO.update(user);
             assertEquals("User update count " + user.getUserID(), Integer.valueOf(1), changedCount);
         }
@@ -820,7 +817,7 @@ logger.debug("Persons GroupID: " + groupID);
         {
             Date expired = Util.genDate(2010, 9, 30);
         
-            Driver driver = new Driver(0, person.getPersonID(), DriverStatus.ACTIVE, 100+person.getPersonID(), "l"+person.getPersonID(), 
+            Driver driver = new Driver(0, person.getPersonID(), Status.ACTIVE, 100+person.getPersonID(), "l"+person.getPersonID(), 
                                         randomState(), "ABCD", expired);
 
             // create
@@ -870,7 +867,7 @@ logger.debug("Persons GroupID: " + groupID);
         // restore all 
         for (Driver driver : driverList)
         {
-            driver.setStatus(DriverStatus.ACTIVE);
+            driver.setStatus(Status.ACTIVE);
             Integer changedCount = driverDAO.update(driver);
             assertEquals("User update count " + driver.getDriverID(), Integer.valueOf(1), changedCount);
         }
@@ -1013,6 +1010,19 @@ logger.debug("Persons GroupID: " + groupID);
         {
             if (cnt++ == idx)
                 return state;
+        }
+        
+        return null;
+    }
+
+    private Integer randomStateID()
+    {
+        int idx = Util.randomInt(0, States.getStates().size()-1);
+        int cnt = 0;
+        for (State state : States.getStates().values())
+        {
+            if (cnt++ == idx)
+                return state.getID();
         }
         
         return null;

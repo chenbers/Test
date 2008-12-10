@@ -2,7 +2,7 @@ package com.inthinc.pro.backing;
 
 import com.inthinc.pro.backing.VehiclesBean.VehicleView;
 import com.inthinc.pro.model.State;
-import com.inthinc.pro.model.VehicleStatus;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.app.States;
 
@@ -24,7 +24,7 @@ public class VehiclesBeanTest extends BaseAdminBeanTest<VehiclesBean.VehicleView
     protected void populate(VehicleView editItem)
     {
         editItem.setCostPerHour(1000);
-        editItem.setStatus(VehicleStatus.ACTIVE);
+        editItem.setStatus(Status.ACTIVE);
         editItem.setName("Vehicle");
         editItem.setMake("Chevy");
         editItem.setModel("Test");

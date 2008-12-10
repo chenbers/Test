@@ -52,10 +52,6 @@ public class BreakdownBean extends BaseDurationBean {
 		//Control parameters
 		sb.append(GraphicUtil.getPieControlParameters());
         
-        //Date range qualifiers
-        Integer endDate = DateUtil.getTodaysDate();
-        Integer startDate = DateUtil.getDaysBackDate(endDate, getDuration().getNumberOfDays());
-        
         //Fetch, qualifier is groupId (parent), date from, date to
         List<ScoreableEntity> s = null;
         try {          
@@ -64,7 +60,7 @@ public class BreakdownBean extends BaseDurationBean {
 //            s = scoreDAO.getScores(this.navigation.getGroupID(),
 //                    startDate, endDate, ScoreType.SCORE_OVERALL_PERCENTAGES);
             s = scoreDAO.getScoreBreakdown(this.navigation.getGroupID(),
-                    startDate, endDate, scoreType);
+                    getDuration(), scoreType);
         } catch (Exception e) {
             logger.debug("graphicDao error: " + e.getMessage());
         }    
@@ -73,29 +69,6 @@ public class BreakdownBean extends BaseDurationBean {
         //Calculate total observations and set the pie data
         // this may change to be actual percentages
         ScoreableEntity se = null;
-/*        
-        int total = 0;
-        for ( int i = 0; i < s.size(); i++ ) {            
-            se = (ScoreableEntity)s.get(i);
-            logger.debug("score is: " + se.getScore());
-            total += se.getScore();            
-        }
-        logger.debug("total is: " + total);
-        Integer percent = 0;
-        for ( int i = 0; i < s.size(); i++ ) {
-            se = (ScoreableEntity)s.get(i);
-            percent = (se.getScore()*100)/total;
-            sb.append("<set value=\'" + percent.toString() + "\' " + "label=\'\' color=\'" +                
-                    (BreakdownBean.entityColorKey.get(i)) + "\'/>");
-        }
-*/
-    logger.error(DateUtil.getDisplayDate(startDate) + " - " + DateUtil.getDisplayDate(endDate) );
-    logger.error("RETURNED " + s.size() + "  SCORES!!!");
-    for ( int i = 0; i < s.size(); i++ ) 
-    {
-        logger.error("Date: " + DateUtil.getDisplayDate(s.get(i).getDate()) + " Score: " + s.get(i).getScore());
-        
-    }
         for ( int i = 0; i < s.size(); i++ ) {
             se = (ScoreableEntity)s.get(i);
             Integer percent = se.getScore();
@@ -121,14 +94,12 @@ public class BreakdownBean extends BaseDurationBean {
     private void init()
     {
         logger.debug("init()");
-        Integer endDate = DateUtil.getTodaysDate();
-        Integer startDate = DateUtil.getDaysBackDate(endDate, getDuration().getNumberOfDays());
         Integer groupID = navigation.getGroupID();
         if (groupID == null)
         {
             groupID = getUser().getPerson().getGroupID();
         }
-        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(groupID, startDate, endDate, ScoreType.SCORE_OVERALL);
+        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(groupID, getDuration(), ScoreType.SCORE_OVERALL);
         if (scoreableEntity == null)
             setOverallScore(0);
         else setOverallScore(scoreableEntity.getScore());

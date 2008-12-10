@@ -5,6 +5,7 @@ import org.springframework.security.GrantedAuthority;
 import org.springframework.security.GrantedAuthorityImpl;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 
 public class ProUser extends org.springframework.security.userdetails.User
@@ -24,7 +25,7 @@ public class ProUser extends org.springframework.security.userdetails.User
     {
         this(   user.getUsername(),
                 user.getPassword(),
-                user.getActive(), // boolean enabled,
+                user.getStatus().equals(Status.ACTIVE), // boolean enabled,
                 true, // boolean accountNonExpired,
                 true, // boolean credentialsNonExpired
                 true, // boolean accountNonLocked,

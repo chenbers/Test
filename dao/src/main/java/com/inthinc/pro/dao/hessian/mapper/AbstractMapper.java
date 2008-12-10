@@ -157,10 +157,10 @@ public abstract class AbstractMapper implements Mapper
             catch (NoSuchFieldException e)
             {
                 // If the field doesn't exist, continue
-                if (logger.isDebugEnabled())
-                {
-                    logger.debug("The field \"" + key + "\" does not exist for class: " + value.getClass().getName());
-                }
+//                if (logger.isDebugEnabled())
+//                {
+//                    logger.debug("The field \"" + key + "\" does not exist for class: " + value.getClass().getName());
+//                }
             }
         }
 

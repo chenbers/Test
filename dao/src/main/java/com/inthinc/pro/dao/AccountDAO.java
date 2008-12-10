@@ -5,4 +5,6 @@ import com.inthinc.pro.model.Account;
 
 public interface AccountDAO extends GenericDAO<Account, Integer>
 {
+    Integer create(Account entity);
+
 }

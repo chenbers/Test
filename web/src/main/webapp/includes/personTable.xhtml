@@ -24,9 +24,9 @@
         <h:outputText value="#{item.first}" /><h:outputText value=" " /><h:outputText value="#{item.last}" />
       </h:commandLink>
     </rich:column>
-    <rich:column rendered="#{personBean.tableColumns['user_active'].visible}" sortBy="#{item.user.active}">
+    <rich:column rendered="#{personBean.tableColumns['user_active'].visible}" sortBy="#{item.user.status}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_user_active}" /></f:facet>
-      <h:outputText value="#{item.user.active ? messages.active : messages.inactive}" />
+      <h:outputText value="#{item.user.status}" />
     </rich:column>
     <rich:column rendered="#{personBean.tableColumns['user_username'].visible}" sortBy="#{item.user.username}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_user_username}" /></f:facet>
@@ -106,9 +106,9 @@
       <f:facet name="header"><h:outputText value="#{messages.personHeader_address_zip}" /></f:facet>
       <h:outputText value="#{item.address.zip}" />
     </rich:column>
-    <rich:column rendered="#{personBean.tableColumns['driver_active'].visible}" sortBy="#{item.driver.active}">
+    <rich:column rendered="#{personBean.tableColumns['driver_active'].visible}" sortBy="#{item.driver.status}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_active}" /></f:facet>
-      <h:outputText value="#{item.driver.active ? messages.active : messages.inactive}" />
+      <h:outputText value="#{item.driver.status}" />
     </rich:column>
     <rich:column rendered="#{personBean.tableColumns['driver_license'].visible}" sortBy="#{item.driver.license}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_license}" /></f:facet>

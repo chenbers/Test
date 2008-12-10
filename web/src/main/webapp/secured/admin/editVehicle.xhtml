@@ -153,6 +153,7 @@
                                 <td>
                                   <h:selectOneMenu value="#{vehiclesBean.item.state}" id="state" onchange="checkMultiple(this)" required="#{(not vehiclesBean.batchEdit) or vehiclesBean.updateField['state']}" requiredMessage="#{messages.required}">
                                     <f:selectItem itemLabel="#{messages.editVehicle_selectState}" />
+		                             <f:converter  converterId="StateConverter"/>
                                     <f:selectItems value="#{vehiclesBean.states}" />
                                   </h:selectOneMenu>
                                   <rich:message for="state" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -179,13 +180,12 @@
                               </ui:fragment>
                               <tr>
                                 <td width="100" valign="top">
-                                  <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_active" value="#{vehiclesBean.updateField['active']}" />
+                                  <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_active" value="#{vehiclesBean.updateField['status']}" />
                                   <h:outputText value="#{messages.editVehicle_active}" />
                                 </td>
                                 <td>
-                                  <h:selectOneMenu value="#{vehiclesBean.item.active}" id="active" onchange="checkMultiple(this)">
-                                    <f:selectItem itemValue="true" itemLabel="#{messages.active}" />
-                                    <f:selectItem itemValue="false" itemLabel="#{messages.inactive}" />
+                                  <h:selectOneMenu value="#{vehiclesBean.item.status}" id="active" onchange="checkMultiple(this)">
+                                    <f:selectItems value="#{vehiclesBean.statuses}"/>
                                   </h:selectOneMenu>
                                 </td>
                               </tr>

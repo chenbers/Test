@@ -52,9 +52,9 @@
             <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_group}" /></f:facet>
             <h:outputText value="#{item.group.name}" />
           </rich:column>
-          <rich:column sortBy="#{item.active}">
+          <rich:column sortBy="#{item.status}">
             <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_active}" /></f:facet>
-            <h:outputText value="#{item.active ? messages.active : messages.inactive}" />
+            <h:outputText value="#{(item.status == 1) ? messages.active : messages.inactive}" />
           </rich:column>
           <rich:column sortBy="#{empty item.deviceID}">
             <f:facet name="header"><h:outputText value="#{messages.chooseVehicle_assigned}" /></f:facet>

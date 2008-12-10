@@ -67,4 +67,15 @@ public class States implements BaseAppEntity
         return null;
     }
 
+    public static State getStateByName(String name)
+    {
+        for (State state : getStates().values())
+        {
+            if (state.getName().equals(name))
+            {
+                return state;
+            }
+        }
+        return null;
+    }
 }

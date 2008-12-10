@@ -16,12 +16,12 @@ public class User extends BaseEntity
     @Column(name = "roleID")
     private Role    role;
     
-    private UserStatus status;
+    private Status status;
     
     private String  username;
     private String  password;
     
-    public User(Integer userID, Integer personID, Role role, UserStatus status, String username, String password)
+    public User(Integer userID, Integer personID, Role role, Status status, String username, String password)
     {
         super();
         this.userID = userID;
@@ -87,17 +87,12 @@ public class User extends BaseEntity
         this.role = role;
     }
 
-    public Boolean getActive()
-    {
-        return status != null && status.equals(UserStatus.ACTIVE);
-    }
-
-    public UserStatus getStatus()
+    public Status getStatus()
     {
         return status;
     }
 
-    public void setStatus(UserStatus status)
+    public void setStatus(Status status)
     {
         this.status = status;
     }

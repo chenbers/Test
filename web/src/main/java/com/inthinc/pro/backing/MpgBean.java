@@ -106,13 +106,8 @@ public class MpgBean extends BaseDurationBean {
     {
         if (mpgEntities.size() == 0)
         {
-            // Date range qualifiers
-            int numDaysBack = getDuration().getNumberOfDays();
-            Integer endDate = DateUtil.getTodaysDate();
-            Integer startDate = DateUtil.getDaysBackDate(endDate, numDaysBack);
-            
             Integer parentGroupId = this.getNavigation().getGroupID();
-            List<MpgEntity> tempEntities = mpgDAO.getEntities(parentGroupId, startDate, endDate);
+            List<MpgEntity> tempEntities = mpgDAO.getEntities(parentGroupId, getDuration());
     
             // Populate the table
             String contextPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();

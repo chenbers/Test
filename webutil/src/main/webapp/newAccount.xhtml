@@ -1,0 +1,69 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:h="http://java.sun.com/jsf/html"
+	 xmlns:f="http://java.sun.com/jsf/core" 
+	 xmlns:a4j="http://richfaces.org/a4j" 
+	 xmlns:rich="http://richfaces.org/rich">
+
+<head>
+<title>New Account</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+
+</head>
+<f:view contentType="text/html" >
+<body>
+
+<div>
+    <rich:panel id="newAccount-panel">
+      <f:facet name="header">
+        <h:outputText value="New Account" />
+      </f:facet>
+	<h:form>
+	<h:outputText id="inst" value="This page should only be used by inthinc to create test tiwipro accounts.  The account, top level group, and superuser will be created.  The email and username must be unique." />
+	<h:panelGrid columns="3">
+	
+		<h:outputText value="Username:" />
+		<h:inputText  id="userName" value="#{newAccountBean.username}" required="true" requiredMessage="Username is required."/>
+        <rich:message for="userName"/>
+		
+		<h:outputText value="Email:" />
+		<h:inputText  id="email" value="#{newAccountBean.email}" required="true" requiredMessage="Email is required."/>
+        <rich:message for="email"/>
+		
+	</h:panelGrid>        
+	<h:commandButton value="Create Account" action="#{newAccountBean.createAction}"/>
+	
+	</h:form>
+	</rich:panel>
+
+	<h:panelGroup id="statusPanel">
+		<rich:modalPanel id="errorPanel" styleClass="errorPopup" showWhenRendered="#{not empty newAccountBean.errorMsg}" width="300" height="200" zindex="2000">
+		    <f:facet name="header">
+		      <h:outputText value="Creat Account Error" />
+		    </f:facet>
+		    <p>
+		      <h:outputText value="#{newAccountBean.errorMsg}" escape="false"/>
+		    </p>
+		    <h:form>
+		    	<h:commandButton onclick="Richfaces.hideModalPanel('errorPanel')" value="OK" action="#{newAccountBean.clearErrorAction}" style="float:right"/>
+			</h:form>
+		</rich:modalPanel>    
+	
+		<rich:modalPanel id="successPanel" styleClass="successPopup" showWhenRendered="#{not empty newAccountBean.successMsg}" width="300" height="200" zindex="2000">
+		    <f:facet name="header">
+		      <h:outputText value="Create Account Success" />
+		    </f:facet>
+		    <p>
+		      <h:outputText value="#{newAccountBean.successMsg}" escape="false"/>
+		    </p>
+		    <h:form>
+		    	<h:commandButton onclick="Richfaces.hideModalPanel('successPanel')" value="OK" action="#{newAccountBean.reInitAction}" style="float:right"/>
+			</h:form>
+		</rich:modalPanel>    
+	</h:panelGroup>
+
+</div><!-- end page -->
+<div> </div> 
+</body>
+</f:view>
+</html>

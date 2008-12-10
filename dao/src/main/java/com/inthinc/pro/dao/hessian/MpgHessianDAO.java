@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.MpgEntity;
 
 public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> implements MpgDAO
@@ -25,9 +26,9 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
     }
 
     @Override
-    public List<MpgEntity> getEntities(Integer groupID, Integer startDate, Integer endDate)
+    public List<MpgEntity> getEntities(Integer groupID, Duration duration)
     {
-        List<MpgEntity> scoreList = getMapper().convertToModelObject(reportService.getMpgValues(groupID, startDate, endDate), MpgEntity.class);
+        List<MpgEntity> scoreList = getMapper().convertToModelObject(reportService.getMpgValues(groupID, duration.getCode()), MpgEntity.class);
         return scoreList;
     }
 }

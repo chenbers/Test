@@ -42,6 +42,16 @@ public class Roles implements BaseAppEntity
     {
         return getRoles().get(id);
     }
+    public static Role getRoleByName(String  name)
+    {
+        for (Role role : getRoles().values())
+        {
+            if (role.getName().equals(name))
+                return role;
+        }
+        return null;
+    }
+
 
 
     public RoleDAO getRoleDAO()

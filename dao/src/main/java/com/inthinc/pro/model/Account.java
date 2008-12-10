@@ -18,14 +18,14 @@ public class Account extends BaseEntity
 
 	private Integer       mailID;
     private Integer       billID;
-    private AccountStatus status;
+    private Status status;
 
     public Account()
     {
         super();
     }
     
-    public Account(Integer acctID, Integer mailID, Integer billID, AccountStatus status)
+    public Account(Integer acctID, Integer mailID, Integer billID, Status status)
     {
         super();
         this.acctID = acctID;
@@ -64,12 +64,12 @@ public class Account extends BaseEntity
         this.billID = billID;
     }
 
-    public AccountStatus getStatus()
+    public Status getStatus()
     {
         return status;
     }
 
-    public void setStatus(AccountStatus status)
+    public void setStatus(Status status)
     {
         this.status = status;
     }

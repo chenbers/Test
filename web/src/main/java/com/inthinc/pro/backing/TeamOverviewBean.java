@@ -39,13 +39,11 @@ public class TeamOverviewBean extends BaseDurationBean
     private Integer initOverallScore(ScoreType scoreType)
     {
         
-        Integer endDate = DateUtil.getTodaysDate();
-        Integer startDate = DateUtil.getDaysBackDate(endDate, getDuration().getNumberOfDays());
 
         ScoreableEntity scoreableEntity = null;
         try 
         {
-            scoreableEntity = scoreDAO.getAverageScoreByType(getGroupID(), startDate, endDate, scoreType);
+            scoreableEntity = scoreDAO.getAverageScoreByType(getGroupID(), getDuration(), scoreType);
         }
         catch (Exception ex)
         {

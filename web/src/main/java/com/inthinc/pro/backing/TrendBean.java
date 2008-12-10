@@ -88,10 +88,6 @@ public class TrendBean extends BaseDurationBean
         // Control parameters
         sb.append(GraphicUtil.getXYControlParameters());
 
-        // Date range qualifiers
-        Integer endDate = DateUtil.getTodaysDate();
-        Integer startDate = DateUtil.getDaysBackDate(endDate, navigation.getDuration().getNumberOfDays());
-
         // Fetch to get parents children, qualifier is groupId (parent),
         // date from, date to
         List<ScoreableEntity> s = null;
@@ -114,7 +110,7 @@ public class TrendBean extends BaseDurationBean
             
             ScoreableEntity se = s.get(i-1);
             // Fetch to get children's observations
-            ss = scoreDAO.getScores(se.getEntityID(), startDate, endDate, ScoreType.SCORE_OVERALL_TIME);
+            ss = scoreDAO.getScores(se.getEntityID(), navigation.getDuration(), ScoreType.SCORE_OVERALL_TIME);
 
             // Y-coordinates
             sb.append("<dataset seriesName=\'\' color=\'");
@@ -205,9 +201,7 @@ public class TrendBean extends BaseDurationBean
         List<ScoreableEntity> s = null;
         try
         {
-            Integer endDate = DateUtil.getTodaysDate();
-            Integer startDate = DateUtil.getDaysBackDate(endDate, navigation.getDuration().getNumberOfDays());
-            s = scoreDAO.getScores(this.navigation.getGroupID(), startDate, endDate, ScoreType.SCORE_OVERALL);
+            s = scoreDAO.getScores(this.navigation.getGroupID(), navigation.getDuration(), ScoreType.SCORE_OVERALL);
         }
         catch (Exception e)
         {
