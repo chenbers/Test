@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.inthinc.pro.ProDAOException;
+import com.inthinc.pro.model.DriveQMap;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreType;
-import com.inthinc.pro.model.ScoreTypeBreakdown;
 
 public interface ReportService extends HessianService
 {
@@ -163,5 +163,26 @@ public interface ReportService extends HessianService
      * @return List<Map<String, Object>>  that maps to List of ScoreTypeBreakdown objects 
      */
     List<Map<String, Object>> getScoreBreakdownByType(Integer groupID, Integer duration, Integer scoreType) throws ProDAOException;
+
+  //Methods currently supported on REAL back end       
+    Map<String, Object> getDScoreByDM(Integer driverID, Integer mileage);
+
+    Map<String, Object> getDScoreByDT(Integer driverID, Integer duration);
     
+    List<Map<String, Object>> getDTrendByDTC(Integer driverID, Integer duration, Integer count);
+    
+    List<Map<String, Object>> getDTrendByDMC(Integer driverID, Integer mileage, Integer count);
+    
+    Map<String, Object> getVScoreByVM(Integer vehicleID, Integer mileage);
+    
+    Map<String, Object> getVScoreByVT(Integer vehicleID, Integer duration);
+    
+    List<Map<String, Object>> getVTrendByVMC(Integer vehicleID, Integer mileage, Integer count);
+    
+    List<Map<String, Object>> getVTrendByVTC(Integer vehicleID, Integer duration, Integer count);
+    
+    Map<String, Object> getGDScoreByGT(Integer groupID, Integer duration);
+    
+    List<Map<String, Object>> getGDTrendByGTC(Integer groupID, Integer duration, Integer count);
+
 }
