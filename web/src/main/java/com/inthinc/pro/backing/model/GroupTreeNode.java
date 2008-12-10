@@ -10,6 +10,8 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.richfaces.model.SwingTreeNodeImpl;
 
+import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LatLng;
 
@@ -22,7 +24,12 @@ public class GroupTreeNode extends SwingTreeNodeImpl implements Serializable{
 	private List<GroupTreeNode> childGroupTreeNodes;
 	private GroupHierarchy groupHierarchyUtil;
 	private GroupLevel groupLevel;
-	private GroupTreeNode fleetNode;
+	
+	private VehicleDAO vehicleDAO;
+	private DriverDAO driverDAO;
+	
+	//We are storing these values here because once loaded, we don't want to have to pull them again.
+
 
 	private static final Logger logger = Logger.getLogger(GroupTreeNode.class);
 	
@@ -80,24 +87,6 @@ public class GroupTreeNode extends SwingTreeNodeImpl implements Serializable{
 		if(node.getParent() != null){
 			loadBreadCrumbs(node.getParent(),breadCrumbList);
 		}
-	}
-	
-	public GroupTreeNode getFleetNode() {
-		if(fleetNode == null){
-			fleetNode = getFleet(this);
-		}
-		return fleetNode;
-	}
-	
-	private GroupTreeNode getFleet(GroupTreeNode groupTreeNode){
-		GroupTreeNode result = null;
-		if(groupTreeNode.getGroup().getParentID() == 0){
-			result = groupTreeNode;
-		}else{
-			result = getFleet(groupTreeNode.getParent());
-		}	
-		
-		return result;
 	}
 	
 	public void addChildNode(GroupTreeNode groupTreeNode){
@@ -212,6 +201,7 @@ public class GroupTreeNode extends SwingTreeNodeImpl implements Serializable{
 		childGroupTreeNodes = childNodes;
 		return childGroupTreeNodes;
 	}
+
 	
 	
 }

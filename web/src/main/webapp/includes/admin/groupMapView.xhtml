@@ -9,8 +9,8 @@
 
 
 
-	<div class="add_section_title">#{messages.group_geofence}</div>
-	<div style="width: 100%; height: 500px">
+	<div class="add_section_title">#{messages.group_default_view}</div>
+	<div style="width: 100%; height: 510px">
 	<table style="width: 100%" cellpadding="4" border="0" align="center">
 		<tbody>
 			<tr>
@@ -19,32 +19,23 @@
 			<tr>
 				<td><h:panelGroup styleClass="map-border" layout="block">
 					<div id="map-canvas" style="width: 500px; height: 500px; border: 0"></div>
-				</h:panelGroup> <script type="text/javascript">
-
-								function updateGroupNode(){
-									var latLng = map.getCenter();
-									updateGroup(null,latLng.lat(),latLng.lng(),map.getZoom());
-								}
-														    
-	      						if (GBrowserIsCompatible()) {
-	        						map = new GMap2(document.getElementById("map-canvas"));
-	        						map.addControl(new GLargeMapControl());
-	        						map.addControl(new GMapTypeControl());
-									map.setMapType(G_NORMAL_MAP);
-									map.setCenter(new GLatLng(#{groupTreeNode.group.mapCenter.lat},#{groupTreeNode.group.mapCenter.lng}),#{groupTreeNode.group.mapZoom});
-		      					}
-	    					</script> <a4j:jsFunction name="updateGroup"
-					action="#{organizationBean.updateGroupNode}"
-					reRender="groupContent,buttonPanel,organizationTreePanel">
-					<a4j:actionparam name="state" value="VIEW"
-						assignTo="#{organizationBean.groupState}" />
-					<a4j:actionparam name="latitude"
-						assignTo="#{groupTreeNode.group.mapCenter.lat}" />
-					<a4j:actionparam name="longitude"
-						assignTo="#{groupTreeNode.group.mapCenter.lng}" />
-					<a4j:actionparam name="zoomLevel"
-						assignTo="#{groupTreeNode.group.mapZoom}" />
-				</a4j:jsFunction></td>
+				</h:panelGroup> 
+				<script type="text/javascript">	
+					
+											    
+   					if (GBrowserIsCompatible()) {
+   					
+   							GUnload();
+   					
+   	   					
+   						map = new GMap2(document.getElementById("map-canvas"));
+   						
+   						map.addControl(new GMapTypeControl());
+						map.setMapType(G_NORMAL_MAP);
+						map.setCenter(new GLatLng(#{groupTreeNode.group.mapCenter.lat},#{groupTreeNode.group.mapCenter.lng}),#{groupTreeNode.group.mapZoom});
+    				}
+	    		</script> 
+	    		</td>
 			</tr>
 			<tr>
 				<td></td>

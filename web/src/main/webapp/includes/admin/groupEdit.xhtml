@@ -6,6 +6,90 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:security="http://pro.tiwi.com/jsf/security">
+	
+	
+	<h:panelGroup id="buttonPanel">
+		<ul id="grid_nav_dark">
+		<li class="l">
+
+		<ul id="breadcrumb">
+			<ui:repeat
+				value="#{organizationBean.selectedGroupNode.groupBreadCrumb}"
+				var="crumb">
+				<li class="last"><a4j:commandLink value="#{crumb.group.name}"
+					reRender="groupPanel,groupContent,organizationTreePanel">
+					<a4j:actionparam converter="SimpleBeanConverter" name="groupNode"
+						value="#{crumb}"
+						actionListener="#{organizationBean.changeSelectedGroup}"
+						assignTo="#{organizationBean.selectedGroupNode}" />
+				</a4j:commandLink></li>
+			</ui:repeat>
+		</ul>
+
+		</li>
+		<li class="r"><h:panelGroup>
+
+			<a4j:commandLink rendered="#{organizationBean.groupState eq 'ADD'}"
+				onclick="saveGroupNode()">
+				<button value="submit" class="left"><span class="add"><h:outputText
+					value="#{messages.button_create_unit}" /></span></button>
+			</a4j:commandLink>
+			<h:commandLink rendered="#{organizationBean.groupState eq 'EDIT'}"
+				onclick="updateGroupNode()">
+				<button value="submit" class="left"><span class="add"><h:outputText
+					value="#{messages.button_save}" /></span></button>
+			</h:commandLink>
+			<a4j:commandLink rendered="#{organizationBean.groupState ne 'VIEW'}"
+				action="#{organizationBean.changeState}"
+				reRender="groupPanel,organizationTreePanel,buttonPanelFooter">
+				<f:param name="state" value="VIEW" />
+				<button value="submit" class="left"><span class="cancel"><h:outputText
+					value="#{messages.button_cancel}" /></span></button>
+			</a4j:commandLink>
+		</h:panelGroup></li>
+	</ul>
+	</h:panelGroup>
+	<div style="padding-left: 11px">
+	<script type="text/javascript">
+		function updateGroupNode(){
+			var latLng = map.getCenter();
+			updateGroup(null,latLng.lat(),latLng.lng(),map.getZoom());
+		}	
+		function saveGroupNode(){
+			var latLng = map.getCenter();
+			saveGroup(null,latLng.lat(),latLng.lng(),map.getZoom());
+		}	
+
+		map.enableGoogleBar();
+		map.enableDragging();
+		map.enableDoubleClickZoom();
+		map.addControl(new GLargeMapControl());
+   	</script> 
+	<a4j:jsFunction name="updateGroup"
+			action="#{organizationBean.updateGroupNode}"
+			reRender="groupPanel,organizationTreePanel,buttonPanelFooter">
+			<a4j:actionparam name="state" value="VIEW"
+				assignTo="#{organizationBean.groupState}" />
+			<a4j:actionparam name="latitude"
+				assignTo="#{groupTreeNode.group.mapCenter.lat}" />
+			<a4j:actionparam name="longitude"
+				assignTo="#{groupTreeNode.group.mapCenter.lng}" />
+			<a4j:actionparam name="zoomLevel"
+				assignTo="#{groupTreeNode.group.mapZoom}" />
+	</a4j:jsFunction>
+	<a4j:jsFunction name="saveGroup"
+			action="#{organizationBean.saveGroupNode}"
+			reRender="groupPanel,organizationTreePanel,buttonPanelFooter">
+			<a4j:actionparam name="state" value="VIEW"
+				assignTo="#{organizationBean.groupState}" />
+			<a4j:actionparam name="latitude"
+				assignTo="#{groupTreeNode.group.mapCenter.lat}" />
+			<a4j:actionparam name="longitude"
+				assignTo="#{groupTreeNode.group.mapCenter.lng}" />
+			<a4j:actionparam name="zoomLevel"
+				assignTo="#{groupTreeNode.group.mapZoom}" />
+	</a4j:jsFunction>
+	
 	<table>
 		<tr>
 			<td width="500px" valign="top">
@@ -36,7 +120,11 @@
 					</tbody>
 	
 				</table>
+				
+				
 			</td>
 		</tr>
 	</table>
+	</div>
+	
 </ui:composition>

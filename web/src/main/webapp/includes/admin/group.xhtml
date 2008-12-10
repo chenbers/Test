@@ -1,4 +1,5 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition
+	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:rich="http://richfaces.org/rich"
@@ -6,57 +7,98 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:security="http://pro.tiwi.com/jsf/security">
+	
+	<h:panelGroup id="groupPanel">
+		<h:panelGroup rendered="#{organizationBean.selectedGroupNode ne null}">
+
+			<h:outputText rendered="#{organizationBean.groupState eq 'VIEW'}">
+				<ui:include src="/includes/admin/groupView.xhtml">
+					<ui:param name="groupTreeNode"
+						value="#{organizationBean.selectedGroupNode}" />
+				</ui:include>
+			</h:outputText>
 
 
 
-	<table>
-		<tr>
-			<td width="275" valign="top">
-			<div class="add_section_title">
-				<h:outputFormat value="#{messages.group_summary_title}">
-					<f:param value="#{organizationBean.selectedGroupNode.group.name}" />
-				</h:outputFormat>
-			</div>
-			<table width="240" cellspacing="2" cellpadding="4" border="0"
-				align="center">
-				<tbody>
-					<tr>
-						<td width="100">#{messages.group_fleet}</td>
-						<td align="left">
-						#{groupTreeNode.fleetNode.group.name}</td>
+			<h:outputText rendered="#{organizationBean.groupState ne 'VIEW'}">
+				<ui:include src="/includes/admin/groupEdit.xhtml">
+					<ui:param name="groupTreeNode"
+						value="#{organizationBean.inProgressGroupNode}" />
+				</ui:include>
 
-					</tr>
-					<tr>
-						<td>#{messages.group_name}</td>
-						<td>#{groupTreeNode.group.name}</td>
-					</tr>
-					<tr>
-						<td>#{messages.group_description}</td>
-						<td>#{groupTreeNode.group.description}</td>
-					</tr>
-					<tr>
-						<td>#{messages.group_manager}</td>
-						<td>#{organizationBean.selectedPerson.first} #{organizationBean.selectedPerson.last}</td>
-					</tr>
-					<h:outputText
-						rendered="#{organizationBean.selectedGroupNode.groupLevel.description eq 'TEAM'}">
-						<tr>
-							<td>#{messages.group_number_of_vehicles}</td>
-							<td>125</td>
-						</tr>
-						<tr>
-							<td>#{messages.group_number_of_drivers}</td>
-							<td>243</td>
-						</tr>
-					</h:outputText>
-				</tbody>
+			</h:outputText>
 
-			</table>
-			</td>
-			<td>
-			<div style="padding-top: 5px"><h:graphicImage
-				value="/images/map_small.PNG" /></div>
-			</td>
-		</tr>
+
+		</h:panelGroup>
+	</h:panelGroup>
+	<div class="add_section_title">#{messages.group_default_view}</div>
+	<div style="width: 100%; height: 510px">
+	<table style="width: 100%" cellpadding="4" border="0" align="center">
+		<tbody>
+			<tr>
+				<td style="font-weight: bold" width="100"></td>
+			</tr>
+			<tr>
+				<td><h:panelGroup styleClass="map-border" layout="block">
+					<div id="map-canvas" style="width: 500px; height: 500px; border: 0"></div>
+				</h:panelGroup> 
+				<script type="text/javascript">	
+					
+											    
+   					if (GBrowserIsCompatible()) {
+   					
+   							GUnload();
+   					
+   	   					
+   						map = new GMap2(document.getElementById("map-canvas"));
+   						
+   						map.addControl(new GMapTypeControl());
+						map.setMapType(G_NORMAL_MAP);
+						map.setCenter(new GLatLng(#{organizationBean.selectedGroupNode.group.mapCenter.lat},#{organizationBean.selectedGroupNode.group.mapCenter.lng}),#{organizationBean.selectedGroupNode.group.mapZoom});
+						<h:outputText rendered="#{organizationBean.groupState eq 'VIEW'}">
+							map.disableDragging();
+							map.disableScrollWheelZoom();
+							map.disableDoubleClickZoom();
+						</h:outputText>
+						<h:outputText rendered="#{organizationBean.groupState ne 'VIEW'}">
+							map.enableGoogleBar();
+							map.addControl(new GLargeMapControl());
+						</h:outputText>
+    				}
+	    		</script> 
+	    		</td>
+			</tr>
+			<tr>
+				<td></td>
+			</tr>
+		</tbody>
+
 	</table>
+	</div>
+	<h:outputText rendered="#{organizationBean.groupState eq 'EDIT'}">
+	<div style="padding-top:25px">
+	<ul id="grid_nav_dark">
+		<li class="r"><h:panelGroup id="buttonPanelFooter">
+			<a4j:commandLink rendered="#{organizationBean.groupState eq 'ADD'}"
+				onclick="saveGroupNode()">
+				<button value="submit" class="left"><span class="add"><h:outputText
+					value="#{messages.button_create_unit}" /></span></button>
+			</a4j:commandLink>
+			<h:commandLink rendered="#{organizationBean.groupState eq 'EDIT'}"
+				onclick="updateGroupNode()">
+				<button value="submit" class="left"><span class="add"><h:outputText
+					value="#{messages.button_save}" /></span></button>
+			</h:commandLink>
+			<a4j:commandLink rendered="#{organizationBean.groupState ne 'VIEW'}"
+				action="#{organizationBean.changeState}"
+				reRender="groupPanel,organizationTreePanel,buttonPanelFooter">
+				<f:param name="state" value="VIEW" />
+				<button value="submit" class="left"><span class="cancel"><h:outputText
+					value="#{messages.button_cancel}" /></span></button>
+			</a4j:commandLink>
+		</h:panelGroup></li>
+	</ul>
+	</div>
+	</h:outputText>
+
 </ui:composition>

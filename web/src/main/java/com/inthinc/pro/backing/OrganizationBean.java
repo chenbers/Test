@@ -14,11 +14,17 @@ import org.richfaces.event.NodeSelectedEvent;
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.model.GroupLevel;
 import com.inthinc.pro.backing.model.GroupTreeNode;
+import com.inthinc.pro.backing.ui.TableColumn;
+import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.PersonDAO;
+import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.Vehicle;
 
 /*
  * Notes TODO
@@ -38,11 +44,17 @@ public class OrganizationBean extends BaseBean{
 	//Spring managed beans
 	private GroupDAO groupDAO;
 	private PersonDAO personDAO;
+	private DriverDAO driverDAO;
+	private VehicleDAO vehicleDAO;
 
 	//Organization Tree Specific
 	private List<GroupTreeNode> topLevelNodes;
 	private GroupHierarchy organizationHierarchy;
 	private GroupTreeNode selectedGroupNode;
+	private Integer selectedGroupVehicleCount;
+	private Integer selectedGroupDriverCount;
+	
+
 	private Map<Integer, Boolean> treeStateMap = new HashMap<Integer, Boolean>();
 	
 	//For editing groups
@@ -51,9 +63,21 @@ public class OrganizationBean extends BaseBean{
 	private Person selectedPerson;
 	private GroupTreeNode inProgressGroupNode;
 	
+	//Driver/Vehicle Search
+	private Boolean driverSearchSelected = true;
+	private Boolean vehicleSearchSelected = false;
+	private List<DriverReportItem> driverData;
+	private List<Vehicle> vehicleData;
+	private Map<String,TableColumn> driverColumns;
+	private Map<String,TableColumn> vehicleColumns;
+
 	public OrganizationBean(){
 		groupState = State.VIEW;
-		//Set the selected initial selected group
+		
+//		driverColumns.put("employeeID",new TableColumn(true,"Employee ID"));
+//		driverColumns.put("employee",new TableColumn(true,"Employee ID"));
+//		driverColumns.put("employeeId",new TableColumn(true,"Employee ID"));
+		
 	}
 
 	public List<GroupTreeNode> getTopLevelNode(){
@@ -68,7 +92,7 @@ public class OrganizationBean extends BaseBean{
 				group.setMapZoom(3);
 				group.setMapCenter(new LatLng(40.2,-111));
 				GroupTreeNode topLevelNode = new GroupTreeNode(group,organizationHierarchy);
-				selectedGroupNode = topLevelNode;
+				setSelectedGroupNode(topLevelNode);
 				topLevelNodes.add(topLevelNode);
 			}
 			
@@ -112,8 +136,8 @@ public class OrganizationBean extends BaseBean{
 	
 	public void selectNode(NodeSelectedEvent event){
 		UITree tree = (UITree)event.getComponent();
-		GroupTreeNode object = (GroupTreeNode)tree.getRowData();
-		selectedGroupNode = object;
+		GroupTreeNode groupTreeNode = (GroupTreeNode)tree.getRowData();
+		setSelectedGroupNode(groupTreeNode);
 	}
 	
 	public void changeExpandListent(NodeExpandedEvent event){
@@ -185,6 +209,8 @@ public class OrganizationBean extends BaseBean{
 		Group group = new Group();
 		group.setAccountID(getAccountID());
 		group.setGroupID(++id_counter);
+		group.setMapZoom(3);
+		group.setMapCenter(new LatLng(40.2,-111));
 		GroupTreeNode newGroupNode = new GroupTreeNode(group,organizationHierarchy);
 		return newGroupNode;
 	}
@@ -229,6 +255,8 @@ public class OrganizationBean extends BaseBean{
 	}
 
 	public void setSelectedGroupNode(GroupTreeNode selectedGroupNode) {
+		selectedGroupDriverCount = driverDAO.getAllDrivers(selectedGroupNode.getGroup().getGroupID()).size();
+		selectedGroupVehicleCount = vehicleDAO.getVehiclesInGroupHierarchy(selectedGroupNode.getGroup().getGroupID()).size();
 		this.selectedGroupNode = selectedGroupNode;
 	}
 	
@@ -262,7 +290,59 @@ public class OrganizationBean extends BaseBean{
 	public void setInProgressGroupNode(GroupTreeNode inProgressGroupNode) {
 		this.inProgressGroupNode = inProgressGroupNode;
 	}
+	public Boolean getDriverSearchSelected() {
+		return driverSearchSelected;
+	}
 
-	
+	public void setDriverSearchSelected(Boolean driverSearchSelected) {
+		this.driverSearchSelected = driverSearchSelected;
+	}
+
+	public Boolean getVehicleSearchSelected() {
+		return vehicleSearchSelected;
+	}
+
+	public void setVehicleSearchSelected(Boolean vehicleSearchSelected) {
+		this.vehicleSearchSelected = vehicleSearchSelected;
+	}
+
+	public DriverDAO getDriverDAO() {
+		return driverDAO;
+	}
+
+	public void setDriverDAO(DriverDAO driverDAO) {
+		this.driverDAO = driverDAO;
+	}
+
+	public VehicleDAO getVehicleDAO() {
+		return vehicleDAO;
+	}
+
+	public void setVehicleDAO(VehicleDAO vehicleDAO) {
+		this.vehicleDAO = vehicleDAO;
+	}
+
+	public List<DriverReportItem> getDriverData() {
+		return driverData;
+	}
+
+	public void setDriverData(List<DriverReportItem> driverData) {
+		this.driverData = driverData;
+	}
+
+	public List<Vehicle> getVehicleData() {
+		return vehicleData;
+	}
+
+	public void setVehicleData(List<Vehicle> vehicleData) {
+		this.vehicleData = vehicleData;
+	}
+	public Integer getSelectedGroupVehicleCount() {
+		return selectedGroupVehicleCount;
+	}
+
+	public Integer getSelectedGroupDriverCount() {
+		return selectedGroupDriverCount;
+	}
 	
 }

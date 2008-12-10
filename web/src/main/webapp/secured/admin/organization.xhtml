@@ -46,13 +46,13 @@
 										<li class="l grid_title">#{organizationBean.accountName}</li>
 									</ul>
 									<h:panelGroup id="organizationTreePanel">
-										<rich:tree switchType="client" selectedClass="selectedNode"
+										<rich:tree switchType="ajax" selectedClass="selectedNode"
 											style="overflow: auto;width:210px;height:400px;border-left:1px solid #A1C667;border-right:1px solid #A1C667;border-bottom:1px solid #A1C667; margin-left: 11px"
 											value="#{organizationBean.topLevelNode}" var="group"
 											nodeFace="#{group.data.groupLevel.description}"
 											reRender="groupPanel"
 											nodeSelectListener="#{organizationBean.selectNode}"
-											adviseNodeSelected="#{organizationBean.adviseNodeSelected}"
+											
 											ajaxSubmitSelection="true">
 											<rich:treeNode type="FLEET" iconLeaf="/images/ico_truck.png"
 												icon="/images/ico_truck.png">
@@ -76,99 +76,12 @@
 							<td  valign="top">
 							<div
 								style="text-align: top; width: 550px;height: 100%">
-							<h:panelGroup id="groupPanel">
-								<h:panelGroup
-									rendered="#{organizationBean.selectedGroupNode ne null}">
-									<ul id="grid_nav_dark">
-										<li class="l">
-									
-										<ul id="breadcrumb">
-											<ui:repeat value="#{organizationBean.groupState eq 'VIEW'?organizationBean.selectedGroupNode.groupBreadCrumb:organizationBean.inProgressGroupNode.groupBreadCrumb}" var="crumb" >
-												<li class="last">
-													<a4j:commandLink value="#{crumb.group.name}" reRender="groupPanel,groupContent,organizationTreePanel">
-														<a4j:actionparam  converter="SimpleBeanConverter" name="groupNode" value="#{crumb}" actionListener="#{organizationBean.changeSelectedGroup}" assignTo="#{organizationBean.selectedGroupNode}"/>
-													</a4j:commandLink>
-												</li>
-											</ui:repeat>
-										</ul>
-										
-										</li>
-										<li class="r"><h:panelGroup id="buttonPanel">
-
-											<!-- If mode param is null then the conent from this page is being used and we are in view mode
-														 -->
-											<a4j:commandLink
-												rendered="#{organizationBean.groupState eq 'VIEW'}"
-												action="#{organizationBean.changeState}"
-												reRender="groupContent,buttonPanel">
-												<f:param name="state" value="EDIT" />
-												<button value="submit" class="left"><span
-													class="edit"><h:outputText
-													value="#{messages.button_edit}" /></span></button>
-											</a4j:commandLink>
-											<a4j:commandLink
-												rendered="#{organizationBean.groupState eq 'VIEW'}"
-												action="#{organizationBean.changeState}"
-												reRender="groupContent,buttonPanel">
-												<f:param name="state" value="ADD" />
-												<button value="submit" class="left"><span
-													class="add"><h:outputText
-													value="#{messages.button_add}" /></span></button>
-											</a4j:commandLink>
-
-											<a4j:commandLink
-												rendered="#{organizationBean.groupState eq 'ADD'}"
-												action="#{organizationBean.saveGroupNode}"
-												reRender="groupContent,buttonPanel,organizationTreePanel">
-												<f:param name="state" value="VIEW" />
-												<button value="submit" class="left"><span
-													class="add"><h:outputText
-													value="#{messages.button_create_unit}" /></span></button>
-											</a4j:commandLink>
-											<h:commandLink
-												rendered="#{organizationBean.groupState eq 'EDIT'}"
-												onclick="updateGroupNode()">
-												<button value="submit" class="left"><span
-													class="add"><h:outputText
-													value="#{messages.button_save}" /></span></button>
-											</h:commandLink>
-											<a4j:commandLink
-												rendered="#{organizationBean.groupState ne 'VIEW'}"
-												action="#{organizationBean.changeState}"
-												reRender="groupContent,buttonPanel,organizationTreePanel">
-												<f:param name="state" value="VIEW" />
-												<button value="submit" class="left"><span
-													class="cancel"><h:outputText
-													value="#{messages.button_cancel}" /></span></button>
-											</a4j:commandLink>
-											
-
-										</h:panelGroup></li>
-									</ul>
-									<div style="padding-left: 11px"><h:panelGroup
-										id="groupContent">
-										<h:outputText
-											rendered="#{organizationBean.groupState eq 'VIEW'}">
-											<ui:include src="/includes/admin/group.xhtml">
-												<ui:param name="groupTreeNode" value="#{organizationBean.selectedGroupNode}"/>
-											</ui:include>
-											<ui:include src="/includes/admin/groupMapView.xhtml">
-												<ui:param name="groupTreeNode" value="#{organizationBean.inProgressGroupNode}"/>
-											</ui:include>
-										</h:outputText>
-
-										<h:outputText
-											rendered="#{organizationBean.groupState ne 'VIEW'}">
-											<ui:include src="/includes/admin/groupEdit.xhtml">
-												<ui:param name="groupTreeNode" value="#{organizationBean.inProgressGroupNode}"/>
-											</ui:include>
-											<ui:include src="/includes/admin/groupMapView.xhtml">
-												<ui:param name="groupTreeNode" value="#{organizationBean.inProgressGroupNode}"/>
-											</ui:include>
-										</h:outputText>
-									</h:panelGroup></div>
-								</h:panelGroup>
-							</h:panelGroup></div>
+							<h:panelGroup id="contentPanel">		
+								<ui:include src="/includes/admin/group.xhtml">
+								</ui:include>
+	
+							  </h:panelGroup>
+								 </div>
 							</td>
 						</tr>
 					</table>

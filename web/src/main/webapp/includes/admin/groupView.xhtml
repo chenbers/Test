@@ -1,0 +1,97 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:security="http://pro.tiwi.com/jsf/security">
+
+	<ul id="grid_nav_dark">
+		<li class="l">
+
+		<ul id="breadcrumb">
+			<ui:repeat
+				value="#{organizationBean.selectedGroupNode.groupBreadCrumb}"
+				var="crumb">
+				<li class="last"><a4j:commandLink value="#{crumb.group.name}"
+					reRender="groupPanel,groupContent,organizationTreePanel">
+					<a4j:actionparam converter="SimpleBeanConverter" name="groupNode"
+						value="#{crumb}"
+						actionListener="#{organizationBean.changeSelectedGroup}"
+						assignTo="#{organizationBean.selectedGroupNode}" />
+				</a4j:commandLink></li>
+			</ui:repeat>
+		</ul>
+
+		</li>
+		<li class="r"><h:panelGroup>
+
+			<!-- If mode param is null then the conent from this page is being used and we are in view mode
+														 -->
+			<a4j:commandLink rendered="#{organizationBean.groupState eq 'VIEW'}"
+				action="#{organizationBean.changeState}"
+				reRender="groupPanel,buttonPanelFooter">
+				<f:param name="state" value="EDIT" />
+				<button value="submit" class="left"><span class="edit"><h:outputText
+					value="#{messages.button_edit}" /></span></button>
+			</a4j:commandLink>
+			<a4j:commandLink rendered="#{organizationBean.groupState eq 'VIEW'}"
+				action="#{organizationBean.changeState}"
+				reRender="groupPanel,buttonPanelFooter">
+				<f:param name="state" value="ADD" />
+				<button value="submit" class="left"><span class="add"><h:outputText
+					value="#{messages.button_add}" /></span></button>
+			</a4j:commandLink>
+		</h:panelGroup></li>
+	</ul>
+
+	<div style="padding-left: 11px;padding-bottom: 10px">
+	<table>
+		<tr>
+			<td width="500" valign="top">
+			<div class="add_section_title">
+				<h:outputFormat value="#{messages.group_summary_title}">
+					<f:param value="#{organizationBean.selectedGroupNode.group.name}" />
+				</h:outputFormat>
+			</div>
+			<table width="500" cellspacing="2" cellpadding="4" border="0"
+				align="center">
+				<tbody>
+					<tr>
+						<td>#{messages.group_name}</td>
+						<td>#{groupTreeNode.group.name}</td>
+					</tr>
+					<tr>
+						<td>#{messages.group_description}</td>
+						<td>#{groupTreeNode.group.description}</td>
+					</tr>
+					<tr>
+						<td>#{messages.group_manager}</td>
+						<td>#{organizationBean.selectedPerson.first} #{organizationBean.selectedPerson.last}</td>
+					</tr>
+				
+					<tr>
+						<td>#{messages.group_number_of_vehicles}</td>
+						<td>#{organizationBean.selectedGroupVehicleCount}</td>
+					</tr>
+					<tr>
+						<td>#{messages.group_number_of_drivers}</td>
+						<td>#{organizationBean.selectedGroupDriverCount}</td>
+					</tr>
+				
+				</tbody>
+
+			</table>
+			</td>
+		</tr>
+	</table>
+	</div>
+	
+	<script type="text/javascript">				
+		map.disableDragging();
+		map.disableScrollWheelZoom();
+		map.disableDoubleClickZoom();
+		map.setCenter(new GLatLng(#{groupTreeNode.group.mapCenter.lat},#{groupTreeNode.group.mapCenter.lng}),#{groupTreeNode.group.mapZoom});
+	</script> 
+</ui:composition>
