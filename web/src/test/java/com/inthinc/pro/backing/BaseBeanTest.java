@@ -34,11 +34,11 @@ import com.inthinc.pro.security.userdetails.ProUser;
 @RunWith(SpringJUnit4ClassRunner.class)
 
 // any classes that extend this one will also have access to these configurations
-@ContextConfiguration(locations={"file:src/main/config/appcontext/applicationContext-mockdao.xml",
-                                 "file:src/main/config/appcontext/applicationContext-daoBeans.xml",
-                                 "file:src/main/config/appcontext/applicationContext-appBeans.xml",
-                                 "file:src/main/config/appcontext/applicationContext-beans.xml",
-                                 "file:src/main/config/appcontext/applicationContext-security.xml"}, 
+@ContextConfiguration(locations={"classpath:spring/applicationContext-mockdao.xml",
+                                 "classpath:spring/applicationContext-daoBeans.xml",
+                                 "classpath:spring/applicationContext-appBeans.xml",
+                                 "classpath:spring/applicationContext-beans.xml",
+                                 "classpath:spring/applicationContext-security.xml"}, 
                                  loader=com.inthinc.pro.spring.test.WebSessionContextLoader.class)
 
                                  
@@ -57,11 +57,12 @@ public class BaseBeanTest extends AbstractJsfTestCase implements ApplicationCont
 
     private static final Logger logger = Logger.getLogger(BaseBeanTest.class);
     protected ApplicationContext applicationContext;
+    public String test;
     
     @BeforeClass
     public static void runOnceBeforeAllTests() throws Exception
     {
-        System.setProperty("log4j.configuration", "file:./src/test/resources/log4j.properties");
+        System.setProperty("log4j.configuration", "classpath*:log4j.properties");
         
         // initializes the mock data
         MockData.getInstance();

@@ -43,13 +43,13 @@
 	<!-- Spring -->
 	<context-param>
       <param-name>contextConfigLocation</param-name>
-      <param-value>/WEB-INF/applicationContext-*.xml</param-value>
+      <param-value>classpath*:spring/applicationContext-*.xml</param-value>
    </context-param>
 	
 	<!-- FACELET DEBUG PARAMETERS Special Debug Output for Development (not sure if needed)-->
  	<context-param>
   		<param-name>facelets.DEVELOPMENT</param-name>
-  		<param-value>true</param-value>
+  		<param-value>${facelets.development}</param-value>
  	</context-param>
  	
 	<!-- Optional JSF-RI Parameters to Help Debug -->
