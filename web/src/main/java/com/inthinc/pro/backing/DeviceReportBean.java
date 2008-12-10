@@ -64,14 +64,30 @@ public class DeviceReportBean extends BaseBean
         //Fake data
         drt = new DeviceReportItem();
         Device device = new Device();
-        device.setDeviceID(123456);
+        device.setName("TIWI0789");
         device.setVehicleID(456789);
         device.setImei("1c3lc46h67n6016i4a");
         device.setPhone("801-642-3159");        
         device.setStatus(DeviceStatus.DISABLED);
         devicesData.add(device);
         
-
+        drt = new DeviceReportItem();
+        device = new Device();
+        device.setName("TIWI1117");
+        device.setVehicleID(123456);
+        device.setImei("1c3lc46h67n7891i4a");
+        device.setPhone("801-555-1212");        
+        device.setStatus(DeviceStatus.ACTIVE);
+        devicesData.add(device);
+        
+        drt = new DeviceReportItem();
+        device = new Device();
+        device.setName("TIWI3917");
+        device.setVehicleID(456789);
+        device.setImei("1c3lc46h67n6719i4a");
+        device.setPhone("801-324-8851");        
+        device.setStatus(DeviceStatus.DELETED);
+        devicesData.add(device);        
         
         loadResults(devicesData);     
         maxCount = deviceData.size();        
