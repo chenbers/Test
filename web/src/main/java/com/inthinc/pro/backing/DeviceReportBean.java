@@ -15,6 +15,8 @@ import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceReportItem;
 import com.inthinc.pro.model.DeviceStatus;
+import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
@@ -110,30 +112,22 @@ public class DeviceReportBean extends BaseBean
             this.deviceData.clear();
         }
 
-        //Search by tiwi pro ID          
+        //Search by tiwi pro ID                     
         if ( this.searchFor.trim().length() != 0 ) {
-            try { 
-                Integer id = Integer.parseInt(this.searchFor.trim());   
-                String compareToID = Integer.toString(id.intValue());
-                List <Device> matchedDevices = new ArrayList<Device>();    
-                
-                for ( int i = 0; i < devicesData.size(); i++ ) {
-                    Device d = devicesData.get(i);                   
-                    String localID = Integer.toString(d.getDeviceID());
-                    
-                    //Fuzzy
-                    int index1 = localID.indexOf(compareToID);                    
-                    if (index1 != -1) {                        
-                        matchedDevices.add(d);
-                    }
+            String trimmedSearch = this.searchFor.trim();            
+            List <Device> matchedDevices = new ArrayList<Device>();    
+            
+            for ( Device d: devicesData ) {    
+                //Fuzzy   
+                String dev = d.getImei();
+                int index1 = dev.indexOf(trimmedSearch);                    
+                if (index1 != -1) {                        
+                    matchedDevices.add(d);
                 }
-                
-                loadResults(matchedDevices);             
-                this.maxCount = matchedDevices.size();
-                
-            //Looking for non-integer error for input search string
-            } catch (Exception e) {}
-
+            }
+            
+            loadResults(matchedDevices);             
+            this.maxCount = matchedDevices.size();
         //Nothing entered, show them all
         } else {
             loadResults(devicesData);
