@@ -57,7 +57,14 @@
       						<h:outputText value="#{messages.reports_status}" />
       					</f:facet>
       					<h:outputText value="#{item.device.status}" />
-    				</rich:column>    		
+    				</rich:column>  
+    				<rich:column rendered="#{deviceColumns['emergPhoneNbr'].visible}" 
+    					sortBy="#{item.device.ephone}">
+      					<f:facet name="header">
+      						<h:outputText value="#{messages.reports_emergphonenbr}" />
+      					</f:facet>
+      					<h:outputText value="#{item.device.ephone}" />
+    				</rich:column>   		
     			</rich:dataTable>    	
     			
     			<rich:datascroller id="bottomScroller" for="items" immediate="true"

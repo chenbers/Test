@@ -52,9 +52,11 @@
 					<rich:spacer width="20"/>
 					<h:outputText style="width:80px;" value="#{messages.reports_status}" />
 					<rich:spacer width="20"/>
-					<rich:spacer width="20"/> 						
-					<rich:spacer width="20"/>
-					<rich:spacer width="80"/>    
+					<h:selectBooleanCheckbox style="width:20px;" 
+						value="#{deviceColumns['emergPhoneNbr'].visible}" />
+					<rich:spacer width="20"/>	
+					<h:outputText style="width:80px;" value="#{messages.reports_emergphonenbr}" />    
+  
 							
 				</h:panelGrid>
 				</rich:panel>
