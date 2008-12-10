@@ -24,11 +24,11 @@
 					width="100%">
 
 					<rich:column rendered="#{deviceColumns['tiwiproID'].visible}" 
-						sortBy="#{item.device.deviceID}">
+						sortBy="#{item.device.name}">
 						<f:facet name="header">
 							<h:outputText value="#{messages.reports_tiwiproid}" />
 						</f:facet>							
-						<h:outputText value="#{item.device.deviceID}"/>										
+						<h:outputText value="#{item.device.name}"/>										
     				</rich:column>
     				<rich:column rendered="#{deviceColumns['assignedVehicle'].visible}" 
     					sortBy="#{item.device.vehicleID}">
