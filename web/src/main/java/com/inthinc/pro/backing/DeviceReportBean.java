@@ -111,17 +111,22 @@ public class DeviceReportBean extends BaseBean
         if ( this.deviceData.size() > 0 ) {
             this.deviceData.clear();
         }
-
-        //Search by tiwi pro ID                     
+                           
         if ( this.searchFor.trim().length() != 0 ) {
             String trimmedSearch = this.searchFor.trim();            
             List <Device> matchedDevices = new ArrayList<Device>();    
             
             for ( Device d: devicesData ) {    
-                //Fuzzy   
-                String dev = d.getImei();
+                //Fuzzy, imei
+                String dev = d.getImei().toLowerCase();
                 int index1 = dev.indexOf(trimmedSearch);                    
                 if (index1 != -1) {                        
+                    matchedDevices.add(d);
+                }
+                //Fuzzy, device name
+                String name = d.getName().toLowerCase();
+                int index2 = name.indexOf(trimmedSearch);                    
+                if ( (index1 == -1) && (index2 != -1) ) {                        
                     matchedDevices.add(d);
                 }
             }
