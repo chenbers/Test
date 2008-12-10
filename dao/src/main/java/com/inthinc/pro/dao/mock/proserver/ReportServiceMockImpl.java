@@ -295,18 +295,11 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
         for (int i = 0; i < numScoreRecords; i++)
         {
             ScoreableEntity se = new ScoreableEntity();
-
-            if (i == numScoreRecords) // No room for label on last data point. Place it next to last.
-                se.setIdentifier(currentOdometer.toString() + "mi"); // Mileage at time the score was calculated.
-
-            if (i == 0)
-            {
-                Integer temp = milesBack > currentOdometer ? 0 : currentOdometer - milesBack;
-                se.setIdentifier(temp.toString() + "mi");
-            }
-            else
-                se.setIdentifier("");
-
+        
+        	
+            Integer temp = milesBack > currentOdometer ? 0 : currentOdometer - (milesBack * i);
+        	se.setIdentifier(temp.toString() + "mi");
+      
             se.setScore((int) (Math.random() * ((50 - 0) + 1)) + 0);
 
             returnList.add(TempConversionUtil.createMapFromObject(se));

@@ -49,6 +49,9 @@ public class Line implements BaseChart
                                                     "numberPrefix=\'\' " +
                                                     "showValues=\'0\' " +
                                                     "adjustDiv=\'0\' " +
+                                                    "labelDisplay='Rotate' " +
+                                                    //"labelDisplay='Stagger'" +
+                                                    "slantLabels='1' " +
                                                     "setAdaptiveYMin='0' " +
                                                     "borderColor=\'#cfcfcf\' " +
                                                     "vDivLineColor=\'#cfcfcf\' " +

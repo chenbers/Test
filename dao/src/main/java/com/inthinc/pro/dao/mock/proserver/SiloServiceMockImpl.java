@@ -1,6 +1,7 @@
 package com.inthinc.pro.dao.mock.proserver;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -23,6 +24,7 @@ import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagPref;
@@ -1042,8 +1044,10 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     @Override
     public Map<String, Object> getLastLoc(Integer reqType, Integer id)
     {
-        // TODO Auto-generated method stub
-        return null;
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("driverID", id);
+
+    	return MockData.getInstance().lookup(LastLocation.class, searchCriteria);
     }
 
     @Override

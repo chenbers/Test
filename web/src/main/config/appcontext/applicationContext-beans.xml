@@ -157,6 +157,12 @@
     <bean id="googleMapKey" class="com.inthinc.pro.map.google.GoogleMapKeys">
         <property name="googleMapKeyPropertiesFile" value="classpath:googleMapKeys.properties" />
     </bean>
+    
+    <bean id="liveFleetBean" class="com.inthinc.pro.backing.LiveFleetBean" scope="request" parent="baseBean">
+        <property name="driverDAO" ref="driverDAO"></property>
+        <property name="navigation" ref="navigationBean"></property>
+        <property name="groupDAO" ref="groupDAO"></property>
+    </bean>
 
     <!-- Web Util Beans - wraps access to servlet  -->
     <bean id="webUtil" class="com.inthinc.pro.util.WebUtil"></bean>

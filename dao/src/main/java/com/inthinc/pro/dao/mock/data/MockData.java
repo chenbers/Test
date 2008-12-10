@@ -31,6 +31,7 @@ import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.GroupLevel;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.LowBatteryEvent;
@@ -448,9 +449,14 @@ public class MockData
                 }
                 else
                 {
+                    int routeLen = 3;
                     route = new ArrayList<LatLng>(2);
-                    route.add(new LatLng(lat[startAddressIdx], lng[startAddressIdx]));
-                    route.add(new LatLng(lat[endAddressIdx], lng[endAddressIdx]));
+                    
+                    for (int r = 0; r < routeLen; r++)
+                    {
+                        route.add( new LatLng( randomLat(), randomLng() ));
+                    }
+                    
                 }
                 Trip trip = new Trip(id, vehicleID, 
                         startDate, endDate, 
@@ -458,6 +464,21 @@ public class MockData
                 trip.setDriverID(driver.getDriverID());
                 
                 int eventCnt = addEventsAndRedFlagsForTrip(driver, vehicle, trip, eventIdOffset);
+                
+                if(tripCnt == numTrips-2)
+                {
+                	 LastLocation lastLoc = new LastLocation();
+                	 
+                	 int routeCount = trip.getRoute().size();
+                	 lastLoc.setLat( trip.getRoute().get(routeCount-1).getLat() );
+                	 lastLoc.setLng( trip.getRoute().get(routeCount-1).getLng() );
+                	 lastLoc.setTime( trip.getEndTime() );
+                	 lastLoc.setDriverID(trip.getDriverID());
+                	 lastLoc.setVehicleID(trip.getVehicleID());
+                	 
+                	 storeObject(lastLoc);
+                }
+                
                 storeObject(trip);
 
                 //            addZoneEvent(xml, driverID, vehicleID, trip.getEndLoc());
@@ -486,6 +507,10 @@ public class MockData
                     System.out.println("ERROR: minute: " + minute);            
                 endDate = DateUtil.convertTimeInSecondsToDate(hourInDaysBack(day, minute));
             }
+            
+           
+            
+        
         }
     }
     

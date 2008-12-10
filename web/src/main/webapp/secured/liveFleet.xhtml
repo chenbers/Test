@@ -11,19 +11,19 @@
 	<ui:define name="scripts">
 		<script src="http://maps.google.com/maps?file=api&amp;v=2.x&amp;key=#{gmBean.key}" type="text/javascript"></script>
 		<script type="text/javascript">
+		
 	    function createMarker(point, message, iconImage)
         {
-          var markerIcon = new GIcon(baseIcon);
-          markerIcon.image = iconImage;
-
-          // Set up our GMarkerOptions object
-          markerOptions = { icon:markerIcon };
-          var marker = new GMarker(point, markerOptions);
-
-          GEvent.addListener(marker, "click", function() {
-            marker.openInfoWindowHtml("<b>" + message + "</b>");
-          });
-          return marker;
+	          var markerIcon = new GIcon(baseIcon);
+	       	  markerIcon.image = iconImage;
+		         
+	          markerOptions = { icon:markerIcon };
+	          var marker = new GMarker(point, markerOptions);
+	
+	          GEvent.addListener(marker, "click", function() {
+	          marker.openInfoWindowHtml("<b>" + message + "</b>");
+	          });
+	          return marker;
         }
 
    		function showAddress(address) {
@@ -33,22 +33,24 @@
    	          function(point) {
    	            if (!point) {
    	              alert(address + " not found");
-   	            } else {
-   	              //map.setCenter(point, 13);
-   	              var marker = new GMarker(point);
-   	              map.addOverlay(marker);
-
-   	              marker.openInfoWindowHtml(address);
-
-   	              
-   	           	  bounds.extend(marker.getPoint());
-
-				  var loc;
-     	          loc = marker.getLatLng();
-	              notifyBean(loc.lat(), loc.lng());	
-	             
+   	         } else {
+  	              
+   				 //Create Marker
+				 var marker = new GMarker(point);
+				 GEvent.addListener(marker, "click", function() {
+			         	marker.openInfoWindowHtml("<b>" + address + "</b>");  });
+				 
+				 map.addOverlay(marker);
+				 bounds.extend(marker.getPoint());
 				
-     	            }
+				 //Immediately display info window.
+				 marker.openInfoWindow("<b>" + address + "</b>");
+				         	  
+				 //Pass LatLng to Bean.
+				 var loc = marker.getLatLng();
+				 addressPoint = marker.getLatLng();
+				 notifyBean(loc.lat(), loc.lng());	
+    	         }
    	          }
    	        );
    	      }
@@ -166,6 +168,8 @@
 			    var geocoder = null;
 			    var renderVehicles = new Boolean(false);
 
+			    var addressPoint;
+
 			    var baseIcon = new GIcon();
 					baseIcon.iconSize = new GSize(21, 20);
 					baseIcon.iconAnchor = new GPoint(6, 20);
@@ -178,7 +182,7 @@
 						map.addControl(new GLargeMapControl());
 						map.addControl(new GMapTypeControl());
 						map.addControl(new GOverviewMapControl()); 
-						map.setCenter(new GLatLng(37.4419, -122.1419), 14);
+						map.setCenter(new GLatLng(37.4419, -122.1419), 14);  //Replace with Group Default View LAT LNG
 						map.setMapType(G_NORMAL_MAP);
 		    	    geocoder = new GClientGeocoder();
 		        }
@@ -193,13 +197,17 @@
 							//alert('rerender div');
 			  					var marker;
 			  					var driverLoc;
-			  					
+
 			  					<ui:repeat value="#{liveFleetBean.drivers}" var="driver">
 			  						driverLoc = new GLatLng(#{driver.lastLocation.lat}, #{driver.lastLocation.lng});
 									marker = createMarker(driverLoc,"#{driver.driver.person.first} #{driver.driver.person.last} <br />#{driver.driver.person.workPhone}",
 															"#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
 									map.addOverlay(marker);
 									bounds.extend(marker.getPoint());
+
+									//polyline = new GPolyline([addressPoint, new GLatLng(#{driver.lastLocation.lat}, #{driver.lastLocation.lng})]
+									//							, "#0000ee", 3);
+									//map.addOverlay(polyline);
 									
 								</ui:repeat>
 	
@@ -230,12 +238,6 @@
 	</td>
   </tr>
 </table>
-	
-			
-<script type="text/javascript">
-	//Set up map.
-	//initialize();
-</script>
 
 </ui:define>
 </ui:composition>
