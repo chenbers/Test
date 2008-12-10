@@ -711,6 +711,71 @@ ul#grid_nav li.text a:visited {
 	color: #333;
 	text-decoration: underline;
 	}
+	
+/*  GRID NAV DARD */
+
+ul#grid_nav_dark {
+	height: 36px;
+	border-top: 1px solid #8BAD37;
+	border-bottom: 1px solid #8BAD37;
+	background: url(../images/bg_grid_nav_dark.png);
+	list-style: none;
+	padding: 0;
+	margin: 0 10px 0 10px;
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	}
+
+ul#grid_nav_dark li {
+list-style: none;
+padding: 2px 4px 2px 2px;
+margin: 0;
+}
+
+ul#grid_nav_dark li.divider {
+list-style: none;
+padding: 5px 0 0 1px;
+margin: 0;
+}
+
+ul#grid_nav_dark li.text {
+list-style: none;
+padding: 12px 5px 0 5px;
+margin: 0;
+}
+
+ul#grid_nav_dark .grid_title {
+	font: bold 14px Verdana, Arial, Helvetica, sans-serif;
+	color: #30450C;
+	margin: 7px 5px 0 4px;
+	}
+	
+ul#grid_nav_dark .grid_icon {
+	margin: 8px 0 0 8px;
+	}
+
+ul#grid_nav_dark li.r {
+float: right;
+}
+
+ul#grid_nav_dark li.l {
+float: left;
+}
+
+ul#grid_nav_dark li a:active,
+ul#grid_nav_dark li a:link,
+ul#grid_nav_dark li a:hover,
+ul#grid_nav_dark li a:visited {
+	color: #333;
+	text-decoration: none;
+	}
+	
+ul#grid_nav_dark li.text a:active,
+ul#grid_nav_dark li.text a:link,
+ul#grid_nav_dark li.text a:hover,
+ul#grid_nav_dark li.text a:visited {
+	color: #333;
+	text-decoration: underline;
+	}
 
 /* DASHBAORD STYLES */
 
