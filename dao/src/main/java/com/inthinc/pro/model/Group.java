@@ -15,7 +15,9 @@ public class Group extends BaseEntity {
 	private String name;
 	private Integer parentID;
 	private GroupStatus status;
+	private GroupLevel level;
 	private Integer managerID; // Links to Person ID
+	
 	private String description;
 	
 	//Default map view settings
@@ -36,6 +38,23 @@ public class Group extends BaseEntity {
 		this.name = name;
 		this.parentID = parentID;
 		this.status = GroupStatus.GROUP_ACTIVE;
+	}
+	
+	public Group(Integer groupID, Integer accountID, String name,
+			Integer parentID,GroupLevel level,Integer managerID,String description,
+			Integer mapZoom,LatLng mapCenter) {
+		super();
+		this.groupID = groupID;
+		this.accountID = accountID;
+		this.name = name;
+		this.parentID = parentID;
+		this.status = GroupStatus.GROUP_ACTIVE;
+		this.level = level;
+		this.managerID = managerID;
+		this.description = description;
+		this.mapZoom = mapZoom;
+		this.mapCenter = mapCenter;
+	
 	}
 
 	public Integer getGroupID() {
@@ -108,5 +127,12 @@ public class Group extends BaseEntity {
 
 	public void setMapCenter(LatLng mapCenter) {
 		this.mapCenter = mapCenter;
+	}
+	public GroupLevel getLevel() {
+		return level;
+	}
+
+	public void setLevel(GroupLevel level) {
+		this.level = level;
 	}
 }
