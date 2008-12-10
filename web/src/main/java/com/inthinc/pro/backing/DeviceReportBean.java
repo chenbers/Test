@@ -57,7 +57,8 @@ public class DeviceReportBean extends BaseBean
         AVAILABLE_COLUMNS.add("assignedVehicle");
         AVAILABLE_COLUMNS.add("IMEI");
         AVAILABLE_COLUMNS.add("phoneNbr");
-        AVAILABLE_COLUMNS.add("status");        
+        AVAILABLE_COLUMNS.add("status");   
+        AVAILABLE_COLUMNS.add("emergPhoneNbr");
     }
     
     public void init() {
@@ -71,6 +72,7 @@ public class DeviceReportBean extends BaseBean
         device.setImei("1c3lc46h67n6016i4a");
         device.setPhone("801-642-3159");        
         device.setStatus(DeviceStatus.DISABLED);
+        device.setEphone("801-642-0918");
         devicesData.add(device);
         
         drt = new DeviceReportItem();
@@ -80,6 +82,7 @@ public class DeviceReportBean extends BaseBean
         device.setImei("1c3lc46h67n7891i4a");
         device.setPhone("801-555-1212");        
         device.setStatus(DeviceStatus.ACTIVE);
+        device.setEphone("801-555-1133");
         devicesData.add(device);
         
         drt = new DeviceReportItem();
@@ -89,6 +92,7 @@ public class DeviceReportBean extends BaseBean
         device.setImei("1c3lc46h67n6719i4a");
         device.setPhone("801-324-8851");        
         device.setStatus(DeviceStatus.DELETED);
+        device.setEphone("801-324-9817");
         devicesData.add(device);        
         
         loadResults(devicesData);     
