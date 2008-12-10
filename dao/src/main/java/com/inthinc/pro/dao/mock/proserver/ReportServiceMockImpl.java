@@ -25,6 +25,19 @@ import com.inthinc.pro.model.ScoreableEntity;
 
 public class ReportServiceMockImpl extends AbstractServiceMockImpl implements ReportService
 {
+    //Cutover to real issues:
+    //
+    //  * Backend expects integer indicator for duration,
+    //      we currently use start/end date.
+    //  * Use current backend interface and embed relevant
+    //      Davids methods for scores in them.
+    //  * Need easy way to pick out of driveq what we want,
+    //      some utility "thing".
+    //  * For performance, maybe session beans for caching
+    //      previously snagged data, used down in the 
+    //      data access methods. A quick check there and 
+    //      then on to the data store.  The data is static.
+    
     private static final Logger logger = Logger.getLogger(ReportServiceMockImpl.class);
     
     @Override
@@ -358,4 +371,75 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
         scoreBreakdownByTypeCache.put(cacheKey, returnList);
         return returnList;
     }
+    
+//Methods currently supported on REAL back end         
+    @Override
+    public Map<String, Object> getDScoreByDM(Integer driverID, Integer mileage)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    } 
+    
+    @Override
+    public Map<String, Object> getDScoreByDT(Integer driverID, Integer duration)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    public List<Map<String, Object>> getDTrendByDTC(Integer driverID, Integer duration, Integer count)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    } 
+    
+    @Override
+    public List<Map<String, Object>> getDTrendByDMC(Integer driverID, Integer mileage, Integer count)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    public Map<String, Object> getVScoreByVM(Integer vehicleID, Integer mileage)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }  
+    
+    @Override
+    public Map<String, Object> getVScoreByVT(Integer vehicleID, Integer duration)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    public List<Map<String, Object>> getVTrendByVMC(Integer vehicleID, Integer mileage, Integer count)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    } 
+    
+    @Override
+    public List<Map<String, Object>> getVTrendByVTC(Integer vehicleID, Integer duration, Integer count)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }  
+    
+    @Override
+    public Map<String, Object> getGDScoreByGT(Integer groupID, Integer duration)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }  
+    
+    @Override
+    public List<Map<String, Object>> getGDTrendByGTC(Integer groupID, Integer duration, Integer count)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }     
 }
