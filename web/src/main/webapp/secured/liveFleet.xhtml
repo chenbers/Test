@@ -1,10 +1,10 @@
 <ui:composition template="/layout/layout.xhtml" 
-			xmlns="http://www.w3.org/1999/xhtml" 
-			xmlns:ui="http://java.sun.com/jsf/facelets"
-  			xmlns:h="http://java.sun.com/jsf/html" 
-  			xmlns:f="http://java.sun.com/jsf/core"
-  			xmlns:rich="http://richfaces.org/rich"
-  			xmlns:a4j="http://richfaces.org/a4j">
+				xmlns="http://www.w3.org/1999/xhtml" 
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+	  			xmlns:h="http://java.sun.com/jsf/html" 
+	  			xmlns:f="http://java.sun.com/jsf/core"
+	  			xmlns:rich="http://richfaces.org/rich"
+	  			xmlns:a4j="http://richfaces.org/a4j">
 
 	<ui:param name="liveFleetSelected" value="current" />
 	
@@ -34,22 +34,25 @@
    	            if (!point) {
    	              alert(address + " not found");
    	            } else {
-   	              map.setCenter(point, 13);
+   	              //map.setCenter(point, 13);
    	              var marker = new GMarker(point);
    	              map.addOverlay(marker);
+
    	              marker.openInfoWindowHtml(address);
 
-				var loc;
-     	         loc = marker.getLatLng();
-	             notifyBean(loc.lat(), loc.lng());	
+   	              
+   	           	  bounds.extend(marker.getPoint());
+
+				  var loc;
+     	          loc = marker.getLatLng();
+	              notifyBean(loc.lat(), loc.lng());	
+	             
 				
      	            }
    	          }
    	        );
    	      }
    	    }
-
-
 	    
 	</script>	
 	</ui:define>
@@ -147,6 +150,7 @@
 					<td width="90">Find Address: </td>
 					<td width="301">
 						<input type="text" size="60" id="addressTextBox" value="1600 Amphitheatre Pky, Mountain View, CA" />
+						
 					</td>
 					<td width="165">
 						<button value="" class="left" onclick="renderVehicles = true; showAddress(document.getElementById('addressTextBox').value);"><span class="search">Locate</span></button>
@@ -184,17 +188,19 @@
 
 
 	  					//Display Markers on map object.
-						if(renderVehicles == true)
+	  					if(renderVehicles == true)
 						{		  			
-							alert('rerender div');
+							//alert('rerender div');
 			  					var marker;
 			  					var driverLoc;
 			  					
 			  					<ui:repeat value="#{liveFleetBean.drivers}" var="driver">
 			  						driverLoc = new GLatLng(#{driver.lastLocation.lat}, #{driver.lastLocation.lng});
-									marker = createMarker(driverLoc, "DRIVER", "#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
+									marker = createMarker(driverLoc,"#{driver.driver.person.first} #{driver.driver.person.last} <br />#{driver.driver.person.workPhone}",
+															"#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
 									map.addOverlay(marker);
 									bounds.extend(marker.getPoint());
+									
 								</ui:repeat>
 	
 								map.setZoom(map.getBoundsZoomLevel(bounds));
