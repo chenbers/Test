@@ -1,0 +1,91 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+<!--
+  Parameters:
+  ==============
+             value: A list of SelectItem objects that are picked by the user.
+     autocompleter: A bean that implements the AutocompletePicker interface.
+
+  Optional Parameters:
+  ==============
+          formName: The name of the form containing the picker. If not provided, "edit-form" is used.
+
+  To use:
+  ==============
+  <ui:include src="/includes/sideNav.xhtml">
+    <ui:param name="value" value="#{items}" />
+    <ui:param name="autocompleter" value="#{myBean}" />
+  </ui:include>
+-->
+
+  <ui:composition>
+
+    <c:if test="#{empty formName}">
+      <c:set var="formName" value="edit-form" />
+    </c:if>
+
+    <a4j:region renderRegionOnly="true">
+      <a4j:outputPanel id="pickerPanel">
+
+        <h:inputHidden id="itemValue" value="#{autocompleter.itemValue}" />
+
+        <div class="picker" onclick="setFocus(event, this)">
+          <ui:repeat id="picker-repeater" value="#{value}" var="item">
+            <span class="pick-item">
+              <h:outputText value="#{item.label}" />
+              <a4j:commandLink action="#{autocompleter.deleteItem}" styleClass="delete-pick-item" reRender="pickerPanel" oncomplete="clearInput()">
+                <a4j:actionparam name="itemValue" value="#{item.value}" assignTo="#{autocompleter.itemValue}" />
+                <h:graphicImage value="/images/x.gif" width="16" height="20" />
+              </a4j:commandLink></span>
+          </ui:repeat>
+          <h:outputText value=" " />
+          <h:inputText id="picker-input" value="" style="border:0px solid white;" size="30" onblur="this.value = ''" />
+          <rich:suggestionbox for="picker-input" suggestionAction="#{autocompleter.autocomplete}" var="suggestion" usingSuggestObjects="true" onobjectchange="updateItemValue(suggestion)" eventsQueue="pickerQueue" ignoreDupResponses="true">
+            <h:column>
+              <h:outputText value="#{suggestion.label}" />
+            </h:column>
+            <a4j:support event="onselect" action="#{autocompleter.addItem}" reRender="pickerPanel" oncomplete="clearInput()" />
+          </rich:suggestionbox>
+        </div>
+
+      </a4j:outputPanel>
+    </a4j:region>
+
+    <script type="text/javascript">
+      function setFocus(e, picker)
+      {
+        if (!e)
+          e = window.event;
+        var target;
+        if (e.target)
+          target = e.target;
+        else if (e.srcElement)
+          target = e.srcElement;
+        if (target == picker)
+          document.getElementById('#{formName}:picker-input').focus();
+      }
+
+      function updateItemValue(suggestion)
+      {
+        var selected = suggestion.getSelectedItems();
+        if (selected.length > 0)
+          document.getElementById('#{formName}:itemValue').value = selected[0].value;
+      }
+
+      function clearInput()
+      {
+        var input = document.getElementById('#{formName}:picker-input');
+        input.value = "";
+        input.focus();
+      }
+    </script>
+
+  </ui:composition>
+
+</html>

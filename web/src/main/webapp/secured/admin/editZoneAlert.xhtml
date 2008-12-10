@@ -24,21 +24,21 @@
       <tr>
         <td valign="top" width="130">
           <ui:include src="/includes/adminSideNav.xhtml">
-            <ui:param name="selectedAction" value="go_adminZoneAlerts" />
+            <ui:param name="selectedAction" value="#{(zoneAlertsBean.add) ? 'go_adminAddZoneAlert' : 'go_adminZoneAlerts'}" />
             <ui:param name="parentAction" value="go_adminZoneAlerts" />
           </ui:include>
         </td>
         <td valign="top">
           <!-- START PANEL -->
 
-          <a4j:form id="display-form">
+          <a4j:form id="edit-form">
 
             <h:inputHidden id="zonePoints" value="#{zoneAlertsBean.item.zone.pointsString}" />
 
             <div class="">
               <div class="panel_nw">
                 <div class="panel_title">
-                  <span class="admin"><h:outputText value="#{messages.adminHeader_zoneAlertDetails}" /><h:outputText value=" " /><h:outputText value="#{zoneAlertsBean.item.name}" /></span>
+                  <span class="admin"><h:outputText value="#{zoneAlertsBean.add ? messages.adminHeader_addZoneAlert : (zoneAlertsBean.batchEdit ? messages.adminHeader_editZoneAlerts : messages.adminHeader_editZoneAlert)}" /></span>
                   <span class="panel_links"></span>
                 </div>
               </div>
@@ -48,9 +48,8 @@
                 <div class="panel_content">
 
                   <ul id="grid_nav" style="margin: 0;">
-                    <li class="l text"><h:commandLink action="#{zoneAlertsBean.cancelDisplay}" value="#{messages.zoneAlert_backToZoneAlerts}" /></li>
-                    <li class="r"><h:commandLink action="#{zoneAlertsBean.edit}"><button value="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></h:commandLink></li>
-                    <li class="r"><a4j:commandLink><button value="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink></li>
+                    <li class="r"><h:commandLink action="#{zoneAlertsBean.cancelEdit}" immediate="true"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
+                    <li class="r"><h:commandLink action="#{zoneAlertsBean.save}"><button value="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink></li>
                   </ul>
 
                   <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
@@ -194,10 +193,10 @@
                         <div class="add_section_title"><h:outputText value="#{messages.editZoneAlert_notificationsByName}" /></div>
 
                         <div>
-                          <ui:repeat value="#{zoneAlertsBean.item.notifyPeople}" var="person" varStatus="index">
-                            <h:outputText value="#{(index > 0) ? ', ' : ''}" />
-                            <h:outputText value="#{person.label}" />
-                          </ui:repeat>
+                          <ui:include src="../../includes/autocompletePicker.xhtml">
+                            <ui:param name="value" value="#{zoneAlertsBean.item.notifyPeople}" />
+                            <ui:param name="autocompleter" value="#{zoneAlertsBean}" />
+                          </ui:include>
                         </div>
 
                       </td>
@@ -212,6 +211,11 @@
                     </tr>
                   </table>
 
+                  <ul id="grid_nav" style="margin: 0;">
+                    <li class="r"><h:commandLink action="#{zoneAlertsBean.cancelEdit}" immediate="true"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
+                    <li class="r"><h:commandLink action="#{zoneAlertsBean.save}"><button value="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink></li>
+                  </ul>
+
                 </div>
               </div>
 
@@ -222,42 +226,55 @@
 
           </a4j:form>
 
-          <script type="text/javascript">
-            function showZone()
-            {
-              map.clearOverlays();
-              var outline = fromOutlineString(document.getElementById("display-form:zonePoints").value);
-              if (outline)
-              {
-                centerMapAtZone(getLatLngBounds(outline));
-                loadZone(outline, false);
-              }
-            }
-
-            function bodyLoad()
-            {
-              if (GBrowserIsCompatible())
-              {
-                map = new GMap2(document.getElementById("map-canvas"));
-                showZone();
-              }
-            }
-
-            function bodyUnload()
-            {
-              GUnload();
-            }
-          </script>
-
           <!-- END PANEL -->
         </td>
       </tr>
     </table>
 
-    <ui:include src="../../includes/confirmDelete.xhtml">
-      <ui:param name="deleteBean" value="#{zoneAlertsBean}" />
-      <ui:param name="explanation" value="#{messages.zoneAlert_confirmDelete}" />
-    </ui:include>
+    <script type="text/javascript">
+      function showZone()
+      {
+        map.clearOverlays();
+        var outline = fromOutlineString(document.getElementById("edit-form:zonePoints").value);
+        if (outline)
+        {
+          centerMapAtZone(getLatLngBounds(outline));
+          loadZone(outline, false);
+        }
+      }
+
+      function bodyLoad()
+      {
+        if (GBrowserIsCompatible())
+        {
+          map = new GMap2(document.getElementById("map-canvas"));
+          showZone();
+        }
+      }
+
+      function bodyUnload()
+      {
+        GUnload();
+      }
+
+      function checkMultiple(item)
+      {
+        var id;
+        if (typeof(item) == "string")
+          id = item;
+        else
+          id = item.id;
+
+        var box;
+        var index = id.indexOf(":");
+        if (index > 0)
+          box = document.getElementById("edit-form:update_" + id.substring(index + 1));
+        else
+          box = document.getElementById("edit-form:update_" + id);
+        if (box)
+          box.checked = true;
+      }
+    </script>
 
   </ui:define>
 

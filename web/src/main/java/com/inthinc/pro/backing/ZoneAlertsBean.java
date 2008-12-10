@@ -2,15 +2,18 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
 import org.springframework.beans.BeanUtils;
 
+import com.inthinc.pro.backing.ui.AutocompletePicker;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.ZoneAlertDAO;
 import com.inthinc.pro.dao.ZoneDAO;
@@ -21,7 +24,7 @@ import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
 import com.inthinc.pro.util.MessageUtil;
 
-public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView>
+public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView> implements AutocompletePicker
 {
     private static final List<String> AVAILABLE_COLUMNS;
     private static final int[]        DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2 };
@@ -38,6 +41,8 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView>
     private PersonDAO                 personDAO;
     private ZoneAlertDAO              zoneAlertDAO;
     private ZoneDAO                   zoneDAO;
+    private List<Person>              people;
+    private Integer                   personID;
 
     public void setPersonDAO(PersonDAO personDAO)
     {
@@ -200,6 +205,75 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView>
         return "go_adminZoneAlerts";
     }
 
+    @Override
+    public List<SelectItem> autocomplete(Object value)
+    {
+        if (people == null)
+            people = personDAO.getPeopleInGroupHierarchy(getUser().getPerson().getGroupID());
+
+        final ArrayList<SelectItem> suggestions = new ArrayList<SelectItem>();
+        final String[] names = value.toString().toLowerCase().split("[, ]");
+        for (final Person person : people)
+        {
+            boolean matches = true;
+            for (final String name : names)
+            {
+                matches &= (person.getFirst().toLowerCase().startsWith(name) || person.getLast().toLowerCase().startsWith(name));
+                if (!matches)
+                    break;
+            }
+            if (matches)
+                suggestions.add(new SelectItem(person.getPersonID(), person.getFirst() + ' ' + person.getLast()));
+        }
+
+        final List<SelectItem> notifyPeople = getItem().getNotifyPeople();
+        if (notifyPeople != null)
+            for (final SelectItem item : notifyPeople)
+                for (final Iterator<SelectItem> i = suggestions.iterator(); i.hasNext();)
+                    if (i.next().getValue().equals(item.getValue()))
+                        i.remove();
+
+        return suggestions;
+    }
+
+    @Override
+    public Object getItemValue()
+    {
+        return null;
+    }
+
+    @Override
+    public void setItemValue(Object value)
+    {
+        try
+        {
+            personID = new Integer(value.toString());
+        }
+        catch (NumberFormatException e)
+        {
+            personID = null;
+        }
+    }
+
+    public int getPickedItemCount()
+    {
+        return getItem().getNotifyPeople().size();
+    }
+
+    @Override
+    public void addItem()
+    {
+        getItem().addNotifyPerson(personID);
+        personID = null;
+    }
+
+    @Override
+    public void deleteItem()
+    {
+        getItem().removeNotifyPerson(personID);
+        personID = null;
+    }
+
     public static class ZoneAlertView extends ZoneAlert implements EditItem
     {
         @Column(updateable = false)
@@ -212,7 +286,7 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView>
         @Column(updateable = false)
         private Zone              zone;
         @Column(updateable = false)
-        private List<Person>      notifyPeople;
+        private List<SelectItem>  notifyPeople;
         @Column(updateable = false)
         private boolean           selected;
 
@@ -245,19 +319,37 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView>
             return zone;
         }
 
-        public List<Person> getNotifyPeople()
+        public List<SelectItem> getNotifyPeople()
         {
-            if ((notifyPeople == null) && (getNotifyPersonIDs() != null))
+            if (notifyPeople == null)
             {
-                notifyPeople = new ArrayList<Person>();
-                for (final Integer id : getNotifyPersonIDs())
-                {
-                    final Person person = personDAO.findByID(id);
-                    if (person != null)
-                        notifyPeople.add(person);
-                }
+                notifyPeople = new ArrayList<SelectItem>();
+                if (getNotifyPersonIDs() != null)
+                    for (final Integer id : getNotifyPersonIDs())
+                    {
+                        final Person person = personDAO.findByID(id);
+                        if (person != null)
+                            notifyPeople.add(new SelectItem(person.getPersonID(), person.getFirst() + ' ' + person.getLast()));
+                    }
             }
             return notifyPeople;
+        }
+
+        public void addNotifyPerson(Integer personID)
+        {
+            if (getNotifyPersonIDs() == null)
+                setNotifyPersonIDs(new ArrayList<Integer>());
+            getNotifyPersonIDs().add(personID);
+            notifyPeople = null;
+        }
+
+        public void removeNotifyPerson(Integer personID)
+        {
+            if (getNotifyPersonIDs() != null)
+            {
+                getNotifyPersonIDs().remove(personID);
+                notifyPeople = null;
+            }
         }
 
         public boolean isSelected()

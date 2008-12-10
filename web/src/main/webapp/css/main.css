@@ -636,6 +636,38 @@ span.apply {
 	padding: 0 0 0 25px;
 	}
 
+/* INLINE PICKER */
+div.picker {
+	padding: 2px;
+	border: 1px solid #666666;
+	cursor:text;
+	}
+
+div.picker input {
+	border: 0px solid white;
+	}
+
+span.pick-item {
+	white-space: nowrap;
+	background: url(../images/inline_left.png) left no-repeat;
+	padding: 5px 0px 5px 4px;
+	cursor: default;
+	line-height: 23px;
+	}
+
+a.delete-pick-item {
+	padding: 5px 0px;
+	background: url(../images/inline_delete.png) right no-repeat;
+	}
+
+a.delete-pick-item:hover {
+	background: url(../images/inline_delete_on.png) right no-repeat;
+	}
+
+a.delete-pick-item img {
+	vertical-align: -20%;
+	border: none;
+	}
 
 
 /* HACKS */
