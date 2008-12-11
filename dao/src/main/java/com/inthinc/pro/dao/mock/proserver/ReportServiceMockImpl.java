@@ -471,5 +471,29 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
     {
         // TODO Auto-generated method stub
         return null;
-    }     
+    } 
+    
+    public List<Map<String, Object>> getDVScoresByGT(Integer groupID, Integer duration)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    } 
+    
+    public List<Map<String, Object>> getVDScoresByGT(Integer groupID, Integer duration)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    } 
+        
+    public List<Map<String, Object>>  getSDScoresByGT(Integer groupID, Integer duration)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    } 
+    
+    public List<Map<String, Object>>  getSDTrendsByGTC(Integer groupID, Integer duration, Integer metric)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }  
 }
