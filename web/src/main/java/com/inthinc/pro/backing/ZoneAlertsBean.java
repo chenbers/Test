@@ -22,6 +22,7 @@ import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.ZoneAlertDAO;
 import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.model.BaseAlert;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.TableType;
@@ -101,6 +102,13 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView> 
     {
         final ZoneAlertView alertView = new ZoneAlertView();
         BeanUtils.copyProperties(alert, alertView);
+        if ((alertView.getDayOfWeek() == null) || (alertView.getDayOfWeek().size() != 7))
+        {
+            final ArrayList<Boolean> dayOfWeek = new ArrayList<Boolean>();
+            for (int i = 0; i < 7; i++)
+                dayOfWeek.add(false);
+            alertView.setDayOfWeek(dayOfWeek);
+        }
         alertView.setPersonDAO(personDAO);
         alertView.setZoneDAO(zoneDAO);
         alertView.setOldVehicleIDs(alert.getVehicleIDs());
@@ -218,6 +226,26 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView> 
         updateField.put("monitorIdle", defineAlerts);
 
         return super.save();
+    }
+
+    @Override
+    protected boolean validate(List<ZoneAlertView> saveItems)
+    {
+        final FacesContext context = FacesContext.getCurrentInstance();
+
+        boolean valid = true;
+        for (final ZoneAlertView alert : saveItems)
+        {
+            if (!alert.isAnytime() && (alert.getStartTOD() >= alert.getStopTOD()))
+            {
+                final String summary = MessageUtil.formatMessageString("editZoneAlert_invalidTimeframe");
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
+                context.addMessage("edit-form:stopTOD", message);
+                valid = false;
+            }
+            // TODO: make sure at least one alert is defined, at least one vehicle is added, and at least one person is being notified
+        }
+        return valid;
     }
 
     @Override
@@ -440,6 +468,8 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView> 
         @Column(updateable = false)
         private Zone              zone;
         @Column(updateable = false)
+        private boolean           anytime;
+        @Column(updateable = false)
         private List<SelectItem>  notifyPeople;
         @Column(updateable = false)
         private List<Integer>     oldVehicleIDs;
@@ -477,6 +507,48 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView> 
             if (zone == null)
                 zone = zoneDAO.findByID(getZoneID());
             return zone;
+        }
+
+        public boolean isAnytime()
+        {
+            if (!anytime)
+                anytime = (getStartTOD() == null) || getStartTOD().equals(getStopTOD());
+            return anytime;
+        }
+
+        public void setAnytime(boolean anytime)
+        {
+            this.anytime = anytime;
+            if (anytime)
+            {
+                setStartTOD(null);
+                setStopTOD(null);
+            }
+            else
+            {
+                if (getStartTOD() == null)
+                    setStartTOD(BaseAlert.DEFAULT_START_TOD);
+                if ((getStopTOD() == null) || (getStopTOD() <= getStartTOD()))
+                    setStopTOD(BaseAlert.DEFAULT_STOP_TOD);
+            }
+        }
+
+        @Override
+        public void setStartTOD(Integer startTOD)
+        {
+            if (!anytime)
+                super.setStartTOD(startTOD);
+            else
+                super.setStartTOD(null);
+        }
+
+        @Override
+        public void setStopTOD(Integer stopTOD)
+        {
+            if (!anytime)
+                super.setStopTOD(stopTOD);
+            else
+                super.setStopTOD(null);
         }
 
         List<Integer> getOldVehicleIDs()

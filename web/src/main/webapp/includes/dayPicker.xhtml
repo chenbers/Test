@@ -1,0 +1,78 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+<!--
+  Parameters:
+  ==============
+          days: A list of 7 Boolean values for the selected days.
+
+  Optional Parameters:
+  ==============
+      formName: The name of the form containing the picker. If not provided, "edit-form" is used.
+      disabled: Whether the picker is disabled.
+      onchange: A javascript expression to call when the value changes.
+
+  To use:
+  ==============
+  <ui:include src="/includes/dayPicker.xhtml" />
+-->
+
+  <ui:composition>
+
+    <c:if test="#{empty formName}">
+      <c:set var="formName" value="edit-form" />
+    </c:if>
+
+    <table border="0" cellspacing="0" cellpadding="2" class="days">
+      <tr>
+        <c:if test="#{not disabled}">
+          <th align="center"><h:outputText value="#{messages.dayPicker_all}" /></th>
+        </c:if>
+        <th align="center"><h:outputText value="#{messages.dayPicker_sunday}" /></th>
+        <th align="center"><h:outputText value="#{messages.dayPicker_monday}" /></th>
+        <th align="center"><h:outputText value="#{messages.dayPicker_tuesday}" /></th>
+        <th align="center"><h:outputText value="#{messages.dayPicker_wednesday}" /></th>
+        <th align="center"><h:outputText value="#{messages.dayPicker_thursday}" /></th>
+        <th align="center"><h:outputText value="#{messages.dayPicker_friday}" /></th>
+        <th align="center"><h:outputText value="#{messages.dayPicker_saturday}" /></th>
+      </tr>
+      <tr>
+        <c:if test="#{not disabled}">
+          <td align="center"><input type="checkbox" id="daysSelectAll" onchange="checkAll(this.checked)" /></td>
+        </c:if>
+        <td align="center"><h:selectBooleanCheckbox id="day0" value="#{days[0]}" disabled="#{disabled}" onclick="checkedOne()" /></td>
+        <td align="center"><h:selectBooleanCheckbox id="day1" value="#{days[1]}" disabled="#{disabled}" onclick="checkedOne()" /></td>
+        <td align="center"><h:selectBooleanCheckbox id="day2" value="#{days[2]}" disabled="#{disabled}" onclick="checkedOne()" /></td>
+        <td align="center"><h:selectBooleanCheckbox id="day3" value="#{days[3]}" disabled="#{disabled}" onclick="checkedOne()" /></td>
+        <td align="center"><h:selectBooleanCheckbox id="day4" value="#{days[4]}" disabled="#{disabled}" onclick="checkedOne()" /></td>
+        <td align="center"><h:selectBooleanCheckbox id="day5" value="#{days[5]}" disabled="#{disabled}" onclick="checkedOne()" /></td>
+        <td align="center"><h:selectBooleanCheckbox id="day6" value="#{days[6]}" disabled="#{disabled}" onclick="checkedOne()" /></td>
+      </tr>
+    </table>
+
+    <script type="text/javascript">
+      function checkAll(checked)
+      {
+        for (var i = 0; i &lt; 7; i++)
+          document.getElementById('#{formName}:day' + i).checked = checked;
+        #{onchange}
+      }
+
+      function checkedOne()
+      {
+        var checked = true;
+        for (var i = 0; i &lt; 7; i++)
+          checked = checked &amp;&amp; document.getElementById('#{formName}:day' + i).checked;
+        document.getElementById('daysSelectAll').checked = checked;
+        #{onchange}
+      }
+    </script>
+
+  </ui:composition>
+
+</html>

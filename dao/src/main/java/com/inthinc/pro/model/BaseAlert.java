@@ -7,20 +7,22 @@ import com.inthinc.pro.dao.annotations.Column;
 public abstract class BaseAlert extends BaseEntity
 {
     @Column(updateable = false)
-    public static final int MIN_TOD = 0;
+    public static final int     MIN_TOD           = 0;
     @Column(updateable = false)
-    public static final int MAX_TOD = 1439;
+    public static final int     MAX_TOD           = 1439;
+    public static final Integer DEFAULT_START_TOD = 480; // 8:00 am
+    public static final Integer DEFAULT_STOP_TOD  = 1020; // 5:00 pm
 
     @Column(name = "acctID")
-    private Integer         accountID;
-    private Integer         groupID;
-    private String          name;
-    private String          description;
-    private Integer         startTOD;
-    private Integer         stopTOD;
-    private List<Integer>   dayOfWeek;
-    private List<Integer>   notifyPersonIDs;
-    private List<String>    emailTo;
+    private Integer             accountID;
+    private Integer             groupID;
+    private String              name;
+    private String              description;
+    private Integer             startTOD;
+    private Integer             stopTOD;
+    private List<Boolean>       dayOfWeek;
+    private List<Integer>       notifyPersonIDs;
+    private List<String>        emailTo;
 
     public Integer getAccountID()
     {
@@ -82,12 +84,12 @@ public abstract class BaseAlert extends BaseEntity
         this.stopTOD = stopTOD;
     }
 
-    public List<Integer> getDayOfWeek()
+    public List<Boolean> getDayOfWeek()
     {
         return dayOfWeek;
     }
 
-    public void setDayOfWeek(List<Integer> dayOfWeek)
+    public void setDayOfWeek(List<Boolean> dayOfWeek)
     {
         this.dayOfWeek = dayOfWeek;
     }

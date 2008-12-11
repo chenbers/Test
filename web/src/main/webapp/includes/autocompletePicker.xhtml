@@ -46,7 +46,7 @@
               </a4j:commandLink></span>
           </ui:repeat>
           <h:outputText value=" " />
-          <h:inputText id="picker-input" value="" style="border:0px solid white;" size="30" onblur="this.value = ''" />
+          <h:inputText id="picker-input" value="" style="border:0px solid white;" size="1" onkeyup="this.size = Math.max(1, this.value.length)" onblur="this.value = ''; this.size = 1;" />
           <rich:suggestionbox for="picker-input" suggestionAction="#{autocompleter.autocomplete}" var="suggestion" usingSuggestObjects="true" onobjectchange="updateItemValue(suggestion)" eventsQueue="pickerQueue" ignoreDupResponses="true">
             <h:column>
               <h:outputText value="#{suggestion.label}" />
@@ -83,6 +83,7 @@
       {
         var input = document.getElementById('#{formName}:picker-input');
         input.value = "";
+        input.size = 1;
         input.focus();
         #{onchange}
       }
