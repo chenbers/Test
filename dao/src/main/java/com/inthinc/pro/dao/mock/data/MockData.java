@@ -23,9 +23,11 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.AggressiveDrivingEvent;
+import com.inthinc.pro.model.DVQMap;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceLowBatteryEvent;
 import com.inthinc.pro.model.DeviceStatus;
+import com.inthinc.pro.model.DriveQMap;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Event;
@@ -221,6 +223,9 @@ public class MockData
                 List<Vehicle> vehiclesInGroup = addVehiclesToGroup(accountID, groups[cnt].getGroupID(), randomInt(1, MAX_VEHICLES_IN_GROUP));
 
                 addTripsAndEvents(driversInGroup, vehiclesInGroup, idOffset);
+                
+                // newer mock scores
+                addDriveQMaps(driversInGroup, vehiclesInGroup);
 
             }
 
@@ -232,6 +237,59 @@ public class MockData
     }
     
 
+
+    private void addDriveQMaps(List<Driver> driversInGroup, List<Vehicle> vehiclesInGroup)
+    {
+        for (Driver driver : driversInGroup)
+        {
+            DVQMap dvqMap = new DVQMap();
+            
+            dvqMap.setDriver(driver);
+            dvqMap.setVehicle(vehiclesInGroup.get(randomInt(0, vehiclesInGroup.size()-1)));
+            dvqMap.setDriveQ(createDriveQ());
+            
+            storeObject(dvqMap);
+        }
+    }
+
+    private DriveQMap createDriveQ()
+    {
+        DriveQMap driveQMap = new DriveQMap();
+        driveQMap.setAggressiveAccel(randomInt(0, 50));
+        driveQMap.setAggressiveBreak(randomInt(0, 50));
+        driveQMap.setAggressiveBump(randomInt(0, 50));
+        driveQMap.setAggressiveLeft(randomInt(0, 50));
+        driveQMap.setAggressiveRight(randomInt(0, 50));
+        driveQMap.setAggressiveTurn((driveQMap.getAggressiveLeft()+driveQMap.getAggressiveRight())/2);
+        driveQMap.setDrivingStyle( (driveQMap.getAggressiveAccel()+driveQMap.getAggressiveBreak()+driveQMap.getAggressiveBump()+driveQMap.getAggressiveTurn()) / 4);
+
+        driveQMap.setCoaching(randomInt(0, 50));
+        
+        driveQMap.setDriveTime(randomInt(1, 5000));
+        
+        driveQMap.setIdleHi(randomInt(0, 50));
+        driveQMap.setIdleLo(randomInt(0, 50));
+        
+        driveQMap.setStartingOdometer(randomInt(500, 5000));
+        driveQMap.setEndingOdometer(driveQMap.getStartingOdometer() + randomInt(0, 1000));
+        driveQMap.setOdometer(driveQMap.getEndingOdometer());
+        
+        driveQMap.setMpgLight(randomInt(20, 30));
+        driveQMap.setMpgMedium(randomInt(15, 25));
+        driveQMap.setMpgHeavy(randomInt(10, 20));
+        
+        driveQMap.setSeatbelt(randomInt(0,50));
+        
+        driveQMap.setSpeeding1(randomInt(0,50));
+        driveQMap.setSpeeding2(randomInt(0,50));
+        driveQMap.setSpeeding3(randomInt(0,50));
+        driveQMap.setSpeeding4(randomInt(0,50));
+        driveQMap.setSpeeding5(randomInt(0,50));
+        driveQMap.setSpeeding((driveQMap.getSpeeding1()+driveQMap.getSpeeding2()+driveQMap.getSpeeding3()+driveQMap.getSpeeding4()+driveQMap.getSpeeding5())/5);
+
+        driveQMap.setOverall((driveQMap.getDrivingStyle()+driveQMap.getSeatbelt()+driveQMap.getSpeeding())/3);
+        return driveQMap;
+    }
 
     private void addUsersToGroup(Integer accountID, Integer groupID)
     {

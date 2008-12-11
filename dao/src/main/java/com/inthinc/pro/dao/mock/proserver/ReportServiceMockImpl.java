@@ -14,6 +14,7 @@ import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.mock.data.SearchCriteria;
 import com.inthinc.pro.dao.mock.data.TempConversionUtil;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.DVQMap;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
@@ -438,8 +439,31 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
     @Override
     public Map<String, Object> getGDScoreByGT(Integer groupID, Integer duration)
     {
-        // TODO Auto-generated method stub
-        return null;
+        List<DVQMap> entityList = new ArrayList<DVQMap>();
+        
+        
+        Group topGroup = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
+        List<Group> groupList = getGroupHierarchy(topGroup);
+        
+        for (Group group : groupList)
+        {
+            SearchCriteria searchCriteria = new SearchCriteria();
+            searchCriteria.addKeyValue("driver:person:groupID", group.getGroupID());
+    
+            // get list of drivers that are in the specified group
+            List<DVQMap> groupDVQList = MockData.getInstance().retrieveObjectList(DVQMap.class, searchCriteria);
+            if (groupDVQList == null)
+            {
+                continue;
+            }
+            for (DVQMap dvq : groupDVQList)
+            {
+                // TODO:
+                // for now just return the scores for 1st driver in list, should actually average all scores 
+                return TempConversionUtil.createMapFromObject(dvq.getDriveQ());
+            }
+        }
+        throw new EmptyResultSetException("No scores for group: " + groupID, "getGDScoreByGT", 0);
     }  
     
     @Override

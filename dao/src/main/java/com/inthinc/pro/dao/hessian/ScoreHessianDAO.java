@@ -2,6 +2,7 @@ package com.inthinc.pro.dao.hessian;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -9,7 +10,9 @@ import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
+import com.inthinc.pro.model.DriveQMap;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreTypeBreakdown;
 import com.inthinc.pro.model.ScoreableEntity;
@@ -74,22 +77,27 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     }
 
     @Override
-    public ScoreableEntity getAverageScoreByType(Integer groupID, Duration duration, ScoreType st)
+    public ScoreableEntity getAverageScoreByType(Integer groupID, Duration duration, ScoreType scoreType)
     {
         try
         {
-            return getMapper().convertToModelObject(reportService.getAverageScoreByType(groupID, duration.getCode(), st), ScoreableEntity.class);
+            
+            // TODO: not sure if this duration mapping is correct
+// groupID = 16777218;            
+            Map<String, Object> returnMap = reportService.getGDScoreByGT(groupID, duration.getCode());
+            DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
+            
+            ScoreableEntity scoreableEntity = new ScoreableEntity();
+            scoreableEntity.setEntityID(groupID);
+            scoreableEntity.setEntityType(EntityType.ENTITY_GROUP);
+            scoreableEntity.setScoreType(scoreType);
+            scoreableEntity.setScore(dqMap.getScoreMap().get(scoreType));
+            return scoreableEntity;
+            
         }
         catch (EmptyResultSetException e)
         {
             return null;
-        }
-        catch (ProxyException e)
-        {
-            if (e.getErrorCode() == 422)
-                return null;
-            else
-                throw e;
         }
     }
 
