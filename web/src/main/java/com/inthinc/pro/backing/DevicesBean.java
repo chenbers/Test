@@ -98,6 +98,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         final DeviceView deviceView = new DeviceView();
         BeanUtils.copyProperties(device, deviceView);
         deviceView.setVehicleDAO(vehicleDAO);
+        deviceView.setOldVehicleID(device.getVehicleID());
         deviceView.setSelected(false);
         return deviceView;
     }

@@ -638,6 +638,7 @@ span.apply {
 
 /* INLINE PICKER */
 div.picker {
+	margin: 1px;
 	padding: 2px;
 	border: 1px solid #666666;
 	cursor:text;
@@ -2511,6 +2512,11 @@ ul.legend {
 	font-size:9px;
 	color: gray;
 	padding-top: 5px;
+}
+
+.instructions {
+	font-size:9px;
+	color: gray;
 }
 
 /*  Trend table definitions */

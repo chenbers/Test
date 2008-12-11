@@ -357,6 +357,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
                 vehicle.setVehicleID(vehicleDAO.create(getUser().getPerson().getGroupID(), vehicle));
             else
                 vehicleDAO.update(vehicle);
+            vehicle.setOldGroupID(vehicle.getGroupID());
 
             if (vehicle.isDriverChanged())
                 assignDriver(vehicle);

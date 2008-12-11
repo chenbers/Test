@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
+import com.inthinc.pro.dao.ZoneAlertDAO;
 import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.util.MessageUtil;
@@ -21,10 +22,16 @@ public class ZonesBean extends BaseBean
     private Zone                 item;
     private boolean              editing;
     private ZoneDAO              zoneDAO;
+    private ZoneAlertDAO         zoneAlertDAO;
 
     public void setZoneDAO(ZoneDAO zoneDAO)
     {
         this.zoneDAO = zoneDAO;
+    }
+
+    public void setZoneAlertDAO(ZoneAlertDAO zoneAlertDAO)
+    {
+        this.zoneAlertDAO = zoneAlertDAO;
     }
 
     public Map<String, Integer> getZoneIDs()
@@ -128,7 +135,7 @@ public class ZonesBean extends BaseBean
     {
         final FacesContext context = FacesContext.getCurrentInstance();
 
-        // TODO: disconnect from zone alerts
+        zoneAlertDAO.deleteByZoneID(item.getZoneID());
 
         zoneDAO.deleteByID(item.getZoneID());
 

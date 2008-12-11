@@ -1,6 +1,9 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -15,11 +18,14 @@ import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.backing.ui.AutocompletePicker;
 import com.inthinc.pro.dao.PersonDAO;
+import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.ZoneAlertDAO;
 import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.TableType;
+import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
 import com.inthinc.pro.util.MessageUtil;
@@ -39,14 +45,25 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView> 
     }
 
     private PersonDAO                 personDAO;
+    private VehicleDAO                vehicleDAO;
     private ZoneAlertDAO              zoneAlertDAO;
     private ZoneDAO                   zoneDAO;
     private List<Person>              people;
     private Integer                   personID;
+    private ArrayList<SelectItem>     zones;
+    private String                    vehicleFilter;
+    private List<SelectItem>          vehicles;
+    private List<SelectItem>          vehicleGroups;
+    private List<Vehicle>             allVehicles;
 
     public void setPersonDAO(PersonDAO personDAO)
     {
         this.personDAO = personDAO;
+    }
+
+    public void setVehicleDAO(VehicleDAO vehicleDAO)
+    {
+        this.vehicleDAO = vehicleDAO;
     }
 
     public void setZoneAlertDAO(ZoneAlertDAO zoneAlertDAO)
@@ -86,6 +103,9 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView> 
         BeanUtils.copyProperties(alert, alertView);
         alertView.setPersonDAO(personDAO);
         alertView.setZoneDAO(zoneDAO);
+        alertView.setOldVehicleIDs(alert.getVehicleIDs());
+        alertView.setOldNotifyPersonIDs(alert.getNotifyPersonIDs());
+        alertView.setOldEmailToString(alertView.getEmailToString());
         alertView.setSelected(false);
         return alertView;
     }
@@ -169,6 +189,38 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView> 
     }
 
     @Override
+    public String cancelEdit()
+    {
+        getItem().setVehicleIDs(getItem().getOldVehicleIDs());
+        getItem().setNotifyPersonIDs(getItem().getOldNotifyPersonIDs());
+        getItem().setEmailToString(getItem().getOldEmailToString());
+        return super.cancelEdit();
+    }
+
+    @Override
+    public String save()
+    {
+        // if batch-changing alert definition, change all of its children
+        final Map<String, Boolean> updateField = getUpdateField();
+        final boolean defineAlerts = Boolean.TRUE.equals(updateField.get("defineAlerts"));
+        updateField.put("arrival", defineAlerts);
+        updateField.put("departure", defineAlerts);
+        updateField.put("driverIDViolation", defineAlerts);
+        updateField.put("ignitionOn", defineAlerts);
+        updateField.put("ignitionOff", defineAlerts);
+        updateField.put("position", defineAlerts);
+        updateField.put("seatbeltViolation", defineAlerts);
+        updateField.put("speedLimit", defineAlerts);
+        updateField.put("speedViolation", defineAlerts);
+        updateField.put("masterBuzzer", defineAlerts);
+        updateField.put("cautionArea", defineAlerts);
+        updateField.put("disableRF", defineAlerts);
+        updateField.put("monitorIdle", defineAlerts);
+
+        return super.save();
+    }
+
+    @Override
     protected void doSave(List<ZoneAlertView> saveItems, boolean create)
     {
         final FacesContext context = FacesContext.getCurrentInstance();
@@ -179,6 +231,10 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView> 
                 alert.setZoneAlertID(zoneAlertDAO.create(getAccountID(), alert));
             else
                 zoneAlertDAO.update(alert);
+
+            alert.setOldVehicleIDs(alert.getVehicleIDs());
+            alert.setOldNotifyPersonIDs(alert.getNotifyPersonIDs());
+            alert.setOldEmailToString(alert.getEmailToString());
 
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "zoneAlert_added" : "zoneAlert_updated", alert.getName());
@@ -203,6 +259,91 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView> 
     protected String getFinishedRedirect()
     {
         return "go_adminZoneAlerts";
+    }
+
+    public List<SelectItem> getZones()
+    {
+        if (zones == null)
+        {
+            zones = new ArrayList<SelectItem>();
+            final List<Zone> list = zoneDAO.getZonesInGroupHierarchy(getUser().getPerson().getGroupID());
+            for (final Zone zone : list)
+                zones.add(new SelectItem(zone.getZoneID(), zone.getName()));
+            sortSelectItems(zones);
+        }
+        return zones;
+    }
+
+    public List<SelectItem> getVehicleGroups()
+    {
+        if (vehicleGroups == null)
+        {
+            vehicleGroups = new ArrayList<SelectItem>();
+            for (final Group group : getGroupHierarchy().getGroupList())
+                vehicleGroups.add(new SelectItem(group.getGroupID(), MessageUtil.formatMessageString("editZoneAlert_vehicleGroup", group.getName())));
+        }
+        return vehicleGroups;
+    }
+
+    public String getVehicleFilter()
+    {
+        return vehicleFilter;
+    }
+
+    public void setVehicleFilter(String vehicleFilter)
+    {
+        this.vehicleFilter = vehicleFilter;
+        vehicles = null;
+    }
+
+    private boolean matchesFilter(Vehicle vehicle)
+    {
+        if ((vehicleFilter == null) || (vehicleFilter.length() == 0) || ((vehicle.getVtype() != null) && vehicle.getVtype().getDescription().equals(vehicleFilter)))
+            return true;
+        else
+        {
+            try
+            {
+                final Integer groupID = new Integer(vehicleFilter);
+                if (groupID.equals(vehicle.getGroupID()))
+                    return true;
+
+                // test for a parent group
+                Group vehicleGroup = findGroup(vehicle.getGroupID());
+                while (vehicleGroup != null)
+                {
+                    if (groupID.equals(vehicleGroup.getParentID()))
+                        return true;
+                    vehicleGroup = findGroup(vehicleGroup.getParentID());
+                }
+            }
+            catch (NumberFormatException e)
+            {
+            }
+        }
+        return false;
+    }
+
+    private Group findGroup(Integer groupID)
+    {
+        for (final Group group : getGroupHierarchy().getGroupList())
+            if (group.getGroupID().equals(groupID))
+                return group;
+        return null;
+    }
+
+    public List<SelectItem> getVehicles()
+    {
+        if (vehicles == null)
+        {
+            vehicles = new ArrayList<SelectItem>();
+            if (allVehicles == null)
+                allVehicles = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getPerson().getGroupID());
+            for (final Vehicle vehicle : allVehicles)
+                if (matchesFilter(vehicle))
+                    vehicles.add(new SelectItem(vehicle.getVehicleID(), vehicle.getName()));
+        }
+        return vehicles;
     }
 
     @Override
@@ -233,6 +374,7 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView> 
                     if (i.next().getValue().equals(item.getValue()))
                         i.remove();
 
+        sortSelectItems(suggestions);
         return suggestions;
     }
 
@@ -274,6 +416,18 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView> 
         personID = null;
     }
 
+    private static void sortSelectItems(List<SelectItem> items)
+    {
+        Collections.sort(items, new Comparator<SelectItem>()
+        {
+            @Override
+            public int compare(SelectItem o1, SelectItem o2)
+            {
+                return o1.getLabel().compareTo(o2.getLabel());
+            }
+        });
+    }
+
     public static class ZoneAlertView extends ZoneAlert implements EditItem
     {
         @Column(updateable = false)
@@ -287,6 +441,12 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView> 
         private Zone              zone;
         @Column(updateable = false)
         private List<SelectItem>  notifyPeople;
+        @Column(updateable = false)
+        private List<Integer>     oldVehicleIDs;
+        @Column(updateable = false)
+        private List<Integer>     oldNotifyPersonIDs;
+        @Column(updateable = false)
+        private String            oldEmailToString;
         @Column(updateable = false)
         private boolean           selected;
 
@@ -319,18 +479,31 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView> 
             return zone;
         }
 
+        List<Integer> getOldVehicleIDs()
+        {
+            return oldVehicleIDs;
+        }
+
+        void setOldVehicleIDs(List<Integer> oldVehicleIDs)
+        {
+            this.oldVehicleIDs = oldVehicleIDs;
+        }
+
         public List<SelectItem> getNotifyPeople()
         {
             if (notifyPeople == null)
             {
                 notifyPeople = new ArrayList<SelectItem>();
                 if (getNotifyPersonIDs() != null)
+                {
                     for (final Integer id : getNotifyPersonIDs())
                     {
                         final Person person = personDAO.findByID(id);
                         if (person != null)
                             notifyPeople.add(new SelectItem(person.getPersonID(), person.getFirst() + ' ' + person.getLast()));
                     }
+                    sortSelectItems(notifyPeople);
+                }
             }
             return notifyPeople;
         }
@@ -350,6 +523,47 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView> 
                 getNotifyPersonIDs().remove(personID);
                 notifyPeople = null;
             }
+        }
+
+        List<Integer> getOldNotifyPersonIDs()
+        {
+            return oldNotifyPersonIDs;
+        }
+
+        void setOldNotifyPersonIDs(List<Integer> oldNotifyPersonIDs)
+        {
+            this.oldNotifyPersonIDs = oldNotifyPersonIDs;
+        }
+
+        public String getEmailToString()
+        {
+            final StringBuilder sb = new StringBuilder();
+            if (getEmailTo() != null)
+                for (final String email : getEmailTo())
+                {
+                    if (sb.length() > 0)
+                        sb.append(", ");
+                    sb.append(email);
+                }
+            return sb.toString();
+        }
+
+        public void setEmailToString(String emailToString)
+        {
+            if ((emailToString != null) && (emailToString.trim().length() > 0))
+                setEmailTo(Arrays.asList(emailToString.split("[,; ]+")));
+            else
+                setEmailTo(null);
+        }
+
+        String getOldEmailToString()
+        {
+            return oldEmailToString;
+        }
+
+        void setOldEmailToString(String oldEmailToString)
+        {
+            this.oldEmailToString = oldEmailToString;
         }
 
         public boolean isSelected()

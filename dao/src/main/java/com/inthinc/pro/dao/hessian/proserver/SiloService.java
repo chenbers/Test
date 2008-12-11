@@ -257,4 +257,6 @@ public interface SiloService extends HessianService
     Map<String, Object> createZoneAlert(Integer acctID, Map<String, Object> zoneAlertMap) throws ProDAOException;
 
     List<Map<String, Object>> getZoneAlertIDsInGroupHierarchy(Integer groupID);
+
+    Map<String, Object> deleteZoneAlertsByZoneID(Integer zoneID);
 }

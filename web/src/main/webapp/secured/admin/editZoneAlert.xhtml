@@ -64,19 +64,40 @@
 
                         <table width="400" border="0" cellspacing="2" cellpadding="4" align="right" style="background-color: #f2efe9; border: 1px solid #acacac; border-right-width: 0px;">
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editZoneAlert_zone}" /></td>
-                            <td><h:outputText value="#{zoneAlertsBean.item.zone.name}" /></td>
+                            <td width="100" valign="top">
+                              <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_zoneID" value="#{zoneAlertsBean.updateField['zoneID']}" />
+                              <h:outputText value="#{messages.editZoneAlert_zone}" />
+                            </td>
+                            <td>
+                              <h:selectOneMenu id="zoneID" value="#{zoneAlertsBean.item.zoneID}">
+                                <a4j:support event="onchange" reRender="zonePoints" limitToList="true" ajaxSingle="true" onsubmit="checkMultiple(this)" oncomplete="showZone()"/>
+                                <f:selectItems value="#{zoneAlertsBean.zones}" />
+                              </h:selectOneMenu>
+                            </td>
                           </tr>
                         </table>
 
                         <table width="400" border="0" cellspacing="2" cellpadding="4" align="center" style="border-right: 1px solid #acacac;">
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editZoneAlert_name}" /></td>
-                            <td><h:outputText value="#{zoneAlertsBean.item.name}" /></td>
+                            <td width="100" valign="top">
+                              <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_name" value="#{zoneAlertsBean.updateField['name']}" />
+                              <h:outputText value="#{messages.editZoneAlert_name}" />
+                            </td>
+                            <td>
+                              <h:inputText value="#{zoneAlertsBean.item.name}" id="name" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                maxlength="30" required="#{(not zoneAlertsBean.batchEdit) or zoneAlertsBean.updateField['name']}" requiredMessage="#{messages.required}" />
+                              <rich:message for="name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            </td>
                           </tr>
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editZoneAlert_description}" /></td>
-                            <td><h:outputText value="#{zoneAlertsBean.item.description}" /></td>
+                            <td width="100" valign="top">
+                              <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_description" value="#{zoneAlertsBean.updateField['description']}" />
+                              <h:outputText value="#{messages.editZoneAlert_description}" />
+                            </td>
+                            <td>
+                              <h:inputText value="#{zoneAlertsBean.item.description}" id="description" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                maxlength="64" />
+                            </td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editZoneAlert_dayOfWeek}" /></td>
@@ -101,72 +122,75 @@
                     <tr>
                       <td width="390" valign="top">
 
-                        <div class="add_section_title"><h:outputText value="#{messages.editZoneAlert_defineAlerts}" /></div>
+                        <div class="add_section_title">
+                          <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_defineAlerts" value="#{zoneAlertsBean.updateField['defineAlerts']}" />
+                          <h:outputText value="#{messages.editZoneAlert_defineAlerts}" />
+                        </div>
 
                         <table width="380" border="0" cellspacing="2" cellpadding="4" align="center">
                           <tr>
                             <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.speedLimit}" disabled="true" />
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.speedLimit}" />
                               <h:outputText value="#{messages.editZoneAlert_speedLimit}" />
                             </td>
                             <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.seatbeltViolation}" disabled="true" />
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.seatbeltViolation}" />
                               <h:outputText value="#{messages.editZoneAlert_seatbeltViolation}" />
                             </td>
                           </tr>
                           <tr>
                             <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.cautionArea}" disabled="true" />
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.cautionArea}" />
                               <h:outputText value="#{messages.editZoneAlert_cautionArea}" />
                             </td>
                             <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.speedViolation}" disabled="true" />
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.speedViolation}" />
                               <h:outputText value="#{messages.editZoneAlert_speedViolation}" />
                             </td>
                           </tr>
                           <tr>
                             <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.arrival}" disabled="true" />
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.arrival}" />
                               <h:outputText value="#{messages.editZoneAlert_arrival}" />
                             </td>
                             <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.driverIDViolation}" disabled="true" />
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.driverIDViolation}" />
                               <h:outputText value="#{messages.editZoneAlert_driverIDViolation}" />
                             </td>
                           </tr>
                           <tr>
                             <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.departure}" disabled="true" />
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.departure}" />
                               <h:outputText value="#{messages.editZoneAlert_departure}" />
                             </td>
                             <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.position}" disabled="true" />
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.position}" />
                               <h:outputText value="#{messages.editZoneAlert_position}" />
                             </td>
                           </tr>
                           <tr>
                             <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.ignitionOn}" disabled="true" />
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.ignitionOn}" />
                               <h:outputText value="#{messages.editZoneAlert_ignitionOn}" />
                             </td>
                             <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.masterBuzzer}" disabled="true" />
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.masterBuzzer}" />
                               <h:outputText value="#{messages.editZoneAlert_masterBuzzer}" />
                             </td>
                           </tr>
                           <tr>
                             <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.ignitionOff}" disabled="true" />
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.ignitionOff}" />
                               <h:outputText value="#{messages.editZoneAlert_ignitionOff}" />
                             </td>
                             <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.monitorIdle}" disabled="true" />
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.monitorIdle}" />
                               <h:outputText value="#{messages.editZoneAlert_monitorIdle}" />
                             </td>
                           </tr>
                           <tr>
                             <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.disableRF}" disabled="true" />
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.disableRF}" />
                               <h:outputText value="#{messages.editZoneAlert_disableRF}" />
                             </td>
                           </tr>
@@ -176,9 +200,22 @@
                       <td width="10"><img src="images/x.gif" width="10" /></td>
                       <td width="390" valign="top">
 
-                        <div class="add_section_title"><h:outputText value="#{messages.editZoneAlert_assignVehicles}" /></div>
+                        <div class="add_section_title">
+                          <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_vehicleIDs" value="#{zoneAlertsBean.updateField['vehicleIDs']}" />
+                          <h:outputText value="#{messages.editZoneAlert_assignVehicles}" />
+                        </div>
 
-                        TODO: list vehicles, or maybe list fleets/regions/teams?
+                        <h:selectOneMenu value="#{zoneAlertsBean.vehicleFilter}">
+                          <a4j:support event="onchange" reRender="vehicleIDs" limitToList="true" />
+                          <f:selectItem itemLabel="#{messages.editZoneAlert_allVehicles}" />
+                          <f:selectItem itemLabel="#{messages.editZoneAlert_lightVehicles}" itemValue="LIGHT" />
+                          <f:selectItem itemLabel="#{messages.editZoneAlert_mediumVehicles}" itemValue="MEDIUM" />
+                          <f:selectItem itemLabel="#{messages.editZoneAlert_heavyVehicles}" itemValue="HEAVY" />
+                          <f:selectItems value="#{zoneAlertsBean.vehicleGroups}" />
+                        </h:selectOneMenu>
+                        <rich:pickList id="vehicleIDs" value="#{zoneAlertsBean.item.vehicleIDs}" showButtonsLabel="false" onlistchanged="checkMultiple(this)">
+                          <f:selectItems value="#{zoneAlertsBean.vehicles}" />
+                        </rich:pickList>
 
                       </td>
                     </tr>
@@ -190,22 +227,31 @@
                     <tr>
                       <td width="390" valign="top">
 
-                        <div class="add_section_title"><h:outputText value="#{messages.editZoneAlert_notificationsByName}" /></div>
-
-                        <div>
-                          <ui:include src="../../includes/autocompletePicker.xhtml">
-                            <ui:param name="value" value="#{zoneAlertsBean.item.notifyPeople}" />
-                            <ui:param name="autocompleter" value="#{zoneAlertsBean}" />
-                          </ui:include>
+                        <div class="add_section_title">
+                          <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_notifyPeople" value="#{zoneAlertsBean.updateField['notifyPeople']}" />
+                          <h:outputText value="#{messages.editZoneAlert_notificationsByName}" />
                         </div>
+
+                        <div class="instructions"><h:outputText value="#{messages.editZoneAlert_notificationsByNameInstructions}" /></div>
+
+                        <ui:include src="../../includes/autocompletePicker.xhtml">
+                          <ui:param name="value" value="#{zoneAlertsBean.item.notifyPeople}" />
+                          <ui:param name="autocompleter" value="#{zoneAlertsBean}" />
+                          <ui:param name="onchange" value="checkMultiple('notifyPeople')" />
+                        </ui:include>
 
                       </td>
                       <td width="10"><img src="images/x.gif" width="10" /></td>
                       <td width="390" valign="top">
 
-                        <div class="add_section_title"><h:outputText value="#{messages.editZoneAlert_notificationsByEmail}" /></div>
+                        <div class="add_section_title">
+                          <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_emailToString" value="#{zoneAlertsBean.updateField['emailToString']}" />
+                          <h:outputText value="#{messages.editZoneAlert_notificationsByEmail}" />
+                        </div>
 
-                        <div><h:outputText value="#{zoneAlertsBean.item.emailTo}" /></div>
+                        <div class="instructions"><h:outputText value="#{messages.editZoneAlert_notificationsByEmailInstructions}" /></div>
+
+                        <h:inputTextarea id="emailToString" value="#{zoneAlertsBean.item.emailToString}" rows="4" style="width:100%" onchange="checkMultiple(this)" />
 
                       </td>
                     </tr>

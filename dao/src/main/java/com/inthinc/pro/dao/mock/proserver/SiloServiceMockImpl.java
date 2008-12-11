@@ -820,6 +820,12 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
+    public Map<String, Object> deleteZoneAlertsByZoneID(Integer zoneID)
+    {
+        return createReturnValue("count", 0);
+    }
+
+    @Override
     public Map<String, Object> createZoneAlert(Integer acctID, Map<String, Object> zoneAlertMap) throws ProDAOException
     {
         // TODO: actually store the object to the mock data

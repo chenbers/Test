@@ -54,6 +54,7 @@ import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
 
@@ -933,6 +934,7 @@ public class MockData
         vehicle.setLicense(license);
         vehicle.setState(state);
         vehicle.setStatus(Status.ACTIVE);
+        vehicle.setVtype(VehicleType.values()[randomInt(0, VehicleType.values().length - 1)]);
         return vehicle;
     }
 

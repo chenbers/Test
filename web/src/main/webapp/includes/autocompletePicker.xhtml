@@ -15,6 +15,7 @@
   Optional Parameters:
   ==============
           formName: The name of the form containing the picker. If not provided, "edit-form" is used.
+          onchange: A javascript expression to call when the value changes.
 
   To use:
   ==============
@@ -39,7 +40,7 @@
           <ui:repeat id="picker-repeater" value="#{value}" var="item">
             <span class="pick-item">
               <h:outputText value="#{item.label}" />
-              <a4j:commandLink action="#{autocompleter.deleteItem}" styleClass="delete-pick-item" reRender="pickerPanel" oncomplete="clearInput()">
+              <a4j:commandLink action="#{autocompleter.deleteItem}" styleClass="delete-pick-item" reRender="pickerPanel" oncomplete="changeComplete()">
                 <a4j:actionparam name="itemValue" value="#{item.value}" assignTo="#{autocompleter.itemValue}" />
                 <h:graphicImage value="/images/x.gif" width="16" height="20" />
               </a4j:commandLink></span>
@@ -50,7 +51,7 @@
             <h:column>
               <h:outputText value="#{suggestion.label}" />
             </h:column>
-            <a4j:support event="onselect" action="#{autocompleter.addItem}" reRender="pickerPanel" oncomplete="clearInput()" />
+            <a4j:support event="onselect" action="#{autocompleter.addItem}" reRender="pickerPanel" oncomplete="changeComplete()" />
           </rich:suggestionbox>
         </div>
 
@@ -78,11 +79,12 @@
           document.getElementById('#{formName}:itemValue').value = selected[0].value;
       }
 
-      function clearInput()
+      function changeComplete()
       {
         var input = document.getElementById('#{formName}:picker-input');
         input.value = "";
         input.focus();
+        #{onchange}
       }
     </script>
 

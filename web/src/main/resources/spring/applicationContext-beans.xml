@@ -92,12 +92,14 @@
     </bean>
 
     <bean id="zonesBean" class="com.inthinc.pro.backing.ZonesBean" scope="session">
+        <property name="zoneAlertDAO" ref="zoneAlertDAO"></property>
         <property name="zoneDAO" ref="zoneDAO"></property>
     </bean>
 
     <bean id="zoneAlertsBean" class="com.inthinc.pro.backing.ZoneAlertsBean" scope="session">
         <property name="zoneAlertDAO" ref="zoneAlertDAO"></property>
         <property name="zoneDAO" ref="zoneDAO"></property>
+        <property name="vehicleDAO" ref="vehicleDAO"></property>
         <property name="personDAO" ref="personDAO"></property>
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
     </bean>

@@ -194,8 +194,9 @@
                         <div class="add_section_title"><h:outputText value="#{messages.editZoneAlert_notificationsByName}" /></div>
 
                         <div>
-                          <ui:repeat value="#{zoneAlertsBean.item.notifyPeople}" var="person" varStatus="index">
-                            <h:outputText value="#{(index > 0) ? ', ' : ''}" />
+                          <h:outputText value="#{zoneAlertsBean.item.notifyPeople[0].label}" />
+                          <ui:repeat value="#{zoneAlertsBean.item.notifyPeople}" var="person" offset="1">
+                            <h:outputText value=", " />
                             <h:outputText value="#{person.label}" />
                           </ui:repeat>
                         </div>
@@ -206,7 +207,13 @@
 
                         <div class="add_section_title"><h:outputText value="#{messages.editZoneAlert_notificationsByEmail}" /></div>
 
-                        <div><h:outputText value="#{zoneAlertsBean.item.emailTo}" /></div>
+                        <div>
+                          <a href="mailto:#{email}"><h:outputText value="#{zoneAlertsBean.item.emailTo[0]}" /></a>
+                          <ui:repeat value="#{zoneAlertsBean.item.emailTo}" var="email" offset="1">
+                            <h:outputText value=", " />
+                            <a href="mailto:#{email}"><h:outputText value="#{email}" /></a>
+                          </ui:repeat>
+                        </div>
 
                       </td>
                     </tr>

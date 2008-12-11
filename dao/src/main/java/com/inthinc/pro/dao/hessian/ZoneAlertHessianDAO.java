@@ -21,4 +21,10 @@ public class ZoneAlertHessianDAO extends GenericHessianDAO<ZoneAlert, Integer> i
         }
         return flags;
     }
+
+    @Override
+    public Integer deleteByZoneID(Integer zoneID)
+    {
+        return getChangedCount(getSiloService().deleteZoneAlertsByZoneID(zoneID));
+    }
 }

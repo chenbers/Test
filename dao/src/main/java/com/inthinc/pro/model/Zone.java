@@ -13,14 +13,14 @@ public class Zone extends BaseEntity
     private static final long serialVersionUID = 7505601232108995094L;
 
     @ID
-    private Integer             zoneID;
+    private Integer           zoneID;
     @Column(name = "acctID")
-    private Integer             accountID;
-    private Integer             groupID;
-    private String              name;
-    private String              address;
+    private Integer           accountID;
+    private Integer           groupID;
+    private String            name;
+    private String            address;
     @Column(type = LatLng.class)
-    private List<LatLng>        points;
+    private List<LatLng>      points;
 
     public Integer getZoneID()
     {
@@ -106,16 +106,19 @@ public class Zone extends BaseEntity
     {
         points = new ArrayList<LatLng>();
 
-        final StringTokenizer tokenizer = new StringTokenizer(pointsString, ";");
-        while (tokenizer.hasMoreTokens())
+        if (pointsString != null)
         {
-            final String latlngToken = tokenizer.nextToken();
-            final int idx = latlngToken.indexOf(',');
-            if (idx == -1)
-                throw new IllegalArgumentException("invalid point pair string: " + latlngToken);
-            final float lat = new Float(latlngToken.substring(1, idx));
-            final float lng = new Float(latlngToken.substring(idx + 1, latlngToken.length() - 1));
-            points.add(new LatLng(lat, lng));
+            final StringTokenizer tokenizer = new StringTokenizer(pointsString, ";");
+            while (tokenizer.hasMoreTokens())
+            {
+                final String latlngToken = tokenizer.nextToken();
+                final int idx = latlngToken.indexOf(',');
+                if (idx == -1)
+                    throw new IllegalArgumentException("invalid point pair string: " + latlngToken);
+                final float lat = new Float(latlngToken.substring(1, idx));
+                final float lng = new Float(latlngToken.substring(idx + 1, latlngToken.length() - 1));
+                points.add(new LatLng(lat, lng));
+            }
         }
     }
 }

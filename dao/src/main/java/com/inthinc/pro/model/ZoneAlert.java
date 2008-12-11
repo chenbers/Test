@@ -1,5 +1,7 @@
 package com.inthinc.pro.model;
 
+import java.util.List;
+
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
@@ -24,6 +26,7 @@ public class ZoneAlert extends BaseAlert
     private Boolean           cautionArea;
     private Boolean           disableRF;
     private Boolean           monitorIdle;
+    private List<Integer>     vehicleIDs;
 
     public Integer getZoneAlertID()
     {
@@ -173,5 +176,15 @@ public class ZoneAlert extends BaseAlert
     public void setMonitorIdle(Boolean monitorIdle)
     {
         this.monitorIdle = monitorIdle;
+    }
+
+    public List<Integer> getVehicleIDs()
+    {
+        return vehicleIDs;
+    }
+
+    public void setVehicleIDs(List<Integer> vehicleIDs)
+    {
+        this.vehicleIDs = vehicleIDs;
     }
 }
