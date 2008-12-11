@@ -1,10 +1,9 @@
 package it.com.inthinc.pro.dao;
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import it.config.IntegrationConfig;
-
-import java.io.File;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -26,7 +25,7 @@ public class ReportServiceTest
     @BeforeClass
     public static void setUpBeforeClass() throws Exception
     {
-        IntegrationConfig config = new IntegrationConfig(new File("./src/test/resources"));
+        IntegrationConfig config = new IntegrationConfig();
 
         String host = config.get(IntegrationConfig.SILO_HOST).toString();
         Integer port = Integer.valueOf(config.get(IntegrationConfig.SILO_PORT).toString());

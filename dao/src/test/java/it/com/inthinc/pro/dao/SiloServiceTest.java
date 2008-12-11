@@ -1,15 +1,17 @@
 package it.com.inthinc.pro.dao;
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import it.config.IntegrationConfig;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
-
-import it.config.IntegrationConfig;
 
 import org.apache.log4j.Logger;
 import org.junit.AfterClass;
@@ -95,7 +97,7 @@ public class SiloServiceTest
     @BeforeClass
     public static void setUpBeforeClass() throws Exception
     {
-        IntegrationConfig config = new IntegrationConfig(new File("./src/test/resources"));
+        IntegrationConfig config = new IntegrationConfig();
 
         String host = config.get(IntegrationConfig.SILO_HOST).toString();
         Integer port = Integer.valueOf(config.get(IntegrationConfig.SILO_PORT).toString());
