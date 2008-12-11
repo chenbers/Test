@@ -1,6 +1,5 @@
 package it.config;
 
-import java.io.File;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
