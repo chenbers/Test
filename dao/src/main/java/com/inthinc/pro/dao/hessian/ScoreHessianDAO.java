@@ -1,5 +1,6 @@
 package com.inthinc.pro.dao.hessian;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import com.inthinc.pro.dao.hessian.proserver.ReportService;
 import com.inthinc.pro.model.DriveQMap;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
+import com.inthinc.pro.model.GQMap;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreTypeBreakdown;
 import com.inthinc.pro.model.ScoreableEntity;
@@ -83,7 +85,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         {
             
             // TODO: not sure if this duration mapping is correct
-// groupID = 16777218;            
+//groupID = 16777218;            
             Map<String, Object> returnMap = reportService.getGDScoreByGT(groupID, duration.getCode());
             DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
             
@@ -124,10 +126,41 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     @Override
     public List<ScoreableEntity> getScores(Integer groupID, Duration duration, ScoreType scoreType)
     {
-        // logger.debug("getScores() groupID = " + groupID);
         try
         {
-            List<ScoreableEntity> scoreList = getMapper().convertToModelObject(reportService.getScores(groupID, duration.getCode(), scoreType.getCode()), ScoreableEntity.class);
+//groupID = 16777218;            
+            List<Map<String, Object>> returnMapList = reportService.getSDScoresByGT(groupID, duration.getCode());
+            
+            List<GQMap> gqMapList = getMapper().convertToModelObject(returnMapList, GQMap.class);
+
+            List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
+            for (GQMap gqMap : gqMapList)
+            {
+                
+                ScoreableEntity scoreableEntity = new ScoreableEntity();
+                scoreableEntity.setEntityID(gqMap.getGroup().getGroupID());
+                scoreableEntity.setEntityType(EntityType.ENTITY_GROUP);
+                scoreableEntity.setIdentifier(gqMap.getGroup().getName());
+                scoreableEntity.setScoreType(scoreType);
+                scoreableEntity.setScore(gqMap.getDriveQ().getScoreMap().get(scoreType));
+                scoreList.add(scoreableEntity);
+
+            }
+            
+            return scoreList;
+            
+        }
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
+    }
+    @Override
+    public List<ScoreableEntity> getTrendScores(Integer groupID, Duration duration)
+    {
+        try
+        {
+            List<ScoreableEntity> scoreList = getMapper().convertToModelObject(reportService.getScores(groupID, duration.getCode(), ScoreType.SCORE_OVERALL_TIME.getCode()), ScoreableEntity.class);
             return scoreList;
         }
         catch (EmptyResultSetException e)
@@ -141,7 +174,6 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             else
                 throw e;
         }
-
     }
 
     @Override

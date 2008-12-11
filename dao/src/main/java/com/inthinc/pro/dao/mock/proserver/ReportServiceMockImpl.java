@@ -18,6 +18,7 @@ import com.inthinc.pro.model.DVQMap;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
+import com.inthinc.pro.model.GQMap;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreType;
@@ -487,8 +488,32 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
         
     public List<Map<String, Object>>  getSDScoresByGT(Integer groupID, Integer duration)
     {
-        // TODO Auto-generated method stub
-        return null;
+   // TODO CJ HERE
+        List<GQMap> entityList = new ArrayList<GQMap>();
+        
+        
+        Group topGroup = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
+        List<Group> groupList = getGroupHierarchy(topGroup);
+        
+        List<Map<String, Object>> gqMapList = new ArrayList<Map<String, Object>>();
+        
+        for (Group group : groupList)
+        {
+            if (group.getParentID().equals(groupID))
+            {
+                SearchCriteria searchCriteria = new SearchCriteria();
+                searchCriteria.addKeyValue("group:groupID", group.getGroupID());
+        
+                // get list of drivers that are in the specified group
+                GQMap gqMap = MockData.getInstance().retrieveObject(GQMap.class, searchCriteria);
+                if (gqMap == null)
+                {
+                    continue;
+                }
+                gqMapList.add(TempConversionUtil.createMapFromObject(gqMap));
+            }
+        }
+        return gqMapList;
     } 
     
     public List<Map<String, Object>>  getSDTrendsByGTC(Integer groupID, Integer duration, Integer metric)

@@ -32,6 +32,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.GQMap;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.GroupLevel;
@@ -212,6 +213,8 @@ public class MockData
             
             addMpg(groups[cnt].getGroupID(), groups[cnt].getName(), groups[cnt].getGroupID());
             
+            addGroupDriveQMap(groups[cnt]);
+            
             if (!groupIsParent(groups, groups[cnt].getGroupID()))
             {
                 List<Driver> driversInGroup = addDriversToGroup(accountID, groups[cnt].getGroupID(),5);
@@ -237,12 +240,21 @@ public class MockData
         
     }
     
+    private void addGroupDriveQMap(Group group)
+    {
+        
+        GQMap gqMap = new GQMap();
+        gqMap.setDriveQ(createDriveQ());
+        gqMap.setGroup(group);
+        storeObject(gqMap);
+    }
 
 
     private void addDriveQMaps(List<Driver> driversInGroup, List<Vehicle> vehiclesInGroup)
     {
         for (Driver driver : driversInGroup)
         {
+            
             DVQMap dvqMap = new DVQMap();
             
             dvqMap.setDriver(driver);
@@ -251,6 +263,7 @@ public class MockData
             
             storeObject(dvqMap);
         }
+        
     }
 
     private DriveQMap createDriveQ()
@@ -1172,7 +1185,15 @@ public class MockData
             boolean isMatch = true;
             for (Map.Entry<String,Object> searchItem : searchMap.entrySet())
             {
-                Object fieldValue = getFieldValue(obj, searchItem.getKey().toString());
+                Object fieldValue = null;
+                if (searchItem.getKey().indexOf(":") != -1)
+                {
+                    fieldValue = getFieldValue(obj, searchItem.getKey().split(":"));
+                }
+                else
+                {
+                    fieldValue = getFieldValue(obj, searchItem.getKey());
+                }
                 
                 if (!searchItemMatch(searchItem, fieldValue))
                 {

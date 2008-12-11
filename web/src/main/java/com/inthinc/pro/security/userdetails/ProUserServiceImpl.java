@@ -19,52 +19,6 @@ public class ProUserServiceImpl implements UserDetailsService
     
     private UserDAO userDAO;
     
-    /*
-    static Map<String, User> mockUserMap = new HashMap<String, User>();
-    static
-    {
-        User user = new User();
-        user.setUsername("expired");
-        user.setPassword("nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7");   // password is 'password'
-        user.setActive(false);
-        user.setRole(Role.ROLE_USER);
-        mockUserMap.put("expired", user);
-        
-        user = new User();
-        user.setUsername("admin");
-        user.setPassword("nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7");   // password is 'password'
-        user.setActive(true);
-        user.setRole(Role.ROLE_ADMIN);
-        mockUserMap.put("admin", user);
-
-        user = new User();
-        user.setUsername("manager");
-        user.setPassword("nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7");   // password is 'password'
-        user.setActive(true);
-        user.setRole(Role.ROLE_MANAGER);
-        mockUserMap.put("manager", user);
-
-        user = new User();
-        user.setUsername("superuser");
-        user.setPassword("nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7");   // password is 'password'
-        user.setActive(true);
-        user.setRole(Role.ROLE_SUPERUSER);
-        mockUserMap.put("superuser", user);
-        
-        for (int i = 0; i < 10; i++)
-        {
-            String username="user"+i;
-            user = new User();
-            user.setUsername(username);
-            user.setPassword("nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7");   // password is 'password'
-            user.setActive(true);
-            user.setRole(Role.ROLE_USER);
-            mockUserMap.put(username, user);
-            
-        }
-    }
-    */
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException
     {
@@ -72,6 +26,10 @@ public class ProUserServiceImpl implements UserDetailsService
         try
         {
             User user = lookup(username);
+            if (user == null)
+            {
+                throw new UsernameNotFoundException("Username could not be found");
+            }
             return new ProUser(user, user.getRole().toString());
         }
         catch (EmptyResultSetException ex)

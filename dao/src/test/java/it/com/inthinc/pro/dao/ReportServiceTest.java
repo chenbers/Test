@@ -1,8 +1,12 @@
 package it.com.inthinc.pro.dao;
 
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+
+import java.util.List;
+
 import it.config.IntegrationConfig;
 
 import org.junit.AfterClass;
@@ -62,5 +66,26 @@ public class ReportServiceTest
         assertNull(scoreableEntity);
         
     }
+    
+    @Test
+    public void getScores()
+    {
+        ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
+        scoreDAO.setReportService(reportService);
+        
+        
+        Integer groupID = 16777218;
+        List<ScoreableEntity> scoreableEntityList = scoreDAO.getScores(groupID, Duration.DAYS, ScoreType.SCORE_OVERALL);
+        
+        assertNotNull(scoreableEntityList);
+        System.out.println("GroupID: " + groupID + " num entries: " + scoreableEntityList.size());
+        
+        groupID = 483;
+        scoreableEntityList = scoreDAO.getScores(groupID, Duration.DAYS, ScoreType.SCORE_OVERALL);
+        
+        assertNotNull(scoreableEntityList);
+        assertEquals("no score expected", 0, scoreableEntityList.size());
+    }
+
 
 }

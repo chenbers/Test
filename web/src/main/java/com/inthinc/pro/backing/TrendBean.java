@@ -110,7 +110,7 @@ public class TrendBean extends BaseDurationBean
             
             ScoreableEntity se = s.get(i-1);
             // Fetch to get children's observations
-            ss = scoreDAO.getScores(se.getEntityID(), navigation.getDuration(), ScoreType.SCORE_OVERALL_TIME);
+            ss = scoreDAO.getTrendScores(se.getEntityID(), navigation.getDuration());
 
             // Y-coordinates
             sb.append("<dataset seriesName=\'\' color=\'");
@@ -188,7 +188,12 @@ public class TrendBean extends BaseDurationBean
 //            se.setColorKey(GraphicUtil.entityColorKey.get(cnt++));
             if (score.getEntityType().equals(EntityType.ENTITY_GROUP))
             {
-                se.setGoTo(contextPath + getGroupHierarchy().getGroupLevel(score.getEntityID()).getUrl() + "?groupID=" + score.getEntityID());
+                // TODO: if getGroupHierarchy().getGroupLevel(score.getEntityID()) returns null 
+                // this should an error -- someone trying to access a group they shouldn't
+                String url = "";
+                if (getGroupHierarchy().getGroupLevel(score.getEntityID()) != null)
+                    url = getGroupHierarchy().getGroupLevel(score.getEntityID()).getUrl();
+                se.setGoTo(contextPath + url + "?groupID=" + score.getEntityID());
             }
             scoreableEntities.add(se);
             score = null;

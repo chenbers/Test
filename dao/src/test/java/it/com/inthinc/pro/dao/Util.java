@@ -48,8 +48,11 @@ public class Util
         PropertyDescriptor propertyDescriptors[] = beanInfo.getPropertyDescriptors();
         for (int i = 0; i < propertyDescriptors.length; i++)
         {
+            if (propertyDescriptors[i].isHidden())
+                continue;
+            
             String key = propertyDescriptors[i].getName();
-            if (ignoreFields.contains(key))
+            if (ignoreFields.contains(key) || key.equals("class"))
                 continue;
     
             Method getMethod = propertyDescriptors[i].getReadMethod();
@@ -92,7 +95,15 @@ public class Util
                     {
                         assertNotNull(value1.getClass().getSimpleName() + " Field: " + key + " ", value2 );
                     }
-                    assertEquals(value1.getClass().getSimpleName() + " Field: " + key + " ", value1, value2);
+                    if (!isStandardProperty(value1) && !isComparableProperty(value1))
+                    {
+System.out.println("key: " + key + " class:" + value1.getClass().getName());                        
+                        compareObjects(value1, value2, ignoreList);
+                    }
+                    else
+                    {    
+                        assertEquals(value1.getClass().getSimpleName() + " Field: " + key + " ", value1, value2);
+                    }
                 }
             }
             catch (IllegalAccessException e)
@@ -111,6 +122,18 @@ public class Util
         
     }
 
+    private static boolean isComparableProperty(Object value1)
+    {
+        if (BaseEnum.class.isAssignableFrom(value1.getClass()))
+            return true;
+        if (Enum.class.isAssignableFrom(value1.getClass()))
+            return true;
+        if (TimeZone.class.isAssignableFrom(value1.getClass()))
+            return true;
+        
+        return false;
+    }
+
     public static Date genDate(Integer year, Integer month, Integer day)
     {
         GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
@@ -121,5 +144,19 @@ public class Util
         return cal.getTime();
         
     }
+    private static boolean isStandardProperty(Object o)
+    {
+        if (Number.class.isInstance(o))
+            return true;
+        if (Character.class.isInstance(o))
+            return true;
+        if (String.class.isInstance(o))
+            return true;
+        if (Boolean.class.isInstance(o))
+            return true;
+        return false;
+    }
+
+
 
 }

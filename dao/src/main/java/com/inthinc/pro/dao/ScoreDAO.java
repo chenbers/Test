@@ -45,6 +45,9 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      * @return
      */
     List<ScoreableEntity> getScores(Integer groupID, Duration duration, ScoreType scoreType);
+    
+    List<ScoreableEntity> getTrendScores(Integer groupID, Duration duration);
+
 
     /**
      * Retrieve the list of overall scores for top five drivers for the last 30 days
