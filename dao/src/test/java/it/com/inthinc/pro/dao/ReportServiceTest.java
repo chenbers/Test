@@ -8,6 +8,7 @@ import java.io.File;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.hessian.ScoreHessianDAO;
@@ -44,6 +45,7 @@ public class ReportServiceTest
     }
     
     @Test
+    @Ignore
     public void averageScoreByType()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
