@@ -61,7 +61,13 @@
     </bean>
 
 	<bean id="flyOutBean" class="com.inthinc.pro.backing.FlyOutBean" scope="request" />
-
+    
+    <bean id="liveFleetBean" class="com.inthinc.pro.backing.LiveFleetBean" scope="request" parent="baseBean">
+        <property name="driverDAO" ref="driverDAO"></property>
+        <property name="navigation" ref="navigationBean"></property>
+        <property name="groupDAO" ref="groupDAO"></property>
+    </bean>
+    
     <bean id="personBean" class="com.inthinc.pro.backing.PersonBean" scope="session">
         <property name="personDAO" ref="personDAO"></property>
         <property name="groupDAO" ref="groupDAO"></property>
