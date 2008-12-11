@@ -3,13 +3,13 @@
   	xmlns:h="http://java.sun.com/jsf/html" 
   	xmlns:f="http://java.sun.com/jsf/core" 
   	xmlns:a4j="http://richfaces.org/a4j"
-  	xmlns:rich="http://richfaces.org/rich">
-  	
+  	xmlns:rich="http://richfaces.org/rich">  	
+ 	  	
 <div class="main_nav">
 	<div class="main_nav-right"></div>
 	<div class="main_nav-left"></div>
 	<div class="main_nav-bg">
-	<h:form>
+	<h:form id="navigation"> 
 		<ul>
 			<li class="#{homeSelected}">	
 				<h:commandLink title="#{messages.navigation_home}" action="go_home">
@@ -37,23 +37,35 @@
 				</h:commandLink>
 			</li>
 			<li style="float:right">
+			
+				
+			
 				<table width="250" border="0" cellspacing="0" cellpadding="0" id="menu_search_box">
 				  <tr>
 					<td class="left"><h:graphicImage value="/images/search_box_left.png" /></td>
 					<td width="105" height="100" class="middle">
-					  <h:inputText value="" styleClass="text" size="15"/>
+					  <h:inputText id="redirectSearch" value="" styleClass="text" size="15"/>
 					</td>
 					<td class="middle">
-						<h:selectOneMenu value="" styleClass="text" style="width: 95px;">
+						<h:selectOneMenu id="redirectTo" value="" styleClass="text" style="width: 95px;">
 							<f:selectItem itemLabel="#{messages.navigation_searchDrivers}" itemValue="1"/>
 							<f:selectItem itemLabel="#{messages.navigation_searchVehicles}" itemValue="2"/>
-							<f:selectItem itemLabel="#{messages.navigation_searchDevices}" itemValue="3"/>
+							<f:selectItem itemLabel="#{messages.navigation_searchIdlings}" itemValue="3"/>														
+							<f:selectItem itemLabel="#{messages.navigation_searchDevices}" itemValue="4"/>							
 						</h:selectOneMenu>
 					</td>
-					<td class="middle" width="25" align="center"><h:graphicImage value="/images/ico_search.png" width="15" height="15" style="margin: 5px;" /></td>
-					<td class="right"><h:graphicImage value="/images/search_box_right.png" /></td>
+					<td class="middle" width="25" align="center">
+						<input type="button" value="Go" onClick="goTo();">
+						</input>					
+					</td>
+					<td class="right">
+						<h:graphicImage value="/images/search_box_right.png" />
+					</td>
 				  </tr>
 			  </table>
+			  
+			 
+			  
 			</li>	
 		</ul>
 		</h:form>
