@@ -5,12 +5,16 @@ import java.util.Map;
 
 import javax.faces.context.FacesContext;
 
+import org.apache.log4j.Logger;
+
 public class BaseReportBean extends BaseBean
 {
+    private static final Logger logger = Logger.getLogger(BaseReportBean.class);
+
     protected String checkForRequestMap()
     {
         String searchFor = null;
-        
+
         Map m = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         Iterator imap = m.entrySet().iterator();
 
@@ -20,10 +24,10 @@ public class BaseReportBean extends BaseBean
             Map.Entry entry = (Map.Entry) imap.next();
             String key = (String) entry.getKey();
             String value = (String) entry.getValue();
-       
+
             //search parm
             if ( key.equalsIgnoreCase("searchFor") ) {              
-                searchFor = value;              
+                searchFor = value;    
             }
         }
         

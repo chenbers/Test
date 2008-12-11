@@ -32,7 +32,7 @@ import com.inthinc.pro.model.VehicleReportItem;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.TempColumns;
 
-public class VehicleReportBean extends BaseBean
+public class VehicleReportBean extends BaseReportBean
 {
     private static final Logger logger = Logger.getLogger(VehicleReportBean.class);
     
@@ -78,9 +78,17 @@ public class VehicleReportBean extends BaseBean
         AVAILABLE_COLUMNS.add("style");
     }
     
-    public void init() {               
+    public void init() {   
+        searchFor = checkForRequestMap();
+        
         vehiclesData = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getPerson().getGroupID());
-        loadResults(vehiclesData);
+        if ( (searchFor != null) && (searchFor.trim().length() != 0) ) 
+        {
+            search();
+        } else {
+            loadResults(vehiclesData);
+        }
+        
         maxCount = vehicleData.size();
         resetCounts();
     }
@@ -327,11 +335,7 @@ public class VehicleReportBean extends BaseBean
     }
     
     public void scrollerListener(DataScrollerEvent se)     
-    {        
-        logger.debug("scoll event page: " + se.getPage() + 
-                " old " + se.getOldScrolVal() + " new " + se.getNewScrolVal() +
-                " total " + this.vehicleData.size());
-        
+    {              
         this.start = (se.getPage()-1)*this.numRowsPerPg + 1;
         this.end = (se.getPage())*this.numRowsPerPg;
         //Partial page

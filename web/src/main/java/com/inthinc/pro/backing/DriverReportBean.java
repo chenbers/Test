@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.faces.context.FacesContext;
+
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
@@ -30,7 +32,7 @@ import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.TempColumns;
 
-public class DriverReportBean extends BaseBean
+public class DriverReportBean extends BaseReportBean
 {
     private static final Logger logger = Logger.getLogger(DriverReportBean.class);
     
@@ -59,7 +61,6 @@ public class DriverReportBean extends BaseBean
     private Integer end = numRowsPerPg;
     
     private String searchFor = "";
-
     
     static
     {
@@ -77,16 +78,34 @@ public class DriverReportBean extends BaseBean
     }
     
     public void init() {  
-        driversData = driverDAO.getAllDrivers(getUser().getPerson().getGroupID());        
-        loadResults(driversData);     
-        maxCount = driverData.size();        
-        resetCounts();
+        searchFor = checkForRequestMap();        
+        driversData = driverDAO.getAllDrivers(getUser().getPerson().getGroupID());
+        checkOnSearch();
     }
         
 
     public List<DriverReportItem> getDriverData()
-    {             
+    {      
+        if ( driverData.size() > 0 ) {
+            this.driverData.clear();
+        }
+        
+        searchFor = checkForRequestMap();        
+        checkOnSearch();
+        
         return driverData;
+    }
+    
+    private void checkOnSearch() {
+        if ( (searchFor != null) && (searchFor.trim().length() != 0) ) 
+        {
+            search();
+        } else {
+            loadResults(driversData);
+        }
+        
+        maxCount = driverData.size();        
+        resetCounts();        
     }
 
     public void setDriverData(List<DriverReportItem> driverData)

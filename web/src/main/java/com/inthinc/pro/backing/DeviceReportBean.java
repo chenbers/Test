@@ -23,7 +23,7 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.TempColumns;
 
-public class DeviceReportBean extends BaseBean
+public class DeviceReportBean extends BaseReportBean
 {
     private static final Logger logger = Logger.getLogger(DeviceReportBean.class);
     
@@ -62,6 +62,8 @@ public class DeviceReportBean extends BaseBean
     }
     
     public void init() {
+        searchFor = checkForRequestMap();
+        
         //Live DAO here
 //        assetsData = driverDAO.getAllDrivers(getUser().getPerson().getGroupID());
         //Fake data
@@ -95,7 +97,13 @@ public class DeviceReportBean extends BaseBean
         device.setEphone("801-324-9817");
         devicesData.add(device);        
         
-        loadResults(devicesData);     
+        if ( (searchFor != null) && (searchFor.trim().length() != 0) ) 
+        {
+            search();
+        } else {
+            loadResults(devicesData);
+        }
+        
         maxCount = deviceData.size();        
         resetCounts();
     }

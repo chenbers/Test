@@ -24,7 +24,7 @@ import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.TempColumns;
 
-public class IdlingReportBean extends BaseBean
+public class IdlingReportBean extends BaseReportBean
 {
     private static final Logger logger = Logger.getLogger(IdlingReportBean.class);
     
@@ -79,13 +79,14 @@ public class IdlingReportBean extends BaseBean
     }
     
     public void init() {   
+        searchFor = checkForRequestMap();
+        
         // end initialized to today, start
         //  seven days back
         defaultEndDate = endDate;
         startDate.setTime(this.endDate.getTime() - DAYS_BACK);
         defaultStartDate = startDate;
 
-        idlingsData = new ArrayList<IdlingReportItem>();
         iri = new IdlingReportItem();
         Driver d = new Driver();        
         
@@ -146,16 +147,21 @@ public class IdlingReportBean extends BaseBean
             idlingsData.add(iri);
             iri = new IdlingReportItem();
         }
+                
+        if ( (searchFor != null) && (searchFor.trim().length() != 0) ) 
+        {
+            search();
+        } else {
+            loadResults(idlingsData);
+        }
 
         maxCount = idlingsData.size();
-        loadResults(idlingsData);
         resetCounts();
     }
     
 
     public List<IdlingReportItem> getIdlingData()
-    {
-        logger.debug("getting");           
+    {         
         return idlingData;
         
     }
