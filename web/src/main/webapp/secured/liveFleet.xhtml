@@ -26,6 +26,14 @@
 	          return marker;
         }
 
+		function showDriver(lat, lng, name, phone)
+		{
+			var point = new GLatLng(lat, lng);
+			
+			marker = createMarker(point, name + "<br />" + phone, "#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
+			
+		}
+	    
    		function showAddress(address) {
    	      if (geocoder) {
    	        geocoder.getLatLng(
@@ -48,7 +56,6 @@
 				         	  
 				 //Pass LatLng to Bean.
 				 var loc = marker.getLatLng();
-				 addressPoint = marker.getLatLng();
 				 notifyBean(loc.lat(), loc.lng());	
     	         }
    	          }
@@ -74,56 +81,41 @@
 				</div>
 					<div class="panel_w">
 					  <div class="panel_content">
-							<div class="datagrid">
-								<table width="320" id="theTable" cellpadding="0" cellspacing="0" class="sortable-onload-0 no-arrow rowstyle-alt colstyle-alt paginate-15 max-pages-4 paginationcallback-callbackTest-calculateTotalRating sortcompletecallback-callbackTest-calculateTotalRating">
-								  <thead>
-								  <tr>
+						<!-- Start Trip table --> 
+						<rich:panel id="selectedTrip">
+					
+						<rich:dataTable 
+						value="#{liveFleetBean.drivers}" 
+						id="nearestVehicles"
+						var="item" styleClass="datagrid"
+						rowClasses="tableOdd,tableEven" cellspacing="1" rows="25"  
+						width="100%">
+							<!-- Data -->
+							<rich:column>
+								<img src="../images/ico_start.png" width="20" height="20" />
+							</rich:column>
 
-									<th width="38" height="27" class="sortable-numeric">#</th>
-									<th width="150" class="sortable-text">Driver</th>
-									<th width="79" class="sortable-text">Phone</th>
-									<th width="51" class="">&#160;</th>
-								  </tr>
-								  </thead>
-								  <tbody>
+							<rich:column sortBy="#{item.driverName}">
+								<f:facet name="header">
+									<h:outputText value="Driver" />
+								</f:facet>
+								<h:outputText value="#{item.driverName}" />
+							</rich:column>
+							
+							<rich:column sortBy="#{item.driver.person.workPhone}">
+								<f:facet name="header">
+									<h:outputText value="Phone" />
+								</f:facet>
+								<h:outputText value="#{item.driver.person.workPhone}" />
+							</rich:column>
+							
+							<rich:column>
+								<h:commandLink value="show" onclick="showDriver(" />
+							</rich:column>
 
-								  <tr>
-									<td>1</td>
-									<td>Amy Jones </td>
-									<td>562-3255</td>
-									<td><a href="#">show</a></td>
-								  </tr>
-								  <tr>
-
-									<td>2</td>
-									<td>Paul Smith </td>
-									<td>568-6522</td>
-									<td><a href="#">show</a></td>
-								  </tr>
-								  <tr>
-									<td>3</td>
-
-									<td>Dan Lee </td>
-									<td>654-6544</td>
-									<td><a href="#">show</a></td>
-								  </tr>
-								  <tr>
-									<td>4</td>
-									<td>Stan Ferrera </td>
-
-									<td>598-7455</td>
-									<td><a href="#">show</a></td>
-								  </tr>
-								  <tr>
-									<td>5</td>
-									<td>Jose Sanchez </td>
-									<td>788-1022</td>
-
-									<td><a href="#">show</a></td>
-								  </tr>
-								  </tbody>
-								</table>
-							</div>
+						</rich:dataTable>
+						</rich:panel>
+				<!-- End Trip table -->
 					  </div>
 					</div>
 				<div class="panel_sw">
@@ -167,8 +159,6 @@
 				var map = null;
 			    var geocoder = null;
 			    var renderVehicles = new Boolean(false);
-
-			    var addressPoint;
 
 			    var baseIcon = new GIcon();
 					baseIcon.iconSize = new GSize(21, 20);
