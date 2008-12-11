@@ -13,89 +13,128 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.LatLng;
 
-public class LiveFleetBean extends BaseBean 
+public class LiveFleetBean extends BaseBean
 {
-	private NavigationBean navigation;
-	private GroupDAO groupDAO;
-	private DriverDAO driverDAO;
-	private static final Logger logger = Logger.getLogger(LiveFleetBean.class);
-	
-	private LatLng addressLatLng = new LatLng();
-	private Double maxCount = 100.00D;
-	private Double maxRadius = 300.00D;
-	
-	private List<DriverLastLocationBean> drivers = new ArrayList<DriverLastLocationBean>();
+    private NavigationBean               navigation;
+    private GroupDAO                     groupDAO;
+    private DriverDAO                    driverDAO;
+    private static final Logger          logger        = Logger.getLogger(LiveFleetBean.class);
 
-	public List<DriverLastLocationBean> getDrivers() {
-		initDrivers();
-		logger.debug("completed LastLoc init");
-		return drivers;
-	}
+    private LatLng                       addressLatLng = null;
+    private Integer                      addressZoom;
 
-	public void setDrivers(List<DriverLastLocationBean> drivers) {
-		this.drivers = drivers;
-	}
-	private GroupHierarchy organizationHierarchy;
-	
-	public void initDrivers()
-	{
-		organizationHierarchy = new GroupHierarchy(groupDAO.getGroupsByAcctID(getAccountID()));
-		Group fleetGroup = organizationHierarchy.getTopGroup();
-	    
-		List<Driver> tempDrivers = driverDAO.getAllDrivers(fleetGroup.getGroupID()); // Replace with GetAllDriversNear(LatLng)
-		
-		for(Driver d: tempDrivers)
-		{
-		    
-		    LastLocation last = driverDAO.getLastLocation(d.getDriverID());
-		
-			DriverLastLocationBean driverLast = new DriverLastLocationBean();
-			
-			logger.debug(last.getLat() + " " + d.getDriverID());
-			
-			driverLast.setLastLocation(new LatLng(last.getLat(), last.getLng()) );
-			driverLast.setDriver(d);
-			driverLast.setDriverName(d.getPerson().getFirst() + " " + d.getPerson().getLast());
-			
-			drivers.add(driverLast);
-			
-		}
-	}
-	
-	public GroupDAO getGroupDAO() {
-		return groupDAO;
-	}
-	public void setGroupDAO(GroupDAO groupDAO) {
-		this.groupDAO = groupDAO;
-	}
+    private Integer                      maxCount      = 100;
+    private Double                       maxRadius     = 300.00D;
+    private Integer                      driverPager   = 1;
 
-	public DriverDAO getDriverDAO() {
-		return driverDAO;
-	}
-	public void setDriverDAO(DriverDAO driverDAO) {
-		this.driverDAO = driverDAO;
-	}
+    private List<DriverLastLocationBean> drivers       = new ArrayList<DriverLastLocationBean>();
 
-	public Double getMaxRadius() {
-		return maxRadius;
-	}
-	public void setMaxRadius(Double maxRadius) {
-		this.maxRadius = maxRadius;
-	}
-	
-	//ADDRESS LATLNG PROPERTIES
-	public LatLng getAddressLatLng() {
-		return addressLatLng;
-	}
-	public void setAddressLatLng(LatLng addressLatLng) {
-		this.addressLatLng = addressLatLng;
-	}
-	
-	//NAVIGATION PROPERTIES
-	public NavigationBean getNavigation() {
-		return navigation;
-	}
-	public void setNavigation(NavigationBean navigation) {
-		this.navigation = navigation;
-	}
+    private GroupHierarchy               organizationHierarchy;
+
+    public void initBean()
+    {
+        organizationHierarchy = new GroupHierarchy(groupDAO.getGroupsByAcctID(getAccountID()));
+        addressLatLng = organizationHierarchy.getTopGroup().getMapCenter();
+        addressZoom = organizationHierarchy.getTopGroup().getMapZoom();
+    }
+    
+    public void initDrivers()
+    {
+        
+        Group fleetGroup = organizationHierarchy.getTopGroup();
+
+        List<Driver> tempDrivers = driverDAO.getAllDrivers(fleetGroup.getGroupID()); // Replace with GetAllDriversNear(LatLng)
+
+        for (Driver d : tempDrivers)
+        {
+            LastLocation last = driverDAO.getLastLocation(d.getDriverID());
+
+            DriverLastLocationBean driverLast = new DriverLastLocationBean();
+            driverLast.setLastLocation(new LatLng(last.getLat(), last.getLng()));
+            driverLast.setDriver(d);
+            driverLast.setDriverName(d.getPerson().getFirst() + " " + d.getPerson().getLast());
+
+            drivers.add(driverLast);
+        }
+    }
+    
+    //DRIVER LIST PROPERTIES
+    public List<DriverLastLocationBean> getDrivers()
+    {
+        initDrivers();
+        return drivers;
+    }
+    public void setDrivers(List<DriverLastLocationBean> drivers)
+    {
+        this.drivers = drivers;
+    }
+
+    //DAO PROPERTIES
+    public GroupDAO getGroupDAO()
+    {
+        return groupDAO;
+    }
+    public void setGroupDAO(GroupDAO groupDAO)
+    {
+        this.groupDAO = groupDAO;
+    }
+    public DriverDAO getDriverDAO()
+    {
+        return driverDAO;
+    }
+    public void setDriverDAO(DriverDAO driverDAO)
+    {
+        this.driverDAO = driverDAO;
+    }
+
+    //RADIUS PROPERTIES
+    public Double getMaxRadius()
+    {
+        return maxRadius;
+    }
+    public void setMaxRadius(Double maxRadius)
+    {
+        this.maxRadius = maxRadius;
+    }
+
+    //DRIVER PAGER PROPERTIES
+    public Integer getDriverPager()
+    {
+        return driverPager;
+    }
+    public void setDriverPager(Integer driverPager)
+    {
+        this.driverPager = driverPager;
+    }
+    
+    // ADDRESS LATLNG PROPERTIES
+    public LatLng getAddressLatLng()
+    {   
+        return addressLatLng;
+    }
+    public void setAddressLatLng(LatLng addressLatLng)
+    {
+        this.addressLatLng = addressLatLng;
+    }
+    
+    // DEFAULT ZOOM PROPERTIES
+    public Integer getAddressZoom()
+    {
+        return addressZoom;
+    }
+    public void setAddressZoom(Integer addressZoom)
+    {
+        this.addressZoom = addressZoom;
+    }
+
+    // NAVIGATION PROPERTIES
+    public NavigationBean getNavigation()
+    {
+        return navigation;
+    }
+    public void setNavigation(NavigationBean navigation)
+    {
+        this.navigation = navigation;
+    }
+
 }

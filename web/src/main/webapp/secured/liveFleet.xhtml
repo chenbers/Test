@@ -29,9 +29,21 @@
 		function showDriver(lat, lng, name, phone)
 		{
 			var point = new GLatLng(lat, lng);
+			var message = "<b>" + name + "<br />" + phone + "</b>";
+
+			var markerIcon = new GIcon(baseIcon);
+	       	  markerIcon.image = "#{facesContext.externalContext.request.contextPath}/images/ico_start.png";
+		         
+	          markerOptions = { icon:markerIcon };
 			
-			marker = createMarker(point, name + "<br />" + phone, "#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
+			var marker = new GMarker(point, markerOptions);
+			 GEvent.addListener(marker, "click", function() {
+		         	marker.openInfoWindowHtml(message);  });
+			 
+			 map.addOverlay(marker);
 			
+			 //Immediately display info window.
+			 marker.openInfoWindow(message);
 		}
 	    
    		function showAddress(address) {
@@ -54,7 +66,7 @@
 				 //Immediately display info window.
 				 marker.openInfoWindow("<b>" + address + "</b>");
 				         	  
-				 //Pass LatLng to Bean.
+				 //Pass Geocode lookup LatLng to Bean.
 				 var loc = marker.getLatLng();
 				 notifyBean(loc.lat(), loc.lng());	
     	         }
@@ -81,14 +93,13 @@
 				</div>
 					<div class="panel_w">
 					  <div class="panel_content">
-						<!-- Start Trip table --> 
-						<rich:panel id="selectedTrip">
+						<a4j:form>
 					
 						<rich:dataTable 
 						value="#{liveFleetBean.drivers}" 
-						id="nearestVehicles"
+						id="driversDataTable"
 						var="item" styleClass="datagrid"
-						rowClasses="tableOdd,tableEven" cellspacing="1" rows="25"  
+						rowClasses="tableOdd,tableEven" cellspacing="1" rows="12"  
 						width="100%">
 							<!-- Data -->
 							<rich:column>
@@ -110,12 +121,17 @@
 							</rich:column>
 							
 							<rich:column>
-								<h:commandLink value="show" onclick="showDriver(" />
+								<a href="#" onclick="showDriver(#{item.lastLocation.lat}, #{item.lastLocation.lng}, '#{item.driverName}', '#{item.driver.person.workPhone}');">show</a>
 							</rich:column>
 
 						</rich:dataTable>
-						</rich:panel>
-				<!-- End Trip table -->
+						<div class="spacer"></div>
+						<rich:datascroller align="center" for="driversDataTable"
+           				 	 		id="scroller" reRender="driversDataTable"
+           				 	 		page="#{liveFleetBean.driverPager}" />
+					
+						</a4j:form>
+						<!-- End Trip table -->
 					  </div>
 					</div>
 				<div class="panel_sw">
@@ -143,8 +159,8 @@
 				  <tr>
 					<td width="90">Find Address: </td>
 					<td width="301">
-						<input type="text" size="60" id="addressTextBox" value="1600 Amphitheatre Pky, Mountain View, CA" />
-						
+						<input type="text" size="40" id="addressTextBox" value="1600 Amphitheatre Pky, Mountain View, CA" />
+						    
 					</td>
 					<td width="165">
 						<button value="" class="left" onclick="renderVehicles = true; showAddress(document.getElementById('addressTextBox').value);"><span class="search">Locate</span></button>
@@ -153,12 +169,12 @@
 				</table>
 			  
 				<h:panelGroup styleClass="map-border" layout="block">
-					<div id="map-canvas" style="width:580px;height:700px;border:0"></div>
+					<div id="map-canvas" style="width:580px;height:425px;border:0"></div>
 		  		</h:panelGroup>
 			    <script type="text/javascript">
 				var map = null;
 			    var geocoder = null;
-			    var renderVehicles = new Boolean(false);
+			    var renderVehicles = new Boolean(true);
 
 			    var baseIcon = new GIcon();
 					baseIcon.iconSize = new GSize(21, 20);
@@ -172,7 +188,7 @@
 						map.addControl(new GLargeMapControl());
 						map.addControl(new GMapTypeControl());
 						map.addControl(new GOverviewMapControl()); 
-						map.setCenter(new GLatLng(37.4419, -122.1419), 14);  //Replace with Group Default View LAT LNG
+						map.setCenter(new GLatLng(#{liveFleetBean.addressLatLng.lat}, #{liveFleetBean.addressLatLng.lng}), #{liveFleetBean.addressZoom});  //Replace with Group Default View LAT LNG
 						map.setMapType(G_NORMAL_MAP);
 		    	    geocoder = new GClientGeocoder();
 		        }
