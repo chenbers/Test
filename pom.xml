@@ -1,241 +1,231 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.inthinc.pro</groupId>
+    <artifactId>root</artifactId>
+    <packaging>pom</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>TIWI Pro Application</name>
+    <url>http://www.iwiglobal.com</url>
+    <organization>
+        <name>inthinc</name>
+        <url>http://www.inthinc.com</url>
+    </organization>
+    <issueManagement>
+        <system>Bugzilla</system>
+        <url>https://svn.iwiglobal.com/bugzilla/</url>
+    </issueManagement>
+    <developers>
+        <developer>
+            <id>mraby</id>
+            <name>Matthew Raby</name>
+            <email>mraby@inthinc.com</email>
+            <url>pro.tiwi.com</url>
+        </developer>
+        <developer>
+            <id>cjennings</id>
+            <name>Colleen Jennings</name>
+            <email>cjennings@inthinc.com</email>
+            <url>pro.tiwi.com</url>
+        </developer>
+        <developer>
+            <id>pwehan</id>
+            <name>Paul Wehan</name>
+            <email>pwehan@inthinc.com</email>
+            <url>pro.tiwi.com</url>
+        </developer>
+        <developer>
+            <id>jhoward</id>
+            <name>Jacquie Howard</name>
+            <email>jhoward@inthinc.com</email>
+            <url>pro.tiwi.com</url>
+        </developer>
+        <developer>
+            <id>kselman</id>
+            <name>Kevin Selman</name>
+            <email>kselman@inthinc.com</email>
+            <url>pro.tiwi.com</url>
+        </developer>
+        <developer>
+            <id>mstrong</id>
+            <name>Mike Strong</name>
+            <email>mstrong@inthinc.com</email>
+            <url>pro.tiwi.com</url>
+        </developer>
+        <developer>
+            <id>dgileadi</id>
+            <name>David Gileadi</name>
+            <email>dgileadi@solutionstream.com</email>
+            <url>pro.tiwi.com</url>
+        </developer>
+        <developer>
+            <id>sbrady</id>
+            <name>Scott Brady</name>
+            <email>scottbbrady@gmail.com</email>
+            <url>pro.tiwi.com</url>
+        </developer>
+    </developers>
 
-  <groupId>com.inthinc.pro</groupId>
-  <artifactId>root</artifactId>
-  <packaging>pom</packaging>
-  <version>0.0.1-SNAPSHOT</version>
+    <!-- points to artifact id of other modules -->
+    <modules>
+        <module>dao</module>
+        <module>web</module>
+        <module>webutil</module>
+    </modules>
+    <!--                     -->
+    <!-- Plugin Repositories -->
+    <!--                     -->
+    <build>
+        <finalName>pro</finalName>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>2.2</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <configuration>
+                    <downloadSources>true</downloadSources>
+                    <downloadJavadocs>true</downloadJavadocs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>**/it/*Test.java</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>integration-tests</id>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <skip>false</skip>
+                            <excludes>
+                                <exclude>none</exclude>
+                            </excludes>
+                            <includes>
+                                <include>**/it/*Test.java</include>
+                            </includes>
+                            <systemProperties>
+                                <property>
+                                    <name>log4j.configuration</name>
+                                    <value>file:${basedir}/src/test/resources/log4j.properties</value>
+                                </property>
+                            </systemProperties>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <!--                          -->
+    <!-- Distritubtion Management -->
+    <!--                          -->
+    <distributionManagement>
+        <repository>
+            <id>central</id>
+            <name>inthinc central repo</name>
+            <url>https://testteen.iwiglobal.com:8482/artifactory/libs-releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>inthinc snapshot repo</name>
+            <url>https://testteen.iwiglobal.com:8482/artifactory/libs-snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+    <!--                     -->
+    <!-- Source Repositories -->
+    <!--                     -->
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://testteen.iwiglobal.com:8482/artifactory/repo</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>snapshots</id>
+            <url>https://testteen.iwiglobal.com:8482/artifactory/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
+    <!--                     -->
+    <!-- Plugin Repositories -->
+    <!--                     -->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>central</id>
+            <url>https://testteen.iwiglobal.com:8482/artifactory/repo</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>snapshots</id>
+            <url>https://testteen.iwiglobal.com:8482/artifactory/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
 
-  <name>TIWI Pro Application</name>
+    <!--                       -->
+    <!-- Dependency Management -->
+    <!--                       -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.inthinc.pro.dao</groupId>
+                <artifactId>dao</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
-  <url>http://www.iwiglobal.com</url>
-  <organization>
-    <name>inthinc</name>
-    <url>http://www.inthinc.com</url>
-  </organization>
-  <issueManagement>
-    <system>Bugzilla</system>
-    <url>https://svn.iwiglobal.com/bugzilla/</url>
-  </issueManagement>
-  <developers>
-    <developer>
-      <id>mraby</id>
-      <name>Matthew Raby</name>
-      <email>mraby@inthinc.com</email>
-      <url>pro.tiwi.com</url>
-    </developer>
-    <developer>
-      <id>cjennings</id>
-      <name>Colleen Jennings</name>
-      <email>cjennings@inthinc.com</email>
-      <url>pro.tiwi.com</url>
-    </developer>
-    <developer>
-      <id>pwehan</id>
-      <name>Paul Wehan</name>
-      <email>pwehan@inthinc.com</email>
-      <url>pro.tiwi.com</url>
-    </developer>
-    <developer>
-      <id>jhoward</id>
-      <name>Jacquie Howard</name>
-      <email>jhoward@inthinc.com</email>
-      <url>pro.tiwi.com</url>
-    </developer>
-    <developer>
-        <id>kselman</id>
-        <name>Kevin Selman</name>
-        <email>kselman@inthinc.com</email>
-        <url>pro.tiwi.com</url>
-    </developer>
-    <developer>
-        <id>mstrong</id>
-        <name>Mike Strong</name>
-        <email>mstrong@inthinc.com</email>
-        <url>pro.tiwi.com</url>
-    </developer>
-    <developer>
-        <id>dgileadi</id>
-        <name>David Gileadi</name>
-        <email>dgileadi@solutionstream.com</email>
-        <url>pro.tiwi.com</url>
-    </developer>
-    <developer>
-        <id>sbrady</id>
-        <name>Scott Brady</name>
-        <email>scottbbrady@gmail.com</email>
-        <url>pro.tiwi.com</url>
-    </developer>
-    
-  </developers>
-
-  <!-- points to artifact id of other modules -->
-  <modules>
-    <module>dao</module>
-    <module>web</module>
-    <module>webutil</module>
-  </modules>
-  <!--                     -->
-  <!-- Plugin Repositories -->
-  <!--                     -->
-  <build>
-    <finalName>pro</finalName>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
-        <configuration>
-          <downloadSources>true</downloadSources>
-          <downloadJavadocs>true</downloadJavadocs>
-        </configuration>
-      </plugin>
-      <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <configuration>
-               <excludes>
-                  <exclude>**/it/*Test.java</exclude>
-               </excludes>
-            </configuration>
-            <executions>
-               <execution>
-                  <id>integration-tests</id>
-                  <phase>integration-test</phase>
-                  <goals>
-                     <goal>test</goal>
-                  </goals>
-                  <configuration>
-                     <skip>false</skip>
-                     <excludes>
-                        <exclude>none</exclude>
-                     </excludes>
-                     <includes>
-                        <include>**/it/*Test.java</include>
-                     </includes>
-                     <systemProperties>
-                        <property>
-                           <name>log4j.configuration</name>
-                           <value>file:${basedir}/src/test/resources/log4j.properties</value>
-                        </property>
-                     </systemProperties>
-                  </configuration>
-               </execution>
-            </executions>
-      </plugin>
-      
-      <!--  TODO: This seems wrong to have this here, but it didn't clean out the tiwipro webapp directory in the tomcat dir if it was only in the web pom -->
-      <plugin>
-            <artifactId>maven-clean-plugin</artifactId>
-            <configuration>
-               <filesets>
-                  <fileset>
-                     <directory>${webapp.dir}/tiwipro/</directory>
-                     <followSymlinks>false</followSymlinks>
-                  </fileset>
-               </filesets>
-            </configuration>
-       </plugin>
-    </plugins>
-  </build>
-  <!--                          -->
-  <!-- Distritubtion Management -->
-  <!--                          -->
-  <distributionManagement>
-    <repository>
-      <id>central</id>
-      <name>inthinc central repo</name>
-      <url>https://testteen.iwiglobal.com:8482/artifactory/libs-releases</url>
-    </repository>
-    <snapshotRepository>
-      <id>snapshots</id>
-      <name>inthinc snapshot repo</name>
-      <url>https://testteen.iwiglobal.com:8482/artifactory/libs-snapshots</url>
-    </snapshotRepository>
-  </distributionManagement>
-  <!--                     -->
-  <!-- Source Repositories -->
-  <!--                     -->
-  <repositories>
-    <repository>
-      <id>central</id>
-      <url>https://testteen.iwiglobal.com:8482/artifactory/repo</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>snapshots</id>
-      <url>https://testteen.iwiglobal.com:8482/artifactory/snapshots</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-  </repositories>
-  <!--                     -->
-  <!-- Plugin Repositories -->
-  <!--                     -->
-  <pluginRepositories>
-    <pluginRepository>
-      <id>central</id>
-      <url>https://testteen.iwiglobal.com:8482/artifactory/repo</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </pluginRepository>
-    <pluginRepository>
-      <id>snapshots</id>
-      <url>https://testteen.iwiglobal.com:8482/artifactory/snapshots</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </pluginRepository>
-  </pluginRepositories>
-
-  <!--                       -->
-  <!-- Dependency Management -->
-  <!--                       -->
-  <dependencyManagement>
+    <!--              -->
+    <!-- Dependencies -->
+    <!--              -->
     <dependencies>
-      <dependency>
-        <groupId>com.inthinc.pro.dao</groupId>
-        <artifactId>dao</artifactId>
-        <version>${project.version}</version>
-      </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.4</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.12</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
-  </dependencyManagement>
-
-  <!--              -->
-  <!-- Dependencies -->
-  <!--              -->
-  <dependencies>
-    <dependency>
-         <groupId>junit</groupId>
-         <artifactId>junit</artifactId>
-         <version>4.4</version>
-         <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.12</version>
-      <scope>compile</scope>
-    </dependency>
-  </dependencies>
-  
-  
 </project>
