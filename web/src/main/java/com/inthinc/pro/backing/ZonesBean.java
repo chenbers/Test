@@ -38,7 +38,7 @@ public class ZonesBean extends BaseBean
     {
         if (zones == null)
         {
-            zones = zoneDAO.getZonesInGroupHierarchy(getUser().getPerson().getGroupID());
+            zones = zoneDAO.getZones(getAccountID());
             sortZones();
         }
 

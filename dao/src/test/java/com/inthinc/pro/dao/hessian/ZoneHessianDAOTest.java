@@ -39,11 +39,11 @@ public class ZoneHessianDAOTest
     {
         try
         {
-            List<Zone> zones = zoneHessianDAO.getZonesInGroupHierarchy(-1);
+            List<Zone> zones = zoneHessianDAO.getZones(-1);
 
             assertTrue("expected no zones to be returned", zones.size() == 0);
 
-            zones = zoneHessianDAO.getZonesInGroupHierarchy(101);
+            zones = zoneHessianDAO.getZones(1);
 
             assertTrue("expected to retrieve zone records", zones.size() > 0);
         }

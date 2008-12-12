@@ -1,7 +1,6 @@
 package com.inthinc.pro.dao.mock.proserver;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -730,32 +729,11 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
-    public List<Map<String, Object>> getZoneIDsInGroupHierarchy(Integer groupID)
+    public List<Map<String, Object>> getZonesByAcctID(Integer accountID)
     {
-        final List<Map<String, Object>> zoneIDs = new LinkedList<Map<String, Object>>();
-    
-        Group topGroup = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
-        if (topGroup == null)
-        {
-            return zoneIDs;
-        }
-        
-        List<Group> groupHierarchy = getGroupHierarchy(topGroup);
-
-        for (Group group : groupHierarchy)
-        {
-            final Integer id = group.getGroupID();
-            if (id != null)
-            {
-                final SearchCriteria criteria = new SearchCriteria();
-                criteria.addKeyValue("groupID", id);
-                final List<Map<String, Object>> matches = MockData.getInstance().lookupList(Zone.class, criteria);
-                if (matches != null)
-                    zoneIDs.addAll(matches);
-            }
-        }
-    
-        return zoneIDs;
+        final SearchCriteria criteria = new SearchCriteria();
+        criteria.addKeyValue("accountID", accountID);
+        return MockData.getInstance().lookupList(Zone.class, criteria);
     }
 
     @Override
@@ -785,32 +763,11 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
-    public List<Map<String, Object>> getZoneAlertIDsInGroupHierarchy(Integer groupID)
+    public List<Map<String, Object>> getZoneAlertsByAcctID(Integer accountID)
     {
-        final List<Map<String, Object>> zoneAlertIDs = new LinkedList<Map<String, Object>>();
-    
-        Group topGroup = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
-        if (topGroup == null)
-        {
-            return zoneAlertIDs;
-        }
-        
-        List<Group> groupHierarchy = getGroupHierarchy(topGroup);
-
-        for (Group group : groupHierarchy)
-        {
-            final Integer id = group.getGroupID();
-            if (id != null)
-            {
-                final SearchCriteria criteria = new SearchCriteria();
-                criteria.addKeyValue("groupID", id);
-                final List<Map<String, Object>> matches = MockData.getInstance().lookupList(ZoneAlert.class, criteria);
-                if (matches != null)
-                    zoneAlertIDs.addAll(matches);
-            }
-        }
-    
-        return zoneAlertIDs;
+        final SearchCriteria criteria = new SearchCriteria();
+        criteria.addKeyValue("accountID", accountID);
+        return MockData.getInstance().lookupList(ZoneAlert.class, criteria);
     }
 
     @Override
@@ -846,32 +803,11 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
-    public List<Map<String, Object>> getRedFlagPrefIDsInGroupHierarchy(Integer groupID)
+    public List<Map<String, Object>> getRedFlagPrefsByAcctID(Integer accountID)
     {
-        final List<Map<String, Object>> redFlagPrefIDs = new LinkedList<Map<String, Object>>();
-    
-        Group topGroup = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
-        if (topGroup == null)
-        {
-            return redFlagPrefIDs;
-        }
-        
-        List<Group> groupHierarchy = getGroupHierarchy(topGroup);
-
-        for (Group group : groupHierarchy)
-        {
-            final Integer id = group.getGroupID();
-            if (id != null)
-            {
-                final SearchCriteria criteria = new SearchCriteria();
-                criteria.addKeyValue("groupID", id);
-                final List<Map<String, Object>> matches = MockData.getInstance().lookupList(RedFlagPref.class, criteria);
-                if (matches != null)
-                    redFlagPrefIDs.addAll(matches);
-            }
-        }
-    
-        return redFlagPrefIDs;
+        final SearchCriteria criteria = new SearchCriteria();
+        criteria.addKeyValue("accountID", accountID);
+        return MockData.getInstance().lookupList(RedFlagPref.class, criteria);
     }
 
     @Override

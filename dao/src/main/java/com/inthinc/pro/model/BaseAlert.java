@@ -15,7 +15,6 @@ public abstract class BaseAlert extends BaseEntity
 
     @Column(name = "acctID")
     private Integer             accountID;
-    private Integer             groupID;
     private String              name;
     private String              description;
     private Integer             startTOD;
@@ -32,16 +31,6 @@ public abstract class BaseAlert extends BaseEntity
     public void setAccountID(Integer accountID)
     {
         this.accountID = accountID;
-    }
-
-    public Integer getGroupID()
-    {
-        return groupID;
-    }
-
-    public void setGroupID(Integer groupID)
-    {
-        this.groupID = groupID;
     }
 
     public String getName()

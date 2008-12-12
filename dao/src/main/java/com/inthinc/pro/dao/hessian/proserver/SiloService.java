@@ -220,14 +220,7 @@ public interface SiloService extends HessianService
 
     Map<String, Object> createZone(Integer acctID, Map<String, Object> zoneMap) throws ProDAOException;
 
-    /**
-     * Retrieves the IDs of all people in the hierarchy for the given group ID--that is, the matching group plus all groups beneath it.
-     * 
-     * @param groupID
-     *            The ID of the group at the top of the hierarchy.
-     * @return A list of maps of zoneIDs.
-     */
-    List<Map<String, Object>> getZoneIDsInGroupHierarchy(Integer groupID);
+    List<Map<String, Object>> getZonesByAcctID(Integer accountID);
 
     // Methods related to the RedFlagPref type
     Map<String, Object> deleteRedFlagPref(Integer redFlagPrefID) throws ProDAOException;
@@ -238,14 +231,7 @@ public interface SiloService extends HessianService
 
     Map<String, Object> createRedFlagPref(Integer acctID, Map<String, Object> redFlagPrefMap) throws ProDAOException;
 
-    /**
-     * Retrieves the IDs of all people in the hierarchy for the given group ID--that is, the matching group plus all groups beneath it.
-     * 
-     * @param groupID
-     *            The ID of the group at the top of the hierarchy.
-     * @return A list of maps of redFlagPrefIDs.
-     */
-    List<Map<String, Object>> getRedFlagPrefIDsInGroupHierarchy(Integer groupID);
+    List<Map<String, Object>> getRedFlagPrefsByAcctID(Integer accountID);
 
     // Methods related to the ZoneAlert type
     Map<String, Object> deleteZoneAlert(Integer zoneAlertID) throws ProDAOException;
@@ -256,7 +242,7 @@ public interface SiloService extends HessianService
 
     Map<String, Object> createZoneAlert(Integer acctID, Map<String, Object> zoneAlertMap) throws ProDAOException;
 
-    List<Map<String, Object>> getZoneAlertIDsInGroupHierarchy(Integer groupID);
+    List<Map<String, Object>> getZoneAlertsByAcctID(Integer accountID);
 
     Map<String, Object> deleteZoneAlertsByZoneID(Integer zoneID);
 }

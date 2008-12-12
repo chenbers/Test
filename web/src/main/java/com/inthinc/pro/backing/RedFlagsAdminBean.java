@@ -42,7 +42,7 @@ public class RedFlagsAdminBean extends BaseAdminBean<RedFlagsAdminBean.RedFlagPr
     protected List<RedFlagPrefView> loadItems()
     {
         // get the red flags
-        final List<RedFlagPref> plainRedFlagPrefs = redFlagPrefDAO.getRedFlagPrefsInGroupHierarchy(getUser().getPerson().getGroupID());
+        final List<RedFlagPref> plainRedFlagPrefs = redFlagPrefDAO.getRedFlagPrefs(getAccountID());
 
         // convert the RedFlagPrefs to RedFlagPrefViews
         final LinkedList<RedFlagPrefView> items = new LinkedList<RedFlagPrefView>();

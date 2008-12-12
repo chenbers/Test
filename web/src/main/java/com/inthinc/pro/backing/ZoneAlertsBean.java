@@ -81,7 +81,7 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView> 
     protected List<ZoneAlertView> loadItems()
     {
         // get the zone alerts
-        final List<ZoneAlert> plainZoneAlerts = zoneAlertDAO.getZoneAlertsInGroupHierarchy(getUser().getPerson().getGroupID());
+        final List<ZoneAlert> plainZoneAlerts = zoneAlertDAO.getZoneAlerts(getAccountID());
 
         // convert the ZoneAlerts to ZoneAlertViews
         final LinkedList<ZoneAlertView> items = new LinkedList<ZoneAlertView>();
@@ -294,7 +294,7 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView> 
         if (zones == null)
         {
             zones = new ArrayList<SelectItem>();
-            final List<Zone> list = zoneDAO.getZonesInGroupHierarchy(getUser().getPerson().getGroupID());
+            final List<Zone> list = zoneDAO.getZones(getAccountID());
             for (final Zone zone : list)
                 zones.add(new SelectItem(zone.getZoneID(), zone.getName()));
             sortSelectItems(zones);

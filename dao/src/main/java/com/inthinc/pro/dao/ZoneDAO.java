@@ -6,5 +6,5 @@ import com.inthinc.pro.model.Zone;
 
 public interface ZoneDAO extends GenericDAO<Zone, Integer>
 {
-    List<Zone> getZonesInGroupHierarchy(Integer groupID);
+    List<Zone> getZones(Integer accountID);
 }

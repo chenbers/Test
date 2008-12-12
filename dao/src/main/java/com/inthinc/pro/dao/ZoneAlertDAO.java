@@ -6,7 +6,7 @@ import com.inthinc.pro.model.ZoneAlert;
 
 public interface ZoneAlertDAO extends GenericDAO<ZoneAlert, Integer>
 {
-    List<ZoneAlert> getZoneAlertsInGroupHierarchy(Integer groupID);
+    List<ZoneAlert> getZoneAlerts(Integer accountID);
 
     Integer deleteByZoneID(Integer zoneID);
 }

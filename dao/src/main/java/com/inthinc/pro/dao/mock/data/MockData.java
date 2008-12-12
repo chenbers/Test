@@ -78,9 +78,9 @@ public class MockData
     static final int MAX_DRIVERS_IN_GROUP = 10;
     static final int MAX_VEHICLES_IN_GROUP = 10;
     static final int MAX_USERS_IN_GROUP = 10;
-    static final int MAX_ZONES_IN_GROUP = 10;
+    static final int MAX_ZONES = 100;
     static final int MAX_ZONE_ALERTS_PER_ZONE = 5;
-    static final int MAX_RED_FLAG_PREFS_IN_GROUP = 10;
+    static final int MAX_RED_FLAG_PREFS = 100;
     static final int MAX_TRIPS = 75;
     static final int MAX_ADDRESS = 3;
     static final int MIN_EVENTS = 0;
@@ -166,6 +166,8 @@ public class MockData
         storeObject(account);
         addGroupData(accountID);
         addDevices(accountID, randomInt(MAX_DEVICES / 2, MAX_DEVICES));
+        addZones(accountID, randomInt(MAX_ZONES / 2, MAX_ZONES));
+        addRedFlagPrefs(accountID, randomInt(MAX_RED_FLAG_PREFS / 2, MAX_RED_FLAG_PREFS));
     }
     
     private void addGroupData(Integer accountID)
@@ -232,9 +234,6 @@ public class MockData
                 addDriveQMaps(driversInGroup, vehiclesInGroup);
 
             }
-
-            addZonesToGroup(accountID, groups[cnt].getGroupID(), randomInt(MAX_ZONES_IN_GROUP / 2, MAX_ZONES_IN_GROUP));
-            addRedFlagPrefsToGroup(accountID, groups[cnt].getGroupID(), randomInt(MAX_RED_FLAG_PREFS_IN_GROUP / 2, MAX_RED_FLAG_PREFS_IN_GROUP));
         }
         
         
@@ -734,16 +733,15 @@ public class MockData
         return numEvents;
     }
 
-    private List<Zone> addZonesToGroup(Integer accountID, Integer groupID, int numZones)
+    private List<Zone> addZones(Integer accountID, int numZones)
     {
         List<Zone> zoneList = new ArrayList<Zone>();
-        Integer idOffset = accountID * MAX_GROUPS + groupID * MAX_ZONES_IN_GROUP;
+        Integer idOffset = accountID * MAX_ZONES;
         for (int i = 0; i < numZones; i++)
         {
             int id = idOffset+i+1;
             Zone zone = new Zone();
             zone.setAccountID(accountID);
-            zone.setGroupID(groupID);
             zone.setZoneID(id);
             zone.setCreated(new Date());
             zone.setName("Zone" + id);
@@ -752,7 +750,7 @@ public class MockData
             storeObject(zone);
             zoneList.add(zone);
 
-            addZoneAlertsToZone(id, accountID, groupID, randomInt(1, MAX_ZONE_ALERTS_PER_ZONE));
+            addZoneAlertsToZone(id, accountID, randomInt(1, MAX_ZONE_ALERTS_PER_ZONE));
         }
         
         return zoneList;
@@ -767,16 +765,15 @@ public class MockData
         zone.setPoints(points);
     }
 
-    private List<ZoneAlert> addZoneAlertsToZone(Integer zoneID, Integer accountID, Integer groupID, int numZoneAlerts)
+    private List<ZoneAlert> addZoneAlertsToZone(Integer zoneID, Integer accountID, int numZoneAlerts)
     {
         final List<ZoneAlert> alerts = new ArrayList<ZoneAlert>();
-        final Integer idOffset = accountID * MAX_GROUPS + groupID * MAX_ZONES_IN_GROUP + zoneID * MAX_ZONE_ALERTS_PER_ZONE;
+        final Integer idOffset = accountID * MAX_ZONES + zoneID * MAX_ZONE_ALERTS_PER_ZONE;
         for (int i = 0; i < numZoneAlerts; i++)
         {
             int id = idOffset+i+1;
             final ZoneAlert alert = new ZoneAlert();
             alert.setAccountID(accountID);
-            alert.setGroupID(groupID);
             alert.setZoneID(zoneID);
             alert.setZoneAlertID(id);
             alert.setCreated(new Date());
@@ -803,16 +800,15 @@ public class MockData
         return alerts;
     }
 
-    private List<RedFlagPref> addRedFlagPrefsToGroup(Integer accountID, Integer groupID, int numRedFlagPrefs)
+    private List<RedFlagPref> addRedFlagPrefs(Integer accountID, int numRedFlagPrefs)
     {
         List<RedFlagPref> flags = new ArrayList<RedFlagPref>();
-        Integer idOffset = accountID * MAX_GROUPS + groupID * MAX_RED_FLAG_PREFS_IN_GROUP;
+        Integer idOffset = accountID * MAX_RED_FLAG_PREFS;
         for (int i = 0; i < numRedFlagPrefs; i++)
         {
             int id = idOffset+i+1;
             RedFlagPref flag = new RedFlagPref();
             flag.setAccountID(accountID);
-            flag.setGroupID(groupID);
             flag.setRedFlagPrefID(id);
             flag.setType(RedFlagType.values()[randomInt(0, RedFlagType.values().length - 1)]);
             flag.setCreated(new Date());
