@@ -1,0 +1,109 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:security="http://pro.tiwi.com/jsf/security">
+
+		<ul id="grid_nav_dark">
+			<li class="l">
+	
+			<ul id="breadcrumb">
+				<ui:repeat
+					value="#{organizationBean.selectedGroupNode.groupBreadCrumb}"
+					var="crumb">
+					<li class="last"><a4j:commandLink value="#{crumb.group.name}"
+						reRender="groupPanel,groupContent,organizationTreePanel">
+						<a4j:actionparam converter="SimpleBeanConverter" name="groupNode"
+							value="#{crumb}"
+							actionListener="#{organizationBean.changeSelectedGroup}"
+							assignTo="#{organizationBean.selectedGroupNode}" />
+					</a4j:commandLink></li>
+				</ui:repeat>
+			</ul>
+	
+			</li>
+			<li class="l grid_title">
+				<h:outputFormat value="#{messages.group_vehicle}">
+					<f:param value="#{vehicle.name}"/>
+				</h:outputFormat>											 
+			</li>
+			<li class="r text">											 
+				<h:commandLink action="#{vehiclesBean.edit}" value="#{messages.adminTable_edit}">
+                  <f:param name="editID" value="#{vehicle.vehicleID}" />
+                </h:commandLink>
+			</li>
+		</ul>
+
+		<div style="padding-left: 11px;padding-bottom: 10px">
+		<table>
+			<tr>
+				<td width="500" valign="top">
+				<div class="add_section_title"><h:outputText value="#{messages.editVehicle_vehicleInformation}" /></div>
+                      
+                            <table width="500" border="0" cellspacing="2" cellpadding="4" align="center">
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_year}" /></td>
+                                <td><h:outputText value="#{vehicle.year}" /></td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_make}" /></td>
+                                <td><h:outputText value="#{vehicle.make}" /></td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_model}" /></td>
+                                <td><h:outputText value="#{vehicle.model}" /></td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_color}" /></td>
+                                <td><h:outputText value="#{vehicle.color}" /></td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_type}" /></td>
+                                <td><h:outputText value="#{vehicle.vtype.description}" /></td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_VIN}" /></td>
+                                <td><h:outputText value="#{vehicle.VIN}" /></td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_weight}" /></td>
+                                <td><h:outputText value="#{vehicle.weight}"><f:convertNumber /></h:outputText></td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_license}" /></td>
+                                <td><h:outputText value="#{vehicle.license}" /></td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_state}" /></td>
+                                <td><h:outputText value="#{vehicle.state.name}" /></td>
+                              </tr>
+                            </table>
+	
+	             <div class="spacer"></div>
+	             
+	              <div class="add_section_title"><h:outputText value="#{messages.editVehicle_vehicleProfile}" /></div>
+
+                            <table width="500" border="0" cellspacing="2" cellpadding="4" align="center">
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_name}" /></td>
+                                <td><h:outputText value="#{vehicle.name}" /></td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_active}" /></td>
+                                <td><h:outputText value="#{vehicle.status}" /></td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_costPerHour}" /></td>
+                                <td><h:outputText value="#{vehicle.costPerHour / 100}"><f:convertNumber type="currency" currencySymbol="$" /></h:outputText></td>
+                              </tr>
+                            </table>
+	             
+		
+				</td>
+			</tr>
+		</table>
+		</div>
+</ui:composition>

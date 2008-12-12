@@ -17,7 +17,7 @@ public class Group extends BaseEntity
     private String            name;
     private Integer           parentID;
     private GroupStatus       status;
-    private GroupLevel        level;
+    private GroupType         type;
     private Integer           managerID;                              // Links to Person ID
 
     @Column(name = "desc")
@@ -46,7 +46,7 @@ public class Group extends BaseEntity
         this.status = GroupStatus.GROUP_ACTIVE;
     }
 
-    public Group(Integer groupID, Integer accountID, String name, Integer parentID, GroupLevel level, Integer managerID, String description, Integer mapZoom, LatLng mapCenter)
+    public Group(Integer groupID, Integer accountID, String name, Integer parentID, GroupType type, Integer managerID, String description, Integer mapZoom, LatLng mapCenter)
     {
         super();
         this.groupID = groupID;
@@ -54,7 +54,7 @@ public class Group extends BaseEntity
         this.name = name;
         this.parentID = parentID;
         this.status = GroupStatus.GROUP_ACTIVE;
-        this.level = level;
+        this.type = type;
         this.managerID = managerID;
         this.description = description;
         this.mapZoom = mapZoom;
@@ -156,14 +156,14 @@ public class Group extends BaseEntity
         setMapLng(mapCenter.getLng());
     }
 
-    public GroupLevel getLevel()
+    public GroupType getType()
     {
-        return level;
+        return type;
     }
 
-    public void setLevel(GroupLevel level)
+    public void setType(GroupType type)
     {
-        this.level = level;
+        this.type = type;
     }
 
     public Double getMapLat()

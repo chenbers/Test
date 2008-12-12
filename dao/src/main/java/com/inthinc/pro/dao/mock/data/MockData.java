@@ -35,7 +35,7 @@ import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.GQMap;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
-import com.inthinc.pro.model.GroupLevel;
+import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.LowBatteryEvent;
 import com.inthinc.pro.model.MpgEntity;
@@ -182,7 +182,7 @@ public class MockData
         // D1   D1  D1 D2                               D1 D2   D1 D2               
         Group[] groups =
         {
-                new Group(idOffset+1, accountID, "United States", 0,GroupLevel.FLEET,null,"Root Node",3,new LatLng(44,-111)),       // top level group (executive)
+                new Group(idOffset+1, accountID, "United States", 0,GroupType.FLEET,null,"Root Node",3,new LatLng(44,-111)),       // top level group (executive)
                 
                 new Group(idOffset+2, accountID, "Western", idOffset+1),    // region level
                 new Group(idOffset+3, accountID, "Eastern", idOffset+1),

@@ -12,56 +12,70 @@ import org.richfaces.model.SwingTreeNodeImpl;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.model.BaseEntity;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.Vehicle;
 
 public class GroupTreeNode extends SwingTreeNodeImpl implements Serializable{
 	
 	private static final long serialVersionUID = 6735997209608844223L;
 	
 	private Group group;
+	private Vehicle vehicle;
+	private Driver driver;
+	private TreeNodeType treeNodeType;
+	private Integer id;
+	private String label;
+	
 	private GroupTreeNode parentGroupTreeNode;
 	private List<GroupTreeNode> childGroupTreeNodes;
 	private GroupHierarchy groupHierarchyUtil;
 	private GroupLevel groupLevel;
 	
-	private VehicleDAO vehicleDAO;
-	private DriverDAO driverDAO;
+	
+	private transient VehicleDAO vehicleDAO;
+	private transient DriverDAO driverDAO;
 	
 	//We are storing these values here because once loaded, we don't want to have to pull them again.
-
-
 	private static final Logger logger = Logger.getLogger(GroupTreeNode.class);
 	
 	/*
 	 * Make sure that any group that is passed in has a parent. For some reason the tree view doesn't render
 	 * correctly if there is no parent.
 	 */
-	public GroupTreeNode(Group group, GroupHierarchy groupHierarchy){
-		this.group = group;
-		this.groupHierarchyUtil = groupHierarchy;
-		this.setData(this);
+	//TODO use generics
+	public GroupTreeNode(BaseEntity hierarchalEntity, GroupHierarchy groupHierarchy){
+		initialize(hierarchalEntity, groupHierarchy, null);
 	}
 	
-	public GroupTreeNode(Group group, GroupHierarchy groupHierarchy,GroupTreeNode parent) {
-		this.group = group;
+	public GroupTreeNode(BaseEntity hierarchalEntity, GroupHierarchy groupHierarchy,GroupTreeNode parent) {
+		initialize(hierarchalEntity, groupHierarchy, parent);
+	}
+
+	private void initialize(BaseEntity hierarchalEntity,GroupHierarchy groupHierarchy,GroupTreeNode parent){
+		if(hierarchalEntity instanceof Group){
+			this.group = (Group)hierarchalEntity;
+			if(group.getGroupID() != null){
+				this.setId(this.group.getGroupID());
+				this.setLabel(this.group.getName());
+			}
+		}else if(hierarchalEntity instanceof Driver){
+			this.driver = (Driver)hierarchalEntity;
+			this.setId(this.driver.getDriverID());
+			this.setLabel(this.getDriver().getPerson().getFirst() + " " + this.getDriver().getPerson().getLast());
+		}else if(hierarchalEntity instanceof Vehicle){
+			this.vehicle = (Vehicle)hierarchalEntity;
+			this.setLabel(this.getVehicle().getName());
+			this.setId(this.vehicle.getVehicleID());
+		}
 		this.groupHierarchyUtil = groupHierarchy;
 		this.parentGroupTreeNode = parent;
 		this.setData(this);
 	}
-
 	public void setGroup(Group group) {
 		this.group = group;
-	}
-
-	public String getType() {
-		String result = null;
-		if(groupLevel != null){
-			result = groupLevel.getDescription();
-		}else{
-			result = "";
-		}
-		return result;
 	}
 	
 	public GroupLevel getGroupLevel(){
@@ -70,15 +84,16 @@ public class GroupTreeNode extends SwingTreeNodeImpl implements Serializable{
 		}
 		return groupLevel;
 	}
-//	
+	
 	public Group getGroup() {
 		return group;
 	}
 	
+	//TODO get bread crumb working
 	public List<GroupTreeNode> getGroupBreadCrumb(){
 		List<GroupTreeNode> breadCrumbList = new ArrayList<GroupTreeNode>();
-		loadBreadCrumbs(this, breadCrumbList);
-		Collections.reverse(breadCrumbList);
+//		loadBreadCrumbs(this, breadCrumbList);
+//		Collections.reverse(breadCrumbList);
 		return breadCrumbList;
 	}
 	
@@ -97,8 +112,19 @@ public class GroupTreeNode extends SwingTreeNodeImpl implements Serializable{
 		childGroupTreeNodes.add(groupTreeNode);
 	}
 	
+	public void removeChildNode(GroupTreeNode groupTreeNode){
+		if(childGroupTreeNodes == null){
+			loadChildNodes();
+		}
+		
+		childGroupTreeNodes.remove(groupTreeNode);
+	}
+	
 	public void setParent(GroupTreeNode parentGroupTreeNode) {
-		if(parentGroupTreeNode.getGroup() != null){
+		if(parentGroupTreeNode == null){
+			this.parentGroupTreeNode.removeChildNode(this);
+			this.parentGroupTreeNode = parentGroupTreeNode;
+		}else if(parentGroupTreeNode.getGroup() != null){
 			this.group.setParentID(parentGroupTreeNode.getGroup().getGroupID());
 			parentGroupTreeNode.addChildNode(this);
 			this.parentGroupTreeNode = parentGroupTreeNode;
@@ -120,10 +146,7 @@ public class GroupTreeNode extends SwingTreeNodeImpl implements Serializable{
 	@Override
 	public boolean getAllowsChildren() {
 		boolean result;
-		if(groupLevel == null){
-			getGroupLevel();
-		}
-		if(groupLevel == GroupLevel.TEAM){
+		if(getTreeNodeType() == TreeNodeType.DRIVER || getTreeNodeType() == TreeNodeType.VEHICLE){
 			result = false;
 		}else{
 			result = true;
@@ -185,21 +208,122 @@ public class GroupTreeNode extends SwingTreeNodeImpl implements Serializable{
 	
 	private List<GroupTreeNode> loadChildNodes(){
 		List<GroupTreeNode> childNodes = new ArrayList<GroupTreeNode>();
-		 if(group == null && groupHierarchyUtil.getGroupList().size() > 0){
-			 childNodes.add(new GroupTreeNode(groupHierarchyUtil.getTopGroup(),groupHierarchyUtil));		 }
+		 if(group == null && vehicle == null && driver == null && groupHierarchyUtil.getGroupList().size() > 0){
+			 GroupTreeNode groupTreeNode = new GroupTreeNode(groupHierarchyUtil.getTopGroup(),groupHierarchyUtil);
+			 groupTreeNode.setDriverDAO(driverDAO);
+			 groupTreeNode.setVehicleDAO(vehicleDAO);
+			 childNodes.add(groupTreeNode);		 
+		 }
 
-		List<Group> groupList = groupHierarchyUtil.getChildren(group);
-		if (groupList != null) {
-			for (Group g : groupList) {
-				if(g.getMapCenter() == null){ //Set the initial view to that of the parent
-					g.setMapCenter(new LatLng(group.getMapCenter().getLat(),group.getMapCenter().getLng()));
-					g.setMapZoom(group.getMapZoom());
+		 if(getTreeNodeType() != TreeNodeType.TEAM){
+			List<Group> groupList = groupHierarchyUtil.getChildren(group);
+			if (groupList != null) {
+				for (Group g : groupList) {
+					if(g.getMapCenter() == null){ //Set the initial view to that of the parent
+						g.setMapCenter(new LatLng(group.getMapCenter().getLat(),group.getMapCenter().getLng()));
+						g.setMapZoom(group.getMapZoom());
+					}
+					GroupTreeNode groupTreeNode = new GroupTreeNode(g,groupHierarchyUtil,this);
+					groupTreeNode.setDriverDAO(driverDAO);
+					 groupTreeNode.setVehicleDAO(vehicleDAO);
+					childNodes.add(groupTreeNode);
 				}
-				childNodes.add(new GroupTreeNode(g, groupHierarchyUtil,this));
+			}
+			
+		}else{
+			List<Driver> driverList = driverDAO.getAllDrivers(group.getGroupID());
+			if(driverList != null){
+				for(Driver d:driverList){
+					GroupTreeNode groupTreeNode = new GroupTreeNode(d,groupHierarchyUtil,this);
+					groupTreeNode.setDriverDAO(driverDAO);
+					 groupTreeNode.setVehicleDAO(vehicleDAO);
+					childNodes.add(groupTreeNode);
+					
+				}
+			}
+			List<Vehicle> vehicleList = vehicleDAO.getVehiclesInGroupHierarchy(group.getGroupID());
+			if(vehicleList != null){
+				for(Vehicle v:vehicleList){
+					GroupTreeNode groupTreeNode = new GroupTreeNode(v,groupHierarchyUtil,this);
+					groupTreeNode.setDriverDAO(driverDAO);
+					 groupTreeNode.setVehicleDAO(vehicleDAO);
+					childNodes.add(groupTreeNode);
+					
+				}
 			}
 		}
 		childGroupTreeNodes = childNodes;
 		return childGroupTreeNodes;
+	}
+
+	public void setVehicle(Vehicle vehicle) {
+		this.vehicle = vehicle;
+	}
+
+	public Vehicle getVehicle() {
+		return vehicle;
+	}
+
+	public void setDriver(Driver driver) {
+		this.driver = driver;
+	}
+
+	public Driver getDriver() {
+		return driver;
+	}
+
+	public void setTreeNodeType(TreeNodeType treeNodeType) {
+		this.treeNodeType = treeNodeType;
+	}
+
+	public TreeNodeType getTreeNodeType() {
+		if(treeNodeType == null){
+			if(group != null && treeNodeType == null){
+				GroupLevel groupLevel = groupHierarchyUtil.getGroupLevel(group);
+				switch(groupLevel){
+					case FLEET: treeNodeType = TreeNodeType.FLEET; break;
+					case REGION: treeNodeType = TreeNodeType.DIVISION;break;
+					case TEAM: treeNodeType = TreeNodeType.TEAM;break;
+				}
+			}else if(vehicle != null){
+				treeNodeType = TreeNodeType.VEHICLE;
+			}else{
+				treeNodeType = TreeNodeType.DRIVER;
+			}
+		}
+		return treeNodeType;
+	}
+
+	public void setVehicleDAO(VehicleDAO vehicleDAO) {
+		this.vehicleDAO = vehicleDAO;
+	}
+
+	public VehicleDAO getVehicleDAO() {
+		return vehicleDAO;
+	}
+
+	public void setDriverDAO(DriverDAO driverDAO) {
+		this.driverDAO = driverDAO;
+	}
+
+	public DriverDAO getDriverDAO() {
+		return driverDAO;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Integer getId() {
+		return id;
 	}
 
 	

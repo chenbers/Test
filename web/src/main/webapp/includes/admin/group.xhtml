@@ -7,18 +7,22 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:security="http://pro.tiwi.com/jsf/security">
+	<!-- 
+	The GROUP PANEL, DRIVER PANEL, AND VEHICLE PANEL are all here at the same level. When an action is fired we only want to reRender
+	each panel individually. If we reRender a higher level panel, the the map gets reloaded and the page is much slower. To speed up
+	performance, we have the map at this level as well
 	
+	
+	
+	 -->
 	<h:panelGroup id="groupPanel">
-		<h:panelGroup rendered="#{organizationBean.selectedGroupNode ne null}">
-
+		<h:outputText rendered="#{organizationBean.selectedGroupNode ne null and organizationBean.selectedGroupNode.group ne null}">	
 			<h:outputText rendered="#{organizationBean.groupState eq 'VIEW'}">
 				<ui:include src="/includes/admin/groupView.xhtml">
 					<ui:param name="groupTreeNode"
 						value="#{organizationBean.selectedGroupNode}" />
 				</ui:include>
 			</h:outputText>
-
-
 
 			<h:outputText rendered="#{organizationBean.groupState ne 'VIEW'}">
 				<ui:include src="/includes/admin/groupEdit.xhtml">
@@ -27,10 +31,25 @@
 				</ui:include>
 
 			</h:outputText>
-
-
-		</h:panelGroup>
+		</h:outputText>
 	</h:panelGroup>
+	
+	<h:panelGroup id="driverPanel">
+		<h:outputText rendered="#{organizationBean.selectedGroupNode.treeNodeType eq 'DRIVER'}">	
+			<ui:include src="/includes/admin/driverSubview.xhtml">
+				<ui:param name="driver" value="#{organizationBean.selectedGroupNode.driver}"/>
+			</ui:include>
+		</h:outputText>
+	</h:panelGroup>
+	
+	<h:panelGroup id="vehiclePanel">
+		<h:outputText rendered="#{organizationBean.selectedGroupNode.treeNodeType eq 'VEHICLE'}">	
+			<ui:include src="/includes/admin/driverSubview.xhtml">
+				<ui:param name="vehicle" value="#{organizationBean.selectedGroupNode.vehicle}"/>
+			</ui:include>
+		</h:outputText>
+	</h:panelGroup>
+
 	<div class="add_section_title">#{messages.group_default_view}</div>
 	<div style="width: 100%; height: 510px">
 	<table style="width: 100%" cellpadding="4" border="0" align="center">
@@ -43,11 +62,12 @@
 					<div id="map-canvas" style="width: 500px; height: 500px; border: 0"></div>
 				</h:panelGroup> 
 				<script type="text/javascript">	
-					
+
+					var gControl = new GLargeMapControl()
 											    
    					if (GBrowserIsCompatible()) {
    					
-   							GUnload();
+   						GUnload();
    					
    	   					
    						map = new GMap2(document.getElementById("map-canvas"));
@@ -74,6 +94,7 @@
 		</tbody>
 
 	</table>
+
 	</div>
 	<h:outputText rendered="#{organizationBean.groupState eq 'EDIT'}">
 	<div style="padding-top:25px">

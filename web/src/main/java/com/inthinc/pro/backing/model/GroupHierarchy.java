@@ -9,7 +9,12 @@ import com.inthinc.pro.model.Group;
 public class GroupHierarchy implements Serializable
 {
 	
-    List<Group> groupList;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2855781183498326570L;
+	
+	List<Group> groupList;
 
     public GroupHierarchy()
     {

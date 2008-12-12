@@ -7,41 +7,86 @@
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:security="http://pro.tiwi.com/jsf/security">
 
-
-
-	<div class="add_section_title">#{messages.group_default_view}</div>
-	<div style="width: 100%; height: 510px">
-	<table style="width: 100%" cellpadding="4" border="0" align="center">
-		<tbody>
-			<tr>
-				<td style="font-weight: bold" width="100"></td>
-			</tr>
-			<tr>
-				<td><h:panelGroup styleClass="map-border" layout="block">
-					<div id="map-canvas" style="width: 500px; height: 500px; border: 0"></div>
-				</h:panelGroup> 
-				<script type="text/javascript">	
+	<!-- 
+		This is a google map control which will allow for searching, locating, and defining a center long/lat value and zoom level
+		The zoom level can be sent back to the server with the next form submision
+		
+		Paramters: 
+		latValue(Required): This is initialLatValue and also the property that the lat value is bound to when the form is submitted
+		longValue(Required)
+		zoomLevel(Required)
+		readOnly(required)
+		formName
+	 -->
+	<h:panelGroup id="mapPanel">
+		<h:outputText
+			rendered="#{organizationBean.selectedGroupNode.group ne null}">
+			<div class="add_section_title">#{messages.group_default_view}</div>
+			<div style="width: 100%; height: 510px">
+			<table style="width: 100%" cellpadding="4" border="0" align="center">
+				<tbody>
+					<tr>
+						<td style="font-weight: bold" width="100"></td>
+					</tr>
+					<tr>
+						<td><h:panelGroup styleClass="map-border" layout="block">
+							<div id="map-canvas"
+								style="width: 500px; height: 500px; border: 0"></div>
+						</h:panelGroup> <script type="text/javascript">	
 					
 											    
-   					if (GBrowserIsCompatible()) {
-   					
-   							GUnload();
-   					
-   	   					
-   						map = new GMap2(document.getElementById("map-canvas"));
-   						
-   						map.addControl(new GMapTypeControl());
-						map.setMapType(G_NORMAL_MAP);
-						map.setCenter(new GLatLng(#{groupTreeNode.group.mapCenter.lat},#{groupTreeNode.group.mapCenter.lng}),#{groupTreeNode.group.mapZoom});
-    				}
-	    		</script> 
-	    		</td>
-			</tr>
-			<tr>
-				<td></td>
-			</tr>
-		</tbody>
+		if (GBrowserIsCompatible()) {
+			
+			GUnload();
+				
+	  					
+			map = new GMap2(document.getElementById("map-canvas"));
+					
+			map.addControl(new GMapTypeControl());
+			map.setMapType(G_NORMAL_MAP);
+			map.setCenter(new GLatLng(#{latValue},#{longValue}),#{zoomLevel});
 
-	</table>
-	</div>
+			GEvent.addListener(map, "moveend", function() {
+				  var center = map.getCenter();
+				  var zoom = map.getZoom();
+				  updateMapValues(center.lat(),center.lng(),zoom);
+			});
+
+			function updateMapValues(lat,lng,zoom){
+
+				var latField = document.getElementById('#{formName}:latvalue');
+				var longField = document.getElementById('#{formName}:longvalue');
+				var zoomField = document.getElementById('#{formName}:zoomlevel');
+
+				latField.value = lat;
+				longField.value = lng;
+				zoomField.value = zoom;
+			};
+							
+			<h:outputText rendered="#{readOnly}">
+				map.disableDragging();
+				map.disableScrollWheelZoom();
+				map.disableDoubleClickZoom();
+			</h:outputText>
+			<h:outputText rendered="#{not readOnly}">
+				map.enableGoogleBar();
+				map.addControl(new GLargeMapControl());
+			</h:outputText>
+			
+		}
+	</script> <h:inputText id="latvalue" style="display:none" value="#{latValue}" />
+						<h:inputText id="longvalue" style="display:none"
+							value="#{longValue}" /> <h:inputText id="zoomlevel"
+							style="display:none" value="#{zoomLevel}" /></td>
+
+					</tr>
+					<tr>
+						<td></td>
+					</tr>
+				</tbody>
+
+			</table>
+			</div>
+								</h:outputText>
+								</h:panelGroup>
 </ui:composition>

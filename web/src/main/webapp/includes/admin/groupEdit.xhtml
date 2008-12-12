@@ -6,122 +6,108 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:security="http://pro.tiwi.com/jsf/security">
-	
-	
+
+
 	<h:panelGroup id="buttonPanel">
 		<ul id="grid_nav_dark">
-		<li class="l">
+			<li class="l">
 
-		<ul id="breadcrumb">
-			<ui:repeat
-				value="#{organizationBean.selectedGroupNode.groupBreadCrumb}"
-				var="crumb">
-				<li class="last"><a4j:commandLink value="#{crumb.group.name}"
-					reRender="groupPanel,groupContent,organizationTreePanel">
-					<a4j:actionparam converter="SimpleBeanConverter" name="groupNode"
-						value="#{crumb}"
-						actionListener="#{organizationBean.changeSelectedGroup}"
-						assignTo="#{organizationBean.selectedGroupNode}" />
-				</a4j:commandLink></li>
-			</ui:repeat>
+			<ul id="breadcrumb">
+				<ui:repeat
+					value="#{organizationBean.selectedGroupNode.groupBreadCrumb}"
+					var="crumb">
+					<li class="last"><a4j:commandLink value="#{crumb.group.name}"
+						reRender="groupPanel,groupContent,organizationTreePanel">
+						<a4j:actionparam converter="SimpleBeanConverter" name="groupNode"
+							value="#{crumb}"
+							actionListener="#{organizationBean.changeSelectedGroup}"
+							assignTo="#{organizationBean.selectedGroupNode}" />
+					</a4j:commandLink></li>
+				</ui:repeat>
+			</ul>
+
+			</li>
+			<li class="r"><h:panelGroup>
+
+				<a4j:commandLink rendered="#{organizationBean.groupState eq 'ADD'}"
+					action="#{organizationBean.saveGroupNode}"
+					reRender="groupPanel,organizationTreePanel,buttonPanelFooterv">
+					<f:param name="state" value="VIEW" />
+					<button value="submit" class="left"><span class="add"><h:outputText
+						value="#{messages.button_create_unit}" /></span></button>
+				</a4j:commandLink>
+				<h:commandLink rendered="#{organizationBean.groupState eq 'EDIT'}"
+					action="#{organizationBean.updateGroupNode}"
+					reRender="groupPanel,organizationTreePanel,buttonPanelFooter">
+					<f:param name="state" value="VIEW" />
+					<button value="submit" class="left"><span class="add"><h:outputText
+						value="#{messages.button_save}" /></span></button>
+				</h:commandLink>
+				<a4j:commandLink rendered="#{organizationBean.groupState ne 'VIEW'}"
+					action="#{organizationBean.changeState}"
+					reRender="groupPanel,organizationTreePanel,buttonPanelFooter"
+					immediate="true">
+					<f:param name="state" value="VIEW" />
+					<button value="submit" class="left"><span class="cancel"><h:outputText
+						value="#{messages.button_cancel}" /></span></button>
+				</a4j:commandLink>
+			</h:panelGroup></li>
 		</ul>
-
-		</li>
-		<li class="r"><h:panelGroup>
-
-			<a4j:commandLink rendered="#{organizationBean.groupState eq 'ADD'}"
-				onclick="saveGroupNode()">
-				<button value="submit" class="left"><span class="add"><h:outputText
-					value="#{messages.button_create_unit}" /></span></button>
-			</a4j:commandLink>
-			<h:commandLink rendered="#{organizationBean.groupState eq 'EDIT'}"
-				onclick="updateGroupNode()">
-				<button value="submit" class="left"><span class="add"><h:outputText
-					value="#{messages.button_save}" /></span></button>
-			</h:commandLink>
-			<a4j:commandLink rendered="#{organizationBean.groupState ne 'VIEW'}"
-				action="#{organizationBean.changeState}"
-				reRender="groupPanel,organizationTreePanel,buttonPanelFooter">
-				<f:param name="state" value="VIEW" />
-				<button value="submit" class="left"><span class="cancel"><h:outputText
-					value="#{messages.button_cancel}" /></span></button>
-			</a4j:commandLink>
-		</h:panelGroup></li>
-	</ul>
 	</h:panelGroup>
 	<div style="padding-left: 11px">
-	<script type="text/javascript">
-		function updateGroupNode(){
-			var latLng = map.getCenter();
-			updateGroup(null,latLng.lat(),latLng.lng(),map.getZoom());
-		}	
-		function saveGroupNode(){
-			var latLng = map.getCenter();
-			saveGroup(null,latLng.lat(),latLng.lng(),map.getZoom());
-		}	
+	<a4j:commandLink value="Test Validation Messages" action="#{organizationBean.updateGroupNode}" reRender="groupPanel">
+		<f:param name="state" value="VIEW" />
+	</a4j:commandLink>
 
-		map.enableGoogleBar();
-		map.enableDragging();
-		map.enableDoubleClickZoom();
-		map.addControl(new GLargeMapControl());
-   	</script> 
-	<a4j:jsFunction name="updateGroup"
-			action="#{organizationBean.updateGroupNode}"
-			reRender="groupPanel,organizationTreePanel,buttonPanelFooter">
-			<a4j:actionparam name="state" value="VIEW"
-				assignTo="#{organizationBean.groupState}" />
-			<a4j:actionparam name="latitude"
-				assignTo="#{groupTreeNode.group.mapCenter.lat}" />
-			<a4j:actionparam name="longitude"
-				assignTo="#{groupTreeNode.group.mapCenter.lng}" />
-			<a4j:actionparam name="zoomLevel"
-				assignTo="#{groupTreeNode.group.mapZoom}" />
-	</a4j:jsFunction>
-	<a4j:jsFunction name="saveGroup"
-			action="#{organizationBean.saveGroupNode}"
-			reRender="groupPanel,organizationTreePanel,buttonPanelFooter">
-			<a4j:actionparam name="state" value="VIEW"
-				assignTo="#{organizationBean.groupState}" />
-			<a4j:actionparam name="latitude"
-				assignTo="#{groupTreeNode.group.mapCenter.lat}" />
-			<a4j:actionparam name="longitude"
-				assignTo="#{groupTreeNode.group.mapCenter.lng}" />
-			<a4j:actionparam name="zoomLevel"
-				assignTo="#{groupTreeNode.group.mapZoom}" />
-	</a4j:jsFunction>
-	
-	<table>
+<table>
 		<tr>
 			<td width="500px" valign="top">
-				<div class="add_section_title">
-					<h:outputFormat value="#{organizationBean.groupState eq 'ADD'? messages.group_add_title:messages.group_edit_title}">
-						<f:param value="#{organizationBean.groupState eq 'ADD'?organizationBean.selectedGroupNode.group.name:groupTreeNode.group.name}"/>
-					</h:outputFormat>
-							</div>
-				<table width="500px" cellspacing="2" cellpadding="4" border="0"
-					align="center">
-					<tbody>
-						<tr>
-							<td>#{messages.group_name}</td>
-							<td><h:inputText value="#{groupTreeNode.group.name}"/></td>
-						</tr>
-						<tr>
-							<td>#{messages.group_description}</td>
-							<td><h:inputTextarea value="#{groupTreeNode.group.description}" style="width:100%"/></td>
-						</tr>
-						<tr>
-							<td>#{messages.group_manager}</td>
-							<td>
-								<h:selectOneMenu value="#{groupTreeNode.group.managerID}">
-									<f:selectItems value="#{organizationBean.peopleSelectItems}"/>
-								</h:selectOneMenu>
-							</td>
-						</tr>
-					</tbody>
-	
-				</table>
-				
-				
+			<div class="add_section_title"><h:outputFormat
+				value="#{organizationBean.groupState eq 'ADD'? messages.group_add_title:messages.group_edit_title}">
+				<f:param
+					value="#{organizationBean.groupState eq 'ADD'?organizationBean.selectedGroupNode.group.name:groupTreeNode.group.name}" />
+			</h:outputFormat></div>
+			<table width="500px" cellspacing="2" cellpadding="4" border="0"
+				align="center">
+
+				<tr>
+					<td width="100">#{messages.group_name}</td>
+					<td><h:inputText value="#{groupTreeNode.group.name}"
+						id="group_name" styleClass="text" size="30" maxlength="126"
+						required="true" requiredMessage="#{messages.required}" /> <rich:message
+						for="group_name" errorClass="field-error" fatalClass="field-error"
+						warnClass="field-warning" infoClass="field-info"
+						styleClass="field-msg" /></td>
+				</tr>
+				<tr>
+					<td width="100">#{messages.group_description}</td>
+					<td><h:inputTextarea
+						value="#{groupTreeNode.group.description}" style="width:100%" /></td>
+				</tr>
+				<tr>
+					<td width="100">#{messages.group_group_type}</td>
+					<td><h:selectOneMenu value="#{groupTreeNode.group.type}"
+						id="group_type" converter="SimpleBeanConverter" required="true"
+						requiredMessage="#{messages.required}">
+						<f:selectItems value="#{organizationBean.groupTypeList}" />
+					</h:selectOneMenu> <rich:message for="group_type" errorClass="field-error"
+						fatalClass="field-error" warnClass="field-warning"
+						infoClass="field-info" styleClass="field-msg" /></td>
+				</tr>
+				<tr>
+					<td width="100">#{messages.group_manager}</td>
+					<td><h:selectOneMenu id="group_manager"
+						value="#{groupTreeNode.group.managerID}" required="true"
+						requiredMessage="#{messages.required}">
+						<f:selectItems value="#{organizationBean.peopleSelectItems}" />
+					</h:selectOneMenu> <rich:message for="group_manager" errorClass="field-error"
+						fatalClass="field-error" warnClass="field-warning"
+						infoClass="field-info" styleClass="field-msg" /></td>
+				</tr>
+
+			</table>
+
+
 			</td>
 		</tr>
 	</table>

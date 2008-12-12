@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
+import com.inthinc.pro.dao.hessian.mapper.AbstractMapper;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.mock.data.MockRoles;
@@ -465,7 +466,10 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     @Override
     public Map<String, Object> createGroup(Integer acctID, Map<String, Object> groupMap) throws ProDAOException
     {
-        // TODO: actually store the object to the mock data
+        AbstractMapper mapper = new AbstractMapper(){};
+        Group updatedGroup = mapper.convertToModelObject(groupMap, Group.class);
+        MockData.getInstance().storeObject(updatedGroup);
+        logger.debug("Group Added: " + updatedGroup.getName());
         return createReturnValue("groupID", (int) (Math.random() * Integer.MAX_VALUE));
     }
 
@@ -478,12 +482,26 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     @Override
     public Map<String, Object> getGroup(Integer groupID) throws ProDAOException
     {
+        
         return doMockLookup(Group.class, "groupID", groupID, "No group for ID: " + groupID, "getGroup");
     }
 
     @Override
     public Map<String, Object> updateGroup(Integer groupID, Map<String, Object> groupMap) throws ProDAOException
     {
+        Group group = (Group) MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
+
+        AbstractMapper mapper = new AbstractMapper(){};
+        Group updatedGroup = mapper.convertToModelObject(groupMap, Group.class);
+
+        group.setDescription(updatedGroup.getDescription());
+        group.setName(updatedGroup.getName());
+        group.setMapCenter(updatedGroup.getMapCenter());
+        group.setMapZoom(updatedGroup.getMapZoom());
+        group.setParentID(updatedGroup.getParentID());
+        group.setType(updatedGroup.getType());
+        
+        logger.info("Group Updated: " + group.getName());
         return createReturnValue("count", 1);
     }
 

@@ -52,7 +52,7 @@ import com.inthinc.pro.model.ForwardCommandID;
 import com.inthinc.pro.model.ForwardCommandStatus;
 import com.inthinc.pro.model.Gender;
 import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.GroupLevel;
+import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Person;
@@ -381,25 +381,25 @@ public class SiloServiceTest
     
         // fleet
 //        public Group(Integer groupID, Integer accountID, String name, Integer parentID, GroupLevel level, Integer managerID, String description, Integer mapZoom, LatLng mapCenter)
-        fleetGroup = new Group(0, acctID, "Fleet", 0, GroupLevel.FLEET,  null, "Fleet Group", 5, new LatLng(0.0, 0.0));
+        fleetGroup = new Group(0, acctID, "Fleet", 0, GroupType.FLEET,  null, "Fleet Group", 5, new LatLng(0.0, 0.0));
         Integer groupID = groupDAO.create(acctID, fleetGroup);
         //Integer managerID, String description, Integer mapZoom, LatLng mapCenter)
         assertNotNull(groupID);
         fleetGroup.setGroupID(groupID);
         
         // region
-        regionGroup = new Group(0, acctID, "Region", fleetGroup.getGroupID(), GroupLevel.DIVISION,  null, "Region Group", 5, new LatLng(0.0, 0.0));
+        regionGroup = new Group(0, acctID, "Region", fleetGroup.getGroupID(), GroupType.DIVISION,  null, "Region Group", 5, new LatLng(0.0, 0.0));
         groupID = groupDAO.create(acctID, regionGroup);
         assertNotNull(groupID);
         regionGroup.setGroupID(groupID);
         
         // team
-        team1Group = new Group(0, acctID, "Team", regionGroup.getGroupID(), GroupLevel.TEAM,  null, "Team 1 Group", 5, new LatLng(0.0, 0.0));
+        team1Group = new Group(0, acctID, "Team", regionGroup.getGroupID(), GroupType.TEAM,  null, "Team 1 Group", 5, new LatLng(0.0, 0.0));
         groupID = groupDAO.create(acctID, team1Group);
         assertNotNull(groupID);
         team1Group.setGroupID(groupID);
 
-        team2Group = new Group(0, acctID, "Team 2", regionGroup.getGroupID(), GroupLevel.TEAM,  null, "Team 2 Group", 5, new LatLng(0.0, 0.0));
+        team2Group = new Group(0, acctID, "Team 2", regionGroup.getGroupID(), GroupType.TEAM,  null, "Team 2 Group", 5, new LatLng(0.0, 0.0));
         groupID = groupDAO.create(acctID, team2Group);
         assertNotNull(groupID);
         team2Group.setGroupID(groupID);

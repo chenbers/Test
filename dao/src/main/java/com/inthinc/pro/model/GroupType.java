@@ -4,25 +4,25 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum GroupLevel implements BaseEnum
+public enum GroupType implements BaseEnum
 {
-	FLEET(1, "FLEET"),
-	DIVISION(2, "DIVISION"),
-	TEAM(3, "TEAM");
-	
-    private String description;
-    private int code;
+    FLEET(1, "Fleet"), 
+    DIVISION(2, "Division"), 
+    TEAM(3, "Team");
 
-    private GroupLevel(int code, String description)
+    private Integer code;
+    private String description;
+
+    private GroupType(Integer code, String description)
     {
-        this.code = code;
         this.description = description;
+        this.code = code;
     }
 
-    private static final Map<Integer, GroupLevel> lookup = new HashMap<Integer, GroupLevel>();
+    private static final Map<Integer, GroupType> lookup = new HashMap<Integer, GroupType>();
     static
     {
-        for (GroupLevel p : EnumSet.allOf(GroupLevel.class))
+        for (GroupType p : EnumSet.allOf(GroupType.class))
         {
             lookup.put(p.code, p);
         }
@@ -33,7 +33,7 @@ public enum GroupLevel implements BaseEnum
         return this.code;
     }
 
-    public static GroupLevel valueOf(Integer code)
+    public static GroupType valueOf(Integer code)
     {
         return lookup.get(code);
     }
@@ -43,5 +43,4 @@ public enum GroupLevel implements BaseEnum
     {
         return this.description;
     }
-
 }
