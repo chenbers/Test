@@ -5,30 +5,27 @@ import java.util.List;
 
 import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
-import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
+import com.inthinc.pro.dao.hessian.mapper.TablePrefMapper;
 import com.inthinc.pro.model.TablePreference;
 
 public class TablePreferenceHessianDAO extends GenericHessianDAO<TablePreference, Integer> implements TablePreferenceDAO
 {
+    public TablePreferenceHessianDAO()
+    {
+        super();
+        super.setMapper(new TablePrefMapper());
+    }
+    
     public List<TablePreference> getTablePreferencesByUserID(Integer userID)
     {
         try
         {
-            return getMapper().convertToModelObject(getSiloService().getTablePreferencesByUserID(userID), TablePreference.class);
+            return getMapper().convertToModelObject(getSiloService().getTablePrefsByUserID(userID), TablePreference.class);
         }
         catch (EmptyResultSetException e)
         {
             return Collections.emptyList();
         }
-        // TODO: remove when method is implemented on back end
-        catch (ProxyException e)
-        {
-            if (e.getErrorCode() == 422)
-                return Collections.emptyList();
-            else
-                throw e;
-        }
-
     }
 
 }

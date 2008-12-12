@@ -2,8 +2,11 @@ package com.inthinc.pro.model;
 
 import java.util.List;
 
+import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
+import com.inthinc.pro.dao.annotations.SimpleName;
 
+@SimpleName(simpleName="TablePref")
 public class TablePreference
 {
     @ID
@@ -12,6 +15,22 @@ public class TablePreference
     private Integer userID;
     private TableType tableType;
     private List<Boolean> visible;
+    
+    private String flags;
+    
+    
+    public TablePreference()
+    {
+        
+    }
+    public TablePreference(Integer tablePrefID, Integer userID, TableType tableType, List<Boolean> visible)
+    {
+        super();
+        this.tablePrefID = tablePrefID;
+        this.userID = userID;
+        this.tableType = tableType;
+        this.visible = visible;
+    }
     public Integer getTablePrefID()
     {
         return tablePrefID;
@@ -43,5 +62,13 @@ public class TablePreference
     public void setVisible(List<Boolean> visible)
     {
         this.visible = visible;
+    }
+    public String getFlags()
+    {
+        return flags;
+    }
+    public void setFlags(String flags)
+    {
+        this.flags = flags;
     }
 }

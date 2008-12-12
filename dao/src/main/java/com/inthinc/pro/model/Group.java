@@ -17,6 +17,7 @@ public class Group extends BaseEntity
     private String            name;
     private Integer           parentID;
     private GroupStatus       status;
+    @Column(name = "level")
     private GroupType         type;
     private Integer           managerID;                              // Links to Person ID
 

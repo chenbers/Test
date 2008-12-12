@@ -707,7 +707,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
-    public List<Map<String, Object>> getTablePreferencesByUserID(Integer userID) throws ProDAOException
+    public List<Map<String, Object>> getTablePrefsByUserID(Integer userID) throws ProDAOException
     {
         SearchCriteria searchCriteria = new SearchCriteria();
         searchCriteria.addKeyValue("userID", userID);
@@ -722,26 +722,26 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
-    public Map<String, Object> deleteTablePreference(Integer tablePrefID) throws ProDAOException
+    public Map<String, Object> deleteTablePref(Integer tablePrefID) throws ProDAOException
     {
         return createReturnValue("count", 0);
     }
 
     @Override
-    public Map<String, Object> createTablePreference(Integer acctID, Map<String, Object> tablePreferenceMap) throws ProDAOException
+    public Map<String, Object> createTablePref(Integer userID, Map<String, Object> tablePreferenceMap) throws ProDAOException
     {
         // TODO: actually store the object to the mock data
         return createReturnValue("tablePrefID", (int) (Math.random() * Integer.MAX_VALUE));
     }
 
     @Override
-    public Map<String, Object> getTablePreference(Integer tablePrefID) throws ProDAOException
+    public Map<String, Object> getTablePref(Integer tablePrefID) throws ProDAOException
     {
         return doMockLookup(TablePreference.class, "tablePrefID", tablePrefID, "No tablePreference for ID: " + tablePrefID, "getTablePreference");
     }
 
     @Override
-    public Map<String, Object> updateTablePreference(Integer tablePrefID, Map<String, Object> tablePreferenceMap) throws ProDAOException
+    public Map<String, Object> updateTablePref(Integer tablePrefID, Map<String, Object> tablePreferenceMap) throws ProDAOException
     {
         return createReturnValue("count", 1);
     }

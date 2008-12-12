@@ -158,6 +158,18 @@ public interface SiloService extends HessianService
 
     Map<String, Object> getLastTrip(Integer driverID) throws ProDAOException;
 
+
+    // -------------------------    Table Preferences   -----------------------------------------------
+    List<Map<String, Object>> getTablePrefsByUserID(Integer userID) throws ProDAOException;
+
+    public Map<String, Object> deleteTablePref(Integer tablePrefID) throws ProDAOException;
+
+    public Map<String, Object> createTablePref(Integer userID, Map<String, Object> tablePrefMap) throws ProDAOException;
+
+    public Map<String, Object> getTablePref(Integer tablePrefID) throws ProDAOException;
+
+    public Map<String, Object> updateTablePref(Integer tablePrefID, Map<String, Object> tablePrefMap) throws ProDAOException;
+
     
     // --------------central service -----------------------    
     
@@ -201,15 +213,6 @@ public interface SiloService extends HessianService
     List<Map<String, Object>> getRedFlags(Integer groupID) throws ProDAOException;
 
     
-    List<Map<String, Object>> getTablePreferencesByUserID(Integer userID) throws ProDAOException;
-
-    public Map<String, Object> deleteTablePreference(Integer tablePrefID) throws ProDAOException;
-
-    public Map<String, Object> createTablePreference(Integer acctID, Map<String, Object> tablePreferenceMap) throws ProDAOException;
-
-    public Map<String, Object> getTablePreference(Integer tablePrefID) throws ProDAOException;
-
-    public Map<String, Object> updateTablePreference(Integer tablePrefID, Map<String, Object> tablePreferenceMap) throws ProDAOException;
 
     // Methods related to the Zone type
     Map<String, Object> deleteZone(Integer zoneID) throws ProDAOException;

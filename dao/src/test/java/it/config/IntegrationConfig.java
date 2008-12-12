@@ -16,6 +16,8 @@ public class IntegrationConfig extends Properties
     private final static String CONFIG_PROPERTIES_FILENAME = "it.properties";
     public final static String SILO_HOST = "siloDataAccessHost";
     public final static String SILO_PORT = "siloDataAccessPort";
+    public final static String MCM_HOST = "mcmDataAccessHost";
+    public final static String MCM_PORT = "mcmDataAccessPort";
 
     public IntegrationConfig()
     {

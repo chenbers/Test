@@ -142,7 +142,8 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 scoreableEntity.setEntityType(EntityType.ENTITY_GROUP);
                 scoreableEntity.setIdentifier(gqMap.getGroup().getName());
                 scoreableEntity.setScoreType(scoreType);
-                scoreableEntity.setScore(gqMap.getDriveQ().getScoreMap().get(scoreType));
+                Integer score = gqMap.getDriveQ().getScoreMap().get(scoreType);
+                scoreableEntity.setScore((score == null) ? 0 : score);
                 scoreList.add(scoreableEntity);
 
             }
@@ -237,5 +238,39 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             else
                 throw e;
         }
+/*        
+        try
+        {
+            
+            // TODO: not sure if this duration mapping is correct
+//groupID = 16777218;            
+            Map<String, Object> returnMap = reportService.getGDScoreByGT(groupID, duration.getCode());
+            DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
+            
+            List<ScoreType> subTypeList = scoreType.getSubTypes();
+
+            
+            ScoreTypeBreakdown scoreTypeBreakdown = new ScoreTypeBreakdown();
+            scoreTypeBreakdown.setScoreType(scoreType);
+            scoreTypeBreakdown.setPercentageList(new ArrayList<ScoreableEntity>());
+            for (ScoreType subType : subTypeList)
+            {
+                ScoreableEntity scoreableEntity = new ScoreableEntity();
+                scoreableEntity.setEntityID(groupID);
+                scoreableEntity.setEntityType(EntityType.ENTITY_GROUP);
+                scoreableEntity.setScoreType(subType);
+                scoreableEntity.setScore(dqMap.getScoreMap().get(subType));
+                scoreTypeBreakdown.getPercentageList().add(scoreableEntity);
+            }
+            
+            return scoreTypeBreakdown;
+            
+            
+        }
+        catch (EmptyResultSetException e)
+        {
+            return null;
+        }
+*/        
     }
 }

@@ -29,6 +29,7 @@ import com.inthinc.pro.dao.hessian.GroupHessianDAO;
 import com.inthinc.pro.dao.hessian.PersonHessianDAO;
 import com.inthinc.pro.dao.hessian.RoleHessianDAO;
 import com.inthinc.pro.dao.hessian.StateHessianDAO;
+import com.inthinc.pro.dao.hessian.TablePreferenceHessianDAO;
 import com.inthinc.pro.dao.hessian.TimeZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.TripHessianDAO;
 import com.inthinc.pro.dao.hessian.UserHessianDAO;
@@ -59,6 +60,8 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
+import com.inthinc.pro.model.TablePreference;
+import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
@@ -307,6 +310,9 @@ public class SiloServiceTest
         // user
         users(team2Group.getGroupID());
         
+        // table preferences
+        tablePref(team2Group.getGroupID());
+        
         // driver
         drivers(team1Group.getGroupID());
         
@@ -380,7 +386,6 @@ public class SiloServiceTest
         groupDAO.setSiloService(siloService);
     
         // fleet
-//        public Group(Integer groupID, Integer accountID, String name, Integer parentID, GroupLevel level, Integer managerID, String description, Integer mapZoom, LatLng mapCenter)
         fleetGroup = new Group(0, acctID, "Fleet", 0, GroupType.FLEET,  null, "Fleet Group", 5, new LatLng(0.0, 0.0));
         Integer groupID = groupDAO.create(acctID, fleetGroup);
         //Integer managerID, String description, Integer mapZoom, LatLng mapCenter)
@@ -794,11 +799,57 @@ logger.debug("Persons GroupID: " + groupID);
         // user  list should be same
         groupUserList = userDAO.getUsersInGroupHierarchy(groupID);
         assertEquals("number of users in group: " + groupID, groupPersonList.size(), groupUserList.size());
-
-        
-        
         
     }
+    private void tablePref(Integer groupID)
+    {
+        UserHessianDAO userDAO = new UserHessianDAO();
+        userDAO.setSiloService(siloService);
+
+        TablePreferenceHessianDAO tablePreferenceDAO = new TablePreferenceHessianDAO();
+        tablePreferenceDAO.setSiloService(siloService);
+        
+        List<User> groupUserList = userDAO.getUsersInGroupHierarchy(groupID);
+        
+        // just use the first User
+        Integer userID = groupUserList.get(0).getUserID();
+        
+        List<Boolean> visible = new ArrayList<Boolean>();
+        visible.add(true);
+        visible.add(true);
+        visible.add(false);
+        visible.add(false);
+        
+        TablePreference tablePref = new TablePreference(0, userID, TableType.RED_FLAG, visible);
+        
+        List<TablePreference> tablePrefList = tablePreferenceDAO.getTablePreferencesByUserID(userID);
+        assertEquals("no table preferences should exist yet", 0, tablePrefList.size());
+        
+        // create
+        Integer tablePrefID = tablePreferenceDAO.create(userID, tablePref);
+        tablePref.setTablePrefID(tablePrefID);
+        assertNotNull("Table Preference", tablePrefID);
+        
+        // get
+        TablePreference returnedTablePref = tablePreferenceDAO.findByID(tablePrefID);
+        String[] ignoreFields = {"flags"};
+        Util.compareObjects(tablePref, returnedTablePref, ignoreFields);
+        
+        // update
+        visible.set(2, true);
+        visible.set(3, true);
+        tablePref.setVisible(visible);
+        Integer changedCount= tablePreferenceDAO.update(tablePref);
+        assertEquals("Table Preference Update", Integer.valueOf(1), changedCount);
+        
+        returnedTablePref = tablePreferenceDAO.findByID(tablePrefID);
+        Util.compareObjects(tablePref, returnedTablePref, ignoreFields);
+        
+        tablePrefList = tablePreferenceDAO.getTablePreferencesByUserID(userID);
+        assertEquals("1 table preferences should exist", 1, tablePrefList.size());
+        Util.compareObjects(tablePref, returnedTablePref, ignoreFields);
+    }
+
 
     private void drivers(Integer groupID)
     {

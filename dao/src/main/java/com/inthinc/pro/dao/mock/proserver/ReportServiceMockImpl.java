@@ -488,10 +488,6 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
         
     public List<Map<String, Object>>  getSDScoresByGT(Integer groupID, Integer duration)
     {
-   // TODO CJ HERE
-        List<GQMap> entityList = new ArrayList<GQMap>();
-        
-        
         Group topGroup = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
         List<Group> groupList = getGroupHierarchy(topGroup);
         
