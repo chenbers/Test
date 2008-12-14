@@ -1,7 +1,5 @@
 package com.inthinc.pro.model;
 
-import java.util.List;
-
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
@@ -20,13 +18,12 @@ public class ZoneAlert extends BaseAlert
     private Boolean           ignitionOff;
     private Boolean           position;
     private Boolean           seatbeltViolation;
-    private Boolean           speedLimit;
+    private Integer           speedLimit;
     private Boolean           speedViolation;
     private Boolean           masterBuzzer;
     private Boolean           cautionArea;
     private Boolean           disableRF;
     private Boolean           monitorIdle;
-    private List<Integer>     vehicleIDs;
 
     public Integer getZoneAlertID()
     {
@@ -118,12 +115,12 @@ public class ZoneAlert extends BaseAlert
         this.seatbeltViolation = seatbeltViolation;
     }
 
-    public Boolean getSpeedLimit()
+    public Integer getSpeedLimit()
     {
         return speedLimit;
     }
 
-    public void setSpeedLimit(Boolean speedLimit)
+    public void setSpeedLimit(Integer speedLimit)
     {
         this.speedLimit = speedLimit;
     }
@@ -176,15 +173,5 @@ public class ZoneAlert extends BaseAlert
     public void setMonitorIdle(Boolean monitorIdle)
     {
         this.monitorIdle = monitorIdle;
-    }
-
-    public List<Integer> getVehicleIDs()
-    {
-        return vehicleIDs;
-    }
-
-    public void setVehicleIDs(List<Integer> vehicleIDs)
-    {
-        this.vehicleIDs = vehicleIDs;
     }
 }

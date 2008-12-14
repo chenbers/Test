@@ -27,7 +27,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlag;
-import com.inthinc.pro.model.RedFlagPref;
+import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.User;
@@ -821,35 +821,35 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
-    public List<Map<String, Object>> getRedFlagPrefsByAcctID(Integer accountID)
+    public List<Map<String, Object>> getRedFlagAlertsByAcctID(Integer accountID)
     {
         final SearchCriteria criteria = new SearchCriteria();
         criteria.addKeyValue("accountID", accountID);
-        return MockData.getInstance().lookupList(RedFlagPref.class, criteria);
+        return MockData.getInstance().lookupList(RedFlagAlert.class, criteria);
     }
 
     @Override
-    public Map<String, Object> deleteRedFlagPref(Integer redFlagPrefID) throws ProDAOException
+    public Map<String, Object> deleteRedFlagAlert(Integer redFlagAlertID) throws ProDAOException
     {
         return createReturnValue("count", 0);
     }
 
     @Override
-    public Map<String, Object> createRedFlagPref(Integer acctID, Map<String, Object> redFlagPrefMap) throws ProDAOException
+    public Map<String, Object> createRedFlagAlert(Integer acctID, Map<String, Object> redFlagAlertMap) throws ProDAOException
     {
         // TODO: actually store the object to the mock data
-        return createReturnValue("redFlagPrefID", (int) (Math.random() * Integer.MAX_VALUE));
+        return createReturnValue("redFlagAlertID", (int) (Math.random() * Integer.MAX_VALUE));
     }
 
     @Override
-    public Map<String, Object> getRedFlagPref(Integer redFlagPrefID) throws ProDAOException
+    public Map<String, Object> getRedFlagAlert(Integer redFlagAlertID) throws ProDAOException
     {
-        return doMockLookup(RedFlagPref.class, "redFlagPrefID", redFlagPrefID, "No redFlagPref for ID: " + redFlagPrefID, "getRedFlagPref");
+        return doMockLookup(RedFlagAlert.class, "redFlagAlertID", redFlagAlertID, "No redFlagAlert for ID: " + redFlagAlertID, "getRedFlagAlert");
 
     }
 
     @Override
-    public Map<String, Object> updateRedFlagPref(Integer redFlagPrefID, Map<String, Object> redFlagPrefMap) throws ProDAOException
+    public Map<String, Object> updateRedFlagAlert(Integer redFlagAlertID, Map<String, Object> redFlagAlertMap) throws ProDAOException
     {
         return createReturnValue("count", 1);
     }

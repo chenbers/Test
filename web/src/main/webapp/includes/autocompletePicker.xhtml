@@ -10,7 +10,7 @@
   Parameters:
   ==============
              value: A list of SelectItem objects that are picked by the user.
-     autocompleter: A bean that implements the AutocompletePicker interface.
+     autocompleter: An instance of AutocompletePicker.
 
   Optional Parameters:
   ==============
@@ -37,21 +37,21 @@
         <h:inputHidden id="itemValue" value="#{autocompleter.itemValue}" />
 
         <div class="picker" onclick="setFocus(event, this)">
-          <ui:repeat id="picker-repeater" value="#{value}" var="item">
+          <ui:repeat id="picker-repeater" value="#{autocompleter.picked}" var="item">
             <span class="pick-item">
               <h:outputText value="#{item.label}" />
-              <a4j:commandLink action="#{autocompleter.deleteItem}" styleClass="delete-pick-item" reRender="pickerPanel" oncomplete="changeComplete()">
+              <a4j:commandLink id="picker-delete" styleClass="delete-pick-item" reRender="pickerPanel" limitToList="true" oncomplete="changeComplete()">
                 <a4j:actionparam name="itemValue" value="#{item.value}" assignTo="#{autocompleter.itemValue}" />
                 <h:graphicImage value="/images/x.gif" width="16" height="20" />
               </a4j:commandLink></span>
           </ui:repeat>
           <h:outputText value=" " />
-          <h:inputText id="picker-input" value="" style="border:0px solid white;" size="1" onkeyup="this.size = Math.max(1, this.value.length)" onblur="this.value = ''; this.size = 1;" />
+          <h:inputText id="picker-input" value="" style="border:0px solid white;" size="1" onkeyup="pickerKeyup(this, event)" onblur="this.value = ''; this.size = 1;" />
           <rich:suggestionbox for="picker-input" suggestionAction="#{autocompleter.autocomplete}" var="suggestion" usingSuggestObjects="true" onobjectchange="updateItemValue(suggestion)" eventsQueue="pickerQueue" ignoreDupResponses="true">
             <h:column>
               <h:outputText value="#{suggestion.label}" />
             </h:column>
-            <a4j:support event="onselect" action="#{autocompleter.addItem}" reRender="pickerPanel" oncomplete="changeComplete()" />
+            <a4j:support event="onselect" action="#{autocompleter.addItem}" reRender="pickerPanel" limitToList="true" oncomplete="changeComplete()" />
           </rich:suggestionbox>
         </div>
 
@@ -59,6 +59,7 @@
     </a4j:region>
 
     <script type="text/javascript">
+      var empty = true;
       function setFocus(e, picker)
       {
         if (!e)
@@ -70,6 +71,21 @@
           target = e.srcElement;
         if (target == picker)
           document.getElementById('#{formName}:picker-input').focus();
+      }
+
+      function pickerKeyup(input, e)
+      {
+        input.size = Math.max(1, input.value.length)
+        // backspace key on empty means delete the last item
+        if (empty &amp;&amp; (e.keyCode == 8))
+        {
+          var index = 0;
+          while (document.getElementById("#{formName}:picker-repeater:" + index + ":picker-delete") != null)
+            index++;
+          if (index > 0)
+            document.getElementById("#{formName}:picker-repeater:" + (index - 1) + ":picker-delete").onclick();
+        }
+        empty = (input.value.length == 0);
       }
 
       function updateItemValue(suggestion)

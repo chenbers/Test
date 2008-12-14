@@ -134,8 +134,12 @@
                         <table width="380" border="0" cellspacing="2" cellpadding="4" align="center">
                           <tr>
                             <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.speedLimit}" disabled="true" />
+                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.speedLimitSelected}" disabled="true" />
                               <h:outputText value="#{messages.editZoneAlert_speedLimit}" />
+                              <ui:fragment rendered="#{zoneAlertsBean.item.speedLimitSelected}">
+                                <h:outputText value=": " />
+                                <h:outputText value="#{zoneAlertsBean.item.speedLimit}" />
+                              </ui:fragment>
                             </td>
                             <td width="50%">
                               <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.seatbeltViolation}" disabled="true" />
@@ -204,9 +208,11 @@
                       <td width="10"><img src="images/x.gif" width="10" /></td>
                       <td width="390" valign="top">
 
-                        <div class="add_section_title"><h:outputText value="#{messages.editZoneAlert_assignVehicles}" /></div>
+                        <div class="add_section_title"><h:outputText value="#{messages.editZoneAlert_assignTo}" /></div>
 
-                        TODO: list vehicles, or maybe list fleets/regions/teams?
+                        <ui:repeat value="#{zoneAlertsBean.assignPicker.picked}" var="item">
+                          <h:outputText value="#{item.label}" /><br />
+                        </ui:repeat>
 
                       </td>
                     </tr>
@@ -221,8 +227,8 @@
                         <div class="add_section_title"><h:outputText value="#{messages.editZoneAlert_notificationsByName}" /></div>
 
                         <div>
-                          <h:outputText value="#{zoneAlertsBean.item.notifyPeople[0].label}" />
-                          <ui:repeat value="#{zoneAlertsBean.item.notifyPeople}" var="person" offset="1">
+                          <h:outputText value="#{zoneAlertsBean.peoplePicker.picked[0].label}" />
+                          <ui:repeat value="#{zoneAlertsBean.peoplePicker.picked}" var="person" offset="1">
                             <h:outputText value=", " />
                             <h:outputText value="#{person.label}" />
                           </ui:repeat>

@@ -1,0 +1,138 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+<!--
+  Parameters:
+  ==============
+         bean: An instance of ListPicker.
+
+  Optional Parameters:
+  ==============
+            id: If more than one listPicker is used on a page, must be a unique value for the list picker's ID.
+                ID's of other components will be based on it as well.  The default is "listPicker".
+      formName: The name of the form containing the picker. If not provided, "edit-form" is used.
+          rows: The number of rows in each list. If not provided, 12 is used.
+      onchange: A javascript expression to call when the value changes.
+
+  To use:
+  ==============
+  <ui:include src="/includes/listPicker.xhtml">
+    <ui:param name="bean" value="#{myListPicker}" />
+  </ui:include>
+-->
+
+  <ui:composition>
+
+    <c:if test="#{empty id}">
+      <c:set var="id" value="listPicker" />
+    </c:if>
+    <c:if test="#{empty formName}">
+      <c:set var="formName" value="edit-form" />
+    </c:if>
+    <c:if test="#{empty rows}">
+      <c:set var="rows" value="12" />
+    </c:if>
+
+    <table border="0" cellspacing="4" cellpadding="2" width="100%">
+      <tr>
+        <td width="46%">
+          <h:selectManyListbox id="#{id}From" value="#{bean.emptyItems}" size="#{rows}" style="width:100%" onchange="enablePickButtons()">
+            <f:selectItems value="#{bean.pickFrom}" />
+          </h:selectManyListbox>
+        </td>
+        <td width="8%" align="center">
+          <table border="0" cellspacing="4" cellpadding="0">
+            <tr>
+              <td><a href="#" onclick="pickMove('right', false); return false;" style="cursor:default"><h:graphicImage id="#{id}move_right" value="/images/btn_move_right.png" style="border:0px" /></a></td>
+            </tr>
+            <tr>
+              <td><a href="#" onclick="pickMove('left', false); return false;" style="cursor:default"><h:graphicImage id="#{id}move_left" value="/images/btn_move_left.png" style="border:0px" /></a></td>
+            </tr>
+            <tr>
+              <td><hr noshade="noshade" /></td>
+            </tr>
+            <tr>
+              <td><a href="#" onclick="pickMove('right', true); return false;" style="cursor:default"><h:graphicImage id="#{id}move_all_right" value="/images/btn_move_all_right.png" style="border:0px" /></a></td>
+            </tr>
+            <tr>
+              <td><a href="#" onclick="pickMove('left', true); return false;" style="cursor:default"><h:graphicImage id="#{id}move_all_left" value="/images/btn_move_all_left.png" style="border:0px" /></a></td>
+            </tr>
+          </table>
+        </td>
+        <td width="46%">
+          <h:inputHidden id="#{id}PickedIDs" value="#{bean.pickedIDs}" />
+          <h:selectManyListbox id="#{id}Picked" value="#{bean.emptyItems}" size="#{rows}" style="width:100%" onchange="enablePickButtons()">
+            <f:selectItems value="#{bean.picked}" />
+          </h:selectManyListbox>
+        </td>
+      </tr>
+    </table>
+
+    <script type="text/javascript">
+      function pickMove(dir, all)
+      {
+        var left = document.getElementById("#{formName}:#{id}From");
+        var right = document.getElementById("#{formName}:#{id}Picked");
+        var from = left;
+        var to = right;
+        if (dir == "left")
+        {
+          from = right;
+          to = left;
+        }
+
+        var changed = false;
+        for (var i = 0; i &lt; from.length; i++)
+          if (all || from.options[i].selected)
+          {
+            to.options[to.options.length] = new Option(from.options[i].text, from.options[i].value);
+            from.remove(i);
+            changed = true;
+            i--;
+          }
+
+        if (changed)
+        {
+          var s = "";
+          for (var i = 0; i &lt; right.length; i++)
+          {
+            if (s.length &gt; 0)
+              s += ",";
+            s += right.options[i].value;
+          }
+          document.getElementById("#{formName}:#{id}PickedIDs").value = s;
+          enablePickButtons();
+          #{onchange}
+        }
+      }
+
+      function enablePickButtons()
+      {
+        var left = document.getElementById("#{formName}:#{id}From");
+        var right = document.getElementById("#{formName}:#{id}Picked");
+        enablePickButton("move_right", left.selectedIndex != -1);
+        enablePickButton("move_all_right", left.length > 0);
+        enablePickButton("move_left", right.selectedIndex != -1);
+        enablePickButton("move_all_left", right.length > 0);
+      }
+
+      function enablePickButton(id, enabled)
+      {
+        var image = document.getElementById("#{formName}:#{id}" + id);
+        if (enabled)
+          image.src = "#{facesContext.externalContext.requestContextPath}/images/btn_" + id + ".png";
+        else
+          image.src = "#{facesContext.externalContext.requestContextPath}/images/btn_" + id + "_disabled.png";
+      }
+
+      enablePickButtons();
+    </script>
+
+  </ui:composition>
+
+</html>

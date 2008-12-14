@@ -106,12 +106,16 @@
         <property name="zoneAlertDAO" ref="zoneAlertDAO"></property>
         <property name="zoneDAO" ref="zoneDAO"></property>
         <property name="vehicleDAO" ref="vehicleDAO"></property>
+        <property name="driverDAO" ref="driverDAO"></property>
         <property name="personDAO" ref="personDAO"></property>
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
     </bean>
 
-    <bean id="redFlagsAdminBean" class="com.inthinc.pro.backing.RedFlagsAdminBean" scope="session">
-        <property name="redFlagPrefDAO" ref="redFlagPrefDAO"></property>
+    <bean id="redFlagAlertsBean" class="com.inthinc.pro.backing.RedFlagAlertsBean" scope="session">
+        <property name="redFlagAlertDAO" ref="redFlagAlertDAO"></property>
+        <property name="vehicleDAO" ref="vehicleDAO"></property>
+        <property name="driverDAO" ref="driverDAO"></property>
+        <property name="personDAO" ref="personDAO"></property>
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
     </bean>
 

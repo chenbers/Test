@@ -1,11 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -16,22 +12,17 @@ import javax.faces.model.SelectItem;
 
 import org.springframework.beans.BeanUtils;
 
-import com.inthinc.pro.backing.ui.AutocompletePicker;
-import com.inthinc.pro.dao.PersonDAO;
-import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.ZoneAlertDAO;
 import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.BaseAlert;
-import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.TableType;
-import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.MiscUtil;
 
-public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView> implements AutocompletePicker
+public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlertView>
 {
     private static final List<String> AVAILABLE_COLUMNS;
     private static final int[]        DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2 };
@@ -45,27 +36,9 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView> 
         AVAILABLE_COLUMNS.add("zone");
     }
 
-    private PersonDAO                 personDAO;
-    private VehicleDAO                vehicleDAO;
     private ZoneAlertDAO              zoneAlertDAO;
     private ZoneDAO                   zoneDAO;
-    private List<Person>              people;
-    private Integer                   personID;
     private ArrayList<SelectItem>     zones;
-    private String                    vehicleFilter;
-    private List<SelectItem>          vehicles;
-    private List<SelectItem>          vehicleGroups;
-    private List<Vehicle>             allVehicles;
-
-    public void setPersonDAO(PersonDAO personDAO)
-    {
-        this.personDAO = personDAO;
-    }
-
-    public void setVehicleDAO(VehicleDAO vehicleDAO)
-    {
-        this.vehicleDAO = vehicleDAO;
-    }
 
     public void setZoneAlertDAO(ZoneAlertDAO zoneAlertDAO)
     {
@@ -109,11 +82,7 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView> 
                 dayOfWeek.add(false);
             alertView.setDayOfWeek(dayOfWeek);
         }
-        alertView.setPersonDAO(personDAO);
         alertView.setZoneDAO(zoneDAO);
-        alertView.setOldVehicleIDs(alert.getVehicleIDs());
-        alertView.setOldNotifyPersonIDs(alert.getNotifyPersonIDs());
-        alertView.setOldEmailToString(alertView.getEmailToString());
         alertView.setSelected(false);
         return alertView;
     }
@@ -197,15 +166,6 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView> 
     }
 
     @Override
-    public String cancelEdit()
-    {
-        getItem().setVehicleIDs(getItem().getOldVehicleIDs());
-        getItem().setNotifyPersonIDs(getItem().getOldNotifyPersonIDs());
-        getItem().setEmailToString(getItem().getOldEmailToString());
-        return super.cancelEdit();
-    }
-
-    @Override
     public String save()
     {
         // if batch-changing alert definition, change all of its children
@@ -232,19 +192,21 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView> 
     protected boolean validate(List<ZoneAlertView> saveItems)
     {
         final FacesContext context = FacesContext.getCurrentInstance();
+        boolean valid = super.validate(saveItems);
 
-        boolean valid = true;
+        // at least one alert is defined
         for (final ZoneAlertView alert : saveItems)
-        {
-            if (!alert.isAnytime() && (alert.getStartTOD() >= alert.getStopTOD()))
+            if (!Boolean.TRUE.equals(alert.getArrival()) && !Boolean.TRUE.equals(alert.getDeparture()) && !Boolean.TRUE.equals(alert.getDriverIDViolation())
+                    && !Boolean.TRUE.equals(alert.getIgnitionOn()) && !Boolean.TRUE.equals(alert.getIgnitionOff()) && !Boolean.TRUE.equals(alert.getPosition())
+                    && !Boolean.TRUE.equals(alert.getSeatbeltViolation()) && ((alert.getSpeedLimit() == null) || (alert.getSpeedLimit() == 0))
+                    && !Boolean.TRUE.equals(alert.getSpeedViolation()) && !Boolean.TRUE.equals(alert.getMasterBuzzer()) && !Boolean.TRUE.equals(alert.getCautionArea())
+                    && !Boolean.TRUE.equals(alert.getDisableRF()) && !Boolean.TRUE.equals(alert.getMonitorIdle()))
             {
-                final String summary = MessageUtil.formatMessageString("editZoneAlert_invalidTimeframe");
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
-                context.addMessage("edit-form:stopTOD", message);
+                final String summary = MessageUtil.formatMessageString("editZoneAlert_noAlerts");
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                context.addMessage("edit-form:arrival", message);
                 valid = false;
             }
-            // TODO: make sure at least one alert is defined, at least one vehicle is added, and at least one person is being notified
-        }
         return valid;
     }
 
@@ -260,9 +222,7 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView> 
             else
                 zoneAlertDAO.update(alert);
 
-            alert.setOldVehicleIDs(alert.getVehicleIDs());
-            alert.setOldNotifyPersonIDs(alert.getNotifyPersonIDs());
-            alert.setOldEmailToString(alert.getEmailToString());
+            setOldEmailToString(alert.getEmailToString());
 
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "zoneAlert_added" : "zoneAlert_updated", alert.getName());
@@ -297,172 +257,16 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView> 
             final List<Zone> list = zoneDAO.getZones(getAccountID());
             for (final Zone zone : list)
                 zones.add(new SelectItem(zone.getZoneID(), zone.getName()));
-            sortSelectItems(zones);
+            MiscUtil.sortSelectItems(zones);
         }
         return zones;
     }
 
-    public List<SelectItem> getVehicleGroups()
-    {
-        if (vehicleGroups == null)
-        {
-            vehicleGroups = new ArrayList<SelectItem>();
-            for (final Group group : getGroupHierarchy().getGroupList())
-                vehicleGroups.add(new SelectItem(group.getGroupID(), MessageUtil.formatMessageString("editZoneAlert_vehicleGroup", group.getName())));
-        }
-        return vehicleGroups;
-    }
-
-    public String getVehicleFilter()
-    {
-        return vehicleFilter;
-    }
-
-    public void setVehicleFilter(String vehicleFilter)
-    {
-        this.vehicleFilter = vehicleFilter;
-        vehicles = null;
-    }
-
-    private boolean matchesFilter(Vehicle vehicle)
-    {
-        if ((vehicleFilter == null) || (vehicleFilter.length() == 0) || ((vehicle.getVtype() != null) && vehicle.getVtype().getDescription().equals(vehicleFilter)))
-            return true;
-        else
-        {
-            try
-            {
-                final Integer groupID = new Integer(vehicleFilter);
-                if (groupID.equals(vehicle.getGroupID()))
-                    return true;
-
-                // test for a parent group
-                Group vehicleGroup = findGroup(vehicle.getGroupID());
-                while (vehicleGroup != null)
-                {
-                    if (groupID.equals(vehicleGroup.getParentID()))
-                        return true;
-                    vehicleGroup = findGroup(vehicleGroup.getParentID());
-                }
-            }
-            catch (NumberFormatException e)
-            {
-            }
-        }
-        return false;
-    }
-
-    private Group findGroup(Integer groupID)
-    {
-        for (final Group group : getGroupHierarchy().getGroupList())
-            if (group.getGroupID().equals(groupID))
-                return group;
-        return null;
-    }
-
-    public List<SelectItem> getVehicles()
-    {
-        if (vehicles == null)
-        {
-            vehicles = new ArrayList<SelectItem>();
-            if (allVehicles == null)
-                allVehicles = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getPerson().getGroupID());
-            for (final Vehicle vehicle : allVehicles)
-                if (matchesFilter(vehicle))
-                    vehicles.add(new SelectItem(vehicle.getVehicleID(), vehicle.getName()));
-        }
-        return vehicles;
-    }
-
-    @Override
-    public List<SelectItem> autocomplete(Object value)
-    {
-        if (people == null)
-            people = personDAO.getPeopleInGroupHierarchy(getUser().getPerson().getGroupID());
-
-        final ArrayList<SelectItem> suggestions = new ArrayList<SelectItem>();
-        final String[] names = value.toString().toLowerCase().split("[, ]");
-        for (final Person person : people)
-        {
-            boolean matches = true;
-            for (final String name : names)
-            {
-                matches &= (person.getFirst().toLowerCase().startsWith(name) || person.getLast().toLowerCase().startsWith(name));
-                if (!matches)
-                    break;
-            }
-            if (matches)
-                suggestions.add(new SelectItem(person.getPersonID(), person.getFirst() + ' ' + person.getLast()));
-        }
-
-        final List<SelectItem> notifyPeople = getItem().getNotifyPeople();
-        if (notifyPeople != null)
-            for (final SelectItem item : notifyPeople)
-                for (final Iterator<SelectItem> i = suggestions.iterator(); i.hasNext();)
-                    if (i.next().getValue().equals(item.getValue()))
-                        i.remove();
-
-        sortSelectItems(suggestions);
-        return suggestions;
-    }
-
-    @Override
-    public Object getItemValue()
-    {
-        return null;
-    }
-
-    @Override
-    public void setItemValue(Object value)
-    {
-        try
-        {
-            personID = new Integer(value.toString());
-        }
-        catch (NumberFormatException e)
-        {
-            personID = null;
-        }
-    }
-
-    public int getPickedItemCount()
-    {
-        return getItem().getNotifyPeople().size();
-    }
-
-    @Override
-    public void addItem()
-    {
-        getItem().addNotifyPerson(personID);
-        personID = null;
-    }
-
-    @Override
-    public void deleteItem()
-    {
-        getItem().removeNotifyPerson(personID);
-        personID = null;
-    }
-
-    private static void sortSelectItems(List<SelectItem> items)
-    {
-        Collections.sort(items, new Comparator<SelectItem>()
-        {
-            @Override
-            public int compare(SelectItem o1, SelectItem o2)
-            {
-                return o1.getLabel().compareTo(o2.getLabel());
-            }
-        });
-    }
-
-    public static class ZoneAlertView extends ZoneAlert implements EditItem
+    public static class ZoneAlertView extends ZoneAlert implements BaseAdminAlertsBean.BaseAlertView
     {
         @Column(updateable = false)
         private static final long serialVersionUID = 8372507838051791866L;
 
-        @Column(updateable = false)
-        private PersonDAO         personDAO;
         @Column(updateable = false)
         private ZoneDAO           zoneDAO;
         @Column(updateable = false)
@@ -470,24 +274,11 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView> 
         @Column(updateable = false)
         private boolean           anytime;
         @Column(updateable = false)
-        private List<SelectItem>  notifyPeople;
-        @Column(updateable = false)
-        private List<Integer>     oldVehicleIDs;
-        @Column(updateable = false)
-        private List<Integer>     oldNotifyPersonIDs;
-        @Column(updateable = false)
-        private String            oldEmailToString;
-        @Column(updateable = false)
         private boolean           selected;
 
         public Integer getId()
         {
             return getZoneAlertID();
-        }
-
-        void setPersonDAO(PersonDAO personDAO)
-        {
-            this.personDAO = personDAO;
         }
 
         void setZoneDAO(ZoneDAO zoneDAO)
@@ -551,91 +342,13 @@ public class ZoneAlertsBean extends BaseAdminBean<ZoneAlertsBean.ZoneAlertView> 
                 super.setStopTOD(null);
         }
 
-        List<Integer> getOldVehicleIDs()
+        public boolean isSpeedLimitSelected()
         {
-            return oldVehicleIDs;
+            return (getSpeedLimit() != null) && (getSpeedLimit() > 0);
         }
 
-        void setOldVehicleIDs(List<Integer> oldVehicleIDs)
+        public void setSpeedLimitSelected(boolean speedLimitSelected)
         {
-            this.oldVehicleIDs = oldVehicleIDs;
-        }
-
-        public List<SelectItem> getNotifyPeople()
-        {
-            if (notifyPeople == null)
-            {
-                notifyPeople = new ArrayList<SelectItem>();
-                if (getNotifyPersonIDs() != null)
-                {
-                    for (final Integer id : getNotifyPersonIDs())
-                    {
-                        final Person person = personDAO.findByID(id);
-                        if (person != null)
-                            notifyPeople.add(new SelectItem(person.getPersonID(), person.getFirst() + ' ' + person.getLast()));
-                    }
-                    sortSelectItems(notifyPeople);
-                }
-            }
-            return notifyPeople;
-        }
-
-        public void addNotifyPerson(Integer personID)
-        {
-            if (getNotifyPersonIDs() == null)
-                setNotifyPersonIDs(new ArrayList<Integer>());
-            getNotifyPersonIDs().add(personID);
-            notifyPeople = null;
-        }
-
-        public void removeNotifyPerson(Integer personID)
-        {
-            if (getNotifyPersonIDs() != null)
-            {
-                getNotifyPersonIDs().remove(personID);
-                notifyPeople = null;
-            }
-        }
-
-        List<Integer> getOldNotifyPersonIDs()
-        {
-            return oldNotifyPersonIDs;
-        }
-
-        void setOldNotifyPersonIDs(List<Integer> oldNotifyPersonIDs)
-        {
-            this.oldNotifyPersonIDs = oldNotifyPersonIDs;
-        }
-
-        public String getEmailToString()
-        {
-            final StringBuilder sb = new StringBuilder();
-            if (getEmailTo() != null)
-                for (final String email : getEmailTo())
-                {
-                    if (sb.length() > 0)
-                        sb.append(", ");
-                    sb.append(email);
-                }
-            return sb.toString();
-        }
-
-        public void setEmailToString(String emailToString)
-        {
-            if ((emailToString != null) && (emailToString.trim().length() > 0))
-                setEmailTo(Arrays.asList(emailToString.split("[,; ]+")));
-            else
-                setEmailTo(null);
-        }
-
-        String getOldEmailToString()
-        {
-            return oldEmailToString;
-        }
-
-        void setOldEmailToString(String oldEmailToString)
-        {
-            this.oldEmailToString = oldEmailToString;
         }
 
         public boolean isSelected()

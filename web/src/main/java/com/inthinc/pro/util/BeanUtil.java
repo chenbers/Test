@@ -2,6 +2,7 @@ package com.inthinc.pro.util;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -84,6 +85,7 @@ public class BeanUtil
      * @throws BeanInitializationException
      * @throws FatalBeanException
      */
+    @SuppressWarnings("unchecked")
     private static void deepCopy(Object source, Object target, List<String> ignoreProperties, Map<Object, Object> map)
     {
         // deep-copy children
@@ -126,18 +128,26 @@ public class BeanUtil
                                     writeMethod.invoke(target, targetProperty);
                                 }
 
-                                // filter ignore properties by this property's prefix
-                                final String prefix = descriptor.getName() + '.';
-                                final LinkedList<String> childIgnore = new LinkedList<String>();
-                                if (ignoreProperties != null)
-                                    for (final String key : ignoreProperties)
-                                        if (key.startsWith(prefix))
-                                            childIgnore.add(key.substring(prefix.length()));
+                                // collection, map or custom object
+                                if (targetProperty instanceof Collection)
+                                    ((Collection) targetProperty).addAll((Collection) sourceProperty);
+                                else if (targetProperty instanceof Map)
+                                    ((Map) targetProperty).putAll((Map) sourceProperty);
+                                else
+                                {
+                                    // filter ignore properties by this property's prefix
+                                    final String prefix = descriptor.getName() + '.';
+                                    final LinkedList<String> childIgnore = new LinkedList<String>();
+                                    if (ignoreProperties != null)
+                                        for (final String key : ignoreProperties)
+                                            if (key.startsWith(prefix))
+                                                childIgnore.add(key.substring(prefix.length()));
 
-                                // recurse
-                                map.put(sourceProperty, targetProperty);
-                                deepCopy(sourceProperty, targetProperty, childIgnore, map);
-                                map.remove(sourceProperty);
+                                    // recurse
+                                    map.put(sourceProperty, targetProperty);
+                                    deepCopy(sourceProperty, targetProperty, childIgnore, map);
+                                    map.remove(sourceProperty);
+                                }
                             }
                         }
                     }

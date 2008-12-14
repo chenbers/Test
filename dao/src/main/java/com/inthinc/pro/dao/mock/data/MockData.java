@@ -42,7 +42,7 @@ import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagLevel;
-import com.inthinc.pro.model.RedFlagPref;
+import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagType;
 import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.ScoreType;
@@ -167,7 +167,7 @@ public class MockData
         addGroupData(accountID);
         addDevices(accountID, randomInt(MAX_DEVICES / 2, MAX_DEVICES));
         addZones(accountID, randomInt(MAX_ZONES / 2, MAX_ZONES));
-        addRedFlagPrefs(accountID, randomInt(MAX_RED_FLAG_PREFS / 2, MAX_RED_FLAG_PREFS));
+        addRedFlagAlerts(accountID, randomInt(MAX_RED_FLAG_PREFS / 2, MAX_RED_FLAG_PREFS));
     }
     
     private void addGroupData(Integer accountID)
@@ -786,7 +786,8 @@ public class MockData
             alert.setIgnitionOff(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
             alert.setPosition(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
             alert.setSeatbeltViolation(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-            alert.setSpeedLimit(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
+            if (randomInt(0, 1) == 1)
+                alert.setSpeedLimit(randomInt(5, 70));
             alert.setSpeedViolation(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
             alert.setMasterBuzzer(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
             alert.setCautionArea(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
@@ -800,19 +801,19 @@ public class MockData
         return alerts;
     }
 
-    private List<RedFlagPref> addRedFlagPrefs(Integer accountID, int numRedFlagPrefs)
+    private List<RedFlagAlert> addRedFlagAlerts(Integer accountID, int numRedFlagAlerts)
     {
-        List<RedFlagPref> flags = new ArrayList<RedFlagPref>();
+        List<RedFlagAlert> flags = new ArrayList<RedFlagAlert>();
         Integer idOffset = accountID * MAX_RED_FLAG_PREFS;
-        for (int i = 0; i < numRedFlagPrefs; i++)
+        for (int i = 0; i < numRedFlagAlerts; i++)
         {
             int id = idOffset+i+1;
-            RedFlagPref flag = new RedFlagPref();
+            RedFlagAlert flag = new RedFlagAlert();
             flag.setAccountID(accountID);
-            flag.setRedFlagPrefID(id);
+            flag.setRedFlagAlertID(id);
             flag.setType(RedFlagType.values()[randomInt(0, RedFlagType.values().length - 1)]);
             flag.setCreated(new Date());
-            flag.setName("RedFlagPref" + id);
+            flag.setName("RedFlagAlert" + id);
             flag.setDescription("Don't step on my blue suede shoes!");
             flag.setHardBrake(randomInt(0, 2));
             flag.setHardAcceleration(randomInt(0, 2));

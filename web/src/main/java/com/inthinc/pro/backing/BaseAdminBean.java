@@ -408,10 +408,6 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     {
         final List<T> selected = getSelectedItems();
 
-        // validate
-        if (!validate(selected))
-            return null;
-
         if (batchEdit)
         {
             // get the fields to update
@@ -424,6 +420,10 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
             for (final T t : selected)
                 BeanUtil.deepCopy(item, t, ignoreFields);
         }
+
+        // validate
+        if (!validate(selected))
+            return null;
 
         final boolean add = isAdd();
         doSave(selected, add);

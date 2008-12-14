@@ -1,19 +1,15 @@
 package com.inthinc.pro.model;
 
-import java.util.List;
-
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
-public class RedFlagPref extends BaseAlert
+public class RedFlagAlert extends BaseAlert
 {
     @Column(updateable = false)
     private static final long serialVersionUID = -1621262257747114161L;
 
     @ID
-    private Integer           redFlagPrefID;
-    private List<Integer>     driverIDs;
-    private List<Integer>     vehicleIDs;
+    private Integer           redFlagAlertID;
     private RedFlagType       type;
     private String            speedSet;
     @Column(updateable = false)
@@ -28,37 +24,16 @@ public class RedFlagPref extends BaseAlert
     private Integer           hardTurn;
     @Column(name = "vert")
     private Integer           hardVertical;
+// TODO: others
 
-    private Integer           zoneID;
-
-    public Integer getRedFlagPrefID()
+    public Integer getRedFlagAlertID()
     {
-        return redFlagPrefID;
+        return redFlagAlertID;
     }
 
-    public void setRedFlagPrefID(Integer redFlagPrefID)
+    public void setRedFlagAlertID(Integer redFlagAlertID)
     {
-        this.redFlagPrefID = redFlagPrefID;
-    }
-
-    public List<Integer> getDriverIDs()
-    {
-        return driverIDs;
-    }
-
-    public void setDriverIDs(List<Integer> driverIDs)
-    {
-        this.driverIDs = driverIDs;
-    }
-
-    public List<Integer> getVehicleIDs()
-    {
-        return vehicleIDs;
-    }
-
-    public void setVehicleIDs(List<Integer> vehicleIDs)
-    {
-        this.vehicleIDs = vehicleIDs;
+        this.redFlagAlertID = redFlagAlertID;
     }
 
     public RedFlagType getType()

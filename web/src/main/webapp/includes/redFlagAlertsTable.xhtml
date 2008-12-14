@@ -6,24 +6,24 @@
   xmlns:rich="http://richfaces.org/rich"
   xmlns:security="http://www.springframework.org/security/tags">
 
-  <ui:param name="recordCount" value="#{redFlagsAdminBean.itemCount}" />
-  <ui:param name="items" value="#{redFlagsAdminBean.filteredItems}" />
-  <ui:param name="filterValue" value="#{redFlagsAdminBean.filterValue}" />
-  <ui:param name="page" value="#{redFlagsAdminBean.page}" />
-  <ui:param name="editorBean" value="#{redFlagsAdminBean}" />
+  <ui:param name="recordCount" value="#{redFlagAlertsBean.itemCount}" />
+  <ui:param name="items" value="#{redFlagAlertsBean.filteredItems}" />
+  <ui:param name="filterValue" value="#{redFlagAlertsBean.filterValue}" />
+  <ui:param name="page" value="#{redFlagAlertsBean.page}" />
+  <ui:param name="editorBean" value="#{redFlagAlertsBean}" />
 
   <ui:define name="columns">
-    <rich:column rendered="#{redFlagsAdminBean.tableColumns['name'].visible}" sortBy="#{item.name}" sortOrder="ASCENDING">
+    <rich:column rendered="#{redFlagAlertsBean.tableColumns['name'].visible}" sortBy="#{item.name}" sortOrder="ASCENDING">
       <f:facet name="header"><h:outputText value="#{messages.redFlagsHeader_name}" /></f:facet>
-      <h:commandLink action="#{redFlagsAdminBean.display}" value="#{item.name}">
+      <h:commandLink action="#{redFlagAlertsBean.display}" value="#{item.name}">
         <f:param name="displayID" value="#{item.id}" />
       </h:commandLink>
     </rich:column>
-    <rich:column rendered="#{redFlagsAdminBean.tableColumns['description'].visible}" sortBy="#{item.description}">
+    <rich:column rendered="#{redFlagAlertsBean.tableColumns['description'].visible}" sortBy="#{item.description}">
       <f:facet name="header"><h:outputText value="#{messages.redFlagsHeader_description}" /></f:facet>
       <h:outputText value="#{item.description}" />
     </rich:column>
-    <rich:column rendered="#{redFlagsAdminBean.tableColumns['type'].visible}" sortBy="#{item.type}">
+    <rich:column rendered="#{redFlagAlertsBean.tableColumns['type'].visible}" sortBy="#{item.type}">
       <f:facet name="header"><h:outputText value="#{messages.redFlagsHeader_type}" /></f:facet>
       <h:outputText value="#{item.type}" />
     </rich:column>

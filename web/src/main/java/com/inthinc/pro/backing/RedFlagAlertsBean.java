@@ -11,13 +11,13 @@ import javax.faces.context.FacesContext;
 
 import org.springframework.beans.BeanUtils;
 
-import com.inthinc.pro.dao.RedFlagPrefDAO;
+import com.inthinc.pro.dao.RedFlagAlertDAO;
 import com.inthinc.pro.dao.annotations.Column;
-import com.inthinc.pro.model.RedFlagPref;
+import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.util.MessageUtil;
 
-public class RedFlagsAdminBean extends BaseAdminBean<RedFlagsAdminBean.RedFlagPrefView>
+public class RedFlagAlertsBean extends BaseAdminBean<RedFlagAlertsBean.RedFlagAlertView>
 {
     private static final List<String> AVAILABLE_COLUMNS;
     private static final int[]        DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2 };
@@ -31,44 +31,44 @@ public class RedFlagsAdminBean extends BaseAdminBean<RedFlagsAdminBean.RedFlagPr
         AVAILABLE_COLUMNS.add("type");
     }
 
-    private RedFlagPrefDAO            redFlagPrefDAO;
+    private RedFlagAlertDAO            redFlagAlertDAO;
 
-    public void setRedFlagPrefDAO(RedFlagPrefDAO redFlagPrefDAO)
+    public void setRedFlagAlertDAO(RedFlagAlertDAO redFlagAlertDAO)
     {
-        this.redFlagPrefDAO = redFlagPrefDAO;
+        this.redFlagAlertDAO = redFlagAlertDAO;
     }
 
     @Override
-    protected List<RedFlagPrefView> loadItems()
+    protected List<RedFlagAlertView> loadItems()
     {
         // get the red flags
-        final List<RedFlagPref> plainRedFlagPrefs = redFlagPrefDAO.getRedFlagPrefs(getAccountID());
+        final List<RedFlagAlert> plainRedFlagAlerts = redFlagAlertDAO.getRedFlagAlerts(getAccountID());
 
-        // convert the RedFlagPrefs to RedFlagPrefViews
-        final LinkedList<RedFlagPrefView> items = new LinkedList<RedFlagPrefView>();
-        for (final RedFlagPref flag : plainRedFlagPrefs)
-            items.add(createRedFlagPrefView(flag));
+        // convert the RedFlagAlerts to RedFlagAlertViews
+        final LinkedList<RedFlagAlertView> items = new LinkedList<RedFlagAlertView>();
+        for (final RedFlagAlert flag : plainRedFlagAlerts)
+            items.add(createRedFlagAlertView(flag));
 
         return items;
     }
 
     /**
-     * Creates a RedFlagPrefView object from the given RedFlagPref object.
+     * Creates a RedFlagAlertView object from the given RedFlagAlert object.
      * 
      * @param flag
      *            The flag.
-     * @return The new RedFlagPrefView object.
+     * @return The new RedFlagAlertView object.
      */
-    private RedFlagPrefView createRedFlagPrefView(RedFlagPref flag)
+    private RedFlagAlertView createRedFlagAlertView(RedFlagAlert flag)
     {
-        final RedFlagPrefView flagView = new RedFlagPrefView();
+        final RedFlagAlertView flagView = new RedFlagAlertView();
         BeanUtils.copyProperties(flag, flagView);
         flagView.setSelected(false);
         return flagView;
     }
 
     @Override
-    protected boolean matchesFilter(RedFlagPrefView flag, String filterWord)
+    protected boolean matchesFilter(RedFlagAlertView flag, String filterWord)
     {
         for (final String column : getTableColumns().keySet())
             if (getTableColumns().get(column).getVisible())
@@ -119,17 +119,17 @@ public class RedFlagsAdminBean extends BaseAdminBean<RedFlagsAdminBean.RedFlagPr
     }
 
     @Override
-    protected RedFlagPrefView createAddItem()
+    protected RedFlagAlertView createAddItem()
     {
-        final RedFlagPref flag = new RedFlagPref();
+        final RedFlagAlert flag = new RedFlagAlert();
         flag.setSpeedSettings(new Integer[15]);
-        return createRedFlagPrefView(flag);
+        return createRedFlagAlertView(flag);
     }
 
     @Override
-    public RedFlagPrefView getItem()
+    public RedFlagAlertView getItem()
     {
-        final RedFlagPrefView item = super.getItem();
+        final RedFlagAlertView item = super.getItem();
         if (item.getSpeedSettings() == null)
             item.setSpeedSettings(new Integer[15]);
         if (!item.isSensitivitiesInverted())
@@ -138,13 +138,13 @@ public class RedFlagsAdminBean extends BaseAdminBean<RedFlagsAdminBean.RedFlagPr
     }
 
     @Override
-    protected void doDelete(List<RedFlagPrefView> deleteItems)
+    protected void doDelete(List<RedFlagAlertView> deleteItems)
     {
         final FacesContext context = FacesContext.getCurrentInstance();
 
-        for (final RedFlagPrefView flag : deleteItems)
+        for (final RedFlagAlertView flag : deleteItems)
         {
-            redFlagPrefDAO.deleteByID(flag.getRedFlagPrefID());
+            redFlagAlertDAO.deleteByID(flag.getRedFlagAlertID());
 
             // add a message
             final String summary = MessageUtil.formatMessageString("redFlag_deleted", flag.getName());
@@ -163,11 +163,11 @@ public class RedFlagsAdminBean extends BaseAdminBean<RedFlagsAdminBean.RedFlagPr
     }
 
     @Override
-    protected void doSave(List<RedFlagPrefView> saveItems, boolean create)
+    protected void doSave(List<RedFlagAlertView> saveItems, boolean create)
     {
         final FacesContext context = FacesContext.getCurrentInstance();
 
-        for (final RedFlagPrefView flag : saveItems)
+        for (final RedFlagAlertView flag : saveItems)
         {
             // if batch editing, copy individual speed settings by hand
             if (isBatchEdit())
@@ -182,9 +182,9 @@ public class RedFlagsAdminBean extends BaseAdminBean<RedFlagsAdminBean.RedFlagPr
             }
 
             if (create)
-                flag.setRedFlagPrefID(redFlagPrefDAO.create(getAccountID(), flag));
+                flag.setRedFlagAlertID(redFlagAlertDAO.create(getAccountID(), flag));
             else
-                redFlagPrefDAO.update(flag);
+                redFlagAlertDAO.update(flag);
 
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "redFlag_added" : "redFlag_updated", flag.getName());
@@ -211,7 +211,7 @@ public class RedFlagsAdminBean extends BaseAdminBean<RedFlagsAdminBean.RedFlagPr
         return "go_adminRedFlags";
     }
 
-    public static class RedFlagPrefView extends RedFlagPref implements EditItem
+    public static class RedFlagAlertView extends RedFlagAlert implements EditItem
     {
         @Column(updateable = false)
         private static final long serialVersionUID = 8372507838051791866L;
@@ -221,7 +221,7 @@ public class RedFlagsAdminBean extends BaseAdminBean<RedFlagsAdminBean.RedFlagPr
 
         public Integer getId()
         {
-            return getRedFlagPrefID();
+            return getRedFlagAlertID();
         }
 
         public boolean isSelected()
