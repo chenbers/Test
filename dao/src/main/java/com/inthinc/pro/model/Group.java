@@ -1,5 +1,8 @@
 package com.inthinc.pro.model;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
@@ -28,9 +31,7 @@ public class Group extends BaseEntity
     private Integer           mapZoom;
     private Double            mapLat;
     private Double            mapLng;
-    
-//    @Column(updateable = false)
-//    private LatLng            mapCenter;
+
 
     public Group()
     {
@@ -59,8 +60,10 @@ public class Group extends BaseEntity
         this.managerID = managerID;
         this.description = description;
         this.mapZoom = mapZoom;
-        this.mapLat = mapCenter.getLat();
-        this.mapLng = mapCenter.getLng();
+        if(mapCenter != null){
+            this.mapLat = mapCenter.getLat();
+            this.mapLng = mapCenter.getLng();
+        }
 
     }
 
@@ -186,4 +189,25 @@ public class Group extends BaseEntity
     {
         this.mapLng = mapLng;
     }
+    
+    @Override
+    public boolean equals(Object obj)
+    {
+        boolean isEqual = false;
+        if (obj instanceof Group)
+        {
+            EqualsBuilder eb = new EqualsBuilder().append(this.getGroupID(), ((Group)obj).getGroupID());
+            isEqual = eb.isEquals();
+        }
+        return isEqual;
+    }
+    
+    @Override
+    public int hashCode()
+    {
+        HashCodeBuilder hcb = new HashCodeBuilder(5,9);
+        hcb.append(this.getGroupID());
+        return hcb.toHashCode();
+    }
+    
 }

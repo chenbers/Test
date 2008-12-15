@@ -163,6 +163,7 @@ public class MockData
     private void addAccountData(Integer accountID)
     {
         Account account = new Account(accountID, 0, 0, Status.ACTIVE);
+        account.setAcctName("United States Fleet");
         storeObject(account);
         addGroupData(accountID);
         addDevices(accountID, randomInt(MAX_DEVICES / 2, MAX_DEVICES));
@@ -184,23 +185,23 @@ public class MockData
         {
                 new Group(idOffset+1, accountID, "United States", 0,GroupType.FLEET,null,"Root Node",3,new LatLng(44,-111)),       // top level group (executive)
                 
-                new Group(idOffset+2, accountID, "Western", idOffset+1),    // region level
-                new Group(idOffset+3, accountID, "Eastern", idOffset+1),
-                new Group(idOffset+4, accountID, "Miscellaneous", idOffset+1),     
+                new Group(idOffset+2, accountID, "Western", idOffset+1,GroupType.DIVISION,null,"Western",3,new LatLng(44,-111)),    // region level
+                new Group(idOffset+3, accountID, "Eastern", idOffset+1,GroupType.DIVISION,null,"Eastern Division",3,new LatLng(44,-111)),
+                new Group(idOffset+4, accountID, "Miscellaneous", idOffset+1,GroupType.TEAM,null,"Misc",3,new LatLng(44,-111)),     
                 
-                new Group(idOffset+5, accountID, "Montana", idOffset+2),    // parent Western
-                new Group(idOffset+6, accountID, "Utah", idOffset+2),
-                new Group(idOffset+7, accountID, "Colorado", idOffset+2),
+                new Group(idOffset+5, accountID, "Montana", idOffset+2,GroupType.DIVISION,null,"Montana",3,new LatLng(44,-111)),    // parent Western
+                new Group(idOffset+6, accountID, "Utah", idOffset+2,GroupType.TEAM,null,"Utah",3,new LatLng(44,-111)),
+                new Group(idOffset+7, accountID, "Colorado", idOffset+2, GroupType.TEAM,null,"Colorado State",3,new LatLng(44,-111)),
                 
-                new Group(idOffset+8, accountID, "New York", idOffset+3),   // parent Eastern
-                new Group(idOffset+9, accountID, "Maine", idOffset+3),
+                new Group(idOffset+8, accountID, "New York", idOffset+3,GroupType.DIVISION,null,"New York State",3,new LatLng(44,-111)),   // parent Eastern
+                new Group(idOffset+9, accountID, "Maine", idOffset+3,GroupType.TEAM,null,"Main State",3,new LatLng(44,-111)),
                 
-                new Group(idOffset+10, accountID, "MT Team 1", idOffset+5), // parent Western/Montana
-                new Group(idOffset+11, accountID, "MT Team 2", idOffset+5),
-                new Group(idOffset+12, accountID, "MT Team 3", idOffset+5),
+                new Group(idOffset+10, accountID, "MT Team 1", idOffset+5,GroupType.TEAM,null,"MT Team",3,new LatLng(44,-111)), // parent Western/Montana
+                new Group(idOffset+11, accountID, "MT Team 2", idOffset+5,GroupType.TEAM,null,"MT Team",3,new LatLng(44,-111)),
+                new Group(idOffset+12, accountID, "MT Team 3", idOffset+5,GroupType.TEAM,null,"MT Team",3,new LatLng(44,-111)),
 
-                new Group(idOffset+13, accountID, "NY Team 1", idOffset+8), // parent Eastern/New York
-                new Group(idOffset+14, accountID, "NY Team 2", idOffset+8),
+                new Group(idOffset+13, accountID, "NY Team 1", idOffset+8,GroupType.TEAM,null,"NY Team",3,new LatLng(44,-111)), // parent Eastern/New York
+                new Group(idOffset+14, accountID, "NY Team 2", idOffset+8,GroupType.TEAM,null,"NY Team",3,new LatLng(44,-111)),
 
         };
         

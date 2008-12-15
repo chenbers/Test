@@ -30,24 +30,22 @@
 			<li class="r"><h:panelGroup>
 
 				<a4j:commandLink rendered="#{organizationBean.groupState eq 'ADD'}"
-					action="#{organizationBean.saveGroupNode}"
-					reRender="groupPanel,organizationTreePanel,buttonPanelFooterv">
+					action="#{organizationBean.save}"
+					reRender="groupPanel,organizationTreePanel">
 					<f:param name="state" value="VIEW" />
 					<button value="submit" class="left"><span class="add"><h:outputText
 						value="#{messages.button_create_unit}" /></span></button>
 				</a4j:commandLink>
-				<h:commandLink rendered="#{organizationBean.groupState eq 'EDIT'}"
-					action="#{organizationBean.updateGroupNode}"
-					reRender="groupPanel,organizationTreePanel,buttonPanelFooter">
+				<a4j:commandLink rendered="#{organizationBean.groupState eq 'EDIT'}"
+					action="#{organizationBean.update}"
+					reRender="groupPanel,organizationTreePanel">
 					<f:param name="state" value="VIEW" />
 					<button value="submit" class="left"><span class="add"><h:outputText
 						value="#{messages.button_save}" /></span></button>
-				</h:commandLink>
+				</a4j:commandLink>
 				<a4j:commandLink rendered="#{organizationBean.groupState ne 'VIEW'}"
-					action="#{organizationBean.changeState}"
-					reRender="groupPanel,organizationTreePanel,buttonPanelFooter"
-					immediate="true">
-					<f:param name="state" value="VIEW" />
+					action="#{organizationBean.view}"
+					reRender="groupPanel,organizationTreePanel" immediate="true">
 					<button value="submit" class="left"><span class="cancel"><h:outputText
 						value="#{messages.button_cancel}" /></span></button>
 				</a4j:commandLink>
@@ -55,21 +53,60 @@
 		</ul>
 	</h:panelGroup>
 	<div style="padding-left: 11px">
-	<a4j:commandLink value="Test Validation Messages" action="#{organizationBean.updateGroupNode}" reRender="groupPanel">
-		<f:param name="state" value="VIEW" />
-	</a4j:commandLink>
-
-<table>
+	<rich:messages globalOnly="false" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
+	<table>
 		<tr>
-			<td width="500px" valign="top">
+			<td width="100%" valign="top">
 			<div class="add_section_title"><h:outputFormat
 				value="#{organizationBean.groupState eq 'ADD'? messages.group_add_title:messages.group_edit_title}">
 				<f:param
 					value="#{organizationBean.groupState eq 'ADD'?organizationBean.selectedGroupNode.group.name:groupTreeNode.group.name}" />
 			</h:outputFormat></div>
-			<table width="500px" cellspacing="2" cellpadding="4" border="0"
+			<table width="520px" cellspacing="2" cellpadding="4" border="0"
 				align="center">
-
+				<h:outputText rendered="#{groupTreeNode.group.type ne 'FLEET'}">
+					<tr>
+						<td width="100">#{messages.group_parent_group}</td>
+						<td>
+						<table>
+							<tr>
+								<td><h:selectOneMenu
+									value="#{organizationBean.selectedParentGroup}"
+									id="parent_group" converter="SimpleBeanConverter"
+									required="true" requiredMessage="#{messages.required}">
+									<f:selectItems value="#{organizationBean.parentGroups}" />
+								</h:selectOneMenu></td>
+							</tr>
+							<tr>
+								<td><rich:message for="parent_group"
+									errorClass="field-error" fatalClass="field-error"
+									warnClass="field-warning" infoClass="field-info"
+									styleClass="field-msg" /></td>
+							</tr>
+						</table>
+						</td>
+					</tr>
+					<tr>
+						<td width="100">#{messages.group_group_type}</td>
+						<td>
+						<table>
+							<tr>
+								<td><h:selectOneMenu value="#{groupTreeNode.group.type}"
+									id="group_type" converter="SimpleBeanConverter" required="true"
+									requiredMessage="#{messages.required}">
+									<f:selectItems value="#{organizationBean.groupTypeList}" />
+								</h:selectOneMenu></td>
+							</tr>
+							<tr>
+								<td><rich:message for="group_type" errorClass="field-error"
+									fatalClass="field-error" warnClass="field-warning"
+									infoClass="field-info" styleClass="field-msg" /></td>
+							</tr>
+						</table>
+						</td>
+					</tr>
+					
+				</h:outputText>
 				<tr>
 					<td width="100">#{messages.group_name}</td>
 					<td><h:inputText value="#{groupTreeNode.group.name}"
@@ -84,33 +121,73 @@
 					<td><h:inputTextarea
 						value="#{groupTreeNode.group.description}" style="width:100%" /></td>
 				</tr>
-				<tr>
-					<td width="100">#{messages.group_group_type}</td>
-					<td><h:selectOneMenu value="#{groupTreeNode.group.type}"
-						id="group_type" converter="SimpleBeanConverter" required="true"
-						requiredMessage="#{messages.required}">
-						<f:selectItems value="#{organizationBean.groupTypeList}" />
-					</h:selectOneMenu> <rich:message for="group_type" errorClass="field-error"
-						fatalClass="field-error" warnClass="field-warning"
-						infoClass="field-info" styleClass="field-msg" /></td>
-				</tr>
+				
 				<tr>
 					<td width="100">#{messages.group_manager}</td>
-					<td><h:selectOneMenu id="group_manager"
-						value="#{groupTreeNode.group.managerID}" required="true"
-						requiredMessage="#{messages.required}">
-						<f:selectItems value="#{organizationBean.peopleSelectItems}" />
-					</h:selectOneMenu> <rich:message for="group_manager" errorClass="field-error"
-						fatalClass="field-error" warnClass="field-warning"
-						infoClass="field-info" styleClass="field-msg" /></td>
+					<td>
+					<table>
+						<tr>
+							<td><h:selectOneMenu id="group_manager"
+								value="#{groupTreeNode.group.managerID}" required="true"
+								requiredMessage="#{messages.required}">
+								<f:selectItems value="#{organizationBean.peopleSelectItems}" />
+							</h:selectOneMenu></td>
+						</tr>
+						<tr>
+							<td><rich:message for="group_manager"
+								errorClass="field-error" fatalClass="field-error"
+								warnClass="field-warning" infoClass="field-info"
+								styleClass="field-msg" /></td>
+						</tr>
+					</table>
+					</td>
 				</tr>
 
 			</table>
-
-
 			</td>
 		</tr>
 	</table>
 	</div>
-	
+
+	<div style="padding: 15px">
+	<ui:include src="/includes/admin/groupMapView.xhtml">
+		<ui:param name="latValue" value="#{groupTreeNode.group.mapLat}" />
+		<ui:param name="longValue" value="#{groupTreeNode.group.mapLng}" />
+		<ui:param name="zoomLevel" value="#{groupTreeNode.group.mapZoom}" />
+		<ui:param name="readOnly"
+			value="#{organizationBean.groupState eq 'VIEW'}" />
+		<ui:param name="formName" value="display-form" />
+		<ui:param name="uniqueID" value="EDIT"/>
+	</ui:include></div>
+
+	<h:outputText rendered="#{organizationBean.groupState eq 'EDIT'}">
+
+		<ul id="grid_nav_dark">
+			<li class="r"><h:panelGroup>
+				<a4j:commandLink rendered="#{organizationBean.groupState eq 'ADD'}"
+					action="#{organizationBean.save}"
+					reRender="groupPanel,organizationTreePanel">
+					<f:param name="state" value="VIEW" />
+					<button value="submit" class="left"><span class="add"><h:outputText
+						value="#{messages.button_create_unit}" /></span></button>
+				</a4j:commandLink>
+				<a4j:commandLink rendered="#{organizationBean.groupState eq 'EDIT'}"
+					action="#{organizationBean.update}"
+					reRender="groupPanel,organizationTreePanel">
+					<f:param name="state" value="VIEW" />
+					<button value="submit" class="left"><span class="add"><h:outputText
+						value="#{messages.button_save}" /></span></button>
+				</a4j:commandLink>
+				<a4j:commandLink rendered="#{organizationBean.groupState ne 'VIEW'}"
+					action="#{organizationBean.changeState}"
+					reRender="groupPanel,organizationTreePanel" immediate="true">
+					<f:param name="state" value="VIEW" />
+					<button value="submit" class="left"><span class="cancel"><h:outputText
+						value="#{messages.button_cancel}" /></span></button>
+				</a4j:commandLink>
+			</h:panelGroup></li>
+		</ul>
+
+	</h:outputText>
+
 </ui:composition>

@@ -30,34 +30,36 @@
 			<!-- If mode param is null then the conent from this page is being used and we are in view mode
 														 -->
 			<a4j:commandLink rendered="#{organizationBean.groupState eq 'VIEW'}"
-				action="#{organizationBean.changeState}"
-				reRender="groupPanel,buttonPanelFooter">
-				<f:param name="state" value="EDIT" />
+				action="#{organizationBean.edit}"
+				reRender="groupPanel">
 				<button value="submit" class="left"><span class="edit"><h:outputText
 					value="#{messages.button_edit}" /></span></button>
 			</a4j:commandLink>
 			<a4j:commandLink rendered="#{organizationBean.groupState eq 'VIEW'}"
-				action="#{organizationBean.changeState}"
-				reRender="groupPanel,buttonPanelFooter">
-				<f:param name="state" value="ADD" />
+				action="#{organizationBean.add}"
+				reRender="groupPanel">
 				<button value="submit" class="left"><span class="add"><h:outputText
 					value="#{messages.button_add}" /></span></button>
 			</a4j:commandLink>
 		</h:panelGroup></li>
 	</ul>
 
-	<div style="padding-left: 11px;padding-bottom: 10px">
+	<div style="padding-left: 11px; padding-bottom: 10px">
+	<rich:messages globalOnly="false" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
 	<table>
 		<tr>
 			<td width="500" valign="top">
-			<div class="add_section_title">
-				<h:outputFormat value="#{messages.group_summary_title}">
-					<f:param value="#{organizationBean.selectedGroupNode.group.name}" />
-				</h:outputFormat>
-			</div>
+			<div class="add_section_title"><h:outputFormat
+				value="#{messages.group_summary_title}">
+				<f:param value="#{organizationBean.selectedGroupNode.group.name}" />
+			</h:outputFormat></div>
 			<table width="500" cellspacing="2" cellpadding="4" border="0"
 				align="center">
 				<tbody>
+					<tr>
+						<td width="100">#{messages.group_group_type}</td>
+						<td>#{groupTreeNode.group.type}</td>
+					</tr>
 					<tr>
 						<td width="100">#{messages.group_name}</td>
 						<td>#{groupTreeNode.group.name}</td>
@@ -66,16 +68,14 @@
 						<td width="100">#{messages.group_description}</td>
 						<td>#{groupTreeNode.group.description}</td>
 					</tr>
+
 					
 					<tr>
-						<td width="100">#{messages.group_group_type}</td>
-						<td>#{groupTreeNode.group.type}</td>
-					</tr>
-					<tr>
 						<td width="100">#{messages.group_manager}</td>
-						<td>#{organizationBean.selectedPerson.first} #{organizationBean.selectedPerson.last}</td>
+						<td>#{organizationBean.selectedPerson.first}
+						#{organizationBean.selectedPerson.last}</td>
 					</tr>
-				
+
 					<tr>
 						<td width="100">#{messages.group_number_of_vehicles}</td>
 						<td>#{organizationBean.selectedGroupVehicleCount}</td>
@@ -84,7 +84,7 @@
 						<td width="100">#{messages.group_number_of_drivers}</td>
 						<td>#{organizationBean.selectedGroupDriverCount}</td>
 					</tr>
-				
+
 				</tbody>
 
 			</table>
@@ -92,4 +92,19 @@
 		</tr>
 	</table>
 	</div>
+
+
+	<div style="padding: 15px">
+	<ui:include src="/includes/admin/groupMapView.xhtml">
+		<ui:param name="latValue" value="#{groupTreeNode.group.mapLat}" />
+		<ui:param name="longValue" value="#{groupTreeNode.group.mapLng}" />
+		<ui:param name="zoomLevel" value="#{groupTreeNode.group.mapZoom}" />
+		<ui:param name="readOnly"
+			value="#{organizationBean.groupState eq 'VIEW'}" />
+		<ui:param name="formName" value="display-form" />
+		<ui:param name="uniqueID" value="VIEW"/>
+	</ui:include></div>
+
+
+
 </ui:composition>

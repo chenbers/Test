@@ -89,7 +89,7 @@
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
     </bean>
     
-    <bean id="organizationBean" class="com.inthinc.pro.backing.OrganizationBean" scope="session">
+    <bean id="organizationBean" class="com.inthinc.pro.backing.OrganizationBean" scope="request">
         <property name="groupDAO" ref="groupDAO"></property>
         <property name="personDAO" ref="personDAO"></property>
         <property name="vehicleDAO" ref="vehicleDAO"></property>

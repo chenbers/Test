@@ -16,13 +16,31 @@
 		longValue(Required)
 		zoomLevel(Required)
 		readOnly(required)
-		formName
+		formName(required)
+		uniqueID(optional) I had to add this because I was using the map in different includes. This is optional
 	 -->
-	<h:panelGroup id="mapPanel">
-		<h:outputText
-			rendered="#{organizationBean.selectedGroupNode.group ne null}">
+	<h:panelGroup id="#{uniqueID}-mapPanel">
+		
 			<div class="add_section_title">#{messages.group_default_view}</div>
-			<div style="width: 100%; height: 510px">
+			<div style="width: 100%; height: 100%">
+			<ui:fragment rendered="#{not readOnly}">
+				<table width="100%" border="0" cellpadding="4" cellspacing="0">
+					<tr>
+						<td width="90">#{messages.group_find_address}</td>
+						<td width="301"><input type="text" size="40"
+							id="addressTextBox"
+							value="" /></td>
+						<td width="165">
+						<a4j:commandLink immediate="true" onclick="showAddress(document.getElementById('addressTextBox').value);">
+						<button value="submit" class="left">
+							<span class="search">
+								#{messages.group_locate}
+							</span></button>
+						</a4j:commandLink>
+						</td>
+					</tr>
+				</table>
+			</ui:fragment>
 			<table style="width: 100%" cellpadding="4" border="0" align="center">
 				<tbody>
 					<tr>
@@ -32,53 +50,71 @@
 						<td><h:panelGroup styleClass="map-border" layout="block">
 							<div id="map-canvas"
 								style="width: 500px; height: 500px; border: 0"></div>
-						</h:panelGroup> <script type="text/javascript">	
+							</h:panelGroup> <script type="text/javascript">	
 					
 											    
-		if (GBrowserIsCompatible()) {
-			
-			GUnload();
-				
-	  					
-			map = new GMap2(document.getElementById("map-canvas"));
+							if (GBrowserIsCompatible()) {
+								
+								GUnload();
+									
+						  					
+								map = new GMap2(document.getElementById("map-canvas"));
+										
+								map.addControl(new GMapTypeControl());
+								map.setMapType(G_NORMAL_MAP);
+								map.setCenter(new GLatLng(#{latValue},#{longValue}),#{zoomLevel});
 					
-			map.addControl(new GMapTypeControl());
-			map.setMapType(G_NORMAL_MAP);
-			map.setCenter(new GLatLng(#{latValue},#{longValue}),#{zoomLevel});
-
-			GEvent.addListener(map, "moveend", function() {
-				  var center = map.getCenter();
-				  var zoom = map.getZoom();
-				  updateMapValues(center.lat(),center.lng(),zoom);
-			});
-
-			function updateMapValues(lat,lng,zoom){
-
-				var latField = document.getElementById('#{formName}:latvalue');
-				var longField = document.getElementById('#{formName}:longvalue');
-				var zoomField = document.getElementById('#{formName}:zoomlevel');
-
-				latField.value = lat;
-				longField.value = lng;
-				zoomField.value = zoom;
-			};
-							
-			<h:outputText rendered="#{readOnly}">
-				map.disableDragging();
-				map.disableScrollWheelZoom();
-				map.disableDoubleClickZoom();
-			</h:outputText>
-			<h:outputText rendered="#{not readOnly}">
-				map.enableGoogleBar();
-				map.addControl(new GLargeMapControl());
-			</h:outputText>
+								GEvent.addListener(map, "moveend", function() {
+									  var center = map.getCenter();
+									  var zoom = map.getZoom();
+									  updateMapValues(center.lat(),center.lng(),zoom);
+								});
+					
+								function updateMapValues(lat,lng,zoom){
+					
+									var latField = document.getElementById('#{formName}:#{uniqueID}-latvalue');
+									var longField = document.getElementById('#{formName}:#{uniqueID}-longvalue');
+									var zoomField = document.getElementById('#{formName}:#{uniqueID}-zoomlevel');
+					
+									latField.value = lat;
+									longField.value = lng;
+									zoomField.value = zoom;
+								};
+												
+								<h:outputText rendered="#{readOnly}">
+									map.disableDragging();
+									map.disableScrollWheelZoom();
+									map.disableDoubleClickZoom();
+								</h:outputText>
+								<h:outputText rendered="#{not readOnly}">
+									map.enableGoogleBar();
+									map.addControl(new GLargeMapControl());
+								</h:outputText>
+					
+							}
+					
+							function showAddress(address) {
+								  var geocoder = new GClientGeocoder();
+								
+								  geocoder.getLatLng(
+								    address,
+								    function(point) {
+								      if (!point) {
+								        alert(address + " not found");
+								      } else {
+								        map.setCenter(point, 13);
+								        var marker = new GMarker(point);
+								        map.addOverlay(marker);
+								        marker.openInfoWindowHtml(address);
+								      }
+								    }
+								  );
+								}
+						</script> <h:inputText id="#{uniqueID}-latvalue" style="display:none" value="#{latValue}" />
+						<h:inputText id="#{uniqueID}-longvalue" style="display:none"
+										value="#{longValue}" /> <h:inputText id="#{uniqueID}-zoomlevel"
+										style="display:none" value="#{zoomLevel}" /></td>
 			
-		}
-	</script> <h:inputText id="latvalue" style="display:none" value="#{latValue}" />
-						<h:inputText id="longvalue" style="display:none"
-							value="#{longValue}" /> <h:inputText id="zoomlevel"
-							style="display:none" value="#{zoomLevel}" /></td>
-
 					</tr>
 					<tr>
 						<td></td>
@@ -87,6 +123,6 @@
 
 			</table>
 			</div>
-								</h:outputText>
-								</h:panelGroup>
+	
+	</h:panelGroup>
 </ui:composition>
