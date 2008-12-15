@@ -62,7 +62,7 @@ public class VehicleReportBean extends BaseReportBean
     private Integer end = numRowsPerPg;
     
     private String searchFor = "";
-
+    private String secret = "";
     
     static
     {
@@ -78,25 +78,49 @@ public class VehicleReportBean extends BaseReportBean
         AVAILABLE_COLUMNS.add("style");
     }
     
-    public void init() {   
-        searchFor = checkForRequestMap();
-        
-        vehiclesData = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getPerson().getGroupID());
-        if ( (searchFor != null) && (searchFor.trim().length() != 0) ) 
-        {
-            search();
-        } else {
-            loadResults(vehiclesData);
-        }
-        
-        maxCount = vehicleData.size();
-        resetCounts();
+    public VehicleReportBean()
+    {
+        super();
     }
     
-
+    public void init() 
+    {   
+        searchFor = checkForRequestMap();        
+        vehiclesData = 
+            vehicleDAO.getVehiclesInGroupHierarchy(
+                    getUser().getPerson().getGroupID());
+        
+        //Bean creation could be from Reports selection or
+        //  search on main menu. This accounts for a search
+        //  from the main menu w/ never having been to the 
+        //  Vehicles report page.
+        if ( super.isMainMenu() ) {  
+            checkOnSearch();
+            super.setMainMenu(false);
+        } else {
+            loadResults(this.vehiclesData);
+        }
+    }
+ 
+    
     public List<VehicleReportItem> getVehicleData()
     {        
         return vehicleData;
+    }
+    
+    
+    private void checkOnSearch() 
+    {
+        if ( (searchFor != null) && 
+             (searchFor.trim().length() != 0) ) 
+        {
+            search();
+        } else {
+            loadResults(this.vehiclesData);
+        }
+        
+        maxCount = this.vehicleData.size();        
+        resetCounts();        
     }
 
     public void setDriverData(List<VehicleReportItem> vehicleData)
@@ -104,7 +128,8 @@ public class VehicleReportBean extends BaseReportBean
         this.vehicleData = vehicleData;
     }
     
-    public void search() {             
+    public void search() 
+    {             
         Driver d = new Driver();
         Person p = new Person();
         p.setFirst("Need");
@@ -146,8 +171,12 @@ public class VehicleReportBean extends BaseReportBean
         resetCounts();       
     }
     
-    private void loadResults(List <Vehicle> vehiclesData) 
+    private void loadResults(List <Vehicle> vehicData) 
     {
+        if ( this.vehicleData.size() > 0 ) {
+            this.vehicleData.clear();
+        }
+        
         Vehicle v = null;
         Group g = null;        
         Driver d = new Driver();        
@@ -155,8 +184,8 @@ public class VehicleReportBean extends BaseReportBean
         ScoreableEntity s = null;        
         vrt = new VehicleReportItem();
                 
-        for ( int i = 0; i < vehiclesData.size(); i++ ) {
-            v = vehiclesData.get(i);            
+        for ( int i = 0; i < vehicData.size(); i++ ) {
+            v = vehicData.get(i);            
             
             //Vehicle
             vrt = new VehicleReportItem();
@@ -196,7 +225,8 @@ public class VehicleReportBean extends BaseReportBean
         }     
     }
     
-    private void resetCounts() {
+    private void resetCounts() 
+    {
         this.start = 1;
         
         //None found
@@ -214,7 +244,8 @@ public class VehicleReportBean extends BaseReportBean
         }
     }
     
-    public void saveColumns() {  
+    public void saveColumns() 
+    {  
         //To data store
         TablePreference pref = getTablePref();
         int cnt = 0;
@@ -241,7 +272,8 @@ public class VehicleReportBean extends BaseReportBean
         }       
     }
     
-    public void cancelColumns() {        
+    public void cancelColumns() 
+    {        
         //Update live
         Iterator it = this.vehicleColumns.keySet().iterator();
         while ( it.hasNext() ) {
@@ -456,6 +488,25 @@ public class VehicleReportBean extends BaseReportBean
     public void setTablePreferenceDAO(TablePreferenceDAO tablePreferenceDAO)
     {
         this.tablePreferenceDAO = tablePreferenceDAO;
+    }
+
+    public String getSecret()
+    {
+        searchFor = checkForRequestMap();        
+              
+        if ( super.isMainMenu() ) {  
+            checkOnSearch();
+            super.setMainMenu(false);
+        } else {
+            loadResults(this.vehiclesData);
+        }   
+        
+        return secret;
+    }
+
+    public void setSecret(String secret)
+    {
+        this.secret = secret;
     }
 
 }

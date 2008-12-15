@@ -32,7 +32,10 @@
 									<div class="panel_w">
 									<div class="panel_content">		
 									
-									<a4j:form id="outerVehicleReport">										
+									<a4j:form id="outerVehicleReport">
+									
+										<h:inputHidden value="#{vehicleReportBean.secret}"/>									
+																			
 										<div class="msg">
 											<p id="redflag">
 												<h:outputFormat id="headerRedVehicle" 
