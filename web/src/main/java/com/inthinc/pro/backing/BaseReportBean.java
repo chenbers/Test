@@ -10,10 +10,17 @@ import org.apache.log4j.Logger;
 public class BaseReportBean extends BaseBean
 {
     private static final Logger logger = Logger.getLogger(BaseReportBean.class);
+    
+    private boolean mainMenu;
+    
+    public BaseReportBean(){
+        
+    }
 
     protected String checkForRequestMap()
     {
         String searchFor = null;
+        mainMenu = false;
 
         Map m = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         Iterator imap = m.entrySet().iterator();
@@ -27,10 +34,21 @@ public class BaseReportBean extends BaseBean
 
             //search parm
             if ( key.equalsIgnoreCase("searchFor") ) {              
-                searchFor = value;    
+                searchFor = value;
+                mainMenu = true;
             }
         }
         
         return searchFor;
+    }
+
+    public boolean isMainMenu()
+    {
+        return mainMenu;
+    }
+
+    public void setMainMenu(boolean mainMenu)
+    {
+        this.mainMenu = mainMenu;
     }
 }
