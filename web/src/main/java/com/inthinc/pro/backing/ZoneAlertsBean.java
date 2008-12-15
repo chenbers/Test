@@ -15,7 +15,6 @@ import org.springframework.beans.BeanUtils;
 import com.inthinc.pro.dao.ZoneAlertDAO;
 import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.dao.annotations.Column;
-import com.inthinc.pro.model.BaseAlert;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
@@ -85,29 +84,6 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
         alertView.setZoneDAO(zoneDAO);
         alertView.setSelected(false);
         return alertView;
-    }
-
-    @Override
-    protected boolean matchesFilter(ZoneAlertView alert, String filterWord)
-    {
-        for (final String column : getTableColumns().keySet())
-            if (getTableColumns().get(column).getVisible())
-            {
-                boolean matches = false;
-                try
-                {
-                    matches = String.valueOf(org.apache.commons.beanutils.BeanUtils.getProperty(alert, column.replace('_', '.'))).toLowerCase().startsWith(filterWord);
-                }
-                catch (Exception e)
-                {
-                    logger.error("Error filtering on column " + column, e);
-                }
-
-                if (matches)
-                    return true;
-            }
-
-        return false;
     }
 
     @Override
@@ -303,25 +279,14 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
         public boolean isAnytime()
         {
             if (!anytime)
-                anytime = (getStartTOD() == null) || getStartTOD().equals(getStopTOD());
+                anytime = BaseAdminAlertsBean.isAnytime(this);
             return anytime;
         }
 
         public void setAnytime(boolean anytime)
         {
             this.anytime = anytime;
-            if (anytime)
-            {
-                setStartTOD(null);
-                setStopTOD(null);
-            }
-            else
-            {
-                if (getStartTOD() == null)
-                    setStartTOD(BaseAlert.DEFAULT_START_TOD);
-                if ((getStopTOD() == null) || (getStopTOD() <= getStartTOD()))
-                    setStopTOD(BaseAlert.DEFAULT_STOP_TOD);
-            }
+            BaseAdminAlertsBean.onSetAnytime(this, anytime);
         }
 
         @Override

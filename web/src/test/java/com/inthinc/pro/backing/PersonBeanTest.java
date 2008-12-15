@@ -21,7 +21,7 @@ public class PersonBeanTest extends BaseAdminBeanTest<PersonBean.PersonView>
     }
 
     @Override
-    protected void populate(PersonView editItem)
+    protected void populate(PersonView editItem, BaseAdminBean<PersonBean.PersonView> adminBean)
     {
         editItem.setTimeZone(TimeZone.getTimeZone("UTC"));
         editItem.setCostPerHour(1000);

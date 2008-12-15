@@ -14,6 +14,7 @@ import com.inthinc.pro.backing.ui.ListPicker;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.model.BaseAlert;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
@@ -303,6 +304,27 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     protected void setOldEmailToString(String oldEmailToString)
     {
         this.oldEmailToString = oldEmailToString;
+    }
+
+    protected static boolean isAnytime(BaseAlertView alert)
+    {
+        return (alert.getStartTOD() == null) || alert.getStartTOD().equals(alert.getStopTOD());
+    }
+
+    protected static void onSetAnytime(BaseAlertView alert, boolean anytime)
+    {
+        if (anytime)
+        {
+            alert.setStartTOD(null);
+            alert.setStopTOD(null);
+        }
+        else
+        {
+            if (alert.getStartTOD() == null)
+                alert.setStartTOD(BaseAlert.DEFAULT_START_TOD);
+            if ((alert.getStopTOD() == null) || (alert.getStopTOD() <= alert.getStartTOD()))
+                alert.setStopTOD(BaseAlert.DEFAULT_STOP_TOD);
+        }
     }
 
     public interface BaseAlertView extends EditItem

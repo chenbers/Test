@@ -177,21 +177,12 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
                     matches = (vehicle.getStatus() != null)
                             && ((vehicle.getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("active").toLowerCase().startsWith(filterWord)) || ((!vehicle.getStatus().equals(Status.ACTIVE) && MessageUtil
                                     .getMessageString("inactive").toLowerCase().startsWith(filterWord))));
-                else
-                    try
-                    {
-                        matches = String.valueOf(org.apache.commons.beanutils.BeanUtils.getProperty(vehicle, column.replace('_', '.'))).toLowerCase().startsWith(filterWord);
-                    }
-                    catch (Exception e)
-                    {
-                        logger.error("Error filtering on column " + column, e);
-                    }
 
                 if (matches)
                     return true;
             }
 
-        return false;
+        return super.matchesFilter(vehicle, filterWord);
     }
 
     @Override

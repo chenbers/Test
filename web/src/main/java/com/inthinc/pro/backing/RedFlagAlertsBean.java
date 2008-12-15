@@ -17,7 +17,7 @@ import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.util.MessageUtil;
 
-public class RedFlagAlertsBean extends BaseAdminBean<RedFlagAlertsBean.RedFlagAlertView>
+public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.RedFlagAlertView>
 {
     private static final List<String> AVAILABLE_COLUMNS;
     private static final int[]        DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2 };
@@ -65,29 +65,6 @@ public class RedFlagAlertsBean extends BaseAdminBean<RedFlagAlertsBean.RedFlagAl
         BeanUtils.copyProperties(flag, flagView);
         flagView.setSelected(false);
         return flagView;
-    }
-
-    @Override
-    protected boolean matchesFilter(RedFlagAlertView flag, String filterWord)
-    {
-        for (final String column : getTableColumns().keySet())
-            if (getTableColumns().get(column).getVisible())
-            {
-                boolean matches = false;
-                try
-                {
-                    matches = String.valueOf(org.apache.commons.beanutils.BeanUtils.getProperty(flag, column.replace('_', '.'))).toLowerCase().startsWith(filterWord);
-                }
-                catch (Exception e)
-                {
-                    logger.error("Error filtering on column " + column, e);
-                }
-
-                if (matches)
-                    return true;
-            }
-
-        return false;
     }
 
     @Override
@@ -211,17 +188,32 @@ public class RedFlagAlertsBean extends BaseAdminBean<RedFlagAlertsBean.RedFlagAl
         return "go_adminRedFlags";
     }
 
-    public static class RedFlagAlertView extends RedFlagAlert implements EditItem
+    public static class RedFlagAlertView extends RedFlagAlert implements BaseAdminAlertsBean.BaseAlertView
     {
         @Column(updateable = false)
         private static final long serialVersionUID = 8372507838051791866L;
 
+        @Column(updateable = false)
+        private boolean anytime;
         @Column(updateable = false)
         private boolean           selected;
 
         public Integer getId()
         {
             return getRedFlagAlertID();
+        }
+
+        public boolean isAnytime()
+        {
+            if (!anytime)
+                anytime = BaseAdminAlertsBean.isAnytime(this);
+            return anytime;
+        }
+
+        public void setAnytime(boolean anytime)
+        {
+            this.anytime = anytime;
+            BaseAdminAlertsBean.onSetAnytime(this, anytime);
         }
 
         public boolean isSelected()

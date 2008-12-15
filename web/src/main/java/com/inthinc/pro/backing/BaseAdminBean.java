@@ -1,6 +1,5 @@
 package com.inthinc.pro.backing;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,11 +11,9 @@ import javax.faces.context.FacesContext;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.backing.ui.EditableColumns;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.model.TablePreference;
-import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
 
@@ -25,27 +22,26 @@ import com.inthinc.pro.util.MessageUtil;
  */
 public abstract class BaseAdminBean<T extends EditItem> extends BaseBean implements TablePrefOptions
 {
-    protected static final Logger    logger        = LogManager.getLogger(BaseAdminBean.class);
+    protected static final Logger logger        = LogManager.getLogger(BaseAdminBean.class);
 
-    protected List<T>                items;
-    protected List<T>                filteredItems = new LinkedList<T>();
-    protected String                 filterValue;
-    protected int                    page          = 1;
-    private boolean                  displayed;
-    private T                        item;
-    private boolean                  batchEdit;
-    private Map<String, Boolean>     updateField;
-//    private Map<String, TableColumn> tableColumns;
-    protected TablePreferenceDAO     tablePreferenceDAO;
-    protected TablePreference        tablePreference;
-    
-    private TablePref tablePref;
+    protected List<T>             items;
+    protected List<T>             filteredItems = new LinkedList<T>();
+    protected String              filterValue;
+    protected int                 page          = 1;
+    private boolean               displayed;
+    private T                     item;
+    private boolean               batchEdit;
+    private Map<String, Boolean>  updateField;
+    protected TablePreferenceDAO  tablePreferenceDAO;
+    protected TablePreference     tablePreference;
 
+    private TablePref             tablePref;
 
     public void initBean()
     {
         tablePref = new TablePref(this);
     }
+
     public TablePref getTablePref()
     {
         return tablePref;
@@ -60,7 +56,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     {
         this.tablePreferenceDAO = tablePreferenceDAO;
     }
-    
+
     @Override
     public TablePreferenceDAO getTablePreferenceDAO()
     {
@@ -73,14 +69,16 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         return getUser().getUserID();
     }
 
-    public  Map<String, TableColumn> getTableColumns()
+    public Map<String, TableColumn> getTableColumns()
     {
         return tablePref.getTableColumns();
     }
-    public  void  getTableColumns(Map<String, TableColumn> tableColumns)
+
+    public void getTableColumns(Map<String, TableColumn> tableColumns)
     {
         tablePref.setTableColumns(tableColumns);
     }
+
     /**
      * @return the items
      */
@@ -196,13 +194,33 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     }
 
     /**
+     * Determine whether the given item matches the filter word. The default implementation gets the value of each displayed column as a property from the item, converts the value
+     * to a string, converts it to lowercase, splits it into words and matches the filter word against each word. Override to do more efficient or custom testing.
+     * 
      * @param item
      *            The item to filter in or out of the results.
      * @param filterWord
      *            The lowercase filter word. If there are multiple words in the filter string this method will be called once for each word.
      * @return Whether the item matches the filter string.
      */
-    protected abstract boolean matchesFilter(T item, String filterWord);
+    protected boolean matchesFilter(T item, String filterWord)
+    {
+        for (final String column : getTableColumns().keySet())
+            if (getTableColumns().get(column).getVisible())
+                try
+                {
+                    final String[] words = String.valueOf(org.apache.commons.beanutils.BeanUtils.getProperty(item, column.replace('_', '.'))).toLowerCase().split("\\W+");
+                    for (final String word : words)
+                        if (word.startsWith(filterWord))
+                            return true;
+                }
+                catch (Exception e)
+                {
+                    logger.error("Error filtering on column " + column, e);
+                }
+
+        return false;
+    }
 
     /**
      * @return the current page
@@ -241,85 +259,6 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
      *         <code>true</code>.
      */
     public abstract Map<String, Boolean> getDefaultColumns();
-
-    /**
-     * @return The prefix to prepend to the column name to find the header label in Mesages.properties, e.g. <code>myPage_</code>.
-     */
-//    public abstract String getColumnLabelPrefix();
-
-    /**
-     * @return The TableType for this table, used to load/store preferences.
-     */
-//    public abstract TableType getTableType();
-
-/*    
-    @Override
-    public Map<String, TableColumn> getTableColumns()
-    {
-        if (tableColumns == null)
-        {
-            List<Boolean> visibleList = getTablePreference().getVisible();
-            tableColumns = new HashMap<String, TableColumn>();
-            int cnt = 0;
-            for (String column : getAvailableColumns())
-            {
-                TableColumn tableColumn = new TableColumn(visibleList.get(cnt++), MessageUtil.getMessageString(getColumnLabelPrefix() + column));
-                if (column.equals("clear"))
-                    tableColumn.setCanHide(false);
-
-                tableColumns.put(column, tableColumn);
-            }
-        }
-        return tableColumns;
-    }
-
-    @Override
-    public void setTableColumns(Map<String, TableColumn> tableColumns)
-    {
-        this.tableColumns = tableColumns;
-    }
-
-    /
-    // Called when the user chooses new visible columns.
-    public String saveColumns()
-    {
-        final TablePreference pref = getTablePreference();
-        int cnt = 0;
-        for (String column : getAvailableColumns())
-            pref.getVisible().set(cnt++, tableColumns.get(column).getVisible());
-        tablePreferenceDAO.update(pref);
-        return null;
-    }
-
-    public TablePreference getTablePreference()
-    {
-        if (tablePreference == null)
-        {
-            final List<TablePreference> tablePreferenceList = tablePreferenceDAO.getTablePreferencesByUserID(getUser().getUserID());
-            for (TablePreference pref : tablePreferenceList)
-                if (pref.getTableType().equals(getTableType()))
-                {
-                    tablePreference = pref;
-                    return tablePreference;
-                }
-
-            // create if not found
-            tablePreference = new TablePreference();
-            tablePreference.setUserID(getUser().getUserID());
-            tablePreference.setTableType(getTableType());
-            final List<Boolean> visibleList = new ArrayList<Boolean>();
-            final Map<String, Boolean> defaultColumns = getDefaultColumns();
-            for (final String column : getAvailableColumns())
-            {
-                Boolean visible = defaultColumns.get(column);
-                visibleList.add((visible == null) ? false : visible);
-            }
-            tablePreference.setVisible(visibleList);
-        }
-
-        return tablePreference;
-    }
-*/    
 
     /**
      * Called when the user chooses to display an item.
@@ -431,6 +370,8 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
      */
     public String cancelEdit()
     {
+        item = null;
+
         if (displayed)
             return getDisplayRedirect();
         else

@@ -33,8 +33,10 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
      * 
      * @param editItem
      *            The edit item to populate.
+     * @param adminBean
+     *            The admin bean being tested.
      */
-    protected abstract void populate(T editItem);
+    protected abstract void populate(T editItem, BaseAdminBean<T> adminBean);
 
     /**
      * @return A list of field names to
@@ -82,13 +84,16 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         assertEquals(adminBean.getDefaultColumns().keySet(), getVisibleColumns(adminBean.getTableColumns()));
 
         // add a column
+        boolean added = false;
         for (final String column : adminBean.getAvailableColumns())
             if (!adminBean.getTableColumns().containsKey(column) || !adminBean.getTableColumns().get(column).getVisible())
             {
+                added = true;
                 adminBean.getTableColumns().get(column).setVisible(true);
                 break;
             }
-        assertFalse(adminBean.getDefaultColumns().keySet().equals(getVisibleColumns(adminBean.getTableColumns())));
+        if (added)
+            assertFalse(adminBean.getDefaultColumns().keySet().equals(getVisibleColumns(adminBean.getTableColumns())));
 
         // untested: saveColumns
 
@@ -179,7 +184,7 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         assertTrue(adminBean.isAdd());
 
         // populate
-        populate(adminBean.getItem());
+        populate(adminBean.getItem(), adminBean);
         assertNull(adminBean.getItem().getId());
 
         // save
@@ -219,7 +224,7 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         adminBean.edit();
 
         // populate
-        populate(adminBean.getItem());
+        populate(adminBean.getItem(), adminBean);
 
         // save
         int count = adminBean.getItemCount();
@@ -258,7 +263,7 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         adminBean.batchEdit();
 
         // populate
-        populate(adminBean.getItem());
+        populate(adminBean.getItem(), adminBean);
         for (final String field : getBatchUpdateFields())
             adminBean.getUpdateField().put(field, true);
 
@@ -272,7 +277,8 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
             for (final String field : getBatchUpdateFields())
             {
                 final PropertyDescriptor descriptor = BeanUtils.getPropertyDescriptor(item.getClass(), field);
-                assertEquals(descriptor.getReadMethod().invoke(item, new Object[0]), descriptor.getReadMethod().invoke(adminBean.getItem(), new Object[0]));
+                if (descriptor != null)
+                    assertEquals(descriptor.getReadMethod().invoke(item, new Object[0]), descriptor.getReadMethod().invoke(adminBean.getItem(), new Object[0]));
             }
     }
 

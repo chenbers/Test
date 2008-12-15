@@ -244,21 +244,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
                     matches = (person.getReportsToPerson() != null)
                             && (person.getReportsToPerson().getFirst().toLowerCase().startsWith(filterWord) || person.getReportsToPerson().getLast().toLowerCase().startsWith(
                                     filterWord));
-                else
-                    try
-                    {
-                        matches = String.valueOf(org.apache.commons.beanutils.BeanUtils.getProperty(person, column.replace('_', '.'))).toLowerCase().startsWith(filterWord);
-                    }
-                    catch (Exception e)
-                    {
-                        logger.error("Error filtering on column " + column, e);
-                    }
 
                 if (matches)
                     return true;
             }
 
-        return false;
+        return super.matchesFilter(person, filterWord);
     }
 
     @Override

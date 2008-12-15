@@ -114,21 +114,12 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
                     matches = (device.getVehicle() != null) && (device.getVehicle().getName() != null) && device.getVehicle().getName().toLowerCase().startsWith(filterWord);
                 else if (column.equals("status"))
                     matches = (device.getStatus() != null) && MessageUtil.getMessageString(device.getStatus().getDescription().toLowerCase()).toLowerCase().startsWith(filterWord);
-                else
-                    try
-                    {
-                        matches = String.valueOf(org.apache.commons.beanutils.BeanUtils.getProperty(device, column.replace('_', '.'))).toLowerCase().startsWith(filterWord);
-                    }
-                    catch (Exception e)
-                    {
-                        logger.error("Error filtering on column " + column, e);
-                    }
 
                 if (matches)
                     return true;
             }
 
-        return false;
+        return super.matchesFilter(device, filterWord);
     }
 
     @Override

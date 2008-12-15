@@ -1,7 +1,6 @@
 package com.inthinc.pro.backing;
 
 import com.inthinc.pro.backing.VehiclesBean.VehicleView;
-import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.app.States;
@@ -21,7 +20,7 @@ public class VehiclesBeanTest extends BaseAdminBeanTest<VehiclesBean.VehicleView
     }
 
     @Override
-    protected void populate(VehicleView editItem)
+    protected void populate(VehicleView editItem, BaseAdminBean<VehiclesBean.VehicleView> adminBean)
     {
         editItem.setCostPerHour(1000);
         editItem.setStatus(Status.ACTIVE);
