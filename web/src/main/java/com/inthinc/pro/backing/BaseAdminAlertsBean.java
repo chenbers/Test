@@ -183,6 +183,8 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     @Override
     public String cancelEdit()
     {
+        getAssignPicker().setPicked(getAssignPicked());
+        getPeoplePicker().setPicked(getNotifyPicked());
         getItem().setEmailToString(getOldEmailToString());
         return super.cancelEdit();
     }
