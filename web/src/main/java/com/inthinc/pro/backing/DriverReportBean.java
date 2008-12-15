@@ -32,7 +32,7 @@ import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.TempColumns;
 
-public class DriverReportBean extends BaseReportBean
+public class DriverReportBean extends BaseReportBean   
 {
     private static final Logger logger = Logger.getLogger(DriverReportBean.class);
     
@@ -61,6 +61,7 @@ public class DriverReportBean extends BaseReportBean
     private Integer end = numRowsPerPg;
     
     private String searchFor = "";
+    private String secret = "";
     
     static
     {
@@ -77,60 +78,72 @@ public class DriverReportBean extends BaseReportBean
         AVAILABLE_COLUMNS.add("seatBelt");
     }
     
-    public void init() {  
+    public DriverReportBean() 
+    {
+        super();
+    }
+    
+    public void init() 
+    {          
         searchFor = checkForRequestMap();        
-        driversData = driverDAO.getAllDrivers(getUser().getPerson().getGroupID());
-        checkOnSearch();
+        this.driversData = 
+            driverDAO.getAllDrivers(
+                    getUser().getPerson().getGroupID());
+        
+        //Bean creation could be from Reports selection or
+        //  search on main menu. This accounts for a search
+        //  from the main menu w/ never having been to the 
+        //  Drivers report page.
+        if ( super.isMainMenu() ) {  
+            checkOnSearch();
+            super.setMainMenu(false);
+        } else {
+            loadResults(this.driversData);
+        }
     }
         
 
     public List<DriverReportItem> getDriverData()
-    {      
-        if ( driverData.size() > 0 ) {
-            this.driverData.clear();
-        }
-        
-        searchFor = checkForRequestMap();        
-        checkOnSearch();
-        
-        return driverData;
+    {   
+        return this.driverData;
     }
     
-    private void checkOnSearch() {
-        if ( (searchFor != null) && (searchFor.trim().length() != 0) ) 
+    private void checkOnSearch() 
+    {
+        if ( (searchFor != null) && 
+             (searchFor.trim().length() != 0) ) 
         {
             search();
         } else {
-            loadResults(driversData);
+            loadResults(this.driversData);
         }
         
-        maxCount = driverData.size();        
+        maxCount = this.driverData.size();        
         resetCounts();        
     }
 
-    public void setDriverData(List<DriverReportItem> driverData)
+    public void setDriverData(List<DriverReportItem> drvrData)
     {
-        this.driverData = driverData;
+        this.driverData = drvrData;
     }
     
-    public void search() {     
-        if ( this.driverData.size() > 0 ) {
-            this.driverData.clear();
-        }
-
+    public void search() 
+    {     
         //Search by last name             
         if ( this.searchFor.trim().length() != 0 ) {
             String trimmedSearch = this.searchFor.trim();            
             List <Driver> matchedDrivers = new ArrayList<Driver>();    
             
-            for ( int i = 0; i < driversData.size(); i++ ) {
-                Driver d = driversData.get(i);
+            for ( int i = 0; i < this.driversData.size(); i++ ) {
+                Driver d = this.driversData.get(i);
                 Person p = d.getPerson();
                 
                 //Fuzzy
                 if ( p != null ) {   
-                    String lowerCaseLast = p.getLast().toLowerCase();
-                    int index1 = lowerCaseLast.indexOf(trimmedSearch);                    
+                    String lowerCaseLast = 
+                        p.getLast().toLowerCase();
+                    int index1 = 
+                        lowerCaseLast.indexOf(trimmedSearch);                    
                     if (index1 != -1) {                        
                         matchedDrivers.add(d);
                     }
@@ -139,24 +152,29 @@ public class DriverReportBean extends BaseReportBean
             
             loadResults(matchedDrivers);             
             this.maxCount = matchedDrivers.size();
+            
         //Nothing entered, show them all
         } else {
-            loadResults(driversData);
-            this.maxCount = driversData.size();
+            loadResults(this.driversData);
+            this.maxCount = this.driverData.size();
         }
         
         resetCounts();       
     }
     
-    private void loadResults(List <Driver> driversData)
+    private void loadResults(List <Driver> drvsData)
     {
+        if ( this.driverData.size() > 0 ) {
+            this.driverData.clear();
+        }
+        
         Driver d = null;
         Person p = null;
         ScoreableEntity s = null;
         Group g = null;
        
-        for ( int i = 0; i < driversData.size(); i++ ) {
-            d = driversData.get(i);
+        for ( int i = 0; i < drvsData.size(); i++ ) {
+            d = drvsData.get(i);
             p = d.getPerson();
             
             //Employee and driver
@@ -189,7 +207,7 @@ public class DriverReportBean extends BaseReportBean
             drt.setGroup(g.getName());
             drt.setGroupID(g.getGroupID());
             
-            //Where to go
+            //Where to go **** NOTE: MAKE SURE FACES CONTEXT FOR PATH IS USED
             drt.setGoTo("/tiwipro/secured/team.faces?groupID="+g.getGroupID());
             
             //Needed            
@@ -198,9 +216,13 @@ public class DriverReportBean extends BaseReportBean
             
             driverData.add(drt);            
         }
+        
+        this.maxCount = this.driverData.size();   
+        resetCounts();            
     }
     
-    private void resetCounts() {        
+    private void resetCounts() 
+    {        
         this.start = 1;
         
         //None found
@@ -218,13 +240,14 @@ public class DriverReportBean extends BaseReportBean
         }
     }
     
-    public void saveColumns() {  
+    public void saveColumns() 
+    {  
         //To data store
         TablePreference pref = getTablePref();
         int cnt = 0;
         for (String column : AVAILABLE_COLUMNS)
         {
-            pref.getVisible().set(cnt++, driverColumns.get(column).getVisible());
+            pref.getVisible().set(cnt, driverColumns.get(column).getVisible());
         }
         setTablePref(pref);
         tablePreferenceDAO.update(pref);
@@ -246,7 +269,8 @@ public class DriverReportBean extends BaseReportBean
     }
     
     
-    public void cancelColumns() {        
+    public void cancelColumns() 
+    {        
         //Update live
         Iterator it = this.driverColumns.keySet().iterator();
         while ( it.hasNext() ) {
@@ -267,6 +291,7 @@ public class DriverReportBean extends BaseReportBean
     {
         if (tablePref == null)
         {
+            // TODO: refactor -- could probably keep in a session bean
             List<TablePreference> tablePreferenceList = tablePreferenceDAO.getTablePreferencesByUserID(getUser().getUserID());
             for (TablePreference pref : tablePreferenceList)
             {
@@ -286,9 +311,6 @@ public class DriverReportBean extends BaseReportBean
             }
             tablePref.setVisible(visibleList);
             
-            Integer tablePrefID = getTablePreferenceDAO().create(getUser().getUserID(), tablePref);
-            tablePref.setTablePrefID(tablePrefID);
-            setTablePref(tablePref);
         }
         
         
@@ -326,7 +348,8 @@ public class DriverReportBean extends BaseReportBean
         this.driverColumns = driverColumns;
     }
     
-    private void setStyles() {
+    private void setStyles() 
+    {
         ScoreBox sb = new ScoreBox(0,ScoreBoxSizes.SMALL);  
         
         sb.setScore(drt.getOverallScore());
@@ -356,7 +379,7 @@ public class DriverReportBean extends BaseReportBean
 
     
     public Integer getMaxCount()
-    {
+    {   
         return maxCount;
     }
 
@@ -368,7 +391,7 @@ public class DriverReportBean extends BaseReportBean
 
 
     public Integer getStart()
-    {
+    {   
         return start;
     }
 
@@ -380,7 +403,7 @@ public class DriverReportBean extends BaseReportBean
 
 
     public Integer getEnd()
-    {
+    {   
         return end;
     }
 
@@ -454,6 +477,25 @@ public class DriverReportBean extends BaseReportBean
     public void setTablePreferenceDAO(TablePreferenceDAO tablePreferenceDAO)
     {
         this.tablePreferenceDAO = tablePreferenceDAO;
-    }    
+    }
+
+    public String getSecret()
+    {
+        searchFor = checkForRequestMap();        
+              
+        if ( super.isMainMenu() ) {  
+            checkOnSearch();
+            super.setMainMenu(false);
+        } else {
+            loadResults(this.driversData);
+        }   
+        
+        return secret;
+    }
+
+    public void setSecret(String secret)
+    {
+        this.secret = secret;
+    }
 
 }
