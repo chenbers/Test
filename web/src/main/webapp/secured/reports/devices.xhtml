@@ -34,7 +34,10 @@
 								<div class="panel_w">
 								<div class="panel_content">		
 									
-								<a4j:form id="outerDeviceReport">										
+								<a4j:form id="outerDeviceReport">
+																	
+									<h:inputHidden value="#{deviceReportBean.secret}"/>																	
+																		
 									<div class="msg">
 										<p id="redflag">
 											<h:outputFormat id="headerRedAsset" 

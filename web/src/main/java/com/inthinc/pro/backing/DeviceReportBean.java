@@ -48,6 +48,7 @@ public class DeviceReportBean extends BaseReportBean
     private Integer end = numRowsPerPg;
     
     private String searchFor = "";
+    private String secret = "";
    
     static
     {
@@ -59,6 +60,11 @@ public class DeviceReportBean extends BaseReportBean
         AVAILABLE_COLUMNS.add("phoneNbr");
         AVAILABLE_COLUMNS.add("status");   
         AVAILABLE_COLUMNS.add("emergPhoneNbr");
+    }
+    
+    public DeviceReportBean()
+    {
+        super();
     }
     
     public void init() {
@@ -96,16 +102,17 @@ public class DeviceReportBean extends BaseReportBean
         device.setStatus(DeviceStatus.DELETED);
         device.setEphone("801-324-9817");
         devicesData.add(device);        
-        
-        if ( (searchFor != null) && (searchFor.trim().length() != 0) ) 
-        {
-            search();
+                
+        //Bean creation could be from Reports selection or
+        //  search on main menu. This accounts for a search
+        //  from the main menu w/ never having been to the 
+        //  Devices report page.
+        if ( super.isMainMenu() ) {  
+            checkOnSearch();
+            super.setMainMenu(false);
         } else {
-            loadResults(devicesData);
+            loadResults(this.devicesData);
         }
-        
-        maxCount = deviceData.size();        
-        resetCounts();
     }
         
 
@@ -113,17 +120,27 @@ public class DeviceReportBean extends BaseReportBean
     {             
         return deviceData;
     }
+    
+    private void checkOnSearch() 
+    {
+        if ( (searchFor != null) && 
+             (searchFor.trim().length() != 0) ) 
+        {
+            search();
+        } else {
+            loadResults(this.devicesData);
+        }
+        
+        maxCount = this.deviceData.size();        
+        resetCounts();        
+    }
 
     public void setDeviceData(List<DeviceReportItem> deviceData)
     {
         this.deviceData = deviceData;
     }
     
-    public void search() {     
-        if ( this.deviceData.size() > 0 ) {
-            this.deviceData.clear();
-        }
-                           
+    public void search() {                      
         if ( this.searchFor.trim().length() != 0 ) {
             String trimmedSearch = this.searchFor.trim();            
             List <Device> matchedDevices = new ArrayList<Device>();    
@@ -155,7 +172,11 @@ public class DeviceReportBean extends BaseReportBean
     }
     
     private void loadResults(List <Device> devicesData)
-    {       
+    {     
+        if ( this.deviceData.size() > 0 ) {
+            this.deviceData.clear();
+        }
+ 
         for ( Device a: devicesData ) { 
             drt = new DeviceReportItem();
             drt.setDevice(a);
@@ -374,7 +395,26 @@ public class DeviceReportBean extends BaseReportBean
     public void setTablePreferenceDAO(TablePreferenceDAO tablePreferenceDAO)
     {
         this.tablePreferenceDAO = tablePreferenceDAO;
-    }    
+    }       
+
+    public String getSecret()
+    {
+        searchFor = checkForRequestMap();        
+              
+        if ( super.isMainMenu() ) {  
+            checkOnSearch();
+            super.setMainMenu(false);
+        } else {
+            loadResults(this.devicesData);
+        }   
+        
+        return secret;
+    }
+
+    public void setSecret(String secret)
+    {
+        this.secret = secret;
+    }
 
 }
 
