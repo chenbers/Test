@@ -68,6 +68,7 @@ public class ReportServiceTest
     }
     
     @Test
+    @Ignore
     public void getScores()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
