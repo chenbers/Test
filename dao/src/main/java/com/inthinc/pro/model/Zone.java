@@ -16,10 +16,25 @@ public class Zone extends BaseEntity
     private Integer           zoneID;
     @Column(name = "acctID")
     private Integer           accountID;
+    private Status            status;
     private String            name;
     private String            address;
-    @Column(type = LatLng.class)
+    @Column(name = "latLng", type = LatLng.class)
     private List<LatLng>      points;
+    
+    public Zone()
+    {
+        super();
+    }
+    public Zone(Integer zoneID, Integer accountID, Status status, String name, String address)
+    {
+        super();
+        this.zoneID = zoneID;
+        this.accountID = accountID;
+        this.status = status;
+        this.name = name;
+        this.address = address;
+    }
 
     public Integer getZoneID()
     {
@@ -109,5 +124,16 @@ public class Zone extends BaseEntity
                 points.add(new LatLng(lat, lng));
             }
         }
+    }
+
+
+    public Status getStatus()
+    {
+        return status;
+    }
+
+    public void setStatus(Status status)
+    {
+        this.status = status;
     }
 }

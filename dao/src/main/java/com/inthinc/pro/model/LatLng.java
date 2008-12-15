@@ -2,12 +2,16 @@ package com.inthinc.pro.model;
 
 import java.io.Serializable;
 
+import com.inthinc.pro.dao.annotations.Column;
+
 public class LatLng implements Serializable
 {
 	/**
 	 * 
 	 */
+    @Column(updateable = false)
 	private static final long serialVersionUID = 1L;
+    
 	private double lat;
 	private double lng;
 	public LatLng()

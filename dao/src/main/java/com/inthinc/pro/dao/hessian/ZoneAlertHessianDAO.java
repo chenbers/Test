@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.inthinc.pro.dao.ZoneAlertDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
+import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.model.ZoneAlert;
 
 public class ZoneAlertHessianDAO extends GenericHessianDAO<ZoneAlert, Integer> implements ZoneAlertDAO
@@ -20,6 +21,15 @@ public class ZoneAlertHessianDAO extends GenericHessianDAO<ZoneAlert, Integer> i
         {
             return Collections.emptyList();
         }
+        // TODO: remove once this is implemented on the back end
+        catch (ProxyException e)
+        {
+            if (e.getErrorCode() == 422)
+                return Collections.emptyList();
+            else
+                throw e;
+        }
+        
     }
 
     @Override

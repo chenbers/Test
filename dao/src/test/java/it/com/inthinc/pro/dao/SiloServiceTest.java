@@ -34,6 +34,7 @@ import com.inthinc.pro.dao.hessian.TimeZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.TripHessianDAO;
 import com.inthinc.pro.dao.hessian.UserHessianDAO;
 import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
+import com.inthinc.pro.dao.hessian.ZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEntryException;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateIMEIException;
 import com.inthinc.pro.dao.hessian.extension.HessianDebug;
@@ -66,6 +67,7 @@ import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
+import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.app.Roles;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.app.SupportedTimeZones;
@@ -110,7 +112,7 @@ public class SiloServiceTest
         siloService = new SiloServiceCreator(host, port).getService();
 //        HessianDebug.debugIn = true;
 //        HessianDebug.debugOut = true;
-//        HessianDebug.debugRequest = true;
+        HessianDebug.debugRequest = true;
         
         initApp();
         
@@ -289,6 +291,9 @@ public class SiloServiceTest
         Integer acctID = account.getAcctID();
         groupHierarchy(acctID);
         
+        // zones
+        zones(acctID);
+        
         // devices
         devices(acctID);
         
@@ -323,6 +328,50 @@ public class SiloServiceTest
         find();
     }
 
+
+    private void zones(Integer acctID)
+    {
+/*
+ * TODO
+        ZoneHessianDAO zoneDAO = new ZoneHessianDAO();
+        zoneDAO.setSiloService(siloService);
+        
+        Zone zone = new Zone(0, acctID, Status.ACTIVE, "Zone 1", "123 Street, Salt Lake City, UT 84107");
+        List<LatLng> points = new ArrayList<LatLng>();
+        points.add( new LatLng(40.723871753812f, -111.92932452647742f));
+        points.add( new LatLng(40.704246f, -111.948613f));
+        points.add( new LatLng(40.723871753812f, -111.92932452647742f));
+        zone.setPoints(points);
+
+        // create
+        Integer zoneID = zoneDAO.create(acctID, zone);
+        assertNotNull(zoneID);
+        zone.setZoneID(zoneID);
+        
+        // find
+        String ignoreFields[] = {"modified"};
+//        HessianDebug.debugOut = true;
+        Zone returnedZone = zoneDAO.findByID(zoneID);
+//        HessianDebug.debugOut = false;
+        Util.compareObjects(zone, returnedZone, ignoreFields);
+        
+        // update
+        zone.setName("Mod Zone 1");
+        zone.setAddress("123 Street, Salt Lake City, UT 84107");
+        points = new ArrayList<LatLng>();
+        points.add( new LatLng(40.723871753812f, -111.92932452647742f));
+        points.add( new LatLng(40.704246f, -111.948613f));
+        points.add( new LatLng(40.71f, -111.93f));
+        points.add( new LatLng(40.723871753812f, -111.92932452647742f));
+        zone.setPoints(points);
+        
+        
+        // find/compare after update
+        returnedZone = zoneDAO.findByID(zoneID);
+        Util.compareObjects(zone, returnedZone);
+ */        
+        
+    }
 
     private void account()
     {
