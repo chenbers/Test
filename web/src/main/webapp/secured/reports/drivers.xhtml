@@ -33,7 +33,10 @@
 									<div class="panel_w">
 									<div class="panel_content">		
 									
-									<a4j:form id="outerDriverReport">										
+									<a4j:form id="outerDriverReport">	
+									
+										<h:inputHidden value="#{driverReportBean.secret}"/>
+																		
 										<div class="msg">
 											<p id="redflag">
 												<h:outputFormat id="headerRedDriver" 
