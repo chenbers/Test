@@ -49,6 +49,8 @@ public class IdlingReportBean extends BaseReportBean
     private Integer end = numRowsPerPg;
     
     private String searchFor = "";
+    private String secret = "";
+    
     private Date startDate = new Date();
     private Date endDate = new Date();
     private Date defaultStartDate = new Date();
@@ -78,7 +80,13 @@ public class IdlingReportBean extends BaseReportBean
         AVAILABLE_COLUMNS.add("totalpercent");
     }
     
-    public void init() {   
+    public IdlingReportBean()
+    {
+        super();
+    }
+    
+    public void init() 
+    {   
         searchFor = checkForRequestMap();
         
         // end initialized to today, start
@@ -148,15 +156,17 @@ public class IdlingReportBean extends BaseReportBean
             iri = new IdlingReportItem();
         }
                 
-        if ( (searchFor != null) && (searchFor.trim().length() != 0) ) 
-        {
-            search();
+        
+        //Bean creation could be from Reports selection or
+        //  search on main menu. This accounts for a search
+        //  from the main menu w/ never having been to the 
+        //  Idlings report page.
+        if ( super.isMainMenu() ) {  
+            checkOnSearch();
+            super.setMainMenu(false);
         } else {
-            loadResults(idlingsData);
+            loadResults(this.idlingsData);
         }
-
-        maxCount = idlingsData.size();
-        resetCounts();
     }
     
 
@@ -165,18 +175,27 @@ public class IdlingReportBean extends BaseReportBean
         return idlingData;
         
     }
+    
+    private void checkOnSearch() 
+    {
+        if ( (searchFor != null) && 
+             (searchFor.trim().length() != 0) ) 
+        {
+            search();
+        } else {
+            loadResults(this.idlingsData);
+        }
+        
+        maxCount = this.idlingData.size();        
+        resetCounts();        
+    }
 
     public void setIdlingData(List<IdlingReportItem> idlingData)
     {
         this.idlingData = idlingData;
     }
     
-    public void search() {             
-        
-        if ( this.idlingData.size() > 0 ) {
-            this.idlingData.clear();
-        }  
-        
+    public void search() {                      
         // TODO: Always hit the database, no matter what, too much data to hold,
         // watch for date range as well....
         String name = this.searchFor.trim();
@@ -245,6 +264,10 @@ public class IdlingReportBean extends BaseReportBean
     
     private void loadResults(List <IdlingReportItem> idlingsData) 
     {     
+        if ( this.idlingData.size() > 0 ) {
+            this.idlingData.clear();
+        }
+                
         iri = new IdlingReportItem();
                 
         for ( int i = 0; i < idlingsData.size(); i++ ) {
@@ -545,6 +568,26 @@ public class IdlingReportBean extends BaseReportBean
     public void setBadDates(String badDates)
     {
         this.badDates = badDates;
+    }
+    
+    
+    public String getSecret()
+    {
+        searchFor = checkForRequestMap();        
+              
+        if ( super.isMainMenu() ) {  
+            checkOnSearch();
+            super.setMainMenu(false);
+        } else {
+            loadResults(this.idlingsData);
+        }   
+        
+        return secret;
+    }
+
+    public void setSecret(String secret)
+    {
+        this.secret = secret;
     }
 }
 
