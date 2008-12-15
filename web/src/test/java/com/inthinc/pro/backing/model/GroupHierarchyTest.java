@@ -84,7 +84,7 @@ public class GroupHierarchyTest{
 
 		Group topGroup = groupHierarchy.getTopGroup();
 		assertEquals(groupHierarchy.getGroupLevel(topGroup.getGroupID()),GroupLevel.FLEET);
-		assertEquals(groupHierarchy.getGroupLevel(groupHierarchy.getGroupList().get(1).getGroupID()),GroupLevel.REGION);
+		assertEquals(groupHierarchy.getGroupLevel(groupHierarchy.getGroupList().get(1).getGroupID()),GroupLevel.DIVISION);
 		assertEquals(groupHierarchy.getGroupLevel(groupHierarchy.getGroupList().get(6).getGroupID()),GroupLevel.TEAM);
 	}
 
@@ -101,7 +101,7 @@ public class GroupHierarchyTest{
 	public void testGetGroupLevelGroup() {
 		Group topGroup = groupHierarchy.getTopGroup();
 		assertEquals(groupHierarchy.getGroupLevel(topGroup),GroupLevel.FLEET);
-		assertEquals(groupHierarchy.getGroupLevel(groupHierarchy.getGroupList().get(1)),GroupLevel.REGION);
+		assertEquals(groupHierarchy.getGroupLevel(groupHierarchy.getGroupList().get(1)),GroupLevel.DIVISION);
 		assertEquals(groupHierarchy.getGroupLevel(groupHierarchy.getGroupList().get(6)),GroupLevel.TEAM);
 	}
 

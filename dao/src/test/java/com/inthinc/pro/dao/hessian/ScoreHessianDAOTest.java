@@ -54,7 +54,7 @@ public class ScoreHessianDAOTest
     public void getScores()
     {
 
-        Integer testGroupID = MockData.REGION_GROUP_ID;
+        Integer testGroupID = MockData.DIVISION_GROUP_ID;
         SearchCriteria searchCriteria = new SearchCriteria();
         searchCriteria.addKeyValue("parentID",testGroupID);
         int totalChildGroups = MockData.getInstance().retrieveObjectList(Group.class, searchCriteria).size();
@@ -78,7 +78,7 @@ public class ScoreHessianDAOTest
     @Test
     public void getPercentScores()
     {
-        Integer testGroupID = MockData.REGION_GROUP_ID;
+        Integer testGroupID = MockData.DIVISION_GROUP_ID;
         List<ScoreableEntity> scoreList = scoreHessianDAO.getScoreBreakdown(testGroupID, Duration.DAYS, ScoreType.SCORE_OVERALL);
 
         assertNotNull(scoreList);

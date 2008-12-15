@@ -282,7 +282,7 @@ public class GroupTreeNode extends SwingTreeNodeImpl implements Serializable{
 				GroupLevel groupLevel = groupHierarchyUtil.getGroupLevel(group);
 				switch(groupLevel){
 					case FLEET: treeNodeType = TreeNodeType.FLEET; break;
-					case REGION: treeNodeType = TreeNodeType.DIVISION;break;
+					case DIVISION: treeNodeType = TreeNodeType.DIVISION;break;
 					case TEAM: treeNodeType = TreeNodeType.TEAM;break;
 				}
 			}else if(vehicle != null){

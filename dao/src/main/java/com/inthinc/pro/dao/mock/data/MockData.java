@@ -66,7 +66,7 @@ public class MockData
     // used for unit testing
     public static final Integer TOP_ACCOUNT_ID = 1; 
     public static final Integer TOP_GROUP_ID = 101; 
-    public static final Integer REGION_GROUP_ID = 102;
+    public static final Integer DIVISION_GROUP_ID = 102;
     public static final Integer EMPTY_GROUP_ID = 1;
     
     // if using the unit test group id in unit test, these counters can be used

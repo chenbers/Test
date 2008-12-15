@@ -87,7 +87,7 @@ public class GroupHierarchy implements Serializable
         }
         
         
-        return GroupLevel.REGION;
+        return GroupLevel.DIVISION;
         
     }
     
