@@ -48,7 +48,7 @@
         <div class="popupactions">
           <button value="submit" class="left" onclick="Richfaces.hideModalPanel('editColumns'); return false;"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button>
           <a4j:commandLink 
-          				action="#{bean.saveColumns}"         				
+          				action="#{bean.tablePref.saveColumns}"         				
           				oncomplete="Richfaces.hideModalPanel('editColumns')" 
           				reRender="#{reRender}">
           				<button value="submit" class="left">

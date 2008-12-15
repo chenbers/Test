@@ -23,7 +23,7 @@ import com.inthinc.pro.util.MessageUtil;
 /**
  * @author David Gileadi
  */
-public abstract class BaseAdminBean<T extends EditItem> extends BaseBean implements EditableColumns
+public abstract class BaseAdminBean<T extends EditItem> extends BaseBean implements TablePrefOptions
 {
     protected static final Logger    logger        = LogManager.getLogger(BaseAdminBean.class);
 
@@ -35,15 +35,52 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     private T                        item;
     private boolean                  batchEdit;
     private Map<String, Boolean>     updateField;
-    private Map<String, TableColumn> tableColumns;
+//    private Map<String, TableColumn> tableColumns;
     protected TablePreferenceDAO     tablePreferenceDAO;
     protected TablePreference        tablePreference;
+    
+    private TablePref tablePref;
+
+
+    public void initBean()
+    {
+        tablePref = new TablePref(this);
+    }
+    public TablePref getTablePref()
+    {
+        return tablePref;
+    }
+
+    public void setTablePref(TablePref tablePref)
+    {
+        this.tablePref = tablePref;
+    }
 
     public void setTablePreferenceDAO(TablePreferenceDAO tablePreferenceDAO)
     {
         this.tablePreferenceDAO = tablePreferenceDAO;
     }
+    
+    @Override
+    public TablePreferenceDAO getTablePreferenceDAO()
+    {
+        return tablePreferenceDAO;
+    }
 
+    @Override
+    public Integer getUserID()
+    {
+        return getUser().getUserID();
+    }
+
+    public  Map<String, TableColumn> getTableColumns()
+    {
+        return tablePref.getTableColumns();
+    }
+    public  void  getTableColumns(Map<String, TableColumn> tableColumns)
+    {
+        tablePref.setTableColumns(tableColumns);
+    }
     /**
      * @return the items
      */
@@ -208,13 +245,14 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     /**
      * @return The prefix to prepend to the column name to find the header label in Mesages.properties, e.g. <code>myPage_</code>.
      */
-    public abstract String getColumnLabelPrefix();
+//    public abstract String getColumnLabelPrefix();
 
     /**
      * @return The TableType for this table, used to load/store preferences.
      */
-    public abstract TableType getTableType();
+//    public abstract TableType getTableType();
 
+/*    
     @Override
     public Map<String, TableColumn> getTableColumns()
     {
@@ -241,9 +279,8 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         this.tableColumns = tableColumns;
     }
 
-    /**
-     * Called when the user chooses new visible columns.
-     */
+    /
+    // Called when the user chooses new visible columns.
     public String saveColumns()
     {
         final TablePreference pref = getTablePreference();
@@ -282,6 +319,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
 
         return tablePreference;
     }
+*/    
 
     /**
      * Called when the user chooses to display an item.

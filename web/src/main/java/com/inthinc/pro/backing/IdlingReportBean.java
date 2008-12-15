@@ -277,7 +277,7 @@ public class IdlingReportBean extends BaseReportBean
         int cnt = 0;
         for (String column : AVAILABLE_COLUMNS)
         {
-            pref.getVisible().set(cnt, idlingColumns.get(column).getVisible());
+            pref.getVisible().set(cnt++, idlingColumns.get(column).getVisible());
         }
         setTablePref(pref);
         tablePreferenceDAO.update(pref);
@@ -323,7 +323,7 @@ public class IdlingReportBean extends BaseReportBean
             List<TablePreference> tablePreferenceList = tablePreferenceDAO.getTablePreferencesByUserID(getUser().getUserID());
             for (TablePreference pref : tablePreferenceList)
             {
-                if (pref.getTableType().equals(TableType.VEHICLE_REPORT))
+                if (pref.getTableType().equals(TableType.IDLING_REPORT))
                 {
                     setTablePref(pref);
                     return tablePref;
@@ -331,13 +331,17 @@ public class IdlingReportBean extends BaseReportBean
             }
             tablePref = new TablePreference();
             tablePref.setUserID(getUser().getUserID());
-            tablePref.setTableType(TableType.VEHICLE_REPORT);
+            tablePref.setTableType(TableType.IDLING_REPORT);
             List<Boolean>visibleList = new ArrayList<Boolean>();
             for (String column : AVAILABLE_COLUMNS)
             {
                 visibleList.add(new Boolean(true));
             }
             tablePref.setVisible(visibleList);
+            
+            Integer tablePrefID = getTablePreferenceDAO().create(getUser().getUserID(), tablePref);
+            tablePref.setTablePrefID(tablePrefID);
+            setTablePref(tablePref);
             
         }
         

@@ -220,7 +220,7 @@ public class VehicleReportBean extends BaseReportBean
         int cnt = 0;
         for (String column : AVAILABLE_COLUMNS)
         {
-            pref.getVisible().set(cnt, vehicleColumns.get(column).getVisible());
+            pref.getVisible().set(cnt++, vehicleColumns.get(column).getVisible());
         }
         setTablePref(pref);
         tablePreferenceDAO.update(pref);
@@ -262,7 +262,7 @@ public class VehicleReportBean extends BaseReportBean
     {
         if (tablePref == null)
         {
-            // TODO: refactor -- could probably keep in a session bean
+
             List<TablePreference> tablePreferenceList = tablePreferenceDAO.getTablePreferencesByUserID(getUser().getUserID());
             for (TablePreference pref : tablePreferenceList)
             {
@@ -281,6 +281,10 @@ public class VehicleReportBean extends BaseReportBean
                 visibleList.add(new Boolean(true));
             }
             tablePref.setVisible(visibleList);
+            Integer tablePrefID = getTablePreferenceDAO().create(getUser().getUserID(), tablePref);
+            tablePref.setTablePrefID(tablePrefID);
+            setTablePref(tablePref);
+            
             
         }
         

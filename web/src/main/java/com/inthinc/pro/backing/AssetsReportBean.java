@@ -171,7 +171,7 @@ public class AssetsReportBean extends BaseBean
         int cnt = 0;
         for (String column : AVAILABLE_COLUMNS)
         {
-            pref.getVisible().set(cnt, 
+            pref.getVisible().set(cnt++, 
                     assetColumns.get(column).getVisible());
         }
         setTablePref(pref);
@@ -235,7 +235,10 @@ public class AssetsReportBean extends BaseBean
                 visibleList.add(new Boolean(true));
             }
             tablePref.setVisible(visibleList);
-            
+            Integer tablePrefID = getTablePreferenceDAO().create(getUser().getUserID(), tablePref);
+            tablePref.setTablePrefID(tablePrefID);
+            setTablePref(tablePref);
+
         }
         
         

@@ -383,4 +383,5 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             this.selected = selected;
         }
     }
+
 }

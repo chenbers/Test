@@ -110,7 +110,7 @@ public class SiloServiceTest
         siloService = new SiloServiceCreator(host, port).getService();
 //        HessianDebug.debugIn = true;
 //        HessianDebug.debugOut = true;
-        HessianDebug.debugRequest = true;
+//        HessianDebug.debugRequest = true;
         
         initApp();
         
@@ -847,7 +847,7 @@ logger.debug("Persons GroupID: " + groupID);
         
         tablePrefList = tablePreferenceDAO.getTablePreferencesByUserID(userID);
         assertEquals("1 table preferences should exist", 1, tablePrefList.size());
-        Util.compareObjects(tablePref, returnedTablePref, ignoreFields);
+        Util.compareObjects(tablePref, tablePrefList.get(0), ignoreFields);
     }
 
 

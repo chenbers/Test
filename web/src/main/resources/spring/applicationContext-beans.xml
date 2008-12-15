@@ -20,7 +20,6 @@
     <!-- Navigation bean -->
     <bean id="navigationBean" class="com.inthinc.pro.backing.NavigationBean" scope="session" parent="baseBean"></bean>
     
-    
    
    <!-- Forgot username/password Beans -->
     <bean id="mailSenderBean" class="org.springframework.mail.javamail.JavaMailSenderImpl">
@@ -68,14 +67,14 @@
         <property name="groupDAO" ref="groupDAO"></property>
     </bean>
     
-    <bean id="personBean" class="com.inthinc.pro.backing.PersonBean" scope="session">
+    <bean id="personBean" class="com.inthinc.pro.backing.PersonBean" scope="session" init-method="initBean">
         <property name="personDAO" ref="personDAO"></property>
         <property name="groupDAO" ref="groupDAO"></property>
         <property name="passwordEncryptor" ref="jasyptPasswordEncryptor"></property>
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
     </bean>
 
-    <bean id="vehiclesBean" class="com.inthinc.pro.backing.VehiclesBean" scope="session">
+    <bean id="vehiclesBean" class="com.inthinc.pro.backing.VehiclesBean" scope="session" init-method="initBean">
         <property name="vehicleDAO" ref="vehicleDAO"></property>
         <property name="driverDAO" ref="driverDAO"></property>
         <property name="deviceDAO" ref="deviceDAO"></property>
@@ -83,7 +82,7 @@
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
     </bean>
 
-    <bean id="devicesBean" class="com.inthinc.pro.backing.DevicesBean" scope="session">
+    <bean id="devicesBean" class="com.inthinc.pro.backing.DevicesBean" scope="session" init-method="initBean">
         <property name="deviceDAO" ref="deviceDAO"></property>
         <property name="vehicleDAO" ref="vehicleDAO"></property>
         <property name="vehiclesBean" ref="vehiclesBean"></property>
@@ -198,7 +197,7 @@
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
     </bean>
     <bean id="vehicleReportTable" class="com.inthinc.pro.backing.ui.VehicleReportTable" scope="session"></bean>
-    <bean id="redFlagsBean" class="com.inthinc.pro.backing.RedFlagsBean" scope="session" parent="baseBean">
+    <bean id="redFlagsBean" class="com.inthinc.pro.backing.RedFlagsBean" scope="session" parent="baseBean" init-method="initBean">
         <property name="redFlagDAO" ref="redFlagDAO"></property>
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
     </bean>

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -16,12 +15,10 @@ import org.richfaces.event.DataScrollerEvent;
 
 import com.inthinc.pro.backing.ui.RedFlagReportItem;
 import com.inthinc.pro.backing.ui.TableColumn;
-import com.inthinc.pro.dao.RedFlagDAO;
 import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.mock.data.UnitTestStats;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
-import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.TableType;
 
@@ -82,7 +79,7 @@ public class RedFlagsBeanTest extends BaseBeanTest
         assertEquals(size-1, tableData.size());
         
         // table Preferences
-        TablePreference tablePref = redFlagsBean.getRedFlagTablePref();
+        TablePreference tablePref = redFlagsBean.getTablePref().getTablePreference();
         assertEquals(TableType.RED_FLAG, tablePref.getTableType());
         int cnt = 0;
         for (Boolean visible : tablePref.getVisible())
