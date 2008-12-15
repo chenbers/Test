@@ -69,10 +69,11 @@
                               <h:outputText value="#{messages.editZoneAlert_zone}" />
                             </td>
                             <td>
-                              <h:selectOneMenu id="zoneID" value="#{zoneAlertsBean.item.zoneID}">
+                              <h:selectOneMenu id="zoneID" value="#{zoneAlertsBean.item.zoneID}" required="#{(not zoneAlertsBean.batchEdit) or zoneAlertsBean.updateField['zoneID']}" requiredMessage="#{messages.required}">
                                 <a4j:support event="onchange" reRender="zonePoints" limitToList="true" ajaxSingle="true" onsubmit="checkMultiple(this)" oncomplete="showZone()"/>
                                 <f:selectItems value="#{zoneAlertsBean.zones}" />
                               </h:selectOneMenu>
+                              <rich:message for="zoneID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             </td>
                           </tr>
                         </table>
