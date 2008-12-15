@@ -22,9 +22,11 @@ import com.inthinc.pro.dao.mock.data.TempConversionUtil;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagAlert;
@@ -50,7 +52,6 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
             throw new EmptyResultSetException(emptyResultSetMsg, methodName, 0);
         }
         return returnMap;
-
     }
 
     private Map<String, Object> createReturnValue(String key, Integer value)
@@ -635,6 +636,39 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
 
         return returnList;
     }
+    
+    @Override
+    public List<Map<String, Object>> getDriversNearLoc(Integer groupID, Integer numof, Double lat, Double lng)
+    {
+        Group group = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
+        List<Driver> drivers = getAllDriversInGroup(group);
+        
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+
+        int count = 0;
+        for (Driver driver : drivers)
+        {
+            if(count == numof) break;
+            
+            DriverLocation dl = new DriverLocation();
+            dl.setDriverID(driver.getDriverID());
+            dl.setGroupID(driver.getPerson().getGroupID());
+            dl.setHomePhone(driver.getPerson().getHomePhone());
+            dl.setWorkPhone(driver.getPerson().getWorkPhone());
+            dl.setName(driver.getPerson().getFirst() + " " + driver.getPerson().getLast());
+            
+            SearchCriteria searchCriteria = new SearchCriteria();
+            searchCriteria.addKeyValue("driverID", driver.getDriverID());
+
+            LastLocation l = MockData.getInstance().retrieveObject(LastLocation.class, searchCriteria);
+            dl.setLoc(new LatLng(l.getLat(), l.getLng()));
+
+            returnList.add(TempConversionUtil.createMapFromObject(dl, true));
+            count++;
+        }
+
+        return returnList;
+    }
 
     @Override
     public Map<String, Object> deleteDriver(Integer driverID) throws ProDAOException
@@ -1034,5 +1068,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
 
         return returnList;
     }
+
+
 
 }

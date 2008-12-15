@@ -9,6 +9,7 @@ import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.LatLng;
@@ -23,11 +24,10 @@ public class LiveFleetBean extends BaseBean
     private LatLng                       addressLatLng = null;
     private Integer                      addressZoom;
 
-    private Integer                      maxCount      = 100;
-    private Double                       maxRadius     = 300.00D;
+    private Integer                      maxCount      = 10;
     private Integer                      driverPager   = 1;
 
-    private List<DriverLastLocationBean> drivers       = new ArrayList<DriverLastLocationBean>();
+    private List<DriverLocation> drivers       = new ArrayList<DriverLocation>();
 
     private GroupHierarchy               organizationHierarchy;
 
@@ -40,35 +40,10 @@ public class LiveFleetBean extends BaseBean
     
     public void initDrivers()
     {
-        
         Group fleetGroup = organizationHierarchy.getTopGroup();
-
-        List<Driver> tempDrivers = driverDAO.getAllDrivers(fleetGroup.getGroupID()); // Replace with GetAllDriversNear(LatLng)
-
-        for (Driver d : tempDrivers)
-        {
-            LastLocation last = driverDAO.getLastLocation(d.getDriverID());
-
-            DriverLastLocationBean driverLast = new DriverLastLocationBean();
-            driverLast.setLastLocation(new LatLng(last.getLat(), last.getLng()));
-            driverLast.setDriver(d);
-            driverLast.setDriverName(d.getPerson().getFirst() + " " + d.getPerson().getLast());
-
-            drivers.add(driverLast);
-        }
+        drivers = driverDAO.getDriversNearLoc(fleetGroup.getGroupID(), maxCount, addressLatLng.getLat(), addressLatLng.getLng());
     }
     
-    //DRIVER LIST PROPERTIES
-    public List<DriverLastLocationBean> getDrivers()
-    {
-        initDrivers();
-        return drivers;
-    }
-    public void setDrivers(List<DriverLastLocationBean> drivers)
-    {
-        this.drivers = drivers;
-    }
-
     //DAO PROPERTIES
     public GroupDAO getGroupDAO()
     {
@@ -85,16 +60,6 @@ public class LiveFleetBean extends BaseBean
     public void setDriverDAO(DriverDAO driverDAO)
     {
         this.driverDAO = driverDAO;
-    }
-
-    //RADIUS PROPERTIES
-    public Double getMaxRadius()
-    {
-        return maxRadius;
-    }
-    public void setMaxRadius(Double maxRadius)
-    {
-        this.maxRadius = maxRadius;
     }
 
     //DRIVER PAGER PROPERTIES
@@ -137,4 +102,24 @@ public class LiveFleetBean extends BaseBean
         this.navigation = navigation;
     }
 
+    //MAX DRIVERS COUNT PROPERTIES
+    public Integer getMaxCount()
+    {
+        return maxCount;
+    }
+    public void setMaxCount(Integer maxCount)
+    {
+        this.maxCount = maxCount;
+    }
+
+    // DRIVER LAST LOCATION PROPERTIES
+    public List<DriverLocation> getDrivers()
+    {
+        initDrivers();
+        return drivers;
+    }
+    public void setDrivers(List<DriverLocation> drivers)
+    {
+        this.drivers = drivers;
+    }
 }
