@@ -1,8 +1,10 @@
 package com.inthinc.pro.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import com.inthinc.pro.model.LastLocation;
+import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 
 public interface VehicleDAO extends GenericDAO<Vehicle, Integer>
@@ -17,5 +19,9 @@ public interface VehicleDAO extends GenericDAO<Vehicle, Integer>
     
     LastLocation getLastLocation(Integer vehicleID);
     
+    List<Trip> getTrips(Integer driverID, Date startDate, Date endDate);
+    
+    Trip getLastTrip(Integer driverID);
+
 
 }

@@ -31,9 +31,9 @@ import com.inthinc.pro.dao.hessian.RoleHessianDAO;
 import com.inthinc.pro.dao.hessian.StateHessianDAO;
 import com.inthinc.pro.dao.hessian.TablePreferenceHessianDAO;
 import com.inthinc.pro.dao.hessian.TimeZoneHessianDAO;
-import com.inthinc.pro.dao.hessian.TripHessianDAO;
 import com.inthinc.pro.dao.hessian.UserHessianDAO;
 import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
+import com.inthinc.pro.dao.hessian.ZoneAlertHessianDAO;
 import com.inthinc.pro.dao.hessian.ZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEntryException;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateIMEIException;
@@ -68,6 +68,7 @@ import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
+import com.inthinc.pro.model.ZoneAlert;
 import com.inthinc.pro.model.app.Roles;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.app.SupportedTimeZones;
@@ -142,6 +143,7 @@ public class SiloServiceTest
     }
     
     @Test
+    @Ignore
     public void states()
     {
         StateHessianDAO stateDAO = new StateHessianDAO();
@@ -155,6 +157,7 @@ public class SiloServiceTest
     }
     
     @Test
+    @Ignore
     public void roles()
     {
         RoleHessianDAO roleDAO = new RoleHessianDAO();
@@ -168,6 +171,7 @@ public class SiloServiceTest
     }
     
     @Test
+    @Ignore
     public void supportedTimeZones()
     {
         TimeZoneHessianDAO timeZoneDAO = new TimeZoneHessianDAO();
@@ -182,6 +186,7 @@ public class SiloServiceTest
     }
     
     @Test
+    @Ignore
     public void lastLocation()
     {
         DriverHessianDAO driverDAO = new DriverHessianDAO();
@@ -208,6 +213,7 @@ public class SiloServiceTest
     }
 
     @Test
+    @Ignore
     public void events()
     {
         EventHessianDAO eventDAO = new EventHessianDAO();
@@ -254,17 +260,20 @@ public class SiloServiceTest
     }
     
     @Test
+    @Ignore
     public void trips()
     {
-        TripHessianDAO tripDAO = new TripHessianDAO();
-        tripDAO.setSiloService(siloService);
+        DriverHessianDAO driverDAO = new DriverHessianDAO();
+        driverDAO.setSiloService(siloService);
+        VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
+        vehicleDAO.setSiloService(siloService);
         
         // year time frame from today back
         Date endDate = new Date();
         Date startDate = DateUtil.getDaysBackDate(endDate, 365);
         
         
-        List<Trip> tripList = tripDAO.getTrips(TESTING_DRIVER_ID, startDate, endDate);
+        List<Trip> tripList = driverDAO.getTrips(TESTING_DRIVER_ID, startDate, endDate);
         assertNotNull(tripList);
         assertTrue(tripList.size() > 0);
         
@@ -277,11 +286,27 @@ public class SiloServiceTest
         }
         
 // TODO: getLastTrip not impl on back end yet        
-//        Trip trip = tripDAO.getLastTrip(TESTING_DRIVER_ID);
+//        Trip trip = driverDAO.getLastTrip(TESTING_DRIVER_ID);
 //        assertNotNull(trip);
         
+        tripList = vehicleDAO.getTrips(TESTING_VEHICLE_ID, startDate, endDate);
+        assertNotNull(tripList);
+        assertTrue(tripList.size() > 0);
+        
+        for (Trip trip : tripList)
+        {
+            assertEquals(TESTING_DRIVER_ID, trip.getDriverID());
+            assertTrue(startDate.before(trip.getStartTime()));
+            assertTrue(endDate.after(trip.getEndTime()));
+            assertTrue(trip.getMileage() > 0);
+        }
+        
+     // TODO: getLastTrip not impl on back end yet        
+//      Trip trip = vehicleDAO.getLastTrip(TESTING_VEHICLE_ID);
+//      assertNotNull(trip);
     }
     @Test
+    @Ignore
     public void admin()
     {
 
@@ -326,13 +351,82 @@ public class SiloServiceTest
         
         // various find methods
         find();
+        
+        // zone alert profiles
+        zoneAlertProfiles(acctID);
     }
 
 
+    private void zoneAlertProfiles(Integer acctID)
+    {
+        ZoneHessianDAO zoneDAO = new ZoneHessianDAO();
+        zoneDAO.setSiloService(siloService);
+
+        // create a zone to use
+        Zone zone = new Zone(0, acctID, Status.ACTIVE, "Zone With Alerts", "123 Street, Salt Lake City, UT 84107");
+        List<LatLng> points = new ArrayList<LatLng>();
+        points.add( new LatLng(40.723871753812f, -111.92932452647742f));
+        points.add( new LatLng(40.704246f, -111.948613f));
+        points.add( new LatLng(40.723871753812f, -111.92932452647742f));
+        zone.setPoints(points);
+
+        Integer zoneID = zoneDAO.create(acctID, zone);
+        assertNotNull(zoneID);
+        zone.setZoneID(zoneID);
+        
+
+        ZoneAlertHessianDAO zoneAlertDAO = new ZoneAlertHessianDAO();
+        zoneAlertDAO.setSiloService(siloService);
+        
+        List<Boolean> dayOfWeek = new ArrayList<Boolean>();
+        for (int i = 0; i < 7 ; i++)
+            dayOfWeek.add(true);
+        List<Integer> groupIDList = new ArrayList<Integer>();
+        groupIDList.add(team1Group.getGroupID());
+        List<Integer> notifyPersonIDs = new ArrayList<Integer>();
+        notifyPersonIDs.add(this.personList.get(0).getPersonID());
+        ZoneAlert zoneAlert = new ZoneAlert(acctID, "Zone Alert Profile", "Zone Alert Profile Description", 
+                0, 1339, dayOfWeek, groupIDList,
+                null, null, null, notifyPersonIDs, null,
+                0, zoneID, true, true, true, true, true, true,
+                true, 80, true, true, true, true, true);
+        
+        Integer zoneAlertID = zoneAlertDAO.create(acctID, zoneAlert);
+        assertNotNull(zoneAlertID);
+        zoneAlert.setZoneID(zoneAlertID);
+        
+        // find
+        String ignoreFields[] = {"modified"};
+        ZoneAlert returnedZoneAlert = zoneAlertDAO.findByID(zoneAlertID);
+        Util.compareObjects(zoneAlert, returnedZoneAlert, ignoreFields);
+        
+        // update
+        zoneAlert.setName("Mod Zone Alert Profile");
+        zoneAlert.setDescription("Mod Zone Alert Profile Description");
+        zoneAlert.setArrival(false);
+        zoneAlert.setDisableRF(false);
+        zoneAlert.setGroupIDs(new ArrayList<Integer>());
+        List<VehicleType> vehicleTypeList = new ArrayList<VehicleType>();
+        vehicleTypeList.add(VehicleType.LIGHT);
+        Integer changedCount = zoneAlertDAO.update(zoneAlert);
+        assertEquals("Zone update count", Integer.valueOf(1), changedCount);
+        
+        // find after update
+        returnedZoneAlert = zoneAlertDAO.findByID(zoneAlertID);
+        Util.compareObjects(zoneAlert, returnedZoneAlert, ignoreFields);
+        
+        // get by account id
+        List<ZoneAlert> zoneAlertList = zoneAlertDAO.getZoneAlerts(acctID);
+        assertEquals(1, zoneAlertList.size());
+        Util.compareObjects(zoneAlert, zoneAlertList.get(0), ignoreFields);
+        
+        
+        
+        
+    }
+
     private void zones(Integer acctID)
     {
-/*
- * TODO
         ZoneHessianDAO zoneDAO = new ZoneHessianDAO();
         zoneDAO.setSiloService(siloService);
         
@@ -350,9 +444,7 @@ public class SiloServiceTest
         
         // find
         String ignoreFields[] = {"modified"};
-//        HessianDebug.debugOut = true;
         Zone returnedZone = zoneDAO.findByID(zoneID);
-//        HessianDebug.debugOut = false;
         Util.compareObjects(zone, returnedZone, ignoreFields);
         
         // update
@@ -364,12 +456,19 @@ public class SiloServiceTest
         points.add( new LatLng(40.71f, -111.93f));
         points.add( new LatLng(40.723871753812f, -111.92932452647742f));
         zone.setPoints(points);
+        Integer changedCount = zoneDAO.update(zone);
+        assertEquals("Zone update count", Integer.valueOf(1), changedCount);
         
         
         // find/compare after update
         returnedZone = zoneDAO.findByID(zoneID);
-        Util.compareObjects(zone, returnedZone);
- */        
+        Util.compareObjects(zone, returnedZone, ignoreFields);
+        
+        // delete
+        Integer deleteCount = zoneDAO.deleteByID(zoneID);
+        assertEquals("Zone delte count", Integer.valueOf(1), deleteCount);
+        returnedZone = zoneDAO.findByID(zoneID);
+        assertEquals(Status.DELETED, returnedZone.getStatus());
         
     }
 
@@ -908,8 +1007,6 @@ logger.debug("Persons GroupID: " + groupID);
         PersonHessianDAO personDAO = new PersonHessianDAO();
         personDAO.setSiloService(siloService);
         
-        TripHessianDAO tripDAO = new TripHessianDAO();
-        tripDAO.setSiloService(siloService);
         
         // year time frame from today back
         Date endDate = new Date();
@@ -948,7 +1045,7 @@ logger.debug("Persons GroupID: " + groupID);
             assertNull("no location expected for new driver", loc);
 
             // trips list should be empty
-            List<Trip> emptyTripList = tripDAO.getTrips(driver.getDriverID(), startDate, endDate);
+            List<Trip> emptyTripList = driverDAO.getTrips(driver.getDriverID(), startDate, endDate);
             assertNotNull(emptyTripList);
             assertTrue(emptyTripList.size() == 0);
 

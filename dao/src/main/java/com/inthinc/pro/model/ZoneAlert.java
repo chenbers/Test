@@ -1,5 +1,7 @@
 package com.inthinc.pro.model;
 
+import java.util.List;
+
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
@@ -25,6 +27,55 @@ public class ZoneAlert extends BaseAlert
     private Boolean           disableRF;
     private Boolean           monitorIdle;
 
+    public ZoneAlert(Integer accountID, String name, String description, Integer startTOD, Integer stopTOD, List<Boolean> dayOfWeek, List<Integer> groupIDs,
+            List<Integer> driverIDs, List<Integer> vehicleIDs, List<VehicleType> vehicleTypes, List<Integer> notifyPersonIDs, List<String> emailTo,
+            Integer zoneAlertID, Integer zoneID, Boolean arrival, Boolean departure, Boolean driverIDViolation, Boolean ignitionOn, Boolean ignitionOff, Boolean position,
+            Boolean seatbeltViolation, Integer speedLimit, Boolean speedViolation, Boolean masterBuzzer, Boolean cautionArea, Boolean disableRF, Boolean monitorIdle)
+    {
+        super(accountID, name, description, startTOD, stopTOD, dayOfWeek, groupIDs, driverIDs, vehicleIDs, vehicleTypes, notifyPersonIDs, emailTo);
+        this.zoneAlertID = zoneAlertID;
+        this.zoneID = zoneID;
+        this.arrival = arrival;
+        this.departure = departure;
+        this.driverIDViolation = driverIDViolation;
+        this.ignitionOn = ignitionOn;
+        this.ignitionOff = ignitionOff;
+        this.position = position;
+        this.seatbeltViolation = seatbeltViolation;
+        this.speedLimit = speedLimit;
+        this.speedViolation = speedViolation;
+        this.masterBuzzer = masterBuzzer;
+        this.cautionArea = cautionArea;
+        this.disableRF = disableRF;
+        this.monitorIdle = monitorIdle;
+    }
+
+    public ZoneAlert(Integer zoneAlertID, Integer zoneID, Boolean arrival, Boolean departure, Boolean driverIDViolation, Boolean ignitionOn, Boolean ignitionOff, Boolean position,
+            Boolean seatbeltViolation, Integer speedLimit, Boolean speedViolation, Boolean masterBuzzer, Boolean cautionArea, Boolean disableRF, Boolean monitorIdle)
+    {
+        super();
+        this.zoneAlertID = zoneAlertID;
+        this.zoneID = zoneID;
+        this.arrival = arrival;
+        this.departure = departure;
+        this.driverIDViolation = driverIDViolation;
+        this.ignitionOn = ignitionOn;
+        this.ignitionOff = ignitionOff;
+        this.position = position;
+        this.seatbeltViolation = seatbeltViolation;
+        this.speedLimit = speedLimit;
+        this.speedViolation = speedViolation;
+        this.masterBuzzer = masterBuzzer;
+        this.cautionArea = cautionArea;
+        this.disableRF = disableRF;
+        this.monitorIdle = monitorIdle;
+    }
+
+    public ZoneAlert()
+    {
+        super();
+    }
+    
     public Integer getZoneAlertID()
     {
         return zoneAlertID;

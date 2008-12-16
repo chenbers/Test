@@ -31,6 +31,29 @@ public abstract class BaseAlert extends BaseEntity
     private List<Integer>       notifyPersonIDs;
     private List<String>        emailTo;
 
+    public BaseAlert()
+    {
+        
+    }
+    
+    public BaseAlert(Integer accountID, String name, String description, Integer startTOD, Integer stopTOD, List<Boolean> dayOfWeek, List<Integer> groupIDs,
+            List<Integer> driverIDs, List<Integer> vehicleIDs, List<VehicleType> vehicleTypes, List<Integer> notifyPersonIDs, List<String> emailTo)
+    {
+        super();
+        this.accountID = accountID;
+        this.name = name;
+        this.description = description;
+        this.startTOD = startTOD;
+        this.stopTOD = stopTOD;
+        this.dayOfWeek = dayOfWeek;
+        this.groupIDs = groupIDs;
+        this.driverIDs = driverIDs;
+        this.vehicleIDs = vehicleIDs;
+        this.vehicleTypes = vehicleTypes;
+        this.notifyPersonIDs = notifyPersonIDs;
+        this.emailTo = emailTo;
+    }
+    
     public Integer getAccountID()
     {
         return accountID;
@@ -171,4 +194,5 @@ public abstract class BaseAlert extends BaseEntity
         else
             setEmailTo(null);
     }
+
 }

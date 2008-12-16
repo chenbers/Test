@@ -10,8 +10,6 @@ public class LastLocation
     private Double lat;
     private Double lng;
     
-    public static final Integer DRIVER_TYPE = 1;
-    public static final Integer VEHICLE_TYPE = 2;
     
     public LastLocation()
     {

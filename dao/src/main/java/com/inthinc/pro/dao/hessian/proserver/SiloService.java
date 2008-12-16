@@ -113,14 +113,14 @@ public interface SiloService extends HessianService
     
     // ------------------------- Locations  -----------------------------------------------
     /**
-     * @param reqType  
-     *          1=driver, 2=vehicle
      * @param id 
      *       driverID or vehicleID
+     * @param reqType  
+     *          1=driver, 2=vehicle
      * @return
      *      map[driverID,vehicleID,time,lat,lng]
      */
-    Map<String, Object> getLastLoc(Integer reqType, Integer id);
+    Map<String, Object> getLastLoc(Integer id, Integer reqType);
     
     List<Map<String, Object>> getDriversNearLoc(Integer groupID, Integer numof, Double lat, Double lng);
 
@@ -156,9 +156,29 @@ public interface SiloService extends HessianService
 
 
     // -------------------------    Trips   -----------------------------------------------
-    List<Map<String, Object>> getTrips(Integer driverID, Integer startDate, Integer endDate) throws ProDAOException;
+    /**
+     * @param id 
+     *       driverID or vehicleID
+     * @param reqType  
+     *          1=driver, 2=vehicle
+     * @param startDate  
+     *          start of Date range (seconds)
+     * @param endDate
+     *          end of Date range (seconds)
+     * @return
+     *      list of trip map
+     */
+    List<Map<String, Object>> getTrips(Integer id, Integer reqType, Integer startDate, Integer endDate) throws ProDAOException;
 
-    Map<String, Object> getLastTrip(Integer driverID) throws ProDAOException;
+    /**
+     * @param id 
+     *       driverID or vehicleID
+     * @param reqType  
+     *          1=driver, 2=vehicle
+     * @return
+     *      trip map
+     */
+    Map<String, Object> getLastTrip(Integer id, Integer reqType) throws ProDAOException;
 
 
     // -------------------------    Table Preferences   -----------------------------------------------

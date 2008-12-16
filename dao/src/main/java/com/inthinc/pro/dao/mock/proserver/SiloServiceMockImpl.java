@@ -508,20 +508,24 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
 
 
     @Override
-    public List<Map<String, Object>> getTrips(Integer driverID, Integer startDate, Integer endDate) throws ProDAOException
+    public List<Map<String, Object>> getTrips(Integer id, Integer reqType, Integer startDate, Integer endDate) throws ProDAOException
     {
         SearchCriteria criteria = new SearchCriteria();
-        criteria.addKeyValue("driverID", driverID);
+        if (reqType.intValue() == 1)
+            criteria.addKeyValue("driverID", id);
+        else criteria.addKeyValue("vehicleID", id);
         List<Map<String, Object>> matches = MockData.getInstance().lookupList(Trip.class, criteria);
         return matches;
 
     }
     
     @Override
-    public Map<String, Object> getLastTrip(Integer driverID)
+    public Map<String, Object> getLastTrip(Integer id, Integer reqType)
     {
         SearchCriteria criteria = new SearchCriteria();
-        criteria.addKeyValue("driverID", driverID);
+        if (reqType.intValue() == 1)
+            criteria.addKeyValue("driverID", id);
+        else criteria.addKeyValue("vehicleID", id);
         Map<String, Object> matches = MockData.getInstance().lookup(Trip.class, criteria);
         return matches;
         
@@ -1036,7 +1040,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
-    public Map<String, Object> getLastLoc(Integer reqType, Integer id)
+    public Map<String, Object> getLastLoc(Integer id, Integer reqType)
     {
         SearchCriteria searchCriteria = new SearchCriteria();
         searchCriteria.addKeyValue("driverID", id);

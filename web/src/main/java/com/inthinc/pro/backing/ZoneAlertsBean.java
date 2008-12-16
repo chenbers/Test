@@ -271,7 +271,7 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
 
         public Zone getZone()
         {
-            if (zone == null)
+            if (zone == null && getZoneID() != null)
                 zone = zoneDAO.findByID(getZoneID());
             return zone;
         }

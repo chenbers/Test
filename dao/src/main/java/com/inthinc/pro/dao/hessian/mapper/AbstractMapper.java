@@ -292,7 +292,7 @@ public abstract class AbstractMapper implements Mapper
                     map.put(name, convertList((List<?>) value));
                 }
                 // if the field type is Date, convert to integer
-                if (Date.class.isInstance(value))
+                else if (Date.class.isInstance(value))
                 {
                     map.put(name, (int) (((Date) value).getTime() / 1000l));
                 }

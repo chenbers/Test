@@ -1,10 +1,12 @@
 package com.inthinc.pro.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.LastLocation;
+import com.inthinc.pro.model.Trip;
 
 public interface DriverDAO extends GenericDAO<Driver, Integer>
 {
@@ -35,4 +37,9 @@ public interface DriverDAO extends GenericDAO<Driver, Integer>
      * @return
      */
     LastLocation getLastLocation(Integer driverID);
+    List<Trip> getTrips(Integer driverID, Date startDate, Date endDate);
+    
+    Trip getLastTrip(Integer driverID);
+
+
 }

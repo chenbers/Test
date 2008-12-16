@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -39,6 +40,8 @@ public class ZonesBean extends BaseBean
         if (zones == null)
         {
             zones = zoneDAO.getZones(getAccountID());
+            if (zones.isEmpty())
+                zones = new ArrayList<Zone>();
             sortZones();
         }
 
@@ -109,7 +112,9 @@ public class ZonesBean extends BaseBean
         final FacesContext context = FacesContext.getCurrentInstance();
 
         if (add)
-            item.setZoneID(zoneDAO.create(getUser().getPerson().getGroupID(), item));
+// TODO: is save by groupID or acctID            
+//            item.setZoneID(zoneDAO.create(getUser().getPerson().getGroupID(), item));
+            item.setZoneID(zoneDAO.create(getAccountID(), item));
         else
             zoneDAO.update(item);
 

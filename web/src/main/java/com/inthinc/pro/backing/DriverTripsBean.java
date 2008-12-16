@@ -5,23 +5,20 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.management.timer.Timer;
-
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.TripDisplay;
-import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.dao.EventDAO;
-import com.inthinc.pro.dao.TripDAO;
+import com.inthinc.pro.dao.DriverDAO;
 
 public class DriverTripsBean extends BaseBean
 {
     private static final Logger logger = Logger.getLogger(DriverTripsBean.class);
 
     private NavigationBean navigation;
-    private TripDAO tripDAO;
+    private DriverDAO driverDAO;
     private EventDAO eventDAO;
     
     private Date startDate = new Date();
@@ -67,7 +64,7 @@ public class DriverTripsBean extends BaseBean
     public void initTrips()
     {
         List<Trip> tempTrips = new ArrayList<Trip>();
-        tempTrips = tripDAO.getTrips(navigation.getDriver().getDriverID(), startDate, endDate);
+        tempTrips = driverDAO.getTrips(navigation.getDriver().getDriverID(), startDate, endDate);
 
         trips = new ArrayList<TripDisplay>();
         selectedTrips = new ArrayList<TripDisplay>();
@@ -111,11 +108,11 @@ public class DriverTripsBean extends BaseBean
     }
 
     //TRIP DAO PROPERTIES
-    public TripDAO getTripDAO() {
-        return tripDAO;
+    public DriverDAO getDriverDAO() {
+        return driverDAO;
     }
-    public void setTripDAO(TripDAO tripDAO) {
-        this.tripDAO = tripDAO;
+    public void setDriverDAO(DriverDAO driverDAO) {
+        this.driverDAO = driverDAO;
     }
 	
 	//MILES PROPERTIES

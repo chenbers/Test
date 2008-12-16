@@ -1,19 +1,26 @@
 package com.inthinc.pro.dao.hessian;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.FindByKey;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.LastLocation;
+import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 
 public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> implements VehicleDAO, FindByKey<Vehicle>
 {
-
+    private static final Logger logger = Logger.getLogger(DriverHessianDAO.class);
     private static final String CENTRAL_ID_KEY = "vin";
+    private static final Integer VEHICLE_TYPE = 2;
+
 
     @Override
     public List<Vehicle> getVehiclesInGroupHierarchy(Integer groupID)
@@ -45,7 +52,7 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
     {
         try
         {
-            return getMapper().convertToModelObject(this.getSiloService().getLastLoc(LastLocation.VEHICLE_TYPE, vehicleID), LastLocation.class);
+            return getMapper().convertToModelObject(this.getSiloService().getLastLoc(vehicleID, VEHICLE_TYPE), LastLocation.class);
         }
         catch (EmptyResultSetException e)
         {
@@ -73,6 +80,34 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
         catch (EmptyResultSetException e)
         {
             return null;
+        }
+    }
+
+    @Override
+    public Trip getLastTrip(Integer vehicleID)
+    {
+        try
+        {
+            return getMapper().convertToModelObject(this.getSiloService().getLastTrip(vehicleID, VEHICLE_TYPE), Trip.class);
+        }
+        catch (EmptyResultSetException e)
+        {
+            return null;
+        }
+    }
+
+    @Override
+    public List<Trip> getTrips(Integer vehicleID, Date startDate, Date endDate)
+    {
+        logger.debug("getTrips() vehicleID = " + vehicleID);
+        try
+        {
+            List<Trip> tripList = getMapper().convertToModelObject(this.getSiloService().getTrips(vehicleID, VEHICLE_TYPE, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate)), Trip.class);
+            return tripList;
+        }
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyList();
         }
     }
 }
