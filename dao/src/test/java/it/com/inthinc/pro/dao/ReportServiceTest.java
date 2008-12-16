@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.util.List;
+import java.util.Map;
 
 import it.config.IntegrationConfig;
 
@@ -89,6 +90,7 @@ public class ReportServiceTest
     }
 
     @Test
+    @Ignore
     public void getScoreBreakdown()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -102,4 +104,29 @@ public class ReportServiceTest
         
     }
 
+    @Test
+    public void getScoreTrend()
+    {
+        ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
+        scoreDAO.setReportService(reportService);
+        
+        
+        Integer groupID = 16777218;
+        Map<Integer,List<ScoreableEntity>> scoreMap  = scoreDAO.getTrendScores(groupID, Duration.DAYS);
+        
+        
+        
+        assertNotNull(scoreMap);
+        
+        for (Integer id : scoreMap.keySet())
+        {
+            System.out.println("id: " + id);
+            for (ScoreableEntity s : scoreMap.get(id))
+            {
+                System.out.println("    s: " + s.getScore());
+                
+            }
+        }
+        
+    }
 }

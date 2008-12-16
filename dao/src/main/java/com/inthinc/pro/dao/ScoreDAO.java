@@ -1,6 +1,7 @@
 package com.inthinc.pro.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.ScoreType;
@@ -46,7 +47,7 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      */
     List<ScoreableEntity> getScores(Integer groupID, Duration duration, ScoreType scoreType);
     
-    List<ScoreableEntity> getTrendScores(Integer groupID, Duration duration);
+    Map<Integer,List<ScoreableEntity>> getTrendScores(Integer groupID, Duration duration);
 
 
     /**

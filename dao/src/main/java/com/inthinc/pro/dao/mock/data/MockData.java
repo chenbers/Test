@@ -401,28 +401,13 @@ public class MockData
                 12, 6, 3, 0
         };
         
-        for (int monthsBackCnt = 0; monthsBackCnt < monthsBack.length; monthsBackCnt++)
-        {
-            for (ScoreType scoreType : EnumSet.allOf(ScoreType.class))
-            {
-                if (scoreType == ScoreType.SCORE_OVERALL_TIME ) 
-                {
-                    createOverallScoreOverTime(
-                            entityID, 
-                            entityType, 
-                            entityName, 
-                            scoreType, 
-                            monthsBack[monthsBackCnt]);
-                }
-            }
-        }
         
         // create a score entity of each score type 1 per month
         for (int month = 0; month < 14; month++)
         {
             for (ScoreType scoreType : EnumSet.allOf(ScoreType.class))
             {
-                if (scoreType != ScoreType.SCORE_OVERALL_TIME ) 
+//                if (scoreType != ScoreType.SCORE_OVERALL_TIME ) 
                 {
                     ScoreableEntity scoreableEntity = new ScoreableEntity(
                               entityID, 

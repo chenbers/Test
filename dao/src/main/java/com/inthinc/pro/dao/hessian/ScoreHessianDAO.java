@@ -3,6 +3,7 @@ package com.inthinc.pro.dao.hessian;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,8 @@ import com.inthinc.pro.model.DriveQMap;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.GQMap;
+import com.inthinc.pro.model.GQVMap;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.QuintileMap;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreTypeBreakdown;
@@ -159,23 +162,34 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
     }
     @Override
-    public List<ScoreableEntity> getTrendScores(Integer groupID, Duration duration)
+    public Map<Integer, List<ScoreableEntity>> getTrendScores(Integer groupID, Duration duration)
     {
         try
         {
-            List<ScoreableEntity> scoreList = getMapper().convertToModelObject(reportService.getScores(groupID, duration.getCode(), ScoreType.SCORE_OVERALL_TIME.getCode()), ScoreableEntity.class);
-            return scoreList;
+            List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getCode(), ScoreType.SCORE_OVERALL.getDriveQMetric());
+            List<GQVMap> gqvList = getMapper().convertToModelObject(list, GQVMap.class);
+            
+            Map<Integer, List<ScoreableEntity>> returnMap = new HashMap<Integer, List<ScoreableEntity>>();
+            for (GQVMap gqv : gqvList)
+            {
+                List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
+                for (DriveQMap driveQMap  :gqv.getDriveQV())
+                {
+                    ScoreableEntity entity = new ScoreableEntity();
+                    entity.setEntityID(gqv.getGroup().getGroupID());
+                    entity.setEntityType(EntityType.ENTITY_GROUP);
+                    entity.setScore(driveQMap.getOverall());
+                    entity.setScoreType(ScoreType.SCORE_OVERALL);
+                    scoreList.add(entity);
+                }
+                returnMap.put(gqv.getGroup().getGroupID(), scoreList);
+                
+            }
+            return returnMap;
         }
         catch (EmptyResultSetException e)
         {
-            return Collections.emptyList();
-        }
-        catch (ProxyException e)
-        {
-            if (e.getErrorCode() == 422)
-                return Collections.emptyList();
-            else
-                throw e;
+            return Collections.emptyMap();
         }
     }
 

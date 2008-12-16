@@ -15,7 +15,6 @@ import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.mock.data.SearchCriteria;
 import com.inthinc.pro.dao.mock.proserver.ReportServiceCreator;
 import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
-import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.ScoreType;
@@ -61,10 +60,6 @@ public class ScoreHessianDAOTest
 
         for (ScoreType scoreType : EnumSet.allOf(ScoreType.class))
         {
-            if (scoreType.equals(ScoreType.SCORE_OVERALL_TIME))
-            {
-                continue;
-            }
             for (Duration d : EnumSet.allOf(Duration.class))
             {
                 List<ScoreableEntity> scoreList = scoreHessianDAO.getScores(testGroupID, d, scoreType);

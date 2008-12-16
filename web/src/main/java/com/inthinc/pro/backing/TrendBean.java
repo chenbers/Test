@@ -100,7 +100,7 @@ public class TrendBean extends BaseDurationBean
         sb.append("</categories>");
 
         // Loop over returned set of group ids, controlled by scroller
-        List<ScoreableEntity> ss = null;
+        Map<Integer, List<ScoreableEntity>> groupTrendMap = scoreDAO.getTrendScores(this.navigation.getGroupID(), navigation.getDuration());;
         ColorSelectorStandard cs = new ColorSelectorStandard();
         
         for (int i = this.start; i <= this.end; i++)
@@ -110,7 +110,8 @@ public class TrendBean extends BaseDurationBean
             
             ScoreableEntity se = s.get(i-1);
             // Fetch to get children's observations
-            ss = scoreDAO.getTrendScores(se.getEntityID(), navigation.getDuration());
+//            ss = scoreDAO.getTrendScores(se.getEntityID(), navigation.getDuration());
+            List<ScoreableEntity> ss = groupTrendMap.get(se.getEntityID());
 
             // Y-coordinates
             sb.append("<dataset seriesName=\'\' color=\'");
@@ -139,7 +140,7 @@ public class TrendBean extends BaseDurationBean
                 sss = ss.get(j);
 
                 sb.append("<set value=\'");
-                Float score = new Float(sss.getScore() / 10.0);
+                Float score = new Float((sss.getScore()==null) ? 0 : sss.getScore() / 10.0);
                 sb.append(score.toString()).substring(0, 3);
                 sb.append("'/>");
             }

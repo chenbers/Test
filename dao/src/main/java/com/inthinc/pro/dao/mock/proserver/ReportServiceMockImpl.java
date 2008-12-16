@@ -16,10 +16,12 @@ import com.inthinc.pro.dao.mock.data.SearchCriteria;
 import com.inthinc.pro.dao.mock.data.TempConversionUtil;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.DVQMap;
+import com.inthinc.pro.model.DriveQMap;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.GQMap;
+import com.inthinc.pro.model.GQVMap;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreType;
@@ -515,8 +517,34 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
     
     public List<Map<String, Object>>  getSDTrendsByGTC(Integer groupID, Integer duration, Integer metric)
     {
-        // TODO Auto-generated method stub
-        return null;
+        Group topGroup = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
+        List<Group> groupList = getGroupHierarchy(topGroup);
+        
+        List<Map<String, Object>> gqMapList = new ArrayList<Map<String, Object>>();
+        
+        for (Group group : groupList)
+        {
+            if (group.getParentID().equals(groupID))
+            {
+                SearchCriteria searchCriteria = new SearchCriteria();
+                searchCriteria.addKeyValue("group:groupID", group.getGroupID());
+        
+                // get list of drivers that are in the specified group
+                GQMap gqMap = MockData.getInstance().retrieveObject(GQMap.class, searchCriteria);
+                if (gqMap == null)
+                {
+                    continue;
+                }
+                GQVMap gqvMap = new GQVMap();
+                gqvMap.setGroup(group);
+                List<DriveQMap> driveQVList = new ArrayList<DriveQMap>();
+                for (int i = 0; i < 3; i++)
+                    driveQVList.add(gqMap.getDriveQ());
+                gqvMap.setDriveQV(driveQVList);
+                gqMapList.add(TempConversionUtil.createMapFromObject(gqvMap));
+            }
+        }
+        return gqMapList;
     }  
     
 //  Miscellaneous    
