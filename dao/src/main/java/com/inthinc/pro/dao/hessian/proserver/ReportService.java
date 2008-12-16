@@ -196,4 +196,5 @@ public interface ReportService extends HessianService
     
     List<Map<String, Object>> getSDTrendsByGTC(Integer groupID, Integer duration, Integer metric);
     
+    Map<String, Object> getDPctByGT(Integer groupID, Integer duration, Integer metric);
 }
