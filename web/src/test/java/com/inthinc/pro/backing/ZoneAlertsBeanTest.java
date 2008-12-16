@@ -9,21 +9,26 @@ import javax.faces.model.SelectItem;
 import com.inthinc.pro.backing.ZoneAlertsBean.ZoneAlertView;
 import com.inthinc.pro.util.MiscUtil;
 
+import org.junit.Ignore;
+
 public class ZoneAlertsBeanTest extends BaseAdminBeanTest<ZoneAlertsBean.ZoneAlertView>
 {
     @Override
+    @Ignore
     protected ZoneAlertsBean getAdminBean()
     {
         return (ZoneAlertsBean) applicationContext.getBean("zoneAlertsBean");
     }
 
     @Override
+    @Ignore
     protected String getFilterValue()
     {
         return "zone alert 60";
     }
 
     @Override
+    @Ignore
     protected void populate(ZoneAlertView editItem, BaseAdminBean<ZoneAlertsBean.ZoneAlertView> adminBean)
     {
         editItem.setCreated(new Date());
@@ -50,6 +55,7 @@ public class ZoneAlertsBeanTest extends BaseAdminBeanTest<ZoneAlertsBean.ZoneAle
     }
 
     @Override
+    @Ignore
     protected String[] getBatchUpdateFields()
     {
         return new String[] { "name", "description", "assignTo", "emailToString" };
