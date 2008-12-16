@@ -531,8 +531,9 @@ form p.desc {
 
 form label.radioitem {
 	clear: none;
-	margin: 0px 0px 0px 25px;
-	padding: 0px 0px 15px 0px;
+	float: none;
+	margin: 0px 0px 0px 0px;
+	padding: 0px 15px 0px 0px;
 	}
 
 form input.radiobutton {
@@ -1098,6 +1099,17 @@ h2 {
 .ls_tab_off {
 	height: 31px;
 	padding: 8px 0 0 0;
+	background: url(..//images/ls_tab_off.png) no-repeat;
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	}
+
+table.ls_tab_table {
+	border-spacing: 0px;
+	}
+
+table.ls_tab_table td {
+	height: 31px;
+	padding: 4px 0px;
 	background: url(..//images/ls_tab_off.png) no-repeat;
 	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
 	}
