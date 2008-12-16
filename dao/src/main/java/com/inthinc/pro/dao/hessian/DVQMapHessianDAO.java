@@ -2,6 +2,7 @@ package com.inthinc.pro.dao.hessian;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -10,6 +11,7 @@ import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
 import com.inthinc.pro.model.DVQMap;
 import com.inthinc.pro.model.DriveQMap;
+import com.inthinc.pro.model.QuintileMap;
 
 public class DVQMapHessianDAO extends GenericHessianDAO<DVQMap, Integer> implements DVQMapDAO
 {
@@ -83,4 +85,19 @@ public class DVQMapHessianDAO extends GenericHessianDAO<DVQMap, Integer> impleme
         
     }    
     
+    public QuintileMap getDPctByGT(Integer groupID, Integer duration, Integer metric) 
+    {
+        try
+        {
+            Map<String, Object> returnMap = reportService.getDPctByGT(groupID, duration, metric);
+            logger.debug("returnmap " + returnMap.getClass());
+            QuintileMap dqMap = getMapper().convertToModelObject(returnMap, QuintileMap.class);
+            return dqMap;
+        }
+        catch (EmptyResultSetException e)
+        {
+            return null;
+        }        
+   
+    }
 }
