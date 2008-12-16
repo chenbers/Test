@@ -145,7 +145,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 ScoreableEntity scoreableEntity = new ScoreableEntity();
                 scoreableEntity.setEntityID(gqMap.getGroup().getGroupID());
                 scoreableEntity.setEntityType(EntityType.ENTITY_GROUP);
-                scoreableEntity.setIdentifier(gqMap.getGroup().getName());
+                scoreableEntity.setIdentifier(gqMap.getGroup().getName() == null ? "unknown" : gqMap.getGroup().getName());
                 scoreableEntity.setScoreType(scoreType);
                 Integer score = gqMap.getDriveQ().getScoreMap().get(scoreType);
                 scoreableEntity.setScore((score == null) ? 0 : score);

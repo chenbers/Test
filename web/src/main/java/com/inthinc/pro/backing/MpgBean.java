@@ -107,7 +107,7 @@ public class MpgBean extends BaseDurationBean {
         if (mpgEntities.size() == 0)
         {
             Integer parentGroupId = this.getNavigation().getGroupID();
-            List<MpgEntity> tempEntities = mpgDAO.getEntities(parentGroupId, getDuration());
+            List<MpgEntity> tempEntities = mpgDAO.getEntities(getGroupHierarchy().getGroup(parentGroupId), getDuration());
     
             // Populate the table
             String contextPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();

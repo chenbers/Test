@@ -479,7 +479,37 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
     
     public List<Map<String, Object>> getDVScoresByGT(Integer groupID, Integer duration)
     {
-        // TODO Auto-generated method stub
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("person:groupID", groupID);
+
+        // get list of drivers that are in the specified group
+        List<Map<String, Object>> entityList = MockData.getInstance().lookupList(Group.class, searchCriteria);
+
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+        entityList = MockData.getInstance().lookupList(Driver.class, searchCriteria);
+        if (entityList == null)
+        {
+            return returnList;
+        }
+        for (Map<String, Object> driverMap : entityList)
+        {
+            searchCriteria = new SearchCriteria();
+            searchCriteria.addKeyValue("entityID", driverMap.get("driverID"));
+            searchCriteria.addKeyValueRange("date", startDate, endDate);
+
+            MpgEntity mpg = MockData.getInstance().retrieveObject(MpgEntity.class, searchCriteria);
+            if (mpg != null)
+            {
+                returnList.add(TempConversionUtil.createMapFromObject(mpg));
+            }
+            else
+            {
+                logger.error("mpg missing for driverID " + driverMap.get("driverID"));
+            }
+        }
+
+        
+        
         return null;
     } 
     

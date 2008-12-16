@@ -15,17 +15,25 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.inthinc.pro.dao.hessian.GroupHessianDAO;
+import com.inthinc.pro.dao.hessian.MpgHessianDAO;
 import com.inthinc.pro.dao.hessian.ScoreHessianDAO;
 import com.inthinc.pro.dao.hessian.extension.HessianDebug;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
 import com.inthinc.pro.dao.hessian.proserver.ReportServiceCreator;
+import com.inthinc.pro.dao.hessian.proserver.SiloService;
+import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupType;
+import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 
 public class ReportServiceTest
 {
     private static ReportService reportService;
+    private static SiloService siloService;
     
     @BeforeClass
     public static void setUpBeforeClass() throws Exception
@@ -36,6 +44,7 @@ public class ReportServiceTest
         Integer port = Integer.valueOf(config.get(IntegrationConfig.SILO_PORT).toString());
         
         reportService = new ReportServiceCreator(host, port).getService();
+        siloService = new SiloServiceCreator(host, port).getService();
 //        HessianDebug.debugIn = true;
 //        HessianDebug.debugOut = true;
         HessianDebug.debugRequest = true;
@@ -127,6 +136,45 @@ public class ReportServiceTest
                 
             }
         }
+        
+    }
+    @Test
+    public void mpg()
+    {
+        MpgHessianDAO mpgDAO = new MpgHessianDAO();
+        mpgDAO.setReportService(reportService);
+        
+        GroupHessianDAO groupDAO = new GroupHessianDAO();
+        groupDAO.setSiloService(siloService);
+        
+        Group fleetGroup = groupDAO.findByID(16777218);
+        if (fleetGroup.getType() == null)
+        {
+            fleetGroup.setType(GroupType.FLEET);
+        }
+        
+        List<MpgEntity> mpgList = mpgDAO.getEntities(fleetGroup, Duration.DAYS);
+        assertNotNull(mpgList);
+        
+        for (MpgEntity mpg : mpgList)
+        {
+            System.out.println("groupID: " + mpg.getGroupID() + " " + mpg.getEntityName() + " heavy: " + mpg.getHeavyValue() + " med: " + mpg.getMediumValue() + " light: " + mpg.getLightValue());
+        }
+
+        Group teamGroup = groupDAO.findByID(16777228);
+        if (teamGroup.getType() == null)
+        {
+            teamGroup.setType(GroupType.TEAM);
+        }
+        
+        mpgList = mpgDAO.getEntities(teamGroup, Duration.DAYS);
+        assertNotNull(mpgList);
+      
+        for (MpgEntity mpg : mpgList)
+        {
+            System.out.println("groupID: " + mpg.getGroupID() + " " + mpg.getEntityName() + " heavy: " + mpg.getHeavyValue() + " med: " + mpg.getMediumValue() + " light: " + mpg.getLightValue());
+        }
+      
         
     }
 }
