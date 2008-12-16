@@ -193,8 +193,10 @@ public interface ReportService extends HessianService
     List<Map<String, Object>> getVDScoresByGT(Integer groupID, Integer duration);
  
     List<Map<String, Object>> getSDScoresByGT(Integer groupID, Integer duration);
+       
+    Map<String, Object> getDPctByGT(Integer groupID, Integer duration, Integer metric);
     
+//  GQMap  
     List<Map<String, Object>> getSDTrendsByGTC(Integer groupID, Integer duration, Integer metric);
     
-    Map<String, Object> getDPctByGT(Integer groupID, Integer duration, Integer metric);
 }
