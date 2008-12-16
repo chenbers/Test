@@ -70,21 +70,7 @@ public class DVQMapHessianDAO extends GenericHessianDAO<DVQMap, Integer> impleme
         }
         
     }
-    
-    @Override
-    public List<DVQMap> getSDTrendsByGTC(Integer groupID, Integer duration, Integer metric)
-    {
-        try
-        {
-            return getMapper().convertToModelObject(getReportService().getSDTrendsByGTC(groupID,duration,metric), DVQMap.class);           
-        }
-        catch (EmptyResultSetException e)
-        {
-            return Collections.emptyList();
-        }
-        
-    }    
-    
+
     public QuintileMap getDPctByGT(Integer groupID, Integer duration, Integer metric) 
     {
         try
