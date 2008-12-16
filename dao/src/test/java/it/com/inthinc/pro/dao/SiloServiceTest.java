@@ -387,7 +387,7 @@ public class SiloServiceTest
         notifyPersonIDs.add(this.personList.get(0).getPersonID());
         ZoneAlert zoneAlert = new ZoneAlert(acctID, "Zone Alert Profile", "Zone Alert Profile Description", 
                 0, 1339, dayOfWeek, groupIDList,
-                notifyPersonIDs, null,
+                null, null, null, notifyPersonIDs, null,
                 0, zoneID, true, true);
         
         Integer zoneAlertID = zoneAlertDAO.create(acctID, zoneAlert);

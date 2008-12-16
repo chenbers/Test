@@ -17,9 +17,10 @@ public class ZoneAlert extends BaseAlert
     private Boolean           departure;
 
     public ZoneAlert(Integer accountID, String name, String description, Integer startTOD, Integer stopTOD, List<Boolean> dayOfWeek, List<Integer> groupIDs,
-            List<Integer> notifyPersonIDs, List<String> emailTo, Integer zoneAlertID, Integer zoneID, Boolean arrival, Boolean departure)
+            List<Integer> driverIDs, List<Integer> vehicleIDs, List<VehicleType> vehicleTypes, List<Integer> notifyPersonIDs, List<String> emailTo,
+            Integer zoneAlertID, Integer zoneID, Boolean arrival, Boolean departure)
     {
-        super(accountID, name, description, startTOD, stopTOD, dayOfWeek, groupIDs, notifyPersonIDs, emailTo);
+        super(accountID, name, description, startTOD, stopTOD, dayOfWeek, groupIDs, driverIDs, vehicleIDs, vehicleTypes, notifyPersonIDs, emailTo);
         this.zoneAlertID = zoneAlertID;
         this.zoneID = zoneID;
         this.arrival = arrival;

@@ -130,9 +130,8 @@
 
                         <rich:message for="assignType" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 
-                        <ui:include src="../../includes/listPicker.xhtml">
-                          <ui:param name="bean" value="#{redFlagAlertsBean.assignPicker}" />
-                          <ui:param name="id" value="alertAssign" />
+                        <ui:include src="../../includes/alertAssign.xhtml">
+                          <ui:param name="alertsBean" value="#{redFlagAlertsBean}" />
                           <ui:param name="onchange" value="checkMultiple('assignTo')" />
                         </ui:include>
 
