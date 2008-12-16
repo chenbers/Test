@@ -139,6 +139,15 @@
             <plugin>
                 <groupId>com.atlassian.maven.plugins</groupId>
                 <artifactId>maven-clover2-plugin</artifactId>
+                <configuration>
+                    <license>
+                    <![CDATA[PNrotgFDPwHIFXwBMAIebCtePntllluADfELoVReVQcPSS
+mi2KFq<Nc4zYl8ZVexWN8GNR2KNYvC5rn293xhqnaa8hMH
+QROnTXrOnpnpNqQpRomwtNpNmPMPpMnrpNtWTWVXutwqMU
+VrRnmnmUUnoovmmmqmmmmmUUnoovmmmqmmmmmUU9kqefkZ
+WWUUnm]]>
+                    </license>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
