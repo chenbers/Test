@@ -10,38 +10,48 @@ import java.util.Map;
 public enum ScoreType implements BaseEnum
 {
 
-    SCORE_OVERALL(1, "SCORE_OVERALL"),
-    SCORE_SPEEDING(2, "SCORE_SPEEDING"),
-    SCORE_SEATBELT(3, "SCORE_SEATBELT"),
-    SCORE_DRIVING_STYLE(4, "SCORE_DRIVING_STYLE"),
-    SCORE_COACHING_EVENTS(5, "SCORE_COACHING_EVENTS"),
-    SCORE_OVERALL_TIME(6, "SCORE_OVERALL_TIME"),
+    SCORE_OVERALL(1, "SCORE_OVERALL", DriveQMetric.DRIVEQMETRIC_OVERALL),
+    SCORE_SPEEDING(2, "SCORE_SPEEDING", DriveQMetric.DRIVEQMETRIC_SPEEDING),
+    SCORE_SEATBELT(3, "SCORE_SEATBELT", DriveQMetric.DRIVEQMETRIC_SEATBELT),
+    SCORE_DRIVING_STYLE(4, "SCORE_DRIVING_STYLE", DriveQMetric.DRIVEQMETRIC_DRIVING_STYLE),
+    SCORE_COACHING_EVENTS(5, "SCORE_COACHING_EVENTS", DriveQMetric.DRIVEQMETRIC_COACHING),
+    SCORE_OVERALL_TIME(6, "SCORE_OVERALL_TIME", 0),     // TODO: do we need this one?
     // subTypes of SPEEDING
-    SCORE_SPEEDING_21_30(7, "SCORE_SPEEDING_21_30"),
-    SCORE_SPEEDING_31_40(8, "SCORE_SPEEDING_31_40"),
-    SCORE_SPEEDING_41_54(9, "SCORE_SPEEDING_41_54"),
-    SCORE_SPEEDING_55_64(10, "SCORE_SPEEDING_55_64"),
-    SCORE_SPEEDING_65_80(11, "SCORE_SPEEDING_65_80"),
+    SCORE_SPEEDING_21_30(7, "SCORE_SPEEDING_21_30", DriveQMetric.DRIVEQMETRIC_SPEEDING1),
+    SCORE_SPEEDING_31_40(8, "SCORE_SPEEDING_31_40", DriveQMetric.DRIVEQMETRIC_SPEEDING2),
+    SCORE_SPEEDING_41_54(9, "SCORE_SPEEDING_41_54", DriveQMetric.DRIVEQMETRIC_SPEEDING3),
+    SCORE_SPEEDING_55_64(10, "SCORE_SPEEDING_55_64", DriveQMetric.DRIVEQMETRIC_SPEEDING4),
+    SCORE_SPEEDING_65_80(11, "SCORE_SPEEDING_65_80", DriveQMetric.DRIVEQMETRIC_SPEEDING5),
     // subTypes of SEAT BELT
-    SCORE_SEATBELT_30_DAYS(12, "SCORE_SEATBELT_30_DAYS"),
-    SCORE_SEATBELT_3_MONTHS(13, "SCORE_SEATBELT_3_MONTHS"),
-    SCORE_SEATBELT_6_MONTHS(14, "SCORE_SEATBELT_6_MONTHS"),
-    SCORE_SEATBELT_12_MONTHS(15, "SCORE_SEATBELT_12_MONTHS"),
+    SCORE_SEATBELT_30_DAYS(12, "SCORE_SEATBELT_30_DAYS", DriveQMetric.DRIVEQMETRIC_SEATBELT, Duration.DAYS),
+    SCORE_SEATBELT_3_MONTHS(13, "SCORE_SEATBELT_3_MONTHS", DriveQMetric.DRIVEQMETRIC_SEATBELT, Duration.THREE),
+    SCORE_SEATBELT_6_MONTHS(14, "SCORE_SEATBELT_6_MONTHS", DriveQMetric.DRIVEQMETRIC_SEATBELT, Duration.SIX),
+    SCORE_SEATBELT_12_MONTHS(15, "SCORE_SEATBELT_12_MONTHS", DriveQMetric.DRIVEQMETRIC_SEATBELT, Duration.TWELVE),
     // subTypes of DRIVING_STYLE
-    SCORE_DRIVING_STYLE_HARD_BRAKE(16, "SCORE_DRIVING_STYLE_HARD_BRAKE"),
-    SCORE_DRIVING_STYLE_HARD_ACCEL(17, "SCORE_DRIVING_STYLE_HARD_ACCEL"),
-    SCORE_DRIVING_STYLE_HARD_TURN(18, "SCORE_DRIVING_STYLE_HARD_TURN"),
-    SCORE_DRIVING_STYLE_HARD_LTURN(19, "SCORE_DRIVING_STYLE_HARD_LTURN"),
-    SCORE_DRIVING_STYLE_HARD_RTURN(20, "SCORE_DRIVING_STYLE_HARD_RTURN"),
-    SCORE_DRIVING_STYLE_HARD_BUMP(21, "SCORE_DRIVING_STYLE_HARD_BUMP");
+    SCORE_DRIVING_STYLE_HARD_BRAKE(16, "SCORE_DRIVING_STYLE_HARD_BRAKE", DriveQMetric.DRIVEQMETRIC_AGGRESSIVE_BRAKE),
+    SCORE_DRIVING_STYLE_HARD_ACCEL(17, "SCORE_DRIVING_STYLE_HARD_ACCEL", DriveQMetric.DRIVEQMETRIC_AGGRESSIVE_ACCEL),
+    SCORE_DRIVING_STYLE_HARD_TURN(18, "SCORE_DRIVING_STYLE_HARD_TURN", DriveQMetric.DRIVEQMETRIC_AGGRESSIVE_TURN),
+    SCORE_DRIVING_STYLE_HARD_LTURN(19, "SCORE_DRIVING_STYLE_HARD_LTURN", DriveQMetric.DRIVEQMETRIC_AGGRESSIVE_LEFT),
+    SCORE_DRIVING_STYLE_HARD_RTURN(20, "SCORE_DRIVING_STYLE_HARD_RTURN", DriveQMetric.DRIVEQMETRIC_AGGRESSIVE_RIGHT),
+    SCORE_DRIVING_STYLE_HARD_BUMP(21, "SCORE_DRIVING_STYLE_HARD_BUMP", DriveQMetric.DRIVEQMETRIC_AGGRESSIVE_BUMP);
 
     private String description;
     private int code;
-
-    private ScoreType(int code, String description)
+    private int driveQMetric;
+    private Duration duration;
+    
+    private ScoreType(int code, String description, int driveQMetric)
     {
         this.code = code;
         this.description = description;
+        this.driveQMetric = driveQMetric;
+    }
+    private ScoreType(int code, String description, int driveQMetric, Duration duration)
+    {
+        this.code = code;
+        this.description = description;
+        this.driveQMetric = driveQMetric;
+        this.duration = duration;
     }
 
     private static final Map<Integer, ScoreType> lookup = new HashMap<Integer, ScoreType>();
@@ -91,6 +101,24 @@ public enum ScoreType implements BaseEnum
     public String toString()
     {
         return this.description;
+    }
+
+    public int getDriveQMetric()
+    {
+        return driveQMetric;
+    }
+
+    public void setDriveQMetric(int driveQMetric)
+    {
+        this.driveQMetric = driveQMetric;
+    }
+    public Duration getDuration()
+    {
+        return duration;
+    }
+    public void setDuration(Duration duration)
+    {
+        this.duration = duration;
     }
 }
 

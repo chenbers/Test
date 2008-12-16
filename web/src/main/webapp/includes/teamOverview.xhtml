@@ -23,7 +23,7 @@
 <!-- START PANEL -->
 <h:panelGroup layout="block">
 	<h:panelGroup layout="block" styleClass="panel_nw">
-		<h:panelGroup layout="block" styleClass="panel_title" >
+		<h:panelGroup layout="block" styleClass="panel_title" id="overview-header">
 			<span class="line">#{messages.team_overview}</span>
 				<a4j:region rendered="#{teamOverviewBean.selectedAction.key != 'seatbelt'}" >
 				<ui:include src="/includes/dateLinks.xhtml" >
@@ -47,7 +47,7 @@
 					<ul class="htabs">
 				      <ui:repeat value="#{teamOverviewBean.actions}" var="action" id="menu">
                     	<li class="#{(action.key == teamOverviewBean.selectedAction.key) ? action.onStyle : action.offStyle}">
-				            <a4j:commandLink title="#{action.displayString}" reRender="overview-form,overview-content,duration-links">
+				            <a4j:commandLink title="#{action.displayString}" reRender="overview-header,overview-form,overview-content,duration-links">
 								<h:graphicImage value="/images/x.gif" width="#{action.width}" height="27"  style="border:none"/>
 				            	<f:setPropertyActionListener target="#{teamOverviewBean.selectedAction}" value="#{action}" />
 				            </a4j:commandLink>	

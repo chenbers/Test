@@ -11,6 +11,7 @@ import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
 import com.inthinc.pro.dao.mock.data.MockData;
+import com.inthinc.pro.dao.mock.data.MockQuintileMap;
 import com.inthinc.pro.dao.mock.data.SearchCriteria;
 import com.inthinc.pro.dao.mock.data.TempConversionUtil;
 import com.inthinc.pro.dao.util.DateUtil;
@@ -521,7 +522,18 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
 //  Miscellaneous    
     public Map<String, Object> getDPctByGT(Integer groupID, Integer duration, Integer metric)
     {
-        return null;
+        SearchCriteria searchCriteria;
+        searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("groupID", groupID);
+        searchCriteria.addKeyValue("driveQMetric", metric);
+        searchCriteria.addKeyValue("duration", duration);
+
+        MockQuintileMap mockQuintileMap = MockData.getInstance().retrieveObject(MockQuintileMap.class, searchCriteria);
+        if (mockQuintileMap != null)
+        {
+            return TempConversionUtil.createMapFromObject(mockQuintileMap.getQuintileMap(), false);
+        }
+        throw new EmptyResultSetException("No scores for group: " + groupID, "getDPctByGT", 0);
     }
     
 }

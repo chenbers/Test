@@ -106,7 +106,6 @@ public class ScoreHessianDAOTest
 
     private void checkBreakdown(Integer testGroupID, Duration duration, ScoreType scoreType, int expectedBreakdownSize)
     {
-        Integer totalDrivers = MockData.getInstance().unitTestStats.totalDrivers;
         List<ScoreTypeBreakdown> scoreBreakdownList = scoreHessianDAO.getScoreBreakdownByType(testGroupID, duration, scoreType);
         assertEquals(expectedBreakdownSize, scoreBreakdownList.size());
         List<ScoreType> subTypeList = scoreType.getSubTypes();
@@ -114,7 +113,6 @@ public class ScoreHessianDAOTest
         for (ScoreType subType : subTypeList)
         {
            
-           List<Integer> valueList = MockData.getInstance().unitTestStats.totalScoreCntPerType.get(subType);
            boolean found = false;
            for (ScoreTypeBreakdown breakdown : scoreBreakdownList)
            {
@@ -125,24 +123,9 @@ public class ScoreHessianDAOTest
                    int total = 0; 
                    for (int i = 0; i < 5; i++)
                    {
-                       total += valueList.get(i);
+                       total +=  breakdown.getPercentageList().get(i).getScore();
                    }
-                   int percentTotal = 0;
-                   for (int i = 0; i < 5; i++)
-                   {
-                       Integer expected = null;
-                       if (i == 4)
-                       {
-                           expected = 100 - percentTotal;
-                       }
-                       else
-                       {
-                           expected = Math.round((float) ((float) valueList.get(i) * 100f) / (float) total);
-                           percentTotal += expected;
-                       }
-                       assertEquals(expected, breakdown.getPercentageList().get(i).getScore());
-                   }
-                   break;
+                   assertEquals(100, total);
                }
            }
            

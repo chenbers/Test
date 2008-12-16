@@ -1,5 +1,10 @@
 package com.inthinc.pro.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.inthinc.pro.dao.annotations.Column;
+
 public class QuintileMap extends BaseEntity
 {
     private Integer percent1;
@@ -7,6 +12,9 @@ public class QuintileMap extends BaseEntity
     private Integer percent3;
     private Integer percent4;
     private Integer percent5;
+    
+    @Column(updateable=false)
+    private transient List<Integer> percentList;
     
     public Integer getPercent1()
     {
@@ -47,6 +55,23 @@ public class QuintileMap extends BaseEntity
     public void setPercent5(Integer percent5)
     {
         this.percent5 = percent5;
+    }
+    public List<Integer> getPercentList()
+    {
+        if (percentList == null)
+        {
+            percentList = new ArrayList<Integer>();
+            percentList.add(percent1);
+            percentList.add(percent2);
+            percentList.add(percent3);
+            percentList.add(percent4);
+            percentList.add(percent5);
+        }
+        return percentList;
+    }
+    public void setPercentList(List<Integer> percentList)
+    {
+        this.percentList = percentList;
     }
 
 }

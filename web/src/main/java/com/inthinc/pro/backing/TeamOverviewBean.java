@@ -125,17 +125,22 @@ logger.debug("getSelectedBarDef() ");
         // Control parameters
         sb.append(bar3d.getControlParameters());
         sb.append(bar3d.getCategories(categoryLabelList));
-        
-        List<ScoreCategory> categoryList = Collections.list(Collections.enumeration(EnumSet.allOf(ScoreCategory.class)));
-        Collections.reverse(categoryList);
-        for (ScoreCategory category : categoryList)
+        if (scoreDataList.size() > 0)
         {
-            List<Object> valueList = new ArrayList<Object>();
-            for (ScoreTypeBreakdown scoreTypeBreakdown : scoreDataList)
+        
+            List<ScoreCategory> categoryList = Collections.list(Collections.enumeration(EnumSet.allOf(ScoreCategory.class)));
+            Collections.reverse(categoryList);
+            for (ScoreCategory category : categoryList)
             {
-                valueList.add(scoreTypeBreakdown.getPercentageList().get(category.getCode()-1).getScore());
+                List<Object> valueList = new ArrayList<Object>();
+                for (ScoreTypeBreakdown scoreTypeBreakdown : scoreDataList)
+                {
+                    if (scoreTypeBreakdown.getPercentageList().size() > category.getCode()-1)
+                        valueList.add(scoreTypeBreakdown.getPercentageList().get(category.getCode()-1).getScore());
+                    else valueList.add(0);
+                }
+                sb.append(bar3d.getChartDataSet(category.getRange(), category.getColor(), valueList.toArray(new Object[0])));
             }
-            sb.append(bar3d.getChartDataSet(category.getRange(), category.getColor(), valueList.toArray(new Object[0])));
         }
         sb.append(bar3d.getClose());
 

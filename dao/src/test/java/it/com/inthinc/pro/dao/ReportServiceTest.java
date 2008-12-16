@@ -88,5 +88,18 @@ public class ReportServiceTest
         assertEquals("no score expected", 0, scoreableEntityList.size());
     }
 
+    @Test
+    public void getScoreBreakdown()
+    {
+        ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
+        scoreDAO.setReportService(reportService);
+        
+        
+        Integer groupID = 16777218;
+        List<ScoreableEntity> scoreableEntityList = scoreDAO.getScoreBreakdown(groupID, Duration.DAYS, ScoreType.SCORE_OVERALL);
+        
+        assertNotNull(scoreableEntityList);
+        
+    }
 
 }

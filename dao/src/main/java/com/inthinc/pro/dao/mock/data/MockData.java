@@ -28,7 +28,9 @@ import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceLowBatteryEvent;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.DriveQMap;
+import com.inthinc.pro.model.DriveQMetric;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
@@ -40,6 +42,7 @@ import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.LowBatteryEvent;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.QuintileMap;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.RedFlagAlert;
@@ -217,6 +220,7 @@ public class MockData
             addMpg(groups[cnt].getGroupID(), groups[cnt].getName(), groups[cnt].getGroupID());
             
             addGroupDriveQMap(groups[cnt]);
+            addGroupQuintileMaps(groups[cnt]);
             
             if (!groupIsParent(groups, groups[cnt].getGroupID()))
             {
@@ -240,6 +244,34 @@ public class MockData
         
     }
     
+    private void addGroupQuintileMaps(Group group)
+    {
+        QuintileMap qMap = new QuintileMap();
+        
+        for (int i = DriveQMetric.DRIVEQMETRIC_MIN; i <= DriveQMetric.DRIVEQMETRIC_MAX; i++ )
+        {
+            for (Duration duration : EnumSet.allOf(Duration.class))
+            {
+                MockQuintileMap mockQuintileMap = new MockQuintileMap(randomQuintileMap(), group.getGroupID(), i, duration.getCode());
+                storeObject(mockQuintileMap);
+            }
+        }
+
+        
+    }
+    
+    private QuintileMap randomQuintileMap()
+    {
+        QuintileMap qMap = new QuintileMap();
+        qMap.setPercent1(randomInt(0, 25));
+        qMap.setPercent2(randomInt(0, 25));
+        qMap.setPercent3(randomInt(0, 25));
+        qMap.setPercent4(randomInt(0, 25));
+        qMap.setPercent5(100 - (qMap.getPercent1()+qMap.getPercent2()+qMap.getPercent3()+qMap.getPercent4()));
+        
+        return qMap;
+    }
+
     private void addGroupDriveQMap(Group group)
     {
         
