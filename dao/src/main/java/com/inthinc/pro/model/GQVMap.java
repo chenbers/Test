@@ -2,10 +2,18 @@ package com.inthinc.pro.model;
 
 import java.util.List;
 
+import com.inthinc.pro.dao.annotations.Column;
+
 public class GQVMap extends BaseEntity
 {
     private Group group;
+    @Column(name="driveQV", type=com.inthinc.pro.model.DriveQMap.class, updateable=false)
     private List<DriveQMap> driveQV;
+    
+    public GQVMap()
+    {
+        
+    }
     
     public Group getGroup()
     {
