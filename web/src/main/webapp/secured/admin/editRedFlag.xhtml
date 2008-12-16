@@ -15,8 +15,8 @@
       <tr>
         <td valign="top" width="130">
           <ui:include src="/includes/adminSideNav.xhtml">
-            <ui:param name="selectedAction" value="#{(redFlagAlertsBean.add) ? 'go_adminAddRedFlagAlert' : 'go_adminRedFlagAlerts'}" />
-            <ui:param name="parentAction" value="go_adminRedFlagAlerts" />
+            <ui:param name="selectedAction" value="#{(redFlagAlertsBean.add) ? 'go_adminAddRedFlag' : 'go_adminRedFlags'}" />
+            <ui:param name="parentAction" value="go_adminRedFlags" />
           </ui:include>
         </td>
         <td valign="top">
@@ -27,7 +27,7 @@
             <div class="">
               <div class="panel_nw">
                 <div class="panel_title">
-                  <span class="admin"><h:outputText value="#{redFlagAlertsBean.add ? messages.adminHeader_addRedFlagAlert : (redFlagAlertsBean.batchEdit ? messages.adminHeader_editRedFlagAlerts : messages.adminHeader_editRedFlagAlert)}" /></span>
+                  <span class="admin"><h:outputText value="#{redFlagAlertsBean.add ? messages.adminHeader_addRedFlag : (redFlagAlertsBean.batchEdit ? messages.adminHeader_editRedFlags : messages.adminHeader_editRedFlag)}" /></span>
                   <span class="panel_links"></span>
                 </div>
               </div>
@@ -130,8 +130,9 @@
 
                         <rich:message for="assignType" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 
-                        <ui:include src="../../includes/alertAssign.xhtml">
-                          <ui:param name="alertsBean" value="#{redFlagAlertsBean}" />
+                        <ui:include src="../../includes/listPicker.xhtml">
+                          <ui:param name="bean" value="#{redFlagAlertsBean.assignPicker}" />
+                          <ui:param name="id" value="alertAssign" />
                           <ui:param name="onchange" value="checkMultiple('assignTo')" />
                         </ui:include>
 

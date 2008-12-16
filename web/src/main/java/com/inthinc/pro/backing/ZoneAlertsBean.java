@@ -172,11 +172,7 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
 
         // at least one alert is defined
         for (final ZoneAlertView alert : saveItems)
-            if (!Boolean.TRUE.equals(alert.getArrival()) && !Boolean.TRUE.equals(alert.getDeparture()) && !Boolean.TRUE.equals(alert.getDriverIDViolation())
-                    && !Boolean.TRUE.equals(alert.getIgnitionOn()) && !Boolean.TRUE.equals(alert.getIgnitionOff()) && !Boolean.TRUE.equals(alert.getPosition())
-                    && !Boolean.TRUE.equals(alert.getSeatbeltViolation()) && ((alert.getSpeedLimit() == null) || (alert.getSpeedLimit() == 0))
-                    && !Boolean.TRUE.equals(alert.getSpeedViolation()) && !Boolean.TRUE.equals(alert.getMasterBuzzer()) && !Boolean.TRUE.equals(alert.getCautionArea())
-                    && !Boolean.TRUE.equals(alert.getDisableRF()) && !Boolean.TRUE.equals(alert.getMonitorIdle()))
+            if (!Boolean.TRUE.equals(alert.getArrival()) && !Boolean.TRUE.equals(alert.getDeparture()))
             {
                 final String summary = MessageUtil.formatMessageString("editZoneAlert_noAlerts");
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
@@ -305,15 +301,6 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
                 super.setStopTOD(stopTOD);
             else
                 super.setStopTOD(null);
-        }
-
-        public boolean isSpeedLimitSelected()
-        {
-            return (getSpeedLimit() != null) && (getSpeedLimit() > 0);
-        }
-
-        public void setSpeedLimitSelected(boolean speedLimitSelected)
-        {
         }
 
         public boolean isSelected()

@@ -782,19 +782,7 @@ public class MockData
             alert.setDescription("Toolin' around the zone");
             alert.setArrival(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
             alert.setDeparture(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-            alert.setDriverIDViolation(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-            alert.setIgnitionOn(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-            alert.setIgnitionOff(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-            alert.setPosition(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-            alert.setSeatbeltViolation(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-            if (randomInt(0, 1) == 1)
-                alert.setSpeedLimit(randomInt(5, 70));
-            alert.setSpeedViolation(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-            alert.setMasterBuzzer(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-            alert.setCautionArea(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-            alert.setDisableRF(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-            alert.setMonitorIdle(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-// TODO: vehicles, recipients
+// TODO: groups, recipients
             storeObject(alert);
             alerts.add(alert);
         }

@@ -25,9 +25,6 @@ public abstract class BaseAlert extends BaseEntity
     private Integer             stopTOD;
     private List<Boolean>       dayOfWeek;
     private List<Integer>       groupIDs;
-    private List<Integer>       driverIDs;
-    private List<Integer>       vehicleIDs;
-    private List<VehicleType>   vehicleTypes;
     private List<Integer>       notifyPersonIDs;
     private List<String>        emailTo;
 
@@ -37,7 +34,7 @@ public abstract class BaseAlert extends BaseEntity
     }
     
     public BaseAlert(Integer accountID, String name, String description, Integer startTOD, Integer stopTOD, List<Boolean> dayOfWeek, List<Integer> groupIDs,
-            List<Integer> driverIDs, List<Integer> vehicleIDs, List<VehicleType> vehicleTypes, List<Integer> notifyPersonIDs, List<String> emailTo)
+            List<Integer> notifyPersonIDs, List<String> emailTo)
     {
         super();
         this.accountID = accountID;
@@ -47,9 +44,6 @@ public abstract class BaseAlert extends BaseEntity
         this.stopTOD = stopTOD;
         this.dayOfWeek = dayOfWeek;
         this.groupIDs = groupIDs;
-        this.driverIDs = driverIDs;
-        this.vehicleIDs = vehicleIDs;
-        this.vehicleTypes = vehicleTypes;
         this.notifyPersonIDs = notifyPersonIDs;
         this.emailTo = emailTo;
     }
@@ -122,36 +116,6 @@ public abstract class BaseAlert extends BaseEntity
     public void setGroupIDs(List<Integer> groupIDs)
     {
         this.groupIDs = groupIDs;
-    }
-
-    public List<Integer> getDriverIDs()
-    {
-        return driverIDs;
-    }
-
-    public void setDriverIDs(List<Integer> driverIDs)
-    {
-        this.driverIDs = driverIDs;
-    }
-
-    public List<Integer> getVehicleIDs()
-    {
-        return vehicleIDs;
-    }
-
-    public void setVehicleIDs(List<Integer> vehicleIDs)
-    {
-        this.vehicleIDs = vehicleIDs;
-    }
-
-    public List<VehicleType> getVehicleTypes()
-    {
-        return vehicleTypes;
-    }
-
-    public void setVehicleTypes(List<VehicleType> vehicleTypes)
-    {
-        this.vehicleTypes = vehicleTypes;
     }
 
     public List<Integer> getNotifyPersonIDs()

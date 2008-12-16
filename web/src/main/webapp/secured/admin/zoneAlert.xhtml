@@ -5,7 +5,7 @@
               xmlns:rich="http://richfaces.org/rich"
               xmlns:a4j="http://richfaces.org/a4j"
               xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:c="http://java.sun.com/jstl/core"
+              xmlns:c="http://java.sun.com/jstl/core"
               xmlns:security="http://pro.tiwi.com/jsf/security">
 
   <ui:param name="adminSelected" value="current" />
@@ -134,72 +134,12 @@
                         <table width="380" border="0" cellspacing="2" cellpadding="4" align="center">
                           <tr>
                             <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.speedLimitSelected}" disabled="true" />
-                              <h:outputText value="#{messages.editZoneAlert_speedLimit}" />
-                              <ui:fragment rendered="#{zoneAlertsBean.item.speedLimitSelected}">
-                                <h:outputText value=": " />
-                                <h:outputText value="#{zoneAlertsBean.item.speedLimit}" />
-                              </ui:fragment>
-                            </td>
-                            <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.seatbeltViolation}" disabled="true" />
-                              <h:outputText value="#{messages.editZoneAlert_seatbeltViolation}" />
-                            </td>
-                          </tr>
-                          <tr>
-                            <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.cautionArea}" disabled="true" />
-                              <h:outputText value="#{messages.editZoneAlert_cautionArea}" />
-                            </td>
-                            <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.speedViolation}" disabled="true" />
-                              <h:outputText value="#{messages.editZoneAlert_speedViolation}" />
-                            </td>
-                          </tr>
-                          <tr>
-                            <td width="50%">
                               <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.arrival}" disabled="true" />
                               <h:outputText value="#{messages.editZoneAlert_arrival}" />
                             </td>
                             <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.driverIDViolation}" disabled="true" />
-                              <h:outputText value="#{messages.editZoneAlert_driverIDViolation}" />
-                            </td>
-                          </tr>
-                          <tr>
-                            <td width="50%">
                               <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.departure}" disabled="true" />
                               <h:outputText value="#{messages.editZoneAlert_departure}" />
-                            </td>
-                            <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.position}" disabled="true" />
-                              <h:outputText value="#{messages.editZoneAlert_position}" />
-                            </td>
-                          </tr>
-                          <tr>
-                            <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.ignitionOn}" disabled="true" />
-                              <h:outputText value="#{messages.editZoneAlert_ignitionOn}" />
-                            </td>
-                            <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.masterBuzzer}" disabled="true" />
-                              <h:outputText value="#{messages.editZoneAlert_masterBuzzer}" />
-                            </td>
-                          </tr>
-                          <tr>
-                            <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.ignitionOff}" disabled="true" />
-                              <h:outputText value="#{messages.editZoneAlert_ignitionOff}" />
-                            </td>
-                            <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.monitorIdle}" disabled="true" />
-                              <h:outputText value="#{messages.editZoneAlert_monitorIdle}" />
-                            </td>
-                          </tr>
-                          <tr>
-                            <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.disableRF}" disabled="true" />
-                              <h:outputText value="#{messages.editZoneAlert_disableRF}" />
                             </td>
                           </tr>
                         </table>

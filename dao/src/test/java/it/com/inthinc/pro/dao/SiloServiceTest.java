@@ -387,9 +387,8 @@ public class SiloServiceTest
         notifyPersonIDs.add(this.personList.get(0).getPersonID());
         ZoneAlert zoneAlert = new ZoneAlert(acctID, "Zone Alert Profile", "Zone Alert Profile Description", 
                 0, 1339, dayOfWeek, groupIDList,
-                null, null, null, notifyPersonIDs, null,
-                0, zoneID, true, true, true, true, true, true,
-                true, 80, true, true, true, true, true);
+                notifyPersonIDs, null,
+                0, zoneID, true, true);
         
         Integer zoneAlertID = zoneAlertDAO.create(acctID, zoneAlert);
         assertNotNull(zoneAlertID);
@@ -404,7 +403,6 @@ public class SiloServiceTest
         zoneAlert.setName("Mod Zone Alert Profile");
         zoneAlert.setDescription("Mod Zone Alert Profile Description");
         zoneAlert.setArrival(false);
-        zoneAlert.setDisableRF(false);
         zoneAlert.setGroupIDs(new ArrayList<Integer>());
         List<VehicleType> vehicleTypeList = new ArrayList<VehicleType>();
         vehicleTypeList.add(VehicleType.LIGHT);

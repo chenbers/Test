@@ -117,20 +117,6 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
                 if (getItem().getGroupIDs().contains(group.getGroupID()))
                     picked.add(new SelectItem("group" + group.getGroupID(), group.getName()));
 
-        if (getItem().getVehicleTypes() != null)
-            for (final VehicleType type : getItem().getVehicleTypes())
-                picked.add(new SelectItem(type.toString(), MessageUtil.getMessageString("editAlerts_" + type.toString().toLowerCase() + "Vehicles")));
-
-        if (getItem().getVehicleIDs() != null)
-            for (final SelectItem vehicle : allVehicles)
-                if (getItem().getVehicleIDs().contains(new Integer(vehicle.getValue().toString().substring(7))))
-                    picked.add(vehicle);
-
-        if (getItem().getDriverIDs() != null)
-            for (final SelectItem driver : allDrivers)
-                if (getItem().getDriverIDs().contains(new Integer(driver.getValue().toString().substring(6))))
-                    picked.add(driver);
-
         return picked;
     }
 
@@ -213,33 +199,6 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
                 if (!getItem().getGroupIDs().contains(id))
                     getItem().getGroupIDs().add(id);
             }
-            // vehicle
-            else if (item.getValue().toString().startsWith("vehicle"))
-            {
-                if (getItem().getVehicleIDs() == null)
-                    getItem().setVehicleIDs(new ArrayList<Integer>());
-                final Integer id = new Integer(item.getValue().toString().substring(7));
-                if (!getItem().getVehicleIDs().contains(id))
-                    getItem().getVehicleIDs().add(id);
-            }
-            // driver
-            else if (item.getValue().toString().startsWith("driver"))
-            {
-                if (getItem().getDriverIDs() == null)
-                    getItem().setDriverIDs(new ArrayList<Integer>());
-                final Integer id = new Integer(item.getValue().toString().substring(6));
-                if (!getItem().getDriverIDs().contains(id))
-                    getItem().getDriverIDs().add(id);
-            }
-            else
-            {
-                // vehicle type
-                if (getItem().getVehicleTypes() == null)
-                    getItem().setVehicleTypes(new ArrayList<VehicleType>());
-                final VehicleType type = VehicleType.valueOf(item.getValue().toString());
-                if (!getItem().getVehicleTypes().contains(type))
-                    getItem().getVehicleTypes().add(type);
-            }
         }
 
         // set notify person IDs
@@ -269,14 +228,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
             }
 
             // assigned to something
-            boolean assigned = (alert.getGroupIDs() != null) && (alert.getGroupIDs().size() > 0);
-            if (!assigned)
-                assigned = (alert.getDriverIDs() != null) && (alert.getDriverIDs().size() > 0);
-            if (!assigned)
-                assigned = (alert.getVehicleIDs() != null) && (alert.getVehicleIDs().size() > 0);
-            if (!assigned)
-                assigned = (alert.getVehicleTypes() != null) && (alert.getVehicleTypes().size() > 0);
-            if (!assigned)
+            if ((alert.getGroupIDs() == null) || (alert.getGroupIDs().size() == 0))
             {
                 final String summary = MessageUtil.formatMessageString("editAlerts_unassigned");
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
@@ -348,18 +300,6 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         public List<Integer> getGroupIDs();
 
         public void setGroupIDs(List<Integer> groupIDs);
-
-        public List<Integer> getDriverIDs();
-
-        public void setDriverIDs(List<Integer> driverIDs);
-
-        public List<Integer> getVehicleIDs();
-
-        public void setVehicleIDs(List<Integer> vehicleIDs);
-
-        public List<VehicleType> getVehicleTypes();
-
-        public void setVehicleTypes(List<VehicleType> vehicleTypes);
 
         public List<Integer> getNotifyPersonIDs();
 

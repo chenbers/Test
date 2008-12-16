@@ -52,18 +52,6 @@ public class ZoneAlertsBeanTest extends BaseAdminBeanTest<ZoneAlertsBean.ZoneAle
         editItem.setDescription("Toolin' around the zone");
         editItem.setArrival(MiscUtil.randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
         editItem.setDeparture(MiscUtil.randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-        editItem.setDriverIDViolation(MiscUtil.randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-        editItem.setIgnitionOn(MiscUtil.randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-        editItem.setIgnitionOff(MiscUtil.randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-        editItem.setPosition(MiscUtil.randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-        editItem.setSeatbeltViolation(MiscUtil.randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-        if (MiscUtil.randomInt(0, 1) == 1)
-            editItem.setSpeedLimit(MiscUtil.randomInt(5, 70));
-        editItem.setSpeedViolation(MiscUtil.randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-        editItem.setMasterBuzzer(MiscUtil.randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-        editItem.setCautionArea(MiscUtil.randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-        editItem.setDisableRF(MiscUtil.randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-        editItem.setMonitorIdle(MiscUtil.randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
         final List<SelectItem> pickedGroups = new ArrayList<SelectItem>();
         pickedGroups.add(new SelectItem("group101"));
         ((ZoneAlertsBean) adminBean).getAssignPicker().setPicked(pickedGroups);
