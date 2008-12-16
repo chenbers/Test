@@ -73,15 +73,15 @@
 
                         <table width="400" border="0" cellspacing="2" cellpadding="4" align="center">
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editZoneAlert_name}" /></td>
+                            <td width="100"><h:outputText value="#{messages.editAlerts_name}" /></td>
                             <td><h:outputText value="#{zoneAlertsBean.item.name}" /></td>
                           </tr>
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editZoneAlert_description}" /></td>
+                            <td width="100"><h:outputText value="#{messages.editAlerts_description}" /></td>
                             <td><h:outputText value="#{zoneAlertsBean.item.description}" /></td>
                           </tr>
                           <tr>
-                            <td width="100" valign="top"><h:outputText value="#{messages.editZoneAlert_dayOfWeek}" /></td>
+                            <td width="100" valign="top"><h:outputText value="#{messages.editAlerts_dayOfWeek}" /></td>
                             <td>
                               <ui:include src="../../includes/dayPicker.xhtml">
                                 <ui:param name="days" value="#{zoneAlertsBean.item.dayOfWeek}" />
@@ -90,11 +90,11 @@
                             </td>
                           </tr>
                           <tr>
-                            <td width="100" valign="top"><h:outputText value="#{messages.editZoneAlert_timeframe}" /></td>
+                            <td width="100" valign="top"><h:outputText value="#{messages.editAlerts_timeframe}" /></td>
                             <td>
-                              <h:outputText rendered="#{zoneAlertsBean.item.anytime}" value="#{messages.editZoneAlert_timeframeAnytime}" />
+                              <h:outputText rendered="#{zoneAlertsBean.item.anytime}" value="#{messages.editAlerts_timeframeAnytime}" />
                               <ui:fragment rendered="#{not zoneAlertsBean.item.anytime}">
-                                <h:outputText value="#{messages.editZoneAlert_timeframeBetween}" />
+                                <h:outputText value="#{messages.editAlerts_timeframeBetween}" />
                                 <h:outputText value=" " />
                                 <c:set var="hours" value="#{((zoneAlertsBean.item.startTOD - (zoneAlertsBean.item.startTOD % 60)) / 60 % 12)}" />
                                 <c:if test="#{hours == 0}">
@@ -103,7 +103,7 @@
                                 <h:outputText value="#{hours}"><f:convertNumber integerOnly="true" /></h:outputText>:<h:outputText value="#{zoneAlertsBean.item.startTOD % 60}"><f:convertNumber integerOnly="true" minIntegerDigits="2" maxIntegerDigits="2" /></h:outputText>
                                 <h:outputText value="#{(zoneAlertsBean.item.startTOD ge 720) ? messages.timePicker_pm : messages.timePicker_am}" />
                                 <h:outputText value=" " />
-                                <h:outputText value="#{messages.editZoneAlert_betweenAnd}" />
+                                <h:outputText value="#{messages.editAlerts_betweenAnd}" />
                                 <h:outputText value=" " />
                                 <c:set var="hours" value="#{((zoneAlertsBean.item.stopTOD - (zoneAlertsBean.item.stopTOD % 60)) / 60 % 12)}" />
                                 <c:if test="#{hours == 0}">
@@ -208,7 +208,7 @@
                       <td width="10"><img src="images/x.gif" width="10" /></td>
                       <td width="390" valign="top">
 
-                        <div class="add_section_title"><h:outputText value="#{messages.editZoneAlert_assignTo}" /></div>
+                        <div class="add_section_title"><h:outputText value="#{messages.editAlerts_assignTo}" /></div>
 
                         <ui:repeat value="#{zoneAlertsBean.assignPicker.picked}" var="item">
                           <h:outputText value="#{item.label}" /><br />
@@ -224,7 +224,7 @@
                     <tr>
                       <td width="390" valign="top">
 
-                        <div class="add_section_title"><h:outputText value="#{messages.editZoneAlert_notificationsByName}" /></div>
+                        <div class="add_section_title"><h:outputText value="#{messages.editAlerts_notificationsByName}" /></div>
 
                         <div>
                           <h:outputText value="#{zoneAlertsBean.peoplePicker.picked[0].label}" />
@@ -238,7 +238,7 @@
                       <td width="10"><img src="images/x.gif" width="10" /></td>
                       <td width="390" valign="top">
 
-                        <div class="add_section_title"><h:outputText value="#{messages.editZoneAlert_notificationsByEmail}" /></div>
+                        <div class="add_section_title"><h:outputText value="#{messages.editAlerts_notificationsByEmail}" /></div>
 
                         <div>
                           <a href="mailto:#{email}"><h:outputText value="#{zoneAlertsBean.item.emailTo[0]}" /></a>

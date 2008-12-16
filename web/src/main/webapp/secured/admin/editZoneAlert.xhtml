@@ -82,7 +82,7 @@
                           <tr>
                             <td width="100" valign="top">
                               <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_name" value="#{zoneAlertsBean.updateField['name']}" />
-                              <h:outputText value="#{messages.editZoneAlert_name}" />
+                              <h:outputText value="#{messages.editAlerts_name}" />
                             </td>
                             <td>
                               <h:inputText value="#{zoneAlertsBean.item.name}" id="name" onchange="checkMultiple(this)" styleClass="text" size="30"
@@ -93,7 +93,7 @@
                           <tr>
                             <td width="100" valign="top">
                               <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_description" value="#{zoneAlertsBean.updateField['description']}" />
-                              <h:outputText value="#{messages.editZoneAlert_description}" />
+                              <h:outputText value="#{messages.editAlerts_description}" />
                             </td>
                             <td>
                               <h:inputText value="#{zoneAlertsBean.item.description}" id="description" onchange="checkMultiple(this)" styleClass="text" size="30"
@@ -103,7 +103,7 @@
                           <tr>
                             <td width="100" valign="top">
                               <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_dayOfWeek" value="#{zoneAlertsBean.updateField['dayOfWeek']}" />
-                              <h:outputText value="#{messages.editZoneAlert_dayOfWeek}" />
+                              <h:outputText value="#{messages.editAlerts_dayOfWeek}" />
                             </td>
                             <td>
                               <ui:include src="../../includes/dayPicker.xhtml">
@@ -115,12 +115,12 @@
                           <tr>
                             <td width="100" valign="top">
                               <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_timeframe" value="#{zoneAlertsBean.updateField['timeframe']}" />
-                              <h:outputText value="#{messages.editZoneAlert_timeframe}" />
+                              <h:outputText value="#{messages.editAlerts_timeframe}" />
                             </td>
                             <td>
                               <h:selectOneRadio value="#{zoneAlertsBean.item.anytime}" onchange="document.getElementById('timeframePickers').style.display = (this.value == 'true' ? 'none' : '')">
-                                <f:selectItem itemValue="true" itemLabel="#{messages.editZoneAlert_timeframeAnytime}" />
-                                <f:selectItem itemValue="false" itemLabel="#{messages.editZoneAlert_timeframeBetween}" />
+                                <f:selectItem itemValue="true" itemLabel="#{messages.editAlerts_timeframeAnytime}" />
+                                <f:selectItem itemValue="false" itemLabel="#{messages.editAlerts_timeframeBetween}" />
                               </h:selectOneRadio>
                               <table id="timeframePickers" border="0" style="#{zoneAlertsBean.item.anytime ? 'display:none' : ''}">
                                 <tr>
@@ -131,7 +131,7 @@
                                       <ui:param name="onchange" value="checkMultiple('timeframe')" />
                                     </ui:include>
                                   </td>
-                                  <td><h:outputText value="#{messages.editZoneAlert_betweenAnd}" /></td>
+                                  <td><h:outputText value="#{messages.editAlerts_betweenAnd}" /></td>
                                   <td>
                                     <ui:include src="../../includes/timePicker.xhtml">
                                       <ui:param name="id" value="stopTOD" />
@@ -242,7 +242,7 @@
 
                         <div class="add_section_title">
                           <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_assignTo" value="#{zoneAlertsBean.updateField['assignTo']}" />
-                          <h:outputText value="#{messages.editZoneAlert_assignTo}" />
+                          <h:outputText value="#{messages.editAlerts_assignTo}" />
                         </div>
 
                         <rich:message for="assignType" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -266,10 +266,10 @@
 
                         <div class="add_section_title">
                           <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_notifyPersonIDs" value="#{zoneAlertsBean.updateField['notifyPersonIDs']}" />
-                          <h:outputText value="#{messages.editZoneAlert_notificationsByName}" />
+                          <h:outputText value="#{messages.editAlerts_notificationsByName}" />
                         </div>
 
-                        <div class="instructions"><h:outputText value="#{messages.editZoneAlert_notificationsByNameInstructions}" /></div>
+                        <div class="instructions"><h:outputText value="#{messages.editAlerts_notificationsByNameInstructions}" /></div>
 
                         <ui:include src="../../includes/autocompletePicker.xhtml">
                           <ui:param name="autocompleter" value="#{zoneAlertsBean.peoplePicker}" />
@@ -282,10 +282,10 @@
 
                         <div class="add_section_title">
                           <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_emailToString" value="#{zoneAlertsBean.updateField['emailToString']}" />
-                          <h:outputText value="#{messages.editZoneAlert_notificationsByEmail}" />
+                          <h:outputText value="#{messages.editAlerts_notificationsByEmail}" />
                         </div>
 
-                        <div class="instructions"><h:outputText value="#{messages.editZoneAlert_notificationsByEmailInstructions}" /></div>
+                        <div class="instructions"><h:outputText value="#{messages.editAlerts_notificationsByEmailInstructions}" /></div>
 
                         <h:inputTextarea id="emailToString" value="#{zoneAlertsBean.item.emailToString}" rows="4" style="width:100%" onchange="checkMultiple(this)" />
 

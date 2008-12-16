@@ -1,0 +1,225 @@
+<ui:composition template="/layout/layout.xhtml" 
+              xmlns="http://www.w3.org/1999/xhtml" 
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:rich="http://richfaces.org/rich"
+              xmlns:a4j="http://richfaces.org/a4j"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:security="http://pro.tiwi.com/jsf/security">
+
+  <ui:param name="adminSelected" value="current" />
+
+  <ui:define name="content">
+
+    <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+      <tr>
+        <td valign="top" width="130">
+          <ui:include src="/includes/adminSideNav.xhtml">
+            <ui:param name="selectedAction" value="#{(redFlagAlertsBean.add) ? 'go_adminAddRedFlagAlert' : 'go_adminRedFlagAlerts'}" />
+            <ui:param name="parentAction" value="go_adminRedFlagAlerts" />
+          </ui:include>
+        </td>
+        <td valign="top">
+          <!-- START PANEL -->
+
+          <a4j:form id="edit-form">
+
+            <div class="">
+              <div class="panel_nw">
+                <div class="panel_title">
+                  <span class="admin"><h:outputText value="#{redFlagAlertsBean.add ? messages.adminHeader_addRedFlagAlert : (redFlagAlertsBean.batchEdit ? messages.adminHeader_editRedFlagAlerts : messages.adminHeader_editRedFlagAlert)}" /></span>
+                  <span class="panel_links"></span>
+                </div>
+              </div>
+
+              <div class="panel_w">
+
+                <div class="panel_content">
+
+                  <ul id="grid_nav" style="margin: 0;">
+                    <li class="r"><h:commandLink action="#{redFlagAlertsBean.cancelEdit}" immediate="true"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
+                    <li class="r"><h:commandLink action="#{redFlagAlertsBean.save}"><button value="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink></li>
+                  </ul>
+
+                  <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
+
+                  <div class="add_section_title"><h:outputText value="#{messages.editRedFlag_nameDescriptionType}" /></div>
+
+                  <div class="spacer"></div>
+
+                  <table width="790" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td width="390" valign="top">
+                
+                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                          <tr>
+                            <td width="100" valign="top">
+                              <h:selectBooleanCheckbox rendered="#{redFlagAlertsBean.batchEdit}" id="update_name" value="#{redFlagAlertsBean.updateField['name']}" />
+                              <h:outputText value="#{messages.editAlerts_name}" />
+                            </td>
+                            <td>
+                              <h:inputText value="#{redFlagAlertsBean.item.name}" id="name" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                maxlength="30" required="#{(not redFlagAlertsBean.batchEdit) or redFlagAlertsBean.updateField['name']}" requiredMessage="#{messages.required}" />
+                              <rich:message for="name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td width="100" valign="top">
+                              <h:selectBooleanCheckbox rendered="#{redFlagAlertsBean.batchEdit}" id="update_description" value="#{redFlagAlertsBean.updateField['description']}" />
+                              <h:outputText value="#{messages.editAlerts_description}" />
+                            </td>
+                            <td>
+                              <h:inputText value="#{redFlagAlertsBean.item.description}" id="description" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                maxlength="64" />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td width="100" valign="top">
+                              <h:selectBooleanCheckbox rendered="#{redFlagAlertsBean.batchEdit}" id="update_dayOfWeek" value="#{redFlagAlertsBean.updateField['dayOfWeek']}" />
+                              <h:outputText value="#{messages.editAlerts_dayOfWeek}" />
+                            </td>
+                            <td>
+                              <ui:include src="../../includes/dayPicker.xhtml">
+                                <ui:param name="days" value="#{redFlagAlertsBean.item.dayOfWeek}" />
+                                <ui:param name="onchange" value="checkMultiple('dayOfWeek')" />
+                              </ui:include>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td width="100" valign="top">
+                              <h:selectBooleanCheckbox rendered="#{redFlagAlertsBean.batchEdit}" id="update_timeframe" value="#{redFlagAlertsBean.updateField['timeframe']}" />
+                              <h:outputText value="#{messages.editAlerts_timeframe}" />
+                            </td>
+                            <td>
+                              <h:selectOneRadio value="#{redFlagAlertsBean.item.anytime}" onchange="document.getElementById('timeframePickers').style.display = (this.value == 'true' ? 'none' : '')">
+                                <f:selectItem itemValue="true" itemLabel="#{messages.editAlerts_timeframeAnytime}" />
+                                <f:selectItem itemValue="false" itemLabel="#{messages.editAlerts_timeframeBetween}" />
+                              </h:selectOneRadio>
+                              <table id="timeframePickers" border="0" style="#{redFlagAlertsBean.item.anytime ? 'display:none' : ''}">
+                                <tr>
+                                  <td>
+                                    <ui:include src="../../includes/timePicker.xhtml">
+                                      <ui:param name="id" value="startTOD" />
+                                      <ui:param name="value" value="#{redFlagAlertsBean.item.startTOD}" />
+                                      <ui:param name="onchange" value="checkMultiple('timeframe')" />
+                                    </ui:include>
+                                  </td>
+                                  <td><h:outputText value="#{messages.editAlerts_betweenAnd}" /></td>
+                                  <td>
+                                    <ui:include src="../../includes/timePicker.xhtml">
+                                      <ui:param name="id" value="stopTOD" />
+                                      <ui:param name="value" value="#{redFlagAlertsBean.item.stopTOD}" />
+                                      <ui:param name="onchange" value="checkMultiple('timeframe')" />
+                                    </ui:include>
+                                  </td>
+                                </tr>
+                              </table>
+                              <rich:message for="stopTOD" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            </td>
+                          </tr>
+                        </table>
+
+                      </td>
+                      <td width="10"><img src="images/x.gif" width="10" /></td>
+                      <td width="390" valign="top">
+
+                        <div class="add_section_title">
+                          <h:selectBooleanCheckbox rendered="#{redFlagAlertsBean.batchEdit}" id="update_assignTo" value="#{redFlagAlertsBean.updateField['assignTo']}" />
+                          <h:outputText value="#{messages.editAlerts_assignTo}" />
+                        </div>
+
+                        <rich:message for="assignType" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+
+                        <ui:include src="../../includes/alertAssign.xhtml">
+                          <ui:param name="alertsBean" value="#{redFlagAlertsBean}" />
+                          <ui:param name="onchange" value="checkMultiple('assignTo')" />
+                        </ui:include>
+
+                      </td>
+                    </tr>
+                  </table>
+
+                  <div class="spacer"></div>
+
+TODO: define red flags
+
+                  <div class="spacer"></div>
+
+                  <rich:message for="emailToString" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+
+                  <table width="790" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td width="390" valign="top">
+
+                        <div class="add_section_title">
+                          <h:selectBooleanCheckbox rendered="#{redFlagAlertsBean.batchEdit}" id="update_notifyPersonIDs" value="#{redFlagAlertsBean.updateField['notifyPersonIDs']}" />
+                          <h:outputText value="#{messages.editAlerts_notificationsByName}" />
+                        </div>
+
+                        <div class="instructions"><h:outputText value="#{messages.editAlerts_notificationsByNameInstructions}" /></div>
+
+                        <ui:include src="../../includes/autocompletePicker.xhtml">
+                          <ui:param name="autocompleter" value="#{redFlagAlertsBean.peoplePicker}" />
+                          <ui:param name="onchange" value="checkMultiple('notifyPersonIDs')" />
+                        </ui:include>
+
+                      </td>
+                      <td width="10"><img src="images/x.gif" width="10" /></td>
+                      <td width="390" valign="top">
+
+                        <div class="add_section_title">
+                          <h:selectBooleanCheckbox rendered="#{redFlagAlertsBean.batchEdit}" id="update_emailToString" value="#{redFlagAlertsBean.updateField['emailToString']}" />
+                          <h:outputText value="#{messages.editAlerts_notificationsByEmail}" />
+                        </div>
+
+                        <div class="instructions"><h:outputText value="#{messages.editAlerts_notificationsByEmailInstructions}" /></div>
+
+                        <h:inputTextarea id="emailToString" value="#{redFlagAlertsBean.item.emailToString}" rows="4" style="width:100%" onchange="checkMultiple(this)" />
+
+                      </td>
+                    </tr>
+                  </table>
+
+                  <ul id="grid_nav" style="margin: 0;">
+                    <li class="r"><h:commandLink action="#{redFlagAlertsBean.cancelEdit}" immediate="true"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
+                    <li class="r"><h:commandLink action="#{redFlagAlertsBean.save}"><button value="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink></li>
+                  </ul>
+
+                </div>
+              </div>
+
+              <div class="panel_sw">
+                <div class="panel_statusbar"></div>
+              </div>
+            </div>
+
+          </a4j:form>
+
+          <!-- END PANEL -->
+        </td>
+      </tr>
+    </table>
+
+    <script type="text/javascript">
+      function checkMultiple(item)
+      {
+        var id;
+        if (typeof(item) == "string")
+          id = item;
+        else
+          id = item.id;
+
+        var box;
+        var index = id.indexOf(":");
+        if (index > 0)
+          box = document.getElementById("edit-form:update_" + id.substring(index + 1));
+        else
+          box = document.getElementById("edit-form:update_" + id);
+        if (box)
+          box.checked = true;
+      }
+    </script>
+
+  </ui:define>
+
+</ui:composition>

@@ -1,0 +1,193 @@
+<ui:composition template="/layout/layout.xhtml" 
+              xmlns="http://www.w3.org/1999/xhtml" 
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:rich="http://richfaces.org/rich"
+              xmlns:a4j="http://richfaces.org/a4j"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:security="http://pro.tiwi.com/jsf/security">
+
+  <ui:param name="adminSelected" value="current" />
+
+  <ui:define name="content">
+
+    <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
+      <tr>
+        <td valign="top" width="130">
+          <ui:include src="/includes/adminSideNav.xhtml">
+            <ui:param name="selectedAction" value="go_adminRedFlags" />
+            <ui:param name="parentAction" value="go_adminRedFlags" />
+          </ui:include>
+        </td>
+        <td valign="top">
+          <!-- START PANEL -->
+
+          <a4j:form id="display-form">
+
+            <div class="">
+              <div class="panel_nw">
+                <div class="panel_title">
+                  <span class="admin"><h:outputText value="#{messages.adminHeader_redFlagDetails}" /><h:outputText value=" " /><h:outputText value="#{redFlagAlertsBean.item.name}" /></span>
+                  <span class="panel_links"></span>
+                </div>
+              </div>
+
+              <div class="panel_w">
+
+                <div class="panel_content">
+
+                  <ul id="grid_nav" style="margin: 0;">
+                    <li class="l text"><h:commandLink action="#{redFlagAlertsBean.cancelDisplay}" value="#{messages.redFlag_backToRedFlags}" /></li>
+                    <li class="r"><h:commandLink action="#{redFlagAlertsBean.edit}"><button value="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></h:commandLink></li>
+                    <li class="r"><a4j:commandLink><button value="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink></li>
+                  </ul>
+
+                  <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
+              
+                  <div class="add_section_title"><h:outputText value="#{messages.editRedFlag_nameDescriptionType}" /></div>
+                  
+                  <table width="790" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td width="390" valign="top">
+                
+                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editAlerts_name}" /></td>
+                            <td><h:outputText value="#{redFlagAlertsBean.item.name}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editAlerts_description}" /></td>
+                            <td><h:outputText value="#{redFlagAlertsBean.item.description}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100" valign="top"><h:outputText value="#{messages.editAlerts_dayOfWeek}" /></td>
+                            <td>
+                              <ui:include src="../../includes/dayPicker.xhtml">
+                                <ui:param name="days" value="#{redFlagAlertsBean.item.dayOfWeek}" />
+                                <ui:param name="disabled" value="true" />
+                              </ui:include>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td width="100" valign="top"><h:outputText value="#{messages.editAlerts_timeframe}" /></td>
+                            <td>
+                              <h:outputText rendered="#{redFlagAlertsBean.item.anytime}" value="#{messages.editAlerts_timeframeAnytime}" />
+                              <ui:fragment rendered="#{not redFlagAlertsBean.item.anytime}">
+                                <h:outputText value="#{messages.editAlerts_timeframeBetween}" />
+                                <h:outputText value=" " />
+                                <c:set var="hours" value="#{((redFlagAlertsBean.item.startTOD - (redFlagAlertsBean.item.startTOD % 60)) / 60 % 12)}" />
+                                <c:if test="#{hours == 0}">
+                                  <c:set var="hours" value="12" />
+                                </c:if>
+                                <h:outputText value="#{hours}"><f:convertNumber integerOnly="true" /></h:outputText>:<h:outputText value="#{redFlagAlertsBean.item.startTOD % 60}"><f:convertNumber integerOnly="true" minIntegerDigits="2" maxIntegerDigits="2" /></h:outputText>
+                                <h:outputText value="#{(redFlagAlertsBean.item.startTOD ge 720) ? messages.timePicker_pm : messages.timePicker_am}" />
+                                <h:outputText value=" " />
+                                <h:outputText value="#{messages.editAlerts_betweenAnd}" />
+                                <h:outputText value=" " />
+                                <c:set var="hours" value="#{((redFlagAlertsBean.item.stopTOD - (redFlagAlertsBean.item.stopTOD % 60)) / 60 % 12)}" />
+                                <c:if test="#{hours == 0}">
+                                  <c:set var="hours" value="12" />
+                                </c:if>
+                                <h:outputText value="#{hours}"><f:convertNumber integerOnly="true" /></h:outputText>:<h:outputText value="#{redFlagAlertsBean.item.stopTOD % 60}"><f:convertNumber integerOnly="true" minIntegerDigits="2" maxIntegerDigits="2" /></h:outputText>
+                                <h:outputText value="#{(redFlagAlertsBean.item.stopTOD ge 720) ? messages.timePicker_pm : messages.timePicker_am}" />
+                              </ui:fragment>
+                            </td>
+                          </tr>
+                        </table>
+
+                      </td>
+                      <td width="10"><img src="images/x.gif" width="10" /></td>
+                      <td width="390" valign="top">
+
+                        <div class="add_section_title"><h:outputText value="#{messages.editAlerts_assignTo}" /></div>
+
+                        <ui:repeat value="#{redFlagAlertsBean.assignPicker.picked}" var="item">
+                          <h:outputText value="#{item.label}" /><br />
+                        </ui:repeat>
+
+                      </td>
+                    </tr>
+                  </table>
+
+                  <div class="spacer"></div>
+
+                  <div class="add_section_title"><h:outputText value="#{messages.editRedFlag_defineRedFlag}" /></div>
+
+                  <table width="790" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td width="240" valign="top">
+                
+                        <table width="230" border="0" cellspacing="2" cellpadding="4" align="center">
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editRedFlag_type}" /></td>
+                            <td><h:outputText value="#{redFlagAlertsBean.item.type}" /></td>
+                          </tr>
+                        </table>
+
+                      </td>
+                      <td width="10"><img src="images/x.gif" width="10" /></td>
+                      <td width="540" valign="top">
+
+                        TODO: flag specifics
+
+                      </td>
+                    </tr>
+                  </table>
+
+                  <div class="spacer"></div>
+
+                  <table width="790" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td width="390" valign="top">
+
+                        <div class="add_section_title"><h:outputText value="#{messages.editAlerts_notificationsByName}" /></div>
+
+                        <div>
+                          <h:outputText value="#{redFlagAlertsBean.peoplePicker.picked[0].label}" />
+                          <ui:repeat value="#{redFlagAlertsBean.peoplePicker.picked}" var="person" offset="1">
+                            <h:outputText value=", " />
+                            <h:outputText value="#{person.label}" />
+                          </ui:repeat>
+                        </div>
+
+                      </td>
+                      <td width="10"><img src="images/x.gif" width="10" /></td>
+                      <td width="390" valign="top">
+
+                        <div class="add_section_title"><h:outputText value="#{messages.editAlerts_notificationsByEmail}" /></div>
+
+                        <div>
+                          <a href="mailto:#{email}"><h:outputText value="#{redFlagAlertsBean.item.emailTo[0]}" /></a>
+                          <ui:repeat value="#{redFlagAlertsBean.item.emailTo}" var="email" offset="1">
+                            <h:outputText value=", " />
+                            <a href="mailto:#{email}"><h:outputText value="#{email}" /></a>
+                          </ui:repeat>
+                        </div>
+
+                      </td>
+                    </tr>
+                  </table>
+
+                </div>
+              </div>
+
+              <div class="panel_sw">
+                <div class="panel_statusbar"></div>
+              </div>
+            </div>
+
+          </a4j:form>
+
+          <!-- END PANEL -->
+        </td>
+      </tr>
+    </table>
+
+    <ui:include src="../../includes/confirmDelete.xhtml">
+      <ui:param name="deleteBean" value="#{redFlagAlertsBean}" />
+      <ui:param name="explanation" value="#{messages.redFlag_confirmDelete}" />
+    </ui:include>
+
+  </ui:define>
+
+</ui:composition>
