@@ -517,4 +517,11 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
         // TODO Auto-generated method stub
         return null;
     }  
+    
+//  Miscellaneous    
+    public Map<String, Object> getDPctByGT(Integer groupID, Integer duration, Integer metric)
+    {
+        return null;
+    }
+    
 }
