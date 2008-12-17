@@ -68,34 +68,39 @@ public class DataGenerator
         
         // Account
         createAccount();
-        xml.writeObject(account);
+        writeObject(account);
         
         // Group Hierarchy
         createGroupHierarchy(account.getAcctID());
-        xml.writeObject(fleetGroup);
-        xml.writeObject(districtGroup);
-        xml.writeObject(teamGroup);
+        writeObject(fleetGroup);
+        writeObject(districtGroup);
+        writeObject(teamGroup);
 
         // User at fleet level
         System.out.println("Fleet Level");
         createUser(fleetGroup.getGroupID());
-        xml.writeObject(user);
+        writeObject(user);
 
         // User at team level
         System.out.println("Team Level");
         createUser(teamGroup.getGroupID());
-        xml.writeObject(user);
+        writeObject(user);
 
         createDevice();
         createDriver();
         createVehicle(device.getDeviceID(), driver.getDriverID());
-        xml.writeObject(device);
-        xml.writeObject(driver);
-        xml.writeObject(vehicle);
+        writeObject(device);
+        writeObject(driver);
+        writeObject(vehicle);
         
         System.out.println("generate Events for " +device.getImei());            
     }
     
+    private void writeObject(Object obj)
+    {
+        if (xml != null)
+            xml.writeObject(obj);
+    }
     private void init()
     {
         StateHessianDAO stateDAO = new StateHessianDAO();
@@ -317,13 +322,12 @@ public class DataGenerator
     
     public static void main(String[] args)
     {
-        if (args.length < 1)
+        String xmlPath = null;
+        if (args.length == 1)
         {
-            System.out.println("Usage: TestDataGenerator <xml file dir>");
-            System.exit(0);
+            xmlPath = args[0];        
         }
 
-        String xmlPath = args[0];
         
         IntegrationConfig config = new IntegrationConfig();
 
@@ -333,21 +337,26 @@ public class DataGenerator
         siloService = new SiloServiceCreator(host, port).getService();
         
         
-        String xmlFileName = xmlPath + "/TestData.xml";
-      
         DataGenerator  testData = new DataGenerator ();
         try
         {
             System.out.println(" -- test data generation start -- ");
-            System.out.println(" xml output file: " + xmlFileName);
-            xml = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(xmlFileName)));
+            if (xmlPath != null)
+            {
+                String xmlFileName = xmlPath + "/TestData.xml";
+                xml = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(xmlFileName)));
+                System.out.println(" saving output to " + xmlFileName);
+            }
             testData.createTestData();
             
             HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
             MCMSimulator mcmSim = (MCMSimulator) factory.create(MCMSimulator.class, config.getProperty(IntegrationConfig.MCM_HOST), config.getIntegerProp(IntegrationConfig.MCM_PORT));
             testData.generateEvents(mcmSim);
-            
-            xml.close();
+         
+            if (xml != null)
+            {
+                xml.close();
+            }
             
             System.out.println(" -- test data generation complete -- ");
         }

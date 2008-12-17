@@ -12,7 +12,8 @@ public enum ReportMileageType implements BaseEnum
 
     MILEAGE_500(1, 500, 100, 5),
     MILEAGE_1000(2, 1000, 100, 10),
-    MILEAGE_10000(3, 10000, 1000, 10);
+    MILEAGE_5000(3, 5000, 500, 10),
+    MILEAGE_10000(4, 10000, 1000, 10);
 
     private int code;
     private int miles;
