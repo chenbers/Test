@@ -24,5 +24,5 @@ public interface DriveQMapDAO extends GenericDAO<DriveQMap, Integer>
     
     DriveQMap getGDScoreByGT(Integer groupID, Integer duration);
     
-    List<DriveQMap> getGDTrendByGTC(Integer groupID, Integer duration, Integer count);
+    DriveQMap getGDTrendByGTC(Integer groupID, Integer duration);
 }
