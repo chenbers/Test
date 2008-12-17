@@ -285,4 +285,51 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
         
     }
+    
+
+    @Override
+    public List<VehicleReportItem> getVehicleReportData(Integer groupID, Duration duration)
+    {
+        try
+        {
+            List<DVQMap> result = getMapper().convertToModelObject(
+                    reportService.getVDScoresByGT(groupID, duration.getCode()), DVQMap.class);            
+            List<VehicleReportItem> lVri = new ArrayList<VehicleReportItem>();
+            VehicleReportItem vri = null;
+            
+            for ( DVQMap d : result ) {
+                vri = new VehicleReportItem();
+                Vehicle v = d.getVehicle();
+                DriveQMap dqm = d.getDriveQ();
+                
+                vri.setGroupID(d.getVehicle().getGroupID());
+                vri.setVehicleID(d.getVehicle().getVehicleID());
+                vri.setMakeModelYear(
+                        v.getMake() + "/" +
+                        v.getModel() + "/" +
+                        v.getYear());
+                
+                //May or may not have a driver assigned
+                vri.setDriver(null);
+                if ( d.getDriver() == null ) {
+                    vri.setDriver(d.getDriver());
+                }
+                vri.setMilesDriven(dqm.getEndingOdometer());
+                vri.setOverallScore(dqm.getOverall());
+                vri.setSpeedScore(dqm.getSpeeding());
+                vri.setStyleScore(dqm.getDrivingStyle());
+  
+                lVri.add(vri);
+                vri = null;
+            }
+            
+            return lVri;
+            
+        }
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
+        
+    }
 }
