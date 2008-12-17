@@ -384,6 +384,7 @@
                             <directory>${basedir}/src/main/resources</directory>
                             <includes>
                                 <include>*.taglib.xml</include>
+                                <include>context.xml</include>
                             </includes>
                         </resource>
                         <resource>
