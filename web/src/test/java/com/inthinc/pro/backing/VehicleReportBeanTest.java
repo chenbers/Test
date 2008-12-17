@@ -36,9 +36,7 @@ public class VehicleReportBeanTest extends BaseBeanTest
             (VehicleReportBean)applicationContext.getBean("vehicleReportBean");
         
         // make sure the spring injection worked
-        assertNotNull(vehicleReportBean.getScoreDAO());
-        assertNotNull(vehicleReportBean.getGroupDAO());
-        assertNotNull(vehicleReportBean.getVehicleDAO());        
+        assertNotNull(vehicleReportBean.getScoreDAO());      
         
         // try grabbing some vehicles based on above, should be ?? 
         //  for normal101
