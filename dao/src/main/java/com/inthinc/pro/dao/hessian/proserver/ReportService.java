@@ -167,6 +167,7 @@ public interface ReportService extends HessianService
   //Methods currently supported on REAL back end  
     
 //  DriveQMap    
+    
     Map<String, Object> getDScoreByDM(Integer driverID, Integer mileage);
 
     Map<String, Object> getDScoreByDT(Integer driverID, Integer duration);
@@ -185,18 +186,18 @@ public interface ReportService extends HessianService
     
     Map<String, Object> getGDScoreByGT(Integer groupID, Integer duration);
     
-    List<Map<String, Object>> getGDTrendByGTC(Integer groupID, Integer duration, Integer count);
+    Map<String, Object> getGDTrendByGTC(Integer groupID, Integer duration);
     
 //  DVQMap  
     List<Map<String, Object>> getDVScoresByGT(Integer groupID, Integer duration);
     
     List<Map<String, Object>> getVDScoresByGT(Integer groupID, Integer duration);
  
-    List<Map<String, Object>> getSDScoresByGT(Integer groupID, Integer duration);
-       
     Map<String, Object> getDPctByGT(Integer groupID, Integer duration, Integer metric);
     
-//  GQMap  
+//  GQMap 
+    List<Map<String, Object>> getSDScoresByGT(Integer groupID, Integer duration);    
+    
     List<Map<String, Object>> getSDTrendsByGTC(Integer groupID, Integer duration, Integer metric);
     
 }
