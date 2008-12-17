@@ -39,8 +39,6 @@ public class DriverReportBeanTest extends BaseBeanTest
         
         // make sure the spring injection worked
         assertNotNull(driverReportBean.getScoreDAO());
-        assertNotNull(driverReportBean.getGroupDAO());
-        assertNotNull(driverReportBean.getDriverDAO());
                 
         // try grabbing some drivers based on above, should be 45 
         //  for normal101
