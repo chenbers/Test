@@ -32,6 +32,7 @@ public interface EventDAO  extends GenericDAO<Event, Integer>
 
     List<Event> getWarningEventsForDriver(Integer driverID, Date startDate, Date endDate);
 
-    List<Event> getEventsForDriver(Integer driverID, Date startDate, Date endDate, List<Integer> eventTypes);
+    List<Event> getEventsForDriverByMiles(Integer driverID, Integer milesBack, List<Integer> eventTypes);
 
+    List<Event> getEventsForDriver(Integer driverID, Date startDate, Date endDate, List<Integer> eventTypes);
 }

@@ -1,7 +1,9 @@
 package com.inthinc.pro.dao.mock.proserver;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -1060,7 +1062,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         SearchCriteria searchCriteria = new SearchCriteria();
         searchCriteria.addKeyValue("driverID", driverID);
         searchCriteria.addKeyValueInList("type", typeList);
-        searchCriteria.addKeyValueRange("time", DateUtil.convertTimeInSecondsToDate(startDate), DateUtil.convertTimeInSecondsToDate(endDate));
+        //searchCriteria.addKeyValueRange("time", DateUtil.convertTimeInSecondsToDate(startDate), DateUtil.convertTimeInSecondsToDate(endDate));
 
         List<Event> eventList = MockData.getInstance().retrieveObjectList(Event.class, searchCriteria);
         Collections.sort(eventList); // Make sure events are in ascending order
@@ -1075,6 +1077,17 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         return returnList;
     }
 
+    @Override
+    public List<Map<String, Object>> getNoteByMiles(Integer driverID, Integer milesBack, Integer[] types)
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, -30);
+        
+        Date startDate = new Date();
+        Date endDate = calendar.getTime();  // using dates for mock data. no data with miles attributes.
+        
+        return getNote(driverID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), types);
 
+    }
 
 }

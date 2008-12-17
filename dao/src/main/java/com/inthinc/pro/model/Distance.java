@@ -6,7 +6,10 @@ import java.util.Map;
 
 public enum Distance
 {
-    FIVEHUNDRED("500mi", 500), ONETHOUSAND("1000mi", 1000), TENTHOUSAND("10,000mi", 10000);
+    FIVEHUNDRED     ("500mi", 500), 
+    ONETHOUSAND     ("1,000mi", 1000), 
+    FIVETHOUSAND    ("5,000mi", 5000), 
+    TENTHOUSAND     ("10,000mi", 10000);
 
     private final int numberOfMiles;
     private String distanceValue;

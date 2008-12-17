@@ -66,6 +66,21 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
             return Collections.emptyList();
         }
     }
+    
+    @Override
+    public List<Event> getEventsForDriverByMiles(Integer driverID, Integer milesBack, List<Integer> eventTypes)
+    {
+        try
+        {
+            Integer[] eventTypesArray = eventTypes.toArray(new Integer[0]);
+
+            return getMapper().convertToModelObject(getSiloService().getNoteByMiles(driverID, milesBack, eventTypesArray), Event.class);
+        }
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
+    }
 
     @Override
     public List<Event> getViolationEventsForDriver(Integer driverID, Date startDate, Date endDate)
