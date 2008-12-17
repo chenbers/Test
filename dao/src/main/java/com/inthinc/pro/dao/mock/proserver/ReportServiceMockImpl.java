@@ -383,7 +383,8 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
         Integer startDate = DateUtil.getDaysBackDate(endDate, Duration.valueOf(duration).getNumberOfDays());
         return startDate;
     }
-//Methods currently supported on REAL back end         
+//Methods currently supported on REAL back end   
+    
     @Override
     public Map<String, Object> getDScoreByDM(Integer driverID, Integer mileage)
     {
@@ -471,7 +472,7 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
     }  
     
     @Override
-    public List<Map<String, Object>> getGDTrendByGTC(Integer groupID, Integer duration, Integer count)
+    public Map<String, Object> getGDTrendByGTC(Integer groupID, Integer duration)
     {
         // TODO Auto-generated method stub
         return null;
