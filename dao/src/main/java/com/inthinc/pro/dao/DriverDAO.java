@@ -12,12 +12,20 @@ public interface DriverDAO extends GenericDAO<Driver, Integer>
 {
     
     /**
-     * Gets all drivers in the specified group.
+     * Gets all drivers in the specified group complete hierarchy
      * 
      * @param groupID
-     * @return
+     * @return List of Drivers
      */
     List<Driver> getAllDrivers(Integer groupID);
+    
+    /**
+     * Gets the drivers that are directly under the specified group
+     * 
+     * @param groupID
+     * @return List of Drivers
+     */
+    List<Driver> getDrivers(Integer groupID);
     
     /**
      * Gets a list of DriverLocation's near the specified LatLng.

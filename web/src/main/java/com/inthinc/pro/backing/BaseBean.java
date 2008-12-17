@@ -1,6 +1,8 @@
 package com.inthinc.pro.backing;
 
+
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
@@ -25,13 +27,21 @@ public class BaseBean
     {
         return errorBean;
     }
-    public void setErrorBean(ErrorBean errorBean)
+    public void setErrorBean(final ErrorBean errorBean)
     {
         this.errorBean = errorBean;
     }
     
-    public Object getParameter(String name){
-    	return FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get(name);
+    public Object getParameter(final String name){
+    	return getExternalContext().getRequestParameterMap().get(name);
+    }
+    
+    public FacesContext getFacesContext(){
+        return FacesContext.getCurrentInstance();
+    }
+    
+    public ExternalContext getExternalContext(){
+        return getFacesContext().getExternalContext();
     }
     
     public boolean isLoggedIn()
@@ -85,6 +95,4 @@ public class BaseBean
         final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "WARNING - " + summary, null);
         context.addMessage(null, message);
     }
-
-
 }

@@ -2,14 +2,24 @@ package com.inthinc.pro.backing;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.backing.model.TreeNodeImpl;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.Group;
 
 public class NavigationBean extends BaseBean
 {
     private static final Logger logger   = Logger.getLogger(NavigationBean.class);
+    
+    //Spring managed beans
+    private GroupDAO            groupDAO;
 
     private Integer             groupID;
+    private Group               group;
+    
+    //This is used for the bread crumbs
+    private TreeNodeImpl        groupTreeNode;
     private Driver              driver;
     private Duration            duration = Duration.DAYS;
     private Integer             start = 0;
@@ -27,11 +37,17 @@ public class NavigationBean extends BaseBean
 
     public void setGroupID(Integer groupID)
     {
+        //Lets not load a new group if we don't need to
+        if(this.groupID != groupID){
+            this.group = groupDAO.findByID(groupID);
+            this.setGroupTreeNode(new TreeNodeImpl(group,getGroupHierarchy()));
+            logger.debug("Navigation setGroup:" + group.getName());
+        }
         logger.debug("Navigation setGroupID: " + groupID);
         this.groupID = groupID;
+        
     }
-
-
+    
     public Driver getDriver()
     {
         return driver;
@@ -70,6 +86,36 @@ public class NavigationBean extends BaseBean
     public void setEnd(Integer end)
     {
         this.end = end;
+    }
+
+    public void setGroupDAO(GroupDAO groupDAO)
+    {
+        this.groupDAO = groupDAO;
+    }
+
+    public GroupDAO getGroupDAO()
+    {
+        return groupDAO;
+    }
+
+    public void setGroup(Group group)
+    {
+        this.group = group;
+    }
+
+    public Group getGroup()
+    {
+        return group;
+    }
+
+    public void setGroupTreeNode(TreeNodeImpl groupTreeNode)
+    {
+        this.groupTreeNode = groupTreeNode;
+    }
+
+    public TreeNodeImpl getGroupTreeNode()
+    {
+        return groupTreeNode;
     }
 
 }

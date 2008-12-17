@@ -18,7 +18,9 @@
     </bean>
 
     <!-- Navigation bean -->
-    <bean id="navigationBean" class="com.inthinc.pro.backing.NavigationBean" scope="session" parent="baseBean"></bean>
+    <bean id="navigationBean" class="com.inthinc.pro.backing.NavigationBean" scope="session" parent="baseBean">
+    	 <property name="groupDAO" ref="groupDAO"></property>
+    </bean>
     
    
    <!-- Forgot username/password Beans -->

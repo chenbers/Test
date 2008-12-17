@@ -51,7 +51,7 @@
         						map.addControl(new GLargeMapControl());
         						map.addControl(new GMapTypeControl());
         						map.addControl(new GOverviewMapControl()); 
-								map.setCenter(new GLatLng(#{driverLocationBean.center.lat}, #{driverLocationBean.center.lng}), 10);
+								map.setCenter(new GLatLng(#{mapxcenter}, #{mapycenter}), #{mapzoom});
 								map.setMapType(G_NORMAL_MAP);
  								var mgr = new MarkerManager(map);
  								

@@ -49,44 +49,59 @@
 					<table>
 						<tr>
 							<td valign="top">
-							<div style="textAlign: top; width: 235px">
+							<div style="textAlign: top; width: 233px">
 							<ul id="grid_nav">
 								<li class="l grid_icon"><h:graphicImage
 									value="/images/ico_building.png" /></li>
 								<li class="l grid_title">#{organizationBean.accountName}</li>
 							</ul>
-							<a4j:region>
+							
 								<h:panelGroup id="organizationTreePanel">
-									<rich:tree switchType="ajax" selectedClass="selectedNode"
-										style="overflow: auto;width:210px;height:600px;border-left:1px solid #A1C667;border-right:1px solid #A1C667;border-bottom:1px solid #A1C667; margin-left: 11px"
-										value="#{organizationBean.topLevelNodes}" var="node"
-										nodeFace="#{node.data.treeNodeType}"
+									<rich:tree 
+										id="tree"
+										switchType="ajax" 
+										selectedClass="selectedNode"
+										style="overflow: auto;width:210px;height:650px;border-left:1px solid #A1C667;border-right:1px solid #A1C667;border-bottom:1px solid #A1C667; margin-left: 11px"
+										value="#{organizationBean.topLevelNodes}" 
+										var="item"
+										nodeFace="#{item.data.treeNodeType}"
 										nodeSelectListener="#{organizationBean.selectNode}"
 										reRender="groupPanel,driverPanel,vehiclePanel"
-										dragValue="#{node.data}" dropValue="#{node.data}"
+										dragValue="#{item.data}" dropValue="#{item.data}"
 										adviseNodeSelected="#{organizationBean.adviseNodeSelected}"
-										ajaxSubmitSelection="true">
+										ajaxSubmitSelection="true"
+										ondrop="doRefreshTree()"
+										dragIndicator="indicator"
+										dropListener="#{organizationBean.processDrop}">
 										<rich:treeNode type="FLEET" iconLeaf="/images/ico_truck.png"
-											icon="/images/ico_truck.png">
-											<h:outputText value="#{node.label}" />
+											icon="/images/ico_truck.png" acceptedTypes="DIVISION,TEAM"
+											dragType="FLEET">
+											<rich:dndParam name="label" type="drag" value="#{item.label}"/>
+											<h:outputText value="#{item.label}" />
 										</rich:treeNode>
 										<rich:treeNode type="DIVISION"
 											iconLeaf="/images/ico_trucks.png"
-											icon="/images/ico_trucks.png">
-											<h:outputText value="#{node.label}" />
+											icon="/images/ico_trucks.png" acceptedTypes="DIVISION,TEAM"
+											dragType="DIVISION">
+											<rich:dndParam name="label" type="drag" value="#{item.label}"/>
+											<h:outputText value="#{item.label}" />
 										</rich:treeNode>
 										<rich:treeNode type="TEAM" iconLeaf="/images/ico_team.png"
-											icon="/images/ico_team.png">
-											<h:outputText value="#{node.label}" />
+											icon="/images/ico_team.png"
+											dragType="TEAM">
+											<rich:dndParam name="label" type="drag" value="#{item.label}"/>
+											<h:outputText value="#{item.label}" />
 										</rich:treeNode>
 										<rich:treeNode type="DRIVER" iconLeaf="/images/ico_driver.png"
 											icon="/images/ico_team.png">
-											<h:outputText value="#{node.label}" />
+											<rich:dndParam name="label" type="drag" value="#{item.label}"/>
+											<h:outputText value="#{item.label}" />
 										</rich:treeNode>
 										<rich:treeNode type="VEHICLE"
 											iconLeaf="/images/ico_vehicle.png"
 											icon="/images/ico_team.png">
-											<h:outputText value="#{node.label}" />
+											<rich:dndParam name="label" type="drag" value="#{item.label}"/>
+											<h:outputText value="#{item.label}" />
 										</rich:treeNode>
 									</rich:tree>
 									<!--
@@ -94,12 +109,24 @@
 										adviseNodeOpened="#{organizationBean.adviseNodeExpanded}"
 										changeExpandListener="#{organizationBean.changeExpandListent}"
 										adviseNodeSelected="#{organizationBean.adviseNodeSelected}"
+										dragValue="#{node.data}" dropValue="#{node.data}"
 									-->
 								</h:panelGroup>
-							</a4j:region> <a4j:jsFunction name="refreshTree"
-								reRender="organizationTreePanel"></a4j:jsFunction></div>
+								<rich:dragIndicator id="indicator" />
+								<script type="text/javascript">
+									function doRefreshTree(){
+										setTimeout('refreshTree()', 200)
+						
+										}
+									
+								</script>
+								 <a4j:jsFunction name="refreshTree"
+								reRender="organizationTreePanel">
+								</a4j:jsFunction>
+							</div>
 							</td>
 							<td valign="top">
+							<a4j:region>
 							<div style="text-align: top; width: 550px; height: 100%"><h:panelGroup
 								id="contentPanel">
 								<!-- 
@@ -153,7 +180,7 @@
 								</h:panelGroup>
 
 
-							</h:panelGroup></div>
+							</h:panelGroup></div></a4j:region>
 							</td>
 						</tr>
 					</table>

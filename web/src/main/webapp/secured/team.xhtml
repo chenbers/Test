@@ -44,8 +44,9 @@
 				<ui:include src="/includes/liveFleetMap.xhtml">
 					<ui:param name="mapheight" value="height:580px"/>
 					<ui:param name="mapwidth" value="width:458px"/>
-					<ui:param name="mapxcenter" value="41.0"/>
-					<ui:param name="mapycenter" value="-116.0"/>
+					<ui:param name="mapxcenter" value="#{navigationBean.group.mapLat}"/>
+					<ui:param name="mapycenter" value="#{navigationBean.group.mapLng}"/>
+					<ui:param name="mapzoom" value="#{navigationBean.group.mapZoom}"/>
 				</ui:include>
 			<!-- END PANEL -->
              

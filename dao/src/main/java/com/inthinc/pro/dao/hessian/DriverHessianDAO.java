@@ -1,5 +1,6 @@
 package com.inthinc.pro.dao.hessian;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +34,29 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
             return Collections.emptyList();
         }
 
+    }
+    
+    @Override
+    public List<Driver> getDrivers(Integer groupID)
+    {
+        List<Driver> driverList = new ArrayList<Driver>();
+        try
+        {
+            List<Driver> completeSet = getMapper().convertToModelObject(this.getSiloService().getDriversByGroupID(groupID), Driver.class);
+            for(Driver driver: completeSet)
+            {
+                if(driver.getPerson().getGroupID()==groupID)
+                {
+                    driverList.add(driver);
+                }
+            }
+        }
+        catch (EmptyResultSetException e)
+        {
+            driverList = Collections.emptyList();
+        }
+        
+        return driverList;
     }
 
     @Override

@@ -25,9 +25,10 @@
 			<li class="l divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" /></li>
 			<li class="l">
 	
-				<ul id="breadcrumb">
-					
-				</ul>
+				<ui:include src="/includes/breadcrumb.xhtml">
+					<ui:param name="groupTreeNode"
+						value="#{navigationBean.groupTreeNode}" />
+				</ui:include>
 	
 			</li>
 			<li class="r grid_icon"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_help.png" /></li>

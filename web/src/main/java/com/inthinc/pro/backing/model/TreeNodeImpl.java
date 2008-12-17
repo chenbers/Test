@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 
-import javax.faces.model.SelectItem;
+import javax.swing.tree.TreeNode;
 
 import org.apache.log4j.Logger;
 import org.richfaces.model.SwingTreeNodeImpl;
@@ -19,20 +19,20 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Vehicle;
 
-public class GroupTreeNode extends SwingTreeNodeImpl implements Serializable
+public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable
 {
 
     private static final long serialVersionUID = 6735997209608844223L;
 
     private Group group;
-    private Vehicle vehicle;
-    private Driver driver;
+    private transient Vehicle vehicle;
+    private transient Driver driver;
     private TreeNodeType treeNodeType;
     private Integer id;
     private String label;
 
-    private GroupTreeNode parentGroupTreeNode;
-    private List<GroupTreeNode> childGroupTreeNodes;
+    private TreeNodeImpl parentGroupTreeNode;
+    private List<TreeNodeImpl> childGroupTreeNodes;
     private GroupHierarchy groupHierarchyUtil;
     private GroupLevel groupLevel;
 
@@ -40,23 +40,23 @@ public class GroupTreeNode extends SwingTreeNodeImpl implements Serializable
     private transient DriverDAO driverDAO;
 
     // We are storing these values here because once loaded, we don't want to have to pull them again.
-    private static final Logger logger = Logger.getLogger(GroupTreeNode.class);
+    private static final Logger logger = Logger.getLogger(TreeNodeImpl.class);
 
     /*
      * Make sure that any group that is passed in has a parent. For some reason the tree view doesn't render correctly if there is no parent.
      */
     // TODO use generics
-    public GroupTreeNode(BaseEntity hierarchalEntity, GroupHierarchy groupHierarchy)
+    public TreeNodeImpl(BaseEntity hierarchalEntity, GroupHierarchy groupHierarchy)
     {
         initialize(hierarchalEntity, groupHierarchy, null);
     }
 
-    public GroupTreeNode(BaseEntity hierarchalEntity, GroupHierarchy groupHierarchy, GroupTreeNode parent)
+    public TreeNodeImpl(BaseEntity hierarchalEntity, GroupHierarchy groupHierarchy, TreeNodeImpl parent)
     {
         initialize(hierarchalEntity, groupHierarchy, parent);
     }
 
-    private void initialize(BaseEntity hierarchalEntity, GroupHierarchy groupHierarchy, GroupTreeNode parent)
+    private void initialize(BaseEntity hierarchalEntity, GroupHierarchy groupHierarchy, TreeNodeImpl parent)
     {
         if (hierarchalEntity instanceof Group)
         {
@@ -93,7 +93,22 @@ public class GroupTreeNode extends SwingTreeNodeImpl implements Serializable
     {
         if (groupLevel == null && group != null)
         {
-            groupLevel = groupHierarchyUtil.getGroupLevel(group);
+            switch (treeNodeType) {
+            case FLEET:
+                groupLevel = GroupLevel.FLEET;
+                break;
+            case DIVISION:
+                groupLevel = GroupLevel.DIVISION;
+                break;
+            case TEAM:
+                groupLevel = GroupLevel.DIVISION;
+                break;
+            }
+            
+            if(group.equals(groupHierarchyUtil.getTopGroup())){
+                groupLevel = GroupLevel.FLEET;
+            }
+
         }
         return groupLevel;
     }
@@ -102,26 +117,33 @@ public class GroupTreeNode extends SwingTreeNodeImpl implements Serializable
     {
         return group;
     }
+    
+    
 
     // TODO get bread crumb working
-    public List<GroupTreeNode> getGroupBreadCrumb()
+    public List<TreeNodeImpl> getGroupBreadCrumb()
     {
-        List<GroupTreeNode> breadCrumbList = new ArrayList<GroupTreeNode>();
-        // loadBreadCrumbs(this, breadCrumbList);
-        // Collections.reverse(breadCrumbList);
+        List<TreeNodeImpl> breadCrumbList = new ArrayList<TreeNodeImpl>();
+        loadBreadCrumbs(this, breadCrumbList);
+        Collections.reverse(breadCrumbList);
         return breadCrumbList;
     }
 
-    private void loadBreadCrumbs(GroupTreeNode node, List<GroupTreeNode> breadCrumbList)
+    private void loadBreadCrumbs(TreeNodeImpl node, List<TreeNodeImpl> breadCrumbList)
     {
-        breadCrumbList.add(node);
+        switch (node.getTreeNodeType()) {
+        case FLEET:
+        case DIVISION:
+        case TEAM:
+            breadCrumbList.add(node);
+        }
         if (node.getParent() != null)
         {
             loadBreadCrumbs(node.getParent(), breadCrumbList);
         }
     }
 
-    public void addChildNode(GroupTreeNode groupTreeNode)
+    public void addChildNode(TreeNodeImpl groupTreeNode)
     {
         if (childGroupTreeNodes == null)
         {
@@ -131,7 +153,7 @@ public class GroupTreeNode extends SwingTreeNodeImpl implements Serializable
         childGroupTreeNodes.add(groupTreeNode);
     }
 
-    public void removeChildNode(GroupTreeNode groupTreeNode)
+    public void removeChildNode(TreeNodeImpl groupTreeNode)
     {
         if (childGroupTreeNodes == null)
         {
@@ -141,7 +163,7 @@ public class GroupTreeNode extends SwingTreeNodeImpl implements Serializable
         childGroupTreeNodes.remove(groupTreeNode);
     }
 
-    public void setParent(GroupTreeNode parentGroupTreeNode)
+    public void setParent(TreeNodeImpl parentGroupTreeNode)
     {
         if (parentGroupTreeNode == null)
         {
@@ -176,7 +198,7 @@ public class GroupTreeNode extends SwingTreeNodeImpl implements Serializable
     /**
      * This is not used by the tree component
      */
-    public List<GroupTreeNode> getChildrenNodes()
+    public List<TreeNodeImpl> getChildrenNodes()
     {
         if (childGroupTreeNodes == null)
         {
@@ -201,7 +223,7 @@ public class GroupTreeNode extends SwingTreeNodeImpl implements Serializable
     }
 
     @Override
-    public GroupTreeNode getChildAt(int childIndex)
+    public TreeNodeImpl getChildAt(int childIndex)
     {
         if (childGroupTreeNodes == null)
         {
@@ -223,12 +245,12 @@ public class GroupTreeNode extends SwingTreeNodeImpl implements Serializable
     @Override
     public int getIndex(javax.swing.tree.TreeNode node)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        TreeNodeImpl treeNode = (TreeNodeImpl)node;
+        return this.childGroupTreeNodes.indexOf(treeNode);
     }
 
     @Override
-    public GroupTreeNode getParent()
+    public TreeNodeImpl getParent()
     {
 
         if (parentGroupTreeNode == null && group != null)
@@ -236,11 +258,11 @@ public class GroupTreeNode extends SwingTreeNodeImpl implements Serializable
             Group parentGroup = groupHierarchyUtil.getParentGroup(group);
             if (parentGroup != null)
             {
-                parentGroupTreeNode = new GroupTreeNode(parentGroup, groupHierarchyUtil);
+                parentGroupTreeNode = new TreeNodeImpl(parentGroup, groupHierarchyUtil);
             }
             else
             {
-                parentGroupTreeNode = new GroupTreeNode(null, groupHierarchyUtil);
+                parentGroupTreeNode = new TreeNodeImpl(null, groupHierarchyUtil);
             }
         }
 
@@ -266,13 +288,20 @@ public class GroupTreeNode extends SwingTreeNodeImpl implements Serializable
         }
         return result;
     }
-
-    private List<GroupTreeNode> loadChildNodes()
+    
+    @Override
+    public void addChild(Object key, TreeNode node)
     {
-        List<GroupTreeNode> childNodes = new ArrayList<GroupTreeNode>();
+        logger.info("Add Child Called");
+        super.addChild(key, node);
+    }
+    
+    private List<TreeNodeImpl> loadChildNodes()
+    {
+        List<TreeNodeImpl> childNodes = new ArrayList<TreeNodeImpl>();
         if (group == null && vehicle == null && driver == null && groupHierarchyUtil.getGroupList().size() > 0)
         {
-            GroupTreeNode groupTreeNode = new GroupTreeNode(groupHierarchyUtil.getTopGroup(), groupHierarchyUtil);
+            TreeNodeImpl groupTreeNode = new TreeNodeImpl(groupHierarchyUtil.getTopGroup(), groupHierarchyUtil);
             groupTreeNode.setDriverDAO(driverDAO);
             groupTreeNode.setVehicleDAO(vehicleDAO);
             childNodes.add(groupTreeNode);
@@ -290,7 +319,7 @@ public class GroupTreeNode extends SwingTreeNodeImpl implements Serializable
                         g.setMapCenter(new LatLng(group.getMapCenter().getLat(), group.getMapCenter().getLng()));
                         g.setMapZoom(group.getMapZoom());
                     }
-                    GroupTreeNode groupTreeNode = new GroupTreeNode(g, groupHierarchyUtil, this);
+                    TreeNodeImpl groupTreeNode = new TreeNodeImpl(g, groupHierarchyUtil, this);
                     groupTreeNode.setDriverDAO(driverDAO);
                     groupTreeNode.setVehicleDAO(vehicleDAO);
                     childNodes.add(groupTreeNode);
@@ -305,7 +334,7 @@ public class GroupTreeNode extends SwingTreeNodeImpl implements Serializable
             {
                 for (Driver d : driverList)
                 {
-                    GroupTreeNode groupTreeNode = new GroupTreeNode(d, groupHierarchyUtil, this);
+                    TreeNodeImpl groupTreeNode = new TreeNodeImpl(d, groupHierarchyUtil, this);
                     groupTreeNode.setDriverDAO(driverDAO);
                     groupTreeNode.setVehicleDAO(vehicleDAO);
                     childNodes.add(groupTreeNode);
@@ -317,7 +346,7 @@ public class GroupTreeNode extends SwingTreeNodeImpl implements Serializable
             {
                 for (Vehicle v : vehicleList)
                 {
-                    GroupTreeNode groupTreeNode = new GroupTreeNode(v, groupHierarchyUtil, this);
+                    TreeNodeImpl groupTreeNode = new TreeNodeImpl(v, groupHierarchyUtil, this);
                     groupTreeNode.setDriverDAO(driverDAO);
                     groupTreeNode.setVehicleDAO(vehicleDAO);
                     childNodes.add(groupTreeNode);
@@ -395,9 +424,9 @@ public class GroupTreeNode extends SwingTreeNodeImpl implements Serializable
      *            (node type to search for)
      * @return
      */
-    public GroupTreeNode findTreeNodeByGroupId(Integer groupID)
+    public TreeNodeImpl findTreeNodeByGroupId(Integer groupID)
     {
-        GroupTreeNode node = null;
+        TreeNodeImpl node = null;
         if ((this.treeNodeType == TreeNodeType.DIVISION || this.treeNodeType == TreeNodeType.FLEET || this.treeNodeType == TreeNodeType.TEAM)
                 && this.group.getGroupID().equals(groupID))
         {
@@ -407,7 +436,7 @@ public class GroupTreeNode extends SwingTreeNodeImpl implements Serializable
         {
             if ((this.treeNodeType == TreeNodeType.DIVISION || this.treeNodeType == TreeNodeType.FLEET) && this.getChildCount() > 0)
             {
-                for (GroupTreeNode treeNode : getChildrenNodes())
+                for (TreeNodeImpl treeNode : getChildrenNodes())
                 {
                     if (node == null)
                     {

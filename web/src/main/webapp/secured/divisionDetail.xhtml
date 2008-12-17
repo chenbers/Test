@@ -376,8 +376,9 @@
 				<ui:include src="/includes/liveFleetMap.xhtml">
 					<ui:param name="mapheight" value="height:800px"/>
 					<ui:param name="mapwidth" value="width:790px"/>
-					<ui:param name="mapxcenter" value="41.0"/>
-					<ui:param name="mapycenter" value="-116.0"/>
+					<ui:param name="mapxcenter" value="#{navigationBean.group.mapLat}"/>
+					<ui:param name="mapycenter" value="#{navigationBean.group.mapLng}"/>
+					<ui:param name="mapzoom" value="#{navigationBean.group.mapZoom}"/>
 		            <ui:param name="flyNavRule" value="go_region" />
 		            <ui:param name="flyOutImage" value="ico_minimize.png" />
 				</ui:include>

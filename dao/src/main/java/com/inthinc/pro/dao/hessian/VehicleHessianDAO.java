@@ -1,5 +1,6 @@
 package com.inthinc.pro.dao.hessian;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +34,29 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
         {
             return Collections.emptyList();
         }
+    }
+    
+    @Override
+    public List<Vehicle> getVehiclesInGroup(Integer groupID)
+    {
+        List<Vehicle> vehicleList = new ArrayList<Vehicle>();
+        try
+        {
+            List<Vehicle> completeSet = getMapper().convertToModelObject(getSiloService().getVehiclesByGroupID(groupID), Vehicle.class);
+            for(Vehicle vehicle: completeSet)
+            {
+                if(vehicle.getGroupID() == groupID)
+                {
+                    vehicleList.add(vehicle);
+                }
+            }
+        }
+        catch (EmptyResultSetException e)
+        {
+            vehicleList =  Collections.emptyList();
+        }
+        
+        return vehicleList;
     }
 
     @Override
@@ -110,4 +134,7 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
             return Collections.emptyList();
         }
     }
+
+    
+   
 }

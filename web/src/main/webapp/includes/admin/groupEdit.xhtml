@@ -16,8 +16,8 @@
 				<ui:repeat
 					value="#{organizationBean.selectedGroupNode.groupBreadCrumb}"
 					var="crumb">
-					<li class="last"><a4j:commandLink value="#{crumb.group.name}"
-						reRender="groupPanel,groupContent,organizationTreePanel">
+					<li class="last"><a4j:commandLink value="#{crumb.label}"
+						reRender="groupPanel,organizationTreePanel">
 						<a4j:actionparam converter="SimpleBeanConverter" name="groupNode"
 							value="#{crumb}"
 							actionListener="#{organizationBean.changeSelectedGroup}"

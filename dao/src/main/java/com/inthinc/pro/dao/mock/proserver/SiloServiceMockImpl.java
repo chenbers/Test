@@ -469,9 +469,10 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     {
         AbstractMapper mapper = new AbstractMapper(){};
         Group updatedGroup = mapper.convertToModelObject(groupMap, Group.class);
+        updatedGroup.setGroupID((int) (Math.random() * Integer.MAX_VALUE));
         MockData.getInstance().storeObject(updatedGroup);
         logger.debug("Group Added: " + updatedGroup.getName());
-        return createReturnValue("groupID", (int) (Math.random() * Integer.MAX_VALUE));
+        return createReturnValue("groupID", updatedGroup.getGroupID());
     }
 
     @Override
@@ -501,8 +502,9 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         group.setMapZoom(updatedGroup.getMapZoom());
         group.setParentID(updatedGroup.getParentID());
         group.setType(updatedGroup.getType());
+        group.setManagerID(updatedGroup.getManagerID());
         
-        logger.info("Group Updated: " + group.getName());
+        logger.debug("Group Updated: " + group.getName());
         return createReturnValue("count", 1);
     }
 

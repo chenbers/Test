@@ -24,7 +24,12 @@
 			<li class="l grid_icon"><img src="images/ico_line.png" /></li>
 			<li class="l grid_title">Overview</li>
 			<li class="l divider"><img src="/images/grid_nav_divider.png" /></li>
-			<li class="l"></li>
+			<li class="l">
+				<ui:include src="/includes/breadcrumb.xhtml">
+					<ui:param name="groupTreeNode"
+						value="#{navigationBean.groupTreeNode}" />
+				</ui:include>
+			</li>
 			<li class="r grid_icon"><img src="images/ico_help.png" /></li>
 			<li class="r divider"><img src="/images/grid_nav_divider.png" /></li>
 		</ul>
@@ -215,8 +220,9 @@
 				<ui:include src="/includes/liveFleetMap.xhtml">
 					<ui:param name="mapheight" value="height:360px"/>
 					<ui:param name="mapwidth" value="width:435px"/>
-					<ui:param name="mapxcenter" value="41.0"/>
-					<ui:param name="mapycenter" value="-116.0"/>
+					<ui:param name="mapxcenter" value="#{navigationBean.group.mapLat}"/>
+					<ui:param name="mapycenter" value="#{navigationBean.group.mapLng}"/>
+					<ui:param name="mapzoom" value="#{navigationBean.group.mapZoom}"/>
 					<ui:param name="flyNavRule" value="go_divisionDetail" />
 					<ui:param name="flySelectedTab" value="fleet_full_screen" />
 					<ui:param name="flyOutImage" value="ico_expand.png" />   

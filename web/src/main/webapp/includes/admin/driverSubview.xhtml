@@ -14,7 +14,7 @@
 			<ui:repeat
 				value="#{organizationBean.selectedGroupNode.groupBreadCrumb}"
 				var="crumb">
-				<li class="last"><a4j:commandLink value="#{crumb.group.name}"
+				<li class=""><a4j:commandLink value="#{crumb.group.name}"
 					reRender="groupPanel,groupContent,organizationTreePanel">
 					<a4j:actionparam converter="SimpleBeanConverter" name="groupNode"
 						value="#{crumb}"
@@ -22,14 +22,15 @@
 						assignTo="#{organizationBean.selectedGroupNode}" />
 				</a4j:commandLink></li>
 			</ui:repeat>
+			<li class="last">
+				<h:outputFormat
+					value="#{messages.group_driver}">
+					<f:param value="#{driver.person.first}" />
+					<f:param value="#{driver.person.last}" />
+				</h:outputFormat></li>
 		</ul>
 
 		</li>
-		<li class="l grid_title"><h:outputFormat
-			value="#{messages.group_driver}">
-			<f:param value="#{driver.person.first}" />
-			<f:param value="#{driver.person.last}" />
-		</h:outputFormat></li>
 		<li class="r text"><h:commandLink action="#{personBean.edit}"
 			value="#{messages.adminTable_edit}">
 			<f:param name="editID" value="#{driver.person.empid}" />
