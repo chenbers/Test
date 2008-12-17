@@ -1,0 +1,5 @@
+<Context>
+   <Resource name="jdbc/tiger" auth="Container" type="javax.sql.DataSource" maxActive="100" maxIdle="30" maxWait="10000"
+      username="development" password="w1tn3ss" driverClassName="org.postgresql.Driver"
+      url="jdbc:postgresql://192.168.11.80/iwigis" />
+</Context>
