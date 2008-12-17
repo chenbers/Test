@@ -48,7 +48,9 @@ public class DriverSeatBeltBean extends BaseBean
         logger.debug("##### initStyle()  driverid:  " + navigation.getDriver().getDriverID());
         
         ScoreableEntity seatBeltSe = scoreDAO.getAverageScoreByTypeAndMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), ScoreType.SCORE_SEATBELT);
-        setSeatBeltScore(seatBeltSe.getScore());
+        if (seatBeltSe == null)
+            setSeatBeltScore(0);
+        else setSeatBeltScore(seatBeltSe.getScore());
     }
     
     //SCORE PROPERTIES

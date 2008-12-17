@@ -1,6 +1,7 @@
 package com.inthinc.pro.dao.mock.proserver;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -388,8 +389,14 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
     @Override
     public Map<String, Object> getDScoreByDM(Integer driverID, Integer mileage)
     {
-        // TODO Auto-generated method stub
-        return null;
+logger.debug("getDVQ for" + driverID);        
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("driver:driverID", driverID);
+
+        DVQMap dvq = MockData.getInstance().retrieveObject(DVQMap.class, searchCriteria);
+        if (dvq == null)
+            throw new EmptyResultSetException("No score for driver: " + driverID, "getDScoreByDM", 0);
+        return TempConversionUtil.createMapFromObject(dvq.getDriveQ());
     } 
     
     @Override
@@ -409,8 +416,26 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
     @Override
     public List<Map<String, Object>> getDTrendByDMC(Integer driverID, Integer mileage, Integer count)
     {
-        // TODO Auto-generated method stub
-        return null;
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+        
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("driver:driverID", driverID);
+
+        List<DVQMap> dvqList = MockData.getInstance().retrieveObjectList(DVQMap.class, searchCriteria);
+
+        if (dvqList == null)
+            throw new EmptyResultSetException("No score for driver: " + driverID, "getDTrendByDMC", 0);
+        
+        int start = dvqList.size() - count;
+        int i = 0;
+        for (DVQMap dvq : dvqList)
+        {    
+            if (i++ < start)
+                continue;
+            returnList.add(TempConversionUtil.createMapFromObject(dvq.getDriveQ()));
+        }
+        
+        return returnList;
     }
     
     @Override

@@ -276,7 +276,8 @@ public class MockData
     {
         
         GQMap gqMap = new GQMap();
-        gqMap.setDriveQ(createDriveQ());
+        Integer odometer = randomInt(500, 5000);
+        gqMap.setDriveQ(createDriveQ(odometer));
         gqMap.setGroup(group);
         storeObject(gqMap);
     }
@@ -284,21 +285,25 @@ public class MockData
 
     private void addDriveQMaps(List<Driver> driversInGroup, List<Vehicle> vehiclesInGroup)
     {
+logger.debug("addDriveQMaps");        
         for (Driver driver : driversInGroup)
         {
             
-            DVQMap dvqMap = new DVQMap();
-            
-            dvqMap.setDriver(driver);
-            dvqMap.setVehicle(vehiclesInGroup.get(randomInt(0, vehiclesInGroup.size()-1)));
-            dvqMap.setDriveQ(createDriveQ());
-            
-            storeObject(dvqMap);
+            Integer odometer = randomInt(500, 5000);
+            for (int i = 0; i < 10; i++)
+            {
+                DVQMap dvqMap = new DVQMap();
+                dvqMap.setDriver(driver);
+                dvqMap.setVehicle(vehiclesInGroup.get(randomInt(0, vehiclesInGroup.size()-1)));
+                dvqMap.setDriveQ(createDriveQ(odometer));
+                odometer += 100;
+                storeObject(dvqMap);
+            }
         }
         
     }
 
-    private DriveQMap createDriveQ()
+    private DriveQMap createDriveQ(Integer odometer)
     {
         DriveQMap driveQMap = new DriveQMap();
         driveQMap.setAggressiveAccel(randomInt(0, 50));
@@ -316,9 +321,9 @@ public class MockData
         driveQMap.setIdleHi(randomInt(0, 50));
         driveQMap.setIdleLo(randomInt(0, 50));
         
-        driveQMap.setStartingOdometer(randomInt(500, 5000));
-        driveQMap.setEndingOdometer(driveQMap.getStartingOdometer() + randomInt(0, 1000));
-        driveQMap.setOdometer(driveQMap.getEndingOdometer());
+        driveQMap.setStartingOdometer(odometer);
+        driveQMap.setEndingOdometer(odometer + 100);
+        driveQMap.setOdometer(odometer);
         
         driveQMap.setMpgLight(randomInt(20, 30));
         driveQMap.setMpgMedium(randomInt(15, 25));

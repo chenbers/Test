@@ -60,19 +60,19 @@ public class DriverStyleBean extends BaseBean
         int driverID = navigation.getDriver().getDriverID();
         
         ScoreableEntity se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_DRIVING_STYLE);
-        setStyleScoreOverall(se.getScore());
+        setStyleScoreOverall(se == null ? 0 : se.getScore());
         
         se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL);
-        setStyleScoreAccel(se.getScore());
+        setStyleScoreAccel(se == null ? 0 : se.getScore());
         
         se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE);
-        setStyleScoreBrake(se.getScore());
+        setStyleScoreBrake(se == null ? 0 : se.getScore());
         
         se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP);
-        setStyleScoreBump(se.getScore());
+        setStyleScoreBump(se == null ? 0 : se.getScore());
         
         se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
-        setStyleScoreTurn(se.getScore());
+        setStyleScoreTurn(se == null ? 0 : se.getScore());
         
     }
     

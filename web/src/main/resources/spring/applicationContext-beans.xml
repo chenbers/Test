@@ -180,10 +180,13 @@
 
     <bean id="teamRecentEventsBean" class="com.inthinc.pro.backing.TeamRecentEventsBean" scope="request" parent="baseBean">
         <property name="eventDAO" ref="eventDAO"></property>
+        <property name="driverDAO" ref="driverDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
     </bean>
     <bean id="teamWarningsBean" class="com.inthinc.pro.backing.TeamWarningsBean" scope="request" parent="baseBean">
         <property name="eventDAO" ref="eventDAO"></property>
+        <property name="driverDAO" ref="driverDAO"></property>
+        <property name="vehicleDAO" ref="vehicleDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
     </bean>
     <!-- Report beans -->

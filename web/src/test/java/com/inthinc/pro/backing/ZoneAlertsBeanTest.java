@@ -45,6 +45,13 @@ public class ZoneAlertsBeanTest extends BaseAdminBeanTest<ZoneAlertsBean.ZoneAle
         super.delete();
     }
 
+    @Ignore
+    @Override
+    @Test
+    public void edit()
+    {
+        super.edit();
+    }
     @Override
     protected void populate(ZoneAlertView editItem, BaseAdminBean<ZoneAlertsBean.ZoneAlertView> adminBean)
     {

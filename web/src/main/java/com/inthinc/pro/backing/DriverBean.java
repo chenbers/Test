@@ -47,7 +47,9 @@ public class DriverBean extends BaseBean
     {
         logger.debug("## initOverallScore()");
         ScoreableEntity overallSe = scoreDAO.getAverageScoreByTypeAndMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), ScoreType.SCORE_OVERALL);
-        setOverallScore(overallSe.getScore());
+        if (overallSe == null)
+            setOverallScore(0);
+        else setOverallScore(overallSe.getScore());
     }
 
 	//OVERALL SCORE properties

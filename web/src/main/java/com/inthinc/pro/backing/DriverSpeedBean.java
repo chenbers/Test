@@ -63,22 +63,22 @@ public class DriverSpeedBean extends BaseBean
         int driverID = navigation.getDriver().getDriverID();
         
         ScoreableEntity se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING);
-        setSpeedScoreOverall(se.getScore());
+        setSpeedScoreOverall(se == null ? 0 : se.getScore());
         
         se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING_21_30);
-        setSpeedScoreTwentyOne(se.getScore());
+        setSpeedScoreTwentyOne(se == null ? 0 : se.getScore());
         
         se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING_31_40);
-        setSpeedScoreThirtyOne(se.getScore());
+        setSpeedScoreThirtyOne(se == null ? 0 : se.getScore());
         
         se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING_41_54);
-        setSpeedScoreFourtyOne(se.getScore());
+        setSpeedScoreFourtyOne(se == null ? 0 : se.getScore());
         
         se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING_55_64);
-        setSpeedScoreFiftyFive(se.getScore());
+        setSpeedScoreFiftyFive(se == null ? 0 : se.getScore());
         
         se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING_65_80);
-        setSpeedScoreSixtyFive(se.getScore());
+        setSpeedScoreSixtyFive(se == null ? 0 : se.getScore());
     }
     
     public String createLineDef(ScoreType scoreType)

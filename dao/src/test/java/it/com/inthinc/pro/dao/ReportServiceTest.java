@@ -114,6 +114,7 @@ public class ReportServiceTest
     }
 
     @Test
+    @Ignore
     public void getScoreTrend()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -139,6 +140,7 @@ public class ReportServiceTest
         
     }
     @Test
+    @Ignore
     public void mpg()
     {
         MpgHessianDAO mpgDAO = new MpgHessianDAO();
@@ -172,9 +174,52 @@ public class ReportServiceTest
       
         for (MpgEntity mpg : mpgList)
         {
-            System.out.println("groupID: " + mpg.getGroupID() + " " + mpg.getEntityName() + " heavy: " + mpg.getHeavyValue() + " med: " + mpg.getMediumValue() + " light: " + mpg.getLightValue());
+            System.out.println("groupID: " + mpg.getGroupID() + " " + mpg.getEntityName() + " " + mpg.getEntityID() + " heavy: " + mpg.getHeavyValue() + " med: " + mpg.getMediumValue() + " light: " + mpg.getLightValue());
         }
       
         
+    }
+    
+    
+    
+    @Test
+    @Ignore
+    public void getAverageScoreByTypeAndMiles()
+    {
+        ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
+        scoreDAO.setReportService(reportService);
+     
+        Integer driverID = 16777308;
+        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByTypeAndMiles(driverID, 1000, ScoreType.SCORE_OVERALL);
+
+        assertNotNull(scoreableEntity);
+        dumpScoreableEntity(scoreableEntity);
+    }
+    
+    @Test
+    @Ignore
+    public void getDriverScoreHistoryByMiles()
+    {
+        ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
+        scoreDAO.setReportService(reportService);
+     
+        Integer driverID = 16777308;
+        List<ScoreableEntity> list = scoreDAO.getDriverScoreHistoryByMiles(driverID, 1000, ScoreType.SCORE_OVERALL);
+        assertNotNull(list);
+
+        for (ScoreableEntity entity : list)
+        {
+            dumpScoreableEntity(entity);
+        }
+    }
+
+
+    private void dumpScoreableEntity(ScoreableEntity scoreableEntity)
+    {
+        System.out.println(scoreableEntity.getIdentifier() + " " +
+                scoreableEntity.getEntityID() +" " +
+                scoreableEntity.getEntityType().toString() +" " +
+                scoreableEntity.getScore() +" " +
+                scoreableEntity.getScoreType().toString());
     }
 }

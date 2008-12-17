@@ -20,6 +20,7 @@ import com.inthinc.pro.model.GQMap;
 import com.inthinc.pro.model.GQVMap;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.QuintileMap;
+import com.inthinc.pro.model.ReportMileageType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreTypeBreakdown;
 import com.inthinc.pro.model.ScoreableEntity;
@@ -109,22 +110,24 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     }
 
     @Override
-    public ScoreableEntity getAverageScoreByTypeAndMiles(Integer groupID, Integer milesBack, ScoreType st)
+    public ScoreableEntity getAverageScoreByTypeAndMiles(Integer driverID, Integer milesBack, ScoreType scoreType)
     {
         try
         {
-            return getMapper().convertToModelObject(reportService.getAverageScoreByTypeAndMiles(groupID, milesBack, st), ScoreableEntity.class);
+            DriveQMap driveQMap = getMapper().convertToModelObject(reportService.getDScoreByDM(driverID, milesBack * 100), DriveQMap.class);
+            ScoreableEntity scoreableEntity = new ScoreableEntity();
+            scoreableEntity.setEntityID(driverID);
+            scoreableEntity.setEntityType(EntityType.ENTITY_DRIVER);
+            scoreableEntity.setIdentifier("");
+            scoreableEntity.setScoreType(scoreType);
+            Integer score = driveQMap.getScoreMap().get(scoreType);
+            scoreableEntity.setScore((score == null) ? 0 : score);
+            scoreableEntity.setIdentifier(""+driveQMap.getEndingOdometer());
+            return scoreableEntity;
         }
         catch (EmptyResultSetException e)
         {
             return null;
-        }
-        catch (ProxyException e)
-        {
-            if (e.getErrorCode() == 422)
-                return null;
-            else
-                throw e;
         }
     }
 
@@ -227,20 +230,29 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     {
         try
         {
-            return getMapper().convertToModelObject(reportService.getDriverScoreHistoryByMiles(driverID, milesBack, scoreType.getCode()), ScoreableEntity.class);
+            ReportMileageType reportMileageType = ReportMileageType.valueOf(milesBack);
+            List<Map<String, Object>> list = reportService.getDTrendByDMC(driverID, reportMileageType.getMilesPerBin()*100, reportMileageType.getBinCount());
+            List<DriveQMap> driveQList = getMapper().convertToModelObject(list, DriveQMap.class);
+            
+            List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
+            for (DriveQMap driveQMap  :driveQList)
+            {
+                ScoreableEntity entity = new ScoreableEntity();
+                entity.setEntityID(driverID);
+                entity.setEntityType(EntityType.ENTITY_DRIVER);
+                entity.setScoreType(scoreType);
+                Integer score = driveQMap.getScoreMap().get(scoreType);
+                entity.setScore((score == null) ? 0 : score);
+                entity.setIdentifier(""+driveQMap.getEndingOdometer());
+                scoreList.add(entity);
+            }
+                
+            return scoreList;
         }
         catch (EmptyResultSetException e)
         {
             return Collections.emptyList();
         }
-        catch (ProxyException e)
-        {
-            if (e.getErrorCode() == 422)
-                return Collections.emptyList();
-            else
-                throw e;
-        }
-
     }
 
     @Override

@@ -1,15 +1,21 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.EventDisplay;
+import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
+import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventType;
+import com.inthinc.pro.model.Vehicle;
 
 public class TeamRecentEventsBean extends BaseBean
 {
@@ -19,6 +25,7 @@ public class TeamRecentEventsBean extends BaseBean
     
     private NavigationBean navigation;
     private EventDAO eventDAO;
+    private DriverDAO driverDAO;
     private Integer groupID;
     private EventDisplay selectedEvent;
     private static final EventCategory category = EventCategory.VIOLATION;
@@ -39,6 +46,7 @@ public class TeamRecentEventsBean extends BaseBean
         if (recentEvents == null)
         {
             List<Event> events = eventDAO.getMostRecentEvents(getGroupID(), 5);
+            populateDriver(events);
             
             recentEvents = new ArrayList<EventDisplay>();
             for (Event event : events)
@@ -48,6 +56,26 @@ public class TeamRecentEventsBean extends BaseBean
             
         }
         return recentEvents;
+    }
+
+    // TODO: if this becomes a performance issue -- ask back end to populate this in getRecentNotes() method
+    private void populateDriver(List<Event> events)
+    {
+        Map<Integer, Driver> driverMap  = new HashMap<Integer, Driver>();
+        
+        for (Event event : events)
+        {
+            if (event.getDriver() == null && event.getDriverID() != null)
+            {
+                Driver driver = driverMap.get(event.getDriverID());
+                if (driver == null)
+                {
+                    driver = driverDAO.findByID(event.getDriverID());
+                    driverMap.put(event.getDriverID(), driver);
+                }
+                event.setDriver(driver);
+            }
+        }
     }
 
     public NavigationBean getNavigation()
@@ -106,5 +134,16 @@ public class TeamRecentEventsBean extends BaseBean
     {
         return category;
     }
+
+    public DriverDAO getDriverDAO()
+    {
+        return driverDAO;
+    }
+
+    public void setDriverDAO(DriverDAO driverDAO)
+    {
+        this.driverDAO = driverDAO;
+    }
+
 
 }
