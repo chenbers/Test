@@ -42,6 +42,7 @@
             								<a4j:actionparam name="distance" assignTo="#{driverBean.distance}" value="FIVEHUNDRED" />
             								<a4j:actionparam name="distance" assignTo="#{driverSpeedBean.distance}" value="FIVEHUNDRED" />
             								<a4j:actionparam name="distance" assignTo="#{driverStyleBean.distance}" value="FIVEHUNDRED" />
+            								<a4j:actionparam name="distance" assignTo="#{driverSeatBeltBean.distance}" value="FIVEHUNDRED" />
           								</a4j:commandLink><h:outputText value=" "></h:outputText>
           								<a4j:commandLink title="#{messages.miles1000}" immediate="true"
             								styleClass="#{(driverBean.distance eq 'ONETHOUSAND') ? 'on' : ''}"
@@ -50,6 +51,16 @@
             								<a4j:actionparam name="distance" assignTo="#{driverBean.distance}" value="ONETHOUSAND" />
             								<a4j:actionparam name="distance" assignTo="#{driverSpeedBean.distance}" value="ONETHOUSAND" />
             								<a4j:actionparam name="distance" assignTo="#{driverStyleBean.distance}" value="ONETHOUSAND" />
+            								<a4j:actionparam name="distance" assignTo="#{driverSeatBeltBean.distance}" value="ONETHOUSAND" />
+          								</a4j:commandLink><h:outputText value=" "></h:outputText>
+          								<a4j:commandLink title="#{messages.miles5000}" immediate="true"
+            								styleClass="#{(driverBean.distance eq 'FIVETHOUSAND') ? 'on' : ''}"
+            								reRender="overall-form,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
+            								value="#{messages.miles5000}">
+            								<a4j:actionparam name="distance" assignTo="#{driverBean.distance}" value="FIVETHOUSAND" />
+            								<a4j:actionparam name="distance" assignTo="#{driverSpeedBean.distance}" value="FIVETHOUSAND" />
+            								<a4j:actionparam name="distance" assignTo="#{driverStyleBean.distance}" value="FIVETHOUSAND" />
+            								<a4j:actionparam name="distance" assignTo="#{driverSeatBeltBean.distance}" value="FIVETHOUSAND" />
           								</a4j:commandLink><h:outputText value=" "></h:outputText>
           								<a4j:commandLink title="#{messages.miles10000}" immediate="true"
             								styleClass="#{(driverBean.distance eq 'TENTHOUSAND') ? 'on' : ''}"
@@ -58,6 +69,7 @@
             								<a4j:actionparam name="distance" assignTo="#{driverBean.distance}" value="TENTHOUSAND" />
             								<a4j:actionparam name="distance" assignTo="#{driverSpeedBean.distance}" value="TENTHOUSAND" />
             								<a4j:actionparam name="distance" assignTo="#{driverStyleBean.distance}" value="TENTHOUSAND" />
+            								<a4j:actionparam name="distance" assignTo="#{driverSeatBeltBean.distance}" value="TENTHOUSAND" />
           								</a4j:commandLink><h:outputText value=" "></h:outputText>
       							
 								</span>
@@ -133,7 +145,7 @@
                           <tr>
                             <td width="373">
 				            <ui:include src="../includes/lineChart.xhtml">
-						            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistoryLarge}" />
+						            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistoryOverall}" />
 						            <ui:param name="hiddenFieldID" value="HiddenField1" />
 						            <ui:param name="width" value="380" /> 
 						            <ui:param name="height" value="200" />  
@@ -144,8 +156,8 @@
 							</td>
                             <td width="80" align="center">
 							    <ui:include src="../includes/scoreBox.xhtml">
-							            <ui:param name="score" value="#{driverSpeedBean.speedScore}" />
-							            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreStyle}" />
+							            <ui:param name="score" value="#{driverSpeedBean.speedScoreOverall}" />
+							            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreOverallStyle}" />
 								</ui:include>
 							</td>
                           </tr>
@@ -179,7 +191,7 @@
                           <tr>
                             <td width="373">
                       		<ui:include src="../includes/lineChart.xhtml">
-						            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistoryLarge}" />
+						            <ui:param name="lineChartDef" value="#{driverStyleBean.styleScoreHistoryOverall}" />
 						            <ui:param name="hiddenFieldID" value="HiddenField2" />
 						            <ui:param name="width" value="380" /> 
 						            <ui:param name="height" value="200" />  
@@ -190,8 +202,8 @@
                             </td>
                             <td width="80" align="center">
                                 <ui:include src="../includes/scoreBox.xhtml">
-							            <ui:param name="score" value="#{driverStyleBean.styleScore}" />
-							            <ui:param name="scoreStyle" value="#{driverStyleBean.styleScoreStyle}" />
+							            <ui:param name="score" value="#{driverStyleBean.styleScoreOverall}" />
+							            <ui:param name="scoreStyle" value="#{driverStyleBean.styleScoreOverallStyle}" />
 								</ui:include>
                             </td>
                           </tr>
@@ -220,7 +232,7 @@
                             <td width="373">
                               <div id="seatbelt_chart"></div>
                       		<ui:include src="../includes/lineChart.xhtml">
-						            <ui:param name="lineChartDef" value="#{driverSeatBeltBean.seatBeltScoreHistoryLarge}" />
+						            <ui:param name="lineChartDef" value="#{driverSeatBeltBean.seatBeltScoreHistoryOverall}" />
 						            <ui:param name="hiddenFieldID" value="HiddenField3" />
 						            <ui:param name="width" value="380" /> 
 						            <ui:param name="height" value="200" />
@@ -265,7 +277,27 @@
 							<div id="map-canvas" style="width:458px;height:300px;border:0"></div>
 					  	</h:panelGroup>
 					    <script type="text/javascript">
-      						if (GBrowserIsCompatible()) {
+						var baseIcon = new GIcon();
+							baseIcon.iconSize = new GSize(21, 20);
+							baseIcon.iconAnchor = new GPoint(6, 20);
+							baseIcon.infoWindowAnchor = new GPoint(5, 1);
+
+					    function createMarker(point, message, iconImage)
+				        {
+				          var markerIcon = new GIcon(baseIcon);
+				          markerIcon.image = iconImage;
+	
+				          // Set up our GMarkerOptions object
+				          markerOptions = { icon:markerIcon };
+				          var marker = new GMarker(point, markerOptions);
+	
+				          GEvent.addListener(marker, "click", function() {
+				            marker.openInfoWindowHtml("<b>" + message + "</b>");
+				          });
+				          return marker;
+				        }
+
+  						if (GBrowserIsCompatible()) {
         						map = new GMap2(document.getElementById("map-canvas"));
         						map.addControl(new GLargeMapControl());
         						map.addControl(new GMapTypeControl());
@@ -282,8 +314,15 @@
 								  		  new GLatLng(#{driverTripsBean.selectedTrips[0].routeLastStep.lat}, #{driverTripsBean.selectedTrips[0].routeLastStep.lng})
 									], "#0000ff", 6);
 									map.addOverlay(polyline);
+
+									var violation;
+									<ui:repeat value="#{driverTripsBean.violationEvents}" var="violation">
+										violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
+										map.addOverlay(createMarker(violation, "#{violation.eventType} Violation.<br />#{violation.time}",
+														"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png"));
+									</ui:repeat>
 								
-      						}
+      					}
     					</script>
 					  </div>
 					</div>
@@ -311,7 +350,7 @@
                             <h:inputHidden value="#{driverBean.mpgHistory}" id="hiddenField5" />
 							<script type="text/javascript">
 								var targetElement5 = document.getElementById("hiddenField5");
-								var chart = new FusionCharts("../fusioncharts/MSArea.swf", "ChartId", "450", "300", "0", "0");
+								var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSArea.swf", "ChartId", "450", "300", "0", "0");
 								chart.setDataXML(targetElement5.value);
 								chart.render("mpg_chart");
 							</script>

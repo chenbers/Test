@@ -1741,19 +1741,19 @@ color: #fff;
 .sev_bar_ex {
 	width: 125px;
 	height: 35px;
-	background: url(/tiwipro/images/sev_bar_ex.png) top left no-repeat;
+	background: url(../images/sev_bar_ex.png) top left no-repeat;
 	}
 
 .sev_bar_med {
 	width: 125px;
 	height: 35px;
-	background: url(/tiwipro/images/sev_bar_med.png) top left no-repeat;
+	background: url(../images/sev_bar_med.png) top left no-repeat;
 	}
 
 .sev_bar_low {
 	width: 125px;
 	height: 35px;
-	background: url(/tiwipro/images/sev_bar_low.png) top left no-repeat;
+	background: url(../images/sev_bar_low.png) top left no-repeat;
 	}
 
 /* MESSAGE BOXES */

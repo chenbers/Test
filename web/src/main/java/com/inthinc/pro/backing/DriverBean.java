@@ -68,7 +68,7 @@ public class DriverBean extends BaseBean
 	
 	public String getOverallScoreHistory() {
 		
-        setOverallScoreHistory(createLineDef(ScoreType.SCORE_OVERALL, ChartSizes.LARGE)); // Get Chart data from DAO
+        setOverallScoreHistory(createLineDef(ScoreType.SCORE_OVERALL)); // Get Chart data from DAO
 		return overallScoreHistory;
 	}
 	
@@ -89,7 +89,7 @@ public class DriverBean extends BaseBean
 	
 	//COACHING properties
 	public String getCoachingHistory() {
-		setCoachingHistory(createLineDef(ScoreType.SCORE_COACHING_EVENTS, ChartSizes.LARGE));
+		setCoachingHistory(createLineDef(ScoreType.SCORE_COACHING_EVENTS));
 		return coachingHistory;
 	}
 	public void setCoachingHistory(String coachingHistory) {
@@ -187,14 +187,14 @@ public class DriverBean extends BaseBean
         return sb.toString();
     }
     
-    public String createLineDef(ScoreType scoreType, ChartSizes size)
+    public String createLineDef(ScoreType scoreType)
     {
         
         StringBuffer sb = new StringBuffer();
         Line line = new Line();
 
         //Start XML Data
-        sb.append(line.getControlParameters(size));
+        sb.append(line.getControlParameters());
         
         if(navigation.getDriver() == null)
             logger.debug("Driver is null");

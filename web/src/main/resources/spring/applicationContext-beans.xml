@@ -125,18 +125,21 @@
         <property name="navigation" ref="navigationBean"></property>
     </bean>
 
-    <bean id="driverSpeedBean" class="com.inthinc.pro.backing.DriverSpeedBean" scope="request">
+    <bean id="driverSpeedBean" class="com.inthinc.pro.backing.DriverSpeedBean" scope="request" init-method="init">
         <property name="scoreDAO" ref="scoreDAO"></property>
+        <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
     </bean>
 
     <bean id="driverStyleBean" class="com.inthinc.pro.backing.DriverStyleBean" scope="request">
         <property name="scoreDAO" ref="scoreDAO"></property>
+        <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
     </bean>
 
     <bean id="driverSeatBeltBean" class="com.inthinc.pro.backing.DriverSeatBeltBean" scope="request">
         <property name="scoreDAO" ref="scoreDAO"></property>
+        <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
     </bean>
 

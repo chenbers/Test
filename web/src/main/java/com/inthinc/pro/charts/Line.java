@@ -10,7 +10,7 @@ public class Line implements BaseChart
 {
     private static final Logger logger = Logger.getLogger(Line.class);
     
-    private static final String LINE_CONTROL_PARAMS_SMALL = 
+    private static final String LINE_CONTROL_PARAMS = 
                                                     "<chart " +
                                                     "caption=\'\' " +
                                                     "subcaption=\'\' " +
@@ -19,39 +19,11 @@ public class Line implements BaseChart
                                                     "yAxisName=\'\' " +
                                                     "numberPrefix=\'\' " +
                                                     "showValues=\'0\' " +
-                                                    "showLabels=\'0\' " +
-                                                    "showYAxisValues=\'0\' " +
-                                                    "adjustDiv=\'0\' " +
-                                                    "setAdaptiveYMin='0' " +
-                                                    "borderColor=\'#cfcfcf\' " +
-                                                    "vDivLineColor=\'#cfcfcf\' " +
-                                                    "vDivLineThickness=\'1\' " +
-                                                    "showAlternateHGridColor=\'1\' " +
-                                                    "alternateHGridColor=\'#f0f0f0\' " +
-                                                    "alternateHGridAlpha=\'100\' " +
-                                                    "forceDecimals=\'1\' " +
-                                                    "yAxisMaxValue=\'5\' " +
-                                                    "bgColor=\'#ffffff\' " +
-                                                    "showBorder=\'0\' " +
-                                                    "lineColor=\'#93C034\' " +
-                                                    "lineThickness=\'2\' " +
-                                                    "drawAnchors=\'0\' " +
-                                                    "numVDivLines=\'4\' " + 
-                                                    "plotFillColor=\'#A8C634\' >";
-    
-    private static final String LINE_CONTROL_PARAMS_LARGE = 
-                                                    "<chart " +
-                                                    "caption=\'\' " +
-                                                    "subcaption=\'\' " +
-                                                    "xAxisName=\'\' " +
-                                                    "yAxisMinValue=\'0\' " +
-                                                    "yAxisName=\'\' " +
-                                                    "numberPrefix=\'\' " +
-                                                    "showValues=\'0\' " +
-                                                    "adjustDiv=\'0\' " +
+                                                    "showLabels=\'1\' " +
+                                                    "slantLabels='1' " +  
                                                     "labelDisplay='Rotate' " +
-                                                    //"labelDisplay='Stagger'" +
-                                                    "slantLabels='1' " +
+                                                    "showYAxisValues=\'1\' " +
+                                                    "adjustDiv=\'0\' " +
                                                     "setAdaptiveYMin='0' " +
                                                     "borderColor=\'#cfcfcf\' " +
                                                     "vDivLineColor=\'#cfcfcf\' " +
@@ -76,15 +48,7 @@ public class Line implements BaseChart
     public String getControlParameters()
     {
         
-        return LINE_CONTROL_PARAMS_LARGE;
-    }
-    
-    public String getControlParameters(ChartSizes size) 
-    {
-        if(size == ChartSizes.SMALL)
-            return LINE_CONTROL_PARAMS_SMALL;
-        else
-            return LINE_CONTROL_PARAMS_LARGE;
+        return LINE_CONTROL_PARAMS;
     }
 
     @Override

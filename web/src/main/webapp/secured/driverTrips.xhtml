@@ -454,7 +454,7 @@
 				  				var violation;
 								<ui:repeat value="#{driverTripsBean.violationEvents}" var="violation">
 									violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
-									map.addOverlay(createMarker(violation, "TYPE Violation.<br />#{violation.time}",
+									map.addOverlay(createMarker(violation, "#{violation.eventType} Violation.<br />#{violation.time}",
 													"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png"));
 								</ui:repeat>
 							}

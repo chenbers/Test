@@ -19,39 +19,7 @@
 	<li class="l grid_icon"><img src="images/ico_line.png" /></li>
 	<li class="l grid_title">Driver Performance: <h:outputText> #{driverBean.driverName}</h:outputText></li>
 	<li class="l divider"><img src="/images/grid_nav_divider.png" /></li>
-	<li class="l">
-	
-		<ul id="breadcrumb">
-			<li class="first"><a href="/">Home</a></li>
-			<li><a href="drivers.html">Drivers</a></li>
-			<li class="last"><h:outputText>#{driverBean.driverName}</h:outputText></li>
-		</ul>
-	</li>
 </ul>
-
-<script type="text/javascript">
-
-//Set default selected box.
-var selected = 'OVERALL';
-
-	function SelectBreakDown(region, chartVar)
-	{
-		//Un-Select last component in CSS.
-		document.getElementById(selected).className="tiny_chart";
-		
-		//remember current selected region.
-		selected = region;
-		
-		//change style to new selected region.
-		document.getElementById(region).className="tiny_selected";
-		
-		//resize chart and render it in the top box.
-		// TODO: turn on X and Y axis labels.
-		chartVar.attributes.width = 650;
-		chartVar.attributes.height = 200;
-		chartVar.render('overall_chart');
-	}
-</script>
 
 <table width="940" border="0" cellspacing="0" cellpadding="0" align="center" class="dash_table">
   <tr>
@@ -64,21 +32,27 @@ var selected = 'OVERALL';
 						<a4j:form id="overall-form"> 
 							<span class="panel_links"><h:outputText>Graph the last:&#160;</h:outputText>
 								<a4j:commandLink title="#{messages.miles500}" immediate="true"
-									styleClass="#{(driverStyleBean.distance eq 'FIVEHUNDRED') ? 'on' : ''}"
+									styleClass="#{(driverSeatBeltBean.distance eq 'FIVEHUNDRED') ? 'on' : ''}"
 									reRender="overall-form,overallPanel" value="#{messages.miles500}">
-									<a4j:actionparam name="distance" assignTo="#{driverStyleBean.distance}"	value="FIVEHUNDRED" />
+									<a4j:actionparam name="distance" assignTo="#{driverSeatBeltBean.distance}"	value="FIVEHUNDRED" />
 								</a4j:commandLink>
 							<h:outputText value=" " />
 								<a4j:commandLink title="#{messages.miles1000}" immediate="true"
-									styleClass="#{(driverStyleBean.distance eq 'ONETHOUSAND') ? 'on' : ''}"
+									styleClass="#{(driverSeatBeltBean.distance eq 'ONETHOUSAND') ? 'on' : ''}"
 									reRender="overall-form,overallPanel" value="#{messages.miles1000}">
-									<a4j:actionparam name="distance" assignTo="#{driverStyleBean.distance}"	value="ONETHOUSAND" />
+									<a4j:actionparam name="distance" assignTo="#{driverSeatBeltBean.distance}"	value="ONETHOUSAND" />
+								</a4j:commandLink>
+							<h:outputText value=" " />
+								<a4j:commandLink title="#{messages.miles5000}" immediate="true"
+									styleClass="#{(driverSeatBeltBean.distance eq 'FIVETHOUSAND') ? 'on' : ''}"
+									reRender="overall-form,overallPanel" value="#{messages.miles5000}">
+									<a4j:actionparam name="distance" assignTo="#{driverSeatBeltBean.distance}"	value="FIVETHOUSAND" />
 								</a4j:commandLink>
 							<h:outputText value=" " />
 								 <a4j:commandLink title="#{messages.miles10000}" immediate="true"
-									styleClass="#{(driverStyleBean.distance eq 'TENTHOUSAND') ? 'on' : ''}"
+									styleClass="#{(driverSeatBeltBean.distance eq 'TENTHOUSAND') ? 'on' : ''}"
 									reRender="overall-form,overallPanel" value="#{messages.miles10000}">
-									<a4j:actionparam name="distance" assignTo="#{driverStyleBean.distance}"	value="TENTHOUSAND" />
+									<a4j:actionparam name="distance" assignTo="#{driverSeatBeltBean.distance}"	value="TENTHOUSAND" />
 								</a4j:commandLink>
 							</span>
 						</a4j:form>
@@ -90,7 +64,7 @@ var selected = 'OVERALL';
 					  <tr>
 						<td valign="top" width="600">
 						   <ui:include src="../../includes/lineChart.xhtml">
-						            <ui:param name="lineChartDef" value="#{driverStyleBean.styleScoreHistoryLarge}" />
+						            <ui:param name="lineChartDef" value="#{driverSeatBeltBean.seatBeltScoreHistoryOverall}" />
 						            <ui:param name="hiddenFieldID" value="HiddenField" />
 						            <ui:param name="width" value="650" /> 
 						            <ui:param name="height" value="200" />  
@@ -108,8 +82,8 @@ var selected = 'OVERALL';
 								</td>
 								<td width="80" align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverStyleBean.styleScore}" />
-								            <ui:param name="scoreStyle" value="#{driverStyleBean.styleScoreStyle}" />
+								            <ui:param name="score" value="#{driverSeatBeltBean.seatBeltScore}" />
+								            <ui:param name="scoreStyle" value="#{driverSeatBeltBean.seatBeltScoreStyle}" />
 									</ui:include>
 								</td>
 							  </tr>
@@ -160,21 +134,21 @@ var selected = 'OVERALL';
 						value="#{driverSeatBeltBean.seatBeltEvents}" 
 						id="items"
 						var="item" styleClass="datagrid"
-						rowClasses="tableOdd,tableEven" cellspacing="1" rows="10"  
+						rowClasses="tableOdd,tableEven" cellspacing="1" rows="15"  
 						width="100%"> 
 						<!-- Data -->
-							<rich:column sortBy="#{item.latitude}">
+							<rich:column sortBy="#{item.addressStr}">
 								<f:facet name="header">
 									<h:outputText value="Location" />
 								</f:facet>
-									<h:outputText value="1232 Coleman Ave Santa Clara, CA 95110 " />
+									<h:outputText value="#{item.addressStr}" />
 							</rich:column>
 							
-							<rich:column sortBy="#{item.latitude}">
+							<rich:column sortBy="#{item.time}">
 								<f:facet name="header">
 									<h:outputText value="Time" />
 								</f:facet>
-									<h:outputText value="Fri, Apr 25, 2008 11:22 AM (MST)" />
+									<h:outputText value="#{item.time}" />
 							</rich:column>
 							
 							<rich:column sortBy="#{item.avgSpeed}">

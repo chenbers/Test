@@ -20,14 +20,6 @@
 	<li class="l grid_icon"><img src="images/ico_line.png" /></li>
 	<li class="l grid_title">Driver Performance:&#160;<h:outputText>#{driverSpeedBean.driverName}</h:outputText></li>
 	<li class="l divider"><img src="/images/grid_nav_divider.png" /></li>
-	<li class="l">
-	
-		<ul id="breadcrumb">
-			<li class="first"><a href="/">Home</a></li>
-			<li><a href="drivers.html">Drivers</a></li>
-			<li class="last"><h:outputText>#{driverBean.driverName}</h:outputText></li>
-		</ul>
-	</li>
 </ul>
 
 <script type="text/javascript">
@@ -47,10 +39,19 @@ var selected = 'OVERALL';
 		document.getElementById(region).className="tiny_selected";
 		
 		//resize chart and render it in the top box.
-		// TODO: turn on X and Y axis labels.
+		
 		chartVar.attributes.width = 650;
 		chartVar.attributes.height = 200;
-		chartVar.render('overall_chart');
+
+        //alert(chartVar.variables.dataXML);
+
+        var oldData = chartVar.variables.dataXML;
+    	var newData = oldData.replace("showLabels=\'0\'", "showLabels=\'1\'");
+
+    	newData = newData.replace("showYAxisValues=\'0\'", "showYAxisValues=\'1\'");
+		chartVar.setDataXML(newData);
+		//alert(chartVar.variables.dataXML);
+		//chartVar.render('overall_chart');  //not necessary.
 	}
 </script>
 
@@ -76,6 +77,12 @@ var selected = 'OVERALL';
 									<a4j:actionparam name="distance" assignTo="#{driverSpeedBean.distance}"
 										value="ONETHOUSAND" />
 								</a4j:commandLink><h:outputText value=" "></h:outputText> <a4j:commandLink
+									title="#{messages.miles5000}" immediate="true"
+									styleClass="#{(driverSpeedBean.distance eq 'FIVETHOUSAND') ? 'on' : ''}"
+									reRender="overall-form,overallPanel,breakdown_panel,eventsTable" value="#{messages.miles5000}">
+									<a4j:actionparam name="distance" assignTo="#{driverSpeedBean.distance}"
+										value="FIVETHOUSAND" />
+								</a4j:commandLink><h:outputText value=" "></h:outputText> <a4j:commandLink
 									title="#{messages.miles10000}" immediate="true"
 									styleClass="#{(driverSpeedBean.distance eq 'TENTHOUSAND') ? 'on' : ''}"
 									reRender="overall-form,overallPanel,breakdown_panel,eventsTable"
@@ -93,7 +100,7 @@ var selected = 'OVERALL';
 					  <tr>
 						<td valign="top" width="600">
 						   <ui:include src="../../includes/lineChart.xhtml">
-						            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistoryLarge}" />
+						            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistoryOverall}" />
 						            <ui:param name="hiddenFieldID" value="HiddenField" />
 						            <ui:param name="width" value="650" /> 
 						            <ui:param name="height" value="200" />  
@@ -111,8 +118,8 @@ var selected = 'OVERALL';
 								</td>
 								<td width="80" align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverSpeedBean.speedScore}" />
-								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreStyle}" />
+								            <ui:param name="score" value="#{driverSpeedBean.speedScoreOverall}" />
+								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreOverallStyle}" />
 									</ui:include>
 								</td>
 							  </tr>
@@ -163,19 +170,20 @@ var selected = 'OVERALL';
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-								            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistorySmall}" />
+								            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistoryOverall}" />
 								            <ui:param name="hiddenFieldID" value="HiddenOverall" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
 								            <ui:param name="tartgetElementVar" value="targetElement1" />
 								            <ui:param name="ChartDivID" value="speed_chart_tiny_overall" />
 								            <ui:param name="chartVar" value="overallChart2" />
+								            <ui:param name="disableLabels" value="true" />
 									</ui:include>
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverSpeedBean.speedScore}" />
-								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreStyle}" /> 
+								            <ui:param name="score" value="#{driverSpeedBean.speedScoreOverall}" />
+								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreOverallStyle}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -189,19 +197,20 @@ var selected = 'OVERALL';
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-									            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistorySmall}" />
+									            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistoryTwentyOne}" />
 									            <ui:param name="hiddenFieldID" value="HiddenTWENTYONE" />
 									            <ui:param name="width" value="220" /> 
 									            <ui:param name="height" value="90" />  
-									            <ui:param name="tartgetElementVar" value="targetElement2" />
+									            <ui:param name="tartgetElementVar" value="targetElement21" />
 									            <ui:param name="ChartDivID" value="speed_chart_tiny_21-30" />
 									            <ui:param name="chartVar" value="chart21" />
+									            <ui:param name="disableLabels" value="true" />
 									</ui:include>
 								</td>
 								<td align="center">
 								<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverSpeedBean.speedScore}" />
-								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreStyle}" /> 
+								            <ui:param name="score" value="#{driverSpeedBean.speedScoreTwentyOne}" />
+								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreTwentyOneStyle}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -214,19 +223,20 @@ var selected = 'OVERALL';
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-								            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistorySmall}" />
+								            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistoryThirtyOne}" />
 								            <ui:param name="hiddenFieldID" value="HiddenTHIRTYONE" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
-								            <ui:param name="tartgetElementVar" value="targetElement3" />
+								            <ui:param name="tartgetElementVar" value="targetElement31" />
 								            <ui:param name="ChartDivID" value="speed_chart_tiny_31-40" />
 								            <ui:param name="chartVar" value="chart31" />
+								            <ui:param name="disableLabels" value="true" />
 									</ui:include>
 									</td>
 									<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverSpeedBean.speedScore}" />
-								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreStyle}" /> 
+								            <ui:param name="score" value="#{driverSpeedBean.speedScoreThirtyOne}" />
+								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreThirtyOneStyle}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -234,26 +244,27 @@ var selected = 'OVERALL';
 						</td>
 				      </tr>
 					  <tr>
-						<td id="FORTYONE" valign="top" class="tiny_chart">
+						<td id="FOURTYONE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-							<a href="#" onclick="SelectBreakDown('FORTYONE', chart41)">41-54mph</a></div>
+							<a href="#" onclick="SelectBreakDown('FOURTYONE', chart41)">41-54mph</a></div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-								            <ui:param name="lineChartDef" value="##{driverSpeedBean.speedScoreHistorySmall}" />
-								            <ui:param name="hiddenFieldID" value="HiddenFORTYONE" />
+								            <ui:param name="lineChartDef" value="##{driverSpeedBean.speedScoreHistoryFourtyOne}" />
+								            <ui:param name="hiddenFieldID" value="HiddenFOURTYONE" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
-								            <ui:param name="tartgetElementVar" value="targetElement4" />
+								            <ui:param name="tartgetElementVar" value="targetElement41" />
 								            <ui:param name="ChartDivID" value="speed_chart_tiny_41-54" />
 								            <ui:param name="chartVar" value="chart41" />
+								            <ui:param name="disableLabels" value="true" />
 									</ui:include>
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverSpeedBean.speedScore}" />
-								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreStyle}" /> 
+								            <ui:param name="score" value="#{driverSpeedBean.speedScoreFourtyOne}" />
+								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreFourtyOneStyle}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -266,19 +277,20 @@ var selected = 'OVERALL';
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-								            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistorySmall}" />
+								            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistoryFiftyFive}" />
 								            <ui:param name="hiddenFieldID" value="HiddenFIFTYFIVE" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
-								            <ui:param name="tartgetElementVar" value="targetElement5" />
+								            <ui:param name="tartgetElementVar" value="targetElement55" />
 								            <ui:param name="ChartDivID" value="speed_chart_tiny_55-64" />
 								            <ui:param name="chartVar" value="chart55" />
+								            <ui:param name="disableLabels" value="true" />
 									</ui:include>
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverSpeedBean.speedScore}" />
-								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreStyle}" /> 
+								            <ui:param name="score" value="#{driverSpeedBean.speedScoreFiftyFive}" />
+								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreFiftyFiveStyle}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -291,19 +303,20 @@ var selected = 'OVERALL';
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-								            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistorySmall}" />
+								            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistorySixtyFive}" />
 								            <ui:param name="hiddenFieldID" value="HiddenSIXTYFIVE" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
-								            <ui:param name="tartgetElementVar" value="targetElement6" />
+								            <ui:param name="tartgetElementVar" value="targetElement65" />
 								            <ui:param name="ChartDivID" value="speed_chart_tiny_65-80" />
 								            <ui:param name="chartVar" value="chart65" />
+								            <ui:param name="disableLabels" value="true" />
 									</ui:include>
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverSpeedBean.speedScore}" />
-								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreStyle}" /> 
+								            <ui:param name="score" value="#{driverSpeedBean.speedScoreTwentyOne}" />
+								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreTwentyOneStyle}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -345,18 +358,18 @@ var selected = 'OVERALL';
 
 							<!-- Data -->
 										
-							<rich:column sortBy="#{item.latitude}">
+							<rich:column sortBy="#{item.addressStr}">
 								<f:facet name="header">
 									<h:outputText value="Location" />
 								</f:facet>
-									<h:outputText value="1232 Coleman Ave Santa Clara, CA 95110 " />
+									<h:outputText value="#{item.addressStr}" />
 							</rich:column>
 							
-							<rich:column sortBy="#{item.latitude}">
+							<rich:column sortBy="#{item.time}">
 								<f:facet name="header">
 									<h:outputText value="Time" />
 								</f:facet>
-									<h:outputText value="Fri, Apr 25, 2008 11:22 AM (MST)" />
+									<h:outputText value="#{item.time}" />
 							</rich:column>
 							
 							<rich:column sortBy="#{item.speedLimit}">

@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -13,84 +14,76 @@ import com.inthinc.pro.backing.ui.ScoreBreakdown;
 import com.inthinc.pro.backing.ui.ScoreCategory;
 import com.inthinc.pro.charts.ChartSizes;
 import com.inthinc.pro.charts.Line;
+import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Distance;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.EventType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
-import com.inthinc.pro.model.SpeedingEvent;
+import com.inthinc.pro.model.AggressiveDrivingEvent;
 
 public class DriverStyleBean extends BaseBean
 {
-    private static final Logger logger = Logger.getLogger(DriverSpeedBean.class);
-    
+    private static final Logger logger = Logger.getLogger(DriverStyleBean.class);
     private NavigationBean  navigation;
-    private ScoreDAO    scoreDAO;
-    private String      driverName;
+    private ScoreDAO        scoreDAO;
+    private EventDAO        eventDAO;
     
-    private Integer     styleScore;
-    private String      styleScoreHistorySmall;
-    private String      styleScoreHistoryLarge;
-    private String      styleScoreStyle;
+    private String          driverName;
+    private Distance        distance = Distance.FIVEHUNDRED;
     
-    private Distance distance = Distance.FIVEHUNDRED;
+    private Integer         styleScoreOverall;
+    private String          styleScoreOverallStyle;
+    private Integer         styleScoreAccel;
+    private String          styleScoreAccelStyle;
+    private Integer         styleScoreBrake;
+    private String          styleScoreBrakeStyle;
+    private Integer         styleScoreBump; 
+    private String          styleScoreBumpStyle;
+    private Integer         styleScoreTurn;
+    private String          styleScoreTurnStyle;
     
-    private List<Event> styleEvents = new ArrayList<Event>();
+    private String          styleScoreHistoryOverall;
+    private String          styleScoreHistoryAccel;
+    private String          styleScoreHistoryBrake;
+    private String          styleScoreHistoryBump;
+    private String          styleScoreHistoryTurn;
     
-    private void initStyle()
+    private List<AggressiveDrivingEvent> styleEvents = new ArrayList<AggressiveDrivingEvent>();
+    
+    private void init()
     {
+        int dist = distance.getNumberOfMiles();
+        int driverID = navigation.getDriver().getDriverID();
         
-        logger.debug("##### initStyle()  driverid:  " + navigation.getDriver().getDriverID());
+        ScoreableEntity se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_DRIVING_STYLE);
+        setStyleScoreOverall(se.getScore());
         
-        ScoreableEntity styleSe = scoreDAO.getAverageScoreByTypeAndMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), ScoreType.SCORE_DRIVING_STYLE);
-        setStyleScore(styleSe.getScore());
+        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL);
+        setStyleScoreAccel(se.getScore());
+        
+        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE);
+        setStyleScoreBrake(se.getScore());
+        
+        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP);
+        setStyleScoreBump(se.getScore());
+        
+        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
+        setStyleScoreTurn(se.getScore());
+        
     }
     
-    public Integer getStyleScore() {
-        if(styleScore == null)
-            initStyle();
-        
-        return styleScore;
-    }
-    public void setStyleScore(Integer styleScore) {
-        this.styleScore = styleScore;
-        setStyleScoreStyle(ScoreBox.GetStyleFromScore(styleScore, ScoreBoxSizes.MEDIUM));
-    }
-    public String getStyleScoreHistoryLarge() {
-        setStyleScoreHistoryLarge(createLineDef(ScoreType.SCORE_DRIVING_STYLE, ChartSizes.LARGE));
-        return styleScoreHistoryLarge;
-    }
-    public void setStyleScoreHistoryLarge(String styleScoreHistoryLarge) {
-        this.styleScoreHistoryLarge = styleScoreHistoryLarge;
-    }
- 
-    public String getStyleScoreHistorySmall() {
-        setStyleScoreHistorySmall(createLineDef(ScoreType.SCORE_DRIVING_STYLE, ChartSizes.SMALL));
-        return styleScoreHistorySmall;
-    }
-    public void setStyleScoreHistorySmall(String styleScoreHistorySmall) {
-        this.styleScoreHistorySmall = styleScoreHistorySmall;
-    }
-    
-    public String getStyleScoreStyle() {
-        if(styleScoreStyle == null)
-            initStyle();
-        
-        return styleScoreStyle;
-    }
-    public void setStyleScoreStyle(String styleScoreStyle) {
-        this.styleScoreStyle = styleScoreStyle;
-    }
-    
-    public String createLineDef(ScoreType scoreType, ChartSizes size)
+    public String createLineDef(ScoreType scoreType)
     {
+        logger.debug("*** Getting score history for " + driverName + " " + scoreType.toString());
         StringBuffer sb = new StringBuffer();
         Line line = new Line();
-
+        
         //Start XML Data
-        sb.append(line.getControlParameters(size));
+        sb.append(line.getControlParameters());
         
         List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistoryByMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), scoreType);
         for(ScoreableEntity e : scoreList)
@@ -103,68 +96,167 @@ public class DriverStyleBean extends BaseBean
 
         return sb.toString();
     }
+    
+    //SPEED OVERALL SCORE PROPERTY
+    public Integer getStyleScoreOverall() {
+        return styleScoreOverall;
+    }
+    public void setStyleScoreOverall(Integer styleScoreOverall) {
+        this.styleScoreOverall = styleScoreOverall;
+        setStyleScoreOverallStyle(ScoreBox.GetStyleFromScore(styleScoreOverall, ScoreBoxSizes.MEDIUM));
+    }
+    public String getStyleScoreOverallStyle() {
+        return styleScoreOverallStyle;
+    }
+    public void setStyleScoreOverallStyle(String styleScoreOverallStyle) {
+        this.styleScoreOverallStyle = styleScoreOverallStyle;
+    }
+    
+    //STYLE SCORE HARD ACCEL
+    public Integer getStyleScoreAccel()
+    {
+        return styleScoreAccel;
+    }
+    public void setStyleScoreAccel(Integer styleScoreAccel)
+    {
+        this.styleScoreAccel = styleScoreAccel;
+        setStyleScoreAccelStyle(ScoreBox.GetStyleFromScore(styleScoreAccel, ScoreBoxSizes.MEDIUM));
+    }
+    public String getStyleScoreAccelStyle()
+    {
+        return styleScoreAccelStyle;
+    }
+    public void setStyleScoreAccelStyle(String styleScoreAccelStyle)
+    {
+        this.styleScoreAccelStyle = styleScoreAccelStyle;
+    }
+    
+    //STYLE SCORE HARD BRAKE
+    public Integer getStyleScoreBrake()
+    {
+        return styleScoreBrake;
+    }
+    public void setStyleScoreBrake(Integer styleScoreBrake)
+    {
+        setStyleScoreBrakeStyle(ScoreBox.GetStyleFromScore(styleScoreBrake, ScoreBoxSizes.MEDIUM));
+        this.styleScoreBrake = styleScoreBrake;
+    }
+    public String getStyleScoreBrakeStyle()
+    {
+        return styleScoreBrakeStyle;
+    }
+    public void setStyleScoreBrakeStyle(String styleScoreBrakeStyle)
+    {
+        this.styleScoreBrakeStyle = styleScoreBrakeStyle;
+    }
 
-    //DAO PROPERTIES
+    //STYLE SCORE HARD BUMP
+    public Integer getStyleScoreBump()
+    {
+        return styleScoreBump;
+    }
+    public void setStyleScoreBump(Integer styleScoreBump)
+    {
+        setStyleScoreBumpStyle(ScoreBox.GetStyleFromScore(styleScoreBump, ScoreBoxSizes.MEDIUM));
+        this.styleScoreBump = styleScoreBump;
+    }
+    public String getStyleScoreBumpStyle()
+    {
+        return styleScoreBumpStyle;
+    }
+    public void setStyleScoreBumpStyle(String styleScoreBumpStyle)
+    {
+        this.styleScoreBumpStyle = styleScoreBumpStyle;
+    }
+
+    //STYLE SCORE HARD TURN
+    public Integer getStyleScoreTurn()
+    {
+        return styleScoreTurn;
+    }
+    public void setStyleScoreTurn(Integer styleScoreTurn)
+    {
+        setStyleScoreTurnStyle(ScoreBox.GetStyleFromScore(styleScoreTurn, ScoreBoxSizes.MEDIUM));
+        this.styleScoreTurn = styleScoreTurn;
+    }
+    public String getStyleScoreTurnStyle()
+    {
+        return styleScoreTurnStyle;
+    }
+    public void setStyleScoreTurnStyle(String styleScoreTurnStyle)
+    {
+        this.styleScoreTurnStyle = styleScoreTurnStyle;
+    }
+
+    //OVERALL HISTORY PROPERTY
+    public String getStyleScoreHistoryOverall() {
+        setStyleScoreHistoryOverall(createLineDef(ScoreType.SCORE_DRIVING_STYLE));
+        return styleScoreHistoryOverall;
+    }
+    public void setStyleScoreHistoryOverall(String styleScoreHistoryOverall) {
+        this.styleScoreHistoryOverall = styleScoreHistoryOverall;
+    }
+    
+    //SCORE HISTORY HARD ACCEL
+    public String getStyleScoreHistoryAccel() {
+        setStyleScoreHistoryAccel(createLineDef(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL));
+        return styleScoreHistoryAccel;
+    }
+    public void setStyleScoreHistoryAccel(String styleScoreHistoryAccel) {
+        this.styleScoreHistoryAccel = styleScoreHistoryAccel;
+    }
+    //STYLE HISTORY HARD BRAKE
+    public String getStyleScoreHistoryBrake()
+    {
+        setStyleScoreHistoryBrake(createLineDef(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE));
+        return styleScoreHistoryBrake;
+    }
+    public void setStyleScoreHistoryBrake(String styleScoreHistoryBrake)
+    {
+        this.styleScoreHistoryBrake = styleScoreHistoryBrake;
+    }
+
+    //STYLE HISTORY HARD BUMP
+    public String getStyleScoreHistoryBump()
+    {
+        setStyleScoreHistoryBump(createLineDef(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP));
+        return styleScoreHistoryBump;
+    }
+    public void setStyleScoreHistoryBump(String styleScoreHistoryBump)
+    {
+        this.styleScoreHistoryBump = styleScoreHistoryBump;
+    }
+
+    //STYLE HISTORY HARD TURN
+    public String getStyleScoreHistoryTurn()
+    {
+        setStyleScoreHistoryTurn(createLineDef(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN));
+        return styleScoreHistoryTurn;
+    }
+    public void setStyleScoreHistoryTurn(String styleScoreHistoryTurn)
+    {
+        this.styleScoreHistoryTurn = styleScoreHistoryTurn;
+    }
+
+    //DAO PROPERTY
     public ScoreDAO getScoreDAO()
     {
         return scoreDAO;
     }
-
     public void setScoreDAO(ScoreDAO scoreDAO)
     {
         this.scoreDAO = scoreDAO;
     }
-
-    //STYLE EVENTS LIST
-    public List<Event> getStyleEvents() {
-        
-        SpeedingEvent s = new SpeedingEvent();
-        s.setLatitude(90.000);
-        s.setLongitude(-110.0000);
-        s.setTime(new Date(456655000l));
-        s.setSpeed(87);
-        s.setAvgSpeed(65);
-        s.setTopSpeed(91);
-        s.setDistance(32);
-        styleEvents.add(s);
-
-        SpeedingEvent s2 = new SpeedingEvent();
-        s2.setLatitude(85.000);
-        s2.setLongitude(-119.0000);
-        s2.setTime(new Date(47054000l));
-        s2.setSpeed(87);
-        s2.setAvgSpeed(64);
-        s2.setTopSpeed(78);
-        s2.setDistance(22);
-        styleEvents.add(s2);
-         
-        return styleEvents;
-    }
-
-    public void setStyleEvents(List<Event> styleEvents) {
-        this.styleEvents = styleEvents;
-    }
-    
-    //DRIVER PROPERTIES
-    public String getDriverName() {
-        //setDriverName(driverBean.getDriverName());
-        return driverName;
-    }
-    public void setDriverName(String driverName) {
-        this.driverName = driverName;
-    }
-
-    //NAVIGATION BEAN PROPERTIES
-    public NavigationBean getNavigation()
+    public EventDAO getEventDAO()
     {
-        return navigation;
+        return eventDAO;
     }
-    public void setNavigation(NavigationBean navigation)
+    public void setEventDAO(EventDAO eventDAO)
     {
-        this.navigation = navigation;
+        this.eventDAO = eventDAO;
     }
 
-    //DISTANCE PROPERTIES
+    //DISTANCE PROPERTY
     public Distance getDistance()
     {
         return distance;
@@ -172,5 +264,46 @@ public class DriverStyleBean extends BaseBean
     public void setDistance(Distance distance)
     {
         this.distance = distance;
+        init();
+    }
+
+    //DRIVING STYLE EVENTS LIST
+    public List<AggressiveDrivingEvent> getStyleEvents()
+    {
+        List<Integer> types = new ArrayList<Integer>();    
+        types.add(2);
+        
+        List<Event> tempEvents = new ArrayList<Event>();
+        tempEvents = eventDAO.getEventsForDriverByMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), types);
+       
+        for(Event event: tempEvents)
+        {
+            styleEvents.add( (AggressiveDrivingEvent)event );   
+        }
+        
+        return styleEvents;
+    }
+   
+    public void setStyleEvents(List<AggressiveDrivingEvent> styleEvents) {
+        this.styleEvents = styleEvents;
+    }
+    
+    //DRIVER NAME PROPERTY
+    public String getDriverName() {
+        setDriverName(navigation.getDriver().getPerson().getFirst() + " " + navigation.getDriver().getPerson().getLast());
+        return driverName;
+    }
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
+    }
+
+    //NAVIGATION PROPERTY
+    public NavigationBean getNavigation()
+    {
+        return navigation;
+    }
+    public void setNavigation(NavigationBean navigation)
+    {
+        this.navigation = navigation;
     }
 }
