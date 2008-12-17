@@ -13,6 +13,7 @@ import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
+import com.inthinc.pro.model.DVQMap;
 import com.inthinc.pro.model.DriveQMap;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
@@ -24,6 +25,8 @@ import com.inthinc.pro.model.ReportMileageType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreTypeBreakdown;
 import com.inthinc.pro.model.ScoreableEntity;
+import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleReportItem;
 
 public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer> implements ScoreDAO
 {
