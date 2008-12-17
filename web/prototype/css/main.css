@@ -1151,7 +1151,22 @@ a.ls_tab_add_redflag {
 	color: #000;
 	margin: 0 0 0 8px;
 	}
+a.ls_tab_sbscr {
+	padding: 6px 10px 7px 20px;
+	background: transparent url(/images/ico_speed.png) no-repeat center left;
+	text-decoration: none;
+	color: #000;
+	margin: 0 0 0 8px;
+	}
 	
+a.ls_tab_add_sbscr {
+	padding: 6px 10px 7px 20px;
+	background: transparent url(/images/ico_speed.png) no-repeat center left;
+	text-decoration: none;
+	color: #000;
+	margin: 0 0 0 8px;
+	}
+
 a.ls_tab_zones {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(/images/ico_zones.png) no-repeat center left;

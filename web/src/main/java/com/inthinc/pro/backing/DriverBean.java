@@ -1,29 +1,20 @@
 package com.inthinc.pro.backing;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.BreakdownSelections;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
-import com.inthinc.pro.backing.ui.ScoreBreakdown;
-import com.inthinc.pro.backing.ui.ScoreCategory;
-
+import com.inthinc.pro.charts.ChartSizes;
+import com.inthinc.pro.charts.Line;
 import com.inthinc.pro.dao.ScoreDAO;
-import com.inthinc.pro.dao.util.DateUtil;
-import com.inthinc.pro.util.GraphicUtil;
-import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Distance;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
-import com.inthinc.pro.model.Distance;
-import com.inthinc.pro.model.SpeedingEvent;
-import com.inthinc.pro.model.LatLng;
-import com.inthinc.pro.charts.Line;
-import com.inthinc.pro.charts.ChartSizes;
+import com.inthinc.pro.util.GraphicUtil;
 
 public class DriverBean extends BaseBean
 {

@@ -6,7 +6,7 @@
   	xmlns:iwi="http://pro.tiwi.com/jsf"
 	xmlns:h="http://java.sun.com/jsf/html">
 	
-	<script src="http://gmaps-utility-library.googlecode.com/svn/trunk/markermanager/release/src/markermanager.js">	
+	<script src="#{facesContext.externalContext.request.contextPath}/js/markermanager.js"  type="text/javascript">	
 	</script>
 		<div class="">
 				<div class="panel_nw">
@@ -40,19 +40,18 @@
 							  	</ui:repeat>
 							  	
 					<div class="panel_content">
-			  			<rich:panel bodyClass="panel_content" id="map">
-						<h:panelGroup styleClass="map-border" layout="block">
+				 	 <rich:panel  id="map">
 							<div id="map-canvas" style="#{mapwidth};#{mapheight};border:0"></div>
-					  	</h:panelGroup>
 					    <script type="text/javascript">
 					    	var markerClicked=false;
       						if (GBrowserIsCompatible()) {
         						map = new GMap2(document.getElementById("map-canvas"));
-        						map.addControl(new GLargeMapControl());
+       							map.addControl(new GLargeMapControl());
         						map.addControl(new GMapTypeControl());
         						map.addControl(new GOverviewMapControl()); 
-								map.setCenter(new GLatLng(#{mapxcenter}, #{mapycenter}), #{mapzoom});
+//								map.setCenter(new GLatLng(#{mapxcenter}, #{mapycenter}), #{mapzoom});
 								map.setMapType(G_NORMAL_MAP);
+ 								map.setCenter(new GLatLng(#{driverLocationBean.center.lat}, #{driverLocationBean.center.lng}), 10);
  								var mgr = new MarkerManager(map);
  								
 						        
@@ -103,9 +102,9 @@
 							  	</ui:repeat>
 							}	
     					</script> 
-    					</rich:panel>
- 					 </div>
-				</div>		
+ 					 </rich:panel>
+					 </div>
+ 				</div>		
 																					
 				<div class="panel_sw">
 					<div class="panel_statusbar"></div>

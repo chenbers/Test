@@ -11,7 +11,6 @@ import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
-import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.util.GraphicUtil;
@@ -46,7 +45,8 @@ public class TeamTopBean extends BaseBean
         List<ScoreableEntity> s = null;
         try {
             Integer endDate = DateUtil.getTodaysDate();
-            Integer startDate = DateUtil.getDaysBackDate(endDate, duration.getNumberOfDays());
+            @SuppressWarnings("unused")
+			Integer startDate = DateUtil.getDaysBackDate(endDate, duration.getNumberOfDays());
             
             // TODO: This is not correct.  getUser().getGroupID() needs to be changed to the current group in the navigation
             logger.debug("getting scores for groupID: " + this.navigation.getGroupID());
@@ -94,7 +94,8 @@ public class TeamTopBean extends BaseBean
         List<ScoreableEntity> s = null;
         try {
             Integer endDate = DateUtil.getTodaysDate();
-            Integer startDate = DateUtil.getDaysBackDate(endDate, duration.getNumberOfDays());
+            @SuppressWarnings("unused")
+			Integer startDate = DateUtil.getDaysBackDate(endDate, duration.getNumberOfDays());
             
             // TODO: This is not correct.  getUser().getGroupID() needs to be changed to the current group in the navigation
             logger.debug("getting scores for groupID: " + this.navigation.getGroupID());

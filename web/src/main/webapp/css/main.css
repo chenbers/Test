@@ -192,6 +192,11 @@ body {
 	padding: 0 0 0 20px;
 	background: transparent url(../images/ico_zones.png) no-repeat center left;
 	}
+.panel_title span.slcr {
+	padding: 0 0 0 20px;
+	background: transparent url(../images/ico_spd_limit.png) no-repeat center left;
+	}
+	
 
 .panel_title span.panel_links a:link {
 	color: #333;
@@ -224,7 +229,7 @@ body {
 .panel_links {
 	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
 	position: absolute;
-	top: 9px;
+	top: 7px;
 	right: 8px;
 	}
 	
@@ -1414,6 +1419,20 @@ a.ls_tab_organization {
 	margin: 0 0 0 8px;
 	}
 
+a.ls_tab_sbscr {
+	padding: 6px 10px 7px 20px;
+	background: transparent url(../images/ico_spd_limit.png) no-repeat center left;
+	text-decoration: none;
+	color: #000;
+	margin: 0 0 0 8px;
+	}
+a.ls_tab_add_sbscr {
+	padding: 6px 10px 7px 20px;
+	background: transparent url(../images/ico_add_spd_limit.png) no-repeat center left;
+	text-decoration: none;
+	color: #000;
+	margin: 0 0 0 8px;
+	}
 
 
 

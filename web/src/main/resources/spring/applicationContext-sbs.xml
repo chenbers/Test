@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+   <bean id="sbsDataAccessBean" class="com.iwi.teenserver.dao.hessian.DataAccessHessianImpl">
+	   <property name="dataAccessServices" ref="sbsDataAccessServicesBean" />
+   </bean>
+   <bean id="sbsDataAccessServicesBean" class="com.iwi.teenserver.dao.hessian.IWIDataAccess">
+		<property name="siloDataAccessHost" value="${teenproxy.siloDataAccessHost}"/>
+		<property name="siloDataAccessPort" value="${teenproxy.siloDataAccessPort}"/>
+		<property name="centralDataAccessHost" value="${teenproxy.centralDataAccessHost}"/>
+		<property name="centralDataAccessPort" value="${teenproxy.centralDataAccessPort}"/>		
+   </bean>
+   <bean id="speedLimitChangeRequests" class="com.inthinc.pro.backing.SpeedLimitChangeRequestBean" scope="session" parent="baseBean">
+     	<property name="mailSender" ref="mailSenderBean" />
+ 		<property name="speedLimitChangeRequestReceivedMessage" ref="speedLimitChangeRequestReceivedMessage" />
+   </bean>
+   <bean id="speedLimitChangeRequestReceivedMessage" class="org.springframework.mail.SimpleMailMessage">
+      <property name="from">
+         <value><![CDATA[tiwi Support <speedbystreet@tiwi.com>]]></value>
+      </property>
+	  <property name="subject" value="tiwiPro speed limit feedback received" />
+	  <property name="text">
+	   <value>
+	     <![CDATA[<html><body>
+	    <p> Thank you for taking the time to submit speed limit feedback of %SPEED%mph for %ADDRESS%.  Your assistance as part of our tiwi community is appreciated.</p> 
+
+ 
+
+<p>We will review your request and use our best efforts to get back to you within two business days as to any possible updates.</p>
+
+ 
+
+<p>Thanks again,</p>
+
+ 
+
+<p>The tiwi Speed-By-Street Data Team</p>
+
+<p><a href="www.tiwi.com">www.tiwi.com</a></p></body></html>]]>
+		</value>
+	      </property>
+   </bean>
+     <bean id="slcrTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request"></bean>
+   
+</beans>
