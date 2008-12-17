@@ -7,6 +7,7 @@ import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreTypeBreakdown;
 import com.inthinc.pro.model.ScoreableEntity;
+import com.inthinc.pro.model.VehicleReportItem;
 
 public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
 {
@@ -142,4 +143,13 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      */
     List<ScoreableEntity> getDriverScoreHistoryByMiles(Integer driverID, Integer milesBack, ScoreType scoreType);
     
+
+    /**
+     * Retrieve the individual lines in the Vehicle Report.
+     * 
+     * @param groupID
+     * @param duration
+     */
+    List<VehicleReportItem> getVehicleReportData(Integer groupID, Duration duration);
+
 }
