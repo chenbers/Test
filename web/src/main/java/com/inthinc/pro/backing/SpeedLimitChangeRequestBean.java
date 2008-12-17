@@ -27,11 +27,17 @@ public class SpeedLimitChangeRequestBean extends BaseBean{
     private double lng;
     private String address;
     private double go;
+    private double maplat;
+    private double maplng;
 
     
 	public SpeedLimitChangeRequestBean() {
 		super();
 		changeRequests = new ArrayList<SBSChangeRequest>();
+		maplat = 40.0;
+		maplng = -111.0;
+		lat =360;
+		lng = 360;
 	}
 
 	public SimpleMailMessage getSpeedLimitChangeRequestReceivedMessage() {
@@ -85,27 +91,31 @@ public class SpeedLimitChangeRequestBean extends BaseBean{
 //			List<Point> streetSegment = new ArrayList<Point>();
 //			for (int j=0; j<3; j++){
 //				
-//				Point point = new Point(41.0+Math.random()/10,-116.0+Math.random()/10);
+//				Point point = new Point(lat+Math.random()/10,lng+Math.random()/10);
 //				streetSegment.add(point);
 //			}
 //			sbscr.setStreetSegment(streetSegment);
 //			sbscr.setZipCode("84121");
 //			changeRequests.add(0, sbscr);
+//			maplat = lat;
+//			maplng = lng;
 //			lat = 360;
 //			lng = 360;
 //		}
-//		return changeRequests;
+			return changeRequests;
+			}
+			catch(SQLException sqle){
+				
+				logger.debug("addSegment - SQLException: "+sqle.getMessage());
+				return null;
+			}
+			catch(ParserConfigurationException pce){
+				
+				logger.debug("addSegment - ParserConfigurationException: "+pce.getMessage());
+				return null;
+			}
 		}
-		catch(SQLException sqle){
-			
-			logger.debug("addSegment - SQLException: "+sqle.getMessage());
-			return null;
-		}
-		catch(ParserConfigurationException pce){
-			
-			logger.debug("addSegment - ParserConfigurationException: "+pce.getMessage());
-			return null;
-		}
+		return null;
 	}
 
 	public void setChangeRequests(List<SBSChangeRequest> changeRequests) {
@@ -187,5 +197,21 @@ public class SpeedLimitChangeRequestBean extends BaseBean{
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public double getMaplng() {
+		return maplng;
+	}
+
+	public void setMaplng(double maplng) {
+		this.maplng = maplng;
+	}
+
+	public double getMaplat() {
+		return maplat;
+	}
+
+	public void setMaplat(double maplat) {
+		this.maplat = maplat;
 	}
 }
