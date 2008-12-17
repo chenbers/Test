@@ -75,10 +75,7 @@ public class DVQMapHessianDAO extends GenericHessianDAO<DVQMap, Integer> impleme
     {
         try
         {
-            Map<String, Object> returnMap = reportService.getDPctByGT(groupID, duration, metric);
-            logger.debug("returnmap " + returnMap.getClass());
-            QuintileMap dqMap = getMapper().convertToModelObject(returnMap, QuintileMap.class);
-            return dqMap;
+            return getMapper().convertToModelObject(reportService.getDPctByGT(groupID, duration, metric), QuintileMap.class);
         }
         catch (EmptyResultSetException e)
         {
@@ -86,4 +83,5 @@ public class DVQMapHessianDAO extends GenericHessianDAO<DVQMap, Integer> impleme
         }        
    
     }
+
 }

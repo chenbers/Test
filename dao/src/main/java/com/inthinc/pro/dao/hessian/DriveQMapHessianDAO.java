@@ -24,8 +24,8 @@ public class DriveQMapHessianDAO extends GenericHessianDAO<DriveQMap, Integer> i
     public void setReportService(ReportService reportService)
     {
         this.reportService = reportService;
-    }  
-    
+    } 
+
     @Override    
     public DriveQMap getDScoreByDM(Integer driverID, Integer mileage)
     {
@@ -154,15 +154,15 @@ public class DriveQMapHessianDAO extends GenericHessianDAO<DriveQMap, Integer> i
     }      
 
     @Override    
-    public List<DriveQMap> getGDTrendByGTC(Integer groupID, Integer duration, Integer count)
+    public DriveQMap getGDTrendByGTC(Integer groupID, Integer duration)
     {
         try
         {
-            return getMapper().convertToModelObject(getReportService().getGDTrendByGTC(groupID,duration,count), DriveQMap.class);           
+            return getMapper().convertToModelObject(getReportService().getGDTrendByGTC(groupID,duration), DriveQMap.class);           
         }
         catch (EmptyResultSetException e)
         {
-            return Collections.emptyList();
+            return null;
         }
         
     }       

@@ -29,6 +29,19 @@ public class GQVMapHessianDAO extends GenericHessianDAO<GQVMap, Integer> impleme
     }   
     
     @Override
+    public List<GQVMap> getSDScoresByGT(Integer groupID, Integer duration)
+    {
+        try
+        {
+            return getMapper().convertToModelObject(getReportService().getSDScoresByGT(groupID,duration), GQVMap.class);           
+        }
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
+    }
+        
+    @Override
     public List<GQVMap> getSDTrendsByGTC(Integer groupID, Integer duration, Integer metric)
     {
         try
