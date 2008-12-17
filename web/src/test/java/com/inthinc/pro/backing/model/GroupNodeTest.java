@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 public class GroupNodeTest {
 	
 	private static final Logger logger = Logger.getLogger(GroupNodeTest.class);
-	private GroupTreeNode groupNode;
+	private TreeNodeImpl groupNode;
 	private GroupHierarchy groupHierarchy;
 	
 	@Before
@@ -44,7 +44,7 @@ public class GroupNodeTest {
 		logger.info("Child count: " + childrenCount);
 		assertEquals(childrenCount,1);
 		
-		GroupTreeNode childGroup = (GroupTreeNode)groupNode.getChildAt(0);
+		TreeNodeImpl childGroup = (TreeNodeImpl)groupNode.getChildAt(0);
 		
 		logger.info("Child ID: " + childGroup.getGroup().getGroupID());
 		
