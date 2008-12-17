@@ -3,7 +3,7 @@ package com.inthinc.pro.model;
 public class DriverReportItem extends BaseEntity
 {
     private String group;
-    private Integer employeeID;
+    private String employeeID;
     private String employee;
     private String vehicleID;
     private Integer milesDriven;
@@ -27,11 +27,11 @@ public class DriverReportItem extends BaseEntity
     {
         this.group = group;
     }
-    public Integer getEmployeeID()
+    public String getEmployeeID()
     {
         return employeeID;
     }
-    public void setEmployeeID(Integer employeeID)
+    public void setEmployeeID(String employeeID)
     {
         this.employeeID = employeeID;
     }
