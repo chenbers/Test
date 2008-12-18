@@ -7,6 +7,7 @@
               xmlns:f="http://java.sun.com/jsf/core"
               xmlns:c="http://java.sun.com/jstl/core"
               xmlns:security="http://pro.tiwi.com/jsf/security">
+              
 	<ui:define name="scripts">
 		<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{gmBean.key}" type="text/javascript"></script>				
 	<script src="#{facesContext.externalContext.request.contextPath}/js/speedByStreet.js"  type="text/javascript">	
@@ -38,17 +39,35 @@
 			<div class="panel_w">
 
 				<div class="panel_content">
+     <h:form id="admin-table-form">
+          <ul id="grid_nav" style="margin: 0;">
+            <li class="l"><a4j:commandLink><button value="submit" class="left" onclick=""><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink></li>
+            <li class="l"><a4j:commandLink><button value="submit" class="left" onclick=""><span class="cancel"><h:outputText value="Clear All" /></span></button></a4j:commandLink></li>
+            <li class="l">
+              <table border="0" cellspacing="0" cellpadding="0" id="grid_nav_search_box">
+                <tr>
+		<td><h:inputText size="40" name="address" id="address"/></td>
+                  <td>
+ 		<h:commandButton type="button" value="Show Address" onclick="showLocation(document.forms.speedLimitChangeRequestTable['speedLimitChangeRequestTable:address'].value)"/>
+                  </td>
+                </tr>
+              </table>
+            </li>
+            <li class="l"><a4j:commandLink><button value="submit" class="left" onclick=""><span class="edit"><h:outputText value="Submit Request" /></span></button></a4j:commandLink></li>
+            </ul>
+    </h:form>
+				<div class="spacer"></div>			
 			 	<table>
 				  <tr style=" width : 100%">
 			    	<td  valign="top" width="50%">
 		<div class="datagrid"><!-- Start Speed Limit Changer Request table --> 
+		<rich:panel id="map-data">
 		<h:form id="speedLimitChangeRequestTable">
-		<h:inputText size="40" name="address" id="address"/>
-		<h:commandButton type="button" value="Show Address" onclick="showLocation()"/>
+		
 		
 		<rich:dataTable value="#{speedLimitChangeRequests.changeRequests}" id="items"
 			var="item" styleClass="datagrid"
-			rowClasses="trendTableOdd,trendTableEven" cellspacing="1" rows="5"
+			rowClasses="trendTableOdd,trendTableEven" cellspacing="1" rows="100"
 			width="50%" binding="#{slcrTable}" onRowClick="this.style.backgroundColor='#DfDfF8'">
 
 			<!-- Data -->
@@ -91,7 +110,42 @@
 					</rich:dataTable>
 
 				</h:form> <!-- End slcr table -->
-
+<script type="text/javascript">
+		if (map != null){
+	          var gLatLngArray;
+	          var polyline;
+	          var hipoly;
+	          var seg;
+	          streetSegments = Array();
+<!--		<ui:repeat value="#{speedLimitChangeRequests.changeRequests}" var="changeRequestBean"> -->
+			<c:if test="#{speedLimitChangeRequests.latestChangeRequest != null}">
+		        // Do polyline for segment    
+		        gLatLngArray = new Array();
+		         
+		         <ui:repeat value="#{speedLimitChangeRequests.latestChangeRequest.streetSegment}" var="point">
+			           var lat = #{point.x};
+			           var lng = #{point.y};
+			           gLatLngArray.push(new GLatLng(lat,lng));
+			  	 </ui:repeat>
+		         
+		         polyline = new GPolyline(gLatLngArray, "#666666", 10);
+		         hipoly = new GPolyline(gLatLngArray, "#ff0000", 10);
+		         seg = new StreetSegment();
+		         
+		         seg.initialize(#{speedLimitChangeRequests.latestChangeRequest.linkId},"#{speedLimitChangeRequests.latestChangeRequest.address}",
+		         				"#{speedLimitChangeRequests.latestChangeRequest.zipCode}",
+		         				#{speedLimitChangeRequests.latestChangeRequest.category},
+		         				#{speedLimitChangeRequests.latestChangeRequest.speedLimit},polyline,hipoly);
+		         streetSegments.push(seg);
+		        
+		     	 map.addOverlay(seg.hipoly);
+		     	 seg.hipoly.hide();
+		         map.addOverlay(seg.polyline);
+		       </c:if>
+<!--		  	</ui:repeat> -->
+		 }
+</script>
+</rich:panel>
 </div>
 			
 			
@@ -106,80 +160,46 @@
 		<rich:panel  id="map">
 		<div id="map-canvas" style="height:400px;width:400px;border:0"></div>
 		<script  type="text/javascript">
+	          
 			if (GBrowserIsCompatible()) {
-        		var opts = { onMarkersSetCallback: processMarkers, resultList : G_GOOGLEBAR_RESULT_LIST_SUPPRESS, showOnLoad: true};
-				map = new GMap2(document.getElementById("map-canvas"), {googleBarOptions: opts});
-				map.setCenter(new GLatLng(41.0,-116.0), 10);
-				map.addControl(new GLargeMapControl());
-				map.addControl(new GMapTypeControl());
-				map.addControl(new GOverviewMapControl()); 
-				map.setMapType(G_NORMAL_MAP);					
-		       	map.enableScrollWheelZoom();
-        		map.enableGoogleBar();
-        		geocoder =new GClientGeocoder();
-        				       
-		          var gLatLngArray;
-		          var polyline;
-		          var hipoly;
-		          var seg;
-     	GEvent.addListener(map, "click", function(overlay, point) {
-
-        if (overlay) {
-          
-          	var segment = whichSegment(overlay);
-          	if (segment != null){
-          	
- 				selectSegment(segment.id);
- 			}	
-          } else {
-          
-            reverseGeocode(point.y,point.x,"");
-            
-	      }
-        });
-        
- 				<ui:repeat value="#{speedLimitChangeRequests.changeRequests}" var="changeRequestBean">
-				
-			        // Do polyline for segment    
-			        gLatLngArray = new Array();
-			         
-			         <ui:repeat value="#{changeRequestBean.streetSegment}" var="point">
-				           var lat = #{point.x};
-				           var lng = #{point.y};
-				           gLatLngArray.push(new GLatLng(lat,lng));
-				  	 </ui:repeat>
-			         
-			         polyline = new GPolyline(gLatLngArray, "#666666", 10);
-			         hipoly = new GPolyline(gLatLngArray, "#ff0000", 10);
-			         seg = new StreetSegment();
-			         
-			         seg.initialize(#{changeRequestBean.linkId},"#{changeRequestBean.address}","#{changeRequestBean.zipCode}",
-			         #{changeRequestBean.category},#{changeRequestBean.speedLimit},polyline,hipoly);
-			         streetSegments.push(seg);
-			        
-			     	 map.addOverlay(seg.hipoly);
-			     	 seg.hipoly.hide();
-			         map.addOverlay(seg.polyline);
-			        
-			  	</ui:repeat>
+	        		var opts = { onMarkersSetCallback: processMarkers, resultList : G_GOOGLEBAR_RESULT_LIST_SUPPRESS, showOnLoad: true};
+					map = new GMap2(document.getElementById("map-canvas"), {googleBarOptions: opts});
+					map.setCenter(new GLatLng(#{speedLimitChangeRequests.maplat},#{speedLimitChangeRequests.maplng}), #{speedLimitChangeRequests.mapzoom});
+					map.addControl(new GLargeMapControl());
+					map.addControl(new GMapTypeControl());
+					map.addControl(new GOverviewMapControl()); 
+					map.setMapType(G_NORMAL_MAP);					
+			       	map.enableScrollWheelZoom();
+	        		map.enableGoogleBar();
+	        		geocoder =new GClientGeocoder();
+	        				       
+			     	GEvent.addListener(map, "click", function(overlay, point) {
+			
+			        if (overlay) {
+			          
+			          	var segment = whichSegment(overlay);
+			          	if (segment != null){
+			          	
+			 				selectSegment(segment.id);
+			 			}	
+			          } else {
+			          
+			            reverseGeocode(point.y,point.x,"");
+			            
+				      }
+			        });
   						
-      }
-      function reverseGeocode(lat,lng, fullAddress) {
-      
-      	geocoder.getLocations(new GLatLng(lat,lng), addAddressToMap);
-     	
-     	addSegment(lat,lng,fullAddress);
-      	
       }
  	</script> 
  	</rich:panel>
  	</div>	
 
 	<a4j:form id="segment">
-		<a4j:jsFunction name="addSegment" reRender="map,speedLimitChangeRequestTable" >
+		<a4j:jsFunction name="addSegment" reRender="map-data" >
 			<a4j:actionparam name="lat" assignTo="#{speedLimitChangeRequests.lat}"/>
 			<a4j:actionparam name="lng" assignTo="#{speedLimitChangeRequests.lng}"/>
 			<a4j:actionparam name="address" assignTo="#{speedLimitChangeRequests.address}"/>
+			<a4j:actionparam name="zoom" assignTo="#{speedLimitChangeRequests.mapzoom}"/>
 		</a4j:jsFunction>
 			
 			

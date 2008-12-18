@@ -407,30 +407,35 @@ var baseURL="../servlet/iwiglobal";
         request.send(null);
     }*/
 
+      function reverseGeocode(lat,lng, fullAddress) {
+      
+      	geocoder.getLocations(new GLatLng(lat,lng), addAddressToMap);      	
+      }
     // addAddressToMap() is called when the geocoder returns an
     // answer.  It adds a marker to the map with an open info window
     // showing the nicely formatted version of the address and the country code.
     function addAddressToMap(response) {
- 		clearList();
+// 		clearList();
       if (!response || response.Status.code != 200) {
         alert("Sorry, we were unable to geocode that address");
       } else {
-        place = response.Placemark[0];
+      
+         place = response.Placemark[0];
         point = new GLatLng(place.Point.coordinates[1],
                             place.Point.coordinates[0]);
         streetViewPoint = point;
         
         var fullAddress = place.address;
-        makeMarker(point);
+//        makeMarker(point);
                 
-        addSegment(point.y,point.x, fullAddress);
+        addSegment(point.y, point.x, fullAddress, map.getZoom());
         
-        marker.openInfoWindowHtml(place.address + '<br>' +
-          '<b>Country code:</b> ' + place.AddressDetails.Country.CountryNameCode);
+//        marker.openInfoWindowHtml(place.address + '<br>' +
+///          '<b>Country code:</b> ' + place.AddressDetails.Country.CountryNameCode);
           
- 		 window.setTimeout(function() {
-		  marker.closeInfoWindow();
-		}, 5000);
+ //		 window.setTimeout(function() {
+//		  marker.closeInfoWindow();
+//		}, 5000);
        }
     }
 
@@ -439,7 +444,7 @@ var baseURL="../servlet/iwiglobal";
     // and adds a marker to the map at that location.
     function showLocation(address) {
 
-      geocoder.getLocations(document.forms.speedLimitChangeRequestTable["speedLimitChangeRequestTable:address"].value, addAddressToMap);
+      geocoder.getLocations(address, addAddressToMap);
     }
 
 function goToStreetView(){

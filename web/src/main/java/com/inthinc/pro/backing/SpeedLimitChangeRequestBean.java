@@ -29,13 +29,14 @@ public class SpeedLimitChangeRequestBean extends BaseBean{
     private double go;
     private double maplat;
     private double maplng;
-
-    
+    private int mapzoom;
+     
 	public SpeedLimitChangeRequestBean() {
 		super();
 		changeRequests = new ArrayList<SBSChangeRequest>();
 		maplat = 40.0;
 		maplng = -111.0;
+		mapzoom = 10;
 		lat =360;
 		lng = 360;
 	}
@@ -78,31 +79,31 @@ public class SpeedLimitChangeRequestBean extends BaseBean{
 		if ((lat < 360)&& (lng < 360)){
 			
 			try{
-			SBSChangeRequest sbscr = Tiger.getCompleteChains(lat, lng);
-			changeRequests.add(sbscr);
+				SBSChangeRequest sbscr = Tiger.getCompleteChains(lat, lng);
+				changeRequests.add(0,sbscr);
 			
-//			int i = changeRequests.size();
-//			SBSChangeRequest sbscr = new SBSChangeRequest();
-//			sbscr.setAddress(address);
-//			sbscr.setCategory(i);
-//			sbscr.setComment("hello");
-//			sbscr.setLinkId(""+i);
-//			sbscr.setSpeedLimit(30);
-//			List<Point> streetSegment = new ArrayList<Point>();
-//			for (int j=0; j<3; j++){
-//				
-//				Point point = new Point(lat+Math.random()/10,lng+Math.random()/10);
-//				streetSegment.add(point);
-//			}
-//			sbscr.setStreetSegment(streetSegment);
-//			sbscr.setZipCode("84121");
-//			changeRequests.add(0, sbscr);
-//			maplat = lat;
-//			maplng = lng;
-//			lat = 360;
-//			lng = 360;
-//		}
-			return changeRequests;
+//				int i = changeRequests.size();
+//				SBSChangeRequest sbscr = new SBSChangeRequest();
+//				sbscr.setAddress(address);
+//				sbscr.setCategory(i);
+//				sbscr.setComment("hello");
+//				sbscr.setLinkId(""+i);
+//				sbscr.setSpeedLimit(30);
+//				List<Point> streetSegment = new ArrayList<Point>();
+//				for (int j=0; j<3; j++){
+//					
+//					Point point = new Point(lat+Math.random()/10,lng+Math.random()/10);
+//					streetSegment.add(point);
+//				}
+//				sbscr.setStreetSegment(streetSegment);
+//				sbscr.setZipCode("84121");
+//				changeRequests.add(0, sbscr);
+				maplat = lat;
+				maplng = lng;
+//				lat = 360;
+//				lng = 360;
+	
+				return changeRequests;
 			}
 			catch(SQLException sqle){
 				
@@ -123,47 +124,6 @@ public class SpeedLimitChangeRequestBean extends BaseBean{
 	}
 
 	public void saveRequests(){
-		
-	}
-	public String addSegment(){
-		logger.debug("addSegment - called");
-//		try{
-//			SBSChangeRequest sbscr = Tiger.getCompleteChains(lat, lng);
-//			changeRequests.add(sbscr);
-			
-			changeRequests = new ArrayList<SBSChangeRequest>();
-			for(int i=0;i<3;i++){
-				
-				SBSChangeRequest sbscr = new SBSChangeRequest();
-				sbscr.setAddress(""+i+", Prospector Drive, Salt Lake City, Utah, 84121");
-				sbscr.setCategory(i);
-				sbscr.setComment("hello");
-				sbscr.setLinkId(""+i);
-				sbscr.setSpeedLimit(30);
-				List<Point> streetSegment = new ArrayList<Point>();
-				for (int j=0; j<3; j++){
-					
-					Point point = new Point(41.0+Math.random()/10,-116.0+Math.random()/10);
-					streetSegment.add(point);
-				}
-				sbscr.setStreetSegment(streetSegment);
-				sbscr.setZipCode("84121");
-				changeRequests.add(sbscr);
-			}
-			return "go_adminSBSCR";
-//		}
-//		catch(SQLException sqle){
-//			
-//			logger.debug("addSegment - SQLException: "+sqle.getMessage());
-//			
-//			return "go_adminSBSCR";
-//		}
-//		catch(ParserConfigurationException pce){
-//			
-//			logger.debug("addSegment - ParserConfigurationException: "+pce.getMessage());
-//			
-//			return "go_adminSBSCR";
-//		}
 		
 	}
 
@@ -213,5 +173,22 @@ public class SpeedLimitChangeRequestBean extends BaseBean{
 
 	public void setMaplat(double maplat) {
 		this.maplat = maplat;
+	}
+
+	public int getMapzoom() {
+		return mapzoom;
+	}
+
+	public void setMapzoom(int mapzoom) {
+		this.mapzoom = mapzoom;
+	}
+
+	public SBSChangeRequest getLatestChangeRequest() {
+		
+		return changeRequests.size() > 0?changeRequests.get(0):null;
+	}
+
+	public void setChangeRequest(SBSChangeRequest changeRequestBean) {
+		
 	}
 }

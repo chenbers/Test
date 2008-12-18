@@ -65,7 +65,7 @@ public class Tiger {
 			sbsChangeRequest.setZipCode(rs.getString("zipL"));
 			sbsChangeRequest.setAddress(makeAddress(rs.getString("fedirp"),rs.getString("st_typ_bef"),
 													rs.getString("fename"),rs.getString("st_nm_suff"),
-													rs.getString("fetype"),rs.getString("fedirs")));
+													rs.getString("fetype"),""));
 			sbsChangeRequest.setSpeedLimit(Math.max(rs.getInt("fr_spd_lim"),rs.getInt("to_spd_lim")));
 			sbsChangeRequest.setCategory(rs.getInt("speed_cat"));
 			sbsChangeRequest.setStreetSegment(rs.getString("tigerLine"));
