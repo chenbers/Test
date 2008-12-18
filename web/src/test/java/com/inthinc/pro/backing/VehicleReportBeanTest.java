@@ -43,15 +43,16 @@ public class VehicleReportBeanTest extends BaseBeanTest
         
         // commented-out tests cannot be set, other developers
         //  are causing volatility
-//        assertEquals(36,
-//                vehicleReportBean.getVehicleData().size());        
+        /*
+        assertEquals(36,
+                vehicleReportBean.getVehicleData().size());        
         assertEquals( 1,
                 (new Integer(vehicleReportBean.getStart())).intValue());
         assertEquals(25,
                 (new Integer(vehicleReportBean.getEnd()).intValue()));
-//        assertEquals(36,
-//                (new Integer(vehicleReportBean.getMaxCount()).intValue()));
-                
+        assertEquals(36,
+                (new Integer(vehicleReportBean.getMaxCount()).intValue()));
+        */        
         // column map
         Map<String, TableColumn> columnMap = vehicleReportBean.getVehicleColumns();
         assertEquals(VehicleReportBean.AVAILABLE_COLUMNS.size(), columnMap.size());
