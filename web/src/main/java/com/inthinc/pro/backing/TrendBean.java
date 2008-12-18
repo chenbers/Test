@@ -84,11 +84,6 @@ public class TrendBean extends BaseDurationBean
 //        logger.debug("createLineDef");
         StringBuffer sb = new StringBuffer();
         lineDef = new String();
-        
-        if (true)
-        {
-            return lineDef;
-        }
 
         // Control parameters
         sb.append(GraphicUtil.getXYControlParameters());
