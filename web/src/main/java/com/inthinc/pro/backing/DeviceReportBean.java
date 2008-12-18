@@ -11,7 +11,9 @@ import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
 import com.inthinc.pro.backing.ui.TableColumn;
+import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.TablePreferenceDAO;
+import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceReportItem;
 import com.inthinc.pro.model.DeviceStatus;
@@ -27,8 +29,8 @@ public class DeviceReportBean extends BaseReportBean
 {
     private static final Logger logger = Logger.getLogger(DeviceReportBean.class);
     
-    //assetsData is the ONE read from the db, assetData is what is displayed
-    private List <Device> devicesData = new ArrayList<Device>(); 
+    //devicesData is the ONE read from the db, deviceData is what is displayed
+    private List <DeviceReportItem> devicesData = new ArrayList<DeviceReportItem>(); 
     private List <DeviceReportItem> deviceData = new ArrayList<DeviceReportItem>();
     
     static final List<String> AVAILABLE_COLUMNS;
@@ -37,8 +39,10 @@ public class DeviceReportBean extends BaseReportBean
     
     private TablePreference tablePref;
     private TablePreferenceDAO tablePreferenceDAO;
+    private VehicleDAO vehicleDAO;
+    private DeviceDAO deviceDAO;
    
-    private DeviceReportItem drt = null;
+    private DeviceReportItem dri = null;
     
     private Integer numRowsPerPg = 1;
     private final static String COLUMN_LABEL_PREFIX = "devicereport_";
@@ -70,43 +74,19 @@ public class DeviceReportBean extends BaseReportBean
     public void init() {
         searchFor = checkForRequestMap();
         
-        //Live DAO here
-//        assetsData = driverDAO.getAllDrivers(getUser().getPerson().getGroupID());
-        //Fake data
-        drt = new DeviceReportItem();
-        Device device = new Device();
-        device.setName("TIWI0789");
-        device.setVehicleID(456789);
-        device.setImei("1c3lc46h67n6016i4a");
-        device.setPhone("801-642-3159");        
-        device.setStatus(DeviceStatus.DISABLED);
-        device.setEphone("801-642-0918");
-        devicesData.add(device);
-        
-        drt = new DeviceReportItem();
-        device = new Device();
-        device.setName("TIWI1117");
-        device.setVehicleID(123456);
-        device.setImei("1c3lc46h67n7891i4a");
-        device.setPhone("801-555-1212");        
-        device.setStatus(DeviceStatus.ACTIVE);
-        device.setEphone("801-555-1133");
-        devicesData.add(device);
-        
-        drt = new DeviceReportItem();
-        device = new Device();
-        device.setName("TIWI3917");
-        device.setVehicleID(456789);
-        device.setImei("1c3lc46h67n6719i4a");
-        device.setPhone("801-324-8851");        
-        device.setStatus(DeviceStatus.DELETED);
-        device.setEphone("801-324-9817");
-        devicesData.add(device);        
+        List<Vehicle> vehicList = 
+            vehicleDAO.getVehiclesInGroup(getUser().getPerson().getGroupID());
+
+        for( Vehicle v: vehicList )
+        {
+            Device dev = deviceDAO.findByID(v.getDeviceID());
+ 
+            dri = new DeviceReportItem();
+            dri.setDevice(dev);
                 
-        //Bean creation could be from Reports selection or
-        //  search on main menu. This accounts for a search
-        //  from the main menu w/ never having been to the 
-        //  Devices report page.
+            this.devicesData.add(dri);           
+        }
+        
         if ( super.isMainMenu() ) {  
             checkOnSearch();
             super.setMainMenu(false);
@@ -143,17 +123,17 @@ public class DeviceReportBean extends BaseReportBean
     public void search() {                      
         if ( this.searchFor.trim().length() != 0 ) {
             String trimmedSearch = this.searchFor.trim();            
-            List <Device> matchedDevices = new ArrayList<Device>();    
+            List <DeviceReportItem> matchedDevices = new ArrayList<DeviceReportItem>();    
             
-            for ( Device d: devicesData ) {    
-                //Fuzzy, imei
-                String dev = d.getImei().toLowerCase();
+            for ( DeviceReportItem d: devicesData ) {    
+                //Fuzzy, imei                
+                String dev = d.getDevice().getImei().toLowerCase();
                 int index1 = dev.indexOf(trimmedSearch);                    
                 if (index1 != -1) {                        
                     matchedDevices.add(d);
                 }
                 //Fuzzy, device name
-                String name = d.getName().toLowerCase();
+                String name = d.getDevice().getName().toLowerCase();
                 int index2 = name.indexOf(trimmedSearch);                    
                 if ( (index1 == -1) && (index2 != -1) ) {                        
                     matchedDevices.add(d);
@@ -171,17 +151,20 @@ public class DeviceReportBean extends BaseReportBean
         resetCounts();       
     }
     
-    private void loadResults(List <Device> devicesData)
+    private void loadResults(List <DeviceReportItem> devicData)
     {     
         if ( this.deviceData.size() > 0 ) {
             this.deviceData.clear();
         }
  
-        for ( Device a: devicesData ) { 
-            drt = new DeviceReportItem();
-            drt.setDevice(a);
-            deviceData.add(drt);                        
+        for ( DeviceReportItem a: devicData ) { 
+            dri = new DeviceReportItem();
+            dri.setDevice(a.getDevice());
+            deviceData.add(dri);                        
         }
+        
+        this.maxCount = this.deviceData.size();   
+        resetCounts(); 
     }
     
     private void resetCounts() {        
@@ -414,6 +397,26 @@ public class DeviceReportBean extends BaseReportBean
     public void setSecret(String secret)
     {
         this.secret = secret;
+    }
+
+    public VehicleDAO getVehicleDAO()
+    {
+        return vehicleDAO;
+    }
+
+    public void setVehicleDAO(VehicleDAO vehicleDAO)
+    {
+        this.vehicleDAO = vehicleDAO;
+    }
+
+    public DeviceDAO getDeviceDAO()
+    {
+        return deviceDAO;
+    }
+
+    public void setDeviceDAO(DeviceDAO deviceDAO)
+    {
+        this.deviceDAO = deviceDAO;
     }
 
 }

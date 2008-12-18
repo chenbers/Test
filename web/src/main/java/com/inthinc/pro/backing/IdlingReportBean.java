@@ -15,9 +15,11 @@ import org.richfaces.event.DataScrollerEvent;
 
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.TableType;
@@ -38,6 +40,7 @@ public class IdlingReportBean extends BaseReportBean
     
     private TablePreference tablePref;   
     private TablePreferenceDAO tablePreferenceDAO;
+    private ScoreDAO scoreDAO;
     
     private IdlingReportItem iri = null;
     
@@ -94,69 +97,12 @@ public class IdlingReportBean extends BaseReportBean
         defaultEndDate = endDate;
         startDate.setTime(this.endDate.getTime() - DAYS_BACK);
         defaultStartDate = startDate;
-
-        iri = new IdlingReportItem();
-        Driver d = new Driver();        
-        
-        //Snag the data and then convert the trip string to seconds for compare
-        
-        //This is fake in that I'm just grabbing all the drivers and 
-        //putting some other stats in there with them
-        List <Driver> driversData = driverDAO.getAllDrivers(getUser().getPerson().getGroupID());
-        for ( int i = 0; i < driversData.size(); i++ ) {
-            d = driversData.get(i);           
-            
-            //Real            
-            iri.setDriver(d);
-            
-            //Fake
-            if ( i % 2 == 0 ) {
-            iri.setGroup("North"); iri.setVehicle("AE-1122"); iri.setDriveTime("38:52:22"); 
-            iri.setLowHrs("02:22:14"); iri.setLowPercent(22);
-            iri.setHighHrs("10:48:11"); iri.setHighPercent(98); iri.setTotalHrs("41:16:36");
-            iri.setTotalPercent(17);
-            
-            iri.setLowPerSort(this.convertToSeconds(iri.getLowHrs()));
-                iri.setHighPerSort(this.convertToSeconds(iri.getHighHrs()));
-                iri.setTotalPerSort(this.convertToSeconds(iri.getTotalHrs()));
-                iri.setDriveTimeSort(this.convertToSeconds(iri.getDriveTime()));
-            } else if ( i % 3 == 0 ) {
-            iri.setGroup("South");  iri.setVehicle("ZZ-2132"); iri.setDriveTime("18:32:22"); 
-            iri.setLowHrs("01:32:54"); iri.setLowPercent(12);
-            iri.setHighHrs("20:18:31"); iri.setHighPercent(42); iri.setTotalHrs("11:36:46");
-            iri.setTotalPercent(22); 
-            
-            iri.setLowPerSort(this.convertToSeconds(iri.getLowHrs()));
-                iri.setHighPerSort(this.convertToSeconds(iri.getHighHrs()));
-                iri.setTotalPerSort(this.convertToSeconds(iri.getTotalHrs()));
-                iri.setDriveTimeSort(this.convertToSeconds(iri.getDriveTime()));    
-            } else if ( i % 4 == 0 ) {
-            iri.setGroup("East");  iri.setVehicle("LL-4231"); iri.setDriveTime("42:12:52"); 
-            iri.setLowHrs("04:21:44"); iri.setLowPercent(2);
-            iri.setHighHrs("15:58:41"); iri.setHighPercent(66); iri.setTotalHrs("41:16:36");
-            iri.setTotalPercent(42);
-            
-            iri.setLowPerSort(this.convertToSeconds(iri.getLowHrs()));
-                iri.setHighPerSort(this.convertToSeconds(iri.getHighHrs()));
-                iri.setTotalPerSort(this.convertToSeconds(iri.getTotalHrs()));
-                iri.setDriveTimeSort(this.convertToSeconds(iri.getDriveTime()));    
-            } else {
-            iri.setGroup("West");  iri.setVehicle("JK-9917"); iri.setDriveTime("118:12:42"); 
-            iri.setLowHrs("03:12:54"); iri.setLowPercent(32);
-            iri.setHighHrs("50:18:51"); iri.setHighPercent(12); iri.setTotalHrs("33:46:36");
-            iri.setTotalPercent(55);
-            
-            iri.setLowPerSort(this.convertToSeconds(iri.getLowHrs()));
-                iri.setHighPerSort(this.convertToSeconds(iri.getHighHrs()));
-                iri.setTotalPerSort(this.convertToSeconds(iri.getTotalHrs()));
-                iri.setDriveTimeSort(this.convertToSeconds(iri.getDriveTime()));
-            }
-                
-            idlingsData.add(iri);
-            iri = new IdlingReportItem();
-        }
-                
-        
+   
+        this.idlingsData = 
+            scoreDAO.getIdlingReportData(
+                    getUser().getPerson().getGroupID(),
+                    Duration.TWELVE);
+   
         //Bean creation could be from Reports selection or
         //  search on main menu. This accounts for a search
         //  from the main menu w/ never having been to the 
@@ -262,7 +208,7 @@ public class IdlingReportBean extends BaseReportBean
         badDates = sb.toString();
     }
     
-    private void loadResults(List <IdlingReportItem> idlingsData) 
+    private void loadResults(List <IdlingReportItem> idlsData) 
     {     
         if ( this.idlingData.size() > 0 ) {
             this.idlingData.clear();
@@ -270,10 +216,38 @@ public class IdlingReportBean extends BaseReportBean
                 
         iri = new IdlingReportItem();
                 
-        for ( int i = 0; i < idlingsData.size(); i++ ) {
-            iri = idlingsData.get(i);                       
+        for ( IdlingReportItem i: idlsData ) {
+            iri = i;    
+                    
+            //Group name
+            iri.setGroup(this.getGroupHierarchy().getGroup(i.getGroupID()).getName());
+            
+            //Total idling            
+            Integer tot = 
+                new Integer(iri.getLowHrs()) +
+                new Integer(iri.getHighHrs());
+            iri.setTotalHrs(String.valueOf(tot.intValue()));
+            
+            //Percentages, if any driving
+            iri.setLowPercent(0);
+            iri.setHighPercent(0);
+            iri.setTotalPercent(0);
+            Integer totHrs = new Integer(iri.getTotalHrs());
+            
+            if ( totHrs != 0 ) {
+                int lo = 100*(Integer.parseInt(iri.getLowHrs()));               
+                iri.setLowPercent(lo/totHrs);
+                int hi = 100*(Integer.parseInt(iri.getHighHrs()));
+                iri.setHighPercent(hi/totHrs);
+                int to = 100*(Integer.parseInt(iri.getTotalHrs()));
+                iri.setTotalPercent(to/totHrs);
+            } 
+ 
             idlingData.add(iri);            
-        }             
+        }   
+        
+        this.maxCount = this.idlingData.size();   
+        resetCounts();    
     }
     
     private void resetCounts() {
@@ -588,6 +562,16 @@ public class IdlingReportBean extends BaseReportBean
     public void setSecret(String secret)
     {
         this.secret = secret;
+    }
+
+    public ScoreDAO getScoreDAO()
+    {
+        return scoreDAO;
+    }
+
+    public void setScoreDAO(ScoreDAO scoreDAO)
+    {
+        this.scoreDAO = scoreDAO;
     }
 }
 

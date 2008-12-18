@@ -170,7 +170,7 @@ public class DriverReportBean extends BaseReportBean
             drt.setGroup(this.getGroupHierarchy().getGroup(d.getGroupID()).getName());
             
             //Where to go 
-            drt.setGoTo(contextPath + "team.faces?groupID="+d.getGroupID());                      
+            drt.setGoTo(contextPath + "/secured/team.faces?groupID="+d.getGroupID());                      
             
             driverData.add(drt);            
         }
