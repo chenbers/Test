@@ -36,6 +36,15 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
     ScoreableEntity getAverageScoreByTypeAndMiles(Integer driverID, Integer milesBack, ScoreType st);
     
     /**
+     * Retrieve the overall score by the specified vehicle and mileage.
+     * 
+     * @param vehicleID
+     * @param milesBack
+     * @param st
+     * @return
+     */
+    ScoreableEntity getVehicleAverageScoreByTypeAndMiles(Integer vehicleID, Integer milesBack, ScoreType st);
+    /**
      * Retrieve the list of scores for the sub groups or drivers (one level down) under the specified group.
      * 
      * @param groupID
@@ -136,7 +145,7 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
     List<ScoreTypeBreakdown> getScoreBreakdownByType(Integer groupID, Duration duration, ScoreType scoreType);
 
     /**
-     * Retrieve the scores and mileage.
+     * Retrieve the driver scores and mileage.
      * 
      * @param driverID
      * @param milesBack
@@ -144,6 +153,15 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      */
     List<ScoreableEntity> getDriverScoreHistoryByMiles(Integer driverID, Integer milesBack, ScoreType scoreType);
     
+    /**
+     * Retrieve the vehicle scores and mileage.
+     * 
+     * @param driverID
+     * @param milesBack
+     * @param scoreType
+     */
+    List<ScoreableEntity> getVehicleScoreHistoryByMiles(Integer vehicleID, Integer milesBack, ScoreType scoreType);
+
 
     /**
      * Retrieve the individual lines in the Vehicle Report.
@@ -160,4 +178,5 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      * @param duration
      */
     List<DriverReportItem> getDriverReportData(Integer groupID, Duration duration);
+
 }
