@@ -24,8 +24,8 @@ public class ListPicker
 
     public ListPicker(List<SelectItem> pickFrom, List<SelectItem> picked)
     {
-        this.pickFrom = pickFrom;
-        this.picked = picked;
+        setPicked(picked);
+        setPickFrom(pickFrom);
     }
 
     public List<SelectItem> getPickFrom()
