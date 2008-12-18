@@ -49,6 +49,11 @@ public class BreakdownBean extends BaseDurationBean {
 	public String createPieDef(ScoreType scoreType) {
 		StringBuffer sb = new StringBuffer();
 		
+		if (true)
+		{
+		    return "";
+		}
+		
 		//Control parameters
 		sb.append(GraphicUtil.getPieControlParameters());
         

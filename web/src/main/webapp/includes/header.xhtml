@@ -16,7 +16,7 @@
 	<h:form id="header-form">
 		<ul>
 			<li id="tb-help"><h:outputLink value="#{facesContext.externalContext.requestContextPath}/pages/todo.faces">#{messages.header_help}</h:outputLink></li>
-			<li id="tb-account"><h:outputLink value="#{facesContext.externalContext.requestContextPath}/pages/todo.faces">#{messages.header_myAccount}</h:outputLink></li>
+			<li id="tb-account"><h:outputLink action="#{facesContext.externalContext.requestContextPath}/secured/myAccount.faces">#{messages.header_myAccount}</h:outputLink></li>
 			<li id="tb-logout"><h:outputLink value="#{facesContext.externalContext.requestContextPath}/j_spring_security_logout">#{messages.header_logout}</h:outputLink></li>
 		</ul>
 	</h:form>

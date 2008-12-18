@@ -1,0 +1,223 @@
+<ui:composition template="/layout/layout.xhtml" 
+				xmlns="http://www.w3.org/1999/xhtml" 
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+  				xmlns:h="http://java.sun.com/jsf/html" 
+  				xmlns:rich="http://richfaces.org/rich"
+  				xmlns:a4j="http://richfaces.org/a4j"
+  				xmlns:iwi="http://pro.tiwi.com/jsf"
+  				xmlns:f="http://java.sun.com/jsf/core">
+  
+  <ui:define name="content">
+	
+  
+ 
+ 
+  <ul id="grid_nav">
+    <li class="r"><button value="submit" class="left" onclick="parent.location.href='editAccount.faces'; return false;"><span class="edit">Edit</span></button></li>
+    <li class="r"><button value="submit" class="left" onclick="Richfaces.showModalPanel('changePasswordPanel');return false;"><span class="login">Change Password</span></button></li>
+  </ul>
+  
+  
+  <table class="dash_table" width="940" align="center" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+      <tr>
+        <td colspan="3" valign="top">
+      
+          <!-- START PANEL -->
+          <div class="">
+            <div class="panel_nw">
+              <div class="panel_title">
+                <span class="account">My Account</span>
+                <span class="panel_links"> </span>
+              </div>
+            </div>
+            <div class="panel_w">
+              <div class="panel_content">
+                <table width="930" border="0" cellpadding="0" cellspacing="0">
+                  <tbody>
+                    <tr>
+                      <td width="460">
+                        <div class="add_section_title">Account Information</div>
+                          <table width="100%" border="0" cellpadding="4" cellspacing="0">
+                            <tbody>
+                              <tr>
+                                <td>Name:</td>
+                                <td><h:outputText value="#{myAccountBean.fullName}"/></td>
+                              </tr>
+                              <tr>
+                                <td>Region:</td>
+                                <td><h:outputText value="#{myAccountBean.regionName}"/></td>
+                              </tr>
+                              <tr>
+                                <td>Team:</td>
+                                <td><h:outputText value="#{myAccountBean.teamName}"/></td>
+                              </tr>
+                          </tbody>
+                        </table>
+      
+                      </td>
+      
+                      
+                      <td width="10"><img src="#{facesContext.externalContext.request.contextPath}/images/x.gif" width="10"/></td>
+                      
+                      <td valign="top" width="460">
+                        <div class="add_section_title">Login</div>
+                        <table width="100%" border="0" cellpadding="4" cellspacing="0">
+                          <tbody>
+                            <tr>
+                              <td>User Name:</td>
+                              <td><h:outputText value="#{myAccountBean.user.username}"/></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="panel_sw">
+              <div class="panel_statusbar"></div>
+    
+            </div>
+          </div>
+      <!-- END PANEL -->
+      
+        </td>
+      </tr>
+      <tr>
+        <td valign="top"> </td>
+        <td> </td>
+        <td valign="top"> </td>
+      </tr>
+      <tr>
+        <td valign="top" width="465">
+        
+          <!-- START PANEL -->
+          <div class="">
+            <div class="panel_nw">
+              <div class="panel_title">
+                <span class="notify">Notifications</span>
+              </div>
+            </div>
+            <div class="panel_w">
+              <div class="panel_content">
+                <table width="100%" border="0" cellpadding="4" cellspacing="0">
+                  <tbody>
+                    <tr>
+                      <td width="5%"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_info.png" width="16" height="16"/></td>
+                      <td width="38%">Information:</td>
+      
+                      <td width="57%">Email - Primary</td>
+                    </tr>
+                    <tr>
+                      <td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_warning.png" width="16" height="16"/></td>
+                      <td>Warning:</td>
+                      <td>Text Message - Primary</td>
+                    </tr>
+      
+                    <tr>
+                      <td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_critical.png" width="16" height="16"/></td>
+                      <td>Critical:</td>
+                      <td>Phone - Cell</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+      
+            <div class="panel_sw">
+              <div class="panel_statusbar"></div>
+            </div>
+          </div>
+          <!-- END PANEL -->
+        </td>
+      
+        <td width="10"><img src="#{facesContext.externalContext.request.contextPath}/images/x.gif" width="10"/></td>
+      
+        <td valign="top" width="465">
+        
+        <!-- START PANEL -->
+          <div class="">
+            <div class="panel_nw">
+              <div class="panel_title">
+                <span class="contact">Contact Information</span>
+              </div>
+            </div>
+            <div class="panel_w">
+              <div class="panel_content">
+                <div class="add_section_title">Email</div>
+                  <table width="100%" border="0" cellpadding="4" cellspacing="0">
+                    <tbody>
+                      <tr>
+                        <td>Primary:</td>
+                        <td><h:outputText value="#{myAccountBean.alertContact.priEmail}"/></td>
+                      </tr>
+                      <tr>
+    
+                        <td>Secondary:</td>
+                        <td><h:outputText value="#{myAccountBean.alertContact.secEmail}"/></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                           
+                  <div class="add_section_title">Phone Numbers</div>
+                  <table width="100%" border="0" cellpadding="4" cellspacing="0">
+                    <tbody>
+                      <tr>
+  
+                        <td>Primary:</td>
+                        <td><h:outputText value="#{myAccountBean.alertContact.priPhone}"/></td>
+                      </tr>
+                      <tr>
+                        <td>Secondary:</td>
+                        <td><h:outputText value="#{myAccountBean.alertContact.secPhone}"/></td>
+                      </tr>
+    
+                      <tr>
+                        <td>Cell:</td>
+                        <td><h:outputText value="#{myAccountBean.alertContact.cellPhone}"/></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                                
+                  <div class="add_section_title">Text Messaging</div>
+                  <table width="100%" border="0" cellpadding="4" cellspacing="0">
+
+                    <tbody>
+                      <tr>
+                        <td>Primary:</td>
+                        <td><h:outputText value="#{myAccountBean.alertContact.priText}"/></td>
+                      </tr>
+                      <tr>
+                        <td>Secondary:</td>
+                        <td><h:outputText value="#{myAccountBean.alertContact.secText}"/></td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="panel_sw">
+                <div class="panel_statusbar"></div>
+              </div>
+            </div>
+            <!-- END PANEL -->
+          </td>
+        
+        </tr>
+      </tbody>
+    </table>
+    
+    
+  
+    <rich:modalPanel id="changePasswordPanel" headerClass="popupHeader" controlsClass="popupControls" width="415" height="182">
+      <f:facet name="header">
+        <h:outputText value="#{messages.credentials_header}" />
+      </f:facet>
+      <ui:include src="/includes/changePassword.xhtml" />
+    </rich:modalPanel>
+      
+  </ui:define>
+
+</ui:composition>

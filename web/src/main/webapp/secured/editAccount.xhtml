@@ -1,0 +1,354 @@
+<ui:composition template="/layout/layout.xhtml" 
+				xmlns="http://www.w3.org/1999/xhtml" 
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+  				xmlns:h="http://java.sun.com/jsf/html" 
+  				xmlns:rich="http://richfaces.org/rich"
+  				xmlns:a4j="http://richfaces.org/a4j"
+  				xmlns:iwi="http://pro.tiwi.com/jsf"
+  				xmlns:f="http://java.sun.com/jsf/core">
+  
+  <ui:define name="content">
+	
+  
+  <h:form id="my_form">
+ 
+    <ul id="grid_nav">
+      <li class="r"><button value="submit" class="left" onclick="parent.location.href='myAccount.faces'; return false;"><span class="cancel">Cancel</span></button></li>
+      <li class="r"><h:commandLink action="#{myAccountBean.saveFormAction}" value="" styleClass="left"><button value="submit" class="left"><span class="save">Save</span></button></h:commandLink></li>
+    </ul>
+    
+    
+    <table class="dash_table" width="940" align="center" border="0" cellpadding="0" cellspacing="0">
+      <tbody>
+        <tr>
+          <td colspan="3" valign="top">
+        
+            <!-- START PANEL -->
+            <div class="">
+              <div class="panel_nw">
+                <div class="panel_title">
+                  <span class="account">My Account</span>
+                  <span class="panel_links"> </span>
+                </div>
+              </div>
+              <div class="panel_w">
+                <div class="panel_content">
+                  <table width="930" border="0" cellpadding="0" cellspacing="0">
+                    <tbody>
+                      <tr>
+                        <td width="460">
+                          <div class="add_section_title">Account Information</div>
+                            <table width="100%" border="0" cellpadding="4" cellspacing="0">
+                              <tbody>
+                                <tr>
+                                  <td>Name:</td>
+                                  <td><h:outputText value="#{myAccountBean.fullName}"/></td>
+                                </tr>
+                                <tr>
+                                  <td>Region:</td>
+                                  <td><h:outputText value="#{myAccountBean.regionName}"/></td>
+                                </tr>
+                                <tr>
+                                  <td>Team:</td>
+                                  <td><h:outputText value="#{myAccountBean.teamName}"/></td>
+                                </tr>
+                            </tbody>
+                          </table>
+        
+                        </td>
+        
+                        
+                        <td width="10"><img src="#{facesContext.externalContext.request.contextPath}/images/x.gif" width="10"/></td>
+                        
+                        <td valign="top" width="460">
+                          <div class="add_section_title">Login</div>
+                          <table width="100%" border="0" cellpadding="4" cellspacing="0">
+                            <tbody>
+                              <tr>
+                                <td>User Name:</td>
+                                <td><h:outputText value="#{myAccountBean.user.username}"/></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="panel_sw">
+                <div class="panel_statusbar"></div>
+      
+              </div>
+            </div>
+        <!-- END PANEL -->
+        
+          </td>
+        </tr>
+        <tr>
+          <td valign="top"> </td>
+          <td> </td>
+          <td valign="top"> </td>
+        </tr>
+        <tr>
+          <td valign="top" width="465">
+          
+            <!-- START PANEL -->
+            <div class="">
+              <div class="panel_nw">
+                <div class="panel_title">
+                  <span class="notify">Notifications</span>
+                </div>
+              </div>
+              <div class="panel_w">
+                <div class="panel_content">
+                  <table width="100%" border="0" cellpadding="4" cellspacing="0">
+                    <tbody>
+                    
+                      <tr>
+                        <td width="5%"><img height="16" width="16" src="#{facesContext.externalContext.request.contextPath}/images/ico_info.png"/></td>
+                        <td width="5%">Information:</td>
+                        <td width="5%">
+                          <h:selectOneMenu styleClass="text" id="informationSelectType" value="#{myAccountBean.informationSelectType}" onchange="refreshVisibility()">
+                            <f:selectItem itemLabel="None" itemValue="0"/>
+                            <f:selectItem itemLabel="Email" itemValue="1"/>
+                            <f:selectItem itemLabel="Phone" itemValue="2"/>
+                            <f:selectItem itemLabel="Text" itemValue="3"/>
+                          </h:selectOneMenu>
+                        </td>
+                        <td width="85%">
+                          <h:selectOneMenu styleClass="text" id="informationSelectEmail" value="#{myAccountBean.informationSelectEmail}">
+                            <f:selectItem itemLabel="" itemValue="1"/> <!-- label set by calling refrehValues() -->
+                            <f:selectItem itemLabel="" itemValue="2"/>
+                          </h:selectOneMenu>
+                          <h:selectOneMenu styleClass="text" id="informationSelectPhone" value="#{myAccountBean.informationSelectPhone}">
+                            <f:selectItem itemLabel="" itemValue="3"/>
+                            <f:selectItem itemLabel="" itemValue="4"/>
+                            <f:selectItem itemLabel="" itemValue="5"/>
+                          </h:selectOneMenu>
+                          <h:selectOneMenu styleClass="text" id="informationSelectText" value="#{myAccountBean.informationSelectText}">
+                            <f:selectItem itemLabel="" itemValue="6"/>
+                            <f:selectItem itemLabel="" itemValue="7"/>
+                          </h:selectOneMenu>
+                        </td>
+                      </tr>
+                    
+                    
+                      <tr>
+                        <td width="5%"><img height="16" width="16" src="#{facesContext.externalContext.request.contextPath}/images/ico_warning.png"/></td>
+                        <td width="5%">Warning:</td>
+                        <td width="5%">
+                          <h:selectOneMenu styleClass="text" id="warningSelectType" value="#{myAccountBean.warningSelectType}" onchange="refreshVisibility()">
+                            <f:selectItem itemLabel="None" itemValue="0"/>
+                            <f:selectItem itemLabel="Email" itemValue="1"/>
+                            <f:selectItem itemLabel="Phone" itemValue="2"/>
+                            <f:selectItem itemLabel="Text" itemValue="3"/>
+                          </h:selectOneMenu>
+                        </td>
+                        <td width="85%">
+                          <h:selectOneMenu styleClass="text" id="warningSelectEmail" value="#{myAccountBean.warningSelectEmail}">
+                            <f:selectItem itemLabel="" itemValue="1"/> <!-- label set by calling refrehValues() -->
+                            <f:selectItem itemLabel="" itemValue="2"/>
+                          </h:selectOneMenu>
+                          <h:selectOneMenu styleClass="text" id="warningSelectPhone" value="#{myAccountBean.warningSelectPhone}">
+                            <f:selectItem itemLabel="" itemValue="3"/>
+                            <f:selectItem itemLabel="" itemValue="4"/>
+                            <f:selectItem itemLabel="" itemValue="5"/>
+                          </h:selectOneMenu>
+                          <h:selectOneMenu styleClass="text" id="warningSelectText" value="#{myAccountBean.warningSelectText}">
+                            <f:selectItem itemLabel="" itemValue="6"/>
+                            <f:selectItem itemLabel="" itemValue="7"/>
+                          </h:selectOneMenu>
+                        </td>
+                      </tr>
+                    
+                    
+                      <tr>
+                        <td width="5%"><img height="16" width="16" src="#{facesContext.externalContext.request.contextPath}/images/ico_critical.png"/></td>
+                        <td width="5%">Critical:</td>
+                        <td width="5%">
+                          <h:selectOneMenu styleClass="text" id="criticalSelectType" value="#{myAccountBean.criticalSelectType}" onchange="refreshVisibility()">
+                            <f:selectItem itemLabel="None" itemValue="0"/>
+                            <f:selectItem itemLabel="Email" itemValue="1"/>
+                            <f:selectItem itemLabel="Phone" itemValue="2"/>
+                            <f:selectItem itemLabel="Text" itemValue="3"/>
+                          </h:selectOneMenu>
+                        </td>
+                        <td width="85%">
+                          <h:selectOneMenu styleClass="text" id="criticalSelectEmail" value="#{myAccountBean.criticalSelectEmail}">
+                            <f:selectItem itemLabel="" itemValue="1"/> <!-- label set by calling refrehValues() -->
+                            <f:selectItem itemLabel="" itemValue="2"/>
+                          </h:selectOneMenu>
+                          <h:selectOneMenu styleClass="text" id="criticalSelectPhone" value="#{myAccountBean.criticalSelectPhone}">
+                            <f:selectItem itemLabel="" itemValue="3"/>
+                            <f:selectItem itemLabel="" itemValue="4"/>
+                            <f:selectItem itemLabel="" itemValue="5"/>
+                          </h:selectOneMenu>
+                          <h:selectOneMenu styleClass="text" id="criticalSelectText" value="#{myAccountBean.criticalSelectText}">
+                            <f:selectItem itemLabel="" itemValue="6"/>
+                            <f:selectItem itemLabel="" itemValue="7"/>
+                          </h:selectOneMenu>
+                        </td>
+                      </tr>
+                    
+                    
+                    <!-- 
+                      <tr>
+                        <td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_warning.png" width="16" height="16"/></td>
+                        <td>Warning:</td>
+                        <td>Text Message - Primary</td>
+                      </tr>
+        
+                      <tr>
+                        <td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_critical.png" width="16" height="16"/></td>
+                        <td>Critical:</td>
+                        <td>Phone - Cell</td>
+                      </tr> -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+        
+              <div class="panel_sw">
+                <div class="panel_statusbar"></div>
+              </div>
+            </div>
+            <!-- END PANEL -->
+          </td>
+        
+          <td width="10"><img src="#{facesContext.externalContext.request.contextPath}/images/x.gif" width="10"/></td>
+        
+          <td valign="top" width="465">
+          
+          <!-- START PANEL -->
+            <div class="">
+              <div class="panel_nw">
+                <div class="panel_title">
+                  <span class="contact">Contact Information</span>
+                </div>
+              </div>
+              <div class="panel_w">
+                <div class="panel_content">
+                  <div class="add_section_title">Email</div>
+                    <table width="100%" border="0" cellpadding="4" cellspacing="0">
+                      <tbody>
+                        <tr>
+                          <td>Primary:</td>
+                          <td><h:inputText id="priEmail" value="#{myAccountBean.primaryEmail}" size="40" onkeyup="refreshValues()" /></td>
+                        </tr>
+                        <tr>
+      
+                          <td>Secondary:</td>
+                          <td><h:inputText id="secEmail" value="#{myAccountBean.secondaryEmail}" size="40" onkeyup="refreshValues()" /></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                             
+                    <div class="add_section_title">Phone Numbers</div>
+                    <table width="100%" border="0" cellpadding="4" cellspacing="0">
+                      <tbody>
+                        <tr>
+    
+                          <td>Primary:</td>
+                          <td><h:inputText id="priPhone" value="#{myAccountBean.primaryPhone}" size="40" onkeyup="refreshValues()"/></td>
+                        </tr>
+                        <tr>
+                          <td>Secondary:</td>
+                          <td><h:inputText id="secPhone" value="#{myAccountBean.secondaryPhone}" size="40" onkeyup="refreshValues()" validator="#{myAccountBean.validateForm}"/></td>
+                        </tr>
+      
+                        <tr>
+                          <td>Cell:</td>
+                          <td><h:inputText id="cellPhone" value="#{myAccountBean.cellPhone}" size="40" onkeyup="refreshValues()"/></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                                  
+                    <div class="add_section_title">Text Messaging</div>
+                    <table width="100%" border="0" cellpadding="4" cellspacing="0">
+  
+                      <tbody>
+                        <tr>
+                          <td>Primary:</td>
+                          <td><h:inputText id="priText" value="#{myAccountBean.primaryText}" size="40" onkeyup="refreshValues()"/></td>
+                        </tr>
+                        <tr>
+                          <td>Secondary:</td>
+                          <td><h:inputText id="secText" value="#{myAccountBean.secondaryText}" size="40" onkeyup="refreshValues()"/></td>
+                        </tr>
+  
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="panel_sw">
+                  <div class="panel_statusbar"></div>
+                </div>
+              </div>
+              <!-- END PANEL -->
+            </td>
+          
+          </tr>
+        </tbody>
+      </table>
+    </h:form>  
+    
+    
+    <script type="text/javascript" language="Javascript">
+    function refreshValues()
+    {
+      document.getElementById("my_form:informationSelectEmail").options[0].text = "Primary - " + document.getElementById("my_form:priEmail").value;
+      document.getElementById("my_form:informationSelectEmail").options[1].text = "Secondary - " + document.getElementById("my_form:secEmail").value;
+      document.getElementById("my_form:informationSelectText").options[0].text = "Primary - " + document.getElementById("my_form:priText").value;
+      document.getElementById("my_form:informationSelectText").options[1].text = "Secondary - " + document.getElementById("my_form:secText").value;
+      document.getElementById("my_form:informationSelectPhone").options[0].text = "Primary - " + document.getElementById("my_form:priPhone").value;
+      document.getElementById("my_form:informationSelectPhone").options[1].text = "Secondary - " + document.getElementById("my_form:secPhone").value;
+      document.getElementById("my_form:informationSelectPhone").options[2].text = "Cell - " + document.getElementById("my_form:cellPhone").value;
+      
+      document.getElementById("my_form:warningSelectEmail").options[0].text = "Primary - " + document.getElementById("my_form:priEmail").value;
+      document.getElementById("my_form:warningSelectEmail").options[1].text = "Secondary - " + document.getElementById("my_form:secEmail").value;
+      document.getElementById("my_form:warningSelectText").options[0].text = "Primary - " + document.getElementById("my_form:priText").value;
+      document.getElementById("my_form:warningSelectText").options[1].text = "Secondary - " + document.getElementById("my_form:secText").value;
+      document.getElementById("my_form:warningSelectPhone").options[0].text = "Primary - " + document.getElementById("my_form:priPhone").value;
+      document.getElementById("my_form:warningSelectPhone").options[1].text = "Secondary - " + document.getElementById("my_form:secPhone").value;
+      document.getElementById("my_form:warningSelectPhone").options[2].text = "Cell - " + document.getElementById("my_form:cellPhone").value;
+      
+      document.getElementById("my_form:criticalSelectEmail").options[0].text = "Primary - " + document.getElementById("my_form:priEmail").value;
+      document.getElementById("my_form:criticalSelectEmail").options[1].text = "Secondary - " + document.getElementById("my_form:secEmail").value;
+      document.getElementById("my_form:criticalSelectText").options[0].text = "Primary - " + document.getElementById("my_form:priText").value;
+      document.getElementById("my_form:criticalSelectText").options[1].text = "Secondary - " + document.getElementById("my_form:secText").value;
+      document.getElementById("my_form:criticalSelectPhone").options[0].text = "Primary - " + document.getElementById("my_form:priPhone").value;
+      document.getElementById("my_form:criticalSelectPhone").options[1].text = "Secondary - " + document.getElementById("my_form:secPhone").value;
+      document.getElementById("my_form:criticalSelectPhone").options[2].text = "Cell - " + document.getElementById("my_form:cellPhone").value;
+    }
+    function refreshVisibility()
+    {
+      refreshVisibilityImpl("information");
+      refreshVisibilityImpl("warning");
+      refreshVisibilityImpl("critical");
+    }
+    function refreshVisibilityImpl(type)
+    {
+      document.getElementById("my_form:" + type + "SelectEmail").style.display = "none";
+      document.getElementById("my_form:" + type + "SelectText").style.display = "none";
+      document.getElementById("my_form:" + type + "SelectPhone").style.display = "none";
+      switch (document.getElementById("my_form:" + type + "SelectType").selectedIndex)
+      {
+        case 1:
+          document.getElementById("my_form:" + type + "SelectEmail").style.display = "block";
+          break;
+        case 2:
+          document.getElementById("my_form:" + type + "SelectPhone").style.display = "block";
+          break;
+        case 3:
+          document.getElementById("my_form:" + type + "SelectText").style.display = "block";
+          break;
+      }
+    }
+    refreshValues();
+    refreshVisibility();
+    </script>
+        
+  </ui:define>
+
+</ui:composition>

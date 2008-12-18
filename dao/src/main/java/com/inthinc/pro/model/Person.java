@@ -201,6 +201,15 @@ public class Person extends BaseEntity
     {
         this.dept = dept;
     }
+    
+    public String getFullName()
+    {
+    	StringBuffer result = new StringBuffer();
+    	if (first != null) result.append(first + " ");
+    	if (middle != null) result.append(middle + " ");
+    	if (last != null) result.append(last);
+    	return result.toString().trim();
+    }
 
     public String getFirst()
     {

@@ -23,6 +23,7 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.AggressiveDrivingEvent;
+import com.inthinc.pro.model.AlertContact;
 import com.inthinc.pro.model.DVQMap;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceLowBatteryEvent;
@@ -367,6 +368,10 @@ logger.debug("addDriveQMaps");
         {
             storeObject(users[userCnt]);
             storeObject(users[userCnt].getPerson());
+            AlertContact contact = new AlertContact();
+            contact.setUserID(users[userCnt].getUserID());
+            contact.setSecPhone("(801) 555-5555");
+            storeObject(contact);
         }
     }
 

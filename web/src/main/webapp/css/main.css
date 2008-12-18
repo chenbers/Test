@@ -157,7 +157,22 @@ body {
 	padding: 0 0 0 20px;
 	background: transparent url(../images/ico_admin.png) no-repeat center left;
 	}
+
+.panel_title span.account {
+	background:transparent url(../images/ico_account.png) no-repeat scroll left center;
+	padding:0 0 0 20px;
+}
 	
+.panel_title span.notify {
+	background:transparent url(../images/ico_notification.png) no-repeat scroll left center;
+	padding:0 0 0 20px;
+}
+
+.panel_title span.contact {
+	background:transparent url(../images/ico_contact.png) no-repeat scroll left center;
+	padding:0 0 0 20px;
+}
+
 .panel_title span.speed {
 	padding: 0 0 0 20px;
 	background: transparent url(../images/ico_speed.png) no-repeat center left;

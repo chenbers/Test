@@ -75,6 +75,18 @@
 	</navigation-rule>
 	<navigation-rule>
 		<navigation-case>
+			<from-outcome>go_myAccount</from-outcome>
+			<to-view-id>/secured/myAccount.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>go_editAccount</from-outcome>
+			<to-view-id>/secured/editAccount.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
 			<from-outcome>go_admin</from-outcome>
 			<to-view-id>/secured/admin/people.xhtml</to-view-id>
 		</navigation-case>

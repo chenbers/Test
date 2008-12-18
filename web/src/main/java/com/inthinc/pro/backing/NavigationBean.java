@@ -44,7 +44,7 @@ public class NavigationBean extends BaseBean
     public void setGroupID(Integer groupID)
     {
         //Lets not load a new group if we don't need to
-        if(this.groupID != groupID){
+        if(this.groupID != groupID && groupDAO != null){
             this.group = groupDAO.findByID(groupID);
             this.setGroupTreeNode(new TreeNodeImpl(group,getGroupHierarchy()));
             logger.debug("Navigation setGroup:" + group.getName());
