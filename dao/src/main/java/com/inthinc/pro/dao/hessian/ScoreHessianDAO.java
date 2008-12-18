@@ -350,7 +350,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 DriveQMap dqm = d.getDriveQ();
                 
                 vri.setGroupID(d.getVehicle().getGroupID());
-                vri.setVehicleID(d.getVehicle().getVehicleID());
+                vri.setVehicle(d.getVehicle());
                 vri.setMakeModelYear(
                         v.getMake() + "/" +
                         v.getModel() + "/" +

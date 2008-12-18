@@ -3,7 +3,7 @@ package com.inthinc.pro.model;
 public class VehicleReportItem
 {
     private String group;
-    private Integer vehicleID;
+    private Vehicle vehicle;
     private String makeModelYear;
     private Integer milesDriven;
     private Integer overallScore;
@@ -23,13 +23,13 @@ public class VehicleReportItem
     {
         this.group = group;
     }
-    public Integer getVehicleID()
+    public Vehicle getVehicle()
     {
-        return vehicleID;
+        return vehicle;
     }
-    public void setVehicleID(Integer vehicleID)
+    public void setVehicle(Vehicle vehicle)
     {
-        this.vehicleID = vehicleID;
+        this.vehicle = vehicle;
     }
     public String getMakeModelYear()
     {

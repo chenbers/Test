@@ -132,7 +132,7 @@ public class VehicleReportBean extends BaseReportBean
                 
                 for ( int i = 0; i < vehiclesData.size(); i++ ) {
                     VehicleReportItem v = vehiclesData.get(i);                   
-                    String localID = Integer.toString(v.getVehicleID());
+                    String localID = Integer.toString(v.getVehicle().getVehicleID());
                     
                     //Fuzzy
                     int index1 = localID.indexOf(compareToID);                    
