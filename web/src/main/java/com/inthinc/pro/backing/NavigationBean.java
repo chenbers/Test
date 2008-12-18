@@ -3,6 +3,7 @@ package com.inthinc.pro.backing;
 import org.apache.log4j.Logger;
 import org.omg.PortableServer.POAManagerPackage.State;
 
+import com.inthinc.pro.backing.model.GroupLevel;
 import com.inthinc.pro.backing.model.TreeNodeImpl;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Driver;
@@ -143,6 +144,14 @@ public class NavigationBean extends BaseBean
     public TreeNodeImpl getGroupTreeNode()
     {
         return groupTreeNode;
+    }
+    
+    public String homeAction()
+    {
+        GroupLevel groupLevel = getGroupHierarchy().getGroupLevel(getGroupHierarchy().getTopGroup());
+        
+        return groupLevel.getLocation();
+   
     }
 
 }

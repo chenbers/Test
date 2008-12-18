@@ -12,7 +12,7 @@
 	<h:form id="navigation"> 
 		<ul>
 			<li class="#{homeSelected}">	
-				<h:commandLink title="#{messages.navigation_home}" action="go_home">
+				<h:commandLink title="#{messages.navigation_home}" action="#{navigationBean.homeAction}">
 					<span>#{messages.navigation_home}</span>
 				</h:commandLink>
 			</li>
