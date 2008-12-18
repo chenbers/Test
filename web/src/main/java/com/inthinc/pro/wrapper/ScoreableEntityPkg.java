@@ -8,8 +8,9 @@ public class ScoreableEntityPkg {
 	private String style;
 	private String colorKey;
 	private String goTo;
+	private Integer position;
 	
-	public ScoreableEntityPkg() {
+    public ScoreableEntityPkg() {
 		this.se = new ScoreableEntity();
 		this.style = "";
 		this.colorKey = "";
@@ -45,5 +46,17 @@ public class ScoreableEntityPkg {
 	public String goTo() {
 		return this.goTo;
 	}
+    public Integer getPosition()
+    {
+        return position;
+    }
+
+
+    public void setPosition(Integer position)
+    {
+        this.position = position;
+    }
+
+
 
 }

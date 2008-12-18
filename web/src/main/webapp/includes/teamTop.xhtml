@@ -24,11 +24,11 @@
 			width="100%" binding="#{teamTopDriversTable}">
 
 			<!-- Data -->
-					<rich:column sortBy="#{item.se.position}" width="38" height="27" >
+					<rich:column sortBy="#{item.position}" width="38" height="27" >
 						<f:facet name="header">
 							<h:outputText value="#" />
 						</f:facet>
-						<h:outputText value="#{item.se.position}"/>
+						<h:outputText value="#{item.position}"/>
 
 					</rich:column>
 					<rich:column width="198" sortBy="#{item.se.identifier}" >
@@ -83,11 +83,11 @@
 			width="100%" binding="#{teamBottomDriversTable}">
 
 			<!-- Data -->
- 					<rich:column sortBy="#{item.se.position}" width="38">
+ 					<rich:column sortBy="#{item.position}" width="38">
 						<f:facet name="header">
 							<h:outputText value="#" />
 						</f:facet>
-						<h:outputText value="#{item.se.position}"/>
+						<h:outputText value="#{item.position}"/>
 
 					</rich:column>
 					<rich:column width="198" sortBy="#{item.se.identifier}">

@@ -36,6 +36,7 @@ public class ReportServiceTest
     private static SiloService siloService;
 
     private static final Integer TEST_DIVISION_GROUP_ID = 16777218;
+    private static final Integer TEST_TEAM_GROUP_ID = 16777228;
     private static final Integer TEST_DRIVER_ID = 16777308;
     
     @BeforeClass
@@ -153,7 +154,7 @@ public class ReportServiceTest
             System.out.println("groupID: " + mpg.getGroupID() + " " + mpg.getEntityName() + " heavy: " + mpg.getHeavyValue() + " med: " + mpg.getMediumValue() + " light: " + mpg.getLightValue());
         }
 
-        Group teamGroup = groupDAO.findByID(16777228);
+        Group teamGroup = groupDAO.findByID(TEST_TEAM_GROUP_ID);
         if (teamGroup.getType() == null)
         {
             teamGroup.setType(GroupType.TEAM);
@@ -168,6 +169,40 @@ public class ReportServiceTest
         }
       
         
+    }
+    
+    @Test
+    public void getTopBottomFiveScores()
+    {
+        ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
+        scoreDAO.setReportService(reportService);
+     
+        Integer groupID = TEST_TEAM_GROUP_ID;
+        List<ScoreableEntity> scoreableEntityList = scoreDAO.getTopFiveScores(groupID);
+        assertNotNull(scoreableEntityList);
+        assertTrue(scoreableEntityList.size() <= 5);
+        
+        int score = 51;
+        for (ScoreableEntity s : scoreableEntityList)
+        {
+            System.out.println("driverID: " + s.getEntityID() + " " + s.getIdentifier() + " " + s.getEntityID() + " score" + s.getScore());
+            assertTrue(s.getScore() <= score);
+            score = s.getScore();
+            
+        }
+        
+        scoreableEntityList = scoreDAO.getTopFiveScores(groupID);
+        assertNotNull(scoreableEntityList);
+        assertTrue(scoreableEntityList.size() <= 5);
+        
+        score = 0;
+        for (ScoreableEntity s : scoreableEntityList)
+        {
+            System.out.println("driverID: " + s.getEntityID() + " " + s.getIdentifier() + " " + s.getEntityID() + " score" + s.getScore());
+            assertTrue(s.getScore() >= score);
+            score = s.getScore();
+            
+        }
     }
     
     

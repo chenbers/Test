@@ -52,21 +52,32 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     {
         try
         {
-            List<ScoreableEntity> scoreList = getMapper().convertToModelObject(reportService.getTopFiveScores(groupID), ScoreableEntity.class);
-            return scoreList;
-            // TODO Auto-generated method stub
+            List<ScoreableEntity> scoreList = getSortedScoreList(groupID);
+            return scoreList.subList(0, scoreList.size() > 5 ? 5 : scoreList.size());
         }
         catch (EmptyResultSetException e)
         {
             return Collections.emptyList();
         }
-        catch (ProxyException e)
+    }
+
+    private List<ScoreableEntity> getSortedScoreList(Integer groupID)
+    {
+        // TODO: not sure which duration to use for this one
+        List<DVQMap> dvqList = getMapper().convertToModelObject(reportService.getDVScoresByGT(groupID, 1), DVQMap.class);
+        List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
+        for (DVQMap dvq : dvqList)
         {
-            if (e.getErrorCode() == 422)
-                return Collections.emptyList();
-            else
-                throw e;
+            ScoreableEntity scoreableEntity = new ScoreableEntity();
+            scoreableEntity.setEntityID(dvq.getDriver().getDriverID());
+            scoreableEntity.setEntityType(EntityType.ENTITY_DRIVER);
+            scoreableEntity.setScoreType(ScoreType.SCORE_OVERALL);
+            scoreableEntity.setIdentifier(dvq.getDriver().getPerson().getFirst() + " " + dvq.getDriver().getPerson().getLast());
+            scoreableEntity.setScore(dvq.getDriveQ().getOverall());
+            scoreList.add(scoreableEntity);
         }
+        Collections.sort(scoreList);
+        return scoreList;
     }
 
     @Override
@@ -74,19 +85,13 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     {
         try
         {
-            List<ScoreableEntity> scoreList = getMapper().convertToModelObject(reportService.getBottomFiveScores(groupID), ScoreableEntity.class);
-            return scoreList;
+            List<ScoreableEntity> scoreList = getSortedScoreList(groupID);
+            Collections.reverse(scoreList);
+            return scoreList.subList(0, scoreList.size() > 5 ? 5 : scoreList.size());
         }
         catch (EmptyResultSetException e)
         {
             return Collections.emptyList();
-        }
-        catch (ProxyException e)
-        {
-            if (e.getErrorCode() == 422)
-                return Collections.emptyList();
-            else
-                throw e;
         }
     }
 

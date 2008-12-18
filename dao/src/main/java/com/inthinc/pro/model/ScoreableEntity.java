@@ -2,8 +2,10 @@ package com.inthinc.pro.model;
 
 import com.inthinc.pro.dao.annotations.ID;
 
-public class ScoreableEntity extends BaseEntity {
-	@ID
+public class ScoreableEntity extends BaseEntity implements Comparable<ScoreableEntity>
+{
+
+    @ID
 	private Integer entityID;
 
 	private EntityType entityType;
@@ -11,18 +13,6 @@ public class ScoreableEntity extends BaseEntity {
 	private Integer score;
     private Integer date;
     private ScoreType scoreType;
-    private Integer position;
-
-    public Integer getPosition()
-    {
-        return position;
-    }
-
-    public void setPosition(Integer position)
-    {
-        this.position = position;
-    }
-
     public ScoreableEntity()
     {
         
@@ -83,6 +73,13 @@ public class ScoreableEntity extends BaseEntity {
     public void setScoreType(ScoreType scoreType)
     {
         this.scoreType = scoreType;
+    }
+
+    @Override
+    public int compareTo(ScoreableEntity o)
+    {
+
+        return score.compareTo(o.getScore());
     }
 
 

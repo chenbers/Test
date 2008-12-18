@@ -31,6 +31,8 @@ public class TeamTopBean extends BaseBean
     private List<ScoreableEntityPkg> bottomDrivers = new ArrayList<ScoreableEntityPkg>();
    
     private String goTo = "go_driver";
+    
+    // TODO: This could be refactored to do fewer db hits. 
 
     public List<ScoreableEntityPkg> getTopDrivers()
     {
@@ -44,13 +46,6 @@ public class TeamTopBean extends BaseBean
         //Fetch, qualifier is groupId, date from, date to
         List<ScoreableEntity> s = null;
         try {
-            Integer endDate = DateUtil.getTodaysDate();
-            @SuppressWarnings("unused")
-			Integer startDate = DateUtil.getDaysBackDate(endDate, duration.getNumberOfDays());
-            
-            // TODO: This is not correct.  getUser().getGroupID() needs to be changed to the current group in the navigation
-            logger.debug("getting scores for groupID: " + this.navigation.getGroupID());
-            
             s = scoreDAO.getTopFiveScores(this.navigation.getGroupID());
         } catch (Exception e) {
             logger.debug("graphicDao error: " + e.getMessage());
@@ -62,7 +57,7 @@ public class TeamTopBean extends BaseBean
         for (ScoreableEntity score : s)
         {
             ScoreableEntityPkg se = new ScoreableEntityPkg();
-            score.setPosition(cnt+1);
+            se.setPosition(cnt+1);
             se.setSe(score);
             sb.setScore(score.getScore());
             se.setStyle(sb.getScoreStyle());
@@ -93,13 +88,6 @@ public class TeamTopBean extends BaseBean
         //Fetch, qualifier is groupId, date from, date to
         List<ScoreableEntity> s = null;
         try {
-            Integer endDate = DateUtil.getTodaysDate();
-            @SuppressWarnings("unused")
-			Integer startDate = DateUtil.getDaysBackDate(endDate, duration.getNumberOfDays());
-            
-            // TODO: This is not correct.  getUser().getGroupID() needs to be changed to the current group in the navigation
-            logger.debug("getting scores for groupID: " + this.navigation.getGroupID());
-            
             s = scoreDAO.getBottomFiveScores(this.navigation.getGroupID());
         } catch (Exception e) {
             logger.debug("graphicDao error: " + e.getMessage());
@@ -112,7 +100,7 @@ public class TeamTopBean extends BaseBean
        for (ScoreableEntity score : s)
         {
             ScoreableEntityPkg se = new ScoreableEntityPkg();
-            score.setPosition(cnt+1);
+            se.setPosition(cnt+1);
             se.setSe(score);
             sb.setScore(score.getScore());
             se.setStyle(sb.getScoreStyle());

@@ -113,7 +113,7 @@ public class SiloServiceTest
         siloService = new SiloServiceCreator(host, port).getService();
 //        HessianDebug.debugIn = true;
 //        HessianDebug.debugOut = true;
-        HessianDebug.debugRequest = true;
+//        HessianDebug.debugRequest = true;
         
         initApp();
         
@@ -143,7 +143,6 @@ public class SiloServiceTest
     }
     
     @Test
-    @Ignore
     public void states()
     {
         StateHessianDAO stateDAO = new StateHessianDAO();
@@ -157,7 +156,6 @@ public class SiloServiceTest
     }
     
     @Test
-    @Ignore
     public void roles()
     {
         RoleHessianDAO roleDAO = new RoleHessianDAO();
@@ -171,7 +169,6 @@ public class SiloServiceTest
     }
     
     @Test
-    @Ignore
     public void supportedTimeZones()
     {
         TimeZoneHessianDAO timeZoneDAO = new TimeZoneHessianDAO();
@@ -186,7 +183,6 @@ public class SiloServiceTest
     }
     
     @Test
-    @Ignore
     public void lastLocationDriver()
     {
         DriverHessianDAO driverDAO = new DriverHessianDAO();
@@ -202,7 +198,6 @@ public class SiloServiceTest
     }
     
     @Test
-    @Ignore
     public void lastLocationVehicle()
     {
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
@@ -216,9 +211,8 @@ public class SiloServiceTest
         assertNotNull(vloc.getLoc().getLng());
         
     }
-//    1105
+/*    
     @Test
-    @Ignore
     public void tmpevents()
     {
         EventHessianDAO eventDAO = new EventHessianDAO();
@@ -235,8 +229,8 @@ public class SiloServiceTest
 
     
     }
+*/    
     @Test
-    @Ignore
     public void events()
     {
         EventHessianDAO eventDAO = new EventHessianDAO();
@@ -291,7 +285,6 @@ public class SiloServiceTest
     
     
     @Test
-    @Ignore
     public void trips()
     {
         DriverHessianDAO driverDAO = new DriverHessianDAO();
@@ -338,7 +331,6 @@ public class SiloServiceTest
     }
     
     @Test
-    @Ignore
     public void admin()
     {
 
@@ -474,7 +466,7 @@ public class SiloServiceTest
         zone.setZoneID(zoneID);
         
         // find
-        String ignoreFields[] = {"modified"};
+        String ignoreFields[] = {"modified", "pointsString"};
         Zone returnedZone = zoneDAO.findByID(zoneID);
         Util.compareObjects(zone, returnedZone, ignoreFields);
         
