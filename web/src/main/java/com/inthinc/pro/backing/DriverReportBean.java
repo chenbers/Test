@@ -15,18 +15,11 @@ import org.richfaces.event.DataScrollerEvent;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.TableColumn;
-import com.inthinc.pro.dao.DriverDAO;
-import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.TablePreferenceDAO;
-import com.inthinc.pro.dao.util.DateUtil;
-import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
-import com.inthinc.pro.model.ScoreType;
-import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.util.MessageUtil;
@@ -37,7 +30,7 @@ public class DriverReportBean extends BaseReportBean
     private static final Logger logger = Logger.getLogger(DriverReportBean.class);
     
     //driversData is the ONE read from the db, driverData is what is displayed
-    private List <Driver> driversData = new ArrayList<Driver>(); 
+    private List <DriverReportItem> driversData = new ArrayList<DriverReportItem>(); 
     private List <DriverReportItem> driverData = new ArrayList<DriverReportItem>();
     
             static final List<String> AVAILABLE_COLUMNS;
@@ -46,9 +39,7 @@ public class DriverReportBean extends BaseReportBean
     
     private TablePreference tablePref;
     
-    private DriverDAO driverDAO;
     private ScoreDAO scoreDAO;
-    private GroupDAO groupDAO;
     private TablePreferenceDAO tablePreferenceDAO;
    
     private DriverReportItem drt = null;
@@ -87,8 +78,9 @@ public class DriverReportBean extends BaseReportBean
     {          
         searchFor = checkForRequestMap();        
         this.driversData = 
-            driverDAO.getAllDrivers(
-                    getUser().getPerson().getGroupID());
+            scoreDAO.getDriverReportData(            
+                    getUser().getPerson().getGroupID(),
+                    Duration.TWELVE);
         
         //Bean creation could be from Reports selection or
         //  search on main menu. This accounts for a search
@@ -132,11 +124,11 @@ public class DriverReportBean extends BaseReportBean
         //Search by last name             
         if ( this.searchFor.trim().length() != 0 ) {
             String trimmedSearch = this.searchFor.trim();            
-            List <Driver> matchedDrivers = new ArrayList<Driver>();    
+            List <DriverReportItem> matchedDrivers = new ArrayList<DriverReportItem>();    
             
             for ( int i = 0; i < this.driversData.size(); i++ ) {
-                Driver d = this.driversData.get(i);
-                Person p = d.getPerson();
+                DriverReportItem d = this.driversData.get(i);
+                Person p = d.getDriver().getPerson();
                 
                 //Fuzzy
                 if ( p != null ) {   
@@ -162,57 +154,23 @@ public class DriverReportBean extends BaseReportBean
         resetCounts();       
     }
     
-    private void loadResults(List <Driver> drvsData)
+    private void loadResults(List <DriverReportItem> drvsData)
     {
         if ( this.driverData.size() > 0 ) {
             this.driverData.clear();
         }
-        
-        Driver d = null;
-        Person p = null;
-        ScoreableEntity s = null;
-        Group g = null;
        
-        for ( int i = 0; i < drvsData.size(); i++ ) {
-            d = drvsData.get(i);
-            p = d.getPerson();
-            
-            //Employee and driver
-            drt = new DriverReportItem();
-            drt.setEmployee(p.getFirst() + " " + p.getLast());
-            drt.setEmployeeID(new Integer(p.getEmpid()));
-            drt.setDriver(d);
-            
-            //Scores, full year
-            
-            //NOTE: THIS STATES THAT IT IS FOR MILES, THE ACTUAL
-            //IMPLEMENTATION UNDER THE COVERS IS JUST AN AVERAGE, 
-            //IT NEEDS TO BE FOR ======>TIME<======
-            Integer endDate = DateUtil.getTodaysDate();
-            Integer startDate = DateUtil.getDaysBackDate(
-                    endDate, 
-                    Duration.TWELVE.getNumberOfDays());            
-            s = scoreDAO.getAverageScoreByTypeAndMiles(d.getDriverID(),startDate,ScoreType.SCORE_OVERALL);
-            drt.setOverallScore(s.getScore());
-            s = scoreDAO.getAverageScoreByTypeAndMiles(d.getDriverID(),startDate,ScoreType.SCORE_SEATBELT);
-            drt.setSeatBeltScore(s.getScore());
-            s = scoreDAO.getAverageScoreByTypeAndMiles(d.getDriverID(),startDate,ScoreType.SCORE_SPEEDING);
-            drt.setSpeedScore(s.getScore());
-            s = scoreDAO.getAverageScoreByTypeAndMiles(d.getDriverID(),startDate,ScoreType.SCORE_DRIVING_STYLE);
-            drt.setStyleScore(s.getScore());
+        String contextPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+        
+        for ( DriverReportItem d: drvsData ) {
+            drt = d;   
             setStyles();
             
-            //Group
-            g = groupDAO.findByID(d.getPerson().getGroupID());
-            drt.setGroup(g.getName());
-            drt.setGroupID(g.getGroupID());
+            //Group name
+            drt.setGroup(this.getGroupHierarchy().getGroup(d.getGroupID()).getName());
             
-            //Where to go **** NOTE: MAKE SURE FACES CONTEXT FOR PATH IS USED
-            drt.setGoTo("/tiwipro/secured/team.faces?groupID="+g.getGroupID());
-            
-            //Needed            
-            drt.setMilesDriven(202114);
-            drt.setVehicleID("AE-114");           
+            //Where to go 
+            drt.setGoTo(contextPath + "team.faces?groupID="+d.getGroupID());                      
             
             driverData.add(drt);            
         }
@@ -352,17 +310,25 @@ public class DriverReportBean extends BaseReportBean
     {
         ScoreBox sb = new ScoreBox(0,ScoreBoxSizes.SMALL);  
         
-        sb.setScore(drt.getOverallScore());
-        drt.setStyleOverall(sb.getScoreStyle());
+        if ( drt.getOverallScore() != null ) {
+            sb.setScore(drt.getOverallScore());
+            drt.setStyleOverall(sb.getScoreStyle());
+        }
         
-        sb.setScore(drt.getSeatBeltScore());
-        drt.setStyleSeatBelt(sb.getScoreStyle());
+        if ( drt.getSeatBeltScore() != null ) {
+            sb.setScore(drt.getSeatBeltScore());
+            drt.setStyleSeatBelt(sb.getScoreStyle());
+        }
         
-        sb.setScore(drt.getSpeedScore());
-        drt.setStyleSpeed(sb.getScoreStyle());
+        if ( drt.getSpeedScore() != null ) {
+            sb.setScore(drt.getSpeedScore());
+            drt.setStyleSpeed(sb.getScoreStyle());
+        }
         
-        sb.setScore(drt.getStyleScore());
-        drt.setStyleStyle(sb.getScoreStyle());
+        if ( drt.getStyleScore() != null ) {
+            sb.setScore(drt.getStyleScore());
+            drt.setStyleStyle(sb.getScoreStyle());
+        }
         
     }
     
@@ -376,75 +342,55 @@ public class DriverReportBean extends BaseReportBean
             this.end = this.driverData.size();
         }
     }  
-
     
     public Integer getMaxCount()
     {   
         return maxCount;
     }
 
-
     public void setMaxCount(Integer maxCount)
     {        
         this.maxCount = maxCount;
     }
-
 
     public Integer getStart()
     {   
         return start;
     }
 
-
     public void setStart(Integer start)
     {
         this.start = start;
     }
-
 
     public Integer getEnd()
     {   
         return end;
     }
 
-
     public void setEnd(Integer end)
     {
         this.end = end;
     }
-
 
     public Integer getNumRowsPerPg()
     {
         return numRowsPerPg;
     }
 
-
     public void setNumRowsPerPg(Integer numRowsPerPg)
     {
         this.numRowsPerPg = numRowsPerPg;
     }
-
 
     public String getSearchFor()
     {
         return searchFor;
     }
 
-
     public void setSearchFor(String searchFor)
     {
         this.searchFor = searchFor;
-    }
-
-    public DriverDAO getDriverDAO()
-    {
-        return driverDAO;
-    }
-
-    public void setDriverDAO(DriverDAO driverDAO)
-    {
-        this.driverDAO = driverDAO;
     }
 
     public ScoreDAO getScoreDAO()
@@ -457,22 +403,10 @@ public class DriverReportBean extends BaseReportBean
         this.scoreDAO = scoreDAO;
     }
 
-    public GroupDAO getGroupDAO()
-    {
-        return groupDAO;
-    }
-
-    public void setGroupDAO(GroupDAO groupDAO)
-    {
-        this.groupDAO = groupDAO;
-    }
-
-
     public TablePreferenceDAO getTablePreferenceDAO()
     {
         return tablePreferenceDAO;
     }
-
 
     public void setTablePreferenceDAO(TablePreferenceDAO tablePreferenceDAO)
     {

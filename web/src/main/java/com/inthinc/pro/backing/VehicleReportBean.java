@@ -13,21 +13,13 @@ import org.richfaces.event.DataScrollerEvent;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.TableColumn;
-import com.inthinc.pro.dao.DriverDAO;
-import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.TablePreferenceDAO;
-import com.inthinc.pro.dao.VehicleDAO;
-import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
-import com.inthinc.pro.model.ScoreType;
-import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.TableType;
-import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleReportItem;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.TempColumns;
@@ -37,7 +29,7 @@ public class VehicleReportBean extends BaseReportBean
     private static final Logger logger = Logger.getLogger(VehicleReportBean.class);
     
     //vehiclesData is the ONE read from the db, vehicleData is what is displayed
-    private List <Vehicle> vehiclesData = new ArrayList<Vehicle>();
+    private List <VehicleReportItem> vehiclesData = new ArrayList<VehicleReportItem>();
     private List <VehicleReportItem> vehicleData = new ArrayList<VehicleReportItem>();
     
             static final List<String> AVAILABLE_COLUMNS;
@@ -46,10 +38,7 @@ public class VehicleReportBean extends BaseReportBean
     
     private TablePreference tablePref;
     
-    private VehicleDAO vehicleDAO;
     private ScoreDAO scoreDAO;
-    private GroupDAO groupDAO;
-    private DriverDAO driverDAO;
     private TablePreferenceDAO tablePreferenceDAO;
     
     private VehicleReportItem vrt = null;
@@ -87,8 +76,9 @@ public class VehicleReportBean extends BaseReportBean
     {   
         searchFor = checkForRequestMap();        
         vehiclesData = 
-            vehicleDAO.getVehiclesInGroupHierarchy(
-                    getUser().getPerson().getGroupID());
+            scoreDAO.getVehicleReportData(
+                    getUser().getPerson().getGroupID(),
+                    Duration.TWELVE);
         
         //Bean creation could be from Reports selection or
         //  search on main menu. This accounts for a search
@@ -129,13 +119,7 @@ public class VehicleReportBean extends BaseReportBean
     }
     
     public void search() 
-    {             
-        Driver d = new Driver();
-        Person p = new Person();
-        p.setFirst("Need");
-        p.setLast("Data");
-        d.setPerson(p);
-        
+    {                     
         if ( this.vehicleData.size() > 0 ) {
             this.vehicleData.clear();
         }
@@ -144,10 +128,10 @@ public class VehicleReportBean extends BaseReportBean
             try { 
                 Integer id = Integer.parseInt(this.searchFor.trim());   
                 String compareToID = Integer.toString(id.intValue());
-                List <Vehicle> matchedVehicles = new ArrayList<Vehicle>();    
+                List <VehicleReportItem> matchedVehicles = new ArrayList<VehicleReportItem>();    
                 
                 for ( int i = 0; i < vehiclesData.size(); i++ ) {
-                    Vehicle v = vehiclesData.get(i);                   
+                    VehicleReportItem v = vehiclesData.get(i);                   
                     String localID = Integer.toString(v.getVehicleID());
                     
                     //Fuzzy
@@ -171,58 +155,34 @@ public class VehicleReportBean extends BaseReportBean
         resetCounts();       
     }
     
-    private void loadResults(List <Vehicle> vehicData) 
+    private void loadResults(List <VehicleReportItem> vehicData) 
     {
         if ( this.vehicleData.size() > 0 ) {
             this.vehicleData.clear();
-        }
-        
-        Vehicle v = null;
-        Group g = null;        
-        Driver d = new Driver();        
-       
-        ScoreableEntity s = null;        
-        vrt = new VehicleReportItem();
+        }       
                 
-        for ( int i = 0; i < vehicData.size(); i++ ) {
-            v = vehicData.get(i);            
-            
-            //Vehicle
-            vrt = new VehicleReportItem();
-            vrt.setVehicleID(v.getVehicleID());
-            vrt.setMakeModelYear(v.getMake() + "/" + v.getModel() + "/" + v.getYear());         
-            
-            //Scores, full year
-            s = scoreDAO.getAverageScoreByType(v.getGroupID(),Duration.TWELVE,ScoreType.SCORE_OVERALL);
-            vrt.setOverallScore(s.getScore());
-            s = scoreDAO.getAverageScoreByType(v.getGroupID(),Duration.TWELVE,ScoreType.SCORE_SPEEDING);
-            vrt.setSpeedScore(s.getScore());
-            s = scoreDAO.getAverageScoreByType(v.getGroupID(),Duration.TWELVE,ScoreType.SCORE_DRIVING_STYLE);
-            vrt.setStyleScore(s.getScore());
+        for ( VehicleReportItem v: vehicData ) {          
+            vrt = v;
             setStyles();
                         
-            //Group
-            g = groupDAO.findByID(v.getGroupID());
-            vrt.setGroup(g.getName());
-            vrt.setGroupID(g.getGroupID());
+            //Group name
+            vrt.setGroup(this.getGroupHierarchy().getGroup(v.getGroupID()).getName());
             
-            //Driver
-            if ( v.getDriverID() != null ) {
-                d = driverDAO.findByID(v.getDriverID());
-            //None assigned
-            } else {
+            //Driver, none assigned
+            if ( v.getDriver() == null ) {
+                Driver d = new Driver();
                 Person p = new Person();
                 p.setFirst("None");
                 p.setLast("Assigned");
                 d.setPerson(p);
-            }
-            vrt.setDriver(d);
-                        
-            //Needed                    
-            vrt.setMilesDriven(202114);
+                vrt.setDriver(d);
+            }            
             
             vehicleData.add(vrt);            
-        }     
+        }    
+                
+        this.maxCount = this.vehicleData.size();   
+        resetCounts();            
     }
     
     private void resetCounts() 
@@ -359,14 +319,20 @@ public class VehicleReportBean extends BaseReportBean
     private void setStyles() {
         ScoreBox sb = new ScoreBox(0,ScoreBoxSizes.SMALL);  
         
-        sb.setScore(vrt.getOverallScore());
-        vrt.setStyleOverall(sb.getScoreStyle());
-       
-        sb.setScore(vrt.getSpeedScore());
-        vrt.setStyleSpeed(sb.getScoreStyle());
+        if ( vrt.getOverallScore() != null ) {
+            sb.setScore(vrt.getOverallScore());
+            vrt.setStyleOverall(sb.getScoreStyle());
+        } 
         
-        sb.setScore(vrt.getStyleScore());
-        vrt.setStyleStyle(sb.getScoreStyle());
+        if ( vrt.getSpeedScore() != null ) {
+            sb.setScore(vrt.getSpeedScore());
+            vrt.setStyleSpeed(sb.getScoreStyle());
+        }
+        
+        if ( vrt.getStyleScore() != null ) {
+            sb.setScore(vrt.getStyleScore());
+            vrt.setStyleStyle(sb.getScoreStyle());
+        }
         
     }
     
@@ -380,18 +346,15 @@ public class VehicleReportBean extends BaseReportBean
         }
     }
     
-
     public Integer getMaxCount()
     {
         return maxCount;
     }
 
-
     public void setMaxCount(Integer maxCount)
     {        
         this.maxCount = maxCount;
     }
-
 
     public Integer getStart()
     {
@@ -404,50 +367,34 @@ public class VehicleReportBean extends BaseReportBean
         this.start = start;
     }
 
-
     public Integer getEnd()
     {
         return end;
     }
-
 
     public void setEnd(Integer end)
     {
         this.end = end;
     }
 
-
     public Integer getNumRowsPerPg()
     {
         return numRowsPerPg;
     }
-
 
     public void setNumRowsPerPg(Integer numRowsPerPg)
     {
         this.numRowsPerPg = numRowsPerPg;
     }
 
-
     public String getSearchFor()
     {
         return searchFor;
     }
 
-
     public void setSearchFor(String searchFor)
     {
         this.searchFor = searchFor;
-    }
-
-    public VehicleDAO getVehicleDAO()
-    {
-        return vehicleDAO;
-    }
-
-    public void setVehicleDAO(VehicleDAO vehicleDAO)
-    {
-        this.vehicleDAO = vehicleDAO;
     }
 
     public ScoreDAO getScoreDAO()
@@ -458,26 +405,6 @@ public class VehicleReportBean extends BaseReportBean
     public void setScoreDAO(ScoreDAO scoreDAO)
     {
         this.scoreDAO = scoreDAO;
-    }
-
-    public GroupDAO getGroupDAO()
-    {
-        return groupDAO;
-    }
-
-    public void setGroupDAO(GroupDAO groupDAO)
-    {
-        this.groupDAO = groupDAO;
-    }
-
-    public DriverDAO getDriverDAO()
-    {
-        return driverDAO;
-    }
-
-    public void setDriverDAO(DriverDAO driverDAO)
-    {
-        this.driverDAO = driverDAO;
     }
 
     public TablePreferenceDAO getTablePreferenceDAO()
@@ -508,5 +435,4 @@ public class VehicleReportBean extends BaseReportBean
     {
         this.secret = secret;
     }
-
 }
