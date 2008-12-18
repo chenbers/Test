@@ -3,9 +3,11 @@ package com.inthinc.pro.model;
 public class IdlingReportItem extends BaseEntity
 {
     private String group;
+    private Integer groupID;
     private Driver driver;
-    private String vehicle;
+    private Vehicle vehicle;
     private String driveTime;
+    private Integer milesDriven;
     private String lowHrs;
     private Integer lowPercent;
     private String highHrs;
@@ -26,6 +28,14 @@ public class IdlingReportItem extends BaseEntity
     {
         this.group = group;
     }
+    public Integer getGroupID()
+    {
+        return groupID;
+    }
+    public void setGroupID(Integer groupID)
+    {
+        this.groupID = groupID;
+    }
     public Driver getDriver()
     {
         return driver;
@@ -34,11 +44,11 @@ public class IdlingReportItem extends BaseEntity
     {
         this.driver = driver;
     }
-    public String getVehicle()
+    public Vehicle getVehicle()
     {
         return vehicle;
     }
-    public void setVehicle(String vehicle)
+    public void setVehicle(Vehicle vehicle)
     {
         this.vehicle = vehicle;
     }
@@ -49,6 +59,14 @@ public class IdlingReportItem extends BaseEntity
     public void setDriveTime(String driveTime)
     {
         this.driveTime = driveTime;
+    }
+    public Integer getMilesDriven()
+    {
+        return milesDriven;
+    }
+    public void setMilesDriven(Integer milesDriven)
+    {
+        this.milesDriven = milesDriven;
     }
     public String getLowHrs()
     {
