@@ -51,14 +51,17 @@
       					</h:commandLink>       
     				</rich:column>
     				<rich:column rendered="#{idlingColumns['vehicle'].visible}" 
-    					sortBy="#{item.vehicle}">
+    					sortBy="#{item.vehicle.name}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_vehicle}" />
       					</f:facet>
       					<h:commandLink action="go_vehicle" 
-      						value="#{item.vehicle}">
-							
-						</h:commandLink> 					
+							value="#{item.vehicle.name}">
+      						<f:setPropertyActionListener 
+								value="#{item.vehicle}" 
+								target="#{navigationBean.vehicle}">
+							</f:setPropertyActionListener>
+      					</h:commandLink>        								
     				</rich:column>
     				<rich:column rendered="#{idlingColumns['drivetime'].visible}" 
     					sortBy="#{item.driveTimeSort}">    					
