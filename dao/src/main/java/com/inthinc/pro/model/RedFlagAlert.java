@@ -10,12 +10,10 @@ public class RedFlagAlert extends BaseAlert
 
     @ID
     private Integer           redFlagAlertID;
-    private RedFlagType       type;
     private String            speedSet;
     @Column(updateable = false)
     private Integer[]         speedSettings;
-    @Column(updateable = false)
-    private boolean           sensitivitiesInverted;
+    private RedFlagLevel[]    speedLevels;
     @Column(name = "accel")
     private Integer           hardAcceleration;
     @Column(name = "brake")
@@ -24,7 +22,11 @@ public class RedFlagAlert extends BaseAlert
     private Integer           hardTurn;
     @Column(name = "vert")
     private Integer           hardVertical;
-// TODO: others
+    private RedFlagLevel      hardAccelerationLevel;
+    private RedFlagLevel      hardBrakeLevel;
+    private RedFlagLevel      hardTurnLevel;
+    private RedFlagLevel      hardVerticalLevel;
+    private RedFlagLevel      seatBeltLevel;
 
     public Integer getRedFlagAlertID()
     {
@@ -34,16 +36,6 @@ public class RedFlagAlert extends BaseAlert
     public void setRedFlagAlertID(Integer redFlagAlertID)
     {
         this.redFlagAlertID = redFlagAlertID;
-    }
-
-    public RedFlagType getType()
-    {
-        return type;
-    }
-
-    public void setType(RedFlagType type)
-    {
-        this.type = type;
     }
 
     public String getSpeedSet()
@@ -90,6 +82,16 @@ public class RedFlagAlert extends BaseAlert
         }
     }
 
+    public RedFlagLevel[] getSpeedLevels()
+    {
+        return speedLevels;
+    }
+
+    public void setSpeedLevels(RedFlagLevel[] speedLevels)
+    {
+        this.speedLevels = speedLevels;
+    }
+
     public Integer getHardAcceleration()
     {
         return hardAcceleration;
@@ -130,34 +132,53 @@ public class RedFlagAlert extends BaseAlert
         this.hardVertical = hardVertical;
     }
 
-    public boolean isSensitivitiesInverted()
+    public RedFlagLevel getHardAccelerationLevel()
     {
-        return sensitivitiesInverted;
+        return hardAccelerationLevel;
     }
 
-    /**
-     * Inverts all the sensitivity levels. Useful for the UI, where a low number means a low sensitivity level.
-     */
-    public void invertSensitivities()
+    public void setHardAccelerationLevel(RedFlagLevel hardAccelerationLevel)
     {
-        sensitivitiesInverted = !sensitivitiesInverted;
-        hardAcceleration = invertSensitivity(hardAcceleration);
-        hardBrake = invertSensitivity(hardBrake);
-        hardTurn = invertSensitivity(hardTurn);
-        hardVertical = invertSensitivity(hardVertical);
+        this.hardAccelerationLevel = hardAccelerationLevel;
     }
 
-    /**
-     * Inverts the given sensitivity level. Null-safe.
-     * 
-     * @param sensitivity
-     *            The sensitivity level to invert.
-     * @return The inverted sensitivity level.
-     */
-    public static Integer invertSensitivity(Integer sensitivity)
+    public RedFlagLevel getHardBrakeLevel()
     {
-        if (sensitivity != null)
-            return Device.MAX_SENSITIVITY + ((Device.MIN_SENSITIVITY - Device.MAX_SENSITIVITY) - (sensitivity - Device.MAX_SENSITIVITY));
-        return null;
+        return hardBrakeLevel;
+    }
+
+    public void setHardBrakeLevel(RedFlagLevel hardBrakeLevel)
+    {
+        this.hardBrakeLevel = hardBrakeLevel;
+    }
+
+    public RedFlagLevel getHardTurnLevel()
+    {
+        return hardTurnLevel;
+    }
+
+    public void setHardTurnLevel(RedFlagLevel hardTurnLevel)
+    {
+        this.hardTurnLevel = hardTurnLevel;
+    }
+
+    public RedFlagLevel getHardVerticalLevel()
+    {
+        return hardVerticalLevel;
+    }
+
+    public void setHardVerticalLevel(RedFlagLevel hardVerticalLevel)
+    {
+        this.hardVerticalLevel = hardVerticalLevel;
+    }
+
+    public RedFlagLevel getSeatBeltLevel()
+    {
+        return seatBeltLevel;
+    }
+
+    public void setSeatBeltLevel(RedFlagLevel seatBeltLevel)
+    {
+        this.seatBeltLevel = seatBeltLevel;
     }
 }

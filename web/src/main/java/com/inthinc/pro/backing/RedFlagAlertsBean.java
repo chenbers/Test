@@ -14,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 import com.inthinc.pro.dao.RedFlagAlertDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.RedFlagAlert;
+import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.util.MessageUtil;
 
@@ -31,7 +32,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         AVAILABLE_COLUMNS.add("type");
     }
 
-    private RedFlagAlertDAO            redFlagAlertDAO;
+    private RedFlagAlertDAO           redFlagAlertDAO;
 
     public void setRedFlagAlertDAO(RedFlagAlertDAO redFlagAlertDAO)
     {
@@ -109,8 +110,8 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         final RedFlagAlertView item = super.getItem();
         if (item.getSpeedSettings() == null)
             item.setSpeedSettings(new Integer[15]);
-        if (!item.isSensitivitiesInverted())
-            item.invertSensitivities();
+        if (item.getSpeedLevels() == null)
+            item.setSpeedLevels(new RedFlagLevel[15]);
         return item;
     }
 
@@ -128,15 +129,6 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
             context.addMessage(null, message);
         }
-    }
-
-    @Override
-    public String save()
-    {
-        if (getItem().isSensitivitiesInverted())
-            getItem().invertSensitivities();
-
-        return super.save();
     }
 
     @Override
@@ -191,12 +183,16 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
     public static class RedFlagAlertView extends RedFlagAlert implements BaseAdminAlertsBean.BaseAlertView
     {
         @Column(updateable = false)
-        private static final long serialVersionUID = 8372507838051791866L;
+        private static final long    serialVersionUID = 8372507838051791866L;
 
         @Column(updateable = false)
-        private boolean anytime;
+        private boolean              anytime;
         @Column(updateable = false)
-        private boolean           selected;
+        private boolean              selected;
+        @Column(updateable = false)
+        private String               type;
+        @Column(updateable = false)
+        private List<RedFlagSetting> settings;
 
         public Integer getId()
         {
@@ -216,6 +212,50 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             BaseAdminAlertsBean.onSetAnytime(this, anytime);
         }
 
+        public String getType()
+        {
+            if (type == null)
+                type = "speed";
+            return type;
+        }
+
+        public void setType(String type)
+        {
+            if ((type != this.type) && (type != null) && !type.equals(this.type))
+                settings = null;
+            this.type = type;
+        }
+
+        public List<RedFlagSetting> getSettings()
+        {
+            if (settings == null)
+            {
+                settings = new LinkedList<RedFlagSetting>();
+                if (getType().equals("speed"))
+                {
+                    for (int i = 0; i < getSpeedSettings().length; i++)
+                        settings.add(new RedFlagSetting("speed" + i, String.valueOf((i + 1) * 5), getSpeedSettings()[i], (getSpeedLevels()[i] != null)
+                                && !getSpeedLevels()[i].equals(RedFlagLevel.NONE), getSpeedLevels()[i]));
+                }
+                else if (getType().equals("drivingStyle"))
+                {
+                    settings.add(new RedFlagSetting("hardAcceleration", MessageUtil.getMessageString("editDevice_hardAcceleration"), getHardAcceleration(),
+                            (getHardAccelerationLevel() != null) && !getHardAccelerationLevel().equals(RedFlagLevel.NONE), getHardAccelerationLevel()));
+                    settings.add(new RedFlagSetting("hardBrake", MessageUtil.getMessageString("editDevice_hardBrake"), getHardBrake(), (getHardBrakeLevel() != null)
+                            && !getHardBrakeLevel().equals(RedFlagLevel.NONE), getHardBrakeLevel()));
+                    settings.add(new RedFlagSetting("hardTurn", MessageUtil.getMessageString("editDevice_hardTurn"), getHardTurn(), (getHardTurnLevel() != null)
+                            && !getHardTurnLevel().equals(RedFlagLevel.NONE), getHardTurnLevel()));
+                    settings.add(new RedFlagSetting("hardVertical", MessageUtil.getMessageString("editDevice_hardVertical"), getHardVertical(), (getHardVerticalLevel() != null)
+                            && !getHardVerticalLevel().equals(RedFlagLevel.NONE), getHardVerticalLevel()));
+                }
+                else if (getType().equals("safety"))
+                {
+                    settings.add(new RedFlagSetting("seatBelt", null, null, (getSeatBeltLevel() != null) && !getSeatBeltLevel().equals(RedFlagLevel.NONE), getSeatBeltLevel()));
+                }
+            }
+            return settings;
+        }
+
         public boolean isSelected()
         {
             return selected;
@@ -224,6 +264,62 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         public void setSelected(boolean selected)
         {
             this.selected = selected;
+        }
+    }
+
+    public static class RedFlagSetting
+    {
+        private String       label;
+        private Integer      value;
+        private boolean      selected;
+        private RedFlagLevel severity;
+
+        public RedFlagSetting(String id, String label, Integer value, boolean selected, RedFlagLevel severity)
+        {
+            this.label = label;
+            this.value = value;
+            this.selected = selected;
+            this.severity = severity;
+        }
+
+        public String getLabel()
+        {
+            return label;
+        }
+
+        void setLabel(String label)
+        {
+            this.label = label;
+        }
+
+        public Integer getValue()
+        {
+            return value;
+        }
+
+        public void setValue(Integer value)
+        {
+            this.value = value;
+        }
+
+        public boolean isSelected()
+        {
+            return selected;
+        }
+
+        public void setSelected(boolean selected)
+        {
+            this.selected = selected;
+        }
+
+        public RedFlagLevel getSeverity()
+        {
+            return severity;
+        }
+
+        public void setSeverity(RedFlagLevel severity)
+        {
+            this.severity = severity;
         }
     }
 }

@@ -5,6 +5,7 @@
               xmlns:rich="http://richfaces.org/rich"
               xmlns:a4j="http://richfaces.org/a4j"
               xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:c="http://java.sun.com/jstl/core"
               xmlns:security="http://pro.tiwi.com/jsf/security">
 
   <ui:param name="adminSelected" value="current" />
@@ -43,14 +44,12 @@
 
                   <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
 
-                  <div class="add_section_title"><h:outputText value="#{messages.editRedFlag_nameDescriptionType}" /></div>
-
-                  <div class="spacer"></div>
-
                   <table width="790" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td width="390" valign="top">
                 
+                        <div class="add_section_title"><h:outputText value="#{messages.editRedFlag_nameDescriptionType}" /></div>
+
                         <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                           <tr>
                             <td width="100" valign="top">
@@ -91,7 +90,7 @@
                               <h:outputText value="#{messages.editAlerts_timeframe}" />
                             </td>
                             <td>
-                              <h:selectOneRadio value="#{redFlagAlertsBean.item.anytime}" onchange="document.getElementById('timeframePickers').style.display = (this.value == 'true' ? 'none' : '')">
+                              <h:selectOneRadio value="#{redFlagAlertsBean.item.anytime}" onchange="document.getElementById('timeframePickers').style.display = (this.value == 'true' ? 'none' : '')" enabledClass="radioitem">
                                 <f:selectItem itemValue="true" itemLabel="#{messages.editAlerts_timeframeAnytime}" />
                                 <f:selectItem itemValue="false" itemLabel="#{messages.editAlerts_timeframeBetween}" />
                               </h:selectOneRadio>
@@ -141,7 +140,81 @@
 
                   <div class="spacer"></div>
 
-TODO: define red flags
+                  <div class="add_section_title"><h:outputText value="#{messages.editRedFlag_defineRedFlag}" /></div>
+
+                  <div class="spacer"></div>
+
+                  <table width="790" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td width="130" valign="top">
+                        <h:selectOneRadio value="#{redFlagAlertsBean.item.type}" layout="pageDirection" style="width:100%" styleClass="ls_tab_table" enabledClass="radioitem">
+                          <a4j:support event="onchange" reRender="settingsTable" limitToList="true" />
+                          <f:selectItem itemValue="speed" itemLabel="#{messages.editRedFlag_speed}" />
+                          <f:selectItem itemValue="drivingStyle" itemLabel="#{messages.editRedFlag_drivingStyle}" />
+                          <f:selectItem itemValue="safety" itemLabel="#{messages.editRedFlag_safety}" />
+                        </h:selectOneRadio>
+                      </td>
+                      <td width="10"><img src="images/x.gif" width="10" /></td>
+                      <td width="650" valign="top">
+
+                        <script type="text/javascript">
+                          var sensitivities = new Array();
+                          <c:forEach begin="20" var="sensitivity" end="90">
+                            sensitivities[#{sensitivity}] = '<h:outputText value="#{(sensitivity le 43) ? messages.editDevice_sensitivityLess : ((sensitivity le 67) ? messages.editDevice_sensitivityAverage : messages.editDevice_sensitivityMore)}" />';
+                          </c:forEach>
+                        </script>
+
+                        <rich:dataTable id="settingsTable" value="#{redFlagAlertsBean.item.settings}" var="item" rowKeyVar="index" headerClass="datagrid"
+                          rowClasses="tableOdd,tableEven" width="100%">
+                          <rich:column rendered="#{redFlagAlertsBean.batchEdit}" style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                            <f:facet name="header">
+                              <h:outputText value="#{messages.editRedFlag_batchEdit}" />
+                            </f:facet>
+                            <h:selectBooleanCheckbox id="update_" value="#{redFlagAlertsBean.updateField[index]}" />
+                          </rich:column>
+                          <rich:column rendered="#{redFlagAlertsBean.item.type != 'safety'}" style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                            <f:facet name="header">
+                              <h:outputText value="#{(redFlagAlertsBean.item.type == 'speed') ? messages.editRedFlag_speedHeader : messages.editRedFlag_setting}" />
+                            </f:facet>
+                            <h:selectBooleanCheckbox id="selected" value="#{item.selected}" />
+                            <h:outputText value="#{item.label}" />
+                            <h:outputText rendered="#{redFlagAlertsBean.item.type == 'speed'}" value=" mph" />
+                          </rich:column>
+                          <rich:column rendered="#{redFlagAlertsBean.item.type == 'speed'}" style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                            <f:facet name="header">
+                              <h:outputText value="#{messages.editRedFlag_speedSettingHeader}" />
+                            </f:facet>
+                            <rich:inputNumberSlider id="speed" value="#{redFlagAlertsBean.item.speedSettings[index]}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="-25" maxValue="25" step="1" onchange="var id = this.mainTable.id.substring(0, this.mainTable.id.length - 5); checkMultiple(id); document.getElementById(id + 'selected').checked = true; document.getElementById(this.mainTable.id + 'MPH').innerHTML = this.value" />
+                            <h:outputText id="speedMPH" value="#{redFlagAlertsBean.item.speedSettings[index]}" /><h:outputText value=" mph" />
+                          </rich:column>
+                          <rich:column rendered="#{redFlagAlertsBean.item.type == 'drivingStyle'}" style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                            <f:facet name="header">
+                              <h:outputText value="#{messages.editRedFlag_sensitivity}" />
+                            </f:facet>
+                            <rich:inputNumberSlider id="sensitivity" value="#{item.value}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="20" maxValue="90" onchange="var id = this.mainTable.id.substring(0, this.mainTable.id.length - 11); checkMultiple(id); document.getElementById(id + 'selected').checked = true; document.getElementById(this.mainTable.id + 'Level').innerHTML = sensitivities[this.value]" />
+                            <h:outputText id="sensitivityLevel" value="#{(device[sensitivityItem] ge 67) ? messages.editDevice_sensitivityMore : ((device[sensitivityItem] ge 43) ? messages.editDevice_sensitivityAverage : messages.editDevice_sensitivityLess)}" />
+                          </rich:column>
+                          <rich:column rendered="#{redFlagAlertsBean.item.type == 'safety'}" style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                            <f:facet name="header">
+                              <h:outputText value="#{messages.editRedFlag_setting}" />
+                            </f:facet>
+                            <h:outputText value="#{messages.editRedFlag_seatBelt}" />
+                          </rich:column>
+                          <rich:column style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                            <f:facet name="header">
+                              <h:outputText value="#{messages.editRedFlag_severity}" />
+                            </f:facet>
+                            <h:selectOneMenu id="severity" value="#{item.severity}" onchange="var id = this.id.substring(0, this.id.length - 8); checkMultiple(id); document.getElementById(id + 'selected').checked = true;">
+                              <f:selectItem itemValue="INFO" itemLabel="#{messages.redFlag_info}" />
+                              <f:selectItem itemValue="WARNING" itemLabel="#{messages.redFlag_warning}" />
+                              <f:selectItem itemValue="CRITICAL" itemLabel="#{messages.redFlag_critical}" />
+                            </h:selectOneMenu>
+                          </rich:column>
+                        </rich:dataTable>
+
+                      </td>
+                    </tr>
+                  </table>
 
                   <div class="spacer"></div>
 

@@ -486,7 +486,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
 
             int selected = 0;
             T selection = null;
-            for (T t : items)
+            for (T t : getItems())
                 if (t.isSelected())
                 {
                     selection = t;

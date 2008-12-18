@@ -36,27 +36,26 @@ import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.GQMap;
 import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.GroupType;
+import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.LowBatteryEvent;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.QuintileMap;
 import com.inthinc.pro.model.RedFlag;
-import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.RedFlagAlert;
-import com.inthinc.pro.model.RedFlagType;
+import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SeatBeltEvent;
 import com.inthinc.pro.model.SpeedingEvent;
 import com.inthinc.pro.model.State;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TamperingEvent;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.User;
-import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
@@ -817,23 +816,38 @@ logger.debug("addDriveQMaps");
         Integer idOffset = accountID * MAX_RED_FLAG_PREFS;
         for (int i = 0; i < numRedFlagAlerts; i++)
         {
-            int id = idOffset+i+1;
+            int id = idOffset + i + 1;
             RedFlagAlert flag = new RedFlagAlert();
             flag.setAccountID(accountID);
             flag.setRedFlagAlertID(id);
-            flag.setType(RedFlagType.values()[randomInt(0, RedFlagType.values().length - 1)]);
             flag.setCreated(new Date());
             flag.setName("RedFlagAlert" + id);
             flag.setDescription("Don't step on my blue suede shoes!");
-            flag.setHardBrake(randomInt(0, 2));
-            flag.setHardAcceleration(randomInt(0, 2));
-            flag.setHardTurn(randomInt(0, 2));
-            flag.setHardVertical(randomInt(0, 2));
+            flag.setHardBrakeLevel(RedFlagLevel.values()[randomInt(0, RedFlagLevel.values().length - 1)]);
+            flag.setHardAccelerationLevel(RedFlagLevel.values()[randomInt(0, RedFlagLevel.values().length - 1)]);
+            flag.setHardTurnLevel(RedFlagLevel.values()[randomInt(0, RedFlagLevel.values().length - 1)]);
+            flag.setHardVerticalLevel(RedFlagLevel.values()[randomInt(0, RedFlagLevel.values().length - 1)]);
+            final RedFlagLevel[] speedLevels = new RedFlagLevel[15];
+            for (int j = 0; j < speedLevels.length; j++)
+                speedLevels[j] = RedFlagLevel.values()[randomInt(0, RedFlagLevel.values().length - 1)];
+            flag.setSpeedLevels(speedLevels);
+            if (flag.getHardBrakeLevel() != RedFlagLevel.NONE)
+                flag.setHardBrake(randomInt(0, 2));
+            if (flag.getHardAccelerationLevel() != RedFlagLevel.NONE)
+                flag.setHardAcceleration(randomInt(0, 2));
+            if (flag.getHardTurnLevel() != RedFlagLevel.NONE)
+                flag.setHardTurn(randomInt(0, 2));
+            if (flag.getHardVerticalLevel() != RedFlagLevel.NONE)
+                flag.setHardVertical(randomInt(0, 2));
             final Integer[] speedSettings = new Integer[15];
             for (int j = 0; j < speedSettings.length; j++)
-                speedSettings[j] = randomInt(0, 5) * 5;
+                if (speedLevels[j] != RedFlagLevel.NONE)
+                    speedSettings[j] = randomInt(0, 5) * 5;
+                else
+                    speedSettings[j] = 0;
             flag.setSpeedSettings(speedSettings);
-// TODO: more, vehicles/drivers, recipients
+            flag.setSeatBeltLevel(RedFlagLevel.values()[randomInt(0, RedFlagLevel.values().length - 1)]);
+            // TODO: groups/vehicles/drivers, recipients
             storeObject(flag);
             flags.add(flag);
         }

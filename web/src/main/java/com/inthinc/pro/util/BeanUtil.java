@@ -109,7 +109,7 @@ public class BeanUtil
                         if (sourceProperty != null)
                         {
                             // simple copy
-                            if (BeanUtils.isSimpleProperty(clazz) || clazz.isEnum())
+                            if (BeanUtils.isSimpleProperty(clazz) || clazz.isEnum() || clazz.isArray())
                                 writeMethod.invoke(target, new Object[] { sourceProperty });
                             // circular reference: simply store the target reference
                             else if (map.get(sourceProperty) != null)
