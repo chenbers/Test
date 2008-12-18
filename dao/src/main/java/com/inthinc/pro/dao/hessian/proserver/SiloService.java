@@ -139,7 +139,11 @@ public interface SiloService extends HessianService
      */
     List<Map<String, Object>> getNote(Integer driverID, Integer startDate, Integer endDate, Integer types[]);
     
+    List<Map<String, Object>> getVehicleNote(Integer vehicleID, Integer startDate, Integer endDate, Integer types[]);
+    
     List<Map<String, Object>> getNoteByMiles(Integer driverID, Integer milesBack, Integer types[]);
+    
+    List<Map<String, Object>> getVehicleNoteByMiles(Integer vehicleID, Integer milesBack, Integer types[]);
 
     /**
      * getMostRecentEvents

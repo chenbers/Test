@@ -58,7 +58,11 @@ public class DriverTripsBean extends BaseBean
     
     public void initViolations()
     {
-    	violationEvents = eventDAO.getMostRecentEvents(getUser().getPerson().getGroupID(), 25); //Change to more appropriate DAO method with dates.
+    	List<Integer> types = new ArrayList<Integer>();
+    	types.add(93);
+    	types.add(3);
+    	types.add(2);
+        violationEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), startDate, endDate, types);
     }
     
     public void initTrips()

@@ -36,40 +36,40 @@
 						<span class="panel_links"><h:outputText>Graph the last:&#160;</h:outputText> 
 							       
   										<a4j:commandLink title="#{messages.miles500}" immediate="true"
-            								styleClass="#{(driverBean.distance eq 'FIVEHUNDRED') ? 'on' : ''}"
+            								styleClass="#{(vehicleBean.distance eq 'FIVEHUNDRED') ? 'on' : ''}"
             								reRender="overall-form,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
             								value="#{messages.miles500}">
             								<a4j:actionparam name="distance" assignTo="#{vehicleBean.distance}" value="FIVEHUNDRED" />
-            								<a4j:actionparam name="distance" assignTo="#{driverSpeedBean.distance}" value="FIVEHUNDRED" />
-            								<a4j:actionparam name="distance" assignTo="#{driverStyleBean.distance}" value="FIVEHUNDRED" />
-            								<a4j:actionparam name="distance" assignTo="#{driverSeatBeltBean.distance}" value="FIVEHUNDRED" />
+            								<a4j:actionparam name="distance" assignTo="#{vehicleSpeedBean.distance}" value="FIVEHUNDRED" />
+            								<a4j:actionparam name="distance" assignTo="#{vehicleStyleBean.distance}" value="FIVEHUNDRED" />
+            								<a4j:actionparam name="distance" assignTo="#{vehicleSeatBeltBean.distance}" value="FIVEHUNDRED" />
           								</a4j:commandLink><h:outputText value=" "></h:outputText>
           								<a4j:commandLink title="#{messages.miles1000}" immediate="true"
-            								styleClass="#{(driverBean.distance eq 'ONETHOUSAND') ? 'on' : ''}"
+            								styleClass="#{(vehicleBean.distance eq 'ONETHOUSAND') ? 'on' : ''}"
             								reRender="overall-form,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
             								value="#{messages.miles1000}">
             								<a4j:actionparam name="distance" assignTo="#{vehicleBean.distance}" value="ONETHOUSAND" />
-            								<a4j:actionparam name="distance" assignTo="#{driverSpeedBean.distance}" value="ONETHOUSAND" />
-            								<a4j:actionparam name="distance" assignTo="#{driverStyleBean.distance}" value="ONETHOUSAND" />
-            								<a4j:actionparam name="distance" assignTo="#{driverSeatBeltBean.distance}" value="ONETHOUSAND" />
+            								<a4j:actionparam name="distance" assignTo="#{vehicleSpeedBean.distance}" value="ONETHOUSAND" />
+            								<a4j:actionparam name="distance" assignTo="#{vehicleStyleBean.distance}" value="ONETHOUSAND" />
+            								<a4j:actionparam name="distance" assignTo="#{vehicleSeatBeltBean.distance}" value="ONETHOUSAND" />
           								</a4j:commandLink><h:outputText value=" "></h:outputText>
           								<a4j:commandLink title="#{messages.miles5000}" immediate="true"
-            								styleClass="#{(driverBean.distance eq 'FIVETHOUSAND') ? 'on' : ''}"
+            								styleClass="#{(vehicleBean.distance eq 'FIVETHOUSAND') ? 'on' : ''}"
             								reRender="overall-form,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
             								value="#{messages.miles5000}">
             								<a4j:actionparam name="distance" assignTo="#{vehicleBean.distance}" value="FIVETHOUSAND" />
-            								<a4j:actionparam name="distance" assignTo="#{driverSpeedBean.distance}" value="FIVETHOUSAND" />
-            								<a4j:actionparam name="distance" assignTo="#{driverStyleBean.distance}" value="FIVETHOUSAND" />
-            								<a4j:actionparam name="distance" assignTo="#{driverSeatBeltBean.distance}" value="FIVETHOUSAND" />
+            								<a4j:actionparam name="distance" assignTo="#{vehicleSpeedBean.distance}" value="FIVETHOUSAND" />
+            								<a4j:actionparam name="distance" assignTo="#{vehicleStyleBean.distance}" value="FIVETHOUSAND" />
+            								<a4j:actionparam name="distance" assignTo="#{vehicleSeatBeltBean.distance}" value="FIVETHOUSAND" />
           								</a4j:commandLink><h:outputText value=" "></h:outputText>
           								<a4j:commandLink title="#{messages.miles10000}" immediate="true"
-            								styleClass="#{(driverBean.distance eq 'TENTHOUSAND') ? 'on' : ''}"
+            								styleClass="#{(vehicleBean.distance eq 'TENTHOUSAND') ? 'on' : ''}"
             								reRender="overall-form,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
             								value="#{messages.miles10000}">
             								<a4j:actionparam name="distance" assignTo="#{vehicleBean.distance}" value="TENTHOUSAND" />
-            								<a4j:actionparam name="distance" assignTo="#{driverSpeedBean.distance}" value="TENTHOUSAND" />
-            								<a4j:actionparam name="distance" assignTo="#{driverStyleBean.distance}" value="TENTHOUSAND" />
-            								<a4j:actionparam name="distance" assignTo="#{driverSeatBeltBean.distance}" value="TENTHOUSAND" />
+            								<a4j:actionparam name="distance" assignTo="#{vehicleSpeedBean.distance}" value="TENTHOUSAND" />
+            								<a4j:actionparam name="distance" assignTo="#{vehicleStyleBean.distance}" value="TENTHOUSAND" />
+            								<a4j:actionparam name="distance" assignTo="#{vehicleSeatBeltBean.distance}" value="TENTHOUSAND" />
           								</a4j:commandLink><h:outputText value=" "></h:outputText>
       							
 								</span>
@@ -146,7 +146,7 @@
                           <tr>
                             <td width="373">
 				            <ui:include src="../includes/lineChart.xhtml">
-						            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistoryOverall}" />
+						            <ui:param name="lineChartDef" value="#{vehicleSpeedBean.speedScoreHistoryOverall}" />
 						            <ui:param name="hiddenFieldID" value="HiddenField1" />
 						            <ui:param name="width" value="380" /> 
 						            <ui:param name="height" value="200" />  
@@ -157,8 +157,8 @@
 							</td>
                             <td width="80" align="center">
 							    <ui:include src="../includes/scoreBox.xhtml">
-							            <ui:param name="score" value="#{driverSpeedBean.speedScoreOverall}" />
-							            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreOverallStyle}" />
+							            <ui:param name="score" value="#{vehicleSpeedBean.speedScoreOverall}" />
+							            <ui:param name="scoreStyle" value="#{vehicleSpeedBean.speedScoreOverallStyle}" />
 								</ui:include>
 							</td>
                           </tr>
@@ -192,7 +192,7 @@
                           <tr>
                             <td width="373">
                       		<ui:include src="../includes/lineChart.xhtml">
-						            <ui:param name="lineChartDef" value="#{driverStyleBean.styleScoreHistoryOverall}" />
+						            <ui:param name="lineChartDef" value="#{vehicleStyleBean.styleScoreHistoryOverall}" />
 						            <ui:param name="hiddenFieldID" value="HiddenField2" />
 						            <ui:param name="width" value="380" /> 
 						            <ui:param name="height" value="200" />  
@@ -203,8 +203,8 @@
                             </td>
                             <td width="80" align="center">
                                 <ui:include src="../includes/scoreBox.xhtml">
-							            <ui:param name="score" value="#{driverStyleBean.styleScoreOverall}" />
-							            <ui:param name="scoreStyle" value="#{driverStyleBean.styleScoreOverallStyle}" />
+							            <ui:param name="score" value="#{vehicleStyleBean.styleScoreOverall}" />
+							            <ui:param name="scoreStyle" value="#{vehicleStyleBean.styleScoreOverallStyle}" />
 								</ui:include>
                             </td>
                           </tr>
@@ -233,7 +233,7 @@
                             <td width="373">
                               <div id="seatbelt_chart"></div>
                       		<ui:include src="../includes/lineChart.xhtml">
-						            <ui:param name="lineChartDef" value="#{driverSeatBeltBean.seatBeltScoreHistoryOverall}" />
+						            <ui:param name="lineChartDef" value="#{vehicleSeatBeltBean.seatBeltScoreHistoryOverall}" />
 						            <ui:param name="hiddenFieldID" value="HiddenField3" />
 						            <ui:param name="width" value="380" /> 
 						            <ui:param name="height" value="200" />
@@ -244,8 +244,8 @@
                             </td>
                             <td width="80" align="center">
                        	        <ui:include src="../includes/scoreBox.xhtml">
-							            <ui:param name="score" value="#{driverSeatBeltBean.seatBeltScore}" />
-							            <ui:param name="scoreStyle" value="#{driverSeatBeltBean.seatBeltScoreStyle}" />
+							            <ui:param name="score" value="#{vehicleSeatBeltBean.seatBeltScore}" />
+							            <ui:param name="scoreStyle" value="#{vehicleSeatBeltBean.seatBeltScoreStyle}" />
 								</ui:include>
                             </td>
                           </tr>
@@ -348,7 +348,7 @@
                           <tr>
                             <td>
                             <rich:panel id="mpg_chart"></rich:panel>
-                            <h:inputHidden value="#{driverBean.mpgHistory}" id="hiddenField5" />
+                            <h:inputHidden value="#{vehicleBean.mpgHistory}" id="hiddenField5" />
 							<script type="text/javascript">
 								var targetElement5 = document.getElementById("hiddenField5");
 								var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSArea.swf", "ChartId", "450", "300", "0", "0");
@@ -381,7 +381,7 @@
                           <tr>
                             <td>
                             <ui:include src="../includes/lineChart.xhtml">
-						            <ui:param name="lineChartDef" value="#{driverBean.coachingHistory}" />
+						            <ui:param name="lineChartDef" value="#{vehicleBean.coachingHistory}" />
 						            <ui:param name="hiddenFieldID" value="HiddenField4" />
 						            <ui:param name="width" value="450" /> 
 						            <ui:param name="height" value="200" />
