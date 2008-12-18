@@ -5,7 +5,7 @@ public class DriverReportItem extends BaseEntity
     private String group;
     private String employeeID;
     private String employee;
-    private String vehicleID;
+    private Vehicle vehicle;
     private Integer milesDriven;
     private Integer overallScore;
     private Integer speedScore;
@@ -43,13 +43,13 @@ public class DriverReportItem extends BaseEntity
     {
         this.employee = employee;
     }
-    public String getVehicleID()
+    public Vehicle getVehicle()
     {
-        return vehicleID;
+        return vehicle;
     }
-    public void setVehicleID(String vehicleID)
+    public void setVehicle(Vehicle vehicle)
     {
-        this.vehicleID = vehicleID;
+        this.vehicle = vehicle;
     }
     public Integer getMilesDriven()
     {
