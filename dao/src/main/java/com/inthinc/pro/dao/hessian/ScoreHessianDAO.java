@@ -22,6 +22,7 @@ import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.GQMap;
 import com.inthinc.pro.model.GQVMap;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.QuintileMap;
 import com.inthinc.pro.model.ReportMileageType;
 import com.inthinc.pro.model.ScoreType;
@@ -423,6 +424,46 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
         
     }
+
+
+    @Override
+    public List<IdlingReportItem> getIdlingReportData(Integer groupID, Duration duration)
+    {
+        try
+        {
+            List<DVQMap> result = getMapper().convertToModelObject(
+                    reportService.getDVScoresByGT(groupID, duration.getCode()), DVQMap.class);            
+            List<IdlingReportItem> lIri = new ArrayList<IdlingReportItem>();
+            IdlingReportItem iri = null;
+            
+            for ( DVQMap d : result ) {
+                iri = new IdlingReportItem();
+                Driver v = d.getDriver();
+                DriveQMap dqm = d.getDriveQ();
+                                
+                iri.setGroupID(v.getPerson().getGroupID());
+                iri.setDriver(v);                
+                iri.setVehicle(d.getVehicle());
+                iri.setDriveTime(String.valueOf(dqm.getDriveTime().intValue()));
+                iri.setMilesDriven(dqm.getEndingOdometer());
+                iri.setLowHrs(String.valueOf(dqm.getIdleLo().intValue()));
+                iri.setHighHrs(String.valueOf(dqm.getIdleHi().intValue()));
+                iri.setDriveTime(String.valueOf(dqm.getDriveTime().intValue()));                
+  
+                lIri.add(iri);
+                iri = null;
+            }
+            
+            return lIri;
+            
+        }
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
+        
+    }
+
     
     @Override
     public Map<ScoreType, ScoreableEntity> getScoreBreakdownByTypeAndMiles(Integer driverID, Integer milesBack, ScoreType scoreType)
