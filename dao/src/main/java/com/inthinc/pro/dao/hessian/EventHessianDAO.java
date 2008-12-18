@@ -1,11 +1,13 @@
 package com.inthinc.pro.dao.hessian;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
+import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.mapper.EventHessianMapper;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Event;
@@ -79,6 +81,15 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
         catch (EmptyResultSetException e)
         {
             return Collections.emptyList();
+        }
+        // TODO: Remove when method is impl on back end
+        catch (ProxyException ex)
+        {
+            if (ex.getErrorCode() == 422)
+            {
+                return new ArrayList<Event>();
+            }
+            throw ex;
         }
     }
 

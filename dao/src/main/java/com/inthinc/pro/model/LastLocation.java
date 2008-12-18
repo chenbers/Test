@@ -7,10 +7,17 @@ public class LastLocation
     private Integer driverID;
     private Integer vehicleID;
     private Date time;
-    private Double lat;
-    private Double lng;
+    private LatLng loc;
     
     
+    public LatLng getLoc()
+    {
+        return loc;
+    }
+    public void setLoc(LatLng loc)
+    {
+        this.loc = loc;
+    }
     public LastLocation()
     {
         
@@ -38,21 +45,5 @@ public class LastLocation
     public void setTime(Date time)
     {
         this.time = time;
-    }
-    public Double getLat()
-    {
-        return lat;
-    }
-    public void setLat(Double lat)
-    {
-        this.lat = lat;
-    }
-    public Double getLng()
-    {
-        return lng;
-    }
-    public void setLng(Double lng)
-    {
-        this.lng = lng;
     }
 }

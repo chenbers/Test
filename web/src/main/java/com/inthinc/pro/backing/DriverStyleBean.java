@@ -59,19 +59,25 @@ public class DriverStyleBean extends BaseBean
         int dist = distance.getNumberOfMiles();
         int driverID = navigation.getDriver().getDriverID();
         
-        ScoreableEntity se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_DRIVING_STYLE);
+        Map<ScoreType, ScoreableEntity> scoreMap = scoreDAO.getScoreBreakdownByTypeAndMiles(driverID, dist, ScoreType.SCORE_DRIVING_STYLE);
+//        ScoreableEntity se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_DRIVING_STYLE);
+        ScoreableEntity se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE);
         setStyleScoreOverall(se == null ? 0 : se.getScore());
         
-        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL);
+//        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL);
+        se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL);
         setStyleScoreAccel(se == null ? 0 : se.getScore());
         
-        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE);
+//        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE);
+        se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE);
         setStyleScoreBrake(se == null ? 0 : se.getScore());
         
-        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP);
+//        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP);
+        se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP);
         setStyleScoreBump(se == null ? 0 : se.getScore());
         
-        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
+//        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
+        se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
         setStyleScoreTurn(se == null ? 0 : se.getScore());
         
     }

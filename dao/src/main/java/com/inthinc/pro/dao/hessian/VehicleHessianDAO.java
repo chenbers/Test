@@ -11,7 +11,9 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.dao.FindByKey;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
+import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
@@ -76,6 +78,7 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
     {
         try
         {
+            
             return getMapper().convertToModelObject(this.getSiloService().getLastLoc(vehicleID, VEHICLE_TYPE), LastLocation.class);
         }
         catch (EmptyResultSetException e)
@@ -117,6 +120,15 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
         catch (EmptyResultSetException e)
         {
             return null;
+        }
+        // TODO: Remove when method is impl on back end
+        catch (ProxyException ex)
+        {
+            if (ex.getErrorCode() == 422)
+            {
+                return null;
+            }
+            throw ex;
         }
     }
 

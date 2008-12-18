@@ -62,22 +62,30 @@ public class DriverSpeedBean extends BaseBean
         int dist = distance.getNumberOfMiles();
         int driverID = navigation.getDriver().getDriverID();
         
-        ScoreableEntity se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING);
+        Map<ScoreType, ScoreableEntity> scoreMap = scoreDAO.getScoreBreakdownByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING);
+        
+//        ScoreableEntity se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING);
+        ScoreableEntity se = scoreMap.get(ScoreType.SCORE_SPEEDING);
         setSpeedScoreOverall(se == null ? 0 : se.getScore());
         
-        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING_21_30);
+//        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING_21_30);
+        se = scoreMap.get(ScoreType.SCORE_SPEEDING_21_30);
         setSpeedScoreTwentyOne(se == null ? 0 : se.getScore());
         
-        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING_31_40);
+//        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING_31_40);
+        se = scoreMap.get(ScoreType.SCORE_SPEEDING_31_40);
         setSpeedScoreThirtyOne(se == null ? 0 : se.getScore());
         
-        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING_41_54);
+//        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING_55_64);
+        se = scoreMap.get(ScoreType.SCORE_SPEEDING_55_64);
         setSpeedScoreFourtyOne(se == null ? 0 : se.getScore());
         
-        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING_55_64);
+//        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING_55_64);
+        se = scoreMap.get(ScoreType.SCORE_SPEEDING_55_64);
         setSpeedScoreFiftyFive(se == null ? 0 : se.getScore());
         
-        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING_65_80);
+//        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING_65_80);
+        se = scoreMap.get(ScoreType.SCORE_SPEEDING_65_80);
         setSpeedScoreSixtyFive(se == null ? 0 : se.getScore());
     }
     

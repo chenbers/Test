@@ -564,8 +564,7 @@ logger.debug("addDriveQMaps");
                 	 LastLocation lastLoc = new LastLocation();
                 	 
                 	 int routeCount = trip.getRoute().size();
-                	 lastLoc.setLat( trip.getRoute().get(routeCount-1).getLat() );
-                	 lastLoc.setLng( trip.getRoute().get(routeCount-1).getLng() );
+                	 lastLoc.setLoc( trip.getRoute().get(routeCount-1));
                 	 lastLoc.setTime( trip.getEndTime() );
                 	 lastLoc.setDriverID(trip.getDriverID());
                 	 lastLoc.setVehicleID(trip.getVehicleID());

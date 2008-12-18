@@ -423,4 +423,36 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
         
     }
+    
+    @Override
+    public Map<ScoreType, ScoreableEntity> getScoreBreakdownByTypeAndMiles(Integer driverID, Integer milesBack, ScoreType scoreType)
+    {
+        try
+        {
+            Map<ScoreType, ScoreableEntity> returnMap = new HashMap<ScoreType, ScoreableEntity>();
+            DriveQMap driveQMap = getMapper().convertToModelObject(reportService.getDScoreByDM(driverID, milesBack * 100), DriveQMap.class);
+
+            List<ScoreType> subTypeList = scoreType.getSubTypes();
+            
+            for (ScoreType subType : subTypeList)
+            {
+                ScoreableEntity scoreableEntity = new ScoreableEntity();
+                scoreableEntity.setEntityID(driverID);
+                scoreableEntity.setEntityType(EntityType.ENTITY_DRIVER);
+                scoreableEntity.setIdentifier("");
+                scoreableEntity.setScoreType(subType);
+                Integer score = driveQMap.getScoreMap().get(subType);
+                scoreableEntity.setScore((score == null) ? 0 : score);
+                scoreableEntity.setIdentifier(""+driveQMap.getEndingOdometer());
+                
+                returnMap.put(subType, scoreableEntity);
+            }
+            return returnMap;
+        }
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyMap();
+        }
+    }
+    
 }

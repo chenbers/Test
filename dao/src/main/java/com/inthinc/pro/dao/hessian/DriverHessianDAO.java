@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
+import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
@@ -64,7 +65,7 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
     {
         try
         {
-            return getMapper().convertToModelObject(this.getSiloService().getLastLoc(DRIVER_TYPE, driverID), LastLocation.class);
+            return getMapper().convertToModelObject(this.getSiloService().getLastLoc(driverID, DRIVER_TYPE), LastLocation.class);
         }
         catch (EmptyResultSetException e)
         {
@@ -81,7 +82,16 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
         }
         catch (EmptyResultSetException e)
         {
-            return null;
+            return Collections.emptyList();
+        }
+        // TODO: Remove when method is impl on back end
+        catch (ProxyException ex)
+        {
+            if (ex.getErrorCode() == 422)
+            {
+                return Collections.emptyList();
+            }
+            throw ex;
         }
     }
 
@@ -95,6 +105,15 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
         catch (EmptyResultSetException e)
         {
             return null;
+        }
+        // TODO: Remove when method is impl on back end
+        catch (ProxyException ex)
+        {
+            if (ex.getErrorCode() == 422)
+            {
+                return null;
+            }
+            throw ex;
         }
     }
 

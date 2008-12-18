@@ -669,7 +669,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
             searchCriteria.addKeyValue("driverID", driver.getDriverID());
 
             LastLocation l = MockData.getInstance().retrieveObject(LastLocation.class, searchCriteria);
-            dl.setLoc(new LatLng(l.getLat(), l.getLng()));
+            dl.setLoc(l.getLoc());
 
             returnList.add(TempConversionUtil.createMapFromObject(dl, true));
             count++;
