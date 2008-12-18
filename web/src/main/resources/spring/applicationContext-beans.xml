@@ -119,7 +119,12 @@
         <property name="personDAO" ref="personDAO"></property>
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
     </bean>
-
+    
+   <bean id="vehicleBean" class="com.inthinc.pro.backing.VehicleBean" scope="request">
+        <property name="scoreDAO" ref="scoreDAO"></property>
+        <property name="navigation" ref="navigationBean"></property>
+    </bean>
+    
     <bean id="driverBean" class="com.inthinc.pro.backing.DriverBean" scope="request">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="navigation" ref="navigationBean"></property>

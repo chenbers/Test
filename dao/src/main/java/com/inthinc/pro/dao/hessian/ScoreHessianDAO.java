@@ -135,6 +135,26 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             return null;
         }
     }
+    
+    @Override
+    public ScoreableEntity getVehicleAverageScoreByTypeAndMiles(Integer vehicleID, Integer milesBack, ScoreType st)
+    {
+        try
+        {
+            return getMapper().convertToModelObject(reportService.getVehicleAverageScoreByTypeAndMiles(vehicleID, milesBack, st), ScoreableEntity.class);
+        }
+        catch (EmptyResultSetException e)
+        {
+            return null;
+        }
+        catch (ProxyException e)
+        {
+            if (e.getErrorCode() == 422)
+                return null;
+            else
+                throw e;
+        }
+    }
 
     @Override
     public List<ScoreableEntity> getScores(Integer groupID, Duration duration, ScoreType scoreType)
@@ -258,6 +278,27 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         {
             return Collections.emptyList();
         }
+    }
+    
+    @Override
+    public List<ScoreableEntity> getVehicleScoreHistoryByMiles(Integer vehicleID, Integer milesBack, ScoreType scoreType)
+    {
+        try
+        {
+            return getMapper().convertToModelObject(reportService.getVehicleScoreHistoryByMiles(vehicleID, milesBack, scoreType.getCode()), ScoreableEntity.class);
+        }
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
+        catch (ProxyException e)
+        {
+            if (e.getErrorCode() == 422)
+                return Collections.emptyList();
+            else
+                throw e;
+        }
+
     }
 
     @Override

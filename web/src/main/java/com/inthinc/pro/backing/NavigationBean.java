@@ -1,12 +1,16 @@
 package com.inthinc.pro.backing;
 
 import org.apache.log4j.Logger;
+import org.omg.PortableServer.POAManagerPackage.State;
 
 import com.inthinc.pro.backing.model.TreeNodeImpl;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.Status;
+import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleType;
 
 public class NavigationBean extends BaseBean
 {
@@ -21,13 +25,27 @@ public class NavigationBean extends BaseBean
     //This is used for the bread crumbs
     private TreeNodeImpl        groupTreeNode;
     private Driver              driver;
+    private Vehicle             vehicle;
     private Duration            duration = Duration.DAYS;
     private Integer             start = 0;
     private Integer             end = 0;
 
     public NavigationBean()
     {
-
+            //TEMPORARY 
+            vehicle = new Vehicle();
+            vehicle.setDriverID(1201);
+            vehicle.setMake("Ford");
+            vehicle.setModel("F-150");
+            vehicle.setDeviceID(1301);
+            vehicle.setLicense("TWI 225");
+            vehicle.setName("Vehicle Name");
+            vehicle.setStatus(Status.ACTIVE);
+            vehicle.setVehicleID(1201);
+            vehicle.setVIN("ASDF1234ASDF1234ASDF1234");
+            vehicle.setVtype(VehicleType.MEDIUM);
+            vehicle.setWeight(4567);
+            vehicle.setYear(2006);
     }
 
     public Integer getGroupID()
@@ -57,7 +75,16 @@ public class NavigationBean extends BaseBean
     {
         this.driver = driver;
     }
-
+    public Vehicle getVehicle()
+    {
+        return vehicle;
+    }
+    
+    public void setVehicle(Vehicle vehicle)
+    {
+        this.vehicle = vehicle;
+    }
+    
     public Duration getDuration()
     {
         return duration;

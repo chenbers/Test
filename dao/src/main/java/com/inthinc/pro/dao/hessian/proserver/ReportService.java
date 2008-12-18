@@ -52,6 +52,19 @@ public interface ReportService extends HessianService
     Map<String, Object> getAverageScoreByTypeAndMiles(Integer driverID, Integer milesBack, ScoreType scoreType) throws ProDAOException;
     
     /**
+     * Return the average score for the specified driver and miles back.
+     * 
+     * @param driverID
+     * @param milesBack
+     *          500  1,000 10,000
+     * @param scoreType
+     *            SCORE_OVERALL = 1, SCORE_SPEEDING=2, SCORE_SEATBELT=3, SCORE_DRIVING_STYLE=4, SCORE_COACHING_EVENTS=5
+     * @return Map<String,Object> that maps to a ScoreableEntity
+     * @throws ProDAOException
+     */
+    Map<String, Object> getVehicleAverageScoreByTypeAndMiles(Integer vehicleID, Integer milesBack, ScoreType scoreType) throws ProDAOException;
+    
+    /**
      * getScores -- retrieves the scores for direct children of the specified group
      * 
      * @param groupID
@@ -106,7 +119,7 @@ public interface ReportService extends HessianService
      * 
      * @param driverID
      * @param milesBack
-     *          500  1,000 10,000
+     *          500  1,000 5,000 10,000
      * @param scoreType
      *            SCORE_OVERALL = 1, SCORE_SPEEDING=2, SCORE_SEATBELT=3, SCORE_DRIVING_STYLE=4, SCORE_COACHING_EVENTS=5
      * @return List<Map<String,Object>> that maps to a List of ScoreableEntity
@@ -114,7 +127,18 @@ public interface ReportService extends HessianService
      */
     List<Map<String, Object>> getDriverScoreHistoryByMiles(Integer driverID, Integer milesBack, Integer scoreType) throws ProDAOException;
     
-    
+    /**
+     * getVehicleScoreHistoryByMiles -- retrieves a list of scores for the specified vehicleID and milesBack.   
+     * 
+     * @param driverID
+     * @param milesBack
+     *          500  1,000 5,000 10,000
+     * @param scoreType
+     *            SCORE_OVERALL = 1, SCORE_SPEEDING=2, SCORE_SEATBELT=3, SCORE_DRIVING_STYLE=4, SCORE_COACHING_EVENTS=5
+     * @return List<Map<String,Object>> that maps to a List of ScoreableEntity
+     * @throws ProDAOException
+     */
+    List<Map<String, Object>> getVehicleScoreHistoryByMiles(Integer vehicleID, Integer milesBack, Integer scoreType) throws ProDAOException;
     
     /**
      * Retrieve the List of Score Break Downs for a specific score type.  

@@ -148,6 +148,23 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
         return getAverageScore(milesBack, allScores);
 
     }
+    
+    @Override
+    public Map<String, Object> getVehicleAverageScoreByTypeAndMiles(Integer vehicleID, Integer milesBack, ScoreType scoreType) throws ProDAOException
+    {
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("entityID", vehicleID);
+        searchCriteria.addKeyValue("scoreType", scoreType);
+
+        // get all scores of the time period and average them
+        List<ScoreableEntity> allScores = MockData.getInstance().retrieveObjectList(ScoreableEntity.class, searchCriteria);
+        if (allScores.size() == 0)
+        {
+            throw new EmptyResultSetException("No overall score for: " + vehicleID, "getOverallScore", 0);
+        }
+
+        return getAverageScore(milesBack, allScores);
+    }
 
     @Override
     public List<Map<String, Object>> getScores(Integer groupID, Integer duration, Integer scoreType) throws ProDAOException
@@ -293,18 +310,42 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
     @Override
     public List<Map<String, Object>> getDriverScoreHistoryByMiles(Integer driverID, Integer milesBack, Integer scoreType) throws ProDAOException
     {
-        Integer currentOdometer = 9923;
+        Integer currentOdometer = 49923;
         Integer numScoreRecords = 10;
 
         List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
 
-        for (int i = 0; i < numScoreRecords; i++)
+        for (int i = numScoreRecords; i > 0; i--)
         {
             ScoreableEntity se = new ScoreableEntity();
         
         	
-            Integer temp = milesBack > currentOdometer ? 0 : currentOdometer - (milesBack * i);
+            Integer temp = milesBack > currentOdometer ? 0 : currentOdometer - (milesBack / i);
         	se.setIdentifier(temp.toString() + "mi");
+      
+            se.setScore((int) (Math.random() * ((50 - 0) + 1)) + 0);
+
+            returnList.add(TempConversionUtil.createMapFromObject(se));
+        }
+
+        return returnList;
+    }
+    
+    @Override
+    public List<Map<String, Object>> getVehicleScoreHistoryByMiles(Integer vehicleID, Integer milesBack, Integer scoreType) throws ProDAOException
+    {
+        Integer currentOdometer = 49923;
+        Integer numScoreRecords = 10;
+
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+
+        for (int i = numScoreRecords; i > 0; i--)
+        {
+            ScoreableEntity se = new ScoreableEntity();
+        
+            
+            Integer temp = milesBack > currentOdometer ? 0 : currentOdometer - (milesBack / i);
+            se.setIdentifier(temp.toString() + "mi");
       
             se.setScore((int) (Math.random() * ((50 - 0) + 1)) + 0);
 
@@ -608,5 +649,9 @@ logger.debug("getDVQ for" + driverID);
         }
         throw new EmptyResultSetException("No scores for group: " + groupID, "getDPctByGT", 0);
     }
+
+
+
+
     
 }
