@@ -211,10 +211,12 @@
     </bean>
     <bean id="idlingReportBean" class="com.inthinc.pro.backing.IdlingReportBean" scope="session" parent="baseBean" init-method="init">
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
-        <property name="driverDAO" ref="driverDAO"></property>
+        <property name="scoreDAO" ref="scoreDAO"></property>        
     </bean>
     <bean id="idlingReportTable" class="com.inthinc.pro.backing.ui.IdlingReportTable" scope="session"></bean>
     <bean id="deviceReportBean" class="com.inthinc.pro.backing.DeviceReportBean" scope="session" parent="baseBean" init-method="init">
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
+        <property name="vehicleDAO" ref="vehicleDAO"/>
+        <property name="deviceDAO" ref="deviceDAO"/>
     </bean>    
 </beans>
