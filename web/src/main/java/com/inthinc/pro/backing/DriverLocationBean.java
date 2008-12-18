@@ -14,6 +14,7 @@ import com.inthinc.pro.map.MapIcon;
 import com.inthinc.pro.map.MapIconFactory;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.util.WebUtil;
 
@@ -68,7 +69,18 @@ public class DriverLocationBean extends BaseBean {
 		        for (Driver driver:drivers){
 		
 		        	DriverLastLocationBean db = new DriverLastLocationBean();
-		        	db.setLastLocation(new LatLng(center.getLat()+Math.random()/10, center.getLng()+Math.random()/10));
+		        	LastLocation loc = null;
+		        	if (driver.getDriverID() != null)
+		        	    loc = driverDAO.getLastLocation(driver.getDriverID());
+		        	if (loc != null)
+		        	    db.setLastLocation(loc.getLoc());
+		        	else
+		        	{
+	                    logger.debug("last loc is null for driver: " + driver.getDriverID());                    
+		        	    // TODO: What do we do in case where there is no last location?
+	                  db.setLastLocation(new LatLng(center.getLat()+Math.random()/10, center.getLng()+Math.random()/10));
+		        	    
+		        	}
 		        	db.setGroupID(group.getGroupID());
 		        	db.setDriver(driver);
 		        	db.setDriverName(driver.getPerson().getFirst()+" "+driver.getPerson().getLast());
@@ -89,8 +101,21 @@ public class DriverLocationBean extends BaseBean {
 	        for (Driver driver:drivers){
 	
 	        	DriverLastLocationBean db = new DriverLastLocationBean();
-	        	db.setLastLocation(new LatLng(center.getLat()+Math.random()/10, center.getLng()+Math.random()/10));
-	        	db.setGroupID(navigation.getGroupID());
+                LastLocation loc = null;
+                if (driver.getDriverID() != null)
+                    loc = driverDAO.getLastLocation(driver.getDriverID());
+                if (loc != null)
+                {
+                    db.setLastLocation(loc.getLoc());
+                }
+                else
+                {
+                    logger.debug("last loc is null for driver: " + driver.getDriverID());                    
+                    // TODO: What do we do in case where there is no last location?
+                  db.setLastLocation(new LatLng(center.getLat()+Math.random()/10, center.getLng()+Math.random()/10));
+                    
+                }
+	            db.setGroupID(navigation.getGroupID());
 	        	db.setDriver(driver);
 	        	db.setDriverName(driver.getPerson().getFirst()+" "+driver.getPerson().getLast());
 	        	driverLastLocations.put(driver.getDriverID(),db);
