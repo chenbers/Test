@@ -36,8 +36,11 @@
       						<h:outputText value="#{messages.reports_vehicleID}" />
       					</f:facet>
       					<h:commandLink action="go_vehicle" 
-      						value="#{item.vehicleID}">
-							
+      						value="#{item.vehicle.name}">
+							<f:setPropertyActionListener 
+									value="#{item.vehicle}" 
+									target="#{navigationBean.vehicle}">
+							</f:setPropertyActionListener>
 						</h:commandLink>  						
     				</rich:column>
     				<rich:column rendered="#{vehicleColumns['makeModelYear'].visible}" 

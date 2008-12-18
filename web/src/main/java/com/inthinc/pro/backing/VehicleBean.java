@@ -26,7 +26,7 @@ public class VehicleBean extends BaseBean
     
     private String      vehicleName;
     
-    private Integer     overallScore;
+    private Integer     overallScore = 0;
     private String      overallScoreHistory;
     private String      overallScoreStyle;
     
@@ -44,7 +44,10 @@ public class VehicleBean extends BaseBean
     {
         logger.debug("## initOverallScore()");
         ScoreableEntity overallSe = scoreDAO.getVehicleAverageScoreByTypeAndMiles(navigation.getVehicle().getVehicleID(), distance.getNumberOfMiles(), ScoreType.SCORE_OVERALL);
-        setOverallScore(overallSe.getScore());
+          
+        setOverallScore(overallSe == null ? 0 : (overallSe.getScore()));
+      
+        
     }
 
 	//OVERALL SCORE properties

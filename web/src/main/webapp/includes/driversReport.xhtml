@@ -56,10 +56,10 @@
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_vehicle}" />
       					</f:facet>
-      					<h:commandLink action="go_vehicle" value="Vehicle">
+      					<h:commandLink action="go_vehicle" value="#{item.vehicle.name}">
 							<f:setPropertyActionListener 
-								value="#{item.driver}" 
-								target="#{navigationBean.driver}"> <!-- replace with vehicle object -->
+								value="#{item.vehicle}" 
+								target="#{navigationBean.vehicle}">
 							</f:setPropertyActionListener>
 						</h:commandLink>      					
     				</rich:column>

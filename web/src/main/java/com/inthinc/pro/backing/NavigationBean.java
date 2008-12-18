@@ -33,20 +33,7 @@ public class NavigationBean extends BaseBean
 
     public NavigationBean()
     {
-            //TEMPORARY 
-            vehicle = new Vehicle();
-            vehicle.setDriverID(1201);
-            vehicle.setMake("Ford");
-            vehicle.setModel("F-150");
-            vehicle.setDeviceID(1301);
-            vehicle.setLicense("TWI 225");
-            vehicle.setName("Vehicle Name");
-            vehicle.setStatus(Status.ACTIVE);
-            vehicle.setVehicleID(1201);
-            vehicle.setVIN("ASDF1234ASDF1234ASDF1234");
-            vehicle.setVtype(VehicleType.MEDIUM);
-            vehicle.setWeight(4567);
-            vehicle.setYear(2006);
+     
     }
 
     public Integer getGroupID()
