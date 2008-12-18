@@ -187,7 +187,7 @@ public class SiloServiceTest
     
     @Test
     @Ignore
-    public void lastLocation()
+    public void lastLocationDriver()
     {
         DriverHessianDAO driverDAO = new DriverHessianDAO();
         driverDAO.setSiloService(siloService);
@@ -197,9 +197,14 @@ public class SiloServiceTest
         
         assertEquals(TESTING_DRIVER_ID, loc.getDriverID());
         assertNotNull(loc.getTime());
-        assertNotNull(loc.getLat());
-        assertNotNull(loc.getLng());
-
+        assertNotNull(loc.getLoc().getLat());
+        assertNotNull(loc.getLoc().getLng());
+    }
+    
+    @Test
+    @Ignore
+    public void lastLocationVehicle()
+    {
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
         vehicleDAO.setSiloService(siloService);
         
@@ -207,11 +212,29 @@ public class SiloServiceTest
         assertNotNull(vloc);
         assertEquals(TESTING_VEHICLE_ID, vloc.getVehicleID());
         assertNotNull(vloc.getTime());
-        assertNotNull(vloc.getLat());
-        assertNotNull(vloc.getLng());
+        assertNotNull(vloc.getLoc().getLat());
+        assertNotNull(vloc.getLoc().getLng());
         
     }
+//    1105
+    @Test
+    @Ignore
+    public void tmpevents()
+    {
+        EventHessianDAO eventDAO = new EventHessianDAO();
+        eventDAO.setSiloService(siloService);
+        
+        List<Event> recentEventsList  = eventDAO.getMostRecentEvents(1105, 5);
+        assertEquals(5, recentEventsList.size());
+        validateEvents(EventMapper.getEventTypesInCategory(EventCategory.VIOLATION), recentEventsList);
+        
 
+        List<Event> recentWarningsList  = eventDAO.getMostRecentWarnings(1105, 5);
+        assertEquals(3, recentWarningsList.size());
+        validateEvents(EventMapper.getEventTypesInCategory(EventCategory.WARNING), recentWarningsList);
+
+    
+    }
     @Test
     @Ignore
     public void events()
@@ -235,11 +258,18 @@ public class SiloServiceTest
         List<Event> recentEventsList  = eventDAO.getMostRecentEvents(TESTING_GROUP_ID, 5);
         assertTrue("expected some events to be returned", (recentEventsList.size() > 0 && recentEventsList.size() < 6));
         validateEvents(EventMapper.getEventTypesInCategory(EventCategory.VIOLATION), recentEventsList);
+        
+        int listSize = recentEventsList.size();
 
         List<Event> recentWarningsList  = eventDAO.getMostRecentWarnings(TESTING_GROUP_ID, 5);
     //  TODO: ask David to generate some of these types
 //        assertTrue("expected some events to be returned", (recentWarningsList.size() > 0 && recentWarningsList.size() < 6));
         validateEvents(EventMapper.getEventTypesInCategory(EventCategory.WARNING), recentWarningsList);
+
+        recentEventsList  = eventDAO.getMostRecentEvents(TESTING_GROUP_ID, 5);
+        assertEquals(listSize, recentEventsList.size());
+
+    
     }
     
     private void validateEvents(List<Integer> expectedTypes, List<Event> eventList, Date startDate, Date endDate)
@@ -259,6 +289,7 @@ public class SiloServiceTest
         }
     }
     
+    
     @Test
     @Ignore
     public void trips()
@@ -275,6 +306,7 @@ public class SiloServiceTest
         
         List<Trip> tripList = driverDAO.getTrips(TESTING_DRIVER_ID, startDate, endDate);
         assertNotNull(tripList);
+        System.out.println("num trips: " + tripList.size());
         assertTrue(tripList.size() > 0);
         
         for (Trip trip : tripList)
@@ -285,26 +317,26 @@ public class SiloServiceTest
             assertTrue(trip.getMileage() > 0);
         }
         
-// TODO: getLastTrip not impl on back end yet        
 //        Trip trip = driverDAO.getLastTrip(TESTING_DRIVER_ID);
 //        assertNotNull(trip);
         
         tripList = vehicleDAO.getTrips(TESTING_VEHICLE_ID, startDate, endDate);
         assertNotNull(tripList);
+        System.out.println("num trips: " + tripList.size());
         assertTrue(tripList.size() > 0);
         
-        for (Trip trip : tripList)
+        for (Trip t : tripList)
         {
-            assertEquals(TESTING_DRIVER_ID, trip.getDriverID());
-            assertTrue(startDate.before(trip.getStartTime()));
-            assertTrue(endDate.after(trip.getEndTime()));
-            assertTrue(trip.getMileage() > 0);
+            assertEquals(TESTING_DRIVER_ID, t.getDriverID());
+            assertTrue(startDate.before(t.getStartTime()));
+            assertTrue(endDate.after(t.getEndTime()));
+            assertTrue(t.getMileage() > 0);
         }
         
-     // TODO: getLastTrip not impl on back end yet        
-//      Trip trip = vehicleDAO.getLastTrip(TESTING_VEHICLE_ID);
-//      assertNotNull(trip);
+//        trip = vehicleDAO.getLastTrip(TESTING_VEHICLE_ID);
+//        assertNotNull(trip);
     }
+    
     @Test
     @Ignore
     public void admin()
@@ -353,7 +385,8 @@ public class SiloServiceTest
         find();
         
         // zone alert profiles
-        zoneAlertProfiles(acctID);
+// TODO:        
+//        zoneAlertProfiles(acctID);
     }
 
 
@@ -731,8 +764,8 @@ public class SiloServiceTest
             vehicle.setVehicleID(vehicleID);
             vehicleList.add(vehicle);
 
+// TODO: back end should return empty result set, is returning a map with lat, lng 0.0            
             // get last loc (should be empty);
-     
             LastLocation loc = vehicleDAO.getLastLocation(vehicle.getVehicleID());
             assertNull("no location expected for new vehicle", loc);
         }
@@ -831,7 +864,6 @@ logger.debug("Persons GroupID: " + groupID);
             person.setPersonID(personID);
             personList.add(person);
         }
-
         
         // update all to female
         for (Person person : personList)
