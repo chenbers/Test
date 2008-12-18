@@ -3,6 +3,7 @@ package com.inthinc.pro.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreTypeBreakdown;
@@ -152,4 +153,11 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      */
     List<VehicleReportItem> getVehicleReportData(Integer groupID, Duration duration);
 
+    /**
+     * Retrieve the individual lines in the Driver Report.
+     * 
+     * @param groupID
+     * @param duration
+     */
+    List<DriverReportItem> getDriverReportData(Integer groupID, Duration duration);
 }
