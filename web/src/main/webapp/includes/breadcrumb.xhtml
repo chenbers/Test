@@ -8,16 +8,16 @@
 	xmlns:security="http://pro.tiwi.com/jsf/security">
 
 	<ul id="breadcrumb">
-		<ui:repeat
+		<a4j:repeat
 			value="#{groupTreeNode.groupBreadCrumb}"
-			var="crumb">
-			<li class="last">
+			var="crumb" rowKeyVar="rowKey">
+			<li class="#{rowKey eq (groupTreeNode.breadCrumbCount - 1)?'last':''}">
 				<h:outputLink value="#{facesContext.externalContext.request.contextPath}#{crumb.groupLevel.url}" >
 					<h:outputText value="#{crumb.label}"/>
 					<f:param name="groupID" value="#{crumb.id}"/>
 				</h:outputLink>
 			</li>
-		</ui:repeat>
+		</a4j:repeat>
 	</ul>
 	
 </ui:composition>

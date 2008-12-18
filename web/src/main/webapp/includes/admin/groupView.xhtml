@@ -11,17 +11,17 @@
 		<li class="l">
 
 		<ul id="breadcrumb">
-			<ui:repeat
+			<a4j:repeat
 				value="#{organizationBean.selectedGroupNode.groupBreadCrumb}"
-				var="crumb">
-				<li class="last"><a4j:commandLink value="#{crumb.label}"
+				var="crumb" rowKeyVar="rowKey">
+				<li class="#{rowKey eq (organizationBean.selectedGroupNode.breadCrumbCount - 1)?'last':''}"><a4j:commandLink value="#{crumb.label}"
 					reRender="groupPanel,organizationTreePanel">
 					<a4j:actionparam converter="SimpleBeanConverter" name="groupNode"
 						value="#{crumb}"
 						actionListener="#{organizationBean.changeSelectedGroup}"
 						assignTo="#{organizationBean.selectedGroupNode}" />
 				</a4j:commandLink></li>
-			</ui:repeat>
+			</a4j:repeat>
 		</ul>
 
 		</li>

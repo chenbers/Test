@@ -13,9 +13,9 @@ import com.inthinc.pro.model.Group;
 import static org.junit.Assert.*;
 
 
-public class GroupNodeTest {
+public class TreeNodeImplTest {
 	
-	private static final Logger logger = Logger.getLogger(GroupNodeTest.class);
+	private static final Logger logger = Logger.getLogger(TreeNodeImplTest.class);
 	private TreeNodeImpl groupNode;
 	private GroupHierarchy groupHierarchy;
 	

@@ -15,8 +15,8 @@
 			<ul id="breadcrumb">
 				<ui:repeat
 					value="#{organizationBean.selectedGroupNode.groupBreadCrumb}"
-					var="crumb">
-					<li class="last"><a4j:commandLink value="#{crumb.label}"
+					var="crumb" rowKeyVar="rowKey">
+					<li class="#{rowKey eq (organizationBean.selectedGroupNode.breadCrumbCount - 1)?'last':''}"><a4j:commandLink value="#{crumb.label}"
 						reRender="groupPanel,organizationTreePanel">
 						<a4j:actionparam converter="SimpleBeanConverter" name="groupNode"
 							value="#{crumb}"
@@ -53,7 +53,6 @@
 		</ul>
 	</h:panelGroup>
 	<div style="padding-left: 11px">
-	<rich:messages globalOnly="false" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
 	<table>
 		<tr>
 			<td width="100%" valign="top">
@@ -128,7 +127,7 @@
 					<table>
 						<tr>
 							<td><h:selectOneMenu id="group_manager"
-								value="#{groupTreeNode.group.managerID}" required="true"
+								value="#{groupTreeNode.group.managerID}"
 								requiredMessage="#{messages.required}">
 								<f:selectItems value="#{organizationBean.peopleSelectItems}" />
 							</h:selectOneMenu></td>

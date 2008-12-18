@@ -17,12 +17,14 @@ import org.richfaces.model.ListRowKey;
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.model.TreeNodeImpl;
 import com.inthinc.pro.backing.model.TreeNodeType;
+import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupStatus;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Person;
@@ -46,11 +48,12 @@ public class OrganizationBean extends BaseBean
     private PersonDAO personDAO;
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
+    private AccountDAO accountDAO;
 
     /*
      * Organization Tree Specific
      */
-    private List<TreeNodeImpl> topLevelNodes;
+    private TreeNodeImpl topLevelNode;
     private GroupHierarchy organizationHierarchy;
     private TreeNodeImpl selectedGroupNode;
     private Map<Integer, Boolean> treeStateMap = new HashMap<Integer, Boolean>();
@@ -83,31 +86,26 @@ public class OrganizationBean extends BaseBean
      * This returns a list of nodes that are contained in top level that the user has access to view. This bean is session scope so in order to reload the group heirarchy, the
      * topLevelNodes variable needs to be set to null
      */
-    public List<TreeNodeImpl> getTopLevelNodes()
+    public TreeNodeImpl getTopLevelNodes()
     {
-        if (topLevelNodes == null)
+        if (topLevelNode == null)
         {
-            topLevelNodes = new ArrayList<TreeNodeImpl>();
 
             organizationHierarchy = new GroupHierarchy(groupDAO.getGroupHierarchy(getAccountID(), getGroupHierarchy().getTopGroup().getGroupID()));
-
             Group topLevelGroup = organizationHierarchy.getTopGroup();
-           
-            TreeNodeImpl topLevelNode = new TreeNodeImpl(topLevelGroup, organizationHierarchy);
+            topLevelNode = new TreeNodeImpl(topLevelGroup, organizationHierarchy);
             topLevelNode.setDriverDAO(driverDAO);
             topLevelNode.setVehicleDAO(vehicleDAO);
             setSelectedGroupNode(topLevelNode);
-            topLevelNodes.add(topLevelNode);
-
             logger.debug("Group Hirarchy was Loaded");
 
         }
-        return topLevelNodes;
+        return topLevelNode;
     }
 
-    public void setTopLevelNodes(List<TreeNodeImpl> topLevelNodes)
+    public void setTopLevelNodes(TreeNodeImpl topLevelNode)
     {
-        this.topLevelNodes = topLevelNodes;
+        this.topLevelNode = topLevelNode;
     }
 
     public boolean adviseNodeSelected(UITree tree)
@@ -176,28 +174,37 @@ public class OrganizationBean extends BaseBean
     /**
      * Event to handle the on drop action of the Tree View
      * 
-     * Rules: If the Drag Node equals the Drop Node then do nothing
-     *        If the Drag Nodes Parent equals the Drop Node then do nothing
+     * Rules: If the Drag Node equals the Drop Node then do nothing If the Drag Nodes Parent equals the Drop Node then do nothing
      * 
-     * @param DropEvent event
+     * @param DropEvent
+     *            event
      */
     public void processDrop(DropEvent event)
     {
         TreeNodeImpl dragTreeNode = (TreeNodeImpl) event.getDragValue();
         TreeNodeImpl dropTreeNode = (TreeNodeImpl) event.getDropValue();
-        logger.info(dragTreeNode.getLabel() + " was dropped onto " + dropTreeNode.getLabel());
-        if(dragTreeNode.getId().equals(dropTreeNode.getId()) || dragTreeNode.getParent().getId().equals(dropTreeNode.getId())){
-            logger.info("process drop stopped");
-            return;
-        }else if(dragTreeNode.findTreeNodeByGroupId(dropTreeNode.getGroup().getGroupID()) != null){
-            logger.info("Cannot drop onto child");
+        
+//        groupState = State.EDIT;
+//        selectedGroupNode = dragTreeNode;
+//        selectedParentGroup = dropTreeNode.getGroup();
+//        inProgressGroupNode = new TreeNodeImpl(new Group(), organizationHierarchy);
+//        copyGroupTreeNode(selectedGroupNode, inProgressGroupNode);
+        logger.debug(dragTreeNode.getLabel() + " was dropped onto " + dropTreeNode.getLabel());
+        if (dragTreeNode.getId().equals(dropTreeNode.getId()) || dragTreeNode.getParent().getId().equals(dropTreeNode.getId()))
+        {
+            logger.debug("process drop stopped");
             return;
         }
-        
+        else if (dragTreeNode.findTreeNodeByGroupId(dropTreeNode.getGroup().getGroupID()) != null)
+        {
+            logger.debug("Cannot drop onto child");
+            return;
+        }
+
         dragTreeNode.getGroup().setParentID(dropTreeNode.getGroup().getGroupID());
         dragTreeNode.setParent(dropTreeNode);
-        
-        groupDAO.update(dragTreeNode.getGroup());        
+
+        groupDAO.update(dragTreeNode.getGroup());
     }
 
     /*
@@ -249,10 +256,7 @@ public class OrganizationBean extends BaseBean
             TreeNodeImpl parentNode = null;
             if (selectedParentGroup != null)
             {
-                for (TreeNodeImpl treeNode : topLevelNodes)
-                {
-                    parentNode = treeNode.findTreeNodeByGroupId(selectedParentGroup.getGroupID());
-                }
+                parentNode = topLevelNode.findTreeNodeByGroupId(selectedParentGroup.getGroupID());
                 selectedGroupNode.getGroup().setParentID(parentNode.getGroup().getGroupID());
                 selectedGroupNode.setParent(parentNode);
             }
@@ -262,7 +266,7 @@ public class OrganizationBean extends BaseBean
             this.addInfoMessage("Group: " + selectedGroupNode.getLabel() + " - Updated");
             selectedParentGroup = null;
             groupState = State.VIEW;
-          
+
         }
     }
 
@@ -272,22 +276,19 @@ public class OrganizationBean extends BaseBean
     public void save()
     {
         TreeNodeImpl parentNode = null;
-        for (TreeNodeImpl treeNode : topLevelNodes)
-        {
-            parentNode = treeNode.findTreeNodeByGroupId(selectedParentGroup.getGroupID());
-        }
+        parentNode = topLevelNode.findTreeNodeByGroupId(selectedParentGroup.getGroupID());
         inProgressGroupNode.setParent(parentNode);
         inProgressGroupNode.getGroup().setParentID(parentNode.getGroup().getGroupID());
         // treeStateMap.put(selectedGroupNode.getGroup().getGroupID(), true);
         if (validate(inProgressGroupNode))
         {
-            Integer id = groupDAO.create(null, inProgressGroupNode.getGroup());
+            Integer id = groupDAO.create(getAccountID(), inProgressGroupNode.getGroup());
             if (id > 0)
             {
                 selectedGroupNode = inProgressGroupNode;
                 updateUsersGroupHeirarchy();
                 inProgressGroupNode = null;
-                topLevelNodes = null;
+                topLevelNode = null;
                 selectedParentGroup = null;
                 this.addInfoMessage("Group: " + selectedGroupNode.getLabel() + " - Added");
                 groupState = State.VIEW;
@@ -304,33 +305,32 @@ public class OrganizationBean extends BaseBean
         organizationHierarchy = new GroupHierarchy(groupDAO.getGroupHierarchy(getAccountID(), getGroupHierarchy().getTopGroup().getGroupID()));
         getProUser().setGroupHierarchy(organizationHierarchy);
     }
-    
-    
+
     /**
      * Case 1: EDIT - If there are drivers/devices/or vehicles then the group has to be a team
      * 
-     * @param treeNode treeNode containing the group to validate
+     * @param treeNode
+     *            treeNode containing the group to validate
      * @return returns true if validation is successfully
      */
     private boolean validate(TreeNodeImpl treeNode)
     {
         boolean valid = true;
-        //Case 1
-        if(groupState==State.EDIT && treeNode.getGroup().getType() != GroupType.TEAM){
+        // Case 1
+        if (groupState == State.EDIT && treeNode.getGroup().getType() != GroupType.TEAM)
+        {
             List<Driver> driverList = driverDAO.getDrivers(treeNode.getGroup().getGroupID());
             List<Vehicle> vehicleList = vehicleDAO.getVehiclesInGroup(treeNode.getGroup().getGroupID());
-            if(vehicleList.size() > 0 || driverList.size() > 0)
+            if (vehicleList.size() > 0 || driverList.size() > 0)
             {
                 addErrorMessage("Group Cannot be changed from Team if there are Drivers, Vehicles attatched to the group");
                 valid = false;
             }
         }
-        
-        //Case 2
+
+        // Case 2
         return valid;
     }
-    
-    
 
     private void copyGroupTreeNode(TreeNodeImpl copyFromNode, TreeNodeImpl copyToNode)
     {
@@ -353,6 +353,8 @@ public class OrganizationBean extends BaseBean
     {
         Group group = new Group();
         group.setAccountID(getAccountID());
+        group.setGroupID(0);
+        group.setStatus(GroupStatus.GROUP_ACTIVE);
         group.setMapZoom(selectedGroupNode.getGroup().getMapZoom());
         group.setMapCenter(selectedGroupNode.getGroup().getMapCenter());
         TreeNodeImpl newGroupNode = new TreeNodeImpl(group, organizationHierarchy);
@@ -371,8 +373,8 @@ public class OrganizationBean extends BaseBean
         List<SelectItem> selectItems = new ArrayList<SelectItem>();
         selectItems.add(new SelectItem(null, ""));
 
-        selectItems.add(new SelectItem(GroupType.DIVISION,GroupType.DIVISION.toString()));
-        selectItems.add(new SelectItem(GroupType.TEAM,GroupType.TEAM.toString()));
+        selectItems.add(new SelectItem(GroupType.DIVISION, GroupType.DIVISION.toString()));
+        selectItems.add(new SelectItem(GroupType.TEAM, GroupType.TEAM.toString()));
 
         return selectItems;
     }
@@ -398,15 +400,11 @@ public class OrganizationBean extends BaseBean
     public List<SelectItem> getParentGroups()
     {
         List<SelectItem> selectItemList = new ArrayList<SelectItem>();
-        for (TreeNodeImpl treeNode : topLevelNodes)
+        if (topLevelNode.getTreeNodeType() == TreeNodeType.FLEET || topLevelNode.getTreeNodeType() == TreeNodeType.DIVISION)
         {
-            if (treeNode.getTreeNodeType() == TreeNodeType.FLEET || treeNode.getTreeNodeType() == TreeNodeType.DIVISION)
-            {
-                selectItemList.add(new SelectItem(treeNode.getGroup(), treeNode.getLabel()));
-                selectItemList.addAll(getChildNodesAsSelectItems(treeNode));
-            }
+            selectItemList.add(new SelectItem(topLevelNode.getGroup(), topLevelNode.getLabel()));
+            selectItemList.addAll(getChildNodesAsSelectItems(topLevelNode));
         }
-
         selectItemList.add(0, new SelectItem(null, ""));
         return selectItemList;
     }
@@ -442,7 +440,9 @@ public class OrganizationBean extends BaseBean
 
     public String getAccountName()
     {
-        return getAccountID().toString();
+        //return getAccountDAO().findByID(getAccountID()).getAcctName();
+        return "Fleet USA";
+
     }
 
     public TreeNodeImpl getSelectedGroupNode()
@@ -490,7 +490,7 @@ public class OrganizationBean extends BaseBean
 
     public Person getSelectedPerson()
     {
-        if (selectedGroupNode != null)
+        if (selectedGroupNode != null && selectedGroupNode.getGroup().getManagerID() != null)
         {
             selectedPerson = personDAO.findByID(selectedGroupNode.getGroup().getManagerID());
         }
@@ -550,6 +550,16 @@ public class OrganizationBean extends BaseBean
     public Group getSelectedParentGroup()
     {
         return selectedParentGroup;
+    }
+
+    public void setAccountDAO(AccountDAO accountDAO)
+    {
+        this.accountDAO = accountDAO;
+    }
+
+    public AccountDAO getAccountDAO()
+    {
+        return accountDAO;
     }
 
 }

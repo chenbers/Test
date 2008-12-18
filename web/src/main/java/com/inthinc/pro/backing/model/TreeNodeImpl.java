@@ -30,6 +30,8 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable
     private TreeNodeType treeNodeType;
     private Integer id;
     private String label;
+    
+    private List<TreeNodeImpl> breadCrumbList;
 
     private TreeNodeImpl parentGroupTreeNode;
     private List<TreeNodeImpl> childGroupTreeNodes;
@@ -118,14 +120,18 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable
         return group;
     }
     
-    
-
-    // TODO get bread crumb working
+    public int getBreadCrumbCount(){
+        return getGroupBreadCrumb().size();
+    }
+   
     public List<TreeNodeImpl> getGroupBreadCrumb()
     {
-        List<TreeNodeImpl> breadCrumbList = new ArrayList<TreeNodeImpl>();
-        loadBreadCrumbs(this, breadCrumbList);
-        Collections.reverse(breadCrumbList);
+        if(breadCrumbList == null)
+        {
+            breadCrumbList = new ArrayList<TreeNodeImpl>();
+            loadBreadCrumbs(this, breadCrumbList);
+            Collections.reverse(breadCrumbList);
+        }
         return breadCrumbList;
     }
 
@@ -179,6 +185,9 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable
             }
             this.parentGroupTreeNode = parentGroupTreeNode;
         }
+
+        //We need to reload the breadcrumb list
+        breadCrumbList = null;
     }
 
     /**
@@ -427,14 +436,14 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable
     public TreeNodeImpl findTreeNodeByGroupId(Integer groupID)
     {
         TreeNodeImpl node = null;
-        if ((this.treeNodeType == TreeNodeType.DIVISION || this.treeNodeType == TreeNodeType.FLEET || this.treeNodeType == TreeNodeType.TEAM)
+        if ((this.getTreeNodeType() == TreeNodeType.DIVISION || this.getTreeNodeType() == TreeNodeType.FLEET || this.getTreeNodeType() == TreeNodeType.TEAM)
                 && this.group.getGroupID().equals(groupID))
         {
             node = this;
         }
         else
         {
-            if ((this.treeNodeType == TreeNodeType.DIVISION || this.treeNodeType == TreeNodeType.FLEET) && this.getChildCount() > 0)
+            if ((this.getTreeNodeType() == TreeNodeType.DIVISION || this.getTreeNodeType() == TreeNodeType.FLEET) && this.getChildCount() > 0)
             {
                 for (TreeNodeImpl treeNode : getChildrenNodes())
                 {

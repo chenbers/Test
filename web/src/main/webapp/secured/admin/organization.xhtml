@@ -20,6 +20,7 @@
 
 	<ui:define name="content">
 		
+		
 		<t:saveState value="#{organizationBean.topLevelNodes}"/>
 		<t:saveState value="#{organizationBean.groupState}"/>
 		<t:saveState value="#{organizationBean.selectedGroupNode}"/>
@@ -121,7 +122,7 @@
 									
 								</script>
 								 <a4j:jsFunction name="refreshTree"
-								reRender="organizationTreePanel">
+								reRender="organizationTreePanel,groupPanel">
 								</a4j:jsFunction>
 							</div>
 							</td>
