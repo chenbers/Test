@@ -16,8 +16,12 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
 
     private Integer forgiven = 0;
     private Integer flags;
+    @Column(name="lat")
     private Double latitude;
+    
+    @Column(name="lng")
     private Double longitude;
+    
     private Integer maprev;
     private Integer odometer;
     private Integer speed;
