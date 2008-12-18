@@ -52,11 +52,11 @@
 						</h:commandLink>      					     					
     				</rich:column>
     				<rich:column rendered="#{driverColumns['vehicleID'].visible}" 
-    					sortBy="#{item.vehicleID}">
+    					sortBy="#{item.vehicle.vehicleID}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_vehicle}" />
       					</f:facet>
-      					<a href="#{facesContext.externalContext.request.contextPath}/secured/vehicle.faces">#{item.vehicleID}</a>    					
+      					<a href="#{facesContext.externalContext.request.contextPath}/secured/vehicle.faces">#{item.vehicle.vehicleID}</a>    					
     				</rich:column>
     				<rich:column rendered="#{driverColumns['milesDriven'].visible}" 
     					sortBy="#{item.milesDriven}">
