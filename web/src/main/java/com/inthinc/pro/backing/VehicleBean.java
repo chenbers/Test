@@ -46,8 +46,7 @@ public class VehicleBean extends BaseBean
         ScoreableEntity overallSe = scoreDAO.getVehicleAverageScoreByTypeAndMiles(navigation.getVehicle().getVehicleID(), distance.getNumberOfMiles(), ScoreType.SCORE_OVERALL);
           
         setOverallScore(overallSe == null ? 0 : (overallSe.getScore()));
-      
-        
+
     }
 
 	//OVERALL SCORE properties

@@ -9,9 +9,11 @@ import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.charts.ChartSizes;
 import com.inthinc.pro.charts.Line;
+import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.Distance;
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.util.GraphicUtil;
@@ -21,6 +23,8 @@ public class DriverBean extends BaseBean
 	private static final Logger logger = Logger.getLogger(DriverBean.class);
 	
     private ScoreDAO    scoreDAO;
+    private MpgDAO      mpgDAO;
+
     private Distance    distance = Distance.FIVEHUNDRED;
     private LatLng      lastLocation;
     
@@ -130,7 +134,7 @@ public class DriverBean extends BaseBean
         this.distance = distance;
     }
 
-    //SCORE DAO PROPERTIES
+    //DAO PROPERTIES
     public ScoreDAO getScoreDAO()
     {
         return scoreDAO;
@@ -140,7 +144,15 @@ public class DriverBean extends BaseBean
     {
         this.scoreDAO = scoreDAO;
     }
-    
+    public MpgDAO getMpgDAO()
+    {
+        return mpgDAO;
+    }
+
+    public void setMpgDAO(MpgDAO mpgDAO)
+    {
+        this.mpgDAO = mpgDAO;
+    }
 	//LAST LOCATION PROPERTIES
 	public LatLng getLastLocation() {
 		if(lastLocation == null)
@@ -178,16 +190,52 @@ public class DriverBean extends BaseBean
     }
 
     
-    private String createMiniLineDef()
+    private String createMiniLineDef()  //REFACTOR 
     {
         StringBuffer sb = new StringBuffer();
+        
         //Control parameters
         sb.append(GraphicUtil.createMiniLineControlParameters());
-        sb.append(GraphicUtil.createFakeMiniLineData());        
-        sb.append("</chart>");
+        //sb.append(GraphicUtil.createFakeMiniLineData());        
         
+        List<MpgEntity> mpgEntities = mpgDAO.getDriverEntities(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), 10);
+        
+        sb.append("<categories>");
+        sb.append(" <category label=\"\"/>");
+        sb.append(" <category label=\"\"/>");
+        sb.append(" <category label=\"\"/>");
+        sb.append(" <category label=\"\"/>");
+        sb.append(" <category label=\"\"/>");
+        sb.append("</categories>");
+        
+        //LIGHT DATASET
+        sb.append("<dataset seriesName=\"Light\" color=\"B1D1DC\" plotBorderColor=\"B1D1DC\"> ");
+        for (MpgEntity entity: mpgEntities)
+        {  
+            sb.append("<set value=\"" + entity.getLightValue() + "\"/>"); 
+        }
+        sb.append("</dataset>");
+        
+        //MEDIUM DATASET
+        sb.append("<dataset seriesName=\"Medium\" color=\"C8A1D1\" plotBorderColor=\"C8A1D1\"> ");
+        for (MpgEntity entity: mpgEntities)
+        {  
+            sb.append("<set value=\"" + entity.getMediumValue() + "\"/>"); 
+        }
+        sb.append("</dataset>");
+        
+        //HEAVY DATASET
+        sb.append("<dataset seriesName=\"Heavy\" color=\"A8C634\" plotBorderColor=\"A8C634\"> ");
+        for (MpgEntity entity: mpgEntities)
+        {  
+            sb.append("<set value=\"" + entity.getMediumValue() + "\"/>"); 
+        }
+        sb.append("</dataset>");
+        
+        
+        sb.append("</chart>");
         return sb.toString();
-    }
+     }
     
     public String createLineDef(ScoreType scoreType)
     {

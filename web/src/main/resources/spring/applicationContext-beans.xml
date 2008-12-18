@@ -140,6 +140,7 @@
     
     <bean id="driverBean" class="com.inthinc.pro.backing.DriverBean" scope="request">
         <property name="scoreDAO" ref="scoreDAO"></property>
+        <property name="mpgDAO" ref="mpgDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
     </bean>
     

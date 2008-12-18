@@ -11,6 +11,7 @@ import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
 import com.inthinc.pro.model.DVQMap;
+import com.inthinc.pro.model.DriveQMap;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.GQMap;
@@ -93,5 +94,27 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
             return Collections.emptyList();
         }
         
+    }
+
+    @Override
+    public List<MpgEntity> getDriverEntities(Integer driverID, Integer mileage, Integer count)
+    {
+        List<MpgEntity> scoreList = new ArrayList<MpgEntity>();
+          
+        
+        List<Map<String, Object>> returnMapList = reportService.getDTrendByDMC(driverID, mileage, count);
+        List<DriveQMap> dqMapList = getMapper().convertToModelObject(returnMapList, DriveQMap.class);
+
+        for (DriveQMap dqMap : dqMapList)
+        {
+            MpgEntity mpgEntity = new MpgEntity();   
+            mpgEntity.setHeavyValue(dqMap.getMpgHeavy());
+            mpgEntity.setLightValue(dqMap.getMpgLight());
+            mpgEntity.setMediumValue(dqMap.getMpgMedium());
+            mpgEntity.setOdometer(dqMap.getOdometer());
+            
+            scoreList.add(mpgEntity);
+        }
+        return scoreList;
     }
 }

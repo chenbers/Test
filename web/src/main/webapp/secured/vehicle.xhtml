@@ -318,7 +318,7 @@
 
 									var violation;
 									<ui:repeat value="#{driverTripsBean.violationEvents}" var="violation">
-										violation = new GLatLng(# {violation.latitude}, # {violation.longitude});
+										violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
 										map.addOverlay(createMarker(violation, "#{violation.eventType} Violation.<br />#{violation.time}",
 														"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png"));
 									</ui:repeat>
@@ -365,40 +365,8 @@
 				</div>
 			</div>
 		<!-- END PANEL -->
-		
 		<div class="spacer"></div>
 		
-		<!-- START PANEL -->
-			<div class="">
-				<div class="panel_nw">
-					<div class="panel_title">
-						<span class="coaching">Coaching Events </span>
-						<span class="panel_links">_</span>					</div>
-				</div>
-					<div class="panel_w">
-					  <rich:panel bodyClass="panel_content" id="coachingPanel" border="0">
-					    <table width="450" border="0" align="center" cellpadding="0" cellspacing="0">
-                          <tr>
-                            <td>
-                            <ui:include src="../includes/lineChart.xhtml">
-						            <ui:param name="lineChartDef" value="#{vehicleBean.coachingHistory}" />
-						            <ui:param name="hiddenFieldID" value="HiddenField4" />
-						            <ui:param name="width" value="450" /> 
-						            <ui:param name="height" value="200" />
-						            <ui:param name="tartgetElementVar" value="targetElement4" />
-						            <ui:param name="ChartDivID" value="coaching_chart" />
-						            <ui:param name="chartVar" value="coaching_chart" />
-							</ui:include>
-                            </td>
-                          </tr>
-                        </table>
-					  </rich:panel>
-					</div>
-				<div class="panel_sw">
-					<div class="panel_statusbar"></div>
-				</div>
-			</div>
-		<!-- END PANEL -->
 	</td>
   </tr>
 </table>
@@ -406,7 +374,3 @@
 </ui:define>
 
 </ui:composition>
-
-
-
-

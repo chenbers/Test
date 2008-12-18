@@ -14,6 +14,9 @@ public class MpgEntity extends BaseEntity {
 	private Integer mediumValue;
 	private Integer heavyValue;
     private Integer date;
+    private Integer odometer;
+
+
 
     public MpgEntity()
     {
@@ -94,6 +97,15 @@ public class MpgEntity extends BaseEntity {
 	public void setDate(Integer date) {
 		this.date = date;
 	}
+	
+    public Integer getOdometer()
+    {
+        return odometer;
+    }
 
+    public void setOdometer(Integer odometer)
+    {
+        this.odometer = odometer;
+    }
 
 }
