@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+        <meta http-equiv="Content-Type"         content="text/html; charset=utf-8" />
+        <title>frequency decoder - accessible, unobtrusive slider demo</title>       
+        <meta name="author"                     content="frequency decoder" />
+        <meta name="description"                content="An unobtrusive javascript that turns any text input or selectlist into a keyboard-accessible slider control" />
+        <meta http-equiv="imagetoolbar"         content="no" />
+        <link rel="stylesheet" type="text/css" media="screen, projection" href="../slider.css" />
+        <link rel="stylesheet" type="text/css" media="screen, projection" href="../demo.css" />   
+
+<style type="text/css" media="screen">
+/* (DEMO ONLY) An extra class that floats the vertical slider left for the demo */
+.verticalclass
+        {
+        float:left;
+        margin-right:4px;
+        height:250px;
+        }
+/* (DEMO ONLY) Extra styling for the black sliders targeted using their parent fieldset's id */
+#bswrap .fd-slider-vertical
+        {
+        float:left;
+        height:150px;
+        margin-right:4px;
+        }
+#bswrap .fd-slider-vertical .fd-slider-inner
+        {
+        background:#202020;
+        border-color:#1c1c1c;
+        }
+#bswrap .fd-slider-vertical .fd-slider-bar
+        {
+        background:#111;
+        border-color:#111 #2c2c2c #2c2c2c #111;
+        }
+#bswrap
+        {
+        background:#222;
+        border:3px double #333;
+        -moz-border-radius:0;
+        color:#ccc;
+        }
+#bswrap code
+        {
+        color:#ccc;
+        }
+#bswrap .fd-slider:focus .fd-slider-inner,
+#bswrap .fd-slider-vertical:focus .fd-slider-inner,
+#bswrap .focused .fd-slider-inner
+        {
+        background:#202020 !important;
+        border-color:#000 !important;
+        }
+#selectTestLabel, .mt
+        {
+        margin-top:1em;
+        }
+</style>
+<!--[if lte IE 6]>
+<link rel="stylesheet" type="text/css" media="screen, projection" href="../ie.css" />
+<![endif]-->
+<script type="text/javascript" src="../slider.js"></script>
+</head>
+<body>
+<div id="article-wrapper">
+  <form action="" method="post">
+    <h1>Accessible Unobtrusive Slider Demo</h1>
+    <h2>Accessibility Enhancements (<abbr title="Accessible Rich Internet Applications">ARIA</abbr>)</h2>
+
+    <!-- The following paragraph is used to set the ARIA describedby property -->
+    <p id="fd_slider_describedby">Whenever a slider has focus, the keys <kbd title="Left arrow key">&larr;</kbd>, <kbd title="Right arrow key">&rarr;</kbd>, <kbd title="Up arrow key">&uarr;</kbd>, <kbd title="Down arrow key">&darr;</kbd>, <kbd title="Insert key">Ins</kbd> and <kbd title="Delete key">Del</kbd> can be used to control the slider handle (pressing either the <kbd>Page up</kbd> or <kbd>Page down</kbd> keys or <kbd title="CTRL key">CTRL</kbd> and an arrow key will move the handle by two steps at a time), the <kbd title="Home key">Home</kbd> key to set the slider at it&#8217;s minimum value and the <kbd title="End key">End</kbd> key to set the slider at it&#8217;s maximum value.</p>
+    <p>The script automatically assigns each slider the required ARIA role of &#8220;slider&#8221; and states &#8220;valuemax&#8221;, &#8220;valuemin&#8221;, &#8220;valuetext&#8221; and &#8220;valuenow&#8221;.</p>
+    <p>Should an element with an id of <code>fd_slider_describedby</code> exist, this is used to set the ARIA &#8220;describedby&#8221; relationship. Additionally, should the sliders associated form element itself have an associated <code>label</code>, this label is used to set the ARIA &#8220;labelledby&#8221; relationship.</p>
+    <p>View the <a href="../slider.js">JavaScript source</a> or read the <a href="http://www.frequency-decoder.com/2008/08/01/unobtrusive-slider-control-v2">related article</a>.</p>
+
+    <h2>Alternative styling demo</h2>
+    <!-- The following fieldset's id "bswrap" is used to target the sliders contained within in order to change their default styling -->
+    <fieldset id="bswrap">
+      <p>The following sliders have been created by giving their associated inputs the following className:</p>
+      <p><code>class="fd_tween fd_range_0_255 fd_vertical fd_hide_input"</code></p>
+      <p>Additionally, the wrapper <code>fieldset</code> has been given an id that enables us to target &amp; change the style of the sliders contained within.</p>
+
+      <p><input type="text" name="slider-5" id="slider-5" type="text" title="Range: 0 - 255" class="fd_tween fd_range_0_255 fd_vertical fd_hide_input" value="0" /></p>
+      <input type="text" name="slider-6" id="slider-6" type="text" title="Range: 0 - 255" class="fd_tween fd_range_0_255 fd_vertical fd_hide_input" value="0" />
+      <input name="slider7" id="slider-7" type="text" title="Range: 0 - 255" class="fd_tween fd_range_0_255 fd_vertical fd_hide_input" value="0" />
+      <input name="slider8" id="slider-8" type="text" title="Range: 0 - 255" class="fd_tween fd_range_0_255 fd_vertical fd_hide_input" value="0" />
+      <input name="slider9" id="slider-9" type="text" title="Range: 0 - 255" class="fd_tween fd_range_0_255 fd_vertical fd_hide_input" value="0" />
+      <input name="slider10" id="slider-10" type="text" title="Range: 0 - 255" class="fd_tween fd_range_0_255 fd_vertical fd_hide_input" value="0" />
+      <input name="slider11" id="slider-11" type="text" title="Range: 0 - 255" class="fd_tween fd_range_0_255 fd_vertical fd_hide_input" value="0" />
+      <input name="slider12" id="slider-12" type="text" title="Range: 0 - 255" class="fd_tween fd_range_0_255 fd_vertical fd_hide_input" value="0" />
+    </fieldset>
+
+    <h2>Don&#8217;t forget folks</h2>
+    <p>The rather nice png images and styles for the black sliders were located at <a href="http://www.schillmania.com/">schillmania</a>. Go visit&#8230;</p>
+  </form>
+</div>
+</body>
+</html>

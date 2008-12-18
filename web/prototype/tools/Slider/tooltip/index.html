@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+        <meta http-equiv="Content-Type"         content="text/html; charset=utf-8" />
+        <title>frequency decoder - accessible, unobtrusive slider demo</title>       
+        <meta name="author"                     content="frequency decoder" />
+        <meta name="description"                content="An unobtrusive javascript that turns any text input or selectlist into a keyboard-accessible slider control" />
+        <meta http-equiv="imagetoolbar"         content="no" />
+        <link rel="stylesheet" type="text/css" media="screen, projection" href="../slider.css" />
+        <link rel="stylesheet" type="text/css" media="screen, projection" href="../demo.css" />         
+<style type="text/css" media="screen">
+#tooltip
+        {
+        position:absolute;
+        top:0px;
+        left:-999px;
+        width:100px;
+        height:25px;
+        line-height:25px;
+        background:transparent url(../tooltip-dongle.png) no-repeat 50% 100%;
+        padding-bottom:5px;
+        }
+#tooltipInner1
+        {
+        padding-left:5px;
+        overflow:hidden;
+        color:#fff;
+        background:transparent url(../tooltipleft.png) no-repeat 0 0;
+        }
+#tooltipInner2
+        {
+        padding:0 5px 0 0;
+        height:22px;
+        line-height:22px;
+        overflow:hidden;
+        color:#fff;
+        text-align:center;
+        background:transparent url(../tooltip.png) no-repeat 100% 0;
+        text-shadow:#000 1px 1px 1px;
+        }
+</style>
+<!--[if lte IE 6]>
+<link rel="stylesheet" type="text/css" media="screen, projection" href="../ie.css" />
+<style type="text/css">
+/* Basic styles for non png aware Internet Explorer 6 */
+#tooltip
+        {
+        background-image:url(../tooltip-dongle.gif);
+        }
+#tooltipInner1
+        {
+        background-image:none;
+        padding:0;
+        }
+#tooltipInner2
+        {
+        background-image:none;
+        background:#000;
+        padding:0;
+        }
+</style>
+<![endif]-->
+<script type="text/javascript" src="../slider.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+
+// Disable the mouseWheel operations for all sliders...
+//fdSliderController.disableMouseWheel();
+
+// Preloading the images used for the slider handle
+var imgList = ["slider-disabled.png", "slider-disabled-1.png", "slider.png", "slider-1.png"];
+var preloadImg = []
+for(var i = 0, imgSrc; imgSrc = imgList[i]; i++) {
+        preloadImg[i] = new Image();
+        preloadImg[i].src = "../" + imgSrc;
+};
+
+// Remember folks, none of this JavaScript is actually necessary, it's just there to show you
+// how to extend the slider functionality with callback functions/Object.methods
+
+// The tooltip object
+var TT = {
+        tooltip:null,
+        tooltipInner:null,
+        handle:null,
+        init:function(e) {    
+                           
+                // Grab a reference to the slider handle
+                var handle = document.getElementById("fd-slider-handle-selectTest1");
+
+                // If something has gone wrong then bail out...
+                if(!handle) { return; };
+
+                // Create the tooltip...
+                var tt = document.createElement("div");
+                tt.id = "tooltip";
+                        
+                var TTinner1 = document.createElement("div");
+                TTinner1.id = "tooltipInner1";
+
+                var TTinner2 = document.createElement("div");
+                TTinner2.id = "tooltipInner2";
+
+                TTinner1.appendChild(TTinner2);
+                tt.appendChild(TTinner1);
+                        
+                document.getElementsByTagName('body')[0].appendChild(tt);
+
+                // Cache a reference to the tooltip, tooltip inner & slider handle
+                TT.tooltip      = tt;
+                TT.tooltipInner = TTinner2;
+                TT.handle       = handle;
+                
+                // Add the required events...
+                
+                // Show the tooltip when the slider is focused
+                fdSliderController.addEvent(handle, "focus", TT.show);
+                
+                // Hide the tooltip when the slider is blurred
+                fdSliderController.addEvent(handle, "blur",  TT.hide);
+               
+                // Internet Explorer fills the input's value attribute after the
+                // onload event fires so we need to set a timeout of 200ms in order
+                // to be able to read this "delayed" value and correctly reset 
+                // the toolTip position.
+                TT.tooltip.style.display = "block";
+                TT.tooltip.style.visibility = "hidden";                
+                /*@cc_on
+                /*@if(@_win32)
+                setTimeout(function() { TT.update(); TT.tooltip.style.display = "none"; TT.tooltip.style.visibility = "hidden"; }, 800);
+                @else @*/
+                TT.update();                          
+                TT.tooltip.style.display = "none";
+                TT.tooltip.style.visibility = "hidden";
+                /*@end
+                @*/                 
+                
+        },
+        // A function that positions the tooltip and updates it's value
+        // This is also used as the callback function for the slider
+        update:function(e) {                                                                 
+                var curleft = 0,
+                    curtop  = 0,
+                    obj     = TT.handle,
+                    osw     = obj.offsetWidth;
+                
+                // Try catch for IE's benefit
+                try {
+                        while (obj.offsetParent) {
+                                curleft += obj.offsetLeft;
+                                curtop  += obj.offsetTop;
+                                obj      = obj.offsetParent;
+                        };
+                } catch(err) { };
+
+                TT.tooltip.style.left = Math.round((curleft - ((TT.tooltip.offsetWidth - osw) / 2))) + "px";
+                TT.tooltip.style.top = (curtop - 30)  + "px";
+
+                while(TT.tooltipInner.firstChild) { TT.tooltipInner.removeChild(TT.tooltipInner.firstChild); };
+
+                var txt = document.getElementById("selectTest1");
+                txt = txt.options[txt.selectedIndex].text;
+
+                TT.tooltipInner.appendChild(document.createTextNode(txt));                
+        },
+        show:function(e) {
+                e = e || window.event;                 
+                if(e && e.type && e.type != "focus") return;
+                TT.tooltip.style.display = "block";
+                TT.tooltip.style.visibility = "visible";
+                TT.update();                  
+        },
+        hide:function(e) {
+                e = e || window.event;
+                if(e && e.type && e.type != "blur") return;
+                TT.tooltip.style.display = "none";
+                TT.tooltip.style.visibility = "hidden";
+        }
+};
+//]]>
+</script>
+</head>
+<body>
+<div id="article-wrapper">
+  <form action="" method="post">
+    <h1>Accessible Unobtrusive Slider Demo</h1>
+    <h2>Accessibility Enhancements (<abbr title="Accessible Rich Internet Applications">ARIA</abbr>)</h2>
+
+    <!-- The following paragraph is used to set the ARIA describedby property -->
+    <p id="fd_slider_describedby">Whenever a slider has focus, the keys <kbd title="Left arrow key">&larr;</kbd>, <kbd title="Right arrow key">&rarr;</kbd>, <kbd title="Up arrow key">&uarr;</kbd>, <kbd title="Down arrow key">&darr;</kbd>, <kbd title="Insert key">Ins</kbd> and <kbd title="Delete key">Del</kbd> can be used to control the slider handle (pressing either the <kbd>Page up</kbd> or <kbd>Page down</kbd> keys or <kbd title="CTRL key">CTRL</kbd> and an arrow key will move the handle by two steps at a time), the <kbd title="Home key">Home</kbd> key to set the slider at it&#8217;s minimum value and the <kbd title="End key">End</kbd> key to set the slider at it&#8217;s maximum value.</p>
+    <p>The script automatically assigns each slider the required ARIA role of &#8220;slider&#8221; and states &#8220;valuemax&#8221;, &#8220;valuemin&#8221;, &#8220;valuetext&#8221; and &#8220;valuenow&#8221;.</p>
+    <p>Should an element with an id of <code>fd_slider_describedby</code> exist, this is used to set the ARIA &#8220;describedby&#8221; relationship. Additionally, should the sliders associated form element itself have an associated <code>label</code>, this label is used to set the ARIA &#8220;labelledby&#8221; relationship.</p>
+    <p>View the <a href="../slider.js">JavaScript source</a> or read the <a href="http://www.frequency-decoder.com/2008/08/01/unobtrusive-slider-control-v2">related article</a>.</p>
+
+    <h2>SelectList demo with tooltip</h2>
+    <fieldset>
+      <p>The following slider has been created from a select list whose options contain non-numeric values. A simple callback function has been defined that updates a dynamically created tooltip with the current slider value.</p> 
+      <p><code>class="fd_slider_cb_create_TT-init fd_slider_cb_update_TT-update fd_slider_cb_move_TT-update fd_hide_input"</code></p>
+      <label for="selectTest1" id="selectTest1Label">Range "lowest" to "highest"</label>
+      <select name="selectTest1" id="selectTest1" class="fd_tween fd_slider_cb_create_TT-init fd_slider_cb_update_TT-update fd_slider_cb_move_TT-update fd_hide_input">
+        <optgroup label="low ranges">
+          <option value="-3">lowest</option>
+          <option value="-2">lower</option>
+          <option value="-1">low</option>
+        </optgroup>
+        <option value="0" selected="selected">normal</option>
+        <optgroup label="high ranges">
+          <option value="1">high</option>
+          <option value="2">higher</option>
+          <option value="3">highest</option>
+        </optgroup>
+      </select>
+    </fieldset> 
+    <h2>Don&#8217;t forget folks</h2>
+    <p>The rather nice png images and styles for the black sliders were located at <a href="http://www.schillmania.com/">schillmania</a>. Go visit&#8230;</p>
+  </form>
+</div>
+</body>
+</html>  

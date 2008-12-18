@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+        <meta http-equiv="Content-Type"         content="text/html; charset=utf-8" />
+        <title>frequency decoder - accessible, unobtrusive slider demo</title>       
+        <meta name="author"                     content="frequency decoder" />
+        <meta name="description"                content="An unobtrusive javascript that turns any text input or selectlist into a keyboard-accessible slider control" />
+        <meta http-equiv="imagetoolbar"         content="no" />
+        <link rel="stylesheet" type="text/css" media="screen, projection" href="../slider.css" />
+        <link rel="stylesheet" type="text/css" media="screen, projection" href="../demo.css" />   
+
+<style type="text/css" media="screen">
+/* (DEMO ONLY) The dynamically created div that changes colour */
+#colorBox
+        {
+        float:left;
+        clear:both;
+        width:273px;
+        height:1em;
+        border:1px solid #ccc;
+        border-top:1px solid #888;
+        border-left:1px solid #888;
+        margin-left:5em;
+        }
+/* (DEMO ONLY) The dynamically created div that holds the hexadecimal colour value */
+#hexValue
+        {
+        float:left;
+        width:5em;
+        margin-left:0.2em;
+        color:#222;
+        font-family:'andale mono','lucida console','courier new',monospace;
+        }
+/* (DEMO ONLY) An extra class that floats & sizes the horizontal sliders for the demo */
+div.extraclass
+        {
+        width:275px;
+        float:left;
+        }
+#selectTestLabel, .mt
+        {
+        margin-top:1em;
+        }
+.halfSize
+        {
+        width:50%;
+        }
+.quarterSize
+        {
+        width:25%;
+        }
+dl,dt,dd
+        {
+        margin:0;
+        padding:0;
+        text-align:left;
+        }
+dt
+        {
+        width:5em;
+        float:left;
+        clear:left;
+        padding:0 0 4px 0;
+        }
+dd
+        {
+        margin-left:5em;
+        padding-bottom:4px;
+        }
+</style>
+<!--[if lte IE 6]>
+<link rel="stylesheet" type="text/css" media="screen, projection" href="../ie.css" />
+<style type="text/css">
+/* Beat the IE double float margin bug for the color selector demo */
+#colorBox
+        {
+        margin-left:2.5em;
+        }
+</style>
+<![endif]-->
+<script type="text/javascript" src="../slider.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+
+// Remember folks, none of this JavaScript is actually necessary, it's just there to show you
+// how to extend the slider functionality with callback functions/Object.methods
+
+// Preloading the images used for the slider handle, not at all necessary...
+var imgList = ["slider-disabled.png", "slider-disabled-1.png", "slider.png", "slider-1.png"];
+var preloadImg = []
+for(var i = 0, imgSrc; imgSrc = imgList[i]; i++) {
+        preloadImg[i] = new Image();
+        preloadImg[i].src = "./" + imgSrc;
+}; 
+
+/*******************************************************************************
+ Colour Picker demo 
+ ******************************************************************************/
+ 
+// Utility function for the demo that converts and rgb value to hex
+function toHex(N) {
+        if (N==null) return "00";
+        N=parseInt(N);
+        if (N==0 || isNaN(N)) return "00";
+        N=Math.max(0,N); N=Math.min(N,255);
+        N=Math.round(N);
+        return "0123456789ABCDEF".charAt((N-N%16)/16) + "0123456789ABCDEF".charAt(N%16);
+}
+
+// The first three input's have been given the class:
+//
+// "fd_slider_cb_update_updateColor"
+//
+// Which tells the associated sliders to call the function updateColor()
+// whenever a slider value updates. 
+function updateColor() {
+        var r = parseInt(document.getElementById('slider-r').value, 10) || 0;
+        var g = parseInt(document.getElementById('slider-g').value, 10) || 0;
+        var b = parseInt(document.getElementById('slider-b').value, 10) || 0;
+
+        var cbox = document.getElementById("colorBox");
+        if(cbox) cbox.style.backgroundColor = "rgb("+r+ ","+g+","+b+")";
+        var res = document.getElementById("hexValue");
+        if(res) res.innerHTML = "#" + toHex(r) + toHex(g) + toHex(b);
+}
+
+// The third input only has been given the class:
+//
+// "fd_slider_cb_create_createColourBox"
+//
+// Which tells the associated slider to call the function createColourBox()
+// whenever the associated slider has been created and injected into the DOM.
+// The function creates the divs used to display the dynamically generated
+// color.
+function createColourBox() {
+        var dl   = document.getElementsByTagName('dl')[0],
+            box  = document.createElement('div'),
+            res  = document.createElement('div');
+            
+        box.setAttribute('id', 'colorBox');        
+        res.setAttribute('id', 'hexValue');
+
+        dl.parentNode.insertBefore(res, dl.nextSibling);
+        dl.parentNode.insertBefore(box, res);
+        
+        // Update the color immediately
+        updateColor();
+        
+        // Clean up for poor old IE
+        res = box = null;
+};
+
+//]]>
+</script>
+</head>
+<body>
+<div id="article-wrapper">
+  <form action="" method="post">
+    <h1>Accessible Unobtrusive Slider Demo</h1>
+    <h2>Accessibility Enhancements (<abbr title="Accessible Rich Internet Applications">ARIA</abbr>)</h2>
+
+    <!-- The following paragraph is used to set the ARIA describedby property -->
+    <p id="fd_slider_describedby">Whenever a slider has focus, the keys <kbd title="Left arrow key">&larr;</kbd>, <kbd title="Right arrow key">&rarr;</kbd>, <kbd title="Up arrow key">&uarr;</kbd>, <kbd title="Down arrow key">&darr;</kbd>, <kbd title="Insert key">Ins</kbd> and <kbd title="Delete key">Del</kbd> can be used to control the slider handle (pressing either the <kbd>Page up</kbd> or <kbd>Page down</kbd> keys or <kbd title="CTRL key">CTRL</kbd> and an arrow key will move the handle by two steps at a time), the <kbd title="Home key">Home</kbd> key to set the slider at it&#8217;s minimum value and the <kbd title="End key">End</kbd> key to set the slider at it&#8217;s maximum value.</p>
+    <p>The script automatically assigns each slider the required ARIA role of &#8220;slider&#8221; and states &#8220;valuemax&#8221;, &#8220;valuemin&#8221;, &#8220;valuetext&#8221; and &#8220;valuenow&#8221;.</p>
+    <p>Should an element with an id of <code>fd_slider_describedby</code> exist, this is used to set the ARIA &#8220;describedby&#8221; relationship. Additionally, should the sliders associated form element itself have an associated <code>label</code>, this label is used to set the ARIA &#8220;labelledby&#8221; relationship.</p>
+    <p>View the <a href="../slider.js">JavaScript source</a> or read the <a href="http://www.frequency-decoder.com/2008/08/01/unobtrusive-slider-control-v2">related article</a>.</p>
+
+    <h2>ColourPicker Demo</h2>
+    <fieldset>
+      <p>The following three sliders have been created by giving the associated input the following className:</p>
+      <p><code>class="fd_range_0_255 fd_slider_cn_extraclass fd_tween fd_slider_cb_update_updateColor"</code></p>
+      <p>The third input has also been given the additional className:</p>
+      <p><code>class="fd_slider_cb_create_createColourBox"</code></p>
+      <!--
+      
+      ClassNames explained
+      ====================
+      
+      fd_tween                                  : Use the tween animation      
+      fd_range_0_255                            : A range of 0 to 255
+      fd_slider_cn_extraclass                   : Give the slider the className "extraclass"
+      fd_slider_cb_update_updateColor           : Call the function "updateColor()" whenever the slider value updates
+      fd_slider_cb_create_createColourBox       : Call the function "createColourBox()" whenever the slider has been created
+      
+      -->
+      <dl>
+        <dt><label for="slider-r">Red:</label></dt>
+        <dd><input name="slider1" id="slider-r" type="text" title="Range: 0 - 255" class="fd_range_0_255 fd_slider_cn_extraclass fd_tween fd_slider_cb_update_updateColor" value="100" maxlength="3" /></dd>
+        <dt><label for="slider-g">Green:</label></dt>
+        <dd><input name="slider2" id="slider-g" type="text" title="Range: 0 - 255" class="fd_range_0_255 fd_slider_cn_extraclass fd_tween fd_slider_cb_update_updateColor" value="150"  maxlength="3" /></dd>
+        <dt><label for="slider-b">Blue:</label></dt>
+        <dd><input name="slider3" id="slider-b" type="text" title="Range: 0 - 255" class="fd_range_0_255 fd_slider_cn_extraclass fd_tween fd_slider_cb_update_updateColor fd_slider_cb_create_createColourBox" value="200"  maxlength="3" /></dd>
+      </dl>
+    </fieldset>    
+
+    <h2>Don&#8217;t forget folks</h2>
+    <p>The rather nice png images and styles for the black sliders were located at <a href="http://www.schillmania.com/">schillmania</a>. Go visit&#8230;</p>
+  </form>
+</div>
+</body>
+</html>

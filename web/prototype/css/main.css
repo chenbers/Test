@@ -988,6 +988,20 @@ h2 {
 	background: url(/images/ls_tab_off.png) no-repeat;
 	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
 	}
+	
+.ls_radio_on {
+	height: 31px;
+	padding: 5px 0 0 5px;
+	background: url(/images/ls_tab_on.png) no-repeat;
+	font: bold 10px Verdana, Arial, Helvetica, sans-serif;
+	}
+	
+.ls_radio_off {
+	height: 31px;
+	padding: 5px 0 0 5px;
+	background: url(/images/ls_tab_off.png) no-repeat;
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	}
 
 .sub_wrapper {
 	padding: 0 0 15px 0;

@@ -22,12 +22,60 @@
 <link rel="stylesheet" type="text/css" href="css/ie7.css" />
 <![endif]--> 
 
+<link rel="stylesheet" type="text/css" media="screen, projection" href="/css/slider.css" />       
+
+<!--[if lte IE 6]>
+<link rel="stylesheet" type="text/css" media="screen, projection" href="ie_slider.css" />
+<![endif]-->
+<script type="text/javascript" src="/js/slider.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+
+// Disable the mouseWheel operations for all sliders...
+//fdSliderController.disableMouseWheel();
+
+// Preloading the images used for the slider handle
+var imgList = ["slider-disabled.png", "slider-disabled-1.png", "slider.png", "slider-1.png"];
+var preloadImg = []
+for(var i = 0, imgSrc; imgSrc = imgList[i]; i++) {
+        preloadImg[i] = new Image();
+        preloadImg[i].src = "../" + imgSrc;
+};
+
+// Callback function called after the slider has been created and added to the DOM
+// and also whenever the slider value changes.
+function updateLabel(opts) {
+        document.getElementById("slider_1").innerHTML = "Range low to highest (current value: " + opts.value + ")";
+};
+
+function updateLabel2(opts) {
+        document.getElementById("slider_2").innerHTML = "Range low to highest (current value: " + opts.value + ")";
+};
+
+function updateLabel3(opts) {
+        document.getElementById("slider_3").innerHTML = "Range low to highest (current value: " + opts.value + ")";
+};
+
+function updateLabel4(opts) {
+        document.getElementById("slider_4").innerHTML = "Range low to highest (current value: " + opts.value + ")";
+};
+
+function updateLabel5(opts) {
+        document.getElementById("slider_5").innerHTML = "Range low to highest (current value: " + opts.value + ")";
+};
 
 
+//]]>
+</script>
+
+<link rel="stylesheet" href="/css/test.css" type="text/css" media="screen" title="Test Stylesheet" charset="utf-8" />
+<script src="/js/protoculous-effects-shrinkvars.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/textboxlist.js" type="text/javascript" charset="utf-8"></script>
+<script src="/js/test.js" type="text/javascript" charset="utf-8"></script>
 
 </head>
 
-<body>
+<body id="test">
 
 <div id="header">
 	<div id="logo"><a href="/dash_exec.html"><img src="/images/x.gif" width="80" height="80" border="0" /></a></div>
@@ -105,7 +153,7 @@
             </tr>
 			<tr>
 			  <td valign="top" class="sub_wrapper">
-			  	<div class="ls_tab_sub_active"><a href="admin_add_redflag_1.html" class="ls_tab_add_redflag">Add Profile </a></div>
+			  	<div class="ls_tab_sub_active"><a href="admin_add_redflag_1.html" class="ls_tab_add_redflag">Add Red Flag</a></div>
 			  </td>
 			</tr>
           </table>
@@ -116,64 +164,457 @@
 					<div class="panel_nw">
 						<div class="panel_title">
 							<span class="admin">Admin: Add Red Flag Profile </span>
-							<span class="panel_links"></span>						</div>
+							<span class="panel_links"></span>
+                        </div>
 					</div>
 						<div class="panel_w">
 						  <div class="panel_content">
-						  
-						  	<div class="steps" align="center">
-								<ul id="mainNav" class="sixStep">
-									<li class="current"><a href=""><em>Step 1:</em><span>Create Profile</span></a></li>
-									<li><a href=""><em>Step 2:</em><span>Speed &amp;<br />Driving Style</span></a></li>
-									<li><a href=""><em>Step 3:</em><span>Safety &amp;<br />Diagnostics</span></a></li>
-									<li><a href=""><em>Step 4:</em><span>Efficiency &amp; Hours </span></a></li>
-									<li class="offSuccess"><a><em>Step 5:</em><span>Assign Drivers<br />or Vehicles</span></a></li>
-									<li class="success"><a><em>Red Flag<br />Profile  Creation Complete</em></a></li>
-								</ul>
-							</div>
+
 							<div class="clearfloat">&nbsp;</div>
 							
-							<ul id="grid_nav" style="margin: 0;">
-									<li class="r"><button value="submit" class="right next" onclick="parent.location.href='admin_add_redflag_2.html'; return false;"><span class="left">Next</span></button></li>
+							<ul id="grid_nav" style="margin: 0;">                            
+									<li class="r"><button value="submit" class="left"><span class="cancel">Cancel</span></button></li>
+                              <li class="r"><button value="submit" class="left" onclick="parent.location.href='admin_add_redflag_alert_details.html'; return false;"><span class="apply">Create Red Flag</span></button></li>
 							</ul>
 							
 							<div class="spacer"></div>
 																	
 									<table width="790" border="0" cellspacing="0" cellpadding="0">
-                                      <tr>
-                                        <td width="390" rowspan="2" valign="top">
-                                          <div class="add_section_title">Profile Information </div>
-                                          <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
-                                            <tr>
-                                              <td width="100">Name:</td>
-                                              <td>
-                                                <input name="textfield222" type="text" class="text" size="45" />
-                                              </td>
-                                            </tr>
-                                          </table>
-                                        </td>
-                                        <td width="10"><img src="images/x.gif" width="10" /></td>
-                                        <td width="390" rowspan="2" valign="top">
-                                          <div class="add_section_title">Description</div>
-                                          <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
-                                            <tr>
-                                              <td width="100" valign="top">Description:</td>
-                                              <td>
-                                                <textarea name="textfield22" cols="30" rows="5" wrap="virtual" class="text"></textarea>
-                                              </td>
-                                            </tr>
-                                          </table>
-                                        </td>
+                                        <tr>
+                                        <td colspan="3" valign="top"><div class="add_section_title">Name, Description and Type</div></td>
                                       </tr>
-                                      <tr>
-                                        <td>&nbsp;</td>
-                                      </tr>
+                                        <tr>
+                                          <td width="390" valign="top">
+                                            <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                                              <tr>
+                                                <td width="100">Name:</td>
+                                                <td>
+                                                  <input name="textfield" type="text" class="text" size="45" />
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <td width="100" valign="top">Description:</td>
+                                                <td>
+                                                  <textarea name="textfield" cols="28" rows="5" wrap="virtual" class="text"></textarea>
+                                                </td>
+                                              </tr>
+                                            </table>
+                                          </td>
+                                          <td width="10"><img src="images/x.gif" width="10" height="10" /></td>
+                                          <td width="390" valign="top">
+                                            <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                                              <tr>
+                                                <td valign="top">Red Flag Type</td>
+                                                <td>
+                                                  <table border="0" cellspacing="0" cellpadding="4">
+                                                    <tr>
+                                                      <td>
+                                                        <input type="radio" name="radio" id="radio37" value="radio" />
+                                                      </td>
+                                                      <td><img src="images/ico_driver.png" width="16" height="16" /></td>
+                                                      <td>User(s)</td>
+                                                      <td><img src="images/ico_vehicle.png" width="15" height="15" /></td>
+                                                      <td>
+                                                        <input type="radio" name="radio" id="radio38" value="radio" />
+                                                      </td>
+                                                      <td>Vehicle(s)</td>
+                                                    </tr>
+                                                  </table>
+                                                </td>
+                                              </tr>
+                                              <tr>
+                                                <td width="100" valign="top">Vehicle Type:</td>
+                                                <td>
+                                                  <select name="select2" class="text" id="select">
+                                                    <option>20 ton semi</option>
+                                                    <option>5 ton service vehicle</option>
+                                                    <option>other vehicle type here</option>
+                                                  </select>
+                                                </td>
+                                              </tr>
+                                            </table>
+                                          </td>
+                                        </tr>
                                     </table>
-							
+                                    
 							<div class="spacer"></div>
-								<ul id="grid_nav" style="margin: 0;">
-									<li class="r"><button value="submit" class="right next" onclick="parent.location.href='admin_add_redflag_2.html'; return false;"><span class="left">Next</span></button></li>
-								</ul>									
+																	
+									<table width="790" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                        <td colspan="3" valign="top">
+                                          <div class="add_section_title">Define Red Flag</div>
+                                        </td>
+                                      </tr>
+                                        <tr>
+                                          <td width="130" valign="top">
+                                          <table width="130" border="0" cellpadding="0" cellspacing="0"  style="margin-top: 10px;">
+                                            <tr>
+                                              <td valign="top" class="ls_radio_off">
+                                                    <table width="50" border="0" cellspacing="0" cellpadding="2">
+                                                      <tr>
+                                                        <td width="20">
+                                                        <input type="radio" name="radio" id="radio" value="radio" /></td>
+                                                        <td>Speed</td>
+                                                      </tr>
+                                                    </table>
+                                              </td>
+                                            </tr>
+                                            <tr>
+                                              <td valign="top" class="ls_radio_on">
+                                              		<table width="120" border="0" cellspacing="0" cellpadding="2">
+                                                      <tr>
+                                                        <td width="20">
+                                                        <input type="radio" name="radio" id="radio" value="radio" /></td>
+                                                        <td>Driving Style</td>
+                                                      </tr>
+                                                    </table>
+                                              </td>
+                                            </tr>
+                                            
+                                            <tr>
+                                              <td valign="top" class="ls_radio_off">
+                                              		<table width="100" border="0" cellspacing="0" cellpadding="2">
+                                                      <tr>
+                                                        <td width="20">
+                                                        <input type="radio" name="radio" id="radio" value="radio" /></td>
+                                                        <td>Safety</td>
+                                                      </tr>
+                                                    </table>
+                                              </td>
+                                            </tr>
+                                            <tr>
+                                              <td valign="top" class="ls_radio_off">
+                                              		<table width="100" border="0" cellspacing="0" cellpadding="2">
+                                                      <tr>
+                                                        <td width="20">
+                                                        <input type="radio" name="radio" id="radio" value="radio" /></td>
+                                                        <td>Diagnostics</td>
+                                                      </tr>
+                                                    </table>
+                                              </td>
+                                            </tr>
+                                            <tr>
+                                              <td valign="top" class="ls_radio_off">
+                                              		<table width="100" border="0" cellspacing="0" cellpadding="2">
+                                                      <tr>
+                                                        <td width="20">
+                                                        <input type="radio" name="radio" id="radio" value="radio" /></td>
+                                                        <td>Efficiency</td>
+                                                      </tr>
+                                                    </table>
+                                              </td>
+                                            </tr>
+                                            <tr>
+                                              <td valign="top" class="ls_radio_off">
+                                             	   <table width="100" border="0" cellspacing="0" cellpadding="2">
+                                                      <tr>
+                                                        <td width="20">
+                                                        <input type="radio" name="radio" id="radio" value="radio" /></td>
+                                                        <td>Hours</td>
+                                                      </tr>
+                                                    </table>
+                                              </td>
+                                            </tr>
+                                          </table>
+                                          </td>
+                                          <td width="10"><img src="images/x.gif" width="10" height="10" /></td>
+                                          <td width="650" valign="top">
+                                          
+								<div class="datagrid" id="">
+								<table width="630" id="driving_style_table" cellpadding="0" cellspacing="0" class="sortable-onload-show no-arrow rowstyle-alt colstyle-alt paginate-15 max-pages-4" style="margin-top: 10px;">
+								  <thead>
+								  <tr>
+								    <th width="44">&nbsp;</th>
+									<th width="131">Driver</th>
+									<th width="326">Sensitivity</th>
+									<th width="127">Type</th>
+									</tr>
+								  </thead>
+								  <tbody>
+								  <tr>
+								    <td width="44">
+								      <input type="checkbox" name="checkbox" id="checkbox" />
+								    </td>
+									<td>Hard Brake </td>
+									<td>
+                                     <label for="slider_1" class="lft" id="slider_1">Range low to highest</label>
+                                      <select name="slider_1" id="slider_1" class="fd_slider_cb_create_updateLabel fd_slider_cb_update_updateLabel fd_slider_cn_halfSize fd_hide_input">
+                                        <option value="lowest">lowest</option>
+                                        <option value="lower">lower</option>
+                                        <option value="low">low</option>
+                                        <option value="medium" selected="selected">medium</option>
+                                        <option value="high">high</option>
+                                        <option value="higher">higher</option>
+                                        <option value="highest">highest</option>
+                                      </select>
+                                    </td>
+								    <td>
+								      <select name="select3" class="text" id="select2">
+								        <option>information</option>
+								        <option>warning</option>
+								        <option>critical</option>
+							          </select>
+							        </td>
+								    </tr>
+								  <tr>
+								    <td width="44">
+								      <input type="checkbox" name="checkbox2" id="checkbox2" />
+								    </td>
+									<td>Hard Accelerate </td>
+									<td>
+                                     <label for="slider_2" class="lft" id="slider_2">Range low to highest</label>
+                                      <select name="slider_2" id="slider_2" class="fd_slider_cb_create_updateLabel2 fd_slider_cb_update_updateLabel2 fd_slider_cn_halfSize fd_hide_input">
+                                        <option value="lowest">lowest</option>
+                                        <option value="lower">lower</option>
+                                        <option value="low">low</option>
+                                        <option value="medium" selected="selected">medium</option>
+                                        <option value="high">high</option>
+                                        <option value="higher">higher</option>
+                                        <option value="highest">highest</option>
+                                      </select>  
+									</td>
+								    <td>
+								      <select name="select4" class="text" id="select3">
+                                        <option>information</option>
+                                        <option>warning</option>
+                                        <option>critical</option>
+                                      </select>
+								    </td>
+								    </tr>
+								  <tr>
+								    <td width="44">
+								      <input type="checkbox" name="checkbox3" id="checkbox3" />
+								    </td>
+								    <td>Hard Right Turn </td>
+								    <td>
+                                    <label for="slider_3" class="lft" id="slider_3">Range low to highest</label>
+                                      <select name="slider_3" id="slider_3" class="fd_slider_cb_create_updateLabel3 fd_slider_cb_update_updateLabel3 fd_slider_cn_halfSize fd_hide_input">
+                                        <option value="lowest">lowest</option>
+                                        <option value="lower">lower</option>
+                                        <option value="low">low</option>
+                                        <option value="medium" selected="selected">medium</option>
+                                        <option value="high">high</option>
+                                        <option value="higher">higher</option>
+                                        <option value="highest">highest</option>
+                                      </select>  
+                                    </td>
+								    <td>
+								      <select name="select5" class="text" id="select4">
+                                        <option>information</option>
+                                        <option>warning</option>
+                                        <option>critical</option>
+                                      </select>
+								    </td>
+								    </tr>
+								  <tr>
+								    <td width="44">
+								      <input type="checkbox" name="checkbox4" id="checkbox4" />
+								    </td>
+								    <td>Hard Left Turn </td>
+								    <td>
+                                    <label for="slider_4" class="lft" id="slider_4">Range low to highest</label>
+                                      <select name="slider_2" id="slider_4" class="fd_slider_cb_create_updateLabel4 fd_slider_cb_update_updateLabel4 fd_slider_cn_halfSize fd_hide_input">
+                                        <option value="lowest">lowest</option>
+                                        <option value="lower">lower</option>
+                                        <option value="low">low</option>
+                                        <option value="medium" selected="selected">medium</option>
+                                        <option value="high">high</option>
+                                        <option value="higher">higher</option>
+                                        <option value="highest">highest</option>
+                                      </select>  
+                                    </td>
+								    <td>
+								      <select name="select6" class="text" id="select5">
+                                        <option>information</option>
+                                        <option>warning</option>
+                                        <option>critical</option>
+                                      </select>
+								    </td>
+								    </tr>
+								  <tr>
+								    <td width="44">
+								      <input type="checkbox" name="checkbox5" id="checkbox5" />
+								    </td>
+								    <td>Hard Bump </td>
+								    <td>
+                                    <label for="slider_5" class="lft" id="slider_5">Range low to highest</label>
+                                      <select name="slider_5" id="slider_5" class="fd_slider_cb_create_updateLabel5 fd_slider_cb_update_updateLabel5 fd_slider_cn_halfSize fd_hide_input">
+                                        <option value="lowest">lowest</option>
+                                        <option value="lower">lower</option>
+                                        <option value="low">low</option>
+                                        <option value="medium" selected="selected">medium</option>
+                                        <option value="high">high</option>
+                                        <option value="higher">higher</option>
+                                        <option value="highest">highest</option>
+                                      </select>  
+                                    </td>
+								    <td>
+								      <select name="select7" class="text" id="select6">
+                                        <option>information</option>
+                                        <option>warning</option>
+                                        <option>critical</option>
+                                      </select>
+								    </td>
+								    </tr>
+								  </tbody>
+								</table>
+							</div>
+                            
+                            
+                            
+                            
+                                                                      
+                                          
+                                          </td>
+                                        </tr>
+                                    </table>
+                                    
+                                    <div class="spacer"></div>
+                                    
+                                    <table width="790" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                        <td colspan="3" valign="top">
+                                          <div class="add_section_title">Assign Vehicles</div>
+                                        </td>
+                                      </tr>
+                                        <tr>
+                                          <td width="130" valign="top">
+                                          <table width="130" border="0" cellpadding="0" cellspacing="0"  style="margin-top: 10px;">
+                                            <tr>
+                                              <td valign="top" class="ls_radio_off">
+                                                    <table width="50" border="0" cellspacing="0" cellpadding="2">
+                                                      <tr>
+                                                        <td width="20">
+                                                        <input type="radio" name="radio" id="radio" value="radio" /></td>
+                                                        <td>All</td>
+                                                      </tr>
+                                                    </table>
+                                              </td>
+                                            </tr>
+                                            <tr>
+                                              <td valign="top" class="ls_radio_on">
+                                              		<table width="120" border="0" cellspacing="0" cellpadding="2">
+                                                      <tr>
+                                                        <td width="20">
+                                                        <input type="radio" name="radio" id="radio" value="radio" /></td>
+                                                        <td>Fleet</td>
+                                                      </tr>
+                                                    </table>
+                                              </td>
+                                            </tr>
+                                            
+                                            <tr>
+                                              <td valign="top" class="ls_radio_off">
+                                              		<table width="100" border="0" cellspacing="0" cellpadding="2">
+                                                      <tr>
+                                                        <td width="20">
+                                                        <input type="radio" name="radio" id="radio" value="radio" /></td>
+                                                        <td>Region</td>
+                                                      </tr>
+                                                    </table>
+                                              </td>
+                                            </tr>
+                                            <tr>
+                                              <td valign="top" class="ls_radio_off">
+                                              		<table width="100" border="0" cellspacing="0" cellpadding="2">
+                                                      <tr>
+                                                        <td width="20">
+                                                        <input type="radio" name="radio" id="radio" value="radio" /></td>
+                                                        <td>Team</td>
+                                                      </tr>
+                                                    </table>
+                                              </td>
+                                            </tr>
+                                          </table>
+                                          </td>
+                                          <td width="10"><img src="images/x.gif" width="10" height="10" /></td>
+                                          <td width="650" valign="top">
+                                          
+								<div class="datagrid" id="">
+								<table width="630" id="zones_table" cellpadding="0" cellspacing="0" class="sortable-onload-show no-arrow rowstyle-alt colstyle-alt paginate-15 max-pages-4" style="margin-top: 10px;">
+								  <thead>
+								  <tr>
+								    <th width="44">&nbsp;</th>
+									<th width="584">Fleet</th>
+									</tr>
+								  </thead>
+								  <tbody>
+								  <tr>
+								    <td width="44">
+								      <input type="checkbox" name="checkbox" id="checkbox" />
+								    </td>
+									<td>Fleet A </td>
+									</tr>
+								  <tr>
+								    <td width="44"><input type="checkbox" name="checkbox" id="checkbox" /></td>
+									<td>Fleet B</td>
+									</tr>
+								  <tr>
+								    <td width="44">
+								      <input type="checkbox" name="checkbox3" id="checkbox3" />
+								    </td>
+								    <td>Fleet C</td>
+								    </tr>
+								  <tr>
+								    <td width="44">
+								      <input type="checkbox" name="checkbox4" id="checkbox4" />
+								    </td>
+								    <td>Fleet D</td>
+								    </tr>
+								  <tr>
+								    <td width="44">
+								      <input type="checkbox" name="checkbox5" id="checkbox5" />
+								    </td>
+								    <td>Fleet E</td>
+								    </tr>
+								  </tbody>
+								</table>
+							</div>
+                            
+                            
+                            
+                            
+                                                                      
+                                          
+                                          </td>
+                                        </tr>
+                                    </table>
+                                    
+                                    <div class="spacer"></div>
+                                    
+                                    <table width="790" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                          <td valign="top"><div class="add_section_title">Notifications by Name</div></td>
+                                          <td>&nbsp;</td>
+                                          <td valign="top"><div class="add_section_title">Notifications by email</div></td>
+                                        </tr>
+                                        <tr>
+                                          <td width="390" valign="top">Type the names of the employess you would like to notify.  Names will appear as you type.  Select names from the list.</td>
+                                          <td width="10"><img src="images/x.gif" width="10" height="10" /></td>
+                                          <td width="390" valign="top">Type the email addresses you would like to notify separated by commas.</td>
+                                      </tr>
+                                        <tr>
+                                          <td valign="top"
+                                          <input type="text" value="" id="facebook-demo" />
+                                          <div id="facebook-auto">
+                                
+                                            <div class="default">Type the names of employess you would like notified.</div> 
+                                            <ul class="feed">
+                                              <li value="1">Jorge Luis Borges</li>
+                                              <li value="2">Julio Cortazar</li>
+                                            </ul>
+                                          </div>
+                                          </td>
+                                          <td>&nbsp;</td>
+                                          <td valign="top">
+                                            <textarea name="textarea" rows="5" class="text" id="textarea" style="width: 390px;"></textarea>
+                                          </td>
+                                        </tr>
+                                    </table>                                    
+                                    
+                                    
+                                                                        
+															
 						  </div>
 						</div>
 					<div class="panel_sw">
@@ -191,6 +632,22 @@
 
 </div>
 <!-- END WRAPPER -->
+
+    <script language="JavaScript">
+        document.observe('dom:loaded', function() {
+        
+        
+          // init
+          tlist2 = new FacebookList('facebook-demo', 'facebook-auto',{fetchFile:'fetched.htm'});
+          
+          // fetch and feed
+          new Ajax.Request('json.htm', {
+            onSuccess: function(transport) {
+                transport.responseText.evalJSON(true).each(function(t){tlist2.autoFeed(t)});
+            }
+          });
+        });    
+    </script>
 
 </body>
 
