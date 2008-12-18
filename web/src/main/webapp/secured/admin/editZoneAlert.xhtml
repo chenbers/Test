@@ -118,7 +118,7 @@
                               <h:outputText value="#{messages.editAlerts_timeframe}" />
                             </td>
                             <td>
-                              <h:selectOneRadio value="#{zoneAlertsBean.item.anytime}" onchange="document.getElementById('timeframePickers').style.display = (this.value == 'true' ? 'none' : '')">
+                              <h:selectOneRadio value="#{zoneAlertsBean.item.anytime}" onchange="document.getElementById('timeframePickers').style.display = (this.value == 'true' ? 'none' : '')" enabledClass="radioitem>
                                 <f:selectItem itemValue="true" itemLabel="#{messages.editAlerts_timeframeAnytime}" />
                                 <f:selectItem itemValue="false" itemLabel="#{messages.editAlerts_timeframeBetween}" />
                               </h:selectOneRadio>
@@ -188,7 +188,7 @@
                           <h:outputText value="#{messages.editAlerts_assignTo}" />
                         </div>
 
-                        <rich:message for="assignType" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                        <rich:message for="alertAssignFrom" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 
                         <ui:include src="../../includes/listPicker.xhtml">
                           <ui:param name="bean" value="#{zoneAlertsBean.assignPicker}" />
