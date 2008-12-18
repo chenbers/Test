@@ -395,6 +395,8 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 Driver v = d.getDriver();
                 DriveQMap dqm = d.getDriveQ();
                 
+                dri.setDriver(v);
+                
                 dri.setGroupID(v.getPerson().getGroupID());
                 dri.setEmployeeID(v.getPerson().getEmpid());
                 dri.setEmployee(v.getPerson().getFirst() + " " +
