@@ -56,7 +56,12 @@
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_vehicle}" />
       					</f:facet>
-      					<a href="#{facesContext.externalContext.request.contextPath}/secured/vehicle.faces">#{item.vehicle.vehicleID}</a>    					
+      					<h:commandLink action="go_vehicle" value="Vehicle">
+							<f:setPropertyActionListener 
+								value="#{item.driver}" 
+								target="#{navigationBean.driver}"> <!-- replace with vehicle object -->
+							</f:setPropertyActionListener>
+						</h:commandLink>      					
     				</rich:column>
     				<rich:column rendered="#{driverColumns['milesDriven'].visible}" 
     					sortBy="#{item.milesDriven}">
