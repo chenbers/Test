@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreTypeBreakdown;
 import com.inthinc.pro.model.ScoreableEntity;
@@ -190,5 +191,15 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      * @return  Map with scoreType as key and the scorableEntity for that scoreType.
      */
     Map<ScoreType, ScoreableEntity> getScoreBreakdownByTypeAndMiles(Integer driverID, Integer milesBack, ScoreType scoreType);
+
+
+    /**
+     * Retrieve the individual lines in the Idling Report.
+     * 
+     * @param groupID
+     * @param duration
+     */
+    List<IdlingReportItem> getIdlingReportData(Integer groupID, Duration duration);    
+
 
 }
