@@ -20,6 +20,9 @@ public class VehicleTripsBean extends BaseBean
 
     private NavigationBean navigation;
     private VehicleDAO vehicleDAO;
+    private DriverDAO driverDAO;
+
+
     private EventDAO eventDAO;
     
     private Date startDate = new Date();
@@ -69,7 +72,7 @@ public class VehicleTripsBean extends BaseBean
     public void initTrips()
     {
         List<Trip> tempTrips = new ArrayList<Trip>();
-        tempTrips = vehicleDAO.getTrips(navigation.getVehicle().getVehicleID(), startDate, endDate);
+        tempTrips = driverDAO.getTrips(navigation.getVehicle().getVehicleID(), startDate, endDate); //TEMP CHANGE TO VEHICLEDAO
 
         trips = new ArrayList<TripDisplay>();
         selectedTrips = new ArrayList<TripDisplay>();
@@ -280,4 +283,14 @@ public class VehicleTripsBean extends BaseBean
 	public void setSelectedTrips(List<TripDisplay> selectedTrips) {
 		this.selectedTrips = selectedTrips;
 	}
+	
+    public DriverDAO getDriverDAO()
+    {
+        return driverDAO;
+    }
+
+    public void setDriverDAO(DriverDAO driverDAO)
+    {
+        this.driverDAO = driverDAO;
+    }
 }
