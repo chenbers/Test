@@ -79,7 +79,10 @@
       					<h:commandLink action="go_vehicle">
       						<iwi:scoreBox style="#{item.styleOverall}" 
       							score="#{item.overallScore}"/>    
-							
+							<f:setPropertyActionListener 
+								value="#{item.vehicle}" 
+								target="#{navigationBean.vehicle}">
+							</f:setPropertyActionListener>	
 						</h:commandLink>       					
     				</rich:column>
     				<rich:column rendered="#{vehicleColumns['speed'].visible}">
@@ -89,7 +92,10 @@
       					<h:commandLink action="go_vehicle">
       						<iwi:scoreBox style="#{item.styleSpeed}" 
       							score="#{item.speedScore}"/>    
-							
+						<f:setPropertyActionListener 
+							value="#{item.vehicle}" 
+							target="#{navigationBean.vehicle}">
+						</f:setPropertyActionListener>								
 						</h:commandLink>             			
     				</rich:column>
     				<rich:column rendered="#{vehicleColumns['style'].visible}">
@@ -99,7 +105,10 @@
       					<h:commandLink action="go_vehicle">
       						<iwi:scoreBox style="#{item.styleStyle}" 
       							score="#{item.styleScore}"/>    
-							
+						<f:setPropertyActionListener 
+							value="#{item.vehicle}" 
+							target="#{navigationBean.vehicle}">
+						</f:setPropertyActionListener>								
 						</h:commandLink>       					
     				</rich:column>
     			</rich:dataTable>    			
