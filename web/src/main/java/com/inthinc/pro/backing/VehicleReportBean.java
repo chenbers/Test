@@ -125,9 +125,8 @@ public class VehicleReportBean extends BaseReportBean
         }
                       
         if ( this.searchFor.trim().length() != 0 ) {     
-            try { 
-                Integer id = Integer.parseInt(this.searchFor.trim());   
-                String compareToID = Integer.toString(id.intValue());
+            try {                 
+                String compareToID = this.searchFor.trim();
                 List <VehicleReportItem> matchedVehicles = new ArrayList<VehicleReportItem>();    
                 
                 for ( int i = 0; i < vehiclesData.size(); i++ ) {
