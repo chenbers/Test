@@ -130,16 +130,38 @@ public class DriverReportBean extends BaseReportBean
                 DriverReportItem d = this.driversData.get(i);
                 Person p = d.getDriver().getPerson();
                 
-                //Fuzzy
+                int index1;
+                int index2;
+                int index3;
+                                
                 if ( p != null ) {   
-                    String lowerCaseLast = 
-                        p.getLast().toLowerCase();
-                    int index1 = 
-                        lowerCaseLast.indexOf(trimmedSearch);                    
+                    String lowerCaseFirst = 
+                        p.getFirst().toLowerCase();
+                    index1 = 
+                        lowerCaseFirst.indexOf(trimmedSearch);                    
                     if (index1 != -1) {                        
                         matchedDrivers.add(d);
                     }
-                }
+                
+                    String lowerCaseLast = 
+                        p.getLast().toLowerCase();
+                    index2 = 
+                        lowerCaseLast.indexOf(trimmedSearch);                    
+                    if ((index1 == -1) && 
+                        (index2 != -1)) {                        
+                        matchedDrivers.add(d);
+                    }
+                    
+                    String lowerCaseUserID = 
+                        p.getUser().getUsername();
+                    index3 = 
+                        lowerCaseUserID.indexOf(trimmedSearch);                    
+                    if ((index1 == -1) && 
+                        (index2 == -1) &&
+                        (index3 != -1) ) {                        
+                        matchedDrivers.add(d);
+                    }
+                }                
             }
             
             loadResults(matchedDrivers);             
