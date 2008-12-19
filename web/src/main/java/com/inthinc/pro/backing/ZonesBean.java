@@ -112,11 +112,15 @@ public class ZonesBean extends BaseBean
         final FacesContext context = FacesContext.getCurrentInstance();
 
         if (add)
-// TODO: is save by groupID or acctID            
-//            item.setZoneID(zoneDAO.create(getUser().getPerson().getGroupID(), item));
+        {
+            item.setGroupID(getUser().getPerson().getGroupID());
             item.setZoneID(zoneDAO.create(getAccountID(), item));
+        }
         else
+        {
+            item.setGroupID(getUser().getPerson().getGroupID());
             zoneDAO.update(item);
+        }
 
         // add a message
         final String summary = MessageUtil.formatMessageString(add ? "zone_added" : "zone_updated", item.getName());

@@ -113,7 +113,7 @@ public class SiloServiceTest
         siloService = new SiloServiceCreator(host, port).getService();
 //        HessianDebug.debugIn = true;
 //        HessianDebug.debugOut = true;
-//        HessianDebug.debugRequest = true;
+        HessianDebug.debugRequest = true;
         
         initApp();
         
@@ -341,7 +341,7 @@ public class SiloServiceTest
         groupHierarchy(acctID);
         
         // zones
-        zones(acctID);
+        zones(acctID, team1Group.getGroupID());
         
         // devices
         devices(acctID);
@@ -361,6 +361,9 @@ public class SiloServiceTest
         persons(team1Group.getGroupID());
         persons(team2Group.getGroupID());
         
+        // assign manager to group
+        groupManager(team1Group.getGroupID());
+        
         // user
         users(team2Group.getGroupID());
         
@@ -378,17 +381,17 @@ public class SiloServiceTest
         
         // zone alert profiles
 // TODO:        
-//        zoneAlertProfiles(acctID);
+//        zoneAlertProfiles(acctID, team1Group.getGroupID());
     }
 
 
-    private void zoneAlertProfiles(Integer acctID)
+    private void zoneAlertProfiles(Integer acctID, Integer groupID)
     {
         ZoneHessianDAO zoneDAO = new ZoneHessianDAO();
         zoneDAO.setSiloService(siloService);
 
         // create a zone to use
-        Zone zone = new Zone(0, acctID, Status.ACTIVE, "Zone With Alerts", "123 Street, Salt Lake City, UT 84107");
+        Zone zone = new Zone(0, acctID, Status.ACTIVE, "Zone With Alerts", "123 Street, Salt Lake City, UT 84107", groupID);
         List<LatLng> points = new ArrayList<LatLng>();
         points.add( new LatLng(40.723871753812f, -111.92932452647742f));
         points.add( new LatLng(40.704246f, -111.948613f));
@@ -448,12 +451,12 @@ public class SiloServiceTest
         
     }
 
-    private void zones(Integer acctID)
+    private void zones(Integer acctID, Integer groupID)
     {
         ZoneHessianDAO zoneDAO = new ZoneHessianDAO();
         zoneDAO.setSiloService(siloService);
         
-        Zone zone = new Zone(0, acctID, Status.ACTIVE, "Zone 1", "123 Street, Salt Lake City, UT 84107");
+        Zone zone = new Zone(0, acctID, Status.ACTIVE, "Zone 1", "123 Street, Salt Lake City, UT 84107", groupID);
         List<LatLng> points = new ArrayList<LatLng>();
         points.add( new LatLng(40.723871753812f, -111.92932452647742f));
         points.add( new LatLng(40.704246f, -111.948613f));
@@ -486,6 +489,12 @@ public class SiloServiceTest
         // find/compare after update
         returnedZone = zoneDAO.findByID(zoneID);
         Util.compareObjects(zone, returnedZone, ignoreFields);
+        
+        List<Zone> zones = zoneDAO.getZones(acctID);
+        assertNotNull(zones);
+        assertEquals(1, zones.size());
+        Util.compareObjects(zone, zones.get(0), ignoreFields);
+        
         
         // delete
         Integer deleteCount = zoneDAO.deleteByID(zoneID);
@@ -902,9 +911,25 @@ logger.debug("Persons GroupID: " + groupID);
             }
         }
         
+        
+        
     }
 
+    private void groupManager(Integer groupID)
+    {
+        // try to assign the person as the managerID of a group
+        Person manager = personList.get(0);
+        GroupHessianDAO groupHessianDAO = new GroupHessianDAO();
+        groupHessianDAO.setSiloService(siloService);
+        
+        Group group = groupHessianDAO.findByID(groupID);
+        group.setManagerID(manager.getPersonID());
+        
+        groupHessianDAO.update(group);
 
+        Group returnedGroup = groupHessianDAO.findByID(groupID);
+        Util.compareObjects(group, returnedGroup);
+    }
 
     private void users(Integer groupID)
     {
