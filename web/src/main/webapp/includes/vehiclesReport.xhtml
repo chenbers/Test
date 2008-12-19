@@ -28,7 +28,9 @@
 						<f:facet name="header">
 							<h:outputText value="#{messages.reports_group}" />
 						</f:facet>						
-						<h:outputText value="#{item.group}" />  							
+						<h:outputLink value="#{item.goTo}">
+							<h:outputText value="#{item.group}" />
+						</h:outputLink>											  							
     				</rich:column>
     				<rich:column rendered="#{vehicleColumns['vehicleID'].visible}" 
     					sortBy="#{item.vehicleID}">
@@ -59,7 +61,7 @@
       						value="#{item.driver.person.first} #{item.driver.person.last}">
 							<f:setPropertyActionListener 
 								value="#{item.driver}" 
-								target="#{driverBean.driver}">
+								target="#{navigationBean.driver}">
 							</f:setPropertyActionListener>
 						</h:commandLink>         										
     				</rich:column>
