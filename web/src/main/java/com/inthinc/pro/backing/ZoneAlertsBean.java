@@ -74,13 +74,6 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
     {
         final ZoneAlertView alertView = new ZoneAlertView();
         BeanUtils.copyProperties(alert, alertView);
-        if ((alertView.getDayOfWeek() == null) || (alertView.getDayOfWeek().size() != 7))
-        {
-            final ArrayList<Boolean> dayOfWeek = new ArrayList<Boolean>();
-            for (int i = 0; i < 7; i++)
-                dayOfWeek.add(false);
-            alertView.setDayOfWeek(dayOfWeek);
-        }
         alertView.setZoneDAO(zoneDAO);
         alertView.setSelected(false);
         return alertView;

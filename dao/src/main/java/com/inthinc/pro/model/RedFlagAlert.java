@@ -10,8 +10,6 @@ public class RedFlagAlert extends BaseAlert
 
     @ID
     private Integer           redFlagAlertID;
-    private String            speedSet;
-    @Column(updateable = false)
     private Integer[]         speedSettings;
     private RedFlagLevel[]    speedLevels;
     @Column(name = "accel")
@@ -38,48 +36,16 @@ public class RedFlagAlert extends BaseAlert
         this.redFlagAlertID = redFlagAlertID;
     }
 
-    public String getSpeedSet()
-    {
-        return speedSet;
-    }
-
-    public void setSpeedSet(String speedSet)
-    {
-        this.speedSet = speedSet;
-        this.speedSettings = null;
-    }
-
     public Integer[] getSpeedSettings()
     {
-        if ((speedSettings == null) && (speedSet != null))
-        {
-            final String[] speeds = speedSet.split(" ");
-            speedSettings = new Integer[speeds.length];
-            for (int i = 0; i < speeds.length; i++)
-                speedSettings[i] = new Integer(speeds[i]);
-        }
         return speedSettings;
     }
 
     public void setSpeedSettings(Integer[] speedSettings)
     {
         this.speedSettings = speedSettings;
-        if ((speedSettings == null) || (speedSettings.length == 0))
-            this.speedSet = null;
-        else
-        {
-            if (speedSettings.length != 15)
-                throw new IllegalArgumentException("speedSettings.length must be 15");
-
-            final StringBuilder sb = new StringBuilder();
-            for (final Integer speed : speedSettings)
-            {
-                if (sb.length() > 0)
-                    sb.append(' ');
-                sb.append(speed);
-            }
-            this.speedSet = sb.toString();
-        }
+        if ((speedSettings != null) && (speedSettings.length != 15))
+            throw new IllegalArgumentException("speedSettings.length must be 15");
     }
 
     public RedFlagLevel[] getSpeedLevels()

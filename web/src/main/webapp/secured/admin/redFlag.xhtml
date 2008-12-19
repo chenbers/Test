@@ -94,6 +94,10 @@
                               </ui:fragment>
                             </td>
                           </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editRedFlag_type}" /></td>
+                            <td><h:outputText value="#{redFlagAlertsBean.item.type}" /></td>
+                          </tr>
                         </table>
 
                       </td>
@@ -116,20 +120,92 @@
 
                   <table width="790" border="0" cellspacing="0" cellpadding="0">
                     <tr>
-                      <td width="240" valign="top">
-                
-                        <table width="230" border="0" cellspacing="2" cellpadding="4" align="center">
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editRedFlag_type}" /></td>
-                            <td><h:outputText value="#{redFlagAlertsBean.item.type}" /></td>
-                          </tr>
-                        </table>
+                      <td>
 
-                      </td>
-                      <td width="10"><img src="images/x.gif" width="10" /></td>
-                      <td width="540" valign="top">
+                        <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'speed'}">
 
-                        TODO: flag specifics
+                          <table width="100%" border="0" cellpadding="2" cellspacing="0">
+                            <tr class="datagrid">
+                              <th><h:outputText value="#{messages.editRedFlag_speedHeader}" /></th>
+                              <th colspan="2"><h:outputText value="#{messages.editRedFlag_speedSettingHeader}" /></th>
+                              <th><h:outputText value="#{messages.editRedFlag_severity}" /></th>
+                            </tr>
+                            <c:forEach begin="0" var="index" end="14">
+                              <c:set var="id" value="speed#{index}" />
+                              <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
+                                <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                  <h:selectBooleanCheckbox id="#{id}Selected" value="#{redFlagAlertsBean.item.speedSelected[index]}" />
+                                  <h:outputText value="#{(index * 5) + 5}" />
+                                  <h:outputText value=" mph" />
+                                </td>
+                                <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" width="200">
+                                  <rich:inputNumberSlider id="#{id}" value="#{redFlagAlertsBean.item.speedSettings[index]}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="-25" maxValue="25" step="1" />
+                                </td>
+                                <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                  <h:outputText id="#{id}MPH" value="#{redFlagAlertsBean.item.speedSettings[index]}" />
+                                  <h:outputText value=" mph" />
+                                </td>
+                                <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                  <h:selectOneMenu id="#{id}Severity" value="#{redFlagAlertsBean.item.speedLevels[index]}" >
+                                    <f:selectItem itemValue="INFO" itemLabel="#{messages.redFlag_info}" />
+                                    <f:selectItem itemValue="WARNING" itemLabel="#{messages.redFlag_warning}" />
+                                    <f:selectItem itemValue="CRITICAL" itemLabel="#{messages.redFlag_critical}" />
+                                  </h:selectOneMenu>
+                                </td>
+                              </tr>
+                            </c:forEach>
+                          </table>
+
+                        </h:panelGroup>
+
+                        <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'drivingStyle'}">
+
+                          <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                            <tr class="datagrid">
+                              <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
+                              <th colspan="2"><h:outputText value="#{messages.editRedFlag_sensitivity}" /></th>
+                              <th><h:outputText value="#{messages.editRedFlag_severity}" /></th>
+                            </tr>
+                            <c:forEach begin="0" var="index" end="3">
+                              <c:set var="sensitivityItem" value="#{(index == 0) ? 'hardBrake' : ((index == 1) ? 'hardAcceleration' : ((index == 2) ? 'hardTurn' : 'hardVertical'))}" />
+                              <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
+                                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                  <c:set var="sensitivitySelected" value="#{sensitivityItem}Selected" />
+                                  <h:selectBooleanCheckbox id="#{sensitivityItem}Selected" value="#{redFlagAlertsBean.item[sensitivitySelected]}" />
+                                  <c:set var="sensitivityLabel" value="editDevice_#{sensitivityItem}" />
+                                  <h:outputText value="#{messages[sensitivityLabel]}" />
+                                </td>
+                                <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" width="200">
+                                  <rich:inputNumberSlider id="#{sensitivityItem}" disabled="true" value="#{redFlagAlertsBean.item[sensitivityItem]}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="20" maxValue="90" />
+                                </td>
+                                <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;">
+                                  <c:set var="sensitivityLevel" value="#{(redFlagAlertsBean.item[sensitivityItem] ge 67) ? messages.editDevice_sensitivityMore : ((redFlagAlertsBean.item[sensitivityItem] ge 43) ? messages.editDevice_sensitivityAverage : messages.editDevice_sensitivityLess)}" />
+                                  <h:outputText id="#{sensitivityItem}Level" style="font-weight:bold" value="#{sensitivityLevel}" />
+                                </td>
+                                <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                  <c:set var="sensitivityLevel" value="#{sensitivityItem}Level" />
+                                  <h:outputText value="#{redFlagAlertsBean.item[sensitivityLevel]}" />
+                                </td>
+                              </tr>
+                            </c:forEach>
+                          </table>
+
+                        </h:panelGroup>
+
+                        <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'safety'}">
+
+                          <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
+                            <tr>
+                              <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
+                              <th><h:outputText value="#{messages.editRedFlag_severity}" /></th>
+                            </tr>
+                            <tr class="tableEven">
+                              <td><h:outputText value="#{messages.editRedFlag_seatBelt}" /></td>
+                              <td><h:outputText value="#{redFlagAlertsBean.item.seatBeltLevel.description}" /></td>
+                            </tr>
+                          </table>
+
+                        </h:panelGroup>
 
                       </td>
                     </tr>

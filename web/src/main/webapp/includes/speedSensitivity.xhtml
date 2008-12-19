@@ -44,7 +44,6 @@
                                 <th><h:outputText value="#{messages.editDevice_speedHeader}" /></th>
                                 <th colspan="2"><h:outputText value="#{messages.editDevice_speedSettingHeader}" /></th>
                               </tr>
-
                               <c:forEach begin="0" var="index" end="14">
                                 <c:set var="id" value="speed#{index}" />
                                 <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
@@ -60,7 +59,6 @@
                                   </td>
                                 </tr>
                               </c:forEach>
-
                             </table>
 
                           </td>

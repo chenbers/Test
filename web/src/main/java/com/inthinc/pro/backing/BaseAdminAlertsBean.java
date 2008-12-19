@@ -176,7 +176,15 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
             oldItem = item;
             oldEmailToString = item.getEmailToString();
             getAssignPicker().setPicked(getAssignPicked());
+            getAssignPicker().setPickFrom(getAssignPickFrom());
             getPeoplePicker().setPicked(getNotifyPicked());
+        }
+        if ((item.getDayOfWeek() == null) || (item.getDayOfWeek().size() != 7))
+        {
+            final ArrayList<Boolean> dayOfWeek = new ArrayList<Boolean>();
+            for (int i = 0; i < 7; i++)
+                dayOfWeek.add(false);
+            item.setDayOfWeek(dayOfWeek);
         }
         return item;
     }
@@ -259,15 +267,6 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         boolean valid = true;
         for (final BaseAlertView alert : saveItems)
         {
-            // time of day
-            if (!alert.isAnytime() && (alert.getStartTOD() >= alert.getStopTOD()))
-            {
-                final String summary = MessageUtil.formatMessageString("editAlerts_invalidTimeframe");
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                context.addMessage("edit-form:stopTOD", message);
-                valid = false;
-            }
-
             // assigned to something
             boolean assigned = (alert.getGroupIDs() != null) && (alert.getGroupIDs().size() > 0);
             if (!assigned)
