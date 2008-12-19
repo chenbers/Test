@@ -28,6 +28,7 @@ import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreTypeBreakdown;
 import com.inthinc.pro.model.ScoreableEntity;
+import com.inthinc.pro.model.Vehicle;
 
 public class ReportServiceMockImpl extends AbstractServiceMockImpl implements ReportService
 {
@@ -429,8 +430,7 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
     
     @Override
     public Map<String, Object> getDScoreByDM(Integer driverID, Integer mileage)
-    {
-logger.debug("getDVQ for" + driverID);        
+    {       
         SearchCriteria searchCriteria = new SearchCriteria();
         searchCriteria.addKeyValue("driver:driverID", driverID);
 
@@ -571,8 +571,27 @@ logger.debug("getDVQ for" + driverID);
     
     public List<Map<String, Object>> getVDScoresByGT(Integer groupID, Integer duration)
     {
-        // TODO Auto-generated method stub
-        return null;
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("person:groupID", groupID);
+
+        // get list of vehicles that are in the specified group
+        List<Map<String, Object>> entityList = MockData.getInstance().lookupList(Vehicle.class, searchCriteria);
+
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+
+        if (entityList == null)
+        {
+            return returnList;
+        }
+        for (Map<String, Object> vehicleMap : entityList)
+        {
+            searchCriteria = new SearchCriteria();
+            searchCriteria.addKeyValue("vehicle:vehicleID", vehicleMap.get("vehicleID"));
+    
+            DVQMap dvq = MockData.getInstance().retrieveObject(DVQMap.class, searchCriteria);
+            returnList.add(TempConversionUtil.createMapFromObject(dvq));
+        }
+        return returnList;
     } 
         
     public List<Map<String, Object>>  getSDScoresByGT(Integer groupID, Integer duration)
