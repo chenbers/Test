@@ -14,6 +14,7 @@ public class VehicleReportItem
     private String styleStyle;
     private Driver driver;
     private Integer groupID;
+    private String goTo;
     
     public String getGroup()
     {
@@ -110,6 +111,14 @@ public class VehicleReportItem
     public void setGroupID(Integer groupID)
     {
         this.groupID = groupID;
+    }
+    public String getGoTo()
+    {
+        return goTo;
+    }
+    public void setGoTo(String goTo)
+    {
+        this.goTo = goTo;
     }
 
 }
