@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.faces.context.FacesContext;
+
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
@@ -158,7 +160,9 @@ public class VehicleReportBean extends BaseReportBean
     {
         if ( this.vehicleData.size() > 0 ) {
             this.vehicleData.clear();
-        }       
+        }   
+        
+        String contextPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
                 
         for ( VehicleReportItem v: vehicData ) {          
             vrt = v;
@@ -166,6 +170,10 @@ public class VehicleReportBean extends BaseReportBean
                         
             //Group name
             vrt.setGroup(this.getGroupHierarchy().getGroup(v.getGroupID()).getName());
+                        
+            //Where to go - make sure you go to the correct level            
+            vrt.setGoTo(contextPath + this.getGroupHierarchy().getGroupLevel(v.getGroupID()).getUrl() +
+                    "?groupID="+v.getGroupID());   
             
             //Driver, none assigned
             if ( v.getDriver() == null ) {
