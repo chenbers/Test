@@ -102,7 +102,8 @@ public class GraphicUtil {
 		sb.append("showAlternateHGridColor=\'1\' ");
 		sb.append("alternateHGridColor=\'#f0f0f0\' ");
 		sb.append("alternateHGridAlpha=\'100\' ");
-			
+		sb.append("slantLabels='1' ");                    //TESTING
+		sb.append("labelDisplay='Rotate' ");              //TESTING
 		sb.append("divLineColor=\'cfcfcf\' ");
 		sb.append("divLineIsDashed=\'1\' ");
 			 

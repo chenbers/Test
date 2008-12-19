@@ -1,0 +1,201 @@
+<ui:composition template="/layout/layout.xhtml" 
+				xmlns="http://www.w3.org/1999/xhtml" 
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+  				xmlns:h="http://java.sun.com/jsf/html" 
+  				xmlns:rich="http://richfaces.org/rich"
+  				xmlns:a4j="http://richfaces.org/a4j"
+  				xmlns:f="http://java.sun.com/jsf/core">
+
+	<ui:define name="scripts">
+		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>	
+	</ui:define>
+
+	<ui:param name="reportsSelected" value="current" />
+	
+	<ui:define name="content">
+<div id="wrapper">
+
+<ul id="grid_nav">
+	<li class="l grid_icon"><img src="images/ico_line.png" /></li>
+	<li class="l grid_title">Vehicle Performance: <h:outputText> #{vehicleBean.vehicleName}</h:outputText></li>
+	<li class="l divider"><img src="/images/grid_nav_divider.png" /></li>
+</ul>
+
+<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" class="dash_table">
+  <tr>
+    <td colspan="3" valign="top">
+		<!-- START PANEL -->
+			<div class="">
+				<div class="panel_nw">
+					<div class="panel_title">
+						<span class="line">Seat Belt</span>
+						<a4j:form id="overall-form"> 
+							<span class="panel_links"><h:outputText>Graph the last:&#160;</h:outputText>
+								<a4j:commandLink title="#{messages.miles500}" immediate="true"
+									styleClass="#{(vehicleSeatBeltBean.distance eq 'FIVEHUNDRED') ? 'on' : ''}"
+									reRender="overall-form,overallPanel" value="#{messages.miles500}">
+									<a4j:actionparam name="distance" assignTo="#{vehicleSeatBeltBean.distance}"	value="FIVEHUNDRED" />
+								</a4j:commandLink>
+							<h:outputText value=" " />
+								<a4j:commandLink title="#{messages.miles1000}" immediate="true"
+									styleClass="#{(vehicleSeatBeltBean.distance eq 'ONETHOUSAND') ? 'on' : ''}"
+									reRender="overall-form,overallPanel" value="#{messages.miles1000}">
+									<a4j:actionparam name="distance" assignTo="#{vehicleSeatBeltBean.distance}"	value="ONETHOUSAND" />
+								</a4j:commandLink>
+							<h:outputText value=" " />
+								<a4j:commandLink title="#{messages.miles5000}" immediate="true"
+									styleClass="#{(vehicleSeatBeltBean.distance eq 'FIVETHOUSAND') ? 'on' : ''}"
+									reRender="overall-form,overallPanel" value="#{messages.miles5000}">
+									<a4j:actionparam name="distance" assignTo="#{vehicleSeatBeltBean.distance}"	value="FIVETHOUSAND" />
+								</a4j:commandLink>
+							<h:outputText value=" " />
+								 <a4j:commandLink title="#{messages.miles10000}" immediate="true"
+									styleClass="#{(vehicleSeatBeltBean.distance eq 'TENTHOUSAND') ? 'on' : ''}"
+									reRender="overall-form,overallPanel" value="#{messages.miles10000}">
+									<a4j:actionparam name="distance" assignTo="#{vehicleSeatBeltBean.distance}"	value="TENTHOUSAND" />
+								</a4j:commandLink>
+							</span>
+						</a4j:form>
+					</div>
+				</div>
+				<div class="panel_w">
+				  <rich:panel bodyClass="panel_content" id="overallPanel" border="0">
+				  <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
+					  <tr>
+						<td valign="top" width="600">
+						   <ui:include src="../../includes/lineChart.xhtml">
+						            <ui:param name="lineChartDef" value="#{vehicleSeatBeltBean.seatBeltScoreHistoryOverall}" />
+						            <ui:param name="hiddenFieldID" value="HiddenField" />
+						            <ui:param name="width" value="650" /> 
+						            <ui:param name="height" value="200" />  
+						            <ui:param name="tartgetElementVar" value="targetElement" />
+						            <ui:param name="ChartDivID" value="overall_chart" />
+						            <ui:param name="chartVar" value="overallChart" />
+							</ui:include>
+						</td>
+						<td valign="top" align="right">
+							<table width="220" border="0" cellspacing="0" cellpadding="0" class="scorebox" style="margin: 20px 20px 0 0;">
+							  <tr>
+								<td>
+									<h4>Overall Score</h4>
+									<div style="margin-top: 8px;"><a href="#" class="ls_tab_email">Email</a></div>
+								</td>
+								<td width="80" align="center">
+									<ui:include src="../../includes/scoreBox.xhtml">
+								            <ui:param name="score" value="#{vehicleSeatBeltBean.seatBeltScore}" />
+								            <ui:param name="scoreStyle" value="#{vehicleSeatBeltBean.seatBeltScoreStyle}" />
+									</ui:include>
+								</td>
+							  </tr>
+							</table>
+						</td>
+					  </tr>
+					</table>
+				  
+				  </rich:panel>
+				</div>
+				<div class="panel_sw">
+					<div class="panel_statusbar"></div>
+				</div>
+			</div>
+			<div class="spacer"></div>
+		<!-- END PANEL -->
+	</td>
+    </tr>
+  <tr>
+    <td colspan="3" valign="top"><img src="images/x.gif" width="10" height="10" /></td>
+    </tr>
+  <tr>
+    <td width="465" valign="top">
+<!-- END PANEL -->
+	</td>
+    </tr>
+  <tr>
+    <td colspan="3" valign="top"><img src="images/x.gif" width="10" height="10" /></td>
+    </tr>
+  <tr>
+    <td width="465" valign="top">
+		<!-- START PANEL -->
+			<div class="">
+				<div class="panel_nw">
+					<div class="panel_title">
+						<span class="details">Details</span>
+						<span class="panel_links"></span>
+					</div>
+				</div>
+				<div class="panel_w">
+				  <div class="panel_content">
+				     
+
+			<div class="datagrid">
+				<!-- Start Event table --> 
+					<h:form id="eventTable">
+						<rich:dataTable 
+						value="#{vehicleSeatBeltBean.seatBeltEvents}" 
+						id="items"
+						var="item" styleClass="datagrid"
+						rowClasses="tableOdd,tableEven" cellspacing="1" rows="15"  
+						width="100%"> 
+						<!-- Data -->
+							<rich:column sortBy="#{item.addressStr}">
+								<f:facet name="header">
+									<h:outputText value="Location" />
+								</f:facet>
+									<h:outputText value="#{item.addressStr}" />
+							</rich:column>
+							
+							<rich:column sortBy="#{item.time}">
+								<f:facet name="header">
+									<h:outputText value="Time" />
+								</f:facet>
+									<h:outputText value="#{item.time}" />
+							</rich:column>
+							
+							<rich:column sortBy="#{item.avgSpeed}">
+								<f:facet name="header">
+									<h:outputText value="Avg. Speed" />
+								</f:facet>
+								<h:outputText value="#{item.avgSpeed}" />
+							</rich:column>
+							
+							<rich:column sortBy="#{item.topSpeed}">
+								<f:facet name="header">
+									<h:outputText value="Top Speed" />
+								</f:facet>
+								<h:outputText value="#{item.topSpeed}" />
+							</rich:column>
+							
+							<rich:column sortBy="#{item.distance}">
+								<f:facet name="header">
+									<h:outputText value="Distance" />
+								</f:facet>
+								<h:outputText value="#{item.distance}" />
+							</rich:column>
+							
+							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="" />
+								</f:facet>
+								<a href="#">forgive</a>
+							</rich:column>
+							
+						</rich:dataTable>
+					</h:form> 
+				<!-- End Event table -->
+				</div>
+				</div>
+				</div>
+				</div>
+		</td>
+    </tr>
+</table>
+ </div>
+				
+				<div class="panel_sw">
+					<div class="panel_statusbar"></div>
+				</div>
+			
+		<!-- END PANEL -->
+		
+</ui:define>
+</ui:composition>

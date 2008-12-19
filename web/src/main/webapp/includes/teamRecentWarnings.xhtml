@@ -38,7 +38,7 @@
 						</f:facet>
 						<!-- TODO:  hook up vehicle link to correct page -->
 						<h:commandLink action="go_vehicle" value="#{event.vehicleName}">
-<!-- 						<f:setPropertyActionListener value="#{event.event.vehicle}" target="#{vehicleBean.vehicle}" />  -->	
+ 							<f:setPropertyActionListener value="#{event.event.vehicle}" target="#{navigationBean.vehicle}" />
 						</h:commandLink>
 					</rich:column>
 					<rich:column sortBy="#{event.driverName}" width="45%" height="27" >

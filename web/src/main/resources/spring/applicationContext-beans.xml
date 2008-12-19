@@ -137,16 +137,22 @@
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
     </bean>
+        
+    <bean id="vehicleSeatBeltBean" class="com.inthinc.pro.backing.VehicleSeatBeltBean" scope="request">
+        <property name="scoreDAO" ref="scoreDAO"></property>
+        <property name="eventDAO" ref="eventDAO"></property>
+        <property name="navigation" ref="navigationBean"></property>
+    </bean>
+    
+    <bean id="vehicleTripsBean" class="com.inthinc.pro.backing.VehicleTripsBean" scope="request" parent="baseBean" init-method="init">
+        <property name="vehicleDAO" ref="vehicleDAO"></property>
+        <property name="navigation" ref="navigationBean"></property>
+        <property name="eventDAO" ref="eventDAO"></property>
+    </bean>
     
     <bean id="driverBean" class="com.inthinc.pro.backing.DriverBean" scope="request">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="mpgDAO" ref="mpgDAO"></property>
-        <property name="navigation" ref="navigationBean"></property>
-    </bean>
-    
-    <bean id="vehicleSeatBeltBean" class="com.inthinc.pro.backing.VehicleSeatBeltBean" scope="request">
-        <property name="scoreDAO" ref="scoreDAO"></property>
-        <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
     </bean>
 

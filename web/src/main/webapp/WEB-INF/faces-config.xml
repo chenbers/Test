@@ -259,16 +259,42 @@
 			<to-view-id>/secured/team.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
-	<navigation-rule>
-		<navigation-case>
-			<from-outcome>go_driver</from-outcome>
-			<to-view-id>/secured/driver.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
+
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>go_vehicle</from-outcome>
 			<to-view-id>/secured/vehicle.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>go_reportVehicleSpeed</from-outcome>
+			<to-view-id>/secured/reports/vehicleSpeed.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>go_reportVehicleStyle</from-outcome>
+			<to-view-id>/secured/reports/vehicleStyle.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>go_reportVehicleSeatBelt</from-outcome>
+			<to-view-id>/secured/reports/vehicleSeatBelt.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>go_vehicleTrips</from-outcome>
+			<to-view-id>/secured/vehicleTrips.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>go_driver</from-outcome>
+			<to-view-id>/secured/driver.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
@@ -283,7 +309,7 @@
 			<to-view-id>/secured/reports/driverStyle.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
-		<navigation-rule>
+	<navigation-rule>
 		<navigation-case>
 			<from-outcome>go_reportDriverSeatBelt</from-outcome>
 			<to-view-id>/secured/reports/driverSeatBelt.xhtml</to-view-id>
