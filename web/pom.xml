@@ -341,7 +341,7 @@
        <dependency>
          <groupId>com.iwi</groupId>
          <artifactId>teenserverdao</artifactId>
-         <version>1.0.11-SNAPSHOT</version>
+         <version>1.0.11</version>
          <scope>compile</scope>
       </dependency>
       <dependency>
