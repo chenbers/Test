@@ -15,6 +15,15 @@
         <system>Bugzilla</system>
         <url>https://svn.iwiglobal.com/bugzilla/</url>
     </issueManagement>
+    <ciManagement>
+        <system>hudson</system>
+        <url>http://testteen.iwiglobal.com:8091/hudson</url>
+    </ciManagement>
+    <scm>
+        <connection>scm:svn:https://svn.iwiglobal.com/pro/pro/trunk</connection>
+        <developerConnection>scm:svn:https://svn.iwiglobal.com/pro/pro/trunk</developerConnection>
+        <url>http://svn.iwiglobal.com/pro</url>
+    </scm>
     <developers>
         <developer>
             <id>mraby</id>
@@ -141,6 +150,10 @@
                 <groupId>com.atlassian.maven.plugins</groupId>
                 <artifactId>maven-clover2-plugin</artifactId>
                 <configuration>
+                    <generatePdf>false</generatePdf>
+                    <generateXml>true</generateXml>
+                    <generateHtml>false</generateHtml>
+                    <includesTestSourceRoots>false</includesTestSourceRoots>
                     <license>
                     <![CDATA[PNrotgFDPwHIFXwBMAIebCtePntllluADfELoVReVQcPSS
 mi2KFq<Nc4zYl8ZVexWN8GNR2KNYvC5rn293xhqnaa8hMH
@@ -170,6 +183,17 @@ WWUUnm]]>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>dashboard-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.0-beta-8</version>
+                <configuration>
+                    <username>${svnUsername}</username>
+                    <password>${svnPassword}</password>
+                    <scmCommentPrefix>[Hudson]</scmCommentPrefix>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                </configuration>
             </plugin>
         </plugins>
     </build>
