@@ -309,7 +309,7 @@ public class SiloServiceTest
             assertTrue(endDate.after(trip.getEndTime()));
             assertTrue(trip.getMileage() > 0);
         }
-        
+        // TODO: not impl. on back end
 //        Trip trip = driverDAO.getLastTrip(TESTING_DRIVER_ID);
 //        assertNotNull(trip);
         
@@ -326,6 +326,7 @@ public class SiloServiceTest
             assertTrue(t.getMileage() > 0);
         }
         
+        // TODO: not impl. on back end
 //        trip = vehicleDAO.getLastTrip(TESTING_VEHICLE_ID);
 //        assertNotNull(trip);
     }
@@ -764,8 +765,7 @@ public class SiloServiceTest
             assertNotNull(vehicleID);
             vehicle.setVehicleID(vehicleID);
             vehicleList.add(vehicle);
-
-// TODO: back end should return empty result set, is returning a map with lat, lng 0.0            
+       
             // get last loc (should be empty);
             LastLocation loc = vehicleDAO.getLastLocation(vehicle.getVehicleID());
             assertNull("no location expected for new vehicle", loc);

@@ -96,7 +96,7 @@ public class ScoreHessianDAOTest
         checkBreakdown(testGroupID, Duration.DAYS, ScoreType.SCORE_OVERALL, 4);
         checkBreakdown(testGroupID, Duration.DAYS, ScoreType.SCORE_SPEEDING, 6);
         checkBreakdown(testGroupID, Duration.DAYS, ScoreType.SCORE_SEATBELT, 5);
-        checkBreakdown(testGroupID, Duration.DAYS, ScoreType.SCORE_DRIVING_STYLE, 6);
+        checkBreakdown(testGroupID, Duration.DAYS, ScoreType.SCORE_DRIVING_STYLE, 5);
     }
 
     private void checkBreakdown(Integer testGroupID, Duration duration, ScoreType scoreType, int expectedBreakdownSize)

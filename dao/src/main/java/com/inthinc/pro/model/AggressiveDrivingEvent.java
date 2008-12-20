@@ -61,7 +61,7 @@ public class AggressiveDrivingEvent extends Event
             // TODO: Distinguish between hard left and hard right
             else if (Math.abs(deltaY / 10.0f) * 1.1f > Math.abs(deltaX / 10.0f)
                     && Math.abs(deltaY / 10.0f) > Math.abs(deltaZ / 10.0f))
-                eventType = EventType.HARD_LEFT_TURN;
+                eventType = EventType.HARD_TURN;
         }
 
         return eventType;

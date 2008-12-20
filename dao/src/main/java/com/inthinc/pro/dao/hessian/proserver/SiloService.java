@@ -209,6 +209,16 @@ public interface SiloService extends HessianService
 
     public Map<String, Object> updateTablePref(Integer tablePrefID, Map<String, Object> tablePrefMap) throws ProDAOException;
 
+    // -------------------------    Zones   -----------------------------------------------
+    Map<String, Object> deleteZone(Integer zoneID) throws ProDAOException;
+
+    Map<String, Object> getZone(Integer zoneID) throws ProDAOException;
+
+    Map<String, Object> updateZone(Integer zoneID, Map<String, Object> zoneMap) throws ProDAOException;
+
+    Map<String, Object> createZone(Integer acctID, Map<String, Object> zoneMap) throws ProDAOException;
+
+    List<Map<String, Object>> getZonesByAcctID(Integer accountID);
     
     // --------------central service -----------------------    
     
@@ -253,16 +263,6 @@ public interface SiloService extends HessianService
 
     
 
-    // Methods related to the Zone type
-    Map<String, Object> deleteZone(Integer zoneID) throws ProDAOException;
-
-    Map<String, Object> getZone(Integer zoneID) throws ProDAOException;
-
-    Map<String, Object> updateZone(Integer zoneID, Map<String, Object> zoneMap) throws ProDAOException;
-
-    Map<String, Object> createZone(Integer acctID, Map<String, Object> zoneMap) throws ProDAOException;
-
-    List<Map<String, Object>> getZonesByAcctID(Integer accountID);
 
     // Methods related to the RedFlagAlert type
     Map<String, Object> deleteRedFlagAlert(Integer redFlagAlertID) throws ProDAOException;
