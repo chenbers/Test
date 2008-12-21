@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.backing.ui.BreakdownSelections;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
-import com.inthinc.pro.charts.ChartSizes;
 import com.inthinc.pro.charts.Line;
 import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.ScoreDAO;
@@ -228,7 +227,7 @@ public class DriverBean extends BaseBean
         sb.append("<dataset seriesName=\"Heavy\" color=\"A8C634\" plotBorderColor=\"A8C634\"> ");
         for (MpgEntity entity: mpgEntities)
         {  
-            sb.append("<set value=\"" + entity.getMediumValue() + "\"/>"); 
+            sb.append("<set value=\"" + entity.getHeavyValue() + "\"/>"); 
         }
         sb.append("</dataset>");
         

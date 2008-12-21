@@ -4,8 +4,6 @@ import java.text.MessageFormat;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.charts.ChartSizes;
-
 public class Line implements BaseChart
 {
     private static final Logger logger = Logger.getLogger(Line.class);

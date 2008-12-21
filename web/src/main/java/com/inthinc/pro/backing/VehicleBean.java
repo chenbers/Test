@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.backing.ui.BreakdownSelections;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
-import com.inthinc.pro.charts.ChartSizes;
 import com.inthinc.pro.charts.Line;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.Distance;

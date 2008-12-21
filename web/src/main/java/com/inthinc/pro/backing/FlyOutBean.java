@@ -7,7 +7,17 @@ public class FlyOutBean
     private String navigationRule;
     private String returnNavRule;
     private String selectedTab;
+    private Integer groupID;
     
+    public Integer getGroupID()
+    {
+        return groupID;
+    }
+
+    public void setGroupID(Integer groupID)
+    {
+        this.groupID = groupID;
+    }
     private static final Logger logger = Logger.getLogger(DriverSeatBeltBean.class);
     
     //FLY OUT-IN  ACTION
