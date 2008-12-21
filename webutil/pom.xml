@@ -3,11 +3,11 @@
     <parent>
         <artifactId>root</artifactId>
         <groupId>com.inthinc.pro</groupId>
-        <version>0.0.2</version>
+        <version>0.0.3-SNAPSHOT</version>
     </parent>
     <groupId>com.inthinc.pro.webutil</groupId>
     <artifactId>webutil</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>Tiwi Pro Portal - Web Utilities App</name>
     <dependencies>
@@ -150,7 +150,7 @@
         <dependency>
             <groupId>com.inthinc.pro.dao</groupId>
             <artifactId>dao</artifactId>
-            <version>0.0.2</version>
+            <version>0.0.3-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
