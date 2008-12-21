@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Person;
 
-public class DriverBeanTest extends BaseBeanTest
+public class DriverSeatBeltBeanTest extends BaseBeanTest
 {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception
@@ -28,10 +28,10 @@ public class DriverBeanTest extends BaseBeanTest
         loginUser("normal101");
         
         // get the bean from the applicationContext (initialized by Spring injection)
-        DriverBean driverBean = (DriverBean)applicationContext.getBean("driverBean");
+        DriverSeatBeltBean driverSeatBeltBean = (DriverSeatBeltBean)applicationContext.getBean("driverSeatBeltBean");
         NavigationBean nav = (NavigationBean)applicationContext.getBean("navigationBean");
         
-        driverBean.setNavigation(nav);
+        driverSeatBeltBean.setNavigation(nav);
         
         Person p = new Person();
         p.setFirst("John");
@@ -44,15 +44,12 @@ public class DriverBeanTest extends BaseBeanTest
 
         d.setPerson(p);
         
-        driverBean.getNavigation().setDriver(d);
+        driverSeatBeltBean.getNavigation().setDriver(d);
         
         // make sure the spring injection worked
-        assertNotNull(driverBean.getOverallScore());
-        assertNotNull(driverBean.getOverallScoreStyle());
-        assertNotNull(driverBean.getOverallScoreHistory());
-        
-        assertNotNull(driverBean.getMpgHistory());
-        assertNotNull(driverBean.getCoachingHistory());
+        assertNotNull(driverSeatBeltBean.getSeatBeltScore());
+        assertNotNull(driverSeatBeltBean.getSeatBeltScoreStyle());
+        assertNotNull(driverSeatBeltBean.getSeatBeltScoreHistoryOverall());
         
     }
 }
