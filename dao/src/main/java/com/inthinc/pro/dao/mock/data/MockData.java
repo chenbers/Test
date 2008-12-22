@@ -832,7 +832,7 @@ logger.debug("addDriveQMaps");
             flag.setHardAccelerationLevel(RedFlagLevel.values()[randomInt(0, RedFlagLevel.values().length - 1)]);
             flag.setHardTurnLevel(RedFlagLevel.values()[randomInt(0, RedFlagLevel.values().length - 1)]);
             flag.setHardVerticalLevel(RedFlagLevel.values()[randomInt(0, RedFlagLevel.values().length - 1)]);
-            final RedFlagLevel[] speedLevels = new RedFlagLevel[15];
+            final RedFlagLevel[] speedLevels = new RedFlagLevel[Device.NUM_SPEEDS];
             for (int j = 0; j < speedLevels.length; j++)
                 speedLevels[j] = RedFlagLevel.values()[randomInt(0, RedFlagLevel.values().length - 1)];
             flag.setSpeedLevels(speedLevels);
@@ -844,7 +844,7 @@ logger.debug("addDriveQMaps");
                 flag.setHardTurn(randomInt(0, 2));
             if (flag.getHardVerticalLevel() != RedFlagLevel.NONE)
                 flag.setHardVertical(randomInt(0, 2));
-            final Integer[] speedSettings = new Integer[15];
+            final Integer[] speedSettings = new Integer[Device.NUM_SPEEDS];
             for (int j = 0; j < speedSettings.length; j++)
                 if (speedLevels[j] != RedFlagLevel.NONE)
                     speedSettings[j] = randomInt(0, 5) * 5;
@@ -1021,7 +1021,7 @@ logger.debug("addDriveQMaps");
         device.setHardAcceleration(randomInt(0, 2));
         device.setHardTurn(randomInt(0, 2));
         device.setHardVertical(randomInt(0, 2));
-        final Integer[] speedSettings = new Integer[15];
+        final Integer[] speedSettings = new Integer[Device.NUM_SPEEDS];
         for (int i = 0; i < speedSettings.length; i++)
             speedSettings[i] = randomInt(0, 5) * 5;
         device.setSpeedSettings(speedSettings);

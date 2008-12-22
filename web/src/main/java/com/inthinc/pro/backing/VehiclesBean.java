@@ -229,7 +229,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         if (device != null)
         {
             if (device.getSpeedSettings() == null)
-                device.setSpeedSettings(new Integer[15]);
+                device.setSpeedSettings(new Integer[Device.NUM_SPEEDS]);
             if (!device.isSensitivitiesInverted())
                 device.invertSensitivities();
         }

@@ -8,6 +8,9 @@ import com.inthinc.pro.dao.annotations.ID;
 public class Device extends BaseEntity
 {
     @Column(updateable = false)
+    public static final int NUM_SPEEDS = 15;
+
+    @Column(updateable = false)
     private static final long serialVersionUID = 2865030663439253720L;
 
     // yep, a high number means a low sensitivity; a low number means a high sensitivity
@@ -266,8 +269,8 @@ public class Device extends BaseEntity
             this.speedSet = null;
         else
         {
-            if (speedSettings.length != 15)
-                throw new IllegalArgumentException("speedSettings.length must be 15");
+            if (speedSettings.length != NUM_SPEEDS)
+                throw new IllegalArgumentException("speedSettings.length must be " + NUM_SPEEDS);
 
             final StringBuilder sb = new StringBuilder();
             for (final Integer speed : speedSettings)

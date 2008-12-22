@@ -183,7 +183,7 @@
                                     <h:outputText value=" mph" />
                                   </td>
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" width="200">
-                                    <rich:inputNumberSlider id="#{id}" value="#{redFlagAlertsBean.item.speedSettings[index]}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="-25" maxValue="25" step="1" onchange="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById(this.mainTable.id + 'MPH').innerHTML = this.value" />
+                                    <rich:inputNumberSlider id="#{id}" value="#{redFlagAlertsBean.item.speedSettings[index]}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="-25" maxValue="25" step="1" onchange="checkMultiple(this.mainTable.id); document.getElementById(this.mainTable.id + 'Selected').checked = true; document.getElementById(this.mainTable.id + 'MPH').innerHTML = this.value" />
                                   </td>
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <h:outputText id="#{id}MPH" value="#{redFlagAlertsBean.item.speedSettings[index]}" />
@@ -227,7 +227,7 @@
                                 <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
                                   <ui:fragment rendered="#{redFlagAlertsBean.batchEdit}">
                                     <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                      <h:selectBooleanCheckbox id="update_#{sensitivityItem}" value="#{updateField[sensitivityItem]}" />
+                                      <h:selectBooleanCheckbox id="update_#{sensitivityItem}" value="#{redFlagAlertsBean.updateField[sensitivityItem]}" />
                                     </td>
                                   </ui:fragment>
                                   <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
@@ -237,7 +237,7 @@
                                     <h:outputText value="#{messages[sensitivityLabel]}" />
                                   </td>
                                   <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" width="200">
-                                    <rich:inputNumberSlider id="#{sensitivityItem}" value="#{redFlagAlertsBean.item[sensitivityItem]}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="20" maxValue="90" onchange="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById(this.mainTable.id + 'Level').innerHTML = sensitivities[this.value]" />
+                                    <rich:inputNumberSlider id="#{sensitivityItem}" value="#{redFlagAlertsBean.item[sensitivityItem]}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="20" maxValue="90" onchange="checkMultiple(this.mainTable.id); document.getElementById(this.mainTable.id + 'Selected').checked = true; document.getElementById(this.mainTable.id + 'Level').innerHTML = sensitivities[this.value]" />
                                   </td>
                                   <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;">
                                     <c:set var="sensitivityLevel" value="#{(redFlagAlertsBean.item[sensitivityItem] ge 67) ? messages.editDevice_sensitivityMore : ((redFlagAlertsBean.item[sensitivityItem] ge 43) ? messages.editDevice_sensitivityAverage : messages.editDevice_sensitivityLess)}" />

@@ -155,7 +155,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     {
         final Device device = new Device();
         device.setStatus(DeviceStatus.NEW);
-        device.setSpeedSettings(new Integer[15]);
+        device.setSpeedSettings(new Integer[Device.NUM_SPEEDS]);
         return createDeviceView(device);
     }
 
@@ -164,7 +164,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     {
         final DeviceView item = super.getItem();
         if (item.getSpeedSettings() == null)
-            item.setSpeedSettings(new Integer[15]);
+            item.setSpeedSettings(new Integer[Device.NUM_SPEEDS]);
         if (!item.isSensitivitiesInverted())
             item.invertSensitivities();
         return item;

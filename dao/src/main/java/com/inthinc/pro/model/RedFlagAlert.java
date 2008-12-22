@@ -44,8 +44,8 @@ public class RedFlagAlert extends BaseAlert
     public void setSpeedSettings(Integer[] speedSettings)
     {
         this.speedSettings = speedSettings;
-        if ((speedSettings != null) && (speedSettings.length != 15))
-            throw new IllegalArgumentException("speedSettings.length must be 15");
+        if ((speedSettings != null) && (speedSettings.length != Device.NUM_SPEEDS))
+            throw new IllegalArgumentException("speedSettings.length must be " + Device.NUM_SPEEDS);
     }
 
     public RedFlagLevel[] getSpeedLevels()
