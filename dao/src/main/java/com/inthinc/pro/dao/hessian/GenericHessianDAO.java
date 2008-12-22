@@ -209,6 +209,9 @@ public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>
     {
         if (findMethod == null)
             throw new NotImplementedException();
+        
+        if (id == null)
+            return null;
 
         T modelObject = null;
         try
