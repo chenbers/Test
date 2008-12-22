@@ -13,6 +13,8 @@ import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEmailException;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateUsernameException;
 import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.GroupType;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Gender;
 import com.inthinc.pro.model.Group;
@@ -58,7 +60,7 @@ public class NewAccountBean
         Integer acctID = accountDAO.create(account);
 
         // create the account's top level group
-        Group topGroup = new Group(0, acctID, "Top", 0);
+        Group topGroup = new Group(0, acctID, "Top", 0, GroupType.FLEET, 0, "Initial top level group", 5, new LatLng(0.0, 0.0));
         Integer groupID = groupDAO.create(acctID, topGroup);
         
         // create the person record for the superuser
