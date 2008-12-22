@@ -104,7 +104,7 @@
                     <resource>
                         <directory>${basedir}/src/main/resources</directory>
                         <excludes>
-                            <exclude>**/applicationContext-mockdao.xml</exclude>
+                            <exclude>**/applicationContext-dao.xml</exclude>
                             <exclude>**/applicationContext-serverPropertiesLocal.xml</exclude>
                         </excludes>
                     </resource>
