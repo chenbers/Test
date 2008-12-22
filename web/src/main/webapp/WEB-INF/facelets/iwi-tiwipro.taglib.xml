@@ -9,4 +9,11 @@
 		<tag-name>scoreBox</tag-name>
 		<source>scoreBox.xhtml</source>
 	</tag>
+	<tag>
+		<tag-name>conditionalCSS</tag-name>
+		<component>
+			<component-type>conditionalCSS</component-type>
+			<renderer-type>conditionalCSS.renderer</renderer-type>
+		</component>
+	</tag>
 </facelet-taglib>

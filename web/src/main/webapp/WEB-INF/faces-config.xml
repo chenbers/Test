@@ -25,6 +25,12 @@
 		<converter-id>RoleConverter</converter-id>
 		<converter-class>com.inthinc.pro.convert.RoleConverter</converter-class>
 	</converter>
+	
+	<!-- Components -->
+	 <component>  
+	     <component-type>conditionalCSS</component-type>  
+	     <component-class>com.inthinc.pro.backing.ui.UIConditionalCSS</component-class>  
+ 	 </component>
 
 	<!-- managed beans -->
 	

@@ -7,7 +7,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core" 
 	xmlns:a4j="http://richfaces.org/a4j" 
-	xmlns:rich="http://richfaces.org/rich">
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:tiwi="http://pro.tiwi.com/jsf">
 
 <f:view contentType="text/html"> 
 <f:loadBundle basename="com.inthinc.pro.resources.Messages" var="messages"/>
@@ -17,13 +18,13 @@
 <link media="screen" type="text/css" href="#{facesContext.externalContext.requestContextPath}/css/richfaces.css" rel="stylesheet" />
 <link media="screen" type="text/css" href="#{facesContext.externalContext.requestContextPath}/css/main.css" rel="stylesheet" />
 
-<!--[if IE 6]>
+<tiwi:conditionalCSS browserVersion="IE 6">
 <link rel="stylesheet" type="text/css" href="#{facesContext.externalContext.requestContextPath}/css/ie6.css" />
-<![endif]--> 
+</tiwi:conditionalCSS>
 
-<!--[if IE 7]>
+<tiwi:conditionalCSS browserVersion="IE 7">
 <link rel="stylesheet" type="text/css" href="#{facesContext.externalContext.requestContextPath}/css/ie7.css" />
-<![endif]--> 
+</tiwi:conditionalCSS>
 
 <link rel="icon" href="#{facesContext.externalContext.requestContextPath}/favicon.ico" type="image/x-icon"/>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
