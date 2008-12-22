@@ -6,10 +6,10 @@ import java.util.Map;
 
 public enum RedFlagLevel implements BaseEnum
 {
-    NONE(1, "none"),
-    CRITICAL(1, "critical"),
-    INFO(2, "info"),
-    WARNING(3, "warning");
+    NONE(0, "none"),
+    INFO(1, "info"),
+    WARNING(2, "warning"),
+    CRITICAL(3, "critical");
 
     private String description;
     private int code;
