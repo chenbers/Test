@@ -108,7 +108,7 @@ public class GroupHierarchy implements Serializable
     public Group getParentGroup(Group childGroup){
     	Group parentGroup = null;
     	for(Group group: groupList){
-    		if(group.getGroupID() == childGroup.getParentID()){
+    		if(group.getGroupID().equals(childGroup.getParentID())){
     			parentGroup = group;
     		}
     	}
