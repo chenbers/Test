@@ -34,6 +34,7 @@ import com.inthinc.pro.model.VehicleReportItem;
 public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer> implements ScoreDAO
 {
     private static final Logger logger = Logger.getLogger(ScoreHessianDAO.class);
+    private static final Integer SECONDS_TO_HOURS = 3600;
 
     private ReportService       reportService;
 
@@ -451,10 +452,10 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 iri.setGroupID(v.getPerson().getGroupID());
                 iri.setDriver(v);                
                 iri.setVehicle(d.getVehicle());
-                iri.setDriveTime(dqm.getDriveTime());
+                iri.setDriveTime(dqm.getDriveTime()/SECONDS_TO_HOURS);
                 iri.setMilesDriven(dqm.getEndingOdometer());
-                iri.setLowHrs(String.valueOf(dqm.getIdleLo().intValue()));
-                iri.setHighHrs(String.valueOf(dqm.getIdleHi().intValue()));                
+                iri.setLowHrs(String.valueOf(dqm.getIdleLo()/SECONDS_TO_HOURS));
+                iri.setHighHrs(String.valueOf(dqm.getIdleHi()/SECONDS_TO_HOURS));                
   
                 lIri.add(iri);
                 iri = null;
