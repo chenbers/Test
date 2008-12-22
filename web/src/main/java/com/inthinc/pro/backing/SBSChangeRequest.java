@@ -6,7 +6,9 @@ import java.util.List;
 
 import org.postgis.Point;
 
-public class SBSChangeRequest {
+import com.iwi.teenserver.model.SpeedLimitChangeRequest;
+
+public class SBSChangeRequest implements EditItem{
 	
 	private String linkId;
 	private String address;
@@ -17,7 +19,13 @@ public class SBSChangeRequest {
 	private int newSpeedLimit;
 	private String comment;
 	private boolean selected;
+	private SpeedLimitChangeRequest changeRequest;
 	
+	@Override
+	public Integer getId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	public boolean isSelected() {
 		return selected;
 	}
@@ -93,16 +101,11 @@ public class SBSChangeRequest {
 	public void setCategory(int category) {
 		this.category = category;
 	}	
-
-//	String query = "select link_id as ogc_fid,st_nm_pref as fedirp,st_typ_bef,st_nm_base as fename,st_nm_suff,st_typ_aft as fetype ,l_refaddr as fraddl,l_nrefaddr as toaddl,"+
-//			"r_refaddr as fraddr,r_nrefaddr as toaddr,l_postcode as zipL,r_postcode as zipR,"+
-//			"distance(the_geom,setsrid(GeomFromText('"+point+"',32767),4326)) as dist, "+
-//			"astext(the_geom) as tigerline, COALESCE(streets.iwi_speed_cat,"+ 
-//			"streets_sif.speed_cat, streets.speed_cat) AS speed_cat, COALESCE(streets.iwi_fr_spd_lim, streets_sif.fr_spd_lim," +
-//			"streets.fr_spd_lim) AS fr_spd_lim,COALESCE(streets.iwi_to_spd_lim," +
-//			"streets_sif.to_spd_lim, streets.to_spd_lim) AS to_spd_lim "+
-//			"from streets LEFT JOIN streets_sif USING (link_id)"+
-//			"where the_geom && " +
-//			"expand(setsrid(geomFromText('"+point+"',32767),4326),0.002) order by dist limit 1";
+	public SpeedLimitChangeRequest getChangeRequest() {
+		return changeRequest;
+	}
+	public void setChangeRequest(SpeedLimitChangeRequest changeRequest) {
+		this.changeRequest = changeRequest;
+	}
 
 }

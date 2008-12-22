@@ -39,36 +39,33 @@
 			<div class="panel_w">
 
 				<div class="panel_content">
-     <h:form id="admin-table-form">
+     <a4j:form id="speedLimitChangeRequestTable">
           <ul id="grid_nav" style="margin: 0;">
-            <li class="l"><a4j:commandLink><button value="submit" class="left" onclick=""><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink></li>
+            <li class="l"><a4j:commandLink action="#{speedLimitChangeRequests.delete}" reRender="map-data"><button value="submit" class="left" onclick=""><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink></li>
             <li class="l"><a4j:commandLink><button value="submit" class="left" onclick=""><span class="cancel"><h:outputText value="Clear All" /></span></button></a4j:commandLink></li>
             <li class="l">
-              <table border="0" cellspacing="0" cellpadding="0" id="grid_nav_search_box">
+              <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
                 <tr>
-		<td><h:inputText size="40" name="address" id="address"/></td>
-                  <td>
- 		<h:commandButton type="button" value="Show Address" onclick="showLocation(document.forms.speedLimitChangeRequestTable['speedLimitChangeRequestTable:address'].value)"/>
-                  </td>
-                </tr>
+         		<td><h:outputText value="#{messages.button_search}" /></td>
+         		<td><h:inputText size="40" name="address" id="address" class="text" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('speedLimitChangeRequestTable:searchButton').onclick(); return false; } return true;"/></td>
+                 </tr>
               </table>
             </li>
-            <li class="l"><a4j:commandLink><button value="submit" class="left" onclick=""><span class="edit"><h:outputText value="Submit Request" /></span></button></a4j:commandLink></li>
+  		<li class="l"><a4j:commandLink><button value="submit" class="left" onclick="showLocation(document.getElementById('speedLimitChangeRequestTable:address').value);"><span class="search"><h:outputText value="Find Address" /></span></button></a4j:commandLink></li>
+            <li class="l"><a4j:commandLink action="#{speedLimitChangeRequests.saveRequests}" reRender="map-data"><button value="submit" class="left" onclick=""><span class="edit"><h:outputText value="Submit Request" /></span></button></a4j:commandLink></li>
             </ul>
-    </h:form>
-				<div class="spacer"></div>			
+ 				<div class="spacer"></div>			
 			 	<table>
 				  <tr style=" width : 100%">
 			    	<td  valign="top" width="50%">
 		<div class="datagrid"><!-- Start Speed Limit Changer Request table --> 
 		<rich:panel id="map-data">
-		<h:form id="speedLimitChangeRequestTable">
 		
 		
 		<rich:dataTable value="#{speedLimitChangeRequests.changeRequests}" id="items"
 			var="item" styleClass="datagrid"
 			rowClasses="trendTableOdd,trendTableEven" cellspacing="1" rows="100"
-			width="50%" binding="#{slcrTable}" onRowClick="this.style.backgroundColor='#DfDfF8'">
+			width="50%" onRowClick="this.style.backgroundColor='#DfDfF8'">
 
 			<!-- Data -->
               <rich:column>
@@ -109,16 +106,14 @@
 
 					</rich:dataTable>
 
-				</h:form> <!-- End slcr table -->
 <script type="text/javascript">
 		if (map != null){
 	          var gLatLngArray;
 	          var polyline;
 	          var hipoly;
 	          var seg;
-	          streetSegments = Array();
-<!--		<ui:repeat value="#{speedLimitChangeRequests.changeRequests}" var="changeRequestBean"> -->
-			<c:if test="#{speedLimitChangeRequests.latestChangeRequest != null}">
+
+		         map.setCenter(new GLatLng(#{speedLimitChangeRequests.maplat},#{speedLimitChangeRequests.maplng}),16);
 		        // Do polyline for segment    
 		        gLatLngArray = new Array();
 		         
@@ -136,17 +131,17 @@
 		         				"#{speedLimitChangeRequests.latestChangeRequest.zipCode}",
 		         				#{speedLimitChangeRequests.latestChangeRequest.category},
 		         				#{speedLimitChangeRequests.latestChangeRequest.speedLimit},polyline,hipoly);
-		         streetSegments.push(seg);
+		         streetSegments.unshift(seg);
 		        
 		     	 map.addOverlay(seg.hipoly);
 		     	 seg.hipoly.hide();
 		         map.addOverlay(seg.polyline);
-		       </c:if>
-<!--		  	</ui:repeat> -->
 		 }
 </script>
 </rich:panel>
+
 </div>
+
 			
 			
 			          <!-- END PANEL -->
@@ -194,21 +189,11 @@
  	</rich:panel>
  	</div>	
 
-	<a4j:form id="segment">
-		<a4j:jsFunction name="addSegment" reRender="map-data" >
-			<a4j:actionparam name="lat" assignTo="#{speedLimitChangeRequests.lat}"/>
-			<a4j:actionparam name="lng" assignTo="#{speedLimitChangeRequests.lng}"/>
-			<a4j:actionparam name="address" assignTo="#{speedLimitChangeRequests.address}"/>
-			<a4j:actionparam name="zoom" assignTo="#{speedLimitChangeRequests.mapzoom}"/>
-		</a4j:jsFunction>
-			
-			
-	</a4j:form>
-					             
 							<!-- END PANEL -->
 							</td>
 					</tr>
 			    </table>
+</a4j:form>
 				</div>
 			</div>
           </div>
@@ -219,6 +204,23 @@
 		</tr>
     </table>
 
+
+	<a4j:form id="segment">
+		<a4j:jsFunction name="addSegment" reRender="map-data" >
+			<a4j:actionparam name="lat" assignTo="#{speedLimitChangeRequests.lat}"/>
+			<a4j:actionparam name="lng" assignTo="#{speedLimitChangeRequests.lng}"/>
+			<a4j:actionparam name="address" assignTo="#{speedLimitChangeRequests.address}"/>
+			<a4j:actionparam name="zoom" assignTo="#{speedLimitChangeRequests.mapzoom}"/>
+		</a4j:jsFunction>
+	</a4j:form>	
+	<a4j:form id="delete">
+		<a4j:jsFunction name="deleteSelectedSegment" reRender="map-data" >
+			<a4j:actionparam name="deleteMe" assignTo="#{speedLimitChangeRequests.deleteMe}"/>
+		</a4j:jsFunction>
+			
+			
+	</a4j:form>
+					             
   </ui:define>
 
 </ui:composition>

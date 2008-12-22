@@ -417,14 +417,14 @@ var baseURL="../servlet/iwiglobal";
     function addAddressToMap(response) {
 // 		clearList();
       if (!response || response.Status.code != 200) {
-        alert("Sorry, we were unable to geocode that address");
+        alert("Sorry, we were unable to geocode that address - repsonse is: "+response);
+        if (response) {alert ("response status code is: "+response.Status.code);}
       } else {
       
          place = response.Placemark[0];
         point = new GLatLng(place.Point.coordinates[1],
                             place.Point.coordinates[0]);
         streetViewPoint = point;
-        
         var fullAddress = place.address;
 //        makeMarker(point);
                 
@@ -443,7 +443,6 @@ var baseURL="../servlet/iwiglobal";
     // in the form.  It geocodes the address entered into the form
     // and adds a marker to the map at that location.
     function showLocation(address) {
-
       geocoder.getLocations(address, addAddressToMap);
     }
 
@@ -844,4 +843,29 @@ function updateByZipCat(){
 }
 function updateWait(){
 	document.getElementById("addressDiv").innerHTML = 'Updating database....It could take several minutes';
+}
+function deleteSelected(){
+	var selectedItems;
+	var list = new Array();
+	
+  	for (var i=streetSegments.length-1;  i >=0; i--) {
+  		
+  		var streetSegment = streetSegments[i];
+//   			alert("deleteSelected "+i);
+  	
+   		if (document.getElementById("speedLimitChangeRequestTable:items:"+i+":c").checked) {
+//  			alert("deleteSelected checked  "+i);
+  			if (streetSegment == segmentSelected) segmentSelected = null;
+  			map.removeOverlay(streetSegments[i].polyline);
+  			map.removeOverlay(streetSegments[i].hipoly);
+  			streetSegments.splice(i,1);
+  			list.push(i);
+  		}
+  	}
+  	selectedItems = list.join(" ");
+//  	alert(selectedItems);
+  	deleteSelectedSegment(selectedItems);
+  	
+//  	refreshSegments();
+  	showSelected();
 }
