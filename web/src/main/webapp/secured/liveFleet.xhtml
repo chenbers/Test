@@ -12,56 +12,88 @@
 		<script src="http://maps.google.com/maps?file=api&amp;v=2.x&amp;key=#{gmBean.key}" type="text/javascript"></script>
 		<script type="text/javascript">
 		
-	    function createMarker(point, message, iconImage)
+		/* CreateMarker(GLatLng, divID, GIcon or null)
+		 *	
+		 * Creates a marker using specified GIcon or default icon if null is passed for iconImage.
+		 * divID is the id of a DIV you want displayed in the info window. */
+        function createMarker(point, divID, iconImage) 
         {
-	          var markerIcon = new GIcon(baseIcon);
-	       	  markerIcon.image = iconImage;
-		         
-	          markerOptions = { icon:markerIcon };
-	          var marker = new GMarker(point, markerOptions);
-	
-	          GEvent.addListener(marker, "click", function() {
-	          marker.openInfoWindowHtml("<b>" + message + "</b>");
-	          });
-	          return marker;
+        	var markerIcon;
+        	var marker;
+
+			//Use passed in image.
+        	if(iconImage != null)
+        	{
+				markerIcon = new GIcon(baseIcon);
+	       	    markerIcon.image = "#{facesContext.externalContext.request.contextPath}/images/ico_start.png";
+	       	 	markerOptions = { icon:markerIcon };
+	       	 	marker = new GMarker(point, markerOptions);
+        	}
+        	//Use default GoogleMap marker image.
+        	else
+        	{
+		      	markerIcon = new GIcon();
+				marker = new GMarker(point);
+        	}
+       
+       		GEvent.addListener(marker, "click", function() {
+					var node = document.getElementById(divID).cloneNode(true);
+          			node.style.display = 'block';
+		            marker.openInfoWindow(node);
+		 			});
+
+        	return marker;
         }
 
-		function showDriver(lat, lng, name, phone)
+
+		function showDriver(lat, lng, divId)
 		{
 			var point = new GLatLng(lat, lng);
-			var message = "<b>" + name + "<br />" + phone + "</b>";
+			var node = document.getElementById(divId).cloneNode(true);
+  				node.style.display = 'block';
+			
 
 			var markerIcon = new GIcon(baseIcon);
-	       	  markerIcon.image = "#{facesContext.externalContext.request.contextPath}/images/ico_start.png";
+	       	 	markerIcon.image = "#{facesContext.externalContext.request.contextPath}/images/ico_start.png";
 		         
-	          markerOptions = { icon:markerIcon };
+	        markerOptions = { icon:markerIcon };
 			
 			var marker = new GMarker(point, markerOptions);
-			 GEvent.addListener(marker, "click", function() {
-		         	marker.openInfoWindowHtml(message);  });
+
+			GEvent.addListener(marker, "click", function() {
+		    	     	marker.openInfoWindowHtml(node);  });
 			 
-			 map.addOverlay(marker);
+			map.addOverlay(marker);
 			
-			 //Immediately display info window.
-			 marker.openInfoWindow(message);
+			//Immediately display info window.
+			marker.openInfoWindow(node);
 		}
 	    
    		function processForm(addressId, countId)
    		{
-   			var address = document.getElementById(addressId).value
-   			var count = document.getElementById(countId).value
+			//Get form elements
+   			var address = document.getElementById(addressId).value;
+   			var count = document.getElementById(countId).value;
 
-	   	      if (geocoder) {
+   			// Clear all existing markers and zoom boundary.
+			map.clearOverlays();
+			bounds = new GLatLngBounds();
+   			
+			//Text field is blank, process form for only number of vehicles dropdown.
+	   		if(address.length == 0)  
+   			{
+   				notifyBean(mapDefaultLoc.lat(), mapDefaultLoc.lng(), count);
+   				return;
+   	   		}
+
+	   	    if (geocoder) {
 	   	        geocoder.getLatLng(
 	   	          address,
 	   	          function(point) {
 	   	            if (!point) {
 	   	              alert(address + " not found");
 	   	         } else {
-	  	              
-					 // Clear all existing markers.
-					 map.clearOverlays();
-
+	  	     
 	   				 //Create Marker
 					 var marker = new GMarker(point);
 					 GEvent.addListener(marker, "click", function() {
@@ -82,6 +114,27 @@
 	   	        );
 	   	      }
    	    }
+
+		//Process form if user pressed enter in TextBox.
+   		function checkEnter(e){ 
+   			var characterCode;
+
+   			if(e.which){ 
+   			e = e;
+   			characterCode = e.which; //character code is contained in NN4's which property
+   			}
+   			else{
+   			e = event;
+   			characterCode = e.keyCode;//character code is contained in IE's keyCode property
+   			}
+
+   			//if generated character code is equal to ascii 13 (if enter key)
+   			if(characterCode == 13) { 
+   					processForm('addressTextBox', 'countComboBox');
+   					return false; }
+   			else
+   	   			{	return true;  }
+   			}
 	    
 	</script>	
 	</ui:define>
@@ -129,7 +182,7 @@
 							</rich:column>
 							
 							<rich:column>
-								<a href="#" onclick="showDriver(#{item.loc.lat}, #{item.loc.lng}, '#{item.name}', '#{item.workPhone}');">show</a>
+								<a href="#" onclick="showDriver(#{item.loc.lat}, #{item.loc.lng}, #{item.driverID});">show</a>
 							</rich:column>
 
 						</rich:dataTable>
@@ -165,10 +218,10 @@
 				  <tr>
 					<td width="90">Find Address: </td>
 					<td width="301">
-						<input type="text" size="40" id="addressTextBox" value="1600 Amphitheatre Pky, Mountain View, CA" />
+						<input type="text" size="40" id="addressTextBox" value="1600 Amphitheatre Pky, Mountain View, CA" onKeyPress="checkEnter(event);"/>
 					</td>
 					<td width="165" rowspan="2">
-						<button value="" class="left" onclick="processForm('addressTextBox', 'countComboBox');"><span class="search">Locate</span></button>
+						<button name="dd" value="" class="left" onclick="processForm('addressTextBox', 'countComboBox');"><span class="search">Locate</span></button>
 					</td>
 				  </tr>
 				  <tr>
@@ -189,10 +242,19 @@
 				<h:panelGroup styleClass="map-border" layout="block">
 					<div id="map-canvas" style="width:580px;height:425px;border:0"></div>
 		  		</h:panelGroup>
+		  			<div id="defaultMessage" style="display:none">
+			    			<h:form>
+				    			<h2>Live Fleet</h2>
+				    			This is the default view for your division.
+				    			[<h:commandLink action="go_adminOrganization" value="change" />]
+			    			</h:form>
+		    		</div>
 			    <script type="text/javascript">
 				var map = null;
 			    var geocoder = null;
 			    var addressLatLng = null;
+			    var mapDefaultLoc = new GLatLng(#{liveFleetBean.addressLatLng.lat}, #{liveFleetBean.addressLatLng.lng});
+			    var markerClicked = false;
 
 			    var baseIcon = new GIcon();
 					baseIcon.iconSize = new GSize(21, 20);
@@ -201,39 +263,58 @@
 
 				var bounds = new GLatLngBounds();
 
-		        if (GBrowserIsCompatible()) {
+		        if (GBrowserIsCompatible())
+			        {
+		   
 		        	map = new GMap2(document.getElementById("map-canvas"));
 					map.addControl(new GLargeMapControl());
 					map.addControl(new GMapTypeControl());
 					map.addControl(new GOverviewMapControl()); 
-					map.setCenter(new GLatLng(#{liveFleetBean.addressLatLng.lat}, #{liveFleetBean.addressLatLng.lng}), #{liveFleetBean.addressZoom});
+					map.setCenter(mapDefaultLoc);
 					map.setMapType(G_NORMAL_MAP);
 		    	    geocoder = new GClientGeocoder();
+
+		    	    
+		    	    var marker = createMarker(mapDefaultLoc, "defaultMessage", null);
+					map.addOverlay(marker);
+					bounds.extend(marker.getPoint());
+
+					var node = document.getElementById("defaultMessage").cloneNode(true);
+          			node.style.display = 'block';
+		            marker.openInfoWindow(node);
+				
 		        }
 			    </script>
 	    			<rich:panel id="vehicleScript">
-			    		<script type="text/javascript">
- 							var marker;
-		  					var driverLoc;
-
-		  					
-
-		  					<ui:repeat value="#{liveFleetBean.drivers}" var="driver">
-		  						driverLoc = new GLatLng(#{driver.loc.lat}, #{driver.loc.lng});
-								marker = createMarker(driverLoc,"#{driver.name} <br />#{driver.workPhone}",
-																"#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
-								map.addOverlay(marker);
-								bounds.extend(marker.getPoint());
-
-								//polyline = new GPolyline([addressPoint, new GLatLng(#{driver.loc.lat}, #{driver.loc.lng})]
-								//							, "#0000ee", 3);
-								//map.addOverlay(polyline);
-								
-							</ui:repeat>
-
-							map.setZoom(map.getBoundsZoomLevel(bounds));
-						    map.setCenter(bounds.getCenter());
-					</script>
+	    			
+		    			<ui:repeat value="#{liveFleetBean.drivers}" var="driver">
+		    				<div id="#{driver.driverID}" style="display:none">
+			    				<h3>#{driver.name}</h3>
+			    				Work: #{driver.workPhone} <br />
+			    				Home: #{driver.homePhone} <br />
+			    				Vehicle:
+		    				</div>
+		    			</ui:repeat>
+		    			
+				    	<script type="text/javascript">
+	 							var marker;
+			  					var driverLoc;
+	
+			  					<ui:repeat value="#{liveFleetBean.drivers}" var="driver">
+			  						driverLoc = new GLatLng(#{driver.loc.lat}, #{driver.loc.lng});
+	
+			  					    var node = document.getElementById(#{driver.driverID}).cloneNode(true);
+				  		  			node.style.display = 'block';
+	
+									marker = createMarker(driverLoc, #{driver.driverID}, "#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
+									map.addOverlay(marker);
+									bounds.extend(marker.getPoint());
+	
+								</ui:repeat>
+	
+								map.setZoom(map.getBoundsZoomLevel(bounds));
+							    map.setCenter(bounds.getCenter());
+						</script>
 					</rich:panel>
 					
 					<a4j:form>
