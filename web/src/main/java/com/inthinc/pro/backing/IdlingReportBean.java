@@ -232,7 +232,7 @@ public class IdlingReportBean extends BaseReportBean
             iri.setLowPercent(0);
             iri.setHighPercent(0);
             iri.setTotalPercent(0);
-            Integer totHrs = new Integer(iri.getTotalHrs());
+            Integer totHrs = new Integer(iri.getDriveTime());
             
             if ( totHrs != 0 ) {
                 int lo = 100*(Integer.parseInt(iri.getLowHrs()));               
