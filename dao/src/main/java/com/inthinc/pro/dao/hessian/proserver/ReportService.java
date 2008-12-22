@@ -212,6 +212,10 @@ public interface ReportService extends HessianService
     
     Map<String, Object> getGDTrendByGTC(Integer groupID, Integer duration);
     
+    Map<String, Object> getGDScoreByGSE(Integer groupID, Integer start, Integer end);
+    
+    Map<String, Object> getGVScoreByGSE(Integer groupID, Integer start, Integer end);
+    
 //  DVQMap  
     List<Map<String, Object>> getDVScoresByGT(Integer groupID, Integer duration);
     
