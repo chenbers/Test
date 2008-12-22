@@ -6,7 +6,7 @@ public class IdlingReportItem extends BaseEntity
     private Integer groupID;
     private Driver driver;
     private Vehicle vehicle;
-    private String driveTime;
+    private Integer driveTime;
     private Integer milesDriven;
     private String lowHrs;
     private Integer lowPercent;
@@ -52,11 +52,11 @@ public class IdlingReportItem extends BaseEntity
     {
         this.vehicle = vehicle;
     }
-    public String getDriveTime()
+    public Integer getDriveTime()
     {
         return driveTime;
     }
-    public void setDriveTime(String driveTime)
+    public void setDriveTime(Integer driveTime)
     {
         this.driveTime = driveTime;
     }
