@@ -115,6 +115,12 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
         final String zoneID = parameterMap.get("zoneID");
         if (zoneID != null)
             alert.setZoneID(new Integer(zoneID));
+        else
+        {
+            final List<SelectItem> zones = getZones();
+            if ((zones != null) && (zones.size() > 0))
+                alert.setZoneID((Integer) zones.get(0).getValue());
+        }
         return createZoneAlertView(alert);
     }
 
