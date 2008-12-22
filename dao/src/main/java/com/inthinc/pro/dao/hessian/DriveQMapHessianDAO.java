@@ -165,6 +165,35 @@ public class DriveQMapHessianDAO extends GenericHessianDAO<DriveQMap, Integer> i
             return null;
         }
         
-    }       
+    }        
+    
+    @Override    
+    public DriveQMap getGDScoreByGSE(Integer groupID, Integer start, Integer end)
+    {
+        try
+        {
+            return getMapper().convertToModelObject(getReportService().getGDScoreByGSE(groupID,start,end), DriveQMap.class);           
+        }
+        catch (EmptyResultSetException e)
+        {
+            return null;
+        }
+        
+    }     
+    
+    
+    @Override    
+    public DriveQMap getGVScoreByGSE(Integer groupID, Integer start, Integer end)
+    {
+        try
+        {
+            return getMapper().convertToModelObject(getReportService().getGVScoreByGSE(groupID,start,end), DriveQMap.class);           
+        }
+        catch (EmptyResultSetException e)
+        {
+            return null;
+        }
+        
+    }     
 }
 
