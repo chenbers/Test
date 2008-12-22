@@ -20,8 +20,10 @@ import com.inthinc.pro.dao.hessian.proserver.ReportServiceCreator;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.mock.proserver.ReportServiceMockImpl;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.DVQMap;
 import com.inthinc.pro.model.DriveQMap;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.GQVMap;
 import com.inthinc.pro.model.QuintileMap;
 
@@ -62,6 +64,7 @@ public class ReportServiceIntegrationTest
 //  Driver Reports
         
     @Test
+    @Ignore
     public void getDScoreByDM()
     {
         DriveQMapHessianDAO dqmDAO = new DriveQMapHessianDAO();
@@ -88,6 +91,7 @@ public class ReportServiceIntegrationTest
     }
     
     @Test
+    @Ignore
     public void getDScoreByDT()
     {
         DriveQMapHessianDAO dqmDAO = new DriveQMapHessianDAO();
@@ -113,6 +117,7 @@ public class ReportServiceIntegrationTest
     }
     
     @Test
+    @Ignore
     public void getDTrendByDTC()
     {
         DriveQMapHessianDAO dqmDAO = new DriveQMapHessianDAO();
@@ -142,6 +147,7 @@ public class ReportServiceIntegrationTest
     }
     
     @Test
+    @Ignore
     public void getDTrendByDMC()
     {
         DriveQMapHessianDAO dqmDAO = new DriveQMapHessianDAO();
@@ -173,6 +179,7 @@ public class ReportServiceIntegrationTest
 //  Vehicle Reports
     
     @Test
+    @Ignore
     public void getVScoreByVM()
     {
         DriveQMapHessianDAO dqmDAO = new DriveQMapHessianDAO();
@@ -198,6 +205,7 @@ public class ReportServiceIntegrationTest
     }
     
     @Test
+    @Ignore
     public void getVScoreByVT()
     {
         DriveQMapHessianDAO dqmDAO = new DriveQMapHessianDAO();
@@ -223,6 +231,7 @@ public class ReportServiceIntegrationTest
     }
     
     @Test
+    @Ignore
     public void getVTrendByVMC()
     {
         DriveQMapHessianDAO dqmDAO = new DriveQMapHessianDAO();
@@ -252,6 +261,7 @@ public class ReportServiceIntegrationTest
     }
     
     @Test
+    @Ignore
     public void getVTrendByVTC()
     {
         DriveQMapHessianDAO dqmDAO = new DriveQMapHessianDAO();
@@ -283,6 +293,7 @@ public class ReportServiceIntegrationTest
 //  Group Driver Reports
     
     @Test
+    @Ignore
     public void getDVScoresByGT()
     {
         DVQMapHessianDAO dvqmDAO = new DVQMapHessianDAO();
@@ -316,7 +327,8 @@ public class ReportServiceIntegrationTest
         System.out.println("***** end *****");                
     }
     
-    @Test
+    @Test 
+    @Ignore
     public void getGDScoreByGT()
     {
         DriveQMapHessianDAO dqmDAO = new DriveQMapHessianDAO();
@@ -342,6 +354,7 @@ public class ReportServiceIntegrationTest
     }
     
     @Test
+    @Ignore
     public void getGDTrendByGTC()
     {
         DriveQMapHessianDAO dqmDAO = new DriveQMapHessianDAO();
@@ -367,6 +380,7 @@ public class ReportServiceIntegrationTest
     }
     
     @Test
+    @Ignore
     public void getDPctByGT()
     {
         DVQMapHessianDAO dvqmDAO = new DVQMapHessianDAO();
@@ -398,6 +412,7 @@ public class ReportServiceIntegrationTest
 
     
     @Test
+    @Ignore
     public void getSDScoresByGT()
     {
         GQVMapHessianDAO gqvDAO = new GQVMapHessianDAO();
@@ -435,6 +450,7 @@ public class ReportServiceIntegrationTest
     }
     
     @Test
+    @Ignore
     public void getSDTrendsByGTC()
     {
         GQVMapHessianDAO gqvDAO = new GQVMapHessianDAO();
@@ -474,6 +490,7 @@ public class ReportServiceIntegrationTest
 //  Group Vehicle Reports
     
     @Test
+    @Ignore
     public void getVDScoresByGT()
     {
         DVQMapHessianDAO dvqmDAO = new DVQMapHessianDAO();
@@ -506,4 +523,63 @@ public class ReportServiceIntegrationTest
         }
         System.out.println("***** end *****");           
     }
+    
+    
+    @Test    
+    public void getGDScoreByGSE()
+    {
+        DriveQMapHessianDAO dqmDAO = new DriveQMapHessianDAO();
+        dqmDAO.setReportService(reportService);
+        
+        System.out.println("***** begin getGDScoreByGSE *****");
+        
+        // Date range qualifiers
+        Integer endDate = DateUtil.getTodaysDate();
+        Integer startDate = DateUtil.getDaysBackDate(endDate, Duration.DAYS.getNumberOfDays());
+        
+        try 
+        {
+            DriveQMap dqm = dqmDAO.getGDScoreByGSE(
+                    16777218, startDate, endDate);
+            if ( dqm != null ) {
+                System.out.println("for groupID 16777218 " +
+                        dqm.getOverall());
+            } else {
+                System.out.println("null map returned");
+            }
+        } catch (Exception e)
+        {
+            System.out.println("getGDScoreByGSE failed");
+        }
+        System.out.println("***** end *****");           
+    }  
+    
+    @Test    
+    public void getGVScoreByGSE()
+    {
+        DriveQMapHessianDAO dqmDAO = new DriveQMapHessianDAO();
+        dqmDAO.setReportService(reportService);
+        
+        System.out.println("***** begin getGVScoreByGSE *****");
+        
+        // Date range qualifiers
+        Integer endDate = DateUtil.getTodaysDate();
+        Integer startDate = DateUtil.getDaysBackDate(endDate, Duration.DAYS.getNumberOfDays());
+        
+        try 
+        {
+            DriveQMap dqm = dqmDAO.getGVScoreByGSE(
+                    16777218, startDate, endDate);
+            if ( dqm != null ) {
+                System.out.println("for groupID 16777218 " +
+                        dqm.getOverall());
+            } else {
+                System.out.println("null map returned");
+            }
+        } catch (Exception e)
+        {
+            System.out.println("getGVScoreByGSE failed");
+        }
+        System.out.println("***** end *****");           
+    }    
 }
