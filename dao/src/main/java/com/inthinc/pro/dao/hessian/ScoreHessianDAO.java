@@ -451,11 +451,10 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 iri.setGroupID(v.getPerson().getGroupID());
                 iri.setDriver(v);                
                 iri.setVehicle(d.getVehicle());
-                iri.setDriveTime(String.valueOf(dqm.getDriveTime().intValue()));
+                iri.setDriveTime(dqm.getDriveTime());
                 iri.setMilesDriven(dqm.getEndingOdometer());
                 iri.setLowHrs(String.valueOf(dqm.getIdleLo().intValue()));
-                iri.setHighHrs(String.valueOf(dqm.getIdleHi().intValue()));
-                iri.setDriveTime(String.valueOf(dqm.getDriveTime().intValue()));                
+                iri.setHighHrs(String.valueOf(dqm.getIdleHi().intValue()));                
   
                 lIri.add(iri);
                 iri = null;
