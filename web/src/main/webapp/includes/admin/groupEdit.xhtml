@@ -56,11 +56,13 @@
 	<table>
 		<tr>
 			<td width="100%" valign="top">
+		
 			<div class="add_section_title"><h:outputFormat
-				value="#{organizationBean.groupState eq 'ADD'? messages.group_add_title:messages.group_edit_title}">
+				value="#{organizationBean.groupState eq 'ADD'? messages.group_add_title : messages.group_edit_title}">
 				<f:param
-					value="#{organizationBean.groupState eq 'ADD'?organizationBean.selectedGroupNode.group.name:groupTreeNode.group.name}" />
+					value="#{organizationBean.groupState eq 'ADD'? organizationBean.selectedGroupNode.group.name : groupTreeNode.group.name}" />
 			</h:outputFormat></div>
+
 			<table width="520px" cellspacing="2" cellpadding="4" border="0"
 				align="center">
 				<h:outputText rendered="#{groupTreeNode.group.type ne 'FLEET'}">
