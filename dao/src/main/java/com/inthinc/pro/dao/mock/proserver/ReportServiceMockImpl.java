@@ -652,7 +652,7 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
         return gqMapList;
     }  
     
-//  Miscellaneous    
+    
     public Map<String, Object> getDPctByGT(Integer groupID, Integer duration, Integer metric)
     {
         SearchCriteria searchCriteria;
@@ -668,9 +668,14 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
         }
         throw new EmptyResultSetException("No scores for group: " + groupID, "getDPctByGT", 0);
     }
+                             
+    public Map<String, Object> getGDScoreByGSE(Integer groupID, Integer start, Integer end)
+    {
+        return null;
+    }
 
-
-
-
-    
+    public Map<String, Object> getGVScoreByGSE(Integer groupID, Integer start, Integer end)
+    {
+        return null;
+    }
 }
