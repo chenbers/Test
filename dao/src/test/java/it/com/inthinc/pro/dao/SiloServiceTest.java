@@ -113,7 +113,7 @@ public class SiloServiceTest
         siloService = new SiloServiceCreator(host, port).getService();
 //        HessianDebug.debugIn = true;
 //        HessianDebug.debugOut = true;
-        HessianDebug.debugRequest = true;
+//        HessianDebug.debugRequest = true;
         
         initApp();
         

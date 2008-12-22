@@ -59,6 +59,10 @@ public class DriverSpeedBean extends BaseBean
     private void init()
     {
         int dist = distance.getNumberOfMiles();
+        if (navigation.getDriver() == null)
+        {
+            return;
+        }
         int driverID = navigation.getDriver().getDriverID();
         
         Map<ScoreType, ScoreableEntity> scoreMap = scoreDAO.getScoreBreakdownByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING);

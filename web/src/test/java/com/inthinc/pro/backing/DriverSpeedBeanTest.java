@@ -47,22 +47,22 @@ public class DriverSpeedBeanTest extends BaseBeanTest
         
         driverSpeedBean.setSpeedScoreTwentyOne(33);
         String Test = driverSpeedBean.getSpeedScoreTwentyOneStyle();
-        assertEquals(Test, "score_lg_4");
+        assertEquals(Test, "score_med_4");
         
         driverSpeedBean.setSpeedScoreThirtyOne(22);
         Test = driverSpeedBean.getSpeedScoreThirtyOneStyle();
-        assertEquals(Test, "score_lg_3");
+        assertEquals(Test, "score_med_3");
         
         driverSpeedBean.setSpeedScoreFourtyOne(44);
         Test = driverSpeedBean.getSpeedScoreFourtyOneStyle();
-        assertEquals(Test, "score_lg_5");
+        assertEquals(Test, "score_med_5");
         
         driverSpeedBean.setSpeedScoreFiftyFive(11);
         Test = driverSpeedBean.getSpeedScoreFiftyFiveStyle();
-        assertEquals(Test, "score_lg_2");
+        assertEquals(Test, "score_med_2");
         
         driverSpeedBean.setSpeedScoreSixtyFive(44);
         Test = driverSpeedBean.getSpeedScoreSixtyFiveStyle();
-        assertEquals(Test, "score_lg_5");
+        assertEquals(Test, "score_med_5");
     }
 }
