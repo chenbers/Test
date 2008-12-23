@@ -368,9 +368,9 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                     vri.setDriver(d.getDriver());
                 }
                 vri.setMilesDriven(dqm.getEndingOdometer());
-                vri.setOverallScore(dqm.getOverall());
-                vri.setSpeedScore(dqm.getSpeeding());
-                vri.setStyleScore(dqm.getDrivingStyle());
+                vri.setOverallScore(((float)dqm.getOverall())/(float)10.0);
+                vri.setSpeedScore(((float)dqm.getSpeeding())/(float)10.0);
+                vri.setStyleScore(((float)dqm.getDrivingStyle())/(float)10.0);
   
                 lVri.add(vri);
                 vri = null;
@@ -414,10 +414,10 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                     dri.setVehicle(d.getVehicle());
                 }
                 dri.setMilesDriven(dqm.getEndingOdometer());
-                dri.setOverallScore(dqm.getOverall());
-                dri.setSpeedScore(dqm.getSpeeding());
-                dri.setStyleScore(dqm.getDrivingStyle());
-                dri.setSeatBeltScore(dqm.getSeatbelt());                
+                dri.setOverallScore(((float)dqm.getOverall())/(float)10.0);
+                dri.setSpeedScore(((float)dqm.getSpeeding())/(float)10.0);
+                dri.setStyleScore(((float)dqm.getDrivingStyle())/(float)10.0);
+                dri.setSeatBeltScore(((float)dqm.getSeatbelt())/(float)10.0);                
   
                 lDri.add(dri);
                 dri = null;
