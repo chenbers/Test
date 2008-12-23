@@ -128,16 +128,35 @@ public class VehicleReportBean extends BaseReportBean
                       
         if ( this.searchFor.trim().length() != 0 ) {     
             try {                 
-                String compareToID = this.searchFor.trim();
+                String trimmedSearch = this.searchFor.trim().toLowerCase();
                 List <VehicleReportItem> matchedVehicles = new ArrayList<VehicleReportItem>();    
                 
                 for ( int i = 0; i < vehiclesData.size(); i++ ) {
                     VehicleReportItem v = vehiclesData.get(i);                   
-                    String localID = Integer.toString(v.getVehicle().getVehicleID());
+                    String vehicleID = Integer.toString(v.getVehicle().getVehicleID());
                     
-                    //Fuzzy
-                    int index1 = localID.indexOf(compareToID);                    
+                    int index1;
+                    int index2;
+                    int index3;
+                                                          
+                    // vehicle ID
+                    index1 = vehicleID.indexOf(trimmedSearch);                    
                     if (index1 != -1) {                        
+                        matchedVehicles.add(v);
+                    }
+                    
+                    // make                    
+                    index2 = v.getVehicle().getMake().toLowerCase().indexOf(trimmedSearch);                    
+                    if ((index1 == -1) && 
+                        (index2 != -1) ) {                        
+                        matchedVehicles.add(v);
+                    }
+                    
+                    // model                    
+                    index3 = v.getVehicle().getModel().toLowerCase().indexOf(trimmedSearch);                    
+                    if ((index1 == -1) && 
+                        (index2 == -1) &&
+                        (index3 != -1)) {                        
                         matchedVehicles.add(v);
                     }
                 }

@@ -44,7 +44,7 @@ public class DriverReportBean extends BaseReportBean
    
     private DriverReportItem drt = null;
     
-    private Integer numRowsPerPg = 25;
+    private Integer numRowsPerPg = 2;
     private final static String COLUMN_LABEL_PREFIX = "driverreport_";
     
     private Integer maxCount = null;
@@ -120,10 +120,13 @@ public class DriverReportBean extends BaseReportBean
     }
     
     public void search() 
-    {     
-        //Search by last name             
+    {      
+        if ( this.driverData.size() > 0 ) {
+            this.driverData.clear();
+        }
+        
         if ( this.searchFor.trim().length() != 0 ) {
-            String trimmedSearch = this.searchFor.trim();            
+            String trimmedSearch = this.searchFor.trim().toLowerCase();            
             List <DriverReportItem> matchedDrivers = new ArrayList<DriverReportItem>();    
             
             for ( int i = 0; i < this.driversData.size(); i++ ) {
@@ -133,8 +136,10 @@ public class DriverReportBean extends BaseReportBean
                 int index1;
                 int index2;
                 int index3;
-                                
-                if ( p != null ) {   
+                                                
+                if ( p != null ) {
+                    
+                    // first name
                     String lowerCaseFirst = 
                         p.getFirst().toLowerCase();
                     index1 = 
@@ -143,6 +148,7 @@ public class DriverReportBean extends BaseReportBean
                         matchedDrivers.add(d);
                     }
                 
+                    // last name
                     String lowerCaseLast = 
                         p.getLast().toLowerCase();
                     index2 = 
@@ -152,10 +158,12 @@ public class DriverReportBean extends BaseReportBean
                         matchedDrivers.add(d);
                     }
                     
-                    String lowerCaseUserID = 
-                        p.getUser().getUsername();
+                    // driver id
+                    String lowerCaseDriverID = 
+                        String.valueOf(
+                                new Integer(d.getDriver().getDriverID()));
                     index3 = 
-                        lowerCaseUserID.indexOf(trimmedSearch);                    
+                        lowerCaseDriverID.indexOf(trimmedSearch);                    
                     if ((index1 == -1) && 
                         (index2 == -1) &&
                         (index3 != -1) ) {                        

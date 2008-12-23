@@ -123,29 +123,40 @@ public class DeviceReportBean extends BaseReportBean
         this.deviceData = deviceData;
     }
     
-    public void search() {                      
+    public void search() 
+    {
+        if ( this.deviceData.size() > 0 ) {
+            this.deviceData.clear();
+        }
+        
         if ( this.searchFor.trim().length() != 0 ) {
-            String trimmedSearch = this.searchFor.trim();            
+            String trimmedSearch = this.searchFor.trim().toLowerCase();            
             List <DeviceReportItem> matchedDevices = new ArrayList<DeviceReportItem>();    
             
-            for ( DeviceReportItem d: devicesData ) {    
-                //Fuzzy, imei                
+            for ( DeviceReportItem d: devicesData ) {
+                
+                int index1;
+                int index2;
+                
+                // imei                
                 String dev = d.getDevice().getImei().toLowerCase();
-                int index1 = dev.indexOf(trimmedSearch);                    
+                index1 = dev.indexOf(trimmedSearch);                    
                 if (index1 != -1) {                        
                     matchedDevices.add(d);
                 }
-                //Fuzzy, device name
+                
+                // device name
                 String name = d.getDevice().getName().toLowerCase();
-                int index2 = name.indexOf(trimmedSearch);                    
-                if ( (index1 == -1) && (index2 != -1) ) {                        
+                index2 = name.indexOf(trimmedSearch);                    
+                if ( (index1 == -1) && 
+                     (index2 != -1) ) {                        
                     matchedDevices.add(d);
                 }
             }
             
             loadResults(matchedDevices);             
             this.maxCount = matchedDevices.size();
-        //Nothing entered, show them all
+                    
         } else {
             loadResults(devicesData);
             this.maxCount = devicesData.size();

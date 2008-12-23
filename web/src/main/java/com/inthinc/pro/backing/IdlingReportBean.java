@@ -68,7 +68,6 @@ public class IdlingReportBean extends BaseReportBean
     // set to SEVEN days back
     private final static int DAYS_BACK = 7 * 24 * 60 * 60 * 1000;
 
-
     private DriverDAO driverDAO;
     
     static
@@ -149,34 +148,57 @@ public class IdlingReportBean extends BaseReportBean
         this.idlingData = idlingData;
     }
     
-    public void search() {            
-        // Always hit the database, no matter what, too much data to hold,
-        // watch for date range as well....
-        String name = this.searchFor.trim();
-        checkDates();
+    public void search() 
+    {
+        // to be shown
+        if ( this.idlingData.size() > 0 ) {
+            this.idlingData.clear();
+        }
         
+        // snagged from the db
         if ( this.idlingsData.size() > 0 ) {
             this.idlingsData.clear();
         }
-        this.idlingsData = 
-            scoreDAO.getIdlingReportData(
-                    getUser().getPerson().getGroupID(),
-                    internalStartDate, internalEndDate);
         
-        List <IdlingReportItem> matchedIdlers = new ArrayList<IdlingReportItem>(); 
-        
-        // TODO: Date range check in here, something like all the idling between
-        // the from date to the to date.  Maybe check for no date specified?
-        if ( name.length() != 0 ) {     
-                                                                         
-            for ( int i = 0; i < idlingsData.size(); i++ ) {
-                iri = (IdlingReportItem)idlingsData.get(i);                   
-   
-                String localName = iri.getDriver().getPerson().getLast();
+        String trimmedSearch = this.searchFor.trim().toLowerCase();
 
-                //Fuzzy
-                int index1 = localName.indexOf(name);                    
+        if ( trimmedSearch.length() != 0 ) {
+            
+            // always hit the database, no matter what, 
+            //   because of date range....
+            checkDates();
+            
+            this.idlingsData = 
+                scoreDAO.getIdlingReportData(
+                        getUser().getPerson().getGroupID(),
+                        internalStartDate, internalEndDate);
+            
+            List <IdlingReportItem> matchedIdlers = new ArrayList<IdlingReportItem>();                 
+                                                                         
+            for ( IdlingReportItem iri: this.idlingsData ) {
+                
+                int index1;
+                int index2;
+                int index3;
+   
+                // first name 
+                index1 = iri.getDriver().getPerson().getFirst().toLowerCase().indexOf(trimmedSearch);                    
                 if (index1 != -1) {                        
+                    matchedIdlers.add(iri);
+                }
+                
+                // last name 
+                index2 = iri.getDriver().getPerson().getLast().toLowerCase().indexOf(trimmedSearch);                    
+                if ((index1 == -1) &&
+                    (index2 != -1) ) {                        
+                    matchedIdlers.add(iri);
+                }
+                
+                // vehicle name 
+                index3 = iri.getVehicle().getName().trim().toLowerCase().indexOf(trimmedSearch);                    
+                if ((index1 == -1) &&
+                    (index2 == -1) &&
+                    (index3 != -1) ) {                        
                     matchedIdlers.add(iri);
                 }
             }
