@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<tocdata>
+<item name="Welcome" url="Welcome.htm" />
+<item name="Home" url="Home.htm" />
+<book name="Reports" url="Reports.htm" >
+  <item name="Drivers" url="Drivers.htm" />
+  <item name="Vehicles" url="Vehicles.htm" />
+  <item name="Idling" url="Idling.htm" />
+</book>
+<item name="Red Flags" url="Red_Flags.htm" />
+<item name="Live Fleet" url="Live_Fleet.htm" />
+<book name="Admin" url="Admin.htm" >
+  <item name="Add Person" url="Add_Person.htm" />
+  <item name="Add Vehicle" url="Add_Vehicle.htm" />
+  <item name="Add Device" url="Add_Device.htm" />
+  <item name="Add Zone" url="Add_Zone.htm" />
+  <item name="Add Zone Alert" url="Add_Zone_Alert.htm" />
+  <item name="Red Flags_Admin" url="Red_Flags_Admin.htm" />
+  <item name="Organization" url="Organization.htm" />
+</book>
+
+</tocdata>

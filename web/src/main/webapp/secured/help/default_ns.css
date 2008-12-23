@@ -1,0 +1,129 @@
+﻿BODY { 
+      font-weight:bold; 
+      font-style:normal; 
+      background-color:#ffffff; 
+      font-family:"Trebuchet MS"  , sans-serif; 
+      color:#000000;  }
+H1 { 
+    font-weight:bold; 
+    font-size:30; 
+    font-family:"Trebuchet MS"  , sans-serif; 
+    font-style:normal; 
+    color:#000000;  }
+LI.H1 { 
+       font-weight:bold; 
+       font-size:30; 
+       font-family:"Trebuchet MS"  , sans-serif;  }
+H2 { 
+    font-weight:bold; 
+    font-size:24; 
+    font-family:"Trebuchet MS"  , sans-serif; 
+    font-style:normal; 
+    color:#000000;  }
+LI.H2 { 
+       font-weight:bold; 
+       font-size:24; 
+       font-family:"Trebuchet MS"  , sans-serif;  }
+H3 { 
+    font-weight:bold; 
+    font-size:18pt; 
+    font-family:"Trebuchet MS"  , sans-serif; 
+    font-style:normal; 
+    color:#000000;  }
+LI.H3 { 
+       font-weight:bold; 
+       font-size:18pt; 
+       font-family:"Trebuchet MS"  , sans-serif;  }
+H4 { 
+    font-weight:bold; 
+    font-size:12.0pt; 
+    font-family:treb; 
+    font-style:normal; 
+    color:#000000;  }
+LI.H4 { 
+       font-weight:bold; 
+       font-size:12.0pt; 
+       font-family:treb;  }
+H5 { 
+    font-weight:bold; 
+    font-size:10.0pt; 
+    font-family:"Trebuchet MS"  , sans-serif; 
+    font-style:normal; 
+    color:#000000;  }
+LI.H5 { 
+       font-weight:bold; 
+       font-size:10.0pt; 
+       font-family:"Trebuchet MS"  , sans-serif;  }
+H6 { 
+    font-weight:bold; 
+    font-size:8.0pt; 
+    font-family:"Trebuchet MS"  , sans-serif; 
+    font-style:normal; 
+    color:#000000;  }
+LI.H6 { 
+       font-weight:bold; 
+       font-size:8.0pt;  }
+P { 
+   font-size:14pt; 
+   margin-top:8pt; 
+   margin-bottom:8pt; 
+   font-family:"Trebuchet MS"  , sans-serif; 
+   font-weight:normal; 
+   font-style:normal; 
+   color:#000000;  }
+LI.P { 
+      font-size:14pt; 
+      font-family:"Trebuchet MS"  , sans-serif; 
+      font-weight:normal; 
+      font-style:normal;  }
+A.expandspot { 
+              color:#008000; 
+              cursor:hand; 
+              font-style:italic; 
+              text-decoration:none;  }
+SPAN.expandtext { 
+                 font-style:italic; 
+                 font-weight:normal; 
+                 color:#ff0000;  }
+A.dropspot { 
+            cursor:hand; 
+            color:#008000; 
+            font-style:italic; 
+            text-decoration:none;  }
+A.glossterm { 
+             color:#800000; 
+             cursor:hand; 
+             font-style:italic; 
+             text-decoration:none;  }
+SPAN.glosstext { 
+                font-style:italic; 
+                font-weight:normal; 
+                color:#0000ff;  }
+OL { 
+    margin-top:0px; 
+    margin-bottom:0px; 
+    font-family:"Trebuchet MS"  , sans-serif; 
+    font-style:normal; 
+    font-weight:bold; 
+    color:#000000;  }
+UL { 
+    margin-top:0px; 
+    margin-bottom:0px; 
+    font-family:"Trebuchet MS"  , sans-serif; 
+    font-style:normal; 
+    font-weight:bold; 
+    color:#000000;  }
+A:link { 
+        color:#00ff00;  }
+A:active { 
+          color:#0000ff;  }
+A:hover { 
+         color:#ff0000;  }
+ol ol { 
+       margin-top:8px;  }
+ol ul { 
+       margin-top:8px;  }
+ul ul { 
+       margin-top:8px;  }
+ul ol { 
+       margin-top:8px;  }

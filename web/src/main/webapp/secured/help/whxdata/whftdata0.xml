@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<ftstdata>
+<topic name="Add Device" url="Add_Device.htm" />
+<topic name="Add Person" url="Add_Person.htm" />
+<topic name="Add Vehicle" url="Add_Vehicle.htm" />
+<topic name="Add Zone" url="Add_Zone.htm" />
+<topic name="Add Zone Alert" url="Add_Zone_Alert.htm" />
+<topic name="Admin" url="Admin.htm" />
+<topic name="Drivers" url="Drivers.htm" />
+<topic name="Home" url="Home.htm" />
+<topic name="Home - Overall Score_hs" url="Home_-_Overall_Score_hs.htm" />
+<topic name="Home - Trend_hs" url="Home_-_Trend_hs.htm" />
+<topic name="Idling" url="Idling.htm" />
+<topic name="Live Fleet" url="Live_Fleet.htm" />
+<topic name="Organization" url="Organization.htm" />
+<topic name="Red Flags" url="Red_Flags.htm" />
+<topic name="Red Flags_Admin" url="Red_Flags_Admin.htm" />
+<topic name="Reports" url="Reports.htm" />
+<topic name="Vehicles" url="Vehicles.htm" />
+<topic name="Welcome" url="Welcome.htm" />
+
+</ftstdata>  
