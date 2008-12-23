@@ -76,7 +76,7 @@ public class Util
                 {
                     long diff = ((Date)value1).getTime() - ((Date)value2).getTime();
                     
-                    if (diff > 3000 || diff < -3000)
+                    if (diff > 6000 || diff < -6000)
                     {
                         assertEquals(value1.getClass().getSimpleName() + " Field: " + key + " ", ((Date)value1).getTime(), ((Date)value2).getTime());
                     }

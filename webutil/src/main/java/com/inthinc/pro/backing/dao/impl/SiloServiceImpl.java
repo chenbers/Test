@@ -616,4 +616,39 @@ public class SiloServiceImpl implements SiloService
         return null;
     }
 
+    @Override
+    public Map<String, Object> getDriverByPersonID(@DaoParam(name="personID")Integer personID) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> getUserByPersonID(@DaoParam(name="personID")Integer personID) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> getDriversByGroupIDDeep(Integer groupID) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> getGroupsByGroupIDDeep(Integer groupID) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> getVehiclesByGroupIDDeep(Integer groupID) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

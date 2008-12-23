@@ -38,6 +38,8 @@ public interface SiloService extends HessianService
     Map<String, Object> updateGroup(Integer groupID, Map<String, Object> groupMap) throws ProDAOException;
 
     List<Map<String, Object>> getGroupsByAcctID(Integer acctID) throws ProDAOException;
+    
+    List<Map<String, Object>> getGroupsByGroupIDDeep(Integer groupID) throws ProDAOException;
 
     // ------- Device  ----------
     Map<String, Object> createDevice(Integer acctID, Map<String, Object> deviceMap) throws ProDAOException;
@@ -59,8 +61,9 @@ public interface SiloService extends HessianService
 
     Map<String, Object> updateVehicle(Integer vehicleID, Map<String, Object> vehicleMap) throws ProDAOException;
   
-// ?? TODO: does this get the entire group hierarchy or just the one group?    
     List<Map<String, Object>> getVehiclesByGroupID(Integer groupID) throws ProDAOException;
+
+    List<Map<String, Object>> getVehiclesByGroupIDDeep(Integer groupID) throws ProDAOException;
 
     Map<String, Object> setVehicleDriver(Integer vehicleID, Integer driverID) throws ProDAOException;
 
@@ -92,23 +95,29 @@ public interface SiloService extends HessianService
 
     
     // ------- Driver  ----------
-    Map<String, Object> createDriver(Integer acctID, Map<String, Object> driverMap) throws ProDAOException;
+    Map<String, Object> createDriver(Integer personID, Map<String, Object> driverMap) throws ProDAOException;
 
     Map<String, Object> deleteDriver(Integer driverID) throws ProDAOException;
 
     Map<String, Object> getDriver(Integer driverID) throws ProDAOException;
 
+    Map<String, Object> getDriverByPersonID(Integer personID) throws ProDAOException;
+
     Map<String, Object> updateDriver(Integer driverID, Map<String, Object> driverMap) throws ProDAOException;
 
-    List<Map<String, Object>> getDriversByGroupID(Integer groupID);
+    List<Map<String, Object>> getDriversByGroupID(Integer groupID) throws ProDAOException;
+    
+    List<Map<String, Object>> getDriversByGroupIDDeep(Integer groupID) throws ProDAOException;
 
     
     // ------- User  ----------
-    Map<String, Object> createUser(Integer acctID, Map<String, Object> userMap) throws ProDAOException;
+    Map<String, Object> createUser(Integer personID, Map<String, Object> userMap) throws ProDAOException;
 
     Map<String, Object> deleteUser(Integer userID) throws ProDAOException;
 
     Map<String, Object> getUser(Integer userID) throws ProDAOException;
+
+    Map<String, Object> getUserByPersonID(Integer personID) throws ProDAOException;
 
     Map<String, Object> updateUser(Integer userID, Map<String, Object> userMap) throws ProDAOException;
 

@@ -255,9 +255,22 @@ public class Device extends BaseEntity
         if ((speedSettings == null) && (speedSet != null))
         {
             final String[] speeds = speedSet.split(" ");
-            speedSettings = new Integer[speeds.length];
+            speedSettings = new Integer[NUM_SPEEDS];
             for (int i = 0; i < speeds.length; i++)
-                speedSettings[i] = new Integer(speeds[i]);
+            {
+                try
+                {
+                    speedSettings[i] = new Integer(speeds[i]);
+                }
+                catch (NumberFormatException e)
+                {
+                    speedSettings[i] = 0;
+                }
+            }
+            for (int i = speeds.length; i < NUM_SPEEDS; i++)
+            {
+                speedSettings[i] = 0;
+            }
         }
         return speedSettings;
     }

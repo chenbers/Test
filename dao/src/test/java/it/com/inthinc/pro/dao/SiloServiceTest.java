@@ -309,9 +309,8 @@ public class SiloServiceTest
             assertTrue(endDate.after(trip.getEndTime()));
             assertTrue(trip.getMileage() > 0);
         }
-        // TODO: not impl. on back end
-//        Trip trip = driverDAO.getLastTrip(TESTING_DRIVER_ID);
-//        assertNotNull(trip);
+        Trip trip = driverDAO.getLastTrip(TESTING_DRIVER_ID);
+        assertNotNull(trip);
         
         tripList = vehicleDAO.getTrips(TESTING_VEHICLE_ID, startDate, endDate);
         assertNotNull(tripList);
@@ -326,9 +325,8 @@ public class SiloServiceTest
             assertTrue(t.getMileage() > 0);
         }
         
-        // TODO: not impl. on back end
-//        trip = vehicleDAO.getLastTrip(TESTING_VEHICLE_ID);
-//        assertNotNull(trip);
+        trip = vehicleDAO.getLastTrip(TESTING_VEHICLE_ID);
+        assertNotNull(trip);
     }
     
     @Test
@@ -340,7 +338,7 @@ public class SiloServiceTest
         account();
         Integer acctID = account.getAcctID();
         groupHierarchy(acctID);
-        
+
         // zones
         zones(acctID, team1Group.getGroupID());
         
@@ -374,6 +372,9 @@ public class SiloServiceTest
         // driver
         drivers(team1Group.getGroupID());
         
+        // person with driver, address and user
+        personDeep(acctID, team1Group.getGroupID());
+        
         // assign drivers to vehicles
         assignDriversToVehicles(team1Group.getGroupID());
         
@@ -384,6 +385,7 @@ public class SiloServiceTest
 // TODO:        
 //        zoneAlertProfiles(acctID, team1Group.getGroupID());
     }
+
 
 
     private void zoneAlertProfiles(Integer acctID, Integer groupID)
@@ -837,8 +839,7 @@ public class SiloServiceTest
         
         List<Vehicle> groupVehicleList = vehicleDAO.getVehiclesInGroupHierarchy(groupID);
         
-// TODO: asked for deep version of this so that we can get all vehicles down the hierarchy        
-        assertEquals("vehicle count for region group", Integer.valueOf(VEHICLE_COUNT), new Integer(groupVehicleList.size()));
+        assertEquals("vehicle count for region group", Integer.valueOf(VEHICLE_COUNT*3), new Integer(groupVehicleList.size()));
         
     }
 
@@ -860,6 +861,9 @@ logger.debug("Persons GroupID: " + groupID);
             Person person = new Person(0, groupID, TimeZone.getDefault(), null, address.getAddrID(), "555555555"+i, "555555555"+i, 
                             email,
                             "emp"+i, null, "title"+i, "dept" + i, "first"+i, "m"+i, "last"+i, "jr", Gender.MALE, 65, 180, dob);
+//            User user = new User(0, 0, randomRole(), Status.ACTIVE, "", PASSWORD);
+//            person.setUser(user);
+            
             Integer personID = personDAO.create(groupID, person);
             assertNotNull(personID);
             person.setPersonID(personID);
@@ -878,7 +882,7 @@ logger.debug("Persons GroupID: " + groupID);
             }
         }
 
-        String ignoreFields[] = {"costPerHour"};
+        String ignoreFields[] = {"costPerHour", "address"};
         for (Person person : personList)
         {
             if (person.getGroupID().equals(groupID))
@@ -902,7 +906,7 @@ logger.debug("Persons GroupID: " + groupID);
                 {
                     if (groupPerson.getPersonID().equals(person.getPersonID()))
                     {
-                        Util.compareObjects(person, groupPerson);
+                        Util.compareObjects(person, groupPerson, ignoreFields);
                         found = true;
                         break;
                     }
@@ -961,6 +965,9 @@ logger.debug("Persons GroupID: " + groupID);
             // find user by ID
 
             User returnedUser = userDAO.findByID(user.getUserID());
+            Util.compareObjects(user, returnedUser, ignoreFields);
+
+            returnedUser = userDAO.getUserByPersonID(person.getPersonID());
             Util.compareObjects(user, returnedUser, ignoreFields);
 
             userList.add(user);
@@ -1084,6 +1091,10 @@ logger.debug("Persons GroupID: " + groupID);
             // find Driver by ID
             Driver returnedDriver = driverDAO.findByID(driver.getDriverID());
             Util.compareObjects(driver, returnedDriver, ignoreFields);
+            
+            // find by PersonID
+            returnedDriver = driverDAO.getDriverByPersonID(person.getPersonID());
+            Util.compareObjects(driver, returnedDriver, ignoreFields);
 
             driverList.add(driver);
             
@@ -1186,13 +1197,52 @@ logger.debug("Persons GroupID: " + groupID);
             }
         }
     }
+    private void personDeep(Integer acctID, Integer groupID)
+    {
+        PersonHessianDAO personDAO = new PersonHessianDAO();
+        personDAO.setSiloService(siloService);
+        
+        Date expired = Util.genDate(2010, 8, 30);
+        Address address = new Address(null, Util.randomInt(100, 999) + " Street", null, "City " + Util.randomInt(10,99),
+                randomState(), "12345");
+        Driver driver = new Driver(0, 0, Status.ACTIVE, 100+groupID, "l"+groupID, 
+                randomState(), "ABCD", expired);
+        User user = new User(0, 0, randomRole(), Status.ACTIVE, "deepuser_"+groupID, PASSWORD);
+        Date dob = Util.genDate(1959, 8, 30);
+        Person person = new Person(0, groupID, TimeZone.getDefault(), null, address.getAddrID(), "5555555555", "5555555555", 
+                "email"+groupID+"@email.com",
+                "emp"+groupID, null, "title"+groupID, "dept" + groupID, "first"+groupID, "m"+groupID, "last"+groupID, "jr", Gender.MALE, 65, 180, 
+                dob);
+        person.setUser(user);
+        person.setDriver(driver);
+        person.setAddress(address);
+        
+        Integer personID = personDAO.create(acctID, person);
+        person.setPersonID(personID);
+        assertNotNull(personID);
+        assertNotNull("addressID not set", person.getAddressID());
+        assertNotNull("userID not set", person.getUser().getUserID());
+        assertNotNull("driverID not set", person.getDriver().getDriverID());
+        assertNotNull("personID in user not set", person.getUser().getPersonID());
+        assertNotNull("personID in driver not set", person.getDriver().getPersonID());
+        
+        Person returnPerson = personDAO.findByID(personID);
+        String[] ignoreFields = {"modified"};
+        Util.compareObjects(person, returnPerson, ignoreFields);
+
+// TODO: This did not work        
+//        personDAO.deleteByID(personID);
+//        Person delPerson = personDAO.findByID(personID);
+//        assertNull(delPerson);
+        
+    }
 
     private void find()
     {
         // do these last to allow back end more time to update it's cache (can take up to 5 min)
         PersonHessianDAO personDAO = new PersonHessianDAO();
         personDAO.setSiloService(siloService);
-        findByKey(personDAO, personList.get(0), personList.get(0).getEmail(), new String[] {"modified"});
+        findByKey(personDAO, personList.get(0), personList.get(0).getEmail(), new String[] {"modified", "address", "driver", "user"});
         findByKeyExpectNoResult(personDAO, "BAD_EMAIL");
 
         UserHessianDAO userDAO = new UserHessianDAO();

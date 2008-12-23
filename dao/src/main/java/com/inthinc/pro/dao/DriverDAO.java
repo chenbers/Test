@@ -45,9 +45,11 @@ public interface DriverDAO extends GenericDAO<Driver, Integer>
      * @return
      */
     LastLocation getLastLocation(Integer driverID);
+    
+    
     List<Trip> getTrips(Integer driverID, Date startDate, Date endDate);
     
     Trip getLastTrip(Integer driverID);
 
-
+    Driver getDriverByPersonID(Integer personID);
 }

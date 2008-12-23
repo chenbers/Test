@@ -364,6 +364,28 @@ public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>
         return idClass.cast(map.get(name));
     }
 
+    protected ID getReturnKey(Map<String, Object> map, Class<?> clzz)
+    {
+        String name = null;
+        for (Field f : clzz.getDeclaredFields())
+        {
+            if (f.isAnnotationPresent(com.inthinc.pro.dao.annotations.ID.class))
+            {
+                if (f.isAnnotationPresent(Column.class))
+                {
+                    Column column = f.getAnnotation(Column.class);
+                    name = column.name();
+                }
+                else
+                {
+                    name = f.getName();
+                }
+                break;
+            }
+        }
+
+        return idClass.cast(map.get(name));
+    }
     protected Integer getChangedCount(Map<String, Object> map)
     {
         return (Integer) map.get("count");

@@ -327,9 +327,12 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     {
         // prefix the sensitivity settings with "device."
         final Map<String, Boolean> updateField = getUpdateField();
-        for (final String key : updateField.keySet())
-            if (key.startsWith("hard"))
-                updateField.put("device." + key, updateField.get(key));
+        if (updateField != null)
+        {
+            for (final String key : updateField.keySet())
+                if (key.startsWith("hard"))
+                    updateField.put("device." + key, updateField.get(key));
+        }
 
         if ((getItem().getDevice() != null) && getItem().getDevice().isSensitivitiesInverted())
             getItem().getDevice().invertSensitivities();

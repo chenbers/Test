@@ -1143,6 +1143,51 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
 
     }
 
+    @Override
+    public Map<String, Object> getDriverByPersonID(Integer personID) throws ProDAOException
+    {
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("personID", personID);
+        Map<String, Object>returnMap =  MockData.getInstance().lookup(Driver.class, searchCriteria);
+        if (returnMap == null)
+        {
+            throw new EmptyResultSetException("getDriverByPersonID() returned no value for personID=" + personID, "getDriverByPersonID()", 0);
+        }
+        return returnMap;
+    }
+
+    @Override
+    public Map<String, Object> getUserByPersonID(Integer personID) throws ProDAOException
+    {
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("personID", personID);
+        Map<String, Object>returnMap =  MockData.getInstance().lookup(User.class, searchCriteria);
+        if (returnMap == null)
+        {
+            throw new EmptyResultSetException("getUserByPersonID() returned no value for personID=" + personID, "getUserByPersonID()", 0);
+        }
+        return returnMap;
+    }
+
+    @Override
+    public List<Map<String, Object>> getDriversByGroupIDDeep(Integer groupID) throws ProDAOException
+    {
+        return getDriversByGroupID(groupID);
+    }
+
+    @Override
+    public List<Map<String, Object>> getGroupsByGroupIDDeep(Integer groupID) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> getVehiclesByGroupIDDeep(Integer groupID) throws ProDAOException
+    {
+        return getVehiclesByGroupID(groupID);
+    }
+
 
 
 }
