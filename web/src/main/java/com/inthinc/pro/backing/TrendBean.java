@@ -36,7 +36,7 @@ public class TrendBean extends BaseDurationBean
 
     private List<ScoreableEntityPkg> scoreableEntities = new ArrayList<ScoreableEntityPkg>();
     
-    private Integer numRowsPerPg = 1;
+    private Integer numRowsPerPg = 10;
     private Integer maxCount = 0;
     private Integer start = 1;
     private Integer end = numRowsPerPg;

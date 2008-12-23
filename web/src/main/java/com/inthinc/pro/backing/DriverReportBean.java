@@ -44,7 +44,7 @@ public class DriverReportBean extends BaseReportBean
    
     private DriverReportItem drt = null;
     
-    private Integer numRowsPerPg = 2;
+    private Integer numRowsPerPg = 25;
     private final static String COLUMN_LABEL_PREFIX = "driverreport_";
     
     private Integer maxCount = null;

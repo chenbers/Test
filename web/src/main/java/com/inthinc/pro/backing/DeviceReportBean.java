@@ -44,7 +44,7 @@ public class DeviceReportBean extends BaseReportBean
    
     private DeviceReportItem dri = null;
     
-    private Integer numRowsPerPg = 1;
+    private Integer numRowsPerPg = 25;
     private final static String COLUMN_LABEL_PREFIX = "devicereport_";
     
     private Integer maxCount = null;

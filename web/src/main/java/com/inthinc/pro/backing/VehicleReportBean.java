@@ -45,7 +45,7 @@ public class VehicleReportBean extends BaseReportBean
     
     private VehicleReportItem vrt = null;
     
-    private Integer numRowsPerPg = 2;
+    private Integer numRowsPerPg = 25;
     private final static String COLUMN_LABEL_PREFIX = "vehiclereport_";
     
     private Integer maxCount = null;
