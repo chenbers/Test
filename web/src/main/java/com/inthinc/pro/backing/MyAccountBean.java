@@ -2,14 +2,11 @@ package com.inthinc.pro.backing;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
-import javax.faces.component.UISelectOne;
 import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.MessageSource;
 
-import com.inthinc.pro.backing.model.GroupHierarchy;
-import com.inthinc.pro.backing.model.GroupLevel;
 import com.inthinc.pro.dao.AlertContactDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.AlertContact;
@@ -44,13 +41,7 @@ public class MyAccountBean extends BaseBean
     private String criticalSelectPhone;
     private String criticalSelectText;
     
-    private String primaryEmail;
-    private String secondaryEmail;
-    private String primaryPhone;
-    private String secondaryPhone;
-    private String cellPhone;
-    private String primaryText;
-    private String secondaryText;
+    private UIInput primaryEmailInput;
     
     public MyAccountBean()
     {
@@ -59,43 +50,43 @@ public class MyAccountBean extends BaseBean
     
     public void validateForm(FacesContext context, UIComponent component, Object value)
     {
-    //    String pE = (String) primaryEmailInput.getLocalValue();
-    //    pE = (String) primaryEmailInput.getValue();
-        logger.info("validatingForm");
+        if (primaryEmailInput.getLocalValue() != null)
+        {
+            String pE = (String) primaryEmailInput.getLocalValue();
+            pE = (String) primaryEmailInput.getValue();
+            logger.info("validatingForm");
+        }
+        else
+        {
+            logger.info("validatingForm");
+        }
     }
 
     public String saveFormAction()
     {
         User user = getUser();
-        AlertContact alertContact = alertContactDAO.findByUserID(user.getUserID());
+        AlertContact alertContact = getAlertContact();
         boolean isNew = false;
         if (alertContact == null)
         {
             isNew = true;
             alertContact = new AlertContact();
         }
-        alertContact.setPriEmail(primaryEmail);
-        alertContact.setSecEmail(secondaryEmail);
-        alertContact.setPriPhone(primaryPhone);
-        alertContact.setSecPhone(secondaryPhone);
-        alertContact.setCellPhone(cellPhone);
-        alertContact.setPriText(primaryText);
-        alertContact.setSecText(secondaryText);
 
         if ("0".equals(informationSelectType)) alertContact.setInfo(0);
         else if ("1".equals(informationSelectType)) alertContact.setInfo(new Integer(informationSelectEmail));
         else if ("2".equals(informationSelectType)) alertContact.setInfo(new Integer(informationSelectPhone));
         else if ("3".equals(informationSelectType)) alertContact.setInfo(new Integer(informationSelectText));
 
-        if ("0".equals(warningSelectType)) alertContact.setInfo(0);
-        else if ("1".equals(warningSelectType)) alertContact.setInfo(new Integer(warningSelectEmail));
-        else if ("2".equals(warningSelectType)) alertContact.setInfo(new Integer(warningSelectPhone));
-        else if ("3".equals(warningSelectType)) alertContact.setInfo(new Integer(warningSelectText));
+        if ("0".equals(warningSelectType)) alertContact.setWarn(0);
+        else if ("1".equals(warningSelectType)) alertContact.setWarn(new Integer(warningSelectEmail));
+        else if ("2".equals(warningSelectType)) alertContact.setWarn(new Integer(warningSelectPhone));
+        else if ("3".equals(warningSelectType)) alertContact.setWarn(new Integer(warningSelectText));
 
-        if ("0".equals(criticalSelectType)) alertContact.setInfo(0);
-        else if ("1".equals(criticalSelectType)) alertContact.setInfo(new Integer(criticalSelectEmail));
-        else if ("2".equals(criticalSelectType)) alertContact.setInfo(new Integer(criticalSelectPhone));
-        else if ("3".equals(criticalSelectType)) alertContact.setInfo(new Integer(criticalSelectText));
+        if ("0".equals(criticalSelectType)) alertContact.setCrit(0);
+        else if ("1".equals(criticalSelectType)) alertContact.setCrit(new Integer(criticalSelectEmail));
+        else if ("2".equals(criticalSelectType)) alertContact.setCrit(new Integer(criticalSelectPhone));
+        else if ("3".equals(criticalSelectType)) alertContact.setCrit(new Integer(criticalSelectText));
         
         if (isNew)
         {
@@ -106,6 +97,50 @@ public class MyAccountBean extends BaseBean
             alertContactDAO.update(alertContact);
         }
         return "go_myAccount";
+    }
+    
+    public String getInfoText()
+    {
+        String result = "None";
+        if (getAlertContact() != null && getAlertContact().getInfo() != null)
+        {
+            result = getAlertText(getAlertContact().getInfo());
+        }
+        return result;
+    }
+    
+    public String getWarnText()
+    {
+        String result = "None";
+        if (getAlertContact() != null && getAlertContact().getWarn() != null)
+        {
+            result = getAlertText(getAlertContact().getWarn());
+        }
+        return result;
+    }
+    
+    public String getCritText()
+    {
+        String result = "None";
+        if (getAlertContact() != null && getAlertContact().getCrit() != null)
+        {
+            result = getAlertText(getAlertContact().getCrit());
+        }
+        return result;
+    }
+    
+    private String getAlertText(int alertId)
+    {
+        String result = "None";
+        if (alertId == 0) result = "None";
+        else if (alertId == 1) result = "Email - Primary";
+        else if (alertId == 2) result = "Email - Secondary";
+        else if (alertId == 3) result = "Phone - Primary";
+        else if (alertId == 4) result = "Phone - Secondary";
+        else if (alertId == 5) result = "Phone - Cell";
+        else if (alertId == 6) result = "Text Message - Primary";
+        else if (alertId == 7) result = "Text Message - Secondary";
+        return result;
     }
 
     public AlertContact getAlertContact()
@@ -248,77 +283,7 @@ public class MyAccountBean extends BaseBean
     {
         this.informationSelectText = informationSelectText;
     }
-
-    public String getPrimaryEmail()
-    {
-        return primaryEmail;
-    }
-
-    public void setPrimaryEmail(String primaryEmail)
-    {
-        this.primaryEmail = primaryEmail;
-    }
-
-    public String getSecondaryEmail()
-    {
-        return secondaryEmail;
-    }
-
-    public void setSecondaryEmail(String secondaryEmail)
-    {
-        this.secondaryEmail = secondaryEmail;
-    }
-
-    public String getPrimaryPhone()
-    {
-        return primaryPhone;
-    }
-
-    public void setPrimaryPhone(String primaryPhone)
-    {
-        this.primaryPhone = primaryPhone;
-    }
-
-    public String getSecondaryPhone()
-    {
-        return secondaryPhone;
-    }
-
-    public void setSecondaryPhone(String secondaryPhone)
-    {
-        this.secondaryPhone = secondaryPhone;
-    }
-
-    public String getCellPhone()
-    {
-        return cellPhone;
-    }
-
-    public void setCellPhone(String cellPhone)
-    {
-        this.cellPhone = cellPhone;
-    }
-
-    public String getPrimaryText()
-    {
-        return primaryText;
-    }
-
-    public void setPrimaryText(String primaryText)
-    {
-        this.primaryText = primaryText;
-    }
-
-    public String getSecondaryText()
-    {
-        return secondaryText;
-    }
-
-    public void setSecondaryText(String secondaryText)
-    {
-        this.secondaryText = secondaryText;
-    }
-
+    
     public String getWarningSelectType()
     {
         if (getAlertContact() != null && getAlertContact().getWarn() != null)
@@ -437,4 +402,14 @@ public class MyAccountBean extends BaseBean
         this.criticalSelectText = criticalSelectText;
     }
 
+    public UIInput getPrimaryEmailInput()
+    {
+        return primaryEmailInput;
+    }
+    
+    public void setPrimaryEmailInput(UIInput value)
+    {
+        this.primaryEmailInput = value;
+    }
+    
 }

@@ -6,11 +6,21 @@ import com.inthinc.pro.dao.AlertContactDAO;
 import com.inthinc.pro.dao.FindByKey;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.model.AlertContact;
+import com.inthinc.pro.model.Silo;
 
 public class AlertContactHessianDAO extends GenericHessianDAO<AlertContact, Integer> implements AlertContactDAO, FindByKey<AlertContact>
 {
     private static final Logger logger = Logger.getLogger(AlertContactHessianDAO.class);
 
+    @Override
+    @SuppressWarnings("unchecked")
+    public Integer create(AlertContact entity)
+    {
+        // if silo id is not provided -- get one from the back end
+        Silo silo = getMapper().convertToModelObject(getSiloService().getNextSilo(), Silo.class);
+        return super.create(silo.getSiloID(), entity);
+    }
+    
     public AlertContact findByUserID(Integer userID)
     {
         try

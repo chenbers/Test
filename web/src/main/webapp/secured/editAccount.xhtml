@@ -190,20 +190,7 @@
                           </h:selectOneMenu>
                         </td>
                       </tr>
-                    
-                    
-                    <!-- 
-                      <tr>
-                        <td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_warning.png" width="16" height="16"/></td>
-                        <td>Warning:</td>
-                        <td>Text Message - Primary</td>
-                      </tr>
-        
-                      <tr>
-                        <td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_critical.png" width="16" height="16"/></td>
-                        <td>Critical:</td>
-                        <td>Phone - Cell</td>
-                      </tr> -->
+                      
                     </tbody>
                   </table>
                 </div>
@@ -234,12 +221,12 @@
                       <tbody>
                         <tr>
                           <td>Primary:</td>
-                          <td><h:inputText id="priEmail" value="#{myAccountBean.primaryEmail}" size="40" onkeyup="refreshValues()" /></td>
+                          <td><h:inputText id="priEmail" value="#{myAccountBean.alertContact.priEmail}" binding="#{myAccountBean.primaryEmailInput}" size="40" onkeyup="refreshValues()" validator="#{myAccountBean.validateForm}" /></td>
                         </tr>
                         <tr>
       
                           <td>Secondary:</td>
-                          <td><h:inputText id="secEmail" value="#{myAccountBean.secondaryEmail}" size="40" onkeyup="refreshValues()" /></td>
+                          <td><h:inputText id="secEmail" value="#{myAccountBean.alertContact.secEmail}" size="40" onkeyup="refreshValues()" /></td>
                         </tr>
                       </tbody>
                     </table>
@@ -250,16 +237,16 @@
                         <tr>
     
                           <td>Primary:</td>
-                          <td><h:inputText id="priPhone" value="#{myAccountBean.primaryPhone}" size="40" onkeyup="refreshValues()"/></td>
+                          <td><h:inputText id="priPhone" value="#{myAccountBean.alertContact.priPhone}" size="40" onkeyup="refreshValues()"/></td>
                         </tr>
                         <tr>
                           <td>Secondary:</td>
-                          <td><h:inputText id="secPhone" value="#{myAccountBean.secondaryPhone}" size="40" onkeyup="refreshValues()" validator="#{myAccountBean.validateForm}"/></td>
+                          <td><h:inputText id="secPhone" value="#{myAccountBean.alertContact.secPhone}" size="40" onkeyup="refreshValues()"/></td>
                         </tr>
       
                         <tr>
                           <td>Cell:</td>
-                          <td><h:inputText id="cellPhone" value="#{myAccountBean.cellPhone}" size="40" onkeyup="refreshValues()"/></td>
+                          <td><h:inputText id="cellPhone" value="#{myAccountBean.alertContact.cellPhone}" size="40" onkeyup="refreshValues()"/></td>
                         </tr>
                       </tbody>
                     </table>
@@ -270,11 +257,11 @@
                       <tbody>
                         <tr>
                           <td>Primary:</td>
-                          <td><h:inputText id="priText" value="#{myAccountBean.primaryText}" size="40" onkeyup="refreshValues()"/></td>
+                          <td><h:inputText id="priText" value="#{myAccountBean.alertContact.priText}" size="40" onkeyup="refreshValues()"/></td>
                         </tr>
                         <tr>
                           <td>Secondary:</td>
-                          <td><h:inputText id="secText" value="#{myAccountBean.secondaryText}" size="40" onkeyup="refreshValues()"/></td>
+                          <td><h:inputText id="secText" value="#{myAccountBean.alertContact.secText}" size="40" onkeyup="refreshValues()"/></td>
                         </tr>
   
                       </tbody>
@@ -297,29 +284,40 @@
     <script type="text/javascript" language="Javascript">
     function refreshValues()
     {
-      document.getElementById("my_form:informationSelectEmail").options[0].text = "Primary - " + document.getElementById("my_form:priEmail").value;
-      document.getElementById("my_form:informationSelectEmail").options[1].text = "Secondary - " + document.getElementById("my_form:secEmail").value;
-      document.getElementById("my_form:informationSelectText").options[0].text = "Primary - " + document.getElementById("my_form:priText").value;
-      document.getElementById("my_form:informationSelectText").options[1].text = "Secondary - " + document.getElementById("my_form:secText").value;
-      document.getElementById("my_form:informationSelectPhone").options[0].text = "Primary - " + document.getElementById("my_form:priPhone").value;
-      document.getElementById("my_form:informationSelectPhone").options[1].text = "Secondary - " + document.getElementById("my_form:secPhone").value;
-      document.getElementById("my_form:informationSelectPhone").options[2].text = "Cell - " + document.getElementById("my_form:cellPhone").value;
+      setValueText(document.getElementById("my_form:informationSelectEmail").options[0], "Primary - ", document.getElementById("my_form:priEmail").value);
+      setValueText(document.getElementById("my_form:informationSelectEmail").options[1], "Secondary - ", document.getElementById("my_form:secEmail").value);
+      setValueText(document.getElementById("my_form:informationSelectText").options[0], "Primary - ", document.getElementById("my_form:priText").value);
+      setValueText(document.getElementById("my_form:informationSelectText").options[1], "Secondary - ", document.getElementById("my_form:secText").value);
+      setValueText(document.getElementById("my_form:informationSelectPhone").options[0], "Primary - ", document.getElementById("my_form:priPhone").value);
+      setValueText(document.getElementById("my_form:informationSelectPhone").options[1], "Secondary - ", document.getElementById("my_form:secPhone").value);
+      setValueText(document.getElementById("my_form:informationSelectPhone").options[2], "Cell - ", document.getElementById("my_form:cellPhone").value);
       
-      document.getElementById("my_form:warningSelectEmail").options[0].text = "Primary - " + document.getElementById("my_form:priEmail").value;
-      document.getElementById("my_form:warningSelectEmail").options[1].text = "Secondary - " + document.getElementById("my_form:secEmail").value;
-      document.getElementById("my_form:warningSelectText").options[0].text = "Primary - " + document.getElementById("my_form:priText").value;
-      document.getElementById("my_form:warningSelectText").options[1].text = "Secondary - " + document.getElementById("my_form:secText").value;
-      document.getElementById("my_form:warningSelectPhone").options[0].text = "Primary - " + document.getElementById("my_form:priPhone").value;
-      document.getElementById("my_form:warningSelectPhone").options[1].text = "Secondary - " + document.getElementById("my_form:secPhone").value;
-      document.getElementById("my_form:warningSelectPhone").options[2].text = "Cell - " + document.getElementById("my_form:cellPhone").value;
+      setValueText(document.getElementById("my_form:warningSelectEmail").options[0], "Primary - ", document.getElementById("my_form:priEmail").value);
+      setValueText(document.getElementById("my_form:warningSelectEmail").options[1], "Secondary - ", document.getElementById("my_form:secEmail").value);
+      setValueText(document.getElementById("my_form:warningSelectText").options[0], "Primary - ", document.getElementById("my_form:priText").value);
+      setValueText(document.getElementById("my_form:warningSelectText").options[1], "Secondary - ", document.getElementById("my_form:secText").value);
+      setValueText(document.getElementById("my_form:warningSelectPhone").options[0], "Primary - ", document.getElementById("my_form:priPhone").value);
+      setValueText(document.getElementById("my_form:warningSelectPhone").options[1], "Secondary - ", document.getElementById("my_form:secPhone").value);
+      setValueText(document.getElementById("my_form:warningSelectPhone").options[2], "Cell - ", document.getElementById("my_form:cellPhone").value);
       
-      document.getElementById("my_form:criticalSelectEmail").options[0].text = "Primary - " + document.getElementById("my_form:priEmail").value;
-      document.getElementById("my_form:criticalSelectEmail").options[1].text = "Secondary - " + document.getElementById("my_form:secEmail").value;
-      document.getElementById("my_form:criticalSelectText").options[0].text = "Primary - " + document.getElementById("my_form:priText").value;
-      document.getElementById("my_form:criticalSelectText").options[1].text = "Secondary - " + document.getElementById("my_form:secText").value;
-      document.getElementById("my_form:criticalSelectPhone").options[0].text = "Primary - " + document.getElementById("my_form:priPhone").value;
-      document.getElementById("my_form:criticalSelectPhone").options[1].text = "Secondary - " + document.getElementById("my_form:secPhone").value;
-      document.getElementById("my_form:criticalSelectPhone").options[2].text = "Cell - " + document.getElementById("my_form:cellPhone").value;
+      setValueText(document.getElementById("my_form:criticalSelectEmail").options[0], "Primary - ", document.getElementById("my_form:priEmail").value);
+      setValueText(document.getElementById("my_form:criticalSelectEmail").options[1], "Secondary - ", document.getElementById("my_form:secEmail").value);
+      setValueText(document.getElementById("my_form:criticalSelectText").options[0], "Primary - ", document.getElementById("my_form:priText").value);
+      setValueText(document.getElementById("my_form:criticalSelectText").options[1], "Secondary - ", document.getElementById("my_form:secText").value);
+      setValueText(document.getElementById("my_form:criticalSelectPhone").options[0], "Primary - ", document.getElementById("my_form:priPhone").value);
+      setValueText(document.getElementById("my_form:criticalSelectPhone").options[1], "Secondary - ", document.getElementById("my_form:secPhone").value);
+      setValueText(document.getElementById("my_form:criticalSelectPhone").options[2], "Cell - ", document.getElementById("my_form:cellPhone").value);
+    }
+    function setValueText(element, preface, text)
+    {
+      if (text == "")
+      {
+        element.text = "&lt;empty&gt;";
+      }
+      else
+      {
+        element.text = preface + text;
+      }
     }
     function refreshVisibility()
     {

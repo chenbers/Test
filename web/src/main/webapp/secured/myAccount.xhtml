@@ -108,18 +108,18 @@
                       <td width="5%"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_info.png" width="16" height="16"/></td>
                       <td width="38%">Information:</td>
       
-                      <td width="57%">Email - Primary</td>
+                      <td width="57%"><h:outputText value="#{myAccountBean.infoText}" /></td>
                     </tr>
                     <tr>
                       <td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_warning.png" width="16" height="16"/></td>
                       <td>Warning:</td>
-                      <td>Text Message - Primary</td>
+                      <td><h:outputText value="#{myAccountBean.warnText}" /></td>
                     </tr>
       
                     <tr>
                       <td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_critical.png" width="16" height="16"/></td>
                       <td>Critical:</td>
-                      <td>Phone - Cell</td>
+                      <td><h:outputText value="#{myAccountBean.critText}" /></td>
                     </tr>
                   </tbody>
                 </table>
@@ -151,7 +151,7 @@
                     <tbody>
                       <tr>
                         <td>Primary:</td>
-                        <td><h:outputText value="#{myAccountBean.alertContact.priEmail}"/></td>
+                        <td><h:outputText value="#{myAccountBean.alertContact.priEmail}" /></td>
                       </tr>
                       <tr>
     
@@ -211,7 +211,7 @@
     
     
   
-    <rich:modalPanel id="changePasswordPanel" headerClass="popupHeader" controlsClass="popupControls" width="415" height="182">
+    <rich:modalPanel id="changePasswordPanel" headerClass="popupHeader" controlsClass="popupControls" autosized="true">
       <f:facet name="header">
         <h:outputText value="#{messages.credentials_header}" />
       </f:facet>

@@ -370,7 +370,6 @@ logger.debug("addDriveQMaps");
             storeObject(users[userCnt].getPerson());
             AlertContact contact = new AlertContact();
             contact.setUserID(users[userCnt].getUserID());
-            contact.setSecPhone("(801) 555-5555");
             storeObject(contact);
         }
     }
