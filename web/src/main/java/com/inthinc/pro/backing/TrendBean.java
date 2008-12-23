@@ -47,7 +47,7 @@ public class TrendBean extends BaseDurationBean
     public TrendBean()
     {
         super();  
-//        logger.debug("constructor"); 
+        System.out.println("constructor"); 
         
         //Check if the scroller is submitting a form, not
         //  just initial load.  If so, grab the groupID associated
@@ -69,7 +69,7 @@ public class TrendBean extends BaseDurationBean
 
     public String getLineDef()
     {      
-//        logger.debug("lineDef");
+        System.out.println("lineDef");
         lineDef = createLineDef();
         return lineDef;
     }
@@ -81,7 +81,7 @@ public class TrendBean extends BaseDurationBean
 
     private String createLineDef()
     {
-//        logger.debug("createLineDef");
+        System.out.println("createLineDef");
         StringBuffer sb = new StringBuffer();
         lineDef = new String();
 
@@ -92,7 +92,13 @@ public class TrendBean extends BaseDurationBean
         // date from, date to
         List<ScoreableEntity> s = null;
         s = getScores();
-        this.maxCount = s.size();        
+        
+        // Adjust the count values
+        this.maxCount = s.size(); 
+        this.end = this.numRowsPerPg;
+        if ( this.maxCount < this.end ) {
+            this.end = this.maxCount;
+        }
 
         // X-coordinates
         sb.append("<categories>");
@@ -154,7 +160,7 @@ public class TrendBean extends BaseDurationBean
 
     public List<ScoreableEntityPkg> getScoreableEntities()
     {   
-//        logger.debug("getscoreableentities");
+        System.out.println("getscoreableentities");
         createScoreableEntities();
         return scoreableEntities;
     }
@@ -166,7 +172,7 @@ public class TrendBean extends BaseDurationBean
 
     public List<ScoreableEntityPkg> createScoreableEntities()
     {
-//        logger.debug("createscoreableentities");
+        System.out.println("createscoreableentities");
         if ( scoreableEntities != null ) {
             logger.debug("scoreableentities size " + scoreableEntities.size());
         }        
@@ -251,7 +257,7 @@ public class TrendBean extends BaseDurationBean
 
     public void setNavigation(NavigationBean navigation)
     {
-//        logger.debug("setnavigation");
+        System.out.println("setnavigation");
         this.navigation = navigation;
         
         if ( this.navigation != null ) {            
@@ -292,7 +298,7 @@ public class TrendBean extends BaseDurationBean
 
     public Integer getMaxCount()
     {
-//        logger.debug("getmaxcount");  
+        System.out.println("getmaxcount");  
         return this.maxCount;
     }
 
@@ -303,7 +309,7 @@ public class TrendBean extends BaseDurationBean
 
     public Integer getStart()
     {   
-//        logger.debug("getstart");
+        System.out.println("getstart");
         return start;
     }
 
@@ -314,7 +320,7 @@ public class TrendBean extends BaseDurationBean
 
     public Integer getEnd()
     {
-//        logger.debug("getend");
+        System.out.println("getend");
         return end;
     }
 
@@ -325,7 +331,7 @@ public class TrendBean extends BaseDurationBean
 
     public String getCountString()
     {
-//        logger.debug("getcountstring");
+        System.out.println("getcountstring");
         countString = "Showing " + this.start + " to " + 
             this.end + " of " + this.maxCount + " records";
         return countString;
@@ -338,7 +344,7 @@ public class TrendBean extends BaseDurationBean
 
     public Integer getNumRowsPerPg()
     {
-//        logger.debug("getnumrowsperpg");
+        System.out.println("getnumrowsperpg");
         return numRowsPerPg;
     }
 
