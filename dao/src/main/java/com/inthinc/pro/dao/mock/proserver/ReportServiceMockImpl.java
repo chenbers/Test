@@ -678,4 +678,10 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
     {
         return null;
     }
+    
+
+    public List<Map<String, Object>> getDVScoresByGSE(Integer groupID, Integer start, Integer end)
+    {
+        return null;
+    }
 }
