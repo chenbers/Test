@@ -55,15 +55,19 @@ public class IdlingReportBean extends BaseReportBean
     private String secret = "";
     
     private Date startDate = new Date();
+    private Date defaultStartDate = null;
+    private Integer internalStartDate = null;
     private Date endDate = new Date();
-    private Date defaultStartDate = new Date();
-    private Date defaultEndDate = new Date();
+    private Date defaultEndDate = null;
+    private Integer internalEndDate = null;    
     private String badDates = "Search dates: * Okay.";
     private final static String NO_START_DATE = " * No start date, reset";
     private final static String NO_END_DATE = " * No end date, reset";
     private final static String START_BEFORE_END = " * Start before end, reset";
+    
     // set to SEVEN days back
     private final static int DAYS_BACK = 7 * 24 * 60 * 60 * 1000;
+
 
     private DriverDAO driverDAO;
     
@@ -92,16 +96,20 @@ public class IdlingReportBean extends BaseReportBean
     {   
         searchFor = checkForRequestMap();
         
-        // end initialized to today, start
-        //  seven days back
         defaultEndDate = endDate;
         startDate.setTime(this.endDate.getTime() - DAYS_BACK);
         defaultStartDate = startDate;
+        
+        // end initialized to today, start
+        //  seven days back
+        Integer defaultEndDate = DateUtil.getTodaysDate();
+        Integer defaultStartDate = DateUtil.getDaysBackDate(
+                defaultEndDate,7);
    
         this.idlingsData = 
             scoreDAO.getIdlingReportData(
                     getUser().getPerson().getGroupID(),
-                    Duration.TWELVE);
+                    defaultStartDate, defaultEndDate);
    
         //Bean creation could be from Reports selection or
         //  search on main menu. This accounts for a search
@@ -141,11 +149,20 @@ public class IdlingReportBean extends BaseReportBean
         this.idlingData = idlingData;
     }
     
-    public void search() {                      
-        // TODO: Always hit the database, no matter what, too much data to hold,
+    public void search() {            
+        // Always hit the database, no matter what, too much data to hold,
         // watch for date range as well....
         String name = this.searchFor.trim();
         checkDates();
+        
+        if ( this.idlingsData.size() > 0 ) {
+            this.idlingsData.clear();
+        }
+        this.idlingsData = 
+            scoreDAO.getIdlingReportData(
+                    getUser().getPerson().getGroupID(),
+                    internalStartDate, internalEndDate);
+        
         List <IdlingReportItem> matchedIdlers = new ArrayList<IdlingReportItem>(); 
         
         // TODO: Date range check in here, something like all the idling between
@@ -167,8 +184,8 @@ public class IdlingReportBean extends BaseReportBean
             this.maxCount = matchedIdlers.size();
                            
         } else {
-            loadResults(idlingsData);
-            this.maxCount = idlingsData.size();
+            loadResults(this.idlingsData);
+            this.maxCount = this.idlingsData.size();
         }
         
         resetCounts();       
@@ -178,18 +195,18 @@ public class IdlingReportBean extends BaseReportBean
         StringBuffer sb = new StringBuffer();
         sb.append("Search Dates: ");
         boolean good = true;
-        
-        // null?
+                        
+        // null checks
         if ( startDate == null ) {
             startDate = defaultStartDate;
             sb.append(NO_START_DATE);
             good = false;
-        }
+        } 
         if ( endDate == null ) {
             endDate = defaultEndDate;
             sb.append(NO_END_DATE);
             good = false;
-        }
+        } 
         
         // start after end?
         if ( startDate.getTime() > endDate.getTime() ) {
@@ -206,6 +223,8 @@ public class IdlingReportBean extends BaseReportBean
         sb.append(".");
         
         badDates = sb.toString();
+        internalStartDate = (int)startDate.getTime()*1000;
+        internalEndDate = (int)endDate.getTime()*1000;
     }
     
     private void loadResults(List <IdlingReportItem> idlsData) 
@@ -506,30 +525,6 @@ public class IdlingReportBean extends BaseReportBean
     public void setDriverDAO(DriverDAO driverDAO)
     {
         this.driverDAO = driverDAO;
-    }
-
-
-    public Date getDefaultStartDate()
-    {
-        return defaultStartDate;
-    }
-
-
-    public void setDefaultStartDate(Date defaultStartDate)
-    {
-        this.defaultStartDate = defaultStartDate;
-    }
-
-
-    public Date getDefaultEndDate()
-    {
-        return defaultEndDate;
-    }
-
-
-    public void setDefaultEndDate(Date defaultEndDate)
-    {
-        this.defaultEndDate = defaultEndDate;
     }
 
 
