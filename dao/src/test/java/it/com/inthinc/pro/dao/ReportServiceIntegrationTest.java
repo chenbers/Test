@@ -525,7 +525,8 @@ public class ReportServiceIntegrationTest
     }
     
     
-    @Test    
+    @Test
+    @Ignore
     public void getGDScoreByGSE()
     {
         DriveQMapHessianDAO dqmDAO = new DriveQMapHessianDAO();
@@ -554,7 +555,8 @@ public class ReportServiceIntegrationTest
         System.out.println("***** end *****");           
     }  
     
-    @Test    
+    @Test 
+    @Ignore
     public void getGVScoreByGSE()
     {
         DriveQMapHessianDAO dqmDAO = new DriveQMapHessianDAO();
@@ -579,6 +581,45 @@ public class ReportServiceIntegrationTest
         } catch (Exception e)
         {
             System.out.println("getGVScoreByGSE failed");
+        }
+        System.out.println("***** end *****");           
+    }  
+    
+    @Test    
+    public void getDVScoresByGSE()
+    {
+        DVQMapHessianDAO dvqmDAO = new DVQMapHessianDAO();
+        dvqmDAO.setReportService(reportService);
+        
+        System.out.println("***** begin getDVScoresByGSE *****");
+        
+        // Date range qualifiers
+        Integer endDate = DateUtil.getTodaysDate();
+        Integer startDate = DateUtil.getDaysBackDate(endDate, 
+                Duration.DAYS.getNumberOfDays());
+        
+        try 
+        {
+            List<DVQMap> dvqmList = dvqmDAO.getDVScoresByGSE(
+                    16777218, startDate, endDate);
+            if ( dvqmList != null ) {
+                int i = 1;
+                for ( DVQMap d: dvqmList )
+                {
+                    System.out.println(" i " + i + 
+                            " driver: "
+                            + d.getDriver().getPerson().getLast()
+                            + " overall score "
+                            + d.getDriveQ().getOverall()
+                            );
+                    i++;
+                }
+            } else {
+                System.out.println("null map returned");
+            }
+        } catch (Exception e)
+        {
+            System.out.println("getDVScoresByGSE failed");
         }
         System.out.println("***** end *****");           
     }    
