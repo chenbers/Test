@@ -42,7 +42,7 @@ public class BaseReportBean extends BaseBean
         return searchFor;
     }
     
-    private Integer floatToInteger(float value)
+    protected Integer floatToInteger(float value)
     {       
         Float fTmp = new Float(value*10.0);             
         return fTmp.intValue() ;
