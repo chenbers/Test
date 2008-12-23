@@ -76,40 +76,51 @@
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_overall}" />
       					</f:facet>
-      					<h:commandLink action="go_vehicle">
-      						<iwi:scoreBox style="#{item.styleOverall}" 
-      							score="#{item.overallScore}"/>    
-							<f:setPropertyActionListener 
-								value="#{item.vehicle}" 
-								target="#{navigationBean.vehicle}">
-							</f:setPropertyActionListener>	
-						</h:commandLink>       					
+      					<div class="#{item.styleOverall}">
+      						<div class="score">      					
+      							<h:commandLink action="go_vehicle">
+      								<h:outputText value="#{item.overallScore}">
+      								</h:outputText>    
+									<f:setPropertyActionListener 
+										value="#{item.vehicle}" 
+										target="#{navigationBean.vehicle}">
+									</f:setPropertyActionListener>	
+								</h:commandLink>
+							</div>       
+						</div>					
     				</rich:column>
     				<rich:column rendered="#{vehicleColumns['speed'].visible}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_speed}" />
       					</f:facet>
-      					<h:commandLink action="go_vehicle">
-      						<iwi:scoreBox style="#{item.styleSpeed}" 
-      							score="#{item.speedScore}"/>    
-						<f:setPropertyActionListener 
-							value="#{item.vehicle}" 
-							target="#{navigationBean.vehicle}">
-						</f:setPropertyActionListener>								
-						</h:commandLink>             			
+      					<div class="#{item.styleSpeed}">
+      						<div class="score">  
+      							<h:commandLink action="go_reportVehicleSpeed">
+      								<h:outputText value="#{item.speedScore}">
+      								</h:outputText>    
+									<f:setPropertyActionListener 
+										value="#{item.vehicle}" 
+										target="#{navigationBean.vehicle}">
+									</f:setPropertyActionListener>								
+								</h:commandLink>
+							</div>  
+						</div>           			
     				</rich:column>
     				<rich:column rendered="#{vehicleColumns['style'].visible}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_style}" />
       					</f:facet>
-      					<h:commandLink action="go_vehicle">
-      						<iwi:scoreBox style="#{item.styleStyle}" 
-      							score="#{item.styleScore}"/>    
-						<f:setPropertyActionListener 
-							value="#{item.vehicle}" 
-							target="#{navigationBean.vehicle}">
-						</f:setPropertyActionListener>								
-						</h:commandLink>       					
+      					<div class="#{item.styleStyle}">
+      						<div class="score">  
+      							<h:commandLink action="go_reportVehicleStyle">
+      								<h:outputText value="#{item.styleScore}"/>    
+									<f:setPropertyActionListener 
+										value="#{item.vehicle}" 
+										target="#{navigationBean.vehicle}">
+									</f:setPropertyActionListener>								
+								</h:commandLink>
+							</div>       	
+						</div>				
     				</rich:column>
     			</rich:dataTable>    			
     			
