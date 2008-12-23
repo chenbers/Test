@@ -129,8 +129,7 @@ public class DriverReportBean extends BaseReportBean
             String trimmedSearch = this.searchFor.trim().toLowerCase();            
             List <DriverReportItem> matchedDrivers = new ArrayList<DriverReportItem>();    
             
-            for ( int i = 0; i < this.driversData.size(); i++ ) {
-                DriverReportItem d = this.driversData.get(i);
+            for ( DriverReportItem d: this.driversData ) {                
                 Person p = d.getDriver().getPerson();
                 
                 int index1;
@@ -159,11 +158,9 @@ public class DriverReportBean extends BaseReportBean
                     }
                     
                     // driver id
-                    String lowerCaseDriverID = 
-                        String.valueOf(
-                                new Integer(d.getDriver().getDriverID()));
+                    String lowerCaseEmployeeID = d.getEmployeeID().toLowerCase();                        
                     index3 = 
-                        lowerCaseDriverID.indexOf(trimmedSearch);                    
+                        lowerCaseEmployeeID.indexOf(trimmedSearch);                    
                     if ((index1 == -1) && 
                         (index2 == -1) &&
                         (index3 != -1) ) {                        
