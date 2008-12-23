@@ -8,6 +8,8 @@
 
 	<a4j:region id="#{ajaxForm}_region">
 	<a4j:form id="#{ajaxForm}">
+	
+		<h:inputHidden id="dateLinksWithGrpId" value="#{navigationBean.groupID}"/>
         
 		<span class="panel_links_ico">
 		<a4j:status id="#{ajaxStatusID}" for="#{ajaxForm}_region">
