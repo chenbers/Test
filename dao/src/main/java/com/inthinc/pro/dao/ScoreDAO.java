@@ -199,7 +199,7 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      * @param groupID
      * @param duration
      */
-    List<IdlingReportItem> getIdlingReportData(Integer groupID, Duration duration);    
+    List<IdlingReportItem> getIdlingReportData(Integer groupID, Integer start, Integer end);    
 
 
 }
