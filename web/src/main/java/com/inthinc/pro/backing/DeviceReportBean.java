@@ -79,12 +79,15 @@ public class DeviceReportBean extends BaseReportBean
 
         for( Vehicle v: vehicList )
         {
-            Device dev = deviceDAO.findByID(v.getDeviceID());
+            // save only vehicles that have devices associated to them
+            if ( v.getDeviceID() != null ) {
+                Device dev = deviceDAO.findByID(v.getDeviceID());            
  
-            dri = new DeviceReportItem();
-            dri.setDevice(dev);
+                dri = new DeviceReportItem();
+                dri.setDevice(dev);
                 
-            this.devicesData.add(dri);           
+                this.devicesData.add(dri);
+            }
         }
         
         if ( super.isMainMenu() ) {  
