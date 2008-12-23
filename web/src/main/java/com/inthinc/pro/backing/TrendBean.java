@@ -47,7 +47,6 @@ public class TrendBean extends BaseDurationBean
     public TrendBean()
     {
         super();  
-        System.out.println("constructor"); 
         
         //Check if the scroller is submitting a form, not
         //  just initial load.  If so, grab the groupID associated
@@ -58,7 +57,6 @@ public class TrendBean extends BaseDurationBean
            Map.Entry entry = (Map.Entry) imap.next();
            String key = (String) entry.getKey();
            String value = (String) entry.getValue();
-//           logger.debug("key " + key + " value " + value);
            
            //Group ID
            if (         key.equalsIgnoreCase("trendtable:hiddengroupid") ) {              
@@ -69,7 +67,6 @@ public class TrendBean extends BaseDurationBean
 
     public String getLineDef()
     {      
-        System.out.println("lineDef");
         lineDef = createLineDef();
         return lineDef;
     }
@@ -81,7 +78,6 @@ public class TrendBean extends BaseDurationBean
 
     private String createLineDef()
     {
-        System.out.println("createLineDef");
         StringBuffer sb = new StringBuffer();
         lineDef = new String();
 
@@ -116,13 +112,11 @@ public class TrendBean extends BaseDurationBean
             
             ScoreableEntity se = s.get(i-1);
             // Fetch to get children's observations
-//            ss = scoreDAO.getTrendScores(se.getEntityID(), navigation.getDuration());
             List<ScoreableEntity> ss = groupTrendMap.get(se.getEntityID());
 
             // Y-coordinates
             sb.append("<dataset seriesName=\'\' color=\'");
             sb.append(cs.getEntityColorKey(i-1).substring(1));
-//            sb.append((GraphicUtil.entityColorKey.get(i)).substring(1));
             sb.append("\'>");
 
             // Not a full range, pad w/ zero
@@ -160,7 +154,6 @@ public class TrendBean extends BaseDurationBean
 
     public List<ScoreableEntityPkg> getScoreableEntities()
     {   
-        System.out.println("getscoreableentities");
         createScoreableEntities();
         return scoreableEntities;
     }
@@ -172,7 +165,6 @@ public class TrendBean extends BaseDurationBean
 
     public List<ScoreableEntityPkg> createScoreableEntities()
     {
-        System.out.println("createscoreableentities");
         if ( scoreableEntities != null ) {
             logger.debug("scoreableentities size " + scoreableEntities.size());
         }        
@@ -192,7 +184,6 @@ public class TrendBean extends BaseDurationBean
             sb.setScore(score.getScore());
             se.setStyle(sb.getScoreStyle());
             se.setColorKey(cs.getEntityColorKey(cnt++));
-//            se.setColorKey(GraphicUtil.entityColorKey.get(cnt++));
             if (score.getEntityType().equals(EntityType.ENTITY_GROUP))
             {
                 // TODO: if getGroupHierarchy().getGroupLevel(score.getEntityID()) returns null 
@@ -235,9 +226,6 @@ public class TrendBean extends BaseDurationBean
 
         navigation.setStart(this.start);
         navigation.setEnd(this.end);
-        
-//        logger.debug("from scroller, start " + this.start + " end "
-//                + this.end);
     } 
 
     public ScoreDAO getScoreDAO()
@@ -257,7 +245,6 @@ public class TrendBean extends BaseDurationBean
 
     public void setNavigation(NavigationBean navigation)
     {
-        System.out.println("setnavigation");
         this.navigation = navigation;
         
         if ( this.navigation != null ) {            
@@ -291,14 +278,10 @@ public class TrendBean extends BaseDurationBean
             navigation.setStart(this.start);
             navigation.setEnd(this.end);                       
         }
-//        logger.debug("final stats " + 
-//                " start " + this.navigation.getStart() + 
-//                " end " + this.navigation.getEnd());
     }
 
     public Integer getMaxCount()
     {
-        System.out.println("getmaxcount");  
         return this.maxCount;
     }
 
@@ -309,7 +292,6 @@ public class TrendBean extends BaseDurationBean
 
     public Integer getStart()
     {   
-        System.out.println("getstart");
         return start;
     }
 
@@ -320,7 +302,6 @@ public class TrendBean extends BaseDurationBean
 
     public Integer getEnd()
     {
-        System.out.println("getend");
         return end;
     }
 
@@ -331,7 +312,6 @@ public class TrendBean extends BaseDurationBean
 
     public String getCountString()
     {
-        System.out.println("getcountstring");
         countString = "Showing " + this.start + " to " + 
             this.end + " of " + this.maxCount + " records";
         return countString;
@@ -344,7 +324,6 @@ public class TrendBean extends BaseDurationBean
 
     public Integer getNumRowsPerPg()
     {
-        System.out.println("getnumrowsperpg");
         return numRowsPerPg;
     }
 
