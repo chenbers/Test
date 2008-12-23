@@ -1,6 +1,5 @@
 package com.inthinc.pro.backing;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -45,13 +44,6 @@ public class ZoneAlertsBeanTest extends BaseAdminBeanTest<ZoneAlertsBean.ZoneAle
         super.delete();
     }
 
-    @Ignore
-    @Override
-    @Test
-    public void edit()
-    {
-        super.edit();
-    }
     @Override
     protected void populate(ZoneAlertView editItem, BaseAdminBean<ZoneAlertsBean.ZoneAlertView> adminBean)
     {
@@ -59,7 +51,10 @@ public class ZoneAlertsBeanTest extends BaseAdminBeanTest<ZoneAlertsBean.ZoneAle
         editItem.setName("Zone Alert");
         editItem.setDescription("Toolin' around the zone");
         editItem.setArrival(MiscUtil.randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-        editItem.setDeparture(MiscUtil.randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
+        if (!editItem.getArrival())
+            editItem.setDeparture(true);
+        else
+            editItem.setDeparture(MiscUtil.randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
         final List<SelectItem> pickedGroups = new ArrayList<SelectItem>();
         pickedGroups.add(new SelectItem("group101"));
         ((ZoneAlertsBean) adminBean).getAssignPicker().setPicked(pickedGroups);
@@ -69,16 +64,6 @@ public class ZoneAlertsBeanTest extends BaseAdminBeanTest<ZoneAlertsBean.ZoneAle
     @Override
     protected String[] getBatchUpdateFields()
     {
-        return new String[] { "name", "description"};
-    }
-    
-    
-    // TODO: fix this
-    @Ignore
-    @Override
-    @Test
-    public void batchEdit() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException
-    {
-        super.batchEdit();
+        return new String[] { "name", "description", "assignTo", "emailToString" };
     }
 }

@@ -806,7 +806,10 @@ logger.debug("addDriveQMaps");
             alert.setName("Zone Alert " + id);
             alert.setDescription("Toolin' around the zone");
             alert.setArrival(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-            alert.setDeparture(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
+            if (!alert.getArrival())
+                alert.setDeparture(true);
+            else
+                alert.setDeparture(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
 // TODO: groups, recipients
             storeObject(alert);
             alerts.add(alert);
