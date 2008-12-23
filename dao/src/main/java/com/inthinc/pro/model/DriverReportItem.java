@@ -7,10 +7,10 @@ public class DriverReportItem extends BaseEntity
     private String employee;
     private Vehicle vehicle;
     private Integer milesDriven;
-    private Integer overallScore;
-    private Integer speedScore;
-    private Integer styleScore;
-    private Integer seatBeltScore;
+    private Float overallScore;
+    private Float speedScore;
+    private Float styleScore;
+    private Float seatBeltScore;
     private String styleOverall;
     private String styleSpeed;
     private String styleStyle;
@@ -59,35 +59,35 @@ public class DriverReportItem extends BaseEntity
     {
         this.milesDriven = milesDriven;
     }
-    public Integer getOverallScore()
+    public Float getOverallScore()
     {
         return overallScore;
     }
-    public void setOverallScore(Integer overallScore)
+    public void setOverallScore(Float overallScore)
     {
         this.overallScore = overallScore;
     }
-    public Integer getSpeedScore()
+    public Float getSpeedScore()
     {
         return speedScore;
     }
-    public void setSpeedScore(Integer speedScore)
+    public void setSpeedScore(Float speedScore)
     {
         this.speedScore = speedScore;
     }
-    public Integer getStyleScore()
+    public Float getStyleScore()
     {
         return styleScore;
     }
-    public void setStyleScore(Integer styleScore)
+    public void setStyleScore(Float styleScore)
     {
         this.styleScore = styleScore;
     }
-    public Integer getSeatBeltScore()
+    public Float getSeatBeltScore()
     {
         return seatBeltScore;
     }
-    public void setSeatBeltScore(Integer seatBeltScore)
+    public void setSeatBeltScore(Float seatBeltScore)
     {
         this.seatBeltScore = seatBeltScore;
     }
