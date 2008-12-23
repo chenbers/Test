@@ -45,7 +45,7 @@ public class VehicleReportBean extends BaseReportBean
     
     private VehicleReportItem vrt = null;
     
-    private Integer numRowsPerPg = 25;
+    private Integer numRowsPerPg = 2;
     private final static String COLUMN_LABEL_PREFIX = "vehiclereport_";
     
     private Integer maxCount = null;
@@ -346,17 +346,17 @@ public class VehicleReportBean extends BaseReportBean
         ScoreBox sb = new ScoreBox(0,ScoreBoxSizes.SMALL);  
         
         if ( vrt.getOverallScore() != null ) {
-            sb.setScore(vrt.getOverallScore());
+            sb.setScore( floatToInteger(vrt.getOverallScore()) );
             vrt.setStyleOverall(sb.getScoreStyle());
         } 
         
         if ( vrt.getSpeedScore() != null ) {
-            sb.setScore(vrt.getSpeedScore());
+            sb.setScore( floatToInteger(vrt.getSpeedScore()) );
             vrt.setStyleSpeed(sb.getScoreStyle());
         }
         
         if ( vrt.getStyleScore() != null ) {
-            sb.setScore(vrt.getStyleScore());
+            sb.setScore( floatToInteger(vrt.getStyleScore()) );
             vrt.setStyleStyle(sb.getScoreStyle());
         }
         
