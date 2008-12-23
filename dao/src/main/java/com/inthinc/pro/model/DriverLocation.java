@@ -1,11 +1,15 @@
 package com.inthinc.pro.model;
 
+import com.inthinc.pro.dao.annotations.Column;
+
 public class DriverLocation
 {
     private Integer driverID;        
     private Integer groupID;             // driver's groupID
-    private Integer vehicleID;      
-    private Integer vType;               // 0=light, 1-medium, 2-heavy
+    private Integer vehicleID;
+    
+    @Column(name = "vType")
+    private VehicleType vehicleType;           // 0=light, 1-medium, 2-heavy
     private String name;                 // person.first " " person.last
     private String homePhone;            // person.homePhone
     private String workPhone;            // person.workPhone
@@ -35,13 +39,13 @@ public class DriverLocation
     {
         this.vehicleID = vehicleID;
     }
-    public Integer getVType()
+    public VehicleType getVehicleType()
     {
-        return vType;
+        return vehicleType;
     }
-    public void setVType(Integer type)
+    public void setVehicleType(VehicleType type)
     {
-        vType = type;
+        vehicleType = type;
     }
     public String getName()
     {

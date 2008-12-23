@@ -37,6 +37,7 @@ import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
 
@@ -690,6 +691,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
             dl.setHomePhone(driver.getPerson().getHomePhone());
             dl.setWorkPhone(driver.getPerson().getWorkPhone());
             dl.setName(driver.getPerson().getFirst() + " " + driver.getPerson().getLast());
+            dl.setVehicleType(VehicleType.MEDIUM);
             
             SearchCriteria searchCriteria = new SearchCriteria();
             searchCriteria.addKeyValue("driverID", driver.getDriverID());
