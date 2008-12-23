@@ -74,53 +74,69 @@
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_overall}" />
       					</f:facet>
-      					<h:commandLink action="go_driver">
-      						<iwi:scoreBox style="#{item.styleOverall}" 
-      							score="#{item.overallScore}"/>    
-							<f:setPropertyActionListener 
-								value="#{item.driver}" 
-								target="#{navigationBean.driver}">
-							</f:setPropertyActionListener>
-						</h:commandLink>       					
+      					<div class="#{item.styleOverall}">
+      						<div class="score">
+      							<h:commandLink action="go_driver">
+      								<h:outputText 
+      									value="#{item.overallScore}">
+      								</h:outputText>    
+									<f:setPropertyActionListener 
+										value="#{item.driver}" 
+										target="#{navigationBean.driver}">
+									</f:setPropertyActionListener>
+								</h:commandLink>					
+							</div>
+						</div>      					
     				</rich:column>
     				<rich:column rendered="#{driverColumns['speed'].visible}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_speed}" />
       					</f:facet>
-      					<h:commandLink action="go_reportDriverSpeed">
-      						<iwi:scoreBox style="#{item.styleSpeed}" 
-      							score="#{item.speedScore}"/>    
-							<f:setPropertyActionListener 
-								value="#{item.driver}" 
-								target="#{navigationBean.driver}">
-							</f:setPropertyActionListener>
-						</h:commandLink>        					
+      					<div class="#{item.styleSpeed}">
+      						<div class="score">      					
+      							<h:commandLink action="go_reportDriverSpeed">
+      								<h:outputText value="#{item.speedScore}">
+      								</h:outputText>    
+									<f:setPropertyActionListener 
+										value="#{item.driver}" 
+										target="#{navigationBean.driver}">
+									</f:setPropertyActionListener>
+								</h:commandLink>  
+							</div>
+						</div>      					
     				</rich:column>
     				<rich:column rendered="#{driverColumns['style'].visible}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_style}" />
       					</f:facet>
-      					<h:commandLink action="go_reportDriverStyle">
-      						<iwi:scoreBox style="#{item.styleStyle}" 
-      							score="#{item.styleScore}"/>      
-							<f:setPropertyActionListener 
-								value="#{item.driver}" 
-								target="#{navigationBean.driver}">
-							</f:setPropertyActionListener>
-						</h:commandLink>        					
+      					<div class="#{item.styleStyle}">
+      						<div class="score">         					
+      							<h:commandLink action="go_reportDriverStyle">
+      								<h:outputText value="#{item.styleScore}"/>      
+									<f:setPropertyActionListener 
+										value="#{item.driver}" 
+										target="#{navigationBean.driver}">
+									</f:setPropertyActionListener>
+								</h:commandLink>
+							</div>
+						</div>        					
     				</rich:column>
     				<rich:column rendered="#{driverColumns['seatBelt'].visible}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_seatbelt}" />
       					</f:facet>  
-      					<h:commandLink action="go_reportDriverSeatBelt">
-      						<iwi:scoreBox style="#{item.styleSeatBelt}" 
-      							score="#{item.seatBeltScore}"/>         
-							<f:setPropertyActionListener 
-								value="#{item.driver}" 
-								target="#{navigationBean.driver}">
-							</f:setPropertyActionListener>
-						</h:commandLink>     					      					
+      					<div class="#{item.styleSeatBelt}">
+      						<div class="score">        					
+      							<h:commandLink action="go_reportDriverSeatBelt">
+      								<h:outputText value="#{item.seatBeltScore}">
+      								</h:outputText>         
+									<f:setPropertyActionListener 
+										value="#{item.driver}" 
+										target="#{navigationBean.driver}">
+									</f:setPropertyActionListener>
+								</h:commandLink> 
+							</div>
+						</div>    					      					
     				</rich:column>
     			</rich:dataTable>    	
     			
