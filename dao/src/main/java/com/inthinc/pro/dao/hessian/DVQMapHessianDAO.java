@@ -84,4 +84,17 @@ public class DVQMapHessianDAO extends GenericHessianDAO<DVQMap, Integer> impleme
    
     }
 
+    @Override
+    public List<DVQMap> getDVScoresByGSE(Integer groupID, Integer start, Integer end)
+    {
+        try
+        {
+            return getMapper().convertToModelObject(getReportService().getDVScoresByGSE(groupID,start,end), DVQMap.class);           
+        }
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
+        
+    } 
 }
