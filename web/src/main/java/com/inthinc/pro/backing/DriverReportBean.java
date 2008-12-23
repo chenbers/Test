@@ -339,30 +339,30 @@ public class DriverReportBean extends BaseReportBean
     
     private void setStyles() 
     {
-        ScoreBox sb = new ScoreBox(0,ScoreBoxSizes.SMALL);  
+        ScoreBox sb = new ScoreBox(0,ScoreBoxSizes.SMALL); 
         
-        if ( drt.getOverallScore() != null ) {
-            sb.setScore(drt.getOverallScore());
+        if ( drt.getOverallScore() != null ) {            
+            sb.setScore(floatToInteger( drt.getOverallScore() ));
             drt.setStyleOverall(sb.getScoreStyle());
         }
         
         if ( drt.getSeatBeltScore() != null ) {
-            sb.setScore(drt.getSeatBeltScore());
+            sb.setScore(floatToInteger( drt.getSeatBeltScore() ));
             drt.setStyleSeatBelt(sb.getScoreStyle());
         }
         
         if ( drt.getSpeedScore() != null ) {
-            sb.setScore(drt.getSpeedScore());
+            sb.setScore(floatToInteger( drt.getSpeedScore() ));
             drt.setStyleSpeed(sb.getScoreStyle());
         }
         
         if ( drt.getStyleScore() != null ) {
-            sb.setScore(drt.getStyleScore());
+            sb.setScore(floatToInteger( drt.getStyleScore() ));
             drt.setStyleStyle(sb.getScoreStyle());
         }
         
     }
-    
+
     public void scrollerListener(DataScrollerEvent se)     
     {               
         this.start = (se.getPage()-1)*this.numRowsPerPg + 1;
