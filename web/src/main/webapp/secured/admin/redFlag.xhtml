@@ -96,7 +96,10 @@
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editRedFlag_type}" /></td>
-                            <td><h:outputText value="#{redFlagAlertsBean.item.type}" /></td>
+                            <td>
+                              <c:set var="typeMessage" value="redFlag_#{redFlagAlertsBean.item.type}" />
+                              <h:outputText value="#{messages[typeMessage]}" />
+                            </td>
                           </tr>
                         </table>
 

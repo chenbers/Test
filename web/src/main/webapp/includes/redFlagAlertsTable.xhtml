@@ -3,6 +3,7 @@
   xmlns:ui="http://java.sun.com/jsf/facelets"
   xmlns:h="http://java.sun.com/jsf/html"
   xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"
   xmlns:rich="http://richfaces.org/rich"
   xmlns:security="http://www.springframework.org/security/tags">
 
@@ -25,7 +26,8 @@
     </rich:column>
     <rich:column rendered="#{redFlagAlertsBean.tableColumns['type'].visible}" sortBy="#{item.type}">
       <f:facet name="header"><h:outputText value="#{messages.redFlagsHeader_type}" /></f:facet>
-      <h:outputText value="#{item.type}" />
+      <c:set var="typeMessage" value="redFlag_#{item.type}" />
+      <h:outputText value="#{messages[typeMessage]}" />
     </rich:column>
   </ui:define>
 
