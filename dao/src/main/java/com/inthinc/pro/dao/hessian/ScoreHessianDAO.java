@@ -435,12 +435,12 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
 
 
     @Override
-    public List<IdlingReportItem> getIdlingReportData(Integer groupID, Duration duration)
+    public List<IdlingReportItem> getIdlingReportData(Integer groupID, Integer start, Integer end)
     {
         try
         {
             List<DVQMap> result = getMapper().convertToModelObject(
-                    reportService.getDVScoresByGT(groupID, duration.getCode()), DVQMap.class);            
+                    reportService.getDVScoresByGSE(groupID, start, end), DVQMap.class);            
             List<IdlingReportItem> lIri = new ArrayList<IdlingReportItem>();
             IdlingReportItem iri = null;
             
@@ -452,11 +452,24 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 iri.setGroupID(v.getPerson().getGroupID());
                 iri.setDriver(v);                
                 iri.setVehicle(d.getVehicle());
-                iri.setDriveTime(dqm.getDriveTime()/SECONDS_TO_HOURS);
-                iri.setMilesDriven(dqm.getEndingOdometer());
-                iri.setLowHrs(String.valueOf(dqm.getIdleLo()/SECONDS_TO_HOURS));
-                iri.setHighHrs(String.valueOf(dqm.getIdleHi()/SECONDS_TO_HOURS));                
-  
+                
+                iri.setDriveTime(0);
+                iri.setMilesDriven(0);
+                iri.setLowHrs("0");
+                iri.setHighHrs("0");
+                if ( dqm.getDriveTime() != null ) {
+                    iri.setDriveTime(dqm.getDriveTime()/SECONDS_TO_HOURS);
+                }
+                if ( dqm.getEndingOdometer() != null ) {
+                    iri.setMilesDriven(dqm.getEndingOdometer());
+                }
+                if ( dqm.getIdleLo() != null ) {
+                    iri.setLowHrs(String.valueOf(dqm.getIdleLo()/SECONDS_TO_HOURS));
+                }
+                if ( dqm.getIdleHi() != null ) {
+                    iri.setHighHrs(String.valueOf(dqm.getIdleHi()/SECONDS_TO_HOURS));                
+                }
+                
                 lIri.add(iri);
                 iri = null;
             }
