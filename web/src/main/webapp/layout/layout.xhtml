@@ -61,7 +61,9 @@
 </head>
 <body onload="if (typeof bodyLoad != 'undefined') bodyLoad()" onunload="if (typeof bodyUnload != 'undefined') bodyUnload()">
 <ui:insert name="header">
-  <ui:include src="/includes/header.xhtml"/>
+  <ui:include src="/includes/header.xhtml">
+  	<ui:param name="helpFile" value="#{helpFile}" />
+  </ui:include>
 </ui:insert>
 <ui:insert name="navigation">
   <ui:include src="/includes/navigation.xhtml"/>
