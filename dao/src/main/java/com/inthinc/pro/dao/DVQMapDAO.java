@@ -16,4 +16,5 @@ public interface DVQMapDAO extends GenericDAO<DVQMap, Integer>
         
     QuintileMap getDPctByGT(Integer groupID, Integer duration, Integer metric);
     
+    List<DVQMap> getDVScoresByGSE(Integer groupID, Integer start, Integer end);
 }
