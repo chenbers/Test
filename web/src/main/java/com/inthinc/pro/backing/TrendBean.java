@@ -58,9 +58,13 @@ public class TrendBean extends BaseDurationBean
            String key = (String) entry.getKey();
            String value = (String) entry.getValue();
            
-           //Group ID
+           // groupID, can get going backwards from the hidden in the
+           //   scroller or backward from the hidden in the ajax
            if (         key.equalsIgnoreCase("trendtable:hiddengroupid") ) {              
                tmpGroupID = new Integer(value);              
+           }
+           if (         key.equalsIgnoreCase("trend_form:dateLinksWithGrpId") ) {
+               tmpGroupID = new Integer(value);
            }
         }
     }
