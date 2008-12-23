@@ -72,7 +72,8 @@
       					</f:facet>
       					<h:outputText value="#{item.milesDriven}" />
     				</rich:column>
-    				<rich:column rendered="#{vehicleColumns['overall'].visible}">
+    				<rich:column rendered="#{vehicleColumns['overall'].visible}"
+    					sortBy="#{item.overallScore}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_overall}" />
       					</f:facet>
@@ -89,7 +90,8 @@
 							</div>       
 						</div>					
     				</rich:column>
-    				<rich:column rendered="#{vehicleColumns['speed'].visible}">
+    				<rich:column rendered="#{vehicleColumns['speed'].visible}"
+    					sortBy="#{item.speedScore}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_speed}" />
       					</f:facet>
@@ -106,7 +108,8 @@
 							</div>  
 						</div>           			
     				</rich:column>
-    				<rich:column rendered="#{vehicleColumns['style'].visible}">
+    				<rich:column rendered="#{vehicleColumns['style'].visible}"
+    					sortBy="#{item.styleScore}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_style}" />
       					</f:facet>

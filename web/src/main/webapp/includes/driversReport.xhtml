@@ -35,14 +35,14 @@
     				<rich:column rendered="#{driverColumns['employeeID'].visible}" 
     					sortBy="#{item.employeeID}">
       					<f:facet name="header">
-      						<h:outputText value="#{messages.reports_employeeID}" />
+      						<h:outputText value="#{messages.reports_driverID}" />
       					</f:facet>
 						<h:outputText value="#{item.employeeID}" />      
     				</rich:column>
     				<rich:column rendered="#{driverColumns['employee'].visible}" 
     					sortBy="#{item.employee}">    					
       					<f:facet name="header">
-      						<h:outputText value="Employee" />
+      						<h:outputText value="#{messages.reports_driver}" />
       					</f:facet>
       					<h:commandLink action="go_driver" value="#{item.employee}">
 							<f:setPropertyActionListener 
@@ -70,7 +70,8 @@
       					</f:facet>
       					<h:outputText value="#{item.milesDriven}" />
     				</rich:column>
-    				<rich:column rendered="#{driverColumns['overall'].visible}">
+    				<rich:column rendered="#{driverColumns['overall'].visible}"
+    					sortBy="#{item.overallScore}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_overall}" />
       					</f:facet>
@@ -88,7 +89,8 @@
 							</div>
 						</div>      					
     				</rich:column>
-    				<rich:column rendered="#{driverColumns['speed'].visible}">
+    				<rich:column rendered="#{driverColumns['speed'].visible}"
+    					sortBy="#{item.speedScore}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_speed}" />
       					</f:facet>
@@ -105,7 +107,8 @@
 							</div>
 						</div>      					
     				</rich:column>
-    				<rich:column rendered="#{driverColumns['style'].visible}">
+    				<rich:column rendered="#{driverColumns['style'].visible}"
+    					sortBy="#{item.styleScore}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_style}" />
       					</f:facet>
@@ -121,7 +124,8 @@
 							</div>
 						</div>        					
     				</rich:column>
-    				<rich:column rendered="#{driverColumns['seatBelt'].visible}">
+    				<rich:column rendered="#{driverColumns['seatBelt'].visible}"
+    					sortBy="#{item.seatBeltScore}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_seatbelt}" />
       					</f:facet>  
