@@ -847,6 +847,16 @@ ul#grid_nav_dark li.text a:visited {
 
 /* SCORES */
 
+.score a:visited {
+	text-decoration: none;
+}
+.score a:link {
+	text-decoration: none;
+}
+.score a:active {
+	text-decoration: none;
+}
+
 .score_lg_1 {
 	width: 90px;
 	height: 90px;
@@ -959,6 +969,7 @@ ul#grid_nav_dark li.text a:visited {
 	font: bold 18px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	color: #333;
 	padding: 8px 0 0 5px;
+	
 	}
 
 .score_five {
