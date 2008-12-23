@@ -14,6 +14,12 @@
    <to-view-id>/newAccount.xhtml</to-view-id>
   </navigation-case>
  </navigation-rule>
+ <navigation-rule>
+  <navigation-case>
+   <from-outcome>go_daoUtil</from-outcome>
+   <to-view-id>/dao.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
 
   <!-- =========== FULL CONFIGURATION FILE ================================== -->
  <application>

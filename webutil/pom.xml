@@ -10,6 +10,84 @@
     <version>0.0.3-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>Tiwi Pro Portal - Web Utilities App</name>
+
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <property>
+                    <name>!env</name>
+                </property>
+            </activation>
+            <properties>
+                <facelets.development>true</facelets.development>
+            </properties>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>${basedir}/src/main/resources</directory>
+                        <excludes>
+                            <exclude>**/applicationContext-serverPropertiesRemote.xml</exclude>
+                        </excludes>
+                    </resource>
+                    <resource>
+                        <directory>${basedir}/src/main/config/properties</directory>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+        <profile>
+            <id>quality assurance</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>qa</value>
+                </property>
+            </activation>
+            <properties>
+                <facelets.development>true</facelets.development>
+            </properties>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>${basedir}/src/main/resources</directory>
+                        <excludes>
+                            <exclude>**/applicationContext-serverPropertiesLocal.xml</exclude>
+                        </excludes>
+                    </resource>
+                    <resource>
+                        <directory>${basedir}/src/main/config/properties</directory>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+        <profile>
+            <id>production</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>prod</value>
+                </property>
+            </activation>
+            <properties>
+                <facelets.development>false</facelets.development>
+            </properties>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>${basedir}/src/main/resources</directory>
+                        <excludes>
+                            <exclude>**/applicationContext-serverPropertiesLocal.xml</exclude>
+                        </excludes>
+                    </resource>
+                    <resource>
+                        <directory>${basedir}/src/main/config/properties</directory>
+                    </resource>
+                </resources>
+            </build>
+        </profile>
+        
+    </profiles>
     <dependencies>
         <dependency>
             <groupId>javax.faces</groupId>
@@ -94,6 +172,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>org.apache.myfaces.tomahawk</groupId>
+            <artifactId>tomahawk12</artifactId>
+            <version>1.1.8</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
             <version>2.5</version>
@@ -130,6 +214,43 @@
             <version>2.0.8</version>
         </dependency>
         <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>2.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>2.0.4</version>
+            <classifier>tests</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core-tiger</artifactId>
+            <version>2.0.4</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-support</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>2.0.4</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-web</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
             <groupId>org.jasypt</groupId>
             <artifactId>jasypt</artifactId>
             <version>1.5</version>
@@ -153,26 +274,49 @@
             <version>0.0.3-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.shale</groupId>
+            <artifactId>shale-test</artifactId>
+            <version>1.0.5</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.1</version>
+        </dependency>
+       <dependency>
+         <groupId>com.iwi</groupId>
+         <artifactId>teenserverdao</artifactId>
+         <version>1.0.11</version>
+         <scope>compile</scope>
+      </dependency>
+      <dependency>
+         <groupId>postgresql</groupId>
+         <artifactId>postgresql</artifactId>
+         <version>8.3-603.jdbc4</version>
+         <scope>compile</scope>
+      </dependency>
+      <dependency>
+         <groupId>postgresql</groupId>
+         <artifactId>postgis</artifactId>
+         <version>1.3.1</version>
+         <scope>compile</scope>
+      </dependency>
+      <dependency>
+         <groupId>vividsolutions</groupId>
+         <artifactId>jts</artifactId>
+         <version>1.8</version>
+         <scope>compile</scope>
+      </dependency>
     </dependencies>
     <build>
         <finalName>tiwiproutil</finalName>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
                     <webResources>
-                        <resource>
-                            <targetPath>WEB-INF</targetPath>
-                            <directory>${basedir}/src/main/config/appcontext</directory>
-                            <includes>
-                                <include>applicationContext-dao.xml</include>
-                                <include>applicationContext-appBeans.xml</include>
-                                <include>applicationContext-beans.xml</include>
-                                <include>applicationContext-daoBeans.xml</include>
-                                <include>applicationContext-prodProperties.xml</include>
-                            </includes>
-                        </resource>
                         <resource>
                             <filtering>true</filtering>
                             <targetPath>WEB-INF</targetPath>
@@ -186,4 +330,5 @@
             </plugin>
         </plugins>
     </build>
+    
 </project>

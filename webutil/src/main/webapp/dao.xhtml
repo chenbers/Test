@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html"
+  	xmlns:f="http://java.sun.com/jsf/core" 
+  	xmlns:a4j="http://richfaces.org/a4j" 
+  	xmlns:rich="http://richfaces.org/rich">
+
+<f:view contentType="text/html"> 
+
+<head>
+<title>tiwiPro DAO</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<!-- javascript here -->
+
+
+</head>
+<body>
+	<h:outputText value="Method:"/>
+	<a4j:form id="method-select-form">
+		<div id="page_top_left">
+			<h:selectOneMenu id="method-select-menu" onchange="submit()" value="#{daoUtilBean.selectedMethod}">
+				<f:selectItems value="#{daoUtilBean.methodSelectList}" />
+		        <a4j:support event="onchange" reRender="paramPanel,resultsPanel"/>
+			</h:selectOneMenu>        
+		</div>
+    </a4j:form>
+	<br/>
+	<br/>
+	
+	<rich:panel id="paramPanel">
+		<f:facet name="header">
+			<h:outputText value="#{daoUtilBean.selectedMethod} - PARAMETERS"/>
+		</f:facet>
+		<a4j:form>
+			<rich:dataTable  rendered="#{daoUtilBean.paramList != null}" value="#{daoUtilBean.paramList}" var="p" id="param">
+				<rich:column>
+	            	<f:facet name="header">
+	                	<h:outputText value="Name"/>
+					</f:facet>
+	                <h:outputText id="name" value="#{p.paramName}"/>
+   	            </rich:column>
+				<rich:column>
+	            	<f:facet name="header">
+	                	<h:outputText value="Type"/>
+					</f:facet>
+	                <h:outputText id="type" value="#{p.paramTypeName}"/>
+   	            </rich:column>
+				<rich:column>
+	            	<f:facet name="header">
+	                	<h:outputText value="Expected Input Format"/>
+					</f:facet>
+	                <h:outputText id="desc" value="#{p.paramInputDesc}"/>
+   	            </rich:column>
+				<rich:column>
+	            	<f:facet name="header">
+	                	<h:outputText value="Value"/>
+					</f:facet>
+					<h:panelGroup>
+	                	<h:inputText id="value" value="#{p.paramValue}" size="30" required="true" requiredMessage="required"/>
+	                	<rich:message for="value"/>
+	                </h:panelGroup>
+   	            </rich:column>
+			</rich:dataTable>
+			<br/>
+			<a4j:commandButton id="query" value="run" reRender="resultsPanel" 
+					style="float:left"  action="#{daoUtilBean.resultsAction}"/>
+			<br/>
+		</a4j:form>
+	</rich:panel>
+	<br/>
+	<br/>
+	
+	<rich:panel id="resultsPanel">
+		<f:facet name="header">
+			<h:outputText value="#{daoUtilBean.selectedMethod} - RESULTS"/>
+		</f:facet>
+		<a4j:form>
+		<rich:dataTable rows="20" value="#{daoUtilBean.results}" var="result" id="result">
+				<rich:column>
+	            	<f:facet name="header">
+	                	<h:outputText value="Name"/>
+					</f:facet>
+	                <h:outputText id="name" value="#{result.name}"/>
+   	            </rich:column>
+				<rich:column>
+	            	<f:facet name="header">
+	                	<h:outputText value="Value"/>
+					</f:facet>
+	                <h:outputText id="value" value="#{result.value}"/>
+   	            </rich:column>
+		</rich:dataTable>
+		<rich:datascroller id="resultScroll" for="result"/>
+		</a4j:form>		
+	</rich:panel>
+
+</body>
+</f:view>
+</html>
