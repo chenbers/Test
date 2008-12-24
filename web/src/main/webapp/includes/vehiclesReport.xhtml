@@ -33,7 +33,7 @@
 						</h:outputLink>											  							
     				</rich:column>
     				<rich:column rendered="#{vehicleColumns['vehicleID'].visible}" 
-    					sortBy="#{item.vehicleID}">
+    					sortBy="#{item.vehicle.vehicleID}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_vehicleID}" />
       					</f:facet>
@@ -58,12 +58,16 @@
       						<h:outputText value="#{messages.reports_driver}" />
       					</f:facet>
       					<h:commandLink action="go_driver" 
+      						rendered="#{item.driver.person.first != 'None'}"
       						value="#{item.driver.person.first} #{item.driver.person.last}">
 							<f:setPropertyActionListener 
 								value="#{item.driver}" 
 								target="#{navigationBean.driver}">
 							</f:setPropertyActionListener>
-						</h:commandLink>         										
+						</h:commandLink>   
+						<h:outputText rendered="#{item.driver.person.first == 'None'}"
+							value="None Assigned">
+						</h:outputText>      										
     				</rich:column>
     				<rich:column rendered="#{vehicleColumns['milesDriven'].visible}" 
     					sortBy="#{item.milesDriven}">
