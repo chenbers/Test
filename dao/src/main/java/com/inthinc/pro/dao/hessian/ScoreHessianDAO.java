@@ -368,9 +368,18 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                     vri.setDriver(d.getDriver());
                 }
                 vri.setMilesDriven(dqm.getEndingOdometer());
-                vri.setOverallScore(((float)dqm.getOverall())/(float)10.0);
-                vri.setSpeedScore(((float)dqm.getSpeeding())/(float)10.0);
-                vri.setStyleScore(((float)dqm.getDrivingStyle())/(float)10.0);
+                vri.setOverallScore((float)0.0);
+                if ( dqm.getOverall() != null ) {
+                    vri.setOverallScore(((float)dqm.getOverall())/(float)10.0);
+                }
+                vri.setSpeedScore((float)0.0);
+                if ( dqm.getSpeeding() != null ) {                                   
+                    vri.setSpeedScore(((float)dqm.getSpeeding())/(float)10.0);
+                }
+                vri.setStyleScore((float)0.0);
+                if ( dqm.getDrivingStyle() != null ) {
+                    vri.setStyleScore(((float)dqm.getDrivingStyle())/(float)10.0);
+                }
   
                 lVri.add(vri);
                 vri = null;
@@ -414,10 +423,22 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                     dri.setVehicle(d.getVehicle());
                 }
                 dri.setMilesDriven(dqm.getEndingOdometer());
-                dri.setOverallScore(((float)dqm.getOverall())/(float)10.0);
-                dri.setSpeedScore(((float)dqm.getSpeeding())/(float)10.0);
-                dri.setStyleScore(((float)dqm.getDrivingStyle())/(float)10.0);
-                dri.setSeatBeltScore(((float)dqm.getSeatbelt())/(float)10.0);                
+                dri.setOverallScore((float)0.0);
+                if ( dqm.getOverall() != null ) {
+                    dri.setOverallScore(((float)dqm.getOverall())/(float)10.0);
+                }
+                dri.setSpeedScore((float)0.0);
+                if ( dqm.getSpeeding() != null ) {
+                    dri.setSpeedScore(((float)dqm.getSpeeding())/(float)10.0);
+                }
+                dri.setStyleScore((float)0.0);
+                if ( dqm.getDrivingStyle() != null ) {
+                    dri.setStyleScore(((float)dqm.getDrivingStyle())/(float)10.0);
+                }
+                dri.setSeatBeltScore((float)0.0);
+                if ( dqm.getSeatbelt() != null ) {
+                    dri.setSeatBeltScore(((float)dqm.getSeatbelt())/(float)10.0);
+                }
   
                 lDri.add(dri);
                 dri = null;
