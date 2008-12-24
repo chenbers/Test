@@ -843,6 +843,7 @@ ul#grid_nav_dark li.text a:visited {
 	margin: 0;
 	height: 10px;
 	width: 10px;
+	border:none;
 	}
 
 /* SCORES */
@@ -2509,6 +2510,7 @@ ul.legend {
 .lgnd td.o_score {
 	background: url(../images/lgnd_label.png) no-repeat left center;
 	padding: 10px 0 10px 30px;
+	margin: 0;
 	}
 
 

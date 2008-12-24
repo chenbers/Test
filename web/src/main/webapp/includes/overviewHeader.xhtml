@@ -1,0 +1,22 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:security="http://pro.tiwi.com/jsf/security">
+	<ul id="grid_nav">
+			<li class="l grid_icon"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_line.png" /></li>
+			<li class="l grid_title">Overview</li>
+			<li class="l divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" /></li>
+			<li class="l">
+				<ui:include src="/includes/breadcrumb.xhtml">
+					<ui:param name="groupTreeNode"
+						value="#{navigationBean.groupTreeNode}" />
+				</ui:include>
+			</li>
+			<li class="r grid_icon"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_help.png" /></li>
+			<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" /></li>
+	</ul>
+</ui:composition>

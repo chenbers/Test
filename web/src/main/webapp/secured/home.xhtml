@@ -19,21 +19,7 @@
 		</h:form>
 	
 			
-		<ul id="grid_nav">
-			<li class="l grid_icon"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_line.png" /></li>
-			<li class="l grid_title">Overview</li>
-			<li class="l divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" /></li>
-			<li class="l">
-	
-				<ui:include src="/includes/breadcrumb.xhtml">
-					<ui:param name="groupTreeNode"
-						value="#{navigationBean.groupTreeNode}" />
-				</ui:include>
-	
-			</li>
-			<li class="r grid_icon"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_help.png" /></li>
-			<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" /></li>
-		</ul>
+		<ui:include src="/includes/overviewHeader.xhtml"/>
 		<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" class="dash_table">
   			<tr>
     			<td width="465" valign="top">

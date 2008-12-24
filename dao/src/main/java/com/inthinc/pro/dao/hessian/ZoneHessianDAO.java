@@ -21,14 +21,6 @@ public class ZoneHessianDAO extends GenericHessianDAO<Zone, Integer> implements 
         {
             return Collections.emptyList();
         }
-        // TODO: remove once this is implemented on the back end
-        catch (ProxyException e)
-        {
-            if (e.getErrorCode() == 422)
-                return Collections.emptyList();
-            else
-                throw e;
-        }
         
     }
 }

@@ -5,23 +5,30 @@
 	xmlns:f="http://java.sun.com/jsf/core"
   	xmlns:iwi="http://pro.tiwi.com/jsf"
 	xmlns:h="http://java.sun.com/jsf/html">
+	
 							
-	<h:panelGrid width="920" border="0" cellpadding="0" cellspacing="0" columns="2">
-        <h:panelGrid width="120" border="0" cellspacing="0" cellpadding="4">
+<table width="920" border="0" cellspacing="0" cellpadding="0" align="center">
+	<tr>
+    	<td colspan="2" align="right" valign="top"> </td>
+	</tr>
+	<tr>
+		<td width="120" align="center" valign="middle">
         	<ui:include src="/includes/overallScoreBox.xhtml">	
 				<ui:param name="scoreStyle" value="#{teamOverviewBean.overallScoreStyle}"/>									
           		<ui:param name="score" value="#{teamOverviewBean.selectedOverallScore}"/>             						
     		</ui:include>    							
 			<ui:include src="/includes/scoreBoxLegend.xhtml"/>
-		</h:panelGrid>   
-		<h:panelGroup >
+		</td>
+        <td width="">
 				<div id="tab_#{type}Div" align="center"></div>
 		  		<input type="hidden" id="tab_#{type}Def" value="#{teamOverviewBean.selectedBarDef}"/>
 				<script type="text/javascript">
 					renderTypeBar("#{type}", "720", "500");
 				</script>
-		</h:panelGroup>
-	</h:panelGrid>                          
+		</td>
+		</tr>
+</table>   
 
-                          
+
+         
 </ui:composition>
