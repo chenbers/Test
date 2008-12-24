@@ -17,11 +17,13 @@ import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.TablePreferenceDAO;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.TableType;
+import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.TempColumns;
 
@@ -195,6 +197,13 @@ public class DriverReportBean extends BaseReportBean
             
             //Group name
             drt.setGroup(this.getGroupHierarchy().getGroup(d.getGroupID()).getName());
+                        
+            //Vehicle, none assigned
+            if ( d.getVehicle() == null ) {
+                Vehicle v = new Vehicle();                
+                v.setName("None Assigned");
+                drt.setVehicle(v);
+            }  
             
             //Where to go - make sure you go to the correct level            
             drt.setGoTo(contextPath + this.getGroupHierarchy().getGroupLevel(d.getGroupID()).getUrl() +
