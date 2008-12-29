@@ -160,6 +160,15 @@ public class IdlingReportBean extends BaseReportBean
             this.idlingsData.clear();
         }
         
+        // always hit the database, no matter what, 
+        //   because of date range....
+        checkDates();
+        
+        this.idlingsData = 
+            scoreDAO.getIdlingReportData(
+                    getUser().getPerson().getGroupID(),
+                    internalStartDate, internalEndDate);
+        
         String trimmedSearch = this.searchFor.trim().toLowerCase();
 
         if ( trimmedSearch.length() != 0 ) {
