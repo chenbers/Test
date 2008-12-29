@@ -24,6 +24,7 @@ import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.AggressiveDrivingEvent;
 import com.inthinc.pro.model.AlertContact;
+import com.inthinc.pro.model.BaseAlert;
 import com.inthinc.pro.model.DVQMap;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceLowBatteryEvent;
@@ -804,12 +805,55 @@ logger.debug("addDriveQMaps");
             alert.setCreated(new Date());
             alert.setName("Zone Alert " + id);
             alert.setDescription("Toolin' around the zone");
+            final ArrayList<Boolean> dayOfWeek = new ArrayList<Boolean>();
+            boolean pickedOne = false;
+            for (int j = 0; j < 7; j++)
+            {
+                final boolean day = randomInt(0, 1) == 1 ? true : false;
+                dayOfWeek.add(day);
+                pickedOne |= day;
+            }
+            if (!pickedOne)
+                dayOfWeek.set(0, true);
+            alert.setDayOfWeek(dayOfWeek);
+            if (randomInt(0, 1) == 1)
+            {
+                alert.setStartTOD(randomInt(BaseAlert.MIN_TOD, BaseAlert.MAX_TOD));
+                alert.setStopTOD(randomInt(BaseAlert.MIN_TOD, BaseAlert.MAX_TOD));
+            }
+
             alert.setArrival(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
             if (!alert.getArrival())
                 alert.setDeparture(true);
             else
                 alert.setDeparture(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-// TODO: groups, recipients
+
+            // groups
+            final ArrayList<Integer> groupIDs = new ArrayList<Integer>();
+            final List<Object> groups = dataMap.get(Group.class);
+            for (final Object group : groups)
+                if (randomInt(0, 5) == 0)
+                    groupIDs.add(((Group) group).getGroupID());
+            alert.setGroupIDs(groupIDs);
+
+            // recipients
+            final ArrayList<Integer> personIDs = new ArrayList<Integer>();
+            final List<Object> people = dataMap.get(Person.class);
+            for (final Object person : people)
+                if (randomInt(0, 5) == 0)
+                    personIDs.add(((Person) person).getPersonID());
+            alert.setNotifyPersonIDs(personIDs);
+
+            // e-mail to
+            if (randomInt(0, 1) == 1)
+            {
+                final ArrayList<String> emailTo = new ArrayList<String>();
+                for (final Object person : people)
+                    if (randomInt(0, 5) == 0)
+                        emailTo.add(((Person) person).getEmail());
+                alert.setEmailTo(emailTo);
+            }
+
             storeObject(alert);
             alerts.add(alert);
         }
@@ -830,31 +874,95 @@ logger.debug("addDriveQMaps");
             flag.setCreated(new Date());
             flag.setName("RedFlagAlert" + id);
             flag.setDescription("Don't step on my blue suede shoes!");
-            flag.setHardBrakeLevel(RedFlagLevel.values()[randomInt(0, RedFlagLevel.values().length - 1)]);
-            flag.setHardAccelerationLevel(RedFlagLevel.values()[randomInt(0, RedFlagLevel.values().length - 1)]);
-            flag.setHardTurnLevel(RedFlagLevel.values()[randomInt(0, RedFlagLevel.values().length - 1)]);
-            flag.setHardVerticalLevel(RedFlagLevel.values()[randomInt(0, RedFlagLevel.values().length - 1)]);
-            final RedFlagLevel[] speedLevels = new RedFlagLevel[Device.NUM_SPEEDS];
-            for (int j = 0; j < speedLevels.length; j++)
-                speedLevels[j] = RedFlagLevel.values()[randomInt(0, RedFlagLevel.values().length - 1)];
-            flag.setSpeedLevels(speedLevels);
-            if (flag.getHardBrakeLevel() != RedFlagLevel.NONE)
-                flag.setHardBrake(randomInt(0, 2));
-            if (flag.getHardAccelerationLevel() != RedFlagLevel.NONE)
-                flag.setHardAcceleration(randomInt(0, 2));
-            if (flag.getHardTurnLevel() != RedFlagLevel.NONE)
-                flag.setHardTurn(randomInt(0, 2));
-            if (flag.getHardVerticalLevel() != RedFlagLevel.NONE)
-                flag.setHardVertical(randomInt(0, 2));
-            final Integer[] speedSettings = new Integer[Device.NUM_SPEEDS];
-            for (int j = 0; j < speedSettings.length; j++)
-                if (speedLevels[j] != RedFlagLevel.NONE)
-                    speedSettings[j] = randomInt(0, 5) * 5;
-                else
-                    speedSettings[j] = 0;
-            flag.setSpeedSettings(speedSettings);
-            flag.setSeatBeltLevel(RedFlagLevel.values()[randomInt(0, RedFlagLevel.values().length - 1)]);
-            // TODO: groups/vehicles/drivers, recipients
+            final ArrayList<Boolean> dayOfWeek = new ArrayList<Boolean>();
+            boolean pickedOne = false;
+            for (int j = 0; j < 7; j++)
+            {
+                final boolean day = randomInt(0, 1) == 1 ? true : false;
+                dayOfWeek.add(day);
+                pickedOne |= day;
+            }
+            if (!pickedOne)
+                dayOfWeek.set(0, true);
+            flag.setDayOfWeek(dayOfWeek);
+            if (randomInt(0, 1) == 1)
+            {
+                flag.setStartTOD(randomInt(BaseAlert.MIN_TOD, BaseAlert.MAX_TOD));
+                flag.setStopTOD(randomInt(BaseAlert.MIN_TOD, BaseAlert.MAX_TOD));
+            }
+
+            final int type = randomInt(0, 2);
+            if (type == 0)
+            {
+                flag.setHardBrakeLevel(RedFlagLevel.values()[randomInt(0, RedFlagLevel.values().length - 1)]);
+                flag.setHardAccelerationLevel(RedFlagLevel.values()[randomInt(0, RedFlagLevel.values().length - 1)]);
+                flag.setHardTurnLevel(RedFlagLevel.values()[randomInt(0, RedFlagLevel.values().length - 1)]);
+                flag.setHardVerticalLevel(RedFlagLevel.values()[randomInt(0, RedFlagLevel.values().length - 1)]);
+                if (flag.getHardBrakeLevel() != RedFlagLevel.NONE)
+                    flag.setHardBrake(randomInt(0, 2));
+                if (flag.getHardAccelerationLevel() != RedFlagLevel.NONE)
+                    flag.setHardAcceleration(randomInt(0, 2));
+                if (flag.getHardTurnLevel() != RedFlagLevel.NONE)
+                    flag.setHardTurn(randomInt(0, 2));
+                if (flag.getHardVerticalLevel() != RedFlagLevel.NONE)
+                    flag.setHardVertical(randomInt(0, 2));
+            }
+            else if (type == 1)
+            {
+                final RedFlagLevel[] speedLevels = new RedFlagLevel[Device.NUM_SPEEDS];
+                for (int j = 0; j < speedLevels.length; j++)
+                    speedLevels[j] = RedFlagLevel.values()[randomInt(0, RedFlagLevel.values().length - 1)];
+                flag.setSpeedLevels(speedLevels);
+                final Integer[] speedSettings = new Integer[Device.NUM_SPEEDS];
+                for (int j = 0; j < speedSettings.length; j++)
+                    if (speedLevels[j] != RedFlagLevel.NONE)
+                        speedSettings[j] = randomInt(0, 5) * 5;
+                    else
+                        speedSettings[j] = 0;
+                flag.setSpeedSettings(speedSettings);
+            }
+            else
+                flag.setSeatBeltLevel(RedFlagLevel.values()[randomInt(0, RedFlagLevel.values().length - 1)]);
+
+            // groups
+            if (randomInt(0, 1) == 1)
+            {
+                final ArrayList<Integer> groupIDs = new ArrayList<Integer>();
+                final List<Object> groups = dataMap.get(Group.class);
+                for (final Object group : groups)
+                    if (randomInt(0, 5) == 0)
+                        groupIDs.add(((Group) group).getGroupID());
+                flag.setGroupIDs(groupIDs);
+            }
+
+            // vehicle types
+            if (randomInt(0, 1) == 1)
+            {
+                final ArrayList<VehicleType> vehicleTypes = new ArrayList<VehicleType>();
+                for (final VehicleType vehicleType : VehicleType.values())
+                    if (randomInt(0, 1) == 0)
+                        vehicleTypes.add(vehicleType);
+                flag.setVehicleTypes(vehicleTypes);
+            }
+
+            // recipients
+            final ArrayList<Integer> personIDs = new ArrayList<Integer>();
+            final List<Object> people = dataMap.get(Person.class);
+            for (final Object person : people)
+                if (randomInt(0, 5) == 0)
+                    personIDs.add(((Person) person).getPersonID());
+            flag.setNotifyPersonIDs(personIDs);
+
+            // e-mail to
+            if (randomInt(0, 1) == 1)
+            {
+                final ArrayList<String> emailTo = new ArrayList<String>();
+                for (final Object person : people)
+                    if (randomInt(0, 5) == 0)
+                        emailTo.add(((Person) person).getEmail());
+                flag.setEmailTo(emailTo);
+            }
+
             storeObject(flag);
             flags.add(flag);
         }
