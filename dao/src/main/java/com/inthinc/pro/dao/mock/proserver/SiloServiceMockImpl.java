@@ -545,6 +545,9 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         if (reqType.intValue() == 1)
             criteria.addKeyValue("driverID", id);
         else criteria.addKeyValue("vehicleID", id);
+        
+        criteria.addKeyValueRange("startTime", DateUtil.convertTimeInSecondsToDate(startDate), DateUtil.convertTimeInSecondsToDate(endDate));
+
         List<Map<String, Object>> matches = MockData.getInstance().lookupList(Trip.class, criteria);
         return matches;
 
@@ -1090,7 +1093,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         SearchCriteria searchCriteria = new SearchCriteria();
         searchCriteria.addKeyValue("driverID", driverID);
         searchCriteria.addKeyValueInList("type", typeList);
-        //searchCriteria.addKeyValueRange("time", DateUtil.convertTimeInSecondsToDate(startDate), DateUtil.convertTimeInSecondsToDate(endDate));
+        searchCriteria.addKeyValueRange("time", DateUtil.convertTimeInSecondsToDate(startDate), DateUtil.convertTimeInSecondsToDate(endDate));
 
         List<Event> eventList = MockData.getInstance().retrieveObjectList(Event.class, searchCriteria);
         Collections.sort(eventList); // Make sure events are in ascending order
