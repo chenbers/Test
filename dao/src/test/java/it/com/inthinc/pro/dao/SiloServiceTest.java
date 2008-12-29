@@ -46,6 +46,7 @@ import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
@@ -195,8 +196,41 @@ public class SiloServiceTest
         assertNotNull(loc.getTime());
         assertNotNull(loc.getLoc().getLat());
         assertNotNull(loc.getLoc().getLng());
-    }
+    }    
     
+    @Test
+    public void driversNearLoc() 
+    {
+        System.out.println("***** begin driversNearLoc *****");        
+        
+        DriverHessianDAO driverDAO = new DriverHessianDAO();
+        driverDAO.setSiloService(siloService);
+        
+        Integer groupID = 1;
+        Integer numOf = 10;
+        Double lat = (double)33.010;
+        Double lng = (double)-117.111;
+        
+        List<DriverLocation> result = 
+            driverDAO.getDriversNearLoc(
+                    groupID, numOf, lat, lng);
+        
+        if ( result != null )
+        {
+            for ( DriverLocation d: result) 
+            {
+                System.out.println("found " + d.getGroupID() + 
+                        " " + d.getDriverID() + " " +
+                        d.getLoc().getLat() + " " +
+                        d.getLoc().getLng());
+            }
+        } else 
+        {
+            System.out.println("NO DRIVERS FOUND NEAR" );  
+        }
+        System.out.println("***** end driversNearLoc *****");                
+    }
+        
     @Test
     public void lastLocationVehicle()
     {
