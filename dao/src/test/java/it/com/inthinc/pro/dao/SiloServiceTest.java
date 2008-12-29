@@ -463,6 +463,7 @@ public class SiloServiceTest
         List<LatLng> points = new ArrayList<LatLng>();
         points.add( new LatLng(40.723871753812f, -111.92932452647742f));
         points.add( new LatLng(40.704246f, -111.948613f));
+        points.add( new LatLng(40.70f, -111.95f));
         points.add( new LatLng(40.723871753812f, -111.92932452647742f));
         zone.setPoints(points);
 

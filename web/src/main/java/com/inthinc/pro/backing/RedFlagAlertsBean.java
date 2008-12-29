@@ -343,7 +343,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
 
         public Boolean[] getSpeedSelected()
         {
-            if (speedSelected == null)
+            if ((speedSelected == null) && (getSpeedLevels() != null))
             {
                 speedSelected = new Boolean[Device.NUM_SPEEDS];
                 for (int i = 0; i < speedSelected.length; i++)

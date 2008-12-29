@@ -1,19 +1,20 @@
 package com.inthinc.pro.dao.hessian;
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
-import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.mock.data.MockRoles;
 import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
-import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.User;
+import com.inthinc.pro.model.app.Roles;
+import com.inthinc.pro.model.app.States;
 
 public class UserHessianDAOTest
 {
@@ -35,7 +36,20 @@ public class UserHessianDAOTest
     {
         userHessianDAO = new UserHessianDAO();
         userHessianDAO.setSiloService(new SiloServiceCreator().getService());
+
+        StateHessianDAO stateDAO = new StateHessianDAO();
+        stateDAO.setSiloService(new SiloServiceCreator().getService());
         
+        States states = new States();
+        states.setStateDAO(stateDAO);
+        states.init();
+
+        RoleHessianDAO roleDAO = new RoleHessianDAO();
+        roleDAO.setSiloService(new SiloServiceCreator().getService());
+
+        Roles roles = new Roles();
+        roles.setRoleDAO(roleDAO);
+        roles.init();
     }
     
 

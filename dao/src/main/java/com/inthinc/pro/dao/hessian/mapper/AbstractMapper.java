@@ -1,8 +1,10 @@
 package com.inthinc.pro.dao.hessian.mapper;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -134,37 +136,21 @@ public abstract class AbstractMapper implements Mapper
                 continue;
             }
 
-            // If a converter was not found, get the Field object for later use
-            Field field = null;
-            try
-            {
-                field = getField(key, fieldList);
-
-                // Check if the value is a Map or a List and handle it or just set the value in the object to be returned
-                if (Map.class.isInstance(value))
-                {
-                    setProperty(modelObject, key, convertToModelObject((Map<String, Object>) value, field.getType()));
-                }
-                else if (List.class.isInstance(value))
-                {
-                    setProperty(modelObject, key, convertToModelObject((List<Map<String, Object>>) value, field.getAnnotation(Column.class).type()));
-                }
-                else
-                {
-                    setProperty(modelObject, key, value);
-                }
-            }
-            catch (NoSuchFieldException e)
-            {
-                // If the field doesn't exist, continue
-//                if (logger.isDebugEnabled())
-//                {
-//                    logger.debug("The field \"" + key + "\" does not exist for class: " + value.getClass().getName());
-//                }
-            }
+            setProperty(modelObject, key, value, fieldList);
         }
 
         return modelObject;
+    }
+
+    private Class<?> getFieldType(Field field)
+    {
+        Class<?> fieldType = null;
+        final Column annotation = field.getAnnotation(Column.class);
+        if (annotation != null)
+            fieldType = annotation.type();
+        if ((fieldType == null) && (field.getGenericType() instanceof ParameterizedType))
+            fieldType = (Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0];
+        return fieldType;
     }
 
     // public List<T> convertToModelObject(List<Map<String, Object>> list)
@@ -185,14 +171,137 @@ public abstract class AbstractMapper implements Mapper
         return returnList;
     }
 
+    private <E> List<E> convertSimpleListToModelObject(List<Object> list, Class<E> type, List<Field> fieldType)
+    {
+        List<E> returnList = new ArrayList<E>();
+        if (list != null)
+        {
+            for (Object o : list)
+            {
+                try
+                {
+                    returnList.add((E) convertProperty(type, null, o, fieldType));
+                }
+                catch (NoSuchFieldException e)
+                {
+                }
+                catch (Exception e)
+                {
+                    throw new MappingException(e);
+                }
+            }
+        }
+        return returnList;
+    }
+
+    private void setProperty(Object bean, String name, Object value, List<Field> fieldList)
+    {
+        try
+        {
+            Class<?> propertyType = PropertyUtils.getPropertyType(bean, name);
+            // if the property type is Date, convert the integer returned in the hash map that represents seconds to a long and create a Date object
+            value = convertProperty(propertyType, name, value, fieldList);
+            PropertyUtils.setProperty(bean, name, value);
+        }
+        catch (InvocationTargetException e)
+        {
+            if (logger.isDebugEnabled())
+            {
+                logger.debug("The property \"" + name + "\" could not be set to the value \"" + value + "\"", e);
+            }
+        }
+        catch (NoSuchMethodException e)
+        {
+        }
+        catch (NoSuchFieldException e)
+        {
+        }
+        catch (Exception e)
+        {
+            throw new MappingException(e);
+        }
+    }
+
+    private Object convertProperty(Class<?> propertyType, String key, Object value, List<Field> fieldList) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchFieldException, InstantiationException
+    {
+        if (propertyType != null)
+        {
+            if (propertyType.equals(Date.class) && value instanceof Integer)
+            {
+                Integer seconds = (Integer) value;
+                value = new Date(seconds.longValue() * 1000l);
+            }
+            if (propertyType == TimeZone.class && value instanceof String)
+            {
+                String tzID = (String) value;
+                value = TimeZone.getTimeZone(tzID);
+            }
+            else if (propertyType.equals(Boolean.class) && value instanceof Integer)
+            {
+                value = ((Integer) value).equals(Integer.valueOf(0)) ? Boolean.FALSE : Boolean.TRUE;
+            }
+            else if (ReferenceEntity.class.isAssignableFrom(propertyType) && value instanceof Integer)
+            {
+                Method valueOf = propertyType.getMethod("valueOf", Integer.class);
+                if (valueOf != null)
+                    value = valueOf.invoke(null, value);
+            }
+            else if (BaseEnum.class.isAssignableFrom(propertyType) && value instanceof Integer)
+            {
+                Method valueOf = propertyType.getMethod("valueOf", Integer.class);
+                if (valueOf != null)
+                    value = valueOf.invoke(null, value);
+            }
+            else if (Enum.class.isAssignableFrom(propertyType) && value instanceof String)
+            {
+                Method valueOf = propertyType.getMethod("valueOf", String.class);
+                if (valueOf != null)
+                    value = valueOf.invoke(null, value);
+            }
+            else if (propertyType.isArray() && value instanceof List)
+            {
+                value = createArray((List<?>) value, propertyType, fieldList);
+            }
+            else if (Map.class.isInstance(value))
+            {
+                final Field field = getField(key, fieldList);
+                value = convertToModelObject((Map<String, Object>) value, field.getType());
+            }
+            else if (List.class.isInstance(value))
+            {
+                final Field field = getField(key, fieldList);
+                final Class<?> fieldType = getFieldType(field);
+                if (fieldType != null)
+                {
+                    if (Boolean.class.isAssignableFrom(fieldType) || Number.class.isAssignableFrom(fieldType) || String.class.isAssignableFrom(fieldType)
+                            || Character.class.isAssignableFrom(fieldType) || Date.class.isAssignableFrom(fieldType) || TimeZone.class.isAssignableFrom(fieldType)
+                            || fieldType.isEnum())
+                        value = convertSimpleListToModelObject((List<Object>) value, fieldType, fieldList);
+                    else
+                        value = convertToModelObject((List<Map<String, Object>>) value, fieldType);
+                }
+            }
+        }
+    
+        return value;
+    }
+
+    public <T> T[] createArray(List<T> list, Class<?> propertyType, List<Field> fieldList) throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, NoSuchFieldException
+    {
+        final T[] array = (T[]) Array.newInstance(propertyType.getComponentType(), list.size());
+        for (int i = 0; i < array.length; i++)
+            array[i] = (T) convertProperty(propertyType.getComponentType(), null, list.get(i), fieldList);
+        return array;
+    }
+
     @Override
     public Map<String, Object> convertToMap(Object modelObject)
     {
-        Map<Object, Map<String, Object>> handled = new HashMap<Object, Map<String, Object>>();
-        return convertToMap(modelObject, handled);
+        final Map<Object, Map<String, Object>> handled = new HashMap<Object, Map<String, Object>>();
+        return convertToMap(modelObject, handled, false);
     }
 
-    protected Map<String, Object> convertToMap(Object modelObject, Map<Object, Map<String, Object>> handled)
+    protected Map<String, Object> convertToMap(Object modelObject, Map<Object, Map<String, Object>> handled, boolean includeNonUpdateables)
     {
         if (modelObject == null)
             return null;
@@ -217,7 +326,7 @@ public abstract class AbstractMapper implements Mapper
                 if (column != null)
                 {
                     // If the field has been annotated with the @Column(updateable=false), then skip
-                    if (!column.updateable())
+                    if (!includeNonUpdateables && !column.updateable())
                         continue;
                     if (!column.name().isEmpty())
                         name = column.name();
@@ -264,67 +373,10 @@ public abstract class AbstractMapper implements Mapper
                     {
                         throw new MappingException(e);
                     }
-
                 }
-
-                // if the property is a Map, convert the objects in the Map to Map<String,Object>. i'm not sure if this will ever occur
-                // i didn't want to make the assumption that the Map object represented by the value variable is a Map<String, Object> so i'm
-                // just going with Map<Object, Object>.
-                else if (Map.class.isInstance(value))
-                {
-                    Map<Object, Map<String, Object>> valueMap = new HashMap<Object, Map<String, Object>>();
-                    for (Map.Entry<Object, Object> entry : ((Map<Object, Object>) value).entrySet())
-                    {
-                        if (handled.containsKey(entry.getValue()))
-                        {
-                            valueMap.put(entry.getKey(), handled.get(entry.getValue()));
-                        }
-                        else
-                        {
-                            valueMap.put(entry.getKey(), convertToMap(entry.getValue(), handled));
-                        }
-                    }
-                    map.put(name, valueMap);
-                }
-                // if the property is a List, convert the objects in the list to Map<String, Object>
-                else if (List.class.isInstance(value))
-                {
-                    map.put(name, convertList((List<?>) value));
-                }
-                // if the field type is Date, convert to integer
-                else if (Date.class.isInstance(value))
-                {
-                    map.put(name, (int) (((Date) value).getTime() / 1000l));
-                }
-                // if the field type is TimeZone, convert to string
-                else if (TimeZone.class.isInstance(value))
-                {
-                    map.put(name, ((TimeZone) value).getID());
-                }
-                else if (ReferenceEntity.class.isInstance(value))
-                {
-                    map.put(name, ((ReferenceEntity) value).getID());
-                }
-                else if (BaseEnum.class.isInstance(value))
-                {
-                    map.put(name, ((BaseEnum) value).getCode());
-                }
-                // if the property is not a standardProperty it must be some kind of bean/pojo/object. convert the property to a map
-                else if (!isStandardProperty(value))
-                {
-                    if (handled.containsKey(value))
-                    {
-                        map.put(name, handled.get(value));
-                    }
-                    else
-                    {
-                        map.put(name, convertToMap(value, handled));
-                    }
-                }
-                // if we have made it this far, the value must be a String or a primitive type. Just put it in the map.
                 else
                 {
-                    map.put(name, value);
+                    map.put(name, convertToHessian(value, handled, field, includeNonUpdateables));
                 }
             }
             clazz = clazz.getSuperclass();
@@ -332,74 +384,112 @@ public abstract class AbstractMapper implements Mapper
         return map;
     }
 
+    private Object convertToHessian(Object value, Map<Object, Map<String, Object>> handled, Field field, boolean includeNonUpdateables)
+    {
+        // if the property is a Map, convert the objects in the Map to Map<String,Object>. i'm not sure if this will ever occur
+        // i didn't want to make the assumption that the Map object represented by the value variable is a Map<String, Object> so i'm
+        // just going with Map<Object, Object>.
+        if (Map.class.isInstance(value))
+        {
+            Map<Object, Map<String, Object>> valueMap = new HashMap<Object, Map<String, Object>>();
+            for (Map.Entry<Object, Object> entry : ((Map<Object, Object>) value).entrySet())
+            {
+                if (handled.containsKey(entry.getValue()))
+                {
+                    valueMap.put(entry.getKey(), handled.get(entry.getValue()));
+                }
+                else
+                {
+                    valueMap.put(entry.getKey(), convertToMap(entry.getValue(), handled, includeNonUpdateables));
+                }
+            }
+            value = valueMap;
+        }
+        // if the property is a List, convert the objects in the list to Map<String, Object> as needed
+        else if (List.class.isInstance(value))
+        {
+            final Class<?> fieldType = getFieldType(field);
+            if (fieldType != null)
+            {
+                if (Boolean.class.isAssignableFrom(fieldType) || Number.class.isAssignableFrom(fieldType) || String.class.isAssignableFrom(fieldType)
+                        || Character.class.isAssignableFrom(fieldType) || Date.class.isAssignableFrom(fieldType) || TimeZone.class.isAssignableFrom(fieldType)
+                        || fieldType.isEnum())
+                    value = convertSimpleList((List<?>) value, field, handled, includeNonUpdateables);
+                else
+                    value = convertList((List<?>) value, handled, includeNonUpdateables);
+            }
+        }
+        // if the property is an array, convert the array to a list
+        else if (value.getClass().isArray())
+        {
+            final ArrayList<Object> list = new ArrayList<Object>();
+            for (int i = 0; i < Array.getLength(value); i++)
+                list.add(convertToHessian(Array.get(value, i), handled, field, includeNonUpdateables));
+            value = list;
+        }
+        // if the field type is Date, convert to integer
+        else if (Date.class.isInstance(value))
+        {
+            value = (int) (((Date) value).getTime() / 1000l);
+        }
+        // if the field type is TimeZone, convert to string
+        else if (TimeZone.class.isInstance(value))
+        {
+            value = ((TimeZone) value).getID();
+        }
+        // if the field type is Boolean, convert to integer
+        else if (Boolean.class.isInstance(value))
+        {
+            value = ((Boolean) value) ? 1 : 0;
+        }
+        else if (ReferenceEntity.class.isInstance(value))
+        {
+            value = ((ReferenceEntity) value).getID();
+        }
+        else if (BaseEnum.class.isInstance(value))
+        {
+            value = ((BaseEnum) value).getCode();
+        }
+        // if the property is not a standardProperty it must be some kind of bean/pojo/object. convert the property to a map
+        else if (!isStandardProperty(value))
+        {
+            if (handled.containsKey(value))
+            {
+                value = handled.get(value);
+            }
+            else
+            {
+                value = convertToMap(value, handled, includeNonUpdateables);
+            }
+        }
+        // if we have made it this far, the value must be a String or a primitive type. Just put it in the map.
+        return value;
+    }
+
     public List<Map<String, Object>> convertList(List<?> list)
+    {
+        final Map<Object, Map<String, Object>> handled = new HashMap<Object, Map<String, Object>>();
+        return convertList(list, handled, false);
+    }
+
+    private List<Map<String, Object>> convertList(List<?> list, Map<Object, Map<String, Object>> handled, boolean includeNonUpdateables)
     {
         List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
         for (Object o : list)
         {
-            returnList.add(convertToMap(o));
+            returnList.add(convertToMap(o, handled, includeNonUpdateables));
         }
         return returnList;
     }
 
-    private void setProperty(Object bean, String name, Object value)
+    private List<Object> convertSimpleList(List<?> list, Field field, Map<Object, Map<String, Object>> handled, boolean includeNonUpdateables)
     {
-        try
+        List<Object> returnList = new ArrayList<Object>();
+        for (Object o : list)
         {
-            Class<?> propertyType = PropertyUtils.getPropertyType(bean, name);
-            // if the property type is Date, convert the integer returned in the hash map that represents seconds to a long and create a Date object
-            if (propertyType != null && propertyType.equals(Date.class) && value instanceof Integer)
-            {
-                Integer seconds = (Integer) value;
-                value = new Date(seconds.longValue() * 1000l);
-            }
-            if (propertyType != null && propertyType == TimeZone.class && value instanceof String)
-            {
-                String tzID = (String) value;
-                value = TimeZone.getTimeZone(tzID);
-            }
-            else if (propertyType != null && propertyType.equals(Boolean.class) && value instanceof Integer)
-            {
-                value = ((Integer) value).equals(Integer.valueOf(0)) ? Boolean.FALSE : Boolean.TRUE;
-            }
-            else if (propertyType != null && ReferenceEntity.class.isAssignableFrom(propertyType) && value instanceof Integer)
-            {
-                Method valueOf = propertyType.getMethod("valueOf", Integer.class);
-                if (valueOf != null)
-                    value = valueOf.invoke(null, value);
-            }
-            else if (propertyType != null && BaseEnum.class.isAssignableFrom(propertyType) && value instanceof Integer)
-            {
-                Method valueOf = propertyType.getMethod("valueOf", Integer.class);
-                if (valueOf != null)
-                    value = valueOf.invoke(null, value);
-            }
-            else if (propertyType != null && Enum.class.isAssignableFrom(propertyType) && value instanceof String)
-            {
-                Method valueOf = propertyType.getMethod("valueOf", String.class);
-                if (valueOf != null)
-                    value = valueOf.invoke(null, value);
-            }
-            PropertyUtils.setProperty(bean, name, value);
+            returnList.add(convertToHessian(o, handled, field, includeNonUpdateables));
         }
-        catch (IllegalAccessException e)
-        {
-            throw new MappingException(e);
-        }
-        catch (InvocationTargetException e)
-        {
-            if (logger.isDebugEnabled())
-            {
-                logger.debug("The property \"" + name + "\" could not be set to the value \"" + value + "\"");
-            }
-        }
-        catch (NoSuchMethodException e)
-        {
-            if (logger.isDebugEnabled())
-            {
-                logger.debug("The property \"" + name + "\" does not exist for class: " + value.getClass().getName());
-            }
-        }
+        return returnList;
     }
 
     private static boolean isStandardProperty(Object o)

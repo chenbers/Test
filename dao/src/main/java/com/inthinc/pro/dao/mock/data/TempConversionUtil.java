@@ -8,9 +8,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import com.inthinc.pro.model.BaseEnum;
 
@@ -90,10 +92,14 @@ public class TempConversionUtil
                 }
                 else if (List.class.isInstance(value))
                 {
-                    List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+                    List<Object> returnList = new ArrayList<Object>();
                     for (Object o : (List<?>) value)
                     {
-                        returnList.add(createMapFromObject(o, includeTransients));
+                        if ((o instanceof Boolean) || (o instanceof Number) || (o instanceof String)
+                                || (o instanceof Character) || (o instanceof Enum))
+                            returnList.add(o);
+                        else
+                            returnList.add(createMapFromObject(o, includeTransients));
                     }
                     value = returnList;
                 }

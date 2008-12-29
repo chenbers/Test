@@ -267,6 +267,22 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         boolean valid = true;
         for (final BaseAlertView alert : saveItems)
         {
+            // at least one day chosen
+            boolean dayPicked = false;
+            for (boolean day : alert.getDayOfWeek())
+                if (day)
+                {
+                    dayPicked = true;
+                    break;
+                }
+            if (!dayPicked)
+            {
+                final String summary = MessageUtil.formatMessageString("editAlerts_noDays");
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                context.addMessage("edit-form:day0", message);
+                valid = false;
+            }
+
             // assigned to something
             boolean assigned = (alert.getGroupIDs() != null) && (alert.getGroupIDs().size() > 0);
             if (!assigned)

@@ -56,6 +56,12 @@ public class Role extends BaseEntity implements ReferenceEntity
     {
         return roleID;
     }
- 
-    
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (obj instanceof Role)
+            return ((Role) obj).getID().equals(getID());
+        else
+            return false;
+    }
 }

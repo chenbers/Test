@@ -13,6 +13,8 @@ import com.inthinc.pro.dao.mock.data.UnitTestStats;
 import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagLevel;
+import com.inthinc.pro.model.app.Roles;
+import com.inthinc.pro.model.app.States;
 
 public class RedFlagHessianDAOTest
 {
@@ -25,6 +27,20 @@ public class RedFlagHessianDAOTest
     {
         redFlagHessianDAO = new RedFlagHessianDAO();
         redFlagHessianDAO.setSiloService(new SiloServiceCreator().getService());
+
+        StateHessianDAO stateDAO = new StateHessianDAO();
+        stateDAO.setSiloService(new SiloServiceCreator().getService());
+        
+        States states = new States();
+        states.setStateDAO(stateDAO);
+        states.init();
+
+        RoleHessianDAO roleDAO = new RoleHessianDAO();
+        roleDAO.setSiloService(new SiloServiceCreator().getService());
+
+        Roles roles = new Roles();
+        roles.setRoleDAO(roleDAO);
+        roles.init();
     }
 
     
