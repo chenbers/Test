@@ -141,7 +141,21 @@ public interface SiloService extends HessianService
      *      map[driverID,vehicleID,time,lat,lng]
      */
     Map<String, Object> getLastLoc(Integer id, Integer reqType);
-    
+    /**
+     * @param groupID
+     * 
+     * @param numof
+     *          requested number of returned maps
+     *          
+     * @param lat
+     *          latitude to look for
+     *          
+     * @param lng
+     *          longitude to look for
+     *       
+     * @return
+     *      map[driverID,groupID,vehicleID,vType,name,homePhone,workPhone,loc(lat,lng)]
+     */
     List<Map<String, Object>> getDriversNearLoc(Integer groupID, Integer numof, Double lat, Double lng);
 
     // ------------------------- Events/Notes  -----------------------------------------------
