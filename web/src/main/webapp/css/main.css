@@ -578,6 +578,10 @@ form label.field-checkbox {
 
 /* BUTTONs */
 
+a button {
+	text-decoration: none;
+	}
+
 button {
 	border:0;
 	cursor:pointer;
@@ -626,11 +630,15 @@ span.addZoneAlert {
 span.save {
 	background: url(../images/btn_save.png) left no-repeat;
 	}
-	
+
+span.delete {
+	background: url(../images/btn_trash.png) left no-repeat;
+	}
+
 span.cancel {
 	background: url(../images/btn_cross.png) left no-repeat;
 	}
-	
+
 span.edit {
 	background: url(../images/btn_edit.png) left no-repeat;
 	}
