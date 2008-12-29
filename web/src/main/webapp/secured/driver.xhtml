@@ -297,6 +297,11 @@
 				          return marker;
 				        }
 
+						function bodyUnload()
+						{
+							GUnload();
+						}
+					    
   						if (GBrowserIsCompatible()) {
         						map = new GMap2(document.getElementById("map-canvas"));
         						map.addControl(new GLargeMapControl());

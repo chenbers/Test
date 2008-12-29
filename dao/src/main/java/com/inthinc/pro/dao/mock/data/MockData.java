@@ -528,7 +528,8 @@ logger.debug("addDriveQMaps");
                 int id = idOffset+driver.getDriverID() * MAX_TRIPS + tripCnt;
                 int eventIdOffset = id;
     //            Integer vehicleID = idOffset+randomInt(1, numVehicles);
-                Integer vehicleID = 0;
+                //Integer vehicleID = 0;
+                
                 int startAddressIdx = randomInt(0, MAX_ADDRESS - 1);
                 int endAddressIdx = randomInt(0, MAX_ADDRESS - 1);
                 
@@ -556,7 +557,7 @@ logger.debug("addDriveQMaps");
                     }
                     
                 }
-                Trip trip = new Trip(id, vehicleID, 
+                Trip trip = new Trip(id, vehicle.getVehicleID(), 
                         startDate, endDate, 
                         randomInt(500, 10000), route, addressStr[startAddressIdx], addressStr[endAddressIdx]);
                 trip.setDriverID(driver.getDriverID());
