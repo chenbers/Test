@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.TripDisplay;
@@ -25,18 +26,17 @@ public class DriverTripsBean extends BaseBean
     private Date endDate = new Date();
     
     private Integer milesDriven = new Integer(0);
-    private Integer numStops = 0;
-    private String idleTime = "0:45";
+    private String idleTime = "0:45"; //
     private Integer numTrips = 0;
     private Integer totalDriveTime;
     
-    private boolean showAllTrips = false;
+    private boolean showLastTenTrips = false;
     private boolean showIdleMarkers = true;
     private boolean showWarnings = true;
     
     private List<TripDisplay> trips;
     private List<TripDisplay> selectedTrips;
-    private TripDisplay selectedTrip;	
+    private TripDisplay selectedTrip;
 	private List<Event> violationEvents;
 
 	private Integer tripsPager = 0;
@@ -45,28 +45,16 @@ public class DriverTripsBean extends BaseBean
     
 	public void init()
     {
-    	Calendar calendar = Calendar.getInstance();
+    	// Set start date to 7 days ago.
+	    Calendar calendar = Calendar.getInstance();
     	calendar.add(Calendar.DAY_OF_MONTH, -7);
-    	
     	startDate = calendar.getTime();
     	
     	initTrips();
-    	
-    	initViolations();
-
-    }
-    
-    public void initViolations()
-    {
-    	List<Integer> types = new ArrayList<Integer>();
-    	types.add(93);
-    	types.add(3);
-    	types.add(2);
-        violationEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), startDate, endDate, types);
     }
     
     public void initTrips()
-    {
+    {  
         List<Trip> tempTrips = new ArrayList<Trip>();
         tempTrips = driverDAO.getTrips(navigation.getDriver().getDriverID(), startDate, endDate);
 
@@ -75,23 +63,37 @@ public class DriverTripsBean extends BaseBean
         
         for (Trip trip : tempTrips)
         {
+            if(trip.getStartTime().before(startDate))
+                continue;
+            
             trips.add( 0, new TripDisplay(trip) );
             
             milesDriven += trip.getMileage();
             //totalDriveTime += ( trip.getEndTime() - trip.getStartTime() );
-
-            //idleTime =  ?
         }
-        
+
         numTrips = trips.size();
         
-        if(trips.size() > 0)
+        if(numTrips > 0)
         {
-            selectedTrips.add( trips.get(0) );
-        }
-        
+            selectedTrips.add(trips.get(0));
+            
+            Date vStart = selectedTrips.get(0).getTrip().getStartTime();
+            Date vEnd = selectedTrips.get(0).getTrip().getEndTime();
+            
+            initViolations(vStart, vEnd);
+        }     
     }
  
+    public void initViolations(Date start, Date end)
+    {
+        List<Integer> types = new ArrayList<Integer>();
+        types.add(93); // EventMapper.TIWIPRO_EVENT_SPEEDING_EX3
+        types.add(3);  // EventMapper.TIWIPRO_EVENT_SEATBELT
+        types.add(2);  // EventMapper.TIWIPRO_EVENT_NOTEEVENT
+        
+        violationEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), start, end, types);  
+    }
     
     //DATE PROPERTIES
     public Date getStartDate()
@@ -127,14 +129,6 @@ public class DriverTripsBean extends BaseBean
 		this.milesDriven = milesDriven;
 	}
 	
-	//STOPS PROPERTIES
-	public Integer getNumStops() {
-		return numStops;
-	}
-	public void setNumStops(Integer numStops) {
-		this.numStops = numStops;
-	}
-	
 	//IDLE TIME PROPERTIES
 	public String getIdleTime() {
 		return idleTime;
@@ -160,30 +154,39 @@ public class DriverTripsBean extends BaseBean
 	}
 	
 	//SHOW ALL TRIPS SETTING PROPERTIES
-	public boolean isShowAllTrips() {
-		return showAllTrips;
+	public boolean isShowLastTenTrips() {
+		return showLastTenTrips;
 	}
-	public void setShowAllTrips(boolean showAllTrips) 
+	public void setShowLastTenTrips(boolean showLastTenTrips)
 	{
-		this.showAllTrips = showAllTrips;
+		this.showLastTenTrips = showLastTenTrips; 
 		selectedTrips.clear();
 
-		if (showAllTrips) {
-
+		if (showLastTenTrips)
+		{
 			int count = 0;
-			for (TripDisplay trip : trips) {
+			for (TripDisplay trip : trips)
+			{
 				if (count == 10)
 					break;
 
-				selectedTrips.add(trip);
+				selectedTrips.add(trip);  //Trips are already in reverse order. (Most recent first)
 				count++;
 			}
-		} else {
+			
+			//TODO RESET START END DATES TO MATCH THE TRIPS
+		} 
+		else 
+		{
 			if (selectedTrip == null) {
 				selectedTrips.add(trips.get(0));
 			} else
 				selectedTrips.add(selectedTrip);
 		}	
+		
+		if(selectedTrips.size() > 0)
+		    initViolations(selectedTrips.get(selectedTrips.size()-1).getTrip().getStartTime(), selectedTrips.get(0).getTrip().getEndTime());
+        
 	}
 	
 	//SHOW IDLE MARKERS SETTING PROPERTIES
@@ -241,7 +244,8 @@ public class DriverTripsBean extends BaseBean
     {
         selectedTrips.clear();
         selectedTrips.add(selectedTrip);
-        //turn off select all checkbox
+        this.showLastTenTrips = false;
+        initViolations(selectedTrip.getTrip().getStartTime(), selectedTrip.getTrip().getEndTime());
     }
 
     //NAVIGATION PROPERTIES
