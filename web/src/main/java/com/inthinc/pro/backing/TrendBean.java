@@ -24,7 +24,7 @@ import com.inthinc.pro.util.ColorSelectorStandard;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.wrapper.ScoreableEntityPkg;
 
-public class TrendBean extends BaseDurationBean
+public class TrendBean extends BaseBean
 {
 
     private static final Logger logger = Logger.getLogger(TrendBean.class);
@@ -36,7 +36,7 @@ public class TrendBean extends BaseDurationBean
 
     private List<ScoreableEntityPkg> scoreableEntities = new ArrayList<ScoreableEntityPkg>();
     
-    private Integer numRowsPerPg = 10;
+    private Integer numRowsPerPg = 2;
     private Integer maxCount = 0;
     private Integer start = 1;
     private Integer end = numRowsPerPg;
@@ -95,10 +95,10 @@ public class TrendBean extends BaseDurationBean
         
         // Adjust the count values
         this.maxCount = s.size(); 
-        this.end = this.numRowsPerPg;
-        if ( this.maxCount < this.end ) {
-            this.end = this.maxCount;
-        }
+//        this.end = this.numRowsPerPg;
+//        if ( this.maxCount < this.end ) {
+//            this.end = this.maxCount;
+//        }
 
         // X-coordinates
         sb.append("<categories>");
@@ -106,7 +106,8 @@ public class TrendBean extends BaseDurationBean
         sb.append("</categories>");
 
         // Loop over returned set of group ids, controlled by scroller
-        Map<Integer, List<ScoreableEntity>> groupTrendMap = scoreDAO.getTrendScores(this.navigation.getGroupID(), navigation.getDuration());;
+        Map<Integer, List<ScoreableEntity>> groupTrendMap = scoreDAO.getTrendScores(
+                this.navigation.getGroupID(), navigation.getDuration());;
         ColorSelectorStandard cs = new ColorSelectorStandard();
         
         for (int i = this.start; i <= this.end; i++)
@@ -250,38 +251,40 @@ public class TrendBean extends BaseDurationBean
     public void setNavigation(NavigationBean navigation)
     {
         this.navigation = navigation;
-        
-        if ( this.navigation != null ) {            
-            if ( this.navigation.getDuration() == null ) {
-                this.navigation.setDuration(Duration.DAYS);
-            }
-            if ( this.navigation.getStart() != 0 ) {              
-                this.start = this.navigation.getStart();
-            }
-            if ( this.navigation.getEnd() != 0 ) {              
-                this.end = this.navigation.getEnd();
-            }
+                  
+        // existing navigation
+        if ( this.navigation.getDuration() == null ) {
+            this.navigation.setDuration(Duration.DAYS);
         }
-                
+        if ( this.navigation.getStart() != 0 ) {              
+            this.start = this.navigation.getStart();
+        } 
+        if ( this.navigation.getEnd() != 0 ) {              
+            this.end = this.navigation.getEnd();
+        } 
+         
+        // tmpGroupID implies back on the same page
         if ( this.tmpGroupID != null ) {
-            navigation.setGroupID(tmpGroupID);
+            this.navigation.setGroupID(tmpGroupID);
             
-            //Reset the groupID from the datascroller hidden             
+            List<ScoreableEntity> s = null;
+            s = getScores();
+            this.maxCount = s.size();                
+            
+        // no temp, coming from somewhere, breadcrumb, etc.
+        //  we will re-initialize...
+        } else {            
             List<ScoreableEntity> s = null;
             s = getScores();
             this.maxCount = s.size();
-            
-            //Reset the count parameters
             this.start = 1;
             this.end = this.numRowsPerPg;
-            
-            //Partial page
-            if ( this.end > maxCount ) {
-                this.end = maxCount;
+            if ( this.end > this.maxCount ) {
+                this.end = this.maxCount;
             }
-            navigation.setStart(this.start);
-            navigation.setEnd(this.end);                       
         }
+                
+        
     }
 
     public Integer getMaxCount()
