@@ -1,6 +1,7 @@
 package com.inthinc.pro.util;
 
 import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashMap;
@@ -228,7 +229,13 @@ public class BeanUtil
                                             if (clazz.isPrimitive())
                                                 write.invoke(item, new Object[] { BeanUtils.instantiateClass(o1.getClass().getConstructor(String.class), new Object[] { "0" }) });
                                             else
-                                                write.invoke(item, new Object[] { null });
+                                                try
+                                                {
+                                                    write.invoke(item, new Object[] { null });
+                                                }
+                                                catch (InvocationTargetException e)
+                                                {
+                                                }
                                         }
                                     }
                                 }
