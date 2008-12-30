@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.TablePreferenceDAO;
+import com.inthinc.pro.dao.hessian.exceptions.HessianException;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
@@ -237,8 +238,6 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     public void setPage(int page)
     {
         this.page = page;
-        for (final T t : items)
-            t.setSelected(false);
     }
 
     /**
@@ -405,7 +404,16 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
             return null;
 
         final boolean add = isAdd();
-        doSave(selected, add);
+        try
+        {
+            doSave(selected, add);
+        }
+        catch (HessianException e)
+        {
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getLocalizedMessage(), null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return null;
+        }
 
         if (add)
         {
@@ -434,7 +442,17 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
             return null;
         }
 
-        doDelete(selected);
+        try
+        {
+            doDelete(selected);
+        }
+        catch (HessianException e)
+        {
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getLocalizedMessage(), null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return null;
+        }
+
         items.removeAll(selected);
         filteredItems.removeAll(selected);
 
