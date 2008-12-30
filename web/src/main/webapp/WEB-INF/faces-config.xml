@@ -329,7 +329,15 @@
 	</navigation-rule>
 	
 	<!-- validators -->
-	
+	<validator>
+		<validator-id>com.inthinc.pro.validators.RegexValidator</validator-id>
+		<validator-class>com.inthinc.pro.validators.RegexValidator</validator-class>
+	</validator>
+	<validator>
+		<validator-id>com.inthinc.pro.validators.EmailValidator</validator-id>
+		<validator-class>com.inthinc.pro.validators.EmailValidator</validator-class>
+	</validator>
+
 	<!-- components -->
 	<component>
    		<component-type>com.inthinc.pro.security.jsftaglib.Authorize</component-type>

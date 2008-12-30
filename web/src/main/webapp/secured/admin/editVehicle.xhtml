@@ -117,6 +117,8 @@
                                   <h:inputText value="#{vehiclesBean.item.VIN}" id="VIN" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     maxlength="17" required="true" requiredMessage="#{messages.required}" validatorMessage="#{messages.editVehicle_VINlength}">
                                       <f:validateLength minimum="17" maximum="17" />
+                                      <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
+                                      <f:attribute name="regex" value="[A-Za-z0-9]+" />
                                   </h:inputText>
                                   <rich:message for="VIN" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                 </td>
@@ -196,7 +198,9 @@
                                 </td>
                                 <td>
                                   $<h:inputText value="#{vehiclesBean.item.costPerHourDollars}" id="costPerHour" onchange="checkMultiple(this)" styleClass="text" size="10"
-                                    required="#{(not vehiclesBean.batchEdit) or vehiclesBean.updateField['costPerHour']}" requiredMessage="#{messages.required}" converter="javax.faces.Double" converterMessage="#{messages.editVehicle_costPerHourFormat}" />
+                                    required="#{(not vehiclesBean.batchEdit) or vehiclesBean.updateField['costPerHour']}" requiredMessage="#{messages.required}" converter="javax.faces.Double" converterMessage="#{messages.editVehicle_costPerHourFormat}">
+                                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+                                  </h:inputText>
                                   <rich:message for="costPerHour" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                 </td>
                               </tr>

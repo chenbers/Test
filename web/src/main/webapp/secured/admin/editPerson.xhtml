@@ -287,7 +287,9 @@
                           </td>
                           <td>
                             $<h:inputText value="#{personBean.item.costPerHourDollars}" id="costPerHour" onchange="checkMultiple(this)" styleClass="text" size="10"
-                              required="#{(not personBean.batchEdit) or personBean.updateField['costPerHour']}" requiredMessage="#{messages.required}" converter="javax.faces.Double" converterMessage="#{messages.editPerson_costPerHourFormat}" />
+                              required="#{(not personBean.batchEdit) or personBean.updateField['costPerHour']}" requiredMessage="#{messages.required}" converter="javax.faces.Double" converterMessage="#{messages.editPerson_costPerHourFormat}">
+                              <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+                            </h:inputText>
                             <rich:message for="costPerHour" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                           </td>
                         </tr>
