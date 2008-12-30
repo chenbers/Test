@@ -21,6 +21,7 @@
               title:  A title for the dialog.  If not provided, messages.confirmDelete_title will be used.
         explanation:  Explanatory text for the dialog.  If not provided, messages.confirmDelete_explanation will
                       be used.
+        deleteItems:  A list of the items to delete.  If provided, shown below the explanation.
 
   To use:
   ==============
@@ -49,7 +50,7 @@
       <c:set var="explanation" value="#{messages.confirmDelete_explanation}" />
     </c:if>
 
-    <rich:modalPanel id="confirmDelete" headerClass="popupHeader" controlsClass="popupControls" width="500" height="140" resizeable="false" zindex="2001" onshow="if (event.parameters.deleteID) document.getElementById('confirmDeleteID').value = event.parameters.deleteID; document.getElementById('deleteButton').focus();">
+    <rich:modalPanel id="confirmDelete" headerClass="popupHeader" controlsClass="popupControls" width="500" height="140" autosized="true" resizeable="false" zindex="2001" onshow="if (event.parameters.deleteID) document.getElementById('confirmDeleteID').value = event.parameters.deleteID; document.getElementById('deleteButton').focus();">
       <f:facet name="header">
         <h:outputText value="#{title}" />
       </f:facet>
@@ -58,6 +59,10 @@
       </f:facet>
 
       <div class="popupsubtitle"><h:outputText value="#{explanation}" /></div>
+
+      <rich:dataGrid columns="3" value="#{deleteItems}" var="deleteItem" width="100%" style="border:0">
+        <h:outputText value="&#160;&#160;&#160;&#8226; " /><h:outputText value="#{deleteItem.name}" />
+      </rich:dataGrid>
 
       <a4j:form id="confirmDeleteForm">
 

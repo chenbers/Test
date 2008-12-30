@@ -533,7 +533,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     /**
      * @return The list of selected items.
      */
-    protected List<T> getSelectedItems()
+    public List<T> getSelectedItems()
     {
         final LinkedList<T> selected = new LinkedList<T>();
         for (final T t : filteredItems)

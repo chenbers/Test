@@ -437,7 +437,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
             {
                 for (final PersonView person : items)
                     if (groupID.equals(person.getGroupID()) && !person.getPersonID().equals(getItem().getPersonID()))
-                        reportsToOptions.put(person.getFirst() + " " + person.getLast(), person.getPersonID());
+                        reportsToOptions.put(person.getName(), person.getPersonID());
                 final Group group = groupDAO.findByID(groupID);
                 if (group != null)
                     groupID = group.getParentID();
@@ -483,6 +483,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     public static class PersonView extends Person implements EditItem
     {
         @Column(updateable = false)
+        private static final long serialVersionUID = 8954277815270194338L;
+
+        @Column(updateable = false)
         private PersonBean bean;
         @Column(updateable = false)
         private Group   group;
@@ -502,6 +505,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         public Integer getId()
         {
             return getPersonID();
+        }
+
+        public String getName()
+        {
+            return getFirst() + ' ' + getLast();
         }
 
         @Override

@@ -26,7 +26,13 @@ public class SBSChangeRequest implements EditItem{
 		// TODO Auto-generated method stub
 		return null;
 	}
-	public boolean isSelected() {
+	@Override
+    public String getName()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    public boolean isSelected() {
 		return selected;
 	}
 	public void setSelected(boolean selected) {
