@@ -13,7 +13,7 @@ import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
 
-public class NavigationBean extends BaseBean
+public class NavigationBean extends BaseDurationBean
 {
     private static final Logger logger   = Logger.getLogger(NavigationBean.class);
     
@@ -27,7 +27,6 @@ public class NavigationBean extends BaseBean
     private TreeNodeImpl        groupTreeNode;
     private Driver              driver;
     private Vehicle             vehicle;
-    private Duration            duration = Duration.DAYS;
     private Integer             start = 0;
     private Integer             end = 0;
 
@@ -71,16 +70,6 @@ public class NavigationBean extends BaseBean
     public void setVehicle(Vehicle vehicle)
     {
         this.vehicle = vehicle;
-    }
-    
-    public Duration getDuration()
-    {
-        return duration;
-    }
-
-    public void setDuration(Duration duration)
-    {
-        this.duration = duration;
     }
 
     public Integer getStart()
