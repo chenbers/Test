@@ -38,7 +38,6 @@ public class TrendBeanTest extends BaseBeanTest
                 
         // try grabbing some regions based on above, should be 3 
         //  for normal101
-        trendBean.setDuration(Duration.DAYS);
         trendBean.getNavigation().setGroupID(101);
         Integer start = trendBean.getStart();   
 /*        
