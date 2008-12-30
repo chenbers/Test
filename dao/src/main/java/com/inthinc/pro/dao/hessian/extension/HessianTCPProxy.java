@@ -16,7 +16,7 @@ import com.caucho.hessian.client.HessianRuntimeException;
 import com.caucho.hessian.io.AbstractHessianInput;
 import com.caucho.hessian.io.AbstractHessianOutput;
 import com.caucho.hessian.io.HessianProtocolException;
-import com.inthinc.pro.dao.hessian.exceptions.HessionExceptionConverter;
+import com.inthinc.pro.dao.hessian.exceptions.HessianExceptionConverter;
 
 public class HessianTCPProxy implements InvocationHandler
 {
@@ -169,7 +169,7 @@ public class HessianTCPProxy implements InvocationHandler
             // If return value is an integer, then we have an error condition
             if (value instanceof Integer)
             {
-                throw HessionExceptionConverter.convert(methodName, args, (Integer) value);
+                throw HessianExceptionConverter.convert(methodName, args, (Integer) value);
             }
 
             return null;

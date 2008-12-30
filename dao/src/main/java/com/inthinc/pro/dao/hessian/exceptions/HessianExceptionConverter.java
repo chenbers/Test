@@ -3,7 +3,7 @@ package com.inthinc.pro.dao.hessian.exceptions;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HessionExceptionConverter
+public class HessianExceptionConverter
 {
     private static final Map<Integer, String> HESSIAN_CONNECTION_EXCEPTION_MAP = new HashMap<Integer, String>();
     private static final Map<Integer, String> HESSIAN_EXCEPTION_MAP = new HashMap<Integer, String>();
