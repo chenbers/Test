@@ -341,6 +341,27 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     }
 
     @Override
+    protected boolean validate(List<VehicleView> saveItems)
+    {
+        final FacesContext context = FacesContext.getCurrentInstance();
+        boolean valid = true;
+
+        for (final VehicleView vehicle : saveItems)
+        {
+            // unique VIN
+            final Vehicle byVIN = vehicleDAO.findByVIN(vehicle.getVIN());
+            if ((byVIN != null) && !byVIN.getVehicleID().equals(vehicle.getVehicleID()))
+            {
+                valid = false;
+                final String summary = MessageUtil.getMessageString("editVehicle_uniqueVIN");
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                context.addMessage("edit-form:VIN", message);
+            }
+        }
+        return valid;
+    }
+
+    @Override
     protected void doSave(List<VehicleView> saveItems, boolean create)
     {
         final FacesContext context = FacesContext.getCurrentInstance();

@@ -109,7 +109,7 @@
         <property name="zoneDAO" ref="zoneDAO"></property>
         <property name="vehicleDAO" ref="vehicleDAO"></property>
         <property name="driverDAO" ref="driverDAO"></property>
-        <property name="personDAO" ref="personDAO"></property>
+        <property name="userDAO" ref="userDAO"></property>
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
     </bean>
 
@@ -117,7 +117,7 @@
         <property name="redFlagAlertDAO" ref="redFlagAlertDAO"></property>
         <property name="vehicleDAO" ref="vehicleDAO"></property>
         <property name="driverDAO" ref="driverDAO"></property>
-        <property name="personDAO" ref="personDAO"></property>
+        <property name="userDAO" ref="userDAO"></property>
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
     </bean>
     

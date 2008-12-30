@@ -139,7 +139,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         }
         else if (name.equals("vin"))
         {
-            Vehicle vehicle = MockData.getInstance().lookupObject(Vehicle.class, name, value);
+            Vehicle vehicle = MockData.getInstance().lookupObject(Vehicle.class, "VIN", value);
             if (vehicle != null)
             {
                 returnMap = new HashMap<String,Object>();

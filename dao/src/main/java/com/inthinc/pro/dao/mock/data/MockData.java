@@ -843,7 +843,7 @@ logger.debug("addDriveQMaps");
             for (final Object person : people)
                 if (randomInt(0, 5) == 0)
                     personIDs.add(((Person) person).getPersonID());
-            alert.setNotifyPersonIDs(personIDs);
+            alert.setNotifyUserIDs(personIDs);
 
             // e-mail to
             if (randomInt(0, 1) == 1)
@@ -952,7 +952,7 @@ logger.debug("addDriveQMaps");
             for (final Object person : people)
                 if (randomInt(0, 5) == 0)
                     personIDs.add(((Person) person).getPersonID());
-            flag.setNotifyPersonIDs(personIDs);
+            flag.setNotifyUserIDs(personIDs);
 
             // e-mail to
             if (randomInt(0, 1) == 1)
@@ -1299,7 +1299,7 @@ logger.debug("addDriveQMaps");
         for (Object obj : objList)
         {
             Object fieldValue = getFieldValue(obj, key);
-            if (fieldValue.equals(value))
+            if ((fieldValue != null) && fieldValue.equals(value))
             {
                 return (T) obj;
             }
