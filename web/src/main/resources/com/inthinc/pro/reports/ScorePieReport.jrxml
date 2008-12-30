@@ -23,9 +23,39 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
+	<subDataset name="SeatBeltSubDataset" >
+
+
+		<field name="key" class="java.lang.String"/>
+		<field name="value" class="java.lang.Integer"/>
+		<field name="label" class="java.lang.String"/>
+
+	</subDataset>
+
+	<subDataset name="SpeedSubDataset" >
+
+
+		<field name="key" class="java.lang.String"/>
+		<field name="value" class="java.lang.Integer"/>
+		<field name="label" class="java.lang.String"/>
+
+	</subDataset>
+
+	<subDataset name="DrivingStyleSubDataset" >
+
+
+		<field name="key" class="java.lang.String"/>
+		<field name="value" class="java.lang.Integer"/>
+		<field name="label" class="java.lang.String"/>
+
+	</subDataset>
+
 	<parameter name="ACCOUNT_NAME" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="ENTITY_NAME" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="OVERALL_SCORE" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="DRIVER_STYLE_DATA" isForPrompting="false" class="java.util.List"/>
+	<parameter name="SEATBELT_USE_DATA" isForPrompting="false" class="java.util.List"/>
+	<parameter name="SPEED_DATA" isForPrompting="false" class="java.util.List"/>
 
 	<field name="value" class="java.lang.Integer"/>
 	<field name="key" class="java.lang.String"/>
@@ -40,7 +70,18 @@
 			</band>
 		</title>
 		<pageHeader>
-			<band height="518"  isSplitAllowed="true" >
+			<band height="621"  isSplitAllowed="true" >
+				<rectangle radius="3" >
+					<reportElement
+						x="0"
+						y="427"
+						width="535"
+						height="171"
+						forecolor="#666666"
+						backcolor="#F9F7F7"
+						key="rectangle-2"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
 				<rectangle radius="2" >
 					<reportElement
 						x="0"
@@ -101,7 +142,7 @@
 					</pieDataset>
 					<piePlot 
 isCircular="true" >
-						<plot backcolor="#FFFFFF" backgroundAlpha="0.0" foregroundAlpha="0.2" >
+						<plot backcolor="#FFFFFF" backgroundAlpha="0.0" >
 							<seriesColor seriesOrder="0" color="#FF0101"/>
 							<seriesColor seriesOrder="1" color="#FF6601"/>
 							<seriesColor seriesOrder="2" color="#F6B305"/>
@@ -137,6 +178,164 @@ isCircular="true" >
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["Overall Score: " + $P{OVERALL_SCORE}]]></textFieldExpression>
 				</textField>
+				<pieChart>
+					<chart isShowLegend="false"  hyperlinkTarget="Self" >
+					<reportElement
+						x="5"
+						y="452"
+						width="159"
+						height="138"
+						key="element-2"/>
+					<box></box>
+					</chart>
+					<pieDataset>
+						<dataset >
+							<datasetRun subDataset="DrivingStyleSubDataset">
+					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{DRIVER_STYLE_DATA})]]></dataSourceExpression>
+							</datasetRun>
+						</dataset>
+						<keyExpression><![CDATA[$F{key}]]></keyExpression>
+						<valueExpression><![CDATA[$F{value}]]></valueExpression>
+						<labelExpression><![CDATA[$F{value}.toString() + "%"]]></labelExpression>
+				<sectionHyperlink >
+				</sectionHyperlink>
+					</pieDataset>
+					<piePlot 
+isCircular="true" >
+						<plot backcolor="#FFFFFF" backgroundAlpha="0.0" >
+							<seriesColor seriesOrder="0" color="#FF0101"/>
+							<seriesColor seriesOrder="1" color="#FF6601"/>
+							<seriesColor seriesOrder="2" color="#F6B305"/>
+							<seriesColor seriesOrder="3" color="#1E88C8"/>
+							<seriesColor seriesOrder="4" color="#6B9D1B"/>
+</plot>
+					</piePlot>
+				</pieChart>
+				<pieChart>
+					<chart isShowLegend="false"  hyperlinkTarget="Self" >
+					<reportElement
+						x="177"
+						y="452"
+						width="165"
+						height="138"
+						key="element-3"/>
+					<box></box>
+					</chart>
+					<pieDataset>
+						<dataset >
+							<datasetRun subDataset="SeatBeltSubDataset">
+					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SEATBELT_USE_DATA})]]></dataSourceExpression>
+							</datasetRun>
+						</dataset>
+						<keyExpression><![CDATA[$F{key}]]></keyExpression>
+						<valueExpression><![CDATA[$F{value}]]></valueExpression>
+						<labelExpression><![CDATA[$F{value}.toString() + "%"]]></labelExpression>
+				<sectionHyperlink >
+				</sectionHyperlink>
+					</pieDataset>
+					<piePlot 
+isCircular="true" >
+						<plot backcolor="#FFFFFF" backgroundAlpha="0.0" >
+							<seriesColor seriesOrder="0" color="#FF0101"/>
+							<seriesColor seriesOrder="1" color="#FF6601"/>
+							<seriesColor seriesOrder="2" color="#F6B305"/>
+							<seriesColor seriesOrder="3" color="#1E88C8"/>
+							<seriesColor seriesOrder="4" color="#6B9D1B"/>
+</plot>
+					</piePlot>
+				</pieChart>
+				<pieChart>
+					<chart isShowLegend="false"  hyperlinkTarget="Self" >
+					<reportElement
+						x="362"
+						y="452"
+						width="165"
+						height="138"
+						key="element-4"/>
+					<box></box>
+					</chart>
+					<pieDataset>
+						<dataset >
+							<datasetRun subDataset="SpeedSubDataset">
+					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SPEED_DATA})]]></dataSourceExpression>
+							</datasetRun>
+						</dataset>
+						<keyExpression><![CDATA[$F{key}]]></keyExpression>
+						<valueExpression><![CDATA[$F{value}]]></valueExpression>
+						<labelExpression><![CDATA[$F{value}.toString() + "%"]]></labelExpression>
+				<sectionHyperlink >
+				</sectionHyperlink>
+					</pieDataset>
+					<piePlot 
+isCircular="true" >
+						<plot backcolor="#FFFFFF" backgroundAlpha="0.0" >
+							<seriesColor seriesOrder="0" color="#FF0101"/>
+							<seriesColor seriesOrder="1" color="#FF6601"/>
+							<seriesColor seriesOrder="2" color="#F6B305"/>
+							<seriesColor seriesOrder="3" color="#1E88C8"/>
+							<seriesColor seriesOrder="4" color="#6B9D1B"/>
+</plot>
+					</piePlot>
+				</pieChart>
+				<staticText>
+					<reportElement
+						x="5"
+						y="436"
+						width="145"
+						height="12"
+						key="staticText-4"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[Driving Style]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="177"
+						y="436"
+						width="145"
+						height="12"
+						key="staticText-5"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[Seatbelt Use]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="362"
+						y="436"
+						width="145"
+						height="12"
+						key="staticText-6"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[Speed]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="170"
+						y="427"
+						width="0"
+						height="171"
+						forecolor="#666666"
+						key="line-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="350"
+						y="427"
+						width="0"
+						height="171"
+						forecolor="#666666"
+						key="line-2"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 		</pageHeader>
 		<columnHeader>
@@ -152,7 +351,16 @@ isCircular="true" >
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="53"  isSplitAllowed="true" >
+			<band height="26"  isSplitAllowed="true" >
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="5"
+						width="535"
+						height="0"
+						key="line-3"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 		</pageFooter>
 		<summary>
