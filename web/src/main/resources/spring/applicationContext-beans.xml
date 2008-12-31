@@ -22,6 +22,12 @@
     	 <property name="groupDAO" ref="groupDAO"></property>
     </bean>
     
+    <!-- Bean for Printing Reports -->
+    <bean id="reportRendererBean" class="com.inthinc.pro.backing.ReportRendererBean" scope="request" parent="baseBean">
+    	 <property name="navigationBean" ref="navigationBean"></property>
+    </bean>
+    
+    
    
    <!-- Forgot username/password Beans -->
     <bean id="mailSenderBean" class="org.springframework.mail.javamail.JavaMailSenderImpl">
@@ -46,11 +52,13 @@
     <bean id="trendBean" class="com.inthinc.pro.backing.TrendBean" scope="request" parent="baseBean">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
+        <property name="reportRenderer" ref="reportRendererBean"></property>
     </bean>
     <bean id="trendTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request"></bean>
     <bean id="breakdownBean" class="com.inthinc.pro.backing.BreakdownBean" scope="request" parent="baseBean">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
+        <property name="reportRendererBean" ref="reportRendererBean"></property>
     </bean>
     <bean id="mpgBean" class="com.inthinc.pro.backing.MpgBean" scope="request" parent="baseBean">
         <property name="mpgDAO" ref="mpgDAO"></property>
@@ -239,6 +247,7 @@
     <bean id="driverReportBean" class="com.inthinc.pro.backing.DriverReportBean" scope="session" parent="baseBean" init-method="init">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
+        <property name="reportRendererBean" ref="reportRendererBean"/>
     </bean>
     <bean id="driverReportTable" class="com.inthinc.pro.backing.ui.DriverReportTable" scope="session"></bean>
     <bean id="vehicleReportBean" class="com.inthinc.pro.backing.VehicleReportBean" scope="session" parent="baseBean" init-method="init">

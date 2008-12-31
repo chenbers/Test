@@ -56,6 +56,7 @@
 	<parameter name="DRIVER_STYLE_DATA" isForPrompting="false" class="java.util.List"/>
 	<parameter name="SEATBELT_USE_DATA" isForPrompting="false" class="java.util.List"/>
 	<parameter name="SPEED_DATA" isForPrompting="false" class="java.util.List"/>
+	<parameter name="DURATION" isForPrompting="false" class="java.lang.Integer"/>
 
 	<field name="value" class="java.lang.Integer"/>
 	<field name="key" class="java.lang.String"/>
@@ -78,14 +79,14 @@
 						width="535"
 						height="171"
 						forecolor="#666666"
-						backcolor="#F9F7F7"
+						backcolor="#E7E6E6"
 						key="rectangle-2"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
 				<rectangle radius="2" >
 					<reportElement
 						x="0"
-						y="16"
+						y="32"
 						width="535"
 						height="36"
 						forecolor="#999999"
@@ -123,9 +124,9 @@
 					<chart  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="60"
+						y="82"
 						width="535"
-						height="338"
+						height="345"
 						key="element-1"/>
 					<box></box>
 						<chartLegend textColor="#000000" backgroundColor="#FFFFFF" >
@@ -167,7 +168,7 @@ isCircular="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="5"
-						y="24"
+						y="40"
 						width="345"
 						height="18"
 						forecolor="#666666"
@@ -336,6 +337,19 @@ isCircular="true" >
 						key="line-2"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="14"
+						width="376"
+						height="14"
+						key="textField-3"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DURATION}.toString( int, int )]]></textFieldExpression>
+				</textField>
 			</band>
 		</pageHeader>
 		<columnHeader>

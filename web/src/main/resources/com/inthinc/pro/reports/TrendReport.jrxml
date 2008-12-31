@@ -27,8 +27,8 @@
 
 
 		<field name="seriesID" class="java.lang.String"/>
-		<field name="x" class="java.lang.Integer"/>
-		<field name="y" class="java.lang.Integer"/>
+		<field name="durationPoint" class="java.lang.Integer"/>
+		<field name="score" class="java.lang.Number"/>
 		<field name="label" class="java.lang.String"/>
 
 	</subDataset>
@@ -36,10 +36,9 @@
 	<parameter name="ACCOUNT_NAME" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="ENTITY_NAME" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="TREND_CHART_DATA" isForPrompting="false" class="java.util.List"/>
+	<parameter name="CATEGORY_LABELS" isForPrompting="false" class="java.util.Collection"/>
 
-	<field name="value" class="java.lang.Integer"/>
-	<field name="key" class="java.lang.String"/>
-	<field name="label" class="java.lang.String"/>
+	<field name="se.identifier" class="java.lang.String"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -115,34 +114,34 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["Trend Report"]]></textFieldExpression>
 				</textField>
-				<xyLineChart>
+				<lineChart>
 					<chart  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="59"
+						y="58"
 						width="535"
 						height="358"
-						key="element-5"/>
+						key="element-1"/>
 					<box></box>
 						<chartLegend textColor="#000000" backgroundColor="#FFFFFF" >
 					</chartLegend>
 					</chart>
-					<xyDataset>
+					<categoryDataset>
 						<dataset >
 							<datasetRun subDataset="TrendChartDataset">
-					<dataSourceExpression><![CDATA[$P{MyDataource}]]></dataSourceExpression>
+					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{TREND_CHART_DATA})]]></dataSourceExpression>
 							</datasetRun>
 						</dataset>
-						<xySeries>
+						<categorySeries>
 							<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
-							<xValueExpression><![CDATA[$F{x}]]></xValueExpression>
-							<yValueExpression><![CDATA[$F{y}]]></yValueExpression>
+							<categoryExpression><![CDATA[$F{durationPoint}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{score}]]></valueExpression>
 							<labelExpression><![CDATA[$F{label}]]></labelExpression>
 				<itemHyperlink >
 				</itemHyperlink>
-						</xySeries>
-					</xyDataset>
-					<linePlot >
+						</categorySeries>
+					</categoryDataset>
+					<linePlot isShowShapes="false" >
 						<plot />
 						<categoryAxisFormat>
 							<axisFormat >
@@ -153,15 +152,28 @@
 							</axisFormat>
 						</valueAxisFormat>
 					</linePlot>
-				</xyLineChart>
+				</lineChart>
 			</band>
 		</pageHeader>
 		<columnHeader>
 			<band height="25"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="0"
+						y="2"
+						width="128"
+						height="18"
+						key="staticText-4"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Bottom">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[NAME]]></text>
+				</staticText>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="100"  isSplitAllowed="true" >
+			<band height="20"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
@@ -170,10 +182,10 @@
 						height="19"
 						key="textField-3"/>
 					<box></box>
-					<textElement>
+					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{Field}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{se.identifier}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

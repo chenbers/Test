@@ -135,4 +135,10 @@ public class MpgBean extends BaseDurationBean {
     {
         this.mpgEntities = mpgEntities;
     }
+    
+    public String exportToPDF()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

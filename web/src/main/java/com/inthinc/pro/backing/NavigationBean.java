@@ -129,5 +129,4 @@ public class NavigationBean extends BaseDurationBean
         return groupLevel.getLocation();
    
     }
-
 }

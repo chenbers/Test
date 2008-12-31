@@ -38,7 +38,7 @@ public class GroupLevelBean extends BaseBean
         if (groupID != null)
         {
             logger.debug("initGroupID from request: " + groupID);
-            navigationBean.setGroupID(new Integer(groupID));
+            navigationBean.setGroupID(Integer.valueOf(groupID));
         }
         else
         {

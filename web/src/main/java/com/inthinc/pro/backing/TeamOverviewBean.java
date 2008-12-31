@@ -260,6 +260,13 @@ logger.debug("getSelectedOverallScore() ");
         setBarDefMap(null);
         
     }
+    
+  
+    public String exportToPDF()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 
 }

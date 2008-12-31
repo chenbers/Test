@@ -31,6 +31,7 @@ public class TrendBeanTest extends BaseBeanTest
         
         // get the bean from the applicationContext (initialized by Spring injection)
         TrendBean trendBean = (TrendBean)applicationContext.getBean("trendBean");
+
         
         // make sure the spring injection worked
         assertNotNull(trendBean.getScoreDAO());
@@ -52,6 +53,5 @@ public class TrendBeanTest extends BaseBeanTest
 */       
         // create xy chart
         assertNotNull(trendBean.getLineDef());
-       
     }
 }

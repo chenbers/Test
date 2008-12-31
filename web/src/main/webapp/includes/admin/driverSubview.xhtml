@@ -22,12 +22,11 @@
 						assignTo="#{organizationBean.selectedGroupNode}" />
 				</a4j:commandLink></li>
 			</ui:repeat>
-			<li class="last">
-				<h:outputFormat
-					value="#{messages.group_driver}">
-					<f:param value="#{driver.person.first}" />
-					<f:param value="#{driver.person.last}" />
-				</h:outputFormat></li>
+			<li class="last"><h:outputFormat
+				value="#{messages.group_driver}">
+				<f:param value="#{driver.person.first}" />
+				<f:param value="#{driver.person.last}" />
+			</h:outputFormat></li>
 		</ul>
 
 		</li>
@@ -149,42 +148,44 @@
 				</tr>
 			</table>
 
-			<div class="add_section_title"><h:outputText
-				value="#{messages.editPerson_employeeInformation}" /></div>
+			<div class="spacer"></div>
+
+			<div class="add_section_title">Driver Information</div>
 
 			<table width="500" border="0" cellspacing="2" cellpadding="4"
 				align="center">
 				<tr>
 					<td width="100"><h:outputText
-						value="#{messages.editPerson_group}" /></td>
+						value="#{messages.editPerson_driver_license}" /></td>
+					<td><h:outputText value="#{driver.person.driver.license}" /></td>
+				</tr>
+				<tr>
+					<td width="100"><h:outputText
+						value="#{messages.editPerson_driver_licenseClass}" /></td>
 					<td><h:outputText
-						value="#{selectedTreeNode.parent.group.name}" /></td>
+						value="#{driver.person.driver.licenseClass}" /></td>
 				</tr>
 				<tr>
 					<td width="100"><h:outputText
-						value="#{messages.editPerson_reportsTo}" /></td>
-					<td><h:outputText
-						value="#{personBean.item.reportsToPerson != null ? personBean.item.reportsToPerson.first : null}" /><h:outputText
-						value=" " /><h:outputText
-						value="#{personBean.item.reportsToPerson != null ? personBean.item.reportsToPerson.last : null}" /></td>
+						value="#{messages.editPerson_driver_state}" /></td>
+					<td><h:outputText value="#{driver.person.driver.state.name}" /></td>
 				</tr>
 				<tr>
 					<td width="100"><h:outputText
-						value="#{messages.editPerson_title}" /></td>
-					<td><h:outputText value="#{driver.person.title}" /></td>
-				</tr>
-				<tr>
-					<td width="100"><h:outputText
-						value="#{messages.editPerson_timeZone}" /></td>
-					<td><h:outputText
-						value="#{driver.person.timeZone.displayName}" /></td>
-				</tr>
-				<tr>
-					<td width="100"><h:outputText
-						value="#{messages.editPerson_costPerHour}" /></td>
-					<td><h:outputText value="#{driver.person.costPerHour / 100}">
-						<f:convertNumber type="currency" currencySymbol="$" />
+						value="#{messages.editPerson_driver_expiration}" /></td>
+					<td><h:outputText value="#{driver.person.driver.expiration}">
+						<f:convertDateTime dateStyle="long" />
 					</h:outputText></td>
+				</tr>
+				<tr>
+					<td width="100"><h:outputText
+						value="#{messages.editPerson_driver_RFID}" /></td>
+					<td><h:outputText value="#{driver.person.driver.RFID}" /></td>
+				</tr>
+				<tr>
+					<td width="100"><h:outputText
+						value="#{messages.editPerson_driver_active}" /></td>
+					<td><h:outputText value="#{driver.person.driver.status}" /></td>
 				</tr>
 			</table>
 			</td>

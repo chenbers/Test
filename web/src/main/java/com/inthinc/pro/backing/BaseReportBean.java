@@ -12,6 +12,7 @@ public class BaseReportBean extends BaseBean
     private static final Logger logger = Logger.getLogger(BaseReportBean.class);
     
     private boolean mainMenu;
+   
     
     public BaseReportBean(){
         

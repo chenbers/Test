@@ -5,6 +5,8 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Random;
 
+import javax.faces.context.FacesContext;
+
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.wrapper.MpgEntityPkg;
@@ -106,7 +108,8 @@ public class GraphicUtil {
 		sb.append("labelDisplay='Rotate' ");              //TESTING
 		sb.append("divLineColor=\'cfcfcf\' ");
 		sb.append("divLineIsDashed=\'1\' ");
-			 
+		sb.append("imageSaveURL=\'" + FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/secured/FusionChartsSave.jsp\'");
+		sb.append("imageSave=\'1\'");	 
 		sb.append("animation=\'1\' ");
 		sb.append("bgColor=\'#ffffff\' ");
 		sb.append("borderThickness=\'1\' ");
@@ -139,6 +142,8 @@ public class GraphicUtil {
 		sb.append("startingAngle=\'90\' ");
 		sb.append("use3DLighting=\'1\' ");
 		sb.append("radius3D=\'30\' ");
+		sb.append("imageSaveURL=\'" + FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/secured/FusionChartsSave.jsp\'");
+        sb.append("imageSave=\'1\'");
 		sb.append("showPercentValues=\'1\' ");
 		sb.append("smartLineThickness=\'1\' ");
 		sb.append("smartLineColor=\'333333\' ");

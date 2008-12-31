@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import java.util.Iterator;
@@ -20,6 +21,8 @@ import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
+import com.inthinc.pro.reports.ReportRenderer;
+import com.inthinc.pro.reports.model.LineGraphData;
 import com.inthinc.pro.util.ColorSelectorStandard;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.wrapper.ScoreableEntityPkg;
@@ -43,6 +46,8 @@ public class TrendBean extends BaseBean
     
     private String countString = null;
     private Integer tmpGroupID = null;
+    
+    private ReportRenderer reportRenderer;
 
     public TrendBean()
     {
@@ -337,6 +342,60 @@ public class TrendBean extends BaseBean
     public void setNumRowsPerPg(Integer numRowsPerPg)
     {
         this.numRowsPerPg = numRowsPerPg;
+    }
+    
+    public String exportToPDF()
+    {
+        List<LineGraphData> lineGraphDataList = new ArrayList<LineGraphData>();
+        List<ScoreableEntityPkg> scoreableEntityDataSet = createScoreableEntities();
+        List<ScoreableEntity> s = null;
+        s = getScores();
+        // Loop over returned set of group ids, controlled by scroller
+        Map<Integer, List<ScoreableEntity>> groupTrendMap = scoreDAO.getTrendScores(
+                this.navigation.getGroupID(), navigation.getDuration());
+        
+        
+        
+        for(int i = 0;i < groupTrendMap.size(); i++)
+        {
+            ScoreableEntity se = s.get(i);
+            List<ScoreableEntity> scoreableEntityList = groupTrendMap.get(se.getEntityID());
+            
+            // Not a full range, pad w/ zero
+            int holes = 0;
+            if (navigation.getDuration() == Duration.DAYS)
+            {
+                holes = navigation.getDuration().getNumberOfDays() - scoreableEntityList.size();            
+            }
+            else
+            {
+                holes = GraphicUtil.convertToMonths(navigation.getDuration()) - scoreableEntityList.size();
+            }
+            int index = 0;
+            for (int k = 0; k < holes; k++)
+            {
+                lineGraphDataList.add(new LineGraphData(se.getEntityID().toString(),index++,0F,se.getIdentifier()));
+            }
+            for(ScoreableEntity scoreableEntity:scoreableEntityList)
+            {
+               Float score = new Float((scoreableEntity.getScore()==null) ? 0 : scoreableEntity.getScore() / 10.0);
+               lineGraphDataList.add(new LineGraphData(scoreableEntity.getEntityID().toString(),index++,score,se.getIdentifier()));
+            }
+            
+        }
+        
+        reportRenderer.exportTrendReportToPDF(lineGraphDataList, scoreableEntityDataSet);
+        return null;
+    }
+
+    public void setReportRenderer(ReportRenderer reportRenderer)
+    {
+        this.reportRenderer = reportRenderer;
+    }
+
+    public ReportRenderer getReportRenderer()
+    {
+        return reportRenderer;
     }
 
 }

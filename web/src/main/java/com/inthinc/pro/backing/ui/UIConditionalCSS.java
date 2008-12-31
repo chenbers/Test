@@ -6,6 +6,15 @@ import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
 
+/**
+ * 
+ * @author mstrong
+ *
+ * Control for adding css conditional comments around css styles for use with IE 6 and IE 7
+ * 
+ *
+ */
+
 public class UIConditionalCSS extends UIComponentBase
 {
     public static final String COMPONENT_TYPE = "conditionalCSS";

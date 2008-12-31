@@ -23,6 +23,7 @@
             			<ui:param name="flyNavRule" value="#{flyNavRule}" />
             			<ui:param name="flySelectedTab" value="#{flySelectedTab}" /> 
             			<ui:param name="flyOutImage" value="#{flyOutImage}" /> 
+            			<ui:param name="reportBean" value="#{breakdownBean}" />
 					</ui:include>	
 			</div>
 		</div>	
@@ -46,7 +47,7 @@
 				  			<h:inputHidden value="#{pieDef}" id="hiddenField3"/>
 							<script type="text/javascript">
 								var targetElement3 = document.getElementById("hiddenField3");
-								var chart2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "320", "300", "0", "0");										
+								var chart2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf?", "ChartId", "320", "300", "0", "1");										
 								chart2.setDataXML(targetElement3.value);									   	   
 								chart2.render("chartdiv");
 							</script>
