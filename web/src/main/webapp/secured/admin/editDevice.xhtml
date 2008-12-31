@@ -73,7 +73,11 @@
                                 </td>
                                 <td>
                                   <h:inputText value="#{devicesBean.item.imei}" id="imei" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="26" required="#{(not devicesBean.batchEdit) or devicesBean.updateField['imei']}" requiredMessage="#{messages.required}" />
+                                    maxlength="15" required="#{(not devicesBean.batchEdit) or devicesBean.updateField['imei']}" requiredMessage="#{messages.required}" validatorMessage="#{messages.editDevice_imeiFormat}">
+                                    <f:validateLength minimum="15" maximum="15" />
+                                    <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
+                                    <f:attribute name="regex" value="[0-9]+" />
+                                  </h:inputText>
                                   <rich:message for="imei" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                 </td>
                               </tr>
@@ -84,7 +88,11 @@
                                 </td>
                                 <td>
                                   <h:inputText value="#{devicesBean.item.sim}" id="sim" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="12" required="#{(not devicesBean.batchEdit) or devicesBean.updateField['sim']}" requiredMessage="#{messages.required}" />
+                                    maxlength="19" required="#{(not devicesBean.batchEdit) or devicesBean.updateField['sim']}" requiredMessage="#{messages.required}" validatorMessage="#{messages.editDevice_simFormat}">
+                                    <f:validateLength minimum="19" maximum="19" />
+                                    <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
+                                    <f:attribute name="regex" value="[0-9]+" />
+                                  </h:inputText>
                                   <rich:message for="sim" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                 </td>
                               </tr>
@@ -95,7 +103,10 @@
                                 </td>
                                 <td>
                                   <h:inputText value="#{devicesBean.item.phone}" id="phone" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="22" required="#{(not devicesBean.batchEdit) or devicesBean.updateField['phone']}" requiredMessage="#{messages.required}" />
+                                    maxlength="22" required="#{(not devicesBean.batchEdit) or devicesBean.updateField['phone']}" requiredMessage="#{messages.required}" validatorMessage="#{messages.editDevice_phoneFormat}">
+                                    <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
+                                    <f:attribute name="regex" value="\(?\d{3}\)?[\- ]?\d{3}[\- ]?\d{4}" />
+                                  </h:inputText>
                                   <rich:message for="phone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                 </td>
                               </tr>
@@ -107,14 +118,17 @@
                                 </td>
                                 <td>
                                   <h:inputText value="#{devicesBean.item.ephone}" id="ephone" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="22" required="#{(not devicesBean.batchEdit) or devicesBean.updateField['ephone']}" requiredMessage="#{messages.required}" />
+                                    maxlength="22" required="#{(not devicesBean.batchEdit) or devicesBean.updateField['ephone']}" requiredMessage="#{messages.required}" validatorMessage="#{messages.editDevice_phoneFormat}">
+                                    <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
+                                    <f:attribute name="regex" value="\(?\d{3}\)?[\- ]?\d{3}[\- ]?\d{4}" />
+                                  </h:inputText>
                                   <rich:message for="ephone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                 </td>
                               </tr>
                             </table>
 
                           </td>
-                          <td width="10"><img src="images/x.gif" width="10" /></td>
+                          <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
                           <td width="390" valign="top">
 
                           <div class="add_section_title"><h:outputText value="#{messages.editDevice_deviceProfile}" /></div>

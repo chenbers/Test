@@ -2160,6 +2160,11 @@ span.required {
 	color: #990000;
 	}
 
+.required-key {
+	color: #990000;
+	text-align: right;
+	}
+
 /*
 
 Search box in the menu

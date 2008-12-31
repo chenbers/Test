@@ -224,6 +224,27 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     }
 
     @Override
+    protected boolean validate(List<DeviceView> saveItems)
+    {
+        final FacesContext context = FacesContext.getCurrentInstance();
+        boolean valid = true;
+
+        for (final DeviceView device : saveItems)
+        {
+            // unique IMEI
+            final Device byImei = deviceDAO.findByIMEI(device.getImei());
+            if ((byImei != null) && !byImei.getDeviceID().equals(device.getDeviceID()))
+            {
+                valid = false;
+                final String summary = MessageUtil.getMessageString("editDevice_uniqueImei");
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                context.addMessage("edit-form:imei", message);
+            }
+        }
+        return valid;
+    }
+
+    @Override
     protected void doSave(List<DeviceView> saveItems, boolean create)
     {
         final FacesContext context = FacesContext.getCurrentInstance();
