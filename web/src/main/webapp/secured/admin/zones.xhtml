@@ -69,15 +69,15 @@
                           </table>
                         </li>
                         <ui:fragment rendered="#{zonesBean.zonesCount gt 0}">
-                          <li class="l"><a4j:commandLink action="#{zonesBean.edit}" reRender="displayZone,editZone,zoneName,zoneAddress" oncomplete="showZone(true)"><button value="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></a4j:commandLink></li>
-                          <li class="l"><button value="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></button></li>
+                          <li class="l"><a4j:commandLink action="#{zonesBean.edit}" reRender="displayZone,editZone,zoneName,zoneAddress" oncomplete="showZone(true)"><button type="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></a4j:commandLink></li>
+                          <li class="l"><button type="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></button></li>
                         </ui:fragment>
                         <li class="r">
-                          <a4j:commandLink action="#{zonesBean.add}" onclick="map.clearOverlays()" reRender="displayZone,editZone"><button value="submit" class="left"><span class="add"><h:outputText value="#{messages.zones_addZone}" /></span></button></a4j:commandLink>
+                          <a4j:commandLink action="#{zonesBean.add}" onclick="map.clearOverlays()" reRender="displayZone,editZone"><button type="submit" class="left"><span class="add"><h:outputText value="#{messages.zones_addZone}" /></span></button></a4j:commandLink>
                           <ui:fragment rendered="#{zonesBean.zonesCount gt 0}">
                             <a4j:commandLink action="#{zoneAlertsBean.add}">
                               <f:param name="zoneID" value="#{zonesBean.item.zoneID}" />
-                              <button value="submit" class="left"><span class="addZoneAlert"><h:outputText value="#{messages.zones_addZoneAlert}" /></span></button>
+                              <button type="submit" class="left"><span class="addZoneAlert"><h:outputText value="#{messages.zones_addZoneAlert}" /></span></button>
                             </a4j:commandLink>
                           </ui:fragment>
                         </li>
@@ -107,8 +107,8 @@
                           </table>
                         </li>
                         <li class="r">
-                          <a4j:commandLink action="#{zonesBean.save}" onclick="stopDrawing()" reRender="displayZone,editZone" oncomplete="disableEditing()"><button value="submit" class="left"><span class="save"><h:outputText value="#{messages.zones_save}" /></span></button></a4j:commandLink>
-                          <a4j:commandLink action="#{zonesBean.cancelEdit}" onclick="cancelEdit()" reRender="points,displayZone,editZone" oncomplete="showZone(false)" immediate="true"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></a4j:commandLink>
+                          <a4j:commandLink action="#{zonesBean.save}" onclick="stopDrawing()" reRender="displayZone,editZone" oncomplete="disableEditing()"><button type="submit" class="left"><span class="save"><h:outputText value="#{messages.zones_save}" /></span></button></a4j:commandLink>
+                          <a4j:commandLink action="#{zonesBean.cancelEdit}" onclick="cancelEdit()" reRender="points,displayZone,editZone" oncomplete="showZone(false)" immediate="true"><button type="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></a4j:commandLink>
                         </li>
                       </ul>
 
@@ -133,7 +133,7 @@
                             </tr>
                           </table>
                         </li>
-                        <li class="l"><button value="submit" class="left" onclick="showAddress(document.getElementById('zones-form:zoneAddress').value); return false;"><span class="search"><h:outputText value="#{messages.zones_locate}" /></span></button></li>
+                        <li class="l"><button type="submit" class="left" onclick="showAddress(document.getElementById('zones-form:zoneAddress').value); return false;"><span class="search"><h:outputText value="#{messages.zones_locate}" /></span></button></li>
                       </ul>
 
                     </h:panelGroup>

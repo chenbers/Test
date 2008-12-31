@@ -63,8 +63,8 @@
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_state}" /></f:facet>
       <h:outputText value="#{item.state.name}" />
     </rich:column>
-    <rich:column rendered="#{vehiclesBean.tableColumns['active'].visible}" sortBy="#{item.status.description}">
-      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_active}" /></f:facet>
+    <rich:column rendered="#{vehiclesBean.tableColumns['status'].visible}" sortBy="#{item.status.description}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_status}" /></f:facet>
       <h:outputText value="#{item.status.description}" />
     </rich:column>
     <rich:column rendered="#{vehiclesBean.tableColumns['hardAccelerationLevel'].visible}" sortBy="#{item.sensitivity.hardAccelerationLevel}">

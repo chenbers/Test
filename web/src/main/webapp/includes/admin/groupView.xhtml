@@ -32,13 +32,13 @@
 			<a4j:commandLink rendered="#{organizationBean.groupState eq 'VIEW'}"
 				action="#{organizationBean.edit}"
 				reRender="groupPanel">
-				<button value="submit" class="left"><span class="edit"><h:outputText
+				<button type="submit" class="left"><span class="edit"><h:outputText
 					value="#{messages.button_edit}" /></span></button>
 			</a4j:commandLink>
 			<a4j:commandLink rendered="#{organizationBean.groupState eq 'VIEW'}"
 				action="#{organizationBean.add}"
 				reRender="groupPanel">
-				<button value="submit" class="left"><span class="add"><h:outputText
+				<button type="submit" class="left"><span class="add"><h:outputText
 					value="#{messages.button_add}" /></span></button>
 			</a4j:commandLink>
 		</h:panelGroup></li>

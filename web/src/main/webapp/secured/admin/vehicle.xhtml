@@ -43,8 +43,8 @@
 
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="l text"><h:commandLink action="#{vehiclesBean.cancelDisplay}" value="#{messages.vehicle_backToVehicles}" /></li>
-                        <li class="r"><h:commandLink action="#{vehiclesBean.edit}"><button value="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></h:commandLink></li>
-                        <li class="r"><a4j:commandLink><button value="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink></li>
+                        <li class="r"><h:commandLink action="#{vehiclesBean.edit}"><button type="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></h:commandLink></li>
+                        <li class="r"><a4j:commandLink><button type="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink></li>
                       </ul>
 
                       <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
@@ -106,7 +106,7 @@
                                 <td><h:outputText value="#{vehiclesBean.item.name}" /></td>
                               </tr>
                               <tr>
-                                <td width="100"><h:outputText value="#{messages.editVehicle_active}" /></td>
+                                <td width="100"><h:outputText value="#{messages.editVehicle_status}" /></td>
                                 <td><h:outputText value="#{vehiclesBean.item.status}" /></td>
                               </tr>
                               <tr>
@@ -145,8 +145,8 @@
 
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="l text"><h:commandLink action="#{vehiclesBean.cancelDisplay}" value="#{messages.vehicle_backToVehicles}" /></li>
-                        <li class="r"><h:commandLink action="#{vehiclesBean.edit}"><button value="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></h:commandLink></li>
-                        <li class="r"><a4j:commandLink><button value="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink></li>
+                        <li class="r"><h:commandLink action="#{vehiclesBean.edit}"><button type="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></h:commandLink></li>
+                        <li class="r"><a4j:commandLink><button type="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink></li>
                       </ul>
 
                       <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />

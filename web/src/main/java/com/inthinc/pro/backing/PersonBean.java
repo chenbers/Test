@@ -84,10 +84,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         AVAILABLE_COLUMNS.add("address_city");
         AVAILABLE_COLUMNS.add("address_state");
         AVAILABLE_COLUMNS.add("address_zip");
-        AVAILABLE_COLUMNS.add("user_active");
+        AVAILABLE_COLUMNS.add("user_status");
         AVAILABLE_COLUMNS.add("user_username");
         AVAILABLE_COLUMNS.add("user_role");
-        AVAILABLE_COLUMNS.add("driver_active");
+        AVAILABLE_COLUMNS.add("driver_status");
         AVAILABLE_COLUMNS.add("driver_license");
         AVAILABLE_COLUMNS.add("driver_licenseClass");
         AVAILABLE_COLUMNS.add("driver_state");
@@ -228,12 +228,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
                 boolean matches = false;
                 if (column.equals("fullName"))
                     matches = person.getFirst().toLowerCase().startsWith(filterWord) || person.getLast().toLowerCase().startsWith(filterWord);
-                else if (column.equals("user_active"))
+                else if (column.equals("user_status"))
                     matches = (person.getUser() != null)
                             && (person.getUser().getStatus() != null)
                             && ((person.getUser().getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("active").toLowerCase().startsWith(filterWord)) || ((!person.getUser().getStatus().equals(Status.ACTIVE) && MessageUtil
                                     .getMessageString("inactive").toLowerCase().startsWith(filterWord))));
-                else if (column.equals("driver_active"))
+                else if (column.equals("driver_status"))
                     matches = (person.getDriver() != null)
                             && (person.getDriver().getStatus() != null)
                             && ((person.getDriver().getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("active").toLowerCase().startsWith(filterWord)) || ((!person.getDriver()

@@ -103,12 +103,12 @@
       	</h:panelGroup>
 	
         <div class="popupactions">
-          <button value="submit" class="left" onclick="Richfaces.hideModalPanel('clearRedFlagPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_no}" /></span></button>
+          <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearRedFlagPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_no}" /></span></button>
           <a4j:commandLink 
           				action="#{redFlagsBean.clearItemAction}"         				
           				oncomplete="Richfaces.hideModalPanel('clearRedFlagPanel')" 
           				reRender="items">
-          				<button value="submit" class="left">
+          				<button type="submit" class="left">
           					<span class="apply">
           						<h:outputText value="#{messages.button_yes}" />
           					</span>

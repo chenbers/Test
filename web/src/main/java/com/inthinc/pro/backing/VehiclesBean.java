@@ -61,7 +61,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         AVAILABLE_COLUMNS.add("weight");
         AVAILABLE_COLUMNS.add("license");
         AVAILABLE_COLUMNS.add("state");
-        AVAILABLE_COLUMNS.add("active");
+        AVAILABLE_COLUMNS.add("status");
         AVAILABLE_COLUMNS.add("hardAccelerationLevel");
         AVAILABLE_COLUMNS.add("hardTurnLevel");
         AVAILABLE_COLUMNS.add("hardVerticalLevel");
@@ -173,7 +173,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
                                     .startsWith(filterWord));
                 else if (column.equals("group"))
                     matches = (vehicle.getGroup() != null) && vehicle.getGroup().getName().toLowerCase().startsWith(filterWord);
-                else if (column.equals("active"))
+                else if (column.equals("status"))
                     matches = (vehicle.getStatus() != null)
                             && ((vehicle.getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("active").toLowerCase().startsWith(filterWord)) || ((!vehicle.getStatus().equals(Status.ACTIVE) && MessageUtil
                                     .getMessageString("inactive").toLowerCase().startsWith(filterWord))));

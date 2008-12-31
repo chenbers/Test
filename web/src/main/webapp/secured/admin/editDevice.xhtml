@@ -39,8 +39,8 @@
                     <rich:tab id="details" label="#{messages.device_details}">
 
                       <ul id="grid_nav" style="margin: 0;">
-                        <li class="r"><h:commandLink action="#{devicesBean.cancelEdit}" immediate="true"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
-                        <li class="r"><button value="submit" class="right next" onclick="document.getElementById('edit-form:speedSensitivity_shifted').onclick();return false;"><span class="left"><h:outputText value="#{messages.button_next}" /></span></button></li>
+                        <li class="r"><h:commandLink action="#{devicesBean.cancelEdit}" immediate="true"><button type="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
+                        <li class="r"><button type="submit" class="right next" onclick="document.getElementById('edit-form:speedSensitivity_shifted').onclick();return false;"><span class="left"><h:outputText value="#{messages.button_next}" /></span></button></li>
                       </ul>
 
                       <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
@@ -172,8 +172,8 @@
                       <div class="spacer"></div>
 
                       <ul id="grid_nav" style="margin: 0;">
-                        <li class="r"><h:commandLink action="#{devicesBean.cancelEdit}" immediate="true"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
-                        <li class="r"><button value="submit" class="right next" onclick="document.getElementById('edit-form:speedSensitivity_shifted').onclick();return false;"><span class="left"><h:outputText value="#{messages.button_next}" /></span></button></li>
+                        <li class="r"><h:commandLink action="#{devicesBean.cancelEdit}" immediate="true"><button type="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
+                        <li class="r"><button type="submit" class="right next" onclick="document.getElementById('edit-form:speedSensitivity_shifted').onclick();return false;"><span class="left"><h:outputText value="#{messages.button_next}" /></span></button></li>
                       </ul>
 
                     </rich:tab>
@@ -181,8 +181,8 @@
                     <rich:tab id="speedSensitivity" label="#{messages.device_speedSensitivity}">
 
                       <ul id="grid_nav" style="margin: 0;">
-                        <li class="r"><h:commandLink action="#{devicesBean.cancelEdit}" immediate="true"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
-                        <li class="r"><h:commandLink action="#{devicesBean.save}"><button value="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink></li>
+                        <li class="r"><h:commandLink action="#{devicesBean.cancelEdit}" immediate="true"><button type="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
+                        <li class="r"><h:commandLink action="#{devicesBean.save}"><button type="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink></li>
                       </ul>
 
                       <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
@@ -194,8 +194,8 @@
                       </ui:include>
 
                       <ul id="grid_nav" style="margin: 0;">
-                        <li class="r"><h:commandLink action="#{devicesBean.cancelEdit}" immediate="true"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
-                        <li class="r"><h:commandLink action="#{devicesBean.save}"><button value="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink></li>
+                        <li class="r"><h:commandLink action="#{devicesBean.cancelEdit}" immediate="true"><button type="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
+                        <li class="r"><h:commandLink action="#{devicesBean.save}"><button type="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink></li>
                       </ul>
 
                     </rich:tab>

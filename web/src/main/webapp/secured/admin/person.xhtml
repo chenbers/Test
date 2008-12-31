@@ -38,8 +38,8 @@
 
                   <ul id="grid_nav" style="margin: 0;">
                     <li class="l text"><h:commandLink action="#{personBean.cancelDisplay}" value="#{messages.person_backToPeople}" /></li>
-                    <li class="r"><h:commandLink action="#{personBean.edit}"><button value="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></h:commandLink></li>
-                    <li class="r"><a4j:commandLink><button value="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink></li>
+                    <li class="r"><h:commandLink action="#{personBean.edit}"><button type="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></h:commandLink></li>
+                    <li class="r"><a4j:commandLink><button type="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink></li>
                   </ul>
 
                   <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
@@ -169,7 +169,7 @@
                             <td><h:outputText value="#{personBean.item.user.username}" /></td>
                           </tr>
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_user_active}" /></td>
+                            <td width="100"><h:outputText value="#{messages.editPerson_user_status}" /></td>
                             <td><h:outputText value="#{personBean.item.user.status}" /></td>
                           </tr>
                         </table>
@@ -204,7 +204,7 @@
                             <td><h:outputText value="#{personBean.item.driver.RFID}" /></td>
                           </tr>
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_driver_active}" /></td>
+                            <td width="100"><h:outputText value="#{messages.editPerson_driver_status}" /></td>
                             <td><h:outputText value="#{personBean.item.driver.status}" /></td>
                           </tr>
                         </table>

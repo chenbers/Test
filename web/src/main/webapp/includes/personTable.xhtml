@@ -24,8 +24,8 @@
         <h:outputText value="#{item.first}" /><h:outputText value=" " /><h:outputText value="#{item.last}" />
       </h:commandLink>
     </rich:column>
-    <rich:column rendered="#{personBean.tableColumns['user_active'].visible}" sortBy="#{item.user.status.description}">
-      <f:facet name="header"><h:outputText value="#{messages.personHeader_user_active}" /></f:facet>
+    <rich:column rendered="#{personBean.tableColumns['user_status'].visible}" sortBy="#{item.user.status.description}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_user_status}" /></f:facet>
       <h:outputText value="#{item.user.status.description}" />
     </rich:column>
     <rich:column rendered="#{personBean.tableColumns['user_username'].visible}" sortBy="#{item.user.username}">
@@ -106,8 +106,8 @@
       <f:facet name="header"><h:outputText value="#{messages.personHeader_address_zip}" /></f:facet>
       <h:outputText value="#{item.address.zip}" />
     </rich:column>
-    <rich:column rendered="#{personBean.tableColumns['driver_active'].visible}" sortBy="#{item.driver.status.description}">
-      <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_active}" /></f:facet>
+    <rich:column rendered="#{personBean.tableColumns['driver_status'].visible}" sortBy="#{item.driver.status.description}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_status}" /></f:facet>
       <h:outputText value="#{item.driver.status.description}" />
     </rich:column>
     <rich:column rendered="#{personBean.tableColumns['driver_license'].visible}" sortBy="#{item.driver.license}">

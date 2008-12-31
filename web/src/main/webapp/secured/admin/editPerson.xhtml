@@ -35,8 +35,8 @@
               <div class="panel_content">
 
                 <ul id="grid_nav" style="margin: 0;">
-                  <li class="r"><h:commandLink action="#{personBean.cancelEdit}" immediate="true"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
-                  <li class="r"><h:commandLink action="#{personBean.save}"><button value="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink></li>
+                  <li class="r"><h:commandLink action="#{personBean.cancelEdit}" immediate="true"><button type="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
+                  <li class="r"><h:commandLink action="#{personBean.save}"><button type="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink></li>
                 </ul>
 
                 <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
@@ -345,11 +345,11 @@
                         </tr>
                         <tr>
                           <td width="100" valign="top">
-                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_user_active" value="#{personBean.updateField['user.status']}" />
-                            <h:outputText value="#{messages.editPerson_user_active}" />
+                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_user_status" value="#{personBean.updateField['user.status']}" />
+                            <h:outputText value="#{messages.editPerson_user_status}" />
                           </td>
                           <td>
-                            <h:selectOneMenu value="#{personBean.item.user.status}" id="user_active" onchange="checkMultiple(this)">
+                            <h:selectOneMenu value="#{personBean.item.user.status}" id="user_status" onchange="checkMultiple(this)">
                               <f:selectItems value="#{personBean.statuses}"/>
                             </h:selectOneMenu>
                           </td>
@@ -423,11 +423,11 @@
                         </ui:fragment>
                         <tr>
                           <td width="100" valign="top">
-                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_driver_active" value="#{personBean.updateField['driver.status']}" />
-                            <h:outputText value="#{messages.editPerson_driver_active}" />
+                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_driver_status" value="#{personBean.updateField['driver.status']}" />
+                            <h:outputText value="#{messages.editPerson_driver_status}" />
                           </td>
                           <td>
-                            <h:selectOneMenu value="#{personBean.item.driver.status}" id="driver_active" onchange="checkMultiple(this)">
+                            <h:selectOneMenu value="#{personBean.item.driver.status}" id="driver_status" onchange="checkMultiple(this)">
                               <f:selectItems value="#{personBean.statuses}"/>
                             </h:selectOneMenu>
                           </td>
@@ -441,8 +441,8 @@
                 <div class="spacer"></div>
 
                 <ul id="grid_nav" style="margin: 0;">
-                  <li class="r"><h:commandLink action="#{personBean.cancelEdit}" immediate="true"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
-                  <li class="r"><h:commandLink action="#{personBean.save}"><button value="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink></li>
+                  <li class="r"><h:commandLink action="#{personBean.cancelEdit}" immediate="true"><button type="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
+                  <li class="r"><h:commandLink action="#{personBean.save}"><button type="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink></li>
                 </ul>
 
               </div>

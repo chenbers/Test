@@ -39,9 +39,11 @@
                     <rich:tab id="details" label="#{messages.device_details}">
 
                       <ul id="grid_nav" style="margin: 0;">
-                        <li class="r"><h:commandLink action="#{vehiclesBean.cancelEdit}" immediate="true"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
-                        <ui:fragment rendered="#{not empty vehiclesBean.item.device}"><li class="r"><button value="submit" class="right next" onclick="document.getElementById('edit-form:speedSensitivity_shifted').onclick();return false;"><span class="left"><h:outputText value="#{messages.button_next}" /></span></button></li></ui:fragment>
-                        <ui:fragment rendered="#{empty vehiclesBean.item.device}"><li class="r"><h:commandLink action="#{vehiclesBean.save}"><button value="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink></li></ui:fragment>
+                        <li class="r">
+                          <ui:fragment rendered="#{not empty vehiclesBean.item.device}"><button type="submit" class="right next" onclick="document.getElementById('edit-form:speedSensitivity_shifted').onclick();return false;"><span class="left"><h:outputText value="#{messages.button_next}" /></span></button></ui:fragment>
+                          <ui:fragment rendered="#{empty vehiclesBean.item.device}"><h:commandLink action="#{vehiclesBean.save}"><button type="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink></ui:fragment>
+                          <h:outputText value=" " /><h:commandLink action="#{vehiclesBean.cancelEdit}" immediate="true"><button type="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink>
+                        </li>
                       </ul>
 
                       <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
@@ -188,11 +190,11 @@
                               </ui:fragment>
                               <tr>
                                 <td width="100" valign="top">
-                                  <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_active" value="#{vehiclesBean.updateField['status']}" />
-                                  <h:outputText value="#{messages.editVehicle_active}" />
+                                  <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_status" value="#{vehiclesBean.updateField['status']}" />
+                                  <h:outputText value="#{messages.editVehicle_status}" />
                                 </td>
                                 <td>
-                                  <h:selectOneMenu value="#{vehiclesBean.item.status}" id="active" onchange="checkMultiple(this)">
+                                  <h:selectOneMenu value="#{vehiclesBean.item.status}" id="status" onchange="checkMultiple(this)">
                                     <f:selectItem itemLabel="#{messages.editVehicle_selectStatus}" />
                                     <f:selectItems value="#{vehiclesBean.statuses}"/>
                                   </h:selectOneMenu>
@@ -241,9 +243,11 @@
                       <div class="spacer"></div>
 
                       <ul id="grid_nav" style="margin: 0;">
-                        <li class="r"><h:commandLink action="#{vehiclesBean.cancelEdit}" immediate="true"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
-                        <ui:fragment rendered="#{not empty vehiclesBean.item.device}"><li class="r"><button value="submit" class="right next" onclick="document.getElementById('edit-form:speedSensitivity_shifted').onclick();return false;"><span class="left"><h:outputText value="#{messages.button_next}" /></span></button></li></ui:fragment>
-                        <ui:fragment rendered="#{empty vehiclesBean.item.device}"><li class="r"><h:commandLink action="#{vehiclesBean.save}"><button value="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink></li></ui:fragment>
+                        <li class="r">
+                          <ui:fragment rendered="#{not empty vehiclesBean.item.device}"><button type="submit" class="right next" onclick="document.getElementById('edit-form:speedSensitivity_shifted').onclick();return false;"><span class="left"><h:outputText value="#{messages.button_next}" /></span></button></ui:fragment>
+                          <ui:fragment rendered="#{empty vehiclesBean.item.device}"><h:commandLink action="#{vehiclesBean.save}"><button type="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink></ui:fragment>
+                          <h:outputText value=" " /><h:commandLink action="#{vehiclesBean.cancelEdit}" immediate="true"><button type="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink>
+                        </li>
                       </ul>
 
                     </rich:tab>
@@ -251,8 +255,10 @@
                     <rich:tab id="speedSensitivity" label="#{messages.device_speedSensitivity}">
 
                       <ul id="grid_nav" style="margin: 0;">
-                        <li class="r"><h:commandLink action="#{vehiclesBean.cancelEdit}" immediate="true"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
-                        <li class="r"><h:commandLink action="#{vehiclesBean.save}"><button value="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink></li>
+                        <li class="r">
+                          <h:commandLink action="#{vehiclesBean.save}"><button type="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink>
+                          <h:outputText value=" " /><h:commandLink action="#{vehiclesBean.cancelEdit}" immediate="true"><button type="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink>
+                        </li>
                       </ul>
 
                       <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
@@ -272,8 +278,10 @@
                       </ui:fragment>
 
                       <ul id="grid_nav" style="margin: 0;">
-                        <li class="r"><h:commandLink action="#{vehiclesBean.cancelEdit}" immediate="true"><button value="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
-                        <li class="r"><h:commandLink action="#{vehiclesBean.save}"><button value="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink></li>
+                        <li class="r">
+                          <h:commandLink action="#{vehiclesBean.save}"><button type="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink>
+                          <h:outputText value=" " /><h:commandLink action="#{vehiclesBean.cancelEdit}" immediate="true"><button type="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink>
+                        </li>
                       </ul>
 
                     </rich:tab>

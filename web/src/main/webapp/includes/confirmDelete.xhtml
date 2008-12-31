@@ -69,7 +69,7 @@
         <input type="hidden" id="confirmDeleteID" name="deleteID" />
 
         <div class="popupactions">
-          <button value="submit" class="left" onclick="Richfaces.hideModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button>
+          <button type="submit" class="left" onclick="Richfaces.hideModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button>
           <a4j:commandLink id="deleteA" action="#{deleteBean['delete']}" onclick="Richfaces.hideModalPanel('confirmDelete')" reRender="#{reRender}"><button id="deleteButton" value="submit" class="left" onclick="document.getElementById('confirmDeleteForm:deleteA').onclick()" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink>
         </div>
 

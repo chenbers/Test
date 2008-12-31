@@ -102,19 +102,19 @@
 		<li class="r"><h:panelGroup id="buttonPanelFooter">
 			<a4j:commandLink rendered="#{organizationBean.groupState eq 'ADD'}"
 				onclick="saveGroupNode()">
-				<button value="submit" class="left"><span class="add"><h:outputText
+				<button type="submit" class="left"><span class="add"><h:outputText
 					value="#{messages.button_create_unit}" /></span></button>
 			</a4j:commandLink>
 			<h:commandLink rendered="#{organizationBean.groupState eq 'EDIT'}"
 				onclick="updateGroupNode()">
-				<button value="submit" class="left"><span class="add"><h:outputText
+				<button type="submit" class="left"><span class="add"><h:outputText
 					value="#{messages.button_save}" /></span></button>
 			</h:commandLink>
 			<a4j:commandLink rendered="#{organizationBean.groupState ne 'VIEW'}"
 				action="#{organizationBean.changeState}"
 				reRender="groupPanel,organizationTreePanel,buttonPanelFooter">
 				<f:param name="state" value="VIEW" />
-				<button value="submit" class="left"><span class="cancel"><h:outputText
+				<button type="submit" class="left"><span class="cancel"><h:outputText
 					value="#{messages.button_cancel}" /></span></button>
 			</a4j:commandLink>
 		</h:panelGroup></li>

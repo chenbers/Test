@@ -42,8 +42,8 @@
 
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="l text"><h:commandLink action="#{devicesBean.cancelDisplay}" value="#{messages.device_backToDevices}" /></li>
-                        <li class="r"><h:commandLink action="#{devicesBean.edit}"><button value="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></h:commandLink></li>
-                        <li class="r"><a4j:commandLink><button value="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink></li>
+                        <li class="r"><h:commandLink action="#{devicesBean.edit}"><button type="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></h:commandLink></li>
+                        <li class="r"><a4j:commandLink><button type="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink></li>
                       </ul>
 
                       <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
@@ -126,8 +126,8 @@
 
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="l text"><h:commandLink action="#{devicesBean.cancelDisplay}" value="#{messages.device_backToDevices}" /></li>
-                        <li class="r"><h:commandLink action="#{devicesBean.edit}"><button value="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></h:commandLink></li>
-                        <li class="r"><a4j:commandLink><button value="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink></li>
+                        <li class="r"><h:commandLink action="#{devicesBean.edit}"><button type="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></h:commandLink></li>
+                        <li class="r"><a4j:commandLink><button type="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink></li>
                       </ul>
 
                       <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
