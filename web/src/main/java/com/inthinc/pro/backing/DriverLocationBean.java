@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.faces.context.FacesContext;
+
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.DriverDAO;
@@ -31,6 +33,7 @@ public class DriverLocationBean extends BaseBean {
 	private Map<Integer,Group> groupMap;
 	private boolean showLegend;
 	private List<DriverLastLocationBean> driverLastLocationBeanList;
+    private static final String WEBAPP_CONTEXT = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
 	private static final Logger logger = Logger.getLogger(DriverLocationBean.class);
 
 	public DriverLocationBean() {
@@ -48,14 +51,16 @@ public class DriverLocationBean extends BaseBean {
  //       int index = 0;
     	MapIconFactory mif = new MapIconFactory();
     	
+    	
+    	
     	driverLastLocations = new TreeMap<Integer,DriverLastLocationBean>();
         driverLastLocationBeanList = new ArrayList<DriverLastLocationBean>();
         childGroups = getGroupHierarchy().getChildren(getGroupHierarchy().getGroup(this.navigation.getGroupID()));
         if (childGroups != null){
         	showLegend = true;
         	
-          	List<MapIcon> mapIcons = mif.makeMapIcons("/images/googleMapIcons/icon_", "/images/icon_1.png", childGroups.size());
-         	List<MapIcon> legendIcons = mif.makeMapIcons("/images/legendIcons/icon_", "/images/icon_car_1.png", childGroups.size());
+          	List<MapIcon> mapIcons = mif.makeMapIcons("images/googleMapIcons/icon_", "images/icon_1.png", childGroups.size());
+         	List<MapIcon> legendIcons = mif.makeMapIcons("images/legendIcons/icon_", "images/icon_car_1.png", childGroups.size());
          	Iterator<MapIcon> mapIconIt = mapIcons.iterator();
          	Iterator<MapIcon> legendIconIt = legendIcons.iterator();
          	          	
