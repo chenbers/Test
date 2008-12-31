@@ -98,8 +98,8 @@ public class DriverLocationBean extends BaseBean {
         	showLegend = false;
 	        List<Driver> drivers = driverDAO.getAllDrivers(this.navigation.getGroupID());
 	        
-         	List<MapIcon> mapIcons = mif.makeMapIcons("/images/googleMapIcons/icon_", "/images/icon_1.png", 1);
-         	List<MapIcon> legendIcons = mif.makeMapIcons("/images/legendIcons/icon_", "/images/icon_car_1.png", 1);
+         	List<MapIcon> mapIcons = mif.makeMapIcons("images/googleMapIcons/icon_", "images/icon_1.png", 1);
+         	List<MapIcon> legendIcons = mif.makeMapIcons("images/legendIcons/icon_", "images/icon_car_1.png", 1);
 	        // Do something to get driverLastLocations or last trips to get location
         	mapIconMap.addIcon(navigation.getGroupID(), mapIcons.get(0).getUrl());
         	legendIconMap.addIcon(navigation.getGroupID(), legendIcons.get(0).getUrl());
