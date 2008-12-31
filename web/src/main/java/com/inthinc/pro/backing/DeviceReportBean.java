@@ -85,6 +85,7 @@ public class DeviceReportBean extends BaseReportBean
  
                 dri = new DeviceReportItem();
                 dri.setDevice(dev);
+                dri.setVehicle(v);
                 
                 this.devicesData.add(dri);
             }
