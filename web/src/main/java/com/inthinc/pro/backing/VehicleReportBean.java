@@ -138,27 +138,37 @@ public class VehicleReportBean extends BaseReportBean
                     int index1;
                     int index2;
                     int index3;
+                    int index4;
                                                           
                     // vehicle ID
                     index1 = vehicleID.indexOf(trimmedSearch);                    
                     if (index1 != -1) {                        
-                        matchedVehicles.add(v);
+                        matchedVehicles.add(v);                    
                     }
                     
                     // make                    
                     index2 = v.getVehicle().getMake().toLowerCase().indexOf(trimmedSearch);                    
                     if ((index1 == -1) && 
-                        (index2 != -1) ) {                        
-                        matchedVehicles.add(v);
+                        (index2 != -1) ) {                          
+                        matchedVehicles.add(v);                   
                     }
                     
                     // model                    
                     index3 = v.getVehicle().getModel().toLowerCase().indexOf(trimmedSearch);                    
-                    if ((index1 == -1) && 
-                        (index2 == -1) &&
-                        (index3 != -1)) {                        
-                        matchedVehicles.add(v);
+                    if ((index1 == -1) &&
+                        (index2 == -1) && 
+                        (index3 != -1) ) {                                      
+                        matchedVehicles.add(v);                    
                     }
+                    
+                    // driver name                    
+                    index4 = v.getDriver().getPerson().getFullName().indexOf(trimmedSearch);                                  
+                    if ((index1 == -1) &&
+                        (index2 == -1) &&
+                        (index3 == -1) &&
+                        (index4 != -1) ) {                                 
+                        matchedVehicles.add(v);
+                    }                    
                 }
                 
                 loadResults(matchedVehicles);             
