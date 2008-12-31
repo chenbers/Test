@@ -35,7 +35,13 @@
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_assignedvehicle}" />
       					</f:facet>
-						<h:outputText value="#{item.device.vehicleID}" />      
+						<h:commandLink action="go_vehicle" 
+      						value="#{item.device.vehicleID}">
+							<f:setPropertyActionListener 
+									value="#{item.vehicle}" 
+									target="#{navigationBean.vehicle}">
+							</f:setPropertyActionListener>
+						</h:commandLink>  	      
     				</rich:column>
     				<rich:column rendered="#{deviceColumns['IMEI'].visible}" 
     					sortBy="#{item.device.imei}">    					
