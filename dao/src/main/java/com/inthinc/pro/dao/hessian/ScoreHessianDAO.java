@@ -103,13 +103,37 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         {
             
             // TODO: not sure if this duration mapping is correct
-//groupID = 16777218;            
+            //groupID = 16777218;            
             Map<String, Object> returnMap = reportService.getGDScoreByGT(groupID, duration.getCode());
             DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
             
             ScoreableEntity scoreableEntity = new ScoreableEntity();
             scoreableEntity.setEntityID(groupID);
             scoreableEntity.setEntityType(EntityType.ENTITY_GROUP);
+            scoreableEntity.setScoreType(scoreType);
+            scoreableEntity.setScore(dqMap.getScoreMap().get(scoreType));
+            return scoreableEntity;
+            
+        }
+        catch (EmptyResultSetException e)
+        {
+            return null;
+        }
+    }
+    
+    @Override
+    public ScoreableEntity getDriverAverageScoreByType(Integer driverID, Duration duration, ScoreType scoreType)
+    {
+        try
+        {
+            
+            // TODO: not sure if this duration mapping is correct            
+            Map<String, Object> returnMap = reportService.getDScoreByDT(driverID, duration.getCode());
+            DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
+            
+            ScoreableEntity scoreableEntity = new ScoreableEntity();
+            scoreableEntity.setEntityID(driverID);
+            scoreableEntity.setEntityType(EntityType.ENTITY_DRIVER);
             scoreableEntity.setScoreType(scoreType);
             scoreableEntity.setScore(dqMap.getScoreMap().get(scoreType));
             return scoreableEntity;
@@ -536,5 +560,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             return Collections.emptyMap();
         }
     }
+
+
     
 }

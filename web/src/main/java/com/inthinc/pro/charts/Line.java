@@ -35,7 +35,10 @@ public class Line implements BaseChart
                                                     "showBorder=\'0\' " +
                                                     "lineColor=\'#93C034\' " +
                                                     "lineThickness=\'2\' " +
-                                                    "drawAnchors=\'0\' " +
+                                                    "drawAnchors=\'1\' " +
+                                                    "anchorRadius=\'2\' " +
+                                                    "anchorBgColor=\'#A8C634\' " +
+                                                    "anchorBorderColor=\'#cfcfcf\' " +
                                                     "numVDivLines=\'4\' " + 
                                                     "plotFillColor=\'#A8C634\' >";
     

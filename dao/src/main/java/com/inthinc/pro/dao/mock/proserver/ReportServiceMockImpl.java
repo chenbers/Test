@@ -443,8 +443,13 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
     @Override
     public Map<String, Object> getDScoreByDT(Integer driverID, Integer duration)
     {
-        // TODO Auto-generated method stub
-        return null;
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("driver:driverID", driverID);
+
+        DVQMap dvq = MockData.getInstance().retrieveObject(DVQMap.class, searchCriteria);
+        if (dvq == null)
+            throw new EmptyResultSetException("No score for driver: " + driverID, "getDScoreByDT", 0);
+        return TempConversionUtil.createMapFromObject(dvq.getDriveQ());
     }
     
     @Override
