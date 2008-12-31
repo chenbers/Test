@@ -5,6 +5,8 @@
 .dr-pnl-b		{padding: 0px;}
 .dr-table-cell	{border: 0px;padding: 0px;}
 
+.dr-tbpnl-tb	{font-family:inherit;}
+
 .rich-message {margin-left: 5px;}
 .rich-message-marker { margin-right: 5px; }
 .rich-message-label {}
