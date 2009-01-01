@@ -35,8 +35,10 @@
               <div class="panel_content">
 
                 <ul id="grid_nav" style="margin: 0;">
-                  <li class="r"><h:commandLink action="#{personBean.cancelEdit}" immediate="true"><button type="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
-                  <li class="r"><h:commandLink action="#{personBean.save}"><button type="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink></li>
+                  <li class="r">
+                    <h:commandLink action="#{personBean.save}"><button type="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink>
+                    <h:outputText value=" " /><h:commandLink action="#{personBean.cancelEdit}" immediate="true"><button type="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink>
+                  </li>
                 </ul>
 
                 <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
@@ -441,8 +443,10 @@
                 <div class="spacer"></div>
 
                 <ul id="grid_nav" style="margin: 0;">
-                  <li class="r"><h:commandLink action="#{personBean.cancelEdit}" immediate="true"><button type="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink></li>
-                  <li class="r"><h:commandLink action="#{personBean.save}"><button type="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink></li>
+                  <li class="r">
+                    <h:commandLink action="#{personBean.save}"><button type="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink>
+                    <h:outputText value=" " /><h:commandLink action="#{personBean.cancelEdit}" immediate="true"><button type="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink>
+                  </li>
                 </ul>
 
               </div>
