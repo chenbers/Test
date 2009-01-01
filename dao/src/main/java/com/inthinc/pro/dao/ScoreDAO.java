@@ -165,6 +165,15 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
     List<ScoreableEntity> getDriverScoreHistoryByMiles(Integer driverID, Integer milesBack, ScoreType scoreType);
     
     /**
+     * Retrieve the driver scores by type and duration.
+     * 
+     * @param driverID
+     * @param duration
+     * @param scoreType
+     */
+    List<ScoreableEntity> getDriverScoreHistory(Integer driverID, Duration duration, ScoreType scoreType, Integer count);
+    
+    /**
      * Retrieve the vehicle scores and mileage.
      * 
      * @param driverID

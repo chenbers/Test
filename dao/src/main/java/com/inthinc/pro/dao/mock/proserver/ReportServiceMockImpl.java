@@ -455,8 +455,26 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
     @Override
     public List<Map<String, Object>> getDTrendByDTC(Integer driverID, Integer duration, Integer count)
     {
-        // TODO Auto-generated method stub
-        return null;
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+        
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("driver:driverID", driverID);
+
+        List<DVQMap> dvqList = MockData.getInstance().retrieveObjectList(DVQMap.class, searchCriteria);
+
+        if (dvqList == null)
+            throw new EmptyResultSetException("No score for driver: " + driverID, "getDTrendByDTC", 0);
+        
+        int start = dvqList.size() - count;
+        int i = 0;
+        for (DVQMap dvq : dvqList)
+        {    
+            if (i++ < start)
+                continue;
+            returnList.add(TempConversionUtil.createMapFromObject(dvq.getDriveQ()));
+        }
+        
+        return returnList;
     } 
     
     @Override

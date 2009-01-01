@@ -1,11 +1,12 @@
 <ui:composition template="/layout/layout.xhtml" 
-			xmlns="http://www.w3.org/1999/xhtml" 
-			xmlns:ui="http://java.sun.com/jsf/facelets"
-  			xmlns:h="http://java.sun.com/jsf/html" 
-  			xmlns:rich="http://richfaces.org/rich"
-  			xmlns:a4j="http://richfaces.org/a4j"
-  			xmlns:f="http://java.sun.com/jsf/core"
-  			xmlns:iwi="http://pro.tiwi.com/jsf">
+				xmlns="http://www.w3.org/1999/xhtml" 
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+	  			xmlns:h="http://java.sun.com/jsf/html" 
+	  			xmlns:rich="http://richfaces.org/rich"
+	  			xmlns:a4j="http://richfaces.org/a4j"
+	  			xmlns:f="http://java.sun.com/jsf/core"
+	  			xmlns:c="http://java.sun.com/jstl/core"
+	  			xmlns:iwi="http://pro.tiwi.com/jsf">
 
 	<ui:define name="scripts">
 		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>	
@@ -257,22 +258,24 @@
 			</div>
 		<!-- END PANEL -->
 	</td>
-	
     <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
-	
     <td width="465" valign="top">
 		<!-- START PANEL -->
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="map">Last Trip</span>
+						<span class="map">Last Trip
+						<c:if test="#{driverBean.lastTrip ne null}">
+							<h:outputText value=": #{driverBean.lastTrip.trip.endTime}" />
+						</c:if>
+						</span>
 						<span class="panel_links"><h:form><h:commandLink value="view all trips" action="go_driverTrips">
 						</h:commandLink></h:form></span>
 					</div>
 				</div>
 					<div class="panel_w">
 					  <div class="panel_content">
-							
+						<c:if test="#{driverBean.lastTrip ne null}">	
 					  	<h:panelGroup styleClass="map-border" layout="block">
 							<div id="map-canvas" style="width:458px;height:300px;border:0"></div>
 					  	</h:panelGroup>
@@ -307,7 +310,7 @@
         						map.addControl(new GLargeMapControl());
         						map.addControl(new GMapTypeControl());
         						map.addControl(new GOverviewMapControl()); 
-								map.setCenter(new GLatLng(#{driverTripsBean.selectedTrips[0].routeLastStep.lat}, #{driverTripsBean.selectedTrips[0].routeLastStep.lng}), 14);
+								map.setCenter(new GLatLng(#{driverBean.lastTrip.routeLastStep.lat}, #{driverBean.lastTrip.routeLastStep.lng}), 14);
 								map.setMapType(G_NORMAL_MAP);
 								
 								var polyline = new GPolyline([
@@ -316,7 +319,7 @@
 										new GLatLng(#{route.lat}, #{route.lng}),
 								  	</ui:repeat>
 								  		  //Repeating the last step to finish JS array.
-								  		  new GLatLng(#{driverTripsBean.selectedTrips[0].routeLastStep.lat}, #{driverTripsBean.selectedTrips[0].routeLastStep.lng})
+								  		  new GLatLng(#{driverBean.lastTrip.routeLastStep.lat}, #{driverBean.lastTrip.routeLastStep.lng})
 									], "#0000ff", 6);
 									map.addOverlay(polyline);
 
@@ -329,6 +332,10 @@
 								
       					}
     					</script>
+    					</c:if>
+    					<c:if test="{driverBean.lastTrip eq null ? true : false}">
+  							<h2>#{messages.no_trips_found}</h2>
+  						</c:if>
 					  </div>
 					</div>
 				<div class="panel_sw">
@@ -344,7 +351,7 @@
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="coaching">Miles Per Gallon</span>
-						<span class="panel_links">_</span>					</div>
+					</div>
 				</div>
 					<div class="panel_w">
 					  <rich:panel bodyClass="panel_content" id="mpgPanel" border="0">
@@ -377,7 +384,7 @@
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="coaching">Coaching Events </span>
-						<span class="panel_links">_</span>					</div>
+					</div>
 				</div>
 					<div class="panel_w">
 					  <rich:panel bodyClass="panel_content" id="coachingPanel" border="0">
@@ -408,9 +415,4 @@
 </table>
 </div>
 </ui:define>
-
 </ui:composition>
-
-
-
-

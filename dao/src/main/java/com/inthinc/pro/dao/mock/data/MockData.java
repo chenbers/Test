@@ -286,7 +286,7 @@ public class MockData
 
     private void addDriveQMaps(List<Driver> driversInGroup, List<Vehicle> vehiclesInGroup)
     {
-logger.debug("addDriveQMaps");        
+        logger.debug("addDriveQMaps");        
         for (Driver driver : driversInGroup)
         {
             
@@ -307,6 +307,7 @@ logger.debug("addDriveQMaps");
     private DriveQMap createDriveQ(Integer odometer)
     {
         DriveQMap driveQMap = new DriveQMap();
+        driveQMap.setCreated(new Date());  //NEED TO CREATE OLD DATES
         driveQMap.setAggressiveAccel(randomInt(0, 50));
         driveQMap.setAggressiveBreak(randomInt(0, 50));
         driveQMap.setAggressiveBump(randomInt(0, 50));

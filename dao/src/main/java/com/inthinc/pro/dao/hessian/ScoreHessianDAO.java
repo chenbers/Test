@@ -1,5 +1,7 @@
 package com.inthinc.pro.dao.hessian;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -300,6 +302,38 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 Integer score = driveQMap.getScoreMap().get(scoreType);
                 entity.setScore((score == null) ? 0 : score);
                 entity.setIdentifier(""+driveQMap.getEndingOdometer());
+                scoreList.add(entity);
+            }
+                
+            return scoreList;
+        }
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
+    }
+    
+    @Override
+    public List<ScoreableEntity> getDriverScoreHistory(Integer driverID, Duration duration, ScoreType scoreType, Integer count)
+    {
+        try
+        {
+            List<Map<String, Object>> list = reportService.getDTrendByDTC(driverID, duration.getCode(), count);
+            List<DriveQMap> driveQList = getMapper().convertToModelObject(list, DriveQMap.class);
+            
+            List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
+            DateFormat dateFormatter = new SimpleDateFormat("MMM");
+            
+            for (DriveQMap driveQMap  :driveQList)
+            {
+                ScoreableEntity entity = new ScoreableEntity();
+                entity.setEntityID(driverID);
+                entity.setEntityType(EntityType.ENTITY_DRIVER);
+                entity.setScoreType(scoreType);
+                Integer score = driveQMap.getScoreMap().get(scoreType);
+                entity.setScore((score == null) ? 0 : score);
+                
+                entity.setIdentifier( "" + dateFormatter.format(driveQMap.getCreated()));
                 scoreList.add(entity);
             }
                 
