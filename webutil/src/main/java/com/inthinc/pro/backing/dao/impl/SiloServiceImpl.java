@@ -312,7 +312,7 @@ public class SiloServiceImpl implements SiloService
     }
 
     @Override
-    public List<Map<String, Object>> getNote(@DaoParam(name="driverID")Integer driverID, 
+    public List<Map<String, Object>> getDriverNote(@DaoParam(name="driverID")Integer driverID, 
             @DaoParam(name="startDate", inputDesc="MM/dd/yyyy hh:mm:ss", inputConvert=com.inthinc.pro.convert.DateConvert.class)Integer startDate,
             @DaoParam(name="endDate", inputDesc="MM/dd/yyyy hh:mm:ss", inputConvert=com.inthinc.pro.convert.DateConvert.class)Integer endDate,
             @DaoParam(name="types[]", inputDesc="comma sep list of event types")Integer[] types)
