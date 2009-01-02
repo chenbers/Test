@@ -13,7 +13,7 @@ public class Driver extends BaseEntity
     private Status status;
     
     @Column(name = "rfid")
-    private Integer RFID;
+    private Long RFID;
     private String  license;            // max 10 characters
 
     @Column(name = "stateID")
@@ -27,7 +27,7 @@ public class Driver extends BaseEntity
     @Column(updateable = false)
     private Person person;
 
-    public Driver(Integer driverID, Integer personID, Status status, Integer rfid, String license, State state, String licenseClass, Date expiration)
+    public Driver(Integer driverID, Integer personID, Status status, Long rfid, String license, State state, String licenseClass, Date expiration)
     {
         super();
         this.driverID = driverID;
@@ -69,12 +69,12 @@ public class Driver extends BaseEntity
         this.personID = personID;
     }
 
-    public Integer getRFID()
+    public Long getRFID()
     {
         return RFID;
     }
 
-    public void setRFID(Integer rfid)
+    public void setRFID(Long rfid)
     {
         this.RFID = rfid;
     }
