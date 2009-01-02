@@ -111,19 +111,15 @@
 					<textElement>
 						<font size="14"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Trend Report"]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Miles Per Gallon Report"]]></textFieldExpression>
 				</textField>
-			</band>
-		</title>
-		<pageHeader>
-			<band height="0"  isSplitAllowed="true" >
-				<lineChart>
-					<chart  hyperlinkTarget="Self"  customizerClass="com.inthinc.pro.reports.TrendLineChartCustomizer" >
+				<barChart>
+					<chart  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="-336"
+						y="61"
 						width="535"
-						height="332"
+						height="325"
 						key="element-1"/>
 					<box></box>
 						<chartLegend textColor="#000000" backgroundColor="#FFFFFF" >
@@ -131,66 +127,24 @@
 					</chart>
 					<categoryDataset>
 						<dataset >
-							<datasetRun subDataset="TrendChartDataset">
-					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{TREND_CHART_DATA})]]></dataSourceExpression>
-							</datasetRun>
 						</dataset>
-						<categorySeries>
-							<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
-							<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
-							<valueExpression><![CDATA[$F{score}]]></valueExpression>
-							<labelExpression><![CDATA[$F{label}]]></labelExpression>
-				<itemHyperlink >
-				</itemHyperlink>
-						</categorySeries>
 					</categoryDataset>
-					<linePlot isShowShapes="false" >
-						<plot >
-							<seriesColor seriesOrder="0" color="#FF0000"/>
-							<seriesColor seriesOrder="1" color="#00FF00"/>
-							<seriesColor seriesOrder="2" color="#0000FF"/>
-							<seriesColor seriesOrder="3" color="#FF9900"/>
-							<seriesColor seriesOrder="4" color="#9900FF"/>
-							<seriesColor seriesOrder="5" color="#0099FF"/>
-							<seriesColor seriesOrder="6" color="#00FFFF"/>
-							<seriesColor seriesOrder="7" color="#FFFF00"/>
-							<seriesColor seriesOrder="8" color="#FF00FF"/>
-							<seriesColor seriesOrder="9" color="#990066"/>
-							<seriesColor seriesOrder="10" color="#CC9933"/>
-							<seriesColor seriesOrder="11" color="#009933"/>
-							<seriesColor seriesOrder="12" color="#99CCCC"/>
-							<seriesColor seriesOrder="13" color="#FF99FF"/>
-							<seriesColor seriesOrder="14" color="#FFCC99"/>
-							<seriesColor seriesOrder="15" color="#CCCC66"/>
-							<seriesColor seriesOrder="16" color="#99FF99"/>
-							<seriesColor seriesOrder="17" color="#99CCFF"/>
-							<seriesColor seriesOrder="18" color="#CCCCFF"/>
-							<seriesColor seriesOrder="19" color="#CC3333"/>
-							<seriesColor seriesOrder="20" color="#CC6600"/>
-							<seriesColor seriesOrder="21" color="#CC6699"/>
-							<seriesColor seriesOrder="22" color="#66CC99"/>
-							<seriesColor seriesOrder="23" color="#666699"/>
-</plot>
+					<barPlot >
+						<plot />
 						<categoryAxisFormat>
 							<axisFormat >
-								<labelFont>
-					<font fontName="SansSerif" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false" pdfEncoding="Cp1252"/>
-								</labelFont>
-								<tickLabelFont>
-								</tickLabelFont>
 							</axisFormat>
 						</categoryAxisFormat>
 						<valueAxisFormat>
 							<axisFormat >
-								<labelFont>
-					<font fontName="SansSerif" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false" pdfEncoding="Cp1252"/>
-								</labelFont>
-								<tickLabelFont>
-								</tickLabelFont>
 							</axisFormat>
 						</valueAxisFormat>
-					</linePlot>
-				</lineChart>
+					</barPlot>
+				</barChart>
+			</band>
+		</title>
+		<pageHeader>
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 		</pageHeader>
 		<columnHeader>

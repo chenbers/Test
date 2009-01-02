@@ -56,7 +56,7 @@
 	<parameter name="DRIVER_STYLE_DATA" isForPrompting="false" class="java.util.List"/>
 	<parameter name="SEATBELT_USE_DATA" isForPrompting="false" class="java.util.List"/>
 	<parameter name="SPEED_DATA" isForPrompting="false" class="java.util.List"/>
-	<parameter name="DURATION" isForPrompting="false" class="java.lang.Integer"/>
+	<parameter name="DURATION" isForPrompting="false" class="java.lang.String"/>
 
 	<field name="value" class="java.lang.Integer"/>
 	<field name="key" class="java.lang.String"/>
@@ -75,7 +75,7 @@
 				<rectangle radius="3" >
 					<reportElement
 						x="0"
-						y="427"
+						y="436"
 						width="535"
 						height="171"
 						forecolor="#666666"
@@ -183,7 +183,7 @@ isCircular="true" >
 					<chart isShowLegend="false"  hyperlinkTarget="Self" >
 					<reportElement
 						x="5"
-						y="452"
+						y="461"
 						width="159"
 						height="138"
 						key="element-2"/>
@@ -216,7 +216,7 @@ isCircular="true" >
 					<chart isShowLegend="false"  hyperlinkTarget="Self" >
 					<reportElement
 						x="177"
-						y="452"
+						y="461"
 						width="165"
 						height="138"
 						key="element-3"/>
@@ -249,7 +249,7 @@ isCircular="true" >
 					<chart isShowLegend="false"  hyperlinkTarget="Self" >
 					<reportElement
 						x="362"
-						y="452"
+						y="461"
 						width="165"
 						height="138"
 						key="element-4"/>
@@ -281,7 +281,7 @@ isCircular="true" >
 				<staticText>
 					<reportElement
 						x="5"
-						y="436"
+						y="445"
 						width="145"
 						height="12"
 						key="staticText-4"/>
@@ -294,7 +294,7 @@ isCircular="true" >
 				<staticText>
 					<reportElement
 						x="177"
-						y="436"
+						y="445"
 						width="145"
 						height="12"
 						key="staticText-5"/>
@@ -307,7 +307,7 @@ isCircular="true" >
 				<staticText>
 					<reportElement
 						x="362"
-						y="436"
+						y="445"
 						width="145"
 						height="12"
 						key="staticText-6"/>
@@ -320,7 +320,7 @@ isCircular="true" >
 				<line direction="TopDown">
 					<reportElement
 						x="170"
-						y="427"
+						y="436"
 						width="0"
 						height="171"
 						forecolor="#666666"
@@ -330,7 +330,7 @@ isCircular="true" >
 				<line direction="TopDown">
 					<reportElement
 						x="350"
-						y="427"
+						y="436"
 						width="0"
 						height="171"
 						forecolor="#666666"
@@ -348,7 +348,7 @@ isCircular="true" >
 					<textElement textAlignment="Left" verticalAlignment="Top">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DURATION}.toString( int, int )]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DURATION}]]></textFieldExpression>
 				</textField>
 			</band>
 		</pageHeader>
