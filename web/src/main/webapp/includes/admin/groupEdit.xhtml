@@ -17,7 +17,7 @@
 					value="#{organizationBean.selectedGroupNode.groupBreadCrumb}"
 					var="crumb" rowKeyVar="rowKey">
 					<li class="#{rowKey eq (organizationBean.selectedGroupNode.breadCrumbCount - 1)?'last':''}"><a4j:commandLink value="#{crumb.label}"
-						reRender="groupPanel,organizationTreePanel">
+						reRender="groupPanel,driverPanel,vehiclePanel,organizationTreePanel">
 						<a4j:actionparam converter="SimpleBeanConverter" name="groupNode"
 							value="#{crumb}"
 							actionListener="#{organizationBean.changeSelectedGroup}"
