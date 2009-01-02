@@ -31,10 +31,7 @@ public class DriverStyleBean extends BaseDurationBean
     private NavigationBean  navigation;
     private ScoreDAO        scoreDAO;
     private EventDAO        eventDAO;
-    
-    private String          driverName;
-    private Distance        distance = Distance.FIVEHUNDRED;
-
+ 
     private Integer         styleScoreOverall;
     private String          styleScoreOverallStyle;
     private Integer         styleScoreAccel;
@@ -56,27 +53,22 @@ public class DriverStyleBean extends BaseDurationBean
     
     private void init()
     {
-//        int dist = distance.getNumberOfMiles();
         int driverID = navigation.getDriver().getDriverID();
         
         Map<ScoreType, ScoreableEntity> scoreMap = scoreDAO.getDriverScoreBreakdownByType(driverID, getDuration(), ScoreType.SCORE_DRIVING_STYLE);
-//        ScoreableEntity se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_DRIVING_STYLE);
+
         ScoreableEntity se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE);
         setStyleScoreOverall(se == null ? 0 : se.getScore());
         
-//        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL);
         se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL);
         setStyleScoreAccel(se == null ? 0 : se.getScore());
         
-//        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE);
         se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE);
         setStyleScoreBrake(se == null ? 0 : se.getScore());
         
-//        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP);
         se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP);
         setStyleScoreBump(se == null ? 0 : se.getScore());
         
-//        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
         se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
         setStyleScoreTurn(se == null ? 0 : se.getScore());
         
@@ -84,14 +76,12 @@ public class DriverStyleBean extends BaseDurationBean
     
     public String createLineDef(ScoreType scoreType)
     {
-        logger.debug("*** Getting score history for " + driverName + " " + scoreType.toString());
         StringBuffer sb = new StringBuffer();
         Line line = new Line();
         
         //Start XML Data
         sb.append(line.getControlParameters());
-        
-        //List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistoryByMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), scoreType);
+
         List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistory(navigation.getDriver().getDriverID(), getDuration(), scoreType, 10);
         for(ScoreableEntity e : scoreList)
         {
@@ -104,7 +94,7 @@ public class DriverStyleBean extends BaseDurationBean
         return sb.toString();
     }
     
-    //SPEED OVERALL SCORE PROPERTY
+    //STYLE OVERALL SCORE PROPERTY
     public Integer getStyleScoreOverall() {
         return styleScoreOverall;
     }
@@ -262,18 +252,22 @@ public class DriverStyleBean extends BaseDurationBean
     {
         this.eventDAO = eventDAO;
     }
-
-    //DISTANCE PROPERTY
-    public Distance getDistance()
+    public NavigationBean getNavigation()
     {
-        return distance;
+        return navigation;
     }
-    public void setDistance(Distance distance)
+    public void setNavigation(NavigationBean navigation)
     {
-        this.distance = distance;
+        this.navigation = navigation;
+    }
+    
+    @Override
+    public void setDuration(Duration duration)
+    {
+        super.setDuration(duration);
         init();
     }
-
+    
     /*
      * DrivingStyle Events List properties
      */
@@ -283,7 +277,8 @@ public class DriverStyleBean extends BaseDurationBean
         types.add(2);
         
         List<Event> tempEvents = new ArrayList<Event>();
-        tempEvents = eventDAO.getEventsForDriverByMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), types);
+     
+        tempEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), getStartDate(), getEndDate(), types);
        
         for(Event event: tempEvents)
         {
@@ -292,28 +287,7 @@ public class DriverStyleBean extends BaseDurationBean
         
         return styleEvents;
     }
-   
     public void setStyleEvents(List<AggressiveDrivingEvent> styleEvents) {
         this.styleEvents = styleEvents;
-    }
-    
-    /*
-     * DriverName Properties
-     */
-    public String getDriverName() {
-        setDriverName(navigation.getDriver().getPerson().getFirst() + " " + navigation.getDriver().getPerson().getLast());
-        return driverName;
-    }
-    public void setDriverName(String driverName) {
-        this.driverName = driverName;
-    }
-
-    public NavigationBean getNavigation()
-    {
-        return navigation;
-    }
-    public void setNavigation(NavigationBean navigation)
-    {
-        this.navigation = navigation;
     }
 }

@@ -18,12 +18,13 @@
 	<ui:define name="content">
 <div id="wrapper">
 
-
-<ul id="grid_nav">
-	<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
-	<li class="l grid_title">Driver Performance:&#160;<h:outputText>#{driverBean.driverName}</h:outputText></li>
-	<li class="l divider"><img src="/images/grid_nav_divider.png" /></li>
-</ul>
+<h:form>
+	<ul id="grid_nav">
+		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
+		<li class="l grid_title">Driver Performance:&#160;<h:commandLink action="go_driver" value="#{navigationBean.driver.person.fullName}" /></li>
+		<li class="l divider"><img src="/images/grid_nav_divider.png" /></li>
+	</ul>
+</h:form>
 
 <table width="940" border="0" cellspacing="0" cellpadding="0" align="center" class="dash_table">
   <tr>
@@ -43,7 +44,7 @@
 								</a4j:status>
 								<rich:spacer width="10" />
 								<a4j:commandLink title="#{messages.duration_days}" immediate="true"
-									styleClass="#{(driverSpeedBean.duration eq 'DAYS') ? 'on' : ''}"		
+									styleClass="#{(driverBean.duration eq 'DAYS') ? 'on' : ''}"		
 									reRender="dateLinksForm,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
 									value="#{messages.duration_days}">
 									<a4j:actionparam name="duration" assignTo="#{driverBean.duration}"	value="DAYS" />
@@ -53,7 +54,7 @@
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
 								<a4j:commandLink title="#{messages.duration_three}" immediate="true"
-									styleClass="#{(driverSpeedBean.duration eq 'THREE') ? 'on' : ''}"	
+									styleClass="#{(driverBean.duration eq 'THREE') ? 'on' : ''}"	
 									reRender="dateLinksForm,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
 									value="#{messages.duration_three}">
 									<a4j:actionparam name="duration" assignTo="#{driverBean.duration}" value="THREE" />
@@ -63,7 +64,7 @@
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
 								<a4j:commandLink title="#{messages.duration_six}" immediate="true"
-									styleClass="#{(driverSpeedBean.duration eq 'SIX') ? 'on' : ''}"	
+									styleClass="#{(driverBean.duration eq 'SIX') ? 'on' : ''}"	
 									reRender="dateLinksForm,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
 									value="#{messages.duration_six}">
 									<a4j:actionparam name="duration" assignTo="#{driverBean.duration}" value="SIX" />
@@ -73,7 +74,7 @@
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
 								<a4j:commandLink title="#{messages.duration_twelve}" immediate="true"
-									styleClass="#{(driverSpeedBean.duration eq 'TWELVE') ? 'on' : ''}"	
+									styleClass="#{(driverBean.duration eq 'TWELVE') ? 'on' : ''}"	
 									reRender="dateLinksForm,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
 									value="#{messages.duration_twelve}">
 									<a4j:actionparam name="duration" assignTo="#{driverBean.duration}" value="TWELVE" />
@@ -287,7 +288,7 @@
 					  	<h:panelGroup styleClass="map-border" layout="block">
 							<div id="map-canvas" style="width:458px;height:300px;border:0"></div>
 					  	</h:panelGroup>
-					    <script type="text/javascript">
+					    <script type="text/JavaScript">
 						var baseIcon = new GIcon();
 							baseIcon.iconSize = new GSize(21, 20);
 							baseIcon.iconAnchor = new GPoint(6, 20);

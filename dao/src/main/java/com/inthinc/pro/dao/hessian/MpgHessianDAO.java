@@ -97,12 +97,12 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
     }
 
     @Override
-    public List<MpgEntity> getDriverEntities(Integer driverID, Integer mileage, Integer count)
+    public List<MpgEntity> getDriverEntities(Integer driverID, Duration duration, Integer count)
     {
         List<MpgEntity> scoreList = new ArrayList<MpgEntity>();
           
         
-        List<Map<String, Object>> returnMapList = reportService.getDTrendByDMC(driverID, mileage, count);
+        List<Map<String, Object>> returnMapList = reportService.getDTrendByDTC(driverID, duration.getCode(), count);
         List<DriveQMap> dqMapList = getMapper().convertToModelObject(returnMapList, DriveQMap.class);
 
         for (DriveQMap dqMap : dqMapList)

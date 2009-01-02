@@ -1,5 +1,8 @@
 package com.inthinc.pro.backing;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import com.inthinc.pro.model.Duration;
 
 public class BaseDurationBean extends BaseBean
@@ -47,4 +50,15 @@ public class BaseDurationBean extends BaseBean
         return (duration.equals(Duration.TWELVE)) ? ON : OFF;
     }
 
+    public Date getStartDate()
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, duration.getNumberOfDays() * -1);
+        return calendar.getTime();
+    }
+    
+    public Date getEndDate()
+    {
+        return new Date();
+    }
 }

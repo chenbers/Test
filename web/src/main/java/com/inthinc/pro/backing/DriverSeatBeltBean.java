@@ -30,24 +30,17 @@ public class DriverSeatBeltBean extends BaseDurationBean
     private static final Logger logger = Logger.getLogger(DriverSeatBeltBean.class);
     
     private NavigationBean  navigation;
-    private ScoreDAO    scoreDAO;
-    private EventDAO    eventDAO;
+    private ScoreDAO        scoreDAO;
+    private EventDAO        eventDAO;
 
-    private String      driverName;
-    
-    private Integer     seatBeltScore;
-    private String      seatBeltScoreHistoryOverall;
-    private String      seatBeltScoreStyle;
-    
-    private Distance distance = Distance.FIVEHUNDRED;
-    
+    private Integer         seatBeltScore;
+    private String          seatBeltScoreHistoryOverall;
+    private String          seatBeltScoreStyle;
+      
     private List<SeatBeltEvent> seatBeltEvents = new ArrayList<SeatBeltEvent>();
     
     private void initSeatBelt()
     {
-        logger.debug("##### initStyle()  driverid:  " + navigation.getDriver().getDriverID());
-        
-        //ScoreableEntity seatBeltSe = scoreDAO.getAverageScoreByTypeAndMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), ScoreType.SCORE_SEATBELT);
         ScoreableEntity seatBeltSe = scoreDAO.getDriverAverageScoreByType(navigation.getDriver().getDriverID(), getDuration(), ScoreType.SCORE_SEATBELT);
         if (seatBeltSe == null)
             setSeatBeltScore(0);
@@ -94,7 +87,6 @@ public class DriverSeatBeltBean extends BaseDurationBean
         //Start XML Data
         sb.append(line.getControlParameters());
         
-        //List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistoryByMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), scoreType);
         List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistory(navigation.getDriver().getDriverID(), getDuration(), scoreType, 10);
         for(ScoreableEntity e : scoreList)
         {
@@ -133,14 +125,13 @@ public class DriverSeatBeltBean extends BaseDurationBean
         types.add(3);
         
         List<Event> tempEvents = new ArrayList<Event>();
-        tempEvents = eventDAO.getEventsForDriverByMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), types);
+        tempEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), getStartDate(), getEndDate(), types);
        
         for(Event event: tempEvents)
         {
             seatBeltEvents.add( (SeatBeltEvent)event );   
         }
         
-         
         return seatBeltEvents;
     }
 
@@ -148,13 +139,11 @@ public class DriverSeatBeltBean extends BaseDurationBean
         this.seatBeltEvents = seatBeltEvents;
     }
     
-    //DRIVER NAME PROPERTIES
-    public String getDriverName() {
-        //setDriverName(driverBean.getDriverName());
-        return driverName;
-    }
-    public void setDriverName(String driverName) {
-        this.driverName = driverName;
+    @Override
+    public void setDuration(Duration duration)
+    {
+        super.setDuration(duration);
+   
     }
 
     //NAVIGATION BEAN PROPERTIES
@@ -165,15 +154,5 @@ public class DriverSeatBeltBean extends BaseDurationBean
     public void setNavigation(NavigationBean navigation)
     {
         this.navigation = navigation;
-    }
-
-    //DISTANCE PROPERTIES
-    public Distance getDistance()
-    {
-        return distance;
-    }
-    public void setDistance(Distance distance)
-    {
-        this.distance = distance;
     }
 }

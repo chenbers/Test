@@ -31,9 +31,6 @@ public class DriverSpeedBean extends BaseDurationBean
     private NavigationBean  navigation;
     private ScoreDAO        scoreDAO;
     private EventDAO        eventDAO;
-    
-    private String          driverName;
-    private Distance        distance = Distance.FIVEHUNDRED;
 
     private Integer         speedScoreOverall;
     private String          speedScoreOverallStyle;
@@ -59,44 +56,35 @@ public class DriverSpeedBean extends BaseDurationBean
     
     private void init()
     {
-        int dist = distance.getNumberOfMiles();
         if (navigation.getDriver() == null)
         {
             return;
         }
         int driverID = navigation.getDriver().getDriverID();
         
-        //Map<ScoreType, ScoreableEntity> scoreMap = scoreDAO.getScoreBreakdownByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING);
         Map<ScoreType, ScoreableEntity> scoreMap = scoreDAO.getDriverScoreBreakdownByType(driverID, getDuration(), ScoreType.SCORE_SPEEDING);
         
-//        ScoreableEntity se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING);
         ScoreableEntity se = scoreMap.get(ScoreType.SCORE_SPEEDING);
         setSpeedScoreOverall(se == null ? 0 : se.getScore());
         
-//        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING_21_30);
         se = scoreMap.get(ScoreType.SCORE_SPEEDING_21_30);
         setSpeedScoreTwentyOne(se == null ? 0 : se.getScore());
         
-//        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING_31_40);
         se = scoreMap.get(ScoreType.SCORE_SPEEDING_31_40);
         setSpeedScoreThirtyOne(se == null ? 0 : se.getScore());
         
-//        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING_55_64);
         se = scoreMap.get(ScoreType.SCORE_SPEEDING_55_64);
         setSpeedScoreFourtyOne(se == null ? 0 : se.getScore());
         
-//        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING_55_64);
         se = scoreMap.get(ScoreType.SCORE_SPEEDING_55_64);
         setSpeedScoreFiftyFive(se == null ? 0 : se.getScore());
         
-//        se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING_65_80);
         se = scoreMap.get(ScoreType.SCORE_SPEEDING_65_80);
         setSpeedScoreSixtyFive(se == null ? 0 : se.getScore());
     }
     
     public String createLineDef(ScoreType scoreType)
     {
-        logger.debug("*** Getting score history for " + driverName + " " + scoreType.toString());
         StringBuffer sb = new StringBuffer();
         Line line = new Line();
         
@@ -233,7 +221,6 @@ public class DriverSpeedBean extends BaseDurationBean
     public void setSpeedScoreHistoryOverall(String speedScoreHistoryOverall) {
         this.speedScoreHistoryOverall = speedScoreHistoryOverall;
     }
-    
     //SCORE HISTORY 21-30 MPH
     public String getSpeedScoreHistoryTwentyOne() {
         setSpeedScoreHistoryTwentyOne(createLineDef(ScoreType.SCORE_SPEEDING_21_30));
@@ -252,7 +239,6 @@ public class DriverSpeedBean extends BaseDurationBean
     {
         this.speedScoreHistoryThirtyOne = speedScoreHistoryThirtyOne;
     }
-
     //SPEED HISTORY 41-54 MPH
     public String getSpeedScoreHistoryFourtyOne()
     {
@@ -274,7 +260,6 @@ public class DriverSpeedBean extends BaseDurationBean
     {
         this.speedScoreHistoryFiftyFive = speedScoreHistoryFiftyFive;
     }
-    
     //SPEED HISTORY 65+
     public String getSpeedScoreHistorySixtyFive()
     {
@@ -285,7 +270,6 @@ public class DriverSpeedBean extends BaseDurationBean
     {
         this.speedScoreHistorySixtyFive = speedScoreHistorySixtyFive;
     }
-
     //DAO PROPERTY
     public ScoreDAO getScoreDAO()
     {
@@ -303,18 +287,14 @@ public class DriverSpeedBean extends BaseDurationBean
     {
         this.eventDAO = eventDAO;
     }
-
-    //DISTANCE PROPERTY
-    public Distance getDistance()
+    
+    @Override
+    public void setDuration(Duration duration)
     {
-        return distance;
-    }
-    public void setDistance(Distance distance)
-    {
-        this.distance = distance;
+        super.setDuration(duration);
         init();
     }
-
+    
     //SPEEDING EVENTS LIST
     public List<SpeedingEvent> getSpeedingEvents()
     {
@@ -322,7 +302,7 @@ public class DriverSpeedBean extends BaseDurationBean
         types.add(93);
         
         List<Event> tempEvents = new ArrayList<Event>();
-        tempEvents = eventDAO.getEventsForDriverByMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), types);
+        tempEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), getStartDate(), getEndDate(), types);
        
         for(Event event: tempEvents)
         {
@@ -334,15 +314,6 @@ public class DriverSpeedBean extends BaseDurationBean
    
     public void setSpeedingEvents(List<SpeedingEvent> speedingEvents) {
         this.speedingEvents = speedingEvents;
-    }
-    
-    //DRIVER NAME PROPERTY
-    public String getDriverName() {
-        setDriverName(navigation.getDriver().getPerson().getFirst() + " " + navigation.getDriver().getPerson().getLast());
-        return driverName;
-    }
-    public void setDriverName(String driverName) {
-        this.driverName = driverName;
     }
 
     //NAVIGATION PROPERTY

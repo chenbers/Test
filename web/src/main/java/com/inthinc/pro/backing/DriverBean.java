@@ -35,11 +35,9 @@ public class DriverBean extends BaseDurationBean
     private ScoreDAO    scoreDAO;
     private MpgDAO      mpgDAO;
     private EventDAO    eventDAO;
-    private Distance    distance = Distance.FIVEHUNDRED;
  
     private TripDisplay lastTrip;
     private List<Event> violationEvents;
-    private String      driverName;  
     private Integer     overallScore;
     private String      overallScoreHistory;
     private String      overallScoreStyle;
@@ -51,8 +49,6 @@ public class DriverBean extends BaseDurationBean
 
     private void initOverallScore()
     {
-        logger.debug("## initOverallScore()");
-        //ScoreableEntity overallSe = scoreDAO.getAverageScoreByTypeAndMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), ScoreType.SCORE_OVERALL);
         ScoreableEntity overallSe = scoreDAO.getDriverAverageScoreByType(navigation.getDriver().getDriverID(), getDuration(), ScoreType.SCORE_OVERALL);
         
         if (overallSe == null)
@@ -117,16 +113,7 @@ public class DriverBean extends BaseDurationBean
 	public void setCoachingHistory(String coachingHistory) {
 		this.coachingHistory = coachingHistory;
 	}
-	
-	//DRIVER NAME properties
-	public String getDriverName()
-	{
-	    setDriverName(navigation.getDriver().getPerson().getFirst() + " " + navigation.getDriver().getPerson().getLast());
-	    return driverName;
-	}
-	public void setDriverName(String driverName) {
-		this.driverName = driverName;
-	}
+
 	//LAST TRIP
     public TripDisplay getLastTrip()
     {
@@ -155,20 +142,6 @@ public class DriverBean extends BaseDurationBean
 
     public void setViolationEvents(List<Event> violationEvents) {
         this.violationEvents = violationEvents;
-    }
-    //DISTANCE properties
-    public Distance getDistance()
-    {
-        return distance;
-    }
-    public String getDistanceAsString()
-    {   
-        return distance.toString();
-    }
-    public void setDistance(Distance distance)
-    {
-      
-        this.distance = distance;
     }
 
     //DAO PROPERTIES
@@ -237,7 +210,7 @@ public class DriverBean extends BaseDurationBean
         sb.append(GraphicUtil.createMiniLineControlParameters());
         //sb.append(GraphicUtil.createFakeMiniLineData());        
         
-        List<MpgEntity> mpgEntities = mpgDAO.getDriverEntities(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), 10);
+        List<MpgEntity> mpgEntities = mpgDAO.getDriverEntities(navigation.getDriver().getDriverID(), getDuration(), 10);
         
         sb.append("<categories>");
         sb.append(" <category label=\"\"/>");
@@ -288,7 +261,6 @@ public class DriverBean extends BaseDurationBean
         if(navigation.getDriver() == null)
             logger.debug("Driver is null");
         
-        //List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistoryByMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), scoreType);
         List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistory(navigation.getDriver().getDriverID(), getDuration(), scoreType, 10);
         
         //DateFormat dateFormatter = new SimpleDateFormat("MMMMM");
@@ -304,31 +276,7 @@ public class DriverBean extends BaseDurationBean
 
         return sb.toString();
     }
-    
-    public String createLineDef2(ScoreType scoreType)
-    {
-        
-        StringBuffer sb = new StringBuffer();
-        Line line = new Line();
-
-        //Start XML Data
-        sb.append(line.getControlParameters());
-        
-        if(navigation.getDriver() == null)
-            logger.debug("Driver is null");
-        
-        List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistoryByMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), scoreType);
-        for(ScoreableEntity e : scoreList)
-        {
-            sb.append(line.getChartItem(new Object[] {(double)(e.getScore() / 10.0d), e.getIdentifier()}));
-        }
-
-        //End XML Data
-        sb.append(line.getClose());
-
-        return sb.toString();
-    }
-
+  
     //NAVIGATION BEAN PROPERTIES
     public NavigationBean getNavigation()
     {

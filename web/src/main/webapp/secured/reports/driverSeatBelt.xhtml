@@ -15,11 +15,13 @@
 	<ui:define name="content">
 <div id="wrapper">
 
-<ul id="grid_nav">
-	<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
-	<li class="l grid_title">Driver Performance: <h:outputText> #{driverBean.driverName}</h:outputText></li>
-	<li class="l divider"><img src="/images/grid_nav_divider.png" /></li>
-</ul>
+<h:form>
+	<ul id="grid_nav">
+		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
+		<li class="l grid_title">Driver Seat Belt Performance:&#160;<h:commandLink action="go_driver" value="#{navigationBean.driver.person.fullName}" /></li>
+		<li class="l divider"><img src="/images/grid_nav_divider.png" /></li>
+	</ul>
+</h:form>
 
 <table width="940" border="0" cellspacing="0" cellpadding="0" align="center" class="dash_table">
   <tr>
@@ -29,33 +31,45 @@
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="line">Seat Belt</span>
-						<a4j:form id="overall-form"> 
-							<span class="panel_links"><h:outputText>Graph the last:&#160;</h:outputText>
-								<a4j:commandLink title="#{messages.miles500}" immediate="true"
-									styleClass="#{(driverSeatBeltBean.distance eq 'FIVEHUNDRED') ? 'on' : ''}"
-									reRender="overall-form,overallPanel" value="#{messages.miles500}">
-									<a4j:actionparam name="distance" assignTo="#{driverSeatBeltBean.distance}"	value="FIVEHUNDRED" />
+						<a4j:region id="dateLinksForm_region">
+							<a4j:form id="dateLinksForm">
+							<span class="panel_links">
+								<a4j:status id="dateLinksStatus" for="dateLinksForm_region">
+									<f:facet name="start">
+										<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
+									</f:facet>
+								</a4j:status>
+								<rich:spacer width="10" />
+								<a4j:commandLink title="#{messages.duration_days}" immediate="true"
+									styleClass="#{(driverSeatBeltBean.duration eq 'DAYS') ? 'on' : ''}"		
+									reRender="dateLinksForm,overallPanel,eventsTable"
+									value="#{messages.duration_days}">
+									<a4j:actionparam name="duration" assignTo="#{driverSeatBeltBean.duration}"	value="DAYS" />
 								</a4j:commandLink>
-							<h:outputText value=" " />
-								<a4j:commandLink title="#{messages.miles1000}" immediate="true"
-									styleClass="#{(driverSeatBeltBean.distance eq 'ONETHOUSAND') ? 'on' : ''}"
-									reRender="overall-form,overallPanel" value="#{messages.miles1000}">
-									<a4j:actionparam name="distance" assignTo="#{driverSeatBeltBean.distance}"	value="ONETHOUSAND" />
+								<rich:spacer width="5"></rich:spacer>
+								<a4j:commandLink title="#{messages.duration_three}" immediate="true"
+									styleClass="#{(driverSeatBeltBean.duration eq 'THREE') ? 'on' : ''}"	
+									reRender="dateLinksForm,overallPanel,eventsTable"
+									value="#{messages.duration_three}">
+									<a4j:actionparam name="duration" assignTo="#{driverSeatBeltBean.duration}"	value="THREE" />
 								</a4j:commandLink>
-							<h:outputText value=" " />
-								<a4j:commandLink title="#{messages.miles5000}" immediate="true"
-									styleClass="#{(driverSeatBeltBean.distance eq 'FIVETHOUSAND') ? 'on' : ''}"
-									reRender="overall-form,overallPanel" value="#{messages.miles5000}">
-									<a4j:actionparam name="distance" assignTo="#{driverSeatBeltBean.distance}"	value="FIVETHOUSAND" />
+								<rich:spacer width="5"></rich:spacer>
+								<a4j:commandLink title="#{messages.duration_six}" immediate="true"
+									styleClass="#{(driverSeatBeltBean.duration eq 'SIX') ? 'on' : ''}"	
+									reRender="dateLinksForm,overallPanel,eventsTable"
+									value="#{messages.duration_six}">
+									<a4j:actionparam name="duration" assignTo="#{driverSeatBeltBean.duration}"	value="SIX" />
 								</a4j:commandLink>
-							<h:outputText value=" " />
-								 <a4j:commandLink title="#{messages.miles10000}" immediate="true"
-									styleClass="#{(driverSeatBeltBean.distance eq 'TENTHOUSAND') ? 'on' : ''}"
-									reRender="overall-form,overallPanel" value="#{messages.miles10000}">
-									<a4j:actionparam name="distance" assignTo="#{driverSeatBeltBean.distance}"	value="TENTHOUSAND" />
+								<rich:spacer width="5"></rich:spacer>
+								<a4j:commandLink title="#{messages.duration_twelve}" immediate="true"
+									styleClass="#{(driverSeatBeltBean.duration eq 'TWELVE') ? 'on' : ''}"	
+									reRender="dateLinksForm,overallPanel,eventsTable"
+									value="#{messages.duration_twelve}">
+									<a4j:actionparam name="duration" assignTo="#{driverSeatBeltBean.duration}"	value="TWELVE" />
 								</a4j:commandLink>
-							</span>
-						</a4j:form>
+								</span>
+							</a4j:form>
+							</a4j:region>
 					</div>
 				</div>
 				<div class="panel_w">
@@ -127,9 +141,9 @@
 				  <div class="panel_content">
 				     
 
-			<div class="datagrid">
+			<rich:panel id="eventsTable" bodyClass="datagrid">
 				<!-- Start Event table --> 
-					<h:form id="eventTable">
+					<h:form id="eventTableForm">
 						<rich:dataTable 
 						value="#{driverSeatBeltBean.seatBeltEvents}" 
 						id="items"
@@ -182,7 +196,7 @@
 						</rich:dataTable>
 					</h:form> 
 				<!-- End Event table -->
-				</div>
+				</rich:panel>
 				</div>
 				</div>
 				</div>

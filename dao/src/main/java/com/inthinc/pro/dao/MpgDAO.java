@@ -19,5 +19,14 @@ public interface MpgDAO extends GenericDAO<MpgEntity, Integer>
      */
     List<MpgEntity> getEntities(Group group, Duration duration);
     
-    List<MpgEntity> getDriverEntities(Integer driverID, Integer mileage, Integer count);
+    
+   /**
+    * Retrieve a list of MpgEntity objects for a driver.
+    * 
+    * @param driverID
+    * @param mileage
+    * @param count
+    * @return
+    */
+    List<MpgEntity> getDriverEntities(Integer driverID, Duration duration, Integer count);
 }
