@@ -18,13 +18,14 @@ import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Distance;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SpeedingEvent;
 
-public class DriverSpeedBean extends BaseBean
+public class DriverSpeedBean extends BaseDurationBean
 {
     private static final Logger logger = Logger.getLogger(DriverSpeedBean.class);
     private NavigationBean  navigation;
@@ -33,7 +34,7 @@ public class DriverSpeedBean extends BaseBean
     
     private String          driverName;
     private Distance        distance = Distance.FIVEHUNDRED;
-    
+
     private Integer         speedScoreOverall;
     private String          speedScoreOverallStyle;
     private Integer         speedScoreTwentyOne;
@@ -65,7 +66,8 @@ public class DriverSpeedBean extends BaseBean
         }
         int driverID = navigation.getDriver().getDriverID();
         
-        Map<ScoreType, ScoreableEntity> scoreMap = scoreDAO.getScoreBreakdownByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING);
+        //Map<ScoreType, ScoreableEntity> scoreMap = scoreDAO.getScoreBreakdownByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING);
+        Map<ScoreType, ScoreableEntity> scoreMap = scoreDAO.getDriverScoreBreakdownByType(driverID, getDuration(), ScoreType.SCORE_SPEEDING);
         
 //        ScoreableEntity se = scoreDAO.getAverageScoreByTypeAndMiles(driverID, dist, ScoreType.SCORE_SPEEDING);
         ScoreableEntity se = scoreMap.get(ScoreType.SCORE_SPEEDING);
@@ -101,7 +103,7 @@ public class DriverSpeedBean extends BaseBean
         //Start XML Data
         sb.append(line.getControlParameters());
         
-        List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistoryByMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), scoreType);
+        List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistory(navigation.getDriver().getDriverID(), getDuration(), scoreType, 10);
         for(ScoreableEntity e : scoreList)
         {
             sb.append(line.getChartItem(new Object[] {(double)(e.getScore() / 10.0d), e.getIdentifier()}));

@@ -18,13 +18,14 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.AggressiveDrivingEvent;
 import com.inthinc.pro.model.Distance;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SeatBeltEvent;
 import com.inthinc.pro.model.SpeedingEvent;
 
-public class DriverSeatBeltBean extends BaseBean
+public class DriverSeatBeltBean extends BaseDurationBean
 {
     private static final Logger logger = Logger.getLogger(DriverSeatBeltBean.class);
     
@@ -46,7 +47,8 @@ public class DriverSeatBeltBean extends BaseBean
     {
         logger.debug("##### initStyle()  driverid:  " + navigation.getDriver().getDriverID());
         
-        ScoreableEntity seatBeltSe = scoreDAO.getAverageScoreByTypeAndMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), ScoreType.SCORE_SEATBELT);
+        //ScoreableEntity seatBeltSe = scoreDAO.getAverageScoreByTypeAndMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), ScoreType.SCORE_SEATBELT);
+        ScoreableEntity seatBeltSe = scoreDAO.getDriverAverageScoreByType(navigation.getDriver().getDriverID(), getDuration(), ScoreType.SCORE_SEATBELT);
         if (seatBeltSe == null)
             setSeatBeltScore(0);
         else setSeatBeltScore(seatBeltSe.getScore());
@@ -92,7 +94,8 @@ public class DriverSeatBeltBean extends BaseBean
         //Start XML Data
         sb.append(line.getControlParameters());
         
-        List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistoryByMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), scoreType);
+        //List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistoryByMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), scoreType);
+        List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistory(navigation.getDriver().getDriverID(), getDuration(), scoreType, 10);
         for(ScoreableEntity e : scoreList)
         {
             sb.append(line.getChartItem(new Object[] {(double)(e.getScore() / 10.0d), e.getIdentifier()}));

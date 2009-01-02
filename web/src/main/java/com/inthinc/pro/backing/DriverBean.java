@@ -27,7 +27,7 @@ import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.util.GraphicUtil;
 
 
-public class DriverBean extends BaseBean
+public class DriverBean extends BaseDurationBean
 {
 	private static final Logger logger = Logger.getLogger(DriverBean.class);
 	
@@ -36,7 +36,7 @@ public class DriverBean extends BaseBean
     private MpgDAO      mpgDAO;
     private EventDAO    eventDAO;
     private Distance    distance = Distance.FIVEHUNDRED;
-    private Duration    duration = Duration.THREE;
+ 
     private TripDisplay lastTrip;
     private List<Event> violationEvents;
     private String      driverName;  
@@ -53,7 +53,7 @@ public class DriverBean extends BaseBean
     {
         logger.debug("## initOverallScore()");
         //ScoreableEntity overallSe = scoreDAO.getAverageScoreByTypeAndMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), ScoreType.SCORE_OVERALL);
-        ScoreableEntity overallSe = scoreDAO.getDriverAverageScoreByType(navigation.getDriver().getDriverID(), duration, ScoreType.SCORE_OVERALL);
+        ScoreableEntity overallSe = scoreDAO.getDriverAverageScoreByType(navigation.getDriver().getDriverID(), getDuration(), ScoreType.SCORE_OVERALL);
         
         if (overallSe == null)
             setOverallScore(0);
@@ -289,7 +289,7 @@ public class DriverBean extends BaseBean
             logger.debug("Driver is null");
         
         //List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistoryByMiles(navigation.getDriver().getDriverID(), distance.getNumberOfMiles(), scoreType);
-        List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistory(navigation.getDriver().getDriverID(), duration, scoreType, 10);
+        List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistory(navigation.getDriver().getDriverID(), getDuration(), scoreType, 10);
         
         //DateFormat dateFormatter = new SimpleDateFormat("MMMMM");
         for(ScoreableEntity e : scoreList)

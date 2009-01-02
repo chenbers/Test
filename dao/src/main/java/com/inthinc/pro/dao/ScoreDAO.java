@@ -211,6 +211,17 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      */
     Map<ScoreType, ScoreableEntity> getScoreBreakdownByTypeAndMiles(Integer driverID, Integer milesBack, ScoreType scoreType);
 
+    /**
+     * Retrieve the score breakdown for the specified driver and mileage and score type.  The scoreType and all of it's subTypes
+     * are included in the return map.
+     * 
+     * @param driverID
+     * @param milesBack
+     * @param scoreType
+     * @return  Map with scoreType as key and the scorableEntity for that scoreType.
+     */
+    Map<ScoreType, ScoreableEntity> getDriverScoreBreakdownByType(Integer driverID, Duration duration, ScoreType scoreType);
+
 
     /**
      * Retrieve the individual lines in the Idling Report.
