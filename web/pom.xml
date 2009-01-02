@@ -16,7 +16,8 @@
 			<id>local</id>
 			<activation>
 				<property>
-					<name>!env</name>
+					<name>env</name>
+                    <value>local</value>
 				</property>
 			</activation>
 			<properties>
@@ -365,13 +366,13 @@
 		</dependency>
 		<dependency>
 			<groupId>easymock</groupId>
-			<artifactId>easymock</artifactId>
+			<artifactId>org.easymock</artifactId>
 			<version>2.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>easymock</groupId>
-			<artifactId>easymockclassextension</artifactId>
+			<artifactId>org.easymockclassextension</artifactId>
 			<version>2.2</version>
 			<scope>test</scope>
 		</dependency>
