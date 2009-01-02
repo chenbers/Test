@@ -585,7 +585,8 @@ public class ReportServiceIntegrationTest
         System.out.println("***** end *****");           
     }  
     
-    @Test    
+    @Test  
+    @Ignore
     public void getDVScoresByGSE()
     {
         DVQMapHessianDAO dvqmDAO = new DVQMapHessianDAO();
