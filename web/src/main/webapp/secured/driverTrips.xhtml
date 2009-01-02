@@ -384,6 +384,8 @@
 			</div>
 			<div class="panel_w">
 			  <rich:panel bodyClass="panel_content" id="selectedTripMap">
+			  <c:if test="#{driverTripsBean.numTrips gt 0 ? true : false}">
+			  
 			  <h:panelGroup styleClass="map-border" layout="block">
 				<div id="map-canvas" style="width:588px;height:400px;border:0"></div>
 				</h:panelGroup>
@@ -407,7 +409,7 @@
   						map.setMapType(G_NORMAL_MAP);
 						
 				    function createMarker(point, message, iconImage)
-				        {
+				    {
 				          var markerIcon = new GIcon(baseIcon);
 				          markerIcon.image = iconImage;
 	
@@ -419,7 +421,12 @@
 				            marker.openInfoWindowHtml("<b>" + message + "</b>");
 				          });
 				          return marker;
-				        }
+				    }
+
+					function bodyUnload()
+					{
+						GUnload();
+					}
 
 			   		function drawSelectedTrips()
 			   		{
@@ -436,8 +443,7 @@
 								<ui:repeat value="#{trip.route}" var="rt">
 										new GLatLng(#{rt.lat}, #{rt.lng}),
 								</ui:repeat>
-		    			  		new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng})
-
+		    			  				new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng})
 								], "#0000ff", 6);
 								map.addOverlay(polyline);
 
@@ -524,6 +530,12 @@
 				    map.setCenter(bounds.getCenter());
     				
   					</script> 
+			</c:if>
+  					
+			<c:if test="#{driverTripsBean.numTrips lt 1 ? true : false}">
+				<h2>#{messages.no_trips_found}</h2>
+			</c:if>
+  					
 			  </rich:panel>
 			</div>
 			<div class="panel_sw">

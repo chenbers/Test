@@ -384,6 +384,7 @@
 			</div>
 			<div class="panel_w">
 			  <rich:panel bodyClass="panel_content" id="selectedTripMap">
+			  <c:if test="#{vehicleTripsBean.numTrips gt 0 ? true : false}">
 			  <h:panelGroup styleClass="map-border" layout="block">
 				<div id="map-canvas" style="width:588px;height:400px;border:0"></div>
 				</h:panelGroup>
@@ -523,7 +524,12 @@
 				    map.setZoom(map.getBoundsZoomLevel(bounds));
 				    map.setCenter(bounds.getCenter());
     				
-  					</script> 
+  					</script>
+  					</c:if>
+  					
+  					<c:if test="#{vehicleTripsBean.numTrips lt 1 ? true : false}">
+  						<h2>#{messages.no_trips_found}</h2>
+  					</c:if> 
 			  </rich:panel>
 			</div>
 			<div class="panel_sw">

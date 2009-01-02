@@ -5,6 +5,7 @@
   			xmlns:rich="http://richfaces.org/rich"
   			xmlns:a4j="http://richfaces.org/a4j"
   			xmlns:f="http://java.sun.com/jsf/core"
+  			xmlns:c="http://java.sun.com/jstl/core"
   			xmlns:iwi="http://pro.tiwi.com/jsf">
 
 	<ui:define name="scripts">
@@ -267,7 +268,11 @@
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="map">Last Trip</span>
+						<span class="map">Last Trip
+						<c:if test="#{vehicleBean.lastTrip ne null}">
+							<h:outputText value=": #{vehicleBean.lastTrip.trip.endTime}" />
+						</c:if>
+						</span>
 						<span class="panel_links"><h:form><h:commandLink value="view all trips" action="go_vehicleTrips">
 						</h:commandLink></h:form></span>
 					</div>

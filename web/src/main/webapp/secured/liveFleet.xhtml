@@ -45,7 +45,6 @@
         	return marker;
         }
 
-
 		function showDriver(lat, lng, divId)
 		{
 			var point = new GLatLng(lat, lng);
@@ -116,7 +115,8 @@
    	    }
 
 		//Process form if user pressed enter in form fields.
-   		function checkEnter(e){ 
+   		function checkEnter(e)
+   		{ 
    			var characterCode;
 
    			if(e.which){ 
@@ -135,6 +135,11 @@
    			else
    	   			{	return true;  }
    			}
+
+		function bodyUnload()
+		{
+			GUnload();
+		}
 	    
 	</script>	
 	</ui:define>
