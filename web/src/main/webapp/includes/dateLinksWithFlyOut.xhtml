@@ -80,17 +80,7 @@
 					<f:param name="groupID" value="#{groupID}" />
 				</c:if>
 			</h:commandLink> </span>
-			<rich:contextMenu event="onclick" attachTiming="onavailable" submitMode="server"
-				attached="true" attachTo="#{ajaxForm}_toolsId">
-				<rich:menuItem ajaxSingle="true" disabled="true" iconDisabled="/images/ico_email.gif"
-					icon="/images/ico_email.gif" value="Email Report"
-					id="#{ajaxForm}_email">
-				</rich:menuItem>
-
-				<rich:menuItem ajaxSingle="true" iconDisabled="/images/ico_pdf.gif" disabled="#{reportBean eq null?'true':'false'}"
-					icon="/images/ico_pdf.gif" value="Export To PDF" action="#{reportBean.exportToPDF}" id="export">
-				</rich:menuItem>
-			</rich:contextMenu>
+			
 		</a4j:form>
 	</a4j:region>
 </ui:composition>
