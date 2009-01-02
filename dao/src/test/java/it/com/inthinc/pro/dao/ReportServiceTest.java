@@ -78,6 +78,7 @@ public class ReportServiceTest
     }
     
     @Test
+    @Ignore
     public void getScores()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -93,6 +94,7 @@ public class ReportServiceTest
     }
 
     @Test
+    @Ignore
     public void getScoreBreakdown()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -107,6 +109,7 @@ public class ReportServiceTest
     }
 
     @Test
+    @Ignore
     public void getScoreTrend()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -132,6 +135,7 @@ public class ReportServiceTest
         
     }
     @Test
+    @Ignore
     public void mpg()
     {
         MpgHessianDAO mpgDAO = new MpgHessianDAO();
@@ -172,6 +176,7 @@ public class ReportServiceTest
     }
     
     @Test
+    @Ignore
     public void getTopBottomFiveScores()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -208,6 +213,7 @@ public class ReportServiceTest
     
     
     @Test
+    @Ignore
     public void getAverageScoreByTypeAndMiles()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -221,6 +227,7 @@ public class ReportServiceTest
     }
     
     @Test
+    @Ignore
     public void getDriverScoreHistoryByMiles()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -237,6 +244,7 @@ public class ReportServiceTest
     }
 
     @Test
+    @Ignore
     public void getScoreBreakdownByTypeAndMiles()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
