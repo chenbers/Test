@@ -23,10 +23,6 @@
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_vehicle}" /></f:facet>
       <h:outputText value="#{item.vehicle.name}" />
     </rich:column>
-    <rich:column rendered="#{devicesBean.tableColumns['baselineID'].visible}" sortBy="#{item.baselineID}">
-      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_baselineID}" /></f:facet>
-      <h:outputText value="#{item.baselineID}" />
-    </rich:column>
     <rich:column rendered="#{devicesBean.tableColumns['imei'].visible}" sortBy="#{item.imei}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_imei}" /></f:facet>
       <h:outputText value="#{item.imei}" />

@@ -1107,7 +1107,7 @@ public class MockData
         for (int i = 0; i < numDevices; i++)
         {
             int id = idOffset+i+1;
-            Device device = createDevice(id, accountID, randomInt(0, Integer.MAX_VALUE), DeviceStatus.values()[randomInt(0, 2)], "DEVICE" + id, String.valueOf(randomInt(10000,
+            Device device = createDevice(id, accountID, DeviceStatus.values()[randomInt(0, 2)], "DEVICE" + id, String.valueOf(randomInt(10000,
                     Integer.MAX_VALUE)), String.valueOf(randomInt(10000, Integer.MAX_VALUE)), randomPhone(), randomPhone(), new Date());
             storeObject(device);
             deviceList.add(device);
@@ -1115,13 +1115,11 @@ public class MockData
         return deviceList;
     }
 
-    private Device createDevice(Integer id, Integer accountID, Integer baselineID, DeviceStatus status, String name, String imei, String sim, String phone, String ephone,
-            Date activated)
+    private Device createDevice(Integer id, Integer accountID, DeviceStatus status, String name, String imei, String sim, String phone, String ephone, Date activated)
     {
         final Device device = new Device();
         device.setDeviceID(id);
         device.setAccountID(accountID);
-        device.setBaselineID(baselineID);
         device.setStatus(status);
         device.setName(name);
         device.setImei(imei);

@@ -25,8 +25,6 @@ public class Device extends BaseEntity
     private Integer           accountID;
     @Column(updateable = false)
     private Integer           vehicleID;
-    @Column(name = "baseID")
-    private Integer           baselineID;
     private DeviceStatus      status;
     private String            name;
     @Column(name = "mcmid")
@@ -53,12 +51,11 @@ public class Device extends BaseEntity
     {
         super();
     }
-    public Device(Integer deviceID, Integer accountID, Integer baselineID, DeviceStatus status, String name, String imei, String sim, String phone, String ephone)
+    public Device(Integer deviceID, Integer accountID, DeviceStatus status, String name, String imei, String sim, String phone, String ephone)
     {
         super();
         this.deviceID = deviceID;
         this.accountID = accountID;
-        this.baselineID = baselineID;
         this.status = status;
         this.name = name;
         this.imei = imei;
@@ -95,16 +92,6 @@ public class Device extends BaseEntity
     public void setVehicleID(Integer vehicleID)
     {
         this.vehicleID = vehicleID;
-    }
-
-    public Integer getBaselineID()
-    {
-        return baselineID;
-    }
-
-    public void setBaselineID(Integer baseID)
-    {
-        this.baselineID = baseID;
     }
 
     public DeviceStatus getStatus()

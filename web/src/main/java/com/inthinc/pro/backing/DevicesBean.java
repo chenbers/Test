@@ -28,7 +28,7 @@ import com.inthinc.pro.util.MessageUtil;
 public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 {
     private static final List<String>              AVAILABLE_COLUMNS;
-    private static final int[]                     DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 3, 5, 8 };
+    private static final int[]                     DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 4, 7 };
 
     private static final Map<String, DeviceStatus> STATUSES;
 
@@ -38,7 +38,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         AVAILABLE_COLUMNS = new ArrayList<String>();
         AVAILABLE_COLUMNS.add("name");
         AVAILABLE_COLUMNS.add("vehicle");
-        AVAILABLE_COLUMNS.add("baselineID");
         AVAILABLE_COLUMNS.add("imei");
         AVAILABLE_COLUMNS.add("sim");
         AVAILABLE_COLUMNS.add("phone");

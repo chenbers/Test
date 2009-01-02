@@ -22,7 +22,6 @@ public class DevicesBeanTest extends BaseAdminBeanTest<DevicesBean.DeviceView>
     @Override
     protected void populate(DeviceView editItem, BaseAdminBean<DevicesBean.DeviceView> adminBean)
     {
-        editItem.setBaselineID(1234);
         editItem.setStatus(DeviceStatus.ACTIVE);
         editItem.setName("DEV123");
         editItem.setImei("123456");
