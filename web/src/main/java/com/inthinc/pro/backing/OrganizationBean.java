@@ -22,6 +22,7 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupStatus;
@@ -440,8 +441,9 @@ public class OrganizationBean extends BaseBean
 
     public String getAccountName()
     {
-        //return getAccountDAO().findByID(getAccountID()).getAcctName();
-        return "Fleet USA";
+        Account account = getAccountDAO().findByID(getAccountID());
+        String name = account.getAcctName();
+        return name;
 
     }
 

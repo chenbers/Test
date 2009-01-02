@@ -4,16 +4,17 @@ public class LineGraphData
 {
     private String seriesID;
    
-    private Integer durationPoint;
+    private String category;
+   
     private Float score;
     private String label;
     
     public LineGraphData(){};
     
-    public LineGraphData(String seriesID,Integer durationPoint,Float score,String label){
+    public LineGraphData(String seriesID,String category,Float score,String label){
         this.seriesID = seriesID;
         this.label = label;
-        this.durationPoint = durationPoint;
+        this.category = category;
         this.score = score;
     }
     
@@ -21,15 +22,7 @@ public class LineGraphData
     {
         return seriesID;
     }
-    public Integer getDurationPoint()
-    {
-        return durationPoint;
-    }
-
-    public void setDurationPoint(Integer durationPoint)
-    {
-        this.durationPoint = durationPoint;
-    }
+     
 
     public Float getScore()
     {
@@ -53,6 +46,16 @@ public class LineGraphData
     public void setLabel(String label)
     {
         this.label = label;
+    }
+    
+    public String getCategory()
+    {
+        return category;
+    }
+
+    public void setCategory(String category)
+    {
+        this.category = category;
     }
     
 

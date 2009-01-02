@@ -47,6 +47,15 @@ public class ScoreableEntity extends BaseEntity implements Comparable<ScoreableE
 	public void setScore(Integer score) {
 		this.score = score;
 	}
+
+	public Float getScoreAsFloat(){
+	    Float fScore = null;
+	    if(score != null){
+	        fScore = new Float((this.getScore()==null) ? 0 : this.getScore() / 10.0);
+	    }
+	    
+	    return fScore;
+	}
     public Integer getDate()
     {
         return date;

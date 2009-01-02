@@ -49,15 +49,49 @@ public class GraphicUtil {
 		String lbl = new String();
 		StringBuffer sb = new StringBuffer();
 		
-        if ( duration == Duration.DAYS ) {
+		List<String> monthList = createMonthList(duration);
+		for(String month:monthList)
+		{
+		    sb.append("<category label=\'"); 
+		    sb.append(month);
+            sb.append("\'/>");
+		}
+		
+//        if ( duration == Duration.DAYS ) {
+//            for ( int i = 1; i < 31; i++ ) {
+//                sb.append("<category label=\'");
+//                sb.append(String.valueOf(i));
+//                sb.append("\'/>");
+//            }       
+//        } else {
+//            int num = convertToMonths(duration);
+//                        
+//            //What month is it? Remember, implemented with jan as 0. Also,
+//            //add 12 so the short date ranges work...
+//            GregorianCalendar calendar = new GregorianCalendar();       
+//            int currentMonth = calendar.get(GregorianCalendar.MONTH)+1;
+//            
+//            //Start there
+//            for ( int i = currentMonth + 12 - num; i < currentMonth + 12 ; i++ ) {
+//                sb.append("<category label=\'");
+//                sb.append(monthLbls.get(i));
+//                sb.append("\'/>");
+//            }           
+//        }
+		
+		return sb.toString();
+	}
+	
+	public static List<String> createMonthList(Duration duration)
+	{
+	    List<String> monthList = new ArrayList<String>();
+	    
+	    if ( duration == Duration.DAYS ) {
             for ( int i = 1; i < 31; i++ ) {
-                sb.append("<category label=\'");
-                sb.append(String.valueOf(i));
-                sb.append("\'/>");
+                monthList.add(String.valueOf(i));
             }       
         } else {
-            int num = convertToMonths(duration);
-                        
+            int num = convertToMonths(duration);             
             //What month is it? Remember, implemented with jan as 0. Also,
             //add 12 so the short date ranges work...
             GregorianCalendar calendar = new GregorianCalendar();       
@@ -65,14 +99,12 @@ public class GraphicUtil {
             
             //Start there
             for ( int i = currentMonth + 12 - num; i < currentMonth + 12 ; i++ ) {
-                sb.append("<category label=\'");
-                sb.append(monthLbls.get(i));
-                sb.append("\'/>");
+                monthList.add(monthLbls.get(i));
             }           
         }
-		
-		return sb.toString();
-	}	
+	    
+	    return monthList;
+	}
 	
 	public static int convertToMonths(Duration duration) {
 	    int months = 0;

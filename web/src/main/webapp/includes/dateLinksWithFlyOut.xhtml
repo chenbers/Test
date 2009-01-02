@@ -4,7 +4,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:h="http://java.sun.com/jsf/html">
-	
+
 	<!-- 
 	Parameters:
 		reportBean - needs to be a bean that implements the action - exportToPDF
@@ -65,10 +65,10 @@
 					value="TWELVE" />
 			</a4j:commandLink> </span>
 
-			<span class="panel_ico"> <img
-				src="#{facesContext.externalContext.request.contextPath}/images/ico_tools.png"
-				id="#{ajaxForm}_toolsId" /><rich:spacer width="2" /> <h:commandLink
-				action="#{flyOutBean.flyNavRuleAction}">
+			<span class="panel_ico">
+				<img id="#{ajaxForm}_toolsId"
+				src="#{facesContext.externalContext.request.contextPath}/images/ico_tools.png" /><rich:spacer
+				width="2" /> <h:commandLink action="#{flyOutBean.flyNavRuleAction}">
 				<img
 					src="#{facesContext.externalContext.request.contextPath}/images/#{flyOutImage}"
 					border="0" />
@@ -80,7 +80,20 @@
 					<f:param name="groupID" value="#{groupID}" />
 				</c:if>
 			</h:commandLink> </span>
-			
+			<rich:contextMenu event="oncontextmenu" attachTiming="onavailable"
+				submitMode="server" attachTo="#{ajaxForm}_toolsId">
+				<rich:menuItem ajaxSingle="true" disabled="true"
+					iconDisabled="/images/ico_email.gif" icon="/images/ico_email.gif"
+					value="Email Report" id="#{ajaxForm}_email">
+				</rich:menuItem>
+
+				<rich:menuItem ajaxSingle="true" iconDisabled="/images/ico_pdf.gif"
+					disabled="#{reportBean eq null?'true':'false'}"
+					icon="/images/ico_pdf.gif" value="Export To PDF"
+					action="#{reportBean.exportToPDF}" id="export">
+				</rich:menuItem>
+			</rich:contextMenu>
+
 		</a4j:form>
 	</a4j:region>
 </ui:composition>

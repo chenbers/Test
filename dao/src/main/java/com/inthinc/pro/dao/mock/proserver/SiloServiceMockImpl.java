@@ -22,6 +22,7 @@ import com.inthinc.pro.dao.mock.data.MockTimeZones;
 import com.inthinc.pro.dao.mock.data.SearchCriteria;
 import com.inthinc.pro.dao.mock.data.TempConversionUtil;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.AlertCon;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
@@ -938,8 +939,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     @Override
     public Map<String, Object> getAcct(Integer acctID) throws ProDAOException
     {
-        // TODO Auto-generated method stub
-        return null;
+        return doMockLookup(Account.class, "acctID", acctID, "No Account for ID: " + acctID, "getAccount");
     }
 
     @Override

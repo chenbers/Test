@@ -354,11 +354,12 @@ public class TrendBean extends BaseBean
         Map<Integer, List<ScoreableEntity>> groupTrendMap = scoreDAO.getTrendScores(
                 this.navigation.getGroupID(), navigation.getDuration());
         
-        
+        List<String> monthList = GraphicUtil.createMonthList(navigation.getDuration());
         
         for(int i = 0;i < groupTrendMap.size(); i++)
         {
             ScoreableEntity se = s.get(i);
+            ColorSelectorStandard cs = new ColorSelectorStandard();
             List<ScoreableEntity> scoreableEntityList = groupTrendMap.get(se.getEntityID());
             
             // Not a full range, pad w/ zero
@@ -374,12 +375,12 @@ public class TrendBean extends BaseBean
             int index = 0;
             for (int k = 0; k < holes; k++)
             {
-                lineGraphDataList.add(new LineGraphData(se.getEntityID().toString(),index++,0F,se.getIdentifier()));
+                lineGraphDataList.add(new LineGraphData(se.getIdentifier(),monthList.get(index++),0F,se.getIdentifier()));
             }
             for(ScoreableEntity scoreableEntity:scoreableEntityList)
             {
                Float score = new Float((scoreableEntity.getScore()==null) ? 0 : scoreableEntity.getScore() / 10.0);
-               lineGraphDataList.add(new LineGraphData(scoreableEntity.getEntityID().toString(),index++,score,se.getIdentifier()));
+               lineGraphDataList.add(new LineGraphData(se.getIdentifier(),monthList.get(index++),score,se.getIdentifier()));
             }
             
         }
