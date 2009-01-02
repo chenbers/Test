@@ -1084,7 +1084,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
-    public List<Map<String, Object>> getNote(Integer driverID, Integer startDate, Integer endDate, Integer[] types)
+    public List<Map<String, Object>> getDriverNote(Integer driverID, Integer startDate, Integer endDate, Integer[] types)
     {
         List<Event> driverEvents = new ArrayList<Event>();
 
@@ -1117,7 +1117,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         //Date startDate = new Date();
         //Date endDate = calendar.getTime();  // using dates for mock data. no data with miles attributes.
         
-        return getNote(vehicleID, startDate, endDate, types);
+        return getVehicleNote(vehicleID, startDate, endDate, types);
     }
 
     @Override
@@ -1129,7 +1129,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         Date startDate = new Date();
         Date endDate = calendar.getTime();  // using dates for mock data. no data with miles attributes.
         
-        return getNote(driverID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), types);
+        return getDriverNote(driverID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), types);
 
     }
     
@@ -1142,7 +1142,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         Date startDate = new Date();
         Date endDate = calendar.getTime();  // using dates for mock data. no data with miles attributes.
         
-        return getNote(vehicleID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), types);
+        return getVehicleNote(vehicleID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), types);
 
     }
 
