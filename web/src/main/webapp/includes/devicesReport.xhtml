@@ -53,7 +53,7 @@
     				<rich:column rendered="#{deviceColumns['phoneNbr'].visible}" 
     					sortBy="#{item.device.phone}">
       					<f:facet name="header">
-      						<h:outputText value="#{messages.reports_phonenumber}" />
+      						<h:outputText value="#{messages.reports_devicephonenbr}" />
       					</f:facet>
       					<h:outputText value="#{item.device.phone}" />   
     				</rich:column>
@@ -67,7 +67,7 @@
     				<rich:column rendered="#{deviceColumns['emergPhoneNbr'].visible}" 
     					sortBy="#{item.device.ephone}">
       					<f:facet name="header">
-      						<h:outputText value="#{messages.reports_emergphonenbr}" />
+      						<h:outputText value="#{messages.reports_ecallphonenbr}" />
       					</f:facet>
       					<h:outputText value="#{item.device.ephone}" />
     				</rich:column>   		
