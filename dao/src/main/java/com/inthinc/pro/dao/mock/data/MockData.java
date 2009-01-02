@@ -23,7 +23,7 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.AggressiveDrivingEvent;
-import com.inthinc.pro.model.AlertContact;
+import com.inthinc.pro.model.AlertCon;
 import com.inthinc.pro.model.BaseAlert;
 import com.inthinc.pro.model.DVQMap;
 import com.inthinc.pro.model.Device;
@@ -370,7 +370,7 @@ public class MockData
         {
             storeObject(users[userCnt]);
             storeObject(users[userCnt].getPerson());
-            AlertContact contact = new AlertContact();
+            AlertCon contact = new AlertCon();
             contact.setUserID(users[userCnt].getUserID());
             storeObject(contact);
         }

@@ -5,23 +5,21 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.dao.AlertContactDAO;
 import com.inthinc.pro.dao.FindByKey;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
-import com.inthinc.pro.model.AlertContact;
+import com.inthinc.pro.model.AlertCon;
 import com.inthinc.pro.model.Silo;
 
-public class AlertContactHessianDAO extends GenericHessianDAO<AlertContact, Integer> implements AlertContactDAO, FindByKey<AlertContact>
+public class AlertContactHessianDAO extends GenericHessianDAO<AlertCon, Integer> implements AlertContactDAO, FindByKey<AlertCon>
 {
     private static final Logger logger = Logger.getLogger(AlertContactHessianDAO.class);
 
     @Override
     @SuppressWarnings("unchecked")
-    public Integer create(AlertContact entity)
+    public Integer create(AlertCon entity)
     {
-        // if silo id is not provided -- get one from the back end
-        Silo silo = getMapper().convertToModelObject(getSiloService().getNextSilo(), Silo.class);
-        return super.create(silo.getSiloID(), entity);
+        return super.create(entity.getUserID(), entity);
     }
     
-    public AlertContact findByUserID(Integer userID)
+    public AlertCon findByUserID(Integer userID)
     {
         try
         {
@@ -34,7 +32,7 @@ public class AlertContactHessianDAO extends GenericHessianDAO<AlertContact, Inte
     }
 
     @Override
-    public AlertContact findByKey(String key)
+    public AlertCon findByKey(String key)
     {
     	Integer userID = Integer.parseInt(key);
         return findByUserID(userID);

@@ -2,7 +2,7 @@ package com.inthinc.pro.model;
 
 import com.inthinc.pro.dao.annotations.ID;
 
-public class AlertContact extends BaseEntity
+public class AlertCon extends BaseEntity
 {
     @ID
     private Integer userID;
@@ -17,7 +17,7 @@ public class AlertContact extends BaseEntity
     private String priText;
     private String secText;
 
-    public AlertContact()
+    public AlertCon()
     {
         super();
     }

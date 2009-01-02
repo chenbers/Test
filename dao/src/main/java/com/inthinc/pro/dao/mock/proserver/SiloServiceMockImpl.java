@@ -22,7 +22,7 @@ import com.inthinc.pro.dao.mock.data.MockTimeZones;
 import com.inthinc.pro.dao.mock.data.SearchCriteria;
 import com.inthinc.pro.dao.mock.data.TempConversionUtil;
 import com.inthinc.pro.dao.util.DateUtil;
-import com.inthinc.pro.model.AlertContact;
+import com.inthinc.pro.model.AlertCon;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
@@ -91,28 +91,22 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
-    public Map<String, Object> createAlertContact(Integer acctID, Map<String, Object> propertyMap) throws ProDAOException
+    public Map<String, Object> createAlertCon(Integer acctID, Map<String, Object> propertyMap) throws ProDAOException
     {
         // TODO: actually store the object to the mock data
         return createReturnValue("userID", (int) (Math.random() * Integer.MAX_VALUE));
     }
 
     @Override
-    public Map<String, Object> getAlertContact(Integer userID) throws ProDAOException
+    public Map<String, Object> getAlertCon(Integer userID) throws ProDAOException
     {
-        return doMockLookup(AlertContact.class, "userID", userID, "No alert contact for ID: " + userID, "getAlertContact");
+        return doMockLookup(AlertCon.class, "userID", userID, "No alert contact for ID: " + userID, "getAlertContact");
     }
 
     @Override
-    public Map<String, Object> updateAlertContact(Integer userID, Map<String, Object> propertyMap) throws ProDAOException
+    public Map<String, Object> updateAlertCon(Integer userID, Map<String, Object> propertyMap) throws ProDAOException
     {
         return createReturnValue("count", 1);
-    }
-
-    @Override
-    public Map<String, Object> deleteAlertContact(Integer userID) throws ProDAOException
-    {
-        return createReturnValue("count", 0);
     }
     
     @Override

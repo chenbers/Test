@@ -1,18 +1,21 @@
 package com.inthinc.pro.backing;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.MessageSource;
 
 import com.inthinc.pro.dao.AlertContactDAO;
 import com.inthinc.pro.dao.GroupDAO;
-import com.inthinc.pro.model.AlertContact;
+import com.inthinc.pro.model.AlertCon;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.User;
+import com.inthinc.pro.validators.EmailValidator;
 
 public class MyAccountBean extends BaseBean
 {
@@ -21,7 +24,7 @@ public class MyAccountBean extends BaseBean
     private MessageSource messageSource;
     private AlertContactDAO alertContactDAO;
     private GroupDAO groupDAO;
-    private AlertContact alertContact;
+    private AlertCon alertContact;
 
     private String regionName;
     private String teamName;
@@ -41,37 +44,24 @@ public class MyAccountBean extends BaseBean
     private String criticalSelectPhone;
     private String criticalSelectText;
     
-    private UIInput primaryEmailInput;
-    
     public MyAccountBean()
     {
         super();
     }
     
-    public void validateForm(FacesContext context, UIComponent component, Object value)
+    public void validateEmail(FacesContext context, UIComponent component, Object value)
     {
-        if (primaryEmailInput.getLocalValue() != null)
+        String valueStr = (String) value;
+        if (valueStr != null && valueStr.length() > 0)
         {
-            String pE = (String) primaryEmailInput.getLocalValue();
-            pE = (String) primaryEmailInput.getValue();
-            logger.info("validatingForm");
-        }
-        else
-        {
-            logger.info("validatingForm");
+            new EmailValidator().validate(context, component, value);
         }
     }
 
     public String saveFormAction()
     {
         User user = getUser();
-        AlertContact alertContact = getAlertContact();
-        boolean isNew = false;
-        if (alertContact == null)
-        {
-            isNew = true;
-            alertContact = new AlertContact();
-        }
+        AlertCon alertContact = getAlertContact();
 
         if ("0".equals(informationSelectType)) alertContact.setInfo(0);
         else if ("1".equals(informationSelectType)) alertContact.setInfo(new Integer(informationSelectEmail));
@@ -87,7 +77,8 @@ public class MyAccountBean extends BaseBean
         else if ("1".equals(criticalSelectType)) alertContact.setCrit(new Integer(criticalSelectEmail));
         else if ("2".equals(criticalSelectType)) alertContact.setCrit(new Integer(criticalSelectPhone));
         else if ("3".equals(criticalSelectType)) alertContact.setCrit(new Integer(criticalSelectText));
-        
+
+        boolean isNew = alertContactDAO.findByUserID(getUser().getUserID()) == null;
         if (isNew)
         {
             alertContactDAO.create(alertContact.getUserID(), alertContact);
@@ -143,14 +134,14 @@ public class MyAccountBean extends BaseBean
         return result;
     }
 
-    public AlertContact getAlertContact()
+    public AlertCon getAlertContact()
     {
         if (alertContact == null)
         {
             alertContact = alertContactDAO.findByUserID(getUser().getUserID());
             if (alertContact == null)
             {
-                alertContact = new AlertContact();
+                alertContact = new AlertCon();
             }
         }
         return alertContact;
@@ -401,15 +392,4 @@ public class MyAccountBean extends BaseBean
     {
         this.criticalSelectText = criticalSelectText;
     }
-
-    public UIInput getPrimaryEmailInput()
-    {
-        return primaryEmailInput;
-    }
-    
-    public void setPrimaryEmailInput(UIInput value)
-    {
-        this.primaryEmailInput = value;
-    }
-    
 }

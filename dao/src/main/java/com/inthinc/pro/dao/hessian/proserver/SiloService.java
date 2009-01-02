@@ -85,13 +85,11 @@ public interface SiloService extends HessianService
 
     // ------- AlertContact  ----------
     
-    Map<String, Object> createAlertContact(Integer acctID, Map<String, Object> alertContactMap) throws ProDAOException;
+    Map<String, Object> createAlertCon(Integer acctID, Map<String, Object> alertContactMap) throws ProDAOException;
 
-    Map<String, Object> getAlertContact(Integer userID) throws ProDAOException;
+    Map<String, Object> getAlertCon(Integer userID) throws ProDAOException;
 
-    Map<String, Object> updateAlertContact(Integer userID, Map<String, Object> alertContactMap) throws ProDAOException;
-
-    Map<String, Object> deleteAlertContact(Integer userID) throws ProDAOException;
+    Map<String, Object> updateAlertCon(Integer userID, Map<String, Object> alertContactMap) throws ProDAOException;
 
     
     // ------- Driver  ----------

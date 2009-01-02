@@ -92,7 +92,7 @@
 
               <rich:dataTable value="#{mpgBean.mpgEntities}" id="items"
                 var="item" styleClass="datagrid"
-                cellspacing="1" width="100%">
+                rowClasses="trendTableOdd,trendTableEven" cellspacing="1" width="100%">
 
                 <rich:column sortBy="#{item.entity.entityName}" styleClass="alt">
                   <f:facet name="header">

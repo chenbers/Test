@@ -34,44 +34,48 @@ public class ChangePasswordBean extends BaseBean
         super();
     }
     
-    public void validateNewPassword(FacesContext context, UIComponent component, Object value)
+    public void validateMatchingPasswords(FacesContext context, UIComponent component, Object value)
     {
         // if both input components are valid at this point, meaning that they
         // have passed conversion and validation
         if (newPasswordInput.isValid() && confirmPasswordInput.isValid())
         {
-            String oldPassword = (String) value;//oldPasswordInput.getLocalValue();
-            String newPassword = (String) newPasswordInput.getLocalValue();
-            String confirmPassword = (String) confirmPasswordInput.getLocalValue();
-            if (newPassword == null) newPassword = (String) newPasswordInput.getValue();
-            if (confirmPassword == null) confirmPassword = (String) confirmPasswordInput.getValue();
-
+            String newPassword = (String) newPasswordInput.getSubmittedValue();
+            String confirmPassword = (String) confirmPasswordInput.getSubmittedValue();
             if (!newPassword.equals(confirmPassword))
             {
                 FacesMessage message = new FacesMessage();
-                message.setSummary(messageSource.getMessage("updatecred_passwordsDontMatch", null, FacesContext.getCurrentInstance().getExternalContext().getRequestLocale()));
+                message.setSummary(messageSource.getMessage("myAccount_passwords_dont_match", null, FacesContext.getCurrentInstance().getExternalContext().getRequestLocale()));
                 message.setSeverity(FacesMessage.SEVERITY_ERROR);
                 throw new ValidatorException(message);
             }
+        }
+        
+    }
+    
+    public void validateNewPassword(FacesContext context, UIComponent component, Object value)
+    {
+        // if both input components are valid at this point, meaning that they
+        // have passed conversion and validation
+        String submittedPassword = (String) oldPasswordInput.getSubmittedValue();
             
-            User user = getUser();
-            String oldPasswordEncrypted = passwordEncryptor.encryptPassword(oldPassword);
-            String storedPasswordEncryped = user.getPassword();
-            if (!oldPasswordEncrypted.equals(storedPasswordEncryped))
-            {
-                FacesMessage message = new FacesMessage();
-                message.setSummary(messageSource.getMessage("updatecred_passwordsDontMatch", null, FacesContext.getCurrentInstance().getExternalContext().getRequestLocale()));
-                message.setSeverity(FacesMessage.SEVERITY_ERROR);
-                throw new ValidatorException(message);
-            }
+        User user = getUser();
+       // StrongPasswordEncryptor passwordEncryptor2 = new StrongPasswordEncryptor();
+       // String oldPasswordEncrypted = passwordEncryptor2.encryptPassword(submittedPassword);
+        String storedPassword = user.getPassword();
+        if (!passwordEncryptor.checkPassword(submittedPassword, storedPassword))
+        {
+            FacesMessage message = new FacesMessage();
+            message.setSummary(messageSource.getMessage("myAccount_incorrect_password", null, FacesContext.getCurrentInstance().getExternalContext().getRequestLocale()));
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
         }
     }
 
     public String changePasswordAction()
     {
+        String newPasswordEncrypt = passwordEncryptor.encryptPassword((String) newPasswordInput.getValue());
         User user = getUser();
-        String newPasword = (String) newPasswordInput.getValue();
-        String newPasswordEncrypt = passwordEncryptor.encryptPassword(newPasword);
         user.setPassword(newPasswordEncrypt);
         userDAO.update(user);
         return "go_myAccount";

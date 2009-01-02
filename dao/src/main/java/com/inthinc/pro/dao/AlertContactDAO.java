@@ -1,9 +1,9 @@
 package com.inthinc.pro.dao;
 
-import com.inthinc.pro.model.AlertContact;
+import com.inthinc.pro.model.AlertCon;
 
-public interface AlertContactDAO extends GenericDAO<AlertContact, Integer>
+public interface AlertContactDAO extends GenericDAO<AlertCon, Integer>
 {
-  Integer create(AlertContact entity);
-  AlertContact findByUserID(Integer userID);
+  Integer create(AlertCon entity);
+  AlertCon findByUserID(Integer userID);
 }
