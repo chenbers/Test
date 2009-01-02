@@ -212,11 +212,17 @@ public abstract class AbstractMapper implements Mapper
         }
         catch (NoSuchMethodException e)
         {
+            throw new MappingException(e);
         }
         catch (NoSuchFieldException e)
         {
+            throw new MappingException(e);
         }
-        catch (Exception e)
+        catch (IllegalAccessException e)
+        {
+            throw new MappingException(e);
+        }
+        catch (InstantiationException e)
         {
             throw new MappingException(e);
         }
