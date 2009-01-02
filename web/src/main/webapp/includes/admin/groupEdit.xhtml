@@ -40,7 +40,7 @@
 					action="#{organizationBean.update}"
 					reRender="groupPanel,organizationTreePanel">
 					<f:param name="state" value="VIEW" />
-					<button type="submit" class="left"><span class="add"><h:outputText
+					<button type="submit" class="left"><span class="save"><h:outputText
 						value="#{messages.button_save}" /></span></button>
 				</a4j:commandLink>
 				<a4j:commandLink rendered="#{organizationBean.groupState ne 'VIEW'}"
@@ -176,13 +176,12 @@
 					action="#{organizationBean.update}"
 					reRender="groupPanel,organizationTreePanel">
 					<f:param name="state" value="VIEW" />
-					<button type="submit" class="left"><span class="add"><h:outputText
+					<button type="submit" class="left"><span class="save"><h:outputText
 						value="#{messages.button_save}" /></span></button>
 				</a4j:commandLink>
 				<a4j:commandLink rendered="#{organizationBean.groupState ne 'VIEW'}"
-					action="#{organizationBean.changeState}"
+					action="#{organizationBean.view}"
 					reRender="groupPanel,organizationTreePanel" immediate="true">
-					<f:param name="state" value="VIEW" />
 					<button type="submit" class="left"><span class="cancel"><h:outputText
 						value="#{messages.button_cancel}" /></span></button>
 				</a4j:commandLink>
