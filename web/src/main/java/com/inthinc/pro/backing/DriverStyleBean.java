@@ -1,5 +1,7 @@
 package com.inthinc.pro.backing;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -83,9 +85,11 @@ public class DriverStyleBean extends BaseDurationBean
         sb.append(line.getControlParameters());
 
         List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistory(navigation.getDriver().getDriverID(), getDuration(), scoreType, 10);
+        DateFormat dateFormatter = new SimpleDateFormat(getDuration().getDatePattern());
+        
         for(ScoreableEntity e : scoreList)
-        {
-            sb.append(line.getChartItem(new Object[] {(double)(e.getScore() / 10.0d), e.getIdentifier()}));
+        { 
+            sb.append(line.getChartItem(new Object[] { (double)(e.getScore() / 10.0d), dateFormatter.format(e.getCreated()) } ));
         }
 
         //End XML Data

@@ -15,6 +15,7 @@ import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.DVQMap;
 import com.inthinc.pro.model.DriveQMap;
 import com.inthinc.pro.model.Driver;
@@ -322,7 +323,6 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             List<DriveQMap> driveQList = getMapper().convertToModelObject(list, DriveQMap.class);
             
             List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
-            DateFormat dateFormatter = new SimpleDateFormat("MMM");
             
             for (DriveQMap driveQMap  :driveQList)
             {
@@ -332,8 +332,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 entity.setScoreType(scoreType);
                 Integer score = driveQMap.getScoreMap().get(scoreType);
                 entity.setScore((score == null) ? 0 : score);
-                
-                entity.setIdentifier( "" + dateFormatter.format(driveQMap.getCreated()));
+                entity.setCreated(driveQMap.getCreated());
                 scoreList.add(entity);
             }
                 

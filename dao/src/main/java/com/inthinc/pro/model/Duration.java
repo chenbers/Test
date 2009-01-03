@@ -6,11 +6,12 @@ import java.util.Map;
 
 public enum Duration implements BaseEnum
 {
-    DAYS(1, "30 days", 30), THREE(2, "3 months", 90), SIX(3, "6 months", 180), TWELVE(4, "12 months", 360);
+    DAYS(1, "30 days", 30, "dd"), THREE(2, "3 months", 90, "MMM"), SIX(3, "6 months", 180, "MMM"), TWELVE(4, "12 months", 360, "MMM");
 
     private final int numberOfDays;
     private String durationValue;
     private Integer code;
+    private String datePattern;
     private static final Map<Integer, Duration> lookup = new HashMap<Integer, Duration>();
     
     static
@@ -26,11 +27,12 @@ public enum Duration implements BaseEnum
         for(Duration d : EnumSet.allOf(Duration.class))
             codeLookup.put(d.getCode(), d);
     }
-    Duration(Integer code, String durationValue, int numberOfDays)
+    Duration(Integer code, String durationValue, int numberOfDays, String datePattern)
     {
         this.code = code;
         this.durationValue = durationValue;
         this.numberOfDays = numberOfDays;
+        this.datePattern = datePattern;
     }
 
     public int getNumberOfDays()
@@ -58,6 +60,11 @@ public enum Duration implements BaseEnum
     public static Duration valueOf(Integer code)
     {
         return codeLookup.get(code);
+    }
+       
+    public String getDatePattern()
+    {
+        return this.datePattern;
     }
 
 }

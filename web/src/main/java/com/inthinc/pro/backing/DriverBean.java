@@ -243,32 +243,24 @@ public class DriverBean extends BaseDurationBean
             sb.append("<set value=\"" + entity.getHeavyValue() + "\"/>"); 
         }
         sb.append("</dataset>");
-        
-        
         sb.append("</chart>");
         return sb.toString();
      }
     
     public String createLineDef(ScoreType scoreType)
     {
-        
         StringBuffer sb = new StringBuffer();
         Line line = new Line();
 
         //Start XML Data
         sb.append(line.getControlParameters());
         
-        if(navigation.getDriver() == null)
-            logger.debug("Driver is null");
-        
         List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistory(navigation.getDriver().getDriverID(), getDuration(), scoreType, 10);
+        DateFormat dateFormatter = new SimpleDateFormat(getDuration().getDatePattern());
         
-        //DateFormat dateFormatter = new SimpleDateFormat("MMMMM");
         for(ScoreableEntity e : scoreList)
-        {
-            //dateFormatter.f
-            
-            sb.append(line.getChartItem(new Object[] {(double)(e.getScore() / 10.0d), e.getIdentifier()}));
+        { 
+            sb.append(line.getChartItem(new Object[] { (double)(e.getScore() / 10.0d), dateFormatter.format(e.getCreated()) } ));
         }
 
         //End XML Data
