@@ -84,7 +84,10 @@ public class DeviceReportBean extends BaseReportBean
                 Device dev = deviceDAO.findByID(v.getDeviceID());            
  
                 dri = new DeviceReportItem();
+                
                 dri.setDevice(dev);
+                dri.getDevice().setEphone(formatPhone(dri.getDevice().getEphone()));
+                dri.getDevice().setPhone(formatPhone(dri.getDevice().getPhone()));
                 dri.setVehicle(v);
                 
                 this.devicesData.add(dri);

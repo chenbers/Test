@@ -47,7 +47,17 @@ public class BaseReportBean extends BaseBean
     {       
         Float fTmp = new Float(value*10.0);             
         return fTmp.intValue() ;
-    }    
+    }   
+    
+    protected String formatPhone(String incoming) 
+    {
+        return  "(" + 
+            incoming.substring(0,2) +
+                ")" +
+            incoming.substring(3,5) +
+                "-" +
+            incoming.substring(6,9);
+    }
 
     public boolean isMainMenu()
     {
