@@ -2,17 +2,28 @@ package com.inthinc.pro.backing;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletResponse;
+
+import net.sf.jasperreports.engine.JasperPrint;
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
+import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
+import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.reports.ReportRenderer;
+import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.model.PieScoreData;
 import com.inthinc.pro.reports.model.PieScoreRange;
 import com.inthinc.pro.util.GraphicUtil;
@@ -34,8 +45,10 @@ public class BreakdownBean extends BaseDurationBean
     };
 
     private ScoreDAO scoreDAO;
+    private AccountDAO accountDAO;
+  
     private NavigationBean navigation;
-    private ReportRendererBean reportRendererBean;
+    private ReportRenderer reportRenderer;
 
     private String overallPieDef;
     private Integer overallScore;
@@ -221,11 +234,28 @@ public class BreakdownBean extends BaseDurationBean
         format.setMinimumFractionDigits(1);
         String overallScore = format.format((double) ((double) getOverallScore() / (double) 10.0));
 
-        reportRendererBean.exportOverallScoreToPDF(getPieScoreData(ScoreType.SCORE_OVERALL),
-                getPieScoreData(ScoreType.SCORE_DRIVING_STYLE),
-                getPieScoreData(ScoreType.SCORE_SEATBELT),
-                getPieScoreData(ScoreType.SCORE_SPEEDING),overallScore);
+//        reportRenderer.exportOverallScoreToPDF(getPieScoreData(ScoreType.SCORE_OVERALL),
+//                getPieScoreData(ScoreType.SCORE_DRIVING_STYLE),
+//                getPieScoreData(ScoreType.SCORE_SEATBELT),
+//                getPieScoreData(ScoreType.SCORE_SPEEDING),overallScore);
+        
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.OVERALL_SCORE,getNavigation().getGroup().getName(),getAccountName());
+        reportCriteria.setMainDataset(getPieScoreData(ScoreType.SCORE_OVERALL));
+        reportCriteria.addParameter("OVERALL_SCORE",overallScore);
+        reportCriteria.addParameter("DURATION", "30 Days");
+        reportCriteria.addParameter("DRIVER_STYLE_DATA",getPieScoreData(ScoreType.SCORE_DRIVING_STYLE));
+        reportCriteria.addParameter("SEATBELT_USE_DATA",  getPieScoreData(ScoreType.SCORE_SEATBELT));
+        reportCriteria.addParameter("SPEED_DATA", getPieScoreData(ScoreType.SCORE_SPEEDING));
+        reportRenderer.exportSingleReportToPDF(reportCriteria, (ServletResponse)getExternalContext().getResponse());
         return null;
+
+    }
+    
+    private String getAccountName()
+    {
+        Account account = getAccountDAO().findByID(getAccountID());
+        String name = account.getAcctName();
+        return name;
     }
     
     private List<PieScoreData> getPieScoreData(ScoreType scoreType){
@@ -253,14 +283,24 @@ public class BreakdownBean extends BaseDurationBean
         return pieChartDataList;
     }
 
-    public void setReportRendererBean(ReportRendererBean reportRendererBean)
+    public void setAccountDAO(AccountDAO accountDAO)
     {
-        this.reportRendererBean = reportRendererBean;
+        this.accountDAO = accountDAO;
     }
 
-    public ReportRendererBean getReportRendererBean()
+    public AccountDAO getAccountDAO()
     {
-        return reportRendererBean;
+        return accountDAO;
+    }
+    
+    public ReportRenderer getReportRenderer()
+    {
+        return reportRenderer;
+    }
+
+    public void setReportRenderer(ReportRenderer reportRenderer)
+    {
+        this.reportRenderer = reportRenderer;
     }
 
 }

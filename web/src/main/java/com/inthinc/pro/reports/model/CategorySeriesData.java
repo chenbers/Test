@@ -1,37 +1,23 @@
 package com.inthinc.pro.reports.model;
 
-public class LineGraphData
+
+public class CategorySeriesData extends ChartData
 {
     private String seriesID;
-   
     private String category;
-   
-    private Float score;
-    private String label;
     
-    public LineGraphData(){};
+    public CategorySeriesData(){};
     
-    public LineGraphData(String seriesID,String category,Float score,String label){
+    public CategorySeriesData(String seriesID,String category,Float value,String label){
         this.seriesID = seriesID;
         this.label = label;
         this.category = category;
-        this.score = score;
+        this.setValue(value);
     }
     
     public String getSeriesID()
     {
         return seriesID;
-    }
-     
-
-    public Float getScore()
-    {
-        return score;
-    }
-
-    public void setScore(Float score)
-    {
-        this.score = score;
     }
 
     public void setSeriesID(String seriesID)
@@ -57,6 +43,4 @@ public class LineGraphData
     {
         this.category = category;
     }
-    
-
 }

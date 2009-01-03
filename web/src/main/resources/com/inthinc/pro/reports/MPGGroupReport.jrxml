@@ -23,20 +23,19 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
-	<subDataset name="TrendChartDataset" >
+	<subDataset name="CategorySeriesSubDataset" >
 
 
 		<field name="seriesID" class="java.lang.String"/>
 		<field name="category" class="java.lang.String"/>
-		<field name="score" class="java.lang.Number"/>
+		<field name="value" class="java.lang.Number"/>
 		<field name="label" class="java.lang.String"/>
 
 	</subDataset>
 
 	<parameter name="ACCOUNT_NAME" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="ENTITY_NAME" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="TREND_CHART_DATA" isForPrompting="false" class="java.util.List"/>
-	<parameter name="CATEGORY_LABELS" isForPrompting="false" class="java.util.Collection"/>
+	<parameter name="MPG_CHART_DATA" isForPrompting="false" class="java.util.List"/>
 
 	<field name="se.identifier" class="java.lang.String"/>
 	<field name="se.scoreAsFloat" class="java.lang.Float"/>
@@ -127,7 +126,18 @@
 					</chart>
 					<categoryDataset>
 						<dataset >
+							<datasetRun subDataset="CategorySeriesSubDataset">
+					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{MPG_CHART_DATA})]]></dataSourceExpression>
+							</datasetRun>
 						</dataset>
+						<categorySeries>
+							<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{value}]]></valueExpression>
+							<labelExpression><![CDATA[$F{label}]]></labelExpression>
+				<itemHyperlink >
+				</itemHyperlink>
+						</categorySeries>
 					</categoryDataset>
 					<barPlot >
 						<plot />

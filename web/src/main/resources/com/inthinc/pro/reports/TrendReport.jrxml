@@ -28,15 +28,14 @@
 
 		<field name="seriesID" class="java.lang.String"/>
 		<field name="category" class="java.lang.String"/>
-		<field name="score" class="java.lang.Number"/>
+		<field name="value" class="java.lang.Number"/>
 		<field name="label" class="java.lang.String"/>
 
 	</subDataset>
 
 	<parameter name="ACCOUNT_NAME" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="ENTITY_NAME" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="TREND_CHART_DATA" isForPrompting="false" class="java.util.List"/>
-	<parameter name="CATEGORY_LABELS" isForPrompting="false" class="java.util.Collection"/>
+	<parameter name="SUB_DATASET_1" isForPrompting="false" class="java.util.List"/>
 
 	<field name="se.identifier" class="java.lang.String"/>
 	<field name="se.scoreAsFloat" class="java.lang.Float"/>
@@ -132,13 +131,13 @@
 					<categoryDataset>
 						<dataset >
 							<datasetRun subDataset="TrendChartDataset">
-					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{TREND_CHART_DATA})]]></dataSourceExpression>
+					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_1})]]></dataSourceExpression>
 							</datasetRun>
 						</dataset>
 						<categorySeries>
 							<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
 							<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
-							<valueExpression><![CDATA[$F{score}]]></valueExpression>
+							<valueExpression><![CDATA[$F{value}]]></valueExpression>
 							<labelExpression><![CDATA[$F{label}]]></labelExpression>
 				<itemHyperlink >
 				</itemHyperlink>

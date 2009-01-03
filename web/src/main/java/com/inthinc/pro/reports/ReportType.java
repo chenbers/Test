@@ -2,10 +2,10 @@ package com.inthinc.pro.reports;
 
 public enum ReportType
 {
-    TEST_REPORT_1("Test","TestReport"),
     DRIVER_TABULAR("Driver Report","DriverTableReport"),
     OVERALL_SCORE("Overal Score","ScorePieReport"),
-    TREND("Trend Report","TrendReport");
+    TREND("Trend Report","TrendReport"),
+    MPG_GROUP("Trend Report","MPGGroupReport");
     
   
     private ReportType[] reportSubtypes;

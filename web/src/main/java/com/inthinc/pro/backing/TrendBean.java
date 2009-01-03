@@ -1,6 +1,5 @@
 package com.inthinc.pro.backing;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import java.util.Iterator;
@@ -8,21 +7,24 @@ import java.util.List;
 import java.util.Map;
 
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
+import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.ScoreDAO;
-import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
+import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
-import com.inthinc.pro.reports.model.LineGraphData;
+import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.util.ColorSelectorStandard;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.wrapper.ScoreableEntityPkg;
@@ -33,6 +35,7 @@ public class TrendBean extends BaseBean
     private static final Logger logger = Logger.getLogger(TrendBean.class);
 
     private ScoreDAO scoreDAO;
+    private AccountDAO accountDAO;
     private NavigationBean navigation;
 
     private String lineDef = new String();
@@ -346,7 +349,7 @@ public class TrendBean extends BaseBean
     
     public String exportToPDF()
     {
-        List<LineGraphData> lineGraphDataList = new ArrayList<LineGraphData>();
+        List<CategorySeriesData> lineGraphDataList = new ArrayList<CategorySeriesData>();
         List<ScoreableEntityPkg> scoreableEntityDataSet = createScoreableEntities();
         List<ScoreableEntity> s = null;
         s = getScores();
@@ -375,18 +378,28 @@ public class TrendBean extends BaseBean
             int index = 0;
             for (int k = 0; k < holes; k++)
             {
-                lineGraphDataList.add(new LineGraphData(se.getIdentifier(),monthList.get(index++),0F,se.getIdentifier()));
+                lineGraphDataList.add(new CategorySeriesData(se.getIdentifier(),monthList.get(index++),0F,se.getIdentifier()));
             }
             for(ScoreableEntity scoreableEntity:scoreableEntityList)
             {
                Float score = new Float((scoreableEntity.getScore()==null) ? 0 : scoreableEntity.getScore() / 10.0);
-               lineGraphDataList.add(new LineGraphData(se.getIdentifier(),monthList.get(index++),score,se.getIdentifier()));
+               lineGraphDataList.add(new CategorySeriesData(se.getIdentifier(),monthList.get(index++),score,se.getIdentifier()));
             }
             
         }
-        
-        reportRenderer.exportTrendReportToPDF(lineGraphDataList, scoreableEntityDataSet);
+       
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.TREND,getNavigation().getGroup().getName(),getAccountName());
+        reportCriteria.addSubDataSet(lineGraphDataList);
+        reportCriteria.setMainDataset(scoreableEntityDataSet);
+        reportRenderer.exportSingleReportToPDF(reportCriteria, (HttpServletResponse)getExternalContext().getResponse());
         return null;
+    }
+    
+    private String getAccountName()
+    {
+        Account account = getAccountDAO().findByID(getAccountID());
+        String name = account.getAcctName();
+        return name;
     }
 
     public void setReportRenderer(ReportRenderer reportRenderer)
@@ -397,6 +410,16 @@ public class TrendBean extends BaseBean
     public ReportRenderer getReportRenderer()
     {
         return reportRenderer;
+    }
+
+    public void setAccountDAO(AccountDAO accountDAO)
+    {
+        this.accountDAO = accountDAO;
+    }
+
+    public AccountDAO getAccountDAO()
+    {
+        return accountDAO;
     }
 
 }

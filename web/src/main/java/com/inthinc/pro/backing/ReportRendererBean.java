@@ -7,18 +7,18 @@ import java.util.List;
 import java.util.Map;
 
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.AccountDAO;
-import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.reports.ProReportCompiler;
+import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.TrendLineChartCustomizer;
-import com.inthinc.pro.reports.model.LineGraphData;
+import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.reports.model.PieScoreData;
 import com.inthinc.pro.wrapper.ScoreableEntityPkg;
 
@@ -48,55 +48,64 @@ public class ReportRendererBean extends BaseBean implements ReportRenderer
     public void exportOverallScoreToPDF(List<PieScoreData> overallScoreData, List<PieScoreData> drivingStyleData, List<PieScoreData> seatbeltData, List<PieScoreData> speedData,
             String overallscore)
     {
-        ProReportCompiler proCompiler = new ProReportCompiler(ReportType.OVERALL_SCORE);
-
-        // Set the list of main datasources for each of the report templates
-        Map<String, List> source = new HashMap<String, List>();
-        source.put(ReportType.OVERALL_SCORE.toString(), overallScoreData);
-
-        // Set the parameter map
-        Map<String, Object> paramMap = new HashMap<String, Object>();
-        paramMap.put("OVERALL_SCORE", overallscore);
-        paramMap.put("ENTITY_NAME", this.navigationBean.getGroup().getName());
-        paramMap.put("DURATION","30 Days");
-
-        // Set the sub Datasets
-        paramMap.put("DRIVER_STYLE_DATA", drivingStyleData);
-        paramMap.put("SEATBELT_USE_DATA", seatbeltData);
-        paramMap.put("SPEED_DATA", speedData);
-
-        paramMap.put("ACCOUNT_NAME",getAccountName());
-        JasperPrint jp = proCompiler.compileReport(source, paramMap);
-        exportToPdf(jp);
+//        ProReportCompiler proCompiler = new ProReportCompiler(ReportType.OVERALL_SCORE);
+//
+//        // Set the list of main datasources for each of the report templates
+//        Map<String, List> source = new HashMap<String, List>();
+//        source.put(ReportType.OVERALL_SCORE.toString(), overallScoreData);
+//
+//        // Set the parameter map
+//        Map<String, Object> paramMap = new HashMap<String, Object>();
+//        paramMap.put("OVERALL_SCORE", overallscore);
+//        paramMap.put("ENTITY_NAME", this.navigationBean.getGroup().getName());
+//        paramMap.put("DURATION","30 Days");
+//
+//        // Set the sub Datasets
+//        paramMap.put("DRIVER_STYLE_DATA", drivingStyleData);
+//        paramMap.put("SEATBELT_USE_DATA", seatbeltData);
+//        paramMap.put("SPEED_DATA", speedData);
+//
+//        paramMap.put("ACCOUNT_NAME",getAccountName());
+//        JasperPrint jp = proCompiler.compileReport(source, paramMap);
+//        exportToPdf(jp);
     }
 
     @Override
-    public void exportTrendReportToPDF(List<LineGraphData> trendChartData, List<ScoreableEntityPkg> scoreableEntityData)
+    public void exportTrendReportToPDF(List<CategorySeriesData> trendChartData, List<ScoreableEntityPkg> scoreableEntityData)
     {
-        ProReportCompiler proCompiler = new ProReportCompiler(ReportType.TREND);
-
-        // Set the list of master datasources for each of the report templates
-        Map<String, List> source = new HashMap<String, List>();
-        source.put(ReportType.TREND.toString(), scoreableEntityData);
-
-        // Set the parameter map
-        Map<String, Object> paramMap = new HashMap<String, Object>();
-        paramMap.put("ENTITY_NAME", this.navigationBean.getGroup().getName());
-
-        // Set the sub Datasets
-        paramMap.put("TREND_CHART_DATA", trendChartData);
-        paramMap.put("ACCOUNT_NAME", getAccountName());
-        paramMap.put("CUSTOMIZER_CLASS",new TrendLineChartCustomizer());
-        JasperPrint jp = proCompiler.compileReport(source, paramMap);
+//        ProReportCompiler proCompiler = new ProReportCompiler(ReportType.TREND);
+//
+//        // Set the list of master datasources for each of the report templates
+//        Map<String, List> source = new HashMap<String, List>();
+//        source.put(ReportType.TREND.toString(), scoreableEntityData);
+//
+//        // Set the parameter map
+//        Map<String, Object> paramMap = new HashMap<String, Object>();
+//        paramMap.put("ENTITY_NAME", this.navigationBean.getGroup().getName());
+//
+//        // Set the sub Datasets
+//        paramMap.put("TREND_CHART_DATA", trendChartData);
+//        paramMap.put("ACCOUNT_NAME", getAccountName());
+//        JasperPrint jp = proCompiler.compileReport(source, paramMap);
+//        exportToPdf(jp);
+    }
+    
+    @Override
+    public void exportSingleReportToPDF(ReportCriteria reportCriteria, ServletResponse response)
+    {
+        Map<String,List> mainDatasets = new HashMap<String, List>();
+        mainDatasets.put(reportCriteria.getReportType().toString(), reportCriteria.getMainDataset());
+        ProReportCompiler proCompiler = new ProReportCompiler(reportCriteria.getReportType());
+        JasperPrint jp = proCompiler.compileReport(mainDatasets, reportCriteria.getPramMap());
         exportToPdf(jp);
     }
 
-    private String getAccountName()
-    {
-        Account account = getAccountDAO().findByID(getAccountID());
-        String name = account.getAcctName();
-        return name;
-    }
+//    private String getAccountName()
+//    {
+//        Account account = getAccountDAO().findByID(getAccountID());
+//        String name = account.getAcctName();
+//        return name;
+//    }
 
     private void exportToPdf(JasperPrint jasperPrint)
     {
