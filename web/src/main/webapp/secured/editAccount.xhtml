@@ -225,26 +225,26 @@
                         <tr>
                           <td>Primary:</td>
                           <td>
-                            <h:inputText id="priEmail" value="#{myAccountBean.alertContact.priEmail}" 
-                              size="40" onkeyup="refreshValues()" validator="#{myAccountBean.validateEmail}" />
                             <rich:message for="priEmail">
                               <f:facet name="errorMarker">
                                 <h:graphicImage value="/images/icon_msg_err_small.png" />
                               </f:facet>
                             </rich:message>  
+                            <h:inputText id="priEmail" value="#{myAccountBean.alertContact.priEmail}" 
+                              size="40" onkeyup="refreshValues()" validator="#{myAccountBean.validateEmail}" />
                           </td>
                         </tr>
                         <tr>
       
                           <td>Secondary:</td>
                           <td>
-                            <h:inputText id="secEmail" value="#{myAccountBean.alertContact.secEmail}" 
-                              size="40" onkeyup="refreshValues()" validator="#{myAccountBean.validateEmail}" />
                             <rich:message for="secEmail">
                               <f:facet name="errorMarker">
                                 <h:graphicImage value="/images/icon_msg_err_small.png" />
                               </f:facet>
                             </rich:message>  
+                            <h:inputText id="secEmail" value="#{myAccountBean.alertContact.secEmail}" 
+                              size="40" onkeyup="refreshValues()" validator="#{myAccountBean.validateEmail}" />
                           </td>
                         </tr>
                       </tbody>

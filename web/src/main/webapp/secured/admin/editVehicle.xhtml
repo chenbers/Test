@@ -64,13 +64,13 @@
                                   <span class="required">*</span>
                                 </td>
                                 <td>
+                                  <rich:message for="VIN" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{vehiclesBean.item.VIN}" id="VIN" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     maxlength="17" required="true" requiredMessage="#{messages.required}" validatorMessage="#{messages.editVehicle_VINlength}">
                                     <f:validateLength minimum="17" maximum="17" />
                                     <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
                                     <f:attribute name="regex" value="[A-Za-z0-9]+" />
                                   </h:inputText>
-                                  <rich:message for="VIN" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                 </td>
                               </tr>
                               </ui:fragment>
@@ -81,9 +81,9 @@
                                   <span class="required">*</span>
                                 </td>
                                 <td>
+                                  <rich:message for="make" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{vehiclesBean.item.make}" id="make" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     maxlength="22" required="#{(not vehiclesBean.batchEdit) or vehiclesBean.updateField['make']}" requiredMessage="#{messages.required}" />
-                                  <rich:message for="make" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                 </td>
                               </tr>
                               <tr>
@@ -93,9 +93,9 @@
                                   <span class="required">*</span>
                                 </td>
                                 <td>
+                                  <rich:message for="model" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{vehiclesBean.item.model}" id="model" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     maxlength="22" required="#{(not vehiclesBean.batchEdit) or vehiclesBean.updateField['model']}" requiredMessage="#{messages.required}" />
-                                  <rich:message for="model" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                 </td>
                               </tr>
                               <tr>
@@ -137,11 +137,11 @@
                                   <h:outputText value="#{messages.editVehicle_weight}" />
                                 </td>
                                 <td>
+                                  <rich:message for="weight" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{vehiclesBean.item.weight}" id="weight" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     converterMessage="#{messages.editVehicle_weightFormat}" validatorMessage="#{messages.editVehicle_weightFormat}">
                                     <f:validateLongRange minimum="1" />
                                   </h:inputText>
-                                  <rich:message for="weight" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                 </td>
                               </tr>
                               <ui:fragment rendered="#{not vehiclesBean.batchEdit}">
@@ -158,12 +158,12 @@
                                   <h:outputText value="#{messages.editVehicle_state}" />
                                 </td>
                                 <td>
+                                  <rich:message for="state" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:selectOneMenu value="#{vehiclesBean.item.state}" id="state" onchange="checkMultiple(this)">
-                                    <f:selectItem itemLabel="#{messages.editVehicle_selectState}" />
+                                    <f:selectItem itemLabel="" />
 		                             <f:converter  converterId="StateConverter"/>
                                     <f:selectItems value="#{vehiclesBean.states}" />
                                   </h:selectOneMenu>
-                                  <rich:message for="state" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                 </td>
                               </tr>
                             </table>
@@ -182,9 +182,9 @@
                                   <span class="required">*</span>
                                 </td>
                                 <td>
+                                  <rich:message for="name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{vehiclesBean.item.name}" id="name" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     maxlength="30" required="true" requiredMessage="#{messages.required}" />
-                                  <rich:message for="name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                 </td>
                               </tr>
                               </ui:fragment>
@@ -195,7 +195,7 @@
                                 </td>
                                 <td>
                                   <h:selectOneMenu value="#{vehiclesBean.item.status}" id="status" onchange="checkMultiple(this)">
-                                    <f:selectItem itemLabel="#{messages.editVehicle_selectStatus}" />
+                                    <f:selectItem itemLabel="" />
                                     <f:selectItems value="#{vehiclesBean.statuses}"/>
                                   </h:selectOneMenu>
                                 </td>
@@ -213,12 +213,12 @@
                                   <h:outputText value="#{messages.editVehicle_groupID}" />
                                 </td>
                                 <td>
+                                  <rich:message for="groupID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:selectOneMenu value="#{vehiclesBean.item.groupID}" id="groupID">
                                     <a4j:support event="onchange" reRender="driverID,chooseDriverForm:chooseDriverTable" limitToList="true" ajaxSingle="true" onsubmit="checkMultiple(this)" />
-                                    <f:selectItem itemLabel="#{messages.editVehicle_selectGroup}" />
+                                    <f:selectItem itemLabel="" />
                                     <f:selectItems value="#{vehiclesBean.groups}" />
                                   </h:selectOneMenu>
-                                  <rich:message for="groupID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                 </td>
                               </tr>
                               <ui:fragment rendered="#{not vehiclesBean.batchEdit}">

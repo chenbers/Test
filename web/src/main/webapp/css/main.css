@@ -1862,25 +1862,22 @@ color: #fff;
 .field-msg {
 	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
 	margin: 0px;
-	padding: 1px 1px 1px 16px;
+	padding: 0px 0px 1px 16px;
 	display: block;
 	}
 
 .field-warning {
-	background: #ffffcc url(../images/icon_msg_warn_small.png) top left no-repeat;
-	border: 1px solid #eca031;
+	background: url(../images/icon_msg_warn_small.png) top left no-repeat;
 	color: #c26b06;
 	}
 	
 .field-info {
-	background: #ebf0fa url(../images/icon_msg_info_small.png) top left no-repeat;
-	border: 1px solid #75a3ed;
+	background: url(../images/icon_msg_info_small.png) top left no-repeat;
 	color: #395898;
 	}
 	
 .field-error {
-	background: #fce9e9 url(../images/icon_msg_err_small.png) top left no-repeat;
-	border: 1px solid #f46666;
+	background: url(../images/icon_msg_err_small.png) top left no-repeat;
 	color: #c44d34;
 	}
 

@@ -71,11 +71,11 @@
                               <h:outputText value="#{messages.editZoneAlert_zone}" />
                             </td>
                             <td>
+                              <rich:message for="zoneID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                               <h:selectOneMenu id="zoneID" value="#{zoneAlertsBean.item.zoneID}" required="#{(not zoneAlertsBean.batchEdit) or zoneAlertsBean.updateField['zoneID']}" requiredMessage="#{messages.required}">
                                 <a4j:support event="onchange" reRender="zonePoints" limitToList="true" ajaxSingle="true" onsubmit="checkMultiple(this)" oncomplete="showZone()"/>
                                 <f:selectItems value="#{zoneAlertsBean.zones}" />
                               </h:selectOneMenu>
-                              <rich:message for="zoneID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             </td>
                           </tr>
                         </table>
@@ -87,9 +87,9 @@
                               <h:outputText value="#{messages.editAlerts_name}" />
                             </td>
                             <td>
+                              <rich:message for="name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                               <h:inputText value="#{zoneAlertsBean.item.name}" id="name" onchange="checkMultiple(this)" styleClass="text" size="30"
                                 maxlength="30" required="#{(not zoneAlertsBean.batchEdit) or zoneAlertsBean.updateField['name']}" requiredMessage="#{messages.required}" />
-                              <rich:message for="name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             </td>
                           </tr>
                           <tr>
@@ -108,11 +108,11 @@
                               <h:outputText value="#{messages.editAlerts_dayOfWeek}" />
                             </td>
                             <td>
+                              <rich:message for="day0" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                               <ui:include src="../../includes/dayPicker.xhtml">
                                 <ui:param name="days" value="#{zoneAlertsBean.item.dayOfWeek}" />
                                 <ui:param name="onchange" value="checkMultiple('dayOfWeek')" />
                               </ui:include>
-                              <rich:message for="day0" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             </td>
                           </tr>
                           <tr>
@@ -121,6 +121,7 @@
                               <h:outputText value="#{messages.editAlerts_timeframe}" />
                             </td>
                             <td>
+                              <rich:message for="stopTOD" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                               <h:selectOneRadio value="#{zoneAlertsBean.item.anytime}" onchange="document.getElementById('timeframePickers').style.display = (this.value == 'true' ? 'none' : '')" enabledClass="radioitem">
                                 <f:selectItem itemValue="true" itemLabel="#{messages.editAlerts_timeframeAnytime}" />
                                 <f:selectItem itemValue="false" itemLabel="#{messages.editAlerts_timeframeBetween}" />
@@ -144,7 +145,6 @@
                                   </td>
                                 </tr>
                               </table>
-                              <rich:message for="stopTOD" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             </td>
                           </tr>
                         </table>
