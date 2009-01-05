@@ -1,18 +1,14 @@
 package it.util;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import it.com.inthinc.pro.dao.Util;
+import it.config.IntegrationConfig;
 
 import java.beans.XMLEncoder;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.util.Date;
-import java.util.List;
 import java.util.TimeZone;
-
-import it.com.inthinc.pro.dao.Util;
-import it.config.IntegrationConfig;
 
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
@@ -127,7 +123,7 @@ public class DataGenerator
         Person person = createPerson(teamGroup.getGroupID(), "Driver", "Last"+teamGroup.getGroupID());
         Date expired = Util.genDate(2010, 9, 30);
         
-        driver = new Driver(0, person.getPersonID(), Status.ACTIVE, 100+person.getPersonID(), "l"+person.getPersonID(), 
+        driver = new Driver(0, person.getPersonID(), Status.ACTIVE, 100l + person.getPersonID().longValue(), "l"+person.getPersonID(), 
                                         States.getStateByAbbrev("UT"), "ABCD", expired);
 
         Integer driverID = driverDAO.create(person.getPersonID(), driver);

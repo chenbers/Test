@@ -16,10 +16,8 @@ import java.util.TimeZone;
 import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.pro.dao.AlertContactDAO;
 import com.inthinc.pro.dao.FindByKey;
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
 import com.inthinc.pro.dao.hessian.AddressHessianDAO;
@@ -39,7 +37,6 @@ import com.inthinc.pro.dao.hessian.ZoneAlertHessianDAO;
 import com.inthinc.pro.dao.hessian.ZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEntryException;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateIMEIException;
-import com.inthinc.pro.dao.hessian.extension.HessianDebug;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
@@ -1163,7 +1160,7 @@ logger.debug("Persons GroupID: " + groupID);
         {
             Date expired = Util.genDate(2010, 9, 30);
         
-            Driver driver = new Driver(0, person.getPersonID(), Status.ACTIVE, 100+person.getPersonID(), "l"+person.getPersonID(), 
+            Driver driver = new Driver(0, person.getPersonID(), Status.ACTIVE, 100l + person.getPersonID().longValue(), "l"+person.getPersonID(), 
                                         randomState(), "ABCD", expired);
 
             // create
@@ -1173,7 +1170,7 @@ logger.debug("Persons GroupID: " + groupID);
             
 
             // update
-            driver.setRFID(200+person.getPersonID());
+            driver.setRFID(200l + person.getPersonID().longValue());
             Integer changedCount = driverDAO.update(driver);
             assertEquals("Driver update count " + driver.getDriverID(), Integer.valueOf(1), changedCount);
             
@@ -1294,7 +1291,7 @@ logger.debug("Persons GroupID: " + groupID);
         Date expired = Util.genDate(2010, 8, 30);
         Address address = new Address(null, Util.randomInt(100, 999) + " Street", null, "City " + Util.randomInt(10,99),
                 randomState(), "12345");
-        Driver driver = new Driver(0, 0, Status.ACTIVE, 100+groupID, "l"+groupID, 
+        Driver driver = new Driver(0, 0, Status.ACTIVE, 100l + groupID.longValue(), "l"+groupID, 
                 randomState(), "ABCD", expired);
         User user = new User(0, 0, randomRole(), Status.ACTIVE, "deepuser_"+groupID, PASSWORD);
         Date dob = Util.genDate(1959, 8, 30);
