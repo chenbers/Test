@@ -35,7 +35,7 @@
 					src="/includes/adminSideNav.xhtml">
 					<ui:param name="selectedAction" value="go_adminOrganization" />
 				</ui:include></td>
-				<td valign="top"><!-- START PANEL --> <h:form id="display-form">
+				<td valign="top"><!-- START PANEL --> <a4j:form id="display-form">
 
 					<div class="">
 					<div class="panel_nw">
@@ -56,7 +56,9 @@
 									value="/images/ico_building.png" /></li>
 								<li class="l grid_title">#{organizationBean.accountName}</li>
 							</ul>
-							
+								<!-- Can't seem to set the immediate to true. When doing so, on select, the node is being set
+									to a SwingTreeNodeImpl -->
+								<a4j:region>
 								<h:panelGroup id="organizationTreePanel">
 									<rich:tree 
 										id="tree"
@@ -72,6 +74,7 @@
 										adviseNodeSelected="#{organizationBean.adviseNodeSelected}"
 										ajaxSubmitSelection="true"
 										ondrop="doRefreshTree()"
+										false="true"
 										dragIndicator="indicator"
 										dropListener="#{organizationBean.processDrop}">
 										<rich:treeNode type="FLEET" iconLeaf="/images/ico_truck.png"
@@ -113,6 +116,7 @@
 										dragValue="#{node.data}" dropValue="#{node.data}"
 									-->
 								</h:panelGroup>
+								</a4j:region>
 								<rich:dragIndicator id="indicator" />
 								<script type="text/javascript">
 									function doRefreshTree(){
@@ -191,7 +195,7 @@
 					<div class="panel_sw">
 					<div class="panel_statusbar"></div>
 					</div>
-				</h:form> <!-- END PANEL --></td>
+				</a4j:form> <!-- END PANEL --></td>
 			</tr>
 
 		</table>

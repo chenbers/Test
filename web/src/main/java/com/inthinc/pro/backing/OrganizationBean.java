@@ -12,7 +12,6 @@ import org.richfaces.component.UITree;
 import org.richfaces.event.DropEvent;
 import org.richfaces.event.NodeExpandedEvent;
 import org.richfaces.event.NodeSelectedEvent;
-import org.richfaces.model.ListRowKey;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.model.TreeNodeImpl;
@@ -97,7 +96,10 @@ public class OrganizationBean extends BaseBean
             topLevelNode = new TreeNodeImpl(topLevelGroup, organizationHierarchy);
             topLevelNode.setDriverDAO(driverDAO);
             topLevelNode.setVehicleDAO(vehicleDAO);
-            setSelectedGroupNode(topLevelNode);
+            if (selectedGroupNode == null)
+            {
+                setSelectedGroupNode(topLevelNode);
+            }
             logger.debug("Group Hirarchy was Loaded");
 
         }
@@ -184,12 +186,12 @@ public class OrganizationBean extends BaseBean
     {
         TreeNodeImpl dragTreeNode = (TreeNodeImpl) event.getDragValue();
         TreeNodeImpl dropTreeNode = (TreeNodeImpl) event.getDropValue();
-        
-//        groupState = State.EDIT;
-//        selectedGroupNode = dragTreeNode;
-//        selectedParentGroup = dropTreeNode.getGroup();
-//        inProgressGroupNode = new TreeNodeImpl(new Group(), organizationHierarchy);
-//        copyGroupTreeNode(selectedGroupNode, inProgressGroupNode);
+
+        // groupState = State.EDIT;
+        // selectedGroupNode = dragTreeNode;
+        // selectedParentGroup = dropTreeNode.getGroup();
+        // inProgressGroupNode = new TreeNodeImpl(new Group(), organizationHierarchy);
+        // copyGroupTreeNode(selectedGroupNode, inProgressGroupNode);
         logger.debug(dragTreeNode.getLabel() + " was dropped onto " + dropTreeNode.getLabel());
         if (dragTreeNode.getId().equals(dropTreeNode.getId()) || dragTreeNode.getParent().getId().equals(dropTreeNode.getId()))
         {
@@ -211,6 +213,11 @@ public class OrganizationBean extends BaseBean
     /*
      * BEGIN CRUD methods
      */
+    
+    private void cleanFields(){
+        inProgressGroupNode = null;
+        selectedParentGroup = null;
+    }
 
     public void edit()
     {
@@ -227,7 +234,7 @@ public class OrganizationBean extends BaseBean
     public void view()
     {
         groupState = State.VIEW;
-        inProgressGroupNode = null; // Clear out the group that was being worked on.
+        cleanFields(); // Clear out the group that was being worked on.
     }
 
     public void add()
@@ -235,10 +242,7 @@ public class OrganizationBean extends BaseBean
         groupState = State.ADD;
         logger.debug("Adding New Group");
         inProgressGroupNode = createNewGroupNode();
-        if (selectedGroupNode.getParent() != null && selectedGroupNode.getParent().getGroup() != null)
-        {
-            selectedParentGroup = selectedGroupNode.getGroup();
-        }
+        selectedParentGroup = selectedGroupNode.getGroup();
     }
 
     public void changeSelectedGroup(javax.faces.event.ActionEvent event)
@@ -265,8 +269,8 @@ public class OrganizationBean extends BaseBean
             groupDAO.update(selectedGroupNode.getGroup());
             updateUsersGroupHeirarchy();
             this.addInfoMessage("Group: " + selectedGroupNode.getLabel() + " - Updated");
-            selectedParentGroup = null;
             groupState = State.VIEW;
+            cleanFields();
 
         }
     }
@@ -286,19 +290,21 @@ public class OrganizationBean extends BaseBean
             Integer id = groupDAO.create(getAccountID(), inProgressGroupNode.getGroup());
             if (id > 0)
             {
-                selectedGroupNode = inProgressGroupNode;
+                inProgressGroupNode.getGroup().setGroupID(id);
+                inProgressGroupNode.setId(id);
+                setSelectedGroupNode(inProgressGroupNode);
                 updateUsersGroupHeirarchy();
-                inProgressGroupNode = null;
                 topLevelNode = null;
-                selectedParentGroup = null;
-                this.addInfoMessage("Group: " + selectedGroupNode.getLabel() + " - Added");
+                this.addInfoMessage("Group: " + selectedGroupNode.getGroup().getName() + " - Added");
                 groupState = State.VIEW;
+                cleanFields();
             }
             else
             {
                 this.addErrorMessage("Error Adding:  " + selectedGroupNode.getLabel());
             }
         }
+
     }
 
     private void updateUsersGroupHeirarchy()
@@ -456,6 +462,7 @@ public class OrganizationBean extends BaseBean
     {
         if (selectedGroupNode.getGroup() != null)
         {
+            //TODO These are being called to often. Figure something else out - mstrong
             selectedGroupDriverCount = driverDAO.getAllDrivers(selectedGroupNode.getGroup().getGroupID()).size();
             selectedGroupVehicleCount = vehicleDAO.getVehiclesInGroupHierarchy(selectedGroupNode.getGroup().getGroupID()).size();
         }

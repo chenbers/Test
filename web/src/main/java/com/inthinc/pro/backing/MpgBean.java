@@ -18,6 +18,7 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -65,7 +66,6 @@ public class MpgBean extends BaseDurationBean {
         List<MpgEntityPkg> entities = null;
         try
         {
-            // TODO: This is not correct. getUser().getGroupID() needs to be changed to the current group in the navigation
             logger.debug("getting scores for groupID: " + this.navigation.getGroupID());
             entities = getMpgEntities();
             sb.append(GraphicUtil.createMpgXML(entities)); 
@@ -115,8 +115,8 @@ public class MpgBean extends BaseDurationBean {
     {
         if (mpgEntities.size() == 0)
         {
-            Integer parentGroupId = this.getNavigation().getGroupID();
-            List<MpgEntity> tempEntities = mpgDAO.getEntities(getGroupHierarchy().getGroup(parentGroupId), getDuration());
+            Group parentGroup = this.getNavigation().getGroup();
+            List<MpgEntity> tempEntities = mpgDAO.getEntities(parentGroup, getDuration());
     
             // Populate the table
             String contextPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
