@@ -103,7 +103,7 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable
                 groupLevel = GroupLevel.DIVISION;
                 break;
             case TEAM:
-                groupLevel = GroupLevel.DIVISION;
+                groupLevel = GroupLevel.TEAM;
                 break;
             }
             

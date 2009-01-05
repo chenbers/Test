@@ -61,6 +61,7 @@ public class NavigationBean extends BaseDurationBean
     public void setDriver(Driver driver)
     {
         this.driver = driver;
+        setGroupID(driver.getPerson().getGroupID());
     }
     public Vehicle getVehicle()
     {
