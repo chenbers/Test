@@ -46,6 +46,7 @@ public class Device extends BaseEntity
     private Integer           hardTurn;
     @Column(name = "vert")
     private Integer           hardVertical;
+    private Integer           baseID;
 
     public Device()
     {
@@ -289,6 +290,14 @@ public class Device extends BaseEntity
     public void setImei(String imei)
     {
         this.imei = imei;
+    }
+    public Integer getBaseID()
+    {
+        return baseID;
+    }
+    public void setBaseID(Integer baseID)
+    {
+        this.baseID = baseID;
     }
 
 }
