@@ -1,9 +1,12 @@
 package com.inthinc.pro.dao.hessian;
 
+import it.com.inthinc.pro.dao.SiloUtil;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -15,6 +18,7 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.SpeedingEvent;
 
 public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implements EventDAO
 {
@@ -61,7 +65,7 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
         {
             Integer[] eventTypesArray = eventTypes.toArray(new Integer[0]);
 
-            return getMapper().convertToModelObject(getSiloService().getDriverNote(driverID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), eventTypesArray), Event.class);
+            return SiloUtil.getEventList(getSiloService().getDriverNote(driverID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), eventTypesArray));
         }
         catch (EmptyResultSetException e)
         {
@@ -76,7 +80,7 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
         {
             Integer[] eventTypesArray = eventTypes.toArray(new Integer[0]);
 
-            return getMapper().convertToModelObject(getSiloService().getVehicleNote(vehicleID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), eventTypesArray), Event.class);
+            return SiloUtil.getEventList(getSiloService().getVehicleNote(vehicleID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), eventTypesArray));
         }
         catch (EmptyResultSetException e)
         {
