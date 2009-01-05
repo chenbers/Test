@@ -29,6 +29,7 @@ import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.util.MessageUtil;
 
 /*
  * Notes TODO
@@ -268,7 +269,7 @@ public class OrganizationBean extends BaseBean
 
             groupDAO.update(selectedGroupNode.getGroup());
             updateUsersGroupHeirarchy();
-            this.addInfoMessage("Group: " + selectedGroupNode.getLabel() + " - Updated");
+            this.addInfoMessage(selectedGroupNode.getGroup().getName() + " "+ MessageUtil.getMessageString("group_update_confirmation"));
             groupState = State.VIEW;
             cleanFields();
 
@@ -295,7 +296,7 @@ public class OrganizationBean extends BaseBean
                 setSelectedGroupNode(inProgressGroupNode);
                 updateUsersGroupHeirarchy();
                 topLevelNode = null;
-                this.addInfoMessage("Group: " + selectedGroupNode.getGroup().getName() + " - Added");
+                this.addInfoMessage(selectedGroupNode.getGroup().getName() + " "+ MessageUtil.getMessageString("group_save_confirmation"));
                 groupState = State.VIEW;
                 cleanFields();
             }
