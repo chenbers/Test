@@ -31,8 +31,9 @@ public class GroupLevelBean extends BaseBean
 
     public void initGroupID()
     {
-//        DebugUtil.dumpRequestParameterMap();
+        //DebugUtil.dumpRequestParameterMap();
 
+        //If there is a group already in the navigation bean and no new groupID is given, we need to leave the group alone.
         FacesContext ctx = FacesContext.getCurrentInstance();
         String groupID = (String) ctx.getExternalContext().getRequestParameterMap().get("groupID");
         if (groupID != null)
@@ -40,7 +41,7 @@ public class GroupLevelBean extends BaseBean
             logger.debug("initGroupID from request: " + groupID);
             navigationBean.setGroupID(Integer.valueOf(groupID));
         }
-        else
+        else if(navigationBean.getGroupID() == null) 
         {
             logger.debug("initGroupID from user bean: " + groupID);
             navigationBean.setGroupID(getUser().getPerson().getGroupID());
