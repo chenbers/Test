@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletResponse;
 
 import net.sf.jasperreports.engine.JasperPrint;
 
@@ -233,20 +234,16 @@ public class BreakdownBean extends BaseDurationBean
         format.setMaximumFractionDigits(1);
         format.setMinimumFractionDigits(1);
         String overallScore = format.format((double) ((double) getOverallScore() / (double) 10.0));
-
-//        reportRenderer.exportOverallScoreToPDF(getPieScoreData(ScoreType.SCORE_OVERALL),
-//                getPieScoreData(ScoreType.SCORE_DRIVING_STYLE),
-//                getPieScoreData(ScoreType.SCORE_SEATBELT),
-//                getPieScoreData(ScoreType.SCORE_SPEEDING),overallScore);
         
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.OVERALL_SCORE,getNavigation().getGroup().getName(),getAccountName());
         reportCriteria.setMainDataset(getPieScoreData(ScoreType.SCORE_OVERALL));
         reportCriteria.addParameter("OVERALL_SCORE",overallScore);
-        reportCriteria.addParameter("DURATION", "30 Days");
+        //TODO add Duration value to report
+        reportCriteria.addParameter("DURATION", "");
         reportCriteria.addParameter("DRIVER_STYLE_DATA",getPieScoreData(ScoreType.SCORE_DRIVING_STYLE));
         reportCriteria.addParameter("SEATBELT_USE_DATA",  getPieScoreData(ScoreType.SCORE_SEATBELT));
         reportCriteria.addParameter("SPEED_DATA", getPieScoreData(ScoreType.SCORE_SPEEDING));
-        reportRenderer.exportSingleReportToPDF(reportCriteria, (ServletResponse)getExternalContext().getResponse());
+        reportRenderer.exportSingleReportToPDF(reportCriteria, (HttpServletResponse)getExternalContext().getResponse());
         return null;
 
     }

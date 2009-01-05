@@ -36,82 +36,20 @@ public class ReportRendererBean extends BaseBean implements ReportRenderer
     private NavigationBean navigationBean;
     private AccountDAO accountDAO;
 
-    public void exportDriverReport(List<DriverReportItem> driverlist)
-    {
-        ProReportCompiler proCompiler = new ProReportCompiler(ReportType.DRIVER_TABULAR);
-        Map<String, List> source = new HashMap<String, List>();
-        source.put(ReportType.DRIVER_TABULAR.toString(), driverlist);
-        JasperPrint jp = proCompiler.compileReport(source, null);
-        exportToPdf(jp);
-    }
-
-    public void exportOverallScoreToPDF(List<PieScoreData> overallScoreData, List<PieScoreData> drivingStyleData, List<PieScoreData> seatbeltData, List<PieScoreData> speedData,
-            String overallscore)
-    {
-//        ProReportCompiler proCompiler = new ProReportCompiler(ReportType.OVERALL_SCORE);
-//
-//        // Set the list of main datasources for each of the report templates
-//        Map<String, List> source = new HashMap<String, List>();
-//        source.put(ReportType.OVERALL_SCORE.toString(), overallScoreData);
-//
-//        // Set the parameter map
-//        Map<String, Object> paramMap = new HashMap<String, Object>();
-//        paramMap.put("OVERALL_SCORE", overallscore);
-//        paramMap.put("ENTITY_NAME", this.navigationBean.getGroup().getName());
-//        paramMap.put("DURATION","30 Days");
-//
-//        // Set the sub Datasets
-//        paramMap.put("DRIVER_STYLE_DATA", drivingStyleData);
-//        paramMap.put("SEATBELT_USE_DATA", seatbeltData);
-//        paramMap.put("SPEED_DATA", speedData);
-//
-//        paramMap.put("ACCOUNT_NAME",getAccountName());
-//        JasperPrint jp = proCompiler.compileReport(source, paramMap);
-//        exportToPdf(jp);
-    }
-
     @Override
-    public void exportTrendReportToPDF(List<CategorySeriesData> trendChartData, List<ScoreableEntityPkg> scoreableEntityData)
-    {
-//        ProReportCompiler proCompiler = new ProReportCompiler(ReportType.TREND);
-//
-//        // Set the list of master datasources for each of the report templates
-//        Map<String, List> source = new HashMap<String, List>();
-//        source.put(ReportType.TREND.toString(), scoreableEntityData);
-//
-//        // Set the parameter map
-//        Map<String, Object> paramMap = new HashMap<String, Object>();
-//        paramMap.put("ENTITY_NAME", this.navigationBean.getGroup().getName());
-//
-//        // Set the sub Datasets
-//        paramMap.put("TREND_CHART_DATA", trendChartData);
-//        paramMap.put("ACCOUNT_NAME", getAccountName());
-//        JasperPrint jp = proCompiler.compileReport(source, paramMap);
-//        exportToPdf(jp);
-    }
-    
-    @Override
-    public void exportSingleReportToPDF(ReportCriteria reportCriteria, ServletResponse response)
+    public void exportSingleReportToPDF(ReportCriteria reportCriteria, HttpServletResponse response)
     {
         Map<String,List> mainDatasets = new HashMap<String, List>();
         mainDatasets.put(reportCriteria.getReportType().toString(), reportCriteria.getMainDataset());
         ProReportCompiler proCompiler = new ProReportCompiler(reportCriteria.getReportType());
         JasperPrint jp = proCompiler.compileReport(mainDatasets, reportCriteria.getPramMap());
-        exportToPdf(jp);
+        exportToPdf(jp,(HttpServletResponse)response);
     }
 
-//    private String getAccountName()
-//    {
-//        Account account = getAccountDAO().findByID(getAccountID());
-//        String name = account.getAcctName();
-//        return name;
-//    }
-
-    private void exportToPdf(JasperPrint jasperPrint)
+    private void exportToPdf(JasperPrint jasperPrint,HttpServletResponse response)
     {
         if (jasperPrint != null && jasperPrint.getPages().size() > 0)
         {
-            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
             response.setContentType(PDF_CONTENT_TYPE);
             response.addHeader("Content-Disposition", "attachment; filename=\"Tiwi_Pro_Report.pdf\"");
 
