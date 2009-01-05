@@ -5,7 +5,7 @@ import java.util.Date;
 
 import com.inthinc.pro.dao.annotations.Column;
 
-public class Event extends BaseEntity implements Comparable<Event>, Serializable
+public class Event implements Comparable<Event>, Serializable
 {
     /**
      * 
@@ -43,6 +43,15 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     
     @Column(updateable = false)
     private LatLng latLng;
+   
+    private Integer groupID;
+    private Integer state;
+    private Integer heading;
+    private Integer sats;
+    @Column(updateable=false)
+    private Integer modified;
+    @Column(updateable=false)
+    private Integer created;
 
     public Event()
     {
@@ -267,6 +276,66 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     public void setFlags(Integer flags)
     {
         this.flags = flags;
+    }
+
+    public Integer getGroupID()
+    {
+        return groupID;
+    }
+
+    public void setGroupID(Integer groupID)
+    {
+        this.groupID = groupID;
+    }
+
+    public Integer getState()
+    {
+        return state;
+    }
+
+    public void setState(Integer state)
+    {
+        this.state = state;
+    }
+
+    public Integer getHeading()
+    {
+        return heading;
+    }
+
+    public void setHeading(Integer heading)
+    {
+        this.heading = heading;
+    }
+
+    public Integer getSats()
+    {
+        return sats;
+    }
+
+    public void setSats(Integer sats)
+    {
+        this.sats = sats;
+    }
+
+    public Integer getModified()
+    {
+        return modified;
+    }
+
+    public void setModified(Integer modified)
+    {
+        this.modified = modified;
+    }
+
+    public Integer getCreated()
+    {
+        return created;
+    }
+
+    public void setCreated(Integer created)
+    {
+        this.created = created;
     }
 
 }
