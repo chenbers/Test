@@ -7,49 +7,12 @@ import java.io.InputStream;
 
 import org.apache.log4j.Logger;
 
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRPrintPage;
 import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 
 public class ReportUtils
 {
     private static Logger logger = Logger.getLogger(ReportUtils.class);
-
-//    public static JasperPrint loadReport(ReportType reportType)
-//    {
-//        JasperPrint jasperPrint = null;
-//
-//        for (int i = 0; i < reportType.getReportSections().length; i++)
-//        {
-//            JasperPrint jp = null;
-//            try
-//            {
-//                jp = JasperFillManager.fillReport(loadReport(reportType.getReportSections()[i]), null);
-//                if (jasperPrint == null)
-//                {
-//                    jasperPrint = jp;
-//                }
-//                else
-//                {
-//                    for (Object o : jp.getPages())
-//                    {
-//                        jasperPrint.addPage((JRPrintPage) o);
-//                    }
-//                }
-//
-//            }
-//            catch (JRException e)
-//            {
-//                logger.error(e.getMessage());
-//            }
-//
-//        }
-//
-//        return jasperPrint;
-//    }
 
     public static JasperReport loadReport(ReportType reportSection)
     {

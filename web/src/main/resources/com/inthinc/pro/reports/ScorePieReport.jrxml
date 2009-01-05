@@ -121,7 +121,7 @@
 				<text><![CDATA[Tiwi Pro Portal]]></text>
 				</staticText>
 				<pieChart>
-					<chart  hyperlinkTarget="Self" >
+					<chart  hyperlinkTarget="Self"  customizerClass="com.inthinc.pro.reports.PieChartCustomizer" >
 					<reportElement
 						x="0"
 						y="82"
@@ -180,7 +180,7 @@ isCircular="true" >
 				<textFieldExpression   class="java.lang.String"><![CDATA["Overall Score: " + $P{OVERALL_SCORE}]]></textFieldExpression>
 				</textField>
 				<pieChart>
-					<chart isShowLegend="false"  hyperlinkTarget="Self" >
+					<chart isShowLegend="false"  hyperlinkTarget="Self"  customizerClass="com.inthinc.pro.reports.PieChartCustomizer" >
 					<reportElement
 						x="5"
 						y="461"
@@ -213,7 +213,7 @@ isCircular="true" >
 					</piePlot>
 				</pieChart>
 				<pieChart>
-					<chart isShowLegend="false"  hyperlinkTarget="Self" >
+					<chart isShowLegend="false"  hyperlinkTarget="Self"  customizerClass="com.inthinc.pro.reports.PieChartCustomizer" >
 					<reportElement
 						x="177"
 						y="461"
@@ -246,7 +246,7 @@ isCircular="true" >
 					</piePlot>
 				</pieChart>
 				<pieChart>
-					<chart isShowLegend="false"  hyperlinkTarget="Self" >
+					<chart isShowLegend="false"  hyperlinkTarget="Self"  customizerClass="com.inthinc.pro.reports.PieChartCustomizer" >
 					<reportElement
 						x="362"
 						y="461"

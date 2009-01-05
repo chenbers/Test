@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
@@ -11,12 +12,18 @@ import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.model.GroupLevel;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
+import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreableEntity;
+import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.reports.ReportRenderer;
+import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.util.ColorSelectorStandard;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.wrapper.MpgEntityPkg;
@@ -28,6 +35,8 @@ public class MpgBean extends BaseDurationBean {
 
     private MpgDAO mpgDAO;
     private NavigationBean navigation;
+    private AccountDAO accountDAO;
+    private ReportRenderer reportRenderer;
     private List<MpgEntityPkg> mpgEntities = new ArrayList<MpgEntityPkg>();
     
 	
@@ -138,7 +147,55 @@ public class MpgBean extends BaseDurationBean {
     
     public String exportToPDF()
     {
-        // TODO Auto-generated method stub
+        List<MpgEntityPkg> entities = getMpgEntities();
+        List<CategorySeriesData> seriesData = new ArrayList<CategorySeriesData>();
+        
+        for(MpgEntityPkg entity: entities)
+        {
+            String seriesID = entity.getEntity().getEntityName();
+            Number heavyValue = entity.getEntity().getHeavyValue();
+            Number mediumValue = entity.getEntity().getMediumValue();
+            Number lightValue = entity.getEntity().getLightValue();
+            seriesData.add(new CategorySeriesData("Light",seriesID,lightValue,seriesID));
+            seriesData.add(new CategorySeriesData("Medium",seriesID,mediumValue,seriesID));
+            seriesData.add(new CategorySeriesData("Heavy",seriesID,heavyValue,seriesID));
+           
+            
+            
+        }
+        
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.MPG_GROUP,getNavigation().getGroup().getName(),getAccountName());
+        reportCriteria.setMainDataset(entities);
+        reportCriteria.addSubDataSet(seriesData);
+        reportRenderer.exportSingleReportToPDF(reportCriteria, (HttpServletResponse)getExternalContext().getResponse());
+        
         return null;
+    }
+    
+    private String getAccountName()
+    {
+        Account account = getAccountDAO().findByID(getAccountID());
+        String name = account.getAcctName();
+        return name;
+    }
+
+    public void setAccountDAO(AccountDAO accountDAO)
+    {
+        this.accountDAO = accountDAO;
+    }
+
+    public AccountDAO getAccountDAO()
+    {
+        return accountDAO;
+    }
+
+    public void setReportRenderer(ReportRenderer reportRenderer)
+    {
+        this.reportRenderer = reportRenderer;
+    }
+
+    public ReportRenderer getReportRenderer()
+    {
+        return reportRenderer;
     }
 }

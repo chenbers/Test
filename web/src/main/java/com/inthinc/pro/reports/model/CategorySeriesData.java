@@ -8,7 +8,7 @@ public class CategorySeriesData extends ChartData
     
     public CategorySeriesData(){};
     
-    public CategorySeriesData(String seriesID,String category,Float value,String label){
+    public CategorySeriesData(String seriesID,String category,Number value,String label){
         this.seriesID = seriesID;
         this.label = label;
         this.category = category;

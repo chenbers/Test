@@ -35,11 +35,12 @@
 
 	<parameter name="ACCOUNT_NAME" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="ENTITY_NAME" isForPrompting="false" class="java.lang.String"/>
-	<parameter name="MPG_CHART_DATA" isForPrompting="false" class="java.util.List"/>
+	<parameter name="SUB_DATASET_1" isForPrompting="false" class="java.util.List"/>
 
-	<field name="se.identifier" class="java.lang.String"/>
-	<field name="se.scoreAsFloat" class="java.lang.Float"/>
-	<field name="colorKey" class="java.lang.String"/>
+	<field name="entity.entityName" class="java.lang.String"/>
+	<field name="entity.lightValue" class="java.lang.Integer"/>
+	<field name="entity.mediumValue" class="java.lang.Integer"/>
+	<field name="entity.heavyValue" class="java.lang.Integer"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -127,7 +128,7 @@
 					<categoryDataset>
 						<dataset >
 							<datasetRun subDataset="CategorySeriesSubDataset">
-					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{MPG_CHART_DATA})]]></dataSourceExpression>
+					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_1})]]></dataSourceExpression>
 							</datasetRun>
 						</dataset>
 						<categorySeries>
@@ -140,7 +141,11 @@
 						</categorySeries>
 					</categoryDataset>
 					<barPlot >
-						<plot />
+						<plot >
+							<seriesColor seriesOrder="0" color="#AFD8F8"/>
+							<seriesColor seriesOrder="1" color="#F6BD0F"/>
+							<seriesColor seriesOrder="2" color="#8BBA00"/>
+</plot>
 						<categoryAxisFormat>
 							<axisFormat >
 							</axisFormat>
@@ -175,7 +180,7 @@
 					<reportElement
 						x="5"
 						y="7"
-						width="390"
+						width="235"
 						height="18"
 						forecolor="#666666"
 						key="staticText-4"/>
@@ -188,7 +193,7 @@
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="445"
+						x="245"
 						y="7"
 						width="82"
 						height="18"
@@ -198,7 +203,37 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Score]]></text>
+				<text><![CDATA[Light ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="327"
+						y="7"
+						width="82"
+						height="18"
+						forecolor="#666666"
+						key="staticText-6"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Medium ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="412"
+						y="7"
+						width="82"
+						height="18"
+						forecolor="#666666"
+						key="staticText-7"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[Heavy ]]></text>
 				</staticText>
 			</band>
 		</columnHeader>
@@ -208,7 +243,7 @@
 					<reportElement
 						x="5"
 						y="2"
-						width="390"
+						width="235"
 						height="19"
 						forecolor="#666666"
 						key="textField-3"/>
@@ -216,12 +251,12 @@
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{se.identifier}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{entity.entityName}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="445"
-						y="3"
+						x="245"
+						y="2"
 						width="80"
 						height="19"
 						forecolor="#666666"
@@ -230,7 +265,35 @@
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{se.scoreAsFloat}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{entity.lightValue}.toString()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="327"
+						y="2"
+						width="80"
+						height="19"
+						forecolor="#666666"
+						key="textField-5"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{entity.mediumValue}.toString()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="412"
+						y="2"
+						width="80"
+						height="19"
+						forecolor="#666666"
+						key="textField-6"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{entity.heavyValue}.toString()]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
