@@ -69,16 +69,16 @@
                           </table>
                         </li>
                         <ui:fragment rendered="#{zonesBean.zonesCount gt 0}">
-                          <li class="l"><a4j:commandLink action="#{zonesBean.edit}" reRender="displayZone,editZone,zoneName,zoneAddress" oncomplete="showZone(true)"><button type="submit" class="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></button></a4j:commandLink></li>
+                          <li class="l"><a4j:commandButton action="#{zonesBean.edit}" reRender="displayZone,editZone,zoneName,zoneAddress" oncomplete="showZone(true)" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></a4j:commandButton></li>
                           <li class="l"><button type="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></button></li>
                         </ui:fragment>
                         <li class="r">
-                          <a4j:commandLink action="#{zonesBean.add}" onclick="map.clearOverlays()" reRender="displayZone,editZone"><button type="submit" class="left"><span class="add"><h:outputText value="#{messages.zones_addZone}" /></span></button></a4j:commandLink>
+                          <a4j:commandButton action="#{zonesBean.add}" onclick="map.clearOverlays()" reRender="displayZone,editZone" styleClass="left"><span class="add"><h:outputText value="#{messages.zones_addZone}" /></span></a4j:commandButton>
                           <ui:fragment rendered="#{zonesBean.zonesCount gt 0}">
-                            <a4j:commandLink action="#{zoneAlertsBean.add}">
+                            <a4j:commandButton action="#{zoneAlertsBean.add}" styleClass="left">
                               <f:param name="zoneID" value="#{zonesBean.item.zoneID}" />
-                              <button type="submit" class="left"><span class="addZoneAlert"><h:outputText value="#{messages.zones_addZoneAlert}" /></span></button>
-                            </a4j:commandLink>
+                              <span class="addZoneAlert"><h:outputText value="#{messages.zones_addZoneAlert}" /></span>
+                            </a4j:commandButton>
                           </ui:fragment>
                         </li>
                       </ul>
@@ -107,8 +107,8 @@
                           </table>
                         </li>
                         <li class="r">
-                          <a4j:commandLink action="#{zonesBean.save}" onclick="stopDrawing()" reRender="displayZone,editZone" oncomplete="disableEditing()"><button type="submit" class="left"><span class="save"><h:outputText value="#{messages.zones_save}" /></span></button></a4j:commandLink>
-                          <a4j:commandLink action="#{zonesBean.cancelEdit}" onclick="cancelEdit()" reRender="points,displayZone,editZone" oncomplete="showZone(false)" immediate="true"><button type="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></a4j:commandLink>
+                          <a4j:commandButton action="#{zonesBean.save}" onclick="stopDrawing()" reRender="displayZone,editZone" oncomplete="disableEditing()" styleClass="left"><span class="save"><h:outputText value="#{messages.zones_save}" /></span></a4j:commandButton>
+                          <a4j:commandButton action="#{zonesBean.cancelEdit}" onclick="cancelEdit()" reRender="points,displayZone,editZone" oncomplete="showZone(false)" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></a4j:commandButton>
                         </li>
                       </ul>
 

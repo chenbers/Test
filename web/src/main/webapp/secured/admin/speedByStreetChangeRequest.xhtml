@@ -41,8 +41,8 @@
 				<div class="panel_content">
      <a4j:form id="speedLimitChangeRequestTable">
           <ul id="grid_nav" style="margin: 0;">
-            <li class="l"><a4j:commandLink action="#{speedLimitChangeRequests.delete}" reRender="map-data"><button type="submit" class="left" onclick=""><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink></li>
-            <li class="l"><a4j:commandLink><button type="submit" class="left" onclick=""><span class="cancel"><h:outputText value="Clear All" /></span></button></a4j:commandLink></li>
+            <li class="l"><a4j:commandButton action="#{speedLimitChangeRequests.delete}" reRender="map-data" styleClass="left" onclick=""><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton></li>
+            <li class="l"><a4j:commandButton styleClass="left" onclick=""><span class="cancel"><h:outputText value="Clear All" /></span></a4j:commandButton></li>
             <li class="l">
               <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
                 <tr>
@@ -51,8 +51,8 @@
                  </tr>
               </table>
             </li>
-  		<li class="l"><a4j:commandLink><button type="submit" class="left" onclick="showLocation(document.getElementById('speedLimitChangeRequestTable:address').value);"><span class="search"><h:outputText value="Find Address" /></span></button></a4j:commandLink></li>
-            <li class="l"><a4j:commandLink action="#{speedLimitChangeRequests.saveRequests}" reRender="map-data"><button type="submit" class="left" onclick=""><span class="edit"><h:outputText value="Submit Request" /></span></button></a4j:commandLink></li>
+  		<li class="l"><a4j:commandButton styleClass="left" onclick="showLocation(document.getElementById('speedLimitChangeRequestTable:address').value);"><span class="search"><h:outputText value="Find Address" /></span></a4j:commandButton></li>
+            <li class="l"><a4j:commandButton action="#{speedLimitChangeRequests.saveRequests}" reRender="map-data" styleClass="left" onclick=""><span class="edit"><h:outputText value="Submit Request" /></span></a4j:commandButton></li>
             </ul>
  				<div class="spacer"></div>			
 			 	<table>

@@ -41,8 +41,8 @@
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="r">
                           <ui:fragment rendered="#{not empty vehiclesBean.item.device}"><button type="submit" class="right next" onclick="document.getElementById('edit-form:speedSensitivity_shifted').onclick();return false;"><span class="left"><h:outputText value="#{messages.button_next}" /></span></button></ui:fragment>
-                          <ui:fragment rendered="#{empty vehiclesBean.item.device}"><h:commandLink action="#{vehiclesBean.save}"><button type="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink></ui:fragment>
-                          <h:outputText value=" " /><h:commandLink action="#{vehiclesBean.cancelEdit}" immediate="true"><button type="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink>
+                          <ui:fragment rendered="#{empty vehiclesBean.item.device}"><a4j:commandButton action="#{vehiclesBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></a4j:commandButton></ui:fragment>
+                          <h:outputText value=" " /><a4j:commandButton action="#{vehiclesBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></a4j:commandButton>
                         </li>
                       </ul>
 
@@ -245,8 +245,8 @@
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="r">
                           <ui:fragment rendered="#{not empty vehiclesBean.item.device}"><button type="submit" class="right next" onclick="document.getElementById('edit-form:speedSensitivity_shifted').onclick();return false;"><span class="left"><h:outputText value="#{messages.button_next}" /></span></button></ui:fragment>
-                          <ui:fragment rendered="#{empty vehiclesBean.item.device}"><h:commandLink action="#{vehiclesBean.save}"><button type="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink></ui:fragment>
-                          <h:outputText value=" " /><h:commandLink action="#{vehiclesBean.cancelEdit}" immediate="true"><button type="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink>
+                          <ui:fragment rendered="#{empty vehiclesBean.item.device}"><a4j:commandButton action="#{vehiclesBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></a4j:commandButton></ui:fragment>
+                          <h:outputText value=" " /><a4j:commandButton action="#{vehiclesBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></a4j:commandButton>
                         </li>
                       </ul>
 
@@ -256,8 +256,8 @@
 
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="r">
-                          <h:commandLink action="#{vehiclesBean.save}"><button type="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink>
-                          <h:outputText value=" " /><h:commandLink action="#{vehiclesBean.cancelEdit}" immediate="true"><button type="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink>
+                          <a4j:commandButton action="#{vehiclesBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></a4j:commandButton>
+                          <h:outputText value=" " /><a4j:commandButton action="#{vehiclesBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></a4j:commandButton>
                         </li>
                       </ul>
 
@@ -279,8 +279,8 @@
 
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="r">
-                          <h:commandLink action="#{vehiclesBean.save}"><button type="submit" class="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></button></h:commandLink>
-                          <h:outputText value=" " /><h:commandLink action="#{vehiclesBean.cancelEdit}" immediate="true"><button type="submit" class="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button></h:commandLink>
+                          <a4j:commandButton action="#{vehiclesBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></a4j:commandButton>
+                          <h:outputText value=" " /><a4j:commandButton action="#{vehiclesBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></a4j:commandButton>
                         </li>
                       </ul>
 

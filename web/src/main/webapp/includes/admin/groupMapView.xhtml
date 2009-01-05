@@ -31,12 +31,11 @@
 							id="addressTextBox"
 							value="" /></td>
 						<td width="165">
-						<a4j:commandLink immediate="true" onclick="showAddress(document.getElementById('addressTextBox').value);">
-						<button type="submit" class="left">
+						<a4j:commandButton immediate="true" onclick="showAddress(document.getElementById('addressTextBox').value);" styleClass="left">
 							<span class="search">
 								#{messages.group_locate}
 							</span></button>
-						</a4j:commandLink>
+						</a4j:commandButton>
 						</td>
 					</tr>
 				</table>

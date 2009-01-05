@@ -29,26 +29,23 @@
 			</li>
 			<li class="r"><h:panelGroup>
 
-				<a4j:commandLink rendered="#{organizationBean.groupState eq 'ADD'}"
+				<a4j:commandButton rendered="#{organizationBean.groupState eq 'ADD'}"
 					action="#{organizationBean.save}"
-					reRender="groupPanel,organizationTreePanel">
+					reRender="groupPanel,organizationTreePanel" styleClass="left">
 					<f:param name="state" value="VIEW" />
-					<button type="submit" class="left"><span class="add"><h:outputText
-						value="#{messages.button_create_unit}" /></span></button>
-				</a4j:commandLink>
-				<a4j:commandLink rendered="#{organizationBean.groupState eq 'EDIT'}"
+					<span class="add"><h:outputText
+						value="#{messages.button_create_unit}" /></span></a4j:commandButton>
+				<a4j:commandButton rendered="#{organizationBean.groupState eq 'EDIT'}"
 					action="#{organizationBean.update}"
-					reRender="groupPanel,organizationTreePanel">
+					reRender="groupPanel,organizationTreePanel" styleClass="left">
 					<f:param name="state" value="VIEW" />
-					<button type="submit" class="left"><span class="save"><h:outputText
-						value="#{messages.button_save}" /></span></button>
-				</a4j:commandLink>
-				<a4j:commandLink rendered="#{organizationBean.groupState ne 'VIEW'}"
+					<span class="save"><h:outputText
+						value="#{messages.button_save}" /></span></a4j:commandButton>
+				<a4j:commandButton rendered="#{organizationBean.groupState ne 'VIEW'}"
 					action="#{organizationBean.view}"
-					reRender="groupPanel,organizationTreePanel" immediate="true">
-					<button type="submit" class="left"><span class="cancel"><h:outputText
-						value="#{messages.button_cancel}" /></span></button>
-				</a4j:commandLink>
+					reRender="groupPanel,organizationTreePanel" immediate="true" styleClass="left">
+					<span class="cancel"><h:outputText
+						value="#{messages.button_cancel}" /></span></a4j:commandButton>
 			</h:panelGroup></li>
 		</ul>
 	</h:panelGroup>
@@ -165,26 +162,23 @@
 
 		<ul id="grid_nav_dark">
 			<li class="r"><h:panelGroup>
-				<a4j:commandLink rendered="#{organizationBean.groupState eq 'ADD'}"
+				<a4j:commandButton rendered="#{organizationBean.groupState eq 'ADD'}"
 					action="#{organizationBean.save}"
-					reRender="groupPanel,organizationTreePanel">
+					reRender="groupPanel,organizationTreePanel" styleClass="left">
 					<f:param name="state" value="VIEW" />
-					<button type="submit" class="left"><span class="add"><h:outputText
-						value="#{messages.button_create_unit}" /></span></button>
-				</a4j:commandLink>
-				<a4j:commandLink rendered="#{organizationBean.groupState eq 'EDIT'}"
+					<span class="add"><h:outputText
+						value="#{messages.button_create_unit}" /></span></a4j:commandButton>
+				<a4j:commandButton rendered="#{organizationBean.groupState eq 'EDIT'}"
 					action="#{organizationBean.update}"
-					reRender="groupPanel,organizationTreePanel">
+					reRender="groupPanel,organizationTreePanel" styleClass="left">
 					<f:param name="state" value="VIEW" />
-					<button type="submit" class="left"><span class="save"><h:outputText
-						value="#{messages.button_save}" /></span></button>
-				</a4j:commandLink>
-				<a4j:commandLink rendered="#{organizationBean.groupState ne 'VIEW'}"
+					<span class="save"><h:outputText
+						value="#{messages.button_save}" /></span></a4j:commandButton>
+				<a4j:commandButton rendered="#{organizationBean.groupState ne 'VIEW'}"
 					action="#{organizationBean.view}"
-					reRender="groupPanel,organizationTreePanel" immediate="true">
-					<button type="submit" class="left"><span class="cancel"><h:outputText
-						value="#{messages.button_cancel}" /></span></button>
-				</a4j:commandLink>
+					reRender="groupPanel,organizationTreePanel" immediate="true" styleClass="left">
+					<span class="cancel"><h:outputText
+						value="#{messages.button_cancel}" /></span></a4j:commandButton>
 			</h:panelGroup></li>
 		</ul>
 

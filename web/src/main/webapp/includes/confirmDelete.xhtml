@@ -50,7 +50,7 @@
       <c:set var="explanation" value="#{messages.confirmDelete_explanation}" />
     </c:if>
 
-    <rich:modalPanel id="confirmDelete" headerClass="popupHeader" controlsClass="popupControls" width="500" height="140" autosized="true" resizeable="false" zindex="2001" onshow="if (event.parameters.deleteID) document.getElementById('confirmDeleteID').value = event.parameters.deleteID; document.getElementById('deleteButton').focus();">
+    <rich:modalPanel id="confirmDelete" headerClass="popupHeader" controlsClass="popupControls" width="500" height="140" autosized="true" resizeable="false" zindex="2001" onshow="if (event.parameters.deleteID) document.getElementById('confirmDeleteID').value = event.parameters.deleteID; document.getElementById('confirmDeleteForm:deleteButton').focus();">
       <f:facet name="header">
         <h:outputText value="#{title}" />
       </f:facet>
@@ -70,7 +70,7 @@
 
         <div class="popupactions">
           <button type="submit" class="left" onclick="Richfaces.hideModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button>
-          <a4j:commandLink id="deleteA" action="#{deleteBean['delete']}" onclick="Richfaces.hideModalPanel('confirmDelete')" reRender="#{reRender}"><button id="deleteButton" value="submit" class="left" onclick="document.getElementById('confirmDeleteForm:deleteA').onclick()" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></button></a4j:commandLink>
+          <a4j:commandButton id="deleteButton" action="#{deleteBean['delete']}" onclick="Richfaces.hideModalPanel('confirmDelete')" reRender="#{reRender}" styleClass="left" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
         </div>
 
       </a4j:form>

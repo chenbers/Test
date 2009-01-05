@@ -104,16 +104,14 @@
 	
         <div class="popupactions">
           <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearRedFlagPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_no}" /></span></button>
-          <a4j:commandLink 
+          <a4j:commandButton
           				action="#{redFlagsBean.clearItemAction}"         				
           				oncomplete="Richfaces.hideModalPanel('clearRedFlagPanel')" 
-          				reRender="items">
-          				<button type="submit" class="left">
+          				reRender="items" styleClass="left">
           					<span class="apply">
           						<h:outputText value="#{messages.button_yes}" />
           					</span>
-          				</button>
-			</a4j:commandLink>          			
+			</a4j:commandButton>
         </div>
 
       </a4j:form>

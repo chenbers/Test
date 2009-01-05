@@ -75,26 +75,22 @@
 				</rich:panel>
 			
 				<div class="popupactions">					
-					<a4j:commandLink rendered="true" 
+					<a4j:commandButton rendered="true" 
           				action="#{driverReportBean.cancelColumns}"           				
           				onclick="Richfaces.hideModalPanel('editDriverColumns')" 
-          				reRender="items">
-          				<button type="submit" class="left">
+          				reRender="items" styleClass="left">
           					<span class="cancel">
           						<h:outputText value="#{messages.button_cancel}" />
           					</span>
-          				</button>
-          			</a4j:commandLink>  
-          			<a4j:commandLink rendered="true" 
+          			</a4j:commandButton>  
+          			<a4j:commandButton rendered="true" 
           				action="#{driverReportBean.saveColumns}"           				
           				onclick="Richfaces.hideModalPanel('editDriverColumns')" 
-          				reRender="items">
-          				<button type="submit" class="left">
+          				reRender="items" styleClass="left">
           					<span class="save">
           						<h:outputText value="#{messages.button_save}" />
           					</span>
-          				</button>
-          			</a4j:commandLink>          			
+          			</a4j:commandButton>          			
         		</div>
       		
       		</a4j:form>

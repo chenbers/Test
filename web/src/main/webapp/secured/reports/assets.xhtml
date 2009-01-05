@@ -58,14 +58,12 @@
               								</table>
             							</li>
             							<li class="l">
-            								<a4j:commandLink action="#{assetReportBean.search}" 
-            									reRender="items,topScroller,bottomScroller,headerAssets">
-            									<button type="submit" class="left">
+            								<a4j:commandButton action="#{assetReportBean.search}" 
+            									reRender="items,topScroller,bottomScroller,headerAssets" styleClass="left">
             										<span class="search">
             											<h:outputText value="#{messages.button_search}" />
             										</span>
-            									</button>
-            								</a4j:commandLink>            								
+            								</a4j:commandButton>            								
             							</li>
             							<li class="l text">
             								<a4j:commandLink 

@@ -100,23 +100,18 @@
 	<div style="padding-top:25px">
 	<ul id="grid_nav_dark">
 		<li class="r"><h:panelGroup id="buttonPanelFooter">
-			<a4j:commandLink rendered="#{organizationBean.groupState eq 'ADD'}"
-				onclick="saveGroupNode()">
-				<button type="submit" class="left"><span class="add"><h:outputText
-					value="#{messages.button_create_unit}" /></span></button>
-			</a4j:commandLink>
-			<h:commandLink rendered="#{organizationBean.groupState eq 'EDIT'}"
-				onclick="updateGroupNode()">
-				<button type="submit" class="left"><span class="add"><h:outputText
-					value="#{messages.button_save}" /></span></button>
-			</h:commandLink>
-			<a4j:commandLink rendered="#{organizationBean.groupState ne 'VIEW'}"
+			<a4j:commandButton rendered="#{organizationBean.groupState eq 'ADD'}"
+				onclick="saveGroupNode()" styleClass="left"><span class="add"><h:outputText
+					value="#{messages.button_create_unit}" /></span></a4j:commandButton>
+			<h:commandButton rendered="#{organizationBean.groupState eq 'EDIT'}"
+				onclick="updateGroupNode()"styleClass="left"><span class="add"><h:outputText
+					value="#{messages.button_save}" /></span></h:commandButton>
+			<a4j:commandButton rendered="#{organizationBean.groupState ne 'VIEW'}"
 				action="#{organizationBean.changeState}"
-				reRender="groupPanel,organizationTreePanel,buttonPanelFooter">
+				reRender="groupPanel,organizationTreePanel,buttonPanelFooter" styleClass="left">
 				<f:param name="state" value="VIEW" />
-				<button type="submit" class="left"><span class="cancel"><h:outputText
-					value="#{messages.button_cancel}" /></span></button>
-			</a4j:commandLink>
+				<span class="cancel"><h:outputText
+					value="#{messages.button_cancel}" /></span></a4j:commandButton>
 		</h:panelGroup></li>
 	</ul>
 	</div>

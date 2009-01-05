@@ -17,7 +17,7 @@
  
     <ul id="grid_nav">
       <li class="r">
-        <h:commandLink action="#{myAccountBean.saveFormAction}" value="" styleClass="left"><button type="submit" class="left"><span class="save">Save</span></button></h:commandLink>
+        <a4j:commandButton action="#{myAccountBean.saveFormAction}" styleClass="left"><span class="save">Save</span></a4j:commandButton>
         <h:outputText value=" " /><button type="submit" class="left" onclick="parent.location.href='myAccount.faces'; return false;"><span class="cancel">Cancel</span></button>
       </li>
     </ul>

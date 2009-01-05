@@ -29,18 +29,16 @@
 
 			<!-- If mode param is null then the conent from this page is being used and we are in view mode
 														 -->
-			<a4j:commandLink rendered="#{organizationBean.groupState eq 'VIEW'}"
+			<a4j:commandButton rendered="#{organizationBean.groupState eq 'VIEW'}"
 				action="#{organizationBean.edit}"
-				reRender="groupPanel">
-				<button type="submit" class="left"><span class="edit"><h:outputText
-					value="#{messages.button_edit}" /></span></button>
-			</a4j:commandLink>
-			<a4j:commandLink rendered="#{organizationBean.groupState eq 'VIEW'}"
+				reRender="groupPanel" styleClass="left">
+				<span class="edit"><h:outputText
+					value="#{messages.button_edit}" /></span></a4j:commandButton>
+			<a4j:commandButton rendered="#{organizationBean.groupState eq 'VIEW'}"
 				action="#{organizationBean.add}"
-				reRender="groupPanel">
-				<button type="submit" class="left"><span class="add"><h:outputText
-					value="#{messages.button_add}" /></span></button>
-			</a4j:commandLink>
+				reRender="groupPanel" styleClass="left">
+				<span class="add"><h:outputText
+					value="#{messages.button_add}" /></span></a4j:commandButton>
 		</h:panelGroup></li>
 	</ul>
 

@@ -59,14 +59,12 @@
               									</table>
             								</li>
             								<li class="l">
-            									<a4j:commandLink action="#{idlingReportBean.search}" 
-            										reRender="items,topScroller,bottomScroller,headerIdlings,startCalendar,endCalendar,errMsg">
-            										<button type="submit" class="left">
+            									<a4j:commandButton action="#{idlingReportBean.search}" 
+            										reRender="items,topScroller,bottomScroller,headerIdlings,startCalendar,endCalendar,errMsg" styleClass="left">
             											<span class="search">
             												<h:outputText value="#{messages.button_search}" />
             											</span>
-            										</button>
-            									</a4j:commandLink>            								
+            									</a4j:commandButton>            								
             								</li>            									
             								<li class="l">   
             								    <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">

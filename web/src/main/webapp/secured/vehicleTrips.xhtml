@@ -67,13 +67,11 @@
 							  <tr>
 							    <td> </td>
 							    <td>
-			    					 <a4j:commandLink action="#{vehicleTripsBean.initTrips}" reRender="statsPanel,tripsPanel,selectedTripMap" immediate="false" >
-			    					 	<button type="submit" class="left">
+			    					 <a4j:commandButton action="#{vehicleTripsBean.initTrips}" reRender="statsPanel,tripsPanel,selectedTripMap" immediate="false" styleClass="left">
 				          					<span class="edit">
 				          						<h:outputText value="Update Date Range" />
 				          					</span>
-				          				</button>
-			    					 </a4j:commandLink>		 
+			    					 </a4j:commandButton>		 
 							    </td>
 							    <td> </td>
 							    </tr>
