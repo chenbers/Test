@@ -31,7 +31,6 @@ public class Group extends BaseEntity
     private Integer           mapZoom;
     private Double            mapLat;
     private Double            mapLng;
-    private Integer           zoneRev;
 
 
     public Group()
@@ -209,16 +208,6 @@ public class Group extends BaseEntity
         HashCodeBuilder hcb = new HashCodeBuilder(5,9);
         hcb.append(this.getGroupID());
         return hcb.toHashCode();
-    }
-
-    public Integer getZoneRev()
-    {
-        return zoneRev;
-    }
-
-    public void setZoneRev(Integer zoneRev)
-    {
-        this.zoneRev = zoneRev;
     }
     
 }
