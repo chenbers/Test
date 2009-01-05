@@ -49,6 +49,7 @@ public class Person extends BaseEntity
     private User   user;
     @Column(updateable = false)
     private Driver driver;
+    private Integer         status;
 
     public Person()
     {
@@ -319,6 +320,16 @@ public class Person extends BaseEntity
     public void setAddressID(Integer addressID)
     {
         this.addressID = addressID;
+    }
+
+    public Integer getStatus()
+    {
+        return status;
+    }
+
+    public void setStatus(Integer status)
+    {
+        this.status = status;
     }
 
 }
