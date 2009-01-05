@@ -26,6 +26,7 @@
 		<t:saveState value="#{organizationBean.selectedGroupNode}"/>
 		<t:saveState value="#{organizationBean.inProgressGroupNode}"/>
 		<t:saveState value="#{organizationBean.selectedParentGroup}"/>
+		<t:saveState value="#{organizationBean.treeStateMap}"/>
 		
 		
 		<table width="920" border="0" cellspacing="0" cellpadding="0"
@@ -72,6 +73,8 @@
 										reRender="groupPanel,driverPanel,vehiclePanel"
 										dragValue="#{item.data}" dropValue="#{item.data}"
 										adviseNodeSelected="#{organizationBean.adviseNodeSelected}"
+										adviseNodeOpened="#{organizationBean.adviseNodeExpanded}"
+										changeExpandListener="#{organizationBean.changeExpandListener}"
 										ajaxSubmitSelection="true"
 										ondrop="doRefreshTree()"
 										false="true"
@@ -111,7 +114,7 @@
 									<!--
 										adviseNodeSelected="#{organizationBean.adviseNodeSelected}" 
 										adviseNodeOpened="#{organizationBean.adviseNodeExpanded}"
-										changeExpandListener="#{organizationBean.changeExpandListent}"
+										changeExpandListener="#{organizationBean.changeExpandListener}"
 										adviseNodeSelected="#{organizationBean.adviseNodeSelected}"
 										dragValue="#{node.data}" dropValue="#{node.data}"
 									-->

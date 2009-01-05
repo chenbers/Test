@@ -59,6 +59,7 @@ public class OrganizationBean extends BaseBean
     private TreeNodeImpl selectedGroupNode;
     private Map<Integer, Boolean> treeStateMap = new HashMap<Integer, Boolean>();
 
+
     /*
      * For controlling state of page
      */
@@ -128,9 +129,6 @@ public class OrganizationBean extends BaseBean
         return false;
     }
 
-    /*
-     * Not in use - Causes the app to run too slow
-     */
     public boolean adviseNodeExpanded(UITree tree)
     {
         boolean result = false;
@@ -138,10 +136,12 @@ public class OrganizationBean extends BaseBean
         {
             TreeNodeImpl object = (TreeNodeImpl) tree.getRowData();
             logger.debug("Tree Node Expanded: " + object.getLabel());
-
-            if (treeStateMap.get(object.getGroup().getGroupID()) != null && treeStateMap.get(object.getGroup().getGroupID()))
+            if (object.getGroup() != null)
             {
-                result = true;
+                if (treeStateMap.get(object.getGroup().getGroupID()) != null && treeStateMap.get(object.getGroup().getGroupID()))
+                {
+                    result = true;
+                }
             }
         }
         return result;
@@ -161,17 +161,20 @@ public class OrganizationBean extends BaseBean
         setSelectedGroupNode(treeNode);
     }
 
-    public void changeExpandListent(NodeExpandedEvent event)
+    public void changeExpandListener(NodeExpandedEvent event)
     {
         UITree tree = (UITree) event.getComponent();
         TreeNodeImpl object = (TreeNodeImpl) tree.getRowData();
-        if (tree.isExpanded())
+        if (object.getGroup() != null)
         {
-            treeStateMap.put(object.getGroup().getGroupID(), Boolean.TRUE);
-        }
-        else
-        {
-            treeStateMap.put(object.getGroup().getGroupID(), Boolean.FALSE);
+            if (tree.isExpanded())
+            {
+                treeStateMap.put(object.getGroup().getGroupID(), Boolean.TRUE);
+            }
+            else
+            {
+                treeStateMap.put(object.getGroup().getGroupID(), Boolean.FALSE);
+            }
         }
     }
 
@@ -214,8 +217,9 @@ public class OrganizationBean extends BaseBean
     /*
      * BEGIN CRUD methods
      */
-    
-    private void cleanFields(){
+
+    private void cleanFields()
+    {
         inProgressGroupNode = null;
         selectedParentGroup = null;
     }
@@ -269,7 +273,7 @@ public class OrganizationBean extends BaseBean
 
             groupDAO.update(selectedGroupNode.getGroup());
             updateUsersGroupHeirarchy();
-            this.addInfoMessage(selectedGroupNode.getGroup().getName() + " "+ MessageUtil.getMessageString("group_update_confirmation"));
+            this.addInfoMessage(selectedGroupNode.getGroup().getName() + " " + MessageUtil.getMessageString("group_update_confirmation"));
             groupState = State.VIEW;
             cleanFields();
 
@@ -296,9 +300,11 @@ public class OrganizationBean extends BaseBean
                 setSelectedGroupNode(inProgressGroupNode);
                 updateUsersGroupHeirarchy();
                 topLevelNode = null;
-                this.addInfoMessage(selectedGroupNode.getGroup().getName() + " "+ MessageUtil.getMessageString("group_save_confirmation"));
+                this.addInfoMessage(selectedGroupNode.getGroup().getName() + " " + MessageUtil.getMessageString("group_save_confirmation"));
                 groupState = State.VIEW;
+                treeStateMap.put(selectedParentGroup.getGroupID(), Boolean.TRUE);
                 cleanFields();
+               
             }
             else
             {
@@ -461,9 +467,9 @@ public class OrganizationBean extends BaseBean
 
     public void setSelectedGroupNode(TreeNodeImpl selectedGroupNode)
     {
-        if (selectedGroupNode.getGroup() != null)
+        if (selectedGroupNode.getTreeNodeType() == TreeNodeType.TEAM)
         {
-            //TODO These are being called to often. Figure something else out - mstrong
+            
             selectedGroupDriverCount = driverDAO.getAllDrivers(selectedGroupNode.getGroup().getGroupID()).size();
             selectedGroupVehicleCount = vehicleDAO.getVehiclesInGroupHierarchy(selectedGroupNode.getGroup().getGroupID()).size();
         }
@@ -570,6 +576,17 @@ public class OrganizationBean extends BaseBean
     public AccountDAO getAccountDAO()
     {
         return accountDAO;
+    }
+    
+
+    public Map<Integer, Boolean> getTreeStateMap()
+    {
+        return treeStateMap;
+    }
+
+    public void setTreeStateMap(Map<Integer, Boolean> treeStateMap)
+    {
+        this.treeStateMap = treeStateMap;
     }
 
 }
