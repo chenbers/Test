@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import org.junit.Ignore;
 import it.config.IntegrationConfig;
 
 import java.util.ArrayList;
@@ -252,19 +253,18 @@ public class SiloServiceTest
     @Test
     public void driversNearLoc() 
     {
-        System.out.println("***** begin driversNearLoc *****");        
-        
         DriverHessianDAO driverDAO = new DriverHessianDAO();
         driverDAO.setSiloService(siloService);
         
-        Integer groupID = 1;
         Integer numOf = 10;
         Double lat = (double)33.010;
         Double lng = (double)-117.111;
         
         List<DriverLocation> result = 
             driverDAO.getDriversNearLoc(
-                    groupID, numOf, lat, lng);
+                    TESTING_GROUP_ID, numOf, lat, lng);
+                
+        assertNotNull(result);
         
         if ( result != null )
         {
@@ -279,9 +279,79 @@ public class SiloServiceTest
         {
             System.out.println("NO DRIVERS FOUND NEAR" );  
         }
-        System.out.println("***** end driversNearLoc *****");                
+                 
     }
+            
+    @Test
+    public void driversEvents() 
+    {        
+        EventHessianDAO eventDAO = new EventHessianDAO();
+        eventDAO.setSiloService(siloService);
+                
+        // year time frame from today back
+        Date endDate = new Date();
+        Date startDate = DateUtil.getDaysBackDate(endDate, 365);
         
+        List<Integer> type = new ArrayList<Integer>();
+        type.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
+      
+        List<Event> result = 
+            eventDAO.getEventsForDriver(
+                    TESTING_DRIVER_ID,startDate,endDate,type);
+        
+        assertNotNull(result);
+        
+        if ( result != null )
+        {
+            for ( Event r: result) 
+            {
+                System.out.println("driver id " + r.getDriverID() +
+                        " speed " + r.getSpeed() + 
+                        " lat " + r.getLatitude() +
+                        " lng " + r.getLongitude());
+            }
+        } else 
+        {
+            System.out.println("NO VEHICLES FOUND");  
+        }
+                        
+    }
+    
+    
+    @Test
+    public void vehiclesEvents() 
+    {        
+        EventHessianDAO eventDAO = new EventHessianDAO();
+        eventDAO.setSiloService(siloService);
+                
+        // year time frame from today back
+        Date endDate = new Date();
+        Date startDate = DateUtil.getDaysBackDate(endDate, 365);
+        
+        List<Integer> type = new ArrayList<Integer>();
+        type.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
+      
+        List<Event> result = 
+            eventDAO.getEventsForDriver(
+                    TESTING_VEHICLE_ID,startDate,endDate,type);
+        
+        if ( result != null )
+        {
+            for ( Event r: result) 
+            {
+                System.out.println("vehicle id " + r.getVehicleID() +
+                        " speed " + r.getSpeed() + 
+                        " lat " + r.getLatitude() +
+                        " lng " + r.getLongitude());
+            }
+        } else 
+        {
+            System.out.println("NO VEHICLES FOUND");  
+        }
+                      
+    }   
+    
+    
     @Test
     public void lastLocationVehicle()
     {
@@ -316,6 +386,7 @@ public class SiloServiceTest
     }
 */    
     @Test
+    @Ignore
     public void events()
     {
         EventHessianDAO eventDAO = new EventHessianDAO();
