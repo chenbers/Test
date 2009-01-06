@@ -1178,6 +1178,22 @@ public class MockData
         int daysBackDate = DateUtil.getDaysBackDate(baseTimeSec, day, MST_TZ);
         return daysBackDate + (minute * DateUtil.SECONDS_IN_MINUTE);
     }
+    
+    //------------ DELETE METHODS ----------------
+    public int deleteObject(Class clas,String key,Object value)
+    {
+        List<Object> objList = dataMap.get(clas);
+        
+        for(Object object: objList){
+            Object fieldValue = getFieldValue(object, key);
+            if(fieldValue.equals(value))
+            {
+                objList.remove(object);
+            }
+        }
+        
+        return objList.size();
+    }
 
     
     //------------ LOOKUP METHODS ----------------

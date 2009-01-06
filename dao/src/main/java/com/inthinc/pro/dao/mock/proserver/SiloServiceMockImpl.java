@@ -30,7 +30,6 @@ import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
-import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagAlert;
@@ -502,7 +501,8 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     @Override
     public Map<String, Object> deleteGroup(Integer groupID) throws ProDAOException
     {
-        return createReturnValue("count", 0);
+        int newSize =  MockData.getInstance().deleteObject(Group.class, "groupID", groupID);
+        return createReturnValue("count", newSize);
     }
 
     @Override

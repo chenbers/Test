@@ -313,6 +313,28 @@ public class OrganizationBean extends BaseBean
         }
 
     }
+    
+    public void delete(){
+        if(selectedGroupNode.getGroup() != null)
+        {
+            //Validation
+            if(selectedGroupNode.equals(topLevelNode)){
+                
+                addErrorMessage("Cannot delete the top level group.");
+            }else if(selectedGroupNode.getChildCount() > 0){
+                addErrorMessage("Cannot delete a group that contains groups,drivers, or vehicles");
+            }else
+            {
+                groupDAO.deleteByID(selectedGroupNode.getGroup().getGroupID());
+                TreeNodeImpl parentNode = selectedGroupNode.getParent();
+                selectedGroupNode.setParent(null);
+                selectedGroupNode = parentNode;
+                //Make sure when the page refreshed that we pull a new list in
+                topLevelNode = null;
+            }
+        }
+       
+    }
 
     private void updateUsersGroupHeirarchy()
     {
