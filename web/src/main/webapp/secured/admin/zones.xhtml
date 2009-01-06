@@ -237,7 +237,8 @@
 
             <ui:include src="../../includes/confirmDelete.xhtml">
               <ui:param name="deleteBean" value="#{zonesBean}" />
-              <ui:param name="reRender" value="displayZone" />
+              <ui:param name="reRender" value="points,displayZone" />
+              <ui:param name="ondelete" value="showZone(false)" />
               <ui:param name="explanation" value="#{messages.zones_confirmDelete}" />
             </ui:include>
 

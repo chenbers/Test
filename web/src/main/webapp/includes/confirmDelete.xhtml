@@ -22,6 +22,7 @@
         explanation:  Explanatory text for the dialog.  If not provided, messages.confirmDelete_explanation will
                       be used.
         deleteItems:  A list of the items to delete.  If provided, shown below the explanation.
+           ondelete:  A javascript expression to be called after the item(s) have been deleted.
 
   To use:
   ==============
@@ -70,7 +71,7 @@
 
         <div class="popupactions">
           <button type="submit" class="left" onclick="Richfaces.hideModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button>
-          <a4j:commandButton id="deleteButton" action="#{deleteBean['delete']}" onclick="Richfaces.hideModalPanel('confirmDelete')" reRender="#{reRender}" styleClass="left" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
+          <a4j:commandButton id="deleteButton" action="#{deleteBean['delete']}" onclick="Richfaces.hideModalPanel('confirmDelete')" oncomplete="#{ondelete}" reRender="#{reRender}" styleClass="left" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
         </div>
 
       </a4j:form>
