@@ -64,8 +64,8 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
         try
         {
             Integer[] eventTypesArray = eventTypes.toArray(new Integer[0]);
-
-            return SiloUtil.getEventList(getSiloService().getDriverNote(driverID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), eventTypesArray));
+            
+            return getMapper().convertToModelObject(getSiloService().getDriverNote(driverID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), eventTypesArray), Event.class);
         }
         catch (EmptyResultSetException e)
         {
