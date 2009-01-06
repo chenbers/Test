@@ -36,7 +36,7 @@ public class ReportRendererBeanTest extends BaseBeanTest
         rc.addParameter("SPEED_DATA", list);
         rc.addParameter("OVERALL_SCORE", 2.3F);
         
-        rrb.exportSingleReportToPDF(rc,null);
+        //rrb.exportSingleReportToPDF(rc,null);
         
     }
 
