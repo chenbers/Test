@@ -293,7 +293,7 @@ function endShape_(e, getMapPoints)
         && (shape_.end.y >= 0) && (shape_.end.y <= mapSize.width))
       {
         var points = getMapPoints();
-        polygon = createGPolygon_(points);
+        polygon = createGPolygon_(points, true);
         GEvent.trigger(drawZone, "endZone", shape_.type, points);
       }
       else
