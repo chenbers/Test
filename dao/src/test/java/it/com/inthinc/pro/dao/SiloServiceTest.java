@@ -334,8 +334,10 @@ public class SiloServiceTest
         type.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
       
         List<Event> result = 
-            eventDAO.getEventsForDriver(
+            eventDAO.getEventsForVehicle(
                     TESTING_VEHICLE_ID,startDate,endDate,type);
+        
+        assertNotNull(result);
         
         if ( result != null )
         {
