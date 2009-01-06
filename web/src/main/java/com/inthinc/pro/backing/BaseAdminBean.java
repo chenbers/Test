@@ -369,12 +369,13 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
      */
     public String cancelEdit()
     {
-        item = null;
-
         if (displayed)
             return getDisplayRedirect();
         else
+        {
+            item = null;
             return getFinishedRedirect();
+        }
     }
 
     /**
