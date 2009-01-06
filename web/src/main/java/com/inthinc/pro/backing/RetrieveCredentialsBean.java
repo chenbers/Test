@@ -125,10 +125,11 @@ public class RetrieveCredentialsBean extends BaseBean
     {
         if (emailInput.isValid())
         {
+            new EmailValidator().validate(context, component, value);
             String emailStr = value.toString();
-            if (new EmailValidator().isValid(emailStr, component))
+            Person person = personDAO.findByEmail(emailStr);
+            if (person != null)
             {
-                Person person = personDAO.findByEmail(emailStr);
                 validUser = person.getUser();
             }
             

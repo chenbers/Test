@@ -284,7 +284,8 @@ body {
 	width: 960px;
 	height: 38px;
 	margin: 0 auto 0 auto;
-	background: url(../images/main_nav_bg.gif) repeat-x;		
+	background: url(../images/main_nav_bg.gif) repeat-x;
+	clear:both;		
 	}
 	
 .main_nav-left{
@@ -447,6 +448,7 @@ body {
 
 #horz_nav {
 	float: right;
+	width:750px;
 	}
 
 #horz_nav ul {

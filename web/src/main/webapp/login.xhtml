@@ -38,7 +38,14 @@
 		</table>
 		</form>
 		<h:form>
-			<h:commandLink title="#{messages.login_forgotLink}" onclick="Richfaces.showModalPanel('forgotPasswordPanel');return false" value="#{messages.login_forgotLink}"></h:commandLink>
+			<h:commandLink title="#{messages.login_forgotLink}" onclick="Richfaces.showModalPanel('forgotPasswordPanel');selectEmailInput();return false" value="#{messages.login_forgotLink}"></h:commandLink>
+            <script type="text/javascript">
+              function selectEmailInput()
+              {
+                var emailElement = document.getElementById("changePasswordForm:email");
+                emailElement.focus();
+              }
+            </script>
 		</h:form>
 	  </div>
 	</div>
