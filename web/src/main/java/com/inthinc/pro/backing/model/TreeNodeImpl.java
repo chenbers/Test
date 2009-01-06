@@ -3,6 +3,7 @@ package com.inthinc.pro.backing.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -204,6 +205,7 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable
      */
 
     @Override
+    @SuppressWarnings("unchecked")
     public Enumeration children()
     {
         if (childGroupTreeNodes == null)
@@ -372,7 +374,20 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable
                 }
             }
         }
+       
         childGroupTreeNodes = childNodes;
+        
+        //Sort the child nodes by the label in accending order
+        Collections.sort(childGroupTreeNodes,new Comparator<TreeNodeImpl>()
+        {
+        
+            @Override
+            public int compare(TreeNodeImpl o1, TreeNodeImpl o2)
+            {
+                
+                return o1.getLabel().compareTo(o2.getLabel());
+            }
+        });
         return childGroupTreeNodes;
     }
 
