@@ -49,7 +49,7 @@ public class Person extends BaseEntity
     private User   user;
     @Column(updateable = false)
     private Driver driver;
-    private Integer         status;
+    private Status         status;
 
     public Person()
     {
@@ -58,7 +58,7 @@ public class Person extends BaseEntity
     
     public Person(Integer personID, Integer groupID, TimeZone timeZone, Integer costPerHour, Integer addressID, String homePhone, String workPhone, String email,
             String empid, Integer reportsTo, String title, String dept, String first, String middle, String last, String suffix, Gender gender, Integer height, Integer weight,
-            Date dob)
+            Date dob, Status status)
     {
         super();
         this.personID = personID;
@@ -81,6 +81,7 @@ public class Person extends BaseEntity
         this.height = height;
         this.weight = weight;
         this.dob = dob;
+        this.status=status;
     }
 
     public Integer getPersonID()
@@ -322,12 +323,12 @@ public class Person extends BaseEntity
         this.addressID = addressID;
     }
 
-    public Integer getStatus()
+    public Status getStatus()
     {
         return status;
     }
 
-    public void setStatus(Integer status)
+    public void setStatus(Status status)
     {
         this.status = status;
     }

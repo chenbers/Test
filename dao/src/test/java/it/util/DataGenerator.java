@@ -206,7 +206,7 @@ public class DataGenerator
         // create a person
         Person person = new Person(0, groupID, TimeZone.getDefault(), null, null, "5555555555", "5555555555", 
                 first + "email"+groupID+"@email.com",   
-                "emp01", null, "title", "dept", first, "m", last, "jr", Gender.MALE, 65, 180, new Date());
+                "emp01", null, "title", "dept", first, "m", last, "jr", Gender.MALE, 65, 180, new Date(), Status.ACTIVE);
 
         Integer personID = personDAO.create(groupID, person);
         assertNotNull(personID);
