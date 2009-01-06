@@ -212,6 +212,7 @@
                       GEvent.addListener(drawZone, "cancelZone", function(type)
                       {
                         select("hand");
+                        showZone(true);
                       });
                       GEvent.addListener(drawZone, "updateZone", function(points)
                       {
