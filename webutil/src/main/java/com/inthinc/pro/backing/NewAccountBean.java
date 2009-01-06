@@ -66,7 +66,7 @@ public class NewAccountBean
         // create the person record for the superuser
         Person person = new Person(0, groupID, TimeZone.getDefault(), null, null, "5555555555", "5555555555", 
                         email, "0", null, "title", "dept",
-                        "first", "m", "last", "jr", Gender.FEMALE, 65, 180, new Date());
+                        "first", "m", "last", "jr", Gender.FEMALE, 65, 180, new Date(), Status.ACTIVE);
         Integer personID = null;
         try
         {
