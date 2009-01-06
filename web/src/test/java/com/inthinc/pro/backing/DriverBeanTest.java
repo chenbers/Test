@@ -36,7 +36,7 @@ public class DriverBeanTest extends BaseBeanTest
         Person p = new Person();
         p.setFirst("John");
         p.setLast("Doe");
-        p.setGroupID(201);
+        p.setGroupID(101);
         
         Driver d = new Driver();
         d.setDriverID(101);
