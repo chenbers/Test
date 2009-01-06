@@ -101,12 +101,6 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         selectItems(adminBean, 3);
         assertNotNull(adminBean.getSelectedItems());
         assertTrue(adminBean.getSelectedItems().size() > 0);
-
-        // paging clears selection
-        adminBean.setPage(2);
-        assertNotNull(adminBean.getSelectedItems());
-        // we may have one selected item if we have an edit item
-        assertTrue(adminBean.getSelectedItems().size() <= 1);
     }
 
     protected Set<String> getVisibleColumns(Map<String, TableColumn> columns)
@@ -291,13 +285,13 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         // get the bean from the applicationContext (initialized by Spring injection)
         BaseAdminBean<T> adminBean = getAdminBean();
 
-        // select an item
+        // select at least one item (more may have been selected in other tests)
         adminBean.getItems().get(0).setSelected(true);
 
         // delete, test no redirect
         int count = adminBean.getItemCount();
         assertEquals(adminBean.delete(), null);
-        assertEquals(adminBean.getItemCount(), count - 1);
+        assertTrue(adminBean.getItemCount() < count);
 
         // display an item
         final Map<String, String> params = new HashMap<String, String>();
