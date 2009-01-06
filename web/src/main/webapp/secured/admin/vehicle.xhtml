@@ -45,7 +45,7 @@
                         <li class="l text"><h:commandLink action="#{vehiclesBean.cancelDisplay}" value="#{messages.vehicle_backToVehicles}" /></li>
                         <li class="r">
                           <a4j:commandButton styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
-                          <h:outputText value=" " /><a4j:commandButton action="#{vehiclesBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></a4j:commandButton>
+                          <h:outputText value=" " /><h:commandButton action="#{vehiclesBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>
                         </li>
                       </ul>
 
@@ -149,7 +149,7 @@
                         <li class="l text"><h:commandLink action="#{vehiclesBean.cancelDisplay}" value="#{messages.vehicle_backToVehicles}" /></li>
                         <li class="r">
                           <a4j:commandButton styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
-                          <h:outputText value=" " /><a4j:commandButton action="#{vehiclesBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></a4j:commandButton>
+                          <h:outputText value=" " /><h:commandButton action="#{vehiclesBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>
                         </li>
                       </ul>
 

@@ -1,12 +1,13 @@
 package com.inthinc.pro.backing.ui;
 
-import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.context.FacesContext;
 import javax.faces.render.Renderer;
 
-public class CommandButton extends HtmlCommandButton
+import org.ajax4jsf.component.html.HtmlAjaxCommandButton;
+
+public class AjaxCommandButton extends HtmlAjaxCommandButton
 {
-    protected static final Renderer renderer = new CommandButtonRenderer();
+    protected static final Renderer renderer = new AjaxCommandButtonRenderer();
 
     @Override
     protected Renderer getRenderer(FacesContext context)

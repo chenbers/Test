@@ -53,11 +53,15 @@
 			Renders child components inside the HTML "button" element.</description>
 		<display-name>Ajax commandButton</display-name>
 		<component-type>org.ajax4jsf.CommandButton</component-type>
-		<component-class>com.inthinc.pro.backing.ui.CommandButton</component-class>
+		<component-class>com.inthinc.pro.backing.ui.AjaxCommandButton</component-class>
 		<component-extension>
 			<component-family>javax.faces.Command</component-family>
-			<renderer-type>com.inthinc.pro.backing.ui.CommandButtonRenderer</renderer-type>
+			<renderer-type>com.inthinc.pro.backing.ui.AjaxCommandButtonRenderer</renderer-type>
 		</component-extension>
+	</component>
+	<component>
+		<component-type>javax.faces.HtmlCommandButton</component-type>
+		<component-class>com.inthinc.pro.backing.ui.CommandButton</component-class>
 	</component>
 
 	<!-- managed beans -->

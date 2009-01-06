@@ -2,62 +2,141 @@ package com.inthinc.pro.backing.ui;
 
 import java.io.IOException;
 
+import javax.faces.component.UICommand;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.ResponseWriter;
+import javax.faces.event.ActionEvent;
 
-import org.ajax4jsf.component.UIAjaxCommandButton;
-import org.ajax4jsf.renderkit.ComponentVariables;
-import org.ajax4jsf.renderkit.ComponentsVariableResolver;
+import com.sun.faces.renderkit.AttributeManager;
+import com.sun.faces.renderkit.RenderKitUtils;
+import com.sun.faces.renderkit.html_basic.ButtonRenderer;
 
-public class CommandButtonRenderer extends org.ajax4jsf.renderkit.html.CommandButtonRenderer
+public class CommandButtonRenderer extends ButtonRenderer
 {
+    private static final String ATTRIBUTES[];
+
+    static
+    {
+        ATTRIBUTES = AttributeManager.getAttributes(AttributeManager.Key.COMMANDBUTTON);
+    }
+
     @Override
-    protected void doEncodeBegin(ResponseWriter writer, FacesContext context, UIComponent component) throws IOException
+    public void decode(FacesContext context, UIComponent component)
     {
         if (isImage(component))
-            super.doEncodeBegin(writer, context, component);
+            super.decode(context, component);
         else
         {
-            ComponentVariables variables = ComponentsVariableResolver.getVariables(this, component);
-            doEncodeBegin(writer, context, (UIAjaxCommandButton) component, variables);
-            ComponentsVariableResolver.removeVariables(this, component);
+            rendererParamsNotNull(context, component);
+            if (!shouldDecode(component))
+                return;
+            if (wasClicked(context, component) && !isReset(component))
+                component.queueEvent(new ActionEvent(component));
         }
     }
 
-    public void doEncodeBegin(ResponseWriter writer, FacesContext context, UIAjaxCommandButton component, ComponentVariables variables) throws IOException
+    protected static boolean wasClicked(FacesContext context, UIComponent component)
     {
-        String clientId = component.getClientId(context);
-        writer.startElement("button", component);
-        getUtils().writeAttribute(writer, "class", component.getAttributes().get("styleClass"));
-        getUtils().writeAttribute(writer, "id", clientId);
-        getUtils().writeAttribute(writer, "name", clientId);
-        getUtils().writeAttribute(writer, "onclick", getOnClick(context, component));
-        getUtils().writeAttribute(writer, "value", getValue(component));
-        getUtils().encodeAttributesFromArray(
-                context,
-                component,
-                new String[] { "accept", "accesskey", "align", "alt", "checked", "dir", "disabled", "lang", "maxlength", "onblur", "onchange", "ondblclick", "onfocus",
-                        "onkeydown", "onkeypress", "onkeyup", "onmousedown", "onmousemove", "onmouseout", "onmouseover", "onmouseup", "onselect", "readonly", "size", "src",
-                        "style", "tabindex", "title", "usemap", "xml:lang" });
+        String proxyId = getProxyId(component.getClientId(context));
+        return "true".equals(context.getExternalContext().getRequestParameterMap().get(proxyId));
+    }
 
-        String type = (String) component.getAttributes().get("type");
-        if (null != type)
-            writer.writeAttribute("type", type.toLowerCase(), "type");
-        else
-            writer.writeAttribute("type", "button", "type");
+    protected static boolean isReset(UIComponent component)
+    {
+        return "reset".equals(component.getAttributes().get("type"));
     }
 
     @Override
-    public void doEncodeEnd(ResponseWriter writer, FacesContext context, UIAjaxCommandButton component, ComponentVariables variables) throws IOException
+    public void encodeBegin(FacesContext context, UIComponent component) throws IOException
     {
         if (isImage(component))
-            super.doEncodeEnd(writer, context, component, variables);
+            super.encodeBegin(context, component);
         else
-            writer.endElement("button");
+        {
+            rendererParamsNotNull(context, component);
+            if (!shouldEncode(component))
+                return;
+            String type = (String) component.getAttributes().get("type");
+            if (type == null)
+                type = "submit";
+            ResponseWriter writer = context.getResponseWriter();
+            if (writer == null)
+                throw new AssertionError();
+            String value = "";
+            Object valueObj = ((UICommand) component).getValue();
+            if (valueObj != null)
+                value = valueObj.toString();
+            String clientId = component.getClientId(context);
+
+            // hidden proxy, to avoid IE bugs
+            String proxyId = getProxyId(clientId);
+            writer.startElement("input", component);
+            writer.writeAttribute("type", "hidden", "type");
+            writer.writeAttribute("name", proxyId, "name");
+            writer.writeAttribute("id", proxyId, "id");
+            writer.endElement("input");
+
+            // button
+            writer.startElement("button", component);
+            writeIdAttributeIfNecessary(context, writer, component);
+            writer.writeAttribute("type", type, "type");
+            writer.writeAttribute("name", clientId, "clientId");
+            writer.writeAttribute("value", value, "value");
+            writer.writeAttribute("onclick", buildOnClick(context, component), "onclick");
+            RenderKitUtils.renderPassThruAttributes(writer, component, ATTRIBUTES);
+            RenderKitUtils.renderXHTMLStyleBooleanAttributes(writer, component);
+            String styleClass = (String) component.getAttributes().get("styleClass");
+            if (styleClass != null && styleClass.length() > 0)
+                writer.writeAttribute("class", styleClass, "styleClass");
+        }
     }
 
-    protected boolean isImage(UIComponent component)
+    protected static String buildOnClick(FacesContext context, UIComponent component)
+    {
+        StringBuilder onClick = new StringBuilder();
+        String curClick = (String) component.getAttributes().get("onclick");
+        if (curClick != null)
+        {
+            curClick.replaceAll("return (true|false);?", "");
+            onClick.append(curClick);
+            onClick.append(';');
+        }
+        String clientId = component.getClientId(context);
+        if (!isBooleanAttribute(component, "disabled"))
+            onClick.append("document.getElementById('" + getProxyId(clientId) + "').value = 'true'");
+        else
+            onClick = new StringBuilder("return false;");
+        return onClick.toString();
+    }
+
+    protected static String getProxyId(String clientId)
+    {
+        return clientId + ":proxy";
+    }
+
+    protected static boolean isBooleanAttribute(UIComponent component, String name)
+    {
+        Object attrValue = component.getAttributes().get(name);
+        boolean result = false;
+        if (null != attrValue)
+            if (attrValue instanceof String)
+                result = "true".equalsIgnoreCase((String) attrValue);
+            else
+                result = Boolean.TRUE.equals(attrValue);
+        return result;
+    }
+
+    @Override
+    public void encodeEnd(FacesContext context, UIComponent component) throws IOException
+    {
+        if (isImage(component))
+            super.encodeEnd(context, component);
+        else
+            context.getResponseWriter().endElement("button");
+    }
+
+    protected static boolean isImage(UIComponent component)
     {
         return component.getAttributes().get("image") != null;
     }

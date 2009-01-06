@@ -52,7 +52,7 @@
                     <li class="l text"><h:commandLink action="#{zoneAlertsBean.cancelDisplay}" value="#{messages.zoneAlert_backToZoneAlerts}" /></li>
                     <li class="r">
                       <a4j:commandButton styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
-                      <h:outputText value=" " /><a4j:commandButton action="#{zoneAlertsBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></a4j:commandButton>
+                      <h:outputText value=" " /><h:commandButton action="#{zoneAlertsBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>
                     </li>
                   </ul>
 

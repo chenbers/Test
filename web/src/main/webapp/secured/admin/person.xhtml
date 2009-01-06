@@ -40,7 +40,7 @@
                     <li class="l text"><h:commandLink action="#{personBean.cancelDisplay}" value="#{messages.person_backToPeople}" /></li>
                     <li class="r">
                       <a4j:commandButton styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
-                      <h:outputText value=" " /><a4j:commandButton action="#{personBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></a4j:commandButton>
+                      <h:outputText value=" " /><h:commandButton action="#{personBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>
                     </li>
                   </ul>
 
