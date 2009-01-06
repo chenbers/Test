@@ -270,7 +270,10 @@ public class Person extends BaseEntity
 
     public void setHeight(Integer height)
     {
-        this.height = height;
+        if ((height != null) && (height == 0))
+            this.height = null;
+        else
+            this.height = height;
     }
 
     public Integer getWeight()
@@ -280,7 +283,10 @@ public class Person extends BaseEntity
 
     public void setWeight(Integer weight)
     {
-        this.weight = weight;
+        if ((weight != null) && (weight == 0))
+            this.weight = null;
+        else
+            this.weight = weight;
     }
 
     public Date getDob()
