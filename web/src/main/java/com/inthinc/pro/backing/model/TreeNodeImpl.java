@@ -30,7 +30,7 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable
     private TreeNodeType treeNodeType;
     private Integer id;
     private String label;
-    
+
     private List<TreeNodeImpl> breadCrumbList;
 
     private TreeNodeImpl parentGroupTreeNode;
@@ -106,8 +106,9 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable
                 groupLevel = GroupLevel.TEAM;
                 break;
             }
-            
-            if(group.equals(groupHierarchyUtil.getTopGroup())){
+
+            if (group.equals(groupHierarchyUtil.getTopGroup()))
+            {
                 groupLevel = GroupLevel.FLEET;
             }
 
@@ -119,23 +120,31 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable
     {
         return group;
     }
-    
-    public int getBreadCrumbCount(){
+
+    public int getBreadCrumbCount()
+    {
         return getGroupBreadCrumb().size();
     }
-   
+
     public List<TreeNodeImpl> getGroupBreadCrumb()
     {
-        if(breadCrumbList == null)
+        if (breadCrumbList == null)
         {
             breadCrumbList = new ArrayList<TreeNodeImpl>();
-            loadBreadCrumbs(this, breadCrumbList);
+            //We set the number of crumbs to show at 3.
+            loadBreadCrumbs(this, breadCrumbList,4);
             Collections.reverse(breadCrumbList);
         }
         return breadCrumbList;
     }
 
-    private void loadBreadCrumbs(TreeNodeImpl node, List<TreeNodeImpl> breadCrumbList)
+    /**
+     * 
+     * @param node
+     * @param breadCrumbList
+     * @param levelIndex - is essentially a counter and indicates how high up the hierarchy we need to walk.
+     */
+    private void loadBreadCrumbs(TreeNodeImpl node, List<TreeNodeImpl> breadCrumbList,int levelIndex)
     {
         switch (node.getTreeNodeType()) {
         case FLEET:
@@ -143,9 +152,9 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable
         case TEAM:
             breadCrumbList.add(node);
         }
-        if (node.getParent() != null)
+        if (node.getParent() != null && levelIndex > 1)
         {
-            loadBreadCrumbs(node.getParent(), breadCrumbList);
+            loadBreadCrumbs(node.getParent(), breadCrumbList,--levelIndex);
         }
     }
 
@@ -186,7 +195,7 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable
             this.parentGroupTreeNode = parentGroupTreeNode;
         }
 
-        //We need to reload the breadcrumb list
+        // We need to reload the breadcrumb list
         breadCrumbList = null;
     }
 
@@ -254,7 +263,7 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable
     @Override
     public int getIndex(javax.swing.tree.TreeNode node)
     {
-        TreeNodeImpl treeNode = (TreeNodeImpl)node;
+        TreeNodeImpl treeNode = (TreeNodeImpl) node;
         return this.childGroupTreeNodes.indexOf(treeNode);
     }
 
@@ -297,14 +306,14 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable
         }
         return result;
     }
-    
+
     @Override
     public void addChild(Object key, TreeNode node)
     {
         logger.info("Add Child Called");
         super.addChild(key, node);
     }
-    
+
     private List<TreeNodeImpl> loadChildNodes()
     {
         List<TreeNodeImpl> childNodes = new ArrayList<TreeNodeImpl>();
