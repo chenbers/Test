@@ -1,6 +1,5 @@
 package com.inthinc.pro.dao.hessian;
 
-import it.com.inthinc.pro.dao.SiloUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
