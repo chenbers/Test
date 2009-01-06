@@ -10,8 +10,8 @@
 
 	<h:panelGroup id="buttonPanel">
 		<ul id="grid_nav_dark">
-			<li class="l">
-			<!-- Per bug 3504
+			<!-- Per bug 3504<li class="l">
+			
 			<ul id="breadcrumb">
 				<ui:repeat
 					value="#{organizationBean.selectedGroupNode.groupBreadCrumb}"
@@ -25,29 +25,33 @@
 					</a4j:commandLink></li>
 				</ui:repeat>
 			</ul>
-			-->
+			
 
+			</li>-->
+			<li class="r">
+				<a4j:commandButton rendered="#{organizationBean.groupState ne 'VIEW'}"
+					action="#{organizationBean.view}"
+					reRender="groupPanel,organizationTreePanel" immediate="true" styleClass="left">
+					<span class="cancel"><h:outputText
+						value="#{messages.button_cancel}" /></span></a4j:commandButton>
 			</li>
-			<li class="r"><h:panelGroup>
-
-				<a4j:commandButton rendered="#{organizationBean.groupState eq 'ADD'}"
-					action="#{organizationBean.save}"
-					reRender="groupPanel,organizationTreePanel" styleClass="left">
-					<f:param name="state" value="VIEW" />
-					<span class="add"><h:outputText
-						value="#{messages.button_create_unit}" /></span></a4j:commandButton>
+			<li class="r">
 				<a4j:commandButton rendered="#{organizationBean.groupState eq 'EDIT'}"
 					action="#{organizationBean.update}"
 					reRender="groupPanel,organizationTreePanel" styleClass="left">
 					<f:param name="state" value="VIEW" />
 					<span class="save"><h:outputText
 						value="#{messages.button_save}" /></span></a4j:commandButton>
-				<a4j:commandButton rendered="#{organizationBean.groupState ne 'VIEW'}"
-					action="#{organizationBean.view}"
-					reRender="groupPanel,organizationTreePanel" immediate="true" styleClass="left">
-					<span class="cancel"><h:outputText
-						value="#{messages.button_cancel}" /></span></a4j:commandButton>
-			</h:panelGroup></li>
+			</li>
+			<li class="r">
+				<a4j:commandButton rendered="#{organizationBean.groupState eq 'ADD'}"
+					action="#{organizationBean.save}"
+					reRender="groupPanel,organizationTreePanel" styleClass="left">
+					<f:param name="state" value="VIEW" />
+					<span class="add"><h:outputText
+						value="#{messages.button_create_unit}" /></span></a4j:commandButton>
+			</li>
+				
 		</ul>
 	</h:panelGroup>
 	<div style="padding-left: 11px">
@@ -162,25 +166,31 @@
 	<h:outputText rendered="#{organizationBean.groupState eq 'EDIT'}">
 
 		<ul id="grid_nav_dark">
-			<li class="r"><h:panelGroup>
-				<a4j:commandButton rendered="#{organizationBean.groupState eq 'ADD'}"
-					action="#{organizationBean.save}"
-					reRender="groupPanel,organizationTreePanel" styleClass="left">
-					<f:param name="state" value="VIEW" />
-					<span class="add"><h:outputText
-						value="#{messages.button_create_unit}" /></span></a4j:commandButton>
+			<li class="r">
+				<a4j:commandButton rendered="#{organizationBean.groupState ne 'VIEW'}"
+					action="#{organizationBean.view}"
+					reRender="groupPanel,organizationTreePanel" immediate="true" styleClass="left">
+					<span class="cancel"><h:outputText
+						value="#{messages.button_cancel}" /></span></a4j:commandButton>
+			</li>
+			<li class="r">
 				<a4j:commandButton rendered="#{organizationBean.groupState eq 'EDIT'}"
 					action="#{organizationBean.update}"
 					reRender="groupPanel,organizationTreePanel" styleClass="left">
 					<f:param name="state" value="VIEW" />
 					<span class="save"><h:outputText
 						value="#{messages.button_save}" /></span></a4j:commandButton>
-				<a4j:commandButton rendered="#{organizationBean.groupState ne 'VIEW'}"
-					action="#{organizationBean.view}"
-					reRender="groupPanel,organizationTreePanel" immediate="true" styleClass="left">
-					<span class="cancel"><h:outputText
-						value="#{messages.button_cancel}" /></span></a4j:commandButton>
-			</h:panelGroup></li>
+			</li>
+			<li class="r">
+				<a4j:commandButton rendered="#{organizationBean.groupState eq 'ADD'}"
+					action="#{organizationBean.save}"
+					reRender="groupPanel,organizationTreePanel" styleClass="left">
+					<f:param name="state" value="VIEW" />
+					<span class="add"><h:outputText
+						value="#{messages.button_create_unit}" /></span></a4j:commandButton>
+			</li>
+			
+			
 		</ul>
 
 	</h:outputText>

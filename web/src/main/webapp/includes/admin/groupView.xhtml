@@ -8,9 +8,10 @@
 	xmlns:security="http://pro.tiwi.com/jsf/security">
 
 	<ul id="grid_nav_dark">
+	<!--  Per bug 3504
 		<li class="l">
 
-		<!--  Per bug 3504
+		
 			<ul id="breadcrumb">
 			<a4j:repeat
 				value="#{organizationBean.selectedGroupNode.groupBreadCrumb}"
@@ -24,26 +25,32 @@
 				</a4j:commandLink></li>
 			</a4j:repeat>
 		</ul>
-		-->
+		
 
-		</li>
-		<li class="r"><h:panelGroup>
-
-			<!-- If mode param is null then the conent from this page is being used and we are in view mode
-														 -->
-			<a4j:commandButton rendered="#{organizationBean.groupState eq 'VIEW'}"
-				action="#{organizationBean.edit}"
-				reRender="groupPanel" styleClass="left">
-				<span class="edit"><h:outputText
-					value="#{messages.button_edit}" /></span></a4j:commandButton>
-			<a4j:commandButton rendered="#{organizationBean.groupState eq 'VIEW'}"
+		</li>-->
+		
+		<li class="r">
+			<a4j:commandButton
 				action="#{organizationBean.add}"
 				reRender="groupPanel" styleClass="left">
 				<span class="add"><h:outputText
 					value="#{messages.button_add}" /></span></a4j:commandButton>
-		</h:panelGroup></li>
+		</li>
+		<li class="r">
+			<a4j:commandButton
+				action="#{organizationBean.edit}"
+				reRender="groupPanel" styleClass="left">
+				<span class="edit"><h:outputText
+					value="#{messages.button_edit}" /></span></a4j:commandButton>
+		</li>
+		<li class="r">
+			<a4j:commandButton rendered="#{organizationBean.selectedGroupNode.treeNodeType ne 'FLEET'}"
+				onclick="Richfaces.showModalPanel('confirmDelete'); return false;" styleClass="left">
+				<span class="delete"><h:outputText
+					value="#{messages.button_delete}" /></span></a4j:commandButton>
+		</li>
 	</ul>
-
+	
 	<div style="padding-left: 11px; padding-bottom: 10px">
 	<rich:messages globalOnly="false" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
 	<table>
@@ -105,6 +112,10 @@
 		<ui:param name="uniqueID" value="VIEW"/>
 	</ui:include></div>
 
-
+	<ui:include src="../../includes/confirmDelete.xhtml">
+      <ui:param name="deleteBean" value="#{organizationBean}" />
+      <ui:param name="explanation" value="#{messages.group_delete_confirmation}" />
+      <ui:param name="reRender" value="groupPanel,organizationTreePanel" />
+    </ui:include>
 
 </ui:composition>
