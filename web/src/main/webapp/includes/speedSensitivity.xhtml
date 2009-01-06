@@ -58,6 +58,9 @@
                                     <h:outputText id="#{id}MPH" value="#{device.speedSettings[index]}" /><h:outputText value=" mph" />
                                   </td>
                                 </tr>
+                                <script type="text/javascript">
+                                  document.getElementById('edit-form:#{id}MPH').innerHTML = document.getElementById('edit-form:#{id}Input').value;
+                                </script>
                               </c:forEach>
                             </table>
 
@@ -103,6 +106,9 @@
                                   </td>
                                   <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;"><h:outputText value="#{messages.editDevice_sensitivityMore}" /></td>
                                 </tr>
+                                <script type="text/javascript">
+                                  document.getElementById('edit-form:#{sensitivityItem}Level').innerHTML = sensitivities[document.getElementById('edit-form:#{sensitivityItem}Input').value];
+                                </script>
                               </c:forEach>
                             </table>
 
