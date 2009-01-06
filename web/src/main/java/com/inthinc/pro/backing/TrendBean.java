@@ -284,7 +284,14 @@ public class TrendBean extends BaseBean
         } else {            
             List<ScoreableEntity> s = null;
             s = getScores();
-            this.maxCount = s.size();
+            if (s != null)
+            {
+                maxCount = s.size();
+            }
+            else
+            {
+                maxCount = 0;
+            }
             this.start = 1;
             this.end = this.numRowsPerPg;
             if ( this.end > this.maxCount ) {
