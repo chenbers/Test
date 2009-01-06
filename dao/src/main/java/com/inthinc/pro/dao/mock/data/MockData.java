@@ -1061,7 +1061,8 @@ public class MockData
         for (int i = 0; i < numVehiclesInGroup; i++)
         {
             int id = idOffset+i+1;
-            Vehicle vehicle = createVehicle(id, accountID, groupID, "Ford", "F" + (randomInt(1, 15) * 1000), "Red", randomInt(5, 50) * 1000, "00000000000000000", "ABC-123", 
+            String VIN = String.valueOf(randomInt(10000000, 99999999)) + String.valueOf(randomInt(100000000, 999999999));
+            Vehicle vehicle = createVehicle(id, accountID, groupID, "Ford", "F" + (randomInt(1, 15) * 1000), "Red", randomInt(5, 50) * 1000, VIN, "ABC-123", 
                     MockStates.randomState(), randomInt(0, 10) < 8);
             storeObject(vehicle);
             addScores(vehicle.getVehicleID(), EntityType.ENTITY_VEHICLE, vehicle.getName());
