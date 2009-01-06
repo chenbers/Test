@@ -1,6 +1,7 @@
 package it.com.inthinc.pro.dao;
 
 import com.inthinc.pro.dao.hessian.exceptions.MappingException;
+import com.inthinc.pro.dao.hessian.mapper.AbstractMapper;
 import com.inthinc.pro.model.AggressiveDrivingEvent;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventAttr;
@@ -101,7 +102,7 @@ public class SiloUtil
                 }
             }
             else
-            {
+            {               
                 setPropertyOnObject(objectType, object, key, data);
             }
         }
@@ -158,7 +159,7 @@ public class SiloUtil
         byte[] eventBytes = new byte[200];
         int idx = 0;
         eventBytes[idx++] = (byte) (event.getType() & 0x000000FF);
-        Integer eventTime = new Integer((int)event.getTime());
+        Integer eventTime = new Integer((int)event.getTime().getTime());
         idx = puti4(eventBytes, idx, eventTime);
         eventBytes[idx++] = (byte) 1; // ?? flags
         eventBytes[idx++] = (byte) 1; // maprev
