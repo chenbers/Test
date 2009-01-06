@@ -24,4 +24,27 @@ public class MiscUtil
             }
         });
     }
+
+    public static String formatPhone(String phone)
+    {
+        if (phone == null)
+            return null;
+        if (phone.length() != 10)
+            throw new IllegalArgumentException();
+        final StringBuilder sb = new StringBuilder();
+        sb.append('(');
+        sb.append(phone.substring(0, 3));
+        sb.append(") ");
+        sb.append(phone.substring(3, 6));
+        sb.append('-');
+        sb.append(phone.substring(6));
+        return sb.toString();
+    }
+
+    public static String unformatPhone(String phone)
+    {
+        if (phone == null)
+            return null;
+        return phone.replaceAll("\\D", "");        
+    }
 }

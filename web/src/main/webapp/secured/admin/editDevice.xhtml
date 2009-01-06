@@ -61,6 +61,7 @@
                                 <td width="100" valign="top">
                                   <h:selectBooleanCheckbox rendered="#{devicesBean.batchEdit}" id="update_name" value="#{devicesBean.updateField['name']}" />
                                   <h:outputText value="#{messages.editDevice_name}" />
+                                  <span class="required">*</span>
                                 </td>
                                 <td>
                                   <rich:message for="name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -72,6 +73,7 @@
                                 <td width="100" valign="top">
                                   <h:selectBooleanCheckbox rendered="#{devicesBean.batchEdit}" id="update_imei" value="#{devicesBean.updateField['imei']}" />
                                   <h:outputText value="#{messages.editDevice_imei}" />
+                                  <span class="required">*</span>
                                 </td>
                                 <td>
                                   <rich:message for="imei" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -87,6 +89,7 @@
                                 <td width="100" valign="top">
                                   <h:selectBooleanCheckbox rendered="#{devicesBean.batchEdit}" id="update_sim" value="#{devicesBean.updateField['sim']}" />
                                   <h:outputText value="#{messages.editDevice_sim}" />
+                                  <span class="required">*</span>
                                 </td>
                                 <td>
                                   <rich:message for="sim" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -102,13 +105,14 @@
                                 <td width="100" valign="top">
                                   <h:selectBooleanCheckbox rendered="#{devicesBean.batchEdit}" id="update_phone" value="#{devicesBean.updateField['phone']}" />
                                   <h:outputText value="#{messages.editDevice_phone}" />
+                                  <span class="required">*</span>
                                 </td>
                                 <td>
                                   <rich:message for="phone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{devicesBean.item.phone}" id="phone" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     maxlength="22" required="#{(not devicesBean.batchEdit) or devicesBean.updateField['phone']}" requiredMessage="#{messages.required}" validatorMessage="#{messages.editDevice_phoneFormat}">
                                     <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
-                                    <f:attribute name="regex" value="\(?\d{3}\)?[\- ]?\d{3}[\- ]?\d{4}" />
+                                    <f:attribute name="regex" value="\D?\d{3}\D*\d{3}\D?\d{4}" />
                                   </h:inputText>
                                 </td>
                               </tr>
@@ -117,13 +121,14 @@
                                 <td width="100" valign="top">
                                   <h:selectBooleanCheckbox rendered="#{devicesBean.batchEdit}" id="update_ephone" value="#{devicesBean.updateField['ephone']}" />
                                   <h:outputText value="#{messages.editDevice_ephone}" />
+                                  <span class="required">*</span>
                                 </td>
                                 <td>
                                   <rich:message for="ephone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{devicesBean.item.ephone}" id="ephone" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     maxlength="22" required="#{(not devicesBean.batchEdit) or devicesBean.updateField['ephone']}" requiredMessage="#{messages.required}" validatorMessage="#{messages.editDevice_phoneFormat}">
                                     <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
-                                    <f:attribute name="regex" value="\(?\d{3}\)?[\- ]?\d{3}[\- ]?\d{4}" />
+                                    <f:attribute name="regex" value="\D?\d{3}\D*\d{3}\D?\d{4}" />
                                   </h:inputText>
                                 </td>
                               </tr>
@@ -143,6 +148,7 @@
                                 </td>
                                 <td>
                                   <h:selectOneMenu value="#{devicesBean.item.status}" id="status" onchange="checkMultiple(this)">
+                                    <f:selectItem itemLabel="" />
                                     <f:selectItems value="#{devicesBean.statuses}" />
                                   </h:selectOneMenu>
                                 </td>
@@ -170,6 +176,8 @@
                           </td>
                         </tr>
                       </table>
+
+                      <div class="required-key"><h:outputText value="#{messages.requiredKey}" /></div>
 
                       <div class="spacer"></div>
 
@@ -233,6 +241,20 @@
     </ui:include>
 
     <script type="text/javascript">
+  var formElements = ["text", "checkbox", "radio", "select-one", "select-multiple", "textarea"];
+
+  function bodyLoad()
+  {
+    var elements = document.getElementById("edit-form").elements;
+    for (var i = 0; i &lt; elements.length; i++)
+      for (var j = 0; j &lt; formElements.length; j++)
+        if (elements[i].getAttribute("type") == formElements[j])
+        {
+          elements[i].focus();
+          return;
+        }
+  }
+
   function checkMultiple(item)
   {
     var id;

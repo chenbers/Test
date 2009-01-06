@@ -39,6 +39,7 @@ import com.inthinc.pro.model.app.Roles;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.app.SupportedTimeZones;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.MiscUtil;
 
 /**
  * @author David Gileadi
@@ -510,6 +511,30 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         public String getName()
         {
             return getFirst() + ' ' + getLast();
+        }
+
+        @Override
+        public String getHomePhone()
+        {
+            return MiscUtil.formatPhone(super.getHomePhone());
+        }
+
+        @Override
+        public String getWorkPhone()
+        {
+            return MiscUtil.formatPhone(super.getWorkPhone());
+        }
+
+        @Override
+        public void setHomePhone(String homePhone)
+        {
+            super.setHomePhone(MiscUtil.unformatPhone(homePhone));
+        }
+
+        @Override
+        public void setWorkPhone(String workPhone)
+        {
+            super.setWorkPhone(MiscUtil.unformatPhone(workPhone));
         }
 
         @Override

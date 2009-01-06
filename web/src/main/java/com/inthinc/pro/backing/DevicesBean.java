@@ -21,6 +21,7 @@ import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.MiscUtil;
 
 /**
  * @author David Gileadi
@@ -382,6 +383,30 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             if (vehicle == null && getVehicleID() != null)
                 vehicle = vehicleDAO.findByID(getVehicleID());
             return vehicle;
+        }
+
+        @Override
+        public String getEphone()
+        {
+            return MiscUtil.formatPhone(super.getEphone());
+        }
+
+        @Override
+        public String getPhone()
+        {
+            return MiscUtil.formatPhone(super.getPhone());
+        }
+
+        @Override
+        public void setEphone(String ephone)
+        {
+            super.setEphone(MiscUtil.unformatPhone(ephone));
+        }
+
+        @Override
+        public void setPhone(String phone)
+        {
+            super.setPhone(MiscUtil.unformatPhone(phone));
         }
 
         public boolean isSelected()
