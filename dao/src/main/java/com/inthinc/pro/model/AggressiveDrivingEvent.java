@@ -16,6 +16,7 @@ public class AggressiveDrivingEvent extends Event
     private Integer severity; // This number represents the severity of the event with
                         // in the range of 0 to 100, 100 being the most extreme.
                         // This may need to be changed.
+    private Integer speedLimit;
 
     public AggressiveDrivingEvent()
     {
@@ -113,6 +114,16 @@ public class AggressiveDrivingEvent extends Event
     public void setDeltaZ(Integer deltaZ)
     {
         this.deltaZ = deltaZ;
+    }
+
+    public Integer getSpeedLimit()
+    {
+        return speedLimit;
+    }
+
+    public void setSpeedLimit(Integer speedLimit)
+    {
+        this.speedLimit = speedLimit;
     }
 
 }
