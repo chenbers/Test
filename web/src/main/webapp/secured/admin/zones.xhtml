@@ -160,7 +160,9 @@
                     {
                       centerMapAtZone(getLatLngBounds(outline));
                       loadZone(outline, editable);
+                      return true;
                     }
+                    return false;
                   }
 
                   function storeOutline()
@@ -222,7 +224,8 @@
                         storeOutline();
                       });
 
-                      showZone(false);
+                      if (!showZone(false))
+                        showAddress("4225 West Lake Park Blvd. Suite 100 West Valley City UT 84120");
                     }
                   }
 

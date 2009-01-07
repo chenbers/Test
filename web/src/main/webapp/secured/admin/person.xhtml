@@ -153,10 +153,6 @@
                             <td width="100"><h:outputText value="#{messages.editPerson_timeZone}" /></td>
                             <td><h:outputText value="#{personBean.item.timeZone.displayName}" /></td>
                           </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_costPerHour}" /></td>
-                            <td><h:outputText value="#{personBean.item.costPerHour / 100}"><f:convertNumber type="currency" currencySymbol="$" /></h:outputText></td>
-                          </tr>
                         </table>
 
                         <ui:fragment rendered="#{personBean.item.userSelected}">
