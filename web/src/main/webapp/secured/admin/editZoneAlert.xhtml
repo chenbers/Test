@@ -240,6 +240,10 @@
                     </tr>
                   </table>
 
+                  <div class="required-key"><h:outputText value="#{messages.requiredKey}" /></div>
+
+                  <div class="spacer"></div>
+
                   <ul id="grid_nav" style="margin: 0;">
                     <li class="r">
                       <h:commandButton action="#{zoneAlertsBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
@@ -274,6 +278,8 @@
         }
       }
 
+      var formElements = ["text", "checkbox", "radio", "select-one", "select-multiple", "textarea"];
+
       function bodyLoad()
       {
         if (GBrowserIsCompatible())
@@ -284,6 +290,15 @@
           map.disableInfoWindow();
           showZone();
         }
+
+        var elements = document.getElementById("edit-form").elements;
+        for (var i = 0; i &lt; elements.length; i++)
+          for (var j = 0; j &lt; formElements.length; j++)
+            if (elements[i].getAttribute("type") == formElements[j])
+            {
+              elements[i].focus();
+              return;
+            }
       }
 
       function bodyUnload()
