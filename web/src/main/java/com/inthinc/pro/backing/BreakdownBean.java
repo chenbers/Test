@@ -34,7 +34,7 @@ public class BreakdownBean extends BaseDurationBean
 
     private static final Logger logger = Logger.getLogger(BreakdownBean.class);
 
-    private static List<String> entityColorKey = new ArrayList<String>()
+    public static List<String> entityColorKey = new ArrayList<String>()
     {
         {
             add("FF0101");
@@ -243,7 +243,7 @@ public class BreakdownBean extends BaseDurationBean
         reportCriteria.addParameter("DRIVER_STYLE_DATA",getPieScoreData(ScoreType.SCORE_DRIVING_STYLE));
         reportCriteria.addParameter("SEATBELT_USE_DATA",  getPieScoreData(ScoreType.SCORE_SEATBELT));
         reportCriteria.addParameter("SPEED_DATA", getPieScoreData(ScoreType.SCORE_SPEEDING));
-        reportRenderer.exportSingleReportToPDF(reportCriteria, (HttpServletResponse)getExternalContext().getResponse());
+        reportRenderer.exportSingleReportToPDF(reportCriteria, getFacesContext());
         return null;
 
     }
