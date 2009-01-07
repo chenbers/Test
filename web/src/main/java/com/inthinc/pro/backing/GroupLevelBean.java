@@ -33,15 +33,19 @@ public class GroupLevelBean extends BaseBean
     {
         //DebugUtil.dumpRequestParameterMap();
 
-        //If there is a group already in the navigation bean and no new groupID is given, we need to leave the group alone.
+        //TODO This is tricky... Initially the site was set up so that if no groupID was sent in the request, then the group would be
+        // set to the top level group. This is how I believe it should be, but there are many requests that are not including the groupID.
+        // Because of this, this bean was changed to leave the group alone if the groupID is not passed... A quick fix is included to set the group to the
+        // top level if it is the home page. This needs to be changed in the future.
         FacesContext ctx = FacesContext.getCurrentInstance();
         String groupID = (String) ctx.getExternalContext().getRequestParameterMap().get("groupID");
+       
         if (groupID != null)
         {
             logger.debug("initGroupID from request: " + groupID);
             navigationBean.setGroupID(Integer.valueOf(groupID));
         }
-        else if(navigationBean.getGroupID() == null) 
+        else if(navigationBean.getGroupID() == null || (ctx.getViewRoot().getViewId() != null && ctx.getViewRoot().getViewId().contains("home"))) //TODO quick fix... we need to go through the site and add the groupID to all the requests.
         {
             logger.debug("initGroupID from user bean: " + groupID);
             navigationBean.setGroupID(getUser().getPerson().getGroupID());
