@@ -124,7 +124,7 @@ public class DataGenerator
         Date expired = Util.genDate(2010, 9, 30);
         
         driver = new Driver(0, person.getPersonID(), Status.ACTIVE, 100l + person.getPersonID().longValue(), "l"+person.getPersonID(), 
-                                        States.getStateByAbbrev("UT"), "ABCD", expired);
+                                        States.getStateByAbbrev("UT"), "ABCD", expired, null, null);
 
         Integer driverID = driverDAO.create(person.getPersonID(), driver);
         driver.setDriverID(driverID);

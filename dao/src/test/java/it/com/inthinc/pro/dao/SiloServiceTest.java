@@ -1240,7 +1240,7 @@ logger.debug("Persons GroupID: " + groupID);
             Date expired = Util.genDate(2010, 9, 30);
         
             Driver driver = new Driver(0, person.getPersonID(), Status.ACTIVE, 100l + person.getPersonID().longValue(), "l"+person.getPersonID(), 
-                                        randomState(), "ABCD", expired);
+                                        randomState(), "ABCD", expired, null, null);
 
             // create
             Integer driverID = driverDAO.create(person.getPersonID(), driver);
@@ -1371,7 +1371,7 @@ logger.debug("Persons GroupID: " + groupID);
         Address address = new Address(null, Util.randomInt(100, 999) + " Street", null, "City " + Util.randomInt(10,99),
                 randomState(), "12345");
         Driver driver = new Driver(0, 0, Status.ACTIVE, 100l + groupID.longValue(), "l"+groupID, 
-                randomState(), "ABCD", expired);
+                randomState(), "ABCD", expired, null, null);
         User user = new User(0, 0, randomRole(), Status.ACTIVE, "deepuser_"+groupID, PASSWORD);
         Date dob = Util.genDate(1959, 8, 30);
         Person person = new Person(0, groupID, TimeZone.getDefault(), null, address.getAddrID(), "5555555555", "5555555555", 
