@@ -67,21 +67,6 @@
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_status}" /></f:facet>
       <h:outputText value="#{item.status.description}" />
     </rich:column>
-    <rich:column rendered="#{vehiclesBean.tableColumns['hardAccelerationLevel'].visible}" sortBy="#{item.sensitivity.hardAccelerationLevel}">
-      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_hardAccelerationLevel}" /></f:facet>
-<!-- TODO: a graphical display for this -->
-      <h:outputText value="#{item.sensitivity.hardAccelerationLevel}" />
-    </rich:column>
-    <rich:column rendered="#{vehiclesBean.tableColumns['hardTurnLevel'].visible}" sortBy="#{item.sensitivity.hardTurnLevel}">
-      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_hardTurnLevel}" /></f:facet>
-<!-- TODO: a graphical display for this -->
-      <h:outputText value="#{item.sensitivity.hardTurnLevel}" />
-    </rich:column>
-    <rich:column rendered="#{vehiclesBean.tableColumns['hardVerticalLevel'].visible}" sortBy="#{item.sensitivity.hardVerticalLevel}">
-      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_hardVerticalLevel}" /></f:facet>
-<!-- TODO: a graphical display for this -->
-      <h:outputText value="#{item.sensitivity.hardVerticalLevel}" />
-    </rich:column>
   </ui:define>
 
 </ui:composition>

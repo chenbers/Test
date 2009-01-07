@@ -62,9 +62,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         AVAILABLE_COLUMNS.add("license");
         AVAILABLE_COLUMNS.add("state");
         AVAILABLE_COLUMNS.add("status");
-        AVAILABLE_COLUMNS.add("hardAccelerationLevel");
-        AVAILABLE_COLUMNS.add("hardTurnLevel");
-        AVAILABLE_COLUMNS.add("hardVerticalLevel");
 
         // years
         final Calendar cal = Calendar.getInstance();
