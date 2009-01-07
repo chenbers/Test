@@ -5,7 +5,8 @@
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:c="http://java.sun.com/jstl/core"
-	xmlns:security="http://pro.tiwi.com/jsf/security">
+	xmlns:security="http://pro.tiwi.com/jsf/security"
+	xmlns:profunc="http://pro.tiwi.com/jsffunctions">
 	<ul id="grid_nav">
 			<li class="l grid_icon"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_line.png" /></li>
 			<li class="l grid_title">Overview</li>
@@ -16,7 +17,27 @@
 						value="#{navigationBean.groupTreeNode}" />
 				</ui:include>
 			</li>
+			
 			<li class="r grid_icon"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_help.png" /></li>
+			<h:outputText rendered="#{showContextMenu eq 'true'}">
+			<li class="r grid_icon"><img id="overviewContextMenu" src="#{facesContext.externalContext.request.contextPath}/images/ico_tools.png" /></li>
+			</h:outputText>
 			<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" /></li>
 	</ul>
+	<h:form>
+	<rich:contextMenu event="onclick"
+		attachTiming="onavailable" disableDefaultMenu="false"
+		submitMode="server" attachTo="overviewContextMenu">
+		<rich:menuItem ajaxSingle="true" disabled="true" rendered="false"
+			iconDisabled="/images/ico_email.gif" icon="/images/ico_email.gif"
+			value="Email Report" id="email_menu_item">
+		</rich:menuItem>
+
+		<rich:menuItem ajaxSingle="true" iconDisabled="/images/ico_pdf.gif"
+			icon="/images/ico_pdf.gif" value="Export To PDF"
+			action="#{reportRendererBean.exportMultipleReportsToPDF}" id="export_menu_item">
+			<a4j:actionparam assignTo="#{reportRendererBean.reportTypes}" converter="SimpleBeanConverter" value="${profunc:getReportTypes()}"/>
+		</rich:menuItem>
+	</rich:contextMenu>
+	</h:form>
 </ui:composition>

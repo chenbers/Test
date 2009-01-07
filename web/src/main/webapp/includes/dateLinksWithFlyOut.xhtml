@@ -92,9 +92,11 @@
 				</rich:menuItem>
 
 				<rich:menuItem ajaxSingle="true" iconDisabled="/images/ico_pdf.gif"
-					disabled="#{reportBean eq null?'true':'false'}"
+					disabled="#{reportType eq null?'true':'false'}"
 					icon="/images/ico_pdf.gif" value="Export To PDF"
-					action="#{reportBean.exportToPDF}" id="export">
+					action="#{reportRendererBean.exportSingleReportToPDF}" id="export">
+					<a4j:actionparam assignTo="#{reportRendererBean.reportType}" value="#{reportType}"/>
+					<a4j:actionparam assignTo="#{duration}" converter="SimpleBeanConverter" value="#{duration}" />
 				</rich:menuItem>
 			</rich:contextMenu>
 		</a4j:form>

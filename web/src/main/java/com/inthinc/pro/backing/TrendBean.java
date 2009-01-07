@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
@@ -355,6 +354,13 @@ public class TrendBean extends BaseBean
     
     public String exportToPDF()
     {
+        ReportCriteria reportCriteria = buildReportCriteria();
+        reportRenderer.exportSingleReportToPDF(reportCriteria,getFacesContext());
+        return null;
+    }
+    
+    public ReportCriteria buildReportCriteria()
+    {
         List<CategorySeriesData> lineGraphDataList = new ArrayList<CategorySeriesData>();
         List<ScoreableEntityPkg> scoreableEntityDataSet = createScoreableEntities();
         List<ScoreableEntity> s = null;
@@ -397,8 +403,8 @@ public class TrendBean extends BaseBean
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.TREND,getNavigation().getGroup().getName(),getAccountName());
         reportCriteria.addSubDataSet(lineGraphDataList);
         reportCriteria.setMainDataset(scoreableEntityDataSet);
-        reportRenderer.exportSingleReportToPDF(reportCriteria,getFacesContext());
-        return null;
+        reportCriteria.setDuration(getNavigation().getDuration());
+        return reportCriteria;
     }
     
     private String getAccountName()

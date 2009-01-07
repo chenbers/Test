@@ -36,6 +36,7 @@
 	<parameter name="ACCOUNT_NAME" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="ENTITY_NAME" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="SUB_DATASET_1" isForPrompting="false" class="java.util.List"/>
+	<parameter name="DURATION" isForPrompting="false" class="java.lang.String"/>
 
 	<field name="entity.entityName" class="java.lang.String"/>
 	<field name="entity.lightValue" class="java.lang.Integer"/>
@@ -47,12 +48,12 @@
 			</band>
 		</background>
 		<title>
-			<band height="395"  isSplitAllowed="true" >
+			<band height="422"  isSplitAllowed="true" >
 				<rectangle radius="2" >
 					<reportElement
 						mode="Opaque"
 						x="0"
-						y="17"
+						y="36"
 						width="535"
 						height="36"
 						forecolor="#999999"
@@ -89,7 +90,7 @@
 				<staticText>
 					<reportElement
 						x="128"
-						y="33"
+						y="52"
 						width="0"
 						height="2"
 						key="staticText-3"/>
@@ -102,7 +103,7 @@
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="5"
-						y="25"
+						y="44"
 						width="345"
 						height="18"
 						forecolor="#666666"
@@ -117,7 +118,7 @@
 					<chart  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
-						y="61"
+						y="80"
 						width="535"
 						height="325"
 						key="element-1"/>
@@ -156,6 +157,19 @@
 						</valueAxisFormat>
 					</barPlot>
 				</barChart>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="17"
+						width="376"
+						height="14"
+						key="textField-7"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Duration: " + $P{DURATION}]]></textFieldExpression>
+				</textField>
 			</band>
 		</title>
 		<pageHeader>

@@ -36,6 +36,7 @@
 	<parameter name="ACCOUNT_NAME" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="ENTITY_NAME" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="SUB_DATASET_1" isForPrompting="false" class="java.util.List"/>
+	<parameter name="DURATION" isForPrompting="false" class="java.lang.String"/>
 
 	<field name="se.identifier" class="java.lang.String"/>
 	<field name="se.scoreAsFloat" class="java.lang.Float"/>
@@ -46,12 +47,12 @@
 			</band>
 		</background>
 		<title>
-			<band height="395"  isSplitAllowed="true" >
+			<band height="426"  isSplitAllowed="true" >
 				<rectangle radius="2" >
 					<reportElement
 						mode="Opaque"
 						x="0"
-						y="17"
+						y="37"
 						width="535"
 						height="36"
 						forecolor="#999999"
@@ -88,7 +89,7 @@
 				<staticText>
 					<reportElement
 						x="128"
-						y="33"
+						y="53"
 						width="0"
 						height="2"
 						key="staticText-3"/>
@@ -101,7 +102,7 @@
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="5"
-						y="25"
+						y="45"
 						width="345"
 						height="18"
 						forecolor="#666666"
@@ -112,15 +113,11 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["Trend Report"]]></textFieldExpression>
 				</textField>
-			</band>
-		</title>
-		<pageHeader>
-			<band height="0"  isSplitAllowed="true" >
 				<lineChart>
 					<chart  hyperlinkTarget="Self"  customizerClass="com.inthinc.pro.reports.TrendLineChartCustomizer" >
 					<reportElement
 						x="0"
-						y="-336"
+						y="79"
 						width="535"
 						height="332"
 						key="element-1"/>
@@ -190,6 +187,23 @@
 						</valueAxisFormat>
 					</linePlot>
 				</lineChart>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="18"
+						width="376"
+						height="14"
+						key="textField-5"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Duration: " + $P{DURATION}]]></textFieldExpression>
+				</textField>
+			</band>
+		</title>
+		<pageHeader>
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 		</pageHeader>
 		<columnHeader>

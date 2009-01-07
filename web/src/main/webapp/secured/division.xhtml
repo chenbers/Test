@@ -20,7 +20,9 @@
 			<h:inputHidden value="#{groupLevelBean.ping}" />
 		</h:form>
 	
-		<ui:include src="/includes/overviewHeader.xhtml"/>
+		<ui:include src="/includes/overviewHeader.xhtml">
+			<ui:param name="showContextMenu" value="true"/>
+		</ui:include>
 
 		<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" class="dash_table">
 
@@ -44,7 +46,7 @@
 			            <ui:param name="flyNavRule" value="go_divisionDetail" />
 						<ui:param name="flySelectedTab" value="trend_full_screen" />  
 						<ui:param name="flyOutImage" value="ico_expand.png" />
-						<ui:param name="reportBean" value="#{trendBean}"/>
+						<ui:param name="reportType" value="TREND"/>
 					</ui:include>	
 			</div>
 

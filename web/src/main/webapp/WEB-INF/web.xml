@@ -19,7 +19,10 @@
 	
 	<context-param>
 		<param-name>facelets.LIBRARIES</param-name>
-		<param-value>/META-INF/security.taglib.xml;/WEB-INF/facelets/iwi-tiwipro.taglib.xml</param-value>
+		<param-value>/META-INF/security.taglib.xml;
+		/WEB-INF/facelets/iwi-tiwipro.taglib.xml;
+		/META-INF/security.taglib.xml;/WEB-INF/facelets/iwi-tiwipro-functions.taglib.xml</param-value>
+		
 	</context-param>
 	
 	<context-param>

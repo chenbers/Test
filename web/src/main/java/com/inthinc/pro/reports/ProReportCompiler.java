@@ -16,21 +16,12 @@ public class ProReportCompiler
 {
 
     private static Logger logger = Logger.getLogger(ProReportCompiler.class);
-    private ReportType reportType;
     private JasperPrint jasperPrint;
     private Map<String, Object> paramMap;
 
-    public ProReportCompiler(ReportType reportType)
+    public ProReportCompiler()
     {
-        this.reportType = reportType;
         paramMap = new HashMap<String, Object>();
-        paramMap.put("REPORT_TITLE", reportType.getLabel());
-    }
-
-    public JasperPrint compileReport()
-    {
-        populateReport(reportType,null);
-        return jasperPrint;
     }
 
     /**
@@ -45,37 +36,53 @@ public class ProReportCompiler
      * 
      * @return JasperPrint object
      */
-    @SuppressWarnings("unchecked")
-    public JasperPrint compileReport(Map<String, List> masterDatasetCollection,Map<String,Object> paramMap)
+//    @SuppressWarnings("unchecked")
+//    public JasperPrint compileReport(Map<String, List> masterDatasetCollection,Map<String,Object> paramMap)
+//    {
+//        this.paramMap.putAll(paramMap);
+//        if (reportType.getSubtypes() != null && reportType.getSubtypes().length > 0)
+//        {
+//            for (int i = 0; i < reportType.getSubtypes().length; i++)
+//            {
+//                List collection = masterDatasetCollection.get(reportType.getSubtypes()[1].toString());
+//                JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(collection);
+//                populateReport(reportType.getSubtypes()[1], ds);
+//            }
+//        }
+//        else
+//        {
+//            List collection = masterDatasetCollection.get(reportType.toString());
+//            JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(collection);
+//            populateReport(reportType, ds);
+//        }
+//        
+//        
+//        return jasperPrint;
+//    }
+    
+    public JasperPrint compileReport(ReportCriteria reportCriteria)
     {
-        this.paramMap.putAll(paramMap);
-        if (reportType.getSubtypes() != null && reportType.getSubtypes().length > 0)
+        populateReport(reportCriteria);
+        return jasperPrint;
+    }
+    
+    public JasperPrint compileReport(List<ReportCriteria> reportCriteriaList)
+    {
+        for(ReportCriteria reportCriteria: reportCriteriaList)
         {
-            for (int i = 0; i < reportType.getSubtypes().length; i++)
-            {
-                List collection = masterDatasetCollection.get(reportType.getSubtypes()[1].toString());
-                JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(collection);
-                populateReport(reportType.getSubtypes()[1], ds);
-            }
+            populateReport(reportCriteria);
         }
-        else
-        {
-            List collection = masterDatasetCollection.get(reportType.toString());
-            JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(collection);
-            populateReport(reportType, ds);
-        }
-        
-        
         return jasperPrint;
     }
 
-    public void populateReport(ReportType reportSection, JRBeanCollectionDataSource ds)
+    public void populateReport(ReportCriteria reportCriteria)
     {
         JasperPrint jp = null;
         try
         {
-            JasperReport jr = ReportUtils.loadReport(reportSection);
-            jp = JasperFillManager.fillReport(jr, paramMap, ds);
+            JasperReport jr = ReportUtils.loadReport(reportCriteria.getReportType());
+            JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(reportCriteria.getMainDataset());
+            jp = JasperFillManager.fillReport(jr, reportCriteria.getPramMap(), ds);
             if (jasperPrint == null)
             {
                 jasperPrint = jp;

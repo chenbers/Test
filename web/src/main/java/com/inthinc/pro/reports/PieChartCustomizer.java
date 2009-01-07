@@ -3,6 +3,8 @@ package com.inthinc.pro.reports;
 import java.awt.Color;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PiePlot;
+import org.jfree.util.Rotation;
+
 import com.inthinc.pro.backing.BreakdownBean;
 import net.sf.jasperreports.engine.JRAbstractChartCustomizer;
 import net.sf.jasperreports.engine.JRChart;
@@ -25,6 +27,7 @@ public class PieChartCustomizer extends JRAbstractChartCustomizer
         plot.setSectionOutlinePaint(color);
         plot.setShadowXOffset(4);
         plot.setShadowYOffset(4);
+        plot.setDirection(Rotation.ANTICLOCKWISE);
         plot.setShadowPaint(new Color(0xE7E6E6,false));
         int colorIndex = 0;
         

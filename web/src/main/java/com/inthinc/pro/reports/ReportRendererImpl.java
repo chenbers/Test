@@ -2,9 +2,7 @@ package com.inthinc.pro.reports;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
@@ -27,11 +25,17 @@ public class ReportRendererImpl implements ReportRenderer
     @Override
     public void exportSingleReportToPDF(ReportCriteria reportCriteria, FacesContext facesContext)
     {
-        Map<String,List> mainDatasets = new HashMap<String, List>();
-        mainDatasets.put(reportCriteria.getReportType().toString(), reportCriteria.getMainDataset());
-        ProReportCompiler proCompiler = new ProReportCompiler(reportCriteria.getReportType());
-        JasperPrint jp = proCompiler.compileReport(mainDatasets, reportCriteria.getPramMap());
+        ProReportCompiler proCompiler = new ProReportCompiler();
+        JasperPrint jp = proCompiler.compileReport(reportCriteria);
         exportToPdf(jp,facesContext);
+    }
+    
+    @Override
+    public void exportMultipleReportsToPDF(List<ReportCriteria> reportCriteriaList, FacesContext facesContext)
+    {
+        ProReportCompiler proCompiler = new ProReportCompiler();
+        JasperPrint jp = proCompiler.compileReport(reportCriteriaList);
+        exportToPdf(jp,facesContext); 
     }
 
     private void exportToPdf(JasperPrint jasperPrint,FacesContext facesContext)

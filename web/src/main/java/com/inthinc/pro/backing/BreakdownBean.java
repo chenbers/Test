@@ -230,6 +230,13 @@ public class BreakdownBean extends BaseDurationBean
 
     public String exportToPDF()
     {
+        ReportCriteria reportCriteria = buildReportCriteria();
+        reportRenderer.exportSingleReportToPDF(reportCriteria, getFacesContext());
+        return null;
+
+    }
+    
+    public ReportCriteria buildReportCriteria(){
         NumberFormat format = NumberFormat.getInstance();
         format.setMaximumFractionDigits(1);
         format.setMinimumFractionDigits(1);
@@ -238,14 +245,12 @@ public class BreakdownBean extends BaseDurationBean
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.OVERALL_SCORE,getNavigation().getGroup().getName(),getAccountName());
         reportCriteria.setMainDataset(getPieScoreData(ScoreType.SCORE_OVERALL));
         reportCriteria.addParameter("OVERALL_SCORE",overallScore);
-        //TODO add Duration value to report
         reportCriteria.addParameter("DURATION", "");
         reportCriteria.addParameter("DRIVER_STYLE_DATA",getPieScoreData(ScoreType.SCORE_DRIVING_STYLE));
         reportCriteria.addParameter("SEATBELT_USE_DATA",  getPieScoreData(ScoreType.SCORE_SEATBELT));
         reportCriteria.addParameter("SPEED_DATA", getPieScoreData(ScoreType.SCORE_SPEEDING));
-        reportRenderer.exportSingleReportToPDF(reportCriteria, getFacesContext());
-        return null;
-
+        reportCriteria.setDuration(getDuration());
+        return reportCriteria;
     }
     
     private String getAccountName()

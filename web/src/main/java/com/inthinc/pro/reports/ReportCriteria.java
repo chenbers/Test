@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.reports.model.ChartData;
 
 public class ReportCriteria
@@ -11,6 +12,7 @@ public class ReportCriteria
     private List mainDataset;
     private Map<String, Object> paramMap = new HashMap<String, Object>();
     private ReportType reportType;
+    private Duration duration;
     
     private static final String SUB_DATASET = "SUB_DATASET";
     private int subsetIndex = 1;
@@ -50,6 +52,17 @@ public class ReportCriteria
     
     public Map<String,Object> getPramMap(){
         return this.paramMap;
+    }
+
+    public void setDuration(Duration duration)
+    {
+        paramMap.put("DURATION",duration.toString());
+        this.duration = duration;
+    }
+
+    public Duration getDuration()
+    {
+        return duration;
     }
 
 }

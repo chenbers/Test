@@ -147,6 +147,14 @@ public class MpgBean extends BaseDurationBean {
     
     public String exportToPDF()
     {
+       
+        ReportCriteria reportCriteria = buildReportCriteria();
+        reportRenderer.exportSingleReportToPDF(reportCriteria, getFacesContext());
+        
+        return null;
+    }
+    
+    public ReportCriteria buildReportCriteria(){
         List<MpgEntityPkg> entities = getMpgEntities();
         List<CategorySeriesData> seriesData = new ArrayList<CategorySeriesData>();
         
@@ -159,17 +167,13 @@ public class MpgBean extends BaseDurationBean {
             seriesData.add(new CategorySeriesData("Light",seriesID,lightValue,seriesID));
             seriesData.add(new CategorySeriesData("Medium",seriesID,mediumValue,seriesID));
             seriesData.add(new CategorySeriesData("Heavy",seriesID,heavyValue,seriesID));
-           
-            
-            
         }
         
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.MPG_GROUP,getNavigation().getGroup().getName(),getAccountName());
         reportCriteria.setMainDataset(entities);
         reportCriteria.addSubDataSet(seriesData);
-        reportRenderer.exportSingleReportToPDF(reportCriteria, getFacesContext());
-        
-        return null;
+        reportCriteria.setDuration(getDuration());
+        return reportCriteria;
     }
     
     private String getAccountName()
