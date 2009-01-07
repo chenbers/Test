@@ -1,5 +1,6 @@
 package com.inthinc.pro.util;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -153,5 +154,17 @@ public class DateUtil
        // format yyyy-mm-dd
         return year + DOB_SEPARATOR + twoDigitFormat.format(month) + DOB_SEPARATOR + twoDigitFormat.format(day);
 
+    }
+    
+    public static String getDurationFromSeconds(Integer secsIn)
+    {
+        int hours = secsIn / 3600,
+        remainder = secsIn % 3600,
+        minutes = remainder / 60,
+        seconds = remainder % 60;
+
+        return ( (hours < 10 ? "0" : "") + hours
+        + ":" + (minutes < 10 ? "0" : "") + minutes
+        + ":" + (seconds< 10 ? "0" : "") + seconds );
     }
 }
