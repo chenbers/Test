@@ -33,7 +33,7 @@ public class GroupLevelBean extends BaseBean
     {
         //DebugUtil.dumpRequestParameterMap();
 
-        //TODO This is tricky... Initially the site was set up so that if no groupID was sent in the request, then the group would be
+        //Initially the site was set up so that if no groupID was sent in the request, then the group would be
         // set to the top level group. This is how I believe it should be, but there are many requests that are not including the groupID.
         // Because of this, this bean was changed to leave the group alone if the groupID is not passed... A quick fix is included to set the group to the
         // top level if it is the home page. This needs to be changed in the future.
@@ -45,7 +45,7 @@ public class GroupLevelBean extends BaseBean
             logger.debug("initGroupID from request: " + groupID);
             navigationBean.setGroupID(Integer.valueOf(groupID));
         }
-        else if(navigationBean.getGroupID() == null || (ctx.getViewRoot().getViewId() != null && ctx.getViewRoot().getViewId().contains("home"))) //TODO quick fix... we need to go through the site and add the groupID to all the requests.
+        else if(navigationBean.getGroupID() == null)
         {
             logger.debug("initGroupID from user bean: " + groupID);
             navigationBean.setGroupID(getUser().getPerson().getGroupID());

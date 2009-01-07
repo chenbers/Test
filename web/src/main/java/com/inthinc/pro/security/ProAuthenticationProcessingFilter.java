@@ -65,7 +65,7 @@ public class ProAuthenticationProcessingFilter extends AuthenticationProcessingF
     {
         GroupLevel groupLevel = groupHierarchy.getGroupLevel(groupHierarchy.getTopGroup());
         
-        return groupLevel.getUrl();
+        return groupLevel.getUrl() + "?groupID=" + groupHierarchy.getTopGroup().getGroupID().toString();
         
         
     }

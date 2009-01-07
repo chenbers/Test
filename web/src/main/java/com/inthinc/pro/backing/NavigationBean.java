@@ -127,7 +127,7 @@ public class NavigationBean extends BaseDurationBean
     public String homeAction()
     {
         GroupLevel groupLevel = getGroupHierarchy().getGroupLevel(getGroupHierarchy().getTopGroup());
-        this.groupID = getGroupHierarchy().getTopGroup().getGroupID();
+        setGroupID(getGroupHierarchy().getTopGroup().getGroupID());
         
         return groupLevel.getLocation();
    
