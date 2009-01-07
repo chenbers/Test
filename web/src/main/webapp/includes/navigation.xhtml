@@ -49,16 +49,17 @@
 					<td width="105" height="100" class="middle">
 					  <h:inputText id="redirectSearch" value="" styleClass="text" size="15"/>
 					</td>
-					<td class="middle">
-						<h:selectOneMenu id="redirectTo" value="" styleClass="text" style="width: 95px;">
-							<f:selectItem itemLabel="#{messages.navigation_searchDrivers}" itemValue="1"/>
-							<f:selectItem itemLabel="#{messages.navigation_searchVehicles}" itemValue="2"/>
-							<f:selectItem itemLabel="#{messages.navigation_searchIdlings}" itemValue="3"/>														
-							<f:selectItem itemLabel="#{messages.navigation_searchDevices}" itemValue="4"/>							
-						</h:selectOneMenu>
-					</td>
+                    <td class="middle">
+                      <h:selectOneMenu id="redirectTo" value="" styleClass="text" style="width: 95px;margin-top:0">
+                        <f:selectItem itemLabel="#{messages.navigation_searchDrivers}" itemValue="1"/>                         
+                                      <f:selectItem itemLabel="#{messages.navigation_searchDevices}" itemValue="4"/>  
+                                      <f:selectItem itemLabel="#{messages.navigation_searchIdlings}" itemValue="3"/>
+                        <f:selectItem itemLabel="#{messages.navigation_searchVehicles}" itemValue="2"/>             
+                      </h:selectOneMenu>
+                    </td>
 					<td class="middle" width="25" align="center">
-						<input type="button" value="Go" onClick="goTo();">
+						<input type="image" src="#{facesContext.externalContext.request.contextPath}/images/ico_search.gif" value="" 
+                          onclick="goTo();" title="#{messages.navigation_searchToolTip}">
 						</input>					
 					</td>
 					<td class="right">
