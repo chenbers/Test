@@ -24,10 +24,12 @@ public class EventAttr
 
         // Attribute id (192->254) have four byte values)
         mapping.put(192, "zoneID");        // 10x
-
+        mapping.put(219, "lowIdle");
+        mapping.put(220, "highIdle");
 
         // Attribute Id (255) has a stringId byte,  followed by a null terminate string.
         mapping.put(255, "string");
+        
 
     }
     

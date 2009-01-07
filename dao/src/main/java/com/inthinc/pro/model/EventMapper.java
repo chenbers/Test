@@ -46,6 +46,7 @@ public class EventMapper
     public static final int TIWIPRO_EVENT_START_SPEEDING = 201;
     public static final int TIWIPRO_EVENT_UNPLUGGED = 202;
     public static final int TIWIPRO_EVENT_LOW_TIWI_BATTERY = 207;
+    public static final int TIWIPRO_EVENT_IDLE = 208;
     public static final int TIWIPRO_EVENT_STRIPPED_ACKNOWLEDGE_ID_WITH_DATA    = 246;
     public static final int TIWIPRO_EVENT_ZONE_ENTER_ALERTED = 247;
     public static final int TIWIPRO_EVENT_ZONE_EXIT_ALERTED = 248;
@@ -68,6 +69,7 @@ public class EventMapper
         typeMap.put(TIWIPRO_EVENT_LOCATION, Event.class);
         typeMap.put(TIWIPRO_EVENT_LOW_BATTERY, LowBatteryEvent.class);
         typeMap.put(TIWIPRO_EVENT_LOW_TIWI_BATTERY, DeviceLowBatteryEvent.class);
+        typeMap.put(TIWIPRO_EVENT_IDLE, IdleEvent.class);
     }
     @SuppressWarnings("unchecked")
     private static final Map<EventCategory, List<Integer>> categoryMap = new HashMap<EventCategory, List<Integer>> (); 
@@ -78,6 +80,7 @@ public class EventMapper
         violationList.add(TIWIPRO_EVENT_SPEEDING);
         violationList.add(TIWIPRO_EVENT_SPEEDING_EX3);
         violationList.add(TIWIPRO_EVENT_SEATBELT);
+        violationList.add(TIWIPRO_EVENT_IDLE);
         categoryMap.put(EventCategory.VIOLATION, violationList);
         
         List<Integer> warningList = new ArrayList<Integer>();

@@ -39,6 +39,7 @@ import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.GQMap;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
+import com.inthinc.pro.model.IdleEvent;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.LowBatteryEvent;
@@ -676,7 +677,7 @@ public class MockData
         trip.setEvents(new ArrayList<Event>());
         for (int eventCnt = 0; eventCnt < numEvents; eventCnt++)
         {
-            int eventCategory = randomInt(1, 3);
+            int eventCategory = randomInt(1, 4);
             Event event = null;
             Long id = new Long(idOffset+trip.getTripID() * MAX_EVENTS + eventCnt);
             int dateInSeconds = randomInt(DateUtil.convertDateToSeconds(trip.getStartTime()), DateUtil.convertDateToSeconds(trip.getEndTime()));
@@ -739,6 +740,14 @@ public class MockData
                             date,
                             randomInt(15, 70), randomInt(10, 50), lat, lng, topSpeed, avgSpeed,
                             speedLimit, randomInt(5, 70), randomInt(10, 50));
+                event.setAddressStr(addressStr[randomInt(0,2)]);
+                break;
+            case 4:
+                int lowIdle = randomInt(55, 500);
+                int highIdle = randomInt(55, 200);
+                event = new IdleEvent(id, vehicle.getVehicleID(), EventMapper.TIWIPRO_EVENT_IDLE, 
+                        date, 
+                        randomInt(15, 70), randomInt(10, 50), lat, lng, lowIdle, highIdle);
                 event.setAddressStr(addressStr[randomInt(0,2)]);
                 break;
             }
