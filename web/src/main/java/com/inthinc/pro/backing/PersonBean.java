@@ -24,6 +24,7 @@ import org.springframework.beans.BeanUtils;
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.PersonDAO;
+import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Driver;
@@ -61,7 +62,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     private static final int                   MILLIS_PER_HOUR        = MILLIS_PER_MINUTE * 60;
     private static final Map<String, String>   LICENSE_CLASSES;
     private static final Map<String, State>    STATES;
-    private static final Map<String, Status>    STATUSES;
+    private static final Map<String, Status>   STATUSES;
 
     static
     {
@@ -113,10 +114,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
             WEIGHTS.put(String.valueOf(i), i);
 
         // time zones
-//        final List<String> timeZones = new ArrayList<String>();
-//        for (final String id : TimeZone.getAvailableIDs())
-//            if (!id.startsWith("Etc/"))
-//                timeZones.add(id);
+        // final List<String> timeZones = new ArrayList<String>();
+        // for (final String id : TimeZone.getAvailableIDs())
+        // if (!id.startsWith("Etc/"))
+        // timeZones.add(id);
         List<String> timeZones = SupportedTimeZones.getSupportedTimeZones();
         // sort by offset from GMT
         Collections.sort(timeZones, new Comparator<String>()
@@ -161,6 +162,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     }
 
     private PersonDAO                          personDAO;
+    private UserDAO                            userDAO;
     private GroupDAO                           groupDAO;
     private PasswordEncryptor                  passwordEncryptor;
     private Map<String, Integer>               groups;
@@ -170,6 +172,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     public void setPersonDAO(PersonDAO personDAO)
     {
         this.personDAO = personDAO;
+    }
+
+    public void setUserDAO(UserDAO userDAO)
+    {
+        this.userDAO = userDAO;
     }
 
     public void setGroupDAO(GroupDAO groupDAO)
@@ -232,13 +239,13 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
                 else if (column.equals("user_status"))
                     matches = (person.getUser() != null)
                             && (person.getUser().getStatus() != null)
-                            && ((person.getUser().getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("active").toLowerCase().startsWith(filterWord)) || ((!person.getUser().getStatus().equals(Status.ACTIVE) && MessageUtil
-                                    .getMessageString("inactive").toLowerCase().startsWith(filterWord))));
+                            && ((person.getUser().getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("active").toLowerCase().startsWith(filterWord)) || ((!person
+                                    .getUser().getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("inactive").toLowerCase().startsWith(filterWord))));
                 else if (column.equals("driver_status"))
                     matches = (person.getDriver() != null)
                             && (person.getDriver().getStatus() != null)
-                            && ((person.getDriver().getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("active").toLowerCase().startsWith(filterWord)) || ((!person.getDriver()
-                                    .getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("inactive").toLowerCase().startsWith(filterWord))));
+                            && ((person.getDriver().getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("active").toLowerCase().startsWith(filterWord)) || ((!person
+                                    .getDriver().getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("inactive").toLowerCase().startsWith(filterWord))));
                 else if (column.equals("group"))
                     matches = (person.getGroup() != null) && person.getGroup().getName().toLowerCase().startsWith(filterWord);
                 else if (column.equals("reportsTo"))
@@ -334,19 +341,43 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     @Override
     protected boolean validate(List<PersonView> saveItems)
     {
-        boolean passed = true;
+        boolean valid = true;
         final FacesContext context = FacesContext.getCurrentInstance();
         for (final PersonView person : saveItems)
+        {
+            // unique e-mail
+            final Person byEmail = personDAO.findByEmail(person.getEmail());
+            if ((byEmail != null) && !byEmail.getPersonID().equals(person.getPersonID()))
+            {
+                valid = false;
+                final String summary = MessageUtil.getMessageString("editPerson_uniqueEmail");
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                context.addMessage("edit-form:email", message);
+            }
+
+            // unique username
+            if (person.isUserSelected())
+            {
+                final User byUsername = userDAO.findByUserName(person.getUser().getUsername());
+                if ((byUsername != null) && !byUsername.getPersonID().equals(person.getPersonID()))
+                {
+                    valid = false;
+                    final String summary = MessageUtil.getMessageString("editPerson_uniqueUsername");
+                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                    context.addMessage("edit-form:user_username", message);
+                }
+            }
+
+            // matching passwords
             if ((person.getPassword() != null) && (person.getPassword().length() > 0) && !person.getPassword().equals(person.getConfirmPassword()))
             {
-                final FacesMessage message = new FacesMessage();
-                message.setSummary(MessageUtil.getMessageString("editPerson_passwordsMismatched"));
-                message.setSeverity(FacesMessage.SEVERITY_ERROR);
-                context.addMessage("edit-form:user_password", message);
-                passed = false;
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_passwordsMismatched"), null);
+                context.addMessage("edit-form:confirmPassword", message);
+                valid = false;
                 break;
             }
-        return passed;
+        }
+        return valid;
     }
 
     @Override
@@ -476,6 +507,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     {
         return STATES;
     }
+
     public Map<String, Status> getStatuses()
     {
         return STATUSES;
@@ -487,21 +519,21 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         private static final long serialVersionUID = 8954277815270194338L;
 
         @Column(updateable = false)
-        private PersonBean bean;
+        private PersonBean        bean;
         @Column(updateable = false)
-        private Group   group;
+        private Group             group;
         @Column(updateable = false)
-        private Person  reportsToPerson;
+        private Person            reportsToPerson;
         @Column(updateable = false)
-        private String  password;
+        private String            password;
         @Column(updateable = false)
-        private String  confirmPassword;
+        private String            confirmPassword;
         @Column(updateable = false)
-        private boolean userSelected;
+        private boolean           userSelected;
         @Column(updateable = false)
-        private boolean driverSelected;
+        private boolean           driverSelected;
         @Column(updateable = false)
-        private boolean selected;
+        private boolean           selected;
 
         public Integer getId()
         {

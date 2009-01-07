@@ -84,6 +84,7 @@
     
     <bean id="personBean" class="com.inthinc.pro.backing.PersonBean" scope="session" init-method="initBean">
         <property name="personDAO" ref="personDAO"></property>
+        <property name="userDAO" ref="userDAO"></property>
         <property name="groupDAO" ref="groupDAO"></property>
         <property name="passwordEncryptor" ref="jasyptPasswordEncryptor"></property>
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
