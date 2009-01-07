@@ -86,13 +86,13 @@
       <f:facet name="header"><h:outputText value="#{messages.personHeader_weight}" /></f:facet>
       <h:outputText value="#{item.weight}" />
     </rich:column>
-    <rich:column rendered="#{personBean.tableColumns['address_street1'].visible}" sortBy="#{item.address.street1}">
-      <f:facet name="header"><h:outputText value="#{messages.personHeader_address_street1}" /></f:facet>
-      <h:outputText value="#{item.address.street1}" />
+    <rich:column rendered="#{personBean.tableColumns['address_addr1'].visible}" sortBy="#{item.address.addr1}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_address_addr1}" /></f:facet>
+      <h:outputText value="#{item.address.addr1}" />
     </rich:column>
-    <rich:column rendered="#{personBean.tableColumns['address_street2'].visible}" sortBy="#{item.address.street2}">
-      <f:facet name="header"><h:outputText value="#{messages.personHeader_address_street2}" /></f:facet>
-      <h:outputText value="#{item.address.street2}" />
+    <rich:column rendered="#{personBean.tableColumns['address_addr2'].visible}" sortBy="#{item.address.addr2}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_address_addr2}" /></f:facet>
+      <h:outputText value="#{item.address.addr2}" />
     </rich:column>
     <rich:column rendered="#{personBean.tableColumns['address_city'].visible}" sortBy="#{item.address.city}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_address_city}" /></f:facet>
