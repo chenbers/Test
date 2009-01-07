@@ -55,6 +55,7 @@ public class DriverSpeedBean extends BaseDurationBean
     private String          speedScoreHistorySixtyFive;
     
     private List<SpeedingEvent> speedingEvents = new ArrayList<SpeedingEvent>();
+    private SpeedingEvent   clearItem;
     
     private void init()
     {
@@ -318,6 +319,16 @@ public class DriverSpeedBean extends BaseDurationBean
    
     public void setSpeedingEvents(List<SpeedingEvent> speedingEvents) {
         this.speedingEvents = speedingEvents;
+    }
+
+    public SpeedingEvent getClearItem()
+    {
+        return clearItem;
+    }
+
+    public void setClearItem(SpeedingEvent clearItem)
+    {
+        this.clearItem = clearItem;
     }
 
     //NAVIGATION PROPERTY

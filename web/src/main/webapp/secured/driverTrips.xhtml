@@ -21,7 +21,21 @@
 	<ul id="grid_nav">
 		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
 		<li class="l grid_title">Driver Trips:&#160;<h:commandLink action="go_driver" value="#{navigationBean.driver.person.fullName}" /></li>
-		<li class="l divider"><img src="/images/grid_nav_divider.png" /></li>
+		<li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li>
+		
+		<li class="l">
+			<ui:include src="/includes/breadcrumb.xhtml">
+				<ui:param name="groupTreeNode" value="#{navigationBean.groupTreeNode}" />
+				<ui:param name="lastBreadCrumb" value="true" />
+			</ui:include>
+		</li>
+		
+		<li class="l" style="margin-left: -15px;">
+			<ul id="breadcrumb">
+				<li><h:commandLink action="go_driver" value="#{navigationBean.driver.person.fullName}" /></li>
+				<li class="last">Trips</li>
+			</ul>
+		</li>
 	</ul>
 </h:form>
 <div class="spacer"></div>
@@ -158,7 +172,7 @@
 						id="selectedTripTable"
 						var="item" styleClass="datagrid"
 						rowClasses="tableOdd,tableEven" cellspacing="1" rows="10"  
-						width="100%">  <!-- //TODO: Make generic Odd Even CSS -->
+						width="100%">
 
 							<!-- Data -->
 							
@@ -183,7 +197,7 @@
 							</rich:column>
 						</rich:dataTable>
 						<rich:datascroller align="center" for="selectedTripTable" maxPages="20"
-           				  page="#{driverTripsBean.tripPager}" id="eventScroller" reRender="selectedTripTable" />
+           				 					id="eventScroller" reRender="selectedTripTable" />
 					 </a4j:form>
 					 </rich:panel>
 				<!-- End Trip table -->
@@ -269,7 +283,7 @@
 					  <div class="panel_content">
 					    <div class="" id="">
 							<div class="" id="">
-								<table width="320" id="legend" cellpadding="4" cellspacing="0" class="sortable-onload-show no-arrow colstyle-alt paginate-15 max-pages-4">
+								<table width="320" id="legend" cellpadding="4" cellspacing="0">
 								  <tbody>
 								  <tr>
 									<td width="25"><img src="../images/ico_start.png" width="21" height="20" /></td>
@@ -361,8 +375,7 @@
 							</rich:column>
 						</rich:dataTable>
 						<div class="spacer"></div>
-						<rich:datascroller align="center" for="tripsTable" maxPages="20"
-           				 page="#{driverTripsBean.tripsPager}" id="scroller" reRender="tripsTable" />
+						<rich:datascroller align="center" for="tripsTable" maxPages="20" id="scroller" reRender="tripsTable" />
 					</a4j:form> 
 				<!-- End Trip table -->
 			  </rich:panel>
@@ -401,7 +414,7 @@
 
 					var bounds = new GLatLngBounds();
 
-				 		map = new GMap2(document.getElementById("map-canvas"));
+				 	var	map = new GMap2(document.getElementById("map-canvas"));
   						map.addControl(new GLargeMapControl());
   						map.addControl(new GMapTypeControl());
   						map.addControl(new GOverviewMapControl()); 
@@ -474,15 +487,14 @@
 							}
 
 							var idleMarker;
-							if(showIdleMarkers == true)  //TODO Get Idle Events from DAO 
+							if(showIdleMarkers == true)
 							{
-								idleMarker = new GLatLng(32.961299896240234, -117.1980972290039);
-								map.addOverlay(createMarker(idleMarker, "Vehicle Idle.<br />Dec 04, 2008 07:06<br />Duration 3.45 minutes.",
-								"#{facesContext.externalContext.request.contextPath}/images/ico_idle.png"));
-
-								idleMarker = new GLatLng(32.9817008972168, -117.1593017578125);
-								map.addOverlay(createMarker(idleMarker, "Vehicle Idle.<br />Dec 04, 2008 07:01<br />Duration 13.02 minutes.",
-								"#{facesContext.externalContext.request.contextPath}/images/ico_idle.png"));
+								var idle;
+								<ui:repeat value="#{driverTripsBean.idleEvents}" var="idle">
+									idle = new GLatLng(#{idle.latitude}, #{idle.longitude});
+									map.addOverlay(createMarker(idle, "#{idle.eventType} Violation.<br />High RPM: #{idle.highIdleDuration}",
+													"#{facesContext.externalContext.request.contextPath}/images/ico_idle.png"));
+								</ui:repeat>
 							}	
         				}
 			   			

@@ -16,7 +16,7 @@
 		        {
 					var map = new GMap2(document.getElementById("map-canvas"));
 					var location = new GLatLng(lat, lng)
-					map.setCenter(location, 14);
+					map.setCenter(location, 15);
 					map.addOverlay(new GMarker(location)); 
 	        	}
 	      }
@@ -37,6 +37,7 @@
 		<li class="l">
 			<ui:include src="/includes/breadcrumb.xhtml">
 				<ui:param name="groupTreeNode" value="#{navigationBean.groupTreeNode}" />
+				<ui:param name="lastBreadCrumb" value="true" />
 			</ui:include>
 		</li>
 		
@@ -358,23 +359,21 @@ var selected = 'OVERALL';
 			<div class="datagrid">
 				<!-- Start Event table --> 
 					<h:form id="eventTable">
-						<rich:dataTable 
-						value="#{driverStyleBean.styleEvents}" 
-						id="items"
-						var="item" styleClass="datagrid"
+						<rich:dataTable value="#{driverStyleBean.styleEvents}" 
+						id="items" var="item" styleClass="datagrid"
 						rowClasses="tableOdd,tableEven" cellspacing="1" 
 						rows="10" width="100%">
-						<!-- Data -->
 						
 							<rich:column >
 				              <a4j:commandLink style="cursor:pointer">
-				                <div class="maplink">
 					                <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
 					                  <f:param name="lat" value="#{item.latitude}"/>
 					                  <f:param name="lng" value="#{item.longitude}"/>
 					                </rich:componentControl>
-					                <h:outputText value="#{item.addressStr}" />  <!-- ADDRESS GEOCODING NEEDED -->
-								</div>
+					                	<div class="maplink">
+					                		#{item.addressStr}<br />
+					                	</div>
+					                	<!-- ADDRESS GEOCODING NEEDED / MAP image cut off at bottom. -->
 				              </a4j:commandLink>
 				            </rich:column>
 							
