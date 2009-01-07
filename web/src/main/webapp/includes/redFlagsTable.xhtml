@@ -82,7 +82,8 @@
 
 			</div>	
 			
-    <rich:modalPanel id="clearRedFlagPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="350" zindex="2000">
+    <rich:modalPanel id="clearRedFlagPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="50" autosized="true" resizeable="false" zindex="2000"
+    		onshow="document.getElementById('clearItemForm:yesButton').focus();">
       <f:facet name="header">
         <h:outputText value="#{messages.redflags_clearTitle}" />
       </f:facet>
@@ -95,20 +96,19 @@
       </h:panelGroup>
 
       <a4j:form id="clearItemForm">
-		<h:panelGroup layout="block"  styleClass="popupcontent">
-      		<h:outputFormat id="clearItem" value="#{messages.redflags_clearDesc}">
-      			<a4j:actionparam value="#{redFlagsBean.clearItem.detail}"/>
-      			<a4j:actionparam value="#{redFlagsBean.clearItem.date}"/>
-      		</h:outputFormat>
+		<h:panelGroup layout="block"  styleClass="popupcontent" id="clearItem">
+			<h:outputText value="#{redFlagsBean.clearItem.detail}"/><br/>
+      		<h:outputText value="#{redFlagsBean.clearItem.date}"/>
       	</h:panelGroup>
 	
         <div class="popupactions">
-          <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearRedFlagPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_no}" /></span></button>
-          <a4j:commandButton
+          <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearRedFlagPanel'); return false;"><span class="no"><h:outputText value="#{messages.button_no}" /></span></button>
+          <a4j:commandButton id="yesButton"
           				action="#{redFlagsBean.clearItemAction}"         				
           				oncomplete="Richfaces.hideModalPanel('clearRedFlagPanel')" 
+          				onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;"
           				reRender="items" styleClass="left">
-          					<span class="apply">
+          					<span class="yes">
           						<h:outputText value="#{messages.button_yes}" />
           					</span>
 			</a4j:commandButton>

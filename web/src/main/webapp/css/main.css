@@ -669,6 +669,16 @@ span.apply {
 	padding: 0 0 0 25px;
 	}
 
+span.no {
+	background: url(../images/btn_cross.png) left no-repeat;
+	padding: 0 10px 0 25px;
+}
+
+span.yes {
+	background: url(../images/btn_apply.png) left no-repeat;
+	padding: 0 5px 0 25px;
+}
+
 /* INLINE PICKER */
 div.picker {
 	margin: 1px;
