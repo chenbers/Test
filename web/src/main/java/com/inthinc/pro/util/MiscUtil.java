@@ -27,7 +27,7 @@ public class MiscUtil
 
     public static String formatPhone(String phone)
     {
-        if (phone == null)
+        if ((phone == null) || (phone.length() == 0))
             return null;
         if (phone.length() != 10)
             throw new IllegalArgumentException();

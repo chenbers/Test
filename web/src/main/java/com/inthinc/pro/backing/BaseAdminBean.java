@@ -98,11 +98,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
      */
     public List<T> getFilteredItems()
     {
-        if (items == null)
-        {
-            items = loadItems();
-            applyFilter();
-        }
+        getItems();
         return filteredItems;
     }
 
@@ -321,7 +317,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         if (parameterMap.get(paramName) != null)
         {
             final int editID = Integer.parseInt(parameterMap.get(paramName));
-            for (final T t : items)
+            for (final T t : getItems())
                 t.setSelected(t.getId().equals(editID));
 
             item = null;
@@ -485,7 +481,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
      */
     public Map<String, Boolean> getUpdateField()
     {
-        if ((updateField == null) && (items.size() > 0))
+        if ((updateField == null) && (getItems().size() > 0))
         {
             updateField = new HashMap<String, Boolean>();
             for (final String name : BeanUtil.getPropertyNames(items.get(0)))

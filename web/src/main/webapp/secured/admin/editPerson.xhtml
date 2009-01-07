@@ -233,7 +233,9 @@
                         <tr>
                           <td width="100" valign="top">
                             <h:outputText value="#{messages.editPerson_email}" />
-                            <h:outputText id="emailRequired" rendered="#{personBean.item.userSelected}" styleClass="required" value="*" />
+                            <a4j:outputPanel id="emailRequired">
+                              <h:outputText rendered="#{personBean.item.userSelected}" styleClass="required" value="*" />
+                            </a4j:outputPanel>
                           </td>
                           <td>
                             <rich:message for="email" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -306,6 +308,7 @@
 
                       <div class="spacer"></div>
 
+                      <rich:message for="isUser" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                       <div class="add_section_title">
                         <h:selectBooleanCheckbox rendered="#{not personBean.batchEdit}" id="isUser" value="#{personBean.item.userSelected}" onclick="showSection('userTable', this.checked)">
                           <a4j:support event="onchange" ajaxSingle="true" reRender="emailRequired,email,isUser" limitToList="true" />
@@ -441,6 +444,18 @@
                           </td>
                         </tr>
                         </ui:fragment>
+                        <tr>
+                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_driver_certifications}" /></td>
+                          <td>
+                            <h:inputText value="#{personBean.item.driver.certifications}" id="driver_certifications" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="160" />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_driver_dot}" /></td>
+                          <td>
+                            <h:inputText value="#{personBean.item.driver.dot}" id="driver_dot" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="160" />
+                          </td>
+                        </tr>
                         <tr>
                           <td width="100" valign="top">
                             <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_driver_status" value="#{personBean.updateField['driver.status']}" />

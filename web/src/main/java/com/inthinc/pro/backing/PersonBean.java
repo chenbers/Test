@@ -94,6 +94,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         AVAILABLE_COLUMNS.add("driver_licenseClass");
         AVAILABLE_COLUMNS.add("driver_state");
         AVAILABLE_COLUMNS.add("driver_expiration");
+        AVAILABLE_COLUMNS.add("driver_certifications");
+        AVAILABLE_COLUMNS.add("driver_dot");
+        AVAILABLE_COLUMNS.add("driver_RFID");
 
         // genders
         GENDERS = new TreeMap<String, Gender>();
@@ -366,15 +369,22 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
                     final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
                     context.addMessage("edit-form:user_username", message);
                 }
-            }
 
-            // matching passwords
-            if ((person.getPassword() != null) && (person.getPassword().length() > 0) && !person.getPassword().equals(person.getConfirmPassword()))
+                // matching passwords
+                if ((person.getPassword() != null) && (person.getPassword().length() > 0) && !person.getPassword().equals(person.getConfirmPassword()))
+                {
+                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_passwordsMismatched"), null);
+                    context.addMessage("edit-form:confirmPassword", message);
+                    valid = false;
+                    break;
+                }
+            }
+            // must be a user or a driver or both
+            else if (!person.isDriverSelected())
             {
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_passwordsMismatched"), null);
-                context.addMessage("edit-form:confirmPassword", message);
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_userOrDriver"), null);
+                context.addMessage("edit-form:isUser", message);
                 valid = false;
-                break;
             }
         }
         return valid;

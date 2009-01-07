@@ -7,27 +7,33 @@ import com.inthinc.pro.dao.annotations.ID;
 
 public class Driver extends BaseEntity
 {
+    @Column(updateable = false)
+    private static final long serialVersionUID = -1791892231790514608L;
+
     @ID
-    private Integer driverID;
-    private Integer personID;
-    private Status status;
-    
+    private Integer           driverID;
+    private Integer           personID;
+    private Status            status;
+
     @Column(name = "rfid")
-    private Long RFID;
-    private String  license;            // max 10 characters
+    private Long              RFID;
+    private String            license;                                 // max 10 characters
 
     @Column(name = "stateID")
-    private State   state;
+    private State             state;
 
     @Column(name = "class")
-    private String  licenseClass;       // max 4 characters
-    
-    private Date    expiration;
+    private String            licenseClass;                            // max 4 characters
+
+    private Date              expiration;
+    @Column(name = "certs")
+    private String            certifications;
+    private String            dot;
 
     @Column(updateable = false)
-    private Person person;
+    private Person            person;
 
-    public Driver(Integer driverID, Integer personID, Status status, Long rfid, String license, State state, String licenseClass, Date expiration)
+    public Driver(Integer driverID, Integer personID, Status status, Long rfid, String license, State state, String licenseClass, Date expiration, String certifications, String dot)
     {
         super();
         this.driverID = driverID;
@@ -38,6 +44,8 @@ public class Driver extends BaseEntity
         this.state = state;
         this.licenseClass = licenseClass;
         this.expiration = expiration;
+        this.certifications = certifications;
+        this.dot = dot;
     }
 
     public Driver()
@@ -119,6 +127,26 @@ public class Driver extends BaseEntity
         this.expiration = expiration;
     }
 
+    public String getCertifications()
+    {
+        return certifications;
+    }
+
+    public void setCertifications(String certifications)
+    {
+        this.certifications = certifications;
+    }
+
+    public String getDot()
+    {
+        return dot;
+    }
+
+    public void setDot(String dot)
+    {
+        this.dot = dot;
+    }
+
     public Person getPerson()
     {
         return person;
@@ -138,5 +166,5 @@ public class Driver extends BaseEntity
     {
         this.status = status;
     }
-    
+
 }

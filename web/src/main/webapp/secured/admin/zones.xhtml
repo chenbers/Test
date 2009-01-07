@@ -101,7 +101,7 @@
                               </td>
                               <td>
                                 <rich:message for="zoneName" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                                <h:inputText id="zoneName" value="#{zonesBean.item.name}" class="text" size="30" maxlength="30" required="#{zonesBean.editing}" requiredMessage="#{messages.required}" />
+                                <h:inputText id="zoneName" value="#{zonesBean.item.name}" class="text" size="30" maxlength="60" required="#{zonesBean.editing}" requiredMessage="#{messages.required}" />
                               </td>
                             </tr>
                           </table>
@@ -128,7 +128,7 @@
                             <tr>
                               <td><h:outputText value="#{messages.zones_address}" /></td>
                               <td>
-                                <h:inputText id="zoneAddress" value="#{zonesBean.item.address}" class="text" size="30" maxlength="64" onkeypress="if (event &amp;&amp; event.keyCode == 13) { showAddress(this.value); return false; } return true;" />
+                                <h:inputText id="zoneAddress" value="#{zonesBean.item.address}" class="text" size="30" maxlength="126" onkeypress="if (event &amp;&amp; event.keyCode == 13) { showAddress(this.value); return false; } return true;" />
                               </td>
                             </tr>
                           </table>

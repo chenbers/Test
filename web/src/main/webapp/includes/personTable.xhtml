@@ -128,6 +128,14 @@
         <f:convertDateTime dateStyle="long" />
       </h:outputText>
     </rich:column>
+    <rich:column rendered="#{personBean.tableColumns['driver_certifications'].visible}" sortBy="#{item.driver.certifications}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_certifications}" /></f:facet>
+      <h:outputText value="#{item.driver.certifications}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.tableColumns['driver_dot'].visible}" sortBy="#{item.driver.dot}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_dot}" /></f:facet>
+      <h:outputText value="#{item.driver.dot}" />
+    </rich:column>
     <rich:column rendered="#{personBean.tableColumns['driver_RFID'].visible}" sortBy="#{item.driver.RFID}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_RFID}" /></f:facet>
       <h:outputText value="#{item.driver.RFID}" />
