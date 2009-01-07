@@ -1,7 +1,6 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -398,7 +397,7 @@ public class TrendBean extends BaseBean
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.TREND,getNavigation().getGroup().getName(),getAccountName());
         reportCriteria.addSubDataSet(lineGraphDataList);
         reportCriteria.setMainDataset(scoreableEntityDataSet);
-        reportRenderer.exportSingleReportToPDF(reportCriteria, (HttpServletResponse)getExternalContext().getResponse());
+        reportRenderer.exportSingleReportToPDF(reportCriteria,getFacesContext());
         return null;
     }
     

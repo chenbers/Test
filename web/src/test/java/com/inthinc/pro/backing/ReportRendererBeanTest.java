@@ -21,7 +21,7 @@ public class ReportRendererBeanTest extends BaseBeanTest
         ReportRendererBean rrb = (ReportRendererBean)applicationContext.getBean("reportRenderer");
         NavigationBean navBean = (NavigationBean)applicationContext.getBean("navigationBean");
         navBean.setGroup(new Group(1,1,"Test",0));
-        rrb.setNavigationBean(navBean);
+        
         
         List<PieScoreData> list = new ArrayList<PieScoreData>();
         PieScoreData se1 = new PieScoreData(PieScoreRange.SCORE_0.getLabel(),50,PieScoreRange.SCORE_0.getLabel());

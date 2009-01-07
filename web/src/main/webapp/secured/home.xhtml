@@ -12,8 +12,8 @@
 	</ui:define>
 
 	<ui:param name="homeSelected" value="current" />
-	<ui:define name="content">
 	
+	<ui:define name="content">
 		<h:form id="setupGroup">
 			<h:inputHidden value="#{groupLevelBean.ping}" />
 		</h:form>
@@ -110,7 +110,7 @@
 							
 										var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSLine.swf", "ChartId", "445", "300", "0", "0");						   						   		
 										chart.setDataXML(targetElement.value);
-					   			   
+										chart.setTransparent(true);
 										chart.render("chartdiv2");
 									</script>
 								</rich:panel> 

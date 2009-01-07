@@ -167,7 +167,7 @@ public class MpgBean extends BaseDurationBean {
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.MPG_GROUP,getNavigation().getGroup().getName(),getAccountName());
         reportCriteria.setMainDataset(entities);
         reportCriteria.addSubDataSet(seriesData);
-        reportRenderer.exportSingleReportToPDF(reportCriteria, (HttpServletResponse)getExternalContext().getResponse());
+        reportRenderer.exportSingleReportToPDF(reportCriteria, getFacesContext());
         
         return null;
     }

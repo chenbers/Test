@@ -1,11 +1,10 @@
 package com.inthinc.pro.reports;
  
 
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletResponse;
+import javax.faces.context.FacesContext;
 
 
 public interface ReportRenderer
 {
-    void exportSingleReportToPDF(ReportCriteria reportCriteria,HttpServletResponse response);
+    public void exportSingleReportToPDF(ReportCriteria reportCriteria, FacesContext facesContext);
 }
