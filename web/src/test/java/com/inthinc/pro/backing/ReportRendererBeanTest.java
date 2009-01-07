@@ -3,6 +3,7 @@ package com.inthinc.pro.backing;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.model.EntityType;
@@ -17,6 +18,7 @@ import com.inthinc.pro.reports.model.PieScoreRange;
 public class ReportRendererBeanTest extends BaseBeanTest
 {
     @Test
+    @Ignore
     public void testExportOverallScoreToPDF(){
         ReportRendererBean rrb = (ReportRendererBean)applicationContext.getBean("reportRenderer");
         NavigationBean navBean = (NavigationBean)applicationContext.getBean("navigationBean");

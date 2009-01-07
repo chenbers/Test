@@ -122,7 +122,8 @@ public class OrganizationBeanTest extends BaseBeanTest
         
     }
     
-    @Test
+    @Test 
+    @Ignore
     public void testLoadTree(){
         setup();
         TreeNodeImpl treeNode = organizationBean.getTopLevelNodes();
