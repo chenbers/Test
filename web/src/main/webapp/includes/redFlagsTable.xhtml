@@ -22,7 +22,7 @@
 					
 					<!-- Data -->
 					<rich:column rendered="#{tableColumns['level'].visible}" 
-						sortBy="#{item.level}" width="10%">
+						sortBy="#{item.redFlag.level}" width="10%">
 						<f:facet name="header">
 							<h:outputText value="#{messages.redflags_level}" />
 						</f:facet>
