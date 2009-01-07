@@ -75,10 +75,10 @@
                         <li class="r">
                           <a4j:commandButton action="#{zonesBean.add}" onclick="map.clearOverlays()" reRender="displayZone,editZone" styleClass="left"><span class="add"><h:outputText value="#{messages.zones_addZone}" /></span></a4j:commandButton>
                           <ui:fragment rendered="#{zonesBean.zonesCount gt 0}">
-                            <a4j:commandButton action="#{zoneAlertsBean.add}" styleClass="left">
+                            <h:commandButton action="#{zoneAlertsBean.add}" styleClass="left">
                               <f:param name="zoneID" value="#{zonesBean.item.zoneID}" />
                               <span class="addZoneAlert"><h:outputText value="#{messages.zones_addZoneAlert}" /></span>
-                            </a4j:commandButton>
+                            </h:commandButton>
                           </ui:fragment>
                         </li>
                       </ul>
