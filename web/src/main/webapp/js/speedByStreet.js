@@ -12,51 +12,36 @@ var segmentSelected = null;
 var custommap1;
 var speedLayer;
 var streetviewOverlay;
-var entryPoint;
+var entryPoint = 1;
 var address;
 var lat;
 var lon;
-
-//var baseURL="http://testteen.iwiglobal.com:8780/SpeedByStreet/servlet/iwiglobal";
-//var baseURL="http://testteen.iwiglobal.com:8780/SpeedByStreet/servlet/iwiglobal";
-//var baseURL="http://localhost:8080/SpeedByStreet/servlet/iwiglobal";
-var baseURL="../servlet/iwiglobal";
+var check = false;
+var cursor;
 //StreetView stuff
     var panorama;
     var markers;
     var currentMarkerNum;
     var client;
+    var row;
     
  //
  //Streetsegment
  	function StreetSegment(){     
  	this.id = "";
- 	this.name = "";
- 	this.zip = "";
- 	this.cat = 0;
- 	this.speedLimit = 0;
- 	this.newSpeedLimit = 0;
  	this.polyline = null;
- 	this.hipoly = null;
- 	this.selected = false;
- 	this.comment = "";
- 	
- 	this.initialize = function(id,name,zip,cat,speedLimit,polyline,hipoly) {
+	this.selected = false;
+	this.bcolor= null;
+	this.row = null;
+  	
+ 	this.initialize = function(id,polyline,bcolor, row) {
  	
 	 	this.id = id;
-	 	this.name = name;
-	 	this.zip = zip;
-	 	this.cat = cat;
-	 	this.speedLimit = speedLimit;
-	 	this.newSpeedLimit = 0;
 	 	this.polyline = polyline;
-	 	this.hipoly = hipoly;
 	 	this.selected = false;
+	 	this.bcolor = bcolor;
+	 	this.row = row;
 	}
-	this.setNewSpeedlimit = function(newSpeedLimit) {
-	
- 	 	this.newSpeedLimit = newSpeedLimit;
- 	}
  }	
  
  function findSegment(id){
@@ -154,41 +139,41 @@ var baseURL="../servlet/iwiglobal";
     }
 }
 
-
-	function showSelected(){
+	function showSelected(row){
 	
 		if (segmentSelected){
 		
-	  		var row = document.getElementById("r"+segmentSelected.id);
 	 		row.style.backgroundColor = '#DfDfF8';
 	 	}
 	}
 	
  	function selectSegment(id) {
  	 
+ 	 	if (check) {
+ 	 		// Don't select row if it a child element picked up click first 
+ 	 		check = false;
+ 	 		return;
+ 	 	}
  		var streetSegment = findSegment(id);
  		
 		if (streetSegment.selected){
 		
- 	 		streetSegment.hipoly.hide();
-	  		streetSegment.polyline.show();
+		  	streetSegment.polyline.setStrokeStyle({color:"#666666"});
 			streetSegment.selected = false;
 			segmentSelected = null;
 				  		
-			var row = document.getElementById("r"+streetSegment.id);
-	 		row.style.backgroundColor = '#ffffff';
+	 		streetSegment.row.style.backgroundColor = streetSegment.bcolor;
 		}
  		else {
  		
 		  	deselectAllSegments();
  		
-	 		streetSegment.polyline.hide();
-	 		streetSegment.hipoly.show();
+		  	streetSegment.polyline.setStrokeStyle({color:"#ff0000"});
 			streetSegment.selected = true;
-			segmentSelected = streetSegment;	
-	  		var row = document.getElementById("r"+id);
-	 		row.style.backgroundColor = '#ff9999';
-	 		
+			segmentSelected = streetSegment;
+
+	 		streetSegment.row.style.backgroundColor = '#DfDfF8';
+
 	 		panTo(streetSegment);
 		}
  	}
@@ -196,15 +181,10 @@ var baseURL="../servlet/iwiglobal";
   	
   		if (segmentSelected){
 
-	 		segmentSelected.hipoly.hide();
-	  		segmentSelected.polyline.show();
+		  	segmentSelected.polyline.setStrokeStyle({color:"#666666"});
 			segmentSelected.selected = false;
 	  		
-			var row = document.getElementById("r"+segmentSelected.id);
-			if (row){
-			
-	 			row.style.backgroundColor = '#ffffff'
-	 		}
+	 		segmentSelected.row.style.backgroundColor = segmentSelected.bcolor;
 	 		
 	 		segmentSelected = null;
 	 	}
@@ -219,10 +199,8 @@ var baseURL="../servlet/iwiglobal";
 	 		
 	 		if(streetSegment){
 	 		
-		 		streetSegment.polyline.hide();
-		 		streetSegment.hipoly.show();
-		 		var row = document.getElementById("r"+id);
-		 		row.style.backgroundColor = '#ff9999'
+				streetSegment.polyline.setStrokeStyle({color:"#ff0000"});
+		 		streetSegment.row.style.backgroundColor = '#DfDfF8';
 		       	var vertexCount = streetSegment.polyline.getVertexCount();
 		       	var half = (vertexCount+vertexCount%2)/2;
 				map.panTo(streetSegment.polyline.getVertex(half));
@@ -235,182 +213,18 @@ var baseURL="../servlet/iwiglobal";
 	 	
 	 		for(var i=0; i<streetSegments.length; i++){
 	 
-		 		streetSegments[i].hipoly.hide();
-		  		streetSegments[i].polyline.show();
-		  		
-		  		var row = document.getElementById("r"+streetSegments[i].id);
-		  		
-		 		row.style.backgroundColor = '#ffffff'
+		  		streetSegments[i].polyline.setStrokeStyle({color:"#666666"});
+		 		streetSegments[i].row.style.backgroundColor = streetSegments[i].bcolor;
 	  		}
 	  	}
  	}
  	
- /*     function displayLine(id) {
-      
-     	
-           var request = GXmlHttp.create();
-
-            request.open("GET", 'http://localhost:8080/SpeedByStreet/servlet/iwiglobal?srv=tigerChain&&id=' + id, true);
-            request.onreadystatechange = function() {
-             if (request.readyState == 4) {
-                var xmlDoc = request.responseXML;
-                var pointXml = xmlDoc.documentElement.getElementsByTagName("point");
-
-                 var gLatLngArray = new Array();
-                for (var i = 0; i < pointXml.length; i++) {
-                  var lat = parseFloat(pointXml[i].getElementsByTagName("lat")[0].childNodes[0].nodeValue);
-                  var lng = parseFloat(pointXml[i].getElementsByTagName("lng")[0].childNodes[0].nodeValue);
-                  gLatLngArray.push(new GLatLng(lat,lng));
-                }
-                var polyline = new GPolyline(gLatLngArray, "#ff0000", 10);
-                map.addOverlay(polyline);
-				
-              }
-            } // function
-            request.send(null);
-       }*/
-
-    function extractStreetSegments(lines, fullAddress){
-    
-           var id = lines[0].getElementsByTagName("id")[0].childNodes[0].nodeValue;
-           
-           var segcheck = findSegment(id);
-           if(!segcheck){
-            
-            	//alert("full address is: "+fullAddress);
-  	      		 if (fullAddress.length==0){
- 	      		 
-		         	 name = '? (street with no name)';
-		         	 
-			         if (lines[0].getElementsByTagName("name")[0].childNodes[0] != null) {
-			         
-			           name = lines[0].getElementsByTagName("name")[0].childNodes[0].nodeValue;
-					}
-			         var zip = '';
-			         if (lines[0].getElementsByTagName("postalcode")[0].childNodes[0] != null) {
-			           zip  = lines[0].getElementsByTagName("postalcode")[0].childNodes[0].nodeValue;
-			         }
-			         name+=(" "+zip);
-			         geocoder.getLocations(name,  function(response){
-			         
-				           if (!response || response.Status.code != 200) {
-						        alert("Sorry, we were unable to geocode that address");
-						   } 
-						   else {
-	      		 				var seg = new StreetSegment();
-						        place = response.Placemark[0];
-						        
-						       	name = place.address;
-            					//alert("full address is: "+name);
-						         var speedCat = '';
-						         if (lines[0].getElementsByTagName("speed_cat")[0].childNodes[0] != null) {
-						           speedCat  = lines[0].getElementsByTagName("speed_cat")[0].childNodes[0].nodeValue;
-						         }
-						         var frSpeedLimit ='';
-						         var toSpeedLimit ='';
-						         var speedLimit = '';
-						         if (lines[0].getElementsByTagName("fr_spd_lim")[0].childNodes[0] != null) {
-						           frSpeedLimit  = lines[0].getElementsByTagName("fr_spd_lim")[0].childNodes[0].nodeValue;
-						         }
-						         if (lines[0].getElementsByTagName("to_spd_lim")[0].childNodes[0] != null) {
-						           toSpeedLimit  = lines[0].getElementsByTagName("to_spd_lim")[0].childNodes[0].nodeValue;
-						         }
-								speedLimit =''+Math.max(parseInt(frSpeedLimit,toSpeedLimit));
-						        // Do polyline for segment    
-						         var pointXml = lines[0].getElementsByTagName("point");
-						         var gLatLngArray = new Array();
-						         for (var j = 0; j < pointXml.length; j++) {
-						           var lat = parseFloat(pointXml[j].getElementsByTagName("lat")[0].childNodes[0].nodeValue);
-						           var lng = parseFloat(pointXml[j].getElementsByTagName("lng")[0].childNodes[0].nodeValue);
-						           gLatLngArray.push(new GLatLng(lat,lng));
-						         }
-						         
-						         var polyline = new GPolyline(gLatLngArray, "#666666", 10);
-						         var hipoly = new GPolyline(gLatLngArray, "#DfDfF8", 10);
-						        seg.initialize(id,name,zip,speedCat,speedLimit,polyline,hipoly);
-						        streetSegments.push(seg);
-						        
-					      		map.addOverlay(seg.hipoly);
-					      		seg.hipoly.hide();
-						        map.addOverlay(seg.polyline);
-						        
-						        refreshSegments();
-	 
-	 							selectSegment(streetSegments[streetSegments.length-1].id);
-						        
-				         	}
-		         	 	});
-		         	 	
-		         }
-		         else {
-		      		 var seg = new StreetSegment();
-	 	      		 var name = fullAddress;
-			         var speedCat = '';
-			         if (lines[0].getElementsByTagName("speed_cat")[0].childNodes[0] != null) {
-			           speedCat  = lines[0].getElementsByTagName("speed_cat")[0].childNodes[0].nodeValue;
-			         }
-			         var frSpeedLimit ='';
-			         var toSpeedLimit ='';
-			         var speedLimit = '';
-			         if (lines[0].getElementsByTagName("fr_spd_lim")[0].childNodes[0] != null) {
-			           frSpeedLimit  = lines[0].getElementsByTagName("fr_spd_lim")[0].childNodes[0].nodeValue;
-			         }
-			         if (lines[0].getElementsByTagName("to_spd_lim")[0].childNodes[0] != null) {
-			           toSpeedLimit  = lines[0].getElementsByTagName("to_spd_lim")[0].childNodes[0].nodeValue;
-			         }
-					speedLimit =''+Math.max(parseInt(frSpeedLimit,toSpeedLimit));
-			        // Do polyline for segment    
-			         var pointXml = lines[0].getElementsByTagName("point");
-			         var gLatLngArray = new Array();
-			         for (var j = 0; j < pointXml.length; j++) {
-			           var lat = parseFloat(pointXml[j].getElementsByTagName("lat")[0].childNodes[0].nodeValue);
-			           var lng = parseFloat(pointXml[j].getElementsByTagName("lng")[0].childNodes[0].nodeValue);
-			           gLatLngArray.push(new GLatLng(lat,lng));
-			         }
-			         
-			         var polyline = new GPolyline(gLatLngArray, "#666666", 10);
-			         var hipoly = new GPolyline(gLatLngArray, "#DfDfF8", 10);
-			        seg.initialize(id,name,zip,speedCat,speedLimit,polyline,hipoly);
-			        streetSegments.push(seg);
-			        
-		      		map.addOverlay(seg.hipoly);
-		      		seg.hipoly.hide();
-			        map.addOverlay(seg.polyline);
-			        
-			 		refreshSegments();
-			 
-			 		selectSegment(streetSegments[streetSegments.length-1].id);
-			        	
-		        }
-		  	 }
-		}
- /*    function reverseGeocode(lat,lng, fullAddress) {
-     
-        if (streetSegments.length >=5) return;
-    
-        document.getElementById("addressDiv").innerHTML = 'loading ...';
-
-        var request = GXmlHttp.create();
-
-
-      //  request.open("GET", 'http://localhost:8080/SpeedByStreet/servlet/iwiglobal?srv=tigerCompleteChains&lat=' + lat + '&lng=' + lng, true);
-
-         request.open("GET", baseURL+'?srv=tigerCompleteChains&lat=' + lat + '&lng=' + lng, true);
-        request.onreadystatechange = function() {
-         if (request.readyState == 4) {
-            var xmlDoc = request.responseXML;
-            var lines = xmlDoc.documentElement.getElementsByTagName("line");
-            extractStreetSegments(lines, fullAddress);
-            
-          }
-        } // function
-        request.send(null);
-    }*/
 
       function reverseGeocode(lat,lng, fullAddress) {
       
       	geocoder.getLocations(new GLatLng(lat,lng), addAddressToMap);      	
       }
+      
     // addAddressToMap() is called when the geocoder returns an
     // answer.  It adds a marker to the map with an open info window
     // showing the nicely formatted version of the address and the country code.
@@ -535,7 +349,7 @@ function validate(field, min,max){
 		field.value = "";
 		error = true;
 		errorField = field;
-		document.updateForm.submit.disabled = true;
+//		document.updateForm.submit.disabled = true;
 		return;
 	}
 	else {
@@ -543,160 +357,9 @@ function validate(field, min,max){
 		field.value = ""+input;
 		error = false;
 		errorField = "";
-		document.updateForm.submit.disabled = false;
+//		document.updateForm.submit.disabled = false;
 	}
 }
-function updateSpeedLimits(){
-
-	document.getElementById("status").innerHTML = 'updating ...';
-//	var url = 'http://localhost:8080/SpeedByStreet/servlet/iwiglobal?srv=updateSpeedLimits'
-	var url = baseURL+'?srv=updateSpeedLimits'
-	var count = 0;
-	for (var i=0; i<streetSegments.length; i++){
-		var value = document.getElementById(streetSegments[i].id).value;
-		if (value!=""){
-			url+="&"+streetSegments[i].id+"="+streetSegments[i].speedLimit+"-"+value;
-			count++;
-		}
-	}
-	if (count > 0){
-   var request = GXmlHttp.create();
-
-    request.open("GET", url, true);
-    request.onreadystatechange = function() {
-    
-	     if (request.readyState == 4) {
-	     	document.getElementById("status").innerHTML = 'Update successful';
-			for (var i=0; i<streetSegments.length; i++){
-			
-				var value = document.getElementById(streetSegments[i].id).value;
-				if (value!=""){
-				
-					streetSegments[i].speedLimit = value;
-				}
-			}
-			refreshSegments();
-			refreshStreetLayer();
-	     }
-   	} // function
-    request.send(null);
-    }
-	else {
-	
-	   document.getElementById("status").innerHTML = 'Nothing to update';
-	}
-	
-}
-
-function submitChangeRequests(){
-
-	document.getElementById("status").innerHTML = 'updating ...';
-	
-	var count = 0;
-	var link;
-	var change;
-	var comments;
-	var address;
-	var zip;
-	
-	for (var i=0; i<streetSegments.length; i++){
-	
-		link = "updateForm:changeRequest:"+count+":linkId";
-		change = "updateForm:changeRequest:"+count+":change";
-		comments = "updateForm:changeRequest:"+count+":comments";
-		address = "updateForm:changeRequest:"+count+":address";
-//		zip = "updateForm:changeRequest:"+count+":zip";
-		
-		var value = document.getElementById(streetSegments[i].id).value;
-		
-		if (value!=""){
-		
-			document.getElementById(link).value = streetSegments[i].id;
-
-			document.getElementById(change).value=value;
-			document.getElementById(comments).value = document.getElementById("t"+streetSegments[i].id).value;
-			document.getElementById(address).value = streetSegments[i].name;
-//			document.getElementById(zip).value = streetSegments[i].zip;
-			count++;
-		}
-	}
-	if (count > 0){
-	
-		document.forms.updateForm.submit();
-    }
-	else {
-	
-	   document.getElementById("status").innerHTML = 'Nothing to update';
-	}
-	
-}
-	function refreshSegments(){
-
-		if (streetSegments.length > 0){
-	        var html = '<table cellspacing="0" cellpadding="5" style="background: #ffffff"><tr class=restable><th></th><th style="text-align: left; font-size: 12px;">Street</th><th style="text-align: left; font-size: 12px;">MPH</th><th style="text-align: left; font-size: 12px;">New MPH</th><th style="text-align: left; font-size: 12px;">Comments</th></tr>';
-	        for (var j = 0; j < streetSegments.length; j++) {
-	        	
-	        	var seg = streetSegments[j];
-	        	
-	        	if (parseInt(seg.speedLimit)==0){
-	        	
-	        		switch(parseInt(seg.cat)){
-	        		case 1:
-	        			seg.speedLimit = 75;
-	        			break;
-	        		case 2:
-	        			seg.speedLimit = 75;
-	        			break;
-	        		case 3:
-	        			seg.speedLimit = 60;
-	        			break;
-	        		case 4:
-	        			seg.speedLimit = 50;
-	        			break;
-	        		case 5:
-	        			seg.speedLimit = 40;
-	        			break;
-	        		case 6:
-	        			seg.speedLimit = 30;
-	        			break;
-	        		case 7:
-	        			seg.speedLimit = 20;
-	        			break;
-	        		case 8:
-	        			seg.speedLimit = 5;
-	        			break;
-	        		default:
-	        			seg.speedLimit = 40;
-	        		}
-	        	}
-	     //      if (j % 2== 0) {
-	             html = html + '<tr id="r'+seg.id+
-	             '" onmouseover="hoverSegment('+
-	             seg.id + ');" onmouseout="hoverDeselectAllSegments();" >';
-	     //      } else {
-	     //        html = html + '<tr class=\"odd\" id="r'+seg.id+'">';
-	     //      }
-	
-	           html = html + '<td><input type="checkbox" id="c'+seg.id+'"></td> <td style="text-align: left; font-size: 12px;" onclick="selectSegment(' + seg.id + ');">' + seg.name + '</td>';
-	           html = html + '<td style="text-align: center;  font-size: 12px;" onclick="selectSegment(' + seg.id + ');">' + 
-	           seg.speedLimit + '</td><td style="text-align: center;  font-size: 12px;"><input type="text" maxlength="3" size="3" id="'+seg.id+'" onkeyup="validate(this,0,199)"/></td>'+
-	           '<td style="text-align: center;  font-size: 12px;"><input type="text" maxlength="100" size="20" id="t'+seg.id+'"/></td></tr>';
-		       
-	        }
-	
-	        html = html + '<tr><td colspan=8><small>click on street name to see the segment on the map</small></td></tr>';
-	        html = html + '</table>';
-	
-	        document.getElementById("addressDiv").innerHTML = html ;
-	        	          
-		    document.getElementById("status").innerHTML = '';
-		}
-		else {
-		
-			deselectAllSegments();
-			document.getElementById("addressDiv").innerHTML = '<font color="red">click on the map to view reverse geocoded street names.</font>';
-		}
-	}	
 	function clearList(){
 		
 		deselectAllSegments();
@@ -739,7 +402,7 @@ function submitChangeRequests(){
 		
        	for (var i=0;  i < streetSegments.length; i++) {
        	
-        	if ((overlay == streetSegments[i].polyline)||(overlay == streetSegments[i].hipoly)) {
+        	if ((overlay == streetSegments[i].polyline)) {
        		
        			return streetSegments[i];
        		}
@@ -788,23 +451,6 @@ function toggleStreetView() {
     streetviewOverlay = null;
   }*/
 }
-function  deleteChecked(){
-
-  	for (var i=streetSegments.length-1;  i >=0; i--) {
-  		
-  		var streetSegment = streetSegments[i];
-  	
-   		if (document.getElementById("c"+streetSegment.id).checked) {
-  		
-  			if (streetSegment == segmentSelected) segmentSelected = null;
-  			map.removeOverlay(streetSegments[i].polyline);
-  			map.removeOverlay(streetSegments[i].hipoly);
-  			streetSegments.splice(i,1);
-  		}
-  	}
-  	refreshSegments();
-  	showSelected();
-}	
 function panTo(segment){
 
     var vertexCount = segment.polyline.getVertexCount();
@@ -812,60 +458,22 @@ function panTo(segment){
     map.panTo(segment.polyline.getVertex(half)); 
 }
 
-function updateByZipCat(){
-
-    var request;
-    if (window.XMLHttpRequest) { // Non-IE browsers
-    
-      request = new XMLHttpRequest();
-    }
-    else {
-    
-      request = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-	if (request){
-	
-		document.getElementById("addressDiv").innerHTML = 'Updating database....It could take several minutes';
-		var zip = document.forms.zipCatForm["zipCatForm:zip"].value;
-		var cat = document.forms.zipCatForm["zipCatForm:cat"].value;
-		var speed = document.forms.zipCatForm["zipCatForm:speed"].value;
-	    request.open("GET", baseURL+'?srv=zipcat&zip=' + zip + '&cat=' + cat+ '&speed=' + speed, true);
-	    request.onreadystatechange = function() {
-	    
-		    if (request.readyState == 4) {
-		    
-				document.getElementById("addressDiv").innerHTML = 'Update Successful';
-		    
-		    }
-	    } // function
-	    request.send(null);
-	}
-}
 function updateWait(){
 	document.getElementById("addressDiv").innerHTML = 'Updating database....It could take several minutes';
 }
 function deleteSelected(){
-	var selectedItems;
-	var list = new Array();
-	
   	for (var i=streetSegments.length-1;  i >=0; i--) {
   		
   		var streetSegment = streetSegments[i];
-//   			alert("deleteSelected "+i);
+   			alert("deleteSelected "+i);
   	
-   		if (document.getElementById("speedLimitChangeRequestTable:items:"+i+":c").checked) {
-//  			alert("deleteSelected checked  "+i);
+   		if (document.getElementById("speedLimitChangeRequestTable:items:"+i+":c") && document.getElementById("speedLimitChangeRequestTable:items:"+i+":c").checked) {
+  			alert("deleteSelected checked  "+i);
   			if (streetSegment == segmentSelected) segmentSelected = null;
-  			map.removeOverlay(streetSegments[i].polyline);
-  			map.removeOverlay(streetSegments[i].hipoly);
-  			streetSegments.splice(i,1);
-  			list.push(i);
+  			streetSegments[i].polyline.hide();
+  			
   		}
   	}
-  	selectedItems = list.join(" ");
-//  	alert(selectedItems);
-  	deleteSelectedSegment(selectedItems);
-  	
-//  	refreshSegments();
   	showSelected();
+  	
 }

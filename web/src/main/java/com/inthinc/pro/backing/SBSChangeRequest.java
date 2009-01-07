@@ -11,6 +11,7 @@ import com.iwi.teenserver.model.SpeedLimitChangeRequest;
 public class SBSChangeRequest implements EditItem{
 	
 	private String linkId;
+	private String numbers;
 	private String address;
 	private String zipCode;
 	private List<Point> streetSegment;
@@ -108,10 +109,24 @@ public class SBSChangeRequest implements EditItem{
 		this.category = category;
 	}	
 	public SpeedLimitChangeRequest getChangeRequest() {
+		
+		changeRequest = new SpeedLimitChangeRequest();
+		changeRequest.setAddress(address);
+		changeRequest.setComment(comment);
+		changeRequest.setLinkId(new Integer(linkId));
+		changeRequest.setNewSpeedLimit(newSpeedLimit);
+		changeRequest.setStatus(0);
+		
 		return changeRequest;
 	}
 	public void setChangeRequest(SpeedLimitChangeRequest changeRequest) {
 		this.changeRequest = changeRequest;
+	}
+	public String getNumbers() {
+		return numbers;
+	}
+	public void setNumbers(String numbers) {
+		this.numbers = numbers;
 	}
 
 }

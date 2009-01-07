@@ -174,7 +174,7 @@
     <bean id="driverBean" class="com.inthinc.pro.backing.DriverBean" scope="request">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="mpgDAO" ref="mpgDAO"></property>
-        <property name="driverDAO" ref="driverDAO"></property>
+	    <property name="driverDAO" ref="driverDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
     </bean>

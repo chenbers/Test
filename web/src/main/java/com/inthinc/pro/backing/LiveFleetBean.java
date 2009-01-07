@@ -53,7 +53,7 @@ public class LiveFleetBean extends BaseBean
         childGroups = getGroupHierarchy().getChildren(fleetGroup);
         MapIconFactory mif = new MapIconFactory();
 
-        List<MapIcon> mapIcons = mif.makeMapIcons("images/googleMapIcons/icon_", "images/icon_1.png", 24);
+        List<MapIcon> mapIcons = mif.getMapIcons(MapIconFactory.IconType.MARKER, 24);
         Iterator<MapIcon> mapIconIt = mapIcons.iterator();
 
         mapIconMap = new IconMap();

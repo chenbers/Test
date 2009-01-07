@@ -110,9 +110,7 @@ TODO: the top scroller doesn't work right with filtering
                 <f:facet name="header">
                   <h:outputText value=" " />
                 </f:facet>
-                <h:selectBooleanCheckbox value="#{item.selected}">
-                  <a4j:support event="onclick" reRender="confirmDelete" limitToList="true" />
-                </h:selectBooleanCheckbox>
+                <h:selectBooleanCheckbox value="#{item.selected}" />
               </rich:column>
               <ui:insert name="columns" />
               <rich:column>
@@ -137,7 +135,6 @@ TODO: the top scroller doesn't work right with filtering
     <ui:include src="confirmDelete.xhtml">
       <ui:param name="deleteBean" value="#{editorBean}" />
       <ui:param name="reRender" value="dataTable" />
-      <ui:param name="deleteItems" value="#{editorBean.selectedItems}" />
     </ui:include>
 
     <ui:include src="editColumnsPopup.xhtml">

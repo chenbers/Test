@@ -63,10 +63,15 @@ public class Tiger {
 			
 			sbsChangeRequest.setLinkId(rs.getString("ogc_fid"));
 			sbsChangeRequest.setZipCode(rs.getString("zipL"));
-			sbsChangeRequest.setAddress(makeAddress(rs.getString("fedirp"),rs.getString("st_typ_bef"),
+			sbsChangeRequest.setNumbers(getNumbers(rs.getString("fraddr"),rs.getString("toaddr"),
+													rs.getString("fraddl"),rs.getString("toaddl")));
+			sbsChangeRequest.setAddress(makeAddress(rs.getString("fraddr"),rs.getString("toaddr"),
+													rs.getString("fraddl"),rs.getString("toaddl"),
+													rs.getString("fedirp"),rs.getString("st_typ_bef"),
 													rs.getString("fename"),rs.getString("st_nm_suff"),
 													rs.getString("fetype"),""));
-			sbsChangeRequest.setSpeedLimit(Math.max(rs.getInt("fr_spd_lim"),rs.getInt("to_spd_lim")));
+			sbsChangeRequest.setSpeedLimit(deduceSpeedLimit(rs.getInt("fr_spd_lim"),rs.getInt("to_spd_lim"),rs.getInt("speed_cat")));
+			
 			sbsChangeRequest.setCategory(rs.getInt("speed_cat"));
 			sbsChangeRequest.setStreetSegment(rs.getString("tigerLine"));
 		}
@@ -74,10 +79,30 @@ public class Tiger {
 		return sbsChangeRequest;
 	
 	}
-    private static String makeAddress(String fedirp, String st_typ_bef, String fename, String st_nm_suff, String fetype, String fedirs){
+    private static String getNumbers (String fromAddrRight, String toAddrRight, String fromAddrLeft, String toAddrLeft){
+        StringBuilder builder = new StringBuilder();
+        append(builder, fromAddrRight);
+        append(builder, "-");
+        append(builder, toAddrRight);
+        append(builder, ",");
+        append(builder, fromAddrLeft);
+        append(builder, "-");
+        append(builder, toAddrLeft);
+        
+        return builder.toString().trim();
+
+    }
+    private static String makeAddress(String fromAddrRight, String toAddrRight, String fromAddrLeft, String toAddrLeft, String fedirp, String st_typ_bef, String fename, String st_nm_suff, String fetype, String fedirs){
     	
             StringBuilder builder = new StringBuilder();
-
+            append(builder, fromAddrRight);
+            append(builder, "-");
+            append(builder, toAddrRight);
+            append(builder, ",");
+            append(builder, fromAddrLeft);
+            append(builder, "-");
+            append(builder, toAddrLeft);
+            append(builder, " ");
             append(builder, fedirp);
             append(builder, st_typ_bef);
             append(builder, fename);
@@ -93,4 +118,32 @@ public class Tiger {
         }
     }
 
+    private static int deduceSpeedLimit(int fromSpeedLimit, int toSpeedLimit, int category){
+    	
+    	int speedLimit = Math.max(fromSpeedLimit,toSpeedLimit);
+    	if (speedLimit == 0){
+        	
+    		switch(category){
+    		case 1:
+    			return 75;
+    		case 2:
+    			return 75;
+    		case 3:
+    			return 60;
+    		case 4:
+    			return 50;
+    		case 5:
+    			return 40;
+    		case 6:
+    			return 30;
+    		case 7:
+    			return 20;
+    		case 8:
+    			return 5;
+    		default:
+    			return 0;
+    		}
+        }
+    	else return speedLimit;
+    }
 }

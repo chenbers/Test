@@ -57,7 +57,7 @@ public class DriverSpeedBean extends BaseDurationBean
     private List<SpeedingEvent> speedingEvents = new ArrayList<SpeedingEvent>();
     private SpeedingEvent   clearItem;
     
-    private void init()
+	private void init()
     {
         if (navigation.getDriver() == null)
         {
@@ -313,7 +313,6 @@ public class DriverSpeedBean extends BaseDurationBean
         {
             speedingEvents.add( (SpeedingEvent)event );   
         }
-        
         return speedingEvents;
     }
    

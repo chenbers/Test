@@ -50,9 +50,8 @@
        							map.addControl(new GLargeMapControl());
         						map.addControl(new GMapTypeControl());
         						map.addControl(new GOverviewMapControl()); 
-								map.setCenter(new GLatLng(#{mapxcenter}, #{mapycenter}), #{mapzoom});
 								map.setMapType(G_NORMAL_MAP);
- 								//map.setCenter(new GLatLng(#{driverLocationBean.center.lat}, #{driverLocationBean.center.lng}), 10);
+ 								map.setCenter(new GLatLng(#{driverLocationBean.center.lat}, #{driverLocationBean.center.lng}), 10);
  								var mgr = new MarkerManager(map);
  								
 						        
@@ -98,7 +97,7 @@
 								<ui:repeat value="#{driverLocationBean.driverLastLocationBeans}" var="driverLastLocationBean">
 									var latlng = new GLatLng(#{driverLastLocationBean.lastLocation.lat}, #{driverLastLocationBean.lastLocation.lng});
 						        		mgr.addMarker(createMarker(latlng, "#{driverLastLocationBean.driver.driverID}",
-						        		 "#{driverLocationBean.mapIconMap.icons[driverLastLocationBean.groupID]}"),10);
+						        		 "#{driverLocationBean.mapIconMap.icons[driverLastLocationBean.groupID]}"),0,16);
 	        						
 							  	</ui:repeat>
 							}	

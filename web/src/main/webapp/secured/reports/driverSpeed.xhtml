@@ -7,7 +7,10 @@
   				xmlns:f="http://java.sun.com/jsf/core">
 
 	<ui:define name="scripts">
-		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>	
+		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionChartsWMode.js" type="text/javascript"></script>	
+		<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{gmBean.key}" type="text/javascript"></script>				
+		<script src="#{facesContext.externalContext.request.contextPath}/js/speedByStreet.js"  type="text/javascript">	
+		</script>
 		<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{gmBean.key}" type="text/javascript"></script>
 	    <script type="text/javascript">
 	      function initialize(lat, lng) 
@@ -422,6 +425,8 @@ var selected = 'OVERALL';
 									<h:outputText value="Posted Speed" />
 								</f:facet>
 								<strong><h:outputText value="#{item.speedLimit} #{messages.measurement_speed}" /></strong>	
+								<a4j:commandLink onclick="javascript:Richfaces.showModalPanel('SLChangeRequestPanel',{lat:'#{item.latitude}',lon:'#{item.longitude}'});"  value="#{messages.sbs_submitRequest}"> </a4j:commandLink>
+								
 							</rich:column>
 							
 							<rich:column sortBy="#{item.avgSpeed}">
@@ -509,6 +514,16 @@ var selected = 'OVERALL';
 		<div class="panel_statusbar"></div>
 	</div>
 			
+		<!-- END PANEL -->
+	<rich:modalPanel id="SLChangeRequestPanel" headerClass="popupHeader" controlsClass="popupControls" autosized="true" onshow="reverseGeocode(event.parameters.lat,event.parameters.lon, null)">
+      <f:facet name="header">
+        <h:outputText value="#{messages.sbs_header}" />
+      </f:facet>
+      <f:facet name="controls">
+        <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('SLChangeRequestPanel')" />
+      </f:facet>
+		<ui:include src="../../includes/speedLimitChangeRequestPanel.xhtml" />
+	</rich:modalPanel>	
 <!-- END PANEL -->
 <rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">
 	<f:facet name="header">

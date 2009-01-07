@@ -48,10 +48,7 @@ public class DriverLocationBean extends BaseBean {
 
 	public List<DriverLastLocationBean> getDriverLastLocationBeans() {
 
- //       int index = 0;
     	MapIconFactory mif = new MapIconFactory();
-    	
-    	
     	
     	driverLastLocations = new TreeMap<Integer,DriverLastLocationBean>();
         driverLastLocationBeanList = new ArrayList<DriverLastLocationBean>();
@@ -59,8 +56,8 @@ public class DriverLocationBean extends BaseBean {
         if (childGroups != null){
         	showLegend = true;
         	
-          	List<MapIcon> mapIcons = mif.makeMapIcons("images/googleMapIcons/icon_", "images/icon_1.png", childGroups.size());
-         	List<MapIcon> legendIcons = mif.makeMapIcons("images/legendIcons/icon_", "images/icon_car_1.png", childGroups.size());
+          	List<MapIcon> mapIcons = mif.getMapIcons(MapIconFactory.IconType.MARKER, childGroups.size());
+         	List<MapIcon> legendIcons = mif.getMapIcons(MapIconFactory.IconType.LEGEND, childGroups.size());
          	Iterator<MapIcon> mapIconIt = mapIcons.iterator();
          	Iterator<MapIcon> legendIconIt = legendIcons.iterator();
          	          	
@@ -71,66 +68,64 @@ public class DriverLocationBean extends BaseBean {
 	        	legendIconMap.addIcon(group.getGroupID(), legendIconIt.next().getUrl());
 		        List<Driver> drivers = driverDAO.getAllDrivers(group.getGroupID());
 		        // Do something to get driverLastLocations or last trips to get location
-		        for (Driver driver:drivers){
-		
-		        	DriverLastLocationBean db = new DriverLastLocationBean();
-		        	LastLocation loc = null;
-		        	if (driver.getDriverID() != null)
-		        	    loc = driverDAO.getLastLocation(driver.getDriverID());
-		        	if (loc != null)
-		        	    db.setLastLocation(loc.getLoc());
-		        	else
-		        	{
-	                    logger.debug("last loc is null for driver: " + driver.getDriverID());                    
-		        	    // TODO: What do we do in case where there is no last location?
-	                  db.setLastLocation(new LatLng(center.getLat()+Math.random()/10, center.getLng()+Math.random()/10));
-		        	    
-		        	}
-		        	db.setGroupID(group.getGroupID());
-		        	db.setDriver(driver);
-		        	db.setDriverName(driver.getPerson().getFirst()+" "+driver.getPerson().getLast());
-		        	driverLastLocations.put(driver.getDriverID(),db);
-		        	driverLastLocationBeanList.add(db);
-		        }
+		        locateDrivers(drivers,group.getGroupID());
 	        }
         }
         else {
         	showLegend = false;
 	        List<Driver> drivers = driverDAO.getAllDrivers(this.navigation.getGroupID());
 	        
-         	List<MapIcon> mapIcons = mif.makeMapIcons("images/googleMapIcons/icon_", "images/icon_1.png", 1);
-         	List<MapIcon> legendIcons = mif.makeMapIcons("images/legendIcons/icon_", "images/icon_car_1.png", 1);
+         	List<MapIcon> mapIcons = mif.getMapIcons(MapIconFactory.IconType.MARKER, 1);
+         	List<MapIcon> legendIcons = mif.getMapIcons(MapIconFactory.IconType.LEGEND, 1);
 	        // Do something to get driverLastLocations or last trips to get location
         	mapIconMap.addIcon(navigation.getGroupID(), mapIcons.get(0).getUrl());
         	legendIconMap.addIcon(navigation.getGroupID(), legendIcons.get(0).getUrl());
-	        for (Driver driver:drivers){
-	
-	        	DriverLastLocationBean db = new DriverLastLocationBean();
-                LastLocation loc = null;
-                if (driver.getDriverID() != null)
-                    loc = driverDAO.getLastLocation(driver.getDriverID());
-                if (loc != null)
-                {
-                    db.setLastLocation(loc.getLoc());
-                }
-                else
-                {
-                    logger.debug("last loc is null for driver: " + driver.getDriverID());                    
-                    // TODO: What do we do in case where there is no last location?
-                  db.setLastLocation(new LatLng(center.getLat()+Math.random()/10, center.getLng()+Math.random()/10));
-                    
-                }
-	            db.setGroupID(navigation.getGroupID());
-	        	db.setDriver(driver);
-	        	db.setDriverName(driver.getPerson().getFirst()+" "+driver.getPerson().getLast());
-	        	driverLastLocations.put(driver.getDriverID(),db);
-	        	driverLastLocationBeanList.add(db);
-	        }
+	        locateDrivers(drivers,navigation.getGroupID());
       	
         }
 		return driverLastLocationBeanList;
 	}
-	
+	private void locateDrivers(List<Driver> drivers, int groupId){
+
+		int validDriverCount = 0;
+		
+		for (Driver driver:drivers){
+        	
+        	DriverLastLocationBean db = new DriverLastLocationBean();
+            LastLocation loc = null;
+            if (driver.getDriverID() != null)
+                loc = driverDAO.getLastLocation(driver.getDriverID());
+            if (loc != null)
+            {
+                db.setLastLocation(loc.getLoc());
+                
+                validDriverCount++;
+            }
+            else
+            {
+                logger.debug("last loc is null for driver: " + driver.getDriverID());                    
+                // TODO: What do we do in case where there is no last location?
+ //             db.setLastLocation(new LatLng(center.getLat()+Math.random()/10, center.getLng()+Math.random()/10));
+                db.setLastLocation(null);
+            }
+            db.setGroupID(groupId);
+        	db.setDriver(driver);
+        	db.setDriverName(driver.getPerson().getFirst()+" "+driver.getPerson().getLast());
+        	driverLastLocations.put(driver.getDriverID(),db);
+        	driverLastLocationBeanList.add(db);
+        }
+		//calculate better map center - set to average of all positions if there are any
+		if (validDriverCount == 0){
+			
+			//Set to center for the group
+			setCenter(this.getGroupHierarchy().getTopGroup().getMapCenter());
+		}
+		else {
+
+			setCenter(driverLastLocationBeanList.get(0).getLastLocation());
+		}
+		
+	}
 	public DriverDAO getDriverDAO() {
 		return driverDAO;
 	}

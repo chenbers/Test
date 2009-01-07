@@ -11,9 +11,13 @@
 		<property name="centralDataAccessHost" value="${teenproxy.centralDataAccessHost}"/>
 		<property name="centralDataAccessPort" value="${teenproxy.centralDataAccessPort}"/>		
    </bean>
-   <bean id="speedLimitChangeRequests" class="com.inthinc.pro.backing.SpeedLimitChangeRequestBean" scope="session" parent="baseBean">
+   <bean id="speedLimitChangeRequests" class="com.inthinc.pro.backing.SpeedLimitChangeRequestBean" scope="request" parent="baseBean" init-method="init">
      	<property name="mailSender" ref="mailSenderBean" />
  		<property name="speedLimitChangeRequestReceivedMessage" ref="speedLimitChangeRequestReceivedMessage" />
+ 		<property name="sbsUserId" value="${teenproxy.sbsUserId}"/>
+		<property name="sbsUserName" value="${teenproxy.sbsUserName}"/>
+		<property name="teenServerDAO" ref="sbsDataAccessBean"/>
+		
    </bean>
    <bean id="speedLimitChangeRequestReceivedMessage" class="org.springframework.mail.SimpleMailMessage">
       <property name="from">

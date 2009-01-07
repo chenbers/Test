@@ -1,54 +1,81 @@
 package com.inthinc.pro.backing;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.faces.component.UIInput;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
-import org.postgis.Point;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.util.StringUtils;
 
+import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.sbs.Tiger;
+import com.inthinc.pro.util.MessageUtil;
 import com.iwi.teenserver.dao.GenericDataAccess;
 import com.iwi.teenserver.model.SpeedLimitChangeRequest;
-import com.iwi.teenserver.model.User;
 
 public class SpeedLimitChangeRequestBean extends BaseBean{
 
-    private static final Logger logger = Logger.getLogger(DriverSeatBeltBean.class);
+    private static final Logger logger = Logger.getLogger(SpeedLimitChangeRequestBean.class);
 
-    private NavigationBean navigation;
-    private GenericDataAccess teenServerDAO; //From teenserverDAO
-    private List<SBSChangeRequest> changeRequests;
-    private JavaMailSenderImpl mailSender;
-    private SimpleMailMessage speedLimitChangeRequestReceivedMessage;
-    private double lat;
-    private double lng;
-    private String address;
-    private double go;
-    private double maplat;
-    private double maplng;
-    private int mapzoom;
-    private boolean getAll;
-    private String deleteMe;
+    private NavigationBean 			navigation;
+    private GenericDataAccess 		teenServerDAO; //From teenserverDAO
+    private int 					sbsUserId;
+    private String 					sbsUserName;
+    private List<SBSChangeRequest> 	changeRequests;
+    private JavaMailSenderImpl 		mailSender;
+    private SimpleMailMessage 		speedLimitChangeRequestReceivedMessage;
+    private double 					lat;
+    private double 					lng;
+    private String 					address;
+    private double 					go;
+    private double 					maplat;
+    private double 					maplng;
+    private int 					mapzoom;
+    private String 					emailAddress;
+    private UIInput					emailInput;
+    private String 					caption;
+    private boolean					requestSent;
+    private boolean					success;
+    private boolean					emailSent;
     
+	public boolean isRequestSent() {
+		return requestSent;
+	}
+	public void setRequestSent(boolean requestSent) {
+		this.requestSent = requestSent;
+	}
+	public boolean isSuccess() {
+		return success;
+	}
+	public void setSuccess(boolean success) {
+		this.success = success;
+	}
 	public SpeedLimitChangeRequestBean() {
 		super();
+	}
+	public void init(){
+		
 		changeRequests = new ArrayList<SBSChangeRequest>();
-		maplat = 40.0;
-		maplng = -111.0;
+		maplat = 360;
+		maplng = 360;
 		mapzoom = 10;
 		lat =360;
 		lng = 360;
-		getAll = false;
-		deleteMe = null;
+		caption = MessageUtil.getMessageString("sbs_caption_select");
+		emailAddress = getUser().getPerson().getEmail();
+		requestSent = false;
+		success = false;
+		emailSent = false;
 	}
-
 	public SimpleMailMessage getSpeedLimitChangeRequestReceivedMessage() {
 		return speedLimitChangeRequestReceivedMessage;
 	}
@@ -81,78 +108,67 @@ public class SpeedLimitChangeRequestBean extends BaseBean{
 	public void setNavigation(NavigationBean navigation) {
 		this.navigation = navigation;
 	}
-
 	public synchronized List<SBSChangeRequest> getChangeRequests() {
 		
+		return changeRequests;
+	}
+
+	public String addChangeRequest() {
+		
+		setCaption(MessageUtil.getMessageString("sbs_caption_select"));
+
 		if ((lat < 360)&& (lng < 360)){
 			
-//			try{
-//				SBSChangeRequest sbscr = Tiger.getCompleteChains(lat, lng);
-//				
-//				sbscr.setAddress(sbscr.getAddress()+"/"+address);
-//				changeRequests.add(0,sbscr);
+			try{
+				SBSChangeRequest sbscr = Tiger.getCompleteChains(lat, lng);
 				
-				int i = changeRequests.size();
-				SBSChangeRequest sbscr = new SBSChangeRequest();
-				sbscr.setAddress(address);
-				sbscr.setCategory(i);
-				sbscr.setComment("hello");
-				sbscr.setLinkId(""+i);
-				sbscr.setSpeedLimit(30);
-				List<Point> streetSegment = new ArrayList<Point>();
-				logger.debug("lat,lng is: "+lat+","+lng);
-				streetSegment.add(new Point(lat,lng));
-				for (int j=0; j<3; j++){
-					double randomLat = lat+Math.random()/10;
-					double randomLng = lng+Math.random()/10;
-					logger.debug("randomLat,randomLng is: "+randomLat+","+randomLng);
-					
-					Point point = new Point(randomLat,randomLng);
-					streetSegment.add(point);
-				}
-				sbscr.setStreetSegment(streetSegment);
-				sbscr.setZipCode("84121");
-				changeRequests.add(0, sbscr);
+				sbscr.setAddress(this.makeCompositeAddress(address, sbscr.getAddress()));
+				changeRequests.add(0,sbscr);
+				
+//				int i = changeRequests.size();
+//				SBSChangeRequest sbscr = new SBSChangeRequest();
+//				sbscr.setAddress(address);
+//				sbscr.setCategory(i);
+//				sbscr.setComment("hello");
+//				sbscr.setLinkId(""+i);
+//				sbscr.setSpeedLimit(30);
+//				List<Point> streetSegment = new ArrayList<Point>();
+//				logger.debug("lat,lng is: "+lat+","+lng);
+//				streetSegment.add(new Point(lat,lng));
+//				for (int j=0; j<3; j++){
+//					double randomLat = lat+Math.random()/1000;
+//					double randomLng = lng+Math.random()/1000;
+//					logger.debug("randomLat,randomLng is: "+randomLat+","+randomLng);
+//					
+//					Point point = new Point(randomLat,randomLng);
+//					streetSegment.add(point);
+//				}
+//				sbscr.setStreetSegment(streetSegment);
+//				sbscr.setZipCode("84121");
+//				changeRequests.add(0, sbscr);
 				maplat = lat;
 				maplng = lng;
 				lat = 360;
 				lng = 360;
-	
-				return changeRequests;
-//			}
-//			catch(SQLException sqle){
-//				
-//				logger.debug("addSegment - SQLException: "+sqle.getMessage());
-//				return null;
-//			}
-//			catch(ParserConfigurationException pce){
-//				
-//				logger.debug("addSegment - ParserConfigurationException: "+pce.getMessage());
-//				return null;
-//			}
-		}
-		else if (getAll){
-			
-			getAll = false;
-			
-			return changeRequests;
-		}
-		else if (deleteMe != null){
 
-			String[] deleteItems = deleteMe.split("\\s");
-		    for (int x=0; x<deleteItems.length; x++){
-		    		try{
-		    			Integer deleteInt = new Integer(deleteItems[x]);
-				    	 changeRequests.remove(deleteInt.intValue());
-		    		}
-		    		catch (NumberFormatException nfe){
-		    			logger.debug("delete checked items NumberFormatException on "+deleteItems[x]);
-		    		}
-		    }
-			deleteMe = null;
-			return changeRequests;
+				return "";
+
+			}
+			catch(SQLException sqle){
+				
+				logger.debug("addSegment - SQLException: "+sqle.getMessage());
+				setCaption("Could not access database - please try again later");
+				return null;
+			}
+			catch(ParserConfigurationException pce){
+				
+				logger.debug("addSegment - ParserConfigurationException: "+pce.getMessage());
+				setCaption("Could not interpret latitude and longitude - please try again");
+				return null;
+			}
 		}
-		return null;
+			
+		return "";
 	}
 
 	public void setChangeRequests(List<SBSChangeRequest> changeRequests) {
@@ -192,6 +208,8 @@ public class SpeedLimitChangeRequestBean extends BaseBean{
 	}
 
 	public double getMaplng() {
+		
+		setMapCenter();
 		return maplng;
 	}
 
@@ -200,9 +218,20 @@ public class SpeedLimitChangeRequestBean extends BaseBean{
 	}
 
 	public double getMaplat() {
+		
+		setMapCenter();
 		return maplat;
 	}
-
+	private void setMapCenter(){
+		
+		if (maplat >= 360){
+			
+			//use default map center from hierarchy
+			LatLng mapCenter = getGroupHierarchy().getTopGroup().getMapCenter();
+			maplat = mapCenter.getLat();
+			maplng = mapCenter.getLng();
+		}		
+	}
 	public void setMaplat(double maplat) {
 		this.maplat = maplat;
 	}
@@ -235,13 +264,20 @@ public class SpeedLimitChangeRequestBean extends BaseBean{
 				it.remove();
 			}
 		}
-		getAll = true;
-		return "go_adminSBSCR";
+		return "";
 	}
 
-	public String saveRequests()
+	public String deleteAll(){
+		
+		changeRequests.clear();
+		
+		return "";
+	}
+	public String saveRequestsAction()
 	{
 		logger.info("saveRequests");
+		requestSent = true;
+		success = true;
 		if (changeRequests != null){
 			
 			Iterator<SBSChangeRequest> it = changeRequests.iterator();
@@ -252,60 +288,182 @@ public class SpeedLimitChangeRequestBean extends BaseBean{
 					logger.info("saveRequests" +slb.getLinkId());
 					saveRequest(slb);
 				}
+				else {
+					
+					success = false;
+				}
 			}
 		}
-		changeRequests.clear();
-		return "go_adminSBSCR";
+		return "";
 
 	}
 
 	public void  saveRequest(SBSChangeRequest speedLimitBean)
 	{
 		SpeedLimitChangeRequest changeRequest = speedLimitBean.getChangeRequest();
-//		logger.debug(getUser().getFirst());
-//		logger.debug(changeRequest.getLinkId());
+		changeRequest.setUserID(sbsUserId);
+		logger.debug(changeRequest.getLinkId());
 //		if (teenServerDAO == null)logger.debug("dataAccess is null");
-//		else logger.debug(dataAccess.getClass());
-		
-//		teenServerDAO.saveSpeedLimitChangeRequest(new com.iwi.teenserver.model.User(), changeRequest);
-//		sendEmailToUser(speedLimitBean);
+//		else logger.debug(teenServerDAO.getClass());
+		com.iwi.teenserver.model.User user = teenServerDAO.getUserById(getSbsUserId());
+		teenServerDAO.saveSpeedLimitChangeRequest(user, changeRequest);
+		if ((emailAddress != null) && !emailAddress.isEmpty()){
+			
+			sendEmailToUser(speedLimitBean);
+		}
 	}
 
-//	public void sendEmailToUser(SBSChangeRequest speedLimitBean) {
+	public void sendEmailToUser(SBSChangeRequest speedLimitBean) {
+		
+		try {
+			MimeMessage message = mailSender.createMimeMessage();
+			// use the true flag to indicate you need a multipart message
+			MimeMessageHelper helper = new MimeMessageHelper(message, true);
+			//String emailAddresses = "jacquie_howard@hotmail.com";
+			String emailAddresses =getEmailAddress();
+			if (emailAddresses == null) return;
+			String email[] = emailAddresses.split(";");
+			helper.setTo(email[0]);
+			logger.debug("sendEmailToUser email address is "+email[0]);
+		
+			SimpleMailMessage justTheText 
+					= new SimpleMailMessage(getSpeedLimitChangeRequestReceivedMessage());
+			String text = justTheText.getText();
+			text = StringUtils.replace(text, "%ADDRESS%",speedLimitBean.getAddress());
+			text = StringUtils.replace(text, "%SPEED%",""+speedLimitBean.getNewSpeedLimit());
+			helper.setText(text,true);
+			helper.setFrom(justTheText.getFrom());
+			helper.setSubject(justTheText.getSubject());
+			
+			mailSender.send(message);
+			emailSent = false;
+			
+		} catch (MessagingException e) {
+			// 
+			emailSent = false;
+		}
+	}
+
+	public boolean getRenderTable(){
+		
+		return (changeRequests.size()>0)|| (lat<360);
+	}
+//	public void RenderTable(boolean requestCount){
 //		
-//		try {
-//			MimeMessage message = mailSender.createMimeMessage();
-//			// use the true flag to indicate you need a multipart message
-//			MimeMessageHelper helper = new MimeMessageHelper(message, true);
-//			//String emailAddresses = "jacquie_howard@hotmail.com";
-//			String emailAddresses =getUser().getEmail();
-//			if (emailAddresses == null) return;
-//			String email[] = emailAddresses.split(";");
-//			helper.setTo(email[0]);
-//			logger.debug("sendEmailToUser email address is "+email[0]);
-//		
-//			SimpleMailMessage justTheText 
-//					= new SimpleMailMessage(getSpeedLimitChangeRequestReceivedMessage());
-//			String text = justTheText.getText();
-//			text = StringUtils.replace(text, "%ADDRESS%",speedLimitBean.getAddress().getAddr1());
-//			text = StringUtils.replace(text, "%SPEED%",""+speedLimitBean.getSpeedLimitChange());
-//			helper.setText(text,true);
-//			helper.setFrom(justTheText.getFrom());
-//			helper.setSubject(justTheText.getSubject());
-//			
-//			mailSender.send(message);
-//			
-//		} catch (MessagingException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 //	}
 
-	public String getDeleteMe() {
-		return deleteMe;
+	public int getSbsUserId() {
+		return sbsUserId;
 	}
 
-	public void setDeleteMe(String deleteMe) {
-		this.deleteMe = deleteMe;
+	public void setSbsUserId(int sbsUserId) {
+		this.sbsUserId = sbsUserId;
+	}
+
+	public String getEmailAddress() {
+//		return "jacquie_howard@hotmail.com";
+		return emailAddress;
+	}
+
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
+	}
+
+	public String getSbsUserName() {
+		return sbsUserName;
+	}
+
+	public void setSbsUserName(String sbsUserName) {
+		this.sbsUserName = sbsUserName;
+	}
+
+	public String getCaption() {
+		return caption;
+	}
+
+	public void setCaption(String caption) {
+		this.caption = caption;
+	}
+
+    public UIInput getEmailInput()
+    {
+        return emailInput;
+    }
+
+    public void setEmailInput(UIInput emailInput)
+    {
+        this.emailInput = emailInput;
+    }
+    public String resetAction(){
+    	
+		changeRequests.clear();
+		maplat = 360;
+		maplng = 360;
+		mapzoom = 10;
+		lat =360;
+		lng = 360;
+		caption = MessageUtil.getMessageString("sbs_caption_select");
+		requestSent = false;
+		success = false;
+    	
+    	return "";
+    }
+	public boolean isEmailSent() {
+		return emailSent;
+	}
+	public void setEmailSent(boolean emailSent) {
+		this.emailSent = emailSent;
+	}
+	private String makeCompositeAddress(String gAddress, String tAddress){
+		
+		if ((gAddress == null) || (gAddress.isEmpty())){
+
+			if ((tAddress == null) || (tAddress.isEmpty())){
+				
+				return null;
+			}
+			else {
+				return tAddress;
+			}
+		}
+		if ((tAddress == null) || (tAddress.isEmpty())){
+
+			return gAddress;
+		}
+		StringBuffer compositeAddress = new StringBuffer();
+		
+		String gTokens[]= gAddress.split(",");
+//		Pattern p = Pattern.compile("[0-9]* - [0-9]* , [0-9]* - [0-9]*");
+//		tAddress.
+		int street = 0;
+		for(int z=0;z<7;z++){
+			
+			street = tAddress.indexOf(' ',z);
+		}
+		compositeAddress.append(tAddress.substring(0,street));
+		String streetName[] = tAddress.substring(street+1).split(" ");
+		
+		int j;
+		for(j=0;j<gTokens.length;j++){
+			
+			if (streetName[0].equalsIgnoreCase(gTokens[j])){
+				
+				for (int i=j; i<gTokens.length; i++){
+					
+					compositeAddress.append(gTokens[i]);
+				}
+				break;
+			}
+		}
+		if (j==gTokens.length){
+			
+			//Couldn't find street name in google address
+			//So take whole of Google address and add to numbers and address from Tiger
+			StringBuffer address = new StringBuffer(tAddress);
+			address.append(",");
+			address.append(gAddress);
+			compositeAddress.append(address);
+		}
+		return compositeAddress.toString();
 	}
 }
