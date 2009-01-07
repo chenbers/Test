@@ -30,7 +30,7 @@
 	    </c:if>
 
 		#{chartVar}.setDataXML(#{tartgetElementVar}.value);			   
-		#{chartVar}.addParam('wmode', 'transparent');
+		#{chartVar}.setTransparent(true);
 		#{chartVar}.render("#{ChartDivID}");
 	</script>
 

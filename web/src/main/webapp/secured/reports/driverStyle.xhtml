@@ -7,7 +7,7 @@
   				xmlns:f="http://java.sun.com/jsf/core">
 
 	<ui:define name="scripts">
-		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionChartsWMode.js" type="text/javascript"></script>	
+		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>	
 		<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{gmBean.key}" type="text/javascript"></script>
 	    <script type="text/javascript">
 	      function initialize(lat, lng) 
@@ -77,7 +77,7 @@ var selected = 'OVERALL';
 		
 		chartVar.setDataXML(data);
 		
-		//chartVar.render('overall_chart');
+		chartVar.render('overall_chart');
 	}
 </script>
 
@@ -88,7 +88,7 @@ var selected = 'OVERALL';
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="line">Driving Style</span>
+						<span class="vehicle">Driving Style</span>
 							<a4j:region id="dateLinksForm_region">
 							<a4j:form id="dateLinksForm">
 							<span class="panel_links">
@@ -150,7 +150,7 @@ var selected = 'OVERALL';
 							  <tr>
 								<td>
 									<h4>Overall Score</h4>
-									<div style="margin-top: 8px;"><a href="#" class="ls_tab_email">Email</a></div>
+									<div style="margin-top: 8px;"><a href="#" class="ls_tab_email">E-mail</a></div>
 								</td>
 								<td width="80" align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
@@ -188,10 +188,10 @@ var selected = 'OVERALL';
   <tr>
     <td width="465" valign="top">
 		<!-- START PANEL -->
-			<div class="">
+			<div class="" style="width: 938px;">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="style">Breakdown by Style</span>
+						<span class="vehicle">Breakdown by Driving Style</span>
 						<span class="panel_links"></span></div>
 				</div>
 				<div class="panel_w">
@@ -345,7 +345,7 @@ var selected = 'OVERALL';
 		<div class="spacer"></div>
 		
 		<!-- START PANEL -->
-			<div class="">
+			<div class="" style="width: 938px;">
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="details">Details</span>
@@ -359,12 +359,17 @@ var selected = 'OVERALL';
 			<div class="datagrid">
 				<!-- Start Event table --> 
 					<h:form id="eventTable">
+					<rich:datascroller align="center" for="items"
+							id="scrollerTop" reRender="items" />
 						<rich:dataTable value="#{driverStyleBean.styleEvents}" 
 						id="items" var="item" styleClass="datagrid"
 						rowClasses="tableOdd,tableEven" cellspacing="1" 
 						rows="10" width="100%">
 						
-							<rich:column >
+							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="Location" />
+								</f:facet>
 				              <a4j:commandLink style="cursor:pointer">
 					                <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
 					                  <f:param name="lat" value="#{item.latitude}"/>
@@ -379,7 +384,7 @@ var selected = 'OVERALL';
 							
 							<rich:column sortBy="#{item.time}">
 								<f:facet name="header">
-									<h:outputText value="Time" />
+									<h:outputText value="Date/Time" />
 								</f:facet>
 									<h:outputText value="#{item.time}">
 										<f:convertDateTime pattern="MMM DD yyyy hh:mm a"/>
@@ -390,14 +395,14 @@ var selected = 'OVERALL';
 								<f:facet name="header">
 									<h:outputText value="Event" />
 								</f:facet>
-								<h3><h:outputText value="#{item.eventType}" /></h3>		
+								<strong><h:outputText value="#{item.eventType}" /></strong>		
 							</rich:column>
 							
 							<rich:column sortBy="#{item.avgSpeed}">
 								<f:facet name="header">
-									<h:outputText value="Avg. Speed" />
+									<h:outputText value="Avg Speed" />
 								</f:facet>
-								<h3><h:outputText value="#{item.avgSpeed}" /></h3>
+								<strong><h:outputText value="#{item.avgSpeed}" /></strong>
 							</rich:column>
 							
 							<rich:column sortBy="#{item.severity}">
@@ -419,7 +424,7 @@ var selected = 'OVERALL';
 						</rich:dataTable>
 						
 						<rich:datascroller align="center" for="items"
-							id="scroller" reRender="items" />
+							id="scrollerBottom" reRender="items" />
 					</h:form> 
 				<!-- End Event table -->
 				</div>
@@ -436,7 +441,6 @@ var selected = 'OVERALL';
 </div>
 
 <rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">
-      
 	<f:facet name="header">
     	<h:outputText value="Event Location" />
     </f:facet>

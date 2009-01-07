@@ -7,7 +7,7 @@
   				xmlns:f="http://java.sun.com/jsf/core">
 
 	<ui:define name="scripts">
-		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionChartsWMode.js" type="text/javascript"></script>	
+		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>	
 		<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{gmBean.key}" type="text/javascript"></script>
 	    <script type="text/javascript">
 	      function initialize(lat, lng) 
@@ -59,7 +59,7 @@
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="line">Seat Belt</span>
+						<span class="seatbelt">Seat Belt: Overall</span>
 						<a4j:region id="dateLinksForm_region">
 							<a4j:form id="dateLinksForm">
 							<span class="panel_links">
@@ -117,11 +117,11 @@
 							</ui:include>
 						</td>
 						<td valign="top" align="right">
-							<table width="220" border="0" cellspacing="0" cellpadding="0" class="scorebox" style="margin: 20px 20px 0 0;">
+						<table width="220" border="0" cellspacing="0" cellpadding="0" class="scorebox" style="margin: 20px 20px 0 0;">
 							  <tr>
 								<td>
 									<h4>Overall Score</h4>
-									<div style="margin-top: 8px;"><a href="#" class="ls_tab_email">Email</a></div>
+									<div style="margin-top: 8px;"><a href="#" class="ls_tab_email">E-mail</a></div>
 								</td>
 								<td width="80" align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
@@ -159,7 +159,7 @@
   <tr>
     <td width="465" valign="top">
 		<!-- START PANEL -->
-			<div class="">
+			<div class="" style="width: 938px;">
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="details">Details</span>
@@ -173,23 +173,27 @@
 			<rich:panel id="eventsTable" bodyClass="datagrid">
 				<!-- Start Event table --> 
 					<h:form id="eventTableForm">
+					<rich:datascroller align="center" for="items" id="scrollerTop" reRender="items" />
 						<rich:dataTable 
 						value="#{driverSeatBeltBean.seatBeltEvents}" 
-						id="items"
-						var="item" styleClass="datagrid"
+						id="items" var="item" styleClass="datagrid"
 						rowClasses="tableOdd,tableEven" cellspacing="1" rows="15"  
 						width="100%"> 
 						<!-- Data -->
 						
 							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="Location" />
+								</f:facet>
 				              <a4j:commandLink style="cursor:pointer">
-				                <div class="maplink">
 					                <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
 					                  <f:param name="lat" value="#{item.latitude}"/>
 					                  <f:param name="lng" value="#{item.longitude}"/>
 					                </rich:componentControl>
-					                <h:outputText value="#{item.addressStr}" />  <!-- ADDRESS GEOCODING NEEDED -->
-								</div>
+					                	<div class="maplink">
+					                		#{item.addressStr}<br />
+					                	</div>
+					                	<!-- ADDRESS GEOCODING NEEDED / MAP image cut off at bottom. -->
 				              </a4j:commandLink>
 				            </rich:column>
 							
@@ -206,14 +210,14 @@
 								<f:facet name="header">
 									<h:outputText value="Avg. Speed" />
 								</f:facet>
-								<h3><h:outputText value="#{item.avgSpeed}" /></h3>
+								<strong><h:outputText value="#{item.avgSpeed}" /></strong>
 							</rich:column>
 							
 							<rich:column sortBy="#{item.topSpeed}">
 								<f:facet name="header">
 									<h:outputText value="Top Speed" />
 								</f:facet>
-								<h3><h:outputText value="#{item.topSpeed}" /></h3>
+								<strong><h:outputText value="#{item.topSpeed}" /></strong>
 							</rich:column>
 							
 							<rich:column sortBy="#{item.distance}">
@@ -232,8 +236,7 @@
 							
 						</rich:dataTable>
 						
-						<rich:datascroller align="center" for="items"
-							id="scroller" reRender="items" />
+						<rich:datascroller align="center" for="items" id="scrollerBottom" reRender="items" />
 					</h:form> 
 				<!-- End Event table -->
 				</rich:panel>

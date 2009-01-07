@@ -392,14 +392,21 @@ var selected = 'OVERALL';
 						id="eventsTable" var="item" styleClass="datagrid"
 						rowClasses="tableOdd,tableEven" cellspacing="1" rows="10" width="100%">			
 
-							<rich:column sortBy="#{item.addressStr}">
+							<rich:column>
 								<f:facet name="header">
 									<h:outputText value="Location" />
 								</f:facet>
-								<div class="maplink">
-										<h:outputText value="#{item.addressStr}" />
-								</div>
-							</rich:column>
+				              <a4j:commandLink style="cursor:pointer">
+					                <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
+					                  <f:param name="lat" value="#{item.latitude}"/>
+					                  <f:param name="lng" value="#{item.longitude}"/>
+					                </rich:componentControl>
+					                	<div class="maplink">
+					                		#{item.addressStr}<br />
+					                	</div>
+					                	<!-- ADDRESS GEOCODING NEEDED / MAP image cut off at bottom. -->
+				              </a4j:commandLink>
+				            </rich:column>
 							
 							<rich:column sortBy="#{item.time}">
 								<f:facet name="header">
@@ -414,21 +421,21 @@ var selected = 'OVERALL';
 								<f:facet name="header">
 									<h:outputText value="Posted Speed" />
 								</f:facet>
-								<h3><h:outputText value="#{item.speedLimit} #{messages.measurement_speed}" /></h3>	
+								<strong><h:outputText value="#{item.speedLimit} #{messages.measurement_speed}" /></strong>	
 							</rich:column>
 							
 							<rich:column sortBy="#{item.avgSpeed}">
 								<f:facet name="header">
 									<h:outputText value="Avg Speed" />
 								</f:facet>
-								<h3><h:outputText value="#{item.avgSpeed} #{messages.measurement_speed}" /></h3>
+								<strong><h:outputText value="#{item.avgSpeed} #{messages.measurement_speed}" /></strong>
 							</rich:column>
 							
 							<rich:column sortBy="#{item.topSpeed}">
 								<f:facet name="header">
 									<h:outputText value="Top Speed" />
 								</f:facet>
-								<h3><h:outputText value="#{item.topSpeed} #{messages.measurement_speed}" /></h3>
+								<strong><h:outputText value="#{item.topSpeed} #{messages.measurement_speed}" /></strong>
 							</rich:column>
 							
 							<rich:column sortBy="#{item.distance}">
@@ -503,6 +510,25 @@ var selected = 'OVERALL';
 	</div>
 			
 <!-- END PANEL -->
-		
+<rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">
+	<f:facet name="header">
+    	<h:outputText value="Event Location" />
+    </f:facet>
+    <f:facet name="controls">
+    	<h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('eventLocationModal')" />
+    </f:facet>
+
+    <div class="eventmap-border">
+    	<div id="map-canvas" style="width: 522px; height: 355px; border: 0"></div>
+    </div>
+
+    <div class="popupactions">
+    	<a4j:commandButton value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('eventLocationModal')" styleClass="left">
+   			<span class="edit">
+   				<h:outputText value="#{messages.button_close}" />
+   			</span>
+	 	</a4j:commandButton>
+    </div>
+</rich:modalPanel>
 </ui:define>
 </ui:composition>
