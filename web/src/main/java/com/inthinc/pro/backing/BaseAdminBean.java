@@ -456,6 +456,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
 
         items.removeAll(selected);
         filteredItems.removeAll(selected);
+        item = null;
 
         if (displayed)
             return getFinishedRedirect();

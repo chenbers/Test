@@ -11,9 +11,6 @@
 
   Required Parameters:
   ==============
-           reRender:  Id['s] (in format of call UIComponent.findComponent()) of components, rendered in case
-                      of AjaxRequest caused by this component. Can be single id, comma-separated list of Id's,
-                      or EL Expression with array or Collection.
          deleteBean:  A bean that has a method named delete(), called when the delete button is clicked.
 
   Optional Parameters:
@@ -22,7 +19,12 @@
         explanation:  Explanatory text for the dialog.  If not provided, messages.confirmDelete_explanation will
                       be used.
         deleteItems:  A list of the items to delete.  If provided, shown below the explanation.
+           reRender:  Id['s] (in format of call UIComponent.findComponent()) of components, rendered in case
+                      of AjaxRequest caused by this component. Can be single id, comma-separated list of Id's,
+                      or EL Expression with array or Collection.
            ondelete:  A javascript expression to be called after the item(s) have been deleted.
+    supportRedirect:  If true, an h:commandButton is used instead of a4j:commandButton, and ondelete and reRender
+                      aren't supported.
 
   To use:
   ==============
@@ -51,7 +53,7 @@
       <c:set var="explanation" value="#{messages.confirmDelete_explanation}" />
     </c:if>
 
-    <rich:modalPanel id="confirmDelete" headerClass="popupHeader" controlsClass="popupControls" width="500" height="140" autosized="true" resizeable="false" zindex="2001" onshow="if (event.parameters.deleteID) document.getElementById('confirmDeleteID').value = event.parameters.deleteID; document.getElementById('confirmDeleteForm:deleteButton').focus();">
+    <rich:modalPanel id="confirmDelete" headerClass="popupHeader" controlsClass="popupControls" width="500" height="140" autosized="true" resizeable="false" zindex="2001" onshow="if (event.parameters.deleteID) document.getElementById('confirmDeleteID').value = event.parameters.deleteID; var button = document.getElementById('confirmDeleteForm:deleteButton'); if (button == null) button = document.getElementById('confirmDeleteForm:deleteButtonDirect'); button.focus();">
       <f:facet name="header">
         <h:outputText value="#{title}" />
       </f:facet>
@@ -71,7 +73,8 @@
 
         <div class="popupactions">
           <button type="submit" class="left" onclick="Richfaces.hideModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button>
-          <a4j:commandButton id="deleteButton" action="#{deleteBean['delete']}" onclick="Richfaces.hideModalPanel('confirmDelete')" oncomplete="#{ondelete}" reRender="#{reRender}" styleClass="left" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
+          <h:commandButton id="deleteButtonDirect" rendered="#{supportRedirect}" action="#{deleteBean['delete']}" onclick="Richfaces.hideModalPanel('confirmDelete')" styleClass="left" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></h:commandButton>
+          <a4j:commandButton id="deleteButton" rendered="#{(empty supportRedirect) or !supportRedirect}" action="#{deleteBean['delete']}" onclick="Richfaces.hideModalPanel('confirmDelete')" oncomplete="#{ondelete}" reRender="#{reRender}" styleClass="left" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
         </div>
 
       </a4j:form>
