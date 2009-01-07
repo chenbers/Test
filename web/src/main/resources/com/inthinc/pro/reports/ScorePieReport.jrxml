@@ -71,14 +71,14 @@
 			</band>
 		</title>
 		<pageHeader>
-			<band height="621"  isSplitAllowed="true" >
+			<band height="645"  isSplitAllowed="true" >
 				<rectangle radius="3" >
 					<reportElement
 						x="0"
-						y="436"
+						y="453"
 						width="535"
 						height="171"
-						forecolor="#666666"
+						forecolor="#999999"
 						backcolor="#E7E6E6"
 						key="rectangle-2"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -183,7 +183,7 @@ isCircular="true" >
 					<chart isShowLegend="false"  hyperlinkTarget="Self"  customizerClass="com.inthinc.pro.reports.PieChartCustomizer" >
 					<reportElement
 						x="5"
-						y="461"
+						y="478"
 						width="159"
 						height="138"
 						key="element-2"/>
@@ -216,7 +216,7 @@ isCircular="true" >
 					<chart isShowLegend="false"  hyperlinkTarget="Self"  customizerClass="com.inthinc.pro.reports.PieChartCustomizer" >
 					<reportElement
 						x="177"
-						y="461"
+						y="478"
 						width="165"
 						height="138"
 						key="element-3"/>
@@ -249,7 +249,7 @@ isCircular="true" >
 					<chart isShowLegend="false"  hyperlinkTarget="Self"  customizerClass="com.inthinc.pro.reports.PieChartCustomizer" >
 					<reportElement
 						x="362"
-						y="461"
+						y="478"
 						width="165"
 						height="138"
 						key="element-4"/>
@@ -281,7 +281,7 @@ isCircular="true" >
 				<staticText>
 					<reportElement
 						x="5"
-						y="445"
+						y="462"
 						width="145"
 						height="12"
 						key="staticText-4"/>
@@ -294,7 +294,7 @@ isCircular="true" >
 				<staticText>
 					<reportElement
 						x="177"
-						y="445"
+						y="462"
 						width="145"
 						height="12"
 						key="staticText-5"/>
@@ -307,7 +307,7 @@ isCircular="true" >
 				<staticText>
 					<reportElement
 						x="362"
-						y="445"
+						y="462"
 						width="145"
 						height="12"
 						key="staticText-6"/>
@@ -320,20 +320,20 @@ isCircular="true" >
 				<line direction="TopDown">
 					<reportElement
 						x="170"
-						y="436"
+						y="453"
 						width="0"
 						height="171"
-						forecolor="#666666"
+						forecolor="#999999"
 						key="line-1"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
 						x="350"
-						y="436"
+						y="453"
 						width="0"
 						height="171"
-						forecolor="#666666"
+						forecolor="#999999"
 						key="line-2"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>

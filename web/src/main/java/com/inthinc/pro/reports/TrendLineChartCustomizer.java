@@ -21,5 +21,6 @@ public class TrendLineChartCustomizer extends JRAbstractChartCustomizer
         Font font = plot.getDomainAxis().getLabelFont();
         Font newFont = new Font(font.getName(),font.getStyle(),8);
         plot.getDomainAxis().setTickLabelFont(newFont);
+        plot.setNoDataMessage("No Data Available");
     }
 }
