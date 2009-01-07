@@ -24,6 +24,8 @@ import com.inthinc.pro.dao.mock.data.TempConversionUtil;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.AlertCon;
+import com.inthinc.pro.model.AlertMessage;
+import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
@@ -1183,6 +1185,19 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     public List<Map<String, Object>> getVehiclesByGroupIDDeep(Integer groupID) throws ProDAOException
     {
         return getVehiclesByGroupID(groupID);
+    }
+
+    @Override
+    public List<Map<String, Object>> getMessages(Integer alertMessageType)
+    {
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("alertMessageDeliveryType", AlertMessageDeliveryType.valueOf(alertMessageType));
+        List<Map<String, Object>> returnList = MockData.getInstance().lookupList(AlertMessage.class, searchCriteria);
+        if (returnList == null)
+        {
+            throw new EmptyResultSetException("getMessages() returned no value for alertMessageType=" + alertMessageType, "getMessages()", 0);
+        }
+        return returnList;
     }
 
 

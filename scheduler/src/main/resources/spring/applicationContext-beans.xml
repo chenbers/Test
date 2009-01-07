@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+   <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+         <property name="host" value="${mailserver}" />
+	</bean>
+
+   <bean id="mailDispatcher"	class="com.inthinc.pro.scheduler.dispatch.MailDispatcher">
+		<property name="mailSender" ref="mailSender" />
+	</bean>
+
+   <bean id="phoneDispatcher"	class="com.inthinc.pro.scheduler.dispatch.PhoneDispatcher">
+         <property name="asteriskScript" value="${asterisk.script}" />
+	</bean>
+   
+   <!--  QUARTZ (jobs and triggers) -->
+	<bean id="baseAlertJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="com.inthinc.pro.scheduler.quartz.BaseAlertJob"/>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="alertMessageDAO" value-ref="alertMessageDAO"/>
+				<entry key="mailDispatcher" value-ref="mailDispatcher"/>
+				<entry key="phoneDispatcher" value-ref="phoneDispatcher"/>
+			</map>
+		</property>
+   </bean>
+   
+	<bean name="emailAlertJob" class="org.springframework.scheduling.quartz.JobDetailBean" parent="baseAlertJob">
+		<property name="jobClass" value="com.inthinc.pro.scheduler.quartz.EmailAlertJob"/>
+	</bean>
+	
+	<bean name="smsAlertJob" class="org.springframework.scheduling.quartz.JobDetailBean" parent="baseAlertJob">
+		<property name="jobClass" value="com.inthinc.pro.scheduler.quartz.SMSAlertJob"/>
+	</bean>
+	
+	<bean name="phoneAlertJob" class="org.springframework.scheduling.quartz.JobDetailBean" parent="baseAlertJob">
+		<property name="jobClass" value="com.inthinc.pro.scheduler.quartz.PhoneAlertJob"/>
+	</bean>
+
+	<bean id="emailMessageCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="emailAlertJob"/>
+		<!-- run every odd minute -->
+	  <property name="cronExpression" value="0 1/2 * * * ?"/>
+	</bean>
+			
+	<bean id="smsMessageCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="smsAlertJob"/>
+		<!-- run every even minute -->
+	  <property name="cronExpression" value="0 0/2 * * * ?"/>
+	</bean>
+
+	<bean id="phoneMessageCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="phoneAlertJob"/>
+		<!-- run every odd minute - 30 seconds into it -->
+	  <property name="cronExpression" value="30 1/2 * * * ?"/>
+	</bean>
+
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean" lazy-init="false">
+	  <property name="triggers">
+    	<list>
+	      <ref bean="emailMessageCronTrigger"/>
+	      <ref bean="smsMessageCronTrigger"/>
+	      <ref bean="phoneMessageCronTrigger"/>
+	    </list>
+	  </property>
+	</bean>
+			
+   <!--  QUARTZ  END -->
+   
+   
+</beans>

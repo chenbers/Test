@@ -6,7 +6,7 @@ package com.inthinc.pro.model;
 public interface ReferenceEntity
 {
 
-    public Integer getID();
+    public Integer retrieveID();
     
     
 }

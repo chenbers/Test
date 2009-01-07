@@ -456,7 +456,7 @@ public abstract class AbstractMapper implements Mapper
         }
         else if (ReferenceEntity.class.isInstance(value))
         {
-            value = ((ReferenceEntity) value).getID();
+            value = ((ReferenceEntity) value).retrieveID();
         }
         else if (BaseEnum.class.isInstance(value))
         {

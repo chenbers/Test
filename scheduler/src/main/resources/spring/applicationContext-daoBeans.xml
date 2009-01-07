@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+    <!-- Service Related Beans -->
+    <bean id="siloServiceBean" factory-bean="siloServiceCreator" factory-method="getService" />
+
+    <!-- DAO -->
+    <bean id="genericDAO" class="com.inthinc.pro.dao.hessian.GenericHessianDAO" abstract="true">
+        <property name="siloService" ref="siloServiceBean" />
+    </bean>
+    <bean id="alertMessageDAO" class="com.inthinc.pro.dao.hessian.AlertMessageHessianDAO" parent="genericDAO"></bean>
+</beans>

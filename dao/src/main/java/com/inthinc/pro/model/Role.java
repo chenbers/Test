@@ -52,7 +52,7 @@ public class Role extends BaseEntity implements ReferenceEntity
         return "ROLE_" + getName().toUpperCase();
     }
     @Override
-    public Integer getID()
+    public Integer retrieveID()
     {
         return roleID;
     }
@@ -60,7 +60,7 @@ public class Role extends BaseEntity implements ReferenceEntity
     public boolean equals(Object obj)
     {
         if (obj instanceof Role)
-            return ((Role) obj).getID().equals(getID());
+            return ((Role) obj).retrieveID().equals(retrieveID());
         else
             return false;
     }

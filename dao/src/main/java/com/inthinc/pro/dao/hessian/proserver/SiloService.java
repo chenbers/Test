@@ -240,6 +240,10 @@ public interface SiloService extends HessianService
     Map<String, Object> createZone(Integer acctID, Map<String, Object> zoneMap) throws ProDAOException;
 
     List<Map<String, Object>> getZonesByAcctID(Integer accountID);
+
+    
+    // -------------------------    Messages   -----------------------------------------------
+    List<Map<String, Object>> getMessages(Integer deliveryMethodType);
     
     // --------------central service -----------------------    
     

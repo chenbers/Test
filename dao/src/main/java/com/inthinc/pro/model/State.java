@@ -47,7 +47,7 @@ public class State extends BaseEntity implements ReferenceEntity
         this.stateID = stateID;
     }
     @Override
-    public Integer getID()
+    public Integer retrieveID()
     {
         return stateID;
     }

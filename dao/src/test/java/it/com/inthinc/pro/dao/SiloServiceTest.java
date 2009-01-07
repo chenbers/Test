@@ -1487,7 +1487,7 @@ logger.debug("Persons GroupID: " + groupID);
         for (State state : States.getStates().values())
         {
             if (cnt++ == idx)
-                return state.getID();
+                return state.getStateID();
         }
         
         return null;

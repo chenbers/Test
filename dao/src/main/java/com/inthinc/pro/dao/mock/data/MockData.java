@@ -24,6 +24,9 @@ import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.AggressiveDrivingEvent;
 import com.inthinc.pro.model.AlertCon;
+import com.inthinc.pro.model.AlertMessage;
+import com.inthinc.pro.model.AlertMessageDeliveryType;
+import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.BaseAlert;
 import com.inthinc.pro.model.DVQMap;
 import com.inthinc.pro.model.Device;
@@ -159,11 +162,29 @@ public class MockData
         // create an empty group (just for testing)
         Group emptyGroup = new Group(1, NUM_ACCOUNTS, "EMPTY GROUP", 0);
         storeObject(emptyGroup);
+        
+        // add some messages for testing alert messages
+        // un-comment only if testing alert messages
+//        addMessages();
 
 
     }
     
+
     //------------ DATA GENERATION METHODS ----------------
+
+    private void addMessages()
+    {
+        AlertMessage msg = new AlertMessage(1, AlertMessageDeliveryType.EMAIL, AlertMessageType.ALERT_TYPE_AGGRESSIVE_DRIVING, "cjennings@inthinc.com", "this is a test email message");
+        storeObject(msg);
+        
+        msg = new AlertMessage(2, AlertMessageDeliveryType.TEXT_MESSAGE, AlertMessageType.ALERT_TYPE_LOW_BATTERY, "8017185958@vtext.com", "this is a test SMS message");
+        storeObject(msg);
+        
+        msg = new AlertMessage(3, AlertMessageDeliveryType.PHONE, AlertMessageType.ALERT_TYPE_ENTER_ZONE, "8017185958", "this is a test phone message");
+        storeObject(msg);
+        
+    }
     
     private void addAccountData(Integer accountID)
     {

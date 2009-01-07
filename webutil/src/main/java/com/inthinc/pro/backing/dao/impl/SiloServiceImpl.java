@@ -644,4 +644,11 @@ public class SiloServiceImpl implements SiloService
         return null;
     }
 
+    @Override
+    public List<Map<String, Object>> getMessages(Integer deliveryMethodType)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }
