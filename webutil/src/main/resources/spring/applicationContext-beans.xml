@@ -16,5 +16,8 @@
     <bean id="daoUtilBean" class="com.inthinc.pro.backing.dao.DaoUtilBean">
 		<property name="siloServiceCreator" ref="siloServiceCreator" />
     </bean>
+    <bean id="fwdcmdBean" class="com.inthinc.pro.backing.FwdCmdBean">
+		<property name="deviceDAO" ref="deviceDAO" />
+	</bean>
     
 </beans>

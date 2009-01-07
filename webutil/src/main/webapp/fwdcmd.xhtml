@@ -1,0 +1,83 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:h="http://java.sun.com/jsf/html"
+	 xmlns:f="http://java.sun.com/jsf/core" 
+	 xmlns:a4j="http://richfaces.org/a4j" 
+	 xmlns:rich="http://richfaces.org/rich"
+	 xmlns:acegi-jsf="http://sourceforge.net/projects/jsf-comp/acegijsf">
+
+<f:view contentType="text/html"> 
+
+<head>
+<title>TeenServer Forward Command</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<!-- javascript here -->
+
+
+</head>
+<body>
+    <div id="middle">
+    <div id="content">
+    
+    <a4j:form>
+      <rich:panel>
+        <f:facet name="header">
+        Send Foward Commands
+      </f:facet>
+        <h:panelGrid columns="3">
+
+          <h:outputText value="IMEI: " />
+          <h:inputText id="imei" label="IMEI" value="#{fwdcmdBean.imei}" binding="#{fwdcmdBean.imeiInput}"
+            validator="#{fwdcmdBean.validateIMEI}" required="true" />
+          <rich:message for="imei">
+            <f:facet name="errorMarker">
+              <h:graphicImage value="/images/error.gif" />
+            </f:facet>
+          </rich:message>
+
+          <h:outputText value="Forward Command ID: " />
+          <h:inputText id="fwdcmd" label="FwdCmd" value="#{fwdcmdBean.fwdcmd}" required="true" />
+          <rich:message for="fwdcmd">
+            <f:facet name="errorMarker">
+              <h:graphicImage value="/images/error.gif" />
+            </f:facet>
+          </rich:message>
+
+          <h:outputText value="Integer Data: " />
+          <h:inputText id="intdata" label="Integer Data" value="#{fwdcmdBean.intData}" />
+          <rich:message for="intdata">
+            <f:facet name="errorMarker">
+              <h:graphicImage value="/images/error.gif" />
+            </f:facet>
+          </rich:message>
+
+          <h:outputText value="String Data: " />
+          <h:inputText id="stringdata" label="String Data" value="#{fwdcmdBean.stringData}" />
+          <rich:message for="stringdata">
+            <f:facet name="errorMarker">
+              <h:graphicImage value="/images/error.gif" />
+            </f:facet>
+          </rich:message>
+
+        </h:panelGrid>
+      </rich:panel>
+      <a4j:commandButton value="Send Command" action="#{fwdcmdBean.sendFwdCmdAction}" oncomplete="javascript:if(#{empty facesContext.maximumSeverity}){Richfaces.showModalPanel('successPanel')}" />
+      <a4j:commandButton value="Done" action="go_home" immediate="true" />
+    </a4j:form>
+    
+    </div>
+    </div>
+
+    <rich:modalPanel id="successPanel" width="200" height="120" zindex="2000">
+      <f:facet name="header">
+        <h:outputText value="Send Foward Command" />
+      </f:facet>
+      <p><h:outputText value="Forward command sent successfully" /></p>
+      <a4j:form>
+        <a4j:commandButton onclick="Richfaces.hideModalPanel('successPanel')" value="ok"></a4j:commandButton>
+      </a4j:form>
+    </rich:modalPanel>
+</body>
+</f:view>
+</html>
+    

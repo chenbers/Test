@@ -20,6 +20,15 @@
    <to-view-id>/dao.xhtml</to-view-id>
   </navigation-case>
  </navigation-rule>
+ <navigation-rule>
+  <navigation-case>
+   <from-outcome>go_forwardCmd</from-outcome>
+   <to-view-id>/fwdcmd.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
+ 
+ 
+ 
 
   <!-- =========== FULL CONFIGURATION FILE ================================== -->
  <application>
