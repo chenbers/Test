@@ -325,6 +325,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
             item.setDriver(new Driver());
             item.getDriver().setPersonID(item.getPersonID());
         }
+        if ((item.getDriver().getRFID() != null) && (item.getDriver().getRFID() == 0))
+            item.getDriver().setRFID(null);
         return item;
     }
 
