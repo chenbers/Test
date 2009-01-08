@@ -33,7 +33,7 @@ public class MiscUtil
         {
             phone = unformatPhone(phone);
             if (phone.length() != 10)
-                throw new IllegalArgumentException();
+                return null;
         }
         final StringBuilder sb = new StringBuilder();
         sb.append('(');
