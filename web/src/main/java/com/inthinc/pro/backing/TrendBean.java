@@ -1,6 +1,8 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -40,13 +42,16 @@ public class TrendBean extends BaseBean
 
     private List<ScoreableEntityPkg> scoreableEntities = new ArrayList<ScoreableEntityPkg>();
     
-    private Integer numRowsPerPg = 2;
+    private Integer numRowsPerPg = 5;
     private Integer maxCount = 0;
     private Integer start = 1;
     private Integer end = numRowsPerPg;
     
     private String countString = null;
     private Integer tmpGroupID = null;
+    
+    private Boolean sortItFirst = new Boolean(false);
+    private Boolean sortItSecond = new Boolean(false);
     
     private ReportRenderer reportRenderer;
 
@@ -98,6 +103,16 @@ public class TrendBean extends BaseBean
         // date from, date to
         List<ScoreableEntity> s = null;
         s = getScores();
+        
+        // Apply any sorting
+        if ( this.sortItFirst ) 
+        {
+            s = sortOnIdentifier(s);
+        } 
+        if ( this.sortItSecond )
+        {
+            s = sortOnScore(s);
+        }
         
         // Adjust the count values
         this.maxCount = s.size(); 
@@ -182,6 +197,16 @@ public class TrendBean extends BaseBean
         this.scoreableEntities = new ArrayList<ScoreableEntityPkg>();
         List<ScoreableEntity> s = null;
         s = getScores();
+        
+        // Apply any sorting
+        if ( this.sortItFirst ) 
+        {
+            s = sortOnIdentifier(s);
+        } 
+        if ( this.sortItSecond )
+        {
+            s = sortOnScore(s);
+        }
 
         // Populate the table
         String contextPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
@@ -210,6 +235,46 @@ public class TrendBean extends BaseBean
         this.maxCount = this.scoreableEntities.size();        
         return this.scoreableEntities;
     }
+    private List<ScoreableEntity> sortOnIdentifier(List<ScoreableEntity> sLocal )
+    {
+        List<ScoreableEntity> sTemp = sLocal;
+        
+        Collections.sort(sTemp, new Comparator() {
+            public int compare(Object o1, Object o2) {
+                ScoreableEntity s1 = (ScoreableEntity)o1;
+                ScoreableEntity s2 = (ScoreableEntity)o2;
+                return s1.getIdentifier().compareToIgnoreCase(s2.getIdentifier());
+            }            
+        });  
+    
+        if ( !this.navigation.getSortedFirst() ) 
+        {
+            Collections.reverse(sTemp);            
+        }        
+        
+        return sTemp;
+    }
+        
+    private List<ScoreableEntity> sortOnScore(List<ScoreableEntity> sLocal )
+    {
+        List<ScoreableEntity> sTemp = sLocal;
+        
+        Collections.sort(sTemp, new Comparator() {
+            public int compare(Object o1, Object o2) {
+                ScoreableEntity s1 = (ScoreableEntity)o1;
+                ScoreableEntity s2 = (ScoreableEntity)o2;
+                return s1.getScore().compareTo(s2.getScore());      
+            }            
+        });  
+    
+        if ( !this.navigation.getSortedSecond() ) 
+        {
+            Collections.reverse(sTemp);            
+        }        
+        
+        return sTemp;
+    }
+    
     
     private List<ScoreableEntity> getScores() {
         List<ScoreableEntity> s = null;
@@ -432,6 +497,38 @@ public class TrendBean extends BaseBean
     public AccountDAO getAccountDAO()
     {
         return accountDAO;
+    }
+    public Boolean getSortItFirst()
+    {
+        return sortItFirst;
+    }
+
+    public void setSortItFirst(Boolean sortItFirst)
+    {
+        this.sortItFirst = sortItFirst;
+        
+        if (        this.navigation.getSortedFirst() )
+        {
+            this.navigation.setSortedFirst(false);
+        } 
+        else if (  !this.navigation.getSortedFirst() )
+        {
+            this.navigation.setSortedFirst(true);
+        }
+    }
+    
+    public void setSortItSecond(Boolean sortItSecond)
+    {
+        this.sortItSecond = sortItSecond;
+        
+        if (        this.navigation.getSortedSecond() )
+        {
+            this.navigation.setSortedSecond(false);
+        } 
+        else if (  !this.navigation.getSortedSecond() )
+        {
+            this.navigation.setSortedSecond(true);
+        }
     }
 
 }
