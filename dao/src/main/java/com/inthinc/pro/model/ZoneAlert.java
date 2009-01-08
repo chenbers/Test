@@ -11,6 +11,7 @@ public class ZoneAlert extends BaseAlert
     private static final long serialVersionUID = 3066238032590993441L;
 
     @ID
+    @Column(name="alertID")
     private Integer           zoneAlertID;
     private Integer           zoneID;
     private Boolean           arrival;

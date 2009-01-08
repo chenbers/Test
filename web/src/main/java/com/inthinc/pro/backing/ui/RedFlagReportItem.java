@@ -45,7 +45,7 @@ public class RedFlagReportItem
         dateFormatter.setTimeZone(event.getDriver().getPerson().getTimeZone());
         setDate(dateFormatter.format(event.getTime()));
         
-        Group group = groupHierarchy.getGroup(event.getDriver().getPerson().getGroupID());
+        Group group = groupHierarchy.getGroup(event.getDriver().getGroupID());
         if (group != null)
         {
             setGroup(group.getName());

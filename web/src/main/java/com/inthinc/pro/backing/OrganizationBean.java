@@ -420,7 +420,7 @@ public class OrganizationBean extends BaseBean
      */
     public List<SelectItem> getPeopleSelectItems()
     {
-        List<Person> personList = personDAO.getPeopleInGroupHierarchy(getUser().getPerson().getGroupID());
+        List<Person> personList = personDAO.getPeopleInGroupHierarchy(getUser().getGroupID());
 
         List<SelectItem> selectItems = new ArrayList<SelectItem>(0);
         selectItems.add(new SelectItem(null, ""));

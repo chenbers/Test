@@ -79,7 +79,7 @@ public class VehicleReportBean extends BaseReportBean
         searchFor = checkForRequestMap();        
         vehiclesData = 
             scoreDAO.getVehicleReportData(
-                    getUser().getPerson().getGroupID(),
+                    getUser().getGroupID(),
                     Duration.TWELVE);
         
         //Bean creation could be from Reports selection or

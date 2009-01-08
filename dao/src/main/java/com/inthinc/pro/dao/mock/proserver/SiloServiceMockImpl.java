@@ -187,32 +187,32 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         return createReturnValue("count", 1);
     }
 
-    @Override
-    public List<Map<String, Object>> getPersonsByGroupID(Integer groupID)
-    {
-        final List<Map<String, Object>> personIDs = new LinkedList<Map<String, Object>>();
-        
-        Group topGroup = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
-        if (topGroup == null)
-            return personIDs;
-        
-        List<Group> groupHierarchy = getGroupHierarchy(topGroup);
-
-        for (Group group : groupHierarchy)
-        {
-            final Integer id = group.getGroupID();
-            if (id != null)
-            {
-                final SearchCriteria criteria = new SearchCriteria();
-                criteria.addKeyValue("groupID", id);
-                final List<Map<String, Object>> matches = MockData.getInstance().lookupList(Person.class, criteria);
-                if (matches != null)
-                    personIDs.addAll(matches);
-            }
-        }
-
-        return personIDs;
-    }
+//    @Override
+//    public List<Map<String, Object>> getPersonsByGroupID(Integer groupID)
+//    {
+//        final List<Map<String, Object>> personIDs = new LinkedList<Map<String, Object>>();
+//        
+//        Group topGroup = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
+//        if (topGroup == null)
+//            return personIDs;
+//        
+//        List<Group> groupHierarchy = getGroupHierarchy(topGroup);
+//
+//        for (Group group : groupHierarchy)
+//        {
+//            final Integer id = group.getGroupID();
+//            if (id != null)
+//            {
+//                final SearchCriteria criteria = new SearchCriteria();
+//                criteria.addKeyValue("groupID", id);
+//                final List<Map<String, Object>> matches = MockData.getInstance().lookupList(Person.class, criteria);
+//                if (matches != null)
+//                    personIDs.addAll(matches);
+//            }
+//        }
+//
+//        return personIDs;
+//    }
 
 //    @Override
 //    public Map<String, Object> getAverageScoreByType(Integer groupID, Integer startDate, Integer endDate, ScoreType st) throws ProDAOException
@@ -659,10 +659,14 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     public List<Map<String, Object>> getDriversByGroupID(Integer groupID)
     {
         logger.debug("mock IMPL getAllDrivers groupID = " + groupID);
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
         Group group = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
+        if (group == null)
+        {
+            return returnList;
+        }
 
         List<Driver> drivers = getAllDriversInGroup(group);
-        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
 
         for (Driver driver : drivers)
         {
@@ -687,7 +691,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
             
             DriverLocation dl = new DriverLocation();
             dl.setDriverID(driver.getDriverID());
-            dl.setGroupID(driver.getPerson().getGroupID());
+            dl.setGroupID(driver.getGroupID());
             dl.setHomePhone(driver.getPerson().getHomePhone());
             dl.setWorkPhone(driver.getPerson().getWorkPhone());
             dl.setName(driver.getPerson().getFirst() + " " + driver.getPerson().getLast());
@@ -1002,6 +1006,33 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> getUsersByGroupIDDeep(Integer groupID)
+    {
+      final List<Map<String, Object>> userIDs = new LinkedList<Map<String, Object>>();
+      
+      Group topGroup = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
+      if (topGroup == null)
+          return userIDs;
+      
+      List<Group> groupHierarchy = getGroupHierarchy(topGroup);
+
+      for (Group group : groupHierarchy)
+      {
+          final Integer id = group.getGroupID();
+          if (id != null)
+          {
+              final SearchCriteria criteria = new SearchCriteria();
+              criteria.addKeyValue("groupID", id);
+              final List<Map<String, Object>> matches = MockData.getInstance().lookupList(User.class, criteria);
+              if (matches != null)
+                  userIDs.addAll(matches);
+          }
+      }
+
+      return userIDs;
     }
 
     @Override

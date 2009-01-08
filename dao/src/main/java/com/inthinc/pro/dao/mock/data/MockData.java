@@ -403,6 +403,7 @@ public class MockData
     {
         User user = new User();
         user.setUserID(id);
+        user.setGroupID(groupID);
         user.setUsername(username);
         user.setPassword(password);
         user.setRole(role);
@@ -410,7 +411,6 @@ public class MockData
         user.setPerson(new Person());
         user.getPerson().setPersonID(id);
         user.getPerson().setEmpid(String.valueOf(id));
-        user.getPerson().setGroupID(groupID);
         user.getPerson().setHomePhone(homePhone);
         user.getPerson().setWorkPhone(workPhone);
         user.getPerson().setEmail(email);
@@ -648,7 +648,7 @@ public class MockData
         storeObject(event, Event.class);
         RedFlag redFlag = new RedFlag(idOffset+1, RedFlagLevel.valueOf(randomInt(1,3)), randomInt(0, 1) == 1, false, event);
         storeObject(redFlag);
-        if (driver.getPerson().getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID))
+        if (driver.getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID))
         {
             unitTestStats.totalRedFlags++;
             unitTestStats.totalWarningRedFlags++;
@@ -664,7 +664,7 @@ public class MockData
         storeObject(event, Event.class);
         redFlag = new RedFlag(idOffset+2, RedFlagLevel.valueOf(randomInt(1,3)), randomInt(0, 1) == 1, false, event);
         storeObject(redFlag);
-        if (driver.getPerson().getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID))
+        if (driver.getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID))
         {
             unitTestStats.totalRedFlags++;
             unitTestStats.totalWarningRedFlags++;
@@ -680,7 +680,7 @@ public class MockData
         storeObject(event, Event.class);
         redFlag = new RedFlag(idOffset+3, RedFlagLevel.valueOf(randomInt(1,3)), randomInt(0, 1) == 1, false, event);
         storeObject(redFlag);
-        if (driver.getPerson().getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID))
+        if (driver.getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID))
         {
             unitTestStats.totalRedFlags++;
             unitTestStats.totalWarningRedFlags++;
@@ -781,7 +781,7 @@ public class MockData
             
             storeObject(redFlag);
             
-            if (driver.getPerson().getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID))
+            if (driver.getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID))
             {
                 unitTestStats.totalRedFlags++;
             }
@@ -1067,7 +1067,6 @@ public class MockData
         }
         person.setEmpid(String.valueOf(id));
         person.setPersonID(id);
-        person.setGroupID(groupID);
         person.setFirst(first);
         person.setLast(last);
         person.setHomePhone(randomPhone());
@@ -1078,6 +1077,7 @@ public class MockData
         driver.setDriverID(id);
         driver.setPersonID(person.getPersonID());
         driver.setPerson(person);
+        driver.setGroupID(groupID);
         person.setDriver(driver);
         return driver;
     }

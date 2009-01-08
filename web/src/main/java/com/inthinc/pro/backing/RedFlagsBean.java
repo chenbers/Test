@@ -163,7 +163,7 @@ public class RedFlagsBean extends BaseBean implements TablePrefOptions
     {
         setFilteredTableData(null);
         
-        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(getUser().getPerson().getGroupID());
+        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(getUser().getGroupID());
         List<RedFlagReportItem> redFlagReportItemList = new ArrayList<RedFlagReportItem>();
         for (RedFlag redFlag : redFlagList)
         {

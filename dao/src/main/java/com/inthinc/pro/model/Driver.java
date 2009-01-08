@@ -33,7 +33,9 @@ public class Driver extends BaseEntity
     @Column(updateable = false)
     private Person            person;
 
-    public Driver(Integer driverID, Integer personID, Status status, Long rfid, String license, State state, String licenseClass, Date expiration, String certifications, String dot)
+    private Integer           groupID;
+
+    public Driver(Integer driverID, Integer personID, Status status, Long rfid, String license, State state, String licenseClass, Date expiration, String certifications, String dot, Integer groupID)
     {
         super();
         this.driverID = driverID;
@@ -46,6 +48,7 @@ public class Driver extends BaseEntity
         this.expiration = expiration;
         this.certifications = certifications;
         this.dot = dot;
+        this.groupID = groupID;
     }
 
     public Driver()
@@ -165,6 +168,16 @@ public class Driver extends BaseEntity
     public void setStatus(Status status)
     {
         this.status = status;
+    }
+
+    public Integer getGroupID()
+    {
+        return groupID;
+    }
+
+    public void setGroupID(Integer groupID)
+    {
+        this.groupID = groupID;
     }
 
 }

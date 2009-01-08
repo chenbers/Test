@@ -26,7 +26,6 @@ public class EventDisplayTest
         Person person = new Person();
         person.setEmpid(String.valueOf(100));
         person.setPersonID(100);
-        person.setGroupID(1);
         person.setFirst("John");
         person.setLast("Doe");
         person.setTimeZone(TimeZone.getTimeZone("US/Pacific"));
@@ -34,6 +33,7 @@ public class EventDisplayTest
         driver.setDriverID(200);
         driver.setPersonID(100);
         driver.setPerson(person);
+        driver.setGroupID(1);
         person.setDriver(driver);
 
         Vehicle vehicle = new Vehicle();

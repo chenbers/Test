@@ -50,7 +50,7 @@ public class UserHessianDAO extends GenericHessianDAO<User, Integer> implements 
         
         try
         {
-            return getMapper().convertToModelObject(getSiloService().getUsersByGroupID(groupID), User.class);
+            return getMapper().convertToModelObject(getSiloService().getUsersByGroupIDDeep(groupID), User.class);
         }
         catch (EmptyResultSetException e)
         {

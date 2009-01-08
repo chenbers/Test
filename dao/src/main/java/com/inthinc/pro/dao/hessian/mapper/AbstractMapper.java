@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.dao.annotations.ConvertFieldToColumn;
+import com.inthinc.pro.dao.hessian.debug.DebugUtil;
 import com.inthinc.pro.dao.hessian.exceptions.MappingException;
 import com.inthinc.pro.model.BaseEnum;
 import com.inthinc.pro.model.ReferenceEntity;
@@ -393,9 +394,13 @@ public abstract class AbstractMapper implements Mapper
             }
             clazz = clazz.getSuperclass();
         }
+//DebugUtil.dumpMap(map);        
         return map;
     }
 
+    
+
+    
     private Object convertToHessian(Object value, Map<Object, Map<String, Object>> handled, Field field, boolean includeNonUpdateables)
     {
         // if the property is a Map, convert the objects in the Map to Map<String,Object>. i'm not sure if this will ever occur

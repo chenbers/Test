@@ -27,7 +27,7 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
         
         try
         {
-            List<Driver> driverList = getMapper().convertToModelObject(this.getSiloService().getDriversByGroupID(groupID), Driver.class);
+            List<Driver> driverList = getMapper().convertToModelObject(this.getSiloService().getDriversByGroupIDDeep(groupID), Driver.class);
             return driverList;
         }
         catch (EmptyResultSetException e)
@@ -46,7 +46,7 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
             List<Driver> completeSet = getMapper().convertToModelObject(this.getSiloService().getDriversByGroupID(groupID), Driver.class);
             for(Driver driver: completeSet)
             {
-                if(driver.getPerson().getGroupID()==groupID)
+                if(driver.getGroupID()==groupID)
                 {
                     driverList.add(driver);
                 }

@@ -75,7 +75,7 @@ public class DeviceReportBean extends BaseReportBean
         searchFor = checkForRequestMap();
         
         List<Vehicle> vehicList = 
-            vehicleDAO.getVehiclesInGroupHierarchy(getUser().getPerson().getGroupID());
+            vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
 
         for( Vehicle v: vehicList )
         {

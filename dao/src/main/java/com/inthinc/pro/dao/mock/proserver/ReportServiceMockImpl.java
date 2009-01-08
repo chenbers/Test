@@ -82,7 +82,7 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
         else
         {
             searchCriteria = new SearchCriteria();
-            searchCriteria.addKeyValue("person:groupID", groupID);
+            searchCriteria.addKeyValue("groupID", groupID);
 
             // get list of drivers that are in the specified group
             entityList = MockData.getInstance().lookupList(Driver.class, searchCriteria);
@@ -203,7 +203,7 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
         else
         {
             searchCriteria = new SearchCriteria();
-            searchCriteria.addKeyValue("person:groupID", groupID);
+            searchCriteria.addKeyValue("groupID", groupID);
 
             // get list of drivers that are in the specified group
             entityList = MockData.getInstance().lookupList(Driver.class, searchCriteria);
@@ -565,7 +565,7 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
         for (Group group : groupList)
         {
             SearchCriteria searchCriteria = new SearchCriteria();
-            searchCriteria.addKeyValue("driver:person:groupID", group.getGroupID());
+            searchCriteria.addKeyValue("driver:groupID", group.getGroupID());
     
             // get list of drivers that are in the specified group
             List<DVQMap> groupDVQList = MockData.getInstance().retrieveObjectList(DVQMap.class, searchCriteria);
@@ -593,7 +593,7 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
     public List<Map<String, Object>> getDVScoresByGT(Integer groupID, Integer duration)
     {
         SearchCriteria searchCriteria = new SearchCriteria();
-        searchCriteria.addKeyValue("person:groupID", groupID);
+        searchCriteria.addKeyValue("groupID", groupID);
 
         // get list of drivers that are in the specified group
         List<Map<String, Object>> entityList = MockData.getInstance().lookupList(Driver.class, searchCriteria);
@@ -618,7 +618,7 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
     public List<Map<String, Object>> getVDScoresByGT(Integer groupID, Integer duration)
     {
         SearchCriteria searchCriteria = new SearchCriteria();
-        searchCriteria.addKeyValue("person:groupID", groupID);
+        searchCriteria.addKeyValue("groupID", groupID);
 
         // get list of vehicles that are in the specified group
         List<Map<String, Object>> entityList = MockData.getInstance().lookupList(Vehicle.class, searchCriteria);

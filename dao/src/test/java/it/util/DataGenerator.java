@@ -74,12 +74,12 @@ public class DataGenerator
 
         // User at fleet level
         System.out.println("Fleet Level");
-        createUser(fleetGroup.getGroupID());
+        createUser(account.getAcctID(), fleetGroup.getGroupID());
         writeObject(user);
 
         // User at team level
         System.out.println("Team Level");
-        createUser(teamGroup.getGroupID());
+        createUser(account.getAcctID(), teamGroup.getGroupID());
         writeObject(user);
 
         createDevice();
@@ -120,11 +120,11 @@ public class DataGenerator
         DriverHessianDAO driverDAO = new DriverHessianDAO();
         driverDAO.setSiloService(siloService);
         
-        Person person = createPerson(teamGroup.getGroupID(), "Driver", "Last"+teamGroup.getGroupID());
+        Person person = createPerson(teamGroup.getAccountID(), teamGroup.getGroupID(), "Driver", "Last"+teamGroup.getGroupID());
         Date expired = Util.genDate(2010, 9, 30);
         
         driver = new Driver(0, person.getPersonID(), Status.ACTIVE, 100l + person.getPersonID().longValue(), "l"+person.getPersonID(), 
-                                        States.getStateByAbbrev("UT"), "ABCD", expired, null, null);
+                                        States.getStateByAbbrev("UT"), "ABCD", expired, null, null, teamGroup.getGroupID());
 
         Integer driverID = driverDAO.create(person.getPersonID(), driver);
         driver.setDriverID(driverID);
@@ -158,17 +158,17 @@ public class DataGenerator
         
     }
 
-    private void createUser(Integer groupID)
+    private void createUser(Integer acctID, Integer groupID)
     {
         UserHessianDAO userDAO = new UserHessianDAO();
         userDAO.setSiloService(siloService);
 
         // create a person
-        Person person = createPerson(groupID, "Person", "Last"+groupID); 
+        Person person = createPerson(acctID, groupID, "Person", "Last"+groupID); 
 
 
         String username = "user_"+person.getPersonID();
-        user = new User(0, person.getPersonID(), Roles.getRoleByName("superUser"), Status.ACTIVE, username, PASSWORD);
+        user = new User(0, person.getPersonID(), Roles.getRoleByName("superUser"), Status.ACTIVE, username, PASSWORD, groupID);
         Integer userID = userDAO.create(person.getPersonID(), user);
         user.setUserID(userID);
         
@@ -198,17 +198,17 @@ public class DataGenerator
         
     }
     
-    private Person createPerson(Integer groupID, String first, String last)
+    private Person createPerson(Integer acctID, Integer groupID, String first, String last)
     {
         PersonHessianDAO personDAO = new PersonHessianDAO();
         personDAO.setSiloService(siloService);
 
         // create a person
-        Person person = new Person(0, groupID, TimeZone.getDefault(), null, null, "5555555555", "5555555555", 
+        Person person = new Person(0, acctID, TimeZone.getDefault(), null, null, "5555555555", "5555555555", 
                 first + "email"+groupID+"@email.com",   
                 "emp01", null, "title", "dept", first, "m", last, "jr", Gender.MALE, 65, 180, new Date(), Status.ACTIVE);
 
-        Integer personID = personDAO.create(groupID, person);
+        Integer personID = personDAO.create(acctID, person);
         assertNotNull(personID);
         person.setPersonID(personID);
         return person;

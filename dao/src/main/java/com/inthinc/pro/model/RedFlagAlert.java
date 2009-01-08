@@ -1,5 +1,7 @@
 package com.inthinc.pro.model;
 
+import java.util.List;
+
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
@@ -25,6 +27,32 @@ public class RedFlagAlert extends BaseAlert
     private RedFlagLevel      hardTurnLevel;
     private RedFlagLevel      hardVerticalLevel;
     private RedFlagLevel      seatBeltLevel;
+    
+    public RedFlagAlert()
+    {
+        
+    }
+
+    public RedFlagAlert(Integer accountID, String name, String description, Integer startTOD, Integer stopTOD, List<Boolean> dayOfWeek, List<Integer> groupIDs,
+            List<Integer> driverIDs, List<Integer> vehicleIDs, List<VehicleType> vehicleTypes, List<Integer> notifyPersonIDs, List<String> emailTo,
+            Integer[] speedSettings, RedFlagLevel[] speedLevels, Integer hardAcceleration, Integer hardBrake, Integer hardTurn, Integer hardVertical,
+            RedFlagLevel hardAccelerationLevel, RedFlagLevel hardBrakeLevel, RedFlagLevel hardTurnLevel, RedFlagLevel hardVerticalLevel, RedFlagLevel seatBeltLevel)
+    {
+        super(accountID, name, description, startTOD, stopTOD, dayOfWeek, groupIDs, driverIDs, vehicleIDs, vehicleTypes, notifyPersonIDs, emailTo);
+        
+        this.speedSettings = speedSettings;
+        this.speedLevels = speedLevels;
+        this.hardAcceleration = hardAcceleration;
+        this.hardBrake = hardBrake;
+        this.hardTurn = hardTurn;
+        this.hardVertical = hardVertical;
+        this.hardAccelerationLevel = hardAccelerationLevel;
+        this.hardBrakeLevel = hardBrakeLevel;
+        this.hardTurnLevel = hardTurnLevel;
+        this.hardVerticalLevel = hardVerticalLevel;
+        this.seatBeltLevel = seatBeltLevel;
+        
+    }
 
     public Integer getRedFlagAlertID()
     {

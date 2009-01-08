@@ -156,7 +156,7 @@ public class MyAccountBean extends BaseBean
     {
         if (true || regionName == null)
         {
-            Group group = groupDAO.findByID(getUser().getPerson().getGroupID());
+            Group group = groupDAO.findByID(getUser().getGroupID());
             if (group != null && group.getType() == GroupType.DIVISION)
             {
                 regionName = group.getName();
@@ -177,7 +177,7 @@ public class MyAccountBean extends BaseBean
     {
         if (teamName == null)
         {
-            Group group = groupDAO.findByID(getUser().getPerson().getGroupID());
+            Group group = groupDAO.findByID(getUser().getGroupID());
             if (group != null && group.getType() == GroupType.TEAM)
             {
                 regionName = group.getName();

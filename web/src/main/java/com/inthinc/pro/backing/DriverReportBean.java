@@ -81,7 +81,7 @@ public class DriverReportBean extends BaseReportBean
         searchFor = checkForRequestMap();        
         this.driversData = 
             scoreDAO.getDriverReportData(            
-                    getUser().getPerson().getGroupID(),
+                    getUser().getGroupID(),
                     Duration.TWELVE);
         
         //Bean creation could be from Reports selection or

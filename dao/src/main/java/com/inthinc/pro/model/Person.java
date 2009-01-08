@@ -18,7 +18,6 @@ public class Person extends BaseEntity
 	
 	@ID
     private Integer          personID;
-    private Integer          groupID;
     @Column(name = "tzName")
     private TimeZone         timeZone;
     private Integer          costPerHour; // in cents
@@ -50,19 +49,20 @@ public class Person extends BaseEntity
     @Column(updateable = false)
     private Driver driver;
     private Status         status;
+    private Integer        acctID;
 
     public Person()
     {
         super();
     }
     
-    public Person(Integer personID, Integer groupID, TimeZone timeZone, Integer costPerHour, Integer addressID, String homePhone, String workPhone, String email,
+    public Person(Integer personID,  Integer acctID, TimeZone timeZone, Integer costPerHour, Integer addressID, String homePhone, String workPhone, String email,
             String empid, Integer reportsTo, String title, String dept, String first, String middle, String last, String suffix, Gender gender, Integer height, Integer weight,
             Date dob, Status status)
     {
         super();
+        this.acctID = acctID;
         this.personID = personID;
-        this.groupID = groupID;
         this.timeZone = timeZone;
         this.costPerHour = costPerHour;
         this.addressID = addressID;
@@ -94,15 +94,6 @@ public class Person extends BaseEntity
         this.personID = personID;
     }
 
-    public Integer getGroupID()
-    {
-        return groupID;
-    }
-
-    public void setGroupID(Integer groupID)
-    {
-        this.groupID = groupID;
-    }
 
     public TimeZone getTimeZone()
     {
@@ -337,6 +328,16 @@ public class Person extends BaseEntity
     public void setStatus(Status status)
     {
         this.status = status;
+    }
+
+    public Integer getAcctID()
+    {
+        return acctID;
+    }
+
+    public void setAcctID(Integer acctID)
+    {
+        this.acctID = acctID;
     }
 
 }

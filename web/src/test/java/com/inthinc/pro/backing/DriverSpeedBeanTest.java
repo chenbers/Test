@@ -36,11 +36,11 @@ public class DriverSpeedBeanTest extends BaseBeanTest
         Person p = new Person();
         p.setFirst("John");
         p.setLast("Doe");
-        p.setGroupID(101);
         
         Driver d = new Driver();
         d.setDriverID(101);
         d.setPersonID(45);
+        d.setGroupID(101);
 
         d.setPerson(p);
         driverSpeedBean.getNavigation().setDriver(d);

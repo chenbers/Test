@@ -48,9 +48,9 @@
             <f:facet name="header"><h:outputText value="#{messages.personHeader_fullName}" /></f:facet>
             <h:outputText value="#{item.person.first}" /><h:outputText value=" " /><h:outputText value="#{item.person.last}" />
           </rich:column>
-          <rich:column sortBy="#{editorBean.groupNames[item.person.groupID]}">
+          <rich:column sortBy="#{editorBean.groupNames[item.groupID]}">
             <f:facet name="header"><h:outputText value="#{messages.personHeader_group}" /></f:facet>
-            <h:outputText value="#{editorBean.groupNames[item.person.groupID]}" />
+            <h:outputText value="#{editorBean.groupNames[item.groupID]}" />
           </rich:column>
           <rich:column sortBy="#{item.status}">
             <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_status}" /></f:facet>

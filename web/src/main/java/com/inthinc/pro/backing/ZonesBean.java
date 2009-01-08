@@ -113,12 +113,12 @@ public class ZonesBean extends BaseBean
 
         if (add)
         {
-            item.setGroupID(getUser().getPerson().getGroupID());
+            item.setGroupID(getUser().getGroupID());
             item.setZoneID(zoneDAO.create(getAccountID(), item));
         }
         else
         {
-            item.setGroupID(getUser().getPerson().getGroupID());
+            item.setGroupID(getUser().getGroupID());
             zoneDAO.update(item);
         }
 

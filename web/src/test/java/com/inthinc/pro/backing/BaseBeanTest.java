@@ -132,12 +132,12 @@ public class BaseBeanTest extends AbstractJsfTestCase implements ApplicationCont
     {
         ProUser proUser = (ProUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         
-        Integer topGroupID = proUser.getUser().getPerson().getGroupID();
+        Integer topGroupID = proUser.getUser().getGroupID();
         
         GroupDAO groupDAO = (GroupDAO)applicationContext.getBean("groupDAO");
         
         // TODO: re-factor when back end methods getGroupsByGroupIDDeep is available
-        Group topGroup = groupDAO.findByID(proUser.getUser().getPerson().getGroupID());
+        Group topGroup = groupDAO.findByID(proUser.getUser().getGroupID());
         List<Group> groupList = groupDAO.getGroupHierarchy(topGroup.getAccountID(), topGroupID);
         
         GroupHierarchy groupHierarchy = new GroupHierarchy(groupList);

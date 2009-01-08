@@ -21,7 +21,9 @@ public class User extends BaseEntity
     private String  username;
     private String  password;
     
-    public User(Integer userID, Integer personID, Role role, Status status, String username, String password)
+    private Integer groupID;
+    
+    public User(Integer userID, Integer personID, Role role, Status status, String username, String password, Integer groupID)
     {
         super();
         this.userID = userID;
@@ -30,6 +32,7 @@ public class User extends BaseEntity
         this.status = status;
         this.username = username;
         this.password = password;
+        this.groupID = groupID;
     }
 
     public User()
@@ -109,6 +112,16 @@ public class User extends BaseEntity
     public void setPersonID(Integer personID)
     {
         this.personID = personID;
+    }
+
+    public Integer getGroupID()
+    {
+        return groupID;
+    }
+
+    public void setGroupID(Integer groupID)
+    {
+        this.groupID = groupID;
     }
     
 

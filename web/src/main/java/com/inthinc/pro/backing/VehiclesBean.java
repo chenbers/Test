@@ -128,7 +128,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     protected List<VehicleView> loadItems()
     {
         // get the vehicles
-        final List<Vehicle> plainVehicles = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getPerson().getGroupID());
+        final List<Vehicle> plainVehicles = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
 
         // convert the Vehicles to VehicleViews
         final LinkedList<VehicleView> items = new LinkedList<VehicleView>();
@@ -366,7 +366,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         for (final VehicleView vehicle : saveItems)
         {
             if (create)
-                vehicle.setVehicleID(vehicleDAO.create(getUser().getPerson().getGroupID(), vehicle));
+                vehicle.setVehicleID(vehicleDAO.create(getUser().getGroupID(), vehicle));
             else
                 vehicleDAO.update(vehicle);
             vehicle.setOldGroupID(vehicle.getGroupID());
@@ -507,7 +507,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
             super.setGroupID(groupID);
             group = null;
 
-            if ((driver != null) && !driver.getPerson().getGroupID().equals(groupID))
+            if ((driver != null) && !driver.getGroupID().equals(groupID))
                 setDriverID(null);
             driver = null;
             bean.drivers = null;

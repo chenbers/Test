@@ -80,8 +80,6 @@ public interface SiloService extends HessianService
 
     Map<String, Object> updatePerson(Integer personID, Map<String, Object> personMap) throws ProDAOException;
 
-    List<Map<String, Object>> getPersonsByGroupID(Integer groupID);
-
 
     // ------- AlertContact  ----------
     
@@ -120,6 +118,8 @@ public interface SiloService extends HessianService
     Map<String, Object> updateUser(Integer userID, Map<String, Object> userMap) throws ProDAOException;
 
     List<Map<String, Object>> getUsersByGroupID(Integer groupID);
+
+    List<Map<String, Object>> getUsersByGroupIDDeep(Integer groupID);
 
     // ------- Forward Commands  ----------
     List<Map<String, Object>> getFwdCmds(Integer deviceID, Integer status);

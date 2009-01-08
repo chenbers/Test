@@ -30,6 +30,7 @@ public abstract class BaseAlert extends BaseEntity
     private List<VehicleType>   vehicleTypes;
     private List<Integer>       notifyUserIDs;
     private List<String>        emailTo;
+    private Status  status;
 
     public BaseAlert()
     {
@@ -52,6 +53,7 @@ public abstract class BaseAlert extends BaseEntity
         this.vehicleTypes = vehicleTypes;
         this.notifyUserIDs = notifyPersonIDs;
         this.emailTo = emailTo;
+        this.status = Status.ACTIVE;
     }
     
     public Integer getAccountID()
@@ -193,6 +195,16 @@ public abstract class BaseAlert extends BaseEntity
             setEmailTo(new ArrayList<String>(Arrays.asList(emailToString.split("[,; ]+"))));
         else
             setEmailTo(null);
+    }
+
+    public Status getStatus()
+    {
+        return status;
+    }
+
+    public void setStatus(Status status)
+    {
+        this.status = status;
     }
 
 }

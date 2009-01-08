@@ -62,11 +62,25 @@ public class Util
             {
                 value1 = getMethod.invoke(obj1);
                 value2 = getMethod.invoke(obj2);
+
+                if (value1 == null && value2 == null)
+                {
+                    continue;
+                }
+                else if (value1 == null)
+                {
+                    assertNotNull(value2.getClass().getSimpleName() + " Field: " + key + " expected value is null, but returned value is not", value1 );
+                }
+                else if (value2 == null)
+                {
+                    assertNotNull(value1.getClass().getSimpleName() + " Field: " + key + " expected value is not null, but returned value is", value2 );
+                }
     
                 if (List.class.isInstance(value1))
                 {
                     List<?> value1List = (List<?>) value1;
                     List<?>  value2List = (List<?>) value2;
+                    assertEquals("Field: " + key + " list sizes differ", value1List.size(), value2List.size());
                     for (int v = 0; v < value1List.size(); v++)
                     {
                         compareObjects(value1List.get(v), value2List.get(v));
@@ -83,18 +97,6 @@ public class Util
                 }
                 else
                 {
-                    if (value1 == null && value2 == null)
-                    {
-                        continue;
-                    }
-                    else if (value1 == null)
-                    {
-                        assertNotNull(value2.getClass().getSimpleName() + " Field: " + key + " ", value1 );
-                    }
-                    else if (value2 == null)
-                    {
-                        assertNotNull(value1.getClass().getSimpleName() + " Field: " + key + " ", value2 );
-                    }
                     if (!isStandardProperty(value1) && !isComparableProperty(value1))
                     {
 System.out.println("key: " + key + " class:" + value1.getClass().getName());                        

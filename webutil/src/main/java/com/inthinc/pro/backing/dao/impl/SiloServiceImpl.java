@@ -328,12 +328,6 @@ public class SiloServiceImpl implements SiloService
         return null;
     }
 
-    @Override
-    public List<Map<String, Object>> getPersonsByGroupID(@DaoParam(name="groupID")Integer groupID)
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
 
     @Override
     public List<Map<String, Object>> getRecentNotes(@DaoParam(name="groupID")Integer groupID, @DaoParam(name="count")Integer eventCnt, 
@@ -646,6 +640,13 @@ public class SiloServiceImpl implements SiloService
 
     @Override
     public List<Map<String, Object>> getMessages(Integer deliveryMethodType)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> getUsersByGroupIDDeep(Integer groupID)
     {
         // TODO Auto-generated method stub
         return null;

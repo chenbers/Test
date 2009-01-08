@@ -88,7 +88,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         {
             if (allVehicles == null)
             {
-                final List<Vehicle> vehicles = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getPerson().getGroupID());
+                final List<Vehicle> vehicles = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
                 allVehicles = new ArrayList<SelectItem>(vehicles.size());
                 for (final Vehicle vehicle : vehicles)
                     allVehicles.add(new SelectItem("vehicle" + vehicle.getVehicleID(), vehicle.getName()));
@@ -99,7 +99,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         {
             if (allDrivers == null)
             {
-                final List<Driver> drivers = driverDAO.getAllDrivers(getUser().getPerson().getGroupID());
+                final List<Driver> drivers = driverDAO.getAllDrivers(getUser().getGroupID());
                 allDrivers = new ArrayList<SelectItem>(drivers.size());
                 for (final Driver driver : drivers)
                     allDrivers.add(new SelectItem("driver" + driver.getDriverID(), driver.getPerson().getFirst() + ' ' + driver.getPerson().getLast()));
@@ -138,7 +138,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     {
         if (peoplePicker == null)
         {
-            final List<User> users = userDAO.getUsersInGroupHierarchy(getUser().getPerson().getGroupID());
+            final List<User> users = userDAO.getUsersInGroupHierarchy(getUser().getGroupID());
             final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(users.size());
             for (final User user : users)
                 allUsers.add(new SelectItem(user.getUserID(), user.getPerson().getFirst() + ' ' + user.getPerson().getLast()));

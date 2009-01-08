@@ -149,12 +149,22 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
     {
         try
         {
-            List<Person> personList = getMapper().convertToModelObject(getSiloService().getPersonsByGroupID(groupID), Person.class);
             List<Person> returnPersonList = new ArrayList<Person>();
-            for (Person person : personList)
+            // TODO: change to DEEP when available
+            List<User> userList = getMapper().convertToModelObject(getSiloService().getUsersByGroupIDDeep(groupID), User.class);
+            for (User user : userList)
             {
-                populateInnerObjects(person.getPersonID(), person);
-                returnPersonList.add(person);
+                user.getPerson().setUser(user);
+                returnPersonList.add(user.getPerson());
+            }
+            List<Driver> driverList = getMapper().convertToModelObject(getSiloService().getDriversByGroupIDDeep(groupID), Driver.class);
+            for (Driver driver: driverList)
+            {
+                Person person = findPersonInList(returnPersonList, driver);
+                if (person == null)
+                {
+                    returnPersonList.add(driver.getPerson());
+                }
             }
             return returnPersonList;
         }
@@ -162,8 +172,22 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
         {
             return Collections.emptyList();
         }
-
+        
     }
+    
+    private Person findPersonInList(List<Person> returnPersonList, Driver driver)
+    {
+        for (Person person : returnPersonList)
+        {
+            if (person.getPersonID().equals(driver.getPersonID()))
+            {
+                person.setDriver(driver);
+                return person;
+            }
+        }
+        return null;
+    }
+
 
     @Override
     public Person findByEmail(String email)

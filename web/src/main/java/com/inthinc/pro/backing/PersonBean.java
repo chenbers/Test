@@ -203,7 +203,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     protected List<PersonView> loadItems()
     {
         // get the people
-        final List<Person> plainPeople = personDAO.getPeopleInGroupHierarchy(getUser().getPerson().getGroupID());
+        final List<Person> plainPeople = personDAO.getPeopleInGroupHierarchy(getUser().getGroupID());
 
         // convert the people to PersonViews
         final LinkedList<PersonView> items = new LinkedList<PersonView>();
@@ -256,8 +256,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
                             && (person.getDriver().getStatus() != null)
                             && ((person.getDriver().getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("active").toLowerCase().startsWith(filterWord)) || ((!person
                                     .getDriver().getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("inactive").toLowerCase().startsWith(filterWord))));
-                else if (column.equals("group"))
-                    matches = (person.getGroup() != null) && person.getGroup().getName().toLowerCase().startsWith(filterWord);
+// TODO: FIXME                
+//                else if (column.equals("group"))
+//                    matches = (person.getGroup() != null) && person.getGroup().getName().toLowerCase().startsWith(filterWord);
                 else if (column.equals("reportsTo"))
                     matches = (person.getReportsToPerson() != null)
                             && (person.getReportsToPerson().getFirst().toLowerCase().startsWith(filterWord) || person.getReportsToPerson().getLast().toLowerCase().startsWith(
@@ -426,7 +427,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
             }
 
             if (create)
-                person.setPersonID(personDAO.create(getUser().getPerson().getGroupID(), person));
+                person.setPersonID(personDAO.create(getUser().getGroupID(), person));
             else
                 personDAO.update(person);
 
@@ -488,11 +489,17 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         {
             // find all people in the same group and in all parent groups
             reportsToOptions = new TreeMap<String, Integer>();
-            Integer groupID = getItem().getGroupID();
+// TODO: FIXME          
+            Integer groupID =null;
+            if (getItem().getUser() != null)
+                groupID = getItem().getUser().getGroupID();
+            else if (getItem().getDriver() != null)
+                groupID = getItem().getDriver().getGroupID();
             while ((groupID != null) && (groupID > 0))
             {
                 for (final PersonView person : items)
-                    if (groupID.equals(person.getGroupID()) && !person.getPersonID().equals(getItem().getPersonID()))
+// TODO: FIXME                    
+//                    if (groupID.equals(person.getGroupID()) && !person.getPersonID().equals(getItem().getPersonID()))
                         reportsToOptions.put(person.getName(), person.getPersonID());
                 final Group group = groupDAO.findByID(groupID);
                 if (group != null)
@@ -592,22 +599,21 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         {
             super.setWorkPhone(MiscUtil.unformatPhone(workPhone));
         }
-
-        @Override
-        public void setGroupID(Integer groupID)
-        {
-            super.setGroupID(groupID);
-            group = null;
-            bean.reportsToOptions = null;
-        }
-
-        public Group getGroup()
-        {
-            if (group == null)
-                group = bean.groupDAO.findByID(getGroupID());
-            return group;
-        }
-
+// TODO: FIXME
+//        public void setGroupID(Integer groupID)
+//        {
+//            super.setGroupID(groupID);
+//            group = null;
+//            bean.reportsToOptions = null;
+//        }
+//
+//        public Group getGroup()
+//        {
+//            if (group == null)
+//                group = bean.groupDAO.findByID(getGroupID());
+//            return group;
+//        }
+//
         @Override
         public void setReportsTo(Integer reportsTo)
         {

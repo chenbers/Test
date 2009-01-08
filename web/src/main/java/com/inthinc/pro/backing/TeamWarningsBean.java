@@ -96,7 +96,7 @@ public class TeamWarningsBean extends BaseBean
         setGroupID(navigation.getGroupID());
         if (groupID == null)
         {
-            setGroupID(getUser().getPerson().getGroupID());
+            setGroupID(getUser().getGroupID());
         }
         return groupID;
     }

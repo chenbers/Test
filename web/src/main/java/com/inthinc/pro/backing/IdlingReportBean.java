@@ -107,7 +107,7 @@ public class IdlingReportBean extends BaseReportBean
    
         this.idlingsData = 
             scoreDAO.getIdlingReportData(
-                    getUser().getPerson().getGroupID(),
+                    getUser().getGroupID(),
                     defaultStartDate, defaultEndDate);
    
         //Bean creation could be from Reports selection or
@@ -166,7 +166,7 @@ public class IdlingReportBean extends BaseReportBean
         
         this.idlingsData = 
             scoreDAO.getIdlingReportData(
-                    getUser().getPerson().getGroupID(),
+                    getUser().getGroupID(),
                     internalStartDate, internalEndDate);
         
         String trimmedSearch = this.searchFor.trim().toLowerCase();
@@ -179,7 +179,7 @@ public class IdlingReportBean extends BaseReportBean
             
             this.idlingsData = 
                 scoreDAO.getIdlingReportData(
-                        getUser().getPerson().getGroupID(),
+                        getUser().getGroupID(),
                         internalStartDate, internalEndDate);
             
             List <IdlingReportItem> matchedIdlers = new ArrayList<IdlingReportItem>();                 
