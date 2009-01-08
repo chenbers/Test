@@ -485,11 +485,13 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
      */
     public Map<String, Boolean> getUpdateField()
     {
-        if ((updateField == null) && (getItems().size() > 0))
+        if ((updateField == null) || (updateField.size() == 0))
         {
-            updateField = new HashMap<String, Boolean>();
-            for (final String name : BeanUtil.getPropertyNames(items.get(0)))
-                updateField.put(name, false);
+            if (updateField == null)
+                updateField = new HashMap<String, Boolean>();
+            if (getItems().size() > 0)
+                for (final String name : BeanUtil.getPropertyNames(items.get(0)))
+                    updateField.put(name, false);
         }
         return updateField;
     }
