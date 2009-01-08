@@ -15,7 +15,8 @@ public class MapIconFactory {
 	
 	public enum IconType {
 								MARKER(MessageUtil.getMessageString("icons_markers")/*"/googleMapIcons/"*/),
-								LEGEND(MessageUtil.getMessageString("icons_legend")/*"/legendIcons/"*/);
+								LEGEND(MessageUtil.getMessageString("icons_legend")/*"/legendIcons/"*/),
+								MAP_LEGEND(MessageUtil.getMessageString("icons_mapLegend")/*"/mapLegendIcons/"*/);
 								
 		private final String url;
 		private int count;
