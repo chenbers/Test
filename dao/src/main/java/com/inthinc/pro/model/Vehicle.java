@@ -31,7 +31,6 @@ public class Vehicle extends BaseEntity
     private Integer           driverID;
     @Column(updateable = false)
     private Integer           deviceID;
-    private String            fullName;
 
     public Vehicle()
     {
@@ -222,12 +221,8 @@ public class Vehicle extends BaseEntity
 
     public String getFullName()
     {
-        return this.year.toString() + " " + this.make + " " + this.model;
+        if ((this.year == null) && (this.make == null) && (this.model == null))
+            return null;
+        return this.year + " " + this.make + " " + this.model;
     }
-
-    public void setFullName(String fullName)
-    {
-        this.fullName = fullName;
-    }
-    
 }
