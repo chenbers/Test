@@ -499,6 +499,13 @@ public class SiloServiceImpl implements SiloService
     }
 
     @Override
+    public Map<String, Object> clrVehicleDevice(Integer vehicleID, Integer deviceID) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
     public Map<String, Object> setVehicleDriver(Integer vehicleID, Integer driverID) throws ProDAOException
     {
         // TODO Auto-generated method stub
