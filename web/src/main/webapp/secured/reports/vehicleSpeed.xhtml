@@ -8,6 +8,19 @@
 
 	<ui:define name="scripts">
 		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>	
+		<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{gmBean.key}" type="text/javascript"></script>
+	    <script type="text/javascript">
+	      function initialize(lat, lng) 
+	      {
+	        if (GBrowserIsCompatible()) {
+	          var map = new GMap2(document.getElementById("map-canvas"));
+	          var location = new GLatLng(lat, lng)
+	          map.setCenter(location, 15);
+	          map.addOverlay(new GMarker(location)); 
+	        }
+	      }
+    	</script>
+
 	</ui:define>
 
 	<ui:param name="reportsSelected" value="current" />
@@ -16,11 +29,27 @@
 	<ui:define name="content">
 <div id="wrapper">
 
-<ul id="grid_nav">
-	<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
-	<li class="l grid_title">Vehicle Performance:&#160;<h:outputText>#{vehicleSpeedBean.vehicleName}</h:outputText></li>
-	<li class="l divider"><img src="/images/grid_nav_divider.png" /></li>
-</ul>
+<h:form>
+	<ul id="grid_nav">
+		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
+		<li class="l grid_title">Vehicle Performance:&#160;<h:commandLink action="go_vehicle" value="#{navigationBean.vehicle.fullName}" /></li>
+		<li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li>
+		
+		<li class="l">
+			<ui:include src="/includes/breadcrumb.xhtml">
+				<ui:param name="groupTreeNode" value="#{navigationBean.groupTreeNode}" />
+				<ui:param name="lastBreadCrumb" value="true" />
+			</ui:include>
+		</li>
+		
+		<li class="l" style="margin-left: -15px;">
+			<ul id="breadcrumb">
+				<li><h:commandLink action="go_vehicle" value="#{navigationBean.vehicle.fullName}" /></li>
+				<li class="last">Speed</li>
+			</ul>
+		</li>
+	</ul>
+</h:form>
 
 <script type="text/javascript">
 
@@ -61,39 +90,49 @@ var selected = 'OVERALL';
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="line">Speed</span>
-						<a4j:form id="overall-form"> 
-									<span class="panel_links"><h:outputText>Graph the last:&#160;</h:outputText>
-								<a4j:commandLink title="#{messages.miles500}" immediate="true"
-									styleClass="#{(vehicleSpeedBean.distance eq 'FIVEHUNDRED') ? 'on' : ''}"
-									reRender="overall-form,overallPanel,breakdown_panel,eventsTable" value="#{messages.miles500}">
-									<a4j:actionparam name="distance" assignTo="#{vehicleSpeedBean.distance}"
-										value="FIVEHUNDRED" />
-								</a4j:commandLink><h:outputText value=" "></h:outputText> <a4j:commandLink
-									title="#{messages.miles1000}" immediate="true"
-									styleClass="#{(vehicleSpeedBean.distance eq 'ONETHOUSAND') ? 'on' : ''}"
-									reRender="overall-form,overallPanel,breakdown_panel,eventsTable" value="#{messages.miles1000}">
-									<a4j:actionparam name="distance" assignTo="#{vehicleSpeedBean.distance}"
-										value="ONETHOUSAND" />
-								</a4j:commandLink><h:outputText value=" "></h:outputText> <a4j:commandLink
-									title="#{messages.miles5000}" immediate="true"
-									styleClass="#{(vehicleSpeedBean.distance eq 'FIVETHOUSAND') ? 'on' : ''}"
-									reRender="overall-form,overallPanel,breakdown_panel,eventsTable" value="#{messages.miles5000}">
-									<a4j:actionparam name="distance" assignTo="#{vehicleSpeedBean.distance}"
-										value="FIVETHOUSAND" />
-								</a4j:commandLink><h:outputText value=" "></h:outputText> <a4j:commandLink
-									title="#{messages.miles10000}" immediate="true"
-									styleClass="#{(vehicleSpeedBean.distance eq 'TENTHOUSAND') ? 'on' : ''}"
-									reRender="overall-form,overallPanel,breakdown_panel,eventsTable"
-									value="#{messages.miles10000}">
-									<a4j:actionparam name="distance" assignTo="#{vehicleSpeedBean.distance}"
-										value="TENTHOUSAND" />
-								</a4j:commandLink><h:outputText value=" "></h:outputText>
-									</span>
-						</a4j:form>
+						<span class="speed">Speed</span>
+						<a4j:region id="dateLinksForm_region">
+							<a4j:form id="dateLinksForm">
+							<span class="panel_links">
+								<a4j:status id="dateLinksStatus" for="dateLinksForm_region">
+									<f:facet name="start">
+										<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
+									</f:facet>
+								</a4j:status>
+								<rich:spacer width="10" />
+								<a4j:commandLink title="#{messages.duration_days}" immediate="true"
+									styleClass="#{(vehicleSpeedBean.duration eq 'DAYS') ? 'on' : ''}"		
+									reRender="dateLinksForm,overallPanel,breakdown_panel,eventsTable"
+									value="#{messages.duration_days}">
+									<a4j:actionparam name="duration" assignTo="#{vehicleSpeedBean.duration}"	value="DAYS" />
+								</a4j:commandLink>
+								<rich:spacer width="5"></rich:spacer>
+								<a4j:commandLink title="#{messages.duration_three}" immediate="true"
+									styleClass="#{(vehicleSpeedBean.duration eq 'THREE') ? 'on' : ''}"	
+									reRender="dateLinksForm,overallPanel,breakdown_panel,eventsTable"
+									value="#{messages.duration_three}">
+									<a4j:actionparam name="duration" assignTo="#{vehicleSpeedBean.duration}"	value="THREE" />
+								</a4j:commandLink>
+								<rich:spacer width="5"></rich:spacer>
+								<a4j:commandLink title="#{messages.duration_six}" immediate="true"
+									styleClass="#{(vehicleSpeedBean.duration eq 'SIX') ? 'on' : ''}"	
+									reRender="dateLinksForm,overallPanel,breakdown_panel,eventsTable"
+									value="#{messages.duration_six}">
+									<a4j:actionparam name="duration" assignTo="#{vehicleSpeedBean.duration}"	value="SIX" />
+								</a4j:commandLink>
+								<rich:spacer width="5"></rich:spacer>
+								<a4j:commandLink title="#{messages.duration_twelve}" immediate="true"
+									styleClass="#{(vehicleSpeedBean.duration eq 'TWELVE') ? 'on' : ''}"	
+									reRender="dateLinksForm,overallPanel,breakdown_panel,eventsTable"
+									value="#{messages.duration_twelve}">
+									<a4j:actionparam name="duration" assignTo="#{vehicleSpeedBean.duration}"	value="TWELVE" />
+								</a4j:commandLink>
+								</span>
+							</a4j:form>
+							</a4j:region>
 					</div>
 				</div>
-				<div class="panel_w">
+				<div class="panel_w">  
 				  <rich:panel bodyClass="panel_content" id="overallPanel" border="0">
 				  <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
 					  <tr>
@@ -113,7 +152,7 @@ var selected = 'OVERALL';
 							  <tr>
 								<td>
 									<h4>Overall Score</h4>
-									<div style="margin-top: 8px;"><a href="#" class="ls_tab_email">Email</a></div>
+									<div style="margin-top: 8px;"><a href="#" class="ls_tab_email">E-mail</a></div>
 								</td>
 								<td width="80" align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
@@ -151,10 +190,10 @@ var selected = 'OVERALL';
   <tr>
     <td width="465" valign="top">
 		<!-- START PANEL -->
-			<div class="">
+			<div class="" style="width: 938px;">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="speed">Breakdown by Speed Limit   </span>
+						<span class="speed">Breakdown by Speed Limit</span>
 						<span class="panel_links"></span></div>
 				</div>
 				<div class="panel_w">
@@ -333,7 +372,7 @@ var selected = 'OVERALL';
 		<div class="spacer"></div>
 		
 		<!-- START PANEL -->
-			<div class="">
+			<div class="" style="width: 938px;">
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="details">Details</span>
@@ -345,91 +384,151 @@ var selected = 'OVERALL';
 				     
 
 			<div class="datagrid">
-				<!-- Start Event table --> 
-					<h:form id="trendTable">
+					<h:form id="eventsTableForm">
+					<rich:datascroller align="center" for="eventsTable"
+							id="scrollerTop" reRender="eventsTable" />
 						<rich:dataTable 
 						value="#{vehicleSpeedBean.speedingEvents}" 
-						id="eventsTable"
-						var="item" styleClass="datagrid"
-						rowClasses="trendTableOdd,trendTableEven" cellspacing="1" rows="10"  
-						width="100%"
-						binding="#{trendTable.table}">  <!-- TODO: Make generic Odd Even CSS -->
+						id="eventsTable" var="item" styleClass="datagrid"
+						rowClasses="tableOdd,tableEven" cellspacing="1" rows="10" width="100%">			
 
-							<!-- Data -->
-										
-							<rich:column sortBy="#{item.addressStr}">
+							<rich:column>
 								<f:facet name="header">
 									<h:outputText value="Location" />
 								</f:facet>
-									<h:outputText value="#{item.addressStr}" />
-							</rich:column>
+				              <a4j:commandLink style="cursor:pointer">
+					                <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
+					                  <f:param name="lat" value="#{item.latitude}"/>
+					                  <f:param name="lng" value="#{item.longitude}"/>
+					                </rich:componentControl>
+					                	<div class="maplink">
+					                		#{item.addressStr}<br />
+					                	</div>
+					                	<!-- ADDRESS GEOCODING NEEDED / MAP image cut off at bottom. -->
+				              </a4j:commandLink>
+				            </rich:column>
 							
 							<rich:column sortBy="#{item.time}">
 								<f:facet name="header">
-									<h:outputText value="Time" />
+									<h:outputText value="Date/Time" />
 								</f:facet>
-									<h:outputText value="#{item.time}" />
+									<h:outputText value="#{item.time}">
+										<f:convertDateTime pattern="MMM DD yyyy hh:mm a"/>
+									</h:outputText>
 							</rich:column>
 							
 							<rich:column sortBy="#{item.speedLimit}">
 								<f:facet name="header">
 									<h:outputText value="Posted Speed" />
 								</f:facet>
-								<h:outputText value="#{item.speedLimit}" />		
+								<strong><h:outputText value="#{item.speedLimit} #{messages.measurement_speed}" /></strong>	
 							</rich:column>
 							
 							<rich:column sortBy="#{item.avgSpeed}">
 								<f:facet name="header">
-									<h:outputText value="Avg. Speed" />
+									<h:outputText value="Avg Speed" />
 								</f:facet>
-								<h:outputText value="#{item.avgSpeed}" />
+								<strong><h:outputText value="#{item.avgSpeed} #{messages.measurement_speed}" /></strong>
 							</rich:column>
 							
 							<rich:column sortBy="#{item.topSpeed}">
 								<f:facet name="header">
 									<h:outputText value="Top Speed" />
 								</f:facet>
-								<h:outputText value="#{item.topSpeed}" />
+								<strong><h:outputText value="#{item.topSpeed} #{messages.measurement_speed}" /></strong>
 							</rich:column>
 							
 							<rich:column sortBy="#{item.distance}">
 								<f:facet name="header">
 									<h:outputText value="Distance" />
 								</f:facet>
-								<h:outputText value="#{item.distance}" />
+								<h:outputText value="#{item.distance} #{messages.measurement_distances}" />
 							</rich:column>
 							
-							<rich:column sortBy="#{item.time}">
-								<f:facet name="header">
-									<h:outputText value="Severity" />
-								</f:facet>
-									<div class="sev_bar_med"></div>
-							</rich:column>
-							
-							<rich:column>
-								<f:facet name="header">
-									<h:outputText value="" />
-								</f:facet>
-								<a href="#">forgive</a>
-							</rich:column>
+							<rich:column width="10%">
+		      					<f:facet name="header">
+		      						<h:outputText value="" />
+		      					</f:facet>
+								<a4j:commandLink oncomplete="javascript:Richfaces.showModalPanel('clearRedFlagPanel')" reRender="clearItemForm:clearItem" >
+									<h:outputText value="#{messages.redflags_clear}" />
+									<f:setPropertyActionListener target="#{vehicleSpeedBean.clearItem}" value="#{item}" />
+								</a4j:commandLink>
+    						</rich:column>
 							
 						</rich:dataTable>
+						<rich:datascroller align="center" for="eventsTable"
+							id="scrollerBottom" reRender="eventsTable" />
 					</h:form> 
-				<!-- End Event table -->
+					</div>
 				</div>
-				</div>
-				</div>
-				</div>
+			</div>
+		</div>
 		</td>
     </tr>
 </table>
  </div>
+	<rich:modalPanel id="clearRedFlagPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="350" zindex="2000">
+      <f:facet name="header">
+        <h:outputText value="#{messages.redflags_clearTitle}" />
+      </f:facet>
+      <f:facet name="controls">
+        <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('clearRedFlagPanel')" />
+      </f:facet>
+
+      <h:panelGroup layout="block" styleClass="popupsubtitle">
+      	<h:outputText value="#{messages.redflags_clearInst}"/>
+      </h:panelGroup>
+
+      <a4j:form id="clearItemForm">
+		<h:panelGroup layout="block"  styleClass="popupcontent">
+      		<h:outputFormat id="clearItem" value="#{messages.redflags_clearDesc}">
+      			<a4j:actionparam value="#{redFlagsBean.clearItem.detail}"/>
+      			<a4j:actionparam value="#{redFlagsBean.clearItem.date}"/>
+      		</h:outputFormat>
+      	</h:panelGroup>
+	
+        <div class="popupactions">
+          <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearRedFlagPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_no}" /></span></button>
+          <a4j:commandLink 
+          				action="#{redFlagsBean.clearItemAction}"         				
+          				oncomplete="Richfaces.hideModalPanel('clearRedFlagPanel')" 
+          				reRender="items">
+          				<button type="submit" class="left">
+          					<span class="apply">
+          						<h:outputText value="#{messages.button_yes}" />
+          					</span>
+          				</button>
+			</a4j:commandLink>          			
+        </div>
+
+      </a4j:form>
+
+    </rich:modalPanel>
 				
-				<div class="panel_sw">
-					<div class="panel_statusbar"></div>
-				</div>
+	<div class="panel_sw">
+		<div class="panel_statusbar"></div>
+	</div>
 			
-		<!-- END PANEL -->
-		
+<!-- END PANEL -->
+<rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">
+	<f:facet name="header">
+    	<h:outputText value="Event Location" />
+    </f:facet>
+    <f:facet name="controls">
+    	<h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('eventLocationModal')" />
+    </f:facet>
+
+    <div class="eventmap-border">
+    	<div id="map-canvas" style="width: 522px; height: 355px; border: 0"></div>
+    </div>
+
+    <div class="popupactions">
+    	<a4j:commandButton value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('eventLocationModal')" styleClass="left">
+   			<span class="edit">
+   				<h:outputText value="#{messages.button_close}" />
+   			</span>
+	 	</a4j:commandButton>
+    </div>
+</rich:modalPanel>
 </ui:define>
 </ui:composition>

@@ -117,4 +117,26 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
         }
         return scoreList;
     }
+
+    @Override
+    public List<MpgEntity> getVehicleEntities(Integer vehicleID, Duration duration, Integer count)
+    {
+        List<MpgEntity> scoreList = new ArrayList<MpgEntity>();
+          
+        
+        List<Map<String, Object>> returnMapList = reportService.getVTrendByVTC(vehicleID, duration.getCode(), count);
+        List<DriveQMap> dqMapList = getMapper().convertToModelObject(returnMapList, DriveQMap.class);
+
+        for (DriveQMap dqMap : dqMapList)
+        {
+            MpgEntity mpgEntity = new MpgEntity();   
+            mpgEntity.setHeavyValue(dqMap.getMpgHeavy());
+            mpgEntity.setLightValue(dqMap.getMpgLight());
+            mpgEntity.setMediumValue(dqMap.getMpgMedium());
+            mpgEntity.setOdometer(dqMap.getOdometer());
+            
+            scoreList.add(mpgEntity);
+        }
+        return scoreList;
+    }
 }

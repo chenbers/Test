@@ -9,7 +9,7 @@ import com.inthinc.pro.model.MpgEntity;
 public interface MpgDAO extends GenericDAO<MpgEntity, Integer>
 {
     
-    /**
+     /**
      * Retrieve the list of {@link MpgEntity} objects for the sub groups or drivers (one level down) under the specified group.
      * 
      * @param groupID
@@ -19,8 +19,7 @@ public interface MpgDAO extends GenericDAO<MpgEntity, Integer>
      */
     List<MpgEntity> getEntities(Group group, Duration duration);
     
-    
-   /**
+    /**
     * Retrieve a list of MpgEntity objects for a driver.
     * 
     * @param driverID
@@ -29,4 +28,14 @@ public interface MpgDAO extends GenericDAO<MpgEntity, Integer>
     * @return
     */
     List<MpgEntity> getDriverEntities(Integer driverID, Duration duration, Integer count);
+    
+    /**
+     * Retrieve a list of MpgEntity objects for a vehicle.
+     * 
+     * @param vehicleID
+     * @param mileage
+     * @param count
+     * @return
+     */
+     List<MpgEntity> getVehicleEntities(Integer vehicleID, Duration duration, Integer count);
 }

@@ -1,5 +1,7 @@
 package com.inthinc.pro.backing;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -17,23 +19,21 @@ import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Distance;
-import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.AggressiveDrivingEvent;
 
-public class VehicleStyleBean extends BaseBean
+public class VehicleStyleBean extends BaseDurationBean
 {
     private static final Logger logger = Logger.getLogger(VehicleStyleBean.class);
     private NavigationBean  navigation;
     private ScoreDAO        scoreDAO;
     private EventDAO        eventDAO;
-    
-    private String          vehicleName;
-    private Distance        distance = Distance.FIVEHUNDRED;
-    
+ 
     private Integer         styleScoreOverall;
     private String          styleScoreOverallStyle;
     private Integer         styleScoreAccel;
@@ -55,39 +55,41 @@ public class VehicleStyleBean extends BaseBean
     
     private void init()
     {
-        int dist = distance.getNumberOfMiles();
         int vehicleID = navigation.getVehicle().getVehicleID();
         
-        ScoreableEntity se = scoreDAO.getVehicleAverageScoreByTypeAndMiles(vehicleID, dist, ScoreType.SCORE_DRIVING_STYLE);
+        Map<ScoreType, ScoreableEntity> scoreMap = scoreDAO.getVehicleScoreBreakdownByType(vehicleID, getDuration(), ScoreType.SCORE_DRIVING_STYLE);
+
+        ScoreableEntity se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE);
         setStyleScoreOverall(se == null ? 0 : se.getScore());
         
-        se = scoreDAO.getVehicleAverageScoreByTypeAndMiles(vehicleID, dist, ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL);
+        se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL);
         setStyleScoreAccel(se == null ? 0 : se.getScore());
         
-        se = scoreDAO.getVehicleAverageScoreByTypeAndMiles(vehicleID, dist, ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE);
+        se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE);
         setStyleScoreBrake(se == null ? 0 : se.getScore());
         
-        se = scoreDAO.getVehicleAverageScoreByTypeAndMiles(vehicleID, dist, ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP);
+        se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP);
         setStyleScoreBump(se == null ? 0 : se.getScore());
         
-        se = scoreDAO.getVehicleAverageScoreByTypeAndMiles(vehicleID, dist, ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
+        se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
         setStyleScoreTurn(se == null ? 0 : se.getScore());
         
     }
     
     public String createLineDef(ScoreType scoreType)
     {
-        logger.debug("*** Getting score history for " + vehicleName + " " + scoreType.toString());
         StringBuffer sb = new StringBuffer();
         Line line = new Line();
         
         //Start XML Data
         sb.append(line.getControlParameters());
+
+        List<ScoreableEntity> scoreList = scoreDAO.getVehicleScoreHistory(navigation.getVehicle().getVehicleID(), getDuration(), scoreType, 10);
+        DateFormat dateFormatter = new SimpleDateFormat(getDuration().getDatePattern());
         
-        List<ScoreableEntity> scoreList = scoreDAO.getVehicleScoreHistoryByMiles(navigation.getVehicle().getVehicleID(), distance.getNumberOfMiles(), scoreType);
         for(ScoreableEntity e : scoreList)
-        {
-            sb.append(line.getChartItem(new Object[] {(double)(e.getScore() / 10.0d), e.getIdentifier()}));
+        { 
+            sb.append(line.getChartItem(new Object[] { (double)(e.getScore() / 10.0d), dateFormatter.format(e.getCreated()) } ));
         }
 
         //End XML Data
@@ -96,7 +98,7 @@ public class VehicleStyleBean extends BaseBean
         return sb.toString();
     }
     
-    //SPEED OVERALL SCORE PROPERTY
+    //STYLE OVERALL SCORE PROPERTY
     public Integer getStyleScoreOverall() {
         return styleScoreOverall;
     }
@@ -254,26 +256,33 @@ public class VehicleStyleBean extends BaseBean
     {
         this.eventDAO = eventDAO;
     }
-
-    //DISTANCE PROPERTY
-    public Distance getDistance()
+    public NavigationBean getNavigation()
     {
-        return distance;
+        return navigation;
     }
-    public void setDistance(Distance distance)
+    public void setNavigation(NavigationBean navigation)
     {
-        this.distance = distance;
+        this.navigation = navigation;
+    }
+    
+    @Override
+    public void setDuration(Duration duration)
+    {
+        super.setDuration(duration);
         init();
     }
-
-    //DRIVING STYLE EVENTS LIST
+    
+    /*
+     * DrivingStyle Events List properties
+     */
     public List<AggressiveDrivingEvent> getStyleEvents()
     {
         List<Integer> types = new ArrayList<Integer>();    
         types.add(2);
         
         List<Event> tempEvents = new ArrayList<Event>();
-        tempEvents = eventDAO.getEventsForVehicleByMiles(navigation.getVehicle().getVehicleID(), distance.getNumberOfMiles(), types);
+     
+        tempEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), getStartDate(), getEndDate(), types);
        
         for(Event event: tempEvents)
         {
@@ -282,27 +291,7 @@ public class VehicleStyleBean extends BaseBean
         
         return styleEvents;
     }
-   
     public void setStyleEvents(List<AggressiveDrivingEvent> styleEvents) {
         this.styleEvents = styleEvents;
-    }
-    
-    //DRIVER NAME PROPERTY
-    public String getVehicleName() {
-        setVehicleName(navigation.getVehicle().getName() + " " + navigation.getVehicle().getMake() + " " + navigation.getVehicle().getModel());
-        return vehicleName;
-    }
-    public void setVehicleName(String vehicleName) {
-        this.vehicleName = vehicleName;
-    }
-
-    //NAVIGATION PROPERTY
-    public NavigationBean getNavigation()
-    {
-        return navigation;
-    }
-    public void setNavigation(NavigationBean navigation)
-    {
-        this.navigation = navigation;
     }
 }

@@ -1,12 +1,11 @@
 <ui:composition template="/layout/layout.xhtml" 
-			xmlns="http://www.w3.org/1999/xhtml" 
-			xmlns:ui="http://java.sun.com/jsf/facelets"
-  			xmlns:h="http://java.sun.com/jsf/html" 
-  			xmlns:rich="http://richfaces.org/rich"
-  			xmlns:a4j="http://richfaces.org/a4j"
-  			xmlns:f="http://java.sun.com/jsf/core"
-  			xmlns:c="http://java.sun.com/jstl/core"
-  			xmlns:iwi="http://pro.tiwi.com/jsf">
+				xmlns="http://www.w3.org/1999/xhtml" 
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+	  			xmlns:h="http://java.sun.com/jsf/html" 
+	  			xmlns:rich="http://richfaces.org/rich"
+	  			xmlns:a4j="http://richfaces.org/a4j"
+	  			xmlns:f="http://java.sun.com/jsf/core"
+	  			xmlns:c="http://java.sun.com/jstl/core">
 
 	<ui:define name="scripts">
 		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>	
@@ -18,12 +17,25 @@
 	<ui:define name="content">
 <div id="wrapper">
 
-
-<ul id="grid_nav">
-	<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
-	<li class="l grid_title">Vehicle Performance:&#160;<h:outputText>#{vehicleBean.vehicleName}</h:outputText></li>
-	<li class="l divider"><img src="/images/grid_nav_divider.png" /></li>
-</ul>
+<h:form>
+	<ul id="grid_nav">
+		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
+		<li class="l grid_title">Vehicle Performance:&#160;<h:commandLink action="go_vehicle" value="#{navigationBean.vehicle.fullName}" /></li>
+		<li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li>
+		
+		<li class="l">
+			<ui:include src="/includes/breadcrumb.xhtml">
+				<ui:param name="groupTreeNode" value="#{navigationBean.groupTreeNode}" />
+				<ui:param name="lastBreadCrumb" value="true" />
+			</ui:include>
+		</li>
+		<li class="l" style="margin-left: -15px;">
+			<ul id="breadcrumb">
+				<li class="last"><h:outputText value="#{navigationBean.vehicle.fullName}" /></li>
+			</ul>
+		</li>
+	</ul>
+</h:form>
 
 <table width="940" border="0" cellspacing="0" cellpadding="0" align="center" class="dash_table">
   <tr>
@@ -32,49 +44,58 @@
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="line">Overall Score </span>
-						<a4j:form id="overall-form"> 
-						<span class="panel_links"><h:outputText>Graph the last:&#160;</h:outputText> 
-							       
-  										<a4j:commandLink title="#{messages.miles500}" immediate="true"
-            								styleClass="#{(vehicleBean.distance eq 'FIVEHUNDRED') ? 'on' : ''}"
-            								reRender="overall-form,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
-            								value="#{messages.miles500}">
-            								<a4j:actionparam name="distance" assignTo="#{vehicleBean.distance}" value="FIVEHUNDRED" />
-            								<a4j:actionparam name="distance" assignTo="#{vehicleSpeedBean.distance}" value="FIVEHUNDRED" />
-            								<a4j:actionparam name="distance" assignTo="#{vehicleStyleBean.distance}" value="FIVEHUNDRED" />
-            								<a4j:actionparam name="distance" assignTo="#{vehicleSeatBeltBean.distance}" value="FIVEHUNDRED" />
-          								</a4j:commandLink><h:outputText value=" "></h:outputText>
-          								<a4j:commandLink title="#{messages.miles1000}" immediate="true"
-            								styleClass="#{(vehicleBean.distance eq 'ONETHOUSAND') ? 'on' : ''}"
-            								reRender="overall-form,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
-            								value="#{messages.miles1000}">
-            								<a4j:actionparam name="distance" assignTo="#{vehicleBean.distance}" value="ONETHOUSAND" />
-            								<a4j:actionparam name="distance" assignTo="#{vehicleSpeedBean.distance}" value="ONETHOUSAND" />
-            								<a4j:actionparam name="distance" assignTo="#{vehicleStyleBean.distance}" value="ONETHOUSAND" />
-            								<a4j:actionparam name="distance" assignTo="#{vehicleSeatBeltBean.distance}" value="ONETHOUSAND" />
-          								</a4j:commandLink><h:outputText value=" "></h:outputText>
-          								<a4j:commandLink title="#{messages.miles5000}" immediate="true"
-            								styleClass="#{(vehicleBean.distance eq 'FIVETHOUSAND') ? 'on' : ''}"
-            								reRender="overall-form,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
-            								value="#{messages.miles5000}">
-            								<a4j:actionparam name="distance" assignTo="#{vehicleBean.distance}" value="FIVETHOUSAND" />
-            								<a4j:actionparam name="distance" assignTo="#{vehicleSpeedBean.distance}" value="FIVETHOUSAND" />
-            								<a4j:actionparam name="distance" assignTo="#{vehicleStyleBean.distance}" value="FIVETHOUSAND" />
-            								<a4j:actionparam name="distance" assignTo="#{vehicleSeatBeltBean.distance}" value="FIVETHOUSAND" />
-          								</a4j:commandLink><h:outputText value=" "></h:outputText>
-          								<a4j:commandLink title="#{messages.miles10000}" immediate="true"
-            								styleClass="#{(vehicleBean.distance eq 'TENTHOUSAND') ? 'on' : ''}"
-            								reRender="overall-form,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
-            								value="#{messages.miles10000}">
-            								<a4j:actionparam name="distance" assignTo="#{vehicleBean.distance}" value="TENTHOUSAND" />
-            								<a4j:actionparam name="distance" assignTo="#{vehicleSpeedBean.distance}" value="TENTHOUSAND" />
-            								<a4j:actionparam name="distance" assignTo="#{vehicleStyleBean.distance}" value="TENTHOUSAND" />
-            								<a4j:actionparam name="distance" assignTo="#{vehicleSeatBeltBean.distance}" value="TENTHOUSAND" />
-          								</a4j:commandLink><h:outputText value=" "></h:outputText>
-      							
+						<span class="overall">Overall Score </span>
+						<a4j:region id="dateLinksForm_region">
+							<a4j:form id="dateLinksForm">
+							<span class="panel_links">
+								<a4j:status id="dateLinksStatus" for="dateLinksForm_region">
+									<f:facet name="start">
+										<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
+									</f:facet>
+								</a4j:status>
+								<rich:spacer width="10" />
+								<a4j:commandLink title="#{messages.duration_days}" immediate="true"
+									styleClass="#{(vehicleBean.duration eq 'DAYS') ? 'on' : ''}"		
+									reRender="dateLinksForm,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
+									value="#{messages.duration_days}">
+									<a4j:actionparam name="duration" assignTo="#{vehicleBean.duration}"	value="DAYS" />
+									<a4j:actionparam name="duration" assignTo="#{vehicleSpeedBean.duration}"	value="DAYS" />
+									<a4j:actionparam name="duration" assignTo="#{vehicleStyleBean.duration}"	value="DAYS" />
+									<a4j:actionparam name="duration" assignTo="#{vehicleSeatBeltBean.duration}"	value="DAYS" />
+								</a4j:commandLink>
+								<rich:spacer width="5"></rich:spacer>
+								<a4j:commandLink title="#{messages.duration_three}" immediate="true"
+									styleClass="#{(vehicleBean.duration eq 'THREE') ? 'on' : ''}"	
+									reRender="dateLinksForm,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
+									value="#{messages.duration_three}">
+									<a4j:actionparam name="duration" assignTo="#{vehicleBean.duration}" value="THREE" />
+									<a4j:actionparam name="duration" assignTo="#{vehicleSpeedBean.duration}"	value="THREE" />
+									<a4j:actionparam name="duration" assignTo="#{vehicleStyleBean.duration}"	value="THREE" />
+									<a4j:actionparam name="duration" assignTo="#{vehicleSeatBeltBean.duration}"	value="THREE" />
+								</a4j:commandLink>
+								<rich:spacer width="5"></rich:spacer>
+								<a4j:commandLink title="#{messages.duration_six}" immediate="true"
+									styleClass="#{(vehicleBean.duration eq 'SIX') ? 'on' : ''}"	
+									reRender="dateLinksForm,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
+									value="#{messages.duration_six}">
+									<a4j:actionparam name="duration" assignTo="#{vehicleBean.duration}" value="SIX" />
+									<a4j:actionparam name="duration" assignTo="#{vehicleSpeedBean.duration}"	value="SIX" />
+									<a4j:actionparam name="duration" assignTo="#{vehicleStyleBean.duration}"	value="SIX" />
+									<a4j:actionparam name="duration" assignTo="#{vehicleSeatBeltBean.duration}"	value="SIX" />
+								</a4j:commandLink>
+								<rich:spacer width="5"></rich:spacer>
+								<a4j:commandLink title="#{messages.duration_twelve}" immediate="true"
+									styleClass="#{(vehicleBean.duration eq 'TWELVE') ? 'on' : ''}"	
+									reRender="dateLinksForm,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
+									value="#{messages.duration_twelve}">
+									<a4j:actionparam name="duration" assignTo="#{vehicleBean.duration}" value="TWELVE" />
+									<a4j:actionparam name="duration" assignTo="#{vehicleSpeedBean.duration}"	value="TWELVE" />
+									<a4j:actionparam name="duration" assignTo="#{vehicleStyleBean.duration}"	value="TWELVE" />
+									<a4j:actionparam name="duration" assignTo="#{vehicleSeatBeltBean.duration}"	value="TWELVE" />
+								</a4j:commandLink>
 								</span>
 							</a4j:form>
+							</a4j:region>
 						</div>
 				</div>
 				<div class="panel_w">
@@ -91,7 +112,6 @@
 						            <ui:param name="ChartDivID" value="overall_chart" />
 						            <ui:param name="chartVar" value="overallChart" />
 							</ui:include>
-						
 						</td>
 						<td valign="top" align="right">
 							<table width="220" border="0" cellspacing="0" cellpadding="0" class="scorebox" style="margin: 20px 20px 0 0;">
@@ -111,7 +131,6 @@
 						</td>
 					  </tr>
 					</table>
-				  
 				  </rich:panel>
 				</div>
 				<div class="panel_sw">
@@ -224,9 +243,8 @@
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="seatbelt">Seatbelt</span>
-						<span class="panel_links"><h:form id="seatBelt_report_link">
-						<h:commandLink value="view report" action="go_reportVehicleSeatBelt" /></h:form></span></div>
+						<span class="seatbelt">Seat Belt</span>
+						<span class="panel_links"><h:form id="seatBelt_report_link"><h:commandLink value="view report" action="go_reportVehicleSeatBelt" /></h:form></span></div>
 				</div>
 					<div class="panel_w">
 					  <rich:panel bodyClass="panel_content" id="seatBeltPanel" border="0">
@@ -260,9 +278,7 @@
 			</div>
 		<!-- END PANEL -->
 	</td>
-	
     <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
-	
     <td width="465" valign="top">
 		<!-- START PANEL -->
 			<div class="">
@@ -279,15 +295,17 @@
 				</div>
 					<div class="panel_w">
 					  <div class="panel_content">
-							
+						<c:if test="#{vehicleBean.lastTrip ne null}">	
 					  	<h:panelGroup styleClass="map-border" layout="block">
 							<div id="map-canvas" style="width:458px;height:300px;border:0"></div>
 					  	</h:panelGroup>
-					    <script type="text/javascript">
+					    <script type="text/JavaScript">
 						var baseIcon = new GIcon();
 							baseIcon.iconSize = new GSize(21, 20);
 							baseIcon.iconAnchor = new GPoint(6, 20);
 							baseIcon.infoWindowAnchor = new GPoint(5, 1);
+
+						var bounds = new GLatLngBounds();
 
 					    function createMarker(point, message, iconImage)
 				        {
@@ -304,33 +322,62 @@
 				          return marker;
 				        }
 
-  						if (GBrowserIsCompatible()) {
-        						map = new GMap2(document.getElementById("map-canvas"));
-        						map.addControl(new GLargeMapControl());
-        						map.addControl(new GMapTypeControl());
-        						map.addControl(new GOverviewMapControl()); 
-								map.setCenter(new GLatLng(#{vehicleTripsBean.selectedTrips[0].routeLastStep.lat}, #{vehicleTripsBean.selectedTrips[0].routeLastStep.lng}), 14);
-								map.setMapType(G_NORMAL_MAP);
-								
-								var polyline = new GPolyline([
-								
-									<ui:repeat value="#{vehicleTripsBean.selectedTrips[0].route}" var="route">
-										new GLatLng(#{route.lat}, #{route.lng}),
-								  	</ui:repeat>
-								  		  //Repeating the last step to finish JS array.
-								  		  new GLatLng(#{vehicleTripsBean.selectedTrips[0].routeLastStep.lat}, #{vehicleTripsBean.selectedTrips[0].routeLastStep.lng})
-									], "#0000ff", 6);
-									map.addOverlay(polyline);
+						function bodyUnload()
+						{
+							GUnload();
+						}
+					    
+  						if (GBrowserIsCompatible())
+  	  					{
+       						map = new GMap2(document.getElementById("map-canvas"));
+       						map.addControl(new GLargeMapControl());
+       						map.addControl(new GMapTypeControl());
+       						map.addControl(new GOverviewMapControl()); 
+							map.setCenter(new GLatLng(#{vehicleBean.lastTrip.routeLastStep.lat}, #{vehicleBean.lastTrip.routeLastStep.lng}), 14);
+							map.setMapType(G_NORMAL_MAP);
+							
+							var polyline = new GPolyline([
+							
+							<ui:repeat value="#{vehicleBean.lastTrip.route}" var="route">
+								new GLatLng(#{route.lat}, #{route.lng}),
+						  	</ui:repeat>
+						  		  //Repeating the last step to finish JS array.
+						  		  new GLatLng(#{vehicleBean.lastTrip.routeLastStep.lat}, #{vehicleBean.lastTrip.routeLastStep.lng})
+							], "#0000ff", 6);
+							map.addOverlay(polyline);
 
-									var violation;
-									<ui:repeat value="#{vehicleTripsBean.violationEvents}" var="violation">
-										violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
-										map.addOverlay(createMarker(violation, "#{violation.eventType} Violation.<br />#{violation.time}",
-														"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png"));
-									</ui:repeat>
+							//Start of trip marker
+							var startlatlng = new GLatLng(#{vehicleBean.lastTrip.route[0].lat}, #{vehicleBean.lastTrip.route[0].lng});
+							marker = createMarker(startlatlng, "Start of trip.<br />" + "#{vehicleBean.lastTrip.trip.startTime}<br />#{vehicleBean.lastTrip.startAddress}",
+													"#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
+							map.addOverlay(marker);
+							bounds.extend(marker.getPoint());
+
+							//End of trip marker
+							var endlatlng = new GLatLng(#{vehicleBean.lastTrip.routeLastStep.lat}, #{vehicleBean.lastTrip.routeLastStep.lng});
+							marker = createMarker(endlatlng, "End of trip.<br />" + "#{vehicleBean.lastTrip.trip.endTime}<br />#{vehicleBean.lastTrip.endAddress}",
+													"#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
+							map.addOverlay(marker);
+							bounds.extend(marker.getPoint());
+
+							//Create Violation markers.
+							var violation;
+							<ui:repeat value="#{vehicleBean.violationEvents}" var="violation">
+								violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
+								map.addOverlay(createMarker(violation, "#{violation.eventType} Violation.<br />#{violation.time}",
+												"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png"));
+							</ui:repeat>
+
+							//Zoom and Center on trip.
+							map.setZoom(map.getBoundsZoomLevel(bounds));
+						    map.setCenter(bounds.getCenter());
 								
       					}
     					</script>
+    					</c:if>
+    					<c:if test="{vehicleBean.lastTrip eq null ? true : false}">
+  							<h2>#{messages.no_trips_found}</h2>
+  						</c:if>
 					  </div>
 					</div>
 				<div class="panel_sw">
@@ -345,7 +392,7 @@
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="coaching">Miles Per Gallon</span>
+						<span class="gas">Miles Per Gallon</span>
 					</div>
 				</div>
 					<div class="panel_w">
@@ -371,12 +418,43 @@
 				</div>
 			</div>
 		<!-- END PANEL -->
+		
 		<div class="spacer"></div>
 		
+		<!-- START PANEL -->
+			<div class="">
+				<div class="panel_nw">
+					<div class="panel_title">
+						<span class="coaching">Coaching Events </span>
+					</div>
+				</div>
+					<div class="panel_w">
+					  <rich:panel bodyClass="panel_content" id="coachingPanel" border="0">
+					    <table width="450" border="0" align="center" cellpadding="0" cellspacing="0">
+                          <tr>
+                            <td>
+                            <ui:include src="../includes/lineChart.xhtml">
+						            <ui:param name="lineChartDef" value="#{vehicleBean.coachingHistory}" />
+						            <ui:param name="hiddenFieldID" value="HiddenField4" />
+						            <ui:param name="width" value="450" /> 
+						            <ui:param name="height" value="200" />
+						            <ui:param name="tartgetElementVar" value="targetElement4" />
+						            <ui:param name="ChartDivID" value="coaching_chart" />
+						            <ui:param name="chartVar" value="coaching_chart" />
+							</ui:include>
+                            </td>
+                          </tr>
+                        </table>
+					  </rich:panel>
+					</div>
+				<div class="panel_sw">
+					<div class="panel_statusbar"></div>
+				</div>
+			</div>
+		<!-- END PANEL -->
 	</td>
   </tr>
 </table>
 </div>
 </ui:define>
-
 </ui:composition>

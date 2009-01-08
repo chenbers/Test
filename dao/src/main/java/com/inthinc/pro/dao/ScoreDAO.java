@@ -26,7 +26,7 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      */
     ScoreableEntity getAverageScoreByType(Integer groupID, Duration duration,  ScoreType st);
     
-    /**
+    /**  TO BE REMOVED NOT USED
      * Retrieve the overall score by the specified driver and mileage. 
      * 
      * @param driverID
@@ -36,17 +36,27 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      */
     ScoreableEntity getAverageScoreByTypeAndMiles(Integer driverID, Integer milesBack, ScoreType st);
     
-    /**
-     * Retrieve the overall score by the specified driver and date range. 
+    /** NOT USED ANYMORE
+     * Retrieve the overall score by the specified driver and date range.   
      * 
      * @param driverID
-     * @param milesBack
+     * @param duration
      * @param st
      * @return
      */
     ScoreableEntity getDriverAverageScoreByType(Integer driverID, Duration duration,  ScoreType st);
     
     /**
+     * Retrieve the overall score by the specified vehicle and date range. 
+     * 
+     * @param vehicleID
+     * @param duration
+     * @param st
+     * @return
+     */
+    ScoreableEntity getVehicleAverageScoreByType(Integer vehicleID, Duration duration,  ScoreType st);
+    
+    /** NOT USED ANYMORE 
      * Retrieve the overall score by the specified vehicle and mileage.
      * 
      * @param vehicleID
@@ -55,6 +65,7 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      * @return
      */
     ScoreableEntity getVehicleAverageScoreByTypeAndMiles(Integer vehicleID, Integer milesBack, ScoreType st);
+    
     /**
      * Retrieve the list of scores for the sub groups or drivers (one level down) under the specified group.
      * 
@@ -155,8 +166,8 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      */
     List<ScoreTypeBreakdown> getScoreBreakdownByType(Integer groupID, Duration duration, ScoreType scoreType);
 
-    /**
-     * Retrieve the driver scores and mileage.
+    /** 
+     * Retrieve the driver scores and mileage.   TO BE REMOVED.  NOT USED
      * 
      * @param driverID
      * @param milesBack
@@ -174,15 +185,25 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
     List<ScoreableEntity> getDriverScoreHistory(Integer driverID, Duration duration, ScoreType scoreType, Integer count);
     
     /**
-     * Retrieve the vehicle scores and mileage.
+     * Retrieve the vehicle scores by type and duration.
      * 
-     * @param driverID
+     * @param vehicleID
+     * @param duration
+     * @param scoreType
+     */
+    List<ScoreableEntity> getVehicleScoreHistory(Integer vehicleID, Duration duration, ScoreType scoreType, Integer count);
+    
+    
+    /**
+     * Retrieve the vehicle scores and mileage.   TO BE REMOVED NOT USED
+     * 
+     * @param vehicleID
      * @param milesBack
      * @param scoreType
      */
     List<ScoreableEntity> getVehicleScoreHistoryByMiles(Integer vehicleID, Integer milesBack, ScoreType scoreType);
 
-
+    
     /**
      * Retrieve the individual lines in the Vehicle Report.
      * 
@@ -200,7 +221,7 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
     List<DriverReportItem> getDriverReportData(Integer groupID, Duration duration);
 
 
-    /**
+    /**  TO BE REMOVED NOT USED
      * Retrieve the score breakdown for the specified driver and mileage and score type.  The scoreType and all of it's subTypes
      * are included in the return map.
      * 
@@ -222,7 +243,18 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      */
     Map<ScoreType, ScoreableEntity> getDriverScoreBreakdownByType(Integer driverID, Duration duration, ScoreType scoreType);
 
+    /**
+     * Retrieve the score breakdown for the specified driver and mileage and score type.  The scoreType and all of it's subTypes
+     * are included in the return map.
+     * 
+     * @param driverID
+     * @param milesBack
+     * @param scoreType
+     * @return  Map with scoreType as key and the scorableEntity for that scoreType.
+     */
+    Map<ScoreType, ScoreableEntity> getVehicleScoreBreakdownByType(Integer vehicleID, Duration duration, ScoreType scoreType);
 
+    
     /**
      * Retrieve the individual lines in the Idling Report.
      * 

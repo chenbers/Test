@@ -147,8 +147,32 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             return null;
         }
     }
-
+    
     @Override
+    public ScoreableEntity getVehicleAverageScoreByType(Integer vehicleID, Duration duration, ScoreType st)
+    {
+        try
+        {
+            
+            // TODO: not sure if this duration mapping is correct            
+            Map<String, Object> returnMap = reportService.getVScoreByVT(vehicleID, duration.getCode());
+            DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
+            
+            ScoreableEntity scoreableEntity = new ScoreableEntity();
+            scoreableEntity.setEntityID(vehicleID);
+            scoreableEntity.setEntityType(EntityType.ENTITY_VEHICLE);
+            scoreableEntity.setScoreType(st);
+            scoreableEntity.setScore(dqMap.getScoreMap().get(st));
+            return scoreableEntity;
+            
+        }
+        catch (EmptyResultSetException e)
+        {
+            return null;
+        }
+    }
+
+    @Override  // TODO:  TO BE REMOVED NOT USED
     public ScoreableEntity getAverageScoreByTypeAndMiles(Integer driverID, Integer milesBack, ScoreType scoreType)
     {
         try
@@ -170,7 +194,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
     }
     
-    @Override
+    @Override  // TODO:  TO BE REMOVED NOT USED
     public ScoreableEntity getVehicleAverageScoreByTypeAndMiles(Integer vehicleID, Integer milesBack, ScoreType st)
     {
         try
@@ -284,7 +308,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
     }
 
-    @Override
+    @Override  //TODO TO BE REMOVED NOT USED
     public List<ScoreableEntity> getDriverScoreHistoryByMiles(Integer driverID, Integer milesBack, ScoreType scoreType)
     {
         try
@@ -344,7 +368,38 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
     }
     
+
     @Override
+    public List<ScoreableEntity> getVehicleScoreHistory(Integer vehicleID, Duration duration, ScoreType scoreType, Integer count)
+    {
+        try
+        {
+            List<Map<String, Object>> list = reportService.getVTrendByVTC(vehicleID, duration.getCode(), count);
+            List<DriveQMap> driveQList = getMapper().convertToModelObject(list, DriveQMap.class);
+            
+            List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
+            
+            for (DriveQMap driveQMap  :driveQList)
+            {
+                ScoreableEntity entity = new ScoreableEntity();
+                entity.setEntityID(vehicleID);
+                entity.setEntityType(EntityType.ENTITY_VEHICLE);
+                entity.setScoreType(scoreType);
+                Integer score = driveQMap.getScoreMap().get(scoreType);
+                entity.setScore((score == null) ? 0 : score);
+                entity.setCreated(driveQMap.getCreated());
+                scoreList.add(entity);
+            }
+                
+            return scoreList;
+        }
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
+    }
+    
+    @Override  // TODO TO BE REMOVED NOT USED
     public List<ScoreableEntity> getVehicleScoreHistoryByMiles(Integer vehicleID, Integer milesBack, ScoreType scoreType)
     {
         try
@@ -624,7 +679,36 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             return Collections.emptyMap();
         }
     }
-
-
     
+    @Override
+    public Map<ScoreType, ScoreableEntity> getVehicleScoreBreakdownByType(Integer vehicleID, Duration duration, ScoreType scoreType)
+    {
+        try
+        {
+            Map<ScoreType, ScoreableEntity> returnMap = new HashMap<ScoreType, ScoreableEntity>();
+            DriveQMap driveQMap = getMapper().convertToModelObject(reportService.getVScoreByVT(vehicleID, duration.getCode()), DriveQMap.class);
+
+            List<ScoreType> subTypeList = scoreType.getSubTypes();
+            
+            for (ScoreType subType : subTypeList)
+            {
+                ScoreableEntity scoreableEntity = new ScoreableEntity();
+                scoreableEntity.setEntityID(vehicleID);
+                scoreableEntity.setEntityType(EntityType.ENTITY_VEHICLE);
+                scoreableEntity.setIdentifier("");
+                scoreableEntity.setScoreType(subType);
+                Integer score = driveQMap.getScoreMap().get(subType);
+                scoreableEntity.setScore((score == null) ? 0 : score);
+                scoreableEntity.setIdentifier(""+driveQMap.getEndingOdometer());
+                
+                returnMap.put(subType, scoreableEntity);
+            }
+            return returnMap;
+        }
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyMap();
+        }
+    }
+
 }
