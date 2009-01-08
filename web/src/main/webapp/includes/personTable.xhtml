@@ -56,9 +56,9 @@
       <f:facet name="header"><h:outputText value="#{messages.personHeader_timeZone}" /></f:facet>
       <h:outputText value="#{item.timeZone.displayName}" />
     </rich:column>
-    <rich:column rendered="#{personBean.tableColumns['reportsTo'].visible}" sortBy="#{item.reportsToPerson.first}">
+    <rich:column rendered="#{personBean.tableColumns['reportsTo'].visible}" sortBy="#{item.reportsTo}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_reportsTo}" /></f:facet>
-      <h:outputText value="#{item.reportsToPerson.first}" /><h:outputText value=" " /><h:outputText value="#{item.reportsToPerson.last}" />
+      <h:outputText value="#{item.reportsTo}" />
     </rich:column>
     <rich:column rendered="#{personBean.tableColumns['title'].visible}" sortBy="#{item.title}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_title}" /></f:facet>
