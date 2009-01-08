@@ -56,7 +56,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     private DeviceDAO                              deviceDAO;
     private VehicleDAO                             vehicleDAO;
     private VehiclesBean                           vehiclesBean;
-    private List<VehicleView>                      vehicles;
 
     public void setDeviceDAO(DeviceDAO deviceDAO)
     {
@@ -186,10 +185,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         for (final DeviceView device : deleteItems)
         {
             if (device.getVehicleID() != null)
-            {
-                vehicleDAO.setVehicleDevice(device.getOldVehicleID(), null);
                 setVehicleDevice(device.getVehicleID(), null);
-            }
 
             deviceDAO.deleteByID(device.getDeviceID());
 
@@ -202,9 +198,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 
     public List<VehicleView> getVehicles()
     {
-        if (vehicles == null)
-            vehicles = new LinkedList<VehicleView>(vehiclesBean.getItems());
-        return vehicles;
+        return vehiclesBean.getItems();
     }
 
     public void chooseVehicle()
@@ -286,7 +280,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     {
         if (device.getOldVehicleID() != null)
         {
-            vehicleDAO.setVehicleDevice(device.getOldVehicleID(), null);
+            vehicleDAO.clearVehicleDevice(device.getOldVehicleID(), device.getDeviceID());
             setVehicleDevice(device.getOldVehicleID(), null);
         }
 

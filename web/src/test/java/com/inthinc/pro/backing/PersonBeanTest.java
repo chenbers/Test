@@ -29,7 +29,7 @@ public class PersonBeanTest extends BaseAdminBeanTest<PersonBean.PersonView>
         editItem.setWorkPhone("098-765-4321");
         editItem.setEmail("nobody@nowhere.com");
         editItem.setEmpid("TK624");
-        editItem.setReportsTo(123);
+        editItem.setReportsTo("John Doe");
         editItem.setFirst("Test");
         editItem.setMiddle("Unit");
         editItem.setLast("Person");

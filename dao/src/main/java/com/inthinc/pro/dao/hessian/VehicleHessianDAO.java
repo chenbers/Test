@@ -13,7 +13,6 @@ import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.util.DateUtil;
-import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
@@ -71,6 +70,12 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
     public void setVehicleDevice(Integer vehicleID, Integer deviceID)
     {
         getSiloService().setVehicleDevice(vehicleID, deviceID);
+    }
+
+    @Override
+    public void clearVehicleDevice(Integer vehicleID, Integer deviceID)
+    {
+        getSiloService().clrVehicleDevice(vehicleID, deviceID);
     }
 
     @Override

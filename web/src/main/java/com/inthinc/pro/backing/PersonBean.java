@@ -31,6 +31,7 @@ import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Gender;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.State;
@@ -75,7 +76,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         AVAILABLE_COLUMNS.add("homePhone");
         AVAILABLE_COLUMNS.add("email");
         AVAILABLE_COLUMNS.add("timeZone");
-        AVAILABLE_COLUMNS.add("group");
         AVAILABLE_COLUMNS.add("reportsTo");
         AVAILABLE_COLUMNS.add("title");
         AVAILABLE_COLUMNS.add("dob");
@@ -89,6 +89,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         AVAILABLE_COLUMNS.add("address_zip");
         AVAILABLE_COLUMNS.add("user_status");
         AVAILABLE_COLUMNS.add("user_username");
+        AVAILABLE_COLUMNS.add("user_groupID");
         AVAILABLE_COLUMNS.add("user_role");
         AVAILABLE_COLUMNS.add("driver_status");
         AVAILABLE_COLUMNS.add("driver_license");
@@ -98,6 +99,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         AVAILABLE_COLUMNS.add("driver_certifications");
         AVAILABLE_COLUMNS.add("driver_dot");
         AVAILABLE_COLUMNS.add("driver_RFID");
+        AVAILABLE_COLUMNS.add("driver_groupID");
 
         // genders
         GENDERS = new TreeMap<String, Gender>();
@@ -118,10 +120,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
             WEIGHTS.put(String.valueOf(i), i);
 
         // time zones
-        // final List<String> timeZones = new ArrayList<String>();
-        // for (final String id : TimeZone.getAvailableIDs())
-        // if (!id.startsWith("Etc/"))
-        // timeZones.add(id);
         List<String> timeZones = SupportedTimeZones.getSupportedTimeZones();
         // sort by offset from GMT
         Collections.sort(timeZones, new Comparator<String>()
@@ -171,7 +169,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     private GroupDAO                           groupDAO;
     private PasswordEncryptor                  passwordEncryptor;
     private Map<String, Integer>               groups;
-    private Map<String, Integer>               reportsToOptions;
+    private Map<String, Integer>               teams;
     private Map<String, Role>                  roles;
 
     public void setPersonDAO(PersonDAO personDAO)
@@ -256,13 +254,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
                             && (person.getDriver().getStatus() != null)
                             && ((person.getDriver().getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("active").toLowerCase().startsWith(filterWord)) || ((!person
                                     .getDriver().getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("inactive").toLowerCase().startsWith(filterWord))));
-// TODO: FIXME                
-//                else if (column.equals("group"))
-//                    matches = (person.getGroup() != null) && person.getGroup().getName().toLowerCase().startsWith(filterWord);
-                else if (column.equals("reportsTo"))
-                    matches = (person.getReportsToPerson() != null)
-                            && (person.getReportsToPerson().getFirst().toLowerCase().startsWith(filterWord) || person.getReportsToPerson().getLast().toLowerCase().startsWith(
-                                    filterWord));
+                else if (column.equals("user_groupID"))
+                    matches = (person.getGroup() != null) && person.getGroup().getName().toLowerCase().startsWith(filterWord);
+                else if (column.equals("driver_groupID"))
+                    matches = (person.getTeam() != null) && person.getTeam().getName().toLowerCase().startsWith(filterWord);
 
                 if (matches)
                     return true;
@@ -337,7 +332,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     protected void doDelete(List<PersonView> deleteItems)
     {
         final FacesContext context = FacesContext.getCurrentInstance();
-        reportsToOptions = null;
 
         for (final PersonView person : deleteItems)
         {
@@ -402,10 +396,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     @Override
     protected void doSave(List<PersonView> saveItems, boolean create)
     {
-        // if adding a user, reset the potential supervisor list
-        if (create)
-            reportsToOptions = null;
-
         final FacesContext context = FacesContext.getCurrentInstance();
 
         for (final PersonView person : saveItems)
@@ -483,30 +473,17 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         return groups;
     }
 
-    public Map<String, Integer> getReportsToOptions()
+    public Map<String, Integer> getTeams()
     {
-        if (reportsToOptions == null)
+        if (teams == null)
         {
-            // find all people in the same group and in all parent groups
-            reportsToOptions = new TreeMap<String, Integer>();
-// TODO: FIXME          
-            Integer groupID =null;
-            if (getItem().getUser() != null)
-                groupID = getItem().getUser().getGroupID();
-            else if (getItem().getDriver() != null)
-                groupID = getItem().getDriver().getGroupID();
-            while ((groupID != null) && (groupID > 0))
-            {
-                for (final PersonView person : items)
-// TODO: FIXME                    
-//                    if (groupID.equals(person.getGroupID()) && !person.getPersonID().equals(getItem().getPersonID()))
-                        reportsToOptions.put(person.getName(), person.getPersonID());
-                final Group group = groupDAO.findByID(groupID);
-                if (group != null)
-                    groupID = group.getParentID();
-            }
+            teams = new TreeMap<String, Integer>();
+            final GroupHierarchy hierarchy = getProUser().getGroupHierarchy();
+            for (final Group group : hierarchy.getGroupList())
+                if (group.getType() == GroupType.TEAM)
+                    teams.put(group.getName(), group.getGroupID());
         }
-        return reportsToOptions;
+        return teams;
     }
 
     public Map<String, TimeZone> getTimeZones()
@@ -554,7 +531,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         @Column(updateable = false)
         private Group             group;
         @Column(updateable = false)
-        private Person            reportsToPerson;
+        private Group             team;
         @Column(updateable = false)
         private String            password;
         @Column(updateable = false)
@@ -599,33 +576,19 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         {
             super.setWorkPhone(MiscUtil.unformatPhone(workPhone));
         }
-// TODO: FIXME
-//        public void setGroupID(Integer groupID)
-//        {
-//            super.setGroupID(groupID);
-//            group = null;
-//            bean.reportsToOptions = null;
-//        }
-//
-//        public Group getGroup()
-//        {
-//            if (group == null)
-//                group = bean.groupDAO.findByID(getGroupID());
-//            return group;
-//        }
-//
-        @Override
-        public void setReportsTo(Integer reportsTo)
+
+        public Group getGroup()
         {
-            super.setReportsTo(reportsTo);
-            reportsToPerson = null;
+            if (group == null)
+                group = bean.groupDAO.findByID(getUser().getGroupID());
+            return group;
         }
 
-        public Person getReportsToPerson()
+        public Group getTeam()
         {
-            if (reportsToPerson == null && getReportsTo() != null)
-                reportsToPerson = bean.personDAO.findByID(getReportsTo());
-            return reportsToPerson;
+            if (team == null)
+                team = bean.groupDAO.findByID(getDriver().getGroupID());
+            return team;
         }
 
         public Double getCostPerHourDollars()

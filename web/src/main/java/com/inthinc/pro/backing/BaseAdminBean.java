@@ -85,9 +85,11 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
      */
     public List<T> getItems()
     {
-        if (items == null)
+        if ((items == null) || (items.size() == 0))
         {
             items = loadItems();
+            if (items == null)
+                items = new LinkedList<T>();
             applyFilter();
         }
         return items;

@@ -31,7 +31,7 @@ public class Person extends BaseEntity
     private String           email;
     // employee information
     private String           empid;
-    private Integer          reportsTo;  // userID
+    private String           reportsTo;
     private String           title;
     private String           dept;
     // personal information
@@ -57,7 +57,7 @@ public class Person extends BaseEntity
     }
     
     public Person(Integer personID,  Integer acctID, TimeZone timeZone, Integer costPerHour, Integer addressID, String homePhone, String workPhone, String email,
-            String empid, Integer reportsTo, String title, String dept, String first, String middle, String last, String suffix, Gender gender, Integer height, Integer weight,
+            String empid, String reportsTo, String title, String dept, String first, String middle, String last, String suffix, Gender gender, Integer height, Integer weight,
             Date dob, Status status)
     {
         super();
@@ -165,12 +165,12 @@ public class Person extends BaseEntity
         this.empid = empid;
     }
 
-    public Integer getReportsTo()
+    public String getReportsTo()
     {
         return reportsTo;
     }
 
-    public void setReportsTo(Integer reportsTo)
+    public void setReportsTo(String reportsTo)
     {
         this.reportsTo = reportsTo;
     }

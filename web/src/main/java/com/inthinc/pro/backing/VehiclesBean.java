@@ -317,6 +317,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
 
         if (Boolean.parseBoolean(params.get("immediate")) && !isAdd() && !isBatchEdit())
             assignDriver(getItem());
+
+        drivers = null;
     }
 
     @Override
@@ -396,19 +398,12 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
             context.addMessage(null, message);
         }
+
+        drivers = null;
     }
 
     private void assignDriver(final VehicleView vehicle)
     {
-        if (vehicle.getDriverID() != null)
-            for (final VehicleView otherVehicle : getItems())
-                if (vehicle.getDriverID().equals(otherVehicle.getDriverID()) && !otherVehicle.getVehicleID().equals(vehicle.getVehicleID()))
-                {
-                    vehicleDAO.setVehicleDriver(otherVehicle.getVehicleID(), null);
-                    otherVehicle.setDriverID(null);
-                    break;
-                }
-
         vehicleDAO.setVehicleDriver(vehicle.getVehicleID(), vehicle.getDriverID());
         vehicle.setOldDriverID(vehicle.getDriverID());
 
