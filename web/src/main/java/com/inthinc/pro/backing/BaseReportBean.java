@@ -52,11 +52,11 @@ public class BaseReportBean extends BaseBean
     protected String formatPhone(String incoming) 
     {
         return  "(" + 
-            incoming.substring(0,2) +
+            incoming.substring(0,3) +
                 ")" +
-            incoming.substring(3,5) +
+            incoming.substring(3,6) +
                 "-" +
-            incoming.substring(6,9);
+            incoming.substring(6,10);
     }
 
     public boolean isMainMenu()
