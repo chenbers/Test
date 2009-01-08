@@ -242,7 +242,8 @@ public class DriverReportBean extends BaseReportBean
         int cnt = 0;
         for (String column : AVAILABLE_COLUMNS)
         {
-            pref.getVisible().set(cnt, driverColumns.get(column).getVisible());
+            pref.getVisible().set(cnt++, 
+                    driverColumns.get(column).getVisible());
         }
         setTablePref(pref);
         tablePreferenceDAO.update(pref);
