@@ -102,7 +102,7 @@ public class Tiger {
             append(builder, fromAddrLeft);
             append(builder, "-");
             append(builder, toAddrLeft);
-            append(builder, " ");
+            append(builder, "*");
             append(builder, fedirp);
             append(builder, st_typ_bef);
             append(builder, fename);

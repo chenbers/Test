@@ -5,12 +5,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.MessageSource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -27,6 +32,7 @@ public class SpeedLimitChangeRequestBean extends BaseBean{
     private static final Logger logger = Logger.getLogger(SpeedLimitChangeRequestBean.class);
 
     private NavigationBean 			navigation;
+    private MessageSource  			messageSource;
     private GenericDataAccess 		teenServerDAO; //From teenserverDAO
     private int 					sbsUserId;
     private String 					sbsUserName;
@@ -336,10 +342,11 @@ public class SpeedLimitChangeRequestBean extends BaseBean{
 			helper.setSubject(justTheText.getSubject());
 			
 			mailSender.send(message);
-			emailSent = false;
+			emailSent = true;
 			
 		} catch (MessagingException e) {
 			// 
+			logger.debug("sendEmailToUser email could not be sent "+e.getMessage());
 			emailSent = false;
 		}
 	}
@@ -394,6 +401,22 @@ public class SpeedLimitChangeRequestBean extends BaseBean{
     {
         this.emailInput = emailInput;
     }
+    public void validateEmail(FacesContext context, UIComponent component, Object value)
+    {
+        if (!emailInput.isValid())
+        {
+                FacesMessage error = new FacesMessage();
+                String text = MessageUtil.getMessageString("credentials_invalid_email");
+                error.setSummary(text);
+                error.setSeverity(FacesMessage.SEVERITY_ERROR);
+                throw new ValidatorException(error);
+         }
+    }
+    public void setMessageSource(MessageSource messageSource)
+    {
+        this.messageSource = messageSource;
+    }
+    
     public String resetAction(){
     	
 		changeRequests.clear();
@@ -433,36 +456,55 @@ public class SpeedLimitChangeRequestBean extends BaseBean{
 		StringBuffer compositeAddress = new StringBuffer();
 		
 		String gTokens[]= gAddress.split(",");
+		String gStreet[]=gTokens[0].split(" ");
 //		Pattern p = Pattern.compile("[0-9]* - [0-9]* , [0-9]* - [0-9]*");
 //		tAddress.
-		int street = 0;
-		for(int z=0;z<7;z++){
-			
-			street = tAddress.indexOf(' ',z);
-		}
-		compositeAddress.append(tAddress.substring(0,street));
-		String streetName[] = tAddress.substring(street+1).split(" ");
+		int street = tAddress.indexOf('*');
+		
+		compositeAddress.append(tAddress.substring(0,street));//Copy numbers over
+		String streetName =tAddress.substring(street+1).trim();
+		String streetTokens[] = streetName.split(" ");
 		
 		int j;
-		for(j=0;j<gTokens.length;j++){
+		for(j=0;j<gStreet.length-1;j++){
 			
-			if (streetName[0].equalsIgnoreCase(gTokens[j])){
+			if (streetTokens[0].equalsIgnoreCase(gStreet[j])){
 				
-				for (int i=j; i<gTokens.length; i++){
+				for (int i=j; i<gStreet.length; i++){
+					
+					compositeAddress.append(gStreet[i]);
+					compositeAddress.append(" ");
+				}
+				compositeAddress.replace(compositeAddress.length()-1, compositeAddress.length()-1, ",");
+				for (int i=1; i<gTokens.length; i++){
 					
 					compositeAddress.append(gTokens[i]);
+					compositeAddress.append(",");
 				}
+				compositeAddress.replace(compositeAddress.length()-1, compositeAddress.length()-1, "");
 				break;
 			}
 		}
-		if (j==gTokens.length){
+		if (j==gStreet.length-1){
 			
 			//Couldn't find street name in google address
 			//So take whole of Google address and add to numbers and address from Tiger
-			StringBuffer address = new StringBuffer(tAddress);
-			address.append(",");
-			address.append(gAddress);
-			compositeAddress.append(address);
+			compositeAddress.append(streetName);
+			compositeAddress.append(",");
+			
+			if (gTokens.length<3){
+				
+				compositeAddress.append(gAddress);
+			}
+			else {
+				
+				for (int i=gTokens.length-3; i<gTokens.length; i++){
+					
+					compositeAddress.append(gTokens[i]);
+					compositeAddress.append(",");
+				}
+				compositeAddress.replace(compositeAddress.length()-1, compositeAddress.length()-1, "");
+			}
 		}
 		return compositeAddress.toString();
 	}

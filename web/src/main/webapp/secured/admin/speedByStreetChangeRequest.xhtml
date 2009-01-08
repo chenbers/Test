@@ -274,7 +274,7 @@
    <c:if test="#{!speedLimitChangeRequests.requestSent}">
  	<div><h:outputText value="#{messages.sbs_emailIntro}" /></div>
   <a4j:form id="emailForm">
-    <h:inputText style="width:230px;margin:10px" binding="#{speedLimitChangeRequests.emailInput}" id="email" label="#{messages.sbs_emailAddress}" value="#{speedLimitChangeRequests.emailAddress}" required="true"></h:inputText>
+    <h:inputText style="width:230px;margin:10px" binding="#{speedLimitChangeRequests.emailInput}" id="email" label="#{messages.sbs_emailAddress}" value="#{speedLimitChangeRequests.emailAddress}" required="true" validator="#{speedLimitChangeRequests.validateEmail}"></h:inputText>
     <div>
       <rich:message for="email">
         <f:facet name="errorMarker">
