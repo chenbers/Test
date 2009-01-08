@@ -117,18 +117,26 @@
 													style="background-color:#{item.colorKey};border-style:solid;border-width:1px;border-color:#000000">
 												</rich:spacer>
 											</rich:column>
-											<rich:column sortBy="#{item.se.identifier}">
+											<rich:column>
 												<f:facet name="header">
-													<h:outputText value="Region" />
+													<a4j:commandLink 
+														value="Region" 
+														reRender="xypanel,topScroller,bottomScroller,items">
+														<f:setPropertyActionListener target="#{trendBean.sortItFirst}" value="true" />														
+													</a4j:commandLink>
 												</f:facet>
 												<h:outputLink value="#{item.goTo}">
 													<h:outputText value="#{item.se.identifier}" />
 												</h:outputLink>
 
 											</rich:column>
-											<rich:column width="73" sortBy="#{item.se.score}">
+											<rich:column width="73">
 												<f:facet name="header">
-													<h:outputText value="Score" />
+													<a4j:commandLink 
+														value="Score" 
+														reRender="xypanel,topScroller,bottomScroller,items">
+														<f:setPropertyActionListener target="#{trendBean.sortItSecond}" value="true" />														
+													</a4j:commandLink>
 												</f:facet>
 												<iwi:scoreBox style="#{item.style}" score="#{item.se.score}"/>
 												
