@@ -344,7 +344,7 @@
                           </td>
                           <td>
                             <rich:message for="user_groupID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:selectOneMenu value="#{personBean.item.user.groupID}" id="user_groupID" required="true" requiredMessage="#{messages.required}">
+                            <h:selectOneMenu value="#{personBean.item.user.groupID}" id="user_groupID" required="#{personBean.item.userSelected and ((not personBean.batchEdit) or personBean.updateField['user.groupID'])}" requiredMessage="#{messages.required}">
                               <f:selectItem itemLabel="" />
                               <f:selectItems value="#{personBean.groups}" />
                             </h:selectOneMenu>
@@ -462,7 +462,7 @@
                           </td>
                           <td>
                             <rich:message for="driver_groupID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:selectOneMenu value="#{personBean.item.driver.groupID}" id="driver_groupID" required="true" requiredMessage="#{messages.required}">
+                            <h:selectOneMenu value="#{personBean.item.driver.groupID}" id="driver_groupID" required="#{personBean.item.driverSelected and ((not personBean.batchEdit) or personBean.updateField['driver.groupID'])}" requiredMessage="#{messages.required}">
                               <f:selectItem itemLabel="" />
                               <f:selectItems value="#{personBean.teams}" />
                             </h:selectOneMenu>
