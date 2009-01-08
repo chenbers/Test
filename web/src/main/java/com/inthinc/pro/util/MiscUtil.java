@@ -30,7 +30,11 @@ public class MiscUtil
         if ((phone == null) || (phone.length() == 0))
             return null;
         if (phone.length() != 10)
-            throw new IllegalArgumentException();
+        {
+            phone = unformatPhone(phone);
+            if (phone.length() != 10)
+                throw new IllegalArgumentException();
+        }
         final StringBuilder sb = new StringBuilder();
         sb.append('(');
         sb.append(phone.substring(0, 3));
@@ -45,6 +49,6 @@ public class MiscUtil
     {
         if (phone == null)
             return null;
-        return phone.replaceAll("\\D", "");        
+        return phone.replaceAll("\\D", "");
     }
 }
