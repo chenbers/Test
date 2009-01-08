@@ -6,9 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.inthinc.pro.backing.ui.TableColumn;
-import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.model.TablePreference;
-import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.util.MessageUtil;
 
 public class TablePref
@@ -32,7 +30,10 @@ public class TablePref
             int cnt = 0;
             for (String column : tablePrefOptions.getAvailableColumns())
             {
-                TableColumn tableColumn = new TableColumn(visibleList.get(cnt++), MessageUtil.getMessageString(tablePrefOptions.getColumnLabelPrefix() + column));
+                Boolean visible = false;
+                if (cnt < visibleList.size())
+                    visible = visibleList.get(cnt++);
+                TableColumn tableColumn = new TableColumn(visible, MessageUtil.getMessageString(tablePrefOptions.getColumnLabelPrefix() + column));
                 if (column.equals("clear"))
                     tableColumn.setCanHide(false);
 
