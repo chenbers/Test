@@ -186,7 +186,10 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         for (final DeviceView device : deleteItems)
         {
             if (device.getVehicleID() != null)
+            {
+                vehicleDAO.setVehicleDevice(device.getOldVehicleID(), null);
                 setVehicleDevice(device.getVehicleID(), null);
+            }
 
             deviceDAO.deleteByID(device.getDeviceID());
 
