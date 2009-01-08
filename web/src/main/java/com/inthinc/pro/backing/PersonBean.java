@@ -22,6 +22,7 @@ import org.jasypt.util.password.PasswordEncryptor;
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
+import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.UserDAO;
@@ -166,6 +167,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
 
     private PersonDAO                          personDAO;
     private UserDAO                            userDAO;
+    private DriverDAO                          driverDAO;
     private GroupDAO                           groupDAO;
     private PasswordEncryptor                  passwordEncryptor;
     private Map<String, Integer>               groups;
@@ -180,6 +182,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     public void setUserDAO(UserDAO userDAO)
     {
         this.userDAO = userDAO;
+    }
+
+    public void setDriverDAO(DriverDAO driverDAO)
+    {
+        this.driverDAO = driverDAO;
     }
 
     public void setGroupDAO(GroupDAO groupDAO)
@@ -296,6 +303,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     {
         final PersonView person = new PersonView();
         person.bean = this;
+        person.setStatus(Status.ACTIVE);
         person.setUser(new User());
         // TODO: maybe use the browser's time zone instead, if possible...
         person.setTimeZone(TimeZone.getDefault());
@@ -405,14 +413,20 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
                 person.getUser().setPassword(passwordEncryptor.encryptPassword(person.getPassword()));
 
             if (!person.isUserSelected())
+            {
+                if (person.getUser().getUserID() != null)
+                    userDAO.deleteByID(person.getUser().getUserID());
                 person.setUser(null);
+            }
             if (!person.isDriverSelected())
+            {
+                if (person.getDriver().getDriverID() != null)
+                    driverDAO.deleteByID(person.getDriver().getDriverID());
                 person.setDriver(null);
+            }
 
             if (create)
-            {
                 person.setPersonID(personDAO.create(getUser().getPerson().getGroupID(), person));
-            }
             else
                 personDAO.update(person);
 

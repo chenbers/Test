@@ -17,11 +17,10 @@ import com.inthinc.pro.model.User;
 
 public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> implements PersonDAO, FindByKey<Person>
 {
-    private static final Logger logger = Logger.getLogger(PersonHessianDAO.class);
-    
+    private static final Logger logger         = Logger.getLogger(PersonHessianDAO.class);
+
     private static final String CENTRAL_ID_KEY = "email";
 
-    
     @Override
     public Integer create(Integer acctID, Person person)
     {
@@ -31,63 +30,75 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
             person.getAddress().setAddrID(addressID);
             person.setAddressID(addressID);
         }
-        
-        Integer personID =  super.create(acctID, person);
-        
+
+        Integer personID = super.create(acctID, person);
+
         if (person.getUser() != null && (person.getUser().getUserID() == null || person.getUser().getUserID().intValue() == 0))
         {
             person.getUser().setPersonID(personID);
             Integer userID = getReturnKey(getSiloService().createUser(personID, getMapper().convertToMap(person.getUser())), User.class);
             person.getUser().setUserID(userID);
-            
         }
-        
+
         if (person.getDriver() != null && (person.getDriver().getDriverID() == null || person.getDriver().getDriverID().intValue() == 0))
         {
             person.getDriver().setPersonID(personID);
             Integer driverID = getReturnKey(getSiloService().createDriver(personID, getMapper().convertToMap(person.getDriver())), Driver.class);
             person.getDriver().setDriverID(driverID);
         }
-        
-        
+
         return personID;
     }
-    
+
     @Override
     public Integer update(Person person)
     {
         Integer changedCount = super.update(person);
-        
+
         if (person.getAddress() != null)
         {
             getSiloService().updateAddr(person.getAddress().getAddrID(), getMapper().convertToMap(person.getAddress()));
         }
+
         if (person.getDriver() != null)
         {
-            getSiloService().updateDriver(person.getDriver().getDriverID(), getMapper().convertToMap(person.getDriver()));
+            if (person.getDriver().getDriverID() == null || person.getDriver().getDriverID().intValue() == 0)
+            {
+                person.getDriver().setPersonID(person.getPersonID());
+                Integer driverID = getReturnKey(getSiloService().createDriver(person.getPersonID(), getMapper().convertToMap(person.getDriver())), Driver.class);
+                person.getDriver().setDriverID(driverID);
+            }
+            else
+            {
+                getSiloService().updateDriver(person.getDriver().getDriverID(), getMapper().convertToMap(person.getDriver()));
+            }
         }
+
         if (person.getUser() != null)
         {
-            getSiloService().updateUser(person.getUser().getUserID(), getMapper().convertToMap(person.getUser()));
+            if (person.getUser().getUserID() == null || person.getUser().getUserID().intValue() == 0)
+            {
+                person.getUser().setPersonID(person.getPersonID());
+                Integer userID = getReturnKey(getSiloService().createUser(person.getPersonID(), getMapper().convertToMap(person.getUser())), User.class);
+                person.getUser().setUserID(userID);
+            }
+            else
+            {
+                getSiloService().updateUser(person.getUser().getUserID(), getMapper().convertToMap(person.getUser()));
+            }
         }
-        
-        
+
         return changedCount;
     }
+
     @Override
     public Person findByID(Integer personID)
     {
-        
         Person person = super.findByID(personID);
         if (person != null)
         {
-            
             populateInnerObjects(personID, person);
-        
-        
         }
-        
-        
         return person;
     }
 
@@ -104,7 +115,7 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
             // ignore -- no driver is attached to person
         }
         person.setDriver(driver);
-        
+
         // attach user if there is one
         User user = null;
         try
@@ -139,7 +150,7 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
         try
         {
             List<Person> personList = getMapper().convertToModelObject(getSiloService().getPersonsByGroupID(groupID), Person.class);
-            List<Person> returnPersonList = new ArrayList<Person>(); 
+            List<Person> returnPersonList = new ArrayList<Person>();
             for (Person person : personList)
             {
                 populateInnerObjects(person.getPersonID(), person);
@@ -151,14 +162,14 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
         {
             return Collections.emptyList();
         }
-        
+
     }
-    
+
     @Override
     public Person findByEmail(String email)
     {
         // TODO: it can take up to 5 minutes from when a person record is added until
-        // it can be accessed via getID().   Should this method account for that?
+        // it can be accessed via getID(). Should this method account for that?
         try
         {
             Map<String, Object> returnMap = getSiloService().getID(CENTRAL_ID_KEY, email);
@@ -166,7 +177,6 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
             Person person = findByID(personID);
             populateInnerObjects(personID, person);
             return person;
-            
         }
         catch (EmptyResultSetException e)
         {
@@ -179,6 +189,4 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
     {
         return findByEmail(key);
     }
-
-
 }

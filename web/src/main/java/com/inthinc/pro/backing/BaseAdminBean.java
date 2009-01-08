@@ -409,6 +409,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         {
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getLocalizedMessage(), null);
             FacesContext.getCurrentInstance().addMessage(null, message);
+            logger.debug("Hessian error while saving", e);
             return null;
         }
 
@@ -447,6 +448,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         {
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getLocalizedMessage(), null);
             FacesContext.getCurrentInstance().addMessage(null, message);
+            logger.debug("Hessian error while deleting", e);
             return null;
         }
 
