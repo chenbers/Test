@@ -12,7 +12,7 @@ public enum ReportType
     DRIVER_TABULAR("Driver Report","DriverTableReport"),
     OVERALL_SCORE("Overal Score","ScorePieReport"),
     TREND("Trend Report","TrendReport"),
-    MPG_GROUP("Trend Report","MPGGroupReport");
+    MPG_GROUP("MPG Report","MPGGroupReport");
     
   
     private ReportType[] reportSubtypes;

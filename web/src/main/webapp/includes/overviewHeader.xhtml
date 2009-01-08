@@ -28,15 +28,16 @@
 	<rich:contextMenu event="onclick"
 		attachTiming="onavailable" disableDefaultMenu="false"
 		submitMode="server" attachTo="overviewContextMenu">
-		<rich:menuItem ajaxSingle="true" disabled="true" rendered="false"
-			iconDisabled="/images/ico_email.gif" icon="/images/ico_email.gif"
-			value="Email Report" id="email_menu_item">
-		</rich:menuItem>
+		<rich:menuItem ajaxSingle="true" rendered="true"
+					iconDisabled="/images/ico_email.gif" icon="/images/ico_email.gif"
+					value="Email Report" id="#{ajaxForm}_email" action="go_emailReports">
+					<a4j:actionparam assignTo="#{reportRendererBean.reportTypes}" converter="SimpleBeanConverter" value="#{reportRendererBean.reportTypeList}"/>
+				</rich:menuItem>
 
 		<rich:menuItem ajaxSingle="true" iconDisabled="/images/ico_pdf.gif"
 			icon="/images/ico_pdf.gif" value="Export To PDF"
-			action="#{reportRendererBean.exportMultipleReportsToPDF}" id="export_menu_item">
-			<a4j:actionparam assignTo="#{reportRendererBean.reportTypes}" converter="SimpleBeanConverter" value="${profunc:getReportTypes()}"/>
+			action="#{reportRendererBean.exportReportToPDF}" id="export_menu_item">
+			<a4j:actionparam assignTo="#{reportRendererBean.reportTypes}" converter="SimpleBeanConverter" value="#{reportRendererBean.reportTypeList}"/>
 		</rich:menuItem>
 	</rich:contextMenu>
 	</h:form>

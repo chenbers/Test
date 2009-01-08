@@ -155,6 +155,11 @@ body {
 	background: transparent url(../images/ico_driver.png) no-repeat center left;
 	}
 	
+.panel_title span.email {
+	padding: 0 0 0 20px;
+	background: transparent url(/images/ico_email.png) no-repeat center left;
+	}
+	
 .panel_title span.admin {
 	padding: 0 0 0 20px;
 	background: transparent url(../images/ico_admin.png) no-repeat center left;
@@ -523,6 +528,12 @@ form div label {
 	width: 40%;
 	font: 10px Verdana, Arial, Helvetica, sans-serif;
 	}
+	
+form td label {
+	float: none;
+	width: 100%;
+	font: 10px Verdana, Arial, Helvetica, sans-serif;
+	}
 
 form input.txt {
 	display: block;
@@ -553,6 +564,7 @@ form p.desc {
 	background: none;
 	}
 
+
 form label.radioitem {
 	clear: none;
 	float: none;
@@ -574,11 +586,13 @@ form input.checkbox {
 	margin: 0px;
 	}
 
+
 form label.field-checkbox {
 	clear: none;
 	margin: 0px 0px 0px 25px;
 	padding: 0px 0px 15px 0px;
 	}
+
 
 /* BUTTONs */
 

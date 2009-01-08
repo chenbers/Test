@@ -15,20 +15,20 @@ import com.inthinc.pro.model.VehicleType;
 
 public class NavigationBean extends BaseDurationBean
 {
-    private static final Logger logger   = Logger.getLogger(NavigationBean.class);
-    
-    //Spring managed beans
-    private GroupDAO            groupDAO;
+    private static final Logger logger = Logger.getLogger(NavigationBean.class);
 
-    private Integer             groupID;
-    private Group               group;
-    
-    //This is used for the bread crumbs
-    private TreeNodeImpl        groupTreeNode;
-    private Driver              driver;
-    private Vehicle             vehicle;
-    private Integer             start = 0;
-    private Integer             end = 0;
+    // Spring managed beans
+    private GroupDAO groupDAO;
+
+    private Integer groupID;
+    private Group group;
+
+    // This is used for the bread crumbs
+    private TreeNodeImpl groupTreeNode;
+    private Driver driver;
+    private Vehicle vehicle;
+    private Integer start = 0;
+    private Integer end = 0;
     
     //Capture for sort
     private Boolean             sortedFirst = false;
@@ -36,7 +36,7 @@ public class NavigationBean extends BaseDurationBean
 
     public NavigationBean()
     {
-     
+
     }
 
     public Integer getGroupID()
@@ -46,18 +46,19 @@ public class NavigationBean extends BaseDurationBean
 
     public void setGroupID(Integer groupID)
     {
-        //Lets not load a new group if we don't need to
-        if(this.groupID != groupID && groupDAO != null){
+        // Lets not load a new group if we don't need to
+        if (this.groupID != groupID && groupDAO != null)
+        {
             group = getGroupHierarchy().getGroup(groupID);
-//            this.group = groupDAO.findByID(groupID);
-            this.setGroupTreeNode(new TreeNodeImpl(group,getGroupHierarchy()));
+            // this.group = groupDAO.findByID(groupID);
+            this.setGroupTreeNode(new TreeNodeImpl(group, getGroupHierarchy()));
             logger.debug("Navigation setGroup:" + group.getName());
         }
         logger.debug("Navigation setGroupID: " + groupID);
         this.groupID = groupID;
-        
+
     }
-    
+
     public Driver getDriver()
     {
         return driver;
@@ -68,11 +69,12 @@ public class NavigationBean extends BaseDurationBean
         this.driver = driver;
         setGroupID(driver.getGroupID());
     }
+
     public Vehicle getVehicle()
     {
         return vehicle;
     }
-    
+
     public void setVehicle(Vehicle vehicle)
     {
         this.vehicle = vehicle;
@@ -127,14 +129,21 @@ public class NavigationBean extends BaseDurationBean
     {
         return groupTreeNode;
     }
-    
+
+    public String groupPageAction()
+    {
+        
+        GroupLevel groupLevel = getGroupHierarchy().getGroupLevel(group);
+        return groupLevel.getLocation();
+    }
+
     public String homeAction()
     {
         GroupLevel groupLevel = getGroupHierarchy().getGroupLevel(getGroupHierarchy().getTopGroup());
         setGroupID(getGroupHierarchy().getTopGroup().getGroupID());
-        
+
         return groupLevel.getLocation();
-   
+
     }
     
 
