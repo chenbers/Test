@@ -100,8 +100,10 @@
                                 <strong><h:outputText value="#{messages.zones_name}" /></strong>
                               </td>
                               <td>
-                                <rich:message for="zoneName" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                 <h:inputText id="zoneName" value="#{zonesBean.item.name}" class="text" size="30" maxlength="60" required="#{zonesBean.editing}" requiredMessage="#{messages.required}" />
+                              </td>
+                              <td>
+                                <rich:message for="zoneName" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                               </td>
                             </tr>
                           </table>
