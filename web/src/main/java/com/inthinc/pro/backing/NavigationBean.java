@@ -29,6 +29,10 @@ public class NavigationBean extends BaseDurationBean
     private Vehicle             vehicle;
     private Integer             start = 0;
     private Integer             end = 0;
+    
+    //Capture for sort
+    private Boolean             sortedFirst = false;
+    private Boolean             sortedSecond = false;
 
     public NavigationBean()
     {
@@ -132,4 +136,39 @@ public class NavigationBean extends BaseDurationBean
         return groupLevel.getLocation();
    
     }
+    
+
+    public Boolean getSortedFirst()
+    {
+        return sortedFirst;
+    }
+
+    public void setSortedFirst(Boolean sortedFirst)
+    {
+        if ( this.sortedFirst ) 
+        {
+            this.sortedFirst = false;
+        } 
+        else if ( !this.sortedFirst )
+        {
+            this.sortedFirst = true;
+        }
+    }
+
+    public Boolean getSortedSecond()
+    {
+        return sortedSecond;
+    }
+
+    public void setSortedSecond(Boolean sortedSecond)
+    {
+        if ( this.sortedSecond ) 
+        {
+            this.sortedSecond = false;
+        } 
+        else if ( !this.sortedSecond )
+        {
+            this.sortedSecond = true;
+        }
+    }    
 }
