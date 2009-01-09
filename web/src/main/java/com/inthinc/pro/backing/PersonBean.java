@@ -337,6 +337,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
 
         for (final PersonView person : deleteItems)
         {
+            if (person.isUserSelected() && (person.getUser().getUserID() != null))
+                userDAO.deleteByID(person.getUser().getUserID());
+            if (person.isDriverSelected() && (person.getDriver().getDriverID() != null))
+                driverDAO.deleteByID(person.getDriver().getDriverID());
             personDAO.deleteByID(person.getPersonID());
 
             // add a message
