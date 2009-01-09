@@ -218,7 +218,7 @@
                                   <h:selectOneMenu value="#{vehiclesBean.item.groupID}" id="groupID" required="#{(not vehiclesBean.batchEdit) or vehiclesBean.updateField['groupID']}" requiredMessage="#{messages.required}">
                                     <a4j:support event="onchange" reRender="driverID,chooseDriverForm:chooseDriverTable" limitToList="true" ajaxSingle="true" onsubmit="checkMultiple(this)" />
                                     <f:selectItem itemLabel="" />
-                                    <f:selectItems value="#{vehiclesBean.groups}" />
+                                    <f:selectItems value="#{vehiclesBean.teams}" />
                                   </h:selectOneMenu>
                                 </td>
                               </tr>

@@ -101,7 +101,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     private DeviceDAO                             deviceDAO;
     private GroupDAO                              groupDAO;
     private List<Group>                           allGroups;
-    private TreeMap<String, Integer>              groups;
+    private TreeMap<String, Integer>              teams;
     private TreeMap<Integer, String>              groupNames;
     private List<Driver>                          drivers;
     private TreeMap<Integer, Boolean>             driverAssigned;
@@ -296,9 +296,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
 
     public List<Driver> getDrivers()
     {
-// TODO: is the below call to getAllDrivers the call we need?
         if ((drivers == null) && (getItem().getGroupID() != null))
-            drivers = driverDAO.getAllDrivers(getItem().getGroupID());
+            drivers = driverDAO.getDrivers(getItem().getGroupID());
         return drivers;
     }
 
@@ -466,15 +465,16 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         return STATUSES;
     }
 
-    public TreeMap<String, Integer> getGroups()
+    public TreeMap<String, Integer> getTeams()
     {
-        if (groups == null)
+        if (teams == null)
         {
-            groups = new TreeMap<String, Integer>();
+            teams = new TreeMap<String, Integer>();
             for (final Group group : getAllGroups())
-                groups.put(group.getName(), group.getGroupID());
+                if (group.getType() == GroupType.TEAM)
+                    teams.put(group.getName(), group.getGroupID());
         }
-        return groups;
+        return teams;
     }
 
     public static class VehicleView extends Vehicle implements EditItem
