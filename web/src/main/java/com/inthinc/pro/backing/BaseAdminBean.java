@@ -423,6 +423,11 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
             applyFilter();
         }
 
+        // deselect all edited items
+        for (final T item : getSelectedItems())
+            item.setSelected(false);
+
+        // redirect
         if (isBatchEdit())
             return getFinishedRedirect();
         else
