@@ -37,14 +37,7 @@ public class MiscUtil
             else
                 return phone;
         }
-        final StringBuilder sb = new StringBuilder();
-        sb.append('(');
-        sb.append(phone.substring(0, 3));
-        sb.append(") ");
-        sb.append(phone.substring(3, 6));
-        sb.append('-');
-        sb.append(phone.substring(6));
-        return sb.toString();
+        return MessageUtil.formatMessageString("phoneFormat", phone.substring(0, 3), phone.substring(3, 6), phone.substring(6));
     }
 
     public static String unformatPhone(String phone)
