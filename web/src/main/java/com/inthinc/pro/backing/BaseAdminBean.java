@@ -384,6 +384,8 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     public String save()
     {
         final List<T> selected = getSelectedItems();
+        if ((selected.size() == 0) && isAdd())
+            selected.add(item);
 
         if (batchEdit)
         {
