@@ -105,7 +105,7 @@ public class FwdCmdBean
         {
             data = Integer.valueOf(0);
         }
-        deviceDAO.queueForwardCommand(device.getDeviceID(), new ForwardCommand(0, ForwardCommandID.valueOf(fwdcmd), data, ForwardCommandStatus.STATUS_QUEUED));
+        deviceDAO.queueForwardCommand(device.getDeviceID(), new ForwardCommand(0, fwdcmd, data, ForwardCommandStatus.STATUS_QUEUED));
     }
 
 

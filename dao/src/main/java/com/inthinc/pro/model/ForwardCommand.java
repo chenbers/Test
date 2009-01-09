@@ -6,7 +6,7 @@ public class ForwardCommand extends BaseEntity implements Comparable<ForwardComm
 {
     @ID
     private Integer fwdID;
-    private ForwardCommandID cmd;
+    private Integer cmd;
     private Object data;        // can be integer or string
     private ForwardCommandStatus status; 
 
@@ -15,7 +15,7 @@ public class ForwardCommand extends BaseEntity implements Comparable<ForwardComm
     {
         super();
     }
-    public ForwardCommand(Integer fwdID, ForwardCommandID cmd, Object data, ForwardCommandStatus status)
+    public ForwardCommand(Integer fwdID, Integer cmd, Object data, ForwardCommandStatus status)
     {
         super();
         this.fwdID = fwdID;
@@ -23,11 +23,11 @@ public class ForwardCommand extends BaseEntity implements Comparable<ForwardComm
         this.data = data;
         this.status = status;
     }
-    public ForwardCommandID getCmd()
+    public Integer getCmd()
     {
         return cmd;
     }
-    public void setCmd(ForwardCommandID cmd)
+    public void setCmd(Integer cmd)
     {
         this.cmd = cmd;
     }

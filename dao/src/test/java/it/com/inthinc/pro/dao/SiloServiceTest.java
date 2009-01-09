@@ -65,6 +65,7 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.Role;
+import com.inthinc.pro.model.SensitivityForwardCommandMapping;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TablePreference;
@@ -186,6 +187,18 @@ public class SiloServiceTest
         
         assertTrue(SupportedTimeZones.getSupportedTimeZones().size() > 0);
         
+    }
+
+    @Test
+    public void sensitivityForwardCommandMapping()
+    {
+        DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
+        deviceDAO.setSiloService(siloService);
+
+        List<SensitivityForwardCommandMapping> fcList = deviceDAO.getSensitivityForwardCommandMapping();
+
+        
+        assertEquals("The sensitivity forward command mapping list should contain 4 items.", 4, fcList.size());
     }
     
     @Test

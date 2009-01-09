@@ -38,13 +38,19 @@ public class Device extends BaseEntity
     private Integer[]         speedSettings;
     @Column(updateable = false)
     private boolean           sensitivitiesInverted;
-    @Column(name = "accel")
+    
+    private String  accel;
+    private String  brake;
+    private String  turn;
+    private String  vert;
+    
+    @Column(updateable = false)
     private Integer           hardAcceleration;
-    @Column(name = "brake")
+    @Column(updateable = false)
     private Integer           hardBrake;
-    @Column(name = "turn")
+    @Column(updateable = false)
     private Integer           hardTurn;
-    @Column(name = "vert")
+    @Column(updateable = false)
     private Integer           hardVertical;
     private Integer           baseID;
 
@@ -298,6 +304,38 @@ public class Device extends BaseEntity
     public void setBaseID(Integer baseID)
     {
         this.baseID = baseID;
+    }
+    public String getAccel()
+    {
+        return accel;
+    }
+    public void setAccel(String accel)
+    {
+        this.accel = accel;
+    }
+    public String getBrake()
+    {
+        return brake;
+    }
+    public void setBrake(String brake)
+    {
+        this.brake = brake;
+    }
+    public String getTurn()
+    {
+        return turn;
+    }
+    public void setTurn(String turn)
+    {
+        this.turn = turn;
+    }
+    public String getVert()
+    {
+        return vert;
+    }
+    public void setVert(String vert)
+    {
+        this.vert = vert;
     }
 
 }

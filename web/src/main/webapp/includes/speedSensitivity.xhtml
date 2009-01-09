@@ -70,8 +70,8 @@
 
                             <script type="text/javascript">
                               var sensitivities = new Array();
-                              <c:forEach begin="20" var="sensitivity" end="90">
-                                sensitivities[#{sensitivity}] = '<h:outputText value="#{(sensitivity le 43) ? messages.editDevice_sensitivityLess : ((sensitivity le 67) ? messages.editDevice_sensitivityAverage : messages.editDevice_sensitivityMore)}" />';
+                              <c:forEach begin="1" var="sensitivity" end="5">
+                                sensitivities[#{sensitivity}] = '<h:outputText value="#{(sensitivity le 2) ? messages.editDevice_sensitivityLess : ((sensitivity eq 3) ? messages.editDevice_sensitivityAverage : messages.editDevice_sensitivityMore)}" />';
                               </c:forEach>
                             </script>
 
@@ -83,13 +83,13 @@
                                 <th><h:outputText value="#{messages.editDevice_sensitivityHeader}" /></th>
                                 <th colspan="3"><h:outputText value="#{messages.editDevice_sensitivitySettingHeader}" /></th>
                               </tr>
-                              <c:forEach begin="0" var="index" end="3">
-                                <c:set var="sensitivityItem" value="#{(index == 0) ? 'hardBrake' : ((index == 1) ? 'hardAcceleration' : ((index == 2) ? 'hardTurn' : 'hardVertical'))}" />
+                              <c:forEach begin="1" var="index" end="4">
+                                <c:set var="sensitivityItem" value="#{(index == 1) ? 'hardAcceleration' : ((index == 2) ? 'hardBrake' : ((index == 3) ? 'hardTurn' : 'hardVertical'))}" />
                                 <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
                                   <td></td>
                                   <td style="padding: 6px 12px 0px 12px" colspan="2" align="right">
                                     <h:outputText value="#{messages.editDevice_currentSensitivity}" />
-                                    <c:set var="sensitivityLevel" value="#{(device[sensitivityItem] ge 67) ? messages.editDevice_sensitivityMore : ((device[sensitivityItem] ge 43) ? messages.editDevice_sensitivityAverage : messages.editDevice_sensitivityLess)}" />
+                                    <c:set var="sensitivityLevel" value="#{(device[sensitivityItem] ge 4) ? messages.editDevice_sensitivityMore : ((device[sensitivityItem] eq 3) ? messages.editDevice_sensitivityAverage : messages.editDevice_sensitivityLess)}" />
                                     <h:outputText id="#{sensitivityItem}Level" style="font-weight:bold" value="#{sensitivityLevel}" />
                                   </td>
                                   <td></td>
@@ -102,7 +102,7 @@
                                   </td>
                                   <td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;"><h:outputText value="#{messages.editDevice_sensitivityLess}" /></td>
                                   <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <rich:inputNumberSlider id="#{sensitivityItem}" disabled="#{disabled}" value="#{device[sensitivityItem]}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="20" maxValue="90" onchange="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById(this.mainTable.id + 'Level').innerHTML = sensitivities[this.value]" />
+                                    <rich:inputNumberSlider id="#{sensitivityItem}" disabled="#{disabled}" value="#{device[sensitivityItem]}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="1" maxValue="5" onchange="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById(this.mainTable.id + 'Level').innerHTML = sensitivities[this.value]" />
                                   </td>
                                   <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;"><h:outputText value="#{messages.editDevice_sensitivityMore}" /></td>
                                 </tr>

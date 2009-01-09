@@ -7,14 +7,23 @@ import java.util.Map;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.FindByKey;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
+import com.inthinc.pro.dao.hessian.mapper.DeviceMapper;
+import com.inthinc.pro.dao.hessian.mapper.TablePrefMapper;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.ForwardCommand;
 import com.inthinc.pro.model.ForwardCommandStatus;
+import com.inthinc.pro.model.SensitivityForwardCommandMapping;
 
 public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer> implements DeviceDAO, FindByKey<Device>
 {
     private static final String CENTRAL_ID_KEY = "mcmid";
 
+    public DeviceHessianDAO()
+    {
+        super();
+        super.setMapper(new DeviceMapper());
+    }
+    
     @Override
     public List<Device> getDevicesByAcctID(Integer accountID)
     {
@@ -67,4 +76,11 @@ public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer> impleme
     {
         return getChangedCount(getSiloService().queueFwdCmd(deviceID, getMapper().convertToMap(forwardCommand)));
     }
+    
+    @Override
+    public List<SensitivityForwardCommandMapping> getSensitivityForwardCommandMapping()
+    {
+        return getMapper().convertToModelObject(getSiloService().getSensitivityMaps(), SensitivityForwardCommandMapping.class);
+    }
+
 }

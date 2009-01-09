@@ -12,5 +12,8 @@
    <bean id="supportedTimeZones" class="com.inthinc.pro.model.app.SupportedTimeZones" init-method="init">
 		<property name="timeZoneDAO" ref="timeZoneDAO"></property>
    </bean>
+   <bean id="deviceSensitivityMapping" class="com.inthinc.pro.model.app.DeviceSensitivityMapping" init-method="init">
+		<property name="deviceDAO" ref="deviceDAO"></property>
+   </bean>
 
 </beans>
