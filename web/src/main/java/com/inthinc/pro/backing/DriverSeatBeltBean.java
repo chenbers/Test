@@ -17,6 +17,7 @@ import com.inthinc.pro.charts.Line;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.AggressiveDrivingEvent;
 import com.inthinc.pro.model.Distance;
 import com.inthinc.pro.model.Driver;
@@ -123,17 +124,22 @@ public class DriverSeatBeltBean extends BaseDurationBean
     }
 
     //SEATBELT EVENTS LIST
-    public List<SeatBeltEvent> getSeatBeltEvents() {
-        
-        List<Integer> types = new ArrayList<Integer>();    
-        types.add(3);
-        
-        List<Event> tempEvents = new ArrayList<Event>();
-        tempEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), getStartDate(), getEndDate(), types);
-       
-        for(Event event: tempEvents)
+    public List<SeatBeltEvent> getSeatBeltEvents() 
+    {
+        if(seatBeltEvents.size() < 1)
         {
-            seatBeltEvents.add( (SeatBeltEvent)event );   
+            List<Integer> types = new ArrayList<Integer>();    
+            types.add(3);
+            
+            List<Event> tempEvents = new ArrayList<Event>();
+            tempEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), getStartDate(), getEndDate(), types);
+           
+            AddressLookup lookup = new AddressLookup();
+            for(Event event: tempEvents)
+            {
+                event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
+                seatBeltEvents.add( (SeatBeltEvent)event );   
+            }
         }
         
         return seatBeltEvents;

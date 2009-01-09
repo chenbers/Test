@@ -21,7 +21,7 @@ public class AddressLookup
     public AddressLookup() 
     {
         logger.debug("AddressLookup - constructor");
-//      mapServerURLString = "http://testteen.iwiglobal.com:8081/geonames/servlet/iwiglobal?srv=findNearbyAddress";
+      mapServerURLString = "http://testteen.iwiglobal.com:8081/geonames/servlet/iwiglobal?srv=findNearbyAddress";
 
     }
     public String getMapServerURLString()
@@ -37,10 +37,13 @@ public class AddressLookup
 
     public String getAddress(double lat, double lng) 
     {
-        try {
-            return sendRequest(new URL(getMapServerURLString()+"&lat=" + lat + "&lng=" + lng));
+        try 
+        {
+            String address = sendRequest(new URL(getMapServerURLString()+"&lat=" + lat + "&lng=" + lng));
+            return address.length() < 1 ? "No address found at location." : address;
         }
-        catch (Exception e) {
+        catch (Exception e) 
+        {
             logger.error(e);
         }
         

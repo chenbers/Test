@@ -4,7 +4,8 @@
   				xmlns:h="http://java.sun.com/jsf/html" 
   				xmlns:rich="http://richfaces.org/rich"
   				xmlns:a4j="http://richfaces.org/a4j"
-  				xmlns:f="http://java.sun.com/jsf/core">
+  				xmlns:f="http://java.sun.com/jsf/core"
+  				xmlns:t="http://myfaces.apache.org/tomahawk">
 
 	<ui:define name="scripts">
 		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>	
@@ -14,7 +15,7 @@
 	      {
 	        if (GBrowserIsCompatible())
 		        {
-					var map = new GMap2(document.getElementById("map-canvas"));
+					var map = new GMap2(document.getElementById("location-canvas"));
 					var location = new GLatLng(lat, lng)
 					map.setCenter(location, 15);
 					map.addOverlay(new GMarker(location)); 
@@ -24,6 +25,8 @@
 	</ui:define>
 
 	<ui:param name="reportsSelected" value="current" />
+	
+	<t:saveState value="#{driverStyleBean.styleEvents}"/>
 	
 	<ui:define name="content">
 <div id="wrapper">
@@ -77,7 +80,7 @@ var selected = 'OVERALL';
 		
 		chartVar.setDataXML(data);
 		
-		chartVar.render('overall_chart');
+		//chartVar.render('overall_chart');
 	}
 </script>
 
@@ -359,8 +362,8 @@ var selected = 'OVERALL';
 			<div class="datagrid">
 				<!-- Start Event table --> 
 					<h:form id="eventTable">
-					<rich:datascroller align="center" for="items"
-							id="scrollerTop" reRender="items" />
+					<rich:datascroller align="center" for="items" immediate="true"
+							id="scrollerTop" reRender="items,scrollerBottom" />
 						<rich:dataTable value="#{driverStyleBean.styleEvents}" 
 						id="items" var="item" styleClass="datagrid"
 						rowClasses="tableOdd,tableEven" cellspacing="1" 
@@ -370,16 +373,15 @@ var selected = 'OVERALL';
 								<f:facet name="header">
 									<h:outputText value="Location" />
 								</f:facet>
-				              <a4j:commandLink style="cursor:pointer">
-					                <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
-					                  <f:param name="lat" value="#{item.latitude}"/>
-					                  <f:param name="lng" value="#{item.longitude}"/>
-					                </rich:componentControl>
-					                	<div class="maplink">
-					                		#{item.addressStr}<br />
-					                	</div>
-					                	<!-- ADDRESS GEOCODING NEEDED / MAP image cut off at bottom. -->
-				              </a4j:commandLink>
+								<div class="maplink">
+					              <a4j:commandLink style="cursor:pointer">
+						                <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
+						                  <f:param name="lat" value="#{item.latitude}"/>
+						                  <f:param name="lng" value="#{item.longitude}"/>
+						                </rich:componentControl>
+						                		#{item.addressStr}<br />
+					              </a4j:commandLink>
+				              	</div>
 				            </rich:column>
 							
 							<rich:column sortBy="#{item.time}">
@@ -402,7 +404,7 @@ var selected = 'OVERALL';
 								<f:facet name="header">
 									<h:outputText value="Avg Speed" />
 								</f:facet>
-								<strong><h:outputText value="#{item.avgSpeed}" /></strong>
+								<strong><h:outputText value="#{item.avgSpeed} #{messages.measurement_speed}" /></strong>
 							</rich:column>
 							
 							<rich:column sortBy="#{item.severity}">
@@ -423,8 +425,8 @@ var selected = 'OVERALL';
 							
 						</rich:dataTable>
 						
-						<rich:datascroller align="center" for="items"
-							id="scrollerBottom" reRender="items" />
+						<rich:datascroller align="center" for="items" immediate="true"
+							id="scrollerBottom" reRender="items,scrollerTop" />
 					</h:form> 
 				<!-- End Event table -->
 				</div>
@@ -449,7 +451,7 @@ var selected = 'OVERALL';
     </f:facet>
 
     <div class="eventmap-border">
-    	<div id="map-canvas" style="width: 522px; height: 355px; border: 0"></div>
+    	<div id="location-canvas" style="width: 522px; height: 355px; border: 0"></div>
     </div>
 
     <div class="popupactions">

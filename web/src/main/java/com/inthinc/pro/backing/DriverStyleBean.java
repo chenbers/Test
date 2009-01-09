@@ -18,6 +18,7 @@ import com.inthinc.pro.charts.Line;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Distance;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
@@ -277,16 +278,21 @@ public class DriverStyleBean extends BaseDurationBean
      */
     public List<AggressiveDrivingEvent> getStyleEvents()
     {
-        List<Integer> types = new ArrayList<Integer>();    
-        types.add(2);
-        
-        List<Event> tempEvents = new ArrayList<Event>();
-     
-        tempEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), getStartDate(), getEndDate(), types);
-       
-        for(Event event: tempEvents)
+        if(styleEvents.size() < 1)
         {
-            styleEvents.add( (AggressiveDrivingEvent)event );   
+            List<Integer> types = new ArrayList<Integer>();    
+            types.add(2);
+            
+            List<Event> tempEvents = new ArrayList<Event>();
+         
+            tempEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), getStartDate(), getEndDate(), types);
+           
+            AddressLookup lookup = new AddressLookup();
+            for(Event event: tempEvents)
+            {
+                event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
+                styleEvents.add( (AggressiveDrivingEvent)event );   
+            }
         }
         
         return styleEvents;
