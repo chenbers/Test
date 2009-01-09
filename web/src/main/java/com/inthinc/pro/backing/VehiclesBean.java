@@ -24,6 +24,7 @@ import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TableType;
@@ -43,7 +44,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     private static final Map<String, String>      YEARS;
     private static final Map<String, VehicleType> TYPES;
     private static final Map<String, State>       STATES;
-    private static final Map<String, Status>    STATUSES;
+    private static final Map<String, Status>      STATUSES;
 
     static
     {
@@ -87,22 +88,23 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         STATES = new TreeMap<String, State>();
         for (final State state : States.getStates().values())
             STATES.put(state.getName(), state);
-        
+
         // statuses
         STATUSES = new TreeMap<String, Status>();
         STATUSES.put(Status.ACTIVE.toString(), Status.ACTIVE);
         STATUSES.put(Status.INACTIVE.toString(), Status.INACTIVE);
-        
+
     }
 
     private VehicleDAO                            vehicleDAO;
     private DriverDAO                             driverDAO;
     private DeviceDAO                             deviceDAO;
     private GroupDAO                              groupDAO;
-    private transient TreeMap<String, Integer>    groups;
-    private transient TreeMap<Integer, String>    groupNames;
-    private transient List<Driver>                drivers;
-    private transient TreeMap<Integer, Boolean>   driverAssigned;
+    private List<Group>                           allGroups;
+    private TreeMap<String, Integer>              groups;
+    private TreeMap<Integer, String>              groupNames;
+    private List<Driver>                          drivers;
+    private TreeMap<Integer, Boolean>             driverAssigned;
 
     public void setVehicleDAO(VehicleDAO vehicleDAO)
     {
@@ -127,8 +129,10 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
     @Override
     protected List<VehicleView> loadItems()
     {
+        final Group top = getAllGroups().get(0);
+
         // get the vehicles
-        final List<Vehicle> plainVehicles = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
+        final List<Vehicle> plainVehicles = vehicleDAO.getVehiclesInGroupHierarchy(top.getGroupID());
 
         // convert the Vehicles to VehicleViews
         final LinkedList<VehicleView> items = new LinkedList<VehicleView>();
@@ -136,6 +140,19 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
             items.add(createVehicleView(vehicle));
 
         return items;
+    }
+
+    private List<Group> getAllGroups()
+    {
+        if (allGroups == null)
+        {
+            final GroupHierarchy hierarchy = getGroupHierarchy();
+            if (hierarchy.getTopGroup().getType() == GroupType.FLEET)
+                allGroups = hierarchy.getGroupList();
+            else
+                allGroups = groupDAO.getGroupsByAcctID(getAccountID());
+        }
+        return allGroups;
     }
 
     /**
@@ -172,8 +189,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
                     matches = (vehicle.getGroup() != null) && vehicle.getGroup().getName().toLowerCase().startsWith(filterWord);
                 else if (column.equals("status"))
                     matches = (vehicle.getStatus() != null)
-                            && ((vehicle.getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("active").toLowerCase().startsWith(filterWord)) || ((!vehicle.getStatus().equals(Status.ACTIVE) && MessageUtil
-                                    .getMessageString("inactive").toLowerCase().startsWith(filterWord))));
+                            && ((vehicle.getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("active").toLowerCase().startsWith(filterWord)) || ((!vehicle
+                                    .getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("inactive").toLowerCase().startsWith(filterWord))));
 
                 if (matches)
                     return true;
@@ -279,6 +296,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
 
     public List<Driver> getDrivers()
     {
+// TODO: is the below call to getAllDrivers the call we need?
         if ((drivers == null) && (getItem().getGroupID() != null))
             drivers = driverDAO.getAllDrivers(getItem().getGroupID());
         return drivers;
@@ -289,8 +307,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         if (groupNames == null)
         {
             groupNames = new TreeMap<Integer, String>();
-            final GroupHierarchy hierarchy = getProUser().getGroupHierarchy();
-            for (final Group group : hierarchy.getGroupList())
+            for (final Group group : getAllGroups())
                 groupNames.put(group.getGroupID(), group.getName());
         }
         return groupNames;
@@ -368,7 +385,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         for (final VehicleView vehicle : saveItems)
         {
             if (create)
-                vehicle.setVehicleID(vehicleDAO.create(getUser().getGroupID(), vehicle));
+                vehicle.setVehicleID(vehicleDAO.create(vehicle.getGroupID(), vehicle));
             else
                 vehicleDAO.update(vehicle);
             vehicle.setOldGroupID(vehicle.getGroupID());
@@ -454,8 +471,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         if (groups == null)
         {
             groups = new TreeMap<String, Integer>();
-            final GroupHierarchy hierarchy = getProUser().getGroupHierarchy();
-            for (final Group group : hierarchy.getGroupList())
+            for (final Group group : getAllGroups())
                 groups.put(group.getName(), group.getGroupID());
         }
         return groups;

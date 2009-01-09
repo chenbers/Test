@@ -168,6 +168,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     private DriverDAO                          driverDAO;
     private GroupDAO                           groupDAO;
     private PasswordEncryptor                  passwordEncryptor;
+    private List<Group>                        allGroups;
     private Map<String, Integer>               groups;
     private Map<String, Integer>               teams;
     private Map<String, Role>                  roles;
@@ -200,8 +201,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     @Override
     protected List<PersonView> loadItems()
     {
+        final Group top = getAllGroups().get(0);
+
         // get the people
-        final List<Person> plainPeople = personDAO.getPeopleInGroupHierarchy(getUser().getGroupID());
+        final List<Person> plainPeople = personDAO.getPeopleInGroupHierarchy(top.getGroupID());
 
         // convert the people to PersonViews
         final LinkedList<PersonView> items = new LinkedList<PersonView>();
@@ -209,6 +212,19 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
             items.add(createPersonView(person));
 
         return items;
+    }
+
+    private List<Group> getAllGroups()
+    {
+        if (allGroups == null)
+        {
+            final GroupHierarchy hierarchy = getGroupHierarchy();
+            if (hierarchy.getTopGroup().getType() == GroupType.FLEET)
+                allGroups = hierarchy.getGroupList();
+            else
+                allGroups = groupDAO.getGroupsByAcctID(getAccountID());
+        }
+        return allGroups;
     }
 
     /**
@@ -423,7 +439,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
             }
 
             if (create)
-                person.setPersonID(personDAO.create(getUser().getGroupID(), person));
+                person.setPersonID(personDAO.create(getAccountID(), person));
             else
                 personDAO.update(person);
 
@@ -472,8 +488,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         if (groups == null)
         {
             groups = new TreeMap<String, Integer>();
-            final GroupHierarchy hierarchy = getProUser().getGroupHierarchy();
-            for (final Group group : hierarchy.getGroupList())
+            for (final Group group : getAllGroups())
                 groups.put(group.getName(), group.getGroupID());
         }
         return groups;
@@ -484,8 +499,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         if (teams == null)
         {
             teams = new TreeMap<String, Integer>();
-            final GroupHierarchy hierarchy = getProUser().getGroupHierarchy();
-            for (final Group group : hierarchy.getGroupList())
+            for (final Group group : getAllGroups())
                 if (group.getType() == GroupType.TEAM)
                     teams.put(group.getName(), group.getGroupID());
         }
