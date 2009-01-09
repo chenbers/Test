@@ -141,6 +141,7 @@
                     </div>
 				</div>
 					<div class="panel_w">
+					
 					  <div class="panel_content">
 					  	<!-- Start xy graph --> 
 				<rich:panel id="xypanel" 
@@ -160,10 +161,30 @@
 				</rich:panel> 
 				<!-- End xy graph -->
 
-		<div class="spacer"></div>			
+		<div class="spacer"></div>
+			
+		<rich:panel>	
+			<rich:spacer height="10"/>
+								
+				<div style="text-align: right;" >													
+					<h:outputText 
+						id="countString" value="#{trendBean.countString}"/>
+					<rich:spacer width="10"/>
+				</div>					
+													
+		</rich:panel>					
 
 		<div class="datagrid">
-			<h:form id="trendTable">	
+		
+			<h:form id="trendTable">
+							
+					<rich:datascroller id="topScroller" for="items" immediate="true"
+        				scrollerListener="#{trendBean.scrollerListener}" maxPages="5"
+        				reRender="bottomScroller,countString,starter,items,xypanel">        			
+        			</rich:datascroller>	
+						        							
+   						<h:inputHidden id="hiddenGroupID" value="#{navigationBean.groupID}"/>   											
+				
 						<rich:dataTable value="#{trendBean.scoreableEntities}" id="items"
 							var="item" styleClass="datagrid"
 							rowClasses="trendTableOdd,trendTableEven" 
@@ -201,20 +222,17 @@
 								<iwi:scoreBox style="#{item.style}" score="#{item.se.score}"/>
 												
 							</rich:column>
-						</rich:dataTable>
+						</rich:dataTable>				
 				
-				<rich:panel style="border: 1px solid #ccc; height: 24px; width: 100%;">	
-					<div style="text-align: right;">													
-						<h:outputText id="totalString" value="Showing #{trendBean.maxCount} records."/>
-						<rich:spacer width="10"/>
-					</div>									
-				</rich:panel>
-					</h:form> 
-				<!-- End Trend table -->
-				<!-- End Trend table -->
+				<rich:datascroller id="bottomScroller" for="items" immediate="true"
+    				scrollerListener="#{trendBean.scrollerListener}" maxPages="5"
+        			reRender="topScroller,countString,starter,items,xypanel">        			
+        		</rich:datascroller>  
+        			
+			</h:form> 
 
-					<!-- leave reRenderList alone -->
-
+					<!-- End Trend table -->
+					
 					<!-- END PANEL -->
 						
 						</div>

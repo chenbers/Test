@@ -90,6 +90,7 @@
 									<ui:param name="flySelectedTab" value="trend_full_screen" />  
 									<ui:param name="flyOutImage" value="ico_expand.png" />
 									<ui:param name="reportType" value="TREND" />
+									<ui:param name="numRowsPerPg" value="10"/>
 								</ui:include>	
 							</div>
 		
@@ -97,7 +98,6 @@
 
 
 						<div class="panel_w">
-							<h:inputHidden id="starter" value="#{trendBean.start}"></h:inputHidden>
 
 								<div class="panel_content">
 									<!-- Start xy graph --> 
@@ -121,16 +121,18 @@
 								<div class="spacer"></div>
 								<div class="spacer"></div>				
 				
-								<div style="border: 1px solid black; height: 40px; width:445px;">
+								
 								<rich:panel>	
 									<rich:spacer height="10"/>
+									
 									<div style="text-align: right;" >													
 										<h:outputText 
 											id="countString" value="#{trendBean.countString}"/>
 										<rich:spacer width="10"/>
-									</div>									
+									</div>					
+													
 								</rich:panel>
-							</div>
+								
 				
 							<div class="spacer"></div>
 							<div class="spacer"></div>		
@@ -140,11 +142,11 @@
 								<h:form id="trendTable">	
 								
         							<rich:datascroller id="topScroller" for="items" immediate="true"
-        								scrollerListener="#{trendBean.scrollerListener}" 
+        								scrollerListener="#{trendBean.scrollerListener}" maxPages="5"
         								reRender="bottomScroller,countString,starter,items,xypanel">        			
         							</rich:datascroller>	
         							
-   										<h:inputHidden id="hiddenGroupID" value="#{navigationBean.groupID}" />				
+   										<h:inputHidden id="hiddenGroupID" value="#{navigationBean.groupID}"/>   								
 			
 										<rich:dataTable value="#{trendBean.scoreableEntities}" id="items"
 											var="item" styleClass="datagrid"
@@ -191,7 +193,7 @@
 										</rich:dataTable>
 						
 									<rich:datascroller id="bottomScroller" for="items" immediate="true"
-    									scrollerListener="#{trendBean.scrollerListener}"
+    									scrollerListener="#{trendBean.scrollerListener}" maxPages="5"
         								reRender="topScroller,countString,starter,items,xypanel">        			
         							</rich:datascroller>        		
         		
