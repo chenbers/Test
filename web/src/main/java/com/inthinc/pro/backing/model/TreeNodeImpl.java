@@ -94,27 +94,7 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable
 
     public GroupLevel getGroupLevel()
     {
-        if (groupLevel == null && group != null)
-        {
-            switch (treeNodeType) {
-            case FLEET:
-                groupLevel = GroupLevel.FLEET;
-                break;
-            case DIVISION:
-                groupLevel = GroupLevel.DIVISION;
-                break;
-            case TEAM:
-                groupLevel = GroupLevel.TEAM;
-                break;
-            }
-
-            if (group.equals(groupHierarchyUtil.getTopGroup()))
-            {
-                groupLevel = GroupLevel.FLEET;
-            }
-
-        }
-        return groupLevel;
+        return groupHierarchyUtil.getGroupLevel(this.group);
     }
 
     public Group getGroup()

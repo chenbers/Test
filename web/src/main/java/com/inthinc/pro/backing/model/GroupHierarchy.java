@@ -76,19 +76,15 @@ public class GroupHierarchy implements Serializable
 
     public GroupLevel getGroupLevel(Group group)
     {
-        if (group.getParentID().intValue() == 0)
+        GroupLevel groupLevel = GroupLevel.DIVISION;
+        switch(group.getType())
         {
-            return GroupLevel.FLEET;
+        case FLEET: groupLevel = GroupLevel.FLEET;break;
+        case DIVISION: groupLevel = GroupLevel.DIVISION;break;
+        case TEAM: groupLevel = GroupLevel.TEAM;break;
         }
-        
-        if (!groupHasChildren(group))
-        {
-            return GroupLevel.TEAM;
-        }
-        
-        
-        return GroupLevel.DIVISION;
-        
+
+        return groupLevel;
     }
     
     public List<Group> getChildren(Group parent){
