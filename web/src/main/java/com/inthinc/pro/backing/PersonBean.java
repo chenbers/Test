@@ -428,13 +428,13 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
             if ((person.getPassword() != null) && (person.getPassword().length() > 0))
                 person.getUser().setPassword(passwordEncryptor.encryptPassword(person.getPassword()));
 
-            if (!person.isUserSelected())
+            if (!person.isUserSelected() && (person.getUser() != null))
             {
                 if (person.getUser().getUserID() != null)
                     userDAO.deleteByID(person.getUser().getUserID());
                 person.setUser(null);
             }
-            if (!person.isDriverSelected())
+            if (!person.isDriverSelected() && (person.getDriver() != null))
             {
                 if (person.getDriver().getDriverID() != null)
                     driverDAO.deleteByID(person.getDriver().getDriverID());
