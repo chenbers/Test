@@ -223,6 +223,13 @@ public class Vehicle extends BaseEntity
     {
         if ((this.year == null) && (this.make == null) && (this.model == null))
             return null;
-        return this.year + " " + this.make + " " + this.model;
+        
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.year!=null?this.year:"");
+        sb.append(" ");
+        sb.append(this.make!=null?this.make:"");
+        sb.append(" ");
+        sb.append(this.model!=null?this.model:"");
+        return sb.toString();
     }
 }
