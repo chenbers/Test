@@ -374,13 +374,16 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         for (final PersonView person : saveItems)
         {
             // unique e-mail
-            final Person byEmail = personDAO.findByEmail(person.getEmail());
-            if ((byEmail != null) && !byEmail.getPersonID().equals(person.getPersonID()))
+            if ((person.getEmail() != null) && (person.getEmail().length() > 0))
             {
-                valid = false;
-                final String summary = MessageUtil.getMessageString("editPerson_uniqueEmail");
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                context.addMessage("edit-form:email", message);
+                final Person byEmail = personDAO.findByEmail(person.getEmail());
+                if ((byEmail != null) && !byEmail.getPersonID().equals(person.getPersonID()))
+                {
+                    valid = false;
+                    final String summary = MessageUtil.getMessageString("editPerson_uniqueEmail");
+                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                    context.addMessage("edit-form:email", message);
+                }
             }
 
             // unique username
