@@ -42,6 +42,13 @@ public class GroupHierarchyTest{
     			
     			Group subGroup = new Group();
     			subGroup.setGroupID(groupID);
+    			if(level == 5)
+    			{
+    			    subGroup.setType(GroupType.TEAM);
+    			}else
+    			{
+    			    subGroup.setType(GroupType.DIVISION);
+    			}
     			subGroup.setParentID(group.getGroupID());
     			
     			list.add(subGroup);
@@ -83,7 +90,7 @@ public class GroupHierarchyTest{
 
 	}
 
-	@Test  @Ignore
+	@Test
 	public void testGetGroupLevelInteger() {
 
 		Group topGroup = groupHierarchy.getTopGroup();
@@ -101,7 +108,7 @@ public class GroupHierarchyTest{
 		assertEquals(groupHierarchy.getGroup(123),null);
 	}
 
-	@Test @Ignore
+	@Test
 	public void testGetGroupLevelGroup() {
 		Group topGroup = groupHierarchy.getTopGroup();
 		assertEquals(groupHierarchy.getGroupLevel(topGroup),GroupLevel.FLEET);
