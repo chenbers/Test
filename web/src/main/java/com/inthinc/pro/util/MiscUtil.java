@@ -31,9 +31,11 @@ public class MiscUtil
             return null;
         if (phone.length() != 10)
         {
-            phone = unformatPhone(phone);
-            if (phone.length() != 10)
-                return null;
+            final String unfo = unformatPhone(phone);
+            if (unfo.length() == 10)
+                phone = unfo;
+            else
+                return phone;
         }
         final StringBuilder sb = new StringBuilder();
         sb.append('(');
