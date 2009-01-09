@@ -151,14 +151,6 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
         {
             return Collections.emptyList();
         }
-        // TODO: remove once this is implemented
-        catch (ProxyException e)
-        {
-            if (e.getErrorCode() == 422)
-                return Collections.emptyList();
-            else
-                throw e;
-        }
 
     }
 }

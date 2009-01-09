@@ -258,14 +258,12 @@ public class ReportServiceTest
 
                 List<ScoreableEntity> scoreList = scoreDAO.getVehicleScoreHistory(TEST_VEHICLE_ID, d, st, 5);
                 assertNotNull("getVehicleScoreHistory for duration " + d.toString() + " scoreType " + st.toString(), scoreList);
-// TODO: add back in when backend method is implemented                
-//                assertTrue("getVehicleScoreHistory for duration " + d.toString() + " scoreType " + st.toString(), scoreList.size() > 0 && scoreList.size() <= 5);
+                assertTrue("getVehicleScoreHistory for duration " + d.toString() + " scoreType " + st.toString(), scoreList.size() > 0 && scoreList.size() <= 5);
             }
             
             List<MpgEntity> mpgEntityList = mpgDAO.getVehicleEntities(TEST_VEHICLE_ID, d, 5);
             assertNotNull("getVehicleEntities for duration " + d.toString(), mpgEntityList);
-// TODO: add back in when backend method is implemented                
-//            assertTrue("getVehicleEntities for duration " + d.toString(), mpgEntityList.size() > 0 && mpgEntityList.size() <= 5);
+            assertTrue("getVehicleEntities for duration " + d.toString(), mpgEntityList.size() > 0 && mpgEntityList.size() <= 5);
         }
     }
 
