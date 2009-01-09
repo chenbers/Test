@@ -17,8 +17,10 @@ import com.inthinc.pro.charts.Line;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.AggressiveDrivingEvent;
 import com.inthinc.pro.model.Distance;
+import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
@@ -125,15 +127,21 @@ public class VehicleSeatBeltBean extends BaseDurationBean
     //SEATBELT EVENTS LIST
     public List<SeatBeltEvent> getSeatBeltEvents() {
         
-        List<Integer> types = new ArrayList<Integer>();    
-        types.add(3);
-        
-        List<Event> tempEvents = new ArrayList<Event>();
-        tempEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), getStartDate(), getEndDate(), types);
-       
-        for(Event event: tempEvents)
+        if(seatBeltEvents.size() < 1)
         {
-            seatBeltEvents.add( (SeatBeltEvent)event );   
+            List<Integer> types = new ArrayList<Integer>();    
+            types.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
+            
+            List<Event> tempEvents = new ArrayList<Event>();
+            tempEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), getStartDate(), getEndDate(), types);
+           
+            AddressLookup lookup = new AddressLookup();
+            
+            for(Event event: tempEvents)
+            {
+                event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
+                seatBeltEvents.add( (SeatBeltEvent)event );   
+            }
         }
         
         return seatBeltEvents;

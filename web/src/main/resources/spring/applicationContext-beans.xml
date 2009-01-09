@@ -175,7 +175,6 @@
         <property name="vehicleDAO" ref="vehicleDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
         <property name="eventDAO" ref="eventDAO"></property>
-        <property name="driverDAO" ref="driverDAO"></property>
     </bean>
     
     <bean id="driverBean" class="com.inthinc.pro.backing.DriverBean" scope="request">

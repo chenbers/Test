@@ -18,7 +18,9 @@ import com.inthinc.pro.charts.Line;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Distance;
+import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
@@ -303,15 +305,21 @@ public class VehicleSpeedBean extends BaseDurationBean
     //SPEEDING EVENTS LIST
     public List<SpeedingEvent> getSpeedingEvents()
     {
-        List<Integer> types = new ArrayList<Integer>();    
-        types.add(93);
-        
-        List<Event> tempEvents = new ArrayList<Event>();
-        tempEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), getStartDate(), getEndDate(), types);
-       
-        for(Event event: tempEvents)
+        if(speedingEvents.size() < 1)
         {
-            speedingEvents.add( (SpeedingEvent)event );   
+            List<Integer> types = new ArrayList<Integer>();    
+            types.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
+            
+            List<Event> tempEvents = new ArrayList<Event>();
+            tempEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), getStartDate(), getEndDate(), types);
+           
+            AddressLookup lookup = new AddressLookup();
+            
+            for(Event event: tempEvents)
+            {
+                event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
+                speedingEvents.add( (SpeedingEvent)event );   
+            }
         }
         
         return speedingEvents;
