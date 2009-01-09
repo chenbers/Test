@@ -57,7 +57,7 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
 
         if (person.getAddress() != null)
         {
-            getSiloService().updateAddr(person.getAddress().getAddrID(), getMapper().convertToMap(person.getAddress()));
+            getSiloService().updateAddr(person.getAddressID(), getMapper().convertToMap(person.getAddress()));
         }
 
         if (person.getDriver() != null)
