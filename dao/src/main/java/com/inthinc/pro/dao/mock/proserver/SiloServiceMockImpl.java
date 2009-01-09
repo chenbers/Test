@@ -1119,7 +1119,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     @Override
     public List<Map<String, Object>> getDriverNote(Integer driverID, Integer startDate, Integer endDate, Integer[] types)
     {
-        List<Event> driverEvents = new ArrayList<Event>();
+        //List<Event> driverEvents = new ArrayList<Event>();
 
         List<Object> typeList = new ArrayList<Object>();
         Collections.addAll(typeList, types);
@@ -1144,13 +1144,26 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     @Override
     public List<Map<String, Object>> getVehicleNote(Integer vehicleID, Integer startDate, Integer endDate, Integer[] types)
     {
-        //Calendar calendar = Calendar.getInstance();
-        //calendar.add(Calendar.DAY_OF_MONTH, -30);
-        
-        //Date startDate = new Date();
-        //Date endDate = calendar.getTime();  // using dates for mock data. no data with miles attributes.
-        
-        return getVehicleNote(vehicleID, startDate, endDate, types);
+        //List<Event> vehicleEvents = new ArrayList<Event>();
+
+        List<Object> typeList = new ArrayList<Object>();
+        Collections.addAll(typeList, types);
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("vehicleID", vehicleID);
+        searchCriteria.addKeyValueInList("type", typeList);
+        searchCriteria.addKeyValueRange("time", DateUtil.convertTimeInSecondsToDate(startDate), DateUtil.convertTimeInSecondsToDate(endDate));
+
+        List<Event> eventList = MockData.getInstance().retrieveObjectList(Event.class, searchCriteria);
+        Collections.sort(eventList); // Make sure events are in ascending order
+        Collections.reverse(eventList); // descending order (i.e. most recent first)
+
+        List<Map<String, Object>> returnList = new ArrayList<Map<String, Object>>();
+        for (Event event : eventList)
+        {
+            returnList.add(TempConversionUtil.createMapFromObject(event, true));
+        }
+
+        return returnList;
     }
 
     @Override
