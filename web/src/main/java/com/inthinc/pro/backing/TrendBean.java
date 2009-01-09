@@ -333,6 +333,9 @@ public class TrendBean extends BaseBean
         if ( this.navigation.getEnd() != 0 ) {              
             this.end = this.navigation.getEnd();
         } 
+        if ( this.navigation.getNumRowsPerPg() != 0 ) {
+            this.numRowsPerPg = this.navigation.getNumRowsPerPg();
+        }
          
         // tmpGroupID implies back on the same page
         if ( this.tmpGroupID != null ) {
@@ -360,9 +363,12 @@ public class TrendBean extends BaseBean
             if ( this.end > this.maxCount ) {
                 this.end = this.maxCount;
             }
+            
+            // key to making the flyout function
+            this.navigation.setStart(this.start);
+            this.navigation.setEnd(this.end);
         }
-                
-        
+                        
     }
 
     public Integer getMaxCount()
