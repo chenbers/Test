@@ -6,7 +6,7 @@ import java.util.Map;
 
 public enum DeviceStatus implements BaseEnum
 {
-    NEW(0, "NEW"), ACTIVE(1, "ACTIVE"), DISABLED(2, "DISABLED"), DELETED(3, "DELETED");
+    NEW(0, "NEW"), ACTIVE(1, "ACTIVE"), INACTIVE(2, "INACTIVE"), DELETED(3, "DELETED");
 
     private int    code;
     private String description;
