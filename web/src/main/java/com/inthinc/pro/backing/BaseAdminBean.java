@@ -544,7 +544,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
             if (t.isSelected())
                 selected.add(t);
 
-        if ((selected.size() == 0) && (item != null))
+        if ((selected.size() == 0) && (item != null) && !isAdd())
             selected.add(item);
 
         return selected;
