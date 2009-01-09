@@ -397,6 +397,15 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         {
             return Collections.emptyList();
         }
+        // TODO: remove once this is implemented
+        catch (ProxyException e)
+        {
+            if (e.getErrorCode() == 422)
+                return Collections.emptyList();
+            else
+                throw e;
+        }
+        
     }
     
     @Override  // TODO TO BE REMOVED NOT USED

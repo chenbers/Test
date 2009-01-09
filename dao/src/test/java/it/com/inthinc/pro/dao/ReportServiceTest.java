@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
@@ -37,9 +38,10 @@ public class ReportServiceTest
 
     // these totally depend on David Story running his Speedracer script when reinitializing the db
     // these are the IDs for the speed racer driver
-    private static final Integer TEST_DIVISION_GROUP_ID = 1; //16777218;
-    private static final Integer TEST_TEAM_GROUP_ID = 2; //16777228;
-    private static final Integer TEST_DRIVER_ID = 1; //16777308;
+    private static final Integer TEST_DIVISION_GROUP_ID = 1; 
+    private static final Integer TEST_TEAM_GROUP_ID = 2;
+    private static final Integer TEST_DRIVER_ID = 1;
+    private static final Integer TEST_VEHICLE_ID = 1;
     
     @BeforeClass
     public static void setUpBeforeClass() throws Exception
@@ -199,8 +201,73 @@ public class ReportServiceTest
     }
     
     
+    @Test
+    public void driverScores()
+    {
+        ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
+        scoreDAO.setReportService(reportService);
+        
+        MpgHessianDAO mpgDAO = new MpgHessianDAO();
+        mpgDAO.setReportService(reportService);
+
+        List<ScoreType> mainScoreTypes = ScoreType.SCORE_OVERALL.getSubTypes();
+        
+        for(Duration d : EnumSet.allOf(Duration.class))
+        {
+            for (ScoreType st : mainScoreTypes)
+            {
+                ScoreableEntity avgScore = scoreDAO.getDriverAverageScoreByType(TEST_DRIVER_ID, d, st);
+                assertNotNull("getDriverAverageScoreByType for duration " + d.toString() + " scoreType " + st.toString(), avgScore);
+            
+                Map<ScoreType, ScoreableEntity> scoreBreakdownMap = scoreDAO.getDriverScoreBreakdownByType(TEST_DRIVER_ID, d, st);
+                assertNotNull("getDriverScoreBreakdownByType for duration " + d.toString() + " scoreType " + st.toString(), scoreBreakdownMap);
+                assertEquals("getDriverScoreBreakdownByType for duration " + d.toString() + " scoreType " + st.toString(), st.getSubTypes().size(),  scoreBreakdownMap.size());
+                
+                List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistory(TEST_DRIVER_ID, d, st, 5);
+                assertNotNull("getDriverScoreHistory for duration " + d.toString() + " scoreType " + st.toString(), scoreList);
+                assertTrue("getDriverScoreHistory for duration " + d.toString() + " scoreType " + st.toString(), scoreList.size() > 0 && scoreList.size() <= 5);
+            }
+            List<MpgEntity> mpgEntityList = mpgDAO.getDriverEntities(TEST_DRIVER_ID, d, 5);
+            assertNotNull("getDriverEntities for duration " + d.toString(), mpgEntityList);
+            assertTrue("getDriverEntities for duration " + d.toString(), mpgEntityList.size() > 0 && mpgEntityList.size() <= 5);
+        }
+     
+    }
     
-    
+    @Test
+    public void vehicleScores()
+    {
+        ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
+        scoreDAO.setReportService(reportService);
+
+        MpgHessianDAO mpgDAO = new MpgHessianDAO();
+        mpgDAO.setReportService(reportService);
+
+        List<ScoreType> mainScoreTypes = ScoreType.SCORE_OVERALL.getSubTypes();
+        
+        for(Duration d : EnumSet.allOf(Duration.class))
+        {
+            for (ScoreType st : mainScoreTypes)
+            {
+                ScoreableEntity avgScore = scoreDAO.getVehicleAverageScoreByType(TEST_VEHICLE_ID, d, st);
+                assertNotNull("getVehicleAverageScoreByType for duration " + d.toString() + " scoreType " + st.toString(), avgScore);
+            
+                Map<ScoreType, ScoreableEntity> scoreBreakdownMap = scoreDAO.getVehicleScoreBreakdownByType(TEST_VEHICLE_ID, d, st);
+                assertNotNull("getVehicleScoreBreakdownByType for duration " + d.toString() + " scoreType " + st.toString(), scoreBreakdownMap);
+                assertEquals("getVehicleScoreBreakdownByType for duration " + d.toString() + " scoreType " + st.toString(), st.getSubTypes().size(),  scoreBreakdownMap.size());
+
+                List<ScoreableEntity> scoreList = scoreDAO.getVehicleScoreHistory(TEST_VEHICLE_ID, d, st, 5);
+                assertNotNull("getVehicleScoreHistory for duration " + d.toString() + " scoreType " + st.toString(), scoreList);
+// TODO: add back in when backend method is implemented                
+//                assertTrue("getVehicleScoreHistory for duration " + d.toString() + " scoreType " + st.toString(), scoreList.size() > 0 && scoreList.size() <= 5);
+            }
+            
+            List<MpgEntity> mpgEntityList = mpgDAO.getVehicleEntities(TEST_VEHICLE_ID, d, 5);
+            assertNotNull("getVehicleEntities for duration " + d.toString(), mpgEntityList);
+// TODO: add back in when backend method is implemented                
+//            assertTrue("getVehicleEntities for duration " + d.toString(), mpgEntityList.size() > 0 && mpgEntityList.size() <= 5);
+        }
+    }
 
     private void dumpScoreableEntity(ScoreableEntity scoreableEntity)
     {
