@@ -20,17 +20,23 @@ public class NavigationBean extends BaseDurationBean
     // Spring managed beans
     private GroupDAO groupDAO;
 
+    // Key to using widgets
     private Integer groupID;
     private Group group;
 
     // This is used for the bread crumbs
     private TreeNodeImpl groupTreeNode;
+    
+    // Passed to various pages
     private Driver driver;
     private Vehicle vehicle;
+    
+    // Trend chart function
     private Integer start = 0;
     private Integer end = 0;
+    private Integer numRowsPerPg = 5;
     
-    //Capture for sort
+    // Capture for sort
     private Boolean             sortedFirst = false;
     private Boolean             sortedSecond = false;
 
@@ -50,7 +56,7 @@ public class NavigationBean extends BaseDurationBean
         if (this.groupID != groupID && groupDAO != null)
         {
             group = getGroupHierarchy().getGroup(groupID);
-            // this.group = groupDAO.findByID(groupID);
+           
             this.setGroupTreeNode(new TreeNodeImpl(group, getGroupHierarchy()));
             logger.debug("Navigation setGroup:" + group.getName());
         }
@@ -131,8 +137,7 @@ public class NavigationBean extends BaseDurationBean
     }
 
     public String groupPageAction()
-    {
-        
+    {        
         GroupLevel groupLevel = getGroupHierarchy().getGroupLevel(group);
         return groupLevel.getLocation();
     }
@@ -143,9 +148,7 @@ public class NavigationBean extends BaseDurationBean
         setGroupID(getGroupHierarchy().getTopGroup().getGroupID());
 
         return groupLevel.getLocation();
-
-    }
-    
+    }    
 
     public Boolean getSortedFirst()
     {
@@ -178,6 +181,23 @@ public class NavigationBean extends BaseDurationBean
         else if ( !this.sortedSecond )
         {
             this.sortedSecond = true;
+        }
+    }
+
+    public Integer getNumRowsPerPg()
+    {
+        return numRowsPerPg;
+    }
+
+    public void setNumRowsPerPg(Integer numRowsPerPg)
+    {
+        this.numRowsPerPg = numRowsPerPg;
+        
+        // A change here implies the start and end must change
+        //  as we are going from standard to flyout
+        this.start = 1;
+        if ( this.end > this.numRowsPerPg ) {
+            this.end = this.numRowsPerPg;
         }
     }    
 }
