@@ -118,6 +118,8 @@ public abstract class BaseAlert extends BaseEntity
 
     public List<Integer> getGroupIDs()
     {
+        if (groupIDs == null)
+            return new ArrayList<Integer>();
         return groupIDs;
     }
 
@@ -128,6 +130,8 @@ public abstract class BaseAlert extends BaseEntity
 
     public List<Integer> getDriverIDs()
     {
+        if (driverIDs == null)
+            return new ArrayList<Integer>();
         return driverIDs;
     }
 
@@ -138,6 +142,8 @@ public abstract class BaseAlert extends BaseEntity
 
     public List<Integer> getVehicleIDs()
     {
+        if (vehicleIDs == null)
+            return new ArrayList<Integer>();
         return vehicleIDs;
     }
 
@@ -148,6 +154,8 @@ public abstract class BaseAlert extends BaseEntity
 
     public List<VehicleType> getVehicleTypes()
     {
+        if (vehicleTypes == null)
+            return new ArrayList<VehicleType>();
         return vehicleTypes;
     }
 
@@ -158,6 +166,8 @@ public abstract class BaseAlert extends BaseEntity
 
     public List<Integer> getNotifyUserIDs()
     {
+        if (notifyUserIDs == null)
+            return new ArrayList<Integer>();
         return notifyUserIDs;
     }
 
@@ -168,6 +178,8 @@ public abstract class BaseAlert extends BaseEntity
 
     public List<String> getEmailTo()
     {
+        if (emailTo == null)
+            return new ArrayList<String>();
         return emailTo;
     }
 

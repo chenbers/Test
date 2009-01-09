@@ -40,12 +40,11 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
     public List<MpgEntity> getEntities(Group group, Duration duration)
     {
         try
-        {
-//groupID = 16777218;            
+        {          
             List<MpgEntity> scoreList = new ArrayList<MpgEntity>();
             Integer groupID = group.getGroupID();
             
-            if (group.getType().equals(GroupType.TEAM))
+            if (group.getType() == null || group.getType().equals(GroupType.TEAM))
             {
                 List<Map<String, Object>> returnMapList = reportService.getDVScoresByGT(groupID, duration.getCode());
                 List<DVQMap> dvqList = getMapper().convertToModelObject(returnMapList, DVQMap.class);

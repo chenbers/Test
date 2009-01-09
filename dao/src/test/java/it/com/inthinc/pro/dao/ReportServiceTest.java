@@ -35,9 +35,11 @@ public class ReportServiceTest
     private static ReportService reportService;
     private static SiloService siloService;
 
-    private static final Integer TEST_DIVISION_GROUP_ID = 16777218;
-    private static final Integer TEST_TEAM_GROUP_ID = 16777228;
-    private static final Integer TEST_DRIVER_ID = 16777308;
+    // these totally depend on David Story running his Speedracer script when reinitializing the db
+    // these are the IDs for the speed racer driver
+    private static final Integer TEST_DIVISION_GROUP_ID = 1; //16777218;
+    private static final Integer TEST_TEAM_GROUP_ID = 2; //16777228;
+    private static final Integer TEST_DRIVER_ID = 1; //16777308;
     
     @BeforeClass
     public static void setUpBeforeClass() throws Exception
@@ -51,7 +53,7 @@ public class ReportServiceTest
         siloService = new SiloServiceCreator(host, port).getService();
 //        HessianDebug.debugIn = true;
 //        HessianDebug.debugOut = true;
-        HessianDebug.debugRequest = true;
+//        HessianDebug.debugRequest = true;
         
         
     }
@@ -62,7 +64,6 @@ public class ReportServiceTest
     }
     
     @Test
-    @Ignore
     public void averageScoreByType()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -78,7 +79,6 @@ public class ReportServiceTest
     }
     
     @Test
-    @Ignore
     public void getScores()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -94,7 +94,6 @@ public class ReportServiceTest
     }
 
     @Test
-    @Ignore
     public void getScoreBreakdown()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -109,7 +108,6 @@ public class ReportServiceTest
     }
 
     @Test
-    @Ignore
     public void getScoreTrend()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -135,7 +133,6 @@ public class ReportServiceTest
         
     }
     @Test
-    @Ignore
     public void mpg()
     {
         MpgHessianDAO mpgDAO = new MpgHessianDAO();
@@ -144,13 +141,9 @@ public class ReportServiceTest
         GroupHessianDAO groupDAO = new GroupHessianDAO();
         groupDAO.setSiloService(siloService);
         
-        Group fleetGroup = groupDAO.findByID(16777218);
-        if (fleetGroup.getType() == null)
-        {
-            fleetGroup.setType(GroupType.FLEET);
-        }
-        
-        List<MpgEntity> mpgList = mpgDAO.getEntities(fleetGroup, Duration.DAYS);
+        Group divisionGroup = groupDAO.findByID(TEST_DIVISION_GROUP_ID);
+                
+        List<MpgEntity> mpgList = mpgDAO.getEntities(divisionGroup, Duration.DAYS);
         assertNotNull(mpgList);
         
         for (MpgEntity mpg : mpgList)
@@ -159,10 +152,6 @@ public class ReportServiceTest
         }
 
         Group teamGroup = groupDAO.findByID(TEST_TEAM_GROUP_ID);
-        if (teamGroup.getType() == null)
-        {
-            teamGroup.setType(GroupType.TEAM);
-        }
         
         mpgList = mpgDAO.getEntities(teamGroup, Duration.DAYS);
         assertNotNull(mpgList);
@@ -176,7 +165,6 @@ public class ReportServiceTest
     }
     
     @Test
-    @Ignore
     public void getTopBottomFiveScores()
     {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
@@ -212,59 +200,7 @@ public class ReportServiceTest
     
     
     
-    @Test
-    @Ignore
-    public void getAverageScoreByTypeAndMiles()
-    {
-        ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
-        scoreDAO.setReportService(reportService);
-     
-        Integer driverID = TEST_DRIVER_ID;
-        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByTypeAndMiles(driverID, 1000, ScoreType.SCORE_OVERALL);
-
-        assertNotNull(scoreableEntity);
-        dumpScoreableEntity(scoreableEntity);
-    }
     
-    @Test
-    @Ignore
-    public void getDriverScoreHistoryByMiles()
-    {
-        ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
-        scoreDAO.setReportService(reportService);
-     
-        Integer driverID = TEST_DRIVER_ID;
-        List<ScoreableEntity> list = scoreDAO.getDriverScoreHistoryByMiles(driverID, 1000, ScoreType.SCORE_OVERALL);
-        assertNotNull(list);
-
-        for (ScoreableEntity entity : list)
-        {
-            dumpScoreableEntity(entity);
-        }
-    }
-
-    @Test
-    @Ignore
-    public void getScoreBreakdownByTypeAndMiles()
-    {
-        ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
-        scoreDAO.setReportService(reportService);
-     
-        Integer driverID = TEST_DRIVER_ID;
-        Map<ScoreType, ScoreableEntity> returnMap = scoreDAO.getScoreBreakdownByTypeAndMiles(driverID, 1000, ScoreType.SCORE_SPEEDING);
-        
-        assertNotNull(returnMap);
-        
-        int expectedSize = ScoreType.SCORE_SPEEDING.getSubTypes().size();
-        
-        assertEquals("expected size of return map", expectedSize, returnMap.size());
-
-        for (ScoreableEntity entity : returnMap.values())
-        {
-            dumpScoreableEntity(entity);
-        }
-    }
-
 
     private void dumpScoreableEntity(ScoreableEntity scoreableEntity)
     {

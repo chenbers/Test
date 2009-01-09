@@ -11,6 +11,7 @@ public class RedFlagAlert extends BaseAlert
     private static final long serialVersionUID = -1621262257747114161L;
 
     @ID
+    @Column(name="alertID")
     private Integer           redFlagAlertID;
     private Integer[]         speedSettings;
     private RedFlagLevel[]    speedLevels;

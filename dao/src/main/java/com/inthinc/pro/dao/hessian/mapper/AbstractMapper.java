@@ -95,7 +95,7 @@ public abstract class AbstractMapper implements Mapper
     private <E> E convertToModelObject(Map<String, Object> map, E modelObject)
     {
         List<Field> fieldList = getAllFields(modelObject.getClass());
-
+//      DebugUtil.dumpMap(map);
         for (Map.Entry<String, Object> entry : map.entrySet())
         {
             String columnName = entry.getKey();
@@ -394,7 +394,7 @@ public abstract class AbstractMapper implements Mapper
             }
             clazz = clazz.getSuperclass();
         }
-//DebugUtil.dumpMap(map);        
+// DebugUtil.dumpMap(map);        
         return map;
     }
 
@@ -403,6 +403,10 @@ public abstract class AbstractMapper implements Mapper
     
     private Object convertToHessian(Object value, Map<Object, Map<String, Object>> handled, Field field, boolean includeNonUpdateables)
     {
+        if (value == null)
+        {
+            return value;
+        }
         // if the property is a Map, convert the objects in the Map to Map<String,Object>. i'm not sure if this will ever occur
         // i didn't want to make the assumption that the Map object represented by the value variable is a Map<String, Object> so i'm
         // just going with Map<Object, Object>.

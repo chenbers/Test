@@ -10,6 +10,7 @@ import org.junit.Ignore;
 import it.config.IntegrationConfig;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -62,6 +63,7 @@ import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlagAlert;
+import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
@@ -444,9 +446,7 @@ public class SiloServiceTest
         }
     }
     
-//TODO: FIXME    
     @Test
-    @Ignore
     public void trips()
     {
         DriverHessianDAO driverDAO = new DriverHessianDAO();
@@ -494,8 +494,6 @@ public class SiloServiceTest
     @Test
     public void admin()
     {
-
-        
         // test all create, find, update and any other methods (not delete yet though)
         account();
         Integer acctID = account.getAcctID();
@@ -542,9 +540,8 @@ public class SiloServiceTest
         find();
 
         // zone alert profiles
-// TODO:        
         zoneAlertProfiles(acctID, team1Group.getGroupID());
-//        redFlagAlertProfiles(acctID, team1Group.getGroupID());
+        redFlagAlertProfiles(acctID, team1Group.getGroupID());
     }
 
 
@@ -562,17 +559,72 @@ public class SiloServiceTest
         List<Integer> notifyPersonIDs = new ArrayList<Integer>();
         notifyPersonIDs.add(this.personList.get(0).getPersonID());
         notifyPersonIDs.add(this.personList.get(1).getPersonID());
-//        RedFlagAlert redFlagAlert = new RedFlagAlert(acctID, "Red Flag Alert Profile", "Red Flag Alert Profile Description", 
-//                0, 1339, dayOfWeek, groupIDList,
-//                null, // driverIDs
-//                null, // vehicleIDs 
-//                null, // vehicleTypeIDs 
-//                notifyPersonIDs, 
-//                null, // emailTo
-                
+        Integer[] speedSettings={10,15,20,25,30,35,40,45,50,55,60,65,70,75,80};
+        RedFlagLevel[] speedLevels=new RedFlagLevel[15];
+        for (int i = 0; i < 15; i++)
+            if (i/2 == 0)
+                speedLevels[i] = RedFlagLevel.CRITICAL;
+            else speedLevels[i] = RedFlagLevel.INFO;
+        RedFlagAlert redFlagAlert = new RedFlagAlert(acctID, "Red Flag Alert Profile", "Red Flag Alert Profile Description", 
+                0, 1339, dayOfWeek, groupIDList,
+                null, // driverIDs
+                null, // vehicleIDs 
+                null, // vehicleTypeIDs 
+                notifyPersonIDs, 
+                null, // emailTo
+                speedSettings, speedLevels, 
+                10, 10, 10, 10,
+                RedFlagLevel.WARNING,
+                RedFlagLevel.WARNING,
+                RedFlagLevel.WARNING,
+                RedFlagLevel.WARNING,
+                RedFlagLevel.WARNING);
+
+        
+        Integer redFlagAlertID = redFlagAlertDAO.create(acctID, redFlagAlert);
+        assertNotNull(redFlagAlertID);
+        redFlagAlert.setRedFlagAlertID(redFlagAlertID);
+        
+        // find
+        String ignoreFields[] = {"modified"};
+        RedFlagAlert returnedRedFlagAlert  = redFlagAlertDAO.findByID(redFlagAlertID);
+        Util.compareObjects(redFlagAlert, returnedRedFlagAlert, ignoreFields);
+        
+        // update
+        redFlagAlert.setHardAcceleration(20);
+        redFlagAlert.setHardBrake(20);
+        redFlagAlert.setHardTurn(20);
+        redFlagAlert.setHardVertical(20);
+        redFlagAlert.setHardAccelerationLevel(RedFlagLevel.CRITICAL);
+        redFlagAlert.setHardBrakeLevel(RedFlagLevel.CRITICAL);
+        redFlagAlert.setHardTurnLevel(RedFlagLevel.CRITICAL);
+        redFlagAlert.setHardVerticalLevel(RedFlagLevel.CRITICAL);
+        redFlagAlert.setSeatBeltLevel(RedFlagLevel.CRITICAL);
+        Integer[] newSpeedSettings=new Integer[15];
+        RedFlagLevel[] newSpeedLevels=new RedFlagLevel[15];
+        for (int i = 0; i < 15; i++)
+        {
+            newSpeedSettings[i] = 99;
+            newSpeedLevels[i] = RedFlagLevel.WARNING;
+        }
+        redFlagAlert.setSpeedLevels(newSpeedLevels);
+        redFlagAlert.setSpeedSettings(newSpeedSettings);
+        Integer changedCount = redFlagAlertDAO.update(redFlagAlert);
+        assertEquals("Red Flag alert update count", Integer.valueOf(1), changedCount);
         
         
-    }
+        // find after update
+        returnedRedFlagAlert  = redFlagAlertDAO.findByID(redFlagAlertID);
+        Util.compareObjects(redFlagAlert, returnedRedFlagAlert, ignoreFields);
+        
+        // delete
+        Integer deletedCount = redFlagAlertDAO.deleteByID(redFlagAlertID);
+        assertEquals("Red Flag alert delete count", Integer.valueOf(1), deletedCount );
+        
+        // find after delete
+        returnedRedFlagAlert  = redFlagAlertDAO.findByID(redFlagAlertID);
+        assertEquals("Red flag alert should have deleted status after delete", Status.DELETED, returnedRedFlagAlert.getStatus());
+    } 
 
     private void zoneAlertProfiles(Integer acctID, Integer groupID)
     {
@@ -615,11 +667,9 @@ public class SiloServiceTest
         
         Integer zoneAlertID = zoneAlertDAO.create(acctID, zoneAlert);
         assertNotNull(zoneAlertID);
-        zoneAlert.setZoneID(zoneAlertID);
+        zoneAlert.setZoneAlertID(zoneAlertID);
         
         // find
-        // TODO: finish this
-/*        
         String ignoreFields[] = {"modified"};
         ZoneAlert returnedZoneAlert = zoneAlertDAO.findByID(zoneAlertID);
         Util.compareObjects(zoneAlert, returnedZoneAlert, ignoreFields);
@@ -642,10 +692,28 @@ public class SiloServiceTest
         List<ZoneAlert> zoneAlertList = zoneAlertDAO.getZoneAlerts(acctID);
         assertEquals(1, zoneAlertList.size());
         Util.compareObjects(zoneAlert, zoneAlertList.get(0), ignoreFields);
+
+        // delete
+        Integer deletedCount = zoneAlertDAO.deleteByID(zoneAlertID);
+        assertEquals("Red Flag alert delete count", Integer.valueOf(1), deletedCount );
         
-  */      
+        // find after delete
+        returnedZoneAlert  = zoneAlertDAO.findByID(zoneAlertID);
+        assertEquals("Zone alert have deleted status after delete", Status.DELETED, returnedZoneAlert.getStatus());
+        
+        // mark it back to ACTIVE
+        changedCount = zoneAlertDAO.update(zoneAlert);
+        assertEquals("Zone update count (restore after delete)", Integer.valueOf(1), changedCount);
         
         
+        // find after un-delete
+        returnedZoneAlert  = zoneAlertDAO.findByID(zoneAlertID);
+        assertEquals("Zone alert have deleted status after delete", Status.DELETED, returnedZoneAlert.getStatus());
+        
+        zoneAlertDAO.deleteByZoneID(zoneID);
+        returnedZoneAlert  = zoneAlertDAO.findByID(zoneAlertID);
+        assertEquals("Zone alert have deleted status after deletebyzoneID", Status.DELETED, returnedZoneAlert.getStatus());
+
     }
 
     private void zones(Integer acctID, Integer groupID)

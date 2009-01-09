@@ -121,12 +121,12 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
             for (final VehicleType type : getItem().getVehicleTypes())
                 picked.add(new SelectItem(type.toString(), MessageUtil.getMessageString("editAlerts_" + type.toString().toLowerCase() + "Vehicles")));
 
-        if (getItem().getVehicleIDs() != null)
+        if (getItem().getVehicleIDs() != null && allVehicles != null)
             for (final SelectItem vehicle : allVehicles)
                 if (getItem().getVehicleIDs().contains(new Integer(vehicle.getValue().toString().substring(7))))
                     picked.add(vehicle);
 
-        if (getItem().getDriverIDs() != null)
+        if (getItem().getDriverIDs() != null && allDrivers != null)
             for (final SelectItem driver : allDrivers)
                 if (getItem().getDriverIDs().contains(new Integer(driver.getValue().toString().substring(6))))
                     picked.add(driver);
