@@ -50,7 +50,7 @@ public class TrendBean extends BaseBean
     private String countString = null;
     private Integer tmpGroupID = null;
     
-    private Boolean sortItFirst = new Boolean(false);
+    private Boolean sortItFirst = new Boolean(true);
     private Boolean sortItSecond = new Boolean(false);
     
     private ReportRenderer reportRenderer;
@@ -243,7 +243,7 @@ public class TrendBean extends BaseBean
             public int compare(Object o1, Object o2) {
                 ScoreableEntity s1 = (ScoreableEntity)o1;
                 ScoreableEntity s2 = (ScoreableEntity)o2;
-                return s1.getIdentifier().compareToIgnoreCase(s2.getIdentifier());
+                return s2.getIdentifier().compareToIgnoreCase(s1.getIdentifier());
             }            
         });  
     
@@ -263,7 +263,7 @@ public class TrendBean extends BaseBean
             public int compare(Object o1, Object o2) {
                 ScoreableEntity s1 = (ScoreableEntity)o1;
                 ScoreableEntity s2 = (ScoreableEntity)o2;
-                return s1.getScore().compareTo(s2.getScore());      
+                return s2.getScore().compareTo(s1.getScore());      
             }            
         });  
     
