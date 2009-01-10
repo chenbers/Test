@@ -150,7 +150,6 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
         try
         {
             List<Person> returnPersonList = new ArrayList<Person>();
-            // TODO: change to DEEP when available
             List<User> userList = getMapper().convertToModelObject(getSiloService().getUsersByGroupIDDeep(groupID), User.class);
             for (User user : userList)
             {
@@ -163,6 +162,7 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
                 Person person = findPersonInList(returnPersonList, driver);
                 if (person == null)
                 {
+                    driver.getPerson().setDriver(driver);
                     returnPersonList.add(driver.getPerson());
                 }
             }
