@@ -602,14 +602,14 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
 
         public Group getGroup()
         {
-            if (group == null)
+            if ((group == null) && (getUser() != null))
                 group = bean.groupDAO.findByID(getUser().getGroupID());
             return group;
         }
 
         public Group getTeam()
         {
-            if (team == null)
+            if ((team == null) && (getDriver() != null))
                 team = bean.groupDAO.findByID(getDriver().getGroupID());
             return team;
         }
