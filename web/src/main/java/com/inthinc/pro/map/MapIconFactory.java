@@ -26,7 +26,8 @@ public class MapIconFactory {
 			
 			WebUtil webUtil = new WebUtil();
 			
-			StringBuffer urlBuffer = new StringBuffer(webUtil.getFullRequestContextPath());
+			
+			StringBuffer urlBuffer = new StringBuffer(webUtil.getRequestContextPath());
 			urlBuffer.append("/images"+folder);
 			StringBuffer pathBuffer = new StringBuffer(webUtil.getRealPath(""));
 			pathBuffer.append("/images"+folder);
