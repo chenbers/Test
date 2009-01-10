@@ -168,6 +168,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     private DriverDAO                          driverDAO;
     private GroupDAO                           groupDAO;
     private PasswordEncryptor                  passwordEncryptor;
+    private List<PersonChangeListener>         changeListeners;
     private List<Group>                        allGroups;
     private Map<String, Integer>               groups;
     private Map<String, Integer>               teams;
@@ -196,6 +197,18 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     public void setPasswordEncryptor(PasswordEncryptor passwordEncryptor)
     {
         this.passwordEncryptor = passwordEncryptor;
+    }
+
+    public void setPersonChangeListeners(List<PersonChangeListener> changeListeners)
+    {
+        this.changeListeners = changeListeners;
+    }
+
+    private void notifyChangeListeners()
+    {
+        if (changeListeners != null)
+            for (final PersonChangeListener listener : changeListeners)
+                listener.personListChanged();
     }
 
     @Override
@@ -344,6 +357,22 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
         if ((item.getDriver().getRFID() != null) && (item.getDriver().getRFID() == 0))
             item.getDriver().setRFID(null);
         return item;
+    }
+
+    @Override
+    public String delete()
+    {
+        final String result = super.delete();
+        notifyChangeListeners();
+        return result;
+    }
+
+    @Override
+    public String save()
+    {
+        final String result = super.save();
+        notifyChangeListeners();
+        return result;
     }
 
     @Override

@@ -9,11 +9,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
+import com.inthinc.pro.backing.VehiclesBean.VehicleView;
 import com.inthinc.pro.backing.ui.AutocompletePicker;
 import com.inthinc.pro.backing.ui.ListPicker;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.UserDAO;
-import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.BaseAlert;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
@@ -23,11 +23,11 @@ import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.MiscUtil;
 
-public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAlertView> extends BaseAdminBean<T>
+public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAlertView> extends BaseAdminBean<T> implements PersonChangeListener
 {
     protected UserDAO          userDAO;
-    protected VehicleDAO       vehicleDAO;
     protected DriverDAO        driverDAO;
+    private VehiclesBean       vehiclesBean;
     private String             assignType;
     private List<SelectItem>   allVehicles;
     private List<SelectItem>   allDrivers;
@@ -41,14 +41,14 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         this.userDAO = userDAO;
     }
 
-    public void setVehicleDAO(VehicleDAO vehicleDAO)
-    {
-        this.vehicleDAO = vehicleDAO;
-    }
-
     public void setDriverDAO(DriverDAO driverDAO)
     {
         this.driverDAO = driverDAO;
+    }
+
+    public void setVehiclesBean(VehiclesBean vehiclesBean)
+    {
+        this.vehiclesBean = vehiclesBean;
     }
 
     public String getAssignType()
@@ -88,7 +88,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         {
             if (allVehicles == null)
             {
-                final List<Vehicle> vehicles = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
+                final List<VehicleView> vehicles = vehiclesBean.getItems();
                 allVehicles = new ArrayList<SelectItem>(vehicles.size());
                 for (final Vehicle vehicle : vehicles)
                     allVehicles.add(new SelectItem("vehicle" + vehicle.getVehicleID(), vehicle.getName()));
@@ -165,6 +165,13 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
             MiscUtil.sortSelectItems(notifyPeople);
         }
         return notifyPeople;
+    }
+
+    @Override
+    public void personListChanged()
+    {
+        assignPicker = null;
+        peoplePicker = null;
     }
 
     @Override

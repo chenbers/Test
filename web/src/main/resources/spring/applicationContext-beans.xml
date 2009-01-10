@@ -98,6 +98,13 @@
         <property name="groupDAO" ref="groupDAO"></property>
         <property name="passwordEncryptor" ref="jasyptPasswordEncryptor"></property>
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
+        <property name="personChangeListeners">
+          <list>
+            <ref local="vehiclesBean" />
+            <ref local="zoneAlertsBean" />
+            <ref local="redFlagAlertsBean" />
+          </list>
+        </property>
     </bean>
 
     <bean id="vehiclesBean" class="com.inthinc.pro.backing.VehiclesBean" scope="session" init-method="initBean">
@@ -130,19 +137,18 @@
 
     <bean id="zoneAlertsBean" class="com.inthinc.pro.backing.ZoneAlertsBean" scope="session" init-method="initBean">
         <property name="zoneAlertDAO" ref="zoneAlertDAO"></property>
-        <property name="zoneDAO" ref="zoneDAO"></property>
-        <property name="vehicleDAO" ref="vehicleDAO"></property>
         <property name="driverDAO" ref="driverDAO"></property>
         <property name="userDAO" ref="userDAO"></property>
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
+        <property name="zonesBean" ref="zonesBean"></property>
     </bean>
 
     <bean id="redFlagAlertsBean" class="com.inthinc.pro.backing.RedFlagAlertsBean" scope="session" init-method="initBean">
         <property name="redFlagAlertDAO" ref="redFlagAlertDAO"></property>
-        <property name="vehicleDAO" ref="vehicleDAO"></property>
         <property name="driverDAO" ref="driverDAO"></property>
         <property name="userDAO" ref="userDAO"></property>
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
+        <property name="vehiclesBean" ref="vehiclesBean"></property>
     </bean>
     
    <bean id="vehicleBean" class="com.inthinc.pro.backing.VehicleBean" scope="request">

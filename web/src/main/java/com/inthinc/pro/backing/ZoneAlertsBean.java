@@ -8,18 +8,15 @@ import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.dao.ZoneAlertDAO;
-import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
 import com.inthinc.pro.util.MessageUtil;
-import com.inthinc.pro.util.MiscUtil;
 
 public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlertView>
 {
@@ -36,17 +33,16 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
     }
 
     private ZoneAlertDAO              zoneAlertDAO;
-    private ZoneDAO                   zoneDAO;
-    private ArrayList<SelectItem>     zones;
+    private ZonesBean                 zonesBean;
 
     public void setZoneAlertDAO(ZoneAlertDAO zoneAlertDAO)
     {
         this.zoneAlertDAO = zoneAlertDAO;
     }
 
-    public void setZoneDAO(ZoneDAO zoneDAO)
+    public void setZonesBean(ZonesBean zonesBean)
     {
-        this.zoneDAO = zoneDAO;
+        this.zonesBean = zonesBean;
     }
 
     @Override
@@ -74,7 +70,7 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
     {
         final ZoneAlertView alertView = new ZoneAlertView();
         BeanUtils.copyProperties(alert, alertView);
-        alertView.setZoneDAO(zoneDAO);
+        alertView.setZonesBean(zonesBean);
         alertView.setSelected(false);
         return alertView;
     }
@@ -117,9 +113,9 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
             alert.setZoneID(new Integer(zoneID));
         else
         {
-            final List<SelectItem> zones = getZones();
+            final Map<String, Integer> zones = getZones();
             if ((zones != null) && (zones.size() > 0))
-                alert.setZoneID((Integer) zones.get(0).getValue());
+                alert.setZoneID(zones.values().iterator().next());
         }
         return createZoneAlertView(alert);
     }
@@ -220,17 +216,9 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
         return "go_adminZoneAlerts";
     }
 
-    public List<SelectItem> getZones()
+    public Map<String, Integer> getZones()
     {
-        if (zones == null)
-        {
-            zones = new ArrayList<SelectItem>();
-            final List<Zone> list = zoneDAO.getZones(getAccountID());
-            for (final Zone zone : list)
-                zones.add(new SelectItem(zone.getZoneID(), zone.getName()));
-            MiscUtil.sortSelectItems(zones);
-        }
-        return zones;
+        return zonesBean.getZoneIDs();
     }
 
     public static class ZoneAlertView extends ZoneAlert implements BaseAdminAlertsBean.BaseAlertView
@@ -239,7 +227,7 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
         private static final long serialVersionUID = 8372507838051791866L;
 
         @Column(updateable = false)
-        private ZoneDAO           zoneDAO;
+        private ZonesBean         zonesBean;
         @Column(updateable = false)
         private Zone              zone;
         @Column(updateable = false)
@@ -252,9 +240,9 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
             return getZoneAlertID();
         }
 
-        void setZoneDAO(ZoneDAO zoneDAO)
+        void setZonesBean(ZonesBean zonesBean)
         {
-            this.zoneDAO = zoneDAO;
+            this.zonesBean = zonesBean;
         }
 
         @Override
@@ -267,7 +255,14 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
         public Zone getZone()
         {
             if (zone == null && getZoneID() != null)
-                zone = zoneDAO.findByID(getZoneID());
+            {
+                for (final Zone test : zonesBean.getZones())
+                    if (test.getZoneID().equals(getZoneID()))
+                    {
+                        zone = test;
+                        break;
+                    }
+            }
             return zone;
         }
 

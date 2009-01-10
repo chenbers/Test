@@ -35,7 +35,7 @@ public class ZonesBean extends BaseBean
         this.zoneAlertDAO = zoneAlertDAO;
     }
 
-    public Map<String, Integer> getZoneIDs()
+    public List<Zone> getZones()
     {
         if (zones == null)
         {
@@ -44,11 +44,15 @@ public class ZonesBean extends BaseBean
                 zones = new ArrayList<Zone>();
             sortZones();
         }
+        return zones;
+    }
 
+    public Map<String, Integer> getZoneIDs()
+    {
         if (zoneIDs == null)
         {
             zoneIDs = new LinkedHashMap<String, Integer>();
-            for (final Zone zone : zones)
+            for (final Zone zone : getZones())
                 zoneIDs.put(zone.getName(), zone.getZoneID());
         }
 
@@ -169,7 +173,7 @@ public class ZonesBean extends BaseBean
     {
         item = null;
         if (itemID != null)
-            for (final Zone zone : zones)
+            for (final Zone zone : getZones())
                 if (zone.getZoneID().equals(itemID))
                 {
                     item = zone;

@@ -36,7 +36,7 @@ import com.inthinc.pro.util.MessageUtil;
 /**
  * @author David Gileadi
  */
-public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
+public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implements PersonChangeListener
 {
     private static final List<String>             AVAILABLE_COLUMNS;
     private static final int[]                    DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 8, 12 };
@@ -298,6 +298,12 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
         if ((drivers == null) && (getItem().getGroupID() != null))
             drivers = driverDAO.getDrivers(getItem().getGroupID());
         return drivers;
+    }
+
+    @Override
+    public void personListChanged()
+    {
+        drivers = null;
     }
 
     public TreeMap<Integer, String> getGroupNames()
