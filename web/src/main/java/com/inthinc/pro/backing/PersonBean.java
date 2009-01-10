@@ -454,6 +454,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     }
 
     @Override
+    protected PersonView revertItem(PersonView editItem)
+    {
+        return createPersonView(personDAO.findByID(editItem.getPersonID()));
+    }
+
+    @Override
     protected void doSave(List<PersonView> saveItems, boolean create)
     {
         final FacesContext context = FacesContext.getCurrentInstance();

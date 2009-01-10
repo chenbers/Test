@@ -239,6 +239,12 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     }
 
     @Override
+    protected DeviceView revertItem(DeviceView editItem)
+    {
+        return createDeviceView(deviceDAO.findByID(editItem.getDeviceID()));
+    }
+
+    @Override
     protected void doSave(List<DeviceView> saveItems, boolean create)
     {
         final FacesContext context = FacesContext.getCurrentInstance();

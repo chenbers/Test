@@ -367,6 +367,15 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
      */
     public String cancelEdit()
     {
+        // revert the edit item
+        if (!isBatchEdit() && !isAdd())
+        {
+            final int index = getItems().indexOf(getItem());
+            if (index != -1)
+                items.set(index, revertItem(item));
+            applyFilter();
+        }
+
         if (displayed)
             return getDisplayRedirect();
         else
@@ -579,6 +588,15 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     {
         return true;
     }
+
+    /**
+     * Revert the given item to pre-edit state.
+     * 
+     * @param editItem
+     *            The item to revert.
+     * @return The reverted item; doesn't have to be the same instance as the given editItem.
+     */
+    protected abstract T revertItem(T editItem);
 
     /**
      * Save the given list of items.

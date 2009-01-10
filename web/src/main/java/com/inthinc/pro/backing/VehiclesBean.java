@@ -381,6 +381,12 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     }
 
     @Override
+    protected VehicleView revertItem(VehicleView editItem)
+    {
+        return createVehicleView(vehicleDAO.findByID(editItem.getVehicleID()));
+    }
+
+    @Override
     protected void doSave(List<VehicleView> saveItems, boolean create)
     {
         final FacesContext context = FacesContext.getCurrentInstance();

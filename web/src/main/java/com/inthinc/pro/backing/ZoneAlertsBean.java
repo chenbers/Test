@@ -178,6 +178,12 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
     }
 
     @Override
+    protected ZoneAlertView revertItem(ZoneAlertView editItem)
+    {
+        return createZoneAlertView(zoneAlertDAO.findByID(editItem.getZoneAlertID()));
+    }
+
+    @Override
     protected void doSave(List<ZoneAlertView> saveItems, boolean create)
     {
         final FacesContext context = FacesContext.getCurrentInstance();

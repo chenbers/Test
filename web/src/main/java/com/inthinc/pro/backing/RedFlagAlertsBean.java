@@ -231,6 +231,12 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
     }
 
     @Override
+    protected RedFlagAlertView revertItem(RedFlagAlertView editItem)
+    {
+        return createRedFlagAlertView(redFlagAlertDAO.findByID(editItem.getRedFlagAlertID()));
+    }
+
+    @Override
     protected void doSave(List<RedFlagAlertView> saveItems, boolean create)
     {
         final FacesContext context = FacesContext.getCurrentInstance();
