@@ -661,6 +661,10 @@ span.edit {
 	background: url(../images/btn_edit.png) left no-repeat;
 	}
 	
+span.email {
+	background: url(../images/btn_email.png) left no-repeat;
+	}
+	
 span.retrieve_password {
 	background: url(../images/btn_pass.png) left no-repeat;
 	}

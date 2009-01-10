@@ -39,7 +39,7 @@
                     </li>
                     <li class="r">
                     	 <h:commandButton styleClass="left" action="#{reportRendererBean.sendReportViaEmail}">
-                      	<span class="left"><h:outputText value="Send Email" /></span></h:commandButton>
+                      	<span class="email"><h:outputText value="#{messages.reports_email}" /></span></h:commandButton>
                     </li>
                   </ul>
 
@@ -85,7 +85,8 @@
 							<tr>
 								<td width="100" valign="top"><h:outputText
 									value="Email Address:" /></td>
-								<td><h:inputText size="45" value="#{reportRendererBean.emailAddress}" /></td>
+								<td><h:inputTextarea cols ="40" rows="5" value="#{reportRendererBean.emailAddress}" /></td>
+								
 							</tr>
 							
 						</table>

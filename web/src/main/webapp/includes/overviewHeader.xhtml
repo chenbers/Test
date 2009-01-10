@@ -7,6 +7,12 @@
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:security="http://pro.tiwi.com/jsf/security"
 	xmlns:profunc="http://pro.tiwi.com/jsffunctions">
+	
+	
+	
+	
+		<a4j:form id="overview_header_form">
+	
 	<ul id="grid_nav">
 			<li class="l grid_icon"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_line.png" /></li>
 			<li class="l grid_title">Overview</li>
@@ -20,25 +26,30 @@
 			
 			<li class="r grid_icon"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_help.png" /></li>
 			<h:outputText rendered="#{showContextMenu eq 'true'}">
-			<li class="r grid_icon"><img id="overviewContextMenu" src="#{facesContext.externalContext.request.contextPath}/images/ico_tools.png" /></li>
+			<li class="r grid_icon">
+				<h:panelGroup id="overview_tools_icon">
+					<h:graphicImage value="/images/ico_tools.png"/>
+				</h:panelGroup>
+			</li>
 			</h:outputText>
 			<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" /></li>
 	</ul>
-	<h:form>
-	<rich:contextMenu event="onclick"
-		attachTiming="onavailable" disableDefaultMenu="false"
-		submitMode="server" attachTo="overviewContextMenu">
-		<rich:menuItem ajaxSingle="true" rendered="true"
+	
+	<rich:contextMenu attachTo="overview_tools_icon" disableDefaultMenu="false" attached="true" id="over_header_menu" submitMode="server" event="onclick">
+		<rich:menuItem
 					iconDisabled="/images/ico_email.gif" icon="/images/ico_email.gif"
 					value="Email Report" id="#{ajaxForm}_email" action="go_emailReports">
 					<a4j:actionparam assignTo="#{reportRendererBean.reportTypes}" converter="SimpleBeanConverter" value="#{reportRendererBean.reportTypeList}"/>
 				</rich:menuItem>
 
-		<rich:menuItem ajaxSingle="true" iconDisabled="/images/ico_pdf.gif"
+		<rich:menuItem  iconDisabled="/images/ico_pdf.gif"
 			icon="/images/ico_pdf.gif" value="Export To PDF"
 			action="#{reportRendererBean.exportReportToPDF}" id="export_menu_item">
 			<a4j:actionparam assignTo="#{reportRendererBean.reportTypes}" converter="SimpleBeanConverter" value="#{reportRendererBean.reportTypeList}"/>
 		</rich:menuItem>
 	</rich:contextMenu>
-	</h:form>
+		
+			
+	</a4j:form>
+	
 </ui:composition>

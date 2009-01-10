@@ -75,7 +75,7 @@
               
             var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/ScrollColumn2D.swf", "ChartId", "#{xywidth}", "#{xyheight}", "0", "0");                                
             chart.setDataXML(targetElement.value);
-                     
+            chart.setTransparent(true);          
             chart.render("mpgChartDiv");
           </script>
         </rich:panel> 

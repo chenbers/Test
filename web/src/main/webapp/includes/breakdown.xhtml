@@ -48,7 +48,8 @@
 							<script type="text/javascript">
 								var targetElement3 = document.getElementById("hiddenField3");
 								var chart2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf?", "ChartId", "320", "300", "0", "1");										
-								chart2.setDataXML(targetElement3.value);									   	   
+								chart2.setDataXML(targetElement3.value);	
+								chart2.setTransparent(true);								   	   
 								chart2.render("chartdiv");
 							</script>
 	                    </td>
