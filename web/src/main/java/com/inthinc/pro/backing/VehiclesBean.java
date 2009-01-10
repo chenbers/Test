@@ -249,8 +249,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         {
             if (device.getSpeedSettings() == null)
                 device.setSpeedSettings(new Integer[Device.NUM_SPEEDS]);
-            if (!device.isSensitivitiesInverted())
-                device.invertSensitivities();
         }
         return item;
     }
@@ -264,11 +262,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
                 if (vehicle.getDevice() != null)
                 {
                     final Device device = new Device();
-                    device.setHardAcceleration(Device.MIN_SENSITIVITY);
-                    device.setHardBrake(Device.MIN_SENSITIVITY);
-                    device.setHardTurn(Device.MIN_SENSITIVITY);
-                    device.setHardVertical(Device.MIN_SENSITIVITY);
-                    device.invertSensitivities();
                     getItem().device = device;
                     break;
                 }
@@ -360,8 +353,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
                     updateField.put("device." + key, updateField.get(key));
         }
 
-        if ((getItem().getDevice() != null) && getItem().getDevice().isSensitivitiesInverted())
-            getItem().getDevice().invertSensitivities();
+//        if ((getItem().getDevice() != null) && getItem().getDevice().isSensitivitiesInverted())
+//            getItem().getDevice().invertSensitivities();
 
         return super.save();
     }

@@ -257,7 +257,7 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
             if (zone == null && getZoneID() != null)
             {
                 for (final Zone test : zonesBean.getZones())
-                    if (test.getZoneID().equals(getZoneID()))
+                    if (test.getZoneID() != null && test.getZoneID().equals(getZoneID()))
                     {
                         zone = test;
                         break;

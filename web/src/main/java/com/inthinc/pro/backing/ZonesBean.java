@@ -174,7 +174,7 @@ public class ZonesBean extends BaseBean
         item = null;
         if (itemID != null)
             for (final Zone zone : getZones())
-                if (zone.getZoneID().equals(itemID))
+                if (zone.getZoneID() != null && zone.getZoneID().equals(itemID))
                 {
                     item = zone;
                     break;

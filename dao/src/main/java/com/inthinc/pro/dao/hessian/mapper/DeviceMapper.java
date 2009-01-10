@@ -1,18 +1,26 @@
 package com.inthinc.pro.dao.hessian.mapper;
 
+import java.util.Map;
+
 import com.inthinc.pro.dao.annotations.ConvertColumnToField;
+import com.inthinc.pro.dao.annotations.ConvertFieldToColumn;
 import com.inthinc.pro.model.Device;
+import com.inthinc.pro.model.TablePreference;
 
 public class DeviceMapper extends AbstractMapper
 {
-    private static final Integer DEFAULT_LEVEL = 3;
     
     @ConvertColumnToField(columnName = "accel")
     public void accelToModel(Device device, Object value)
     {
-        if (device == null || value == null)
+        if (device == null)
             return;
-
+        
+        if (value == null)
+        {
+            device.setHardAcceleration(Device.DEFAULT_LEVEL);
+        }
+            
         if (value instanceof String)
         {
             device.setHardAcceleration(parseLevel(value));
@@ -22,8 +30,13 @@ public class DeviceMapper extends AbstractMapper
     @ConvertColumnToField(columnName = "brake")
     public void brakeToModel(Device device, Object value)
     {
-        if (device == null || value == null)
+        if (device == null)
             return;
+        
+        if (value == null)
+        {
+            device.setHardBrake(Device.DEFAULT_LEVEL);
+        }
 
         if (value instanceof String)
         {
@@ -34,8 +47,13 @@ public class DeviceMapper extends AbstractMapper
     @ConvertColumnToField(columnName = "turn")
     public void turnToModel(Device device, Object value)
     {
-        if (device == null || value == null)
+        if (device == null)
             return;
+        
+        if (value == null)
+        {
+            device.setHardTurn(Device.DEFAULT_LEVEL);
+        }
 
         if (value instanceof String)
         {
@@ -46,8 +64,13 @@ public class DeviceMapper extends AbstractMapper
     @ConvertColumnToField(columnName = "vert")
     public void vertToModel(Device device, Object value)
     {
-        if (device == null || value == null)
+        if (device == null)
             return;
+        
+        if (value == null)
+        {
+            device.setHardVertical(Device.DEFAULT_LEVEL);
+        }
 
         if (value instanceof String)
         {
@@ -56,9 +79,9 @@ public class DeviceMapper extends AbstractMapper
         }
     }
 
-    private Integer parseLevel(Object value)
+    public Integer parseLevel(Object value)
     {
-        String[] comp = ((String) value).split(";", 2);
+        String[] comp = ((String) value).split(" ");
         Integer level = null;
         if (comp.length == 3)
         {
@@ -68,15 +91,69 @@ public class DeviceMapper extends AbstractMapper
             }
             catch (NumberFormatException ex)
             {
-                level = DEFAULT_LEVEL;
+                level = Device.DEFAULT_LEVEL;
             }
-            
         }
         else
         {
-            level = DEFAULT_LEVEL;
+            level = Device.DEFAULT_LEVEL;
         }
         return level;
+    }
+
+    @ConvertColumnToField(columnName = "speedSet")
+    public void speedSetToModel(Device device, Object value)
+    {
+        if (device == null || value == null)
+            return;
+
+        if (value instanceof String)
+        {
+            String[] speeds = ((String)value).split(" ");
+            Integer[] speedSettings = new Integer[Device.NUM_SPEEDS];
+            for (int i = 0; i < speeds.length; i++)
+            {
+                try
+                {
+                    speedSettings[i] = new Integer(speeds[i]);
+                }
+                catch (NumberFormatException e)
+                {
+                    speedSettings[i] = Device.DEFAULT_SPEED_SETTING;
+                }
+            }
+            for (int i = speeds.length; i < Device.NUM_SPEEDS; i++)
+            {
+                speedSettings[i] = Device.DEFAULT_SPEED_SETTING;
+            }
+            
+            device.setSpeedSettings(speedSettings);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @ConvertFieldToColumn(fieldName = "speedSet")
+    public void SpeedSetToColumn(Device device, Object value)
+    {
+        if (Map.class.isInstance(value))
+        {
+            ((Map<String, Object>)value).put("speedSet", speedSettingsArrayToSpeedSetStr(device.getSpeedSettings()));
+        }
+    }
+    
+    public String speedSettingsArrayToSpeedSetStr(Integer[] speedSettings)
+    {
+        if ((speedSettings == null) || (speedSettings.length == 0) || speedSettings.length != Device.NUM_SPEEDS)
+            return Device.DEFAULT_SPEED_SET;
+        
+        StringBuilder sb = new StringBuilder();
+        for (Integer speed : speedSettings)
+        {
+            if (sb.length() > 0)
+                sb.append(' ');
+            sb.append(speed);
+        }
+        return sb.toString();
     }
 
     

@@ -7,17 +7,28 @@ import com.inthinc.pro.dao.annotations.ID;
 
 public class Device extends BaseEntity
 {
+    
+    @Column(updateable = false)
+    public static final Integer DEFAULT_LEVEL = 3;
+
     @Column(updateable = false)
     public static final int NUM_SPEEDS = 15;
+
+    @Column(updateable = false)
+    public static final Integer DEFAULT_SPEED_SETTING = 0;
+    
+    @Column(updateable = false)
+    public static final String DEFAULT_SPEED_SET = "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
+
 
     @Column(updateable = false)
     private static final long serialVersionUID = 2865030663439253720L;
 
     // yep, a high number means a low sensitivity; a low number means a high sensitivity
-    @Column(updateable = false)
-    public static final int   MIN_SENSITIVITY  = 90;
-    @Column(updateable = false)
-    public static final int   MAX_SENSITIVITY  = 20;
+//    @Column(updateable = false)
+//    public static final int   MIN_SENSITIVITY  = 90;
+//    @Column(updateable = false)
+//    public static final int   MAX_SENSITIVITY  = 20;
 
     @ID
     private Integer           deviceID;
@@ -36,8 +47,8 @@ public class Device extends BaseEntity
     private String            speedSet;
     @Column(updateable = false)
     private Integer[]         speedSettings;
-    @Column(updateable = false)
-    private boolean           sensitivitiesInverted;
+//    @Column(updateable = false)
+//    private boolean           sensitivitiesInverted;
     
     private String  accel;
     private String  brake;
@@ -166,14 +177,16 @@ public class Device extends BaseEntity
     {
         return speedSet;
     }
-
+/*
     public boolean isSensitivitiesInverted()
     {
         return sensitivitiesInverted;
     }
-
+*/
     public Integer getHardAcceleration()
     {
+        if (hardAcceleration == null)
+            return DEFAULT_LEVEL;
         return hardAcceleration;
     }
 
@@ -184,6 +197,8 @@ public class Device extends BaseEntity
 
     public Integer getHardBrake()
     {
+        if (hardBrake == null)
+            return DEFAULT_LEVEL;
         return hardBrake;
     }
 
@@ -194,6 +209,8 @@ public class Device extends BaseEntity
 
     public Integer getHardTurn()
     {
+        if (hardTurn == null)
+            return DEFAULT_LEVEL;
         return hardTurn;
     }
 
@@ -204,6 +221,8 @@ public class Device extends BaseEntity
 
     public Integer getHardVertical()
     {
+        if (hardVertical == null)
+            return DEFAULT_LEVEL;
         return hardVertical;
     }
 
@@ -215,6 +234,7 @@ public class Device extends BaseEntity
     /**
      * Inverts all the sensitivity levels. Useful for the UI, where a low number means a low sensitivity level.
      */
+/*    
     public void invertSensitivities()
     {
         sensitivitiesInverted = !sensitivitiesInverted;
@@ -223,7 +243,7 @@ public class Device extends BaseEntity
         hardTurn = invertSensitivity(hardTurn);
         hardVertical = invertSensitivity(hardVertical);
     }
-
+*/
     /**
      * Inverts the given sensitivity level. Null-safe.
      * 
@@ -231,40 +251,27 @@ public class Device extends BaseEntity
      *            The sensitivity level to invert.
      * @return The inverted sensitivity level.
      */
+/*    
     public static Integer invertSensitivity(Integer sensitivity)
     {
         if (sensitivity != null)
             return MAX_SENSITIVITY + ((MIN_SENSITIVITY - MAX_SENSITIVITY) - (sensitivity - MAX_SENSITIVITY));
         return null;
     }
-
+*/
     public void setSpeedSet(String speedSet)
     {
         this.speedSet = speedSet;
-        this.speedSettings = null;
     }
 
     public Integer[] getSpeedSettings()
     {
-        if ((speedSettings == null) && (speedSet != null))
+        if (speedSettings == null)
         {
-            final String[] speeds = speedSet.split(" ");
             speedSettings = new Integer[NUM_SPEEDS];
-            for (int i = 0; i < speeds.length; i++)
-            {
-                try
-                {
-                    speedSettings[i] = new Integer(speeds[i]);
-                }
-                catch (NumberFormatException e)
-                {
-                    speedSettings[i] = 0;
-                }
-            }
-            for (int i = speeds.length; i < NUM_SPEEDS; i++)
-            {
-                speedSettings[i] = 0;
-            }
+            for (int i = 0; i < NUM_SPEEDS; i++)
+                speedSettings[i] = DEFAULT_SPEED_SETTING; 
+                
         }
         return speedSettings;
     }
@@ -272,22 +279,6 @@ public class Device extends BaseEntity
     public void setSpeedSettings(Integer[] speedSettings)
     {
         this.speedSettings = speedSettings;
-        if ((speedSettings == null) || (speedSettings.length == 0))
-            this.speedSet = null;
-        else
-        {
-            if (speedSettings.length != NUM_SPEEDS)
-                throw new IllegalArgumentException("speedSettings.length must be " + NUM_SPEEDS);
-
-            final StringBuilder sb = new StringBuilder();
-            for (final Integer speed : speedSettings)
-            {
-                if (sb.length() > 0)
-                    sb.append(' ');
-                sb.append(speed);
-            }
-            this.speedSet = sb.toString();
-        }
     }
     public String getImei()
     {

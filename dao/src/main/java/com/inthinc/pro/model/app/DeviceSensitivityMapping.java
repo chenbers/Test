@@ -1,18 +1,20 @@
 package com.inthinc.pro.model.app;
 
 import java.util.List;
+import java.util.Map;
 
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.model.ForwardCommand;
 import com.inthinc.pro.model.ForwardCommandStatus;
 import com.inthinc.pro.model.SensitivityForwardCommandMapping;
+import com.inthinc.pro.model.SensitivityType;
 
 
 public class DeviceSensitivityMapping implements BaseAppEntity
 {
 	private static final long serialVersionUID = 1L;
 	
-	private List<SensitivityForwardCommandMapping> sensitivityMapping;
+	private static Map<SensitivityType, SensitivityForwardCommandMapping> sensitivityMapping;
 	
 	private DeviceDAO deviceDAO;
 
@@ -26,43 +28,37 @@ public class DeviceSensitivityMapping implements BaseAppEntity
 		sensitivityMapping = deviceDAO.getSensitivityForwardCommandMapping();
 	}
 
-	public ForwardCommand getForwardCommand(Integer setting, Integer level)
-	{
-		SensitivityForwardCommandMapping mapping = sensitivityMapping.get(setting);
-
-        return new ForwardCommand(0, mapping.getFwdCmd(), level, ForwardCommandStatus.STATUS_QUEUED);
-    }
-
-	public Integer getForwardCommandCmdID(Integer setting)
+	public Integer getForwardCommandCmdID(SensitivityType setting)
     {
         SensitivityForwardCommandMapping mapping = sensitivityMapping.get(setting);
         return mapping.getFwdCmd();
     }
-/*    
-    public Integer getIndex(Integer setting, String level)
-    {
-        // return index 1 to 5
+	
+	public static ForwardCommand getForwardCommand(SensitivityType setting, Integer level)
+	{
+	    String levelStr = level.toString();
         SensitivityForwardCommandMapping mapping = sensitivityMapping.get(setting);
-        for (Integer index = 0; index < mapping.getValues().size(); index++)
+        for (String value : mapping.getValues())
         {
-            if (level >= mapping.getValues().get(index))
+            if (value.endsWith(levelStr))
             {
-                return index+1;
+                return new ForwardCommand(0, mapping.getFwdCmd(), value, ForwardCommandStatus.STATUS_QUEUED);
             }
         }
-        return 1;
-    }
-    public Integer getLevel(Integer setting, Integer index)
+        return null;
+	}
+
+	public static SensitivityType getSensitivityType(ForwardCommand fwdCmd)
     {
-        // map index 1 to 5 to it's level
-        SensitivityForwardCommandMapping mapping = sensitivityMapping.get(setting);
-        if (index < 1 || index > 5)
+        for (SensitivityForwardCommandMapping mapping : sensitivityMapping.values())
         {
-            return mapping.getValues().get(0);
+            if (mapping.getFwdCmd().equals(fwdCmd.getCmd()))
+            {
+                return mapping.getSetting();
+            }
         }
-        return mapping.getValues().get(index-1);
+        return null;
     }
-*/
 
     public DeviceDAO getDeviceDAO()
     {

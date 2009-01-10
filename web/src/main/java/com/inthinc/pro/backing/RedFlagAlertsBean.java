@@ -253,7 +253,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             }
 
             // since getItem auto-creates the below, null 'em here before saving
-            if (flag.getSpeedSettings()[0] == null)
+            if (flag.getSpeedSettings() != null && flag.getSpeedSettings()[0] == null)
             {
                 flag.setSpeedSettings(null);
                 flag.setSpeedLevels(null);

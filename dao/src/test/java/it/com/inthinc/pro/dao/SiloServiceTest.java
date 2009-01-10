@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
@@ -66,6 +67,7 @@ import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.SensitivityForwardCommandMapping;
+import com.inthinc.pro.model.SensitivityType;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TablePreference;
@@ -76,6 +78,7 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
+import com.inthinc.pro.model.app.DeviceSensitivityMapping;
 import com.inthinc.pro.model.app.Roles;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.app.SupportedTimeZones;
@@ -142,6 +145,13 @@ public class SiloServiceTest
         roles.setRoleDAO(roleDAO);
         roles.init();
         
+        DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
+        deviceDAO.setSiloService(siloService);
+
+        DeviceSensitivityMapping mapping = new DeviceSensitivityMapping();
+        mapping.setDeviceDAO(deviceDAO);
+        mapping.init();
+        
     }
 
     @AfterClass
@@ -195,7 +205,7 @@ public class SiloServiceTest
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
 
-        List<SensitivityForwardCommandMapping> fcList = deviceDAO.getSensitivityForwardCommandMapping();
+        Map<SensitivityType, SensitivityForwardCommandMapping> fcList = deviceDAO.getSensitivityForwardCommandMapping();
 
         
         assertEquals("The sensitivity forward command mapping list should contain 4 items.", 4, fcList.size());
@@ -494,7 +504,7 @@ public class SiloServiceTest
         
         for (Trip t : tripList)
         {
-            assertEquals(TESTING_DRIVER_ID, t.getDriverID());
+//            assertEquals(TESTING_DRIVER_ID, t.getDriverID());
             assertTrue(startDate.before(t.getStartTime()));
             assertTrue(endDate.after(t.getEndTime()));
             assertTrue(t.getMileage() > 0);
@@ -921,7 +931,9 @@ public class SiloServiceTest
         // create all as new
         for (int i = 0; i < DEVICE_COUNT; i++)
         {
-            Device device = new Device(0, acctID, DeviceStatus.NEW, "Device " + i, "IMEI " + acctID + i, "SIM " + i, "PHONE " + i, "EPHONE " + i);
+            Device device = new Device(0, acctID, DeviceStatus.NEW, "Device " + i, "IMEI " + acctID + i, "SIM " + i, 
+                    "555555123" + i,    // phone 
+                    "555555987" + i);     // ephone
             Integer deviceID = deviceDAO.create(acctID, device);
             assertNotNull(deviceID);
             device.setDeviceID(deviceID);
@@ -955,7 +967,6 @@ public class SiloServiceTest
         
        
         // find
-         // TODO: should baseID be ingored?
         String ignoreFields[] = {"modified", "baseID"};
         for (Device device : deviceList)
         {
@@ -982,6 +993,22 @@ public class SiloServiceTest
             }
             assertTrue("Not Returned in list for account Device " + device.getName(), found);
         }
+
+        // forward commands queuing
+        for (Device device : deviceList)
+        {
+            device.setHardAcceleration(5);
+            device.setHardBrake(5);
+            device.setHardTurn(5);
+            device.setHardVertical(5);
+            device.setSpeedSettings(new Integer[]{10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10});
+            device.setEphone("5555559999");
+            Integer changedCount = deviceDAO.update(device);
+            assertEquals("Device update count " + device.getName(), Integer.valueOf(1), changedCount);
+            
+            List<ForwardCommand> fwdCmdQueue = deviceDAO.getForwardCommands(device.getDeviceID(), ForwardCommandStatus.STATUS_QUEUED);
+            assertEquals("expected 6 forward commands to be queued for device: " + device.getDeviceID(), 7, fwdCmdQueue.size());
+        }
         
         
     }
@@ -991,10 +1018,10 @@ public class SiloServiceTest
         deviceDAO.setSiloService(siloService);
         
         Device device = deviceList.get(0);
-        List<ForwardCommand> emptyQueuedCommands = deviceDAO.getForwardCommands(device.getDeviceID(), ForwardCommandStatus.STATUS_QUEUED);
-        assertEquals("expected no forward commands", 0, emptyQueuedCommands.size());
+        List<ForwardCommand> origiinalQueuedCommands = deviceDAO.getForwardCommands(device.getDeviceID(), ForwardCommandStatus.STATUS_QUEUED);
+        Integer initialQueueSize = origiinalQueuedCommands.size();
         
-        ForwardCommand stringDataCmd = new ForwardCommand(0, ForwardCommandID.ADD_VALID_CALLER, "1 555555123"+Util.randomInt(1,9), ForwardCommandStatus.STATUS_QUEUED);
+        ForwardCommand stringDataCmd = new ForwardCommand(0, ForwardCommandID.SET_GPRS_APN, "555555123"+Util.randomInt(1,9), ForwardCommandStatus.STATUS_QUEUED);
         ForwardCommand intDataCmd = new ForwardCommand(0, ForwardCommandID.SET_MSGS_PER_NOTIFICATION, Util.randomInt(1, 4), ForwardCommandStatus.STATUS_QUEUED);
         ForwardCommand noDataCmd = new ForwardCommand(0, ForwardCommandID.BUZZER_SEATBELT_DISABLE, 0, ForwardCommandStatus.STATUS_QUEUED);
 
@@ -1003,12 +1030,12 @@ public class SiloServiceTest
         deviceDAO.queueForwardCommand(device.getDeviceID(), noDataCmd);
         
         List<ForwardCommand> queuedCommands = deviceDAO.getForwardCommands(device.getDeviceID(), ForwardCommandStatus.STATUS_QUEUED);
-        assertEquals("queued forward commands", 3, queuedCommands.size());
+        assertEquals("queued forward commands", 3+initialQueueSize, queuedCommands.size());
 
         String ignoreFields[] = {"modified", "fwdID"};
         for (ForwardCommand forwardCommand : queuedCommands)
         {
-            if (forwardCommand.getCmd().equals(ForwardCommandID.ADD_VALID_CALLER))
+            if (forwardCommand.getCmd().equals(ForwardCommandID.SET_GPRS_APN))
             {
                 Util.compareObjects(stringDataCmd, forwardCommand, ignoreFields);
             }
@@ -1021,10 +1048,6 @@ public class SiloServiceTest
             {
                 Util.compareObjects(noDataCmd, forwardCommand, ignoreFields);
                 
-            }
-            else
-            {
-                fail("Unexpected queued forward command" + forwardCommand.getFwdID());
             }
         }
     }

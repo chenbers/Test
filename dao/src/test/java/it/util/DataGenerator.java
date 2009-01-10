@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
+import com.inthinc.pro.dao.hessian.AddressHessianDAO;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.DriverHessianDAO;
 import com.inthinc.pro.dao.hessian.GroupHessianDAO;
@@ -24,6 +25,7 @@ import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.Driver;
@@ -50,6 +52,7 @@ public class DataGenerator
     private static final long MS_IN_DAY = 24*60*60*1000;
     
     Account account;
+    Address address;
     Group fleetGroup;
     Group districtGroup;
     Group teamGroup;
@@ -62,9 +65,14 @@ public class DataGenerator
     {
         init();
         
+        
         // Account
         createAccount();
         writeObject(account);
+
+        // Address
+        createAddress(account.getAcctID());
+        writeObject(address);
         
         // Group Hierarchy
         createGroupHierarchy(account.getAcctID());
@@ -92,6 +100,17 @@ public class DataGenerator
         System.out.println("generate Events for " +device.getImei());            
     }
     
+    private void createAddress(Integer acctID)
+    {
+        AddressHessianDAO addressDAO = new AddressHessianDAO();
+        addressDAO.setSiloService(siloService);
+        address = new Address(null, Util.randomInt(100, 999) + " Street", null, "City " + Util.randomInt(10,99),
+                            States.getStateByAbbrev("UT"), "12345");
+        Integer addrID = addressDAO.create(acctID, address);
+        address.setAddrID(addrID);
+
+    }
+
     private void writeObject(Object obj)
     {
         if (xml != null)
@@ -152,11 +171,27 @@ public class DataGenerator
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
         
-        device = new Device(0, account.getAcctID(), DeviceStatus.ACTIVE, "Device", "IMEI_" + account.getAcctID(), "SIM", "PHONE", "EPHONE");
+        device = new Device(0, account.getAcctID(), DeviceStatus.ACTIVE, "Device", genNumericID(account.getAcctID(), 15), genNumericID(account.getAcctID(), 19), "5555551234", "5555559876");
+        
+        device.setAccel("1100 50 4");
         Integer deviceID = deviceDAO.create(account.getAcctID(), device);
         device.setDeviceID(deviceID);
         
     }
+
+    private String genNumericID(Integer acctID, Integer len)
+    {
+        String id = "999" + acctID.toString();
+        
+        for (int i = id.length(); i < len; i++)
+        {
+            id += "9";
+        }
+        
+        return id;
+    }
+
+
 
     private void createUser(Integer acctID, Integer groupID)
     {
@@ -204,7 +239,7 @@ public class DataGenerator
         personDAO.setSiloService(siloService);
 
         // create a person
-        Person person = new Person(0, acctID, TimeZone.getDefault(), null, null, "5555555555", "5555555555", 
+        Person person = new Person(0, acctID, TimeZone.getDefault(), 0, address.getAddrID(), "5555555555", "5555555555", 
                 first + "email"+groupID+"@email.com",   
                 "emp01", null, "title", "dept", first, "m", last, "jr", Gender.MALE, 65, 180, new Date(), Status.ACTIVE);
 

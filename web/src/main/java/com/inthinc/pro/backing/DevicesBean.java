@@ -165,8 +165,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         final DeviceView item = super.getItem();
         if (item.getSpeedSettings() == null)
             item.setSpeedSettings(new Integer[Device.NUM_SPEEDS]);
-        if (!item.isSensitivitiesInverted())
-            item.invertSensitivities();
         return item;
     }
 
@@ -215,9 +213,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     @Override
     public String save()
     {
-        if (getItem().isSensitivitiesInverted())
-            getItem().invertSensitivities();
-
+        
         return super.save();
     }
 

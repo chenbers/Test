@@ -99,7 +99,6 @@ public class Util
                 {
                     if (!isStandardProperty(value1) && !isComparableProperty(value1))
                     {
-System.out.println("key: " + key + " class:" + value1.getClass().getName());                        
                         compareObjects(value1, value2, ignoreList);
                     }
                     else
