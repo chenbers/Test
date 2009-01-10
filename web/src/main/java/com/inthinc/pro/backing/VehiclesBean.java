@@ -295,8 +295,18 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
     public List<Driver> getDrivers()
     {
-        if ((drivers == null) && (getItem().getGroupID() != null))
-            drivers = driverDAO.getDrivers(getItem().getGroupID());
+        if (drivers == null)
+        {
+            Integer topGroupID = null;
+            for (Group group : getAllGroups())
+            {
+                if (group.getType().equals(GroupType.FLEET))
+                {
+                    topGroupID = group.getGroupID();
+                }
+            }
+            drivers = driverDAO.getAllDrivers(topGroupID);
+        }
         return drivers;
     }
 
