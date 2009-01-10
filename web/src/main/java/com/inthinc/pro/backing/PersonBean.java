@@ -214,10 +214,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
     @Override
     protected List<PersonView> loadItems()
     {
-        final Group top = getAllGroups().get(0);
-
         // get the people
-        final List<Person> plainPeople = personDAO.getPeopleInGroupHierarchy(top.getGroupID());
+        final List<Person> plainPeople = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());
 
         // convert the people to PersonViews
         final LinkedList<PersonView> items = new LinkedList<PersonView>();
@@ -238,6 +236,14 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
                 allGroups = groupDAO.getGroupsByAcctID(getAccountID());
         }
         return allGroups;
+    }
+
+    private Group getTopGroup()
+    {
+        for (final Group group : getAllGroups())
+            if (group.getType() == GroupType.FLEET)
+                return group;
+        return null;
     }
 
     /**

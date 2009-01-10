@@ -128,10 +128,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     @Override
     protected List<VehicleView> loadItems()
     {
-        final Group top = getAllGroups().get(0);
-
         // get the vehicles
-        final List<Vehicle> plainVehicles = vehicleDAO.getVehiclesInGroupHierarchy(top.getGroupID());
+        final List<Vehicle> plainVehicles = vehicleDAO.getVehiclesInGroupHierarchy(getTopGroup().getGroupID());
 
         // convert the Vehicles to VehicleViews
         final LinkedList<VehicleView> items = new LinkedList<VehicleView>();
@@ -152,6 +150,14 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
                 allGroups = groupDAO.getGroupsByAcctID(getAccountID());
         }
         return allGroups;
+    }
+
+    private Group getTopGroup()
+    {
+        for (final Group group : getAllGroups())
+            if (group.getType() == GroupType.FLEET)
+                return group;
+        return null;
     }
 
     /**
@@ -296,17 +302,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     public List<Driver> getDrivers()
     {
         if (drivers == null)
-        {
-            Integer topGroupID = null;
-            for (Group group : getAllGroups())
-            {
-                if (group.getType().equals(GroupType.FLEET))
-                {
-                    topGroupID = group.getGroupID();
-                }
-            }
-            drivers = driverDAO.getAllDrivers(topGroupID);
-        }
+            drivers = driverDAO.getAllDrivers(getTopGroup().getGroupID());
         return drivers;
     }
 
