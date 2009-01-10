@@ -122,7 +122,7 @@
                             </td>
                             <td>
                               <rich:message for="stopTOD" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                              <h:selectOneRadio value="#{zoneAlertsBean.item.anytime}" onchange="document.getElementById('timeframePickers').style.display = (this.value == 'true' ? 'none' : '')" enabledClass="radioitem">
+                              <h:selectOneRadio value="#{zoneAlertsBean.item.anytime}" onclick="document.getElementById('timeframePickers').style.display = (this.value == 'true' ? 'none' : '')" enabledClass="radioitem">
                                 <f:selectItem itemValue="true" itemLabel="#{messages.editAlerts_timeframeAnytime}" />
                                 <f:selectItem itemValue="false" itemLabel="#{messages.editAlerts_timeframeBetween}" />
                               </h:selectOneRadio>
