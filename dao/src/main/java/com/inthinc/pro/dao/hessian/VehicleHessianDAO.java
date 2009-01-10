@@ -46,7 +46,7 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
             List<Vehicle> completeSet = getMapper().convertToModelObject(getSiloService().getVehiclesByGroupID(groupID), Vehicle.class);
             for(Vehicle vehicle: completeSet)
             {
-                if(vehicle.getGroupID() == groupID)
+                if(groupID.equals(vehicle.getGroupID()))
                 {
                     vehicleList.add(vehicle);
                 }

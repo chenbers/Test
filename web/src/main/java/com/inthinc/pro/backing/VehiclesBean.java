@@ -501,6 +501,15 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView>
             return getVehicleID();
         }
 
+        @Override
+        public Integer getWeight()
+        {
+            final Integer weight = super.getWeight();
+            if ((weight != null) && (weight == 0))
+                return null;
+            return weight;
+        }
+
         Integer getOldGroupID()
         {
             return oldGroupID;
