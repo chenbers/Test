@@ -66,7 +66,7 @@
                                 <td>
                                   <rich:message for="VIN" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{vehiclesBean.item.VIN}" id="VIN" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="17" required="true" requiredMessage="#{messages.required}" validatorMessage="#{messages.editVehicle_VINlength}">
+                                    maxlength="17" required="#{not vehiclesBean.batchEdit}" requiredMessage="#{messages.required}" validatorMessage="#{messages.editVehicle_VINlength}">
                                     <f:validateLength minimum="17" maximum="17" />
                                     <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
                                     <f:attribute name="regex" value="[A-Za-z0-9]+" />
@@ -78,7 +78,7 @@
                                 <td width="100" valign="top">
                                   <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_make" value="#{vehiclesBean.updateField['make']}" />
                                   <h:outputText value="#{messages.editVehicle_make}" />
-                                  <span class="required">*</span>
+                                  <h:outputText rendered="#{not vehiclesBean.batchEdit}" styleClass="required" value=" *" />
                                 </td>
                                 <td>
                                   <rich:message for="make" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -90,7 +90,7 @@
                                 <td width="100" valign="top">
                                   <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_model" value="#{vehiclesBean.updateField['model']}" />
                                   <h:outputText value="#{messages.editVehicle_model}" />
-                                  <span class="required">*</span>
+                                  <h:outputText rendered="#{not vehiclesBean.batchEdit}" styleClass="required" value=" *" />
                                 </td>
                                 <td>
                                   <rich:message for="model" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -102,7 +102,7 @@
                                 <td width="100" valign="top">
                                   <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_year" value="#{vehiclesBean.updateField['year']}" />
                                   <h:outputText value="#{messages.editVehicle_year}" />
-                                  <span class="required">*</span>
+                                  <h:outputText rendered="#{not vehiclesBean.batchEdit}" styleClass="required" value=" *" />
                                 </td>
                                 <td>
                                   <h:selectOneMenu value="#{vehiclesBean.item.year}" id="year" onchange="checkMultiple(this)">
@@ -123,7 +123,7 @@
                                 <td width="100" valign="top">
                                   <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_type" value="#{vehiclesBean.updateField['type']}" />
                                   <h:outputText value="#{messages.editVehicle_type}" />
-                                  <span class="required">*</span>
+                                  <h:outputText rendered="#{not vehiclesBean.batchEdit}" styleClass="required" value=" *" />
                                 </td>
                                 <td>
                                   <h:selectOneMenu value="#{vehiclesBean.item.vtype}" id="type" onchange="checkMultiple(this)">
@@ -184,7 +184,7 @@
                                 <td>
                                   <rich:message for="name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{vehiclesBean.item.name}" id="name" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="30" required="true" requiredMessage="#{messages.required}" />
+                                    maxlength="30" required="#{not vehiclesBean.batchEdit}" requiredMessage="#{messages.required}" />
                                 </td>
                               </tr>
                               </ui:fragment>
@@ -211,7 +211,7 @@
                                 <td width="100" valign="top">
                                   <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_groupID" value="#{vehiclesBean.updateField['groupID']}" />
                                   <h:outputText value="#{messages.editVehicle_groupID}" />
-                                  <span class="required">*</span>
+                                  <h:outputText rendered="#{not vehiclesBean.batchEdit}" styleClass="required" value=" *" />
                                 </td>
                                 <td>
                                   <rich:message for="groupID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />

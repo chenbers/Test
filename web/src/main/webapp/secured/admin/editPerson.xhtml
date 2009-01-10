@@ -277,11 +277,11 @@
                           <td width="100" valign="top">
                             <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_timeZone" value="#{personBean.updateField['timeZone']}" />
                             <h:outputText value="#{messages.editPerson_timeZone}" />
-                            <span class="required">*</span>
+                            <h:outputText rendered="#{not personBean.batchEdit}" styleClass="required" value=" *" />
                           </td>
                           <td>
                             <rich:message for="timeZone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:selectOneMenu value="#{personBean.item.timeZone}" id="timeZone" onchange="checkMultiple(this)" style="width:200px" required="true" requiredMessage="#{messages.required}">
+                            <h:selectOneMenu value="#{personBean.item.timeZone}" id="timeZone" onchange="checkMultiple(this)" style="width:200px" required="#{(not personBean.batchEdit) or personBean.updateField['timeZone']}" requiredMessage="#{messages.required}">
                               <f:selectItem itemLabel="" />
                               <f:converter  converterId="TimeZoneConverter" />
                               <f:selectItems value="#{personBean.timeZones}" />
@@ -343,7 +343,7 @@
                           <td width="100" valign="top">
                             <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_user_groupID" value="#{personBean.updateField['user.groupID']}" />
                             <h:outputText value="#{messages.editPerson_user_group}" />
-                            <span class="required">*</span>
+                            <h:outputText rendered="#{not personBean.batchEdit}" styleClass="required" value=" *" />
                           </td>
                           <td>
                             <rich:message for="user_groupID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -357,7 +357,7 @@
                           <td width="100" valign="top">
                             <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_user_role" value="#{personBean.updateField['user.role']}" />
                             <h:outputText value="#{messages.editPerson_user_role}" />
-                            <span class="required">*</span>
+                            <h:outputText rendered="#{not personBean.batchEdit}" styleClass="required" value=" *" />
                           </td>
                           <td>
                             <h:selectOneMenu value="#{personBean.item.user.role}" id="user_role" onchange="checkMultiple(this)">
@@ -370,7 +370,7 @@
                           <td width="100" valign="top">
                             <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_user_status" value="#{personBean.updateField['user.status']}" />
                             <h:outputText value="#{messages.editPerson_user_status}" />
-                            <span class="required">*</span>
+                            <h:outputText rendered="#{not personBean.batchEdit}" styleClass="required" value=" *" />
                           </td>
                           <td>
                             <h:selectOneMenu value="#{personBean.item.user.status}" id="user_status" onchange="checkMultiple(this)">
@@ -467,7 +467,7 @@
                           <td width="100" valign="top">
                             <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_driver_groupID" value="#{personBean.updateField['driver.groupID']}" />
                             <h:outputText value="#{messages.editPerson_driver_team}" />
-                            <span class="required">*</span>
+                            <h:outputText rendered="#{not personBean.batchEdit}" styleClass="required" value=" *" />
                           </td>
                           <td>
                             <rich:message for="driver_groupID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -481,7 +481,7 @@
                           <td width="100" valign="top">
                             <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_driver_status" value="#{personBean.updateField['driver.status']}" />
                             <h:outputText value="#{messages.editPerson_driver_status}" />
-                            <span class="required">*</span>
+                            <h:outputText rendered="#{not personBean.batchEdit}" styleClass="required" value=" *" />
                           </td>
                           <td>
                             <h:selectOneMenu value="#{personBean.item.driver.status}" id="driver_status" onchange="checkMultiple(this)">

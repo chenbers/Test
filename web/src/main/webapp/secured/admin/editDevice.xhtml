@@ -121,7 +121,7 @@
                                 <td width="100" valign="top">
                                   <h:selectBooleanCheckbox rendered="#{devicesBean.batchEdit}" id="update_ephone" value="#{devicesBean.updateField['ephone']}" />
                                   <h:outputText value="#{messages.editDevice_ephone}" />
-                                  <span class="required">*</span>
+                                  <h:outputText rendered="#{not devicesBean.batchEdit}" styleClass="required" value=" *" />
                                 </td>
                                 <td>
                                   <rich:message for="ephone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -145,7 +145,7 @@
                                 <td width="100" valign="top">
                                   <h:selectBooleanCheckbox rendered="#{devicesBean.batchEdit}" id="update_status" value="#{devicesBean.updateField['status']}" />
                                   <h:outputText value="#{messages.editDevice_status}" />
-                                  <span class="required">*</span>
+                                  <h:outputText rendered="#{not devicesBean.batchEdit}" styleClass="required" value=" *" />
                                 </td>
                                 <td>
                                   <h:selectOneMenu value="#{devicesBean.item.status}" id="status" onchange="checkMultiple(this)">
