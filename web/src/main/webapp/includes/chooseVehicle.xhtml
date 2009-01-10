@@ -60,7 +60,7 @@
             <f:facet name="header"><h:outputText value="#{messages.chooseVehicle_assigned}" /></f:facet>
             <h:outputText value="#{(empty item.deviceID) ? messages.chooseVehicle_unassigned : messages.chooseVehicle_assigned}" />
           </rich:column>
-          <rich:column filterExpression="#{(empty editorBean.item.deviceID) or (item.deviceID != editorBean.item.deviceID)}">
+          <rich:column filterExpression="#{(empty editorBean.item.vehicleID) or (item.vehicleID != editorBean.item.vehicleID)}">
             <f:facet name="header">
               <h:outputText value=" " />
             </f:facet>
