@@ -10,7 +10,6 @@
     <version>0.0.3-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>Tiwi Pro Portal - Web Utilities App</name>
-
     <profiles>
         <profile>
             <id>local</id>
@@ -79,7 +78,6 @@
         </profile>
         <profile>
             <id>production</id>
-            
             <activation>
                 <property>
                     <name>env</name>
