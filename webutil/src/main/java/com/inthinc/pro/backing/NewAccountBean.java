@@ -70,7 +70,7 @@ public class NewAccountBean
         Integer personID = null;
         try
         {
-            personID = personDAO.create(groupID, person);
+            personID = personDAO.create(acctID, person);
             person.setPersonID(personID);
         }
         catch (DuplicateEmailException ex)
