@@ -70,15 +70,15 @@ var selected = 'OVERALL';
 		document.getElementById(region).className="tiny_selected";
 		
 		//resize chart and render it in the top box.
-		chartVar.attributes.width = 650;
-		chartVar.attributes.height = 200;
+		//chartVar.attributes.width = 650;
+		//chartVar.attributes.height = 200;
 
 		//turn on X and Y axis labels.
 		var data = chartVar.variables.dataXML;
 	    data = data.replace("showLabels=\'0\'", "showLabels=\'1\'");
 	    data = data.replace("showYAxisValues=\'0\'", "showYAxisValues=\'1\'");
 		
-		chartVar.setDataXML(data);
+	    overallChart.setDataXML(data);
 		
 		//chartVar.render('overall_chart');
 	}
