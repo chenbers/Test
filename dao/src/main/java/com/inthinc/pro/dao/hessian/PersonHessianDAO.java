@@ -55,8 +55,9 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
     {
         Integer changedCount = super.update(person);
 
-        if ((person.getAddress() != null) && !isEmpty(person.getAddress()))
+        if (person.getAddress() != null)
         {
+            person.getAddress().setAddrID(person.getAddressID());
             getSiloService().updateAddr(person.getAddressID(), getMapper().convertToMap(person.getAddress()));
         }
 
@@ -89,16 +90,6 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
         }
 
         return changedCount;
-    }
-
-    private boolean isEmpty(Address address)
-    {
-        return isEmpty(address.getAddr1()) && isEmpty(address.getAddr2()) && isEmpty(address.getCity()) && (address.getState() == null) && isEmpty(address.getZip());
-    }
-
-    private boolean isEmpty(String s)
-    {
-        return (s == null) || (s.length() == 0);
     }
 
     @Override
