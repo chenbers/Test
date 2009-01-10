@@ -446,13 +446,19 @@
                         </tr>
                         </ui:fragment>
                         <tr>
-                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_driver_certifications}" /></td>
+                          <td width="100" valign="top">
+                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_driver_certifications" value="#{personBean.updateField['driver.certifications']}" />
+                            <h:outputText value="#{messages.editPerson_driver_certifications}" />
+                          </td>
                           <td>
                             <h:inputText value="#{personBean.item.driver.certifications}" id="driver_certifications" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="160" />
                           </td>
                         </tr>
                         <tr>
-                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_driver_dot}" /></td>
+                          <td width="100" valign="top">
+                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_driver_dot" value="#{personBean.updateField['driver.dot']}" />
+                            <h:outputText value="#{messages.editPerson_driver_dot}" />
+                          </td>
                           <td>
                             <h:inputText value="#{personBean.item.driver.dot}" id="driver_dot" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="160" />
                           </td>
