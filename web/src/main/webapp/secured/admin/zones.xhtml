@@ -98,6 +98,7 @@
                               <td>
                                 <h:graphicImage value="/images/ico_zone.png" style="vertical-align:-30%" />
                                 <strong><h:outputText value="#{messages.zones_name}" /></strong>
+                                <span class="required">*</span>
                               </td>
                               <td>
                                 <h:inputText id="zoneName" value="#{zonesBean.item.name}" class="text" size="30" maxlength="60" required="#{zonesBean.editing}" requiredMessage="#{messages.required}" />
