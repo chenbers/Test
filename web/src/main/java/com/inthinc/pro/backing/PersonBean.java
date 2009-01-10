@@ -158,8 +158,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
 
         // statuses
         STATUSES = new TreeMap<String, Status>();
-        STATUSES.put(Status.ACTIVE.toString(), Status.ACTIVE);
-        STATUSES.put(Status.INACTIVE.toString(), Status.INACTIVE);
+        STATUSES.put(MessageUtil.getMessageString("status" + Status.ACTIVE.getCode()), Status.ACTIVE);
+        STATUSES.put(MessageUtil.getMessageString("status" + Status.INACTIVE.getCode()), Status.INACTIVE);
 
     }
 

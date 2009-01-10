@@ -50,7 +50,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         STATUSES = new LinkedHashMap<String, DeviceStatus>();
         for (final DeviceStatus status : DeviceStatus.values())
             if (status != DeviceStatus.DELETED)
-                STATUSES.put(status.getDescription(), status);
+                STATUSES.put(MessageUtil.getMessageString("status" + status.getCode()), status);
     }
 
     private DeviceDAO                              deviceDAO;
