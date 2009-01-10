@@ -49,12 +49,12 @@
             <h:outputText value="#{item.person.first}" /><h:outputText value=" " /><h:outputText value="#{item.person.last}" />
           </rich:column>
           <rich:column sortBy="#{editorBean.groupNames[item.groupID]}">
-            <f:facet name="header"><h:outputText value="#{messages.personHeader_group}" /></f:facet>
+            <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_team}" /></f:facet>
             <h:outputText value="#{editorBean.groupNames[item.groupID]}" />
           </rich:column>
           <rich:column sortBy="#{item.status}">
             <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_status}" /></f:facet>
-            <h:outputText value="#{item.status}" />
+            <c:set var="status" value="status#{item.status.code}" /><h:outputText value="#{messages[status]}" />
           </rich:column>
           <rich:column sortBy="#{editorBean.driverAssigned[item.driverID]}">
             <f:facet name="header"><h:outputText value="#{messages.chooseDriver_assigned}" /></f:facet>

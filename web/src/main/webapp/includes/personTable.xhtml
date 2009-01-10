@@ -3,6 +3,7 @@
   xmlns:ui="http://java.sun.com/jsf/facelets"
   xmlns:h="http://java.sun.com/jsf/html"
   xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"
   xmlns:rich="http://richfaces.org/rich"
   xmlns:security="http://www.springframework.org/security/tags">
 
@@ -26,7 +27,7 @@
     </rich:column>
     <rich:column rendered="#{personBean.tableColumns['user_status'].visible}" sortBy="#{item.user.status.description}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_user_status}" /></f:facet>
-      <h:outputText value="#{item.user.status.description}" />
+      <c:set var="status" value="status#{item.user.status.code}" /><h:outputText value="#{messages[status]}" />
     </rich:column>
     <rich:column rendered="#{personBean.tableColumns['user_username'].visible}" sortBy="#{item.user.username}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_user_username}" /></f:facet>
@@ -108,7 +109,7 @@
     </rich:column>
     <rich:column rendered="#{personBean.tableColumns['driver_status'].visible}" sortBy="#{item.driver.status.description}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_status}" /></f:facet>
-      <h:outputText value="#{item.driver.status.description}" />
+      <c:set var="status" value="status#{item.driver.status.code}" /><h:outputText value="#{messages[status]}" />
     </rich:column>
     <rich:column rendered="#{personBean.tableColumns['driver_license'].visible}" sortBy="#{item.driver.license}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_license}" /></f:facet>

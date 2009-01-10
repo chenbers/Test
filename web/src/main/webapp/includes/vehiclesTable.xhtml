@@ -3,6 +3,7 @@
   xmlns:ui="http://java.sun.com/jsf/facelets"
   xmlns:h="http://java.sun.com/jsf/html"
   xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"
   xmlns:rich="http://richfaces.org/rich"
   xmlns:security="http://www.springframework.org/security/tags">
 
@@ -65,7 +66,7 @@
     </rich:column>
     <rich:column rendered="#{vehiclesBean.tableColumns['status'].visible}" sortBy="#{item.status.description}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_status}" /></f:facet>
-      <h:outputText value="#{item.status.description}" />
+      <c:set var="status" value="status#{item.status.code}" /><h:outputText value="#{messages[status]}" />
     </rich:column>
   </ui:define>
 

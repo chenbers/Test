@@ -5,6 +5,7 @@
               xmlns:rich="http://richfaces.org/rich"
               xmlns:a4j="http://richfaces.org/a4j"
               xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:c="http://java.sun.com/jstl/core"
               xmlns:security="http://pro.tiwi.com/jsf/security">
 
   <ui:param name="adminSelected" value="current" />
@@ -88,7 +89,7 @@
                             <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editDevice_status}" /></td>
-                                <td><h:outputText value="#{devicesBean.item.status}" /></td>
+                                <td><c:set var="status" value="status#{devicesBean.item.status.code}" /><h:outputText value="#{messages[status]}" /></td>
                               </tr>
                               <ui:fragment rendered="#{not empty devicesBean.item.activated}">
                               <tr>

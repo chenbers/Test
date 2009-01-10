@@ -186,7 +186,7 @@
 				<tr>
 					<td width="100"><h:outputText
 						value="#{messages.editPerson_driver_status}" /></td>
-					<td><h:outputText value="#{driver.person.driver.status}" /></td>
+					<td><c:set var="status" value="status#{driver.person.driver.status.code}" /><h:outputText value="#{messages[status]}" /></td>
 				</tr>
 			</table>
 			</td>

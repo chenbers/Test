@@ -3,6 +3,7 @@
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
   	xmlns:iwi="http://pro.tiwi.com/jsf"
 	xmlns:h="http://java.sun.com/jsf/html">
 		
@@ -56,7 +57,7 @@
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_status}" />
       					</f:facet>
-      					<h:outputText value="#{item.asset.status}" />
+      					<c:set var="status" value="status#{item.asset.status.code}" /><h:outputText value="#{messages[status]}" />
     				</rich:column>    		
     			</rich:dataTable>    	
     			

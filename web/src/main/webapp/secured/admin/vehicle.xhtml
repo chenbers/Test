@@ -109,7 +109,7 @@
                               </tr>
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editVehicle_status}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.item.status}" /></td>
+                                <td><c:set var="status" value="status#{vehiclesBean.item.status.code}" /><h:outputText value="#{messages[status]}" /></td>
                               </tr>
                             </table>
 
