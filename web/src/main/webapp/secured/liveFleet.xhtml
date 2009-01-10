@@ -7,6 +7,7 @@
 	  			xmlns:a4j="http://richfaces.org/a4j">
 
 	<ui:param name="liveFleetSelected" value="current" />
+	<ui:param name="helpFile" value="Live_Fleet.htm" />
 	
 	<ui:define name="scripts">
 		<script src="http://maps.google.com/maps?file=api&amp;v=2.x&amp;key=#{gmBean.key}" type="text/javascript"></script>
@@ -56,7 +57,7 @@
 	       		//markerIcon.image = "#{facesContext.externalContext.request.contextPath}/images/ico_start.png";
 	       		markerIcon.image = "";  //Do not place a new icon -- icon is already on map.  //TODO: lookup existing marker and show it.
 
-		    markerOptions = { icon:markerIcon };
+		    var markerOptions = { icon:markerIcon };
 			var marker = new GMarker(point, markerOptions);
 
 			GEvent.addListener(marker, "click", function() {
@@ -150,15 +151,17 @@
 	
 		<ui:repeat value="#{liveFleetBean.drivers}" var="driver">
 			<div id="#{driver.driverID}" style="display: none">
-			<h:form id="mapLinks_#{driver.driverID}">
-				<h3><h:commandLink value="#{driver.name}" action="#{liveFleetBean.driverAction}">
-					<f:param name="id" value="#{driver.driverID}" />
-				</h:commandLink></h3>
-			</h:form>
-				<b>Work:</b> #{driver.workPhone} <br />
-				<b>Home:</b> #{driver.homePhone} <br />
-				<b>Vehicle:</b> #{driver.vehicleType}
-			</div>
+				<h:form id="mapLinks_#{driver.driverID}">
+					<strong>
+						<h:commandLink value="#{driver.name}" action="#{liveFleetBean.driverAction}">
+							<f:param name="id" value="#{driver.driverID}" />
+						</h:commandLink>
+					</strong>
+				</h:form>
+					<b>Work:</b> #{driver.workPhone} <br />
+					<b>Home:</b> #{driver.homePhone} <br />
+					<b>Vehicle Type:</b> #{driver.vehicleType}
+				</div>
 		</ui:repeat>
 		
 	<!-- END GOOGLE MAP POPUPS -->
@@ -174,13 +177,14 @@
 				<span class="panel_links"></span></div>
 				</div>
 				<div class="panel_w">
-				<div class="panel_content"><rich:panel
+				<div class="panel_content">
+				<rich:panel
 					id="driversDataTablePanel">
 					<a4j:form>
 
 						<rich:dataTable value="#{liveFleetBean.drivers}"
 							id="driversDataTable" var="item" styleClass="datagrid"
-							rowClasses="tableOdd,tableEven" cellspacing="1" rows="12"
+							rowClasses="tableOdd,tableEven" cellspacing="1" rows="15"
 							width="100%">
 							<!-- Data -->
 							<rich:column>
@@ -203,8 +207,7 @@
 							</rich:column>
 
 							<rich:column>
-								<a href="#"
-									onclick="showDriver(#{item.loc.lat}, #{item.loc.lng}, #{item.driverID});">show</a>
+								<a href="#" onClick="showDriver(#{item.loc.lat}, #{item.loc.lng}, #{item.driverID});">show</a>
 							</rich:column>
 
 						</rich:dataTable>
@@ -262,11 +265,13 @@
 				<h:panelGroup styleClass="map-border" layout="block">
 					<div id="map-canvas" style="width: 580px; height: 425px; border: 0"></div>
 				</h:panelGroup>
-				<div id="defaultMessage" style="display: none"><h:form>
-					<h2>Live Fleet</h2>
+				<div id="defaultMessage" style="display: none">
+					<h:form>
+						<h2>Live Fleet</h2>
 				    			This is the default view for your division.
 				    			[<h:commandLink action="go_adminOrganization" value="change" />]
-			    			</h:form></div>
+			    	</h:form>
+			    </div>
 				<script type="text/javascript">
 				var map = null;
 			    var geocoder = null;
@@ -285,14 +290,13 @@
 			        {
 		   
 		        	map = new GMap2(document.getElementById("map-canvas"));
+		        	geocoder = new GClientGeocoder();
 					map.addControl(new GLargeMapControl());
 					map.addControl(new GMapTypeControl());
 					map.addControl(new GOverviewMapControl()); 
-					map.setCenter(mapDefaultLoc);
 					map.setMapType(G_NORMAL_MAP);
-		    	    geocoder = new GClientGeocoder();
-
-		    	    
+					map.setCenter(mapDefaultLoc);
+		
 		    	    var marker = createMarker(mapDefaultLoc, "defaultMessage", null);
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());

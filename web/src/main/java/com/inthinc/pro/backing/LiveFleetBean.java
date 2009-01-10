@@ -34,37 +34,21 @@ public class LiveFleetBean extends BaseBean
     private List<DriverLocation> drivers       = new ArrayList<DriverLocation>();
 
     private IconMap              mapIconMap;
+ //   private IconMap              legendIconMap;
 
-    private List<Group>          childGroups;
+
     private GroupHierarchy       organizationHierarchy;
 
     public void initBean()
     {
+        logger.debug("initBean.");
         organizationHierarchy = new GroupHierarchy(groupDAO.getGroupsByAcctID(getAccountID()));
         addressLatLng = organizationHierarchy.getTopGroup().getMapCenter();
         addressZoom = organizationHierarchy.getTopGroup().getMapZoom();
-    }
 
-    public void initDrivers()
-    {
-        Group fleetGroup = organizationHierarchy.getTopGroup();
-        drivers = driverDAO.getDriversNearLoc(fleetGroup.getGroupID(), maxCount, addressLatLng.getLat(), addressLatLng.getLng());
 
-        childGroups = getGroupHierarchy().getChildren(fleetGroup);
-        MapIconFactory mif = new MapIconFactory();
-
-        List<MapIcon> mapIcons = mif.getMapIcons(MapIconFactory.IconType.MARKER, 24);
-        Iterator<MapIcon> mapIconIt = mapIcons.iterator();
-
-        mapIconMap = new IconMap();
-
-        for (DriverLocation driver : drivers)
-        {
-            if (!mapIconMap.icons.containsKey(driver.getGroupID()))
-            {
-                mapIconMap.addIcon(driver.getGroupID(), mapIconIt.next().getUrl());
-            }
-        }
+        
+       
     }
 
     // DAO PROPERTIES
@@ -140,13 +124,42 @@ public class LiveFleetBean extends BaseBean
 
     public void setMaxCount(Integer maxCount)
     {
+        logger.debug("setting count. to " + maxCount.toString());
         this.maxCount = maxCount;
     }
 
     // DRIVER LAST LOCATION PROPERTIES
     public List<DriverLocation> getDrivers()
     {
-        initDrivers();
+        if(drivers.size() < 1)
+        {
+            Group fleetGroup = organizationHierarchy.getTopGroup();
+            drivers = driverDAO.getDriversNearLoc(fleetGroup.getGroupID(), maxCount, addressLatLng.getLat(), addressLatLng.getLng());
+            logger.debug("drivers retieved: " + drivers.size());
+            
+            MapIconFactory mif = new MapIconFactory();
+
+            List<MapIcon> mapIcons = mif.getMapIcons(MapIconFactory.IconType.MARKER, 24);
+//            List<MapIcon> legendIcons = mif.getMapIcons(MapIconFactory.IconType.LEGEND, 24);
+      
+            Iterator<MapIcon> mapIconIt = mapIcons.iterator();
+//            Iterator<MapIcon> legendIconIt = legendIcons.iterator();
+
+            mapIconMap = new IconMap();
+
+            for (DriverLocation driver : drivers)
+            {
+                if (!mapIconMap.icons.containsKey(driver.getGroupID()))
+                {
+                    mapIconMap.addIcon(driver.getGroupID(), mapIconIt.next().getUrl());
+                }
+                
+//                if(!legendIconMap.icons.containsKey(driver.getGroupID()))
+//                {
+//                    legendIconMap.addIcon(driver.getGroupID(), legendIconIt.next().getUrl());
+//                }
+            }
+        }
         return drivers;
     }
 
