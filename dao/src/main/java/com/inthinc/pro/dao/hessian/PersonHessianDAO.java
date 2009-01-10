@@ -55,7 +55,7 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
     {
         Integer changedCount = super.update(person);
 
-        if (person.getAddress() != null)
+        if ((person.getAddress() != null) && !isEmpty(person.getAddress()))
         {
             getSiloService().updateAddr(person.getAddressID(), getMapper().convertToMap(person.getAddress()));
         }
@@ -89,6 +89,16 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
         }
 
         return changedCount;
+    }
+
+    private boolean isEmpty(Address address)
+    {
+        return isEmpty(address.getAddr1()) && isEmpty(address.getAddr2()) && isEmpty(address.getCity()) && (address.getState() == null) && isEmpty(address.getZip());
+    }
+
+    private boolean isEmpty(String s)
+    {
+        return (s == null) || (s.length() == 0);
     }
 
     @Override
@@ -157,7 +167,7 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
                 returnPersonList.add(user.getPerson());
             }
             List<Driver> driverList = getMapper().convertToModelObject(getSiloService().getDriversByGroupIDDeep(groupID), Driver.class);
-            for (Driver driver: driverList)
+            for (Driver driver : driverList)
             {
                 Person person = findPersonInList(returnPersonList, driver);
                 if (person == null)
@@ -172,9 +182,9 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
         {
             return Collections.emptyList();
         }
-        
+
     }
-    
+
     private Person findPersonInList(List<Person> returnPersonList, Driver driver)
     {
         for (Person person : returnPersonList)
@@ -187,7 +197,6 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
         }
         return null;
     }
-
 
     @Override
     public Person findByEmail(String email)
