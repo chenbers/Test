@@ -234,7 +234,7 @@
                           <td width="100" valign="top">
                             <h:outputText value="#{messages.editPerson_email}" />
                             <a4j:outputPanel id="emailRequired">
-                              <h:outputText rendered="#{personBean.item.userSelected}" styleClass="required" value="*" />
+                              <h:outputText rendered="#{personBean.item.userSelected}" styleClass="required" value=" *" />
                             </a4j:outputPanel>
                           </td>
                           <td>
@@ -316,7 +316,7 @@
                         <tr>
                           <td width="100" valign="top">
                             <h:outputText value="#{messages.editPerson_user_password}" />
-                            <h:outputText rendered="#{empty personBean.item.user.password}" styleClass="required" value="*" />
+                            <h:outputText rendered="#{empty personBean.item.user.password}" styleClass="required" value=" *" />
                           </td>
                           <td>
                             <rich:message for="user_password" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -330,7 +330,7 @@
                         <tr>
                           <td width="100" valign="top">
                             <h:outputText value="#{messages.editPerson_confirmPassword}" />
-                            <h:outputText rendered="#{empty personBean.item.user.password}" styleClass="required" value="*" />
+                            <h:outputText rendered="#{empty personBean.item.user.password}" styleClass="required" value=" *" />
                           </td>
                           <td>
                             <rich:message for="confirmPassword" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />

@@ -69,6 +69,7 @@
                             <td width="100" valign="top">
                               <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_zoneID" value="#{zoneAlertsBean.updateField['zoneID']}" />
                               <h:outputText value="#{messages.editZoneAlert_zone}" />
+                              <h:outputText rendered="#{not zoneAlertsBean.batchEdit}" styleClass="required" value=" *" />
                             </td>
                             <td>
                               <rich:message for="zoneID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -85,6 +86,7 @@
                             <td width="100" valign="top">
                               <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_name" value="#{zoneAlertsBean.updateField['name']}" />
                               <h:outputText value="#{messages.editAlerts_name}" />
+                              <h:outputText rendered="#{not zoneAlertsBean.batchEdit}" styleClass="required" value=" *" />
                             </td>
                             <td>
                               <rich:message for="name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -106,6 +108,7 @@
                             <td width="100" valign="top">
                               <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_dayOfWeek" value="#{zoneAlertsBean.updateField['dayOfWeek']}" />
                               <h:outputText value="#{messages.editAlerts_dayOfWeek}" />
+                              <h:outputText rendered="#{not zoneAlertsBean.batchEdit}" styleClass="required" value=" *" />
                             </td>
                             <td>
                               <rich:message for="day0" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -119,6 +122,7 @@
                             <td width="100" valign="top">
                               <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_timeframe" value="#{zoneAlertsBean.updateField['timeframe']}" />
                               <h:outputText value="#{messages.editAlerts_timeframe}" />
+                              <h:outputText rendered="#{not zoneAlertsBean.batchEdit}" styleClass="required" value=" *" />
                             </td>
                             <td>
                               <rich:message for="stopTOD" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -165,6 +169,7 @@
                         <div class="add_section_title">
                           <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_defineAlerts" value="#{zoneAlertsBean.updateField['defineAlerts']}" />
                           <h:outputText value="#{messages.editZoneAlert_defineAlerts}" />
+                          <h:outputText rendered="#{not zoneAlertsBean.batchEdit}" styleClass="required" value=" *" />
                         </div>
 
                         <rich:message for="arrival" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -189,6 +194,7 @@
                         <div class="add_section_title">
                           <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_assignTo" value="#{zoneAlertsBean.updateField['assignTo']}" />
                           <h:outputText value="#{messages.editAlerts_assignTo}" />
+                          <h:outputText rendered="#{not zoneAlertsBean.batchEdit}" styleClass="required" value=" *" />
                         </div>
 
                         <rich:message for="alertAssignFrom" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -240,7 +246,7 @@
                     </tr>
                   </table>
 
-                  <div class="required-key"><h:outputText value="#{messages.requiredKey}" /></div>
+                  <div class="required-key"><h:outputText rendered="#{not zoneAlertsBean.batchEdit}" value="#{messages.requiredKey}" /></div>
 
                   <div class="spacer"></div>
 

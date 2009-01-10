@@ -57,6 +57,7 @@
                             <td width="100" valign="top">
                               <h:selectBooleanCheckbox rendered="#{redFlagAlertsBean.batchEdit}" id="update_name" value="#{redFlagAlertsBean.updateField['name']}" />
                               <h:outputText value="#{messages.editAlerts_name}" />
+                              <h:outputText rendered="#{not redFlagAlertsBean.batchEdit}" styleClass="required" value=" *" />
                             </td>
                             <td>
                               <rich:message for="name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -78,6 +79,7 @@
                             <td width="100" valign="top">
                               <h:selectBooleanCheckbox rendered="#{redFlagAlertsBean.batchEdit}" id="update_dayOfWeek" value="#{redFlagAlertsBean.updateField['dayOfWeek']}" />
                               <h:outputText value="#{messages.editAlerts_dayOfWeek}" />
+                              <h:outputText rendered="#{not redFlagAlertsBean.batchEdit}" styleClass="required" value=" *" />
                             </td>
                             <td>
                               <rich:message for="day0" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -91,6 +93,7 @@
                             <td width="100" valign="top">
                               <h:selectBooleanCheckbox rendered="#{redFlagAlertsBean.batchEdit}" id="update_timeframe" value="#{redFlagAlertsBean.updateField['timeframe']}" />
                               <h:outputText value="#{messages.editAlerts_timeframe}" />
+                              <h:outputText rendered="#{not redFlagAlertsBean.batchEdit}" styleClass="required" value=" *" />
                             </td>
                             <td>
                               <rich:message for="stopTOD" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -128,6 +131,7 @@
                         <div class="add_section_title">
                           <h:selectBooleanCheckbox rendered="#{redFlagAlertsBean.batchEdit}" id="update_assignTo" value="#{redFlagAlertsBean.updateField['assignTo']}" />
                           <h:outputText value="#{messages.editAlerts_assignTo}" />
+                          <h:outputText rendered="#{not redFlagAlertsBean.batchEdit}" styleClass="required" value=" *" />
                         </div>
 
                         <rich:message for="alertAssignFrom" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -335,7 +339,7 @@
                     </tr>
                   </table>
 
-                  <div class="required-key"><h:outputText value="#{messages.requiredKey}" /></div>
+                  <div class="required-key"><h:outputText rendered="#{not redFlagAlertsBean.batchEdit}" value="#{messages.requiredKey}" /></div>
 
                   <div class="spacer"></div>
 

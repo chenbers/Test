@@ -240,7 +240,7 @@
                         </tr>
                       </table>
 
-                      <div class="required-key"><h:outputText value="#{messages.requiredKey}" /></div>
+                      <div class="required-key"><h:outputText rendered="#{not vehiclesBean.batchEdit}" value="#{messages.requiredKey}" /></div>
 
                       <div class="spacer"></div>
 
