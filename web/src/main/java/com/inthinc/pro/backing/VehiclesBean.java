@@ -57,7 +57,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         AVAILABLE_COLUMNS.add("make");
         AVAILABLE_COLUMNS.add("model");
         AVAILABLE_COLUMNS.add("color");
-        AVAILABLE_COLUMNS.add("type");
+        AVAILABLE_COLUMNS.add("vtype");
         AVAILABLE_COLUMNS.add("VIN");
         AVAILABLE_COLUMNS.add("weight");
         AVAILABLE_COLUMNS.add("license");

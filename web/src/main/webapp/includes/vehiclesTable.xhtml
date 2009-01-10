@@ -44,9 +44,9 @@
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_color}" /></f:facet>
       <h:outputText value="#{item.color}" />
     </rich:column>
-    <rich:column rendered="#{vehiclesBean.tableColumns['type'].visible}" sortBy="#{item.type.description}">
-      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_type}" /></f:facet>
-      <h:outputText value="#{item.type.description}" />
+    <rich:column rendered="#{vehiclesBean.tableColumns['vtype'].visible}" sortBy="#{item.vtype.description}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_vtype}" /></f:facet>
+      <h:outputText value="#{item.vtype.description}" />
     </rich:column>
     <rich:column rendered="#{vehiclesBean.tableColumns['VIN'].visible}" sortBy="#{item.VIN}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_VIN}" /></f:facet>
