@@ -53,7 +53,7 @@ public class BaseReportBean extends BaseBean
     {
         return  "(" + 
             incoming.substring(0,3) +
-                ")" +
+                ") " +
             incoming.substring(3,6) +
                 "-" +
             incoming.substring(6,10);
