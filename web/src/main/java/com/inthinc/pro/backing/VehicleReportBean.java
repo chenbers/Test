@@ -133,7 +133,7 @@ public class VehicleReportBean extends BaseReportBean
                 
                 for ( int i = 0; i < vehiclesData.size(); i++ ) {
                     VehicleReportItem v = vehiclesData.get(i);                   
-                    String vehicleID = Integer.toString(v.getVehicle().getVehicleID());
+                    String vehicleID = v.getVehicle().getName().trim().toLowerCase();
                     
                     int index1;
                     int index2;
@@ -162,7 +162,7 @@ public class VehicleReportBean extends BaseReportBean
                     }
                     
                     // driver name                    
-                    index4 = v.getDriver().getPerson().getFullName().indexOf(trimmedSearch);                                  
+                    index4 = v.getDriver().getPerson().getFullName().trim().toLowerCase().indexOf(trimmedSearch);                                  
                     if ((index1 == -1) &&
                         (index2 == -1) &&
                         (index3 == -1) &&
