@@ -53,7 +53,7 @@
             <h:outputText value="#{item.group.name}" />
           </rich:column>
           <rich:column sortBy="#{item.status}">
-            <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_status}" /></f:facet>
+            <f:facet name="header"><h:outputText value="#{messages.chooseVehicle_vehicleStatus}" /></f:facet>
             <c:set var="status" value="status#{item.status.code}" /><h:outputText value="#{messages[status]}" />
           </rich:column>
           <rich:column sortBy="#{empty item.deviceID}">
