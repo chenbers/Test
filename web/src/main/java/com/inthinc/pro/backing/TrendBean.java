@@ -537,4 +537,9 @@ public class TrendBean extends BaseBean
         }
     }
 
+    public Boolean getSortItSecond()
+    {
+        return sortItSecond;
+    }
+
 }
