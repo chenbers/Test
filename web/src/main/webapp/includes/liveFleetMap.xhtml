@@ -22,6 +22,7 @@
 			   				<img src="../images/#{flyOutImage}" border="0" />
 			   				<f:setPropertyActionListener value="#{flyNavRule}" target="#{flyOutBean.navigationRule}" />
 			   				<f:setPropertyActionListener value="#{flySelectedTab}" target="#{flyOutBean.selectedTab}" />
+			   				<f:setPropertyActionListener value="#{numRowsPerPg}" target="#{navigationBean.numRowsPerPg}"/>
 			   			</h:commandLink>
 						</a4j:form>
 						</span>
