@@ -321,6 +321,7 @@ public class TrendBean extends BaseBean
 
     public void setNavigation(NavigationBean navigation)
     {
+        logger.debug("setting navigation");
         this.navigation = navigation;
                   
         // existing navigation
@@ -504,6 +505,7 @@ public class TrendBean extends BaseBean
     {
         return accountDAO;
     }
+    
     public Boolean getSortItFirst()
     {
         return sortItFirst;
@@ -522,6 +524,11 @@ public class TrendBean extends BaseBean
             this.navigation.setSortedFirst(true);
         }
     }
+
+    public Boolean getSortItSecond()
+    {
+        return sortItSecond;
+    }
     
     public void setSortItSecond(Boolean sortItSecond)
     {
@@ -537,9 +544,5 @@ public class TrendBean extends BaseBean
         }
     }
 
-    public Boolean getSortItSecond()
-    {
-        return sortItSecond;
-    }
 
 }
