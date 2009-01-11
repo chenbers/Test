@@ -14,7 +14,7 @@
 						<span class="map">Fleet Map</span>
 						<span class="panel_links">
 						<a4j:form id="refresh">
-						<a4j:commandButton image="../images/ico_refresh.png" immediate="true"
+						<a4j:commandButton image="#{facesContext.externalContext.request.contextPath}/images/ico_refresh.png" immediate="true"
 							reRender="map"
 							value="#{messages.refresh}">
 						</a4j:commandButton>
@@ -51,7 +51,7 @@
         						map.addControl(new GMapTypeControl());
         						map.addControl(new GOverviewMapControl()); 
 								map.setMapType(G_NORMAL_MAP);
- 								map.setCenter(new GLatLng(#{driverLocationBean.center.lat}, #{driverLocationBean.center.lng}), 10);
+ 								map.setCenter(new GLatLng(#{driverLocationBean.center.lat}, #{driverLocationBean.center.lng}), #{driverLocationBean.zoom});
  								var mgr = new MarkerManager(map);
  								
 						        

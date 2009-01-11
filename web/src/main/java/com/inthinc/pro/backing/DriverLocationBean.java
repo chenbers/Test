@@ -11,7 +11,9 @@ import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.map.MapIcon;
 import com.inthinc.pro.map.MapIconFactory;
 import com.inthinc.pro.model.Driver;
@@ -23,9 +25,11 @@ import com.inthinc.pro.util.WebUtil;
 public class DriverLocationBean extends BaseBean {
 
 	private DriverDAO driverDAO;
+	private GroupDAO groupDAO;
     private NavigationBean navigation;
     private boolean pageChange = false;
     private LatLng center;
+    private Integer zoom = 10;
 	private TreeMap<Integer,DriverLastLocationBean> driverLastLocations;
 	private List<Group> childGroups;
 	private IconMap mapIconMap;
@@ -35,10 +39,11 @@ public class DriverLocationBean extends BaseBean {
 	private List<DriverLastLocationBean> driverLastLocationBeanList;
     private static final String WEBAPP_CONTEXT = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
 	private static final Logger logger = Logger.getLogger(DriverLocationBean.class);
+	private GroupHierarchy       organizationHierarchy;
 
 	public DriverLocationBean() {
 		super();
-
+	
 		center = new LatLng(37.4419, -122.1419);
 		legendIconMap = new IconMap();
 		mapIconMap = new IconMap();
@@ -48,6 +53,10 @@ public class DriverLocationBean extends BaseBean {
 
 	public List<DriverLastLocationBean> getDriverLastLocationBeans() {
 
+        organizationHierarchy = new GroupHierarchy(groupDAO.getGroupsByAcctID(getAccountID()));
+        center = organizationHierarchy.getTopGroup().getMapCenter();
+        zoom = organizationHierarchy.getTopGroup().getMapZoom();
+	        
     	MapIconFactory mif = new MapIconFactory();
     	
     	driverLastLocations = new TreeMap<Integer,DriverLastLocationBean>();
@@ -95,7 +104,9 @@ public class DriverLocationBean extends BaseBean {
             LastLocation loc = null;
             if (driver.getDriverID() != null)
                 loc = driverDAO.getLastLocation(driver.getDriverID());
-            if (loc != null)
+            
+          
+            if (loc != null && loc.getLoc() != null)
             {
                 db.setLastLocation(loc.getLoc());
                 
@@ -105,8 +116,11 @@ public class DriverLocationBean extends BaseBean {
             {
                 logger.debug("last loc is null for driver: " + driver.getDriverID());                    
                 // TODO: What do we do in case where there is no last location?
- //             db.setLastLocation(new LatLng(center.getLat()+Math.random()/10, center.getLng()+Math.random()/10));
-                db.setLastLocation(null);
+                
+                continue;  //dont add to list.
+                
+                //db.setLastLocation(new LatLng(center.getLat()+Math.random()/10, center.getLng()+Math.random()/10));
+                //db.setLastLocation(null);
             }
             db.setGroupID(groupId);
         	db.setDriver(driver);
@@ -197,6 +211,27 @@ public class DriverLocationBean extends BaseBean {
 		
 		return showLegend;
 	}
+	
+    public Integer getZoom()
+    {
+        return zoom;
+    }
+
+    public void setZoom(Integer zoom)
+    {
+        this.zoom = zoom;
+    }
+
+    public GroupDAO getGroupDAO()
+    {
+        return groupDAO;
+    }
+
+    public void setGroupDAO(GroupDAO groupDAO)
+    {
+        this.groupDAO = groupDAO;
+    }
+
     public String driverAction(){
     	
     	Map<String,String> requestMap = new WebUtil().getRequestParameterMap();

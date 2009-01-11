@@ -229,6 +229,7 @@
     <bean id="driverLocationBean" class="com.inthinc.pro.backing.DriverLocationBean" scope="request" parent="baseBean">
         <property name="driverDAO" ref="driverDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
+        <property name="groupDAO" ref="groupDAO"></property>
     </bean>
     
     <!-- My Account Beans -->
