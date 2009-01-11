@@ -36,7 +36,7 @@
       						<h:outputText value="#{messages.reports_assignedvehicle}" />
       					</f:facet>
 						<h:commandLink action="go_vehicle" 
-      						value="#{item.device.vehicleID}">
+      						value="#{item.vehicle.name}">
 							<f:setPropertyActionListener 
 									value="#{item.vehicle}" 
 									target="#{navigationBean.vehicle}">
