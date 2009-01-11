@@ -175,6 +175,10 @@ public class Device extends BaseEntity
 
     public String getSpeedSet()
     {
+        if (speedSet == null)
+        {
+            speedSet = new String(DEFAULT_SPEED_SET);
+        }
         return speedSet;
     }
 /*

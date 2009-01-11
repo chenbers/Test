@@ -133,7 +133,7 @@ public class DeviceMapper extends AbstractMapper
 
     @SuppressWarnings("unchecked")
     @ConvertFieldToColumn(fieldName = "speedSet")
-    public void SpeedSetToColumn(Device device, Object value)
+    public void speedSetToColumn(Device device, Object value)
     {
         if (Map.class.isInstance(value))
         {

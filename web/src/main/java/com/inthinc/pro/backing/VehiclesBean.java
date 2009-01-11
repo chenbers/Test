@@ -241,19 +241,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     }
 
     @Override
-    public VehicleView getItem()
-    {
-        final VehicleView item = super.getItem();
-        final Device device = item.getDevice();
-        if (device != null)
-        {
-            if (device.getSpeedSettings() == null)
-                device.setSpeedSettings(new Integer[Device.NUM_SPEEDS]);
-        }
-        return item;
-    }
-
-    @Override
     public String batchEdit()
     {
         final String redirect = super.batchEdit();

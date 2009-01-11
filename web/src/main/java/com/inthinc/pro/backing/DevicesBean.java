@@ -155,7 +155,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     {
         final Device device = new Device();
         device.setStatus(DeviceStatus.NEW);
-        device.setSpeedSettings(new Integer[Device.NUM_SPEEDS]);
+//        device.setSpeedSettings(new Integer[Device.NUM_SPEEDS]);
         return createDeviceView(device);
     }
 
@@ -163,8 +163,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     public DeviceView getItem()
     {
         final DeviceView item = super.getItem();
-        if (item.getSpeedSettings() == null)
-            item.setSpeedSettings(new Integer[Device.NUM_SPEEDS]);
         return item;
     }
 

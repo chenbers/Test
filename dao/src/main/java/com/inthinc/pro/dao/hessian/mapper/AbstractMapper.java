@@ -365,11 +365,9 @@ public abstract class AbstractMapper implements Mapper
                     }
                 }
 
-                if (value == null)
-                    continue;
 
                 // Start checking the value for special cases. If a case doesn't exist, just put the field name and value in the map
-                if (Class.class.isInstance(value))
+                if (value != null && Class.class.isInstance(value))
                     continue;
                 else if (convertToColumnMap.containsKey(field.getName()))
                 {
@@ -387,7 +385,7 @@ public abstract class AbstractMapper implements Mapper
                         throw new MappingException(e);
                     }
                 }
-                else
+                else if (value != null)
                 {
                     map.put(name, convertToHessian(value, handled, field, includeNonUpdateables));
                 }
