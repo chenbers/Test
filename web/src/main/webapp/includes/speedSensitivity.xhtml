@@ -71,7 +71,8 @@
                             <script type="text/javascript">
                               var sensitivities = new Array();
                               <c:forEach begin="1" var="sensitivity" end="5">
-                                sensitivities[#{sensitivity}] = '<h:outputText value="#{(sensitivity le 2) ? messages.editDevice_sensitivityLess : ((sensitivity eq 3) ? messages.editDevice_sensitivityAverage : messages.editDevice_sensitivityMore)}" />';
+                                <c:set var="sLevel" value="editDevice_sensitivity#{sensitivity}" />
+                                sensitivities[#{sensitivity}] = '<h:outputText value="#{messages[sLevel]}" />';
                               </c:forEach>
                             </script>
 
@@ -89,8 +90,8 @@
                                   <td></td>
                                   <td style="padding: 6px 12px 0px 12px" colspan="2" align="right">
                                     <h:outputText value="#{messages.editDevice_currentSensitivity}" />
-                                    <c:set var="sensitivityLevel" value="#{(device[sensitivityItem] ge 4) ? messages.editDevice_sensitivityMore : ((device[sensitivityItem] eq 3) ? messages.editDevice_sensitivityAverage : messages.editDevice_sensitivityLess)}" />
-                                    <h:outputText id="#{sensitivityItem}Level" style="font-weight:bold" value="#{sensitivityLevel}" />
+                                    <c:set var="sensitivityLevel" value="editDevice_sensitivity#{device[sensitivityItem]}" />
+                                    <h:outputText id="#{sensitivityItem}Level" style="font-weight:bold" value="#{messages[sensitivityLevel]}" />
                                   </td>
                                   <td></td>
                                 </tr>
@@ -100,11 +101,11 @@
                                     <c:set var="sensitivityLabel" value="editDevice_#{sensitivityItem}" />
                                     <h:outputText value="#{messages[sensitivityLabel]}" />
                                   </td>
-                                  <td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;"><h:outputText value="#{messages.editDevice_sensitivityLess}" /></td>
+                                  <td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;"><h:outputText value="#{messages.editDevice_sensitivity1}" /></td>
                                   <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <rich:inputNumberSlider id="#{sensitivityItem}" disabled="#{disabled}" value="#{device[sensitivityItem]}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="1" maxValue="5" onchange="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById(this.mainTable.id + 'Level').innerHTML = sensitivities[this.value]" />
                                   </td>
-                                  <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;"><h:outputText value="#{messages.editDevice_sensitivityMore}" /></td>
+                                  <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;"><h:outputText value="#{messages.editDevice_sensitivity5}" /></td>
                                 </tr>
                                 <script type="text/javascript">
                                   document.getElementById('edit-form:#{sensitivityItem}Level').innerHTML = sensitivities[document.getElementById('edit-form:#{sensitivityItem}Input').value];
