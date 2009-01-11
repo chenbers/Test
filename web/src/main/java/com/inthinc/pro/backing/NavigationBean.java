@@ -34,12 +34,11 @@ public class NavigationBean extends BaseDurationBean
     // Trend chart function
     private Integer start = 0;
     private Integer end = 0;
-//    private Integer numRowsPerPg = 5;
     private String numRowsPerPg = "5";
     
     // Capture for sort
-    private Boolean sortedFirst = false;
-    private Boolean sortedSecond = false;
+    private String sortedFirst = "false";
+    private String sortedSecond = "false";
 
     public NavigationBean()
     {
@@ -151,61 +150,40 @@ public class NavigationBean extends BaseDurationBean
         return groupLevel.getLocation();
     }    
 
-    public Boolean getSortedFirst()
+    public String getSortedFirst()
     {
         return sortedFirst;
     }
 
-    public void setSortedFirst(Boolean sortedFirst)
+    public void setSortedFirst(String sortedFirst)
     {
-        if ( this.sortedFirst ) 
+        if (        this.sortedFirst.equalsIgnoreCase("true") ) 
         {
-            this.sortedFirst = false;
+            this.sortedFirst = "false";
         } 
-        else if ( !this.sortedFirst )
+        else if (   this.sortedFirst.equalsIgnoreCase("false") )
         {
-            this.sortedFirst = true;
+            this.sortedFirst = "true";
         }
     }
 
-    public Boolean getSortedSecond()
+    public String getSortedSecond()
     {
         return sortedSecond;
     }
 
-    public void setSortedSecond(Boolean sortedSecond)
+    public void setSortedSecond(String sortedSecond)
     {
-        if ( this.sortedSecond ) 
+        if (        this.sortedSecond.equalsIgnoreCase("true") ) 
         {
-            this.sortedSecond = false;
+            this.sortedSecond = "false";
         } 
-        else if ( !this.sortedSecond )
+        else if (   this.sortedSecond.equalsIgnoreCase("false") )
         {
-            this.sortedSecond = true;
+            this.sortedSecond = "true";
         }
-    }
-/*
-    public Integer getNumRowsPerPg()
-    {
-        return numRowsPerPg;
     }
 
-    public void setNumRowsPerPg(Integer numRowsPerPg)
-    {
-        logger.debug("numRowsPerPg " + this.numRowsPerPg + 
-                " start " + this.start + 
-                " end " + this.end);
-        
-        this.numRowsPerPg = numRowsPerPg;
-        
-        // A change here implies the start and end must change
-        //  as we are going from standard to flyout
-        this.start = 1;
-        if ( this.end > this.numRowsPerPg ) {
-            this.end = this.numRowsPerPg;
-        }
-    }
-*/
     
     public String getNumRowsPerPg()
     {

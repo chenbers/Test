@@ -49,9 +49,12 @@ public class TrendBean extends BaseBean
     
     private String countString = null;
     private Integer tmpGroupID = null;
-    
+/*    
     private Boolean sortItFirst = new Boolean(true);
     private Boolean sortItSecond = new Boolean(false);
+*/    
+    private String sortItFirst = "true";
+    private String sortItSecond = "false";    
     
     private ReportRenderer reportRenderer;
 
@@ -105,11 +108,11 @@ public class TrendBean extends BaseBean
         s = getScores();
         
         // Apply any sorting
-        if ( this.sortItFirst ) 
+        if ( this.sortItFirst.equalsIgnoreCase("true") ) 
         {
             s = sortOnIdentifier(s);
         } 
-        if ( this.sortItSecond )
+        if ( this.sortItSecond.equalsIgnoreCase("true") )
         {
             s = sortOnScore(s);
         }
@@ -199,11 +202,11 @@ public class TrendBean extends BaseBean
         s = getScores();
         
         // Apply any sorting
-        if ( this.sortItFirst ) 
+        if ( this.sortItFirst.equalsIgnoreCase("true") ) 
         {
             s = sortOnIdentifier(s);
         } 
-        if ( this.sortItSecond )
+        if ( this.sortItSecond.equalsIgnoreCase("true") )
         {
             s = sortOnScore(s);
         }
@@ -247,7 +250,7 @@ public class TrendBean extends BaseBean
             }            
         });  
     
-        if ( !this.navigation.getSortedFirst() ) 
+        if ( this.navigation.getSortedFirst().equalsIgnoreCase("false") )             
         {
             Collections.reverse(sTemp);            
         }        
@@ -267,7 +270,7 @@ public class TrendBean extends BaseBean
             }            
         });  
     
-        if ( !this.navigation.getSortedSecond() ) 
+        if ( this.navigation.getSortedSecond().equalsIgnoreCase("false") )            
         {
             Collections.reverse(sTemp);            
         }        
@@ -510,41 +513,41 @@ public class TrendBean extends BaseBean
         return accountDAO;
     }
     
-    public Boolean getSortItFirst()
+    public String getSortItFirst()
     {
         return sortItFirst;
     }
 
-    public void setSortItFirst(Boolean sortItFirst)
+    public void setSortItFirst(String sortItFirst)
     {
         this.sortItFirst = sortItFirst;
         
-        if (        this.navigation.getSortedFirst() )
+        if (        this.navigation.getSortedFirst().equalsIgnoreCase("true") )
         {
-            this.navigation.setSortedFirst(false);
+            this.navigation.setSortedFirst("false");
         } 
-        else if (  !this.navigation.getSortedFirst() )
+        else if (   this.navigation.getSortedFirst().equalsIgnoreCase("false") )
         {
-            this.navigation.setSortedFirst(true);
+            this.navigation.setSortedFirst("true");
         }
     }
 
-    public Boolean getSortItSecond()
+    public String getSortItSecond()
     {
         return sortItSecond;
     }
     
-    public void setSortItSecond(Boolean sortItSecond)
+    public void setSortItSecond(String sortItSecond)
     {
         this.sortItSecond = sortItSecond;
         
-        if (        this.navigation.getSortedSecond() )
+        if (        this.navigation.getSortedSecond().equalsIgnoreCase("true") )
         {
-            this.navigation.setSortedSecond(false);
+            this.navigation.setSortedSecond("false");
         } 
-        else if (  !this.navigation.getSortedSecond() )
+        else if (   this.navigation.getSortedSecond().equalsIgnoreCase("false") )
         {
-            this.navigation.setSortedSecond(true);
+            this.navigation.setSortedSecond("true");
         }
     }
 
