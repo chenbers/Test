@@ -27,10 +27,10 @@ public class Group extends BaseEntity
     @Column(name = "desc")
     private String            description;
 
-    // Default map view settings
-    private Integer           mapZoom;
-    private Double            mapLat;
-    private Double            mapLng;
+    // Default map view settings (Default Value :USA Center)
+    private Integer           mapZoom = 15;
+    private Double            mapLat = 38.5482;
+    private Double            mapLng = -95.8008;
     private Integer           zoneRev;
 
 
@@ -157,8 +157,11 @@ public class Group extends BaseEntity
 
     public void setMapCenter(LatLng mapCenter)
     {
-        setMapLat(mapCenter.getLat());
-        setMapLng(mapCenter.getLng());
+        if(mapCenter != null)
+        {
+            setMapLat(mapCenter.getLat());
+            setMapLng(mapCenter.getLng());
+        }
     }
 
     public GroupType getType()
