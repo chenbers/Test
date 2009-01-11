@@ -27,7 +27,7 @@ public class DriverTripsBean extends BaseBean
     private Date                startDate         = new Date();
     private Date                endDate           = new Date();
 
-    private Integer             milesDriven       = 0;
+    private Double              milesDriven       = 0.0D;
     private Integer             idleSeconds       = 0;
     private Integer             numTrips          = 0;
     private Integer             totalDriveSeconds = 0;
@@ -48,6 +48,9 @@ public class DriverTripsBean extends BaseBean
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, -7);
         startDate = calendar.getTime();
+        
+        if(navigation.getDriver() == null)
+            return;
 
         initTrips();
     }
@@ -62,8 +65,8 @@ public class DriverTripsBean extends BaseBean
 
         for (Trip trip : tempTrips)
         {
-            if (trip.getStartTime().before(startDate)) // ??
-                continue;
+            //if (trip.getStartTime().before(startDate)) // ??
+            //    continue;
 
             trips.add(0, new TripDisplay(trip));
         }
@@ -103,13 +106,18 @@ public class DriverTripsBean extends BaseBean
 
     public void generateStats()
     {
+        milesDriven = 0D;
+        totalDriveSeconds = 0;
+        idleSeconds = 0;
+        
         for (TripDisplay trip : trips)
         {
-            if (trip.getTrip().getStartTime().before(startDate)) // ??
-                continue;
+            //if (trip.getTrip().getStartTime().before(startDate)) // ??
+            //    continue;
 
             milesDriven += trip.getTrip().getMileage();
-            totalDriveSeconds += DateUtil.convertDateToSeconds(trip.getTrip().getEndTime()) - DateUtil.convertDateToSeconds(trip.getTrip().getStartTime());
+            //totalDriveSeconds += DateUtil.convertDateToSeconds(trip.getTrip().getEndTime()) - DateUtil.convertDateToSeconds(trip.getTrip().getStartTime());
+            totalDriveSeconds += (trip.getDurationMiliSeconds() / 1000);
         }
 
         for (Event event : idleEvents)
@@ -152,12 +160,12 @@ public class DriverTripsBean extends BaseBean
     }
 
     // MILES PROPERTIES
-    public Integer getMilesDriven()
+    public Double getMilesDriven()
     {
         return milesDriven / 100;
     }
 
-    public void setMilesDriven(Integer milesDriven)
+    public void setMilesDriven(Double milesDriven)
     {
         this.milesDriven = milesDriven;
     }
@@ -216,7 +224,7 @@ public class DriverTripsBean extends BaseBean
         this.showLastTenTrips = showLastTenTrips;
         selectedTrips.clear();
 
-        if (showLastTenTrips)
+        if (showLastTenTrips == true)
         {
             int count = 0;
             for (TripDisplay trip : trips)

@@ -148,7 +148,7 @@ public class DateUtil
     
     public static String getDurationFromSeconds(Integer secsIn)
     {
-        int hours = secsIn / 3600,
+        Integer hours = secsIn / 3600,
         remainder = secsIn % 3600,
         minutes = remainder / 60,
         seconds = remainder % 60;

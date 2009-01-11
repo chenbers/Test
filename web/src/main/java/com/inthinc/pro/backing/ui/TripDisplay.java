@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
@@ -20,7 +21,7 @@ public class TripDisplay
     String duration;        // 1:32
     List<LatLng> route;
     LatLng routeLastStep;
-    
+    Long durationMiliSeconds;
     Trip trip;
     
     private static DateFormat dateFormatter;
@@ -34,22 +35,24 @@ public class TripDisplay
         dateFormatter = new SimpleDateFormat("dd MMM");
         setDateShort(dateFormatter.format(trip.getEndTime()));
         
-        dateFormatter = new SimpleDateFormat("h:mm");
+        dateFormatter = new SimpleDateFormat("h:mm a");
         setTimeShort(dateFormatter.format(trip.getEndTime() ));
         
-        
-        long diff = trip.getEndTime().getTime()-trip.getStartTime().getTime();
-        setDuration(dateFormatter.format(new Date(diff)));
+        durationMiliSeconds = trip.getEndTime().getTime() - trip.getStartTime().getTime();
+        setDuration(getDurationFromSeconds(durationMiliSeconds / 1000));
         
         Double mileageDouble = (double)trip.getMileage() / 100;
         setDistance(mileageDouble.toString() + "mi");
         
-        setStartAddress(trip.getStartAddressStr());
-        setEndAddress(trip.getEndAddressStr());
-        
+        AddressLookup lookup = new AddressLookup();
+
         if(route.size() > 0)
+        {
             routeLastStep = route.get(route.size()-1);
-        
+            
+            setStartAddress(lookup.getAddress(route.get(0).getLat(), route.get(0).getLng()));
+            setEndAddress(lookup.getAddress(route.get(route.size()-1).getLat(), route.get(route.size()-1).getLng()));
+        }
     }
 
     public String getDateShort()
@@ -140,6 +143,28 @@ public class TripDisplay
     public void setRouteLastStep(LatLng routeLastStep)
     {
         this.routeLastStep = routeLastStep;
+    }
+    
+    public Long getDurationMiliSeconds()
+    {
+        return durationMiliSeconds;
+    }
+
+    public void setDurationMiliSeconds(Long durationMiliSeconds)
+    {
+        this.durationMiliSeconds = durationMiliSeconds;
+    }
+    
+    public static String getDurationFromSeconds(Long secsIn)
+    {
+        Long hours = secsIn / 3600,
+        remainder = secsIn % 3600,
+        minutes = remainder / 60,
+        seconds = remainder % 60;
+
+        return ( (hours < 10 ? "0" : "") + hours
+        + ":" + (minutes < 10 ? "0" : "") + minutes
+        + ":" + (seconds< 10 ? "0" : "") + seconds );
     }
     
 }
