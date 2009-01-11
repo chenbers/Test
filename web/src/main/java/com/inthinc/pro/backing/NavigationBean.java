@@ -34,11 +34,12 @@ public class NavigationBean extends BaseDurationBean
     // Trend chart function
     private Integer start = 0;
     private Integer end = 0;
-    private Integer numRowsPerPg = 5;
+//    private Integer numRowsPerPg = 5;
+    private String numRowsPerPg = "5";
     
     // Capture for sort
-    private Boolean             sortedFirst = false;
-    private Boolean             sortedSecond = false;
+    private Boolean sortedFirst = false;
+    private Boolean sortedSecond = false;
 
     public NavigationBean()
     {
@@ -183,7 +184,7 @@ public class NavigationBean extends BaseDurationBean
             this.sortedSecond = true;
         }
     }
-
+/*
     public Integer getNumRowsPerPg()
     {
         return numRowsPerPg;
@@ -203,5 +204,30 @@ public class NavigationBean extends BaseDurationBean
         if ( this.end > this.numRowsPerPg ) {
             this.end = this.numRowsPerPg;
         }
-    }    
+    }
+*/
+    
+    public String getNumRowsPerPg()
+    {
+        return numRowsPerPg;
+    }
+
+    public void setNumRowsPerPg(String numRowsPerPg)
+    {
+        logger.debug("numRowsPerPg " + numRowsPerPg + 
+                " start " + this.start + 
+                " end " + this.end);
+        
+        String localStr = new String(numRowsPerPg);
+        this.numRowsPerPg = localStr;
+        int local = (new Integer(this.numRowsPerPg)).intValue();
+        
+        // A change here implies the start and end must change
+        //  as we are going from standard to flyout
+        this.start = 1;
+        if ( this.end > local ) {
+            this.end = local;
+        }
+    }
+  
 }

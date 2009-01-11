@@ -334,9 +334,13 @@ public class TrendBean extends BaseBean
         if ( this.navigation.getEnd() != 0 ) {              
             this.end = this.navigation.getEnd();
         } 
-        if ( this.navigation.getNumRowsPerPg() != 0 ) {
-            this.numRowsPerPg = this.navigation.getNumRowsPerPg();
+        if ( this.navigation.getNumRowsPerPg() != null ) {
+            int local = (new Integer(this.navigation.getNumRowsPerPg())).intValue();
+            this.numRowsPerPg = local;
         }
+//        if ( this.navigation.getNumRowsPerPg() != 0 ) {
+//            this.numRowsPerPg = this.navigation.getNumRowsPerPg();
+//        }        
          
         // tmpGroupID implies back on the same page
         if ( this.tmpGroupID != null ) {
