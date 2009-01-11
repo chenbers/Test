@@ -7,6 +7,7 @@ import java.util.Random;
 
 import javax.faces.context.FacesContext;
 
+import com.inthinc.pro.charts.Line;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.wrapper.MpgEntityPkg;
@@ -426,5 +427,48 @@ public class GraphicUtil {
 	public static final double roundDouble(double d, int places) 
 	{
 	    return Math.round(d * Math.pow(10, (double) places)) / Math.pow(10, (double) places);
+	}
+	
+	public static final int getHoles(Duration d, int size)
+	{
+        int holes = 0;
+        if ( d == Duration.DAYS)
+        {
+            holes = d.getNumberOfDays() - size;            
+        }
+        else
+        {
+            holes = GraphicUtil.convertToMonths(d) - size;
+        }   
+        
+        return holes;
+	}
+	
+	public static final String pad(int holes,List<String> monthList)
+	{
+	    Line line = new Line();
+	    StringBuffer sb = new StringBuffer();
+	    
+        for (int k = 0; k < holes; k++)
+        {            
+            String itm = line.getChartItem(new Object[] { (double) (0.0d), 
+                    monthList.get(k) });
+            sb.append(itm);
+        }
+        
+        return sb.toString();
+	}
+	
+	public static final int getDurationSize(Duration d) 
+	{
+	    int size = 0;
+	    
+        if ( d == Duration.DAYS ) {
+            size = 30;     
+        } else {
+            size = convertToMonths(d);                    
+        }
+        
+        return size;	    
 	}
 }
