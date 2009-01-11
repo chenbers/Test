@@ -196,7 +196,9 @@
 								<f:facet name="header">
 									<h:outputText value="Driver" />
 								</f:facet>
-								<h:outputText value="#{item.name}" />
+								<h:commandLink value="#{item.name}" action="#{liveFleetBean.driverAction}">
+									<f:param name="id" value="#{item.driverID}" />
+								</h:commandLink>
 							</rich:column>
 
 							<rich:column sortBy="#{item.workPhone}">
@@ -241,7 +243,7 @@
 					<tr>
 						<td width="90">Find Address:</td>
 						<td width="301">
-							<input type="text" size="40" id="addressTextBox" value="1600 Amphitheatre Pky, Mountain View, CA" onKeyPress="checkEnter(event);" />
+							<input type="text" size="40" id="addressTextBox" value="" onKeyPress="checkEnter(event);" />
 						</td>
 						<td width="165" rowspan="2">
 							<button name="dd" value="" class="left" onclick="processForm('addressTextBox', 'countComboBox');">
