@@ -191,6 +191,10 @@ public class NavigationBean extends BaseDurationBean
 
     public void setNumRowsPerPg(Integer numRowsPerPg)
     {
+        logger.debug("numRowsPerPg " + this.numRowsPerPg + 
+                " start " + this.start + 
+                " end " + this.end);
+        
         this.numRowsPerPg = numRowsPerPg;
         
         // A change here implies the start and end must change
