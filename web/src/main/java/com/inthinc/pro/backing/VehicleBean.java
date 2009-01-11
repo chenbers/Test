@@ -273,14 +273,37 @@ public class VehicleBean extends BaseDurationBean
 
         List<ScoreableEntity> scoreList = scoreDAO.getVehicleScoreHistory(navigation.getVehicle().getVehicleID(), getDuration(), scoreType, 10);
         DateFormat dateFormatter = new SimpleDateFormat(getDuration().getDatePattern());
-
+/*
         String dateString;
         for (ScoreableEntity e : scoreList)
         {
           dateString = e.getCreated() == null ? "" : dateFormatter.format(e.getCreated());
             sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), dateString }));
         }
-
+*/
+        // Get "x" values
+        List<String> monthList = GraphicUtil.createMonthList(getDuration());
+        
+        // Pad any data not found
+        int holes = GraphicUtil.getHoles(getDuration(),scoreList.size());
+        sb.append(GraphicUtil.pad(holes,monthList));
+        
+        int cnt = holes;
+        if ( cnt < 0 )
+        {
+            cnt = 0;
+        }
+        for (ScoreableEntity e : scoreList)
+        {            
+            if ( cnt == GraphicUtil.getDurationSize(getDuration())  ) break;
+//            sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), 
+//                    dateFormatter.format(e.getCreated()) }));
+            String itm = line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), 
+                    monthList.get(cnt) });
+            sb.append(itm);
+            cnt++;
+        }
+        
         // End XML Data
         sb.append(line.getClose());
 
