@@ -117,7 +117,7 @@ public class DriverTripsBean extends BaseBean
 
             milesDriven += trip.getTrip().getMileage();
             //totalDriveSeconds += DateUtil.convertDateToSeconds(trip.getTrip().getEndTime()) - DateUtil.convertDateToSeconds(trip.getTrip().getStartTime());
-            totalDriveSeconds += (trip.getDurationMiliSeconds() / 1000);
+            totalDriveSeconds += (trip.getDurationMiliSeconds() / 1000l);
         }
 
         for (Event event : idleEvents)
