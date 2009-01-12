@@ -23,7 +23,7 @@
       </ui:include>
 -->
 
-    <rich:modalPanel id="editColumns" headerClass="popupHeader" controlsClass="popupControls" width="500" height="350" zindex="2000">
+    <rich:modalPanel id="editColumns" headerClass="popupHeader" controlsClass="popupControls" width="500" height="350" autosized="true" zindex="2000">
       <f:facet name="header">
         <h:outputText value="#{messages.editColumns_title}" />
       </f:facet>
@@ -35,7 +35,7 @@
       	<h:outputText value="#{messages.editColumns_explanation}"/>
       </h:panelGroup>
 
-      <a4j:form id="editColumnsForm" >
+      <a4j:form id="editColumnsForm">
 
 		<rich:dataGrid id="editColumnGrid" columns="3" value="#{bean.availableColumns}" var="col" width="100%" style="border:0">
             <h:outputLabel rendered="#{bean.tableColumns[col].canHide}">

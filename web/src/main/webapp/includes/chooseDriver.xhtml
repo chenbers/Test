@@ -28,7 +28,7 @@
 
   <ui:composition>
 
-    <rich:modalPanel id="chooseDriver" headerClass="popupHeader" controlsClass="popupControls" width="650" height="380" zindex="2001">
+    <rich:modalPanel id="chooseDriver" headerClass="popupHeader" controlsClass="popupControls" width="650" height="380" autosized="true" zindex="2001">
       <f:facet name="header">
         <h:outputText value="#{messages.chooseDriver_title}" />
       </f:facet>
@@ -49,7 +49,7 @@
             <h:outputText value="#{item.person.first}" /><h:outputText value=" " /><h:outputText value="#{item.person.last}" />
           </rich:column>
           <rich:column sortBy="#{editorBean.groupNames[item.groupID]}">
-            <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_team}" /></f:facet>
+            <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_groupID}" /></f:facet>
             <h:outputText value="#{editorBean.groupNames[item.groupID]}" />
           </rich:column>
           <rich:column sortBy="#{item.status}">
