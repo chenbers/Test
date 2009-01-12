@@ -48,8 +48,8 @@
 					action="#{organizationBean.save}"
 					reRender="groupPanel,organizationTreePanel" styleClass="left">
 					<f:param name="state" value="VIEW" />
-					<span class="add"><h:outputText
-						value="#{messages.button_create_unit}" /></span></a4j:commandButton>
+					<span class="save"><h:outputText
+						value="#{messages.button_save}" /></span></a4j:commandButton>
 			</li>
 				
 		</ul>
@@ -69,7 +69,7 @@
 				align="center">
 				<h:outputText rendered="#{groupTreeNode.group.type ne 'FLEET'}">
 					<tr>
-						<td width="100">#{messages.group_parent_group}</td>
+						<td width="100">#{messages.group_parent_group}:</td>
 						<td>
 						<table>
 							<tr>
@@ -90,7 +90,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td width="100">#{messages.group_group_type}</td>
+						<td width="100">#{messages.group_group_type}:</td>
 						<td>
 						<table>
 							<tr>
@@ -111,7 +111,7 @@
 					
 				</h:outputText>
 				<tr>
-					<td width="100">#{messages.group_name}</td>
+					<td width="100">#{messages.group_name}:</td>
 					<td><h:inputText value="#{groupTreeNode.group.name}"
 						id="group_name" styleClass="text" size="30" maxlength="126"
 						required="true" requiredMessage="#{messages.required}" /> <rich:message
@@ -120,13 +120,13 @@
 						styleClass="field-msg" /></td>
 				</tr>
 				<tr>
-					<td width="100">#{messages.group_description}</td>
+					<td width="100">#{messages.group_description}:</td>
 					<td><h:inputTextarea
 						value="#{groupTreeNode.group.description}" style="width:100%" /></td>
 				</tr>
 				
 				<tr>
-					<td width="100">#{messages.group_manager}</td>
+					<td width="100">#{messages.group_manager}:</td>
 					<td>
 					<table>
 						<tr>
