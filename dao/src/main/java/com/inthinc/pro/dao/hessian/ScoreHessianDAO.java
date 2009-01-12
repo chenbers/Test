@@ -249,9 +249,35 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     @Override
     public Map<Integer, List<ScoreableEntity>> getTrendScores(Integer groupID, Duration duration)
     {
+        // Temporary fix, will need to fix on db and web side
+        //  for a duration code of 0 or 1, set the passed code to 0, this
+        //      implies we are asking for DAILY scores
+        //  for any of the month codes, 2 or 3 or 4 or 5, set it to 2, this
+        //      implies we are asking for MONTHLY scores
+        int localDuration = -1;
+        int localCount = -1;
+        
+        if (        duration == Duration.DAYS ) {
+            localDuration = 0;
+            localCount = 30;
+            
+        } else if ( duration == Duration.THREE ) {
+            localDuration = 2;
+            localCount = 3;
+            
+        } else if ( duration == Duration.SIX ) {
+            localDuration = 2;
+            localCount = 6;        
+            
+        } else if ( duration == Duration.TWELVE ) {
+            localDuration = 2;
+            localCount = 12;     
+        }
+        
         try
         {
-            List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getCode(), ScoreType.SCORE_OVERALL.getDriveQMetric());
+            List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, localDuration, localCount);            
+//            List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getCode(), ScoreType.SCORE_OVERALL.getDriveQMetric());
             List<GQVMap> gqvList = getMapper().convertToModelObject(list, GQVMap.class);
 
             Map<Integer, List<ScoreableEntity>> returnMap = new HashMap<Integer, List<ScoreableEntity>>();
