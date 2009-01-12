@@ -1804,6 +1804,7 @@ color: #fff;
 
 .popupactions button {
 	float: right;
+	margin-left: 6px;
 	}
 
 .popupControls {
