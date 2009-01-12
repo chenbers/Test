@@ -60,7 +60,7 @@
                                 <strong><h:outputText value="#{messages.zones_zone}" /></strong>
                               </td>
                               <td>
-                                <h:selectOneMenu value="#{zonesBean.itemID}" id="zone">
+                                <h:selectOneMenu value="#{zonesBean.itemID}" id="zone" style="width: 200px">
                                   <f:selectItems value="#{zonesBean.zoneIDs}" />
                                   <a4j:support event="onchange" reRender="points,address,displayZone,editZone" oncomplete="showZone(false)" />
                                 </h:selectOneMenu>
