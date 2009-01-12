@@ -36,7 +36,6 @@ public class PersonBeanTest extends BaseAdminBeanTest<PersonBean.PersonView>
         editItem.setGender(Gender.FEMALE);
         editItem.setHeight(68);
         editItem.setWeight(123);
-        editItem.setDob(new Date());
     }
 
     @Override
