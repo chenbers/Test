@@ -295,91 +295,94 @@
 				</div>
 					<div class="panel_w">
 					  <div class="panel_content">
-						<c:if test="#{driverBean.lastTrip ne null}">	
+					  
 					  	<h:panelGroup styleClass="map-border" layout="block">
+							<c:if test="#{driverBean.hasLastTrip eq false}">
+	  							<h3>#{messages.no_trips_found}</h3>
+	  						</c:if>
 							<div id="map-canvas" style="width:458px;height:300px;border:0"></div>
 					  	</h:panelGroup>
-					    <script type="text/JavaScript">
-						var baseIcon = new GIcon();
-							baseIcon.iconSize = new GSize(21, 20);
-							baseIcon.iconAnchor = new GPoint(6, 20);
-							baseIcon.infoWindowAnchor = new GPoint(5, 1);
-
-						var bounds = new GLatLngBounds();
-
-					    function createMarker(point, message, iconImage)
-				        {
-				          var markerIcon = new GIcon(baseIcon);
-				          markerIcon.image = iconImage;
+					  	
+					  	<c:if test="#{driverBean.hasLastTrip eq true}">
+						    <script type="text/JavaScript">
+							var baseIcon = new GIcon();
+								baseIcon.iconSize = new GSize(21, 20);
+								baseIcon.iconAnchor = new GPoint(6, 20);
+								baseIcon.infoWindowAnchor = new GPoint(5, 1);
 	
-				          // Set up our GMarkerOptions object
-				          markerOptions = { icon:markerIcon };
-				          var marker = new GMarker(point, markerOptions);
+							var bounds = new GLatLngBounds();
 	
-				          GEvent.addListener(marker, "click", function() {
-				            marker.openInfoWindowHtml("<b>" + message + "</b>");
-				          });
-				          return marker;
-				        }
-
-						function bodyUnload()
-						{
-							GUnload();
-						}
-					    
-  						if (GBrowserIsCompatible())
-  	  					{
-       						map = new GMap2(document.getElementById("map-canvas"));
-       						map.addControl(new GLargeMapControl());
-       						map.addControl(new GMapTypeControl());
-       						map.addControl(new GOverviewMapControl()); 
-							map.setCenter(new GLatLng(#{driverBean.lastTrip.routeLastStep.lat}, #{driverBean.lastTrip.routeLastStep.lng}), 14);
-							map.setMapType(G_NORMAL_MAP);
-							
-							var polyline = new GPolyline([
-							
-							<ui:repeat value="#{driverBean.lastTrip.route}" var="route">
-								new GLatLng(#{route.lat}, #{route.lng}),
-						  	</ui:repeat>
-						  		  //Repeating the last step to finish JS array.
-						  		  new GLatLng(#{driverBean.lastTrip.routeLastStep.lat}, #{driverBean.lastTrip.routeLastStep.lng})
-							], "#0000ff", 6);
-							map.addOverlay(polyline);
-
-							//Start of trip marker
-							var startlatlng = new GLatLng(#{driverBean.lastTrip.route[0].lat}, #{driverBean.lastTrip.route[0].lng});
-							marker = createMarker(startlatlng, "Start of trip.<br />" + "#{driverBean.lastTrip.trip.startTime}<br />#{driverBean.lastTrip.startAddress}",
-													"#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
-							map.addOverlay(marker);
-							bounds.extend(marker.getPoint());
-
-							//End of trip marker
-							var endlatlng = new GLatLng(#{driverBean.lastTrip.routeLastStep.lat}, #{driverBean.lastTrip.routeLastStep.lng});
-							marker = createMarker(endlatlng, "End of trip.<br />" + "#{driverBean.lastTrip.trip.endTime}<br />#{driverBean.lastTrip.endAddress}",
-													"#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
-							map.addOverlay(marker);
-							bounds.extend(marker.getPoint());
-
-							//Create Violation markers.
-							var violation;
-							<ui:repeat value="#{driverBean.violationEvents}" var="violation">
-								violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
-								map.addOverlay(createMarker(violation, "#{violation.eventType} Violation.<br />#{violation.time}",
-												"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png"));
-							</ui:repeat>
-
-							//Zoom and Center on trip.
-							map.setZoom(map.getBoundsZoomLevel(bounds));
-						    map.setCenter(bounds.getCenter());
+						    function createMarker(point, message, iconImage)
+					        {
+					          var markerIcon = new GIcon(baseIcon);
+					          markerIcon.image = iconImage;
+		
+					          // Set up our GMarkerOptions object
+					          markerOptions = { icon:markerIcon };
+					          var marker = new GMarker(point, markerOptions);
+		
+					          GEvent.addListener(marker, "click", function() {
+					            marker.openInfoWindowHtml("<b>" + message + "</b>");
+					          });
+					          return marker;
+					        }
+	
+							function bodyUnload()
+							{
+								GUnload();
+							}
+						    
+	  						if (GBrowserIsCompatible())
+	  	  					{
+	       						map = new GMap2(document.getElementById("map-canvas"));
+	       						map.addControl(new GLargeMapControl());
+	       						map.addControl(new GMapTypeControl());
+	       						map.addControl(new GOverviewMapControl()); 
+								map.setCenter(new GLatLng(#{driverBean.lastTrip.routeLastStep.lat}, #{driverBean.lastTrip.routeLastStep.lng}), 14);
+								map.setMapType(G_NORMAL_MAP);
 								
-      					}
-    					</script>
+								var polyline = new GPolyline([
+								
+								<ui:repeat value="#{driverBean.lastTrip.route}" var="route">
+									new GLatLng(#{route.lat}, #{route.lng}),
+							  	</ui:repeat>
+							  		  //Repeating the last step to finish JS array.
+							  		  new GLatLng(#{driverBean.lastTrip.routeLastStep.lat}, #{driverBean.lastTrip.routeLastStep.lng})
+								], "#0000ff", 6);
+								map.addOverlay(polyline);
+	
+								//Start of trip marker
+								var startlatlng = new GLatLng(#{driverBean.lastTrip.route[0].lat}, #{driverBean.lastTrip.route[0].lng});
+								marker = createMarker(startlatlng, "Start of trip.<br />" + "#{driverBean.lastTrip.trip.startTime}<br />#{driverBean.lastTrip.startAddress}",
+														"#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
+								map.addOverlay(marker);
+								bounds.extend(marker.getPoint());
+	
+								//End of trip marker
+								var endlatlng = new GLatLng(#{driverBean.lastTrip.routeLastStep.lat}, #{driverBean.lastTrip.routeLastStep.lng});
+								marker = createMarker(endlatlng, "End of trip.<br />" + "#{driverBean.lastTrip.trip.endTime}<br />#{driverBean.lastTrip.endAddress}",
+														"#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
+								map.addOverlay(marker);
+								bounds.extend(marker.getPoint());
+	
+								//Create Violation markers.
+								var violation;
+								<ui:repeat value="#{driverBean.violationEvents}" var="violation">
+									violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
+									map.addOverlay(createMarker(violation, "#{violation.eventType} Violation.<br />#{violation.time}",
+													"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png"));
+								</ui:repeat>
+	
+								//Zoom and Center on trip.
+								map.setZoom(map.getBoundsZoomLevel(bounds));
+							    map.setCenter(bounds.getCenter());
+									
+	      					}
+	    					</script>
     					</c:if>
-    					<c:if test="{driverBean.lastTrip eq null ? true : false}">
-  							<h2>#{messages.no_trips_found}</h2>
-  						</c:if>
 					  </div>
 					</div>
+					
 				<div class="panel_sw">
 					<div class="panel_statusbar"></div>
 				</div>

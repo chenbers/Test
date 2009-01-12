@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.TripDisplay;
+import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.IdleEvent;
@@ -44,6 +45,8 @@ public class DriverTripsBean extends BaseBean
 
     public void init()
     {
+        // TODO set startDate to 7 days ago 12:00:00AM and endDate to Today 11:59:59PM and when dates change.
+        
         // Set start date to 7 days ago.
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, -7);
@@ -65,9 +68,6 @@ public class DriverTripsBean extends BaseBean
 
         for (Trip trip : tempTrips)
         {
-            //if (trip.getStartTime().before(startDate)) // ??
-            //    continue;
-
             trips.add(0, new TripDisplay(trip));
         }
 
@@ -96,12 +96,20 @@ public class DriverTripsBean extends BaseBean
         List<Integer> idleTypes = new ArrayList<Integer>();
         idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
 
+        // TODO use one list. add idle events and sort by time.  JSF to check event type for which image to use.
+        
         violationEvents = new ArrayList<Event>();
         violationEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), start, end, vioTypes);
 
+        //Lookup Addresses for events
+        AddressLookup lookup = new AddressLookup();
+        for (Event event: violationEvents)
+        {
+            event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
+        }
+        
         idleEvents = new ArrayList<Event>();
         idleEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), start, end, idleTypes);
-
     }
 
     public void generateStats()
@@ -112,12 +120,10 @@ public class DriverTripsBean extends BaseBean
         
         for (TripDisplay trip : trips)
         {
-            //if (trip.getTrip().getStartTime().before(startDate)) // ??
-            //    continue;
-
             milesDriven += trip.getTrip().getMileage();
-            //totalDriveSeconds += DateUtil.convertDateToSeconds(trip.getTrip().getEndTime()) - DateUtil.convertDateToSeconds(trip.getTrip().getStartTime());
-            totalDriveSeconds += (trip.getDurationMiliSeconds().intValue() / 1000);
+       
+            Long tempLong = (trip.getDurationMiliSeconds() / 1000L);
+            totalDriveSeconds += tempLong.intValue();
         }
 
         for (Event event : idleEvents)

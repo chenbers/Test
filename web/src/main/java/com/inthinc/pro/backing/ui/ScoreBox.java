@@ -24,39 +24,51 @@ public class ScoreBox
 	
 	private void calculateScoreColor()  //To be removed.
 	{
-		//Determine CSS Style
-		if( score <= 10){
+		if(score == null || score < 0)
+		{
+		    setScoreStyle("score_" + size + "_na");
+		    return;
+		}
+	    
+	    //Determine CSS Style
+		if( score <= 10 && score > 0){
 			setScoreStyle("score_" + size + "_1");
 		}
-		else if(score <= 20) {
+		else if(score <= 20 && score > 0) {
 			setScoreStyle("score_" + size + "_2");
 		}
-		else if(score <= 30) {
+		else if(score <= 30 && score > 0) {
 			setScoreStyle("score_" + size + "_3");
 		}
-		else if(score <= 40) {
+		else if(score <= 40 && score > 0) {
 			setScoreStyle("score_" + size + "_4");
 		}
 		else {
 			setScoreStyle("score_" + size + "_5");
-		}
+		}   
 	}
 	
 	public static String GetStyleFromScore(Integer score, ScoreBoxSizes size)
 	{
 	    String style;
 	    
+       if(score == null || score < 0)
+        {
+           style = "score_" + size + "_na";
+            return style;
+        }
+	    
 	    //Determine CSS Style
-        if( score <= 10){
+        if( score <= 10 && score > 0){
             style = "score_" + size.toString() + "_1";
         }
-        else if(score <= 20) {
+        else if(score <= 20 && score > 0) {
             style = "score_" + size.toString() + "_2";
         }
-        else if(score <= 30) {
+        else if(score <= 30 && score > 0) {
             style = "score_" + size.toString() + "_3";
         }
-        else if(score <= 40) {
+        else if(score <= 40 && score > 0) {
             style = "score_" + size.toString() + "_4";
         }
         else {

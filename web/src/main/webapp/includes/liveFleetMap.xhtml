@@ -6,8 +6,7 @@
   	xmlns:iwi="http://pro.tiwi.com/jsf"
 	xmlns:h="http://java.sun.com/jsf/html">
 	
-	<script src="#{facesContext.externalContext.request.contextPath}/js/markermanager.js"  type="text/javascript">	
-	</script>
+	<script src="#{facesContext.externalContext.request.contextPath}/js/markermanager.js"  type="text/javascript"></script>
 		<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
@@ -30,15 +29,15 @@
 				</div>
 				<div class="panel_w">
 					
-								<ui:repeat value="#{driverLocationBean.driverLastLocationBeans}" var="driverLastLocationBean">
-									<div id="#{driverLastLocationBean.driver.driverID}" style="display:none">
-										<h:form id="mapLinks">
-											<h:commandLink value="#{driverLastLocationBean.driverName}" action="#{driverLocationBean.driverAction}">
-												<f:param name="id" value="#{driverLastLocationBean.driver.driverID}"/>
-											</h:commandLink>
-										</h:form>
-									</div>
-							  	</ui:repeat>
+					<ui:repeat value="#{driverLocationBean.driverLastLocationBeans}" var="driverLastLocationBean">
+						<div id="#{driverLastLocationBean.driver.driverID}" style="display:none">
+							<h:form id="mapLinks">
+								<h:commandLink value="#{driverLastLocationBean.driverName}" action="#{driverLocationBean.driverAction}">
+									<f:param name="id" value="#{driverLastLocationBean.driver.driverID}"/>
+								</h:commandLink>
+							</h:form>
+						</div>
+				  	</ui:repeat>
 							  	
 					<div class="panel_content">
 				 	 <rich:panel  id="map">
@@ -95,6 +94,12 @@
 						          });
 						          return marker;
 						        }
+						        
+								function bodyUnload()
+								{
+									GUnload();
+								}
+								
 								<ui:repeat value="#{driverLocationBean.driverLastLocationBeans}" var="driverLastLocationBean">
 									var latlng = new GLatLng(#{driverLastLocationBean.lastLocation.lat}, #{driverLastLocationBean.lastLocation.lng});
 						        		mgr.addMarker(createMarker(latlng, "#{driverLastLocationBean.driver.driverID}",

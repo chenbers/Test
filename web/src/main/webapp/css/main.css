@@ -929,13 +929,20 @@ ul#grid_nav_dark li.text a:visited {
 	background: url(../images/score_lg_5.png) no-repeat;
 	margin: 0;
 	}
+.score_lg_na {
+	width: 90px;
+	height: 90px;
+	background: url(../images/score_lg_na.png) no-repeat;
+	margin: 0;
+	}
 	
 	
 .score_lg_1 div.score, 
 .score_lg_2 div.score, 
 .score_lg_3 div.score, 
 .score_lg_4 div.score, 
-.score_lg_5 div.score {
+.score_lg_5 div.score,
+.score_lg_na div.score {
 	font: bold 32px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	color: #333;
 	padding: 22px 0 0 20px;
@@ -967,8 +974,13 @@ ul#grid_nav_dark li.text a:visited {
 	height: 60px;
 	background: url(../images/score_med_5.png) no-repeat;
 	}
+.score_med_na {
+	width: 60px;
+	height: 60px;
+	background: url(../images/score_med_na.png) no-repeat;
+	}
 	
-.score_med_1 div.score, .score_med_2 div.score, .score_med_3 div.score, .score_med_4 div.score, .score_med_5 div.score {
+.score_med_1 div.score, .score_med_2 div.score, .score_med_3 div.score, .score_med_4 div.score, .score_med_5 div.score, .score_med_na div.score {
 	font: bold 24px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	color: #333;
 	padding: 15px 0 0 2px;
@@ -1005,8 +1017,14 @@ ul#grid_nav_dark li.text a:visited {
 	background: url(../images/score_sm_5.png) no-repeat;
 	cursor: pointer;
 	}
+.score_sm_na {
+	width: 40px;
+	height: 40px;
+	background: url(../images/score_sm_na.png) no-repeat;
+	cursor: pointer;
+	}
 	
-.score_sm_1 div.score, .score_sm_2 div.score, .score_sm_3 div.score, .score_sm_4 div.score, .score_sm_5 div.score {
+.score_sm_1 div.score, .score_sm_2 div.score, .score_sm_3 div.score, .score_sm_4 div.score, .score_sm_5 div.score, .score_sm_na div.score {
 	font: bold 18px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	color: #333;
 	padding: 8px 0 0 5px;
@@ -1741,6 +1759,7 @@ color: #fff;
 .maplink {
 	background: url(../images/ico_map.png) top left no-repeat;
 	padding: 0 0 0 20px;
+	height: 20px;
 	}
 
 /* MODAL WINDOW */
