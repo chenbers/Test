@@ -28,6 +28,7 @@
 	<ui:param name="reportsSelected" value="current" />
 
 	<t:saveState value="#{driverSpeedBean.speedingEvents}"/>
+	<t:saveState value="#{driverBean.clearItem}" />
 	
 	<ui:define name="content">
 <div id="wrapper">
@@ -425,7 +426,7 @@ var selected = 'OVERALL';
 								<f:facet name="header">
 									<h:outputText value="Posted Speed" />
 								</f:facet>
-								<strong><h:outputText value="#{item.speedLimit} #{messages.measurement_speed}" /></strong>	
+								<strong><h:outputText value="#{item.speedLimit} #{messages.measurement_speed}" /></strong><br />	
 								<a4j:commandLink onclick="javascript:Richfaces.showModalPanel('SLChangeRequestPanel',{lat:'#{item.latitude}',lon:'#{item.longitude}'});"  value="#{messages.sbs_submitRequest}"> </a4j:commandLink>
 								
 							</rich:column>
@@ -451,18 +452,16 @@ var selected = 'OVERALL';
 								<h:outputText value="#{item.distance} #{messages.measurement_distances}" />
 							</rich:column>
 							
-							<rich:column width="10%">
+							<rich:column>
 		      					<f:facet name="header">
 		      						<h:outputText value="" />
 		      					</f:facet>
-								<a4j:commandLink oncomplete="javascript:Richfaces.showModalPanel('clearRedFlagPanel')" reRender="clearItemForm:clearItem" >
+								<a4j:commandLink title="#{messages.redflags_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem" >
 									<h:outputText value="#{messages.redflags_clear}" />
-									<f:setPropertyActionListener target="#{driverSpeedBean.clearItem}" value="#{item}" />
+									<f:setPropertyActionListener target="#{driverBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
     						</rich:column>
-							
 						</rich:dataTable>
-						
 						<rich:datascroller align="center" for="eventsTable" immediate="true"
 								id="scrollerBottom" reRender="eventsTable,scrollerTop" />
 					</h:form> 
@@ -474,38 +473,38 @@ var selected = 'OVERALL';
     </tr>
 </table>
  </div>
-	<rich:modalPanel id="clearRedFlagPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="350" zindex="2000">
+	<rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="350">
+      <t:saveState value="#{driverBean.clearItem}" />
       <f:facet name="header">
-        <h:outputText value="#{messages.redflags_clearTitle}" />
+        <h:outputText value="Clear Event" />
       </f:facet>
       <f:facet name="controls">
-        <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('clearRedFlagPanel')" />
+        <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('clearEventPanel')" />
       </f:facet>
 
       <h:panelGroup layout="block" styleClass="popupsubtitle">
-      	<h:outputText value="#{messages.redflags_clearInst}"/>
+      	<h:outputText value="Clear the following Event?"/>
       </h:panelGroup>
 
       <a4j:form id="clearItemForm">
 		<h:panelGroup layout="block"  styleClass="popupcontent">
-      		<h:outputFormat id="clearItem" value="#{messages.redflags_clearDesc}">
-      			<a4j:actionparam value="#{redFlagsBean.clearItem.detail}"/>
-      			<a4j:actionparam value="#{redFlagsBean.clearItem.date}"/>
+      		<h:outputFormat id="clearItem" value="Clear {0} event on {1}">
+      			<a4j:actionparam value="#{driverBean.clearItem.eventType}"/>
+      			<a4j:actionparam value="#{driverBean.clearItem.time}"/>
       		</h:outputFormat>
       	</h:panelGroup>
 	
         <div class="popupactions">
-          <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearRedFlagPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_no}" /></span></button>
-          <a4j:commandLink 
-          				action="#{redFlagsBean.clearItemAction}"         				
-          				oncomplete="Richfaces.hideModalPanel('clearRedFlagPanel')" 
-          				reRender="items">
-          				<button type="submit" class="left">
-          					<span class="apply">
-          						<h:outputText value="#{messages.button_yes}" />
-          					</span>
-          				</button>
-			</a4j:commandLink>          			
+          <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_no}" /></span></button>
+          <a4j:commandLink action="#{driverBean.ClearEventAction}"         				
+          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel')" reRender="eventsTable">
+	          				<button type="submit" class="left">
+	          					<span class="apply">
+	          						<h:outputText value="#{messages.button_yes}" />
+	          					</span>
+	          				</button>
+	          				<f:setPropertyActionListener target="#{driverBean.clearItem}" value="#{driverBean.clearItem}" />
+			</a4j:commandLink> 		
         </div>
 
       </a4j:form>

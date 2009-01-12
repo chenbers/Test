@@ -138,7 +138,16 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
         return getEventsForDriver(driverID, startDate, endDate, EventMapper.getEventTypesInCategory(EventCategory.WARNING));
     }
 
+    @Override
+    public Integer forgive(Integer driverID, Long noteID)
+    {
+        return getChangedCount(getSiloService().forgive(driverID, noteID));
+    }
 
-
+    @Override
+    public Integer unforgive(Integer driverID, Long noteID)
+    {
+        return getChangedCount(getSiloService().unforgive(driverID, noteID));
+    }
 
 }

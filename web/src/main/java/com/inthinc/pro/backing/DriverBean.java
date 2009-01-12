@@ -18,6 +18,7 @@ import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
@@ -40,6 +41,10 @@ public class DriverBean extends BaseDurationBean
     private String              overallScoreStyle;
     private String              mpgHistory;
     private String              coachingHistory;
+    private Boolean             hasLastTrip;
+    private Event               clearItem;
+
+
 
     private NavigationBean      navigation;
     private BreakdownSelections breakdownSelected = BreakdownSelections.OVERALL;
@@ -49,7 +54,7 @@ public class DriverBean extends BaseDurationBean
         ScoreableEntity overallSe = scoreDAO.getDriverAverageScoreByType(navigation.getDriver().getDriverID(), getDuration(), ScoreType.SCORE_OVERALL);
 
         if (overallSe == null)
-            setOverallScore(0);
+            setOverallScore(-1);
         else
             setOverallScore(overallSe.getScore());
     }
@@ -58,9 +63,9 @@ public class DriverBean extends BaseDurationBean
     public void initViolations(Date start, Date end)
     {
         List<Integer> types = new ArrayList<Integer>();
-        types.add(93); // EventMapper.TIWIPRO_EVENT_SPEEDING_EX3
-        types.add(3); // EventMapper.TIWIPRO_EVENT_SEATBELT
-        types.add(2); // EventMapper.TIWIPRO_EVENT_NOTEEVENT
+        types.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
+        types.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
+        types.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
 
         violationEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), start, end, types);
     }
@@ -125,17 +130,39 @@ public class DriverBean extends BaseDurationBean
         if(lastTrip == null)
         {
             Trip tempTrip = driverDAO.getLastTrip(navigation.getDriver().getDriverID());
-    
-            if (tempTrip != null)
+            
+            if (tempTrip != null && tempTrip.getRoute().size() > 0)
             {
+                hasLastTrip = true;
                 TripDisplay trip = new TripDisplay(tempTrip);
                 setLastTrip(trip);
                 initViolations(trip.getTrip().getStartTime(), trip.getTrip().getEndTime());
             }
+            else
+            {
+                hasLastTrip = false;
+            }
         }
         return lastTrip;
     }
+    
+    public void ClearEventAction()
+    {
+        
+        Integer temp = eventDAO.forgive(navigation.getDriver().getDriverID(), clearItem.getNoteID());
+        
+        logger.debug("Clearing event " + clearItem.getNoteID() + " result: " + temp.toString());
+    }
+    public Event getClearItem()
+    {
+        return clearItem;
+    }
 
+    public void setClearItem(Event clearItem)
+    {
+        this.clearItem = clearItem;
+    }
+    
     public void setLastTrip(TripDisplay lastTrip)
     {
         this.lastTrip = lastTrip;
@@ -324,4 +351,15 @@ public class DriverBean extends BaseDurationBean
     {
         this.navigation = navigation;
     }
+
+    public Boolean getHasLastTrip()
+    {
+        return hasLastTrip;
+    }
+
+    public void setHasLastTrip(Boolean hasLastTrip)
+    {
+        this.hasLastTrip = hasLastTrip;
+    }
+    
 }

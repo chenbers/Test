@@ -1250,6 +1250,20 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         return returnList;
     }
 
+    @Override
+    public Map<String, Object> forgive(Integer driverID, Long noteID) throws ProDAOException
+    {
+        Integer temp = 1;
+        return TempConversionUtil.createMapFromObject(temp, true);
+    }
+
+    @Override
+    public Map<String, Object> unforgive(Integer driverID, Long noteID) throws ProDAOException
+    {
+        Integer temp = 1;
+        return TempConversionUtil.createMapFromObject(temp, true);
+    }
+
 
 
 }
