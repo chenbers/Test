@@ -10,46 +10,56 @@
 	
 	
 	
-	
-		<a4j:form id="overview_header_form">
-	
-	<ul id="grid_nav">
-			<li class="l grid_icon"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_line.png" /></li>
-			<li class="l grid_title">Overview</li>
-			<li class="l divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" /></li>
-			<li class="l">
-				<ui:include src="/includes/breadcrumb.xhtml">
-					<ui:param name="groupTreeNode"
-						value="#{navigationBean.groupTreeNode}" />
-				</ui:include>
-			</li>
-			
-			<li class="r grid_icon"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_help.png" /></li>
-			<h:outputText rendered="#{showContextMenu eq 'true'}">
-			<li class="r grid_icon">
-				<h:panelGroup id="overview_tools_icon">
-					<h:graphicImage value="/images/ico_tools.png"/>
-				</h:panelGroup>
-			</li>
-			</h:outputText>
-			<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" /></li>
-	</ul>
-	
-	<rich:contextMenu attachTo="overview_tools_icon" disableDefaultMenu="false" attached="true" id="over_header_menu" submitMode="server" event="onclick">
-		<rich:menuItem
-					iconDisabled="/images/ico_email.gif" icon="/images/ico_email.gif"
-					value="Email Report" id="#{ajaxForm}_email" action="go_emailReports">
-					<a4j:actionparam assignTo="#{reportRendererBean.reportTypes}" converter="SimpleBeanConverter" value="#{reportRendererBean.reportTypeList}"/>
-				</rich:menuItem>
-
-		<rich:menuItem  iconDisabled="/images/ico_pdf.gif"
-			icon="/images/ico_pdf.gif" value="Export To PDF"
-			action="#{reportRendererBean.exportReportToPDF}" id="export_menu_item">
-			<a4j:actionparam assignTo="#{reportRendererBean.reportTypes}" converter="SimpleBeanConverter" value="#{reportRendererBean.reportTypeList}"/>
-		</rich:menuItem>
-	</rich:contextMenu>
+	<a4j:region id="overview_header_region">
+	<a4j:form id="overview_header_form">
+		<ul id="grid_nav">
+				<li class="l grid_icon"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_line.png" /></li>
+				<li class="l grid_title">Overview</li>
+				<li class="l divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" /></li>
+				<li class="l">
+					<ui:include src="/includes/breadcrumb.xhtml">
+						<ui:param name="groupTreeNode"
+							value="#{navigationBean.groupTreeNode}" />
+					</ui:include>
+				</li>
+				
+				<li class="r grid_icon"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_help.png" /></li>
+				<h:outputText rendered="#{showContextMenu eq 'true'}">
+				<li class="r grid_icon">
+					<h:panelGroup id="overview_tools_icon">
+						<h:graphicImage value="/images/ico_tools.png"/>
+					</h:panelGroup>
+				</li>
+				</h:outputText>
+				<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" /></li>
+		</ul>
 		
-			
-	</a4j:form>
+		<rich:contextMenu attachTo="overview_tools_icon" disableDefaultMenu="false" attached="true" id="over_header_menu" submitMode="server" event="onclick">
+			<!--<rich:menuItem
+						iconDisabled="/images/ico_email.gif" icon="/images/ico_email.gif"
+						value="Email Report" id="#{ajaxForm}_email" action="go_emailReports">
+						<a4j:actionparam assignTo="#{reportRendererBean.reportTypes}" converter="SimpleBeanConverter" value="#{reportRendererBean.reportTypeList}"/>
+					</rich:menuItem>
 	
+			-->
+			<rich:menuItem ajaxSingle="true" rendered="true"
+					iconDisabled="/images/ico_email.gif" icon="/images/ico_email.gif" 
+					onclick="Richfaces.showModalPanel('overview_emailPopup');return false;" 
+					value="#{messages.contextMenu_email_this_report}" id="#{ajaxForm}_email" submitMode="none">
+			</rich:menuItem>
+	
+	
+			<rich:menuItem  iconDisabled="/images/ico_pdf.gif"
+				icon="/images/ico_pdf.gif" value="#{messages.contextMenu_export_to_pdf}"
+				action="#{reportRendererBean.exportReportToPDF}" id="export_menu_item">
+				<a4j:actionparam assignTo="#{reportRendererBean.reportTypes}" converter="SimpleBeanConverter" value="#{reportRendererBean.reportTypeList}"/>
+			</rich:menuItem>
+		</rich:contextMenu>
+	</a4j:form>
+	</a4j:region>
+	
+	<ui:include src="/includes/emailReportPopup.xhtml">	
+		<ui:param  name="reportTypeList" value="#{reportRendererBean.reportTypeList}"/>
+		<ui:param name="id" value="overview_emailPopup" />
+    </ui:include>
 </ui:composition>

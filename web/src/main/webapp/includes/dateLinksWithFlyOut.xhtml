@@ -88,22 +88,39 @@
 			</h:commandLink> </span>
 		
 			<rich:contextMenu event="onclick" attatched="true" disableDefaultMenu="false" submitMode="server" attachTo="#{ajaxForm}_toolsId">
+			<!--
 				<rich:menuItem ajaxSingle="true" rendered="true"
 					iconDisabled="/images/ico_email.gif" icon="/images/ico_email.gif"
 					value="Email Report" id="#{ajaxForm}_email" action="go_emailReports">
 					<a4j:actionparam assignTo="#{reportRendererBean.reportType}" value="#{reportType}"/>
 					<a4j:actionparam assignTo="#{reportRendererBean.duration}" converter="SimpleBeanConverter" value="#{duration}" />
 				</rich:menuItem>
+				-->
+				<rich:menuItem ajaxSingle="true" rendered="true"
 
+					iconDisabled="/images/ico_email.gif" icon="/images/ico_email.gif" onclick="Richfaces.showModalPanel('#{ajaxForm}_singleEmail');return false;"
+
+					value="#{messages.contextMenu_email_this_report}" id="#{ajaxForm}_email" submitMode="none">
+
+				</rich:menuItem>
+				
 				<rich:menuItem ajaxSingle="true" iconDisabled="/images/ico_pdf.gif"
 					disabled="#{reportType eq null?'true':'false'}"
-					icon="/images/ico_pdf.gif" value="Export To PDF"
+					icon="/images/ico_pdf.gif" value="#{messages.contextMenu_export_to_pdf}"
 					action="#{reportRendererBean.exportReportToPDF}" id="export">
 					<a4j:actionparam assignTo="#{reportRendererBean.reportType}" value="#{reportType}"/>
 					<a4j:actionparam assignTo="#{duration}" converter="SimpleBeanConverter" value="#{duration}" />
 				</rich:menuItem>
 			</rich:contextMenu>
 		</a4j:form>
+		
+		<h:outputText id="#{ajaxForm}_modalPanel">
+			<ui:include src="/includes/emailReportPopup.xhtml">	
+				<ui:param  name="reportType" value="#{reportType}"/>
+				<ui:param  name="duration" value="#{duration}" />
+				<ui:param  name="id" value="#{ajaxForm}_singleEmail" />
+			</ui:include>
+		</h:outputText>
 	</a4j:region>
 	
 

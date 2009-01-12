@@ -11,8 +11,10 @@
 	Prameters
 		title:       Title of the dialog
 		explanation: Text to be displayed in the header section
+		(Select one or the other reportType - reportTypeList)
 		reportType:  report to be emailed.
 		reportTypeList: reports to be emailed.
+		id:          Modal Panel ID
 
 
  -->
@@ -26,7 +28,7 @@
       <c:set var="explanation" value="#{messages.emailReport_explanation}" />
     </c:if>
 
-    <rich:modalPanel id="#{id}" headerClass="popupHeader" controlsClass="popupControls" width="500" height="140" autosized="true" resizeable="false" zindex="2001" onshow="if (event.parameters.deleteID) document.getElementById('confirmDeleteID').value = event.parameters.deleteID; var button = document.getElementById('confirmDeleteForm:deleteButton'); if (button == null) button = document.getElementById('confirmDeleteForm:deleteButtonDirect'); button.focus();">
+    <rich:modalPanel id="#{id}" headerClass="popupHeader" controlsClass="popupControls" width="500" height="140" autosized="true" resizeable="false" zindex="2001" >
       <f:facet name="header">
         <h:outputText value="#{title}" />
       </f:facet>
@@ -36,10 +38,12 @@
 
       <div class="popupsubtitle"><h:outputText value="#{explanation}" /></div>
 
-      <a4j:form id="confirmDeleteForm">
-		<h:panelGroup style="padding:5px">
-			<h:outputText value="#{messages.emailReport_address_label}"/>
-        	<h:inputTextarea style="margin:5px" cols ="40" rows="5" value="#{reportRendererBean.emailAddress}" />
+      <a4j:form id="#{id}_form">
+		<h:panelGroup style="padding:5px;width:100%">
+			<table>
+				<tr><td align="left" style="padding-left:5px"><h:outputText value="#{messages.emailReport_address_label}"/></td></tr>
+				<tr><td align="left"><h:inputTextarea style="margin:5px" cols ="40" rows="5" value="#{reportRendererBean.emailAddress}" /></td></tr>
+			</table>
 		</h:panelGroup>
         <div class="popupactions">
           <button type="submit" class="left" onclick="Richfaces.hideModalPanel('#{id}'); return false;"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button>
@@ -48,7 +52,7 @@
           		<a4j:actionparam assignTo="#{reportRendererBean.reportTypes}" converter="SimpleBeanConverter" value="#{reportTypeList}"/>
           </a4j:commandButton>
           <a4j:commandButton rendered="#{not empty reportType}"   id="emailReportButton" action="#{reportRendererBean.sendReportViaEmail}" onclick="Richfaces.hideModalPanel('#{id}')" oncomplete="#{onemail}" reRender="#{reRender}" styleClass="left" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;"><span class="email"><h:outputText value="#{messages.button_email}" /></span>
-          		<a4j:actionparam assignTo="#{reportRendererBean.reportType}" converter="SimpleBeanConverter" value="#{reportType}"/>
+          		<a4j:actionparam assignTo="#{reportRendererBean.reportType}" value="#{reportType}"/>
           		<a4j:actionparam assignTo="#{reportRendererBean.duration}" converter="SimpleBeanConverter" value="#{duration}"/>
           </a4j:commandButton>
         </div>
