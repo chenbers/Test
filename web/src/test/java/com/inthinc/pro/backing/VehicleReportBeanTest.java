@@ -54,7 +54,7 @@ public class VehicleReportBeanTest extends BaseBeanTest
                 (new Integer(vehicleReportBean.getMaxCount()).intValue()));
         */        
         // column map
-        Map<String, TableColumn> columnMap = vehicleReportBean.getVehicleColumns();
+        Map<String, TableColumn> columnMap = vehicleReportBean.getTableColumns();
         assertEquals(VehicleReportBean.AVAILABLE_COLUMNS.size(), columnMap.size());
 
     }

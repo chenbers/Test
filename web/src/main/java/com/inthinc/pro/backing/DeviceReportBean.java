@@ -2,10 +2,8 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
@@ -16,16 +14,10 @@ import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceReportItem;
-import com.inthinc.pro.model.DeviceStatus;
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Person;
-import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.util.MessageUtil;
-import com.inthinc.pro.util.TempColumns;
 
-public class DeviceReportBean extends BaseReportBean
+public class DeviceReportBean extends BaseReportBean implements TablePrefOptions
 {
     private static final Logger logger = Logger.getLogger(DeviceReportBean.class);
     
@@ -34,10 +26,7 @@ public class DeviceReportBean extends BaseReportBean
     private List <DeviceReportItem> deviceData = new ArrayList<DeviceReportItem>();
     
     static final List<String> AVAILABLE_COLUMNS;
-    private Map<String,TableColumn> deviceColumns;
-    private Vector tmpColumns = new Vector();    
-    
-    private TablePreference tablePref;
+
     private TablePreferenceDAO tablePreferenceDAO;
     private VehicleDAO vehicleDAO;
     private DeviceDAO deviceDAO;
@@ -45,7 +34,7 @@ public class DeviceReportBean extends BaseReportBean
     private DeviceReportItem dri = null;
     
     private Integer numRowsPerPg = 25;
-    private final static String COLUMN_LABEL_PREFIX = "devicereport_";
+    private final static String COLUMN_LABEL_PREFIX = "deviceReports_";
     
     private Integer maxCount = null;
     private Integer start = 1;
@@ -53,7 +42,9 @@ public class DeviceReportBean extends BaseReportBean
     
     private String searchFor = "";
     private String secret = "";
-   
+
+    private TablePref tablePref;
+
     static
     {
         // available columns
@@ -71,7 +62,10 @@ public class DeviceReportBean extends BaseReportBean
         super();
     }
     
-    public void init() {
+    public void init() 
+    {
+        tablePref = new TablePref(this);
+
         searchFor = checkForRequestMap();
         
         List<Vehicle> vehicList = 
@@ -202,119 +196,7 @@ public class DeviceReportBean extends BaseReportBean
             this.end = 0;
         }
     }
-    
-    public void saveColumns() {  
-        //To data store
-        TablePreference pref = getTablePref();
-        int cnt = 0;
-        for (String column : AVAILABLE_COLUMNS)
-        {
-            pref.getVisible().set(cnt++, 
-                    deviceColumns.get(column).getVisible());
-        }
-        setTablePref(pref);
-        tablePreferenceDAO.update(pref);
-        
-        //Update tmp
-        Iterator it = this.deviceColumns.keySet().iterator();
-        while ( it.hasNext() ) {
-            Object key = it.next(); 
-            Object value = this.deviceColumns.get(key);  
 
-            for ( int i = 0; i < tmpColumns.size(); i++ ) {
-                TempColumns tc = (TempColumns)tmpColumns.get(i);
-                if ( tc.getColName().equalsIgnoreCase((String)key) ) {
-                    Boolean b = ((TableColumn)value).getVisible();
-                    tc.setColValue(b);
-                }
-            }
-        }
-    }
-    
-    
-    public void cancelColumns() {        
-        //Update live
-        Iterator it = this.deviceColumns.keySet().iterator();
-        while ( it.hasNext() ) {
-            Object key = it.next(); 
-            Object value = this.deviceColumns.get(key);  
-  
-            for ( int i = 0; i < tmpColumns.size(); i++ ) {
-                TempColumns tc = (TempColumns)tmpColumns.get(i);
-                if ( tc.getColName().equalsIgnoreCase((String)key) ) {
-                    this.deviceColumns.get(key).setVisible(tc.getColValue());
-                }
-            }
-        }
-
-    }
-
-    public TablePreference getTablePref()
-    {
-        if (tablePref == null)
-        {
-            // TODO: refactor -- could probably keep in a session bean
-            List<TablePreference> tablePreferenceList = 
-                tablePreferenceDAO.getTablePreferencesByUserID(getUser().getUserID());
-            for (TablePreference pref : tablePreferenceList)
-            {
-                if (pref.getTableType().equals(TableType.DEVICE_REPORT))
-                {
-                    setTablePref(pref);
-                    return tablePref;
-                }
-            }
-            tablePref = new TablePreference();
-            tablePref.setUserID(getUser().getUserID());
-            tablePref.setTableType(TableType.DEVICE_REPORT);
-            List<Boolean>visibleList = new ArrayList<Boolean>();
-            for (String column : AVAILABLE_COLUMNS)
-            {
-                visibleList.add(new Boolean(true));
-            }
-            tablePref.setVisible(visibleList);
-            Integer tablePrefID = getTablePreferenceDAO().create(getUser().getUserID(), tablePref);
-            tablePref.setTablePrefID(tablePrefID);
-            setTablePref(tablePref);
-            
-        }
-        
-        
-        return tablePref;
-    }
-    
-    public void setTablePref(TablePreference tablePref)
-    {
-        this.tablePref = tablePref;
-    }
-    
-    public Map<String,TableColumn> getdeviceColumns()    
-    {
-        if ( deviceColumns == null ) {     
-            List<Boolean> visibleList = getTablePref().getVisible();
-            deviceColumns = new HashMap<String, TableColumn>();
-            int cnt = 0;
-            for (String column : AVAILABLE_COLUMNS)
-            {
-                TableColumn tableColumn = new TableColumn(visibleList.get(cnt++), 
-                        MessageUtil.getMessageString(COLUMN_LABEL_PREFIX+column));
-                if (column.equals("clear"))
-                    tableColumn.setCanHide(false);
-                    
-                deviceColumns.put(column, tableColumn);
-                tmpColumns.add(new TempColumns(column,tableColumn.getVisible()));
-                        
-            }
-        } 
-        
-        return deviceColumns;
-    }
-
-    public void setdeviceColumns(Map<String,  TableColumn> deviceColumns)
-    {
-        this.deviceColumns = deviceColumns;
-    }
-    
     public void scrollerListener(DataScrollerEvent se)     
     {               
         this.start = (se.getPage()-1)*this.numRowsPerPg + 1;
@@ -387,6 +269,7 @@ public class DeviceReportBean extends BaseReportBean
     }
 
 
+    @Override
     public TablePreferenceDAO getTablePreferenceDAO()
     {
         return tablePreferenceDAO;
@@ -435,6 +318,58 @@ public class DeviceReportBean extends BaseReportBean
     public void setDeviceDAO(DeviceDAO deviceDAO)
     {
         this.deviceDAO = deviceDAO;
+    }
+
+    @Override
+    public List<String> getAvailableColumns()
+    {
+        return AVAILABLE_COLUMNS;
+    }
+
+    @Override
+    public String getColumnLabelPrefix()
+    {
+        return COLUMN_LABEL_PREFIX;
+    }
+
+    @Override
+    public Map<String, Boolean> getDefaultColumns()
+    {
+        HashMap<String, Boolean> columns = new HashMap<String, Boolean>();
+        for (String col : AVAILABLE_COLUMNS)
+            columns.put(col, true);
+        return columns;
+    }
+
+    @Override
+    public TableType getTableType()
+    {
+        return TableType.DEVICE_REPORT;
+    }
+
+    @Override
+    public Integer getUserID()
+    {
+        return getUser().getUserID();
+    }
+
+    public Map<String, TableColumn> getTableColumns()
+    {
+        return tablePref.getTableColumns();
+    }
+    public void setTableColumns(Map<String, TableColumn> tableColumns)
+    {
+        tablePref.setTableColumns(tableColumns);
+    }
+
+    public TablePref getTablePref()
+    {
+        return tablePref;
+    }
+
+    public void setTablePref(TablePref tablePref)
+    {
+        this.tablePref = tablePref;
     }
 
 }

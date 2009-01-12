@@ -53,7 +53,7 @@ public class DriverReportBeanTest extends BaseBeanTest
                 (new Integer(driverReportBean.getMaxCount()).intValue()));
         */
         // column map
-        Map<String, TableColumn> columnMap = driverReportBean.getDriverColumns();
+        Map<String, TableColumn> columnMap = driverReportBean.getTableColumns();
         assertEquals(DriverReportBean.AVAILABLE_COLUMNS.size(), columnMap.size());
     }
 }

@@ -89,10 +89,10 @@
             								</li>
             								<li class="l text">
             									<a4j:commandLink 
-            										reRender="idlingColumnPanel"
+            										reRender="editColumnsForm:editColumnGrid"
             										action="#"
             									 	styleClass="ls_tab_edit_columns"
-            										onclick="Richfaces.showModalPanel('editIdlingColumns');">            									
+            										onclick="Richfaces.showModalPanel('editColumns');">            									
             										<h:outputText value="#{messages.button_editColumns}" />
             									</a4j:commandLink>            									
             								</li>  
@@ -109,13 +109,14 @@
 								<ui:include src="/includes/idlingsReport.xhtml">	
 									<ui:param name="numRowsPerPg" value="#{idlingReportBean.numRowsPerPg}"/>									
              						<ui:param name="idlingData" value="#{idlingReportBean.idlingData}"/>             						
-             						<ui:param name="idlingColumns" value="#{idlingReportBean.idlingColumns}"/>
+             						<ui:param name="idlingColumns" value="#{idlingReportBean.tableColumns}"/>
              						<ui:param name="idlingTable" value="#{idlingReportTable.table}"/>
     							</ui:include>   
     							</div>	
     							</a4j:form>
-    							<ui:include src="/includes/editIdlingColumns.xhtml">
-									<ui:param name="idlingColumns" value="#{idlingReportBean.idlingColumns}"/>	
+								<ui:include src="/includes/editColumnsPopup.xhtml">
+									<ui:param name="bean" value="#{idlingReportBean}"/>	
+									<ui:param name="reRender" value="outerIdlingReport:items" />
 								</ui:include>    
 								
 								</div>

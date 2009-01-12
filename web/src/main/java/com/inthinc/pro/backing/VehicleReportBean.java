@@ -26,7 +26,7 @@ import com.inthinc.pro.model.VehicleReportItem;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.TempColumns;
 
-public class VehicleReportBean extends BaseReportBean
+public class VehicleReportBean extends BaseReportBean implements TablePrefOptions
 {
     private static final Logger logger = Logger.getLogger(VehicleReportBean.class);
     
@@ -34,11 +34,7 @@ public class VehicleReportBean extends BaseReportBean
     private List <VehicleReportItem> vehiclesData = new ArrayList<VehicleReportItem>();
     private List <VehicleReportItem> vehicleData = new ArrayList<VehicleReportItem>();
     
-            static final List<String> AVAILABLE_COLUMNS;
-    private Map<String,TableColumn> vehicleColumns;
-    private Vector tmpColumns = new Vector(); 
-    
-    private TablePreference tablePref;
+    static final List<String> AVAILABLE_COLUMNS;
     
     private ScoreDAO scoreDAO;
     private TablePreferenceDAO tablePreferenceDAO;
@@ -46,7 +42,7 @@ public class VehicleReportBean extends BaseReportBean
     private VehicleReportItem vrt = null;
     
     private Integer numRowsPerPg = 25;
-    private final static String COLUMN_LABEL_PREFIX = "vehiclereport_";
+    private final static String COLUMN_LABEL_PREFIX = "vehicleReports_";
     
     private Integer maxCount = null;
     private Integer start = 1;
@@ -54,6 +50,8 @@ public class VehicleReportBean extends BaseReportBean
     
     private String searchFor = "";
     private String secret = "";
+    
+    private TablePref tablePref;
     
     static
     {
@@ -76,6 +74,8 @@ public class VehicleReportBean extends BaseReportBean
     
     public void init() 
     {   
+        tablePref = new TablePref(this);
+
         searchFor = checkForRequestMap();        
         vehiclesData = 
             scoreDAO.getVehicleReportData(
@@ -239,119 +239,7 @@ public class VehicleReportBean extends BaseReportBean
             this.end = 0;
         }
     }
-    
-    public void saveColumns() 
-    {  
-        //To data store
-        TablePreference pref = getTablePref();
-        int cnt = 0;
-        for (String column : AVAILABLE_COLUMNS)
-        {
-            pref.getVisible().set(cnt++, vehicleColumns.get(column).getVisible());
-        }
-        setTablePref(pref);
-        tablePreferenceDAO.update(pref);
-        
-        //Update tmp
-        Iterator it = this.vehicleColumns.keySet().iterator();
-        while ( it.hasNext() ) {
-            Object key = it.next(); 
-            Object value = this.vehicleColumns.get(key);  
 
-            for ( int i = 0; i < tmpColumns.size(); i++ ) {
-                TempColumns tc = (TempColumns)tmpColumns.get(i);
-                if ( tc.getColName().equalsIgnoreCase((String)key) ) {
-                    Boolean b = ((TableColumn)value).getVisible();
-                    tc.setColValue(b);
-                }
-            }
-        }       
-    }
-    
-    public void cancelColumns() 
-    {        
-        //Update live
-        Iterator it = this.vehicleColumns.keySet().iterator();
-        while ( it.hasNext() ) {
-            Object key = it.next(); 
-            Object value = this.vehicleColumns.get(key);  
-  
-            for ( int i = 0; i < tmpColumns.size(); i++ ) {
-                TempColumns tc = (TempColumns)tmpColumns.get(i);
-                if ( tc.getColName().equalsIgnoreCase((String)key) ) {
-                    this.vehicleColumns.get(key).setVisible(tc.getColValue());
-                }
-            }
-        }
-
-    }    
-    
-    public TablePreference getTablePref()
-    {
-        if (tablePref == null)
-        {
-
-            List<TablePreference> tablePreferenceList = tablePreferenceDAO.getTablePreferencesByUserID(getUser().getUserID());
-            for (TablePreference pref : tablePreferenceList)
-            {
-                if (pref.getTableType().equals(TableType.VEHICLE_REPORT))
-                {
-                    setTablePref(pref);
-                    return tablePref;
-                }
-            }
-            tablePref = new TablePreference();
-            tablePref.setUserID(getUser().getUserID());
-            tablePref.setTableType(TableType.VEHICLE_REPORT);
-            List<Boolean>visibleList = new ArrayList<Boolean>();
-            for (String column : AVAILABLE_COLUMNS)
-            {
-                visibleList.add(new Boolean(true));
-            }
-            tablePref.setVisible(visibleList);
-            Integer tablePrefID = getTablePreferenceDAO().create(getUser().getUserID(), tablePref);
-            tablePref.setTablePrefID(tablePrefID);
-            setTablePref(tablePref);
-            
-            
-        }
-        
-        
-        return tablePref;
-    }
-    
-    public void setTablePref(TablePreference tablePref)
-    {
-        this.tablePref = tablePref;
-    }
-    
-    public Map<String,TableColumn> getVehicleColumns()    
-    {
-        //Need to do the check to prevent odd access behavior
-        if ( vehicleColumns == null ) {     
-            List<Boolean> visibleList = getTablePref().getVisible();
-            vehicleColumns = new HashMap<String, TableColumn>();
-            int cnt = 0;
-            for (String column : AVAILABLE_COLUMNS)
-            {
-                TableColumn tableColumn = new TableColumn(visibleList.get(cnt++), MessageUtil.getMessageString(COLUMN_LABEL_PREFIX+column));
-                if (column.equals("clear"))
-                    tableColumn.setCanHide(false);
-                    
-                vehicleColumns.put(column, tableColumn);
-                tmpColumns.add(new TempColumns(column,tableColumn.getVisible()));
-                        
-            }
-        } 
-        
-        return vehicleColumns;
-    }
-
-    public void setVehicleColumns(Map<String,  TableColumn> vehicleColumns)
-    {
-        this.vehicleColumns = vehicleColumns;
-    }
-    
     private void setStyles() {
         ScoreBox sb = new ScoreBox(0,ScoreBoxSizes.SMALL);  
         
@@ -470,5 +358,57 @@ public class VehicleReportBean extends BaseReportBean
     public void setSecret(String secret)
     {
         this.secret = secret;
+    }
+
+    @Override
+    public List<String> getAvailableColumns()
+    {
+        return AVAILABLE_COLUMNS;
+    }
+
+    @Override
+    public String getColumnLabelPrefix()
+    {
+        return COLUMN_LABEL_PREFIX;
+    }
+
+    @Override
+    public Map<String, Boolean> getDefaultColumns()
+    {
+        HashMap<String, Boolean> columns = new HashMap<String, Boolean>();
+        for (String col : AVAILABLE_COLUMNS)
+            columns.put(col, true);
+        return columns;
+    }
+
+    @Override
+    public TableType getTableType()
+    {
+        return TableType.VEHICLE_REPORT;
+    }
+
+    @Override
+    public Integer getUserID()
+    {
+        return getUser().getUserID();
+    }
+
+    public Map<String, TableColumn> getTableColumns()
+    {
+        return tablePref.getTableColumns();
+    }
+    public void setTableColumns(Map<String, TableColumn> tableColumns)
+    {
+        tablePref.setTableColumns(tableColumns);
+    }
+
+    public TablePref getTablePref()
+    {
+        return tablePref;
+    }
+
+    public void setTablePref(TablePref tablePref)
+    {
+        this.tablePref = tablePref;
     }
 }

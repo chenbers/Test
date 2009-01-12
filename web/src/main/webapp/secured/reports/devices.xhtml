@@ -70,12 +70,13 @@
             							</li>
             							<li class="l text">
             								<a4j:commandLink 
-            									reRender="deviceColumnPanel"
             									action="#"
             								 	styleClass="ls_tab_edit_columns"
-            									onclick="Richfaces.showModalPanel('editDeviceColumns');">            									
+            									onclick="Richfaces.showModalPanel('editColumns');"
+            									reRender="editColumnsForm:editColumnGrid">        									
             									<h:outputText value="#{messages.button_editColumns}" />
             								</a4j:commandLink>
+            								
             							</li>  
             							<li class="r text">
             								<h:outputFormat id="headerDevices" value="#{messages.redflags_recordCountHeader}">
@@ -90,14 +91,14 @@
 										<ui:include src="/includes/devicesReport.xhtml">	
 											<ui:param name="numRowsPerPg" value="#{deviceReportBean.numRowsPerPg}"/>									
              								<ui:param name="deviceData" value="#{deviceReportBean.deviceData}"/>             						
-             								<ui:param name="deviceColumns" value="#{deviceReportBean.deviceColumns}"/>             								
+             								<ui:param name="deviceColumns" value="#{deviceReportBean.tableColumns}"/>             								
     									</ui:include>   
     								</div>	
     							</a4j:form>
-    							<ui:include src="/includes/editDeviceColumns.xhtml">
-									<ui:param name="deviceColumns" value="#{deviceReportBean.deviceColumns}"/>										
+								<ui:include src="/includes/editColumnsPopup.xhtml">
+									<ui:param name="bean" value="#{deviceReportBean}"/>	
+									<ui:param name="reRender" value="outerDeviceReport:items" />
 								</ui:include>    
-								
 								</div>
 								</div>
 														

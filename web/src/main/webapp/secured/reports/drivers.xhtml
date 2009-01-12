@@ -69,10 +69,10 @@
             								</li>
             								<li class="l text">
             									<a4j:commandLink 
-            										reRender="driverColumnPanel"
+            										reRender="editColumnsForm:editColumnGrid"
             										action="#"
             									 	styleClass="ls_tab_edit_columns"
-            										onclick="Richfaces.showModalPanel('editDriverColumns');">            									
+            										onclick="Richfaces.showModalPanel('editColumns');">            									
             										<h:outputText value="#{messages.button_editColumns}" />
             									</a4j:commandLink>
             								</li>  
@@ -89,13 +89,14 @@
 								<ui:include src="/includes/driversReport.xhtml">	
 									<ui:param name="numRowsPerPg" value="#{driverReportBean.numRowsPerPg}"/>									
              						<ui:param name="driverData" value="#{driverReportBean.driverData}"/>             						
-             						<ui:param name="driverColumns" value="#{driverReportBean.driverColumns}"/>
+             						<ui:param name="driverColumns" value="#{driverReportBean.tableColumns}"/>
              						<ui:param name="driverTable" value="#{driverReportTable.table}"/>
     							</ui:include>   
     							</div>	
     							</a4j:form>
-    							<ui:include src="/includes/editDriverColumns.xhtml">
-									<ui:param name="driverColumns" value="#{driverReportBean.driverColumns}"/>										
+								<ui:include src="/includes/editColumnsPopup.xhtml">
+									<ui:param name="bean" value="#{driverReportBean}"/>	
+									<ui:param name="reRender" value="outerDriverReport:items" />
 								</ui:include>    
 								
 								</div>

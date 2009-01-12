@@ -53,7 +53,7 @@ public class IdlingReportBeanTest extends BaseBeanTest
                 idlingReportBean.convertToSeconds("02:44:23"));
                 
         // column map
-        Map<String, TableColumn> columnMap = idlingReportBean.getIdlingColumns();
+        Map<String, TableColumn> columnMap = idlingReportBean.getTableColumns();
         assertEquals(idlingReportBean.AVAILABLE_COLUMNS.size(), columnMap.size());
         
     }

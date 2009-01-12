@@ -26,7 +26,7 @@ import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.TempColumns;
 
-public class IdlingReportBean extends BaseReportBean
+public class IdlingReportBean extends BaseReportBean implements TablePrefOptions
 {
     private static final Logger logger = Logger.getLogger(IdlingReportBean.class);
     
@@ -34,18 +34,15 @@ public class IdlingReportBean extends BaseReportBean
     private List <IdlingReportItem> idlingsData = new ArrayList<IdlingReportItem>();
     private List <IdlingReportItem> idlingData = new ArrayList<IdlingReportItem>();
     
-            static final List<String> AVAILABLE_COLUMNS;
-    private Map<String,TableColumn> idlingColumns;
-    private Vector tmpColumns = new Vector();  
-    
-    private TablePreference tablePref;   
+    static final List<String> AVAILABLE_COLUMNS;
+
     private TablePreferenceDAO tablePreferenceDAO;
     private ScoreDAO scoreDAO;
     
     private IdlingReportItem iri = null;
     
     private Integer numRowsPerPg = 25;
-    private final static String COLUMN_LABEL_PREFIX = "idlingreport_";
+    private final static String COLUMN_LABEL_PREFIX = "idlingReports_";
     
     private Integer maxCount = null;
     private Integer start = 1;
@@ -70,6 +67,9 @@ public class IdlingReportBean extends BaseReportBean
 
     private DriverDAO driverDAO;
     
+    private TablePref tablePref;
+
+    
     static
     {
         // available columns
@@ -93,6 +93,8 @@ public class IdlingReportBean extends BaseReportBean
     
     public void init() 
     {   
+        tablePref = new TablePref(this);
+        
         searchFor = checkForRequestMap();
         
         defaultEndDate = endDate;
@@ -317,117 +319,6 @@ public class IdlingReportBean extends BaseReportBean
             this.end = 0;
         }
     }
-    
-    public void saveColumns() {  
-        //To data store
-        TablePreference pref = getTablePref();
-        int cnt = 0;
-        for (String column : AVAILABLE_COLUMNS)
-        {
-            pref.getVisible().set(cnt++, idlingColumns.get(column).getVisible());
-        }
-        setTablePref(pref);
-        tablePreferenceDAO.update(pref);
-        
-        //Update tmp
-        Iterator it = this.idlingColumns.keySet().iterator();
-        while ( it.hasNext() ) {
-            Object key = it.next(); 
-            Object value = this.idlingColumns.get(key);  
-
-            for ( int i = 0; i < tmpColumns.size(); i++ ) {
-                TempColumns tc = (TempColumns)tmpColumns.get(i);
-                if ( tc.getColName().equalsIgnoreCase((String)key) ) {
-                    Boolean b = ((TableColumn)value).getVisible();
-                    tc.setColValue(b);
-                }
-            }
-        }     
-    }
-    
-    public void cancelColumns() {        
-        //Update live
-        Iterator it = this.idlingColumns.keySet().iterator();
-        while ( it.hasNext() ) {
-            Object key = it.next(); 
-            Object value = this.idlingColumns.get(key);  
-  
-            for ( int i = 0; i < tmpColumns.size(); i++ ) {
-                TempColumns tc = (TempColumns)tmpColumns.get(i);
-                if ( tc.getColName().equalsIgnoreCase((String)key) ) {
-                    this.idlingColumns.get(key).setVisible(tc.getColValue());
-                }
-            }
-        }
-
-    }
-    
-    public TablePreference getTablePref()
-    {
-        if (tablePref == null)
-        {
-            // TODO: refactor -- could probably keep in a session bean
-            List<TablePreference> tablePreferenceList = tablePreferenceDAO.getTablePreferencesByUserID(getUser().getUserID());
-            for (TablePreference pref : tablePreferenceList)
-            {
-                if (pref.getTableType().equals(TableType.IDLING_REPORT))
-                {
-                    setTablePref(pref);
-                    return tablePref;
-                }
-            }
-            tablePref = new TablePreference();
-            tablePref.setUserID(getUser().getUserID());
-            tablePref.setTableType(TableType.IDLING_REPORT);
-            List<Boolean>visibleList = new ArrayList<Boolean>();
-            for (String column : AVAILABLE_COLUMNS)
-            {
-                visibleList.add(new Boolean(true));
-            }
-            tablePref.setVisible(visibleList);
-            
-            Integer tablePrefID = getTablePreferenceDAO().create(getUser().getUserID(), tablePref);
-            tablePref.setTablePrefID(tablePrefID);
-            setTablePref(tablePref);
-            
-        }
-        
-        
-        return tablePref;
-    }
-    
-    public void setTablePref(TablePreference tablePref)
-    {
-        this.tablePref = tablePref;
-    }
-    
-    public Map<String,TableColumn> getIdlingColumns()    
-    {
-        //Need to do the check to prevent odd access behavior
-        if ( idlingColumns == null ) {     
-            List<Boolean> visibleList = getTablePref().getVisible();
-            idlingColumns = new HashMap<String, TableColumn>();
-            int cnt = 0;
-            for (String column : AVAILABLE_COLUMNS)
-            {
-                TableColumn tableColumn = new TableColumn(visibleList.get(cnt++), MessageUtil.getMessageString(COLUMN_LABEL_PREFIX+column));
-                if (column.equals("clear"))
-                    tableColumn.setCanHide(false);
-                    
-                idlingColumns.put(column, tableColumn);
-                tmpColumns.add(new TempColumns(column,tableColumn.getVisible()));
-                        
-            }
-        } 
-        
-        return idlingColumns;
-    }
-
-    public void setIdlingColumns(Map<String,  TableColumn> vehicleColumns)
-    {
-        this.idlingColumns = vehicleColumns;
-    }
-    
     public void scrollerListener(DataScrollerEvent se)     
     {        
         this.start = (se.getPage()-1)*this.numRowsPerPg + 1;
@@ -598,6 +489,58 @@ public class IdlingReportBean extends BaseReportBean
     public void setScoreDAO(ScoreDAO scoreDAO)
     {
         this.scoreDAO = scoreDAO;
+    }
+
+    @Override
+    public List<String> getAvailableColumns()
+    {
+        return AVAILABLE_COLUMNS;
+    }
+
+    @Override
+    public String getColumnLabelPrefix()
+    {
+        return COLUMN_LABEL_PREFIX;
+    }
+
+    @Override
+    public Map<String, Boolean> getDefaultColumns()
+    {
+        HashMap<String, Boolean> columns = new HashMap<String, Boolean>();
+        for (String col : AVAILABLE_COLUMNS)
+            columns.put(col, true);
+        return columns;
+    }
+
+    @Override
+    public TableType getTableType()
+    {
+        return TableType.IDLING_REPORT;
+    }
+
+    @Override
+    public Integer getUserID()
+    {
+        return getUser().getUserID();
+    }
+
+    public Map<String, TableColumn> getTableColumns()
+    {
+        return tablePref.getTableColumns();
+    }
+    public void setTableColumns(Map<String, TableColumn> tableColumns)
+    {
+        tablePref.setTableColumns(tableColumns);
+    }
+
+    public TablePref getTablePref()
+    {
+        return tablePref;
+    }
+
+    public void setTablePref(TablePref tablePref)
+    {
+        this.tablePref = tablePref;
     }
 }
 
