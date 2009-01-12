@@ -169,7 +169,7 @@ public class TrendBean extends BaseBean
                 sss = ss.get(j);
 
                 sb.append("<set value=\'");
-                Float score = new Float((sss.getScore()==null) ? 0 : sss.getScore() / 10.0);
+                Float score = new Float((sss.getScore()==null) ? 5 : sss.getScore() / 10.0);
                 sb.append(score.toString()).substring(0, 3);
                 sb.append("'/>");
             }
