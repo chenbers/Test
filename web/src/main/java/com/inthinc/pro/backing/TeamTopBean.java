@@ -19,56 +19,30 @@ import com.inthinc.pro.wrapper.ScoreableEntityPkg;
 
 public class TeamTopBean extends BaseBean
 {
-   private static final Logger logger = Logger.getLogger(TeamTopBean.class);
-    
+    private static final Logger logger = Logger.getLogger(TeamTopBean.class);
+
     private ScoreDAO scoreDAO;
     private DriverDAO driverDAO;
     private NavigationBean navigation;
     private boolean pageChange = false;
     private Duration duration = Duration.DAYS;
-    
-    private List<ScoreableEntityPkg> topDrivers = new ArrayList<ScoreableEntityPkg>();
-    private List<ScoreableEntityPkg> bottomDrivers = new ArrayList<ScoreableEntityPkg>();
-   
+
+    private List<ScoreableEntityPkg> topDrivers;
+    private List<ScoreableEntityPkg> bottomDrivers;
+
     private String goTo = "go_driver";
-    
-    // TODO: This could be refactored to do fewer db hits. 
+
+    // TODO: This could be refactored to do fewer db hits.
 
     public List<ScoreableEntityPkg> getTopDrivers()
     {
-//        User u = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();      
-        
-        //Clear the returned data, if present
-        if ( topDrivers.size() > 0 ) {
-            topDrivers.clear();
-        }
-        
-        //Fetch, qualifier is groupId, date from, date to
-        List<ScoreableEntity> s = null;
-        try {
-            s = scoreDAO.getTopFiveScores(this.navigation.getGroupID());
-        } catch (Exception e) {
-            logger.debug("graphicDao error: " + e.getMessage());
-        }       
-//        //Populate the table
-        ScoreBox sb = new ScoreBox(0,ScoreBoxSizes.SMALL);  
-        int cnt = 0;
-        topDrivers = new ArrayList<ScoreableEntityPkg>();
-        for (ScoreableEntity score : s)
+        if (topDrivers == null || topDrivers.isEmpty())
         {
-            ScoreableEntityPkg se = new ScoreableEntityPkg();
-            se.setPosition(cnt+1);
-            se.setSe(score);
-            sb.setScore(score.getScore());
-            se.setStyle(sb.getScoreStyle());
-            se.setColorKey(GraphicUtil.entityColorKey.get(cnt++));
-            se.setGoTo("go_driver");
-            topDrivers.add(se);                      
+            // Fetch, qualifier is groupId, date from, date to
+            topDrivers = convertToScoreableEntityPkg(scoreDAO.getTopFiveScores(this.navigation.getGroupID()));
         }
-
-//        logger.debug("location is: " + navigation.getLocation());
         this.pageChange = true;
-       return topDrivers;
+        return topDrivers;
     }
 
     public void setTopDrivers(List<ScoreableEntityPkg> topDrivers)
@@ -78,53 +52,49 @@ public class TeamTopBean extends BaseBean
 
     public List<ScoreableEntityPkg> getBottomDrivers()
     {
-//        User u = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();      
-        
-        //Clear the returned data, if present
-        if ( bottomDrivers.size() > 0 ) {
-            bottomDrivers.clear();
-        }
-                
-        //Fetch, qualifier is groupId, date from, date to
-        List<ScoreableEntity> s = null;
-        try {
-            s = scoreDAO.getBottomFiveScores(this.navigation.getGroupID());
-        } catch (Exception e) {
-            logger.debug("graphicDao error: " + e.getMessage());
-        }       
-
-        //Populate the table
-        ScoreBox sb = new ScoreBox(0,ScoreBoxSizes.SMALL);  
-        int cnt = 0;
-        bottomDrivers = new ArrayList<ScoreableEntityPkg>();
-       for (ScoreableEntity score : s)
+        if (bottomDrivers == null || bottomDrivers.isEmpty())
         {
-            ScoreableEntityPkg se = new ScoreableEntityPkg();
-            se.setPosition(cnt+1);
-            se.setSe(score);
-            sb.setScore(score.getScore());
-            se.setStyle(sb.getScoreStyle());
-            se.setColorKey(GraphicUtil.entityColorKey.get(cnt++));
-            se.setGoTo("go_driver");
-            bottomDrivers.add(se);                      
+            bottomDrivers = convertToScoreableEntityPkg(scoreDAO.getTopFiveScores(this.navigation.getGroupID()));
         }
-
-//        logger.debug("location is: " + navigation.getLocation());
         this.pageChange = true;
-       
+
         return bottomDrivers;
     }
-//    public void setupNavigation(int driverID){
-//    	
-//    	logger.debug("setupNavigation driverID is: " + driverID);
-//    	Driver driver = driverDAO.getDriverByID(driverID);
-//    	navigation.setDriver(driver);
-//    	navigation.setGroupID(driverID);
-//    	
-//    }
+
+    // public void setupNavigation(int driverID){
+    //    	
+    // logger.debug("setupNavigation driverID is: " + driverID);
+    // Driver driver = driverDAO.getDriverByID(driverID);
+    // navigation.setDriver(driver);
+    // navigation.setGroupID(driverID);
+    //    	
+    // }
     public void setBottomDrivers(List<ScoreableEntityPkg> bottomDrivers)
     {
         this.bottomDrivers = bottomDrivers;
+    }
+
+    private List<ScoreableEntityPkg> convertToScoreableEntityPkg(List<ScoreableEntity> scores)
+    {
+        List<ScoreableEntityPkg> returnList = new ArrayList<ScoreableEntityPkg>();
+        int cnt = 0;
+        for (ScoreableEntity score : scores)
+        {
+            ScoreableEntityPkg se = new ScoreableEntityPkg();
+            ScoreBox sb = new ScoreBox(0, ScoreBoxSizes.SMALL);
+            se.setPosition(cnt + 1);
+            se.setSe(score);
+            if (score.getScore() != null)
+            {
+                sb.setScore(score.getScore());
+            }
+            se.setStyle(sb.getScoreStyle());
+            se.setColorKey(GraphicUtil.entityColorKey.get(cnt++));
+            se.setGoTo("go_driver");
+            returnList.add(se);
+        }
+
+        return returnList;
     }
 
     public String getGoTo()
@@ -156,20 +126,24 @@ public class TeamTopBean extends BaseBean
     {
         this.scoreDAO = scoreDAO;
     }
-    public String driverAction(){
-    	
-    	Map<String,String> requestMap = new WebUtil().getRequestParameterMap();
-    	String driverID = requestMap.get("id");
-    	navigation.setDriver(driverDAO.findByID(new Integer(driverID)));
-    	
-    	return "go_driver";
+
+    public String driverAction()
+    {
+
+        Map<String, String> requestMap = new WebUtil().getRequestParameterMap();
+        String driverID = requestMap.get("id");
+        navigation.setDriver(driverDAO.findByID(Integer.valueOf(driverID)));
+
+        return "go_driver";
     }
 
-	public DriverDAO getDriverDAO() {
-		return driverDAO;
-	}
+    public DriverDAO getDriverDAO()
+    {
+        return driverDAO;
+    }
 
-	public void setDriverDAO(DriverDAO driverDAO) {
-		this.driverDAO = driverDAO;
-	}
+    public void setDriverDAO(DriverDAO driverDAO)
+    {
+        this.driverDAO = driverDAO;
+    }
 }

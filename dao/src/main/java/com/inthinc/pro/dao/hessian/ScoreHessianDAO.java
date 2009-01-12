@@ -1,10 +1,7 @@
 package com.inthinc.pro.dao.hessian;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +12,6 @@ import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
-import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.DVQMap;
 import com.inthinc.pro.model.DriveQMap;
 import com.inthinc.pro.model.Driver;
@@ -24,7 +20,6 @@ import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.GQMap;
 import com.inthinc.pro.model.GQVMap;
-import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.QuintileMap;
 import com.inthinc.pro.model.ReportMileageType;
@@ -38,8 +33,9 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
 {
     private static final Logger logger = Logger.getLogger(ScoreHessianDAO.class);
     private static final Integer SECONDS_TO_HOURS = 3600;
+    private static final Integer NO_SCORE = -1;
 
-    private ReportService       reportService;
+    private ReportService reportService;
 
     public ReportService getReportService()
     {
@@ -77,7 +73,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             scoreableEntity.setEntityType(EntityType.ENTITY_DRIVER);
             scoreableEntity.setScoreType(ScoreType.SCORE_OVERALL);
             scoreableEntity.setIdentifier(dvq.getDriver().getPerson().getFirst() + " " + dvq.getDriver().getPerson().getLast());
-            scoreableEntity.setScore(dvq.getDriveQ().getOverall());
+            scoreableEntity.setScore(dvq.getDriveQ().getOverall() != null ? dvq.getDriveQ().getOverall() : NO_SCORE);
             scoreList.add(scoreableEntity);
         }
         Collections.sort(scoreList);
@@ -104,67 +100,19 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     {
         try
         {
-            
+
             // TODO: not sure if this duration mapping is correct
-            //groupID = 16777218;            
+            // groupID = 16777218;
             Map<String, Object> returnMap = reportService.getGDScoreByGT(groupID, duration.getCode());
             DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
-            
+
             ScoreableEntity scoreableEntity = new ScoreableEntity();
             scoreableEntity.setEntityID(groupID);
             scoreableEntity.setEntityType(EntityType.ENTITY_GROUP);
             scoreableEntity.setScoreType(scoreType);
             scoreableEntity.setScore(dqMap.getScoreMap().get(scoreType));
             return scoreableEntity;
-            
-        }
-        catch (EmptyResultSetException e)
-        {
-            return null;
-        }
-    }
-    
-    @Override
-    public ScoreableEntity getDriverAverageScoreByType(Integer driverID, Duration duration, ScoreType scoreType)
-    {
-        try
-        {
-            
-            // TODO: not sure if this duration mapping is correct            
-            Map<String, Object> returnMap = reportService.getDScoreByDT(driverID, duration.getCode());
-            DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
-            
-            ScoreableEntity scoreableEntity = new ScoreableEntity();
-            scoreableEntity.setEntityID(driverID);
-            scoreableEntity.setEntityType(EntityType.ENTITY_DRIVER);
-            scoreableEntity.setScoreType(scoreType);
-            scoreableEntity.setScore(dqMap.getScoreMap().get(scoreType));
-            return scoreableEntity;
-            
-        }
-        catch (EmptyResultSetException e)
-        {
-            return null;
-        }
-    }
-    
-    @Override
-    public ScoreableEntity getVehicleAverageScoreByType(Integer vehicleID, Duration duration, ScoreType st)
-    {
-        try
-        {
-            
-            // TODO: not sure if this duration mapping is correct            
-            Map<String, Object> returnMap = reportService.getVScoreByVT(vehicleID, duration.getCode());
-            DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
-            
-            ScoreableEntity scoreableEntity = new ScoreableEntity();
-            scoreableEntity.setEntityID(vehicleID);
-            scoreableEntity.setEntityType(EntityType.ENTITY_VEHICLE);
-            scoreableEntity.setScoreType(st);
-            scoreableEntity.setScore(dqMap.getScoreMap().get(st));
-            return scoreableEntity;
-            
+
         }
         catch (EmptyResultSetException e)
         {
@@ -172,7 +120,56 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
     }
 
-    @Override  // TODO:  TO BE REMOVED NOT USED
+    @Override
+    public ScoreableEntity getDriverAverageScoreByType(Integer driverID, Duration duration, ScoreType scoreType)
+    {
+        try
+        {
+
+            // TODO: not sure if this duration mapping is correct
+            Map<String, Object> returnMap = reportService.getDScoreByDT(driverID, duration.getCode());
+            DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
+
+            ScoreableEntity scoreableEntity = new ScoreableEntity();
+            scoreableEntity.setEntityID(driverID);
+            scoreableEntity.setEntityType(EntityType.ENTITY_DRIVER);
+            scoreableEntity.setScoreType(scoreType);
+            scoreableEntity.setScore(dqMap.getScoreMap().get(scoreType));
+            return scoreableEntity;
+
+        }
+        catch (EmptyResultSetException e)
+        {
+            return null;
+        }
+    }
+
+    @Override
+    public ScoreableEntity getVehicleAverageScoreByType(Integer vehicleID, Duration duration, ScoreType st)
+    {
+        try
+        {
+
+            // TODO: not sure if this duration mapping is correct
+            Map<String, Object> returnMap = reportService.getVScoreByVT(vehicleID, duration.getCode());
+            DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
+
+            ScoreableEntity scoreableEntity = new ScoreableEntity();
+            scoreableEntity.setEntityID(vehicleID);
+            scoreableEntity.setEntityType(EntityType.ENTITY_VEHICLE);
+            scoreableEntity.setScoreType(st);
+            scoreableEntity.setScore(dqMap.getScoreMap().get(st));
+            return scoreableEntity;
+
+        }
+        catch (EmptyResultSetException e)
+        {
+            return null;
+        }
+    }
+
+    @Override
+    // TODO: TO BE REMOVED NOT USED
     public ScoreableEntity getAverageScoreByTypeAndMiles(Integer driverID, Integer milesBack, ScoreType scoreType)
     {
         try
@@ -185,7 +182,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             scoreableEntity.setScoreType(scoreType);
             Integer score = driveQMap.getScoreMap().get(scoreType);
             scoreableEntity.setScore((score == null) ? 0 : score);
-            scoreableEntity.setIdentifier(""+driveQMap.getEndingOdometer());
+            scoreableEntity.setIdentifier("" + driveQMap.getEndingOdometer());
             return scoreableEntity;
         }
         catch (EmptyResultSetException e)
@@ -193,8 +190,9 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             return null;
         }
     }
-    
-    @Override  // TODO:  TO BE REMOVED NOT USED
+
+    @Override
+    // TODO: TO BE REMOVED NOT USED
     public ScoreableEntity getVehicleAverageScoreByTypeAndMiles(Integer vehicleID, Integer milesBack, ScoreType st)
     {
         try
@@ -219,15 +217,15 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     {
         try
         {
-//groupID = 16777218;            
+            // groupID = 16777218;
             List<Map<String, Object>> returnMapList = reportService.getSDScoresByGT(groupID, duration.getCode());
-            
+
             List<GQMap> gqMapList = getMapper().convertToModelObject(returnMapList, GQMap.class);
 
             List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
             for (GQMap gqMap : gqMapList)
             {
-                
+
                 ScoreableEntity scoreableEntity = new ScoreableEntity();
                 scoreableEntity.setEntityID(gqMap.getGroup().getGroupID());
                 scoreableEntity.setEntityType(EntityType.ENTITY_GROUP);
@@ -238,15 +236,16 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 scoreList.add(scoreableEntity);
 
             }
-            
+
             return scoreList;
-            
+
         }
         catch (EmptyResultSetException e)
         {
             return Collections.emptyList();
         }
     }
+
     @Override
     public Map<Integer, List<ScoreableEntity>> getTrendScores(Integer groupID, Duration duration)
     {
@@ -254,12 +253,12 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         {
             List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getCode(), ScoreType.SCORE_OVERALL.getDriveQMetric());
             List<GQVMap> gqvList = getMapper().convertToModelObject(list, GQVMap.class);
-            
+
             Map<Integer, List<ScoreableEntity>> returnMap = new HashMap<Integer, List<ScoreableEntity>>();
             for (GQVMap gqv : gqvList)
             {
                 List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
-                for (DriveQMap driveQMap  :gqv.getDriveQV())
+                for (DriveQMap driveQMap : gqv.getDriveQV())
                 {
                     ScoreableEntity entity = new ScoreableEntity();
                     entity.setEntityID(gqv.getGroup().getGroupID());
@@ -269,7 +268,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                     scoreList.add(entity);
                 }
                 returnMap.put(gqv.getGroup().getGroupID(), scoreList);
-                
+
             }
             return returnMap;
         }
@@ -284,9 +283,9 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     {
         try
         {
-//groupID = 16777218;            
+            // groupID = 16777218;
             Map<String, Object> returnMap = reportService.getDPctByGT(groupID, duration.getCode(), scoreType.getDriveQMetric());
-            
+
             QuintileMap quintileMap = getMapper().convertToModelObject(returnMap, QuintileMap.class);
 
             List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
@@ -299,7 +298,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 entity.setScoreType(scoreType);
                 scoreList.add(entity);
             }
-            
+
             return scoreList;
         }
         catch (EmptyResultSetException e)
@@ -308,17 +307,18 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
     }
 
-    @Override  //TODO TO BE REMOVED NOT USED
+    @Override
+    // TODO TO BE REMOVED NOT USED
     public List<ScoreableEntity> getDriverScoreHistoryByMiles(Integer driverID, Integer milesBack, ScoreType scoreType)
     {
         try
         {
             ReportMileageType reportMileageType = ReportMileageType.valueOf(milesBack);
-            List<Map<String, Object>> list = reportService.getDTrendByDMC(driverID, reportMileageType.getMilesPerBin()*100, reportMileageType.getBinCount());
+            List<Map<String, Object>> list = reportService.getDTrendByDMC(driverID, reportMileageType.getMilesPerBin() * 100, reportMileageType.getBinCount());
             List<DriveQMap> driveQList = getMapper().convertToModelObject(list, DriveQMap.class);
-            
+
             List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
-            for (DriveQMap driveQMap  :driveQList)
+            for (DriveQMap driveQMap : driveQList)
             {
                 ScoreableEntity entity = new ScoreableEntity();
                 entity.setEntityID(driverID);
@@ -326,10 +326,10 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 entity.setScoreType(scoreType);
                 Integer score = driveQMap.getScoreMap().get(scoreType);
                 entity.setScore((score == null) ? 0 : score);
-                entity.setIdentifier(""+driveQMap.getEndingOdometer());
+                entity.setIdentifier("" + driveQMap.getEndingOdometer());
                 scoreList.add(entity);
             }
-                
+
             return scoreList;
         }
         catch (EmptyResultSetException e)
@@ -337,7 +337,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             return Collections.emptyList();
         }
     }
-    
+
     @Override
     public List<ScoreableEntity> getDriverScoreHistory(Integer driverID, Duration duration, ScoreType scoreType, Integer count)
     {
@@ -345,10 +345,10 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         {
             List<Map<String, Object>> list = reportService.getDTrendByDTC(driverID, duration.getCode(), count);
             List<DriveQMap> driveQList = getMapper().convertToModelObject(list, DriveQMap.class);
-            
+
             List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
-            
-            for (DriveQMap driveQMap  :driveQList)
+
+            for (DriveQMap driveQMap : driveQList)
             {
                 ScoreableEntity entity = new ScoreableEntity();
                 entity.setEntityID(driverID);
@@ -359,7 +359,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 entity.setCreated(driveQMap.getCreated());
                 scoreList.add(entity);
             }
-                
+
             return scoreList;
         }
         catch (EmptyResultSetException e)
@@ -367,7 +367,6 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             return Collections.emptyList();
         }
     }
-    
 
     @Override
     public List<ScoreableEntity> getVehicleScoreHistory(Integer vehicleID, Duration duration, ScoreType scoreType, Integer count)
@@ -376,10 +375,10 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         {
             List<Map<String, Object>> list = reportService.getVTrendByVTC(vehicleID, duration.getCode(), count);
             List<DriveQMap> driveQList = getMapper().convertToModelObject(list, DriveQMap.class);
-            
+
             List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
-            
-            for (DriveQMap driveQMap  :driveQList)
+
+            for (DriveQMap driveQMap : driveQList)
             {
                 ScoreableEntity entity = new ScoreableEntity();
                 entity.setEntityID(vehicleID);
@@ -390,17 +389,18 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 entity.setCreated(driveQMap.getCreated());
                 scoreList.add(entity);
             }
-                
+
             return scoreList;
         }
         catch (EmptyResultSetException e)
         {
             return Collections.emptyList();
         }
-        
+
     }
-    
-    @Override  // TODO TO BE REMOVED NOT USED
+
+    @Override
+    // TODO TO BE REMOVED NOT USED
     public List<ScoreableEntity> getVehicleScoreHistoryByMiles(Integer vehicleID, Integer milesBack, ScoreType scoreType)
     {
         try
@@ -426,13 +426,13 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     {
         try
         {
-            
+
             // TODO: not sure if this duration mapping is correct
-//groupID = 16777218;            
-    
+            // groupID = 16777218;
+
             List<ScoreTypeBreakdown> scoreTypeBreakdownList = new ArrayList<ScoreTypeBreakdown>();
             List<ScoreType> subTypeList = scoreType.getSubTypes();
-            
+
             for (ScoreType subType : subTypeList)
             {
                 ScoreTypeBreakdown scoreTypeBreakdown = new ScoreTypeBreakdown();
@@ -442,70 +442,69 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 scoreTypeBreakdownList.add(scoreTypeBreakdown);
             }
             return scoreTypeBreakdownList;
-            
-            
+
         }
         catch (EmptyResultSetException e)
         {
             return Collections.emptyList();
         }
-        
+
     }
-    
 
     @Override
     public List<VehicleReportItem> getVehicleReportData(Integer groupID, Duration duration)
     {
         try
         {
-            List<DVQMap> result = getMapper().convertToModelObject(
-                    reportService.getVDScoresByGT(groupID, duration.getCode()), DVQMap.class);            
+            List<DVQMap> result = getMapper().convertToModelObject(reportService.getVDScoresByGT(groupID, duration.getCode()), DVQMap.class);
             List<VehicleReportItem> lVri = new ArrayList<VehicleReportItem>();
             VehicleReportItem vri = null;
-            
-            for ( DVQMap d : result ) {
+
+            for (DVQMap d : result)
+            {
                 vri = new VehicleReportItem();
                 Vehicle v = d.getVehicle();
                 DriveQMap dqm = d.getDriveQ();
-                
+
                 vri.setGroupID(d.getVehicle().getGroupID());
                 vri.setVehicle(d.getVehicle());
-                vri.setMakeModelYear(
-                        v.getMake() + "/" +
-                        v.getModel() + "/" +
-                        v.getYear());
-                
-                //May or may not have a driver assigned
+                vri.setMakeModelYear(v.getMake() + "/" + v.getModel() + "/" + v.getYear());
+
+                // May or may not have a driver assigned
                 vri.setDriver(null);
-                if ( d.getDriver() != null ) {
+                if (d.getDriver() != null)
+                {
                     vri.setDriver(d.getDriver());
                 }
                 vri.setMilesDriven(dqm.getEndingOdometer());
-                vri.setOverallScore((float)0.0);
-                if ( dqm.getOverall() != null ) {
-                    vri.setOverallScore(((float)dqm.getOverall())/(float)10.0);
+                vri.setOverallScore((float) 0.0);
+                if (dqm.getOverall() != null)
+                {
+                    vri.setOverallScore(((float) dqm.getOverall()) / (float) 10.0);
                 }
-                vri.setSpeedScore((float)0.0);
-                if ( dqm.getSpeeding() != null ) {                                   
-                    vri.setSpeedScore(((float)dqm.getSpeeding())/(float)10.0);
+                vri.setSpeedScore((float) 0.0);
+                if (dqm.getSpeeding() != null)
+                {
+                    vri.setSpeedScore(((float) dqm.getSpeeding()) / (float) 10.0);
                 }
-                vri.setStyleScore((float)0.0);
-                if ( dqm.getDrivingStyle() != null ) {
-                    vri.setStyleScore(((float)dqm.getDrivingStyle())/(float)10.0);
+                vri.setStyleScore((float) 0.0);
+                if (dqm.getDrivingStyle() != null)
+                {
+                    vri.setStyleScore(((float) dqm.getDrivingStyle()) / (float) 10.0);
                 }
-  
+
                 lVri.add(vri);
                 vri = null;
             }
-            
+
             return lVri;
-            
+
         }
         catch (EmptyResultSetException e)
         {
             return Collections.emptyList();
         }
-        
+
     }
 
     @Override
@@ -513,112 +512,118 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     {
         try
         {
-            List<DVQMap> result = getMapper().convertToModelObject(
-                    reportService.getDVScoresByGT(groupID, duration.getCode()), DVQMap.class);            
+            List<DVQMap> result = getMapper().convertToModelObject(reportService.getDVScoresByGT(groupID, duration.getCode()), DVQMap.class);
             List<DriverReportItem> lDri = new ArrayList<DriverReportItem>();
             DriverReportItem dri = null;
-            
-            for ( DVQMap d : result ) {
+
+            for (DVQMap d : result)
+            {
                 dri = new DriverReportItem();
                 Driver v = d.getDriver();
                 DriveQMap dqm = d.getDriveQ();
-                
+
                 dri.setDriver(v);
-                
+
                 dri.setGroupID(v.getGroupID());
                 dri.setEmployeeID(v.getPerson().getEmpid());
-                dri.setEmployee(v.getPerson().getFirst() + " " +
-                        v.getPerson().getLast());
-                
-                //May or may not have a vehicle assigned
+                dri.setEmployee(v.getPerson().getFirst() + " " + v.getPerson().getLast());
+
+                // May or may not have a vehicle assigned
                 dri.setVehicle(null);
-                if ( d.getVehicle() != null ) {
+                if (d.getVehicle() != null)
+                {
                     dri.setVehicle(d.getVehicle());
                 }
                 dri.setMilesDriven(dqm.getEndingOdometer());
-                dri.setOverallScore((float)0.0);
-                if ( dqm.getOverall() != null ) {
-                    dri.setOverallScore(((float)dqm.getOverall())/(float)10.0);
+                dri.setOverallScore((float) 0.0);
+                if (dqm.getOverall() != null)
+                {
+                    dri.setOverallScore(((float) dqm.getOverall()) / (float) 10.0);
                 }
-                dri.setSpeedScore((float)0.0);
-                if ( dqm.getSpeeding() != null ) {
-                    dri.setSpeedScore(((float)dqm.getSpeeding())/(float)10.0);
+                dri.setSpeedScore((float) 0.0);
+                if (dqm.getSpeeding() != null)
+                {
+                    dri.setSpeedScore(((float) dqm.getSpeeding()) / (float) 10.0);
                 }
-                dri.setStyleScore((float)0.0);
-                if ( dqm.getDrivingStyle() != null ) {
-                    dri.setStyleScore(((float)dqm.getDrivingStyle())/(float)10.0);
+                dri.setStyleScore((float) 0.0);
+                if (dqm.getDrivingStyle() != null)
+                {
+                    dri.setStyleScore(((float) dqm.getDrivingStyle()) / (float) 10.0);
                 }
-                dri.setSeatBeltScore((float)0.0);
-                if ( dqm.getSeatbelt() != null ) {
-                    dri.setSeatBeltScore(((float)dqm.getSeatbelt())/(float)10.0);
+                dri.setSeatBeltScore((float) 0.0);
+                if (dqm.getSeatbelt() != null)
+                {
+                    dri.setSeatBeltScore(((float) dqm.getSeatbelt()) / (float) 10.0);
                 }
-  
+
                 lDri.add(dri);
                 dri = null;
             }
-            
+
             return lDri;
-            
+
         }
         catch (EmptyResultSetException e)
         {
             return Collections.emptyList();
         }
-        
-    }
 
+    }
 
     @Override
     public List<IdlingReportItem> getIdlingReportData(Integer groupID, Integer start, Integer end)
     {
         try
         {
-            List<DVQMap> result = getMapper().convertToModelObject(
-                    reportService.getDVScoresByGSE(groupID, start, end), DVQMap.class);            
+            List<DVQMap> result = getMapper().convertToModelObject(reportService.getDVScoresByGSE(groupID, start, end), DVQMap.class);
             List<IdlingReportItem> lIri = new ArrayList<IdlingReportItem>();
             IdlingReportItem iri = null;
-            
-            for ( DVQMap d : result ) {
+
+            for (DVQMap d : result)
+            {
                 iri = new IdlingReportItem();
                 Driver v = d.getDriver();
                 DriveQMap dqm = d.getDriveQ();
-                                
+
                 iri.setGroupID(v.getGroupID());
-                iri.setDriver(v);                
+                iri.setDriver(v);
                 iri.setVehicle(d.getVehicle());
-                
+
                 iri.setDriveTime(0);
                 iri.setMilesDriven(0);
                 iri.setLowHrs("0");
                 iri.setHighHrs("0");
-                if ( dqm.getDriveTime() != null ) {
-                    iri.setDriveTime(dqm.getDriveTime()/SECONDS_TO_HOURS);
+                if (dqm.getDriveTime() != null)
+                {
+                    iri.setDriveTime(dqm.getDriveTime() / SECONDS_TO_HOURS);
                 }
-                if ( dqm.getEndingOdometer() != null ) {
+                if (dqm.getEndingOdometer() != null)
+                {
                     iri.setMilesDriven(dqm.getEndingOdometer());
                 }
-                if ( dqm.getIdleLo() != null ) {
-                    iri.setLowHrs(String.valueOf(dqm.getIdleLo()/SECONDS_TO_HOURS));
+                if (dqm.getIdleLo() != null)
+                {
+                    iri.setLowHrs(String.valueOf(dqm.getIdleLo() / SECONDS_TO_HOURS));
                 }
-                if ( dqm.getIdleHi() != null ) {
-                    iri.setHighHrs(String.valueOf(dqm.getIdleHi()/SECONDS_TO_HOURS));                
+                if (dqm.getIdleHi() != null)
+                {
+                    iri.setHighHrs(String.valueOf(dqm.getIdleHi() / SECONDS_TO_HOURS));
                 }
-                
+
                 lIri.add(iri);
                 iri = null;
             }
-            
+
             return lIri;
-            
+
         }
         catch (EmptyResultSetException e)
         {
             return Collections.emptyList();
         }
-        
+
     }
 
-    
     @Override
     public Map<ScoreType, ScoreableEntity> getScoreBreakdownByTypeAndMiles(Integer driverID, Integer milesBack, ScoreType scoreType)
     {
@@ -628,7 +633,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             DriveQMap driveQMap = getMapper().convertToModelObject(reportService.getDScoreByDM(driverID, milesBack * 100), DriveQMap.class);
 
             List<ScoreType> subTypeList = scoreType.getSubTypes();
-            
+
             for (ScoreType subType : subTypeList)
             {
                 ScoreableEntity scoreableEntity = new ScoreableEntity();
@@ -638,8 +643,8 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 scoreableEntity.setScoreType(subType);
                 Integer score = driveQMap.getScoreMap().get(subType);
                 scoreableEntity.setScore((score == null) ? 0 : score);
-                scoreableEntity.setIdentifier(""+driveQMap.getEndingOdometer());
-                
+                scoreableEntity.setIdentifier("" + driveQMap.getEndingOdometer());
+
                 returnMap.put(subType, scoreableEntity);
             }
             return returnMap;
@@ -659,7 +664,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             DriveQMap driveQMap = getMapper().convertToModelObject(reportService.getDScoreByDT(driverID, duration.getCode()), DriveQMap.class);
 
             List<ScoreType> subTypeList = scoreType.getSubTypes();
-            
+
             for (ScoreType subType : subTypeList)
             {
                 ScoreableEntity scoreableEntity = new ScoreableEntity();
@@ -669,8 +674,8 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 scoreableEntity.setScoreType(subType);
                 Integer score = driveQMap.getScoreMap().get(subType);
                 scoreableEntity.setScore((score == null) ? 0 : score);
-                scoreableEntity.setIdentifier(""+driveQMap.getEndingOdometer());
-                
+                scoreableEntity.setIdentifier("" + driveQMap.getEndingOdometer());
+
                 returnMap.put(subType, scoreableEntity);
             }
             return returnMap;
@@ -680,7 +685,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             return Collections.emptyMap();
         }
     }
-    
+
     @Override
     public Map<ScoreType, ScoreableEntity> getVehicleScoreBreakdownByType(Integer vehicleID, Duration duration, ScoreType scoreType)
     {
@@ -690,7 +695,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             DriveQMap driveQMap = getMapper().convertToModelObject(reportService.getVScoreByVT(vehicleID, duration.getCode()), DriveQMap.class);
 
             List<ScoreType> subTypeList = scoreType.getSubTypes();
-            
+
             for (ScoreType subType : subTypeList)
             {
                 ScoreableEntity scoreableEntity = new ScoreableEntity();
@@ -700,8 +705,8 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 scoreableEntity.setScoreType(subType);
                 Integer score = driveQMap.getScoreMap().get(subType);
                 scoreableEntity.setScore((score == null) ? 0 : score);
-                scoreableEntity.setIdentifier(""+driveQMap.getEndingOdometer());
-                
+                scoreableEntity.setIdentifier("" + driveQMap.getEndingOdometer());
+
                 returnMap.put(subType, scoreableEntity);
             }
             return returnMap;
