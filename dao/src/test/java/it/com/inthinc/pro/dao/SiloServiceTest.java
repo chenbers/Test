@@ -764,7 +764,7 @@ public class SiloServiceTest
         zone.setZoneID(zoneID);
         
         // find
-        String ignoreFields[] = {"modified", "pointsString"};
+        String ignoreFields[] = {"modified", "pointsString","points"};
         Zone returnedZone = zoneDAO.findByID(zoneID);
         Util.compareObjects(zone, returnedZone, ignoreFields);
         
