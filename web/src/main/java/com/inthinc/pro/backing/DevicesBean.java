@@ -279,17 +279,14 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     private void assignVehicle(final DeviceView device)
     {
         if (device.getOldVehicleID() != null)
-        {
-            vehicleDAO.clearVehicleDevice(device.getOldVehicleID(), device.getDeviceID());
             setVehicleDevice(device.getOldVehicleID(), null);
-        }
 
         if (device.getVehicleID() != null)
             for (final DeviceView otherDevice : getItems())
                 if (device.getVehicleID().equals(otherDevice.getVehicleID()) && !otherDevice.getDeviceID().equals(device.getDeviceID()))
                 {
+                    vehicleDAO.clearVehicleDevice(device.getVehicleID(), otherDevice.getDeviceID());
                     otherDevice.setVehicleID(null);
-                    break;
                 }
 
         vehicleDAO.setVehicleDevice(device.getVehicleID(), device.getDeviceID());
