@@ -27,7 +27,7 @@
     			<td width="465" valign="top">
 					<!-- START OVERALL/R PANEL -->
 					<!-- leave reRenderList alone -->
-					<ui:include src="/includes/breakdown.xhtml">	
+					<ui:include src="/includes/breakdown.xhtml">
 						<ui:param name="reRenderList" value="breakdownForm,overallPanel,hiddenField3"/>
 						<ui:param name="ajaxStatusID" value="overall_status_2" /> 
 						<ui:param name="pieDef" value="#{breakdownBean.overallPieDef}"/>
@@ -41,6 +41,7 @@
 						<ui:param name="flyNavRule" value="go_fleetDetail" />
 						<ui:param name="flySelectedTab" value="overall_full_screen" />  
 						<ui:param name="flyOutImage" value="ico_expand.png" />
+						<ui:param name="zorder" value="6"/>	
 					</ui:include>		
 					<!-- END PANEL -->
 					<div class="spacer"></div>

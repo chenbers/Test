@@ -87,6 +87,12 @@
 				</c:if>
 			</h:commandLink> </span>
 		
+			<!-- 
+			IMPORTANT!!!!!!!
+			Regarless of what the z-index is set to on this context menu, the parent div has a relative position. So if you're having trouble getting
+			the contextMenu to come to the front in IE6, then you will have to set the z-index on the parent div with the relative position. (This will be the
+			div with style="position:relative")
+			 -->
 			<rich:contextMenu event="onclick" attatched="true" disableDefaultMenu="false" submitMode="server" attachTo="#{ajaxForm}_toolsId">
 			<!--
 				<rich:menuItem ajaxSingle="true" rendered="true"
