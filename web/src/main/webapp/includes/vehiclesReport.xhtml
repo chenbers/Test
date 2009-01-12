@@ -14,7 +14,8 @@
 			
         	<rich:datascroller id="topScroller" for="items" immediate="true"
         		scrollerListener="#{vehicleReportBean.scrollerListener}"
-        		reRender="bottomScroller,items,headerVehicles">
+        		reRender="bottomScroller,items,headerVehicles"
+        		requestDelay="200" eventsQueue="pagerQueue">
         	</rich:datascroller>
         						
 				<rich:dataTable value="#{vehicleData}" id="items"
@@ -133,7 +134,8 @@
     			
     		<rich:datascroller id="bottomScroller" for="items" immediate="true"
     			scrollerListener="#{vehicleReportBean.scrollerListener}"
-        		reRender="topScroller,items,headerVehicles">        			
+        		reRender="topScroller,items,headerVehicles"
+        		requestDelay="200" eventsQueue="pagerQueue">        			
         	</rich:datascroller>
         	
         	

@@ -21,7 +21,8 @@
 			
         	<rich:datascroller id="topScroller" for="items" immediate="true" 
         		scrollerListener="#{idlingReportBean.scrollerListener}"
-        		reRender="bottomScroller,items,headerIdlings">
+        		reRender="bottomScroller,items,headerIdlings"
+        		requestDelay="200" eventsQueue="pagerQueue">
         	</rich:datascroller>
 			      		        						
 				<rich:dataTable value="#{idlingData}" id="items"
@@ -125,7 +126,8 @@
     			
     			<rich:datascroller id="bottomScroller" for="items" immediate="true" 
     				scrollerListener="#{idlingReportBean.scrollerListener}"
-        			reRender="topScroller,items,headerIdlings">        			
+        			reRender="topScroller,items,headerIdlings"
+        			requestDelay="200" eventsQueue="pagerQueue">        			
         		</rich:datascroller>
 				</div>
 		
