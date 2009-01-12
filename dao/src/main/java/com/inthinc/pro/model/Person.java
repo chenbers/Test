@@ -8,57 +8,51 @@ import com.inthinc.pro.dao.annotations.ID;
 
 public class Person extends BaseEntity
 {
-	
-	
-	
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -7162580776394490873L;
-	
-	@ID
-    private Integer          personID;
+    private static final long serialVersionUID = -7162580776394490873L;
+
+    @ID
+    private Integer           personID;
     @Column(name = "tzName")
-    private TimeZone         timeZone;
-    private Integer          costPerHour; // in cents
+    private TimeZone          timeZone;
+    private Integer           costPerHour;                             // in cents
     // contact information
     @Column(name = "addrID")
-    private Integer          addressID;
+    private Integer           addressID;
     @Column(updateable = false)
-    private Address          address;
-    private String           homePhone;
-    private String           workPhone;
-    private String           email;
+    private Address           address;
+    private String            homePhone;
+    private String            workPhone;
+    private String            email;
     // employee information
-    private String           empid;
-    private String           reportsTo;
-    private String           title;
-    private String           dept;
+    private String            empid;
+    private String            reportsTo;
+    private String            title;
+    private String            dept;
     // personal information
-    private String           first;
-    private String           middle;
-    private String           last;
-    private String           suffix;
-    private Gender           gender;
-    private Integer          height;     // inches
-    private Integer          weight;     // pounds
-    private Date             dob;
+    private String            first;
+    private String            middle;
+    private String            last;
+    private String            suffix;
+    private Gender            gender;
+    private Integer           height;                                  // inches
+    private Integer           weight;                                  // pounds
+    private Date              dob;
     // user, driver (may be null)
     @Column(updateable = false)
-    private User   user;
+    private User              user;
     @Column(updateable = false)
-    private Driver driver;
-    private Status         status;
-    private Integer        acctID;
+    private Driver            driver;
+    private Status            status;
+    private Integer           acctID;
 
     public Person()
     {
         super();
     }
-    
-    public Person(Integer personID,  Integer acctID, TimeZone timeZone, Integer costPerHour, Integer addressID, String homePhone, String workPhone, String email,
-            String empid, String reportsTo, String title, String dept, String first, String middle, String last, String suffix, Gender gender, Integer height, Integer weight,
-            Date dob, Status status)
+
+    public Person(Integer personID, Integer acctID, TimeZone timeZone, Integer costPerHour, Integer addressID, String homePhone, String workPhone, String email, String empid,
+            String reportsTo, String title, String dept, String first, String middle, String last, String suffix, Gender gender, Integer height, Integer weight, Date dob,
+            Status status)
     {
         super();
         this.acctID = acctID;
@@ -81,7 +75,7 @@ public class Person extends BaseEntity
         this.height = height;
         this.weight = weight;
         this.dob = dob;
-        this.status=status;
+        this.status = status;
     }
 
     public Integer getPersonID()
@@ -93,7 +87,6 @@ public class Person extends BaseEntity
     {
         this.personID = personID;
     }
-
 
     public TimeZone getTimeZone()
     {
@@ -194,14 +187,31 @@ public class Person extends BaseEntity
     {
         this.dept = dept;
     }
-    
+
     public String getFullName()
     {
-    	StringBuffer result = new StringBuffer();
-    	if (first != null) result.append(first + " ");
-    	if (middle != null) result.append(middle + " ");
-    	if (last != null) result.append(last);
-    	return result.toString().trim();
+        StringBuilder result = new StringBuilder();
+        if (first != null)
+            result.append(first);
+        if (middle != null)
+        {
+            if (result.length() > 0)
+                result.append(' ');
+            result.append(middle);
+        }
+        if (last != null)
+        {
+            if (result.length() > 0)
+                result.append(' ');
+            result.append(last);
+        }
+        if (suffix != null)
+        {
+            if (result.length() > 0)
+                result.append(' ');
+            result.append(suffix);
+        }
+        return result.toString();
     }
 
     public String getFirst()
