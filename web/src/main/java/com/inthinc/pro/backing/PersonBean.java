@@ -277,22 +277,20 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
             if (getTableColumns().get(column).getVisible())
             {
                 boolean matches = false;
-                if (column.equals("fullName"))
-                    matches = person.getFirst().toLowerCase().startsWith(filterWord) || person.getLast().toLowerCase().startsWith(filterWord);
-                else if (column.equals("user_status"))
+                if (column.equals("user_status"))
                     matches = (person.getUser() != null)
                             && (person.getUser().getStatus() != null)
-                            && ((person.getUser().getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("active").toLowerCase().startsWith(filterWord)) || ((!person
-                                    .getUser().getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("inactive").toLowerCase().startsWith(filterWord))));
+                            && ((person.getUser().getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("active").toLowerCase().contains(filterWord)) || ((!person
+                                    .getUser().getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("inactive").toLowerCase().contains(filterWord))));
                 else if (column.equals("driver_status"))
                     matches = (person.getDriver() != null)
                             && (person.getDriver().getStatus() != null)
-                            && ((person.getDriver().getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("active").toLowerCase().startsWith(filterWord)) || ((!person
-                                    .getDriver().getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("inactive").toLowerCase().startsWith(filterWord))));
+                            && ((person.getDriver().getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("active").toLowerCase().contains(filterWord)) || ((!person
+                                    .getDriver().getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("inactive").toLowerCase().contains(filterWord))));
                 else if (column.equals("user_groupID"))
-                    matches = (person.getGroup() != null) && person.getGroup().getName().toLowerCase().startsWith(filterWord);
+                    matches = (person.getGroup() != null) && person.getGroup().getName().toLowerCase().contains(filterWord);
                 else if (column.equals("driver_groupID"))
-                    matches = (person.getTeam() != null) && person.getTeam().getName().toLowerCase().startsWith(filterWord);
+                    matches = (person.getTeam() != null) && person.getTeam().getName().toLowerCase().contains(filterWord);
 
                 if (matches)
                     return true;

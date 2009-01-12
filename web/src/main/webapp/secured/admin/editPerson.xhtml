@@ -320,7 +320,7 @@
                           </td>
                           <td>
                             <rich:message for="user_password" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputSecret value="#{personBean.item.password}" id="user_password" onchange="checkMultiple(this)" styleClass="text" size="30"
+                            <h:inputSecret value="#{personBean.item.password}" id="user_password" redisplay="true" onchange="checkMultiple(this)" styleClass="text" size="30"
                               maxlength="30" required="#{personBean.item.userSelected and empty personBean.item.user.password}" requiredMessage="#{messages.required}" validatorMessage="#{messages.editPerson_passwordFormat}">
                               <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
                               <f:attribute name="regex" value="\w{6,12}" />
@@ -334,7 +334,7 @@
                           </td>
                           <td>
                             <rich:message for="confirmPassword" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputSecret value="#{personBean.item.confirmPassword}" id="confirmPassword" onchange="checkMultiple(this)" styleClass="text" size="30"
+                            <h:inputSecret value="#{personBean.item.confirmPassword}" id="confirmPassword" redisplay="true" onchange="checkMultiple(this)" styleClass="text" size="30"
                               maxlength="30" required="#{personBean.item.userSelected and empty personBean.item.user.password}" requiredMessage="#{messages.required}" />
                           </td>
                         </tr>
@@ -441,7 +441,10 @@
                           <td>
                             <rich:message for="driver_RFID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText value="#{personBean.item.driver.RFID}" id="driver_RFID" onchange="checkMultiple(this)" styleClass="text" size="30"
-                              maxlength="10" converterMessage="#{messages.editPerson_RFIDFormat}" validatorMessage="#{messages.editPerson_RFIDFormat}" />
+                              maxlength="16" required="false" converterMessage="#{messages.editPerson_RFIDFormat}" validatorMessage="#{messages.editPerson_RFIDFormat}">
+                              <f:validateLongRange minimum="-2305843009213693952" maximum="-2233785415175766017" />
+                              <f:converter converterId="HexConverter" />
+                            </h:inputText>
                           </td>
                         </tr>
                         </ui:fragment>

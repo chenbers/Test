@@ -210,7 +210,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
                 {
                     final String[] words = String.valueOf(org.apache.commons.beanutils.BeanUtils.getProperty(item, column.replace('_', '.'))).toLowerCase().split("\\W+");
                     for (final String word : words)
-                        if (word.startsWith(filterWord))
+                        if (word.contains(filterWord))
                             return true;
                 }
                 catch (Exception e)

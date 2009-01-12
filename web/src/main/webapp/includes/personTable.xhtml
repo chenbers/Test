@@ -139,7 +139,9 @@
     </rich:column>
     <rich:column rendered="#{personBean.tableColumns['driver_RFID'].visible}" sortBy="#{item.driver.RFID}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_RFID}" /></f:facet>
-      <h:outputText value="#{item.driver.RFID}" />
+      <h:outputText value="#{item.driver.RFID}">
+        <f:converter converterId="HexConverter" />
+      </h:outputText>
     </rich:column>
     <rich:column rendered="#{personBean.tableColumns['driver_groupID'].visible}" sortBy="#{item.team.name}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_groupID}" /></f:facet>

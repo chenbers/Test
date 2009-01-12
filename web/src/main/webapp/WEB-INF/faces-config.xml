@@ -25,6 +25,10 @@
 		<converter-id>RoleConverter</converter-id>
 		<converter-class>com.inthinc.pro.convert.RoleConverter</converter-class>
 	</converter>
+  <converter>
+    <converter-id>HexConverter</converter-id>
+    <converter-class>com.inthinc.pro.convert.HexConverter</converter-class>
+  </converter>
 	
 	<!-- Components -->
 	<component>

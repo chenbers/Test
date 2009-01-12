@@ -188,14 +188,13 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
                 if (column.equals("driver"))
                     matches = (vehicle.getDriver() != null)
                             && (vehicle.getDriver().getPerson() != null)
-                            && (vehicle.getDriver().getPerson().getFirst().toLowerCase().startsWith(filterWord) || vehicle.getDriver().getPerson().getLast().toLowerCase()
-                                    .startsWith(filterWord));
+                            && (vehicle.getDriver().getPerson().getFullName().toLowerCase().contains(filterWord));
                 else if (column.equals("group"))
-                    matches = (vehicle.getGroup() != null) && vehicle.getGroup().getName().toLowerCase().startsWith(filterWord);
+                    matches = (vehicle.getGroup() != null) && vehicle.getGroup().getName().toLowerCase().contains(filterWord);
                 else if (column.equals("status"))
                     matches = (vehicle.getStatus() != null)
-                            && ((vehicle.getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("active").toLowerCase().startsWith(filterWord)) || ((!vehicle
-                                    .getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("inactive").toLowerCase().startsWith(filterWord))));
+                            && ((vehicle.getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("active").toLowerCase().contains(filterWord)) || ((!vehicle
+                                    .getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("inactive").toLowerCase().contains(filterWord))));
 
                 if (matches)
                     return true;

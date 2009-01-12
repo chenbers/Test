@@ -111,9 +111,9 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             {
                 boolean matches = false;
                 if (column.equals("vehicle"))
-                    matches = (device.getVehicle() != null) && (device.getVehicle().getName() != null) && device.getVehicle().getName().toLowerCase().startsWith(filterWord);
+                    matches = (device.getVehicle() != null) && (device.getVehicle().getName() != null) && device.getVehicle().getName().toLowerCase().contains(filterWord);
                 else if (column.equals("status"))
-                    matches = (device.getStatus() != null) && MessageUtil.getMessageString(device.getStatus().getDescription().toLowerCase()).toLowerCase().startsWith(filterWord);
+                    matches = (device.getStatus() != null) && MessageUtil.getMessageString(device.getStatus().getDescription().toLowerCase()).toLowerCase().contains(filterWord);
 
                 if (matches)
                     return true;
