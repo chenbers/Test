@@ -46,25 +46,23 @@
     </rich:dataGrid>
 
         <div class="popupactions">
-          <div>
-            <a4j:commandButton styleClass="left"
-              action="#{bean.tablePref.cancelEdit}" 
-              oncomplete="Richfaces.hideModalPanel('editColumns');"
-              reRender="editColumnsForm:editColumnsGrid">
-              <span class="cancel">
-               <h:outputText value="#{messages.button_cancel}" />
-              </span>
-            </a4j:commandButton>
-            <h:outputText value=" " />
-            <a4j:commandButton
-              action="#{bean.tablePref.saveColumns}"                 
-              oncomplete="Richfaces.hideModalPanel('editColumns')" 
-              reRender="#{reRender}" styleClass="left">
-              <span class="save">
-                <h:outputText value="#{messages.button_save}" />
-              </span>
-            </a4j:commandButton>
-          </div>
+          <a4j:commandButton styleClass="left"
+            action="#{bean.tablePref.cancelEdit}" 
+            oncomplete="Richfaces.hideModalPanel('editColumns');"
+            reRender="editColumnsForm:editColumnsGrid">
+            <span class="cancel">
+             <h:outputText value="#{messages.button_cancel}" />
+            </span>
+          </a4j:commandButton>
+          <h:outputText value=" " />
+          <a4j:commandButton
+            action="#{bean.tablePref.saveColumns}"                 
+            oncomplete="Richfaces.hideModalPanel('editColumns')" 
+            reRender="#{reRender}" styleClass="left">
+            <span class="save">
+              <h:outputText value="#{messages.button_save}" />
+            </span>
+          </a4j:commandButton>
         </div>
 
       </a4j:form>
