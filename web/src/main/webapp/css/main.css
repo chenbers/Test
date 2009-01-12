@@ -1237,6 +1237,30 @@ a.ls_tab_info {
 	margin: 0 0 0 0;
 	}
 	
+.ls_tab_critical {
+	padding: 6px 10px 7px 20px;
+	background: transparent url(../images/ico_critical.png) no-repeat center left;
+	text-decoration: none;
+	color: #000;
+	margin: 0 0 0 0;
+	}
+	
+.ls_tab_warning {
+	padding: 6px 10px 7px 20px;
+	background: transparent url(../images/ico_warning.png) no-repeat center left;
+	text-decoration: none;
+	color: #000;
+	margin: 0 0 0 0;
+	}
+	
+.ls_tab_info {
+	padding: 6px 10px 7px 20px;
+	background: transparent url(../images/ico_info.png) no-repeat center left;
+	text-decoration: none;
+	color: #000;
+	margin: 0 0 0 0;
+	}
+
 a.ls_tab_drivestyle {
 	padding: 6px 10px 7px 20px;
 	background: transparent url(../images/ico_car.png) no-repeat center left;

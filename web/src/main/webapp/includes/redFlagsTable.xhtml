@@ -26,7 +26,7 @@
 						<f:facet name="header">
 							<h:outputText value="#{messages.redflags_level}" />
 						</f:facet>
-						<h:outputLink value="#" styleClass="ls_tab_#{item.redFlag.level}">#{item.redFlag.level.description}</h:outputLink>
+						<h:outputText styleClass="ls_tab_#{item.redFlag.level}" value="#{item.redFlag.level.description}"/>
     				</rich:column>
     				<rich:column rendered="#{tableColumns['alerts'].visible}" 
     					sortBy="#{item.redFlag.alert}" width="10%">
