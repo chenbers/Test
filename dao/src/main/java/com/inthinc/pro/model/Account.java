@@ -1,5 +1,6 @@
 package com.inthinc.pro.model;
 
+import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 import com.inthinc.pro.dao.annotations.SimpleName;
 
@@ -14,6 +15,8 @@ public class Account extends BaseEntity
 
 	@ID
     private Integer       acctID;
+	
+	@Column(name="name")
 	private String        acctName;
 
 	private Integer       mailID;
