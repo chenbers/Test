@@ -81,7 +81,7 @@ public class MyAccountBean extends BaseBean
         boolean isNew = alertContactDAO.findByUserID(getUser().getUserID()) == null;
         if (isNew)
         {
-            alertContactDAO.create(alertContact.getUserID(), alertContact);
+            alertContactDAO.create(user.getUserID(), alertContact);
         }
         else
         {

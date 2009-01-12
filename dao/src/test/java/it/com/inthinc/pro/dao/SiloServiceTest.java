@@ -212,15 +212,14 @@ public class SiloServiceTest
     }
     
     @Test
-    @Ignore
     public void alertContact()
     {
+    	int id = 1111;
     	AlertContactHessianDAO alertContactDAO = new AlertContactHessianDAO();
     	alertContactDAO.setSiloService(siloService);
     	
-    	// this user already has a alertcon in it
     	AlertCon contact = new AlertCon();
-    	contact.setUserID(1234);
+    	contact.setUserID(id);
     	contact.setPriEmail("priEmail@test.com");
     	contact.setSecEmail("secEmail@test.com");
     	contact.setPriPhone("8015551111");
@@ -231,37 +230,44 @@ public class SiloServiceTest
     	contact.setInfo(1);
     	contact.setWarn(2);
     	contact.setCrit(3);
-    	Integer result = alertContactDAO.create(contact);
-    //	assertEquals(result, contact.getUserID());
-//
-//    	contact = alertContactDAO.findByID(1234);
-//    	assertEquals(new Integer(1234), contact.getUserID());
-//    	assertEquals("priEmail@test.com", contact.getPriEmail());
-//    	assertEquals("secEmail@test.com", contact.getSecEmail());
-//    	assertEquals("8015551111", contact.getPriPhone());
-//    	assertEquals("8015552222", contact.getSecPhone());
-//    	assertEquals("8015553333", contact.getCellPhone());
-//    	assertEquals("8015554444", contact.getPriText());
-//    	assertEquals("8015555555", contact.getSecText());
-//
-//    	contact.setPriEmail("priEmail@test2.com");
-//    	contact.setSecEmail("secEmail@test2.com");
-//    	contact.setPriPhone("4355551111");
-//    	contact.setSecPhone("4355552222");
-//    	contact.setCellPhone("4355553333");
-//    	contact.setPriText("4355554444");
-//    	contact.setSecText("4355555555");
-//    	result = alertContactDAO.update(contact);
-//    	
-//    	contact = alertContactDAO.findByID(1234);
-//    	assertEquals(new Integer(1234), contact.getUserID());
-//    	assertEquals("priEmail@test2.com", contact.getPriEmail());
-//    	assertEquals("secEmail@test2.com", contact.getSecEmail());
-//    	assertEquals("4355551111", contact.getPriPhone());
-//    	assertEquals("4355552222", contact.getSecPhone());
-//    	assertEquals("4355553333", contact.getCellPhone());
-//    	assertEquals("4355554444", contact.getPriText());
-//    	assertEquals("4355555555", contact.getSecText());
+    	if (alertContactDAO.findByID(id) == null)
+    	{
+	    	alertContactDAO.create(contact);
+    	}
+    	else
+    	{
+    		// this is only called if the database isn't cleared out between tests
+	    	alertContactDAO.update(contact);
+    	}
+
+    	contact = alertContactDAO.findByID(id);
+    	assertEquals(new Integer(id), contact.getUserID());
+    	assertEquals("priEmail@test.com", contact.getPriEmail());
+    	assertEquals("secEmail@test.com", contact.getSecEmail());
+    	assertEquals("8015551111", contact.getPriPhone());
+    	assertEquals("8015552222", contact.getSecPhone());
+    	assertEquals("8015553333", contact.getCellPhone());
+    	assertEquals("8015554444", contact.getPriText());
+    	assertEquals("8015555555", contact.getSecText());
+
+    	contact.setPriEmail("priEmail@test2.com");
+    	contact.setSecEmail("secEmail@test2.com");
+    	contact.setPriPhone("4355551111");
+    	contact.setSecPhone("4355552222");
+    	contact.setCellPhone("4355553333");
+    	contact.setPriText("4355554444");
+    	contact.setSecText("4355555555");
+    	alertContactDAO.update(contact);
+    	
+    	contact = alertContactDAO.findByID(id);
+    	assertEquals(new Integer(id), contact.getUserID());
+    	assertEquals("priEmail@test2.com", contact.getPriEmail());
+    	assertEquals("secEmail@test2.com", contact.getSecEmail());
+    	assertEquals("4355551111", contact.getPriPhone());
+    	assertEquals("4355552222", contact.getSecPhone());
+    	assertEquals("4355553333", contact.getCellPhone());
+    	assertEquals("4355554444", contact.getPriText());
+    	assertEquals("4355555555", contact.getSecText());
     }
     
     @Test
