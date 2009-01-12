@@ -10,11 +10,10 @@
 	<ul id="breadcrumb">
 		<a4j:repeat value="#{groupTreeNode.groupBreadCrumb}" var="crumb" rowKeyVar="rowKey">
 			<li class="#{(rowKey eq (groupTreeNode.breadCrumbCount - 1) and lastBreadCrumb eq null)?'last':''}">
-				<h:outputLink value="#{facesContext.externalContext.request.contextPath}#{crumb.groupLevel.url}" >
+              <h:outputLink value="#{facesContext.externalContext.request.contextPath}#{crumb.groupLevel.url}" >
 					<h:outputText value="#{crumb.label}"/>
 					<f:param name="groupID" value="#{crumb.id}"/>
-				</h:outputLink>
-			</li>
+				</h:outputLink></li>
 		</a4j:repeat>
 	</ul>
 	
