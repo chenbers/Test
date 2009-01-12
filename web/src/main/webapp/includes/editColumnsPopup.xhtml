@@ -35,9 +35,9 @@
       	<h:outputText value="#{messages.editColumns_explanation}"/>
       </h:panelGroup>
 
-      <a4j:form id="editColumnsForm">
+      <a4j:form id="editColumnsForm" >
 
-		<rich:dataGrid columns="3" value="#{bean.availableColumns}" var="col" width="100%" style="border:0">
+		<rich:dataGrid id="editColumnGrid" columns="3" value="#{bean.availableColumns}" var="col" width="100%" style="border:0">
             <h:outputLabel rendered="#{bean.tableColumns[col].canHide}">
    	          <h:selectBooleanCheckbox label="#{col}" value="#{bean.tableColumns[col].visible}" />
    	          <h:outputText value="#{bean.tableColumns[col].colLabel}" />
@@ -46,7 +46,14 @@
 		</rich:dataGrid>
 	
         <div class="popupactions">
-          <button type="submit" class="left" onclick="Richfaces.hideModalPanel('editColumns'); return false;"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button>
+          <a4j:commandButton styleClass="left"
+          		 action="#{bean.tablePref.cancelEdit}" 
+          		 oncomplete="Richfaces.hideModalPanel('editColumns');"
+          		 reRender="editColumnsForm:editColumnsGrid">
+          		 <span class="cancel">
+          		 	<h:outputText value="#{messages.button_cancel}" />
+          		 </span>
+		  </a4j:commandButton>
           <a4j:commandButton
           				action="#{bean.tablePref.saveColumns}"         				
           				oncomplete="Richfaces.hideModalPanel('editColumns')" 

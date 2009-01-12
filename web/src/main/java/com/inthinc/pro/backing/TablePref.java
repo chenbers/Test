@@ -58,6 +58,13 @@ public class TablePref
     
     }
 
+    public String cancelEdit()
+    {
+        // force re-init
+//        tablePreference = null;
+        tableColumns = null;
+        return null;
+    }
     
     public void setTableColumns(Map<String, TableColumn> tableColumns)
     {
