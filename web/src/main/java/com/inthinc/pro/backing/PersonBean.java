@@ -5,8 +5,10 @@ package com.inthinc.pro.backing;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -419,6 +421,19 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
                 }
             }
 
+            // birth date
+            if (person.getDob() != null)
+            {
+                Calendar latest = Calendar.getInstance();
+                latest.add(Calendar.YEAR, -16);
+                if (person.getDob().after(latest.getTime()))
+                {
+                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_dobTooLate"), null);
+                    context.addMessage("edit-form:dob", message);
+                    valid = false;
+                }
+            }
+
             // unique username
             if (person.isUserSelected())
             {
@@ -446,6 +461,15 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_userOrDriver"), null);
                 context.addMessage("edit-form:isUser", message);
                 valid = false;
+            }
+            else
+            {
+                if ((person.getDriver().getExpiration() != null) && person.getDriver().getExpiration().before(new Date()))
+                {
+                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_expirationTooSoon"), null);
+                    context.addMessage("edit-form:driver_expiration", message);
+                    valid = false;
+                }
             }
         }
         return valid;
