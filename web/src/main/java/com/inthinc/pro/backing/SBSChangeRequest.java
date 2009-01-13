@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,12 @@ import org.postgis.Point;
 
 import com.iwi.teenserver.model.SpeedLimitChangeRequest;
 
-public class SBSChangeRequest implements EditItem{
+public class SBSChangeRequest implements EditItem, Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	private String linkId;
 	private String numbers;
@@ -20,6 +26,7 @@ public class SBSChangeRequest implements EditItem{
 	private int newSpeedLimit;
 	private String comment;
 	private boolean selected;
+	private String email;
 	private SpeedLimitChangeRequest changeRequest;
 	
 	@Override
@@ -128,5 +135,14 @@ public class SBSChangeRequest implements EditItem{
 	public void setNumbers(String numbers) {
 		this.numbers = numbers;
 	}
-
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public boolean isGood(){
+		
+		return (address!=null)&& (!address.isEmpty()) && (newSpeedLimit != 0);
+	}
 }

@@ -29,6 +29,7 @@ public class MapIconFactory {
 			
 			StringBuffer urlBuffer = new StringBuffer(webUtil.getRequestContextPath());
 			urlBuffer.append("/images"+folder);
+//			StringBuffer urlBuffer = new StringBuffer("../images"+folder);
 			StringBuffer pathBuffer = new StringBuffer(webUtil.getRealPath(""));
 			pathBuffer.append("/images"+folder);
 			

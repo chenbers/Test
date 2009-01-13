@@ -63,8 +63,6 @@ public class Tiger {
 			
 			sbsChangeRequest.setLinkId(rs.getString("ogc_fid"));
 			sbsChangeRequest.setZipCode(rs.getString("zipL"));
-			sbsChangeRequest.setNumbers(getNumbers(rs.getString("fraddr"),rs.getString("toaddr"),
-													rs.getString("fraddl"),rs.getString("toaddl")));
 			sbsChangeRequest.setAddress(makeAddress(rs.getString("fraddr"),rs.getString("toaddr"),
 													rs.getString("fraddl"),rs.getString("toaddl"),
 													rs.getString("fedirp"),rs.getString("st_typ_bef"),
@@ -81,27 +79,31 @@ public class Tiger {
 	}
     private static String getNumbers (String fromAddrRight, String toAddrRight, String fromAddrLeft, String toAddrLeft){
         StringBuilder builder = new StringBuilder();
-        append(builder, fromAddrRight);
-        append(builder, "-");
-        append(builder, toAddrRight);
-        append(builder, ",");
-        append(builder, fromAddrLeft);
-        append(builder, "-");
-        append(builder, toAddrLeft);
-        
+        if ((fromAddrRight!=null)&& (!fromAddrRight.isEmpty())){
+        	
+	        append(builder, fromAddrRight);
+	        append(builder, "-");
+	        if ((toAddrRight!=null)&& (!toAddrRight.isEmpty())){
+		        append(builder, toAddrRight);
+	        }
+	        append(builder, ",");
+        }
+        if ((fromAddrLeft!=null)&& (!fromAddrLeft.isEmpty())){
+        	
+	        append(builder, fromAddrLeft);
+	        append(builder, "-");
+	        if ((toAddrLeft!=null)&& (!toAddrLeft.isEmpty())){
+	        	
+	        	append(builder, toAddrLeft);
+	        }
+        }
         return builder.toString().trim();
 
     }
     private static String makeAddress(String fromAddrRight, String toAddrRight, String fromAddrLeft, String toAddrLeft, String fedirp, String st_typ_bef, String fename, String st_nm_suff, String fetype, String fedirs){
     	
             StringBuilder builder = new StringBuilder();
-            append(builder, fromAddrRight);
-            append(builder, "-");
-            append(builder, toAddrRight);
-            append(builder, ",");
-            append(builder, fromAddrLeft);
-            append(builder, "-");
-            append(builder, toAddrLeft);
+            append(builder,getNumbers(fromAddrRight,toAddrRight,fromAddrLeft,toAddrLeft));
             append(builder, "*");
             append(builder, fedirp);
             append(builder, st_typ_bef);

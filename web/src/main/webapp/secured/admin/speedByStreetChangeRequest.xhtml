@@ -11,7 +11,55 @@
               
 	<ui:define name="scripts">
 		<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{gmBean.key}" type="text/javascript"></script>				
-	<script src="#{facesContext.externalContext.request.contextPath}/js/speedByStreet.js"  type="text/javascript">	
+	<script src="#{facesContext.externalContext.request.contextPath}/js/speedByStreet.js"  type="text/javascript"></script>
+    <script src="#{facesContext.externalContext.request.contextPath}/js/gzoom.js" type="text/javascript"></script>
+    <script src="#{facesContext.externalContext.request.contextPath}/js/wms236.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		function bodyLoad(){
+			if (GBrowserIsCompatible()) {
+			
+	        		var opts = { onMarkersSetCallback: processMarkers, resultList : G_GOOGLEBAR_RESULT_LIST_SUPPRESS, showOnLoad: true};
+					mapsbs = new GMap2(document.getElementById("map-canvas"), {googleBarOptions: opts});
+					mapsbs.setCenter(new GLatLng(#{speedLimitChangeRequests.maplat},#{speedLimitChangeRequests.maplng}), #{speedLimitChangeRequests.mapzoom});
+					mapsbs.addControl(new GLargeMapControl());
+					mapsbs.addControl(new GMapTypeControl());
+					mapsbs.addControl(new GOverviewMapControl()); 
+					mapsbs.setMapType(G_NORMAL_MAP);					
+			       	mapsbs.enableScrollWheelZoom();
+	        		mapsbs.enableGoogleBar();
+	        		geocoder =new GClientGeocoder();
+	        				       
+			     	GEvent.addListener(mapsbs, "click", function(overlay, point) {
+			
+			        if (overlay) {
+			          
+			          	var segment = whichSegment(overlay);
+			          	if (segment != null){
+			          	
+			 				selectSegment(segment.id);
+			 			}	
+			          } else {
+			          
+			            reverseGeocode(point.y,point.x,"");
+			            
+				      }
+			        });
+  						
+			       	GEvent.addListener(mapsbs, "singlerightclick", function(point, source, overlay) {
+			          if (overlay) {
+			          	var segment = whichSegment(overlay);
+			          	if (segment != null){
+			          	
+			          		var point = segment.polyline.getVertex(0);
+							openPanoramaBubblePolyline(point);
+			 			}	
+			          }
+			        });
+      	}
+	}
+	function bodyUnload(){
+		GUnload();
+	}	
 	</script>
 	</ui:define>  			
 
@@ -112,7 +160,7 @@
 					</rich:dataTable>
 
 <script type="text/javascript">
-		if (map != null){
+		if (mapsbs != null){
 	          var gLatLngArray;
 	          var polyline;
 	          var seg;
@@ -122,8 +170,8 @@
 			  
 			    bcolor = '#EBFFCA';
 				streetSegments = new Array();
-				 map.clearOverlays();
-		         map.setCenter(new GLatLng(#{speedLimitChangeRequests.maplat},#{speedLimitChangeRequests.maplng}),16);
+				 mapsbs.clearOverlays();
+		         mapsbs.setCenter(new GLatLng(#{speedLimitChangeRequests.maplat},#{speedLimitChangeRequests.maplng}),16);
 		        
 		         <ui:repeat value="#{speedLimitChangeRequests.changeRequests}" var="changeRequest">
 		         
@@ -151,7 +199,7 @@
 			          	var segment = whichSegment(this);
 			          	if (segment != null){
 			          	
-			          		map.getDragObject().setDraggableCursor("pointer");
+			          		mapsbs.getDragObject().setDraggableCursor("pointer");
 			 				hoverSegment(segment.id);
 			 			}
 			
@@ -159,7 +207,7 @@
 			     	GEvent.addListener(polyline, "mouseout", function() {
 			     	
 			 				hoverDeselectAllSegments();
-			 				map.getDragObject().setDraggableCursor("default"); 
+			 				mapsbs.getDragObject().setDraggableCursor("default"); 
 			 		});	
 
 			         seg = new StreetSegment();
@@ -168,7 +216,7 @@
 			         seg.initialize(#{changeRequest.linkId},polyline, bcolor, row);
 			         streetSegments.push(seg);
 			        
-			         map.addOverlay(seg.polyline);
+			         mapsbs.addOverlay(seg.polyline);
 			         
 			         count++;
 			         
@@ -193,7 +241,7 @@
 		<div id="map-canvas" style="height:400px;width:400px;border:0"></div>
 		<script  type="text/javascript">
 	          
-			if (GBrowserIsCompatible()) {
+/*			if (GBrowserIsCompatible()) {
 			
 	        		var opts = { onMarkersSetCallback: processMarkers, resultList : G_GOOGLEBAR_RESULT_LIST_SUPPRESS, showOnLoad: true};
 					map = new GMap2(document.getElementById("map-canvas"), {googleBarOptions: opts});
@@ -233,7 +281,7 @@
 			 			}	
 			          }
 			        });
-      }
+      }*/
  	</script> 
  	</rich:panel>
  	</div>	
@@ -271,10 +319,10 @@
         <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('saveSlcrPanel')" />
       </f:facet>
       <rich:panel id="reRender">
-   <c:if test="#{!speedLimitChangeRequests.requestSent}">
- 	<div><h:outputText value="#{messages.sbs_emailIntro}" /></div>
+ 	<div><h:outputText value="#{speedLimitChangeRequests.message}" /></div>
   <a4j:form id="emailForm">
-    <h:inputText style="width:230px;margin:10px" binding="#{speedLimitChangeRequests.emailInput}" id="email" label="#{messages.sbs_emailAddress}" value="#{speedLimitChangeRequests.emailAddress}" required="true" validator="#{speedLimitChangeRequests.validateEmail}"></h:inputText>
+   <c:if test="#{!speedLimitChangeRequests.requestSent}">
+    <h:inputText style="width:230px;margin:10px" id="email" label="#{messages.sbs_emailAddress}" value="#{speedLimitChangeRequests.emailAddress}" required="true" validator="#{speedLimitChangeRequests.validateEmail}"></h:inputText>
     <div>
       <rich:message for="email">
         <f:facet name="errorMarker">
@@ -284,39 +332,16 @@
     </div>
     <div class="popupactions">
       <button value="submit" class="left" onclick="Richfaces.hideModalPanel('saveSlcrPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button>
-      <a4j:commandLink reRender="reRender" action="#{speedLimitChangeRequests.saveRequestsAction}" onclick=""><button value="submit" class="left"><span class="retrieve_password"><h:outputText value="#{messages.sbs_submitRequest}" /></span></button></a4j:commandLink>
-    </div>
-  
+      <a4j:commandButton reRender="reRender" action="#{speedLimitChangeRequests.saveRequestsAction}" styleClass="left" onclick=""><span class="retrieve_password"><h:outputText value="#{messages.sbs_submit}" /></span></a4j:commandButton>
+ 	</div>
+   </c:if>
+   <c:if test="#{speedLimitChangeRequests.requestSent}">
+      <div class="popupactions">
+      	<a4j:commandButton reRender="map-data,reRender" action="#{speedLimitChangeRequests.resetAction}" styleClass="left" onclick="Richfaces.hideModalPanel('saveSlcrPanel');"><span class="ok"><h:outputText value="#{messages.button_ok}" /></span></a4j:commandButton>
+ 	  </div>
+   </c:if> 
   </a4j:form>
-  </c:if>
-  <c:if test="#{speedLimitChangeRequests.requestSent and speedLimitChangeRequests.success and speedLimitChangeRequests.emailSent}">
-  	<div><h:outputText value="#{messages.sbs_caption_queued}" /></div>
-    <a4j:form id="emailForm1">
-     <div class="popupactions">
-      <a4j:commandLink reRender="map-data,map,reRender" action="#{speedLimitChangeRequests.resetAction}"><button value="submit" class="left" onclick="Richfaces.hideModalPanel('saveSlcrPanel'); return false;"><span class="ok"><h:outputText value="#{messages.button_ok}" /></span></button></a4j:commandLink>
-    </div>
-   </a4j:form>
-  
-  </c:if>
-    <c:if test="#{speedLimitChangeRequests.requestSent and !speedLimitChangeRequests.success}">
-  	<div><h:outputText value="#{messages.sbs_caption_error}" /></div>
-    <a4j:form id="emailForm2">
-     <div class="popupactions">
-       <a4j:commandLink reRender="map-data,map, reRender" action="#{speedLimitChangeRequests.resetAction}"><button value="submit" class="left" onclick="Richfaces.hideModalPanel('saveSlcrPanel'); return false;"><span class="ok"><h:outputText value="#{messages.button_ok}" /></span></button></a4j:commandLink>
-    </div>
-   </a4j:form>
-  
-  </c:if>
-     <c:if test="#{speedLimitChangeRequests.requestSent and speedLimitChangeRequests.success and !speedLimitChangeRequests.emailSent}">
-  	<div><h:outputText value="#{messages.sbs_caption_noEmail}" /></div>
-    <a4j:form id="emailForm3">
-     <div class="popupactions">
-       <a4j:commandLink reRender="map-data, map,reRender" action="#{speedLimitChangeRequests.resetAction}"><button value="submit" class="left" onclick="Richfaces.hideModalPanel('saveSlcrPanel'); return false;"><span class="ok"><h:outputText value="#{messages.button_ok}" /></span></button></a4j:commandLink>
-    </div>
-   </a4j:form>
-  
-  </c:if>
- 
+   
   </rich:panel>
 	</rich:modalPanel>
 			

@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -36,9 +37,14 @@ import com.inthinc.pro.util.MessageUtil;
 /**
  * @author David Gileadi
  */
-public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implements PersonChangeListener
+public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implements PersonChangeListener, Serializable
 {
-    private static final List<String>             AVAILABLE_COLUMNS;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private static final List<String>             AVAILABLE_COLUMNS;
     private static final int[]                    DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 8, 12 };
 
     private static final Map<String, String>      YEARS;

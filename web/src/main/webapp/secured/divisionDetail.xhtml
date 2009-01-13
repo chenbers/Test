@@ -11,7 +11,7 @@
 	<ui:define name="scripts">
  		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>	
 		<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{gmBean.key}" type="text/javascript"></script>
-	
+		<script src="#{facesContext.externalContext.request.contextPath}/js/markermanager.js" type="text/javascript"></script>
 		<script type="text/javascript" src="#{facesContext.externalContext.request.contextPath}/js/c_config.js"></script>
 		<script type="text/javascript" src="#{facesContext.externalContext.request.contextPath}/js/c_smartmenus.js"></script>
 		<script type="text/javascript" src="#{facesContext.externalContext.request.contextPath}/js/c_addon_popup_menus.js"></script>
@@ -32,8 +32,9 @@
 		{
 			document.getElementById(id).style.display = 'none';
 		}
-	
+				
 	</script>
+	
 	</ui:define>  			
 
 	<ui:param name="homeSelected" value="current" />
@@ -47,10 +48,10 @@
 		<ul id="grid_nav">
 			<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
 			<li class="l grid_title">Overview</li>
-			<li class="l divider"><img src="/images/grid_nav_divider.png" /></li>
+			<li class="l divider"><img src="../images/grid_nav_divider.png" /></li>
 			<li class="l"></li>
 			<li class="r grid_icon"><h:graphicImage value="/images/ico_help.png" /></li>
-			<li class="r divider"><img src="/images/grid_nav_divider.png" /></li>
+			<li class="r divider"><img src="../images/grid_nav_divider.png" /></li>
 		</ul>
 
 <table width="820" border="0" cellspacing="0" cellpadding="0" align="center" id="mpg_full_screen" style="margin-top: 10px; display: none;">
@@ -109,7 +110,10 @@
               <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_overall" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('fleet_full_screen');t_show('overall_full_screen');return true;">Overall Score </a></td>
             </tr>
             <tr>
-              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_map" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('fleet_full_screen');return true;">Fleet Map </a></td>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_map" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('fleet_full_screen');
+               			initMap(#{navigationBean.group.mapLat},#{navigationBean.group.mapLng},5);
+ 						addMarkers();
+              			return true;">Fleet Map </a></td>
             </tr>
             <tr>
               <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_gas" onclick="t_hide('fleet_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
@@ -260,7 +264,11 @@
               <td valign="top" class="ls_tab_on"><a href="#" class="ls_tab_overall" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('fleet_full_screen');t_show('overall_full_screen');return true;">Overall Score </a></td>
             </tr>
             <tr>
-              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_map" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('fleet_full_screen');return false;">Fleet Map </a></td>
+              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_map" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('fleet_full_screen'); 
+								              			initMap(#{navigationBean.group.mapLat},#{navigationBean.group.mapLng},5);
+								 						addMarkers();
+								              			return false;">Fleet Map </a>
+              </td>
             </tr>
             <tr>
               <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_gas" onclick="t_hide('fleet_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
@@ -404,7 +412,7 @@
 				<!-- leave reRenderList alone -->	
 				<ui:include src="/includes/liveFleetMap.xhtml">
 					<ui:param name="mapheight" value="height:800px"/>
-					<ui:param name="mapwidth" value="width:790px"/>
+					<ui:param name="mapwidth" value="width:795px"/>
 					<ui:param name="mapxcenter" value="#{navigationBean.group.mapLat}"/>
 					<ui:param name="mapycenter" value="#{navigationBean.group.mapLng}"/>
 					<ui:param name="mapzoom" value="#{navigationBean.group.mapZoom}"/>
@@ -432,66 +440,11 @@
 		// trend_full_screen
 		// fleet_full_screen
 		<c:if test="#{flyOutBean.selectedTab =='fleet_full_screen'}">
-					    	var markerClicked=false;
-      						if (GBrowserIsCompatible()) {
-        						map = new GMap2(document.getElementById("map-canvas"));
-       							map.addControl(new GLargeMapControl());
-        						map.addControl(new GMapTypeControl());
-        						map.addControl(new GOverviewMapControl()); 
-								map.setMapType(G_NORMAL_MAP);
- 								map.setCenter(new GLatLng(#{driverLocationBean.center.lat}, #{driverLocationBean.center.lng}), 10);
- 								var mgr = new MarkerManager(map);
- 								
-						        
- 								// Creates a marker whose info window displays the link tot the driver corresponding
-						        // to the given index.
-						        function createMarker(point, driverId, iconImage) {
-						          // Create a colored icon for this point using our icon class
-						        coloredIcon = new GIcon(G_DEFAULT_ICON); 
-						        coloredIcon.image = iconImage; 
-						        coloredIcon.iconSize = new GSize(25, 30); 
-						        coloredIcon.iconAnchor = new GPoint(9, 34); 
-						        coloredIcon.infoWindowAnchor = new GPoint(9, 2); 
-						        coloredIcon.infoShadowAnchor = new GPoint(18, 25);
-						        						
-						          // Set up our GMarkerOptions object
-						          markerOptions = { icon:coloredIcon };
-						          var marker = new GMarker(point, markerOptions);
-						          
-						          GEvent.addListener(marker, "mouseover", function() {
-						          			var node = document.getElementById(driverId).cloneNode(true);
-						          			node.style.display = 'block';
-								            if (!markerClicked) marker.openInfoWindow(node);
-						            
-						          });
-						          GEvent.addListener(marker, "click", function() {
-						          			var node = document.getElementById(driverId).cloneNode(true);
-						          			node.style.display = 'block';
-								            if (markerClicked) marker.openInfoWindow(node);
-								            markerClicked =true;
-						            
-						          });
-						          GEvent.addListener(marker, "mouseout", function() {
-								            if (!markerClicked) marker.closeInfoWindow();
-								            
-						            
-						          });
-						          GEvent.addListener(marker, "infowindowclose", function() {
-								            markerClicked = false;
-						            
-						          });
-						          return marker;
-						        }
-								<ui:repeat value="#{driverLocationBean.driverLastLocationBeans}" var="driverLastLocationBean">
-									var latlng = new GLatLng(#{driverLastLocationBean.lastLocation.lat}, #{driverLastLocationBean.lastLocation.lng});
-						        		mgr.addMarker(createMarker(latlng, "#{driverLastLocationBean.driver.driverID}",
-						        		 "#{driverLocationBean.mapIconMap.icons[driverLastLocationBean.groupID]}"),10);
-	        						
-							  	</ui:repeat>
-							}	
-		
+ 			initMap(#{navigationBean.group.mapLat},#{navigationBean.group.mapLng},5);
+ 			addMarkers();
 		</c:if>
-    		</script> 
+			
+    </script> 
 
 </ui:define>
 

@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -24,12 +25,18 @@ import org.springframework.util.StringUtils;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.sbs.Tiger;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.validators.EmailValidator;
 import com.iwi.teenserver.dao.GenericDataAccess;
 import com.iwi.teenserver.model.SpeedLimitChangeRequest;
 
-public class SpeedLimitChangeRequestBean extends BaseBean{
+public class SpeedLimitChangeRequestBean extends BaseBean implements Serializable{
 
-    private static final Logger logger = Logger.getLogger(SpeedLimitChangeRequestBean.class);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private static final Logger logger = Logger.getLogger(SpeedLimitChangeRequestBean.class);
 
     private NavigationBean 			navigation;
     private MessageSource  			messageSource;
@@ -47,8 +54,9 @@ public class SpeedLimitChangeRequestBean extends BaseBean{
     private double 					maplng;
     private int 					mapzoom;
     private String 					emailAddress;
-    private UIInput					emailInput;
+//    private UIInput					emailInput;
     private String 					caption;
+    private String 					message;
     private boolean					requestSent;
     private boolean					success;
     private boolean					emailSent;
@@ -78,6 +86,7 @@ public class SpeedLimitChangeRequestBean extends BaseBean{
 		lng = 360;
 		caption = MessageUtil.getMessageString("sbs_caption_select");
 		emailAddress = getUser().getPerson().getEmail();
+		message = MessageUtil.getMessageString("sbs_emailIntro");
 		requestSent = false;
 		success = false;
 		emailSent = false;
@@ -283,7 +292,6 @@ public class SpeedLimitChangeRequestBean extends BaseBean{
 	{
 		logger.info("saveRequests");
 		requestSent = true;
-		success = true;
 		if (changeRequests != null){
 			
 			Iterator<SBSChangeRequest> it = changeRequests.iterator();
@@ -300,6 +308,9 @@ public class SpeedLimitChangeRequestBean extends BaseBean{
 				}
 			}
 		}
+		else{
+			logger.debug("No change requests submitted");
+		}
 		return "";
 
 	}
@@ -309,13 +320,33 @@ public class SpeedLimitChangeRequestBean extends BaseBean{
 		SpeedLimitChangeRequest changeRequest = speedLimitBean.getChangeRequest();
 		changeRequest.setUserID(sbsUserId);
 		logger.debug(changeRequest.getLinkId());
-//		if (teenServerDAO == null)logger.debug("dataAccess is null");
-//		else logger.debug(teenServerDAO.getClass());
-		com.iwi.teenserver.model.User user = teenServerDAO.getUserById(getSbsUserId());
-		teenServerDAO.saveSpeedLimitChangeRequest(user, changeRequest);
+		String emailAddresses =getEmailAddress();
 		if ((emailAddress != null) && !emailAddress.isEmpty()){
 			
-			sendEmailToUser(speedLimitBean);
+			String email[] = emailAddresses.split(";");
+			changeRequest.setEmail(email[0]);
+		}
+		//Check for valid mandatory fields
+		if (speedLimitBean.isGood()){
+			
+			com.iwi.teenserver.model.User user = teenServerDAO.getUserById(getSbsUserId());
+			if (user != null){
+				
+				teenServerDAO.saveSpeedLimitChangeRequest(user, changeRequest);
+				if ((emailAddress != null) && !emailAddress.isEmpty()){
+					
+					sendEmailToUser(speedLimitBean);
+				}
+			}
+			else {
+				logger.debug("saveRequest: User not found.");
+				message =MessageUtil.getMessageString("sbs_caption_error");;
+			}
+				
+		}
+		else {
+			logger.debug("saveRequest: changeRequest not complete.");
+			message =MessageUtil.getMessageString("sbs_caption_error");;
 		}
 	}
 
@@ -330,6 +361,7 @@ public class SpeedLimitChangeRequestBean extends BaseBean{
 			if (emailAddresses == null) return;
 			String email[] = emailAddresses.split(";");
 			helper.setTo(email[0]);
+
 			logger.debug("sendEmailToUser email address is "+email[0]);
 		
 			SimpleMailMessage justTheText 
@@ -340,14 +372,15 @@ public class SpeedLimitChangeRequestBean extends BaseBean{
 			helper.setText(text,true);
 			helper.setFrom(justTheText.getFrom());
 			helper.setSubject(justTheText.getSubject());
+			speedLimitBean.setEmail(email[0]);
 			
 			mailSender.send(message);
-			emailSent = true;
 			
 		} catch (MessagingException e) {
 			// 
 			logger.debug("sendEmailToUser email could not be sent "+e.getMessage());
-			emailSent = false;
+			message =MessageUtil.getMessageString("sbs_caption_noEmail");
+					
 		}
 	}
 
@@ -392,26 +425,15 @@ public class SpeedLimitChangeRequestBean extends BaseBean{
 		this.caption = caption;
 	}
 
-    public UIInput getEmailInput()
-    {
-        return emailInput;
-    }
-
-    public void setEmailInput(UIInput emailInput)
-    {
-        this.emailInput = emailInput;
-    }
-    public void validateEmail(FacesContext context, UIComponent component, Object value)
-    {
-        if (!emailInput.isValid())
-        {
-                FacesMessage error = new FacesMessage();
-                String text = MessageUtil.getMessageString("credentials_invalid_email");
-                error.setSummary(text);
-                error.setSeverity(FacesMessage.SEVERITY_ERROR);
-                throw new ValidatorException(error);
-         }
-    }
+//    public UIInput getEmailInput()
+//    {
+//        return emailInput;
+//    }
+//
+//    public void setEmailInput(UIInput emailInput)
+//    {
+//        this.emailInput = emailInput;
+//    }
     public void setMessageSource(MessageSource messageSource)
     {
         this.messageSource = messageSource;
@@ -419,16 +441,17 @@ public class SpeedLimitChangeRequestBean extends BaseBean{
     
     public String resetAction(){
     	
-		changeRequests.clear();
-		maplat = 360;
-		maplng = 360;
-		mapzoom = 10;
-		lat =360;
-		lng = 360;
-		caption = MessageUtil.getMessageString("sbs_caption_select");
-		requestSent = false;
-		success = false;
+//		changeRequests.clear();
+//		maplat = 360;
+//		maplng = 360;
+//		mapzoom = 10;
+//		lat =360;
+//		lng = 360;
+//		caption = MessageUtil.getMessageString("sbs_caption_select");
+//		requestSent = false;
+//		success = false;
     	
+    	init();
     	return "";
     }
 	public boolean isEmailSent() {
@@ -508,4 +531,20 @@ public class SpeedLimitChangeRequestBean extends BaseBean{
 		}
 		return compositeAddress.toString();
 	}
+	
+    public void validateEmail(FacesContext context, UIComponent component, Object value)
+    {
+        String valueStr = (String) value;
+        if (valueStr != null && valueStr.length() > 0)
+        {
+            new EmailValidator().validate(context, component, value);
+        }
+    }
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
 }

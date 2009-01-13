@@ -1,4 +1,4 @@
-var map;
+var mapsbs;
 var marker;
 //var gdir;
 var geocoder = null;
@@ -68,12 +68,12 @@ var cursor;
     
       if (GBrowserIsCompatible()) {
         var opts = { onMarkersSetCallback: processMarkers, resultList : G_GOOGLEBAR_RESULT_LIST_SUPPRESS, showOnLoad: true};
-          map = new GMap2(document.getElementById("map-area"), {googleBarOptions: opts});
-	       map.setCenter(new GLatLng(40.723535,-111.9334),2);
- 	       map.addControl(new GLargeMapControl());
- 	       map.addControl(new GScaleControl()); 
-	       map.addControl(new GMapTypeControl());
-	       map.enableScrollWheelZoom();
+          mapsbs = new GMap2(document.getElementById("map-area"), {googleBarOptions: opts});
+	       mapsbs.setCenter(new GLatLng(40.723535,-111.9334),2);
+ 	       mapsbs.addControl(new GLargeMapControl());
+ 	       mapsbs.addControl(new GScaleControl()); 
+	       mapsbs.addControl(new GMapTypeControl());
+	       mapsbs.enableScrollWheelZoom();
  	       geocoder = new GClientGeocoder();
  	       
  	       if (entryPoint==1){
@@ -84,7 +84,7 @@ var cursor;
 			          function(point) {
 			            if (point) {
 			            
-			              	map.setCenter(point, 16);
+			              	mapsbs.setCenter(point, 16);
 			            }
 			          }
 			        );
@@ -94,22 +94,22 @@ var cursor;
 	       else {
 	       
 	       		reverseGeocode(lat,lon,"");
-			   	map.setCenter(new GLatLng(lat,lon), 16);
+			   	mapsbs.setCenter(new GLatLng(lat,lon), 16);
 	       }	       
 	       
  	       
  	       createStreetLayer();
  	       			
 //         var ovmap = new GOverviewMapControl(new GSize(200,200));
-//        map.addControl(ovmap);
+//        mapsbs.addControl(ovmap);
 //		streetviewOverlay = new GStreetviewOverlay();
-//        map.addOverlay(streetviewOverlay);
-        map.enableGoogleBar();
+//        mapsbs.addOverlay(streetviewOverlay);
+        mapsbs.enableGoogleBar();
 
 //        client = new GStreetviewClient();
         streetSegments = new Array();
         
-       	GEvent.addListener(map, "click", function(overlay, point) {
+       	GEvent.addListener(mapsbs, "click", function(overlay, point) {
 
         if (overlay) {
           
@@ -125,7 +125,7 @@ var cursor;
 	      }
         });
         
-       	GEvent.addListener(map, "singlerightclick", function(point, source, overlay) {
+       	GEvent.addListener(mapsbs, "singlerightclick", function(point, source, overlay) {
           if (overlay) {
           	var segment = whichSegment(overlay);
           	if (segment != null){
@@ -203,7 +203,7 @@ var cursor;
 		 		streetSegment.row.style.backgroundColor = '#DfDfF8';
 		       	var vertexCount = streetSegment.polyline.getVertexCount();
 		       	var half = (vertexCount+vertexCount%2)/2;
-				map.panTo(streetSegment.polyline.getVertex(half));
+				mapsbs.panTo(streetSegment.polyline.getVertex(half));
 			}
 		}
  	}
@@ -219,6 +219,38 @@ var cursor;
 	  	}
  	}
  	
+      function initializeLocation(lat,lng, fullAddress) {
+      
+      	geocoder.getLocations(new GLatLng(lat,lng), addAddressToList);      	
+      }
+      
+    // addAddressToMap() is called when the geocoder returns an
+    // answer.  It adds a marker to the mapsbs with an open info window
+    // showing the nicely formatted version of the address and the country code.
+    function addAddressToList(response) {
+// 		clearList();
+      if (!response || response.Status.code != 200) {
+        alert("Sorry, we were unable to geocode that address - repsonse is: "+response);
+        if (response) {alert ("response status code is: "+response.Status.code);}
+      } else {
+      
+         place = response.Placemark[0];
+        point = new GLatLng(place.Point.coordinates[1],
+                            place.Point.coordinates[0]);
+        streetViewPoint = point;
+        var fullAddress = place.address;
+//        makeMarker(point);
+                
+        addSegmentWithoutRerendering(point.y, point.x, fullAddress, mapsbs.getZoom());
+        
+//        marker.openInfoWindowHtml(place.address + '<br>' +
+///          '<b>Country code:</b> ' + place.AddressDetails.Country.CountryNameCode);
+          
+ //		 window.setTimeout(function() {
+//		  marker.closeInfoWindow();
+//		}, 5000);
+       }
+    }
 
       function reverseGeocode(lat,lng, fullAddress) {
       
@@ -226,7 +258,7 @@ var cursor;
       }
       
     // addAddressToMap() is called when the geocoder returns an
-    // answer.  It adds a marker to the map with an open info window
+    // answer.  It adds a marker to the mapsbs with an open info window
     // showing the nicely formatted version of the address and the country code.
     function addAddressToMap(response) {
 // 		clearList();
@@ -242,7 +274,7 @@ var cursor;
         var fullAddress = place.address;
 //        makeMarker(point);
                 
-        addSegment(point.y, point.x, fullAddress, map.getZoom());
+        addSegment(point.y, point.x, fullAddress, mapsbs.getZoom());
         
 //        marker.openInfoWindowHtml(place.address + '<br>' +
 ///          '<b>Country code:</b> ' + place.AddressDetails.Country.CountryNameCode);
@@ -255,7 +287,7 @@ var cursor;
 
     // showLocation() is called when you click on the Search button
     // in the form.  It geocodes the address entered into the form
-    // and adds a marker to the map at that location.
+    // and adds a marker to the mapsbs at that location.
     function showLocation(address) {
       geocoder.getLocations(address, addAddressToMap);
     }
@@ -299,30 +331,66 @@ function goToStreetView(){
   GEvent.addListener(panorama, "newpano", onNewLocation);
   GEvent.addListener(panorama, "yawchanged", onYawChange); 
 
-  var iw = map.getInfoWindow();
+  var iw = mapsbs.getInfoWindow();
   GEvent.addListener(iw, "maximizeend", function() {
     panorama.setContainer(contentNode);  
     window.setTimeout("panorama.checkResize()", 5);
   });
 }
- function openPanoramaBubblePolyline(point) {
+
+/*function openPanoramaBubblePolyline(point) {
   var contentNode = document.createElement('div');
   contentNode.style.textAlign = 'center';
-  contentNode.style.width = '600px';
+  contentNode.style.width = '500px';
   contentNode.style.height = '300px';
   contentNode.innerHTML = 'Loading panorama';
-  map.openInfoWindow(point,"<div id='pano' style='width:400px;height:200px;'></div>", {maxContent: contentNode, maxTitle: "Full screen"});
 
-  panorama = new GStreetviewPanorama(document.getElementById("pano"));
+  var smallNode = document.createElement('div');
+  smallNode.style.width = '200px';
+  smallNode.style.height = '200px';
+  smallNode.id = 'pano';
+  mapsbs.openInfoWindow(point,smallNode, {maxContent: contentNode, maxTitle: "Full screen"});
+
+  panorama = new GStreetviewPanorama(smallNode);
   panorama.setLocationAndPOV(point, null);
   GEvent.addListener(panorama, "newpano", onNewLocation);
   GEvent.addListener(panorama, "yawchanged", onYawChange); 
 
-  var iw = map.getInfoWindow();
+  var iw = mapsbs.getInfoWindow();
   GEvent.addListener(iw, "maximizeend", function() {
     panorama.setContainer(contentNode);  
     window.setTimeout("panorama.checkResize()", 5);
   });
+}*/
+
+
+ function openPanoramaBubblePolyline(point) {
+
+  var contentNode = document.createElement('div');
+  var panorama;
+  contentNode.style.textAlign = 'center';
+  contentNode.style.width = '600px';
+  contentNode.style.height = '300px';
+  contentNode.innerHTML = 'Loading panorama';
+   var smallNode = document.createElement('div');
+  smallNode.style.width = '200px';
+  smallNode.style.height = '200px';
+  smallNode.id = 'pano';
+  mapsbs.openInfoWindow(point,smallNode, {maxContent: contentNode, maxTitle: "Full screen"});
+  
+//   mapsbs.openInfoWindow(point,"<div id='pano' style='width:400px;height:200px;'></div>", {maxContent: contentNode, maxTitle: "Full screen"});
+
+  panorama = new GStreetviewPanorama(smallNode);
+  panorama.setLocationAndPOV(point, null);
+  GEvent.addListener(panorama, "newpano", onNewLocation);
+  GEvent.addListener(panorama, "yawchanged", onYawChange); 
+ 
+  var iw = mapsbs.getInfoWindow();
+  GEvent.addListener(iw, "maximizeend", function() {
+    panorama.setContainer(contentNode);  
+    window.setTimeout("panorama.checkResize()", 5);
+  });
+  
 }
  function onYawChange(newYaw) {
 /*  var GUY_NUM_ICONS = 16;
@@ -336,8 +404,8 @@ function goToStreetView(){
 }
 
 function onNewLocation(lat, lng) {
-  var latlng = new GLatLng(lat, lng);
-  marker.setLatLng(latlng);
+//  var latlng = new GLatLng(lat, lng);
+//  marker.setLatLng(latlng);
 }
 
 function validate(field, min,max){
@@ -360,34 +428,34 @@ function validate(field, min,max){
 //		document.updateForm.submit.disabled = false;
 	}
 }
-	function clearList(){
+//	function clearList(){
 		
-		deselectAllSegments();
-		streetSegments = new Array();
-		document.getElementById("addressDiv").innerHTML = '<font color="red">click on the map to select a street to update.</font>';
-		map.clearOverlays();
-		marker = null;
-	    document.getElementById("status").innerHTML = '';
-	  	if (speedLayer) {
+//		deselectAllSegments();
+//		streetSegments = new Array();
+//		document.getElementById("addressDiv").innerHTML = '<font color="red">click on the mapsbs to select a street to update.</font>';
+//		mapsbs.clearOverlays();
+//		marker = null;
+//	    document.getElementById("status").innerHTML = '';
+//	  	if (speedLayer) {
 	  
-			map.addOverlay(speedLayer);
-		}
-//		if (streetviewOverlay) {
+//			mapsbs.addOverlay(speedLayer);
+//		}
+////		if (streetviewOverlay) {
 		
-//		    map.addOverlay(streetviewOverlay);
-//		}	
-	}
+////		    mapsbs.addOverlay(streetviewOverlay);
+////		}	
+//	}
 	function makeMarker(point){
 	
      	marker = new GMarker(point,{draggable: true});
-      	map.addOverlay(marker);
+      	mapsbs.addOverlay(marker);
       	
 /*       GEvent.addListener(marker, "click", function() {
   			openPanoramaBubble(marker);
        });*/
        
        GEvent.addListener(marker, "dragstart", function() {
-         map.closeInfoWindow();
+         mapsbs.closeInfoWindow();
        });
        
        GEvent.addListener(marker, "dragend", function() {
@@ -415,20 +483,20 @@ function validate(field, min,max){
 		var streetsHyb = new GTileLayer(new GCopyrightCollection(''),1,17);
 		streetsHyb.myLayers="streets";
 		streetsHyb.myFormat="image/png";
-		streetsHyb.myBaseURL="http://csr.iwiglobal.com:8086/cgi-bin/mapserv?map=/var/www/mapserver/saltlake/postgres.map&";
+		streetsHyb.myBaseURL="http://csr.iwiglobal.com:8086/cgi-bin/mapserv?mapsbs=/var/www/mapserver/saltlake/postgres.mapsbs&";
 		streetsHyb.getTileUrl=CustomGetTileUrl;
 		var layer1=[G_NORMAL_MAP.getTileLayers()[0],streetsHyb];
 		custommap1 = new GMapType(layer1, G_SATELLITE_MAP.getProjection(), "Speed Limits", G_SATELLITE_MAP);
 		
-//		map.addMapType(custommap1);
+//		mapsbs.addMapType(custommap1);
 		
 		speedLayer = new GTileLayerOverlay(streetsHyb);
-		map.addOverlay(speedLayer);
+		mapsbs.addOverlay(speedLayer);
 	}
 	
 	function refreshStreetLayer(){
 	
-		map.removeOverlay(speedLayer);
+		mapsbs.removeOverlay(speedLayer);
 		createStreetLayer();
 	}
 	function toggleSpeed() {
@@ -438,16 +506,16 @@ function validate(field, min,max){
 			createStreetLayer();
 	  } else {
 	  
-	    map.removeOverlay(speedLayer);
+	    mapsbs.removeOverlay(speedLayer);
 	    speedLayer = null;
 	  }
 	}
 function toggleStreetView() {
  /* if (!streetviewOverlay) {
     streetviewOverlay = new GStreetviewOverlay();
-    map.addOverlay(streetviewOverlay);
+    mapsbs.addOverlay(streetviewOverlay);
   } else {
-    map.removeOverlay(streetviewOverlay);
+    mapsbs.removeOverlay(streetviewOverlay);
     streetviewOverlay = null;
   }*/
 }
@@ -455,7 +523,7 @@ function panTo(segment){
 
     var vertexCount = segment.polyline.getVertexCount();
     var half = (vertexCount+vertexCount%2)/2;
-    map.panTo(segment.polyline.getVertex(half)); 
+    mapsbs.panTo(segment.polyline.getVertex(half)); 
 }
 
 function updateWait(){
@@ -476,4 +544,10 @@ function deleteSelected(){
   	}
   	showSelected();
   	
+}
+function clearSegments(){
+
+	streetSegments = new Array();
+	mapsbs.clearOverlays();
+	reset();
 }

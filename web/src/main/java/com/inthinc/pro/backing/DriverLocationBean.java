@@ -37,7 +37,7 @@ public class DriverLocationBean extends BaseBean {
 	private Map<Integer,Group> groupMap;
 	private boolean showLegend;
 	private List<DriverLastLocationBean> driverLastLocationBeanList;
-    private static final String WEBAPP_CONTEXT = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+ //   private static final String WEBAPP_CONTEXT = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
 	private static final Logger logger = Logger.getLogger(DriverLocationBean.class);
 	private GroupHierarchy       organizationHierarchy;
 
@@ -85,10 +85,10 @@ public class DriverLocationBean extends BaseBean {
 	        List<Driver> drivers = driverDAO.getAllDrivers(this.navigation.getGroupID());
 	        
          	List<MapIcon> mapIcons = mif.getMapIcons(MapIconFactory.IconType.MARKER, 1);
-         	List<MapIcon> legendIcons = mif.getMapIcons(MapIconFactory.IconType.MAP_LEGEND, 1);
+//        	List<MapIcon> legendIcons = mif.getMapIcons(MapIconFactory.IconType.MAP_LEGEND, 1);
 	        // Do something to get driverLastLocations or last trips to get location
         	mapIconMap.addIcon(navigation.getGroupID(), mapIcons.get(0).getUrl());
-        	legendIconMap.addIcon(navigation.getGroupID(), legendIcons.get(0).getUrl());
+//        	legendIconMap.addIcon(navigation.getGroupID(), legendIcons.get(0).getUrl());
 	        locateDrivers(drivers,navigation.getGroupID());
       	
         }
@@ -128,7 +128,7 @@ public class DriverLocationBean extends BaseBean {
         	driverLastLocations.put(driver.getDriverID(),db);
         	driverLastLocationBeanList.add(db);
         }
-		//calculate better map center - set to average of all positions if there are any
+		//calculate better map center - set to location of first driver
 		if (validDriverCount == 0){
 			
 			//Set to center for the group
