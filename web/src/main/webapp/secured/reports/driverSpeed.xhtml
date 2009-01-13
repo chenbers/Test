@@ -528,7 +528,7 @@ var selected = 'OVERALL';
 	</div>
 			
 <!-- START SBS MODAL -->
-	<rich:modalPanel id="SLChangeRequestPanel" headerClass="popupHeader" controlsClass="popupControls" autosized="true" onshow="reverseGeocode(event.parameters.lat,event.parameters.lon, null)"
+	<rich:modalPanel id="SLChangeRequestPanel" headerClass="popupHeader" controlsClass="popupControls" autosized="true" onshow="reverseGeocode(event.parameters.lat,event.parameters.lon, null);"
 					onhide="clearSegments()">
       <f:facet name="header">
         <h:outputText value="#{messages.sbs_header}" />

@@ -9,8 +9,122 @@
   			  xmlns:t="http://myfaces.apache.org/tomahawk">
               
 <ui:composition>
-		<t:saveState value="#{speedLimitChangeRequests}"/>
 
+<t:saveState value="#{speedLimitChangeRequests}"/>
+
+<rich:panel id="script">
+	<script type="text/javascript">
+      var gLatLngArray;
+      var polyline;
+      var seg;
+	  var bcolor;
+	  var count = 0;
+	  var row;
+	
+		function initMap(){
+			if (GBrowserIsCompatible()) {
+			
+	        		var opts = { onMarkersSetCallback: processMarkers, resultList : G_GOOGLEBAR_RESULT_LIST_SUPPRESS, showOnLoad: true};
+					mapsbs = new GMap2(document.getElementById("map-sbs"), {googleBarOptions: opts});
+					mapsbs.setCenter(new GLatLng(#{speedLimitChangeRequests.maplat},#{speedLimitChangeRequests.maplng}), #{speedLimitChangeRequests.mapzoom});
+					mapsbs.addControl(new GLargeMapControl());
+					mapsbs.addControl(new GMapTypeControl());
+					mapsbs.addControl(new GOverviewMapControl()); 
+					mapsbs.setMapType(G_NORMAL_MAP);					
+			       	mapsbs.enableScrollWheelZoom();
+	        		mapsbs.enableGoogleBar();
+	        		geocoder =new GClientGeocoder();
+	        				       
+			     	GEvent.addListener(mapsbs, "click", function(overlay, point) {
+			
+			        if (overlay) {
+			          
+			          	var segment = whichSegment(overlay);
+			          	if (segment != null){
+			          	
+			 				selectSegment(segment.id);
+			 			}	
+			          } else {
+			          
+			            reverseGeocode(point.y,point.x,"");
+			            
+				      }
+			        });
+  						
+			       	GEvent.addListener(mapsbs, "singlerightclick", function(point, source, overlay) {
+			          if (overlay) {
+			          	var segment = whichSegment(overlay);
+			          	if (segment != null){
+			          	
+			          		var point = segment.polyline.getVertex(0);
+			          	
+							openPanoramaBubblePolyline(point);
+			 			}	
+			          }
+			        });
+				}
+			}
+	function showSegments(){
+			    bcolor = '#EBFFCA';
+				streetSegments = new Array();
+				 mapsbs.clearOverlays();
+		         mapsbs.setCenter(new GLatLng(#{speedLimitChangeRequests.maplat},#{speedLimitChangeRequests.maplng}),16);
+		        
+		         <ui:repeat value="#{speedLimitChangeRequests.changeRequests}" var="changeRequest">
+		         
+		         	if(bcolor == '#EBFFCA'){
+		         	
+		         		bcolor = '#ffffff';
+		         	}
+		         	else {
+		         	
+		         		bcolor = '#EBFFCA';
+		         	}
+		         	
+			         // Do polyline for segment    
+			         gLatLngArray = new Array();
+			         <ui:repeat value="#{changeRequest.streetSegment}" var="point">
+				           var lat = #{point.x};
+				           var lng = #{point.y};
+				           gLatLngArray.push(new GLatLng(lat,lng));
+				  	 </ui:repeat>
+			         
+			         polyline = new GPolyline(gLatLngArray, "#666666", 10);
+			         
+			     	GEvent.addListener(polyline, "mouseover", function() {
+			     	
+			          	var segment = whichSegment(this);
+			          	if (segment != null){
+			          	
+			          		mapsbs.getDragObject().setDraggableCursor("pointer");
+			 				hoverSegment(segment.id);
+			 			}
+			
+			 		});	
+			     	GEvent.addListener(polyline, "mouseout", function() {
+			     	
+			 				hoverDeselectAllSegments();
+			 				mapsbs.getDragObject().setDraggableCursor("default"); 
+			 		});	
+
+			         seg = new StreetSegment();
+			         
+			         row = document.getElementById('speedLimitChangeRequestTable:items:'+count+':c').parentNode.parentNode;
+			         seg.initialize(#{changeRequest.linkId},polyline, bcolor, row);
+			         streetSegments.push(seg);
+			        
+			         mapsbs.addOverlay(seg.polyline);
+			         
+			         count++;
+			         
+		         </ui:repeat>
+		 }
+	function bodyUnload(){
+		GUnload();
+	}	
+	</script>
+		
+</rich:panel>
     <table width="920" border="1" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
       <tr>
        <td valign="top">
@@ -105,108 +219,9 @@
 	<div class="">
 		<div id="map-sbs" style="height:400px;width:400px;border:0"></div>
 		<script  type="text/javascript">
-			if (GBrowserIsCompatible()) {
-			
-	        		var opts = { onMarkersSetCallback: processMarkers, resultList : G_GOOGLEBAR_RESULT_LIST_SUPPRESS, showOnLoad: true};
-					mapsbs = new GMap2(document.getElementById("map-sbs"), {googleBarOptions: opts});
-					mapsbs.setCenter(new GLatLng(#{speedLimitChangeRequests.maplat},#{speedLimitChangeRequests.maplng}), #{speedLimitChangeRequests.mapzoom});
-					mapsbs.addControl(new GLargeMapControl());
-					mapsbs.addControl(new GMapTypeControl());
-					mapsbs.addControl(new GOverviewMapControl()); 
-					mapsbs.setMapType(G_NORMAL_MAP);					
-			       	mapsbs.enableScrollWheelZoom();
-	        		mapsbs.enableGoogleBar();
-	        		geocoder =new GClientGeocoder();
-	        				       
-			     	GEvent.addListener(mapsbs, "click", function(overlay, point) {
-			
-			        if (overlay) {
-			          
-			          	var segment = whichSegment(overlay);
-			          	if (segment != null){
-			          	
-			 				selectSegment(segment.id);
-			 			}	
-			          } else {
-			          
-			            reverseGeocode(point.y,point.x,"");
-			            
-				      }
-			        });
-  						
-			       	GEvent.addListener(mapsbs, "singlerightclick", function(point, source, overlay) {
-			          if (overlay) {
-			          	var segment = whichSegment(overlay);
-			          	if (segment != null){
-			          	
-			          		var point = segment.polyline.getVertex(0);
-			          	
-							openPanoramaBubblePolyline(point);
-			 			}	
-			          }
-			        });
-	          var gLatLngArray;
-	          var polyline;
-	          var seg;
-			  var bcolor;
-			  var count = 0;
-			  var row;
-			  
-			    bcolor = '#EBFFCA';
-				streetSegments = new Array();
-				 mapsbs.clearOverlays();
-		         mapsbs.setCenter(new GLatLng(#{speedLimitChangeRequests.maplat},#{speedLimitChangeRequests.maplng}),16);
-		        
-		         <ui:repeat value="#{speedLimitChangeRequests.changeRequests}" var="changeRequest">
-		         
-		         	if(bcolor == '#EBFFCA'){
-		         	
-		         		bcolor = '#ffffff';
-		         	}
-		         	else {
-		         	
-		         		bcolor = '#EBFFCA';
-		         	}
-		         	
-			         // Do polyline for segment    
-			         gLatLngArray = new Array();
-			         <ui:repeat value="#{changeRequest.streetSegment}" var="point">
-				           var lat = #{point.x};
-				           var lng = #{point.y};
-				           gLatLngArray.push(new GLatLng(lat,lng));
-				  	 </ui:repeat>
-			         
-			         polyline = new GPolyline(gLatLngArray, "#666666", 10);
-			         
-			     	GEvent.addListener(polyline, "mouseover", function() {
-			     	
-			          	var segment = whichSegment(this);
-			          	if (segment != null){
-			          	
-			          		mapsbs.getDragObject().setDraggableCursor("pointer");
-			 				hoverSegment(segment.id);
-			 			}
-			
-			 		});	
-			     	GEvent.addListener(polyline, "mouseout", function() {
-			     	
-			 				hoverDeselectAllSegments();
-			 				mapsbs.getDragObject().setDraggableCursor("default"); 
-			 		});	
-
-			         seg = new StreetSegment();
-			         
-			         row = document.getElementById('speedLimitChangeRequestTable:items:'+count+':c').parentNode.parentNode;
-			         seg.initialize(#{changeRequest.linkId},polyline, bcolor, row);
-			         streetSegments.push(seg);
-			        
-			         mapsbs.addOverlay(seg.polyline);
-			         
-			         count++;
-			         
-		         </ui:repeat>
-		 }
-    </script> 
+			initMap();
+			showSegments();
+    	</script> 
  	</div>	
 
 							<!-- END PANEL -->
@@ -227,7 +242,7 @@
 
 
 	<a4j:form id="segment">
-		<a4j:jsFunction name="addSegment" action="#{speedLimitChangeRequests.addChangeRequest}" reRender="map-data" >
+		<a4j:jsFunction name="addSegment" action="#{speedLimitChangeRequests.addChangeRequest}" reRender="map-data,script" >
 			<a4j:actionparam name="lat" assignTo="#{speedLimitChangeRequests.lat}"/>
 			<a4j:actionparam name="lng" assignTo="#{speedLimitChangeRequests.lng}"/>
 			<a4j:actionparam name="address" assignTo="#{speedLimitChangeRequests.address}"/>
@@ -244,7 +259,7 @@
 		</a4j:jsFunction>
 	</a4j:form>	
 	<a4j:form id="reset">
-		<a4j:jsFunction name="reset" action="#{speedLimitChangeRequests.resetAction}" reRender="map-data">
+		<a4j:jsFunction name="reset" action="#{speedLimitChangeRequests.resetAction}" reRender="map-data,script">
 		</a4j:jsFunction>
 	</a4j:form>	
 	
@@ -274,7 +289,7 @@
    </c:if>
    <c:if test="#{speedLimitChangeRequests.requestSent}">
       <div class="popupactions">
-      	<a4j:commandButton reRender="map-data,reRender" action="#{speedLimitChangeRequests.resetAction}" styleClass="left" onclick="Richfaces.hideModalPanel('saveSlcrPanel');"><span class="ok"><h:outputText value="#{messages.button_ok}" /></span></a4j:commandButton>
+      	<a4j:commandButton reRender="map-data,script,reRender" action="#{speedLimitChangeRequests.resetAction}" styleClass="left" onclick="Richfaces.hideModalPanel('saveSlcrPanel');"><span class="ok"><h:outputText value="#{messages.button_ok}" /></span></a4j:commandButton>
  	  </div>
    </c:if> 
   </a4j:form>
@@ -283,5 +298,9 @@
 
 	</rich:modalPanel>
 
+	<script type="text/javascript">
+		initMap();
+		showSegments();
+	</script>
 </ui:composition>	
 </html>
