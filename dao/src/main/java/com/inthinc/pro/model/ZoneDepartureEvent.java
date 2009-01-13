@@ -49,4 +49,10 @@ public class ZoneDepartureEvent extends Event
     {
         this.zoneName = zoneName;
     }    
+    
+    public EventCategory getEventCategory()
+    {
+        return EventCategory.DRIVER;
+    }
+    
 }

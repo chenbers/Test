@@ -88,6 +88,13 @@ public class EventMapper
         warningList.add(TIWIPRO_EVENT_LOW_TIWI_BATTERY);
         warningList.add(TIWIPRO_EVENT_UNPLUGGED);
         categoryMap.put(EventCategory.WARNING, warningList);
+
+        List<Integer> driverCatList = new ArrayList<Integer>();
+        driverCatList.add(TIWIPRO_EVENT_WSZONES_ARRIVAL_EX);
+        driverCatList.add(TIWIPRO_EVENT_WSZONES_DEPARTURE_EX);
+        driverCatList.add(TIWIPRO_EVENT_ZONE_ENTER_ALERTED);
+        driverCatList.add(TIWIPRO_EVENT_ZONE_EXIT_ALERTED);
+        categoryMap.put(EventCategory.DRIVER, driverCatList);
     }
     
     

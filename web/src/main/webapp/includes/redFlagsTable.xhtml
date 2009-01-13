@@ -22,18 +22,18 @@
 					
 					<!-- Data -->
 					<rich:column rendered="#{tableColumns['level'].visible}" 
-						sortBy="#{item.redFlag.level}" width="10%">
+						sortBy="#{item.level}" width="10%">
 						<f:facet name="header">
 							<h:outputText value="#{messages.redflags_level}" />
 						</f:facet>
-						<h:outputText styleClass="ls_tab_#{item.redFlag.level}" value="#{item.redFlag.level.description}"/>
+						<h:outputText styleClass="ls_tab_#{item.level}" value="#{item.level.description}"/>
     				</rich:column>
     				<rich:column rendered="#{tableColumns['alerts'].visible}" 
-    					sortBy="#{item.redFlag.alert}" width="10%">
+    					sortBy="#{item.alert}" width="10%">
       					<f:facet name="header">
       						<h:outputText value="#{messages.redflags_alerts}" />
       					</f:facet>
-						<h:outputText value="#{(item.redFlag.alert) ? 'yes' : 'no'}" />      
+						<h:outputText value="#{(item.alert) ? 'yes' : 'no'}" />      
     				</rich:column>
     				<rich:column rendered="#{tableColumns['date'].visible}" 
     					sortBy="#{item.date}"  width="20%">

@@ -14,6 +14,8 @@ import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.mapper.EventHessianMapper;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
@@ -149,5 +151,33 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
     {
         return getChangedCount(getSiloService().unforgive(driverID, noteID));
     }
+
+    @Override
+    public List<Event> getRedFlagEventsForGroup(Integer groupID, Duration duration)
+    {
+        Date endDate = new Date();
+        Date startDate = DateUtil.getDaysBackDate(endDate, duration.getNumberOfDays());
+        List<Driver> driverList = getMapper().convertToModelObject(this.getSiloService().getDriversByGroupIDDeep(groupID), Driver.class);
+        List<Integer> eventTypeList = EventMapper.getEventTypesInCategory(EventCategory.VIOLATION);
+        eventTypeList.addAll(EventMapper.getEventTypesInCategory(EventCategory.WARNING));
+        eventTypeList.addAll(EventMapper.getEventTypesInCategory(EventCategory.DRIVER));
+        List<Event> eventList = new ArrayList<Event>();
+        for (Driver driver : driverList)
+        {
+            List<Event> driverEvents = getEventsForDriver(driver.getDriverID(), startDate, endDate, eventTypeList);
+            for (Event event : driverEvents)
+            {
+// TODO: should backend filter these out?                
+                if (event.getForgiven().intValue() == 0)
+                {
+                    event.setDriver(driver);
+                    eventList.add(event);
+                }
+            }
+        }
+        return eventList;
+    }
+
+
 
 }

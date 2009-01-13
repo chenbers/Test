@@ -3,6 +3,7 @@ package com.inthinc.pro.dao;
 import java.util.Date;
 import java.util.List;
 
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 
 
@@ -43,4 +44,7 @@ public interface EventDAO  extends GenericDAO<Event, Integer>
     Integer forgive(Integer driverID, Long noteID);
     
     Integer unforgive(Integer driverID, Long noteID);
+    
+    List<Event> getRedFlagEventsForGroup(Integer groupID, Duration duration);
+
 }

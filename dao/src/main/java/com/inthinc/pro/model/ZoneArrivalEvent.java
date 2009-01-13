@@ -48,4 +48,9 @@ public class ZoneArrivalEvent extends Event
     {
         this.zoneName = zoneName;
     }
+    
+    public EventCategory getEventCategory()
+    {
+        return EventCategory.DRIVER;
+    }
 }

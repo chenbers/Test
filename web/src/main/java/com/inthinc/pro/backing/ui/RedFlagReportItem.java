@@ -3,15 +3,18 @@ package com.inthinc.pro.backing.ui;
 import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
+import com.inthinc.pro.model.Alert;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.RedFlag;
+import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.SpeedingEvent;
 import com.inthinc.pro.util.MessageUtil;
 
@@ -24,25 +27,25 @@ public class RedFlagReportItem
     private String group;
     private String category;
     private String detail;
-    
-    private RedFlag redFlag;
+    private Event event;
+    private RedFlagLevel level;
+    private boolean alert;
     
     private static DateFormat dateFormatter = new SimpleDateFormat("E, MMM d, yyyy h:mm a (z)");
 
     
-    public RedFlagReportItem(RedFlag redFlag, GroupHierarchy groupHierarchy)
+    public RedFlagReportItem(Event event, Alert rfAlert, GroupHierarchy groupHierarchy)
     {
-        this.redFlag = redFlag;
-
-        Event event = redFlag.getEvent();
-        
-        if (event == null)
+        this.event = event;
+        alert = (rfAlert != null);
+        if (rfAlert != null)
         {
-            logger.error("Unable to retrieve Event for Red Flag: " + redFlag.getRedFlagID());
-            return;
+            level = rfAlert.getLevel();
         }
+        else level = RedFlagLevel.INFO;
         
-        dateFormatter.setTimeZone(event.getDriver().getPerson().getTimeZone());
+        TimeZone tz = event.getDriver().getPerson().getTimeZone();
+        dateFormatter.setTimeZone((tz==null) ? TimeZone.getDefault() : tz);
         setDate(dateFormatter.format(event.getTime()));
         
         Group group = groupHierarchy.getGroup(event.getDriver().getGroupID());
@@ -51,10 +54,10 @@ public class RedFlagReportItem
             setGroup(group.getName());
         }
         
-        String catFormat = MessageUtil.getMessageString("redflags_cat" + redFlag.getEvent().getEventCategory().toString());
-        setCategory(MessageFormat.format(catFormat, new Object[] {redFlag.getEvent().getEventType().toString()}));
+        String catFormat = MessageUtil.getMessageString("redflags_cat" + event.getEventCategory().toString());
+        setCategory(MessageFormat.format(catFormat, new Object[] {event.getEventType().toString()}));
         
-        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + redFlag.getEvent().getEventType().getKey())));
+        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType().getKey())));
 
     }
     
@@ -91,15 +94,35 @@ public class RedFlagReportItem
         this.detail = detail;
     }
 
-    public RedFlag getRedFlag()
+    public Event getEvent()
     {
-        return redFlag;
+        return event;
     }
 
-    public void setRedFlag(RedFlag redFlag)
+    public void setEvent(Event event)
     {
-        this.redFlag = redFlag;
+        this.event = event;
     }
-    
+
+    public RedFlagLevel getLevel()
+    {
+        return level;
+    }
+
+    public void setLevel(RedFlagLevel level)
+    {
+        this.level = level;
+    }
+
+    public boolean isAlert()
+    {
+        return alert;
+    }
+
+    public void setAlert(boolean alert)
+    {
+        this.alert = alert;
+    }
+
     
 }

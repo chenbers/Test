@@ -11,8 +11,10 @@ import org.richfaces.event.DataScrollerEvent;
 import com.inthinc.pro.backing.ui.EditableColumns;
 import com.inthinc.pro.backing.ui.RedFlagReportItem;
 import com.inthinc.pro.backing.ui.TableColumn;
+import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.RedFlagDAO;
 import com.inthinc.pro.dao.TablePreferenceDAO;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
@@ -21,7 +23,7 @@ import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.util.MessageUtil;
 
-public class RedFlagsBean extends BaseBean implements TablePrefOptions
+public class RedFlagsBean extends BaseDurationBean implements TablePrefOptions
 {
     private static final Logger     logger                  = Logger.getLogger(RedFlagsBean.class);
 
@@ -35,6 +37,7 @@ public class RedFlagsBean extends BaseBean implements TablePrefOptions
     private List<RedFlagReportItem> filteredTableData;
 
     private RedFlagDAO              redFlagDAO;
+    private EventDAO                eventDAO;
     private TablePreferenceDAO tablePreferenceDAO;
     
     private RedFlagReportItem   clearItem;
@@ -118,7 +121,7 @@ public class RedFlagsBean extends BaseBean implements TablePrefOptions
         
                 for (RedFlagReportItem item : tableData)
                 {
-                    if (validEventTypes.contains(item.getRedFlag().getEvent().getType()))
+                    if (validEventTypes.contains(item.getEvent().getType()))
                     {
                         filteredTableData.add(item);
                     }
@@ -131,7 +134,7 @@ public class RedFlagsBean extends BaseBean implements TablePrefOptions
     
             for (RedFlagReportItem item : tableData)
             {
-                if (item.getRedFlag().getEvent().getNoteID().equals(eventFilter.getNoteID()))
+                if (item.getEvent().getNoteID().equals(eventFilter.getNoteID()))
                 {
                     filteredTableData.add(item);
                     break;
@@ -147,7 +150,7 @@ public class RedFlagsBean extends BaseBean implements TablePrefOptions
                 if (item.getCategory().startsWith(searchText) ||
                     item.getGroup().startsWith(searchText) ||
                     item.getDetail().startsWith(searchText) ||
-                    item.getRedFlag().getLevel().toString().startsWith(searchText))
+                    item.getLevel().toString().startsWith(searchText))
                 {
                     searchTableData.add(item);
                 }
@@ -162,18 +165,21 @@ public class RedFlagsBean extends BaseBean implements TablePrefOptions
     private void initTableData()
     {
         setFilteredTableData(null);
-        
-        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(getUser().getGroupID());
+
+        List<Event> eventList = getEventsForGroup(getUser().getGroupID());
+//        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(getUser().getGroupID());
         List<RedFlagReportItem> redFlagReportItemList = new ArrayList<RedFlagReportItem>();
-        for (RedFlag redFlag : redFlagList)
+        for (Event event : eventList)
         {
-            if (!redFlag.getCleared())
-            {
-                redFlagReportItemList.add(new RedFlagReportItem(redFlag, getGroupHierarchy()));
-            }
+            redFlagReportItemList.add(new RedFlagReportItem(event, null, getGroupHierarchy()));
         }
         setTableData(redFlagReportItemList);
 
+    }
+
+    private List<Event> getEventsForGroup(Integer groupID)
+    {
+        return eventDAO.getRedFlagEventsForGroup(groupID, getDuration());
     }
 
     public void setTableData(List<RedFlagReportItem> tableData)
@@ -246,10 +252,10 @@ public class RedFlagsBean extends BaseBean implements TablePrefOptions
     
     public void clearItemAction()
     {
-        clearItem.getRedFlag().setCleared(true);
+//        clearItem.getRedFlag().setCleared(true);
+        eventDAO.forgive(clearItem.getEvent().getDriverID(), clearItem.getEvent().getNoteID());
         tableData.remove(clearItem);
         filteredTableData.remove(clearItem);
-        // todo: persist in DAO
     }
 
     public EventCategory getCategoryFilter()
@@ -298,6 +304,13 @@ public class RedFlagsBean extends BaseBean implements TablePrefOptions
     public String getSearchText()
     {
         return searchText;
+    }
+
+    public void setDuration(Duration duration)
+    {
+        super.setDuration(duration);
+        setTableData(null);
+        reinit();
     }
 
     public void setSearchText(String searchText)
@@ -390,6 +403,16 @@ public class RedFlagsBean extends BaseBean implements TablePrefOptions
     public void setTableColumns(Map<String, TableColumn> tableColumns)
     {
         tablePref.setTableColumns(tableColumns);
+    }
+
+    public EventDAO getEventDAO()
+    {
+        return eventDAO;
+    }
+
+    public void setEventDAO(EventDAO eventDAO)
+    {
+        this.eventDAO = eventDAO;
     }
 
 }

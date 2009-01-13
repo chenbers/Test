@@ -281,6 +281,7 @@
     <bean id="vehicleReportTable" class="com.inthinc.pro.backing.ui.VehicleReportTable" scope="session"></bean>
     <bean id="redFlagsBean" class="com.inthinc.pro.backing.RedFlagsBean" scope="session" parent="baseBean" init-method="initBean">
         <property name="redFlagDAO" ref="redFlagDAO"></property>
+        <property name="eventDAO" ref="eventDAO"></property>
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
     </bean>
     <bean id="idlingReportBean" class="com.inthinc.pro.backing.IdlingReportBean" scope="session" parent="baseBean" init-method="init">

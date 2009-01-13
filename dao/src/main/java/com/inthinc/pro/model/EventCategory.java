@@ -8,7 +8,8 @@ public enum EventCategory implements BaseEnum
 {
     VIOLATION(1, "VIOLATION"),
     WARNING(2, "WARNING"),
-    NONE(3, "NONE");
+    DRIVER(3, "DRIVER"),
+    NONE(4, "NONE");
 
     private String description;
     private int code;
