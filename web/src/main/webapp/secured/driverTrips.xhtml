@@ -168,16 +168,13 @@
 				<rich:panel id="selectedTrip">
 					<a4j:form>
 						<rich:dataTable 
-						value="#{driverTripsBean.violationEvents}" 
-						id="selectedTripTable"
+						value="#{driverTripsBean.violationEvents}" id="selectedTripTable"
 						var="item" styleClass="datagrid"
-						rowClasses="tableOdd,tableEven" cellspacing="1" rows="10"  
-						width="100%">
-
+						rowClasses="tableOdd,tableEven" cellspacing="1" rows="5" width="100%">
+		
 							<!-- Data -->
-							
 							<rich:column sortBy="#{item.addressStr}">
-								<img src="../images/ico_violation.png" width="20" height="20" alt="#{item.eventType}"/>
+								<img src="../images/ico_violation.png" width="20" height="20"/>
 							</rich:column>
 
 							<rich:column sortBy="#{item.addressStr}">
@@ -196,7 +193,7 @@
 								</h:outputText>
 							</rich:column>
 						</rich:dataTable>
-						<rich:datascroller align="center" for="selectedTripTable" maxPages="20"
+						<rich:datascroller align="center" for="selectedTripTable"
            				 					id="eventScroller" reRender="selectedTripTable" />
 					 </a4j:form>
 					 </rich:panel>
@@ -334,7 +331,7 @@
 								<f:facet name="header">
 									<h:outputText value="Date" />
 								</f:facet>
-									<a4j:commandLink value="#{item.dateShort}" reRender="selectedTripTable,selectedTripMap">
+									<a4j:commandLink value="#{item.dateShort}" reRender="selectedTrip,selectedTripMap">
 										<f:setPropertyActionListener value="#{item}" target="#{driverTripsBean.selectedTrip}" />
 									</a4j:commandLink>
 							</rich:column>
@@ -375,7 +372,7 @@
 							</rich:column>
 						</rich:dataTable>
 						<div class="spacer"></div>
-						<rich:datascroller align="center" for="tripsTable" maxPages="20" id="scroller" reRender="tripsTable" />
+						<rich:datascroller align="center" for="tripsTable" id="scroller" reRender="tripsTable" />
 					</a4j:form> 
 				<!-- End Trip table -->
 			  </rich:panel>

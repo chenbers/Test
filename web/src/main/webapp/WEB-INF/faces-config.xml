@@ -25,10 +25,18 @@
 		<converter-id>RoleConverter</converter-id>
 		<converter-class>com.inthinc.pro.convert.RoleConverter</converter-class>
 	</converter>
-  <converter>
-    <converter-id>HexConverter</converter-id>
-    <converter-class>com.inthinc.pro.convert.HexConverter</converter-class>
-  </converter>
+	<converter>
+	  <converter-id>HexConverter</converter-id>
+	  <converter-class>com.inthinc.pro.convert.HexConverter</converter-class>
+	</converter>
+	  <converter>
+	  <converter-id>PhoneNumberConverter</converter-id>
+	  <converter-class>com.inthinc.pro.convert.PhoneNumberConverter</converter-class>
+	</converter>
+	<converter>
+	  <converter-id>SpeedConverter</converter-id>
+	  <converter-class>com.inthinc.pro.convert.SpeedConverter</converter-class>
+	</converter>
 	
 	<!-- Components -->
 	<component>

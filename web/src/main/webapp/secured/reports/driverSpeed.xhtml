@@ -440,6 +440,9 @@ var selected = 'OVERALL';
 									<h:outputText value="Avg Speed" />
 								</f:facet>
 								<strong><h:outputText value="#{item.avgSpeed} #{messages.measurement_speed}" /></strong>
+								<br />
+					            <h:outputText class="red" value="+"/>
+					            <h:outputText class="red" value="#{speed.avgSpeed - speed.speedLimit}" converter="SpeedConverter" />
 							</rich:column>
 							
 							<rich:column sortBy="#{item.topSpeed}">
@@ -447,6 +450,9 @@ var selected = 'OVERALL';
 									<h:outputText value="Top Speed" />
 								</f:facet>
 								<strong><h:outputText value="#{item.topSpeed} #{messages.measurement_speed}" /></strong>
+								<br />
+              					<h:outputText class="red" value="+"/>
+        					    <h:outputText class="red" value="#{speed.topSpeed - speed.speedLimit}" converter="SpeedConverter" />
 							</rich:column>
 							
 							<rich:column sortBy="#{item.distance}">
@@ -477,7 +483,8 @@ var selected = 'OVERALL';
     </tr>
 </table>
  </div>
-	<rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="350">
+ <!-- START FORGIVE MODAL -->
+<rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="350">
       <t:saveState value="#{driverBean.clearItem}" />
       <f:facet name="header">
         <h:outputText value="Clear Event" />
@@ -513,8 +520,9 @@ var selected = 'OVERALL';
 
       </a4j:form>
 
-    </rich:modalPanel>
-				
+</rich:modalPanel>
+ <!-- START FORGIVE MODAL -->
+ 				
 	<div class="panel_sw">
 		<div class="panel_statusbar"></div>
 	</div>

@@ -27,6 +27,7 @@
 	<ui:param name="reportsSelected" value="current" />
 	
 	<t:saveState value="#{driverStyleBean.styleEvents}"/>
+	<t:saveState value="#{driverBean.clearItem}" />
 	
 	<ui:define name="content">
 <div id="wrapper">
@@ -362,10 +363,10 @@ var selected = 'OVERALL';
 			<div class="datagrid">
 				<!-- Start Event table --> 
 					<h:form id="eventTable">
-					<rich:datascroller align="center" for="items" immediate="true"
-							id="scrollerTop" reRender="items,scrollerBottom" />
+					<rich:datascroller align="center" for="eventsTable" immediate="true"
+							id="scrollerTop" reRender="eventsTable,scrollerBottom" />
 						<rich:dataTable value="#{driverStyleBean.styleEvents}" 
-						id="items" var="item" styleClass="datagrid"
+						id="eventsTable" var="item" styleClass="datagrid"
 						rowClasses="tableOdd,tableEven" cellspacing="1" 
 						rows="10" width="100%">
 						
@@ -417,16 +418,19 @@ var selected = 'OVERALL';
 							</rich:column>
 							
 							<rich:column>
-								<f:facet name="header">
-									<h:outputText value="" />
-								</f:facet>
-								<a href="#">clear</a>
-							</rich:column>
+		      					<f:facet name="header">
+		      						<h:outputText value="" />
+		      					</f:facet>
+								<a4j:commandLink title="#{messages.redflags_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem" >
+									<h:outputText value="#{messages.redflags_clear}" />
+									<f:setPropertyActionListener target="#{driverBean.clearItem}" value="#{item}" />
+								</a4j:commandLink>
+    						</rich:column>
 							
 						</rich:dataTable>
 						
-						<rich:datascroller align="center" for="items" immediate="true"
-							id="scrollerBottom" reRender="items,scrollerTop" />
+						<rich:datascroller align="center" for="eventsTable" immediate="true"
+							id="scrollerBottom" reRender="eventsTable,scrollerTop" />
 					</h:form> 
 				<!-- End Event table -->
 				</div>
@@ -441,6 +445,45 @@ var selected = 'OVERALL';
 <div class="panel_sw">
 	<div class="panel_statusbar"></div>
 </div>
+ <!-- START FORGIVE MODAL -->
+<rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="350">
+      <t:saveState value="#{driverBean.clearItem}" />
+      <f:facet name="header">
+        <h:outputText value="Clear Event" />
+      </f:facet>
+      <f:facet name="controls">
+        <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('clearEventPanel')" />
+      </f:facet>
+
+      <h:panelGroup layout="block" styleClass="popupsubtitle">
+      	<h:outputText value="Clear the following Event?"/>
+      </h:panelGroup>
+
+      <a4j:form id="clearItemForm">
+		<h:panelGroup layout="block"  styleClass="popupcontent">
+      		<h:outputFormat id="clearItem" value="Clear {0} event on {1}">
+      			<a4j:actionparam value="#{driverBean.clearItem.eventType}"/>
+      			<a4j:actionparam value="#{driverBean.clearItem.time}"/>
+      		</h:outputFormat>
+      	</h:panelGroup>
+	
+        <div class="popupactions">
+          <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_no}" /></span></button>
+          <a4j:commandLink action="#{driverBean.ClearEventAction}"         				
+          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel')" reRender="eventsTable">
+	          				<button type="submit" class="left">
+	          					<span class="apply">
+	          						<h:outputText value="#{messages.button_yes}" />
+	          					</span>
+	          				</button>
+	          				<f:setPropertyActionListener target="#{driverBean.clearItem}" value="#{driverBean.clearItem}" />
+			</a4j:commandLink> 		
+        </div>
+
+      </a4j:form>
+
+</rich:modalPanel>
+ <!-- START FORGIVE MODAL -->
 
 <rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">
 	<f:facet name="header">
