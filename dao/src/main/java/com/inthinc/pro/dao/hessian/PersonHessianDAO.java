@@ -157,15 +157,22 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
     @Override
     public List<Person> getPeopleInGroupHierarchy(Integer groupID)
     {
+        List<Person> returnPersonList = new ArrayList<Person>();
         try
         {
-            List<Person> returnPersonList = new ArrayList<Person>();
             List<User> userList = getMapper().convertToModelObject(getSiloService().getUsersByGroupIDDeep(groupID), User.class);
             for (User user : userList)
             {
                 user.getPerson().setUser(user);
                 returnPersonList.add(user.getPerson());
             }
+        }
+        catch (EmptyResultSetException e)
+        {
+        }
+
+        try
+        {
             List<Driver> driverList = getMapper().convertToModelObject(getSiloService().getDriversByGroupIDDeep(groupID), Driver.class);
             for (Driver driver : driverList)
             {
@@ -176,13 +183,28 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
                     returnPersonList.add(driver.getPerson());
                 }
             }
-            return returnPersonList;
         }
         catch (EmptyResultSetException e)
         {
             return Collections.emptyList();
         }
 
+        for (Person person : returnPersonList)
+        {
+            if (person.getAddressID() != null)
+            {
+                try
+                {
+                    person.setAddress(getMapper().convertToModelObject(getSiloService().getAddr(person.getAddressID()), Address.class));
+                }
+                catch (EmptyResultSetException e)
+                {
+                    // ignore -- no address is attached to person
+                }
+            }
+        }
+
+        return returnPersonList;
     }
 
     private Person findPersonInList(List<Person> returnPersonList, Driver driver)
