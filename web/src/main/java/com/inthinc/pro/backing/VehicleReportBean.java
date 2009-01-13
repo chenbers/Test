@@ -43,7 +43,7 @@ public class VehicleReportBean extends BaseReportBean implements TablePrefOption
     
     private VehicleReportItem vrt = null;
     
-    private Integer numRowsPerPg = 3;
+    private Integer numRowsPerPg = 25;
     private final static String COLUMN_LABEL_PREFIX = "vehicleReports_";
     
     private Integer maxCount = null;
@@ -352,6 +352,13 @@ public class VehicleReportBean extends BaseReportBean implements TablePrefOption
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_REPORT,getGroupHierarchy().getTopGroup().getName(),getAccountName());
         reportCriteria.setMainDataset(vehicleData);
         getReportRenderer().exportReportToEmail(reportCriteria,getEmailAddress());
+    }
+    
+    public void exportReportToExcel()
+    {
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_REPORT,getGroupHierarchy().getTopGroup().getName(),getAccountName());
+        reportCriteria.setMainDataset(vehicleData);
+        getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
     }
 
     public String getSecret()
