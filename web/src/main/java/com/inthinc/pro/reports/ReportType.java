@@ -9,10 +9,13 @@ import java.util.Map;
  */
 public enum ReportType
 {
-    DRIVER_TABULAR("Driver Report","DriverTableReport"),
-    OVERALL_SCORE("Overal Score","ScorePieReport"),
-    TREND("Trend Report","TrendReport"),
-    MPG_GROUP("MPG Report","MPGGroupReport");
+    DRIVER_REPORT("Driver Report","DriverReport.jrxml"),
+    VEHICLE_REPORT("Driver Report","VehicleReport.jrxml"),
+    IDLING_REPORT("Driver Report","IdlingReport.jrxml"),
+    DEVICES_REPORT("Driver Report","DevicesReport.jrxml"),
+    OVERALL_SCORE("Overal Score","ScorePieReport.jrxml"),
+    TREND("Trend Report","TrendReport.jrxml"),
+    MPG_GROUP("MPG Report","MPGGroupReport.jrxml");
     
   
     private ReportType[] reportSubtypes;

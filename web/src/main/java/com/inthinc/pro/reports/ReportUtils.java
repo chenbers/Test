@@ -44,7 +44,7 @@ public class ReportUtils
 
     private static File loadFile(String fileName)
     {
-        File file = new File(ReportUtils.class.getResource(fileName + ".jrxml").getFile());
+        File file = new File(ReportUtils.class.getResource(fileName).getFile());
 
         return file;
     }

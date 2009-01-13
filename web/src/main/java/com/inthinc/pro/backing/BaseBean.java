@@ -10,6 +10,8 @@ import org.springframework.security.Authentication;
 import org.springframework.security.context.SecurityContextHolder;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
+import com.inthinc.pro.dao.AccountDAO;
+import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.security.userdetails.ProUser;
 
@@ -18,6 +20,7 @@ public class BaseBean
 {
     private static final Logger logger = Logger.getLogger(BaseBean.class);
     private ErrorBean errorBean;
+    private AccountDAO accountDAO;
     
     public BaseBean()
     {
@@ -94,5 +97,20 @@ public class BaseBean
         final FacesContext context = FacesContext.getCurrentInstance();
         final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "WARNING - " + summary, null);
         context.addMessage(null, message);
+    }
+    public void setAccountDAO(AccountDAO accountDAO)
+    {
+        this.accountDAO = accountDAO;
+    }
+    public AccountDAO getAccountDAO()
+    {
+        return accountDAO;
+    }
+    
+    protected String getAccountName()
+    {
+        Account account = getAccountDAO().findByID(getAccountID());
+        String name = account.getAcctName();
+        return name;
     }
 }

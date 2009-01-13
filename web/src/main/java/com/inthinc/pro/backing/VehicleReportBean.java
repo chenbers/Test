@@ -23,6 +23,8 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.VehicleReportItem;
+import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.TempColumns;
 
@@ -41,7 +43,7 @@ public class VehicleReportBean extends BaseReportBean implements TablePrefOption
     
     private VehicleReportItem vrt = null;
     
-    private Integer numRowsPerPg = 25;
+    private Integer numRowsPerPg = 3;
     private final static String COLUMN_LABEL_PREFIX = "vehicleReports_";
     
     private Integer maxCount = null;
@@ -339,6 +341,20 @@ public class VehicleReportBean extends BaseReportBean implements TablePrefOption
     public void setTablePreferenceDAO(TablePreferenceDAO tablePreferenceDAO)
     {
         this.tablePreferenceDAO = tablePreferenceDAO;
+    }
+    
+    public void exportReportToPdf()
+    {
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_REPORT,getGroupHierarchy().getTopGroup().getName(),null);
+        reportCriteria.setMainDataset(vehicleData);
+        getReportRenderer().exportSingleReportToPDF(reportCriteria, getFacesContext());
+    }
+    
+    public void emailReport()
+    {
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_REPORT,getGroupHierarchy().getTopGroup().getName(),getAccountName());
+        reportCriteria.setMainDataset(vehicleData);
+        getReportRenderer().exportReportToEmail(reportCriteria,getEmailAddress());
     }
 
     public String getSecret()

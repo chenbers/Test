@@ -75,6 +75,11 @@
             										<h:outputText value="#{messages.button_editColumns}" />
             									</a4j:commandLink>            									
             								</li>  
+            								<li class="r grid_icon"><img id="vehicleReportToolImageId"
+												src="#{facesContext.externalContext.request.contextPath}/images/ico_tools.png" />
+											</li>
+											<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
+											</li>
             								<li class="r text">
               									<h:outputFormat id="headerVehicles" value="#{messages.redflags_recordCountHeader}">
 													<a4j:actionparam value="#{vehicleReportBean.start}"/>
@@ -82,7 +87,25 @@
 													<a4j:actionparam value="#{vehicleReportBean.maxCount}"/>
 												</h:outputFormat> 
             								</li>          							
-          								</ul>																																	
+          								</ul>
+          								
+          						<rich:contextMenu event="onclick" attachTiming="onavailable"
+									disableDefaultMenu="false" submitMode="server"
+									attachTo="vehicleReportToolImageId">
+									<rich:menuItem ajaxSingle="true" rendered="true"
+													iconDisabled="/images/ico_email.gif" 
+													icon="/images/ico_email.gif" 
+													onclick="Richfaces.showModalPanel('vehicleReportEmailModal');return false;"
+													value="#{messages.contextMenu_email_this_report}" id="emailMenuItem" submitMode="none">
+									</rich:menuItem>
+			
+									<rich:menuItem ajaxSingle="true"
+										iconDisabled="/images/ico_pdf.gif" icon="/images/ico_pdf.gif"
+										value="Export To PDF"
+										action="#{vehicleReportBean.exportReportToPdf}"
+										id="export_menu_item">
+									</rich:menuItem>
+								</rich:contextMenu>																																	
 								
 								<div class="datagrid">
 								<ui:include src="/includes/vehiclesReport.xhtml">	
@@ -109,7 +132,12 @@
 					</td>
 				</tr>
 			</table>
-		
+			<h:outputText id="vehicle_email_modalPanel">
+			<ui:include src="/includes/emailReportPopup.xhtml">	
+				<ui:param  name="id" value="vehicleReportEmailModal" />
+				<ui:param  name="reportBean" value="#{vehicleReportBean}"/>
+			</ui:include>
+		</h:outputText>
 	</ui:define>
 	
 

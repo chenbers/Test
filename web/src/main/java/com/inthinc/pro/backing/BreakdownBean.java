@@ -46,7 +46,6 @@ public class BreakdownBean extends BaseDurationBean
     };
 
     private ScoreDAO scoreDAO;
-    private AccountDAO accountDAO;
   
     private NavigationBean navigation;
     private ReportRenderer reportRenderer;
@@ -253,13 +252,6 @@ public class BreakdownBean extends BaseDurationBean
         return reportCriteria;
     }
     
-    private String getAccountName()
-    {
-        Account account = getAccountDAO().findByID(getAccountID());
-        String name = account.getAcctName();
-        return name;
-    }
-    
     private List<PieScoreData> getPieScoreData(ScoreType scoreType){
      // Fetch, qualifier is groupId (parent), date from, date to
         List<ScoreableEntity> s = null;
@@ -283,16 +275,6 @@ public class BreakdownBean extends BaseDurationBean
             pieChartDataList.add(new PieScoreData(pieScoreRange.getLabel(),s.get(i).getScore(),pieScoreRange.getLabel()));
         }
         return pieChartDataList;
-    }
-
-    public void setAccountDAO(AccountDAO accountDAO)
-    {
-        this.accountDAO = accountDAO;
-    }
-
-    public AccountDAO getAccountDAO()
-    {
-        return accountDAO;
     }
     
     public ReportRenderer getReportRenderer()

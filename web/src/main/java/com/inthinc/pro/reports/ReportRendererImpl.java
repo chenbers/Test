@@ -1,8 +1,5 @@
 package com.inthinc.pro.reports;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -15,8 +12,6 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
 
 import org.apache.log4j.Logger;
-import org.springframework.mail.javamail.JavaMailSender;
-
 import com.inthinc.pro.backing.ReportRendererBean;
 import com.inthinc.pro.reports.model.ReportAttatchment;
 
@@ -37,7 +32,7 @@ public class ReportRendererImpl implements ReportRenderer
     }
     
     @Override
-    public void exportMultipleReportsToPDF(List<ReportCriteria> reportCriteriaList, FacesContext facesContext)
+    public void exportReportToPDF(List<ReportCriteria> reportCriteriaList, FacesContext facesContext)
     {
         ProReportCompiler proCompiler = new ProReportCompiler();
         JasperPrint jp = proCompiler.compileReport(reportCriteriaList);
@@ -49,6 +44,15 @@ public class ReportRendererImpl implements ReportRenderer
     {
         ProReportCompiler proCompiler = new ProReportCompiler();
         JasperPrint jp = proCompiler.compileReport(reportCriteriaList);
+        exportToPdfViaEmail(jp, email);
+        
+    }
+    
+    @Override
+    public void exportReportToEmail(ReportCriteria reportCriteria, String email)
+    {
+        ProReportCompiler proCompiler = new ProReportCompiler();
+        JasperPrint jp = proCompiler.compileReport(reportCriteria);
         exportToPdfViaEmail(jp, email);
         
     }
@@ -66,33 +70,7 @@ public class ReportRendererImpl implements ReportRenderer
                 attachments.add(reportAttatchment);
                 String[] emails = email.split(",");
                 List<String> emailList =  Arrays.asList(emails);
-                reportMailer.emailReport(emailList, attachments);
-//                MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-//                MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
-//                mimeMessage.setFrom(new InternetAddress("noreply@inthinc.com"));
-//                mimeMessage.setRecipients(Message.RecipientType.TO, email);
-//                mimeMessage.setSubject("Tiwi Pro Report");
-//                mimeMessage.setText("Tiwi Pro Report");
-//                File file = new File("Tiwi Pro Report.pdf");
-//                FileOutputStream out = new FileOutputStream(file);
-//                out.write(bytes);
-//                MimeBodyPart pdfAttatchment = new MimeBodyPart();
-//                FileDataSource fds = new FileDataSource(file);
-//                pdfAttatchment.setFileName("Tiwi Pro Report.pdf");
-//                pdfAttatchment.setDataHandler(new DataHandler(fds));
-//                
-//                Multipart mp = new MimeMultipart();
-//                mp.addBodyPart(pdfAttatchment);
-//                
-//                mimeMessage.setContent(mp);
-//                mimeMessage.setSentDate(new Date());
-//                
-//                
-//               javaMailSender.send(mimeMessage);
-////                mailSender.setHost("https://webmail.iwiglobal.com");
-////                mailSender.setPort("43");
-                
-                
+                reportMailer.emailReport(emailList, attachments);                
             }
             catch(JRException e)
             {
@@ -101,11 +79,10 @@ public class ReportRendererImpl implements ReportRenderer
             {
                 logger.error(e);
             }
-           
-            
-            
         }
     }
+    
+    
 
     private void exportToPdf(JasperPrint jasperPrint,FacesContext facesContext)
     {

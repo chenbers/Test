@@ -35,7 +35,6 @@ public class TrendBean extends BaseBean
     private static final Logger logger = Logger.getLogger(TrendBean.class);
 
     private ScoreDAO scoreDAO;
-    private AccountDAO accountDAO;
     private NavigationBean navigation;
 
     private String lineDef = new String();
@@ -485,13 +484,6 @@ public class TrendBean extends BaseBean
         reportCriteria.setDuration(getNavigation().getDuration());
         return reportCriteria;
     }
-    
-    private String getAccountName()
-    {
-        Account account = getAccountDAO().findByID(getAccountID());
-        String name = account.getAcctName();
-        return name;
-    }
 
     public void setReportRenderer(ReportRenderer reportRenderer)
     {
@@ -501,16 +493,6 @@ public class TrendBean extends BaseBean
     public ReportRenderer getReportRenderer()
     {
         return reportRenderer;
-    }
-
-    public void setAccountDAO(AccountDAO accountDAO)
-    {
-        this.accountDAO = accountDAO;
-    }
-
-    public AccountDAO getAccountDAO()
-    {
-        return accountDAO;
     }
     
     public String getSortItFirst()

@@ -61,5 +61,6 @@
 	<ui:include src="/includes/emailReportPopup.xhtml">	
 		<ui:param  name="reportTypeList" value="#{reportRendererBean.reportTypeList}"/>
 		<ui:param name="id" value="overview_emailPopup" />
+		<ui:param name="reportBean" value="#{reportRendererBean}" />
     </ui:include>
 </ui:composition>

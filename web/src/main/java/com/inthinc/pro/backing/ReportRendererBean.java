@@ -37,21 +37,11 @@ public class ReportRendererBean extends BaseBean
     {
         
     }
-
-
-//    public void exportSingleReportToPDF()
-//    {
-//        ReportCriteria reportCriteria = null;
-//        switch(reportType){
-//        case OVERALL_SCORE:reportCriteria = breakdownBean.buildReportCriteria();break;
-//        case TREND: reportCriteria = trendBean.buildReportCriteria();break;
-//        case MPG_GROUP: reportCriteria = mpgBean.buildReportCriteria();break;
-//        }
-//        
-//        if(reportCriteria != null){
-//            reportRenderer.exportSingleReportToPDF(reportCriteria, getFacesContext());
-//        }
-//    }
+    
+    public void exportReportToPdf()
+    {
+        exportReportToPDF();
+    }
     
     public void exportReportToPDF()
     {
@@ -74,11 +64,11 @@ public class ReportRendererBean extends BaseBean
         
         
         if(reportCriteriaList.size() > 0){
-            reportRenderer.exportMultipleReportsToPDF(reportCriteriaList, getFacesContext());
+            reportRenderer.exportReportToPDF(reportCriteriaList, getFacesContext());
         }
     }
     
-    public void sendReportViaEmail()
+    public void emailReport()
     {
         List<ReportCriteria> reportCriteriaList = new ArrayList<ReportCriteria>();
         for(ReportType rt:reportTypes)
@@ -208,6 +198,9 @@ public class ReportRendererBean extends BaseBean
 
     public String getEmailAddress()
     {
+        if(emailAddress == null){
+            emailAddress = getProUser().getUser().getPerson().getEmail();
+        }
         return emailAddress;
     }
 

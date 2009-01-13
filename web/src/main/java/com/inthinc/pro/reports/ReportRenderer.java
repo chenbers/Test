@@ -10,7 +10,9 @@ public interface ReportRenderer
 {
     public void exportSingleReportToPDF(ReportCriteria reportCriteria, FacesContext facesContext);
     
-    public void exportMultipleReportsToPDF(List<ReportCriteria> reportCriteriaList,FacesContext facesContext);
+    public void exportReportToPDF(List<ReportCriteria> reportCriteriaList,FacesContext facesContext);
     
     public void exportReportToEmail(List<ReportCriteria> reportCriteriaList,String email);
+    
+    public void exportReportToEmail(ReportCriteria reportCriteria,String email);
 }

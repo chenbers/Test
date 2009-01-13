@@ -7,11 +7,17 @@ import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.dao.AccountDAO;
+import com.inthinc.pro.reports.ReportRenderer;
+
 public class BaseReportBean extends BaseBean
 {
     private static final Logger logger = Logger.getLogger(BaseReportBean.class);
     
     private boolean mainMenu;
+    private AccountDAO accountDAO;
+    private String emailAddress;
+    private ReportRenderer reportRenderer;
    
     
     public BaseReportBean(){
@@ -68,5 +74,35 @@ public class BaseReportBean extends BaseBean
     public void setMainMenu(boolean mainMenu)
     {
         this.mainMenu = mainMenu;
+    }
+
+    public void setAccountDAO(AccountDAO accountDAO)
+    {
+        this.accountDAO = accountDAO;
+    }
+
+    public AccountDAO getAccountDAO()
+    {
+        return accountDAO;
+    }
+
+    public void setEmailAddress(String emailAddress)
+    {
+        this.emailAddress = emailAddress;
+    }
+
+    public String getEmailAddress()
+    {
+        return emailAddress;
+    }
+
+    public void setReportRenderer(ReportRenderer reportRenderer)
+    {
+        this.reportRenderer = reportRenderer;
+    }
+
+    public ReportRenderer getReportRenderer()
+    {
+        return reportRenderer;
     }
 }

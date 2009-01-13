@@ -8,6 +8,8 @@
 	<!-- 
 	Parameters:
 		reportBean - needs to be a bean that implements the action - exportToPDF
+		reportType - the report that is to be printed
+		duration - duration of the report
 	
 	 -->
 	
@@ -103,11 +105,8 @@
 				</rich:menuItem>
 				-->
 				<rich:menuItem ajaxSingle="true" rendered="true"
-
 					iconDisabled="/images/ico_email.gif" icon="/images/ico_email.gif" onclick="Richfaces.showModalPanel('#{ajaxForm}_singleEmail');return false;"
-
 					value="#{messages.contextMenu_email_this_report}" id="#{ajaxForm}_email" submitMode="none">
-
 				</rich:menuItem>
 				
 				<rich:menuItem ajaxSingle="true" iconDisabled="/images/ico_pdf.gif"
@@ -125,6 +124,7 @@
 				<ui:param  name="reportType" value="#{reportType}"/>
 				<ui:param  name="duration" value="#{duration}" />
 				<ui:param  name="id" value="#{ajaxForm}_singleEmail" />
+				<ui:param  name="reportBean" value="#{reportRendererBean}"/>
 			</ui:include>
 		</h:outputText>
 	</a4j:region>

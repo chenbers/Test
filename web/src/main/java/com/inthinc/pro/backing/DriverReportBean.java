@@ -24,6 +24,8 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.TempColumns;
 
@@ -422,5 +424,19 @@ public class DriverReportBean extends BaseReportBean implements TablePrefOptions
     public void setTablePref(TablePref tablePref)
     {
         this.tablePref = tablePref;
+    }
+    
+    public void exportReportToPdf()
+    {
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_REPORT,getGroupHierarchy().getTopGroup().getName(),null);
+        reportCriteria.setMainDataset(driverData);
+        getReportRenderer().exportSingleReportToPDF(reportCriteria, getFacesContext());
+    }
+    
+    public void emailReport()
+    {
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_REPORT,getGroupHierarchy().getTopGroup().getName(),getAccountName());
+        reportCriteria.setMainDataset(driverData);
+        getReportRenderer().exportReportToEmail(reportCriteria,getEmailAddress());
     }
 }

@@ -36,7 +36,6 @@ public class MpgBean extends BaseDurationBean {
 
     private MpgDAO mpgDAO;
     private NavigationBean navigation;
-    private AccountDAO accountDAO;
     private ReportRenderer reportRenderer;
     private List<MpgEntityPkg> mpgEntities = new ArrayList<MpgEntityPkg>();
     
@@ -174,23 +173,6 @@ public class MpgBean extends BaseDurationBean {
         reportCriteria.addSubDataSet(seriesData);
         reportCriteria.setDuration(getDuration());
         return reportCriteria;
-    }
-    
-    private String getAccountName()
-    {
-        Account account = getAccountDAO().findByID(getAccountID());
-        String name = account.getAcctName();
-        return name;
-    }
-
-    public void setAccountDAO(AccountDAO accountDAO)
-    {
-        this.accountDAO = accountDAO;
-    }
-
-    public AccountDAO getAccountDAO()
-    {
-        return accountDAO;
     }
 
     public void setReportRenderer(ReportRenderer reportRenderer)

@@ -32,7 +32,7 @@ public class ReportCriteria
         return this.mainDataset;
     }
 
-    public void setReportType(ReportType reportType)
+    private void setReportType(ReportType reportType)
     {
         this.reportType = reportType;
     }
