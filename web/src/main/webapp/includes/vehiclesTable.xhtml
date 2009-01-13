@@ -20,12 +20,12 @@
         <f:param name="displayID" value="#{item.id}" />
       </h:commandLink>
     </rich:column>
-    <rich:column rendered="#{vehiclesBean.tableColumns['driver'].visible}" sortBy="#{item.driver}">
-      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_driver}" /></f:facet>
+    <rich:column rendered="#{vehiclesBean.tableColumns['driverID'].visible}" sortBy="#{item.driver.person.first}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_driverID}" /></f:facet>
       <h:outputText value="#{item.driver.person.first}" /><h:outputText value=" " /><h:outputText value="#{item.driver.person.last}" />
     </rich:column>
-    <rich:column rendered="#{vehiclesBean.tableColumns['group'].visible}" sortBy="#{item.group.name}">
-      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_group}" /></f:facet>
+    <rich:column rendered="#{vehiclesBean.tableColumns['groupID'].visible}" sortBy="#{item.group.name}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_groupID}" /></f:facet>
       <h:outputText value="#{item.group.name}" />
     </rich:column>
     <rich:column rendered="#{vehiclesBean.tableColumns['year'].visible}" sortBy="#{item.year}">

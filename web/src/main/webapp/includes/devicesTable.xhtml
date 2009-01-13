@@ -20,8 +20,8 @@
         <f:param name="displayID" value="#{item.id}" />
       </h:commandLink>
     </rich:column>
-    <rich:column rendered="#{devicesBean.tableColumns['vehicle'].visible}" sortBy="#{item.vehicle.name}">
-      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_vehicle}" /></f:facet>
+    <rich:column rendered="#{devicesBean.tableColumns['vehicleID'].visible}" sortBy="#{item.vehicle.name}">
+      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_vehicleID}" /></f:facet>
       <h:outputText value="#{item.vehicle.name}" />
     </rich:column>
     <rich:column rendered="#{devicesBean.tableColumns['imei'].visible}" sortBy="#{item.imei}">

@@ -38,7 +38,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         // available columns
         AVAILABLE_COLUMNS = new ArrayList<String>();
         AVAILABLE_COLUMNS.add("name");
-        AVAILABLE_COLUMNS.add("vehicle");
+        AVAILABLE_COLUMNS.add("vehicleID");
         AVAILABLE_COLUMNS.add("imei");
         AVAILABLE_COLUMNS.add("sim");
         AVAILABLE_COLUMNS.add("phone");
@@ -110,7 +110,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             if (getTableColumns().get(column).getVisible())
             {
                 boolean matches = false;
-                if (column.equals("vehicle"))
+                if (column.equals("vehicleID"))
                     matches = (device.getVehicle() != null) && (device.getVehicle().getName() != null) && device.getVehicle().getName().toLowerCase().contains(filterWord);
                 else if (column.equals("status"))
                     matches = (device.getStatus() != null) && MessageUtil.getMessageString(device.getStatus().getDescription().toLowerCase()).toLowerCase().contains(filterWord);

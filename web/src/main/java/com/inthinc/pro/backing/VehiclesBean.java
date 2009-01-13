@@ -57,8 +57,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         // available columns
         AVAILABLE_COLUMNS = new ArrayList<String>();
         AVAILABLE_COLUMNS.add("name");
-        AVAILABLE_COLUMNS.add("driver");
-        AVAILABLE_COLUMNS.add("group");
+        AVAILABLE_COLUMNS.add("driverID");
+        AVAILABLE_COLUMNS.add("groupID");
         AVAILABLE_COLUMNS.add("year");
         AVAILABLE_COLUMNS.add("make");
         AVAILABLE_COLUMNS.add("model");
@@ -191,11 +191,11 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             if (getTableColumns().get(column).getVisible())
             {
                 boolean matches = false;
-                if (column.equals("driver"))
+                if (column.equals("driverID"))
                     matches = (vehicle.getDriver() != null)
                             && (vehicle.getDriver().getPerson() != null)
                             && (vehicle.getDriver().getPerson().getFullName().toLowerCase().contains(filterWord));
-                else if (column.equals("group"))
+                else if (column.equals("groupID"))
                     matches = (vehicle.getGroup() != null) && vehicle.getGroup().getName().toLowerCase().contains(filterWord);
                 else if (column.equals("status"))
                     matches = (vehicle.getStatus() != null)
