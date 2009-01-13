@@ -35,8 +35,7 @@ public class BaseReportBean extends BaseBean
 
             //search parm, either from the search in the main menu or
             //  one from the report
-            if ( key.equalsIgnoreCase("searchFor") || 
-                (key.indexOf("searchParam") != -1) ) {              
+            if ( key.equalsIgnoreCase("searchFor")  ) {              
                 searchFor = value;
                 mainMenu = true;
             }
