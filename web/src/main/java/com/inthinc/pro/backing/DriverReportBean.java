@@ -78,7 +78,8 @@ public class DriverReportBean extends BaseReportBean implements TablePrefOptions
     {
         tablePref = new TablePref(this);
 
-        searchFor = checkForRequestMap();        
+        searchFor = checkForRequestMap(); 
+        
         this.driversData = 
             scoreDAO.getDriverReportData(            
                     getUser().getGroupID(),
@@ -88,7 +89,7 @@ public class DriverReportBean extends BaseReportBean implements TablePrefOptions
         //  search on main menu. This accounts for a search
         //  from the main menu w/ never having been to the 
         //  Drivers report page.
-        if ( super.isMainMenu() ) {  
+        if ( (super.isMainMenu()) || (searchFor.trim().length() != 0) ) {  
             checkOnSearch();
             super.setMainMenu(false);
         } else {
@@ -160,7 +161,7 @@ public class DriverReportBean extends BaseReportBean implements TablePrefOptions
                     }
                     
                     // driver id
-                    String lowerCaseEmployeeID = d.getEmployeeID().toLowerCase();                        
+                    String lowerCaseEmployeeID = d.getDriver().getPerson().getUser().getUsername();                        
                     index3 = 
                         lowerCaseEmployeeID.indexOf(trimmedSearch);                    
                     if ((index1 == -1) && 
@@ -194,6 +195,9 @@ public class DriverReportBean extends BaseReportBean implements TablePrefOptions
         for ( DriverReportItem d: drvsData ) {
             drt = d;   
             setStyles();
+            
+            //Driver
+            drt.setDriver(d.getDriver());
             
             //Group name
             drt.setGroup(this.getGroupHierarchy().getGroup(d.getGroupID()).getName());
@@ -346,7 +350,7 @@ public class DriverReportBean extends BaseReportBean implements TablePrefOptions
     {
         searchFor = checkForRequestMap();        
               
-        if ( super.isMainMenu() ) {  
+        if ( super.isMainMenu() || searchFor.trim().length() != 0 ) {  
             checkOnSearch();
             super.setMainMenu(false);
         } else {

@@ -20,7 +20,7 @@ public class BaseReportBean extends BaseBean
 
     protected String checkForRequestMap()
     {
-        String searchFor = null;
+        String searchFor = "";
         mainMenu = false;
 
         Map m = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
@@ -33,8 +33,10 @@ public class BaseReportBean extends BaseBean
             String key = (String) entry.getKey();
             String value = (String) entry.getValue();
 
-            //search parm
-            if ( key.equalsIgnoreCase("searchFor") ) {              
+            //search parm, either from the search in the main menu or
+            //  one from the report
+            if ( key.equalsIgnoreCase("searchFor") || 
+                (key.indexOf("searchParam") != -1) ) {              
                 searchFor = value;
                 mainMenu = true;
             }
