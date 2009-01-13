@@ -172,6 +172,7 @@ public class DeviceReportBean extends BaseReportBean implements TablePrefOptions
         for ( DeviceReportItem a: devicData ) { 
             dri = new DeviceReportItem();
             dri.setDevice(a.getDevice());
+            dri.setVehicle(a.getVehicle());
             deviceData.add(dri);                        
         }
         
