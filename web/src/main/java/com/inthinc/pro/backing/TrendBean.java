@@ -212,15 +212,13 @@ public class TrendBean extends BaseBean
 
         // Populate the table
         String contextPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
-        ScoreBox sb = new ScoreBox(0, ScoreBoxSizes.SMALL);
         int cnt = 0;                
         ColorSelectorStandard cs = new ColorSelectorStandard();
         for (ScoreableEntity score : s)
         {
             ScoreableEntityPkg se = new ScoreableEntityPkg();
             se.setSe(score);
-            sb.setScore(score.getScore());
-            se.setStyle(sb.getScoreStyle());
+            se.setStyle(ScoreBox.GetStyleFromScore(score.getScore(), ScoreBoxSizes.SMALL));
             se.setColorKey(cs.getEntityColorKey(cnt++));
             if (score.getEntityType().equals(EntityType.ENTITY_GROUP))
             {

@@ -242,29 +242,22 @@ public class DriverReportBean extends BaseReportBean implements TablePrefOptions
     }
     
     private void setStyles() 
-    {
-        ScoreBox sb = new ScoreBox(0,ScoreBoxSizes.SMALL); 
-        
+    {   
         if ( drt.getOverallScore() != null ) {            
-            sb.setScore(floatToInteger( drt.getOverallScore() ));
-            drt.setStyleOverall(sb.getScoreStyle());
+            drt.setStyleOverall(ScoreBox.GetStyleFromScore(floatToInteger(drt.getOverallScore()), ScoreBoxSizes.SMALL));
         }
         
         if ( drt.getSeatBeltScore() != null ) {
-            sb.setScore(floatToInteger( drt.getSeatBeltScore() ));
-            drt.setStyleSeatBelt(sb.getScoreStyle());
+            drt.setStyleSeatBelt(ScoreBox.GetStyleFromScore(floatToInteger(drt.getSeatBeltScore()), ScoreBoxSizes.SMALL));      
         }
         
         if ( drt.getSpeedScore() != null ) {
-            sb.setScore(floatToInteger( drt.getSpeedScore() ));
-            drt.setStyleSpeed(sb.getScoreStyle());
+            drt.setStyleSpeed(ScoreBox.GetStyleFromScore(floatToInteger(drt.getSpeedScore()), ScoreBoxSizes.SMALL));
         }
         
         if ( drt.getStyleScore() != null ) {
-            sb.setScore(floatToInteger( drt.getStyleScore() ));
-            drt.setStyleStyle(sb.getScoreStyle());
+            drt.setStyleStyle(ScoreBox.GetStyleFromScore(floatToInteger(drt.getStyleScore()), ScoreBoxSizes.SMALL));
         }
-        
     }
 
     public void scrollerListener(DataScrollerEvent se)     

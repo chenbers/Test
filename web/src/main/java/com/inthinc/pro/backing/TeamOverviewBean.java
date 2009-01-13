@@ -58,8 +58,7 @@ public class TeamOverviewBean extends BaseDurationBean
 
     public String getOverallScoreStyle()
     {
-        ScoreBox sb = new ScoreBox(getSelectedOverallScore(), ScoreBoxSizes.LARGE);
-        return sb.getScoreStyle();
+        return ScoreBox.GetStyleFromScore(getSelectedOverallScore(), ScoreBoxSizes.LARGE);
     }
 
     public ScoreDAO getScoreDAO()
@@ -74,7 +73,7 @@ public class TeamOverviewBean extends BaseDurationBean
 
     public String getSelectedBarDef()
     {
-logger.debug("getSelectedBarDef() ");        
+        logger.debug("getSelectedBarDef() ");        
         TabAction action = getSelectedAction();
         
         ScoreType scoreType = action.getScoreType();

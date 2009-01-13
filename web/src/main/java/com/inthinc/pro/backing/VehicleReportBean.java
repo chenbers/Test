@@ -246,18 +246,15 @@ public class VehicleReportBean extends BaseReportBean implements TablePrefOption
         ScoreBox sb = new ScoreBox(0,ScoreBoxSizes.SMALL);  
         
         if ( vrt.getOverallScore() != null ) {
-            sb.setScore( floatToInteger(vrt.getOverallScore()) );
-            vrt.setStyleOverall(sb.getScoreStyle());
+            vrt.setStyleOverall(ScoreBox.GetStyleFromScore(floatToInteger(vrt.getOverallScore()), ScoreBoxSizes.SMALL));
         } 
         
         if ( vrt.getSpeedScore() != null ) {
-            sb.setScore( floatToInteger(vrt.getSpeedScore()) );
-            vrt.setStyleSpeed(sb.getScoreStyle());
+            vrt.setStyleSpeed(ScoreBox.GetStyleFromScore(floatToInteger(vrt.getSpeedScore()), ScoreBoxSizes.SMALL));
         }
         
         if ( vrt.getStyleScore() != null ) {
-            sb.setScore( floatToInteger(vrt.getStyleScore()) );
-            vrt.setStyleStyle(sb.getScoreStyle());
+            vrt.setStyleStyle(ScoreBox.GetStyleFromScore(floatToInteger(vrt.getStyleScore()), ScoreBoxSizes.SMALL));
         }
         
     }

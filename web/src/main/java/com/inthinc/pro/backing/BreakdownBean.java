@@ -113,8 +113,7 @@ public class BreakdownBean extends BaseDurationBean
             init();
         }
 
-        ScoreBox sb = new ScoreBox(getOverallScore(), ScoreBoxSizes.LARGE);
-        setOverallScoreStyle(sb.getScoreStyle());
+        setOverallScoreStyle(ScoreBox.GetStyleFromScore(getOverallScore(), ScoreBoxSizes.LARGE));
     }
 
     private void init()

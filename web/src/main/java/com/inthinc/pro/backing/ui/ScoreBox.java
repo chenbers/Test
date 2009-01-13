@@ -5,6 +5,7 @@ public class ScoreBox
 	private Integer score; // value is 0 to 50 -- will be displayed divided by 10
 	private String scoreStyle;
 	private String size;
+
 	
 	// Color boxes define in PRD
 	//0-1   red
@@ -24,6 +25,8 @@ public class ScoreBox
 	
 	private void calculateScoreColor()  //To be removed.
 	{
+	    //setScoreStyle(this.GetStyleFromScore(this.score, this.size));
+	    
 		if(score == null || score < 0)
 		{
 		    setScoreStyle("score_" + size + "_na");
@@ -31,16 +34,16 @@ public class ScoreBox
 		}
 	    
 	    //Determine CSS Style
-		if( score <= 10 && score > 0){
+		if( score <= 10 && score >= 0){
 			setScoreStyle("score_" + size + "_1");
 		}
-		else if(score <= 20 && score > 0) {
+		else if(score <= 20 && score >= 0) {
 			setScoreStyle("score_" + size + "_2");
 		}
-		else if(score <= 30 && score > 0) {
+		else if(score <= 30 && score >= 0) {
 			setScoreStyle("score_" + size + "_3");
 		}
-		else if(score <= 40 && score > 0) {
+		else if(score <= 40 && score >= 0) {
 			setScoreStyle("score_" + size + "_4");
 		}
 		else {
@@ -59,16 +62,16 @@ public class ScoreBox
         }
 	    
 	    //Determine CSS Style
-        if( score <= 10 && score > 0){
+        if( score <= 10 && score >= 0){
             style = "score_" + size.toString() + "_1";
         }
-        else if(score <= 20 && score > 0) {
+        else if(score <= 20 && score >= 0) {
             style = "score_" + size.toString() + "_2";
         }
-        else if(score <= 30 && score > 0) {
+        else if(score <= 30 && score >= 0) {
             style = "score_" + size.toString() + "_3";
         }
-        else if(score <= 40 && score > 0) {
+        else if(score <= 40 && score >= 0) {
             style = "score_" + size.toString() + "_4";
         }
         else {
@@ -78,7 +81,7 @@ public class ScoreBox
         return style;
 	}
 	
-	public Integer getScore() {
+	public Integer getScoreNow() {
 		return score;
 	}
 
