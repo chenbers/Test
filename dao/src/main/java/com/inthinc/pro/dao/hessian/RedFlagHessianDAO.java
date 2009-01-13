@@ -12,11 +12,11 @@ public class RedFlagHessianDAO extends GenericHessianDAO<RedFlag, Integer> imple
 {
 
     @Override
-    public List<RedFlag> getRedFlags(Integer groupID)
+    public List<RedFlag> getRedFlags(Integer groupID, Integer count)
     {
         try
         {
-            List<RedFlag> redFlagList = getMapper().convertToModelObject(getSiloService().getRedFlags(groupID), RedFlag.class);
+            List<RedFlag> redFlagList = getMapper().convertToModelObject(getSiloService().getRedFlags(groupID, count), RedFlag.class);
             return redFlagList;
         }
         catch (EmptyResultSetException e)

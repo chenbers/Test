@@ -120,7 +120,7 @@ public class RedFlagsBeanTest extends BaseBeanTest
         assertEquals(new Integer(pageSize), redFlagsBean.getEnd());
         assertEquals(MockData.unitTestStats.totalWarningRedFlags, redFlagsBean.getMaxCount().intValue());
         
-        Event eventFilter = redFlagItems.get(0).getEvent();
+        Event eventFilter = redFlagItems.get(0).getRedFlag().getEvent();
         redFlagsBean.setEventFilter(eventFilter);
         
         redFlagItems = redFlagsBean.getTableData();

@@ -1,5 +1,7 @@
 package com.inthinc.pro.model;
 
+import java.util.TimeZone;
+
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
@@ -14,23 +16,23 @@ public class RedFlag extends BaseEntity
     @Column(updateable=false)
     private Boolean alert;
     
-    private Boolean cleared;
-    
     @Column(updateable=false)
     private Event event;
     
+    @Column(updateable=false)
+    private TimeZone timezone;
     
     public RedFlag()
     {
         
     }
-    public RedFlag(Integer redFlagID, RedFlagLevel level, Boolean alert, Boolean cleared, Event event)
+    public RedFlag(Integer redFlagID, RedFlagLevel level, Boolean alert, Event event, TimeZone timezone)
     {
         this.redFlagID = redFlagID;
         this.level = level;
         this.alert = alert;
-        this.cleared = cleared;
         this.event = event;
+        this.timezone = timezone;
     }
     
 
@@ -64,16 +66,6 @@ public class RedFlag extends BaseEntity
         this.alert = alert;
     }
 
-    public Boolean getCleared()
-    {
-        return cleared;
-    }
-
-    public void setCleared(Boolean cleared)
-    {
-        this.cleared = cleared;
-    }
-
     public Event getEvent()
     {
         return event;
@@ -82,6 +74,14 @@ public class RedFlag extends BaseEntity
     public void setEvent(Event event)
     {
         this.event = event;
+    }
+    public TimeZone getTimezone()
+    {
+        return timezone;
+    }
+    public void setTimezone(TimeZone timezone)
+    {
+        this.timezone = timezone;
     }
 
 

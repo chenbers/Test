@@ -15,7 +15,7 @@ public class AccountHessianDAO extends GenericHessianDAO<Account, Integer> imple
     {
         // if silo id is not provided -- get one from the back end
         Silo silo = getMapper().convertToModelObject(getSiloService().getNextSilo(), Silo.class);
-        return super.create(silo.getSiloID(), entity);
+        return super.create(silo.getSiloID() << 24, entity);
     }
 
 }

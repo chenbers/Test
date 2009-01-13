@@ -645,8 +645,9 @@ public class MockData
         event.setDriver(driver);
         event.setVehicle(vehicle);
         event.setAddressStr(addressStr[randomInt(0,2)]);
+        event.setGroupID(UnitTestStats.UNIT_TEST_GROUP_ID);
         storeObject(event, Event.class);
-        RedFlag redFlag = new RedFlag(idOffset+1, RedFlagLevel.valueOf(randomInt(1,3)), randomInt(0, 1) == 1, false, event);
+        RedFlag redFlag = new RedFlag(idOffset+1, RedFlagLevel.valueOf(randomInt(1,3)), randomInt(0, 1) == 1, event, driver.getPerson().getTimeZone());
         storeObject(redFlag);
         if (driver.getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID))
         {
@@ -660,9 +661,10 @@ public class MockData
         event.setDriverID(driver.getDriverID());
         event.setDriver(driver);
         event.setVehicle(vehicle);
+        event.setGroupID(UnitTestStats.UNIT_TEST_GROUP_ID);
         event.setAddressStr(addressStr[randomInt(0,2)]);
         storeObject(event, Event.class);
-        redFlag = new RedFlag(idOffset+2, RedFlagLevel.valueOf(randomInt(1,3)), randomInt(0, 1) == 1, false, event);
+        redFlag = new RedFlag(idOffset+2, RedFlagLevel.valueOf(randomInt(1,3)), randomInt(0, 1) == 1, event, driver.getPerson().getTimeZone());
         storeObject(redFlag);
         if (driver.getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID))
         {
@@ -677,8 +679,9 @@ public class MockData
         event.setDriver(driver);
         event.setVehicle(vehicle);
         event.setAddressStr(addressStr[randomInt(0,2)]);
+        event.setGroupID(UnitTestStats.UNIT_TEST_GROUP_ID);
         storeObject(event, Event.class);
-        redFlag = new RedFlag(idOffset+3, RedFlagLevel.valueOf(randomInt(1,3)), randomInt(0, 1) == 1, false, event);
+        redFlag = new RedFlag(idOffset+3, RedFlagLevel.valueOf(randomInt(1,3)), randomInt(0, 1) == 1, event, driver.getPerson().getTimeZone());
         storeObject(redFlag);
         if (driver.getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID))
         {
@@ -714,6 +717,7 @@ public class MockData
                         randomInt(15, 70), randomInt(10, 50), lat, lng, randomInt(50, 70),
                         randomInt(70, 90), randomInt(5, 20));
                 event.setAddressStr(addressStr[randomInt(0,2)]);
+                event.setGroupID(UnitTestStats.UNIT_TEST_GROUP_ID);
                 break;
             case 2:
                 Integer deltaVx = 0;
@@ -775,9 +779,10 @@ public class MockData
             event.setDriverID(driver.getDriverID());
             event.setDriver(driver);
             event.setVehicle(vehicle);
+            event.setGroupID(UnitTestStats.UNIT_TEST_GROUP_ID);
             storeObject(event, Event.class);
             Integer redFlagID = new Integer(idOffset+trip.getTripID() * MAX_EVENTS + eventCnt);
-            RedFlag redFlag = new RedFlag(redFlagID, RedFlagLevel.valueOf(randomInt(1,3)), randomInt(0, 1) == 1, false, event);
+            RedFlag redFlag = new RedFlag(redFlagID, RedFlagLevel.valueOf(randomInt(1,3)), randomInt(0, 1) == 1, event, driver.getPerson().getTimeZone());
             
             storeObject(redFlag);
             

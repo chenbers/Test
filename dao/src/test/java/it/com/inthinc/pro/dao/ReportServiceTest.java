@@ -16,9 +16,12 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.GroupHessianDAO;
 import com.inthinc.pro.dao.hessian.MpgHessianDAO;
+import com.inthinc.pro.dao.hessian.RoleHessianDAO;
 import com.inthinc.pro.dao.hessian.ScoreHessianDAO;
+import com.inthinc.pro.dao.hessian.StateHessianDAO;
 import com.inthinc.pro.dao.hessian.extension.HessianDebug;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
 import com.inthinc.pro.dao.hessian.proserver.ReportServiceCreator;
@@ -30,6 +33,9 @@ import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
+import com.inthinc.pro.model.app.DeviceSensitivityMapping;
+import com.inthinc.pro.model.app.Roles;
+import com.inthinc.pro.model.app.States;
 
 public class ReportServiceTest
 {
@@ -57,6 +63,33 @@ public class ReportServiceTest
 //        HessianDebug.debugOut = true;
 //        HessianDebug.debugRequest = true;
         
+        
+        initApp();
+        
+    }
+
+    private static void initApp()
+    {
+        StateHessianDAO stateDAO = new StateHessianDAO();
+        stateDAO.setSiloService(siloService);
+        
+        States states = new States();
+        states.setStateDAO(stateDAO);
+        states.init();
+
+        RoleHessianDAO roleDAO = new RoleHessianDAO();
+        roleDAO.setSiloService(siloService);
+
+        Roles roles = new Roles();
+        roles.setRoleDAO(roleDAO);
+        roles.init();
+        
+        DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
+        deviceDAO.setSiloService(siloService);
+
+        DeviceSensitivityMapping mapping = new DeviceSensitivityMapping();
+        mapping.setDeviceDAO(deviceDAO);
+        mapping.init();
         
     }
 

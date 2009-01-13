@@ -13,5 +13,5 @@ public interface RedFlagDAO extends GenericDAO<RedFlag, Integer>
      * @param groupID
      * @return
      */
-    List<RedFlag> getRedFlags(Integer groupID);
+    List<RedFlag> getRedFlags(Integer groupID, Integer count);
 }

@@ -17,7 +17,8 @@ public enum TableType implements BaseEnum
     ADMIN_ZONE_ALERTS(8, "ADMIN_ZONE_ALERTS"),
     ASSET_REPORT(9, "ASSET_REPORT"),
     DEVICE_REPORT(10, "DEVICE_REPORT"),
-    IDLING_REPORT(11, "IDLING_REPORT");
+    IDLING_REPORT(11, "IDLING_REPORT"),
+    EVENTS(12, "EVENTS");
 
     private String description;
     private int    code;

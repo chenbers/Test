@@ -47,7 +47,7 @@ public class RedFlagHessianDAOTest
     @Test
     public void getRedFlags()
     {
-        List<RedFlag>  redFlagList = redFlagHessianDAO.getRedFlags(UnitTestStats.UNIT_TEST_GROUP_ID);
+        List<RedFlag>  redFlagList = redFlagHessianDAO.getRedFlags(UnitTestStats.UNIT_TEST_GROUP_ID, 500);
         
         assertNotNull(redFlagList);
         assertEquals(MockData.unitTestStats.totalRedFlags, redFlagList.size());

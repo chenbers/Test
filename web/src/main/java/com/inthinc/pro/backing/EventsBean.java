@@ -8,38 +8,34 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
-import com.inthinc.pro.backing.ui.RedFlagReportItem;
+import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.EventDAO;
-import com.inthinc.pro.dao.RedFlagDAO;
 import com.inthinc.pro.dao.TablePreferenceDAO;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
-import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.TableType;
 
-public class RedFlagsBean extends BaseBean implements TablePrefOptions
+public class EventsBean extends BaseBean implements TablePrefOptions
 {
-    private static final Logger     logger                  = Logger.getLogger(RedFlagsBean.class);
+    private static final Logger     logger                  = Logger.getLogger(EventsBean.class);
 
-    private final static String COLUMN_LABEL_PREFIX = "redflags_";
-    
-    // TODO: what should this number be (settable by user?)
-    private static final Integer    RED_FLAG_COUNT = 500;
+    private final static String COLUMN_LABEL_PREFIX = "events_";
+    private final static Integer EVENT_CNT = 500;
 
     private static final Integer                 numRowsPerPg = 25;
     private Integer                 start;
     private Integer                 end;
     private Integer                 maxCount;
-    private List<RedFlagReportItem> tableData;
-    private List<RedFlagReportItem> filteredTableData;
+    private List<EventReportItem> tableData;
+    private List<EventReportItem> filteredTableData;
 
     private EventDAO                eventDAO;
-    private RedFlagDAO              redFlagDAO;
     private TablePreferenceDAO tablePreferenceDAO;
     
-    private RedFlagReportItem   clearItem;
+    private EventReportItem   clearItem;
     
     private EventCategory categoryFilter;
     private Event eventFilter;
@@ -54,8 +50,6 @@ public class RedFlagsBean extends BaseBean implements TablePrefOptions
     {
         // available columns
         AVAILABLE_COLUMNS = new ArrayList<String>();
-        AVAILABLE_COLUMNS.add("level");
-        AVAILABLE_COLUMNS.add("alerts");
         AVAILABLE_COLUMNS.add("date");
         AVAILABLE_COLUMNS.add("group");
         AVAILABLE_COLUMNS.add("category");
@@ -90,7 +84,7 @@ public class RedFlagsBean extends BaseBean implements TablePrefOptions
     }
 
 
-    public List<RedFlagReportItem> getTableData()
+    public List<EventReportItem> getTableData()
     {
         init();
         return getFilteredTableData();
@@ -116,11 +110,11 @@ public class RedFlagsBean extends BaseBean implements TablePrefOptions
             List<Integer> validEventTypes = EventMapper.getEventTypesInCategory(getCategoryFilter());
             if (validEventTypes != null)
             {
-                filteredTableData = new ArrayList<RedFlagReportItem>();
+                filteredTableData = new ArrayList<EventReportItem>();
         
-                for (RedFlagReportItem item : tableData)
+                for (EventReportItem item : tableData)
                 {
-                    if (validEventTypes.contains(item.getRedFlag().getEvent().getType()))
+                    if (validEventTypes.contains(item.getEvent().getType()))
                     {
                         filteredTableData.add(item);
                     }
@@ -129,11 +123,11 @@ public class RedFlagsBean extends BaseBean implements TablePrefOptions
         }
         if (getEventFilter() != null)
         {    
-            filteredTableData = new ArrayList<RedFlagReportItem>();
+            filteredTableData = new ArrayList<EventReportItem>();
     
-            for (RedFlagReportItem item : tableData)
+            for (EventReportItem item : tableData)
             {
-                if (item.getRedFlag().getEvent().getNoteID().equals(eventFilter.getNoteID()))
+                if (item.getEvent().getNoteID().equals(eventFilter.getNoteID()))
                 {
                     filteredTableData.add(item);
                     break;
@@ -142,14 +136,14 @@ public class RedFlagsBean extends BaseBean implements TablePrefOptions
         }
         if (searchText != null && !searchText.trim().isEmpty())
         {
-            ArrayList<RedFlagReportItem> searchTableData = new ArrayList<RedFlagReportItem>();
+            ArrayList<EventReportItem> searchTableData = new ArrayList<EventReportItem>();
             
-            for (RedFlagReportItem item : filteredTableData)
+            for (EventReportItem item : filteredTableData)
             {
                 if (item.getCategory().startsWith(searchText) ||
                     item.getGroup().startsWith(searchText) ||
                     item.getDetail().startsWith(searchText) ||
-                    item.getRedFlag().getLevel().toString().startsWith(searchText))
+                    item.getLevel().toString().startsWith(searchText))
                 {
                     searchTableData.add(item);
                 }
@@ -164,30 +158,26 @@ public class RedFlagsBean extends BaseBean implements TablePrefOptions
     private void initTableData()
     {
         setFilteredTableData(null);
-        
-        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(getUser().getGroupID(), RED_FLAG_COUNT);
-        List<RedFlagReportItem> redFlagReportItemList = new ArrayList<RedFlagReportItem>();
-        for (RedFlag redFlag : redFlagList)
+
+        List<Event> eventList = getEventsForGroup(getUser().getGroupID());
+//        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(getUser().getGroupID());
+        List<EventReportItem> EventReportItemList = new ArrayList<EventReportItem>();
+        for (Event event : eventList)
         {
-            redFlagReportItemList.add(new RedFlagReportItem(redFlag, getGroupHierarchy()));
+            EventReportItemList.add(new EventReportItem(event, null, getGroupHierarchy()));
         }
-        setTableData(redFlagReportItemList);
+        setTableData(EventReportItemList);
 
     }
 
-    public void setTableData(List<RedFlagReportItem> tableData)
+    private List<Event> getEventsForGroup(Integer groupID)
+    {
+        return eventDAO.getMostRecentEvents(groupID, EVENT_CNT);
+    }
+
+    public void setTableData(List<EventReportItem> tableData)
     {
         this.tableData = tableData;
-    }
-
-    public RedFlagDAO getRedFlagDAO()
-    {
-        return redFlagDAO;
-    }
-
-    public void setRedFlagDAO(RedFlagDAO redFlagDAO)
-    {
-        this.redFlagDAO = redFlagDAO;
     }
 
     public Integer getStart()
@@ -233,23 +223,22 @@ public class RedFlagsBean extends BaseBean implements TablePrefOptions
     }
 
 
-    public RedFlagReportItem getClearItem()
+    public EventReportItem getClearItem()
     {
         return clearItem;
     }
 
-    public void setClearItem(RedFlagReportItem clearItem)
+    public void setClearItem(EventReportItem clearItem)
     {
         this.clearItem = clearItem;
     }
     
     public void clearItemAction()
     {
-        eventDAO.forgive(clearItem.getRedFlag().getEvent().getDriverID(), clearItem.getRedFlag().getEvent().getNoteID());
-        
+//        clearItem.getRedFlag().setCleared(true);
+        eventDAO.forgive(clearItem.getEvent().getDriverID(), clearItem.getEvent().getNoteID());
         tableData.remove(clearItem);
         filteredTableData.remove(clearItem);
-        // todo: persist in DAO
     }
 
     public EventCategory getCategoryFilter()
@@ -272,12 +261,12 @@ public class RedFlagsBean extends BaseBean implements TablePrefOptions
         this.categoryFilter = categoryFilter;
     }
 
-    public List<RedFlagReportItem> getFilteredTableData()
+    public List<EventReportItem> getFilteredTableData()
     {
         return filteredTableData;
     }
 
-    public void setFilteredTableData(List<RedFlagReportItem> filteredTableData)
+    public void setFilteredTableData(List<EventReportItem> filteredTableData)
     {
         this.filteredTableData = filteredTableData;
     }
@@ -364,7 +353,7 @@ public class RedFlagsBean extends BaseBean implements TablePrefOptions
     @Override
     public TableType getTableType()
     {
-        return TableType.RED_FLAG;
+        return TableType.EVENTS;
     }
 
     @Override
@@ -377,12 +366,6 @@ public class RedFlagsBean extends BaseBean implements TablePrefOptions
     {
         this.tablePreferenceDAO = tablePreferenceDAO;
     }
-
-    // wrappers for tablePref
-//    public String saveColumns()
-//    {
-//        return tablePref.saveColumns();
-//    }
     public Map<String, TableColumn> getTableColumns()
     {
         return tablePref.getTableColumns();

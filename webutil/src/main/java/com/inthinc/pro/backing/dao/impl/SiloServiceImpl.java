@@ -367,7 +367,7 @@ public class SiloServiceImpl implements SiloService
     }
 
     @Override
-    public List<Map<String, Object>> getRedFlags(@DaoParam(name="groupID")Integer groupID) throws ProDAOException
+    public List<Map<String, Object>> getRedFlags(@DaoParam(name="groupID")Integer groupID, @DaoParam(name="count")Integer count) throws ProDAOException
     {
         // TODO Auto-generated method stub
         return null;
