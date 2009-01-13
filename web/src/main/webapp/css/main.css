@@ -697,6 +697,11 @@ span.yes {
 	padding: 0 5px 0 25px;
 }
 
+span.ok {
+	background: url(../images/btn_apply.png) left no-repeat;
+	padding: 0 10px 0 25px;
+}
+
 /* INLINE PICKER */
 div.picker {
 	margin: 1px;
