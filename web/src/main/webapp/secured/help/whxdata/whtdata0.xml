@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<tocdata>
+<item name="Welcome" url="Welcome.htm" />
+<book name="Home" url="Home.htm" >
+  <item name="Overall Score" url="Overall_Score-Fleet_Level.htm" />
+  <item name="Overall Score" url="Overall_Score-Division_Level.htm" />
+  <item name="Overall Score" url="Overall_Score_-_Team_Level.htm" />
+  <item name="Overall Score" url="Overall_Score_Driver.htm" />
+  <item name="Driving Style" url="Driving_Style.htm" />
+  <item name="Speed" url="Speed.htm" />
+  <item name="Seat Belt" url="Seat_Belt.htm" />
+</book>
+<book name="Reports" url="Reports.htm" >
+  <item name="Drivers" url="Drivers.htm" />
+  <item name="Vehicles" url="Vehicles.htm" />
+  <item name="Idling" url="Idling.htm" />
+  <item name="Devices" url="Devices.htm" />
+</book>
+<item name="Live Fleet" url="Live_Fleet.htm" />
+<item name="Red Flags" url="Red_Flags.htm" />
+<book name="Admin" url="Admin.htm" >
+  <book name="People" url="Admin_People.htm" >
+    <item name="Add a Person" url="Add_a_Person.htm" />
+  </book>
+  <book name="Vehicles" url="Vehicles.htm" >
+    <item name="Add a Vehicle - Details" url="Admin_Add_Vehicle_-_Details.htm" />
+    <item name="Add a Vehicle - Speed and Sensitivity" url="Add_a_Vehicle_-_Speed_and_Sensitivity.htm" />
+  </book>
+  <book name="Devices" url="Admin_Devices.htm" >
+    <item name="Add a Device - Details" url="Add_a_Device_-_Details.htm" />
+    <item name="Add a Device - Speed and Sensitivity" url="Add_a_Device_-_Speed_and_Sensitivity.htm" />
+  </book>
+  <book name="Zones" url="Zones.htm" >
+    <item name="Add Zone" url="Admin_Add_Zone.htm" />
+  </book>
+  <book name="Zone Alerts" url="Admin_Zone_Alert.htm" >
+    <item name="Add Zone Alert" url="Add_Zone_Alert.htm" />
+  </book>
+  <item name="Red Flags" url="Admin_Red_Flags.htm" />
+  <book name="Red Flags" >
+    <item name="Add Profile" url="Admin_Add_Profile.htm" />
+  </book>
+  <item name="Organization" url="Organization.htm" />
+  <item name="Speed by Street" url="Speed_by_Street.htm" />
+</book>
+
+</tocdata>
