@@ -434,6 +434,14 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
                 }
             }
 
+            // driver license expiration
+            if (person.isDriverSelected() && (person.getDriver().getExpiration() != null) && person.getDriver().getExpiration().before(new Date()))
+            {
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_expirationTooSoon"), null);
+                context.addMessage("edit-form:driver_expiration", message);
+                valid = false;
+            }
+
             // unique username
             if (person.isUserSelected())
             {
@@ -461,15 +469,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView>
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_userOrDriver"), null);
                 context.addMessage("edit-form:isUser", message);
                 valid = false;
-            }
-            else
-            {
-                if ((person.getDriver().getExpiration() != null) && person.getDriver().getExpiration().before(new Date()))
-                {
-                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_expirationTooSoon"), null);
-                    context.addMessage("edit-form:driver_expiration", message);
-                    valid = false;
-                }
             }
         }
         return valid;
