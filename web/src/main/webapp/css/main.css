@@ -110,7 +110,7 @@ body {
 	background: transparent url(../images/ico_event.png) no-repeat center left;
 	}
 	
-.panel_title span.warning {
+.panel_title span.warningtitle {
 	padding: 0 0 0 20px;
 	background: transparent url(../images/ico_critical.png) no-repeat center left;
 	}
