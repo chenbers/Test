@@ -354,12 +354,7 @@ public class VehicleReportBean extends BaseReportBean implements TablePrefOption
         getReportRenderer().exportReportToEmail(reportCriteria,getEmailAddress());
     }
     
-    public void exportReportToExcel()
-    {
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_REPORT,getGroupHierarchy().getTopGroup().getName(),getAccountName());
-        reportCriteria.setMainDataset(vehicleData);
-        getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
-    }
+   
 
     public String getSecret()
     {
