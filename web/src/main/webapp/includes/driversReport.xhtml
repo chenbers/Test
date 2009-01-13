@@ -37,18 +37,19 @@
 						</h:outputLink>											
     				</rich:column>
     				<rich:column rendered="#{driverColumns['employeeID'].visible}" 
-    					sortBy="#{item.employeeID}">
+    					sortBy="#{item.driver.person.empid}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_userID}" />
       					</f:facet>
-						<h:outputText value="#{item.employeeID}" />      
+						<h:outputText value="#{item.driver.person.empid}" />      
     				</rich:column>
     				<rich:column rendered="#{driverColumns['employee'].visible}" 
-    					sortBy="#{item.employee}">    					
+    					sortBy="#{item.driver.person.first}">    					
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_driver}" />
       					</f:facet>
-      					<h:commandLink action="go_driver" value="#{item.employee}">
+      					<h:commandLink action="go_driver" 
+      						value="#{item.driver.person.first} #{item.driver.person.last}">
 							<f:setPropertyActionListener 
 								value="#{item.driver}" 
 								target="#{navigationBean.driver}">
