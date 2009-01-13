@@ -338,14 +338,14 @@ public class SiloServiceImpl implements SiloService
     }
     
     @Override
-    public Map<String, Object> forgive(@DaoParam(name="driverID")Integer driverID, @DaoParam(name="noteID")Long noteID) throws ProDAOException;
+    public Map<String, Object> forgive(@DaoParam(name="driverID")Integer driverID, @DaoParam(name="noteID")Long noteID) throws ProDAOException
     {
         // TODO Auto-generated method stub
         return null;
     }
     
     @Override
-    public Map<String, Object> unforgive(@DaoParam(name="driverID")Integer driverID, @DaoParam(name="noteID")Long noteID) throws ProDAOException;
+    public Map<String, Object> unforgive(@DaoParam(name="driverID")Integer driverID, @DaoParam(name="noteID")Long noteID) throws ProDAOException
     {
         // TODO Auto-generated method stub
         return null;
