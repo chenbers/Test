@@ -36,6 +36,8 @@
 									<a4j:form id="outerDriverReport">	
 									
 										<h:inputHidden value="#{driverReportBean.secret}"/>
+										
+										<h:inputHidden id="searchParam" value="#{driverReportBean.searchFor}"/>
 																		
 										<div class="msg">
 											<p id="redflag">
@@ -61,7 +63,7 @@
             								</li>
             								<li class="l">
             									<a4j:commandButton action="#{driverReportBean.search}" 
-            										reRender="items,topScroller,bottomScroller,headerDrivers" styleClass="left">
+            										reRender="items,topScroller,bottomScroller,headerDrivers,searchParam" styleClass="left">
             											<span class="search">
             												<h:outputText value="#{messages.button_search}" />
             											</span>
