@@ -25,6 +25,7 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
 {
     
     private static final Logger logger = Logger.getLogger(EventHessianDAO.class);
+    private static final Integer EXCLUDE_FORGIVEN = 0;
     public EventHessianDAO()
     {
         super();
@@ -66,7 +67,7 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
         {
             Integer[] eventTypesArray = eventTypes.toArray(new Integer[0]);
             
-            return getMapper().convertToModelObject(getSiloService().getDriverNote(driverID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), eventTypesArray), Event.class);
+            return getMapper().convertToModelObject(getSiloService().getDriverNote(driverID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), EXCLUDE_FORGIVEN, eventTypesArray), Event.class);
         }
         catch (EmptyResultSetException e)
         {
@@ -81,7 +82,7 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
         {
             Integer[] eventTypesArray = eventTypes.toArray(new Integer[0]);
 
-            return getMapper().convertToModelObject(getSiloService().getVehicleNote(vehicleID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), eventTypesArray), Event.class);
+            return getMapper().convertToModelObject(getSiloService().getVehicleNote(vehicleID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), EXCLUDE_FORGIVEN, eventTypesArray), Event.class);
         }
         catch (EmptyResultSetException e)
         {
@@ -167,12 +168,8 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
             List<Event> driverEvents = getEventsForDriver(driver.getDriverID(), startDate, endDate, eventTypeList);
             for (Event event : driverEvents)
             {
-// TODO: should backend filter these out?                
-                if (event.getForgiven().intValue() == 0)
-                {
-                    event.setDriver(driver);
-                    eventList.add(event);
-                }
+                event.setDriver(driver);
+                eventList.add(event);
             }
         }
         return eventList;

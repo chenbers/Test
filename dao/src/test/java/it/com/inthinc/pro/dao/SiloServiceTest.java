@@ -327,14 +327,13 @@ public class SiloServiceTest
         Date endDate = new Date();
         Date startDate = DateUtil.getDaysBackDate(endDate, 365);
         
-        List<Integer> type = new ArrayList<Integer>();
-        type.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
       
         List<Event> result = 
             eventDAO.getEventsForDriver(
-                    TESTING_DRIVER_ID,startDate,endDate,type);
+                    TESTING_DRIVER_ID,startDate,endDate,EventMapper.getEventTypesInCategory(EventCategory.VIOLATION));
         
         assertNotNull(result);
+
         
         if ( result != null )
         {
@@ -344,6 +343,28 @@ public class SiloServiceTest
                         " speed " + r.getSpeed() + 
                         " lat " + r.getLatitude() +
                         " lng " + r.getLongitude());
+            }
+            
+            int size = result.size();
+            if (size > 0)
+            {
+                Event e = result.get(0);
+                eventDAO.forgive(e.getDriverID(), e.getNoteID());
+                
+                List<Event> newResult = 
+                    eventDAO.getEventsForDriver(
+                            TESTING_DRIVER_ID,startDate,endDate,EventMapper.getEventTypesInCategory(EventCategory.VIOLATION));
+                
+                assertEquals("list size should be 1 less after forgive", (size-1), newResult.size());
+                
+                eventDAO.unforgive(e.getDriverID(), e.getNoteID());
+                
+                newResult = 
+                    eventDAO.getEventsForDriver(
+                            TESTING_DRIVER_ID,startDate,endDate,EventMapper.getEventTypesInCategory(EventCategory.VIOLATION));
+                
+                assertEquals("list size should be same after forgive/unforgive", size, newResult.size());
+                
             }
         } else 
         {
