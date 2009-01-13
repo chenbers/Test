@@ -89,7 +89,7 @@ public class DriverReportBean extends BaseReportBean implements TablePrefOptions
         //  search on main menu. This accounts for a search
         //  from the main menu w/ never having been to the 
         //  Drivers report page.
-        if ( (super.isMainMenu()) || (searchFor.trim().length() != 0) ) {  
+        if (  super.isMainMenu() ) {  
             checkOnSearch();
             super.setMainMenu(false);
         } else {
@@ -160,8 +160,8 @@ public class DriverReportBean extends BaseReportBean implements TablePrefOptions
                         matchedDrivers.add(d);
                     }
                     
-                    // driver id
-                    String lowerCaseEmployeeID = d.getDriver().getPerson().getUser().getUsername();                        
+                    // emp id
+                    String lowerCaseEmployeeID = d.getDriver().getPerson().getEmpid();
                     index3 = 
                         lowerCaseEmployeeID.indexOf(trimmedSearch);                    
                     if ((index1 == -1) && 
@@ -348,11 +348,18 @@ public class DriverReportBean extends BaseReportBean implements TablePrefOptions
 
     public String getSecret()
     {
-        searchFor = checkForRequestMap();        
+        String searchForLocal = checkForRequestMap();
+        String search = searchForLocal.toLowerCase().trim();
+        if ( (search.length() != 0) && (!search.equalsIgnoreCase(this.searchFor)) ) 
+        {
+            this.searchFor = searchForLocal.toLowerCase().trim();
+        }
               
-        if ( super.isMainMenu() || searchFor.trim().length() != 0 ) {  
+        if ( super.isMainMenu() ) {  
             checkOnSearch();
             super.setMainMenu(false);
+        } else if ( this.searchFor.trim().length() != 0 ) {
+            checkOnSearch();
         } else {
             loadResults(this.driversData);
         }   

@@ -284,11 +284,18 @@ public class DeviceReportBean extends BaseReportBean implements TablePrefOptions
 
     public String getSecret()
     {
-        searchFor = checkForRequestMap();        
+        String searchForLocal = checkForRequestMap();
+        String search = searchForLocal.toLowerCase().trim();
+        if ( (search.length() != 0) && (!search.equalsIgnoreCase(this.searchFor)) ) 
+        {
+            this.searchFor = searchForLocal.toLowerCase().trim();
+        }
               
         if ( super.isMainMenu() ) {  
             checkOnSearch();
             super.setMainMenu(false);
+        } else if ( this.searchFor.trim().length() != 0 ) {
+            checkOnSearch();
         } else {
             loadResults(this.devicesData);
         }   
