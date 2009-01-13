@@ -9,7 +9,7 @@ public class Device extends BaseEntity
 {
     
     @Column(updateable = false)
-    public static final Integer DEFAULT_LEVEL = 3;
+    public static final Integer DEFAULT_LEVEL = 4;
 
     @Column(updateable = false)
     public static final int NUM_SPEEDS = 15;
