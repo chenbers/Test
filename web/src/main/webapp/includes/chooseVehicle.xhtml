@@ -45,11 +45,11 @@
             <h:outputText value="#{item.name}" />
           </rich:column>
           <rich:column sortBy="#{item.driver}">
-            <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_driver}" /></f:facet>
+            <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_driverID}" /></f:facet>
             <h:outputText value="#{item.driver.person.first}" /><h:outputText value=" " /><h:outputText value="#{item.driver.person.last}" />
           </rich:column>
           <rich:column sortBy="#{item.group.name}">
-            <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_group}" /></f:facet>
+            <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_groupID}" /></f:facet>
             <h:outputText value="#{item.group.name}" />
           </rich:column>
           <rich:column sortBy="#{item.status}">
