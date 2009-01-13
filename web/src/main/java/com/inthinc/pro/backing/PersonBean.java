@@ -149,9 +149,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             final int offsetHours = timeZone.getRawOffset() / MILLIS_PER_HOUR;
             final int offsetMinutes = Math.abs((timeZone.getRawOffset() % MILLIS_PER_HOUR) / MILLIS_PER_MINUTE);
             if (offsetHours < 0)
-                TIMEZONES.put(timeZone.getDisplayName() + " (GMT" + offsetHours + ':' + format.format(offsetMinutes) + ')', timeZone);
+                TIMEZONES.put(timeZone.getID() + " (GMT" + offsetHours + ':' + format.format(offsetMinutes) + ')', timeZone);
             else
-                TIMEZONES.put(timeZone.getDisplayName() + " (GMT+" + offsetHours + ':' + format.format(offsetMinutes) + ')', timeZone);
+                TIMEZONES.put(timeZone.getID() + " (GMT+" + offsetHours + ':' + format.format(offsetMinutes) + ')', timeZone);
         }
 
         // license classes
