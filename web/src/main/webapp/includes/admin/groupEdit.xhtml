@@ -69,84 +69,63 @@
 				align="center">
 				<h:outputText rendered="#{groupTreeNode.group.type ne 'FLEET'}">
 					<tr>
-						<td width="100">#{messages.group_parent_group}:</td>
+						<td width="100">#{messages.group_parent_group}:
+						<span class="required">*</span></td>
 						<td>
-						<table>
-							<tr>
-								<td><h:selectOneMenu
+				
+							<rich:message for="parent_group"
+									errorClass="field-error" fatalClass="field-error"
+									warnClass="field-warning" infoClass="field-info"
+									styleClass="field-msg" /><h:selectOneMenu
 									value="#{organizationBean.selectedParentGroup}"
 									id="parent_group" converter="SimpleBeanConverter"
 									required="true" requiredMessage="#{messages.required}">
 									<f:selectItems value="#{organizationBean.parentGroups}" />
-								</h:selectOneMenu></td>
-							</tr>
-							<tr>
-								<td><rich:message for="parent_group"
-									errorClass="field-error" fatalClass="field-error"
-									warnClass="field-warning" infoClass="field-info"
-									styleClass="field-msg" /></td>
-							</tr>
-						</table>
+								</h:selectOneMenu>
 						</td>
 					</tr>
 					<tr>
-						<td width="100">#{messages.group_group_type}:</td>
+						<td width="100">#{messages.group_group_type}:
+						<span class="required">*</span></td>
 						<td>
-						<table>
-							<tr>
-								<td><h:selectOneMenu value="#{groupTreeNode.group.type}"
+						<rich:message for="group_type" errorClass="field-error"
+									fatalClass="field-error" warnClass="field-warning"
+									infoClass="field-info" styleClass="field-msg" /><h:selectOneMenu value="#{groupTreeNode.group.type}"
 									id="group_type" converter="SimpleBeanConverter" required="true"
 									requiredMessage="#{messages.required}">
 									<f:selectItems value="#{organizationBean.groupTypeList}" />
-								</h:selectOneMenu></td>
-							</tr>
-							<tr>
-								<td><rich:message for="group_type" errorClass="field-error"
-									fatalClass="field-error" warnClass="field-warning"
-									infoClass="field-info" styleClass="field-msg" /></td>
-							</tr>
-						</table>
+								</h:selectOneMenu>
 						</td>
 					</tr>
 					
 				</h:outputText>
 				<tr>
-					<td width="100">#{messages.group_name}:</td>
-					<td><h:inputText value="#{groupTreeNode.group.name}"
-						id="group_name" styleClass="text" size="30" maxlength="126"
-						required="true" requiredMessage="#{messages.required}" /> <rich:message
-						for="group_name" errorClass="field-error" fatalClass="field-error"
-						warnClass="field-warning" infoClass="field-info"
-						styleClass="field-msg" /></td>
+					<td width="100">#{messages.group_name}:
+					<span class="required">*</span></td>
+					<td>
+						<rich:message for="group_name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+						<h:inputText value="#{groupTreeNode.group.name}" id="group_name" styleClass="text" size="30" maxlength="30" required="true" requiredMessage="#{messages.required}" /> 
+					</td>
 				</tr>
 				<tr>
 					<td width="100">#{messages.group_description}:</td>
-					<td><h:inputTextarea
-						value="#{groupTreeNode.group.description}" style="width:100%" /></td>
+					<td><h:inputTextarea value="#{groupTreeNode.group.description}" style="width:100%" /></td>
 				</tr>
-				
 				<tr>
 					<td width="100">#{messages.group_manager}:</td>
 					<td>
-					<table>
-						<tr>
-							<td><h:selectOneMenu id="group_manager"
+						<rich:message for="group_manager" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+						<h:selectOneMenu id="group_manager"
 								value="#{groupTreeNode.group.managerID}"
 								requiredMessage="#{messages.required}">
 								<f:selectItems value="#{organizationBean.peopleSelectItems}" />
-							</h:selectOneMenu></td>
-						</tr>
-						<tr>
-							<td><rich:message for="group_manager"
-								errorClass="field-error" fatalClass="field-error"
-								warnClass="field-warning" infoClass="field-info"
-								styleClass="field-msg" /></td>
-						</tr>
-					</table>
+						</h:selectOneMenu>
 					</td>
 				</tr>
 
 			</table>
+			
+			<div class="required-key"><h:outputText value="#{messages.requiredKey}" /></div>
 			</td>
 		</tr>
 	</table>
