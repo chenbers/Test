@@ -376,7 +376,7 @@
 					<textElement textAlignment="Right" verticalAlignment="Bottom">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$V{PAGE_NUMBER} + " of " + $V{REPORT_COUNT}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$V{PAGE_NUMBER} + " of " + $V{PAGE_COUNT}]]></textFieldExpression>
 				</textField>
 			</band>
 		</pageFooter>
