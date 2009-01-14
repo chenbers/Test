@@ -8,9 +8,11 @@
   	
 <div id="header">
 	<div id="logo">
-		<h:outputLink value="#{facesContext.externalContext.requestContextPath}/secured/home.faces">
-			<h:graphicImage width="80px" height="80px" value="/images/x.gif" style="border:none"/>
-		</h:outputLink>
+		<h:form id="headerForm">
+			<h:commandLink action="#{navigationBean.homeAction}">
+				<h:graphicImage width="80px" height="80px" value="/images/x.gif" style="border:none"/>
+			</h:commandLink>
+		</h:form>
 	</div>
 	<div id="horz_nav">
 	<h:form id="header-form">
