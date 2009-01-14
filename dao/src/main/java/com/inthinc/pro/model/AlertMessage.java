@@ -1,15 +1,23 @@
 package com.inthinc.pro.model;
 
+import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
 public class AlertMessage extends BaseEntity
 {
 
     @ID
+    @Column(name = "msgID")
     private Integer messageID;
     
+    @Column(name = "deliveryMethodID")
     private AlertMessageDeliveryType alertMessageDeliveryType;
+    
+    @Column(name = "alertTypeID")
     private AlertMessageType alertMessageType;
+    
+    private RedFlagLevel level;     
+    
     private String address;         // delivery address (e.g. the email address dave@mydomain.com)
     private String message;         // the text of the message (e.g "dave was speeding at 9...")
     
@@ -66,6 +74,14 @@ public class AlertMessage extends BaseEntity
     public void setAlertMessageType(AlertMessageType alertMessageType)
     {
         this.alertMessageType = alertMessageType;
+    }
+    public RedFlagLevel getLevel()
+    {
+        return level;
+    }
+    public void setLevel(RedFlagLevel level)
+    {
+        this.level = level;
     }
 
 }
