@@ -45,10 +45,11 @@
 			<!-- leave reRenderList alone -->	
 				<ui:include src="/includes/liveFleetMap.xhtml">
 					<ui:param name="mapheight" value="height:580px"/>
-					<ui:param name="mapwidth" value="width:458px"/>
+					<ui:param name="mapwidth" value="width:450px"/>
 					<ui:param name="mapxcenter" value="#{navigationBean.group.mapLat}"/>
 					<ui:param name="mapycenter" value="#{navigationBean.group.mapLng}"/>
 					<ui:param name="mapzoom" value="#{navigationBean.group.mapZoom}"/>
+					<ui:param name="flyOutImage" value="" />  
 				</ui:include>
 			<!-- END PANEL -->
              

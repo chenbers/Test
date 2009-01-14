@@ -427,10 +427,10 @@ var selected = 'OVERALL';
 								<f:facet name="header">
 									<h:outputText value="Posted Speed" />
 								</f:facet>
-								<strong><h:outputText value="#{item.speedLimit} #{messages.measurement_speed}" /></strong><br />	
+								<strong><h:outputText value="#{item.speedLimit} #{messages.measurement_speed}" /></strong>
 								<a4j:commandButton onclick="javascript:Richfaces.showModalPanel('SLChangeRequestPanel',{lat:'#{item.latitude}',lon:'#{item.longitude}'});"  
 												title="#{messages.sbs_submitRequest}" image="../images/ico_limit_edit.png"
-												style="vertical-align:middle; margin-left:5px">
+												style="vertical-align:middle;margin-left:10px">
 								</a4j:commandButton>
 								
 							</rich:column>

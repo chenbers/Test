@@ -235,7 +235,7 @@ public class DriverLocationBean extends BaseBean {
     public String driverAction(){
     	
     	Map<String,String> requestMap = new WebUtil().getRequestParameterMap();
-    	String driverID = requestMap.get("id");
+    	String driverID = requestMap.get("driverId");
 //    	Driver d = driverLastLocations.get(new Integer(driverID)).getDriver();
 //    	logger.debug("driverAction driver is: "+d.getDriverID()+" "+d.getPerson().getFirst());
     	navigation.setDriver(driverLastLocations.get(new Integer(driverID)).getDriver());
