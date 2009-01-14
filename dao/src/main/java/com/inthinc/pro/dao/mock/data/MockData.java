@@ -750,7 +750,7 @@ public class MockData
                     deltaVz = -21;
                 }
                 
-                int severity = randomInt(0, 100);
+                int severity = randomInt(1, 5);
                 event = new AggressiveDrivingEvent(id, vehicle.getVehicleID(), EventMapper.TIWIPRO_EVENT_NOTEEVENT,
                             date,
                         randomInt(15, 70), randomInt(10, 50), lat, lng,
