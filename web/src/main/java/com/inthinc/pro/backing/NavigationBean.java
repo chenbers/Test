@@ -42,7 +42,7 @@ public class NavigationBean extends BaseDurationBean
     
     // LiveFleet result count property.
     // Unable to persist maxCount in liveFleetBean with Tomahawk when using a4j:jsFunction
-    private Integer liveFleetCount = 10; 
+    private Integer liveFleetCount;
     
     public NavigationBean()
     {
@@ -219,6 +219,7 @@ public class NavigationBean extends BaseDurationBean
 
     public void setLiveFleetCount(Integer liveFleetCount)
     {
+        logger.debug("Count being set to: " + liveFleetCount);
         this.liveFleetCount = liveFleetCount;
     }
     

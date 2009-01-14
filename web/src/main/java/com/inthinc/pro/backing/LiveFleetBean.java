@@ -1,6 +1,5 @@
 package com.inthinc.pro.backing;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -12,28 +11,26 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.map.MapIcon;
 import com.inthinc.pro.map.MapIconFactory;
-import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.util.WebUtil;
 
 public class LiveFleetBean extends BaseBean
 {
-    private static final Logger  logger        = Logger.getLogger(LiveFleetBean.class);
-    
-    private NavigationBean       navigation;
-    private GroupDAO             groupDAO;
-    private DriverDAO            driverDAO;
-    private LatLng               addressLatLng;
-    private Integer              addressZoom;
-    private Integer              maxCount;
-    private Integer              numRecords;
-    private List<DriverLocation> drivers;  
-    private IconMap              mapIconMap;
-    private IconMap              legendIconMap;
-    private GroupHierarchy       organizationHierarchy;
+    private static final Logger logger = Logger.getLogger(LiveFleetBean.class);
+
+    private NavigationBean navigation;
+    private GroupDAO groupDAO;
+    private DriverDAO driverDAO;
+    private LatLng addressLatLng;
+    private Integer addressZoom;
+    private Integer maxCount;
+    private Integer numRecords;
+    private List<DriverLocation> drivers;
+    private IconMap mapIconMap;
+    private IconMap legendIconMap;
+    private GroupHierarchy organizationHierarchy;
 
     public void initBean()
     {
@@ -41,32 +38,29 @@ public class LiveFleetBean extends BaseBean
         organizationHierarchy = new GroupHierarchy(groupDAO.getGroupsByAcctID(getAccountID()));
         addressLatLng = organizationHierarchy.getTopGroup().getMapCenter();
         addressZoom = organizationHierarchy.getTopGroup().getMapZoom();
-        
+        if(maxCount == null)
+            maxCount = 10;  
+
     }
-    
+
     public void FormAction()
     {
-        logger.debug("ACTION drivers count: " + navigation.getLiveFleetCount().toString());
         logger.debug("ACTION driver size " + drivers.size());
     }
-    
-    // DRIVER LAST LOCATION PROPERTIES
-    public List<DriverLocation> getDrivers()
+
+    private void populateDriverLocations()
     {
-        if(drivers != null && drivers.size() > 0) return drivers;
-        
-        logger.debug("getDriver hit.");   
-        
-        logger.debug("getDrivers trying to get: " + navigation.getLiveFleetCount());
-        
-        //Get drivers
+        logger.debug("getDriver hit.");
+
+
+        // Get drivers
         Group fleetGroup = organizationHierarchy.getTopGroup();
-        setDrivers(driverDAO.getDriversNearLoc(fleetGroup.getGroupID(), navigation.getLiveFleetCount(), addressLatLng.getLat(), addressLatLng.getLng()));
+        setDrivers(driverDAO.getDriversNearLoc(fleetGroup.getGroupID(), maxCount, addressLatLng.getLat(), addressLatLng.getLng()));
         setNumRecords(drivers.size());
-        
+
         logger.debug("getDrivers retieved: " + drivers.size());
-        
-        //Get colored map icons.
+
+        // Get colored map icons.
         MapIconFactory mif = new MapIconFactory();
         List<MapIcon> mapIcons = mif.getMapIcons(MapIconFactory.IconType.MARKER, 24);
         Iterator<MapIcon> mapIconIt = mapIcons.iterator();
@@ -79,10 +73,16 @@ public class LiveFleetBean extends BaseBean
                 mapIconMap.addIcon(driver.getGroupID(), mapIconIt.next().getUrl());
             }
         }
-    
+    }
+
+    // DRIVER LAST LOCATION PROPERTIES
+    public List<DriverLocation> getDrivers()
+    {
+        if (drivers == null || drivers.isEmpty())
+            populateDriverLocations();
         return drivers;
     }
-   
+
     public void setDrivers(List<DriverLocation> drivers)
     {
         this.drivers = drivers;
@@ -152,6 +152,7 @@ public class LiveFleetBean extends BaseBean
     {
         logger.debug("setting count. to " + maxCount.toString());
         this.maxCount = maxCount;
+        populateDriverLocations();
     }
 
     public IconMap getMapIconMap()
@@ -163,7 +164,7 @@ public class LiveFleetBean extends BaseBean
     {
         this.mapIconMap = mapIconMap;
     }
-    
+
     public Integer getNumRecords()
     {
         return numRecords;
@@ -174,12 +175,13 @@ public class LiveFleetBean extends BaseBean
         this.numRecords = numRecords;
     }
 
-    public String driverAction() {
-        
-        Map<String,String> requestMap = new WebUtil().getRequestParameterMap();
+    public String driverAction()
+    {
+
+        Map<String, String> requestMap = new WebUtil().getRequestParameterMap();
         String driverID = requestMap.get("id");
 
-        navigation.setDriver(driverDAO.findByID( Integer.parseInt(driverID) ));
+        navigation.setDriver(driverDAO.findByID(Integer.parseInt(driverID)));
 
         return "go_driver";
     }
