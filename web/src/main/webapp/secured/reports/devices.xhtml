@@ -78,10 +78,12 @@
             								</a4j:commandLink>
             								
             							</li>  
-            							<li class="r grid_icon"><img id="devicesReportToolImageId"
-												src="#{facesContext.externalContext.request.contextPath}/images/ico_tools.png" />
-											</li>
-											<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
+            							<li class="r grid_icon">
+            								<h:panelGroup id="devicesReportToolImageId">
+													<h:graphicImage value="/images/ico_tools.png"/>
+											</h:panelGroup>
+										</li>
+										<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
 											</li>
             							<li class="r text">
             								<h:outputFormat id="headerDevices" value="#{messages.redflags_recordCountHeader}">

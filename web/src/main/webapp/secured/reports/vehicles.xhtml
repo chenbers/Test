@@ -75,8 +75,10 @@
             										<h:outputText value="#{messages.button_editColumns}" />
             									</a4j:commandLink>            									
             								</li>  
-            								<li class="r grid_icon"><img id="vehicleReportToolImageId"
-												src="#{facesContext.externalContext.request.contextPath}/images/ico_tools.png" />
+            								<li class="r grid_icon">
+            									<h:panelGroup id="vehicleReportToolImageId">
+													<h:graphicImage value="/images/ico_tools.png"/>
+												</h:panelGroup>
 											</li>
 											<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
 											</li>
