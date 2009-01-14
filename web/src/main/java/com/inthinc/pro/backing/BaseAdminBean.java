@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
+import org.apache.commons.beanutils.NestedNullException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -32,10 +33,10 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     private boolean               displayed;
     private T                     item;
     private boolean               batchEdit;
+    private boolean               selectAll;
     private Map<String, Boolean>  updateField;
     protected TablePreferenceDAO  tablePreferenceDAO;
     protected TablePreference     tablePreference;
-
     private TablePref             tablePref;
 
     public void initBean()
@@ -212,6 +213,10 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
                     for (final String word : words)
                         if (word.contains(filterWord))
                             return true;
+                }
+                catch (NestedNullException e)
+                {
+                    // ignore nested nulls
                 }
                 catch (Exception e)
                 {
@@ -564,6 +569,35 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
             selected.add(item);
 
         return selected;
+    }
+
+    /**
+     * @return Whether all filtered items are selected.
+     */
+    public boolean isSelectAll()
+    {
+        selectAll = true;
+        for (final T t : getFilteredItems())
+            if (!t.isSelected())
+                selectAll = false;
+        return selectAll;
+    }
+
+    /**
+     * Selectes or deselects all filtered items.
+     * 
+     * @param select
+     *            Whether to select or deselect the items.
+     */
+    public void setSelectAll(boolean select)
+    {
+        this.selectAll = select;
+    }
+
+    public void doSelectAll()
+    {
+        for (final T t : getFilteredItems())
+            t.setSelected(selectAll);
     }
 
     /**

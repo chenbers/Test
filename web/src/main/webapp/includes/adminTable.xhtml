@@ -113,7 +113,9 @@ TODO: the top scroller doesn't work right with filtering
               rows="#{rows}" rowClasses="tableOdd,tableEven" width="100%">
               <rich:column>
                 <f:facet name="header">
-                  <h:outputText value=" " />
+                  <h:selectBooleanCheckbox value="#{editorBean.selectAll}">
+                    <a4j:support event="onclick" action="#{editorBean.doSelectAll}" ajaxSingle="true" reRender="dataTable" limitToList="true" />
+                  </h:selectBooleanCheckbox>
                 </f:facet>
                 <h:selectBooleanCheckbox value="#{item.selected}">
                   <a4j:support event="onclick" reRender="confirmDelete" limitToList="true" />
