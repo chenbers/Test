@@ -20,7 +20,6 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.AggressiveDrivingEvent;
 import com.inthinc.pro.model.Distance;
-import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
@@ -91,11 +90,11 @@ public class VehicleSeatBeltBean extends BaseDurationBean
 
         //Start XML Data
         sb.append(line.getControlParameters());
-
+        
         List<ScoreableEntity> scoreList = scoreDAO.getVehicleScoreHistory(
-                navigation.getVehicle().getVehicleID(), getDuration(), scoreType, 
-                GraphicUtil.getDurationSize(getDuration()));
-//                10);        
+                navigation.getVehicle().getVehicleID(), getDuration(), scoreType,
+                GraphicUtil.getDurationSize(getDuration()));                
+//                10);
         DateFormat dateFormatter = new SimpleDateFormat(getDuration().getDatePattern());
 
         // Get "x" values
@@ -104,12 +103,12 @@ public class VehicleSeatBeltBean extends BaseDurationBean
         int cnt = 0;
         for (ScoreableEntity e : scoreList)
         {            
-            sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt)}));
+            sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt) }));
 //          sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), 
-//                    dateFormatter.format(e.getCreated()) }));                        
+//              dateFormatter.format(e.getCreated()) }));
             cnt++;
         }
-        
+
         //End XML Data
         sb.append(line.getClose());
 
@@ -136,18 +135,17 @@ public class VehicleSeatBeltBean extends BaseDurationBean
     }
 
     //SEATBELT EVENTS LIST
-    public List<SeatBeltEvent> getSeatBeltEvents() {
-        
+    public List<SeatBeltEvent> getSeatBeltEvents() 
+    {
         if(seatBeltEvents.size() < 1)
         {
             List<Integer> types = new ArrayList<Integer>();    
-            types.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
+            types.add(3);
             
             List<Event> tempEvents = new ArrayList<Event>();
             tempEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), getStartDate(), getEndDate(), types);
            
             AddressLookup lookup = new AddressLookup();
-            
             for(Event event: tempEvents)
             {
                 event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));

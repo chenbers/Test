@@ -20,7 +20,6 @@ import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Distance;
-import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
@@ -88,22 +87,23 @@ public class VehicleStyleBean extends BaseDurationBean
         sb.append(line.getControlParameters());
 
         List<ScoreableEntity> scoreList = scoreDAO.getVehicleScoreHistory(
-                navigation.getVehicle().getVehicleID(), getDuration(), scoreType, 
-                GraphicUtil.getDurationSize(getDuration()));
-//                10);        
+                navigation.getVehicle().getVehicleID(), getDuration(), scoreType,
+                GraphicUtil.getDurationSize(getDuration()));                
+//                10);
         DateFormat dateFormatter = new SimpleDateFormat(getDuration().getDatePattern());
 
         // Get "x" values
         List<String> monthList = GraphicUtil.createMonthList(getDuration());
-        
+
         int cnt = 0;
         for (ScoreableEntity e : scoreList)
         {            
             sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt)}));
 //          sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), 
-//                    dateFormatter.format(e.getCreated()) }));                        
+//                    dateFormatter.format(e.getCreated()) }));            
             cnt++;
         }
+        
         //End XML Data
         sb.append(line.getClose());
 
@@ -292,14 +292,13 @@ public class VehicleStyleBean extends BaseDurationBean
         if(styleEvents.size() < 1)
         {
             List<Integer> types = new ArrayList<Integer>();    
-            types.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
+            types.add(2);
             
             List<Event> tempEvents = new ArrayList<Event>();
          
             tempEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), getStartDate(), getEndDate(), types);
            
             AddressLookup lookup = new AddressLookup();
-            
             for(Event event: tempEvents)
             {
                 event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));

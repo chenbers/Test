@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.TripDisplay;
+import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.IdleEvent;
@@ -21,13 +22,13 @@ public class VehicleTripsBean extends BaseBean
     private static final Logger logger            = Logger.getLogger(VehicleTripsBean.class);
 
     private NavigationBean      navigation;
-    private VehicleDAO          vehicleDAO;
+    private VehicleDAO           vehicleDAO;
     private EventDAO            eventDAO;
 
     private Date                startDate         = new Date();
     private Date                endDate           = new Date();
 
-    private Integer             milesDriven       = 0;
+    private Double              milesDriven       = 0.0D;
     private Integer             idleSeconds       = 0;
     private Integer             numTrips          = 0;
     private Integer             totalDriveSeconds = 0;
@@ -44,16 +45,22 @@ public class VehicleTripsBean extends BaseBean
 
     public void init()
     {
+        // TODO set startDate to 7 days ago 12:00:00AM and endDate to Today 11:59:59PM and when dates change.
+        
         // Set start date to 7 days ago.
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, -7);
         startDate = calendar.getTime();
+        
+        if(navigation.getVehicle() == null)
+            return;
 
         initTrips();
     }
 
     public void initTrips()
     {
+        logger.debug("InitTrips");
         List<Trip> tempTrips = new ArrayList<Trip>();
         tempTrips = vehicleDAO.getTrips(navigation.getVehicle().getVehicleID(), startDate, endDate);
 
@@ -62,9 +69,6 @@ public class VehicleTripsBean extends BaseBean
 
         for (Trip trip : tempTrips)
         {
-            if (trip.getStartTime().before(startDate)) // ??
-                continue;
-
             trips.add(0, new TripDisplay(trip));
         }
 
@@ -72,6 +76,8 @@ public class VehicleTripsBean extends BaseBean
 
         if (numTrips > 0)
         {
+            logger.debug(numTrips.toString() + "Trips Found.");
+            
             selectedTrips.add(trips.get(0));
 
             Date vStart = selectedTrips.get(0).getTrip().getStartTime();
@@ -85,6 +91,7 @@ public class VehicleTripsBean extends BaseBean
 
     public void initViolations(Date start, Date end)
     {
+        logger.debug("Get Events");
         List<Integer> vioTypes = new ArrayList<Integer>();
         vioTypes.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
         vioTypes.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
@@ -93,23 +100,35 @@ public class VehicleTripsBean extends BaseBean
         List<Integer> idleTypes = new ArrayList<Integer>();
         idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
 
+        // TODO use one list. add idle events and sort by time.  JSF to check event type for which image to use.
+        
         violationEvents = new ArrayList<Event>();
         violationEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), start, end, vioTypes);
 
+        //Lookup Addresses for events
+        AddressLookup lookup = new AddressLookup();
+        for (Event event: violationEvents)
+        {
+            event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
+        }
+        
         idleEvents = new ArrayList<Event>();
         idleEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), start, end, idleTypes);
-
     }
 
     public void generateStats()
     {
+        logger.debug("Generate Stats");
+        milesDriven = 0D;
+        totalDriveSeconds = 0;
+        idleSeconds = 0;
+        
         for (TripDisplay trip : trips)
         {
-            if (trip.getTrip().getStartTime().before(startDate)) // ??
-                continue;
-
             milesDriven += trip.getTrip().getMileage();
-            totalDriveSeconds += DateUtil.convertDateToSeconds(trip.getTrip().getEndTime()) - DateUtil.convertDateToSeconds(trip.getTrip().getStartTime());
+       
+            Long tempLong = (trip.getDurationMiliSeconds() / 1000L);
+            totalDriveSeconds += tempLong.intValue();
         }
 
         for (Event event : idleEvents)
@@ -152,12 +171,12 @@ public class VehicleTripsBean extends BaseBean
     }
 
     // MILES PROPERTIES
-    public Integer getMilesDriven()
+    public Double getMilesDriven()
     {
         return milesDriven / 100;
     }
 
-    public void setMilesDriven(Integer milesDriven)
+    public void setMilesDriven(Double milesDriven)
     {
         this.milesDriven = milesDriven;
     }
@@ -216,7 +235,7 @@ public class VehicleTripsBean extends BaseBean
         this.showLastTenTrips = showLastTenTrips;
         selectedTrips.clear();
 
-        if (showLastTenTrips)
+        if (showLastTenTrips == true)
         {
             int count = 0;
             for (TripDisplay trip : trips)
