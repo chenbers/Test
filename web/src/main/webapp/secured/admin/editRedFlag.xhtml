@@ -62,7 +62,7 @@
                             <td>
                               <rich:message for="name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                               <h:inputText value="#{redFlagAlertsBean.item.name}" id="name" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                maxlength="30" required="#{(not redFlagAlertsBean.batchEdit) or redFlagAlertsBean.updateField['name']}" requiredMessage="#{messages.required}" />
+                                maxlength="30" validatorMessage="#{messages.required}" />
                             </td>
                           </tr>
                           <tr>
