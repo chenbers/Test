@@ -190,7 +190,7 @@
                                     <h:outputText value=" mph" />
                                   </td>
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" width="200">
-                                    <rich:inputNumberSlider id="#{id}" value="#{redFlagAlertsBean.item.speedSettings[index]}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="-25" maxValue="25" step="1" onchange="checkMultiple(this.mainTable.id); document.getElementById(this.mainTable.id + 'Selected').checked = true; document.getElementById(this.mainTable.id + 'MPH').innerHTML = this.value" />
+                                    <rich:inputNumberSlider id="#{id}" value="#{redFlagAlertsBean.item.speedSettings[index]}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="0" maxValue="25" step="1" onchange="checkMultiple(this.mainTable.id); document.getElementById(this.mainTable.id + 'Selected').checked = true; document.getElementById(this.mainTable.id + 'MPH').innerHTML = this.value" />
                                   </td>
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <h:outputText id="#{id}MPH" value="#{redFlagAlertsBean.item.speedSettings[index]}" />
