@@ -25,7 +25,7 @@
 	</ui:define>
 
 	<ui:param name="reportsSelected" value="current" />
-	
+	<ui:param name="helpFile" value="Seat_Belt.htm" />
 	<t:saveState value="#{driverSeatBeltBean.seatBeltEvents}"/>
 	<t:saveState value="#{driverBean.clearItem}" />
 
@@ -294,7 +294,8 @@
 
 </rich:modalPanel>
  <!-- START FORGIVE MODAL -->
-			
+ 
+<!-- START LOCATION MODAL -->			
 <rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">
       
 	<f:facet name="header">
@@ -316,6 +317,7 @@
 	 	</a4j:commandButton>
     </div>
 </rich:modalPanel>
-		
+<!-- END LOCATION MODAL -->
+
 </ui:define>
 </ui:composition>

@@ -313,7 +313,7 @@ public class MockData
         {
             
             Integer odometer = randomInt(500, 5000);
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 30; i++)
             {
                 DVQMap dvqMap = new DVQMap();
                 dvqMap.setDriver(driver);

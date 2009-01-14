@@ -27,6 +27,7 @@
 	</ui:define>
 
 	<ui:param name="reportsSelected" value="current" />
+	<ui:param name="helpFile" value="Speed.htm" />
 
 	<t:saveState value="#{driverSpeedBean.speedingEvents}"/>
 	<t:saveState value="#{driverBean.clearItem}" />
@@ -442,7 +443,7 @@ var selected = 'OVERALL';
 								<strong><h:outputText value="#{item.avgSpeed} #{messages.measurement_speed}" /></strong>
 								<br />
 					            <h:outputText class="red" value="+"/>
-					            <h:outputText class="red" value="#{speed.avgSpeed - speed.speedLimit}" converter="SpeedConverter" />
+					            <h:outputText class="red" value="#{item.avgSpeed - item.speedLimit}" converter="SpeedConverter" />
 							</rich:column>
 							
 							<rich:column sortBy="#{item.topSpeed}">
@@ -452,7 +453,7 @@ var selected = 'OVERALL';
 								<strong><h:outputText value="#{item.topSpeed} #{messages.measurement_speed}" /></strong>
 								<br />
               					<h:outputText class="red" value="+"/>
-        					    <h:outputText class="red" value="#{speed.topSpeed - speed.speedLimit}" converter="SpeedConverter" />
+        					    <h:outputText class="red" value="#{item.topSpeed - item.speedLimit}" converter="SpeedConverter" />
 							</rich:column>
 							
 							<rich:column sortBy="#{item.distance}">
@@ -485,7 +486,7 @@ var selected = 'OVERALL';
  </div>
  <!-- START FORGIVE MODAL -->
 <rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="350">
-      <t:saveState value="#{driverBean.clearItem}" />
+<t:saveState value="#{driverBean.clearItem}" />
       <f:facet name="header">
         <h:outputText value="Clear Event" />
       </f:facet>
@@ -494,7 +495,7 @@ var selected = 'OVERALL';
       </f:facet>
 
       <h:panelGroup layout="block" styleClass="popupsubtitle">
-      	<h:outputText value="Clear the following Event?"/>
+      	<h:outputText value="Clear the following Event? This action is irreversible."/>
       </h:panelGroup>
 
       <a4j:form id="clearItemForm">
