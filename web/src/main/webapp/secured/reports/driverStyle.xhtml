@@ -25,7 +25,8 @@
 	</ui:define>
 
 	<ui:param name="reportsSelected" value="current" />
-	
+	<ui:param name="helpFile" value="Driving_Style.htm" />
+		
 	<t:saveState value="#{driverStyleBean.styleEvents}"/>
 	<t:saveState value="#{driverBean.clearItem}" />
 	
@@ -412,9 +413,9 @@ var selected = 'OVERALL';
 								<f:facet name="header">
 									<h:outputText value="Severity" />
 								</f:facet>
-								<div class="#{(item.severity gt 65) ? 'sev_bar_ex' : ''}
-											#{(item.severity lt 66) and (item.severity gt 32) ? 'sev_bar_med' : ''}
-											#{(item.severity lt 33) ? 'sev_bar_low' : ''}"></div>
+								<div class="#{(item.severity gt 4) ? 'sev_bar_ex' : ''}
+											#{(item.severity lt 5) and (item.severity gt 2) ? 'sev_bar_med' : ''}
+											#{(item.severity lt 3) ? 'sev_bar_low' : ''}"></div>
 							</rich:column>
 							
 							<rich:column>
@@ -445,7 +446,8 @@ var selected = 'OVERALL';
 <div class="panel_sw">
 	<div class="panel_statusbar"></div>
 </div>
- <!-- START FORGIVE MODAL -->
+
+<!-- START FORGIVE MODAL -->
 <rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="350">
       <t:saveState value="#{driverBean.clearItem}" />
       <f:facet name="header">
@@ -479,12 +481,11 @@ var selected = 'OVERALL';
 	          				<f:setPropertyActionListener target="#{driverBean.clearItem}" value="#{driverBean.clearItem}" />
 			</a4j:commandLink> 		
         </div>
-
       </a4j:form>
-
 </rich:modalPanel>
- <!-- START FORGIVE MODAL -->
+<!-- END FORGIVE MODAL -->
 
+<!-- START LOCATION MODAL -->
 <rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">
 	<f:facet name="header">
     	<h:outputText value="Event Location" />
@@ -505,6 +506,7 @@ var selected = 'OVERALL';
 	 	</a4j:commandButton>
     </div>
 </rich:modalPanel>
+<!-- END LOCATION MODAL -->
 
 </ui:define>
 </ui:composition>
