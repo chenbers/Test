@@ -49,66 +49,72 @@
 						<td><h:panelGroup styleClass="map-border" layout="block">
 							<div id="map-canvas"
 								style="width: 500px; height: 500px; border: 0"></div>
-							</h:panelGroup> <script type="text/javascript">	
-					
-											    
-							if (GBrowserIsCompatible()) {
-								
-								GUnload();
+							</h:panelGroup> 
+							<script type="text/javascript">	
+
+							
+							
+							function initMap(){			    
+								if (GBrowserIsCompatible()) {
 									
-						  					
-								map = new GMap2(document.getElementById("map-canvas"));
+									GUnload();
 										
-								map.addControl(new GMapTypeControl());
-								map.setMapType(G_NORMAL_MAP);
-								map.setCenter(new GLatLng(#{latValue},#{longValue}),#{zoomLevel});
-					
-								GEvent.addListener(map, "moveend", function() {
-									  var center = map.getCenter();
-									  var zoom = map.getZoom();
-									  updateMapValues(center.lat(),center.lng(),zoom);
-								});
-					
-								function updateMapValues(lat,lng,zoom){
-					
-									var latField = document.getElementById('#{formName}:#{uniqueID}-latvalue');
-									var longField = document.getElementById('#{formName}:#{uniqueID}-longvalue');
-									var zoomField = document.getElementById('#{formName}:#{uniqueID}-zoomlevel');
-					
-									latField.value = lat;
-									longField.value = lng;
-									zoomField.value = zoom;
-								};
-												
-								<h:outputText rendered="#{readOnly}">
-									map.disableDragging();
-									map.disableScrollWheelZoom();
-									map.disableDoubleClickZoom();
-								</h:outputText>
-								<h:outputText rendered="#{not readOnly}">
-									map.enableGoogleBar();
-									map.addControl(new GLargeMapControl());
-								</h:outputText>
-					
-							}
-					
-							function showAddress(address) {
-								  var geocoder = new GClientGeocoder();
-								
-								  geocoder.getLatLng(
-								    address,
-								    function(point) {
-								      if (!point) {
-								        alert(address + " not found");
-								      } else {
-								        map.setCenter(point, 13);
-								        var marker = new GMarker(point);
-								        map.addOverlay(marker);
-								        marker.openInfoWindowHtml(address);
-								      }
-								    }
-								  );
+							  					
+									map = new GMap2(document.getElementById("map-canvas"));
+											
+									map.addControl(new GMapTypeControl());
+									map.setMapType(G_NORMAL_MAP);
+									map.setCenter(new GLatLng(#{latValue},#{longValue}),#{zoomLevel});
+						
+									GEvent.addListener(map, "moveend", function() {
+										  var center = map.getCenter();
+										  var zoom = map.getZoom();
+										  updateMapValues(center.lat(),center.lng(),zoom);
+									});
+						
+									function updateMapValues(lat,lng,zoom){
+						
+										var latField = document.getElementById('#{formName}:#{uniqueID}-latvalue');
+										var longField = document.getElementById('#{formName}:#{uniqueID}-longvalue');
+										var zoomField = document.getElementById('#{formName}:#{uniqueID}-zoomlevel');
+						
+										latField.value = lat;
+										longField.value = lng;
+										zoomField.value = zoom;
+									};
+													
+									<h:outputText rendered="#{readOnly}">
+										map.disableDragging();
+										map.disableScrollWheelZoom();
+										map.disableDoubleClickZoom();
+									</h:outputText>
+									<h:outputText rendered="#{not readOnly}">
+										map.enableGoogleBar();
+										map.addControl(new GLargeMapControl());
+									</h:outputText>
+						
 								}
+					
+								function showAddress(address) {
+									  var geocoder = new GClientGeocoder();
+									
+									  geocoder.getLatLng(
+									    address,
+									    function(point) {
+									      if (!point) {
+									        alert(address + " not found");
+									      } else {
+									        map.setCenter(point, 13);
+									        var marker = new GMarker(point);
+									        map.addOverlay(marker);
+									        marker.openInfoWindowHtml(address);
+									      }
+									    }
+									  );
+								}
+							}
+
+							initMap();
 						</script> <h:inputText id="#{uniqueID}-latvalue" style="display:none" value="#{latValue}" />
 						<h:inputText id="#{uniqueID}-longvalue" style="display:none"
 										value="#{longValue}" /> <h:inputText id="#{uniqueID}-zoomlevel"
