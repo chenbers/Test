@@ -367,9 +367,19 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     @Override
     public List<ScoreableEntity> getDriverScoreHistory(Integer driverID, Duration duration, ScoreType scoreType, Integer count)
     {
+        // Temporary fix, will need to fix on db and web side
+        //  for a duration code of 0 or 1, set the passed code to 0, this
+        //      implies we are asking for DAILY scores
+        //  for any of the month codes, 2 or 3 or 4 or 5, set it to 2, this
+        //      implies we are asking for MONTHLY scores
+        int localDuration = findDuration(duration);
+        int localCount = findCount(duration);
+         
         try
         {
-            List<Map<String, Object>> list = reportService.getDTrendByDTC(driverID, duration.getCode(), count);
+            List<Map<String, Object>> list = reportService.getDTrendByDTC(
+                    driverID, localDuration, localCount);
+//                    driverID, duration.getCode(), count);
             List<DriveQMap> driveQList = getMapper().convertToModelObject(list, DriveQMap.class);
 
             List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
@@ -381,7 +391,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 entity.setEntityType(EntityType.ENTITY_DRIVER);
                 entity.setScoreType(scoreType);
                 Integer score = driveQMap.getScoreMap().get(scoreType);
-                entity.setScore((score == null) ? 0 : score);
+                entity.setScore((score == null) ? 50 : score);                
                 entity.setCreated(driveQMap.getCreated());
                 scoreList.add(entity);
             }
@@ -397,9 +407,19 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     @Override
     public List<ScoreableEntity> getVehicleScoreHistory(Integer vehicleID, Duration duration, ScoreType scoreType, Integer count)
     {
+        // Temporary fix, will need to fix on db and web side
+        //  for a duration code of 0 or 1, set the passed code to 0, this
+        //      implies we are asking for DAILY scores
+        //  for any of the month codes, 2 or 3 or 4 or 5, set it to 2, this
+        //      implies we are asking for MONTHLY scores
+        int localDuration = findDuration(duration);
+        int localCount = findCount(duration);
+        
         try
         {
-            List<Map<String, Object>> list = reportService.getVTrendByVTC(vehicleID, duration.getCode(), count);
+            List<Map<String, Object>> list = reportService.getVTrendByVTC(
+                    vehicleID, localDuration, localCount);
+//                    vehicleID, duration.getCode(), count);
             List<DriveQMap> driveQList = getMapper().convertToModelObject(list, DriveQMap.class);
 
             List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
@@ -411,7 +431,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 entity.setEntityType(EntityType.ENTITY_VEHICLE);
                 entity.setScoreType(scoreType);
                 Integer score = driveQMap.getScoreMap().get(scoreType);
-                entity.setScore((score == null) ? 0 : score);
+                entity.setScore((score == null) ? 50 : score);
                 entity.setCreated(driveQMap.getCreated());
                 scoreList.add(entity);
             }
@@ -743,4 +763,41 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
     }
 
+    private int findDuration(Duration duration) 
+    {
+        int localDuration = -1;
+        if (        duration == Duration.DAYS ) {
+            localDuration = 0;
+        
+        } else if ( duration == Duration.THREE ) {
+            localDuration = 2;
+        
+        } else if ( duration == Duration.SIX ) {
+            localDuration = 2;     
+        
+        } else if ( duration == Duration.TWELVE ) {
+            localDuration = 2;
+        }
+        
+        return localDuration;
+    }     
+    
+    private int findCount(Duration duration) 
+    {
+        int localCount = -1;
+        if (        duration == Duration.DAYS ) {
+            localCount = 30;
+        
+        } else if ( duration == Duration.THREE ) {
+            localCount = 3;
+        
+        } else if ( duration == Duration.SIX ) {
+            localCount = 6;        
+        
+        } else if ( duration == Duration.TWELVE ) {
+            localCount = 12;
+        }
+        
+        return localCount;
+    }          
 }
