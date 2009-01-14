@@ -23,17 +23,17 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
-	<parameter name="ACCOUNT_NAME" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="ACCOUNT_NAME" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA[""]]></defaultValueExpression>
+	</parameter>
 	<parameter name="ENTITY_NAME" isForPrompting="false" class="java.lang.String"/>
 
-	<field name="employeeID" class="java.lang.String"/>
-	<field name="employee" class="java.lang.String"/>
-	<field name="overallScore" class="java.lang.Float"/>
-	<field name="speedScore" class="java.lang.Float"/>
-	<field name="styleScore" class="java.lang.Float"/>
-	<field name="seatBeltScore" class="java.lang.Float"/>
+	<field name="device.name" class="java.lang.String"/>
 	<field name="vehicle.name" class="java.lang.String"/>
-	<field name="milesDriven" class="java.lang.Integer"/>
+	<field name="device.imei" class="java.lang.String"/>
+	<field name="device.phone" class="java.lang.String"/>
+	<field name="device.status.description" class="java.lang.String"/>
+	<field name="device.ephone" class="java.lang.String"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -137,72 +137,59 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<text><![CDATA[User ID]]></text>
+				<text><![CDATA[Device ID]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						x="72"
 						y="12"
-						width="151"
+						width="141"
 						height="16"
 						key="staticText-3"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<text><![CDATA[Driver/Vehicle]]></text>
+				<text><![CDATA[Assigned Vehicle]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="338"
+						x="293"
 						y="12"
-						width="45"
+						width="83"
 						height="16"
 						key="staticText-4"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<text><![CDATA[Overall]]></text>
+				<text><![CDATA[Device Phone #]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="383"
+						x="376"
 						y="12"
-						width="46"
+						width="58"
 						height="16"
 						key="staticText-5"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<text><![CDATA[Speed]]></text>
+				<text><![CDATA[Status]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
-						x="429"
+						x="434"
 						y="12"
-						width="47"
+						width="96"
 						height="16"
 						key="staticText-6"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<text><![CDATA[Style]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="477"
-						y="12"
-						width="54"
-						height="16"
-						key="staticText-7"/>
-					<box></box>
-					<textElement verticalAlignment="Middle">
-						<font/>
-					</textElement>
-				<text><![CDATA[Seat Belt]]></text>
+				<text><![CDATA[E-Call Phone # ]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -228,7 +215,7 @@
 				</rectangle>
 				<staticText>
 					<reportElement
-						x="263"
+						x="213"
 						y="12"
 						width="75"
 						height="16"
@@ -237,13 +224,13 @@
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<text><![CDATA[Miles Driven]]></text>
+				<text><![CDATA[IMEI]]></text>
 				</staticText>
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="43"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+			<band height="25"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="5"
 						y="3"
@@ -254,89 +241,63 @@
 					<textElement rotation="None">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{employeeID}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{device.name}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="74"
 						y="3"
-						width="189"
+						width="139"
 						height="17"
 						key="textField-2"/>
 					<box></box>
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{employee}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{vehicle.name}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="###0.0" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="###0.0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="338"
+						x="293"
 						y="3"
-						width="45"
+						width="83"
 						height="17"
 						key="textField-4"/>
 					<box></box>
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{overallScore}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{device.phone}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="383"
+						x="376"
 						y="3"
-						width="46"
+						width="58"
 						height="17"
 						key="textField-5"/>
 					<box></box>
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{speedScore}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{device.status.description}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="429"
+						x="434"
 						y="3"
-						width="47"
+						width="96"
 						height="17"
 						key="textField-6"/>
 					<box></box>
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{styleScore}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{device.ephone}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="###0.0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="477"
-						y="3"
-						width="54"
-						height="17"
-						key="textField-7"/>
-					<box></box>
-					<textElement>
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{seatBeltScore}.toString()]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="74"
-						y="20"
-						width="189"
-						height="17"
-						key="textField-9"/>
-					<box></box>
-					<textElement>
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{vehicle.name}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="###0.0" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="263"
+						x="213"
 						y="3"
 						width="75"
 						height="17"
@@ -345,12 +306,12 @@
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{milesDriven}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{device.imei}]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
 						x="0"
-						y="40"
+						y="22"
 						width="534"
 						height="0"
 						forecolor="#999999"
@@ -365,27 +326,10 @@
 		</columnFooter>
 		<pageFooter>
 			<band height="24"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="305"
-						y="7"
-						width="226"
-						height="12"
-						key="textField-11"/>
-					<box></box>
-					<textElement textAlignment="Right" verticalAlignment="Bottom">
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$V{PAGE_NUMBER} + " of " + $V{PAGE_COUNT}]]></textFieldExpression>
-				</textField>
 			</band>
 		</pageFooter>
-		<lastPageFooter>
-			<band height="50"  isSplitAllowed="true" >
-			</band>
-		</lastPageFooter>
 		<summary>
-			<band height="50"  isSplitAllowed="true" >
+			<band height="0"  isSplitAllowed="true" >
 			</band>
 		</summary>
 </jasperReport>

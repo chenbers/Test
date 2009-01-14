@@ -432,4 +432,11 @@ public class DriverReportBean extends BaseReportBean implements TablePrefOptions
         reportCriteria.setMainDataset(driverData);
         getReportRenderer().exportReportToEmail(reportCriteria,getEmailAddress());
     }
+    
+    public void exportReportToExcel()
+    {
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_REPORT,getGroupHierarchy().getTopGroup().getName(),getAccountName());
+        reportCriteria.setMainDataset(driverData);
+        getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
+    }
 }

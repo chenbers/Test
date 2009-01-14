@@ -13,15 +13,15 @@ import com.inthinc.pro.reports.ReportRenderer;
 public class BaseReportBean extends BaseBean
 {
     private static final Logger logger = Logger.getLogger(BaseReportBean.class);
-    
+
     private boolean mainMenu;
     private AccountDAO accountDAO;
     private String emailAddress;
     private ReportRenderer reportRenderer;
-   
-    
-    public BaseReportBean(){
-        
+
+    public BaseReportBean()
+    {
+
     }
 
     protected String checkForRequestMap()
@@ -32,38 +32,42 @@ public class BaseReportBean extends BaseBean
         Map m = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         Iterator imap = m.entrySet().iterator();
 
-        //if there is a map, the request came from the
-        //  main menu search, so grab it
-        while (imap.hasNext()) {
+        // if there is a map, the request came from the
+        // main menu search, so grab it
+        while (imap.hasNext())
+        {
             Map.Entry entry = (Map.Entry) imap.next();
             String key = (String) entry.getKey();
             String value = (String) entry.getValue();
 
-            //search parm, either from the search in the main menu or
-            //  one from the report
-            if ( key.equalsIgnoreCase("searchFor")  ) {              
+            // search parm, either from the search in the main menu or
+            // one from the report
+            if (key.equalsIgnoreCase("searchFor"))
+            {
                 searchFor = value;
                 mainMenu = true;
             }
         }
-        
+
         return searchFor;
     }
-    
+
     protected Integer floatToInteger(float value)
-    {       
-        Float fTmp = new Float(value*10.0);             
-        return fTmp.intValue() ;
-    }   
-    
-    protected String formatPhone(String incoming) 
     {
-        return  "(" + 
-            incoming.substring(0,3) +
-                ") " +
-            incoming.substring(3,6) +
-                "-" +
-            incoming.substring(6,10);
+        Float fTmp = new Float(value * 10.0);
+        return fTmp.intValue();
+    }
+
+    protected String formatPhone(String incoming)
+    {
+        String result = "";
+
+        if (incoming != null)
+        {
+            result = "(" + incoming.substring(0, 3) + ") " + incoming.substring(3, 6) + "-" + incoming.substring(6, 10);
+        }
+
+        return result;
     }
 
     public boolean isMainMenu()

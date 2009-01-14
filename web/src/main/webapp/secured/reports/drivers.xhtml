@@ -106,6 +106,12 @@
 										action="#{driverReportBean.exportReportToPdf}"
 										id="export_menu_item">
 									</rich:menuItem>
+									<rich:menuItem ajaxSingle="true"
+										iconDisabled="/images/ico_excel.png" icon="/images/ico_excel.png"
+										value="Export To Excel"
+										action="#{driverReportBean.exportReportToExcel}"
+										id="exportExcelMEnuItem">
+									</rich:menuItem>
 								</rich:contextMenu>
 								<div class="datagrid">
 								<ui:include src="/includes/driversReport.xhtml">	

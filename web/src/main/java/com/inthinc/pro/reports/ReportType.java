@@ -10,9 +10,9 @@ import java.util.Map;
 public enum ReportType
 {
     DRIVER_REPORT("Driver Report","DriverReport.jrxml"),
-    VEHICLE_REPORT("Driver Report","VehicleReport.jrxml"),
-    IDLING_REPORT("Driver Report","IdlingReport.jrxml"),
-    DEVICES_REPORT("Driver Report","DevicesReport.jrxml"),
+    VEHICLE_REPORT("Vehicle Report","VehicleReport.jrxml"),
+    IDLING_REPORT("Idling Report","IdlingReport.jrxml"),
+    DEVICES_REPORT("Devices Report","DevicesReport.jrxml"),
     OVERALL_SCORE("Overal Score","ScorePieReport.jrxml"),
     TREND("Trend Report","TrendReport.jrxml"),
     MPG_GROUP("MPG Report","MPGGroupReport.jrxml");

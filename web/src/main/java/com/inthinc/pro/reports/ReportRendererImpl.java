@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.export.JExcelApiExporter;
+import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 
 import org.apache.log4j.Logger;
 import com.inthinc.pro.backing.ReportRendererBean;
@@ -40,12 +42,27 @@ public class ReportRendererImpl implements ReportRenderer
     }
     
     @Override
+    public void exportReportToExcel(List<ReportCriteria> reportCriteriaList, FacesContext facesContext)
+    {
+        ProReportCompiler proCompiler = new ProReportCompiler();
+        JasperPrint jp = proCompiler.compileReport(reportCriteriaList);
+        exportToExcel(jp,facesContext); 
+    }
+    
+    @Override
+    public void exportReportToExcel(ReportCriteria reportCriteria, FacesContext facesContext)
+    {
+        ProReportCompiler proCompiler = new ProReportCompiler();
+        JasperPrint jp = proCompiler.compileReport(reportCriteria);
+        exportToExcel(jp,facesContext); 
+    }
+    
+    @Override
     public void exportReportToEmail(List<ReportCriteria> reportCriteriaList, String email)
     {
         ProReportCompiler proCompiler = new ProReportCompiler();
         JasperPrint jp = proCompiler.compileReport(reportCriteriaList);
         exportToPdfViaEmail(jp, email);
-        
     }
     
     @Override
@@ -126,16 +143,28 @@ public class ReportRendererImpl implements ReportRenderer
 
     private void exportToExcel(JasperPrint jasperPrint,FacesContext facesContext)
     {
+        HttpServletResponse response = (HttpServletResponse)facesContext.getExternalContext().getResponse();
         if (jasperPrint != null && jasperPrint.getPages().size() > 0)
         {
-            HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
             response.setContentType(EXCEL_CONTENT_TYPE);
+            response.addHeader("Content-Disposition", "attachment; filename=\"Tiwi_Pro_Report.xls\"");
 
             OutputStream out = null;
             try
             {
                 out = response.getOutputStream();
-                JasperExportManager.exportReportToPdfStream(jasperPrint, out);
+                JExcelApiExporter jexcelexporter = new JExcelApiExporter();
+                jexcelexporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, jasperPrint);
+                jexcelexporter.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, out);
+                //jexcelexporter.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.TRUE);
+                jexcelexporter.setParameter(JRXlsExporterParameter.IS_AUTO_DETECT_CELL_TYPE, Boolean.TRUE);
+                jexcelexporter.setParameter(JRXlsExporterParameter.IS_WHITE_PAGE_BACKGROUND, Boolean.FALSE);
+                jexcelexporter.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, Boolean.TRUE); 
+                jexcelexporter.setParameter(JRXlsExporterParameter.IS_IGNORE_GRAPHICS, Boolean.TRUE);
+                jexcelexporter.setParameter(JRXlsExporterParameter.IS_IGNORE_CELL_BORDER, Boolean.TRUE);
+                jexcelexporter.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS, Boolean.TRUE);
+                jexcelexporter.exportReport();
+                
                 out.flush();
                 facesContext.responseComplete();
             }

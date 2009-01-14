@@ -1,5 +1,6 @@
 package com.inthinc.pro.reports;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ public class ReportCriteria
     private Map<String, Object> paramMap = new HashMap<String, Object>();
     private ReportType reportType;
     private Duration duration;
+    private static final String INTHINC_NAME = "Inthinc";
     
     private static final String SUB_DATASET = "SUB_DATASET";
     private int subsetIndex = 1;
@@ -63,6 +65,12 @@ public class ReportCriteria
     public Duration getDuration()
     {
         return duration;
+    }
+    
+    public String getCopyRight()
+    {
+        Date today = new Date();
+        return String.valueOf(today.getYear()) + " " + INTHINC_NAME;
     }
 
 }

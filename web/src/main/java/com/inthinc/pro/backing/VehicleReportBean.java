@@ -2,10 +2,8 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import javax.faces.context.FacesContext;
 
@@ -20,13 +18,10 @@ import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Person;
-import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.VehicleReportItem;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.util.MessageUtil;
-import com.inthinc.pro.util.TempColumns;
 
 public class VehicleReportBean extends BaseReportBean implements TablePrefOptions
 {
@@ -354,7 +349,12 @@ public class VehicleReportBean extends BaseReportBean implements TablePrefOption
         getReportRenderer().exportReportToEmail(reportCriteria,getEmailAddress());
     }
     
-   
+    public void exportReportToExcel()
+    {
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_REPORT,getGroupHierarchy().getTopGroup().getName(),getAccountName());
+        reportCriteria.setMainDataset(vehicleData);
+        getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
+    }
 
     public String getSecret()
     {
