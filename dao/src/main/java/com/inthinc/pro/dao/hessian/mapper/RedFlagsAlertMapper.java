@@ -47,7 +47,7 @@ public class RedFlagsAlertMapper extends AbstractMapper
     @ConvertFieldToColumn(fieldName = "speedSettings")
     public void speedSettingsToColumn(RedFlagAlert redFlagAlert, Object value)
     {
-        if (Map.class.isInstance(value))
+        if (Map.class.isInstance(value) && (redFlagAlert.getSpeedSettings() != null))
         {
             StringBuffer buf = new StringBuffer();
             for (Integer setting : redFlagAlert.getSpeedSettings())
@@ -98,7 +98,7 @@ public class RedFlagsAlertMapper extends AbstractMapper
     @ConvertFieldToColumn(fieldName = "speedLevels")
     public void speedLevelsToColumn(RedFlagAlert redFlagAlert, Object value)
     {
-        if (Map.class.isInstance(value))
+        if (Map.class.isInstance(value) && (redFlagAlert.getSpeedLevels() != null))
         {
             StringBuffer buf = new StringBuffer();
             for (RedFlagLevel level : redFlagAlert.getSpeedLevels())

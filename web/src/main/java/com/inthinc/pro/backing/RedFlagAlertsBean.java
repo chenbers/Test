@@ -323,13 +323,13 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         @Column(updateable = false)
         private Boolean[]         speedSelected;
         @Column(updateable = false)
-        private boolean           hardAccelerationSelected;
+        private Boolean           hardAccelerationSelected;
         @Column(updateable = false)
-        private boolean           hardBrakeSelected;
+        private Boolean           hardBrakeSelected;
         @Column(updateable = false)
-        private boolean           hardTurnSelected;
+        private Boolean           hardTurnSelected;
         @Column(updateable = false)
-        private boolean           hardVerticalSelected;
+        private Boolean           hardVerticalSelected;
 
         public Integer getId()
         {
@@ -386,8 +386,11 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
 
         public boolean isHardAccelerationSelected()
         {
-            if (!hardAccelerationSelected)
-                hardAccelerationSelected = super.getHardAccelerationLevel() != RedFlagLevel.NONE;
+            if (hardAccelerationSelected == null)
+            {
+                final RedFlagLevel level = super.getHardAccelerationLevel();
+                hardAccelerationSelected = (level != null) && (level != RedFlagLevel.NONE);
+            }
             return hardAccelerationSelected;
         }
 
@@ -398,8 +401,11 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
 
         public boolean isHardBrakeSelected()
         {
-            if (!hardBrakeSelected)
-                hardBrakeSelected = super.getHardBrakeLevel() != RedFlagLevel.NONE;
+            if (hardBrakeSelected == null)
+            {
+                final RedFlagLevel level = super.getHardBrakeLevel();
+                hardBrakeSelected = (level != null) && (level != RedFlagLevel.NONE);
+            }
             return hardBrakeSelected;
         }
 
@@ -410,8 +416,11 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
 
         public boolean isHardTurnSelected()
         {
-            if (!hardTurnSelected)
-                hardTurnSelected = super.getHardTurnLevel() != RedFlagLevel.NONE;
+            if (hardTurnSelected == null)
+            {
+                final RedFlagLevel level = super.getHardTurnLevel();
+                hardTurnSelected = (level != null) && (level != RedFlagLevel.NONE);
+            }
             return hardTurnSelected;
         }
 
@@ -422,8 +431,11 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
 
         public boolean isHardVerticalSelected()
         {
-            if (!hardVerticalSelected)
-                hardVerticalSelected = super.getHardVerticalLevel() != RedFlagLevel.NONE;
+            if (hardVerticalSelected == null)
+            {
+                final RedFlagLevel level = super.getHardVerticalLevel();
+                hardVerticalSelected = (level != null) && (level != RedFlagLevel.NONE);
+            }
             return hardVerticalSelected;
         }
 
@@ -435,7 +447,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         @Override
         public RedFlagLevel getHardAccelerationLevel()
         {
-            if (!hardAccelerationSelected)
+            if (!isHardAccelerationSelected())
                 return RedFlagLevel.NONE;
             return super.getHardAccelerationLevel();
         }
@@ -443,7 +455,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         @Override
         public RedFlagLevel getHardBrakeLevel()
         {
-            if (!hardBrakeSelected)
+            if (!isHardBrakeSelected())
                 return RedFlagLevel.NONE;
             return super.getHardBrakeLevel();
         }
@@ -451,7 +463,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         @Override
         public RedFlagLevel getHardTurnLevel()
         {
-            if (!hardTurnSelected)
+            if (!isHardTurnSelected())
                 return RedFlagLevel.NONE;
             return super.getHardTurnLevel();
         }
@@ -459,7 +471,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         @Override
         public RedFlagLevel getHardVerticalLevel()
         {
-            if (!hardVerticalSelected)
+            if (!isHardVerticalSelected())
                 return RedFlagLevel.NONE;
             return super.getHardVerticalLevel();
         }

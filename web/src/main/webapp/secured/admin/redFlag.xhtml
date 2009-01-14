@@ -132,8 +132,8 @@
                           <table width="100%" border="0" cellpadding="2" cellspacing="0">
                             <tr class="datagrid">
                               <th><h:outputText value="#{messages.editRedFlag_speedHeader}" /></th>
-                              <th colspan="2"><h:outputText value="#{messages.editRedFlag_speedSettingHeader}" /></th>
-                              <th><h:outputText value="#{messages.editRedFlag_severity}" /></th>
+                              <th width="300" colspan="2"><h:outputText value="#{messages.editRedFlag_speedSettingHeader}" /></th>
+                              <th width="100"><h:outputText value="#{messages.editRedFlag_severity}" /></th>
                             </tr>
                             <c:set var="row" value="#{0}" />
                             <c:forEach begin="0" var="index" end="14">
@@ -167,12 +167,12 @@
                           <table width="100%" border="0" cellpadding="0" cellspacing="0">
                             <tr class="datagrid">
                               <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
-                              <th colspan="2"><h:outputText value="#{messages.editRedFlag_sensitivity}" /></th>
-                              <th><h:outputText value="#{messages.editRedFlag_severity}" /></th>
+                              <th width="300" colspan="2"><h:outputText value="#{messages.editRedFlag_sensitivity}" /></th>
+                              <th width="100"><h:outputText value="#{messages.editRedFlag_severity}" /></th>
                             </tr>
                             <c:set var="row" value="#{0}" />
-                            <c:forEach begin="0" var="index" end="3">
-                              <c:set var="sensitivityItem" value="#{(index == 0) ? 'hardBrake' : ((index == 1) ? 'hardAcceleration' : ((index == 2) ? 'hardTurn' : 'hardVertical'))}" />
+                            <c:forEach begin="1" var="index" end="4">
+                              <c:set var="sensitivityItem" value="#{(index == 1) ? 'hardAcceleration' : ((index == 2) ? 'hardBrake' : ((index == 3) ? 'hardTurn' : 'hardVertical'))}" />
                               <c:set var="sensitivitySelected" value="#{sensitivityItem}Selected" />
                               <c:if test="#{redFlagAlertsBean.item[sensitivitySelected]}">
                                 <tr class="#{((row % 2) == 0) ? 'tableOdd' : 'tableEven'}">
@@ -181,11 +181,11 @@
                                     <h:outputText value="#{messages[sensitivityLabel]}" />
                                   </td>
                                   <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" width="200">
-                                    <rich:inputNumberSlider id="#{sensitivityItem}" disabled="true" value="#{redFlagAlertsBean.item[sensitivityItem]}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="20" maxValue="90" />
+                                    <rich:inputNumberSlider id="#{sensitivityItem}" disabled="true" value="#{redFlagAlertsBean.item[sensitivityItem]}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="1" maxValue="5" />
                                   </td>
                                   <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;">
-                                    <c:set var="sensitivityLevel" value="#{(redFlagAlertsBean.item[sensitivityItem] ge 67) ? messages.editDevice_sensitivityMore : ((redFlagAlertsBean.item[sensitivityItem] ge 43) ? messages.editDevice_sensitivityAverage : messages.editDevice_sensitivityLess)}" />
-                                    <h:outputText id="#{sensitivityItem}Level" style="font-weight:bold" value="#{sensitivityLevel}" />
+                                    <c:set var="sensitivityLevel" value="editDevice_sensitivity#{redFlagAlertsBean.item[sensitivityItem]}" />
+                                    <h:outputText id="#{sensitivityItem}Level" style="font-weight:bold" value="#{messages[sensitivityLevel]}" />
                                   </td>
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <c:set var="sensitivityLevel" value="#{sensitivityItem}Level" />
@@ -204,7 +204,7 @@
                           <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
                             <tr>
                               <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
-                              <th><h:outputText value="#{messages.editRedFlag_severity}" /></th>
+                              <th width="100"><h:outputText value="#{messages.editRedFlag_severity}" /></th>
                             </tr>
                             <tr class="tableEven">
                               <td><h:outputText value="#{messages.editRedFlag_seatBelt}" /></td>

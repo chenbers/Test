@@ -89,6 +89,8 @@ public class RedFlagAlert extends BaseAlert
 
     public Integer getHardAcceleration()
     {
+        if (hardAcceleration == null)
+            return Device.DEFAULT_LEVEL;
         return hardAcceleration;
     }
 
@@ -99,6 +101,8 @@ public class RedFlagAlert extends BaseAlert
 
     public Integer getHardBrake()
     {
+        if (hardBrake == null)
+            return Device.DEFAULT_LEVEL;
         return hardBrake;
     }
 
@@ -109,6 +113,8 @@ public class RedFlagAlert extends BaseAlert
 
     public Integer getHardTurn()
     {
+        if (hardTurn == null)
+            return Device.DEFAULT_LEVEL;
         return hardTurn;
     }
 
@@ -119,6 +125,8 @@ public class RedFlagAlert extends BaseAlert
 
     public Integer getHardVertical()
     {
+        if (hardVertical == null)
+            return Device.DEFAULT_LEVEL;
         return hardVertical;
     }
 
