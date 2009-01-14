@@ -135,8 +135,8 @@ public class ZonesBean extends BaseBean
         {
             zones.add(item);
             sortZones();
-            zoneIDs = null;
         }
+        zoneIDs = null;
 
         editing = false;
     }
