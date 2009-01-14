@@ -12,16 +12,16 @@ public class ReportCriteria
 {
     private List mainDataset;
     private Map<String, Object> paramMap = new HashMap<String, Object>();
-    private ReportType reportType;
+    private Report report;
     private Duration duration;
     private static final String INTHINC_NAME = "Inthinc";
     
     private static final String SUB_DATASET = "SUB_DATASET";
     private int subsetIndex = 1;
     
-    public ReportCriteria(ReportType reportType,String entityName,String accountName)
+    public ReportCriteria(Report report,String entityName,String accountName)
     {
-        setReportType(reportType);
+        setReport(report);
         paramMap.put("ENTITY_NAME", entityName);
         paramMap.put("ACCOUNT_NAME", accountName);
     }
@@ -34,14 +34,14 @@ public class ReportCriteria
         return this.mainDataset;
     }
 
-    private void setReportType(ReportType reportType)
+    private void setReport(Report report)
     {
-        this.reportType = reportType;
+        this.report = report;
     }
 
-    public ReportType getReportType()
+    public Report getReport()
     {
-        return reportType;
+        return report;
     }
     
     public void addParameter(String name,Object value){

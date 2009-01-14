@@ -14,7 +14,7 @@ public class ReportUtils
 {
     private static Logger logger = Logger.getLogger(ReportUtils.class);
 
-    public static JasperReport loadReport(ReportType reportSection)
+    public static JasperReport loadReport(Report reportSection)
     {
         InputStream in = null;
         try

@@ -11,9 +11,9 @@
 	Prameters
 		title:       Title of the dialog
 		explanation: Text to be displayed in the header section
-		(Select one or the other reportType - reportTypeList)
-		reportType:  report to be emailed.
-		reportTypeList: reports to be emailed.
+		(Select one or the other report - reportList)
+		report:  report to be emailed.
+		reports: reports to be emailed.
 		id:          Modal Panel ID
 		
 		reportBean: This is the backing bean that contains the following
@@ -51,14 +51,14 @@
         <div class="popupactions">
           <button type="submit" class="left" onclick="Richfaces.hideModalPanel('#{id}'); return false;"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button>
           
-          <a4j:commandButton rendered="#{not empty reportTypeList}" id="emailButton1" action="#{reportBean.emailReport}" onclick="Richfaces.hideModalPanel('#{id}')" oncomplete="#{onemail}" reRender="#{reRender}" styleClass="left" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;"><span class="email"><h:outputText value="#{messages.button_email}" /></span>
-          		<a4j:actionparam assignTo="#{reportRendererBean.reportTypes}" converter="SimpleBeanConverter" value="#{reportTypeList}"/>
+          <a4j:commandButton rendered="#{not empty reportList}" id="emailButton1" action="#{reportBean.emailReport}" onclick="Richfaces.hideModalPanel('#{id}')" oncomplete="#{onemail}" reRender="#{reRender}" styleClass="left" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;"><span class="email"><h:outputText value="#{messages.button_email}" /></span>
+          		<a4j:actionparam assignTo="#{reportRendererBean.reports}" converter="SimpleBeanConverter" value="#{reports}"/>
           </a4j:commandButton>
-          <a4j:commandButton rendered="#{not empty reportType}"   id="emailReportButton2" action="#{reportBean.emailReport}" onclick="Richfaces.hideModalPanel('#{id}')" oncomplete="#{onemail}" reRender="#{reRender}" styleClass="left" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;"><span class="email"><h:outputText value="#{messages.button_email}" /></span>
-          		<a4j:actionparam assignTo="#{reportRendererBean.reportType}" value="#{reportType}"/>
+          <a4j:commandButton rendered="#{not empty report}"   id="emailReportButton2" action="#{reportBean.emailReport}" onclick="Richfaces.hideModalPanel('#{id}')" oncomplete="#{onemail}" reRender="#{reRender}" styleClass="left" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;"><span class="email"><h:outputText value="#{messages.button_email}" /></span>
+          		<a4j:actionparam assignTo="#{reportRendererBean.report}" value="#{report}"/>
           		<a4j:actionparam assignTo="#{reportRendererBean.duration}" converter="SimpleBeanConverter" value="#{duration}"/>
           </a4j:commandButton>
-          <a4j:commandButton rendered="#{empty reportType and empty reportType}"   id="emailReportButton3" action="#{reportBean.emailReport}" onclick="Richfaces.hideModalPanel('#{id}')" oncomplete="#{onemail}" reRender="#{reRender}" styleClass="left" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;"><span class="email"><h:outputText value="#{messages.button_email}" /></span></a4j:commandButton>
+          <a4j:commandButton rendered="#{empty report and empty reportList}"   id="emailReportButton3" action="#{reportBean.emailReport}" onclick="Richfaces.hideModalPanel('#{id}')" oncomplete="#{onemail}" reRender="#{reRender}" styleClass="left" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;"><span class="email"><h:outputText value="#{messages.button_email}" /></span></a4j:commandButton>
         </div>
 
       </a4j:form>

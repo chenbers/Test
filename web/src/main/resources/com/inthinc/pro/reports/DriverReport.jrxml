@@ -86,11 +86,11 @@
 					<reportElement
 						x="0"
 						y="15"
-						width="376"
+						width="534"
 						height="20"
 						key="staticText-10"/>
 					<box></box>
-					<textElement>
+					<textElement textAlignment="Left">
 						<font size="16"/>
 					</textElement>
 				<text><![CDATA[Driver Report]]></text>

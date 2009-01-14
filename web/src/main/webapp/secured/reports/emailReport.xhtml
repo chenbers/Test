@@ -57,8 +57,8 @@
 									<h:outputText value="Select Reports:"/>
 								</td>
 								<td width="355">
-									<h:selectManyCheckbox style="width:300px" value="#{reportRendererBean.reportTypes}" converter="SimpleBeanConverter" layout="pageDirection">
-										<f:selectItems value="#{reportRendererBean.reportTypeAsSelectItems}"/> 
+									<h:selectManyCheckbox style="width:300px" value="#{reportRendererBean.reports}" converter="SimpleBeanConverter" layout="pageDirection">
+										<f:selectItems value="#{reportRendererBean.reportsAsSelectItems}"/> 
 									</h:selectManyCheckbox>
 								</td>
 							</tr>

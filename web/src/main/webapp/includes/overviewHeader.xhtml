@@ -35,13 +35,6 @@
 		</ul>
 		
 		<rich:contextMenu attachTo="overview_tools_icon" disableDefaultMenu="false" attached="true" id="over_header_menu" submitMode="server" event="onclick">
-			<!--<rich:menuItem
-						iconDisabled="/images/ico_email.gif" icon="/images/ico_email.gif"
-						value="Email Report" id="#{ajaxForm}_email" action="go_emailReports">
-						<a4j:actionparam assignTo="#{reportRendererBean.reportTypes}" converter="SimpleBeanConverter" value="#{reportRendererBean.reportTypeList}"/>
-					</rich:menuItem>
-	
-			-->
 			<rich:menuItem ajaxSingle="true" rendered="true"
 					iconDisabled="/images/ico_email.gif" icon="/images/ico_email.gif" 
 					onclick="Richfaces.showModalPanel('overview_emailPopup');return false;" 
@@ -52,14 +45,14 @@
 			<rich:menuItem  iconDisabled="/images/ico_pdf.gif"
 				icon="/images/ico_pdf.gif" value="#{messages.contextMenu_export_to_pdf}"
 				action="#{reportRendererBean.exportReportToPDF}" id="export_menu_item">
-				<a4j:actionparam assignTo="#{reportRendererBean.reportTypes}" converter="SimpleBeanConverter" value="#{reportRendererBean.reportTypeList}"/>
+				<a4j:actionparam assignTo="#{reportRendererBean.reports}" converter="SimpleBeanConverter" value="#{reportRendererBean.reportList}"/>
 			</rich:menuItem>
 		</rich:contextMenu>
 	</a4j:form>
 	</a4j:region>
 	
 	<ui:include src="/includes/emailReportPopup.xhtml">	
-		<ui:param  name="reportTypeList" value="#{reportRendererBean.reportTypeList}"/>
+		<ui:param  name="reportList" value="#{reportRendererBean.reportList}"/>
 		<ui:param name="id" value="overview_emailPopup" />
 		<ui:param name="reportBean" value="#{reportRendererBean}" />
     </ui:include>

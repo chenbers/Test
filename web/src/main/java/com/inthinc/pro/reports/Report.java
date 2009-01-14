@@ -7,7 +7,7 @@ import java.util.Map;
 /*
  * If these enums chage, make sure to change the .xhtml files that reference them.
  */
-public enum ReportType
+public enum Report
 {
     DRIVER_REPORT("Driver Report","DriverReport.jrxml"),
     VEHICLE_REPORT("Vehicle Report","VehicleReport.jrxml"),
@@ -18,26 +18,24 @@ public enum ReportType
     MPG_GROUP("MPG Report","MPGGroupReport.jrxml");
     
   
-    private ReportType[] reportSubtypes;
     private String filename;
     private String label;
     
-    private ReportType(String label,String filename,ReportType... reportSubtypes){
-        this.reportSubtypes = reportSubtypes;
+    private Report(String label,String filename){
         this.label = label;
         this.filename = filename;
     }
     
-    private static final Map<String, ReportType> lookup = new HashMap<String, ReportType>();
+    private static final Map<String, Report> lookup = new HashMap<String, Report>();
     static
     {
-        for (ReportType p : EnumSet.allOf(ReportType.class))
+        for (Report p : EnumSet.allOf(Report.class))
         {
             lookup.put(p.toString(), p);
         }
     }
 
-    public static ReportType toReportType(String stringValue)
+    public static Report toReport(String stringValue)
     {
         return lookup.get(stringValue);
     }
@@ -48,9 +46,5 @@ public enum ReportType
     
     public String getLabel(){
         return label;
-    }
-    
-    public ReportType[] getSubtypes(){
-        return reportSubtypes;
     }
 }

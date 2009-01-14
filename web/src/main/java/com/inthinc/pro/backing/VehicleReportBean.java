@@ -21,7 +21,7 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.VehicleReportItem;
 import com.inthinc.pro.reports.ReportCriteria;
-import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.reports.Report;
 
 public class VehicleReportBean extends BaseReportBean implements TablePrefOptions
 {
@@ -337,21 +337,21 @@ public class VehicleReportBean extends BaseReportBean implements TablePrefOption
     
     public void exportReportToPdf()
     {
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_REPORT,getGroupHierarchy().getTopGroup().getName(),null);
+        ReportCriteria reportCriteria = new ReportCriteria(Report.VEHICLE_REPORT,getGroupHierarchy().getTopGroup().getName(),null);
         reportCriteria.setMainDataset(vehicleData);
         getReportRenderer().exportSingleReportToPDF(reportCriteria, getFacesContext());
     }
     
     public void emailReport()
     {
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_REPORT,getGroupHierarchy().getTopGroup().getName(),getAccountName());
+        ReportCriteria reportCriteria = new ReportCriteria(Report.VEHICLE_REPORT,getGroupHierarchy().getTopGroup().getName(),getAccountName());
         reportCriteria.setMainDataset(vehicleData);
         getReportRenderer().exportReportToEmail(reportCriteria,getEmailAddress());
     }
     
     public void exportReportToExcel()
     {
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_REPORT,getGroupHierarchy().getTopGroup().getName(),getAccountName());
+        ReportCriteria reportCriteria = new ReportCriteria(Report.VEHICLE_REPORT,getGroupHierarchy().getTopGroup().getName(),getAccountName());
         reportCriteria.setMainDataset(vehicleData);
         getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
     }

@@ -11,7 +11,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.reports.ReportCriteria;
-import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.reports.Report;
 import com.inthinc.pro.reports.model.PieScoreData;
 import com.inthinc.pro.reports.model.PieScoreRange;
 
@@ -31,7 +31,7 @@ public class ReportRendererBeanTest extends BaseBeanTest
         list.add(se1);
         list.add(se2);
         
-        ReportCriteria rc = new ReportCriteria(ReportType.OVERALL_SCORE,"Group1","AccountName");
+        ReportCriteria rc = new ReportCriteria(Report.OVERALL_SCORE,"Group1","AccountName");
         rc.setMainDataset(list);
         rc.addParameter("DRIVER_STYLE_DATA", list);
         rc.addParameter("SEATBELT_USE_DATA", list);

@@ -24,7 +24,7 @@ import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
-import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.reports.Report;
 import com.inthinc.pro.reports.model.PieScoreData;
 import com.inthinc.pro.reports.model.PieScoreRange;
 import com.inthinc.pro.util.GraphicUtil;
@@ -240,7 +240,7 @@ public class BreakdownBean extends BaseDurationBean
         format.setMinimumFractionDigits(1);
         String overallScore = format.format((double) ((double) getOverallScore() / (double) 10.0));
         
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.OVERALL_SCORE,getNavigation().getGroup().getName(),getAccountName());
+        ReportCriteria reportCriteria = new ReportCriteria(Report.OVERALL_SCORE,getNavigation().getGroup().getName(),getAccountName());
         reportCriteria.setMainDataset(getPieScoreData(ScoreType.SCORE_OVERALL));
         reportCriteria.addParameter("OVERALL_SCORE",overallScore);
         reportCriteria.addParameter("DURATION", "");

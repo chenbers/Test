@@ -40,7 +40,7 @@ public class ProReportCompiler
         JasperPrint jp = null;
         try
         {
-            JasperReport jr = ReportUtils.loadReport(reportCriteria.getReportType());
+            JasperReport jr = ReportUtils.loadReport(reportCriteria.getReport());
             JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(reportCriteria.getMainDataset());
             jp = JasperFillManager.fillReport(jr, reportCriteria.getPramMap(), ds);
             if (jasperPrint == null)
