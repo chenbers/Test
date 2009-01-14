@@ -83,7 +83,7 @@
 
 	<bean id="flyOutBean" class="com.inthinc.pro.backing.FlyOutBean" scope="request" />
     
-    <bean id="liveFleetBean" class="com.inthinc.pro.backing.LiveFleetBean" scope="request" parent="baseBean" init-method="initBean">
+    <bean id="liveFleetBean" class="com.inthinc.pro.backing.LiveFleetBean" scope="session" init-method="initBean">
         <property name="driverDAO" ref="driverDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
         <property name="groupDAO" ref="groupDAO"></property>
