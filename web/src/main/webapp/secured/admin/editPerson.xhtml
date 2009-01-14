@@ -294,8 +294,8 @@
 
                       <rich:message for="isUser" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                       <div class="add_section_title">
-                        <h:selectBooleanCheckbox rendered="#{not personBean.batchEdit}" id="isUser" value="#{personBean.item.userSelected}" onclick="showSection('userTable', this.checked)">
-                          <a4j:support event="onchange" ajaxSingle="true" reRender="emailRequired,email,isUser" limitToList="true" />
+                        <h:selectBooleanCheckbox rendered="#{not personBean.batchEdit}" id="isUser" value="#{personBean.item.userSelected}">
+                          <a4j:support event="onclick" onsubmit="showSection('userTable', this.checked)" ajaxSingle="true" reRender="emailRequired,email,isUser" limitToList="true" />
                         </h:selectBooleanCheckbox>
                         <h:outputText value="#{messages.editPerson_userInformation}" />
                       </div>
@@ -383,8 +383,8 @@
                       <div class="spacer"></div>
 
                       <div class="add_section_title">
-                        <h:selectBooleanCheckbox rendered="#{not personBean.batchEdit}" id="isDriver" value="#{personBean.item.driverSelected}" onclick="showSection('driverTable', this.checked)">
-                          <a4j:support event="onchange" ajaxSingle="true" reRender="isDriver" limitToList="true" />
+                        <h:selectBooleanCheckbox rendered="#{not personBean.batchEdit}" id="isDriver" value="#{personBean.item.driverSelected}">
+                          <a4j:support event="onclick" onsubmit="showSection('driverTable', this.checked)" ajaxSingle="true" reRender="isDriver" limitToList="true" />
                         </h:selectBooleanCheckbox>
                         <h:outputText value="#{messages.editPerson_driverInformation}" />
                       </div>
