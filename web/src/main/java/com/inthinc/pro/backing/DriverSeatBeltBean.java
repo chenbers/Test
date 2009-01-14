@@ -103,7 +103,18 @@ public class DriverSeatBeltBean extends BaseDurationBean
         int cnt = 0;
         for (ScoreableEntity e : scoreList)
         {            
-            sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt) }));
+//            sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt) }));
+            if ( e.getScore() != null ) 
+            {
+                sb.append(line.getChartItem(new Object[] { 
+                      (double) (e.getScore() / 10.0d), 
+                      monthList.get(cnt) }));
+            } else 
+            {
+                sb.append(line.getChartItem(new Object[] { 
+                        null, 
+                        monthList.get(cnt) }));
+            }            
 //          sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), 
 //              dateFormatter.format(e.getCreated()) }));
             cnt++;
