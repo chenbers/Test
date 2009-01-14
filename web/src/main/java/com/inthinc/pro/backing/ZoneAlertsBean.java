@@ -108,7 +108,7 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
     {
         final ZoneAlert alert = new ZoneAlert();
         final Map<String, String> parameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        final String zoneID = parameterMap.get("zoneID");
+        final String zoneID = parameterMap.get("zones-form:zone");
         if (zoneID != null)
             alert.setZoneID(new Integer(zoneID));
         else
