@@ -5,7 +5,8 @@
 	  			xmlns:f="http://java.sun.com/jsf/core"
 	  			xmlns:rich="http://richfaces.org/rich"
 	  			xmlns:a4j="http://richfaces.org/a4j"
-	  			xmlns:t="http://myfaces.apache.org/tomahawk">
+	  			xmlns:t="http://myfaces.apache.org/tomahawk"
+	  			xmlns:security="http://pro.tiwi.com/jsf/security">
 
 	<ui:param name="liveFleetSelected" value="current" />
 	<ui:param name="helpFile" value="Live_Fleet.htm" />
@@ -289,7 +290,9 @@
 					<h:form>
 						<h2>Live Fleet</h2>
 				    			This is the default view for your division.
-				    			[<h:commandLink action="go_adminOrganization" value="change" />]
+				    			<security:authorize ifAnyGranted="ROLE_CUSTOMUSER,ROLE_SUPERUSER">
+				    				[<h:commandLink action="go_adminOrganization" value="change" />]
+				    			</security:authorize>
 			    	</h:form>
 			    </div>
 				<script type="text/javascript">
