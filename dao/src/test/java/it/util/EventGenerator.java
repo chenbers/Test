@@ -14,6 +14,8 @@ import com.inthinc.pro.model.LowBatteryEvent;
 import com.inthinc.pro.model.SeatBeltEvent;
 import com.inthinc.pro.model.SpeedingEvent;
 import com.inthinc.pro.model.TamperingEvent;
+import com.inthinc.pro.model.ZoneArrivalEvent;
+import com.inthinc.pro.model.ZoneDepartureEvent;
 
 
 public class EventGenerator
@@ -32,8 +34,8 @@ public class EventGenerator
     private final static int ATTR_TYPE_DELTAVX =  131;
     private final static int ATTR_TYPE_DELTAVY =  132;
     private final static int ATTR_TYPE_DELTAVZ =  133;
+    private final static int ATTR_TYPE_ZONE_ID =  192;
 /*    
-    private final static int ATTR_TYPE_ZONE_ID   192
     private final static int ATTR_TYPE_FIRMVER   193
     private final static int ATTR_TYPE_FWDCMD_ID 194
     private final static int ATTR_TYPE_FWDCMD    195
@@ -270,6 +272,16 @@ public class EventGenerator
             idx = puti2(eventBytes, idx, adEvent.getDeltaY());
             eventBytes[idx++] = (byte) (ATTR_TYPE_DELTAVZ & 0x000000FF);
             idx = puti2(eventBytes, idx, adEvent.getDeltaZ());
+        }
+        else if (event instanceof ZoneArrivalEvent)
+        {
+            ZoneArrivalEvent zoneArrivalEvent = (ZoneArrivalEvent)event;
+            idx = puti4(eventBytes, idx, zoneArrivalEvent.getZoneID());
+        }
+        else if (event instanceof ZoneDepartureEvent)
+        {
+            ZoneDepartureEvent zoneDepartureEvent = (ZoneDepartureEvent)event;
+            idx = puti4(eventBytes, idx, zoneDepartureEvent.getZoneID());
         }
 
         return Arrays.copyOf(eventBytes, idx);

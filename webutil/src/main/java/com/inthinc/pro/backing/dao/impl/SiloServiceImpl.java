@@ -662,7 +662,7 @@ public class SiloServiceImpl implements SiloService
     }
 
     @Override
-    public List<Map<String, Object>> getMessages(Integer deliveryMethodType)
+    public List<Map<String, Object>> getMessages(Integer siloID, Integer deliveryMethodType)
     {
         // TODO Auto-generated method stub
         return null;

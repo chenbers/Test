@@ -2,12 +2,16 @@ package com.inthinc.pro.model;
 
 import java.util.Date;
 
+import com.inthinc.pro.dao.annotations.Column;
+
 public class ZoneDepartureEvent extends Event
 {
 
     private static final long serialVersionUID = 1L;
     
     private Integer zoneID;
+
+    @Column(updateable=false)
     private transient String zoneName;
     
 

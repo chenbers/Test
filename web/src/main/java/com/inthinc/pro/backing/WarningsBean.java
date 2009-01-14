@@ -1,24 +1,16 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.richfaces.event.DataScrollerEvent;
 
-import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.TableColumn;
-import com.inthinc.pro.dao.EventDAO;
-import com.inthinc.pro.dao.TablePreferenceDAO;
-import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
-import com.inthinc.pro.model.EventCategory;
-import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.TableType;
 
-public class EventsBean extends BaseEventsBean
+public class WarningsBean extends BaseEventsBean
 {
     private static final Logger     logger                  = Logger.getLogger(EventsBean.class);
 
@@ -48,7 +40,8 @@ public class EventsBean extends BaseEventsBean
     @Override
     protected List<Event> getEventsForGroup(Integer groupID)
     {
-        return getEventDAO().getViolationEventsForGroup(groupID, 7);
+        return getEventDAO().getWarningEventsForGroup(groupID, 7);
+
     }
 
     public TablePref getTablePref()
@@ -66,7 +59,7 @@ public class EventsBean extends BaseEventsBean
     @Override
     public TableType getTableType()
     {
-        return TableType.EVENTS;
+        return TableType.WARNINGS;
     }
 
     public Map<String, TableColumn> getTableColumns()

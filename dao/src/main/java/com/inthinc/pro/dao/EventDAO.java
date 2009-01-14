@@ -45,6 +45,8 @@ public interface EventDAO  extends GenericDAO<Event, Integer>
     
     Integer unforgive(Integer driverID, Long noteID);
     
-    List<Event> getRedFlagEventsForGroup(Integer groupID, Duration duration);
+    List<Event> getViolationEventsForGroup(Integer groupID, Integer daysBack);
+    
+    List<Event> getWarningEventsForGroup(Integer groupID, Integer daysBack);
 
 }

@@ -154,18 +154,26 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
     }
 
     @Override
-    public List<Event> getRedFlagEventsForGroup(Integer groupID, Duration duration)
+    public List<Event> getViolationEventsForGroup(Integer groupID, Integer daysBack)
+    {
+        return getEventsForGroup(groupID, daysBack, EventMapper.getEventTypesInCategory(EventCategory.VIOLATION));
+    }
+
+    @Override
+    public List<Event> getWarningEventsForGroup(Integer groupID, Integer daysBack)
+    {
+        return getEventsForGroup(groupID, daysBack, EventMapper.getEventTypesInCategory(EventCategory.WARNING));
+    }
+
+    public List<Event> getEventsForGroup(Integer groupID, Integer daysBack, List<Integer>eventTypes)
     {
         Date endDate = new Date();
-        Date startDate = DateUtil.getDaysBackDate(endDate, duration.getNumberOfDays());
+        Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
         List<Driver> driverList = getMapper().convertToModelObject(this.getSiloService().getDriversByGroupIDDeep(groupID), Driver.class);
-        List<Integer> eventTypeList = EventMapper.getEventTypesInCategory(EventCategory.VIOLATION);
-        eventTypeList.addAll(EventMapper.getEventTypesInCategory(EventCategory.WARNING));
-        eventTypeList.addAll(EventMapper.getEventTypesInCategory(EventCategory.DRIVER));
         List<Event> eventList = new ArrayList<Event>();
         for (Driver driver : driverList)
         {
-            List<Event> driverEvents = getEventsForDriver(driver.getDriverID(), startDate, endDate, eventTypeList);
+            List<Event> driverEvents = getEventsForDriver(driver.getDriverID(), startDate, endDate, eventTypes);
             for (Event event : driverEvents)
             {
                 event.setDriver(driver);
@@ -174,7 +182,6 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
         }
         return eventList;
     }
-
 
 
 }

@@ -11,9 +11,7 @@
 			<span class="event">#{messages.team_recentEvents}</span>
 			<span class="panel_links">
 			<h:form id="teamEventsShowAllForm">
-				<h:commandLink action="go_redFlags" value="#{messages.team_recentEventsShowAll}">
-					<f:setPropertyActionListener value="#{teamRecentEventsBean.category}" target="#{redFlagsBean.categoryFilter}" />
-				</h:commandLink>
+				<h:commandLink action="go_events" value="#{messages.team_recentEventsShowAll}"/>
 			</h:form>	
 			</span>
 		</h:panelGroup>	

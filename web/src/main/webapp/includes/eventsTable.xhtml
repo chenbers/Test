@@ -7,10 +7,10 @@
 	xmlns:h="http://java.sun.com/jsf/html">
 		
 		<div class="datagrid">
-				<h:form id="eventsTableForm">
+				<h:form id="#{formId}">
 	
     	    	<rich:datascroller id="topScroller" for="items" immediate="true"
-        			scrollerListener="#{eventsBean.scrollerListener}"
+        			scrollerListener="#{bean.scrollerListener}"
         			reRender="bottomScroller,items,header">
         		</rich:datascroller>
         		
@@ -55,13 +55,13 @@
       					</f:facet>
 						<a4j:commandLink title="#{messages.events_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem" >
 							<h:outputText value="#{messages.events_clear}" />
-							<f:setPropertyActionListener target="#{eventsBean.clearItem}" value="#{item}" />
+							<f:setPropertyActionListener target="#{bean.clearItem}" value="#{item}" />
 						</a4j:commandLink>
     				</rich:column>
     			</rich:dataTable>
     			
     			<rich:datascroller id="bottomScroller" for="items" immediate="true"    			
-    				scrollerListener="#{eventsBean.scrollerListener}"
+    				scrollerListener="#{bean.scrollerListener}"
         			reRender="topScroller,items,header">        			
         		</rich:datascroller>
     			</h:form>
@@ -83,14 +83,14 @@
 
       <a4j:form id="clearItemForm">
 		<h:panelGroup layout="block"  styleClass="popupcontent" id="clearItem">
-			<h:outputText value="#{eventsBean.clearItem.detail}"/><br/>
-      		<h:outputText value="#{eventsBean.clearItem.date}"/>
+			<h:outputText value="#{bean.clearItem.detail}"/><br/>
+      		<h:outputText value="#{bean.clearItem.date}"/>
       	</h:panelGroup>
 	
         <div class="popupactions">
           <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="no"><h:outputText value="#{messages.button_no}" /></span></button>
           <a4j:commandButton id="yesButton"
-          				action="#{eventsBean.clearItemAction}"         				
+          				action="#{bean.clearItemAction}"         				
           				oncomplete="Richfaces.hideModalPanel('clearEventPanel')" 
           				onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;"
           				reRender="items" styleClass="left">

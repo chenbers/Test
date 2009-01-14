@@ -7,86 +7,14 @@
   			xmlns:f="http://java.sun.com/jsf/core">
 
 	<ui:param name="redFlagsSelected" value="current" />
+	
+	<ui:define name="subnavigation">
+		<ui:include src="/includes/redFlags/subNavigation.xhtml" />
+	</ui:define>
+	
 
 	<ui:define name="content">
-	
-<table width="920" border="0" align="center" cellpadding="0" cellspacing="0" style="margin: 0 auto 0 auto;">
-  <tr>
-    <td valign="top">
-      <!-- START PANEL -->
-      <h:panelGroup layout="block" styleClass="">
-        <h:panelGroup layout="block" styleClass="panel_nw">
-          <div class="panel_title"> <span class="redflag">#{messages.redflags_title}</span><span class="panel_links"></span>
-           </div>
-        </h:panelGroup>
-
-        <h:panelGroup layout="block" styleClass="panel_w">
-          <h:panelGroup layout="block" styleClass="panel_content">
-
-			<a4j:form id="redFlagSearch">							
-            <ul id="grid_nav" style="margin: 0;">
-              <li class="l">
-                <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
-                  <tr>
-                    <td>#{messages.redFlags_search}</td>
-                    <td>
-                      <h:inputText id="searchText" value="#{redFlagsBean.searchText}" styleClass="text" size="25"/>
-                    </td>
-                  </tr>
-                </table>
-              </li>
-			  <li class="l">
-					<a4j:commandButton action="#{redFlagsBean.searchAction}" 
-            					reRender="header,redFlagsTableForm:items,redFlagsTableForm:bottomScroller,redFlagsTableForm:topScroller" styleClass="left">
-            				<span class="search">
-            					<h:outputText value="#{messages.button_search}" />
-            				</span>
-            		</a4j:commandButton>            								
-			   </li>
-			  <li class="l text">
-				<a4j:commandLink styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('editColumns')" 
-					reRender="editColumnsForm:editColumnGrid">
-					#{messages.button_editColumns}
-				</a4j:commandLink>
-			  </li>  
-			  <li class="r text">
-			  	<h:outputFormat id="header" value="#{messages.redflags_recordCountHeader}">
-					<a4j:actionparam value="#{redFlagsBean.start}"/>
-					<a4j:actionparam value="#{redFlagsBean.end}"/>
-					<a4j:actionparam value="#{redFlagsBean.maxCount}"/>
-				</h:outputFormat>
-               </li>          							
-            </ul>
-    		</a4j:form>
-    		        
-			<div class="spacer"></div>
-			
-            <h:panelGroup id="redFlagsTable" layout="block" styleClass="datagrid">
-				<ui:include src="/includes/redFlagsTable.xhtml">	
-					<ui:param name="numRowsPerPg" value="#{redFlagsBean.numRowsPerPg}"/>									
-             		<ui:param name="tableData" value="#{redFlagsBean.tableData}"/>             						
-             		<ui:param name="tableColumns" value="#{redFlagsBean.tableColumns}"/>
-    			</ui:include>    							
-            </h:panelGroup>
-            
-          </h:panelGroup>
-		</h:panelGroup>
-
-		<ui:include src="/includes/editColumnsPopup.xhtml">
-			<ui:param name="bean" value="#{redFlagsBean}"/>	
-			<ui:param name="reRender" value="redFlagsTableForm:items" />
-		</ui:include>    
-		
-        <h:panelGroup layout="block" styleClass="panel_sw">
-          <h:panelGroup layout="block" styleClass="panel_statusbar"/>
-		</h:panelGroup>
-
-      </h:panelGroup>
-      <!-- END PANEL -->
-    </td>
-  </tr>
-</table>
-	
+		<p style="font-size:20px;text-align:center;">Red flags Page</p>	
 	
 	</ui:define>
 

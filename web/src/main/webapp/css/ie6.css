@@ -97,7 +97,7 @@ ul.fdtablePaginater {text-align:center;}
 	background: transparent url(../images/ico_event.gif) no-repeat center left;
 	}
 	
-.panel_title span.warning {
+.panel_title span.warningtitle {
 	padding: 0 0 0 20px;
 	background: transparent url(../images/ico_critical.gif) no-repeat center left;
 	}

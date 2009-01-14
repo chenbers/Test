@@ -1238,7 +1238,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
-    public List<Map<String, Object>> getMessages(Integer alertMessageType)
+    public List<Map<String, Object>> getMessages(Integer siloID, Integer alertMessageType)
     {
         SearchCriteria searchCriteria = new SearchCriteria();
         searchCriteria.addKeyValue("alertMessageDeliveryType", AlertMessageDeliveryType.valueOf(alertMessageType));

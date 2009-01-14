@@ -18,7 +18,8 @@ public enum TableType implements BaseEnum
     ASSET_REPORT(9, "ASSET_REPORT"),
     DEVICE_REPORT(10, "DEVICE_REPORT"),
     IDLING_REPORT(11, "IDLING_REPORT"),
-    EVENTS(12, "EVENTS");
+    EVENTS(12, "EVENTS"),
+    WARNINGS(13, "WARNINGS");
 
     private String description;
     private int    code;

@@ -1,0 +1,102 @@
+<ui:composition template="/layout/layout.xhtml" 
+			xmlns="http://www.w3.org/1999/xhtml" 
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+  			xmlns:h="http://java.sun.com/jsf/html" 
+              xmlns:rich="http://richfaces.org/rich"
+              xmlns:a4j="http://richfaces.org/a4j"
+  			xmlns:f="http://java.sun.com/jsf/core">
+
+	<ui:param name="redFlagsSelected" value="current" />
+	<ui:param name="warningsSubSelected" value="current" />
+	
+	
+	<ui:define name="subnavigation">
+		<ui:include src="/includes/redFlags/subNavigation.xhtml" />
+	</ui:define>
+	
+
+	<ui:define name="content">
+	
+<table width="920" border="0" align="center" cellpadding="0" cellspacing="0" style="margin: 0 auto 0 auto;">
+  <tr>
+    <td valign="top">
+      <!-- START PANEL -->
+      <h:panelGroup layout="block" styleClass="">
+        <h:panelGroup layout="block" styleClass="panel_nw">
+          <div class="panel_title"> <span class="warningtitle">#{messages.warnings_title}</span><span class="panel_links"></span>
+           </div>
+        </h:panelGroup>
+
+        <h:panelGroup layout="block" styleClass="panel_w">
+          <h:panelGroup layout="block" styleClass="panel_content">
+
+			<a4j:form id="warningsearch">							
+            <ul id="grid_nav" style="margin: 0;">
+              <li class="l">
+                <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
+                  <tr>
+                    <td>#{messages.warnings_search}</td>
+                    <td>
+                      <h:inputText id="searchText" value="#{warningsBean.searchText}" styleClass="text" size="25"/>
+                    </td>
+                  </tr>
+                </table>
+              </li>
+			  <li class="l">
+					<a4j:commandButton action="#{warningsBean.searchAction}" 
+            					reRender="header,warningsTableForm:items,warningsTableForm:bottomScroller,warningsTableForm:topScroller" styleClass="left">
+            				<span class="search">
+            					<h:outputText value="#{messages.button_search}" />
+            				</span>
+            		</a4j:commandButton>            								
+			   </li>
+			  <li class="l text">
+				<a4j:commandLink styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('editColumns')" 
+					reRender="editColumnsForm:editColumnGrid">
+					#{messages.button_editColumns}
+				</a4j:commandLink>
+			  </li>  
+			  <li class="r text">
+			  	<h:outputFormat id="header" value="#{messages.warnings_recordCountHeader}">
+					<a4j:actionparam value="#{warningsBean.start}"/>
+					<a4j:actionparam value="#{warningsBean.end}"/>
+					<a4j:actionparam value="#{warningsBean.maxCount}"/>
+				</h:outputFormat>
+               </li>          							
+            </ul>
+    		</a4j:form>
+    		        
+			<div class="spacer"></div>
+			
+            <h:panelGroup id="warningsTable" layout="block" styleClass="datagrid">
+				<ui:include src="/includes/eventsTable.xhtml">	
+					<ui:param name="numRowsPerPg" value="#{warningsBean.numRowsPerPg}"/>									
+             		<ui:param name="tableData" value="#{warningsBean.tableData}"/>             						
+             		<ui:param name="tableColumns" value="#{warningsBean.tableColumns}"/>
+             		<ui:param name="bean" value="#{warningsBean}"/>
+             		<ui:param name="formId" value="warningsTableForm"/>
+    			</ui:include>    							
+            </h:panelGroup>
+            
+          </h:panelGroup>
+		</h:panelGroup>
+
+		<ui:include src="/includes/editColumnsPopup.xhtml">
+			<ui:param name="bean" value="#{warningsBean}"/>	
+			<ui:param name="reRender" value="warningsTableForm:items" />
+		</ui:include>    
+		
+        <h:panelGroup layout="block" styleClass="panel_sw">
+          <h:panelGroup layout="block" styleClass="panel_statusbar"/>
+		</h:panelGroup>
+
+      </h:panelGroup>
+      <!-- END PANEL -->
+    </td>
+  </tr>
+</table>
+	
+	
+	</ui:define>
+
+</ui:composition>

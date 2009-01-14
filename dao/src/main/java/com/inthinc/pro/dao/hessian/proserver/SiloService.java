@@ -249,7 +249,7 @@ public interface SiloService extends HessianService
 
     
     // -------------------------    Messages   -----------------------------------------------
-    List<Map<String, Object>> getMessages(Integer deliveryMethodType);
+    List<Map<String, Object>> getMessages(Integer siloID, Integer deliveryMethodType);
     
     // --------------central service -----------------------    
     

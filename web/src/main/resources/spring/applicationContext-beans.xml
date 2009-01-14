@@ -284,6 +284,14 @@
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
     </bean>
+    <bean id="baseEventsBean" class="com.inthinc.pro.backing.BaseEventsBean" scope="session" parent="baseBean" init-method="initBean">
+        <property name="eventDAO" ref="eventDAO"></property>
+        <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
+    </bean>
+    <bean id="eventsBean" class="com.inthinc.pro.backing.EventsBean" scope="session" parent="baseEventsBean">
+    </bean>
+    <bean id="warningsBean" class="com.inthinc.pro.backing.WarningsBean" scope="session" parent="baseEventsBean">
+    </bean>
     <bean id="idlingReportBean" class="com.inthinc.pro.backing.IdlingReportBean" scope="session" parent="baseBean" init-method="init">
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
         <property name="scoreDAO" ref="scoreDAO"></property>   
