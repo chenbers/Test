@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -22,6 +23,7 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.MiscUtil;
+import com.inthinc.pro.validators.EmailValidator;
 
 public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAlertView> extends BaseAdminBean<T> implements PersonChangeListener
 {
@@ -313,6 +315,20 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
                 context.addMessage("edit-form:emailToString", message);
                 valid = false;
+            }
+
+            // valid e-mail addresses
+            for (final String email : alert.getEmailTo())
+            {
+                final Matcher matcher = EmailValidator.EMAIL_REGEX.matcher(email);
+                if (!matcher.matches())
+                {
+                    final String summary = MessageUtil.formatMessageString("editAlerts_emailFormat", email);
+                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                    context.addMessage("edit-form:emailToString", message);
+                    valid = false;
+                    break;
+                }
             }
         }
         return valid;

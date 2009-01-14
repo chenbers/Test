@@ -8,7 +8,7 @@ import com.inthinc.pro.util.MessageUtil;
 
 public class EmailValidator extends RegexValidator
 {
-    private static final Pattern EMAIL_REGEX = Pattern.compile("([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$");
+    public static final Pattern EMAIL_REGEX = Pattern.compile("([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$");
 
     @Override
     protected Pattern getRegex(UIComponent component)
