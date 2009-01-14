@@ -337,8 +337,8 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     {
         if (anytime)
         {
-            alert.setStartTOD(null);
-            alert.setStopTOD(null);
+            alert.setStartTOD(BaseAlert.MIN_TOD);
+            alert.setStopTOD(BaseAlert.MIN_TOD);
         }
         else
         {
