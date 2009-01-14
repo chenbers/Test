@@ -209,13 +209,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     }
 
     @Override
-    public String save()
-    {
-        
-        return super.save();
-    }
-
-    @Override
     protected boolean validate(List<DeviceView> saveItems)
     {
         final FacesContext context = FacesContext.getCurrentInstance();
