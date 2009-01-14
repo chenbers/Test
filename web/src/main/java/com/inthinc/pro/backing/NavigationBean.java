@@ -39,7 +39,11 @@ public class NavigationBean extends BaseDurationBean
     // Capture for sort
     private String sortedFirst = "false";
     private String sortedSecond = "false";
-
+    
+    // LiveFleet result count property.
+    // Unable to persist maxCount in liveFleetBean with Tomahawk when using a4j:jsFunction
+    private Integer liveFleetCount = 10; 
+    
     public NavigationBean()
     {
 
@@ -207,5 +211,17 @@ public class NavigationBean extends BaseDurationBean
             this.end = local;
         }
     }
+
+    public Integer getLiveFleetCount()
+    {
+        return liveFleetCount;
+    }
+
+    public void setLiveFleetCount(Integer liveFleetCount)
+    {
+        this.liveFleetCount = liveFleetCount;
+    }
+    
+    
   
 }

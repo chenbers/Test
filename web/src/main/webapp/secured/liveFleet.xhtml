@@ -184,10 +184,10 @@
 							<div class="panel_content">
 							<rich:panel	id="driversDataTablePanel">
 								<a4j:form>
-								Found #{liveFleetBean.numRecords} drivers.
+								
 								<rich:dataTable value="#{liveFleetBean.drivers}"
 									id="driversDataTable" var="item" styleClass="datagrid"
-									rowClasses="tableOdd,tableEven" cellspacing="1" rows="5" width="100%">
+									rowClasses="tableOdd,tableEven" cellspacing="1" rows="10" width="100%">
 								
 								<rich:column>
 									<img src="#{liveFleetBean.mapIconMap.icons[item.groupID]}"
@@ -215,10 +215,14 @@
 								</rich:column>
 	
 								</rich:dataTable>
-							<div class="spacer"></div>
-							<rich:datascroller align="center" for="driversDataTable" id="driverScroller" reRender="driversDataTable">
-								<f:param name="#{liveFleetBean.maxCount}" value="25"/>
-							</rich:datascroller>
+									<div class="spacer"></div>
+								<rich:datascroller align="center" for="driversDataTable" id="driverScroller" reRender="driversDataTable" />
+									
+						
+							
+								<rich:panel id="stats">
+									Found #{liveFleetBean.numRecords} drivers.
+								</rich:panel>
 						
 							</a4j:form>
 						</rich:panel> 
@@ -346,12 +350,12 @@
 				</rich:panel> 
 				<a4j:form>
 				
-					<a4j:jsFunction reRender="vehicleScript,driversDataTablePanel,mapPopups,driverScroller"
-									name="notifyBean" action="#{liveFleetBean.FormAction}"
-									immediate="true" ajaxSingle="true">				
+					<a4j:jsFunction reRender="vehicleScript,driversDataTable,mapPopups,driverScroller,stats"
+									name="notifyBean"
+									immediate="true" bypassUpdates="true">				
 						<a4j:actionparam name="param1" assignTo="#{liveFleetBean.addressLatLng.lat}" />
 						<a4j:actionparam name="param2" assignTo="#{liveFleetBean.addressLatLng.lng}" />
-						<a4j:actionparam name="param3" assignTo="#{liveFleetBean.maxCount}" />	
+						<a4j:actionparam name="param3" assignTo="#{navigationBean.liveFleetCount}" />	
 						
 					</a4j:jsFunction>
 				</a4j:form>

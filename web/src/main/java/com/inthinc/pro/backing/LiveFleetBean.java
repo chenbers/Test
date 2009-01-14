@@ -30,7 +30,7 @@ public class LiveFleetBean extends BaseBean
     private Integer              addressZoom;
     private Integer              maxCount;
     private Integer              numRecords;
-    private List<DriverLocation> drivers = new ArrayList<DriverLocation>();   
+    private List<DriverLocation> drivers;  
     private IconMap              mapIconMap;
     private IconMap              legendIconMap;
     private GroupHierarchy       organizationHierarchy;
@@ -41,27 +41,27 @@ public class LiveFleetBean extends BaseBean
         organizationHierarchy = new GroupHierarchy(groupDAO.getGroupsByAcctID(getAccountID()));
         addressLatLng = organizationHierarchy.getTopGroup().getMapCenter();
         addressZoom = organizationHierarchy.getTopGroup().getMapZoom();
+        
     }
     
     public void FormAction()
     {
-        logger.debug("ACTION drivers count: " + maxCount.toString());
+        logger.debug("ACTION drivers count: " + navigation.getLiveFleetCount().toString());
         logger.debug("ACTION driver size " + drivers.size());
     }
     
     // DRIVER LAST LOCATION PROPERTIES
     public List<DriverLocation> getDrivers()
     {
-        logger.debug("getDriver hit.");
+        if(drivers != null && drivers.size() > 0) return drivers;
         
-        if(maxCount == null) setMaxCount(10);
-   
+        logger.debug("getDriver hit.");   
         
-        logger.debug("getDrivers trying to get: " + getMaxCount().toString());
+        logger.debug("getDrivers trying to get: " + navigation.getLiveFleetCount());
         
         //Get drivers
         Group fleetGroup = organizationHierarchy.getTopGroup();
-        setDrivers(driverDAO.getDriversNearLoc(fleetGroup.getGroupID(), getMaxCount(), addressLatLng.getLat(), addressLatLng.getLng()));
+        setDrivers(driverDAO.getDriversNearLoc(fleetGroup.getGroupID(), navigation.getLiveFleetCount(), addressLatLng.getLat(), addressLatLng.getLng()));
         setNumRecords(drivers.size());
         
         logger.debug("getDrivers retieved: " + drivers.size());
