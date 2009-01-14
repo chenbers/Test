@@ -155,7 +155,7 @@
                     <tr>
                       <td width="130" valign="top">
                         <h:selectOneRadio value="#{redFlagAlertsBean.item.type}" layout="pageDirection" style="width:100%" styleClass="ls_tab_table" enabledClass="radioitem">
-                          <a4j:support event="onchange" reRender="speed,drivingStyle,safety" limitToList="true" />
+                          <a4j:support event="onclick" reRender="speed,drivingStyle,safety" limitToList="true" />
                           <f:selectItem itemValue="speed" itemLabel="#{messages.redFlag_speed}" />
                           <f:selectItem itemValue="drivingStyle" itemLabel="#{messages.redFlag_drivingStyle}" />
                           <f:selectItem itemValue="safety" itemLabel="#{messages.redFlag_safety}" />
