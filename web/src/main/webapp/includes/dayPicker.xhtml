@@ -43,7 +43,7 @@
       </tr>
       <tr>
         <c:if test="#{not disabled}">
-          <td align="center"><input type="checkbox" id="daysSelectAll" onchange="checkAll(this.checked)" /></td>
+          <td align="center"><input type="checkbox" id="daysSelectAll" onclick="checkAll(this.checked)" /></td>
         </c:if>
         <td align="center"><h:selectBooleanCheckbox id="day0" value="#{days[0]}" disabled="#{disabled}" onclick="checkedOne()" /></td>
         <td align="center"><h:selectBooleanCheckbox id="day1" value="#{days[1]}" disabled="#{disabled}" onclick="checkedOne()" /></td>
