@@ -183,6 +183,15 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             getItem().setSpeedSelected(null);
             getItem().setSeatBeltLevel(RedFlagLevel.NONE);
 
+            if (!getItem().isHardAccelerationSelected())
+                getItem().setHardAccelerationLevel(RedFlagLevel.NONE);
+            if (!getItem().isHardBrakeSelected())
+                getItem().setHardBrakeLevel(RedFlagLevel.NONE);
+            if (!getItem().isHardTurnSelected())
+                getItem().setHardTurnLevel(RedFlagLevel.NONE);
+            if (!getItem().isHardVerticalSelected())
+                getItem().setHardVerticalLevel(RedFlagLevel.NONE);
+
             // if batch editing and changing driving style, make sure the nulled items get set
             if (isBatchEdit())
             {
