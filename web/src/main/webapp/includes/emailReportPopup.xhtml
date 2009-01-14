@@ -13,7 +13,7 @@
 		explanation: Text to be displayed in the header section
 		(Select one or the other report - reportList)
 		report:  report to be emailed.
-		reports: reports to be emailed.
+		reportList: reports to be emailed.
 		id:          Modal Panel ID
 		
 		reportBean: This is the backing bean that contains the following
@@ -52,7 +52,7 @@
           <button type="submit" class="left" onclick="Richfaces.hideModalPanel('#{id}'); return false;"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button>
           
           <a4j:commandButton rendered="#{not empty reportList}" id="emailButton1" action="#{reportBean.emailReport}" onclick="Richfaces.hideModalPanel('#{id}')" oncomplete="#{onemail}" reRender="#{reRender}" styleClass="left" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;"><span class="email"><h:outputText value="#{messages.button_email}" /></span>
-          		<a4j:actionparam assignTo="#{reportRendererBean.reports}" converter="SimpleBeanConverter" value="#{reports}"/>
+          		<a4j:actionparam assignTo="#{reportRendererBean.reports}" converter="SimpleBeanConverter" value="#{reportList}"/>
           </a4j:commandButton>
           <a4j:commandButton rendered="#{not empty report}"   id="emailReportButton2" action="#{reportBean.emailReport}" onclick="Richfaces.hideModalPanel('#{id}')" oncomplete="#{onemail}" reRender="#{reRender}" styleClass="left" onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;"><span class="email"><h:outputText value="#{messages.button_email}" /></span>
           		<a4j:actionparam assignTo="#{reportRendererBean.report}" value="#{report}"/>
