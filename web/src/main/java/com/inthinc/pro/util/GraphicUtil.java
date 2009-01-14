@@ -1,6 +1,10 @@
 package com.inthinc.pro.util;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Random;
@@ -87,9 +91,16 @@ public class GraphicUtil {
 	{
 	    List<String> monthList = new ArrayList<String>();
 	    
+	    Calendar cal;
+	    DateFormat dateFormatter = new SimpleDateFormat("dd");
+	    
 	    if ( duration == Duration.DAYS ) {
-            for ( int i = 1; i < 31; i++ ) {
-                monthList.add(String.valueOf(i));
+            for ( int i = 1; i <= 30; i++ )
+            {
+                cal = Calendar.getInstance();
+                cal.add(Calendar.DAY_OF_MONTH, -i);
+           
+                monthList.add(0, dateFormatter.format(cal.getTime()));
             }       
         } else {
             int num = convertToMonths(duration);             
