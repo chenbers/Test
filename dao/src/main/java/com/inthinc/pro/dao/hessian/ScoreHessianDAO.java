@@ -391,7 +391,8 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 entity.setEntityType(EntityType.ENTITY_DRIVER);
                 entity.setScoreType(scoreType);
                 Integer score = driveQMap.getScoreMap().get(scoreType);
-                entity.setScore((score == null) ? 50 : score);                
+//                entity.setScore(score);  
+                entity.setScore((score == null) ? 50 : score);                   
                 entity.setCreated(driveQMap.getCreated());
                 scoreList.add(entity);
             }
@@ -431,7 +432,8 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 entity.setEntityType(EntityType.ENTITY_VEHICLE);
                 entity.setScoreType(scoreType);
                 Integer score = driveQMap.getScoreMap().get(scoreType);
-                entity.setScore((score == null) ? 50 : score);
+//                entity.setScore(score);
+                entity.setScore((score == null) ? 50 : score);                
                 entity.setCreated(driveQMap.getCreated());
                 scoreList.add(entity);
             }
