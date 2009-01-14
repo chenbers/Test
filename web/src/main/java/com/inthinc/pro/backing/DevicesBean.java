@@ -287,6 +287,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
                 {
                     vehicleDAO.clearVehicleDevice(device.getVehicleID(), otherDevice.getDeviceID());
                     otherDevice.setVehicleID(null);
+                    otherDevice.setOldVehicleID(null);
                 }
 
         vehicleDAO.setVehicleDevice(device.getVehicleID(), device.getDeviceID());
