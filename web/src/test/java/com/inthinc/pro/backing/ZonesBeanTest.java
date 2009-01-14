@@ -13,6 +13,7 @@ import com.inthinc.pro.util.MiscUtil;
 
 public class ZonesBeanTest extends BaseBeanTest
 {
+    @Ignore
     @Test
     public void list()
     {
@@ -29,6 +30,7 @@ public class ZonesBeanTest extends BaseBeanTest
         assertEquals(zonesBean.getZoneIDs().size(), zonesBean.getZonesCount());
     }
 
+    @Ignore
     @Test
     public void display()
     {
@@ -98,6 +100,7 @@ public class ZonesBeanTest extends BaseBeanTest
         assertEquals(count + 1, zonesBean.getZonesCount());
     }
 
+    @Ignore
     @Test
     public void edit()
     {
@@ -141,6 +144,7 @@ public class ZonesBeanTest extends BaseBeanTest
         assertEquals(zonesBean.getZonesCount(), count);
     }
 
+    @Ignore
     @Test
     public void delete()
     {
