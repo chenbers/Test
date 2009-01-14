@@ -492,9 +492,9 @@ public class OrganizationBean extends BaseBean
 
     public void setSelectedGroupNode(TreeNodeImpl selectedGroupNode)
     {
-        if (selectedGroupNode.getTreeNodeType() == TreeNodeType.TEAM)
-        {
-            
+        TreeNodeType type = selectedGroupNode.getTreeNodeType();
+        if (type == TreeNodeType.TEAM || type == TreeNodeType.DIVISION || type ==TreeNodeType.FLEET)
+        { 
             selectedGroupDriverCount = driverDAO.getAllDrivers(selectedGroupNode.getGroup().getGroupID()).size();
             selectedGroupVehicleCount = vehicleDAO.getVehiclesInGroupHierarchy(selectedGroupNode.getGroup().getGroupID()).size();
         }
