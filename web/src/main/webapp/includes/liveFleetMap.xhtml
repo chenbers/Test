@@ -9,6 +9,13 @@
 	
 		<script src="#{facesContext.externalContext.request.contextPath}/js/liveFleetMap.js"  type="text/javascript"></script>
 		<script type="text/javascript">
+			function bodyUnload(){
+			
+				GUnload();
+			}
+		</script>
+		<rich:panel id="scripts">
+		<script type="text/javascript">
 			function addMarkers(){
 				<ui:repeat value="#{driverLocationBean.driverLastLocationBeans}" var="driverLastLocationBean">
 					var latlng = new GLatLng(#{driverLastLocationBean.lastLocation.lat}, #{driverLastLocationBean.lastLocation.lng});
@@ -17,12 +24,8 @@
 	        						
 				</ui:repeat>
 			}
-			function bodyUnload(){
-			
-				GUnload();
-			}
 		</script>
-	
+		</rich:panel>
 		<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
@@ -30,7 +33,7 @@
 						<span class="panel_links">
 						<a4j:form id="refresh">
 						<a4j:commandButton image="/images/ico_refresh.png" immediate="true"
-							reRender="map"
+							reRender="map,scripts"
 							value="#{messages.refresh}">
 						</a4j:commandButton>
 			   			<h:commandLink action="#{flyOutBean.flyNavRuleAction}">
@@ -45,6 +48,7 @@
 				</div>
 				<div class="panel_w">
 					
+				 	 <rich:panel  id="map">
 										<h:form id="mapLinks">
 								<ui:repeat value="#{driverLocationBean.driverLastLocationBeans}" var="driverLastLocationBean">
 									<div id="#{driverLastLocationBean.driver.driverID}" style="display:none">
@@ -57,15 +61,14 @@
 										</h:form>
 							  	
 					<div class="panel_content">
-				 	 <rich:panel  id="map">
 							<h:form name="maplinks2"> <div id="map-canvas" style="#{mapwidth};#{mapheight};border:0"></div></h:form>
 					    <script type="text/javascript">
 					    	initMap(#{mapxcenter}, #{mapycenter}, 5);
 					    	addMarkers();
 					    	
    						</script> 
+ 					 </div>
  					 </rich:panel>
-					 </div>
  				</div>		
 																					
 				<div class="panel_sw">
