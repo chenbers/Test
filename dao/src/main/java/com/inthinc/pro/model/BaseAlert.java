@@ -206,7 +206,7 @@ public abstract class BaseAlert extends BaseEntity
         if ((emailToString != null) && (emailToString.trim().length() > 0))
             setEmailTo(new ArrayList<String>(Arrays.asList(emailToString.split("[,; ]+"))));
         else
-            setEmailTo(null);
+            setEmailTo(new ArrayList<String>());
     }
 
     public Status getStatus()
