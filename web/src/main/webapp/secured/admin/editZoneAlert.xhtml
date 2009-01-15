@@ -73,7 +73,7 @@
                             </td>
                             <td>
                               <rich:message for="zoneID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                              <h:selectOneMenu id="zoneID" value="#{zoneAlertsBean.item.zoneID}" required="#{(not zoneAlertsBean.batchEdit) or zoneAlertsBean.updateField['zoneID']}" requiredMessage="#{messages.required}">
+                              <h:selectOneMenu id="zoneID" value="#{zoneAlertsBean.item.zoneID}" required="#{(not zoneAlertsBean.batchEdit) or zoneAlertsBean.updateField['zoneID']}" requiredMessage="#{messages.required}" style="width: 200px">
                                 <a4j:support event="onchange" reRender="zonePoints" limitToList="true" ajaxSingle="true" onsubmit="checkMultiple(this)" oncomplete="showZone()"/>
                                 <f:selectItems value="#{zoneAlertsBean.zones}" />
                               </h:selectOneMenu>
