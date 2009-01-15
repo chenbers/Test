@@ -53,6 +53,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         try
         {
             List<ScoreableEntity> scoreList = getSortedScoreList(groupID);
+            Collections.reverse(scoreList);
             return scoreList.subList(0, scoreList.size() > 5 ? 5 : scoreList.size());
         }
         catch (EmptyResultSetException e)
@@ -86,7 +87,6 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         try
         {
             List<ScoreableEntity> scoreList = getSortedScoreList(groupID);
-            Collections.reverse(scoreList);
             return scoreList.subList(0, scoreList.size() > 5 ? 5 : scoreList.size());
         }
         catch (EmptyResultSetException e)

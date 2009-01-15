@@ -219,7 +219,7 @@ public class ReportServiceTest
             
         }
         
-        scoreableEntityList = scoreDAO.getTopFiveScores(groupID);
+        scoreableEntityList = scoreDAO.getBottomFiveScores(groupID);
         assertNotNull(scoreableEntityList);
         assertTrue(scoreableEntityList.size() <= 5);
         
