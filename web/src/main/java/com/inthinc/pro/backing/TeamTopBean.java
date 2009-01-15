@@ -146,4 +146,8 @@ public class TeamTopBean extends BaseBean
     {
         this.driverDAO = driverDAO;
     }
+    public String getTeamName(){
+    	
+    	return navigation.getGroupHierarchy().getGroup(navigation.getGroupID()).getName();
+    }
 }

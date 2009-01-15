@@ -5,12 +5,25 @@
 	xmlns:f="http://java.sun.com/jsf/core"
   	xmlns:iwi="http://pro.tiwi.com/jsf"
 	xmlns:h="http://java.sun.com/jsf/html">
+	<script type="text/javascript">
+		function showAllTeam(teamName) 
+		{	
+		alert("showAllTeam");
+			var urlToGoTo = "#{facesContext.externalContext.request.contextPath}/secured/reports/drivers.faces";
+			urlToGoTo = urlToGoTo + "?searchFor=" + teamName;
+			
+			window.location.href=urlToGoTo;
+		}
+	</script>
+	
 	<div class="">
-
+		
 		<div class="panel_nw">
 			<div class="panel_title">
 				<span class="top5">Top 5 Drivers </span>
-				<span class="panel_links"><a href="#">show all</a></span>
+				<span class="panel_links">
+					<a href="#{facesContext.externalContext.request.contextPath}/secured/reports/drivers.faces?searchFor=#{teamTopBean.teamName}">#{messages.team_recentEventsShowAll}</a>
+				</span>	
 			</div>
 		</div>
 		<div class="panel_w">
@@ -66,7 +79,9 @@
 
 			<div class="panel_title">
 				<span class="thumbsdown">Bottom 5 Drivers </span>
-				<span class="panel_links"><a href="#">show all</a></span>
+				<span class="panel_links">
+					<a href="#{facesContext.externalContext.request.contextPath}/secured/reports/drivers.faces?searchFor=#{teamTopBean.teamName}">#{messages.team_recentEventsShowAll}</a>
+				</span>
 			</div>
 		</div>
 		
