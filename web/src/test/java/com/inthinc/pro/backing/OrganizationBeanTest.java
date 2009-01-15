@@ -1,6 +1,10 @@
 package com.inthinc.pro.backing;
 
 import static org.easymock.classextension.EasyMock.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -9,6 +13,7 @@ import org.richfaces.component.UITree;
 import org.richfaces.event.DropEvent;
 import org.richfaces.event.NodeSelectedEvent;
 
+import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.model.TreeNodeImpl;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
@@ -16,8 +21,8 @@ import com.inthinc.pro.model.LatLng;
 
 public class OrganizationBeanTest extends BaseBeanTest
 {
-    private static OrganizationBean organizationBean;
-    
+    private OrganizationBean organizationBean;
+    private static Map<String, Object> conversationContext = new HashMap<String, Object>();//Mimics the t:saveState 
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception
@@ -28,115 +33,210 @@ public class OrganizationBeanTest extends BaseBeanTest
     public static void tearDownAfterClass() throws Exception
     {
     }
-    
+
     private void setup()
     {
         loginUser("superuser101");
-        organizationBean = (OrganizationBean)applicationContext.getBean("organizationBean");
+        organizationBean = (OrganizationBean) applicationContext.getBean("organizationBean");
     }
-    
+
     @Test
-    public void testOrganizationBeanEdit(){
+    public void testOrganizationBeanEdit()
+    {
         setup();
         TreeNodeImpl treeNode = organizationBean.getTopLevelNodes();
         organizationBean.getSelectedPerson();
-        
+
         assertNotNull(treeNode);
-        
+
         organizationBean.edit();
-        
+
         organizationBean.getParentGroups();
         organizationBean.getPeopleSelectItems();
         organizationBean.getGroupTypeList();
-        
+
         Group selectedGroup = organizationBean.getInProgressGroupNode().getGroup();
         selectedGroup.setAccountID(1);
-        selectedGroup.setDescription("Test");
+        selectedGroup.setDescription("Test EDIT");
         selectedGroup.setType(GroupType.DIVISION);
-        selectedGroup.setMapCenter(new LatLng(0,0));
+        selectedGroup.setMapCenter(new LatLng(0, 0));
         selectedGroup.setMapZoom(5);
         selectedGroup.setManagerID(220);
-        
+
         organizationBean.update();
     }
-    
+
     @Test
-    public void testOrganizationBeanAdd(){
+    public void testOrganizationBeanAdd()
+    {
         setup();
         TreeNodeImpl treeNode = organizationBean.getTopLevelNodes();
         organizationBean.setTopLevelNodes(treeNode);
-        
+
         assertNotNull(treeNode);
-        
+
         organizationBean.add();
-        
+
         organizationBean.getParentGroups();
         organizationBean.getPeopleSelectItems();
         organizationBean.getGroupTypeList();
-        
+
         Group selectedGroup = organizationBean.getInProgressGroupNode().getGroup();
         selectedGroup.setAccountID(1);
-        selectedGroup.setDescription("Test");
+        selectedGroup.setDescription("Test ADD");
         selectedGroup.setType(GroupType.DIVISION);
-        selectedGroup.setMapCenter(new LatLng(0,0));
+        selectedGroup.setMapCenter(new LatLng(0, 0));
         selectedGroup.setMapZoom(5);
         selectedGroup.setManagerID(220);
         organizationBean.setSelectedParentGroup(treeNode.getGroup());
+        assertEquals(treeNode, organizationBean.getTopLevelNodes());
+        organizationBean.save();
+        assertEquals(treeNode, organizationBean.getTopLevelNodes());
         
+        //Reset for other tests
+        organizationBean.setSelectedGroupNode(treeNode);
+    }
+
+    /*
+     * There was a bug specifically releated to this process. This unit test should protect it from occuring again.
+     */
+    @Test
+    public void testOrganizationBeanAddEdit()
+    {
+        setup();
+        
+        //Request Add
+        TreeNodeImpl topLevelTreeNode = organizationBean.getTopLevelNodes();
+        organizationBean.setTopLevelNodes(topLevelTreeNode);
+        //We should be adding to the the root node here.
+        organizationBean.add();
+        TreeNodeImpl inProgressNodeImpl = organizationBean.getInProgressGroupNode();
+        saveState(organizationBean);
+        
+        //Request Save
+        Group selectedGroup = inProgressNodeImpl.getGroup();
+        selectedGroup.setAccountID(1);
+        selectedGroup.setDescription("Test");
+        selectedGroup.setName("Test");
+        selectedGroup.setType(GroupType.DIVISION);
+        selectedGroup.setMapCenter(new LatLng(0, 0));
+        selectedGroup.setMapZoom(5);
+        selectedGroup.setManagerID(220);
+        organizationBean = (OrganizationBean) applicationContext.getBean("organizationBean");
+        restoreState(organizationBean);
+        assertEquals(topLevelTreeNode, organizationBean.getTopLevelNodes());
         
         organizationBean.save();
+       
+        assertNull(organizationBean.getInProgressGroupNode());
+        assertNull(organizationBean.getSelectedParentGroup());
+        assertEquals(topLevelTreeNode,organizationBean.getSelectedGroupNode().getParent());
+        assertEquals("Test",organizationBean.getSelectedGroupNode().getLabel());
+        saveState(organizationBean);
+       
+        //Request Edit
+        organizationBean = (OrganizationBean) applicationContext.getBean("organizationBean");
+        restoreState(organizationBean);
+        organizationBean.edit();
+        TreeNodeImpl selectedNodeImpl = organizationBean.getSelectedGroupNode();
+        inProgressNodeImpl = organizationBean.getInProgressGroupNode();
+        assertEquals(topLevelTreeNode, organizationBean.getTopLevelNodes());
+        saveState(organizationBean);
+        
+        //Request Update
+        Group selectedGroupForEdit = inProgressNodeImpl.getGroup();
+        selectedGroupForEdit.setAccountID(1);
+        selectedGroupForEdit.setDescription("Test 4");
+        selectedGroupForEdit.setName("Test 4");
+        selectedGroupForEdit.setType(GroupType.DIVISION);
+        selectedGroupForEdit.setMapCenter(new LatLng(0, 0));
+        selectedGroupForEdit.setMapZoom(5);
+        selectedGroupForEdit.setManagerID(220);
+        
+        organizationBean = (OrganizationBean) applicationContext.getBean("organizationBean");
+        restoreState(organizationBean);
+        assertEquals(topLevelTreeNode, organizationBean.getTopLevelNodes());
+        
+        organizationBean.update();
+        assertEquals(selectedNodeImpl, organizationBean.getSelectedGroupNode()); //Theese should be the same.
+        assertEquals("Test 4", organizationBean.getSelectedGroupNode().getGroup().getName()); //Theese should be the same.
+        
+        
+        
+        
+        //organizationBean.setSelectedParentGroup(treeNode.getGroup());
+         
     }
     
+    private void saveState(OrganizationBean organizationBean)
+    {
+      //saveState
+        conversationContext.put("topLevelNodes",organizationBean.getTopLevelNodes());
+        conversationContext.put("selectedGroupNode",organizationBean.getSelectedGroupNode());
+        conversationContext.put("inProgressGroupNode",organizationBean.getInProgressGroupNode());
+        conversationContext.put("selectedParentGroup",organizationBean.getSelectedParentGroup());
+        conversationContext.put("treeStateMap",organizationBean.getTreeStateMap());
+        conversationContext.put("organizationHierarchy",organizationBean.getOrganizationHierarchy());
+    }
+    
+    private void restoreState(OrganizationBean organizationBean)
+    {
+        organizationBean.setTopLevelNodes((TreeNodeImpl)conversationContext.get("topLevelNodes"));
+        organizationBean.setSelectedGroupNode((TreeNodeImpl)conversationContext.get("selectedGroupNode"));
+        organizationBean.setInProgressGroupNode((TreeNodeImpl)conversationContext.get("inProgressGroupNode"));
+        organizationBean.setSelectedParentGroup((Group)conversationContext.get("selectedParentGroup"));
+        organizationBean.setTreeStateMap((Map)conversationContext.get("treeStateMap"));
+        organizationBean.setOrganizationHierarchy((GroupHierarchy)conversationContext.get("organizationHierarchy"));
+    }
+
     @Test
     @Ignore
-    public void testTreeViewListeners(){
+    public void testTreeViewListeners()
+    {
         setup();
         TreeNodeImpl treeNode = organizationBean.getTopLevelNodes();
         organizationBean.setTopLevelNodes(treeNode);
-        
+
         assertNotNull(treeNode);
-        
-        //Test select node;
+
+        // Test select node;
         UITree uiComponent = createMock(UITree.class);
         TreeNodeImpl childNode = organizationBean.getSelectedGroupNode().getChildAt(0);
         expect(uiComponent.getRowData()).andReturn(childNode).anyTimes();
         replay(uiComponent);
-        NodeSelectedEvent nodeSelectEvent = new NodeSelectedEvent(uiComponent,null);
+        NodeSelectedEvent nodeSelectEvent = new NodeSelectedEvent(uiComponent, null);
         organizationBean.selectNode(nodeSelectEvent);
         assertEquals(childNode, organizationBean.getSelectedGroupNode());
-        
-        //Process Drop
+
+        // Process Drop
         TreeNodeImpl dragNode = organizationBean.getSelectedGroupNode().getChildAt(0);
         TreeNodeImpl dropNode = organizationBean.getSelectedGroupNode();
         DropEvent dropEvent = createMock(DropEvent.class);
-        expect(dropEvent.getDragValue()).andReturn(dragNode).times(1)
-            .andReturn(dropNode).times(1).andReturn(dragNode).times(1);
-        expect(dropEvent.getDropValue()).andReturn(dragNode).times(2)
-            .andReturn(dropNode).anyTimes();
+        expect(dropEvent.getDragValue()).andReturn(dragNode).times(1).andReturn(dropNode).times(1).andReturn(dragNode).times(1);
+        expect(dropEvent.getDropValue()).andReturn(dragNode).times(2).andReturn(dropNode).anyTimes();
         replay(dropEvent);
         organizationBean.processDrop(dropEvent);
         organizationBean.processDrop(dropEvent);
         organizationBean.processDrop(dropEvent);
         assertEquals(dragNode.getParent(), dropNode);
-        
-        
     }
-    
-    @Test 
+
+    @Test
     @Ignore
-    public void testLoadTree(){
+    public void testLoadTree()
+    {
         setup();
         TreeNodeImpl treeNode = organizationBean.getTopLevelNodes();
         organizationBean.setTopLevelNodes(treeNode);
-        
-        
-        for(int i = 0;i<4;i++){
-            if(treeNode.getAllowsChildren()){
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (treeNode.getAllowsChildren())
+            {
                 treeNode = treeNode.getChildAt(0);
             }
         }
-        
+
     }
-    
-    
+
 }

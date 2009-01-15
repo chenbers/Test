@@ -244,12 +244,17 @@ public class OrganizationBean extends BaseBean
         cleanFields(); // Clear out the group that was being worked on.
     }
 
+    /*
+     * Seting up the bean for adding a new group
+     */
     public void add()
     {
         groupState = State.ADD;
         logger.debug("Adding New Group");
-        inProgressGroupNode = createNewGroupNode();
         selectedParentGroup = selectedGroupNode.getGroup();
+        
+        inProgressGroupNode = createNewGroupNode();
+       
     }
 
     public void changeSelectedGroup(javax.faces.event.ActionEvent event)
@@ -302,7 +307,7 @@ public class OrganizationBean extends BaseBean
                 inProgressGroupNode.setId(id);
                 setSelectedGroupNode(inProgressGroupNode);
                 updateUsersGroupHeirarchy();
-                topLevelNode = null;
+                //topLevelNode = null; dont' think we need this and I beleive it is causing problems
                 this.addInfoMessage(selectedGroupNode.getGroup().getName() + " " + MessageUtil.getMessageString("group_save_confirmation"));
                 groupState = State.VIEW;
                 treeStateMap.put(selectedParentGroup.getGroupID(), Boolean.TRUE);
