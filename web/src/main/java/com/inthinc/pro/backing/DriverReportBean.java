@@ -86,6 +86,10 @@ public class DriverReportBean extends BaseReportBean implements TablePrefOptions
             scoreDAO.getDriverReportData(            
                     getUser().getGroupID(),
                     Duration.TWELVE);
+        //Once loaded, set the group name NOW so it can be searchable IMMEDIATELY
+        for ( DriverReportItem dri : this.driversData ) {
+            dri.setGroup(this.getGroupHierarchy().getGroup(dri.getGroupID()).getName());
+        }
         
         //Bean creation could be from Reports selection or
         //  search on main menu. This accounts for a search
@@ -140,6 +144,7 @@ public class DriverReportBean extends BaseReportBean implements TablePrefOptions
                 int index1;
                 int index2;
                 int index3;
+                int index4;
                                                 
                 if ( p != null ) {
                     
@@ -171,6 +176,17 @@ public class DriverReportBean extends BaseReportBean implements TablePrefOptions
                         (index3 != -1) ) {                        
                         matchedDrivers.add(d);
                     }
+                    
+                    // group name
+                    String lowerCaseGroupName = d.getGroup(); 
+                    index4 = 
+                        lowerCaseGroupName.indexOf(trimmedSearch);                    
+                    if ((index1 == -1) && 
+                        (index2 == -1) &&
+                        (index3 == -1) &&
+                        (index4 != -1) ) {                        
+                        matchedDrivers.add(d);
+                    }                    
                 }                
             }
             
@@ -200,9 +216,6 @@ public class DriverReportBean extends BaseReportBean implements TablePrefOptions
             
             //Driver
             drt.setDriver(d.getDriver());
-            
-            //Group name
-            drt.setGroup(this.getGroupHierarchy().getGroup(d.getGroupID()).getName());
                         
             //Vehicle, none assigned
             if ( d.getVehicle() == null ) {
