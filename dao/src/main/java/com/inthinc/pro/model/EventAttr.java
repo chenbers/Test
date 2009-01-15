@@ -13,6 +13,8 @@ public class EventAttr
         mapping.put(2, "avgSpeed");
         mapping.put(3, "speedLimit");
         mapping.put(4, "avgRPM");           // 100x
+        mapping.put(5, "resetReason");
+        mapping.put(6, "manualResetReason");
         mapping.put(24, "severity");
 
         // Attribute Id (128->191 have two byte values)
@@ -24,6 +26,7 @@ public class EventAttr
 
         // Attribute id (192->254) have four byte values)
         mapping.put(192, "zoneID");        // 10x
+        mapping.put(193, "firmwareVersion");
         mapping.put(219, "lowIdle");
         mapping.put(220, "highIdle");
 

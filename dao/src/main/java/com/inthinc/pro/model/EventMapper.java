@@ -70,6 +70,7 @@ public class EventMapper
         typeMap.put(TIWIPRO_EVENT_LOW_BATTERY, LowBatteryEvent.class);
         typeMap.put(TIWIPRO_EVENT_LOW_TIWI_BATTERY, DeviceLowBatteryEvent.class);
         typeMap.put(TIWIPRO_EVENT_IDLE, IdleEvent.class);
+        typeMap.put(TIWIPRO_EVENT_POWER_ON, PowerOnEvent.class);
     }
     @SuppressWarnings("unchecked")
     private static final Map<EventCategory, List<Integer>> categoryMap = new HashMap<EventCategory, List<Integer>> (); 
