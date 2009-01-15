@@ -19,6 +19,11 @@
                     <value>local</value>
 				</property>
 			</activation>
+            <properties>
+                <facelets.development>true</facelets.development>
+                <tomcatMangerURL>http://localhost:8080/manager</tomcatMangerURL>
+                <tomcatServerID>local-tomcat</tomcatServerID>
+            </properties>
 			<build>
 				<resources>
 					<resource>
@@ -27,9 +32,6 @@
 							<exclude>**/applicationContext-mockdao.xml</exclude>
 							<exclude>**/applicationContext-serverPropertiesRemote.xml</exclude>
 						</excludes>
-					</resource>
-					<resource>
-						<directory>${basedir}/src/main/config/properties</directory>
 					</resource>
 				</resources>
 			</build>
@@ -51,9 +53,6 @@
 							<exclude>**/applicationContext-serverPropertiesRemote.xml</exclude>
 						</excludes>
 					</resource>
-					<resource>
-						<directory>${basedir}/src/main/config/properties</directory>
-					</resource>
 				</resources>
 			</build>
 		</profile>
@@ -65,6 +64,11 @@
 					<value>dev</value>
 				</property>
 			</activation>
+            <properties>
+                <facelets.development>true</facelets.development>
+                <tomcatMangerURL>http://dev-pro.inthinc.com:8081/manager</tomcatMangerURL>
+                <tomcatServerID>dev-pro-tomcat</tomcatServerID>
+            </properties>
 			<build>
 				<resources>
 					<resource>
@@ -74,10 +78,21 @@
 							<exclude>**/applicationContext-serverPropertiesLocal.xml</exclude>
 						</excludes>
 					</resource>
-					<resource>
-						<directory>${basedir}/src/main/config/properties</directory>
-					</resource>
 				</resources>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>tomcat-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>deploy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
 			</build>
 		</profile>
 		<profile>
@@ -88,6 +103,11 @@
 					<value>qa</value>
 				</property>
 			</activation>
+            <properties>
+                <facelets.development>true</facelets.development>
+                <tomcatMangerURL>http://qa-pro.inthinc.com:8082/manager</tomcatMangerURL>
+                <tomcatServerID>qa-pro-tomcat</tomcatServerID>
+            </properties>
 			<build>
 				<resources>
 					<resource>
@@ -97,10 +117,21 @@
 							<exclude>**/applicationContext-serverPropertiesLocal.xml</exclude>
 						</excludes>
 					</resource>
-					<resource>
-						<directory>${basedir}/src/main/config/properties</directory>
-					</resource>
 				</resources>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>tomcat-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>deploy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
 			</build>
 		</profile>
 		<profile>
@@ -119,9 +150,6 @@
 							<exclude>**/applicationContext-mockdao.xml</exclude>
 							<exclude>**/applicationContext-serverPropertiesLocal.xml</exclude>
 						</excludes>
-					</resource>
-					<resource>
-						<directory>${basedir}/src/main/config/properties</directory>
 					</resource>
 				</resources>
 			</build>
