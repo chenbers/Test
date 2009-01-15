@@ -133,7 +133,6 @@
 
    			//if generated character code is equal to ascii 13 (if enter key)
    			if(characterCode == 13) { 
-					alert('enter pressed');
 					processForm('addressTextBox', 'countComboBox');
    					return false; }
    			else
@@ -150,24 +149,25 @@
 	<ui:define name="content">
 	
 	<t:saveState value="#{liveFleetBean}" />
-
 	
 	<!-- BEGIN GOOGLE MAP POPUPS -->
 	<rich:panel id="mapPopups">
+		<h:form>
 		<ui:repeat value="#{liveFleetBean.drivers}" var="driver">
 			<div id="#{driver.driverID}" style="display: none">
-				<h:form id="mapLinks_#{driver.driverID}">
+				
 					<strong>
 						<h:commandLink value="#{driver.name}" action="#{liveFleetBean.driverAction}">
 							<f:param name="id" value="#{driver.driverID}" />
 						</h:commandLink>
 					</strong>
-				</h:form>
+				
 					<b>Work:</b> <h:outputText value="#{driver.workPhone}" converter="PhoneNumberConverter" /> <br />
 					<b>Home:</b> <h:outputText value="#{driver.homePhone}" converter="PhoneNumberConverter" /> <br />
 					<b>Vehicle Type:</b> #{driver.vehicleType}
 				</div>
 		</ui:repeat>
+		</h:form>
 	</rich:panel>
 	<!-- END GOOGLE MAP POPUPS -->
 	
@@ -218,13 +218,7 @@
 								</rich:dataTable>
 									<div class="spacer"></div>
 								<rich:datascroller align="center" for="driversDataTable" id="driverScroller" reRender="driversDataTable" />
-									
-						
 							
-								<rich:panel id="stats">
-									Found #{liveFleetBean.numRecords} drivers.
-								</rich:panel>
-						
 							</a4j:form>
 						</rich:panel> 
 						
@@ -282,18 +276,18 @@
 				</table>
 				<hr />
 	<!-- END INPUT FORM -->
-	
+				<h:form name="mapLinks2">
 				<h:panelGroup styleClass="map-border" layout="block">
-					<div id="map-canvas" style="width: 580px; height: 425px; border: 0"></div>
+					 <div id="map-canvas" style="width: 580px; height: 425px; border: 0"></div> 
 				</h:panelGroup>
 				<div id="defaultMessage" style="display: none">
-					<h:form>
+					<br/>
 						<h2>Live Fleet</h2>
 				    			This is the default view for your division.
 				    			<security:authorize ifAnyGranted="ROLE_CUSTOMUSER,ROLE_SUPERUSER">
 				    				[<h:commandLink action="go_adminOrganization" value="change" />]
 				    			</security:authorize>
-			    	</h:form>
+			    	
 			    </div>
 				<script type="text/javascript">
 				var map = null;
@@ -338,8 +332,8 @@
 			  					<ui:repeat value="#{liveFleetBean.drivers}" var="driver">
 			  						driverLoc = new GLatLng(#{driver.loc.lat}, #{driver.loc.lng});
 	
-			  					    var node = document.getElementById(#{driver.driverID}).cloneNode(true);
-				  		  			node.style.display = 'block';
+			  					    //var node = document.getElementById(#{driver.driverID}).cloneNode(true);
+				  		  			//node.style.display = 'block';
 	
 									marker = createMarker(driverLoc, #{driver.driverID}, "#{liveFleetBean.mapIconMap.icons[driver.groupID]}");
 									map.addOverlay(marker);
@@ -351,16 +345,16 @@
 							    map.setCenter(bounds.getCenter());
 						</script>
 				</rich:panel> 
-				<a4j:form>
+				</h:form>
 				
-					<a4j:jsFunction reRender="vehicleScript,driversDataTable,mapPopups,driverScroller,stats"
-									name="notifyBean">				
+				<a4j:form>
+					<a4j:jsFunction reRender="vehicleScript,driversDataTable,mapPopups,driverScroller" name="notifyBean">				
 						<a4j:actionparam name="param1" assignTo="#{liveFleetBean.addressLatLng.lat}" />
 						<a4j:actionparam name="param2" assignTo="#{liveFleetBean.addressLatLng.lng}" />
 						<a4j:actionparam name="param3" assignTo="#{liveFleetBean.maxCount}" />	
-						
 					</a4j:jsFunction>
 				</a4j:form>
+				
 				</div>
 				</div>
 				<div class="panel_sw">
@@ -372,6 +366,5 @@
 				</td>
 			</tr>
 		</table>
-
 	</ui:define>
 </ui:composition>
