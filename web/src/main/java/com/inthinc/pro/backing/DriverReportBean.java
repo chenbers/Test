@@ -168,7 +168,7 @@ public class DriverReportBean extends BaseReportBean implements TablePrefOptions
                     }
                     
                     // emp id
-                    String lowerCaseEmployeeID = d.getDriver().getPerson().getEmpid();
+                    String lowerCaseEmployeeID = d.getDriver().getPerson().getEmpid().toLowerCase();
                     index3 = 
                         lowerCaseEmployeeID.indexOf(trimmedSearch);                    
                     if ((index1 == -1) && 
@@ -178,7 +178,7 @@ public class DriverReportBean extends BaseReportBean implements TablePrefOptions
                     }
                     
                     // group name
-                    String lowerCaseGroupName = d.getGroup(); 
+                    String lowerCaseGroupName = d.getGroup().toLowerCase(); 
                     index4 = 
                         lowerCaseGroupName.indexOf(trimmedSearch);                    
                     if ((index1 == -1) && 
