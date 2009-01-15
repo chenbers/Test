@@ -163,7 +163,7 @@
         <property name="navigation" ref="navigationBean"></property>
     </bean>
     
-    <bean id="vehicleStyleBean" class="com.inthinc.pro.backing.VehicleStyleBean" scope="request">
+    <bean id="vehicleStyleBean" class="com.inthinc.pro.backing.VehicleStyleBean" scope="request" init-method="init">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
