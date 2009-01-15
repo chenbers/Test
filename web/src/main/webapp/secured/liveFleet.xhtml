@@ -154,14 +154,13 @@
 	<rich:panel id="mapPopups">
 		<h:form>
 		<ui:repeat value="#{liveFleetBean.drivers}" var="driver">
-			<div id="#{driver.driverID}" style="display: none">
-				
+				<div id="#{driver.driverID}" style="display: none">
 					<strong>
 						<h:commandLink value="#{driver.name}" action="#{liveFleetBean.driverAction}">
 							<f:param name="id" value="#{driver.driverID}" />
 						</h:commandLink>
 					</strong>
-				
+					<br />
 					<b>Work:</b> <h:outputText value="#{driver.workPhone}" converter="PhoneNumberConverter" /> <br />
 					<b>Home:</b> <h:outputText value="#{driver.homePhone}" converter="PhoneNumberConverter" /> <br />
 					<b>Vehicle Type:</b> #{driver.vehicleType}
@@ -338,7 +337,6 @@
 									marker = createMarker(driverLoc, #{driver.driverID}, "#{liveFleetBean.mapIconMap.icons[driver.groupID]}");
 									map.addOverlay(marker);
 									bounds.extend(marker.getPoint());
-	
 								</ui:repeat>
 	
 								map.setZoom(map.getBoundsZoomLevel(bounds));
