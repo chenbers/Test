@@ -142,11 +142,12 @@ public class DataGenerator
         Person person = createPerson(teamGroup.getAccountID(), teamGroup.getGroupID(), "Driver", "Last"+teamGroup.getGroupID());
         Date expired = Util.genDate(2010, 9, 30);
         
-        driver = new Driver(0, person.getPersonID(), Status.ACTIVE, 100l + person.getPersonID().longValue(), "l"+person.getPersonID(), 
+        driver = new Driver(0, person.getPersonID(), Status.ACTIVE, null, "l"+person.getPersonID(), 
                                         States.getStateByAbbrev("UT"), "ABCD", expired, null, null, teamGroup.getGroupID());
 
         Integer driverID = driverDAO.create(person.getPersonID(), driver);
         driver.setDriverID(driverID);
+        System.out.println("driverId: " + driverID);
         
     }
 
@@ -257,8 +258,9 @@ public class DataGenerator
         account = new Account(null, null, null, Status.ACTIVE);
         
         // create
-        Integer siloID = TESTING_SILO;
-        Integer acctID = accountDAO.create(siloID, account);
+//        Integer siloID = TESTING_SILO;
+//        Integer acctID = accountDAO.create(siloID, account);
+        Integer acctID = accountDAO.create(account);
         account.setAcctID(acctID);
         
     }
