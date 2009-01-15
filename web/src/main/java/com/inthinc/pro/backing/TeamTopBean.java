@@ -54,7 +54,7 @@ public class TeamTopBean extends BaseBean
     {
         if (bottomDrivers == null || bottomDrivers.isEmpty())
         {
-            bottomDrivers = convertToScoreableEntityPkg(scoreDAO.getTopFiveScores(this.navigation.getGroupID()));
+            bottomDrivers = convertToScoreableEntityPkg(scoreDAO.getBottomFiveScores(this.navigation.getGroupID()));
         }
         this.pageChange = true;
 
