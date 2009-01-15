@@ -6,10 +6,18 @@ import java.util.List;
 import com.inthinc.pro.dao.RedFlagDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
+import com.inthinc.pro.dao.hessian.mapper.EventHessianMapper;
+import com.inthinc.pro.dao.hessian.mapper.RedFlagHessianMapper;
 import com.inthinc.pro.model.RedFlag;
 
 public class RedFlagHessianDAO extends GenericHessianDAO<RedFlag, Integer> implements RedFlagDAO
 {
+    public RedFlagHessianDAO()
+    {
+        super();
+        super.setMapper(new RedFlagHessianMapper());
+    }
+
 
     @Override
     public List<RedFlag> getRedFlags(Integer groupID, Integer count)
@@ -23,16 +31,6 @@ public class RedFlagHessianDAO extends GenericHessianDAO<RedFlag, Integer> imple
         {
             return Collections.emptyList();
         }
-        catch (ProxyException e)
-        {
-            // TODO: remove this when method is implemented
-            if (e.getErrorCode() == 422)
-                return Collections.emptyList();
-            else
-                throw e;
-        }
-
-
     }
 
 }

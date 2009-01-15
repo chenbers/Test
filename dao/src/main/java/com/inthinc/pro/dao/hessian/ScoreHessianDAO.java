@@ -364,6 +364,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
     }
 
+    // TODO: refactor since count is determined from the duration, we can get rid of that param on the dao call
     @Override
     public List<ScoreableEntity> getDriverScoreHistory(Integer driverID, Duration duration, ScoreType scoreType, Integer count)
     {
@@ -405,6 +406,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
     }
 
+    // TODO: refactor since count is determined from the duration, we can get rid of that param on the dao call
     @Override
     public List<ScoreableEntity> getVehicleScoreHistory(Integer vehicleID, Duration duration, ScoreType scoreType, Integer count)
     {

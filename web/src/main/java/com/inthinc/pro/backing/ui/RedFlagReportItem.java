@@ -38,7 +38,7 @@ public class RedFlagReportItem
         
         if (event == null)
         {
-            logger.error("Unable to retrieve Event for Red Flag: " + redFlag.getRedFlagID());
+            logger.error("Unable to retrieve Event for Red Flag: ");
             return;
         }
         

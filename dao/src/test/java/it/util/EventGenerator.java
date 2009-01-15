@@ -276,11 +276,13 @@ public class EventGenerator
         else if (event instanceof ZoneArrivalEvent)
         {
             ZoneArrivalEvent zoneArrivalEvent = (ZoneArrivalEvent)event;
+            eventBytes[idx++] = (byte) (ATTR_TYPE_ZONE_ID & 0x000000FF);
             idx = puti4(eventBytes, idx, zoneArrivalEvent.getZoneID());
         }
         else if (event instanceof ZoneDepartureEvent)
         {
             ZoneDepartureEvent zoneDepartureEvent = (ZoneDepartureEvent)event;
+            eventBytes[idx++] = (byte) (ATTR_TYPE_ZONE_ID & 0x000000FF);
             idx = puti4(eventBytes, idx, zoneDepartureEvent.getZoneID());
         }
 

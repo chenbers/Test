@@ -7,19 +7,16 @@ import com.inthinc.pro.dao.annotations.ID;
 
 public class RedFlag extends BaseEntity
 {
-    @ID
-    private Integer redFlagID;
-    
     @Column(updateable=false)
     private RedFlagLevel level;
     
-    @Column(updateable=false)
+    @Column(name="sent",updateable=false)
     private Boolean alert;
     
-    @Column(updateable=false)
+    @Column(name="note",updateable=false)
     private Event event;
     
-    @Column(updateable=false)
+    @Column(name="tzName",updateable=false)
     private TimeZone timezone;
     
     public RedFlag()
@@ -28,23 +25,12 @@ public class RedFlag extends BaseEntity
     }
     public RedFlag(Integer redFlagID, RedFlagLevel level, Boolean alert, Event event, TimeZone timezone)
     {
-        this.redFlagID = redFlagID;
         this.level = level;
         this.alert = alert;
         this.event = event;
         this.timezone = timezone;
     }
     
-
-    public Integer getRedFlagID()
-    {
-        return redFlagID;
-    }
-
-    public void setRedFlagID(Integer redFlagID)
-    {
-        this.redFlagID = redFlagID;
-    }
 
     public RedFlagLevel getLevel()
     {

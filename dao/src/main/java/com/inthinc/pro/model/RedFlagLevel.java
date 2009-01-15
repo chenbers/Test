@@ -7,9 +7,9 @@ import java.util.Map;
 public enum RedFlagLevel implements BaseEnum
 {
     NONE(0, "none"),
-    INFO(1, "info"),
+    CRITICAL(1, "critical"),
     WARNING(2, "warning"),
-    CRITICAL(3, "critical");
+    INFO(3, "info");
 
     private String description;
     private int code;
