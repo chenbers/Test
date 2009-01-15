@@ -9,6 +9,8 @@ import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
 import com.inthinc.pro.backing.ui.EventReportItem;
+import com.inthinc.pro.backing.ui.RedFlagReportItem;
+import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.model.Event;
@@ -133,23 +135,18 @@ public class BaseEventsBean extends BaseBean implements TablePrefOptions
         }
         if (searchText != null && !searchText.trim().isEmpty())
         {
-            ArrayList<EventReportItem> searchTableData = new ArrayList<EventReportItem>();
+            ArrayList<EventReportItem> searchTableDataResult = searchTableData(filteredTableData, searchText.toLowerCase());
             
-            for (EventReportItem item : filteredTableData)
-            {
-                if (item.getCategory().startsWith(searchText) ||
-                    item.getGroup().startsWith(searchText) ||
-                    item.getDetail().startsWith(searchText) ||
-                    item.getLevel().toString().startsWith(searchText))
-                {
-                    searchTableData.add(item);
-                }
-            }
-            setFilteredTableData(searchTableData);
+            setFilteredTableData(searchTableDataResult);
         }
         setMaxCount(filteredTableData.size());
         setStart(filteredTableData.size() > 0 ? 1 : 0);
         setEnd(filteredTableData.size() > getNumRowsPerPg() ? getNumRowsPerPg() : filteredTableData.size());
+    }
+
+    protected ArrayList<EventReportItem> searchTableData(List<EventReportItem> filteredTableData, String lowerCase)
+    {
+        return null;
     }
 
     private void initTableData()

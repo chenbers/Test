@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.TableType;
@@ -71,5 +72,27 @@ public class WarningsBean extends BaseEventsBean
         tablePref.setTableColumns(tableColumns);
     }
 
+    @Override
+    protected ArrayList<EventReportItem> searchTableData(List<EventReportItem> filteredTableData, String caseInsensitiveSearchText)
+    {
+        ArrayList<EventReportItem> searchTableData = new ArrayList<EventReportItem>();
+        Map<String, TableColumn> columnMap = getTableColumns();
+        
+        for (EventReportItem item : filteredTableData)
+        {
+            StringBuilder itemStr = new StringBuilder();
+            itemStr.append(columnMap.get("category").getVisible() ? item.getCategory().toLowerCase() : "");
+            itemStr.append(columnMap.get("group").getVisible() ? item.getGroup().toLowerCase() : "");
+            itemStr.append(columnMap.get("detail").getVisible() ? item.getDetail().toLowerCase() : "");
+            itemStr.append(columnMap.get("date").getVisible() ? item.getDate().toLowerCase() : "");
+            
+            if (itemStr.indexOf(caseInsensitiveSearchText) != -1)
+            {
+                searchTableData.add(item);
+            }
+        }
+        
+        return searchTableData;
+    }
 
 }

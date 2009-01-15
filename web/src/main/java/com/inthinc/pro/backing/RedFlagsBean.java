@@ -144,12 +144,20 @@ public class RedFlagsBean extends BaseBean implements TablePrefOptions
         {
             ArrayList<RedFlagReportItem> searchTableData = new ArrayList<RedFlagReportItem>();
             
+            Map<String, TableColumn> columnMap = getTableColumns();
+            
+            String caseInsensitiveSearchText = searchText.toLowerCase();
             for (RedFlagReportItem item : filteredTableData)
             {
-                if (item.getCategory().startsWith(searchText) ||
-                    item.getGroup().startsWith(searchText) ||
-                    item.getDetail().startsWith(searchText) ||
-                    item.getRedFlag().getLevel().toString().startsWith(searchText))
+                StringBuilder itemStr = new StringBuilder();
+                itemStr.append(columnMap.get("category").getVisible() ? item.getCategory().toLowerCase() : "");
+                itemStr.append(columnMap.get("group").getVisible() ? item.getGroup().toLowerCase() : "");
+                itemStr.append(columnMap.get("detail").getVisible() ? item.getDetail().toLowerCase() : "");
+                itemStr.append(columnMap.get("level").getVisible() ? item.getRedFlag().getLevel().toString().toLowerCase() : "");
+                itemStr.append(columnMap.get("alerts").getVisible() ? (item.getRedFlag().getAlert() ? "yes" : "no") : "");
+                itemStr.append(columnMap.get("date").getVisible() ? item.getDate().toLowerCase() : "");
+                
+                if (itemStr.indexOf(caseInsensitiveSearchText) != -1)
                 {
                     searchTableData.add(item);
                 }
