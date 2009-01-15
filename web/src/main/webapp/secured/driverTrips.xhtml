@@ -95,7 +95,7 @@
 				  				var violation;
 								<ui:repeat value="#{driverTripsBean.violationEvents}" var="violation">
 									violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
-									map.addOverlay(createMarker(violation, "#{violation.eventType} Violation.<br />#{violation.time}",
+									map.addOverlay(createMarker(violation, "#{violation.eventType} Violation.<br />#{violation.time}<br />#{violation.addressStr}",
 													"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png"));
 								</ui:repeat>
 							}
@@ -106,7 +106,7 @@
 								var idle;
 								<ui:repeat value="#{driverTripsBean.idleEvents}" var="idle">
 									idle = new GLatLng(#{idle.latitude}, #{idle.longitude});
-									map.addOverlay(createMarker(idle, "#{idle.eventType} Violation.<br />High RPM: #{idle.highIdleDuration}",
+									map.addOverlay(createMarker(idle, "#{idle.eventType} Violation.<br />High RPM: #{idle.highIdleDuration}<br />Low RPM: #{idle.lowIdleDuration}",
 													"#{facesContext.externalContext.request.contextPath}/images/ico_idle.png"));
 								</ui:repeat>
 							}	
@@ -272,6 +272,10 @@
 								<table width="320" id="" cellpadding="4" cellspacing="0" class="">
 								  <tbody>
 								  <tr>
+								    <td>Total Drive Time:</td>
+								    <td><h:outputText>#{driverTripsBean.totalDriveTime}</h:outputText></td>
+								    </tr>
+								  <tr>
 									<td width="240">Total Miles Driven:</td>
 									<td width="70"><h:outputText>#{driverTripsBean.milesDriven}</h:outputText></td>
 								  </tr>
@@ -282,11 +286,11 @@
 								  <tr>
 								    <td>Total Trips:</td>
 								    <td><h:outputText>#{driverTripsBean.numTrips}</h:outputText></td>
-								    </tr>
+								  </tr>
 								  <tr>
-								    <td>Total Drive Time:</td>
-								    <td><h:outputText>#{driverTripsBean.totalDriveTime}</h:outputText></td>
-								    </tr>
+								    <td valign="top">Driver time zone:</td>
+								    <td><h:outputText>#{navigationBean.driver.person.timeZone.displayName}</h:outputText></td>
+								  </tr>
 								  </tbody>
 						  </table>
 						</div>
@@ -320,7 +324,7 @@
 		
 							<!-- Data -->
 							<rich:column sortBy="#{item.addressStr}">
-								<img src="../images/ico_violation.png" width="20" height="20"/>
+								<h:graphicImage value="/images/ico_violation.png" alt="#{item.eventType}" />
 							</rich:column>
 
 							<rich:column sortBy="#{item.addressStr}">
@@ -334,9 +338,12 @@
 								<f:facet name="header">
 									<h:outputText value="Time" />
 								</f:facet>
-								<h:outputText value="#{item.time}">
-									<f:convertDateTime pattern="MMM dd, yyyy hh:mm" />
+								
+								<h:outputText value="#{item.time}" >
+									<f:convertDateTime pattern="MMM dd, hh:mm a" timeZone="#{navigationBean.driver.person.timeZone}" timeStyle="short" dateStyle="short"/>
 								</h:outputText>
+									
+								
 							</rich:column>
 						</rich:dataTable>
 						<rich:datascroller align="center" for="selectedTripTable"

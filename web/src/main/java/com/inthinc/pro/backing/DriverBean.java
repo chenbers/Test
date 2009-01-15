@@ -17,6 +17,7 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.ScoreDAO;
+import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.MpgEntity;
@@ -67,7 +68,15 @@ public class DriverBean extends BaseDurationBean
         types.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
         types.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
 
+        violationEvents = new ArrayList<Event>();
         violationEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), start, end, types);
+
+        //Lookup Addresses for events
+        AddressLookup lookup = new AddressLookup();
+        for (Event event: violationEvents)
+        {
+            event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
+        }
     }
 
     // OVERALL SCORE properties
@@ -134,7 +143,7 @@ public class DriverBean extends BaseDurationBean
             if (tempTrip != null && tempTrip.getRoute().size() > 0)
             {
                 hasLastTrip = true;
-                TripDisplay trip = new TripDisplay(tempTrip);
+                TripDisplay trip = new TripDisplay(tempTrip, navigation.getDriver().getPerson().getTimeZone());
                 setLastTrip(trip);
                 initViolations(trip.getTrip().getStartTime(), trip.getTrip().getEndTime());
             }
@@ -148,10 +157,9 @@ public class DriverBean extends BaseDurationBean
     
     public void ClearEventAction()
     {
-        
         Integer temp = eventDAO.forgive(navigation.getDriver().getDriverID(), clearItem.getNoteID());
         
-        logger.debug("Clearing event " + clearItem.getNoteID() + " result: " + temp.toString());
+        //logger.debug("Clearing event " + clearItem.getNoteID() + " result: " + temp.toString());
     }
     public Event getClearItem()
     {

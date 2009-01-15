@@ -60,6 +60,7 @@ public class DriverTripsBean extends BaseBean
 
     public void initTrips()
     {
+        logger.debug("InitTrips");
         List<Trip> tempTrips = new ArrayList<Trip>();
         tempTrips = driverDAO.getTrips(navigation.getDriver().getDriverID(), startDate, endDate);
 
@@ -68,13 +69,15 @@ public class DriverTripsBean extends BaseBean
 
         for (Trip trip : tempTrips)
         {
-            trips.add(0, new TripDisplay(trip));
+            trips.add(0, new TripDisplay(trip, navigation.getDriver().getPerson().getTimeZone()));
         }
 
         numTrips = trips.size();
 
         if (numTrips > 0)
         {
+            logger.debug(numTrips.toString() + "Trips Found.");
+            
             selectedTrips.add(trips.get(0));
 
             Date vStart = selectedTrips.get(0).getTrip().getStartTime();
@@ -88,6 +91,7 @@ public class DriverTripsBean extends BaseBean
 
     public void initViolations(Date start, Date end)
     {
+        logger.debug("Get Events");
         List<Integer> vioTypes = new ArrayList<Integer>();
         vioTypes.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
         vioTypes.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
@@ -114,6 +118,7 @@ public class DriverTripsBean extends BaseBean
 
     public void generateStats()
     {
+        logger.debug("Generate Stats");
         milesDriven = 0D;
         totalDriveSeconds = 0;
         idleSeconds = 0;

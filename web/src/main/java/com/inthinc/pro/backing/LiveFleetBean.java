@@ -34,10 +34,9 @@ public class LiveFleetBean extends BaseBean
 
     public void initBean()
     {
-        logger.debug("*** init LiveFleetBean.");
-        organizationHierarchy = new GroupHierarchy(groupDAO.getGroupsByAcctID(getAccountID()));
-        addressLatLng = organizationHierarchy.getTopGroup().getMapCenter();
-        addressZoom = organizationHierarchy.getTopGroup().getMapZoom();
+        organizationHierarchy = getGroupHierarchy();
+        addressLatLng = getGroupHierarchy().getTopGroup().getMapCenter();
+        addressZoom = getGroupHierarchy().getTopGroup().getMapZoom();
         if(maxCount == null)
             maxCount = 10;  
 

@@ -391,7 +391,7 @@ var selected = 'OVERALL';
 									<h:outputText value="Date/Time" />
 								</f:facet>
 									<h:outputText value="#{item.time}">
-										<f:convertDateTime pattern="MMM DD yyyy hh:mm a"/>
+										<f:convertDateTime type="both" timeZone="#{navigationBean.driver.person.timeZone}" timeStyle="short" dateStyle="short"/>
 									</h:outputText>
 							</rich:column>
 							

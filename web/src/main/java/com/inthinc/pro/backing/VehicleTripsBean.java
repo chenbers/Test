@@ -4,15 +4,18 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.TripDisplay;
 import com.inthinc.pro.map.AddressLookup;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.IdleEvent;
 import com.inthinc.pro.model.Trip;
+import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.util.DateUtil;
@@ -24,6 +27,7 @@ public class VehicleTripsBean extends BaseBean
     private NavigationBean      navigation;
     private VehicleDAO           vehicleDAO;
     private EventDAO            eventDAO;
+    private DriverDAO           driverDAO;
 
     private Date                startDate         = new Date();
     private Date                endDate           = new Date();
@@ -42,6 +46,7 @@ public class VehicleTripsBean extends BaseBean
     private TripDisplay         selectedTrip;
     private List<Event>         violationEvents;
     private List<Event>         idleEvents;
+    private TimeZone            timeZone;
 
     public void init()
     {
@@ -61,19 +66,32 @@ public class VehicleTripsBean extends BaseBean
     public void initTrips()
     {
         logger.debug("InitTrips");
+        
+        //Get Time Zone from driver
+        if(navigation.getVehicle().getDriverID() != null)
+        {
+            Driver d = driverDAO.findByID(navigation.getVehicle().getDriverID());
+            timeZone = d.getPerson().getTimeZone();
+        }
+        else
+        {
+            //Use GMT for default if no driver associated.
+            timeZone = TimeZone.getTimeZone("GMT");
+        }
+        
+        //Get Trips from back end.
         List<Trip> tempTrips = new ArrayList<Trip>();
         tempTrips = vehicleDAO.getTrips(navigation.getVehicle().getVehicleID(), startDate, endDate);
 
         trips = new ArrayList<TripDisplay>();
-        selectedTrips = new ArrayList<TripDisplay>();
-
         for (Trip trip : tempTrips)
         {
-            trips.add(0, new TripDisplay(trip));
+            trips.add(0, new TripDisplay(trip, getTimeZone()));
         }
 
         numTrips = trips.size();
 
+        selectedTrips = new ArrayList<TripDisplay>();
         if (numTrips > 0)
         {
             logger.debug(numTrips.toString() + "Trips Found.");
@@ -364,4 +382,28 @@ public class VehicleTripsBean extends BaseBean
     {
         this.selectedTrips = selectedTrips;
     }
+
+    public TimeZone getTimeZone()
+    {
+
+
+        return timeZone;
+    }
+
+    public void setTimeZone(TimeZone timeZone)
+    {
+        this.timeZone = timeZone;
+    }
+
+    public DriverDAO getDriverDAO()
+    {
+        return driverDAO;
+    }
+
+    public void setDriverDAO(DriverDAO driverDAO)
+    {
+        this.driverDAO = driverDAO;
+    }
+    
+    
 }

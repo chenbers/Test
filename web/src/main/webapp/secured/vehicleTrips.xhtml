@@ -95,7 +95,7 @@
 				  				var violation;
 								<ui:repeat value="#{vehicleTripsBean.violationEvents}" var="violation">
 									violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
-									map.addOverlay(createMarker(violation, "#{violation.eventType} Violation.<br />#{violation.time}",
+									map.addOverlay(createMarker(violation, "#{violation.eventType} Violation.<br />#{violation.time}<br />#{violation.addressStr}",
 													"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png"));
 								</ui:repeat>
 							}
@@ -269,8 +269,12 @@
 					<div class="panel_w">
 					  <div class="panel_content">
 					    <div class="" id="">
-								<table width="320" id="" cellpadding="4" cellspacing="0" class="">
+							<table width="320" id="" cellpadding="4" cellspacing="0" class="">
 								  <tbody>
+								  <tr>
+								    <td>Total Drive Time:</td>
+								    <td><h:outputText>#{vehicleTripsBean.totalDriveTime}</h:outputText></td>
+								    </tr>
 								  <tr>
 									<td width="240">Total Miles Driven:</td>
 									<td width="70"><h:outputText>#{vehicleTripsBean.milesDriven}</h:outputText></td>
@@ -282,11 +286,11 @@
 								  <tr>
 								    <td>Total Trips:</td>
 								    <td><h:outputText>#{vehicleTripsBean.numTrips}</h:outputText></td>
-								    </tr>
+								  </tr>
 								  <tr>
-								    <td>Total Drive Time:</td>
-								    <td><h:outputText>#{vehicleTripsBean.totalDriveTime}</h:outputText></td>
-								    </tr>
+								    <td valign="top">Vehicle time zone:</td>
+								    <td><h:outputText>#{vehicleTripsBean.timeZone.displayName}</h:outputText></td>
+								  </tr>
 								  </tbody>
 						  </table>
 						</div>
@@ -320,7 +324,7 @@
 		
 							<!-- Data -->
 							<rich:column sortBy="#{item.addressStr}">
-								<img src="../images/ico_violation.png" width="20" height="20"/>
+								<h:graphicImage value="/images/ico_violation.png" alt="#{item.eventType}" />
 							</rich:column>
 
 							<rich:column sortBy="#{item.addressStr}">
@@ -335,7 +339,7 @@
 									<h:outputText value="Time" />
 								</f:facet>
 								<h:outputText value="#{item.time}">
-									<f:convertDateTime pattern="MMM dd, yyyy hh:mm" />
+									<f:convertDateTime pattern="MMM dd, hh:mm a" timeZone="#{navigationBean.driver.person.timeZone}" timeStyle="short" dateStyle="short"/>
 								</h:outputText>
 							</rich:column>
 						</rich:dataTable>

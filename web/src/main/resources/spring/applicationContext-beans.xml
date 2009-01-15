@@ -178,6 +178,7 @@
     <bean id="vehicleTripsBean" class="com.inthinc.pro.backing.VehicleTripsBean" scope="request" parent="baseBean" init-method="init">
         <property name="vehicleDAO" ref="vehicleDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
+        <property name="driverDAO" ref="driverDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
     </bean>
     

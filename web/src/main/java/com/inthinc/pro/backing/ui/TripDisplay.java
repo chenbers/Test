@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Event;
@@ -23,19 +24,23 @@ public class TripDisplay
     LatLng routeLastStep;
     Long durationMiliSeconds;
     Trip trip;
+    TimeZone timeZone;
     
     private static DateFormat dateFormatter;
     
-    public TripDisplay(Trip trip)
+    public TripDisplay(Trip trip, TimeZone timeZone)
     {
         this.trip = trip;
+        this.timeZone = timeZone;
         
         route = trip.getRoute();
         
         dateFormatter = new SimpleDateFormat("dd MMM");
+        dateFormatter.setTimeZone(timeZone);
         setDateShort(dateFormatter.format(trip.getEndTime()));
         
         dateFormatter = new SimpleDateFormat("h:mm a");
+        dateFormatter.setTimeZone(timeZone);
         setTimeShort(dateFormatter.format(trip.getEndTime() ));
         
         durationMiliSeconds = trip.getEndTime().getTime() - trip.getStartTime().getTime();

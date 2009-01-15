@@ -59,7 +59,7 @@
 				var violation;
 				<ui:repeat value="#{vehicleBean.violationEvents}" var="violation">
 					violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
-					map.addOverlay(createMarker(violation, "#{violation.eventType} Violation.<br />#{violation.time}",
+					map.addOverlay(createMarker(violation, "#{violation.eventType} Violation.<br />#{violation.time}<br />#{violation.addressStr}",
 									"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png"));
 				</ui:repeat>
 	
@@ -363,9 +363,9 @@
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="map">Last Trip
+						<span class="map">Last Trip:&#160;
 						<c:if test="#{vehicleBean.lastTrip ne null}">
-							<h:outputText value=": #{vehicleBean.lastTrip.trip.endTime}" />
+							<h:outputText value="#{vehicleBean.lastTrip.trip.endTime}" />
 						</c:if>
 						</span>
 						<span class="panel_links"><h:form><h:commandLink value="view all trips" action="go_vehicleTrips">

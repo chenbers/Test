@@ -33,8 +33,19 @@ public class IdleEvent extends Event
 	
 	public String getHighIdleDuration()
 	{
-	   return DateUtil.getDurationFromSeconds(this.highIdle);
+	   if(this.highIdle != null)
+	       return DateUtil.getDurationFromSeconds(this.highIdle);
+	   else
+	       return "";
 	}
+	
+   public String getLowIdleDuration()
+    {
+       if(this.lowIdle != null)
+           return DateUtil.getDurationFromSeconds(this.lowIdle);
+       else
+           return "";
+    }
 	
 	public Integer getLowIdle()
     {
