@@ -27,11 +27,13 @@
 					<span>#{messages.navigation_redFlags}</span>
 				</h:commandLink>
 			</li>
+			<security:authorize ifAnyGranted="ROLE_CUSTOMUSER,ROLE_SUPERUSER">
 			<li class="#{liveFleetSelected}">
 				<h:commandLink title="#{messages.navigation_liveFleet}" action="go_liveFleet">
 					<span>#{messages.navigation_liveFleet}</span>
 				</h:commandLink>
 			</li>
+			</security:authorize>
 			<security:authorize ifAnyGranted="ROLE_CUSTOMUSER,ROLE_SUPERUSER">
 				<li class="#{adminSelected}">
 					<h:commandLink title="#{messages.navigation_admin}" action="go_admin">
