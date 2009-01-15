@@ -413,9 +413,11 @@
 	<!-- render kits -->
 	
 	<!-- lifecycle -->
+    <!-- 
 	<lifecycle>
 		<phase-listener>com.inthinc.pro.util.DebugPhaseTracker</phase-listener>
 	</lifecycle>
+    -->
 	
  
     <!-- Facelets support -->
