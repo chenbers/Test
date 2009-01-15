@@ -470,7 +470,7 @@ public class TrendBean extends BaseBean
             }
             for(ScoreableEntity scoreableEntity:scoreableEntityList)
             {
-               Float score = new Float((scoreableEntity.getScore()==null) ? 0 : scoreableEntity.getScore() / 10.0);
+               Float score = new Float((scoreableEntity.getScore()==null) ? 5 : scoreableEntity.getScore() / 10.0);
                lineGraphDataList.add(new CategorySeriesData(se.getIdentifier(),monthList.get(index++),score,se.getIdentifier()));
             }
             
