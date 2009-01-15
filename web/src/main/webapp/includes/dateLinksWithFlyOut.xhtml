@@ -13,6 +13,14 @@
 	
 	 -->
 	
+    <c:choose>
+      <c:when test="#{flyOutImage == 'ico_minimize.png'}">
+        <c:set var="flyoutTitle" value="#{messages.flyout_restore}" />
+      </c:when>
+      <c:otherwise>
+        <c:set var="flyoutTitle" value="#{messages.flyout_maximize}" />
+      </c:otherwise>
+    </c:choose>
 
 	<a4j:region id="#{ajaxForm}_region">
 		<a4j:form id="#{ajaxForm}">
@@ -77,7 +85,7 @@
 				action="#{flyOutBean.flyNavRuleAction}">
 				<img
 					src="#{facesContext.externalContext.request.contextPath}/images/#{flyOutImage}"
-					border="0" />
+					border="0" title="#{flyoutTitle}" />
 				<f:setPropertyActionListener value="#{flyNavRule}"
 					target="#{flyOutBean.navigationRule}" />
 				<f:setPropertyActionListener value="#{flySelectedTab}"
