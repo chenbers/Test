@@ -94,6 +94,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
                 allVehicles = new ArrayList<SelectItem>(vehicles.size());
                 for (final Vehicle vehicle : vehicles)
                     allVehicles.add(new SelectItem("vehicle" + vehicle.getVehicleID(), vehicle.getName()));
+                MiscUtil.sortSelectItems(allVehicles);
             }
             pickFrom.addAll(allVehicles);
         }
@@ -105,6 +106,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
                 allDrivers = new ArrayList<SelectItem>(drivers.size());
                 for (final Driver driver : drivers)
                     allDrivers.add(new SelectItem("driver" + driver.getDriverID(), driver.getPerson().getFirst() + ' ' + driver.getPerson().getLast()));
+                MiscUtil.sortSelectItems(allDrivers);
             }
             pickFrom.addAll(allDrivers);
         }
