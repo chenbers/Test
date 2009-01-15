@@ -10,7 +10,7 @@ import com.inthinc.pro.model.Trip;
 
 public interface DriverDAO extends GenericDAO<Driver, Integer>
 {
-    
+
     /**
      * Gets all drivers in the specified group complete hierarchy
      * 
@@ -18,7 +18,7 @@ public interface DriverDAO extends GenericDAO<Driver, Integer>
      * @return List of Drivers
      */
     List<Driver> getAllDrivers(Integer groupID);
-    
+
     /**
      * Gets the drivers that are directly under the specified group
      * 
@@ -26,7 +26,7 @@ public interface DriverDAO extends GenericDAO<Driver, Integer>
      * @return List of Drivers
      */
     List<Driver> getDrivers(Integer groupID);
-    
+
     /**
      * Gets a list of DriverLocation's near the specified LatLng.
      * 
@@ -37,7 +37,7 @@ public interface DriverDAO extends GenericDAO<Driver, Integer>
      * @return
      */
     List<DriverLocation> getDriversNearLoc(Integer groupID, Integer numof, Double lat, Double lng);
-    
+
     /**
      * Gets the specified drivers LastLocation.
      * 
@@ -45,7 +45,7 @@ public interface DriverDAO extends GenericDAO<Driver, Integer>
      * @return
      */
     LastLocation getLastLocation(Integer driverID);
-    
+
     /**
      * Get all driver trips between start and end dates.
      * 
@@ -55,7 +55,7 @@ public interface DriverDAO extends GenericDAO<Driver, Integer>
      * @return
      */
     List<Trip> getTrips(Integer driverID, Date startDate, Date endDate);
-    
+
     /**
      * Get driver last trip by DriverID
      * 
@@ -71,4 +71,13 @@ public interface DriverDAO extends GenericDAO<Driver, Integer>
      * @return
      */
     Driver getDriverByPersonID(Integer personID);
+
+    /**
+     * Find a driver ID by RFID.
+     * 
+     * @param rfid
+     *            The RFID to find by.
+     * @return The driver ID or <code>null</code> if not found.
+     */
+    Integer getDriverIDForRFID(Long rfid);
 }

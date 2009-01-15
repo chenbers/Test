@@ -53,11 +53,11 @@ import com.inthinc.pro.util.MiscUtil;
 public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements Serializable
 {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	private static final List<String>          AVAILABLE_COLUMNS;
+     * 
+     */
+    private static final long                  serialVersionUID       = 1L;
+
+    private static final List<String>          AVAILABLE_COLUMNS;
     private static final int[]                 DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 6, 18 };
 
     private static final Map<String, Gender>   GENDERS;
@@ -441,11 +441,26 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             }
 
             // driver license expiration
-            if (person.isDriverSelected() && (person.getDriver().getExpiration() != null) && person.getDriver().getExpiration().before(new Date()))
+            if (person.isDriverSelected())
             {
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_expirationTooSoon"), null);
-                context.addMessage("edit-form:driver_expiration", message);
-                valid = false;
+                if ((person.getDriver().getExpiration() != null) && person.getDriver().getExpiration().before(new Date()))
+                {
+                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_expirationTooSoon"), null);
+                    context.addMessage("edit-form:driver_expiration", message);
+                    valid = false;
+                }
+
+                // unique RFID
+                if ((person.getDriver().getRFID() != null) && (person.getDriver().getRFID() != 0))
+                {
+                    final Integer byRFID = driverDAO.getDriverIDForRFID(person.getDriver().getRFID());
+                    if ((byRFID != null) && !byRFID.equals(person.getDriver().getDriverID()))
+                    {
+                        final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_uniqueRFID"), null);
+                        context.addMessage("edit-form:driver_RFID", message);
+                        valid = false;
+                    }
+                }
             }
 
             // unique username

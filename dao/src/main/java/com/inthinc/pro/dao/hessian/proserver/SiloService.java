@@ -275,6 +275,8 @@ public interface SiloService extends HessianService
     //    vin   - vehicleID
     Map<String, Object> getID(String name, String value);
 
+    Map<String, Object> getIDLong(String name, Long value);
+
     
     //--------------------------------------------------------------------------------------------------------
 

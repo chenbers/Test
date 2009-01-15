@@ -162,6 +162,22 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
+    public Map<String, Object> getIDLong(String name, Long value)
+    {
+        Map<String, Object> returnMap = null;
+        if (name.equals("rfid"))
+        {
+            Driver driver = MockData.getInstance().lookupObject(Driver.class, "RFID", value);
+            if (driver != null)
+            {
+                returnMap = new HashMap<String,Object>();
+                returnMap.put("id", driver.getDriverID());
+            }
+        }
+        return returnMap;
+    }
+
+    @Override
     public Map<String, Object> deletePerson(Integer personID) throws ProDAOException
     {
         return createReturnValue("count", 0);
@@ -1263,7 +1279,5 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         Integer temp = 1;
         return TempConversionUtil.createMapFromObject(temp, true);
     }
-
-
 
 }

@@ -23,7 +23,6 @@ import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.HessianException;
 import com.inthinc.pro.dao.hessian.mapper.Mapper;
 import com.inthinc.pro.dao.hessian.mapper.SimpleMapper;
-import com.inthinc.pro.dao.hessian.proserver.ServiceCreator;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 
 public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>

@@ -675,4 +675,10 @@ public class SiloServiceImpl implements SiloService
         return null;
     }
 
+    @Override
+    public Map<String, Object> getIDLong(String name, Long value)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

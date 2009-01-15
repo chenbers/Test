@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -20,6 +21,8 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
 {
     private static final Logger logger = Logger.getLogger(DriverHessianDAO.class);
     private static final Integer DRIVER_TYPE = 1;
+
+    private static final String CENTRAL_ID_KEY = "rfid";
 
     @Override
     public List<Driver> getAllDrivers(Integer groupID)
@@ -145,5 +148,17 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
         }
     }
 
-
+    @Override
+    public Integer getDriverIDForRFID(Long rfid)
+    {
+        try
+        {
+            Map<String, Object> returnMap = getSiloService().getIDLong(CENTRAL_ID_KEY, rfid);
+            return getCentralId(returnMap);
+        }
+        catch (EmptyResultSetException e)
+        {
+            return null;
+        }
+    }
 }
