@@ -308,15 +308,6 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
                 valid = false;
             }
 
-            // someone is notified
-            if (((alert.getNotifyUserIDs() == null) || (alert.getNotifyUserIDs().size() == 0)) && (alert.getEmailToString().length() == 0))
-            {
-                final String summary = MessageUtil.formatMessageString("editAlerts_noNotification");
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                context.addMessage("edit-form:emailToString", message);
-                valid = false;
-            }
-
             // valid e-mail addresses
             for (final String email : alert.getEmailTo())
             {
