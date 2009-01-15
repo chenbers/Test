@@ -122,7 +122,7 @@ public class SBSChangeRequest implements EditItem, Serializable{
 		changeRequest.setComment(comment);
 		changeRequest.setLinkId(new Integer(linkId));
 		changeRequest.setNewSpeedLimit(newSpeedLimit);
-		changeRequest.setStatus(0);
+		changeRequest.setStatus(SpeedLimitChangeRequest.STATUS_NEW);
 		
 		return changeRequest;
 	}
