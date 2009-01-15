@@ -3,12 +3,12 @@
   <parent>
     <artifactId>root</artifactId>
     <groupId>com.inthinc.pro</groupId>
-    <version>0.0.5</version>
+    <version>0.0.6-SNAPSHOT</version>
   </parent>
   <groupId>com.inthinc.pro.scheduler</groupId>
   <artifactId>scheduler</artifactId>
   <packaging>war</packaging>
-  <version>0.0.5</version>
+  <version>0.0.6-SNAPSHOT</version>
   <name>Pro Portal - Scheduler App</name>
 	<profiles>
 		<profile>
@@ -181,7 +181,7 @@
 	<dependency>
 		<groupId>com.inthinc.pro.dao</groupId>
 		<artifactId>dao</artifactId>
-		<version>0.0.5</version>
+		<version>0.0.6-SNAPSHOT</version>
 		<scope>compile</scope>
 	</dependency>
     <dependency>
