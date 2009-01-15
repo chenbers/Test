@@ -56,6 +56,8 @@ public class OrganizationBean extends BaseBean
      */
     private TreeNodeImpl topLevelNode;
     private GroupHierarchy organizationHierarchy;
+   
+
     private TreeNodeImpl selectedGroupNode;
     private Map<Integer, Boolean> treeStateMap = new HashMap<Integer, Boolean>();
 
@@ -295,6 +297,7 @@ public class OrganizationBean extends BaseBean
             Integer id = groupDAO.create(getAccountID(), inProgressGroupNode.getGroup());
             if (id > 0)
             {
+                inProgressGroupNode.setLabel(inProgressGroupNode.getGroup().getName());
                 inProgressGroupNode.getGroup().setGroupID(id);
                 inProgressGroupNode.setId(id);
                 setSelectedGroupNode(inProgressGroupNode);
@@ -304,7 +307,6 @@ public class OrganizationBean extends BaseBean
                 groupState = State.VIEW;
                 treeStateMap.put(selectedParentGroup.getGroupID(), Boolean.TRUE);
                 cleanFields();
-               
             }
             else
             {
@@ -396,7 +398,10 @@ public class OrganizationBean extends BaseBean
         group.setStatus(GroupStatus.GROUP_ACTIVE);
         group.setMapZoom(selectedGroupNode.getGroup().getMapZoom());
         group.setMapCenter(selectedGroupNode.getGroup().getMapCenter());
+        
         TreeNodeImpl newGroupNode = new TreeNodeImpl(group, organizationHierarchy);
+        newGroupNode.setDriverDAO(driverDAO);
+        newGroupNode.setVehicleDAO(vehicleDAO);
         return newGroupNode;
     }
 
@@ -612,6 +617,16 @@ public class OrganizationBean extends BaseBean
     public void setTreeStateMap(Map<Integer, Boolean> treeStateMap)
     {
         this.treeStateMap = treeStateMap;
+    }
+    
+    public GroupHierarchy getOrganizationHierarchy()
+    {
+        return organizationHierarchy;
+    }
+
+    public void setOrganizationHierarchy(GroupHierarchy organizationHierarchy)
+    {
+        this.organizationHierarchy = organizationHierarchy;
     }
 
 }

@@ -27,6 +27,7 @@
 		<t:saveState value="#{organizationBean.inProgressGroupNode}"/>
 		<t:saveState value="#{organizationBean.selectedParentGroup}"/>
 		<t:saveState value="#{organizationBean.treeStateMap}"/>
+		<t:saveState value="#{organizationBean.organizationHierarchy}"/>
 		
 		
 		<table width="920" border="0" cellspacing="0" cellpadding="0"
@@ -59,7 +60,7 @@
 							</ul>
 								<!-- Can't seem to set the immediate to true. When doing so, on select, the node is being set
 									to a SwingTreeNodeImpl -->
-								<a4j:region>
+								<a4j:region id="treeViewRegion">
 								<h:panelGroup id="organizationTreePanel">
 									<rich:tree 
 										id="tree"

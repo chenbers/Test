@@ -161,12 +161,25 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable
 
     public void setParent(TreeNodeImpl parentGroupTreeNode)
     {
+        Integer currentParentId = -1;
+        Integer newParentId = null;
+        
+        if(this.parentGroupTreeNode != null)
+        {
+            currentParentId = this.parentGroupTreeNode.getId();
+        }
+        
+        if(parentGroupTreeNode != null)
+        {
+            newParentId = parentGroupTreeNode.getId();
+        }
+
         if (parentGroupTreeNode == null)
         {
             this.parentGroupTreeNode.removeChildNode(this);
             this.parentGroupTreeNode = parentGroupTreeNode;
         }
-        else if (parentGroupTreeNode.getGroup() != null && this.parentGroupTreeNode != parentGroupTreeNode)
+        else if (parentGroupTreeNode.getGroup() != null && !currentParentId.equals(newParentId))
         {
             parentGroupTreeNode.addChildNode(this);
             if (this.parentGroupTreeNode != null)
@@ -307,6 +320,7 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable
             childNodes.add(groupTreeNode);
         }
 
+       
         if (getTreeNodeType() != TreeNodeType.TEAM)
         {
             List<Group> groupList = groupHierarchyUtil.getChildren(group);
@@ -329,6 +343,7 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable
         }
         else
         {
+            logger.debug("Group" + group);
             List<Driver> driverList = driverDAO.getAllDrivers(group.getGroupID());
             if (driverList != null)
             {
@@ -354,6 +369,7 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable
                 }
             }
         }
+      
        
         childGroupTreeNodes = childNodes;
         
