@@ -143,11 +143,12 @@
 								<h:form id="trendTable">	
 								
         							<rich:datascroller id="topScroller" for="items" immediate="true"
+        								style="width: 100px;" align="center"
         								scrollerListener="#{trendBean.scrollerListener}" maxPages="5"
         								reRender="bottomScroller,countString,starter,items,xypanel">        			
         							</rich:datascroller>	
         							
-   										<h:inputHidden id="hiddenGroupID" value="#{navigationBean.groupID}"/>   								
+   										<h:inputHidden id="hiddenGroupID" value="#{navigationBean.groupID}"/>   						
 			
 										<rich:dataTable value="#{trendBean.scoreableEntities}" id="items"
 											var="item" styleClass="datagrid"
@@ -194,6 +195,7 @@
 										</rich:dataTable>
 						
 									<rich:datascroller id="bottomScroller" for="items" immediate="true"
+										style="width: 100px;" align="center"
     									scrollerListener="#{trendBean.scrollerListener}" maxPages="5"
         								reRender="topScroller,countString,starter,items,xypanel">        			
         							</rich:datascroller>        		
