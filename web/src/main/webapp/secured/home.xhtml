@@ -116,7 +116,7 @@
 										chart.setTransparent(true);
 										chart.render("chartdiv2");
 									</script>
-								</rich:panel> 
+									</rich:panel> 
 								<!-- End xy graph -->
 
 								<div class="spacer"></div>
@@ -142,11 +142,12 @@
 				
 								<h:form id="trendTable">	
 								
+									<table><tr><td align="center">
         							<rich:datascroller id="topScroller" for="items" immediate="true"
-        								style="width: 100px;" align="center"
         								scrollerListener="#{trendBean.scrollerListener}" maxPages="5"
-        								reRender="bottomScroller,countString,starter,items,xypanel">        			
-        							</rich:datascroller>	
+        								reRender="bottomScroller,countString,items,xypanel">        			
+        							</rich:datascroller>
+        							</td></tr></table>	
         							
    										<h:inputHidden id="hiddenGroupID" value="#{navigationBean.groupID}"/>   						
 			
@@ -194,11 +195,13 @@
 
 										</rich:dataTable>
 						
+									<table><tr><td align="center">
 									<rich:datascroller id="bottomScroller" for="items" immediate="true"
-										style="width: 100px;" align="center"
     									scrollerListener="#{trendBean.scrollerListener}" maxPages="5"
-        								reRender="topScroller,countString,starter,items,xypanel">        			
-        							</rich:datascroller>        		
+        								reRender="topScroller,countString,items,xypanel">        			
+        							</rich:datascroller>
+        							</td></tr></table>
+        							        		
         		
 								</h:form> 
 				<!-- End Trend table -->
