@@ -129,11 +129,13 @@ UL {
     font-weight:bold; 
     color:#000000;  }
 A:link { 
-        color:#00ff00;  }
+        color:#8cae39;  }
 A:active { 
-          color:#0000ff;  }
+          color:#0000a6;  }
 A:hover { 
-         color:#ff0000;  }
+         color:#8cae39;  }
+A:visited { 
+           color:#8a0000;  }
 ol ol { 
        margin-top:8px;  }
 ol ul { 
