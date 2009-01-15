@@ -54,7 +54,6 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
     private double 					maplng;
     private int 					mapzoom;
     private String 					emailAddress;
-//    private UIInput					emailInput;
     private String 					caption;
     private String 					message;
     private boolean					requestSent;
@@ -135,10 +134,11 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 		if ((lat < 360)&& (lng < 360)){
 			
 			try{
-				SBSChangeRequest sbscr = Tiger.getCompleteChains(lat, lng);
+				SBSChangeRequest sbscr = Tiger.getCompleteChains(lat, lng, getAddressNumber(address));
 				
-				sbscr.setAddress(this.makeCompositeAddress(address, sbscr.getAddress()));
-				changeRequests.add(0,sbscr);
+				if (!duplicateLinkId(sbscr.getLinkId())){
+					sbscr.setAddress(this.makeCompositeAddress(address, sbscr.getAddress()));
+					changeRequests.add(0,sbscr);
 				
 //				int i = changeRequests.size();
 //				SBSChangeRequest sbscr = new SBSChangeRequest();
@@ -161,13 +161,14 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 //				sbscr.setStreetSegment(streetSegment);
 //				sbscr.setZipCode("84121");
 //				changeRequests.add(0, sbscr);
-				maplat = lat;
-				maplng = lng;
-				lat = 360;
-				lng = 360;
-
-				return "";
-
+					maplat = lat;
+					maplng = lng;
+					lat = 360;
+					lng = 360;
+	
+					return "";
+				}
+	
 			}
 			catch(SQLException sqle){
 				
@@ -425,32 +426,13 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 		this.caption = caption;
 	}
 
-//    public UIInput getEmailInput()
-//    {
-//        return emailInput;
-//    }
-//
-//    public void setEmailInput(UIInput emailInput)
-//    {
-//        this.emailInput = emailInput;
-//    }
     public void setMessageSource(MessageSource messageSource)
     {
         this.messageSource = messageSource;
     }
     
     public String resetAction(){
-    	
-//		changeRequests.clear();
-//		maplat = 360;
-//		maplng = 360;
-//		mapzoom = 10;
-//		lat =360;
-//		lng = 360;
-//		caption = MessageUtil.getMessageString("sbs_caption_select");
-//		requestSent = false;
-//		success = false;
-    	
+    	    	
     	init();
     	return "";
     }
@@ -480,8 +462,7 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 		
 		String gTokens[]= gAddress.split(",");
 		String gStreet[]=gTokens[0].split(" ");
-//		Pattern p = Pattern.compile("[0-9]* - [0-9]* , [0-9]* - [0-9]*");
-//		tAddress.
+
 		int street = tAddress.indexOf('*');
 		
 		compositeAddress.append(tAddress.substring(0,street));//Copy numbers over
@@ -531,7 +512,19 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 		}
 		return compositeAddress.toString();
 	}
-	
+	private int getAddressNumber(String address){
+		int number = -1;
+		try{
+			String tokens[]= address.split(" ");
+
+			number = Integer.parseInt(tokens[0]);
+		}
+		catch (NumberFormatException nfe){
+			// there was no number
+			
+		}
+		return number;
+	}
     public void validateEmail(FacesContext context, UIComponent component, Object value)
     {
         String valueStr = (String) value;
@@ -546,5 +539,12 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 	public void setMessage(String message) {
 		this.message = message;
 	}
-
+	private boolean duplicateLinkId(String linkId){
+		
+		for(SBSChangeRequest sbscr:changeRequests){
+			
+			if (sbscr.getLinkId().equals(linkId)) return true;
+		}
+		return false;
+	}
 }

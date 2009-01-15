@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.zip.DataFormatException;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -30,7 +33,7 @@ public class Tiger {
     }
 
 	
-    public static SBSChangeRequest getCompleteChains(double lat, double lng) throws SQLException, ParserConfigurationException
+    public static SBSChangeRequest getCompleteChains(double lat, double lng, int address) throws SQLException, ParserConfigurationException
     {
 
 		Connection connection = ds.getConnection();
@@ -47,7 +50,7 @@ public class Tiger {
 				"streets_sif.to_spd_lim, streets.to_spd_lim) AS to_spd_lim "+
 				"from streets LEFT JOIN streets_sif USING (link_id)"+
 				"where the_geom && " +
-				"expand(setsrid(geomFromText('"+point+"',32767),4326),0.002) order by dist limit 1";
+				"expand(setsrid(geomFromText('"+point+"',32767),4326),0.002) order by dist limit 10";
 		/*       String query = "select ogc_fid,tlid,fedirp,fename,fetype,fedirs,fraddl,toaddl,fraddr,toaddr,zipL,zipR,countyL,countyR,stateL,stateR,us_fips.placename as placenameL,cfcc,distance(wkb_geometry,GeomFromText('"
 		        + point
 		        + "',32767)) as dist from COMPLETECHAIN,US_FIPS where wkb_geometry &&  expand(geomFromText('"
@@ -57,27 +60,98 @@ public class Tiger {
 		        + " and cfcc like 'A%' order by dist limit 10";*/
 		
 		ResultSet rs = stmt.executeQuery(query);
-		SBSChangeRequest sbsChangeRequest = new SBSChangeRequest();
-		
+		List<SBSChangeRequest> backups = new ArrayList<SBSChangeRequest>();
 		while (rs.next()){
 			
+			SBSChangeRequest sbsChangeRequest = new SBSChangeRequest();
+			List<String> processedAddress = makeAddress(rs.getString("fraddr"),rs.getString("toaddr"),
+					rs.getString("fraddl"),rs.getString("toaddl"),
+					rs.getString("fedirp"),rs.getString("st_typ_bef"),
+					rs.getString("fename"),rs.getString("st_nm_suff"),
+					rs.getString("fetype"),"", address);
+			sbsChangeRequest.setAddress(processedAddress.get(2));
 			sbsChangeRequest.setLinkId(rs.getString("ogc_fid"));
 			sbsChangeRequest.setZipCode(rs.getString("zipL"));
-			sbsChangeRequest.setAddress(makeAddress(rs.getString("fraddr"),rs.getString("toaddr"),
-													rs.getString("fraddl"),rs.getString("toaddl"),
-													rs.getString("fedirp"),rs.getString("st_typ_bef"),
-													rs.getString("fename"),rs.getString("st_nm_suff"),
-													rs.getString("fetype"),""));
 			sbsChangeRequest.setSpeedLimit(deduceSpeedLimit(rs.getInt("fr_spd_lim"),rs.getInt("to_spd_lim"),rs.getInt("speed_cat")));
 			
 			sbsChangeRequest.setCategory(rs.getInt("speed_cat"));
 			sbsChangeRequest.setStreetSegment(rs.getString("tigerLine"));
+			
+			//test if we have a segment in the right range and return 
+			if (processedAddress.get(1).equals("*")){
+				
+				return sbsChangeRequest;
+			}
+			else {
+
+				backups.add(sbsChangeRequest);
+			}
 		}
-		
-		return sbsChangeRequest;
+		if (backups.size() > 0) {
+			return backups.get(0);
+		}
+		else {
+			return null;
+		}
 	
 	}
-    private static String getNumbers (String fromAddrRight, String toAddrRight, String fromAddrLeft, String toAddrLeft){
+    private static List<String> getNumbers (String fromAddrRight, String toAddrRight, String fromAddrLeft, String toAddrLeft, int address) {
+    	
+    	int fromRight = -1, fromLeft = -1, toRight = -1, toLeft = -1;
+    	//Get ducks in a row
+        if ((fromAddrRight!=null)&& (!fromAddrRight.isEmpty())){
+        	try {
+        		fromRight = Integer.parseInt(fromAddrRight);
+        	}
+        	catch (NumberFormatException nfe){
+        		
+        	}
+        }
+        if ((toAddrRight!=null)&& (!toAddrRight.isEmpty())){
+        	try {
+        		toRight = Integer.parseInt(toAddrRight);
+        	}
+        	catch (NumberFormatException nfe){
+        		
+        	}
+        }
+        if ((fromAddrLeft!=null)&& (!fromAddrLeft.isEmpty())){
+        	try {
+        		fromLeft = Integer.parseInt(fromAddrLeft);
+        	}
+        	catch (NumberFormatException nfe){
+        		
+        	}
+        }
+        if ((toAddrLeft!=null)&& (!toAddrLeft.isEmpty())){
+        	try {
+        		toLeft = Integer.parseInt(toAddrLeft);
+        	}
+        	catch (NumberFormatException nfe){
+        		
+        	}
+        }
+        //If the values are in the wrong order swap them around
+        if (toRight < fromRight){
+        	//swap them round
+        	String temp = toAddrRight;
+        	toAddrRight = fromAddrRight;
+        	fromAddrRight = temp;
+        	
+        	int i = toRight;
+        	toRight = fromRight;
+        	fromRight = i;
+        }
+        if (toLeft < fromLeft){
+        	//swap them round
+        	String temp = toAddrLeft;
+        	toAddrLeft = fromAddrLeft;
+        	fromAddrLeft = temp;
+        	
+        	int i = toLeft;
+        	toLeft = fromLeft;
+        	fromLeft = i;
+      }
         StringBuilder builder = new StringBuilder();
         if ((fromAddrRight!=null)&& (!fromAddrRight.isEmpty())){
         	
@@ -97,13 +171,25 @@ public class Tiger {
 	        	append(builder, toAddrLeft);
 	        }
         }
-        return builder.toString().trim();
+        List<String> result = new ArrayList<String>();
+        result.add(builder.toString().trim());
+        String ok ="";
+        //Check if the address supplied is in the address range
+        if ((address == -1) ||((address != -1)&& ((( address >= fromLeft)&&(address <= toLeft)) || ((address >= fromRight)&&(address <= toRight))))){
+        	
+        	ok = "*";
+        }
+        result.add(ok);
+        
+        return result;
 
     }
-    private static String makeAddress(String fromAddrRight, String toAddrRight, String fromAddrLeft, String toAddrLeft, String fedirp, String st_typ_bef, String fename, String st_nm_suff, String fetype, String fedirs){
-    	
+    private static List<String> makeAddress(String fromAddrRight, String toAddrRight, String fromAddrLeft, String toAddrLeft, 
+    		String fedirp, String st_typ_bef, String fename, String st_nm_suff, String fetype, String fedirs, int address){
+    		
+    		List<String> numbers = getNumbers(fromAddrRight,toAddrRight,fromAddrLeft,toAddrLeft, address);
             StringBuilder builder = new StringBuilder();
-            append(builder,getNumbers(fromAddrRight,toAddrRight,fromAddrLeft,toAddrLeft));
+            append(builder,numbers.get(0));
             append(builder, "*");
             append(builder, fedirp);
             append(builder, st_typ_bef);
@@ -111,7 +197,9 @@ public class Tiger {
             append(builder, st_nm_suff);
             append(builder, fetype);
             append(builder, fedirs);
-            return builder.toString().trim();
+            
+            numbers.add(builder.toString().trim());
+            return numbers;
         }
 
     private static void append(StringBuilder builder, String str) {

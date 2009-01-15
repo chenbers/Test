@@ -127,7 +127,7 @@
                 </f:facet>
                 <h:selectBooleanCheckbox value="#{item.selected}" id="c" onclick="check = true"/>
               </rich:column>
- 					<rich:column sortBy="#{item.address}" width="38" height="27" >
+ 					<rich:column width="38" height="27" >
 						<f:facet name="header">
 							<h:outputText value="#{messages.sbs_address}" />
 						</f:facet>
@@ -239,50 +239,6 @@
 	<div class="">
 		<rich:panel  id="map">
 		<div id="map-canvas" style="height:400px;width:400px;border:0"></div>
-		<script  type="text/javascript">
-	          
-/*			if (GBrowserIsCompatible()) {
-			
-	        		var opts = { onMarkersSetCallback: processMarkers, resultList : G_GOOGLEBAR_RESULT_LIST_SUPPRESS, showOnLoad: true};
-					map = new GMap2(document.getElementById("map-canvas"), {googleBarOptions: opts});
-					map.setCenter(new GLatLng(#{speedLimitChangeRequests.maplat},#{speedLimitChangeRequests.maplng}), #{speedLimitChangeRequests.mapzoom});
-					map.addControl(new GLargeMapControl());
-					map.addControl(new GMapTypeControl());
-					map.addControl(new GOverviewMapControl()); 
-					map.setMapType(G_NORMAL_MAP);					
-			       	map.enableScrollWheelZoom();
-	        		map.enableGoogleBar();
-	        		geocoder =new GClientGeocoder();
-	        				       
-			     	GEvent.addListener(map, "click", function(overlay, point) {
-			
-			        if (overlay) {
-			          
-			          	var segment = whichSegment(overlay);
-			          	if (segment != null){
-			          	
-			 				selectSegment(segment.id);
-			 			}	
-			          } else {
-			          
-			            reverseGeocode(point.y,point.x,"");
-			            
-				      }
-			        });
-  						
-			       	GEvent.addListener(map, "singlerightclick", function(point, source, overlay) {
-			          if (overlay) {
-			          	var segment = whichSegment(overlay);
-			          	if (segment != null){
-			          	
-			          		var point = segment.polyline.getVertex(0);
-			          	
-							openPanoramaBubblePolyline(point);
-			 			}	
-			          }
-			        });
-      }*/
- 	</script> 
  	</rich:panel>
  	</div>	
 
