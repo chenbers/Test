@@ -13,6 +13,7 @@ import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.TripDisplay;
 import com.inthinc.pro.charts.Line;
+import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.MpgDAO;
@@ -34,6 +35,7 @@ public class VehicleBean extends BaseDurationBean
     private ScoreDAO            scoreDAO;
     private MpgDAO              mpgDAO;
     private EventDAO            eventDAO;
+    private DriverDAO           driverDAO;
 
     private TripDisplay         lastTrip;
     private List<Event>         violationEvents;
@@ -44,8 +46,6 @@ public class VehicleBean extends BaseDurationBean
     private String              coachingHistory;
     private Boolean             hasLastTrip;
     private Event               clearItem;
-
-
 
     private NavigationBean      navigation;
     private BreakdownSelections breakdownSelected = BreakdownSelections.OVERALL;
@@ -142,6 +142,9 @@ public class VehicleBean extends BaseDurationBean
             
             if (tempTrip != null && tempTrip.getRoute().size() > 0)
             {
+                //Unique to VehicleBean
+                navigation.setDriver(driverDAO.findByID(navigation.getVehicle().getDriverID()));
+       
                 hasLastTrip = true;
                 TripDisplay trip = new TripDisplay(tempTrip, navigation.getDriver().getPerson().getTimeZone());
                 setLastTrip(trip);
@@ -231,6 +234,15 @@ public class VehicleBean extends BaseDurationBean
         this.eventDAO = eventDAO;
     }
 
+    public DriverDAO getDriverDAO()
+    {
+        return driverDAO;
+    }
+
+    public void setDriverDAO(DriverDAO driverDAO)
+    {
+        this.driverDAO = driverDAO;
+    }
     // BREAKDOWN SELECTION PROPERTIES
     public BreakdownSelections getBreakdownSelected()
     {

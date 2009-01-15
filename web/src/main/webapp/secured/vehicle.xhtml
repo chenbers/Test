@@ -365,7 +365,9 @@
 					<div class="panel_title">
 						<span class="map">Last Trip:&#160;
 						<c:if test="#{vehicleBean.lastTrip ne null}">
-							<h:outputText value="#{vehicleBean.lastTrip.trip.endTime}" />
+							<h:outputText value="#{vehicleBean.lastTrip.trip.endTime}">
+								<f:convertDateTime pattern="MMM dd, hh:mm a z" timeZone="#{navigationBean.driver.person.timeZone}" timeStyle="short" dateStyle="short"/>
+							</h:outputText>
 						</c:if>
 						</span>
 						<span class="panel_links"><h:form><h:commandLink value="view all trips" action="go_vehicleTrips">
