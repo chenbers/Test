@@ -51,7 +51,28 @@
 								style="width: 500px; height: 500px; border: 0"></div>
 							</h:panelGroup> 
 							<script type="text/javascript">	
-
+							function showAddress(address) {
+								  
+								  var geocoder = new GClientGeocoder();
+								  var zoomLookup = new Array(2,4,6,10,12,13,16,16,17);
+								  geocoder.getLocations(address,
+									    function(response) {
+									      if(response.Status.code!=200){
+									        alert('"' + address + '" not found');
+									      } else {
+									        var place = response.Placemark[0];
+									        var accuracy = place.AddressDetails.Accuracy;
+									        var point = new GLatLng(place.Point.coordinates[1],place.Point.coordinates[0]);
+									        map.setCenter(point, zoomLookup[accuracy]);
+											
+									        var marker = new GMarker(point);
+									        map.addOverlay(marker);
+									        marker.openInfoWindowHtml(address);
+									      }
+									    }
+								    );
+																		  
+							}
 							
 							
 							function initMap(){			    
@@ -95,23 +116,7 @@
 						
 								}
 					
-								function showAddress(address) {
-									  var geocoder = new GClientGeocoder();
-									
-									  geocoder.getLatLng(
-									    address,
-									    function(point) {
-									      if (!point) {
-									        alert(address + " not found");
-									      } else {
-									        map.setCenter(point, 13);
-									        var marker = new GMarker(point);
-									        map.addOverlay(marker);
-									        marker.openInfoWindowHtml(address);
-									      }
-									    }
-									  );
-								}
+								
 							}
 
 							initMap();
