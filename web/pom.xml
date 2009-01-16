@@ -67,7 +67,7 @@
 			</activation>
 			<properties>
 				<facelets.development>true</facelets.development>
-                <tomcatMangerURL>http://dev-pro.inthinc.com:8081/manager</tomcatMangerURL>
+                <tomcatManagerURL>http://dev-pro.inthinc.com:8081/manager</tomcatManagerURL>
                 <tomcatServerID>dev-pro-tomcat</tomcatServerID>
 			</properties>
 			<build>
@@ -92,7 +92,7 @@
 			</activation>
 			<properties>
 				<facelets.development>true</facelets.development>
-                <tomcatMangerURL>http://qa-pro.inthinc.com:8082/manager</tomcatMangerURL>
+                <tomcatManagerURL>http://qa-pro.inthinc.com:8082/manager</tomcatManagerURL>
                 <tomcatServerID>qa-pro-tomcat</tomcatServerID>                
 			</properties>
 			<build>

@@ -204,7 +204,7 @@ WWUUnm]]>
                 <artifactId>tomcat-maven-plugin</artifactId>
                 <inherited>true</inherited>
                 <configuration>
-                    <url>${tomcatMangerURL}</url>
+                    <url>${tomcatManagerURL}</url>
                     <server>${tomcatServerID}</server>
                     <update>true</update>
                 </configuration>
