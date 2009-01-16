@@ -50,6 +50,11 @@ public class RedFlagReportItem
         {
             setGroup(group.getName());
         }
+        else
+        {
+            setGroup("");
+        }
+        
         
         String catFormat = MessageUtil.getMessageString("redflags_cat" + redFlag.getEvent().getEventCategory().toString());
         setCategory(MessageFormat.format(catFormat, new Object[] {redFlag.getEvent().getEventType().toString()}));
