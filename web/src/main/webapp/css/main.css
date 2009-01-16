@@ -130,6 +130,14 @@ body {
 	background: transparent url(../images/ico_map.png) no-repeat center left;
 	}
 	
+.panel_title span.map a:active,
+.panel_title span.map a:link,
+.panel_title span.map a:hover,
+.panel_title span.map a:visited {
+	color: #333;
+	text-decoration: underline;
+	}
+	
 .panel_title span.search {
 	padding: 0 0 0 20px;
 	background: transparent url(../images/ico_search.png) no-repeat center left;

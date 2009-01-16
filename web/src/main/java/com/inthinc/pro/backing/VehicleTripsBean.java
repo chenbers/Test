@@ -44,6 +44,7 @@ public class VehicleTripsBean extends BaseBean
     private List<TripDisplay>   trips;
     private List<TripDisplay>   selectedTrips;
     private TripDisplay         selectedTrip;
+    private Driver              selectedDriver;
     private List<Event>         violationEvents;
     private List<Event>         idleEvents;
     private TimeZone            timeZone;
@@ -96,8 +97,8 @@ public class VehicleTripsBean extends BaseBean
         {
             logger.debug(numTrips.toString() + "Trips Found.");
             
-            selectedTrips.add(trips.get(0));
-
+            setSelectedTrip(trips.get(0));
+            
             Date vStart = selectedTrips.get(0).getTrip().getStartTime();
             Date vEnd = selectedTrips.get(0).getTrip().getEndTime();
 
@@ -325,8 +326,19 @@ public class VehicleTripsBean extends BaseBean
     {
         selectedTrips.clear();
         selectedTrips.add(selectedTrip);
+        setSelectedDriver(driverDAO.findByID(selectedTrip.getTrip().getDriverID()));
         this.showLastTenTrips = false;
         initViolations(selectedTrip.getTrip().getStartTime(), selectedTrip.getTrip().getEndTime());
+    }
+
+    public Driver getSelectedDriver()
+    {
+        return selectedDriver;
+    }
+
+    public void setSelectedDriver(Driver selectedDriver)
+    {
+        this.selectedDriver = selectedDriver;
     }
 
     // NAVIGATION PROPERTIES
