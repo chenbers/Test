@@ -16,10 +16,8 @@ import javax.faces.context.FacesContext;
 
 import org.springframework.beans.BeanUtils;
 
-import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
-import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.Device;
@@ -39,11 +37,8 @@ import com.inthinc.pro.util.MessageUtil;
  */
 public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implements PersonChangeListener, Serializable
 {
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private static final List<String>             AVAILABLE_COLUMNS;
     private static final int[]                    DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 8, 12 };
 
@@ -104,8 +99,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     private VehicleDAO                            vehicleDAO;
     private DriverDAO                             driverDAO;
     private DeviceDAO                             deviceDAO;
-    private GroupDAO                              groupDAO;
-    private List<Group>                           allGroups;
     private TreeMap<String, Integer>              teams;
     private TreeMap<Integer, String>              groupNames;
     private List<Driver>                          drivers;
@@ -126,11 +119,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         this.deviceDAO = deviceDAO;
     }
 
-    public void setGroupDAO(GroupDAO groupDAO)
-    {
-        this.groupDAO = groupDAO;
-    }
-
     @Override
     protected List<VehicleView> loadItems()
     {
@@ -143,27 +131,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             items.add(createVehicleView(vehicle));
 
         return items;
-    }
-
-    private List<Group> getAllGroups()
-    {
-        if (allGroups == null)
-        {
-            final GroupHierarchy hierarchy = getGroupHierarchy();
-            if (hierarchy.getTopGroup().getType() == GroupType.FLEET)
-                allGroups = hierarchy.getGroupList();
-            else
-                allGroups = groupDAO.getGroupsByAcctID(getAccountID());
-        }
-        return allGroups;
-    }
-
-    private Group getTopGroup()
-    {
-        for (final Group group : getAllGroups())
-            if (group.getType() == GroupType.FLEET)
-                return group;
-        return null;
     }
 
     /**

@@ -12,9 +12,13 @@ import org.apache.commons.beanutils.NestedNullException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.ui.TableColumn;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.dao.hessian.exceptions.HessianException;
+import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
@@ -26,6 +30,8 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
 {
     protected static final Logger logger        = LogManager.getLogger(BaseAdminBean.class);
 
+    private List<Group>           allGroups;
+    protected GroupDAO            groupDAO;
     protected List<T>             items;
     protected List<T>             filteredItems = new LinkedList<T>();
     protected String              filterValue;
@@ -42,6 +48,11 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     public void initBean()
     {
         tablePref = new TablePref(this);
+    }
+
+    public void setGroupDAO(GroupDAO groupDAO)
+    {
+        this.groupDAO = groupDAO;
     }
 
     public TablePref getTablePref()
@@ -79,6 +90,33 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     public void getTableColumns(Map<String, TableColumn> tableColumns)
     {
         tablePref.setTableColumns(tableColumns);
+    }
+
+    /**
+     * @return A list of all available groups.
+     */
+    protected List<Group> getAllGroups()
+    {
+        if (allGroups == null)
+        {
+            final GroupHierarchy hierarchy = getGroupHierarchy();
+            if (hierarchy.getTopGroup().getType() == GroupType.FLEET)
+                allGroups = hierarchy.getGroupList();
+            else
+                allGroups = groupDAO.getGroupsByAcctID(getAccountID());
+        }
+        return allGroups;
+    }
+
+    /**
+     * @return The top-level group.
+     */
+    protected Group getTopGroup()
+    {
+        for (final Group group : getAllGroups())
+            if (group.getType() == GroupType.FLEET)
+                return group;
+        return null;
     }
 
     /**

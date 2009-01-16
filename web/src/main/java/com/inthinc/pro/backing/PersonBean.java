@@ -24,9 +24,7 @@ import javax.faces.context.FacesContext;
 import org.jasypt.util.password.PasswordEncryptor;
 import org.springframework.beans.BeanUtils;
 
-import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.DriverDAO;
-import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.annotations.Column;
@@ -52,10 +50,7 @@ import com.inthinc.pro.util.MiscUtil;
  */
 public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements Serializable
 {
-    /**
-     * 
-     */
-    private static final long                  serialVersionUID       = 1L;
+    private static final long serialVersionUID = 1L;
 
     private static final List<String>          AVAILABLE_COLUMNS;
     private static final int[]                 DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 6, 18 };
@@ -128,7 +123,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             WEIGHTS.put(String.valueOf(i), i);
 
         // time zones
-        List<String> timeZones = SupportedTimeZones.getSupportedTimeZones();
+        final List<String> timeZones = SupportedTimeZones.getSupportedTimeZones();
         // sort by offset from GMT
         Collections.sort(timeZones, new Comparator<String>()
         {
@@ -174,10 +169,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private PersonDAO                          personDAO;
     private UserDAO                            userDAO;
     private DriverDAO                          driverDAO;
-    private GroupDAO                           groupDAO;
     private PasswordEncryptor                  passwordEncryptor;
     private List<PersonChangeListener>         changeListeners;
-    private List<Group>                        allGroups;
     private Map<String, Integer>               groups;
     private Map<String, Integer>               teams;
     private Map<String, Role>                  roles;
@@ -195,11 +188,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     public void setDriverDAO(DriverDAO driverDAO)
     {
         this.driverDAO = driverDAO;
-    }
-
-    public void setGroupDAO(GroupDAO groupDAO)
-    {
-        this.groupDAO = groupDAO;
     }
 
     public void setPasswordEncryptor(PasswordEncryptor passwordEncryptor)
@@ -231,27 +219,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             items.add(createPersonView(person));
 
         return items;
-    }
-
-    private List<Group> getAllGroups()
-    {
-        if (allGroups == null)
-        {
-            final GroupHierarchy hierarchy = getGroupHierarchy();
-            if (hierarchy.getTopGroup().getType() == GroupType.FLEET)
-                allGroups = hierarchy.getGroupList();
-            else
-                allGroups = groupDAO.getGroupsByAcctID(getAccountID());
-        }
-        return allGroups;
-    }
-
-    private Group getTopGroup()
-    {
-        for (final Group group : getAllGroups())
-            if (group.getType() == GroupType.FLEET)
-                return group;
-        return null;
     }
 
     /**

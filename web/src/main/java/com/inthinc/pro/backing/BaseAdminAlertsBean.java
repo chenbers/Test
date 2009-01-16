@@ -88,36 +88,46 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         }
         else if ("vehicles".equals(assignType))
         {
-            if (allVehicles == null)
-            {
-                final List<VehicleView> vehicles = vehiclesBean.getItems();
-                allVehicles = new ArrayList<SelectItem>(vehicles.size());
-                for (final Vehicle vehicle : vehicles)
-                    allVehicles.add(new SelectItem("vehicle" + vehicle.getVehicleID(), vehicle.getName()));
-                MiscUtil.sortSelectItems(allVehicles);
-            }
-            pickFrom.addAll(allVehicles);
+            pickFrom.addAll(getAllVehicles());
         }
         else if ("drivers".equals(assignType))
         {
-            if (allDrivers == null)
-            {
-                final List<Driver> drivers = driverDAO.getAllDrivers(getUser().getGroupID());
-                allDrivers = new ArrayList<SelectItem>(drivers.size());
-                for (final Driver driver : drivers)
-                    allDrivers.add(new SelectItem("driver" + driver.getDriverID(), driver.getPerson().getFirst() + ' ' + driver.getPerson().getLast()));
-                MiscUtil.sortSelectItems(allDrivers);
-            }
-            pickFrom.addAll(allDrivers);
+            pickFrom.addAll(getAllDrivers());
         }
         return pickFrom;
+    }
+
+    protected List<SelectItem> getAllVehicles()
+    {
+        if ((allVehicles == null) && (vehiclesBean != null))
+        {
+            final List<VehicleView> vehicles = vehiclesBean.getItems();
+            allVehicles = new ArrayList<SelectItem>(vehicles.size());
+            for (final Vehicle vehicle : vehicles)
+                allVehicles.add(new SelectItem("vehicle" + vehicle.getVehicleID(), vehicle.getName()));
+            MiscUtil.sortSelectItems(allVehicles);
+        }
+        return allVehicles;
+    }
+
+    protected List<SelectItem> getAllDrivers()
+    {
+        if ((allDrivers == null) && (driverDAO != null))
+        {
+            final List<Driver> drivers = driverDAO.getAllDrivers(getUser().getGroupID());
+            allDrivers = new ArrayList<SelectItem>(drivers.size());
+            for (final Driver driver : drivers)
+                allDrivers.add(new SelectItem("driver" + driver.getDriverID(), driver.getPerson().getFirst() + ' ' + driver.getPerson().getLast()));
+            MiscUtil.sortSelectItems(allDrivers);
+        }
+        return allDrivers;
     }
 
     private List<SelectItem> getAssignPicked()
     {
         final LinkedList<SelectItem> picked = new LinkedList<SelectItem>();
         if (getItem().getGroupIDs() != null)
-            for (final Group group : getGroupHierarchy().getGroupList())
+            for (final Group group : getAllGroups())
                 if (getItem().getGroupIDs().contains(group.getGroupID()))
                     picked.add(new SelectItem("group" + group.getGroupID(), group.getName()));
 
@@ -125,13 +135,13 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
             for (final VehicleType type : getItem().getVehicleTypes())
                 picked.add(new SelectItem(type.toString(), MessageUtil.getMessageString("editAlerts_" + type.toString().toLowerCase() + "Vehicles")));
 
-        if (getItem().getVehicleIDs() != null && allVehicles != null)
-            for (final SelectItem vehicle : allVehicles)
+        if ((getItem().getVehicleIDs() != null) && (getAllVehicles() != null))
+            for (final SelectItem vehicle : getAllVehicles())
                 if (getItem().getVehicleIDs().contains(new Integer(vehicle.getValue().toString().substring(7))))
                     picked.add(vehicle);
 
-        if (getItem().getDriverIDs() != null && allDrivers != null)
-            for (final SelectItem driver : allDrivers)
+        if ((getItem().getDriverIDs() != null) && (getAllDrivers() != null))
+            for (final SelectItem driver : getAllDrivers())
                 if (getItem().getDriverIDs().contains(new Integer(driver.getValue().toString().substring(6))))
                     picked.add(driver);
 
@@ -142,7 +152,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     {
         if (peoplePicker == null)
         {
-            final List<User> users = userDAO.getUsersInGroupHierarchy(getUser().getGroupID());
+            final List<User> users = userDAO.getUsersInGroupHierarchy(getTopGroup().getGroupID());
             final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(users.size());
             for (final User user : users)
                 allUsers.add(new SelectItem(user.getUserID(), user.getPerson().getFirst() + ' ' + user.getPerson().getLast()));
