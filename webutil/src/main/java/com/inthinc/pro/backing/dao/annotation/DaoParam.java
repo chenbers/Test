@@ -12,4 +12,5 @@ public @interface DaoParam
     public abstract java.lang.String name() default "";    
     public abstract java.lang.String inputDesc() default "";
     public abstract java.lang.Class inputConvert() default com.inthinc.pro.convert.BaseConvert.class;
+    public abstract boolean isDate() default false;
 }

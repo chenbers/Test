@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.inthinc.pro.convert.Convert;
@@ -10,9 +11,24 @@ public class Param
 {
     Class<?> paramType;
     String paramValue;
+    Date dateValue;
     String paramName;
     String paramInputDesc;
     Class<?> paramConvert;
+    boolean dateType;
+
+    public boolean getDateType()
+    {
+        return isDateType();
+    }
+    public boolean isDateType()
+    {
+        return dateType;
+    }
+    public void setDateType(boolean dateType)
+    {
+        this.dateType = dateType;
+    }
     public Param()
     {
         
@@ -60,7 +76,9 @@ public class Param
         {
             try
             {
-                paramValue = ((Convert)paramConvert.newInstance()).convert(paramValue.toString());
+                if (dateType)
+                    paramValue = ((Convert)paramConvert.newInstance()).convert(dateValue);
+                else paramValue = ((Convert)paramConvert.newInstance()).convert(paramValue.toString());
             }
             catch (InstantiationException e)
             {
@@ -107,5 +125,15 @@ public class Param
     public void setParamConvert(Class<?> paramConvert)
     {
         this.paramConvert = paramConvert;
+    }
+    public Date getDateValue()
+    {
+        if (dateValue == null)
+            dateValue = new Date();
+        return dateValue;
+    }
+    public void setDateValue(Date dateValue)
+    {
+        this.dateValue = dateValue;
     }
 }

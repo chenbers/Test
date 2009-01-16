@@ -6,6 +6,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -18,6 +21,7 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.backing.dao.annotation.DaoParam;
 import com.inthinc.pro.backing.dao.impl.SiloServiceImpl;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
+import com.inthinc.pro.model.EventAttr;
 
 
 public class DaoUtilBean 
@@ -30,7 +34,7 @@ public class DaoUtilBean
     Map<String, DaoMethod>methodMap;
     List<Param> paramList;
     List<Result> results;
-    private static final Integer ROWS_PER_INSTANCE = 20;
+    private static final Integer ROWS_PER_INSTANCE = 30;
 
     private Class<?> dataAccessInterfaces[] = {
             SiloServiceImpl.class
@@ -127,6 +131,7 @@ logger.debug(paramTypes[i].getName());
                     {
                         param.setParamInputDesc(webParm.inputDesc());
                         param.setParamConvert(webParm.inputConvert());
+                        param.setDateType(webParm.isDate());
                     }
                     param.setParamValue(null);
                     
@@ -236,9 +241,29 @@ logger.debug(paramTypes[i].getName());
         List<Result> resultList = new ArrayList<Result>();
         for (Object key : returnMap.keySet())
         {
-            resultList.add(new Result(key.toString(), returnMap.get(key).toString()));
+            // special case for event attributes
+            if (key.toString().equals("attrMap"))
+            {
+                resultList.addAll(getResultListFromEventAttrMap(returnMap.get(key)));
+            }
+            else
+            {
+                resultList.add(new Result(key.toString(), returnMap.get(key).toString()));
+            }
         }
         
+        return resultList;
+    }
+
+    private Collection<? extends Result> getResultListFromEventAttrMap(Object object)
+    {
+        List<Result> resultList = new ArrayList<Result>();
+        Map<Integer, Integer> attrMap = (Map<Integer, Integer>)object;
+        for (Integer key : attrMap.keySet())
+        {
+            String attrName = EventAttr.getFieldName(key);
+            resultList.add(new Result("ATTR: " + (attrName == null ? key.toString() : attrName), attrMap.get(key).toString()));
+        }
         return resultList;
     }
 
