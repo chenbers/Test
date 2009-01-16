@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <tocdata>
 <item name="Welcome" url="Welcome.htm" />
+<item name="Toolbar" url="Toolbar.htm" />
 <item name="My Account" url="My_Account.htm" />
 <book name="Home" url="Home.htm" >
   <item name="Overall Score" url="Overall_Score-Fleet_Level.htm" />

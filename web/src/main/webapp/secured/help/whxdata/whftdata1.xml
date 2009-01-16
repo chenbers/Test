@@ -22,6 +22,17 @@
 <topic name="Live_Fleet-Map_Viewing_Options_hs" url="Hot_Sports/Live_Fleet-Map_Viewing_Options_hs.htm" />
 <topic name="Live_Fleet-Map_Zoom_and_Navigate_hs" url="Hot_Sports/Live_Fleet-Map_Zoom_and_Navigate_hs.htm" />
 <topic name="live_fleet_map_inset_hs" url="Hot_Sports/live_fleet_map_inset_hs.htm" />
+<topic name="Reports_Devices_Columns_hs" url="Hot_Sports/Reports_Devices_Columns_hs.htm" />
+<topic name="Reports_Devices_Edit_Columns_hs" url="Hot_Sports/Reports_Devices_Edit_Columns_hs.htm" />
+<topic name="Reports_Devices_Navigation_hs" url="Hot_Sports/Reports_Devices_Navigation_hs.htm" />
+<topic name="Reports_Drivers_Columns_hs" url="Hot_Sports/Reports_Drivers_Columns_hs.htm" />
+<topic name="Reports_Drivers_Edit_Columns_hs" url="Hot_Sports/Reports_Drivers_Edit_Columns_hs.htm" />
+<topic name="Reports_Drivers_Search_hs" url="Hot_Sports/Reports_Drivers_Search_hs.htm" />
+<topic name="Reports_Idling_Date_Range_hs" url="Hot_Sports/Reports_Idling_Date_Range_hs.htm" />
+<topic name="Reports_Idling_Search_hs" url="Hot_Sports/Reports_Idling_Search_hs.htm" />
+<topic name="Reports_Vehicles_Edit_Columns_hs" url="Hot_Sports/Reports_Vehicles_Edit_Columns_hs.htm" />
+<topic name="Reports_Vehicles_Navigation_hs" url="Hot_Sports/Reports_Vehicles_Navigation_hs.htm" />
+<topic name="Reports_Vehicles_Search_hs" url="Hot_Sports/Reports_Vehicles_Search_hs.htm" />
 <topic name="Idling" url="Idling.htm" />
 <topic name="Live Fleet" url="Live_Fleet.htm" />
 <topic name="My Account" url="My_Account.htm" />
@@ -36,6 +47,7 @@
 <topic name="Seat Belt" url="Seat_Belt.htm" />
 <topic name="Speed" url="Speed.htm" />
 <topic name="Speed by Street" url="Speed_by_Street.htm" />
+<topic name="Toolbar" url="Toolbar.htm" />
 <topic name="Vehicles" url="Vehicles.htm" />
 <topic name="Welcome" url="Welcome.htm" />
 <topic name="Zones" url="Zones.htm" />
