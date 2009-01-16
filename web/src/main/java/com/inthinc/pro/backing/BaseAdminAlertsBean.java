@@ -230,44 +230,38 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         updateField.put("vehicleIDs", assignTo);
         updateField.put("driverIDs", assignTo);
 
+        // clear previous IDs
+        getItem().setGroupIDs(new ArrayList<Integer>());
+        getItem().setVehicleIDs(new ArrayList<Integer>());
+        getItem().setDriverIDs(new ArrayList<Integer>());
+        getItem().setVehicleTypes(new ArrayList<VehicleType>());
+
         // set group, vehicle type, vehicle and driver IDs
         for (final SelectItem item : getAssignPicker().getPicked())
         {
             // group
             if (item.getValue().toString().startsWith("group"))
             {
-                if (getItem().getGroupIDs() == null)
-                    getItem().setGroupIDs(new ArrayList<Integer>());
                 final Integer id = new Integer(item.getValue().toString().substring(5));
-                if (!getItem().getGroupIDs().contains(id))
-                    getItem().getGroupIDs().add(id);
+                getItem().getGroupIDs().add(id);
             }
             // vehicle
             else if (item.getValue().toString().startsWith("vehicle"))
             {
-                if (getItem().getVehicleIDs() == null)
-                    getItem().setVehicleIDs(new ArrayList<Integer>());
                 final Integer id = new Integer(item.getValue().toString().substring(7));
-                if (!getItem().getVehicleIDs().contains(id))
-                    getItem().getVehicleIDs().add(id);
+                getItem().getVehicleIDs().add(id);
             }
             // driver
             else if (item.getValue().toString().startsWith("driver"))
             {
-                if (getItem().getDriverIDs() == null)
-                    getItem().setDriverIDs(new ArrayList<Integer>());
                 final Integer id = new Integer(item.getValue().toString().substring(6));
-                if (!getItem().getDriverIDs().contains(id))
-                    getItem().getDriverIDs().add(id);
+                getItem().getDriverIDs().add(id);
             }
+            // vehicle type
             else
             {
-                // vehicle type
-                if (getItem().getVehicleTypes() == null)
-                    getItem().setVehicleTypes(new ArrayList<VehicleType>());
                 final VehicleType type = VehicleType.valueOf(item.getValue().toString());
-                if (!getItem().getVehicleTypes().contains(type))
-                    getItem().getVehicleTypes().add(type);
+                getItem().getVehicleTypes().add(type);
             }
         }
 
