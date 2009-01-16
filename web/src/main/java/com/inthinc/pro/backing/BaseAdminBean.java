@@ -381,6 +381,10 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
             applyFilter();
         }
 
+        // deselect all edit items
+        for (final T item : getSelectedItems())
+            item.setSelected(false);
+
         if (displayed)
             return getDisplayRedirect();
         else
