@@ -36,7 +36,7 @@
 							reRender="map,scripts"
 							value="#{messages.refresh}">
 						</a4j:commandButton>
-			   			<h:commandLink action="#{flyOutBean.flyNavRuleAction}">
+			   			<h:commandLink action="#{flyOutBean.flyNavRuleAction}" rendered="#{driverLocationBean.showLegend}">
 			   				<img src="#{facesContext.externalContext.request.contextPath}/images/#{flyOutImage}" border="0" />
 			   				<f:setPropertyActionListener value="#{flyNavRule}" target="#{flyOutBean.navigationRule}" />
 			   				<f:setPropertyActionListener value="#{flySelectedTab}" target="#{flyOutBean.selectedTab}" />
@@ -49,16 +49,18 @@
 				<div class="panel_w">
 					
 				 	 <rich:panel  id="map">
-										<h:form id="mapLinks">
+								<h:form id="mapLinks">
 								<ui:repeat value="#{driverLocationBean.driverLastLocationBeans}" var="driverLastLocationBean">
 									<div id="#{driverLastLocationBean.driver.driverID}" style="display:none">
+									<strong>										
 										<h:commandLink value="#{driverLastLocationBean.driverName}" action="#{driverLocationBean.driverAction}">
 												<f:param name="driverId" value="#{driverLastLocationBean.driver.driverID}"/>
-											</h:commandLink>
+										</h:commandLink>
+									</strong>
 	
 									</div>
 							  	</ui:repeat>
-										</h:form>
+								</h:form>
 							  	
 					<div class="panel_content">
 							<h:form name="maplinks2"> <div id="map-canvas" style="#{mapwidth};#{mapheight};border:0"></div></h:form>
