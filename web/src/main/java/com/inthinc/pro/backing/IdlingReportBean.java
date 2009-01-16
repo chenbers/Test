@@ -99,9 +99,9 @@ public class IdlingReportBean extends BaseReportBean implements TablePrefOptions
         
         searchFor = checkForRequestMap();
         
-        defaultEndDate = endDate;
+        this.defaultEndDate = endDate;
         startDate.setTime(this.endDate.getTime() - DAYS_BACK);
-        defaultStartDate = startDate;
+        this.defaultStartDate = startDate;
         
         // end initialized to today, start
         //  seven days back
@@ -207,12 +207,14 @@ public class IdlingReportBean extends BaseReportBean implements TablePrefOptions
                     matchedIdlers.add(iri);
                 }
                 
-                // vehicle name 
-                index3 = iri.getVehicle().getName().trim().toLowerCase().indexOf(trimmedSearch);                    
-                if ((index1 == -1) &&
-                    (index2 == -1) &&
-                    (index3 != -1) ) {                        
-                    matchedIdlers.add(iri);
+                // vehicle name, if assigned ....
+                if ( iri.getVehicle() != null ) {
+                    index3 = iri.getVehicle().getName().trim().toLowerCase().indexOf(trimmedSearch);                    
+                    if ((index1 == -1) &&
+                        (index2 == -1) &&
+                        (index3 != -1) ) {                        
+                        matchedIdlers.add(iri);
+                    }
                 }
             }
             loadResults(matchedIdlers);                        
@@ -256,10 +258,17 @@ public class IdlingReportBean extends BaseReportBean implements TablePrefOptions
             sb.append("Okay");
         }
         sb.append(".");
-        
+               
         badDates = sb.toString();
-        internalStartDate = (int)startDate.getTime()*1000;
-        internalEndDate = (int)endDate.getTime()*1000;
+        
+        // CAREFULLY compute the search dates
+        long tm = startDate.getTime();
+        tm = tm/((long)1000);
+        internalStartDate = (int)tm;
+        
+        tm = endDate.getTime();
+        tm = tm/((long)1000);
+        internalEndDate = (int)tm;
     }
     
     private void loadResults(List <IdlingReportItem> idlsData) 
