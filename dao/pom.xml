@@ -3,12 +3,12 @@
   <parent>
     <groupId>com.inthinc.pro</groupId>
     <artifactId>root</artifactId>
-    <version>0.0.7-SNAPSHOT</version>
+    <version>0.0.7</version>
   </parent>
 
   <groupId>com.inthinc.pro.dao</groupId>
   <artifactId>dao</artifactId>
-  <version>0.0.7-SNAPSHOT</version>
+  <version>0.0.7</version>
   <packaging>jar</packaging>
 
   <name>Tiwi Pro Portal - Data Layer</name>

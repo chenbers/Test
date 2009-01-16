@@ -3,11 +3,11 @@
 	<parent>
 		<groupId>com.inthinc.pro</groupId>
 		<artifactId>root</artifactId>
-		<version>0.0.7-SNAPSHOT</version>
+		<version>0.0.7</version>
 	</parent>
 	<groupId>com.inthinc.pro.web</groupId>
 	<artifactId>web</artifactId>
-	<version>0.0.7-SNAPSHOT</version>
+	<version>0.0.7</version>
 	<packaging>war</packaging>
 	<name>Pro Portal - Web App</name>
 	<profiles>
@@ -314,7 +314,7 @@
 		<dependency>
 			<groupId>com.inthinc.pro.dao</groupId>
 			<artifactId>dao</artifactId>
-			<version>0.0.7-SNAPSHOT</version>
+			<version>0.0.7</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
