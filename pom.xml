@@ -196,7 +196,7 @@ WWUUnm]]>
                     <scmCommentPrefix>[Hudson]</scmCommentPrefix>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <useReleaseProfile>false</useReleaseProfile>
-                    <goals>deploy tomcat:deploy</goals>
+                    <goals>deploy</goals>
                 </configuration>
             </plugin>
             <plugin>
