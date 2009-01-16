@@ -479,6 +479,20 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable
         return node;
 
     }
+    
+    @Override
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        sb.append("id=");
+        sb.append(this.getId());
+        sb.append(",");
+        sb.append("label=");
+        sb.append(this.getLabel());
+        sb.append("]");
+        return sb.toString();
+    }
 
     public void setVehicleDAO(VehicleDAO vehicleDAO)
     {

@@ -177,7 +177,7 @@ isCircular="true" >
 					<textElement>
 						<font size="14"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{OVERALL_SCORE}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Overall Score: " + $P{OVERALL_SCORE}]]></textFieldExpression>
 				</textField>
 				<pieChart>
 					<chart isShowLegend="false"  hyperlinkTarget="Self"  customizerClass="com.inthinc.pro.reports.PieChartCustomizer" >
