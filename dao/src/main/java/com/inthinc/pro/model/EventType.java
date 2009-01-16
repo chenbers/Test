@@ -19,7 +19,7 @@ public enum EventType implements BaseEnum
 	ZONES_DEPARTURE(10, "Zone Departure", "ZONES_DEPARTURE"),
 	LOW_BATTERY(11, "Low Battery", "LOW_BATTERY"),
 	DEVICE_LOW_BATTERY(12, "tiwi Low Battery", "DEVICE_LOW_BATTERY"),
-	IDLE(13, "Idling", "IDLING"),
+	IDLING(13, "Idling", "IDLING"),
 	UNKNOWN(14, "Unknown", "UNKNOWN");
 	
 

@@ -402,11 +402,11 @@ var selected = 'OVERALL';
 								<strong><h:outputText value="#{item.eventType}" /></strong>		
 							</rich:column>
 							
-							<rich:column sortBy="#{item.avgSpeed}">
+							<rich:column sortBy="#{item.speed}">
 								<f:facet name="header">
 									<h:outputText value="Avg Speed" />
 								</f:facet>
-								<strong><h:outputText value="#{item.avgSpeed} #{messages.measurement_speed}" /></strong>
+								<strong><h:outputText value="#{item.speed} #{messages.measurement_speed}" /></strong>
 							</rich:column>
 							
 							<rich:column sortBy="#{item.severity}">

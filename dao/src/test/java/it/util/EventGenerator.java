@@ -265,7 +265,7 @@ public class EventGenerator
         {
             AggressiveDrivingEvent adEvent = (AggressiveDrivingEvent) event;
             eventBytes[idx++] = (byte) (ATTR_TYPE_AVG_SPEED & 0x000000FF);
-            eventBytes[idx++] = (byte) (adEvent.getAvgSpeed() & 0x000000FF);
+            eventBytes[idx++] = (byte) (adEvent.getSpeed() & 0x000000FF);
             eventBytes[idx++] = (byte) (ATTR_TYPE_DELTAVX & 0x000000FF);
             idx = puti2(eventBytes, idx, adEvent.getDeltaX());
             eventBytes[idx++] = (byte) (ATTR_TYPE_DELTAVY & 0x000000FF);

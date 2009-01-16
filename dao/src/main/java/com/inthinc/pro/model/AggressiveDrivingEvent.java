@@ -9,7 +9,6 @@ public class AggressiveDrivingEvent extends Event
      * 
      */
     private static final long serialVersionUID = 1L;
-    private Integer avgSpeed;
     private Integer deltaX; // deltas store as Integer, divide by 10 for float value
     private Integer deltaY;
     private Integer deltaZ;
@@ -28,23 +27,11 @@ public class AggressiveDrivingEvent extends Event
             Integer deltaZ, Integer severity)
     {
         super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude);
-        this.avgSpeed = avgSpeed;
         this.deltaX = deltaX;
         this.deltaY = deltaY;
         this.deltaZ = deltaZ;
         this.severity = severity;
     }
-
-    public Integer getAvgSpeed()
-    {
-        return avgSpeed;
-    }
-
-    public void setAvgSpeed(Integer avgSpeed)
-    {
-        this.avgSpeed = avgSpeed;
-    }
-
 
     public EventType getEventType()
     {
@@ -83,7 +70,7 @@ public class AggressiveDrivingEvent extends Event
     }
     public String getDetails(String formatStr)
     {
-        return MessageFormat.format(formatStr, new Object[] {avgSpeed});
+        return MessageFormat.format(formatStr, new Object[] {getSpeed()});
     }
 
     public Integer getDeltaX()

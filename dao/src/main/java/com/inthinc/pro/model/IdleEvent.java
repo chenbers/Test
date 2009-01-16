@@ -65,7 +65,7 @@ public class IdleEvent extends Event
     }
     public EventType getEventType()
 	{
-		return EventType.IDLE;
+		return EventType.IDLING;
 	}
     public EventCategory getEventCategory()
     {
