@@ -371,7 +371,8 @@ public class GraphicUtil {
             light[i] = entity.getLightValue();
             medium[i] = entity.getMediumValue();
             heavy[i] = entity.getHeavyValue();
-            sb.append("<category label=\'" + entity.getEntityName() + "\'/>");
+                  
+            sb.append("<category label=\"" + entity.getEntityName().replaceAll("'", "\'") + "\"/>");
         }
         sb.append("</categories>");
         
