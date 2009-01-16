@@ -1,6 +1,7 @@
 package com.inthinc.pro.model;
 
 import java.text.DateFormat;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -70,6 +71,10 @@ public class IdleEvent extends Event
     public EventCategory getEventCategory()
     {
         return EventCategory.VIOLATION;
+    }
+    public String getDetails(String formatStr)
+    {
+        return MessageFormat.format(formatStr, new Object[] {getLowIdle() == null ? 0 : getLowIdle(), getHighIdle() == 0 ? 0 : getHighIdle()});
     }
 
 }
