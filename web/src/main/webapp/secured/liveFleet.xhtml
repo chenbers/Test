@@ -151,8 +151,8 @@
 	<t:saveState value="#{liveFleetBean}" />
 	
 	<!-- BEGIN GOOGLE MAP POPUPS -->
+	<h:form>
 	<rich:panel id="mapPopups">
-		<h:form>
 		<ui:repeat value="#{liveFleetBean.drivers}" var="driver">
 				<div id="#{driver.driverID}" style="display: none">
 					<strong>
@@ -166,8 +166,8 @@
 					<b>Vehicle Type:</b> #{driver.vehicleType}
 				</div>
 		</ui:repeat>
-		</h:form>
 	</rich:panel>
+	</h:form>
 	<!-- END GOOGLE MAP POPUPS -->
 	
 		<table width="940" border="0" cellspacing="0" cellpadding="0"
