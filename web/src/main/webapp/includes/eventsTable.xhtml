@@ -71,14 +71,14 @@
     <rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="50" autosized="true" resizeable="false" zindex="2000"
     		onshow="document.getElementById('clearItemForm:yesButton').focus();">
       <f:facet name="header">
-        <h:outputText value="#{messages.events_clearTitle}" />
+        <h:outputText value="#{clearTitle}" />
       </f:facet>
       <f:facet name="controls">
         <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('clearEventPanel')" />
       </f:facet>
 
       <h:panelGroup layout="block" styleClass="popupsubtitle">
-      	<h:outputText value="#{messages.events_clearInst}"/>
+      	<h:outputText value="#{clearInst}"/>
       </h:panelGroup>
 
       <a4j:form id="clearItemForm">
