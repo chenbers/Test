@@ -226,7 +226,7 @@
         <property name="driverDAO" ref="driverDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
     </bean>
-    <bean id="driverLocationBean" class="com.inthinc.pro.backing.DriverLocationBean" scope="request" parent="baseBean">
+    <bean id="driverLocationBean" class="com.inthinc.pro.backing.DriverLocationBean" scope="request" parent="baseBean" init-method="init">
         <property name="driverDAO" ref="driverDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
         <property name="groupDAO" ref="groupDAO"></property>

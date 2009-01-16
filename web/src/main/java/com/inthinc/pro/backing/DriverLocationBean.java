@@ -1,13 +1,12 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
-
-import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
@@ -27,49 +26,53 @@ public class DriverLocationBean extends BaseBean {
 	private DriverDAO driverDAO;
 	private GroupDAO groupDAO;
     private NavigationBean navigation;
-    private boolean pageChange = false;
+ //   private boolean pageChange = false;
     private LatLng center;
     private Integer zoom = 10;
-	private TreeMap<Integer,DriverLastLocationBean> driverLastLocations;
+	private Map<Integer,DriverLastLocationBean> driverLastLocations;
 	private List<Group> childGroups;
 	private IconMap mapIconMap;
 	private IconMap legendIconMap;
 	private Map<Integer,Group> groupMap;
 	private boolean showLegend;
 	private List<DriverLastLocationBean> driverLastLocationBeanList;
- //   private static final String WEBAPP_CONTEXT = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
-	private static final Logger logger = Logger.getLogger(DriverLocationBean.class);
+ 	private static final Logger logger = Logger.getLogger(DriverLocationBean.class);
 	private GroupHierarchy       organizationHierarchy;
 
 	public DriverLocationBean() {
 		super();
 	
-		center = new LatLng(37.4419, -122.1419);
-		legendIconMap = new IconMap();
-		mapIconMap = new IconMap();
+	}
+	public void init(){
+		
 		groupMap = new HashMap<Integer,Group>();
 		showLegend = true;
-	}
-
-	public List<DriverLastLocationBean> getDriverLastLocationBeans() {
-
         organizationHierarchy = new GroupHierarchy(groupDAO.getGroupsByAcctID(getAccountID()));
         center = organizationHierarchy.getTopGroup().getMapCenter();
         zoom = organizationHierarchy.getTopGroup().getMapZoom();
-	        
+		
+	}
+	public List<DriverLastLocationBean> getDriverLastLocationBeans() {
+
     	MapIconFactory mif = new MapIconFactory();
     	
-    	driverLastLocations = new TreeMap<Integer,DriverLastLocationBean>();
+    	driverLastLocations = new HashMap<Integer,DriverLastLocationBean>();
         driverLastLocationBeanList = new ArrayList<DriverLastLocationBean>();
         childGroups = getGroupHierarchy().getChildren(getGroupHierarchy().getGroup(this.navigation.getGroupID()));
-        if (childGroups != null){
+   		mapIconMap = new IconMap();
+
+   		if (childGroups != null){
         	showLegend = true;
         	
           	List<MapIcon> mapIcons = mif.getMapIcons(MapIconFactory.IconType.MARKER, childGroups.size());
          	List<MapIcon> legendIcons = mif.getMapIcons(MapIconFactory.IconType.MAP_LEGEND, childGroups.size());
          	Iterator<MapIcon> mapIconIt = mapIcons.iterator();
          	Iterator<MapIcon> legendIconIt = legendIcons.iterator();
-         	          	
+         	
+         	//Sort the groups by name so the icons appear in the same order as the trend chart
+         	Collections.sort(childGroups, new GroupComparator());
+    		legendIconMap = new IconMap();
+ 
 	        for (Group group:childGroups){
 	        		         	
 	        	groupMap.put(group.getGroupID(), group);
@@ -85,10 +88,10 @@ public class DriverLocationBean extends BaseBean {
 	        List<Driver> drivers = driverDAO.getAllDrivers(this.navigation.getGroupID());
 	        
          	List<MapIcon> mapIcons = mif.getMapIcons(MapIconFactory.IconType.MARKER, 1);
-//        	List<MapIcon> legendIcons = mif.getMapIcons(MapIconFactory.IconType.MAP_LEGEND, 1);
-	        // Do something to get driverLastLocations or last trips to get location
+
+         	// Do something to get driverLastLocations or last trips to get location
         	mapIconMap.addIcon(navigation.getGroupID(), mapIcons.get(0).getUrl());
-//        	legendIconMap.addIcon(navigation.getGroupID(), legendIcons.get(0).getUrl());
+
 	        locateDrivers(drivers,navigation.getGroupID());
       	
         }
@@ -236,16 +239,33 @@ public class DriverLocationBean extends BaseBean {
     	
     	Map<String,String> requestMap = new WebUtil().getRequestParameterMap();
     	String driverID = requestMap.get("driverId");
-//    	Driver d = driverLastLocations.get(new Integer(driverID)).getDriver();
-//    	logger.debug("driverAction driver is: "+d.getDriverID()+" "+d.getPerson().getFirst());
     	navigation.setDriver(driverLastLocations.get(new Integer(driverID)).getDriver());
     	
     	return "go_driver";
     }
 
-	public void setDriverLastLocationBeanList(
-			List<DriverLastLocationBean> driverLastLocationBeanList) {
+	public void setDriverLastLocationBeanList(List<DriverLastLocationBean> driverLastLocationBeanList) {
+		
 		this.driverLastLocationBeanList = driverLastLocationBeanList;
 	}
 	
+	private class GroupComparator implements Comparator<Group>{
+		
+		public int compare(Group a, Group b){
+			
+	    	if ((a.getName()==null)&& (b.getName()==null))return 0;
+	    	if (a.getName() == null) return -1;
+	    	if (b.getName() == null) return 1;
+	    	
+	    	return a.getName().compareTo(b.getName());
+		}
+		public boolean equals(Group a, Group b){
+	    	if ((a.getName()==null)&& (b.getName()==null))return true;
+	    	if (a.getName() == null) return false;
+	    	if (b.getName() == null) return false;
+	    	
+	    	return a.getName().equals(b.getName());
+			
+		}
+	}
 }
