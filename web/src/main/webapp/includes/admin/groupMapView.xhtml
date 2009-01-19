@@ -26,16 +26,16 @@
 			<ui:fragment rendered="#{not readOnly}">
 				<table width="100%" border="0" cellpadding="4" cellspacing="0">
 					<tr>
-						<td width="90">#{messages.group_find_address}</td>
-						<td width="301"><input type="text" size="40"
+						<td width="100">#{messages.group_find_address}</td>
+						<td width="200"><input type="text" size="42"
 							id="addressTextBox"
 							value="" /></td>
-						<td width="165">
-						<a4j:commandButton immediate="true" onclick="showAddress(document.getElementById('addressTextBox').value);" styleClass="left">
-							<span class="search">
-								#{messages.group_locate}
-							</span>
-						</a4j:commandButton>
+						<td width="50" align="left">
+							<a4j:commandButton immediate="true" onclick="showAddress(document.getElementById('addressTextBox').value);" styleClass="left">
+								<span class="search">
+									#{messages.group_locate}
+								</span>
+							</a4j:commandButton>
 						</td>
 					</tr>
 				</table>
