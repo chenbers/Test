@@ -49,9 +49,9 @@ public class EventHessianMapper extends AbstractMapper
                 }
                 catch (NoSuchMethodException e)
                 {
-                    if (logger.isDebugEnabled())
+                    if (logger.isTraceEnabled())
                     {
-                        logger.debug("The property \"" + propertyName + "\" could not be set to the value \"" + propertyData + "\"", e);
+                        logger.trace("The property \"" + propertyName + "\" could not be set to the value \"" + propertyData + "\"", e);
                     }
                 }
 
