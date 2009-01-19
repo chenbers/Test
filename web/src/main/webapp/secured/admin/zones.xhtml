@@ -75,6 +75,7 @@
                         <li class="r">
                           <a4j:commandButton action="#{zonesBean.add}" onclick="map.clearOverlays()" reRender="displayZone,editZone" styleClass="left"><span class="add"><h:outputText value="#{messages.zones_addZone}" /></span></a4j:commandButton>
                           <ui:fragment rendered="#{zonesBean.zonesCount gt 0}">
+                            <h:outputText value=" " />
                             <h:commandButton action="#{zoneAlertsBean.add}" styleClass="left">
                               <f:param name="zoneID" value="#{zonesBean.item.zoneID}" />
                               <span class="addZoneAlert"><h:outputText value="#{messages.zones_addZoneAlert}" /></span>
@@ -111,7 +112,7 @@
                         </li>
                         <li class="r">
                           <a4j:commandButton action="#{zonesBean.save}" onclick="stopDrawing()" reRender="displayZone,editZone" oncomplete="disableEditing()" styleClass="left"><span class="save"><h:outputText value="#{messages.zones_save}" /></span></a4j:commandButton>
-                          <a4j:commandButton action="#{zonesBean.cancelEdit}" onclick="cancelEdit()" reRender="points,displayZone,editZone" oncomplete="showZone(false)" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></a4j:commandButton>
+                          <h:outputText value="&#160;" /><a4j:commandButton action="#{zonesBean.cancelEdit}" onclick="cancelEdit()" reRender="points,displayZone,editZone" oncomplete="showZone(false)" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></a4j:commandButton>
                         </li>
                       </ul>
 
