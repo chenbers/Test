@@ -19,13 +19,13 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.dao.annotations.ConvertFieldToColumn;
-import com.inthinc.pro.dao.hessian.debug.DebugUtil;
 import com.inthinc.pro.dao.hessian.exceptions.MappingException;
 import com.inthinc.pro.model.BaseEnum;
 import com.inthinc.pro.model.ReferenceEntity;
 
 public abstract class AbstractMapper implements Mapper
 {
+    private static final long serialVersionUID = 4820133473373187598L;
     private static final Logger logger = Logger.getLogger(AbstractMapper.class);
     // private Class<T> modelClass;
     private transient Map<String, Method> convertToFieldMap = new HashMap<String, Method>();
@@ -95,7 +95,6 @@ public abstract class AbstractMapper implements Mapper
     private <E> E convertToModelObject(Map<String, Object> map, E modelObject)
     {
         List<Field> fieldList = getAllFields(modelObject.getClass());
-//      DebugUtil.dumpMap(map);
         for (Map.Entry<String, Object> entry : map.entrySet())
         {
             String columnName = entry.getKey();
@@ -206,23 +205,23 @@ public abstract class AbstractMapper implements Mapper
         }
         catch (InvocationTargetException e)
         {
-            if (logger.isDebugEnabled())
+            if (logger.isTraceEnabled())
             {
-                logger.debug("The property \"" + name + "\" could not be set to the value \"" + value + "\"", e);
+                logger.trace("The property \"" + name + "\" could not be set to the value \"" + value + "\"", e);
             }
         }
         catch (NoSuchMethodException e)
         {
-            if (logger.isDebugEnabled())
+            if (logger.isTraceEnabled())
             {
-                logger.debug("The property \"" + name + "\" could not be set to the value \"" + value + "\"", e);
+                logger.trace("The property \"" + name + "\" could not be set to the value \"" + value + "\"", e);
             }
         }
         catch (NoSuchFieldException e)
         {
-            if (logger.isDebugEnabled())
+            if (logger.isTraceEnabled())
             {
-                logger.debug("The property \"" + name + "\" could not be set to the value \"" + value + "\"", e);
+                logger.trace("The property \"" + name + "\" could not be set to the value \"" + value + "\"", e);
             }
         }
         catch (IllegalAccessException e)
@@ -358,9 +357,9 @@ public abstract class AbstractMapper implements Mapper
                 }
                 catch (IllegalAccessException e)
                 {
-                    if (logger.isDebugEnabled())
+                    if (logger.isTraceEnabled())
                     {
-                        logger.debug("Attempt to access the property \"" + field.getName() + "\" on object of type \"" + modelObject.getClass().getName()
+                        logger.trace("Attempt to access the property \"" + field.getName() + "\" on object of type \"" + modelObject.getClass().getName()
                                 + "\" caused an exception", e);
                     }
                 }
@@ -392,7 +391,6 @@ public abstract class AbstractMapper implements Mapper
             }
             clazz = clazz.getSuperclass();
         }
-// DebugUtil.dumpMap(map);        
         return map;
     }
 
