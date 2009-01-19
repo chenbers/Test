@@ -167,4 +167,11 @@ public class DateUtil
         + ":" + (minutes < 10 ? "0" : "") + minutes
         + ":" + (seconds< 10 ? "0" : "") + seconds );
     }
+    
+    public static String getDurationFromMilliseconds(Long mSecsIn)
+    {
+        Long seconds = mSecsIn / 1000;
+        return getDurationFromSeconds(seconds.intValue());
+    }
+
 }

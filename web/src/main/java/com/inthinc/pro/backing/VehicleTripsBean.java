@@ -69,10 +69,10 @@ public class VehicleTripsBean extends BaseBean
         logger.debug("InitTrips");
         
         //Get Time Zone from driver
-        if(navigation.getVehicle().getDriverID() != null)
+        Driver driver = driverDAO.findByID(navigation.getVehicle().getDriverID());
+        if(driver != null)
         {
-            Driver d = driverDAO.findByID(navigation.getVehicle().getDriverID());
-            timeZone = d.getPerson().getTimeZone();
+            timeZone = driver.getPerson().getTimeZone();
         }
         else
         {
@@ -92,17 +92,14 @@ public class VehicleTripsBean extends BaseBean
 
         numTrips = trips.size();
 
+        //Set selected trip as most recent trip.
+        //Get violations for selected trip.
         selectedTrips = new ArrayList<TripDisplay>();
         if (numTrips > 0)
         {
             logger.debug(numTrips.toString() + "Trips Found.");
             
             setSelectedTrip(trips.get(0));
-            
-            Date vStart = selectedTrips.get(0).getTrip().getStartTime();
-            Date vEnd = selectedTrips.get(0).getTrip().getEndTime();
-
-            initViolations(vStart, vEnd);
 
             generateStats();
         }
@@ -397,8 +394,6 @@ public class VehicleTripsBean extends BaseBean
 
     public TimeZone getTimeZone()
     {
-
-
         return timeZone;
     }
 
@@ -416,6 +411,4 @@ public class VehicleTripsBean extends BaseBean
     {
         this.driverDAO = driverDAO;
     }
-    
-    
 }

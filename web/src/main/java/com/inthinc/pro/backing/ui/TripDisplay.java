@@ -6,16 +6,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
-import com.inthinc.pro.dao.util.DateUtil;
 
 public class TripDisplay
 {
     String dateShort;       // Jul 01
-    String timeShort;       // 1:32 pm
+    String timeStartShort;  // 1:32 PM
+    String timeEndShort;    // 1:55 PM
     String distance;        // 3.2mi
     String startAddress;    // 123 Street
     String endAddress;      // 188 S 11th St
@@ -41,13 +42,14 @@ public class TripDisplay
         
         dateFormatter = new SimpleDateFormat("h:mm a");
         dateFormatter.setTimeZone(timeZone);
-        setTimeShort(dateFormatter.format(trip.getEndTime() ));
+        setTimeStartShort(dateFormatter.format(trip.getStartTime() ));
+        setTimeEndShort(dateFormatter.format(trip.getEndTime() ));
         
         durationMiliSeconds = trip.getEndTime().getTime() - trip.getStartTime().getTime();
-        setDuration(getDurationFromSeconds(durationMiliSeconds / 1000));
+        setDuration(DateUtil.getDurationFromMilliseconds(durationMiliSeconds));
         
         Double mileageDouble = (double)trip.getMileage() / 100;
-        setDistance(mileageDouble.toString() + "mi");
+        setDistance(mileageDouble.toString());
         
         AddressLookup lookup = new AddressLookup();
 
@@ -70,14 +72,24 @@ public class TripDisplay
         this.dateShort = dateShort;
     }
 
-    public String getTimeShort()
+    public String getTimeStartShort()
     {
-        return timeShort;
+        return timeStartShort;
     }
 
-    public void setTimeShort(String timeShort)
+    public void setTimeStartShort(String timeStartShort)
     {
-        this.timeShort = timeShort;
+        this.timeStartShort = timeStartShort;
+    }
+
+    public String getTimeEndShort()
+    {
+        return timeEndShort;
+    }
+
+    public void setTimeEndShort(String timeEndShort)
+    {
+        this.timeEndShort = timeEndShort;
     }
 
     public String getDistance()
@@ -159,17 +171,4 @@ public class TripDisplay
     {
         this.durationMiliSeconds = durationMiliSeconds;
     }
-    
-    public static String getDurationFromSeconds(Long secsIn)
-    {
-        Long hours = secsIn / 3600,
-        remainder = secsIn % 3600,
-        minutes = remainder / 60,
-        seconds = remainder % 60;
-
-        return ( (hours < 10 ? "0" : "") + hours
-        + ":" + (minutes < 10 ? "0" : "") + minutes
-        + ":" + (seconds< 10 ? "0" : "") + seconds );
-    }
-    
 }

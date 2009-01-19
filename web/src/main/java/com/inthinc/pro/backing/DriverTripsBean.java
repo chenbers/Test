@@ -78,13 +78,8 @@ public class DriverTripsBean extends BaseBean
         {
             logger.debug(numTrips.toString() + "Trips Found.");
             
-            selectedTrips.add(trips.get(0));
-
-            Date vStart = selectedTrips.get(0).getTrip().getStartTime();
-            Date vEnd = selectedTrips.get(0).getTrip().getEndTime();
-
-            initViolations(vStart, vEnd);
-
+            setSelectedTrip(trips.get(0));
+   
             generateStats();
         }
     }

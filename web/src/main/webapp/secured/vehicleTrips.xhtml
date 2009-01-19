@@ -11,53 +11,100 @@
 	<ui:define name="scripts">
 		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>	
 		<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{gmBean.key}" type="text/javascript"></script>
-	<rich:panel id="script">
 		<script type="text/javascript">
-					var map;
-					
-					var showWarnings = new Boolean(true);
-					var showIdleMarkers = new Boolean(true);
-					
-					var baseIcon = new GIcon();
-						baseIcon.iconSize = new GSize(21, 20);
-						baseIcon.iconAnchor = new GPoint(6, 20);
-						baseIcon.infoWindowAnchor = new GPoint(5, 1);
+		var map;
+		
+		var showWarnings = new Boolean(true);
+		var showIdleMarkers = new Boolean(true);
+		
+		var baseIcon = new GIcon();
+			baseIcon.iconSize = new GSize(21, 20);
+			baseIcon.iconAnchor = new GPoint(6, 20);
+			baseIcon.infoWindowAnchor = new GPoint(5, 1);
 
-					var bounds = new GLatLngBounds();
-					
-					function initMap(lat,lng,zoom){
-					
-			   			if (GBrowserIsCompatible()) 
-        				{
+		var bounds = new GLatLngBounds();
+		
+		function initMap(lat,lng,zoom)
+		{
+   			if (GBrowserIsCompatible()) 
+			{
 
-					 	  	map = new GMap2(document.getElementById("map-canvas"));
-	  						map.addControl(new GLargeMapControl());
-	  						map.addControl(new GMapTypeControl());
-	  						map.addControl(new GOverviewMapControl()); 
-	  						map.setCenter(new GLatLng(lat, lng), 14);
-	  						map.setMapType(G_NORMAL_MAP);
-  						}
-					}	
-				    function createMarker(point, message, iconImage)
-				    {
-				          var markerIcon = new GIcon(baseIcon);
-				          markerIcon.image = iconImage;
-	
-				          // Set up our GMarkerOptions object
-				          markerOptions = { icon:markerIcon };
-				          var marker = new GMarker(point, markerOptions);
-	
-				          GEvent.addListener(marker, "click", function() {
-				            marker.openInfoWindowHtml("<b>" + message + "</b>");
-				          });
-				          return marker;
-				    }
+		 	  	map = new GMap2(document.getElementById("map-canvas"));
+					map.addControl(new GLargeMapControl());
+					map.addControl(new GMapTypeControl());
+					map.addControl(new GOverviewMapControl()); 
+					map.setCenter(new GLatLng(lat, lng), 14);
+					map.setMapType(G_NORMAL_MAP);
+				}
+		}	
+		
+	    function createMarker(point, message, iconImage)
+	    {
+	          var markerIcon = new GIcon(baseIcon);
+	          markerIcon.image = iconImage;
 
-					function bodyUnload()
-					{
-						GUnload();
-					}
+	          // Set up our GMarkerOptions object
+	          markerOptions = { icon:markerIcon };
+	          var marker = new GMarker(point, markerOptions);
 
+	          GEvent.addListener(marker, "click", function() {
+	            marker.openInfoWindowHtml("<b>" + message + "</b>");
+	          });
+	          return marker;
+	    }
+
+	    //Unload Google Map Objects
+		function bodyUnload()
+		{
+			GUnload();
+		}
+		
+		//Update Map.
+	    function updateMap()
+	    {
+	    	drawSelectedTrips();
+		}
+
+	    // Show Warnings Checkbox changed   //TODO: CLEANER WAY TO DO THIS??
+	    function showWarningsChanged()
+	    {
+	    	if(document.getElementById('showWarningsCheckBox').checked == true)
+	    	{
+				showWarnings = true;
+				updateMap();
+	    	}
+	    	else
+	    	{
+				showWarnings = false;
+	    		updateMap();
+	    	}
+		}
+
+		// Show Idle Markers Checkbox changed
+	    function showIdleChanged()
+	    {
+	      	if(document.getElementById('showIdleCheckBox').checked == true)
+	    	{
+	      		showIdleMarkers = true;
+				updateMap();
+	    	}
+	    	else
+	    	{
+	    		showIdleMarkers = false;
+	    		updateMap();
+	    	}
+		}
+
+		//On page load and A4J Re-render
+		function showTrips(){
+		    updateMap();
+		    map.setZoom(map.getBoundsZoomLevel(bounds));
+		    map.setCenter(bounds.getCenter());
+	    }
+		</script>
+		
+		<rich:panel id="script">
+			<script type="text/javascript">
 			   		function drawSelectedTrips()
 			   		{
 			   				map.clearOverlays(); 
@@ -112,59 +159,18 @@
 								</ui:repeat>
 							}	
  					}
-
-						//Update Map.
-				    function updateMap()
-				    {
-				    	drawSelectedTrips();
-					}
-
-				    // Show Warnings Checkbox changed   //TODO: CLEANER WAY TO DO THIS??
-				    function showWarningsChanged()
-				    {
-				    	if(document.getElementById('showWarningsCheckBox').checked == true)
-				    	{
-							showWarnings = true;
-							updateMap();
-				    	}
-				    	else
-				    	{
-							showWarnings = false;
-				    		updateMap();
-				    	}
-					}
-
-					// Show Idle Markers Checkbox changed
-				    function showIdleChanged()
-				    {
-				      	if(document.getElementById('showIdleCheckBox').checked == true)
-				    	{
-				      		showIdleMarkers = true;
-							updateMap();
-				    	}
-				    	else
-				    	{
-				    		showIdleMarkers = false;
-				    		updateMap();
-				    	}
-					}
-
-					//On page load and A4J Re-render
-					function showTrips(){
-					    updateMap();
-					    map.setZoom(map.getBoundsZoomLevel(bounds));
-					    map.setCenter(bounds.getCenter());
-				    }
-    	</script>			
-</rich:panel>			
+    		</script>			
+		</rich:panel>			
 	</ui:define>
 
 	<ui:param name="homeSelected" value="current" />
 	
 	<ui:define name="content">
 	<t:saveState value="#{vehicleTripsBean.selectedDriver}" />
-<div id="wrapper">
+	<t:saveState value="#{vehicleTripsBean.selectedTrips}" />
+	<t:saveState value="#{vehicleTripsBean.violationEvents}" />
 
+<div id="wrapper">
 <h:form>
 	<ul id="grid_nav">
 		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
@@ -492,7 +498,8 @@
 								<f:facet name="header">
 									<h:outputText value="Time" />
 								</f:facet>
-									<h:outputText value="#{item.timeShort}" />
+									<h:outputText value="#{item.timeStartShort}" /><br />
+									<h:outputText value="#{item.timeEndShort}" />
 							</rich:column>
 							
 							<rich:column sortBy="#{item.distance}">
