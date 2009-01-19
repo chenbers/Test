@@ -137,6 +137,7 @@ public class DeviceReportBean extends BaseReportBean implements TablePrefOptions
                 
                 int index1;
                 int index2;
+                int index3;
                 
                 // imei                
                 String dev = d.getDevice().getImei().toLowerCase();
@@ -152,6 +153,15 @@ public class DeviceReportBean extends BaseReportBean implements TablePrefOptions
                      (index2 != -1) ) {                        
                     matchedDevices.add(d);
                 }
+                
+                // vehicle name
+                String vehicleName = d.getVehicle().getName().toLowerCase();
+                index3 = vehicleName.indexOf(trimmedSearch);                    
+                if ( (index1 == -1) &&
+                     (index2 == -1) &&
+                     (index3 != -1) ) {                        
+                    matchedDevices.add(d);
+                }                
             }
             
             loadResults(matchedDevices);             
