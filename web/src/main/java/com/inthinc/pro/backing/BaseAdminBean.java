@@ -336,6 +336,10 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         item = createAddItem();
         item.setSelected(false);
 
+        // deselect all previous items
+        for (final T item : getSelectedItems())
+            item.setSelected(false);
+
         return getEditRedirect();
     }
 

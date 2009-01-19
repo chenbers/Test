@@ -349,6 +349,13 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     @Override
     public String save()
     {
+        if (isBatchEdit())
+        {
+            final boolean role = Boolean.TRUE.equals(getUpdateField().get("user.role"));
+            getUpdateField().put("user.role.roleID", role);
+            getUpdateField().put("user.role.name", role);
+        }
+
         final String result = super.save();
         notifyChangeListeners();
         return result;
