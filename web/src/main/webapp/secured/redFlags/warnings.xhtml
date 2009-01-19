@@ -30,6 +30,7 @@
         <h:panelGroup layout="block" styleClass="panel_w">
           <h:panelGroup layout="block" styleClass="panel_content">
 
+			<a4j:region id="warningsearchRegion">							
 			<a4j:form id="warningsearch">							
             <ul id="grid_nav" style="margin: 0;">
               <li class="l">
@@ -56,6 +57,22 @@
 					#{messages.button_editColumns}
 				</a4j:commandLink>
 			  </li>  
+			  <li class="l">
+				<a4j:commandButton styleClass="left"
+           					reRender="header,warningsTableForm:items,warningsTableForm:bottomScroller,warningsTableForm:topScroller"
+							action="#{warningsBean.refreshAction}">
+            				<span class="refresh">
+            					<h:outputText value="#{messages.refresh}" />
+            				</span>
+				</a4j:commandButton>
+			  </li>  
+			  <li class="l text">
+				<a4j:status id="warningsStatus" for="warningsearchRegion">
+					<f:facet name="start">
+						<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
+					</f:facet>
+				</a4j:status>
+			  </li>
 			  <li class="r text">
 			  	<h:outputFormat id="header" value="#{messages.warnings_recordCountHeader}">
 					<a4j:actionparam value="#{warningsBean.start}"/>
@@ -65,7 +82,7 @@
                </li>          							
             </ul>
     		</a4j:form>
-    		        
+    		</a4j:region>        
 			<div class="spacer"></div>
 			
             <h:panelGroup id="warningsTable" layout="block" styleClass="datagrid">

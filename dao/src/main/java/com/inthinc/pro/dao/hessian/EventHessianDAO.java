@@ -165,10 +165,28 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
         return getEventsForGroup(groupID, daysBack, EventMapper.getEventTypesInCategory(EventCategory.WARNING));
     }
 
+    @Override
+    public List<Event> getViolationEventsForGroup(Integer groupID, Date startDate, Date endDate)
+    {
+        return getEventsForGroup(groupID, startDate, endDate, EventMapper.getEventTypesInCategory(EventCategory.VIOLATION));
+    }
+
+    @Override
+    public List<Event> getWarningEventsForGroup(Integer groupID, Date startDate, Date endDate)
+    {
+        return getEventsForGroup(groupID, startDate, endDate, EventMapper.getEventTypesInCategory(EventCategory.WARNING));
+    }
+
+
     public List<Event> getEventsForGroup(Integer groupID, Integer daysBack, List<Integer>eventTypes)
     {
         Date endDate = new Date();
         Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
+        return getEventsForGroup(groupID, startDate, endDate, eventTypes);
+    }
+    
+    public List<Event> getEventsForGroup(Integer groupID, Date startDate, Date endDate, List<Integer>eventTypes)
+    {
         List<Driver> driverList = getMapper().convertToModelObject(this.getSiloService().getDriversByGroupIDDeep(groupID), Driver.class);
         List<Event> eventList = new ArrayList<Event>();
         for (Driver driver : driverList)

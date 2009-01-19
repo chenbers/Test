@@ -30,6 +30,7 @@ public class EventAttr
         mapping.put(19, "DMMMonitorY50");
         mapping.put(20, "DMMMonitorY67");
         mapping.put(24, "severity");
+        mapping.put(25, "DMMVersion");
         
         // Attribute Id (128->191 have two byte values)
         mapping.put(129, "distance");

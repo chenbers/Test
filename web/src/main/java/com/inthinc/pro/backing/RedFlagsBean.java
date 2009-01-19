@@ -108,6 +108,11 @@ public class RedFlagsBean extends BaseBean implements TablePrefOptions
         }
 
     }
+    public void refreshAction()
+    {
+        setTableData(null);
+        init();
+    }
     private void filterTableData()
     {
         setFilteredTableData(tableData); 

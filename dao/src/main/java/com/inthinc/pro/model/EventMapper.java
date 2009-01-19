@@ -45,12 +45,18 @@ public class EventMapper
     public static final int TIWIPRO_EVENT_DIAGNOSTICS_REPORT = 200;
     public static final int TIWIPRO_EVENT_START_SPEEDING = 201;
     public static final int TIWIPRO_EVENT_UNPLUGGED = 202;
+    public static final int TIWIPRO_EVENT_START_SEATBELT = 203;
+    public static final int TIWIPRO_EVENT_DMM_MONITOR = 204;
+    public static final int TIWIPRO_EVENT_INCOMING_CALL = 205;
+    public static final int TIWIPRO_EVENT_OUTGOING_CALL = 206;
     public static final int TIWIPRO_EVENT_LOW_TIWI_BATTERY = 207;
     public static final int TIWIPRO_EVENT_IDLE = 208;
+    public static final int TIWIPRO_EVENT_ROLLOVER = 209;
     public static final int TIWIPRO_EVENT_STRIPPED_ACKNOWLEDGE_ID_WITH_DATA    = 246;
     public static final int TIWIPRO_EVENT_ZONE_ENTER_ALERTED = 247;
     public static final int TIWIPRO_EVENT_ZONE_EXIT_ALERTED = 248;
     public static final int TIWIPRO_EVENT_STRIPPED_ACKNOWLEDGE = 254;
+    
     
     @SuppressWarnings("unchecked")
     private static final Map<Integer, Class> typeMap = new HashMap<Integer, Class> (); 

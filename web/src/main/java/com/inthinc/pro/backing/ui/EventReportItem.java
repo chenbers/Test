@@ -44,8 +44,7 @@ public class EventReportItem
         }
         else level = RedFlagLevel.INFO;
         
-        // TODO: do we need driver timezone?
-        TimeZone tz = TimeZone.getDefault(); //event.getDriver().getPerson().getTimeZone();
+        TimeZone tz = (event.getDriver() == null || event.getDriver().getPerson() == null) ? TimeZone.getDefault() : event.getDriver().getPerson().getTimeZone();
         dateFormatter.setTimeZone((tz==null) ? TimeZone.getDefault() : tz);
         setDate(dateFormatter.format(event.getTime()));
         

@@ -681,6 +681,9 @@ span.search {
 	background: url(../images/btn_search.png) left no-repeat;
 	}
 	
+span.refresh {
+	background: url(../images/btn_refresh.png) left no-repeat;
+	}
 span.back {
 	background: url(../images/btn_back.png) left no-repeat;
 	}
@@ -1347,6 +1350,7 @@ a.ls_tab_search {
 	color: #000;
 	margin: 0 0 0 8px;
 	}
+	
 	
 a.ls_tab_driver {
 	padding: 6px 10px 7px 20px;

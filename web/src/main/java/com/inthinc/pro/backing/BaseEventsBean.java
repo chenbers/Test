@@ -9,8 +9,6 @@ import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
 import com.inthinc.pro.backing.ui.EventReportItem;
-import com.inthinc.pro.backing.ui.RedFlagReportItem;
-import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.model.Event;
@@ -89,6 +87,11 @@ public class BaseEventsBean extends BaseBean implements TablePrefOptions
         return getFilteredTableData();
     }
 
+    public void refreshAction()
+    {
+        setTableData(null);
+        init();
+    }
     private void init()
     {
         if (tableData == null)

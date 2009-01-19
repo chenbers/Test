@@ -30,6 +30,8 @@
         <h:panelGroup layout="block" styleClass="panel_w">
           <h:panelGroup layout="block" styleClass="panel_content">
 
+			<a4j:region id="redFlagSearch_region">
+
 			<a4j:form id="redFlagSearch">							
             <ul id="grid_nav" style="margin: 0;">
               <li class="l">
@@ -56,6 +58,23 @@
 					#{messages.button_editColumns}
 				</a4j:commandLink>
 			  </li>  
+			  <li class="l">
+				<a4j:commandButton styleClass="left"
+							reRender="header,redFlagsTableForm:items,redFlagsTableForm:bottomScroller,redFlagsTableForm:topScroller" 
+							action="#{redFlagsBean.refreshAction}">
+            				<span class="refresh">
+            					<h:outputText value="#{messages.refresh}" />
+            				</span>
+				</a4j:commandButton>
+			  </li>  
+			  <li class="l text">
+				<a4j:status id="redFlagsStatus" for="redFlagSearch_region">
+					<f:facet name="start">
+						<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
+					</f:facet>
+				</a4j:status>
+			  </li>
+			  
 			  <li class="r text">
 			  	<h:outputFormat id="header" value="#{messages.redflags_recordCountHeader}">
 					<a4j:actionparam value="#{redFlagsBean.start}"/>
@@ -65,6 +84,7 @@
                </li>          							
             </ul>
     		</a4j:form>
+    		</a4j:region>
     		        
 			<div class="spacer"></div>
 			

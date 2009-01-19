@@ -49,4 +49,7 @@ public interface EventDAO  extends GenericDAO<Event, Integer>
     
     List<Event> getWarningEventsForGroup(Integer groupID, Integer daysBack);
 
+    List<Event> getViolationEventsForGroup(Integer groupID, Date startDate, Date endDate);
+    
+    List<Event> getWarningEventsForGroup(Integer groupID, Date startDate, Date endDate);
 }
