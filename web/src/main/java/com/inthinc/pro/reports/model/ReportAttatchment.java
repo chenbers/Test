@@ -13,8 +13,8 @@ public class ReportAttatchment
    
     
     public ReportAttatchment(String name,byte[] attatchmentData){
-        setFileName(name);
-        setAttatchmentData(attatchmentData);
+        this.fileName = name;
+        this.attatchmentData = attatchmentData;
     }
 
     public String getFileName()

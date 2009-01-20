@@ -31,13 +31,6 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.MessageUtil;
 
-/*
- * Notes TODO
- * 
- * Need to update the GroupHierarchy tied to the user when a group has been updated or added.
- * 
- */
-
 public class OrganizationBean extends BaseBean
 {
 
@@ -83,6 +76,7 @@ public class OrganizationBean extends BaseBean
 
     public OrganizationBean()
     {
+        super();
         groupState = State.VIEW;
     }
 
@@ -96,7 +90,7 @@ public class OrganizationBean extends BaseBean
         {
 
             organizationHierarchy = new GroupHierarchy(groupDAO.getGroupHierarchy(getAccountID(), getGroupHierarchy().getTopGroup().getGroupID()));
-            Group topLevelGroup = organizationHierarchy.getTopGroup();
+            final Group topLevelGroup = organizationHierarchy.getTopGroup();
             topLevelNode = new TreeNodeImpl(topLevelGroup, organizationHierarchy);
             topLevelNode.setDriverDAO(driverDAO);
             topLevelNode.setVehicleDAO(vehicleDAO);
@@ -157,8 +151,8 @@ public class OrganizationBean extends BaseBean
      */
     public void selectNode(NodeSelectedEvent event)
     {
-        UITree tree = (UITree) event.getComponent();
-        TreeNodeImpl treeNode = (TreeNodeImpl) tree.getRowData();
+        final UITree tree = (UITree) event.getComponent();
+        final TreeNodeImpl treeNode = (TreeNodeImpl) tree.getRowData();
         logger.debug(treeNode.getLabel() + " was selected.");
         setSelectedGroupNode(treeNode);
     }
@@ -193,11 +187,6 @@ public class OrganizationBean extends BaseBean
         TreeNodeImpl dragTreeNode = (TreeNodeImpl) event.getDragValue();
         TreeNodeImpl dropTreeNode = (TreeNodeImpl) event.getDropValue();
 
-        // groupState = State.EDIT;
-        // selectedGroupNode = dragTreeNode;
-        // selectedParentGroup = dropTreeNode.getGroup();
-        // inProgressGroupNode = new TreeNodeImpl(new Group(), organizationHierarchy);
-        // copyGroupTreeNode(selectedGroupNode, inProgressGroupNode);
         logger.debug(dragTreeNode.getLabel() + " was dropped onto " + dropTreeNode.getLabel());
         if (dragTreeNode.getId().equals(dropTreeNode.getId()) || dragTreeNode.getParent().getId().equals(dropTreeNode.getId()))
         {
@@ -326,10 +315,9 @@ public class OrganizationBean extends BaseBean
         {
             //Validation
             if(selectedGroupNode.equals(topLevelNode)){
-                
-                addErrorMessage("Cannot delete the top level group.");
+                addErrorMessage(MessageUtil.getMessageString("group_delete_error_top"));
             }else if(selectedGroupNode.getChildCount() > 0){
-                addErrorMessage("Cannot delete a group that contains groups,drivers, or vehicles");
+                addErrorMessage(MessageUtil.getMessageString("group_delete_error_subordinate"));
             }else
             {
                 groupDAO.deleteByID(selectedGroupNode.getGroup().getGroupID());
@@ -364,7 +352,7 @@ public class OrganizationBean extends BaseBean
         {
             List<Driver> driverList = driverDAO.getDrivers(treeNode.getGroup().getGroupID());
             List<Vehicle> vehicleList = vehicleDAO.getVehiclesInGroup(treeNode.getGroup().getGroupID());
-            if (vehicleList.size() > 0 || driverList.size() > 0)
+            if (!vehicleList.isEmpty() || !driverList.isEmpty())
             {
                 addErrorMessage("Group Cannot be changed from Team if there are Drivers, Vehicles attatched to the group");
                 valid = false;
@@ -490,8 +478,7 @@ public class OrganizationBean extends BaseBean
     public String getAccountName()
     {
         Account account = getAccountDAO().findByID(getAccountID());
-        String name = account.getAcctName();
-        return name;
+        return account.getAcctName();
 
     }
 

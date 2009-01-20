@@ -12,7 +12,7 @@ import net.sf.jasperreports.engine.JasperReport;
 
 public class ReportUtils
 {
-    private static Logger logger = Logger.getLogger(ReportUtils.class);
+    private static final Logger logger = Logger.getLogger(ReportUtils.class);
 
     public static JasperReport loadReport(Report reportSection)
     {
