@@ -1,6 +1,5 @@
 package com.inthinc.pro.backing;
 
-import java.util.Date;
 import java.util.TimeZone;
 
 import com.inthinc.pro.backing.PersonBean.PersonView;
