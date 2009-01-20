@@ -55,7 +55,7 @@ public class DriverSpeedBean extends BaseDurationBean
     private String          speedScoreHistoryFourtyOne;
     private String          speedScoreHistoryFiftyFive;
     private String          speedScoreHistorySixtyFive;
-    
+    private static final Integer NO_SCORE = -1;
     
     private List<SpeedingEvent> speedingEvents = new ArrayList<SpeedingEvent>();
     private SpeedingEvent   clearItem;
@@ -71,22 +71,22 @@ public class DriverSpeedBean extends BaseDurationBean
         Map<ScoreType, ScoreableEntity> scoreMap = scoreDAO.getDriverScoreBreakdownByType(driverID, getDuration(), ScoreType.SCORE_SPEEDING);
         
         ScoreableEntity se = scoreMap.get(ScoreType.SCORE_SPEEDING);
-        setSpeedScoreOverall(se == null ? 0 : se.getScore());
+        setSpeedScoreOverall(se == null ? NO_SCORE : se.getScore());
         
         se = scoreMap.get(ScoreType.SCORE_SPEEDING_21_30);
-        setSpeedScoreTwentyOne(se == null ? 0 : se.getScore());
+        setSpeedScoreTwentyOne(se == null ? NO_SCORE : se.getScore());
         
         se = scoreMap.get(ScoreType.SCORE_SPEEDING_31_40);
-        setSpeedScoreThirtyOne(se == null ? 0 : se.getScore());
+        setSpeedScoreThirtyOne(se == null ? NO_SCORE : se.getScore());
         
         se = scoreMap.get(ScoreType.SCORE_SPEEDING_55_64);
-        setSpeedScoreFourtyOne(se == null ? 0 : se.getScore());
+        setSpeedScoreFourtyOne(se == null ? NO_SCORE : se.getScore());
         
         se = scoreMap.get(ScoreType.SCORE_SPEEDING_55_64);
-        setSpeedScoreFiftyFive(se == null ? 0 : se.getScore());
+        setSpeedScoreFiftyFive(se == null ? NO_SCORE : se.getScore());
         
         se = scoreMap.get(ScoreType.SCORE_SPEEDING_65_80);
-        setSpeedScoreSixtyFive(se == null ? 0 : se.getScore());
+        setSpeedScoreSixtyFive(se == null ? NO_SCORE : se.getScore());
     }
     
     public String createLineDef(ScoreType scoreType)

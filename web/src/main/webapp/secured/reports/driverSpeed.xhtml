@@ -359,8 +359,8 @@ var selected = 'OVERALL';
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverSpeedBean.speedScoreTwentyOne}" />
-								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreTwentyOneStyle}" /> 
+								            <ui:param name="score" value="#{driverSpeedBean.speedScoreSixtyFive}" />
+								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreSixtyFiveStyle}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -484,6 +484,11 @@ var selected = 'OVERALL';
     </tr>
 </table>
  </div>
+ 
+<div class="panel_sw">
+	<div class="panel_statusbar"></div>
+</div>
+	
  <!-- START FORGIVE MODAL -->
 <rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="350">
 <t:saveState value="#{driverBean.clearItem}" />
@@ -522,12 +527,8 @@ var selected = 'OVERALL';
       </a4j:form>
 
 </rich:modalPanel>
- <!-- START FORGIVE MODAL -->
- 				
-	<div class="panel_sw">
-		<div class="panel_statusbar"></div>
-	</div>
-			
+<!-- END FORGIVE MODAL -->
+
 <!-- START SBS MODAL -->
 	<rich:modalPanel id="SLChangeRequestPanel" headerClass="popupHeader" controlsClass="popupControls" autosized="true" onshow="reverseGeocode(event.parameters.lat,event.parameters.lon, null);"
 					onhide="clearSegments()">

@@ -52,6 +52,7 @@ public class VehicleStyleBean extends BaseDurationBean
     private String          styleScoreHistoryBrake;
     private String          styleScoreHistoryBump;
     private String          styleScoreHistoryTurn;
+    private static final Integer NO_SCORE = -1;
     
     private List<AggressiveDrivingEvent> styleEvents = new ArrayList<AggressiveDrivingEvent>();
     
@@ -62,19 +63,19 @@ public class VehicleStyleBean extends BaseDurationBean
         Map<ScoreType, ScoreableEntity> scoreMap = scoreDAO.getVehicleScoreBreakdownByType(vehicleID, getDuration(), ScoreType.SCORE_DRIVING_STYLE);
 
         ScoreableEntity se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE);
-        setStyleScoreOverall(se == null ? 0 : se.getScore());
+        setStyleScoreOverall(se == null ? NO_SCORE : se.getScore());
         
         se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL);
-        setStyleScoreAccel(se == null ? 0 : se.getScore());
+        setStyleScoreAccel(se == null ? NO_SCORE : se.getScore());
         
         se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE);
-        setStyleScoreBrake(se == null ? 0 : se.getScore());
+        setStyleScoreBrake(se == null ? NO_SCORE : se.getScore());
         
         se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP);
-        setStyleScoreBump(se == null ? 0 : se.getScore());
+        setStyleScoreBump(se == null ? NO_SCORE : se.getScore());
         
         se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
-        setStyleScoreTurn(se == null ? 0 : se.getScore());
+        setStyleScoreTurn(se == null ? NO_SCORE : se.getScore());
         
     }
     

@@ -47,7 +47,7 @@ public class DriverSeatBeltBean extends BaseDurationBean
     {
         ScoreableEntity seatBeltSe = scoreDAO.getDriverAverageScoreByType(navigation.getDriver().getDriverID(), getDuration(), ScoreType.SCORE_SEATBELT);
         if (seatBeltSe == null)
-            setSeatBeltScore(0);
+            setSeatBeltScore(-1);
         else setSeatBeltScore(seatBeltSe.getScore());
     }
     

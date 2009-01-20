@@ -289,7 +289,8 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                     ScoreableEntity entity = new ScoreableEntity();
                     entity.setEntityID(gqv.getGroup().getGroupID());
                     entity.setEntityType(EntityType.ENTITY_GROUP);
-                    entity.setScore(driveQMap.getOverall());
+                    //entity.setScore(null);
+                    entity.setScore(driveQMap.getOverall() == null ? NO_SCORE : driveQMap.getOverall());
                     entity.setScoreType(ScoreType.SCORE_OVERALL);
                     scoreList.add(entity);
                 }
@@ -527,22 +528,10 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                     vri.setDriver(d.getDriver());
                 }
                 vri.setMilesDriven(dqm.getEndingOdometer());
-                vri.setOverallScore((float) 0.0);
-                if (dqm.getOverall() != null)
-                {
-                    vri.setOverallScore(((float) dqm.getOverall()) / (float) 10.0);
-                }
-                vri.setSpeedScore((float) 0.0);
-                if (dqm.getSpeeding() != null)
-                {
-                    vri.setSpeedScore(((float) dqm.getSpeeding()) / (float) 10.0);
-                }
-                vri.setStyleScore((float) 0.0);
-                if (dqm.getDrivingStyle() != null)
-                {
-                    vri.setStyleScore(((float) dqm.getDrivingStyle()) / (float) 10.0);
-                }
-
+                vri.setOverallScore(dqm.getOverall() == null ? NO_SCORE : dqm.getOverall());
+                vri.setSpeedScore(dqm.getSpeeding() == null ? NO_SCORE : dqm.getSpeeding());
+                vri.setStyleScore(dqm.getDrivingStyle() == null ? NO_SCORE :dqm.getDrivingStyle());
+                
                 lVri.add(vri);
                 vri = null;
             }
@@ -584,28 +573,12 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 {
                     dri.setVehicle(d.getVehicle());
                 }
-                dri.setMilesDriven(dqm.getEndingOdometer());
-                dri.setOverallScore((float) 0.0);
-                if (dqm.getOverall() != null)
-                {
-                    dri.setOverallScore(((float) dqm.getOverall()) / (float) 10.0);
-                }
-                dri.setSpeedScore((float) 0.0);
-                if (dqm.getSpeeding() != null)
-                {
-                    dri.setSpeedScore(((float) dqm.getSpeeding()) / (float) 10.0);
-                }
-                dri.setStyleScore((float) 0.0);
-                if (dqm.getDrivingStyle() != null)
-                {
-                    dri.setStyleScore(((float) dqm.getDrivingStyle()) / (float) 10.0);
-                }
-                dri.setSeatBeltScore((float) 0.0);
-                if (dqm.getSeatbelt() != null)
-                {
-                    dri.setSeatBeltScore(((float) dqm.getSeatbelt()) / (float) 10.0);
-                }
-
+                dri.setMilesDriven(dqm.getEndingOdometer() == null ? NO_SCORE : dqm.getEndingOdometer());
+                dri.setOverallScore(dqm.getOverall() == null ? NO_SCORE : dqm.getOverall());
+                dri.setSpeedScore(dqm.getSpeeding() == null ? NO_SCORE : dqm.getSpeeding());
+                dri.setStyleScore(dqm.getDrivingStyle() == null ? NO_SCORE : dqm.getDrivingStyle());
+                dri.setSeatBeltScore(dqm.getSeatbelt() == null ? NO_SCORE : dqm.getSeatbelt());
+                
                 lDri.add(dri);
                 dri = null;
             }
@@ -721,7 +694,6 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 ScoreableEntity scoreableEntity = new ScoreableEntity();
                 scoreableEntity.setEntityID(driverID);
                 scoreableEntity.setEntityType(EntityType.ENTITY_DRIVER);
-                scoreableEntity.setIdentifier("");
                 scoreableEntity.setScoreType(subType);
                 Integer score = driveQMap.getScoreMap().get(subType);
                 scoreableEntity.setScore((score == null) ? NO_SCORE : score);

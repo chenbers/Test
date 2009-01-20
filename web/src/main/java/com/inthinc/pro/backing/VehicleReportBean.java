@@ -237,21 +237,15 @@ public class VehicleReportBean extends BaseReportBean implements TablePrefOption
         }
     }
 
-    private void setStyles() {
-        ScoreBox sb = new ScoreBox(0,ScoreBoxSizes.SMALL);  
+    private void setStyles() 
+    {
         
-        if ( vrt.getOverallScore() != null ) {
-            vrt.setStyleOverall(ScoreBox.GetStyleFromScore(floatToInteger(vrt.getOverallScore()), ScoreBoxSizes.SMALL));
-        } 
-        
-        if ( vrt.getSpeedScore() != null ) {
-            vrt.setStyleSpeed(ScoreBox.GetStyleFromScore(floatToInteger(vrt.getSpeedScore()), ScoreBoxSizes.SMALL));
-        }
-        
-        if ( vrt.getStyleScore() != null ) {
-            vrt.setStyleStyle(ScoreBox.GetStyleFromScore(floatToInteger(vrt.getStyleScore()), ScoreBoxSizes.SMALL));
-        }
-        
+        vrt.setStyleOverall(ScoreBox.GetStyleFromScore(vrt.getOverallScore(), ScoreBoxSizes.SMALL));
+ 
+        vrt.setStyleSpeed(ScoreBox.GetStyleFromScore(vrt.getSpeedScore(), ScoreBoxSizes.SMALL));
+       
+        vrt.setStyleStyle(ScoreBox.GetStyleFromScore(vrt.getStyleScore(), ScoreBoxSizes.SMALL));
+   
     }
     
     public void scrollerListener(DataScrollerEvent se)     

@@ -87,9 +87,7 @@
       					<div class="#{item.styleOverall}">
       						<div class="score">
       							<h:commandLink action="go_driver">
-      								<h:outputText 
-      									value="#{item.overallScore}">
-      								</h:outputText>    
+      								<h:outputText value="#{item.overallScore}" converter="ScoreConverter" />
 									<f:setPropertyActionListener 
 										value="#{item.driver}" 
 										target="#{navigationBean.driver}">
@@ -106,8 +104,7 @@
       					<div class="#{item.styleSpeed}">
       						<div class="score">      					
       							<h:commandLink action="go_reportDriverSpeed">
-      								<h:outputText value="#{item.speedScore}">
-      								</h:outputText>    
+      								<h:outputText value="#{item.speedScore}" converter="ScoreConverter" />  
 									<f:setPropertyActionListener 
 										value="#{item.driver}" 
 										target="#{navigationBean.driver}">
@@ -124,7 +121,7 @@
       					<div class="#{item.styleStyle}">
       						<div class="score">         					
       							<h:commandLink action="go_reportDriverStyle">
-      								<h:outputText value="#{item.styleScore}"/>      
+      								<h:outputText value="#{item.styleScore}"  converter="ScoreConverter"/>      
 									<f:setPropertyActionListener 
 										value="#{item.driver}" 
 										target="#{navigationBean.driver}">
@@ -141,8 +138,7 @@
       					<div class="#{item.styleSeatBelt}">
       						<div class="score">        					
       							<h:commandLink action="go_reportDriverSeatBelt">
-      								<h:outputText value="#{item.seatBeltScore}">
-      								</h:outputText>         
+      								<h:outputText value="#{item.seatBeltScore}" converter="ScoreConverter" />
 									<f:setPropertyActionListener 
 										value="#{item.driver}" 
 										target="#{navigationBean.driver}">

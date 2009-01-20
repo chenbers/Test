@@ -85,8 +85,7 @@
       					<div class="#{item.styleOverall}">
       						<div class="score">      					
       							<h:commandLink action="go_vehicle">
-      								<h:outputText value="#{item.overallScore}">
-      								</h:outputText>    
+      								<h:outputText value="#{item.overallScore}" converter="ScoreConverter" />
 									<f:setPropertyActionListener 
 										value="#{item.vehicle}" 
 										target="#{navigationBean.vehicle}">
@@ -103,8 +102,7 @@
       					<div class="#{item.styleSpeed}">
       						<div class="score">  
       							<h:commandLink action="go_reportVehicleSpeed">
-      								<h:outputText value="#{item.speedScore}">
-      								</h:outputText>    
+      								<h:outputText value="#{item.speedScore}" converter="ScoreConverter" />  
 									<f:setPropertyActionListener 
 										value="#{item.vehicle}" 
 										target="#{navigationBean.vehicle}">
@@ -121,7 +119,7 @@
       					<div class="#{item.styleStyle}">
       						<div class="score">  
       							<h:commandLink action="go_reportVehicleStyle">
-      								<h:outputText value="#{item.styleScore}"/>    
+      								<h:outputText value="#{item.styleScore}" converter="ScoreConverter"/>    
 									<f:setPropertyActionListener 
 										value="#{item.vehicle}" 
 										target="#{navigationBean.vehicle}">

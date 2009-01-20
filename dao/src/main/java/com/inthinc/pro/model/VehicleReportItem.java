@@ -6,9 +6,9 @@ public class VehicleReportItem
     private Vehicle vehicle;
     private String makeModelYear;
     private Integer milesDriven;
-    private Float overallScore;
-    private Float speedScore;
-    private Float styleScore;
+    private Integer overallScore;
+    private Integer speedScore;
+    private Integer styleScore;
     private String styleOverall;
     private String styleSpeed;
     private String styleStyle;
@@ -56,27 +56,27 @@ public class VehicleReportItem
     {
         this.milesDriven = milesDriven;
     }
-    public Float getOverallScore()
+    public Integer getOverallScore()
     {
         return overallScore;
     }
-    public void setOverallScore(Float overallScore)
+    public void setOverallScore(Integer overallScore)
     {
         this.overallScore = overallScore;
     }
-    public Float getSpeedScore()
+    public Integer getSpeedScore()
     {
         return speedScore;
     }
-    public void setSpeedScore(Float speedScore)
+    public void setSpeedScore(Integer speedScore)
     {
         this.speedScore = speedScore;
     }
-    public Float getStyleScore()
+    public Integer getStyleScore()
     {
         return styleScore;
     }
-    public void setStyleScore(Float styleScore)
+    public void setStyleScore(Integer styleScore)
     {
         this.styleScore = styleScore;
     }
