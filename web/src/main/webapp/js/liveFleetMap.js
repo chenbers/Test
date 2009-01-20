@@ -53,3 +53,7 @@
          return marker;
        }
 	
+		function selectMarker(lat,lng){
+			
+			map.panTo(new GLatLng(lat, lng));
+		}

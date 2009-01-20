@@ -8,7 +8,7 @@ public class DriverLastLocationBean extends BaseBean {
     private LatLng      lastLocation;
     private String      driverName;
     private Driver 		driver;
-    private int			groupID;
+    private int			iconKey;
     
 	public LatLng getLastLocation() {
 		return lastLocation;
@@ -28,11 +28,11 @@ public class DriverLastLocationBean extends BaseBean {
 	public void setDriver(Driver driver) {
 		this.driver = driver;
 	}
-	public int getGroupID() {
-		return groupID;
+	public int getIconKey() {
+		return iconKey;
 	}
-	public void setGroupID(int groupID) {
-		this.groupID = groupID;
+	public void setIconKey(int iconKey) {
+		this.iconKey = iconKey;
 	}
 
 }

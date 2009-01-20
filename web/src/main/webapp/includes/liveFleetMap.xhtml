@@ -20,7 +20,7 @@
 				<ui:repeat value="#{driverLocationBean.driverLastLocationBeans}" var="driverLastLocationBean">
 					var latlng = new GLatLng(#{driverLastLocationBean.lastLocation.lat}, #{driverLastLocationBean.lastLocation.lng});
 					mgr.addMarker(createMarker(latlng, "#{driverLastLocationBean.driver.driverID}",
-						        		 "#{driverLocationBean.mapIconMap.icons[driverLastLocationBean.groupID]}"),0);
+						        		 "#{driverLocationBean.mapIconMap.icons[driverLastLocationBean.iconKey]}"),0);
 	        						
 				</ui:repeat>
 			}
@@ -36,7 +36,8 @@
 							reRender="map,scripts"
 							value="#{messages.refresh}">
 						</a4j:commandButton>
-			   			<h:commandLink action="#{flyOutBean.flyNavRuleAction}" rendered="#{driverLocationBean.showLegend}">
+						<rich:spacer width="2" />
+			   			<h:commandLink action="#{flyOutBean.flyNavRuleAction}" rendered="#{!driverLocationBean.teamLevel}">
 			   				<img src="#{facesContext.externalContext.request.contextPath}/images/#{flyOutImage}" border="0" />
 			   				<f:setPropertyActionListener value="#{flyNavRule}" target="#{flyOutBean.navigationRule}" />
 			   				<f:setPropertyActionListener value="#{flySelectedTab}" target="#{flyOutBean.selectedTab}" />
@@ -78,7 +79,6 @@
 				</div>
 			</div>	
 				
-				<rich:panel rendered="#{driverLocationBean.showLegend}">	
 				<div class="spacer"></div>		
 				<div class="">
 					<div class="panel_nw">
@@ -90,9 +90,17 @@
 	 				<div class="panel_w">
 						<div class="panel_content">
 						  
-						  <rich:dataList value="#{driverLocationBean.childGroups}" var="group" styleClass="legend">
- 						  	<img src="#{driverLocationBean.legendIconMap.icons[group.groupID]}" style="vertical-align:middle"></img> 
-						  	<h:outputText value="#{group.name}" style="margin-left:5px"></h:outputText>
+						  <rich:dataList value="#{driverLocationBean.legendIcons}" var="icon" styleClass="legend" 
+						  			rendered="#{driverLocationBean.teamLevel}">
+							  	<a onmouseover="selectMarker(#{icon.lat},#{icon.lng})" onclick="selectMarker(#{icon.lat},#{icon.lng})">
+		 						  	<img src="#{icon.iconURL}" style="vertical-align:middle"/> 
+								  	<h:outputText value="#{icon.caption}" style="margin-left:5px"></h:outputText>
+							  	</a>
+						</rich:dataList>
+						  <rich:dataList value="#{driverLocationBean.legendIcons}" var="icon" styleClass="legend" 
+						  		rendered="#{!driverLocationBean.teamLevel}">
+						  		<img src="#{icon.iconURL}" style="vertical-align:middle"/> 
+							  	<h:outputText value="#{icon.caption}" style="margin-left:5px"></h:outputText>
 						  </rich:dataList>
 						  <div style="clear:both"/>
 	  					</div>
@@ -102,7 +110,6 @@
 						<div class="panel_statusbar"></div>
 					</div>
 					</div>
-				</rich:panel>
 								
 	    <script type="text/javascript">
 	    	initMap(#{mapxcenter}, #{mapycenter}, 5);
