@@ -120,7 +120,7 @@
 							<ui:include src="/includes/dateLinksWithFlyOut.xhtml">
 								<ui:param name="ajaxForm" value="trendDateLinks"/>
 								<ui:param name="ajaxStatusID" value="trendStatus"/>
-								<ui:param name="reRenderList" value="xypanel,trendTable,trendDateLinks"/>			
+								<ui:param name="reRenderList" value="trendDateLinks,xypanel,countPanel,trendTable:items"/>			
 								<ui:param name="thirtyDaysOn" value="#{navigationBean.styleClass30Days}"/>
 								<ui:param name="threeMonthsOn" value="#{navigationBean.styleClass3Months}"/>
 								<ui:param name="sixMonthsOn" value="#{navigationBean.styleClass6Months}"/>
@@ -129,7 +129,6 @@
 		            			<ui:param name="flyNavRule" value="go_home" />
 		            			<ui:param name="flyOutImage" value="ico_minimize.png" />
 		            			<ui:param name="report" value="TREND" />
-		            			<ui:param name="numRowsPerPg" value="5"/>
 							</ui:include>	
                     </div>
 				</div>
@@ -138,8 +137,8 @@
 					  <div class="panel_content">
 					  	<!-- Start xy graph --> 
 				<rich:panel id="xypanel" 
-					style="height:300;width:445">
-					<h:inputHidden value="#{trendBean.lineDef}" 
+					style="height:600;width:600;">
+					<h:inputHidden value="#{trendFlyoutBean.lineDef}" 
 						id="hiddenField12" />
 
 					<div id="chartdiv2" align="center"></div>
@@ -157,30 +156,28 @@
 				<div class="spacer"></div>	
 				<div class="spacer"></div>				
 				
-				<rich:panel>	
-					<rich:spacer height="10"/>
-								
+				<rich:panel id="countPanel" style="height:30;width:800;position:relative;">	
+					
 						<div style="text-align: right;" >													
 							<h:outputText 
-								id="countString" value="#{trendBean.countString}"/>
-							<rich:spacer width="10"/>
+								id="countString" value="#{trendFlyoutBean.countString}">
+							</h:outputText>						
 						</div>					
 													
-				</rich:panel>								
+				</rich:panel>	
+				
+				<div class="spacer"></div>	
+				<div class="spacer"></div>		
 				
 				<div class="datagrid">
 				
 				<h:form id="trendTable">
-				
-					<rich:datascroller id="topScroller" for="items" immediate="true"
-        				scrollerListener="#{trendBean.scrollerListener}" maxPages="5"
-        				reRender="bottomScroller,countString,starter,items,xypanel">        			
-        			</rich:datascroller>	
+
 						        							
    						<h:inputHidden id="hiddenGroupID" value="#{navigationBean.groupID}"/>   								
 			
-						<rich:dataTable value="#{trendBean.scoreableEntities}" id="items"
-										var="item" styleClass="datagrid"
+						<rich:dataTable value="#{trendFlyoutBean.scoreableEntities}" id="items"
+										var="item" styleClass="datagrid" 
 										rowClasses="trendTableOdd,trendTableEven" 
 										cellspacing="1" width="100%">
 
@@ -198,7 +195,7 @@
 									<a4j:commandLink 
 										value="Region" 
 										reRender="xypanel,items">
-										<f:setPropertyActionListener target="#{trendBean.sortItFirst}" value="true" />														
+										<f:setPropertyActionListener target="#{trendFlyoutBean.sortItFirst}" value="true" />														
 									</a4j:commandLink>
 								</f:facet>
 								<h:outputLink value="#{item.goTo}">
@@ -211,18 +208,14 @@
 									<a4j:commandLink 
 										value="Score" 
 										reRender="xypanel,items">
-										<f:setPropertyActionListener target="#{trendBean.sortItSecond}" value="true" />														
+										<f:setPropertyActionListener target="#{trendFlyoutBean.sortItSecond}" value="true" />														
 									</a4j:commandLink>
 								</f:facet>
 								<iwi:scoreBox style="#{item.style}" score="#{item.se.score}"/>
 							</rich:column>
 
 						</rich:dataTable>
-										
-					<rich:datascroller id="bottomScroller" for="items" immediate="true"
-    					scrollerListener="#{trendBean.scrollerListener}" maxPages="5"
-        				reRender="topScroller,countString,starter,items,xypanel">        			
-        			</rich:datascroller>   		
+
 						
 				</h:form> 		
 					
@@ -279,7 +272,6 @@
 	            			<ui:param name="flyNavRule" value="go_home" />
 	            			<ui:param name="flyOutImage" value="ico_minimize.png" />
 	            			<ui:param name="report" value="OVERALL_SCORE" />
-	            			<ui:param name="numRowsPerPg" value="5"/>
 						</ui:include>	
                     </div>
 				</div>
