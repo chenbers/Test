@@ -497,6 +497,7 @@ public class SiloServiceTest
     }
     
     @Test
+    @Ignore
     public void trips()
     {
         DriverHessianDAO driverDAO = new DriverHessianDAO();
