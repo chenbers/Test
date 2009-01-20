@@ -172,10 +172,7 @@ public class MpgBean extends BaseDurationBean {
         reportCriteria.setMainDataset(entities);
         reportCriteria.addChartDataSet(seriesData);
         reportCriteria.setDuration(getDuration());
-        reportCriteria.setRecordsPerReport(4);
-        reportCriteria.setMainDataSetIdField("entity.entityName");
-        reportCriteria.setChartDataSetIdField("category");
-        
+        reportCriteria.setRecordsPerReportParameters(4, "entity.entityName", "category");
         return reportCriteria;
     }
 

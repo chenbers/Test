@@ -480,8 +480,7 @@ public class TrendBean extends BaseBean
         reportCriteria.addChartDataSet(lineGraphDataList);
         reportCriteria.setMainDataset(scoreableEntityDataSet);
         reportCriteria.setDuration(getNavigation().getDuration());
-        reportCriteria.setRecordsPerReport(8);
-        reportCriteria.setMainDataSetIdField("se.identifier");
+        reportCriteria.setRecordsPerReportParameters(8, "se.identifier", "seriesID");
         return reportCriteria;
     }
 

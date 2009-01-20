@@ -105,17 +105,7 @@ public class ReportCriteria
         Date today = new Date();
         return String.valueOf(today.getYear()) + " " + INTHINC_NAME;
     }
-
-    public void setRecordsPerReport(Integer recordsPerReport)
-    {
-        this.recordsPerReport = recordsPerReport;
-    }
-
-    public Integer getRecordsPerReport()
-    {
-        return recordsPerReport;
-    }
-
+    
     /**
      * 
      * @param mainDatasetIdField = this is the field from the records in the main dataset to which the value will 
@@ -126,25 +116,25 @@ public class ReportCriteria
      * 
      * example: You may want to following to be used the following comparism. CategorySeriesData.seriesID = MpgEntityPkg.entity.entityName. 
      * In this case, the mainDataSetIdField should be set to "entity.entityNam"e
-     */
-    public void setMainDataSetIdField(String mainDatasetIdField)
-    {
-        this.mainDatasetIdField = mainDatasetIdField;
-    }
-
-    public String getMainDataSetIdField()
-    {
-        return mainDatasetIdField;
-    }
-
-    /**
      * 
      * @param chartDataSetIdField this is the field from the chartDataSet record which will be matched to the field defined by 
      * the mainDatasetIdField in the main data set.
      */
-    public void setChartDataSetIdField(String chartDataSetIdField)
+    public void setRecordsPerReportParameters(Integer recordsPerReport,String mainDatasetIdField,String chartDataSetIdField)
     {
+        this.recordsPerReport = recordsPerReport;
+        this.mainDatasetIdField = mainDatasetIdField;
         this.chartDataSetIdField = chartDataSetIdField;
+    }
+
+    public Integer getRecordsPerReport()
+    {
+        return recordsPerReport;
+    }
+    
+    public String getMainDataSetIdField()
+    {
+        return mainDatasetIdField;
     }
 
     public String getChartDataSetIdField()
