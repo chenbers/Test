@@ -29,6 +29,9 @@ public class PieChartCustomizer extends JRAbstractChartCustomizer
         plot.setShadowYOffset(4);
         plot.setDirection(Rotation.ANTICLOCKWISE);
         plot.setShadowPaint(new Color(0xE7E6E6,false));
+        plot.setLabelPaint(Color.BLACK);
+        plot.setLabelShadowPaint(plot.getShadowPaint());
+        plot.setLabelBackgroundPaint(plot.getBackgroundPaint());
         int colorIndex = 0;
         
         //We have to do this for those charts that have 0's and have the legends turned off.

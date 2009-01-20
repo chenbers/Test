@@ -477,9 +477,11 @@ public class TrendBean extends BaseBean
         }
        
         ReportCriteria reportCriteria = new ReportCriteria(Report.TREND,getNavigation().getGroup().getName(),getAccountName());
-        reportCriteria.addSubDataSet(lineGraphDataList);
+        reportCriteria.addChartDataSet(lineGraphDataList);
         reportCriteria.setMainDataset(scoreableEntityDataSet);
         reportCriteria.setDuration(getNavigation().getDuration());
+        reportCriteria.setRecordsPerReport(8);
+        reportCriteria.setMainDataSetIdField("se.identifier");
         return reportCriteria;
     }
 

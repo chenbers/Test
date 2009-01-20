@@ -222,7 +222,7 @@
 				</rectangle>
 				<staticText>
 					<reportElement
-						x="5"
+						x="10"
 						y="7"
 						width="390"
 						height="18"
@@ -237,7 +237,7 @@
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="445"
+						x="450"
 						y="7"
 						width="82"
 						height="18"
@@ -255,7 +255,7 @@
 			<band height="24"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="5"
+						x="10"
 						y="2"
 						width="390"
 						height="19"
@@ -269,7 +269,7 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="445"
+						x="450"
 						y="3"
 						width="80"
 						height="19"
