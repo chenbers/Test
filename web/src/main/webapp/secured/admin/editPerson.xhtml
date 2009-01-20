@@ -107,7 +107,7 @@
                           <td width="100" valign="top"><h:outputText value="#{messages.editPerson_dob}" /></td>
                           <td>
                             <rich:message for="dob" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <rich:calendar value="#{personBean.item.dob}" id="dob" todayControlMode="hidden" enableManualInput="true" converterMessage="#{messages.editPerson_dateFormat}" />
+                            <rich:calendar value="#{personBean.item.dob}" id="dob" todayControlMode="hidden" enableManualInput="true" converterMessage="#{messages.editPerson_dateFormat}" timeZone="#{personBean.utcTimeZone}" />
                           </td>
                         </tr>
                         </ui:fragment>
@@ -432,7 +432,7 @@
                           </td>
                           <td>
                             <rich:message for="driver_expiration" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <rich:calendar value="#{personBean.item.driver.expiration}" id="driver_expiration" onchanged="checkMultiple('driver_expiration')" enableManualInput="true" converterMessage="#{messages.editPerson_dateFormat}" />
+                            <rich:calendar value="#{personBean.item.driver.expiration}" id="driver_expiration" onchanged="checkMultiple('driver_expiration')" enableManualInput="true" converterMessage="#{messages.editPerson_dateFormat}" timeZone="#{personBean.utcTimeZone}" />
                           </td>
                         </tr>
                         <ui:fragment rendered="#{not personBean.batchEdit}">

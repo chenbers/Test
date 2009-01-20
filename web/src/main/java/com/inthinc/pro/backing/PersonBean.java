@@ -528,6 +528,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         return "go_adminPeople";
     }
 
+    public TimeZone getUtcTimeZone()
+    {
+        return TimeZone.getTimeZone("UTC");
+    }
+
     public Map<String, Gender> getGenders()
     {
         return GENDERS;

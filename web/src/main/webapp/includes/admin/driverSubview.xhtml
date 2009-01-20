@@ -75,7 +75,7 @@
 					<td width="100"><h:outputText
 						value="#{messages.editPerson_dob}" /></td>
 					<td><h:outputText value="#{driver.person.dob}">
-						<f:convertDateTime dateStyle="long" />
+						<f:convertDateTime dateStyle="long" timeZone="UTC" />
 					</h:outputText></td>
 				</tr>
 				<tr>
@@ -175,7 +175,7 @@
 					<td width="100"><h:outputText
 						value="#{messages.editPerson_driver_expiration}" /></td>
 					<td><h:outputText value="#{driver.person.driver.expiration}">
-						<f:convertDateTime dateStyle="long" />
+						<f:convertDateTime dateStyle="long" timeZone="UTC" />
 					</h:outputText></td>
 				</tr>
 				<tr>

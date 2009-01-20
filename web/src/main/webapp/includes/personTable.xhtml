@@ -37,7 +37,7 @@
       <f:facet name="header"><h:outputText value="#{messages.personHeader_user_groupID}" /></f:facet>
       <h:outputText value="#{item.group.name}" />
     </rich:column>
-    <rich:column rendered="#{personBean.tableColumns['user_role'].visible}" sortBy="#{item.user.role}">
+    <rich:column rendered="#{personBean.tableColumns['user_role'].visible}" sortBy="#{item.user.role.name}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_user_role}" /></f:facet>
       <h:outputText value="#{item.user.role.name}" />
     </rich:column>
@@ -72,7 +72,7 @@
     <rich:column rendered="#{personBean.tableColumns['dob'].visible}" sortBy="#{item.dob}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_dob}" /></f:facet>
       <h:outputText value="#{item.dob}">
-        <f:convertDateTime dateStyle="long" />
+        <f:convertDateTime dateStyle="long" timeZone="UTC" />
       </h:outputText>
     </rich:column>
     <rich:column rendered="#{personBean.tableColumns['gender'].visible}" sortBy="#{item.gender}">
@@ -126,7 +126,7 @@
     <rich:column rendered="#{personBean.tableColumns['driver_expiration'].visible}" sortBy="#{item.driver.expiration}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_expiration}" /></f:facet>
       <h:outputText value="#{item.driver.expiration}">
-        <f:convertDateTime dateStyle="long" />
+        <f:convertDateTime dateStyle="long" timeZone="UTC" />
       </h:outputText>
     </rich:column>
     <rich:column rendered="#{personBean.tableColumns['driver_certifications'].visible}" sortBy="#{item.driver.certifications}">

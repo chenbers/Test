@@ -76,7 +76,7 @@
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_dob}" /></td>
-                            <td><h:outputText value="#{personBean.item.dob}"><f:convertDateTime dateStyle="long" /></h:outputText></td>
+                            <td><h:outputText value="#{personBean.item.dob}"><f:convertDateTime dateStyle="long" timeZone="UTC" /></h:outputText></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_gender}" /></td>
@@ -200,7 +200,7 @@
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_expiration}" /></td>
-                            <td><h:outputText value="#{personBean.item.driver.expiration}"><f:convertDateTime dateStyle="long" /></h:outputText></td>
+                            <td><h:outputText value="#{personBean.item.driver.expiration}"><f:convertDateTime dateStyle="long" timeZone="UTC" /></h:outputText></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_certifications}" /></td>
