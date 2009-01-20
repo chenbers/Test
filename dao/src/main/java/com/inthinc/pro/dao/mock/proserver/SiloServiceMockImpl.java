@@ -960,8 +960,8 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     @Override
     public Map<String, Object> createAddr(Integer acctID, Map<String, Object> addrMap) throws ProDAOException
     {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO Add the value
+        return createReturnValue("addrID", (int) (Math.random() * Integer.MAX_VALUE));
     }
 
     @Override

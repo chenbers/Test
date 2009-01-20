@@ -486,6 +486,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         // deselect all edited items
         for (final T item : getSelectedItems())
             item.setSelected(false);
+        item = null;
 
         // redirect
         if (isBatchEdit())

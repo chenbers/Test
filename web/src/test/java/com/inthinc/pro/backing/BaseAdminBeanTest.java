@@ -252,8 +252,11 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
 
         // cancel edit
         assertEquals(adminBean.cancelEdit(), adminBean.getFinishedRedirect());
+        assertEquals(adminBean.getSelectedItems().size(), 0);
 
         // start another edit
+        selectItems(adminBean, 3);
+        assertEquals(adminBean.getSelectedItems().size(), 3);
         adminBean.batchEdit();
 
         // populate
@@ -265,6 +268,7 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         int count = adminBean.getItemCount();
         assertEquals(adminBean.save(), adminBean.getFinishedRedirect());
         assertEquals(adminBean.getItemCount(), count);
+        assertEquals(adminBean.getSelectedItems().size(), 0);
 
         // test batch update fields
         for (final T item : adminBean.getSelectedItems())
