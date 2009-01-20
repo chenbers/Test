@@ -34,7 +34,29 @@ public class TeamOverviewBean extends BaseDurationBean
     
     private Integer groupID;
     
+    private String              ping;
+
+    
     private static final Logger logger = Logger.getLogger(TeamOverviewBean.class);
+    
+    public TeamOverviewBean()
+    {
+        logger.debug("TeamOverviewBean - constructor");
+    }
+
+    
+    public String getPing()
+    {
+        getGroupID();
+        return ping;
+    }
+
+
+    public void setPing(String ping)
+    {
+        getGroupID();
+        this.ping = ping;
+    }
 
     private Integer initOverallScore(ScoreType scoreType)
     {
@@ -44,6 +66,7 @@ public class TeamOverviewBean extends BaseDurationBean
         try 
         {
             scoreableEntity = scoreDAO.getAverageScoreByType(getGroupID(), getDuration(), scoreType);
+            logger.debug("TeamOverviewBean OVERALL score groupID[" + getGroupID() + "] scoretype " + scoreType + " score " + scoreableEntity.getScore());
         }
         catch (Exception ex)
         {
@@ -52,7 +75,7 @@ public class TeamOverviewBean extends BaseDurationBean
             
         }
         if (scoreableEntity == null)
-            return 0;
+            return -1;
         return scoreableEntity.getScore();
     }
 
@@ -73,7 +96,6 @@ public class TeamOverviewBean extends BaseDurationBean
 
     public String getSelectedBarDef()
     {
-        logger.debug("getSelectedBarDef() ");        
         TabAction action = getSelectedAction();
         
         ScoreType scoreType = action.getScoreType();
@@ -96,6 +118,7 @@ public class TeamOverviewBean extends BaseDurationBean
         
         try
         {
+            logger.debug("TeamOverviewBean 3D BAR score groupID[" + getGroupID() + "] scoreType " + scoreType);
             scoreDataList = scoreDAO.getScoreBreakdownByType(getGroupID(), getDuration(), scoreType);
         }
         catch (Exception e)
@@ -177,7 +200,6 @@ public class TeamOverviewBean extends BaseDurationBean
 
     public Integer getSelectedOverallScore()
     {
-logger.debug("getSelectedOverallScore() ");        
         TabAction action = getSelectedAction();
         
         ScoreType scoreType = action.getScoreType();
@@ -247,6 +269,12 @@ logger.debug("getSelectedOverallScore() ");
 
     public void setGroupID(Integer groupID)
     {
+        if (this.groupID != null && !this.groupID.equals(groupID))
+        {
+            logger.debug("TeamOverviewBean new groupID " + groupID);
+            setDuration(Duration.DAYS);
+            setSelectedAction(null);
+        }
         this.groupID = groupID;
     }
 
