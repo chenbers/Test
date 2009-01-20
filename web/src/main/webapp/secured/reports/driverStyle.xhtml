@@ -60,7 +60,7 @@
 //Set default selected box.
 var selected = 'OVERALL';
 
-	function SelectBreakDown(region, chartVar)
+	function SelectBreakDown(region, chartVar, title)
 	{
 		//Un-Select last component in CSS.
 		document.getElementById(selected).className="tiny_chart";
@@ -71,19 +71,19 @@ var selected = 'OVERALL';
 		//change style to new selected region.
 		document.getElementById(region).className="tiny_selected";
 		
-		//resize chart and render it in the top box.
-		//chartVar.attributes.width = 650;
-		//chartVar.attributes.height = 200;
-
+		
 		//turn on X and Y axis labels.
 		var data = chartVar.variables.dataXML;
 	    data = data.replace("showLabels=\'0\'", "showLabels=\'1\'");
 	    data = data.replace("showYAxisValues=\'0\'", "showYAxisValues=\'1\'");
-		
-	    overallChart.setDataXML(data);
-		
-		//chartVar.render('overall_chart');
-	}
+	
+		//Set overall chart to data from selected chart.
+		overallChart.setDataXML(data);
+	
+		var x = document.getElementById('titleSpan');
+			x.innerHTML=title;
+			
+	 }
 </script>
 
 <table width="940" border="0" cellspacing="0" cellpadding="0" align="center" class="dash_table">
@@ -93,7 +93,7 @@ var selected = 'OVERALL';
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="vehicle">Driving Style</span>
+						<span class="vehicle" id="titleSpan">Driving Style: Overall</span>
 							<a4j:region id="dateLinksForm_region">
 							<a4j:form id="dateLinksForm">
 							<span class="panel_links">
@@ -205,7 +205,7 @@ var selected = 'OVERALL';
 					  <tr>
 					    <td id="OVERALL" valign="top" class="tiny_selected">
 						  <div class="tiny_title">
-							  <a href="#" onclick="SelectBreakDown('OVERALL', overallChart2)">Overall</a>
+							  <a href="#" onclick="SelectBreakDown('OVERALL', overallChart2, 'Driving Style: Overall')">Overall</a>
 						  </div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
@@ -232,7 +232,7 @@ var selected = 'OVERALL';
 						</td>
 					    <td id="BRAKE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-								<a href="#" onclick="SelectBreakDown('BRAKE', chartBrake)">Hard Brake</a>
+								<a href="#" onclick="SelectBreakDown('BRAKE', chartBrake, 'Driving Style: Hard Brake')">Hard Brake</a>
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
@@ -259,7 +259,7 @@ var selected = 'OVERALL';
 						</td>
 					    <td id="ACCELERATE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-								<a href="#" onclick="SelectBreakDown('ACCELERATE', chartAccel)">Hard Accelerate</a></div>
+								<a href="#" onclick="SelectBreakDown('ACCELERATE', chartAccel, 'Driving Style: Hard Accelerate')">Hard Accelerate</a></div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
@@ -287,7 +287,7 @@ var selected = 'OVERALL';
 					  <tr>
 						<td id="TURN" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-							<a href="#" onclick="SelectBreakDown('TURN', chartTurn)">Hard Turn</a></div>
+							<a href="#" onclick="SelectBreakDown('TURN', chartTurn, 'Driving Style: Hard Turn')">Hard Turn</a></div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
@@ -314,7 +314,7 @@ var selected = 'OVERALL';
 						
 					    <td id="BUMP" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-							<a href="#" onclick="SelectBreakDown('BUMP', chartBump)">Hard Bump</a></div>
+							<a href="#" onclick="SelectBreakDown('BUMP', chartBump, 'Driving Style: Hard Bump')">Hard Bump</a></div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
