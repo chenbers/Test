@@ -90,8 +90,6 @@
 					target="#{flyOutBean.navigationRule}" />
 				<f:setPropertyActionListener value="#{flySelectedTab}"
 					target="#{flyOutBean.selectedTab}" />
-				<f:setPropertyActionListener value="#{numRowsPerPg}"
-					target="#{navigationBean.numRowsPerPg}"/>
 				<c:if test="#{!empty groupID}">
 					<f:param name="groupID" value="#{groupID}" />
 				</c:if>
