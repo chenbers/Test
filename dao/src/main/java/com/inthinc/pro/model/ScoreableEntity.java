@@ -71,6 +71,15 @@ public class ScoreableEntity extends BaseEntity implements Comparable<ScoreableE
     {
         this.scoreType = scoreType;
     }
+    
+    public Float getScoreAsFloat(){
+        Float fScore = null;
+        if(score != null){
+            fScore = new Float((this.getScore()==null) ? 0 : this.getScore() / 10.0);
+        }
+        
+        return fScore;
+    }
 
     @Override
     public int compareTo(ScoreableEntity o)
