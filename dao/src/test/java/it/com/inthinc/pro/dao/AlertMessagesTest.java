@@ -15,6 +15,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -86,7 +87,8 @@ public class AlertMessagesTest
     private static SiloService siloService;
     private static MCMSimulator mcmSim;
 
-    private static final String XML_DATA_FILE = "./src/test/resources/ITBaseData.xml";
+    private static final String XML_DATA_PATH = "./src/test/resources/ITBaseData.xml";
+    private static final String XML_DATA_FILE = "ITBaseData.xml";
 
     private static Account account;
     private static Group fleetGroup;
@@ -103,8 +105,6 @@ public class AlertMessagesTest
     private static Integer zoneID;
 
     private static final String PASSWORD="nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7"; // password
-    
-//    private static final String RESOURCE_DIR = "./src/test/resources";
     
     private static final int DRIVERS = 1;
     private static final int VEHICLES = 2;
@@ -271,7 +271,7 @@ public class AlertMessagesTest
         try
         {
 
-            xml = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(XML_DATA_FILE)));
+            xml = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(XML_DATA_PATH)));
 
             genData();
             xml.writeObject(account);
@@ -301,7 +301,9 @@ public class AlertMessagesTest
     {
         try
         {
-            XMLDecoder xml = new XMLDecoder(new BufferedInputStream(new FileInputStream(XML_DATA_FILE)));
+            InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(XML_DATA_FILE);
+
+            XMLDecoder xml = new XMLDecoder(new BufferedInputStream(stream));
         
             account = getNext(xml, Account.class);
             fleetGroup  = getNext(xml, Group.class);
