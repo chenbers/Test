@@ -100,5 +100,16 @@ public class EventsBean extends BaseEventsBean
         
         return searchTableData;
     }
+    
+    public String showAllFromRecentAction()
+    {
+        setSearchText(null);
+        setCategoryFilter(null);
+        setEventFilter(null);
+        
+        refreshAction();
+        return "go_events";
+    }
+
 
 }
