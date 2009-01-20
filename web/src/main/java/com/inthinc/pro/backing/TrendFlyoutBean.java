@@ -414,9 +414,10 @@ public class TrendFlyoutBean extends BaseBean
         }
        
         ReportCriteria reportCriteria = new ReportCriteria(Report.TREND,getNavigation().getGroup().getName(),getAccountName());
-        reportCriteria.addSubDataSet(lineGraphDataList);
+        reportCriteria.addChartDataSet(lineGraphDataList);
         reportCriteria.setMainDataset(scoreableEntityDataSet);
         reportCriteria.setDuration(getNavigation().getDuration());
+        reportCriteria.setRecordsPerReportParameters(8, "se.identifier", "seriesID");
         return reportCriteria;
     }
 
