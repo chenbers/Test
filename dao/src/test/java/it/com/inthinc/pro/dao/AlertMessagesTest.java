@@ -169,6 +169,7 @@ public class AlertMessagesTest
     }
 
     @Test
+    @Ignore
     public void zoneAlerts()
     {
         
@@ -215,6 +216,7 @@ public class AlertMessagesTest
     }
 
     @Test
+    @Ignore
     public void redFlagAlerts()
     {
         IMEI = device.getImei();
