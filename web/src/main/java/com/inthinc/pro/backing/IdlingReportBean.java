@@ -286,24 +286,30 @@ public class IdlingReportBean extends BaseReportBean implements TablePrefOptions
             iri.setGroup(this.getGroupHierarchy().getGroup(i.getGroupID()).getName());
             
             //Total idling            
-            Integer tot = 
-                new Integer(iri.getLowHrs()) +
-                new Integer(iri.getHighHrs());
-            iri.setTotalHrs(String.valueOf(tot.intValue()));
+            Float tot = iri.getLowHrs() + iri.getHighHrs();
+            iri.setTotalHrs(tot);
             
             //Percentages, if any driving
-            iri.setLowPercent(0);
-            iri.setHighPercent(0);
-            iri.setTotalPercent(0);
-            Integer totHrs = new Integer(iri.getDriveTime());
+            iri.setLowPercent("0.0");
+            iri.setHighPercent("0.0");
+            iri.setTotalPercent("0.0");
+            Float totHrs = new Float(iri.getDriveTime());
             
-            if ( totHrs != 0 ) {
-                int lo = 100*(Integer.parseInt(iri.getLowHrs()));               
-                iri.setLowPercent(lo/totHrs);
-                int hi = 100*(Integer.parseInt(iri.getHighHrs()));
-                iri.setHighPercent(hi/totHrs);
-                int to = 100*(Integer.parseInt(iri.getTotalHrs()));
-                iri.setTotalPercent(to/totHrs);
+            if ( totHrs != 0.0f ) {
+                Float lo = 100.0f*iri.getLowHrs()/totHrs;  
+                String fmt = lo.toString();
+                iri.setLowPercent(fmt.substring(0,3));  
+//                iri.setLowPerSort(lo);
+                
+                Float hi = 100.0f*iri.getHighHrs()/totHrs;
+                fmt = hi.toString();
+                iri.setHighPercent(fmt.substring(0,3));
+//                iri.setHighPerSort(hi);
+                
+                Float to = 100.0f*iri.getTotalHrs()/totHrs;
+                fmt = to.toString();
+                iri.setTotalPercent(fmt.substring(0,3));
+//                iri.setTotalPerSort(to);
             } 
  
             idlingData.add(iri);            

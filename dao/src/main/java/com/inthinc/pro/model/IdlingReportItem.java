@@ -6,19 +6,19 @@ public class IdlingReportItem extends BaseEntity
     private Integer groupID;
     private Driver driver;
     private Vehicle vehicle;
-    private Integer driveTime;
+    private Float driveTime;
     private Integer milesDriven;
-    private String lowHrs;
-    private Integer lowPercent;
-    private String highHrs;
-    private Integer highPercent;
-    private String totalHrs;
-    private Integer totalPercent;
+    private Float lowHrs;
+    private String lowPercent;
+    private Float highHrs;
+    private String highPercent;
+    private Float totalHrs;
+    private String totalPercent;
 
-    private Integer lowPerSort;
-    private Integer highPerSort;
-    private Integer totalPerSort;
-    private Integer driveTimeSort;
+    private Float lowPerSort;
+    private Float highPerSort;
+    private Float totalPerSort;
+    private Float driveTimeSort;
     
     public String getGroup()
     {
@@ -52,11 +52,11 @@ public class IdlingReportItem extends BaseEntity
     {
         this.vehicle = vehicle;
     }
-    public Integer getDriveTime()
+    public Float getDriveTime()
     {
         return driveTime;
     }
-    public void setDriveTime(Integer driveTime)
+    public void setDriveTime(Float driveTime)
     {
         this.driveTime = driveTime;
     }
@@ -68,83 +68,83 @@ public class IdlingReportItem extends BaseEntity
     {
         this.milesDriven = milesDriven;
     }
-    public String getLowHrs()
+    public Float getLowHrs()
     {
         return lowHrs;
     }
-    public void setLowHrs(String lowHrs)
+    public void setLowHrs(Float lowHrs)
     {
         this.lowHrs = lowHrs;
     }
-    public Integer getLowPercent()
+    public String getLowPercent()
     {
         return lowPercent;
     }
-    public void setLowPercent(Integer lowPercent)
+    public void setLowPercent(String lowPercent)
     {
         this.lowPercent = lowPercent;
     }
-    public String getHighHrs()
+    public Float getHighHrs()
     {
         return highHrs;
     }
-    public void setHighHrs(String highHrs)
+    public void setHighHrs(Float highHrs)
     {
         this.highHrs = highHrs;
     }
-    public Integer getHighPercent()
+    public String getHighPercent()
     {
         return highPercent;
     }
-    public void setHighPercent(Integer highPercent)
+    public void setHighPercent(String highPercent)
     {
         this.highPercent = highPercent;
     }
-    public String getTotalHrs()
+    public Float getTotalHrs()
     {
         return totalHrs;
     }
-    public void setTotalHrs(String totalHrs)
+    public void setTotalHrs(Float totalHrs)
     {
         this.totalHrs = totalHrs;
     }
-    public Integer getTotalPercent()
+    public String getTotalPercent()
     {
         return totalPercent;
     }
-    public void setTotalPercent(Integer totalPercent)
+    public void setTotalPercent(String totalPercent)
     {
         this.totalPercent = totalPercent;
     }
-    public Integer getLowPerSort()
+    public Float getLowPerSort()
     {
         return lowPerSort;
     }
-    public void setLowPerSort(Integer lowPerSort)
+    public void setLowPerSort(Float lowPerSort)
     {
         this.lowPerSort = lowPerSort;
     }
-    public Integer getHighPerSort()
+    public Float getHighPerSort()
     {
         return highPerSort;
     }
-    public void setHighPerSort(Integer highPerSort)
+    public void setHighPerSort(Float highPerSort)
     {
         this.highPerSort = highPerSort;
     }
-    public Integer getTotalPerSort()
+    public Float getTotalPerSort()
     {
         return totalPerSort;
     }
-    public void setTotalPerSort(Integer totalPerSort)
+    public void setTotalPerSort(Float totalPerSort)
     {
         this.totalPerSort = totalPerSort;
     }
-    public Integer getDriveTimeSort()
+    public Float getDriveTimeSort()
     {
         return driveTimeSort;
     }
-    public void setDriveTimeSort(Integer driveTimeSort)
+    public void setDriveTimeSort(Float driveTimeSort)
     {
         this.driveTimeSort = driveTimeSort;
     }

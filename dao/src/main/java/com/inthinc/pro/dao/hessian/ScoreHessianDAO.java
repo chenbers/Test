@@ -32,7 +32,7 @@ import com.inthinc.pro.model.VehicleReportItem;
 public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer> implements ScoreDAO
 {
     private static final Logger logger = Logger.getLogger(ScoreHessianDAO.class);
-    private static final Integer SECONDS_TO_HOURS = 3600;
+    private static final float SECONDS_TO_HOURS = 3600.0f;
     private static final Integer NO_SCORE = -1;
 
     private ReportService reportService;
@@ -639,13 +639,14 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 iri.setDriver(v);
                 iri.setVehicle(d.getVehicle());
 
-                iri.setDriveTime(0);
+
+                iri.setDriveTime(0.0f);
                 iri.setMilesDriven(0);
-                iri.setLowHrs("0");
-                iri.setHighHrs("0");
+                iri.setLowHrs(0.0f);
+                iri.setHighHrs(0.0f);
                 if (dqm.getDriveTime() != null)
-                {
-                    iri.setDriveTime(dqm.getDriveTime() / SECONDS_TO_HOURS);
+                {                  
+                    iri.setDriveTime((float)dqm.getDriveTime()/this.SECONDS_TO_HOURS);
                 }
                 if (dqm.getEndingOdometer() != null)
                 {
@@ -653,11 +654,11 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 }
                 if (dqm.getIdleLo() != null)
                 {
-                    iri.setLowHrs(String.valueOf(dqm.getIdleLo() / SECONDS_TO_HOURS));
+                    iri.setLowHrs((float)dqm.getIdleLo() / this.SECONDS_TO_HOURS);
                 }
                 if (dqm.getIdleHi() != null)
                 {
-                    iri.setHighHrs(String.valueOf(dqm.getIdleHi() / SECONDS_TO_HOURS));
+                    iri.setHighHrs((float)dqm.getIdleHi() / this.SECONDS_TO_HOURS);
                 }
 
                 lIri.add(iri);

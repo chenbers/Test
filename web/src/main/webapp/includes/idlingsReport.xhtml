@@ -65,14 +65,14 @@
       					</h:commandLink>        								
     				</rich:column>
     				<rich:column rendered="#{idlingColumns['drivetime'].visible}" 
-    					sortBy="#{item.driveTimeSort}">    					
+    					sortBy="#{item.driveTime}">    					
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_drivetime}" />
       					</f:facet>
       					<h:outputText value="#{item.driveTime}" />        					
     				</rich:column>    				
     				<rich:column rendered="#{idlingColumns['lowhrs'].visible}" 
-    					sortBy="#{item.lowPerSort}">
+    					sortBy="#{item.lowHrs}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_lowidlehrs}" />
       					</f:facet>
@@ -85,7 +85,7 @@
       					<h:outputText value="#{item.lowPercent}" /> 
     				</rich:column>
     				<rich:column rendered="#{idlingColumns['highhrs'].visible}"
-    					sortBy="#{item.highPerSort}">
+    					sortBy="#{item.highHrs}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_highidlehrs}" />
       					</f:facet>
@@ -98,7 +98,7 @@
       					<h:outputText value="#{item.highPercent}" /> 
     				</rich:column>
     				<rich:column rendered="#{idlingColumns['totalhrs'].visible}"
-    					sortBy="#{item.totalPerSort}">
+    					sortBy="#{item.totalHrs}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_totalidlehrs}" />
       					</f:facet>      					
