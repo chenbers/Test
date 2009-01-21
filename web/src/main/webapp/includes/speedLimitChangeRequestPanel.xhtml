@@ -276,11 +276,7 @@
    <c:if test="#{!speedLimitChangeRequests.requestSent}">
     <h:inputText style="width:230px;margin:10px" id="email" label="#{messages.sbs_emailAddress}" value="#{speedLimitChangeRequests.emailAddress}" required="true" validator="#{speedLimitChangeRequests.validateEmail}"></h:inputText>
     <div>
-      <rich:message for="email">
-        <f:facet name="errorMarker">
-          <h:graphicImage value="/images/icon_msg_err_small.png" />
-        </f:facet>
-      </rich:message>
+      <rich:message for="email" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
     </div>
     <div class="popupactions">
       <button value="submit" class="left" onclick="Richfaces.hideModalPanel('saveSlcrPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></button>

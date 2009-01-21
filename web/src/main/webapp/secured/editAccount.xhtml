@@ -32,7 +32,7 @@
             <div class="">
               <div class="panel_nw">
                 <div class="panel_title">
-                  <span class="account">My Account</span>
+                  <span class="account"><h:outputText value="#{messages.header_myAccount}" /></span>
                   <span class="panel_links"> </span>
                 </div>
               </div>
@@ -42,35 +42,33 @@
                     <tbody>
                       <tr>
                         <td width="460">
-                          <div class="add_section_title">Account Information</div>
+                          <div class="add_section_title"><h:outputText value="#{messages.myAccount_accountInformation}" /></div>
                             <table width="100%" border="0" cellpadding="4" cellspacing="0">
                               <tbody>
                                 <tr>
-                                  <td>Name:</td>
+                                  <td width="100"><h:outputText value="#{messages.myAccount_name}" /></td>
                                   <td><h:outputText value="#{myAccountBean.fullName}"/></td>
                                 </tr>
                                 <tr>
-                                  <td>Region:</td>
+                                  <td width="100"><h:outputText value="#{messages.myAccount_region}" /></td>
                                   <td><h:outputText value="#{myAccountBean.regionName}"/></td>
                                 </tr>
                                 <tr>
-                                  <td>Team:</td>
+                                  <td width="100"><h:outputText value="#{messages.myAccount_team}" /></td>
                                   <td><h:outputText value="#{myAccountBean.teamName}"/></td>
                                 </tr>
                             </tbody>
                           </table>
-        
                         </td>
-        
-                        
-                        <td width="10"><img src="#{facesContext.externalContext.request.contextPath}/images/x.gif" width="10"/></td>
+
+                        <td width="10"><h:graphicImage value="/images/x.gif" width="10"/></td>
                         
                         <td valign="top" width="460">
-                          <div class="add_section_title">Login</div>
+                          <div class="add_section_title"><h:outputText value="#{messages.myAccount_loginInformation}" /></div>
                           <table width="100%" border="0" cellpadding="4" cellspacing="0">
                             <tbody>
                               <tr>
-                                <td>User Name:</td>
+                                <td width="100"><h:outputText value="#{messages.myAccount_userName}" /></td>
                                 <td><h:outputText value="#{myAccountBean.user.username}"/></td>
                               </tr>
                             </tbody>
@@ -100,26 +98,23 @@
             <div class="">
               <div class="panel_nw">
                 <div class="panel_title">
-                  <span class="notify">Notifications</span>
+                  <span class="notify"><h:outputText value="#{messages.myAccount_notifications}" /></span>
                 </div>
               </div>
               <div class="panel_w">
                 <div class="panel_content">
                   <table width="100%" border="0" cellpadding="4" cellspacing="0">
                     <tbody>
-                    
                       <tr>
-                        <td width="5%"><img height="16" width="16" src="#{facesContext.externalContext.request.contextPath}/images/ico_info.png"/></td>
-                        <td width="5%">Information:</td>
-                        <td width="5%">
+                        <td width="16"><h:graphicImage value="/images/ico_info.png" width="16" height="16" /></td>
+                        <td width="76"><h:outputText value="#{messages.myAccount_information}" /></td>
+                        <td>
                           <h:selectOneMenu styleClass="text" id="informationSelectType" value="#{myAccountBean.informationSelectType}" onchange="refreshVisibility()">
                             <f:selectItem itemLabel="None" itemValue="0"/>
                             <f:selectItem itemLabel="Email" itemValue="1"/>
                             <f:selectItem itemLabel="Phone" itemValue="2"/>
                             <f:selectItem itemLabel="Text" itemValue="3"/>
                           </h:selectOneMenu>
-                        </td>
-                        <td width="85%">
                           <h:selectOneMenu styleClass="text" id="informationSelectEmail" value="#{myAccountBean.informationSelectEmail}">
                             <f:selectItem itemLabel="" itemValue="1"/> <!-- label set by calling refrehValues() -->
                             <f:selectItem itemLabel="" itemValue="2"/>
@@ -135,20 +130,16 @@
                           </h:selectOneMenu>
                         </td>
                       </tr>
-                    
-                    
                       <tr>
-                        <td width="5%"><img height="16" width="16" src="#{facesContext.externalContext.request.contextPath}/images/ico_warning.png"/></td>
-                        <td width="5%">Warning:</td>
-                        <td width="5%">
+                        <td width="16"><h:graphicImage value="/images/ico_warning.png" width="16" height="16" /></td>
+                        <td width="76"><h:outputText value="#{messages.myAccount_warning}" /></td>
+                        <td>
                           <h:selectOneMenu styleClass="text" id="warningSelectType" value="#{myAccountBean.warningSelectType}" onchange="refreshVisibility()">
                             <f:selectItem itemLabel="None" itemValue="0"/>
                             <f:selectItem itemLabel="Email" itemValue="1"/>
                             <f:selectItem itemLabel="Phone" itemValue="2"/>
                             <f:selectItem itemLabel="Text" itemValue="3"/>
                           </h:selectOneMenu>
-                        </td>
-                        <td width="85%">
                           <h:selectOneMenu styleClass="text" id="warningSelectEmail" value="#{myAccountBean.warningSelectEmail}">
                             <f:selectItem itemLabel="" itemValue="1"/> <!-- label set by calling refrehValues() -->
                             <f:selectItem itemLabel="" itemValue="2"/>
@@ -164,20 +155,16 @@
                           </h:selectOneMenu>
                         </td>
                       </tr>
-                    
-                    
                       <tr>
-                        <td width="5%"><img height="16" width="16" src="#{facesContext.externalContext.request.contextPath}/images/ico_critical.png"/></td>
-                        <td width="5%">Critical:</td>
-                        <td width="5%">
+                        <td width="16"><h:graphicImage value="/images/ico_critical.png" width="16" height="16" /></td>
+                        <td width="76"><h:outputText value="#{messages.myAccount_critical}" /></td>
+                        <td>
                           <h:selectOneMenu styleClass="text" id="criticalSelectType" value="#{myAccountBean.criticalSelectType}" onchange="refreshVisibility()">
                             <f:selectItem itemLabel="None" itemValue="0"/>
                             <f:selectItem itemLabel="Email" itemValue="1"/>
                             <f:selectItem itemLabel="Phone" itemValue="2"/>
                             <f:selectItem itemLabel="Text" itemValue="3"/>
                           </h:selectOneMenu>
-                        </td>
-                        <td width="85%">
                           <h:selectOneMenu styleClass="text" id="criticalSelectEmail" value="#{myAccountBean.criticalSelectEmail}">
                             <f:selectItem itemLabel="" itemValue="1"/> <!-- label set by calling refrehValues() -->
                             <f:selectItem itemLabel="" itemValue="2"/>
@@ -193,12 +180,11 @@
                           </h:selectOneMenu>
                         </td>
                       </tr>
-                      
                     </tbody>
                   </table>
                 </div>
               </div>
-        
+
               <div class="panel_sw">
                 <div class="panel_statusbar"></div>
               </div>
@@ -206,7 +192,7 @@
             <!-- END PANEL -->
           </td>
         
-          <td width="10"><img src="#{facesContext.externalContext.request.contextPath}/images/x.gif" width="10"/></td>
+          <td width="10"><h:graphicImage value="/images/x.gif" width="10"/></td>
         
           <td valign="top" width="465">
           
@@ -214,75 +200,80 @@
             <div class="">
               <div class="panel_nw">
                 <div class="panel_title">
-                  <span class="contact">Contact Information</span>
+                  <span class="contact"><h:outputText value="#{messages.myAccount_contactInformation}" /></span>
                 </div>
               </div>
               <div class="panel_w">
                 <div class="panel_content">
-                  <div class="add_section_title">Email</div>
+                  <div class="add_section_title"><h:outputText value="#{messages.myAccount_email}" /></div>
                     <table width="100%" border="0" cellpadding="4" cellspacing="0">
                       <tbody>
                         <tr>
-                          <td>Primary:</td>
+                          <td width="100"><h:outputText value="#{messages.myAccount_primary}" /></td>
                           <td>
-                            <rich:message for="priEmail">
-                              <f:facet name="errorMarker">
-                                <h:graphicImage value="/images/icon_msg_err_small.png" />
-                              </f:facet>
-                            </rich:message>  
+                            <rich:message for="priEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText id="priEmail" value="#{myAccountBean.alertContact.priEmail}" 
-                              size="40" onkeyup="refreshValues()" validator="#{myAccountBean.validateEmail}" />
+                              size="40" maxlength="62" onkeyup="refreshValues()" validator="#{myAccountBean.validateEmail}" />
                           </td>
                         </tr>
                         <tr>
-      
-                          <td>Secondary:</td>
+                          <td width="100"><h:outputText value="#{messages.myAccount_secondary}" /></td>
                           <td>
-                            <rich:message for="secEmail">
-                              <f:facet name="errorMarker">
-                                <h:graphicImage value="/images/icon_msg_err_small.png" />
-                              </f:facet>
-                            </rich:message>  
+                            <rich:message for="secEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText id="secEmail" value="#{myAccountBean.alertContact.secEmail}" 
-                              size="40" onkeyup="refreshValues()" validator="#{myAccountBean.validateEmail}" />
+                              size="40" maxlength="62" onkeyup="refreshValues()" validator="#{myAccountBean.validateEmail}" />
                           </td>
                         </tr>
                       </tbody>
                     </table>
                              
-                    <div class="add_section_title">Phone Numbers</div>
+                    <div class="add_section_title"><h:outputText value="#{messages.myAccount_phone}" /></div>
                     <table width="100%" border="0" cellpadding="4" cellspacing="0">
                       <tbody>
                         <tr>
-    
-                          <td>Primary:</td>
-                          <td><h:inputText id="priPhone" value="#{myAccountBean.alertContact.priPhone}" size="40" onkeyup="refreshValues()"/></td>
+                          <td width="100"><h:outputText value="#{messages.myAccount_primary}" /></td>
+                          <td>
+                            <rich:message for="priPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText id="priPhone" value="#{myAccountBean.alertContact.priPhone}" size="40" maxlength="22" onkeyup="refreshValues()" validatorMessage="#{messages.myAccount_phoneFormat}">
+                              <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
+                              <f:attribute name="regex" value="\D?\d{3}\D*\d{3}\D?\d{4}" />
+                            </h:inputText>
+                          </td>
                         </tr>
                         <tr>
-                          <td>Secondary:</td>
-                          <td><h:inputText id="secPhone" value="#{myAccountBean.alertContact.secPhone}" size="40" onkeyup="refreshValues()"/></td>
+                          <td width="100"><h:outputText value="#{messages.myAccount_secondary}" /></td>
+                          <td>
+                            <rich:message for="secPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText id="secPhone" value="#{myAccountBean.alertContact.secPhone}" size="40" maxlength="22" onkeyup="refreshValues()" validatorMessage="#{messages.myAccount_phoneFormat}">
+                              <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
+                              <f:attribute name="regex" value="\D?\d{3}\D*\d{3}\D?\d{4}" />
+                            </h:inputText>
+                          </td>
                         </tr>
-      
                         <tr>
-                          <td>Cell:</td>
-                          <td><h:inputText id="cellPhone" value="#{myAccountBean.alertContact.cellPhone}" size="40" onkeyup="refreshValues()"/></td>
+                          <td width="100"><h:outputText value="#{messages.myAccount_cell}" /></td>
+                          <td>
+                            <rich:message for="cellPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText id="cellPhone" value="#{myAccountBean.alertContact.cellPhone}" size="40" maxlength="22" onkeyup="refreshValues()" validatorMessage="#{messages.myAccount_phoneFormat}">
+                              <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
+                              <f:attribute name="regex" value="\D?\d{3}\D*\d{3}\D?\d{4}" />
+                            </h:inputText>
+                          </td>
                         </tr>
                       </tbody>
                     </table>
                                   
-                    <div class="add_section_title">Text Messaging</div>
+                    <div class="add_section_title"><h:outputText value="#{messages.myAccount_textMessages}" /></div>
                     <table width="100%" border="0" cellpadding="4" cellspacing="0">
-  
                       <tbody>
                         <tr>
-                          <td>Primary:</td>
-                          <td><h:inputText id="priText" value="#{myAccountBean.alertContact.priText}" size="40" onkeyup="refreshValues()"/></td>
+                          <td width="100"><h:outputText value="#{messages.myAccount_primary}" /></td>
+                          <td><h:inputText id="priText" value="#{myAccountBean.alertContact.priText}" size="40" maxlength="62" onkeyup="refreshValues()"/></td>
                         </tr>
                         <tr>
-                          <td>Secondary:</td>
-                          <td><h:inputText id="secText" value="#{myAccountBean.alertContact.secText}" size="40" onkeyup="refreshValues()"/></td>
+                          <td width="100"><h:outputText value="#{messages.myAccount_secondary}" /></td>
+                          <td><h:inputText id="secText" value="#{myAccountBean.alertContact.secText}" size="40" maxlength="62" onkeyup="refreshValues()"/></td>
                         </tr>
-  
                       </tbody>
                     </table>
                   </div>

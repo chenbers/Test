@@ -30,7 +30,7 @@
           <div class="">
             <div class="panel_nw">
               <div class="panel_title">
-                <span class="account">My Account</span>
+                <span class="account"><h:outputText value="#{messages.header_myAccount}" /></span>
                 <span class="panel_links"> </span>
               </div>
             </div>
@@ -40,19 +40,19 @@
                   <tbody>
                     <tr>
                       <td width="460">
-                        <div class="add_section_title">Account Information</div>
+                        <div class="add_section_title"><h:outputText value="#{messages.myAccount_accountInformation}" /></div>
                           <table width="100%" border="0" cellpadding="4" cellspacing="0">
                             <tbody>
                               <tr>
-                                <td>Name:</td>
+                                <td width="100"><h:outputText value="#{messages.myAccount_name}" /></td>
                                 <td><h:outputText value="#{myAccountBean.fullName}"/></td>
                               </tr>
                               <tr>
-                                <td>Region:</td>
+                                <td width="100"><h:outputText value="#{messages.myAccount_region}" /></td>
                                 <td><h:outputText value="#{myAccountBean.regionName}"/></td>
                               </tr>
                               <tr>
-                                <td>Team:</td>
+                                <td width="100"><h:outputText value="#{messages.myAccount_team}" /></td>
                                 <td><h:outputText value="#{myAccountBean.teamName}"/></td>
                               </tr>
                           </tbody>
@@ -61,14 +61,14 @@
                       </td>
       
                       
-                      <td width="10"><img src="#{facesContext.externalContext.request.contextPath}/images/x.gif" width="10"/></td>
+                      <td width="10"><h:graphicImage value="/images/x.gif" width="10"/></td>
                       
                       <td valign="top" width="460">
-                        <div class="add_section_title">Login</div>
+                        <div class="add_section_title"><h:outputText value="#{messages.myAccount_loginInformation}" /></div>
                         <table width="100%" border="0" cellpadding="4" cellspacing="0">
                           <tbody>
                             <tr>
-                              <td>User Name:</td>
+                              <td width="100"><h:outputText value="#{messages.myAccount_userName}" /></td>
                               <td><h:outputText value="#{myAccountBean.user.username}"/></td>
                             </tr>
                           </tbody>
@@ -98,7 +98,7 @@
           <div class="">
             <div class="panel_nw">
               <div class="panel_title">
-                <span class="notify">Notifications</span>
+                <span class="notify"><h:outputText value="#{messages.myAccount_notifications}" /></span>
               </div>
             </div>
             <div class="panel_w">
@@ -106,20 +106,18 @@
                 <table width="100%" border="0" cellpadding="4" cellspacing="0">
                   <tbody>
                     <tr>
-                      <td width="5%"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_info.png" width="16" height="16"/></td>
-                      <td width="38%">Information:</td>
-      
-                      <td width="57%"><h:outputText value="#{myAccountBean.infoText}" /></td>
+                      <td width="16"><h:graphicImage value="/images/ico_info.png" width="16" height="16" /></td>
+                      <td width="76"><h:outputText value="#{messages.myAccount_information}" /></td>
+                      <td><h:outputText value="#{myAccountBean.infoText}" /></td>
                     </tr>
                     <tr>
-                      <td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_warning.png" width="16" height="16"/></td>
-                      <td>Warning:</td>
+                      <td width="16"><h:graphicImage value="/images/ico_warning.png" width="16" height="16"/></td>
+                      <td width="76"><h:outputText value="#{messages.myAccount_warning}" /></td>
                       <td><h:outputText value="#{myAccountBean.warnText}" /></td>
                     </tr>
-      
                     <tr>
-                      <td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_critical.png" width="16" height="16"/></td>
-                      <td>Critical:</td>
+                      <td width="16"><h:graphicImage value="/images/ico_critical.png" width="16" height="16"/></td>
+                      <td width="76"><h:outputText value="#{messages.myAccount_critical}" /></td>
                       <td><h:outputText value="#{myAccountBean.critText}" /></td>
                     </tr>
                   </tbody>
@@ -134,7 +132,7 @@
           <!-- END PANEL -->
         </td>
       
-        <td width="10"><img src="#{facesContext.externalContext.request.contextPath}/images/x.gif" width="10"/></td>
+        <td width="10"><h:graphicImage value="/images/x.gif" width="10"/></td>
       
         <td valign="top" width="465">
         
@@ -142,59 +140,54 @@
           <div class="">
             <div class="panel_nw">
               <div class="panel_title">
-                <span class="contact">Contact Information</span>
+                <span class="contact"><h:outputText value="#{messages.myAccount_contactInformation}" /></span>
               </div>
             </div>
             <div class="panel_w">
               <div class="panel_content">
-                <div class="add_section_title">Email</div>
+                <div class="add_section_title"><h:outputText value="#{messages.myAccount_email}" /></div>
                   <table width="100%" border="0" cellpadding="4" cellspacing="0">
                     <tbody>
                       <tr>
-                        <td>Primary:</td>
+                        <td width="100"><h:outputText value="#{messages.myAccount_primary}" /></td>
                         <td><h:outputText value="#{myAccountBean.alertContact.priEmail}" /></td>
                       </tr>
                       <tr>
-    
-                        <td>Secondary:</td>
+                        <td width="100"><h:outputText value="#{messages.myAccount_secondary}" /></td>
                         <td><h:outputText value="#{myAccountBean.alertContact.secEmail}"/></td>
                       </tr>
                     </tbody>
                   </table>
-                           
-                  <div class="add_section_title">Phone Numbers</div>
+
+                  <div class="add_section_title"><h:outputText value="#{messages.myAccount_phone}" /></div>
                   <table width="100%" border="0" cellpadding="4" cellspacing="0">
                     <tbody>
                       <tr>
-  
-                        <td>Primary:</td>
+                        <td width="100"><h:outputText value="#{messages.myAccount_primary}" /></td>
                         <td><h:outputText value="#{myAccountBean.alertContact.priPhone}"/></td>
                       </tr>
                       <tr>
-                        <td>Secondary:</td>
+                        <td width="100"><h:outputText value="#{messages.myAccount_secondary}" /></td>
                         <td><h:outputText value="#{myAccountBean.alertContact.secPhone}"/></td>
                       </tr>
-    
                       <tr>
-                        <td>Cell:</td>
+                        <td width="100"><h:outputText value="#{messages.myAccount_cell}" /></td>
                         <td><h:outputText value="#{myAccountBean.alertContact.cellPhone}"/></td>
                       </tr>
                     </tbody>
                   </table>
-                                
-                  <div class="add_section_title">Text Messaging</div>
-                  <table width="100%" border="0" cellpadding="4" cellspacing="0">
 
+                  <div class="add_section_title"><h:outputText value="#{messages.myAccount_textMessages}" /></div>
+                  <table width="100%" border="0" cellpadding="4" cellspacing="0">
                     <tbody>
                       <tr>
-                        <td>Primary:</td>
+                        <td width="100"><h:outputText value="#{messages.myAccount_primary}" /></td>
                         <td><h:outputText value="#{myAccountBean.alertContact.priText}"/></td>
                       </tr>
                       <tr>
-                        <td>Secondary:</td>
+                        <td width="100"><h:outputText value="#{messages.myAccount_secondary}" /></td>
                         <td><h:outputText value="#{myAccountBean.alertContact.secText}"/></td>
                       </tr>
-
                     </tbody>
                   </table>
                 </div>

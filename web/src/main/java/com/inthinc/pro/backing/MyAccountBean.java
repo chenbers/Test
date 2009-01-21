@@ -1,10 +1,7 @@
 package com.inthinc.pro.backing;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.MessageSource;
@@ -180,7 +177,7 @@ public class MyAccountBean extends BaseBean
             Group group = groupDAO.findByID(getUser().getGroupID());
             if (group != null && group.getType() == GroupType.TEAM)
             {
-                regionName = group.getName();
+                teamName = group.getName();
             }
         }
         return teamName;
