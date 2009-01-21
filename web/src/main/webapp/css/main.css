@@ -117,11 +117,6 @@ body {
 	width: 225px;
 	}
 	
-.panel_title span.overall {
-	padding: 0 0 0 20px;
-	background: transparent url(../images/ico_overall.png) no-repeat center left;
-	}
-	
 .panel_title span.top5 {
 	padding: 0 0 0 20px;
 	background: transparent url(../images/ico_overall.png) no-repeat center left;
@@ -140,6 +135,11 @@ body {
 .panel_title span.line {
 	padding: 0 0 0 20px;
 	background: transparent url(../images/ico_line.png) no-repeat center left;
+	}
+	
+.panel_title span.overall {
+	padding: 0 0 0 20px;
+	background: transparent url(../images/ico_overall.png) no-repeat center left;
 	}
 	
 .panel_title span.event {
@@ -1288,14 +1288,6 @@ table.ls_tab_table td {
 	font-weight: bold;
 	background: #EBFFCA;
 	color: #30450C;
-	}
-	
-a.ls_tab_overall {
-	padding: 6px 10px 7px 20px;
-	background: transparent url(../images/ico_line.png) no-repeat center left;
-	text-decoration: none;
-	color: #000;
-	margin: 0 0 0 8px;
 	}
 	
 a.ls_tab_critical {
