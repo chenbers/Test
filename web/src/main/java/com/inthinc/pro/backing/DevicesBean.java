@@ -43,7 +43,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         AVAILABLE_COLUMNS.add("sim");
         AVAILABLE_COLUMNS.add("phone");
         AVAILABLE_COLUMNS.add("ephone");
-        AVAILABLE_COLUMNS.add("activated");
         AVAILABLE_COLUMNS.add("status");
 
         // statuses
