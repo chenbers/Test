@@ -24,12 +24,14 @@
 -->
 
     <rich:modalPanel id="editColumns" headerClass="popupHeader" controlsClass="popupControls" width="500" height="50" 
-    	autosized="true" resizeable="false" zindex="2000"	>
+    	autosized="true" resizeable="false" zindex="2000"	
+		onshow="document.getElementById('editColumnsForm:editColumnGrid:0:col').focus();">
+										 
       <f:facet name="header">
         <h:outputText value="#{messages.editColumns_title}" />
       </f:facet>
       <f:facet name="controls">
-        <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('editColumns')" />
+        <h:graphicImage value="/images/modal_close.gif" width="19" height="19" style="cursor:pointer" onclick="Richfaces.hideModalPanel('editColumns')" />
       </f:facet>
 
       <h:panelGroup layout="block" styleClass="popupsubtitle">
@@ -40,7 +42,7 @@
 
         <rich:dataGrid id="editColumnGrid" columns="3" value="#{bean.availableColumns}" var="col" width="100%" style="border:0">
           <h:outputLabel rendered="#{bean.tableColumns[col].canHide}">
-           <h:selectBooleanCheckbox label="#{col}" value="#{bean.tableColumns[col].visible}" />
+           <h:selectBooleanCheckbox label="#{col}" value="#{bean.tableColumns[col].visible}" id="col" />
            <h:outputText value="#{bean.tableColumns[col].colLabel}" />
           </h:outputLabel>
     </rich:dataGrid>
@@ -55,9 +57,10 @@
             </span>
           </a4j:commandButton>
           <h:outputText value=" " />
-          <a4j:commandButton
+          <a4j:commandButton 
             action="#{bean.tablePref.saveColumns}"                 
             oncomplete="Richfaces.hideModalPanel('editColumns')" 
+            onkeypress="if (event &amp;&amp; event.keyCode == 13) return true;"
             reRender="#{reRender}" styleClass="left">
             <span class="save">
               <h:outputText value="#{messages.button_save}" />
