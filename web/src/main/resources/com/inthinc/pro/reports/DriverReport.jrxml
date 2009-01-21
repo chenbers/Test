@@ -30,10 +30,10 @@
 
 	<field name="employeeID" class="java.lang.String"/>
 	<field name="employee" class="java.lang.String"/>
-	<field name="overallScore" class="java.lang.Float"/>
-	<field name="speedScore" class="java.lang.Float"/>
-	<field name="styleScore" class="java.lang.Float"/>
-	<field name="seatBeltScore" class="java.lang.Float"/>
+	<field name="overallScore" class="java.lang.Integer"/>
+	<field name="speedScore" class="java.lang.Integer"/>
+	<field name="styleScore" class="java.lang.Integer"/>
+	<field name="seatBeltScore" class="java.lang.Integer"/>
 	<field name="vehicle.name" class="java.lang.String"/>
 	<field name="milesDriven" class="java.lang.Integer"/>
 
@@ -295,7 +295,7 @@
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Float"><![CDATA[$F{overallScore}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[new java.math.BigDecimal($F{overallScore}.intValue()).movePointLeft(1).toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -308,7 +308,7 @@
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Float"><![CDATA[$F{speedScore}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[new java.math.BigDecimal($F{speedScore}.intValue()).movePointLeft(1).toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -321,7 +321,7 @@
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Float"><![CDATA[$F{styleScore}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[new java.math.BigDecimal($F{styleScore}.intValue()).movePointLeft(1).toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -334,7 +334,7 @@
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Float"><![CDATA[$F{seatBeltScore}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[new java.math.BigDecimal($F{seatBeltScore}.intValue()).movePointLeft(1).toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -349,7 +349,7 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{vehicle.name}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="###0.0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="###0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="291"
 						y="3"

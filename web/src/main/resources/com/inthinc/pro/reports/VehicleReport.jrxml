@@ -28,9 +28,9 @@
 	</parameter>
 	<parameter name="ENTITY_NAME" isForPrompting="false" class="java.lang.String"/>
 
-	<field name="overallScore" class="java.lang.Float"/>
-	<field name="speedScore" class="java.lang.Float"/>
-	<field name="styleScore" class="java.lang.Float"/>
+	<field name="overallScore" class="java.lang.Integer"/>
+	<field name="speedScore" class="java.lang.Integer"/>
+	<field name="styleScore" class="java.lang.Integer"/>
 	<field name="milesDriven" class="java.lang.Integer"/>
 	<field name="vehicle.vehicleID" class="java.lang.Integer"/>
 	<field name="makeModelYear" class="java.lang.String"/>
@@ -282,7 +282,7 @@
 					<textElement textAlignment="Left">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{overallScore}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[new java.math.BigDecimal($F{overallScore}.intValue()).movePointLeft(1).toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -295,7 +295,7 @@
 					<textElement textAlignment="Left">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{speedScore}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[new java.math.BigDecimal($F{speedScore}.intValue()).movePointLeft(1).toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -308,7 +308,7 @@
 					<textElement textAlignment="Left">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{styleScore}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[new java.math.BigDecimal($F{styleScore}.intValue()).movePointLeft(1).toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -323,7 +323,7 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{driver.person.first}  + " " + $F{driver.person.last}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="###0.0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="###0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="327"
 						y="3"
