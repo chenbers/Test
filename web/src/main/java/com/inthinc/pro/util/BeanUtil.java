@@ -3,6 +3,7 @@ package com.inthinc.pro.util;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -131,9 +132,15 @@ public class BeanUtil
 
                                 // collection, map or custom object
                                 if (targetProperty instanceof Collection)
+                                {
+                                    ((Collection) targetProperty).clear();
                                     ((Collection) targetProperty).addAll((Collection) sourceProperty);
+                                }
                                 else if (targetProperty instanceof Map)
+                                {
+                                    ((Map) targetProperty).clear();
                                     ((Map) targetProperty).putAll((Map) sourceProperty);
+                                }
                                 else
                                 {
                                     // filter ignore properties by this property's prefix
@@ -216,12 +223,12 @@ public class BeanUtil
                                 final Class<?> clazz = descriptor.getPropertyType();
                                 if (clazz != null)
                                 {
-                                    if (!BeanUtils.isSimpleProperty(clazz) && !clazz.isEnum())
+                                    if (!BeanUtils.isSimpleProperty(clazz) && !clazz.isEnum() && !Collection.class.isAssignableFrom(clazz) && !Map.class.isAssignableFrom(clazz) && !clazz.isArray())
                                     {
                                         compared.add(o1);
                                         compareAndInit(o1, o2, compared);
                                     }
-                                    else if (!o1.equals(o2))
+                                    else if ((clazz.isArray() && !Arrays.deepEquals((Object[]) o1, (Object[]) o2)) || !o1.equals(o2))
                                     {
                                         final Method write = descriptor.getWriteMethod();
                                         if (write != null)
