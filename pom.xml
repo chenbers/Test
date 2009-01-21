@@ -82,6 +82,15 @@
     <properties>
         <compileSource>1.6</compileSource>
     </properties>
+    <profiles>
+        <profile>
+            <id>release</id>
+            <properties>
+                <tomcatManagerURL>http://qa-pro.inthinc.com:8082/manager</tomcatManagerURL>
+                <tomcatServerID>qa-pro-tomcat</tomcatServerID>
+            </properties>
+        </profile>
+    </profiles>
     <build>
         <finalName>pro</finalName>
         <pluginManagement>
@@ -89,7 +98,6 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-clean-plugin</artifactId>
-                    <version>2.2</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -105,7 +113,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-eclipse-plugin</artifactId>
-                <version>2.5.1</version>
                 <configuration>
                     <downloadSources>true</downloadSources>
                     <downloadJavadocs>true</downloadJavadocs>
@@ -197,6 +204,7 @@ WWUUnm]]>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <useReleaseProfile>false</useReleaseProfile>
                     <goals>deploy tomcat:deploy</goals>
+                    <releaseProfiles>release</releaseProfiles>
                 </configuration>
             </plugin>
             <plugin>
