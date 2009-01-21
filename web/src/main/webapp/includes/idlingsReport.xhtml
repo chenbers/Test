@@ -39,7 +39,7 @@
 						<h:outputText value="#{item.group}" />   
     				</rich:column>
     				<rich:column rendered="#{idlingColumns['driver_person_fullName'].visible}" 
-    					sortBy="#{item.driver.person.last}">
+    					sortBy="#{item.driver.person.first}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_driver}" />
       					</f:facet>
