@@ -43,15 +43,15 @@ ul#grid_nav li.divider {
 	margin: 0;
 	}
 	
-#horz_nav #tb-account {
+#horz_nav li a.tb-account {
 	background: url(../images/ico_account.gif) no-repeat 5px 50%;
 	}
 
-#horz_nav #tb-help {
+#horz_nav li a.tb-help {
 	background: url(../images/ico_help.gif) no-repeat 5px 50%;
 	}
 	
-#horz_nav #tb-logout {
+#horz_nav li a.tb-logout {
 	background: url(../images/ico_logout.gif) no-repeat 5px 50%;
 	}
 
