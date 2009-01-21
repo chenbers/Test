@@ -1,25 +1,20 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.richfaces.event.DataScrollerEvent;
 
-import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.DeviceDAO;
-import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceReportItem;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.Report;
+import com.inthinc.pro.reports.ReportCriteria;
 
-public class DeviceReportBean extends BaseReportBean implements TablePrefOptions
+public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
 {
     private static final Logger logger = Logger.getLogger(DeviceReportBean.class);
     
@@ -29,34 +24,23 @@ public class DeviceReportBean extends BaseReportBean implements TablePrefOptions
     
     static final List<String> AVAILABLE_COLUMNS;
 
-    private TablePreferenceDAO tablePreferenceDAO;
     private VehicleDAO vehicleDAO;
     private DeviceDAO deviceDAO;
    
     private DeviceReportItem dri = null;
     
-    private Integer numRowsPerPg = 25;
     private final static String COLUMN_LABEL_PREFIX = "deviceReports_";
-    
-    private Integer maxCount = null;
-    private Integer start = 1;
-    private Integer end = numRowsPerPg;
-    
-    private String searchFor = "";
-    private String secret = "";
-
-    private TablePref tablePref;
 
     static
     {
         // available columns
         AVAILABLE_COLUMNS = new ArrayList<String>();
-        AVAILABLE_COLUMNS.add("tiwiproID");
-        AVAILABLE_COLUMNS.add("assignedVehicle");
-        AVAILABLE_COLUMNS.add("IMEI");
-        AVAILABLE_COLUMNS.add("phoneNbr");
-        AVAILABLE_COLUMNS.add("status");   
-        AVAILABLE_COLUMNS.add("emergPhoneNbr");
+        AVAILABLE_COLUMNS.add("device_name");
+        AVAILABLE_COLUMNS.add("vehicle_name");
+        AVAILABLE_COLUMNS.add("device_imei");
+        AVAILABLE_COLUMNS.add("device_phone");
+        AVAILABLE_COLUMNS.add("device_status");   
+        AVAILABLE_COLUMNS.add("device_ephone");
     }
     
     public DeviceReportBean()
@@ -66,7 +50,7 @@ public class DeviceReportBean extends BaseReportBean implements TablePrefOptions
     
     public void init() 
     {
-        tablePref = new TablePref(this);
+        setTablePref(new TablePref(this));
 
         searchFor = checkForRequestMap();
         
@@ -103,79 +87,26 @@ public class DeviceReportBean extends BaseReportBean implements TablePrefOptions
     {             
         return deviceData;
     }
-    
-    private void checkOnSearch() 
-    {
-        if ( (searchFor != null) && 
-             (searchFor.trim().length() != 0) ) 
-        {
-            search();
-        } else {
-            loadResults(this.devicesData);
-        }
-        
-        maxCount = this.deviceData.size();        
-        resetCounts();        
-    }
 
     public void setDeviceData(List<DeviceReportItem> deviceData)
     {
         this.deviceData = deviceData;
     }
-    
-    public void search() 
+
+    @Override
+    protected List<DeviceReportItem> getDBData()
     {
-        if ( this.deviceData.size() > 0 ) {
-            this.deviceData.clear();
-        }
-        
-        if ( this.searchFor.trim().length() != 0 ) {
-            String trimmedSearch = this.searchFor.trim().toLowerCase();            
-            List <DeviceReportItem> matchedDevices = new ArrayList<DeviceReportItem>();    
-            
-            for ( DeviceReportItem d: devicesData ) {
-                
-                int index1;
-                int index2;
-                int index3;
-                
-                // imei                
-                String dev = d.getDevice().getImei().toLowerCase();
-                index1 = dev.indexOf(trimmedSearch);                    
-                if (index1 != -1) {                        
-                    matchedDevices.add(d);
-                }
-                
-                // device name
-                String name = d.getDevice().getName().toLowerCase();
-                index2 = name.indexOf(trimmedSearch);                    
-                if ( (index1 == -1) && 
-                     (index2 != -1) ) {                        
-                    matchedDevices.add(d);
-                }
-                
-                // vehicle name
-                String vehicleName = d.getVehicle().getName().toLowerCase();
-                index3 = vehicleName.indexOf(trimmedSearch);                    
-                if ( (index1 == -1) &&
-                     (index2 == -1) &&
-                     (index3 != -1) ) {                        
-                    matchedDevices.add(d);
-                }                
-            }
-            
-            loadResults(matchedDevices);             
-            this.maxCount = matchedDevices.size();
-                    
-        } else {
-            loadResults(devicesData);
-            this.maxCount = devicesData.size();
-        }
-        
-        resetCounts();       
+        return devicesData;
     }
-    
-    private void loadResults(List <DeviceReportItem> devicData)
+
+    @Override
+    protected List<DeviceReportItem> getDisplayData()
+    {
+        return deviceData;
+    }
+
+    @Override
+    protected void loadResults(List <DeviceReportItem> devicData)
     {     
         if ( this.deviceData.size() > 0 ) {
             this.deviceData.clear();
@@ -190,134 +121,6 @@ public class DeviceReportBean extends BaseReportBean implements TablePrefOptions
         
         this.maxCount = this.deviceData.size();   
         resetCounts(); 
-    }
-    
-    private void resetCounts() {        
-        this.start = 1;
-        
-        //None found
-        if ( this.deviceData.size() < 1 ) {
-            this.start = 0;
-        }
-        
-        this.end = this.numRowsPerPg;
-        
-        //Fewer than a page
-        if ( this.deviceData.size() <= this.end ) {
-            this.end = this.deviceData.size();
-        } else if ( this.start == 0 ) {
-            this.end = 0;
-        }
-    }
-
-    public void scrollerListener(DataScrollerEvent se)     
-    {               
-        this.start = (se.getPage()-1)*this.numRowsPerPg + 1;
-        this.end = (se.getPage())*this.numRowsPerPg;
-        
-        //Partial page
-        if ( this.end > this.deviceData.size() ) {
-            this.end = this.deviceData.size();
-        }
-    }  
-
-    
-    public Integer getMaxCount()
-    {
-        return maxCount;
-    }
-
-
-    public void setMaxCount(Integer maxCount)
-    {        
-        this.maxCount = maxCount;
-    }
-
-
-    public Integer getStart()
-    {
-        return start;
-    }
-
-
-    public void setStart(Integer start)
-    {
-        this.start = start;
-    }
-
-
-    public Integer getEnd()
-    {
-        return end;
-    }
-
-
-    public void setEnd(Integer end)
-    {
-        this.end = end;
-    }
-
-
-    public Integer getNumRowsPerPg()
-    {
-        return numRowsPerPg;
-    }
-
-
-    public void setNumRowsPerPg(Integer numRowsPerPg)
-    {
-        this.numRowsPerPg = numRowsPerPg;
-    }
-
-
-    public String getSearchFor()
-    {
-        return searchFor;
-    }
-
-
-    public void setSearchFor(String searchFor)
-    {
-        this.searchFor = searchFor;
-    }
-
-
-    @Override
-    public TablePreferenceDAO getTablePreferenceDAO()
-    {
-        return tablePreferenceDAO;
-    }
-
-
-    public void setTablePreferenceDAO(TablePreferenceDAO tablePreferenceDAO)
-    {
-        this.tablePreferenceDAO = tablePreferenceDAO;
-    }       
-
-    public String getSecret()
-    {
-        String searchForLocal = checkForRequestMap();
-        String search = searchForLocal.toLowerCase().trim();
-        if ( (search.length() != 0) && (!search.equalsIgnoreCase(this.searchFor)) ) 
-        {
-            this.searchFor = searchForLocal.toLowerCase().trim();
-        }
-              
-        if ( super.isMainMenu() ) {  
-            checkOnSearch();
-            super.setMainMenu(false);
-        } else if ( this.searchFor.trim().length() != 0 ) {
-            checkOnSearch();
-        } else {
-            loadResults(this.devicesData);
-        }   
-        
-        return secret;
-    }
-
-    public void setSecret(String secret)
-    {
-        this.secret = secret;
     }
 
     public VehicleDAO getVehicleDAO()
@@ -353,45 +156,11 @@ public class DeviceReportBean extends BaseReportBean implements TablePrefOptions
     }
 
     @Override
-    public Map<String, Boolean> getDefaultColumns()
-    {
-        HashMap<String, Boolean> columns = new HashMap<String, Boolean>();
-        for (String col : AVAILABLE_COLUMNS)
-            columns.put(col, true);
-        return columns;
-    }
-
-    @Override
     public TableType getTableType()
     {
         return TableType.DEVICE_REPORT;
     }
 
-    @Override
-    public Integer getUserID()
-    {
-        return getUser().getUserID();
-    }
-
-    public Map<String, TableColumn> getTableColumns()
-    {
-        return tablePref.getTableColumns();
-    }
-    public void setTableColumns(Map<String, TableColumn> tableColumns)
-    {
-        tablePref.setTableColumns(tableColumns);
-    }
-
-    public TablePref getTablePref()
-    {
-        return tablePref;
-    }
-
-    public void setTablePref(TablePref tablePref)
-    {
-        this.tablePref = tablePref;
-    }
-    
     public void exportReportToPdf()
     {
         ReportCriteria reportCriteria = new ReportCriteria(Report.DEVICES_REPORT,getGroupHierarchy().getTopGroup().getName(),null);

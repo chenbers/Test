@@ -2,33 +2,20 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
-import org.richfaces.event.DataScrollerEvent;
 
-import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.ScoreDAO;
-import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.dao.util.DateUtil;
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.IdlingReportItem;
-import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.TableType;
-import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.Report;
-import com.inthinc.pro.util.MessageUtil;
-import com.inthinc.pro.util.TempColumns;
+import com.inthinc.pro.reports.ReportCriteria;
 
-public class IdlingReportBean extends BaseReportBean implements TablePrefOptions
+public class IdlingReportBean extends BaseReportBean<IdlingReportItem>
 {
     private static final Logger logger = Logger.getLogger(IdlingReportBean.class);
     
@@ -38,20 +25,11 @@ public class IdlingReportBean extends BaseReportBean implements TablePrefOptions
     
     static final List<String> AVAILABLE_COLUMNS;
 
-    private TablePreferenceDAO tablePreferenceDAO;
     private ScoreDAO scoreDAO;
     
     private IdlingReportItem iri = null;
     
-    private Integer numRowsPerPg = 25;
     private final static String COLUMN_LABEL_PREFIX = "idlingReports_";
-    
-    private Integer maxCount = null;
-    private Integer start = 1;
-    private Integer end = numRowsPerPg;
-    
-    private String searchFor = "";
-    private String secret = "";
     
     private Date startDate = new Date();
     private Date defaultStartDate = null;
@@ -68,8 +46,6 @@ public class IdlingReportBean extends BaseReportBean implements TablePrefOptions
     private final static int DAYS_BACK = 7 * 24 * 60 * 60 * 1000;
 
     private DriverDAO driverDAO;
-    
-    private TablePref tablePref;
 
     
     static
@@ -77,15 +53,15 @@ public class IdlingReportBean extends BaseReportBean implements TablePrefOptions
         // available columns
         AVAILABLE_COLUMNS = new ArrayList<String>();
         AVAILABLE_COLUMNS.add("group");
-        AVAILABLE_COLUMNS.add("driver");
-        AVAILABLE_COLUMNS.add("vehicle");
-        AVAILABLE_COLUMNS.add("drivetime");
-        AVAILABLE_COLUMNS.add("lowhrs");
-        AVAILABLE_COLUMNS.add("lowpercent");
-        AVAILABLE_COLUMNS.add("highhrs");
-        AVAILABLE_COLUMNS.add("highpercent");
-        AVAILABLE_COLUMNS.add("totalhrs");
-        AVAILABLE_COLUMNS.add("totalpercent");
+        AVAILABLE_COLUMNS.add("driver_person_fullName");
+        AVAILABLE_COLUMNS.add("vehicle_name");
+        AVAILABLE_COLUMNS.add("driveTime");
+        AVAILABLE_COLUMNS.add("lowHrs");
+        AVAILABLE_COLUMNS.add("lowPercent");
+        AVAILABLE_COLUMNS.add("highHrs");
+        AVAILABLE_COLUMNS.add("highPercent");
+        AVAILABLE_COLUMNS.add("totalHrs");
+        AVAILABLE_COLUMNS.add("totalPercent");
     }
     
     public IdlingReportBean()
@@ -95,7 +71,7 @@ public class IdlingReportBean extends BaseReportBean implements TablePrefOptions
     
     public void init() 
     {   
-        tablePref = new TablePref(this);
+        setTablePref(new TablePref(this));
         
         searchFor = checkForRequestMap();
         
@@ -130,35 +106,28 @@ public class IdlingReportBean extends BaseReportBean implements TablePrefOptions
     public List<IdlingReportItem> getIdlingData()
     {         
         return idlingData;
-        
-    }
-    
-    private void checkOnSearch() 
-    {
-        if ( (searchFor != null) && 
-             (searchFor.trim().length() != 0) ) 
-        {
-            search();
-        } else {
-            loadResults(this.idlingsData);
-        }
-        
-        maxCount = this.idlingData.size();        
-        resetCounts();        
     }
 
     public void setIdlingData(List<IdlingReportItem> idlingData)
     {
         this.idlingData = idlingData;
     }
-    
-    public void search() 
+
+    @Override
+    protected List<IdlingReportItem> getDBData()
     {
-        // to be shown
-        if ( this.idlingData.size() > 0 ) {
-            this.idlingData.clear();
-        }
-        
+        return idlingsData;
+    }
+
+    @Override
+    protected List<IdlingReportItem> getDisplayData()
+    {
+        return idlingData;
+    }
+    
+    @Override
+    public void search()
+    {
         // snagged from the db
         if ( this.idlingsData.size() > 0 ) {
             this.idlingsData.clear();
@@ -172,60 +141,8 @@ public class IdlingReportBean extends BaseReportBean implements TablePrefOptions
             scoreDAO.getIdlingReportData(
                     getUser().getGroupID(),
                     internalStartDate, internalEndDate);
-        
-        String trimmedSearch = this.searchFor.trim().toLowerCase();
 
-        if ( trimmedSearch.length() != 0 ) {
-            
-            // always hit the database, no matter what, 
-            //   because of date range....
-            checkDates();
-            
-            this.idlingsData = 
-                scoreDAO.getIdlingReportData(
-                        getUser().getGroupID(),
-                        internalStartDate, internalEndDate);
-            
-            List <IdlingReportItem> matchedIdlers = new ArrayList<IdlingReportItem>();                 
-                                                                         
-            for ( IdlingReportItem iri: this.idlingsData ) {
-                
-                int index1;
-                int index2;
-                int index3;
-   
-                // first name 
-                index1 = iri.getDriver().getPerson().getFirst().toLowerCase().indexOf(trimmedSearch);                    
-                if (index1 != -1) {                        
-                    matchedIdlers.add(iri);
-                }
-                
-                // last name 
-                index2 = iri.getDriver().getPerson().getLast().toLowerCase().indexOf(trimmedSearch);                    
-                if ((index1 == -1) &&
-                    (index2 != -1) ) {                        
-                    matchedIdlers.add(iri);
-                }
-                
-                // vehicle name, if assigned ....
-                if ( iri.getVehicle() != null ) {
-                    index3 = iri.getVehicle().getName().trim().toLowerCase().indexOf(trimmedSearch);                    
-                    if ((index1 == -1) &&
-                        (index2 == -1) &&
-                        (index3 != -1) ) {                        
-                        matchedIdlers.add(iri);
-                    }
-                }
-            }
-            loadResults(matchedIdlers);                        
-            this.maxCount = matchedIdlers.size();
-                           
-        } else {
-            loadResults(this.idlingsData);
-            this.maxCount = this.idlingsData.size();
-        }
-        
-        resetCounts();       
+        super.search();
     }
     
     private void checkDates() {
@@ -263,15 +180,16 @@ public class IdlingReportBean extends BaseReportBean implements TablePrefOptions
         
         // CAREFULLY compute the search dates
         long tm = startDate.getTime();
-        tm = tm/((long)1000);
+        tm = tm/1000L;
         internalStartDate = (int)tm;
         
         tm = endDate.getTime();
-        tm = tm/((long)1000);
+        tm = tm/1000L;
         internalEndDate = (int)tm;
     }
-    
-    private void loadResults(List <IdlingReportItem> idlsData) 
+
+    @Override
+    protected void loadResults(List <IdlingReportItem> idlsData) 
     {     
         if ( this.idlingData.size() > 0 ) {
             this.idlingData.clear();
@@ -318,104 +236,6 @@ public class IdlingReportBean extends BaseReportBean implements TablePrefOptions
         this.maxCount = this.idlingData.size();   
         resetCounts();    
     }
-    
-    private void resetCounts() {
-        this.start = 1;
-        
-        //None found
-        if ( this.idlingData.size() < 1 ) {
-            this.start = 0;
-        }
-        
-        this.end = this.numRowsPerPg;
-        
-        //Fewer than a page
-        if ( this.idlingData.size() <= this.end ) {
-            this.end = this.idlingData.size();
-        } else if ( this.start == 0 ) {
-            this.end = 0;
-        }
-    }
-    public void scrollerListener(DataScrollerEvent se)     
-    {        
-        this.start = (se.getPage()-1)*this.numRowsPerPg + 1;
-        this.end = (se.getPage())*this.numRowsPerPg;
-        //Partial page
-        if ( this.end > this.idlingData.size() ) {
-            this.end = this.idlingData.size();
-        }
-    }
-    
-
-    public Integer getMaxCount()
-    {
-        return maxCount;
-    }
-
-
-    public void setMaxCount(Integer maxCount)
-    {        
-        this.maxCount = maxCount;
-    }
-
-
-    public Integer getStart()
-    {
-        return start;
-    }
-
-
-    public void setStart(Integer start)
-    {
-        this.start = start;
-    }
-
-
-    public Integer getEnd()
-    {
-        return end;
-    }
-
-
-    public void setEnd(Integer end)
-    {
-        this.end = end;
-    }
-
-
-    public Integer getNumRowsPerPg()
-    {
-        return numRowsPerPg;
-    }
-
-
-    public void setNumRowsPerPg(Integer numRowsPerPg)
-    {
-        this.numRowsPerPg = numRowsPerPg;
-    }
-
-
-    public String getSearchFor()
-    {
-        return searchFor;
-    }
-
-
-    public void setSearchFor(String searchFor)
-    {
-        this.searchFor = searchFor;
-    }
-
-    public TablePreferenceDAO getTablePreferenceDAO()
-    {
-        return tablePreferenceDAO;
-    }
-
-    public void setTablePreferenceDAO(TablePreferenceDAO tablePreferenceDAO)
-    {
-        this.tablePreferenceDAO = tablePreferenceDAO;
-    }
-
 
     public Date getStartDate()
     {
@@ -477,33 +297,6 @@ public class IdlingReportBean extends BaseReportBean implements TablePrefOptions
     {
         this.badDates = badDates;
     }
-    
-    
-    public String getSecret()
-    {
-        String searchForLocal = checkForRequestMap();
-        String search = searchForLocal.toLowerCase().trim();
-        if ( (search.length() != 0) && (!search.equalsIgnoreCase(this.searchFor)) ) 
-        {
-            this.searchFor = searchForLocal.toLowerCase().trim();
-        }
-              
-        if ( super.isMainMenu() ) {  
-            checkOnSearch();
-            super.setMainMenu(false);
-        } else if ( this.searchFor.trim().length() != 0 ) {
-            checkOnSearch();
-        } else {
-            loadResults(this.idlingsData);
-        }   
-        
-        return secret;
-    }
-
-    public void setSecret(String secret)
-    {
-        this.secret = secret;
-    }
 
     public ScoreDAO getScoreDAO()
     {
@@ -528,45 +321,11 @@ public class IdlingReportBean extends BaseReportBean implements TablePrefOptions
     }
 
     @Override
-    public Map<String, Boolean> getDefaultColumns()
-    {
-        HashMap<String, Boolean> columns = new HashMap<String, Boolean>();
-        for (String col : AVAILABLE_COLUMNS)
-            columns.put(col, true);
-        return columns;
-    }
-
-    @Override
     public TableType getTableType()
     {
         return TableType.IDLING_REPORT;
     }
 
-    @Override
-    public Integer getUserID()
-    {
-        return getUser().getUserID();
-    }
-
-    public Map<String, TableColumn> getTableColumns()
-    {
-        return tablePref.getTableColumns();
-    }
-    public void setTableColumns(Map<String, TableColumn> tableColumns)
-    {
-        tablePref.setTableColumns(tableColumns);
-    }
-
-    public TablePref getTablePref()
-    {
-        return tablePref;
-    }
-
-    public void setTablePref(TablePref tablePref)
-    {
-        this.tablePref = tablePref;
-    }
-    
     public void exportReportToPdf()
     {
         ReportCriteria reportCriteria = new ReportCriteria(Report.IDLING_REPORT,getGroupHierarchy().getTopGroup().getName(),null);

@@ -1,35 +1,23 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Vector;
 
 import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
-import org.richfaces.event.DataScrollerEvent;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
-import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.ScoreDAO;
-import com.inthinc.pro.dao.TablePreferenceDAO;
-import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.Person;
-import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.Report;
-import com.inthinc.pro.util.MessageUtil;
-import com.inthinc.pro.util.TempColumns;
+import com.inthinc.pro.reports.ReportCriteria;
 
-public class DriverReportBean extends BaseReportBean implements TablePrefOptions
+public class DriverReportBean extends BaseReportBean<DriverReportItem>
 {
     private static final Logger logger = Logger.getLogger(DriverReportBean.class);
     
@@ -40,35 +28,24 @@ public class DriverReportBean extends BaseReportBean implements TablePrefOptions
     static final List<String> AVAILABLE_COLUMNS;
     
     private ScoreDAO scoreDAO;
-    private TablePreferenceDAO tablePreferenceDAO;
    
     private DriverReportItem drt = null;
     
-    private Integer numRowsPerPg = 25;
     private final static String COLUMN_LABEL_PREFIX = "driverReports_";
-    
-    private Integer maxCount = null;
-    private Integer start = 1;
-    private Integer end = numRowsPerPg;
-    
-    private String searchFor = "";
-    private String secret = "";
-
-    private TablePref tablePref;
     
     static
     {
         // available columns
         AVAILABLE_COLUMNS = new ArrayList<String>();
         AVAILABLE_COLUMNS.add("group");
-        AVAILABLE_COLUMNS.add("employeeID");
-        AVAILABLE_COLUMNS.add("employee");
-        AVAILABLE_COLUMNS.add("vehicleID");
+        AVAILABLE_COLUMNS.add("driver_person_empid");
+        AVAILABLE_COLUMNS.add("driver_person_fullName");
+        AVAILABLE_COLUMNS.add("vehicle_name");
         AVAILABLE_COLUMNS.add("milesDriven");
-        AVAILABLE_COLUMNS.add("overall");
-        AVAILABLE_COLUMNS.add("speed");
-        AVAILABLE_COLUMNS.add("style");
-        AVAILABLE_COLUMNS.add("seatBelt");
+        AVAILABLE_COLUMNS.add("overallScore");
+        AVAILABLE_COLUMNS.add("speedScore");
+        AVAILABLE_COLUMNS.add("styleScore");
+        AVAILABLE_COLUMNS.add("seatBeltScore");
     }
     
     public DriverReportBean() 
@@ -78,9 +55,9 @@ public class DriverReportBean extends BaseReportBean implements TablePrefOptions
     
     public void init() 
     {
-        tablePref = new TablePref(this);
+        setTablePref(new TablePref(this));
 
-        searchFor = checkForRequestMap(); 
+        searchFor = checkForRequestMap();
         
         this.driversData = 
             scoreDAO.getDriverReportData(            
@@ -102,107 +79,31 @@ public class DriverReportBean extends BaseReportBean implements TablePrefOptions
             loadResults(this.driversData);
         }
     }
-        
 
     public List<DriverReportItem> getDriverData()
     {   
         return this.driverData;
-    }
-    
-    private void checkOnSearch() 
-    {
-        if ( (searchFor != null) && 
-             (searchFor.trim().length() != 0) ) 
-        {
-            search();
-        } else {
-            loadResults(this.driversData);
-        }
-        
-        maxCount = this.driverData.size();        
-        resetCounts();        
     }
 
     public void setDriverData(List<DriverReportItem> drvrData)
     {
         this.driverData = drvrData;
     }
-    
-    public void search() 
-    {      
-        if ( this.driverData.size() > 0 ) {
-            this.driverData.clear();
-        }
-        
-        if ( this.searchFor.trim().length() != 0 ) {
-            String trimmedSearch = this.searchFor.trim().toLowerCase();            
-            List <DriverReportItem> matchedDrivers = new ArrayList<DriverReportItem>();    
-            
-            for ( DriverReportItem d: this.driversData ) {                
-                Person p = d.getDriver().getPerson();
-                
-                int index1;
-                int index2;
-                int index3;
-                int index4;
-                                                
-                if ( p != null ) {
-                    
-                    // first name
-                    String lowerCaseFirst = 
-                        p.getFirst().toLowerCase();
-                    index1 = 
-                        lowerCaseFirst.indexOf(trimmedSearch);                    
-                    if (index1 != -1) {                        
-                        matchedDrivers.add(d);
-                    }
-                
-                    // last name
-                    String lowerCaseLast = 
-                        p.getLast().toLowerCase();
-                    index2 = 
-                        lowerCaseLast.indexOf(trimmedSearch);                    
-                    if ((index1 == -1) && 
-                        (index2 != -1)) {                        
-                        matchedDrivers.add(d);
-                    }
-                    
-                    // emp id
-                    String lowerCaseEmployeeID = d.getDriver().getPerson().getEmpid().toLowerCase();
-                    index3 = 
-                        lowerCaseEmployeeID.indexOf(trimmedSearch);                    
-                    if ((index1 == -1) && 
-                        (index2 == -1) &&
-                        (index3 != -1) ) {                        
-                        matchedDrivers.add(d);
-                    }
-                    
-                    // group name
-                    String lowerCaseGroupName = d.getGroup().toLowerCase(); 
-                    index4 = 
-                        lowerCaseGroupName.indexOf(trimmedSearch);                    
-                    if ((index1 == -1) && 
-                        (index2 == -1) &&
-                        (index3 == -1) &&
-                        (index4 != -1) ) {                        
-                        matchedDrivers.add(d);
-                    }                    
-                }                
-            }
-            
-            loadResults(matchedDrivers);             
-            this.maxCount = matchedDrivers.size();
-            
-        //Nothing entered, show them all
-        } else {
-            loadResults(this.driversData);
-            this.maxCount = this.driverData.size();
-        }
-        
-        resetCounts();       
+
+    @Override
+    protected List<DriverReportItem> getDBData()
+    {
+        return driversData;
     }
-    
-    private void loadResults(List <DriverReportItem> drvsData)
+
+    @Override
+    protected List<DriverReportItem> getDisplayData()
+    {
+        return driverData;
+    }
+
+    @Override
+    protected void loadResults(List <DriverReportItem> drvsData)
     {
         if ( this.driverData.size() > 0 ) {
             this.driverData.clear();
@@ -235,25 +136,6 @@ public class DriverReportBean extends BaseReportBean implements TablePrefOptions
         resetCounts();            
     }
     
-    private void resetCounts() 
-    {        
-        this.start = 1;
-        
-        //None found
-        if ( this.driverData.size() < 1 ) {
-            this.start = 0;
-        }
-        
-        this.end = this.numRowsPerPg;
-        
-        //Fewer than a page
-        if ( this.driverData.size() <= this.end ) {
-            this.end = this.driverData.size();
-        } else if ( this.start == 0 ) {
-            this.end = 0;
-        }
-    }
-    
     private void setStyles() 
     {      
         drt.setStyleOverall(ScoreBox.GetStyleFromScore(drt.getOverallScore(), ScoreBoxSizes.SMALL));
@@ -266,67 +148,6 @@ public class DriverReportBean extends BaseReportBean implements TablePrefOptions
        
     }
 
-    public void scrollerListener(DataScrollerEvent se)     
-    {               
-        this.start = (se.getPage()-1)*this.numRowsPerPg + 1;
-        this.end = (se.getPage())*this.numRowsPerPg;
-        
-        //Partial page
-        if ( this.end > this.driverData.size() ) {
-            this.end = this.driverData.size();
-        }
-    }  
-    
-    public Integer getMaxCount()
-    {   
-        return maxCount;
-    }
-
-    public void setMaxCount(Integer maxCount)
-    {        
-        this.maxCount = maxCount;
-    }
-
-    public Integer getStart()
-    {   
-        return start;
-    }
-
-    public void setStart(Integer start)
-    {
-        this.start = start;
-    }
-
-    public Integer getEnd()
-    {   
-        return end;
-    }
-
-    public void setEnd(Integer end)
-    {
-        this.end = end;
-    }
-
-    public Integer getNumRowsPerPg()
-    {
-        return numRowsPerPg;
-    }
-
-    public void setNumRowsPerPg(Integer numRowsPerPg)
-    {
-        this.numRowsPerPg = numRowsPerPg;
-    }
-
-    public String getSearchFor()
-    {
-        return searchFor;
-    }
-
-    public void setSearchFor(String searchFor)
-    {
-        this.searchFor = searchFor;
-    }
-
     public ScoreDAO getScoreDAO()
     {
         return scoreDAO;
@@ -335,42 +156,6 @@ public class DriverReportBean extends BaseReportBean implements TablePrefOptions
     public void setScoreDAO(ScoreDAO scoreDAO)
     {
         this.scoreDAO = scoreDAO;
-    }
-
-    public TablePreferenceDAO getTablePreferenceDAO()
-    {
-        return tablePreferenceDAO;
-    }
-
-    public void setTablePreferenceDAO(TablePreferenceDAO tablePreferenceDAO)
-    {
-        this.tablePreferenceDAO = tablePreferenceDAO;
-    }
-
-    public String getSecret()
-    {
-        String searchForLocal = checkForRequestMap();
-        String search = searchForLocal.toLowerCase().trim();
-        if ( (search.length() != 0) && (!search.equalsIgnoreCase(this.searchFor)) ) 
-        {
-            this.searchFor = searchForLocal.toLowerCase().trim();
-        }
-              
-        if ( super.isMainMenu() ) {  
-            checkOnSearch();
-            super.setMainMenu(false);
-        } else if ( this.searchFor.trim().length() != 0 ) {
-            checkOnSearch();
-        } else {
-            loadResults(this.driversData);
-        }   
-        
-        return secret;
-    }
-
-    public void setSecret(String secret)
-    {
-        this.secret = secret;
     }
 
     @Override
@@ -386,43 +171,9 @@ public class DriverReportBean extends BaseReportBean implements TablePrefOptions
     }
 
     @Override
-    public Map<String, Boolean> getDefaultColumns()
-    {
-        HashMap<String, Boolean> columns = new HashMap<String, Boolean>();
-        for (String col : AVAILABLE_COLUMNS)
-            columns.put(col, true);
-        return columns;
-    }
-
-    @Override
     public TableType getTableType()
     {
         return TableType.DRIVER_REPORT;
-    }
-
-    @Override
-    public Integer getUserID()
-    {
-        return getUser().getUserID();
-    }
-
-    public Map<String, TableColumn> getTableColumns()
-    {
-        return tablePref.getTableColumns();
-    }
-    public void setTableColumns(Map<String, TableColumn> tableColumns)
-    {
-        tablePref.setTableColumns(tableColumns);
-    }
-
-    public TablePref getTablePref()
-    {
-        return tablePref;
-    }
-
-    public void setTablePref(TablePref tablePref)
-    {
-        this.tablePref = tablePref;
     }
     
     public void exportReportToPdf()

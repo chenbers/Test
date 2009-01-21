@@ -38,20 +38,20 @@
 						</f:facet>
 						<h:outputText value="#{item.group}" />   
     				</rich:column>
-    				<rich:column rendered="#{idlingColumns['driver'].visible}" 
+    				<rich:column rendered="#{idlingColumns['driver_person_fullName'].visible}" 
     					sortBy="#{item.driver.person.last}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_driver}" />
       					</f:facet>
 						<h:commandLink action="go_driver" 
-							value="#{item.driver.person.first} #{item.driver.person.last}">
+							value="#{item.driver.person.fullName}">
       						<f:setPropertyActionListener 
 								value="#{item.driver}" 
 								target="#{navigationBean.driver}">
 							</f:setPropertyActionListener>
       					</h:commandLink>       
     				</rich:column>
-    				<rich:column rendered="#{idlingColumns['vehicle'].visible}" 
+    				<rich:column rendered="#{idlingColumns['vehicle_name'].visible}" 
     					sortBy="#{item.vehicle.name}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_vehicle}" />
@@ -64,40 +64,40 @@
 							</f:setPropertyActionListener>
       					</h:commandLink>        								
     				</rich:column>
-    				<rich:column rendered="#{idlingColumns['drivetime'].visible}" 
+    				<rich:column rendered="#{idlingColumns['driveTime'].visible}" 
     					sortBy="#{item.driveTime}">    					
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_drivetime}" />
       					</f:facet>
       					<h:outputText value="#{item.driveTime}" />        					
     				</rich:column>    				
-    				<rich:column rendered="#{idlingColumns['lowhrs'].visible}" 
+    				<rich:column rendered="#{idlingColumns['lowHrs'].visible}" 
     					sortBy="#{item.lowHrs}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_lowidlehrs}" />
       					</f:facet>
       					<h:outputText value="#{item.lowHrs}" />
     				</rich:column>
-    				<rich:column rendered="#{idlingColumns['lowpercent'].visible}">    					
+    				<rich:column rendered="#{idlingColumns['lowPercent'].visible}">    					
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_percent}" />
       					</f:facet>
       					<h:outputText value="#{item.lowPercent}" /> 
     				</rich:column>
-    				<rich:column rendered="#{idlingColumns['highhrs'].visible}"
+    				<rich:column rendered="#{idlingColumns['highHrs'].visible}"
     					sortBy="#{item.highHrs}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_highidlehrs}" />
       					</f:facet>
       					<h:outputText value="#{item.highHrs}" /> 
     				</rich:column>
-    				<rich:column rendered="#{idlingColumns['highpercent'].visible}">
+    				<rich:column rendered="#{idlingColumns['highPercent'].visible}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_percent}" />
       					</f:facet>
       					<h:outputText value="#{item.highPercent}" /> 
     				</rich:column>
-    				<rich:column rendered="#{idlingColumns['totalhrs'].visible}"
+    				<rich:column rendered="#{idlingColumns['totalHrs'].visible}"
     					sortBy="#{item.totalHrs}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_totalidlehrs}" />
@@ -105,7 +105,7 @@
       					<h:outputText value="#{item.totalHrs}" /> 
     				</rich:column>
     				
-    				<rich:column rendered="#{idlingColumns['totalpercent'].visible}">    					
+    				<rich:column rendered="#{idlingColumns['totalPercent'].visible}">    					
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_percent}" />
       					</f:facet>      					

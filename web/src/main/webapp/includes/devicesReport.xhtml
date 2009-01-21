@@ -24,14 +24,14 @@
 					rows="#{numRowsPerPg}"
 					width="100%">
 
-					<rich:column rendered="#{deviceColumns['tiwiproID'].visible}" 
+					<rich:column rendered="#{deviceColumns['device_name'].visible}" 
 						sortBy="#{item.device.name}">
 						<f:facet name="header">
 							<h:outputText value="#{messages.reports_deviceid}" />
 						</f:facet>							
 						<h:outputText value="#{item.device.name}"/>										
     				</rich:column>
-    				<rich:column rendered="#{deviceColumns['assignedVehicle'].visible}" 
+    				<rich:column rendered="#{deviceColumns['vehicle_name'].visible}" 
     					sortBy="#{item.vehicle.name}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_assignedvehicle}" />
@@ -44,28 +44,28 @@
 							</f:setPropertyActionListener>
 						</h:commandLink>  	      
     				</rich:column>
-    				<rich:column rendered="#{deviceColumns['IMEI'].visible}" 
+    				<rich:column rendered="#{deviceColumns['device_imei'].visible}" 
     					sortBy="#{item.device.imei}">    					
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_imei}" />
       					</f:facet>
       					<h:outputText value="#{item.device.imei}" />    					     					
     				</rich:column>
-    				<rich:column rendered="#{deviceColumns['phoneNbr'].visible}" 
+    				<rich:column rendered="#{deviceColumns['device_phone'].visible}" 
     					sortBy="#{item.device.phone}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_devicephonenbr}" />
       					</f:facet>
       					<h:outputText value="#{item.device.phone}" />   
     				</rich:column>
-    				<rich:column rendered="#{deviceColumns['status'].visible}" 
+    				<rich:column rendered="#{deviceColumns['device_status'].visible}" 
     					sortBy="#{item.device.status}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_status}" />
       					</f:facet>
       					<h:outputText value="#{item.device.status}" />
     				</rich:column>  
-    				<rich:column rendered="#{deviceColumns['emergPhoneNbr'].visible}" 
+    				<rich:column rendered="#{deviceColumns['device_ephone'].visible}" 
     					sortBy="#{item.device.ephone}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_ecallphonenbr}" />
