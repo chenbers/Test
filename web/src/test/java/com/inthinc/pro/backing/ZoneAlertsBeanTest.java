@@ -50,6 +50,10 @@ public class ZoneAlertsBeanTest extends BaseAdminBeanTest<ZoneAlertsBean.ZoneAle
         editItem.setCreated(new Date());
         editItem.setName("Zone Alert");
         editItem.setDescription("Toolin' around the zone");
+        final ArrayList<Boolean> dayOfWeek = new ArrayList<Boolean>(7);
+        for (int i = 0; i < 7; i++)
+            dayOfWeek.add(new Boolean(MiscUtil.randomInt(0, 1) == 1));
+        editItem.setDayOfWeek(dayOfWeek);
         editItem.setArrival(MiscUtil.randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
         if (!editItem.getArrival())
             editItem.setDeparture(true);

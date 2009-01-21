@@ -8,6 +8,7 @@ import javax.faces.model.SelectItem;
 
 import com.inthinc.pro.backing.RedFlagAlertsBean.RedFlagAlertView;
 import com.inthinc.pro.model.RedFlagLevel;
+import com.inthinc.pro.util.MiscUtil;
 
 public class RedFlagAlertsBeanTest extends BaseAdminBeanTest<RedFlagAlertsBean.RedFlagAlertView>
 {
@@ -29,6 +30,10 @@ public class RedFlagAlertsBeanTest extends BaseAdminBeanTest<RedFlagAlertsBean.R
         editItem.setCreated(new Date());
         editItem.setName("RedFlagAlert");
         editItem.setDescription("New and cool alert");
+        final ArrayList<Boolean> dayOfWeek = new ArrayList<Boolean>(7);
+        for (int i = 0; i < 7; i++)
+            dayOfWeek.add(new Boolean(MiscUtil.randomInt(0, 1) == 1));
+        editItem.setDayOfWeek(dayOfWeek);
         editItem.setSeatBeltLevel(RedFlagLevel.WARNING);
         assertEquals("safety", editItem.getType());
         final List<SelectItem> pickedGroups = new ArrayList<SelectItem>();
