@@ -14,6 +14,7 @@ import javax.faces.context.FacesContext;
 import com.inthinc.pro.charts.Line;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.MpgEntity;
+import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.wrapper.MpgEntityPkg;
 
 public class GraphicUtil {
@@ -117,6 +118,23 @@ public class GraphicUtil {
 	    
 	    return monthList;
 	}
+	
+    
+    public static List<String> createMonthListFromMapDate(
+            List<ScoreableEntity> scoreList)
+    {
+        List<String> monthList = new ArrayList<String>();
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
+        
+        for ( ScoreableEntity se: scoreList ) {
+            Date dt = new Date();
+            dt.setTime(se.getDate().getTime());
+            String dateOut = dateFormatter.format(dt);
+            monthList.add(dateOut);
+        }
+     
+        return monthList;
+    }
 	
 	public static int convertToMonths(Duration duration) {
 	    int months = 0;
