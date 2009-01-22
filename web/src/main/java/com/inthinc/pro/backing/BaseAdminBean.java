@@ -628,7 +628,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
      */
     public boolean isSelectAll()
     {
-        selectAll = true;
+        selectAll = getFilteredItems().size() > 0;
         for (final T t : getFilteredItems())
             if (!t.isSelected())
                 selectAll = false;
