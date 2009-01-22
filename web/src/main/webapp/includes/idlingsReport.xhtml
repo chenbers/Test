@@ -69,14 +69,14 @@
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_drivetime}" />
       					</f:facet>
-      					<h:outputText value="#{item.driveTime}" />        					
+      					<h:outputText value="#{item.driveTime}" converter="FloatConverter"/>        					
     				</rich:column>    				
     				<rich:column rendered="#{idlingColumns['lowHrs'].visible}" 
     					sortBy="#{item.lowHrs}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_lowidlehrs}" />
       					</f:facet>
-      					<h:outputText value="#{item.lowHrs}" />
+      					<h:outputText value="#{item.lowHrs}" converter="FloatConverter"/>
     				</rich:column>
     				<rich:column rendered="#{idlingColumns['lowPercent'].visible}">    					
       					<f:facet name="header">
@@ -89,7 +89,7 @@
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_highidlehrs}" />
       					</f:facet>
-      					<h:outputText value="#{item.highHrs}" /> 
+      					<h:outputText value="#{item.highHrs}" converter="FloatConverter"/> 
     				</rich:column>
     				<rich:column rendered="#{idlingColumns['highPercent'].visible}">
       					<f:facet name="header">
@@ -102,7 +102,7 @@
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_totalidlehrs}" />
       					</f:facet>      					
-      					<h:outputText value="#{item.totalHrs}" /> 
+      					<h:outputText value="#{item.totalHrs}" converter="FloatConverter"/> 
     				</rich:column>
     				
     				<rich:column rendered="#{idlingColumns['totalPercent'].visible}">    					
