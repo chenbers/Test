@@ -2,6 +2,7 @@ package com.inthinc.pro.dao.mock.proserver;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -239,6 +240,10 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
 
         Integer endDate = getEndDate(duration);
         Integer startDate = getStartDate(duration);
+        
+        Date startDateDt = new Date();
+        startDateDt.setTime((long)startDate*1000L);
+        
         Group topGroup = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
 
         List<Driver> allDriversInGroup = getAllDriversInGroup(topGroup);
@@ -262,7 +267,7 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
             }
             returnList.add(TempConversionUtil.createMapFromObject(new ScoreableEntity(groupID, EntityType.ENTITY_GROUP, (i + 1) + "", // name will be 1 to 5 for the 5 different
                     // score breakdowns
-                    new Integer(percent), startDate, ScoreType.valueOf(scoreType))));
+                    new Integer(percent), startDateDt, ScoreType.valueOf(scoreType))));
         }
 
         return returnList;
