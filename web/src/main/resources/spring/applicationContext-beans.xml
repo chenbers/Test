@@ -240,7 +240,6 @@
     
     <!-- My Account Beans -->
     <bean id="changePasswordBean" class="com.inthinc.pro.backing.ChangePasswordBean" scope="session" parent="baseBean">
-        <property name="messageSource" ref="messageSource" />
         <property name="userDAO" ref="userDAO" />
         <property name="passwordEncryptor" ref="jasyptPasswordEncryptor"></property>
     </bean>
