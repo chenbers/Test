@@ -27,6 +27,7 @@ import com.inthinc.pro.dao.hessian.proserver.ReportService;
 import com.inthinc.pro.dao.hessian.proserver.ReportServiceCreator;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
+import com.inthinc.pro.model.DriverScore;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
@@ -200,39 +201,23 @@ public class ReportServiceTest
     }
     
     @Test
-    public void getTopBottomFiveScores()
+    public void getSortedDriverScores()
     {
-/* TODO        
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
         scoreDAO.setReportService(reportService);
      
         Integer groupID = TEST_TEAM_GROUP_ID;
-        List<ScoreableEntity> scoreableEntityList = scoreDAO.getTopFiveScores(groupID);
-        assertNotNull(scoreableEntityList);
-        assertTrue(scoreableEntityList.size() <= 5);
+        List<DriverScore> scoreList = scoreDAO.getSortedDriverScoreList(groupID);
+        assertNotNull(scoreList);
         
-        int score = 51;
-        for (ScoreableEntity s : scoreableEntityList)
+        // expect list to be sorted smallest to largest score
+        int score = -1;
+        for (DriverScore s : scoreList)
         {
-            System.out.println("driverID: " + s.getEntityID() + " " + s.getIdentifier() + " " + s.getEntityID() + " score" + s.getScore());
-            assertTrue(s.getScore() <= score);
-            score = s.getScore();
-            
-        }
-        
-        scoreableEntityList = scoreDAO.getBottomFiveScores(groupID);
-        assertNotNull(scoreableEntityList);
-        assertTrue(scoreableEntityList.size() <= 5);
-        
-        score = 0;
-        for (ScoreableEntity s : scoreableEntityList)
-        {
-            System.out.println("driverID: " + s.getEntityID() + " " + s.getIdentifier() + " " + s.getEntityID() + " score" + s.getScore());
             assertTrue(s.getScore() >= score);
             score = s.getScore();
             
         }
-*/        
     }
     
     

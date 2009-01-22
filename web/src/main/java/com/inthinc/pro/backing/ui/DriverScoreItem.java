@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing.ui;
 
 import com.inthinc.pro.model.DriverScore;
+import com.inthinc.pro.util.MessageUtil;
 
 public class DriverScoreItem
 {
@@ -21,12 +22,12 @@ public class DriverScoreItem
             
             if (driverScore.getVehicle() != null)
                 vehicleID = driverScore.getVehicle().getName(); 
-            else vehicleID = "";
+            else vehicleID = MessageUtil.getMessageString("teamTop_noVehicle");
         }
         else
         {
             driverName = "";
-            vehicleID = "";
+            vehicleID = MessageUtil.getMessageString("teamTop_noVehicle");
         }
     }
     public DriverScore getDriverScore()
