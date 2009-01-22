@@ -126,9 +126,9 @@ TODO: the top scroller doesn't work right with filtering
                 <f:facet name="header">
                   <h:outputText value=" " />
                 </f:facet>
-                <h:commandLink action="#{editorBean['edit']}" value="#{messages.adminTable_edit}">
+                <a4j:htmlCommandLink action="#{editorBean['edit']}" value="#{messages.adminTable_edit}">
                   <f:param name="editID" value="#{item.id}" />
-                </h:commandLink>
+                </a4j:htmlCommandLink>
               </rich:column>
             </rich:dataTable>
 

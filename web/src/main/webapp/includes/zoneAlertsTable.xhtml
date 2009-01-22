@@ -3,6 +3,7 @@
   xmlns:ui="http://java.sun.com/jsf/facelets"
   xmlns:h="http://java.sun.com/jsf/html"
   xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:a4j="http://richfaces.org/a4j"
   xmlns:rich="http://richfaces.org/rich"
   xmlns:security="http://www.springframework.org/security/tags">
 
@@ -15,9 +16,9 @@
   <ui:define name="columns">
     <rich:column rendered="#{zoneAlertsBean.tableColumns['name'].visible}" sortBy="#{item.name}" sortOrder="ASCENDING">
       <f:facet name="header"><h:outputText value="#{messages.zoneAlertsHeader_name}" /></f:facet>
-      <h:commandLink action="#{zoneAlertsBean.display}" value="#{item.name}">
+      <a4j:htmlCommandLink action="#{zoneAlertsBean.display}" value="#{item.name}">
         <f:param name="displayID" value="#{item.id}" />
-      </h:commandLink>
+      </a4j:htmlCommandLink>
     </rich:column>
     <rich:column rendered="#{zoneAlertsBean.tableColumns['description'].visible}" sortBy="#{item.description}">
       <f:facet name="header"><h:outputText value="#{messages.zoneAlertsHeader_description}" /></f:facet>
