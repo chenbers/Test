@@ -29,7 +29,7 @@
 					var="item" styleClass="datagrid" 
 					rowClasses="trendTableOdd,trendTableEven" cellspacing="1" 
 					rows="#{numRowsPerPg}"
-					width="100%" binding="#{idlingTable}">
+					width="100%">
 
 					<rich:column rendered="#{idlingColumns['group'].visible}" 
 						sortBy="#{item.group}">
@@ -43,26 +43,26 @@
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_driver}" />
       					</f:facet>
-						<h:commandLink action="go_driver" 
+						<a4j:htmlCommandLink action="go_driver" 
 							value="#{item.driver.person.fullName}">
       						<f:setPropertyActionListener 
 								value="#{item.driver}" 
 								target="#{navigationBean.driver}">
 							</f:setPropertyActionListener>
-      					</h:commandLink>       
+      					</a4j:htmlCommandLink>       
     				</rich:column>
     				<rich:column rendered="#{idlingColumns['vehicle_name'].visible}" 
     					sortBy="#{item.vehicle.name}">
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_vehicle}" />
       					</f:facet>
-      					<h:commandLink action="go_vehicle" 
+      					<a4j:htmlCommandLink action="go_vehicle" 
 							value="#{item.vehicle.name}">
       						<f:setPropertyActionListener 
 								value="#{item.vehicle}" 
 								target="#{navigationBean.vehicle}">
 							</f:setPropertyActionListener>
-      					</h:commandLink>        								
+      					</a4j:htmlCommandLink>        								
     				</rich:column>
     				<rich:column rendered="#{idlingColumns['driveTime'].visible}" 
     					sortBy="#{item.driveTime}">    					
@@ -115,12 +115,12 @@
       					<f:facet name="header">
       						<h:outputText value="" />
       					</f:facet>    
-      					<h:commandLink action="go_driverTrips" value="#{messages.reports_trips}">
+      					<a4j:htmlCommandLink action="go_driverTrips" value="#{messages.reports_trips}">
       						<f:setPropertyActionListener 
       							value="#{item.driver}" 
       							target="#{navigationBean.driver}">
       						</f:setPropertyActionListener>
-      					</h:commandLink>  					      					
+      					</a4j:htmlCommandLink>  					      					
     				</rich:column>
     			</rich:dataTable>    	
     			

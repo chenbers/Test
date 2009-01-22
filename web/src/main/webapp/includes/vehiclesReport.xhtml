@@ -38,13 +38,13 @@
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_vehicleID}" />
       					</f:facet>
-      					<h:commandLink action="go_vehicle" 
+      					<a4j:htmlCommandLink action="go_vehicle" 
       						value="#{item.vehicle.name}">
 							<f:setPropertyActionListener 
 									value="#{item.vehicle}" 
 									target="#{navigationBean.vehicle}">
 							</f:setPropertyActionListener>
-						</h:commandLink>  						
+						</a4j:htmlCommandLink>  						
     				</rich:column>
     				<rich:column rendered="#{vehicleColumns['makeModelYear'].visible}" 
     					sortBy="#{item.makeModelYear}">
@@ -58,14 +58,14 @@
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_driver}" />
       					</f:facet>
-      					<h:commandLink action="go_driver" 
+      					<a4j:htmlCommandLink action="go_driver" 
       						rendered="#{item.driver.person.first != 'None'}"
       						value="#{item.driver.person.fullName}">
 							<f:setPropertyActionListener 
 								value="#{item.driver}" 
 								target="#{navigationBean.driver}">
 							</f:setPropertyActionListener>
-						</h:commandLink>   
+						</a4j:htmlCommandLink>   
 						<h:outputText rendered="#{item.driver.person.first == 'None'}"
 							value="None Assigned">
 						</h:outputText>      										
@@ -84,13 +84,13 @@
       					</f:facet>
       					<div class="#{item.styleOverall}">
       						<div class="score">      					
-      							<h:commandLink action="go_vehicle">
+      							<a4j:htmlCommandLink action="go_vehicle">
       								<h:outputText value="#{item.overallScore}" converter="ScoreConverter" />
 									<f:setPropertyActionListener 
 										value="#{item.vehicle}" 
 										target="#{navigationBean.vehicle}">
 									</f:setPropertyActionListener>	
-								</h:commandLink>
+								</a4j:htmlCommandLink>
 							</div>       
 						</div>					
     				</rich:column>
@@ -101,13 +101,13 @@
       					</f:facet>
       					<div class="#{item.styleSpeed}">
       						<div class="score">  
-      							<h:commandLink action="go_reportVehicleSpeed">
+      							<a4j:htmlCommandLink action="go_reportVehicleSpeed">
       								<h:outputText value="#{item.speedScore}" converter="ScoreConverter" />  
 									<f:setPropertyActionListener 
 										value="#{item.vehicle}" 
 										target="#{navigationBean.vehicle}">
 									</f:setPropertyActionListener>								
-								</h:commandLink>
+								</a4j:htmlCommandLink>
 							</div>  
 						</div>           			
     				</rich:column>
@@ -118,13 +118,13 @@
       					</f:facet>
       					<div class="#{item.styleStyle}">
       						<div class="score">  
-      							<h:commandLink action="go_reportVehicleStyle">
+      							<a4j:htmlCommandLink action="go_reportVehicleStyle">
       								<h:outputText value="#{item.styleScore}" converter="ScoreConverter"/>    
 									<f:setPropertyActionListener 
 										value="#{item.vehicle}" 
 										target="#{navigationBean.vehicle}">
 									</f:setPropertyActionListener>								
-								</h:commandLink>
+								</a4j:htmlCommandLink>
 							</div>       	
 						</div>				
     				</rich:column>

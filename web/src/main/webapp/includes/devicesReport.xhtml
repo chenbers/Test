@@ -36,13 +36,13 @@
       					<f:facet name="header">
       						<h:outputText value="#{messages.reports_assignedvehicle}" />
       					</f:facet>
-						<h:commandLink action="go_vehicle" 
+						<a4j:htmlCommandLink action="go_vehicle" 
       						value="#{item.vehicle.name}">
 							<f:setPropertyActionListener 
 									value="#{item.vehicle}" 
 									target="#{navigationBean.vehicle}">
 							</f:setPropertyActionListener>
-						</h:commandLink>  	      
+						</a4j:htmlCommandLink>  	      
     				</rich:column>
     				<rich:column rendered="#{deviceColumns['device_imei'].visible}" 
     					sortBy="#{item.device.imei}">    					
