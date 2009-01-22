@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.inthinc.pro.model.DriverReportItem;
+import com.inthinc.pro.model.DriverScore;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.ScoreType;
@@ -83,21 +84,15 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
     Map<Integer,List<ScoreableEntity>> getTrendScores(Integer groupID, Duration duration);
 
 
-    /**
-     * Retrieve the list of overall scores for top five drivers for the last 30 days
-     * 
-     * @param groupID
-     * @return
-     */
-    List<ScoreableEntity> getTopFiveScores(Integer groupID);
-    /**
-     * Retrieve the list of overall scores for bottom five drivers for the last 30 days
-     * 
-     * @param groupID
-     * @return
-     */
-    List<ScoreableEntity> getBottomFiveScores(Integer groupID);
     
+    /**
+     * Retrieve the list of overall scores for drivers in group for the last 30 days sorted highest to lowest scoring.
+     * 
+     * @param groupID
+     * @return
+     */
+    List<DriverScore> getSortedDriverScoreList(Integer groupID);
+
     /**
      * Retrieve the list of 5 percentage scores for the specified group.  The list contains the following:
      *          0 - the percentage of drivers in the group whose overall score is between 0 - 1.0

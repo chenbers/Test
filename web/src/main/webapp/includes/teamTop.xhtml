@@ -5,22 +5,11 @@
 	xmlns:f="http://java.sun.com/jsf/core"
   	xmlns:iwi="http://pro.tiwi.com/jsf"
 	xmlns:h="http://java.sun.com/jsf/html">
-	<script type="text/javascript">
-		function showAllTeam(teamName) 
-		{	
-		alert("showAllTeam");
-			var urlToGoTo = "#{facesContext.externalContext.request.contextPath}/secured/reports/drivers.faces";
-			urlToGoTo = urlToGoTo + "?searchFor=" + teamName;
-			
-			window.location.href=urlToGoTo;
-		}
-	</script>
-	
 	<div class="">
 		
 		<div class="panel_nw">
 			<div class="panel_title">
-				<span class="top5">Top 5 Drivers </span>
+				<span class="top5">#{messages.teamTop_top}</span>
 				<span class="panel_links">
 					<a href="#{facesContext.externalContext.request.contextPath}/secured/reports/drivers.faces?searchFor=#{teamTopBean.teamName}">#{messages.team_recentEventsShowAll}</a>
 				</span>	
@@ -37,31 +26,40 @@
 			width="100%" binding="#{teamTopDriversTable}">
 
 			<!-- Data -->
-					<rich:column sortBy="#{item.position}" width="38" height="27" >
+					<rich:column sortBy="#{item.position}" width="5%" height="27" >
 						<f:facet name="header">
 							<h:outputText value="#" />
 						</f:facet>
 						<h:outputText value="#{item.position}"/>
-
 					</rich:column>
-					<rich:column width="198" sortBy="#{item.se.identifier}" >
+					<rich:column width="40%" sortBy="#{item.driverName}" >
 						<f:facet name="header">
-							<h:outputText value="Driver" />
+							<h:outputText value="#{messages.teamTop_driver}" />
 						</f:facet>
-						<h:commandLink value="#{item.se.identifier}" action="#{teamTopBean.driverAction}">
-							<f:param name="id" value="#{item.se.entityID}"/>
-						 	
-						</h:commandLink>
-
+						<a4j:htmlCommandLink action="go_driver" value="#{item.driverName}">
+							<f:setPropertyActionListener value="#{item.driverScore.driver}" target="#{teamTopBean.navigation.driver}" />
+						</a4j:htmlCommandLink>
 					</rich:column>
-					<rich:column width="68" sortBy="#{item.se.score}" >
+					<rich:column width="10%" sortBy="#{item.driverScore.score}" >
 						<f:facet name="header">
-							<h:outputText value="Score" />
+							<h:outputText value="#{messages.teamTop_score}" />
 						</f:facet>
-						<iwi:scoreBox style="#{item.style}" score="#{item.se.score}"/>
-						
-						
-						</rich:column>
+						<iwi:scoreBox style="#{item.style}" score="#{item.driverScore.score}"/>
+					</rich:column>
+					<rich:column width="30%" sortBy="#{item.vehicleID}" >
+						<f:facet name="header">
+							<h:outputText value="#{messages.teamTop_vehicle}" />
+						</f:facet>
+						<a4j:htmlCommandLink action="go_vehicle" value="#{item.vehicleID}">
+ 							<f:setPropertyActionListener value="#{item.driverScore.vehicle}" target="#{navigationBean.vehicle}" />
+						</a4j:htmlCommandLink>
+					</rich:column>
+					<rich:column width="15%" sortBy="#{item.driverScore.milesDriven}" >
+						<f:facet name="header">
+							<h:outputText value="#{messages.teamTop_miles}" />
+						</f:facet>
+						<h:outputText value="#{item.driverScore.milesDriven}"/>
+					</rich:column>
 
 					</rich:dataTable>
 
@@ -78,7 +76,7 @@
 		<div class="panel_nw">
 
 			<div class="panel_title">
-				<span class="thumbsdown">Bottom 5 Drivers </span>
+				<span class="thumbsdown">#{messages.teamTop_bottom}</span>
 				<span class="panel_links">
 					<a href="#{facesContext.externalContext.request.contextPath}/secured/reports/drivers.faces?searchFor=#{teamTopBean.teamName}">#{messages.team_recentEventsShowAll}</a>
 				</span>
@@ -98,29 +96,43 @@
 			width="100%" binding="#{teamBottomDriversTable}">
 
 			<!-- Data -->
- 					<rich:column sortBy="#{item.position}" width="38">
+ 					<rich:column sortBy="#{item.position}" width="5%">
 						<f:facet name="header">
 							<h:outputText value="#" />
 						</f:facet>
 						<h:outputText value="#{item.position}"/>
 
 					</rich:column>
-					<rich:column width="198" sortBy="#{item.se.identifier}">
+					<rich:column width="40%" sortBy="#{item.driverName}">
 						<f:facet name="header">
 							<h:outputText value="Driver" />
 						</f:facet>
-						<h:commandLink value="#{item.se.identifier}" action="#{teamTopBean.driverAction}">
-							<f:param name="id" value="#{item.se.entityID}"/>
+						<h:commandLink action="go_driver" value="#{item.driverName}">
+							<f:setPropertyActionListener value="#{item.driverScore.driver}" target="#{teamTopBean.navigation.driver}" />
 						</h:commandLink>
 
 					</rich:column>
-					<rich:column width="68" sortBy="#{item.se.score}">
+					<rich:column width="10%" sortBy="#{item.driverScore.score}">
 						<f:facet name="header">
 							<h:outputText value="Score" />
 						</f:facet>
-						<iwi:scoreBox style="#{item.style}" score="#{item.se.score}"/>
+						<iwi:scoreBox style="#{item.style}" score="#{item.driverScore.score}"/>
 												
-						</rich:column>
+					</rich:column>
+					<rich:column width="30%" sortBy="#{item.vehicleID}" >
+						<f:facet name="header">
+							<h:outputText value="#{messages.teamTop_vehicle}" />
+						</f:facet>
+						<a4j:htmlCommandLink action="go_vehicle" value="#{item.vehicleID}">
+ 							<f:setPropertyActionListener value="#{item.driverScore.vehicle}" target="#{navigationBean.vehicle}" />
+						</a4j:htmlCommandLink>
+					</rich:column>
+					<rich:column width="15%" sortBy="#{item.driverScore.milesDriven}" >
+						<f:facet name="header">
+							<h:outputText value="#{messages.teamTop_miles}" />
+						</f:facet>
+						<h:outputText value="#{item.driverScore.milesDriven}"/>
+					</rich:column>
 
 					</rich:dataTable>
 

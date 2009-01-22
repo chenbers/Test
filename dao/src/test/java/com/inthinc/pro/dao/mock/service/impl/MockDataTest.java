@@ -3,6 +3,7 @@ package com.inthinc.pro.dao.mock.service.impl;
 
 import static org.junit.Assert.*;
 
+import java.util.Date;
 import java.util.Map;
 
 import org.junit.AfterClass;
@@ -34,7 +35,7 @@ public class MockDataTest
         searchCriteria.addKeyValue("entityID", new Integer(101));
         Integer endDate = DateUtil.getTodaysDate();
         Integer startDate = DateUtil.getDaysBackDate(endDate, 30);
-        searchCriteria.addKeyValueRange("date", startDate, endDate);
+        searchCriteria.addKeyValueRange("date", new Date(startDate*1000l), new Date(endDate*1000l));
         
         Map<String, Object> returnMap =  MockData.getInstance().lookup(ScoreableEntity.class, searchCriteria);
         

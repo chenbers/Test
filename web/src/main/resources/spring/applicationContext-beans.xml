@@ -228,9 +228,8 @@
     </bean>
     <bean id="teamTopDriversTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request"></bean>
     <bean id="teamBottomDriversTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request"></bean>
-    <bean id="teamTopBean" class="com.inthinc.pro.backing.TeamTopBean" scope="request" parent="baseBean">
+    <bean id="teamTopBean" class="com.inthinc.pro.backing.TeamTopBean" scope="request" parent="baseBean" init-method="init">
         <property name="scoreDAO" ref="scoreDAO"></property>
-        <property name="driverDAO" ref="driverDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
     </bean>
     <bean id="driverLocationBean" class="com.inthinc.pro.backing.DriverLocationBean" scope="request" parent="baseBean" init-method="init">
