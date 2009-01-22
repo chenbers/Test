@@ -335,6 +335,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         batchEdit = false;
         item = createAddItem();
         item.setSelected(false);
+        allGroups = null;
 
         // deselect all previous items
         for (final T item : getSelectedItems())
@@ -351,6 +352,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     public String edit()
     {
         displayed = !selectItem("editID");
+        allGroups = null;
         return getEditRedirect();
     }
 
@@ -385,6 +387,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     public String batchEdit()
     {
         displayed = false;
+        allGroups = null;
         item = null;
         getItem();
 

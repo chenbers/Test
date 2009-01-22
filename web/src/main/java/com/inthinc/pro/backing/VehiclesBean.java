@@ -99,8 +99,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     private VehicleDAO                            vehicleDAO;
     private DriverDAO                             driverDAO;
     private DeviceDAO                             deviceDAO;
-    private TreeMap<String, Integer>              teams;
-    private TreeMap<Integer, String>              groupNames;
     private List<Driver>                          drivers;
     private TreeMap<Integer, Boolean>             driverAssigned;
 
@@ -266,12 +264,9 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
     public TreeMap<Integer, String> getGroupNames()
     {
-        if (groupNames == null)
-        {
-            groupNames = new TreeMap<Integer, String>();
-            for (final Group group : getAllGroups())
-                groupNames.put(group.getGroupID(), group.getName());
-        }
+        final TreeMap<Integer, String> groupNames = new TreeMap<Integer, String>();
+        for (final Group group : getAllGroups())
+            groupNames.put(group.getGroupID(), group.getName());
         return groupNames;
     }
 
@@ -436,13 +431,10 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
     public TreeMap<String, Integer> getTeams()
     {
-        if (teams == null)
-        {
-            teams = new TreeMap<String, Integer>();
-            for (final Group group : getAllGroups())
-                if (group.getType() == GroupType.TEAM)
-                    teams.put(group.getName(), group.getGroupID());
-        }
+        final TreeMap<String, Integer> teams = new TreeMap<String, Integer>();
+        for (final Group group : getAllGroups())
+            if (group.getType() == GroupType.TEAM)
+                teams.put(group.getName(), group.getGroupID());
         return teams;
     }
 

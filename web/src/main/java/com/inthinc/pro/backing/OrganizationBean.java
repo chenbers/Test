@@ -16,12 +16,10 @@ import org.richfaces.event.NodeSelectedEvent;
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.model.TreeNodeImpl;
 import com.inthinc.pro.backing.model.TreeNodeType;
-import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.VehicleDAO;
-import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupStatus;
@@ -42,7 +40,6 @@ public class OrganizationBean extends BaseBean
     private PersonDAO personDAO;
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
-    private AccountDAO accountDAO;
 
     /*
      * Organization Tree Specific
@@ -88,8 +85,7 @@ public class OrganizationBean extends BaseBean
     {
         if (topLevelNode == null)
         {
-
-            organizationHierarchy = new GroupHierarchy(groupDAO.getGroupHierarchy(getAccountID(), getGroupHierarchy().getTopGroup().getGroupID()));
+            organizationHierarchy = new GroupHierarchy(groupDAO.getGroupHierarchy(getAccountID(), getTopGroup().getGroupID()));
             final Group topLevelGroup = organizationHierarchy.getTopGroup();
             topLevelNode = new TreeNodeImpl(topLevelGroup, organizationHierarchy);
             topLevelNode.setDriverDAO(driverDAO);
@@ -102,6 +98,20 @@ public class OrganizationBean extends BaseBean
 
         }
         return topLevelNode;
+    }
+
+    protected Group getTopGroup()
+    {
+        if (getGroupHierarchy().getTopGroup().getType() == GroupType.FLEET)
+            return getGroupHierarchy().getTopGroup();
+        else
+        {
+            final List<Group> groups = groupDAO.getGroupsByAcctID(getAccountID());
+            for (final Group group : groups)
+                if (group.getType() == GroupType.FLEET)
+                    return group;
+        }
+        return null;
     }
 
     public void setTopLevelNodes(TreeNodeImpl topLevelNode)
@@ -117,7 +127,7 @@ public class OrganizationBean extends BaseBean
             logger.debug("Selected: " + treeNode.getLabel());
             logger.debug("Tree Node Types: " + selectedGroupNode.getTreeNodeType() + " vs " + treeNode.getTreeNodeType());
             logger.debug(("Tree Node ID: " + selectedGroupNode.getId() + " vs " + treeNode.getId()));
-            if (treeNode != null && selectedGroupNode.getTreeNodeType().equals(treeNode.getTreeNodeType()) && selectedGroupNode.getId().equals(treeNode.getId()))
+            if (selectedGroupNode.getTreeNodeType().equals(treeNode.getTreeNodeType()) && selectedGroupNode.getId().equals(treeNode.getId()))
             {
                 return true;
             }
@@ -475,13 +485,6 @@ public class OrganizationBean extends BaseBean
         this.groupDAO = groupDAO;
     }
 
-    public String getAccountName()
-    {
-        Account account = getAccountDAO().findByID(getAccountID());
-        return account.getAcctName();
-
-    }
-
     public TreeNodeImpl getSelectedGroupNode()
     {
         return selectedGroupNode;
@@ -589,17 +592,6 @@ public class OrganizationBean extends BaseBean
     {
         return selectedParentGroup;
     }
-
-    public void setAccountDAO(AccountDAO accountDAO)
-    {
-        this.accountDAO = accountDAO;
-    }
-
-    public AccountDAO getAccountDAO()
-    {
-        return accountDAO;
-    }
-    
 
     public Map<Integer, Boolean> getTreeStateMap()
     {

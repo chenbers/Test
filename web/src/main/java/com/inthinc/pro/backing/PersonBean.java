@@ -171,8 +171,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private DriverDAO                          driverDAO;
     private PasswordEncryptor                  passwordEncryptor;
     private List<PersonChangeListener>         changeListeners;
-    private Map<String, Integer>               groups;
-    private Map<String, Integer>               teams;
     private Map<String, Role>                  roles;
 
     public void setPersonDAO(PersonDAO personDAO)
@@ -550,24 +548,18 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
     public Map<String, Integer> getGroups()
     {
-        if (groups == null)
-        {
-            groups = new TreeMap<String, Integer>();
-            for (final Group group : getAllGroups())
-                groups.put(group.getName(), group.getGroupID());
-        }
+        final TreeMap<String, Integer> groups = new TreeMap<String, Integer>();
+        for (final Group group : getAllGroups())
+            groups.put(group.getName(), group.getGroupID());
         return groups;
     }
 
     public Map<String, Integer> getTeams()
     {
-        if (teams == null)
-        {
-            teams = new TreeMap<String, Integer>();
-            for (final Group group : getAllGroups())
-                if (group.getType() == GroupType.TEAM)
-                    teams.put(group.getName(), group.getGroupID());
-        }
+        final TreeMap<String, Integer> teams = new TreeMap<String, Integer>();
+        for (final Group group : getAllGroups())
+            if (group.getType() == GroupType.TEAM)
+                teams.put(group.getName(), group.getGroupID());
         return teams;
     }
 
