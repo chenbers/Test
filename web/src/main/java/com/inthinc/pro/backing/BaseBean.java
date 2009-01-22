@@ -107,7 +107,7 @@ public class BaseBean
         return accountDAO;
     }
     
-    protected String getAccountName()
+    public String getAccountName()
     {
         Account account = getAccountDAO().findByID(getAccountID());
         String name = account.getAcctName();
