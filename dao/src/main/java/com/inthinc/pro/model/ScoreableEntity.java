@@ -1,5 +1,7 @@
 package com.inthinc.pro.model;
 
+import java.util.Date;
+
 import com.inthinc.pro.dao.annotations.ID;
 
 public class ScoreableEntity extends BaseEntity implements Comparable<ScoreableEntity>
@@ -11,14 +13,14 @@ public class ScoreableEntity extends BaseEntity implements Comparable<ScoreableE
 	private EntityType entityType;
 	private String identifier;
 	private Integer score;
-    private Integer date;
+    private Date date;
     private ScoreType scoreType;
     public ScoreableEntity()
     {
         
     }
 	
-	public ScoreableEntity(Integer entityID, EntityType entityType, String identifier, Integer score, Integer date, ScoreType scoreType)
+	public ScoreableEntity(Integer entityID, EntityType entityType, String identifier, Integer score, Date date, ScoreType scoreType)
     {
         super();
         this.entityID = entityID;
@@ -47,11 +49,11 @@ public class ScoreableEntity extends BaseEntity implements Comparable<ScoreableE
 	public void setScore(Integer score) {
 		this.score = score;
 	}
-    public Integer getDate()
+    public Date getDate()
     {
         return date;
     }
-    public void setDate(Integer date)
+    public void setDate(Date date)
     {
         this.date = date;
     }
