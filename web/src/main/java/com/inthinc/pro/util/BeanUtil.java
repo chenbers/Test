@@ -170,6 +170,7 @@ public class BeanUtil
 
     /**
      * Deeply compares all properties of the item to the given compare item, nulling the property of the item if they aren't equal. Ignores already-null properties in the item.
+     * Collections and maps are compared, and only common items are kept. If there are no common items, empty is used.
      * 
      * @param item
      *            The item to compare and init.
@@ -187,6 +188,7 @@ public class BeanUtil
 
     /**
      * Deeply compares all properties of the item to the given compare item, nulling the property of the item if they aren't equal. Ignores already-null properties in the item.
+     * Collections and maps are compared, and only common items are kept. If there are no common items, empty is used.
      * 
      * @param item
      *            The item to compare and init.
@@ -219,15 +221,26 @@ public class BeanUtil
                             final Object o2 = read2.invoke(compareTo, new Object[0]);
                             if (o2 != null)
                             {
-                                // recursive or simple compare
                                 final Class<?> clazz = descriptor.getPropertyType();
                                 if (clazz != null)
                                 {
-                                    if (!BeanUtils.isSimpleProperty(clazz) && !clazz.isEnum() && !Collection.class.isAssignableFrom(clazz) && !Map.class.isAssignableFrom(clazz) && !clazz.isArray())
+                                    // recursive compare
+                                    if (!BeanUtils.isSimpleProperty(clazz) && !clazz.isEnum() && !Collection.class.isAssignableFrom(clazz) && !Map.class.isAssignableFrom(clazz)
+                                            && !clazz.isArray())
                                     {
                                         compared.add(o1);
                                         compareAndInit(o1, o2, compared);
                                     }
+                                    // include common items
+                                    else if (Collection.class.isAssignableFrom(clazz))
+                                    {
+                                        ((Collection<?>) o1).retainAll((Collection<?>) o2);
+                                    }
+                                    else if (Map.class.isAssignableFrom(clazz))
+                                    {
+                                        ((Map<?, ?>) o1).entrySet().retainAll(((Map<?, ?>) o2).entrySet());
+                                    }
+                                    // simple compare
                                     else if ((clazz.isArray() && !Arrays.deepEquals((Object[]) o1, (Object[]) o2)) || !o1.equals(o2))
                                     {
                                         final Method write = descriptor.getWriteMethod();
