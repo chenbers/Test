@@ -61,7 +61,7 @@
                           <td>
                             <rich:message for="empid" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText value="#{personBean.item.empid}" id="empid" onchange="checkMultiple(this)" styleClass="text" size="30"
-                              maxlength="30" required="#{(not personBean.batchEdit) or personBean.updateField['empid']}" requiredMessage="#{messages.required}" />
+                              maxlength="20" required="#{(not personBean.batchEdit) or personBean.updateField['empid']}" requiredMessage="#{messages.required}" />
                           </td>
                         </tr>
                         <tr>
@@ -72,13 +72,13 @@
                           <td>
                             <rich:message for="first" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText value="#{personBean.item.first}" id="first" onchange="checkMultiple(this)" styleClass="text" size="30"
-                              maxlength="30" required="#{(not personBean.batchEdit) or personBean.updateField['first']}" requiredMessage="#{messages.required}" />
+                              maxlength="20" required="#{(not personBean.batchEdit) or personBean.updateField['first']}" requiredMessage="#{messages.required}" />
                           </td>
                         </tr>
                         <tr>
                           <td width="100" valign="top"><h:outputText value="#{messages.editPerson_middle}" /></td>
                           <td>
-                            <h:inputText value="#{personBean.item.middle}" id="middle" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="30" />
+                            <h:inputText value="#{personBean.item.middle}" id="middle" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="20" />
                           </td>
                         </tr>
                         <tr>
@@ -89,7 +89,7 @@
                           <td>
                             <rich:message for="last" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText value="#{personBean.item.last}" id="last" onchange="checkMultiple(this)" styleClass="text" size="30"
-                              maxlength="30" required="#{(not personBean.batchEdit) or personBean.updateField['last']}" requiredMessage="#{messages.required}" />
+                              maxlength="20" required="#{(not personBean.batchEdit) or personBean.updateField['last']}" requiredMessage="#{messages.required}" />
                           </td>
                         </tr>
                         <tr>
