@@ -156,7 +156,7 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
 
     /**
      * Determine whether the given item matches the filter word. The default implementation gets the value of each displayed column as a property from the item, converts the value
-     * to a string, converts it to lowercase, splits it into words and matches the filter word against each word. Override to do more efficient or custom testing.
+     * to a string, converts it to lowercase and matches the filter word against it. Override to do more efficient or custom testing.
      * 
      * @param item
      *            The item to filter in or out of the results.
@@ -170,10 +170,9 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
             if (getTableColumns().get(column).getVisible())
                 try
                 {
-                    final String[] words = String.valueOf(BeanUtils.getProperty(item, column.replace('_', '.'))).toLowerCase().split("\\W+");
-                    for (final String word : words)
-                        if (word.contains(filterWord))
-                            return true;
+                    final String word = String.valueOf(org.apache.commons.beanutils.BeanUtils.getProperty(item, column.replace('_', '.'))).toLowerCase();
+                    if (word.contains(filterWord))
+                        return true;
                 }
                 catch (NestedNullException e)
                 {
