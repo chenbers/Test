@@ -316,7 +316,8 @@ public class DriverBean extends BaseDurationBean
         DateFormat dateFormatter = new SimpleDateFormat(getDuration().getDatePattern());
 
         // Get "x" values
-        List<String> monthList = GraphicUtil.createMonthList(getDuration());
+//        List<String> monthList = GraphicUtil.createMonthListFromMapDate(scoreList);
+        List<String> monthList = GraphicUtil.createMonthList(getDuration());        
 
         int cnt = 0;
         for (ScoreableEntity e : scoreList)
