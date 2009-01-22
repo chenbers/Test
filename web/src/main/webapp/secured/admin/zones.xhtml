@@ -45,6 +45,7 @@
                 <a4j:form id="zones-form">
                   <h:inputHidden id="points" value="#{zonesBean.pointsString}" />
                   <h:inputHidden id="address" value="#{zonesBean.address}" />
+                  <input type="hidden" id="firstPoints" value="#{zonesBean.pointsString}" />
 
                   <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
 
@@ -73,7 +74,7 @@
                           <li class="l"><button type="submit" class="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></button></li>
                         </ui:fragment>
                         <li class="r">
-                          <a4j:commandButton action="#{zonesBean.add}" onclick="map.clearOverlays()" reRender="displayZone,editZone" styleClass="left"><span class="add"><h:outputText value="#{messages.zones_addZone}" /></span></a4j:commandButton>
+                          <a4j:commandButton action="#{zonesBean.add}" oncomplete="clearOutline()" reRender="displayZone,editZone" styleClass="left"><span class="add"><h:outputText value="#{messages.zones_addZone}" /></span></a4j:commandButton>
                           <ui:fragment rendered="#{zonesBean.zonesCount gt 0}">
                             <h:outputText value=" " />
                             <h:commandButton action="#{zoneAlertsBean.add}" styleClass="left">
@@ -156,6 +157,12 @@
                 </a4j:form>
 
                 <script type="text/javascript">
+                  function clearOutline()
+                  {
+                    document.getElementById("zones-form:points").value = "";
+                    map.clearOverlays();
+                  }
+
                   function showZone(editable)
                   {
                     map.clearOverlays();
@@ -178,7 +185,10 @@
                   {
                     stopDrawing();
                     map.clearOverlays();
-                    document.getElementById("zones-form:points").value = document.getElementById("backupPoints").value;
+                    var outline = document.getElementById("backupPoints").value;
+                    if (outline == "")
+                      outline = document.getElementById("firstPoints").value;
+                    document.getElementById("zones-form:points").value = outline;
                   }
 
                   function select(type)

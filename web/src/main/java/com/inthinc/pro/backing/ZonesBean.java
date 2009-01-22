@@ -100,6 +100,8 @@ public class ZonesBean extends BaseBean
     public void cancelEdit()
     {
         editing = false;
+        if (isAdd())
+            item = null;
     }
 
     /**
