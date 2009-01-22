@@ -331,12 +331,12 @@ public class MockData
         DriveQMap driveQMap = new DriveQMap();
         driveQMap.setCreated(new Date());  //NEED TO CREATE OLD DATES
         driveQMap.setAggressiveAccel(randomInt(0, 50));
-        driveQMap.setAggressiveBreak(randomInt(0, 50));
+        driveQMap.setAggressiveBrake(randomInt(0, 50));
         driveQMap.setAggressiveBump(randomInt(0, 50));
         driveQMap.setAggressiveLeft(randomInt(0, 50));
         driveQMap.setAggressiveRight(randomInt(0, 50));
         driveQMap.setAggressiveTurn((driveQMap.getAggressiveLeft()+driveQMap.getAggressiveRight())/2);
-        driveQMap.setDrivingStyle( (driveQMap.getAggressiveAccel()+driveQMap.getAggressiveBreak()+driveQMap.getAggressiveBump()+driveQMap.getAggressiveTurn()) / 4);
+        driveQMap.setDrivingStyle( (driveQMap.getAggressiveAccel()+driveQMap.getAggressiveBrake()+driveQMap.getAggressiveBump()+driveQMap.getAggressiveTurn()) / 4);
 
         driveQMap.setCoaching(randomInt(0, 50));
         
@@ -441,12 +441,16 @@ public class MockData
             {
 //                if (scoreType != ScoreType.SCORE_OVERALL_TIME ) 
                 {
+                    int daysBack = DateUtil.getDaysBackDate(dateNow, 30 * month)-1;
+                    Date daysBackDt = new Date();
+                    daysBackDt.setTime((long)daysBack*1000L);
+                    
                     ScoreableEntity scoreableEntity = new ScoreableEntity(
                               entityID, 
                               entityType, 
                               entityName, 
                               randomInt(0,50), 
-                              DateUtil.getDaysBackDate(dateNow, 30 * month)-1,
+                              daysBackDt,
                               scoreType);
 //if (scoreType.equals(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL) && month == 0)
 //{
@@ -465,16 +469,21 @@ public class MockData
     }
     
     private void createOverallScoreOverTime(Integer entityID, 
-            EntityType entityType, String entityName, ScoreType scoreType, int monthsBack) {
+            EntityType entityType, String entityName, ScoreType scoreType, int monthsBack) {                     
       //Create dates per range
         for ( int i = 0; i < 30; i++ ) {
+            
+            int daysBack = DateUtil.getDaysBackDate(dateNow, 
+                    (30 * monthsBack) - i * DateUtil.SECONDS_IN_DAY);
+            Date daysBackDt = new Date();
+            daysBackDt.setTime((long)daysBack*1000L);
+            
             storeObject(
                 new ScoreableEntity(entityID, 
                     entityType, 
                     entityName, 
                     randomInt(0,50), 
-                    DateUtil.getDaysBackDate(dateNow, 
-                            (30 * monthsBack) - i * DateUtil.SECONDS_IN_DAY),
+                    daysBackDt,
                     scoreType));
         }
     }
