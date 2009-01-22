@@ -173,13 +173,13 @@ public class OrganizationBean extends BaseBean
         TreeNodeImpl object = (TreeNodeImpl) tree.getRowData();
         if (object.getGroup() != null)
         {
-            if (tree.isExpanded())
+            if (treeStateMap.get(object.getGroup().getGroupID()) != null && treeStateMap.get(object.getGroup().getGroupID()))
             {
-                treeStateMap.put(object.getGroup().getGroupID(), Boolean.TRUE);
+                treeStateMap.put(object.getGroup().getGroupID(), Boolean.FALSE);
             }
             else
             {
-                treeStateMap.put(object.getGroup().getGroupID(), Boolean.FALSE);
+                treeStateMap.put(object.getGroup().getGroupID(), Boolean.TRUE);
             }
         }
     }

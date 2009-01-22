@@ -57,6 +57,16 @@
 								<li class="l grid_icon"><h:graphicImage
 									value="/images/ico_building.png" /></li>
 								<li class="l grid_title">#{organizationBean.accountName}</li>
+								<li class="r grid_icon">
+									<a4j:status	id="overview_ajax_status" for="treeViewRegion">
+										<f:facet name="start">
+											<h:outputText>
+											<img
+												 src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif"
+												align="top" />&#160;</h:outputText>
+										</f:facet>
+									</a4j:status>
+								</li>
 							</ul>
 								<!-- Can't seem to set the immediate to true. When doing so, on select, the node is being set
 									to a SwingTreeNodeImpl -->
@@ -78,7 +88,6 @@
 										changeExpandListener="#{organizationBean.changeExpandListener}"
 										ajaxSubmitSelection="true"
 										ondrop="doRefreshTree()"
-										false="true"
 										dragIndicator="indicator"
 										dropListener="#{organizationBean.processDrop}">
 										<rich:treeNode type="FLEET" iconLeaf="/images/ico_truck.png"
@@ -112,13 +121,6 @@
 											<h:outputText value="#{item.label}" />
 										</rich:treeNode>
 									</rich:tree>
-									<!--
-										adviseNodeSelected="#{organizationBean.adviseNodeSelected}" 
-										adviseNodeOpened="#{organizationBean.adviseNodeExpanded}"
-										changeExpandListener="#{organizationBean.changeExpandListener}"
-										adviseNodeSelected="#{organizationBean.adviseNodeSelected}"
-										dragValue="#{node.data}" dropValue="#{node.data}"
-									-->
 								</h:panelGroup>
 								</a4j:region>
 								<rich:dragIndicator id="indicator" />

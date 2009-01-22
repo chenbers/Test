@@ -10,24 +10,6 @@
 
 	<h:panelGroup id="buttonPanel">
 		<ul id="grid_nav_dark">
-			<!-- Per bug 3504<li class="l">
-			
-			<ul id="breadcrumb">
-				<ui:repeat
-					value="#{organizationBean.selectedGroupNode.groupBreadCrumb}"
-					var="crumb" rowKeyVar="rowKey">
-					<li class="#{rowKey eq (organizationBean.selectedGroupNode.breadCrumbCount - 1)?'last':''}"><a4j:commandLink value="#{crumb.label}"
-						reRender="groupPanel,driverPanel,vehiclePanel,organizationTreePanel">
-						<a4j:actionparam converter="SimpleBeanConverter" name="groupNode"
-							value="#{crumb}"
-							actionListener="#{organizationBean.changeSelectedGroup}"
-							assignTo="#{organizationBean.selectedGroupNode}" />
-					</a4j:commandLink></li>
-				</ui:repeat>
-			</ul>
-			
-
-			</li>-->
 			<li class="r">
 				<a4j:commandButton rendered="#{organizationBean.groupState ne 'VIEW'}"
 					action="#{organizationBean.view}"
@@ -76,12 +58,14 @@
 							<rich:message for="parent_group"
 									errorClass="field-error" fatalClass="field-error"
 									warnClass="field-warning" infoClass="field-info"
-									styleClass="field-msg" /><h:selectOneMenu
+									styleClass="field-msg" />
+							<h:selectOneMenu
 									value="#{organizationBean.selectedParentGroup}"
 									id="parent_group" converter="SimpleBeanConverter"
-									required="true" requiredMessage="#{messages.required}">
+									required="true" requiredMessage="#{messages.required}"
+									tabindex="0">
 									<f:selectItems value="#{organizationBean.parentGroups}" />
-								</h:selectOneMenu>
+							</h:selectOneMenu>
 						</td>
 					</tr>
 					<tr>
@@ -92,7 +76,7 @@
 									fatalClass="field-error" warnClass="field-warning"
 									infoClass="field-info" styleClass="field-msg" /><h:selectOneMenu value="#{groupTreeNode.group.type}"
 									id="group_type" converter="SimpleBeanConverter" required="true"
-									requiredMessage="#{messages.required}">
+									requiredMessage="#{messages.required}" tabindex="1">
 									<f:selectItems value="#{organizationBean.groupTypeList}" />
 								</h:selectOneMenu>
 						</td>
@@ -104,18 +88,18 @@
 					<span class="required">*</span></td>
 					<td>
 						<rich:message for="group_name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-						<h:inputText value="#{groupTreeNode.group.name}" id="group_name" styleClass="text" size="30" maxlength="30" required="true" requiredMessage="#{messages.required}" /> 
+						<h:inputText value="#{groupTreeNode.group.name}" id="group_name" tabindex="2"   styleClass="text" size="30" maxlength="30" required="true" requiredMessage="#{messages.required}" /> 
 					</td>
 				</tr>
 				<tr>
 					<td width="100">#{messages.group_description}:</td>
-					<td><h:inputTextarea value="#{groupTreeNode.group.description}" style="width:100%" /></td>
+					<td><h:inputTextarea value="#{groupTreeNode.group.description}" style="width:100%" tabindex="3"/></td>
 				</tr>
 				<tr>
 					<td width="100">#{messages.group_manager}:</td>
 					<td>
 						<rich:message for="group_manager" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-						<h:selectOneMenu id="group_manager"
+						<h:selectOneMenu id="group_manager" tabindex="4"
 								value="#{groupTreeNode.group.managerID}"
 								requiredMessage="#{messages.required}">
 								<f:selectItems value="#{organizationBean.peopleSelectItems}" />
