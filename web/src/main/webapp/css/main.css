@@ -59,10 +59,22 @@ body {
 #footer ul {
 	margin-bottom:6px;
 	width:100%;
+	padding:0;
+	margin:0;
 }
 #footer li.first {
 	border:0 none;
 	padding-left:0;
+	padding-right:0;
+	float:left;
+	text-align:left;
+}
+#footer li.last {
+	border:0 none;
+	padding-left:0;
+	padding-right:0;
+	float:right;
+	text-align:right;
 }
 #footer li {
 	color: white;

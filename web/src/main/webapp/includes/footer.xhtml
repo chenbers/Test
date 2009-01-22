@@ -16,8 +16,12 @@
 	  </script>
 	  <a4j:form>
 		<ul>
-			<li class="first"><h:outputText value="#{messages.footer_copyright}" escape="false"/></li>
-      		<li>|</li>
+		 	<li class="first"><h:outputText value="#{messages.footer_copyright}" escape="false"/></li>
+			<li class="last">
+			  	   <h:outputFormat value="#{messages.footer_version}" style="color:gray;">
+						<f:param value="#{versionBean.version}"/>
+	   				</h:outputFormat>
+			</li>
 			<li><a4j:commandLink title="#{messages.footer_privacyPolicy}" onclick="doPopup('#{facesContext.externalContext.request.contextPath}/html/inthincPrivacyPolicy.html')">#{messages.footer_privacyPolicy}</a4j:commandLink></li>
       		<li>|</li>
 			<li><a4j:commandLink title="#{messages.footer_terms}" onclick="doPopup('#{facesContext.externalContext.request.contextPath}/html/inthincCustomerTermsOfService.html')">#{messages.footer_terms}</a4j:commandLink></li>
@@ -25,10 +29,5 @@
 			<li><a4j:commandLink title="#{messages.footer_support}" onclick="doPopup('#{facesContext.externalContext.request.contextPath}/html/inthincCustomerSupport.html')">#{messages.footer_support}</a4j:commandLink></li>
 		</ul>
 	  </a4j:form>
-	  <div class="version">
-			<h:outputFormat value="#{messages.footer_version}">
-				<f:param value="#{versionBean.version}"/>
-			</h:outputFormat>
-		</div>
 	</div>
 </ui:composition>
