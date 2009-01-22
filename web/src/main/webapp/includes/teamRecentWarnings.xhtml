@@ -35,17 +35,17 @@
 							<h:outputText value="#{messages.team_warningVehicle}" />
 						</f:facet>
 						<!-- TODO:  hook up vehicle link to correct page -->
-						<h:commandLink action="go_vehicle" value="#{event.vehicleName}">
+						<a4j:htmlCommandLink action="go_vehicle" value="#{event.vehicleName}">
  							<f:setPropertyActionListener value="#{event.event.vehicle}" target="#{navigationBean.vehicle}" />
-						</h:commandLink>
+						</a4j:htmlCommandLink>
 					</rich:column>
 					<rich:column sortBy="#{event.driverName}" width="45%" height="27" >
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_warningDriver}" />
 						</f:facet>
-						<h:commandLink action="go_driver" value="#{event.driverName}">
+						<a4j:htmlCommandLink action="go_driver" value="#{event.driverName}">
 							<f:setPropertyActionListener value="#{event.event.driver}" target="#{teamWarningsBean.navigation.driver}" />
-						</h:commandLink>
+						</a4j:htmlCommandLink>
 					</rich:column>
 					<rich:column sortBy="#{event.time}" width="15%" height="27" >
 						<f:facet name="header">
@@ -57,9 +57,9 @@
 						<f:facet name="header">
 							<h:outputText value="" />
 						</f:facet>
-						<h:commandLink action="go_warnings" value="#{messages.team_warningDetails}">
+						<a4j:htmlCommandLink action="go_warnings" value="#{messages.team_warningDetails}">
 							<f:setPropertyActionListener value="#{event.event}" target="#{warningsBean.eventFilter}" />
-						</h:commandLink>
+						</a4j:htmlCommandLink>
 					</rich:column>
 			</rich:dataTable>
 			</h:form>		

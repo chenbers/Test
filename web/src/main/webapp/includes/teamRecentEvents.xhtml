@@ -34,9 +34,9 @@
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_recentEventsDriver}" />
 						</f:facet>
-						<h:commandLink action="go_driver" value="#{event.driverName}">
+						<a4j:htmlCommandLink action="go_driver" value="#{event.driverName}">
 							<f:setPropertyActionListener value="#{event.event.driver}" target="#{teamRecentEventsBean.navigation.driver}" />
-						</h:commandLink>
+						</a4j:htmlCommandLink>
 					</rich:column>
 					<rich:column sortBy="#{event.time}" width="20%" height="27" >
 						<f:facet name="header">
@@ -49,10 +49,10 @@
 							<h:outputText value="" />
 						</f:facet>
 						<!-- TODO:  should go to a page based on the event type -->
-						<h:commandLink action="#{teamRecentEventsBean.detailsAction}" value="#{messages.team_recentEventsDetails}">
+						<a4j:htmlCommandLink action="#{teamRecentEventsBean.detailsAction}" value="#{messages.team_recentEventsDetails}">
 							<f:setPropertyActionListener value="#{event.event.driver}" target="#{teamRecentEventsBean.navigation.driver}" />
 							<f:setPropertyActionListener value="#{event}" target="#{teamRecentEventsBean.selectedEvent}" />
-						</h:commandLink>
+						</a4j:htmlCommandLink>
 					</rich:column>
 			</rich:dataTable>
 			</h:form>		
