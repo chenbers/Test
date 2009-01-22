@@ -29,7 +29,7 @@ import com.inthinc.pro.util.MiscUtil;
 public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 {
     private static final List<String>              AVAILABLE_COLUMNS;
-    private static final int[]                     DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 4, 7 };
+    private static final int[]                     DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 4, 6 };
 
     private static final Map<String, DeviceStatus> STATUSES;
 
