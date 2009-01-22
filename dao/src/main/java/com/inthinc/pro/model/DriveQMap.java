@@ -1,5 +1,6 @@
 package com.inthinc.pro.model;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +19,7 @@ public class DriveQMap extends BaseEntity
     private Integer speeding4;
     private Integer speeding5;
     private Integer drivingStyle;
-    private Integer aggressiveBreak;
+    private Integer aggressiveBrake;
     private Integer aggressiveAccel;
     private Integer aggressiveTurn;
     private Integer aggressiveLeft;
@@ -32,6 +33,8 @@ public class DriveQMap extends BaseEntity
     private Integer idleLo;
     private Integer idleHi;
     private Integer driveTime;
+    private Date startingDate;
+    private Date endingDate;
     
     @Column(updateable = false)
     private transient Map<ScoreType, Integer> scoreMap = new HashMap<ScoreType, Integer>();
@@ -132,14 +135,14 @@ public class DriveQMap extends BaseEntity
         this.drivingStyle = drivingStyle;
         scoreMap.put(ScoreType.SCORE_DRIVING_STYLE, drivingStyle);
     }
-    public Integer getAggressiveBreak()
+    public Integer getAggressiveBrake()
     {
-        return aggressiveBreak;
+        return aggressiveBrake;
     }
-    public void setAggressiveBreak(Integer aggressiveBreak)
+    public void setAggressiveBrake(Integer aggressiveBrake)
     {
-        this.aggressiveBreak = aggressiveBreak;
-        scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE, aggressiveBreak);
+        this.aggressiveBrake = aggressiveBrake;
+        scoreMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE, aggressiveBrake);
     }
     public Integer getAggressiveAccel()
     {
@@ -257,5 +260,21 @@ public class DriveQMap extends BaseEntity
     public Map<ScoreType, Integer> getScoreMap()
     {
         return scoreMap;
+    }
+    public Date getStartingDate()
+    {
+        return startingDate;
+    }
+    public void setStartingDate(Date startingDate)
+    {
+        this.startingDate = startingDate;
+    }
+    public Date getEndingDate()
+    {
+        return endingDate;
+    }
+    public void setEndingDate(Date endingDate)
+    {
+        this.endingDate = endingDate;
     }
 }
