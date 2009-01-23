@@ -46,21 +46,6 @@
 						</f:facet>
 						<iwi:scoreBox style="#{item.style}" score="#{item.driverScore.score}"/>
 					</rich:column>
-					<rich:column width="30%" sortBy="#{item.vehicleID}" >
-						<f:facet name="header">
-							<h:outputText value="#{messages.teamTop_vehicle}" />
-						</f:facet>
-						<a4j:htmlCommandLink action="go_vehicle" value="#{item.vehicleID}" rendered="#{item.vehicleID != messages.teamTop_noVehicle}">
- 							<f:setPropertyActionListener value="#{item.driverScore.vehicle}" target="#{navigationBean.vehicle}" />
-						</a4j:htmlCommandLink>
-						<h:outputText value="#{item.vehicleID}" rendered="#{item.vehicleID == messages.teamTop_noVehicle}"/>
-					</rich:column>
-					<rich:column width="15%" sortBy="#{item.driverScore.milesDriven}" >
-						<f:facet name="header">
-							<h:outputText value="#{messages.teamTop_miles}" />
-						</f:facet>
-						<h:outputText value="#{item.driverScore.milesDriven}"/>
-					</rich:column>
 
 					</rich:dataTable>
 
@@ -119,21 +104,6 @@
 						</f:facet>
 						<iwi:scoreBox style="#{item.style}" score="#{item.driverScore.score}"/>
 												
-					</rich:column>
-					<rich:column width="30%" sortBy="#{item.vehicleID}" >
-						<f:facet name="header">
-							<h:outputText value="#{messages.teamTop_vehicle}" />
-						</f:facet>
-						<a4j:htmlCommandLink action="go_vehicle" value="#{item.vehicleID}" rendered="#{item.vehicleID != messages.teamTop_noVehicle}">
- 							<f:setPropertyActionListener value="#{item.driverScore.vehicle}" target="#{navigationBean.vehicle}" />
-						</a4j:htmlCommandLink>
-						<h:outputText value="#{item.vehicleID}" rendered="#{item.vehicleID == messages.teamTop_noVehicle}"/>
-					</rich:column>
-					<rich:column width="15%" sortBy="#{item.driverScore.milesDriven}" >
-						<f:facet name="header">
-							<h:outputText value="#{messages.teamTop_miles}" />
-						</f:facet>
-						<h:outputText value="#{item.driverScore.milesDriven}"/>
 					</rich:column>
 
 					</rich:dataTable>
