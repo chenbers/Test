@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -157,19 +158,19 @@ public class BaseEventsBean extends BaseBean implements TablePrefOptions
         setFilteredTableData(null);
 
         List<Event> eventList = getEventsForGroup(getUser().getGroupID());
-//        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(getUser().getGroupID());
-        List<EventReportItem> EventReportItemList = new ArrayList<EventReportItem>();
+        List<EventReportItem> eventReportItemList = new ArrayList<EventReportItem>();
         for (Event event : eventList)
         {
-            EventReportItemList.add(new EventReportItem(event, null, getGroupHierarchy()));
+            eventReportItemList.add(new EventReportItem(event, null, getGroupHierarchy()));
         }
-        setTableData(EventReportItemList);
+        Collections.sort(eventReportItemList);
+        Collections.reverse(eventReportItemList);
+        setTableData(eventReportItemList);
 
     }
 
     protected List<Event> getEventsForGroup(Integer groupID)
     {
-//        return eventDAO.getMostRecentEvents(groupID, EVENT_CNT);
         return null;
     }
 
@@ -233,7 +234,6 @@ public class BaseEventsBean extends BaseBean implements TablePrefOptions
     
     public void clearItemAction()
     {
-//        clearItem.getRedFlag().setCleared(true);
         eventDAO.forgive(clearItem.getEvent().getDriverID(), clearItem.getEvent().getNoteID());
         tableData.remove(clearItem);
         filteredTableData.remove(clearItem);
@@ -249,7 +249,6 @@ public class BaseEventsBean extends BaseBean implements TablePrefOptions
 
     private void reinit()
     {
-        //setTableData(null);
         setFilteredTableData(null);
         setStart(null);
         setEnd(null);

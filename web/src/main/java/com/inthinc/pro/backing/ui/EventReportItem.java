@@ -18,7 +18,7 @@ import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.SpeedingEvent;
 import com.inthinc.pro.util.MessageUtil;
 
-public class EventReportItem
+public class EventReportItem implements Comparable<EventReportItem>
 {
     
     private static final Logger logger = Logger.getLogger(EventReportItem.class);
@@ -126,6 +126,12 @@ public class EventReportItem
     public void setAlert(boolean alert)
     {
         this.alert = alert;
+    }
+
+    @Override
+    public int compareTo(EventReportItem o)
+    {
+        return this.getEvent().getTime().compareTo(o.getEvent().getTime());
     }
 
     

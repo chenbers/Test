@@ -15,7 +15,7 @@ import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.SpeedingEvent;
 import com.inthinc.pro.util.MessageUtil;
 
-public class RedFlagReportItem
+public class RedFlagReportItem implements Comparable<RedFlagReportItem>
 {
     
     private static final Logger logger = Logger.getLogger(RedFlagReportItem.class);
@@ -104,6 +104,12 @@ public class RedFlagReportItem
     public void setRedFlag(RedFlag redFlag)
     {
         this.redFlag = redFlag;
+    }
+
+    @Override
+    public int compareTo(RedFlagReportItem o)
+    {
+        return this.getRedFlag().getLevel().compareTo(o.getRedFlag().getLevel());
     }
     
     

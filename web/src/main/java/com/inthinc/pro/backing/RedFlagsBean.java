@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -184,6 +185,7 @@ public class RedFlagsBean extends BaseBean implements TablePrefOptions
         {
             redFlagReportItemList.add(new RedFlagReportItem(redFlag, getGroupHierarchy()));
         }
+        Collections.sort(redFlagReportItemList);
         setTableData(redFlagReportItemList);
 
     }
