@@ -46,11 +46,9 @@ public class OrganizationBean extends BaseBean
      */
     private TreeNodeImpl topLevelNode;
     private GroupHierarchy organizationHierarchy;
-   
 
     private TreeNodeImpl selectedGroupNode;
     private Map<Integer, Boolean> treeStateMap = new HashMap<Integer, Boolean>();
-
 
     /*
      * For controlling state of page
@@ -142,12 +140,9 @@ public class OrganizationBean extends BaseBean
         {
             TreeNodeImpl object = (TreeNodeImpl) tree.getRowData();
             logger.debug("Tree Node Expanded: " + object.getLabel());
-            if (object.getGroup() != null)
+            if (object.getGroup() != null && treeStateMap.get(object.getGroup().getGroupID()) != null && treeStateMap.get(object.getGroup().getGroupID()))
             {
-                if (treeStateMap.get(object.getGroup().getGroupID()) != null && treeStateMap.get(object.getGroup().getGroupID()))
-                {
-                    result = true;
-                }
+                result = true;
             }
         }
         return result;
@@ -251,9 +246,9 @@ public class OrganizationBean extends BaseBean
         groupState = State.ADD;
         logger.debug("Adding New Group");
         selectedParentGroup = selectedGroupNode.getGroup();
-        
+
         inProgressGroupNode = createNewGroupNode();
-       
+
     }
 
     public void changeSelectedGroup(javax.faces.event.ActionEvent event)
@@ -306,7 +301,7 @@ public class OrganizationBean extends BaseBean
                 inProgressGroupNode.setId(id);
                 setSelectedGroupNode(inProgressGroupNode);
                 updateUsersGroupHeirarchy();
-                //topLevelNode = null; dont' think we need this and I beleive it is causing problems
+                // topLevelNode = null; dont' think we need this and I beleive it is causing problems
                 this.addInfoMessage(selectedGroupNode.getGroup().getName() + " " + MessageUtil.getMessageString("group_save_confirmation"));
                 groupState = State.VIEW;
                 treeStateMap.put(selectedParentGroup.getGroupID(), Boolean.TRUE);
@@ -319,26 +314,31 @@ public class OrganizationBean extends BaseBean
         }
 
     }
-    
-    public void delete(){
-        if(selectedGroupNode.getGroup() != null)
+
+    public void delete()
+    {
+        if (selectedGroupNode.getGroup() != null)
         {
-            //Validation
-            if(selectedGroupNode.equals(topLevelNode)){
+            // Validation
+            if (selectedGroupNode.equals(topLevelNode))
+            {
                 addErrorMessage(MessageUtil.getMessageString("group_delete_error_top"));
-            }else if(selectedGroupNode.getChildCount() > 0){
+            }
+            else if (selectedGroupNode.getChildCount() > 0)
+            {
                 addErrorMessage(MessageUtil.getMessageString("group_delete_error_subordinate"));
-            }else
+            }
+            else
             {
                 groupDAO.deleteByID(selectedGroupNode.getGroup().getGroupID());
                 TreeNodeImpl parentNode = selectedGroupNode.getParent();
                 selectedGroupNode.setParent(null);
                 selectedGroupNode = parentNode;
-                //Make sure when the page refreshed that we pull a new list in
+                // Make sure when the page refreshed that we pull a new list in
                 topLevelNode = null;
             }
         }
-       
+
     }
 
     private void updateUsersGroupHeirarchy()
@@ -383,7 +383,7 @@ public class OrganizationBean extends BaseBean
         group.setDescription(copyFromNode.getGroup().getDescription());
         group.setCreated(copyFromNode.getGroup().getCreated());
         group.setType(copyFromNode.getGroup().getType());
-        if(copyFromNode.getGroup().getMapCenter() != null)
+        if (copyFromNode.getGroup().getMapCenter() != null)
         {
             group.setMapCenter(new LatLng(copyFromNode.getGroup().getMapCenter().getLat(), copyFromNode.getGroup().getMapCenter().getLng()));
         }
@@ -401,7 +401,7 @@ public class OrganizationBean extends BaseBean
         group.setStatus(GroupStatus.GROUP_ACTIVE);
         group.setMapZoom(selectedGroupNode.getGroup().getMapZoom());
         group.setMapCenter(selectedGroupNode.getGroup().getMapCenter());
-        
+
         TreeNodeImpl newGroupNode = new TreeNodeImpl(group, organizationHierarchy);
         newGroupNode.setDriverDAO(driverDAO);
         newGroupNode.setVehicleDAO(vehicleDAO);
@@ -493,19 +493,17 @@ public class OrganizationBean extends BaseBean
     public void setSelectedGroupNode(TreeNodeImpl selectedGroupNode)
     {
         TreeNodeType type = selectedGroupNode.getTreeNodeType();
-        if (type == TreeNodeType.TEAM || type == TreeNodeType.DIVISION || type ==TreeNodeType.FLEET)
-        { 
+        if (type == TreeNodeType.TEAM || type == TreeNodeType.DIVISION || type == TreeNodeType.FLEET)
+        {
             selectedGroupDriverCount = driverDAO.getAllDrivers(selectedGroupNode.getGroup().getGroupID()).size();
             selectedGroupVehicleCount = vehicleDAO.getVehiclesInGroupHierarchy(selectedGroupNode.getGroup().getGroupID()).size();
         }
-        if (this.selectedGroupNode != null)
-        {
-            if (!(selectedGroupNode.getTreeNodeType() == this.selectedGroupNode.getTreeNodeType() && selectedGroupNode.getId() == this.selectedGroupNode.getId()))
-            {
-                this.groupState = State.VIEW;
-            }
-        }
 
+        if (this.selectedGroupNode != null
+                && !(selectedGroupNode.getTreeNodeType() == this.selectedGroupNode.getTreeNodeType() && selectedGroupNode.getId() == this.selectedGroupNode.getId()))
+        {
+            this.groupState = State.VIEW;
+        }
         this.selectedGroupNode = selectedGroupNode;
     }
 
@@ -602,7 +600,7 @@ public class OrganizationBean extends BaseBean
     {
         this.treeStateMap = treeStateMap;
     }
-    
+
     public GroupHierarchy getOrganizationHierarchy()
     {
         return organizationHierarchy;
