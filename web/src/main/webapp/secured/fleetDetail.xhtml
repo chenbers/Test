@@ -190,12 +190,14 @@
 									style="background-color:#{item.colorKey};border-style:solid;border-width:1px;border-color:#000000"></rich:spacer>
 							</rich:column>
 
-							<rich:column>
+							<rich:column
+								headerClass="sortable-text #{trendFlyoutBean.sortItFirst eq 'true'? (trendFlyoutBean.navigation.sortedFirst eq 'false' ? 'forwardSort' : 'reverseSort') : ''}">
 								<f:facet name="header">
 									<a4j:commandLink 
-										value="Region" 
+										value="#{messages.trendReport_header_divisionTeam}" 
 										reRender="xypanel,items">
-										<f:setPropertyActionListener target="#{trendFlyoutBean.sortItFirst}" value="true" />														
+										<f:setPropertyActionListener target="#{trendFlyoutBean.sortItFirst}" value="true" />
+										<f:setPropertyActionListener target="#{trendFlyoutBean.sortItSecond}" value="false" />																
 									</a4j:commandLink>
 								</f:facet>
 								<h:outputLink value="#{item.goTo}">
@@ -203,12 +205,14 @@
 								</h:outputLink>
 							</rich:column>
 
-							<rich:column width="73">
+							<rich:column width="73"
+								headerClass="sortable-text #{trendFlyoutBean.sortItSecond eq 'true'? (trendFlyoutBean.navigation.sortedSecond eq 'false' ? 'forwardSort' : 'reverseSort') : ''}">
 								<f:facet name="header">
 									<a4j:commandLink 
-										value="Score" 
+										value="#{messages.trendReport_header_score}" 
 										reRender="xypanel,items">
-										<f:setPropertyActionListener target="#{trendFlyoutBean.sortItSecond}" value="true" />														
+										<f:setPropertyActionListener target="#{trendFlyoutBean.sortItSecond}" value="true" />
+										<f:setPropertyActionListener target="#{trendFlyoutBean.sortItFirst}" value="false" />														
 									</a4j:commandLink>
 								</f:facet>
 								<iwi:scoreBox style="#{item.style}" score="#{item.se.score}"/>
