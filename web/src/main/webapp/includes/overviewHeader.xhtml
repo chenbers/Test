@@ -31,8 +31,18 @@
 					</h:panelGroup>
 				</li>
 				</h:outputText>
+				<li class="r grid_icon">
+					<a4j:status	id="overview_ajax_status" for="overview_header_region">
+						<f:facet name="start">
+							<h:outputText>
+											<img
+												 src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif"
+												align="top" />&#160;</h:outputText>
+						</f:facet>
+					</a4j:status>
+				</li>
 				<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" /></li>
-		</ul>
+			</ul>
 		
 		<rich:contextMenu attachTo="overview_tools_icon" disableDefaultMenu="false" attached="true" id="over_header_menu" submitMode="server" event="onclick">
 			<rich:menuItem ajaxSingle="true" rendered="true"
@@ -49,11 +59,12 @@
 			</rich:menuItem>
 		</rich:contextMenu>
 	</a4j:form>
-	</a4j:region>
-	
-	<ui:include src="/includes/emailReportPopup.xhtml">	
+		<ui:include src="/includes/emailReportPopup.xhtml">	
 		<ui:param  name="reportList" value="#{reportRendererBean.reportList}"/>
 		<ui:param name="id" value="overview_emailPopup" />
 		<ui:param name="reportBean" value="#{reportRendererBean}" />
     </ui:include>
+	</a4j:region>
+	
+	
 </ui:composition>
