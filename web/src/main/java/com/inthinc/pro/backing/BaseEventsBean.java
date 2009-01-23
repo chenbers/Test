@@ -237,6 +237,9 @@ public class BaseEventsBean extends BaseBean implements TablePrefOptions
         eventDAO.forgive(clearItem.getEvent().getDriverID(), clearItem.getEvent().getNoteID());
         tableData.remove(clearItem);
         filteredTableData.remove(clearItem);
+        maxCount--;
+        if (end > maxCount)
+            end = maxCount;
     }
 
     public EventCategory getCategoryFilter()

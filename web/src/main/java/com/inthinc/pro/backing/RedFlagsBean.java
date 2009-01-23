@@ -262,7 +262,10 @@ public class RedFlagsBean extends BaseBean implements TablePrefOptions
         
         tableData.remove(clearItem);
         filteredTableData.remove(clearItem);
-        // todo: persist in DAO
+        maxCount--;
+        if (end > maxCount)
+            end = maxCount;
+        
     }
 
     public EventCategory getCategoryFilter()

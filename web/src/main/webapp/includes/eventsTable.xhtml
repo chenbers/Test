@@ -93,7 +93,7 @@
           				action="#{bean.clearItemAction}"         				
           				oncomplete="Richfaces.hideModalPanel('clearEventPanel')" 
           				onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;"
-          				reRender="items" styleClass="left">
+          				reRender="#{clearRerender}" styleClass="left">
           					<span class="yes">
           						<h:outputText value="#{messages.button_yes}" />
           					</span>
