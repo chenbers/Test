@@ -58,6 +58,8 @@ public class DriverStyleBean extends BaseDurationBean
     
     private void init()
     {
+        super.setTableRowCount(10);
+        
         int driverID = navigation.getDriver().getDriverID();
         
         Map<ScoreType, ScoreableEntity> scoreMap = scoreDAO.getDriverScoreBreakdownByType(driverID, getDuration(), ScoreType.SCORE_DRIVING_STYLE);
@@ -77,6 +79,30 @@ public class DriverStyleBean extends BaseDurationBean
         se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
         setStyleScoreTurn(se == null ? NO_SCORE : se.getScore());
         
+        getViolations();
+        
+    }
+    
+    public void getViolations()
+    {
+        if(styleEvents.size() < 1)
+        {
+            List<Integer> types = new ArrayList<Integer>();    
+            types.add(2);
+            
+            List<Event> tempEvents = new ArrayList<Event>();
+         
+            tempEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), getStartDate(), getEndDate(), types);
+           
+            AddressLookup lookup = new AddressLookup();
+            for(Event event: tempEvents)
+            {
+                event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
+                styleEvents.add( (AggressiveDrivingEvent)event );   
+            }
+            
+            super.setTableSize(styleEvents.size());
+        }    
     }
     
     public String createLineDef(ScoreType scoreType)
@@ -296,28 +322,9 @@ public class DriverStyleBean extends BaseDurationBean
         init();
     }
     
-    /*
-     * DrivingStyle Events List properties
-     */
     public List<AggressiveDrivingEvent> getStyleEvents()
     {
-        if(styleEvents.size() < 1)
-        {
-            List<Integer> types = new ArrayList<Integer>();    
-            types.add(2);
-            
-            List<Event> tempEvents = new ArrayList<Event>();
-         
-            tempEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), getStartDate(), getEndDate(), types);
-           
-            AddressLookup lookup = new AddressLookup();
-            for(Event event: tempEvents)
-            {
-                event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
-                styleEvents.add( (AggressiveDrivingEvent)event );   
-            }
-        }
-        
+        getViolations();  
         return styleEvents;
     }
     public void setStyleEvents(List<AggressiveDrivingEvent> styleEvents) {

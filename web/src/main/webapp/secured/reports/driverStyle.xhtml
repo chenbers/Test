@@ -351,12 +351,18 @@ var selected = 'OVERALL';
 		
 		<!-- START PANEL -->
 			<div class="" style="width: 938px;">
-				<div class="panel_nw">
+				<rich:panel id="tableStats" bodyClass="panel_nw">
 					<div class="panel_title">
 						<span class="details">Details</span>
-						<span class="panel_links"></span>
+						<span class="panel_content_right">
+						  	<h:outputFormat id="headerEvents" value="#{messages.redflags_recordCountHeader}">
+								<a4j:actionparam value="#{driverStyleBean.tableRowStart}"/>
+								<a4j:actionparam value="#{driverStyleBean.tableRowEnd}"/>
+								<a4j:actionparam value="#{driverStyleBean.tableSize}"/>
+							</h:outputFormat>  
+						</span>
 					</div>
-				</div>
+				</rich:panel>
 				<div class="panel_w">
 				  <div class="panel_content">
 				     
@@ -365,24 +371,24 @@ var selected = 'OVERALL';
 				<!-- Start Event table --> 
 					<h:form id="eventTable">
 					<rich:datascroller align="center" for="eventsTable" immediate="true"
-							id="scrollerTop" reRender="eventsTable,scrollerBottom" />
+							id="scrollerTop" reRender="eventsTable,scrollerBottom,tableStats" scrollerListener="#{driverStyleBean.scrollerListener}" />
 						<rich:dataTable value="#{driverStyleBean.styleEvents}" 
 						id="eventsTable" var="item" styleClass="datagrid"
 						rowClasses="tableOdd,tableEven" cellspacing="1" 
-						rows="10" width="100%">
+						rows="#{driverStyleBean.tableRowCount}" width="100%">
 						
 							<rich:column>
 								<f:facet name="header">
 									<h:outputText value="Location" />
 								</f:facet>
 								<div class="maplink">
-					              <a4j:commandLink style="cursor:pointer">
+					              <a4j:htmlCommandLink style="cursor:pointer" disabled="true">
 						                <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
 						                  <f:param name="lat" value="#{item.latitude}"/>
 						                  <f:param name="lng" value="#{item.longitude}"/>
 						                </rich:componentControl>
 						                		#{item.addressStr}<br />
-					              </a4j:commandLink>
+					              </a4j:htmlCommandLink>
 				              	</div>
 				            </rich:column>
 							
@@ -430,8 +436,8 @@ var selected = 'OVERALL';
 							
 						</rich:dataTable>
 						
-						<rich:datascroller align="center" for="eventsTable" immediate="true"
-							id="scrollerBottom" reRender="eventsTable,scrollerTop" />
+						<rich:datascroller align="center" for="eventsTable" immediate="true" id="scrollerBottom" 
+						reRender="eventsTable,scrollerTop,tableStats" scrollerListener="#{driverStyleBean.scrollerListener}"/>
 					</h:form> 
 				<!-- End Event table -->
 				</div>
@@ -448,7 +454,7 @@ var selected = 'OVERALL';
 </div>
 
 <!-- START FORGIVE MODAL -->
-<rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="350">
+<rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="165" resizeable="false">
       <t:saveState value="#{driverBean.clearItem}" />
       <f:facet name="header">
         <h:outputText value="Clear Event" />
@@ -458,7 +464,7 @@ var selected = 'OVERALL';
       </f:facet>
 
       <h:panelGroup layout="block" styleClass="popupsubtitle">
-      	<h:outputText value="Clear the following Event?"/>
+      	<h:outputText value="Clear the following Event? This action is irreversible."/>
       </h:panelGroup>
 
       <a4j:form id="clearItemForm">
@@ -472,7 +478,7 @@ var selected = 'OVERALL';
         <div class="popupactions">
           <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_no}" /></span></button>
           <a4j:commandLink action="#{driverBean.ClearEventAction}"         				
-          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel')" reRender="eventsTable">
+          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel')" reRender="eventsTable,tableStats">
 	          				<button type="submit" class="left">
 	          					<span class="apply">
 	          						<h:outputText value="#{messages.button_yes}" />

@@ -342,6 +342,14 @@ body {
 	margin-left: 11px;
 	}
 
+.panel_content_right {
+	
+	font: normal 12px Verdana, Arial, Helvetica, sans-serif;
+	position: absolute;
+	top: 7px;
+	right: 8px;
+	}
+
 /* START NAVIGATION BLOCK */
 
 .main_nav{

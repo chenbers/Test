@@ -378,26 +378,31 @@ var selected = 'OVERALL';
 		
 		<!-- START PANEL -->
 			<div class="" style="width: 938px;">
-				<div class="panel_nw">
+				<rich:panel id="tableStats" bodyClass="panel_nw">
 					<div class="panel_title">
 						<span class="details">Details</span>
-						<span class="panel_links"></span>
+						<span class="panel_content_right">
+						  	<h:outputFormat id="headerEvents" value="#{messages.redflags_recordCountHeader}">
+								<a4j:actionparam value="#{driverSpeedBean.tableRowStart}"/>
+								<a4j:actionparam value="#{driverSpeedBean.tableRowEnd}"/>
+								<a4j:actionparam value="#{driverSpeedBean.tableSize}"/>
+							</h:outputFormat>  
+						</span>
 					</div>
-				</div>
+				</rich:panel>
 				<div class="panel_w">
 				  <div class="panel_content">
-				     
-
-			<div class="datagrid">
-					<h:form id="eventsTableForm">
+				  
+				<div class="datagrid">
+					<a4j:form id="eventsTableForm" ajaxSubmit="true">
 					<rich:datascroller align="center" for="eventsTable" immediate="true"
-								id="scrollerTop" reRender="eventsTable,scrollerBottom" />
+								id="scrollerTop" reRender="eventsTable,scrollerBottom,tableStats" scrollerListener="#{driverSpeedBean.scrollerListener}" />
 								
 					
 						<rich:dataTable 
 						value="#{driverSpeedBean.speedingEvents}" 
 						id="eventsTable" var="item" styleClass="datagrid"
-						rowClasses="tableOdd,tableEven" cellspacing="1" rows="10">			
+						rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{driverSpeedBean.tableRowCount}" width="100%">			
 
 							<rich:column>
 								<f:facet name="header">
@@ -429,7 +434,7 @@ var selected = 'OVERALL';
 								</f:facet>
 								<strong><h:outputText value="#{item.speedLimit} #{messages.measurement_speed}" /></strong>
 								<a4j:commandButton onclick="javascript:Richfaces.showModalPanel('SLChangeRequestPanel',{lat:'#{item.latitude}',lon:'#{item.longitude}'});"  
-												title="#{messages.sbs_submitRequest}" image="../images/ico_limit_edit.png"
+												title="#{messages.sbs_submitRequest}" image="/images/ico_limit_edit.png"
 												style="vertical-align:middle;margin-left:10px">
 								</a4j:commandButton>
 								
@@ -473,8 +478,10 @@ var selected = 'OVERALL';
     						</rich:column>
 						</rich:dataTable>
 						<rich:datascroller align="center" for="eventsTable" immediate="true"
-								id="scrollerBottom" reRender="eventsTable,scrollerTop" />
-					</h:form> 
+								id="scrollerBottom" reRender="eventsTable,scrollerTop,tableStats" scrollerListener="#{driverSpeedBean.scrollerListener}"/>
+								
+								 
+					</a4j:form> 
 					</div>
 				</div>
 			</div>
@@ -489,7 +496,7 @@ var selected = 'OVERALL';
 </div>
 	
  <!-- START FORGIVE MODAL -->
-<rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="350">
+<rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="165" resizeable="false">
 <t:saveState value="#{driverBean.clearItem}" />
       <f:facet name="header">
         <h:outputText value="Clear Event" />
@@ -513,7 +520,7 @@ var selected = 'OVERALL';
         <div class="popupactions">
           <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_no}" /></span></button>
           <a4j:commandLink action="#{driverBean.ClearEventAction}"         				
-          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel')" reRender="eventsTable">
+          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel')" reRender="eventsTable,tableStats">
 	          				<button type="submit" class="left">
 	          					<span class="apply">
 	          						<h:outputText value="#{messages.button_yes}" />

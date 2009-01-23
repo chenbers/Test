@@ -3,27 +3,17 @@ package com.inthinc.pro.backing;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.log4j.Logger;
-
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
-import com.inthinc.pro.backing.ui.ScoreBreakdown;
-import com.inthinc.pro.backing.ui.ScoreCategory;
 import com.inthinc.pro.charts.Line;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.ScoreDAO;
-import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.map.AddressLookup;
-import com.inthinc.pro.model.Distance;
-import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
-import com.inthinc.pro.model.EventType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SpeedingEvent;
@@ -55,13 +45,17 @@ public class DriverSpeedBean extends BaseDurationBean
     private String          speedScoreHistoryFourtyOne;
     private String          speedScoreHistoryFiftyFive;
     private String          speedScoreHistorySixtyFive;
-    private static final Integer NO_SCORE = -1;
     
-    private List<SpeedingEvent> speedingEvents = new ArrayList<SpeedingEvent>();
-    private SpeedingEvent   clearItem;
+    private static final Integer    NO_SCORE = -1;
+    private List<SpeedingEvent>     speedingEvents = new ArrayList<SpeedingEvent>();
+    private SpeedingEvent           clearItem;
+
     
 	private void init()
     {
+	    //Set Events table rows per page in BaseDurationBean
+	    super.setTableRowCount(10);
+	    
         if (navigation.getDriver() == null)
         {
             return;
@@ -87,7 +81,31 @@ public class DriverSpeedBean extends BaseDurationBean
         
         se = scoreMap.get(ScoreType.SCORE_SPEEDING_65_80);
         setSpeedScoreSixtyFive(se == null ? NO_SCORE : se.getScore());
+        
+        getViolations();
     }
+	
+	public void getViolations()
+	{
+        if(speedingEvents.size() < 1)
+        {
+            List<Event> tempEvents = new ArrayList<Event>();
+            List<Integer> types = new ArrayList<Integer>();    
+            types.add(93);
+            
+            tempEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), getStartDate(), getEndDate(), types);
+           
+            AddressLookup lookup = new AddressLookup();
+            
+            for(Event event: tempEvents)
+            {
+                event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
+                speedingEvents.add( (SpeedingEvent)event );   
+            }
+            
+            super.setTableSize(speedingEvents.size());
+        }
+	}
     
     public String createLineDef(ScoreType scoreType)
     {
@@ -327,23 +345,7 @@ public class DriverSpeedBean extends BaseDurationBean
     //SPEEDING EVENTS LIST
     public List<SpeedingEvent> getSpeedingEvents()
     {
-        List<Event> tempEvents = new ArrayList<Event>();
-        
-        if(speedingEvents.size() < 1)
-        {
-            List<Integer> types = new ArrayList<Integer>();    
-            types.add(93);
-            
-            tempEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), getStartDate(), getEndDate(), types);
-           
-            AddressLookup lookup = new AddressLookup();
-            
-            for(Event event: tempEvents)
-            {
-                event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
-                speedingEvents.add( (SpeedingEvent)event );   
-            }
-        }
+        getViolations();
         return speedingEvents;
     }
    
@@ -370,4 +372,5 @@ public class DriverSpeedBean extends BaseDurationBean
     {
         this.navigation = navigation;
     }
+
 }

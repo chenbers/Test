@@ -210,7 +210,7 @@
         <property name="navigation" ref="navigationBean"></property>
     </bean>
 
-    <bean id="driverSeatBeltBean" class="com.inthinc.pro.backing.DriverSeatBeltBean" scope="request">
+    <bean id="driverSeatBeltBean" class="com.inthinc.pro.backing.DriverSeatBeltBean" scope="request" init-method="init">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>

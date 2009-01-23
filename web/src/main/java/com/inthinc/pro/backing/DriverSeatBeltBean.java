@@ -43,18 +43,42 @@ public class DriverSeatBeltBean extends BaseDurationBean
       
     private List<SeatBeltEvent> seatBeltEvents = new ArrayList<SeatBeltEvent>();
     
-    private void initSeatBelt()
+    private void init()
     {
+        super.setTableRowCount(10);
+        
         ScoreableEntity seatBeltSe = scoreDAO.getDriverAverageScoreByType(navigation.getDriver().getDriverID(), getDuration(), ScoreType.SCORE_SEATBELT);
         if (seatBeltSe == null)
             setSeatBeltScore(-1);
         else setSeatBeltScore(seatBeltSe.getScore());
+        
+        getViolations();
+    }
+    
+    public void getViolations()
+    {
+        if(seatBeltEvents.size() < 1)
+        {
+            List<Integer> types = new ArrayList<Integer>();    
+            types.add(3);
+            
+            List<Event> tempEvents = new ArrayList<Event>();
+            tempEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), getStartDate(), getEndDate(), types);
+           
+            AddressLookup lookup = new AddressLookup();
+            for(Event event: tempEvents)
+            {
+                event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
+                seatBeltEvents.add( (SeatBeltEvent)event );   
+            }
+            super.setTableSize(seatBeltEvents.size());
+        }
     }
     
     //SCORE PROPERTIES
     public Integer getSeatBeltScore() {
         if(seatBeltScore == null)
-            initSeatBelt();
+            init();
         
         return seatBeltScore;
     }
@@ -75,7 +99,7 @@ public class DriverSeatBeltBean extends BaseDurationBean
     //SCOREBOX STYLE PROPERTIES
     public String getSeatBeltScoreStyle() {
         if(seatBeltScoreStyle == null)
-            initSeatBelt();
+            init();
         
         return seatBeltScoreStyle;
     }
@@ -148,22 +172,7 @@ public class DriverSeatBeltBean extends BaseDurationBean
     //SEATBELT EVENTS LIST
     public List<SeatBeltEvent> getSeatBeltEvents() 
     {
-        if(seatBeltEvents.size() < 1)
-        {
-            List<Integer> types = new ArrayList<Integer>();    
-            types.add(3);
-            
-            List<Event> tempEvents = new ArrayList<Event>();
-            tempEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), getStartDate(), getEndDate(), types);
-           
-            AddressLookup lookup = new AddressLookup();
-            for(Event event: tempEvents)
-            {
-                event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
-                seatBeltEvents.add( (SeatBeltEvent)event );   
-            }
-        }
-        
+        getViolations();
         return seatBeltEvents;
     }
 
