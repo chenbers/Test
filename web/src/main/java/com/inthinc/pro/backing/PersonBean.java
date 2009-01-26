@@ -50,7 +50,7 @@ import com.inthinc.pro.util.MiscUtil;
  */
 public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements Serializable
 {
-    private static final long serialVersionUID = 1L;
+    private static final long                  serialVersionUID       = 1L;
 
     private static final List<String>          AVAILABLE_COLUMNS;
     private static final int[]                 DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 6, 18 };
@@ -656,14 +656,14 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
         public Group getGroup()
         {
-            if ((group == null) && (getUser() != null))
+            if ((getUser() != null) && ((group == null) || !group.getGroupID().equals(getUser().getGroupID())))
                 group = bean.groupDAO.findByID(getUser().getGroupID());
             return group;
         }
 
         public Group getTeam()
         {
-            if ((team == null) && (getDriver() != null))
+            if ((getDriver() != null) && ((team == null) || !team.getGroupID().equals(getDriver().getGroupID())))
                 team = bean.groupDAO.findByID(getDriver().getGroupID());
             return team;
         }
