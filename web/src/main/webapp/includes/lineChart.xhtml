@@ -27,6 +27,8 @@
 	    <c:if test="#{disableLabels}">
 	    	#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("showLabels=\'1\'", "showLabels=\'0\'");
 	    	#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("showYAxisValues=\'1\'", "showYAxisValues=\'0\'");
+	    	#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("anchorSides=\'4\'", "anchorSides=\'0\'");
+	    	
 	    </c:if>
 
 		#{chartVar}.setDataXML(#{tartgetElementVar}.value);			   

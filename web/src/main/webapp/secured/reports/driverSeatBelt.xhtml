@@ -26,10 +26,8 @@
 
 	<ui:param name="reportsSelected" value="current" />
 	<ui:param name="helpFile" value="Seat_Belt.htm" />
-	<t:saveState value="#{driverSeatBeltBean.seatBeltEvents}"/>
-	<t:saveState value="#{driverBean.clearItem}" />
-
 	<ui:define name="content">
+	<t:saveState value="#{driverSeatBeltBean}"/>
 <div id="wrapper">
 
 <h:form>
@@ -50,7 +48,7 @@
 		<li class="l" style="margin-left: -15px;">
 			<ul id="breadcrumb">
 				<li><h:commandLink action="go_driver" value="#{navigationBean.driver.person.fullName}" /></li>
-				<li class="last">Seat Belt</li>
+				<li class="last">#{messages.SCORE_SEATBELT}</li>
 			</ul>
 		</li>
 	</ul>
@@ -63,7 +61,7 @@
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="seatbelt">Seat Belt: Overall</span>
+						<span class="seatbelt">#{messages.SCORE_SEATBELT}: #{messages.SCORE_OVERALL}</span>
 						<a4j:region id="dateLinksForm_region">
 							<a4j:form id="dateLinksForm">
 							<span class="panel_links">
@@ -197,54 +195,54 @@
 									<h:outputText value="Location" />
 								</f:facet>
 								<div class="maplink">
-					              <a4j:htmlCommandLink style="cursor:pointer">
+					              <a4j:commandLink style="cursor:pointer">
 						                <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
-						                  <f:param name="lat" value="#{item.latitude}"/>
-						                  <f:param name="lng" value="#{item.longitude}"/>
+						                  <f:param name="lat" value="#{item.event.latitude}"/>
+						                  <f:param name="lng" value="#{item.event.longitude}"/>
 						                </rich:componentControl>
-						                		#{item.addressStr}<br />
-					              </a4j:htmlCommandLink>
+						                		#{item.event.addressStr}<br />
+					              </a4j:commandLink>
 				              	</div>
 				            </rich:column>
 							
-							<rich:column sortBy="#{item.time}">
+							<rich:column sortBy="#{item.event.time}">
 								<f:facet name="header">
 									<h:outputText value="Date/Time" />
 								</f:facet>
-									<h:outputText value="#{item.time}">
+									<h:outputText value="#{item.event.time}">
 										<f:convertDateTime type="both" timeZone="#{navigationBean.driver.person.timeZone}" timeStyle="short" dateStyle="short"/>
 									</h:outputText>
 							</rich:column>
 							
-							<rich:column sortBy="#{item.avgSpeed}">
+							<rich:column sortBy="#{item.event.avgSpeed}">
 								<f:facet name="header">
 									<h:outputText value="Avg Speed" />
 								</f:facet>
-								<strong><h:outputText value="#{item.avgSpeed} #{messages.measurement_speed}" /></strong>
+								<strong><h:outputText value="#{item.event.avgSpeed} #{messages.measurement_speed}" /></strong>
 							</rich:column>
 							
-							<rich:column sortBy="#{item.topSpeed}">
+							<rich:column sortBy="#{item.event.topSpeed}">
 								<f:facet name="header">
 									<h:outputText value="Top Speed" />
 								</f:facet>
-								<strong><h:outputText value="#{item.topSpeed} #{messages.measurement_speed}" /></strong>
+								<strong><h:outputText value="#{item.event.topSpeed} #{messages.measurement_speed}" /></strong>
 							</rich:column>
 							
-							<rich:column sortBy="#{item.distance}">
+							<rich:column sortBy="#{item.event.distance}">
 								<f:facet name="header">
 									<h:outputText value="Distance" />
 								</f:facet>
-								<h:outputText value="#{item.distance} #{messages.measurement_distances}" />
+								<h:outputText value="#{item.event.distance} #{messages.measurement_distances}" />
 							</rich:column>
 							
 							<rich:column>
 		      					<f:facet name="header">
 		      						<h:outputText value="" />
 		      					</f:facet>
-								<a4j:htmlCommandLink title="#{messages.redflags_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem" >
+								<a4j:commandLink title="#{messages.redflags_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem" >
 									<h:outputText value="#{messages.redflags_clear}" />
-									<f:setPropertyActionListener target="#{driverBean.clearItem}" value="#{item}" />
-								</a4j:htmlCommandLink>
+									<f:setPropertyActionListener target="#{driverSeatBeltBean.clearItem}" value="#{item}" />
+								</a4j:commandLink>
     						</rich:column>
 						</rich:dataTable>
 						
@@ -265,8 +263,8 @@
 	<div class="panel_statusbar"></div>
 </div>
  <!-- START FORGIVE MODAL -->
-<rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="165" resizeable="false">
-      <t:saveState value="#{driverBean.clearItem}" />
+<rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="180" resizeable="false">
+<t:saveState value="#{driverSeatBeltBean.clearItem}" />
       <f:facet name="header">
         <h:outputText value="Clear Event" />
       </f:facet>
@@ -279,29 +277,28 @@
       </h:panelGroup>
 
       <a4j:form id="clearItemForm">
-		<h:panelGroup layout="block"  styleClass="popupcontent">
-      		<h:outputFormat id="clearItem" value="Clear {0} event on {1}">
-      			<a4j:actionparam value="#{driverBean.clearItem.eventType}"/>
-      			<a4j:actionparam value="#{driverBean.clearItem.time}"/>
-      		</h:outputFormat>
+	   	<h:panelGroup layout="block"  styleClass="popupcontent" id="clearItem">
+			<h:outputText value="#{driverSeatBeltBean.clearItem.detail}"/><br/>
+      		<h:outputText value="#{driverSeatBeltBean.clearItem.event.time}">
+      			<f:convertDateTime type="both" timeZone="#{navigationBean.driver.person.timeZone}" timeStyle="short" dateStyle="short"/>
+			</h:outputText>
       	</h:panelGroup>
 	
         <div class="popupactions">
           <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_no}" /></span></button>
-          <a4j:commandLink action="#{driverBean.ClearEventAction}"         				
+          <a4j:commandLink action="#{driverSeatBeltBean.ClearEventAction}"         				
           				   oncomplete="Richfaces.hideModalPanel('clearEventPanel')" reRender="eventsTable,tableStats">
 	          				<button type="submit" class="left">
 	          					<span class="apply">
 	          						<h:outputText value="#{messages.button_yes}" />
 	          					</span>
 	          				</button>
-	          				<f:setPropertyActionListener target="#{driverBean.clearItem}" value="#{driverBean.clearItem}" />
+	          				<f:setPropertyActionListener target="#{driverSeatBeltBean.clearItem}" value="#{driverSeatBeltBean.clearItem}" />
 			</a4j:commandLink> 		
         </div>
       </a4j:form>
-
 </rich:modalPanel>
- <!-- START FORGIVE MODAL -->
+<!-- END FORGIVE MODAL -->
  
 <!-- START LOCATION MODAL -->			
 <rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">

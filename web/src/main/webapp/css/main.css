@@ -1917,6 +1917,12 @@ color: #fff;
 	padding: 5px;
 	margin: 5px;
 	}
+	
+.tiny_title div {
+	cursor: pointer;
+	font-weight: bold;
+	text-decoration: underline;
+}
 
 .tiny_title a:active,
 .tiny_title a:link,

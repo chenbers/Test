@@ -65,6 +65,16 @@ public class EventReportItem implements Comparable<EventReportItem>
 
     }
     
+    public EventReportItem(Event event)
+    {
+        this.event = event;
+        
+        String catFormat = MessageUtil.getMessageString("redflags_cat" + event.getEventCategory().toString());
+        setCategory(MessageFormat.format(catFormat, new Object[] {event.getEventType().toString()}));
+        
+        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType().getKey())));
+    }
+    
     public String getDate()
     {
         return date;
@@ -133,6 +143,4 @@ public class EventReportItem implements Comparable<EventReportItem>
     {
         return this.getEvent().getTime().compareTo(o.getEvent().getTime());
     }
-
-    
 }

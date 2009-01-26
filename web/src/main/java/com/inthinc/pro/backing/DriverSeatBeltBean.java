@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.ScoreBreakdown;
@@ -40,8 +41,9 @@ public class DriverSeatBeltBean extends BaseDurationBean
     private Integer         seatBeltScore;
     private String          seatBeltScoreHistoryOverall;
     private String          seatBeltScoreStyle;
+    private EventReportItem clearItem;
       
-    private List<SeatBeltEvent> seatBeltEvents = new ArrayList<SeatBeltEvent>();
+    private List<EventReportItem> seatBeltEvents = new ArrayList<EventReportItem>();
     
     private void init()
     {
@@ -69,7 +71,7 @@ public class DriverSeatBeltBean extends BaseDurationBean
             for(Event event: tempEvents)
             {
                 event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
-                seatBeltEvents.add( (SeatBeltEvent)event );   
+                seatBeltEvents.add( new EventReportItem(event) );   
             }
             super.setTableSize(seatBeltEvents.size());
         }
@@ -170,13 +172,13 @@ public class DriverSeatBeltBean extends BaseDurationBean
     }
 
     //SEATBELT EVENTS LIST
-    public List<SeatBeltEvent> getSeatBeltEvents() 
+    public List<EventReportItem> getSeatBeltEvents() 
     {
         getViolations();
         return seatBeltEvents;
     }
 
-    public void setSeatBeltEvents(List<SeatBeltEvent> seatBeltEvents) {
+    public void setSeatBeltEvents(List<EventReportItem> seatBeltEvents) {
         this.seatBeltEvents = seatBeltEvents;
     }
     
@@ -195,5 +197,24 @@ public class DriverSeatBeltBean extends BaseDurationBean
     public void setNavigation(NavigationBean navigation)
     {
         this.navigation = navigation;
+    }
+    
+    public void ClearEventAction()
+    {
+        Integer temp = eventDAO.forgive(navigation.getDriver().getDriverID(), clearItem.getEvent().getNoteID());
+        //logger.debug("Clearing event " + clearItem.getNoteID() + " result: " + temp.toString());
+        
+        seatBeltEvents.clear();
+        getViolations();
+    }
+
+    public EventReportItem getClearItem()
+    {
+        return clearItem;
+    }
+
+    public void setClearItem(EventReportItem clearItem)
+    {
+        this.clearItem = clearItem;
     }
 }

@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.ScoreBreakdown;
@@ -52,9 +53,11 @@ public class DriverStyleBean extends BaseDurationBean
     private String          styleScoreHistoryBrake;
     private String          styleScoreHistoryBump;
     private String          styleScoreHistoryTurn;
+    
+    private EventReportItem clearItem;
     private static final Integer NO_SCORE = -1;
     
-    private List<AggressiveDrivingEvent> styleEvents = new ArrayList<AggressiveDrivingEvent>();
+    private List<EventReportItem> styleEvents = new ArrayList<EventReportItem>();
     
     private void init()
     {
@@ -98,7 +101,7 @@ public class DriverStyleBean extends BaseDurationBean
             for(Event event: tempEvents)
             {
                 event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
-                styleEvents.add( (AggressiveDrivingEvent)event );   
+                styleEvents.add( new EventReportItem(event) );   
             }
             
             super.setTableSize(styleEvents.size());
@@ -322,12 +325,30 @@ public class DriverStyleBean extends BaseDurationBean
         init();
     }
     
-    public List<AggressiveDrivingEvent> getStyleEvents()
+    public List<EventReportItem> getStyleEvents()
     {
         getViolations();  
         return styleEvents;
     }
-    public void setStyleEvents(List<AggressiveDrivingEvent> styleEvents) {
+    public void setStyleEvents(List<EventReportItem> styleEvents) {
         this.styleEvents = styleEvents;
+    }
+    public void ClearEventAction()
+    {
+        Integer temp = eventDAO.forgive(navigation.getDriver().getDriverID(), clearItem.getEvent().getNoteID());
+        //logger.debug("Clearing event " + clearItem.getNoteID() + " result: " + temp.toString());
+        
+        styleEvents.clear();
+        getViolations();
+    }
+
+    public EventReportItem getClearItem()
+    {
+        return clearItem;
+    }
+
+    public void setClearItem(EventReportItem clearItem)
+    {
+        this.clearItem = clearItem;
     }
 }

@@ -7,8 +7,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.richfaces.event.DataScrollerEvent;
 
 import com.inthinc.pro.backing.ui.BreakdownSelections;
+import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.TripDisplay;
@@ -36,21 +38,16 @@ public class DriverBean extends BaseDurationBean
     private ScoreDAO            scoreDAO;
     private MpgDAO              mpgDAO;
     private EventDAO            eventDAO;
+    private NavigationBean      navigation;
 
     private TripDisplay         lastTrip;
-    private List<Event>         violationEvents;
+    private List<Event>         violationEvents = new ArrayList<Event>();
     private Integer             overallScore;
     private String              overallScoreHistory;
     private String              overallScoreStyle;
     private String              mpgHistory;
     private String              coachingHistory;
     private Boolean             hasLastTrip;
-    private Event               clearItem;
-
-
-
-    private NavigationBean      navigation;
-    private BreakdownSelections breakdownSelected = BreakdownSelections.OVERALL;
 
     private void initOverallScore()
     {
@@ -65,12 +62,13 @@ public class DriverBean extends BaseDurationBean
     // INIT VIOLATIONS
     public void initViolations(Date start, Date end)
     {
+        if(violationEvents.size() > 0) return;
+        
         List<Integer> types = new ArrayList<Integer>();
         types.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
         types.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
         types.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
 
-        violationEvents = new ArrayList<Event>();
         violationEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), start, end, types);
 
         //Lookup Addresses for events
@@ -157,22 +155,6 @@ public class DriverBean extends BaseDurationBean
         return lastTrip;
     }
     
-    public void ClearEventAction()
-    {
-        Integer temp = eventDAO.forgive(navigation.getDriver().getDriverID(), clearItem.getNoteID());
-        
-        //logger.debug("Clearing event " + clearItem.getNoteID() + " result: " + temp.toString());
-    }
-    public Event getClearItem()
-    {
-        return clearItem;
-    }
-
-    public void setClearItem(Event clearItem)
-    {
-        this.clearItem = clearItem;
-    }
-    
     public void setLastTrip(TripDisplay lastTrip)
     {
         this.lastTrip = lastTrip;
@@ -181,9 +163,6 @@ public class DriverBean extends BaseDurationBean
     // VIOLATIONS PROPERTIES
     public List<Event> getViolationEvents()
     {
-        if (violationEvents == null)
-            violationEvents = new ArrayList<Event>();
-
         return violationEvents;
     }
 
@@ -231,17 +210,6 @@ public class DriverBean extends BaseDurationBean
     public void setEventDAO(EventDAO eventDAO)
     {
         this.eventDAO = eventDAO;
-    }
-
-    // BREAKDOWN SELECTION PROPERTIES
-    public BreakdownSelections getBreakdownSelected()
-    {
-        return breakdownSelected;
-    }
-
-    public void setBreakdownSelected(BreakdownSelections breakdownSelected)
-    {
-        this.breakdownSelected = breakdownSelected;
     }
 
     // MPG PROPERTIES

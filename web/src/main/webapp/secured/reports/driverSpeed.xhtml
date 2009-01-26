@@ -28,13 +28,13 @@
 
 	<ui:param name="reportsSelected" value="current" />
 	<ui:param name="helpFile" value="Speed.htm" />
-
-	<t:saveState value="#{driverSpeedBean.speedingEvents}"/>
-	<t:saveState value="#{driverBean.clearItem}" />
+	
 	
 	<ui:define name="content">
-<div id="wrapper">
+	<t:saveState value="#{driverSpeedBean}"/>
 
+	
+<div id="wrapper">
 <h:form>
 	<ul id="grid_nav">
 		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
@@ -78,6 +78,7 @@ var selected = 'OVERALL';
 		var data = chartVar.variables.dataXML;
 	    data = data.replace("showLabels=\'0\'", "showLabels=\'1\'");
 	    data = data.replace("showYAxisValues=\'0\'", "showYAxisValues=\'1\'");
+	    data = data.replace("anchorSides=\'0\'", "anchorSides=\'4\'");
 
 		//Set overall chart to data from selected chart.
 		overallChart.setDataXML(data);
@@ -207,7 +208,7 @@ var selected = 'OVERALL';
 					  <tr>
 					    <td id="OVERALL" valign="top" class="tiny_selected">
 						  <div class="tiny_title">
-								<a href="#" onclick="SelectBreakDown('OVERALL', overallChart2, 'Speed: Overall')">Overall</a>
+								<div onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.reports_speed}: #{messages.SCORE_OVERALL}')">#{messages.SCORE_OVERALL}</div>
 						  </div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
@@ -234,7 +235,8 @@ var selected = 'OVERALL';
 						</td>
 					    <td id="TWENTYONE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-								<a href="#" onclick="SelectBreakDown('TWENTYONE', chart21, 'Speed: 21-30mph')">21-30mph</a>
+								<div onclick="SelectBreakDown('TWENTYONE', chart21, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_21_30}')">#{messages.SCORE_SPEEDING_21_30}</div>
+								
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
@@ -261,7 +263,8 @@ var selected = 'OVERALL';
 						</td>
 					    <td id="THIRTYONE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-								<a href="#" onclick="SelectBreakDown('THIRTYONE', chart31, 'Speed: 31-40mph')">31-40mph</a></div>
+								<div onclick="SelectBreakDown('THIRTYONE', chart31, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_31_40}')">#{messages.SCORE_SPEEDING_31_40}</div>
+							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
@@ -289,7 +292,8 @@ var selected = 'OVERALL';
 					  <tr>
 						<td id="FOURTYONE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-							<a href="#" onclick="SelectBreakDown('FOURTYONE', chart41, 'Speed: 41-54mph')">41-54mph</a></div>
+								<div onclick="SelectBreakDown('FOURTYONE', chart41, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_41_54}')">#{messages.SCORE_SPEEDING_41_54}</div>
+							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
@@ -315,7 +319,8 @@ var selected = 'OVERALL';
 						</td>
 						<td id="FIFTYFIVE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-							<a href="#" onclick="SelectBreakDown('FIFTYFIVE', chart55, 'Speed: 55-64mph')">55-64mph</a></div>
+								<div onclick="SelectBreakDown('FIFTYFIVE', chart55, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_55_64}')">#{messages.SCORE_SPEEDING_55_64}</div>
+							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
@@ -341,7 +346,8 @@ var selected = 'OVERALL';
 						</td>
 					    <td id="SIXTYFIVE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-							<a href="#" onclick="SelectBreakDown('SIXTYFIVE', chart65, 'Speed: 65-80mph')">65-80mph</a></div>
+								<div onclick="SelectBreakDown('SIXTYFIVE', chart65, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_65_80}')">#{messages.SCORE_SPEEDING_65_80}</div>
+							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
@@ -396,9 +402,9 @@ var selected = 'OVERALL';
 				<div class="datagrid">
 					<a4j:form id="eventsTableForm" ajaxSubmit="true">
 					<rich:datascroller align="center" for="eventsTable" immediate="true"
-								id="scrollerTop" reRender="eventsTable,scrollerBottom,tableStats" scrollerListener="#{driverSpeedBean.scrollerListener}" />
+									   id="scrollerTop" reRender="eventsTable,scrollerBottom,tableStats" 
+								       scrollerListener="#{driverSpeedBean.scrollerListener}" />
 								
-					
 						<rich:dataTable 
 						value="#{driverSpeedBean.speedingEvents}" 
 						id="eventsTable" var="item" styleClass="datagrid"
@@ -411,60 +417,60 @@ var selected = 'OVERALL';
 								<div class="maplink">
 					              <a4j:commandLink style="cursor:pointer">
 						                <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
-						                  <f:param name="lat" value="#{item.latitude}"/>
-						                  <f:param name="lng" value="#{item.longitude}"/>
+						                  <f:param name="lat" value="#{item.event.latitude}"/>
+						                  <f:param name="lng" value="#{item.event.longitude}"/>
 						                </rich:componentControl>
-						                		#{item.addressStr}<br />
+						                		#{item.event.addressStr}<br />
 					              </a4j:commandLink>
 				              	</div>
 				            </rich:column>
 							
-							<rich:column sortBy="#{item.time}">
+							<rich:column sortBy="#{item.event.time}">
 								<f:facet name="header">
 									<h:outputText value="Date/Time" />
 								</f:facet>
-									<h:outputText value="#{item.time}">
+									<h:outputText value="#{item.event.time}">
 										<f:convertDateTime type="both" timeZone="#{navigationBean.driver.person.timeZone}" timeStyle="short" dateStyle="short"/>
 									</h:outputText>
 							</rich:column>
 							
-							<rich:column sortBy="#{item.speedLimit}">
+							<rich:column sortBy="#{item.event.speedLimit}">
 								<f:facet name="header">
 									<h:outputText value="Posted Speed" />
 								</f:facet>
-								<strong><h:outputText value="#{item.speedLimit} #{messages.measurement_speed}" /></strong>
-								<a4j:commandButton onclick="javascript:Richfaces.showModalPanel('SLChangeRequestPanel',{lat:'#{item.latitude}',lon:'#{item.longitude}'});"  
+								<strong><h:outputText value="#{item.event.speedLimit} #{messages.measurement_speed}" /></strong>
+								<a4j:commandButton onclick="javascript:Richfaces.showModalPanel('SLChangeRequestPanel',{lat:'#{item.event.latitude}',lon:'#{item.event.longitude}'});"  
 												title="#{messages.sbs_submitRequest}" image="/images/ico_limit_edit.png"
 												style="vertical-align:middle;margin-left:10px">
 								</a4j:commandButton>
 								
 							</rich:column>
 							
-							<rich:column sortBy="#{item.avgSpeed}">
+							<rich:column sortBy="#{item.event.avgSpeed}">
 								<f:facet name="header">
 									<h:outputText value="Avg Speed" />
 								</f:facet>
-								<strong><h:outputText value="#{item.avgSpeed} #{messages.measurement_speed}" /></strong>
+								<strong><h:outputText value="#{item.event.avgSpeed} #{messages.measurement_speed}" /></strong>
 								<br />
 					            <h:outputText class="red" value="+"/>
-					            <h:outputText class="red" value="#{item.avgSpeed - item.speedLimit}" converter="SpeedConverter" />
+					            <h:outputText class="red" value="#{item.event.avgSpeed - item.event.speedLimit}" converter="SpeedConverter" />
 							</rich:column>
 							
-							<rich:column sortBy="#{item.topSpeed}">
+							<rich:column sortBy="#{item.event.topSpeed}">
 								<f:facet name="header">
 									<h:outputText value="Top Speed" />
 								</f:facet>
-								<strong><h:outputText value="#{item.topSpeed} #{messages.measurement_speed}" /></strong>
+								<strong><h:outputText value="#{item.event.topSpeed} #{messages.measurement_speed}" /></strong>
 								<br />
               					<h:outputText class="red" value="+"/>
-        					    <h:outputText class="red" value="#{item.topSpeed - item.speedLimit}" converter="SpeedConverter" />
+        					    <h:outputText class="red" value="#{item.event.topSpeed - item.event.speedLimit}" converter="SpeedConverter" />
 							</rich:column>
 							
-							<rich:column sortBy="#{item.distance}">
+							<rich:column sortBy="#{item.event.distance}">
 								<f:facet name="header">
 									<h:outputText value="Distance" />
 								</f:facet>
-								<h:outputText value="#{item.distance} #{messages.measurement_distances}" />
+								<h:outputText value="#{item.event.distance} #{messages.measurement_distances}" />
 							</rich:column>
 							
 							<rich:column>
@@ -473,12 +479,13 @@ var selected = 'OVERALL';
 		      					</f:facet>
 								<a4j:commandLink title="#{messages.redflags_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem" >
 									<h:outputText value="#{messages.redflags_clear}" />
-									<f:setPropertyActionListener target="#{driverBean.clearItem}" value="#{item}" />
+									<f:setPropertyActionListener target="#{driverSpeedBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
     						</rich:column>
 						</rich:dataTable>
 						<rich:datascroller align="center" for="eventsTable" immediate="true"
-								id="scrollerBottom" reRender="eventsTable,scrollerTop,tableStats" scrollerListener="#{driverSpeedBean.scrollerListener}"/>
+										   id="scrollerBottom" reRender="eventsTable,scrollerTop,tableStats"
+										   scrollerListener="#{driverSpeedBean.scrollerListener}"/>
 								
 								 
 					</a4j:form> 
@@ -496,8 +503,8 @@ var selected = 'OVERALL';
 </div>
 	
  <!-- START FORGIVE MODAL -->
-<rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="165" resizeable="false">
-<t:saveState value="#{driverBean.clearItem}" />
+<rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="180" resizeable="false">
+<t:saveState value="#{driverSpeedBean.clearItem}" />
       <f:facet name="header">
         <h:outputText value="Clear Event" />
       </f:facet>
@@ -510,28 +517,26 @@ var selected = 'OVERALL';
       </h:panelGroup>
 
       <a4j:form id="clearItemForm">
-		<h:panelGroup layout="block"  styleClass="popupcontent">
-      		<h:outputFormat id="clearItem" value="Clear {0} event on {1}">
-      			<a4j:actionparam value="#{driverBean.clearItem.eventType}"/>
-      			<a4j:actionparam value="#{driverBean.clearItem.time}"/>
-      		</h:outputFormat>
+	   	<h:panelGroup layout="block"  styleClass="popupcontent" id="clearItem">
+			<h:outputText value="#{driverSpeedBean.clearItem.detail}"/><br/>
+      		<h:outputText value="#{driverSpeedBean.clearItem.event.time}">
+      			<f:convertDateTime type="both" timeZone="#{navigationBean.driver.person.timeZone}" timeStyle="short" dateStyle="short"/>
+			</h:outputText>
       	</h:panelGroup>
 	
         <div class="popupactions">
           <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_no}" /></span></button>
-          <a4j:commandLink action="#{driverBean.ClearEventAction}"         				
+          <a4j:commandLink action="#{driverSpeedBean.ClearEventAction}"         				
           				   oncomplete="Richfaces.hideModalPanel('clearEventPanel')" reRender="eventsTable,tableStats">
 	          				<button type="submit" class="left">
 	          					<span class="apply">
 	          						<h:outputText value="#{messages.button_yes}" />
 	          					</span>
 	          				</button>
-	          				<f:setPropertyActionListener target="#{driverBean.clearItem}" value="#{driverBean.clearItem}" />
+	          				<f:setPropertyActionListener target="#{driverSpeedBean.clearItem}" value="#{driverSpeedBean.clearItem}" />
 			</a4j:commandLink> 		
         </div>
-
       </a4j:form>
-
 </rich:modalPanel>
 <!-- END FORGIVE MODAL -->
 
