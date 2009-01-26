@@ -1,9 +1,13 @@
 package com.inthinc.pro.backing;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 
@@ -11,6 +15,7 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.IdlingReportItem;
+import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.reports.Report;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -31,19 +36,23 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem>
     
     private final static String COLUMN_LABEL_PREFIX = "idlingReports_";
     
-    private Date startDate = new Date();
+    private Date startDate = null;
+    private Date intStartDate = null;
     private Date defaultStartDate = null;
     private Integer internalStartDate = null;
-    private Date endDate = new Date();
+    
+    private Date endDate = null;
+    private Date intEndDate = null;
     private Date defaultEndDate = null;
-    private Integer internalEndDate = null;    
+    private Integer internalEndDate = null;
+    
     private String badDates = "Search dates: * Okay.";
     private final static String NO_START_DATE = " * No start date, reset";
     private final static String NO_END_DATE = " * No end date, reset";
     private final static String START_BEFORE_END = " * Start before end, reset";
     
-    // set to SEVEN days back
-    private final static int DAYS_BACK = 7 * 24 * 60 * 60 * 1000;
+    // set to SEVEN days back in calendar time
+    private final static long DAYS_BACK = 7 * 24 * 60 * 60 * 1000;
 
     private DriverDAO driverDAO;
 
@@ -73,22 +82,32 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem>
     {   
         setTablePref(new TablePref(this));
         
-        searchFor = checkForRequestMap();
+        searchFor = checkForRequestMap();     
         
-        this.defaultEndDate = endDate;
-        startDate.setTime(this.endDate.getTime() - DAYS_BACK);
-        this.defaultStartDate = startDate;
-        
-        // end initialized to today, start
-        //  seven days back
-        Integer defaultEndDate = DateUtil.getTodaysDate();
-        Integer defaultStartDate = DateUtil.getDaysBackDate(
-                defaultEndDate,7);
-   
+        // Dates for show
+        this.endDate = new Date();
+        this.startDate = new Date();
+        this.startDate.setTime(this.endDate.getTime()-this.DAYS_BACK);
+
+        // Start with today
+        this.intEndDate = new Date(getGregDate(null));
+       
+        // Now, seven days back
+        this.intStartDate = new Date();
+        this.intStartDate.setTime(
+                this.intEndDate.getTime() - DAYS_BACK);         
+                                
+        // Get some other dates, for use if none input        
+        this.defaultEndDate = this.intEndDate;   
+        this.defaultStartDate = this.intStartDate;
+
+        Integer defEndDate = (int)((long)(this.intEndDate.getTime()/1000L));
+        Integer defStartDate = (int)((long)(this.intStartDate.getTime()/1000L));            
+
         this.idlingsData = 
             scoreDAO.getIdlingReportData(
                     getUser().getGroupID(),
-                    defaultStartDate, defaultEndDate);
+                    defStartDate, defEndDate);
    
         //Bean creation could be from Reports selection or
         //  search on main menu. This accounts for a search
@@ -102,6 +121,26 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem>
         }
     }
     
+    private long getGregDate(Date in) 
+    {
+        GregorianCalendar gc = new GregorianCalendar(
+                TimeZone.getTimeZone("GMT"));        
+        
+        // Date supplied, reset to...
+        if ( in != null ) {
+            gc.setTimeInMillis(in.getTime());
+        }
+            
+        gc.clear(Calendar.HOUR_OF_DAY);
+        gc.clear(Calendar.HOUR);
+        gc.set(Calendar.HOUR_OF_DAY, 0);
+        gc.clear(Calendar.MINUTE);
+        gc.set(Calendar.MINUTE, 0);
+        gc.clear(Calendar.SECOND);
+        gc.set(Calendar.SECOND,0);
+    
+        return gc.getTimeInMillis();
+    }    
 
     public List<IdlingReportItem> getIdlingData()
     {         
@@ -140,7 +179,8 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem>
         this.idlingsData = 
             scoreDAO.getIdlingReportData(
                     getUser().getGroupID(),
-                    internalStartDate, internalEndDate);
+                    this.internalStartDate, 
+                    this.internalEndDate);
 
         super.search();
     }
@@ -151,21 +191,21 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem>
         boolean good = true;
                         
         // null checks
-        if ( startDate == null ) {
-            startDate = defaultStartDate;
+        if ( this.startDate == null ) {
+            this.startDate = this.defaultStartDate;
             sb.append(NO_START_DATE);
             good = false;
         } 
-        if ( endDate == null ) {
-            endDate = defaultEndDate;
+        if ( this.endDate == null ) {
+            this.endDate = this.defaultEndDate;
             sb.append(NO_END_DATE);
             good = false;
         } 
         
         // start after end?
-        if ( startDate.getTime() > endDate.getTime() ) {
-            startDate = defaultStartDate;
-            endDate = defaultEndDate;
+        if ( this.startDate.getTime() > this.endDate.getTime() ) {
+            this.startDate = this.defaultStartDate;
+            this.endDate = this.defaultEndDate;
             sb.append(START_BEFORE_END);
             good = false;
         }
@@ -178,14 +218,9 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem>
                
         badDates = sb.toString();
         
-        // CAREFULLY compute the search dates
-        long tm = startDate.getTime();
-        tm = tm/1000L;
-        internalStartDate = (int)tm;
-        
-        tm = endDate.getTime();
-        tm = tm/1000L;
-        internalEndDate = (int)tm;
+        // CAREFULLY compute the search dates      
+        this.internalStartDate = (int)((getGregDate(this.startDate))/1000L);   
+        this.internalEndDate   = (int)((getGregDate(this.endDate))/1000L);   
     }
 
     @Override
