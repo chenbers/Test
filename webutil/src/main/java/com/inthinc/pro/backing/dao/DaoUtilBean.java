@@ -19,6 +19,7 @@ import javax.jws.WebParam;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.dao.annotation.DaoParam;
+import com.inthinc.pro.backing.dao.annotation.MethodDescription;
 import com.inthinc.pro.backing.dao.impl.ReportServiceImpl;
 import com.inthinc.pro.backing.dao.impl.SiloServiceImpl;
 import com.inthinc.pro.dao.hessian.proserver.ReportServiceCreator;
@@ -34,6 +35,7 @@ public class DaoUtilBean
     ReportServiceCreator reportServiceCreator;
     
     String selectedMethod;
+    String selectedMethodDescription;
     Map<String, DaoMethod>methodMap;
     List<Param> paramList;
     List<Result> results;
@@ -63,6 +65,11 @@ public class DaoUtilBean
     public void setSelectedMethod(String selectedMethod)
     {
         this.selectedMethod = selectedMethod;
+        DaoMethod m = getMethodMap().get(selectedMethod);
+        if (m.getMethod().isAnnotationPresent(MethodDescription.class))
+           setSelectedMethodDescription(m.getMethod().getAnnotation(MethodDescription.class).description());
+        else
+            this.setSelectedMethodDescription("");
         setParamList(null);
         setResults(null);
     }
@@ -306,6 +313,16 @@ logger.debug(paramTypes[i].getName());
     public void setReportServiceCreator(ReportServiceCreator reportServiceCreator)
     {
         this.reportServiceCreator = reportServiceCreator;
+    }
+
+    public String getSelectedMethodDescription()
+    {
+        return selectedMethodDescription;
+    }
+
+    public void setSelectedMethodDescription(String selectedMethodDescription)
+    {
+        this.selectedMethodDescription = selectedMethodDescription;
     }
 
 }

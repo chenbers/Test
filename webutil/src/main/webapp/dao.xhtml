@@ -18,16 +18,23 @@
 
 
 </head>
-<body>
-	<h:outputText value="Method:"/>
-	<a4j:form id="method-select-form">
-		<div id="page_top_left">
-			<h:selectOneMenu id="method-select-menu" onchange="submit()" value="#{daoUtilBean.selectedMethod}">
-				<f:selectItems value="#{daoUtilBean.methodSelectList}" />
-		        <a4j:support event="onchange" reRender="paramPanel,resultsPanel"/>
-			</h:selectOneMenu>        
-		</div>
-    </a4j:form>
+<body style="font: normal 12px Verdana, Arial, Helvetica, sans-serif;">
+	<h:panelGrid columns="2">
+		<h:panelGroup>
+			<h:outputText value="Method:"/>
+			<a4j:form id="method-select-form">
+				<div id="page_top_left">
+					<h:selectOneMenu id="method-select-menu" onchange="submit()" value="#{daoUtilBean.selectedMethod}">
+						<f:selectItems value="#{daoUtilBean.methodSelectList}" />
+				        <a4j:support event="onchange" reRender="paramPanel,resultsPanel,description"/>
+					</h:selectOneMenu>        
+				</div>
+		    </a4j:form>
+    	</h:panelGroup>
+		<a4j:region id="description"  >
+	    		<h:outputText value="#{daoUtilBean.selectedMethodDescription}" style="margin-left:20px;"/>
+	   	</a4j:region>
+    </h:panelGrid>
 	<br/>
 	<br/>
 	

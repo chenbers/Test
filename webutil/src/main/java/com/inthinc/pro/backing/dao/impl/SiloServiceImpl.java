@@ -641,42 +641,42 @@ public class SiloServiceImpl implements SiloService
     }
 
     @Override
-    public List<Map<String, Object>> getDriversByGroupIDDeep(Integer groupID) throws ProDAOException
+    public List<Map<String, Object>> getDriversByGroupIDDeep(@DaoParam(name="groupID")Integer groupID) throws ProDAOException
     {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<Map<String, Object>> getGroupsByGroupIDDeep(Integer groupID) throws ProDAOException
+    public List<Map<String, Object>> getGroupsByGroupIDDeep(@DaoParam(name="groupID")Integer groupID) throws ProDAOException
     {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<Map<String, Object>> getVehiclesByGroupIDDeep(Integer groupID) throws ProDAOException
+    public List<Map<String, Object>> getVehiclesByGroupIDDeep(@DaoParam(name="groupID")Integer groupID) throws ProDAOException
     {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<Map<String, Object>> getMessages(Integer siloID, Integer deliveryMethodType)
+    public List<Map<String, Object>> getMessages(@DaoParam(name="groupID")Integer siloID, @DaoParam(name="deliveryMethod",inputDesc="1-PHONE,2-TEXT_MESSAGE,3-EMAIL")Integer deliveryMethodType)
     {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<Map<String, Object>> getUsersByGroupIDDeep(Integer groupID)
+    public List<Map<String, Object>> getUsersByGroupIDDeep(@DaoParam(name="groupID")Integer groupID)
     {
         // TODO Auto-generated method stub
         return null;
     }
-
+//rfid - driverID
     @Override
-    public Map<String, Object> getIDLong(String name, Long value)
+    public Map<String, Object> getIDLong(@DaoParam(name="name", inputDesc="rfid")String name, @DaoParam(name="value")Long value)
     {
         // TODO Auto-generated method stub
         return null;
