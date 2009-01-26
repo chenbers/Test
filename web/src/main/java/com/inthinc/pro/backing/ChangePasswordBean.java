@@ -75,7 +75,9 @@ public class ChangePasswordBean extends BaseBean
 
     public boolean isComplete()
     {
-        return complete;
+        final boolean ret = complete;
+        complete = false;
+        return ret;
     }
 
     public String getOldPassword()
