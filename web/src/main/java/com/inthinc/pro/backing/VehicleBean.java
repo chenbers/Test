@@ -12,6 +12,7 @@ import com.inthinc.pro.backing.ui.BreakdownSelections;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.TripDisplay;
+import com.inthinc.pro.charts.FusionMultiLineChart;
 import com.inthinc.pro.charts.Line;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.VehicleDAO;
@@ -268,49 +269,41 @@ public class VehicleBean extends BaseDurationBean
         this.mpgHistory = mpgHistory;
     }
 
-    private String createMultiLineDef() // TODO REFACTOR WITH UTILITY CLASS
+    // TODO: having light/medium/heavy lines for a single vehicle doesn't make much sense since a single vehicle can only be
+    // one type.  
+    private String createMultiLineDef() 
     {
+        List<MpgEntity> mpgEntities = mpgDAO.getVehicleEntities(navigation.getVehicle().getVehicleID(), getDuration(), null);
+        List<String> catLabelList = GraphicUtil.createMonthList(getDuration());
+        
         StringBuffer sb = new StringBuffer();
+        FusionMultiLineChart multiLineChart = new FusionMultiLineChart();
+        sb.append(multiLineChart.getControlParameters());
 
-        // Control parameters
-        sb.append(GraphicUtil.createMiniLineControlParameters());
-        // sb.append(GraphicUtil.createFakeMiniLineData());
-
-        List<MpgEntity> mpgEntities = mpgDAO.getVehicleEntities(navigation.getVehicle().getVehicleID(), getDuration(), 10);
-
-        sb.append("<categories>");
-        sb.append(" <category label=\"\"/>");
-        sb.append(" <category label=\"\"/>");
-        sb.append(" <category label=\"\"/>");
-        sb.append(" <category label=\"\"/>");
-        sb.append(" <category label=\"\"/>");
-        sb.append("</categories>");
-
-        // LIGHT DATASET
-        sb.append("<dataset seriesName=\"Light\" color=\"B1D1DC\" plotBorderColor=\"B1D1DC\"> ");
+        Integer lightValues[] = new Integer[mpgEntities.size()];
+        Integer medValues[] = new Integer[mpgEntities.size()];
+        Integer heavyValues[] = new Integer[mpgEntities.size()];
+        int cnt = 0;
+        sb.append(multiLineChart.getCategoriesStart());
         for (MpgEntity entity : mpgEntities)
         {
-            sb.append("<set value=\"" + entity.getLightValue() + "\"/>");
-        }
-        sb.append("</dataset>");
+            lightValues[cnt] = entity.getLightValue() == null ? 0 : entity.getLightValue();
+            medValues[cnt] = entity.getMediumValue() == null ? 0 : entity.getMediumValue();
+            heavyValues[cnt] = entity.getHeavyValue() == null ? 0 : entity.getHeavyValue();
+            sb.append(multiLineChart.getCategoryLabel(catLabelList.get(cnt)));
+            cnt++;
 
-        // MEDIUM DATASET
-        sb.append("<dataset seriesName=\"Medium\" color=\"C8A1D1\" plotBorderColor=\"C8A1D1\"> ");
-        for (MpgEntity entity : mpgEntities)
-        {
-            sb.append("<set value=\"" + entity.getMediumValue() + "\"/>");
         }
-        sb.append("</dataset>");
+        sb.append(multiLineChart.getCategoriesEnd());
+        
+        sb.append(multiLineChart.getChartDataSet("Light", "B1D1DC", "B1D1DC", lightValues, catLabelList));
+        sb.append(multiLineChart.getChartDataSet("Medium", "C8A1D1", "C8A1D1", medValues, catLabelList));
+        sb.append(multiLineChart.getChartDataSet("Heavy", "A8C634", "A8C634", heavyValues, catLabelList));
 
-        // HEAVY DATASET
-        sb.append("<dataset seriesName=\"Heavy\" color=\"A8C634\" plotBorderColor=\"A8C634\"> ");
-        for (MpgEntity entity : mpgEntities)
-        {
-            sb.append("<set value=\"" + entity.getHeavyValue() + "\"/>");
-        }
-        sb.append("</dataset>");
-        sb.append("</chart>");
+        sb.append(multiLineChart.getClose());
+        
         return sb.toString();
+
     }
 
     public String createLineDef(ScoreType scoreType)

@@ -4,6 +4,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public enum RedFlagLevel implements BaseEnum
 {
     NONE(0, "none"),
@@ -49,7 +50,6 @@ public enum RedFlagLevel implements BaseEnum
     {
         return description;
     }
-
 }
 
 

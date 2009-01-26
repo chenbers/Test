@@ -1,6 +1,7 @@
 package com.inthinc.pro.charts;
 
 import java.text.MessageFormat;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -16,6 +17,9 @@ public class FusionMultiLineChart implements BaseChart
                                                      "yAxisName=\'\' " +
                                                      "numberPrefix=\'\' " +
                                                      "showValues=\'0\' " +
+                                                     "showLabels=\'1\' " +
+                                                     "slantLabels=\'1\' " +  
+                                                     "labelDisplay=\'Rotate\' " +
                                                      "adjustDiv=\'0\' " +
                                                      "setAdaptiveYMin='0' " +
                                                      "borderColor=\'#cfcfcf\' " +
@@ -24,26 +28,29 @@ public class FusionMultiLineChart implements BaseChart
                                                      "showAlternateHGridColor=\'1\' " +
                                                      "alternateHGridColor=\'#f0f0f0\' " +
                                                      "alternateHGridAlpha=\'100\' " +
-                                                     "forceDecimals=\'1\' " +
+                                                     "forceDecimals=\'0\' " +
                                                      "yAxisMaxValue=\'5\' " +
                                                      "bgColor=\'#ffffff\' " +
                                                      "showBorder=\'0\' " +
                                                      "lineColor=\'#93C034\' " +
                                                      "lineThickness=\'2\' " +
-                                                     "drawAnchors=\'0\' " +
-                                                     "numVDivLines=\'4\' >" +
-                                                     
-                                                     // Category Labels not used in last implementation.
-                                                     "<categories>" +
-                                                     " <category label=\"\"/>" +
-                                                     " <category label=\"\"/>" +
-                                                     " <category label=\"\"/>" +
-                                                     " <category label=\"\"/>" +
-                                                     " <category label=\"\"/>" +
-                                                     "</categories>";
+                                                     "drawAnchors=\'1\' " +
+                                                     "anchorRadius=\'2\' " +
+                                                     "anchorSides=\'4\' " +
+                                                     "anchorBorderThickness=\'4\' " +
+                                                     "numVDivLines=\'4\' >";
     
+    private static final String LINE_CHART_CAT_LABEL=" <category label=''{0}''/>";
+    private static final String LINE_CHART_CAT_START="<categories>";
+    private static final String LINE_CHART_CAT_END="</categories>";
     private static final String LINE_CHART_CLOSE = "</chart>"; 
     private static final String LINE_CHART_ITEM_FORMAT = "<set value=''{0}'' label=''{1}'' />";
+    
+    
+    private static final String LINE_CHART_DATASET_START="<dataset seriesName=''{0}'' color=''{1}'' plotBorderColor=''{2}''>";
+    
+    private static final String LINE_CHART_DATASET_END="</dataset>";
+
 
     @Override
     public String getControlParameters()
@@ -64,4 +71,31 @@ public class FusionMultiLineChart implements BaseChart
     {
         return LINE_CHART_CLOSE;
     }
+
+    public String getCategoryLabel(String label)
+    {
+        return MessageFormat.format(LINE_CHART_CAT_LABEL, new Object[] {label});
+    }
+    public String getCategoriesStart()
+    {
+        return LINE_CHART_CAT_START;
+    }
+    public String getCategoriesEnd()
+    {
+        return LINE_CHART_CAT_END;
+    }
+
+    public String getChartDataSet(String title, String color, String borderColor, Object[] values, List<String> catLabels)
+    {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(MessageFormat.format(LINE_CHART_DATASET_START, new Object[] { title, color, borderColor}));
+        for (int i = 0; i < values.length; i++)
+        {
+            String label = title + " " + catLabels.get(i) + ", " + values[i] + " mpg";  
+            buffer.append(getChartItem(new Object[] { values[i], label}));
+        }
+        buffer.append(LINE_CHART_DATASET_END);
+        return buffer.toString();
+    }
+    
 }

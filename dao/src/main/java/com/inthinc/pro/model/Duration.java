@@ -6,12 +6,14 @@ import java.util.Map;
 
 public enum Duration implements BaseEnum
 {
-    DAYS(1, "30 days", 30, "dd"), THREE(2, "3 months", 90, "MMM"), SIX(3, "6 months", 180, "MMM"), TWELVE(4, "12 months", 360, "MMM");
+    DAYS(1, "30 days", 30, "dd", 0, 30), THREE(2, "3 months", 90, "MMM", 2, 3), SIX(3, "6 months", 180, "MMM", 2, 6), TWELVE(4, "12 months", 360, "MMM", 2, 12);
 
     private final int numberOfDays;
     private String durationValue;
     private Integer code;
     private String datePattern;
+    private Integer dvqMetric;
+    private Integer dvqCount;
     private static final Map<Integer, Duration> lookup = new HashMap<Integer, Duration>();
     
     static
@@ -27,12 +29,14 @@ public enum Duration implements BaseEnum
         for(Duration d : EnumSet.allOf(Duration.class))
             codeLookup.put(d.getCode(), d);
     }
-    Duration(Integer code, String durationValue, int numberOfDays, String datePattern)
+    Duration(Integer code, String durationValue, int numberOfDays, String datePattern, Integer dvqMetric, Integer dvqCount)
     {
         this.code = code;
         this.durationValue = durationValue;
         this.numberOfDays = numberOfDays;
         this.datePattern = datePattern;
+        this.dvqMetric = dvqMetric;
+        this.dvqCount = dvqCount;
     }
 
     public int getNumberOfDays()
@@ -65,6 +69,16 @@ public enum Duration implements BaseEnum
     public String getDatePattern()
     {
         return this.datePattern;
+    }
+
+    public Integer getDvqMetric()
+    {
+        return dvqMetric;
+    }
+
+    public Integer getDvqCount()
+    {
+        return dvqCount;
     }
 
 }

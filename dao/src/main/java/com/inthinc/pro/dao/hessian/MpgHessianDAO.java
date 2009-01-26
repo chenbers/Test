@@ -102,8 +102,8 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
         try
         {
             List<MpgEntity> scoreList = new ArrayList<MpgEntity>();
-
-            List<Map<String, Object>> returnMapList = reportService.getDTrendByDTC(driverID, duration.getCode(), count);
+//logger.debug("getDriverEntities calling getDTrendByDTC(" + driverID + "," + duration.getDvqMetric() + "," +  ((count == null) ? duration.getDvqCount() : count)+")");
+            List<Map<String, Object>> returnMapList = reportService.getDTrendByDTC(driverID, duration.getDvqMetric(), (count == null) ? duration.getDvqCount() : count);
             List<DriveQMap> dqMapList = getMapper().convertToModelObject(returnMapList, DriveQMap.class);
 
             for (DriveQMap dqMap : dqMapList)
@@ -113,6 +113,7 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
                 mpgEntity.setLightValue(dqMap.getMpgLight());
                 mpgEntity.setMediumValue(dqMap.getMpgMedium());
                 mpgEntity.setOdometer(dqMap.getOdometer());
+//logger.debug("L["+ dqMap.getMpgLight()+"] M["+ dqMap.getMpgMedium()+"] H["+ dqMap.getMpgMedium()+"]");
 
                 scoreList.add(mpgEntity);
             }
@@ -130,8 +131,9 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
         try
         {
             List<MpgEntity> scoreList = new ArrayList<MpgEntity>();
+//logger.debug("getVehicleEntities calling getVTrendByDTC(" + vehicleID + "," + duration.getDvqMetric() + "," +  ((count == null) ? duration.getDvqCount() : count)+")");
 
-            List<Map<String, Object>> returnMapList = reportService.getVTrendByVTC(vehicleID, duration.getCode(), count);
+            List<Map<String, Object>> returnMapList = reportService.getVTrendByVTC(vehicleID, duration.getDvqMetric(), (count == null) ? duration.getDvqCount() : count);
             List<DriveQMap> dqMapList = getMapper().convertToModelObject(returnMapList, DriveQMap.class);
 
             for (DriveQMap dqMap : dqMapList)
@@ -141,6 +143,7 @@ public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> impleme
                 mpgEntity.setLightValue(dqMap.getMpgLight());
                 mpgEntity.setMediumValue(dqMap.getMpgMedium());
                 mpgEntity.setOdometer(dqMap.getOdometer());
+//logger.debug("L["+ dqMap.getMpgLight()+"] M["+ dqMap.getMpgMedium()+"] H["+ dqMap.getMpgMedium()+"]");
 
                 scoreList.add(mpgEntity);
             }
