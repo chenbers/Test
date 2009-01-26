@@ -46,6 +46,19 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
     }
 
     @Override
+    public List<ZoneAlertView> getFilteredItems()
+    {
+        for (final ZoneAlertView alert : filteredItems)
+            if (getZoneByID(alert.getZoneID()) == null)
+            {
+                items = null;
+                break;
+            }
+
+        return super.getFilteredItems();
+    }
+
+    @Override
     protected List<ZoneAlertView> loadItems()
     {
         // get the zone alerts
@@ -70,7 +83,7 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
     {
         final ZoneAlertView alertView = new ZoneAlertView();
         BeanUtils.copyProperties(alert, alertView);
-        alertView.setZonesBean(zonesBean);
+        alertView.setZoneAlertsBean(this);
         alertView.setSelected(false);
         return alertView;
     }
@@ -227,13 +240,21 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
         return zonesBean.getZoneIDs();
     }
 
+    protected Zone getZoneByID(Integer zoneID)
+    {
+        for (final Zone zone : zonesBean.getZones())
+            if (zone.getZoneID() != null && zone.getZoneID().equals(zoneID))
+                return zone;
+        return null;
+    }
+
     public static class ZoneAlertView extends ZoneAlert implements BaseAdminAlertsBean.BaseAlertView
     {
         @Column(updateable = false)
         private static final long serialVersionUID = 8372507838051791866L;
 
         @Column(updateable = false)
-        private ZonesBean         zonesBean;
+        private ZoneAlertsBean    zoneAlertsBean;
         @Column(updateable = false)
         private Zone              zone;
         @Column(updateable = false)
@@ -246,9 +267,9 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
             return getZoneAlertID();
         }
 
-        void setZonesBean(ZonesBean zonesBean)
+        void setZoneAlertsBean(ZoneAlertsBean zoneAlertsBean)
         {
-            this.zonesBean = zonesBean;
+            this.zoneAlertsBean = zoneAlertsBean;
         }
 
         @Override
@@ -261,14 +282,7 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
         public Zone getZone()
         {
             if (zone == null && getZoneID() != null)
-            {
-                for (final Zone test : zonesBean.getZones())
-                    if (test.getZoneID() != null && test.getZoneID().equals(getZoneID()))
-                    {
-                        zone = test;
-                        break;
-                    }
-            }
+                zone = zoneAlertsBean.getZoneByID(getZoneID());
             return zone;
         }
 
