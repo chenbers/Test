@@ -63,32 +63,6 @@ public class ReportServiceIntegrationTest
     
 //  Driver Reports
         
-    @Test
-    @Ignore
-    public void getDScoreByDM()
-    {
-        DriveQMapHessianDAO dqmDAO = new DriveQMapHessianDAO();
-        dqmDAO.setReportService(reportService);
-        
-        System.out.println("***** begin getDScoreByDM *****");
-        
-        try 
-        {
-            DriveQMap dqm = dqmDAO.getDScoreByDM(
-                    16777218, 100000);
-            if ( dqm != null ) {                
-                System.out.println("for driver 16777218 " +
-                        dqm.getOverall());
-            } else {
-                System.out.println("null map returned");
-            }
-        } catch (Exception e)
-        {
-            System.out.println("getDScoreByDM failed");
-        }
-        System.out.println("***** end *****");
-        
-    }
     
     @Test
     @Ignore
@@ -145,65 +119,7 @@ public class ReportServiceIntegrationTest
         }
         System.out.println("***** end *****");        
     }
-    
-    @Test
-    @Ignore
-    public void getDTrendByDMC()
-    {
-        DriveQMapHessianDAO dqmDAO = new DriveQMapHessianDAO();
-        dqmDAO.setReportService(reportService);
-        
-        System.out.println("***** begin getDTrendByDMC *****");
-        
-        List<DriveQMap> dqmList = null;
-        try 
-        {
-            dqmList = dqmDAO.getDTrendByDMC(
-                    16777218, 100000, 10);
-            if ( dqmList != null ) { 
-                for ( DriveQMap d: dqmList )
-                {
-                    System.out.println("overall " +
-                        d.getOverall());
-                }
-            } else {
-                System.out.println("null map returned");
-            }
-        } catch (Exception e)
-        {
-            System.out.println("getDTrendByDMC failed");
-        }
-        System.out.println("***** end *****");             
-    }
-    
 //  Vehicle Reports
-    
-    @Test
-    @Ignore
-    public void getVScoreByVM()
-    {
-        DriveQMapHessianDAO dqmDAO = new DriveQMapHessianDAO();
-        dqmDAO.setReportService(reportService);
-        
-        System.out.println("***** begin getVScoreByVM *****");
-        
-        try 
-        {
-            DriveQMap dqm = dqmDAO.getVScoreByVM(
-                    16777218, 100000);
-            if ( dqm != null ) {
-                System.out.println("for vehicle 16777218 " +
-                        dqm.getOverall());
-            } else {
-                System.out.println("null map returned");
-            }
-        } catch (Exception e)
-        {
-            System.out.println("getVScoreByVM failed");
-        }
-        System.out.println("***** end *****");            
-    }
-    
     @Test
     @Ignore
     public void getVScoreByVT()
@@ -229,37 +145,6 @@ public class ReportServiceIntegrationTest
         }
         System.out.println("***** end *****");             
     }
-    
-    @Test
-    @Ignore
-    public void getVTrendByVMC()
-    {
-        DriveQMapHessianDAO dqmDAO = new DriveQMapHessianDAO();
-        dqmDAO.setReportService(reportService);
-        
-        System.out.println("***** begin getVTrendByVMC *****");
-        
-        List<DriveQMap> dqmList = null;
-        try 
-        {
-            dqmList = dqmDAO.getVTrendByVMC(
-                    16777218, 100000, 10);
-            if ( dqmList != null ) { 
-                for ( DriveQMap d: dqmList )
-                {
-                    System.out.println("overall " +
-                        d.getOverall());
-                }
-            } else {
-                System.out.println("null map returned");
-            }
-        } catch (Exception e)
-        {
-            System.out.println("getVTrendByVMC failed");
-        }
-        System.out.println("***** end *****");            
-    }
-    
     @Test
     @Ignore
     public void getVTrendByVTC()

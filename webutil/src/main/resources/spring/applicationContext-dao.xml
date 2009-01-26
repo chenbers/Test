@@ -5,4 +5,8 @@
         <constructor-arg value="${proxy.siloDataAccessHost}" />
         <constructor-arg value="${proxy.siloDataAccessPort}" />
     </bean>
+    <bean id="reportServiceCreator" class="com.inthinc.pro.dao.hessian.proserver.ReportServiceCreator">
+        <constructor-arg value="${proxy.siloDataAccessHost}" />
+        <constructor-arg value="${proxy.siloDataAccessPort}" />
+    </bean>
 </beans>

@@ -22,7 +22,7 @@ public interface ReportService extends HessianService
      * @return
      * @throws ProDAOException
      */
-    List<Map<String, Object>> getMpgValues(Integer groupID, Integer duration) throws ProDAOException;
+//    List<Map<String, Object>> getMpgValues(Integer groupID, Integer duration) throws ProDAOException;
 	
     /**
      * Return the average score for the specified group and time range.
@@ -35,7 +35,7 @@ public interface ReportService extends HessianService
      * @return Map<String,Object> that maps to a ScoreableEntity
      * @throws ProDAOException
      */
-    Map<String, Object> getAverageScoreByType(Integer groupID, Integer duration, ScoreType scoreType) throws ProDAOException;
+//    Map<String, Object> getAverageScoreByType(Integer groupID, Integer duration, ScoreType scoreType) throws ProDAOException;
 
 
     /**
@@ -49,7 +49,7 @@ public interface ReportService extends HessianService
      * @return Map<String,Object> that maps to a ScoreableEntity
      * @throws ProDAOException
      */
-    Map<String, Object> getAverageScoreByTypeAndMiles(Integer driverID, Integer milesBack, ScoreType scoreType) throws ProDAOException;
+//    Map<String, Object> getAverageScoreByTypeAndMiles(Integer driverID, Integer milesBack, ScoreType scoreType) throws ProDAOException;
     
     /**
      * Return the average score for the specified driver and miles back.
@@ -62,7 +62,7 @@ public interface ReportService extends HessianService
      * @return Map<String,Object> that maps to a ScoreableEntity
      * @throws ProDAOException
      */
-    Map<String, Object> getVehicleAverageScoreByTypeAndMiles(Integer vehicleID, Integer milesBack, ScoreType scoreType) throws ProDAOException;
+//    Map<String, Object> getVehicleAverageScoreByTypeAndMiles(Integer vehicleID, Integer milesBack, ScoreType scoreType) throws ProDAOException;
     
     /**
      * getScores -- retrieves the scores for direct children of the specified group
@@ -75,7 +75,7 @@ public interface ReportService extends HessianService
      * @return List<Map<String,Object>> that maps to a List of ScoreableEntity
      * @throws ProDAOException
      */
-    List<Map<String, Object>> getScores(Integer groupID, Integer duration,Integer scoreType) throws ProDAOException;
+//    List<Map<String, Object>> getScores(Integer groupID, Integer duration,Integer scoreType) throws ProDAOException;
 
     /**
      * getTopFiveScores -- retrieves the top five overall scores for the drivers of the specified group over the last thirty days.
@@ -84,7 +84,7 @@ public interface ReportService extends HessianService
      * @return List<Map<String,Object>> that maps to a List of ScoreableEntity
      * @throws ProDAOException
      */
-    List<Map<String, Object>> getTopFiveScores(Integer groupID);
+//    List<Map<String, Object>> getTopFiveScores(Integer groupID);
 
     /**
      * getBottomFiveScores -- retrieves the bottom five overall scores for the drivers of the specified group over the last thirty days.
@@ -93,7 +93,7 @@ public interface ReportService extends HessianService
      * @return List<Map<String,Object>> that maps to a List of ScoreableEntity
      * @throws ProDAOException
      */
-    List<Map<String, Object>> getBottomFiveScores(Integer groupID);
+//    List<Map<String, Object>> getBottomFiveScores(Integer groupID);
 
     /**
      * getScoreBreakdown -- retrieves the scores for the specified group, scoreType and dateRange broken down into 5 percentages (0-100)
@@ -112,7 +112,7 @@ public interface ReportService extends HessianService
      * @return List<Map<String,Object>> that maps to a List of ScoreableEntity
      * @throws ProDAOException
      */
-    List<Map<String, Object>> getScoreBreakdown(Integer groupID,  Integer duration, Integer scoreType) throws ProDAOException;
+//    List<Map<String, Object>> getScoreBreakdown(Integer groupID,  Integer duration, Integer scoreType) throws ProDAOException;
 
     /**
      * getDriverScoreHistoryByMiles -- retrieves a list of scores for the specified driverID and milesBack.   
@@ -125,7 +125,7 @@ public interface ReportService extends HessianService
      * @return List<Map<String,Object>> that maps to a List of ScoreableEntity
      * @throws ProDAOException
      */
-    List<Map<String, Object>> getDriverScoreHistoryByMiles(Integer driverID, Integer milesBack, Integer scoreType) throws ProDAOException;
+//    List<Map<String, Object>> getDriverScoreHistoryByMiles(Integer driverID, Integer milesBack, Integer scoreType) throws ProDAOException;
     
     /**
      * getVehicleScoreHistoryByMiles -- retrieves a list of scores for the specified vehicleID and milesBack.   
@@ -138,7 +138,7 @@ public interface ReportService extends HessianService
      * @return List<Map<String,Object>> that maps to a List of ScoreableEntity
      * @throws ProDAOException
      */
-    List<Map<String, Object>> getVehicleScoreHistoryByMiles(Integer vehicleID, Integer milesBack, Integer scoreType) throws ProDAOException;
+//    List<Map<String, Object>> getVehicleScoreHistoryByMiles(Integer vehicleID, Integer milesBack, Integer scoreType) throws ProDAOException;
     
     /**
      * Retrieve the List of Score Break Downs for a specific score type.  
@@ -186,25 +186,24 @@ public interface ReportService extends HessianService
      *            SCORE_OVERALL = 1, SCORE_SPEEDING=2, SCORE_SEATBELT=3, SCORE_DRIVING_STYLE=4
      * @return List<Map<String, Object>>  that maps to List of ScoreTypeBreakdown objects 
      */
-    List<Map<String, Object>> getScoreBreakdownByType(Integer groupID, Integer duration, Integer scoreType) throws ProDAOException;
+//    List<Map<String, Object>> getScoreBreakdownByType(Integer groupID, Integer duration, Integer scoreType) throws ProDAOException;
 
   //Methods currently supported on REAL back end  
     
 //  DriveQMap    
     
-    Map<String, Object> getDScoreByDM(Integer driverID, Integer mileage);
 
     Map<String, Object> getDScoreByDT(Integer driverID, Integer duration);
     
     List<Map<String, Object>> getDTrendByDTC(Integer driverID, Integer duration, Integer count);
     
-    List<Map<String, Object>> getDTrendByDMC(Integer driverID, Integer mileage, Integer count);
+//    List<Map<String, Object>> getDTrendByDMC(Integer driverID, Integer mileage, Integer count);
     
-    Map<String, Object> getVScoreByVM(Integer vehicleID, Integer mileage);
+//    Map<String, Object> getVScoreByVM(Integer vehicleID, Integer mileage);
     
     Map<String, Object> getVScoreByVT(Integer vehicleID, Integer duration);
     
-    List<Map<String, Object>> getVTrendByVMC(Integer vehicleID, Integer mileage, Integer count);
+//    List<Map<String, Object>> getVTrendByVMC(Integer vehicleID, Integer mileage, Integer count);
     
     List<Map<String, Object>> getVTrendByVTC(Integer vehicleID, Integer duration, Integer count);
     

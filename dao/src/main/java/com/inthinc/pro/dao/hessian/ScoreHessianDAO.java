@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
-import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
 import com.inthinc.pro.model.DVQMap;
 import com.inthinc.pro.model.DriveQMap;
@@ -23,7 +22,6 @@ import com.inthinc.pro.model.GQMap;
 import com.inthinc.pro.model.GQVMap;
 import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.QuintileMap;
-import com.inthinc.pro.model.ReportMileageType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreTypeBreakdown;
 import com.inthinc.pro.model.ScoreableEntity;
@@ -72,8 +70,6 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         try
         {
 
-            // TODO: not sure if this duration mapping is correct
-            // groupID = 16777218;
             Map<String, Object> returnMap = reportService.getGDScoreByGT(groupID, duration.getCode());
             DriveQMap dqMap = getMapper().convertToModelObject(returnMap, DriveQMap.class);
 
@@ -139,49 +135,6 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
     }
 
-    @Override
-    // TODO: TO BE REMOVED NOT USED
-    public ScoreableEntity getAverageScoreByTypeAndMiles(Integer driverID, Integer milesBack, ScoreType scoreType)
-    {
-        try
-        {
-            DriveQMap driveQMap = getMapper().convertToModelObject(reportService.getDScoreByDM(driverID, milesBack * 100), DriveQMap.class);
-            ScoreableEntity scoreableEntity = new ScoreableEntity();
-            scoreableEntity.setEntityID(driverID);
-            scoreableEntity.setEntityType(EntityType.ENTITY_DRIVER);
-            scoreableEntity.setIdentifier("");
-            scoreableEntity.setScoreType(scoreType);
-            Integer score = driveQMap.getScoreMap().get(scoreType);
-            scoreableEntity.setScore((score == null) ? 0 : score);
-            scoreableEntity.setIdentifier("" + driveQMap.getEndingOdometer());
-            return scoreableEntity;
-        }
-        catch (EmptyResultSetException e)
-        {
-            return null;
-        }
-    }
-
-    @Override
-    // TODO: TO BE REMOVED NOT USED
-    public ScoreableEntity getVehicleAverageScoreByTypeAndMiles(Integer vehicleID, Integer milesBack, ScoreType st)
-    {
-        try
-        {
-            return getMapper().convertToModelObject(reportService.getVehicleAverageScoreByTypeAndMiles(vehicleID, milesBack, st), ScoreableEntity.class);
-        }
-        catch (EmptyResultSetException e)
-        {
-            return null;
-        }
-        catch (ProxyException e)
-        {
-            if (e.getErrorCode() == 422)
-                return null;
-            else
-                throw e;
-        }
-    }
 
     @Override
     public List<ScoreableEntity> getScores(Integer groupID, Duration duration, ScoreType scoreType)
@@ -220,35 +173,10 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     @Override
     public Map<Integer, List<ScoreableEntity>> getTrendScores(Integer groupID, Duration duration)
     {
-        // Temporary fix, will need to fix on db and web side
-        //  for a duration code of 0 or 1, set the passed code to 0, this
-        //      implies we are asking for DAILY scores
-        //  for any of the month codes, 2 or 3 or 4 or 5, set it to 2, this
-        //      implies we are asking for MONTHLY scores
-        int localDuration = -1;
-        int localCount = -1;
-        
-        if (        duration == Duration.DAYS ) {
-            localDuration = 0;
-            localCount = 30;
-            
-        } else if ( duration == Duration.THREE ) {
-            localDuration = 2;
-            localCount = 3;
-            
-        } else if ( duration == Duration.SIX ) {
-            localDuration = 2;
-            localCount = 6;        
-            
-        } else if ( duration == Duration.TWELVE ) {
-            localDuration = 2;
-            localCount = 12;     
-        }
         
         try
         {
-            List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, localDuration, localCount);            
-//            List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getCode(), ScoreType.SCORE_OVERALL.getDriveQMetric());
+            List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getDvqMetric(), duration.getDvqCount());            
             List<GQVMap> gqvList = getMapper().convertToModelObject(list, GQVMap.class);
 
             Map<Integer, List<ScoreableEntity>> returnMap = new HashMap<Integer, List<ScoreableEntity>>();
@@ -306,55 +234,14 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
             return Collections.emptyList();
         }
     }
-
-    @Override
-    // TODO TO BE REMOVED NOT USED
-    public List<ScoreableEntity> getDriverScoreHistoryByMiles(Integer driverID, Integer milesBack, ScoreType scoreType)
-    {
-        try
-        {
-            ReportMileageType reportMileageType = ReportMileageType.valueOf(milesBack);
-            List<Map<String, Object>> list = reportService.getDTrendByDMC(driverID, reportMileageType.getMilesPerBin() * 100, reportMileageType.getBinCount());
-            List<DriveQMap> driveQList = getMapper().convertToModelObject(list, DriveQMap.class);
-
-            List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
-            for (DriveQMap driveQMap : driveQList)
-            {
-                ScoreableEntity entity = new ScoreableEntity();
-                entity.setEntityID(driverID);
-                entity.setEntityType(EntityType.ENTITY_DRIVER);
-                entity.setScoreType(scoreType);
-                Integer score = driveQMap.getScoreMap().get(scoreType);
-                entity.setScore((score == null) ? 0 : score);
-                entity.setIdentifier("" + driveQMap.getEndingOdometer());
-                scoreList.add(entity);
-            }
-
-            return scoreList;
-        }
-        catch (EmptyResultSetException e)
-        {
-            return Collections.emptyList();
-        }
-    }
-
     // TODO: refactor since count is determined from the duration, we can get rid of that param on the dao call
     @Override
     public List<ScoreableEntity> getDriverScoreHistory(Integer driverID, Duration duration, ScoreType scoreType, Integer count)
     {
-        // Temporary fix, will need to fix on db and web side
-        //  for a duration code of 0 or 1, set the passed code to 0, this
-        //      implies we are asking for DAILY scores
-        //  for any of the month codes, 2 or 3 or 4 or 5, set it to 2, this
-        //      implies we are asking for MONTHLY scores
-        int localDuration = findDuration(duration);
-        int localCount = findCount(duration);
-         
         try
         {
             List<Map<String, Object>> list = reportService.getDTrendByDTC(
-                    driverID, localDuration, localCount);
-//                    driverID, duration.getCode(), count);
+                    driverID, duration.getDvqMetric(), duration.getDvqCount());
             List<DriveQMap> driveQList = getMapper().convertToModelObject(list, DriveQMap.class);
 
             List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
@@ -366,9 +253,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 entity.setEntityType(EntityType.ENTITY_DRIVER);
                 entity.setScoreType(scoreType);
                 Integer score = driveQMap.getScoreMap().get(scoreType);
-//                entity.setScore(score);  
                 entity.setScore((score == null) ? 50 : score);                   
-//                entity.setCreated(driveQMap.getCreated());
                 entity.setDate(driveQMap.getEndingDate());
                 scoreList.add(entity);
             }
@@ -385,19 +270,11 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     @Override
     public List<ScoreableEntity> getVehicleScoreHistory(Integer vehicleID, Duration duration, ScoreType scoreType, Integer count)
     {
-        // Temporary fix, will need to fix on db and web side
-        //  for a duration code of 0 or 1, set the passed code to 0, this
-        //      implies we are asking for DAILY scores
-        //  for any of the month codes, 2 or 3 or 4 or 5, set it to 2, this
-        //      implies we are asking for MONTHLY scores
-        int localDuration = findDuration(duration);
-        int localCount = findCount(duration);
         
         try
         {
             List<Map<String, Object>> list = reportService.getVTrendByVTC(
-                    vehicleID, localDuration, localCount);
-//                    vehicleID, duration.getCode(), count);
+                    vehicleID, duration.getDvqMetric(), duration.getDvqCount());
             List<DriveQMap> driveQList = getMapper().convertToModelObject(list, DriveQMap.class);
 
             List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
@@ -409,9 +286,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 entity.setEntityType(EntityType.ENTITY_VEHICLE);
                 entity.setScoreType(scoreType);
                 Integer score = driveQMap.getScoreMap().get(scoreType);
-//                entity.setScore(score);
                 entity.setScore((score == null) ? 50 : score);                
-//                entity.setCreated(driveQMap.getCreated());
                 entity.setDate(driveQMap.getEndingDate());
                 scoreList.add(entity);
             }
@@ -426,35 +301,10 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     }
 
     @Override
-    // TODO TO BE REMOVED NOT USED
-    public List<ScoreableEntity> getVehicleScoreHistoryByMiles(Integer vehicleID, Integer milesBack, ScoreType scoreType)
-    {
-        try
-        {
-            return getMapper().convertToModelObject(reportService.getVehicleScoreHistoryByMiles(vehicleID, milesBack, scoreType.getCode()), ScoreableEntity.class);
-        }
-        catch (EmptyResultSetException e)
-        {
-            return Collections.emptyList();
-        }
-        catch (ProxyException e)
-        {
-            if (e.getErrorCode() == 422)
-                return Collections.emptyList();
-            else
-                throw e;
-        }
-
-    }
-
-    @Override
     public List<ScoreTypeBreakdown> getScoreBreakdownByType(Integer groupID, Duration duration, ScoreType scoreType)
     {
         try
         {
-
-            // TODO: not sure if this duration mapping is correct
-            // groupID = 16777218;
 
             List<ScoreTypeBreakdown> scoreTypeBreakdownList = new ArrayList<ScoreTypeBreakdown>();
             List<ScoreType> subTypeList = scoreType.getSubTypes();
@@ -622,38 +472,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
 
     }
-
-    @Override
-    public Map<ScoreType, ScoreableEntity> getScoreBreakdownByTypeAndMiles(Integer driverID, Integer milesBack, ScoreType scoreType)
-    {
-        try
-        {
-            Map<ScoreType, ScoreableEntity> returnMap = new HashMap<ScoreType, ScoreableEntity>();
-            DriveQMap driveQMap = getMapper().convertToModelObject(reportService.getDScoreByDM(driverID, milesBack * 100), DriveQMap.class);
-
-            List<ScoreType> subTypeList = scoreType.getSubTypes();
-
-            for (ScoreType subType : subTypeList)
-            {
-                ScoreableEntity scoreableEntity = new ScoreableEntity();
-                scoreableEntity.setEntityID(driverID);
-                scoreableEntity.setEntityType(EntityType.ENTITY_DRIVER);
-                scoreableEntity.setIdentifier("");
-                scoreableEntity.setScoreType(subType);
-                Integer score = driveQMap.getScoreMap().get(subType);
-                scoreableEntity.setScore((score == null) ? 0 : score);
-                scoreableEntity.setIdentifier("" + driveQMap.getEndingOdometer());
-
-                returnMap.put(subType, scoreableEntity);
-            }
-            return returnMap;
-        }
-        catch (EmptyResultSetException e)
-        {
-            return Collections.emptyMap();
-        }
-    }
-
+    
     @Override
     public Map<ScoreType, ScoreableEntity> getDriverScoreBreakdownByType(Integer driverID, Duration duration, ScoreType scoreType)
     {
@@ -715,41 +534,4 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
     }
 
-    private int findDuration(Duration duration) 
-    {
-        int localDuration = -1;
-        if (        duration == Duration.DAYS ) {
-            localDuration = 0;
-        
-        } else if ( duration == Duration.THREE ) {
-            localDuration = 2;
-        
-        } else if ( duration == Duration.SIX ) {
-            localDuration = 2;     
-        
-        } else if ( duration == Duration.TWELVE ) {
-            localDuration = 2;
-        }
-        
-        return localDuration;
-    }     
-    
-    private int findCount(Duration duration) 
-    {
-        int localCount = -1;
-        if (        duration == Duration.DAYS ) {
-            localCount = 30;
-        
-        } else if ( duration == Duration.THREE ) {
-            localCount = 3;
-        
-        } else if ( duration == Duration.SIX ) {
-            localCount = 6;        
-        
-        } else if ( duration == Duration.TWELVE ) {
-            localCount = 12;
-        }
-        
-        return localCount;
-    }          
 }

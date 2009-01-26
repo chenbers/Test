@@ -26,19 +26,6 @@ public class DriveQMapHessianDAO extends GenericHessianDAO<DriveQMap, Integer> i
         this.reportService = reportService;
     } 
 
-    @Override    
-    public DriveQMap getDScoreByDM(Integer driverID, Integer mileage)
-    {
-        try
-        {
-            return getMapper().convertToModelObject(getReportService().getDScoreByDM(driverID,mileage), DriveQMap.class);           
-        }
-        catch (EmptyResultSetException e)
-        {
-            return null;
-        }
-        
-    }
         
     @Override    
     public DriveQMap getDScoreByDT(Integer driverID, Integer duration)
@@ -67,7 +54,7 @@ public class DriveQMapHessianDAO extends GenericHessianDAO<DriveQMap, Integer> i
         }
         
     }
-
+/*
     @Override
     public List<DriveQMap> getDTrendByDMC(Integer driverID, Integer mileage, Integer count)
     {
@@ -82,7 +69,7 @@ public class DriveQMapHessianDAO extends GenericHessianDAO<DriveQMap, Integer> i
         
     }    
    
-       
+      
     @Override    
     public DriveQMap getVScoreByVM(Integer vehicleID, Integer mileage)
     {
@@ -96,7 +83,7 @@ public class DriveQMapHessianDAO extends GenericHessianDAO<DriveQMap, Integer> i
         }
         
     }
-
+*/
     @Override    
     public DriveQMap getVScoreByVT(Integer vehicleID, Integer duration)
     {
@@ -110,7 +97,7 @@ public class DriveQMapHessianDAO extends GenericHessianDAO<DriveQMap, Integer> i
         }
         
     }        
-
+/*
     @Override
     public List<DriveQMap> getVTrendByVMC(Integer vehicleID, Integer mileage, Integer count)
     {
@@ -124,7 +111,7 @@ public class DriveQMapHessianDAO extends GenericHessianDAO<DriveQMap, Integer> i
         }
         
     } 
-    
+*/    
     @Override
     public List<DriveQMap> getVTrendByVTC(Integer vehicleID, Integer duration, Integer count)
     {

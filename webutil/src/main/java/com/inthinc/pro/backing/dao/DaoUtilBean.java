@@ -19,7 +19,9 @@ import javax.jws.WebParam;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.dao.annotation.DaoParam;
+import com.inthinc.pro.backing.dao.impl.ReportServiceImpl;
 import com.inthinc.pro.backing.dao.impl.SiloServiceImpl;
+import com.inthinc.pro.dao.hessian.proserver.ReportServiceCreator;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.model.EventAttr;
 
@@ -29,6 +31,7 @@ public class DaoUtilBean
     private static final Logger logger = Logger.getLogger(DaoUtilBean.class);
     
     SiloServiceCreator siloServiceCreator;
+    ReportServiceCreator reportServiceCreator;
     
     String selectedMethod;
     Map<String, DaoMethod>methodMap;
@@ -37,7 +40,8 @@ public class DaoUtilBean
     private static final Integer ROWS_PER_INSTANCE = 30;
 
     private Class<?> dataAccessInterfaces[] = {
-            SiloServiceImpl.class
+            SiloServiceImpl.class,
+            ReportServiceImpl.class
     };
     private Object dataAccess[];
     private Object getDataAccess(int interfaceIdx) throws MalformedURLException
@@ -46,6 +50,7 @@ public class DaoUtilBean
         {
             dataAccess = new Object[dataAccessInterfaces.length];
             dataAccess[0] = siloServiceCreator.getService();
+            dataAccess[1] = reportServiceCreator.getService();
         }
         return dataAccess[interfaceIdx];
     }
@@ -291,6 +296,16 @@ logger.debug(paramTypes[i].getName());
     public void setSiloServiceCreator(SiloServiceCreator siloServiceCreator)
     {
         this.siloServiceCreator = siloServiceCreator;
+    }
+
+    public ReportServiceCreator getReportServiceCreator()
+    {
+        return reportServiceCreator;
+    }
+
+    public void setReportServiceCreator(ReportServiceCreator reportServiceCreator)
+    {
+        this.reportServiceCreator = reportServiceCreator;
     }
 
 }
