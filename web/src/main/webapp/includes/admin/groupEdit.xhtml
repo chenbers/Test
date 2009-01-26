@@ -37,6 +37,7 @@
 		</ul>
 	</h:panelGroup>
 	<div style="padding-left: 11px">
+	
 	<table>
 		<tr>
 			<td width="100%" valign="top">
@@ -46,10 +47,10 @@
 				<f:param
 					value="#{organizationBean.groupState eq 'ADD'? organizationBean.selectedGroupNode.group.name : groupTreeNode.group.name}" />
 			</h:outputFormat></div>
-
+			
 			<table width="520px" cellspacing="2" cellpadding="4" border="0"
 				align="center">
-				<h:outputText rendered="#{groupTreeNode.group.type ne 'FLEET'}">
+				<ui:fragment rendered="#{groupTreeNode.group.type ne 'FLEET'}">
 					<tr>
 						<td width="100">#{messages.group_parent_group}:
 						<span class="required">*</span></td>
@@ -63,7 +64,7 @@
 									value="#{organizationBean.selectedParentGroup}"
 									id="parent_group" converter="SimpleBeanConverter"
 									required="true" requiredMessage="#{messages.required}"
-									tabindex="0">
+									tabindex="1">
 									<f:selectItems value="#{organizationBean.parentGroups}" />
 							</h:selectOneMenu>
 						</td>
@@ -76,30 +77,30 @@
 									fatalClass="field-error" warnClass="field-warning"
 									infoClass="field-info" styleClass="field-msg" /><h:selectOneMenu value="#{groupTreeNode.group.type}"
 									id="group_type" converter="SimpleBeanConverter" required="true"
-									requiredMessage="#{messages.required}" tabindex="1">
+									requiredMessage="#{messages.required}" tabindex="2">
 									<f:selectItems value="#{organizationBean.groupTypeList}" />
 								</h:selectOneMenu>
 						</td>
 					</tr>
 					
-				</h:outputText>
+				</ui:fragment>
 				<tr>
 					<td width="100">#{messages.group_name}:
 					<span class="required">*</span></td>
 					<td>
 						<rich:message for="group_name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-						<h:inputText value="#{groupTreeNode.group.name}" id="group_name" tabindex="2"   styleClass="text" size="30" maxlength="30" required="true" requiredMessage="#{messages.required}" /> 
+						<h:inputText value="#{groupTreeNode.group.name}" id="group_name" tabindex="3"   styleClass="text" size="30" maxlength="30" required="true" requiredMessage="#{messages.required}" /> 
 					</td>
 				</tr>
 				<tr>
 					<td width="100">#{messages.group_description}:</td>
-					<td><h:inputTextarea value="#{groupTreeNode.group.description}" style="width:100%" tabindex="3"/></td>
+					<td><h:inputTextarea value="#{groupTreeNode.group.description}" style="width:100%" tabindex="4"/></td>
 				</tr>
 				<tr>
 					<td width="100">#{messages.group_manager}:</td>
 					<td>
 						<rich:message for="group_manager" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-						<h:selectOneMenu id="group_manager" tabindex="4"
+						<h:selectOneMenu id="group_manager" tabindex="5"
 								value="#{groupTreeNode.group.managerID}"
 								requiredMessage="#{messages.required}">
 								<f:selectItems value="#{organizationBean.peopleSelectItems}" />
@@ -157,5 +158,16 @@
 		</ul>
 
 	</h:outputText>
+	<script type="text/javascript">	
+		
+		function setFocus(id) {
+		    var element = document.getElementById(id);
+		    if (element) {
+		        element.focus();
+		    }
+		}
 
+		setFocus("#{groupTreeNode.group.type eq 'FLEET'? 'display-form:group_name' : 'display-form:parent_group'}");
+									
+	</script> 
 </ui:composition>

@@ -29,7 +29,7 @@
 						<td width="100">#{messages.group_find_address}</td>
 						<td width="200"><input type="text" size="42"
 							id="addressTextBox"
-							value="" /></td>
+							value="" tabindex="6"/></td>
 						<td width="50" align="left">
 							<a4j:commandButton immediate="true" onclick="showAddress(document.getElementById('addressTextBox').value);" styleClass="left">
 								<span class="search">
@@ -120,10 +120,11 @@
 							}
 
 							initMap();
-						</script> <h:inputText id="#{uniqueID}-latvalue" style="display:none" value="#{latValue}" />
-						<h:inputText id="#{uniqueID}-longvalue" style="display:none"
-										value="#{longValue}" /> <h:inputText id="#{uniqueID}-zoomlevel"
-										style="display:none" value="#{zoomLevel}" /></td>
+						</script> 
+						<h:inputHidden id="#{uniqueID}-latvalue" value="#{latValue}" />
+						<h:inputHidden id="#{uniqueID}-longvalue" value="#{longValue}" />
+						<h:inputHidden id="#{uniqueID}-zoomlevel" value="#{zoomLevel}" />
+						</td>
 			
 					</tr>
 					<tr>

@@ -29,7 +29,6 @@
 		<t:saveState value="#{organizationBean.treeStateMap}"/>
 		<t:saveState value="#{organizationBean.organizationHierarchy}"/>
 		
-		
 		<table width="920" border="0" cellspacing="0" cellpadding="0"
 			align="center" style="margin: 0 auto 0 auto;">
 			<tr>
@@ -81,7 +80,7 @@
 										var="item"
 										nodeFace="#{item.data.treeNodeType}"
 										nodeSelectListener="#{organizationBean.selectNode}"
-										reRender="groupPanel,driverPanel,vehiclePanel"
+										reRender="driverPanel,vehiclePanel,groupPanel"
 										dragValue="#{item.data}" dropValue="#{item.data}"
 										adviseNodeSelected="#{organizationBean.adviseNodeSelected}"
 										adviseNodeOpened="#{organizationBean.adviseNodeExpanded}"
@@ -146,25 +145,25 @@
 								performance, we have the map at this level as well
 								 -->
 								<h:panelGroup id="groupPanel">
-									<h:outputText
+									<ui:fragment
 										rendered="#{organizationBean.selectedGroupNode ne null and organizationBean.selectedGroupNode.group ne null}">
-										<h:outputText
+										<ui:fragment
 											rendered="#{organizationBean.groupState eq 'VIEW'}">
 											<ui:include src="/includes/admin/groupView.xhtml">
 												<ui:param name="groupTreeNode"
 													value="#{organizationBean.selectedGroupNode}" />
 											</ui:include>
-										</h:outputText>
+										</ui:fragment>
 
-										<h:outputText
+										<ui:fragment
 											rendered="#{organizationBean.groupState ne 'VIEW'}">
 											<ui:include src="/includes/admin/groupEdit.xhtml">
 												<ui:param name="groupTreeNode"
 													value="#{organizationBean.inProgressGroupNode}" />
 											</ui:include>
 
-										</h:outputText>
-									</h:outputText>
+										</ui:fragment>
+									</ui:fragment>
 									
 								</h:panelGroup>
 
@@ -206,18 +205,17 @@
 
 		</table>
 		<ui:include src="/includes/confirmDelete.xhtml">
-      <ui:param name="deleteBean" value="#{organizationBean}" />
-      <ui:param name="explanation" value="#{messages.group_delete_confirmation}" />
-      <ui:param name="reRender" value="groupPanel,organizationTreePanel" />
-    </ui:include>
+	      <ui:param name="deleteBean" value="#{organizationBean}" />
+	      <ui:param name="explanation" value="#{messages.group_delete_confirmation}" />
+	      <ui:param name="reRender" value="groupPanel,organizationTreePanel" />
+	    </ui:include>
     
-    <script type="text/javascript">	
-    	function bodyLoad()
-    	{
-        	
-        	initMap();
-    	}
-    </script>
+	    <script type="text/javascript">	
+	    	function bodyLoad()
+	    	{
+	        	initMap();
+	    	}
+	    </script>
 	</ui:define>
 
 </ui:composition>
