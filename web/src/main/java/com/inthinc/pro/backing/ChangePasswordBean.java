@@ -42,6 +42,7 @@ public class ChangePasswordBean extends BaseBean
             message.setSummary(MessageUtil.getMessageString("myAccount_incorrect_password"));
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             context.addMessage("changePasswordForm:oldPassword", message);
+            oldPassword = null;
             return;
         }
 
