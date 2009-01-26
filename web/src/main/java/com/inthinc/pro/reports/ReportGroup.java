@@ -4,19 +4,19 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum ReportList
+public enum ReportGroup
 {
-    FLEET_DASHBOARD("Fleet Dashboard","home.faces",Report.OVERALL_SCORE,Report.TREND,Report.MPG_GROUP);
+    FLEET_DASHBOARD("Fleet Dashboard",1,Report.OVERALL_SCORE,Report.TREND,Report.MPG_GROUP),
+    DIVISION_DASHBOARD("Division Dashboard",2,Report.OVERALL_SCORE,Report.TREND,Report.MPG_GROUP);
     
-  
     private Report[] reports;
-    private String pageName;
+    private Integer reportID;
     private String label;
     
-    private ReportList(String label,String pageName,Report... reports){
+    private ReportGroup(String label, Integer reportID,Report... reports){
         this.reports = reports;
         this.label = label;
-        this.pageName = pageName;
+        this.reportID = reportID;
     }
     
     private static final Map<String, Report> lookup = new HashMap<String, Report>();
@@ -33,8 +33,9 @@ public enum ReportList
         return lookup.get(stringValue);
     }
     
-    public String getFilename(){
-        return pageName;
+    public Integer getReportID()
+    {
+        return this.reportID;
     }
     
     public String getLabel(){
