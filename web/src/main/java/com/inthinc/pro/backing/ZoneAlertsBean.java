@@ -13,6 +13,7 @@ import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.dao.ZoneAlertDAO;
 import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.model.BaseAlert;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
@@ -305,7 +306,7 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
             if (!anytime)
                 super.setStartTOD(startTOD);
             else
-                super.setStartTOD(null);
+                super.setStartTOD(BaseAlert.MIN_TOD);
         }
 
         @Override
@@ -314,7 +315,7 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
             if (!anytime)
                 super.setStopTOD(stopTOD);
             else
-                super.setStopTOD(null);
+                super.setStopTOD(BaseAlert.MIN_TOD);
         }
 
         public boolean isSelected()

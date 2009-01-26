@@ -241,7 +241,10 @@ public abstract class AbstractMapper implements Mapper
             if (propertyType.equals(Date.class) && value instanceof Integer)
             {
                 Integer seconds = (Integer) value;
-                value = new Date(seconds.longValue() * 1000l);
+                if (seconds > 0)
+                    value = new Date(seconds.longValue() * 1000l);
+                else
+                    value = null;
             }
             if (propertyType == TimeZone.class && value instanceof String)
             {
@@ -387,6 +390,11 @@ public abstract class AbstractMapper implements Mapper
                 else if (value != null)
                 {
                     map.put(name, convertToHessian(value, handled, field, includeNonUpdateables));
+                }
+                else if (BaseEnum.class.isAssignableFrom(field.getType()) || ReferenceEntity.class.isAssignableFrom(field.getType())
+                        || Date.class.isAssignableFrom(field.getType()))
+                {
+                    map.put(name, 0);
                 }
             }
             clazz = clazz.getSuperclass();

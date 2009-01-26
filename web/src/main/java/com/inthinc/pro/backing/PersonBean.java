@@ -239,6 +239,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         personView.setSelected(false);
         if (person.getUser() != null)
             personView.getUser().setPerson(personView);
+        if ((person.getDriver() != null) && (person.getDriver().getRFID() != null) && (person.getDriver().getRFID() == 0))
+            person.getDriver().setRFID(null);
 
         return personView;
     }
@@ -331,8 +333,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             item.setDriver(new Driver());
             item.getDriver().setPersonID(item.getPersonID());
         }
-        if ((item.getDriver().getRFID() != null) && (item.getDriver().getRFID() == 0))
-            item.getDriver().setRFID(null);
         return item;
     }
 
@@ -483,6 +483,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             if ((person.getPassword() != null) && (person.getPassword().length() > 0))
                 person.getUser().setPassword(passwordEncryptor.encryptPassword(person.getPassword()));
 
+            if ((person.getDriver() != null) && (person.getDriver().getRFID() == null))
+                person.getDriver().setRFID(0L);
+
             if (!person.isUserSelected() && (person.getUser() != null))
             {
                 if (person.getUser().getUserID() != null)
@@ -628,6 +631,24 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         public String getName()
         {
             return getFirst() + ' ' + getLast();
+        }
+
+        @Override
+        public Integer getHeight()
+        {
+            final Integer height = super.getHeight();
+            if ((height != null) && (height == 0))
+                return null;
+            return height;
+        }
+
+        @Override
+        public Integer getWeight()
+        {
+            final Integer weight = super.getWeight();
+            if ((weight != null) && (weight == 0))
+                return null;
+            return weight;
         }
 
         @Override

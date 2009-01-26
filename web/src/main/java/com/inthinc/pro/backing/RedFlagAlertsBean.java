@@ -13,6 +13,7 @@ import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.dao.RedFlagAlertDAO;
 import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.model.BaseAlert;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagLevel;
@@ -356,6 +357,24 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         {
             this.anytime = anytime;
             BaseAdminAlertsBean.onSetAnytime(this, anytime);
+        }
+
+        @Override
+        public void setStartTOD(Integer startTOD)
+        {
+            if (!anytime)
+                super.setStartTOD(startTOD);
+            else
+                super.setStartTOD(BaseAlert.MIN_TOD);
+        }
+
+        @Override
+        public void setStopTOD(Integer stopTOD)
+        {
+            if (!anytime)
+                super.setStopTOD(stopTOD);
+            else
+                super.setStopTOD(BaseAlert.MIN_TOD);
         }
 
         public String getType()
