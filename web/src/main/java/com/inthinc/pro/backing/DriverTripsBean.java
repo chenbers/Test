@@ -37,55 +37,53 @@ public class DriverTripsBean extends BaseBean
     private boolean             showIdleMarkers   = true;
     private boolean             showWarnings      = true;
 
-    private List<TripDisplay>   trips;
+    private List<TripDisplay>   trips             = new ArrayList<TripDisplay>();
     private List<TripDisplay>   selectedTrips;
     private TripDisplay         selectedTrip;
-    private List<Event>         violationEvents;
-    private List<Event>         idleEvents;
+    private List<Event>         violationEvents   = new ArrayList<Event>();
+    private List<Event>         idleEvents        = new ArrayList<Event>();
 
-    public void init()
+    public DriverTripsBean()
     {
-        // TODO set startDate to 7 days ago 12:00:00AM and endDate to Today 11:59:59PM and when dates change.
+        // TODO set startDate to 7 days ago 12:00:00AM.
         
         // Set start date to 7 days ago.
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, -7);
         startDate = calendar.getTime();
-        
-        if(navigation.getDriver() == null)
-            return;
-
-        initTrips();
     }
 
     public void initTrips()
     {
-        logger.debug("InitTrips");
-        List<Trip> tempTrips = new ArrayList<Trip>();
-        tempTrips = driverDAO.getTrips(navigation.getDriver().getDriverID(), startDate, endDate);
-
-        trips = new ArrayList<TripDisplay>();
-        selectedTrips = new ArrayList<TripDisplay>();
-
-        for (Trip trip : tempTrips)
+        if(trips.size() < 1)
         {
-            trips.add(0, new TripDisplay(trip, navigation.getDriver().getPerson().getTimeZone()));
-        }
-
-        numTrips = trips.size();
-
-        if (numTrips > 0)
-        {
-            logger.debug(numTrips.toString() + "Trips Found.");
-            
-            setSelectedTrip(trips.get(0));
-   
-            generateStats();
+            List<Trip> tempTrips = new ArrayList<Trip>();
+            tempTrips = driverDAO.getTrips(navigation.getDriver().getDriverID(), startDate, endDate);
+     
+            selectedTrips = new ArrayList<TripDisplay>();
+    
+            for (Trip trip : tempTrips)
+            {
+                trips.add(0, new TripDisplay(trip, navigation.getDriver().getPerson().getTimeZone()));
+            }
+    
+            numTrips = trips.size();
+    
+            if (numTrips > 0)
+            {
+                logger.debug(numTrips.toString() + "Trips Found.");
+                
+                setSelectedTrip(trips.get(0));
+       
+                generateStats();
+            }
         }
     }
 
     public void initViolations(Date start, Date end)
     {
+        if(violationEvents.size() > 1) return;
+        
         logger.debug("Get Events");
         List<Integer> vioTypes = new ArrayList<Integer>();
         vioTypes.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
@@ -96,8 +94,6 @@ public class DriverTripsBean extends BaseBean
         idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
 
         // TODO use one list. add idle events and sort by time.  JSF to check event type for which image to use.
-        
-        violationEvents = new ArrayList<Event>();
         violationEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), start, end, vioTypes);
 
         //Lookup Addresses for events
@@ -195,6 +191,7 @@ public class DriverTripsBean extends BaseBean
     // NUMBER OF TRIPS PROPERTIES
     public Integer getNumTrips()
     {
+        initTrips();
         return numTrips;
     }
 
@@ -300,9 +297,14 @@ public class DriverTripsBean extends BaseBean
 
     public void setSelectedTrip(TripDisplay selectedTrip)
     {
+        //Add this trip to the list of selected trips.
         selectedTrips.clear();
         selectedTrips.add(selectedTrip);
         this.showLastTenTrips = false;
+        
+        //Get Violations for this Trip
+        violationEvents.clear();
+        idleEvents.clear();
         initViolations(selectedTrip.getTrip().getStartTime(), selectedTrip.getTrip().getEndTime());
     }
 
@@ -352,11 +354,18 @@ public class DriverTripsBean extends BaseBean
     // SELECTED TRIPS PROPERTIES
     public List<TripDisplay> getSelectedTrips()
     {
+        initTrips();
         return selectedTrips;
     }
 
     public void setSelectedTrips(List<TripDisplay> selectedTrips)
     {
         this.selectedTrips = selectedTrips;
+    }
+    
+    public void DateChangedAction()
+    {
+        trips.clear();
+        initTrips();
     }
 }

@@ -8,7 +8,8 @@
 	  			xmlns:f="http://java.sun.com/jsf/core"
 	  			xmlns:t="http://myfaces.apache.org/tomahawk">
 
-	<ui:define name="scripts">
+<ui:define name="scripts">
+
 		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>	
 		<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{gmBean.key}" type="text/javascript"></script>
 		<script type="text/javascript">
@@ -100,77 +101,76 @@
 		    map.setZoom(map.getBoundsZoomLevel(bounds));
 		    map.setCenter(bounds.getCenter());
 	    }
-		
+
 		</script>
 		
-		<rich:panel id="script">
-			<script type="text/javascript">
-
-			   		function drawSelectedTrips()
-			   		{
-			   				map.clearOverlays(); 
-							var polyline;
-							var marker;
-							var startlatlng;
-							var endlatlng;
-							
-			   				<ui:repeat value="#{driverTripsBean.selectedTrips}" var="trip">
-								polyline = new GPolyline([
-								<ui:repeat value="#{trip.route}" var="rt">
-										new GLatLng(#{rt.lat}, #{rt.lng}),
-								</ui:repeat>
-		    			  				new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng})
-								], "#0000ff", 6);
-								map.addOverlay(polyline);
-
-								//Start of trip marker
-								startlatlng = new GLatLng(#{trip.route[0].lat}, #{trip.route[0].lng});
-								marker = createMarker(startlatlng, "Start of trip.<br />" + "#{trip.trip.startTime}<br />#{trip.startAddress}",
-														"#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
-								map.addOverlay(marker);
-								bounds.extend(marker.getPoint());
-
-								//End of trip marker
-								endlatlng = new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng});
-								marker = createMarker(endlatlng, "End of trip.<br />" + "#{trip.trip.endTime}<br />#{trip.endAddress}",
-														"#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
-								map.addOverlay(marker);
-								bounds.extend(marker.getPoint());
-
-			  				</ui:repeat>
-
-			  				if(showWarnings == true)
-							{
-				  				var violation;
-								<ui:repeat value="#{driverTripsBean.violationEvents}" var="violation">
-									violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
-									map.addOverlay(createMarker(violation, "#{violation.eventType} Violation.<br />#{violation.time}<br />#{violation.addressStr}<br />",
-													"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png"));
-								</ui:repeat>
-							}
-
-							var idleMarker;
-							if(showIdleMarkers == true)
-							{
-								var idle;
-								<ui:repeat value="#{driverTripsBean.idleEvents}" var="idle">
-									idle = new GLatLng(#{idle.latitude}, #{idle.longitude});
-									map.addOverlay(createMarker(idle, "#{idle.eventType} Violation.<br />High RPM: #{idle.highIdleDuration}<br />Low RPM: #{idle.lowIdleDuration}",
-													"#{facesContext.externalContext.request.contextPath}/images/ico_idle.png"));
-								</ui:repeat>
-							}	
- 					}
-
-    		</script>			
-		</rich:panel>	
+	<rich:panel id="script">
+		<script type="text/javascript">
+   		function drawSelectedTrips()
+   		{
+   				map.clearOverlays(); 
+				var polyline;
+				var marker;
+				var startlatlng;
+				var endlatlng;
 				
+   				<ui:repeat value="#{driverTripsBean.selectedTrips}" var="trip">
+					polyline = new GPolyline([
+					<ui:repeat value="#{trip.route}" var="rt">
+							new GLatLng(#{rt.lat}, #{rt.lng}),
+					</ui:repeat>
+			  				new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng})
+					], "#0000ff", 6);
+					map.addOverlay(polyline);
+
+					//Start of trip marker
+					startlatlng = new GLatLng(#{trip.route[0].lat}, #{trip.route[0].lng});
+					marker = createMarker(startlatlng, "Start of trip.<br />" + "#{trip.trip.startTime}<br />#{trip.startAddress}",
+											"#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
+					map.addOverlay(marker);
+					bounds.extend(marker.getPoint());
+
+					//End of trip marker
+					endlatlng = new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng});
+					marker = createMarker(endlatlng, "End of trip.<br />" + "#{trip.trip.endTime}<br />#{trip.endAddress}",
+											"#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
+					map.addOverlay(marker);
+					bounds.extend(marker.getPoint());
+
+  				</ui:repeat>
+
+  				if(showWarnings == true)
+				{
+	  				var violation;
+					<ui:repeat value="#{driverTripsBean.violationEvents}" var="violation">
+						violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
+						map.addOverlay(createMarker(violation, "#{violation.eventType} Violation.<br />#{violation.time}<br />#{violation.addressStr}<br />",
+										"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png"));
+					</ui:repeat>
+				}
+
+				var idleMarker;
+				if(showIdleMarkers == true)
+				{
+					var idle;
+					<ui:repeat value="#{driverTripsBean.idleEvents}" var="idle">
+						idle = new GLatLng(#{idle.latitude}, #{idle.longitude});
+						map.addOverlay(createMarker(idle, "#{idle.eventType} Violation.<br />High RPM: #{idle.highIdleDuration}<br />Low RPM: #{idle.lowIdleDuration}",
+										"#{facesContext.externalContext.request.contextPath}/images/ico_idle.png"));
+					</ui:repeat>
+				}	
+			}
+		
+		</script>
+	</rich:panel>
+		
 	</ui:define>
 <ui:param name="homeSelected" value="current" />
 
 <ui:define name="content">
+<t:saveState value="#{driverTripsBean.trips}" />
+<t:saveState value="#{driverTripsBean.numTrips}" />
 <t:saveState value="#{driverTripsBean.selectedTrips}" />
-<t:saveState value="#{driverTripsBean.violationEvents}" />
-
 <div id="wrapper">
 <h:form>
 	<ul id="grid_nav">
@@ -198,64 +198,74 @@
   <tr>
     <td width="330" valign="top">
 <!-- START PANEL -->
-			<div class="">
-				<div class="panel_nw">
+<div class="">
+	    <rich:panel id="date_picker_panel">
+			<a4j:region id="dateFormRegion">
+				<a4j:form id="dateForm">
+				<div class="panel_nw">			
 					<div class="panel_title">
 						<span class="cal">Date Range </span>
-						<span class="panel_links"></span>
+						<span class="panel_links">
+						 	<a4j:status id="dateFormStatus" for="dateFormRegion">
+								<f:facet name="start">
+									<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
+								</f:facet>
+							</a4j:status>
+						</span>
 					</div>
 				</div>
 					<div class="panel_w">
 					  <div class="panel_content">
-					    <rich:panel id="date_picker_panel">
-						<a4j:form id="dateForm">
-							<table width="320" cellpadding="4" cellspacing="0" class="" id="">
-							  <tbody>
-							  <tr>
-								<td width="73">Start Date </td>
-								<td width="178">
-									<a4j:outputPanel id="calendarStart" layout="block">
-				                    	<rich:calendar value="#{driverTripsBean.startDate}"
-				                        	locale="en/US" popup="true" immediate="true"
-				                        	datePattern="MMMMM d, yyyy"
-				                        	showApplyButton="false" cellWidth="24px" cellHeight="22px"/>
-				           			</a4j:outputPanel> 
-								</td>
-								<td width="51">to</td>
-							  </tr>
-							  <tr>
-								<td>End Date </td>
-								<td>
-								  <a4j:outputPanel id="calendarEnd" layout="block">
-				                    	<rich:calendar value="#{driverTripsBean.endDate}"
-				                        	locale="en/US" popup="true" immediate="true"
-				                        	datePattern="MMMMM d, yyyy"
-				                        	showApplyButton="false" cellWidth="24px" cellHeight="22px"/>
-				           			</a4j:outputPanel>
-								</td>
-								<td></td>
-							  </tr>
-							  <tr>
-							    <td> </td>
-							    <td>
-			    					 <a4j:commandButton action="#{driverTripsBean.initTrips}" reRender="script,script2,statsPanel,tripsPanel,selectedTripMap,selectedTrip" immediate="false" styleClass="left">
-				          					<span class="edit">
-				          						<h:outputText value="Update Date Range" />
-				          					</span>
-			    					 </a4j:commandButton>		 
-							    </td>
-							    <td> </td>
-							    </tr>
-							  </tbody>
-						  </table>
-						 </a4j:form>
-						</rich:panel>
+
+								<table width="320" cellpadding="4" cellspacing="0" class="" id="">
+								  <tbody>
+									  <tr>
+										<td width="73">Start Date </td>
+										<td width="178">
+											<a4j:outputPanel id="calendarStart" layout="block">
+				                   		 	<rich:calendar value="#{driverTripsBean.startDate}"
+				                	        	locale="en/US" popup="true" immediate="true"
+				               		         	datePattern="MMMMM d, yyyy"
+				               			         	showApplyButton="false" cellWidth="24px" cellHeight="22px"/>
+				           					</a4j:outputPanel> 
+										</td>
+											<td width="51"></td>
+									  </tr>
+									  <tr>
+											<td>End Date </td>
+											<td>
+								  				<a4j:outputPanel id="calendarEnd" layout="block">
+				                    				<rich:calendar value="#{driverTripsBean.endDate}"
+				                        				locale="en/US" popup="true" immediate="true"
+				                        				datePattern="MMMMM d, yyyy"
+				                        				showApplyButton="false" cellWidth="24px" cellHeight="22px"/>
+				           							</a4j:outputPanel>
+											</td>
+											<td></td>
+									  </tr>
+									  <tr>
+										    <td> </td>
+										    <td>
+					    					 <a4j:commandButton action="#{driverTripsBean.DateChangedAction}" reRender="script,script2,statsPanel,tripsPanel,selectedTripMap,selectedTrip" immediate="false" styleClass="left">
+						          					<span class="edit">
+						          						<h:outputText value="Update Date Range" />
+						          					</span>
+					    					 </a4j:commandButton>		 
+							   				 </td>
+										    <td></td>
+								    </tr>
+								  </tbody>
+						  	</table>
 					  </div>
 					</div>
-				<div class="panel_sw">
-					<div class="panel_statusbar"></div>
-				</div>
+					</a4j:form>
+				</a4j:region>
+			</rich:panel>
+		
+			<div class="panel_sw">
+				<div class="panel_statusbar"></div>
 			</div>
+		</div>
 		<!-- END PANEL -->
 		
 		<div class="spacer"></div>
@@ -561,12 +571,14 @@
 			  <h:panelGroup styleClass="map-border" layout="block">
 				<div id="map-canvas" style="width:588px;height:400px;border:0"></div>
 				</h:panelGroup>
-			   		<script type="text/javascript">
+			   
+				<script type="text/javascript">
 			   		
-				   		initMap(#{driverTripsBean.selectedTrips[0].routeLastStep.lat}, #{driverTripsBean.selectedTrips[0].routeLastStep.lng}, 14);
-				   		showTrips();
-    				
-  					</script> 
+			   		initMap(#{driverTripsBean.selectedTrips[0].routeLastStep.lat}, #{driverTripsBean.selectedTrips[0].routeLastStep.lng}, 14);
+			   		showTrips();
+
+    			</script>			
+			
 				</c:if>
   					
 			<c:if test="#{driverTripsBean.numTrips lt 1 ? true : false}">

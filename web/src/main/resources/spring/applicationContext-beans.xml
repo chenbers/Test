@@ -216,7 +216,7 @@
         <property name="navigation" ref="navigationBean"></property>
     </bean>
 
-    <bean id="driverTripsBean" class="com.inthinc.pro.backing.DriverTripsBean" scope="request" parent="baseBean" init-method="init">
+    <bean id="driverTripsBean" class="com.inthinc.pro.backing.DriverTripsBean" scope="request" parent="baseBean">
         <property name="driverDAO" ref="driverDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
         <property name="eventDAO" ref="eventDAO"></property>
