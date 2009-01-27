@@ -14,6 +14,11 @@
 		<table width="920" height="430" border="0" cellspacing="0"
 			cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
 			<tr>
+				<td valign="top" width="130">
+					<ui:include src="/includes/adminSideNav.xhtml">
+					<ui:param name="selectedAction" value="go_adminReportSchedule" />
+					</ui:include>
+				</td>
 				<td valign="top">
 				<a4j:form id="display-form">
 				<div class="">
@@ -42,21 +47,21 @@
                     </li>
                   </ul>
 
-				<table width="920" border="0" cellspacing="0" cellpadding="0">
+				<table width="600" border="0" cellspacing="0" cellpadding="0">
 					<tr>
-						<td width="455" valign="top" align="left">
+						<td width="200" valign="top" align="left">
 
 						<div class="add_section_title"><h:outputText
 							value="Settings" /></div>
 
-						<table width="455" border="0" cellspacing="2" cellpadding="4"
+						<table width="200" border="0" cellspacing="2" cellpadding="4"
 							align="center">
 							<tr>
 								<td width="100" valign="top">
 									<h:outputText value="Select Reports:"/>
 								</td>
-								<td width="355">
-									<h:selectManyCheckbox style="width:300px" value="#{reportRendererBean.reports}" converter="SimpleBeanConverter" layout="pageDirection">
+								<td width="200">
+									<h:selectManyCheckbox style="width:200px" value="#{reportRendererBean.reports}" converter="SimpleBeanConverter" layout="pageDirection">
 										<f:selectItems value="#{reportRendererBean.reportsAsSelectItems}"/> 
 									</h:selectManyCheckbox>
 								</td>
@@ -65,8 +70,8 @@
 								<td width="100" valign="top">
 									<h:outputText value="Select Duration:"/>
 								</td>
-								<td width="355">
-									<h:selectOneRadio style="width:300px" layout="pageDirection" value="#{reportRendererBean.duration}" converter="SimpleBeanConverter">
+								<td width="200">
+									<h:selectOneRadio style="width:200px" layout="pageDirection" value="#{reportRendererBean.duration}" converter="SimpleBeanConverter">
 										<f:selectItems value="#{reportRendererBean.durationAsSelectItems}"/> 
 									</h:selectOneRadio>
 								</td>

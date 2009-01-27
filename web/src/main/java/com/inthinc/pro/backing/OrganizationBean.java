@@ -349,6 +349,7 @@ public class OrganizationBean extends BaseBean
 
     /**
      * Case 1: EDIT - If there are drivers/devices/or vehicles then the group has to be a team
+     * Case 2: EDIT - If there are subordinate groups within a group, then that group cannot be a team
      * 
      * @param treeNode
      *            treeNode containing the group to validate
@@ -364,12 +365,18 @@ public class OrganizationBean extends BaseBean
             List<Vehicle> vehicleList = vehicleDAO.getVehiclesInGroup(treeNode.getGroup().getGroupID());
             if (!vehicleList.isEmpty() || !driverList.isEmpty())
             {
-                addErrorMessage("Group Cannot be changed from Team if there are Drivers, Vehicles attatched to the group");
+                addErrorMessage(MessageUtil.getMessageString("group_edit_error_division"));
                 valid = false;
             }
         }
 
         // Case 2
+        if (groupState == State.EDIT && treeNode.getGroup().getType() == GroupType.TEAM &&
+                !treeNode.getChildrenNodes().isEmpty() && treeNode.getChildrenNodes().get(0).getGroup() != null)
+        {
+            addErrorMessage(MessageUtil.getMessageString("group_edit_error_team"));
+            valid = false;  
+        }
         return valid;
     }
 
