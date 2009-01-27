@@ -677,14 +677,14 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
         public Group getGroup()
         {
-            if ((getUser() != null) && ((group == null) || !group.getGroupID().equals(getUser().getGroupID())))
+            if ((getUser() != null) && ((group == null) || (group.getGroupID() == null) || !group.getGroupID().equals(getUser().getGroupID())))
                 group = bean.groupDAO.findByID(getUser().getGroupID());
             return group;
         }
 
         public Group getTeam()
         {
-            if ((getDriver() != null) && ((team == null) || !team.getGroupID().equals(getDriver().getGroupID())))
+            if ((getDriver() != null) && ((team == null) || (team.getGroupID() == null) || !team.getGroupID().equals(getDriver().getGroupID())))
                 team = bean.groupDAO.findByID(getDriver().getGroupID());
             return team;
         }
