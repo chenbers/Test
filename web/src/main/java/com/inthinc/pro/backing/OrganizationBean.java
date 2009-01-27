@@ -336,6 +336,7 @@ public class OrganizationBean extends BaseBean
                 selectedGroupNode = parentNode;
                 // Make sure when the page refreshed that we pull a new list in
                 topLevelNode = null;
+                updateUsersGroupHeirarchy();
             }
         }
 
