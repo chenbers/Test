@@ -226,12 +226,12 @@ WWUUnm]]>
         <repository>
             <id>central</id>
             <name>inthinc central repo</name>
-            <url>https://testteen.iwiglobal.com:8482/artifactory/libs-releases</url>
+            <url>https://testteen.iwiglobal.com:8482/artifactory/libs-releases-local</url>
         </repository>
         <snapshotRepository>
             <id>snapshots</id>
             <name>inthinc snapshot repo</name>
-            <url>https://testteen.iwiglobal.com:8482/artifactory/libs-snapshots</url>
+            <url>https://testteen.iwiglobal.com:8482/artifactory/libs-snapshots-local</url>
         </snapshotRepository>
     </distributionManagement>
     <!--                     -->
