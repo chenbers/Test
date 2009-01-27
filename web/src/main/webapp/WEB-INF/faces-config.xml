@@ -6,6 +6,10 @@
 
 	<!-- converters -->
 	<converter>
+		<converter-id>DistanceConverter</converter-id>
+		<converter-class>com.inthinc.pro.convert.DistanceConverter</converter-class>
+	</converter>
+	<converter>
 		<converter-id>ScoreConverter</converter-id>
 		<converter-class>com.inthinc.pro.convert.ScoreConverter</converter-class>
 	</converter>

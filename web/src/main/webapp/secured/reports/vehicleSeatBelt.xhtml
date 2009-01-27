@@ -232,7 +232,7 @@
 								<f:facet name="header">
 									<h:outputText value="Distance" />
 								</f:facet>
-								<h:outputText value="#{item.event.distance} #{messages.measurement_distances}" />
+								<h:outputText value="#{item.event.distance}" converter="DistanceConverter" />
 							</rich:column>
 							
 							<rich:column>
