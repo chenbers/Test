@@ -22,6 +22,7 @@ public class ReportRendererImpl implements ReportRenderer
     private static final Logger logger = Logger.getLogger(ReportRendererBean.class);
     private static final String PDF_CONTENT_TYPE = "application/pdf";
     private static final String EXCEL_CONTENT_TYPE = "application/xls";
+    private static final String FILE_NAME = "tiwiPRO_Report";
     
     private ReportMailer reportMailer;
 
@@ -82,7 +83,7 @@ public class ReportRendererImpl implements ReportRenderer
             try
             {
                 byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
-                ReportAttatchment reportAttatchment = new ReportAttatchment("Tiwi Pro Report.pdf",bytes);
+                ReportAttatchment reportAttatchment = new ReportAttatchment(FILE_NAME + ".pdf",bytes);
                 List<ReportAttatchment> attachments = new ArrayList<ReportAttatchment>();
                 attachments.add(reportAttatchment);
                 String[] emails = email.split(",");
@@ -107,7 +108,7 @@ public class ReportRendererImpl implements ReportRenderer
         if (jasperPrint != null && jasperPrint.getPages().size() > 0)
         {
             response.setContentType(PDF_CONTENT_TYPE);
-            response.addHeader("Content-Disposition", "attachment; filename=\"Tiwi_Pro_Report.pdf\"");
+            response.addHeader("Content-Disposition", "attachment; filename=\"" + FILE_NAME + ".pdf\"");
 
             OutputStream out = null;
             try
@@ -147,7 +148,7 @@ public class ReportRendererImpl implements ReportRenderer
         if (jasperPrint != null && jasperPrint.getPages().size() > 0)
         {
             response.setContentType(EXCEL_CONTENT_TYPE);
-            response.addHeader("Content-Disposition", "attachment; filename=\"Tiwi_Pro_Report.xls\"");
+            response.addHeader("Content-Disposition", "attachment; filename=\"" + FILE_NAME + ".xls\"");
 
             OutputStream out = null;
             try

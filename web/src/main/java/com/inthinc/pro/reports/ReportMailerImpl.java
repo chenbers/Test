@@ -16,7 +16,7 @@ public class ReportMailerImpl implements ReportMailer
     
     private static final Logger logger = Logger.getLogger(ReportMailerImpl.class);
     
-    private static final String DEFAULT_SUBJECT = "Tiwi Pro Portal Report";
+    private static final String DEFAULT_SUBJECT = "tiwiPRO Report";
     private static final String DEFAULT_MESSAGE = "View the attatchment(s) to see the report";
     private String from;
     

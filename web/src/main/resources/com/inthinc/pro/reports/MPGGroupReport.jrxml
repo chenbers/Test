@@ -85,7 +85,7 @@
 					<textElement textAlignment="Right" verticalAlignment="Top">
 						<font/>
 					</textElement>
-				<text><![CDATA[Tiwi Pro Portal]]></text>
+				<text><![CDATA[tiwiPRO]]></text>
 				</staticText>
 				<staticText>
 					<reportElement

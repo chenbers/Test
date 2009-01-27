@@ -30,7 +30,7 @@
 
     <bean id="reportMailer" class="com.inthinc.pro.reports.ReportMailerImpl" scope="request">
     	<property name="javaMailSender" ref="mailSenderBean"/>
-    	 <property name="from"><value><![CDATA[tiwi noreply <noreply@inthinc.com>]]></value></property>
+    	 <property name="from"><value><![CDATA[tiwiPRO noreply <noreply@inthinc.com>]]></value></property>
    	</bean>
  
     <bean id="reportRendererBean" class="com.inthinc.pro.backing.ReportRendererBean" scope="request" parent="baseBean">
