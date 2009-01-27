@@ -163,4 +163,25 @@ public class DateUtil
         Long seconds = mSecsIn / 1000;
         return getDurationFromSeconds(seconds.intValue());
     }
+        
+    public static long getGregDate(Date in) 
+    {
+        GregorianCalendar gc = new GregorianCalendar(
+                TimeZone.getTimeZone("GMT"));        
+        
+        // Date supplied, reset to...
+        if ( in != null ) {
+            gc.setTimeInMillis(in.getTime());
+        }
+            
+        gc.clear(Calendar.HOUR_OF_DAY);
+        gc.clear(Calendar.HOUR);
+        gc.set(Calendar.HOUR_OF_DAY, 0);
+        gc.clear(Calendar.MINUTE);
+        gc.set(Calendar.MINUTE, 0);
+        gc.clear(Calendar.SECOND);
+        gc.set(Calendar.SECOND,0);
+    
+        return gc.getTimeInMillis();
+    }  
 }
