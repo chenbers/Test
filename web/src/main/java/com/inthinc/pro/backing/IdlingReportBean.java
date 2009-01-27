@@ -246,7 +246,8 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem>
             iri.setLowPercent("0.0");
             iri.setHighPercent("0.0");
             iri.setTotalPercent("0.0");
-            Float totHrs = new Float(iri.getDriveTime());
+            Float totHrs = new Float(iri.getDriveTime()) +
+                iri.getLowHrs() + iri.getHighHrs();                
             
             if ( totHrs != 0.0f ) {
                 Float lo = 100.0f*iri.getLowHrs()/totHrs;  
