@@ -26,11 +26,10 @@
 
 	<ui:param name="reportsSelected" value="current" />
 	<ui:param name="helpFile" value="Driving_Style.htm" />
-		
-	<t:saveState value="#{vehicleStyleBean.styleEvents}"/>
-	<t:saveState value="#{vehicleBean.clearItem}" />
-	
+
 	<ui:define name="content">
+	
+	<t:saveState value="#{vehicleStyleBean}"/>
 <div id="wrapper">
 
 <h:form>
@@ -71,12 +70,12 @@ var selected = 'OVERALL';
 		//change style to new selected region.
 		document.getElementById(region).className="tiny_selected";
 		
-		
 		//turn on X and Y axis labels.
 		var data = chartVar.variables.dataXML;
 	    data = data.replace("showLabels=\'0\'", "showLabels=\'1\'");
 	    data = data.replace("showYAxisValues=\'0\'", "showYAxisValues=\'1\'");
-	
+	    data = data.replace("anchorSides=\'0\'", "anchorSides=\'4\'");
+	    
 		//Set overall chart to data from selected chart.
 		overallChart.setDataXML(data);
 	
@@ -205,7 +204,7 @@ var selected = 'OVERALL';
 					  <tr>
 					    <td id="OVERALL" valign="top" class="tiny_selected">
 						  <div class="tiny_title">
-							  <a href="#" onclick="SelectBreakDown('OVERALL', overallChart2, 'Driving Style: Overall')">Overall</a>
+							  <div onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_OVERALL}')">#{messages.SCORE_OVERALL}</div>
 						  </div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
@@ -232,7 +231,7 @@ var selected = 'OVERALL';
 						</td>
 					    <td id="BRAKE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-								<a href="#" onclick="SelectBreakDown('BRAKE', chartBrake, 'Driving Style: Hard Brake')">Hard Brake</a>
+								<div onclick="SelectBreakDown('BRAKE', chartBrake, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_BRAKE}')">#{messages.SCORE_DRIVING_STYLE_HARD_BRAKE}</div>
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
@@ -259,7 +258,8 @@ var selected = 'OVERALL';
 						</td>
 					    <td id="ACCELERATE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-								<a href="#" onclick="SelectBreakDown('ACCELERATE', chartAccel, 'Driving Style: Hard Accelerate')">Hard Accelerate</a></div>
+								<div onclick="SelectBreakDown('ACCELERATE', chartAccel, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_ACCEL}')">#{messages.SCORE_DRIVING_STYLE_HARD_ACCEL}</div>
+							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
@@ -287,7 +287,8 @@ var selected = 'OVERALL';
 					  <tr>
 						<td id="TURN" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-							<a href="#" onclick="SelectBreakDown('TURN', chartTurn, 'Driving Style: Hard Turn')">Hard Turn</a></div>
+								<div onclick="SelectBreakDown('TURN', chartTurn, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_TURN}')">#{messages.SCORE_DRIVING_STYLE_HARD_TURN}</div>
+							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
@@ -314,7 +315,8 @@ var selected = 'OVERALL';
 						
 					    <td id="BUMP" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-							<a href="#" onclick="SelectBreakDown('BUMP', chartBump, 'Driving Style: Hard Bump')">Hard Bump</a></div>
+								<div onclick="SelectBreakDown('BUMP', chartBump, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_BUMP}')">#{messages.SCORE_DRIVING_STYLE_HARD_BUMP}</div>
+							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
@@ -351,12 +353,18 @@ var selected = 'OVERALL';
 		
 		<!-- START PANEL -->
 			<div class="" style="width: 938px;">
-				<div class="panel_nw">
+				<rich:panel id="tableStats" bodyClass="panel_nw">
 					<div class="panel_title">
 						<span class="details">Details</span>
-						<span class="panel_links"></span>
+						<span class="panel_content_right">
+						  	<h:outputFormat id="headerEvents" value="#{messages.recordCounts}">
+								<a4j:actionparam value="#{vehicleStyleBean.tableRowStart}"/>
+								<a4j:actionparam value="#{vehicleStyleBean.tableRowEnd}"/>
+								<a4j:actionparam value="#{vehicleStyleBean.tableSize}"/>
+							</h:outputFormat>  
+						</span>
 					</div>
-				</div>
+				</rich:panel>
 				<div class="panel_w">
 				  <div class="panel_content">
 				     
@@ -365,11 +373,11 @@ var selected = 'OVERALL';
 				<!-- Start Event table --> 
 					<h:form id="eventTable">
 					<rich:datascroller align="center" for="eventsTable" immediate="true"
-							id="scrollerTop" reRender="eventsTable,scrollerBottom" />
+							id="scrollerTop" reRender="eventsTable,scrollerBottom,tableStats" scrollerListener="#{vehicleStyleBean.scrollerListener}" />
 						<rich:dataTable value="#{vehicleStyleBean.styleEvents}" 
 						id="eventsTable" var="item" styleClass="datagrid"
 						rowClasses="tableOdd,tableEven" cellspacing="1" 
-						rows="10" width="100%">
+						rows="#{vehicleStyleBean.tableRowCount}" width="100%">
 						
 							<rich:column>
 								<f:facet name="header">
@@ -378,44 +386,44 @@ var selected = 'OVERALL';
 								<div class="maplink">
 					              <a4j:commandLink style="cursor:pointer">
 						                <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
-						                  <f:param name="lat" value="#{item.latitude}"/>
-						                  <f:param name="lng" value="#{item.longitude}"/>
+						                  <f:param name="lat" value="#{item.event.latitude}"/>
+						                  <f:param name="lng" value="#{item.event.longitude}"/>
 						                </rich:componentControl>
-						                		#{item.addressStr}<br />
+						                		#{item.event.addressStr}<br />
 					              </a4j:commandLink>
 				              	</div>
 				            </rich:column>
 							
-							<rich:column sortBy="#{item.time}">
+							<rich:column sortBy="#{item.event.time}">
 								<f:facet name="header">
 									<h:outputText value="Date/Time" />
 								</f:facet>
-									<h:outputText value="#{item.time}">
-										<f:convertDateTime pattern="MMM DD yyyy hh:mm a"/>
+									<h:outputText value="#{item.event.time}">
+										<f:convertDateTime type="both" timeStyle="short" dateStyle="short"/>
 									</h:outputText>
 							</rich:column>
 							
-							<rich:column sortBy="#{item.eventType}">
+							<rich:column sortBy="#{item.event.eventType}">
 								<f:facet name="header">
 									<h:outputText value="Event" />
 								</f:facet>
-								<strong><h:outputText value="#{item.eventType}" /></strong>		
+								<strong><h:outputText value="#{item.event.eventType}" /></strong>		
 							</rich:column>
 							
-							<rich:column sortBy="#{item.speed}">
+							<rich:column sortBy="#{item.event.speed}">
 								<f:facet name="header">
 									<h:outputText value="Avg Speed" />
 								</f:facet>
-								<strong><h:outputText value="#{item.speed} #{messages.measurement_speed}" /></strong>
+								<strong><h:outputText value="#{item.event.speed} #{messages.measurement_speed}" /></strong>
 							</rich:column>
 							
-							<rich:column sortBy="#{item.severity}">
+							<rich:column sortBy="#{item.event.severity}">
 								<f:facet name="header">
 									<h:outputText value="Severity" />
 								</f:facet>
-								<div class="#{(item.severity gt 4) ? 'sev_bar_ex' : ''}
-											#{(item.severity lt 5) and (item.severity gt 2) ? 'sev_bar_med' : ''}
-											#{(item.severity lt 3) ? 'sev_bar_low' : ''}"></div>
+								<div class="#{(item.event.severity gt 4) ? 'sev_bar_ex' : ''}
+											#{(item.event.severity lt 5) and (item.event.severity gt 2) ? 'sev_bar_med' : ''}
+											#{(item.event.severity lt 3) ? 'sev_bar_low' : ''}"></div>
 							</rich:column>
 							
 							<rich:column>
@@ -424,14 +432,14 @@ var selected = 'OVERALL';
 		      					</f:facet>
 								<a4j:commandLink title="#{messages.redflags_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem" >
 									<h:outputText value="#{messages.redflags_clear}" />
-									<f:setPropertyActionListener target="#{vehicleBean.clearItem}" value="#{item}" />
+									<f:setPropertyActionListener target="#{vehicleStyleBean.clearItem}" value="#{item}" />
 								</a4j:commandLink>
     						</rich:column>
 							
 						</rich:dataTable>
 						
-						<rich:datascroller align="center" for="eventsTable" immediate="true"
-							id="scrollerBottom" reRender="eventsTable,scrollerTop" />
+						<rich:datascroller align="center" for="eventsTable" immediate="true" id="scrollerBottom" 
+						reRender="eventsTable,scrollerTop,tableStats" scrollerListener="#{vehicleStyleBean.scrollerListener}"/>
 					</h:form> 
 				<!-- End Event table -->
 				</div>
@@ -447,9 +455,9 @@ var selected = 'OVERALL';
 	<div class="panel_statusbar"></div>
 </div>
 
-<!-- START FORGIVE MODAL -->
-<rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="350">
-      <t:saveState value="#{vehicleBean.clearItem}" />
+ <!-- START FORGIVE MODAL -->
+<rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="180" resizeable="false">
+<t:saveState value="#{vehicleStyleBean.clearItem}" />
       <f:facet name="header">
         <h:outputText value="Clear Event" />
       </f:facet>
@@ -458,32 +466,32 @@ var selected = 'OVERALL';
       </f:facet>
 
       <h:panelGroup layout="block" styleClass="popupsubtitle">
-      	<h:outputText value="Clear the following Event?"/>
+      	<h:outputText value="Clear the following Event? This action is irreversible."/>
       </h:panelGroup>
 
       <a4j:form id="clearItemForm">
-		<h:panelGroup layout="block"  styleClass="popupcontent">
-      		<h:outputFormat id="clearItem" value="Clear {0} event on {1}">
-      			<a4j:actionparam value="#{vehicleBean.clearItem.eventType}"/>
-      			<a4j:actionparam value="#{vehicleBean.clearItem.time}"/>
-      		</h:outputFormat>
+	   	<h:panelGroup layout="block"  styleClass="popupcontent" id="clearItem">
+			<h:outputText value="#{vehicleStyleBean.clearItem.detail}"/><br/>
+      		<h:outputText value="#{vehicleStyleBean.clearItem.event.time}">
+      			<f:convertDateTime type="both" timeStyle="short" dateStyle="short"/>
+			</h:outputText>
       	</h:panelGroup>
 	
         <div class="popupactions">
           <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_no}" /></span></button>
-          <a4j:commandLink action="#{vehicleBean.ClearEventAction}"         				
-          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel')" reRender="eventsTable">
+          <a4j:commandLink action="#{vehicleStyleBean.ClearEventAction}"         				
+          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel')" reRender="eventsTable,tableStats">
 	          				<button type="submit" class="left">
 	          					<span class="apply">
 	          						<h:outputText value="#{messages.button_yes}" />
 	          					</span>
 	          				</button>
-	          				<f:setPropertyActionListener target="#{vehicleBean.clearItem}" value="#{vehicleBean.clearItem}" />
+	          				<f:setPropertyActionListener target="#{vehicleStyleBean.clearItem}" value="#{vehicleStyleBean.clearItem}" />
 			</a4j:commandLink> 		
         </div>
       </a4j:form>
 </rich:modalPanel>
-<!-- START FORGIVE MODAL -->
+<!-- END FORGIVE MODAL -->
 
 <!-- START LOCATION MODAL -->
 <rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">

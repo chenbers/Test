@@ -25,8 +25,8 @@ public class DriverTripsBean extends BaseBean
     private DriverDAO           driverDAO;
     private EventDAO            eventDAO;
 
-    private Date                startDate         = new Date();
-    private Date                endDate           = new Date();
+    private Date                startDate;
+    private Date                endDate;
 
     private Double              milesDriven       = 0.0D;
     private Integer             idleSeconds       = 0;
@@ -43,32 +43,20 @@ public class DriverTripsBean extends BaseBean
     private List<Event>         violationEvents   = new ArrayList<Event>();
     private List<Event>         idleEvents        = new ArrayList<Event>();
 
-    public DriverTripsBean()
-    {
-        // TODO set startDate to 7 days ago 12:00:00AM.
-        
-        // Set start date to 7 days ago.
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, -7);
-        startDate = calendar.getTime();
-    }
-
     public void initTrips()
     {
         if(trips.size() < 1)
         {
             List<Trip> tempTrips = new ArrayList<Trip>();
-            tempTrips = driverDAO.getTrips(navigation.getDriver().getDriverID(), startDate, endDate);
-     
-            selectedTrips = new ArrayList<TripDisplay>();
+            tempTrips = driverDAO.getTrips(navigation.getDriver().getDriverID(), getStartDate(), getEndDate());
     
+            selectedTrips = new ArrayList<TripDisplay>();
             for (Trip trip : tempTrips)
             {
                 trips.add(0, new TripDisplay(trip, navigation.getDriver().getPerson().getTimeZone()));
             }
     
             numTrips = trips.size();
-    
             if (numTrips > 0)
             {
                 logger.debug(numTrips.toString() + "Trips Found.");
@@ -109,7 +97,6 @@ public class DriverTripsBean extends BaseBean
 
     public void generateStats()
     {
-        logger.debug("Generate Stats");
         milesDriven = 0D;
         totalDriveSeconds = 0;
         idleSeconds = 0;
@@ -124,10 +111,11 @@ public class DriverTripsBean extends BaseBean
         
         // Grabbing events over date picker date range
         List<Integer> idleTypes = new ArrayList<Integer>();
-        idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
+                      idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
+                      
         List<Event> tmpIdleEvents = new ArrayList<Event>();
         tmpIdleEvents = eventDAO.getEventsForDriver(
-                navigation.getDriver().getDriverID(), startDate, endDate, idleTypes);        
+                                 navigation.getDriver().getDriverID(), startDate, endDate, idleTypes);        
 
         for (Event event : tmpIdleEvents)
         {
@@ -139,6 +127,18 @@ public class DriverTripsBean extends BaseBean
     // DATE PROPERTIES
     public Date getStartDate()
     {
+        if(startDate == null)
+        {
+            // Set start date to 7 days ago, apply driver's time zone..
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeZone(navigation.getDriver().getPerson().getTimeZone());
+            calendar.add(Calendar.DAY_OF_MONTH, -7);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            startDate = calendar.getTime();
+        }
+        
         return startDate;
     }
 
@@ -149,6 +149,14 @@ public class DriverTripsBean extends BaseBean
 
     public Date getEndDate()
     {
+        if(endDate == null)
+        {
+            // Set end date to now using driver's time zone.
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeZone(navigation.getDriver().getPerson().getTimeZone());
+            endDate = calendar.getTime();
+        }
+        
         return endDate;
     }
 
@@ -245,8 +253,6 @@ public class DriverTripsBean extends BaseBean
                 selectedTrips.add(trip); // Trips are already in reverse order. (Most recent first)
                 count++;
             }
-
-            // TODO RESET START END DATES TO MATCH THE TRIPS
         }
         else
         {
@@ -260,7 +266,6 @@ public class DriverTripsBean extends BaseBean
 
         if (selectedTrips.size() > 0)
             initViolations(selectedTrips.get(selectedTrips.size() - 1).getTrip().getStartTime(), selectedTrips.get(0).getTrip().getEndTime());
-
     }
 
     // SHOW IDLE MARKERS SETTING PROPERTIES

@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.ScoreBreakdown;
@@ -40,21 +41,46 @@ public class VehicleSeatBeltBean extends BaseDurationBean
     private Integer         seatBeltScore;
     private String          seatBeltScoreHistoryOverall;
     private String          seatBeltScoreStyle;
+    private EventReportItem clearItem;
       
-    private List<SeatBeltEvent> seatBeltEvents = new ArrayList<SeatBeltEvent>();
+    private List<EventReportItem> seatBeltEvents = new ArrayList<EventReportItem>();
     
-    private void initSeatBelt()
+    private void init()
     {
+        super.setTableRowCount(10);
+        
         ScoreableEntity seatBeltSe = scoreDAO.getVehicleAverageScoreByType(navigation.getVehicle().getVehicleID(), getDuration(), ScoreType.SCORE_SEATBELT);
         if (seatBeltSe == null)
             setSeatBeltScore(-1);
         else setSeatBeltScore(seatBeltSe.getScore());
+        
+        getViolations();
+    }
+    
+    public void getViolations()
+    {
+        if(seatBeltEvents.size() < 1)
+        {
+            List<Integer> types = new ArrayList<Integer>();    
+            types.add(3);
+            
+            List<Event> tempEvents = new ArrayList<Event>();
+            tempEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), getStartDate(), getEndDate(), types);
+           
+            AddressLookup lookup = new AddressLookup();
+            for(Event event: tempEvents)
+            {
+                event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
+                seatBeltEvents.add( new EventReportItem(event) );   
+            }
+            super.setTableSize(seatBeltEvents.size());
+        }
     }
     
     //SCORE PROPERTIES
     public Integer getSeatBeltScore() {
         if(seatBeltScore == null)
-            initSeatBelt();
+            init();
         
         return seatBeltScore;
     }
@@ -75,7 +101,7 @@ public class VehicleSeatBeltBean extends BaseDurationBean
     //SCOREBOX STYLE PROPERTIES
     public String getSeatBeltScoreStyle() {
         if(seatBeltScoreStyle == null)
-            initSeatBelt();
+            init();
         
         return seatBeltScoreStyle;
     }
@@ -103,7 +129,7 @@ public class VehicleSeatBeltBean extends BaseDurationBean
         int cnt = 0;
         for (ScoreableEntity e : scoreList)
         {            
-//            sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt)}));
+//            sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt) }));
             if ( e.getScore() != null ) 
             {
                 sb.append(line.getChartItem(new Object[] { 
@@ -114,9 +140,9 @@ public class VehicleSeatBeltBean extends BaseDurationBean
                 sb.append(line.getChartItem(new Object[] { 
                         null, 
                         monthList.get(cnt) }));
-            }    
+            }            
 //          sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), 
-//                    dateFormatter.format(e.getCreated()) }));                        
+//              dateFormatter.format(e.getCreated()) }));
             cnt++;
         }
 
@@ -146,28 +172,13 @@ public class VehicleSeatBeltBean extends BaseDurationBean
     }
 
     //SEATBELT EVENTS LIST
-    public List<SeatBeltEvent> getSeatBeltEvents() 
+    public List<EventReportItem> getSeatBeltEvents() 
     {
-        if(seatBeltEvents.size() < 1)
-        {
-            List<Integer> types = new ArrayList<Integer>();    
-            types.add(3);
-            
-            List<Event> tempEvents = new ArrayList<Event>();
-            tempEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), getStartDate(), getEndDate(), types);
-           
-            AddressLookup lookup = new AddressLookup();
-            for(Event event: tempEvents)
-            {
-                event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
-                seatBeltEvents.add( (SeatBeltEvent)event );   
-            }
-        }
-        
+        getViolations();
         return seatBeltEvents;
     }
 
-    public void setSeatBeltEvents(List<SeatBeltEvent> seatBeltEvents) {
+    public void setSeatBeltEvents(List<EventReportItem> seatBeltEvents) {
         this.seatBeltEvents = seatBeltEvents;
     }
     
@@ -186,5 +197,24 @@ public class VehicleSeatBeltBean extends BaseDurationBean
     public void setNavigation(NavigationBean navigation)
     {
         this.navigation = navigation;
+    }
+    
+    public void ClearEventAction()
+    {
+        Integer temp = eventDAO.forgive(navigation.getVehicle().getVehicleID(), clearItem.getEvent().getNoteID());
+        //logger.debug("Clearing event " + clearItem.getNoteID() + " result: " + temp.toString());
+        
+        seatBeltEvents.clear();
+        getViolations();
+    }
+
+    public EventReportItem getClearItem()
+    {
+        return clearItem;
+    }
+
+    public void setClearItem(EventReportItem clearItem)
+    {
+        this.clearItem = clearItem;
     }
 }

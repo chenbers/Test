@@ -7,8 +7,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.richfaces.event.DataScrollerEvent;
 
 import com.inthinc.pro.backing.ui.BreakdownSelections;
+import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.TripDisplay;
@@ -20,6 +22,7 @@ import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.map.AddressLookup;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.MpgEntity;
@@ -32,24 +35,21 @@ public class VehicleBean extends BaseDurationBean
 {
     private static final Logger logger            = Logger.getLogger(VehicleBean.class);
 
-    private VehicleDAO           vehicleDAO;
+    private VehicleDAO          vehicleDAO;
+    private DriverDAO           driverDAO;
     private ScoreDAO            scoreDAO;
     private MpgDAO              mpgDAO;
     private EventDAO            eventDAO;
-    private DriverDAO           driverDAO;
+    private NavigationBean      navigation;
 
     private TripDisplay         lastTrip;
-    private List<Event>         violationEvents;
+    private List<Event>         violationEvents = new ArrayList<Event>();
     private Integer             overallScore;
     private String              overallScoreHistory;
     private String              overallScoreStyle;
     private String              mpgHistory;
     private String              coachingHistory;
     private Boolean             hasLastTrip;
-    private Event               clearItem;
-
-    private NavigationBean      navigation;
-    private BreakdownSelections breakdownSelected = BreakdownSelections.OVERALL;
 
     private void initOverallScore()
     {
@@ -64,12 +64,13 @@ public class VehicleBean extends BaseDurationBean
     // INIT VIOLATIONS
     public void initViolations(Date start, Date end)
     {
+        if(violationEvents.size() > 0) return;
+        
         List<Integer> types = new ArrayList<Integer>();
         types.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
         types.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
         types.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
 
-        violationEvents = new ArrayList<Event>();
         violationEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), start, end, types);
 
         //Lookup Addresses for events
@@ -143,10 +144,9 @@ public class VehicleBean extends BaseDurationBean
             
             if (tempTrip != null && tempTrip.getRoute().size() > 0)
             {
-                //Unique to VehicleBean
-                navigation.setDriver(driverDAO.findByID(navigation.getVehicle().getDriverID()));
-       
                 hasLastTrip = true;
+                navigation.setDriver(driverDAO.findByID(tempTrip.getDriverID()));
+                
                 TripDisplay trip = new TripDisplay(tempTrip, navigation.getDriver().getPerson().getTimeZone());
                 setLastTrip(trip);
                 initViolations(trip.getTrip().getStartTime(), trip.getTrip().getEndTime());
@@ -159,22 +159,6 @@ public class VehicleBean extends BaseDurationBean
         return lastTrip;
     }
     
-    public void ClearEventAction()
-    {
-        Integer temp = eventDAO.forgive(navigation.getVehicle().getVehicleID(), clearItem.getNoteID());
-        
-        //logger.debug("Clearing event " + clearItem.getNoteID() + " result: " + temp.toString());
-    }
-    public Event getClearItem()
-    {
-        return clearItem;
-    }
-
-    public void setClearItem(Event clearItem)
-    {
-        this.clearItem = clearItem;
-    }
-    
     public void setLastTrip(TripDisplay lastTrip)
     {
         this.lastTrip = lastTrip;
@@ -183,9 +167,6 @@ public class VehicleBean extends BaseDurationBean
     // VIOLATIONS PROPERTIES
     public List<Event> getViolationEvents()
     {
-        if (violationEvents == null)
-            violationEvents = new ArrayList<Event>();
-
         return violationEvents;
     }
 
@@ -244,16 +225,6 @@ public class VehicleBean extends BaseDurationBean
     {
         this.driverDAO = driverDAO;
     }
-    // BREAKDOWN SELECTION PROPERTIES
-    public BreakdownSelections getBreakdownSelected()
-    {
-        return breakdownSelected;
-    }
-
-    public void setBreakdownSelected(BreakdownSelections breakdownSelected)
-    {
-        this.breakdownSelected = breakdownSelected;
-    }
 
     // MPG PROPERTIES
     public String getMpgHistory()
@@ -269,9 +240,7 @@ public class VehicleBean extends BaseDurationBean
         this.mpgHistory = mpgHistory;
     }
 
-    // TODO: having light/medium/heavy lines for a single vehicle doesn't make much sense since a single vehicle can only be
-    // one type.  
-    private String createMultiLineDef() 
+    private String createMultiLineDef()
     {
         List<MpgEntity> mpgEntities = mpgDAO.getVehicleEntities(navigation.getVehicle().getVehicleID(), getDuration(), null);
         List<String> catLabelList = GraphicUtil.createMonthList(getDuration());
@@ -303,7 +272,6 @@ public class VehicleBean extends BaseDurationBean
         sb.append(multiLineChart.getClose());
         
         return sb.toString();
-
     }
 
     public String createLineDef(ScoreType scoreType)
@@ -321,12 +289,15 @@ public class VehicleBean extends BaseDurationBean
         DateFormat dateFormatter = new SimpleDateFormat(getDuration().getDatePattern());
 
         // Get "x" values
-        List<String> monthList = GraphicUtil.createMonthList(getDuration());
+//        List<String> monthList = GraphicUtil.createMonthListFromMapDate(scoreList);
+        List<String> monthList = GraphicUtil.createMonthList(getDuration());        
 
         int cnt = 0;
         for (ScoreableEntity e : scoreList)
         {            
-//            sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt)}));
+//          sb.append(line.getChartItem(new Object[] { 
+//              (double) (e.getScore() / 10.0d), 
+//              monthList.get(cnt) }));
             if ( e.getScore() != null ) 
             {
                 sb.append(line.getChartItem(new Object[] { 
@@ -337,9 +308,10 @@ public class VehicleBean extends BaseDurationBean
                 sb.append(line.getChartItem(new Object[] { 
                         null, 
                         monthList.get(cnt) }));
-            }    
+            }            
 //          sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), 
-//                    dateFormatter.format(e.getCreated()) }));                        
+//              dateFormatter.format(e.getCreated()) })); 
+            
             cnt++;
         }
         

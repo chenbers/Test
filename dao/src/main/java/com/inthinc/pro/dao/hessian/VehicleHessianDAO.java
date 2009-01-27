@@ -13,6 +13,7 @@ import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
@@ -152,6 +153,26 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
         }
     }
 
-    
+    @Override
+    public List<DriverLocation> getVehiclesNearLoc(Integer groupID, Integer numof, Double lat, Double lng)
+    {
+        try
+        {
+            return getMapper().convertToModelObject(this.getSiloService().getVehiclesNearLoc(groupID, numof, lat, lng), DriverLocation.class);
+        }
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
+        // TODO: Remove when method is impl on back end
+        catch (ProxyException ex)
+        {
+            if (ex.getErrorCode() == 422)
+            {
+                return Collections.emptyList();
+            }
+            throw ex;
+        }
+    }
    
 }

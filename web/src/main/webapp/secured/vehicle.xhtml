@@ -91,7 +91,7 @@
 	</ui:define>
 
 	<ui:param name="homeSelected" value="current" />
-	<ui:param name="helpFile" value="Vehicles.htm" />
+	<ui:param name="helpFile" value="Overall_Score_Vehicle.htm" />
 	
 	<ui:define name="content">
 <div id="wrapper">
@@ -366,7 +366,7 @@
 						<span class="map">Last Trip:&#160;
 						<c:if test="#{vehicleBean.lastTrip ne null}">
 							<h:outputText value="#{vehicleBean.lastTrip.trip.endTime}">
-								<f:convertDateTime pattern="MMM dd, hh:mm a z" timeZone="#{navigationBean.driver.person.timeZone}" timeStyle="short" dateStyle="short"/>
+								<f:convertDateTime pattern="MMM dd, hh:mm a z" timeZone="#{vehicleBean.lastTrip.timeZone}" timeStyle="short" dateStyle="short"/>
 							</h:outputText>
 						</c:if>
 						</span>

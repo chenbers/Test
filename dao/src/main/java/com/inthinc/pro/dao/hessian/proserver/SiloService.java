@@ -157,6 +157,8 @@ public interface SiloService extends HessianService
      *      map[driverID,groupID,vehicleID,vType,name,homePhone,workPhone,loc(lat,lng)]
      */
     List<Map<String, Object>> getDriversNearLoc(Integer groupID, Integer numof, Double lat, Double lng);
+    
+    List<Map<String, Object>> getVehiclesNearLoc(Integer groupID, Integer numof, Double lat, Double lng);
 
     // ------------------------- Events/Notes  -----------------------------------------------
     
@@ -322,4 +324,5 @@ public interface SiloService extends HessianService
     List<Map<String, Object>> getZoneAlertsByAcctID(Integer accountID);
 
     Map<String, Object> deleteZoneAlertsByZoneID(Integer zoneID);
+
 }

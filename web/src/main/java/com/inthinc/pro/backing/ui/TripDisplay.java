@@ -171,4 +171,15 @@ public class TripDisplay
     {
         this.durationMiliSeconds = durationMiliSeconds;
     }
+
+    public TimeZone getTimeZone()
+    {
+        return timeZone;
+    }
+
+    public void setTimeZone(TimeZone timeZone)
+    {
+        this.timeZone = timeZone;
+    }
+    
 }

@@ -171,6 +171,8 @@
 <t:saveState value="#{driverTripsBean.trips}" />
 <t:saveState value="#{driverTripsBean.numTrips}" />
 <t:saveState value="#{driverTripsBean.selectedTrips}" />
+<t:saveState value="#{driverTripsBean.violationEvents}" />
+
 <div id="wrapper">
 <h:form>
 	<ul id="grid_nav">
@@ -288,26 +290,31 @@
 					<div class="panel_w">
 					  <div class="panel_content">
 					    <div class="" id="">
-								<table width="320" id="" cellpadding="4" cellspacing="0" class="">
+								<table id="" cellpadding="4" cellspacing="0" class="">
 								  <tbody>
 								  <tr>
 								    <td>Total Drive Time:</td>
+								    <td><rich:spacer width="12" /></td>
 								    <td><h:outputText>#{driverTripsBean.totalDriveTime}</h:outputText></td>
 								    </tr>
 								  <tr>
-									<td width="240">Total Miles Driven:</td>
-									<td width="70"><h:outputText>#{driverTripsBean.milesDriven}</h:outputText></td>
+									<td>Total Miles Driven:</td>
+									<td></td>
+									<td><h:outputText>#{driverTripsBean.milesDriven}</h:outputText></td>
 								  </tr>
 								  <tr>
 								    <td>Total Idle Time: </td>
+								    <td></td>
 								    <td><h:outputText>#{driverTripsBean.idleTime}</h:outputText></td>
 								    </tr>
 								  <tr>
 								    <td>Total Trips:</td>
+								    <td></td>
 								    <td><h:outputText>#{driverTripsBean.numTrips}</h:outputText></td>
 								  </tr>
 								  <tr>
 								    <td valign="top">Driver time zone:</td>
+								    <td></td>
 								    <td><h:outputText>#{navigationBean.driver.person.timeZone.displayName}</h:outputText></td>
 								  </tr>
 								  </tbody>
@@ -498,7 +505,7 @@
 
 							<!-- Data -->
 										
-							<rich:column sortBy="#{item.dateShort}">
+							<rich:column sortBy="#{item.dateShort}" >
 								<f:facet name="header">
 									<h:outputText value="Date" />
 								</f:facet>
@@ -507,7 +514,7 @@
 									</a4j:commandLink>
 							</rich:column>
 							
-							<rich:column sortBy="#{item.timeStartShort}">
+							<rich:column sortBy="#{item.timeStartShort}" width="65">
 								<f:facet name="header" >
 									<h:outputText value="Time" />
 								</f:facet>

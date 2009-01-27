@@ -90,6 +90,7 @@
     
     <bean id="liveFleetBean" class="com.inthinc.pro.backing.LiveFleetBean" scope="request" init-method="initBean">
         <property name="driverDAO" ref="driverDAO"></property>
+        <property name="vehicleDAO" ref="vehicleDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
         <property name="groupDAO" ref="groupDAO"></property>
     </bean>
@@ -183,7 +184,7 @@
         <property name="navigation" ref="navigationBean"></property>
     </bean>
     
-    <bean id="vehicleTripsBean" class="com.inthinc.pro.backing.VehicleTripsBean" scope="request" parent="baseBean" init-method="init">
+    <bean id="vehicleTripsBean" class="com.inthinc.pro.backing.VehicleTripsBean" scope="request" parent="baseBean">
         <property name="vehicleDAO" ref="vehicleDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
         <property name="driverDAO" ref="driverDAO"></property>

@@ -725,6 +725,12 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
 
         return returnList;
     }
+    
+    @Override
+    public List<Map<String, Object>> getVehiclesNearLoc(Integer groupID, Integer numof, Double lat, Double lng)
+    {
+        return getDriversNearLoc(groupID, numof, lat, lng);
+    }
 
     @Override
     public Map<String, Object> deleteDriver(Integer driverID) throws ProDAOException
@@ -1279,5 +1285,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         Integer temp = 1;
         return TempConversionUtil.createMapFromObject(temp, true);
     }
+
+
 
 }
