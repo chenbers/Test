@@ -144,8 +144,9 @@
 					<div id="chartdiv2" align="center"></div>
 					<script type="text/javascript">
 						var targetElement = document.getElementById("hiddenField12");
-							
-						var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSLine.swf", "ChartId", "800", "600", "0", "0");						   						   		
+						
+						var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSLine.swf", "ChartId", "800", "600", "0", "0");		
+						chart.setTransparent(true);				   						   		
 						chart.setDataXML(targetElement.value);
 					   			   
 						chart.render("chartdiv2");

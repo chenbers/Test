@@ -158,7 +158,7 @@
 							
 						var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSLine.swf", "ChartId", "800", "600", "0", "0");						   						   		
 						chart.setDataXML(targetElement.value);
-					   			   
+						chart.setTransparent(true);		   
 						chart.render("chartdiv2");
 					</script>
 				</rich:panel> 
