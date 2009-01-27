@@ -1,5 +1,8 @@
 package com.inthinc.pro.backing;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -11,7 +14,9 @@ import javax.faces.validator.ValidatorException;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpUtils;
 
+import org.ajax4jsf.util.base64.Base64;
 import org.apache.log4j.Logger;
 import org.jasypt.util.text.BasicTextEncryptor;
 import org.springframework.context.MessageSource;
@@ -173,6 +178,14 @@ public class RetrieveCredentialsBean extends BaseBean
                         textEncryptor.setPassword(encryptPassword + dateString);
                     }
                     String eUsername = textEncryptor.encrypt(validUser.getUsername());
+                    try
+                    {
+                        eUsername = URLEncoder.encode(eUsername, "UTF-8");
+                    }
+                    catch (UnsupportedEncodingException e)
+                    {
+                        logger.error("Failed encoding the encrypted username: " + eUsername, e);
+                    }
 
                     HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
                     String url = request.getRequestURL().substring(0, request.getRequestURL().lastIndexOf("/") + 1);
