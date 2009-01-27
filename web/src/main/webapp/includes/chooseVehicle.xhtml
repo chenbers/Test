@@ -46,7 +46,7 @@
           </rich:column>
           <rich:column sortBy="#{item.driver}">
             <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_driverID}" /></f:facet>
-            <h:outputText value="#{item.driver.person.first}" /><h:outputText value=" " /><h:outputText value="#{item.driver.person.last}" />
+            <h:outputText value="#{item.driver.person.fullName}" />
           </rich:column>
           <rich:column sortBy="#{item.group.name}">
             <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_groupID}" /></f:facet>

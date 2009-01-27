@@ -23,7 +23,7 @@
       <f:facet name="header"><h:outputText value="#{messages.personHeader_fullName}" /></f:facet>
       <a4j:htmlCommandLink action="#{personBean.display}">
         <f:param name="displayID" value="#{item.id}" />
-        <h:outputText value="#{item.first}" /><h:outputText value=" " /><h:outputText value="#{item.last}" />
+        <h:outputText value="#{item.fullName}" />
       </a4j:htmlCommandLink>
     </rich:column>
     <rich:column rendered="#{personBean.tableColumns['user_status'].visible}" sortBy="#{item.user.status.description}">

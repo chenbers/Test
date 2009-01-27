@@ -227,7 +227,7 @@
                                 <td width="100"><h:outputText value="#{messages.editVehicle_driverID}" /></td>
                                 <td>
                                   <h:panelGroup rendered="#{not empty vehiclesBean.item.deviceID}" id="driverID">
-                                    <h:outputText value="#{vehiclesBean.item.driver.person.first}" /><h:outputText value=" " /><h:outputText value="#{vehiclesBean.item.driver.person.last}" /><h:outputText value=" " />
+                                    <h:outputText value="#{vehiclesBean.item.driver.person.fullName}" /><h:outputText value=" " />
                                     <a href="#" onclick="Richfaces.showModalPanel('chooseDriver'); return false;"><h:outputText value="#{messages.editVehicle_assign}" /></a>
                                   </h:panelGroup>
                                   <h:outputText rendered="#{empty vehiclesBean.item.deviceID}" value="#{messages.vehicle_assignDevice}" />
