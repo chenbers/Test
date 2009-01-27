@@ -4,6 +4,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -112,14 +113,16 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         return visible;
     }
 
-    protected void selectItems(BaseAdminBean<T> adminBean, int maxItems)
+    protected int selectItems(BaseAdminBean<T> adminBean, int maxItems)
     {
         int selected = 0;
+        final List<T> filteredItems = adminBean.getFilteredItems();
         for (int i = 0; (selected < maxItems) && (i < adminBean.getItemCount()); i += 2)
         {
-            adminBean.getFilteredItems().get(i).setSelected(true);
+            filteredItems.get(i).setSelected(true);
             selected++;
         }
+        return selected;
     }
 
     @Test
@@ -237,8 +240,8 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         adminBean.getItems();
 
         // select items to edit
-        selectItems(adminBean, 3);
-        assertEquals(adminBean.getSelectedItems().size(), 3);
+        int selected = selectItems(adminBean, 3);
+        assertEquals(selected, adminBean.getSelectedItems().size());
 
         // edit
         assertFalse(adminBean.isBatchEdit());
@@ -255,8 +258,8 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         assertEquals(adminBean.getSelectedItems().size(), 0);
 
         // start another edit
-        selectItems(adminBean, 3);
-        assertEquals(adminBean.getSelectedItems().size(), 3);
+        selected = selectItems(adminBean, 3);
+        assertEquals(selected, adminBean.getSelectedItems().size());
         adminBean.batchEdit();
 
         // populate
