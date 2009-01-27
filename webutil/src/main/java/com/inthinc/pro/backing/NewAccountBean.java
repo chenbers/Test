@@ -13,6 +13,7 @@ import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEmailException;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateUsernameException;
 import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Status;
@@ -67,6 +68,7 @@ public class NewAccountBean
         Person person = new Person(new Integer(0),acctID,  TimeZone.getDefault(), null, null, "5555555555", "5555555555", 
                         email, "0", null, "title", "dept",
                         "first", "m", "last", "jr", Gender.FEMALE, 65, 180, new Date(), Status.ACTIVE);
+        person.setAddress(new Address(null, "", null, "", null, ""));
         Integer personID = null;
         try
         {
