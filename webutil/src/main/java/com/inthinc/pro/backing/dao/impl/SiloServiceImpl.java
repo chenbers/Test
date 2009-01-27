@@ -254,7 +254,14 @@ public class SiloServiceImpl implements SiloService
         // TODO Auto-generated method stub
         return null;
     }
-
+    
+    @Override
+    public List<Map<String, Object>> getVehiclesNearLoc(@DaoParam(name="groupID")Integer groupID, @DaoParam(name="count")Integer numof, @DaoParam(name="lat")Double lat, @DaoParam(name="lng")Double lng)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
     @Override
     public List<Map<String, Object>> getFwdCmds(@DaoParam(name="deviceID")Integer deviceID, @DaoParam(name="status", inputDesc="ALL = 0,QUEUED = 1,SENT = 2,RECEIVED=3,ACKNOWLEDGED = 4,UNSUPPORTED = 5,BAD_DATA = 6,REMOVED = 7")Integer status)
     {
