@@ -456,12 +456,9 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                     iri.setHighHrs((float)dqm.getIdleHi() / this.SECONDS_TO_HOURS);
                 }
                 
-                // total drive time needs to have the idle time included, per Dave H
                 if (dqm.getDriveTime() != null)
-                {                  
-                    float totalDriveTime = ((float)dqm.getDriveTime()/this.SECONDS_TO_HOURS) +
-                        iri.getLowHrs() + iri.getHighHrs();
-                    iri.setDriveTime(totalDriveTime);
+                {                                                               
+                    iri.setDriveTime(((float)dqm.getDriveTime()/this.SECONDS_TO_HOURS));
                 }
 
                 lIri.add(iri);
