@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.map.MapIcon;
 import com.inthinc.pro.map.MapIconFactory;
 import com.inthinc.pro.model.DriverLocation;
@@ -23,6 +24,7 @@ public class LiveFleetBean extends BaseBean
     private NavigationBean navigation;
     private GroupDAO groupDAO;
     private DriverDAO driverDAO;
+    private VehicleDAO vehicleDAO;
     private LatLng addressLatLng;
     private Integer addressZoom;
     private Integer maxCount;
@@ -106,6 +108,16 @@ public class LiveFleetBean extends BaseBean
     public void setDriverDAO(DriverDAO driverDAO)
     {
         this.driverDAO = driverDAO;
+    }
+
+    public VehicleDAO getVehicleDAO()
+    {
+        return vehicleDAO;
+    }
+
+    public void setVehicleDAO(VehicleDAO vehicleDAO)
+    {
+        this.vehicleDAO = vehicleDAO;
     }
 
     // ADDRESS LATLNG PROPERTIES
