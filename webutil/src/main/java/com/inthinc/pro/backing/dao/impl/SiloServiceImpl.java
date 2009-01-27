@@ -367,7 +367,10 @@ public class SiloServiceImpl implements SiloService
     }
 
     @Override
-    public List<Map<String, Object>> getRedFlags(@DaoParam(name="groupID")Integer groupID, @DaoParam(name="count")Integer count) throws ProDAOException
+    public List<Map<String, Object>> getRedFlags(@DaoParam(name="groupID")Integer groupID, 
+            @DaoParam(name="startDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm", inputConvert=com.inthinc.pro.convert.DateConvert.class)Integer startDate,
+            @DaoParam(name="endDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm", inputConvert=com.inthinc.pro.convert.DateConvert.class)Integer endDate)
+            throws ProDAOException
     {
         // TODO Auto-generated method stub
         return null;

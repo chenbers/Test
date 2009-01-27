@@ -17,7 +17,7 @@ import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.TableType;
 
-public class BaseEventsBean extends BaseBean implements TablePrefOptions
+public class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions
 {
     private static final Logger     logger                  = Logger.getLogger(EventsBean.class);
 
@@ -51,6 +51,8 @@ public class BaseEventsBean extends BaseBean implements TablePrefOptions
         AVAILABLE_COLUMNS = new ArrayList<String>();
         AVAILABLE_COLUMNS.add("date");
         AVAILABLE_COLUMNS.add("group");
+        AVAILABLE_COLUMNS.add("driver");
+        AVAILABLE_COLUMNS.add("vehicle");
         AVAILABLE_COLUMNS.add("category");
         AVAILABLE_COLUMNS.add("detail");
         AVAILABLE_COLUMNS.add("clear");
@@ -59,7 +61,7 @@ public class BaseEventsBean extends BaseBean implements TablePrefOptions
 
     public void initBean()
     {
-        
+        super.initBean();
     }
     
     public void scrollerListener(DataScrollerEvent event)
@@ -161,6 +163,8 @@ public class BaseEventsBean extends BaseBean implements TablePrefOptions
         List<EventReportItem> eventReportItemList = new ArrayList<EventReportItem>();
         for (Event event : eventList)
         {
+            fillInDriver(event);
+            fillInVehicle(event);
             eventReportItemList.add(new EventReportItem(event, null, getGroupHierarchy()));
         }
         Collections.sort(eventReportItemList);

@@ -92,6 +92,16 @@ public class TablePref
         {
             if (pref.getTableType().equals(tablePrefOptions.getTableType()))
             {
+                
+                int columnCount = tablePrefOptions.getAvailableColumns().size();
+                
+                // case were we add/delete some columns after some preferences are already saved in backend
+                // in this case delete from db and re-init to all visible
+                if (pref.getVisible().size() != columnCount)
+                {
+                    tablePrefOptions.getTablePreferenceDAO().deleteByID(pref.getTablePrefID());
+                    break;
+                }
                 setTablePreference(pref);
                 return;
             }

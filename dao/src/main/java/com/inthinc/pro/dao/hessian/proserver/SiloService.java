@@ -289,11 +289,12 @@ public interface SiloService extends HessianService
      * getRedFlags -- retrieves all red flags for drivers in the groupID.
      * 
      * @param groupID
-     * @param count
+     * @param startDate
+     * @param endDate
      * @return
      * @throws ProDAOException
      */
-    List<Map<String, Object>> getRedFlags(Integer groupID, Integer count) throws ProDAOException;
+    List<Map<String, Object>> getRedFlags(Integer groupID, Integer startDate, Integer endDate) throws ProDAOException;
 
     
 

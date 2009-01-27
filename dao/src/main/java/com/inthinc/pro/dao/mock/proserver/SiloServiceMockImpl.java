@@ -785,7 +785,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
-    public List<Map<String, Object>> getRedFlags(Integer groupID, Integer count) throws ProDAOException
+    public List<Map<String, Object>> getRedFlags(Integer groupID, Integer startDate, Integer endDate) throws ProDAOException
     {
         Group group = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
 

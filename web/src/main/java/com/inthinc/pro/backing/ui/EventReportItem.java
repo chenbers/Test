@@ -25,13 +25,15 @@ public class EventReportItem implements Comparable<EventReportItem>
     
     private String date;
     private String group;
+    private String driverName;
+    private String vehicleName;
     private String category;
     private String detail;
     private Event event;
     private RedFlagLevel level;
     private boolean alert;
     
-    private static DateFormat dateFormatter = new SimpleDateFormat("E, MMM d, yyyy h:mm a (z)");
+    private static DateFormat dateFormatter = new SimpleDateFormat("MMM d, yyyy h:mm a (z)");
 
     
     public EventReportItem(Event event, Alert rfAlert, GroupHierarchy groupHierarchy)
@@ -58,6 +60,9 @@ public class EventReportItem implements Comparable<EventReportItem>
             setGroup("");
         }
         
+        setDriverName(event.getDriver().getPerson().getFullName());
+        setVehicleName(event.getVehicle().getName());
+
         String catFormat = MessageUtil.getMessageString("redflags_cat" + event.getEventCategory().toString());
         setCategory(MessageFormat.format(catFormat, new Object[] {event.getEventType().toString()}));
         
@@ -143,4 +148,26 @@ public class EventReportItem implements Comparable<EventReportItem>
     {
         return this.getEvent().getTime().compareTo(o.getEvent().getTime());
     }
+
+    public String getDriverName()
+    {
+        return driverName;
+    }
+
+    public void setDriverName(String driverName)
+    {
+        this.driverName = driverName;
+    }
+
+    public String getVehicleName()
+    {
+        return vehicleName;
+    }
+
+    public void setVehicleName(String vehicleName)
+    {
+        this.vehicleName = vehicleName;
+    }
+
+    
 }

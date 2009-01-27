@@ -240,11 +240,9 @@ public abstract class AbstractMapper implements Mapper
         {
             if (propertyType.equals(Date.class) && value instanceof Integer)
             {
+                // note: negative values represent dates before 1/1/1970
                 Integer seconds = (Integer) value;
-                if (seconds > 0)
-                    value = new Date(seconds.longValue() * 1000l);
-                else
-                    value = null;
+                value = new Date(seconds.longValue() * 1000l);
             }
             if (propertyType == TimeZone.class && value instanceof String)
             {

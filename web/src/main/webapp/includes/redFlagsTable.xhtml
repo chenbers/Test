@@ -36,7 +36,7 @@
 						<h:outputText value="#{(item.redFlag.alert) ? 'yes' : 'no'}" />      
     				</rich:column>
     				<rich:column rendered="#{tableColumns['date'].visible}" 
-    					sortBy="#{item.redFlag.event.time}"  width="25%">
+    					sortBy="#{item.redFlag.event.time}"  width="15%">
       					<f:facet name="header">
       						<h:outputText value="#{messages.redflags_date}" />
       					</f:facet>
@@ -48,6 +48,26 @@
       						<h:outputText value="#{messages.redflags_group}" />
       					</f:facet>
       					<h:outputText value="#{item.group}"/>
+    				</rich:column>
+    				<rich:column rendered="#{tableColumns['driver'].visible}" 
+    					sortBy="#{item.driverName}"  width="10%">
+      					<f:facet name="header">
+      						<h:outputText value="#{messages.redflags_driver}" />
+      					</f:facet>
+						<a4j:htmlCommandLink action="#{redFlagsBean.driverAction}" value="#{item.driverName}">
+							<f:setPropertyActionListener value="#{item.redFlag.event}" target="#{redFlagsBean.selectedEvent}" />
+							<f:setPropertyActionListener value="#{item.redFlag.event.driver}" target="#{navigationBean.driver}" />
+						</a4j:htmlCommandLink>
+    				</rich:column>
+    				<rich:column rendered="#{tableColumns['vehicle'].visible}" 
+    					sortBy="#{item.vehicleName}"  width="10%">
+      					<f:facet name="header">
+      						<h:outputText value="#{messages.redflags_vehicle}" />
+      					</f:facet>
+      					<a4j:htmlCommandLink action="#{redFlagsBean.vehicleAction}" value="#{item.vehicleName}">
+							<f:setPropertyActionListener value="#{item.redFlag.event}" target="#{redFlagsBean.selectedEvent}" />
+ 							<f:setPropertyActionListener value="#{item.redFlag.event.vehicle}" target="#{navigationBean.vehicle}" />
+						</a4j:htmlCommandLink>
     				</rich:column>
     				<rich:column rendered="#{tableColumns['category'].visible}" 
     					sortBy="#{item.category}"  width="20%">

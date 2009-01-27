@@ -7,12 +7,14 @@ import java.text.SimpleDateFormat;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.SpeedingEvent;
+import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.MessageUtil;
 
 public class RedFlagReportItem implements Comparable<RedFlagReportItem>
@@ -22,12 +24,14 @@ public class RedFlagReportItem implements Comparable<RedFlagReportItem>
     
     private String date;
     private String group;
+    private String driverName;
+    private String vehicleName;
     private String category;
     private String detail;
     
     private RedFlag redFlag;
     
-    private static DateFormat dateFormatter = new SimpleDateFormat("E, MMM d, yyyy h:mm a (z)");
+    private static DateFormat dateFormatter = new SimpleDateFormat("MMM d, yyyy h:mm a (z)");
 
     
     public RedFlagReportItem(RedFlag redFlag, GroupHierarchy groupHierarchy)
@@ -55,6 +59,8 @@ public class RedFlagReportItem implements Comparable<RedFlagReportItem>
             setGroup("");
         }
         
+        setDriverName(event.getDriver().getPerson().getFullName());
+        setVehicleName(event.getVehicle().getName());
         
         String catFormat = MessageUtil.getMessageString("redflags_cat" + redFlag.getEvent().getEventCategory().toString());
         setCategory(MessageFormat.format(catFormat, new Object[] {redFlag.getEvent().getEventType().toString()}));
@@ -110,6 +116,26 @@ public class RedFlagReportItem implements Comparable<RedFlagReportItem>
     public int compareTo(RedFlagReportItem o)
     {
         return this.getRedFlag().getLevel().compareTo(o.getRedFlag().getLevel());
+    }
+
+    public String getDriverName()
+    {
+        return driverName;
+    }
+
+    public void setDriverName(String driverName)
+    {
+        this.driverName = driverName;
+    }
+
+    public String getVehicleName()
+    {
+        return vehicleName;
+    }
+
+    public void setVehicleName(String vehicleName)
+    {
+        this.vehicleName = vehicleName;
     }
     
     

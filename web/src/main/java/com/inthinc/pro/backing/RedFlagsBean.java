@@ -20,7 +20,7 @@ import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.TableType;
 
-public class RedFlagsBean extends BaseBean implements TablePrefOptions
+public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions
 {
     private static final Logger     logger                  = Logger.getLogger(RedFlagsBean.class);
 
@@ -59,6 +59,8 @@ public class RedFlagsBean extends BaseBean implements TablePrefOptions
         AVAILABLE_COLUMNS.add("alerts");
         AVAILABLE_COLUMNS.add("date");
         AVAILABLE_COLUMNS.add("group");
+        AVAILABLE_COLUMNS.add("driver");
+        AVAILABLE_COLUMNS.add("vehicle");
         AVAILABLE_COLUMNS.add("category");
         AVAILABLE_COLUMNS.add("detail");
         AVAILABLE_COLUMNS.add("clear");
@@ -67,8 +69,8 @@ public class RedFlagsBean extends BaseBean implements TablePrefOptions
 
     public void initBean()
     {
+        super.initBean();
         tablePref = new TablePref(this);
-        
     }
     
     public void scrollerListener(DataScrollerEvent event)
@@ -179,17 +181,18 @@ public class RedFlagsBean extends BaseBean implements TablePrefOptions
     {
         setFilteredTableData(null);
         
-        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(getUser().getGroupID(), RED_FLAG_COUNT);
+        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(getUser().getGroupID(), 7);
         List<RedFlagReportItem> redFlagReportItemList = new ArrayList<RedFlagReportItem>();
         for (RedFlag redFlag : redFlagList)
         {
+            fillInDriver(redFlag.getEvent());
+            fillInVehicle(redFlag.getEvent());
             redFlagReportItemList.add(new RedFlagReportItem(redFlag, getGroupHierarchy()));
         }
         Collections.sort(redFlagReportItemList);
         setTableData(redFlagReportItemList);
-
     }
-
+    
     public void setTableData(List<RedFlagReportItem> tableData)
     {
         this.tableData = tableData;

@@ -286,18 +286,22 @@
         <property name="reportRenderer" ref="reportRenderer"></property>
     </bean>
     <bean id="vehicleReportTable" class="com.inthinc.pro.backing.ui.VehicleReportTable" scope="session"></bean>
-    <bean id="redFlagsBean" class="com.inthinc.pro.backing.RedFlagsBean" scope="session" parent="baseBean" init-method="initBean">
+    <bean id="baseRedFlagsBean" class="com.inthinc.pro.backing.BaseRedFlagsBean" scope="session" parent="baseBean">
+        <property name="driverDAO" ref="driverDAO"/>
+        <property name="vehicleDAO" ref="vehicleDAO"/>
+    </bean>
+    <bean id="redFlagsBean" class="com.inthinc.pro.backing.RedFlagsBean" scope="session" parent="baseRedFlagsBean" init-method="initBean">
         <property name="redFlagDAO" ref="redFlagDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
     </bean>
-    <bean id="baseEventsBean" class="com.inthinc.pro.backing.BaseEventsBean" scope="session" parent="baseBean" init-method="initBean">
+    <bean id="baseEventsBean" class="com.inthinc.pro.backing.BaseEventsBean" scope="session" parent="baseRedFlagsBean">
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
     </bean>
-    <bean id="eventsBean" class="com.inthinc.pro.backing.EventsBean" scope="session" parent="baseEventsBean">
+    <bean id="eventsBean" class="com.inthinc.pro.backing.EventsBean" scope="session" parent="baseEventsBean"  init-method="initBean">
     </bean>
-    <bean id="warningsBean" class="com.inthinc.pro.backing.WarningsBean" scope="session" parent="baseEventsBean">
+    <bean id="warningsBean" class="com.inthinc.pro.backing.WarningsBean" scope="session" parent="baseEventsBean" init-method="initBean">
     </bean>
     <bean id="idlingReportBean" class="com.inthinc.pro.backing.IdlingReportBean" scope="session" parent="baseBean" init-method="init">
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>

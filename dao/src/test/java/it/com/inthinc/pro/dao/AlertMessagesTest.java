@@ -833,12 +833,12 @@ public class AlertMessagesTest
         alertMessageDAO.setSiloService(siloService);
         System.out.print("Poll for message");
         
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 100; i++)
         {
             List<AlertMessage> msgList = alertMessageDAO.getMessages(AlertMessageDeliveryType.EMAIL);
             if (msgList.size() == 0)
             {
-                if (i == 9)
+                if (i == 99)
                 {
                     fail(description + " getMessages failed even after waiting 10 sec");
                 }
@@ -874,7 +874,7 @@ public class AlertMessagesTest
         RedFlagHessianDAO redFlagDAO = new RedFlagHessianDAO();
         redFlagDAO.setSiloService(siloService);
         
-        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(team1Group.getGroupID(), 100);
+        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(team1Group.getGroupID(), 1);
         
         assertNotNull(redFlagList);
         

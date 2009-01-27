@@ -17,20 +17,6 @@ public class WarningsBean extends BaseEventsBean
 
     private TablePref tablePref;
 
-    // package level -- so unit test can get it
-    static final List<String>       AVAILABLE_COLUMNS;
-    static
-    {
-        // available columns
-        AVAILABLE_COLUMNS = new ArrayList<String>();
-        AVAILABLE_COLUMNS.add("date");
-        AVAILABLE_COLUMNS.add("group");
-        AVAILABLE_COLUMNS.add("category");
-        AVAILABLE_COLUMNS.add("detail");
-        AVAILABLE_COLUMNS.add("clear");
-
-    }
-
     public void initBean()
     {
         super.initBean();
@@ -83,6 +69,8 @@ public class WarningsBean extends BaseEventsBean
             StringBuilder itemStr = new StringBuilder();
             itemStr.append(columnMap.get("category").getVisible() ? item.getCategory().toLowerCase() : "");
             itemStr.append(columnMap.get("group").getVisible() ? item.getGroup().toLowerCase() : "");
+            itemStr.append(columnMap.get("driver").getVisible() ? item.getDriverName().toLowerCase() : "");
+            itemStr.append(columnMap.get("vehicle").getVisible() ? item.getVehicleName().toLowerCase() : "");
             itemStr.append(columnMap.get("detail").getVisible() ? item.getDetail().toLowerCase() : "");
             itemStr.append(columnMap.get("date").getVisible() ? item.getDate().toLowerCase() : "");
             
