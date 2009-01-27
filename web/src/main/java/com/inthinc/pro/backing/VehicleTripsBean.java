@@ -146,8 +146,15 @@ public class VehicleTripsBean extends BaseBean
             Long tempLong = (trip.getDurationMiliSeconds() / 1000L);
             totalDriveSeconds += tempLong.intValue();
         }
+        
+        // Grabbing events over date picker date range
+        List<Integer> idleTypes = new ArrayList<Integer>();
+        idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
+        List<Event> tmpIdleEvents = new ArrayList<Event>();
+        tmpIdleEvents = eventDAO.getEventsForVehicle(
+                navigation.getVehicle().getVehicleID(), startDate, endDate, idleTypes);        
 
-        for (Event event : idleEvents)
+        for (Event event : tmpIdleEvents)
         {
             idleSeconds += ((IdleEvent) event).getHighIdle();
             idleSeconds += ((IdleEvent) event).getLowIdle();
