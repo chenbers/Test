@@ -277,6 +277,7 @@ public class OrganizationBean extends BaseBean
 
             groupDAO.update(selectedGroupNode.getGroup());
             treeStateMap.put(selectedParentGroup.getGroupID(), Boolean.TRUE);
+            getSelectedGroupNode().setTreeNodeType(null); //Reset the type
             updateUsersGroupHeirarchy();
             this.addInfoMessage(selectedGroupNode.getGroup().getName() + " " + MessageUtil.getMessageString("group_update_confirmation"));
             groupState = State.VIEW;
