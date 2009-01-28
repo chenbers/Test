@@ -39,7 +39,7 @@ import com.inthinc.pro.security.userdetails.ProUser;
                                  "classpath:spring/applicationContext-appBeans.xml",
                                  "classpath:spring/applicationContext-beans.xml",
                                  "classpath:spring/applicationContext-security.xml",
-                                 "classpath:spring/applicationContext-reports.xml}"},
+                                 "classpath:spring/applicationContext-reports.xml"},
                                  loader=com.inthinc.pro.spring.test.WebSessionContextLoader.class)
 
                                  
