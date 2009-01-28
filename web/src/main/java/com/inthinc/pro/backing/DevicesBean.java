@@ -105,22 +105,22 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     }
 
     @Override
-    protected boolean matchesFilter(DeviceView device, String filterWord)
+    protected String columnValue(DeviceView device, String columnName)
     {
-        for (final String column : getTableColumns().keySet())
-            if (getTableColumns().get(column).getVisible())
-            {
-                boolean matches = false;
-                if (column.equals("vehicleID"))
-                    matches = (device.getVehicle() != null) && (device.getVehicle().getName() != null) && device.getVehicle().getName().toLowerCase().contains(filterWord);
-                else if (column.equals("status"))
-                    matches = (device.getStatus() != null) && MessageUtil.getMessageString(device.getStatus().getDescription().toLowerCase()).toLowerCase().contains(filterWord);
+        if (columnName.equals("vehicleID"))
+        {
+            if (device.getVehicle() != null)
+                return device.getVehicle().getName();
+            return null;
+        }
+        else if (columnName.equals("status"))
+        {
+            if (device.getStatus() != null)
+                return MessageUtil.getMessageString(device.getStatus().getDescription().toLowerCase());
+            return null;
+        }
 
-                if (matches)
-                    return true;
-            }
-
-        return super.matchesFilter(device, filterWord);
+        return super.columnValue(device, columnName);
     }
 
     @Override
@@ -156,7 +156,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     {
         final Device device = new Device();
         device.setStatus(DeviceStatus.NEW);
-//        device.setSpeedSettings(new Integer[Device.NUM_SPEEDS]);
+        // device.setSpeedSettings(new Integer[Device.NUM_SPEEDS]);
         return createDeviceView(device);
     }
 

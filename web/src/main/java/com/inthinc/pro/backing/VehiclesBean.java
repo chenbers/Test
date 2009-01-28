@@ -37,9 +37,9 @@ import com.inthinc.pro.util.MessageUtil;
  */
 public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implements PersonChangeListener, Serializable
 {
-	private static final long serialVersionUID = 1L;
+    private static final long                     serialVersionUID       = 1L;
 
-	private static final List<String>             AVAILABLE_COLUMNS;
+    private static final List<String>             AVAILABLE_COLUMNS;
     private static final int[]                    DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 8, 12 };
 
     private static final Map<String, String>      YEARS;
@@ -150,28 +150,27 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     }
 
     @Override
-    protected boolean matchesFilter(VehicleView vehicle, String filterWord)
+    protected String columnValue(VehicleView vehicle, String columnName)
     {
-        for (final String column : getTableColumns().keySet())
-            if (getTableColumns().get(column).getVisible())
-            {
-                boolean matches = false;
-                if (column.equals("driverID"))
-                    matches = (vehicle.getDriver() != null)
-                            && (vehicle.getDriver().getPerson() != null)
-                            && (vehicle.getDriver().getPerson().getFullName().toLowerCase().contains(filterWord));
-                else if (column.equals("groupID"))
-                    matches = (vehicle.getGroup() != null) && vehicle.getGroup().getName().toLowerCase().contains(filterWord);
-                else if (column.equals("status"))
-                    matches = (vehicle.getStatus() != null)
-                            && ((vehicle.getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("active").toLowerCase().contains(filterWord)) || ((!vehicle
-                                    .getStatus().equals(Status.ACTIVE) && MessageUtil.getMessageString("inactive").toLowerCase().contains(filterWord))));
+        if (columnName.equals("driverID"))
+        {
+            if ((vehicle.getDriver() != null) && (vehicle.getDriver().getPerson() != null))
+                return vehicle.getDriver().getPerson().getFullName();
+            return null;
+        }
+        else if (columnName.equals("groupID"))
+        {
+            if (vehicle.getGroup() != null)
+                return vehicle.getGroup().getName();
+        }
+        else if (columnName.equals("status"))
+        {
+            if (vehicle.getStatus() != null)
+                return MessageUtil.getMessageString(vehicle.getStatus().getDescription().toLowerCase());
+            return null;
+        }
 
-                if (matches)
-                    return true;
-            }
-
-        return super.matchesFilter(vehicle, filterWord);
+        return super.columnValue(vehicle, columnName);
     }
 
     @Override
@@ -307,8 +306,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
                     updateField.put("device." + key, updateField.get(key));
         }
 
-//        if ((getItem().getDevice() != null) && getItem().getDevice().isSensitivitiesInverted())
-//            getItem().getDevice().invertSensitivities();
+        // if ((getItem().getDevice() != null) && getItem().getDevice().isSensitivitiesInverted())
+        // getItem().getDevice().invertSensitivities();
 
         return super.save();
     }

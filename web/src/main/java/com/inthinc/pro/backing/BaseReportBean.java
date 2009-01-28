@@ -123,7 +123,13 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
                 boolean matched = false;
                 for (final String word : filterWords)
                 {
-                    matched = matchesFilter(t, word);
+                    for (final String column : getTableColumns().keySet())
+                        if (getTableColumns().get(column).getVisible())
+                            {
+                                final String value = columnValue(t, column);
+                                if ((value != null) && value.toLowerCase().contains(word))
+                                    matched = true;
+                            }
 
                     // we can break if we didn't match and we're required to match all words,
                     // or if we did match and we're only required to match one word
@@ -155,35 +161,30 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     }
 
     /**
-     * Determine whether the given item matches the filter word. The default implementation gets the value of each displayed column as a property from the item, converts the value
-     * to a string, converts it to lowercase and matches the filter word against it. Override to do more efficient or custom testing.
+     * Returns the value of the property of the given item described by the given column name. The default implementation converts the column name to property syntax and uses
+     * BeanUtils to get the property value.
      * 
      * @param item
-     *            The item to filter in or out of the results.
-     * @param filterWord
-     *            The lowercase filter word. If there are multiple words in the filter string this method will be called once for each word.
-     * @return Whether the item matches the filter string.
+     *            The item to get the value from.
+     * @param columnName
+     *            The name of the column to get the value of.
+     * @return The value or <code>null</code> if unavailable.
      */
-    protected boolean matchesFilter(T item, String filterWord)
+    protected String columnValue(T item, String columnName)
     {
-        for (final String column : getTableColumns().keySet())
-            if (getTableColumns().get(column).getVisible())
-                try
-                {
-                    final String word = String.valueOf(org.apache.commons.beanutils.BeanUtils.getProperty(item, column.replace('_', '.'))).toLowerCase();
-                    if (word.contains(filterWord))
-                        return true;
-                }
-                catch (NestedNullException e)
-                {
-                    // ignore nested nulls
-                }
-                catch (Exception e)
-                {
-                    logger.error("Error filtering on column " + column, e);
-                }
-
-        return false;
+        try
+        {
+            return String.valueOf(BeanUtils.getProperty(item, columnName.replace('_', '.')));
+        }
+        catch (NestedNullException e)
+        {
+            // ignore nested nulls
+        }
+        catch (Exception e)
+        {
+            logger.error("Error filtering on column " + columnName, e);
+        }
+        return null;
     }
 
     protected void resetCounts()
