@@ -321,7 +321,7 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable
         }
 
        
-        if (getTreeNodeType() != TreeNodeType.TEAM)
+        if (!getTreeNodeType().equals(TreeNodeType.TEAM))
         {
             List<Group> groupList = groupHierarchyUtil.getChildren(group);
             if (groupList != null)

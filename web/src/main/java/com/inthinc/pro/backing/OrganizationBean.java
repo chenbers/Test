@@ -276,6 +276,7 @@ public class OrganizationBean extends BaseBean
             }
 
             groupDAO.update(selectedGroupNode.getGroup());
+            treeStateMap.put(selectedParentGroup.getGroupID(), Boolean.TRUE);
             updateUsersGroupHeirarchy();
             this.addInfoMessage(selectedGroupNode.getGroup().getName() + " " + MessageUtil.getMessageString("group_update_confirmation"));
             groupState = State.VIEW;
@@ -376,7 +377,7 @@ public class OrganizationBean extends BaseBean
 
         // Case 2
         if (groupState == State.EDIT && treeNode.getGroup().getType() == GroupType.TEAM &&
-                !treeNode.getChildrenNodes().isEmpty() && treeNode.getChildrenNodes().get(0).getGroup() != null)
+                !treeNode.getChildrenNodes().isEmpty()  &&treeNode.getChildrenNodes().get(0).getGroup() != null)
         {
             addErrorMessage(MessageUtil.getMessageString("group_edit_error_team"));
             valid = false;  
@@ -402,6 +403,8 @@ public class OrganizationBean extends BaseBean
         copyToNode.setId(copyFromNode.getGroup().getGroupID());
         copyToNode.setLabel(copyFromNode.getGroup().getName());
         copyToNode.setTreeNodeType(copyFromNode.getTreeNodeType());
+        copyToNode.setDriverDAO(driverDAO);
+        copyToNode.setVehicleDAO(vehicleDAO);
     }
 
     private TreeNodeImpl createNewGroupNode()
