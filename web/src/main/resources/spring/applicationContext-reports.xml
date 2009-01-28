@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+    <bean id="reportMailer" class="com.inthinc.pro.reports.mail.ReportMailerImpl">
+    	<property name="javaMailSender" ref="mailSenderBean"/>
+    	 <property name="from"><value><![CDATA[tiwiPRO noreply <noreply@inthinc.com>]]></value></property>
+   	</bean>
+   	
+   	<bean id="reportCreator" class="com.inthinc.pro.reports.jasper.JasperReportCreator">
+    	<constructor-arg ref="reportMailer" />
+    </bean>
+    
+</beans>

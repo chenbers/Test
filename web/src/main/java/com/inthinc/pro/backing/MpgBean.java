@@ -24,6 +24,7 @@ import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.Report;
+import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.util.ColorSelectorStandard;
 import com.inthinc.pro.util.GraphicUtil;
@@ -168,7 +169,7 @@ public class MpgBean extends BaseDurationBean {
             seriesData.add(new CategorySeriesData("Heavy",seriesID,heavyValue,seriesID));
         }
         
-        ReportCriteria reportCriteria = new ReportCriteria(Report.MPG_GROUP,getNavigation().getGroup().getName(),getAccountName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.MPG_GROUP,getNavigation().getGroup().getName(),getAccountName());
         reportCriteria.setMainDataset(entities);
         reportCriteria.addChartDataSet(seriesData);
         reportCriteria.setDuration(getDuration());

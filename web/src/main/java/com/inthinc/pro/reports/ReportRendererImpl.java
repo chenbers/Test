@@ -2,127 +2,80 @@ package com.inthinc.pro.reports;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.export.JExcelApiExporter;
-import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 
 import org.apache.log4j.Logger;
 import com.inthinc.pro.backing.ReportRendererBean;
-import com.inthinc.pro.reports.model.ReportAttatchment;
 
 public class ReportRendererImpl implements ReportRenderer
 {
     private static final Logger logger = Logger.getLogger(ReportRendererBean.class);
-    private static final String PDF_CONTENT_TYPE = "application/pdf";
-    private static final String EXCEL_CONTENT_TYPE = "application/xls";
     private static final String FILE_NAME = "tiwiPRO_Report";
     
-    private ReportMailer reportMailer;
+    private ReportCreator reportCreator;
 
     @Override
     public void exportSingleReportToPDF(ReportCriteria reportCriteria, FacesContext facesContext)
     {
-        ProReportCompiler proCompiler = new ProReportCompiler();
-        JasperPrint jp = proCompiler.compileReport(reportCriteria);
-        exportToPdf(jp,facesContext);
+        Report report = reportCreator.getReport(reportCriteria);
+        exportToPdf(report,facesContext);
     }
     
     @Override
     public void exportReportToPDF(List<ReportCriteria> reportCriteriaList, FacesContext facesContext)
     {
-        ProReportCompiler proCompiler = new ProReportCompiler();
-        JasperPrint jp = proCompiler.compileReport(reportCriteriaList);
-        exportToPdf(jp,facesContext); 
+        Report report = reportCreator.getReport(reportCriteriaList);
+        exportToPdf(report,facesContext);
     }
     
     @Override
     public void exportReportToExcel(List<ReportCriteria> reportCriteriaList, FacesContext facesContext)
     {
-        ProReportCompiler proCompiler = new ProReportCompiler();
-        JasperPrint jp = proCompiler.compileReport(reportCriteriaList);
-        exportToExcel(jp,facesContext); 
+        Report report = reportCreator.getReport(reportCriteriaList);
+        exportToExcel(report,facesContext);
     }
     
     @Override
     public void exportReportToExcel(ReportCriteria reportCriteria, FacesContext facesContext)
     {
-        ProReportCompiler proCompiler = new ProReportCompiler();
-        JasperPrint jp = proCompiler.compileReport(reportCriteria);
-        exportToExcel(jp,facesContext); 
+        Report report = reportCreator.getReport(reportCriteria);
+        exportToExcel(report,facesContext); 
     }
     
     @Override
     public void exportReportToEmail(List<ReportCriteria> reportCriteriaList, String email)
     {
-        ProReportCompiler proCompiler = new ProReportCompiler();
-        JasperPrint jp = proCompiler.compileReport(reportCriteriaList);
-        exportToPdfViaEmail(jp, email);
+        Report report = reportCreator.getReport(reportCriteriaList);
+        report.exportReportToEmail(email, FormatType.PDF);
     }
     
     @Override
     public void exportReportToEmail(ReportCriteria reportCriteria, String email)
     {
-        ProReportCompiler proCompiler = new ProReportCompiler();
-        JasperPrint jp = proCompiler.compileReport(reportCriteria);
-        exportToPdfViaEmail(jp, email);
+        Report report = reportCreator.getReport(reportCriteria);
+        report.exportReportToEmail(email, FormatType.PDF);
         
     }
-    
-    private void exportToPdfViaEmail(JasperPrint jasperPrint,String email)
-    {
-        if (jasperPrint != null && jasperPrint.getPages().size() > 0)
-        {
-            
-            try
-            {
-                byte[] bytes = JasperExportManager.exportReportToPdf(jasperPrint);
-                ReportAttatchment reportAttatchment = new ReportAttatchment(FILE_NAME + ".pdf",bytes);
-                List<ReportAttatchment> attachments = new ArrayList<ReportAttatchment>();
-                attachments.add(reportAttatchment);
-                String[] emails = email.split(",");
-                List<String> emailList =  Arrays.asList(emails);
-                reportMailer.emailReport(emailList, attachments);                
-            }
-            catch(JRException e)
-            {
-                logger.error(e);
-            }catch(Exception e)
-            {
-                logger.error(e);
-            }
-        }
-    }
-    
-    
 
-    private void exportToPdf(JasperPrint jasperPrint,FacesContext facesContext)
+    private void exportToPdf(Report report,FacesContext facesContext)
     {
         HttpServletResponse response = (HttpServletResponse)facesContext.getExternalContext().getResponse();
-        if (jasperPrint != null && jasperPrint.getPages().size() > 0)
+        if (report != null)
         {
-            response.setContentType(PDF_CONTENT_TYPE);
+            response.setContentType(FormatType.PDF.getContentType());
             response.addHeader("Content-Disposition", "attachment; filename=\"" + FILE_NAME + ".pdf\"");
 
             OutputStream out = null;
             try
             {
                 out = response.getOutputStream();
-                JasperExportManager.exportReportToPdfStream(jasperPrint, out);
+                report.exportReportToStream(FormatType.PDF, out);
                 out.flush();
-               facesContext.responseComplete();
+                facesContext.responseComplete();
             }
             catch (IOException e)
-            {
-                logger.warn(e);
-            }
-            catch (JRException e)
             {
                 logger.warn(e);
             }
@@ -142,29 +95,19 @@ public class ReportRendererImpl implements ReportRenderer
     
     
 
-    private void exportToExcel(JasperPrint jasperPrint,FacesContext facesContext)
+    private void exportToExcel(Report report,FacesContext facesContext)
     {
         HttpServletResponse response = (HttpServletResponse)facesContext.getExternalContext().getResponse();
-        if (jasperPrint != null && jasperPrint.getPages().size() > 0)
+        if (report != null)
         {
-            response.setContentType(EXCEL_CONTENT_TYPE);
+            response.setContentType(FormatType.EXCEL.getContentType());
             response.addHeader("Content-Disposition", "attachment; filename=\"" + FILE_NAME + ".xls\"");
 
             OutputStream out = null;
             try
             {
                 out = response.getOutputStream();
-                JExcelApiExporter jexcelexporter = new JExcelApiExporter();
-                jexcelexporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, jasperPrint);
-                jexcelexporter.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, out);
-                //jexcelexporter.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.TRUE);
-                jexcelexporter.setParameter(JRXlsExporterParameter.IS_AUTO_DETECT_CELL_TYPE, Boolean.TRUE);
-                jexcelexporter.setParameter(JRXlsExporterParameter.IS_WHITE_PAGE_BACKGROUND, Boolean.FALSE);
-                jexcelexporter.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, Boolean.TRUE); 
-                jexcelexporter.setParameter(JRXlsExporterParameter.IS_IGNORE_GRAPHICS, Boolean.TRUE);
-                jexcelexporter.setParameter(JRXlsExporterParameter.IS_IGNORE_CELL_BORDER, Boolean.TRUE);
-                jexcelexporter.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS, Boolean.TRUE);
-                jexcelexporter.exportReport();
+                report.exportReportToStream(FormatType.PDF, out);
                 
                 out.flush();
                 facesContext.responseComplete();
@@ -173,10 +116,7 @@ public class ReportRendererImpl implements ReportRenderer
             {
                 logger.warn(e);
             }
-            catch (JRException e)
-            {
-                logger.warn(e);
-            }
+           
             finally
             {
                 try
@@ -190,14 +130,14 @@ public class ReportRendererImpl implements ReportRenderer
             }
         }
     }
-
-    public void setReportMailer(ReportMailer reportMailer)
+    
+    public void setReportCreator(ReportCreator reportCreator)
     {
-        this.reportMailer = reportMailer;
+        this.reportCreator = reportCreator;
     }
 
-    public ReportMailer getReportMailer()
+    public ReportCreator getReportCreator()
     {
-        return reportMailer;
+        return reportCreator;
     }
 }

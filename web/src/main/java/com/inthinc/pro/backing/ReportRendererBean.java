@@ -12,6 +12,7 @@ import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.Report;
+import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.util.MessageUtil;
 
 public class ReportRendererBean extends BaseBean
@@ -26,10 +27,10 @@ public class ReportRendererBean extends BaseBean
     
 
     // For single reports
-    private Report report;
+    private ReportType report;
 
     // For complex reports
-    private List<Report> reports = new ArrayList<Report>(0);
+    private List<ReportType> reports = new ArrayList<ReportType>(0);
     private String emailAddress;
     private Duration duration;
     
@@ -46,7 +47,7 @@ public class ReportRendererBean extends BaseBean
     public void exportReportToPDF()
     {
         List<ReportCriteria> reportCriteriaList = new ArrayList<ReportCriteria>();
-        for(Report rt:reports)
+        for(ReportType rt:reports)
         {
             switch(rt){
             case OVERALL_SCORE:reportCriteriaList.add(breakdownBean.buildReportCriteria());break;
@@ -71,7 +72,7 @@ public class ReportRendererBean extends BaseBean
     public void emailReport()
     {
         List<ReportCriteria> reportCriteriaList = new ArrayList<ReportCriteria>();
-        for(Report rt:reports)
+        for(ReportType rt:reports)
         {
             switch(rt){
             case OVERALL_SCORE:reportCriteriaList.add(breakdownBean.buildReportCriteria());break;
@@ -98,12 +99,12 @@ public class ReportRendererBean extends BaseBean
         
     }
 
-    public Report getReport()
+    public ReportType getReport()
     {
         return report;
     }
 
-    public void setReport(Report report)
+    public void setReport(ReportType report)
     {
         reports.add(report);
         logger.debug("Report added: " + report.toString());
@@ -150,21 +151,21 @@ public class ReportRendererBean extends BaseBean
         return reportRenderer;
     }
 
-    public void setReports(List<Report> reports)
+    public void setReports(List<ReportType> reports)
     {
         this.reports = reports;
     }
 
-    public List<Report> getReports()
+    public List<ReportType> getReports()
     {
         return reports;
     }
     
-    public List<Report> getReportList(){
-        List<Report> reportList = new ArrayList<Report>();
-        reportList.add(Report.OVERALL_SCORE);
-        reportList.add(Report.TREND);
-        reportList.add(Report.MPG_GROUP);
+    public List<ReportType> getReportList(){
+        List<ReportType> reportList = new ArrayList<ReportType>();
+        reportList.add(ReportType.OVERALL_SCORE);
+        reportList.add(ReportType.TREND);
+        reportList.add(ReportType.MPG_GROUP);
         return reportList;
     }
     
@@ -172,7 +173,7 @@ public class ReportRendererBean extends BaseBean
     public List<SelectItem> getReportsAsSelectItems()
     {
         List<SelectItem> selectList = new ArrayList<SelectItem>();
-        for(Report rt:getReportList())
+        for(ReportType rt:getReportList())
         {
             selectList.add(new SelectItem(rt,rt.getLabel()));
         }

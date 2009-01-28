@@ -25,12 +25,7 @@
     
     <!-- Printing Reports -->
     <bean id="reportRenderer" class="com.inthinc.pro.reports.ReportRendererImpl" scope="request">
-    	<property name="reportMailer" ref="reportMailer"/>
-   	</bean>
-
-    <bean id="reportMailer" class="com.inthinc.pro.reports.ReportMailerImpl" scope="request">
-    	<property name="javaMailSender" ref="mailSenderBean"/>
-    	 <property name="from"><value><![CDATA[tiwiPRO noreply <noreply@inthinc.com>]]></value></property>
+    	<property name="reportCreator" ref="reportCreator"/>
    	</bean>
  
     <bean id="reportRendererBean" class="com.inthinc.pro.backing.ReportRendererBean" scope="request" parent="baseBean">

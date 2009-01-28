@@ -9,7 +9,7 @@
     <artifactId>web</artifactId>
     <version>0.0.13-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>Pro Portal - Web App</name>
+    <name>Pro Portal - Reports</name>
     <profiles>
         <profile>
             <id>local</id>
@@ -295,6 +295,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
+         <dependency>
+            <groupId>opensymphony</groupId>
+            <artifactId>quartz</artifactId>
+            <version>1.6.0</version>
+        </dependency>
         <dependency>
             <groupId>org.jasypt</groupId>
             <artifactId>jasypt</artifactId>
@@ -316,6 +321,12 @@
         <dependency>
             <groupId>com.inthinc.pro.dao</groupId>
             <artifactId>dao</artifactId>
+            <version>0.0.13-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.inthinc.pro.reports</groupId>
+            <artifactId>reports</artifactId>
             <version>0.0.13-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

@@ -22,6 +22,7 @@ import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.reports.Report;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
+import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.util.ColorSelectorStandard;
 import com.inthinc.pro.util.GraphicUtil;
@@ -413,7 +414,7 @@ public class TrendFlyoutBean extends BaseBean
             
         }
        
-        ReportCriteria reportCriteria = new ReportCriteria(Report.TREND,getNavigation().getGroup().getName(),getAccountName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.TREND,getNavigation().getGroup().getName(),getAccountName());
         reportCriteria.addChartDataSet(lineGraphDataList);
         reportCriteria.setMainDataset(scoreableEntityDataSet);
         reportCriteria.setDuration(getNavigation().getDuration());

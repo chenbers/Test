@@ -13,6 +13,7 @@ import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.reports.Report;
 import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.reports.ReportType;
 
 public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
 {
@@ -163,21 +164,21 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
 
     public void exportReportToPdf()
     {
-        ReportCriteria reportCriteria = new ReportCriteria(Report.DEVICES_REPORT,getGroupHierarchy().getTopGroup().getName(),null);
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DEVICES_REPORT,getGroupHierarchy().getTopGroup().getName(),null);
         reportCriteria.setMainDataset(deviceData);
         getReportRenderer().exportSingleReportToPDF(reportCriteria, getFacesContext());
     }
     
     public void emailReport()
     {
-        ReportCriteria reportCriteria = new ReportCriteria(Report.DEVICES_REPORT,getGroupHierarchy().getTopGroup().getName(),getAccountName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DEVICES_REPORT,getGroupHierarchy().getTopGroup().getName(),getAccountName());
         reportCriteria.setMainDataset(deviceData);
         getReportRenderer().exportReportToEmail(reportCriteria,getEmailAddress());
     }
     
     public void exportReportToExcel()
     {
-        ReportCriteria reportCriteria = new ReportCriteria(Report.DEVICES_REPORT,getGroupHierarchy().getTopGroup().getName(),getAccountName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DEVICES_REPORT,getGroupHierarchy().getTopGroup().getName(),getAccountName());
         reportCriteria.setMainDataset(deviceData);
         getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
     }

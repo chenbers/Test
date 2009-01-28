@@ -16,6 +16,7 @@ import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.reports.Report;
 import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.reports.ReportType;
 
 public class DriverReportBean extends BaseReportBean<DriverReportItem>
 {
@@ -178,21 +179,21 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem>
     
     public void exportReportToPdf()
     {
-        ReportCriteria reportCriteria = new ReportCriteria(Report.DRIVER_REPORT,getGroupHierarchy().getTopGroup().getName(),null);
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_REPORT,getGroupHierarchy().getTopGroup().getName(),null);
         reportCriteria.setMainDataset(driverData);
         getReportRenderer().exportSingleReportToPDF(reportCriteria, getFacesContext());
     }
     
     public void emailReport()
     {
-        ReportCriteria reportCriteria = new ReportCriteria(Report.DRIVER_REPORT,getGroupHierarchy().getTopGroup().getName(),getAccountName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_REPORT,getGroupHierarchy().getTopGroup().getName(),getAccountName());
         reportCriteria.setMainDataset(driverData);
         getReportRenderer().exportReportToEmail(reportCriteria,getEmailAddress());
     }
     
     public void exportReportToExcel()
     {
-        ReportCriteria reportCriteria = new ReportCriteria(Report.DRIVER_REPORT,getGroupHierarchy().getTopGroup().getName(),getAccountName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_REPORT,getGroupHierarchy().getTopGroup().getName(),getAccountName());
         reportCriteria.setMainDataset(driverData);
         getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
     }
