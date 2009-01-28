@@ -60,8 +60,8 @@ public class EventReportItem implements Comparable<EventReportItem>
             setGroup("");
         }
         
-        setDriverName(event.getDriver().getPerson().getFullName());
-        setVehicleName(event.getVehicle().getName());
+        setDriverName((event.getDriver() == null) ? "None Assigned" : event.getDriver().getPerson().getFullName());
+        setVehicleName((event.getVehicle() == null)? "None Assigned" : event.getVehicle().getName());
 
         String catFormat = MessageUtil.getMessageString("redflags_cat" + event.getEventCategory().toString());
         setCategory(MessageFormat.format(catFormat, new Object[] {event.getEventType().toString()}));
