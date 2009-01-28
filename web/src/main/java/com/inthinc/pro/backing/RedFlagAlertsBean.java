@@ -254,7 +254,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             if ((flag.getName() == null) || (flag.getName().length() == 0))
             {
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
-                FacesContext.getCurrentInstance().addMessage(null, message);
+                FacesContext.getCurrentInstance().addMessage("edit-form:name", message);
                 valid = false;
             }
         return valid;

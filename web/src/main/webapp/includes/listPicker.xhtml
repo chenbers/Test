@@ -111,6 +111,24 @@
         }
       }
 
+      function restorePicked()
+      {
+        var value = document.getElementById("#{formName}:#{id}PickedIDs").value;
+        if (!value)
+          return;
+        var ids = value.split(",");
+        var from = document.getElementById("#{formName}:#{id}From");
+        var to = document.getElementById("#{formName}:#{id}Picked");
+        for (var i = 0; i &lt; ids.length; i++)
+          for (var j = 0; j &lt; from.options.length; j++)
+            if (from.options[j].value == ids[i])
+            {
+              to.options[to.options.length] = new Option(from.options[j].text, from.options[j].value);
+              from.remove(j);
+              break;
+            }
+      }
+
       function enablePickButtons()
       {
         var left = document.getElementById("#{formName}:#{id}From");
@@ -130,6 +148,7 @@
           image.src = "#{facesContext.externalContext.requestContextPath}/images/btn_" + id + "_disabled.png";
       }
 
+      restorePicked();
       enablePickButtons();
     </script>
 

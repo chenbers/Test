@@ -126,7 +126,7 @@
                             </td>
                             <td>
                               <rich:message for="stopTOD" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                              <h:selectOneRadio value="#{zoneAlertsBean.item.anytime}" onclick="document.getElementById('timeframePickers').style.display = (this.value == 'true' ? 'none' : '')" enabledClass="radioitem">
+                              <h:selectOneRadio id="timeframe" value="#{zoneAlertsBean.item.anytime}" onclick="document.getElementById('timeframePickers').style.display = (this.value == 'true' ? 'none' : '')" enabledClass="radioitem">
                                 <f:selectItem itemValue="true" itemLabel="#{messages.editAlerts_timeframeAnytime}" />
                                 <f:selectItem itemValue="false" itemLabel="#{messages.editAlerts_timeframeBetween}" />
                               </h:selectOneRadio>
@@ -296,6 +296,8 @@
           map.disableInfoWindow();
           showZone();
         }
+
+        document.getElementById("timeframePickers").style.display = (document.getElementById("edit-form:timeframe:0").checked ? 'none' : '');
 
         var elements = document.getElementById("edit-form").elements;
         for (var i = 0; i &lt; elements.length; i++)
