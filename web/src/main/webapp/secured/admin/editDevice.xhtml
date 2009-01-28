@@ -78,11 +78,7 @@
                                 <td>
                                   <rich:message for="imei" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{devicesBean.item.imei}" id="imei" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="15" required="#{(not devicesBean.batchEdit) or devicesBean.updateField['imei']}" requiredMessage="#{messages.required}" validatorMessage="#{messages.editDevice_imeiFormat}">
-                                    <f:validateLength minimum="15" maximum="15" />
-                                    <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
-                                    <f:attribute name="regex" value="[0-9]+" />
-                                  </h:inputText>
+                                    maxlength="15" required="#{(not devicesBean.batchEdit) or devicesBean.updateField['imei']}" requiredMessage="#{messages.required}" validator="#{devicesBean.validateImei}" />
                                 </td>
                               </tr>
                               <tr>

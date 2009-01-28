@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 
 import org.springframework.beans.BeanUtils;
 
@@ -207,25 +209,25 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             assignVehicle(getItem());
     }
 
-    @Override
-    protected boolean validate(List<DeviceView> saveItems)
+    public void validateImei(FacesContext context, UIComponent component, Object value)
     {
-        final FacesContext context = FacesContext.getCurrentInstance();
-        boolean valid = true;
+        final String imei = (String) value;
 
-        for (final DeviceView device : saveItems)
+        if (!imei.matches("[0-9]{15}"))
         {
-            // unique IMEI
-            final Device byImei = deviceDAO.findByIMEI(device.getImei());
-            if ((byImei != null) && !byImei.getDeviceID().equals(device.getDeviceID()))
-            {
-                valid = false;
-                final String summary = MessageUtil.getMessageString("editDevice_uniqueImei");
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                context.addMessage("edit-form:imei", message);
-            }
+            final String summary = MessageUtil.getMessageString("editDevice_imeiFormat");
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+            throw new ValidatorException(message);
         }
-        return valid;
+
+        // unique
+        final Device byImei = deviceDAO.findByIMEI(imei);
+        if ((byImei != null) && !byImei.getDeviceID().equals(getItem().getDeviceID()))
+        {
+            final String summary = MessageUtil.getMessageString("editDevice_uniqueImei");
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+            throw new ValidatorException(message);
+        }
     }
 
     @Override
