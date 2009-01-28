@@ -96,7 +96,7 @@ public class GraphicUtil {
 	    DateFormat dateFormatter = new SimpleDateFormat("dd");
 	    
 	    if ( duration == Duration.DAYS ) {
-            for ( int i = 1; i <= 30; i++ )
+            for ( int i = 0; i <= 29; i++ )
             {
                 cal = Calendar.getInstance();
                 cal.add(Calendar.DAY_OF_MONTH, -i);
