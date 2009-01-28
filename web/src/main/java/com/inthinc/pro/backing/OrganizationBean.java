@@ -138,9 +138,12 @@ public class OrganizationBean extends BaseBean
         boolean result = false;
         if (tree != null && tree.getRowData() != null)
         {
-            TreeNodeImpl object = (TreeNodeImpl) tree.getRowData();
-            logger.debug("Tree Node Expanded: " + object.getLabel());
-            if (object.getGroup() != null && treeStateMap.get(object.getGroup().getGroupID()) != null && treeStateMap.get(object.getGroup().getGroupID()))
+            TreeNodeImpl treeNode = (TreeNodeImpl) tree.getRowData();
+            logger.debug("Tree Node Expanded: " + treeNode.getLabel());
+            if (treeNode.getGroup() != null && treeStateMap.get(treeNode.getGroup().getGroupID()) != null && treeStateMap.get(treeNode.getGroup().getGroupID()))
+            {
+                result = true;
+            }else if(treeNode.getGroup() != null && treeNode.getParent().getGroup() == null) 
             {
                 result = true;
             }
