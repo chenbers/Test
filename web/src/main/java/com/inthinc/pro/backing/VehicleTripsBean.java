@@ -135,16 +135,15 @@ public class VehicleTripsBean extends BaseBean
     {
         if(startDate == null)
         {
-            // Set start date to 7 days ago, apply vehicle's time zone..
+            // Set start date to 7 days ago, apply driver's time zone..
             Calendar calendar = Calendar.getInstance();
-            calendar.setTimeZone(this.getTimeZone());
+            calendar.setTimeZone(getTimeZone());
             calendar.add(Calendar.DAY_OF_MONTH, -7);
             calendar.set(Calendar.HOUR_OF_DAY, 0);
             calendar.set(Calendar.MINUTE, 0);
             calendar.set(Calendar.SECOND, 0);
             startDate = calendar.getTime();
         }
-        
         return startDate;
     }
 
@@ -157,20 +156,30 @@ public class VehicleTripsBean extends BaseBean
     {
         if(endDate == null)
         {
-            // Set end date to now using vehicle's time zone.
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeZone(this.getTimeZone());
-            endDate = calendar.getTime();
+            // Set end date to now using driver's time zone.
+            endDate = SetTimeToEndOfDay(new Date(), getTimeZone());
         }
-        
         return endDate;
     }
 
     public void setEndDate(Date endDate)
     {
+        //Set Time to 11:59:99 PM Always
+        endDate = SetTimeToEndOfDay(endDate, getTimeZone());
         this.endDate = endDate;
     }
-
+    
+    public Date SetTimeToEndOfDay(Date date, TimeZone tz)
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeZone(tz);
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND,59);
+        
+        return calendar.getTime();
+    }
     // TRIP DAO PROPERTIES
     public VehicleDAO getVehicleDAO()
     {

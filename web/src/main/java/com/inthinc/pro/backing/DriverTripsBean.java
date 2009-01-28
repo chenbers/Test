@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 
@@ -49,12 +50,13 @@ public class DriverTripsBean extends BaseBean
         {
             List<Trip> tempTrips = new ArrayList<Trip>();
             tempTrips = driverDAO.getTrips(navigation.getDriver().getDriverID(), getStartDate(), getEndDate());
-            logger.debug("initTrips() - " + DateUtil.convertDateToSeconds(getStartDate()) + " - " + DateUtil.convertDateToSeconds(getStartDate()));
+            logger.debug("initTrips() - " + DateUtil.convertDateToSeconds(getStartDate()) + " - " + DateUtil.convertDateToSeconds(getEndDate()));
             
             selectedTrips = new ArrayList<TripDisplay>();
             for (Trip trip : tempTrips)
             {
                 trips.add(0, new TripDisplay(trip, navigation.getDriver().getPerson().getTimeZone()));
+                //logger.debug("TRIP " + DateUtil.convertDateToSeconds(trip.getStartTime()) + " - " + DateUtil.convertDateToSeconds(trip.getEndTime()));
             }
     
             numTrips = trips.size();
@@ -142,7 +144,6 @@ public class DriverTripsBean extends BaseBean
             calendar.set(Calendar.SECOND, 0);
             startDate = calendar.getTime();
         }
-        
         return startDate;
     }
 
@@ -156,19 +157,29 @@ public class DriverTripsBean extends BaseBean
         if(endDate == null)
         {
             // Set end date to now using driver's time zone.
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeZone(navigation.getDriver().getPerson().getTimeZone());
-            endDate = calendar.getTime();
+            endDate = SetTimeToEndOfDay(new Date(), navigation.getDriver().getPerson().getTimeZone());
         }
-        
         return endDate;
     }
 
     public void setEndDate(Date endDate)
     {
+        //Set Time to 11:59:99 PM Always
+        endDate = SetTimeToEndOfDay(endDate, navigation.getDriver().getPerson().getTimeZone());
         this.endDate = endDate;
     }
 
+    public Date SetTimeToEndOfDay(Date date, TimeZone tz)
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeZone(tz);
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND,59);
+        
+        return calendar.getTime();
+    }
     // TRIP DAO PROPERTIES
     public DriverDAO getDriverDAO()
     {
