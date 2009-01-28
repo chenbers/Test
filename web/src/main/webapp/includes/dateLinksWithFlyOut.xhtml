@@ -81,7 +81,7 @@
 				<h:panelGroup id="#{ajaxForm}_toolsId">
 					<h:graphicImage value="/images/ico_tools.png"/>
 				</h:panelGroup>
-				<rich:spacer width="2" /> <h:commandLink
+				<rich:spacer width="2" /> <a4j:commandLink
 				action="#{flyOutBean.flyNavRuleAction}">
 				<img
 					src="#{facesContext.externalContext.request.contextPath}/images/#{flyOutImage}"
@@ -93,7 +93,7 @@
 				<c:if test="#{!empty groupID}">
 					<f:param name="groupID" value="#{groupID}" />
 				</c:if>
-			</h:commandLink> </span>
+			</a4j:commandLink> </span>
 		
 			<!-- 
 			IMPORTANT!!!!!!!
