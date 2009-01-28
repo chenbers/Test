@@ -50,10 +50,13 @@
       					<f:facet name="header">
       						<h:outputText value="#{messages.events_vehicle}" />
       					</f:facet>
-      					<a4j:htmlCommandLink action="#{bean.vehicleAction}" value="#{item.vehicleName}">
+      					<a4j:htmlCommandLink action="#{bean.vehicleAction}" value="#{item.vehicleName}" rendered="#{item.vehicleName != 'None Assigned'}">
 							<f:setPropertyActionListener value="#{item.event}" target="#{bean.selectedEvent}" />
  							<f:setPropertyActionListener value="#{item.event.vehicle}" target="#{navigationBean.vehicle}" />
 						</a4j:htmlCommandLink>
+						<h:outputText rendered="#{item.vehicleName == 'None Assigned'}" 
+							value="#{item.vehicleName}">
+						</h:outputText>   
     				</rich:column>
     				<rich:column rendered="#{tableColumns['category'].visible}" 
     					sortBy="#{item.category}"  width="20%">
