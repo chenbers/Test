@@ -131,7 +131,7 @@
 							<ui:include src="/includes/dateLinksWithFlyOut.xhtml">
 								<ui:param name="ajaxForm" value="trendDateLinks"/>
 								<ui:param name="ajaxStatusID" value="trendStatus"/>
-								<ui:param name="reRenderList" value="xypanel,trendTable,trendDateLinks"/>			
+								<ui:param name="reRenderList" value="trendDateLinks,xypanel,countPanel,trendTable:items"/>			
 								<ui:param name="thirtyDaysOn" value="#{navigationBean.styleClass30Days}"/>
 								<ui:param name="threeMonthsOn" value="#{navigationBean.styleClass3Months}"/>
 								<ui:param name="sixMonthsOn" value="#{navigationBean.styleClass6Months}"/>
@@ -148,8 +148,8 @@
 					  <div class="panel_content">
 					  	<!-- Start xy graph --> 
 				<rich:panel id="xypanel" 
-					style="height:300;width:445">
-					<h:inputHidden value="#{trendBean.lineDef}" 
+					style="height:600;width:600;">
+					<h:inputHidden value="#{trendFlyoutBean.lineDef}" 
 						id="hiddenField12" />
 
 					<div id="chartdiv2" align="center"></div>
@@ -166,13 +166,12 @@
 
 		<div class="spacer"></div>
 			
-		<rich:panel>	
-			<rich:spacer height="10"/>
-								
+		<rich:panel id="countPanel" style="height:30;width:800;position:relative;">	
+					
 				<div style="text-align: right;" >													
 					<h:outputText 
-						id="countString" value="#{trendBean.countString}"/>
-					<rich:spacer width="10"/>
+						id="countString" value="#{trendFlyoutBean.countString}">
+					</h:outputText>						
 				</div>					
 													
 		</rich:panel>					
@@ -181,14 +180,11 @@
 		
 			<h:form id="trendTable">
 							
-					<rich:datascroller id="topScroller" for="items" immediate="true"
-        				scrollerListener="#{trendBean.scrollerListener}" maxPages="5"
-        				reRender="bottomScroller,countString,starter,items,xypanel">        			
-        			</rich:datascroller>	
+
 						        							
    						<h:inputHidden id="hiddenGroupID" value="#{navigationBean.groupID}"/>   											
 				
-						<rich:dataTable value="#{trendBean.scoreableEntities}" id="items"
+						<rich:dataTable value="#{trendFlyoutBean.scoreableEntities}" id="items"
 							var="item" styleClass="datagrid"
 							rowClasses="trendTableOdd,trendTableEven" 
 							cellspacing="1" width="100%">
@@ -202,13 +198,13 @@
 									style="background-color:#{item.colorKey};border-style:solid;border-width:1px;border-color:#000000"></rich:spacer>
 							</rich:column>
 							<rich:column	
-								headerClass="sortable-text #{trendBean.sortItFirst eq 'true'? (trendBean.navigation.sortedFirst eq 'false' ? 'forwardSort' : 'reverseSort') : ''}">
+								headerClass="sortable-text #{trendFlyoutBean.sortItFirst eq 'true'? (trendFlyoutBean.navigation.sortedFirst eq 'false' ? 'forwardSort' : 'reverseSort') : ''}">
 								<f:facet name="header">
 									<a4j:commandLink 
 										value="#{messages.trendReport_header_divisionTeam}" 
 										reRender="xypanel,items">
-										<f:setPropertyActionListener target="#{trendBean.sortItFirst}" value="true" />
-										<f:setPropertyActionListener target="#{trendBean.sortItSecond}" value="false" />														
+										<f:setPropertyActionListener target="#{trendFlyoutBean.sortItFirst}" value="true" />
+										<f:setPropertyActionListener target="#{trendFlyoutBean.sortItSecond}" value="false" />														
 									</a4j:commandLink>
 								</f:facet>
 								<h:outputLink value="#{item.goTo}">
@@ -218,13 +214,13 @@
 							</rich:column>
 								
 							<rich:column width="73"
-								headerClass="sortable-text #{trendBean.sortItSecond eq 'true'? (trendBean.navigation.sortedSecond eq 'false' ? 'forwardSort' : 'reverseSort') : ''}">
+								headerClass="sortable-text #{trendFlyoutBean.sortItSecond eq 'true'? (trendFlyoutBean.navigation.sortedSecond eq 'false' ? 'forwardSort' : 'reverseSort') : ''}">
 								<f:facet name="header">
 									<a4j:commandLink 
 										value="#{messages.trendReport_header_score}" 
 										reRender="xypanel,items">
-										<f:setPropertyActionListener target="#{trendBean.sortItSecond}" value="true" />		
-										<f:setPropertyActionListener target="#{trendBean.sortItFirst}" value="false" />												
+										<f:setPropertyActionListener target="#{trendFlyoutBean.sortItSecond}" value="true" />		
+										<f:setPropertyActionListener target="#{trendFlyoutBean.sortItFirst}" value="false" />												
 									</a4j:commandLink>
 								</f:facet>
 								<iwi:scoreBox style="#{item.style}" score="#{item.se.score}"/>
@@ -232,10 +228,7 @@
 							</rich:column>
 						</rich:dataTable>				
 				
-				<rich:datascroller id="bottomScroller" for="items" immediate="true"
-    				scrollerListener="#{trendBean.scrollerListener}" maxPages="5"
-        			reRender="topScroller,countString,starter,items,xypanel">        			
-        		</rich:datascroller>  
+
         			
 			</h:form> 
 
