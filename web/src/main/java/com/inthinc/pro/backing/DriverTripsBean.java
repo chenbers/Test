@@ -49,7 +49,8 @@ public class DriverTripsBean extends BaseBean
         {
             List<Trip> tempTrips = new ArrayList<Trip>();
             tempTrips = driverDAO.getTrips(navigation.getDriver().getDriverID(), getStartDate(), getEndDate());
-    
+            logger.debug("initTrips() - " + DateUtil.convertDateToSeconds(getStartDate()) + " - " + DateUtil.convertDateToSeconds(getStartDate()));
+            
             selectedTrips = new ArrayList<TripDisplay>();
             for (Trip trip : tempTrips)
             {
@@ -72,7 +73,6 @@ public class DriverTripsBean extends BaseBean
     {
         if(violationEvents.size() > 1) return;
         
-        logger.debug("Get Events");
         List<Integer> vioTypes = new ArrayList<Integer>();
         vioTypes.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
         vioTypes.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
@@ -83,7 +83,9 @@ public class DriverTripsBean extends BaseBean
 
         // TODO use one list. add idle events and sort by time.  JSF to check event type for which image to use.
         violationEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), start, end, vioTypes);
-
+        logger.debug("initViolations() - " + DateUtil.convertDateToSeconds(start) + " - " + DateUtil.convertDateToSeconds(end));
+        
+        
         //Lookup Addresses for events
         AddressLookup lookup = new AddressLookup();
         for (Event event: violationEvents)
@@ -115,8 +117,10 @@ public class DriverTripsBean extends BaseBean
                       
         List<Event> tmpIdleEvents = new ArrayList<Event>();
         tmpIdleEvents = eventDAO.getEventsForDriver(
-                                 navigation.getDriver().getDriverID(), startDate, endDate, idleTypes);        
+                                 navigation.getDriver().getDriverID(), getStartDate(), getEndDate(), idleTypes);        
 
+        logger.debug("generateStats() - " + DateUtil.convertDateToSeconds(getStartDate()) + " - " + DateUtil.convertDateToSeconds(getStartDate()));
+                
         for (Event event : tmpIdleEvents)
         {
             idleSeconds += ((IdleEvent) event).getHighIdle();

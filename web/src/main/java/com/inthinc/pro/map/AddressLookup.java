@@ -20,7 +20,7 @@ public class AddressLookup
 
     public AddressLookup() 
     {
-        logger.debug("AddressLookup - constructor");
+        //logger.debug("AddressLookup - constructor");
       mapServerURLString = "http://testteen.iwiglobal.com:8081/geonames/servlet/iwiglobal?srv=findNearbyAddress";
 
     }
