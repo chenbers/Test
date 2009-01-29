@@ -491,9 +491,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             if ((person.getPassword() != null) && (person.getPassword().length() > 0))
                 person.getUser().setPassword(passwordEncryptor.encryptPassword(person.getPassword()));
 
-            if ((person.getDriver() != null) && (person.getDriver().getRFID() == null))
-                person.getDriver().setRFID(0L);
-
+            // null out the user/driver before saving
             if (!person.isUserSelected() && (person.getUser() != null))
             {
                 if (person.getUser().getUserID() != null)
@@ -507,10 +505,19 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 person.setDriver(null);
             }
 
+            // a null RFID is zero for the DB
+            if ((person.getDriver() != null) && (person.getDriver().getRFID() == null))
+                person.getDriver().setRFID(0L);
+
+            // insert or update
             if (create)
                 person.setPersonID(personDAO.create(getAccountID(), person));
             else
                 personDAO.update(person);
+
+            // a zero RFID is back to null
+            if ((person.getDriver() != null) && (person.getDriver().getRFID() == 0))
+                person.getDriver().setRFID(null);
 
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "person_added" : "person_updated", person.getFirst(), person.getLast());
