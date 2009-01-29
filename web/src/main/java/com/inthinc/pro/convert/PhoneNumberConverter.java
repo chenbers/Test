@@ -17,15 +17,26 @@ public class PhoneNumberConverter extends BaseConverter
         String number = getDigitsOnly(value.toString());
         if (number.length() == 10)
         {
-            return addDashes(number);
+            return makePretty(number);
         }
         
         return number;
     }
     
+    /**
+     * returns 888-111-2222
+     */
     public String addDashes(String s)
     {
         return s.substring(0, 3) + "-" + s.substring(3, 6) + "-" + s.substring(6, 10);
+    }
+    
+    /**
+     * returns (888) 111-2222
+     */
+    public String makePretty(String s)
+    {
+        return "(" + s.substring(0, 3) + ") " + s.substring(3, 6) + "-" + s.substring(6, 10);
     }
 
     public String getDigitsOnly(String s)
