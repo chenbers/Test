@@ -304,7 +304,8 @@
 											<script type="text/javascript">
 												var targetElement1 = document.getElementById("hiddenField1");
 												var pie1 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "450", "450", "0", "0");										
-												pie1.setDataXML(targetElement1.value);									   	   
+												pie1.setDataXML(targetElement1.value);		
+												pie1.setTransparent(true);							   	   
 												pie1.render("overall_pie");
 											</script>
 					                    </td>
@@ -327,7 +328,8 @@
 											<script type="text/javascript">
 												var targetElement2 = document.getElementById("hiddenField2");
 												var pie2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "220", "180", "0", "0");										
-												pie2.setDataXML(targetElement2.value);									   	   
+												pie2.setDataXML(targetElement2.value);	
+												pie2.setTransparent(true);								   	   
 												pie2.render("style_pie");
 											</script>
                               </td>
@@ -338,7 +340,8 @@
 											<script type="text/javascript">
 												var targetElement3 = document.getElementById("hiddenField3");
 												var pie3 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "220", "180", "0", "0");										
-												pie3.setDataXML(targetElement3.value);									   	   
+												pie3.setDataXML(targetElement3.value);	
+												pie3.setTransparent(true);								   	   
 												pie3.render("seatBelt_pie");
 											</script>
                               </td>
@@ -349,7 +352,8 @@
 											<script type="text/javascript">
 												var targetElement4 = document.getElementById("hiddenField4");
 												var pie4 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "220", "180", "0", "0");										
-												pie4.setDataXML(targetElement4.value);									   	   
+												pie4.setDataXML(targetElement4.value);	
+												pie4.setTransparent(true);								   	   
 												pie4.render("speed_pie");
 											</script>
 
