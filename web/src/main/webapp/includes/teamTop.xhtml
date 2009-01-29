@@ -21,8 +21,8 @@
 		<h:form
 		id="teamTopTable">
 		<rich:dataTable value="#{topScores}" id="items"
-			var="item" styleClass="datagrid"
-			rowClasses="trendTableOdd,trendTableEven" cellspacing="1" rows="5"
+			var="item" styleClass="datagrid" rows="5"
+			rowClasses="trendTableOdd,trendTableEven" cellspacing="1"
 			width="100%" binding="#{teamTopDriversTable}">
 
 			<!-- Data -->
@@ -37,7 +37,7 @@
 							<h:outputText value="#{messages.teamTop_driver}" />
 						</f:facet>
 						<a4j:htmlCommandLink action="go_driver" value="#{item.driverName}">
-							<f:setPropertyActionListener value="#{item.driverScore.driver}" target="#{teamTopBean.navigation.driver}" />
+							<f:setPropertyActionListener value="#{item.driverScore.driver}" target="#{navigationBean.driver}" />
 						</a4j:htmlCommandLink>
 					</rich:column>
 					<rich:column width="10%" sortBy="#{item.driverScore.score}" >
@@ -77,8 +77,8 @@
 	<h:form
 		id="teamBottomTable">
 		<rich:dataTable value="#{bottomScores}" id="items"
-			var="item" styleClass="datagrid"
-			rowClasses="trendTableOdd,trendTableEven" cellspacing="1" rows="10"
+			var="item" styleClass="datagrid" rows="5"
+			rowClasses="trendTableOdd,trendTableEven" cellspacing="1"
 			width="100%" binding="#{teamBottomDriversTable}">
 
 			<!-- Data -->
@@ -94,7 +94,7 @@
 							<h:outputText value="Driver" />
 						</f:facet>
 						<a4j:htmlCommandLink action="go_driver" value="#{item.driverName}">
-							<f:setPropertyActionListener value="#{item.driverScore.driver}" target="#{teamTopBean.navigation.driver}" />
+							<f:setPropertyActionListener value="#{item.driverScore.driver}" target="#{navigationBean.driver}" />
 						</a4j:htmlCommandLink>
 
 					</rich:column>

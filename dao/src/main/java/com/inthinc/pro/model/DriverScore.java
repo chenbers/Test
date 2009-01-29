@@ -46,7 +46,14 @@ public class DriverScore implements Comparable<DriverScore>
     @Override
     public int compareTo(DriverScore o)
     {
-        return score.compareTo(o.getScore());
+        Integer scoreResult = score.compareTo(o.getScore());
+        
+        if(scoreResult != 0 )
+            return score.compareTo(o.getScore());
+        else
+            return driver.getPerson().getLast().compareTo(o.getDriver().getPerson().getLast());
+        
+        //return score.compareTo(o.getScore());
     }
 
 }
