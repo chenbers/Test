@@ -22,7 +22,7 @@
 		<t:saveState value="#{organizationBean.topLevelNodes}"/>
 		<t:saveState value="#{organizationBean.groupState}"/>
 		<t:saveState value="#{organizationBean.selectedGroupNode}"/>
-		<t:saveState value="#{organizationBean.inProgressGroupNode}"/>
+		<t:saveState value="#{organizationBean.tempGroupTreeNode}"/>
 		<t:saveState value="#{organizationBean.selectedParentGroup}"/>
 		<t:saveState value="#{organizationBean.treeStateMap}"/>
 		<t:saveState value="#{organizationBean.organizationHierarchy}"/>
@@ -34,8 +34,8 @@
 					src="/includes/adminSideNav.xhtml">
 					<ui:param name="selectedAction" value="go_adminOrganization" />
 				</ui:include></td>
-				<td valign="top"><!-- START PANEL --> <a4j:form id="display-form">
-
+				<td valign="top"><!-- START PANEL --> 
+				  <a4j:form id="display-form">
 					<div class="">
 					<div class="panel_nw">
 					<div class="panel_title"><span class="admin"><h:outputText
@@ -157,7 +157,7 @@
 											rendered="#{organizationBean.groupState ne 'VIEW'}">
 											<ui:include src="/includes/admin/groupEdit.xhtml">
 												<ui:param name="groupTreeNode"
-													value="#{organizationBean.inProgressGroupNode}" />
+													value="#{organizationBean.tempGroupTreeNode}" />
 											</ui:include>
 
 										</ui:fragment>

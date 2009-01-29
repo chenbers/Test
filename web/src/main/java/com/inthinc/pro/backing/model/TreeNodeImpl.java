@@ -416,7 +416,7 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable
     {
         if (treeNodeType == null)
         {
-            if (group != null && treeNodeType == null)
+            if (group != null && treeNodeType == null && group.getType() != null)
             {
                 switch (group.getType()) {
                 case FLEET:

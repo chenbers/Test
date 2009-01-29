@@ -11,11 +11,11 @@
 	<h:panelGroup id="buttonPanel">
 		<ul id="grid_nav_dark">
 			<li class="r">
-				<a4j:commandButton rendered="#{organizationBean.groupState ne 'VIEW'}"
+				<h:commandButton rendered="#{organizationBean.groupState ne 'VIEW'}"
 					action="#{organizationBean.view}"
 					reRender="groupPanel,organizationTreePanel" immediate="true" styleClass="left">
 					<span class="cancel"><h:outputText
-						value="#{messages.button_cancel}" /></span></a4j:commandButton>
+						value="#{messages.button_cancel}" /></span></h:commandButton>
 			</li>
 			<li class="r">
 				<a4j:commandButton rendered="#{organizationBean.groupState eq 'EDIT'}"
@@ -90,7 +90,8 @@
 					<span class="required">*</span></td>
 					<td>
 						<rich:message for="group_name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-						<h:inputText value="#{groupTreeNode.group.name}" id="group_name" tabindex="3"   styleClass="text" size="30" maxlength="30" required="true" requiredMessage="#{messages.required}" /> 
+						<h:inputText value="#{groupTreeNode.group.name}" id="group_name" tabindex="3"   styleClass="text" size="30" maxlength="30" required="true" requiredMessage="#{messages.required}">
+						</h:inputText> 
 					</td>
 				</tr>
 				<tr>
@@ -132,11 +133,11 @@
 
 		<ul id="grid_nav_dark">
 			<li class="r">
-				<a4j:commandButton rendered="#{organizationBean.groupState ne 'VIEW'}"
+				<h:commandButton rendered="#{organizationBean.groupState ne 'VIEW'}"
 					action="#{organizationBean.view}"
 					reRender="groupPanel,organizationTreePanel" immediate="true" styleClass="left">
 					<span class="cancel"><h:outputText
-						value="#{messages.button_cancel}" /></span></a4j:commandButton>
+						value="#{messages.button_cancel}" /></span></h:commandButton>
 			</li>
 			<li class="r">
 				<a4j:commandButton rendered="#{organizationBean.groupState eq 'EDIT'}"

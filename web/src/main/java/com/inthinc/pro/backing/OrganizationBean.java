@@ -66,8 +66,9 @@ public class OrganizationBean extends BaseBean
      */
     private State groupState;
     private Person selectedPerson;
-    private TreeNodeImpl inProgressGroupNode;
+    private TreeNodeImpl tempGroupTreeNode;
     private Group selectedParentGroup;
+    
 
     public OrganizationBean()
     {
@@ -219,7 +220,7 @@ public class OrganizationBean extends BaseBean
 
     private void cleanFields()
     {
-        inProgressGroupNode = null;
+        tempGroupTreeNode = null;
         selectedParentGroup = null;
     }
 
@@ -227,18 +228,19 @@ public class OrganizationBean extends BaseBean
     {
         groupState = State.EDIT;
         logger.debug("editing " + selectedGroupNode.getLabel());
-        inProgressGroupNode = new TreeNodeImpl(new Group(), organizationHierarchy);
-        copyGroupTreeNode(selectedGroupNode, inProgressGroupNode);
+        tempGroupTreeNode = new TreeNodeImpl(new Group(), organizationHierarchy);
+        copyGroupTreeNode(selectedGroupNode, tempGroupTreeNode,false);
         if (selectedGroupNode.getParent() != null && selectedGroupNode.getParent().getGroup() != null)
         {
             selectedParentGroup = selectedGroupNode.getParent().getGroup();
         }
     }
 
-    public void view()
+    public String view()
     {
         groupState = State.VIEW;
-        cleanFields(); // Clear out the group that was being worked on.
+        cleanFields(); // Clear out the group that was being worked on
+        return "go_adminOrganization";
     }
 
     /*
@@ -250,7 +252,7 @@ public class OrganizationBean extends BaseBean
         logger.debug("Adding New Group");
         selectedParentGroup = selectedGroupNode.getGroup();
 
-        inProgressGroupNode = createNewGroupNode();
+        tempGroupTreeNode = createNewGroupNode();
 
     }
 
@@ -264,17 +266,9 @@ public class OrganizationBean extends BaseBean
      */
     public void update()
     {
-        if (validate(inProgressGroupNode))
+        if (validate(tempGroupTreeNode))
         {
-            copyGroupTreeNode(inProgressGroupNode, selectedGroupNode);
-            TreeNodeImpl parentNode = null;
-            if (selectedParentGroup != null)
-            {
-                parentNode = topLevelNode.findTreeNodeByGroupId(selectedParentGroup.getGroupID());
-                selectedGroupNode.getGroup().setParentID(parentNode.getGroup().getGroupID());
-                selectedGroupNode.setParent(parentNode);
-            }
-
+            copyGroupTreeNode(tempGroupTreeNode, selectedGroupNode,true);
             groupDAO.update(selectedGroupNode.getGroup());
             treeStateMap.put(selectedParentGroup.getGroupID(), Boolean.TRUE);
             getSelectedGroupNode().setTreeNodeType(null); //Reset the type
@@ -293,24 +287,22 @@ public class OrganizationBean extends BaseBean
     {
         TreeNodeImpl parentNode = null;
         parentNode = topLevelNode.findTreeNodeByGroupId(selectedParentGroup.getGroupID());
-        inProgressGroupNode.setParent(parentNode);
-        inProgressGroupNode.getGroup().setParentID(parentNode.getGroup().getGroupID());
-        // treeStateMap.put(selectedGroupNode.getGroup().getGroupID(), true);
-        if (validate(inProgressGroupNode))
+        tempGroupTreeNode.setParent(parentNode);
+        tempGroupTreeNode.getGroup().setParentID(parentNode.getGroup().getGroupID());
+        tempGroupTreeNode.setLabel(tempGroupTreeNode.getGroup().getName());
+        if (validate(tempGroupTreeNode))
         {
-            Integer id = groupDAO.create(getAccountID(), inProgressGroupNode.getGroup());
+            Integer id = groupDAO.create(getAccountID(), tempGroupTreeNode.getGroup());
             if (id > 0)
             {
-                inProgressGroupNode.setLabel(inProgressGroupNode.getGroup().getName());
-                inProgressGroupNode.getGroup().setGroupID(id);
-                inProgressGroupNode.setId(id);
-                setSelectedGroupNode(inProgressGroupNode);
+                tempGroupTreeNode.getGroup().setGroupID(id);
+                tempGroupTreeNode.setId(id);
+                setSelectedGroupNode(tempGroupTreeNode);
                 updateUsersGroupHeirarchy();
-                // topLevelNode = null; dont' think we need this and I beleive it is causing problems
-                this.addInfoMessage(selectedGroupNode.getGroup().getName() + " " + MessageUtil.getMessageString("group_save_confirmation"));
-                groupState = State.VIEW;
                 treeStateMap.put(selectedParentGroup.getGroupID(), Boolean.TRUE);
                 cleanFields();
+                this.addInfoMessage(selectedGroupNode.getGroup().getName() + " " + MessageUtil.getMessageString("group_save_confirmation"));
+                groupState = State.VIEW;
             }
             else
             {
@@ -386,7 +378,7 @@ public class OrganizationBean extends BaseBean
         return valid;
     }
 
-    private void copyGroupTreeNode(TreeNodeImpl copyFromNode, TreeNodeImpl copyToNode)
+    private void copyGroupTreeNode(TreeNodeImpl copyFromNode, TreeNodeImpl copyToNode,boolean updateTree)
     {
         Group group = copyToNode.getGroup();
         group.setAccountID(getAccountID());
@@ -406,6 +398,13 @@ public class OrganizationBean extends BaseBean
         copyToNode.setTreeNodeType(copyFromNode.getTreeNodeType());
         copyToNode.setDriverDAO(driverDAO);
         copyToNode.setVehicleDAO(vehicleDAO);
+        TreeNodeImpl parentNode = null;
+        if (selectedParentGroup != null && updateTree)
+        {
+            parentNode = topLevelNode.findTreeNodeByGroupId(selectedParentGroup.getGroupID());
+            copyToNode.getGroup().setParentID(parentNode.getGroup().getGroupID());
+            copyToNode.setParent(parentNode);
+        }
     }
 
     private TreeNodeImpl createNewGroupNode()
@@ -556,14 +555,14 @@ public class OrganizationBean extends BaseBean
         this.selectedPerson = selectedPerson;
     }
 
-    public TreeNodeImpl getInProgressGroupNode()
+    public TreeNodeImpl getTempGroupTreeNode()
     {
-        return inProgressGroupNode;
+        return tempGroupTreeNode;
     }
 
-    public void setInProgressGroupNode(TreeNodeImpl inProgressGroupNode)
+    public void setTempGroupTreeNode(TreeNodeImpl tempGroupTreeNode)
     {
-        this.inProgressGroupNode = inProgressGroupNode;
+        this.tempGroupTreeNode = tempGroupTreeNode;
     }
 
     public DriverDAO getDriverDAO()
@@ -625,5 +624,6 @@ public class OrganizationBean extends BaseBean
     {
         this.organizationHierarchy = organizationHierarchy;
     }
+
 
 }
