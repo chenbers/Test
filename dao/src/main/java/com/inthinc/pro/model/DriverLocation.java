@@ -9,7 +9,7 @@ public class DriverLocation
     private Integer vehicleID;
     
     @Column(name = "vType")
-    private VehicleType vehicleType;     // 0=light, 1-medium, 2-heavy
+    private VehicleType vehicleType;     // 0=light, 1-medium, 2-heavy  - TODO: This field is not being returned from the backend
     private String name;                 // person.first " " person.last
     private String homePhone;            // person.homePhone
     private String workPhone;            // person.workPhone
@@ -44,6 +44,7 @@ public class DriverLocation
     {
         return vehicleType;
     }
+    
     public void setVehicleType(VehicleType type)
     {
         vehicleType = type;

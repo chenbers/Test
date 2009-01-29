@@ -33,6 +33,7 @@ public class LiveFleetBean extends BaseBean
     private IconMap mapIconMap;
     private IconMap legendIconMap;
     private GroupHierarchy organizationHierarchy;
+    private Integer selectedVehicleID;
 
     public void initBean()
     {
@@ -44,11 +45,6 @@ public class LiveFleetBean extends BaseBean
 
     }
 
-    public void FormAction()
-    {
-        logger.debug("ACTION driver size " + drivers.size());
-    }
-
     private void populateDriverLocations()
     {
         logger.debug("getDriver hit.");
@@ -56,7 +52,7 @@ public class LiveFleetBean extends BaseBean
 
         // Get drivers
         Group fleetGroup = organizationHierarchy.getTopGroup();
-        setDrivers(driverDAO.getDriversNearLoc(fleetGroup.getGroupID(), maxCount, addressLatLng.getLat(), addressLatLng.getLng()));
+        setDrivers(vehicleDAO.getVehiclesNearLoc(fleetGroup.getGroupID(), maxCount, addressLatLng.getLat(), addressLatLng.getLng()));
         setNumRecords(drivers.size());
 
         logger.debug("getDrivers retieved: " + drivers.size());
@@ -153,6 +149,16 @@ public class LiveFleetBean extends BaseBean
         this.navigation = navigation;
     }
 
+    public Integer getSelectedVehicleID()
+    {
+        return selectedVehicleID;
+    }
+
+    public void setSelectedVehicleID(Integer selectedVehicleID)
+    {
+        this.selectedVehicleID = selectedVehicleID;
+    }
+
     // MAX DRIVERS COUNT PROPERTIES
     public Integer getMaxCount()
     {
@@ -195,5 +201,11 @@ public class LiveFleetBean extends BaseBean
         navigation.setDriver(driverDAO.findByID(Integer.parseInt(driverID)));
 
         return "go_driver";
+    }
+    
+    public String vehicleDetailAction()
+    {
+        navigation.setVehicle(vehicleDAO.findByID(selectedVehicleID));
+        return "go_vehicle";
     }
 }

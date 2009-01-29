@@ -163,7 +163,11 @@
 					<br />
 					<b>Work:</b> <h:outputText value="#{driver.workPhone}" converter="PhoneNumberConverter" /> <br />
 					<b>Home:</b> <h:outputText value="#{driver.homePhone}" converter="PhoneNumberConverter" /> <br />
-					<b>Vehicle Type:</b> #{driver.vehicleType}
+					<b>Vehicle ID:</b>
+					<a4j:commandLink action="#{liveFleetBean.vehicleDetailAction}" value="#{driver.vehicleID}">
+ 							<f:setPropertyActionListener value="#{driver.vehicleID}" target="#{liveFleetBean.selectedVehicleID}" />
+					</a4j:commandLink>
+	
 				</div>
 		</ui:repeat>
 	</rich:panel>

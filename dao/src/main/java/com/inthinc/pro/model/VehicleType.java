@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public enum VehicleType implements BaseEnum
 {
-    LIGHT(0, "LIGHT"), MEDIUM(1, "MEDIUM"), HEAVY(2, "HEAVY");
+    LIGHT(0, "Light"), MEDIUM(1, "Medium"), HEAVY(2, "Heavy");
 
     private int    code;
     private String description;
@@ -19,12 +19,12 @@ public enum VehicleType implements BaseEnum
     @Override
     public Integer getCode()
     {
-        return code;
+        return this.code;
     }
 
     public String getDescription()
     {
-        return description;
+        return this.description;
     }
 
     private static final HashMap<Integer, VehicleType> lookup = new HashMap<Integer, VehicleType>();
