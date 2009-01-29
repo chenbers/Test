@@ -54,7 +54,7 @@ public class OrganizationBeanTest extends BaseBeanTest
         organizationBean.getParentGroups();
         organizationBean.getPeopleSelectItems();
         organizationBean.getGroupTypeList();
-
+        
         Group selectedGroup = organizationBean.getTempGroupTreeNode().getGroup();
         selectedGroup.setAccountID(1);
         selectedGroup.setDescription("Test EDIT");

@@ -68,7 +68,6 @@ public class OrganizationBean extends BaseBean
     private Person selectedPerson;
     private TreeNodeImpl tempGroupTreeNode;
     private Group selectedParentGroup;
-    
 
     public OrganizationBean()
     {
@@ -144,7 +143,8 @@ public class OrganizationBean extends BaseBean
             if (treeNode.getGroup() != null && treeStateMap.get(treeNode.getGroup().getGroupID()) != null && treeStateMap.get(treeNode.getGroup().getGroupID()))
             {
                 result = true;
-            }else if(treeNode.getGroup() != null && treeNode.getParent().getGroup() == null) 
+            }
+            else if (treeNode.getGroup() != null && treeNode.getParent().getGroup() == null)
             {
                 result = true;
             }
@@ -229,7 +229,7 @@ public class OrganizationBean extends BaseBean
         groupState = State.EDIT;
         logger.debug("editing " + selectedGroupNode.getLabel());
         tempGroupTreeNode = new TreeNodeImpl(new Group(), organizationHierarchy);
-        copyGroupTreeNode(selectedGroupNode, tempGroupTreeNode,false);
+        copyGroupTreeNode(selectedGroupNode, tempGroupTreeNode, false);
         if (selectedGroupNode.getParent() != null && selectedGroupNode.getParent().getGroup() != null)
         {
             selectedParentGroup = selectedGroupNode.getParent().getGroup();
@@ -268,10 +268,13 @@ public class OrganizationBean extends BaseBean
     {
         if (validate(tempGroupTreeNode))
         {
-            copyGroupTreeNode(tempGroupTreeNode, selectedGroupNode,true);
+            copyGroupTreeNode(tempGroupTreeNode, selectedGroupNode, true);
             groupDAO.update(selectedGroupNode.getGroup());
-            treeStateMap.put(selectedParentGroup.getGroupID(), Boolean.TRUE);
-            getSelectedGroupNode().setTreeNodeType(null); //Reset the type
+            if (selectedParentGroup != null)
+            {
+                treeStateMap.put(selectedParentGroup.getGroupID(), Boolean.TRUE);
+            }
+            getSelectedGroupNode().setTreeNodeType(null); // Reset the type
             updateUsersGroupHeirarchy();
             this.addInfoMessage(selectedGroupNode.getGroup().getName() + " " + MessageUtil.getMessageString("group_update_confirmation"));
             groupState = State.VIEW;
@@ -346,8 +349,8 @@ public class OrganizationBean extends BaseBean
     }
 
     /**
-     * Case 1: EDIT - If there are drivers/devices/or vehicles then the group has to be a team
-     * Case 2: EDIT - If there are subordinate groups within a group, then that group cannot be a team
+     * Case 1: EDIT - If there are drivers/devices/or vehicles then the group has to be a team Case 2: EDIT - If there are subordinate groups within a group, then that group cannot
+     * be a team
      * 
      * @param treeNode
      *            treeNode containing the group to validate
@@ -369,16 +372,16 @@ public class OrganizationBean extends BaseBean
         }
 
         // Case 2
-        if (groupState == State.EDIT && treeNode.getGroup().getType() == GroupType.TEAM &&
-                !treeNode.getChildrenNodes().isEmpty()  &&treeNode.getChildrenNodes().get(0).getGroup() != null)
+        if (groupState == State.EDIT && treeNode.getGroup().getType() == GroupType.TEAM && !treeNode.getChildrenNodes().isEmpty()
+                && treeNode.getChildrenNodes().get(0).getGroup() != null)
         {
             addErrorMessage(MessageUtil.getMessageString("group_edit_error_team"));
-            valid = false;  
+            valid = false;
         }
         return valid;
     }
 
-    private void copyGroupTreeNode(TreeNodeImpl copyFromNode, TreeNodeImpl copyToNode,boolean updateTree)
+    private void copyGroupTreeNode(TreeNodeImpl copyFromNode, TreeNodeImpl copyToNode, boolean updateTree)
     {
         Group group = copyToNode.getGroup();
         group.setAccountID(getAccountID());
@@ -624,6 +627,5 @@ public class OrganizationBean extends BaseBean
     {
         this.organizationHierarchy = organizationHierarchy;
     }
-
 
 }
