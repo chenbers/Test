@@ -217,7 +217,7 @@ WWUUnm]]>
                     <url>${tomcatManagerURL}</url>
                     <server>${tomcatServerID}</server>
                     <update>true</update>
-                    <path>tiwipro</path>
+                    <path>/tiwipro</path>
                 </configuration>
             </plugin>
         </plugins>
