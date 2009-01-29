@@ -223,7 +223,7 @@
 								<table width="320" cellpadding="4" cellspacing="0" class="" id="">
 								  <tbody>
 									  <tr>
-										<td width="73">Start Date </td>
+										<td width="80">Start Date </td>
 										<td width="178">
 											<a4j:outputPanel id="calendarStart" layout="block">
 				                   		 	<rich:calendar value="#{vehicleTripsBean.startDate}"
@@ -232,7 +232,7 @@
 				               			         	showApplyButton="false" cellWidth="24px" cellHeight="22px"/>
 				           					</a4j:outputPanel> 
 										</td>
-											<td width="51"></td>
+											<td></td>
 									  </tr>
 									  <tr>
 											<td>End Date </td>
@@ -295,7 +295,7 @@
 								  <tbody>
 								  <tr>
 								    <td>Total Drive Time:</td>
-								    <td><rich:spacer width="12" /></td>
+								    <td><rich:spacer width="4" /></td>
 								    <td><h:outputText>#{vehicleTripsBean.totalDriveTime}</h:outputText></td>
 								    </tr>
 								  <tr>
@@ -462,15 +462,15 @@
 								<table width="320" id="legend" cellpadding="4" cellspacing="0">
 								  <tbody>
 								  <tr>
-									<td width="25"><img src="../images/ico_start.png" width="21" height="20" /></td>
+									<td width="25"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_start.png" width="21" height="20" /></td>
 									<td width="120">Start</td>
-								    <td width="30"><img src="../images/ico_idle.png" width="20" height="20" /></td>
+								    <td width="30"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_idle.png" width="20" height="20" /></td>
 								    <td width="119">Engine Idle</td>
 								  </tr>
 								  <tr>
-									<td><img src="../images/ico_violation.png" width="20" height="20" /></td>
+									<td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_violation.png" width="20" height="20" /></td>
 									<td>Violation</td>
-								    <td><img src="../images/ico_end_trip.png" width="21" height="20" /></td>
+								    <td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png" width="21" height="20" /></td>
 								    <td>End</td>
 								  </tr>
 								  </tbody>
