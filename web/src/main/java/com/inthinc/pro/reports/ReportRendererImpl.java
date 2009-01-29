@@ -107,7 +107,7 @@ public class ReportRendererImpl implements ReportRenderer
             try
             {
                 out = response.getOutputStream();
-                report.exportReportToStream(FormatType.PDF, out);
+                report.exportReportToStream(FormatType.EXCEL, out);
                 
                 out.flush();
                 facesContext.responseComplete();
