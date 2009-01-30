@@ -44,10 +44,10 @@
         <c:if test="#{hours == 0}">
           <c:set var="hours" value="12" />
         </c:if>
-        <c:if test="#{value == minutes}">
+        <c:if test="#{(value % 720) == minutes}">
           <option value="#{minutes}" selected="selected"><h:outputText value="#{hours}"><f:convertNumber integerOnly="true" /></h:outputText>:<h:outputText value="#{minutes % 60}"><f:convertNumber integerOnly="true" minIntegerDigits="2" maxIntegerDigits="2" /></h:outputText></option>
         </c:if>
-        <c:if test="#{value != minutes}">
+        <c:if test="#{(value % 720) != minutes}">
           <option value="#{minutes}"><h:outputText value="#{hours}"><f:convertNumber integerOnly="true" /></h:outputText>:<h:outputText value="#{minutes % 60}"><f:convertNumber integerOnly="true" minIntegerDigits="2" maxIntegerDigits="2" /></h:outputText></option>
         </c:if>
       </c:forEach>
