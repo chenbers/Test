@@ -84,7 +84,14 @@
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_height}" /></td>
-                            <td><h:outputText value="#{(personBean.item.height - (personBean.item.height % 12)) / 12}"><f:convertNumber integerOnly="true" /></h:outputText><h:outputText value="' " /><h:outputText value="#{personBean.item.height % 12}" /><h:outputText value="&quot;" /></td>
+                            <td>
+                              <ui:fragment rendered="#{personBean.item.height > 0}">
+                                <h:outputText value="#{(personBean.item.height - (personBean.item.height % 12)) / 12}"><f:convertNumber integerOnly="true" /></h:outputText>
+                                <h:outputText value="' " />
+                                <h:outputText value="#{personBean.item.height % 12}" />
+                                <h:outputText value="&quot;" />
+                              </ui:fragment>
+                            </td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_weight}" /></td>
