@@ -38,13 +38,13 @@
                   <tr>
                     <td>#{messages.warnings_search}</td>
                     <td>
-                      <h:inputText id="searchText" value="#{warningsBean.searchText}" styleClass="text" size="25"/>
+                      <h:inputText id="searchText" value="#{warningsBean.searchText}" styleClass="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('warningsearch:searchButton').onclick(); return false; } return true;" />
                     </td>
                   </tr>
                 </table>
               </li>
 			  <li class="l">
-					<a4j:commandButton action="#{warningsBean.searchAction}" 
+					<a4j:commandButton id="searchButton" action="#{warningsBean.searchAction}" 
             					reRender="header,warningsTableForm:items,warningsTableForm:bottomScroller,warningsTableForm:topScroller" styleClass="left">
             				<span class="search">
             					<h:outputText value="#{messages.button_search}" />

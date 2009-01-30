@@ -53,13 +53,13 @@
                   											<h:outputText value="#{messages.button_search}" />
                   										</td>
                   										<td>
-                    										<h:inputText id="filterTable" value="#{vehicleReportBean.searchFor}" class="text" size="25" />
+                    										<h:inputText id="filterTable" value="#{vehicleReportBean.searchFor}" class="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('outerVehicleReport:searchButton').onclick(); return false; } return true;" />
                   										</td>
                 									</tr>
               									</table>
             								</li>
             								<li class="l">
-            									<a4j:commandButton action="#{vehicleReportBean.search}" 
+            									<a4j:commandButton id="searchButton" action="#{vehicleReportBean.search}" 
             										reRender="items,topScroller,bottomScroller,headerVehicles" styleClass="left">
             											<span class="search">
             												<h:outputText value="#{messages.button_search}" />

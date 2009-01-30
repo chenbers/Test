@@ -39,13 +39,13 @@
                   <tr>
                     <td>#{messages.redFlags_search}</td>
                     <td>
-                      <h:inputText id="searchText" value="#{redFlagsBean.searchText}" styleClass="text" size="25"/>
+                      <h:inputText id="searchText" value="#{redFlagsBean.searchText}" styleClass="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('redFlagSearch:searchButton').onclick(); return false; } return true;" />
                     </td>
                   </tr>
                 </table>
               </li>
 			  <li class="l">
-					<a4j:commandButton action="#{redFlagsBean.searchAction}" 
+					<a4j:commandButton id="searchButton" action="#{redFlagsBean.searchAction}" 
             					reRender="header,redFlagsTableForm:items,redFlagsTableForm:bottomScroller,redFlagsTableForm:topScroller" styleClass="left">
             				<span class="search">
             					<h:outputText value="#{messages.button_search}" />
