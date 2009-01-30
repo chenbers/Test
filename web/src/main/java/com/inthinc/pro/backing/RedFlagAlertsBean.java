@@ -325,7 +325,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         private static final long serialVersionUID = 8372507838051791866L;
 
         @Column(updateable = false)
-        private boolean           anytime;
+        private Boolean           anytime;
         @Column(updateable = false)
         private boolean           selected;
         @Column(updateable = false)
@@ -348,7 +348,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
 
         public boolean isAnytime()
         {
-            if (!anytime)
+            if (anytime == null)
                 anytime = BaseAdminAlertsBean.isAnytime(this);
             return anytime;
         }
@@ -362,7 +362,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         @Override
         public void setStartTOD(Integer startTOD)
         {
-            if (!anytime)
+            if (!isAnytime())
                 super.setStartTOD(startTOD);
             else
                 super.setStartTOD(BaseAlert.MIN_TOD);
@@ -371,7 +371,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         @Override
         public void setStopTOD(Integer stopTOD)
         {
-            if (!anytime)
+            if (!isAnytime())
                 super.setStopTOD(stopTOD);
             else
                 super.setStopTOD(BaseAlert.MIN_TOD);

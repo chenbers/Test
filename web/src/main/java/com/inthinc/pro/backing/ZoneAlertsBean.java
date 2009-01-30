@@ -259,7 +259,7 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
         @Column(updateable = false)
         private Zone              zone;
         @Column(updateable = false)
-        private boolean           anytime;
+        private Boolean           anytime;
         @Column(updateable = false)
         private boolean           selected;
 
@@ -289,7 +289,7 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
 
         public boolean isAnytime()
         {
-            if (!anytime)
+            if (anytime == null)
                 anytime = BaseAdminAlertsBean.isAnytime(this);
             return anytime;
         }
@@ -303,7 +303,7 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
         @Override
         public void setStartTOD(Integer startTOD)
         {
-            if (!anytime)
+            if (!isAnytime())
                 super.setStartTOD(startTOD);
             else
                 super.setStartTOD(BaseAlert.MIN_TOD);
@@ -312,7 +312,7 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
         @Override
         public void setStopTOD(Integer stopTOD)
         {
-            if (!anytime)
+            if (!isAnytime())
                 super.setStopTOD(stopTOD);
             else
                 super.setStopTOD(BaseAlert.MIN_TOD);
