@@ -93,12 +93,7 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
 
     private boolean isEmpty(Address address)
     {
-        return isEmpty(address.getAddr1()) && isEmpty(address.getAddr2()) && isEmpty(address.getCity()) && (address.getState() == null) && isEmpty(address.getZip());
-    }
-
-    private boolean isEmpty(String s)
-    {
-        return (s == null) || (s.length() == 0);
+        return (address.getAddr1() == null) && (address.getAddr2() == null) && (address.getCity() == null) && (address.getState() == null) && (address.getZip() == null);
     }
 
     @Override
