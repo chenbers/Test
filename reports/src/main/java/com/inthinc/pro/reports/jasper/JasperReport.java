@@ -70,7 +70,7 @@ public class JasperReport implements Report
                 logger.error(e);
             }
         }else{
-            logger.debug("Jasper Print is null");
+            logger.error("Jasper Print is null");
         }
     }
 

@@ -1,7 +1,12 @@
 package com.inthinc.pro.model;
 
+import java.text.NumberFormat;
+
 public class IdlingReportItem extends BaseEntity
 {
+   
+    private static final long serialVersionUID = 835696282264901782L;
+    
     private String group;
     private Integer groupID;
     private Driver driver;
@@ -147,6 +152,34 @@ public class IdlingReportItem extends BaseEntity
     public void setDriveTimeSort(Float driveTimeSort)
     {
         this.driveTimeSort = driveTimeSort;
+    } 
+    
+    public String getTotalHrsAsString()
+    {
+        return floatToString(getTotalHrs());
     }
     
+    public String getLowHrsAsString()
+    {
+        return floatToString(getLowHrs());
+    }
+    
+    public String getHighHrsAsString()
+    {
+        return floatToString(getHighHrs());
+    }
+    
+    public String getDriveTimeAsString()
+    {
+        return floatToString(getDriveTime());
+    }
+    
+    private String floatToString(Float flt)
+    {
+       
+            NumberFormat format = NumberFormat.getInstance();
+            format.setMaximumFractionDigits(2);
+            format.setMinimumFractionDigits(2);
+            return format.format(flt);
+    }
 }
