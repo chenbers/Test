@@ -153,22 +153,24 @@
 	<!-- BEGIN GOOGLE MAP POPUPS -->
 	<h:form>
 	<rich:panel id="mapPopups">
-		<ui:repeat value="#{liveFleetBean.drivers}" var="driver">
-				<div id="#{driver.driverID}" style="display: none">
-					<strong>
+		<ui:repeat value="#{liveFleetBean.drivers}" var="driver">		
+			<div id="#{driver.driverID}" style="display: none">
+				<h:panelGrid columns="2">
+					<f:facet name="header">
 						<h:commandLink value="#{driver.name}" action="#{liveFleetBean.driverAction}">
-							<f:param name="id" value="#{driver.driverID}" />
+							<f:setPropertyActionListener value="driver.driverID" target="#{liveFleetBean.selectedVehicleID}" />
 						</h:commandLink>
-					</strong>
-					<br />
-					<b>Work:</b> <h:outputText value="#{driver.workPhone}" converter="PhoneNumberConverter" /> <br />
-					<b>Home:</b> <h:outputText value="#{driver.homePhone}" converter="PhoneNumberConverter" /> <br />
-					<b>Vehicle ID:</b>
-					<a4j:commandLink action="#{liveFleetBean.vehicleDetailAction}" value="#{driver.vehicleID}">
+					</f:facet>
+					<h:outputText value="#{messages.livefleet_work}:"/>
+					<h:outputText value="#{driver.workPhone}" converter="PhoneNumberConverter" />
+					<h:outputText value="#{messages.livefleet_home}:"/>
+					<h:outputText value="#{driver.homePhone}" converter="PhoneNumberConverter" />
+					<h:outputText value="#{messages.livefleet_vehicleid}:"/>					
+					<h:commandLink action="#{liveFleetBean.vehicleDetailAction}" value="#{driver.vehicleID}">
  							<f:setPropertyActionListener value="#{driver.vehicleID}" target="#{liveFleetBean.selectedVehicleID}" />
-					</a4j:commandLink>
-	
-				</div>
+					</h:commandLink>
+				</h:panelGrid>
+			</div>
 		</ui:repeat>
 	</rich:panel>
 	</h:form>
