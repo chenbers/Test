@@ -321,13 +321,11 @@
         <dependency>
             <groupId>com.inthinc.pro.dao</groupId>
             <artifactId>dao</artifactId>
-            <version>0.0.13-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.inthinc.pro.reports</groupId>
             <artifactId>reports</artifactId>
-            <version>0.0.13-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

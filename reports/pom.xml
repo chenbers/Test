@@ -21,7 +21,6 @@
     <dependency>
          <groupId>com.inthinc.pro.dao</groupId>
          <artifactId>dao</artifactId>
-         <version>0.0.12-SNAPSHOT</version>
          <scope>compile</scope>
      </dependency>
      <dependency>

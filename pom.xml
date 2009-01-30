@@ -292,6 +292,11 @@ WWUUnm]]>
                 <artifactId>dao</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.inthinc.pro.reports</groupId>
+                <artifactId>reports</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
