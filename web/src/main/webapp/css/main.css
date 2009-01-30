@@ -302,17 +302,18 @@ body {
 	color: #333;
 	}
 	
-.panel_title span.panel_links a:hover {
+.panel_title span.panel_links_ico a:hover {
 	color: #333;
 	}
 	
-.panel_title span.panel_links a:active {
+.panel_title span.panel_links_ico a:active {
 	color: #333;
 	}
 	
 .panel_title span.panel_links_ico a:visited {
 	color: #333;
 	}
+	
 .panel_title span.panel_links_ico a.on {
 	color: #6B9D1B;
 	font-weight: bold;
