@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
 import com.inthinc.pro.backing.ui.EventReportItem;
+import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.model.Event;
@@ -17,7 +18,7 @@ import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.TableType;
 
-public class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions
+public class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions<EventReportItem>
 {
     private static final Logger     logger                  = Logger.getLogger(EventsBean.class);
 
@@ -41,7 +42,7 @@ public class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions
     
     private String searchText;
     
-//    private TablePref tablePref;
+    private TablePref<EventReportItem> tablePref;
 
     // package level -- so unit test can get it
     static final List<String>       AVAILABLE_COLUMNS;
@@ -59,11 +60,32 @@ public class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions
 
     }
 
+    @Override
     public void initBean()
     {
         super.initBean();
+        tablePref = new TablePref<EventReportItem>(this);
     }
-    
+
+    public TablePref<EventReportItem> getTablePref()
+    {
+        return tablePref;
+    }
+
+    public void setTablePref(TablePref<EventReportItem> tablePref)
+    {
+        this.tablePref = tablePref;
+    }
+
+    public Map<String, TableColumn> getTableColumns()
+    {
+        return tablePref.getTableColumns();
+    }
+    public void setTableColumns(Map<String, TableColumn> tableColumns)
+    {
+        tablePref.setTableColumns(tableColumns);
+    }
+
     public void scrollerListener(DataScrollerEvent event)
     {
 
@@ -141,18 +163,14 @@ public class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions
         }
         if (searchText != null && !searchText.trim().isEmpty())
         {
-            ArrayList<EventReportItem> searchTableDataResult = searchTableData(filteredTableData, searchText.toLowerCase());
-            
+            final ArrayList<EventReportItem> searchTableDataResult = new ArrayList<EventReportItem>();
+            searchTableDataResult.addAll(filteredTableData);
+            tablePref.filter(searchTableDataResult, searchText, true);
             setFilteredTableData(searchTableDataResult);
         }
         setMaxCount(filteredTableData.size());
         setStart(filteredTableData.size() > 0 ? 1 : 0);
         setEnd(filteredTableData.size() > getNumRowsPerPg() ? getNumRowsPerPg() : filteredTableData.size());
-    }
-
-    protected ArrayList<EventReportItem> searchTableData(List<EventReportItem> filteredTableData, String lowerCase)
-    {
-        return null;
     }
 
     private void initTableData()
@@ -307,6 +325,17 @@ public class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions
     {
         filterTableData();
     }
+
+    @Override
+    public String fieldValue(EventReportItem item, String column)
+    {
+        if ("driver".equals(column))
+            column = "driverName";
+        else if ("vehicle".equals(column))
+            column = "vehicleName";
+        return TablePref.fieldValue(item, column);
+    }
+
     public void showAllAction()
     {
         setCategoryFilter(null);

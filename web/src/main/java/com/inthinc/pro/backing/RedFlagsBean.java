@@ -20,7 +20,7 @@ import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.TableType;
 
-public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions
+public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<RedFlagReportItem>
 {
     private static final Logger     logger                  = Logger.getLogger(RedFlagsBean.class);
 
@@ -47,7 +47,7 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions
     
     private String searchText;
     
-    private TablePref tablePref;
+    private TablePref<RedFlagReportItem> tablePref;
 
     // package level -- so unit test can get it
     static final List<String>       AVAILABLE_COLUMNS;
@@ -67,10 +67,11 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions
 
     }
 
+    @Override
     public void initBean()
     {
         super.initBean();
-        tablePref = new TablePref(this);
+        tablePref = new TablePref<RedFlagReportItem>(this);
     }
     
     public void scrollerListener(DataScrollerEvent event)
@@ -150,31 +151,32 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions
         }
         if (searchText != null && !searchText.trim().isEmpty())
         {
-            ArrayList<RedFlagReportItem> searchTableData = new ArrayList<RedFlagReportItem>();
-            
-            Map<String, TableColumn> columnMap = getTableColumns();
-            
-            String caseInsensitiveSearchText = searchText.toLowerCase();
-            for (RedFlagReportItem item : filteredTableData)
-            {
-                StringBuilder itemStr = new StringBuilder();
-                itemStr.append(columnMap.get("category").getVisible() ? item.getCategory().toLowerCase() : "");
-                itemStr.append(columnMap.get("group").getVisible() ? item.getGroup().toLowerCase() : "");
-                itemStr.append(columnMap.get("detail").getVisible() ? item.getDetail().toLowerCase() : "");
-                itemStr.append(columnMap.get("level").getVisible() ? item.getRedFlag().getLevel().toString().toLowerCase() : "");
-                itemStr.append(columnMap.get("alerts").getVisible() ? (item.getRedFlag().getAlert() ? "yes" : "no") : "");
-                itemStr.append(columnMap.get("date").getVisible() ? item.getDate().toLowerCase() : "");
-                
-                if (itemStr.indexOf(caseInsensitiveSearchText) != -1)
-                {
-                    searchTableData.add(item);
-                }
-            }
+            final ArrayList<RedFlagReportItem> searchTableData = new ArrayList<RedFlagReportItem>();
+            searchTableData.addAll(filteredTableData);
+            tablePref.filter(searchTableData, searchText, true);
             setFilteredTableData(searchTableData);
         }
         setMaxCount(filteredTableData.size());
         setStart(filteredTableData.size() > 0 ? 1 : 0);
         setEnd(filteredTableData.size() > getNumRowsPerPg() ? getNumRowsPerPg() : filteredTableData.size());
+    }
+
+    /**
+     * Returns the value of the property of the given item described by the given column name. The default implementation calls TablePref.fieldValue.
+     * 
+     * @param item
+     *            The item to get the value from.
+     * @param column
+     *            The name of the column to get the value of.
+     * @return The value or <code>null</code> if unavailable.
+     */
+    public String fieldValue(RedFlagReportItem item, String column)
+    {
+        if ("driver".equals(column))
+            column = "driverName";
+        else if ("vehicle".equals(column))
+            column = "vehicleName";
+        return TablePref.fieldValue(item, column);
     }
 
     private void initTableData()

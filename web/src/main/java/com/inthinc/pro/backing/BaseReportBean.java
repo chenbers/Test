@@ -8,8 +8,6 @@ import java.util.Map;
 
 import javax.faces.context.FacesContext;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.NestedNullException;
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
@@ -17,13 +15,13 @@ import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.reports.ReportRenderer;
 
-public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOptions
+public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOptions<T>
 {
     private static final Logger logger       = Logger.getLogger(BaseReportBean.class);
 
     private boolean             mainMenu;
     private TablePreferenceDAO  tablePreferenceDAO;
-    private TablePref           tablePref;
+    private TablePref<T>        tablePref;
     private String              emailAddress;
     private ReportRenderer      reportRenderer;
     private Integer             numRowsPerPg = 25;
@@ -74,12 +72,12 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
         tablePref.setTableColumns(tableColumns);
     }
 
-    public TablePref getTablePref()
+    public TablePref<T> getTablePref()
     {
         return tablePref;
     }
 
-    public void setTablePref(TablePref tablePref)
+    public void setTablePref(TablePref<T> tablePref)
     {
         this.tablePref = tablePref;
     }
@@ -112,43 +110,13 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
             getDisplayData().clear();
         }
 
-        if (this.searchFor.trim().length() != 0)
-        {
-            final boolean matchAllWords = matchAllFilterWords();
-            final String[] filterWords = this.searchFor.trim().toLowerCase().split("\\s+");
-            final List<T> matchedItems = new ArrayList<T>();
+        final List<T> matchedItems = new ArrayList<T>();
+        matchedItems.addAll(getDBData());
 
-            for (T t : getDBData())
-            {
-                boolean matched = false;
-                for (final String word : filterWords)
-                {
-                    for (final String column : getTableColumns().keySet())
-                        if (getTableColumns().get(column).getVisible())
-                            {
-                                final String value = columnValue(t, column);
-                                if ((value != null) && value.toLowerCase().contains(word))
-                                    matched = true;
-                            }
+        tablePref.filter(matchedItems, searchFor.trim(), matchAllFilterWords());
 
-                    // we can break if we didn't match and we're required to match all words,
-                    // or if we did match and we're only required to match one word
-                    if (matched ^ matchAllWords)
-                        break;
-                }
-                if (matched)
-                    matchedItems.add(t);
-            }
-
-            loadResults(matchedItems);
-            this.maxCount = matchedItems.size();
-        }
-        else
-        {
-            loadResults(getDBData());
-            this.maxCount = getDBData().size();
-        }
-
+        loadResults(matchedItems);
+        this.maxCount = matchedItems.size();
         resetCounts();
     }
 
@@ -161,30 +129,17 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     }
 
     /**
-     * Returns the value of the property of the given item described by the given column name. The default implementation converts the column name to property syntax and uses
-     * BeanUtils to get the property value.
+     * Returns the value of the property of the given item described by the given column name. The default implementation calls TablePref.fieldValue.
      * 
      * @param item
      *            The item to get the value from.
-     * @param columnName
+     * @param column
      *            The name of the column to get the value of.
      * @return The value or <code>null</code> if unavailable.
      */
-    protected String columnValue(T item, String columnName)
+    public String fieldValue(T item, String column)
     {
-        try
-        {
-            return String.valueOf(BeanUtils.getProperty(item, columnName.replace('_', '.')));
-        }
-        catch (NestedNullException e)
-        {
-            // ignore nested nulls
-        }
-        catch (Exception e)
-        {
-            logger.error("Error filtering on column " + columnName, e);
-        }
-        return null;
+        return TablePref.fieldValue(item, column);
     }
 
     protected void resetCounts()

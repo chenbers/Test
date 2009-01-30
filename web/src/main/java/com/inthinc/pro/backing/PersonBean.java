@@ -246,40 +246,40 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     }
 
     @Override
-    protected String columnValue(PersonView person, String columnName)
+    public String fieldValue(PersonView person, String column)
     {
-        if (columnName.equals("user_status"))
+        if (column.equals("user_status"))
         {
             if ((person.getUser() != null) && (person.getUser().getStatus() != null))
                 return MessageUtil.getMessageString(person.getUser().getStatus().getDescription().toLowerCase());
             return null;
         }
-        else if (columnName.equals("driver_status"))
+        else if (column.equals("driver_status"))
         {
             if ((person.getDriver() != null) && (person.getDriver().getStatus() != null))
                 return MessageUtil.getMessageString(person.getDriver().getStatus().getDescription().toLowerCase());
             return null;
         }
-        else if (columnName.equals("user_groupID"))
+        else if (column.equals("user_groupID"))
         {
             if (person.getGroup() != null)
                 return person.getGroup().getName();
             return null;
         }
-        else if (columnName.equals("driver_groupID"))
+        else if (column.equals("driver_groupID"))
         {
             if (person.getTeam() != null)
                 return person.getTeam().getName();
             return null;
         }
-        else if (columnName.equals("timeZone"))
+        else if (column.equals("timeZone"))
         {
             if (person.getTimeZone() != null)
                 return person.getTimeZone().getDisplayName();
             return null;
         }
         else
-            return super.columnValue(person, columnName);
+            return super.fieldValue(person, column);
     }
 
     @Override

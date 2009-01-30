@@ -150,27 +150,27 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     }
 
     @Override
-    protected String columnValue(VehicleView vehicle, String columnName)
+    public String fieldValue(VehicleView vehicle, String column)
     {
-        if (columnName.equals("driverID"))
+        if (column.equals("driverID"))
         {
             if ((vehicle.getDriver() != null) && (vehicle.getDriver().getPerson() != null))
                 return vehicle.getDriver().getPerson().getFullName();
             return null;
         }
-        else if (columnName.equals("groupID"))
+        else if (column.equals("groupID"))
         {
             if (vehicle.getGroup() != null)
                 return vehicle.getGroup().getName();
         }
-        else if (columnName.equals("status"))
+        else if (column.equals("status"))
         {
             if (vehicle.getStatus() != null)
                 return MessageUtil.getMessageString(vehicle.getStatus().getDescription().toLowerCase());
             return null;
         }
 
-        return super.columnValue(vehicle, columnName);
+        return super.fieldValue(vehicle, column);
     }
 
     @Override

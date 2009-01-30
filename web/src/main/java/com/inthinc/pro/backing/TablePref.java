@@ -2,22 +2,29 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.NestedNullException;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.util.MessageUtil;
 
-public class TablePref
+public class TablePref<T>
 {
+    private static final Logger logger        = LogManager.getLogger(TablePref.class);
     
-    private TablePrefOptions tablePrefOptions;
+    private TablePrefOptions<T> tablePrefOptions;
     
     private Map<String, TableColumn>    tableColumns;
     private TablePreference tablePreference;
     
-    public TablePref(TablePrefOptions tablePrefOptions)
+    public TablePref(TablePrefOptions<T> tablePrefOptions)
     {
         this.tablePrefOptions = tablePrefOptions;
     }
@@ -125,4 +132,67 @@ public class TablePref
         
     }
 
+    /**
+     * Filter the given list of items by the given filter string.
+     * 
+     * @param filterItems The items to filter, in place.
+     * @param filterValue The value to filter by, to be split into words.
+     * @param matchAllWords Whether all words are required to be matched, or only some.
+     */
+    public void filter(List<T> filterItems, String filterValue, boolean matchAllWords)
+    {
+        if ((filterValue != null) && (filterValue.length() > 0))
+        {
+            final String[] filterWords = filterValue.toLowerCase().split("\\s+");
+            for (Iterator<T> i = filterItems.iterator(); i.hasNext();)
+            {
+                final T o = i.next();
+                boolean matched = false;
+                for (final String word : filterWords)
+                {
+                    for (final String column : getTableColumns().keySet())
+                        if (getTableColumns().get(column).getVisible())
+                            {
+                                final String value = tablePrefOptions.fieldValue(o, column);
+                                if ((value != null) && value.toLowerCase().contains(word))
+                                    matched = true;
+                            }
+
+                    // we can break if we didn't match and we're required to match all words,
+                    // or if we did match and we're only required to match one word
+                    if (matched ^ matchAllWords)
+                        break;
+                }
+                if (!matched)
+                    i.remove();
+            }
+        }
+    }
+
+    /**
+     * Returns the value of the property of the given item described by the given column name. Converts the column name to property syntax and uses BeanUtils to get the property
+     * value. For example, the column named "person_fullName" would be translated to "person.fullName", and BeanUtils would be used to call item.getPerson().getFullName().
+     * 
+     * @param item
+     *            The item to get the value from.
+     * @param column
+     *            The name of the column to get the value of. The name of the column must match the name of a (possibly nested) property as described above.
+     * @return The value or <code>null</code> if unavailable.
+     */
+    public static String fieldValue(Object item, String column)
+    {
+        try
+        {
+            return String.valueOf(BeanUtils.getProperty(item, column.replace('_', '.')));
+        }
+        catch (NestedNullException e)
+        {
+            // ignore nested nulls
+        }
+        catch (Exception e)
+        {
+            logger.error("Error filtering on column " + column, e);
+        }
+        return null;
+    }
 }

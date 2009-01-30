@@ -105,7 +105,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     }
 
     @Override
-    protected String columnValue(DeviceView device, String columnName)
+    public String fieldValue(DeviceView device, String columnName)
     {
         if (columnName.equals("vehicleID"))
         {
@@ -120,7 +120,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             return null;
         }
 
-        return super.columnValue(device, columnName);
+        return super.fieldValue(device, columnName);
     }
 
     @Override
