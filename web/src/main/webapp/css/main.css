@@ -4,8 +4,6 @@ body {
 	background: #080808 url(../images/bg_main.png) repeat-x;
 	font: normal 12px Verdana, Arial, Helvetica, sans-serif;
 	}
-	
-	
 
 #header {
 	width: 960px;
@@ -2846,6 +2844,11 @@ ul.htabs li.seatbelt_on {
 	
 .red {
 	color: #ff0000;
+}
+
+.google_popups a:link, a:visited, a:hover, a:active {
+	color: #333;
+
 }
 
 

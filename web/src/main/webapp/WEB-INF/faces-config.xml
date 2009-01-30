@@ -6,6 +6,10 @@
 
 	<!-- converters -->
 	<converter>
+		<converter-id>TimeAgoConverter</converter-id>
+		<converter-class>com.inthinc.pro.convert.TimeAgoConverter</converter-class>
+	</converter>
+	<converter>
 		<converter-id>DistanceConverter</converter-id>
 		<converter-class>com.inthinc.pro.convert.DistanceConverter</converter-class>
 	</converter>
