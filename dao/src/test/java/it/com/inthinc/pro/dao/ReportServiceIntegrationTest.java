@@ -1,25 +1,24 @@
 package it.com.inthinc.pro.dao;
 
-import java.util.List;
-
 import it.config.IntegrationConfig;
+
+import java.util.Date;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Test;
 import org.junit.Ignore;
+import org.junit.Test;
 
 import com.inthinc.pro.dao.hessian.DVQMapHessianDAO;
 import com.inthinc.pro.dao.hessian.DriveQMapHessianDAO;
 import com.inthinc.pro.dao.hessian.GQVMapHessianDAO;
-import com.inthinc.pro.dao.hessian.ScoreHessianDAO;
 import com.inthinc.pro.dao.hessian.extension.HessianDebug;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
 import com.inthinc.pro.dao.hessian.proserver.ReportServiceCreator;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
-import com.inthinc.pro.dao.mock.proserver.ReportServiceMockImpl;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.DVQMap;
 import com.inthinc.pro.model.DriveQMap;
@@ -420,8 +419,8 @@ public class ReportServiceIntegrationTest
         System.out.println("***** begin getGDScoreByGSE *****");
         
         // Date range qualifiers
-        Integer endDate = DateUtil.getTodaysDate();
-        Integer startDate = DateUtil.getDaysBackDate(endDate, Duration.DAYS.getNumberOfDays());
+        Date endDate = new Date();
+        Date startDate = DateUtil.getDaysBackDate(endDate, Duration.DAYS.getNumberOfDays());
         
         try 
         {
@@ -450,8 +449,8 @@ public class ReportServiceIntegrationTest
         System.out.println("***** begin getGVScoreByGSE *****");
         
         // Date range qualifiers
-        Integer endDate = DateUtil.getTodaysDate();
-        Integer startDate = DateUtil.getDaysBackDate(endDate, Duration.DAYS.getNumberOfDays());
+        Date endDate = new Date();
+        Date startDate = DateUtil.getDaysBackDate(endDate, Duration.DAYS.getNumberOfDays());
         
         try 
         {
@@ -480,8 +479,8 @@ public class ReportServiceIntegrationTest
         System.out.println("***** begin getDVScoresByGSE *****");
         
         // Date range qualifiers
-        Integer endDate = DateUtil.getTodaysDate();
-        Integer startDate = DateUtil.getDaysBackDate(endDate, 
+        Date endDate = new Date();
+        Date startDate = DateUtil.getDaysBackDate(endDate, 
                 Duration.DAYS.getNumberOfDays());
         
         try 

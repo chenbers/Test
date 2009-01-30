@@ -313,8 +313,8 @@ public class SiloServiceImpl implements SiloService
 
     @Override
     public List<Map<String, Object>> getDriverNote(@DaoParam(name="driverID")Integer driverID, 
-            @DaoParam(name="startDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm", inputConvert=com.inthinc.pro.convert.DateConvert.class)Integer startDate,
-            @DaoParam(name="endDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm", inputConvert=com.inthinc.pro.convert.DateConvert.class)Integer endDate,
+            @DaoParam(name="startDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm", inputConvert=com.inthinc.pro.convert.DateConvert.class)Long startDate,
+            @DaoParam(name="endDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm", inputConvert=com.inthinc.pro.convert.DateConvert.class)Long endDate,
             @DaoParam(name="includeForgiven", inputDesc="1 - include forgiven, 0 - exclude forgiven")Integer includeForgiven,
             @DaoParam(name="types[]", inputDesc="comma sep list of event types")Integer[] types)
     {
@@ -375,8 +375,8 @@ public class SiloServiceImpl implements SiloService
 
     @Override
     public List<Map<String, Object>> getRedFlags(@DaoParam(name="groupID")Integer groupID, 
-            @DaoParam(name="startDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm", inputConvert=com.inthinc.pro.convert.DateConvert.class)Integer startDate,
-            @DaoParam(name="endDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm", inputConvert=com.inthinc.pro.convert.DateConvert.class)Integer endDate)
+            @DaoParam(name="startDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm", inputConvert=com.inthinc.pro.convert.DateConvert.class)Long startDate,
+            @DaoParam(name="endDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm", inputConvert=com.inthinc.pro.convert.DateConvert.class)Long endDate)
             throws ProDAOException
     {
         // TODO Auto-generated method stub
@@ -428,8 +428,8 @@ public class SiloServiceImpl implements SiloService
     @Override
     public List<Map<String, Object>> getTrips(@DaoParam(name="id", inputDesc="driverID or vehicleID")Integer id, 
                                         @DaoParam(name="type", inputDesc="1 - DRIVER, 2 - VEHICLE")Integer reqType, 
-                                        @DaoParam(name="startDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm", inputConvert=com.inthinc.pro.convert.DateConvert.class)Integer startDate,
-                                        @DaoParam(name="endDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm", inputConvert=com.inthinc.pro.convert.DateConvert.class)Integer endDate
+                                        @DaoParam(name="startDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm", inputConvert=com.inthinc.pro.convert.DateConvert.class)Long startDate,
+                                        @DaoParam(name="endDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm", inputConvert=com.inthinc.pro.convert.DateConvert.class)Long endDate
                                         ) throws ProDAOException
     {
         // TODO Auto-generated method stub
@@ -459,8 +459,8 @@ public class SiloServiceImpl implements SiloService
 
     @Override
     public List<Map<String, Object>> getVehicleNote(@DaoParam(name="vehicleID")Integer vehicleID, 
-            @DaoParam(name="startDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm", inputConvert=com.inthinc.pro.convert.DateConvert.class)Integer startDate,
-            @DaoParam(name="endDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm", inputConvert=com.inthinc.pro.convert.DateConvert.class)Integer endDate,
+            @DaoParam(name="startDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm", inputConvert=com.inthinc.pro.convert.DateConvert.class)Long startDate,
+            @DaoParam(name="endDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm", inputConvert=com.inthinc.pro.convert.DateConvert.class)Long endDate,
             @DaoParam(name="includeForgiven", inputDesc="1 - include forgiven, 0 - exclude forgiven")Integer includeForgiven,
             @DaoParam(name="types", inputDesc="comma sep list of event types")Integer[] types)
     {

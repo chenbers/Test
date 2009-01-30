@@ -33,9 +33,9 @@ public class MockDataTest
     {
         SearchCriteria searchCriteria = new SearchCriteria();
         searchCriteria.addKeyValue("entityID", new Integer(101));
-        Integer endDate = DateUtil.getTodaysDate();
-        Integer startDate = DateUtil.getDaysBackDate(endDate, 30);
-        searchCriteria.addKeyValueRange("date", new Date(startDate*1000l), new Date(endDate*1000l));
+        Date endDate = new Date();
+        Date startDate = DateUtil.getDaysBackDate(endDate, 30);
+        searchCriteria.addKeyValueRange("date", startDate, endDate);
         
         Map<String, Object> returnMap =  MockData.getInstance().lookup(ScoreableEntity.class, searchCriteria);
         

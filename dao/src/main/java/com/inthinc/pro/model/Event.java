@@ -49,9 +49,9 @@ public class Event implements Comparable<Event>, Serializable
     private Integer heading;
     private Integer sats;
     @Column(updateable=false)
-    private Integer modified;
+    private Date modified;
     @Column(updateable=false)
-    private Integer created;
+    private Date created;
 
     public Event()
     {
@@ -318,22 +318,22 @@ public class Event implements Comparable<Event>, Serializable
         this.sats = sats;
     }
 
-    public Integer getModified()
+    public Date getModified()
     {
         return modified;
     }
 
-    public void setModified(Integer modified)
+    public void setModified(Date modified)
     {
         this.modified = modified;
     }
 
-    public Integer getCreated()
+    public Date getCreated()
     {
         return created;
     }
 
-    public void setCreated(Integer created)
+    public void setCreated(Date created)
     {
         this.created = created;
     }

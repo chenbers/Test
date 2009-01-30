@@ -64,12 +64,8 @@ public abstract class AbstractServiceMockImpl
         return returnDriverList;
     }
     
-    protected void computePercentages(Integer groupID, Integer startDate, Integer scoreType, List<ScoreableEntity> scoreList, int[] totals, int totalDrivers)
+    protected void computePercentages(Integer groupID, Date startDate, Integer scoreType, List<ScoreableEntity> scoreList, int[] totals, int totalDrivers)
     {
-        
-        Date startDateDt = new Date();
-        startDateDt.setTime((long)startDate*1000L);                
-        
         int percentTotal = 0;
         for (int i = 0; i < 5; i++)
         {
@@ -85,12 +81,12 @@ public abstract class AbstractServiceMockImpl
             }
             ScoreableEntity scoreableEntity = new ScoreableEntity(groupID, EntityType.ENTITY_GROUP, 
                         (i + 1) + "", // name will be 1 to 5 for the 5 different score breakdowns
-                    new Integer(percent), startDateDt, ScoreType.valueOf(scoreType));
+                    new Integer(percent), startDate, ScoreType.valueOf(scoreType));
             scoreList.add(scoreableEntity);
         }
     }
 
-    protected int[] getScoreCategoryTotals(int totals[], Integer startDate, Integer endDate, ScoreType scoreType, List<Driver> allDriversInGroup)
+    protected int[] getScoreCategoryTotals(int totals[], Date startDate, Date endDate, ScoreType scoreType, List<Driver> allDriversInGroup)
     {
         if (scoreType.getSubTypes() != null)
         {
@@ -124,15 +120,11 @@ public abstract class AbstractServiceMockImpl
         return totals;
     }
 
-    protected Map<String, Object> getAverageScore(Integer startDate, List<ScoreableEntity> allScores)
+    protected Map<String, Object> getAverageScore(Date startDate, List<ScoreableEntity> allScores)
     {
-        
-        Date startDateDt = new Date();
-        startDateDt.setTime((long)startDate*1000L);                
-        
         int total = 0;
         ScoreableEntity firstEntity = allScores.get(0);
-        ScoreableEntity returnEntity = new ScoreableEntity(firstEntity.getEntityID(), EntityType.ENTITY_GROUP, firstEntity.getIdentifier(), 0, startDateDt, firstEntity
+        ScoreableEntity returnEntity = new ScoreableEntity(firstEntity.getEntityID(), EntityType.ENTITY_GROUP, firstEntity.getIdentifier(), 0, startDate, firstEntity
                 .getScoreType());
         for (ScoreableEntity entity : allScores)
         {

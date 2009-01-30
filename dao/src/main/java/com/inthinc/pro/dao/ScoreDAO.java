@@ -1,5 +1,6 @@
 package com.inthinc.pro.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -209,7 +210,7 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
      * @param groupID
      * @param duration
      */
-    List<IdlingReportItem> getIdlingReportData(Integer groupID, Integer start, Integer end);    
+    List<IdlingReportItem> getIdlingReportData(Integer groupID, Date start, Date end);    
 
 
 }

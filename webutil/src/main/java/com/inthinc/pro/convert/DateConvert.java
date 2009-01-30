@@ -19,6 +19,7 @@ public class DateConvert extends BaseConvert
 
     }
 
+    @Override
     public String convert(String input)
     {
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
@@ -28,10 +29,10 @@ public class DateConvert extends BaseConvert
         {
             Date date = formatter.parse(input);
             long ms = date.getTime();
-            int sec = (int) (ms / 1000l);
+            long sec = (ms / 1000l);
 
             logger.debug(input + " " + sec);
-            return Integer.valueOf(sec).toString();
+            return Long.valueOf(sec).toString();
         }
         catch (ParseException e)
         {
@@ -40,14 +41,15 @@ public class DateConvert extends BaseConvert
         }
     }
 
+    @Override
     public String convert(Date input)
     {
         Date date = input;
         long ms = date.getTime();
-        int sec = (int) (ms / 1000l);
+        long sec = (ms / 1000l);
 
         logger.debug(input + " " + sec);
-        return Integer.valueOf(sec).toString();
+        return Long.valueOf(sec).toString();
     }
 
 }

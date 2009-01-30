@@ -173,9 +173,9 @@ public interface SiloService extends HessianService
      *          list of note/event types (see EventMapper)
      * @return
      */
-    List<Map<String, Object>> getDriverNote(Integer driverID, Integer startDate, Integer endDate, Integer includeForgiven, Integer types[]);
+    List<Map<String, Object>> getDriverNote(Integer driverID, Long startDate, Long endDate, Integer includeForgiven, Integer types[]);
     
-    List<Map<String, Object>> getVehicleNote(Integer vehicleID, Integer startDate, Integer endDate, Integer includeForgiven, Integer types[]);
+    List<Map<String, Object>> getVehicleNote(Integer vehicleID, Long startDate, Long endDate, Integer includeForgiven, Integer types[]);
     
     List<Map<String, Object>> getNoteByMiles(Integer driverID, Integer milesBack, Integer types[]);
     
@@ -214,7 +214,7 @@ public interface SiloService extends HessianService
      * @return
      *      list of trip map
      */
-    List<Map<String, Object>> getTrips(Integer id, Integer reqType, Integer startDate, Integer endDate) throws ProDAOException;
+    List<Map<String, Object>> getTrips(Integer id, Integer reqType, Long startDate, Long endDate) throws ProDAOException;
 
     /**
      * @param id 
@@ -296,7 +296,7 @@ public interface SiloService extends HessianService
      * @return
      * @throws ProDAOException
      */
-    List<Map<String, Object>> getRedFlags(Integer groupID, Integer startDate, Integer endDate) throws ProDAOException;
+    List<Map<String, Object>> getRedFlags(Integer groupID, Long startDate, Long endDate) throws ProDAOException;
 
     
 

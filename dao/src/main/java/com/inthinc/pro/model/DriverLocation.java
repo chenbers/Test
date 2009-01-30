@@ -1,5 +1,7 @@
 package com.inthinc.pro.model;
 
+import java.util.Date;
+
 import com.inthinc.pro.dao.annotations.Column;
 
 public class DriverLocation
@@ -14,7 +16,7 @@ public class DriverLocation
     private String homePhone;            // person.homePhone
     private String workPhone;            // person.workPhone
     private LatLng loc;                  // last location of driver
-    private Integer time;
+    private Date time;
    
     public Integer getDriverID()
     {
@@ -81,11 +83,11 @@ public class DriverLocation
     {
         this.loc = loc;
     }
-    public Integer getTime()
+    public Date getTime()
     {
         return time;
     }
-    public void setTime(Integer time)
+    public void setTime(Date time)
     {
         this.time = time;
     }

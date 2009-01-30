@@ -552,14 +552,14 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
 
 
     @Override
-    public List<Map<String, Object>> getTrips(Integer id, Integer reqType, Integer startDate, Integer endDate) throws ProDAOException
+    public List<Map<String, Object>> getTrips(Integer id, Integer reqType, Long startDate, Long endDate) throws ProDAOException
     {
         SearchCriteria criteria = new SearchCriteria();
         if (reqType.intValue() == 1)
             criteria.addKeyValue("driverID", id);
         else criteria.addKeyValue("vehicleID", id);
         
-        criteria.addKeyValueRange("startTime", DateUtil.convertTimeInSecondsToDate(startDate), DateUtil.convertTimeInSecondsToDate(endDate));
+        criteria.addKeyValueRange("startTime", startDate, endDate);
 
         List<Map<String, Object>> matches = MockData.getInstance().lookupList(Trip.class, criteria);
         return matches;
@@ -791,7 +791,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
-    public List<Map<String, Object>> getRedFlags(Integer groupID, Integer startDate, Integer endDate) throws ProDAOException
+    public List<Map<String, Object>> getRedFlags(Integer groupID, Long startDate, Long endDate) throws ProDAOException
     {
         Group group = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
 
@@ -1139,7 +1139,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
-    public List<Map<String, Object>> getDriverNote(Integer driverID, Integer startDate, Integer endDate, Integer includeForgiven, Integer[] types)
+    public List<Map<String, Object>> getDriverNote(Integer driverID, Long startDate, Long endDate, Integer includeForgiven, Integer[] types)
     {
         //List<Event> driverEvents = new ArrayList<Event>();
 
@@ -1164,7 +1164,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
     
     @Override
-    public List<Map<String, Object>> getVehicleNote(Integer vehicleID, Integer startDate, Integer endDate, Integer includeForgiven, Integer[] types)
+    public List<Map<String, Object>> getVehicleNote(Integer vehicleID, Long startDate, Long endDate, Integer includeForgiven, Integer[] types)
     {
         //List<Event> vehicleEvents = new ArrayList<Event>();
 

@@ -2,6 +2,7 @@ package com.inthinc.pro.dao.hessian;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.DVQMap;
 import com.inthinc.pro.model.DriveQMap;
 import com.inthinc.pro.model.Driver;
@@ -419,11 +421,11 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     }
 
     @Override
-    public List<IdlingReportItem> getIdlingReportData(Integer groupID, Integer start, Integer end)
+    public List<IdlingReportItem> getIdlingReportData(Integer groupID, Date start, Date end)
     {
         try
         {
-            List<DVQMap> result = getMapper().convertToModelObject(reportService.getDVScoresByGSE(groupID, start, end), DVQMap.class);
+            List<DVQMap> result = getMapper().convertToModelObject(reportService.getDVScoresByGSE(groupID, DateUtil.convertDateToSeconds(start), DateUtil.convertDateToSeconds(end)), DVQMap.class);
             List<IdlingReportItem> lIri = new ArrayList<IdlingReportItem>();
             IdlingReportItem iri = null;
 

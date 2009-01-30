@@ -1,34 +1,23 @@
 package com.inthinc.pro.dao.mock.proserver;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
 import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.mock.data.MockQuintileMap;
 import com.inthinc.pro.dao.mock.data.SearchCriteria;
 import com.inthinc.pro.dao.mock.data.TempConversionUtil;
-import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.DVQMap;
 import com.inthinc.pro.model.DriveQMap;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.GQMap;
 import com.inthinc.pro.model.GQVMap;
 import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.MpgEntity;
-import com.inthinc.pro.model.ScoreType;
-import com.inthinc.pro.model.ScoreTypeBreakdown;
-import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.Vehicle;
 
 public class ReportServiceMockImpl extends AbstractServiceMockImpl implements ReportService
@@ -48,16 +37,6 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
     
     private static final Logger logger = Logger.getLogger(ReportServiceMockImpl.class);
     
-    private Integer getEndDate(Integer duration)
-    {
-        return MockData.getInstance().dateNow;
-    }
-    private Integer getStartDate(Integer duration)
-    {
-        Integer endDate = MockData.getInstance().dateNow;
-        Integer startDate = DateUtil.getDaysBackDate(endDate, Duration.valueOf(duration).getNumberOfDays());
-        return startDate;
-    }
 //Methods currently supported on REAL back end   
     
     
@@ -137,9 +116,6 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
     @Override
     public Map<String, Object> getGDScoreByGT(Integer groupID, Integer duration)
     {
-        List<DVQMap> entityList = new ArrayList<DVQMap>();
-        
-        
         Group topGroup = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
         List<Group> groupList = getGroupHierarchy(topGroup);
         
@@ -296,18 +272,18 @@ public class ReportServiceMockImpl extends AbstractServiceMockImpl implements Re
         throw new EmptyResultSetException("No scores for group: " + groupID, "getDPctByGT", 0);
     }
                              
-    public Map<String, Object> getGDScoreByGSE(Integer groupID, Integer start, Integer end)
+    public Map<String, Object> getGDScoreByGSE(Integer groupID, Long start, Long end)
     {
         return null;
     }
 
-    public Map<String, Object> getGVScoreByGSE(Integer groupID, Integer start, Integer end)
+    public Map<String, Object> getGVScoreByGSE(Integer groupID, Long start, Long end)
     {
         return null;
     }
     
 
-    public List<Map<String, Object>> getDVScoresByGSE(Integer groupID, Integer start, Integer end)
+    public List<Map<String, Object>> getDVScoresByGSE(Integer groupID, Long start, Long end)
     {
         return null;
     }

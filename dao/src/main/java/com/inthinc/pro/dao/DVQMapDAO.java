@@ -1,9 +1,9 @@
 package com.inthinc.pro.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import com.inthinc.pro.model.DVQMap;
-import com.inthinc.pro.model.DriveQMap;
 import com.inthinc.pro.model.QuintileMap;
 
 public interface DVQMapDAO extends GenericDAO<DVQMap, Integer>
@@ -16,5 +16,5 @@ public interface DVQMapDAO extends GenericDAO<DVQMap, Integer>
         
     QuintileMap getDPctByGT(Integer groupID, Integer duration, Integer metric);
     
-    List<DVQMap> getDVScoresByGSE(Integer groupID, Integer start, Integer end);
+    List<DVQMap> getDVScoresByGSE(Integer groupID, Date start, Date end);
 }

@@ -3,11 +3,6 @@ package com.inthinc.pro.dao.hessian.proserver;
 import java.util.List;
 import java.util.Map;
 
-import com.inthinc.pro.ProDAOException;
-import com.inthinc.pro.model.DriveQMap;
-import com.inthinc.pro.model.MpgEntity;
-import com.inthinc.pro.model.ScoreType;
-
 public interface ReportService extends HessianService
 {
   // ------------- Methods related to the Scores/Reporting
@@ -211,9 +206,9 @@ public interface ReportService extends HessianService
     
     Map<String, Object> getGDTrendByGTC(Integer groupID, Integer duration);
     
-    Map<String, Object> getGDScoreByGSE(Integer groupID, Integer start, Integer end);
+    Map<String, Object> getGDScoreByGSE(Integer groupID, Long start, Long end);
     
-    Map<String, Object> getGVScoreByGSE(Integer groupID, Integer start, Integer end);
+    Map<String, Object> getGVScoreByGSE(Integer groupID, Long start, Long end);
     
 //  DVQMap  
     List<Map<String, Object>> getDVScoresByGT(Integer groupID, Integer duration);
@@ -222,7 +217,7 @@ public interface ReportService extends HessianService
  
     Map<String, Object> getDPctByGT(Integer groupID, Integer duration, Integer metric);
     
-    List<Map<String, Object>> getDVScoresByGSE(Integer groupID, Integer start, Integer end);
+    List<Map<String, Object>> getDVScoresByGSE(Integer groupID, Long start, Long end);
     
 //  GQMap 
     List<Map<String, Object>> getSDScoresByGT(Integer groupID, Integer duration);    

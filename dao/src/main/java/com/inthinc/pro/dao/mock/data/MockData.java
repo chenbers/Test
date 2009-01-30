@@ -8,10 +8,8 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -121,11 +119,11 @@ public class MockData
     private Map<Class<?>, List<Object>> dataMap = new HashMap<Class<?>, List<Object>>();
     
     //  base all dates in the mock data after this, so that it is easier to unit test
-    public Integer dateNow;    
+    public Date dateNow;    
     private static MockData mockData;
     private MockData()
     {
-        dateNow = DateUtil.getTodaysDate();
+        dateNow = new Date();
         logger.debug("MockData current time:" + dateNow);
         initializeStaticData();
     }
@@ -440,16 +438,15 @@ public class MockData
             {
 //                if (scoreType != ScoreType.SCORE_OVERALL_TIME ) 
                 {
-                    int daysBack = DateUtil.getDaysBackDate(dateNow, 30 * month)-1;
-                    Date daysBackDt = new Date();
-                    daysBackDt.setTime((long)daysBack*1000L);
+                    Date daysBack = DateUtil.getDaysBackDate(dateNow, 30 * month);
+                    daysBack.setTime(daysBack.getTime() - 1000);
                     
                     ScoreableEntity scoreableEntity = new ScoreableEntity(
                               entityID, 
                               entityType, 
                               entityName, 
                               randomInt(0,50), 
-                              daysBackDt,
+                              daysBack,
                               scoreType);
 //if (scoreType.equals(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL) && month == 0)
 //{
@@ -472,17 +469,15 @@ public class MockData
       //Create dates per range
         for ( int i = 0; i < 30; i++ ) {
             
-            int daysBack = DateUtil.getDaysBackDate(dateNow, 
+            Date daysBack = DateUtil.getDaysBackDate(dateNow, 
                     (30 * monthsBack) - i * DateUtil.SECONDS_IN_DAY);
-            Date daysBackDt = new Date();
-            daysBackDt.setTime((long)daysBack*1000L);
             
             storeObject(
                 new ScoreableEntity(entityID, 
                     entityType, 
                     entityName, 
                     randomInt(0,50), 
-                    daysBackDt,
+                    daysBack,
                     scoreType));
         }
     }
@@ -496,9 +491,8 @@ public class MockData
         
         for (int monthsBackCnt = 0; monthsBackCnt < monthsBack.length; monthsBackCnt++)
         {
-        	Calendar date = new GregorianCalendar();
-        	date.add(Calendar.MONTH, (0 - monthsBack[monthsBackCnt]));
-        	int daysBack = (int) (date.getTimeInMillis() - System.currentTimeMillis()) / 1000 / 60 / 60 / 24;
+            Date daysBack = DateUtil.getDaysBackDate(dateNow, monthsBack[monthsBackCnt]*30);
+            daysBack.setTime(daysBack.getTime() - 1000);
         	MpgEntity mapEntity = new MpgEntity(
         			entityID,
         			entityName,
@@ -506,7 +500,7 @@ public class MockData
         			randomInt(0, 50),
         			randomInt(0, 50),
         			randomInt(0, 50),
-                    DateUtil.getDaysBackDate(dateNow, monthsBack[monthsBackCnt]*30)-1);
+        			daysBack);
            storeObject(mapEntity);
         }
     }
@@ -712,7 +706,7 @@ public class MockData
             int eventCategory = randomInt(1, 4);
             Event event = null;
             Long id = new Long(idOffset+trip.getTripID() * MAX_EVENTS + eventCnt);
-            int dateInSeconds = randomInt(DateUtil.convertDateToSeconds(trip.getStartTime()), DateUtil.convertDateToSeconds(trip.getEndTime()));
+            int dateInSeconds = randomInt((int) DateUtil.convertDateToSeconds(trip.getStartTime()), (int) DateUtil.convertDateToSeconds(trip.getEndTime()));
             Date date = DateUtil.convertTimeInSecondsToDate(dateInSeconds);
             int addressIdx  = randomInt(0, trip.getRoute().size()-1);
             double lat = trip.getRoute().get(addressIdx).getLat();

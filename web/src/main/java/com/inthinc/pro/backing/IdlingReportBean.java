@@ -1,6 +1,5 @@
 package com.inthinc.pro.backing;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,11 +12,8 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.ScoreDAO;
-import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.IdlingReportItem;
-import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.TableType;
-import com.inthinc.pro.reports.Report;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 
@@ -40,12 +36,12 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem>
     private Date startDate = null;
     private Date intStartDate = null;
     private Date defaultStartDate = null;
-    private Integer internalStartDate = null;
+    private Date internalStartDate = null;
     
     private Date endDate = null;
     private Date intEndDate = null;
     private Date defaultEndDate = null;
-    private Integer internalEndDate = null;
+    private Date internalEndDate = null;
     
     private String badDates = "Search dates: * Okay.";
     private final static String NO_START_DATE = " * No start date, reset";
@@ -91,7 +87,7 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem>
         this.startDate.setTime(this.endDate.getTime()-this.DAYS_BACK);
 
         // Start with today
-        this.intEndDate = new Date(getGregDate(null));
+        this.intEndDate = getGregDate(null);
        
         // Now, seven days back
         this.intStartDate = new Date();
@@ -100,15 +96,12 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem>
                                 
         // Get some other dates, for use if none input        
         this.defaultEndDate = this.intEndDate;   
-        this.defaultStartDate = this.intStartDate;
-
-        Integer defEndDate = (int)((long)(this.intEndDate.getTime()/1000L));
-        Integer defStartDate = (int)((long)(this.intStartDate.getTime()/1000L));            
+        this.defaultStartDate = this.intStartDate;         
 
         this.idlingsData = 
             scoreDAO.getIdlingReportData(
                     getUser().getGroupID(),
-                    defStartDate, defEndDate);
+                    intStartDate, intEndDate);
    
         //Bean creation could be from Reports selection or
         //  search on main menu. This accounts for a search
@@ -122,7 +115,7 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem>
         }
     }
     
-    private long getGregDate(Date in) 
+    private Date getGregDate(Date in) 
     {
         GregorianCalendar gc = new GregorianCalendar(
                 TimeZone.getTimeZone("GMT"));        
@@ -140,7 +133,7 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem>
         gc.clear(Calendar.SECOND);
         gc.set(Calendar.SECOND,0);
     
-        return gc.getTimeInMillis();
+        return gc.getTime();
     }    
 
     public List<IdlingReportItem> getIdlingData()
@@ -220,8 +213,8 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem>
         badDates = sb.toString();
         
         // CAREFULLY compute the search dates      
-        this.internalStartDate = (int)((getGregDate(this.startDate))/1000L);   
-        this.internalEndDate   = (int)((getGregDate(this.endDate))/1000L);   
+        this.internalStartDate = getGregDate(this.startDate);   
+        this.internalEndDate   = getGregDate(this.endDate);   
     }
 
     @Override

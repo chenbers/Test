@@ -22,19 +22,19 @@ public class DateUtil
     private static String DOB_SEPARATOR = "-";
     private static final NumberFormat twoDigitFormat = new DecimalFormat("00");
 
-    public static int convertDateToSeconds(Date date)
+    public static long convertDateToSeconds(Date date)
     {
-        return (int) (date.getTime() / 1000l);
+        return (date.getTime() / 1000l);
     }
 
-    public static Date convertTimeInSecondsToDate(int seconds)
+    public static Date convertTimeInSecondsToDate(long sec)
     {
-        return new Date(convertSecondsToMilliseconds(seconds));
+        return new Date(convertSecondsToMilliseconds(sec));
     }
 
-    public static long convertSecondsToMilliseconds(int seconds)
+    public static long convertSecondsToMilliseconds(long seconds)
     {
-        return (long) ((long) seconds * 1000l);
+        return (seconds * 1000l);
     }
 
     public static int convertMillisecondsToSeconds(long milliseconds)
@@ -55,7 +55,7 @@ public class DateUtil
     }
     public static Date getDaysBackDate(Date endDate, int daysBack)
     {
-        int sec = DateUtil.convertDateToSeconds(endDate) - (daysBack * SECONDS_IN_DAY);
+        long sec = DateUtil.convertDateToSeconds(endDate) - (daysBack * SECONDS_IN_DAY);
         
         return DateUtil.convertTimeInSecondsToDate(sec);
     }
@@ -99,10 +99,10 @@ public class DateUtil
     public static String getDayOfWeek(Date date, TimeZone timeZone)
     {
 
-        Calendar todayCal = GregorianCalendar.getInstance(timeZone);
+        Calendar todayCal = Calendar.getInstance(timeZone);
         todayCal.setTime(new Date());
 
-        Calendar cal = GregorianCalendar.getInstance(timeZone);
+        Calendar cal = Calendar.getInstance(timeZone);
         cal.setTime(date);
 
         if (todayCal.get(Calendar.YEAR) == cal.get(Calendar.YEAR) && todayCal.get(Calendar.DAY_OF_YEAR) == cal.get(Calendar.DAY_OF_YEAR))
@@ -116,19 +116,19 @@ public class DateUtil
     {
         GregorianCalendar cal = new GregorianCalendar(TimeZone.getDefault());
         cal.setTime(new Date());
-        return cal.get(GregorianCalendar.YEAR);
+        return cal.get(Calendar.YEAR);
     }
     public static int getCurrentMonth()
     {
         GregorianCalendar cal = new GregorianCalendar(TimeZone.getDefault());
         cal.setTime(new Date());
-        return cal.get(GregorianCalendar.MONTH);
+        return cal.get(Calendar.MONTH);
     }
     public static int getCurrentDayOfMonth()
     {
         GregorianCalendar cal = new GregorianCalendar(TimeZone.getDefault());
         cal.setTime(new Date());
-        return cal.get(GregorianCalendar.DAY_OF_MONTH);
+        return cal.get(Calendar.DAY_OF_MONTH);
     }
     
     public static String getDisplayDate(Integer dateSec)
@@ -164,7 +164,7 @@ public class DateUtil
         return getDurationFromSeconds(seconds.intValue());
     }
         
-    public static long getGregDate(Date in) 
+    public static Date getGregDate(Date in) 
     {
         GregorianCalendar gc = new GregorianCalendar(
                 TimeZone.getTimeZone("GMT"));        
@@ -182,6 +182,6 @@ public class DateUtil
         gc.clear(Calendar.SECOND);
         gc.set(Calendar.SECOND,0);
     
-        return gc.getTimeInMillis();
+        return gc.getTime();
     }  
 }

@@ -199,7 +199,7 @@ public abstract class AbstractMapper implements Mapper
         try
         {
             Class<?> propertyType = PropertyUtils.getPropertyType(bean, name);
-            // if the property type is Date, convert the integer returned in the hash map that represents seconds to a long and create a Date object
+            // if the property type is Date, convert the long returned in the hash map that represents seconds to a long and create a Date object
             value = convertProperty(propertyType, name, value, fieldList);
             PropertyUtils.setProperty(bean, name, value);
         }
@@ -238,11 +238,14 @@ public abstract class AbstractMapper implements Mapper
     {
         if (propertyType != null)
         {
-            if (propertyType.equals(Date.class) && value instanceof Integer)
+            if (propertyType.equals(Date.class) && value instanceof Long)
             {
-                // note: negative values represent dates before 1/1/1970
-                Integer seconds = (Integer) value;
-                value = new Date(seconds.longValue() * 1000l);
+                // note: negative values represent dates before 1/1/1970, 1 means null
+                Long seconds = (Long) value;
+                if (seconds != 1)
+                    value = new Date(seconds.longValue() * 1000l);
+                else
+                    value = null;
             }
             if (propertyType == TimeZone.class && value instanceof String)
             {
@@ -389,10 +392,14 @@ public abstract class AbstractMapper implements Mapper
                 {
                     map.put(name, convertToHessian(value, handled, field, includeNonUpdateables));
                 }
-                else if (BaseEnum.class.isAssignableFrom(field.getType()) || ReferenceEntity.class.isAssignableFrom(field.getType())
-                        || Date.class.isAssignableFrom(field.getType()))
+                else if (BaseEnum.class.isAssignableFrom(field.getType()) || ReferenceEntity.class.isAssignableFrom(field.getType()))
                 {
                     map.put(name, 0);
+                }
+                else if (Date.class.isAssignableFrom(field.getType()))
+                {
+                    // use 1 to mean an empty date: January 1, 1970 at 12:01am
+                    map.put(name, 1L);
                 }
             }
             clazz = clazz.getSuperclass();
@@ -450,10 +457,10 @@ public abstract class AbstractMapper implements Mapper
                 list.add(convertToHessian(Array.get(value, i), handled, field, includeNonUpdateables));
             value = list;
         }
-        // if the field type is Date, convert to integer
+        // if the field type is Date, convert to long seconds
         else if (Date.class.isInstance(value))
         {
-            value = (int) (((Date) value).getTime() / 1000l);
+            value = (long) (((Date) value).getTime() / 1000l);
         }
         // if the field type is TimeZone, convert to string
         else if (TimeZone.class.isInstance(value))

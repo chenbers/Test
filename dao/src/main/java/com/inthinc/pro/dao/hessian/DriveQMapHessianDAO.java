@@ -1,6 +1,7 @@
 package com.inthinc.pro.dao.hessian;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -8,6 +9,7 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.dao.DriveQMapDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.DriveQMap;
 
 public class DriveQMapHessianDAO extends GenericHessianDAO<DriveQMap, Integer> implements DriveQMapDAO
@@ -155,11 +157,11 @@ public class DriveQMapHessianDAO extends GenericHessianDAO<DriveQMap, Integer> i
     }        
     
     @Override    
-    public DriveQMap getGDScoreByGSE(Integer groupID, Integer start, Integer end)
+    public DriveQMap getGDScoreByGSE(Integer groupID, Date start, Date end)
     {
         try
         {
-            return getMapper().convertToModelObject(getReportService().getGDScoreByGSE(groupID,start,end), DriveQMap.class);           
+            return getMapper().convertToModelObject(getReportService().getGDScoreByGSE(groupID,DateUtil.convertDateToSeconds(start),DateUtil.convertDateToSeconds(end)), DriveQMap.class);           
         }
         catch (EmptyResultSetException e)
         {
@@ -170,11 +172,11 @@ public class DriveQMapHessianDAO extends GenericHessianDAO<DriveQMap, Integer> i
     
     
     @Override    
-    public DriveQMap getGVScoreByGSE(Integer groupID, Integer start, Integer end)
+    public DriveQMap getGVScoreByGSE(Integer groupID, Date start, Date end)
     {
         try
         {
-            return getMapper().convertToModelObject(getReportService().getGVScoreByGSE(groupID,start,end), DriveQMap.class);           
+            return getMapper().convertToModelObject(getReportService().getGVScoreByGSE(groupID,DateUtil.convertDateToSeconds(start),DateUtil.convertDateToSeconds(end)), DriveQMap.class);           
         }
         catch (EmptyResultSetException e)
         {

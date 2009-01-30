@@ -1,16 +1,16 @@
 package com.inthinc.pro.dao.hessian;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.DVQMapDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.DVQMap;
-import com.inthinc.pro.model.DriveQMap;
 import com.inthinc.pro.model.QuintileMap;
 
 public class DVQMapHessianDAO extends GenericHessianDAO<DVQMap, Integer> implements DVQMapDAO
@@ -85,11 +85,11 @@ public class DVQMapHessianDAO extends GenericHessianDAO<DVQMap, Integer> impleme
     }
 
     @Override
-    public List<DVQMap> getDVScoresByGSE(Integer groupID, Integer start, Integer end)
+    public List<DVQMap> getDVScoresByGSE(Integer groupID, Date start, Date end)
     {
         try
         {
-            return getMapper().convertToModelObject(getReportService().getDVScoresByGSE(groupID,start,end), DVQMap.class);           
+            return getMapper().convertToModelObject(getReportService().getDVScoresByGSE(groupID,DateUtil.convertDateToSeconds(start),DateUtil.convertDateToSeconds(end)), DVQMap.class);           
         }
         catch (EmptyResultSetException e)
         {

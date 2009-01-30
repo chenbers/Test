@@ -3,7 +3,6 @@ package com.inthinc.pro.model;
 import java.util.Date;
 
 import com.inthinc.pro.dao.annotations.ID;
-import com.inthinc.pro.dao.util.DateUtil;
 
 public class MpgEntity extends BaseEntity {
 	@ID
@@ -13,7 +12,7 @@ public class MpgEntity extends BaseEntity {
 	private Integer lightValue;
 	private Integer mediumValue;
 	private Integer heavyValue;
-    private Integer date;
+    private Date date;
     private Integer odometer;
 
 
@@ -22,7 +21,7 @@ public class MpgEntity extends BaseEntity {
     {
     }
 	
-	public MpgEntity(Integer entityID, String entityName, Integer groupID, Integer lightValue, Integer mediumValue, Integer heavyValue, Integer date)
+	public MpgEntity(Integer entityID, String entityName, Integer groupID, Integer lightValue, Integer mediumValue, Integer heavyValue, Date date)
     {
         super();
         this.entityID = entityID;
@@ -38,7 +37,7 @@ public class MpgEntity extends BaseEntity {
     {
         StringBuffer sb = new StringBuffer();
         sb.append(entityID);
-        sb.append(", date: " + date + " (s" + new Date(DateUtil.convertSecondsToMilliseconds(date)) + ")");
+        sb.append(", date: " + date + " (s" + date + ")");
         return sb.toString();
     }
 
@@ -90,11 +89,11 @@ public class MpgEntity extends BaseEntity {
 		this.heavyValue = heavyValue;
 	}
 
-	public Integer getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(Integer date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 	
