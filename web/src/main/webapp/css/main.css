@@ -275,7 +275,6 @@ body {
 	padding: 0 0 0 20px;
 	background: transparent url(../images/ico_spd_limit.png) no-repeat center left;
 	}
-	
 
 .panel_title span.panel_links a:link {
 	color: #333;
@@ -299,12 +298,27 @@ body {
 	text-decoration: none;
 	}
 	
+.panel_title span.panel_links_ico a:link {
+	color: #333;
+	}
+	
+.panel_title span.panel_links a:hover {
+	color: #333;
+	}
+	
+.panel_title span.panel_links a:active {
+	color: #333;
+	}
+	
+.panel_title span.panel_links_ico a:visited {
+	color: #333;
+	}
 .panel_title span.panel_links_ico a.on {
 	color: #6B9D1B;
 	font-weight: bold;
 	text-decoration: none;
 	}
-
+	
 .panel_links {
 	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
 	position: absolute;
