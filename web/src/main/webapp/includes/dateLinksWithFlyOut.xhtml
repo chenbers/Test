@@ -53,14 +53,14 @@
 
 			<span class="panel_ico"> <h:panelGroup id="#{ajaxForm}_toolsId">
 				<h:graphicImage value="/images/ico_tools.png" />
-			</h:panelGroup> <rich:spacer width="2" /> <h:commandLink action="#{flyOutBean.flyNavRuleAction}">
+			</h:panelGroup> <rich:spacer width="2" /> <a4j:htmlCommandLink action="#{flyOutBean.flyNavRuleAction}">
 				<img src="#{facesContext.externalContext.request.contextPath}/images/#{flyOutImage}" border="0" title="#{flyoutTitle}" />
 				<f:setPropertyActionListener value="#{flyNavRule}" target="#{flyOutBean.navigationRule}" />
 				<f:setPropertyActionListener value="#{flySelectedTab}" target="#{flyOutBean.selectedTab}" />
 				<c:if test="#{!empty groupID}">
 					<f:param name="groupID" value="#{groupID}" />
 				</c:if>
-			</h:commandLink> </span>
+			</a4j:htmlCommandLink> </span>
 
 			<!-- 
 			IMPORTANT!!!!!!!
