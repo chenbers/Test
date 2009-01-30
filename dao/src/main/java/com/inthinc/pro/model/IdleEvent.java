@@ -74,7 +74,7 @@ public class IdleEvent extends Event
     }
     public String getDetails(String formatStr)
     {
-        return MessageFormat.format(formatStr, new Object[] {getLowIdle() == null ? 0 : getLowIdle(), getHighIdle() == 0 ? 0 : getHighIdle()});
+        return MessageFormat.format(formatStr, new Object[] {getLowIdle() == null ? 0 : getLowIdle(), getHighIdle() == null ? 0 : getHighIdle()});
     }
 
 }
