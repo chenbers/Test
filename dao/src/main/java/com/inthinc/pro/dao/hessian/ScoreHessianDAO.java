@@ -29,6 +29,8 @@ import com.inthinc.pro.model.ScoreTypeBreakdown;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleReportItem;
+import com.inthinc.pro.model.comparator.DriverReportItemComparator;
+import com.inthinc.pro.model.comparator.VehicleReportItemComparator;
 
 public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer> implements ScoreDAO
 {
@@ -362,6 +364,8 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 lVri.add(vri);
                 vri = null;
             }
+            
+            Collections.sort(lVri,new VehicleReportItemComparator()); //Sort by vehicle.name
 
             return lVri;
 
@@ -409,6 +413,8 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 lDri.add(dri);
                 dri = null;
             }
+            
+            Collections.sort(lDri,new DriverReportItemComparator()); //Sort by employee name
 
             return lDri;
 

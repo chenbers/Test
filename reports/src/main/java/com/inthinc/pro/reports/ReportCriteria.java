@@ -21,6 +21,7 @@ public class ReportCriteria
     private static final String INTHINC_NAME = "Inthinc";
 
     public static final String SUB_DATASET = "SUB_DATASET";
+    public static final String RECORD_COUNT = "RECORD_COUNT";
     private int subsetIndex = 1;
     
     public ReportCriteria(ReportCriteria reportCriteria)
@@ -50,6 +51,7 @@ public class ReportCriteria
 
     public void setMainDataset(List mainDataset)
     {
+        this.paramMap.put(RECORD_COUNT, mainDataset.size());
         this.mainDataset = mainDataset;
     }
 

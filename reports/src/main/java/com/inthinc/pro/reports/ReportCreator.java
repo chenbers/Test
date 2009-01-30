@@ -6,7 +6,6 @@ import java.util.List;
 import com.inthinc.pro.reports.jasper.JasperReport;
 import com.inthinc.pro.reports.jasper.JasperReportBuilder;
 import com.inthinc.pro.reports.mail.ReportMailer;
-import com.inthinc.pro.reports.mail.ReportMailerImpl;
 
 public class ReportCreator<T extends Report>
 {
