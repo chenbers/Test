@@ -246,24 +246,12 @@
 	 				<div class="panel_w">
 						<div class="panel_content">
 						  
-						  <rich:dataList value="#{driverLocationBean.legendIcons}" var="icon" styleClass="legend" 
-						  			rendered="#{driverLocationBean.teamLevel}">
-							  	<a onmouseover="selectMarker(#{icon.lat},#{icon.lng})" onclick="selectMarker(#{icon.lat},#{icon.lng})">
-		 						  	<img src="#{icon.iconURL}" style="vertical-align:middle"/> 
-								  	<h:outputText value="#{icon.caption}" style="margin-left:5px"></h:outputText>
-							  	</a>
-						</rich:dataList>
-						  <rich:dataList value="#{driverLocationBean.legendIcons}" var="icon" styleClass="legend" 
-						  		rendered="#{!driverLocationBean.teamLevel}">
-						  		<img src="#{icon.iconURL}" style="vertical-align:middle"/> 
-							  	<h:outputText value="#{icon.caption}" style="margin-left:5px"></h:outputText>
-						  </rich:dataList>
-						  <div style="clear:both"/>
-	  					</div>
+						 
 					</div>
 	
 					<div class="panel_sw">
 						<div class="panel_statusbar"></div>
+					</div>
 					</div>
 					</div>
 				</td>
