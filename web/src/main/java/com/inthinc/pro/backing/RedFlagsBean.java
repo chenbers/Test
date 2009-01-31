@@ -176,6 +176,14 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
             column = "driverName";
         else if ("vehicle".equals(column))
             column = "vehicleName";
+        else if ("alert".equals(column))
+        {
+            if ((item.getRedFlag() != null) && (item.getRedFlag().getAlert() != null))
+                return item.getRedFlag().getAlert() ? "yes" : "no";
+            return null;
+        }
+        else if ("level".equals(column))
+            column = "redFlag_level_description";
         return TablePref.fieldValue(item, column);
     }
 
@@ -345,12 +353,12 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
         filterTableData();
     }
 
-    public TablePref getTablePref()
+    public TablePref<RedFlagReportItem> getTablePref()
     {
         return tablePref;
     }
 
-    public void setTablePref(TablePref tablePref)
+    public void setTablePref(TablePref<RedFlagReportItem> tablePref)
     {
         this.tablePref = tablePref;
     }
