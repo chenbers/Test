@@ -35,7 +35,7 @@ public class DriverLocationBean extends BaseBean {
 	private List<LegendIcon> legendIcons;
 	private Map<Integer,Group> groupMap;
 	private boolean teamLevel;
-	private List<DriverLastLocationBean> driverLastLocationBeans;
+	private List<DriverLastLocationBean> driverLastLocationBeans = new ArrayList<DriverLastLocationBean>();
  	private static final Logger logger = Logger.getLogger(DriverLocationBean.class);
 	private GroupHierarchy       organizationHierarchy;
 
@@ -53,8 +53,9 @@ public class DriverLocationBean extends BaseBean {
 		
 	}
 	public List<DriverLastLocationBean> getDriverLastLocationBeans() {
-		
-    	int validDriverCount = 0;
+	    
+	    if(driverLastLocationBeans.size() > 0) return driverLastLocationBeans;
+	    int validDriverCount = 0;
     	driverLastLocations = new HashMap<Integer,DriverLastLocationBean>();
         driverLastLocationBeans = new ArrayList<DriverLastLocationBean>();
         childGroups = getGroupHierarchy().getChildren(getGroupHierarchy().getGroup(this.navigation.getGroupID()));
