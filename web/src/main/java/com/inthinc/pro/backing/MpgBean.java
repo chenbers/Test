@@ -7,6 +7,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.richfaces.event.DataScrollerEvent;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.model.GroupLevel;
@@ -39,6 +40,18 @@ public class MpgBean extends BaseDurationBean {
     private NavigationBean navigation;
     private ReportRenderer reportRenderer;
     private List<MpgEntityPkg> mpgEntities = new ArrayList<MpgEntityPkg>();
+
+    private Integer numRowsPerPg = 5;
+    private Integer maxCount = 0;
+    private Integer start = 1;
+    private Integer end = numRowsPerPg;
+
+    private String sortOnName = "";
+    private String sortOnLight = "";
+    private String sortOnMedium = "";
+    private String sortOnHeavy = "";
+    
+    private String countString = null;
     
 	
 	private String barDef;	
@@ -67,7 +80,8 @@ public class MpgBean extends BaseDurationBean {
         try
         {
             logger.debug("getting scores for groupID: " + this.navigation.getGroupID());
-            entities = getMpgEntities();
+            entities = getPagedMpgEntities();
+            
             sb.append(GraphicUtil.createMpgXML(entities)); 
         }
         catch (Exception e)
@@ -95,6 +109,20 @@ public class MpgBean extends BaseDurationBean {
     {
         this.navigation = navigation;
     }
+        
+    public void scrollerListener(DataScrollerEvent se)     
+    {  
+        this.start = (se.getPage()-1)*this.numRowsPerPg + 1;
+        this.end = (se.getPage())*this.numRowsPerPg;
+        
+        //Partial page
+        if ( this.end > this.mpgEntities.size() ) {
+            this.end = this.mpgEntities.size();
+        }
+
+        navigation.setStart(this.start);
+        navigation.setEnd(this.end);
+    } 
 
     public MpgDAO getMpgDAO()
     {
@@ -136,13 +164,34 @@ public class MpgBean extends BaseDurationBean {
                     this.mpgEntities.add(pkg);
                 }
             }
+            this.maxCount = mpgEntities.size();
         }
         return this.mpgEntities;
     }
-    
-    public void setMpgEntities(List<MpgEntityPkg> mpgEntities)
+
+    public List<MpgEntityPkg> getPagedMpgEntities()
     {
-        this.mpgEntities = mpgEntities;
+        List<MpgEntityPkg> pagedMpgEntities = new ArrayList<MpgEntityPkg>();
+        getMpgEntities(); // make sure list is initialized
+        for (int i = this.start; i <= this.end; i++)
+        {
+            if (mpgEntities.size() < i)
+                break;
+            pagedMpgEntities.add(mpgEntities.get(i - 1));
+        }
+        return pagedMpgEntities;
+    }
+
+    public String getCountString()
+    {
+        countString = "Showing " + this.start + " to " + 
+            Math.min(this.maxCount, this.end) + " of " + this.maxCount + " records";
+        return countString;
+    }
+
+    public void setCountString(String countString)
+    {
+        this.countString = countString;
     }
     
     public String exportToPDF()
@@ -185,5 +234,85 @@ public class MpgBean extends BaseDurationBean {
     public ReportRenderer getReportRenderer()
     {
         return reportRenderer;
+    }
+
+    public Integer getNumRowsPerPg()
+    {
+        return numRowsPerPg;
+    }
+
+    public void setNumRowsPerPg(Integer numRowsPerPg)
+    {
+        this.numRowsPerPg = numRowsPerPg;
+    }
+
+    public Integer getMaxCount()
+    {
+        return maxCount;
+    }
+
+    public void setMaxCount(Integer maxCount)
+    {
+        this.maxCount = maxCount;
+    }
+
+    public Integer getStart()
+    {
+        return start;
+    }
+
+    public void setStart(Integer start)
+    {
+        this.start = start;
+    }
+
+    public Integer getEnd()
+    {
+        return end;
+    }
+
+    public void setEnd(Integer end)
+    {
+        this.end = end;
+    }
+    
+    public String getSortOnName()
+    {
+        return sortOnName;
+    }
+
+    public void setSortOnName(String sortOnName)
+    {
+        this.sortOnName = sortOnName;
+    }
+    
+    public String getSortOnLight()
+    {
+        return sortOnLight;
+    }
+
+    public void setSortOnLight(String sortOnLight)
+    {
+        this.sortOnLight = sortOnLight;
+    }
+
+    public String getSortOnMedium()
+    {
+        return sortOnMedium;
+    }
+
+    public void setSortOnMedium(String sortOnMedium)
+    {
+        this.sortOnMedium = sortOnMedium;
+    }
+
+    public String getSortOnHeavy()
+    {
+        return sortOnHeavy;
+    }
+
+    public void setSortOnHeavy(String sortOnHeavy)
+    {
+        this.sortOnHeavy = sortOnHeavy;
     }
 }

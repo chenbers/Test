@@ -89,38 +89,88 @@
           <div class="spacer"></div>
           
           <div class="datagrid">
-            <h:form id="mpgTable">  
+            <h:form id="mpgTable">
+
+        
+              <rich:panel>  
+                <rich:spacer height="10"/>
+                      
+                  <div style="text-align: right;" >                         
+                    <h:outputText 
+                      id="countString" value="#{mpgBean.countString}"/>
+                    <rich:spacer width="10"/>
+                  </div>          
+                                
+              </rich:panel> 
+        
+              <rich:datascroller id="bottomScroller" for="items" immediate="true"
+                  scrollerListener="#{mpgBean.scrollerListener}"
+                  reRender="topScroller,countString,starter,items,mpgPanel">
+                  <f:setPropertyActionListener target="#{mpgBean.sortOnLight}" value="#{mpgBean.sortOnLight}" />
+              </rich:datascroller>             
 
               <rich:dataTable value="#{mpgBean.mpgEntities}" id="items"
-                var="item" styleClass="datagrid"
+                var="item" styleClass="datagrid" rows="1"
                 rowClasses="trendTableOdd,trendTableEven" cellspacing="1" width="100%">
 
-                <rich:column sortBy="#{item.entity.entityName}" styleClass="alt">
+                <rich:column 
+                    headerClass="sortable-text #{mpgBean.sortOnName eq '' ? '' : (mpgBean.sortOnName eq 'asc' ? 'forwardSort' : 'reverseSort')}">
                   <f:facet name="header">
-                    <h:outputText value="Fleet" />
+                    <a4j:commandLink 
+                      value="Fleet" 
+                      reRender="mpgPanel,items">
+                      <f:setPropertyActionListener target="#{mpgBean.sortOnName}" value="#{mpgBean.sortOnName eq 'asc' ? 'dec' : 'asc'}" />
+                      <f:setPropertyActionListener target="#{mpgBean.sortOnLight}" value="" />
+                      <f:setPropertyActionListener target="#{mpgBean.sortOnMedium}" value="" />
+                      <f:setPropertyActionListener target="#{mpgBean.sortOnHeavy}" value="" />                            
+                    </a4j:commandLink>
                   </f:facet>
                   <h:outputLink value="#{item.goTo}">
                     <h:outputText value="#{item.entity.entityName}" />
                   </h:outputLink>
                 </rich:column>
           
-                <rich:column width="73" sortBy="#{item.entity.lightValue}">
+                <rich:column width="73" 
+                    headerClass="sortable-text #{mpgBean.sortOnLight eq '' ? '' : (mpgBean.sortOnLight eq 'asc' ? 'forwardSort' : 'reverseSort')}">
                   <f:facet name="header">
-                    <h:outputText value="Light" />
+                    <a4j:commandLink 
+                      value="Light" 
+                      reRender="mpgPanel,items">
+                      <f:setPropertyActionListener target="#{mpgBean.sortOnName}" value="" />
+                      <f:setPropertyActionListener target="#{mpgBean.sortOnLight}" value="#{mpgBean.sortOnLight eq 'asc' ? 'dec' : 'asc'}" />
+                      <f:setPropertyActionListener target="#{mpgBean.sortOnMedium}" value="" />
+                      <f:setPropertyActionListener target="#{mpgBean.sortOnHeavy}" value="" />                            
+                    </a4j:commandLink>
                   </f:facet>
                   <h:outputText value="#{item.entity.lightValue}" />
                 </rich:column>
           
-                <rich:column width="73" sortBy="#{item.entity.mediumValue}">
+                <rich:column width="73" 
+                    headerClass="sortable-text #{mpgBean.sortOnMedium eq '' ? '' : (mpgBean.sortOnMedium eq 'asc' ? 'forwardSort' : 'reverseSort')}">
                   <f:facet name="header">
-                    <h:outputText value="Medium" />
+                    <a4j:commandLink 
+                      value="Medium" 
+                      reRender="mpgPanel,items">
+                      <f:setPropertyActionListener target="#{mpgBean.sortOnName}" value="" />
+                      <f:setPropertyActionListener target="#{mpgBean.sortOnLight}" value="" />
+                      <f:setPropertyActionListener target="#{mpgBean.sortOnMedium}" value="#{mpgBean.sortOnMedium eq 'asc' ? 'dec' : 'asc'}" />
+                      <f:setPropertyActionListener target="#{mpgBean.sortOnHeavy}" value="" />                            
+                    </a4j:commandLink>
                   </f:facet>
                   <h:outputText value="#{item.entity.mediumValue}" />
                 </rich:column>
           
-                <rich:column width="73" sortBy="#{item.entity.heavyValue}">
+                <rich:column width="73"
+                    headerClass="sortable-text #{mpgBean.sortOnHeavy eq '' ? '' : (mpgBean.sortOnHeavy eq 'asc' ? 'forwardSort' : 'reverseSort')}">
                   <f:facet name="header">
-                    <h:outputText value="Heavy" />
+                    <a4j:commandLink 
+                      value="Heavy" 
+                      reRender="mpgPanel,items">
+                      <f:setPropertyActionListener target="#{mpgBean.sortOnName}" value="" />
+                      <f:setPropertyActionListener target="#{mpgBean.sortOnLight}" value="" />
+                      <f:setPropertyActionListener target="#{mpgBean.sortOnMedium}" value="" />
+                      <f:setPropertyActionListener target="#{mpgBean.sortOnHeavy}" value="#{mpgBean.sortOnHeavy eq 'asc' ? 'dec' : 'asc'}" />                            
+                    </a4j:commandLink>
                   </f:facet>
                   <h:outputText value="#{item.entity.heavyValue}" />
                 </rich:column>
