@@ -13,6 +13,8 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.map.MapIcon;
 import com.inthinc.pro.map.MapIconFactory;
 import com.inthinc.pro.model.Driver;
@@ -24,6 +26,7 @@ import com.inthinc.pro.util.WebUtil;
 public class DriverLocationBean extends BaseBean {
 
 	private DriverDAO driverDAO;
+	private VehicleDAO vehicleDAO;
 	private GroupDAO groupDAO;
     private NavigationBean navigation;
  //   private boolean pageChange = false;
@@ -38,6 +41,9 @@ public class DriverLocationBean extends BaseBean {
 	private List<DriverLastLocationBean> driverLastLocationBeans = new ArrayList<DriverLastLocationBean>();
  	private static final Logger logger = Logger.getLogger(DriverLocationBean.class);
 	private GroupHierarchy       organizationHierarchy;
+	private Integer selectedDriverID;
+	private Integer selectedVehicleID;
+	private AddressLookup addressLookup = new AddressLookup();
 
 	public DriverLocationBean() {
 		super();
@@ -52,9 +58,11 @@ public class DriverLocationBean extends BaseBean {
         zoom = organizationHierarchy.getTopGroup().getMapZoom();
 		
 	}
-	public List<DriverLastLocationBean> getDriverLastLocationBeans() {
+	public List<DriverLastLocationBean> getDriverLastLocationBeans() 
+	{
 	    
 	    if(driverLastLocationBeans.size() > 0) return driverLastLocationBeans;
+	    
 	    int validDriverCount = 0;
     	driverLastLocations = new HashMap<Integer,DriverLastLocationBean>();
         driverLastLocationBeans = new ArrayList<DriverLastLocationBean>();
@@ -115,8 +123,12 @@ public class DriverLocationBean extends BaseBean {
         {
         	DriverLastLocationBean db = new DriverLastLocationBean();
             db.setLastLocation(loc.getLoc());
+            db.setVehicle(vehicleDAO.findByID(loc.getVehicleID()));
         	db.setDriver(driver);
-        	db.setDriverName(driver.getPerson().getFirst()+" "+driver.getPerson().getLast());
+        	db.setDriverName(driver.getPerson().getFirst()+" "+ driver.getPerson().getLast());
+        	db.setTime(loc.getTime());
+        	db.setAddress(addressLookup.getAddress(loc.getLoc().getLat(), loc.getLoc().getLng()));
+        	
         	driverLastLocations.put(driver.getDriverID(),db);
         	driverLastLocationBeans.add(db);
         	
@@ -248,13 +260,39 @@ public class DriverLocationBean extends BaseBean {
         this.groupDAO = groupDAO;
     }
 
-    public String driverAction(){
-    	
-    	Map<String,String> requestMap = new WebUtil().getRequestParameterMap();
-    	String driverID = requestMap.get("driverId");
-    	navigation.setDriver(driverLastLocations.get(new Integer(driverID)).getDriver());
-    	
-    	return "go_driver";
+    public VehicleDAO getVehicleDAO()
+    {
+        return vehicleDAO;
+    }
+    public void setVehicleDAO(VehicleDAO vehicleDAO)
+    {
+        this.vehicleDAO = vehicleDAO;
+    }
+    public Integer getSelectedDriverID()
+    {
+        return selectedDriverID;
+    }
+    public void setSelectedDriverID(Integer selectedDriverID)
+    {
+        this.selectedDriverID = selectedDriverID;
+    }
+    public Integer getSelectedVehicleID()
+    {
+        return selectedVehicleID;
+    }
+    public void setSelectedVehicleID(Integer selectedVehicleID)
+    {
+        this.selectedVehicleID = selectedVehicleID;
+    }
+    public String driverDetailAction()
+    {
+        navigation.setDriver(driverLastLocations.get(new Integer(selectedDriverID)).getDriver());
+        return "go_driver";
+    }
+    public String vehicleDetailAction()
+    {
+        navigation.setVehicle(vehicleDAO.findByID(selectedVehicleID));
+        return "go_vehicle";
     }
 
 	public void setDriverLastLocationBeanList(List<DriverLastLocationBean> driverLastLocationBeanList) {

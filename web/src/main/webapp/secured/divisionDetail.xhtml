@@ -15,8 +15,7 @@
 		<script type="text/javascript" src="#{facesContext.externalContext.request.contextPath}/js/c_config.js"></script>
 		<script type="text/javascript" src="#{facesContext.externalContext.request.contextPath}/js/c_smartmenus.js"></script>
 		<script type="text/javascript" src="#{facesContext.externalContext.request.contextPath}/js/c_addon_popup_menus.js"></script>
-					
-							
+						
 	<script type="text/JavaScript">
 
 		// Show and Hide Tabs.
@@ -111,8 +110,7 @@
             </tr>
             <tr>
               <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_map" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('fleet_full_screen');
-               			initMap(#{navigationBean.group.mapLat},#{navigationBean.group.mapLng},5);
- 						addMarkers();
+               	
               			return true;">Fleet Map </a></td>
             </tr>
             <tr>
@@ -178,10 +176,7 @@
 
 		<div class="datagrid">
 		
-			<h:form id="trendTable">
-							
-
-						        							
+			<h:form id="trendTable">				
    						<h:inputHidden id="hiddenGroupID" value="#{navigationBean.groupID}"/>   											
 				
 						<rich:dataTable value="#{trendFlyoutBean.scoreableEntities}" id="items"
@@ -227,9 +222,6 @@
 												
 							</rich:column>
 						</rich:dataTable>				
-				
-
-        			
 			</h:form> 
 
 					<!-- End Trend table -->
@@ -264,6 +256,7 @@
               <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_map" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('fleet_full_screen'); 
 								              			initMap(#{navigationBean.group.mapLat},#{navigationBean.group.mapLng},5);
 								 						addMarkers();
+								 				    	centerMap();
 								              			return false;">Fleet Map </a>
               </td>
             </tr>
@@ -438,10 +431,7 @@
 		// mpg_full_screen
 		// trend_full_screen
 		// fleet_full_screen
-		<c:if test="#{flyOutBean.selectedTab =='fleet_full_screen'}">
- 			initMap(#{navigationBean.group.mapLat},#{navigationBean.group.mapLng},5);
- 			addMarkers();
-		</c:if>
+
 			
     </script> 
 

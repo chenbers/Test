@@ -1,16 +1,27 @@
   	var markerClicked=false;
   	var map;
   	var mgr;
-  	function initMap(lat,lng,zoom){
+  	var bounds; 
+  	
+  	function initMap(lat,lng,zoom)
+  	{
 		if (GBrowserIsCompatible()) {
 	 		map = new GMap2(document.getElementById("map-canvas"));
 			map.addControl(new GLargeMapControl());
 	 		map.addControl(new GMapTypeControl());
 	 		map.addControl(new GOverviewMapControl()); 
 			map.setMapType(G_NORMAL_MAP);
-			map.setCenter(new GLatLng(lat, lng), zoom);
-			mgr = new MarkerManager(map);
+			map.setCenter(new GLatLng(lat, lng));
+			bounds = new GLatLngBounds();
+			//mgr = new MarkerManager(map);
+			
 		}
+	}
+  	
+  	function centerMap() 
+  	{
+  		map.setZoom(map.getBoundsZoomLevel(bounds));
+	    map.setCenter(bounds.getCenter());
 	}
        
 		// Creates a marker whose info window displays the link tot the driver corresponding
@@ -28,28 +39,28 @@
          markerOptions = { icon:coloredIcon };
          var marker = new GMarker(point, markerOptions);
          
-         GEvent.addListener(marker, "mouseover", function() {
-         			var node = document.getElementById(driverId).cloneNode(true);
-         			node.style.display = 'block';
-	            if (!markerClicked) marker.openInfoWindow(node);
-           
-         });
+         //GEvent.addListener(marker, "mouseover", function() {
+         //			var node = document.getElementById(driverId).cloneNode(true);
+         // 			node.style.display = 'block';
+	     //       if (!markerClicked) marker.openInfoWindow(node);  
+         //});
          GEvent.addListener(marker, "click", function() {
          			var node = document.getElementById(driverId).cloneNode(true);
          			node.style.display = 'block';
-	            if (markerClicked) marker.openInfoWindow(node);
-	            markerClicked =true;
+         			marker.openInfoWindow(node);
            
          });
-         GEvent.addListener(marker, "mouseout", function() {
-	            if (!markerClicked) marker.closeInfoWindow();
-	            
-           
-         });
+         
+         //GEvent.addListener(marker, "mouseout", function() {
+	     //       if (!markerClicked) marker.closeInfoWindow();
+	     //});
+         
          GEvent.addListener(marker, "infowindowclose", function() {
 	            markerClicked = false;
            
          });
+         
+         bounds.extend(marker.getPoint());
          return marker;
        }
 	
