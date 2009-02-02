@@ -34,21 +34,21 @@ public class LiveFleetBean extends BaseBean
     private IconMap legendIconMap;
     private GroupHierarchy organizationHierarchy;
     private Integer selectedVehicleID;
+    private Integer selectedDriverID;
 
     public void initBean()
     {
         organizationHierarchy = getGroupHierarchy();
         addressLatLng = getGroupHierarchy().getTopGroup().getMapCenter();
         addressZoom = getGroupHierarchy().getTopGroup().getMapZoom();
-        if(maxCount == null)
-            maxCount = 10;  
+        if (maxCount == null)
+            maxCount = 10;
 
     }
 
     private void populateDriverLocations()
     {
         logger.debug("getDriver hit.");
-
 
         // Get drivers
         Group fleetGroup = organizationHierarchy.getTopGroup();
@@ -159,6 +159,16 @@ public class LiveFleetBean extends BaseBean
         this.selectedVehicleID = selectedVehicleID;
     }
 
+    public Integer getSelectedDriverID()
+    {
+        return selectedDriverID;
+    }
+
+    public void setSelectedDriverID(Integer selectedDriverID)
+    {
+        this.selectedDriverID = selectedDriverID;
+    }
+
     // MAX DRIVERS COUNT PROPERTIES
     public Integer getMaxCount()
     {
@@ -194,15 +204,10 @@ public class LiveFleetBean extends BaseBean
 
     public String driverAction()
     {
-
-        Map<String, String> requestMap = new WebUtil().getRequestParameterMap();
-        String driverID = requestMap.get("id");
-
-        navigation.setDriver(driverDAO.findByID(Integer.parseInt(driverID)));
-
+        navigation.setDriver(driverDAO.findByID(selectedDriverID));
         return "go_driver";
     }
-    
+
     public String vehicleDetailAction()
     {
         navigation.setVehicle(vehicleDAO.findByID(selectedVehicleID));

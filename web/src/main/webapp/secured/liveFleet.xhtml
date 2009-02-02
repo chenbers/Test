@@ -158,7 +158,7 @@
 				<h:panelGrid columns="2" styleClass="google_popup">
 					<f:facet name="header">
 						<h:commandLink value="#{driver.name}" action="#{liveFleetBean.driverAction}">
-							<f:setPropertyActionListener value="driver.driverID" target="#{liveFleetBean.selectedVehicleID}" />
+							<f:setPropertyActionListener value="driver.driverID" target="#{liveFleetBean.selectedDriverID}" />
 						</h:commandLink>
 					</f:facet>
 					<h:outputText value="#{messages.livefleet_work}:"/>
