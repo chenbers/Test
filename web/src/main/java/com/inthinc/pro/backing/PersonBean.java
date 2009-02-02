@@ -505,7 +505,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 person.setDriver(null);
             }
 
-            // a null RFID is zero for the DB
+            // null numbers are zero for the DB
+            if (person.getHeight() == null)
+                person.setHeight(0);
+            if (person.getWeight() == null)
+                person.setWeight(0);
             if ((person.getDriver() != null) && (person.getDriver().getRFID() == null))
                 person.getDriver().setRFID(0L);
 
@@ -515,7 +519,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             else
                 personDAO.update(person);
 
-            // a zero RFID is back to null
+            // set zero RFID back to null
             if ((person.getDriver() != null) && (person.getDriver().getRFID() == 0))
                 person.getDriver().setRFID(null);
 
