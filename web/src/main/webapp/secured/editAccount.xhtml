@@ -270,14 +270,18 @@
                           <td width="100"><h:outputText value="#{messages.myAccount_primary}" /></td>
                           <td>
                             <rich:message for="priText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText id="priText" value="#{myAccountBean.alertContact.priText}" size="40" maxlength="62" onkeyup="refreshValues()" validator="#{myAccountBean.validateEmail}"/>
+                            <h:inputText id="priText" value="#{myAccountBean.alertContact.priText}" size="40" maxlength="62" onkeyup="refreshValues()" validator="#{myAccountBean.validateEmail}">
+                              <f:attribute name="regexErrorMessage" value="#{messages.myAccount_textMessageFormat}" />
+                            </h:inputText>
                           </td>
                         </tr>
                         <tr>
                           <td width="100"><h:outputText value="#{messages.myAccount_secondary}" /></td>
                           <td>
                             <rich:message for="secText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText id="secText" value="#{myAccountBean.alertContact.secText}" size="40" maxlength="62" onkeyup="refreshValues()" validator="#{myAccountBean.validateEmail}"/>
+                            <h:inputText id="secText" value="#{myAccountBean.alertContact.secText}" size="40" maxlength="62" onkeyup="refreshValues()" validator="#{myAccountBean.validateEmail}">
+                              <f:attribute name="regexErrorMessage" value="#{messages.myAccount_textMessageFormat}" />
+                            </h:inputText>
                           </td>
                         </tr>
                       </tbody>

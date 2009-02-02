@@ -191,7 +191,8 @@ public class TablePref<T>
         }
         catch (Exception e)
         {
-            logger.error("Error filtering on column " + column, e);
+            if (logger.isDebugEnabled())
+                logger.debug("Error filtering on column " + column, e);
         }
         return null;
     }
