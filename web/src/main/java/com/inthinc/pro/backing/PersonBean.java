@@ -505,6 +505,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 person.setDriver(null);
             }
 
+            // set null dropdown items to empty
+            if (person.getSuffix() == null)
+                person.setSuffix("");
+            if ((person.getDriver() != null) && (person.getDriver().getLicenseClass() == null))
+                person.getDriver().setLicenseClass("");
+
             // null numbers are zero for the DB
             if (person.getHeight() == null)
                 person.setHeight(0);
