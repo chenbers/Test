@@ -212,10 +212,10 @@
 			}
 		</script>
 		<ui:repeat value="#{liveFleetBean.drivers}" var="driver">		
-			<div id="#{driver.driverID}" style="display: none">
-				<h:panelGrid columns="2" styleClass="google_popup">
+				<div id="#{driver.driverID}" style="display:none">
+				<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header">
 					<f:facet name="header">
-						<h:commandLink action="#{liveFleetBean.driverDetailAction}" value="#{driver.name}" >
+						<h:commandLink value="#{driver.name}" action="#{liveFleetBean.driverDetailAction}">
 							<f:setPropertyActionListener value="#{driver.driverID}" target="#{liveFleetBean.selectedDriverID}" />
 						</h:commandLink>
 					</f:facet>
@@ -223,10 +223,14 @@
 					<h:outputText value="#{driver.workPhone}" converter="PhoneNumberConverter" />
 					<h:outputText value="#{messages.livefleet_home}:"/>
 					<h:outputText value="#{driver.homePhone}" converter="PhoneNumberConverter" />
-					<h:outputText value="#{messages.livefleet_vehicleid}:"/>					
+					<h:outputText value="#{messages.livefleet_vehicle}:"/>					
 					<h:commandLink action="#{liveFleetBean.vehicleDetailAction}" value="#{driver.vehicleID}">
- 							<f:setPropertyActionListener value="#{driver.vehicleID}" target="#{liveFleetBean.selectedVehicleID}" />
+ 						<f:setPropertyActionListener value="#{driver.vehicleID}" target="#{liveFleetBean.selectedVehicleID}" />
 					</h:commandLink>
+					<h:outputText value="#{messages.livefleet_updated}:" />
+					<h:outputText value="#{driver.time}" converter="TimeAgoConverter"/>
+					<h:outputText value="#{messages.livefleet_address}:"/>
+					<h:outputText value="#{driver.addressStr}" />
 				</h:panelGrid>
 			</div>
 		</ui:repeat>

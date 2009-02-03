@@ -17,6 +17,7 @@ public class DriverLocation
     private String workPhone;            // person.workPhone
     private LatLng loc;                  // last location of driver
     private Date time;
+    private String addressStr;
    
     public Integer getDriverID()
     {
@@ -90,6 +91,14 @@ public class DriverLocation
     public void setTime(Date time)
     {
         this.time = time;
+    }
+    public String getAddressStr()
+    {
+        return addressStr;
+    }
+    public void setAddressStr(String addressStr)
+    {
+        this.addressStr = addressStr;
     }
  
 }

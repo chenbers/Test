@@ -49,7 +49,7 @@
 	<rich:panel id="mapPopups">
 		<ui:repeat value="#{driverLocationBean.driverLastLocationBeans}" var="driverLocation">		
 			<div id="#{driverLocation.driver.driverID}" style="display:none">
-				<h:panelGrid columns="2" styleClass="google_popup" width="230" >
+				<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header">
 					<f:facet name="header">
 						<h:commandLink value="#{driverLocation.driverName}" action="#{driverLocationBean.driverDetailAction}">
 							<f:setPropertyActionListener value="#{driverLocation.driver.driverID}" target="#{driverLocationBean.selectedDriverID}" />
@@ -65,10 +65,9 @@
 					</h:commandLink>
 					<h:outputText value="#{messages.livefleet_updated}:" />
 					<h:outputText value="#{driverLocation.time}" converter="TimeAgoConverter"/>
-				</h:panelGrid>
-					<br />
-					<h:outputText value="#{messages.livefleet_address}:" /><br />
+					<h:outputText value="#{messages.livefleet_address}:"/>
 					<h:outputText value="#{driverLocation.address}" />
+				</h:panelGrid>
 			</div>
 		</ui:repeat>
 	</rich:panel>
