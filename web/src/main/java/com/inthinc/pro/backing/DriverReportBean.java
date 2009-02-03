@@ -179,21 +179,21 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem>
     
     public void exportReportToPdf()
     {
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_REPORT,getGroupHierarchy().getTopGroup().getName(),null);
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_REPORT,getGroupHierarchy().getTopGroup().getName());
         reportCriteria.setMainDataset(driverData);
         getReportRenderer().exportSingleReportToPDF(reportCriteria, getFacesContext());
     }
     
     public void emailReport()
     {
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_REPORT,getGroupHierarchy().getTopGroup().getName(),getAccountName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_REPORT,getGroupHierarchy().getTopGroup().getName());
         reportCriteria.setMainDataset(driverData);
         getReportRenderer().exportReportToEmail(reportCriteria,getEmailAddress());
     }
     
     public void exportReportToExcel()
     {
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_REPORT,getGroupHierarchy().getTopGroup().getName(),getAccountName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_REPORT,getGroupHierarchy().getTopGroup().getName());
         reportCriteria.setMainDataset(driverData);
         getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
     }

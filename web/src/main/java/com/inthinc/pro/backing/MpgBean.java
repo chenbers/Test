@@ -218,7 +218,7 @@ public class MpgBean extends BaseDurationBean {
             seriesData.add(new CategorySeriesData("Heavy",seriesID,heavyValue,seriesID));
         }
         
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.MPG_GROUP,getNavigation().getGroup().getName(),getAccountName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.MPG_GROUP,getNavigation().getGroup().getName());
         reportCriteria.setMainDataset(entities);
         reportCriteria.addChartDataSet(seriesData);
         reportCriteria.setDuration(getDuration());

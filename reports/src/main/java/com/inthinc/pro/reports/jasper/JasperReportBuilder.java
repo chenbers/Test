@@ -3,6 +3,7 @@ package com.inthinc.pro.reports.jasper;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -72,7 +73,7 @@ public class JasperReportBuilder
             JasperReport jr = ReportUtils.loadReport(reportCriteria.getReport());
 
             // Lets break up the report if the recordsPerReport is set
-            JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(reportCriteria.getMainDataset());
+            JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(reportCriteria.getMainDataset() != null? reportCriteria.getMainDataset() : Collections.EMPTY_LIST);
             jp = JasperFillManager.fillReport(jr, reportCriteria.getPramMap(), ds);
             if (jasperPrint == null)
             {

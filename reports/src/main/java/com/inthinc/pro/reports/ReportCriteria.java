@@ -30,22 +30,9 @@ public class ReportCriteria
         paramMap.put("ENTITY_NAME", reportCriteria.getPramMap().get("ENTITY_NAME"));
     }
 
-    public ReportCriteria(ReportType report, String groupName, String accountName)
+    public ReportCriteria(ReportType report, String entityName)
     {
         setReport(report);
-
-        String entityName = "";
-        if (accountName == null)
-        {
-            paramMap.put(" ", "");
-        }
-        else
-        {
-            entityName = accountName + " - ";
-        }
-
-        entityName += groupName;
-
         paramMap.put("ENTITY_NAME", entityName);
     }
 

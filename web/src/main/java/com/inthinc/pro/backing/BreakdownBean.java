@@ -241,7 +241,7 @@ public class BreakdownBean extends BaseDurationBean
         format.setMinimumFractionDigits(1);
         String overallScore = format.format((double) ((double) getOverallScore() / (double) 10.0));
         
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.OVERALL_SCORE,getNavigation().getGroup().getName(),getAccountName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.OVERALL_SCORE,getNavigation().getGroup().getName());
         reportCriteria.setMainDataset(getPieScoreData(ScoreType.SCORE_OVERALL));
         reportCriteria.addParameter("OVERALL_SCORE",overallScore);
         reportCriteria.addParameter("DURATION", "");
