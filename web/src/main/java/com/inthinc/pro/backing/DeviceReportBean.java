@@ -1,6 +1,8 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -81,6 +83,16 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
         } else {
             loadResults(this.devicesData);
         }
+       
+        Collections.sort(this.devicesData,new Comparator<DeviceReportItem>()
+        {
+        
+            @Override
+            public int compare(DeviceReportItem o1, DeviceReportItem o2)
+            {
+                return o1.getDevice().getName().toLowerCase().compareTo(o2.getDevice().getName().toLowerCase());
+            }
+        });  
     }
         
 
