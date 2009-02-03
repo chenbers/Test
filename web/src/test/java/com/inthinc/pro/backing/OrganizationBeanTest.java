@@ -62,7 +62,8 @@ public class OrganizationBeanTest extends BaseBeanTest
         selectedGroup.setMapCenter(new LatLng(0, 0));
         selectedGroup.setMapZoom(5);
         selectedGroup.setManagerID(220);
-
+        
+        organizationBean.setSelectedParentGroup(selectedGroup); //Causes validation to fail. Tests will still pass though
         organizationBean.update();
     }
 

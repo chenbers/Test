@@ -1,0 +1,35 @@
+<ui:composition template="adminTable.xhtml"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:a4j="http://richfaces.org/a4j"
+  xmlns:rich="http://richfaces.org/rich"
+  xmlns:security="http://www.springframework.org/security/tags">
+
+  <ui:param name="recordCount" value="#{reportScheduleBean.itemCount}" />
+  <ui:param name="items" value="#{reportScheduleBean.filteredItems}" />
+  <ui:param name="filterValue" value="#{reportScheduleBean.filterValue}" />
+  <ui:param name="page" value="#{reportScheduleBean.page}" />
+  <ui:param name="editorBean" value="#{reportScheduleBean}" />
+
+  <ui:define name="columns">
+  	<rich:column rendered="#{reportScheduleBean.tableColumns['name'].visible}" sortBy="#{item.name}" sortOrder="ASCENDING">
+      <f:facet name="header"><h:outputText value="#{messages.reportSchedulesHeader_name}" /></f:facet>
+      <a4j:htmlCommandLink action="#{reportScheduleBean.display}" value="#{item.name}">
+        <f:param name="displayID" value="#{item.id}" />
+      </a4j:htmlCommandLink>
+    </rich:column>
+    <rich:column rendered="#{reportScheduleBean.tableColumns['startDate'].visible}" sortBy="#{item.startDate}">
+      <f:facet name="header"><h:outputText value="#{messages.reportSchedulesHeader_startDate}" /></f:facet>
+      <h:outputText value="#{item.startDate}">
+      </h:outputText>
+    </rich:column>
+    <rich:column rendered="#{reportScheduleBean.tableColumns['endDate'].visible}" sortBy="#{item.endDate}">
+      <f:facet name="header"><h:outputText value="#{messages.reportSchedulesHeader_endDate}" /></f:facet>
+      <h:outputText value="#{item.startDate}">
+      </h:outputText>
+    </rich:column>
+  </ui:define>
+
+</ui:composition>

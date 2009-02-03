@@ -195,6 +195,30 @@
         <to-view-id>/secured/admin/editPerson.xhtml</to-view-id>
       </navigation-case>
     </navigation-rule>
+    <navigation-rule>
+		<navigation-case>
+			<from-outcome>go_adminReportSchedules</from-outcome>
+			<to-view-id>/secured/admin/reportSchedules.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+    <navigation-rule>
+      <navigation-case>
+        <from-outcome>go_adminReportSchedule</from-outcome>
+        <to-view-id>/secured/admin/reportSchedule.xhtml</to-view-id>
+      </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+      <navigation-case>
+        <from-outcome>go_adminAddReportSchedule</from-outcome>
+        <to-view-id>/secured/admin/editReportSchedule.xhtml</to-view-id>
+      </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+      <navigation-case>
+        <from-outcome>go_adminEditReportSchedule</from-outcome>
+        <to-view-id>/secured/admin/editReportSchedule.xhtml</to-view-id>
+      </navigation-case>
+    </navigation-rule>
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>go_adminVehicles</from-outcome>
@@ -271,12 +295,6 @@
       <navigation-case>
         <from-outcome>go_adminEditZoneAlert</from-outcome>
         <to-view-id>/secured/admin/editZoneAlert.xhtml</to-view-id>
-      </navigation-case>
-    </navigation-rule>
-     <navigation-rule>
-      <navigation-case>
-        <from-outcome>go_adminReportSchedule</from-outcome>
-        <to-view-id>/secured/admin/reportSchedule.xhtml</to-view-id>
       </navigation-case>
     </navigation-rule>
     <navigation-rule>

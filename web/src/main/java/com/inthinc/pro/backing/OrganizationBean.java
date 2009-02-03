@@ -349,8 +349,10 @@ public class OrganizationBean extends BaseBean
     }
 
     /**
-     * Case 1: EDIT - If there are drivers/devices/or vehicles then the group has to be a team Case 2: EDIT - If there are subordinate groups within a group, then that group cannot
+     * Rule 1: EDIT - If there are drivers/devices/or vehicles then the group has to be a team Case 2: EDIT - If there are subordinate groups within a group, then that group cannot
      * be a team
+     * Rule 3: Edit - Cannot assign the same group to be a groups parent.
+     * Rule 4: Edit - Cannot assign a child group to be a parent.
      * 
      * @param treeNode
      *            treeNode containing the group to validate
@@ -358,8 +360,8 @@ public class OrganizationBean extends BaseBean
      */
     private boolean validate(TreeNodeImpl treeNode)
     {
-        boolean valid = true;
-        // Case 1
+       
+        // Rule 1
         if (groupState == State.EDIT && treeNode.getGroup().getType() != GroupType.TEAM)
         {
             List<Driver> driverList = driverDAO.getDrivers(treeNode.getGroup().getGroupID());
@@ -367,18 +369,33 @@ public class OrganizationBean extends BaseBean
             if (!vehicleList.isEmpty() || !driverList.isEmpty())
             {
                 addErrorMessage(MessageUtil.getMessageString("group_edit_error_division"));
-                valid = false;
+                return false;
             }
         }
 
-        // Case 2
+        // Rule 2
         if (groupState == State.EDIT && treeNode.getGroup().getType() == GroupType.TEAM && !treeNode.getChildrenNodes().isEmpty()
                 && treeNode.getChildrenNodes().get(0).getGroup() != null)
         {
             addErrorMessage(MessageUtil.getMessageString("group_edit_error_team"));
-            valid = false;
+            return false;
         }
-        return valid;
+        
+        // Rule 3
+        if (groupState == State.EDIT && selectedParentGroup.getGroupID().equals(treeNode.getGroup().getGroupID()))
+        {
+            addErrorMessage(MessageUtil.getMessageString("groupEdit_selfParentError"));
+            return false;
+        }
+        
+        // Rule 4
+        if (groupState == State.EDIT && treeNode.findTreeNodeByGroupId(selectedParentGroup.getGroupID()) != null)
+        {
+            addErrorMessage(MessageUtil.getMessageString("groupEdit_childToParentError"));
+            return false;
+        }
+        
+        return true;
     }
 
     private void copyGroupTreeNode(TreeNodeImpl copyFromNode, TreeNodeImpl copyToNode, boolean updateTree)
