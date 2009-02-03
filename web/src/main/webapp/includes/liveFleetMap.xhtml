@@ -49,7 +49,7 @@
 	<rich:panel id="mapPopups">
 		<ui:repeat value="#{driverLocationBean.driverLastLocationBeans}" var="driverLocation">		
 			<div id="#{driverLocation.driver.driverID}" style="display:none">
-				<h:panelGrid columns="2" styleClass="google_popup" width="200" >
+				<h:panelGrid columns="2" styleClass="google_popup" width="230" >
 					<f:facet name="header">
 						<h:commandLink value="#{driverLocation.driverName}" action="#{driverLocationBean.driverDetailAction}">
 							<f:setPropertyActionListener value="#{driverLocation.driver.driverID}" target="#{driverLocationBean.selectedDriverID}" />

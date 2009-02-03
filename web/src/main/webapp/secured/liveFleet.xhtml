@@ -14,6 +14,41 @@
 	<ui:define name="scripts">
 		<script src="http://maps.google.com/maps?file=api&amp;v=2.x&amp;key=#{gmBean.key}" type="text/javascript"></script>
 		<script type="text/javascript">
+		var map = null;
+	    var geocoder = null;
+	    var addressLatLng = null;
+	    var mapDefaultLoc = new GLatLng(#{liveFleetBean.addressLatLng.lat}, #{liveFleetBean.addressLatLng.lng});
+	    var markerClicked = false;
+
+	    var baseIcon = new GIcon();
+			baseIcon.iconSize = new GSize(25, 30);
+			baseIcon.iconAnchor = new GPoint(6, 20);
+			baseIcon.infoWindowAnchor = new GPoint(5, 1);
+
+		var bounds = new GLatLngBounds();
+
+		function initMap()
+		{
+	        if (GBrowserIsCompatible())
+	        {
+	        	map = new GMap2(document.getElementById("map-canvas"));
+	        	geocoder = new GClientGeocoder();
+				map.addControl(new GLargeMapControl());
+				map.addControl(new GMapTypeControl());
+				map.addControl(new GOverviewMapControl()); 
+				map.setMapType(G_NORMAL_MAP);
+				map.setCenter(mapDefaultLoc);
+	
+	    	    var marker = createMarker(mapDefaultLoc, "defaultMessage", null);
+				map.addOverlay(marker);
+				bounds.extend(marker.getPoint());
+	
+				var node = document.getElementById("defaultMessage").cloneNode(true);
+	  			node.style.display = 'block';
+	            marker.openInfoWindow(node);
+        	}
+		}
+
 		
 		/* CreateMarker(GLatLng, divID, GIcon or null)
 		 *	
@@ -143,6 +178,14 @@
 		{
 			GUnload();
 		}
+
+		function bodyLoad()
+		{
+			initMap();
+			addMarkers();
+			map.setZoom(map.getBoundsZoomLevel(bounds));
+		    map.setCenter(bounds.getCenter());
+		}
 	</script>	
 
 	</ui:define>
@@ -153,12 +196,27 @@
 	<!-- BEGIN GOOGLE MAP POPUPS -->
 	<h:form>
 	<rich:panel id="mapPopups">
+		<script type="text/javascript">
+			var marker;
+			var driverLoc;
+
+			function addMarkers()
+			{
+				<ui:repeat value="#{liveFleetBean.drivers}" var="driver">
+					driverLoc = new GLatLng(#{driver.loc.lat}, #{driver.loc.lng});
+			
+				marker = createMarker(driverLoc, #{driver.driverID}, "#{liveFleetBean.mapIconMap.icons[driver.groupID]}");
+				map.addOverlay(marker);
+				bounds.extend(marker.getPoint());
+				</ui:repeat>
+			}
+		</script>
 		<ui:repeat value="#{liveFleetBean.drivers}" var="driver">		
 			<div id="#{driver.driverID}" style="display: none">
 				<h:panelGrid columns="2" styleClass="google_popup">
 					<f:facet name="header">
-						<h:commandLink value="#{driver.name}" action="#{liveFleetBean.driverAction}">
-							<f:setPropertyActionListener value="driver.driverID" target="#{liveFleetBean.selectedDriverID}" />
+						<h:commandLink action="#{liveFleetBean.driverDetailAction}" value="#{driver.name}" >
+							<f:setPropertyActionListener value="#{driver.driverID}" target="#{liveFleetBean.selectedDriverID}" />
 						</h:commandLink>
 					</f:facet>
 					<h:outputText value="#{messages.livefleet_work}:"/>
@@ -195,11 +253,6 @@
 									id="driversDataTable" var="item" styleClass="datagrid"
 									rowClasses="tableOdd,tableEven" cellspacing="1" rows="10" width="100%">
 								
-								<rich:column>
-									<img src="#{liveFleetBean.mapIconMap.icons[item.groupID]}"
-										width="20" height="20" />
-								</rich:column>
-	
 								<rich:column sortBy="#{item.name}">
 									<f:facet name="header">
 										<h:outputText value="Driver" />
@@ -216,8 +269,13 @@
 									<h:outputText value="#{item.time}" converter="TimeAgoConverter"/>
 								</rich:column>
 	
-								<rich:column>
-									<a href="#" onClick="showDriver(#{item.loc.lat}, #{item.loc.lng}, #{item.driverID});">show</a>
+								<rich:column sortBy="#{item.groupID}">
+									<f:facet name="header">
+									
+									</f:facet>
+									<a href="#" onclick="showDriver(#{item.loc.lat}, #{item.loc.lng}, #{item.driverID});">
+										<img src="#{liveFleetBean.legendIconMap.icons[item.groupID]}" style="cursor: pointer;" border="0" />
+									</a>
 								</rich:column>
 	
 								</rich:dataTable>
@@ -235,7 +293,7 @@
 						<div class="panel_statusbar"></div>
 					</div>
 				</div>
-	<div class="spacer"></div>		
+		<div class="spacer"></div>		
 				<div class="">
 					<div class="panel_nw">
 						<div class="panel_title">
@@ -245,10 +303,13 @@
 					</div>	
 	 				<div class="panel_w">
 						<div class="panel_content">
-						  
-						 
-					</div>
-	
+							<rich:dataList value="#{liveFleetBean.displayedGroups}" var="group" styleClass="legend">
+							  		<img src="#{liveFleetBean.legendIconMap.icons[group.groupID]}" style="vertical-align:middle"/> 
+								  	<h:outputText value="#{group.name}" style="margin-left:5px"></h:outputText>
+							  </rich:dataList>
+						</div>
+						<div style="clear:both"/>
+	  					
 					<div class="panel_sw">
 						<div class="panel_statusbar"></div>
 					</div>
@@ -312,71 +373,14 @@
 				    			</security:authorize>
 			    	
 			    </div>
-				<script type="text/javascript">
-				var map = null;
-			    var geocoder = null;
-			    var addressLatLng = null;
-			    var mapDefaultLoc = new GLatLng(#{liveFleetBean.addressLatLng.lat}, #{liveFleetBean.addressLatLng.lng});
-			    var markerClicked = false;
-
-			    var baseIcon = new GIcon();
-					baseIcon.iconSize = new GSize(21, 20);
-					baseIcon.iconAnchor = new GPoint(6, 20);
-					baseIcon.infoWindowAnchor = new GPoint(5, 1);
-
-				var bounds = new GLatLngBounds();
-
-		        if (GBrowserIsCompatible())
-			        {
-		   
-		        	map = new GMap2(document.getElementById("map-canvas"));
-		        	geocoder = new GClientGeocoder();
-					map.addControl(new GLargeMapControl());
-					map.addControl(new GMapTypeControl());
-					map.addControl(new GOverviewMapControl()); 
-					map.setMapType(G_NORMAL_MAP);
-					map.setCenter(mapDefaultLoc);
-		
-		    	    var marker = createMarker(mapDefaultLoc, "defaultMessage", null);
-					map.addOverlay(marker);
-					bounds.extend(marker.getPoint());
-
-					var node = document.getElementById("defaultMessage").cloneNode(true);
-          			node.style.display = 'block';
-		            marker.openInfoWindow(node);
-				
-		        }
-			    </script>
-			    <rich:panel id="vehicleScript">
-					<script type="text/javascript">
-	 							var marker;
-			  					var driverLoc;
-								
-			  					<ui:repeat value="#{liveFleetBean.drivers}" var="driver">
-			  						driverLoc = new GLatLng(#{driver.loc.lat}, #{driver.loc.lng});
-	
-			  					    //var node = document.getElementById(#{driver.driverID}).cloneNode(true);
-				  		  			//node.style.display = 'block';
-	
-									marker = createMarker(driverLoc, #{driver.driverID}, "#{liveFleetBean.mapIconMap.icons[driver.groupID]}");
-									map.addOverlay(marker);
-									bounds.extend(marker.getPoint());
-								</ui:repeat>
-	
-								map.setZoom(map.getBoundsZoomLevel(bounds));
-							    map.setCenter(bounds.getCenter());
-						</script>
-				</rich:panel> 
 				</h:form>
-				
-				<a4j:form>
-					<a4j:jsFunction reRender="vehicleScript,driversDataTable,mapPopups,driverScroller" name="notifyBean">				
-						<a4j:actionparam name="param1" assignTo="#{liveFleetBean.addressLatLng.lat}" />
-						<a4j:actionparam name="param2" assignTo="#{liveFleetBean.addressLatLng.lng}" />
-						<a4j:actionparam name="param3" assignTo="#{liveFleetBean.maxCount}" />	
-					</a4j:jsFunction>
-				</a4j:form>
-				
+					<a4j:form>
+						<a4j:jsFunction reRender="driversDataTable,mapPopups,driverScroller" name="notifyBean" oncomplete="bodyLoad()">				
+							<a4j:actionparam name="param1" assignTo="#{liveFleetBean.addressLatLng.lat}" />
+							<a4j:actionparam name="param2" assignTo="#{liveFleetBean.addressLatLng.lng}" />
+							<a4j:actionparam name="param3" assignTo="#{liveFleetBean.maxCount}" />	
+						</a4j:jsFunction>
+					</a4j:form>
 				</div>
 				</div>
 				<div class="panel_sw">
