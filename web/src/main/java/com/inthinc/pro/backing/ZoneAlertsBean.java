@@ -290,7 +290,11 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
         public boolean isAnytime()
         {
             if (anytime == null)
+            {
+                if (getStartTOD() == null)
+                    super.setStartTOD(BaseAlert.MIN_TOD);
                 anytime = BaseAdminAlertsBean.isAnytime(this);
+            }
             return anytime;
         }
 
