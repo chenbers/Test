@@ -61,7 +61,8 @@
 					violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
 					map.addOverlay(createMarker(violation, "#{violation.eventType} Violation.<br />#{violation.time}<br />#{violation.addressStr}",
 									"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png"));
-				</ui:repeat>
+					//TODO extend bounds
+					</ui:repeat>
 	
 				//Zoom and Center on trip.
 				map.setZoom(map.getBoundsZoomLevel(bounds));
@@ -197,7 +198,6 @@
 							  <tr>
 								<td>
 									<h4>Overall Score</h4>
-									<div style="margin-top: 8px;"><a href="#" class="ls_tab_email">E-mail</a></div>
 								</td>
 								<td width="80" align="center">
 									<ui:include src="../includes/scoreBox.xhtml">
