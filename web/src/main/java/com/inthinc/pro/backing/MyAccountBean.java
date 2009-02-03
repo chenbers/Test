@@ -4,13 +4,12 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
-import org.springframework.context.MessageSource;
 
 import com.inthinc.pro.dao.AlertContactDAO;
+import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.AlertCon;
 import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.validators.EmailValidator;
 
@@ -18,13 +17,10 @@ public class MyAccountBean extends BaseBean
 {
     private static final Logger logger = Logger.getLogger(MyAccountBean.class);
 
-    private MessageSource messageSource;
     private AlertContactDAO alertContactDAO;
     private GroupDAO groupDAO;
+    private DriverDAO driverDAO;
     private AlertCon alertContact;
-
-    private String regionName;
-    private String teamName;
 
     private String informationSelectType;
     private String informationSelectEmail;
@@ -151,46 +147,19 @@ public class MyAccountBean extends BaseBean
     
     public String getRegionName()
     {
-        if (true || regionName == null)
-        {
-            Group group = groupDAO.findByID(getUser().getGroupID());
-            if (group != null && group.getType() == GroupType.DIVISION)
-            {
-                regionName = group.getName();
-            }
-            else if (group != null)
-            {
-                group = groupDAO.findByID(group.getParentID());
-                if (group != null && group.getType() == GroupType.DIVISION)
-                {
-                    regionName = group.getName();
-                }
-            }
-        }
-        return regionName;
+        final Group group = getGroupHierarchy().getGroup(getUser().getGroupID());
+        if (group != null)
+            return group.getName();
+        return null;
     }
 
     public String getTeamName()
     {
-        if (teamName == null)
-        {
-            Group group = groupDAO.findByID(getUser().getGroupID());
-            if (group != null && group.getType() == GroupType.TEAM)
-            {
-                teamName = group.getName();
-            }
-        }
-        return teamName;
-    }
-
-    public MessageSource getMessageSource()
-    {
-        return messageSource;
-    }
-
-    public void setMessageSource(MessageSource messageSource)
-    {
-        this.messageSource = messageSource;
+        if (getUser().getPerson().getDriver() == null)
+            getUser().getPerson().setDriver(driverDAO.getDriverByPersonID(getUser().getPersonID()));
+        if (getUser().getPerson().getDriver() != null)
+            return getGroupHierarchy().getGroup(getUser().getPerson().getDriver().getGroupID()).getName();
+        return null;
     }
 
     public AlertContactDAO getAlertContactDAO()
@@ -211,6 +180,11 @@ public class MyAccountBean extends BaseBean
     public void setGroupDAO(GroupDAO groupDAO)
     {
         this.groupDAO = groupDAO;
+    }
+
+    public void setDriverDAO(DriverDAO driverDAO)
+    {
+        this.driverDAO = driverDAO;
     }
 
     public String getInformationSelectType()

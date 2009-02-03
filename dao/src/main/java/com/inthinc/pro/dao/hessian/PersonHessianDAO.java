@@ -152,10 +152,16 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
     @Override
     public List<Person> getPeopleInGroupHierarchy(Integer groupID)
     {
+        return getPeopleInGroupHierarchy(groupID, groupID);
+    }
+
+    @Override
+    public List<Person> getPeopleInGroupHierarchy(Integer userGroupID, Integer driverGroupID)
+    {
         List<Person> returnPersonList = new ArrayList<Person>();
         try
         {
-            List<User> userList = getMapper().convertToModelObject(getSiloService().getUsersByGroupIDDeep(groupID), User.class);
+            List<User> userList = getMapper().convertToModelObject(getSiloService().getUsersByGroupIDDeep(userGroupID), User.class);
             for (User user : userList)
             {
                 user.getPerson().setUser(user);
@@ -168,7 +174,7 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
 
         try
         {
-            List<Driver> driverList = getMapper().convertToModelObject(getSiloService().getDriversByGroupIDDeep(groupID), Driver.class);
+            List<Driver> driverList = getMapper().convertToModelObject(getSiloService().getDriversByGroupIDDeep(driverGroupID), Driver.class);
             for (Driver driver : driverList)
             {
                 Person person = findPersonInList(returnPersonList, driver);

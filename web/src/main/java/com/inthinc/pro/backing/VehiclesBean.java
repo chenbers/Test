@@ -121,7 +121,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     protected List<VehicleView> loadItems()
     {
         // get the vehicles
-        final List<Vehicle> plainVehicles = vehicleDAO.getVehiclesInGroupHierarchy(getTopGroup().getGroupID());
+        final List<Vehicle> plainVehicles = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
 
         // convert the Vehicles to VehicleViews
         final LinkedList<VehicleView> items = new LinkedList<VehicleView>();
@@ -251,7 +251,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     public List<Driver> getDrivers()
     {
         if (drivers == null)
-            drivers = driverDAO.getAllDrivers(getTopGroup().getGroupID());
+            drivers = driverDAO.getAllDrivers(getUser().getGroupID());
         return drivers;
     }
 
@@ -264,7 +264,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     public TreeMap<Integer, String> getGroupNames()
     {
         final TreeMap<Integer, String> groupNames = new TreeMap<Integer, String>();
-        for (final Group group : getAllGroups())
+        for (final Group group : getGroupHierarchy().getGroupList())
             groupNames.put(group.getGroupID(), group.getName());
         return groupNames;
     }
@@ -431,7 +431,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     public TreeMap<String, Integer> getTeams()
     {
         final TreeMap<String, Integer> teams = new TreeMap<String, Integer>();
-        for (final Group group : getAllGroups())
+        for (final Group group : getGroupHierarchy().getGroupList())
             if (group.getType() == GroupType.TEAM)
                 teams.put(group.getName(), group.getGroupID());
         return teams;

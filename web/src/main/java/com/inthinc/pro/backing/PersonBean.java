@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -209,7 +210,15 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     protected List<PersonView> loadItems()
     {
         // get the people
-        final List<Person> plainPeople = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());
+        final List<Person> plainPeople = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID(), getUser().getGroupID());
+
+        // filter out people who don't belong
+        for (final Iterator<Person> i = plainPeople.iterator(); i.hasNext();)
+        {
+            final Person person = i.next();
+            if ((person.getDriver() == null) && (getGroupHierarchy().getGroup(person.getUser().getGroupID()) == null))
+                i.remove();
+        }
 
         // convert the people to PersonViews
         final LinkedList<PersonView> items = new LinkedList<PersonView>();
@@ -362,7 +371,32 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             getUpdateField().put("user.role.name", role);
         }
 
+        // see if we're partially editing one of the batch items
+        boolean partialEdit = isBatchEdit() && getItem().isUserEditable();
+        if (partialEdit)
+        {
+            partialEdit = false;
+            for (final PersonView person : getSelectedItems())
+                if (!person.isUserEditable())
+                {
+                    partialEdit = true;
+                    break;
+                }
+        }
+
         final String result = super.save();
+
+        // revert partial-edit changes if user editable
+        if ((result != null) && partialEdit)
+        {
+            items = null;
+            getItems();
+
+            final String summary = MessageUtil.getMessageString("editPerson_partialUpdate");
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, summary, null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+
         notifyChangeListeners();
         return result;
     }
@@ -395,7 +429,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         for (final PersonView person : saveItems)
         {
             // unique e-mail
-            if ((person.getEmail() != null) && (person.getEmail().length() > 0))
+            if (!isBatchEdit() && (person.getEmail() != null) && (person.getEmail().length() > 0))
             {
                 final Person byEmail = personDAO.findByEmail(person.getEmail());
                 if ((byEmail != null) && !byEmail.getPersonID().equals(person.getPersonID()))
@@ -408,7 +442,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             }
 
             // birth date
-            if (person.getDob() != null)
+            if (!isBatchEdit() && (person.getDob() != null))
             {
                 Calendar latest = Calendar.getInstance();
                 latest.add(Calendar.YEAR, -16);
@@ -431,7 +465,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 }
 
                 // unique RFID
-                if ((person.getDriver().getRFID() != null) && (person.getDriver().getRFID() != 0))
+                if (!isBatchEdit() && (person.getDriver().getRFID() != null) && (person.getDriver().getRFID() != 0))
                 {
                     final Integer byRFID = driverDAO.getDriverIDForRFID(person.getDriver().getRFID());
                     if ((byRFID != null) && !byRFID.equals(person.getDriver().getDriverID()))
@@ -446,22 +480,25 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             // unique username
             if (person.isUserSelected())
             {
-                final User byUsername = userDAO.findByUserName(person.getUser().getUsername());
-                if ((byUsername != null) && !byUsername.getPersonID().equals(person.getPersonID()))
+                if (!isBatchEdit())
                 {
-                    valid = false;
-                    final String summary = MessageUtil.getMessageString("editPerson_uniqueUsername");
-                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                    context.addMessage("edit-form:user_username", message);
-                }
+                    final User byUsername = userDAO.findByUserName(person.getUser().getUsername());
+                    if ((byUsername != null) && !byUsername.getPersonID().equals(person.getPersonID()))
+                    {
+                        valid = false;
+                        final String summary = MessageUtil.getMessageString("editPerson_uniqueUsername");
+                        final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                        context.addMessage("edit-form:user_username", message);
+                    }
 
-                // matching passwords
-                if ((person.getPassword() != null) && (person.getPassword().length() > 0) && !person.getPassword().equals(person.getConfirmPassword()))
-                {
-                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_passwordsMismatched"), null);
-                    context.addMessage("edit-form:confirmPassword", message);
-                    valid = false;
-                    break;
+                    // matching passwords
+                    if ((person.getPassword() != null) && (person.getPassword().length() > 0) && !person.getPassword().equals(person.getConfirmPassword()))
+                    {
+                        final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_passwordsMismatched"), null);
+                        context.addMessage("edit-form:confirmPassword", message);
+                        valid = false;
+                        break;
+                    }
                 }
             }
             // must be a user or a driver or both
@@ -523,7 +560,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             if (create)
                 person.setPersonID(personDAO.create(getAccountID(), person));
             else
-                personDAO.update(person);
+            {
+                if (person.isUserEditable())
+                    personDAO.update(person);
+                else if (person.isDriverSelected())
+                    driverDAO.update(person.getDriver());
+            }
 
             // set zero RFID back to null
             if ((person.getDriver() != null) && (person.getDriver().getRFID() == 0))
@@ -574,10 +616,21 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         return WEIGHTS;
     }
 
+    public List<String> findPeople(Object event)
+    {
+        final List<String> results = new ArrayList<String>();
+        final String name = event.toString().trim().toLowerCase();
+        if (name.length() > 0)
+            for (final PersonView person : getItems())
+                if (person.getFullName().toLowerCase().contains(name))
+                    results.add(person.getFullName());
+        return results;
+    }
+
     public Map<String, Integer> getGroups()
     {
         final TreeMap<String, Integer> groups = new TreeMap<String, Integer>();
-        for (final Group group : getAllGroups())
+        for (final Group group : getGroupHierarchy().getGroupList())
             groups.put(group.getName(), group.getGroupID());
         return groups;
     }
@@ -585,7 +638,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     public Map<String, Integer> getTeams()
     {
         final TreeMap<String, Integer> teams = new TreeMap<String, Integer>();
-        for (final Group group : getAllGroups())
+        for (final Group group : getGroupHierarchy().getGroupList())
             if (group.getType() == GroupType.TEAM)
                 teams.put(group.getName(), group.getGroupID());
         return teams;
@@ -633,6 +686,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
         @Column(updateable = false)
         private PersonBean        bean;
+        @Column(updateable = false)
+        private Boolean           userEditable;
         @Column(updateable = false)
         private Group             group;
         @Column(updateable = false)
@@ -745,6 +800,20 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         public void setConfirmPassword(String confirmPassword)
         {
             this.confirmPassword = confirmPassword;
+        }
+
+        public boolean isUserEditable()
+        {
+            if (userEditable == null)
+            {
+                // editable if the user is not selected, or if the user's group is within this admin's purview
+                userEditable = !isUserSelected() || (getUser().getGroupID() == null);
+                if (!userEditable)
+                    for (final Group group : bean.getGroupHierarchy().getGroupList())
+                        if (group.getGroupID().equals(getUser().getGroupID()))
+                            userEditable = true;
+            }
+            return userEditable;
         }
 
         public boolean isUserSelected()
