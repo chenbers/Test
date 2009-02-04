@@ -1,5 +1,7 @@
 package com.inthinc.pro.backing;
 
+import java.util.HashMap;
+
 import org.apache.log4j.Logger;
 import org.omg.PortableServer.POAManagerPackage.State;
 
@@ -44,6 +46,9 @@ public class NavigationBean extends BaseDurationBean
     // Unable to persist maxCount in liveFleetBean with Tomahawk when using a4j:jsFunction
     private Integer liveFleetCount;
     
+    // Save flyout state for trend chart
+    private HashMap flyout = new HashMap();
+        
     public NavigationBean()
     {
 
@@ -204,8 +209,6 @@ public class NavigationBean extends BaseDurationBean
         this.numRowsPerPg = localStr;
         int local = (new Integer(this.numRowsPerPg)).intValue();
         
-        // A change here implies the start and end must change
-        //  as we are going from standard to flyout
         this.start = 1;
         if ( this.end > local ) {
             this.end = local;
@@ -222,7 +225,15 @@ public class NavigationBean extends BaseDurationBean
         logger.debug("Count being set to: " + liveFleetCount);
         this.liveFleetCount = liveFleetCount;
     }
-    
-    
+
+    public HashMap getFlyout()
+    {
+        return flyout;
+    }
+
+    public void setFlyout(HashMap flyout)
+    {
+        this.flyout = flyout;
+    }    
   
 }

@@ -46,15 +46,15 @@ public class TrendFlyoutBean extends BaseBean
     
     private String countString = null;
     private Integer tmpGroupID = null;
-/*    
-    private Boolean sortItFirst = new Boolean(true);
-    private Boolean sortItSecond = new Boolean(false);
-*/    
+    
     private String sortItFirst = "true";
     private String sortItSecond = "false";    
     
     private ReportRenderer reportRenderer;
-
+    
+    private int selected = -1;
+    private boolean resetFlyout = false;
+    
     public TrendFlyoutBean()
     {
         super();  
@@ -70,6 +70,16 @@ public class TrendFlyoutBean extends BaseBean
            if (         key.equalsIgnoreCase("trend_form:dateLinksWithGrpId") ) {
                tmpGroupID = new Integer(value);
            }
+          
+           // selected a line to change
+           if (         key.equalsIgnoreCase("selected") ) {
+               selected = (new Integer(value)).intValue();
+           }
+           
+           // entering flyout, re-initialize state
+           if (         key.equalsIgnoreCase("flyoutReset") ) {
+               resetFlyout = true;
+           }           
         }
     }
 
@@ -132,6 +142,13 @@ public class TrendFlyoutBean extends BaseBean
                 continue;
             
             ScoreableEntity se = s.get(i-1);
+           
+            // Show it?
+            String key = String.valueOf(se.getEntityID().intValue());
+            Boolean localShow = (Boolean)this.navigation.getFlyout().get(key);
+            if ( (localShow != null) && !localShow) {
+                continue;
+            } else {            
             // Fetch to get children's observations
             List<ScoreableEntity> ss = groupTrendMap.get(se.getEntityID());
 
@@ -166,6 +183,7 @@ public class TrendFlyoutBean extends BaseBean
                 sb.append("'/>");
             }
             sb.append("</dataset>");
+            }
         }
 
         sb.append("</chart>");
@@ -213,6 +231,13 @@ public class TrendFlyoutBean extends BaseBean
             se.setSe(score);
             se.setStyle(ScoreBox.GetStyleFromScore(score.getScore(), ScoreBoxSizes.SMALL));
             se.setColorKey(cs.getEntityColorKey(cnt++));
+            
+            se.setShow(true);
+            String key = String.valueOf(se.getSe().getEntityID().intValue());
+            if ( this.navigation.getFlyout().get(key) != null ) {
+                se.setShow( (Boolean)this.navigation.getFlyout().get(key) );
+            }  
+                      
             if (score.getEntityType().equals(EntityType.ENTITY_GROUP))
             {
                 // TODO: if getGroupHierarchy().getGroupLevel(score.getEntityID()) returns null 
@@ -321,7 +346,10 @@ public class TrendFlyoutBean extends BaseBean
             this.end = s.size();
             this.maxCount = s.size();                           
         } 
-                        
+                
+        // control of the display of lines        
+        setState();  
+                              
     }
 
     public Integer getMaxCount()
@@ -470,5 +498,36 @@ public class TrendFlyoutBean extends BaseBean
         }
     }
 
+    private void setState() 
+    {
+        // reset the state of the flyout
+        if ( this.resetFlyout ) {
+            this.navigation.getFlyout().clear();
+        }
+        
+        // check for a checkbox selected
+        if ( this.selected != -1 ) {                   
+            String key = String.valueOf(selected);
+            Boolean found = (Boolean)this.navigation.getFlyout().get(key);
+            
+            // Found it
+            if ( found != null ) {
+                
+                // Was true, set false
+                if ( found ) {
+                    this.navigation.getFlyout().put(key, false);
+                    
+                // Was false, set true
+                } else {
+                    this.navigation.getFlyout().put(key, true);
+                }           
+                
+            // New, assumed on, set off
+            } else {
+                this.navigation.getFlyout().put(key, false);
+            }
+        }
+            
+    }
 
 }
