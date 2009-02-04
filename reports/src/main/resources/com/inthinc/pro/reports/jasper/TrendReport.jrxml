@@ -38,9 +38,8 @@
 	<parameter name="SUB_DATASET_1" isForPrompting="false" class="java.util.List"/>
 	<parameter name="DURATION" isForPrompting="false" class="java.lang.String"/>
 
-	<field name="se.identifier" class="java.lang.String"/>
-	<field name="se.scoreAsFloat" class="java.lang.Float"/>
-	<field name="colorKey" class="java.lang.String"/>
+	<field name="identifier" class="java.lang.String"/>
+	<field name="scoreAsFloat" class="java.lang.Float"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -265,7 +264,7 @@
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{se.identifier}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{identifier}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -279,7 +278,7 @@
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{se.scoreAsFloat}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{scoreAsFloat}.toString()]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

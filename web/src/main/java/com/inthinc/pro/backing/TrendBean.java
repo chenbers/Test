@@ -14,18 +14,16 @@ import org.richfaces.event.DataScrollerEvent;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
-import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.ScoreDAO;
-import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
-import com.inthinc.pro.reports.Report;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.model.CategorySeriesData;
+import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.util.ColorSelectorStandard;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.wrapper.ScoreableEntityPkg;
@@ -57,6 +55,7 @@ public class TrendBean extends BaseBean
     private String sortItSecond = "false";    
     
     private ReportRenderer reportRenderer;
+    private ReportCriteriaService reportCriteriaService;
 
     public TrendBean()
     {
@@ -438,51 +437,52 @@ public class TrendBean extends BaseBean
     
     public ReportCriteria buildReportCriteria()
     {
-        List<CategorySeriesData> lineGraphDataList = new ArrayList<CategorySeriesData>();
-        List<ScoreableEntityPkg> scoreableEntityDataSet = createScoreableEntities();
-        List<ScoreableEntity> s = null;
-        s = getScores();
-        // Loop over returned set of group ids, controlled by scroller
-        Map<Integer, List<ScoreableEntity>> groupTrendMap = scoreDAO.getTrendScores(
-                this.navigation.getGroupID(), navigation.getDuration());
-        
-        List<String> monthList = GraphicUtil.createMonthList(navigation.getDuration());
-        
-        for(int i = 0;i < groupTrendMap.size(); i++)
-        {
-            ScoreableEntity se = s.get(i);
-            ColorSelectorStandard cs = new ColorSelectorStandard();
-            List<ScoreableEntity> scoreableEntityList = groupTrendMap.get(se.getEntityID());
-            
-            // Not a full range, pad w/ zero
-            int holes = 0;
-            if (navigation.getDuration() == Duration.DAYS)
-            {
-                holes = navigation.getDuration().getNumberOfDays() - scoreableEntityList.size();            
-            }
-            else
-            {
-                holes = GraphicUtil.convertToMonths(navigation.getDuration()) - scoreableEntityList.size();
-            }
-            int index = 0;
-            for (int k = 0; k < holes; k++)
-            {
-                lineGraphDataList.add(new CategorySeriesData(se.getIdentifier(),monthList.get(index++),0F,se.getIdentifier()));
-            }
-            for(ScoreableEntity scoreableEntity:scoreableEntityList)
-            {
-               Float score = new Float((scoreableEntity.getScore()==null) ? 5 : scoreableEntity.getScore() / 10.0);
-               lineGraphDataList.add(new CategorySeriesData(se.getIdentifier(),monthList.get(index++),score,se.getIdentifier()));
-            }
-            
-        }
-       
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.TREND,getNavigation().getGroup().getName());
-        reportCriteria.addChartDataSet(lineGraphDataList);
-        reportCriteria.setMainDataset(scoreableEntityDataSet);
-        reportCriteria.setDuration(getNavigation().getDuration());
-        reportCriteria.setRecordsPerReportParameters(8, "se.identifier", "seriesID");
-        return reportCriteria;
+//        List<CategorySeriesData> lineGraphDataList = new ArrayList<CategorySeriesData>();
+//        List<ScoreableEntityPkg> scoreableEntityDataSet = createScoreableEntities();
+//        List<ScoreableEntity> s = null;
+//        s = getScores();
+//        // Loop over returned set of group ids, controlled by scroller
+//        Map<Integer, List<ScoreableEntity>> groupTrendMap = scoreDAO.getTrendScores(
+//                this.navigation.getGroupID(), navigation.getDuration());
+//        
+//        List<String> monthList = GraphicUtil.createMonthList(navigation.getDuration());
+//        
+//        for(int i = 0;i < groupTrendMap.size(); i++)
+//        {
+//            ScoreableEntity se = s.get(i);
+//            ColorSelectorStandard cs = new ColorSelectorStandard();
+//            List<ScoreableEntity> scoreableEntityList = groupTrendMap.get(se.getEntityID());
+//            
+//            // Not a full range, pad w/ zero
+//            int holes = 0;
+//            if (navigation.getDuration() == Duration.DAYS)
+//            {
+//                holes = navigation.getDuration().getNumberOfDays() - scoreableEntityList.size();            
+//            }
+//            else
+//            {
+//                holes = GraphicUtil.convertToMonths(navigation.getDuration()) - scoreableEntityList.size();
+//            }
+//            int index = 0;
+//            for (int k = 0; k < holes; k++)
+//            {
+//                lineGraphDataList.add(new CategorySeriesData(se.getIdentifier(),monthList.get(index++),0F,se.getIdentifier()));
+//            }
+//            for(ScoreableEntity scoreableEntity:scoreableEntityList)
+//            {
+//               Float score = new Float((scoreableEntity.getScore()==null) ? 5 : scoreableEntity.getScore() / 10.0);
+//               lineGraphDataList.add(new CategorySeriesData(se.getIdentifier(),monthList.get(index++),score,se.getIdentifier()));
+//            }
+//            
+//        }
+//       
+//        ReportCriteria reportCriteria = new ReportCriteria(ReportType.TREND,getNavigation().getGroup().getName());
+//        reportCriteria.addChartDataSet(lineGraphDataList);
+//        reportCriteria.setMainDataset(scoreableEntityDataSet);
+//        reportCriteria.setDuration(getNavigation().getDuration());
+//        reportCriteria.setRecordsPerReportParameters(8, "se.identifier", "seriesID");
+//        return reportCriteria;
+        return reportCriteriaService.getTrendChartReportCriteria(this.navigation.getGroupID(), this.navigation.getDuration());
     }
 
     public void setReportRenderer(ReportRenderer reportRenderer)
@@ -531,6 +531,16 @@ public class TrendBean extends BaseBean
         {
             this.navigation.setSortedSecond("true");
         }
+    }
+
+    public void setReportCriteriaService(ReportCriteriaService reportCriteriaService)
+    {
+        this.reportCriteriaService = reportCriteriaService;
+    }
+
+    public ReportCriteriaService getReportCriteriaService()
+    {
+        return reportCriteriaService;
     }
 
 

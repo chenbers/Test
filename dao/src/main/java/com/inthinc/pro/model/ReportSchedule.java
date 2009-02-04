@@ -1,42 +1,53 @@
-package com.inthinc.pro.model;
+ package com.inthinc.pro.model;
 
 import java.util.Date;
 import java.util.List;
 
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
+import com.inthinc.pro.dao.annotations.SimpleName;
 
+@SimpleName(simpleName="ReportPref")
 public class ReportSchedule
 {
     @ID
+    @Column(name="reportPrefID")
     private Integer reportScheduleID;
     
     @Column(name = "acctID")
     private Integer accountID;
     
     @Column(name = "reportID")
-    private Integer reportGroupID;
+    private Integer reportID;
     
     private Integer userID;
     private List<String> emailTo;
     private String name;
     private Date startDate;
     private Date endDate;
-    private Date lastExecutedDate; //The last time this schedule was executed.
+    private Integer timeOfDay;
+    private Date lastDate; //The last time this schedule was executed.
     private List<Boolean> dayOfWeek;
     private Integer driverID;
     private Integer vehicleID;
     private Integer groupID;
     private Status status;
-    private Integer durationID;
     
+    @Column(name="duration")
+    private Duration reportDuration;
+    private Occurrence occurrence;
+    
+    public ReportSchedule()
+    {
+        
+    }
     
     public ReportSchedule(Integer reportScheduleID,Integer accountID,Integer reportID,Integer userID,List<String> emailTo,String name,Date startDate
-            ,Date endDate,List<Boolean> dayOfWeek,Integer driverID,Integer vehicleID,Integer groupID,Status status,Date lastExecutedDate)
+            ,Date endDate,List<Boolean> dayOfWeek,Integer driverID,Integer vehicleID,Integer groupID,Status status,Date lastDate,Integer timeOfDay)
     {
         this.reportScheduleID = reportScheduleID;
         this.accountID = accountID;
-        this.reportGroupID = reportID;
+        this.reportID = reportID;
         this.userID = userID;
         this.emailTo = emailTo;
         this.name = name;
@@ -47,7 +58,8 @@ public class ReportSchedule
         this.vehicleID = vehicleID;
         this.groupID= groupID;
         this.status = status;
-        this.lastExecutedDate = lastExecutedDate;
+        this.setLastDate(lastDate);
+        this.timeOfDay = timeOfDay;
     }
     
     public Integer getReportScheduleID()
@@ -153,7 +165,7 @@ public class ReportSchedule
         StringBuilder sb = new StringBuilder();
         sb.append("(");
         sb.append("reportScheduleID="); sb.append(this.reportScheduleID);sb.append(",");
-        sb.append("reportGroupID="); sb.append(this.reportGroupID);sb.append(",");
+        sb.append("reportGroupID="); sb.append(this.reportID);sb.append(",");
         sb.append("userID="); sb.append(this.userID);sb.append(",");
         sb.append("groupID="); sb.append(this.groupID);sb.append(",");
         sb.append("driverID="); sb.append(this.driverID);sb.append(",");
@@ -162,34 +174,54 @@ public class ReportSchedule
         return sb.toString();
     }
 
-    public void setDurationID(Integer durationID)
+    public void setReportID(Integer reportID)
     {
-        this.durationID = durationID;
+        this.reportID = reportID;
     }
 
-    public Integer getDurationID()
+    public Integer getReportID()
     {
-        return durationID;
+        return reportID;
     }
 
-    public void setReportGroupID(Integer reportGroupID)
+    public void setTimeOfDay(Integer timeOfDay)
     {
-        this.reportGroupID = reportGroupID;
+        this.timeOfDay = timeOfDay;
     }
 
-    public Integer getReportGroupID()
+    public Integer getTimeOfDay()
     {
-        return reportGroupID;
+        return timeOfDay;
     }
 
-    public void setLastExecutedDate(Date lastExecutedDate)
+    public void setReportDuration(Duration reportDuration)
     {
-        this.lastExecutedDate = lastExecutedDate;
+        this.reportDuration = reportDuration;
     }
 
-    public Date getLastExecutedDate()
+    public Duration getReportDuration()
     {
-        return lastExecutedDate;
+        return reportDuration;
+    }
+
+    public void setOccurrence(Occurrence occurrence)
+    {
+        this.occurrence = occurrence;
+    }
+
+    public Occurrence getOccurrence()
+    {
+        return occurrence;
+    }
+
+    public void setLastDate(Date lastDate)
+    {
+        this.lastDate = lastDate;
+    }
+
+    public Date getLastDate()
+    {
+        return lastDate;
     }
     
 }

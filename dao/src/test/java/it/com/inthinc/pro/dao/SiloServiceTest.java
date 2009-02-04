@@ -6,11 +6,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import org.junit.Ignore;
 import it.config.IntegrationConfig;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +30,7 @@ import com.inthinc.pro.dao.hessian.EventHessianDAO;
 import com.inthinc.pro.dao.hessian.GroupHessianDAO;
 import com.inthinc.pro.dao.hessian.PersonHessianDAO;
 import com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO;
+import com.inthinc.pro.dao.hessian.ReportScheduleHessianDAO;
 import com.inthinc.pro.dao.hessian.RoleHessianDAO;
 import com.inthinc.pro.dao.hessian.StateHessianDAO;
 import com.inthinc.pro.dao.hessian.TablePreferenceHessianDAO;
@@ -51,6 +51,7 @@ import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
@@ -62,9 +63,11 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.Occurrence;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagLevel;
+import com.inthinc.pro.model.ReportSchedule;
 import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.SensitivityForwardCommandMapping;
 import com.inthinc.pro.model.SensitivityType;
@@ -121,6 +124,7 @@ public class SiloServiceTest
         Integer port = Integer.valueOf(config.get(IntegrationConfig.SILO_PORT).toString());
         
         siloService = new SiloServiceCreator(host, port).getService();
+        
 //        HessianDebug.debugIn = true;
 //        HessianDebug.debugOut = true;
 //        HessianDebug.debugRequest = true;
@@ -478,6 +482,8 @@ public class SiloServiceTest
 
     
     }
+    
+    
     
     private void validateEvents(List<Integer> expectedTypes, List<Event> eventList, Date startDate, Date endDate)
     {
@@ -1229,6 +1235,11 @@ logger.debug("Persons GroupID: " + groupID);
                 Integer changedCount = personDAO.update(person);
                 assertEquals("Person update count " + person.getPersonID(), Integer.valueOf(1), changedCount);
         }
+        
+        for (Person person : personList)
+        {
+            reportSchedules(acctID, person.getUser().getUserID(), groupID);
+        }
 
         // TODO: remove status
         String ignoreFields[] = {"modified", "costPerHour", "address", "status"};
@@ -1257,6 +1268,52 @@ logger.debug("Persons GroupID: " + groupID);
         }
         
         
+        
+    }
+    
+    private void reportSchedules(Integer acctID,Integer userID,Integer groupID)
+    {
+        ReportScheduleHessianDAO reportScheduleHessianDAO = new ReportScheduleHessianDAO();
+        reportScheduleHessianDAO.setSiloService(siloService);
+        
+        ReportSchedule reportSchedule = new ReportSchedule();
+        reportSchedule.setReportDuration(Duration.DAYS);
+        reportSchedule.setStatus(Status.ACTIVE);
+        reportSchedule.setReportID(0);
+        reportSchedule.setName("Report Schedule");
+        reportSchedule.setOccurrence(Occurrence.EVERY_OTHER);
+        reportSchedule.setUserID(userID);
+        reportSchedule.setGroupID(groupID);
+        reportSchedule.setReportID(1);
+        reportSchedule.setAccountID(acctID);
+        Calendar firstOfFebrurary = Calendar.getInstance();
+        firstOfFebrurary.set(Calendar.DATE, 1);
+        reportSchedule.setLastDate(firstOfFebrurary.getTime());
+        reportSchedule.setEndDate(Calendar.getInstance().getTime());
+        reportSchedule.setStartDate(firstOfFebrurary.getTime());
+        
+        
+        Integer id = reportScheduleHessianDAO.create(acctID, reportSchedule);
+        logger.debug("Report Schedule ID: " + id);
+        logger.debug("Report Schedule acctID: " + acctID);
+        assertNotNull(id);
+        
+        List<ReportSchedule> reportSchedules = reportScheduleHessianDAO.getReportSchedulesByAccountID(acctID);
+        assertTrue(reportSchedules.size() > 0);
+
+        ReportSchedule reportSchedule2 = reportScheduleHessianDAO.findByID(id);
+        assertTrue(reportSchedule2.getName().equals("Report Schedule"));
+        
+        reportSchedule2.setName("Report S");
+        reportScheduleHessianDAO.update(reportSchedule2);
+        
+        ReportSchedule reportSchedule3 = reportScheduleHessianDAO.findByID(id);
+        assertTrue(reportSchedule2.getName().equals("Report S"));
+        
+        List<ReportSchedule> reportSchedules2 = reportScheduleHessianDAO.getReportSchedulesByUserID(userID);
+        assertTrue(reportSchedules2.size() > 0);
+        
+        reportScheduleHessianDAO.deleteByID(reportSchedule3.getReportScheduleID());
         
     }
 

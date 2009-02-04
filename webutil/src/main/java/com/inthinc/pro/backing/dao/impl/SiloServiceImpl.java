@@ -691,4 +691,46 @@ public class SiloServiceImpl implements SiloService
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public Map<String, Object> createReportPref(Integer acctID, Map<String, Object> reportPrefMap) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> deleteReportPref(Integer reportPrefID) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> getReportPref(@DaoParam(name="reportPrefID")Integer reportPrefID) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> getReportPrefsByAcctID(@DaoParam(name="acctID")Integer acctID) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> getReportPrefsByUserID(@DaoParam(name="userID")Integer userID) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> updateReportPref(Integer reportPrefID, Map<String, Object> reportPrefMap) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

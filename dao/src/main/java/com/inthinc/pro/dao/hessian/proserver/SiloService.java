@@ -40,6 +40,7 @@ public interface SiloService extends HessianService
     List<Map<String, Object>> getGroupsByAcctID(Integer acctID) throws ProDAOException;
     
     List<Map<String, Object>> getGroupsByGroupIDDeep(Integer groupID) throws ProDAOException;
+    
 
     // ------- Device  ----------
     Map<String, Object> createDevice(Integer acctID, Map<String, Object> deviceMap) throws ProDAOException;
@@ -324,5 +325,20 @@ public interface SiloService extends HessianService
     List<Map<String, Object>> getZoneAlertsByAcctID(Integer accountID);
 
     Map<String, Object> deleteZoneAlertsByZoneID(Integer zoneID);
+    
+    
+    // Report Schedules
+    
+    Map<String, Object> createReportPref(Integer acctID, Map<String, Object> reportPrefMap) throws ProDAOException;
+
+    Map<String, Object> deleteReportPref(Integer reportPrefID) throws ProDAOException;
+
+    Map<String, Object> getReportPref(Integer reportPrefID) throws ProDAOException;
+    
+    List<Map<String, Object>> getReportPrefsByAcctID(Integer acctID) throws ProDAOException;
+
+    Map<String, Object> updateReportPref(Integer reportPrefID, Map<String, Object> reportPrefMap) throws ProDAOException;
+    
+    List<Map<String, Object>> getReportPrefsByUserID(Integer userID) throws ProDAOException;
 
 }

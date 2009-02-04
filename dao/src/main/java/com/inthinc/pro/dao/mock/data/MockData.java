@@ -8,6 +8,7 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -45,11 +46,13 @@ import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.LowBatteryEvent;
 import com.inthinc.pro.model.MpgEntity;
+import com.inthinc.pro.model.Occurrence;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.QuintileMap;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagLevel;
+import com.inthinc.pro.model.ReportSchedule;
 import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
@@ -81,6 +84,7 @@ public class MockData
     
     public static final int NUM_ACCOUNTS = 1;
     static final int MAX_GROUPS = 100;
+    static final int MAX_REPORT_SCHEDULES = 50;
     static final int MAX_DRIVERS_IN_GROUP = 10;
     static final int MAX_VEHICLES_IN_GROUP = 10;
     static final int MAX_USERS_IN_GROUP = 10;
@@ -391,9 +395,12 @@ public class MockData
             storeObject(users[userCnt].getPerson());
             AlertCon contact = new AlertCon();
             contact.setUserID(users[userCnt].getUserID());
+            addReportSchedules(accountID, users[userCnt]);
             storeObject(contact);
         }
     }
+    
+    
 
     private User createUser(Integer id, Integer accountID, Integer groupID, String username, String password, String homePhone, String workPhone, String email, Role role,
             Boolean active)
@@ -415,6 +422,49 @@ public class MockData
         user.getPerson().setLast(username.substring(username.length() / 2));
         user.getPerson().setUser(user);
         return user;
+    }
+    
+    private void addReportSchedules(Integer acctID,User user)
+    {
+        Integer idOffset = acctID * MAX_REPORT_SCHEDULES + user.getUserID() * MAX_REPORT_SCHEDULES;
+        for(int i = 0;i < MAX_REPORT_SCHEDULES;i++)
+        {
+            String name = "Report Schedule " + Integer.valueOf(i);
+            ReportSchedule reportSchedule = createReportSchedule(idOffset++,acctID, user.getUserID(), 1, 
+                    user.getUsername() + "@inthinc.com",5, name,Calendar.getInstance().getTime(),Calendar.getInstance().getTime());
+            storeObject(reportSchedule);
+        }
+    }
+    
+    private ReportSchedule createReportSchedule(Integer reportScheduleID,Integer acctID,Integer userID, Integer reportID, 
+            String emailTo, Integer durationID, String name,Date startDate,Date endDate)
+    {
+        
+        ReportSchedule reportSchedule = new ReportSchedule();
+        reportSchedule.setAccountID(acctID);
+        reportSchedule.setReportScheduleID(reportScheduleID);
+        reportSchedule.setUserID(userID);
+        reportSchedule.setReportID(reportID);
+        List<String> emailToList = new ArrayList<String>();
+        emailToList.add(emailTo);
+        reportSchedule.setEmailTo(emailToList);
+        reportSchedule.setEndDate(endDate);
+        reportSchedule.setStartDate(startDate);
+        reportSchedule.setReportDuration(Duration.DAYS);
+        reportSchedule.setOccurrence(Occurrence.EVERY_WEEEK);
+        reportSchedule.setName(name);
+        List<Boolean> booleanList = new ArrayList<Boolean>();
+        booleanList.add(Boolean.TRUE);
+        booleanList.add(Boolean.FALSE);
+        booleanList.add(Boolean.TRUE);
+        booleanList.add(Boolean.FALSE);
+        booleanList.add(Boolean.TRUE);
+        booleanList.add(Boolean.FALSE);
+        booleanList.add(Boolean.TRUE);
+        reportSchedule.setDayOfWeek(booleanList);
+        reportSchedule.setTimeOfDay(360);
+
+        return reportSchedule;
     }
 
     private void addScores(Integer entityID, EntityType entityType, String entityName)

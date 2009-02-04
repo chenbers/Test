@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.mapper.AbstractMapper;
+import com.inthinc.pro.dao.hessian.mapper.SimpleMapper;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.mock.data.MockRoles;
@@ -35,6 +36,7 @@ import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagAlert;
+import com.inthinc.pro.model.ReportSchedule;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.User;
@@ -1285,7 +1287,52 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         Integer temp = 1;
         return TempConversionUtil.createMapFromObject(temp, true);
     }
-
-
-
+    
+    @Override
+    public Map<String, Object> createReportPref(Integer acctID, Map<String, Object> reportPrefMap) throws ProDAOException
+    {
+        AbstractMapper mapper = new SimpleMapper();
+        ReportSchedule reportSchedule = mapper.convertToModelObject(reportPrefMap, ReportSchedule.class);
+        reportSchedule.setReportScheduleID((int) (Math.random() * Integer.MAX_VALUE));
+        MockData.getInstance().storeObject(reportSchedule);
+        logger.debug("Report Schedule Added: " + reportSchedule.getName());
+        return createReturnValue("reportScheduleID", reportSchedule.getReportScheduleID());
+    }
+    
+    @Override
+    public Map<String, Object> deleteReportPref(Integer reportPrefID) throws ProDAOException
+    {
+        int newSize =  MockData.getInstance().deleteObject(ReportSchedule.class, "reportScheduleID", reportPrefID);
+        return createReturnValue("count", newSize);
+    }
+    
+    @Override
+    public Map<String, Object> getReportPref(Integer reportPrefID) throws ProDAOException
+    {
+        return doMockLookup(ReportSchedule.class, "reportScheduleID", reportPrefID, "No Report Schedule for ID: " + reportPrefID, "getReportSchedule");
+    }
+    
+    @Override
+    public Map<String, Object> updateReportPref(Integer reportPrefID, Map<String, Object> reportPrefMap) throws ProDAOException
+    {
+       
+        return null;
+    }
+    
+    @Override
+    public List<Map<String, Object>> getReportPrefsByAcctID(Integer acctID) throws ProDAOException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    public List<Map<String, Object>> getReportPrefsByUserID(Integer userID)  throws ProDAOException
+    {
+        SearchCriteria searchCriteria = new SearchCriteria();
+        searchCriteria.addKeyValue("userID", userID);
+        List<Map<String, Object>> returnList =  MockData.getInstance().lookupList(ReportSchedule.class,searchCriteria);
+        return returnList;
+    }
+    
 }

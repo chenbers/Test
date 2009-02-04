@@ -11,4 +11,9 @@
     	<constructor-arg ref="reportMailer" />
     </bean>
     
+    <bean id="reportCriteriaService" class="com.inthinc.pro.reports.service.impl.ReportCriteriaServiceImpl">
+    	<property name="groupDAO" ref="groupDAO"/>
+    	<property name="scoreDAO" ref="scoreDAO"/>
+    </bean>
+    
 </beans>

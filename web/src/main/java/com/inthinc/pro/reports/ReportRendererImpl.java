@@ -14,6 +14,7 @@ public class ReportRendererImpl implements ReportRenderer
     private static final Logger logger = Logger.getLogger(ReportRendererBean.class);
     private static final String FILE_NAME = "tiwiPRO_Report";
     
+    @SuppressWarnings("unchecked")
     private ReportCreator reportCreator;
 
     @Override
@@ -23,6 +24,7 @@ public class ReportRendererImpl implements ReportRenderer
         exportToPdf(report,facesContext);
     }
     
+    @SuppressWarnings("unchecked")
     @Override
     public void exportReportToPDF(List<ReportCriteria> reportCriteriaList, FacesContext facesContext)
     {
@@ -30,6 +32,7 @@ public class ReportRendererImpl implements ReportRenderer
         exportToPdf(report,facesContext);
     }
     
+    @SuppressWarnings("unchecked")
     @Override
     public void exportReportToExcel(List<ReportCriteria> reportCriteriaList, FacesContext facesContext)
     {
@@ -44,6 +47,7 @@ public class ReportRendererImpl implements ReportRenderer
         exportToExcel(report,facesContext); 
     }
     
+    @SuppressWarnings("unchecked")
     @Override
     public void exportReportToEmail(List<ReportCriteria> reportCriteriaList, String email)
     {
