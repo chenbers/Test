@@ -9,6 +9,7 @@ public class ScoreableEntityPkg {
 	private String colorKey;
 	private String goTo;
 	private Integer position;
+	private Boolean show;
 	
     public ScoreableEntityPkg() {
 		this.se = new ScoreableEntity();
@@ -55,6 +56,18 @@ public class ScoreableEntityPkg {
     public void setPosition(Integer position)
     {
         this.position = position;
+    }
+
+
+    public Boolean getShow()
+    {
+        return show;
+    }
+
+
+    public void setShow(Boolean show)
+    {
+        this.show = show;
     }
 
 
