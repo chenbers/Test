@@ -27,7 +27,7 @@ public class ReportRendererBeanTest extends BaseBeanTest
         list.add(se1);
         list.add(se2);
         
-        ReportCriteria rc = new ReportCriteria(ReportType.OVERALL_SCORE,"Group1","AccountName");
+        ReportCriteria rc = new ReportCriteria(ReportType.OVERALL_SCORE,"Group1");
         rc.setMainDataset(list);
         rc.addParameter("DRIVER_STYLE_DATA", list);
         rc.addParameter("SEATBELT_USE_DATA", list);
