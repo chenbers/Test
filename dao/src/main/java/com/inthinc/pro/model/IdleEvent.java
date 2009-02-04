@@ -16,8 +16,8 @@ public class IdleEvent extends Event
      * lowIdle - The duration in seconds the vehicle was idling with RPM < 1000
      * highIdle - The duration in seconds the vehicle was idling with RPM > 1000
      */
-    private Integer lowIdle;
-    private Integer highIdle;
+    private Integer lowIdle = 0;
+    private Integer highIdle = 0;
 	
 	public IdleEvent()
 	{
