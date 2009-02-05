@@ -213,6 +213,20 @@ public class OrganizationBean extends BaseBean
 
         groupDAO.update(dragTreeNode.getGroup());
     }
+    
+    private void setExpandedNode(TreeNodeImpl treeNode)
+    {
+        if(treeNode.getGroup() != null && treeNode.getGroup().getGroupID() != null)
+        {
+            treeStateMap.put(treeNode.getGroup().getGroupID(), Boolean.TRUE);
+        }
+        
+        if(treeNode.getParent() != null)
+        {
+            setExpandedNode(treeNode.getParent());
+        }
+        
+    }
 
     /*
      * BEGIN CRUD methods
@@ -272,7 +286,8 @@ public class OrganizationBean extends BaseBean
             groupDAO.update(selectedGroupNode.getGroup());
             if (selectedParentGroup != null)
             {
-                treeStateMap.put(selectedParentGroup.getGroupID(), Boolean.TRUE);
+                setExpandedNode(selectedGroupNode.getParent());
+                //treeStateMap.put(selectedParentGroup.getGroupID(), Boolean.TRUE);
             }
             getSelectedGroupNode().setTreeNodeType(null); // Reset the type
             updateUsersGroupHeirarchy();
