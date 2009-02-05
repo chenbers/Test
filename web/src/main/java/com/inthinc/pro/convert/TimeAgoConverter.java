@@ -32,7 +32,7 @@ public class TimeAgoConverter extends BaseConverter
         Integer nowSeconds = (int)DateUtil.convertDateToSeconds(new Date());
         Integer seconds = 0;
         
-        //Get loggedin user's time zone.
+        //Get logged in user's time zone.
         TimeZone tz = super.getUser().getUser().getPerson().getTimeZone();
 
         if( value instanceof Date)

@@ -2868,6 +2868,7 @@ ul.htabs li.seatbelt_on {
 
 .google_popups_rows {
 	vertical-align: top;
+	text-align: left;
 	}
 	
 .google_popups_rows a:link, a:visited, a:active, a:hover {
