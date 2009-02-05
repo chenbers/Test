@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="DriverSummaryReport"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="595"
+		 pageHeight="842"
+		 columnWidth="535"
+		 columnSpacing="0"
+		 leftMargin="30"
+		 rightMargin="30"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="AllSectionsNoDetail"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<subDataset name="overallDataSet" >
+
+
+		<field name="seriesID" class="java.lang.String"/>
+		<field name="value" class="java.lang.Double"/>
+		<field name="category" class="java.lang.String"/>
+		<field name="label" class="java.lang.String"/>
+
+	</subDataset>
+
+	<subDataset name="speedDataSet" >
+
+
+		<field name="seriesID" class="java.lang.String"/>
+		<field name="category" class="java.lang.String"/>
+		<field name="value" class="java.lang.Double"/>
+		<field name="label" class="java.lang.String"/>
+
+	</subDataset>
+
+	<subDataset name="styleDataSet" >
+
+
+		<field name="seriesID" class="java.lang.String"/>
+		<field name="category" class="java.lang.String"/>
+		<field name="label" class="java.lang.String"/>
+		<field name="value" class="java.lang.Double"/>
+
+	</subDataset>
+
+	<subDataset name="seatBeltDataSet" >
+
+
+		<field name="seriesID" class="java.lang.String"/>
+		<field name="category" class="java.lang.String"/>
+		<field name="value" class="java.lang.Double"/>
+		<field name="label" class="java.lang.String"/>
+
+	</subDataset>
+
+	<parameter name="SUB_DATASET_1" isForPrompting="false" class="java.util.Collection"/>
+	<parameter name="DRIVER_NAME" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="OVERALL_SCORE" isForPrompting="false" class="java.lang.Double"/>
+	<parameter name="SUB_DATASET_2" isForPrompting="false" class="java.util.Collection"/>
+	<parameter name="SPEED_SCORE" isForPrompting="false" class="java.lang.Double"/>
+	<parameter name="STYLE_SCORE" isForPrompting="false" class="java.lang.Double"/>
+	<parameter name="SEATBELT_SCORE" isForPrompting="false" class="java.lang.Double"/>
+	<parameter name="SUB_DATASET_3" isForPrompting="false" class="java.util.Collection"/>
+	<parameter name="SUB_DATASET_4" isForPrompting="false" class="java.util.Collection"/>
+	<parameter name="REPORT_NAME" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="DURATION" isForPrompting="false" class="java.lang.String"/>
+
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="34"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="5"
+						y="0"
+						width="110"
+						height="15"
+						key="staticText-6"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[INTHINC]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="5"
+						y="15"
+						width="49"
+						height="16"
+						key="staticText-7"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[Duration:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="54"
+						y="15"
+						width="87"
+						height="16"
+						key="textField-7"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DURATION}]]></textFieldExpression>
+				</textField>
+			</band>
+		</title>
+		<pageHeader>
+			<band height="555"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="161"
+						y="6"
+						width="360"
+						height="19"
+						key="textField-1"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DRIVER_NAME}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="5"
+						y="6"
+						width="156"
+						height="19"
+						key="textField-6"/>
+					<box></box>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{REPORT_NAME}]]></textFieldExpression>
+				</textField>
+				<lineChart>
+					<chart isShowLegend="false"  hyperlinkTarget="Self" >
+					<reportElement
+						x="5"
+						y="33"
+						width="427"
+						height="109"
+						key="element-1"/>
+					<box></box>
+					</chart>
+					<categoryDataset>
+						<dataset resetType="None" >
+							<datasetRun subDataset="overallDataSet">
+					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_1})]]></dataSourceExpression>
+							</datasetRun>
+						</dataset>
+						<categorySeries>
+							<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{value}]]></valueExpression>
+							<labelExpression><![CDATA[$F{label}]]></labelExpression>
+				<itemHyperlink >
+				</itemHyperlink>
+						</categorySeries>
+					</categoryDataset>
+					<linePlot >
+						<plot labelRotation="25.0" />
+						<categoryAxisFormat>
+							<axisFormat >
+							</axisFormat>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat >
+							</axisFormat>
+						</valueAxisFormat>
+					</linePlot>
+				</lineChart>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="449"
+						y="65"
+						width="55"
+						height="34"
+						key="textField-2"/>
+					<box></box>
+					<textElement>
+						<font size="28"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$P{OVERALL_SCORE}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="438"
+						y="42"
+						width="80"
+						height="15"
+						key="staticText-2"/>
+					<box></box>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+				<text><![CDATA[Overall Score]]></text>
+				</staticText>
+				<lineChart>
+					<chart  hyperlinkTarget="Self" >
+					<reportElement
+						x="5"
+						y="163"
+						width="427"
+						height="109"
+						key="element-2"/>
+					<box></box>
+						<chartLegend textColor="#000000" backgroundColor="#FFFFFF" >
+					</chartLegend>
+					</chart>
+					<categoryDataset>
+						<dataset >
+							<datasetRun subDataset="speedDataSet">
+					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_2})]]></dataSourceExpression>
+							</datasetRun>
+						</dataset>
+						<categorySeries>
+							<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{value}]]></valueExpression>
+							<labelExpression><![CDATA[$F{label}]]></labelExpression>
+				<itemHyperlink >
+				</itemHyperlink>
+						</categorySeries>
+					</categoryDataset>
+					<linePlot >
+						<plot labelRotation="25.0" />
+						<categoryAxisFormat>
+							<axisFormat >
+							</axisFormat>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat >
+							</axisFormat>
+						</valueAxisFormat>
+					</linePlot>
+				</lineChart>
+				<staticText>
+					<reportElement
+						x="438"
+						y="171"
+						width="80"
+						height="15"
+						key="staticText-3"/>
+					<box></box>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+				<text><![CDATA[Speed Score]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="449"
+						y="197"
+						width="55"
+						height="34"
+						key="textField-3"/>
+					<box></box>
+					<textElement>
+						<font size="28"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$P{SPEED_SCORE}]]></textFieldExpression>
+				</textField>
+				<lineChart>
+					<chart isShowLegend="false"  hyperlinkTarget="Self" >
+					<reportElement
+						x="5"
+						y="289"
+						width="427"
+						height="109"
+						key="element-3"/>
+					<box></box>
+					</chart>
+					<categoryDataset>
+						<dataset >
+							<datasetRun subDataset="styleDataSet">
+					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_3})]]></dataSourceExpression>
+							</datasetRun>
+						</dataset>
+						<categorySeries>
+							<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{value}]]></valueExpression>
+							<labelExpression><![CDATA[$F{label}]]></labelExpression>
+				<itemHyperlink >
+				</itemHyperlink>
+						</categorySeries>
+					</categoryDataset>
+					<linePlot >
+						<plot labelRotation="335.0" />
+						<categoryAxisFormat>
+							<axisFormat >
+							</axisFormat>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat >
+							</axisFormat>
+						</valueAxisFormat>
+					</linePlot>
+				</lineChart>
+				<staticText>
+					<reportElement
+						x="438"
+						y="289"
+						width="80"
+						height="15"
+						key="staticText-4"/>
+					<box></box>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+				<text><![CDATA[Style Score]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="449"
+						y="311"
+						width="55"
+						height="34"
+						key="textField-4"/>
+					<box></box>
+					<textElement>
+						<font size="28"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$P{STYLE_SCORE}]]></textFieldExpression>
+				</textField>
+				<lineChart>
+					<chart isShowLegend="false"  hyperlinkTarget="Self" >
+					<reportElement
+						x="5"
+						y="414"
+						width="427"
+						height="124"
+						key="element-4"/>
+					<box></box>
+					</chart>
+					<categoryDataset>
+						<dataset >
+							<datasetRun subDataset="seatBeltDataSet">
+					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_4})]]></dataSourceExpression>
+							</datasetRun>
+						</dataset>
+						<categorySeries>
+							<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{value}]]></valueExpression>
+							<labelExpression><![CDATA[$F{label}]]></labelExpression>
+				<itemHyperlink >
+				</itemHyperlink>
+						</categorySeries>
+					</categoryDataset>
+					<linePlot >
+						<plot labelRotation="335.0" />
+						<categoryAxisFormat>
+							<axisFormat >
+							</axisFormat>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat >
+							</axisFormat>
+						</valueAxisFormat>
+					</linePlot>
+				</lineChart>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="449"
+						y="435"
+						width="55"
+						height="34"
+						key="textField-5"/>
+					<box></box>
+					<textElement>
+						<font size="28"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$P{SEATBELT_SCORE}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="438"
+						y="414"
+						width="90"
+						height="15"
+						key="staticText-5"/>
+					<box></box>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+				<text><![CDATA[Seat Belt Score]]></text>
+				</staticText>
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="30"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<lastPageFooter>
+			<band height="19"  isSplitAllowed="true" >
+			</band>
+		</lastPageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>
