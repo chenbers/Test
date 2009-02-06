@@ -54,7 +54,7 @@ public class EventDisplayTest
         event.setVehicle(vehicle);
 
         EventDisplay display = new EventDisplay(event);
-        assertEquals("08/30/2007", display.getDateStr());
+        assertTrue(display.getDateStr().startsWith("Aug 30, 2007 "));
         assertEquals("John Doe", display.getDriverName());
         assertEquals(event, display.getEvent());
         assertEquals(EventType.SPEEDING.toString(), display.getEventType());
