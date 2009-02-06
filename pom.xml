@@ -100,6 +100,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-clean-plugin</artifactId>
+                    <version>2.3</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -107,6 +108,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.0.2</version>
                 <configuration>
                     <source>${compileSource}</source>
                     <target>${compileSource}</target>
@@ -124,6 +126,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.4.3</version>
                 <configuration>
                     <excludes>
                         <exclude>**/it/*Test.java</exclude>
@@ -157,6 +160,7 @@
             <plugin>
                 <groupId>com.atlassian.maven.plugins</groupId>
                 <artifactId>maven-clover2-plugin</artifactId>
+                <version>2.4.2</version>
                 <configuration>
                     <generatePdf>false</generatePdf>
                     <generateXml>true</generateXml>
@@ -187,6 +191,7 @@ WWUUnm]]>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
+                <version>1.2</version>
                 <configuration>
                     <findbugsXmlOutput>true</findbugsXmlOutput>
                     <findbugsXmlWithMessages>true</findbugsXmlWithMessages>
@@ -196,6 +201,7 @@ WWUUnm]]>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>dashboard-maven-plugin</artifactId>
+                <version>1.0.0-beta-1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -215,6 +221,7 @@ WWUUnm]]>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>tomcat-maven-plugin</artifactId>
+                <version>1.0-beta-1</version>
                 <inherited>true</inherited>
                 <configuration>
                     <url>${tomcatManagerURL}</url>
