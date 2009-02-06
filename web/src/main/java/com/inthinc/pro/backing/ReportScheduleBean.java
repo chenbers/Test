@@ -4,19 +4,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.application.FacesMessage;
-
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.BeanUtils;
 
-import com.inthinc.pro.backing.ZoneAlertsBean.ZoneAlertView;
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.ReportScheduleDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.annotations.Column;
@@ -26,6 +23,7 @@ import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.ReportSchedule;
 import com.inthinc.pro.model.TableType;
+import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.util.MessageUtil;
 
@@ -51,16 +49,14 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     private static final String REDIRECT_REPORT_SCHEDULE = "go_adminReportSchedule";
     private static final String REDIRECT_EDIT_REPORT_SCHEDULE = "go_adminEditReportSchedule";
     
-    
-    
     /*
      * Spring managed beans
      */
     private ReportScheduleDAO reportScheduleDAO;
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
-    
-    
+    private GroupDAO groupDAO;
+
     static
     {
         // available columns
@@ -69,6 +65,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         AVAILABLE_COLUMNS.add("startDate");
         AVAILABLE_COLUMNS.add("endDate");
         AVAILABLE_COLUMNS.add("timeOfDay");
+        AVAILABLE_COLUMNS.add("lastEmail");
+        AVAILABLE_COLUMNS.add("report");
        
         REPORT_GROUPS = new HashedMap();
         REPORT_GROUPS.put("   ", null);
@@ -270,6 +268,25 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         final ReportScheduleView reportScheduleView = new ReportScheduleView();
         BeanUtils.copyProperties(reportSchedule,reportScheduleView);
         reportScheduleView.setSelected(false);
+        
+        if(reportSchedule.getDriverID() != null)
+        {
+            Driver driver = driverDAO.findByID(reportScheduleView.getDriverID());
+            reportScheduleView.setDriverName(driver.getPerson().getFullName());
+        }
+        
+        if(reportSchedule.getVehicleID() != null)
+        {
+            Vehicle vehicle = vehicleDAO.findByID(reportScheduleView.getVehicleID());
+            reportScheduleView.setVehicleName(vehicle.getFullName());
+        }
+        
+        if(reportSchedule.getGroupID() != null)
+        {
+            Group group = groupDAO.findByID(reportScheduleView.getGroupID());
+            reportScheduleView.setGroupName(group.getName());
+        }
+        
         return reportScheduleView;
     }
     
@@ -302,6 +319,16 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     {
         this.driverDAO = driverDAO;
     }
+    
+    public GroupDAO getGroupDAO()
+    {
+        return groupDAO;
+    }
+
+    public void setGroupDAO(GroupDAO groupDAO)
+    {
+        this.groupDAO = groupDAO;
+    }
 
     public static class ReportScheduleView extends ReportSchedule implements EditItem
     {
@@ -310,6 +337,15 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         
         @Column(updateable = false)
         private boolean selected;
+        
+        @Column(updateable = false)
+        private String groupName;
+        
+        @Column(updateable = false)
+        private String driverName;
+        
+        @Column(updateable = false)
+        private String vehicleName;
 
         @Override
         public boolean isSelected()
@@ -348,9 +384,40 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
                 String[] emailArray = email.split(",");
                 this.setEmailTo(Arrays.asList(emailArray));
             }
-            
         }
-   
+        
+        public String getReportName(){
+            return ReportGroup.valueOf(getReportID()).getLabel();
+        }
+        
+        public String getGroupName(){
+           return this.groupName;
+        }
+
+        public void setGroupName(String groupName)
+        {
+            this.groupName = groupName;
+        }
+
+        public void setDriverName(String driverName)
+        {
+            this.driverName = driverName;
+        }
+
+        public String getDriverName()
+        {
+            return driverName;
+        }
+
+        public void setVehicleName(String vehicleName)
+        {
+            this.vehicleName = vehicleName;
+        }
+
+        public String getVehicleName()
+        {
+            return vehicleName;
+        }
     }
 
 }

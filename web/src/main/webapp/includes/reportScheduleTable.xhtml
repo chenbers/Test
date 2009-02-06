@@ -27,7 +27,12 @@
     </rich:column>
     <rich:column rendered="#{reportScheduleBean.tableColumns['endDate'].visible}" sortBy="#{item.endDate}">
       <f:facet name="header"><h:outputText value="#{messages.reportSchedulesHeader_endDate}" /></f:facet>
-      <h:outputText value="#{item.startDate}">
+      <h:outputText value="#{item.endDate}">
+      </h:outputText>
+    </rich:column>
+    <rich:column rendered="#{reportScheduleBean.tableColumns['report'].visible}" sortBy="#{item.reportID}">
+      <f:facet name="header"><h:outputText value="#{messages.reportSchedulesHeader_report}" /></f:facet>
+      <h:outputText value="#{item.reportName}">
       </h:outputText>
     </rich:column>
   </ui:define>

@@ -38,10 +38,10 @@
 	<parameter name="SUB_DATASET_1" isForPrompting="false" class="java.util.List"/>
 	<parameter name="DURATION" isForPrompting="false" class="java.lang.String"/>
 
-	<field name="entity.entityName" class="java.lang.String"/>
-	<field name="entity.lightValue" class="java.lang.Integer"/>
-	<field name="entity.mediumValue" class="java.lang.Integer"/>
-	<field name="entity.heavyValue" class="java.lang.Integer"/>
+	<field name="entityName" class="java.lang.String"/>
+	<field name="lightValue" class="java.lang.Integer"/>
+	<field name="mediumValue" class="java.lang.Integer"/>
+	<field name="heavyValue" class="java.lang.Integer"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -265,7 +265,7 @@
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{entity.entityName}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{entityName}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -279,7 +279,7 @@
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{entity.lightValue}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{lightValue}.toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -293,7 +293,7 @@
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{entity.mediumValue}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{mediumValue}.toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -307,7 +307,7 @@
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{entity.heavyValue}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{heavyValue}.toString()]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

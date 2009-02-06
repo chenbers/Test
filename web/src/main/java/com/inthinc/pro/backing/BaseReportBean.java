@@ -14,6 +14,7 @@ import org.richfaces.event.DataScrollerEvent;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.reports.ReportRenderer;
+import com.inthinc.pro.reports.service.ReportCriteriaService;
 
 public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOptions<T>
 {
@@ -24,6 +25,7 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     private TablePref<T>        tablePref;
     private String              emailAddress;
     private ReportRenderer      reportRenderer;
+    private ReportCriteriaService reportCriteriaService;
     private Integer             numRowsPerPg = 25;
     protected Integer           maxCount     = null;
     private Integer             start        = 1;
@@ -332,5 +334,15 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     public ReportRenderer getReportRenderer()
     {
         return reportRenderer;
+    }
+
+    public void setReportCriteriaService(ReportCriteriaService reportCriteriaService)
+    {
+        this.reportCriteriaService = reportCriteriaService;
+    }
+
+    public ReportCriteriaService getReportCriteriaService()
+    {
+        return reportCriteriaService;
     }
 }

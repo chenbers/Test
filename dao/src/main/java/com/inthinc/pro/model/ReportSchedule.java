@@ -35,6 +35,7 @@ public class ReportSchedule
     
     @Column(name="duration")
     private Duration reportDuration;
+    @Column(updateable=false)
     private Occurrence occurrence;
     
     public ReportSchedule()
@@ -77,6 +78,19 @@ public class ReportSchedule
     public void setUserID(Integer userID)
     {
         this.userID = userID;
+    }
+    
+    public String getEmailToAsString(){
+        StringBuilder sb = new StringBuilder("");
+        if(emailTo != null && !emailTo.isEmpty())
+        {
+            for(String email:emailTo)
+            {
+                sb.append(email + ",");
+            }
+        }
+        
+        return sb.toString();
     }
     public List<String> getEmailTo()
     {

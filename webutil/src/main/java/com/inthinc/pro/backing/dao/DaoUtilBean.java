@@ -79,7 +79,7 @@ public class DaoUtilBean
         List<SelectItem> methodList = new ArrayList<SelectItem>();
         methodList.add(new SelectItem("--Select a Method--", "--Select a Method--"));
         for (String methodName : getMethodMap().keySet())
-        {
+        {  
             methodList.add(new SelectItem(methodName, methodName));
         }
         return methodList;

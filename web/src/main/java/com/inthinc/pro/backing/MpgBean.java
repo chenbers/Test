@@ -4,33 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.model.GroupLevel;
-import com.inthinc.pro.backing.ui.ScoreBox;
-import com.inthinc.pro.backing.ui.ScoreBoxSizes;
-import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.MpgDAO;
-import com.inthinc.pro.dao.util.DateUtil;
-import com.inthinc.pro.model.Account;
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.MpgEntity;
-import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
-import com.inthinc.pro.reports.Report;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.model.CategorySeriesData;
-import com.inthinc.pro.util.ColorSelectorStandard;
+import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.wrapper.MpgEntityPkg;
-import com.inthinc.pro.wrapper.ScoreableEntityPkg;
 
 public class MpgBean extends BaseDurationBean {
 
@@ -39,6 +28,7 @@ public class MpgBean extends BaseDurationBean {
     private MpgDAO mpgDAO;
     private NavigationBean navigation;
     private ReportRenderer reportRenderer;
+    private ReportCriteriaService reportCriteriaService;
     private List<MpgEntityPkg> mpgEntities = new ArrayList<MpgEntityPkg>();
 
     private Integer numRowsPerPg = 5;
@@ -204,25 +194,7 @@ public class MpgBean extends BaseDurationBean {
     }
     
     public ReportCriteria buildReportCriteria(){
-        List<MpgEntityPkg> entities = getMpgEntities();
-        List<CategorySeriesData> seriesData = new ArrayList<CategorySeriesData>();
-        
-        for(MpgEntityPkg entity: entities)
-        {
-            String seriesID = entity.getEntity().getEntityName();
-            Number heavyValue = entity.getEntity().getHeavyValue();
-            Number mediumValue = entity.getEntity().getMediumValue();
-            Number lightValue = entity.getEntity().getLightValue();
-            seriesData.add(new CategorySeriesData("Light",seriesID,lightValue,seriesID));
-            seriesData.add(new CategorySeriesData("Medium",seriesID,mediumValue,seriesID));
-            seriesData.add(new CategorySeriesData("Heavy",seriesID,heavyValue,seriesID));
-        }
-        
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.MPG_GROUP,getNavigation().getGroup().getName());
-        reportCriteria.setMainDataset(entities);
-        reportCriteria.addChartDataSet(seriesData);
-        reportCriteria.setDuration(getDuration());
-        reportCriteria.setRecordsPerReportParameters(4, "entity.entityName", "category");
+        ReportCriteria reportCriteria = reportCriteriaService.getMpgReportCriteria(navigation.getGroupID(), getDuration());
         return reportCriteria;
     }
 
@@ -314,5 +286,15 @@ public class MpgBean extends BaseDurationBean {
     public void setSortOnHeavy(String sortOnHeavy)
     {
         this.sortOnHeavy = sortOnHeavy;
+    }
+
+    public void setReportCriteriaService(ReportCriteriaService reportCriteriaService)
+    {
+        this.reportCriteriaService = reportCriteriaService;
+    }
+
+    public ReportCriteriaService getReportCriteriaService()
+    {
+        return reportCriteriaService;
     }
 }

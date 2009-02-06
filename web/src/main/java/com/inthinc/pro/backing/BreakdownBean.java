@@ -28,6 +28,7 @@ import com.inthinc.pro.reports.Report;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.model.PieScoreData;
 import com.inthinc.pro.reports.model.PieScoreRange;
+import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.util.GraphicUtil;
 
 public class BreakdownBean extends BaseDurationBean
@@ -50,6 +51,7 @@ public class BreakdownBean extends BaseDurationBean
   
     private NavigationBean navigation;
     private ReportRenderer reportRenderer;
+    private ReportCriteriaService reportCriteriaService;
 
     private String overallPieDef;
     private Integer overallScore;
@@ -236,46 +238,34 @@ public class BreakdownBean extends BaseDurationBean
     }
     
     public ReportCriteria buildReportCriteria(){
-        NumberFormat format = NumberFormat.getInstance();
-        format.setMaximumFractionDigits(1);
-        format.setMinimumFractionDigits(1);
-        String overallScore = format.format((double) ((double) getOverallScore() / (double) 10.0));
-        
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.OVERALL_SCORE,getNavigation().getGroup().getName());
-        reportCriteria.setMainDataset(getPieScoreData(ScoreType.SCORE_OVERALL));
-        reportCriteria.addParameter("OVERALL_SCORE",overallScore);
-        reportCriteria.addParameter("DURATION", "");
-        reportCriteria.addParameter("DRIVER_STYLE_DATA",getPieScoreData(ScoreType.SCORE_DRIVING_STYLE));
-        reportCriteria.addParameter("SEATBELT_USE_DATA",  getPieScoreData(ScoreType.SCORE_SEATBELT));
-        reportCriteria.addParameter("SPEED_DATA", getPieScoreData(ScoreType.SCORE_SPEEDING));
-        reportCriteria.setDuration(getDuration());
+        ReportCriteria reportCriteria = reportCriteriaService.getOverallScoreReportCriteria(navigation.getGroupID(), getDuration());
         return reportCriteria;
     }
     
-    private List<PieScoreData> getPieScoreData(ScoreType scoreType){
-     // Fetch, qualifier is groupId (parent), date from, date to
-        List<ScoreableEntity> s = null;
-        try
-        {
-            logger.debug("getting scores for groupID: " + this.navigation.getGroupID());
-            // s = scoreDAO.getScores(this.navigation.getGroupID(),
-            // startDate, endDate, ScoreType.SCORE_OVERALL_PERCENTAGES);
-            s = scoreDAO.getScoreBreakdown(this.navigation.getGroupID(), getDuration(), scoreType);
-        }
-        catch (Exception e)
-        {
-            logger.debug("graphicDao error: " + e.getMessage());
-        }
-        logger.debug("found: " + s.size());
-
-        List<PieScoreData> pieChartDataList = new ArrayList<PieScoreData>();
-        
-        for(int i = 0;i < s.size();i++){
-            PieScoreRange pieScoreRange = PieScoreRange.valueOf(i);
-            pieChartDataList.add(new PieScoreData(pieScoreRange.getLabel(),s.get(i).getScore(),pieScoreRange.getLabel()));
-        }
-        return pieChartDataList;
-    }
+//    private List<PieScoreData> getPieScoreData(ScoreType scoreType){
+//     // Fetch, qualifier is groupId (parent), date from, date to
+//        List<ScoreableEntity> s = null;
+//        try
+//        {
+//            logger.debug("getting scores for groupID: " + this.navigation.getGroupID());
+//            // s = scoreDAO.getScores(this.navigation.getGroupID(),
+//            // startDate, endDate, ScoreType.SCORE_OVERALL_PERCENTAGES);
+//            s = scoreDAO.getScoreBreakdown(this.navigation.getGroupID(), getDuration(), scoreType);
+//        }
+//        catch (Exception e)
+//        {
+//            logger.debug("graphicDao error: " + e.getMessage());
+//        }
+//        logger.debug("found: " + s.size());
+//
+//        List<PieScoreData> pieChartDataList = new ArrayList<PieScoreData>();
+//        
+//        for(int i = 0;i < s.size();i++){
+//            PieScoreRange pieScoreRange = PieScoreRange.valueOf(i);
+//            pieChartDataList.add(new PieScoreData(pieScoreRange.getLabel(),s.get(i).getScore(),pieScoreRange.getLabel()));
+//        }
+//        return pieChartDataList;
+//    }
     
     public ReportRenderer getReportRenderer()
     {
@@ -285,6 +275,16 @@ public class BreakdownBean extends BaseDurationBean
     public void setReportRenderer(ReportRenderer reportRenderer)
     {
         this.reportRenderer = reportRenderer;
+    }
+    
+    public ReportCriteriaService getReportCriteriaService()
+    {
+        return reportCriteriaService;
+    }
+
+    public void setReportCriteriaService(ReportCriteriaService reportCriteriaService)
+    {
+        this.reportCriteriaService = reportCriteriaService;
     }
 
 }

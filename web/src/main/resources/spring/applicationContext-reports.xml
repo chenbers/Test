@@ -14,6 +14,9 @@
     <bean id="reportCriteriaService" class="com.inthinc.pro.reports.service.impl.ReportCriteriaServiceImpl">
     	<property name="groupDAO" ref="groupDAO"/>
     	<property name="scoreDAO" ref="scoreDAO"/>
+    	<property name="mpgDAO" ref="mpgDAO"/>
+    	<property name="vehicleDAO" ref="vehicleDAO"/>
+    	<property name="deviceDAO" ref="deviceDAO"/>
     </bean>
     
 </beans>

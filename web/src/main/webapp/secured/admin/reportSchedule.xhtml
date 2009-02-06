@@ -5,9 +5,10 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:security="http://pro.tiwi.com/jsf/security">
+	xmlns:security="http://pro.tiwi.com/jsf/security"
+	xmlns:c="http://java.sun.com/jstl/core">
 
-	<ui:param name="reportsSelected" value="current" />
+	<ui:param name="adminSelected" value="current" />
 
 	<ui:define name="content">
 		
@@ -16,15 +17,17 @@
 			<tr>
 				<td valign="top" width="130">
 					<ui:include src="/includes/adminSideNav.xhtml">
-					<ui:param name="selectedAction" value="go_adminReportSchedule" />
+						<ui:param name="selectedAction" value="#{(reportScheduleBean.add) ? 'go_adminAddReportSchedule' : 'go_adminReportSchedules'}" />
+			            <ui:param name="parentAction" value="go_adminReportSchedules" />
 					</ui:include>
 				</td>
 				<td valign="top">
-				<a4j:form id="display-form">
+				<a4j:form id="edit-form">
 				<div class="">
 				<div class="panel_nw">
-				<div class="panel_title"><span class="email">#{messages.reports_email_report}</span>
-				<span class="panel_links"></span></div>
+				<div class="panel_title">
+					<span class="email">#{messages.adminHeader_addReportSchedule}</span>
+					<span class="panel_links"></span></div>
 				</div>
 
 				<div class="panel_w"><!-- MAIN CONTENT -->
@@ -32,68 +35,144 @@
 					errorClass="error" fatalClass="error" warnClass="warning"
 					infoClass="info" styleClass="msg" />
 					
-					<ul id="grid_nav" style="margin: 0;">
-					<li class="l grid_title">
-						<h:outputText value="#{navigationBean.group.name}"/>
-					</li>
-                    <li class="r">
-                      
-                     <h:commandButton action="#{navigationBean.groupPageAction}" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
-                     
+				<ul id="grid_nav" style="margin: 0;">
+                   	<li class="r">
+                      <h:commandButton action="#{reportScheduleBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
+                      <h:outputText value=" " /><h:commandButton action="#{reportScheduleBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
                     </li>
-                    <li class="r">
-                    	 <h:commandButton styleClass="left" action="#{reportRendererBean.sendReportViaEmail}">
-                      	<span class="email"><h:outputText value="#{messages.reports_email}" /></span></h:commandButton>
-                    </li>
-                  </ul>
+                </ul>
 
-				<table width="600" border="0" cellspacing="0" cellpadding="0">
+				<table width="650" border="0" cellspacing="0" cellpadding="0">
 					<tr>
-						<td width="200" valign="top" align="left">
-
+						<td width="350" valign="top" align="left">
 						<div class="add_section_title"><h:outputText
-							value="Settings" /></div>
+							value="#{messages.reportSchedule_reportScheduling}" /></div>
 
-						<table width="200" border="0" cellspacing="2" cellpadding="4"
-							align="center">
-							<tr>
-								<td width="100" valign="top">
-									<h:outputText value="Select Reports:"/>
-								</td>
-								<td width="200">
-									<h:selectManyCheckbox style="width:200px" value="#{reportRendererBean.reports}" converter="SimpleBeanConverter" layout="pageDirection">
-										<f:selectItems value="#{reportRendererBean.reportsAsSelectItems}"/> 
-									</h:selectManyCheckbox>
-								</td>
-							</tr>
-							<tr>
-								<td width="100" valign="top">
-									<h:outputText value="Select Duration:"/>
-								</td>
-								<td width="200">
-									<h:selectOneRadio style="width:200px" layout="pageDirection" value="#{reportRendererBean.duration}" converter="SimpleBeanConverter">
-										<f:selectItems value="#{reportRendererBean.durationAsSelectItems}"/> 
-									</h:selectOneRadio>
-								</td>
-							</tr>
-						</table>
-						</td>
-						<td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
-						<td width="455" valign="top" align="left">
-
-						<div class="add_section_title"><h:outputText
-							value="Email Address" /></div>
-
-						<table width="455" border="0" cellspacing="2" cellpadding="4"
+						<table width="350" border="0" cellspacing="2" cellpadding="4"
 							align="center">
 							<tr>
 								<td width="100" valign="top"><h:outputText
-									value="Email Address:" /></td>
-								<td><h:inputTextarea cols ="40" rows="5" value="#{reportRendererBean.emailAddress}" /></td>
+									value="#{messages.reportSchedule_name}" />
+								</td>
+								<td>
+									<h:outputText value="#{reportScheduleBean.item.name}"></h:outputText>	
+								</td>
+							</tr>
+							<tr>
+								<td width="100" valign="top"><h:outputText
+									value="#{messages.reportSchedule_startDate}" />
+								</td>
+								<td>
+									<h:outputText value="#{reportScheduleBean.item.startDate}"/>	
+								</td>
 								
+							</tr>
+							<tr>
+								<td width="100" valign="top"><h:outputText
+									value="#{messages.reportSchedule_endDate}" />
+								</td>
+								<td>
+									<h:outputText value="#{reportScheduleBean.item.endDate}"/>	
+								</td>
+							</tr>
+							<tr>
+								<td width="100" valign="top"><h:outputText
+									value="#{messages.reportSchedule_daysOfWeek}" />
+								</td>
+								<td>
+									<ui:include src="../../includes/dayPicker.xhtml">
+		                                <ui:param name="days" value="#{reportScheduleBean.item.dayOfWeek}" />
+		                                <ui:param name="disabled" value="true" />
+                              		</ui:include>	
+								</td>
+							</tr>
+							<tr>
+								<td width="100" valign="top"><h:outputText
+									value="#{messages.reportSchedule_timeOfDay}" />
+								</td>
+								<td>
+									<c:set var="hours" value="#{((reportScheduleBean.item.timeOfDay - (reportScheduleBean.item.timeOfDay % 60)) / 60 % 12)}" />
+	                                <c:if test="#{hours == 0}">
+	                                  <c:set var="hours" value="12" />
+	                                </c:if>
+	                                <h:outputText value="#{hours}"><f:convertNumber integerOnly="true" /></h:outputText>:<h:outputText value="#{reportScheduleBean.item.timeOfDay % 60}"><f:convertNumber integerOnly="true" minIntegerDigits="2" maxIntegerDigits="2" /></h:outputText>
+	                                <h:outputText value="#{(reportScheduleBean.item.timeOfDay ge 720) ? messages.timePicker_pm : messages.timePicker_am}" />
+								</td>
 							</tr>
 							
 						</table>
+						
+						</td>
+						<td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
+						<td width="400" valign="top" align="left">
+							
+						<div class="add_section_title"><h:outputText
+							value="#{messages.reportSchedule_reportConfiguration}" /></div>
+						<h:panelGroup id="reportConfigTable" >
+						<table width="350" border="0" cellspacing="2" cellpadding="4"
+							align="center">
+							<tr>
+								<td width="100" valign="top">
+									<h:outputText value="#{messages.reportSchedule_report}"/>
+								</td>
+								<td>
+									<h:outputText value="#{reportScheduleBean.item.reportName}"/>
+								</td>
+							</tr>
+							<tr>
+								<td width="100" valign="top">
+									<h:outputText value="#{messages.reportSchedule_duration}"/>
+								</td>
+								<td>
+									<h:outputText value="#{reportScheduleBean.item.reportDuration}"/>
+								</td>
+							</tr>
+							
+							
+							<h:outputText rendered="#{reportScheduleBean.item.groupName ne null}">
+									<tr>
+										<td width="100" valign="top">
+											<h:outputText value="#{messages.reportSchedule_group}"/>
+										</td>
+										<td>
+											<h:outputText value="#{reportScheduleBean.item.groupName}"/>
+										</td>
+									</tr>
+							</h:outputText>
+							<h:outputText rendered="#{reportScheduleBean.item.driverName ne null}">
+									<tr>
+										<td width="100" valign="top">
+											<h:outputText value="#{messages.reportSchedule_driver}"/>
+										</td>
+										<td>
+											<h:outputText value="#{reportScheduleBean.item.driverName}"/>
+										</td>
+									</tr>
+							</h:outputText>
+							<h:outputText rendered="#{reportScheduleBean.item.vehicleName ne null}">
+									<tr>
+										<td width="100" valign="top">
+											<h:outputText value="#{messages.reportSchedule_driver}"/>
+										</td>
+										<td>
+											<h:outputText value="#{reportScheduleBean.item.vehicleName}"/>
+										</td>
+									</tr>
+							</h:outputText>
+						</table>
+						</h:panelGroup>
+							<div class="add_section_title"><h:outputText
+									value="#{messages.reportSchedule_emailing}" /></div>
+							
+							<table width="350" border="0" cellspacing="2" cellpadding="4"
+								align="center">
+								<tr>
+									<td>
+										<h:outputText cols ="40" rows="5" value="#{reportScheduleBean.item.emailToString}" />
+									</td>
+								</tr>
+								
+							</table>
 						</td>
 					</tr>
 				</table>
@@ -105,12 +184,10 @@
 				<div class="panel_statusbar"></div>
 				</div>
 				</div>
-</a4j:form>
+					</a4j:form>
 				</td>
 			</tr>
 		</table>
-
-
 	</ui:define>
 
 </ui:composition>

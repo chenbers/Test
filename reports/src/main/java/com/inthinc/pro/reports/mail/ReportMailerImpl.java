@@ -40,7 +40,7 @@ public class ReportMailerImpl implements ReportMailer
         try
         {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,true);
-            mimeMessageHelper.setTo((String[])toAddress.toArray());
+            mimeMessageHelper.setTo(toAddress.toArray(new String[toAddress.size()]));
             mimeMessageHelper.setFrom(fromAddress);
             for(ReportAttatchment reportAttatchment:attachments)
             {

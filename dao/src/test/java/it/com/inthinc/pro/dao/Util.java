@@ -30,7 +30,7 @@ public class Util
     {
         compareObjects(obj1, obj2, new String[] {});
     }
-    public static <T> void compareObjects(T obj1, T obj2, String ignoreList[])
+    public static <T> void compareObjects(T obj1, T obj2, String... ignoreList)
     {
         List<String> ignoreFields = Arrays.asList(ignoreList);
         Class<?> cls = obj1.getClass();

@@ -20,13 +20,25 @@ public class ReportUtil
             add("JUL");add("AUG");add("SEP");add("OCT");add("NOV");add("DEC");
         }
     };
-    public static List <String> entityColorKey = new ArrayList<String>(){
+    
+    public static List <String> lineChartEntityColorKey = new ArrayList<String>(){
         {
-            add(new String("#880000"));add(new String("#008800"));
-            add(new String("#000088"));add(new String("#888800"));
-            add(new String("#880088"));add(new String("#008888"));
-            add(new String("#FF0000"));add(new String("#00FF00"));
-            add(new String("#0000FF"));add(new String("#FF00FF"));  
+            add("#880000");add("#008800");
+            add("#000088");add("#888800");
+            add("#880088");add("#008888");
+            add("#FF0000");add("#00FF00");
+            add("#0000FF");add("#FF00FF");  
+        }
+    };
+    
+    public static List<String> pieChartEntityColorKey = new ArrayList<String>()
+    {
+        {
+            add("FF0101");
+            add("FF6601");
+            add("F6B305");
+            add("1E88C8");
+            add("6B9D1B");
         }
     };
     

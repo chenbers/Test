@@ -159,21 +159,21 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem>
     
     public void exportReportToPdf()
     {
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_REPORT,getGroupHierarchy().getTopGroup().getName());
+        ReportCriteria reportCriteria = getReportCriteriaService().getVehicleReportCriteria(getUser().getGroupID(), Duration.TWELVE);
         reportCriteria.setMainDataset(vehicleData);
         getReportRenderer().exportSingleReportToPDF(reportCriteria, getFacesContext());
     }
     
     public void emailReport()
     {
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_REPORT,getGroupHierarchy().getTopGroup().getName());
+        ReportCriteria reportCriteria = getReportCriteriaService().getVehicleReportCriteria(getUser().getGroupID(), Duration.TWELVE);
         reportCriteria.setMainDataset(vehicleData);
         getReportRenderer().exportReportToEmail(reportCriteria,getEmailAddress());
     }
     
     public void exportReportToExcel()
     {
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_REPORT,getGroupHierarchy().getTopGroup().getName());
+        ReportCriteria reportCriteria = getReportCriteriaService().getVehicleReportCriteria(getUser().getGroupID(), Duration.TWELVE);
         reportCriteria.setMainDataset(vehicleData);
         getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
     }

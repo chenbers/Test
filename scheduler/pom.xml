@@ -167,6 +167,12 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>com.inthinc.pro.reports</groupId>
+            <artifactId>reports</artifactId>
+            <version>0.0.15-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>javax.transaction</groupId>
             <artifactId>jta</artifactId>
             <version>1.0.1B</version>

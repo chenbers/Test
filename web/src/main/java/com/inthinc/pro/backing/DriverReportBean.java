@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import com.inthinc.pro.reports.ReportType;
 
 public class DriverReportBean extends BaseReportBean<DriverReportItem>
 {
+    
     private static final Logger logger = Logger.getLogger(DriverReportBean.class);
     
     //driversData is the ONE read from the db, driverData is what is displayed
@@ -179,21 +181,21 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem>
     
     public void exportReportToPdf()
     {
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_REPORT,getGroupHierarchy().getTopGroup().getName());
+        ReportCriteria reportCriteria = getReportCriteriaService().getDriverReportCriteria(getUser().getGroupID(), Duration.TWELVE);
         reportCriteria.setMainDataset(driverData);
         getReportRenderer().exportSingleReportToPDF(reportCriteria, getFacesContext());
     }
     
     public void emailReport()
     {
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_REPORT,getGroupHierarchy().getTopGroup().getName());
+        ReportCriteria reportCriteria = getReportCriteriaService().getDriverReportCriteria(getUser().getGroupID(), Duration.TWELVE);
         reportCriteria.setMainDataset(driverData);
         getReportRenderer().exportReportToEmail(reportCriteria,getEmailAddress());
     }
     
     public void exportReportToExcel()
     {
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_REPORT,getGroupHierarchy().getTopGroup().getName());
+        ReportCriteria reportCriteria = getReportCriteriaService().getDriverReportCriteria(getUser().getGroupID(), Duration.TWELVE);
         reportCriteria.setMainDataset(driverData);
         getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
     }

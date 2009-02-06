@@ -15,7 +15,6 @@ import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.reports.ReportCriteria;
-import com.inthinc.pro.reports.ReportType;
 
 public class IdlingReportBean extends BaseReportBean<IdlingReportItem>
 {
@@ -358,21 +357,21 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem>
 
     public void exportReportToPdf()
     {
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.IDLING_REPORT,getGroupHierarchy().getTopGroup().getName());
+        ReportCriteria reportCriteria = getReportCriteriaService().getIdlingReportCriteria(getGroupHierarchy().getTopGroup().getGroupID(), intStartDate, intEndDate);
         reportCriteria.setMainDataset(idlingData);
         getReportRenderer().exportSingleReportToPDF(reportCriteria, getFacesContext());
     }
     
     public void emailReport()
     {
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.IDLING_REPORT,getGroupHierarchy().getTopGroup().getName());
+        ReportCriteria reportCriteria = getReportCriteriaService().getIdlingReportCriteria(getGroupHierarchy().getTopGroup().getGroupID(), intStartDate, intEndDate);
         reportCriteria.setMainDataset(idlingData);
         getReportRenderer().exportReportToEmail(reportCriteria,getEmailAddress());
     }
     
     public void exportReportToExcel()
     {
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.IDLING_REPORT,getGroupHierarchy().getTopGroup().getName());
+        ReportCriteria reportCriteria = getReportCriteriaService().getIdlingReportCriteria(getGroupHierarchy().getTopGroup().getGroupID(), intStartDate, intEndDate);
         reportCriteria.setMainDataset(idlingData);
         getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
     }

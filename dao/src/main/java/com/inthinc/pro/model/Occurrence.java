@@ -4,7 +4,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum Occurrence
+public enum Occurrence implements BaseEnum
 {
     EVERY_WEEEK(0,"Once a week"),
     EVERY_OTHER(1,"Every other week"),
