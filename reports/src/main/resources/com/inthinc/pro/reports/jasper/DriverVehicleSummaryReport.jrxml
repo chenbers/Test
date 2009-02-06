@@ -7,7 +7,7 @@
 		 printOrder="Vertical"
 		 orientation="Portrait"
 		 pageWidth="595"
-		 pageHeight="842"
+		 pageHeight="794"
 		 columnWidth="535"
 		 columnSpacing="0"
 		 leftMargin="30"
@@ -407,7 +407,7 @@
 			</band>
 		</pageHeader>
 		<columnHeader>
-			<band height="30"  isSplitAllowed="true" >
+			<band height="30"  isSplitAllowed="false" >
 			</band>
 		</columnHeader>
 		<detail>
