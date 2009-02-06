@@ -19,7 +19,7 @@ public class EventDisplay
     
     Event event;
     
-    private static DateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
+    private DateFormat dateFormatter = new SimpleDateFormat("MMM d, yyyy h:mm a (z)");
     
     public EventDisplay(Event event)
     {
