@@ -43,7 +43,7 @@
     </rich:column>
     <rich:column rendered="#{devicesBean.tableColumns['activated'].visible}" sortBy="#{item.activated}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_activated}" /></f:facet>
-      <h:outputText value="#{item.activated}"><f:convertDateTime dateStyle="long" timeZone="#{devicesBean.user.person.timeZone}" /></h:outputText>
+      <h:outputText value="#{item.activated}"><f:convertDateTime pattern="MMM d, yyyy" timeZone="#{devicesBean.user.person.timeZone}" /></h:outputText>
     </rich:column>
     <rich:column rendered="#{devicesBean.tableColumns['status'].visible}" sortBy="#{item.status.description}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_status}" /></f:facet>

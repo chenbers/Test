@@ -209,7 +209,7 @@
 									<h:outputText value="Date/Time" />
 								</f:facet>
 									<h:outputText value="#{item.event.time}">
-										<f:convertDateTime type="both" timeZone="#{navigationBean.driver.person.timeZone}" timeStyle="short" dateStyle="short"/>
+										<f:convertDateTime timeZone="#{navigationBean.driver.person.timeZone}" pattern="MMM d, yyyy h:mm a (z)"/>
 									</h:outputText>
 							</rich:column>
 							
@@ -279,7 +279,7 @@
 	   	<h:panelGroup layout="block"  styleClass="popupcontent" id="clearItem">
 			<h:outputText value="#{driverSeatBeltBean.clearItem.detail}"/><br/>
       		<h:outputText value="#{driverSeatBeltBean.clearItem.event.time}">
-      			<f:convertDateTime type="both" timeZone="#{navigationBean.driver.person.timeZone}" timeStyle="short" dateStyle="short"/>
+      			<f:convertDateTime pattern="MMM d, yyyy h:mm a (z)" timeZone="#{navigationBean.driver.person.timeZone}" />
 			</h:outputText>
       	</h:panelGroup>
 	

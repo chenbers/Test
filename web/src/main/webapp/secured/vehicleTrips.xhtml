@@ -125,14 +125,14 @@
 
 					//Start of trip marker
 					startlatlng = new GLatLng(#{trip.route[0].lat}, #{trip.route[0].lng});
-					marker = createMarker(startlatlng, "Start of trip.<br />" + "#{trip.trip.startTime}<br />#{trip.startAddress}",
+					marker = createMarker(startlatlng, "Start of trip.<br /><h:outputText value='#{trip.trip.startTime}'><f:convertDateTime pattern='MMM d, yyyy h:mm a (z)' timeZone='#{vehicleTripsBean.timeZone}' /></h:outputText><br />#{trip.startAddress}",
 											"#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());
 
 					//End of trip marker
 					endlatlng = new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng});
-					marker = createMarker(endlatlng, "End of trip.<br />" + "#{trip.trip.endTime}<br />#{trip.endAddress}",
+					marker = createMarker(endlatlng, "End of trip.<br /><h:outputText value='#{trip.trip.endTime}'><f:convertDateTime pattern='MMM d, yyyy h:mm a (z)' timeZone='#{vehicleTripsBean.timeZone}' /></h:outputText><br />#{trip.endAddress}",
 											"#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());
@@ -144,7 +144,7 @@
 	  				var violation;
 					<ui:repeat value="#{vehicleTripsBean.violationEvents}" var="violation">
 						violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
-						map.addOverlay(createMarker(violation, "#{violation.eventType} Violation.<br />#{violation.time}<br />#{violation.addressStr}<br />",
+						map.addOverlay(createMarker(violation, "#{violation.eventType} Violation.<br /><h:outputText value='#{violation.time}'><f:convertDateTime pattern='MMM d, yyyy h:mm a (z)' timeZone='#{vehicleTripsBean.timeZone}' /></h:outputText><br />#{violation.addressStr}<br />",
 										"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png"));
 					</ui:repeat>
 				}
@@ -228,7 +228,7 @@
 											<a4j:outputPanel id="calendarStart" layout="block">
 				                   		 	<rich:calendar value="#{vehicleTripsBean.startDate}"
 				                	        	locale="en/US" popup="true" immediate="true"
-				               		         	datePattern="MMMMM d, yyyy"
+				               		         	datePattern="MMM d, yyyy"
 				               			         	showApplyButton="false" cellWidth="24px" cellHeight="22px"/>
 				           					</a4j:outputPanel> 
 										</td>
@@ -240,7 +240,7 @@
 								  				<a4j:outputPanel id="calendarEnd" layout="block">
 				                    				<rich:calendar value="#{vehicleTripsBean.endDate}"
 				                        				locale="en/US" popup="true" immediate="true"
-				                        				datePattern="MMMMM d, yyyy"
+				                        				datePattern="MMM d, yyyy"
 				                        				showApplyButton="false" cellWidth="24px" cellHeight="22px"/>
 				           							</a4j:outputPanel>
 											</td>
@@ -279,10 +279,10 @@
 					<div class="panel_title">
 						<span class=""><h:outputText>Stats:&#160;</h:outputText>
 						<h:outputText value="#{vehicleTripsBean.startDate}">
-							<f:convertDateTime pattern="MMM dd, yyyy" />
+							<f:convertDateTime pattern="MMM d, yyyy" />
 						</h:outputText>&#160;to&#160; 
 						<h:outputText value="#{vehicleTripsBean.endDate}">
-							<f:convertDateTime pattern="MMM dd, yyyy" />
+							<f:convertDateTime pattern="MMM d, yyyy" />
 						</h:outputText>
 						</span>
 						<span class="panel_links"></span>
@@ -363,11 +363,11 @@
 							
 							<rich:column sortBy="#{item.time}">
 								<f:facet name="header">
-									<h:outputText value="Time" />
+									<h:outputText value="Date/Time" />
 								</f:facet>
 								
 								<h:outputText value="#{item.time}" >
-									<f:convertDateTime pattern="MMM dd, hh:mm a" timeZone="#{vehicleTripsBean.timeZone}" timeStyle="short" dateStyle="short"/>
+									<f:convertDateTime pattern="MMM d, yyyy h:mm a (z)" timeZone="#{vehicleTripsBean.timeZone}" />
 								</h:outputText>
 							
 							</rich:column>

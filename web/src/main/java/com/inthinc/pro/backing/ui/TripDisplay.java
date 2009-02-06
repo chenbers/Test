@@ -2,13 +2,11 @@ package com.inthinc.pro.backing.ui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.map.AddressLookup;
-import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
 
@@ -36,11 +34,11 @@ public class TripDisplay
         
         route = trip.getRoute();
         
-        dateFormatter = new SimpleDateFormat("dd MMM");
+        dateFormatter = new SimpleDateFormat("MMM d, yyyy");
         dateFormatter.setTimeZone(timeZone);
         setDateShort(dateFormatter.format(trip.getEndTime()));
         
-        dateFormatter = new SimpleDateFormat("h:mm a");
+        dateFormatter = new SimpleDateFormat("h:mm a (z)");
         dateFormatter.setTimeZone(timeZone);
         setTimeStartShort(dateFormatter.format(trip.getStartTime() ));
         setTimeEndShort(dateFormatter.format(trip.getEndTime() ));
