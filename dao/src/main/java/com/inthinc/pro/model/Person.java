@@ -20,9 +20,16 @@ public class Person extends BaseEntity
     private Integer           addressID;
     @Column(updateable = false)
     private Address           address;
-    private String            homePhone;
-    private String            workPhone;
-    private String            email;
+    private String            priEmail;
+    private String            secEmail;
+    private String            priPhone;
+    private String            secPhone;
+    private String            cellPhone;
+    private String            priText;
+    private String            secText;
+    private Integer           info;
+    private Integer           warn;
+    private Integer           crit;
     // employee information
     private String            empid;
     private String            reportsTo;
@@ -50,9 +57,9 @@ public class Person extends BaseEntity
         super();
     }
 
-    public Person(Integer personID, Integer acctID, TimeZone timeZone, Integer costPerHour, Integer addressID, String homePhone, String workPhone, String email, String empid,
-            String reportsTo, String title, String dept, String first, String middle, String last, String suffix, Gender gender, Integer height, Integer weight, Date dob,
-            Status status)
+    public Person(Integer personID, Integer acctID, TimeZone timeZone, Integer costPerHour, Integer addressID, String priEmail, String secEmail, String priPhone, String secPhone,
+            String cellPhone, String priText, String secText, Integer info, Integer warn, Integer crit, String empid, String reportsTo, String title, String dept, String first,
+            String middle, String last, String suffix, Gender gender, Integer height, Integer weight, Date dob, Status status)
     {
         super();
         this.acctID = acctID;
@@ -60,9 +67,16 @@ public class Person extends BaseEntity
         this.timeZone = timeZone;
         this.costPerHour = costPerHour;
         this.addressID = addressID;
-        this.homePhone = homePhone;
-        this.workPhone = workPhone;
-        this.email = email;
+        this.priEmail = priEmail;
+        this.secEmail = secEmail;
+        this.priPhone = priPhone;
+        this.secPhone = secPhone;
+        this.cellPhone = cellPhone;
+        this.priText = priText;
+        this.secText = secText;
+        this.info = info;
+        this.warn = warn;
+        this.crit = crit;
         this.empid = empid;
         this.reportsTo = reportsTo;
         this.title = title;
@@ -118,34 +132,104 @@ public class Person extends BaseEntity
         this.address = address;
     }
 
-    public String getHomePhone()
+    public String getPriEmail()
     {
-        return homePhone;
+        return priEmail;
     }
 
-    public void setHomePhone(String homePhone)
+    public void setPriEmail(String priEmail)
     {
-        this.homePhone = homePhone;
+        this.priEmail = priEmail;
     }
 
-    public String getWorkPhone()
+    public String getSecEmail()
     {
-        return workPhone;
+        return secEmail;
     }
 
-    public void setWorkPhone(String workPhone)
+    public void setSecEmail(String secEmail)
     {
-        this.workPhone = workPhone;
+        this.secEmail = secEmail;
     }
 
-    public String getEmail()
+    public String getPriPhone()
     {
-        return email;
+        return priPhone;
     }
 
-    public void setEmail(String email)
+    public void setPriPhone(String priPhone)
     {
-        this.email = email;
+        this.priPhone = priPhone;
+    }
+
+    public String getSecPhone()
+    {
+        return secPhone;
+    }
+
+    public void setSecPhone(String secPhone)
+    {
+        this.secPhone = secPhone;
+    }
+
+    public String getCellPhone()
+    {
+        return cellPhone;
+    }
+
+    public void setCellPhone(String cellPhone)
+    {
+        this.cellPhone = cellPhone;
+    }
+
+    public String getPriText()
+    {
+        return priText;
+    }
+
+    public void setPriText(String priText)
+    {
+        this.priText = priText;
+    }
+
+    public String getSecText()
+    {
+        return secText;
+    }
+
+    public void setSecText(String secText)
+    {
+        this.secText = secText;
+    }
+
+    public Integer getInfo()
+    {
+        return info;
+    }
+
+    public void setInfo(Integer info)
+    {
+        this.info = info;
+    }
+
+    public Integer getWarn()
+    {
+        return warn;
+    }
+
+    public void setWarn(Integer warn)
+    {
+        this.warn = warn;
+    }
+
+    public Integer getCrit()
+    {
+        return crit;
+    }
+
+    public void setCrit(Integer crit)
+    {
+        this.crit = crit;
     }
 
     public String getEmpid()

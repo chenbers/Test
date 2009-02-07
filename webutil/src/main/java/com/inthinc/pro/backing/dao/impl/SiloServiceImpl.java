@@ -25,13 +25,6 @@ public class SiloServiceImpl implements SiloService
     }
 
     @Override
-    public Map<String, Object> createAlertCon(Integer acctID, Map<String, Object> alertContactMap) throws ProDAOException
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public Map<String, Object> createDevice(Integer acctID, Map<String, Object> deviceMap) throws ProDAOException
     {
         // TODO Auto-generated method stub
@@ -201,13 +194,6 @@ public class SiloServiceImpl implements SiloService
 
     @Override
     public Map<String, Object> getAddr(@DaoParam(name="addrID")Integer addrID) throws ProDAOException
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Map<String, Object> getAlertCon(@DaoParam(name="userID")Integer userID) throws ProDAOException
     {
         // TODO Auto-generated method stub
         return null;
@@ -547,13 +533,6 @@ public class SiloServiceImpl implements SiloService
 
     @Override
     public Map<String, Object> updateAddr(Integer addrID, Map<String, Object> addrMap) throws ProDAOException
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Map<String, Object> updateAlertCon(Integer userID, Map<String, Object> alertContactMap) throws ProDAOException
     {
         // TODO Auto-generated method stub
         return null;

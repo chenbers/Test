@@ -206,41 +206,76 @@
                         </tr>
                         <ui:fragment rendered="#{not personBean.batchEdit}">
                         <tr>
-                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_homePhone}" /></td>
+                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_priPhone}" /></td>
                           <td>
-                            <rich:message for="homePhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.homePhone}" id="homePhone" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="22" validatorMessage="#{messages.editPerson_phoneFormat}">
+                            <rich:message for="priPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{personBean.item.priPhone}" id="priPhone" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="22" validatorMessage="#{messages.editPerson_phoneFormat}">
                               <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
                               <f:attribute name="regex" value="\D?\d{3}\D*\d{3}\D?\d{4}" />
                             </h:inputText>
                           </td>
                         </tr>
-                        </ui:fragment>
                         <tr>
-                          <td width="100" valign="top">
-                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_workPhone" disabled="#{!personBean.item.userEditable}" value="#{personBean.updateField['workPhone']}" />
-                            <h:outputText value="#{messages.editPerson_workPhone}" />
-                          </td>
+                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_secPhone}" /></td>
                           <td>
-                            <rich:message for="workPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.workPhone}" id="workPhone" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="22" validatorMessage="#{messages.editPerson_phoneFormat}">
+                            <rich:message for="secPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{personBean.item.secPhone}" id="secPhone" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="22" validatorMessage="#{messages.editPerson_phoneFormat}">
                               <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
                               <f:attribute name="regex" value="\D?\d{3}\D*\d{3}\D?\d{4}" />
                             </h:inputText>
                           </td>
                         </tr>
-                        <ui:fragment rendered="#{not personBean.batchEdit}">
+                        <tr>
+                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_cellPhone}" /></td>
+                          <td>
+                            <rich:message for="cellPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{personBean.item.cellPhone}" id="cellPhone" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="22" validatorMessage="#{messages.editPerson_phoneFormat}">
+                              <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
+                              <f:attribute name="regex" value="\D?\d{3}\D*\d{3}\D?\d{4}" />
+                            </h:inputText>
+                          </td>
+                        </tr>
                         <tr>
                           <td width="100" valign="top">
-                            <h:outputText value="#{messages.editPerson_email}" />
+                            <h:outputText value="#{messages.editPerson_priEmail}" />
                             <a4j:outputPanel id="emailRequired">
                               <h:outputText rendered="#{personBean.item.userSelected}" styleClass="required" value=" *" />
                             </a4j:outputPanel>
                           </td>
                           <td>
-                            <rich:message for="email" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.email}" id="email" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" styleClass="text" size="30"
+                            <rich:message for="priEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{personBean.item.priEmail}" id="priEmail" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30"
                               maxlength="62" required="#{personBean.item.userSelected}" requiredMessage="#{messages.required}" validatorMessage="#{messages.editPerson_emailFormat}">
+                              <f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
+                            </h:inputText>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_secEmail}" /></td>
+                          <td>
+                            <rich:message for="secEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{personBean.item.secEmail}" id="secEmail" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30"
+                              maxlength="62" validatorMessage="#{messages.editPerson_emailFormat}">
+                              <f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
+                            </h:inputText>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_priText}" /></td>
+                          <td>
+                            <rich:message for="priText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{personBean.item.priText}" id="priText" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30"
+                              maxlength="62" validatorMessage="#{messages.editPerson_textMessageFormat}">
+                              <f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
+                            </h:inputText>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_secText}" /></td>
+                          <td>
+                            <rich:message for="secText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{personBean.item.secText}" id="secText" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30"
+                              maxlength="62" validatorMessage="#{messages.editPerson_textMessageFormat}">
                               <f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
                             </h:inputText>
                           </td>
@@ -251,6 +286,49 @@
                     </td>
                     <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
                     <td width="390" valign="top">
+
+                      <div class="add_section_title"><h:outputText value="#{messages.editPerson_notifications}" /></div>
+
+                      <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                        <tr>
+                          <td width="100">
+                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_info" disabled="#{!personBean.item.userEditable}" value="#{personBean.updateField['reportsTo']}" />
+                            <h:graphicImage value="/images/ico_info.png" width="16" height="16" style="valign:middle" />
+                            <h:outputText value=" #{messages.myAccount_information}" />
+                          </td>
+                          <td>
+                            <h:selectOneMenu value="#{personBean.item.info}" id="info" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" style="width:200px">
+                              <f:selectItems value="#{personBean.alertOptions}" />
+                            </h:selectOneMenu>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="100">
+                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_warn" disabled="#{!personBean.item.userEditable}" value="#{personBean.updateField['warn']}" />
+                            <h:graphicImage value="/images/ico_warning.png" width="16" height="16" style="valign:middle" />
+                            <h:outputText value=" #{messages.myAccount_warning}" />
+                          </td>
+                          <td>
+                            <h:selectOneMenu value="#{personBean.item.warn}" id="warn" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" style="width:200px">
+                              <f:selectItems value="#{personBean.alertOptions}" />
+                            </h:selectOneMenu>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="100">
+                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_crit" disabled="#{!personBean.item.userEditable}" value="#{personBean.updateField['crit']}" />
+                            <h:graphicImage value="/images/ico_critical.png" width="16" height="16" style="valign:middle" />
+                            <h:outputText value=" #{messages.myAccount_critical}" />
+                          </td>
+                          <td>
+                            <h:selectOneMenu value="#{personBean.item.crit}" id="crit" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" style="width:200px">
+                              <f:selectItems value="#{personBean.alertOptions}" />
+                            </h:selectOneMenu>
+                          </td>
+                        </tr>
+                      </table>
+
+                      <div class="spacer"></div>
 
                       <div class="add_section_title"><h:outputText value="#{messages.editPerson_employeeInformation}" /></div>
 
@@ -531,6 +609,8 @@
 
   function bodyLoad()
   {
+    populateAlertText();
+
     var elements = document.getElementById("edit-form").elements;
     for (var i = 0; i &lt; elements.length; i++)
       for (var j = 0; j &lt; formElements.length; j++)
@@ -557,6 +637,42 @@
       box = document.getElementById("edit-form:update_" + id);
     if (box)
       box.checked = true;
+  }
+
+  function populateAlertText(id)
+  {
+    if (#{personBean.batchEdit})
+      return;
+
+    if (id == null)
+    {
+      populateAlertText("edit-form:info");
+      populateAlertText("edit-form:warn");
+      populateAlertText("edit-form:crit");
+    }
+    else
+    {
+      var select = document.getElementById(id);
+      populateAlertOption(select.options[1], "edit-form:priEmail");
+      populateAlertOption(select.options[2], "edit-form:secEmail");
+      populateAlertOption(select.options[3], "edit-form:priPhone");
+      populateAlertOption(select.options[4], "edit-form:secPhone");
+      populateAlertOption(select.options[5], "edit-form:cellPhone");
+      populateAlertOption(select.options[6], "edit-form:priText");
+      populateAlertOption(select.options[7], "edit-form:secText");
+    }
+  }
+
+  function populateAlertOption(option, inputId)
+  {
+    var value = document.getElementById(inputId).value;
+    if ((value != null) &amp;&amp; (value != ""))
+      value = "#{messages.myAccount_alertTextSeparator}" + value;
+    var index = option.text.indexOf("#{messages.myAccount_alertTextSeparator}");
+    if (index != -1)
+      option.text = option.text.substring(0, index) + value;
+    else
+      option.text = option.text + value;
   }
 
   function showSection(id, show)

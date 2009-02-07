@@ -22,7 +22,6 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.AggressiveDrivingEvent;
-import com.inthinc.pro.model.AlertCon;
 import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.AlertMessageType;
@@ -393,16 +392,13 @@ public class MockData
         {
             storeObject(users[userCnt]);
             storeObject(users[userCnt].getPerson());
-            AlertCon contact = new AlertCon();
-            contact.setUserID(users[userCnt].getUserID());
             addReportSchedules(accountID, users[userCnt]);
-            storeObject(contact);
         }
     }
     
     
 
-    private User createUser(Integer id, Integer accountID, Integer groupID, String username, String password, String homePhone, String workPhone, String email, Role role,
+    private User createUser(Integer id, Integer accountID, Integer groupID, String username, String password, String priPhone, String secPhone, String email, Role role,
             Boolean active)
     {
         User user = new User();
@@ -415,9 +411,9 @@ public class MockData
         user.setPerson(new Person());
         user.getPerson().setPersonID(id);
         user.getPerson().setEmpid(String.valueOf(id));
-        user.getPerson().setHomePhone(homePhone);
-        user.getPerson().setWorkPhone(workPhone);
-        user.getPerson().setEmail(email);
+        user.getPerson().setPriPhone(priPhone);
+        user.getPerson().setSecPhone(secPhone);
+        user.getPerson().setPriEmail(email);
         user.getPerson().setFirst(username.substring(0, username.length() / 2));
         user.getPerson().setLast(username.substring(username.length() / 2));
         user.getPerson().setUser(user);
@@ -939,7 +935,7 @@ public class MockData
                 final ArrayList<String> emailTo = new ArrayList<String>();
                 for (final Object person : people)
                     if (randomInt(0, 5) == 0)
-                        emailTo.add(((Person) person).getEmail());
+                        emailTo.add(((Person) person).getPriEmail());
                 alert.setEmailTo(emailTo);
             }
 
@@ -1048,7 +1044,7 @@ public class MockData
                 final ArrayList<String> emailTo = new ArrayList<String>();
                 for (final Object person : people)
                     if (randomInt(0, 5) == 0)
-                        emailTo.add(((Person) person).getEmail());
+                        emailTo.add(((Person) person).getPriEmail());
                 flag.setEmailTo(emailTo);
             }
 
@@ -1126,9 +1122,9 @@ public class MockData
         person.setPersonID(id);
         person.setFirst(first);
         person.setLast(last);
-        person.setHomePhone(randomPhone());
-        person.setWorkPhone(randomPhone());
-        person.setEmail(first.toLowerCase() + '.' + last.toLowerCase() + "@email.com");
+        person.setPriPhone(randomPhone());
+        person.setSecPhone(randomPhone());
+        person.setPriEmail(first.toLowerCase() + '.' + last.toLowerCase() + "@email.com");
         person.setTimeZone(MockTimeZones.getRandomTimezone());
         Driver driver = new Driver();
         driver.setDriverID(id);

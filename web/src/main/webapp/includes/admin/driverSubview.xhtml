@@ -132,21 +132,34 @@
 						value="#{messages.editPerson_address_zip}" /></td>
 					<td><h:outputText value="#{driver.person.address.zip}" /></td>
 				</tr>
-				<tr>
-					<td width="100"><h:outputText
-						value="#{messages.editPerson_homePhone }" /></td>
-					<td><h:outputText value="#{driver.person.homePhone}" /></td>
-				</tr>
-				<tr>
-					<td width="100"><h:outputText
-						value="#{messages.editPerson_workPhone}" /></td>
-					<td><h:outputText value="#{driver.person.workPhone}" /></td>
-				</tr>
-				<tr>
-					<td width="100"><h:outputText
-						value="#{messages.editPerson_email}" /></td>
-					<td><h:outputText value="#{driver.person.email}" /></td>
-				</tr>
+                <tr>
+                  <td width="100"><h:outputText value="#{messages.editPerson_priPhone }" /></td>
+                  <td><h:outputText value="#{driver.person.priPhone}" /></td>
+                </tr>
+                <tr>
+                  <td width="100"><h:outputText value="#{messages.editPerson_secPhone}" /></td>
+                  <td><h:outputText value="#{driver.person.secPhone}" /></td>
+                </tr>
+                <tr>
+                  <td width="100"><h:outputText value="#{messages.editPerson_cellPhone}" /></td>
+                  <td><h:outputText value="#{driver.person.cellPhone}" /></td>
+                </tr>
+                <tr>
+                  <td width="100"><h:outputText value="#{messages.editPerson_priEmail}" /></td>
+                  <td><a href="mailto:#{driver.person.priEmail}"><h:outputText value="#{driver.person.priEmail}" /></a></td>
+                </tr>
+                <tr>
+                  <td width="100"><h:outputText value="#{messages.editPerson_secEmail}" /></td>
+                  <td><a href="mailto:#{driver.person.secEmail}"><h:outputText value="#{driver.person.secEmail}" /></a></td>
+                </tr>
+                <tr>
+                  <td width="100"><h:outputText value="#{messages.editPerson_priText}" /></td>
+                  <td><h:outputText value="#{driver.person.priText}" /></td>
+                </tr>
+                <tr>
+                  <td width="100"><h:outputText value="#{messages.editPerson_secText}" /></td>
+                  <td><h:outputText value="#{driver.person.secText}" /></td>
+                </tr>
 			</table>
 
 			<div class="spacer"></div>

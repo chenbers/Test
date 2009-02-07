@@ -42,17 +42,48 @@
       <f:facet name="header"><h:outputText value="#{messages.personHeader_user_role}" /></f:facet>
       <h:outputText value="#{item.user.role.name}" />
     </rich:column>
-    <rich:column rendered="#{personBean.tableColumns['workPhone'].visible}" sortBy="#{item.workPhone}">
-      <f:facet name="header"><h:outputText value="#{messages.personHeader_workPhone}" /></f:facet>
-      <h:outputText value="#{item.workPhone}" />
+    <rich:column rendered="#{personBean.tableColumns['priPhone'].visible}" sortBy="#{item.priPhone}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_priPhone}" /></f:facet>
+      <h:outputText value="#{item.priPhone}" />
     </rich:column>
-    <rich:column rendered="#{personBean.tableColumns['homePhone'].visible}" sortBy="#{item.homePhone}">
-      <f:facet name="header"><h:outputText value="#{messages.personHeader_homePhone}" /></f:facet>
-      <h:outputText value="#{item.homePhone}" />
+    <rich:column rendered="#{personBean.tableColumns['secPhone'].visible}" sortBy="#{item.secPhone}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_secPhone}" /></f:facet>
+      <h:outputText value="#{item.secPhone}" />
     </rich:column>
-    <rich:column rendered="#{personBean.tableColumns['email'].visible}" sortBy="#{item.email}">
-      <f:facet name="header"><h:outputText value="#{messages.personHeader_email}" /></f:facet>
-      <a href="mailto:#{item.email}"><h:outputText value="#{item.email}" /></a>
+    <rich:column rendered="#{personBean.tableColumns['cellPhone'].visible}" sortBy="#{item.cellPhone}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_cellPhone}" /></f:facet>
+      <h:outputText value="#{item.cellPhone}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.tableColumns['priEmail'].visible}" sortBy="#{item.priEmail}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_priEmail}" /></f:facet>
+      <a href="mailto:#{item.priEmail}"><h:outputText value="#{item.priEmail}" /></a>
+    </rich:column>
+    <rich:column rendered="#{personBean.tableColumns['secEmail'].visible}" sortBy="#{item.secEmail}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_secEmail}" /></f:facet>
+      <a href="mailto:#{item.secEmail}"><h:outputText value="#{item.secEmail}" /></a>
+    </rich:column>
+    <rich:column rendered="#{personBean.tableColumns['priText'].visible}" sortBy="#{item.priText}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_priText}" /></f:facet>
+      <h:outputText value="#{item.priText}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.tableColumns['secText'].visible}" sortBy="#{item.secText}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_secText}" /></f:facet>
+      <h:outputText value="#{item.secText}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.tableColumns['info'].visible}" sortBy="#{item.info}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_info}" /></f:facet>
+      <c:set var="alertText" value="myAccount_alertText#{item.info}" />
+      <h:outputText value="#{messages[alertText]}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.tableColumns['warn'].visible}" sortBy="#{item.warn}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_warn}" /></f:facet>
+      <c:set var="alertText" value="myAccount_alertText#{item.warn}" />
+      <h:outputText value="#{messages[alertText]}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.tableColumns['crit'].visible}" sortBy="#{item.crit}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_crit}" /></f:facet>
+      <c:set var="alertText" value="myAccount_alertText#{item.crit}" />
+      <h:outputText value="#{messages[alertText]}" />
     </rich:column>
     <rich:column rendered="#{personBean.tableColumns['timeZone'].visible}" sortBy="#{item.timeZone.displayName}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_timeZone}" /></f:facet>
@@ -73,7 +104,7 @@
     <rich:column rendered="#{personBean.tableColumns['dob'].visible}" sortBy="#{item.dob}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_dob}" /></f:facet>
       <h:outputText value="#{item.dob}">
-        <f:convertDateTime dateStyle="long" timeZone="UTC" />
+        <f:convertDateTime pattern="MMM d, yyyy" timeZone="UTC" />
       </h:outputText>
     </rich:column>
     <rich:column rendered="#{personBean.tableColumns['gender'].visible}" sortBy="#{item.gender}">
@@ -132,7 +163,7 @@
     <rich:column rendered="#{personBean.tableColumns['driver_expiration'].visible}" sortBy="#{item.driver.expiration}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_expiration}" /></f:facet>
       <h:outputText value="#{item.driver.expiration}">
-        <f:convertDateTime dateStyle="long" timeZone="UTC" />
+        <f:convertDateTime pattern="MMM d, yyyy" timeZone="UTC" />
       </h:outputText>
     </rich:column>
     <rich:column rendered="#{personBean.tableColumns['driver_certifications'].visible}" sortBy="#{item.driver.certifications}">

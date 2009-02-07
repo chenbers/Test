@@ -6,17 +6,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
-import org.springframework.context.MessageSource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -39,7 +35,6 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 	private static final Logger logger = Logger.getLogger(SpeedLimitChangeRequestBean.class);
 
     private NavigationBean 			navigation;
-    private MessageSource  			messageSource;
     private GenericDataAccess 		teenServerDAO; //From teenserverDAO
     private int 					sbsUserId;
     private String 					sbsUserName;
@@ -84,7 +79,7 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 		lat =360;
 		lng = 360;
 		caption = MessageUtil.getMessageString("sbs_caption_select");
-		emailAddress = getUser().getPerson().getEmail();
+		emailAddress = getUser().getPerson().getPriEmail();
 		message = MessageUtil.getMessageString("sbs_emailIntro");
 		requestSent = false;
 		success = false;
@@ -341,13 +336,13 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 			}
 			else {
 				logger.debug("saveRequest: User not found.");
-				message =MessageUtil.getMessageString("sbs_caption_error");;
+				message =MessageUtil.getMessageString("sbs_caption_error");
 			}
 				
 		}
 		else {
 			logger.debug("saveRequest: changeRequest not complete.");
-			message =MessageUtil.getMessageString("sbs_caption_error");;
+			message =MessageUtil.getMessageString("sbs_caption_error");
 		}
 	}
 
@@ -425,11 +420,6 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 	public void setCaption(String caption) {
 		this.caption = caption;
 	}
-
-    public void setMessageSource(MessageSource messageSource)
-    {
-        this.messageSource = messageSource;
-    }
     
     public String resetAction(){
     	    	

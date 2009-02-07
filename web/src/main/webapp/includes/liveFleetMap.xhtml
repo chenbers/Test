@@ -55,10 +55,10 @@
 							<f:setPropertyActionListener value="#{driverLocation.driver.driverID}" target="#{driverLocationBean.selectedDriverID}" />
 						</h:commandLink>
 					</f:facet>
-					<h:outputText value="#{messages.livefleet_work}:"/>
-					<h:outputText value="#{driverLocation.driver.person.workPhone}" converter="PhoneNumberConverter" />
-					<h:outputText value="#{messages.livefleet_home}:"/>
-					<h:outputText value="#{driverLocation.driver.person.homePhone}" converter="PhoneNumberConverter" />
+					<h:outputText value="#{messages.livefleet_priPhone}:"/>
+					<h:outputText value="#{driverLocation.driver.person.priPhone}" converter="PhoneNumberConverter" />
+					<h:outputText value="#{messages.livefleet_secPhone}:"/>
+					<h:outputText value="#{driverLocation.driver.person.secPhone}" converter="PhoneNumberConverter" />
 					<h:outputText value="#{messages.livefleet_vehicle}:"/>					
 					<h:commandLink action="#{driverLocationBean.vehicleDetailAction}" value="#{driverLocation.vehicle.fullName}">
  						<f:setPropertyActionListener value="#{driverLocation.vehicle.vehicleID}" target="#{driverLocationBean.selectedVehicleID}" />

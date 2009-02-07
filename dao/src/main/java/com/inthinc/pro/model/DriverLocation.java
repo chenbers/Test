@@ -13,8 +13,8 @@ public class DriverLocation
     @Column(name = "vType")
     private VehicleType vehicleType;     // 0=light, 1-medium, 2-heavy  - TODO: This field is not being returned from the backend
     private String name;                 // person.first " " person.last
-    private String homePhone;            // person.homePhone
-    private String workPhone;            // person.workPhone
+    private String priPhone;             // person.priPhone
+    private String secPhone;             // person.secPhone
     private LatLng loc;                  // last location of driver
     private Date time;
     private String addressStr;
@@ -60,21 +60,21 @@ public class DriverLocation
     {
         this.name = name;
     }
-    public String getHomePhone()
+    public String getPriPhone()
     {
-        return homePhone;
+        return priPhone;
     }
-    public void setHomePhone(String homePhone)
+    public void setPriPhone(String homePhone)
     {
-        this.homePhone = homePhone;
+        this.priPhone = homePhone;
     }
-    public String getWorkPhone()
+    public String getSecPhone()
     {
-        return workPhone;
+        return secPhone;
     }
-    public void setWorkPhone(String workPhone)
+    public void setSecPhone(String workPhone)
     {
-        this.workPhone = workPhone;
+        this.secPhone = workPhone;
     }
     public LatLng getLoc()
     {

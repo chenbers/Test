@@ -76,7 +76,7 @@
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_dob}" /></td>
-                            <td><h:outputText value="#{personBean.item.dob}"><f:convertDateTime dateStyle="long" timeZone="UTC" /></h:outputText></td>
+                            <td><h:outputText value="#{personBean.item.dob}"><f:convertDateTime pattern="MMM d, yyyy" timeZone="UTC" /></h:outputText></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_gender}" /></td>
@@ -125,22 +125,63 @@
                             <td><h:outputText value="#{personBean.item.address.zip}" /></td>
                           </tr>
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_homePhone }" /></td>
-                            <td><h:outputText value="#{personBean.item.homePhone}" /></td>
+                            <td width="100"><h:outputText value="#{messages.editPerson_priPhone }" /></td>
+                            <td><h:outputText value="#{personBean.item.priPhone}" /></td>
                           </tr>
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_workPhone}" /></td>
-                            <td><h:outputText value="#{personBean.item.workPhone}" /></td>
+                            <td width="100"><h:outputText value="#{messages.editPerson_secPhone}" /></td>
+                            <td><h:outputText value="#{personBean.item.secPhone}" /></td>
                           </tr>
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_email}" /></td>
-                            <td><h:outputText value="#{personBean.item.email}" /></td>
+                            <td width="100"><h:outputText value="#{messages.editPerson_cellPhone}" /></td>
+                            <td><h:outputText value="#{personBean.item.cellPhone}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_priEmail}" /></td>
+                            <td><a href="mailto:#{personBean.item.priEmail}"><h:outputText value="#{personBean.item.priEmail}" /></a></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_secEmail}" /></td>
+                            <td><a href="mailto:#{personBean.item.secEmail}"><h:outputText value="#{personBean.item.secEmail}" /></a></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_priText}" /></td>
+                            <td><h:outputText value="#{personBean.item.priText}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_secText}" /></td>
+                            <td><h:outputText value="#{personBean.item.secText}" /></td>
                           </tr>
                         </table>
 
                       </td>
                       <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
                       <td width="390" valign="top">
+
+                        <div class="add_section_title"><h:outputText value="#{messages.editPerson_notifications}" /></div>
+
+                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                          <tr>
+                            <td width="16"><h:graphicImage value="/images/ico_info.png" width="16" height="16" /></td>
+                            <td width="74"><h:outputText value="#{messages.myAccount_information}" /></td>
+                            <c:set var="alertText" value="myAccount_alertText#{personBean.item.info}" />
+                            <td><h:outputText value="#{messages[alertText]}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="16"><h:graphicImage value="/images/ico_warning.png" width="16" height="16" /></td>
+                            <td width="74"><h:outputText value="#{messages.myAccount_warning}" /></td>
+                            <c:set var="alertText" value="myAccount_alertText#{personBean.item.warn}" />
+                            <td><h:outputText value="#{messages[alertText]}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="16"><h:graphicImage value="/images/ico_critical.png" width="16" height="16" /></td>
+                            <td width="74"><h:outputText value="#{messages.myAccount_critical}" /></td>
+                            <c:set var="alertText" value="myAccount_alertText#{personBean.item.crit}" />
+                            <td><h:outputText value="#{messages[alertText]}" /></td>
+                          </tr>
+                        </table>
+
+                        <div class="spacer"></div>
 
                         <div class="add_section_title"><h:outputText value="#{messages.editPerson_employeeInformation}" /></div>
 
@@ -207,7 +248,7 @@
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_expiration}" /></td>
-                            <td><h:outputText value="#{personBean.item.driver.expiration}"><f:convertDateTime dateStyle="long" timeZone="UTC" /></h:outputText></td>
+                            <td><h:outputText value="#{personBean.item.driver.expiration}"><f:convertDateTime pattern="MMM d, yyyy" timeZone="UTC" /></h:outputText></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_certifications}" /></td>

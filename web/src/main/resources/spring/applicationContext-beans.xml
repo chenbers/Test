@@ -252,8 +252,7 @@
         <property name="passwordEncryptor" ref="jasyptPasswordEncryptor"></property>
     </bean>
     <bean id="myAccountBean" class="com.inthinc.pro.backing.MyAccountBean" scope="session" parent="baseBean">
-        <property name="alertContactDAO" ref="alertContactDAO" />
-        <property name="groupDAO" ref="groupDAO"></property>
+        <property name="personDAO" ref="personDAO" />
         <property name="driverDAO" ref="driverDAO"></property>
     </bean>
 

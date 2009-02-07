@@ -54,7 +54,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private static final long                  serialVersionUID       = 1L;
 
     private static final List<String>          AVAILABLE_COLUMNS;
-    private static final int[]                 DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 6, 18 };
+    private static final int[]                 DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 13, 24 };
 
     private static final Map<String, Gender>   GENDERS;
     private static final Map<String, Integer>  HEIGHTS;
@@ -69,6 +69,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private static final Map<String, String>   LICENSE_CLASSES;
     private static final Map<String, State>    STATES;
     private static final Map<String, Status>   STATUSES;
+    private static final Map<String, Integer> ALERT_OPTIONS;
 
     static
     {
@@ -76,9 +77,16 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         AVAILABLE_COLUMNS = new ArrayList<String>();
         AVAILABLE_COLUMNS.add("empid");
         AVAILABLE_COLUMNS.add("fullName");
-        AVAILABLE_COLUMNS.add("workPhone");
-        AVAILABLE_COLUMNS.add("homePhone");
-        AVAILABLE_COLUMNS.add("email");
+        AVAILABLE_COLUMNS.add("priPhone");
+        AVAILABLE_COLUMNS.add("secPhone");
+        AVAILABLE_COLUMNS.add("cellPhone");
+        AVAILABLE_COLUMNS.add("priEmail");
+        AVAILABLE_COLUMNS.add("secEmail");
+        AVAILABLE_COLUMNS.add("priText");
+        AVAILABLE_COLUMNS.add("secText");
+        AVAILABLE_COLUMNS.add("info");
+        AVAILABLE_COLUMNS.add("warn");
+        AVAILABLE_COLUMNS.add("crit");
         AVAILABLE_COLUMNS.add("timeZone");
         AVAILABLE_COLUMNS.add("reportsTo");
         AVAILABLE_COLUMNS.add("title");
@@ -165,6 +173,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         STATUSES.put(MessageUtil.getMessageString("status" + Status.ACTIVE.getCode()), Status.ACTIVE);
         STATUSES.put(MessageUtil.getMessageString("status" + Status.INACTIVE.getCode()), Status.INACTIVE);
 
+        // alert options
+        ALERT_OPTIONS = new LinkedHashMap<String, Integer>();
+        for (int i = 0; i < 8; i++)
+            ALERT_OPTIONS.put(MessageUtil.getMessageString("myAccount_alertText" + i), i);
     }
 
     private PersonDAO                          personDAO;
@@ -287,6 +299,27 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 return person.getTimeZone().getDisplayName();
             return null;
         }
+        else if (column.equals("info"))
+        {
+            Integer value = person.getInfo();
+            if (value == null)
+                value = 0;
+            return MessageUtil.getMessageString("myAccount_alertText" + value);
+        }
+        else if (column.equals("warn"))
+        {
+            Integer value = person.getWarn();
+            if (value == null)
+                value = 0;
+            return MessageUtil.getMessageString("myAccount_alertText" + value);
+        }
+        else if (column.equals("crit"))
+        {
+            Integer value = person.getCrit();
+            if (value == null)
+                value = 0;
+            return MessageUtil.getMessageString("myAccount_alertText" + value);
+        }
         else
             return super.fieldValue(person, column);
     }
@@ -329,6 +362,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         // TODO: maybe use the browser's time zone instead, if possible...
         person.setTimeZone(TimeZone.getDefault());
         person.setAddress(new Address());
+        person.getUser().setRole(Role.valueOf(2));  // normal user
         person.getUser().setPerson(person);
         person.setDriver(new Driver());
         person.setUserSelected(true);
@@ -408,11 +442,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
         for (final PersonView person : deleteItems)
         {
-            if (person.isUserSelected() && (person.getUser().getUserID() != null))
-                userDAO.deleteByID(person.getUser().getUserID());
-            if (person.isDriverSelected() && (person.getDriver().getDriverID() != null))
-                driverDAO.deleteByID(person.getDriver().getDriverID());
-            personDAO.deleteByID(person.getPersonID());
+            personDAO.delete(person);
 
             // add a message
             final String summary = MessageUtil.formatMessageString("person_deleted", person.getFirst(), person.getLast());
@@ -428,10 +458,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         final FacesContext context = FacesContext.getCurrentInstance();
         for (final PersonView person : saveItems)
         {
-            // unique e-mail
-            if (!isBatchEdit() && (person.getEmail() != null) && (person.getEmail().length() > 0))
+            // unique primary e-mail
+            if (!isBatchEdit() && (person.getPriEmail() != null) && (person.getPriEmail().length() > 0))
             {
-                final Person byEmail = personDAO.findByEmail(person.getEmail());
+                final Person byEmail = personDAO.findByEmail(person.getPriEmail());
                 if ((byEmail != null) && !byEmail.getPersonID().equals(person.getPersonID()))
                 {
                     valid = false;
@@ -616,6 +646,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         return WEIGHTS;
     }
 
+    public Map<String, Integer> getAlertOptions()
+    {
+        return ALERT_OPTIONS;
+    }
+
     public List<String> findPeople(Object event)
     {
         final List<String> results = new ArrayList<String>();
@@ -732,27 +767,39 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         }
 
         @Override
-        public String getHomePhone()
+        public String getPriPhone()
         {
-            return MiscUtil.formatPhone(super.getHomePhone());
+            return MiscUtil.formatPhone(super.getPriPhone());
         }
 
         @Override
-        public String getWorkPhone()
+        public void setPriPhone(String priPhone)
         {
-            return MiscUtil.formatPhone(super.getWorkPhone());
+            super.setPriPhone(MiscUtil.unformatPhone(priPhone));
         }
 
         @Override
-        public void setHomePhone(String homePhone)
+        public String getSecPhone()
         {
-            super.setHomePhone(MiscUtil.unformatPhone(homePhone));
+            return MiscUtil.formatPhone(super.getSecPhone());
         }
 
         @Override
-        public void setWorkPhone(String workPhone)
+        public void setSecPhone(String secPhone)
         {
-            super.setWorkPhone(MiscUtil.unformatPhone(workPhone));
+            super.setSecPhone(MiscUtil.unformatPhone(secPhone));
+        }
+
+        @Override
+        public String getCellPhone()
+        {
+            return MiscUtil.formatPhone(super.getCellPhone());
+        }
+
+        @Override
+        public void setCellPhone(String cellPhone)
+        {
+            super.setCellPhone(MiscUtil.unformatPhone(cellPhone));
         }
 
         public Group getGroup()

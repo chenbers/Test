@@ -24,7 +24,6 @@ import com.inthinc.pro.dao.mock.data.SearchCriteria;
 import com.inthinc.pro.dao.mock.data.TempConversionUtil;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
-import com.inthinc.pro.model.AlertCon;
 import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.Device;
@@ -95,29 +94,10 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
-    public Map<String, Object> createAlertCon(Integer acctID, Map<String, Object> propertyMap) throws ProDAOException
-    {
-        // TODO: actually store the object to the mock data
-        return createReturnValue("userID", (int) (Math.random() * Integer.MAX_VALUE));
-    }
-
-    @Override
-    public Map<String, Object> getAlertCon(Integer userID) throws ProDAOException
-    {
-        return doMockLookup(AlertCon.class, "userID", userID, "No alert contact for ID: " + userID, "getAlertContact");
-    }
-
-    @Override
-    public Map<String, Object> updateAlertCon(Integer userID, Map<String, Object> propertyMap) throws ProDAOException
-    {
-        return createReturnValue("count", 1);
-    }
-    
-    @Override
     public Map<String, Object> getID(String name, String value) throws ProDAOException
     {
         Map<String, Object> returnMap = null;
-        if (name.equals("email"))
+        if (name.equals("priEmail"))
         {
             Person person = MockData.getInstance().lookupObject(Person.class, name, value);
             if (person != null)
@@ -710,8 +690,8 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
             DriverLocation dl = new DriverLocation();
             dl.setDriverID(driver.getDriverID());
             dl.setGroupID(driver.getGroupID());
-            dl.setHomePhone(driver.getPerson().getHomePhone());
-            dl.setWorkPhone(driver.getPerson().getWorkPhone());
+            dl.setPriPhone(driver.getPerson().getPriPhone());
+            dl.setSecPhone(driver.getPerson().getSecPhone());
             dl.setName(driver.getPerson().getFirst() + " " + driver.getPerson().getLast());
             dl.setVehicleType(VehicleType.MEDIUM);
             

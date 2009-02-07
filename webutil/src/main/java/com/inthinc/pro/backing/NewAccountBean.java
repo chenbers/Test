@@ -14,13 +14,13 @@ import com.inthinc.pro.dao.hessian.exceptions.DuplicateEmailException;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateUsernameException;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
-import com.inthinc.pro.model.GroupType;
-import com.inthinc.pro.model.LatLng;
-import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Gender;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupType;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Role;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.app.Roles;
 
@@ -65,8 +65,7 @@ public class NewAccountBean
         Integer groupID = groupDAO.create(acctID, topGroup);
         
         // create the person record for the superuser
-        Person person = new Person(new Integer(0),acctID,  TimeZone.getDefault(), null, null, "5555555555", "5555555555", 
-                        email, "0", null, "title", "dept",
+        Person person = new Person(new Integer(0),acctID,  TimeZone.getDefault(), null, null, email, null, "5555555555", "5555555555", null, null, null, null, null, null, "0", null, "title", "dept",
                         "first", "m", "last", "jr", Gender.FEMALE, 65, 180, new Date(), Status.ACTIVE);
         person.setAddress(new Address(null, "", null, "", null, ""));
         Integer personID = null;
@@ -83,7 +82,7 @@ public class NewAccountBean
             
             return;
         }
-        
+
         // create the superuser
         User user = new User(0, person.getPersonID(), getSuperUserRole(), Status.ACTIVE, getUsername(), PASSWORD, groupID);
         Integer userID = null;

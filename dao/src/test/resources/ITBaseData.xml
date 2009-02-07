@@ -216,9 +216,6 @@
     </void> 
    </object> 
   </void> 
-  <void property="email"> 
-   <string>email292@email.com</string> 
-  </void> 
   <void property="empid"> 
    <string>emp292</string> 
   </void> 
@@ -232,9 +229,6 @@
   </void> 
   <void property="height"> 
    <int>65</int> 
-  </void> 
-  <void property="homePhone"> 
-   <string>5555555555</string> 
   </void> 
   <void property="last"> 
    <string>last292</string> 
@@ -299,11 +293,6 @@
   <void property="weight"> 
    <int>180</int> 
   </void> 
-  <void property="workPhone"> 
-   <string>5555555555</string> 
-  </void> 
- </object> 
- <object class="com.inthinc.pro.model.AlertCon"> 
   <void property="cellPhone"> 
    <string>8015553333</string> 
   </void> 
@@ -330,9 +319,6 @@
   </void> 
   <void property="secText"> 
    <string>8015555555</string> 
-  </void> 
-  <void property="userID"> 
-   <int>420</int> 
   </void> 
   <void property="warn"> 
    <int>1</int> 

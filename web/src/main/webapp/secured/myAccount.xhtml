@@ -5,7 +5,8 @@
   				xmlns:rich="http://richfaces.org/rich"
   				xmlns:a4j="http://richfaces.org/a4j"
   				xmlns:iwi="http://pro.tiwi.com/jsf"
-  				xmlns:f="http://java.sun.com/jsf/core">
+  				xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jstl/core">
   
   <ui:param name="helpFile" value="My_Account.htm" />
   <ui:define name="content">
@@ -48,7 +49,7 @@
                             <tbody>
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.myAccount_name}" /></td>
-                                <td><h:outputText value="#{myAccountBean.fullName}"/></td>
+                                <td><h:outputText value="#{myAccountBean.user.person.fullName}"/></td>
                               </tr>
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.myAccount_region}" /></td>
@@ -111,17 +112,20 @@
                     <tr>
                       <td width="16"><h:graphicImage value="/images/ico_info.png" width="16" height="16" /></td>
                       <td width="76"><h:outputText value="#{messages.myAccount_information}" /></td>
-                      <td><h:outputText value="#{myAccountBean.infoText}" /></td>
+                      <c:set var="alertText" value="myAccount_alertText#{myAccountBean.user.person.info}" />
+                      <td><h:outputText value="#{messages[alertText]}" /></td>
                     </tr>
                     <tr>
                       <td width="16"><h:graphicImage value="/images/ico_warning.png" width="16" height="16"/></td>
                       <td width="76"><h:outputText value="#{messages.myAccount_warning}" /></td>
-                      <td><h:outputText value="#{myAccountBean.warnText}" /></td>
+                      <c:set var="alertText" value="myAccount_alertText#{myAccountBean.user.person.warn}" />
+                      <td><h:outputText value="#{messages[alertText]}" /></td>
                     </tr>
                     <tr>
                       <td width="16"><h:graphicImage value="/images/ico_critical.png" width="16" height="16"/></td>
                       <td width="76"><h:outputText value="#{messages.myAccount_critical}" /></td>
-                      <td><h:outputText value="#{myAccountBean.critText}" /></td>
+                      <c:set var="alertText" value="myAccount_alertText#{myAccountBean.user.person.crit}" />
+                      <td><h:outputText value="#{messages[alertText]}" /></td>
                     </tr>
                   </tbody>
                 </table>
@@ -153,11 +157,11 @@
                     <tbody>
                       <tr>
                         <td width="100"><h:outputText value="#{messages.myAccount_primary}" /></td>
-                        <td><h:outputText value="#{myAccountBean.alertContact.priEmail}" /></td>
+                        <td><h:outputText value="#{myAccountBean.user.person.priEmail}" /></td>
                       </tr>
                       <tr>
                         <td width="100"><h:outputText value="#{messages.myAccount_secondary}" /></td>
-                        <td><h:outputText value="#{myAccountBean.alertContact.secEmail}"/></td>
+                        <td><h:outputText value="#{myAccountBean.user.person.secEmail}"/></td>
                       </tr>
                     </tbody>
                   </table>
@@ -167,15 +171,15 @@
                     <tbody>
                       <tr>
                         <td width="100"><h:outputText value="#{messages.myAccount_primary}" /></td>
-                        <td><h:outputText value="#{myAccountBean.alertContact.priPhone}"/></td>
+                        <td><h:outputText value="#{myAccountBean.user.person.priPhone}"/></td>
                       </tr>
                       <tr>
                         <td width="100"><h:outputText value="#{messages.myAccount_secondary}" /></td>
-                        <td><h:outputText value="#{myAccountBean.alertContact.secPhone}"/></td>
+                        <td><h:outputText value="#{myAccountBean.user.person.secPhone}"/></td>
                       </tr>
                       <tr>
                         <td width="100"><h:outputText value="#{messages.myAccount_cell}" /></td>
-                        <td><h:outputText value="#{myAccountBean.alertContact.cellPhone}"/></td>
+                        <td><h:outputText value="#{myAccountBean.user.person.cellPhone}"/></td>
                       </tr>
                     </tbody>
                   </table>
@@ -185,11 +189,11 @@
                     <tbody>
                       <tr>
                         <td width="100"><h:outputText value="#{messages.myAccount_primary}" /></td>
-                        <td><h:outputText value="#{myAccountBean.alertContact.priText}"/></td>
+                        <td><h:outputText value="#{myAccountBean.user.person.priText}"/></td>
                       </tr>
                       <tr>
                         <td width="100"><h:outputText value="#{messages.myAccount_secondary}" /></td>
-                        <td><h:outputText value="#{myAccountBean.alertContact.secText}"/></td>
+                        <td><h:outputText value="#{myAccountBean.user.person.secText}"/></td>
                       </tr>
                     </tbody>
                   </table>

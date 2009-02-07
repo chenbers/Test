@@ -19,7 +19,7 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
 {
     private static final Logger logger         = Logger.getLogger(PersonHessianDAO.class);
 
-    private static final String CENTRAL_ID_KEY = "email";
+    private static final String CENTRAL_ID_KEY = "priEmail";
 
     @Override
     public Integer create(Integer acctID, Person person)
@@ -244,5 +244,16 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
     public Person findByKey(String key)
     {
         return findByEmail(key);
+    }
+
+    @Override
+    public Integer delete(Person person)
+    {
+        if ((person.getUser() != null) && (person.getUser().getUserID() != null))
+            getSiloService().deleteUser(person.getUser().getUserID());
+        if ((person.getDriver() != null) && (person.getDriver().getDriverID() != null))
+            getSiloService().deleteDriver(person.getDriver().getDriverID());
+
+        return super.deleteByID(person.getPersonID());
     }
 }

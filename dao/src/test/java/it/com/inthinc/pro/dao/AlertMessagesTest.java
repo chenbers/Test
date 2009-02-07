@@ -4,26 +4,23 @@ package it.com.inthinc.pro.dao;
 // The tests in this file  can fail sporadically when the scheduler is running on the same
 // server that is is hitting (usually dev).  If this becomes a problem, we can mark them as Ignore.  
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import it.config.IntegrationConfig;
+import it.util.EventGenerator;
+import it.util.MCMSimulator;
 
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
-
-import it.config.IntegrationConfig;
-import it.util.EventGenerator;
-import it.util.MCMSimulator;
 
 import org.apache.log4j.Logger;
 import org.junit.AfterClass;
@@ -32,7 +29,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
-import com.inthinc.pro.dao.hessian.AlertContactHessianDAO;
 import com.inthinc.pro.dao.hessian.AlertMessageHessianDAO;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.GroupHessianDAO;
@@ -50,7 +46,6 @@ import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
-import com.inthinc.pro.model.AlertCon;
 import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.Device;
@@ -100,7 +95,6 @@ public class AlertMessagesTest
     private static Zone zone;
     private static ZoneAlert zoneAlert;
     private static RedFlagAlert redFlagAlert;
-    private static AlertCon contact;
     private static String IMEI;
     private static Integer zoneID;
 
@@ -279,7 +273,6 @@ public class AlertMessagesTest
             xml.writeObject(regionGroup);
             xml.writeObject(team1Group);
             xml.writeObject(person);
-            xml.writeObject(contact);
             xml.writeObject(device);
             xml.writeObject(vehicle);
             xml.writeObject(zone);
@@ -310,7 +303,6 @@ public class AlertMessagesTest
             regionGroup  = getNext(xml, Group.class);
             team1Group  = getNext(xml, Group.class);
             person = getNext(xml, Person.class);
-            contact = getNext(xml, AlertCon.class);
             device = getNext(xml, Device.class);
             vehicle = getNext(xml, Vehicle.class);
             zone = getNext(xml, Zone.class);
@@ -411,8 +403,7 @@ public class AlertMessagesTest
                 randomState(), "ABCD", expired, null, null, groupID);
         User user = new User(0, 0, randomRole(), Status.ACTIVE, "deepuser_"+groupID, PASSWORD, groupID);
         Date dob = Util.genDate(1959, 8, 30);
-        person = new Person(0, acctID, TimeZone.getTimeZone(SupportedTimeZones.getSupportedTimeZones().get(0)), null, address.getAddrID(), "5555555555", "5555555555", 
-                "email"+groupID+"@email.com",
+        person = new Person(0, acctID, TimeZone.getTimeZone(SupportedTimeZones.getSupportedTimeZones().get(0)), null, address.getAddrID(), "email"+groupID+"@email.com", "secEmail@test.com", "8015551111", "8015552222", "8015553333", "8015554444@texter.com", "8015555555@texter.com", 1, 1, 1, 
                 "emp"+groupID, null, "title"+groupID, "dept" + groupID, "first"+groupID, "m"+groupID, "last"+groupID, "jr", Gender.MALE, 65, 180, 
                 dob, Status.ACTIVE);
         person.setUser(user);
@@ -425,23 +416,6 @@ public class AlertMessagesTest
         logger.debug("PERSON ID: " + personID);
         logger.debug("DRIVER ID: " + person.getDriver().getDriverID());
 
-        AlertContactHessianDAO alertContactDAO = new AlertContactHessianDAO();
-        alertContactDAO.setSiloService(siloService);
-        
-        contact = new AlertCon();
-        contact.setUserID(user.getUserID());
-        contact.setPriEmail("priEmail@test.com");
-        contact.setSecEmail("secEmail@test.com");
-        contact.setPriPhone("8015551111");
-        contact.setSecPhone("8015552222");
-        contact.setCellPhone("8015553333");
-        contact.setPriText("8015554444");
-        contact.setSecText("8015555555");
-        contact.setInfo(1);
-        contact.setWarn(1);
-        contact.setCrit(1);
-        alertContactDAO.create(contact);
-        
         
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);

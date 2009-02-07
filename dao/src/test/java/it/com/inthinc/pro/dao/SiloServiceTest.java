@@ -23,7 +23,6 @@ import org.junit.Test;
 import com.inthinc.pro.dao.FindByKey;
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
 import com.inthinc.pro.dao.hessian.AddressHessianDAO;
-import com.inthinc.pro.dao.hessian.AlertContactHessianDAO;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.DriverHessianDAO;
 import com.inthinc.pro.dao.hessian.EventHessianDAO;
@@ -46,7 +45,6 @@ import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
-import com.inthinc.pro.model.AlertCon;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.Driver;
@@ -213,65 +211,6 @@ public class SiloServiceTest
 
         
         assertEquals("The sensitivity forward command mapping list should contain 4 items.", 4, fcList.size());
-    }
-    
-    @Test
-    public void alertContact()
-    {
-    	int id = 1111;
-    	AlertContactHessianDAO alertContactDAO = new AlertContactHessianDAO();
-    	alertContactDAO.setSiloService(siloService);
-    	
-    	AlertCon contact = new AlertCon();
-    	contact.setUserID(id);
-    	contact.setPriEmail("priEmail@test.com");
-    	contact.setSecEmail("secEmail@test.com");
-    	contact.setPriPhone("8015551111");
-    	contact.setSecPhone("8015552222");
-    	contact.setCellPhone("8015553333");
-    	contact.setPriText("8015554444");
-    	contact.setSecText("8015555555");
-    	contact.setInfo(1);
-    	contact.setWarn(2);
-    	contact.setCrit(3);
-    	if (alertContactDAO.findByID(id) == null)
-    	{
-	    	alertContactDAO.create(contact);
-    	}
-    	else
-    	{
-    		// this is only called if the database isn't cleared out between tests
-	    	alertContactDAO.update(contact);
-    	}
-
-    	contact = alertContactDAO.findByID(id);
-    	assertEquals(new Integer(id), contact.getUserID());
-    	assertEquals("priEmail@test.com", contact.getPriEmail());
-    	assertEquals("secEmail@test.com", contact.getSecEmail());
-    	assertEquals("8015551111", contact.getPriPhone());
-    	assertEquals("8015552222", contact.getSecPhone());
-    	assertEquals("8015553333", contact.getCellPhone());
-    	assertEquals("8015554444", contact.getPriText());
-    	assertEquals("8015555555", contact.getSecText());
-
-    	contact.setPriEmail("priEmail@test2.com");
-    	contact.setSecEmail("secEmail@test2.com");
-    	contact.setPriPhone("4355551111");
-    	contact.setSecPhone("4355552222");
-    	contact.setCellPhone("4355553333");
-    	contact.setPriText("4355554444");
-    	contact.setSecText("4355555555");
-    	alertContactDAO.update(contact);
-    	
-    	contact = alertContactDAO.findByID(id);
-    	assertEquals(new Integer(id), contact.getUserID());
-    	assertEquals("priEmail@test2.com", contact.getPriEmail());
-    	assertEquals("secEmail@test2.com", contact.getSecEmail());
-    	assertEquals("4355551111", contact.getPriPhone());
-    	assertEquals("4355552222", contact.getSecPhone());
-    	assertEquals("4355553333", contact.getCellPhone());
-    	assertEquals("4355554444", contact.getPriText());
-    	assertEquals("4355555555", contact.getSecText());
     }
     
     @Test
@@ -1206,8 +1145,7 @@ public class SiloServiceTest
         {
             Date dob = Util.genDate(1959, 8, 30);
             String email =  "email_"+groupID+"_"+i+"@yahoo.com";
-            Person person = new Person(0, acctID, TimeZone.getDefault(), null, address.getAddrID(), "555555555"+i, "555555555"+i, 
-                            email,
+            Person person = new Person(0, acctID, TimeZone.getDefault(), null, address.getAddrID(), email, null, "555555555" + i, "555555555" + i, null, null, null, null, null, null,
                             "emp"+i, null, "title"+i, "dept" + i, "first"+i, "m"+i, "last"+i, "jr", Gender.MALE, 65, 180, dob, Status.ACTIVE);
             User user = new User(0, 0, randomRole(), Status.ACTIVE, "user"+groupID+"_"+i, PASSWORD, groupID);
             person.setUser(user);
@@ -1381,8 +1319,6 @@ public class SiloServiceTest
         
         List<Person> groupPersonList = personDAO.getPeopleInGroupHierarchy(groupID);
         assertEquals("people count for group", Integer.valueOf(PERSON_COUNT), new Integer(groupPersonList.size()));
-
-        String ignoreFields[] = {"modified", "person"};
 
         // get all for group
         List<User> groupUserList = userDAO.getUsersInGroupHierarchy(groupID);
@@ -1617,8 +1553,7 @@ public class SiloServiceTest
                 randomState(), "ABCD", expired, null, null, groupID);
         User user = new User(0, 0, randomRole(), Status.ACTIVE, "deepuser_"+groupID, PASSWORD, groupID);
         Date dob = Util.genDate(1959, 8, 30);
-        Person person = new Person(0, acctID, TimeZone.getDefault(), null, address.getAddrID(), "5555555555", "5555555555", 
-                "email"+groupID+"@email.com",
+        Person person = new Person(0, acctID, TimeZone.getDefault(), null, address.getAddrID(), "priEmail" + groupID + "@test.com", "secEmail@test.com", "8015551111", "8015552222", "8015553333", "8015554444@texter.com", "8015555555@texter.com", 1, 2, 3,
                 "emp"+groupID, null, "title"+groupID, "dept" + groupID, "first"+groupID, "m"+groupID, "last"+groupID, "jr", Gender.MALE, 65, 180, 
                 dob, Status.ACTIVE);
         person.setUser(user);
@@ -1633,7 +1568,7 @@ public class SiloServiceTest
         assertNotNull("driverID not set", person.getDriver().getDriverID());
         assertNotNull("personID in user not set", person.getUser().getPersonID());
         assertNotNull("personID in driver not set", person.getDriver().getPersonID());
-        
+
         Person returnPerson = personDAO.findByID(personID);
         String[] ignoreFields = {"modified"};
         Util.compareObjects(person, returnPerson, ignoreFields);
@@ -1650,7 +1585,7 @@ public class SiloServiceTest
         // do these last to allow back end more time to update it's cache (can take up to 5 min)
         PersonHessianDAO personDAO = new PersonHessianDAO();
         personDAO.setSiloService(siloService);
-        findByKey(personDAO, personList.get(0), personList.get(0).getEmail(), new String[] {"modified", "address", "driver", "user"});
+        findByKey(personDAO, personList.get(0), personList.get(0).getPriEmail(), new String[] {"modified", "address", "driver", "user"});
         findByKeyExpectNoResult(personDAO, "BAD_EMAIL");
 
         UserHessianDAO userDAO = new UserHessianDAO();
@@ -1718,19 +1653,6 @@ public class SiloServiceTest
         {
             if (cnt++ == idx)
                 return state;
-        }
-        
-        return null;
-    }
-
-    private Integer randomStateID()
-    {
-        int idx = Util.randomInt(0, States.getStates().size()-1);
-        int cnt = 0;
-        for (State state : States.getStates().values())
-        {
-            if (cnt++ == idx)
-                return state.getStateID();
         }
         
         return null;

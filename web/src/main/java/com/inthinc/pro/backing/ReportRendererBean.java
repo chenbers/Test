@@ -11,7 +11,6 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
-import com.inthinc.pro.reports.Report;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.util.MessageUtil;
 
@@ -201,7 +200,7 @@ public class ReportRendererBean extends BaseBean
     public String getEmailAddress()
     {
         if(emailAddress == null){
-            emailAddress = getProUser().getUser().getPerson().getEmail();
+            emailAddress = getProUser().getUser().getPerson().getPriEmail();
         }
         return emailAddress;
     }

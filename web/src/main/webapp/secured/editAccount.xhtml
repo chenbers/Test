@@ -47,7 +47,7 @@
                               <tbody>
                                 <tr>
                                   <td width="100"><h:outputText value="#{messages.myAccount_name}" /></td>
-                                  <td><h:outputText value="#{myAccountBean.fullName}"/></td>
+                                  <td><h:outputText value="#{myAccountBean.user.person.fullName}"/></td>
                                 </tr>
                                 <tr>
                                   <td width="100"><h:outputText value="#{messages.myAccount_region}" /></td>
@@ -109,24 +109,8 @@
                         <td width="16"><h:graphicImage value="/images/ico_info.png" width="16" height="16" /></td>
                         <td width="76"><h:outputText value="#{messages.myAccount_information}" /></td>
                         <td>
-                          <h:selectOneMenu styleClass="text" id="informationSelectType" value="#{myAccountBean.informationSelectType}" onchange="refreshVisibility()">
-                            <f:selectItem itemLabel="None" itemValue="0"/>
-                            <f:selectItem itemLabel="Email" itemValue="1"/>
-                            <f:selectItem itemLabel="Phone" itemValue="2"/>
-                            <f:selectItem itemLabel="Text" itemValue="3"/>
-                          </h:selectOneMenu>
-                          <h:selectOneMenu styleClass="text" id="informationSelectEmail" value="#{myAccountBean.informationSelectEmail}" style="width:250px">
-                            <f:selectItem itemLabel="" itemValue="1"/> <!-- label set by calling refrehValues() -->
-                            <f:selectItem itemLabel="" itemValue="2"/>
-                          </h:selectOneMenu>
-                          <h:selectOneMenu styleClass="text" id="informationSelectPhone" value="#{myAccountBean.informationSelectPhone}" style="width:150px">
-                            <f:selectItem itemLabel="" itemValue="3"/>
-                            <f:selectItem itemLabel="" itemValue="4"/>
-                            <f:selectItem itemLabel="" itemValue="5"/>
-                          </h:selectOneMenu>
-                          <h:selectOneMenu styleClass="text" id="informationSelectText" value="#{myAccountBean.informationSelectText}" style="width:250px">
-                            <f:selectItem itemLabel="" itemValue="6"/>
-                            <f:selectItem itemLabel="" itemValue="7"/>
+                          <h:selectOneMenu value="#{myAccountBean.user.person.info}" id="info" style="width:250px">
+                            <f:selectItems value="#{myAccountBean.alertOptions}" />
                           </h:selectOneMenu>
                         </td>
                       </tr>
@@ -134,24 +118,8 @@
                         <td width="16"><h:graphicImage value="/images/ico_warning.png" width="16" height="16" /></td>
                         <td width="76"><h:outputText value="#{messages.myAccount_warning}" /></td>
                         <td>
-                          <h:selectOneMenu styleClass="text" id="warningSelectType" value="#{myAccountBean.warningSelectType}" onchange="refreshVisibility()">
-                            <f:selectItem itemLabel="None" itemValue="0"/>
-                            <f:selectItem itemLabel="Email" itemValue="1"/>
-                            <f:selectItem itemLabel="Phone" itemValue="2"/>
-                            <f:selectItem itemLabel="Text" itemValue="3"/>
-                          </h:selectOneMenu>
-                          <h:selectOneMenu styleClass="text" id="warningSelectEmail" value="#{myAccountBean.warningSelectEmail}" style="width:250px">
-                            <f:selectItem itemLabel="" itemValue="1"/> <!-- label set by calling refrehValues() -->
-                            <f:selectItem itemLabel="" itemValue="2"/>
-                          </h:selectOneMenu>
-                          <h:selectOneMenu styleClass="text" id="warningSelectPhone" value="#{myAccountBean.warningSelectPhone}" style="width:150px">
-                            <f:selectItem itemLabel="" itemValue="3"/>
-                            <f:selectItem itemLabel="" itemValue="4"/>
-                            <f:selectItem itemLabel="" itemValue="5"/>
-                          </h:selectOneMenu>
-                          <h:selectOneMenu styleClass="text" id="warningSelectText" value="#{myAccountBean.warningSelectText}" style="width:250px">
-                            <f:selectItem itemLabel="" itemValue="6"/>
-                            <f:selectItem itemLabel="" itemValue="7"/>
+                          <h:selectOneMenu value="#{myAccountBean.user.person.warn}" id="warn" style="width:250px">
+                            <f:selectItems value="#{myAccountBean.alertOptions}" />
                           </h:selectOneMenu>
                         </td>
                       </tr>
@@ -159,24 +127,8 @@
                         <td width="16"><h:graphicImage value="/images/ico_critical.png" width="16" height="16" /></td>
                         <td width="76"><h:outputText value="#{messages.myAccount_critical}" /></td>
                         <td>
-                          <h:selectOneMenu styleClass="text" id="criticalSelectType" value="#{myAccountBean.criticalSelectType}" onchange="refreshVisibility()">
-                            <f:selectItem itemLabel="None" itemValue="0"/>
-                            <f:selectItem itemLabel="Email" itemValue="1"/>
-                            <f:selectItem itemLabel="Phone" itemValue="2"/>
-                            <f:selectItem itemLabel="Text" itemValue="3"/>
-                          </h:selectOneMenu>
-                          <h:selectOneMenu styleClass="text" id="criticalSelectEmail" value="#{myAccountBean.criticalSelectEmail}" style="width:250px">
-                            <f:selectItem itemLabel="" itemValue="1"/> <!-- label set by calling refrehValues() -->
-                            <f:selectItem itemLabel="" itemValue="2"/>
-                          </h:selectOneMenu>
-                          <h:selectOneMenu styleClass="text" id="criticalSelectPhone" value="#{myAccountBean.criticalSelectPhone}" style="width:150px">
-                            <f:selectItem itemLabel="" itemValue="3"/>
-                            <f:selectItem itemLabel="" itemValue="4"/>
-                            <f:selectItem itemLabel="" itemValue="5"/>
-                          </h:selectOneMenu>
-                          <h:selectOneMenu styleClass="text" id="criticalSelectText" value="#{myAccountBean.criticalSelectText}" style="width:250px">
-                            <f:selectItem itemLabel="" itemValue="6"/>
-                            <f:selectItem itemLabel="" itemValue="7"/>
+                          <h:selectOneMenu value="#{myAccountBean.user.person.crit}" id="crit" style="width:250px">
+                            <f:selectItems value="#{myAccountBean.alertOptions}" />
                           </h:selectOneMenu>
                         </td>
                       </tr>
@@ -209,19 +161,19 @@
                     <table width="100%" border="0" cellpadding="4" cellspacing="0">
                       <tbody>
                         <tr>
-                          <td width="100"><h:outputText value="#{messages.myAccount_primary}" /></td>
+                          <td width="100"><h:outputText value="#{messages.myAccount_primary}" /> <span class="required">*</span></td>
                           <td>
                             <rich:message for="priEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText id="priEmail" value="#{myAccountBean.alertContact.priEmail}" 
-                              size="40" maxlength="62" onkeyup="refreshValues()" validator="#{myAccountBean.validateEmail}" />
+                            <h:inputText id="priEmail" value="#{myAccountBean.user.person.priEmail}" size="40" maxlength="62"
+                              onkeyup="populateAlertText()" required="true" requiredMessage="#{messages.required}" validator="#{myAccountBean.validateEmail}" />
                           </td>
                         </tr>
                         <tr>
                           <td width="100"><h:outputText value="#{messages.myAccount_secondary}" /></td>
                           <td>
                             <rich:message for="secEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText id="secEmail" value="#{myAccountBean.alertContact.secEmail}" 
-                              size="40" maxlength="62" onkeyup="refreshValues()" validator="#{myAccountBean.validateEmail}" />
+                            <h:inputText id="secEmail" value="#{myAccountBean.user.person.secEmail}" 
+                              size="40" maxlength="62" onkeyup="populateAlertText()" validator="#{myAccountBean.validateEmail}" />
                           </td>
                         </tr>
                       </tbody>
@@ -234,7 +186,7 @@
                           <td width="100"><h:outputText value="#{messages.myAccount_primary}" /></td>
                           <td>
                             <rich:message for="priPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText id="priPhone" value="#{myAccountBean.alertContact.priPhone}" size="40" maxlength="22" onkeyup="refreshValues()" validatorMessage="#{messages.myAccount_phoneFormat}">
+                            <h:inputText id="priPhone" value="#{myAccountBean.user.person.priPhone}" size="40" maxlength="22" onkeyup="populateAlertText()" validatorMessage="#{messages.myAccount_phoneFormat}">
                               <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
                               <f:attribute name="regex" value="\D?\d{3}\D*\d{3}\D?\d{4}" />
                             </h:inputText>
@@ -244,7 +196,7 @@
                           <td width="100"><h:outputText value="#{messages.myAccount_secondary}" /></td>
                           <td>
                             <rich:message for="secPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText id="secPhone" value="#{myAccountBean.alertContact.secPhone}" size="40" maxlength="22" onkeyup="refreshValues()" validatorMessage="#{messages.myAccount_phoneFormat}">
+                            <h:inputText id="secPhone" value="#{myAccountBean.user.person.secPhone}" size="40" maxlength="22" onkeyup="populateAlertText()" validatorMessage="#{messages.myAccount_phoneFormat}">
                               <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
                               <f:attribute name="regex" value="\D?\d{3}\D*\d{3}\D?\d{4}" />
                             </h:inputText>
@@ -254,7 +206,7 @@
                           <td width="100"><h:outputText value="#{messages.myAccount_cell}" /></td>
                           <td>
                             <rich:message for="cellPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText id="cellPhone" value="#{myAccountBean.alertContact.cellPhone}" size="40" maxlength="22" onkeyup="refreshValues()" validatorMessage="#{messages.myAccount_phoneFormat}">
+                            <h:inputText id="cellPhone" value="#{myAccountBean.user.person.cellPhone}" size="40" maxlength="22" onkeyup="populateAlertText()" validatorMessage="#{messages.myAccount_phoneFormat}">
                               <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
                               <f:attribute name="regex" value="\D?\d{3}\D*\d{3}\D?\d{4}" />
                             </h:inputText>
@@ -270,7 +222,7 @@
                           <td width="100"><h:outputText value="#{messages.myAccount_primary}" /></td>
                           <td>
                             <rich:message for="priText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText id="priText" value="#{myAccountBean.alertContact.priText}" size="40" maxlength="62" onkeyup="refreshValues()" validator="#{myAccountBean.validateEmail}">
+                            <h:inputText id="priText" value="#{myAccountBean.user.person.priText}" size="40" maxlength="62" onkeyup="populateAlertText()" validator="#{myAccountBean.validateEmail}">
                               <f:attribute name="regexErrorMessage" value="#{messages.myAccount_textMessageFormat}" />
                             </h:inputText>
                           </td>
@@ -279,7 +231,7 @@
                           <td width="100"><h:outputText value="#{messages.myAccount_secondary}" /></td>
                           <td>
                             <rich:message for="secText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText id="secText" value="#{myAccountBean.alertContact.secText}" size="40" maxlength="62" onkeyup="refreshValues()" validator="#{myAccountBean.validateEmail}">
+                            <h:inputText id="secText" value="#{myAccountBean.user.person.secText}" size="40" maxlength="62" onkeyup="populateAlertText()" validator="#{myAccountBean.validateEmail}">
                               <f:attribute name="regexErrorMessage" value="#{messages.myAccount_textMessageFormat}" />
                             </h:inputText>
                           </td>
@@ -302,69 +254,55 @@
     
     
     <script type="text/javascript" language="Javascript">
-    function refreshValues()
+  function bodyLoad()
+  {
+    populateAlertText();
+
+    var elements = document.getElementById("edit-form").elements;
+    for (var i = 0; i &lt; elements.length; i++)
+      for (var j = 0; j &lt; formElements.length; j++)
+        if (elements[i].getAttribute("type") == formElements[j])
+        {
+          elements[i].focus();
+          return;
+        }
+  }
+
+  function populateAlertText(id)
+  {
+    if (#{personBean.batchEdit})
+      return;
+
+    if (id == null)
     {
-      setValueText(document.getElementById("my_form:informationSelectEmail").options[0], "Primary - ", document.getElementById("my_form:priEmail").value);
-      setValueText(document.getElementById("my_form:informationSelectEmail").options[1], "Secondary - ", document.getElementById("my_form:secEmail").value);
-      setValueText(document.getElementById("my_form:informationSelectText").options[0], "Primary - ", document.getElementById("my_form:priText").value);
-      setValueText(document.getElementById("my_form:informationSelectText").options[1], "Secondary - ", document.getElementById("my_form:secText").value);
-      setValueText(document.getElementById("my_form:informationSelectPhone").options[0], "Primary - ", document.getElementById("my_form:priPhone").value);
-      setValueText(document.getElementById("my_form:informationSelectPhone").options[1], "Secondary - ", document.getElementById("my_form:secPhone").value);
-      setValueText(document.getElementById("my_form:informationSelectPhone").options[2], "Cell - ", document.getElementById("my_form:cellPhone").value);
-      
-      setValueText(document.getElementById("my_form:warningSelectEmail").options[0], "Primary - ", document.getElementById("my_form:priEmail").value);
-      setValueText(document.getElementById("my_form:warningSelectEmail").options[1], "Secondary - ", document.getElementById("my_form:secEmail").value);
-      setValueText(document.getElementById("my_form:warningSelectText").options[0], "Primary - ", document.getElementById("my_form:priText").value);
-      setValueText(document.getElementById("my_form:warningSelectText").options[1], "Secondary - ", document.getElementById("my_form:secText").value);
-      setValueText(document.getElementById("my_form:warningSelectPhone").options[0], "Primary - ", document.getElementById("my_form:priPhone").value);
-      setValueText(document.getElementById("my_form:warningSelectPhone").options[1], "Secondary - ", document.getElementById("my_form:secPhone").value);
-      setValueText(document.getElementById("my_form:warningSelectPhone").options[2], "Cell - ", document.getElementById("my_form:cellPhone").value);
-      
-      setValueText(document.getElementById("my_form:criticalSelectEmail").options[0], "Primary - ", document.getElementById("my_form:priEmail").value);
-      setValueText(document.getElementById("my_form:criticalSelectEmail").options[1], "Secondary - ", document.getElementById("my_form:secEmail").value);
-      setValueText(document.getElementById("my_form:criticalSelectText").options[0], "Primary - ", document.getElementById("my_form:priText").value);
-      setValueText(document.getElementById("my_form:criticalSelectText").options[1], "Secondary - ", document.getElementById("my_form:secText").value);
-      setValueText(document.getElementById("my_form:criticalSelectPhone").options[0], "Primary - ", document.getElementById("my_form:priPhone").value);
-      setValueText(document.getElementById("my_form:criticalSelectPhone").options[1], "Secondary - ", document.getElementById("my_form:secPhone").value);
-      setValueText(document.getElementById("my_form:criticalSelectPhone").options[2], "Cell - ", document.getElementById("my_form:cellPhone").value);
+      populateAlertText("my_form:info");
+      populateAlertText("my_form:warn");
+      populateAlertText("my_form:crit");
     }
-    function setValueText(element, preface, text)
+    else
     {
-      if (text == "")
-      {
-        element.text = "&lt;empty&gt;";
-      }
-      else
-      {
-        element.text = preface + text;
-      }
+      var select = document.getElementById(id);
+      populateAlertOption(select.options[1], "my_form:priEmail");
+      populateAlertOption(select.options[2], "my_form:secEmail");
+      populateAlertOption(select.options[3], "my_form:priPhone");
+      populateAlertOption(select.options[4], "my_form:secPhone");
+      populateAlertOption(select.options[5], "my_form:cellPhone");
+      populateAlertOption(select.options[6], "my_form:priText");
+      populateAlertOption(select.options[7], "my_form:secText");
     }
-    function refreshVisibility()
-    {
-      refreshVisibilityImpl("information");
-      refreshVisibilityImpl("warning");
-      refreshVisibilityImpl("critical");
-    }
-    function refreshVisibilityImpl(type)
-    {
-      document.getElementById("my_form:" + type + "SelectEmail").style.display = "none";
-      document.getElementById("my_form:" + type + "SelectText").style.display = "none";
-      document.getElementById("my_form:" + type + "SelectPhone").style.display = "none";
-      switch (document.getElementById("my_form:" + type + "SelectType").selectedIndex)
-      {
-        case 1:
-          document.getElementById("my_form:" + type + "SelectEmail").style.display = "block";
-          break;
-        case 2:
-          document.getElementById("my_form:" + type + "SelectPhone").style.display = "block";
-          break;
-        case 3:
-          document.getElementById("my_form:" + type + "SelectText").style.display = "block";
-          break;
-      }
-    }
-    refreshValues();
-    refreshVisibility();
+  }
+
+  function populateAlertOption(option, inputId)
+  {
+    var value = document.getElementById(inputId).value;
+    if ((value != null) &amp;&amp; (value != ""))
+      value = "#{messages.myAccount_alertTextSeparator}" + value;
+    var index = option.text.indexOf("#{messages.myAccount_alertTextSeparator}");
+    if (index != -1)
+      option.text = option.text.substring(0, index) + value;
+    else
+      option.text = option.text + value;
+  }
     </script>
         
   </ui:define>

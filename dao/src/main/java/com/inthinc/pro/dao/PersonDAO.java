@@ -29,4 +29,6 @@ public interface PersonDAO extends GenericDAO<Person, Integer>
      * @return The list of people in the group hierarchy.
      */
     List<Person> getPeopleInGroupHierarchy(Integer userGroupID, Integer driverGroupID);
+
+    Integer delete(Person person);
 }
