@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="DriverSummaryReport"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="595"
+		 pageHeight="794"
+		 columnWidth="535"
+		 columnSpacing="0"
+		 leftMargin="30"
+		 rightMargin="30"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="AllSectionsNoDetail"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<subDataset name="mpgDataSet" >
+
+
+		<field name="seriesID" class="java.lang.String"/>
+		<field name="category" class="java.lang.String"/>
+		<field name="value" class="java.lang.Integer"/>
+		<field name="label" class="java.lang.String"/>
+
+	</subDataset>
+
+	<subDataset name="coachingDataSet" >
+
+
+		<field name="seriesID" class="java.lang.String"/>
+		<field name="category" class="java.lang.String"/>
+		<field name="value" class="java.lang.Double"/>
+		<field name="label" class="java.lang.String"/>
+
+	</subDataset>
+
+	<parameter name="SUB_DATASET_1" isForPrompting="false" class="java.util.Collection"/>
+	<parameter name="DRIVER_NAME" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="REPORT_NAME" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="DURATION" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="MAP_URL" isForPrompting="false" class="java.io.InputStream"/>
+	<parameter name="SUB_DATASET_2" isForPrompting="false" class="java.util.Collection"/>
+
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="34"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="5"
+						y="0"
+						width="110"
+						height="15"
+						key="staticText-6"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[INTHINC]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="5"
+						y="15"
+						width="49"
+						height="16"
+						key="staticText-7"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[Duration:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="54"
+						y="15"
+						width="87"
+						height="16"
+						key="textField-7"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DURATION}]]></textFieldExpression>
+				</textField>
+			</band>
+		</title>
+		<pageHeader>
+			<band height="600"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="161"
+						y="6"
+						width="360"
+						height="19"
+						key="textField-1"/>
+					<box></box>
+					<textElement verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DRIVER_NAME}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="5"
+						y="6"
+						width="156"
+						height="19"
+						key="textField-6"/>
+					<box></box>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{REPORT_NAME}]]></textFieldExpression>
+				</textField>
+				<lineChart>
+					<chart  hyperlinkTarget="Self" >
+					<reportElement
+						x="16"
+						y="264"
+						width="430"
+						height="137"
+						key="element-1"/>
+					<box></box>
+						<chartLegend textColor="#000000" backgroundColor="#FFFFFF" >
+					</chartLegend>
+					</chart>
+					<categoryDataset>
+						<dataset resetType="None" >
+							<datasetRun subDataset="mpgDataSet">
+					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_1})]]></dataSourceExpression>
+							</datasetRun>
+						</dataset>
+						<categorySeries>
+							<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{value}]]></valueExpression>
+							<labelExpression><![CDATA[$F{label}]]></labelExpression>
+				<itemHyperlink >
+				</itemHyperlink>
+						</categorySeries>
+					</categoryDataset>
+					<linePlot >
+						<plot labelRotation="25.0" >
+							<seriesColor seriesOrder="0" color="#B1D1DC"/>
+							<seriesColor seriesOrder="1" color="#C8A1D1"/>
+							<seriesColor seriesOrder="2" color="#A8C634"/>
+</plot>
+						<categoryAxisFormat>
+							<axisFormat >
+							</axisFormat>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat >
+							</axisFormat>
+						</valueAxisFormat>
+					</linePlot>
+				</lineChart>
+				<staticText>
+					<reportElement
+						x="286"
+						y="41"
+						width="72"
+						height="20"
+						key="staticText-8"/>
+					<box></box>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+				<text><![CDATA[Last Trip:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="286"
+						y="81"
+						width="59"
+						height="14"
+						key="staticText-9"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[Start time:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="286"
+						y="123"
+						width="59"
+						height="14"
+						key="staticText-10"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[End time:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="286"
+						y="137"
+						width="72"
+						height="14"
+						key="staticText-11"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[End location:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="286"
+						y="95"
+						width="72"
+						height="14"
+						key="staticText-12"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[Start location:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="16"
+						y="240"
+						width="151"
+						height="19"
+						key="staticText-13"/>
+					<box></box>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+				<text><![CDATA[Miles Per Gallon]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="16"
+						y="433"
+						width="203"
+						height="19"
+						key="staticText-14"/>
+					<box></box>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+				<text><![CDATA[Coaching Events:]]></text>
+				</staticText>
+				<lineChart>
+					<chart  hyperlinkTarget="Self" >
+					<reportElement
+						x="16"
+						y="458"
+						width="428"
+						height="139"
+						key="element-2"/>
+					<box></box>
+						<chartLegend textColor="#000000" backgroundColor="#FFFFFF" >
+					</chartLegend>
+					</chart>
+					<categoryDataset>
+						<dataset >
+							<datasetRun subDataset="coachingDataSet">
+					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_2})]]></dataSourceExpression>
+							</datasetRun>
+						</dataset>
+						<categorySeries>
+							<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{value}]]></valueExpression>
+							<labelExpression><![CDATA[$F{label}]]></labelExpression>
+				<itemHyperlink >
+				</itemHyperlink>
+						</categorySeries>
+					</categoryDataset>
+					<linePlot >
+						<plot />
+						<categoryAxisFormat>
+							<axisFormat >
+							</axisFormat>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat >
+							</axisFormat>
+						</valueAxisFormat>
+					</linePlot>
+				</lineChart>
+				<image  evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="16"
+						y="30"
+						width="261"
+						height="207"
+						key="image-1"/>
+					<box></box>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.io.InputStream"><![CDATA[$P{MAP_URL}]]></imageExpression>
+				</image>
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="false" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<lastPageFooter>
+			<band height="19"  isSplitAllowed="true" >
+			</band>
+		</lastPageFooter>
+		<summary>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>
