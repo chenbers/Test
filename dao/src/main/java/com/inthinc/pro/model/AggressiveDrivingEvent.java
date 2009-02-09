@@ -16,6 +16,7 @@ public class AggressiveDrivingEvent extends Event
                         // in the range of 0 to 100, 100 being the most extreme.
                         // This may need to be changed.
     private Integer speedLimit;
+    private String eventTypeString;
 
     public AggressiveDrivingEvent()
     {
@@ -111,6 +112,16 @@ public class AggressiveDrivingEvent extends Event
     public void setSpeedLimit(Integer speedLimit)
     {
         this.speedLimit = speedLimit;
+    }
+
+    public String getEventTypeString()
+    {
+        return this.getEventType().toString();
+    }
+
+    public void setEventTypeString(String eventTypeString)
+    {
+        this.eventTypeString = eventTypeString;
     }
 
 }
