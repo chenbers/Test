@@ -13,10 +13,16 @@ public enum ReportType
     OVERALL_SCORE("Overal Score","ScorePieReport.jrxml"),
     TREND("Trend Report","TrendReport.jrxml"),
     MPG_GROUP("MPG Report","MPGGroupReport.jrxml"),
-    DRIVER_SUMMARY_P1("Driver/Vehicle Summary Report P1", "DriverVehicleSummaryReport1.jrxml"),
-    DRIVER_SUMMARY_P2("Driver/Vehicle Summary Report P2", "DriverVehicleSummaryReport2.jrxml"),
-    DRIVER_SPEED("Speed Report", "DriverVehicleSpeedReport.jrxml"),
-    DRIVER_STYLE("Style Report", "DriverVehicleStyleReport.jrxml");
+    DRIVER_SUMMARY_P1("Driver Summary Report P1", "DriverVehicleSummaryReport1.jrxml"),
+    DRIVER_SUMMARY_P2("Driver Summary Report P2", "DriverVehicleSummaryReport2.jrxml"),
+    DRIVER_SPEED("Driver Speed Report", "DriverVehicleSpeedReport.jrxml"),
+    DRIVER_STYLE("Driver Style Report", "DriverVehicleStyleReport.jrxml"),
+    DRIVER_SEATBELT("Driver Seat Belt Report", "DriverVehicleSeatBeltReport.jrxml"),
+    VEHICLE_SUMMARY_P1("Vehicle Summary Report P1", "DriverVehicleSummaryReport1.jrxml"),
+    VEHICLE_SUMMARY_P2("Vehicle Summary Report P2", "DriverVehicleSummaryReport2.jrxml"),
+    VEHICLE_SPEED("Vehicle Speed Report", "DriverVehicleSpeedReport.jrxml"),
+    VEHICLE_STYLE("Vehicle Style Report", "DriverVehicleStyleReport.jrxml"),
+    VEHICLE_SEATBELT("Vehicle Seat Belt Report", "DriverVehicleSeatBeltReport.jrxml");
   
     private String filename;
     private String label;
