@@ -31,6 +31,7 @@ import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.map.MapLookup;
 import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.util.GraphicUtil;
+import com.inthinc.pro.util.MessageUtil;
 
 public class DriverBean extends BaseDurationBean
 {
@@ -311,7 +312,7 @@ public class DriverBean extends BaseDurationBean
         int count = 0;
         for (ScoreableEntity se : scoreList)
         {
-            chartDataList.add( new CategorySeriesData(  scoreType.toString(), 
+            chartDataList.add( new CategorySeriesData(  MessageUtil.getMessageString(scoreType.toString()), 
                                                         monthList.get(count).toString(), 
                                                         se.getScore() / 10.0D, 
                                                         monthList.get(count).toString() ));
@@ -356,7 +357,7 @@ public class DriverBean extends BaseDurationBean
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_SUMMARY_P1, getGroupHierarchy().getTopGroup().getName());
         reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_OVERALL));
         reportCriteria.setDuration(getDuration());
-        reportCriteria.addParameter("REPORT_NAME", "Driver Performance:");
+        reportCriteria.addParameter("REPORT_NAME", "Driver Performance: Summary");
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
         reportCriteria.addParameter("DRIVER_NAME", this.getNavigation().getDriver().getPerson().getFullName());
         reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_SPEEDING));
@@ -370,15 +371,21 @@ public class DriverBean extends BaseDurationBean
         // Page 2
         ReportCriteria reportCriteria2 = new ReportCriteria(ReportType.DRIVER_SUMMARY_P2, getGroupHierarchy().getTopGroup().getName());
         reportCriteria2.setDuration(getDuration());
-        reportCriteria2.addParameter("REPORT_NAME", "Driver Performance:");
+        reportCriteria2.addParameter("REPORT_NAME", "Driver Performance: Summary");
         reportCriteria2.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
         reportCriteria2.addParameter("DRIVER_NAME", this.getNavigation().getDriver().getPerson().getFullName());
         
-        String imageUrl =  MapLookup.getMap(lastTrip.getRouteLastStep().getLat(), lastTrip.getRouteLastStep().getLng(), 250, 200);
-        logger.debug(imageUrl);
+        if(lastTrip != null)
+        {
+            reportCriteria2.addParameter("START_TIME", lastTrip.getStartDateString());
+            reportCriteria2.addParameter("START_LOCATION", lastTrip.getStartAddress());
+            reportCriteria2.addParameter("END_TIME", lastTrip.getEndDateString());
+            reportCriteria2.addParameter("END_LOCATION", lastTrip.getEndAddress());      
+            String imageUrl =  MapLookup.getMap(lastTrip.getRouteLastStep().getLat(), lastTrip.getRouteLastStep().getLng(), 250, 200);
+            //logger.debug(imageUrl);
+            //reportCriteria2.addParameter("MAP_URL", MapLookup.getDataFromURI(imageUrl) );
+        }
         
-
-        reportCriteria2.addParameter("MAP_URL", MapLookup.getImageFromUrl(imageUrl) );
         reportCriteria2.addChartDataSet(createMpgJasperDef());
         reportCriteria2.addChartDataSet(createJasperDef(ScoreType.SCORE_COACHING_EVENTS));
         tempCriteria.add(reportCriteria2);

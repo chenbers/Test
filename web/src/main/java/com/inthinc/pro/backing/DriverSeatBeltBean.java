@@ -28,7 +28,12 @@ import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SeatBeltEvent;
 import com.inthinc.pro.model.SpeedingEvent;
+import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.reports.ReportRenderer;
+import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.util.GraphicUtil;
+import com.inthinc.pro.util.MessageUtil;
 
 public class DriverSeatBeltBean extends BaseDurationBean
 {
@@ -42,6 +47,8 @@ public class DriverSeatBeltBean extends BaseDurationBean
     private String          seatBeltScoreHistoryOverall;
     private String          seatBeltScoreStyle;
     private EventReportItem clearItem;
+    private ReportRenderer              reportRenderer;
+    private String                      emailAddress;
       
     private List<EventReportItem> seatBeltEvents = new ArrayList<EventReportItem>();
     
@@ -216,5 +223,72 @@ public class DriverSeatBeltBean extends BaseDurationBean
     public void setClearItem(EventReportItem clearItem)
     {
         this.clearItem = clearItem;
+    }
+    public List<CategorySeriesData> createJasperDef(List<ScoreType> scoreTypes)
+    {
+        List<CategorySeriesData> returnList = new ArrayList<CategorySeriesData>();
+
+        for (ScoreType st : scoreTypes)
+        {
+            List<ScoreableEntity> scoreList = scoreDAO
+                    .getDriverScoreHistory(navigation.getDriver().getDriverID(), getDuration(), st, GraphicUtil.getDurationSize(getDuration()));
+            
+            List<String> monthList = GraphicUtil.createMonthList(getDuration());  
+            int count = 0;
+            for (ScoreableEntity se : scoreList)
+            {
+                returnList.add( new CategorySeriesData(  MessageUtil.getMessageString(st.toString()), 
+                                                         monthList.get(count).toString(), 
+                                                         se.getScore() / 10.0D, 
+                                                         monthList.get(count).toString() ));
+              
+                count++;
+            }
+        }
+        return returnList;
+    }
+    
+    public ReportCriteria buildReport()
+    {
+        // Page 1
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_SEATBELT, getGroupHierarchy().getTopGroup().getName());
+        
+        reportCriteria.setDuration(getDuration());
+        reportCriteria.addParameter("REPORT_NAME", "Driver Performance: Seat Belt");
+        reportCriteria.addParameter("ENTITY_NAME", this.getNavigation().getDriver().getPerson().getFullName());
+        reportCriteria.addParameter("RECORD_COUNT", this.getSeatBeltEvents().size());
+        reportCriteria.addParameter("OVERALL_SCORE", this.getSeatBeltScore() / 10.0D);
+        reportCriteria.addParameter("SPEED_MEASUREMENT", MessageUtil.getMessageString("measurement_speed"));
+        
+        List<ScoreType> scoreTypes = new ArrayList<ScoreType>();
+        scoreTypes.add(ScoreType.SCORE_SEATBELT);
+        reportCriteria.addChartDataSet(this.createJasperDef(scoreTypes));
+        reportCriteria.setMainDataset(this.seatBeltEvents);
+        
+        return reportCriteria;
+    }
+    public void setReportRenderer(ReportRenderer reportRenderer)
+    {
+        this.reportRenderer = reportRenderer;
+    }
+    public ReportRenderer getReportRenderer()
+    {
+        return reportRenderer;
+    }
+    public String getEmailAddress()
+    {
+        return emailAddress;
+    }
+    public void setEmailAddress(String emailAddress)
+    {
+        this.emailAddress = emailAddress;
+    }
+    public void exportReportToPdf()
+    {
+        getReportRenderer().exportSingleReportToPDF(buildReport(), getFacesContext());
+    }
+    public void emailReport()
+    {
+        //getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
     }
 }

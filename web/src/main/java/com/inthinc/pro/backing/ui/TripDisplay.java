@@ -59,6 +59,18 @@ public class TripDisplay
             setEndAddress(lookup.getAddress(route.get(route.size()-1).getLat(), route.get(route.size()-1).getLng()));
         }
     }
+    public String getStartDateString()
+    {
+        dateFormatter = new SimpleDateFormat("MMM d, yyyy h:mm a (z)");
+        dateFormatter.setTimeZone(timeZone);
+        return dateFormatter.format(trip.getEndTime());
+    }
+    public String getEndDateString()
+    {
+        dateFormatter = new SimpleDateFormat("MMM d, yyyy h:mm a (z)");
+        dateFormatter.setTimeZone(timeZone);
+        return dateFormatter.format(trip.getStartTime());
+    }
 
     public String getDateShort()
     {

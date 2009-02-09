@@ -49,6 +49,10 @@
 	<parameter name="DURATION" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="MAP_URL" isForPrompting="false" class="java.io.InputStream"/>
 	<parameter name="SUB_DATASET_2" isForPrompting="false" class="java.util.Collection"/>
+	<parameter name="START_TIME" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="START_LOCATION" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="END_TIME" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="END_LOCATION" isForPrompting="false" class="java.lang.String"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -58,80 +62,54 @@
 			<band height="34"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
-						x="5"
+						x="494"
 						y="0"
-						width="110"
+						width="40"
 						height="15"
-						key="staticText-6"/>
+						key="staticText-15"/>
 					<box></box>
 					<textElement>
 						<font/>
 					</textElement>
-				<text><![CDATA[INTHINC]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="5"
-						y="15"
-						width="49"
-						height="16"
-						key="staticText-7"/>
-					<box></box>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[Duration:]]></text>
+				<text><![CDATA[tiwiPRO]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="54"
-						y="15"
-						width="87"
-						height="16"
-						key="textField-7"/>
-					<box></box>
-					<textElement>
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DURATION}]]></textFieldExpression>
-				</textField>
-			</band>
-		</title>
-		<pageHeader>
-			<band height="600"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="161"
-						y="6"
-						width="360"
-						height="19"
+						x="0"
+						y="0"
+						width="187"
+						height="15"
 						key="textField-1"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
-						<font size="12"/>
+						<font size="10"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DRIVER_NAME}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="5"
-						y="6"
-						width="156"
+						x="0"
+						y="15"
+						width="230"
 						height="19"
-						key="textField-6"/>
+						key="textField-2"/>
 					<box></box>
 					<textElement>
-						<font size="12"/>
+						<font size="14"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{REPORT_NAME}]]></textFieldExpression>
 				</textField>
+			</band>
+		</title>
+		<pageHeader>
+			<band height="626"  isSplitAllowed="true" >
 				<lineChart>
-					<chart  hyperlinkTarget="Self" >
+					<chart  hyperlinkTarget="Self"  customizerClass="com.inthinc.pro.reports.jasper.customizer.MpgLineChartCustomizer" >
 					<reportElement
-						x="16"
-						y="264"
-						width="430"
-						height="137"
+						x="49"
+						y="273"
+						width="450"
+						height="150"
 						key="element-1"/>
 					<box></box>
 						<chartLegend textColor="#000000" backgroundColor="#FFFFFF" >
@@ -152,8 +130,8 @@
 				</itemHyperlink>
 						</categorySeries>
 					</categoryDataset>
-					<linePlot >
-						<plot labelRotation="25.0" >
+					<linePlot isShowShapes="false" >
+						<plot >
 							<seriesColor seriesOrder="0" color="#B1D1DC"/>
 							<seriesColor seriesOrder="1" color="#C8A1D1"/>
 							<seriesColor seriesOrder="2" color="#A8C634"/>
@@ -184,7 +162,7 @@
 				<staticText>
 					<reportElement
 						x="286"
-						y="81"
+						y="68"
 						width="59"
 						height="14"
 						key="staticText-9"/>
@@ -197,7 +175,7 @@
 				<staticText>
 					<reportElement
 						x="286"
-						y="123"
+						y="110"
 						width="59"
 						height="14"
 						key="staticText-10"/>
@@ -210,7 +188,7 @@
 				<staticText>
 					<reportElement
 						x="286"
-						y="137"
+						y="124"
 						width="72"
 						height="14"
 						key="staticText-11"/>
@@ -223,7 +201,7 @@
 				<staticText>
 					<reportElement
 						x="286"
-						y="95"
+						y="82"
 						width="72"
 						height="14"
 						key="staticText-12"/>
@@ -235,8 +213,8 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="16"
-						y="240"
+						x="49"
+						y="249"
 						width="151"
 						height="19"
 						key="staticText-13"/>
@@ -248,8 +226,8 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="16"
-						y="433"
+						x="49"
+						y="435"
 						width="203"
 						height="19"
 						key="staticText-14"/>
@@ -260,12 +238,12 @@
 				<text><![CDATA[Coaching Events:]]></text>
 				</staticText>
 				<lineChart>
-					<chart  hyperlinkTarget="Self" >
+					<chart  hyperlinkTarget="Self"  customizerClass="com.inthinc.pro.reports.jasper.customizer.MpgLineChartCustomizer" >
 					<reportElement
-						x="16"
-						y="458"
-						width="428"
-						height="139"
+						x="49"
+						y="459"
+						width="450"
+						height="150"
 						key="element-2"/>
 					<box></box>
 						<chartLegend textColor="#000000" backgroundColor="#FFFFFF" >
@@ -286,7 +264,7 @@
 				</itemHyperlink>
 						</categorySeries>
 					</categoryDataset>
-					<linePlot >
+					<linePlot isShowShapes="false" >
 						<plot />
 						<categoryAxisFormat>
 							<axisFormat >
@@ -298,17 +276,100 @@
 						</valueAxisFormat>
 					</linePlot>
 				</lineChart>
-				<image  evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<image  onErrorType="Icon" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="16"
 						y="30"
 						width="261"
 						height="207"
 						key="image-1"/>
-					<box></box>
+					<box>					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+</box>
 					<graphicElement stretchType="NoStretch"/>
 					<imageExpression class="java.io.InputStream"><![CDATA[$P{MAP_URL}]]></imageExpression>
 				</image>
+				<staticText>
+					<reportElement
+						x="0"
+						y="0"
+						width="49"
+						height="16"
+						key="staticText-16"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[Duration:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="49"
+						y="0"
+						width="87"
+						height="16"
+						key="textField-3"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DURATION}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="369"
+						y="69"
+						width="157"
+						height="13"
+						key="textField-4"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{START_TIME}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="369"
+						y="82"
+						width="157"
+						height="13"
+						key="textField-5"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{START_LOCATION}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="369"
+						y="110"
+						width="157"
+						height="13"
+						key="textField-6"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{END_TIME}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="369"
+						y="123"
+						width="157"
+						height="13"
+						key="textField-7"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{END_LOCATION}]]></textFieldExpression>
+				</textField>
 			</band>
 		</pageHeader>
 		<columnHeader>
