@@ -99,8 +99,8 @@ var selected = 'OVERALL';
 						<span class="speed" id="titleSpan">Speed: Overall</span>
 						<a4j:region id="dateLinksForm_region">
 							<a4j:form id="dateLinksForm">
-							<span class="panel_links">
-								<a4j:status id="dateLinksStatus" for="dateLinksForm_region">
+							<span class="panel_links_ico" style="right: 30px;">
+								<a4j:status id="dateLinksStatus" for="dateLinksForm_region" >
 									<f:facet name="start">
 										<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
 									</f:facet>
@@ -134,6 +134,27 @@ var selected = 'OVERALL';
 									<a4j:actionparam name="duration" assignTo="#{driverSpeedBean.duration}"	value="TWELVE" />
 								</a4j:commandLink>
 								</span>
+								<span class="panel_ico">
+									<h:panelGroup id="toolsIcon">
+										<h:graphicImage value="/images/ico_tools.png" alt="Tools" />
+									</h:panelGroup>
+								</span>
+									<rich:contextMenu event="onclick" attachTiming="onavailable"
+										disableDefaultMenu="false" submitMode="server"
+										attachTo="toolsIcon">
+										<rich:menuItem ajaxSingle="true" rendered="true"
+														iconDisabled="/images/ico_email.gif" 
+														icon="/images/ico_email.gif" 
+														onclick="Richfaces.showModalPanel('driverReportEmailModal');return false;"
+														value="#{messages.contextMenu_email_this_report}" id="emailMenuItem" submitMode="none">
+										</rich:menuItem>
+										<rich:menuItem ajaxSingle="true"
+														iconDisabled="/images/ico_pdf.gif" icon="/images/ico_pdf.gif"
+														value="Export To PDF"
+														action="#{driverSpeedBean.exportReportToPdf}"
+														id="export_menu_item">
+										</rich:menuItem>
+									</rich:contextMenu>
 							</a4j:form>
 							</a4j:region>
 					</div>
@@ -203,6 +224,14 @@ var selected = 'OVERALL';
 				</div>
 				<div class="panel_w">
 				  <rich:panel bodyClass="panel_content" id="breakdown_panel" border="0">
+				  <script type="text/javascript">
+
+				  		// Reset selected region on A4J ReRender
+				  		selected = 'OVERALL';
+				  		var x = document.getElementById('titleSpan');
+						x.innerHTML = '#{messages.reports_speed}: #{messages.SCORE_OVERALL}';
+						
+				  </script>
 					<table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
 					  <tr>
 					    <td id="OVERALL" valign="top" class="tiny_selected">
@@ -575,5 +604,13 @@ var selected = 'OVERALL';
 	</rich:modalPanel>
 <!-- END LOCATION MODAL -->
 
+<!-- START EMAIL MODAL -->
+	<h:outputText id="driver_email_modalPanel">
+		<ui:include src="/includes/emailReportPopup.xhtml">	
+			<ui:param  name="id" value="driverReportEmailModal" />
+			<ui:param  name="reportBean" value="#{driverSpeedBean}"/>
+		</ui:include>
+	</h:outputText>
+<!-- END EMAIL MODAL -->
 </ui:define>
 </ui:composition>

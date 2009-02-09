@@ -101,7 +101,7 @@ public class VehicleStyleBean extends BaseDurationBean
             for(Event event: tempEvents)
             {
                 event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
-                styleEvents.add( new EventReportItem(event) );   
+                styleEvents.add( new EventReportItem(event, null) );   
             }
             
             super.setTableSize(styleEvents.size());

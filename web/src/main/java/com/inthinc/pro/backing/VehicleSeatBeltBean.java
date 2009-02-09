@@ -71,7 +71,7 @@ public class VehicleSeatBeltBean extends BaseDurationBean
             for(Event event: tempEvents)
             {
                 event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
-                seatBeltEvents.add( new EventReportItem(event) );   
+                seatBeltEvents.add( new EventReportItem(event, null) );   
             }
             super.setTableSize(seatBeltEvents.size());
         }

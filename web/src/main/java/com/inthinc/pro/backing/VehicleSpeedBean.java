@@ -105,7 +105,7 @@ public class VehicleSpeedBean extends BaseDurationBean
                 // TODO: Lookup each driver and get timezone.
                 
                 event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
-                speedingEvents.add( new EventReportItem(event) );   
+                speedingEvents.add( new EventReportItem(event, null) );   
             }
             
             super.setTableSize(speedingEvents.size());

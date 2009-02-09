@@ -203,18 +203,21 @@
 	    <property name="driverDAO" ref="driverDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
+        <property name="reportRenderer" ref="reportRenderer"></property>
     </bean>
 
     <bean id="driverSpeedBean" class="com.inthinc.pro.backing.DriverSpeedBean" scope="request" init-method="init">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
+        <property name="reportRenderer" ref="reportRenderer"></property>
     </bean>
 
     <bean id="driverStyleBean" class="com.inthinc.pro.backing.DriverStyleBean" scope="request" init-method="init">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
+        <property name="reportRenderer" ref="reportRenderer"></property>
     </bean>
 
     <bean id="driverSeatBeltBean" class="com.inthinc.pro.backing.DriverSeatBeltBean" scope="request" init-method="init">

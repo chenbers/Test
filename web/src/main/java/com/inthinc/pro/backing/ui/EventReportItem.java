@@ -70,9 +70,12 @@ public class EventReportItem implements Comparable<EventReportItem>
 
     }
     
-    public EventReportItem(Event event)
+    public EventReportItem(Event event, TimeZone tz)
     {
         this.event = event;
+        
+        dateFormatter.setTimeZone((tz==null) ? TimeZone.getDefault() : tz);
+        setDate(dateFormatter.format(event.getTime()));
         
         String catFormat = MessageUtil.getMessageString("redflags_cat" + event.getEventCategory().toString());
         setCategory(MessageFormat.format(catFormat, new Object[] {event.getEventType().toString()}));
