@@ -60,19 +60,24 @@
 <script type="text/javascript">
 
 //Set default selected box.
-var selected = 'OVERALL';
+var selected;
+var selectedVar;
+var selectedTitle;
+var firstLoad = new Boolean(true);
 
 	function SelectBreakDown(region, chartVar, title)
 	{
 		//Un-Select last component in CSS.
-		document.getElementById(selected).className="tiny_chart";
+		if(selected != null)
+			document.getElementById(selected).className="tiny_chart";
 		
 		//remember current selected region.
 		selected = region;
-		
+		selectedVar = chartVar;
+		selectedTitle = title;
+
 		//change style to new selected region.
 		document.getElementById(region).className="tiny_selected";
-		
 		
 		//turn on X and Y axis labels.
 		var data = chartVar.variables.dataXML;
@@ -83,6 +88,12 @@ var selected = 'OVERALL';
 		//Set overall chart to data from selected chart.
 		overallChart.setDataXML(data);
 
+		if(firstLoad)
+		{
+			overallChart.setTransparent(true);
+			overallChart.render("overallChartDiv");
+		}
+		
 		var x = document.getElementById('titleSpan');
 			x.innerHTML=title;
 			
@@ -108,28 +119,28 @@ var selected = 'OVERALL';
 								<rich:spacer width="10" />
 								<a4j:commandLink title="#{messages.duration_days}" immediate="true"
 									styleClass="#{(driverSpeedBean.duration eq 'DAYS') ? 'on' : ''}"		
-									reRender="dateLinksForm,overallPanel,breakdown_panel,eventsTable"
+									reRender="dateLinksForm,breakdown_panel,eventsTable"
 									value="#{messages.duration_days}">
 									<a4j:actionparam name="duration" assignTo="#{driverSpeedBean.duration}"	value="DAYS" />
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
 								<a4j:commandLink title="#{messages.duration_three}" immediate="true"
 									styleClass="#{(driverSpeedBean.duration eq 'THREE') ? 'on' : ''}"	
-									reRender="dateLinksForm,overallPanel,breakdown_panel,eventsTable"
+									reRender="dateLinksForm,breakdown_panel,eventsTable"
 									value="#{messages.duration_three}">
 									<a4j:actionparam name="duration" assignTo="#{driverSpeedBean.duration}"	value="THREE" />
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
 								<a4j:commandLink title="#{messages.duration_six}" immediate="true"
 									styleClass="#{(driverSpeedBean.duration eq 'SIX') ? 'on' : ''}"	
-									reRender="dateLinksForm,overallPanel,breakdown_panel,eventsTable"
+									reRender="dateLinksForm,breakdown_panel,eventsTable"
 									value="#{messages.duration_six}">
 									<a4j:actionparam name="duration" assignTo="#{driverSpeedBean.duration}"	value="SIX" />
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
 								<a4j:commandLink title="#{messages.duration_twelve}" immediate="true"
 									styleClass="#{(driverSpeedBean.duration eq 'TWELVE') ? 'on' : ''}"	
-									reRender="dateLinksForm,overallPanel,breakdown_panel,eventsTable"
+									reRender="dateLinksForm,breakdown_panel,eventsTable"
 									value="#{messages.duration_twelve}">
 									<a4j:actionparam name="duration" assignTo="#{driverSpeedBean.duration}"	value="TWELVE" />
 								</a4j:commandLink>
@@ -164,15 +175,10 @@ var selected = 'OVERALL';
 				  <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
 					  <tr>
 						<td valign="top" width="600">
-						   <ui:include src="../../includes/lineChart.xhtml">
-						            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistoryOverall}" />
-						            <ui:param name="hiddenFieldID" value="HiddenField" />
-						            <ui:param name="width" value="650" /> 
-						            <ui:param name="height" value="200" />  
-						            <ui:param name="tartgetElementVar" value="targetElement" />
-						            <ui:param name="ChartDivID" value="overall_chart" />
-						            <ui:param name="chartVar" value="overallChart" />
-							</ui:include>
+							<rich:panel id="overallChartDiv" style="height: 200;"></rich:panel>
+						 		<script type="text/javascript">
+									var overallChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Area2D.swf", "overallChartId", "650", "200", "0", "1");
+								</script>
 						</td>
 						<td valign="top" align="right">
 							<table width="220" border="0" cellspacing="0" cellpadding="0" class="scorebox" style="margin: 20px 20px 0 0;">
@@ -224,17 +230,10 @@ var selected = 'OVERALL';
 				</div>
 				<div class="panel_w">
 				  <rich:panel bodyClass="panel_content" id="breakdown_panel" border="0">
-				  <script type="text/javascript">
 
-				  		// Reset selected region on A4J ReRender
-				  		selected = 'OVERALL';
-				  		var x = document.getElementById('titleSpan');
-						x.innerHTML = '#{messages.reports_speed}: #{messages.SCORE_OVERALL}';
-						
-				  </script>
 					<table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
 					  <tr>
-					    <td id="OVERALL" valign="top" class="tiny_selected">
+					    <td id="OVERALL" valign="top" class="tiny_chart">
 						  <div class="tiny_title">
 								<div onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.reports_speed}: #{messages.SCORE_OVERALL}')">#{messages.SCORE_OVERALL}</div>
 						  </div>
@@ -401,6 +400,29 @@ var selected = 'OVERALL';
 						</td>
 					  </tr>
 					</table>
+					<script type="text/javascript">
+
+					// This code gets called on first load and A4J Re-Renders
+			  		// Reselect last selected region.
+			  		
+						if(firstLoad == true)
+						{
+							SelectBreakDown('OVERALL', overallChart2, '#{messages.reports_speed}: #{messages.SCORE_OVERALL}');
+							firstLoad = false;
+						}
+						else
+						{
+							if(selected == 'OVERALL') SelectBreakDown(selected, overallChart2, selectedTitle);
+							if(selected == 'TWENTYONE') SelectBreakDown(selected, chart21, selectedTitle);
+							if(selected == 'THIRTYONE') SelectBreakDown(selected, chart31, selectedTitle);
+							if(selected == 'FOURTYONE') SelectBreakDown(selected, chart41, selectedTitle);
+							if(selected == 'FIFTYFIVE') SelectBreakDown(selected, chart55, selectedTitle);
+							if(selected == 'SIXTYFIVE') SelectBreakDown(selected, chart65, selectedTitle);
+						}
+
+				        
+						
+				  </script>
 				  </rich:panel>
 				</div>
 				<div class="panel_sw">
