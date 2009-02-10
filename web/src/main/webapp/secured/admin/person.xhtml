@@ -126,15 +126,15 @@
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_priPhone }" /></td>
-                            <td><h:outputText value="#{personBean.item.priPhone}" /></td>
+                            <td><h:outputText value="#{personBean.item.priPhone}" converter="PhoneNumberConverter" /></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_secPhone}" /></td>
-                            <td><h:outputText value="#{personBean.item.secPhone}" /></td>
+                            <td><h:outputText value="#{personBean.item.secPhone}" converter="PhoneNumberConverter" /></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_cellPhone}" /></td>
-                            <td><h:outputText value="#{personBean.item.cellPhone}" /></td>
+                            <td><h:outputText value="#{personBean.item.cellPhone}" converter="PhoneNumberConverter" /></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_priEmail}" /></td>

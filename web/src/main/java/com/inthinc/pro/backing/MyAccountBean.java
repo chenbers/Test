@@ -64,7 +64,11 @@ public class MyAccountBean extends BaseBean
         if (getUser().getPerson().getDriver() == null)
             getUser().getPerson().setDriver(driverDAO.getDriverByPersonID(getUser().getPersonID()));
         if (getUser().getPerson().getDriver() != null)
-            return getGroupHierarchy().getGroup(getUser().getPerson().getDriver().getGroupID()).getName();
+        {
+            final Group group = getGroupHierarchy().getGroup(getUser().getPerson().getDriver().getGroupID());
+            if (group != null)
+                return group.getName();
+        }
         return null;
     }
 

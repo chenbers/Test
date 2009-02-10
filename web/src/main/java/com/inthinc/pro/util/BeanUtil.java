@@ -101,67 +101,70 @@ public class BeanUtil
             {
                 final Method readMethod = descriptor.getReadMethod();
                 final PropertyDescriptor targetDescriptor = BeanUtils.getPropertyDescriptor(target.getClass(), descriptor.getName());
-                final Method writeMethod = targetDescriptor.getWriteMethod();
-                if ((readMethod != null) && (writeMethod != null))
+                if (targetDescriptor != null)
                 {
-                    try
+                    final Method writeMethod = targetDescriptor.getWriteMethod();
+                    if ((readMethod != null) && (writeMethod != null))
                     {
-                        // create a destination
-                        final Object sourceProperty = readMethod.invoke(source, new Object[0]);
-                        if (sourceProperty != null)
+                        try
                         {
-                            // simple copy
-                            if (BeanUtils.isSimpleProperty(clazz) || clazz.isEnum() || clazz.isArray())
-                                writeMethod.invoke(target, new Object[] { sourceProperty });
-                            // circular reference: simply store the target reference
-                            else if (map.get(sourceProperty) != null)
-                                writeMethod.invoke(target, new Object[] { map.get(sourceProperty) });
-                            // deep copy
-                            else
+                            // create a destination
+                            final Object sourceProperty = readMethod.invoke(source, new Object[0]);
+                            if (sourceProperty != null)
                             {
-                                // get or create the container
-                                Object targetProperty = null;
-                                final Method targetReader = targetDescriptor.getReadMethod();
-                                if (targetReader != null)
-                                    targetProperty = targetReader.invoke(target, new Object[0]);
-                                if (targetProperty == null)
-                                {
-                                    targetProperty = BeanUtils.instantiateClass(sourceProperty.getClass());
-                                    writeMethod.invoke(target, targetProperty);
-                                }
-
-                                // collection, map or custom object
-                                if (targetProperty instanceof Collection)
-                                {
-                                    ((Collection) targetProperty).clear();
-                                    ((Collection) targetProperty).addAll((Collection) sourceProperty);
-                                }
-                                else if (targetProperty instanceof Map)
-                                {
-                                    ((Map) targetProperty).clear();
-                                    ((Map) targetProperty).putAll((Map) sourceProperty);
-                                }
+                                // simple copy
+                                if (BeanUtils.isSimpleProperty(clazz) || clazz.isEnum() || clazz.isArray())
+                                    writeMethod.invoke(target, new Object[] { sourceProperty });
+                                // circular reference: simply store the target reference
+                                else if (map.get(sourceProperty) != null)
+                                    writeMethod.invoke(target, new Object[] { map.get(sourceProperty) });
+                                // deep copy
                                 else
                                 {
-                                    // filter ignore properties by this property's prefix
-                                    final String prefix = descriptor.getName() + '.';
-                                    final LinkedList<String> childIgnore = new LinkedList<String>();
-                                    if (ignoreProperties != null)
-                                        for (final String key : ignoreProperties)
-                                            if (key.startsWith(prefix))
-                                                childIgnore.add(key.substring(prefix.length()));
+                                    // get or create the container
+                                    Object targetProperty = null;
+                                    final Method targetReader = targetDescriptor.getReadMethod();
+                                    if (targetReader != null)
+                                        targetProperty = targetReader.invoke(target, new Object[0]);
+                                    if (targetProperty == null)
+                                    {
+                                        targetProperty = BeanUtils.instantiateClass(sourceProperty.getClass());
+                                        writeMethod.invoke(target, targetProperty);
+                                    }
 
-                                    // recurse
-                                    map.put(sourceProperty, targetProperty);
-                                    deepCopy(sourceProperty, targetProperty, childIgnore, map);
-                                    map.remove(sourceProperty);
+                                    // collection, map or custom object
+                                    if (targetProperty instanceof Collection)
+                                    {
+                                        ((Collection) targetProperty).clear();
+                                        ((Collection) targetProperty).addAll((Collection) sourceProperty);
+                                    }
+                                    else if (targetProperty instanceof Map)
+                                    {
+                                        ((Map) targetProperty).clear();
+                                        ((Map) targetProperty).putAll((Map) sourceProperty);
+                                    }
+                                    else
+                                    {
+                                        // filter ignore properties by this property's prefix
+                                        final String prefix = descriptor.getName() + '.';
+                                        final LinkedList<String> childIgnore = new LinkedList<String>();
+                                        if (ignoreProperties != null)
+                                            for (final String key : ignoreProperties)
+                                                if (key.startsWith(prefix))
+                                                    childIgnore.add(key.substring(prefix.length()));
+
+                                        // recurse
+                                        map.put(sourceProperty, targetProperty);
+                                        deepCopy(sourceProperty, targetProperty, childIgnore, map);
+                                        map.remove(sourceProperty);
+                                    }
                                 }
                             }
                         }
-                    }
-                    catch (Throwable ex)
-                    {
-                        throw new FatalBeanException("Could not copy properties from source to target", ex);
+                        catch (Throwable ex)
+                        {
+                            throw new FatalBeanException("Could not copy properties from source to target", ex);
+                        }
                     }
                 }
             }

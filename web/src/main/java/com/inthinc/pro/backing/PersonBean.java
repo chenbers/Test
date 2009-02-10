@@ -43,6 +43,7 @@ import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.app.Roles;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.app.SupportedTimeZones;
+import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.MiscUtil;
 
@@ -384,7 +385,33 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             item.setDriver(new Driver());
             item.getDriver().setPersonID(item.getPersonID());
         }
+        if ((item.getDriver().getRFID() != null) && (item.getDriver().getRFID() == 0))
+            item.getDriver().setRFID(null);
         return item;
+    }
+
+    @Override
+    public String display()
+    {
+        final String redirect = super.display();
+
+        // if displaying the current user, reload from the DB in case changed elsewhere
+        if (getItem().isUserSelected() && getItem().getUser().getUserID().equals(getUserID()))
+            item = revertItem(getItem());
+
+        return redirect;
+    }
+
+    @Override
+    public String edit()
+    {
+        final String redirect = super.edit();
+
+        // if editing the current user, reload from the DB in case changed elsewhere
+        if (getItem().isUserSelected() && getItem().getUser().getUserID().equals(getUserID()))
+            item = revertItem(getItem());
+
+        return redirect;
     }
 
     @Override
@@ -595,6 +622,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                     personDAO.update(person);
                 else if (person.isDriverSelected())
                     driverDAO.update(person.getDriver());
+
+                // if updating the currently-logged-in person, update the proUser
+                if ((person.getUser() != null) && person.getUser().getUserID().equals(getUserID()))
+                    BeanUtil.deepCopy(person.getUser(), getUser());
             }
 
             // set zero RFID back to null
@@ -764,42 +795,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             if ((weight != null) && (weight == 0))
                 return null;
             return weight;
-        }
-
-        @Override
-        public String getPriPhone()
-        {
-            return MiscUtil.formatPhone(super.getPriPhone());
-        }
-
-        @Override
-        public void setPriPhone(String priPhone)
-        {
-            super.setPriPhone(MiscUtil.unformatPhone(priPhone));
-        }
-
-        @Override
-        public String getSecPhone()
-        {
-            return MiscUtil.formatPhone(super.getSecPhone());
-        }
-
-        @Override
-        public void setSecPhone(String secPhone)
-        {
-            super.setSecPhone(MiscUtil.unformatPhone(secPhone));
-        }
-
-        @Override
-        public String getCellPhone()
-        {
-            return MiscUtil.formatPhone(super.getCellPhone());
-        }
-
-        @Override
-        public void setCellPhone(String cellPhone)
-        {
-            super.setCellPhone(MiscUtil.unformatPhone(cellPhone));
         }
 
         public Group getGroup()

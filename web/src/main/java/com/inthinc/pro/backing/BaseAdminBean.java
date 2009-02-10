@@ -36,7 +36,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     protected String              filterValue;
     protected int                 page          = 1;
     private boolean               displayed;
-    private T                     item;
+    protected T                   item;
     private boolean               batchEdit;
     private boolean               selectAll;
     private Map<String, Boolean>  updateField;

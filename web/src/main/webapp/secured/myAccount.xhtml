@@ -171,15 +171,15 @@
                     <tbody>
                       <tr>
                         <td width="100"><h:outputText value="#{messages.myAccount_primary}" /></td>
-                        <td><h:outputText value="#{myAccountBean.user.person.priPhone}"/></td>
+                        <td><h:outputText value="#{myAccountBean.user.person.priPhone}" converter="PhoneNumberConverter" /></td>
                       </tr>
                       <tr>
                         <td width="100"><h:outputText value="#{messages.myAccount_secondary}" /></td>
-                        <td><h:outputText value="#{myAccountBean.user.person.secPhone}"/></td>
+                        <td><h:outputText value="#{myAccountBean.user.person.secPhone}" converter="PhoneNumberConverter" /></td>
                       </tr>
                       <tr>
                         <td width="100"><h:outputText value="#{messages.myAccount_cell}" /></td>
-                        <td><h:outputText value="#{myAccountBean.user.person.cellPhone}"/></td>
+                        <td><h:outputText value="#{myAccountBean.user.person.cellPhone}" converter="PhoneNumberConverter" /></td>
                       </tr>
                     </tbody>
                   </table>
