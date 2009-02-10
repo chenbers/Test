@@ -83,7 +83,9 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
     private ZoneAlertView createZoneAlertView(ZoneAlert alert)
     {
         final ZoneAlertView alertView = new ZoneAlertView();
+        alertView.setAnytime(false);
         BeanUtils.copyProperties(alert, alertView);
+        alertView.setAnytime(isAnytime(alertView));
         alertView.setZoneAlertsBean(this);
         alertView.setSelected(false);
         return alertView;

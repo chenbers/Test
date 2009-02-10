@@ -65,7 +65,9 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
     private RedFlagAlertView createRedFlagAlertView(RedFlagAlert flag)
     {
         final RedFlagAlertView flagView = new RedFlagAlertView();
+        flagView.setAnytime(false);
         BeanUtils.copyProperties(flag, flagView);
+        flagView.setAnytime(isAnytime(flagView));
         flagView.setSelected(false);
         return flagView;
     }
