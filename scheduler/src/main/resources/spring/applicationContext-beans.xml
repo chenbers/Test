@@ -38,6 +38,7 @@
 				<entry key="reportCriteriaService" value-ref="reportCriteriaService"/>
 				<entry key="reportScheduleDAO" value-ref="reportScheduleDAO"/>
 				<entry key="userDAO" value-ref="userDAO"/>
+				<entry key="accountDAO" value-ref="accountDAO"/>
 			</map>
 		</property>
 	</bean>

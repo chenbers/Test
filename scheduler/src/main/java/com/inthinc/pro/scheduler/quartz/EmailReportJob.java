@@ -10,8 +10,11 @@ import org.apache.log4j.Logger;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
+
+import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.ReportScheduleDAO;
 import com.inthinc.pro.dao.UserDAO;
+import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Occurrence;
 import com.inthinc.pro.model.ReportSchedule;
 import com.inthinc.pro.model.Status;
@@ -38,7 +41,10 @@ public class EmailReportJob extends QuartzJobBean
     private ReportCriteriaService reportCriteriaService;
     private ReportScheduleDAO reportScheduleDAO;
     private UserDAO userDAO;
+    private AccountDAO accountDAO;
     
+   
+
     @Override
     protected void executeInternal(JobExecutionContext arg0) throws JobExecutionException
     {
@@ -51,11 +57,20 @@ public class EmailReportJob extends QuartzJobBean
     
     private void processReportSchedules()
     {
-        //TODO We need pull the reportSchedules from all the accounts. As the code implies, we're only using account 1 at the moment.
-        List<ReportSchedule> reportSchedules = reportScheduleDAO.getReportSchedulesByAccountID(1);
+        
+        List<Account> accounts = accountDAO.getAllAcctIDs();
+        logger.debug("Account Count: " + accounts.size());
+        
+        List<ReportSchedule> reportSchedules = new ArrayList<ReportSchedule>();
+        for(Account account : accounts)
+        {
+            reportSchedules.addAll(reportScheduleDAO.getReportSchedulesByAccountID(account.getAcctID()));
+        }
+            
         Calendar todaysDate = Calendar.getInstance();
         for(ReportSchedule reportSchedule:reportSchedules)
         {
+            logger.debug("EmailReportJob: Begin Validation: " + reportSchedule.getName());
             if(emailReport(reportSchedule))
             {
                 logger.debug("EmailReportJob: BEGIN REPORT " + reportSchedule.getName());
@@ -164,6 +179,11 @@ public class EmailReportJob extends QuartzJobBean
             logger.debug("Name: " + reportSchedule.getName());
             logger.debug("Current Date Time: " + df.format(currentTimeDate.getTime()));
             logger.debug("End Date Time " + sdf2.format(endCalendar.getTime()));
+            return false;
+        }
+        
+        if(reportSchedule.getOccurrence() == null)
+        {
             return false;
         }
         
@@ -285,4 +305,16 @@ public class EmailReportJob extends QuartzJobBean
     {
         return userDAO;
     }
+    
+    public AccountDAO getAccountDAO()
+    {
+        return accountDAO;
+    }
+
+
+    public void setAccountDAO(AccountDAO accountDAO)
+    {
+        this.accountDAO = accountDAO;
+    }
+
 }
