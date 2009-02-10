@@ -293,7 +293,7 @@
                         <tr>
                           <td width="100">
                             <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_info" disabled="#{!personBean.item.userEditable}" value="#{personBean.updateField['reportsTo']}" />
-                            <h:graphicImage value="/images/ico_info.png" width="16" height="16" style="valign:middle" />
+                            <h:graphicImage rendered="#{!personBean.batchEdit}" value="/images/ico_info.png" width="16" height="16" style="valign:middle" />
                             <h:outputText value=" #{messages.myAccount_information}" />
                           </td>
                           <td>
@@ -305,7 +305,7 @@
                         <tr>
                           <td width="100">
                             <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_warn" disabled="#{!personBean.item.userEditable}" value="#{personBean.updateField['warn']}" />
-                            <h:graphicImage value="/images/ico_warning.png" width="16" height="16" style="valign:middle" />
+                            <h:graphicImage rendered="#{!personBean.batchEdit}" value="/images/ico_warning.png" width="16" height="16" style="valign:middle" />
                             <h:outputText value=" #{messages.myAccount_warning}" />
                           </td>
                           <td>
@@ -317,7 +317,7 @@
                         <tr>
                           <td width="100">
                             <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_crit" disabled="#{!personBean.item.userEditable}" value="#{personBean.updateField['crit']}" />
-                            <h:graphicImage value="/images/ico_critical.png" width="16" height="16" style="valign:middle" />
+                            <h:graphicImage rendered="#{!personBean.batchEdit}" value="/images/ico_critical.png" width="16" height="16" style="valign:middle" />
                             <h:outputText value=" #{messages.myAccount_critical}" />
                           </td>
                           <td>
