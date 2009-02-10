@@ -45,7 +45,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     private static final long serialVersionUID = -8422069679000248942L;
     
     private static final List<String> AVAILABLE_COLUMNS;
-    private static final int[]        DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 4 };
+    private static final int[]        DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 3, 4 };
     private static final List<SelectItem> REPORT_GROUPS;
     private static final List<SelectItem> DURATIONS;
     private static final List<SelectItem> OCCURRENCES;
@@ -219,6 +219,24 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             else
             {
                 reportScheduleDAO.update(reportSchedule);
+            }
+            
+            if(reportSchedule.getDriverID() != null)
+            {
+                Driver driver = driverDAO.findByID(reportSchedule.getDriverID());
+                reportSchedule.setDriverName(driver.getPerson().getFullName());
+            }
+            
+            if(reportSchedule.getVehicleID() != null)
+            {
+                Vehicle vehicle = vehicleDAO.findByID(reportSchedule.getVehicleID());
+                reportSchedule.setVehicleName(vehicle.getFullName());
+            }
+            
+            if(reportSchedule.getGroupID() != null)
+            {
+                Group group = groupDAO.findByID(reportSchedule.getGroupID());
+                reportSchedule.setGroupName(group.getName());
             }
                 
 

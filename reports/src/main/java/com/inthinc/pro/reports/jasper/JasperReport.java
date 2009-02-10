@@ -99,7 +99,7 @@ public class JasperReport implements Report
             logger.error(e);
         }
 
-    }
+    } 
 
     private void exportToPdfStream(OutputStream out,JasperPrint jasperPrint) throws JRException
     {

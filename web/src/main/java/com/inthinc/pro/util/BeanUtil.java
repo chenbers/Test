@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -113,7 +114,7 @@ public class BeanUtil
                             if (sourceProperty != null)
                             {
                                 // simple copy
-                                if (BeanUtils.isSimpleProperty(clazz) || clazz.isEnum() || clazz.isArray())
+                                if (BeanUtils.isSimpleProperty(clazz) || clazz.isEnum() || clazz.isArray() || clazz.isAssignableFrom(Date.class))
                                     writeMethod.invoke(target, new Object[] { sourceProperty });
                                 // circular reference: simply store the target reference
                                 else if (map.get(sourceProperty) != null)
@@ -311,7 +312,7 @@ public class BeanUtil
             {
                 try
                 {
-                    if (BeanUtils.isSimpleProperty(clazz) || clazz.isEnum())
+                    if (BeanUtils.isSimpleProperty(clazz) || clazz.isEnum() || clazz.isAssignableFrom(Date.class))
                     {
                         if (!"class".equals(descriptor.getName()))
                             names.add(prefix + descriptor.getName());

@@ -4,7 +4,7 @@
 
     <bean id="reportMailer" class="com.inthinc.pro.reports.mail.ReportMailerImpl">
     	<property name="javaMailSender" ref="mailSenderBean"/>
-    	 <property name="from"><value><![CDATA[tiwiPRO noreply <noreply@inthinc.com>]]></value></property>
+    	 <property name="from"><value><![CDATA[tiwiPRO Reporting <noreply@inthinc.com>]]></value></property>
    	</bean>
    	
    	<bean id="reportCreator" class="com.inthinc.pro.reports.jasper.JasperReportCreator">

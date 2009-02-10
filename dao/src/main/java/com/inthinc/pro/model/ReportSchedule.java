@@ -177,14 +177,22 @@ public class ReportSchedule
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
-        sb.append("(");
-        sb.append("reportScheduleID="); sb.append(this.reportScheduleID);sb.append(",");
-        sb.append("reportGroupID="); sb.append(this.reportID);sb.append(",");
-        sb.append("userID="); sb.append(this.userID);sb.append(",");
-        sb.append("groupID="); sb.append(this.groupID);sb.append(",");
-        sb.append("driverID="); sb.append(this.driverID);sb.append(",");
-        sb.append("vehicle="); sb.append(this.vehicleID);sb.append(",");
-        sb.append(")");
+        sb.append(this.getClass().toString());
+        sb.append("[");
+        sb.append("reportScheduleID="); sb.append(this.reportScheduleID);sb.append(", ");
+        sb.append("reportGroupID="); sb.append(this.reportID);sb.append(", ");
+        sb.append("userID="); sb.append(this.userID);sb.append(", ");
+        sb.append("groupID="); sb.append(this.groupID);sb.append(", ");
+        sb.append("driverID="); sb.append(this.driverID);sb.append(", ");
+        sb.append("status="); sb.append(this.status);sb.append(", ");
+        sb.append("startDate="); sb.append(this.startDate);sb.append(", ");
+        sb.append("endDate="); sb.append(this.endDate);sb.append(", ");
+        sb.append("lastDate="); sb.append(this.lastDate);sb.append(", ");
+        sb.append("occurrence="); sb.append(this.occurrence);sb.append(", ");
+        sb.append("dayOfWeek="); sb.append(this.dayOfWeek);sb.append(", ");
+        sb.append("reportDuration="); sb.append(this.reportDuration);sb.append(", ");
+        sb.append("emailTo="); sb.append(this.emailTo);
+        sb.append("]");
         return sb.toString();
     }
 
