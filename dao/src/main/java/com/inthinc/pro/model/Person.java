@@ -24,7 +24,6 @@ public class Person extends BaseEntity implements Comparable<Person>
     private String            secEmail;
     private String            priPhone;
     private String            secPhone;
-    private String            cellPhone;
     private String            priText;
     private String            secText;
     private Integer           info;
@@ -58,8 +57,8 @@ public class Person extends BaseEntity implements Comparable<Person>
     }
 
     public Person(Integer personID, Integer acctID, TimeZone timeZone, Integer costPerHour, Integer addressID, String priEmail, String secEmail, String priPhone, String secPhone,
-            String cellPhone, String priText, String secText, Integer info, Integer warn, Integer crit, String empid, String reportsTo, String title, String dept, String first,
-            String middle, String last, String suffix, Gender gender, Integer height, Integer weight, Date dob, Status status)
+            String priText, String secText, Integer info, Integer warn, Integer crit, String empid, String reportsTo, String title, String dept, String first, String middle,
+            String last, String suffix, Gender gender, Integer height, Integer weight, Date dob, Status status)
     {
         super();
         this.acctID = acctID;
@@ -71,7 +70,6 @@ public class Person extends BaseEntity implements Comparable<Person>
         this.secEmail = secEmail;
         this.priPhone = priPhone;
         this.secPhone = secPhone;
-        this.cellPhone = cellPhone;
         this.priText = priText;
         this.secText = secText;
         this.info = info;
@@ -170,16 +168,6 @@ public class Person extends BaseEntity implements Comparable<Person>
     public void setSecPhone(String secPhone)
     {
         this.secPhone = secPhone;
-    }
-
-    public String getCellPhone()
-    {
-        return cellPhone;
-    }
-
-    public void setCellPhone(String cellPhone)
-    {
-        this.cellPhone = cellPhone;
     }
 
     public String getPriText()

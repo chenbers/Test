@@ -76,7 +76,7 @@
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_dob}" /></td>
-                            <td><h:outputText value="#{personBean.item.dob}"><f:convertDateTime pattern="MMM d, yyyy" timeZone="UTC" /></h:outputText></td>
+                            <td><h:outputText value="#{personBean.item.dob}"><f:convertDateTime pattern="#{messages.dateFormat}" timeZone="UTC" /></h:outputText></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_gender}" /></td>
@@ -131,10 +131,6 @@
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_secPhone}" /></td>
                             <td><h:outputText value="#{personBean.item.secPhone}" converter="PhoneNumberConverter" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_cellPhone}" /></td>
-                            <td><h:outputText value="#{personBean.item.cellPhone}" converter="PhoneNumberConverter" /></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_priEmail}" /></td>
@@ -248,7 +244,7 @@
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_expiration}" /></td>
-                            <td><h:outputText value="#{personBean.item.driver.expiration}"><f:convertDateTime pattern="MMM d, yyyy" timeZone="UTC" /></h:outputText></td>
+                            <td><h:outputText value="#{personBean.item.driver.expiration}"><f:convertDateTime pattern="#{messages.dateFormat}" timeZone="UTC" /></h:outputText></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_certifications}" /></td>

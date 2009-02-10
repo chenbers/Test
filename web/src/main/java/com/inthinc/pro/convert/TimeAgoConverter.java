@@ -9,9 +9,9 @@ import java.util.TimeZone;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.ConverterException;
-import javax.swing.text.DateFormatter;
 
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.util.MessageUtil;
 
 /**
  * TimeAgoConverter
@@ -19,14 +19,13 @@ import com.inthinc.pro.dao.util.DateUtil;
  */
 public class TimeAgoConverter extends BaseConverter
 {
-    private DateFormat dateFormatter;
-    private String dateFormat = "MMM dd h:mm a z";
-    
+    @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException
     {
         return new Integer(value);
     }
     
+    @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException
     {
         Integer nowSeconds = (int)DateUtil.convertDateToSeconds(new Date());
@@ -59,7 +58,7 @@ public class TimeAgoConverter extends BaseConverter
         
         if(hours > 48)
         {
-            DateFormat dateFormatter = new SimpleDateFormat(dateFormat);
+            DateFormat dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"));
             dateFormatter.setTimeZone(tz);
             return dateFormatter.format(DateUtil.convertTimeInSecondsToDate(thenSecs));
         }

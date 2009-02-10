@@ -8,6 +8,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.util.MessageUtil;
 
 public class EventDisplay
 {
@@ -19,7 +20,7 @@ public class EventDisplay
     
     Event event;
     
-    private DateFormat dateFormatter = new SimpleDateFormat("MMM d, yyyy h:mm a (z)");
+    private DateFormat dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"));
     
     public EventDisplay(Event event)
     {

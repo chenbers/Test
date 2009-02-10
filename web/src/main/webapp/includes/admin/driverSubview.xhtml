@@ -134,15 +134,11 @@
 				</tr>
                 <tr>
                   <td width="100"><h:outputText value="#{messages.editPerson_priPhone }" /></td>
-                  <td><h:outputText value="#{driver.person.priPhone}" /></td>
+                  <td><h:outputText value="#{driver.person.priPhone}" converter="PhoneNumberConverter" /></td>
                 </tr>
                 <tr>
                   <td width="100"><h:outputText value="#{messages.editPerson_secPhone}" /></td>
-                  <td><h:outputText value="#{driver.person.secPhone}" /></td>
-                </tr>
-                <tr>
-                  <td width="100"><h:outputText value="#{messages.editPerson_cellPhone}" /></td>
-                  <td><h:outputText value="#{driver.person.cellPhone}" /></td>
+                  <td><h:outputText value="#{driver.person.secPhone}" converter="PhoneNumberConverter" /></td>
                 </tr>
                 <tr>
                   <td width="100"><h:outputText value="#{messages.editPerson_priEmail}" /></td>

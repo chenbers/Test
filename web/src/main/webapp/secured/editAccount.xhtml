@@ -161,7 +161,7 @@
                     <table width="100%" border="0" cellpadding="4" cellspacing="0">
                       <tbody>
                         <tr>
-                          <td width="100"><h:outputText value="#{messages.myAccount_primary}" /> <span class="required">*</span></td>
+                          <td width="100"><h:outputText value="#{messages.myAccount_priEmail}" /> <span class="required">*</span></td>
                           <td>
                             <rich:message for="priEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText id="priEmail" value="#{myAccountBean.user.person.priEmail}" size="40" maxlength="62"
@@ -169,7 +169,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td width="100"><h:outputText value="#{messages.myAccount_secondary}" /></td>
+                          <td width="100"><h:outputText value="#{messages.myAccount_secEmail}" /></td>
                           <td>
                             <rich:message for="secEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText id="secEmail" value="#{myAccountBean.user.person.secEmail}" 
@@ -183,7 +183,7 @@
                     <table width="100%" border="0" cellpadding="4" cellspacing="0">
                       <tbody>
                         <tr>
-                          <td width="100"><h:outputText value="#{messages.myAccount_primary}" /></td>
+                          <td width="100"><h:outputText value="#{messages.myAccount_priPhone}" /></td>
                           <td>
                             <rich:message for="priPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText id="priPhone" value="#{myAccountBean.user.person.priPhone}" size="40" maxlength="22" onkeyup="populateAlertText()" validatorMessage="#{messages.myAccount_phoneFormat}" converter="PhoneNumberConverter">
@@ -193,20 +193,10 @@
                           </td>
                         </tr>
                         <tr>
-                          <td width="100"><h:outputText value="#{messages.myAccount_secondary}" /></td>
+                          <td width="100"><h:outputText value="#{messages.myAccount_secPhone}" /></td>
                           <td>
                             <rich:message for="secPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText id="secPhone" value="#{myAccountBean.user.person.secPhone}" size="40" maxlength="22" onkeyup="populateAlertText()" validatorMessage="#{messages.myAccount_phoneFormat}" converter="PhoneNumberConverter">
-                              <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
-                              <f:attribute name="regex" value="\D?\d{3}\D*\d{3}\D?\d{4}" />
-                            </h:inputText>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td width="100"><h:outputText value="#{messages.myAccount_cell}" /></td>
-                          <td>
-                            <rich:message for="cellPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText id="cellPhone" value="#{myAccountBean.user.person.cellPhone}" size="40" maxlength="22" onkeyup="populateAlertText()" validatorMessage="#{messages.myAccount_phoneFormat}" converter="PhoneNumberConverter">
                               <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
                               <f:attribute name="regex" value="\D?\d{3}\D*\d{3}\D?\d{4}" />
                             </h:inputText>
@@ -219,7 +209,7 @@
                     <table width="100%" border="0" cellpadding="4" cellspacing="0">
                       <tbody>
                         <tr>
-                          <td width="100"><h:outputText value="#{messages.myAccount_primary}" /></td>
+                          <td width="100"><h:outputText value="#{messages.myAccount_priText}" /></td>
                           <td>
                             <rich:message for="priText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText id="priText" value="#{myAccountBean.user.person.priText}" size="40" maxlength="62" onkeyup="populateAlertText()" validator="#{myAccountBean.validateEmail}">
@@ -228,7 +218,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td width="100"><h:outputText value="#{messages.myAccount_secondary}" /></td>
+                          <td width="100"><h:outputText value="#{messages.myAccount_secText}" /></td>
                           <td>
                             <rich:message for="secText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText id="secText" value="#{myAccountBean.user.person.secText}" size="40" maxlength="62" onkeyup="populateAlertText()" validator="#{myAccountBean.validateEmail}">
@@ -257,15 +247,6 @@
   function bodyLoad()
   {
     populateAlertText();
-
-    var elements = document.getElementById("edit-form").elements;
-    for (var i = 0; i &lt; elements.length; i++)
-      for (var j = 0; j &lt; formElements.length; j++)
-        if (elements[i].getAttribute("type") == formElements[j])
-        {
-          elements[i].focus();
-          return;
-        }
   }
 
   function populateAlertText(id)
@@ -286,9 +267,8 @@
       populateAlertOption(select.options[2], "my_form:secEmail");
       populateAlertOption(select.options[3], "my_form:priPhone");
       populateAlertOption(select.options[4], "my_form:secPhone");
-      populateAlertOption(select.options[5], "my_form:cellPhone");
-      populateAlertOption(select.options[6], "my_form:priText");
-      populateAlertOption(select.options[7], "my_form:secText");
+      populateAlertOption(select.options[5], "my_form:priText");
+      populateAlertOption(select.options[6], "my_form:secText");
     }
   }
 

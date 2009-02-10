@@ -228,7 +228,7 @@
 											<a4j:outputPanel id="calendarStart" layout="block">
 				                   		 	<rich:calendar value="#{vehicleTripsBean.startDate}"
 				                	        	locale="en/US" popup="true" immediate="true"
-				               		         	datePattern="MMM d, yyyy"
+				               		         	datePattern="#{messages.dateFormat}"
 				               			         	showApplyButton="false" cellWidth="24px" cellHeight="22px"/>
 				           					</a4j:outputPanel> 
 										</td>
@@ -240,7 +240,7 @@
 								  				<a4j:outputPanel id="calendarEnd" layout="block">
 				                    				<rich:calendar value="#{vehicleTripsBean.endDate}"
 				                        				locale="en/US" popup="true" immediate="true"
-				                        				datePattern="MMM d, yyyy"
+				                        				datePattern="#{messages.dateFormat}"
 				                        				showApplyButton="false" cellWidth="24px" cellHeight="22px"/>
 				           							</a4j:outputPanel>
 											</td>
@@ -279,10 +279,10 @@
 					<div class="panel_title">
 						<span class=""><h:outputText>Stats:&#160;</h:outputText>
 						<h:outputText value="#{vehicleTripsBean.startDate}">
-							<f:convertDateTime pattern="MMM d, yyyy" />
+							<f:convertDateTime pattern="#{messages.dateFormat}" />
 						</h:outputText>&#160;to&#160; 
 						<h:outputText value="#{vehicleTripsBean.endDate}">
-							<f:convertDateTime pattern="MMM d, yyyy" />
+							<f:convertDateTime pattern="#{messages.dateFormat}" />
 						</h:outputText>
 						</span>
 						<span class="panel_links"></span>
@@ -367,7 +367,7 @@
 								</f:facet>
 								
 								<h:outputText value="#{item.time}" >
-									<f:convertDateTime pattern="MMM d, yyyy h:mm a (z)" timeZone="#{vehicleTripsBean.timeZone}" />
+									<f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{vehicleTripsBean.timeZone}" />
 								</h:outputText>
 							
 							</rich:column>

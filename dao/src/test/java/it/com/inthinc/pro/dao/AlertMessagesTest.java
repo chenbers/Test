@@ -403,9 +403,9 @@ public class AlertMessagesTest
                 randomState(), "ABCD", expired, null, null, groupID);
         User user = new User(0, 0, randomRole(), Status.ACTIVE, "deepuser_"+groupID, PASSWORD, groupID);
         Date dob = Util.genDate(1959, 8, 30);
-        person = new Person(0, acctID, TimeZone.getTimeZone(SupportedTimeZones.getSupportedTimeZones().get(0)), null, address.getAddrID(), "email"+groupID+"@email.com", "secEmail@test.com", "8015551111", "8015552222", "8015553333", "8015554444@texter.com", "8015555555@texter.com", 1, 1, 1, 
-                "emp"+groupID, null, "title"+groupID, "dept" + groupID, "first"+groupID, "m"+groupID, "last"+groupID, "jr", Gender.MALE, 65, 180, 
-                dob, Status.ACTIVE);
+        person = new Person(0, acctID, TimeZone.getTimeZone(SupportedTimeZones.getSupportedTimeZones().get(0)), null, address.getAddrID(), "email"+groupID+"@email.com", "secEmail@test.com", "8015551111", "8015552222", "8015554444@texter.com", "8015555555@texter.com", 1, 1, 1, "emp"+groupID, 
+                null, "title"+groupID, "dept" + groupID, "first"+groupID, "m"+groupID, "last"+groupID, "jr", Gender.MALE, 65, 180, dob, 
+                Status.ACTIVE);
         person.setUser(user);
         person.setDriver(driver);
         person.setAddress(address);

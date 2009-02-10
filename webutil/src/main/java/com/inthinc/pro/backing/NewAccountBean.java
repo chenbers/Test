@@ -65,8 +65,8 @@ public class NewAccountBean
         Integer groupID = groupDAO.create(acctID, topGroup);
         
         // create the person record for the superuser
-        Person person = new Person(new Integer(0),acctID,  TimeZone.getDefault(), null, null, email, null, "5555555555", "5555555555", null, null, null, null, null, null, "0", null, "title", "dept",
-                        "first", "m", "last", "jr", Gender.FEMALE, 65, 180, new Date(), Status.ACTIVE);
+        Person person = new Person(new Integer(0),acctID,  TimeZone.getDefault(), null, null, email, null, "5555555555", "5555555555", null, null, null, null, null, "0", null, "title", "dept", "first",
+                        "m", "last", "jr", Gender.FEMALE, 65, 180, new Date(), Status.ACTIVE);
         person.setAddress(new Address(null, "", null, "", null, ""));
         Integer personID = null;
         try

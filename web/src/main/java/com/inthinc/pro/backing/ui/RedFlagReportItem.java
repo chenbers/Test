@@ -7,14 +7,9 @@ import java.text.SimpleDateFormat;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
-import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
-import com.inthinc.pro.model.EventCategory;
-import com.inthinc.pro.model.EventType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.RedFlag;
-import com.inthinc.pro.model.SpeedingEvent;
-import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.MessageUtil;
 
 public class RedFlagReportItem implements Comparable<RedFlagReportItem>
@@ -31,7 +26,7 @@ public class RedFlagReportItem implements Comparable<RedFlagReportItem>
     
     private RedFlag redFlag;
     
-    private static DateFormat dateFormatter = new SimpleDateFormat("MMM d, yyyy h:mm a (z)");
+    private static DateFormat dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"));
 
     
     public RedFlagReportItem(RedFlag redFlag, GroupHierarchy groupHierarchy)

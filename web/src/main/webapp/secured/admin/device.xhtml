@@ -94,7 +94,7 @@
                               <ui:fragment rendered="#{not empty devicesBean.item.activated}">
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editDevice_activated}" /></td>
-                                <td><h:outputText value="#{devicesBean.item.activated}"><f:convertDateTime pattern="MMM d, yyyy" timeZone="#{devicesBean.user.person.timeZone}" /></h:outputText></td>
+                                <td><h:outputText value="#{devicesBean.item.activated}"><f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{devicesBean.user.person.timeZone}" /></h:outputText></td>
                               </tr>
                               </ui:fragment>
                             </table>

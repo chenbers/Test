@@ -389,7 +389,7 @@
 						<span class="map">Last Trip:&#160;
 						<c:if test="#{driverBean.lastTrip ne null}">
 							<h:outputText value="#{driverBean.lastTrip.trip.endTime}">
-								<f:convertDateTime pattern="MMM dd, yyyy hh:mm a (z)" timeZone="#{navigationBean.driver.person.timeZone}" />
+								<f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{navigationBean.driver.person.timeZone}" />
 							</h:outputText>
 						</c:if>
 						</span>

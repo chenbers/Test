@@ -25,7 +25,8 @@ public class MyAccountBean extends BaseBean
         // alert options
         ALERT_OPTIONS = new LinkedHashMap<String, Integer>();
         for (int i = 0; i < 8; i++)
-            ALERT_OPTIONS.put(MessageUtil.getMessageString("myAccount_alertText" + i), i);
+            if (i != 5) // skip cell phone
+                ALERT_OPTIONS.put(MessageUtil.getMessageString("myAccount_alertText" + i), i);
     }
 
     private PersonDAO personDAO;

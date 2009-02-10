@@ -10,12 +10,8 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.model.Alert;
 import com.inthinc.pro.model.Event;
-import com.inthinc.pro.model.EventCategory;
-import com.inthinc.pro.model.EventType;
 import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagLevel;
-import com.inthinc.pro.model.SpeedingEvent;
 import com.inthinc.pro.util.MessageUtil;
 
 public class EventReportItem implements Comparable<EventReportItem>
@@ -33,7 +29,7 @@ public class EventReportItem implements Comparable<EventReportItem>
     private RedFlagLevel level;
     private boolean alert;
     
-    private static DateFormat dateFormatter = new SimpleDateFormat("MMM d, yyyy h:mm a (z)");
+    private static DateFormat dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"));
 
     
     public EventReportItem(Event event, Alert rfAlert, GroupHierarchy groupHierarchy)

@@ -226,16 +226,6 @@
                           </td>
                         </tr>
                         <tr>
-                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_cellPhone}" /></td>
-                          <td>
-                            <rich:message for="cellPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.cellPhone}" id="cellPhone" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="22" validatorMessage="#{messages.editPerson_phoneFormat}" converter="PhoneNumberConverter">
-                              <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
-                              <f:attribute name="regex" value="\D?\d{3}\D*\d{3}\D?\d{4}" />
-                            </h:inputText>
-                          </td>
-                        </tr>
-                        <tr>
                           <td width="100" valign="top">
                             <h:outputText value="#{messages.editPerson_priEmail}" />
                             <a4j:outputPanel id="emailRequired">
@@ -657,9 +647,8 @@
       populateAlertOption(select.options[2], "edit-form:secEmail");
       populateAlertOption(select.options[3], "edit-form:priPhone");
       populateAlertOption(select.options[4], "edit-form:secPhone");
-      populateAlertOption(select.options[5], "edit-form:cellPhone");
-      populateAlertOption(select.options[6], "edit-form:priText");
-      populateAlertOption(select.options[7], "edit-form:secText");
+      populateAlertOption(select.options[5], "edit-form:priText");
+      populateAlertOption(select.options[6], "edit-form:secText");
     }
   }
 

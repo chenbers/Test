@@ -240,8 +240,8 @@ public class DataGenerator
         personDAO.setSiloService(siloService);
 
         // create a person
-        Person person = new Person(0, acctID, TimeZone.getDefault(), 0, address.getAddrID(), first + "email"+groupID+"@email.com", null, "5555555555", "5555555555", null, null, null, null, null, null, 
-                "emp01", null, "title", "dept", first, "m", last, "jr", Gender.MALE, 65, 180, new Date(), Status.ACTIVE);
+        Person person = new Person(0, acctID, TimeZone.getDefault(), 0, address.getAddrID(), first + "email"+groupID+"@email.com", null, "5555555555", "5555555555", null, null, null, null, null, "emp01", 
+                null, "title", "dept", first, "m", last, "jr", Gender.MALE, 65, 180, new Date(), Status.ACTIVE);
 
         Integer personID = personDAO.create(acctID, person);
         assertNotNull(personID);

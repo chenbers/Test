@@ -9,6 +9,7 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
+import com.inthinc.pro.util.MessageUtil;
 
 public class TripDisplay
 {
@@ -34,11 +35,11 @@ public class TripDisplay
         
         route = trip.getRoute();
         
-        dateFormatter = new SimpleDateFormat("MMM d, yyyy");
+        dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateFormat"));
         dateFormatter.setTimeZone(timeZone);
         setDateShort(dateFormatter.format(trip.getEndTime()));
         
-        dateFormatter = new SimpleDateFormat("h:mm a (z)");
+        dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("timeFormat"));
         dateFormatter.setTimeZone(timeZone);
         setTimeStartShort(dateFormatter.format(trip.getStartTime() ));
         setTimeEndShort(dateFormatter.format(trip.getEndTime() ));
@@ -61,13 +62,13 @@ public class TripDisplay
     }
     public String getStartDateString()
     {
-        dateFormatter = new SimpleDateFormat("MMM d, yyyy h:mm a (z)");
+        dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"));
         dateFormatter.setTimeZone(timeZone);
         return dateFormatter.format(trip.getStartTime());
     }
     public String getEndDateString()
     {
-        dateFormatter = new SimpleDateFormat("MMM d, yyyy h:mm a (z)");
+        dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"));
         dateFormatter.setTimeZone(timeZone);
         return dateFormatter.format(trip.getEndTime());
     }

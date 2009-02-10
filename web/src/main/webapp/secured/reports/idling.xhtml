@@ -76,13 +76,13 @@
             												<rich:calendar id="startCalendar" inputSize="10" 
             													value="#{idlingReportBean.startDate}" 
             													currentDate="#{idlingReportBean.startDate}"            												
-            													datePattern="dd MMM yy"/>
+            													datePattern="#{messages.dateFormat}"/>
             											</td>
             											<td>
             												<rich:calendar id="endCalendar" inputSize="10" 
             													value="#{idlingReportBean.endDate}" 
             													currendDate="#{idlingReportBean.endDate}"            													
-            													datePattern="dd MMM yy"/>
+            													datePattern="#{messages.dateFormat}"/>
             											</td>
             										</tr>
             									</table>

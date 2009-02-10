@@ -446,7 +446,7 @@ var firstLoad = new Boolean(true);
 									<h:outputText value="Date/Time" />
 								</f:facet>
 									<h:outputText value="#{item.event.time}">
-										<f:convertDateTime pattern="MMM d, yyyy h:mm a (z)"/>
+										<f:convertDateTime pattern="#{messages.dateTimeFormat}"/>
 									</h:outputText>
 							</rich:column>
 							
@@ -520,7 +520,7 @@ var firstLoad = new Boolean(true);
 	   	<h:panelGroup layout="block"  styleClass="popupcontent" id="clearItem">
 			<h:outputText value="#{vehicleStyleBean.clearItem.detail}"/><br/>
       		<h:outputText value="#{vehicleStyleBean.clearItem.event.time}">
-      			<f:convertDateTime pattern="MMM d, yyyy h:mm a (z)"/>
+      			<f:convertDateTime pattern="#{messages.dateTimeFormat}"/>
 			</h:outputText>
       	</h:panelGroup>
 	

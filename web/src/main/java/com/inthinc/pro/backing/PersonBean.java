@@ -45,7 +45,6 @@ import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.app.SupportedTimeZones;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
-import com.inthinc.pro.util.MiscUtil;
 
 /**
  * @author David Gileadi
@@ -80,7 +79,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         AVAILABLE_COLUMNS.add("fullName");
         AVAILABLE_COLUMNS.add("priPhone");
         AVAILABLE_COLUMNS.add("secPhone");
-        AVAILABLE_COLUMNS.add("cellPhone");
         AVAILABLE_COLUMNS.add("priEmail");
         AVAILABLE_COLUMNS.add("secEmail");
         AVAILABLE_COLUMNS.add("priText");
@@ -177,7 +175,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         // alert options
         ALERT_OPTIONS = new LinkedHashMap<String, Integer>();
         for (int i = 0; i < 8; i++)
-            ALERT_OPTIONS.put(MessageUtil.getMessageString("myAccount_alertText" + i), i);
+            if (i != 5) // skip cell phone
+                ALERT_OPTIONS.put(MessageUtil.getMessageString("myAccount_alertText" + i), i);
     }
 
     private PersonDAO                          personDAO;

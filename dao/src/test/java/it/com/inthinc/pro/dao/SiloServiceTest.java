@@ -1148,8 +1148,8 @@ public class SiloServiceTest
         {
             Date dob = Util.genDate(1959, 8, 30);
             String email =  "email_"+groupID+"_"+i+"@yahoo.com";
-            Person person = new Person(0, acctID, TimeZone.getDefault(), null, address.getAddrID(), email, null, "555555555" + i, "555555555" + i, null, null, null, null, null, null,
-                            "emp"+i, null, "title"+i, "dept" + i, "first"+i, "m"+i, "last"+i, "jr", Gender.MALE, 65, 180, dob, Status.ACTIVE);
+            Person person = new Person(0, acctID, TimeZone.getDefault(), null, address.getAddrID(), email, null, "555555555" + i, "555555555" + i, null, null, null, null, null, "emp"+i,
+                            null, "title"+i, "dept" + i, "first"+i, "m"+i, "last"+i, "jr", Gender.MALE, 65, 180, dob, Status.ACTIVE);
             User user = new User(0, 0, randomRole(), Status.ACTIVE, "user"+groupID+"_"+i, PASSWORD, groupID);
             person.setUser(user);
             
@@ -1558,9 +1558,9 @@ public class SiloServiceTest
                 randomState(), "ABCD", expired, null, null, groupID);
         User user = new User(0, 0, randomRole(), Status.ACTIVE, "deepuser_"+groupID, PASSWORD, groupID);
         Date dob = Util.genDate(1959, 8, 30);
-        Person person = new Person(0, acctID, TimeZone.getDefault(), null, address.getAddrID(), "priEmail" + groupID + "@test.com", "secEmail@test.com", "8015551111", "8015552222", "8015553333", "8015554444@texter.com", "8015555555@texter.com", 1, 2, 3,
-                "emp"+groupID, null, "title"+groupID, "dept" + groupID, "first"+groupID, "m"+groupID, "last"+groupID, "jr", Gender.MALE, 65, 180, 
-                dob, Status.ACTIVE);
+        Person person = new Person(0, acctID, TimeZone.getDefault(), null, address.getAddrID(), "priEmail" + groupID + "@test.com", "secEmail@test.com", "8015551111", "8015552222", "8015554444@texter.com", "8015555555@texter.com", 1, 2, 3, "emp"+groupID,
+                null, "title"+groupID, "dept" + groupID, "first"+groupID, "m"+groupID, "last"+groupID, "jr", Gender.MALE, 65, 180, dob, 
+                Status.ACTIVE);
         person.setUser(user);
         person.setDriver(driver);
         person.setAddress(address);
