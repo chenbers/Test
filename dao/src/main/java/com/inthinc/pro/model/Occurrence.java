@@ -6,9 +6,9 @@ import java.util.Map;
 
 public enum Occurrence implements BaseEnum
 {
-    EVERY_WEEEK(0,"Once a week"),
-    EVERY_OTHER(1,"Every other week"),
-    ONCE_MONTH(2,"Once a Month");
+    DAILY(0,"Daily"),
+    WEEKLY(1,"Weekly"),
+    MONTHLY(2,"Monthly");
     
     private Integer code;
     private String description;
@@ -38,6 +38,11 @@ public enum Occurrence implements BaseEnum
         return lookup.get(code);
     }
 
+    public String getDescription()
+    {
+        return description;
+    }
+    
     @Override
     public String toString()
     {

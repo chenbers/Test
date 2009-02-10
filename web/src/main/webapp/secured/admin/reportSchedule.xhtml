@@ -36,10 +36,11 @@
 					infoClass="info" styleClass="msg" />
 					
 				<ul id="grid_nav" style="margin: 0;">
-                   	<li class="r">
-                      <h:commandButton action="#{reportScheduleBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
-                      <h:outputText value=" " /><h:commandButton action="#{reportScheduleBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
-                    </li>
+					 <li class="l text"><a4j:htmlCommandLink action="#{reportScheduleBean.cancelDisplay}" value="#{messages.reportSchedule_backToSchedules}" /></li>
+                   	 <li class="r">
+                      <a4j:commandButton styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
+                      <h:outputText value=" " /><h:commandButton action="#{reportScheduleBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>
+                   	 </li>
                 </ul>
 
 				<table width="650" border="0" cellspacing="0" cellpadding="0">
@@ -63,7 +64,9 @@
 									value="#{messages.reportSchedule_startDate}" />
 								</td>
 								<td>
-									<h:outputText value="#{reportScheduleBean.item.startDate}"/>	
+									<h:outputText value="#{reportScheduleBean.item.startDate}">
+										<f:convertDateTime timeZone="#{reportScheduleBean.utcTimeZone}" type="date" />
+									</h:outputText>	
 								</td>
 								
 							</tr>
@@ -72,18 +75,9 @@
 									value="#{messages.reportSchedule_endDate}" />
 								</td>
 								<td>
-									<h:outputText value="#{reportScheduleBean.item.endDate}"/>	
-								</td>
-							</tr>
-							<tr>
-								<td width="100" valign="top"><h:outputText
-									value="#{messages.reportSchedule_daysOfWeek}" />
-								</td>
-								<td>
-									<ui:include src="../../includes/dayPicker.xhtml">
-		                                <ui:param name="days" value="#{reportScheduleBean.item.dayOfWeek}" />
-		                                <ui:param name="disabled" value="true" />
-                              		</ui:include>	
+									<h:outputText value="#{reportScheduleBean.item.endDate}">
+										<f:convertDateTime timeZone="#{reportScheduleBean.utcTimeZone}" type="date" />
+									</h:outputText>	
 								</td>
 							</tr>
 							<tr>
@@ -99,6 +93,27 @@
 	                                <h:outputText value="#{(reportScheduleBean.item.timeOfDay ge 720) ? messages.timePicker_pm : messages.timePicker_am}" />
 								</td>
 							</tr>
+							<tr>
+								<td width="100" valign="top">
+									<h:outputText value="#{messages.reportSchedule_occurrence}"/>
+								</td>
+								<td>
+									<h:outputText value="#{reportScheduleBean.item.occurrence}"/>
+								</td>
+							</tr>
+							<h:outputText rendered="#{reportScheduleBean.item.occurrence eq 'DAILY'}">
+							<tr>
+								<td width="100" valign="top"><h:outputText
+									value="#{messages.reportSchedule_daysOfWeek}" />
+								</td>
+								<td>
+									<ui:include src="../../includes/dayPicker.xhtml">
+		                                <ui:param name="days" value="#{reportScheduleBean.item.dayOfWeek}" />
+		                                <ui:param name="disabled" value="true" />
+                              		</ui:include>	
+								</td>
+							</tr>
+							</h:outputText>
 							
 						</table>
 						
@@ -116,7 +131,7 @@
 									<h:outputText value="#{messages.reportSchedule_report}"/>
 								</td>
 								<td>
-									<h:outputText value="#{reportScheduleBean.item.reportName}"/>
+									<h:outputText value="#{reportScheduleBean.item.report.label}"/>
 								</td>
 							</tr>
 							<tr>
@@ -162,7 +177,7 @@
 						</table>
 						</h:panelGroup>
 							<div class="add_section_title"><h:outputText
-									value="#{messages.reportSchedule_emailing}" /></div>
+									value="#{messages.reportSchedule_email}" /></div>
 							
 							<table width="350" border="0" cellspacing="2" cellpadding="4"
 								align="center">

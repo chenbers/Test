@@ -8,7 +8,9 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
+import javax.faces.model.SelectItem;
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.BeanUtils;
 
@@ -21,7 +23,9 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.Occurrence;
 import com.inthinc.pro.model.ReportSchedule;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.reports.ReportGroup;
@@ -41,9 +45,10 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     private static final long serialVersionUID = -8422069679000248942L;
     
     private static final List<String> AVAILABLE_COLUMNS;
-    private static final int[]        DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2 };
-    private static final Map<String, Integer> REPORT_GROUPS;
-    private static final Map<String, Duration> DURATIONS;
+    private static final int[]        DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 4 };
+    private static final List<SelectItem> REPORT_GROUPS;
+    private static final List<SelectItem> DURATIONS;
+    private static final List<SelectItem> OCCURRENCES;
     
     private static final String REDIRECT_REPORT_SCHEDULES = "go_adminReportSchedules";
     private static final String REDIRECT_REPORT_SCHEDULE = "go_adminReportSchedule";
@@ -64,26 +69,33 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         AVAILABLE_COLUMNS.add("name");
         AVAILABLE_COLUMNS.add("startDate");
         AVAILABLE_COLUMNS.add("endDate");
-        AVAILABLE_COLUMNS.add("timeOfDay");
         AVAILABLE_COLUMNS.add("lastEmail");
         AVAILABLE_COLUMNS.add("report");
        
-        REPORT_GROUPS = new HashedMap();
-        REPORT_GROUPS.put("   ", null);
+        REPORT_GROUPS = new ArrayList<SelectItem>();
+        REPORT_GROUPS.add(new SelectItem(null,""));
         for(ReportGroup rt:EnumSet.allOf(ReportGroup.class))
         {
-            REPORT_GROUPS.put(rt.getLabel(), rt.getCode());
+            REPORT_GROUPS.add(new SelectItem(rt.getCode(),rt.getLabel()));
         }
             
-        DURATIONS = new HashedMap();
+        DURATIONS = new ArrayList<SelectItem>();
+        DURATIONS.add(new SelectItem(null,""));
         for(Duration d : EnumSet.allOf(Duration.class))
         {
-            DURATIONS.put(d.toString(), d);
+            DURATIONS.add(new SelectItem(d,d.toString()));
+        }
+        
+        OCCURRENCES = new ArrayList<SelectItem>();
+        OCCURRENCES.add(new SelectItem(null,""));
+        for(Occurrence o : EnumSet.allOf(Occurrence.class))
+        {
+            OCCURRENCES.add(new SelectItem(o,o.getDescription()));
         }
     }
     
     
-    public Map<String, Integer> getReportGroups()
+    public List<SelectItem> getReportGroups()
     { 
         return REPORT_GROUPS;
     }
@@ -98,9 +110,14 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         return entityType;
     }
     
-    public Map<String,Duration> getDurations()
+    public List<SelectItem> getDurations()
     {
         return DURATIONS;
+    }
+    
+    public List<SelectItem> getOccurrences()
+    {
+        return OCCURRENCES;
     }
     
     @SuppressWarnings("unchecked")
@@ -161,6 +178,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         
         reportSchedule.setDayOfWeek(booleanList);
         
+        reportSchedule.setStatus(Status.ACTIVE);
+        
         return createReportScheduleView(reportSchedule);
     }
 
@@ -175,6 +194,17 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             addInfoMessage(summary);
         }
         
+    }
+    
+    @Override
+    public String save()
+    {
+        getUpdateField().put("startDate", Boolean.TRUE);
+        getUpdateField().put("endDate", Boolean.TRUE);
+        getUpdateField().put("dayOfWeek",Boolean.TRUE);
+        getUpdateField().put("timeOfDay",Boolean.TRUE);
+        getUpdateField().put("dayOfWeek",Boolean.TRUE);
+        return super.save();
     }
 
     @Override
@@ -197,6 +227,11 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             addInfoMessage(summary);
         }
         
+    }
+    
+    public TimeZone getUtcTimeZone()
+    {
+        return TimeZone.getTimeZone("UTC");
     }
 
     @Override
@@ -287,6 +322,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             reportScheduleView.setGroupName(group.getName());
         }
         
+        
+        
         return reportScheduleView;
     }
     
@@ -346,6 +383,9 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         
         @Column(updateable = false)
         private String vehicleName;
+        
+        @Column(updateable = false)
+        private ReportGroup report;
 
         @Override
         public boolean isSelected()
@@ -366,15 +406,20 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         }
         
         public String getEmailToString(){
-            String emailString = "";
+            StringBuilder sb = new StringBuilder();
             if(getEmailTo() != null)
             {
-                for(String email:this.getEmailTo())
+                for(int i= 0;i < getEmailTo().size();i++)
                 {
-                    emailString += email + ",";
+                    sb.append(getEmailTo().get(i));
+                    if((i+1) ==  getEmailTo().size())
+                    {
+                        break;
+                    }
+                    sb.append(",");
                 }
             }
-            return emailString; 
+            return sb.toString(); 
         }
         
         public void setEmailToString(String email)
@@ -386,8 +431,12 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             }
         }
         
-        public String getReportName(){
-            return ReportGroup.valueOf(getReportID()).getLabel();
+        public ReportGroup getReport(){
+            if(getReportID() != null)
+            {
+                report = ReportGroup.valueOf(getReportID());
+            }
+            return report;
         }
         
         public String getGroupName(){
@@ -417,6 +466,11 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         public String getVehicleName()
         {
             return vehicleName;
+        }
+
+        public void setReport(ReportGroup report)
+        {
+            this.report = report;
         }
     }
 

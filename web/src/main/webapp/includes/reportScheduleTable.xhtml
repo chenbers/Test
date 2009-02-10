@@ -23,16 +23,25 @@
     <rich:column rendered="#{reportScheduleBean.tableColumns['startDate'].visible}" sortBy="#{item.startDate}">
       <f:facet name="header"><h:outputText value="#{messages.reportSchedulesHeader_startDate}" /></f:facet>
       <h:outputText value="#{item.startDate}">
+      	<f:convertDateTime timeZone="#{reportScheduleBean.utcTimeZone}" type="date" />
       </h:outputText>
     </rich:column>
     <rich:column rendered="#{reportScheduleBean.tableColumns['endDate'].visible}" sortBy="#{item.endDate}">
       <f:facet name="header"><h:outputText value="#{messages.reportSchedulesHeader_endDate}" /></f:facet>
       <h:outputText value="#{item.endDate}">
+      	<f:convertDateTime timeZone="#{reportScheduleBean.utcTimeZone}" type="date" />
+      </h:outputText>
+    </rich:column>
+    <rich:column rendered="#{reportScheduleBean.tableColumns['lastEmail'].visible}" sortBy="#{item.reportID}">
+      <f:facet name="header"><h:outputText value="#{messages.reportSchedulesHeader_lastEmail}" /></f:facet>
+      	<h:outputText value="#{item.lastDate}">
+      		<f:convertDateTime timeZone="
+      		#{reportScheduleBean.utcTimeZone}" type="date" />
       </h:outputText>
     </rich:column>
     <rich:column rendered="#{reportScheduleBean.tableColumns['report'].visible}" sortBy="#{item.reportID}">
       <f:facet name="header"><h:outputText value="#{messages.reportSchedulesHeader_report}" /></f:facet>
-      <h:outputText value="#{item.reportName}">
+      <h:outputText value="#{item.report.label}">
       </h:outputText>
     </rich:column>
   </ui:define>

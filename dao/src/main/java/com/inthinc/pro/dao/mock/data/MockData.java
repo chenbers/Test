@@ -447,7 +447,7 @@ public class MockData
         reportSchedule.setEndDate(endDate);
         reportSchedule.setStartDate(startDate);
         reportSchedule.setReportDuration(Duration.DAYS);
-        reportSchedule.setOccurrence(Occurrence.EVERY_WEEEK);
+        reportSchedule.setOccurrence(Occurrence.WEEKLY);
         reportSchedule.setName(name);
         List<Boolean> booleanList = new ArrayList<Boolean>();
         booleanList.add(Boolean.TRUE);

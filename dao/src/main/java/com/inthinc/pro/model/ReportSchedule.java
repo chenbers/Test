@@ -35,7 +35,7 @@ public class ReportSchedule
     
     @Column(name="duration")
     private Duration reportDuration;
-    @Column(updateable=false)
+
     private Occurrence occurrence;
     
     public ReportSchedule()
