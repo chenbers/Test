@@ -1,6 +1,5 @@
 package com.inthinc.pro.backing;
 
-import java.awt.Image;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -275,7 +274,6 @@ public class DriverBean extends BaseDurationBean
         List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistory(navigation.getDriver().getDriverID(), 
                                                                          getDuration(), scoreType, GraphicUtil.getDurationSize(getDuration()));
         
-        DateFormat dateFormatter = new SimpleDateFormat(getDuration().getDatePattern());
         // Get "x" values
         List<String> monthList = GraphicUtil.createMonthList(getDuration());
 
@@ -355,40 +353,41 @@ public class DriverBean extends BaseDurationBean
         
         // Page 1
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_SUMMARY_P1, getGroupHierarchy().getTopGroup().getName());
-        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_OVERALL));
+        
         reportCriteria.setDuration(getDuration());
         reportCriteria.addParameter("REPORT_NAME", "Driver Performance: Summary");
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
         reportCriteria.addParameter("DRIVER_NAME", this.getNavigation().getDriver().getPerson().getFullName());
-        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_SPEEDING));
         reportCriteria.addParameter("SPEED_SCORE", initAverageScore(ScoreType.SCORE_SPEEDING) / 10.0D);
-        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_DRIVING_STYLE));
         reportCriteria.addParameter("STYLE_SCORE", initAverageScore(ScoreType.SCORE_DRIVING_STYLE) / 10.0D);
-        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_SEATBELT));
         reportCriteria.addParameter("SEATBELT_SCORE", initAverageScore(ScoreType.SCORE_SEATBELT) / 10.0D);
+        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_OVERALL));
+        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_SPEEDING));
+        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_DRIVING_STYLE));
+        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_SEATBELT));
         tempCriteria.add(reportCriteria);
         
         // Page 2
-        ReportCriteria reportCriteria2 = new ReportCriteria(ReportType.DRIVER_SUMMARY_P2, getGroupHierarchy().getTopGroup().getName());
-        reportCriteria2.setDuration(getDuration());
-        reportCriteria2.addParameter("REPORT_NAME", "Driver Performance: Summary");
-        reportCriteria2.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
-        reportCriteria2.addParameter("DRIVER_NAME", this.getNavigation().getDriver().getPerson().getFullName());
+        reportCriteria = new ReportCriteria(ReportType.DRIVER_SUMMARY_P2, getGroupHierarchy().getTopGroup().getName());
+        reportCriteria.setDuration(getDuration());
+        reportCriteria.addParameter("REPORT_NAME", "Driver Performance: Summary");
+        reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
+        reportCriteria.addParameter("DRIVER_NAME", this.getNavigation().getDriver().getPerson().getFullName());
         
         if(lastTrip != null)
         {
-            reportCriteria2.addParameter("START_TIME", lastTrip.getStartDateString());
-            reportCriteria2.addParameter("START_LOCATION", lastTrip.getStartAddress());
-            reportCriteria2.addParameter("END_TIME", lastTrip.getEndDateString());
-            reportCriteria2.addParameter("END_LOCATION", lastTrip.getEndAddress());      
+            reportCriteria.addParameter("START_TIME", lastTrip.getStartDateString());
+            reportCriteria.addParameter("START_LOCATION", lastTrip.getStartAddress());
+            reportCriteria.addParameter("END_TIME", lastTrip.getEndDateString());
+            reportCriteria.addParameter("END_LOCATION", lastTrip.getEndAddress());      
             String imageUrl =  MapLookup.getMap(lastTrip.getRouteLastStep().getLat(), lastTrip.getRouteLastStep().getLng(), 250, 200);
             //logger.debug(imageUrl);
             //reportCriteria2.addParameter("MAP_URL", MapLookup.getDataFromURI(imageUrl) );
         }
         
-        reportCriteria2.addChartDataSet(createMpgJasperDef());
-        reportCriteria2.addChartDataSet(createJasperDef(ScoreType.SCORE_COACHING_EVENTS));
-        tempCriteria.add(reportCriteria2);
+        reportCriteria.addChartDataSet(createMpgJasperDef());
+        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_COACHING_EVENTS));
+        tempCriteria.add(reportCriteria);
         
         return tempCriteria;
     }

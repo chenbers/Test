@@ -20,7 +20,12 @@ import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SpeedingEvent;
+import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.reports.ReportRenderer;
+import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.util.GraphicUtil;
+import com.inthinc.pro.util.MessageUtil;
 
 public class VehicleSpeedBean extends BaseDurationBean
 {
@@ -52,7 +57,8 @@ public class VehicleSpeedBean extends BaseDurationBean
     private static final Integer        NO_SCORE = -1;
     private List<EventReportItem>       speedingEvents = new ArrayList<EventReportItem>();
     private EventReportItem             clearItem;
-
+    private ReportRenderer              reportRenderer;
+    private String                      emailAddress;
     
     private void init()
     {
@@ -382,5 +388,81 @@ public class VehicleSpeedBean extends BaseDurationBean
     {
         this.navigation = navigation;
     }
+    public List<CategorySeriesData> createJasperDef(List<ScoreType> scoreTypes)
+    {
+        List<CategorySeriesData> returnList = new ArrayList<CategorySeriesData>();
 
+        for (ScoreType st : scoreTypes)
+        {
+            List<ScoreableEntity> scoreList = scoreDAO
+                    .getVehicleScoreHistory(navigation.getVehicle().getVehicleID(), getDuration(), st, GraphicUtil.getDurationSize(getDuration()));
+            
+            List<String> monthList = GraphicUtil.createMonthList(getDuration());  
+            int count = 0;
+            for (ScoreableEntity se : scoreList)
+            {
+                returnList.add( new CategorySeriesData(  MessageUtil.getMessageString(st.toString()), 
+                                                         monthList.get(count).toString(), 
+                                                         se.getScore() / 10.0D, 
+                                                         monthList.get(count).toString() ));
+              
+                count++;
+            }
+        }
+        return returnList;
+    }
+    
+    public ReportCriteria buildReport()
+    {
+        // Page 1
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_SPEED, getGroupHierarchy().getTopGroup().getName());
+        
+        reportCriteria.setDuration(getDuration());
+        reportCriteria.addParameter("REPORT_NAME", "Vehicle Performance: Speed");
+        reportCriteria.addParameter("ENTITY_NAME", this.getNavigation().getVehicle().getFullName());
+        reportCriteria.addParameter("RECORD_COUNT", getSpeedingEvents().size());
+        reportCriteria.addParameter("OVERALL_SCORE", this.getSpeedScoreOverall() / 10.0D);
+        reportCriteria.addParameter("SPEED_MEASUREMENT", MessageUtil.getMessageString("measurement_speed"));
+        reportCriteria.addParameter("SCORE_TWENTYONE", this.getSpeedScoreTwentyOne() / 10.0D);
+        reportCriteria.addParameter("SCORE_THIRTYONE", this.getSpeedScoreThirtyOne() / 10.0D);
+        reportCriteria.addParameter("SCORE_FOURTYONE", this.getSpeedScoreFourtyOne() / 10.0D);
+        reportCriteria.addParameter("SCORE_FIFTYFIVE", this.getSpeedScoreFiftyFive() / 10.0D);
+        reportCriteria.addParameter("SCORE_SIXTYFIVE", this.getSpeedScoreSixtyFive() / 10.0D);
+        
+        List<ScoreType> scoreTypes = new ArrayList<ScoreType>();
+        scoreTypes.add(ScoreType.SCORE_SPEEDING);
+        scoreTypes.add(ScoreType.SCORE_SPEEDING_21_30);
+        scoreTypes.add(ScoreType.SCORE_SPEEDING_31_40);
+        scoreTypes.add(ScoreType.SCORE_SPEEDING_41_54);
+        scoreTypes.add(ScoreType.SCORE_SPEEDING_55_64);
+        scoreTypes.add(ScoreType.SCORE_SPEEDING_65_80);
+        reportCriteria.addChartDataSet(this.createJasperDef(scoreTypes));
+        reportCriteria.setMainDataset(this.speedingEvents);
+        
+        return reportCriteria;
+    }
+    public void setReportRenderer(ReportRenderer reportRenderer)
+    {
+        this.reportRenderer = reportRenderer;
+    }
+    public ReportRenderer getReportRenderer()
+    {
+        return reportRenderer;
+    }
+    public String getEmailAddress()
+    {
+        return emailAddress;
+    }
+    public void setEmailAddress(String emailAddress)
+    {
+        this.emailAddress = emailAddress;
+    }
+    public void exportReportToPdf()
+    {
+        getReportRenderer().exportSingleReportToPDF(buildReport(), getFacesContext());
+    }
+    public void emailReport()
+    {
+        //getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
+    }
 }

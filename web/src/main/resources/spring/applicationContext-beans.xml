@@ -170,24 +170,28 @@
         <property name="vehicleDAO" ref="vehicleDAO"></property>
         <property name="mpgDAO" ref="mpgDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
+        <property name="reportRenderer" ref="reportRenderer"></property>
     </bean>
     
     <bean id="vehicleSpeedBean" class="com.inthinc.pro.backing.VehicleSpeedBean" scope="request" init-method="init">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
+        <property name="reportRenderer" ref="reportRenderer"></property>
     </bean>
     
     <bean id="vehicleStyleBean" class="com.inthinc.pro.backing.VehicleStyleBean" scope="request" init-method="init">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
+        <property name="reportRenderer" ref="reportRenderer"></property>
     </bean>
         
     <bean id="vehicleSeatBeltBean" class="com.inthinc.pro.backing.VehicleSeatBeltBean" scope="request">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
+        <property name="reportRenderer" ref="reportRenderer"></property>
     </bean>
     
     <bean id="vehicleTripsBean" class="com.inthinc.pro.backing.VehicleTripsBean" scope="request" parent="baseBean">

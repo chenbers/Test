@@ -63,13 +63,13 @@ public class TripDisplay
     {
         dateFormatter = new SimpleDateFormat("MMM d, yyyy h:mm a (z)");
         dateFormatter.setTimeZone(timeZone);
-        return dateFormatter.format(trip.getEndTime());
+        return dateFormatter.format(trip.getStartTime());
     }
     public String getEndDateString()
     {
         dateFormatter = new SimpleDateFormat("MMM d, yyyy h:mm a (z)");
         dateFormatter.setTimeZone(timeZone);
-        return dateFormatter.format(trip.getStartTime());
+        return dateFormatter.format(trip.getEndTime());
     }
 
     public String getDateShort()

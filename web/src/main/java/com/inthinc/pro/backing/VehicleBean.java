@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,7 +30,13 @@ import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.Trip;
+import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.reports.ReportRenderer;
+import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.reports.map.MapLookup;
+import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.util.GraphicUtil;
+import com.inthinc.pro.util.MessageUtil;
 
 public class VehicleBean extends BaseDurationBean
 {
@@ -50,15 +57,17 @@ public class VehicleBean extends BaseDurationBean
     private String              mpgHistory;
     private String              coachingHistory;
     private Boolean             hasLastTrip;
+    private ReportRenderer      reportRenderer;
+    private String              emailAddress;
 
-    private void initOverallScore()
+    private Integer initAverageScore(ScoreType scoreType)
     {
-        ScoreableEntity overallSe = scoreDAO.getVehicleAverageScoreByType(navigation.getVehicle().getVehicleID(), getDuration(), ScoreType.SCORE_OVERALL);
+        ScoreableEntity se = scoreDAO.getVehicleAverageScoreByType(navigation.getVehicle().getVehicleID(), getDuration(), scoreType);
 
-        if (overallSe == null)
-            setOverallScore(-1);
+        if (se == null)
+            return -1;
         else
-            setOverallScore(overallSe.getScore());
+            return se.getScore();
     }
 
     // INIT VIOLATIONS
@@ -86,7 +95,7 @@ public class VehicleBean extends BaseDurationBean
     {
         if (overallScore == null)
         {
-            initOverallScore();
+            setOverallScore(initAverageScore(ScoreType.SCORE_OVERALL));
         }
         return overallScore;
     }
@@ -113,7 +122,7 @@ public class VehicleBean extends BaseDurationBean
     {
         if (overallScoreStyle == null)
         {
-            initOverallScore();
+            setOverallScore(initAverageScore(ScoreType.SCORE_OVERALL));
         }
         return overallScoreStyle;
     }
@@ -282,39 +291,26 @@ public class VehicleBean extends BaseDurationBean
         // Start XML Data
         sb.append(line.getControlParameters());
 
-        List<ScoreableEntity> scoreList = scoreDAO.getVehicleScoreHistory(
-                navigation.getVehicle().getVehicleID(), getDuration(), scoreType, 
-                GraphicUtil.getDurationSize(getDuration()));
-//                10);
-        DateFormat dateFormatter = new SimpleDateFormat(getDuration().getDatePattern());
+        List<ScoreableEntity> scoreList = scoreDAO.getVehicleScoreHistory(navigation.getVehicle().getVehicleID(),
+                                                    getDuration(), scoreType, GraphicUtil.getDurationSize(getDuration()));
 
-        // Get "x" values
-//        List<String> monthList = GraphicUtil.createMonthListFromMapDate(scoreList);
-        List<String> monthList = GraphicUtil.createMonthList(getDuration());        
+        List<String> monthList = GraphicUtil.createMonthList(getDuration());
 
         int cnt = 0;
         for (ScoreableEntity e : scoreList)
-        {            
-//          sb.append(line.getChartItem(new Object[] { 
-//              (double) (e.getScore() / 10.0d), 
-//              monthList.get(cnt) }));
-            if ( e.getScore() != null ) 
+        {
+            if (e.getScore() != null)
             {
-                sb.append(line.getChartItem(new Object[] { 
-                      (double) (e.getScore() / 10.0d), 
-                      monthList.get(cnt) }));
-            } else 
+                sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt) }));
+            }
+            else
             {
-                sb.append(line.getChartItem(new Object[] { 
-                        null, 
-                        monthList.get(cnt) }));
-            }            
-//          sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), 
-//              dateFormatter.format(e.getCreated()) })); 
-            
+                sb.append(line.getChartItem(new Object[] { null, monthList.get(cnt) }));
+            }
+
             cnt++;
         }
-        
+
         // End XML Data
         sb.append(line.getClose());
 
@@ -340,6 +336,123 @@ public class VehicleBean extends BaseDurationBean
     public void setHasLastTrip(Boolean hasLastTrip)
     {
         this.hasLastTrip = hasLastTrip;
+    }
+    public List<CategorySeriesData> createJasperDef(ScoreType scoreType)
+    {
+        List<ScoreableEntity> scoreList = scoreDAO.getVehicleScoreHistory(
+                                            navigation.getVehicle().getVehicleID(), getDuration(), scoreType, 
+                                            GraphicUtil.getDurationSize(getDuration()));
+
+        List<CategorySeriesData> chartDataList = new ArrayList<CategorySeriesData>();
+        List<String> monthList = GraphicUtil.createMonthList(getDuration());        
+        
+        int count = 0;
+        for (ScoreableEntity se : scoreList)
+        {
+            chartDataList.add( new CategorySeriesData(  MessageUtil.getMessageString(scoreType.toString()), 
+                                                        monthList.get(count).toString(), 
+                                                        se.getScore() / 10.0D, 
+                                                        monthList.get(count).toString() ));
+            count++;
+        }
+        return chartDataList;
+    }
+    
+    public List<CategorySeriesData> createMpgJasperDef()
+    {
+        List<CategorySeriesData> chartDataList = new ArrayList<CategorySeriesData>();
+        List<MpgEntity> mpgEntities = mpgDAO.getVehicleEntities(navigation.getVehicle().getVehicleID(), getDuration(), null);
+   
+        List<String> monthList = GraphicUtil.createMonthList(getDuration());        
+        
+        int count = 0;
+        for (MpgEntity me : mpgEntities)
+        {
+            chartDataList.add( new CategorySeriesData(  "Light", 
+                    monthList.get(count).toString(), 
+                    me.getLightValue(), 
+                    monthList.get(count).toString() ));
+            chartDataList.add( new CategorySeriesData(  "Medium", 
+                    monthList.get(count).toString(), 
+                    me.getMediumValue(), 
+                    monthList.get(count).toString() ));
+            chartDataList.add( new CategorySeriesData(  "Heavy", 
+                    monthList.get(count).toString(), 
+                    me.getHeavyValue(), 
+                    monthList.get(count).toString() ));
+            
+            count++;
+        }
+        logger.debug("CHART Data List for MPG " + chartDataList.size());
+        return chartDataList;
+    }
+    
+    public List<ReportCriteria> buildReport() throws IOException
+    {
+        List<ReportCriteria> tempCriteria = new ArrayList<ReportCriteria>();
+        
+        // Page 1
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_SUMMARY_P1, getGroupHierarchy().getTopGroup().getName());
+        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_OVERALL));
+        reportCriteria.setDuration(getDuration());
+        reportCriteria.addParameter("REPORT_NAME", "Vehicle Performance: Summary");
+        reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
+        reportCriteria.addParameter("DRIVER_NAME", this.getNavigation().getVehicle().getFullName());
+        reportCriteria.addParameter("SPEED_SCORE", initAverageScore(ScoreType.SCORE_SPEEDING) / 10.0D);
+        reportCriteria.addParameter("STYLE_SCORE", initAverageScore(ScoreType.SCORE_DRIVING_STYLE) / 10.0D);
+        reportCriteria.addParameter("SEATBELT_SCORE", initAverageScore(ScoreType.SCORE_SEATBELT) / 10.0D);
+        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_SPEEDING));
+        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_DRIVING_STYLE));
+        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_SEATBELT));
+        tempCriteria.add(reportCriteria);
+        
+        // Page 2
+        reportCriteria = new ReportCriteria(ReportType.VEHICLE_SUMMARY_P2, getGroupHierarchy().getTopGroup().getName());
+        reportCriteria.setDuration(getDuration());
+        reportCriteria.addParameter("REPORT_NAME", "Vehicle Performance: Summary");
+        reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
+        reportCriteria.addParameter("DRIVER_NAME", this.getNavigation().getVehicle().getFullName());
+        
+        if(lastTrip != null)
+        {
+            reportCriteria.addParameter("START_TIME", lastTrip.getStartDateString());
+            reportCriteria.addParameter("START_LOCATION", lastTrip.getStartAddress());
+            reportCriteria.addParameter("END_TIME", lastTrip.getEndDateString());
+            reportCriteria.addParameter("END_LOCATION", lastTrip.getEndAddress());      
+            String imageUrl =  MapLookup.getMap(lastTrip.getRouteLastStep().getLat(), lastTrip.getRouteLastStep().getLng(), 250, 200);
+            //logger.debug(imageUrl);
+            //reportCriteria2.addParameter("MAP_URL", MapLookup.getDataFromURI(imageUrl) );
+        }
+        
+        reportCriteria.addChartDataSet(createMpgJasperDef());
+        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_COACHING_EVENTS));
+        tempCriteria.add(reportCriteria);
+        
+        return tempCriteria;
+    }
+    public void setReportRenderer(ReportRenderer reportRenderer)
+    {
+        this.reportRenderer = reportRenderer;
+    }
+    public ReportRenderer getReportRenderer()
+    {
+        return reportRenderer;
+    }
+    public String getEmailAddress()
+    {
+        return emailAddress;
+    }
+    public void setEmailAddress(String emailAddress)
+    {
+        this.emailAddress = emailAddress;
+    }
+    public void exportReportToPdf() throws IOException
+    {
+        getReportRenderer().exportReportToPDF(buildReport(), getFacesContext());
+    }
+    public void emailReport()
+    {
+        //getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
     }
     
 }

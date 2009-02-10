@@ -28,7 +28,12 @@ import com.inthinc.pro.model.EventType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.AggressiveDrivingEvent;
+import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.reports.ReportRenderer;
+import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.util.GraphicUtil;
+import com.inthinc.pro.util.MessageUtil;
 
 public class VehicleStyleBean extends BaseDurationBean
 {
@@ -56,6 +61,8 @@ public class VehicleStyleBean extends BaseDurationBean
     
     private EventReportItem clearItem;
     private static final Integer NO_SCORE = -1;
+    private ReportRenderer              reportRenderer;
+    private String          emailAddress;
     
     private List<EventReportItem> styleEvents = new ArrayList<EventReportItem>();
     
@@ -350,5 +357,80 @@ public class VehicleStyleBean extends BaseDurationBean
     public void setClearItem(EventReportItem clearItem)
     {
         this.clearItem = clearItem;
+    }
+    public List<CategorySeriesData> createJasperDef(List<ScoreType> scoreTypes)
+    {
+        List<CategorySeriesData> returnList = new ArrayList<CategorySeriesData>();
+
+        for (ScoreType st : scoreTypes)
+        {
+            List<ScoreableEntity> scoreList = scoreDAO
+                    .getVehicleScoreHistory(navigation.getVehicle().getVehicleID(), getDuration(), st, GraphicUtil.getDurationSize(getDuration()));
+            
+            List<String> monthList = GraphicUtil.createMonthList(getDuration());  
+            int count = 0;
+            for (ScoreableEntity se : scoreList)
+            {
+                returnList.add( new CategorySeriesData(  MessageUtil.getMessageString(st.toString()), 
+                                                         monthList.get(count).toString(), 
+                                                         se.getScore() / 10.0D, 
+                                                         monthList.get(count).toString() ));
+              
+                count++;
+            }
+        }
+        return returnList;
+    }
+    
+    public ReportCriteria buildReport()
+    {
+        // Page 1
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_STYLE, getGroupHierarchy().getTopGroup().getName());
+        
+        reportCriteria.setDuration(getDuration());
+        reportCriteria.addParameter("REPORT_NAME", "Vehicle Performance: Style");
+        reportCriteria.addParameter("ENTITY_NAME", this.getNavigation().getVehicle().getFullName());
+        reportCriteria.addParameter("RECORD_COUNT", this.getStyleEvents().size());
+        reportCriteria.addParameter("OVERALL_SCORE", this.getStyleScoreOverall() / 10.0D);
+        reportCriteria.addParameter("SPEED_MEASUREMENT", MessageUtil.getMessageString("measurement_style"));
+        reportCriteria.addParameter("SCORE_HARDBRAKE", this.getStyleScoreAccel() / 10.0D);
+        reportCriteria.addParameter("SCORE_HARDACCEL", this.getStyleScoreAccel() / 10.0D);
+        reportCriteria.addParameter("SCORE_HARDTURN", this.getStyleScoreTurn() / 10.0D);
+        reportCriteria.addParameter("SCORE_HARDBUMP", this.getStyleScoreBump() / 10.0D);
+        
+        List<ScoreType> scoreTypes = new ArrayList<ScoreType>();
+        scoreTypes.add(ScoreType.SCORE_DRIVING_STYLE);
+        scoreTypes.add(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL);
+        scoreTypes.add(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE);
+        scoreTypes.add(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP);
+        scoreTypes.add(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
+        reportCriteria.addChartDataSet(this.createJasperDef(scoreTypes));
+        reportCriteria.setMainDataset(this.styleEvents);
+        
+        return reportCriteria;
+    }
+    public void setReportRenderer(ReportRenderer reportRenderer)
+    {
+        this.reportRenderer = reportRenderer;
+    }
+    public ReportRenderer getReportRenderer()
+    {
+        return reportRenderer;
+    }
+    public String getEmailAddress()
+    {
+        return emailAddress;
+    }
+    public void setEmailAddress(String emailAddress)
+    {
+        this.emailAddress = emailAddress;
+    }
+    public void exportReportToPdf()
+    {
+        getReportRenderer().exportSingleReportToPDF(buildReport(), getFacesContext());
+    }
+    public void emailReport()
+    {
+        //getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
     }
 }
