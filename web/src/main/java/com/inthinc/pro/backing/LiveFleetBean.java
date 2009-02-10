@@ -74,21 +74,21 @@ public class LiveFleetBean extends BaseBean
             driver.setAddressStr(addressLookup.getAddress(driver.getLoc().getLat(), driver.getLoc().getLng()));
             
             // Add groups to Group map for Legend
-            if (!displayedGroups.contains(organizationHierarchy.getGroup(driver.getGroupID())))
+            if (!displayedGroups.contains(organizationHierarchy.getGroup(driver.getDriver().getGroupID())))
             {
-                displayedGroups.add(organizationHierarchy.getGroup(driver.getGroupID()));
+                displayedGroups.add(organizationHierarchy.getGroup(driver.getDriver().getGroupID()));
             }
 
             // Build list of map icons
-            if (!mapIconMap.icons.containsKey(driver.getGroupID()))
+            if (!mapIconMap.icons.containsKey(driver.getDriver().getGroupID()))
             {
-                mapIconMap.addIcon(driver.getGroupID(), mapIconIt.next().getUrl());
+                mapIconMap.addIcon(driver.getDriver().getGroupID(), mapIconIt.next().getUrl());
             }
 
             // Build list of legend icons
-            if (!legendIconMap.icons.containsKey(driver.getGroupID()))
+            if (!legendIconMap.icons.containsKey(driver.getDriver().getGroupID()))
             {
-                legendIconMap.addIcon(driver.getGroupID(), legendIconIt.next().getUrl());
+                legendIconMap.addIcon(driver.getDriver().getGroupID(), legendIconIt.next().getUrl());
             }
         }
     }

@@ -214,27 +214,27 @@
 				<ui:repeat value="#{liveFleetBean.drivers}" var="driver">
 					driverLoc = new GLatLng(#{driver.loc.lat}, #{driver.loc.lng});
 			
-				marker = createMarker(driverLoc, #{driver.driverID}, "#{liveFleetBean.mapIconMap.icons[driver.groupID]}");
+				marker = createMarker(driverLoc, #{driver.driver.driverID}, "#{liveFleetBean.mapIconMap.icons[driver.driver.groupID]}");
 				map.addOverlay(marker);
 				bounds.extend(marker.getPoint());
 				</ui:repeat>
 			}
 		</script>
 		<ui:repeat value="#{liveFleetBean.drivers}" var="driver">		
-				<div id="#{driver.driverID}" style="display:none">
+				<div id="#{driver.driver.driverID}" style="display:none">
 				<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header">
 					<f:facet name="header">
-						<h:commandLink value="#{driver.name}" action="#{liveFleetBean.driverDetailAction}">
-							<f:setPropertyActionListener value="#{driver.driverID}" target="#{liveFleetBean.selectedDriverID}" />
+						<h:commandLink value="#{driver.driver.person.fullName}" action="#{liveFleetBean.driverDetailAction}">
+							<f:setPropertyActionListener value="#{driver.driver.driverID}" target="#{liveFleetBean.selectedDriverID}" />
 						</h:commandLink>
 					</f:facet>
 					<h:outputText value="#{messages.livefleet_priPhone}:"/>
-					<h:outputText value="#{driver.priPhone}" converter="PhoneNumberConverter" />
+					<h:outputText value="#{driver.driver.person.priPhone}" converter="PhoneNumberConverter" />
 					<h:outputText value="#{messages.livefleet_secPhone}:"/>
-					<h:outputText value="#{driver.secPhone}" converter="PhoneNumberConverter" />
+					<h:outputText value="#{driver.driver.person.secPhone}" converter="PhoneNumberConverter" />
 					<h:outputText value="#{messages.livefleet_vehicle}:"/>					
-					<h:commandLink action="#{liveFleetBean.vehicleDetailAction}" value="#{driver.vehicleID}">
- 						<f:setPropertyActionListener value="#{driver.vehicleID}" target="#{liveFleetBean.selectedVehicleID}" />
+					<h:commandLink action="#{liveFleetBean.vehicleDetailAction}" value="#{driver.vehicle.fullName}">
+ 						<f:setPropertyActionListener value="#{driver.vehicle.vehicleID}" target="#{liveFleetBean.selectedVehicleID}" />
 					</h:commandLink>
 					<h:outputText value="#{messages.livefleet_updated}:" />
 					<h:outputText value="#{driver.time}" converter="TimeAgoConverter"/>
@@ -266,12 +266,12 @@
 									id="driversDataTable" var="item" styleClass="datagrid"
 									rowClasses="tableOdd,tableEven" cellspacing="1" rows="10" width="100%">
 								
-								<rich:column sortBy="#{item.name}">
+								<rich:column sortBy="#{item.driver.person.fullName}">
 									<f:facet name="header">
 										<h:outputText value="Driver" />
 									</f:facet>
-									<h:commandLink value="#{item.name}" action="#{liveFleetBean.driverDetailAction}">
-										<f:setPropertyActionListener value="#{item.driverID}" target="#{liveFleetBean.selectedDriverID}" />
+									<h:commandLink value="#{item.driver.person.fullName}" action="#{liveFleetBean.driverDetailAction}">
+										<f:setPropertyActionListener value="#{item.driver.driverID}" target="#{liveFleetBean.selectedDriverID}" />
 									</h:commandLink>
 								</rich:column>
 	
@@ -282,12 +282,12 @@
 									<h:outputText value="#{item.time}" converter="TimeAgoConverter"/>
 								</rich:column>
 	
-								<rich:column sortBy="#{item.groupID}">
+								<rich:column sortBy="#{item.driver.groupID}">
 									<f:facet name="header">
 									
 									</f:facet>
-									<a href="#" onclick="showDriver(#{item.loc.lat}, #{item.loc.lng}, #{item.driverID});">
-										<img src="#{liveFleetBean.legendIconMap.icons[item.groupID]}" style="cursor: pointer;" border="0" />
+									<a href="#" onclick="showDriver(#{item.loc.lat}, #{item.loc.lng}, #{item.driver.driverID});">
+										<img src="#{liveFleetBean.legendIconMap.icons[item.driver.groupID]}" style="cursor: pointer;" border="0" />
 									</a>
 								</rich:column>
 	

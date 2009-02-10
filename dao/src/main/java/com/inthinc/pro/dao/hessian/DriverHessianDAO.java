@@ -77,28 +77,6 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
     }
 
     @Override
-    public List<DriverLocation> getDriversNearLoc(Integer groupID, Integer numof, Double lat, Double lng)
-    {
-        try
-        {
-            return getMapper().convertToModelObject(this.getSiloService().getDriversNearLoc(groupID, numof, lat, lng), DriverLocation.class);
-        }
-        catch (EmptyResultSetException e)
-        {
-            return Collections.emptyList();
-        }
-        // TODO: Remove when method is impl on back end
-        catch (ProxyException ex)
-        {
-            if (ex.getErrorCode() == 422)
-            {
-                return Collections.emptyList();
-            }
-            throw ex;
-        }
-    }
-
-    @Override
     public Trip getLastTrip(Integer driverID)
     {
         try

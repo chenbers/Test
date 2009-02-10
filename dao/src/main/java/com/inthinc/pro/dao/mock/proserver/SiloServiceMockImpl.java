@@ -675,7 +675,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
     
     @Override
-    public List<Map<String, Object>> getDriversNearLoc(Integer groupID, Integer numof, Double lat, Double lng)
+    public List<Map<String, Object>> getVehiclesNearLoc(Integer groupID, Integer numof, Double lat, Double lng)
     {
         Group group = MockData.getInstance().lookupObject(Group.class, "groupID", groupID);
         List<Driver> drivers = getAllDriversInGroup(group);
@@ -688,12 +688,16 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
             if(count == numof) break;
             
             DriverLocation dl = new DriverLocation();
-            dl.setDriverID(driver.getDriverID());
-            dl.setGroupID(driver.getGroupID());
-            dl.setPriPhone(driver.getPerson().getPriPhone());
-            dl.setSecPhone(driver.getPerson().getSecPhone());
-            dl.setName(driver.getPerson().getFirst() + " " + driver.getPerson().getLast());
-            dl.setVehicleType(VehicleType.MEDIUM);
+            
+            dl.setDriver(driver);
+            
+            dl.setTime(new Date());
+//            dl.setDriverID(driver.getDriverID());
+//            dl.setGroupID(driver.getGroupID());
+//            dl.setPriPhone(driver.getPerson().getPriPhone());
+//            dl.setSecPhone(driver.getPerson().getSecPhone());
+//            dl.setName(driver.getPerson().getFirst() + " " + driver.getPerson().getLast());
+//            dl.setVehicleType(VehicleType.MEDIUM);
             
             SearchCriteria searchCriteria = new SearchCriteria();
             searchCriteria.addKeyValue("driverID", driver.getDriverID());
@@ -706,12 +710,6 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         }
 
         return returnList;
-    }
-    
-    @Override
-    public List<Map<String, Object>> getVehiclesNearLoc(Integer groupID, Integer numof, Double lat, Double lng)
-    {
-        return getDriversNearLoc(groupID, numof, lat, lng);
     }
 
     @Override

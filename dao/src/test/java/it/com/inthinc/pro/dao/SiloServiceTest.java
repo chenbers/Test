@@ -231,15 +231,18 @@ public class SiloServiceTest
     @Test
     public void driversNearLoc() 
     {
-        DriverHessianDAO driverDAO = new DriverHessianDAO();
-        driverDAO.setSiloService(siloService);
+        //DriverHessianDAO driverDAO = new DriverHessianDAO();
+        //driverDAO.setSiloService(siloService);
+        
+        VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
+        vehicleDAO.setSiloService(siloService);
         
         Integer numOf = 10;
         Double lat = (double)33.010;
         Double lng = (double)-117.111;
         
         List<DriverLocation> result = 
-            driverDAO.getDriversNearLoc(
+            vehicleDAO.getVehiclesNearLoc(
                     TESTING_GROUP_ID, numOf, lat, lng);
                 
         assertNotNull(result);
@@ -248,8 +251,8 @@ public class SiloServiceTest
         {
             for ( DriverLocation d: result) 
             {
-                System.out.println("found " + d.getGroupID() + 
-                        " " + d.getDriverID() + " " +
+                System.out.println("found " + d.getDriver().getGroupID() + 
+                        " " + d.getDriver().getDriverID() + " " +
                         d.getLoc().getLat() + " " +
                         d.getLoc().getLng());
             }
