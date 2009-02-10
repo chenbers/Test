@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -34,26 +35,26 @@ import com.inthinc.pro.util.MessageUtil;
 /**
  * 
  * @author mstrong
- *
+ * 
  */
 public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportScheduleView> implements Serializable
 {
-    
+
     /**
      * 
      */
     private static final long serialVersionUID = -8422069679000248942L;
-    
+
     private static final List<String> AVAILABLE_COLUMNS;
-    private static final int[]        DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 3, 4 };
+    private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 3, 5 };
     private static final List<SelectItem> REPORT_GROUPS;
     private static final List<SelectItem> DURATIONS;
     private static final List<SelectItem> OCCURRENCES;
-    
+
     private static final String REDIRECT_REPORT_SCHEDULES = "go_adminReportSchedules";
     private static final String REDIRECT_REPORT_SCHEDULE = "go_adminReportSchedule";
     private static final String REDIRECT_EDIT_REPORT_SCHEDULE = "go_adminEditReportSchedule";
-    
+
     /*
      * Spring managed beans
      */
@@ -69,104 +70,119 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         AVAILABLE_COLUMNS.add("name");
         AVAILABLE_COLUMNS.add("startDate");
         AVAILABLE_COLUMNS.add("endDate");
+        AVAILABLE_COLUMNS.add("occurrence");
         AVAILABLE_COLUMNS.add("lastEmail");
         AVAILABLE_COLUMNS.add("report");
-       
+
         REPORT_GROUPS = new ArrayList<SelectItem>();
-        REPORT_GROUPS.add(new SelectItem(null,""));
-        for(ReportGroup rt:EnumSet.allOf(ReportGroup.class))
+        for (ReportGroup rt : EnumSet.allOf(ReportGroup.class))
         {
-            REPORT_GROUPS.add(new SelectItem(rt.getCode(),rt.getLabel()));
+            REPORT_GROUPS.add(new SelectItem(rt.getCode(), rt.getLabel()));
         }
-            
+        sort(REPORT_GROUPS);
+        REPORT_GROUPS.add(0,new SelectItem(null, ""));
+
         DURATIONS = new ArrayList<SelectItem>();
-        DURATIONS.add(new SelectItem(null,""));
-        for(Duration d : EnumSet.allOf(Duration.class))
+        DURATIONS.add(new SelectItem(null, ""));
+        for (Duration d : EnumSet.allOf(Duration.class))
         {
-            DURATIONS.add(new SelectItem(d,d.toString()));
+            DURATIONS.add(new SelectItem(d, d.toString()));
         }
-        
+
         OCCURRENCES = new ArrayList<SelectItem>();
-        OCCURRENCES.add(new SelectItem(null,""));
-        for(Occurrence o : EnumSet.allOf(Occurrence.class))
+        OCCURRENCES.add(new SelectItem(null, ""));
+        for (Occurrence o : EnumSet.allOf(Occurrence.class))
         {
-            OCCURRENCES.add(new SelectItem(o,o.getDescription()));
+            OCCURRENCES.add(new SelectItem(o, o.getDescription()));
         }
     }
     
-    
+    private static void sort(List<SelectItem> selectItemList)
+    {
+        Collections.sort(selectItemList, new Comparator<SelectItem>()
+        {
+            @Override
+            public int compare(SelectItem o1, SelectItem o2)
+            {
+                return o1.getLabel().toLowerCase().compareTo(o2.getLabel().toLowerCase());
+            }
+        });
+    }
+
     public List<SelectItem> getReportGroups()
-    { 
+    {
         return REPORT_GROUPS;
     }
-    
+
     public EntityType getSelectedEntityType()
     {
         EntityType entityType = null;
-        if(getItem() != null && this.getItem().getReportID() != null)
+        if (getItem() != null && this.getItem().getReportID() != null)
         {
             entityType = ReportGroup.valueOf(this.getItem().getReportID()).getEntityType();
         }
         return entityType;
     }
-    
+
     public List<SelectItem> getDurations()
     {
         return DURATIONS;
     }
-    
+
     public List<SelectItem> getOccurrences()
     {
         return OCCURRENCES;
     }
-    
+
     @SuppressWarnings("unchecked")
-    public Map<String,Integer> getDrivers()
+    public Map<String, Integer> getDrivers()
     {
-        Map<String,Integer> driverMap = new HashedMap();
+        Map<String, Integer> driverMap = new HashedMap();
         driverMap.put("", null);
         List<Driver> driverList = driverDAO.getAllDrivers(getGroupHierarchy().getTopGroup().getGroupID());
-        for(Driver driver:driverList)
+        for (Driver driver : driverList)
         {
             driverMap.put(driver.getPerson().getFullName(), driver.getDriverID());
         }
-        
+
         return driverMap;
     }
-    
-    @SuppressWarnings("unchecked")
-    public Map<String,Integer> getGroups()
+
+    public List<SelectItem> getGroups()
     {
-        Map<String,Integer> groupMap = new HashedMap();
+        List<SelectItem> selectItemList = new ArrayList<SelectItem>();
+
         List<Group> groupList = getGroupHierarchy().getGroupList();
-        groupMap.put("", null);
-        
-        for(Group group:groupList)
+        for (Group group : groupList)
         {
             switch(group.getType()){
             case FLEET:
-            case DIVISION: groupMap.put(group.getName(), group.getGroupID());break;
-            case TEAM:
+            case DIVISION: selectItemList.add(new SelectItem(group.getGroupID(), group.getName())); break;
+            case TEAM: //do nothing
             }
+            
         }
-        return groupMap;
+
+        sort(selectItemList);
+
+        selectItemList.add(0, new SelectItem(null, ""));
+        return selectItemList;
     }
-    
+
     @SuppressWarnings("unchecked")
-    public Map<String,Integer> getVehicles()
+    public Map<String, Integer> getVehicles()
     {
-        //TODO needs implementation
+        // TODO needs implementation
         return Collections.EMPTY_MAP;
     }
-    
-    
+
     @Override
     protected ReportScheduleView createAddItem()
     {
         final ReportSchedule reportSchedule = new ReportSchedule();
         reportSchedule.setAccountID(getAccountID());
         reportSchedule.setUserID(getUserID());
-        
+
         List<Boolean> booleanList = new ArrayList<Boolean>();
         booleanList.add(Boolean.FALSE);
         booleanList.add(Boolean.FALSE);
@@ -175,11 +191,11 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         booleanList.add(Boolean.FALSE);
         booleanList.add(Boolean.FALSE);
         booleanList.add(Boolean.FALSE);
-        
+
         reportSchedule.setDayOfWeek(booleanList);
-        
+
         reportSchedule.setStatus(Status.ACTIVE);
-        
+
         return createReportScheduleView(reportSchedule);
     }
 
@@ -193,17 +209,17 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             final String summary = MessageUtil.formatMessageString("reportSchedule_deleted", reportSchedule.getName());
             addInfoMessage(summary);
         }
-        
+
     }
-    
+
     @Override
     public String save()
     {
         getUpdateField().put("startDate", Boolean.TRUE);
         getUpdateField().put("endDate", Boolean.TRUE);
-        getUpdateField().put("dayOfWeek",Boolean.TRUE);
-        getUpdateField().put("timeOfDay",Boolean.TRUE);
-        getUpdateField().put("dayOfWeek",Boolean.TRUE);
+        getUpdateField().put("dayOfWeek", Boolean.TRUE);
+        getUpdateField().put("timeOfDay", Boolean.TRUE);
+        getUpdateField().put("dayOfWeek", Boolean.TRUE);
         return super.save();
     }
 
@@ -220,33 +236,32 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             {
                 reportScheduleDAO.update(reportSchedule);
             }
-            
-            if(reportSchedule.getDriverID() != null)
+
+            if (reportSchedule.getDriverID() != null)
             {
                 Driver driver = driverDAO.findByID(reportSchedule.getDriverID());
                 reportSchedule.setDriverName(driver.getPerson().getFullName());
             }
-            
-            if(reportSchedule.getVehicleID() != null)
+
+            if (reportSchedule.getVehicleID() != null)
             {
                 Vehicle vehicle = vehicleDAO.findByID(reportSchedule.getVehicleID());
                 reportSchedule.setVehicleName(vehicle.getFullName());
             }
-            
-            if(reportSchedule.getGroupID() != null)
+
+            if (reportSchedule.getGroupID() != null)
             {
                 Group group = groupDAO.findByID(reportSchedule.getGroupID());
                 reportSchedule.setGroupName(group.getName());
             }
-                
 
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "reportSchedule_added" : "reportSchedule_updated", reportSchedule.getName());
             addInfoMessage(summary);
         }
-        
+
     }
-    
+
     public TimeZone getUtcTimeZone()
     {
         return TimeZone.getTimeZone("UTC");
@@ -291,7 +306,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     {
         List<ReportScheduleView> returnList = new ArrayList<ReportScheduleView>();
         List<ReportSchedule> reportScheduleList = reportScheduleDAO.getReportSchedulesByUserID(getProUser().getUser().getUserID());
-        for(ReportSchedule reportSchedule : reportScheduleList)
+        for (ReportSchedule reportSchedule : reportScheduleList)
         {
             returnList.add(createReportScheduleView(reportSchedule));
         }
@@ -315,36 +330,36 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     {
         return TableType.REPORT_SCHEDULES;
     }
-    
+
     private ReportScheduleView createReportScheduleView(ReportSchedule reportSchedule)
     {
         final ReportScheduleView reportScheduleView = new ReportScheduleView();
-        BeanUtils.copyProperties(reportSchedule,reportScheduleView);
+        BeanUtils.copyProperties(reportSchedule, reportScheduleView);
         reportScheduleView.setSelected(false);
-        
-        if(reportSchedule.getDriverID() != null)
+
+        if (reportSchedule.getDriverID() != null)
         {
             Driver driver = driverDAO.findByID(reportScheduleView.getDriverID());
             reportScheduleView.setDriverName(driver.getPerson().getFullName());
         }
-        
-        if(reportSchedule.getVehicleID() != null)
+
+        if (reportSchedule.getVehicleID() != null)
         {
             Vehicle vehicle = vehicleDAO.findByID(reportScheduleView.getVehicleID());
             reportScheduleView.setVehicleName(vehicle.getFullName());
         }
-        
-        if(reportSchedule.getGroupID() != null)
+
+        if (reportSchedule.getGroupID() != null)
         {
             Group group = groupDAO.findByID(reportScheduleView.getGroupID());
             reportScheduleView.setGroupName(group.getName());
         }
-        
-        
-        
+
         return reportScheduleView;
     }
+
     
+
     public void setReportScheduleDAO(ReportScheduleDAO reportScheduleDAO)
     {
         this.reportScheduleDAO = reportScheduleDAO;
@@ -374,7 +389,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     {
         this.driverDAO = driverDAO;
     }
-    
+
     public GroupDAO getGroupDAO()
     {
         return groupDAO;
@@ -387,78 +402,81 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
 
     public static class ReportScheduleView extends ReportSchedule implements EditItem
     {
-       
+
         private static final long serialVersionUID = 8954277815270194338L;
-        
+
         @Column(updateable = false)
         private boolean selected;
-        
+
         @Column(updateable = false)
         private String groupName;
-        
+
         @Column(updateable = false)
         private String driverName;
-        
+
         @Column(updateable = false)
         private String vehicleName;
-        
+
         @Column(updateable = false)
         private ReportGroup report;
 
         @Override
         public boolean isSelected()
         {
-           return selected;
+            return selected;
         }
 
         @Override
         public void setSelected(boolean selected)
         {
             this.selected = selected;
-            
+
         }
-        
+
         public Integer getId()
         {
-           return this.getReportScheduleID();
+            return this.getReportScheduleID();
         }
-        
-        public String getEmailToString(){
+
+        public String getEmailToString()
+        {
             StringBuilder sb = new StringBuilder();
-            if(getEmailTo() != null)
+            if (getEmailTo() != null)
             {
-                for(int i= 0;i < getEmailTo().size();i++)
+                for (int i = 0; i < getEmailTo().size(); i++)
                 {
                     sb.append(getEmailTo().get(i));
-                    if((i+1) ==  getEmailTo().size())
+                    if ((i + 1) == getEmailTo().size())
                     {
                         break;
                     }
                     sb.append(",");
                 }
             }
-            return sb.toString(); 
+            return sb.toString();
         }
-        
+
         public void setEmailToString(String email)
         {
-            if(email != null)
+            if (email != null)
             {
                 String[] emailArray = email.split(",");
                 this.setEmailTo(Arrays.asList(emailArray));
             }
         }
-        
-        public ReportGroup getReport(){
-            if(getReportID() != null)
+
+        public ReportGroup getReport()
+        {
+            if (getReportID() != null)
             {
                 report = ReportGroup.valueOf(getReportID());
             }
             return report;
         }
-        
-        public String getGroupName(){
-           return this.groupName;
+
+        public String getGroupName()
+        {
+            return this.groupName;
         }
 
         public void setGroupName(String groupName)

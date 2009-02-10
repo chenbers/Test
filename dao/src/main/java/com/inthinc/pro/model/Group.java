@@ -213,7 +213,7 @@ public class Group extends BaseEntity
         hcb.append(this.getGroupID());
         return hcb.toHashCode();
     }
-
+    
     public Integer getZoneRev()
     {
         return zoneRev;

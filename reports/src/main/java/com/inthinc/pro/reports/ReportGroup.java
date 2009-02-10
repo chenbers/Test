@@ -1,20 +1,18 @@
 package com.inthinc.pro.reports;
 
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.inthinc.pro.model.EntityType;
 
 public enum ReportGroup
 {
-    DIVISION_REPORT("Division Report",0,new CriteriaType[]{CriteriaType.DURATION,CriteriaType.GROUP},ReportType.OVERALL_SCORE,ReportType.TREND,ReportType.MPG_GROUP),
-    DRIVERS_REPORT("Drivers Report",2,new CriteriaType[]{CriteriaType.DURATION,CriteriaType.GROUP},ReportType.DRIVER_REPORT),
-    VEHICLES_REPORT("Vehicles Report",3,new CriteriaType[]{CriteriaType.DURATION,CriteriaType.GROUP},ReportType.VEHICLE_REPORT),
+    DIVISION_REPORT("Feet/Division Report",0,new CriteriaType[]{CriteriaType.DURATION,CriteriaType.GROUP},ReportType.OVERALL_SCORE,ReportType.TREND,ReportType.MPG_GROUP),
+    DRIVERS_REPORT("Driver Report",2,new CriteriaType[]{CriteriaType.DURATION,CriteriaType.GROUP},ReportType.DRIVER_REPORT),
+    VEHICLES_REPORT("Vehicle Report",3,new CriteriaType[]{CriteriaType.DURATION,CriteriaType.GROUP},ReportType.VEHICLE_REPORT),
     IDLING_REPORT("Idling Report",4,new CriteriaType[]{CriteriaType.DURATION,CriteriaType.GROUP},ReportType.IDLING_REPORT),
-    DEVICES_REPORT("Devices Report",5,new CriteriaType[]{CriteriaType.DURATION,CriteriaType.GROUP},ReportType.DEVICES_REPORT);
+    DEVICES_REPORT("Device Report",5,new CriteriaType[]{CriteriaType.DURATION,CriteriaType.GROUP},ReportType.DEVICES_REPORT);
     
     
     private ReportType[] reports;

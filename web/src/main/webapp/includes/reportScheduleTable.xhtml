@@ -32,6 +32,10 @@
       	<f:convertDateTime timeZone="#{reportScheduleBean.utcTimeZone}" type="date" />
       </h:outputText>
     </rich:column>
+    <rich:column rendered="#{reportScheduleBean.tableColumns['occurrence'].visible}" sortBy="#{item.occurrence}">
+      <f:facet name="header"><h:outputText value="#{messages.reportSchedulesHeader_occurrence}" /></f:facet>
+      <h:outputText value="#{item.occurrence}"/>
+    </rich:column>
     <rich:column rendered="#{reportScheduleBean.tableColumns['lastEmail'].visible}" sortBy="#{item.lastDate}">
       <f:facet name="header"><h:outputText value="#{messages.reportSchedulesHeader_lastEmail}" /></f:facet>
       	<h:outputText value="#{item.lastDate}">
