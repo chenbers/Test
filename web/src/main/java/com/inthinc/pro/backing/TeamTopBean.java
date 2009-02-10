@@ -27,11 +27,11 @@ public class TeamTopBean extends BaseBean
     public void init()
     {
         List<DriverScore> scoreList = scoreDAO.getSortedDriverScoreList(navigation.getGroupID());
-        bottomDrivers = convertToDriverScoreItemList(scoreList.subList(0, scoreList.size() > 5 ? 5 : scoreList.size()));
+        topDrivers = convertToDriverScoreItemList(scoreList.subList(0, scoreList.size() > 5 ? 5 : scoreList.size()));
         
         
         Collections.reverse(scoreList);
-        topDrivers = convertToDriverScoreItemList(scoreList.subList(0, scoreList.size() > 5 ? 5 : scoreList.size()));
+        bottomDrivers = convertToDriverScoreItemList(scoreList.subList(0, scoreList.size() > 5 ? 5 : scoreList.size()));
 
         
         

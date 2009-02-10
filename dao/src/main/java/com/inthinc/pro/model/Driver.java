@@ -5,37 +5,38 @@ import java.util.Date;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
-public class Driver extends BaseEntity
+public class Driver extends BaseEntity implements Comparable<Driver>
 {
     @Column(updateable = false)
     private static final long serialVersionUID = -1791892231790514608L;
 
     @ID
-    private Integer           driverID;
-    private Integer           personID;
-    private Status            status;
+    private Integer driverID;
+    private Integer personID;
+    private Status status;
 
     @Column(name = "rfid")
-    private Long              RFID;
-    private String            license;                                 // max 10 characters
+    private Long RFID;
+    private String license; // max 10 characters
 
     @Column(name = "stateID")
-    private State             state;
+    private State state;
 
     @Column(name = "class")
-    private String            licenseClass;                            // max 4 characters
+    private String licenseClass; // max 4 characters
 
-    private Date              expiration;
+    private Date expiration;
     @Column(name = "certs")
-    private String            certifications;
-    private String            dot;
+    private String certifications;
+    private String dot;
 
     @Column(updateable = false)
-    private Person            person;
+    private Person person;
 
-    private Integer           groupID;
+    private Integer groupID;
 
-    public Driver(Integer driverID, Integer personID, Status status, Long rfid, String license, State state, String licenseClass, Date expiration, String certifications, String dot, Integer groupID)
+    public Driver(Integer driverID, Integer personID, Status status, Long rfid, String license, State state, String licenseClass, Date expiration, String certifications,
+            String dot, Integer groupID)
     {
         super();
         this.driverID = driverID;
@@ -178,6 +179,14 @@ public class Driver extends BaseEntity
     public void setGroupID(Integer groupID)
     {
         this.groupID = groupID;
+    }
+
+    @Override
+    public int compareTo(Driver o)
+    {
+        // for now, the Person instance's compareTo seems to be the best way to determine the natural order of Drivers
+        // (note: Driver should never be null. If it is, there is a big problem)
+        return this.person.compareTo(o.getPerson());
     }
 
 }

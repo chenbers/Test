@@ -6,7 +6,7 @@ import java.util.TimeZone;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
-public class Person extends BaseEntity
+public class Person extends BaseEntity implements Comparable<Person>
 {
     private static final long serialVersionUID = -7162580776394490873L;
 
@@ -426,6 +426,19 @@ public class Person extends BaseEntity
     public void setAcctID(Integer acctID)
     {
         this.acctID = acctID;
+    }
+
+    @Override
+    public int compareTo(Person o)
+    {
+        //for now, use the name fields to determine the natural order of person objects
+        int result = this.last.compareTo(o.getLast());        
+        if(result == 0)
+            result = this.first.compareTo(o.getFirst());        
+        if(result == 0)
+            result = this.middle.compareTo(o.getMiddle());
+        
+        return result;
     }
 
 }
