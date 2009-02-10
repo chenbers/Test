@@ -210,11 +210,11 @@ public class ReportServiceTest
         List<DriverScore> scoreList = scoreDAO.getSortedDriverScoreList(groupID);
         assertNotNull(scoreList);
         
-        // expect list to be sorted smallest to largest score
-        int score = -1;
+        // expect list to be sorted largest to smallest score
+        int score = 50;
         for (DriverScore s : scoreList)
         {
-            assertTrue(s.getScore() >= score);
+            assertTrue(s.getScore() <= score);
             score = s.getScore();
             
         }
