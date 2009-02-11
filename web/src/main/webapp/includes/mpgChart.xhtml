@@ -67,9 +67,8 @@
         
         <!-- Start xy graph --> 
         <rich:panel id="mpgPanel" style="height:#{xyheight};width:#{xywidth}">
-          <h:inputHidden value="#{barDef}" id="mpgDataElement" />
-
           <div id="mpgChartDiv" align="center"></div>
+          <h:inputHidden value="#{barDef}" id="mpgDataElement" />
           <script type="text/javascript">
             var targetElement = document.getElementById("mpgDataElement");
               
@@ -82,7 +81,7 @@
         <!-- End xy graph -->
       
         <rich:panel rendered="#{displayLegend}">
-          <div align="center"><img src="#{facesContext.externalContext.request.contextPath}/images/legend_mpg.png" width="332" height="44"/></div>
+          <div align="center"><h:graphicImage url="/images/legend_mpg.png" width="332" height="44"/></div>
         </rich:panel>
         
         <rich:panel rendered="#{displayTable}">
