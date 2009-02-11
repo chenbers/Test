@@ -108,7 +108,8 @@
 		<script type="text/javascript">
    		function drawSelectedTrips()
    		{
-   				map.clearOverlays(); 
+   				bounds = new GLatLngBounds();
+				map.clearOverlays(); 
 				var polyline;
 				var marker;
 				var startlatlng;
@@ -172,7 +173,9 @@
 <t:saveState value="#{vehicleTripsBean.numTrips}" />
 <t:saveState value="#{vehicleTripsBean.selectedTrips}" />
 <t:saveState value="#{vehicleTripsBean.selectedDriver}" />
+<t:saveState value="#{vehicleTripsBean.idleEvents}" />
 <t:saveState value="#{vehicleTripsBean.violationEvents}" />
+<t:saveState value="#{vehicleTripsBean.allEvents}" />
 
 <div id="wrapper">
 <h:form>
@@ -345,13 +348,14 @@
 				<rich:panel id="selectedTrip">
 					<a4j:form>
 						<rich:dataTable 
-						value="#{vehicleTripsBean.violationEvents}" id="selectedTripTable"
+						value="#{vehicleTripsBean.allEvents}" id="selectedTripTable"
 						var="item" styleClass="datagrid"
 						rowClasses="tableOdd,tableEven" cellspacing="1" rows="5" width="100%">
 		
 							<!-- Data -->
 							<rich:column sortBy="#{item.addressStr}">
-								<h:graphicImage value="/images/ico_violation.png" alt="#{item.eventType}" />
+								<h:graphicImage value="/images/ico_idle.png" rendered="#{item.type eq 208}" alt="#{item.eventType}" />
+								<h:graphicImage value="/images/ico_violation.png" rendered="#{item.type ne 208}" alt="#{item.eventType}" />
 							</rich:column>
 
 							<rich:column sortBy="#{item.addressStr}">
@@ -414,7 +418,7 @@
 									<td width="20">
 									    <a4j:form id="showLastTenForm" reRender="script,script2,selectedTripMap,selectedTrip">
 										    <h:selectBooleanCheckbox id="showAllCheckBox" value="#{vehicleTripsBean.showLastTenTrips}" >
-										    	<a4j:support event="onclick" reRender="script,script2,selectedTripMap,selectDriverForm" />
+										    	<a4j:support event="onclick" reRender="script,script2,selectedTripMap,selectedTrip,selectDriverForm" />
 										    </h:selectBooleanCheckbox>
 										</a4j:form>
 								    </td>
@@ -515,7 +519,7 @@
 									</a4j:commandLink>
 							</rich:column>
 							
-							<rich:column sortBy="#{item.timeStartShort}" width="65">
+							<rich:column sortBy="#{item.timeStartShort}" width="90">
 								<f:facet name="header" >
 									<h:outputText value="Time" />
 								</f:facet>

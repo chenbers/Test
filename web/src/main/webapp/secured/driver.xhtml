@@ -401,18 +401,18 @@
 					  <div class="panel_content">
 					  
 					  	<h:panelGroup styleClass="map-border" layout="block">
-							<c:if test="#{driverBean.hasLastTrip eq false}">
+							<h:outputText rendered="#{vehicleBean.hasLastTrip eq false}">
 	  							<h3>#{messages.no_trips_found}</h3>
-	  						</c:if>
+	  						</h:outputText>
 							<div id="map-canvas" style="width:458px;height:300px;border:0"></div>
 					  	</h:panelGroup>
 					  	
-					  	<c:if test="#{driverBean.hasLastTrip eq true}">
+					  	<h:outputText rendered="#{vehicleBean.hasLastTrip eq true}">
 						    <script type="text/JavaScript">
-						    	initMap(#{driverBean.lastTrip.routeLastStep.lat}, #{driverBean.lastTrip.routeLastStep.lng}, 14);
+						    	initMap(#{vehicleBean.lastTrip.routeLastStep.lat}, #{vehicleBean.lastTrip.routeLastStep.lng}, 14);
 						    	drawTrip();
 	    					</script>
-    					</c:if>
+    					</h:outputText>
 					  </div>
 					</div>
 					

@@ -97,6 +97,7 @@
 
 		//On page load and A4J Re-render
 		function showTrips(){
+			
 		    updateMap();
 		    map.setZoom(map.getBoundsZoomLevel(bounds));
 		    map.setCenter(bounds.getCenter());
@@ -109,6 +110,7 @@
    		function drawSelectedTrips()
    		{
    				map.clearOverlays(); 
+   				bounds = new GLatLngBounds();
 				var polyline;
 				var marker;
 				var startlatlng;
