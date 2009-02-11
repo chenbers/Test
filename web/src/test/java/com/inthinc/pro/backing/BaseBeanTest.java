@@ -74,6 +74,7 @@ public class BaseBeanTest extends AbstractJsfTestCase implements ApplicationCont
     public void setUp() throws Exception
     {
         super.setUp();
+        application.setMessageBundle("com.inthinc.pro.resources.Messages");
     }
 
     @After
