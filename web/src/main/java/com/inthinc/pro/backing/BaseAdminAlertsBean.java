@@ -343,7 +343,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
 
     protected static boolean isAnytime(BaseAlertView alert)
     {
-        return alert.getStartTOD().equals(alert.getStopTOD());
+        return (alert.getStartTOD() == null) || alert.getStartTOD().equals(alert.getStopTOD());
     }
 
     protected static void onSetAnytime(BaseAlertView alert, boolean anytime)
