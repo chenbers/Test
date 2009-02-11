@@ -230,7 +230,7 @@ public class BeanUtil
                                 {
                                     // recursive compare
                                     if (!BeanUtils.isSimpleProperty(clazz) && !clazz.isEnum() && !Collection.class.isAssignableFrom(clazz) && !Map.class.isAssignableFrom(clazz)
-                                            && !clazz.isArray())
+                                            && !clazz.isArray() && !Date.class.isAssignableFrom(clazz))
                                     {
                                         compared.add(o1);
                                         compareAndInit(o1, o2, compared);
@@ -243,7 +243,7 @@ public class BeanUtil
                                     else if (Map.class.isAssignableFrom(clazz))
                                     {
                                         ((Map<?, ?>) o1).entrySet().retainAll(((Map<?, ?>) o2).entrySet());
-                                    }
+                                    }  
                                     // simple compare
                                     else if ((clazz.isArray() && !Arrays.deepEquals((Object[]) o1, (Object[]) o2)) || !o1.equals(o2))
                                     {
