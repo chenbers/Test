@@ -171,7 +171,9 @@
 <t:saveState value="#{driverTripsBean.trips}" />
 <t:saveState value="#{driverTripsBean.numTrips}" />
 <t:saveState value="#{driverTripsBean.selectedTrips}" />
+<t:saveState value="#{driverTripsBean.allEvents}" />
 <t:saveState value="#{driverTripsBean.violationEvents}" />
+<t:saveState value="#{driverTripsBean.idleEvents}" />
 
 <div id="wrapper">
 <h:form>
@@ -344,13 +346,15 @@
 				<rich:panel id="selectedTrip">
 					<a4j:form>
 						<rich:dataTable 
-						value="#{driverTripsBean.violationEvents}" id="selectedTripTable"
+						value="#{driverTripsBean.allEvents}" id="selectedTripTable"
 						var="item" styleClass="datagrid"
 						rowClasses="tableOdd,tableEven" cellspacing="1" rows="5" width="100%">
 		
 							<!-- Data -->
 							<rich:column sortBy="#{item.addressStr}">
-								<h:graphicImage value="/images/ico_violation.png" alt="#{item.eventType}" />
+								<h:graphicImage value="/images/ico_idle.png" rendered="#{item.type eq 208}" alt="#{item.eventType}" />
+							
+								<h:graphicImage value="/images/ico_violation.png" rendered="#{item.type ne 208}" alt="#{item.eventType}" />
 							</rich:column>
 
 							<rich:column sortBy="#{item.addressStr}">
@@ -413,7 +417,7 @@
 									<td width="20">
 									    <a4j:form id="showLastTenForm" reRender="script,script2,selectedTripMap,selectedTrip">
 										    <h:selectBooleanCheckbox id="showAllCheckBox" value="#{driverTripsBean.showLastTenTrips}" >
-										    	<a4j:support event="onclick" reRender="script,script2,selectedTripMap" />
+										    	<a4j:support event="onclick" reRender="script,script2,selectedTrip,selectedTripMap" />
 										    </h:selectBooleanCheckbox>
 										</a4j:form>
 								    </td>
@@ -514,7 +518,7 @@
 									</a4j:commandLink>
 							</rich:column>
 							
-							<rich:column sortBy="#{item.timeStartShort}" width="65">
+							<rich:column sortBy="#{item.timeStartShort}" width="90">
 								<f:facet name="header" >
 									<h:outputText value="Time" />
 								</f:facet>
