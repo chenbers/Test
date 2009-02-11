@@ -7,8 +7,9 @@ import java.util.Map;
 public enum Occurrence implements BaseEnum
 {
     DAILY(0,"Daily"),
-    WEEKLY(1,"Weekly"),
-    MONTHLY(2,"Monthly");
+    DAILY_CUSTOM(1,"Daily - Customizable"),
+    WEEKLY(2,"Weekly"),
+    MONTHLY(3,"Monthly");
     
     private Integer code;
     private String description;
