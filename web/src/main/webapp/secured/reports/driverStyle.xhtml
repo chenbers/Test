@@ -104,7 +104,7 @@ var firstLoad = new Boolean(true);
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="vehicle" id="titleSpan">Driving Style: Overall</span>
+						<span class="vehicle" id="titleSpan"></span>
 							<a4j:region id="dateLinksForm_region">
 							<a4j:form id="dateLinksForm">
 							<span class="panel_links_ico" style="right: 30px;">
@@ -376,7 +376,7 @@ var firstLoad = new Boolean(true);
 			  		
 						if(firstLoad == true)
 						{
-							SelectBreakDown('OVERALL', overallChart2, '#{messages.reports_speed}: #{messages.SCORE_OVERALL}');
+							SelectBreakDown('OVERALL', overallChart2, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_OVERALL}');
 							firstLoad = false;
 						}
 						else
