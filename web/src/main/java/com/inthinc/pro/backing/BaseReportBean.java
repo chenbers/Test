@@ -39,6 +39,26 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
 
     }
 
+    public void init() 
+    {
+        setTablePref(new TablePref<T>(this));
+
+        searchFor = checkForRequestMap();
+        
+        loadDBData();
+        
+        //Bean creation could be from Reports selection or
+        //  search on main menu. This accounts for a search
+        //  from the main menu w/ never having been to the 
+        //  Drivers report page.
+        if (  isMainMenu() ) {  
+            checkOnSearch();
+            setMainMenu(false);
+        } else {
+            loadResults(getDisplayData());
+        }
+    }
+
     public TablePreferenceDAO getTablePreferenceDAO()
     {
         return tablePreferenceDAO;
@@ -83,6 +103,8 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     {
         this.tablePref = tablePref;
     }
+
+    protected abstract void loadDBData();
 
     protected abstract List<T> getDBData();
 
@@ -276,7 +298,7 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
             String key = entry.getKey();
             String value = entry.getValue();
 
-            // search parm, either from the search in the main menu or
+            // search param, either from the search in the main menu or
             // one from the report
             if (key.equalsIgnoreCase("searchFor"))
             {

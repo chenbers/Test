@@ -15,11 +15,9 @@ import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.VehicleReportItem;
-import com.inthinc.pro.reports.Report;
 import com.inthinc.pro.reports.ReportCriteria;
-import com.inthinc.pro.reports.ReportType;
 
-public class VehicleReportBean extends BaseReportBean<VehicleReportItem>
+public class VehicleReportBean extends BaseReportBean<VehicleReportItem> implements PersonChangeListener
 {
     private static final Logger logger = Logger.getLogger(VehicleReportBean.class);
     
@@ -53,27 +51,21 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem>
     {
         super();
     }
-    
-    public void init() 
-    {   
-        setTablePref(new TablePref(this));
 
-        searchFor = checkForRequestMap();        
+    @Override
+    protected void loadDBData()
+    {
         vehiclesData = 
             scoreDAO.getVehicleReportData(
                     getUser().getGroupID(),
                     Duration.TWELVE);
-        
-        //Bean creation could be from Reports selection or
-        //  search on main menu. This accounts for a search
-        //  from the main menu w/ never having been to the 
-        //  Vehicles report page.
-        if ( super.isMainMenu() ) {  
-            checkOnSearch();
-            super.setMainMenu(false);
-        } else {
-            loadResults(this.vehiclesData);
-        }
+    }
+
+    @Override
+    public void personListChanged()
+    {
+        loadDBData();
+        search();
     }
  
     

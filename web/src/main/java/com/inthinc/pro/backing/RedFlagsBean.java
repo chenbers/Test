@@ -20,7 +20,7 @@ import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.TableType;
 
-public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<RedFlagReportItem>
+public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<RedFlagReportItem>, PersonChangeListener
 {
     private static final Logger     logger                  = Logger.getLogger(RedFlagsBean.class);
 
@@ -98,6 +98,12 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     {
         init();
         return getFilteredTableData();
+    }
+
+    @Override
+    public void personListChanged()
+    {
+        refreshAction();
     }
 
     private void init()

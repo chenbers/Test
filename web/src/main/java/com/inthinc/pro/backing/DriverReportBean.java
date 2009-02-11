@@ -1,6 +1,5 @@
 package com.inthinc.pro.backing;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,11 +14,9 @@ import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.reports.Report;
 import com.inthinc.pro.reports.ReportCriteria;
-import com.inthinc.pro.reports.ReportType;
 
-public class DriverReportBean extends BaseReportBean<DriverReportItem>
+public class DriverReportBean extends BaseReportBean<DriverReportItem> implements PersonChangeListener
 {
     
     private static final Logger logger = Logger.getLogger(DriverReportBean.class);
@@ -55,13 +52,10 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem>
     {
         super();
     }
-    
-    public void init() 
-    {
-        setTablePref(new TablePref(this));
 
-        searchFor = checkForRequestMap();
-        
+    @Override
+    protected void loadDBData()
+    {
         this.driversData = 
             scoreDAO.getDriverReportData(            
                     getUser().getGroupID(),
@@ -70,17 +64,13 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem>
         for ( DriverReportItem dri : this.driversData ) {
             dri.setGroup(this.getGroupHierarchy().getGroup(dri.getGroupID()).getName());
         }
-        
-        //Bean creation could be from Reports selection or
-        //  search on main menu. This accounts for a search
-        //  from the main menu w/ never having been to the 
-        //  Drivers report page.
-        if (  super.isMainMenu() ) {  
-            checkOnSearch();
-            super.setMainMenu(false);
-        } else {
-            loadResults(this.driversData);
-        }
+    }
+
+    @Override
+    public void personListChanged()
+    {
+        loadDBData();
+        search();
     }
 
     public List<DriverReportItem> getDriverData()

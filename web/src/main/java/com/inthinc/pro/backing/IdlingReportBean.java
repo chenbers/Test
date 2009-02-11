@@ -16,7 +16,7 @@ import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.reports.ReportCriteria;
 
-public class IdlingReportBean extends BaseReportBean<IdlingReportItem>
+public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implements PersonChangeListener
 {
     private static final Logger logger = Logger.getLogger(IdlingReportBean.class);
     
@@ -73,17 +73,14 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem>
     {
         super();
     }
-    
-    public void init() 
-    {   
-        setTablePref(new TablePref(this));
-        
-        searchFor = checkForRequestMap();     
-        
+
+    @Override
+    protected void loadDBData()
+    {
         // Dates for show
         this.endDate = new Date();
         this.startDate = new Date();
-        this.startDate.setTime(this.endDate.getTime()-this.DAYS_BACK);
+        this.startDate.setTime(this.endDate.getTime() - DAYS_BACK);
 
         // Start with today
         this.intEndDate = getGregDate(null);
@@ -101,17 +98,13 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem>
             scoreDAO.getIdlingReportData(
                     getUser().getGroupID(),
                     intStartDate, intEndDate);
-   
-        //Bean creation could be from Reports selection or
-        //  search on main menu. This accounts for a search
-        //  from the main menu w/ never having been to the 
-        //  Idlings report page.
-        if ( super.isMainMenu() ) {  
-            checkOnSearch();
-            super.setMainMenu(false);
-        } else {
-            loadResults(this.idlingsData);
-        }
+    }
+
+    @Override
+    public void personListChanged()
+    {
+        loadDBData();
+        search();
     }
     
     private Date getGregDate(Date in) 

@@ -18,7 +18,7 @@ import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.TableType;
 
-public class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions<EventReportItem>
+public class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions<EventReportItem>, PersonChangeListener
 {
     private static final Logger     logger                  = Logger.getLogger(EventsBean.class);
 
@@ -110,6 +110,12 @@ public class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions
     {
         init();
         return getFilteredTableData();
+    }
+
+    @Override
+    public void personListChanged()
+    {
+        refreshAction();
     }
 
     public void refreshAction()

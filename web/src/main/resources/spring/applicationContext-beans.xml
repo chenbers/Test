@@ -105,6 +105,12 @@
             <ref local="vehiclesBean" />
             <ref local="zoneAlertsBean" />
             <ref local="redFlagAlertsBean" />
+            <ref local="eventsBean" />
+            <ref local="warningsBean" />
+            <ref local="redFlagsBean" />
+            <ref local="idlingReportBean" />
+            <ref local="driverReportBean" />
+            <ref local="vehicleReportBean" />
           </list>
         </property>
     </bean>

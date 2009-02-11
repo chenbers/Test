@@ -13,7 +13,6 @@ import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceReportItem;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.reports.Report;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 
@@ -51,12 +50,25 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
         super();
     }
     
+    @Override
     public void init() 
     {
-        setTablePref(new TablePref(this));
-
-        searchFor = checkForRequestMap();
+        super.init();
+       
+        Collections.sort(this.devicesData,new Comparator<DeviceReportItem>()
+        {
         
+            @Override
+            public int compare(DeviceReportItem o1, DeviceReportItem o2)
+            {
+                return o1.getDevice().getName().toLowerCase().compareTo(o2.getDevice().getName().toLowerCase());
+            }
+        });  
+    }
+
+    @Override
+    protected void loadDBData()
+    {
         List<Vehicle> vehicList = 
             vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
 
@@ -76,23 +88,6 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
                 this.devicesData.add(dri);
             }
         }
-        
-        if ( super.isMainMenu() ) {  
-            checkOnSearch();
-            super.setMainMenu(false);
-        } else {
-            loadResults(this.devicesData);
-        }
-       
-        Collections.sort(this.devicesData,new Comparator<DeviceReportItem>()
-        {
-        
-            @Override
-            public int compare(DeviceReportItem o1, DeviceReportItem o2)
-            {
-                return o1.getDevice().getName().toLowerCase().compareTo(o2.getDevice().getName().toLowerCase());
-            }
-        });  
     }
         
 
