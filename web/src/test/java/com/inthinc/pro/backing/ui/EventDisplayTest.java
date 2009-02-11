@@ -8,6 +8,7 @@ import java.util.TimeZone;
 
 import org.junit.Test;
 
+import com.inthinc.pro.backing.BaseBeanTest;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
@@ -16,7 +17,7 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.SpeedingEvent;
 import com.inthinc.pro.model.Vehicle;
 
-public class EventDisplayTest
+public class EventDisplayTest extends BaseBeanTest
 {
 
     @Test
