@@ -397,14 +397,14 @@ public class OrganizationBean extends BaseBean
         }
         
         // Rule 3
-        if (groupState == State.EDIT && selectedParentGroup.getGroupID().equals(treeNode.getGroup().getGroupID()))
+        if (groupState == State.EDIT && selectedParentGroup != null && selectedParentGroup.getGroupID().equals(treeNode.getGroup().getGroupID()))
         {
             addErrorMessage(MessageUtil.getMessageString("groupEdit_selfParentError"));
             return false;
         }
         
         // Rule 4
-        if (groupState == State.EDIT && treeNode.findTreeNodeByGroupId(selectedParentGroup.getGroupID()) != null)
+        if (groupState == State.EDIT && selectedParentGroup != null && treeNode.findTreeNodeByGroupId(selectedParentGroup.getGroupID()) != null)
         {
             addErrorMessage(MessageUtil.getMessageString("groupEdit_childToParentError"));
             return false;

@@ -50,6 +50,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     private static final List<SelectItem> REPORT_GROUPS;
     private static final List<SelectItem> DURATIONS;
     private static final List<SelectItem> OCCURRENCES;
+    private static final List<SelectItem> STATUSES;
 
     private static final String REDIRECT_REPORT_SCHEDULES = "go_adminReportSchedules";
     private static final String REDIRECT_REPORT_SCHEDULE = "go_adminReportSchedule";
@@ -73,6 +74,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         AVAILABLE_COLUMNS.add("occurrence");
         AVAILABLE_COLUMNS.add("lastEmail");
         AVAILABLE_COLUMNS.add("report");
+        AVAILABLE_COLUMNS.add("status");
+        
 
         REPORT_GROUPS = new ArrayList<SelectItem>();
         for (ReportGroup rt : EnumSet.allOf(ReportGroup.class))
@@ -95,6 +98,11 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         {
             OCCURRENCES.add(new SelectItem(o, o.getDescription()));
         }
+        
+        STATUSES = new ArrayList<SelectItem>();
+        STATUSES.add(new SelectItem(Status.ACTIVE,Status.ACTIVE.getDescription()));
+        STATUSES.add(new SelectItem(Status.INACTIVE,Status.INACTIVE.getDescription()));
+       
     }
     
     private static void sort(List<SelectItem> selectItemList)
@@ -132,6 +140,11 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     public List<SelectItem> getOccurrences()
     {
         return OCCURRENCES;
+    }
+    
+    public List<SelectItem> getStatuses()
+    {
+        return STATUSES;
     }
 
     @SuppressWarnings("unchecked")
@@ -220,6 +233,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         getUpdateField().put("dayOfWeek", Boolean.TRUE);
         getUpdateField().put("timeOfDay", Boolean.TRUE);
         getUpdateField().put("dayOfWeek", Boolean.TRUE);
+        getUpdateField().put("status", Boolean.TRUE);
         return super.save();
     }
 

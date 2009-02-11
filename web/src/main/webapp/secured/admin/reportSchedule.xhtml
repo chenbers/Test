@@ -61,6 +61,14 @@
 							</tr>
 							<tr>
 								<td width="100" valign="top"><h:outputText
+									value="#{messages.reportSchedule_status}" />
+								</td>
+								<td>
+									<h:outputText value="#{reportScheduleBean.item.status}"/>
+								</td>
+							</tr>
+							<tr>
+								<td width="100" valign="top"><h:outputText
 									value="#{messages.reportSchedule_startDate}" />
 								</td>
 								<td>
@@ -101,7 +109,7 @@
 									<h:outputText value="#{reportScheduleBean.item.occurrence}"/>
 								</td>
 							</tr>
-							<h:outputText rendered="#{reportScheduleBean.item.occurrence eq 'DAILY'}">
+							<h:outputText rendered="#{reportScheduleBean.item.occurrence eq 'DAILY_CUSTOM'}">
 							<tr>
 								<td width="100" valign="top"><h:outputText
 									value="#{messages.reportSchedule_daysOfWeek}" />

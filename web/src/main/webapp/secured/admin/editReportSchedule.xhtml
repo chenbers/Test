@@ -63,6 +63,17 @@
 							</ui:fragment>
 							<tr>
 								<td width="100" valign="top"><h:outputText
+									value="#{messages.reportSchedule_status}" />
+								</td>
+								<td>
+									<h:selectOneMenu id="status" value="#{reportScheduleBean.item.status}" converter="SimpleBeanConverter">
+										<f:selectItems value="#{reportScheduleBean.statuses}"/> 
+									</h:selectOneMenu>
+								</td>
+								
+							</tr>
+							<tr>
+								<td width="100" valign="top"><h:outputText
 									value="#{messages.reportSchedule_startDate}" />
 									<h:outputText styleClass="required" value=" *" />
 								</td>
@@ -109,24 +120,24 @@
 							</tr>
 						</table>
 						 <h:panelGroup id="dayOfWeekPanel">
-						<table width="350" border="0" cellspacing="2" cellpadding="4"
-							align="center">
-							<tr>
-								<td width="100" valign="top">
-									
-									<h:outputText 
-										value="#{messages.reportSchedule_daysOfWeek}" rendered="#{reportScheduleBean.item.occurrence eq 'DAILY'}"/>
-								</td>
-								<td>
-									<h:outputText rendered="#{reportScheduleBean.item.occurrence eq 'DAILY'}">
-									<ui:include src="../../includes/dayPicker.xhtml">
-		                                <ui:param name="days" value="#{reportScheduleBean.item.dayOfWeek}" />
-		                                <ui:param name="onchange" value="checkMultiple('dayOfWeek')" />
-                              		</ui:include>	
-                              		</h:outputText>
-								</td>
-							</tr>
-						</table>
+							<table width="350" border="0" cellspacing="2" cellpadding="4"
+								align="center">
+								<tr>
+									<td width="100" valign="top">
+										
+										<h:outputText 
+											value="#{messages.reportSchedule_daysOfWeek}" rendered="#{reportScheduleBean.item.occurrence eq 'DAILY_CUSTOM'}"/>
+									</td>
+									<td>
+										<h:outputText rendered="#{reportScheduleBean.item.occurrence eq 'DAILY_CUSTOM'}">
+										<ui:include src="../../includes/dayPicker.xhtml">
+			                                <ui:param name="days" value="#{reportScheduleBean.item.dayOfWeek}" />
+			                                <ui:param name="onchange" value="checkMultiple('dayOfWeek')" />
+	                              		</ui:include>	
+	                              		</h:outputText>
+									</td>
+								</tr>
+							</table>
 						</h:panelGroup>
 						</td>
 						<td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
