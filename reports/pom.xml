@@ -2,14 +2,14 @@
   <parent>
     <artifactId>root</artifactId>
     <groupId>com.inthinc.pro</groupId>
-    <version>0.0.17</version>
+    <version>0.0.18-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.inthinc.pro.reports</groupId>
   <artifactId>reports</artifactId>
   <name>reports</name>
   <packaging>jar</packaging>
-  <version>0.0.17</version>
+  <version>0.0.18-SNAPSHOT</version>
   <url>http://maven.apache.org</url>
   <dependencies>
     <dependency>
