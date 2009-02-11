@@ -59,6 +59,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     /*
      * Spring managed beans
      */
+    
     private ReportScheduleDAO reportScheduleDAO;
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;

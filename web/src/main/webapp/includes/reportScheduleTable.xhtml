@@ -35,6 +35,23 @@
     <rich:column rendered="#{reportScheduleBean.tableColumns['occurrence'].visible}" sortBy="#{item.occurrence}">
       <f:facet name="header"><h:outputText value="#{messages.reportSchedulesHeader_occurrence}" /></f:facet>
       <h:outputText value="#{item.occurrence}"/>
+      <h:outputText rendered="#{item.occurrence eq 'WEEKLY'}">
+      	  <br/>
+      	  <h:outputText value=" "/>
+	      <h:outputText  value="#{item.startDate}">
+	      	   <f:convertDateTime pattern="EEEE" timeZone="#{reportScheduleBean.utcTimeZone}" type="date" />
+	      </h:outputText>
+      </h:outputText>
+      <h:outputText rendered="#{item.occurrence eq 'DAILY_CUSTOM'}">
+      	  <br/>
+	      <h:outputText value="#{messages.dayPicker_sunday} " rendered="#{item.dayOfWeek[0]}"/>
+          <h:outputText value="#{messages.dayPicker_monday} " rendered="#{item.dayOfWeek[1]}"/>
+          <h:outputText value="#{messages.dayPicker_tuesday} " rendered="#{item.dayOfWeek[2]}"/>
+          <h:outputText value="#{messages.dayPicker_wednesday} " rendered="#{item.dayOfWeek[3]}"/>
+          <h:outputText value="#{messages.dayPicker_thursday_2} " rendered="#{item.dayOfWeek[4]}"/>
+          <h:outputText value="#{messages.dayPicker_friday} " rendered="#{item.dayOfWeek[5]}"/>
+          <h:outputText value="#{messages.dayPicker_saturday} " rendered="#{item.dayOfWeek[6]}"/>
+      </h:outputText>
     </rich:column>
     <rich:column rendered="#{reportScheduleBean.tableColumns['lastEmail'].visible}" sortBy="#{item.lastDate}">
       <f:facet name="header"><h:outputText value="#{messages.reportSchedulesHeader_lastEmail}" /></f:facet>
