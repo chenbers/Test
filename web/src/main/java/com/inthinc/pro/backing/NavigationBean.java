@@ -3,25 +3,23 @@ package com.inthinc.pro.backing;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
-import org.omg.PortableServer.POAManagerPackage.State;
 
 import com.inthinc.pro.backing.model.GroupLevel;
 import com.inthinc.pro.backing.model.TreeNodeImpl;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.VehicleType;
 
-public class NavigationBean extends BaseDurationBean
+public class NavigationBean extends BaseBean
 {
     private static final Logger logger = Logger.getLogger(NavigationBean.class);
 
     // Spring managed beans
     private GroupDAO groupDAO;
 
+    private DurationBean durationBean;
+    
     // Key to using widgets
     private Integer groupID;
     private Group group;
@@ -52,6 +50,16 @@ public class NavigationBean extends BaseDurationBean
     public NavigationBean()
     {
 
+    }
+
+    public DurationBean getDurationBean()
+    {
+        return durationBean;
+    }
+
+    public void setDurationBean(DurationBean durationBean)
+    {
+        this.durationBean = durationBean;
     }
 
     public Integer getGroupID()

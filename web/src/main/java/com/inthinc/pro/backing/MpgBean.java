@@ -15,18 +15,18 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
-import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.wrapper.MpgEntityPkg;
 
-public class MpgBean extends BaseDurationBean {
+public class MpgBean extends BaseBean
+{
 
-	private static final Logger logger = Logger.getLogger(MpgBean.class);
+    private static final Logger logger = Logger.getLogger(MpgBean.class);
 
     private MpgDAO mpgDAO;
     private NavigationBean navigation;
+    private DurationBean durationBean;
     private ReportRenderer reportRenderer;
     private ReportCriteriaService reportCriteriaService;
     private List<MpgEntityPkg> mpgEntities = new ArrayList<MpgEntityPkg>();
@@ -40,30 +40,31 @@ public class MpgBean extends BaseDurationBean {
     private String sortOnLight = "";
     private String sortOnMedium = "";
     private String sortOnHeavy = "";
-    
+
     private String countString = null;
-    
-	
-	private String barDef;	
 
-	
-	public String getBarDef() {
-	    if (barDef == null)
-	    {
-	        barDef = createBarDef();
-	    }
-		return barDef;
-	}
+    private String barDef;
 
-	public void setBarDef(String barDef) {
-		this.barDef = barDef;
-	}
-	
-	public String createBarDef() {
-		StringBuffer sb = new StringBuffer();
-		
-		//Control parameters
-		sb.append(GraphicUtil.getBarControlParameters());
+    public String getBarDef()
+    {
+        if (barDef == null)
+        {
+            barDef = createBarDef();
+        }
+        return barDef;
+    }
+
+    public void setBarDef(String barDef)
+    {
+        this.barDef = barDef;
+    }
+
+    public String createBarDef()
+    {
+        StringBuffer sb = new StringBuffer();
+
+        // Control parameters
+        sb.append(GraphicUtil.getBarControlParameters());
 
         // get the data
         List<MpgEntityPkg> entities = null;
@@ -71,24 +72,24 @@ public class MpgBean extends BaseDurationBean {
         {
             logger.debug("getting scores for groupID: " + this.navigation.getGroupID());
             entities = getPagedMpgEntities();
-            
-            sb.append(GraphicUtil.createMpgXML(entities)); 
+
+            sb.append(GraphicUtil.createMpgXML(entities));
         }
         catch (Exception e)
         {
             logger.error("mpgDAO error", e);
         }
-			
-		//Bar parameters
-		//MAKE SURE YOU LOAD REAL DATA SO, IF THERE IS FEWER OBSERVATIONS
-		//THAN THE REQUESTED INTERVAL I.E. 22 DAYS WHEN YOU NEED 30, YOU 
-		//PAD THE FRONT WITH ZEROES
-		//sb.append(GraphicUtil.createFakeBarData());		
-		
-		sb.append("</chart>");
-		
-		return sb.toString();
-	}
+
+        // Bar parameters
+        // MAKE SURE YOU LOAD REAL DATA SO, IF THERE IS FEWER OBSERVATIONS
+        // THAN THE REQUESTED INTERVAL I.E. 22 DAYS WHEN YOU NEED 30, YOU
+        // PAD THE FRONT WITH ZEROES
+        // sb.append(GraphicUtil.createFakeBarData());
+
+        sb.append("</chart>");
+
+        return sb.toString();
+    }
 
     public NavigationBean getNavigation()
     {
@@ -99,20 +100,31 @@ public class MpgBean extends BaseDurationBean {
     {
         this.navigation = navigation;
     }
-        
-    public void scrollerListener(DataScrollerEvent se)     
-    {  
-        this.start = (se.getPage()-1)*this.numRowsPerPg + 1;
-        this.end = (se.getPage())*this.numRowsPerPg;
-        
-        //Partial page
-        if ( this.end > this.mpgEntities.size() ) {
+
+    public DurationBean getDurationBean()
+    {
+        return durationBean;
+    }
+
+    public void setDurationBean(DurationBean durationBean)
+    {
+        this.durationBean = durationBean;
+    }
+
+    public void scrollerListener(DataScrollerEvent se)
+    {
+        this.start = (se.getPage() - 1) * this.numRowsPerPg + 1;
+        this.end = (se.getPage()) * this.numRowsPerPg;
+
+        // Partial page
+        if (this.end > this.mpgEntities.size())
+        {
             this.end = this.mpgEntities.size();
         }
 
         navigation.setStart(this.start);
         navigation.setEnd(this.end);
-    } 
+    }
 
     public MpgDAO getMpgDAO()
     {
@@ -123,19 +135,19 @@ public class MpgBean extends BaseDurationBean {
     {
         this.mpgDAO = mpgDAO;
     }
-    
+
     public Integer getGroupID()
     {
         return this.getNavigation().getGroupID();
     }
-    
+
     public List<MpgEntityPkg> getMpgEntities()
     {
         if (mpgEntities.size() == 0)
         {
             Group parentGroup = this.getNavigation().getGroup();
-            List<MpgEntity> tempEntities = mpgDAO.getEntities(parentGroup, getDuration());
-    
+            List<MpgEntity> tempEntities = mpgDAO.getEntities(parentGroup, durationBean.getDuration());
+
             // Populate the table
             String contextPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
             for (MpgEntity entity : tempEntities)
@@ -174,8 +186,7 @@ public class MpgBean extends BaseDurationBean {
 
     public String getCountString()
     {
-        countString = "Showing " + this.start + " to " + 
-            Math.min(this.maxCount, this.end) + " of " + this.maxCount + " records";
+        countString = "Showing " + this.start + " to " + Math.min(this.maxCount, this.end) + " of " + this.maxCount + " records";
         return countString;
     }
 
@@ -183,18 +194,19 @@ public class MpgBean extends BaseDurationBean {
     {
         this.countString = countString;
     }
-    
+
     public String exportToPDF()
     {
-       
+
         ReportCriteria reportCriteria = buildReportCriteria();
         reportRenderer.exportSingleReportToPDF(reportCriteria, getFacesContext());
-        
+
         return null;
     }
-    
-    public ReportCriteria buildReportCriteria(){
-        ReportCriteria reportCriteria = reportCriteriaService.getMpgReportCriteria(navigation.getGroupID(), getDuration());
+
+    public ReportCriteria buildReportCriteria()
+    {
+        ReportCriteria reportCriteria = reportCriteriaService.getMpgReportCriteria(navigation.getGroupID(), durationBean.getDuration());
         return reportCriteria;
     }
 
@@ -247,7 +259,7 @@ public class MpgBean extends BaseDurationBean {
     {
         this.end = end;
     }
-    
+
     public String getSortOnName()
     {
         return sortOnName;
@@ -257,7 +269,7 @@ public class MpgBean extends BaseDurationBean {
     {
         this.sortOnName = sortOnName;
     }
-    
+
     public String getSortOnLight()
     {
         return sortOnLight;

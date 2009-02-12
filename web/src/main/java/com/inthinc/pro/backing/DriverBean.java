@@ -32,30 +32,31 @@ import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.util.MessageUtil;
 
-public class DriverBean extends BaseDurationBean
+public class DriverBean extends BaseBean
 {
-    private static final Logger logger            = Logger.getLogger(DriverBean.class);
+    private static final Logger logger = Logger.getLogger(DriverBean.class);
 
-    private DriverDAO           driverDAO;
-    private ScoreDAO            scoreDAO;
-    private MpgDAO              mpgDAO;
-    private EventDAO            eventDAO;
-    private NavigationBean      navigation;
+    private DriverDAO driverDAO;
+    private ScoreDAO scoreDAO;
+    private MpgDAO mpgDAO;
+    private EventDAO eventDAO;
+    private NavigationBean navigation;
+    private DurationBean durationBean;
 
-    private TripDisplay         lastTrip;
-    private List<Event>         violationEvents = new ArrayList<Event>();
-    private Integer             overallScore;
-    private String              overallScoreHistory;
-    private String              overallScoreStyle;
-    private String              mpgHistory;
-    private String              coachingHistory;
-    private Boolean             hasLastTrip;
-    private ReportRenderer      reportRenderer;
-    private String              emailAddress;
+    private TripDisplay lastTrip;
+    private List<Event> violationEvents = new ArrayList<Event>();
+    private Integer overallScore;
+    private String overallScoreHistory;
+    private String overallScoreStyle;
+    private String mpgHistory;
+    private String coachingHistory;
+    private Boolean hasLastTrip;
+    private ReportRenderer reportRenderer;
+    private String emailAddress;
 
     private Integer initAverageScore(ScoreType scoreType)
     {
-        ScoreableEntity se = scoreDAO.getDriverAverageScoreByType(navigation.getDriver().getDriverID(), getDuration(), scoreType);
+        ScoreableEntity se = scoreDAO.getDriverAverageScoreByType(navigation.getDriver().getDriverID(), durationBean.getDuration(), scoreType);
 
         if (se == null)
             return -1;
@@ -66,8 +67,9 @@ public class DriverBean extends BaseDurationBean
     // INIT VIOLATIONS
     public void initViolations(Date start, Date end)
     {
-        if(violationEvents.size() > 0) return;
-        
+        if (violationEvents.size() > 0)
+            return;
+
         List<Integer> types = new ArrayList<Integer>();
         types.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
         types.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
@@ -75,9 +77,9 @@ public class DriverBean extends BaseDurationBean
 
         violationEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), start, end, types);
 
-        //Lookup Addresses for events
+        // Lookup Addresses for events
         AddressLookup lookup = new AddressLookup();
-        for (Event event: violationEvents)
+        for (Event event : violationEvents)
         {
             event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
         }
@@ -140,10 +142,10 @@ public class DriverBean extends BaseDurationBean
     // LAST TRIP
     public TripDisplay getLastTrip()
     {
-        if(lastTrip == null)
+        if (lastTrip == null)
         {
             Trip tempTrip = driverDAO.getLastTrip(navigation.getDriver().getDriverID());
-            
+
             if (tempTrip != null && tempTrip.getRoute().size() > 0)
             {
                 hasLastTrip = true;
@@ -158,7 +160,7 @@ public class DriverBean extends BaseDurationBean
         }
         return lastTrip;
     }
-    
+
     public void setLastTrip(TripDisplay lastTrip)
     {
         this.lastTrip = lastTrip;
@@ -232,9 +234,9 @@ public class DriverBean extends BaseDurationBean
 
     private String createMultiLineDef()
     {
-        List<MpgEntity> mpgEntities = mpgDAO.getDriverEntities(navigation.getDriver().getDriverID(), getDuration(), null);
-        List<String> catLabelList = GraphicUtil.createMonthList(getDuration());
-        
+        List<MpgEntity> mpgEntities = mpgDAO.getDriverEntities(navigation.getDriver().getDriverID(), durationBean.getDuration(), null);
+        List<String> catLabelList = GraphicUtil.createMonthList(durationBean.getDuration());
+
         StringBuffer sb = new StringBuffer();
         FusionMultiLineChart multiLineChart = new FusionMultiLineChart();
         sb.append(multiLineChart.getControlParameters());
@@ -254,13 +256,13 @@ public class DriverBean extends BaseDurationBean
 
         }
         sb.append(multiLineChart.getCategoriesEnd());
-        
+
         sb.append(multiLineChart.getChartDataSet("Light", "B1D1DC", "B1D1DC", lightValues, catLabelList));
         sb.append(multiLineChart.getChartDataSet("Medium", "C8A1D1", "C8A1D1", medValues, catLabelList));
         sb.append(multiLineChart.getChartDataSet("Heavy", "A8C634", "A8C634", heavyValues, catLabelList));
 
         sb.append(multiLineChart.getClose());
-        
+
         return sb.toString();
     }
 
@@ -271,11 +273,11 @@ public class DriverBean extends BaseDurationBean
 
         // Start XML Data
         sb.append(line.getControlParameters());
-        List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistory(navigation.getDriver().getDriverID(), 
-                                                                         getDuration(), scoreType, GraphicUtil.getDurationSize(getDuration()));
-        
+        List<ScoreableEntity> scoreList = scoreDAO
+                .getDriverScoreHistory(navigation.getDriver().getDriverID(), durationBean.getDuration(), scoreType, GraphicUtil.getDurationSize(durationBean.getDuration()));
+
         // Get "x" values
-        List<String> monthList = GraphicUtil.createMonthList(getDuration());
+        List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration());
 
         int cnt = 0;
         for (ScoreableEntity e : scoreList)
@@ -297,64 +299,52 @@ public class DriverBean extends BaseDurationBean
 
         return sb.toString();
     }
-    
+
     public List<CategorySeriesData> createJasperDef(ScoreType scoreType)
     {
-        List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistory(
-                                            navigation.getDriver().getDriverID(), getDuration(), scoreType, 
-                                            GraphicUtil.getDurationSize(getDuration()));
+        List<ScoreableEntity> scoreList = scoreDAO
+                .getDriverScoreHistory(navigation.getDriver().getDriverID(), durationBean.getDuration(), scoreType, GraphicUtil.getDurationSize(durationBean.getDuration()));
 
         List<CategorySeriesData> chartDataList = new ArrayList<CategorySeriesData>();
-        List<String> monthList = GraphicUtil.createMonthList(getDuration());        
-        
+        List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration());
+
         int count = 0;
         for (ScoreableEntity se : scoreList)
         {
-            chartDataList.add( new CategorySeriesData(  MessageUtil.getMessageString(scoreType.toString()), 
-                                                        monthList.get(count).toString(), 
-                                                        se.getScore() / 10.0D, 
-                                                        monthList.get(count).toString() ));
+            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString(scoreType.toString()), monthList.get(count).toString(), se.getScore() / 10.0D, monthList.get(
+                    count).toString()));
             count++;
         }
         return chartDataList;
     }
-    
+
     public List<CategorySeriesData> createMpgJasperDef()
     {
         List<CategorySeriesData> chartDataList = new ArrayList<CategorySeriesData>();
-        List<MpgEntity> mpgEntities = mpgDAO.getDriverEntities(navigation.getDriver().getDriverID(), getDuration(), null);
-   
-        List<String> monthList = GraphicUtil.createMonthList(getDuration());        
-        
+        List<MpgEntity> mpgEntities = mpgDAO.getDriverEntities(navigation.getDriver().getDriverID(), durationBean.getDuration(), null);
+
+        List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration());
+
         int count = 0;
         for (MpgEntity me : mpgEntities)
         {
-            chartDataList.add( new CategorySeriesData(  "Light", 
-                    monthList.get(count).toString(), 
-                    me.getLightValue(), 
-                    monthList.get(count).toString() ));
-            chartDataList.add( new CategorySeriesData(  "Medium", 
-                    monthList.get(count).toString(), 
-                    me.getMediumValue(), 
-                    monthList.get(count).toString() ));
-            chartDataList.add( new CategorySeriesData(  "Heavy", 
-                    monthList.get(count).toString(), 
-                    me.getHeavyValue(), 
-                    monthList.get(count).toString() ));
-            
+            chartDataList.add(new CategorySeriesData("Light", monthList.get(count).toString(), me.getLightValue(), monthList.get(count).toString()));
+            chartDataList.add(new CategorySeriesData("Medium", monthList.get(count).toString(), me.getMediumValue(), monthList.get(count).toString()));
+            chartDataList.add(new CategorySeriesData("Heavy", monthList.get(count).toString(), me.getHeavyValue(), monthList.get(count).toString()));
+
             count++;
         }
         return chartDataList;
     }
-    
+
     public List<ReportCriteria> buildReport() throws IOException
     {
         List<ReportCriteria> tempCriteria = new ArrayList<ReportCriteria>();
-        
+
         // Page 1
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_SUMMARY_P1, getGroupHierarchy().getTopGroup().getName());
-        
-        reportCriteria.setDuration(getDuration());
+
+        reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.addParameter("REPORT_NAME", "Driver Performance: Summary");
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
         reportCriteria.addParameter("DRIVER_NAME", this.getNavigation().getDriver().getPerson().getFullName());
@@ -366,29 +356,29 @@ public class DriverBean extends BaseDurationBean
         reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_DRIVING_STYLE));
         reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_SEATBELT));
         tempCriteria.add(reportCriteria);
-        
+
         // Page 2
         reportCriteria = new ReportCriteria(ReportType.DRIVER_SUMMARY_P2, getGroupHierarchy().getTopGroup().getName());
-        reportCriteria.setDuration(getDuration());
+        reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.addParameter("REPORT_NAME", "Driver Performance: Summary");
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
         reportCriteria.addParameter("DRIVER_NAME", this.getNavigation().getDriver().getPerson().getFullName());
-        
-        if(lastTrip != null)
+
+        if (lastTrip != null)
         {
             reportCriteria.addParameter("START_TIME", lastTrip.getStartDateString());
             reportCriteria.addParameter("START_LOCATION", lastTrip.getStartAddress());
             reportCriteria.addParameter("END_TIME", lastTrip.getEndDateString());
-            reportCriteria.addParameter("END_LOCATION", lastTrip.getEndAddress());      
-            String imageUrl =  MapLookup.getMap(lastTrip.getRouteLastStep().getLat(), lastTrip.getRouteLastStep().getLng(), 250, 200);
-            //logger.debug(imageUrl);
-            //reportCriteria2.addParameter("MAP_URL", MapLookup.getDataFromURI(imageUrl) );
+            reportCriteria.addParameter("END_LOCATION", lastTrip.getEndAddress());
+            String imageUrl = MapLookup.getMap(lastTrip.getRouteLastStep().getLat(), lastTrip.getRouteLastStep().getLng(), 250, 200);
+            // logger.debug(imageUrl);
+            // reportCriteria2.addParameter("MAP_URL", MapLookup.getDataFromURI(imageUrl) );
         }
-        
+
         reportCriteria.addChartDataSet(createMpgJasperDef());
         reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_COACHING_EVENTS));
         tempCriteria.add(reportCriteria);
-        
+
         return tempCriteria;
     }
 
@@ -403,36 +393,53 @@ public class DriverBean extends BaseDurationBean
         this.navigation = navigation;
     }
 
+    public DurationBean getDurationBean()
+    {
+        return durationBean;
+    }
+
+    public void setDurationBean(DurationBean durationBean)
+    {
+        this.durationBean = durationBean;
+    }
+
     public Boolean getHasLastTrip()
     {
         return hasLastTrip;
     }
+
     public void setHasLastTrip(Boolean hasLastTrip)
     {
         this.hasLastTrip = hasLastTrip;
     }
+
     public void setReportRenderer(ReportRenderer reportRenderer)
     {
         this.reportRenderer = reportRenderer;
     }
+
     public ReportRenderer getReportRenderer()
     {
         return reportRenderer;
     }
+
     public String getEmailAddress()
     {
         return emailAddress;
     }
+
     public void setEmailAddress(String emailAddress)
     {
         this.emailAddress = emailAddress;
     }
+
     public void exportReportToPdf() throws IOException
     {
         getReportRenderer().exportReportToPDF(buildReport(), getFacesContext());
     }
+
     public void emailReport()
     {
-        //getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
+        // getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
     }
 }

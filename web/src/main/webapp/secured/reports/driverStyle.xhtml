@@ -115,31 +115,31 @@ var firstLoad = new Boolean(true);
 								</a4j:status>
 								<rich:spacer width="10" />
 								<a4j:commandLink title="#{messages.duration_days}" immediate="true"
-									styleClass="#{(driverStyleBean.duration eq 'DAYS') ? 'on' : ''}"		
+									styleClass="#{(driverStyleDurationBean.duration eq 'DAYS') ? 'on' : ''}"		
 									reRender="dateLinksForm,breakdown_panel,eventsTable"
 									value="#{messages.duration_days}">
-									<a4j:actionparam name="duration" assignTo="#{driverStyleBean.duration}"	value="DAYS" />
+									<a4j:actionparam name="duration" assignTo="#{driverStyleDurationBean.duration}"	value="DAYS" />
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
 								<a4j:commandLink title="#{messages.duration_three}" immediate="true"
-									styleClass="#{(driverStyleBean.duration eq 'THREE') ? 'on' : ''}"	
+									styleClass="#{(driverStyleDurationBean.duration eq 'THREE') ? 'on' : ''}"	
 									reRender="dateLinksForm,breakdown_panel,eventsTable"
 									value="#{messages.duration_three}">
-									<a4j:actionparam name="duration" assignTo="#{driverStyleBean.duration}"	value="THREE" />
+									<a4j:actionparam name="duration" assignTo="#{driverStyleDurationBean.duration}"	value="THREE" />
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
 								<a4j:commandLink title="#{messages.duration_six}" immediate="true"
-									styleClass="#{(driverStyleBean.duration eq 'SIX') ? 'on' : ''}"	
+									styleClass="#{(driverStyleDurationBean.duration eq 'SIX') ? 'on' : ''}"	
 									reRender="dateLinksForm,breakdown_panel,eventsTable"
 									value="#{messages.duration_six}">
-									<a4j:actionparam name="duration" assignTo="#{driverStyleBean.duration}"	value="SIX" />
+									<a4j:actionparam name="duration" assignTo="#{driverStyleDurationBean.duration}"	value="SIX" />
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
 								<a4j:commandLink title="#{messages.duration_twelve}" immediate="true"
-									styleClass="#{(driverStyleBean.duration eq 'TWELVE') ? 'on' : ''}"	
+									styleClass="#{(driverStyleDurationBean.duration eq 'TWELVE') ? 'on' : ''}"	
 									reRender="dateLinksForm,breakdown_panel,eventsTable"
 									value="#{messages.duration_twelve}">
-									<a4j:actionparam name="duration" assignTo="#{driverStyleBean.duration}"	value="TWELVE" />
+									<a4j:actionparam name="duration" assignTo="#{driverStyleDurationBean.duration}"	value="TWELVE" />
 								</a4j:commandLink>
 								</span>
 								<span class="panel_ico">

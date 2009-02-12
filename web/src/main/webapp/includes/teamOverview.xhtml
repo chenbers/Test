@@ -30,11 +30,11 @@
 					<ui:param name="ajaxForm" value="overviewDates-form"/>
 					<ui:param name="ajaxStatusID" value="overviewStatus"/>
 					<ui:param name="reRenderList" value="overviewDates-form,overview-content"/>			
-					<ui:param name="thirtyDaysOn" value="#{teamOverviewBean.styleClass30Days}"/>
-					<ui:param name="threeMonthsOn" value="#{teamOverviewBean.styleClass3Months}"/>
-					<ui:param name="sixMonthsOn" value="#{teamOverviewBean.styleClass6Months}"/>
-					<ui:param name="twelveMonthsOn" value="#{teamOverviewBean.styleClass12Months}"/>
-					<ui:param name="duration" value="#{teamOverviewBean.duration}" />
+					<ui:param name="thirtyDaysOn" value="#{teamOverviewDurationBean.styleClass30Days}"/>
+					<ui:param name="threeMonthsOn" value="#{teamOverviewDurationBean.styleClass3Months}"/>
+					<ui:param name="sixMonthsOn" value="#{teamOverviewDurationBean.styleClass6Months}"/>
+					<ui:param name="twelveMonthsOn" value="#{teamOverviewDurationBean.styleClass12Months}"/>
+					<ui:param name="duration" value="#{teamOverviewDurationBean.duration}" />
 				</ui:include>
 				</a4j:region>	
 		</h:panelGroup>				

@@ -7,7 +7,7 @@ import org.richfaces.event.DataScrollerEvent;
 
 import com.inthinc.pro.model.Duration;
 
-public class BaseDurationBean extends BaseBean
+public class DurationBean
 {
     private Duration            duration            = Duration.DAYS;
     private String              styleClass30Days;
@@ -21,7 +21,7 @@ public class BaseDurationBean extends BaseBean
     private Integer             tableRowStart       = 1;
     private Integer             tableRowEnd;
 
-    public BaseDurationBean()
+    public DurationBean()
     {
 
     }

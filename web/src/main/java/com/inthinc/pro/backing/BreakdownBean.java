@@ -1,37 +1,21 @@
 package com.inthinc.pro.backing;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletResponse;
-
-import net.sf.jasperreports.engine.JasperPrint;
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
-import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.ScoreDAO;
-import com.inthinc.pro.dao.util.DateUtil;
-import com.inthinc.pro.model.Account;
-import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
-import com.inthinc.pro.reports.Report;
-import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.model.PieScoreData;
-import com.inthinc.pro.reports.model.PieScoreRange;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.util.GraphicUtil;
 
-public class BreakdownBean extends BaseDurationBean
+public class BreakdownBean extends BaseBean
 {
 
     private static final Logger logger = Logger.getLogger(BreakdownBean.class);
@@ -50,6 +34,7 @@ public class BreakdownBean extends BaseDurationBean
     private ScoreDAO scoreDAO;
   
     private NavigationBean navigation;
+    private DurationBean durationBean;
     private ReportRenderer reportRenderer;
     private ReportCriteriaService reportCriteriaService;
 
@@ -87,7 +72,7 @@ public class BreakdownBean extends BaseDurationBean
             logger.debug("getting scores for groupID: " + this.navigation.getGroupID());
             // s = scoreDAO.getScores(this.navigation.getGroupID(),
             // startDate, endDate, ScoreType.SCORE_OVERALL_PERCENTAGES);
-            s = scoreDAO.getScoreBreakdown(this.navigation.getGroupID(), getDuration(), scoreType);
+            s = scoreDAO.getScoreBreakdown(this.navigation.getGroupID(), durationBean.getDuration(), scoreType);
         }
         catch (Exception e)
         {
@@ -127,7 +112,7 @@ public class BreakdownBean extends BaseDurationBean
         {
             groupID = getUser().getGroupID();
         }
-        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(groupID, getDuration(), ScoreType.SCORE_OVERALL);
+        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(groupID, durationBean.getDuration(), ScoreType.SCORE_OVERALL);
         if (scoreableEntity == null)
             setOverallScore(0);
         else
@@ -168,7 +153,7 @@ public class BreakdownBean extends BaseDurationBean
 
     public String getDurationAsString()
     {
-        return getDuration().toString();
+        return durationBean.getDuration().toString();
     }
 
     // DAO PROPERTIES
@@ -191,6 +176,16 @@ public class BreakdownBean extends BaseDurationBean
     public void setNavigation(NavigationBean navigation)
     {
         this.navigation = navigation;
+    }
+
+    public DurationBean getDurationBean()
+    {
+        return durationBean;
+    }
+
+    public void setDurationBean(DurationBean durationBean)
+    {
+        this.durationBean = durationBean;
     }
 
     // DRIVING STYLE PIE PROPERTIES
@@ -238,7 +233,7 @@ public class BreakdownBean extends BaseDurationBean
     }
     
     public ReportCriteria buildReportCriteria(){
-        ReportCriteria reportCriteria = reportCriteriaService.getOverallScoreReportCriteria(navigation.getGroupID(), getDuration());
+        ReportCriteria reportCriteria = reportCriteriaService.getOverallScoreReportCriteria(navigation.getGroupID(), durationBean.getDuration());
         return reportCriteria;
     }
     

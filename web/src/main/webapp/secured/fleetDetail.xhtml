@@ -77,11 +77,11 @@
                     <ui:param name="ajaxForm" value="mpgForm" />
                     <ui:param name="ajaxStatusID" value="mpg_status" /> 
             		<ui:param name="barDef" value="#{mpgBean.barDef}"/>  
-            		<ui:param name="duration" value="#{mpgBean.duration}" />   
-              		<ui:param name="thirtyDaysOn" value="#{mpgBean.styleClass30Days}"/>
-    				<ui:param name="threeMonthsOn" value="#{mpgBean.styleClass3Months}"/>
-    				<ui:param name="sixMonthsOn" value="#{mpgBean.styleClass6Months}"/>
-    				<ui:param name="twelveMonthsOn" value="#{mpgBean.styleClass12Months}"/>   
+            		<ui:param name="duration" value="#{mpgDurationBean.duration}" />   
+              		<ui:param name="thirtyDaysOn" value="#{mpgDurationBean.styleClass30Days}"/>
+    				<ui:param name="threeMonthsOn" value="#{mpgDurationBean.styleClass3Months}"/>
+    				<ui:param name="sixMonthsOn" value="#{mpgDurationBean.styleClass6Months}"/>
+    				<ui:param name="twelveMonthsOn" value="#{mpgDurationBean.styleClass12Months}"/>   
                     <ui:param name="xyheight" value="600"/>
                     <ui:param name="xywidth" value="800"/>  
                     <ui:param name="flyNavRule" value="go_home" />
@@ -121,11 +121,11 @@
 								<ui:param name="ajaxForm" value="trendDateLinks"/>
 								<ui:param name="ajaxStatusID" value="trendStatus"/>
 								<ui:param name="reRenderList" value="trendDateLinks,xypanel,countPanel,viewControl:items"/>			
-								<ui:param name="thirtyDaysOn" value="#{navigationBean.styleClass30Days}"/>
-								<ui:param name="threeMonthsOn" value="#{navigationBean.styleClass3Months}"/>
-								<ui:param name="sixMonthsOn" value="#{navigationBean.styleClass6Months}"/>
-								<ui:param name="twelveMonthsOn" value="#{navigationBean.styleClass12Months}"/>
-		            			<ui:param name="duration" value="#{navigationBean.duration}" />
+								<ui:param name="thirtyDaysOn" value="#{navigationDurationBean.styleClass30Days}"/>
+								<ui:param name="threeMonthsOn" value="#{navigationDurationBean.styleClass3Months}"/>
+								<ui:param name="sixMonthsOn" value="#{navigationDurationBean.styleClass6Months}"/>
+								<ui:param name="twelveMonthsOn" value="#{navigationDurationBean.styleClass12Months}"/>
+		            			<ui:param name="duration" value="#{navigationDurationBean.duration}" />
 		            			<ui:param name="flyNavRule" value="go_home" />
 		            			<ui:param name="flyOutImage" value="ico_minimize.png" />
 		            			<ui:param name="report" value="TREND" />
@@ -268,11 +268,11 @@
 							<ui:param name="ajaxForm" value="dateLinksFormForm"/>
 							<ui:param name="ajaxStatusID" value="overall_status" /> 
 							<ui:param name="reRenderList" value="overallPanel,dateLinksFormForm"/>			
-							<ui:param name="thirtyDaysOn" value="#{breakdownBean.styleClass30Days}"/>
-							<ui:param name="threeMonthsOn" value="#{breakdownBean.styleClass3Months}"/>
-							<ui:param name="sixMonthsOn" value="#{breakdownBean.styleClass6Months}"/>
-							<ui:param name="twelveMonthsOn" value="#{breakdownBean.styleClass12Months}"/>
-	            			<ui:param name="duration" value="#{breakdownBean.duration}" />
+							<ui:param name="thirtyDaysOn" value="#{breakdownDurationBean.styleClass30Days}"/>
+							<ui:param name="threeMonthsOn" value="#{breakdownDurationBean.styleClass3Months}"/>
+							<ui:param name="sixMonthsOn" value="#{breakdownDurationBean.styleClass6Months}"/>
+							<ui:param name="twelveMonthsOn" value="#{breakdownDurationBean.styleClass12Months}"/>
+	            			<ui:param name="duration" value="#{breakdownDurationBean.duration}" />
 	            			<ui:param name="flyNavRule" value="go_home" />
 	            			<ui:param name="flyOutImage" value="ico_minimize.png" />
 	            			<ui:param name="report" value="OVERALL_SCORE" />

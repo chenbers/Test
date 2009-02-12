@@ -21,6 +21,7 @@
     <!-- Navigation bean -->
     <bean id="navigationBean" class="com.inthinc.pro.backing.NavigationBean" scope="session" parent="baseBean">
     	 <property name="groupDAO" ref="groupDAO"></property>
+        <property name="durationBean" ref="navigationDurationBean"/>
     </bean>
     
     <!-- Printing Reports -->
@@ -72,12 +73,14 @@
         <property name="navigation" ref="navigationBean"></property>
         <property name="reportRenderer" ref="reportRenderer"></property>
         <property name="reportCriteriaService" ref="reportCriteriaService"></property>
+        <property name="durationBean" ref="breakdownDurationBean"/>
     </bean>
     <bean id="mpgBean" class="com.inthinc.pro.backing.MpgBean" scope="request" parent="baseBean">
         <property name="mpgDAO" ref="mpgDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
         <property name="reportRenderer" ref="reportRenderer"></property>
         <property name="reportCriteriaService" ref="reportCriteriaService"></property>
+        <property name="durationBean" ref="mpgDurationBean"/>
     </bean>
     <bean id="fleetOverviewBean" class="com.inthinc.pro.backing.FleetOverviewBean" scope="request" parent="baseBean">
         <property name="scoreDAO" ref="scoreDAO"></property>
@@ -177,6 +180,7 @@
         <property name="mpgDAO" ref="mpgDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
         <property name="reportRenderer" ref="reportRenderer"></property>
+        <property name="durationBean" ref="vehicleDurationBean"/>
     </bean>
     
     <bean id="vehicleSpeedBean" class="com.inthinc.pro.backing.VehicleSpeedBean" scope="request" init-method="init">
@@ -184,6 +188,7 @@
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
         <property name="reportRenderer" ref="reportRenderer"></property>
+        <property name="durationBean" ref="vehicleSpeedDurationBean"/>
     </bean>
     
     <bean id="vehicleStyleBean" class="com.inthinc.pro.backing.VehicleStyleBean" scope="request" init-method="init">
@@ -191,6 +196,7 @@
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
         <property name="reportRenderer" ref="reportRenderer"></property>
+        <property name="durationBean" ref="vehicleStyleDurationBean"/>
     </bean>
         
     <bean id="vehicleSeatBeltBean" class="com.inthinc.pro.backing.VehicleSeatBeltBean" scope="request">
@@ -198,6 +204,7 @@
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
         <property name="reportRenderer" ref="reportRenderer"></property>
+        <property name="durationBean" ref="vehicleSeatBeltDurationBean"/>
     </bean>
     
     <bean id="vehicleTripsBean" class="com.inthinc.pro.backing.VehicleTripsBean" scope="request" parent="baseBean">
@@ -214,6 +221,7 @@
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
         <property name="reportRenderer" ref="reportRenderer"></property>
+        <property name="durationBean" ref="driverDurationBean"/>
     </bean>
 
     <bean id="driverSpeedBean" class="com.inthinc.pro.backing.DriverSpeedBean" scope="request" init-method="init">
@@ -221,6 +229,7 @@
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
         <property name="reportRenderer" ref="reportRenderer"></property>
+        <property name="durationBean" ref="driverSpeedDurationBean"/>
     </bean>
 
     <bean id="driverStyleBean" class="com.inthinc.pro.backing.DriverStyleBean" scope="request" init-method="init">
@@ -228,6 +237,7 @@
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
         <property name="reportRenderer" ref="reportRenderer"></property>
+        <property name="durationBean" ref="driverStyleDurationBean"/>
     </bean>
 
     <bean id="driverSeatBeltBean" class="com.inthinc.pro.backing.DriverSeatBeltBean" scope="request" init-method="init">
@@ -235,6 +245,7 @@
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
         <property name="reportRenderer" ref="reportRenderer"></property>
+        <property name="durationBean" ref="driverSeatBeltDurationBean"/>
     </bean>
 
     <bean id="driverTripsBean" class="com.inthinc.pro.backing.DriverTripsBean" scope="request" parent="baseBean">
@@ -246,6 +257,7 @@
     <bean id="teamOverviewBean" class="com.inthinc.pro.backing.TeamOverviewBean" scope="session" parent="baseBean">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
+        <property name="durationBean" ref="teamOverviewDurationBean"/>
     </bean>
     <bean id="teamTopDriversTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request"></bean>
     <bean id="teamBottomDriversTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request"></bean>
@@ -340,4 +352,18 @@
         <property name="reportRenderer" ref="reportRenderer"></property>
         <property name="reportCriteriaService" ref="reportCriteriaService"></property>
     </bean>    
+    
+    <!-- Duration Beans -->
+    <bean id="breakdownDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
+    <bean id="driverDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
+    <bean id="driverSeatBeltDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
+    <bean id="driverSpeedDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
+    <bean id="driverStyleDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
+    <bean id="mpgDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
+    <bean id="navigationDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
+    <bean id="teamOverviewDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
+    <bean id="vehicleDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
+    <bean id="vehicleSeatBeltDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
+    <bean id="vehicleSpeedDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
+    <bean id="vehicleStyleDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
 </beans>

@@ -3,8 +3,6 @@ package com.inthinc.pro.backing;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -13,21 +11,14 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
-import com.inthinc.pro.backing.ui.ScoreBreakdown;
-import com.inthinc.pro.backing.ui.ScoreCategory;
 import com.inthinc.pro.charts.Line;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.ScoreDAO;
-import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.map.AddressLookup;
-import com.inthinc.pro.model.Distance;
-import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
-import com.inthinc.pro.model.EventType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
-import com.inthinc.pro.model.AggressiveDrivingEvent;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.ReportType;
@@ -35,316 +26,359 @@ import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.util.MessageUtil;
 
-public class VehicleStyleBean extends BaseDurationBean
+public class VehicleStyleBean extends BaseBean
 {
     private static final Logger logger = Logger.getLogger(VehicleStyleBean.class);
-    private NavigationBean  navigation;
-    private ScoreDAO        scoreDAO;
-    private EventDAO        eventDAO;
- 
-    private Integer         styleScoreOverall;
-    private String          styleScoreOverallStyle;
-    private Integer         styleScoreAccel;
-    private String          styleScoreAccelStyle;
-    private Integer         styleScoreBrake;
-    private String          styleScoreBrakeStyle;
-    private Integer         styleScoreBump; 
-    private String          styleScoreBumpStyle;
-    private Integer         styleScoreTurn;
-    private String          styleScoreTurnStyle;
-    
-    private String          styleScoreHistoryOverall;
-    private String          styleScoreHistoryAccel;
-    private String          styleScoreHistoryBrake;
-    private String          styleScoreHistoryBump;
-    private String          styleScoreHistoryTurn;
-    
+    private NavigationBean navigation;
+    private DurationBean durationBean;
+    private ScoreDAO scoreDAO;
+    private EventDAO eventDAO;
+
+    private Integer styleScoreOverall;
+    private String styleScoreOverallStyle;
+    private Integer styleScoreAccel;
+    private String styleScoreAccelStyle;
+    private Integer styleScoreBrake;
+    private String styleScoreBrakeStyle;
+    private Integer styleScoreBump;
+    private String styleScoreBumpStyle;
+    private Integer styleScoreTurn;
+    private String styleScoreTurnStyle;
+
+    private String styleScoreHistoryOverall;
+    private String styleScoreHistoryAccel;
+    private String styleScoreHistoryBrake;
+    private String styleScoreHistoryBump;
+    private String styleScoreHistoryTurn;
+
     private EventReportItem clearItem;
     private static final Integer NO_SCORE = -1;
-    private ReportRenderer              reportRenderer;
-    private String          emailAddress;
-    
+    private ReportRenderer reportRenderer;
+    private String emailAddress;
+
     private List<EventReportItem> styleEvents = new ArrayList<EventReportItem>();
-    
+
     private void init()
     {
-        super.setTableRowCount(10);
-        
+        durationBean.setTableRowCount(10);
+
         int vehicleID = navigation.getVehicle().getVehicleID();
-        
-        Map<ScoreType, ScoreableEntity> scoreMap = scoreDAO.getVehicleScoreBreakdownByType(vehicleID, getDuration(), ScoreType.SCORE_DRIVING_STYLE);
+
+        Map<ScoreType, ScoreableEntity> scoreMap = scoreDAO.getVehicleScoreBreakdownByType(vehicleID, durationBean.getDuration(), ScoreType.SCORE_DRIVING_STYLE);
 
         ScoreableEntity se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE);
         setStyleScoreOverall(se == null ? NO_SCORE : se.getScore());
-        
+
         se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL);
         setStyleScoreAccel(se == null ? NO_SCORE : se.getScore());
-        
+
         se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE);
         setStyleScoreBrake(se == null ? NO_SCORE : se.getScore());
-        
+
         se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP);
         setStyleScoreBump(se == null ? NO_SCORE : se.getScore());
-        
+
         se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
         setStyleScoreTurn(se == null ? NO_SCORE : se.getScore());
-        
+
         getViolations();
-        
+
     }
-    
+
     public void getViolations()
     {
-        if(styleEvents.size() < 1)
+        if (styleEvents.size() < 1)
         {
-            List<Integer> types = new ArrayList<Integer>();    
+            List<Integer> types = new ArrayList<Integer>();
             types.add(2);
-            
+
             List<Event> tempEvents = new ArrayList<Event>();
-         
-            tempEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), getStartDate(), getEndDate(), types);
-           
+
+            tempEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), durationBean.getStartDate(), durationBean.getEndDate(), types);
+
             AddressLookup lookup = new AddressLookup();
-            for(Event event: tempEvents)
+            for (Event event : tempEvents)
             {
                 event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
-                styleEvents.add( new EventReportItem(event, null) );   
+                styleEvents.add(new EventReportItem(event, null));
             }
-            
-            super.setTableSize(styleEvents.size());
-        }    
+
+            durationBean.setTableSize(styleEvents.size());
+        }
     }
-    
+
     public String createLineDef(ScoreType scoreType)
     {
         StringBuffer sb = new StringBuffer();
         Line line = new Line();
-        
-        //Start XML Data
+
+        // Start XML Data
         sb.append(line.getControlParameters());
 
-        List<ScoreableEntity> scoreList = scoreDAO.getVehicleScoreHistory(
-                navigation.getVehicle().getVehicleID(), getDuration(), scoreType,
-                GraphicUtil.getDurationSize(getDuration()));                
-//                10);
-        DateFormat dateFormatter = new SimpleDateFormat(getDuration().getDatePattern());
+        List<ScoreableEntity> scoreList = scoreDAO.getVehicleScoreHistory(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), scoreType, GraphicUtil
+                .getDurationSize(durationBean.getDuration()));
+        // 10);
+        DateFormat dateFormatter = new SimpleDateFormat(durationBean.getDuration().getDatePattern());
 
         // Get "x" values
-        List<String> monthList = GraphicUtil.createMonthList(getDuration());
+        List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration());
 
         int cnt = 0;
         for (ScoreableEntity e : scoreList)
-        {            
-//            sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt)}));
-            if ( e.getScore() != null ) 
+        {
+            // sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt)}));
+            if (e.getScore() != null)
             {
-                sb.append(line.getChartItem(new Object[] { 
-                      (double) (e.getScore() / 10.0d), 
-                      monthList.get(cnt) }));
-            } else 
+                sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt) }));
+            }
+            else
             {
-                sb.append(line.getChartItem(new Object[] { 
-                        null, 
-                        monthList.get(cnt) }));
-            }               
-//          sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), 
-//                    dateFormatter.format(e.getCreated()) }));            
+                sb.append(line.getChartItem(new Object[] { null, monthList.get(cnt) }));
+            }
+            // sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d),
+            // dateFormatter.format(e.getCreated()) }));
             cnt++;
         }
-        
-        //End XML Data
+
+        // End XML Data
         sb.append(line.getClose());
 
         return sb.toString();
     }
-    
-    //STYLE OVERALL SCORE PROPERTY
-    public Integer getStyleScoreOverall() {
+
+    // STYLE OVERALL SCORE PROPERTY
+    public Integer getStyleScoreOverall()
+    {
         return styleScoreOverall;
     }
-    public void setStyleScoreOverall(Integer styleScoreOverall) {
+
+    public void setStyleScoreOverall(Integer styleScoreOverall)
+    {
         this.styleScoreOverall = styleScoreOverall;
         setStyleScoreOverallStyle(ScoreBox.GetStyleFromScore(styleScoreOverall, ScoreBoxSizes.MEDIUM));
     }
-    public String getStyleScoreOverallStyle() {
+
+    public String getStyleScoreOverallStyle()
+    {
         return styleScoreOverallStyle;
     }
-    public void setStyleScoreOverallStyle(String styleScoreOverallStyle) {
+
+    public void setStyleScoreOverallStyle(String styleScoreOverallStyle)
+    {
         this.styleScoreOverallStyle = styleScoreOverallStyle;
     }
-    
-    //STYLE SCORE HARD ACCEL
+
+    // STYLE SCORE HARD ACCEL
     public Integer getStyleScoreAccel()
     {
         return styleScoreAccel;
     }
+
     public void setStyleScoreAccel(Integer styleScoreAccel)
     {
         this.styleScoreAccel = styleScoreAccel;
         setStyleScoreAccelStyle(ScoreBox.GetStyleFromScore(styleScoreAccel, ScoreBoxSizes.MEDIUM));
     }
+
     public String getStyleScoreAccelStyle()
     {
         return styleScoreAccelStyle;
     }
+
     public void setStyleScoreAccelStyle(String styleScoreAccelStyle)
     {
         this.styleScoreAccelStyle = styleScoreAccelStyle;
     }
-    
-    //STYLE SCORE HARD BRAKE
+
+    // STYLE SCORE HARD BRAKE
     public Integer getStyleScoreBrake()
     {
         return styleScoreBrake;
     }
+
     public void setStyleScoreBrake(Integer styleScoreBrake)
     {
         setStyleScoreBrakeStyle(ScoreBox.GetStyleFromScore(styleScoreBrake, ScoreBoxSizes.MEDIUM));
         this.styleScoreBrake = styleScoreBrake;
     }
+
     public String getStyleScoreBrakeStyle()
     {
         return styleScoreBrakeStyle;
     }
+
     public void setStyleScoreBrakeStyle(String styleScoreBrakeStyle)
     {
         this.styleScoreBrakeStyle = styleScoreBrakeStyle;
     }
 
-    //STYLE SCORE HARD BUMP
+    // STYLE SCORE HARD BUMP
     public Integer getStyleScoreBump()
     {
         return styleScoreBump;
     }
+
     public void setStyleScoreBump(Integer styleScoreBump)
     {
         setStyleScoreBumpStyle(ScoreBox.GetStyleFromScore(styleScoreBump, ScoreBoxSizes.MEDIUM));
         this.styleScoreBump = styleScoreBump;
     }
+
     public String getStyleScoreBumpStyle()
     {
         return styleScoreBumpStyle;
     }
+
     public void setStyleScoreBumpStyle(String styleScoreBumpStyle)
     {
         this.styleScoreBumpStyle = styleScoreBumpStyle;
     }
 
-    //STYLE SCORE HARD TURN
+    // STYLE SCORE HARD TURN
     public Integer getStyleScoreTurn()
     {
         return styleScoreTurn;
     }
+
     public void setStyleScoreTurn(Integer styleScoreTurn)
     {
         setStyleScoreTurnStyle(ScoreBox.GetStyleFromScore(styleScoreTurn, ScoreBoxSizes.MEDIUM));
         this.styleScoreTurn = styleScoreTurn;
     }
+
     public String getStyleScoreTurnStyle()
     {
         return styleScoreTurnStyle;
     }
+
     public void setStyleScoreTurnStyle(String styleScoreTurnStyle)
     {
         this.styleScoreTurnStyle = styleScoreTurnStyle;
     }
 
-    //OVERALL HISTORY PROPERTY
-    public String getStyleScoreHistoryOverall() {
+    // OVERALL HISTORY PROPERTY
+    public String getStyleScoreHistoryOverall()
+    {
         setStyleScoreHistoryOverall(createLineDef(ScoreType.SCORE_DRIVING_STYLE));
         return styleScoreHistoryOverall;
     }
-    public void setStyleScoreHistoryOverall(String styleScoreHistoryOverall) {
+
+    public void setStyleScoreHistoryOverall(String styleScoreHistoryOverall)
+    {
         this.styleScoreHistoryOverall = styleScoreHistoryOverall;
     }
-    
-    //SCORE HISTORY HARD ACCEL
-    public String getStyleScoreHistoryAccel() {
+
+    // SCORE HISTORY HARD ACCEL
+    public String getStyleScoreHistoryAccel()
+    {
         setStyleScoreHistoryAccel(createLineDef(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL));
         return styleScoreHistoryAccel;
     }
-    public void setStyleScoreHistoryAccel(String styleScoreHistoryAccel) {
+
+    public void setStyleScoreHistoryAccel(String styleScoreHistoryAccel)
+    {
         this.styleScoreHistoryAccel = styleScoreHistoryAccel;
     }
-    //STYLE HISTORY HARD BRAKE
+
+    // STYLE HISTORY HARD BRAKE
     public String getStyleScoreHistoryBrake()
     {
         setStyleScoreHistoryBrake(createLineDef(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE));
         return styleScoreHistoryBrake;
     }
+
     public void setStyleScoreHistoryBrake(String styleScoreHistoryBrake)
     {
         this.styleScoreHistoryBrake = styleScoreHistoryBrake;
     }
 
-    //STYLE HISTORY HARD BUMP
+    // STYLE HISTORY HARD BUMP
     public String getStyleScoreHistoryBump()
     {
         setStyleScoreHistoryBump(createLineDef(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP));
         return styleScoreHistoryBump;
     }
+
     public void setStyleScoreHistoryBump(String styleScoreHistoryBump)
     {
         this.styleScoreHistoryBump = styleScoreHistoryBump;
     }
 
-    //STYLE HISTORY HARD TURN
+    // STYLE HISTORY HARD TURN
     public String getStyleScoreHistoryTurn()
     {
         setStyleScoreHistoryTurn(createLineDef(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN));
         return styleScoreHistoryTurn;
     }
+
     public void setStyleScoreHistoryTurn(String styleScoreHistoryTurn)
     {
         this.styleScoreHistoryTurn = styleScoreHistoryTurn;
     }
 
-    //DAO PROPERTY
+    // DAO PROPERTY
     public ScoreDAO getScoreDAO()
     {
         return scoreDAO;
     }
+
     public void setScoreDAO(ScoreDAO scoreDAO)
     {
         this.scoreDAO = scoreDAO;
     }
+
     public EventDAO getEventDAO()
     {
         return eventDAO;
     }
+
     public void setEventDAO(EventDAO eventDAO)
     {
         this.eventDAO = eventDAO;
     }
+
     public NavigationBean getNavigation()
     {
         return navigation;
     }
+
     public void setNavigation(NavigationBean navigation)
     {
         this.navigation = navigation;
     }
-    
-    @Override
+
+    public DurationBean getDurationBean()
+    {
+        return durationBean;
+    }
+
+    public void setDurationBean(DurationBean durationBean)
+    {
+        this.durationBean = durationBean;
+    }
+
     public void setDuration(Duration duration)
     {
-        super.setDuration(duration);
+        durationBean.setDuration(duration);
         init();
     }
-    
+
     public List<EventReportItem> getStyleEvents()
     {
-        getViolations();  
+        getViolations();
         return styleEvents;
     }
-    public void setStyleEvents(List<EventReportItem> styleEvents) {
+
+    public void setStyleEvents(List<EventReportItem> styleEvents)
+    {
         this.styleEvents = styleEvents;
     }
+
     public void ClearEventAction()
     {
         Integer temp = eventDAO.forgive(navigation.getVehicle().getVehicleID(), clearItem.getEvent().getNoteID());
-        //logger.debug("Clearing event " + clearItem.getNoteID() + " result: " + temp.toString());
-        
+        // logger.debug("Clearing event " + clearItem.getNoteID() + " result: " + temp.toString());
+
         styleEvents.clear();
         getViolations();
     }
@@ -358,6 +392,7 @@ public class VehicleStyleBean extends BaseDurationBean
     {
         this.clearItem = clearItem;
     }
+
     public List<CategorySeriesData> createJasperDef(List<ScoreType> scoreTypes)
     {
         List<CategorySeriesData> returnList = new ArrayList<CategorySeriesData>();
@@ -365,29 +400,27 @@ public class VehicleStyleBean extends BaseDurationBean
         for (ScoreType st : scoreTypes)
         {
             List<ScoreableEntity> scoreList = scoreDAO
-                    .getVehicleScoreHistory(navigation.getVehicle().getVehicleID(), getDuration(), st, GraphicUtil.getDurationSize(getDuration()));
-            
-            List<String> monthList = GraphicUtil.createMonthList(getDuration());  
+                    .getVehicleScoreHistory(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), st, GraphicUtil.getDurationSize(durationBean.getDuration()));
+
+            List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration());
             int count = 0;
             for (ScoreableEntity se : scoreList)
             {
-                returnList.add( new CategorySeriesData(  MessageUtil.getMessageString(st.toString()), 
-                                                         monthList.get(count).toString(), 
-                                                         se.getScore() / 10.0D, 
-                                                         monthList.get(count).toString() ));
-              
+                returnList.add(new CategorySeriesData(MessageUtil.getMessageString(st.toString()), monthList.get(count).toString(), se.getScore() / 10.0D, monthList.get(count)
+                        .toString()));
+
                 count++;
             }
         }
         return returnList;
     }
-    
+
     public ReportCriteria buildReport()
     {
         // Page 1
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_STYLE, getGroupHierarchy().getTopGroup().getName());
-        
-        reportCriteria.setDuration(getDuration());
+
+        reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.addParameter("REPORT_NAME", "Vehicle Performance: Style");
         reportCriteria.addParameter("ENTITY_NAME", this.getNavigation().getVehicle().getFullName());
         reportCriteria.addParameter("RECORD_COUNT", this.getStyleEvents().size());
@@ -397,7 +430,7 @@ public class VehicleStyleBean extends BaseDurationBean
         reportCriteria.addParameter("SCORE_HARDACCEL", this.getStyleScoreAccel() / 10.0D);
         reportCriteria.addParameter("SCORE_HARDTURN", this.getStyleScoreTurn() / 10.0D);
         reportCriteria.addParameter("SCORE_HARDBUMP", this.getStyleScoreBump() / 10.0D);
-        
+
         List<ScoreType> scoreTypes = new ArrayList<ScoreType>();
         scoreTypes.add(ScoreType.SCORE_DRIVING_STYLE);
         scoreTypes.add(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL);
@@ -406,31 +439,37 @@ public class VehicleStyleBean extends BaseDurationBean
         scoreTypes.add(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
         reportCriteria.addChartDataSet(this.createJasperDef(scoreTypes));
         reportCriteria.setMainDataset(this.styleEvents);
-        
+
         return reportCriteria;
     }
+
     public void setReportRenderer(ReportRenderer reportRenderer)
     {
         this.reportRenderer = reportRenderer;
     }
+
     public ReportRenderer getReportRenderer()
     {
         return reportRenderer;
     }
+
     public String getEmailAddress()
     {
         return emailAddress;
     }
+
     public void setEmailAddress(String emailAddress)
     {
         this.emailAddress = emailAddress;
     }
+
     public void exportReportToPdf()
     {
         getReportRenderer().exportSingleReportToPDF(buildReport(), getFacesContext());
     }
+
     public void emailReport()
     {
-        //getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
+        // getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
     }
 }

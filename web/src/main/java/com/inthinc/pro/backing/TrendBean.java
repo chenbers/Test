@@ -125,12 +125,12 @@ public class TrendBean extends BaseBean
 
         // X-coordinates
         sb.append("<categories>");
-        sb.append(GraphicUtil.createMonthsString(navigation.getDuration()));
+        sb.append(GraphicUtil.createMonthsString(navigation.getDurationBean().getDuration()));
         sb.append("</categories>");
 
         // Loop over returned set of group ids, controlled by scroller
         Map<Integer, List<ScoreableEntity>> groupTrendMap = scoreDAO.getTrendScores(
-                this.navigation.getGroupID(), navigation.getDuration());;
+                this.navigation.getGroupID(), navigation.getDurationBean().getDuration());;
         ColorSelectorStandard cs = new ColorSelectorStandard();
         
         for (int i = this.start; i <= this.end; i++)
@@ -149,13 +149,13 @@ public class TrendBean extends BaseBean
 
             // Not a full range, pad w/ zero
             int holes = 0;
-            if (navigation.getDuration() == Duration.DAYS)
+            if (navigation.getDurationBean().getDuration() == Duration.DAYS)
             {
-                holes = navigation.getDuration().getNumberOfDays() - ss.size();            
+                holes = navigation.getDurationBean().getDuration().getNumberOfDays() - ss.size();            
             }
             else
             {
-                holes = GraphicUtil.convertToMonths(navigation.getDuration()) - ss.size();
+                holes = GraphicUtil.convertToMonths(navigation.getDurationBean().getDuration()) - ss.size();
             }
             for (int k = 0; k < holes; k++)
             {
@@ -280,7 +280,7 @@ public class TrendBean extends BaseBean
         List<ScoreableEntity> s = null;
         try
         {
-            s = scoreDAO.getScores(this.navigation.getGroupID(), navigation.getDuration(), ScoreType.SCORE_OVERALL);
+            s = scoreDAO.getScores(this.navigation.getGroupID(), navigation.getDurationBean().getDuration(), ScoreType.SCORE_OVERALL);
         }
         catch (Exception e)
         {
@@ -325,8 +325,8 @@ public class TrendBean extends BaseBean
         this.navigation = navigation;
                   
         // existing navigation
-        if ( this.navigation.getDuration() == null ) {
-            this.navigation.setDuration(Duration.DAYS);
+        if ( this.navigation.getDurationBean().getDuration() == null ) {
+            this.navigation.getDurationBean().setDuration(Duration.DAYS);
         }
         if ( this.navigation.getStart() != 0 ) {              
             this.start = this.navigation.getStart();
@@ -482,7 +482,7 @@ public class TrendBean extends BaseBean
 //        reportCriteria.setDuration(getNavigation().getDuration());
 //        reportCriteria.setRecordsPerReportParameters(8, "se.identifier", "seriesID");
 //        return reportCriteria;
-        return reportCriteriaService.getTrendChartReportCriteria(this.navigation.getGroupID(), this.navigation.getDuration());
+        return reportCriteriaService.getTrendChartReportCriteria(this.navigation.getGroupID(), this.navigation.getDurationBean().getDuration());
     }
 
     public void setReportRenderer(ReportRenderer reportRenderer)
