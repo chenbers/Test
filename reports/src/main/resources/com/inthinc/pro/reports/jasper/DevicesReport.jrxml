@@ -243,7 +243,7 @@
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="23"  isSplitAllowed="true" >
+			<band height="22"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="5"
@@ -309,7 +309,7 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{device.ephone}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" pattern="###0.0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" pattern="000000000000000" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="328"
 						y="3"
@@ -320,7 +320,7 @@
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{device.imei}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[java.lang.Long.valueOf($F{device.imei})]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
