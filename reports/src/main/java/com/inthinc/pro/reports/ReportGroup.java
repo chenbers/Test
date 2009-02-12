@@ -9,7 +9,7 @@ import com.inthinc.pro.model.GroupType;
 
 public enum ReportGroup
 {
-    DIVISION_REPORT("Feet/Division Report",0,EntityType.ENTITY_GROUP,
+    DIVISION_REPORT("Fleet/Division Report",0,EntityType.ENTITY_GROUP,
             new CriteriaType[]{CriteriaType.DURATION}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET},
             ReportType.OVERALL_SCORE,ReportType.TREND,ReportType.MPG_GROUP),
