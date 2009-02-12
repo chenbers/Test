@@ -719,7 +719,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         if (roles == null)
         {
             roles = new LinkedHashMap<String, Role>();
-            for (final Role role : Roles.getRoles().values())
+            for (final Role role : Roles.getRoleMap().values())
             {
                 roles.put(role.getName(), role);
                 if (role.equals(getUser().getRole()))

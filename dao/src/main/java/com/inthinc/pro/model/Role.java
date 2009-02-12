@@ -4,7 +4,7 @@ package com.inthinc.pro.model;
 import com.inthinc.pro.dao.annotations.ID;
 import com.inthinc.pro.model.app.Roles;
 
-public class Role extends BaseEntity implements ReferenceEntity
+public class Role extends BaseEntity implements ReferenceEntity, Comparable<Role>
 {
     @ID
     Integer roleID;
@@ -63,5 +63,10 @@ public class Role extends BaseEntity implements ReferenceEntity
             return ((Role) obj).retrieveID().equals(retrieveID());
         else
             return false;
+    }
+    @Override
+    public int compareTo(Role o)
+    {
+        return this.name.compareTo(o.getName());
     }
 }

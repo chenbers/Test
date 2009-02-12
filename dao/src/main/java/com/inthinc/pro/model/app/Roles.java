@@ -1,6 +1,7 @@
 package com.inthinc.pro.model.app;
 
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +13,8 @@ import com.inthinc.pro.model.Role;
 public class Roles implements BaseAppEntity
 {
     Logger logger = Logger.getLogger(Roles.class);
-    private static Map<Integer, Role> rolesMap;
+    private static List<Role> roleList;
+    private static Map<Integer, Role> roleMap;
     
     private RoleDAO roleDAO;
 
@@ -23,28 +25,36 @@ public class Roles implements BaseAppEntity
     
     public void init()
     {
-        List<Role> rolesList = roleDAO.getRoles();
-        rolesMap = new HashMap<Integer, Role>();
+        roleList = roleDAO.getRoles();
+        Collections.sort(roleList);
+        roleList = Collections.unmodifiableList(roleList);
+        Map<Integer, Role> map = new LinkedHashMap<Integer, Role>();
 
-        for (Role role : rolesList)
+        for (Role role : roleList)
         {
-               rolesMap.put(role.getRoleID(), role);
+               map.put(role.getRoleID(), role);
         }
+        roleMap = Collections.unmodifiableMap(map);
     }
     
 
-    public static Map<Integer, Role>  getRoles()
+    public static Map<Integer, Role>  getRoleMap()
     {
-        return rolesMap;
+        return roleMap;
+    }
+    
+    public static List<Role> getRoleList()
+    {
+        return roleList;
     }
     
     public static Role getRoleById(Integer id)
     {
-        return getRoles().get(id);
+        return getRoleMap().get(id);
     }
     public static Role getRoleByName(String  name)
     {
-        for (Role role : getRoles().values())
+        for (Role role : getRoleMap().values())
         {
             if (role.getName().equals(name))
                 return role;

@@ -184,7 +184,7 @@ public class SiloServiceTest
         roles.setRoleDAO(roleDAO);
         roles.init();
         
-        assertTrue(Roles.getRoles().size() > 0);
+        assertTrue(Roles.getRoleMap().size() > 0);
     }
     
     @Test
@@ -1665,9 +1665,9 @@ public class SiloServiceTest
 
     private Role randomRole()
     {
-        int idx = Util.randomInt(0, Roles.getRoles().size()-1);
+        int idx = Util.randomInt(0, Roles.getRoleMap().size()-1);
         int cnt = 0;
-        for (Role role : Roles.getRoles().values())
+        for (Role role : Roles.getRoleMap().values())
         {
             if (cnt++ == idx)
                 return role;
