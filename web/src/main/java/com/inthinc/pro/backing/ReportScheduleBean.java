@@ -24,11 +24,13 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.Occurrence;
 import com.inthinc.pro.model.ReportSchedule;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.reports.CriteriaType;
 import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.util.MessageUtil;
 
@@ -167,16 +169,17 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         List<SelectItem> selectItemList = new ArrayList<SelectItem>();
 
         List<Group> groupList = getGroupHierarchy().getGroupList();
+        
+        List<GroupType> acceptableGroupTypes = Arrays.asList(getItem().getReport().getGroupTypes());
         for (Group group : groupList)
         {
-            switch(group.getType()){
-            case FLEET:
-            case DIVISION: selectItemList.add(new SelectItem(group.getGroupID(), group.getName())); break;
-            case TEAM: //do nothing
+            if(acceptableGroupTypes.contains(group.getType()))
+            {
+                selectItemList.add(new SelectItem(group.getGroupID(), group.getName()));
             }
             
         }
-
+        
         sort(selectItemList);
 
         selectItemList.add(0, new SelectItem(null, ""));

@@ -5,14 +5,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.inthinc.pro.model.EntityType;
+import com.inthinc.pro.model.GroupType;
 
 public enum ReportGroup
 {
-    DIVISION_REPORT("Feet/Division Report",0,new CriteriaType[]{CriteriaType.DURATION,CriteriaType.GROUP},ReportType.OVERALL_SCORE,ReportType.TREND,ReportType.MPG_GROUP),
-    DRIVERS_REPORT("Driver Report",2,new CriteriaType[]{CriteriaType.DURATION,CriteriaType.GROUP},ReportType.DRIVER_REPORT),
-    VEHICLES_REPORT("Vehicle Report",3,new CriteriaType[]{CriteriaType.DURATION,CriteriaType.GROUP},ReportType.VEHICLE_REPORT),
-    IDLING_REPORT("Idling Report",4,new CriteriaType[]{CriteriaType.GROUP},ReportType.IDLING_REPORT),
-    DEVICES_REPORT("Device Report",5,new CriteriaType[]{CriteriaType.GROUP},ReportType.DEVICES_REPORT);
+    DIVISION_REPORT("Feet/Division Report",0,EntityType.ENTITY_GROUP,
+            new CriteriaType[]{CriteriaType.DURATION}, 
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET},
+            ReportType.OVERALL_SCORE,ReportType.TREND,ReportType.MPG_GROUP),
+    DRIVERS_REPORT("Driver Report",2,EntityType.ENTITY_GROUP,
+            new CriteriaType[]{CriteriaType.DURATION}, 
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM},
+            ReportType.DRIVER_REPORT),
+    VEHICLES_REPORT("Vehicle Report",3,EntityType.ENTITY_GROUP,
+            new CriteriaType[]{CriteriaType.DURATION}, 
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM},
+            ReportType.VEHICLE_REPORT),
+    IDLING_REPORT("Idling Report",4,EntityType.ENTITY_GROUP,
+            new CriteriaType[]{}, 
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM},
+            ReportType.IDLING_REPORT),
+    DEVICES_REPORT("Device Report",5,EntityType.ENTITY_GROUP,
+            new CriteriaType[]{}, 
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM},
+            ReportType.DEVICES_REPORT);
     
     
     private ReportType[] reports;
@@ -20,13 +36,40 @@ public enum ReportGroup
     private String label;
     private EntityType entityType; //Type of entity this report is bound to
     private CriteriaType[] criterias;
+    private GroupType[] groupTypes;
    
-    
-    private ReportGroup(String label, Integer code,CriteriaType[] criterias,ReportType... reports){
+    /**
+     * 
+     * @param label Report Title
+     * @param code - Code to be stored in the DB
+     * @param entityType - Entity for which this report belongs (GROUP,DRIVER,VEHICLE)
+     * @param criterias - List of Criterias
+     * @param groupTypes - If entityType is GROUP then this is the list of groups that are acceptable for this report
+     * @param reports - List of ReportTypes
+     */
+    private ReportGroup(String label, Integer code,EntityType entityType,CriteriaType[] criterias,GroupType[] groupTypes,ReportType... reports){
         this.reports = reports;
         this.label = label;
         this.code = code; 
         this.criterias = criterias;
+        this.groupTypes = groupTypes;
+        this.entityType = entityType;
+    }
+    
+    /**
+     * This constructor is to assist in creating Driver and Vehicle report groups
+     * 
+     * @param label - Report Title
+     * @param code - Code to be stored in the DB
+     * @param criterias - List of Criterias
+     * @param reports - List of ReportTypes (individual reports)
+     */
+    private ReportGroup(String label, Integer code,EntityType entityType, CriteriaType[] criterias,ReportType... reports){
+        this.reports = reports;
+        this.label = label;
+        this.code = code; 
+        this.criterias = criterias;
+        this.entityType = entityType;
     }
     
     private static final Map<Integer, ReportGroup> lookup = new HashMap<Integer, ReportGroup>();
@@ -64,5 +107,10 @@ public enum ReportGroup
     public EntityType getEntityType()
     {
         return entityType;
+    }
+
+    public GroupType[] getGroupTypes()
+    {
+        return groupTypes;
     }
 }

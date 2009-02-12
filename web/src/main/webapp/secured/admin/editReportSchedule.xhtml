@@ -178,35 +178,35 @@
 										</td>
 									</tr>
 								</h:outputText>
-								<h:outputText rendered="#{criteria eq 'GROUP'}">
+							</ui:repeat>
+							<h:outputText rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP'}">
+								<tr>
+									<td width="100" valign="top">
+										<h:outputText value="#{messages.reportSchedule_group}"/>
+										<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
+									</td>
+									<td>
+										<rich:message for="group" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+										<h:selectOneMenu id="group" value="#{reportScheduleBean.item.groupID}" required="true" requiredMessage="#{messages.required}">
+											<f:selectItems value="#{reportScheduleBean.groups}"/> 
+										</h:selectOneMenu>
+									</td>
+								</tr>
+							</h:outputText>
+							<h:outputText rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_DRIVER'}">
 									<tr>
 										<td width="100" valign="top">
-											<h:outputText value="#{messages.reportSchedule_group}"/>
+											<h:outputText value="#{messages.reportSchedule_driver}"/>
 											<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
 										</td>
 										<td>
-											<rich:message for="group" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-											<h:selectOneMenu id="group" value="#{reportScheduleBean.item.groupID}" required="true" requiredMessage="#{messages.required}">
-												<f:selectItems value="#{reportScheduleBean.groups}"/> 
+											<rich:message for="driver" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+											<h:selectOneMenu id="driver" value="#{reportScheduleBean.item.driverID}" required="true" requiredMessage="#{messages.required}">
+												<f:selectItems value="#{reportScheduleBean.drivers}"/> 
 											</h:selectOneMenu>
 										</td>
 									</tr>
-								</h:outputText>
-								<h:outputText rendered="#{criteria eq 'DRIVER'}">
-										<tr>
-											<td width="100" valign="top">
-												<h:outputText value="#{messages.reportSchedule_driver}"/>
-												<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
-											</td>
-											<td>
-												<rich:message for="driver" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-												<h:selectOneMenu id="driver" value="#{reportScheduleBean.item.driverID}" required="true" requiredMessage="#{messages.required}">
-													<f:selectItems value="#{reportScheduleBean.drivers}"/> 
-												</h:selectOneMenu>
-											</td>
-										</tr>
-								</h:outputText>
-							</ui:repeat>
+							</h:outputText>
 
 						</table>
 						</h:panelGroup>
