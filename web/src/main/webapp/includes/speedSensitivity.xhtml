@@ -59,13 +59,15 @@
                                   </td>
                                 </tr>
                               </c:forEach>
-                              <tr class="tableEven">
-                                <td colspan="3" align="right" style="border-bottom: 1px solid #8BAD37">
-                                  <h:outputText value="#{messages.editDevice_speedAdjustAll}" />
-                                  <a href="#" onclick="bumpSpeeds(true); return false;"><h:graphicImage value="/images/btn_plus.png" style="border: 0px; vertical-align: middle;" /></a>
-                                  <a href="#" onclick="bumpSpeeds(false); return false;"><h:graphicImage value="/images/btn_minus.png" style="border: 0px; vertical-align: middle;" /></a>
-                                </td>
-                              </tr>
+                              <ui:fragment rendered="#{not disabled}">
+                                <tr class="tableEven">
+                                  <td colspan="3" align="right" style="border-bottom: 1px solid #8BAD37">
+                                    <h:outputText value="#{messages.editDevice_speedAdjustAll}" />
+                                    <a href="#" onclick="bumpSpeeds(true); return false;"><h:graphicImage value="/images/btn_plus.png" style="border: 0px; vertical-align: middle;" /></a>
+                                    <a href="#" onclick="bumpSpeeds(false); return false;"><h:graphicImage value="/images/btn_minus.png" style="border: 0px; vertical-align: middle;" /></a>
+                                  </td>
+                                </tr>
+                              </ui:fragment>
                             </table>
                             <script type="text/javascript">
                               function bumpSpeeds(up)
