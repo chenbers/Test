@@ -51,18 +51,37 @@
                                     <h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{id}" value="#{updateField[id]}" />
                                     <h:outputText value="#{(index * 5) + 5}" />
                                   </td>
-                                  <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" align="right">
-                                    <rich:inputNumberSlider disabled="#{disabled}" id="#{id}" value="#{device.speedSettings[index]}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="0" maxValue="25" step="1" onchange="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById(this.mainTable.id + 'MPH').innerHTML = this.value" />
+                                  <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;" align="right">
+                                    <rich:inputNumberSlider disabled="#{disabled}" id="#{id}" value="#{device.speedSettings[index]}" width="250" showToolTip="false" showBoundaryValues="false" minValue="-25" maxValue="25" step="1" onchange="if (checkMultiple) checkMultiple(this.mainTable.id)" />
                                   </td>
-                                  <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:outputText id="#{id}MPH" value="#{device.speedSettings[index]}" /><h:outputText value=" mph" />
+                                  <td style="padding: 6px 12px 6px 2px; border-bottom: 1px solid #8BAD37;">
+                                    <h:outputText value=" mph" />
                                   </td>
                                 </tr>
-                                <script type="text/javascript">
-                                  document.getElementById('edit-form:#{id}MPH').innerHTML = document.getElementById('edit-form:#{id}Input').value;
-                                </script>
                               </c:forEach>
+                              <tr class="tableEven">
+                                <td colspan="3" align="right" style="border-bottom: 1px solid #8BAD37">
+                                  <h:outputText value="#{messages.editDevice_speedAdjustAll}" />
+                                  <a href="#" onclick="bumpSpeeds(true); return false;"><h:graphicImage value="/images/btn_plus.png" style="border: 0px; vertical-align: middle;" /></a>
+                                  <a href="#" onclick="bumpSpeeds(false); return false;"><h:graphicImage value="/images/btn_minus.png" style="border: 0px; vertical-align: middle;" /></a>
+                                </td>
+                              </tr>
                             </table>
+                            <script type="text/javascript">
+                              function bumpSpeeds(up)
+                              {
+                                for (var i = 0; i &lt; 15; i++)
+                                {
+                                  var input = document.getElementById("edit-form:speed" + i).component;
+                                  if (up)
+                                    input.setValue(Number(input.input.value) + 1);
+                                  else
+                                    input.setValue(Number(input.input.value) - 1);
+                                }
+                              }
+                            </script>
+
+                            <div class="spacer"></div>
 
                           </td>
                           <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
@@ -95,7 +114,7 @@
                                   </td>
                                   <td></td>
                                 </tr>
-                                <tr class="tableOdd">
+                                <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
                                   <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{sensitivityItem}" value="#{updateField[sensitivityItem]}" />
                                     <c:set var="sensitivityLabel" value="editDevice_#{sensitivityItem}" />
