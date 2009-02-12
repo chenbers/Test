@@ -2,6 +2,7 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -47,11 +48,12 @@ public class VehicleTripsBean extends BaseBean
     private Driver              selectedDriver;
     private List<Event>         violationEvents   = new ArrayList<Event>();
     private List<Event>         idleEvents        = new ArrayList<Event>();
+    private List<Event>         allEvents         = new ArrayList<Event>();
     private TimeZone            timeZone;
 
     public void initTrips()
     {
-        if(trips.size() < 1)
+        if(trips.isEmpty())
         {
             List<Trip> tempTrips = new ArrayList<Trip>();
             tempTrips = vehicleDAO.getTrips(navigation.getVehicle().getVehicleID(), getStartDate(), getEndDate());
@@ -59,6 +61,7 @@ public class VehicleTripsBean extends BaseBean
             selectedTrips = new ArrayList<TripDisplay>();
             for (Trip trip : tempTrips)
             {
+                // Add/Insert trip to index 0. to reverse list.
                 trips.add(0, new TripDisplay(trip, this.timeZone));
             }
     
@@ -67,8 +70,9 @@ public class VehicleTripsBean extends BaseBean
             {
                 logger.debug(numTrips.toString() + "Trips Found.");
                 
+                // Set selected trip and get associated events.
+                // Generate Stats on selected
                 setSelectedTrip(trips.get(0));
-       
                 generateStats();
             }
         }
@@ -76,29 +80,36 @@ public class VehicleTripsBean extends BaseBean
 
     public void initViolations(Date start, Date end)
     {
-        if(violationEvents.size() > 1) return;
-        
-        logger.debug("Get Events");
-        List<Integer> vioTypes = new ArrayList<Integer>();
-        vioTypes.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
-        vioTypes.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
-        vioTypes.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
-
-        List<Integer> idleTypes = new ArrayList<Integer>();
-        idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
-
-        // TODO use one list. add idle events and sort by time.  JSF to check event type for which image to use.
-        violationEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), start, end, vioTypes);
-
-        //Lookup Addresses for events
-        AddressLookup lookup = new AddressLookup();
-        for (Event event: violationEvents)
+        if(violationEvents.isEmpty())
         {
-            event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
+            List<Integer> vioTypes = new ArrayList<Integer>();
+            vioTypes.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
+            vioTypes.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
+            vioTypes.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
+    
+            List<Integer> idleTypes = new ArrayList<Integer>();
+            idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
+    
+            violationEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), start, end, vioTypes);
+            idleEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), start, end, idleTypes);
+            
+            //Lookup Addresses for events
+            AddressLookup lookup = new AddressLookup();
+            for (Event event: violationEvents)
+            {
+                event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
+            }
+            for (Event event: idleEvents)
+            {
+                event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
+            }
+            
+            allEvents.clear();
+            allEvents.addAll(violationEvents);
+            allEvents.addAll(idleEvents);
+            Collections.sort(allEvents);
+            Collections.reverse(allEvents);
         }
-        
-        idleEvents = new ArrayList<Event>();
-        idleEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), start, end, idleTypes);
     }
 
     public void generateStats()
@@ -115,7 +126,7 @@ public class VehicleTripsBean extends BaseBean
             totalDriveSeconds += tempLong.intValue();
         }
         
-        // Grabbing events over date picker date range
+        // Get events over date picker date range
         List<Integer> idleTypes = new ArrayList<Integer>();
                       idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
                       
@@ -171,6 +182,7 @@ public class VehicleTripsBean extends BaseBean
     
     public Date SetTimeToEndOfDay(Date date, TimeZone tz)
     {
+        // Adjust time using TimeZome and set to 11:59:59
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeZone(tz);
         calendar.setTime(date);
@@ -257,30 +269,35 @@ public class VehicleTripsBean extends BaseBean
         this.showLastTenTrips = showLastTenTrips;
         selectedTrips.clear();
 
+        // Check box is checked
         if (showLastTenTrips == true)
         {
             int count = 0;
             for (TripDisplay trip : trips)
             {
+                // Add 10 trips to list then stop.
                 if (count == 10)
                     break;
 
                 selectedTrips.add(trip); // Trips are already in reverse order. (Most recent first)
                 count++;
             }
+            
+            // Load events for given list.
+            this.violationEvents.clear();
+            initViolations(selectedTrips.get(selectedTrips.size() - 1).getTrip().getStartTime(), selectedTrips.get(0).getTrip().getEndTime());
         }
         else
         {
             if (selectedTrip == null)
             {
-                selectedTrips.add(trips.get(0));
+                setSelectedTrip(trips.get(0));
             }
             else
-                selectedTrips.add(selectedTrip);
+            {
+                setSelectedTrip(selectedTrip);
+            }
         }
-
-        if (selectedTrips.size() > 0)
-            initViolations(selectedTrips.get(selectedTrips.size() - 1).getTrip().getStartTime(), selectedTrips.get(0).getTrip().getEndTime());
     }
 
     // SHOW IDLE MARKERS SETTING PROPERTIES
@@ -369,7 +386,16 @@ public class VehicleTripsBean extends BaseBean
     {
         this.idleEvents = idleEvents;
     }
-
+    
+    public List<Event> getAllEvents()
+    {
+        return allEvents;
+    }
+    
+    public void setAllEvents(List<Event> allEvents)
+    {
+        this.allEvents = allEvents;
+    }
     // EVENT DAO PROPERTIES
     public EventDAO getEventDAO()
     {
@@ -440,5 +466,4 @@ public class VehicleTripsBean extends BaseBean
     {
         this.timeZone = timeZone;
     }
-    
 }
