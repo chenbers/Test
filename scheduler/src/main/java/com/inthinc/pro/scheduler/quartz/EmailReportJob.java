@@ -73,6 +73,7 @@ public class EmailReportJob extends QuartzJobBean
                 User user = userDAO.findByID(reportSchedule.getUserID());
                 Calendar todaysDate = Calendar.getInstance(user.getPerson().getTimeZone());
                 logger.debug("EmailReportJob: BEGIN REPORT " + reportSchedule.getName());
+                logger.debug("Account ID: " + reportSchedule.getAccountID());
                 processReportSchedule(reportSchedule);
                 reportSchedule.setLastDate(todaysDate.getTime());
                 Integer modified = reportScheduleDAO.update(reportSchedule);
