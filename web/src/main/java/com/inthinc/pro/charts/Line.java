@@ -30,6 +30,7 @@ public class Line implements BaseChart
                                                     "alternateHGridColor=\'#f0f0f0\' " +
                                                     "alternateHGridAlpha=\'100\' " +
                                                     "forceDecimals=\'1\' " +
+                                                    "decimals=\'1\' " +
                                                     "yAxisMaxValue=\'5\' " +
                                                     "bgColor=\'#ffffff\' " +
                                                     "showBorder=\'0\' " +
