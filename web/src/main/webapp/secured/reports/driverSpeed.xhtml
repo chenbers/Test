@@ -445,9 +445,9 @@ var firstLoad = new Boolean(true);
 						<span class="details">Details</span>
 						<span class="panel_content_right">
 						  	<h:outputFormat id="headerEvents" value="#{messages.recordCounts}">
-								<a4j:actionparam value="#{driverSpeedDurationBean.tableRowStart}"/>
-								<a4j:actionparam value="#{driverSpeedDurationBean.tableRowEnd}"/>
-								<a4j:actionparam value="#{driverSpeedDurationBean.tableSize}"/>
+								<a4j:actionparam value="#{driverSpeedBean.tableRowStart}"/>
+								<a4j:actionparam value="#{driverSpeedBean.tableRowEnd}"/>
+								<a4j:actionparam value="#{driverSpeedBean.tableSize}"/>
 							</h:outputFormat>  
 						</span>
 					</div>
@@ -464,7 +464,7 @@ var firstLoad = new Boolean(true);
 						<rich:dataTable 
 						value="#{driverSpeedBean.speedingEvents}" 
 						id="eventsTable" var="item" styleClass="datagrid"
-						rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{driverSpeedDurationBean.tableRowCount}" width="100%">			
+						rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{driverSpeedBean.tableRowCount}" width="100%">			
 
 							<rich:column>
 								<f:facet name="header">

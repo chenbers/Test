@@ -60,7 +60,7 @@ public class VehicleStyleBean extends BaseBean
 
     private void init()
     {
-        durationBean.setTableRowCount(10);
+        super.setTableRowCount(10);
 
         int vehicleID = navigation.getVehicle().getVehicleID();
 
@@ -103,7 +103,7 @@ public class VehicleStyleBean extends BaseBean
                 styleEvents.add(new EventReportItem(event, null));
             }
 
-            durationBean.setTableSize(styleEvents.size());
+            super.setTableSize(styleEvents.size());
         }
     }
 

@@ -64,7 +64,7 @@ public class VehicleSpeedBean extends BaseBean
     private void init()
     {
         // Set Events table rows per page in BaseDurationBean
-        durationBean.setTableRowCount(10);
+        super.setTableRowCount(10);
 
         if (navigation.getVehicle() == null)
         {
@@ -116,7 +116,7 @@ public class VehicleSpeedBean extends BaseBean
                 speedingEvents.add(new EventReportItem(event, null));
             }
 
-            durationBean.setTableSize(speedingEvents.size());
+            super.setTableSize(speedingEvents.size());
         }
     }
 

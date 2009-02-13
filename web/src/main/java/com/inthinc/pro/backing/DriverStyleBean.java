@@ -60,7 +60,7 @@ public class DriverStyleBean extends BaseBean
 
     private void init()
     {
-        durationBean.setTableRowCount(10);
+        super.setTableRowCount(10);
 
         int driverID = navigation.getDriver().getDriverID();
 
@@ -103,7 +103,7 @@ public class DriverStyleBean extends BaseBean
                 styleEvents.add(new EventReportItem(event, this.navigation.getDriver().getPerson().getTimeZone()));
             }
 
-            durationBean.setTableSize(styleEvents.size());
+            super.setTableSize(styleEvents.size());
         }
     }
 

@@ -64,7 +64,7 @@ public class DriverSpeedBean extends BaseBean
     private void init()
     {
         // Set Events table rows per page in BaseDurationBean
-        durationBean.setTableRowCount(10);
+        super.setTableRowCount(10);
 
         if (navigation.getDriver() == null)
         {
@@ -113,7 +113,7 @@ public class DriverSpeedBean extends BaseBean
                 speedingEvents.add(new EventReportItem(event, this.navigation.getDriver().getPerson().getTimeZone()));
             }
 
-            durationBean.setTableSize(speedingEvents.size());
+            super.setTableSize(speedingEvents.size());
         }
     }
 
