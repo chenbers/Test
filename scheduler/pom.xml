@@ -78,7 +78,7 @@
             </build>
         </profile>
         <profile>
-            <id>quality assurance</id>
+            <id>qa</id>
             <activation>
                 <property>
                     <name>env</name>
@@ -213,6 +213,14 @@
                             </includes>
                         </resource>
                     </webResources>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <goals>deploy tomcat:deploy</goals>
+                    <releaseProfiles>qa</releaseProfiles>
                 </configuration>
             </plugin>
             <plugin>
