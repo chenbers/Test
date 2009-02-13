@@ -79,7 +79,7 @@
 								</td>
 								<td>
 									<rich:message for="startDate" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-									<rich:calendar id="startDate" value="#{reportScheduleBean.item.startDate}" required="true" requiredMessage="#{messages.required}" timeZone="#{reportScheduleBean.utcTimeZone}"/>	
+									<rich:calendar id="startDate" value="#{reportScheduleBean.item.startDate}" required="true" requiredMessage="#{messages.required}" todayControlMode="hidden" enableManualInput="true" converterMessage="#{messages.editPerson_dateFormat}" timeZone="#{reportScheduleBean.utcTimeZone}"/>	
 								</td>
 								
 							</tr>
@@ -88,7 +88,7 @@
 									value="#{messages.reportSchedule_endDate}" />
 								</td>
 								<td>
-									<rich:calendar value="#{reportScheduleBean.item.endDate}" timeZone="#{reportScheduleBean.utcTimeZone}"/>	
+									<rich:calendar value="#{reportScheduleBean.item.endDate}" todayControlMode="hidden" enableManualInput="true" converterMessage="#{messages.editPerson_dateFormat}" timeZone="#{reportScheduleBean.utcTimeZone}"/>	
 								</td>
 							</tr>
 							<tr>
