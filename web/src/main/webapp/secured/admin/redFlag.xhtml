@@ -28,7 +28,7 @@
             <div class="">
               <div class="panel_nw">
                 <div class="panel_title">
-                  <span class="admin"><h:outputText value="#{messages.adminHeader_redFlagDetails}" /><h:outputText value=" " /><h:outputText value="#{redFlagAlertsBean.item.name}" /></span>
+                  <span class="admin"><h:outputFormat value="#{messages.adminHeader_redFlagDetails}"><f:param value="#{redFlagAlertsBean.item.name}" /></h:outputFormat></span>
                   <span class="panel_links"></span>
                 </div>
               </div>
