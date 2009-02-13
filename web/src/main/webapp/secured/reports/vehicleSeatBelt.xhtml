@@ -193,9 +193,9 @@
 						<span class="details">Details</span>
 							<span class="panel_content_right">
 						  	<h:outputFormat id="headerEvents" value="#{messages.recordCounts}">
-								<a4j:actionparam value="#{vehicleSeatBeltDurationBean.tableRowStart}"/>
-								<a4j:actionparam value="#{vehicleSeatBeltDurationBean.tableRowEnd}"/>
-								<a4j:actionparam value="#{vehicleSeatBeltDurationBean.tableSize}"/>
+								<a4j:actionparam value="#{vehicleSeatBeltBean.tableRowStart}"/>
+								<a4j:actionparam value="#{vehicleSeatBeltBean.tableRowEnd}"/>
+								<a4j:actionparam value="#{vehicleSeatBeltBean.tableSize}"/>
 							</h:outputFormat>  
 						</span>
 					</div>
@@ -212,7 +212,7 @@
 						<rich:dataTable 
 							value="#{vehicleSeatBeltBean.seatBeltEvents}" 
 							id="eventsTable" var="item" styleClass="datagrid"
-							rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{vehicleSeatBeltDurationBean.tableRowCount}"  
+							rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{vehicleSeatBeltBean.tableRowCount}"  
 							width="100%"> 
 						<!-- Data -->
 						
