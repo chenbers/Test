@@ -123,8 +123,7 @@ public class BaseBean
 
     
     //TODO: The following TableStats code needs to be pulled out into it's own bean and then injected into beans that need it
-    private final static String ON = "on";
-    private final static String OFF = "";
+
     private Integer tableSize = 0;
     private Integer tableRowCount;
     private Integer tableRowStart = 1;
