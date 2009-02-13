@@ -124,7 +124,7 @@ public class EmailReportJob extends QuartzJobBean
         }
 
         Report report = reportCreator.getReport(reportCriteriaList);
-        report.exportReportToEmail(reportSchedule.getEmailToAsString(), FormatType.PDF);
+        report.exportReportToEmail(reportSchedule.getEmailToString(), FormatType.PDF);
     }
 
     /*

@@ -54,7 +54,7 @@
 	<bean id="emailReportCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="emailReportJob"/>
 		<!-- run every odd minute -->
-	  <property name="cronExpression" value="0 2/15 * * * ?"/>
+	  <property name="cronExpression" value="0 1/15 * * * ?"/>
 	</bean>
 
 	<bean id="emailMessageCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">

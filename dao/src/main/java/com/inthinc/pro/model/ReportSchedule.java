@@ -1,5 +1,8 @@
  package com.inthinc.pro.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -80,26 +83,41 @@ public class ReportSchedule
         this.userID = userID;
     }
     
-    public String getEmailToAsString(){
-        StringBuilder sb = new StringBuilder("");
-        if(emailTo != null && !emailTo.isEmpty())
-        {
-            for(String email:emailTo)
+    public String getEmailToString()
+    {
+        final StringBuilder sb = new StringBuilder();
+        if (getEmailTo() != null)
+            for (final String email : getEmailTo())
             {
-                sb.append(email + ",");
+                if (sb.length() > 0)
+                    sb.append(", ");
+                sb.append(email);
             }
-        }
-        
         return sb.toString();
     }
+
+    public void setEmailToString(String emailToString)
+    {
+        if ((emailToString != null) && (emailToString.trim().length() > 0))
+            setEmailTo(new ArrayList<String>(Arrays.asList(emailToString.split("[,; ]+"))));
+        else
+            setEmailTo(new ArrayList<String>());
+    }
+    
     public List<String> getEmailTo()
     {
+        if(emailTo == null)
+        {   
+            emailTo = new ArrayList<String>();
+        }
         return emailTo;
     }
+    
     public void setEmailTo(List<String> emailTo)
     {
         this.emailTo = emailTo;
     }
+    
     public Integer getAccountID()
     {
         return accountID;

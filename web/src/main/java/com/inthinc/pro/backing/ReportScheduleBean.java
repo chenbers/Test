@@ -30,7 +30,6 @@ import com.inthinc.pro.model.ReportSchedule;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.reports.CriteriaType;
 import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.util.MessageUtil;
 
@@ -236,7 +235,6 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         getUpdateField().put("endDate", Boolean.TRUE);
         getUpdateField().put("dayOfWeek", Boolean.TRUE);
         getUpdateField().put("timeOfDay", Boolean.TRUE);
-        getUpdateField().put("dayOfWeek", Boolean.TRUE);
         getUpdateField().put("status", Boolean.TRUE);
         return super.save();
     }
@@ -372,6 +370,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             Group group = groupDAO.findByID(reportScheduleView.getGroupID());
             reportScheduleView.setGroupName(group.getName());
         }
+        
+        
 
         return reportScheduleView;
     }
@@ -456,32 +456,6 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             return this.getReportScheduleID();
         }
 
-        public String getEmailToString()
-        {
-            StringBuilder sb = new StringBuilder();
-            if (getEmailTo() != null)
-            {
-                for (int i = 0; i < getEmailTo().size(); i++)
-                {
-                    sb.append(getEmailTo().get(i));
-                    if ((i + 1) == getEmailTo().size())
-                    {
-                        break;
-                    }
-                    sb.append(",");
-                }
-            }
-            return sb.toString();
-        }
-
-        public void setEmailToString(String email)
-        {
-            if (email != null)
-            {
-                String[] emailArray = email.split(",");
-                this.setEmailTo(Arrays.asList(emailArray));
-            }
-        }
 
         public ReportGroup getReport()
         {
