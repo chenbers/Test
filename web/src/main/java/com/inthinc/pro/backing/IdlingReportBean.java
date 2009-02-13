@@ -59,7 +59,6 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
         AVAILABLE_COLUMNS = new ArrayList<String>();
         AVAILABLE_COLUMNS.add("group");
         AVAILABLE_COLUMNS.add("driver_person_fullName");
-        AVAILABLE_COLUMNS.add("vehicle_name");
         AVAILABLE_COLUMNS.add("driveTime");
         AVAILABLE_COLUMNS.add("lowHrs");
         AVAILABLE_COLUMNS.add("lowPercent");

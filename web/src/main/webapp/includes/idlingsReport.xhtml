@@ -51,19 +51,6 @@
 							</f:setPropertyActionListener>
       					</a4j:htmlCommandLink>       
     				</rich:column>
-    				<rich:column rendered="#{idlingColumns['vehicle_name'].visible}" 
-    					sortBy="#{item.vehicle.name}">
-      					<f:facet name="header">
-      						<h:outputText value="#{messages.reports_vehicle}" />
-      					</f:facet>
-      					<a4j:htmlCommandLink action="go_vehicle" 
-							value="#{item.vehicle.name}">
-      						<f:setPropertyActionListener 
-								value="#{item.vehicle}" 
-								target="#{navigationBean.vehicle}">
-							</f:setPropertyActionListener>
-      					</a4j:htmlCommandLink>        								
-    				</rich:column>
     				<rich:column rendered="#{idlingColumns['driveTime'].visible}" 
     					sortBy="#{item.driveTime}">    					
       					<f:facet name="header">
