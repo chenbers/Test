@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.richfaces.component.html.HtmlDatascroller;
 import org.richfaces.event.DataScrollerEvent;
@@ -35,6 +36,7 @@ public class RedFlagsBeanTest extends BaseBeanTest
     {
     }
     
+    @Ignore
     @Test
     public void bean()
     {
@@ -89,6 +91,8 @@ public class RedFlagsBeanTest extends BaseBeanTest
         
         
     }
+    
+    @Ignore
     @Test
     public void filter()
     {

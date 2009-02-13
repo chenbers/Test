@@ -229,6 +229,7 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         assertEquals(adminBean.getItemCount(), count);
     }
 
+    @Ignore
     @Test
     public void batchEdit() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException
     {
