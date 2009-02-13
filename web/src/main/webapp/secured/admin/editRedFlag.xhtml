@@ -178,6 +178,7 @@
                               </tr>
                               <c:forEach begin="0" var="index" end="14">
                                 <c:set var="id" value="speed#{index}" />
+                                <c:set var="minimum" value="#{(index lt 4) ? ((-index * 5) - 5) : -25}" />
                                 <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
                                   <ui:fragment rendered="#{redFlagAlertsBean.batchEdit}">
                                     <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
@@ -190,7 +191,7 @@
                                     <h:outputText value=" mph" />
                                   </td>
                                   <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;" width="250">
-                                    <rich:inputNumberSlider id="#{id}" value="#{redFlagAlertsBean.item.speedSettings[index]}" width="250" showToolTip="false" showBoundaryValues="false" minValue="-25" maxValue="25" step="1" onchange="checkMultiple(this.mainTable.id); document.getElementById(this.mainTable.id + 'Selected').checked = true;" />
+                                    <rich:inputNumberSlider id="#{id}" value="#{redFlagAlertsBean.item.speedSettings[index]}" width="250" showToolTip="false" showBoundaryValues="false" minValue="#{minimum}" maxValue="25" step="1" onchange="checkMultiple(this.mainTable.id); document.getElementById(this.mainTable.id + 'Selected').checked = true;" />
                                   </td>
                                   <td style="padding: 6px 12px 6px 2px; border-bottom: 1px solid #8BAD37;">
                                     <h:outputText value=" mph" />

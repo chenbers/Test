@@ -139,13 +139,14 @@
                             <c:forEach begin="0" var="index" end="14">
                               <c:if test="#{redFlagAlertsBean.item.speedSelected[index]}">
                                 <c:set var="id" value="speed#{index}" />
+                                <c:set var="minimum" value="#{(index lt 4) ? ((-index * 5) - 5) : -25}" />
                                 <tr class="#{((row % 2) == 0) ? 'tableOdd' : 'tableEven'}">
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <h:outputText value="#{(index * 5) + 5}" />
                                     <h:outputText value=" mph" />
                                   </td>
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" width="200">
-                                    <rich:inputNumberSlider id="#{id}" disabled="true" value="#{redFlagAlertsBean.item.speedSettings[index]}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="-25" maxValue="25" step="1" />
+                                    <rich:inputNumberSlider id="#{id}" disabled="true" value="#{redFlagAlertsBean.item.speedSettings[index]}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="#{minimum}" maxValue="25" step="1" />
                                   </td>
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <h:outputText id="#{id}MPH" value="#{redFlagAlertsBean.item.speedSettings[index]}" />
