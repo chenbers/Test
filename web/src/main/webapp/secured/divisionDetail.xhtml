@@ -277,9 +277,9 @@
 					<div class="panel_title">
 						<span class="overall">Overall Score </span>
 						<ui:include src="/includes/dateLinksWithFlyOut.xhtml">
-							<ui:param name="ajaxForm" value="dateLinksFormForm"/>
+							<ui:param name="ajaxForm" value="overallDateLinks"/>
 							<ui:param name="ajaxStatusID" value="overall_status" /> 
-							<ui:param name="reRenderList" value="overallPanel"/>			
+							<ui:param name="reRenderList" value="overallPanel,overallDateLinks"/>			
 							<ui:param name="thirtyDaysOn" value="#{breakdownDurationBean.styleClass30Days}"/>
 							<ui:param name="threeMonthsOn" value="#{breakdownDurationBean.styleClass3Months}"/>
 							<ui:param name="sixMonthsOn" value="#{breakdownDurationBean.styleClass6Months}"/>

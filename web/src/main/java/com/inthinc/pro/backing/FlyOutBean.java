@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 
 public class FlyOutBean 
 {
+    private static final Logger logger = Logger.getLogger(FlyOutBean.class);
     private String navigationRule;
     private String returnNavRule;
     private String selectedTab;
@@ -18,7 +19,6 @@ public class FlyOutBean
     {
         this.groupID = groupID;
     }
-    private static final Logger logger = Logger.getLogger(DriverSeatBeltBean.class);
     
     //FLY OUT-IN  ACTION
     public String flyNavRuleAction()
