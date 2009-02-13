@@ -108,7 +108,7 @@
 					<textElement textAlignment="Right" verticalAlignment="Top">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Vehicle Count " + $P{RECORD_COUNT}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Vehicle Count: " + $P{RECORD_COUNT}.toString()]]></textFieldExpression>
 				</textField>
 			</band>
 		</title>

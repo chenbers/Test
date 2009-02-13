@@ -244,7 +244,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         List<DeviceReportItem> deviceReportItems = new ArrayList<DeviceReportItem>();
         for( Vehicle v: vehicList )
         {
-            // save only vehicles that have devices associated to them
             if ( v.getDeviceID() != null ) {
                 Device dev = deviceDAO.findByID(v.getDeviceID());            
  
