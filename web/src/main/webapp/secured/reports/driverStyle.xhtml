@@ -162,6 +162,12 @@ var firstLoad = new Boolean(true);
 														action="#{driverStyleBean.exportReportToPdf}"
 														id="export_menu_item">
 										</rich:menuItem>
+										<rich:menuItem ajaxSingle="true"
+														iconDisabled="/images/ico_excel.png" icon="/images/ico_excel.png"
+														value="Export To Excel"
+														action="#{driverStyleBean.exportReportToExcel}"
+														id="exportExcelMenuItem">
+										</rich:menuItem>
 									</rich:contextMenu>
 							</a4j:form>
 							</a4j:region>
@@ -405,9 +411,9 @@ var firstLoad = new Boolean(true);
 						<span class="details">Details</span>
 						<span class="panel_content_right">
 						  	<h:outputFormat id="headerEvents" value="#{messages.recordCounts}">
-								<a4j:actionparam value="#{driverStyleBean.tableRowStart}"/>
-								<a4j:actionparam value="#{driverStyleBean.tableRowEnd}"/>
-								<a4j:actionparam value="#{driverStyleBean.tableSize}"/>
+								<a4j:actionparam value="#{driverStyleDurationBean.tableRowStart}"/>
+								<a4j:actionparam value="#{driverStyleDurationBean.tableRowEnd}"/>
+								<a4j:actionparam value="#{driverStyleDurationBean.tableSize}"/>
 							</h:outputFormat>  
 						</span>
 					</div>
@@ -424,7 +430,7 @@ var firstLoad = new Boolean(true);
 						<rich:dataTable value="#{driverStyleBean.styleEvents}" 
 						id="eventsTable" var="item" styleClass="datagrid"
 						rowClasses="tableOdd,tableEven" cellspacing="1" 
-						rows="#{driverStyleBean.tableRowCount}" width="100%">
+						rows="#{driverStyleDurationBean.tableRowCount}" width="100%">
 						
 							<rich:column>
 								<f:facet name="header">

@@ -304,6 +304,11 @@ public class VehicleSeatBeltBean extends BaseBean
 
     public void emailReport()
     {
-        // getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
+        getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
+    }
+    
+    public void exportReportToExcel()
+    {
+        getReportRenderer().exportReportToExcel(buildReport(), getFacesContext());
     }
 }

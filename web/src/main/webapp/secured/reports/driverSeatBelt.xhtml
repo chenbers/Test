@@ -119,6 +119,12 @@
 														action="#{driverSeatBeltBean.exportReportToPdf}"
 														id="export_menu_item">
 										</rich:menuItem>
+										<rich:menuItem ajaxSingle="true"
+														iconDisabled="/images/ico_excel.png" icon="/images/ico_excel.png"
+														value="Export To Excel"
+														action="#{driverSeatBeltBean.exportReportToExcel}"
+														id="exportExcelMenuItem">
+										</rich:menuItem>
 									</rich:contextMenu>
 							</a4j:form>
 							</a4j:region>
@@ -187,9 +193,9 @@
 						<span class="details">Details</span>
 							<span class="panel_content_right">
 						  	<h:outputFormat id="headerEvents" value="#{messages.recordCounts}">
-								<a4j:actionparam value="#{driverSeatBeltBean.tableRowStart}"/>
-								<a4j:actionparam value="#{driverSeatBeltBean.tableRowEnd}"/>
-								<a4j:actionparam value="#{driverSeatBeltBean.tableSize}"/>
+								<a4j:actionparam value="#{driverSeatBeltDurationBean.tableRowStart}"/>
+								<a4j:actionparam value="#{driverSeatBeltDurationBean.tableRowEnd}"/>
+								<a4j:actionparam value="#{driverSeatBeltDurationBean.tableSize}"/>
 							</h:outputFormat>  
 						</span>
 					</div>
@@ -206,7 +212,7 @@
 						<rich:dataTable 
 							value="#{driverSeatBeltBean.seatBeltEvents}" 
 							id="eventsTable" var="item" styleClass="datagrid"
-							rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{driverSeatBeltBean.tableRowCount}"  
+							rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{driverSeatBeltDurationBean.tableRowCount}"  
 							width="100%"> 
 						<!-- Data -->
 						

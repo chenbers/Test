@@ -461,10 +461,10 @@ public class DriverSpeedBean extends BaseBean
         return returnList;
     }
 
-    public ReportCriteria buildReport()
+    public ReportCriteria buildReport(ReportType reportType)
     {
         // Page 1
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_SPEED, getGroupHierarchy().getTopGroup().getName());
+        ReportCriteria reportCriteria = new ReportCriteria(reportType, getGroupHierarchy().getTopGroup().getName());
 
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.addParameter("REPORT_NAME", "Driver Performance: Speed");
@@ -513,12 +513,16 @@ public class DriverSpeedBean extends BaseBean
 
     public void exportReportToPdf()
     {
-        getReportRenderer().exportSingleReportToPDF(buildReport(), getFacesContext());
+        getReportRenderer().exportSingleReportToPDF(buildReport(ReportType.DRIVER_SPEED), getFacesContext());
     }
 
     public void emailReport()
     {
-        // getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
+        getReportRenderer().exportReportToEmail(buildReport(ReportType.DRIVER_SPEED), getEmailAddress());
     }
-
+    
+    public void exportReportToExcel()
+    {
+        getReportRenderer().exportReportToExcel(buildReport(ReportType.DRIVER_SPEED), getFacesContext());
+    }
 }

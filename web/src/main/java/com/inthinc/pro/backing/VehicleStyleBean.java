@@ -87,7 +87,7 @@ public class VehicleStyleBean extends BaseBean
 
     public void getViolations()
     {
-        if (styleEvents.size() < 1)
+        if (styleEvents.isEmpty())
         {
             List<Integer> types = new ArrayList<Integer>();
             types.add(2);
@@ -470,6 +470,11 @@ public class VehicleStyleBean extends BaseBean
 
     public void emailReport()
     {
-        // getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
+        getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
+    }
+    
+    public void exportReportToExcel()
+    {
+        getReportRenderer().exportReportToExcel(buildReport(), getFacesContext());
     }
 }

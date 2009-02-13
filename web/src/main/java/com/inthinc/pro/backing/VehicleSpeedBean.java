@@ -97,7 +97,8 @@ public class VehicleSpeedBean extends BaseBean
 
     public void getViolations()
     {
-        if (speedingEvents.size() < 1)
+        
+        if (speedingEvents.isEmpty())
         {
             List<Event> tempEvents = new ArrayList<Event>();
             List<Integer> types = new ArrayList<Integer>();
@@ -518,9 +519,14 @@ public class VehicleSpeedBean extends BaseBean
     {
         getReportRenderer().exportSingleReportToPDF(buildReport(), getFacesContext());
     }
-
+    
     public void emailReport()
     {
-        // getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
+        getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
+    }
+
+    public void exportReportToExcel()
+    {
+        getReportRenderer().exportReportToExcel(buildReport(), getFacesContext());
     }
 }
