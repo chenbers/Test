@@ -1,13 +1,17 @@
 package com.inthinc.pro.backing;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -38,7 +42,7 @@ import com.inthinc.pro.util.MessageUtil;
  * @author mstrong
  * 
  */
-public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportScheduleView> implements Serializable
+public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportScheduleView> implements TablePrefOptions<ReportScheduleBean.ReportScheduleView>, Serializable
 {
 
     /**
@@ -60,7 +64,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     /*
      * Spring managed beans
      */
-    
+
     private ReportScheduleDAO reportScheduleDAO;
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
@@ -77,7 +81,6 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         AVAILABLE_COLUMNS.add("lastEmail");
         AVAILABLE_COLUMNS.add("report");
         AVAILABLE_COLUMNS.add("status");
-        
 
         REPORT_GROUPS = new ArrayList<SelectItem>();
         for (ReportGroup rt : EnumSet.allOf(ReportGroup.class))
@@ -85,7 +88,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             REPORT_GROUPS.add(new SelectItem(rt.getCode(), rt.getLabel()));
         }
         sort(REPORT_GROUPS);
-        REPORT_GROUPS.add(0,new SelectItem(null, ""));
+        REPORT_GROUPS.add(0, new SelectItem(null, ""));
 
         DURATIONS = new ArrayList<SelectItem>();
         DURATIONS.add(new SelectItem(null, ""));
@@ -100,13 +103,13 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         {
             OCCURRENCES.add(new SelectItem(o, o.getDescription()));
         }
-        
+
         STATUSES = new ArrayList<SelectItem>();
-        STATUSES.add(new SelectItem(Status.ACTIVE,Status.ACTIVE.getDescription()));
-        STATUSES.add(new SelectItem(Status.INACTIVE,Status.INACTIVE.getDescription()));
-       
+        STATUSES.add(new SelectItem(Status.ACTIVE, Status.ACTIVE.getDescription()));
+        STATUSES.add(new SelectItem(Status.INACTIVE, Status.INACTIVE.getDescription()));
+
     }
-    
+
     private static void sort(List<SelectItem> selectItemList)
     {
         Collections.sort(selectItemList, new Comparator<SelectItem>()
@@ -143,7 +146,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     {
         return OCCURRENCES;
     }
-    
+
     public List<SelectItem> getStatuses()
     {
         return STATUSES;
@@ -168,17 +171,17 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         List<SelectItem> selectItemList = new ArrayList<SelectItem>();
 
         List<Group> groupList = getGroupHierarchy().getGroupList();
-        
+
         List<GroupType> acceptableGroupTypes = Arrays.asList(getItem().getReport().getGroupTypes());
         for (Group group : groupList)
         {
-            if(acceptableGroupTypes.contains(group.getType()))
+            if (acceptableGroupTypes.contains(group.getType()))
             {
                 selectItemList.add(new SelectItem(group.getGroupID(), group.getName()));
             }
-            
+
         }
-        
+
         sort(selectItemList);
 
         selectItemList.add(0, new SelectItem(null, ""));
@@ -278,6 +281,38 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
 
     }
 
+    @Override
+    public String fieldValue(ReportScheduleView item, String column)
+    {
+        //Need to make sure we return the date string just as it appears in the UI table
+        String returnString = "";
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy");
+        sdf.setTimeZone(getUtcTimeZone());
+        
+        
+        
+        if ("name".equals(column))
+            returnString = item.getName();
+        else if ("startDate".equals(column))
+            returnString = item.getStartDate() != null ? sdf.format(item.getStartDate()) : "";
+        else if ("endDate".equals(column))
+            returnString = item.getEndDate() != null ? sdf.format(item.getEndDate()) : "";
+        else if ("occurrence".equals(column))
+            returnString = item.getOccurrence() != null ? item.getOccurrence().toString() : "";
+        else if ("lastEmail".equals(column))
+            returnString = item.getLastDate() != null ? sdf.format(item.getLastDate()) : "";
+        else if ("report".equals(column))
+            returnString = item.getReport() != null ? item.getReport().getLabel() : "";
+        else if ("status".equals(column))
+            returnString = item.getStatus() != null ? item.getStatus().toString() : "";
+
+        logger.debug("column: " + column);
+        logger.debug("returnValue: " + returnString);
+
+        return returnString;
+
+    }
+
     public TimeZone getUtcTimeZone()
     {
         return TimeZone.getTimeZone("UTC");
@@ -370,13 +405,9 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             Group group = groupDAO.findByID(reportScheduleView.getGroupID());
             reportScheduleView.setGroupName(group.getName());
         }
-        
-        
 
         return reportScheduleView;
     }
-
-    
 
     public void setReportScheduleDAO(ReportScheduleDAO reportScheduleDAO)
     {
@@ -455,7 +486,6 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         {
             return this.getReportScheduleID();
         }
-
 
         public ReportGroup getReport()
         {
