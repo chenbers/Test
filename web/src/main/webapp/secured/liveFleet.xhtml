@@ -232,10 +232,13 @@
 					<h:outputText value="#{driver.driver.person.priPhone}" converter="PhoneNumberConverter" />
 					<h:outputText value="#{messages.livefleet_secPhone}:"/>
 					<h:outputText value="#{driver.driver.person.secPhone}" converter="PhoneNumberConverter" />
+					
 					<h:outputText value="#{messages.livefleet_vehicle}:"/>					
-					<h:commandLink action="#{liveFleetBean.vehicleDetailAction}" value="#{driver.vehicle.fullName}">
+					<h:commandLink action="#{liveFleetBean.vehicleDetailAction}" value="#{driver.vehicle.name}">
  						<f:setPropertyActionListener value="#{driver.vehicle.vehicleID}" target="#{liveFleetBean.selectedVehicleID}" />
 					</h:commandLink>
+					<h:outputText value="#{messages.livefleet_vehicleType}:"/>
+					<h:outputText value="#{driver.vehicle.vtype}" />
 					<h:outputText value="#{messages.livefleet_updated}:" />
 					<h:outputText value="#{driver.time}" converter="TimeAgoConverter"/>
 					<h:outputText value="#{messages.livefleet_address}:"/>
