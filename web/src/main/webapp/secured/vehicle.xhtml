@@ -31,62 +31,95 @@
 						map.setMapType(G_NORMAL_MAP);
 					}
 			}
-			function drawTrip(){
-				var polyline = new GPolyline([
-								
-				<ui:repeat value="#{vehicleBean.lastTrip.route}" var="route">
-					new GLatLng(#{route.lat}, #{route.lng}),
-			  	</ui:repeat>
-			  		  //Repeating the last step to finish JS array.
-			  		  new GLatLng(#{vehicleBean.lastTrip.routeLastStep.lat}, #{vehicleBean.lastTrip.routeLastStep.lng})
-				], "#0000ff", 6);
-				map.addOverlay(polyline);
-	
-				//Start of trip marker
-				var startlatlng = new GLatLng(#{vehicleBean.lastTrip.route[0].lat}, #{vehicleBean.lastTrip.route[0].lng});
-				marker = createMarker(startlatlng, "Start of trip.<br />" + "#{vehicleBean.lastTrip.trip.startTime}<br />#{vehicleBean.lastTrip.startAddress}",
-										"#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
-				map.addOverlay(marker);
-				bounds.extend(marker.getPoint());
-	
-				//End of trip marker
-				var endlatlng = new GLatLng(#{vehicleBean.lastTrip.routeLastStep.lat}, #{vehicleBean.lastTrip.routeLastStep.lng});
-				marker = createMarker(endlatlng, "End of trip.<br />" + "#{vehicleBean.lastTrip.trip.endTime}<br />#{vehicleBean.lastTrip.endAddress}",
-										"#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
-				map.addOverlay(marker);
-				bounds.extend(marker.getPoint());
-	
-				//Create Violation markers.
-				var violation;
-				<ui:repeat value="#{vehicleBean.violationEvents}" var="violation">
-					violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
-					map.addOverlay(createMarker(violation, "#{violation.eventType} Violation.<br />#{violation.time}<br />#{violation.addressStr}",
-									"#{facesContext.externalContext.request.contextPath}/images/ico_violation.png"));
-				</ui:repeat>
-	
-				//Zoom and Center on trip.
-				map.setZoom(map.getBoundsZoomLevel(bounds));
-			    map.setCenter(bounds.getCenter());
+			function drawTrip()
+			{
+				<h:outputText rendered="#{vehicleBean.hasLastTrip}">
+					var polyline = new GPolyline([
+										<ui:repeat value="#{vehicleBean.lastTrip.route}" var="route">
+											new GLatLng(#{route.lat}, #{route.lng}),
+									  	</ui:repeat>
+									  	//Repeating the last step to finish JS array.
+									  	new GLatLng(#{vehicleBean.lastTrip.routeLastStep.lat}, #{vehicleBean.lastTrip.routeLastStep.lng})	], "#0000ff", 6);
+
+					map.addOverlay(polyline);
+		
+					//Start of trip marker
+					var startlatlng = new GLatLng(#{vehicleBean.lastTrip.route[0].lat}, #{vehicleBean.lastTrip.route[0].lng});
+					marker = createMarker(startlatlng, "tripStartBubble", "#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
+					map.addOverlay(marker);
+					bounds.extend(marker.getPoint());
+		
+					//End of trip marker
+					var endlatlng = new GLatLng(#{vehicleBean.lastTrip.routeLastStep.lat}, #{vehicleBean.lastTrip.routeLastStep.lng});
+					marker = createMarker(endlatlng, "tripEndBubble", "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
+					map.addOverlay(marker);
+					bounds.extend(marker.getPoint());
+		
+					//Create Violation markers. //IDLE EVENT is the only event with different icon.
+					var violation;
+					var image;
+					<ui:repeat value="#{vehicleBean.violationEvents}" var="violation">
+						violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
+
+						<h:outputText rendered="#{violation.eventType.code eq '13'}" >
+							image = "#{facesContext.externalContext.request.contextPath}/images/ico_idle.png";
+						</h:outputText>
+						<h:outputText rendered="#{violation.eventType.code ne '13'}" >
+							image = "#{facesContext.externalContext.request.contextPath}/images/ico_violation.png";
+						</h:outputText>
+						
+						marker = createMarker(violation, "#{violation.noteID}", image);
+						map.addOverlay(marker);
+						bounds.extend(marker.getPoint());
+					</ui:repeat>
+		
+					//Zoom and Center on trip.
+					map.setZoom(map.getBoundsZoomLevel(bounds));
+				    map.setCenter(bounds.getCenter());
+			    </h:outputText>
 			}
-	
-		    function createMarker(point, message, iconImage)
-	        {
-	          var markerIcon = new GIcon(baseIcon);
-	          markerIcon.image = iconImage;
 
-	          // Set up our GMarkerOptions object
-	          markerOptions = { icon:markerIcon };
-	          var marker = new GMarker(point, markerOptions);
+		    function createMarker(point, divID, iconImage) 
+		        {
+		        	var markerIcon;
+		        	var marker;
 
-	          GEvent.addListener(marker, "click", function() {
-	            marker.openInfoWindowHtml("<b>" + message + "</b>");
-	          });
-	          return marker;
-	        }
+					//Use passed in image.
+		        	if(iconImage != null)
+		        	{
+						markerIcon = new GIcon(baseIcon);
+			       	    markerIcon.image = iconImage;
+			       	 	markerOptions = { icon:markerIcon };
+			       	 	marker = new GMarker(point, markerOptions);
+		        	}
+		        	//Use default GoogleMap marker image.
+		        	else
+		        	{
+				      	markerIcon = new GIcon();
+						marker = new GMarker(point);
+		        	}
+		       
+		       		GEvent.addListener(marker, "click", function() {
+							var node = document.getElementById(divID).cloneNode(true);
+		          			node.style.display = 'block';
+				            marker.openInfoWindow(node);
+				 			});
+
+		        	return marker;
+		        }
 
 			function bodyUnload()
 			{
 				GUnload();
+			}
+			
+			function bodyLoad()
+			{
+				// Init Google map if hasLastTrip is true;
+				<h:outputText rendered="#{vehicleBean.hasLastTrip}">
+					initMap(#{vehicleBean.lastTrip.routeLastStep.lat}, #{vehicleBean.lastTrip.routeLastStep.lng}, 14);
+					drawTrip();
+		 		</h:outputText>
 			}
 		</script>
 	</ui:define>
@@ -95,6 +128,46 @@
 	<ui:param name="helpFile" value="Overall_Score_Vehicle.htm" />
 	
 	<ui:define name="content">
+	
+<!-- BEGIN GOOGLE BUBBLES -->
+	<ui:include src="/includes/tripBubble.xhtml">
+            <ui:param name="hiddenDivID" value="tripStartBubble" />
+            <ui:param name="bubbleTitle" value="#{messages.TRIP_START}" />
+            <ui:param name="timeZoneObject" value="#{navigationBean.driver.person.timeZone}" />
+            <ui:param name="eventDateTime" value="#{vehicleBean.lastTrip.trip.startTime}" />
+            <ui:param name="eventLocation" value="#{vehicleBean.lastTrip.startAddress}" />
+            <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
+	</ui:include>
+	
+	<ui:include src="/includes/tripBubble.xhtml">
+            <ui:param name="hiddenDivID" value="tripEndBubble" />
+            <ui:param name="bubbleTitle" value="#{messages.TRIP_END}" />
+            <ui:param name="eventDateTime" value="#{vehicleBean.lastTrip.trip.endTime}" />
+            <ui:param name="eventLocation" value="#{vehicleBean.lastTrip.endAddress}" />
+            <ui:param name="timeZoneObject" value="#{navigationBean.driver.person.timeZone}" />
+            <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
+	</ui:include>
+	
+	<ui:repeat value="#{vehicleBean.violationEvents}" var="violation">
+		<ui:include src="/includes/eventBubble.xhtml">
+	            <ui:param name="hiddenDivID" value="#{violation.noteID}" />
+	            <ui:param name="eventType" value="#{violation.eventType}" />
+	            <ui:param name="eventDateTime" value="#{violation.time}" />
+	            <ui:param name="eventLocation" value="#{violation.addressStr}" />
+	            <ui:param name="timeZoneObject" value="#{navigationBean.driver.person.timeZone}" />
+	            <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
+	            <ui:param name="eventSpeedLimit" value="#{violation.speedLimit}" />
+	            <ui:param name="eventAvgSpeed" value="#{violation.avgSpeed}" />
+	            <ui:param name="eventTopSpeed" value="#{violation.topSpeed}" />
+	            <ui:param name="eventDistance" value="#{violation.distance}" />
+	            <ui:param name="eventSpeed" value="#{violation.speed}" />
+	            <ui:param name="eventSeverity" value="#{violation.severity}" />
+	            <ui:param name="eventLowIdle" value="#{violation.lowIdleDuration}" />
+	            <ui:param name="eventHighIdle" value="#{violation.highIdleDuration}" />
+		</ui:include>
+	</ui:repeat>
+<!-- END GOOGLE BUBBLES -->
+
 <div id="wrapper">
 
 <h:form>
@@ -404,13 +477,6 @@
 	  						</h:outputText>
 							<div id="map-canvas" style="width:458px;height:300px;border:0"></div>
 					  	</h:panelGroup>
-					  	
-					  	<h:outputText rendered="#{vehicleBean.hasLastTrip eq true}">
-						    <script type="text/JavaScript">
-						    	initMap(#{vehicleBean.lastTrip.routeLastStep.lat}, #{vehicleBean.lastTrip.routeLastStep.lng}, 14);
-						    	drawTrip();
-	    					</script>
-    					</h:outputText>
 					  </div>
 					</div>
 					
@@ -490,10 +556,6 @@
   </tr>
 </table>
 </div>
-	<script type="text/JavaScript">
-		   initMap(#{vehicleBean.lastTrip.routeLastStep.lat}, #{vehicleBean.lastTrip.routeLastStep.lng}, 14);
-		   drawTrip();
- 	</script>
  	
 <!-- START EMAIL MODAL -->
 	<h:outputText id="driver_email_modalPanel">

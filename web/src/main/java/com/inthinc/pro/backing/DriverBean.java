@@ -67,21 +67,22 @@ public class DriverBean extends BaseBean
     // INIT VIOLATIONS
     public void initViolations(Date start, Date end)
     {
-        if (violationEvents.size() > 0)
-            return;
-
-        List<Integer> types = new ArrayList<Integer>();
-        types.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
-        types.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
-        types.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
-
-        violationEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), start, end, types);
-
-        // Lookup Addresses for events
-        AddressLookup lookup = new AddressLookup();
-        for (Event event : violationEvents)
+        if (violationEvents.isEmpty())
         {
-            event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
+            List<Integer> types = new ArrayList<Integer>();
+            types.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
+            types.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
+            types.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
+            types.add(EventMapper.TIWIPRO_EVENT_IDLE);
+    
+            violationEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), start, end, types);
+    
+            // Lookup Addresses for events
+            AddressLookup lookup = new AddressLookup();
+            for (Event event : violationEvents)
+            {
+                event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
+            }
         }
     }
 
@@ -284,13 +285,16 @@ public class DriverBean extends BaseBean
         {
             if (e.getScore() != null)
             {
-                sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt) }));
+                //Adding special condition for coaching events.
+                if(scoreType == ScoreType.SCORE_COACHING_EVENTS)
+                    sb.append(line.getChartItem(new Object[] { (int) (e.getScore()), monthList.get(cnt) }));
+                else
+                    sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt) }));
             }
             else
             {
                 sb.append(line.getChartItem(new Object[] { null, monthList.get(cnt) }));
             }
-
             cnt++;
         }
 
@@ -438,8 +442,8 @@ public class DriverBean extends BaseBean
         getReportRenderer().exportReportToPDF(buildReport(), getFacesContext());
     }
 
-    public void emailReport()
+    public void emailReport() throws IOException
     {
-        // getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
+        getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
     }
 }
