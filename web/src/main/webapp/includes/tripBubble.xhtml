@@ -1,0 +1,29 @@
+<!-- 
+	To use:
+	
+	<ui:include src="/includes/tripBubble.xhtml">
+            <ui:param name="hiddenDivID" value="tripStartBubble" />
+            <ui:param name="bubbleTitle" value="#{messages.TRIP_START}" />
+            <ui:param name="timeZoneObject" value="#{navigationBean.driver.person.timeZone}" />
+            <ui:param name="eventDateTime" value="#{driverBean.lastTrip.trip.startTime}" />
+            <ui:param name="eventLocation" value="#{driverBean.lastTrip.startAddress}" />
+            <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
+	</ui:include>
+-->
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core">
+
+<div id="#{hiddenDivID}" style="display:none">
+	<h:panelGrid columns="1" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header">
+		<f:facet name="header">
+			<h:outputText value="#{bubbleTitle}" />
+		</f:facet>
+		<h:outputText value="#{eventDateTime}">
+			<f:convertDateTime timeZone="#{timeZoneObject}" pattern="#{datePattern}"/>
+		</h:outputText>
+		<h:outputText value="#{eventLocation}" />
+	</h:panelGrid>
+</div>
+</ui:composition>

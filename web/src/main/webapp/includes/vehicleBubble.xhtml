@@ -1,0 +1,66 @@
+<!-- 
+	To use:
+	
+			<ui:include src="../includes/vehicleBubble.xhtml">
+	            <ui:param name="hiddenDivID" value="#{driverLoc.driver.driverID}_#{driverLoc.vehicle.vehicleID}" />
+	            <ui:param name="driver" value="#{driverLoc.driver}" />
+	        	<ui:param name="vehicle" value="#{driverLoc.vehicle}" />
+	        	<ui:param name="bean" value="#{liveFleetBean}" />
+	        	<ui:param name="driverAction" value="#{liveFleetBean.driverDetailAction}" />
+	        	<ui:param name="targetDriverID" value="#{liveFleetBean.selectedDriverID}" />
+	        	<ui:param name="messagePriPhone" value="#{messages.livefleet_priPhone}" />
+	        	<ui:param name="messageSecPhone" value="#{messages.livefleet_secPhone}" />
+	        	<ui:param name="messageVehicle" value="#{messages.livefleet_vehicle}" />
+	        	<ui:param name="vehicleAction" value="#{liveFleetBean.vehicleDetailAction}" />
+	        	<ui:param name="targetVehicleID" value="#{liveFleetBean.selectedVehicleID}" />
+	        	<ui:param name="messageVehicleType" value="#{messages.livefleet_vehicleType}" />
+	        	<ui:param name="messageLastUpdated" value="#{messages.livefleet_updated}" />
+	        	<ui:param name="vehicleTime" value="#{driverLoc.time}" />
+	        	<ui:param name="messageAddress" value="#{messages.livefleet_address}" />
+	        	<ui:param name="vehicleAddress" value="#{driverLoc.addressStr}" />
+			</ui:include>
+			
+			The backing bean must implement two actions:  driverDetailAction and vehicleDetailAction
+			example:
+			
+			    public String driverDetailAction()
+			    {
+			        navigation.setDriver(driverDAO.findByID(selectedDriverID));
+			        return "go_driver";
+			    }
+			
+			    public String vehicleDetailAction()
+			    {
+			        navigation.setVehicle(vehicleDAO.findByID(selectedVehicleID));
+			        return "go_vehicle";
+			    }
+-->
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core">
+
+	<div id="#{hiddenDivID}" style="display:none">
+		<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header">
+			<f:facet name="header">
+				<h:commandLink value="#{driver.person.fullName}" action="#{bean.driverDetailAction}">
+					<f:setPropertyActionListener value="#{driver.driverID}" target="#{targetDriverID}" />
+				</h:commandLink>
+			</f:facet>
+			<h:outputText value="#{messagePriPhone}:"/>
+			<h:outputText value="#{driver.person.priPhone}" converter="PhoneNumberConverter" />
+			<h:outputText value="#{messageSecPhone}:"/>
+			<h:outputText value="#{driver.person.secPhone}" converter="PhoneNumberConverter" />
+			<h:outputText value="#{messageVehicle}:"/>					
+			<h:commandLink action="#{bean.vehicleDetailAction}" value="#{vehicle.fullName}">
+					<f:setPropertyActionListener value="#{vehicle.vehicleID}" target="#{targetVehicleID}" />
+			</h:commandLink>
+			<h:outputText value="#{messageVehicleType}:"/>
+			<h:outputText value="#{vehicle.vtype}" />
+			<h:outputText value="#{messageLastUpdated}:" />
+			<h:outputText value="#{vehicleTime}" converter="TimeAgoConverter"/>
+			<h:outputText value="#{messageAddress}:"/>
+			<h:outputText value="#{vehicleAddress}" />
+		</h:panelGrid>
+	</div>
+</ui:composition>

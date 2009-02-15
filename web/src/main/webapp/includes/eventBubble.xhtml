@@ -1,0 +1,72 @@
+<!-- 
+	To use:
+	
+		<ui:include src="/includes/eventBubble.xhtml">
+	            <ui:param name="hiddenDivID" value="#{violation.noteID}" />
+	            <ui:param name="eventType" value="#{violation.eventType}" />
+	            <ui:param name="eventDateTime" value="#{violation.time}" />
+	            <ui:param name="eventLocation" value="#{violation.addressStr}" />
+	            <ui:param name="timeZoneObject" value="#{navigationBean.driver.person.timeZone}" />  
+	            <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
+	            <ui:param name="eventSpeedLimit" value="#{violation.speedLimit}" />
+	            <ui:param name="eventAvgSpeed" value="#{violation.avgSpeed}" />
+	            <ui:param name="eventTopSpeed" value="#{violation.topSpeed}" />
+	            <ui:param name="eventDistance" value="#{violation.distance}" />
+	            <ui:param name="eventSpeed" value="#{violation.speed}" />
+	            <ui:param name="eventSeverity" value="#{violation.severity}" />
+		</ui:include>
+-->
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core">
+
+<div id="#{hiddenDivID}" style="display:none">
+	<h:panelGrid columns="1" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header">
+		<f:facet name="header">
+			<h:outputText value="#{eventType}" />
+		</f:facet>
+		<h:outputText value="#{eventDateTime}">
+			<f:convertDateTime timeZone="#{timeZoneObject}" pattern="#{datePattern}"/>
+		</h:outputText>
+		<h:outputText value="#{eventLocation}" />
+		
+		 <!-- SPEEDING EVENT -->
+		<h:outputText rendered="#{eventType.code eq '3'}" >
+			<ul>
+				<li>Speed Limit: <h:outputText value="#{eventSpeedLimit}" converter="SpeedConverter" /></li>
+				<li>Average Speed: <h:outputText value="#{eventAvgSpeed}" converter="SpeedConverter" /></li>
+				<li>Top Speed: <h:outputText value="#{eventTopSpeed}" converter="SpeedConverter" /></li>
+				<li>Distance: <h:outputText value="#{eventDistance}" converter="DistanceConverter" /></li>
+			</ul>
+		</h:outputText>
+		
+		<!-- AGGRESSIVE DRIVING EVENT -->
+		<h:outputText rendered="#{eventType.code eq '4' || eventType.code eq '5' || eventType.code eq '6' || eventType.code eq '8'}" >
+			<ul>
+				<li>Speed: <h:outputText value="#{eventSpeed}" converter="SpeedConverter" /></li>
+				<li>Severity:<div class="#{(eventSeverity gt 4) ? 'sev_bar_ex' : ''}
+											#{(eventSeverity lt 5) and (eventSeverity gt 2) ? 'sev_bar_med' : ''}
+											#{(eventSeverity lt 3) ? 'sev_bar_low' : ''}"></div></li>
+			</ul>
+		</h:outputText>
+		
+		<!-- SEAT BELT EVENT -->
+		<h:outputText rendered="#{eventType.code eq '2'}" >
+			<ul>
+				<li>Average Speed: <h:outputText value="#{eventAvgSpeed}" converter="SpeedConverter" /></li>
+				<li>Top Speed: <h:outputText value="#{eventTopSpeed}" converter="SpeedConverter" /></li>
+				<li>Distance: <h:outputText value="#{eventDistance}" converter="DistanceConverter" /></li>
+			</ul>
+		</h:outputText>
+		
+			<!-- IDLING EVENT -->
+		<h:outputText rendered="#{eventType.code eq '13'}" >
+			<ul>
+				<li>Low idle duration: <h:outputText value="#{eventHighIdle}"  /></li>
+				<li>High idle duration: <h:outputText value="#{eventLowIdle}"  /></li>
+			</ul>
+		</h:outputText>
+	</h:panelGrid>
+</div>
+</ui:composition>
