@@ -214,37 +214,29 @@
 				<ui:repeat value="#{liveFleetBean.drivers}" var="driver">
 					driverLoc = new GLatLng(#{driver.loc.lat}, #{driver.loc.lng});
 			
-				marker = createMarker(driverLoc, #{driver.driver.driverID}, "#{liveFleetBean.mapIconMap.icons[driver.driver.groupID]}");
+				marker = createMarker(driverLoc, '#{driver.driver.driverID}_#{driver.vehicle.vehicleID}', "#{liveFleetBean.mapIconMap.icons[driver.driver.groupID]}");
 				map.addOverlay(marker);
 				bounds.extend(marker.getPoint());
 				</ui:repeat>
 			}
 		</script>
-		<ui:repeat value="#{liveFleetBean.drivers}" var="driver">		
-				<div id="#{driver.driver.driverID}" style="display:none">
-				<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header">
-					<f:facet name="header">
-						<h:commandLink value="#{driver.driver.person.fullName}" action="#{liveFleetBean.driverDetailAction}">
-							<f:setPropertyActionListener value="#{driver.driver.driverID}" target="#{liveFleetBean.selectedDriverID}" />
-						</h:commandLink>
-					</f:facet>
-					<h:outputText value="#{messages.livefleet_priPhone}:"/>
-					<h:outputText value="#{driver.driver.person.priPhone}" converter="PhoneNumberConverter" />
-					<h:outputText value="#{messages.livefleet_secPhone}:"/>
-					<h:outputText value="#{driver.driver.person.secPhone}" converter="PhoneNumberConverter" />
-					
-					<h:outputText value="#{messages.livefleet_vehicle}:"/>					
-					<h:commandLink action="#{liveFleetBean.vehicleDetailAction}" value="#{driver.vehicle.name}">
- 						<f:setPropertyActionListener value="#{driver.vehicle.vehicleID}" target="#{liveFleetBean.selectedVehicleID}" />
-					</h:commandLink>
-					<h:outputText value="#{messages.livefleet_vehicleType}:"/>
-					<h:outputText value="#{driver.vehicle.vtype}" />
-					<h:outputText value="#{messages.livefleet_updated}:" />
-					<h:outputText value="#{driver.time}" converter="TimeAgoConverter"/>
-					<h:outputText value="#{messages.livefleet_address}:"/>
-					<h:outputText value="#{driver.addressStr}" />
-				</h:panelGrid>
-			</div>
+		<ui:repeat value="#{liveFleetBean.drivers}" var="driverLoc">
+			<ui:include src="../includes/vehicleBubble.xhtml">
+	            <ui:param name="hiddenDivID" value="#{driverLoc.driver.driverID}_#{driverLoc.vehicle.vehicleID}" />
+	            <ui:param name="driver" value="#{driverLoc.driver}" />
+	        	<ui:param name="vehicle" value="#{driverLoc.vehicle}" />
+	        	<ui:param name="bean" value="#{liveFleetBean}" />
+	        	<ui:param name="targetDriverID" value="#{liveFleetBean.selectedDriverID}" />
+	        	<ui:param name="messagePriPhone" value="#{messages.livefleet_priPhone}" />
+	        	<ui:param name="messageSecPhone" value="#{messages.livefleet_secPhone}" />
+	        	<ui:param name="messageVehicle" value="#{messages.livefleet_vehicle}" />
+	        	<ui:param name="targetVehicleID" value="#{liveFleetBean.selectedVehicleID}" />
+	        	<ui:param name="messageVehicleType" value="#{messages.livefleet_vehicleType}" />
+	        	<ui:param name="messageLastUpdated" value="#{messages.livefleet_updated}" />
+	        	<ui:param name="vehicleTime" value="#{driverLoc.time}" />
+	        	<ui:param name="messageAddress" value="#{messages.livefleet_address}" />
+	        	<ui:param name="vehicleAddress" value="#{driverLoc.addressStr}" />
+			</ui:include>
 		</ui:repeat>
 	</rich:panel>
 	</h:form>
@@ -289,7 +281,7 @@
 									<f:facet name="header">
 									
 									</f:facet>
-									<a href="#" onclick="showDriver(#{item.loc.lat}, #{item.loc.lng}, #{item.driver.driverID});">
+									<a href="#" onclick="showDriver(#{item.loc.lat}, #{item.loc.lng}, '#{item.driver.driverID}_#{item.vehicle.vehicleID}');">
 										<img src="#{liveFleetBean.legendIconMap.icons[item.driver.groupID]}" style="cursor: pointer;" border="0" />
 									</a>
 								</rich:column>

@@ -48,27 +48,22 @@
 	<h:form>
 	<rich:panel id="mapPopups">
 		<ui:repeat value="#{driverLocationBean.driverLastLocationBeans}" var="driverLocation">		
-			<div id="#{driverLocation.driver.driverID}" style="display:none">
-				<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header">
-					<f:facet name="header">
-						<h:commandLink value="#{driverLocation.driverName}" action="#{driverLocationBean.driverDetailAction}">
-							<f:setPropertyActionListener value="#{driverLocation.driver.driverID}" target="#{driverLocationBean.selectedDriverID}" />
-						</h:commandLink>
-					</f:facet>
-					<h:outputText value="#{messages.livefleet_priPhone}:"/>
-					<h:outputText value="#{driverLocation.driver.person.priPhone}" converter="PhoneNumberConverter" />
-					<h:outputText value="#{messages.livefleet_secPhone}:"/>
-					<h:outputText value="#{driverLocation.driver.person.secPhone}" converter="PhoneNumberConverter" />
-					<h:outputText value="#{messages.livefleet_vehicle}:"/>					
-					<h:commandLink action="#{driverLocationBean.vehicleDetailAction}" value="#{driverLocation.vehicle.fullName}">
- 						<f:setPropertyActionListener value="#{driverLocation.vehicle.vehicleID}" target="#{driverLocationBean.selectedVehicleID}" />
-					</h:commandLink>
-					<h:outputText value="#{messages.livefleet_updated}:" />
-					<h:outputText value="#{driverLocation.time}" converter="TimeAgoConverter"/>
-					<h:outputText value="#{messages.livefleet_address}:"/>
-					<h:outputText value="#{driverLocation.address}" />
-				</h:panelGrid>
-			</div>
+			<ui:include src="../includes/vehicleBubble.xhtml">
+	            <ui:param name="hiddenDivID" value="#{driverLocation.driver.driverID}" />
+	            <ui:param name="driver" value="#{driverLocation.driver}" />
+	        	<ui:param name="vehicle" value="#{driverLocation.vehicle}" />
+	        	<ui:param name="bean" value="#{driverLocationBean}" />
+	        	<ui:param name="targetDriverID" value="#{driverLocationBean.selectedDriverID}" />
+	        	<ui:param name="messagePriPhone" value="#{messages.livefleet_priPhone}" />
+	        	<ui:param name="messageSecPhone" value="#{messages.livefleet_secPhone}" />
+	        	<ui:param name="messageVehicle" value="#{messages.livefleet_vehicle}" />
+	        	<ui:param name="targetVehicleID" value="#{driverLocationBean.selectedVehicleID}" />
+	        	<ui:param name="messageVehicleType" value="#{messages.livefleet_vehicleType}" />
+	        	<ui:param name="messageLastUpdated" value="#{messages.livefleet_updated}" />
+	        	<ui:param name="vehicleTime" value="#{driverLocation.time}" />
+	        	<ui:param name="messageAddress" value="#{messages.livefleet_address}" />
+	        	<ui:param name="vehicleAddress" value="#{driverLocation.address}" />
+			</ui:include>
 		</ui:repeat>
 	</rich:panel>
 	</h:form>

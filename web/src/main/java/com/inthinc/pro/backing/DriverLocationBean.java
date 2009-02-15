@@ -286,7 +286,8 @@ public class DriverLocationBean extends BaseBean {
     }
     public String driverDetailAction()
     {
-        navigation.setDriver(driverLastLocations.get(new Integer(selectedDriverID)).getDriver());
+        //navigation.setDriver(driverLastLocations.get(new Integer(selectedDriverID)).getDriver());
+        navigation.setDriver(driverDAO.findByID(selectedDriverID));
         return "go_driver";
     }
     public String vehicleDetailAction()
