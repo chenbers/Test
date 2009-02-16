@@ -1,11 +1,17 @@
 package com.inthinc.pro.reports.jasper.customizer;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Paint;
+import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.PieSectionLabelGenerator;
 import org.jfree.chart.plot.PiePlot;
+import org.jfree.data.general.PieDataset;
+import org.jfree.ui.RectangleInsets;
 import org.jfree.util.Rotation;
 
 import net.sf.jasperreports.engine.JRAbstractChartCustomizer;
@@ -41,8 +47,11 @@ public class PieChartCustomizer extends JRAbstractChartCustomizer
         plot.setDirection(Rotation.ANTICLOCKWISE);
         plot.setShadowPaint(new Color(0xE7E6E6,false));
         plot.setLabelPaint(Color.BLACK);
-        plot.setLabelShadowPaint(plot.getShadowPaint());
-        plot.setLabelBackgroundPaint(plot.getBackgroundPaint());
+        plot.setLabelOutlinePaint(null);
+        plot.setLabelShadowPaint(null);
+        plot.setLabelPadding(new RectangleInsets(0,0,0,0));
+        plot.setLabelBackgroundPaint(null);
+        plot.setLabelFont(new Font(plot.getLabelFont().getFontName(),plot.getLabelFont().getStyle(),8));
         int colorIndex = 0;
         
         //We have to do this for those charts that have 0's and have the legends turned off.

@@ -1,17 +1,14 @@
 package com.inthinc.pro.backing;
 
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -214,6 +211,11 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         reportSchedule.setDayOfWeek(booleanList);
 
         reportSchedule.setStatus(Status.ACTIVE);
+        if(getUser() != null && getUser().getPerson() != null && getUser().getPerson().getPriEmail() != null)
+        {
+            reportSchedule.getEmailTo().add(getUser().getPerson().getPriEmail());
+        }
+       
 
         return createReportScheduleView(reportSchedule);
     }
