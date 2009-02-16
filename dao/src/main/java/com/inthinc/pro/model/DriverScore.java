@@ -67,7 +67,9 @@ public class DriverScore implements Comparable<DriverScore>
         // if neither score is null, compare score
         if (this.score != null && o.getScore() != null)
         {            
-            int scoreResult = (this.score < o.getScore() ? 1 : (this.score == o.getScore() ? 0 : -1));
+            int thisScore = this.score.intValue();
+            int thatScore = o.getScore().intValue();
+            int scoreResult = (thisScore < thatScore ? 1 : (thisScore == thatScore ? 0 : -1));
             // if scores are NOT the same, return outcome
             if (scoreResult != 0)
                 return scoreResult;

@@ -26,13 +26,13 @@
 			width="100%" binding="#{teamTopDriversTable}">
 
 			<!-- Data -->
-					<rich:column sortBy="#{item.position}" width="5%" height="27" >
+					<rich:column width="5%" height="27" >
 						<f:facet name="header">
 							<h:outputText value="#" />
 						</f:facet>
 						<h:outputText value="#{item.position}"/>
 					</rich:column>
-					<rich:column width="40%" sortBy="#{item.driverName}" >
+					<rich:column width="40%">
 						<f:facet name="header">
 							<h:outputText value="#{messages.teamTop_driver}" />
 						</f:facet>
@@ -40,7 +40,7 @@
 							<f:setPropertyActionListener value="#{item.driverScore.driver}" target="#{navigationBean.driver}" />
 						</a4j:htmlCommandLink>
 					</rich:column>
-					<rich:column width="10%" sortBy="#{item.driverScore.score}" >
+					<rich:column width="10%">
 						<f:facet name="header">
 							<h:outputText value="#{messages.teamTop_score}" />
 						</f:facet>
@@ -82,14 +82,14 @@
 			width="100%" binding="#{teamBottomDriversTable}">
 
 			<!-- Data -->
- 					<rich:column sortBy="#{item.position}" width="5%">
+ 					<rich:column width="5%">
 						<f:facet name="header">
 							<h:outputText value="#" />
 						</f:facet>
 						<h:outputText value="#{item.position}"/>
 
 					</rich:column>
-					<rich:column width="40%" sortBy="#{item.driverName}">
+					<rich:column width="40%">
 						<f:facet name="header">
 							<h:outputText value="Driver" />
 						</f:facet>
@@ -98,7 +98,7 @@
 						</a4j:htmlCommandLink>
 
 					</rich:column>
-					<rich:column width="10%" sortBy="#{item.driverScore.score}">
+					<rich:column width="10%">
 						<f:facet name="header">
 							<h:outputText value="Score" />
 						</f:facet>

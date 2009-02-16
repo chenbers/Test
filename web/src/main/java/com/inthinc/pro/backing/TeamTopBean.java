@@ -23,19 +23,15 @@ public class TeamTopBean extends BaseBean
     private List<DriverScoreItem> topDrivers;
     private List<DriverScoreItem> bottomDrivers;
 
-
     public void init()
     {
         List<DriverScore> scoreList = scoreDAO.getSortedDriverScoreList(navigation.getGroupID());
         topDrivers = convertToDriverScoreItemList(scoreList.subList(0, scoreList.size() > 5 ? 5 : scoreList.size()));
-        
-        
+
         Collections.reverse(scoreList);
         bottomDrivers = convertToDriverScoreItemList(scoreList.subList(0, scoreList.size() > 5 ? 5 : scoreList.size()));
-
-        
-        
     }
+
     public List<DriverScoreItem> getTopDrivers()
     {
         return topDrivers;
@@ -76,7 +72,6 @@ public class TeamTopBean extends BaseBean
         return returnList;
     }
 
-
     public NavigationBean getNavigation()
     {
         return navigation;
@@ -96,8 +91,10 @@ public class TeamTopBean extends BaseBean
     {
         this.scoreDAO = scoreDAO;
     }
-    public String getTeamName(){
-    	
-    	return navigation.getGroupHierarchy().getGroup(navigation.getGroupID()).getName();
+
+    public String getTeamName()
+    {
+
+        return navigation.getGroupHierarchy().getGroup(navigation.getGroupID()).getName();
     }
 }

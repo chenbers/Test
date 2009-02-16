@@ -420,11 +420,11 @@ public class Person extends BaseEntity implements Comparable<Person>
     public int compareTo(Person o)
     {
         //for now, use the name fields to determine the natural order of person objects
-        int result = this.last.compareTo(o.getLast());        
+        int result = (this.last.toUpperCase()).compareTo(o.getLast().toUpperCase());        
         if(result == 0)
-            result = this.first.compareTo(o.getFirst());        
+            result = (this.first.toUpperCase()).compareTo(o.getFirst().toUpperCase());        
         if(result == 0)
-            result = this.middle.compareTo(o.getMiddle());
+            result = (this.middle.toUpperCase()).compareTo(o.getMiddle().toUpperCase());
         
         return result;
     }

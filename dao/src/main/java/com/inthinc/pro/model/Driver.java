@@ -184,8 +184,8 @@ public class Driver extends BaseEntity implements Comparable<Driver>
     @Override
     public int compareTo(Driver o)
     {
-        // for now, the Person instance's compareTo seems to be the best way to determine the natural order of Drivers
-        // (note: Driver should never be null. If it is, there is a big problem)
+        // for now, a Person instance's compareTo seems to be the best way to determine the natural order of Drivers
+        // (note: Person should never be null. If it is, there is a big problem)
         return this.person.compareTo(o.getPerson());
     }
 
