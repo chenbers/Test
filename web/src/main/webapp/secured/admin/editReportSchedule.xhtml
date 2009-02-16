@@ -30,7 +30,8 @@
 				</div>
 
 				<div class="panel_w"><!-- MAIN CONTENT -->
-				<div class="panel_content"><rich:messages globalOnly="true"
+				<div class="panel_content">
+				<rich:messages globalOnly="true"
 					errorClass="error" fatalClass="error" warnClass="warning"
 					infoClass="info" styleClass="msg" />
 					
@@ -233,6 +234,13 @@
 				</table>
 				
 				 <div class="required-key"><h:outputText rendered="#{not zoneAlertsBean.batchEdit}" value="#{messages.requiredKey}" /></div>
+				 
+				 <ul id="grid_nav" style="margin: 0;">
+                   	<li class="r">
+                      <h:commandButton action="#{reportScheduleBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
+                      <h:outputText value=" " /><h:commandButton action="#{reportScheduleBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
+                    </li>
+                 </ul>
 				</div>
 
 				</div>
@@ -246,6 +254,20 @@
 			</tr>
 		</table>
 		  <script type="text/javascript">
+		         var formElements = ["text", "checkbox", "radio", "select-one", "select-multiple", "textarea"];
+				 function bodyLoad()
+				  {
+		
+				    var elements = document.getElementById("edit-form").elements;
+				    for (var i = 0; i &lt; elements.length; i++)
+				      for (var j = 0; j &lt; formElements.length; j++)
+				        if (elements[i].getAttribute("type") == formElements[j])
+				        {
+				          elements[i].focus();
+				          return;
+				        }
+				  }
+				  
 				function checkMultiple(item)
 			      {
 			        var id;
