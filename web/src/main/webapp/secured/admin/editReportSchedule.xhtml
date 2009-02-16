@@ -25,7 +25,7 @@
 				<div class="">
 				<div class="panel_nw">
 				<div class="panel_title">
-					<span class="email">#{messages.adminHeader_addReportSchedule}</span>
+					<span class="email"><h:outputText value="#{reportScheduleBea.add ? messages.adminHeader_addReportSchedule : (reportScheduleBean.batchEdit ? messages.adminHeader_editReportSchedules : adminHeader_editReportSchedule)}"/></span>
 					<span class="panel_links"></span></div>
 				</div>
 
@@ -57,13 +57,14 @@
 									</td>
 									<td>
 										<rich:message for="scheduleName" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-										<h:inputText id="scheduleName" value="#{reportScheduleBean.item.name}" required="true" requiredMessage="#{messages.required}"></h:inputText>	
+										<h:inputText id="scheduleName" value="#{reportScheduleBean.item.name}" styleClass="text" size="30" required="true" requiredMessage="#{messages.required}"></h:inputText>	
 									</td>
 								</tr>
 							</ui:fragment>
 							<tr>
-								<td width="100" valign="top"><h:outputText
-									value="#{messages.reportSchedule_status}" />
+								<td width="100" valign="top">
+									<h:selectBooleanCheckbox rendered="#{reportScheduleBean.batchEdit}" id="update_status" value="#{reportScheduleBean.updateField['status']}" />
+									<h:outputText value="#{messages.reportSchedule_status}" />
 								</td>
 								<td>
 									<h:selectOneMenu id="status" value="#{reportScheduleBean.item.status}" converter="SimpleBeanConverter">
@@ -73,27 +74,30 @@
 								
 							</tr>
 							<tr>
-								<td width="100" valign="top"><h:outputText
-									value="#{messages.reportSchedule_startDate}" />
-									<h:outputText styleClass="required" value=" *" />
+								<td width="100" valign="top">
+									<h:selectBooleanCheckbox rendered="#{reportScheduleBean.batchEdit}" id="update_startDate" value="#{reportScheduleBean.updateField['startDate']}" />
+									<h:outputText value="#{messages.reportSchedule_startDate}" />
+									<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
 								</td>
 								<td>
 									<rich:message for="startDate" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-									<rich:calendar id="startDate" value="#{reportScheduleBean.item.startDate}" required="true" requiredMessage="#{messages.required}" todayControlMode="hidden" enableManualInput="true" converterMessage="#{messages.editPerson_dateFormat}" timeZone="#{reportScheduleBean.utcTimeZone}"/>	
+									<rich:calendar id="startDate" value="#{reportScheduleBean.item.startDate}" required="#{(not reportScheduleBean.batchEdit) or reportScheduleBean.updateField['startDate']}" requiredMessage="#{messages.required}" todayControlMode="hidden" enableManualInput="true" converterMessage="#{messages.editPerson_dateFormat}" timeZone="#{reportScheduleBean.utcTimeZone}"/>	
 								</td>
 								
 							</tr>
 							<tr>
-								<td width="100" valign="top"><h:outputText
-									value="#{messages.reportSchedule_endDate}" />
+								<td width="100" valign="top">
+									<h:selectBooleanCheckbox rendered="#{reportScheduleBean.batchEdit}" id="update_endDate" value="#{reportScheduleBean.updateField['endDate']}" />
+									<h:outputText value="#{messages.reportSchedule_endDate}" />
 								</td>
 								<td>
 									<rich:calendar value="#{reportScheduleBean.item.endDate}" todayControlMode="hidden" enableManualInput="true" converterMessage="#{messages.editPerson_dateFormat}" timeZone="#{reportScheduleBean.utcTimeZone}"/>	
 								</td>
 							</tr>
 							<tr>
-								<td width="100" valign="top"><h:outputText
-									value="#{messages.reportSchedule_timeOfDay}" />
+								<td width="100" valign="top">
+									<h:selectBooleanCheckbox rendered="#{reportScheduleBean.batchEdit}" id="update_timeOfDay" value="#{reportScheduleBean.updateField['timeOfDay']}" />
+									<h:outputText value="#{messages.reportSchedule_timeOfDay}" />
 									
 								</td>
 								<td>
@@ -107,12 +111,13 @@
 							</tr>
 							<tr>
 								<td width="100" valign="top">
+									<h:selectBooleanCheckbox rendered="#{reportScheduleBean.batchEdit}" id="update_occurrence" value="#{reportScheduleBean.updateField['occurrence']}" />
 									<h:outputText value="#{messages.reportSchedule_occurrence}"/>
 									<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
 								</td>
 								<td>
 									<rich:message for="occurrence" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-									<h:selectOneMenu id="occurrence" value="#{reportScheduleBean.item.occurrence}" converter="SimpleBeanConverter" required="true" requiredMessage="#{messages.required}">
+									<h:selectOneMenu id="occurrence" value="#{reportScheduleBean.item.occurrence}" converter="SimpleBeanConverter" required="#{(not reportScheduleBean.batchEdit) or reportScheduleBean.updateField['occurrence']}" requiredMessage="#{messages.required}">
 										<a4j:support event="onchange" reRender="dayOfWeekPanel" ajaxSingle="true"/>
 										<f:selectItems value="#{reportScheduleBean.occurrences}"/> 
 									</h:selectOneMenu>
@@ -124,9 +129,8 @@
 								align="center">
 								<tr>
 									<td width="100" valign="top">
-										
-										<h:outputText 
-											value="#{messages.reportSchedule_daysOfWeek}" rendered="#{reportScheduleBean.item.occurrence eq 'DAILY_CUSTOM'}"/>
+										<h:selectBooleanCheckbox rendered="#{reportScheduleBean.batchEdit and reportScheduleBean.item.occurrence eq 'DAILY_CUSTOM'}" id="update_dayOfWeek" value="#{reportScheduleBean.updateField['dayOfWeek']}" />
+										<h:outputText value="#{messages.reportSchedule_daysOfWeek}" rendered="#{reportScheduleBean.item.occurrence eq 'DAILY_CUSTOM'}"/>
 									</td>
 									<td>
 										<h:outputText rendered="#{reportScheduleBean.item.occurrence eq 'DAILY_CUSTOM'}">

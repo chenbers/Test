@@ -231,16 +231,17 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
 
     }
 
-    @Override
-    public String save()
-    {
-        getUpdateField().put("startDate", Boolean.TRUE);
-        getUpdateField().put("endDate", Boolean.TRUE);
-        getUpdateField().put("dayOfWeek", Boolean.TRUE);
-        getUpdateField().put("timeOfDay", Boolean.TRUE);
-        getUpdateField().put("status", Boolean.TRUE);
-        return super.save();
-    }
+//    @Override
+//    public String save()
+//    {
+////        getUpdateField().put("startDate", Boolean.TRUE);
+////        getUpdateField().put("endDate", Boolean.TRUE);
+////        getUpdateField().put("dayOfWeek", Boolean.TRUE);
+////        getUpdateField().put("timeOfDay", Boolean.TRUE);
+////        getUpdateField().put("status", Boolean.TRUE);
+////        getUpdateField().put("occurrence", Boolean.TRUE);
+//        return super.save();
+//    }
 
     @Override
     protected void doSave(List<ReportScheduleView> saveItems, boolean create)
