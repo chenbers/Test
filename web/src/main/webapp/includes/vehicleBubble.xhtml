@@ -52,7 +52,7 @@
 			<h:outputText value="#{messageSecPhone}:"/>
 			<h:outputText value="#{driver.person.secPhone}" converter="PhoneNumberConverter" />
 			<h:outputText value="#{messageVehicle}:"/>					
-			<h:commandLink action="#{bean.vehicleDetailAction}" value="#{vehicle.fullName}">
+			<h:commandLink action="#{bean.vehicleDetailAction}" value="#{vehicle.name}">
 					<f:setPropertyActionListener value="#{vehicle.vehicleID}" target="#{targetVehicleID}" />
 			</h:commandLink>
 			<h:outputText value="#{messageVehicleType}:"/>
