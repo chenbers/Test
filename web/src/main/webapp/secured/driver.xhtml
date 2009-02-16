@@ -458,11 +458,11 @@
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="map">Last Trip:&#160;
-						<c:if test="#{driverBean.lastTrip ne null}">
+						<h:outputText rendered="#{driverBean.hasLastTrip eq true}">
 							<h:outputText value="#{driverBean.lastTrip.trip.endTime}">
 								<f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{navigationBean.driver.person.timeZone}" />
 							</h:outputText>
-						</c:if>
+						</h:outputText>
 						</span>
 						<span class="panel_links"><h:form><h:commandLink value="view all trips" action="go_driverTrips">
 						</h:commandLink></h:form></span>
@@ -473,7 +473,7 @@
 					  
 					  	<h:panelGroup styleClass="map-border" layout="block">
 							<h:outputText rendered="#{driverBean.hasLastTrip eq false}">
-	  							<h3>#{messages.no_trips_found}</h3>
+	  							<h3>#{messages.no_last_trip_found}</h3>
 	  						</h:outputText>
 							<div id="map-canvas" style="width:458px;height:300px;border:0"></div>
 					  	</h:panelGroup>

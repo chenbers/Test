@@ -409,6 +409,9 @@ public class DriverBean extends BaseBean
 
     public Boolean getHasLastTrip()
     {
+        if(this.lastTrip == null)
+            this.getLastTrip();
+        
         return hasLastTrip;
     }
 

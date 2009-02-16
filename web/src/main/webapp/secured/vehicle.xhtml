@@ -184,7 +184,7 @@
 		</li>
 		<li class="l" style="margin-left: -15px;">
 			<ul id="breadcrumb">
-				<li class="last"><h:outputText value="#{navigationBean.vehicle.fullName}" /></li>
+				<li class="last"><h:outputText value="#{navigationBean.vehicle.fullName}" /><h:outputText value=" (ID: #{navigationBean.vehicle.name})" /></li>
 			</ul>
 		</li>
 	</ul>
@@ -458,11 +458,11 @@
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="map">Last Trip:&#160;
-						<c:if test="#{vehicleBean.lastTrip ne null}">
+						<h:outputText rendered="#{vehicleBean.lastTrip ne null}">
 							<h:outputText value="#{vehicleBean.lastTrip.trip.endTime}">
 								<f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{vehicleBean.lastTrip.timeZone}" />
 							</h:outputText>
-						</c:if>
+						</h:outputText>
 						</span>
 						<span class="panel_links"><h:form><h:commandLink value="view all trips" action="go_vehicleTrips">
 						</h:commandLink></h:form></span>
@@ -473,9 +473,9 @@
 					  
 					  	<h:panelGroup styleClass="map-border" layout="block">
 							<h:outputText rendered="#{vehicleBean.hasLastTrip eq false}">
-	  							<h3>#{messages.no_trips_found}</h3>
+	  							<h3>#{messages.no_last_trip_found}</h3>
 	  						</h:outputText>
-							<div id="map-canvas" style="width:458px;height:300px;border:0"></div>
+								<div id="map-canvas" style="width:458px;height:300px;border:0"></div>
 					  	</h:panelGroup>
 					  </div>
 					</div>

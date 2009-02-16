@@ -40,7 +40,7 @@ public class DriverTripsBean extends BaseBean
     private boolean             showWarnings      = true;
 
     private List<TripDisplay>   trips             = new ArrayList<TripDisplay>();
-    private List<TripDisplay>   selectedTrips;
+    private List<TripDisplay>   selectedTrips     = new ArrayList<TripDisplay>();
     private TripDisplay         selectedTrip;
     private List<Event>         violationEvents   = new ArrayList<Event>();
     private List<Event>         idleEvents        = new ArrayList<Event>();
@@ -53,7 +53,6 @@ public class DriverTripsBean extends BaseBean
             List<Trip> tempTrips = new ArrayList<Trip>();
             tempTrips = driverDAO.getTrips(navigation.getDriver().getDriverID(), getStartDate(), getEndDate());
       
-            selectedTrips = new ArrayList<TripDisplay>();
             for (Trip trip : tempTrips)
             {
                 // Add/Insert trip to index 0. to reverse list.
