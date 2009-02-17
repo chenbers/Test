@@ -9,7 +9,7 @@ public enum EventType implements BaseEnum
 	TAMPERING(1, "Tampering", "TAMPERING"),
 	SEATBELT(2, "Seat Belt", "SEATBELT"), 
 	SPEEDING(3, "Speeding", "SPEEDING"), 
-	HARD_ACCEL(4, "Rapid Acceleration", "HARD_ACCEL"), 
+	HARD_ACCEL(4, "Hard Acceleration", "HARD_ACCEL"), 
 	HARD_BRAKE(5, "Hard Brake", "HARD_BRAKE"),
     HARD_TURN(6, "Unsafe Turn", "HARD_TURN"),
 //	HARD_LEFT_TURN(6, "Unsafe Left Turn", "HARD_LEFT_TURN"),
