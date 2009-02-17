@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
@@ -152,6 +153,7 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
     public void exportReportToPdf()
     {
         ReportCriteria reportCriteria = getReportCriteriaService().getVehicleReportCriteria(getUser().getGroupID(), Duration.TWELVE);
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(vehicleData);
         getReportRenderer().exportSingleReportToPDF(reportCriteria, getFacesContext());
     }
@@ -159,6 +161,7 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
     public void emailReport()
     {
         ReportCriteria reportCriteria = getReportCriteriaService().getVehicleReportCriteria(getUser().getGroupID(), Duration.TWELVE);
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(vehicleData);
         getReportRenderer().exportReportToEmail(reportCriteria,getEmailAddress());
     }
@@ -166,6 +169,7 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
     public void exportReportToExcel()
     {
         ReportCriteria reportCriteria = getReportCriteriaService().getVehicleReportCriteria(getUser().getGroupID(), Duration.TWELVE);
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(vehicleData);
         getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
     }

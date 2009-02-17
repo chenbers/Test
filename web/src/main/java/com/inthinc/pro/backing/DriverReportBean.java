@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
@@ -173,6 +174,7 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
     {
         ReportCriteria reportCriteria = getReportCriteriaService().getDriverReportCriteria(getUser().getGroupID(), Duration.TWELVE);
         reportCriteria.setMainDataset(driverData);
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         getReportRenderer().exportSingleReportToPDF(reportCriteria, getFacesContext());
     }
     
@@ -180,6 +182,7 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
     {
         ReportCriteria reportCriteria = getReportCriteriaService().getDriverReportCriteria(getUser().getGroupID(), Duration.TWELVE);
         reportCriteria.setMainDataset(driverData);
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         getReportRenderer().exportReportToEmail(reportCriteria,getEmailAddress());
     }
     
@@ -187,6 +190,7 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
     {
         ReportCriteria reportCriteria = getReportCriteriaService().getDriverReportCriteria(getUser().getGroupID(), Duration.TWELVE);
         reportCriteria.setMainDataset(driverData);
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
     }
 }

@@ -350,6 +350,7 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
     public void exportReportToPdf()
     {
         ReportCriteria reportCriteria = getReportCriteriaService().getIdlingReportCriteria(getGroupHierarchy().getTopGroup().getGroupID(), intStartDate, intEndDate);
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(idlingData);
         getReportRenderer().exportSingleReportToPDF(reportCriteria, getFacesContext());
     }
@@ -357,6 +358,7 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
     public void emailReport()
     {
         ReportCriteria reportCriteria = getReportCriteriaService().getIdlingReportCriteria(getGroupHierarchy().getTopGroup().getGroupID(), intStartDate, intEndDate);
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(idlingData);
         getReportRenderer().exportReportToEmail(reportCriteria,getEmailAddress());
     }
@@ -364,6 +366,7 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
     public void exportReportToExcel()
     {
         ReportCriteria reportCriteria = getReportCriteriaService().getIdlingReportCriteria(getGroupHierarchy().getTopGroup().getGroupID(), intStartDate, intEndDate);
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(idlingData);
         getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
     }

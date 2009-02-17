@@ -37,6 +37,8 @@
 	<parameter name="ENTITY_NAME" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="SUB_DATASET_1" isForPrompting="false" class="java.util.List"/>
 	<parameter name="DURATION" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="REPORT_LOGO" isForPrompting="false" class="java.io.InputStream"/>
+	<parameter name="REPORT_DATE_AS_STRING" isForPrompting="false" class="java.lang.String"/>
 
 	<field name="entityName" class="java.lang.String"/>
 	<field name="lightValue" class="java.lang.Integer"/>
@@ -49,44 +51,6 @@
 		</background>
 		<title>
 			<band height="422"  isSplitAllowed="true" >
-				<rectangle radius="2" >
-					<reportElement
-						mode="Opaque"
-						x="0"
-						y="36"
-						width="535"
-						height="36"
-						forecolor="#999999"
-						backcolor="#E7E6E6"
-						key="rectangle-1"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="0"
-						y="1"
-						width="376"
-						height="14"
-						key="textField-1"/>
-					<box></box>
-					<textElement textAlignment="Left" verticalAlignment="Top">
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ENTITY_NAME}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement
-						x="412"
-						y="1"
-						width="122"
-						height="16"
-						key="staticText-1"/>
-					<box></box>
-					<textElement textAlignment="Right" verticalAlignment="Top">
-						<font/>
-					</textElement>
-				<text><![CDATA[tiwiPRO]]></text>
-				</staticText>
 				<staticText>
 					<reportElement
 						x="128"
@@ -100,22 +64,8 @@
 					</textElement>
 				<text><![CDATA[Static Text]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="5"
-						y="44"
-						width="345"
-						height="18"
-						forecolor="#666666"
-						key="textField-2"/>
-					<box></box>
-					<textElement>
-						<font size="14"/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Miles Per Gallon"]]></textFieldExpression>
-				</textField>
 				<barChart>
-					<chart  hyperlinkTarget="Self" >
+					<chart  hyperlinkTarget="Self"  customizerClass="com.inthinc.pro.reports.jasper.customizer.MpgCustomizer" >
 					<reportElement
 						x="0"
 						y="80"
@@ -159,17 +109,89 @@
 				</barChart>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="0"
-						y="17"
-						width="376"
+						x="382"
+						y="0"
+						width="153"
 						height="14"
 						key="textField-7"/>
 					<box></box>
-					<textElement textAlignment="Left" verticalAlignment="Top">
+					<textElement textAlignment="Right" verticalAlignment="Top">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ENTITY_NAME}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="128"
+						y="53"
+						width="0"
+						height="2"
+						key="staticText-8"/>
+					<box></box>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[Static Text]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="382"
+						y="16"
+						width="153"
+						height="14"
+						key="textField-8"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Top">
 						<font/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["Duration: " + $P{DURATION}]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement
+						x="54"
+						y="17"
+						width="318"
+						height="26"
+						key="staticText-9"/>
+					<box></box>
+					<textElement>
+						<font size="16"/>
+					</textElement>
+				<text><![CDATA[Miles Per Gallon Report]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="54"
+						y="4"
+						width="122"
+						height="16"
+						key="staticText-10"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font/>
+					</textElement>
+				<text><![CDATA[tiwiPRO - Portal]]></text>
+				</staticText>
+				<image  scaleImage="RetainShape" vAlign="Top" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="1"
+						width="51"
+						height="47"
+						key="image-1"/>
+					<box></box>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.io.InputStream"><![CDATA[$P{REPORT_LOGO}]]></imageExpression>
+				</image>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="61"
+						width="535"
+						height="0"
+						key="line-4"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 		</title>
 		<pageHeader>
@@ -202,7 +224,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-Bold" isBold="true"/>
 					</textElement>
-				<text><![CDATA[Name]]></text>
+				<text><![CDATA[Division/Team]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -326,6 +348,19 @@
 						key="line-3"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="12"
+						width="198"
+						height="14"
+						key="textField-9"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{REPORT_DATE_AS_STRING}]]></textFieldExpression>
+				</textField>
 			</band>
 		</pageFooter>
 		<summary>

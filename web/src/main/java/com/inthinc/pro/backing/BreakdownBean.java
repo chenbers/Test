@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -234,33 +235,9 @@ public class BreakdownBean extends BaseBean
     
     public ReportCriteria buildReportCriteria(){
         ReportCriteria reportCriteria = reportCriteriaService.getOverallScoreReportCriteria(navigation.getGroupID(), durationBean.getDuration());
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         return reportCriteria;
     }
-    
-//    private List<PieScoreData> getPieScoreData(ScoreType scoreType){
-//     // Fetch, qualifier is groupId (parent), date from, date to
-//        List<ScoreableEntity> s = null;
-//        try
-//        {
-//            logger.debug("getting scores for groupID: " + this.navigation.getGroupID());
-//            // s = scoreDAO.getScores(this.navigation.getGroupID(),
-//            // startDate, endDate, ScoreType.SCORE_OVERALL_PERCENTAGES);
-//            s = scoreDAO.getScoreBreakdown(this.navigation.getGroupID(), getDuration(), scoreType);
-//        }
-//        catch (Exception e)
-//        {
-//            logger.debug("graphicDao error: " + e.getMessage());
-//        }
-//        logger.debug("found: " + s.size());
-//
-//        List<PieScoreData> pieChartDataList = new ArrayList<PieScoreData>();
-//        
-//        for(int i = 0;i < s.size();i++){
-//            PieScoreRange pieScoreRange = PieScoreRange.valueOf(i);
-//            pieChartDataList.add(new PieScoreData(pieScoreRange.getLabel(),s.get(i).getScore(),pieScoreRange.getLabel()));
-//        }
-//        return pieChartDataList;
-//    }
     
     public ReportRenderer getReportRenderer()
     {

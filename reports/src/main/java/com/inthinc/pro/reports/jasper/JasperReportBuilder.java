@@ -1,5 +1,6 @@
 package com.inthinc.pro.reports.jasper;
 
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -71,6 +72,11 @@ public class JasperReportBuilder
         try
         {
             JasperReport jr = ReportUtils.loadReport(reportCriteria.getReport());
+            InputStream imageInputStream = ReportUtils.loadFile("logo_main.gif");
+            if(imageInputStream != null)
+            {
+                reportCriteria.getPramMap().put("REPORT_LOGO", imageInputStream);
+            }
 
             // Lets break up the report if the recordsPerReport is set
             JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(reportCriteria.getMainDataset() != null? reportCriteria.getMainDataset() : Collections.EMPTY_LIST);

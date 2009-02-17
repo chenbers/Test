@@ -44,11 +44,10 @@ public class ReportUtils
         return null;
     }
 
-    private static InputStream loadFile(String fileName)
+    public static InputStream loadFile(String fileName)
     {
         String path = PACKAGE_PATH + fileName;
         InputStream inputStream = ReportUtils.class.getClassLoader().getResourceAsStream(path);
-        //File file = new File(ReportUtils.class.getResource(fileName).getFile());
         return inputStream;
     }
 

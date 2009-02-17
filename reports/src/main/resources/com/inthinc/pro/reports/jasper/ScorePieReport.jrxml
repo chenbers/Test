@@ -57,6 +57,8 @@
 	<parameter name="SEATBELT_USE_DATA" isForPrompting="false" class="java.util.List"/>
 	<parameter name="SPEED_DATA" isForPrompting="false" class="java.util.List"/>
 	<parameter name="DURATION" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="REPORT_LOGO" isForPrompting="false" class="java.io.InputStream"/>
+	<parameter name="REPORT_DATE_AS_STRING" isForPrompting="false" class="java.lang.String"/>
 
 	<field name="value" class="java.lang.Integer"/>
 	<field name="key" class="java.lang.String"/>
@@ -71,7 +73,7 @@
 			</band>
 		</title>
 		<pageHeader>
-			<band height="645"  isSplitAllowed="true" >
+			<band height="641"  isSplitAllowed="true" >
 				<rectangle radius="3" >
 					<reportElement
 						x="0"
@@ -79,46 +81,35 @@
 						width="535"
 						height="171"
 						forecolor="#999999"
-						backcolor="#F7F6F6"
+						backcolor="#F9F6F6"
 						key="rectangle-2"/>
-					<graphicElement stretchType="NoStretch"/>
-				</rectangle>
-				<rectangle radius="2" >
-					<reportElement
-						x="0"
-						y="32"
-						width="535"
-						height="36"
-						forecolor="#999999"
-						backcolor="#E7E6E6"
-						key="rectangle-1"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="0"
-						y="0"
-						width="376"
+						x="337"
+						y="1"
+						width="198"
 						height="14"
 						key="textField-1"/>
 					<box></box>
-					<textElement textAlignment="Left" verticalAlignment="Top">
+					<textElement textAlignment="Right" verticalAlignment="Top">
 						<font/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ENTITY_NAME}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
-						x="412"
-						y="0"
+						x="54"
+						y="4"
 						width="122"
 						height="16"
 						key="staticText-1"/>
 					<box></box>
-					<textElement textAlignment="Right" verticalAlignment="Top">
+					<textElement textAlignment="Left" verticalAlignment="Top">
 						<font/>
 					</textElement>
-				<text><![CDATA[tiwiPRO]]></text>
+				<text><![CDATA[tiwiPRO - Portal]]></text>
 				</staticText>
 				<pieChart>
 					<chart  hyperlinkTarget="Self"  customizerClass="com.inthinc.pro.reports.jasper.customizer.PieChartCustomizer" >
@@ -167,25 +158,24 @@ isCircular="true" >
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="5"
-						y="40"
-						width="345"
+						x="337"
+						y="29"
+						width="198"
 						height="18"
-						forecolor="#666666"
 						key="textField-2"/>
 					<box></box>
-					<textElement>
-						<font size="14"/>
+					<textElement textAlignment="Right">
+						<font size="10"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["Overall Score: " + $P{OVERALL_SCORE}]]></textFieldExpression>
 				</textField>
 				<pieChart>
 					<chart isShowLegend="false"  hyperlinkTarget="Self"  customizerClass="com.inthinc.pro.reports.jasper.customizer.PieChartCustomizer" >
 					<reportElement
-						x="5"
+						x="0"
 						y="478"
-						width="159"
-						height="138"
+						width="176"
+						height="129"
 						key="element-2"/>
 					<box></box>
 					</chart>
@@ -215,10 +205,10 @@ isCircular="true" >
 				<pieChart>
 					<chart isShowLegend="false"  hyperlinkTarget="Self"  customizerClass="com.inthinc.pro.reports.jasper.customizer.PieChartCustomizer" >
 					<reportElement
-						x="177"
+						x="170"
 						y="478"
-						width="165"
-						height="138"
+						width="180"
+						height="129"
 						key="element-3"/>
 					<box></box>
 					</chart>
@@ -248,10 +238,10 @@ isCircular="true" >
 				<pieChart>
 					<chart isShowLegend="false"  hyperlinkTarget="Self"  customizerClass="com.inthinc.pro.reports.jasper.customizer.PieChartCustomizer" >
 					<reportElement
-						x="362"
+						x="350"
 						y="478"
-						width="165"
-						height="138"
+						width="185"
+						height="129"
 						key="element-4"/>
 					<box></box>
 					</chart>
@@ -302,7 +292,7 @@ isCircular="true" >
 					<textElement>
 						<font/>
 					</textElement>
-				<text><![CDATA[Seatbelt Use]]></text>
+				<text><![CDATA[Seatbelt]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -339,17 +329,50 @@ isCircular="true" >
 				</line>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="0"
-						y="14"
-						width="376"
+						x="337"
+						y="15"
+						width="198"
 						height="14"
 						key="textField-3"/>
 					<box></box>
-					<textElement textAlignment="Left" verticalAlignment="Top">
+					<textElement textAlignment="Right" verticalAlignment="Top">
 						<font/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["Duration: " + $P{DURATION}]]></textFieldExpression>
 				</textField>
+				<image  scaleImage="RetainShape" vAlign="Top" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="1"
+						width="51"
+						height="47"
+						key="image-1"/>
+					<box></box>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.io.InputStream"><![CDATA[$P{REPORT_LOGO}]]></imageExpression>
+				</image>
+				<staticText>
+					<reportElement
+						x="54"
+						y="17"
+						width="182"
+						height="26"
+						key="staticText-7"/>
+					<box></box>
+					<textElement>
+						<font size="16"/>
+					</textElement>
+				<text><![CDATA[Overall Score Report]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="58"
+						width="535"
+						height="0"
+						key="line-4"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
 			</band>
 		</pageHeader>
 		<columnHeader>
@@ -365,7 +388,7 @@ isCircular="true" >
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="26"  isSplitAllowed="true" >
+			<band height="23"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						x="0"
@@ -375,6 +398,19 @@ isCircular="true" >
 						key="line-3"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="6"
+						width="198"
+						height="14"
+						key="textField-4"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{REPORT_DATE_AS_STRING}]]></textFieldExpression>
+				</textField>
 			</band>
 		</pageFooter>
 		<summary>

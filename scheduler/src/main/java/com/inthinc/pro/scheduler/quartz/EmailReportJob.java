@@ -3,6 +3,7 @@ package com.inthinc.pro.scheduler.quartz;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -121,6 +122,14 @@ public class EmailReportJob extends QuartzJobBean
                 break;
 
             }
+        }
+        
+        //TODO I don't want to pull the user this often. But for now it will have to do.
+        
+        User user = userDAO.findByID(reportSchedule.getUserID());
+        //Set the current date of the reports
+        for(ReportCriteria reportCriteria: reportCriteriaList){
+            reportCriteria.setReportDate(new Date(), user.getPerson().getTimeZone());
         }
 
         Report report = reportCreator.getReport(reportCriteriaList);

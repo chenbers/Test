@@ -1,9 +1,11 @@
 package com.inthinc.pro.reports;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.reports.model.ChartData;
@@ -19,6 +21,7 @@ public class ReportCriteria
     private String chartDataSetIdField;
 
     private static final String INTHINC_NAME = "Inthinc";
+    private static final String REPORT_DATE_STRING = "REPORT_DATE_AS_STRING";
 
     public static final String SUB_DATASET = "SUB_DATASET";
     public static final String RECORD_COUNT = "RECORD_COUNT";
@@ -114,6 +117,19 @@ public class ReportCriteria
         this.recordsPerReport = recordsPerReport;
         this.mainDatasetIdField = mainDatasetIdField;
         this.chartDataSetIdField = chartDataSetIdField;
+    }
+    
+    /**
+     * This takes a Date and Timezone, formats the date according to the timezone and puts it in the reports parameter map.
+     * This method was added to maximize code reuse. 
+     * 
+     * @param date Date of the report.
+     * @param timeZone Time Zone to 
+     */
+    public void setReportDate(Date date,TimeZone timeZone){
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
+        sdf.setTimeZone(timeZone);
+        paramMap.put(REPORT_DATE_STRING, sdf.format(date));
     }
 
     public Integer getRecordsPerReport()

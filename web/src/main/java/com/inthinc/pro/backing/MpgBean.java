@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
@@ -207,6 +208,7 @@ public class MpgBean extends BaseBean
     public ReportCriteria buildReportCriteria()
     {
         ReportCriteria reportCriteria = reportCriteriaService.getMpgReportCriteria(navigation.getGroupID(), durationBean.getDuration());
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         return reportCriteria;
     }
 

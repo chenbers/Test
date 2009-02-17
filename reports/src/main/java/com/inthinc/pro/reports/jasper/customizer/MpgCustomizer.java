@@ -1,7 +1,7 @@
 package com.inthinc.pro.reports.jasper.customizer;
 
+
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.CategoryPlot;
 
 import net.sf.jasperreports.engine.JRAbstractChartCustomizer;
@@ -14,9 +14,27 @@ public class MpgCustomizer extends JRAbstractChartCustomizer
     {
         CategoryPlot plot = (CategoryPlot)jFreeChart.getPlot();
         plot.setNoDataMessage("No Data Available");
-        ValueAxis valueAxis = plot.getRangeAxis();
-        //valueAxis.setAutoRange(true);
         
+        //If all the values of the dataset are zero, then the chart does not by defualt show a range on the y axis. 
+        //It simply displays 0.000000 which is not desireable. Here we are checking to see if all values are zero, and if
+        //they are, we are setting a default y axis range.
+        boolean foundData = false;
+      
+        for(int i = 0;i < plot.getDataset().getColumnCount();i++)
+        {
+            for(int j = 0; j < plot.getDataset().getRowCount();j++)
+            {
+                Number value = plot.getDataset().getValue(j,i);
+                if(value.intValue() > 0){
+                    foundData = true;
+                    break;
+                }
+            }
+        }
+        if(!foundData)
+        {
+            plot.getRangeAxis().setRange(0.0, 30.0);
+        }
     }
 
 }

@@ -3,6 +3,7 @@ package com.inthinc.pro.backing;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -172,6 +173,7 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
     public void exportReportToPdf()
     {
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.DEVICES_REPORT,getGroupHierarchy().getTopGroup().getName());
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(deviceData);
         getReportRenderer().exportSingleReportToPDF(reportCriteria, getFacesContext());
     }
@@ -179,6 +181,7 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
     public void emailReport()
     {
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.DEVICES_REPORT,getGroupHierarchy().getTopGroup().getName());
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(deviceData);
         getReportRenderer().exportReportToEmail(reportCriteria,getEmailAddress());
     }
@@ -186,6 +189,7 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
     public void exportReportToExcel()
     {
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.DEVICES_REPORT,getGroupHierarchy().getTopGroup().getName());
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(deviceData);
         getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
     }
