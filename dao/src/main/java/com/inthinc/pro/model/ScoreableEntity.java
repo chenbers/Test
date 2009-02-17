@@ -82,6 +82,18 @@ public class ScoreableEntity extends BaseEntity implements Comparable<ScoreableE
         
         return fScore;
     }
+    
+    public String getScoreAsString(){
+        String returnString = null;
+        if(score < 0)
+        {
+            returnString = "N/A";
+        }else{
+            returnString = getScoreAsFloat().toString();
+        }
+        
+        return returnString;
+    }
 
     @Override
     public int compareTo(ScoreableEntity o)

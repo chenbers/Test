@@ -49,7 +49,6 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
 
     private static final List<String> AVAILABLE_COLUMNS;
     private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 3, 5 };
-    private static final List<SelectItem> REPORT_GROUPS;
     private static final List<SelectItem> DURATIONS;
     private static final List<SelectItem> OCCURRENCES;
     private static final List<SelectItem> STATUSES;
@@ -57,6 +56,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     private static final String REDIRECT_REPORT_SCHEDULES = "go_adminReportSchedules";
     private static final String REDIRECT_REPORT_SCHEDULE = "go_adminReportSchedule";
     private static final String REDIRECT_EDIT_REPORT_SCHEDULE = "go_adminEditReportSchedule";
+    
+    private List<SelectItem> reportGroups;
 
     /*
      * Spring managed beans
@@ -78,14 +79,6 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         AVAILABLE_COLUMNS.add("lastEmail");
         AVAILABLE_COLUMNS.add("report");
         AVAILABLE_COLUMNS.add("status");
-
-        REPORT_GROUPS = new ArrayList<SelectItem>();
-        for (ReportGroup rt : EnumSet.allOf(ReportGroup.class))
-        {
-            REPORT_GROUPS.add(new SelectItem(rt.getCode(), rt.getLabel()));
-        }
-        sort(REPORT_GROUPS);
-        REPORT_GROUPS.add(0, new SelectItem(null, ""));
 
         DURATIONS = new ArrayList<SelectItem>();
         DURATIONS.add(new SelectItem(null, ""));
@@ -121,7 +114,21 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
 
     public List<SelectItem> getReportGroups()
     {
-        return REPORT_GROUPS;
+        if(reportGroups == null){
+            reportGroups = new ArrayList<SelectItem>();
+            
+            for (ReportGroup rt : EnumSet.allOf(ReportGroup.class))
+            {
+                List<GroupType> groupTypes = Arrays.asList(rt.getGroupTypes());
+                if(groupTypes.contains(getGroupHierarchy().getTopGroup().getType()))
+                {
+                    reportGroups.add(new SelectItem(rt.getCode(), rt.getLabel()));
+                }
+            }
+            sort(reportGroups);
+            reportGroups.add(0, new SelectItem(null, ""));
+        }
+        return reportGroups;
     }
 
     public EntityType getSelectedEntityType()
