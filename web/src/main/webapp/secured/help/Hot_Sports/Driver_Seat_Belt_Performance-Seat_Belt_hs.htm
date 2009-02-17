@@ -10,7 +10,11 @@ if (navigator.appName !="Netscape")
 {   document.write("<link rel='stylesheet' href='../hotspots.css'>");}
 //-->
 </script>
-<script type="text/javascript" language="JavaScript" title="WebHelpInlineScript">
+<style type="text/css">
+<!--
+ul.whs1 { list-style:disc; }
+-->
+</style><script type="text/javascript" language="JavaScript" title="WebHelpInlineScript">
 <!--
 function reDo() {
   if (innerWidth != origWidth || innerHeight != origHeight)
@@ -70,10 +74,17 @@ else
 
 //-->
 </script>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus tristique 
- erat et risus. Pellentesque dapibus tristique risus. Nam nulla ipsum, 
- convallis sed, euismod vehicula, facilisis quis, purus. Suspendisse elementum. 
- Phasellus quis libero et est fringilla sagittis.</p>
+<p>This shows a graph of the overall seat belt performance score. Each 
+ circle represents a day of the week. Hovering over the circle will indicate 
+ the day and the score for that day. </p>
+<p><br>
+You can see the scores for:</p>
+<ul type="disc" class="whs1">
+	<li class=p><p>30 days</p></li>
+	<li class=p><p>3 months</p></li>
+	<li class=p><p>6 months</p></li>
+	<li class=p><p>12 months</p></li>
+</ul>
 <script type="text/javascript" language="javascript1.2">
 <!--
 highlightSearch();

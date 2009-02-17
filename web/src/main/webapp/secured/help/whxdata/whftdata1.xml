@@ -1,5 +1,28 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <ftstdata>
+<topic name="Drive Style-Breakdown_hs" url="Hot_Sports/Drive_Style-Breakdown_hs.htm" />
+<topic name="Drive_Style-Details_hs" url="Hot_Sports/Drive_Style-Details_hs.htm" />
+<topic name="Drive_Style-Navigation_hs" url="Hot_Sports/Drive_Style-Navigation_hs.htm" />
+<topic name="Driver Seat Belt Performance-Details" url="Hot_Sports/Driver_Seat_Belt_Performance-Details.htm" />
+<topic name="Driver Seat Belt Performance-Navigation" url="Hot_Sports/Driver_Seat_Belt_Performance-Navigation.htm" />
+<topic name="Driver Seat Belt Performance-Overall Score" url="Hot_Sports/Driver_Seat_Belt_Performance-Overall_Score_hs.htm" />
+<topic name="Driver Seat Belt Performance-Seat Belt" url="Hot_Sports/Driver_Seat_Belt_Performance-Seat_Belt_hs.htm" />
+<topic name="Driver Speed Performance-Speed Breakdown" url="Hot_Sports/Driver_Speed_Performance-Speed_Breakdown_hs.htm" />
+<topic name="Driver Speed Performance-Speed" url="Hot_Sports/Driver_Speed_Performance-Speed_hs.htm" />
+<topic name="Driver Speed Report-Details" url="Hot_Sports/Driver_Speed_Report-Details_hs.htm" />
+<topic name="Driver Speed Report-Navigation" url="Hot_Sports/Driver_Speed_Report-Navigation.htm" />
+<topic name="Driver Speed Report-Overall Score" url="Hot_Sports/Driver_Speed_Report-Overall_Score_hs.htm" />
+<topic name="Driver Style-Overall Score_hs" url="Hot_Sports/Driver_Style-Overall_Score_hs.htm" />
+<topic name="Driver Style-Performance_hs" url="Hot_Sports/Driver_Style-Performance_hs.htm" />
+<topic name="Home - Division_Map_hs" url="Hot_Sports/Home_-_Division_Map_hs.htm" />
+<topic name="Home - Drivers - Top_Bottom_hs" url="Hot_Sports/Home_-_Drivers_-_Top_Bottom_hs.htm" />
+<topic name="Home - Miles Per Gallon_hs" url="Hot_Sports/Home_-_Miles_Per_Gallon_hs.htm" />
+<topic name="Home - Overall Score_hs" url="Hot_Sports/Home_-_Overall_Score_hs.htm" />
+<topic name="Home - Recent Events_hs" url="Hot_Sports/Home_-_Recent_Events_hs.htm" />
+<topic name="Home - Regions_hs" url="Hot_Sports/Home_-_Regions_hs.htm" />
+<topic name="Home - Team Data_hs" url="Hot_Sports/Home_-_Team_Data_hs.htm" />
+<topic name="Home - Team Map_hs" url="Hot_Sports/Home_-_Team_Map_hs.htm" />
+<topic name="Home - Trend_hs" url="Hot_Sports/Home_-_Trend_hs.htm" />
 <topic name="Home - Warnings_hs" url="Hot_Sports/Home_-_Warnings_hs.htm" />
 <topic name="Home_Driver_Performance-Coaching_Events_hs" url="Hot_Sports/Home_Driver_Performance-Coaching_Events_hs.htm" />
 <topic name="Home_Driver_Performance-Driving_Style_hs" url="Hot_Sports/Home_Driver_Performance-Driving_Style_hs.htm" />
@@ -9,6 +32,7 @@
 <topic name="Home_Driver_Performance-Overall_Score_Email_hs" url="Hot_Sports/Home_Driver_Performance-Overall_Score_Email_hs.htm" />
 <topic name="Home_Driver_Performance-Seat_Belt_hs" url="Hot_Sports/Home_Driver_Performance-Seat_Belt_hs.htm" />
 <topic name="Home_Driver_Performance-Speed_hs" url="Hot_Sports/Home_Driver_Performance-Speed_hs.htm" />
+<topic name="Home - Fleet Legend_hs" url="Hot_Sports/Home_Fleet_Legend_hs.htm" />
 <topic name="individual_driver_record-coaching_events_hs" url="Hot_Sports/individual_driver_record-coaching_events_hs.htm" />
 <topic name="individual_driver_record-driving_style_hs" url="Hot_Sports/individual_driver_record-driving_style_hs.htm" />
 <topic name="individual_driver_record-last_trip_hs" url="Hot_Sports/individual_driver_record-last_trip_hs.htm" />
@@ -22,17 +46,39 @@
 <topic name="Live_Fleet-Map_Viewing_Options_hs" url="Hot_Sports/Live_Fleet-Map_Viewing_Options_hs.htm" />
 <topic name="Live_Fleet-Map_Zoom_and_Navigate_hs" url="Hot_Sports/Live_Fleet-Map_Zoom_and_Navigate_hs.htm" />
 <topic name="live_fleet_map_inset_hs" url="Hot_Sports/live_fleet_map_inset_hs.htm" />
+<topic name="Red_Flags_-_Columns_hs.htm" url="Hot_Sports/Red_Flags_-_Columns_hs.htm" />
+<topic name="Red Flags - Edit Columns_hs" url="Hot_Sports/Red_Flags_-_Edit_Columns_hs.htm" />
+<topic name="Red_Flags_-_Search_hs.htm" url="Hot_Sports/Red_Flags_-_Search_hs.htm" />
 <topic name="Reports_Devices_Columns_hs" url="Hot_Sports/Reports_Devices_Columns_hs.htm" />
 <topic name="Reports_Devices_Edit_Columns_hs" url="Hot_Sports/Reports_Devices_Edit_Columns_hs.htm" />
 <topic name="Reports_Devices_Navigation_hs" url="Hot_Sports/Reports_Devices_Navigation_hs.htm" />
+<topic name="Reports_Devices_Search_hs" url="Hot_Sports/Reports_Devices_Search_hs.htm" />
 <topic name="Reports_Drivers_Columns_hs" url="Hot_Sports/Reports_Drivers_Columns_hs.htm" />
 <topic name="Reports_Drivers_Edit_Columns_hs" url="Hot_Sports/Reports_Drivers_Edit_Columns_hs.htm" />
+<topic name="Reports_Drivers_Navigation_hs" url="Hot_Sports/Reports_Drivers_Navigation_hs.htm" />
 <topic name="Reports_Drivers_Search_hs" url="Hot_Sports/Reports_Drivers_Search_hs.htm" />
+<topic name="Reports_Idling_Columns_hs" url="Hot_Sports/Reports_Idling_Columns.htm" />
 <topic name="Reports_Idling_Date_Range_hs" url="Hot_Sports/Reports_Idling_Date_Range_hs.htm" />
+<topic name="Reports_Idling_Edit_Columns_hs" url="Hot_Sports/Reports_Idling_Edit_Columns_hs.htm" />
+<topic name="Reports_Idling_Navigation_hs" url="Hot_Sports/Reports_Idling_Navigation_hs.htm" />
 <topic name="Reports_Idling_Search_hs" url="Hot_Sports/Reports_Idling_Search_hs.htm" />
+<topic name="Reports_Vehicles_Columns_hs" url="Hot_Sports/Reports_Vehicles_Columns_hs.htm" />
 <topic name="Reports_Vehicles_Edit_Columns_hs" url="Hot_Sports/Reports_Vehicles_Edit_Columns_hs.htm" />
 <topic name="Reports_Vehicles_Navigation_hs" url="Hot_Sports/Reports_Vehicles_Navigation_hs.htm" />
 <topic name="Reports_Vehicles_Search_hs" url="Hot_Sports/Reports_Vehicles_Search_hs.htm" />
+<topic name="Save_hs" url="Hot_Sports/Save_hs.htm" />
+<topic name="Trips_Date_Range_hs" url="Hot_Sports/Trips_Date_Range_hs.htm" />
+<topic name="Trips_Events_hs" url="Hot_Sports/Trips_Events_hs.htm" />
+<topic name="Trips_Legend_hs" url="Hot_Sports/Trips_Legend_hs.htm" />
+<topic name="Trips_Map_hs" url="Hot_Sports/Trips_Map_hs.htm" />
+<topic name="Trips_Navigation_hs" url="Hot_Sports/Trips_Navigation_hs.htm" />
+<topic name="Trips_Settings_hs" url="Hot_Sports/Trips_Settings_hs.htm" />
+<topic name="Trips_Stats_hs" url="Hot_Sports/Trips_Stats_hs.htm" />
+<topic name="Trips_Trips_By_hs" url="Hot_Sports/Trips_Trips_By_hs.htm" />
+<topic name="Warning - Navigation_hs" url="Hot_Sports/Warning_-_Navigation_hs.htm" />
+<topic name="Warning - Search_hs" url="Hot_Sports/Warning_-_Search_hs.htm" />
+<topic name="Warnings - Columns_hs" url="Hot_Sports/Warnings_-_Columns_hs.htm" />
+<topic name="Warnings - Edit Columns_hs" url="Hot_Sports/Warnings_-_Edit_Columns_hs.htm" />
 <topic name="Idling" url="Idling.htm" />
 <topic name="Live Fleet" url="Live_Fleet.htm" />
 <topic name="My Account" url="My_Account.htm" />
@@ -42,13 +88,15 @@
 <topic name="Overall Score - Team Level" url="Overall_Score_-_Team_Level.htm" />
 <topic name="Overall Score - Driver Level" url="Overall_Score_Driver.htm" />
 <topic name="Red Flags" url="Red_Flags.htm" />
-<topic name="Red Flags - Edit Columns" url="Red_Flags_-_Edit_Columns.htm" />
 <topic name="Reports" url="Reports.htm" />
 <topic name="Seat Belt" url="Seat_Belt.htm" />
 <topic name="Speed" url="Speed.htm" />
 <topic name="Speed by Street" url="Speed_by_Street.htm" />
 <topic name="Toolbar" url="Toolbar.htm" />
+<topic name="Trips" url="Trips.htm" />
 <topic name="Vehicles" url="Vehicles.htm" />
+<topic name="View Trips" url="View_Trips.htm" />
+<topic name="Warnings" url="Warnings.htm" />
 <topic name="Welcome" url="Welcome.htm" />
 <topic name="Zones" url="Zones.htm" />
 

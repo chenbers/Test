@@ -47,7 +47,8 @@ if (window.gbWhTopic)
 {
 	if (window.addTocInfo)
 	{
-	addButton("show",BTN_TEXT,"Show","","","","",0,0,"","","");
+	addTocInfo("Admin\nRed Flags");
+addButton("show",BTN_TEXT,"Show","","","","",0,0,"","","");
 
 	}
 	if (window.writeBtnStyle)
@@ -58,7 +59,10 @@ if (window.gbWhTopic)
 
 	if(1)
 	{
-	
+	document.write("<p style=\"text-align:right\"> ");
+AddMasterBreadcrumbs("tiwi_Pro_Portal.htm", "", ">", "Home", "Welcome.htm");
+document.write("<a href=\"Admin.htm\">Admin</a> > Red Flags</p>");
+
 	}
 
 	if (window.setRelStartPage)
@@ -84,7 +88,7 @@ if( typeof( InitEffects ) != 'function' ) InitEffects = new Function();if( typeo
 
 
 <map name=MAP318816008>
-<area shape="rect" coords="162, 59, 241, 85" href="javascript:void(0);" id="area2" onMouseOver="if (parseInt(navigator.appVersion) >= 4 && typeof(BSPSPopupOnMouseOver) == 'function') BSPSPopupOnMouseOver(event);" class="BSSCPopup" onclick="BSSCPopup('Hot_Sports/Admin_Red_Flags-Delete_hs.htm');return false;"><area shape="rect" coords="249, 58, 346, 86" href="javascript:void(0);" id="area3" onMouseOver="if (parseInt(navigator.appVersion) >= 4 && typeof(BSPSPopupOnMouseOver) == 'function') BSPSPopupOnMouseOver(event);" class="BSSCPopup" onclick="BSSCPopup('Hot_Sports/Admin_Red_Flags-Batch_Edit_hs.htm');return false;"><area shape="rect" coords="356, 59, 604, 86" href="javascript:void(0);" id="area4" onMouseOver="if (parseInt(navigator.appVersion) >= 4 && typeof(BSPSPopupOnMouseOver) == 'function') BSPSPopupOnMouseOver(event);" class="BSSCPopup" onclick="BSSCPopup('Hot_Sports/Admin_Red_Flags-Search_hs.htm');return false;"><area shape="rect" coords="167, 106, 197, 256" href="javascript:void(0);" id="area5" onMouseOver="if (parseInt(navigator.appVersion) >= 4 && typeof(BSPSPopupOnMouseOver) == 'function') BSPSPopupOnMouseOver(event);" class="BSSCPopup" onclick="BSSCPopup('Hot_Sports/Admin_Red_Flags-Check_Boxes_hs.htm');return false;"><area shape="rect" coords="247, 103, 853, 259" href="javascript:void(0);" id="area6" onMouseOver="if (parseInt(navigator.appVersion) >= 4 && typeof(BSPSPopupOnMouseOver) == 'function') BSPSPopupOnMouseOver(event);" class="BSSCPopup" onclick="BSSCPopup('Hot_Sports/Admin_Red_Flags-Columns_hs.htm');return false;"><area shape="rect" coords="861, 130, 910, 255" href="javascript:void(0);" id="area13" onMouseOver="if (parseInt(navigator.appVersion) >= 4 && typeof(BSPSPopupOnMouseOver) == 'function') BSPSPopupOnMouseOver(event);" class="BSSCPopup" onclick="BSSCPopup('Hot_Sports/Admin_Red_Flags-Edit_hs.htm');return false;"></map>
+<area shape="rect" coords="162, 59, 241, 85" href="javascript:void(0);" id="area2" onMouseOver="if (parseInt(navigator.appVersion) >= 4 && typeof(BSPSPopupOnMouseOver) == 'function') BSPSPopupOnMouseOver(event);" class="BSSCPopup" onclick="BSSCPopup('Hot_Sports/Admin_Red_Flags-Delete_hs.htm');return false;"><area shape="rect" coords="249, 58, 346, 86" href="javascript:void(0);" id="area3" onMouseOver="if (parseInt(navigator.appVersion) >= 4 && typeof(BSPSPopupOnMouseOver) == 'function') BSPSPopupOnMouseOver(event);" class="BSSCPopup" onclick="BSSCPopup('Hot_Sports/Admin_Red_Flags-Batch_Edit_hs.htm');return false;"><area shape="rect" coords="356, 58, 604, 85" href="javascript:void(0);" id="area4" onMouseOver="if (parseInt(navigator.appVersion) >= 4 && typeof(BSPSPopupOnMouseOver) == 'function') BSPSPopupOnMouseOver(event);" class="BSSCPopup" onclick="BSSCPopup('Hot_Sports/Admin_Red_Flags-Search_hs.htm');return false;"><area shape="rect" coords="167, 106, 197, 256" href="javascript:void(0);" id="area5" onMouseOver="if (parseInt(navigator.appVersion) >= 4 && typeof(BSPSPopupOnMouseOver) == 'function') BSPSPopupOnMouseOver(event);" class="BSSCPopup" onclick="BSSCPopup('Hot_Sports/Admin_Red_Flags-Check_Boxes_hs.htm');return false;"><area shape="rect" coords="247, 103, 853, 259" href="javascript:void(0);" id="area6" onMouseOver="if (parseInt(navigator.appVersion) >= 4 && typeof(BSPSPopupOnMouseOver) == 'function') BSPSPopupOnMouseOver(event);" class="BSSCPopup" onclick="BSSCPopup('Hot_Sports/Admin_Red_Flags-Columns_hs.htm');return false;"><area shape="rect" coords="861, 130, 910, 255" href="javascript:void(0);" id="area13" onMouseOver="if (parseInt(navigator.appVersion) >= 4 && typeof(BSPSPopupOnMouseOver) == 'function') BSPSPopupOnMouseOver(event);" class="BSSCPopup" onclick="BSSCPopup('Hot_Sports/Admin_Red_Flags-Edit_hs.htm');return false;"></map>
 <script type="text/javascript" language=JavaScript1.2><!--
 FilePopupInit('area2');
 //--></script><script type="text/javascript" language=JavaScript1.2><!--
@@ -99,8 +103,8 @@ FilePopupInit('area6');
 FilePopupInit('area13');
 //--></script>
 <h1>Red Flags</h1>
-<p>This page lists your devices. You can sort the columns by Profile, Description, 
- or Type. </p>
+<p>This page lists your red flag alerts. You can sort the columns by Profile, 
+ Description, or Type. </p>
 <p>To learn more about various areas of interest, move your mouse over 
  the image below. When you see the <img src="pointer_icon.bmp" x-maintain-ratio="TRUE" width="17px" height="22px" border="0" class="img_whs1"> icon, click that area. A pop-up window will 
  appear.</p>
@@ -114,6 +118,9 @@ if (window.writeIntopicBar)
 	writeIntopicBar(0);
 if(0)
 {
+document.write("<p style=\"text-align:right\"> ");
+AddMasterBreadcrumbs("tiwi_Pro_Portal.htm", "", ">", "Home", "Welcome.htm");
+document.write("<a href=\"Admin.htm\">Admin</a> > Red Flags</p>");
 
 }
 //-->

@@ -9,6 +9,7 @@
   <item name="Overall Score" url="Overall_Score_-_Team_Level.htm" />
   <item name="Overall Score" url="Overall_Score_Driver.htm" />
   <item name="Driving Style" url="Driving_Style.htm" />
+  <item name="Warnings" url="Warnings.htm" />
   <item name="Speed" url="Speed.htm" />
   <item name="Seat Belt" url="Seat_Belt.htm" />
 </book>
@@ -19,12 +20,13 @@
   <item name="Devices" url="Devices.htm" />
 </book>
 <item name="Live Fleet" url="Live_Fleet.htm" />
+<item name="Trips" url="Trips.htm" />
 <item name="Red Flags" url="Red_Flags.htm" />
 <book name="Admin" url="Admin.htm" >
-  <book name="People" url="Admin_People.htm" >
+  <book name="Users" url="Admin_People.htm" >
     <item name="Add User" url="Add_a_Person.htm" />
   </book>
-  <book name="Vehicles" url="Vehicles.htm" >
+  <book name="Vehicles" url="Admin_Vehicles.htm" >
     <item name="Add a Vehicle - Details" url="Admin_Add_Vehicle_-_Details.htm" />
     <item name="Add a Vehicle - Speed and Sensitivity" url="Add_a_Vehicle_-_Speed_and_Sensitivity.htm" />
   </book>
@@ -38,7 +40,7 @@
   <book name="Zone Alerts" url="Admin_Zone_Alert.htm" >
     <item name="Add Zone Alert" url="Add_Zone_Alert.htm" />
   </book>
-  <book name="Red Flags" >
+  <book name="Red Flags" url="Admin_Red_Flags.htm" >
     <item name="Add Profile" url="Admin_Add_Profile.htm" />
   </book>
   <item name="Organization" url="Organization.htm" />
