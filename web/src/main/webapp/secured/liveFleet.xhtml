@@ -257,8 +257,8 @@
 							<rich:panel	id="driversDataTablePanel">
 								<a4j:form>
 								
-								<rich:dataTable value="#{liveFleetBean.drivers}"
-									id="driversDataTable" var="item" styleClass="datagrid"
+								<rich:dataTable value="#{liveFleetBean.drivers}" 
+									id="driversDataTable" var="item" styleClass="datagrid" sortMode="single"
 									rowClasses="tableOdd,tableEven" cellspacing="1" rows="10" width="100%">
 								
 								<rich:column sortBy="#{item.driver.person.fullName}">
@@ -270,7 +270,7 @@
 									</h:commandLink>
 								</rich:column>
 	
-								<rich:column sortBy="#{item.time}">
+								<rich:column sortBy="#{item.time}" selfSorted="true"  sortOrder="DESCENDING">
 									<f:facet name="header">
 										<h:outputText value="Updated" />
 									</f:facet>
