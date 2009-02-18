@@ -434,9 +434,8 @@ public class VehicleBean extends BaseBean
             reportCriteria.addParameter("START_LOCATION", lastTrip.getStartAddress());
             reportCriteria.addParameter("END_TIME", lastTrip.getEndDateString());
             reportCriteria.addParameter("END_LOCATION", lastTrip.getEndAddress());
-            String imageUrl = MapLookup.getMap(lastTrip.getRouteLastStep().getLat(), lastTrip.getRouteLastStep().getLng(), 250, 200);
-            // logger.debug(imageUrl);
-            // reportCriteria2.addParameter("MAP_URL", MapLookup.getDataFromURI(imageUrl) );
+            String imageUrl = MapLookup.getMap(lastTrip.getRouteLastStep().getLat(), lastTrip.getRouteLastStep().getLng(), 250, 200); 
+            reportCriteria.addParameter("MAP_URL", imageUrl);
         }
 
         reportCriteria.addChartDataSet(createMpgJasperDef());
