@@ -68,7 +68,7 @@
 									<h:outputText value="#{messages.reportSchedule_status}" />
 								</td>
 								<td>
-									<h:selectOneMenu id="status" value="#{reportScheduleBean.item.status}" converter="SimpleBeanConverter">
+									<h:selectOneMenu id="status" value="#{reportScheduleBean.item.status}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
 										<f:selectItems value="#{reportScheduleBean.statuses}"/> 
 									</h:selectOneMenu>
 								</td>
@@ -82,22 +82,28 @@
 								</td>
 								<td>
 									<rich:message for="startDate" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-									<rich:calendar id="startDate" value="#{reportScheduleBean.item.startDate}" required="#{(not reportScheduleBean.batchEdit) or reportScheduleBean.updateField['startDate']}" requiredMessage="#{messages.required}" todayControlMode="hidden" enableManualInput="true" converterMessage="#{messages.editPerson_dateFormat}" timeZone="#{reportScheduleBean.utcTimeZone}"/>	
+									<rich:calendar id="startDate" value="#{reportScheduleBean.item.startDate}" 
+											required="#{(not reportScheduleBean.batchEdit) or reportScheduleBean.updateField['startDate']}" 
+											requiredMessage="#{messages.required}" todayControlMode="hidden" enableManualInput="true" 
+											converterMessage="#{messages.editPerson_dateFormat}" timeZone="#{reportScheduleBean.utcTimeZone}" 
+											oninputchange="checkMultiple('startDate')" ondateselect="checkMultiple('startDate')"/>	
 								</td>
 								
 							</tr>
 							<tr>
 								<td width="100" valign="top">
-									<h:selectBooleanCheckbox rendered="#{reportScheduleBean.batchEdit}" id="update_endDate" value="#{reportScheduleBean.updateField['endDate']}" />
+									<h:selectBooleanCheckbox rendered="#{reportScheduleBean.batchEdit}" id="update_endDate" value="#{reportScheduleBean.updateField['endDate']}"/>
 									<h:outputText value="#{messages.reportSchedule_endDate}" />
 								</td>
 								<td>
-									<rich:calendar value="#{reportScheduleBean.item.endDate}" todayControlMode="hidden" enableManualInput="true" converterMessage="#{messages.editPerson_dateFormat}" timeZone="#{reportScheduleBean.utcTimeZone}"/>	
+									<rich:calendar value="#{reportScheduleBean.item.endDate}" todayControlMode="hidden" enableManualInput="true" 
+									converterMessage="#{messages.editPerson_dateFormat}" timeZone="#{reportScheduleBean.utcTimeZone}" 
+									oninputchange="checkMultiple('endDate')" ondateselect="checkMultiple('endDate')"/>	
 								</td>
 							</tr>
 							<tr>
 								<td width="100" valign="top">
-									<h:selectBooleanCheckbox rendered="#{reportScheduleBean.batchEdit}" id="update_timeOfDay" value="#{reportScheduleBean.updateField['timeOfDay']}" />
+									<h:selectBooleanCheckbox rendered="#{reportScheduleBean.batchEdit}" id="update_timeOfDay" value="#{reportScheduleBean.updateField['timeOfDay']}"/>
 									<h:outputText value="#{messages.reportSchedule_timeOfDay}" />
 									
 								</td>
@@ -106,7 +112,7 @@
 									<ui:include src="../../includes/timePicker.xhtml">
                                       <ui:param name="id" value="timeOfDay" />
                                       <ui:param name="value" value="#{reportScheduleBean.item.timeOfDay}" />
-                                      <ui:param name="onchange" value="checkMultiple('timeframe')" />
+                                      <ui:param name="onchange" value="checkMultiple('timeOfDay')" />
                                     </ui:include>
 								</td>
 							</tr>
@@ -119,7 +125,7 @@
 								<td>
 									<rich:message for="occurrence" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 									<h:selectOneMenu id="occurrence" value="#{reportScheduleBean.item.occurrence}" converter="SimpleBeanConverter" required="#{(not reportScheduleBean.batchEdit) or reportScheduleBean.updateField['occurrence']}" requiredMessage="#{messages.required}">
-										<a4j:support event="onchange" reRender="dayOfWeekPanel" ajaxSingle="true"/>
+										<a4j:support event="onchange" reRender="dayOfWeekPanel" ajaxSingle="true" onsubmit="checkMultiple(this)"/>
 										<f:selectItems value="#{reportScheduleBean.occurrences}"/> 
 									</h:selectOneMenu>
 								</td>
