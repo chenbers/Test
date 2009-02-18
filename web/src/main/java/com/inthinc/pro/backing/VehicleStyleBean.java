@@ -33,6 +33,7 @@ public class VehicleStyleBean extends BaseBean
     private DurationBean durationBean;
     private ScoreDAO scoreDAO;
     private EventDAO eventDAO;
+    private TableStatsBean tableStatsBean;
 
     private Integer styleScoreOverall;
     private String styleScoreOverallStyle;
@@ -60,7 +61,7 @@ public class VehicleStyleBean extends BaseBean
 
     private void init()
     {
-        super.setTableRowCount(10);
+        tableStatsBean.setTableRowCount(10);
 
         int vehicleID = navigation.getVehicle().getVehicleID();
 
@@ -103,7 +104,7 @@ public class VehicleStyleBean extends BaseBean
                 styleEvents.add(new EventReportItem(event, null));
             }
 
-            super.setTableSize(styleEvents.size());
+            tableStatsBean.setTableSize(styleEvents.size());
         }
     }
 
@@ -356,7 +357,16 @@ public class VehicleStyleBean extends BaseBean
     {
         this.durationBean = durationBean;
     }
+    
+    public TableStatsBean getTableStatsBean()
+    {
+        return tableStatsBean;
+    }
 
+    public void setTableStatsBean(TableStatsBean tableStatsBean)
+    {
+        this.tableStatsBean = tableStatsBean;
+    }
     public void setDuration(Duration duration)
     {
         durationBean.setDuration(duration);

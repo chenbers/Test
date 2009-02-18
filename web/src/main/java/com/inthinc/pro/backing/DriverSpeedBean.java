@@ -34,6 +34,7 @@ public class DriverSpeedBean extends BaseBean
     private DurationBean durationBean;
     private ScoreDAO scoreDAO;
     private EventDAO eventDAO;
+    private TableStatsBean tableStatsBean;
 
     private Integer speedScoreOverall;
     private String speedScoreOverallStyle;
@@ -64,7 +65,7 @@ public class DriverSpeedBean extends BaseBean
     private void init()
     {
         // Set Events table rows per page in BaseDurationBean
-        super.setTableRowCount(10);
+        tableStatsBean.setTableRowCount(10);
 
         if (navigation.getDriver() == null)
         {
@@ -112,8 +113,8 @@ public class DriverSpeedBean extends BaseBean
                 event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
                 speedingEvents.add(new EventReportItem(event, this.navigation.getDriver().getPerson().getTimeZone()));
             }
-
-            super.setTableSize(speedingEvents.size());
+            
+            tableStatsBean.setTableSize(speedingEvents.size());
         }
     }
 
@@ -380,7 +381,16 @@ public class DriverSpeedBean extends BaseBean
     {
         this.eventDAO = eventDAO;
     }
+    
+    public TableStatsBean getTableStatsBean()
+    {
+        return tableStatsBean;
+    }
 
+    public void setTableStatsBean(TableStatsBean tableStatsBean)
+    {
+        this.tableStatsBean = tableStatsBean;
+    }
     
     public void setDuration(Duration duration)
     {

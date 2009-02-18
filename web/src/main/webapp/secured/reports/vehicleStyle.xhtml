@@ -411,9 +411,9 @@ var firstLoad = new Boolean(true);
 						<span class="details">Details</span>
 						<span class="panel_content_right">
 						  	<h:outputFormat id="headerEvents" value="#{messages.recordCounts}">
-								<a4j:actionparam value="#{vehicleStyleBean.tableRowStart}"/>
-								<a4j:actionparam value="#{vehicleStyleBean.tableRowEnd}"/>
-								<a4j:actionparam value="#{vehicleStyleBean.tableSize}"/>
+								<a4j:actionparam value="#{vehicleStyleBean.tableStatsBean.tableRowStart}"/>
+								<a4j:actionparam value="#{vehicleStyleBean.tableStatsBean.tableRowEnd}"/>
+								<a4j:actionparam value="#{vehicleStyleBean.tableStatsBean.tableSize}"/>
 							</h:outputFormat>  
 						</span>
 					</div>
@@ -426,11 +426,11 @@ var firstLoad = new Boolean(true);
 				<!-- Start Event table --> 
 					<h:form id="eventTable">
 					<rich:datascroller align="center" for="eventsTable" immediate="true"
-							id="scrollerTop" reRender="eventsTable,scrollerBottom,tableStats" scrollerListener="#{vehicleStyleBean.scrollerListener}" />
+							id="scrollerTop" reRender="eventsTable,scrollerBottom,tableStats" scrollerListener="#{vehicleStyleBean.tableStatsBean.scrollerListener}" />
 						<rich:dataTable value="#{vehicleStyleBean.styleEvents}" 
 						id="eventsTable" var="item" styleClass="datagrid"
 						rowClasses="tableOdd,tableEven" cellspacing="1" 
-						rows="#{vehicleStyleBean.tableRowCount}" width="100%">
+						rows="#{vehicleStyleBean.tableStatsBean.tableRowCount}" width="100%">
 						
 							<rich:column>
 								<f:facet name="header">
@@ -492,7 +492,7 @@ var firstLoad = new Boolean(true);
 						</rich:dataTable>
 						
 						<rich:datascroller align="center" for="eventsTable" immediate="true" id="scrollerBottom" 
-						reRender="eventsTable,scrollerTop,tableStats" scrollerListener="#{vehicleStyleBean.scrollerListener}"/>
+						reRender="eventsTable,scrollerTop,tableStats" scrollerListener="#{vehicleStyleBean.tableStatsBean.scrollerListener}"/>
 					</h:form> 
 				<!-- End Event table -->
 				</div>

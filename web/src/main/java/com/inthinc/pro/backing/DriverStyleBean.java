@@ -17,6 +17,7 @@ import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -33,6 +34,7 @@ public class DriverStyleBean extends BaseBean
     private DurationBean durationBean;
     private ScoreDAO scoreDAO;
     private EventDAO eventDAO;
+    private TableStatsBean tableStatsBean;
 
     private Integer styleScoreOverall;
     private String styleScoreOverallStyle;
@@ -60,7 +62,7 @@ public class DriverStyleBean extends BaseBean
 
     private void init()
     {
-        super.setTableRowCount(10);
+        tableStatsBean.setTableRowCount(10);
 
         int driverID = navigation.getDriver().getDriverID();
 
@@ -90,7 +92,7 @@ public class DriverStyleBean extends BaseBean
         if (styleEvents.size() < 1)
         {
             List<Integer> types = new ArrayList<Integer>();
-            types.add(2);
+            types.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
 
             List<Event> tempEvents = new ArrayList<Event>();
 
@@ -103,7 +105,7 @@ public class DriverStyleBean extends BaseBean
                 styleEvents.add(new EventReportItem(event, this.navigation.getDriver().getPerson().getTimeZone()));
             }
 
-            super.setTableSize(styleEvents.size());
+            tableStatsBean.setTableSize(styleEvents.size());
         }
     }
 
@@ -350,6 +352,16 @@ public class DriverStyleBean extends BaseBean
     public DurationBean getDurationBean()
     {
         return durationBean;
+    }
+    
+    public TableStatsBean getTableStatsBean()
+    {
+        return tableStatsBean;
+    }
+
+    public void setTableStatsBean(TableStatsBean tableStatsBean)
+    {
+        this.tableStatsBean = tableStatsBean;
     }
 
     public void setDurationBean(DurationBean durationBean)

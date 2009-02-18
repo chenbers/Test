@@ -33,6 +33,7 @@ public class DriverSeatBeltBean extends BaseBean
     private DurationBean durationBean;
     private ScoreDAO scoreDAO;
     private EventDAO eventDAO;
+    private TableStatsBean tableStatsBean;
 
     private Integer seatBeltScore;
     private String seatBeltScoreHistoryOverall;
@@ -45,7 +46,7 @@ public class DriverSeatBeltBean extends BaseBean
 
     private void init()
     {
-        super.setTableRowCount(10);
+        tableStatsBean.setTableRowCount(10);
 
         ScoreableEntity seatBeltSe = scoreDAO.getDriverAverageScoreByType(navigation.getDriver().getDriverID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
         if (seatBeltSe == null)
@@ -72,7 +73,7 @@ public class DriverSeatBeltBean extends BaseBean
                 event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
                 seatBeltEvents.add(new EventReportItem(event, this.navigation.getDriver().getPerson().getTimeZone()));
             }
-            super.setTableSize(seatBeltEvents.size());
+            tableStatsBean.setTableSize(seatBeltEvents.size());
         }
     }
 
@@ -203,6 +204,16 @@ public class DriverSeatBeltBean extends BaseBean
     public void setNavigation(NavigationBean navigation)
     {
         this.navigation = navigation;
+    }
+
+    public TableStatsBean getTableStatsBean()
+    {
+        return tableStatsBean;
+    }
+
+    public void setTableStatsBean(TableStatsBean tableStatsBean)
+    {
+        this.tableStatsBean = tableStatsBean;
     }
 
     public DurationBean getDurationBean()

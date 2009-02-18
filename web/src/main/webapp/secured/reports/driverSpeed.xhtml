@@ -445,9 +445,9 @@ var firstLoad = new Boolean(true);
 						<span class="details">Details</span>
 						<span class="panel_content_right">
 						  	<h:outputFormat id="headerEvents" value="#{messages.recordCounts}">
-								<a4j:actionparam value="#{driverSpeedBean.tableRowStart}"/>
-								<a4j:actionparam value="#{driverSpeedBean.tableRowEnd}"/>
-								<a4j:actionparam value="#{driverSpeedBean.tableSize}"/>
+								<a4j:actionparam value="#{driverSpeedBean.tableStatsBean.tableRowStart}"/>
+								<a4j:actionparam value="#{driverSpeedBean.tableStatsBean.tableRowEnd}"/>
+								<a4j:actionparam value="#{driverSpeedBean.tableStatsBean.tableSize}"/>
 							</h:outputFormat>  
 						</span>
 					</div>
@@ -459,12 +459,12 @@ var firstLoad = new Boolean(true);
 					<a4j:form id="eventsTableForm" ajaxSubmit="true">
 					<rich:datascroller align="center" for="eventsTable" immediate="true"
 									   id="scrollerTop" reRender="eventsTable,scrollerBottom,tableStats" 
-								       scrollerListener="#{driverSpeedBean.scrollerListener}" />
+								       scrollerListener="#{driverSpeedBean.tableStatsBean.scrollerListener}" />
 								
 						<rich:dataTable 
 						value="#{driverSpeedBean.speedingEvents}" 
 						id="eventsTable" var="item" styleClass="datagrid"
-						rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{driverSpeedBean.tableRowCount}" width="100%">			
+						rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{driverSpeedBean.tableStatsBean.tableRowCount}" width="100%">			
 
 							<rich:column>
 								<f:facet name="header">
@@ -541,7 +541,7 @@ var firstLoad = new Boolean(true);
 						</rich:dataTable>
 						<rich:datascroller align="center" for="eventsTable" immediate="true"
 										   id="scrollerBottom" reRender="eventsTable,scrollerTop,tableStats"
-										   scrollerListener="#{driverSpeedBean.scrollerListener}"/>
+										   scrollerListener="#{driverSpeedBean.tableStatsBean.scrollerListener}"/>
 								
 								 
 					</a4j:form> 

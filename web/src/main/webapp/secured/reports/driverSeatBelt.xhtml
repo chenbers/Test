@@ -193,9 +193,10 @@
 						<span class="details">Details</span>
 							<span class="panel_content_right">
 						  	<h:outputFormat id="headerEvents" value="#{messages.recordCounts}">
-								<a4j:actionparam value="#{driverSeatBeltBean.tableRowStart}"/>
-								<a4j:actionparam value="#{driverSeatBeltBean.tableRowEnd}"/>
-								<a4j:actionparam value="#{driverSeatBeltBean.tableSize}"/>
+								<a4j:actionparam value="#{driverSeatBeltBean.tableStatsBean.tableRowStart}"/>
+								<a4j:actionparam value="#{driverSeatBeltBean.tableStatsBean.tableRowEnd}"/>
+								<a4j:actionparam value="#{driverSeatBeltBean.tableStatsBean.tableSize}"/>
+								
 							</h:outputFormat>  
 						</span>
 					</div>
@@ -208,11 +209,11 @@
 				<!-- Start Event table --> 
 					<h:form id="eventTableForm">
 					<rich:datascroller align="center" for="eventsTable" id="scrollerTop" 
-					reRender="eventsTable,scrollerBottom,tableStats" immediate="true" scrollerListener="#{driverSeatBeltBean.scrollerListener}"/>
+					reRender="eventsTable,scrollerBottom,tableStats" immediate="true" scrollerListener="#{driverSeatBeltBean.tableStatsBean.scrollerListener}"/>
 						<rich:dataTable 
 							value="#{driverSeatBeltBean.seatBeltEvents}" 
 							id="eventsTable" var="item" styleClass="datagrid"
-							rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{driverSeatBeltBean.tableRowCount}"  
+							rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{driverSeatBeltBean.tableStatsBean.tableRowCount}"  
 							width="100%"> 
 						<!-- Data -->
 						
@@ -273,7 +274,7 @@
 						</rich:dataTable>
 						
 						<rich:datascroller align="center" for="eventsTable" id="scrollerBottom" 
-						reRender="eventsTable,scrollerTop,tableStats" immediate="true" scrollerListener="#{driverSeatBeltBean.scrollerListener}"/>
+						reRender="eventsTable,scrollerTop,tableStats" immediate="true" scrollerListener="#{driverSeatBeltBean.tableStatsBean.scrollerListener}"/>
 					</h:form> 
 				<!-- End Event table -->
 				</rich:panel>

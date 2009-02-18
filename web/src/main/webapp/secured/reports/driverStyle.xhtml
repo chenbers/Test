@@ -411,9 +411,9 @@ var firstLoad = new Boolean(true);
 						<span class="details">Details</span>
 						<span class="panel_content_right">
 						  	<h:outputFormat id="headerEvents" value="#{messages.recordCounts}">
-								<a4j:actionparam value="#{driverStyleBean.tableRowStart}"/>
-								<a4j:actionparam value="#{driverStyleBean.tableRowEnd}"/>
-								<a4j:actionparam value="#{driverStyleBean.tableSize}"/>
+								<a4j:actionparam value="#{driverStyleBean.tableStatsBean.tableRowStart}"/>
+								<a4j:actionparam value="#{driverStyleBean.tableStatsBean.tableRowEnd}"/>
+								<a4j:actionparam value="#{driverStyleBean.tableStatsBean.tableSize}"/>
 							</h:outputFormat>  
 						</span>
 					</div>
@@ -426,11 +426,11 @@ var firstLoad = new Boolean(true);
 				<!-- Start Event table --> 
 					<h:form id="eventTable">
 					<rich:datascroller align="center" for="eventsTable" immediate="true"
-							id="scrollerTop" reRender="eventsTable,scrollerBottom,tableStats" scrollerListener="#{driverStyleBean.scrollerListener}" />
+							id="scrollerTop" reRender="eventsTable,scrollerBottom,tableStats" scrollerListener="#{driverStyleBean.tableStatsBean.scrollerListener}" />
 						<rich:dataTable value="#{driverStyleBean.styleEvents}" 
 						id="eventsTable" var="item" styleClass="datagrid"
 						rowClasses="tableOdd,tableEven" cellspacing="1" 
-						rows="#{driverStyleBean.tableRowCount}" width="100%">
+						rows="#{driverStyleBean.tableStatsBean.tableRowCount}" width="100%">
 						
 							<rich:column>
 								<f:facet name="header">
@@ -492,7 +492,7 @@ var firstLoad = new Boolean(true);
 						</rich:dataTable>
 						
 						<rich:datascroller align="center" for="eventsTable" immediate="true" id="scrollerBottom" 
-						reRender="eventsTable,scrollerTop,tableStats" scrollerListener="#{driverStyleBean.scrollerListener}"/>
+						reRender="eventsTable,scrollerTop,tableStats" scrollerListener="#{driverStyleBean.tableStatsBean.scrollerListener}"/>
 					</h:form> 
 				<!-- End Event table -->
 				</div>
