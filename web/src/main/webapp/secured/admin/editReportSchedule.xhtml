@@ -66,6 +66,7 @@
 								<td width="100" valign="top">
 									<h:selectBooleanCheckbox rendered="#{reportScheduleBean.batchEdit}" id="update_status" value="#{reportScheduleBean.updateField['status']}" />
 									<h:outputText value="#{messages.reportSchedule_status}" />
+									<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
 								</td>
 								<td>
 									<h:selectOneMenu id="status" value="#{reportScheduleBean.item.status}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
@@ -105,7 +106,7 @@
 								<td width="100" valign="top">
 									<h:selectBooleanCheckbox rendered="#{reportScheduleBean.batchEdit}" id="update_timeOfDay" value="#{reportScheduleBean.updateField['timeOfDay']}"/>
 									<h:outputText value="#{messages.reportSchedule_timeOfDay}" />
-									
+									<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
 								</td>
 								<td>
 									
