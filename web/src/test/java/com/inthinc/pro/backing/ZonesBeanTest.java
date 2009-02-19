@@ -46,9 +46,7 @@ public class ZonesBeanTest extends BaseBeanTest
         assertNotNull(zonesBean.getPointsString());
 
         // set a display ID
-        final Iterator<Integer> iterator = zonesBean.getZoneIDs().values().iterator();
-        iterator.next();
-        final Integer id = iterator.next();
+        final Integer id = (Integer)zonesBean.getZoneIDs().get(0).getValue();
         zonesBean.setItemID(id);
         assertEquals(id, zonesBean.getItemID());
         assertEquals(zonesBean.getItem().getZoneID(), zonesBean.getItemID());
@@ -111,9 +109,7 @@ public class ZonesBeanTest extends BaseBeanTest
         ZonesBean zonesBean = getZonesBean();
 
         // set an edit ID
-        final Iterator<Integer> iterator = zonesBean.getZoneIDs().values().iterator();
-        iterator.next();
-        final Integer id = iterator.next();
+        final Integer id = (Integer)zonesBean.getZoneIDs().get(0).getValue();
         zonesBean.setItemID(id);
         assertEquals(id, zonesBean.getItemID());
         assertEquals(zonesBean.getItem().getZoneID(), zonesBean.getItemID());
@@ -155,9 +151,7 @@ public class ZonesBeanTest extends BaseBeanTest
         ZonesBean zonesBean = getZonesBean();
 
         // select an item
-        final Iterator<Integer> iterator = zonesBean.getZoneIDs().values().iterator();
-        iterator.next();
-        final Integer id = iterator.next();
+        final Integer id = (Integer)zonesBean.getZoneIDs().get(0).getValue();
         zonesBean.setItemID(id);
         assertEquals(id, zonesBean.getItemID());
         assertEquals(zonesBean.getItem().getZoneID(), zonesBean.getItemID());

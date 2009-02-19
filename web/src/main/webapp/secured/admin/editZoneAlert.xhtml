@@ -32,8 +32,10 @@
           <!-- START PANEL -->
 
           <a4j:form id="edit-form">
-
-            <h:inputHidden id="zonePoints" value="#{zoneAlertsBean.item.zone.pointsString}" />
+	
+			<h:panelGroup id="zonePoints-panel" >
+           		<h:inputHidden  id="zonePoints" value="#{zoneAlertsBean.item.zone.pointsString}" rendered="#{zoneAlertsBean.item.zone ne null}" />
+            </h:panelGroup>
 
             <div class="">
               <div class="panel_nw">
@@ -73,8 +75,8 @@
                             </td>
                             <td>
                               <rich:message for="zoneID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                              <h:selectOneMenu id="zoneID" value="#{zoneAlertsBean.item.zoneID}" required="#{(not zoneAlertsBean.batchEdit) or zoneAlertsBean.updateField['zoneID']}" requiredMessage="#{messages.required}" style="width: 200px">
-                                <a4j:support event="onchange" reRender="zonePoints" limitToList="true" ajaxSingle="true" onsubmit="checkMultiple(this)" oncomplete="showZone()"/>
+                              <h:selectOneMenu id="zoneID" value="#{zoneAlertsBean.item.zoneID}" required="#{(not zoneAlertsBean.batchEdit) or zoneAlertsBean.updateField['zoneID']}"  requiredMessage="#{messages.required}" style="width: 200px">
+                                <a4j:support event="onchange" reRender="zonePoints-panel" limitToList="true" ajaxSingle="true" onsubmit="checkMultiple(this)" oncomplete="showZone()"/>
                                 <f:selectItems value="#{zoneAlertsBean.zones}" />
                               </h:selectOneMenu>
                             </td>
@@ -276,11 +278,15 @@
       function showZone()
       {
         map.clearOverlays();
-        var outline = fromOutlineString(document.getElementById("edit-form:zonePoints").value);
-        if (outline)
-        {
-          centerMapAtZone(getLatLngBounds(outline));
-          loadZone(outline, false);
+        if(document.getElementById("edit-form:zonePoints") != null)
+        { 
+           
+	        var outline = fromOutlineString(document.getElementById("edit-form:zonePoints").value);
+	        if (outline)
+	        {
+	          centerMapAtZone(getLatLngBounds(outline));
+	          loadZone(outline, false);
+	        }
         }
       }
 

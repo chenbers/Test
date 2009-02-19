@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
 import org.springframework.beans.BeanUtils;
 
@@ -126,12 +127,12 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
         final Map<String, String> parameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         final String zoneID = parameterMap.get("zones-form:zone");
         if (zoneID != null)
-            alert.setZoneID(new Integer(zoneID));
+            alert.setZoneID(Integer.valueOf(zoneID));
         else
         {
-            final Map<String, Integer> zones = getZones();
+            final List<SelectItem> zones = getZones();
             if ((zones != null) && (zones.size() > 0))
-                alert.setZoneID(zones.values().iterator().next());
+                alert.setZoneID((Integer)zones.get(0).getValue());
         }
         return createZoneAlertView(alert);
     }
@@ -238,9 +239,10 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
         return "go_adminZoneAlerts";
     }
 
-    public Map<String, Integer> getZones()
+    public List<SelectItem> getZones()
     {
-        return zonesBean.getZoneIDs();
+        List<SelectItem> zoneList = zonesBean.getZoneIDs();
+        return zoneList;
     }
 
     protected Zone getZoneByID(Integer zoneID)

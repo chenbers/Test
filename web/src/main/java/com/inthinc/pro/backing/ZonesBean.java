@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
 import com.inthinc.pro.dao.ZoneAlertDAO;
 import com.inthinc.pro.dao.ZoneDAO;
@@ -19,7 +20,7 @@ import com.inthinc.pro.util.MessageUtil;
 public class ZonesBean extends BaseBean
 {
     private List<Zone>           zones;
-    private Map<String, Integer> zoneIDs;
+    private List<SelectItem> zoneIDs;
     private Zone                 item;
     private boolean              editing;
     private ZoneDAO              zoneDAO;
@@ -47,13 +48,16 @@ public class ZonesBean extends BaseBean
         return zones;
     }
 
-    public Map<String, Integer> getZoneIDs()
+    public List<SelectItem> getZoneIDs()
     {
         if (zoneIDs == null)
         {
-            zoneIDs = new LinkedHashMap<String, Integer>();
-            for (final Zone zone : getZones())
-                zoneIDs.put(zone.getName(), zone.getZoneID());
+            zoneIDs = new ArrayList<SelectItem>();
+            for(final Zone zone: getZones())
+            {
+                zoneIDs.add(new SelectItem(zone.getZoneID(),zone.getName()));
+            }
+            //zoneIDs.add(0,new SelectItem(null,""));
         }
 
         return zoneIDs;

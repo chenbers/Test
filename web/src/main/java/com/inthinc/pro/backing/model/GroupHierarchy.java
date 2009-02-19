@@ -2,9 +2,11 @@ package com.inthinc.pro.backing.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupType;
 
 public class GroupHierarchy implements Serializable
 {
@@ -121,6 +123,18 @@ public class GroupHierarchy implements Serializable
                 return true;
             }
         }
+        return false;
+    }
+    
+    public boolean containsGroupTypes(List<GroupType> groupTypeList)
+    {
+        for(Group group: groupList)
+        {
+            if(groupTypeList.contains(group.getType())){
+                return true;
+            }
+        }
+        
         return false;
     }
     
