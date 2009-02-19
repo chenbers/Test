@@ -1,7 +1,10 @@
 package com.inthinc.pro.backing.ui;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 
@@ -25,6 +28,27 @@ public class JsfFunctions
         reportTypeList.add(ReportType.TREND);
         reportTypeList.add(ReportType.MPG_GROUP);
         return reportTypeList;
+    }
+    
+    public static String convertDateTime(Date d,String p,TimeZone timeZone)
+    {
+        final String defaultFormat = "MMM dd, yyyy";
+        Date date = new Date();
+        String pattern = defaultFormat;
+        if(p != null)
+        {
+            pattern = p;
+        }
+        if(d != null)
+        {
+            date = d;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        if(timeZone != null)
+        {
+            sdf.setTimeZone(timeZone);
+        }
+        return sdf.format(date);
     }
 
 }

@@ -10,6 +10,12 @@
 		<source>scoreBox.xhtml</source>
 	</tag>
 	<tag>
+		<tag-name>dateTimeOutputConverter</tag-name>
+		<converter>
+         	<converter-id>DateTimeConverter</converter-id>
+      	</converter>
+	</tag>
+	<tag>
 		<tag-name>conditionalCSS</tag-name>
 		<component>
 			<component-type>conditionalCSS</component-type>

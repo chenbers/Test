@@ -49,6 +49,18 @@
 	  <converter-id>FloatConverter</converter-id>
 	  <converter-class>com.inthinc.pro.convert.FloatConverter</converter-class>
 	</converter>
+	<converter>
+	  <converter-id>DateTimeConverter</converter-id>
+	  <converter-class>com.inthinc.pro.convert.DateTimeConverter</converter-class>
+	  <property>
+	      <property-name>timeZone</property-name>
+	      <property-class>java.lang.Object</property-class>
+   	  </property>
+   	   <property>
+	      <property-name>pattern</property-name>
+	      <property-class>java.lang.String</property-class>
+   	  </property>
+	</converter>
 	
 	<!-- Components -->
 	<component>
