@@ -477,13 +477,14 @@ var firstLoad = new Boolean(true);
 				              	</div>
 				            </rich:column>
 							
-							<rich:column sortBy="#{item.event.time}">
+							<rich:column sortBy="#{item.event.time}" >
 								<f:facet name="header">
 									<h:outputText value="Date/Time" />
 								</f:facet>
 									<h:outputText value="#{item.event.time}">
-										<f:convertDateTime pattern="#{messages.dateTimeFormat}"/>
+										<f:convertDateTime timeZone="#{vehicleSpeedBean.user.person.timeZone}" pattern="#{messages.dateTimeFormat}" />
 									</h:outputText>
+									
 							</rich:column>
 							
 							<rich:column sortBy="#{item.event.speedLimit}">

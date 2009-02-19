@@ -236,7 +236,7 @@
 									<h:outputText value="Date/Time" />
 								</f:facet>
 									<h:outputText value="#{item.event.time}">
-										<f:convertDateTime pattern="#{messages.dateTimeFormat}"/>
+										<f:convertDateTime timeZone="#{vehicleSeatBeltBean.user.person.timeZone}" pattern="#{messages.dateTimeFormat}" />
 									</h:outputText>
 							</rich:column>
 							
