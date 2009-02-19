@@ -174,7 +174,7 @@
 					<reportElement
 						x="97"
 						y="12"
-						width="120"
+						width="249"
 						height="16"
 						key="staticText-3"/>
 					<box></box>
@@ -272,19 +272,6 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						x="217"
-						y="12"
-						width="127"
-						height="16"
-						key="staticText-13"/>
-					<box></box>
-					<textElement verticalAlignment="Middle">
-						<font/>
-					</textElement>
-				<text><![CDATA[Vehicle Name]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
 						x="632"
 						y="12"
 						width="71"
@@ -330,7 +317,7 @@
 					<reportElement
 						x="97"
 						y="3"
-						width="120"
+						width="249"
 						height="17"
 						key="textField-2"/>
 					<box></box>
@@ -390,19 +377,6 @@
 						<font/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{highPercent}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="217"
-						y="3"
-						width="127"
-						height="17"
-						key="textField-9"/>
-					<box></box>
-					<textElement>
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{vehicle.name}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0.0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
