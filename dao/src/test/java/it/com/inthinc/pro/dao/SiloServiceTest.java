@@ -991,7 +991,7 @@ public class SiloServiceTest
             assertEquals("Device update count " + device.getName(), Integer.valueOf(1), changedCount);
             
             List<ForwardCommand> fwdCmdQueue = deviceDAO.getForwardCommands(device.getDeviceID(), ForwardCommandStatus.STATUS_QUEUED);
-            assertEquals("expected 6 forward commands to be queued for device: " + device.getDeviceID(), 7, fwdCmdQueue.size());
+            assertEquals("expected 14 forward commands to be queued for device: " + device.getDeviceID(), 14, fwdCmdQueue.size());
         }
         
         

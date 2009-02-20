@@ -120,6 +120,47 @@ public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer> impleme
     }
     
     @Override
+    public Integer create(Integer id, Device device)
+    {
+        
+         Integer deviceID = super.create(id, device);
+         
+         // sensitivity
+         if (device.getHardAcceleration() != null)
+         {
+             queueForwardCommand(deviceID, DeviceSensitivityMapping.getForwardCommand(SensitivityType.HARD_ACCEL_SETTING, device.getHardAcceleration()));
+         }
+         if (device.getHardBrake() != null)
+         {
+             queueForwardCommand(deviceID, DeviceSensitivityMapping.getForwardCommand(SensitivityType.HARD_BRAKE_SETTING, device.getHardBrake()));
+         }
+         if (device.getHardTurn() != null)
+         {
+             queueForwardCommand(deviceID, DeviceSensitivityMapping.getForwardCommand(SensitivityType.HARD_TURN_SETTING, device.getHardTurn()));
+         }
+         if (device.getHardVertical() != null)
+         {
+             queueForwardCommand(deviceID, DeviceSensitivityMapping.getForwardCommand(SensitivityType.HARD_VERT_SETTING, device.getHardVertical()));
+         }
+         
+         // speed settings
+         if (device.getSpeedSettings() != null)
+         {
+             queueForwardCommand(deviceID, new ForwardCommand(0, ForwardCommandID.SET_SPEED_ALARMS, speedSettingsStr(device.getSpeedSettings()), ForwardCommandStatus.STATUS_QUEUED));
+         }
+         
+         // ECALL
+         if (device.getEphone() != null)
+         {
+             queueForwardCommand(deviceID, new ForwardCommand(0, ForwardCommandID.SET_CALL_NUMBER, filterPhoneNumber(device.getEphone()), ForwardCommandStatus.STATUS_QUEUED));
+             queueForwardCommand(deviceID, new ForwardCommand(0, ForwardCommandID.ADD_VALID_CALLER, "1 " + filterPhoneNumber(device.getEphone()), ForwardCommandStatus.STATUS_QUEUED));
+         }
+         
+         
+         return deviceID;
+    }
+
+    @Override
     public Integer update(Device device)
     {
         
