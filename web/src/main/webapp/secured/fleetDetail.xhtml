@@ -1,23 +1,17 @@
-<ui:composition template="/layout/layout.xhtml" 
-					xmlns="http://www.w3.org/1999/xhtml" 
-					xmlns:ui="http://java.sun.com/jsf/facelets"
-		  			xmlns:h="http://java.sun.com/jsf/html" 
-		  			xmlns:rich="http://richfaces.org/rich"
-		  			xmlns:a4j="http://richfaces.org/a4j"
-		  			xmlns:iwi="http://pro.tiwi.com/jsf"
-		  			xmlns:f="http://java.sun.com/jsf/core"
-		  			xmlns:t="http://myfaces.apache.org/tomahawk">
-  			
+<ui:composition template="/layout/layout.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" xmlns:a4j="http://richfaces.org/a4j" xmlns:iwi="http://pro.tiwi.com/jsf" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
 	<ui:define name="scripts">
- 		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>	
+		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>
 		<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{gmBean.key}" type="text/javascript"></script>
-	
+
 		<script type="text/javascript" src="#{facesContext.externalContext.request.contextPath}/js/c_config.js"></script>
 		<script type="text/javascript" src="#{facesContext.externalContext.request.contextPath}/js/c_smartmenus.js"></script>
 		<script type="text/javascript" src="#{facesContext.externalContext.request.contextPath}/js/c_addon_popup_menus.js"></script>
-					
-							
-	<script type="text/JavaScript">
+
+
+		<script type="text/JavaScript">
 
 		// Show and Hide Tabs.
 		function t_show(id)
@@ -34,7 +28,7 @@
 		}
 	
 	</script>
-	</ui:define>  			
+	</ui:define>
 
 	<ui:param name="homeSelected" value="current" />
 
@@ -42,7 +36,7 @@
 		<h:form id="setupGroup">
 			<h:inputHidden value="#{groupLevelBean.ping}" />
 		</h:form>
-	
+
 		<ul id="grid_nav">
 			<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
 			<li class="l grid_title">Overview</li>
@@ -52,109 +46,98 @@
 			<li class="r divider"><img src="../images/grid_nav_divider.png" /></li>
 		</ul>
 
-        <table width="820" border="0" cellspacing="0" cellpadding="0" align="center" id="mpg_full_screen" style="margin-top: 10px; display: none;">
+		<table width="820" border="0" cellspacing="0" cellpadding="0" align="center" id="mpg_full_screen" style="margin-top: 10px; display: none;">
 			<tr>
-			  <td valign="top">
-    			  <table width="130" border="0" cellpadding="0" cellspacing="0"  style="margin-top: 40px;">
-                    <tr>
-                      <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_line" onclick="t_hide('mpg_full_screen');t_hide('overall_full_screen');t_show('trend_full_screen');return true;">Trend</a></td>
-                    </tr>
-                    <tr>
-                      <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_overall" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_show('overall_full_screen');return true;">Overall Score </a></td>
-                    </tr>
-                    <tr>
-                      <td valign="top" class="ls_tab_on"><a href="#" class="ls_tab_gas" onclick="t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
-                    </tr>
-                </table>
-			  </td>
-			<td>
-			
-			<!-- START PANEL -->
-			<div>
-    			<ui:include src="/includes/mpgChart.xhtml">	
-    				<ui:param name="reRenderList" value="mpgForm,mpgDataElement,mpgPanel"/>
-    				<ui:param name="title" value="#{messages.mpg_title}"/>	
-                    <ui:param name="ajaxForm" value="mpgForm" />
-                    <ui:param name="ajaxStatusID" value="mpg_status" /> 
-            		<ui:param name="barDef" value="#{mpgBean.barDef}"/>  
-            		<ui:param name="duration" value="#{mpgDurationBean.duration}" />   
-              		<ui:param name="thirtyDaysOn" value="#{mpgDurationBean.styleClass30Days}"/>
-    				<ui:param name="threeMonthsOn" value="#{mpgDurationBean.styleClass3Months}"/>
-    				<ui:param name="sixMonthsOn" value="#{mpgDurationBean.styleClass6Months}"/>
-    				<ui:param name="twelveMonthsOn" value="#{mpgDurationBean.styleClass12Months}"/>   
-                    <ui:param name="xyheight" value="600"/>
-                    <ui:param name="xywidth" value="800"/>  
-                    <ui:param name="flyNavRule" value="go_home" />
-                    <ui:param name="inFlyOut" value="true" />
-    			</ui:include>
-			</div>
-		    <!-- END PANEL -->
-		</td>
+				<td valign="top">
+				<table width="130" border="0" cellpadding="0" cellspacing="0" style="margin-top: 40px;">
+					<tr>
+						<td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_line"
+							onclick="t_hide('mpg_full_screen');t_hide('overall_full_screen');t_show('trend_full_screen');return true;">Trend</a></td>
+					</tr>
+					<tr>
+						<td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_overall"
+							onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_show('overall_full_screen');return true;">Overall Score </a></td>
+					</tr>
+					<tr>
+						<td valign="top" class="ls_tab_on"><a href="#" class="ls_tab_gas"
+							onclick="t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
+					</tr>
+				</table>
+				</td>
+				<td><!-- START PANEL -->
+				<div><ui:include src="/includes/mpgChart.xhtml">
+					<ui:param name="reRenderList" value="mpgForm,mpgDataElement,mpgPanel" />
+					<ui:param name="title" value="#{messages.mpg_title}" />
+					<ui:param name="ajaxForm" value="mpgForm" />
+					<ui:param name="ajaxStatusID" value="mpg_status" />
+					<ui:param name="barDef" value="#{mpgBean.barDef}" />
+					<ui:param name="duration" value="#{mpgDurationBean.duration}" />
+					<ui:param name="thirtyDaysOn" value="#{mpgDurationBean.styleClass30Days}" />
+					<ui:param name="threeMonthsOn" value="#{mpgDurationBean.styleClass3Months}" />
+					<ui:param name="sixMonthsOn" value="#{mpgDurationBean.styleClass6Months}" />
+					<ui:param name="twelveMonthsOn" value="#{mpgDurationBean.styleClass12Months}" />
+					<ui:param name="xyheight" value="600" />
+					<ui:param name="xywidth" value="800" />
+					<ui:param name="flyNavRule" value="go_home" />
+					<ui:param name="inFlyOut" value="true" />
+				</ui:include></div>
+				<!-- END PANEL --></td>
 
-		</tr>
+			</tr>
 		</table>
-        
-		<table width="820" border="0" cellspacing="0" cellpadding="0" align="center" id="trend_full_screen" style="margin-top: 10px;  display: none;">
+
+		<table width="820" border="0" cellspacing="0" cellpadding="0" align="center" id="trend_full_screen" style="margin-top: 10px; display: none;">
 			<tr>
-			  <td valign="top">
-			  <table width="130" border="0" cellpadding="0" cellspacing="0"  style="margin-top: 40px;">
-            <tr>
-              <td valign="top" class="ls_tab_on"><a href="#" class="ls_tab_line" onclick="t_hide('mpg_full_screen');t_hide('overall_full_screen');t_show('trend_full_screen');return true;">Trend</a></td>
-            </tr>
-            <tr>
-              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_overall" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_show('overall_full_screen');return true;">Overall Score </a></td>
-            </tr>
-            <tr>
-              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_gas" onclick="t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
-            </tr>
-        </table>
-			  </td>
-			<td>
-			
-			<!-- START PANEL -->
-			<div class="">
+				<td valign="top">
+				<table width="130" border="0" cellpadding="0" cellspacing="0" style="margin-top: 40px;">
+					<tr>
+						<td valign="top" class="ls_tab_on"><a href="#" class="ls_tab_line"
+							onclick="t_hide('mpg_full_screen');t_hide('overall_full_screen');t_show('trend_full_screen');return true;">Trend</a></td>
+					</tr>
+					<tr>
+						<td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_overall"
+							onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_show('overall_full_screen');return true;">Overall Score </a></td>
+					</tr>
+					<tr>
+						<td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_gas"
+							onclick="t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
+					</tr>
+				</table>
+				</td>
+				<td><!-- START PANEL -->
+				<div class="">
 				<div class="panel_nw">
 
-					<div class="panel_title">
-						<span class="line">Trend</span>
-							<ui:include src="/includes/dateLinksWithFlyOut.xhtml">
-								<ui:param name="ajaxForm" value="trendDateLinks"/>
-								<ui:param name="ajaxStatusID" value="trendStatus"/>
-								<ui:param name="reRenderList" value="trendDateLinks,xypanel,countPanel,viewControl:items"/>			
-								<ui:param name="thirtyDaysOn" value="#{navigationDurationBean.styleClass30Days}"/>
-								<ui:param name="threeMonthsOn" value="#{navigationDurationBean.styleClass3Months}"/>
-								<ui:param name="sixMonthsOn" value="#{navigationDurationBean.styleClass6Months}"/>
-								<ui:param name="twelveMonthsOn" value="#{navigationDurationBean.styleClass12Months}"/>
-		            			<ui:param name="duration" value="#{navigationDurationBean.duration}" />
-		            			<ui:param name="flyNavRule" value="go_home" />
-		            			<ui:param name="flyOutImage" value="ico_minimize.png" />
-		            			<ui:param name="report" value="TREND" />
-							</ui:include>	
-                    </div>
+				<div class="panel_title"><span class="line">Trend</span> <ui:include src="/includes/dateLinksWithFlyOut.xhtml">
+					<ui:param name="ajaxForm" value="trendDateLinks" />
+					<ui:param name="ajaxStatusID" value="trendStatus" />
+					<ui:param name="reRenderList" value="trendDateLinks,xypanel,countPanel,viewControl:items" />
+					<ui:param name="thirtyDaysOn" value="#{navigationDurationBean.styleClass30Days}" />
+					<ui:param name="threeMonthsOn" value="#{navigationDurationBean.styleClass3Months}" />
+					<ui:param name="sixMonthsOn" value="#{navigationDurationBean.styleClass6Months}" />
+					<ui:param name="twelveMonthsOn" value="#{navigationDurationBean.styleClass12Months}" />
+					<ui:param name="duration" value="#{navigationDurationBean.duration}" />
+					<ui:param name="flyNavRule" value="go_home" />
+					<ui:param name="flyOutImage" value="ico_minimize.png" />
+					<ui:param name="report" value="TREND" />
+				</ui:include></div>
 				</div>
-					<div class="panel_w">
-					
-					  <div class="panel_content">
-					  	<!-- Start xy graph --> 
-							<rich:panel style="height:600;width:600">
-								<div id="chartdiv2" align="center"></div>
-								<script type="text/javascript">
+				<div class="panel_w">
+
+				<div class="panel_content"><!-- Start xy graph --> <rich:panel style="height:600;width:600">
+					<div id="chartdiv2" align="center"></div>
+					<script type="text/javascript">
 									var trendChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSLine.swf", "TrendChartId", "800", "600", "0", "1");						   						   		
 									trendChart.setDataXML("<chart></chart>");
 									trendChart.setTransparent(true);
 									trendChart.render("chartdiv2");
 								</script>
-							</rich:panel> 	
-								<!-- Start xy graph --> 	
-							<rich:panel id="xypanel">
-									<h:inputHidden value="#{trendFlyoutBean.lineDef}" id="trendDataInputHidden" />
-									<script type="text/javascript">
-										 var trendDataElement = document.getElementById("trendDataInputHidden");
-										
-										 chartObj = getChartFromId("TrendChartId");
-		   						   		
-										 chartObj.setDataXML(trendDataElement.value);
-								
+				</rich:panel> <!-- Start xy graph --> <rich:panel id="xypanel">
+					<h:inputHidden value="#{trendFlyoutBean.lineDef}" id="trendDataInputHidden" />
+					<script type="text/javascript">
+										 var trendDataElement = document.getElementById("trendDataInputHidden");										
+										 chartObj = getChartFromId("TrendChartId");		   						   		
+										 chartObj.setDataXML(trendDataElement.value);								
 	
 										 function FC_Rendered(DOMId){
 									        
@@ -166,228 +149,188 @@
 									         }
 									      }
 									</script>
-							</rich:panel> 
-							<!-- End xy graph -->
+				</rich:panel> <!-- End xy graph -->
 
-				<div class="spacer"></div>	
-				<div class="spacer"></div>				
-				
-				<rich:panel id="countPanel" style="height:30;width:800;position:relative;">	
-					
-						<div style="text-align: right;" >													
-							<h:outputText 
-								id="countString" value="#{trendFlyoutBean.countString}">
-							</h:outputText>						
-						</div>					
-													
-				</rich:panel>	
-				
-				<div class="spacer"></div>	
-				<div class="spacer"></div>		
-				
-				<div class="datagrid">
-				
-				
-					<a4j:form id="viewControl" reRender="trendDateLinks,xypanel,countPanel,hiddenField12,items">
-						        							
-   						<h:inputHidden id="hiddenGroupID" value="#{navigationBean.groupID}"/>   								
-			
-						<rich:dataTable value="#{trendFlyoutBean.scoreableEntities}" id="items"
-										var="item" styleClass="datagrid" 
-										rowClasses="trendTableOdd,trendTableEven" 
-										cellspacing="1" width="100%">
-										
-							<rich:column width="20">
+				<div class="spacer"></div>
+				<div class="spacer"></div>
 
-									<h:selectBooleanCheckbox id="showCheckBox" value="#{item.show}" >
-									   	<a4j:support event="onclick" reRender="trendDateLinks,xypanel,countPanel,hiddenField12">
-									   		<f:param name="selected" value="#{item.se.entityID}">
-									   		</f:param>
-									   	</a4j:support>
-									</h:selectBooleanCheckbox>
-								
-							</rich:column>
+				<rich:panel id="countPanel" style="height:30;width:800;position:relative;">
 
-							<!-- Data -->
-							<rich:column width="20">
-								<f:facet name="header">
-									<h:outputText value=" " />
-								</f:facet>
-								<rich:spacer width="17" height="17"
-									style="background-color:#{item.colorKey};border-style:solid;border-width:1px;border-color:#000000"></rich:spacer>
-							</rich:column>
+					<div style="text-align: right;"><h:outputText id="countString" value="#{trendFlyoutBean.countString}">
+					</h:outputText></div>
 
-							<rich:column sortBy="#{item.se.identifier}">
-								<f:facet name="header">
-									<h:outputText value="Division/Team" />
-								</f:facet>
-								<h:outputLink value="#{item.goTo}">
-									<h:outputText value="#{item.se.identifier}" />
-								</h:outputLink>
-							</rich:column>
+				</rich:panel>
 
-							<rich:column width="73" sortBy="#{item.se.score}">
-								<f:facet name="header">
-									<h:outputText value="Score" />
-								</f:facet>
-								<iwi:scoreBox style="#{item.style}" score="#{item.se.score}"/>
-							</rich:column>
+				<div class="spacer"></div>
+				<div class="spacer"></div>
 
-						</rich:dataTable>
+				<div class="datagrid"><a4j:form id="viewControl" reRender="trendDateLinks,xypanel,countPanel,hiddenField12,items">
 
-						
-				</a4j:form>		
-					
-				<!-- End Trend table -->
+					<h:inputHidden id="hiddenGroupID" value="#{navigationBean.groupID}" />
 
-				<!-- END PANEL -->
-						
-						</div>
-						
-					  </div>
-					</div>
-				<div class="panel_sw">
-					<div class="panel_statusbar"></div>
+					<rich:dataTable value="#{trendFlyoutBean.scoreableEntities}" id="items" var="item" styleClass="datagrid" rowClasses="trendTableOdd,trendTableEven" cellspacing="1" width="100%">
+
+						<rich:column width="20">
+
+							<h:selectBooleanCheckbox id="showCheckBox" value="#{item.show}">
+								<a4j:support event="onclick" reRender="trendDateLinks,xypanel,countPanel,hiddenField12">
+									<f:param name="selected" value="#{item.se.entityID}">
+									</f:param>
+								</a4j:support>
+							</h:selectBooleanCheckbox>
+
+						</rich:column>
+
+						<!-- Data -->
+						<rich:column width="20">
+							<f:facet name="header">
+								<h:outputText value=" " />
+							</f:facet>
+							<rich:spacer width="17" height="17" style="background-color:#{item.colorKey};border-style:solid;border-width:1px;border-color:#000000"></rich:spacer>
+						</rich:column>
+
+						<rich:column sortBy="#{item.se.identifier}">
+							<f:facet name="header">
+								<h:outputText value="Division/Team" />
+							</f:facet>
+							<h:outputLink value="#{item.goTo}">
+								<h:outputText value="#{item.se.identifier}" />
+							</h:outputLink>
+						</rich:column>
+
+						<rich:column width="73" sortBy="#{item.se.score}">
+							<f:facet name="header">
+								<h:outputText value="Score" />
+							</f:facet>
+							<iwi:scoreBox style="#{item.style}" score="#{item.se.score}" />
+						</rich:column>
+
+					</rich:dataTable>
+
+
+				</a4j:form> <!-- End Trend table --> <!-- END PANEL --></div>
+
 				</div>
-			</div>
-		<!-- END PANEL -->
-		</td>
+				</div>
+				<div class="panel_sw">
+				<div class="panel_statusbar"></div>
+				</div>
+				</div>
+				<!-- END PANEL --></td>
 
-		</tr>
-		</table>        
-		
+			</tr>
+		</table>
+
 		<table width="820" border="0" cellspacing="0" cellpadding="0" align="center" id="overall_full_screen" style="margin-top: 10px; display: none;">
 			<tr>
-			  <td valign="top">
-			  <table width="130" border="0" cellpadding="0" cellspacing="0"  style="margin-top: 40px;">
-            <tr>
-              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_line" onclick="t_hide('mpg_full_screen');t_hide('overall_full_screen');t_show('trend_full_screen');return true;">Trend</a></td>
-            </tr>
-            <tr>
-              <td valign="top" class="ls_tab_on"><a href="#" class="ls_tab_overall" onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_show('overall_full_screen');return true;">Overall Score </a></td>
-            </tr>
-            <tr>
-              <td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_gas" onclick="t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
+				<td valign="top">
+				<table width="130" border="0" cellpadding="0" cellspacing="0" style="margin-top: 40px;">
+					<tr>
+						<td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_line"
+							onclick="t_hide('mpg_full_screen');t_hide('overall_full_screen');t_show('trend_full_screen');return true;">Trend</a></td>
+					</tr>
+					<tr>
+						<td valign="top" class="ls_tab_on"><a href="#" class="ls_tab_overall"
+							onclick="t_hide('mpg_full_screen');t_hide('trend_full_screen');t_show('overall_full_screen');return true;">Overall Score </a></td>
+					</tr>
+					<tr>
+						<td valign="top" class="ls_tab_off"><a href="#" class="ls_tab_gas"
+							onclick="t_hide('trend_full_screen');t_hide('overall_full_screen');t_show('mpg_full_screen');return true;">Miles Per Gallon</a></td>
 
-            </tr>
-          </table>
-			  </td>
-			<td>
-			
-			<!-- START PANEL -->
-			<div class="">
+					</tr>
+				</table>
+				</td>
+				<td><!-- START PANEL -->
+				<div class="">
 				<div class="panel_nw">
-					<div class="panel_title">
-						<span class="overall">Overall Score </span>
-						<ui:include src="/includes/dateLinksWithFlyOut.xhtml">
-							<ui:param name="ajaxForm" value="dateLinksFormForm"/>
-							<ui:param name="ajaxStatusID" value="overall_status" /> 
-							<ui:param name="reRenderList" value="overallPanel,dateLinksFormForm"/>			
-							<ui:param name="thirtyDaysOn" value="#{breakdownDurationBean.styleClass30Days}"/>
-							<ui:param name="threeMonthsOn" value="#{breakdownDurationBean.styleClass3Months}"/>
-							<ui:param name="sixMonthsOn" value="#{breakdownDurationBean.styleClass6Months}"/>
-							<ui:param name="twelveMonthsOn" value="#{breakdownDurationBean.styleClass12Months}"/>
-	            			<ui:param name="duration" value="#{breakdownDurationBean.duration}" />
-	            			<ui:param name="flyNavRule" value="go_home" />
-	            			<ui:param name="flyOutImage" value="ico_minimize.png" />
-	            			<ui:param name="report" value="OVERALL_SCORE" />
-						</ui:include>	
-                    </div>
+				<div class="panel_title"><span class="overall">Overall Score </span> <ui:include src="/includes/dateLinksWithFlyOut.xhtml">
+					<ui:param name="ajaxForm" value="dateLinksFormForm" />
+					<ui:param name="ajaxStatusID" value="overall_status" />
+					<ui:param name="reRenderList" value="overallPanel,dateLinksFormForm" />
+					<ui:param name="thirtyDaysOn" value="#{breakdownDurationBean.styleClass30Days}" />
+					<ui:param name="threeMonthsOn" value="#{breakdownDurationBean.styleClass3Months}" />
+					<ui:param name="sixMonthsOn" value="#{breakdownDurationBean.styleClass6Months}" />
+					<ui:param name="twelveMonthsOn" value="#{breakdownDurationBean.styleClass12Months}" />
+					<ui:param name="duration" value="#{breakdownDurationBean.duration}" />
+					<ui:param name="flyNavRule" value="go_home" />
+					<ui:param name="flyOutImage" value="ico_minimize.png" />
+					<ui:param name="report" value="OVERALL_SCORE" />
+				</ui:include></div>
 				</div>
-					<div class="panel_w">
-					  <rich:panel bodyClass="panel_content" id="overallPanel">
-					  
-					  <table width="800" height="" border="1" align="center" cellpadding="0" cellspacing="0">
-                            <tr>
-                              <td colspan="3" valign="top" style="border-bottom: 1px solid #e1e1e1;">
-						 		<table width="455" height="100" border="1" cellspacing="0" cellpadding="0" align="center">
-					            	<tr>
-					                	<td colspan="2" align="right" valign="top">&#160;</td>
-					                </tr>
-					                <tr>
-					                    <td align="center" valign="top" width="120">
-					    					<ui:include src="/includes/overallScoreBox.xhtml">	
-												<ui:param name="scoreStyle" value="#{breakdownBean.overallScoreStyle}"/>									
-				        	  					<ui:param name="score" value="#{breakdownBean.overallScore}"/>             						
-				    						</ui:include>    							
-										</td>
-											
-					                    <td rowspan="2" width="">
-					                    	<rich:panel id="overall_pie" align="center"></rich:panel>
-								  			<h:inputHidden value="#{breakdownBean.overallPieDef}" id="hiddenField1"/>
-											<script type="text/javascript">
+				<div class="panel_w"><rich:panel bodyClass="panel_content" id="overallPanel">
+
+					<table width="800" height="" border="1" align="center" cellpadding="0" cellspacing="0">
+						<tr>
+							<td colspan="3" valign="top" style="border-bottom: 1px solid #e1e1e1;">
+							<table width="455" height="100" border="1" cellspacing="0" cellpadding="0" align="center">
+								<tr>
+									<td colspan="2" align="right" valign="top">&#160;</td>
+								</tr>
+								<tr>
+									<td align="center" valign="top" width="120"><ui:include src="/includes/overallScoreBox.xhtml">
+										<ui:param name="scoreStyle" value="#{breakdownBean.overallScoreStyle}" />
+										<ui:param name="score" value="#{breakdownBean.overallScore}" />
+									</ui:include></td>
+
+									<td rowspan="2" width=""><rich:panel id="overall_pie" align="center"></rich:panel> <h:inputHidden value="#{breakdownBean.overallPieDef}" id="hiddenField1" /> <script
+										type="text/javascript">
 												var targetElement1 = document.getElementById("hiddenField1");
 												var pie1 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "450", "450", "0", "0");										
 												pie1.setDataXML(targetElement1.value);		
 												pie1.setTransparent(true);							   	   
 												pie1.render("overall_pie");
-											</script>
-					                    </td>
-					                 </tr>
-					                 <tr>
-					                 	
-					                    <td align="center" valign="top" width="120">
-											<ui:include src="/includes/scoreBoxLegend.xhtml"/>
-					                    </td>
-					                 </tr>
-								</table>
-                              </td>
-                            </tr>
-                            <tr>
+											</script></td>
+								</tr>
+								<tr>
 
-                              <td width="225" valign="top" style="border-right: 1px solid #e1e1e1;">
-                              			<div class="piegrid_label"><a href="#" class="ls_tab_drivestyle">Driving Style</a></div>
-                                     	<rich:panel id="style_pie" align="center"></rich:panel>
-								  			<h:inputHidden value="#{breakdownBean.stylePieDef}" id="hiddenField2"/>
-											<script type="text/javascript">
+									<td align="center" valign="top" width="120"><ui:include src="/includes/scoreBoxLegend.xhtml" /></td>
+								</tr>
+							</table>
+							</td>
+						</tr>
+						<tr>
+
+							<td width="225" valign="top" style="border-right: 1px solid #e1e1e1;">
+							<div class="piegrid_label"><a href="#" class="ls_tab_drivestyle">Driving Style</a></div>
+							<rich:panel id="style_pie" align="center"></rich:panel> <h:inputHidden value="#{breakdownBean.stylePieDef}" id="hiddenField2" /> <script type="text/javascript">
 												var targetElement2 = document.getElementById("hiddenField2");
 												var pie2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "220", "180", "0", "0");										
 												pie2.setDataXML(targetElement2.value);	
 												pie2.setTransparent(true);								   	   
 												pie2.render("style_pie");
-											</script>
-                              </td>
-                              <td width="225" valign="top" style="border-right: 1px solid #e1e1e1;">
-                             			<div class="piegrid_label"><a href="#" class="ls_tab_seatbelt">Seat Belt</a></div>
-										<rich:panel id="seatBelt_pie" align="center"></rich:panel>
-								  			<h:inputHidden value="#{breakdownBean.seatBeltPieDef}" id="hiddenField3"/>
-											<script type="text/javascript">
+											</script></td>
+							<td width="225" valign="top" style="border-right: 1px solid #e1e1e1;">
+							<div class="piegrid_label"><a href="#" class="ls_tab_seatbelt">Seat Belt</a></div>
+							<rich:panel id="seatBelt_pie" align="center"></rich:panel> <h:inputHidden value="#{breakdownBean.seatBeltPieDef}" id="hiddenField3" /> <script type="text/javascript">
 												var targetElement3 = document.getElementById("hiddenField3");
 												var pie3 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "220", "180", "0", "0");										
 												pie3.setDataXML(targetElement3.value);	
 												pie3.setTransparent(true);								   	   
 												pie3.render("seatBelt_pie");
-											</script>
-                              </td>
-                              <td width="225" valign="top" style="border-right: 1px solid #e1e1e1;">
-                              <div class="piegrid_label"><a href="#" class="ls_tab_speed">Speed</a></div>
-                                     <rich:panel id="speed_pie" align="center"></rich:panel>
-								  			<h:inputHidden value="#{breakdownBean.speedPieDef}" id="hiddenField4"/>
-											<script type="text/javascript">
+											</script></td>
+							<td width="225" valign="top" style="border-right: 1px solid #e1e1e1;">
+							<div class="piegrid_label"><a href="#" class="ls_tab_speed">Speed</a></div>
+							<rich:panel id="speed_pie" align="center"></rich:panel> <h:inputHidden value="#{breakdownBean.speedPieDef}" id="hiddenField4" /> <script type="text/javascript">
 												var targetElement4 = document.getElementById("hiddenField4");
 												var pie4 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "220", "180", "0", "0");										
 												pie4.setDataXML(targetElement4.value);	
 												pie4.setTransparent(true);								   	   
 												pie4.render("speed_pie");
-											</script>
+											</script></td>
+						</tr>
+					</table>
 
-                              </td>
-                            </tr>
-                          </table>
-					  
-					  </rich:panel>
-					</div>
+				</rich:panel></div>
 				<div class="panel_sw">
-					<div class="panel_statusbar"></div>
+				<div class="panel_statusbar"></div>
 				</div>
-			</div>
+				</div>
 
-		<!-- END PANEL -->
-		</td>
-		</tr>
-	</table>
+				<!-- END PANEL --></td>
+			</tr>
+		</table>
 
-	<script type="text/JavaScript">
+		<script type="text/JavaScript">
 	
 		//Start page with the following tab.
 		t_show('#{flyOutBean.selectedTab}');
@@ -402,6 +345,6 @@
 		
 	</script>
 
-</ui:define>
+	</ui:define>
 
 </ui:composition>

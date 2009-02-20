@@ -45,7 +45,8 @@ public class MpgBean extends BaseBean
     private String countString = null;
 
     private String barDef;
-
+    
+    
     public String getBarDef()
     {
         if (barDef == null)

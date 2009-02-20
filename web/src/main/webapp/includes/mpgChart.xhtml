@@ -1,75 +1,61 @@
-<ui:composition 
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:rich="http://richfaces.org/rich"
-	xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:c="http://java.sun.com/jstl/core"
-  	xmlns:iwi="http://pro.tiwi.com/jsf"
-	xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core" xmlns:iwi="http://pro.tiwi.com/jsf" xmlns:h="http://java.sun.com/jsf/html">
 
 
-  <c:if test="#{empty inFlyOut}">
-    <c:set var="inFlyOut" value="false" />
-  </c:if>
-  <c:choose>
-    <c:when test="#{inFlyOut == 'true'}">
-      <c:set var="displayLegend" value="false" />
-      <c:set var="displayTable" value="true" />
-      <c:set var="flyOutImage" value="ico_minimize.png" />
-    </c:when>
-    <c:otherwise>
-      <c:set var="displayLegend" value="true" />
-      <c:set var="displayTable" value="false" />
-      <c:set var="flyOutImage" value="ico_expand.png" />
-    </c:otherwise>
-  </c:choose>
-  
-  <div>
-    <div class="panel_nw">
+	<c:if test="#{empty inFlyOut}">
+		<c:set var="inFlyOut" value="false" />
+	</c:if>
+	<c:choose>
+		<c:when test="#{inFlyOut == 'true'}">
+			<c:set var="displayTable" value="true" />
+			<c:set var="flyOutImage" value="ico_minimize.png" />
+		</c:when>
+		<c:otherwise>
+			<c:set var="displayTable" value="false" />
+			<c:set var="flyOutImage" value="ico_expand.png" />
+		</c:otherwise>
+	</c:choose>
 
-      <div class="panel_title" style="z-index: #{zorder}">
-        <span class="gas">#{title}</span>
-        <c:choose>
-          <c:when test="#{empty flyNavRule}">
-            <ui:include src="/includes/dateLinks.xhtml">
-              <ui:param name="ajaxForm" value="#{ajaxForm}"/>
-              <ui:param name="ajaxStatusID" value="#{ajaxStatusID}"/>
-              <ui:param name="reRenderList" value="#{reRenderList}"/>     
-              <ui:param name="thirtyDaysOn" value="#{thirtyDaysOn}"/>
-              <ui:param name="threeMonthsOn" value="#{threeMonthsOn}"/>
-              <ui:param name="sixMonthsOn" value="#{sixMonthsOn}"/>
-              <ui:param name="twelveMonthsOn" value="#{twelveMonthsOn}"/>
-              <ui:param name="duration" value="#{duration}" />
-            </ui:include>
-          </c:when>
-          <c:otherwise>
-    	    <ui:include src="/includes/dateLinksWithFlyOut.xhtml">
-    	      <ui:param name="ajaxForm" value="#{ajaxForm}"/>
-    	      <ui:param name="ajaxStatusID" value="#{ajaxStatusID}"/>
-    	      <ui:param name="reRenderList" value="#{reRenderList}"/>			
-    	      <ui:param name="thirtyDaysOn" value="#{thirtyDaysOn}"/>
-    	      <ui:param name="threeMonthsOn" value="#{threeMonthsOn}"/>
-    	      <ui:param name="sixMonthsOn" value="#{sixMonthsOn}"/>
-    	      <ui:param name="twelveMonthsOn" value="#{twelveMonthsOn}"/>
-        	  <ui:param name="duration" value="#{duration}" />
-              <ui:param name="flyNavRule" value="#{flyNavRule}" />  
-              <ui:param name="flyOutImage" value="#{flyOutImage}" />
-              <ui:param name="flySelectedTab" value="mpg_full_screen" />
-              <ui:param name="groupID" value="#{mpgBean.groupID}" />
-              <ui:param name="report" value="MPG_GROUP"/>
+	<div>
+	<div class="panel_nw">
+
+	<div class="panel_title" style="z-index: #{zorder}"><span class="gas">#{title}</span> <c:choose>
+		<c:when test="#{empty flyNavRule}">
+			<ui:include src="/includes/dateLinks.xhtml">
+				<ui:param name="ajaxForm" value="#{ajaxForm}" />
+				<ui:param name="ajaxStatusID" value="#{ajaxStatusID}" />
+				<ui:param name="reRenderList" value="#{reRenderList}" />
+				<ui:param name="thirtyDaysOn" value="#{thirtyDaysOn}" />
+				<ui:param name="threeMonthsOn" value="#{threeMonthsOn}" />
+				<ui:param name="sixMonthsOn" value="#{sixMonthsOn}" />
+				<ui:param name="twelveMonthsOn" value="#{twelveMonthsOn}" />
+				<ui:param name="duration" value="#{duration}" />
 			</ui:include>
-          </c:otherwise>
-        </c:choose>
-      </div>
-    </div>
-    <div class="panel_w">
-      <div class="panel_content">
-        
-        <!-- Start xy graph --> 
-        <rich:panel id="mpgPanel" style="height:#{xyheight};width:#{xywidth}">
-          <div id="mpgChartDiv" align="center"></div>
-          <h:inputHidden value="#{barDef}" id="mpgDataElement" />
-          <script type="text/javascript">
+		</c:when>
+		<c:otherwise>
+			<ui:include src="/includes/dateLinksWithFlyOut.xhtml">
+				<ui:param name="ajaxForm" value="#{ajaxForm}" />
+				<ui:param name="ajaxStatusID" value="#{ajaxStatusID}" />
+				<ui:param name="reRenderList" value="#{reRenderList}" />
+				<ui:param name="thirtyDaysOn" value="#{thirtyDaysOn}" />
+				<ui:param name="threeMonthsOn" value="#{threeMonthsOn}" />
+				<ui:param name="sixMonthsOn" value="#{sixMonthsOn}" />
+				<ui:param name="twelveMonthsOn" value="#{twelveMonthsOn}" />
+				<ui:param name="duration" value="#{duration}" />
+				<ui:param name="flyNavRule" value="#{flyNavRule}" />
+				<ui:param name="flyOutImage" value="#{flyOutImage}" />
+				<ui:param name="flySelectedTab" value="mpg_full_screen" />
+				<ui:param name="groupID" value="#{mpgBean.groupID}" />
+				<ui:param name="report" value="MPG_GROUP" />
+			</ui:include>
+		</c:otherwise>
+	</c:choose></div>
+	</div>
+	<div class="panel_w">
+	<div class="panel_content"><!-- Start xy graph --> <rich:panel id="mpgPanel" style="height:#{xyheight};width:#{xywidth}">
+		<div id="mpgChartDiv" align="center"></div>
+		<h:inputHidden value="#{barDef}" id="mpgDataElement" />
+		<script type="text/javascript">
             var targetElement = document.getElementById("mpgDataElement");
               
             var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/ScrollColumn2D.swf", "ChartId", "#{xywidth}", "#{xyheight}", "0", "0");                                
@@ -77,116 +63,87 @@
             chart.setTransparent(true);          
             chart.render("mpgChartDiv");
           </script>
-        </rich:panel> 
-        <!-- End xy graph -->
-      
-        <rich:panel rendered="#{displayLegend}">
-          <div align="center"><h:graphicImage url="/images/legend_mpg.png" width="332" height="44"/></div>
-        </rich:panel>
-        
-        <rich:panel rendered="#{displayTable}">
-          <div class="spacer"></div>
-          
-          <div class="datagrid">
-            <h:form id="mpgTable">
+	</rich:panel> <!-- End xy graph --> <rich:panel>
+		<div align="center"><h:graphicImage url="/images/legend_mpg.png" width="332" height="44" /></div>
+	</rich:panel> <rich:panel rendered="#{displayTable}">
+		<div class="spacer"></div>
 
-        
-              <rich:panel>  
-                <rich:spacer height="10"/>
-                      
-                  <div style="text-align: right;" >                         
-                    <h:outputText 
-                      id="countString" value="#{mpgBean.countString}"/>
-                    <rich:spacer width="10"/>
-                  </div>          
-                                
-              </rich:panel> 
-        
-              <rich:datascroller id="bottomScroller" for="items" immediate="true"
-                  scrollerListener="#{mpgBean.scrollerListener}"
-                  reRender="topScroller,countString,starter,items,mpgPanel">
-                  <f:setPropertyActionListener target="#{mpgBean.sortOnLight}" value="#{mpgBean.sortOnLight}" />
-              </rich:datascroller>             
+		<div class="datagrid"><h:form id="mpgTable">
 
-              <rich:dataTable value="#{mpgBean.mpgEntities}" id="items"
-                var="item" styleClass="datagrid" rows="1"
-                rowClasses="trendTableOdd,trendTableEven" cellspacing="1" width="100%">
 
-                <rich:column 
-                    headerClass="sortable-text #{mpgBean.sortOnName eq '' ? '' : (mpgBean.sortOnName eq 'asc' ? 'forwardSort' : 'reverseSort')}">
-                  <f:facet name="header">
-                    <a4j:commandLink 
-                      value="Fleet" 
-                      reRender="mpgPanel,items">
-                      <f:setPropertyActionListener target="#{mpgBean.sortOnName}" value="#{mpgBean.sortOnName eq 'asc' ? 'dec' : 'asc'}" />
-                      <f:setPropertyActionListener target="#{mpgBean.sortOnLight}" value="" />
-                      <f:setPropertyActionListener target="#{mpgBean.sortOnMedium}" value="" />
-                      <f:setPropertyActionListener target="#{mpgBean.sortOnHeavy}" value="" />                            
-                    </a4j:commandLink>
-                  </f:facet>
-                  <h:outputLink value="#{item.goTo}">
-                    <h:outputText value="#{item.entity.entityName}" />
-                  </h:outputLink>
-                </rich:column>
-          
-                <rich:column width="73" 
-                    headerClass="sortable-text #{mpgBean.sortOnLight eq '' ? '' : (mpgBean.sortOnLight eq 'asc' ? 'forwardSort' : 'reverseSort')}">
-                  <f:facet name="header">
-                    <a4j:commandLink 
-                      value="Light" 
-                      reRender="mpgPanel,items">
-                      <f:setPropertyActionListener target="#{mpgBean.sortOnName}" value="" />
-                      <f:setPropertyActionListener target="#{mpgBean.sortOnLight}" value="#{mpgBean.sortOnLight eq 'asc' ? 'dec' : 'asc'}" />
-                      <f:setPropertyActionListener target="#{mpgBean.sortOnMedium}" value="" />
-                      <f:setPropertyActionListener target="#{mpgBean.sortOnHeavy}" value="" />                            
-                    </a4j:commandLink>
-                  </f:facet>
-                  <h:outputText value="#{item.entity.lightValue}" />
-                </rich:column>
-          
-                <rich:column width="73" 
-                    headerClass="sortable-text #{mpgBean.sortOnMedium eq '' ? '' : (mpgBean.sortOnMedium eq 'asc' ? 'forwardSort' : 'reverseSort')}">
-                  <f:facet name="header">
-                    <a4j:commandLink 
-                      value="Medium" 
-                      reRender="mpgPanel,items">
-                      <f:setPropertyActionListener target="#{mpgBean.sortOnName}" value="" />
-                      <f:setPropertyActionListener target="#{mpgBean.sortOnLight}" value="" />
-                      <f:setPropertyActionListener target="#{mpgBean.sortOnMedium}" value="#{mpgBean.sortOnMedium eq 'asc' ? 'dec' : 'asc'}" />
-                      <f:setPropertyActionListener target="#{mpgBean.sortOnHeavy}" value="" />                            
-                    </a4j:commandLink>
-                  </f:facet>
-                  <h:outputText value="#{item.entity.mediumValue}" />
-                </rich:column>
-          
-                <rich:column width="73"
-                    headerClass="sortable-text #{mpgBean.sortOnHeavy eq '' ? '' : (mpgBean.sortOnHeavy eq 'asc' ? 'forwardSort' : 'reverseSort')}">
-                  <f:facet name="header">
-                    <a4j:commandLink 
-                      value="Heavy" 
-                      reRender="mpgPanel,items">
-                      <f:setPropertyActionListener target="#{mpgBean.sortOnName}" value="" />
-                      <f:setPropertyActionListener target="#{mpgBean.sortOnLight}" value="" />
-                      <f:setPropertyActionListener target="#{mpgBean.sortOnMedium}" value="" />
-                      <f:setPropertyActionListener target="#{mpgBean.sortOnHeavy}" value="#{mpgBean.sortOnHeavy eq 'asc' ? 'dec' : 'asc'}" />                            
-                    </a4j:commandLink>
-                  </f:facet>
-                  <h:outputText value="#{item.entity.heavyValue}" />
-                </rich:column>
+			<rich:panel>
+				<rich:spacer height="10" />
 
-              </rich:dataTable>
-            </h:form>
-            
-          </div>
-          
-        </rich:panel>
-                
-      </div>
-    </div>
+				<div style="text-align: right;"><h:outputText id="countString" value="#{mpgBean.countString}" /> <rich:spacer width="10" /></div>
 
-    <div class="panel_sw">
-      <div class="panel_statusbar"></div>
-    </div>
+			</rich:panel>
 
-  </div>
+			<rich:datascroller id="bottomScroller" for="items" immediate="true" scrollerListener="#{mpgBean.scrollerListener}" reRender="topScroller,countString,starter,items,mpgPanel">
+				<f:setPropertyActionListener target="#{mpgBean.sortOnLight}" value="#{mpgBean.sortOnLight}" />
+			</rich:datascroller>
+
+			<rich:dataTable value="#{mpgBean.mpgEntities}" id="items" var="item" styleClass="datagrid" rows="#{mpgBean.numRowsPerPg}" rowClasses="trendTableOdd,trendTableEven"
+				cellspacing="1" width="100%">
+
+				<rich:column headerClass="sortable-text #{mpgBean.sortOnName eq '' ? '' : (mpgBean.sortOnName eq 'asc' ? 'forwardSort' : 'reverseSort')}">
+					<f:facet name="header">
+						<a4j:commandLink value="Fleet" reRender="mpgPanel,items">
+							<f:setPropertyActionListener target="#{mpgBean.sortOnName}" value="#{mpgBean.sortOnName eq 'asc' ? 'dec' : 'asc'}" />
+							<f:setPropertyActionListener target="#{mpgBean.sortOnLight}" value="" />
+							<f:setPropertyActionListener target="#{mpgBean.sortOnMedium}" value="" />
+							<f:setPropertyActionListener target="#{mpgBean.sortOnHeavy}" value="" />
+						</a4j:commandLink>
+					</f:facet>
+					<h:outputLink value="#{item.goTo}">
+						<h:outputText value="#{item.entity.entityName}" />
+					</h:outputLink>
+				</rich:column>
+
+				<rich:column width="73" headerClass="sortable-text #{mpgBean.sortOnLight eq '' ? '' : (mpgBean.sortOnLight eq 'asc' ? 'forwardSort' : 'reverseSort')}">
+					<f:facet name="header">
+						<a4j:commandLink value="Light" reRender="mpgPanel,items">
+							<f:setPropertyActionListener target="#{mpgBean.sortOnName}" value="" />
+							<f:setPropertyActionListener target="#{mpgBean.sortOnLight}" value="#{mpgBean.sortOnLight eq 'asc' ? 'dec' : 'asc'}" />
+							<f:setPropertyActionListener target="#{mpgBean.sortOnMedium}" value="" />
+							<f:setPropertyActionListener target="#{mpgBean.sortOnHeavy}" value="" />
+						</a4j:commandLink>
+					</f:facet>
+					<h:outputText value="#{item.entity.lightValue}" />
+				</rich:column>
+
+				<rich:column width="73" headerClass="sortable-text #{mpgBean.sortOnMedium eq '' ? '' : (mpgBean.sortOnMedium eq 'asc' ? 'forwardSort' : 'reverseSort')}">
+					<f:facet name="header">
+						<a4j:commandLink value="Medium" reRender="mpgPanel,items">
+							<f:setPropertyActionListener target="#{mpgBean.sortOnName}" value="" />
+							<f:setPropertyActionListener target="#{mpgBean.sortOnLight}" value="" />
+							<f:setPropertyActionListener target="#{mpgBean.sortOnMedium}" value="#{mpgBean.sortOnMedium eq 'asc' ? 'dec' : 'asc'}" />
+							<f:setPropertyActionListener target="#{mpgBean.sortOnHeavy}" value="" />
+						</a4j:commandLink>
+					</f:facet>
+					<h:outputText value="#{item.entity.mediumValue}" />
+				</rich:column>
+
+				<rich:column width="73" headerClass="sortable-text #{mpgBean.sortOnHeavy eq '' ? '' : (mpgBean.sortOnHeavy eq 'asc' ? 'forwardSort' : 'reverseSort')}">
+					<f:facet name="header">
+						<a4j:commandLink value="Heavy" reRender="mpgPanel,items">
+							<f:setPropertyActionListener target="#{mpgBean.sortOnName}" value="" />
+							<f:setPropertyActionListener target="#{mpgBean.sortOnLight}" value="" />
+							<f:setPropertyActionListener target="#{mpgBean.sortOnMedium}" value="" />
+							<f:setPropertyActionListener target="#{mpgBean.sortOnHeavy}" value="#{mpgBean.sortOnHeavy eq 'asc' ? 'dec' : 'asc'}" />
+						</a4j:commandLink>
+					</f:facet>
+					<h:outputText value="#{item.entity.heavyValue}" />
+				</rich:column>
+
+			</rich:dataTable>
+		</h:form></div>
+
+	</rich:panel></div>
+	</div>
+
+	<div class="panel_sw">
+	<div class="panel_statusbar"></div>
+	</div>
+
+	</div>
 </ui:composition>
