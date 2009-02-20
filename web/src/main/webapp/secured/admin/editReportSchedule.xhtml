@@ -87,7 +87,8 @@
 											required="#{(not reportScheduleBean.batchEdit) or reportScheduleBean.updateField['startDate']}" 
 											requiredMessage="#{messages.required}" todayControlMode="hidden" enableManualInput="true" 
 											converterMessage="#{messages.editPerson_dateFormat}" timeZone="#{reportScheduleBean.utcTimeZone}" 
-											oninputchange="checkMultiple('startDate')" ondateselect="checkMultiple('startDate')"/>	
+											oninputchange="checkMultiple('startDate')" ondateselect="checkMultiple('startDate')">
+									</rich:calendar>	
 								</td>
 								
 							</tr>
@@ -97,9 +98,11 @@
 									<h:outputText value="#{messages.reportSchedule_endDate}" />
 								</td>
 								<td>
-									<rich:calendar value="#{reportScheduleBean.item.endDate}" todayControlMode="hidden" enableManualInput="true" 
-									converterMessage="#{messages.editPerson_dateFormat}" timeZone="#{reportScheduleBean.utcTimeZone}" 
-									oninputchange="checkMultiple('endDate')" ondateselect="checkMultiple('endDate')"/>	
+									<rich:message for="endDate" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+									<rich:calendar id="endDate" value="#{reportScheduleBean.item.endDate}" todayControlMode="hidden" enableManualInput="true" 
+										converterMessage="#{messages.editPerson_dateFormat}" timeZone="#{reportScheduleBean.utcTimeZone}" 
+										oninputchange="checkMultiple('endDate')" ondateselect="checkMultiple('endDate')">
+									</rich:calendar>	
 								</td>
 							</tr>
 							<tr>
