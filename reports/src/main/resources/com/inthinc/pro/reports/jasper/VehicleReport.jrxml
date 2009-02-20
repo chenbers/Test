@@ -31,9 +31,9 @@
 	<parameter name="REPORT_DATE_AS_STRING" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="REPORT_LOGO" isForPrompting="false" class="java.io.InputStream"/>
 
-	<field name="overallScore" class="java.lang.Integer"/>
-	<field name="speedScore" class="java.lang.Integer"/>
-	<field name="styleScore" class="java.lang.Integer"/>
+	<field name="overallScoreAsString" class="java.lang.String"/>
+	<field name="speedScoreAsString" class="java.lang.String"/>
+	<field name="styleScoreAsString" class="java.lang.String"/>
 	<field name="milesDriven" class="java.lang.Integer"/>
 	<field name="vehicle.name" class="java.lang.String"/>
 	<field name="makeModelYear" class="java.lang.String"/>
@@ -323,7 +323,7 @@
 					<textElement textAlignment="Left">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[new java.math.BigDecimal($F{overallScore}.intValue()).movePointLeft(1).toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{overallScoreAsString}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -336,7 +336,7 @@
 					<textElement textAlignment="Left">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[new java.math.BigDecimal($F{speedScore}.intValue()).movePointLeft(1).toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{speedScoreAsString}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -349,7 +349,7 @@
 					<textElement textAlignment="Left">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[new java.math.BigDecimal($F{styleScore}.intValue()).movePointLeft(1).toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{styleScoreAsString}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

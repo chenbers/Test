@@ -1,5 +1,7 @@
 package com.inthinc.pro.model;
 
+import java.math.BigDecimal;
+
 public class DriverReportItem extends BaseEntity implements Comparable<DriverReportItem>
 {
     
@@ -7,6 +9,8 @@ public class DriverReportItem extends BaseEntity implements Comparable<DriverRep
      * 
      */
     private static final long serialVersionUID = 6797365101619066450L;
+    
+    private static final String NA = "N/A";
     
     private String group;
     private String employeeID;
@@ -152,6 +156,51 @@ public class DriverReportItem extends BaseEntity implements Comparable<DriverRep
     public void setGoTo(String goTo)
     {
         this.goTo = goTo;
+    }
+    
+    public String getSpeedScoreAsString()
+    {
+        String returnString = NA;
+        if(speedScore != null && speedScore >= 0)
+        {
+            returnString = new BigDecimal(speedScore).movePointLeft(1).toString();
+        }
+        
+        return returnString;
+    }
+    
+    public String getStyleScoreAsString()
+    {
+        String returnString = NA;
+        if(styleScore != null && styleScore >= 0)
+        {
+            returnString = new BigDecimal(styleScore).movePointLeft(1).toString();
+        }
+        
+        return returnString;
+    }
+    
+    public String getOverallScoreAsString()
+    {
+        String returnString = NA;
+        
+        if(overallScore != null && overallScore >= 0)
+        {
+            returnString = new BigDecimal(overallScore).movePointLeft(1).toString();
+        }
+        
+        return returnString;
+    }
+    
+    public String getSeatBeltScoreAsString()
+    {
+        String returnString = NA;
+        if(seatBeltScore != null && seatBeltScore >= 0)
+        {
+            returnString = new BigDecimal(seatBeltScore).movePointLeft(1).toString();
+        }
+        
+        return returnString;
     }
     
     @Override

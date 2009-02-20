@@ -1,5 +1,7 @@
 package com.inthinc.pro.model;
 
+import java.math.BigDecimal;
+
 public class VehicleReportItem extends BaseEntity implements Comparable<VehicleReportItem>
 {
     /**
@@ -7,6 +9,7 @@ public class VehicleReportItem extends BaseEntity implements Comparable<VehicleR
      */
     private static final long serialVersionUID = -199959826868545534L;
     
+    private static final String NA = "N/A";
     
     private String group;
     private Vehicle vehicle;
@@ -125,6 +128,40 @@ public class VehicleReportItem extends BaseEntity implements Comparable<VehicleR
     public void setGoTo(String goTo)
     {
         this.goTo = goTo;
+    }
+    
+    public String getSpeedScoreAsString()
+    {
+        String returnString = NA;
+        if(speedScore != null && speedScore >= 0)
+        {
+            returnString = new BigDecimal(speedScore).movePointLeft(1).toString();
+        }
+        
+        return returnString;
+    }
+    
+    public String getStyleScoreAsString()
+    {
+        String returnString = NA;
+        if(styleScore != null && styleScore >= 0)
+        {
+            returnString = new BigDecimal(styleScore).movePointLeft(1).toString();
+        }
+        
+        return returnString;
+    }
+    
+    public String getOverallScoreAsString()
+    {
+        String returnString = NA;
+        
+        if(overallScore != null && overallScore >= 0)
+        {
+            returnString = new BigDecimal(overallScore).movePointLeft(1).toString();
+        }
+        
+        return returnString;
     }
     
     @Override

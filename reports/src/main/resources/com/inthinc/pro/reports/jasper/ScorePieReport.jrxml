@@ -292,7 +292,7 @@ isCircular="true" >
 					<textElement>
 						<font/>
 					</textElement>
-				<text><![CDATA[Seatbelt]]></text>
+				<text><![CDATA[Seat Belt]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
