@@ -168,7 +168,7 @@
 				</itemHyperlink>
 						</categorySeries>
 					</categoryDataset>
-					<linePlot isShowShapes="false" >
+					<linePlot >
 						<plot >
 							<seriesColor seriesOrder="0" color="#B1D1DC"/>
 							<seriesColor seriesOrder="1" color="#C8A1D1"/>

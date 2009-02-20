@@ -7,7 +7,7 @@
 		 printOrder="Vertical"
 		 orientation="Portrait"
 		 pageWidth="595"
-		 pageHeight="1500"
+		 pageHeight="784"
 		 columnWidth="535"
 		 columnSpacing="0"
 		 leftMargin="30"
@@ -47,6 +47,7 @@
 	<parameter name="SCORE_HARDBUMP" isForPrompting="false" class="java.lang.Double"/>
 	<parameter name="SPEED_MEASUREMENT" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="DURATION" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="REPORT_LOGO" isForPrompting="false" class="java.io.InputStream"/>
 
 	<field name="event.addressStr" class="java.lang.String"/>
 	<field name="date" class="java.lang.String"/>
@@ -65,47 +66,8 @@
 			<band height="462"  isSplitAllowed="false" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="0"
-						y="1"
-						width="376"
-						height="14"
-						key="textField-8"/>
-					<box></box>
-					<textElement textAlignment="Left" verticalAlignment="Top">
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ENTITY_NAME}]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement
-						x="407"
-						y="1"
-						width="122"
-						height="16"
-						key="staticText-8"/>
-					<box></box>
-					<textElement textAlignment="Right" verticalAlignment="Top">
-						<font/>
-					</textElement>
-				<text><![CDATA[tiwiPRO]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="128"
-						y="33"
-						width="0"
-						height="2"
-						key="staticText-9"/>
-					<box></box>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[Static Text]]></text>
-				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="293"
-						y="14"
+						x="297"
+						y="444"
 						width="238"
 						height="17"
 						key="textField-13"/>
@@ -116,7 +78,7 @@
 				<textFieldExpression   class="java.lang.String"><![CDATA["Event Count: " + $P{RECORD_COUNT}.toString()]]></textFieldExpression>
 				</textField>
 				<lineChart>
-					<chart  hyperlinkTarget="Self" >
+					<chart  hyperlinkTarget="Self"  customizerClass="com.inthinc.pro.reports.jasper.customizer.DriverLineChartCustomizer" >
 					<reportElement
 						x="-1"
 						y="50"
@@ -142,7 +104,7 @@
 				</itemHyperlink>
 						</categorySeries>
 					</categoryDataset>
-					<linePlot isShowShapes="false" >
+					<linePlot >
 						<plot />
 						<categoryAxisFormat>
 							<axisFormat >
@@ -291,42 +253,92 @@
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="0"
-						y="14"
-						width="288"
-						height="18"
-						key="textField-22"/>
+						x="323"
+						y="1"
+						width="212"
+						height="14"
+						key="textField-21"/>
 					<box></box>
-					<textElement textAlignment="Left" verticalAlignment="Top">
-						<font size="14"/>
+					<textElement textAlignment="Right" verticalAlignment="Top">
+						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{REPORT_NAME}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ENTITY_NAME}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<staticText>
 					<reportElement
-						x="46"
+						x="128"
 						y="33"
-						width="116"
-						height="17"
-						key="textField-23"/>
+						width="0"
+						height="2"
+						key="staticText-19"/>
 					<box></box>
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{DURATION}]]></textFieldExpression>
+				<text><![CDATA[Static Text]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="323"
+						y="15"
+						width="212"
+						height="17"
+						key="textField-22"/>
+					<box></box>
+					<textElement textAlignment="Right">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Duration: " + $P{DURATION}.toString()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="55"
+						y="21"
+						width="230"
+						height="19"
+						key="textField-23"/>
+					<box></box>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{REPORT_NAME}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
-						x="0"
+						x="128"
 						y="33"
-						width="47"
-						height="16"
+						width="0"
+						height="2"
 						key="staticText-20"/>
 					<box></box>
 					<textElement>
 						<font/>
 					</textElement>
-				<text><![CDATA[Duration:]]></text>
+				<text><![CDATA[Static Text]]></text>
+				</staticText>
+				<image  scaleImage="RetainShape" vAlign="Top" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="1"
+						y="2"
+						width="51"
+						height="47"
+						key="image-1"/>
+					<box></box>
+					<graphicElement stretchType="NoStretch"/>
+					<imageExpression class="java.io.InputStream"><![CDATA[$P{REPORT_LOGO}]]></imageExpression>
+				</image>
+				<staticText>
+					<reportElement
+						x="55"
+						y="5"
+						width="122"
+						height="16"
+						key="staticText-21"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font/>
+					</textElement>
+				<text><![CDATA[tiwiPRO - Portal]]></text>
 				</staticText>
 			</band>
 		</title>
@@ -482,14 +494,14 @@
 					<reportElement
 						x="475"
 						y="3"
-						width="47"
+						width="53"
 						height="17"
 						key="textField-4"/>
 					<box></box>
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.inthinc.pro.reports.model.SeverityType.valueOf($F{event.severity}).toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -515,7 +527,7 @@
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{event.speed}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{event.speed}.toString() + " mph"]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

@@ -398,7 +398,6 @@ public class VehicleBean extends BaseBean
 
             count++;
         }
-        logger.debug("CHART Data List for MPG " + chartDataList.size());
         return chartDataList;
     }
 
@@ -408,7 +407,7 @@ public class VehicleBean extends BaseBean
 
         // Page 1
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_SUMMARY_P1, getGroupHierarchy().getTopGroup().getName());
-        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_OVERALL));
+        
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.addParameter("REPORT_NAME", "Vehicle Performance: Summary");
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
@@ -416,6 +415,7 @@ public class VehicleBean extends BaseBean
         reportCriteria.addParameter("SPEED_SCORE", initAverageScore(ScoreType.SCORE_SPEEDING) / 10.0D);
         reportCriteria.addParameter("STYLE_SCORE", initAverageScore(ScoreType.SCORE_DRIVING_STYLE) / 10.0D);
         reportCriteria.addParameter("SEATBELT_SCORE", initAverageScore(ScoreType.SCORE_SEATBELT) / 10.0D);
+        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_OVERALL));
         reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_SPEEDING));
         reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_DRIVING_STYLE));
         reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_SEATBELT));
