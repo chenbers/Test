@@ -1,7 +1,13 @@
 package com.inthinc.pro.model;
 
-public class VehicleReportItem
+public class VehicleReportItem extends BaseEntity implements Comparable<VehicleReportItem>
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -199959826868545534L;
+    
+    
     private String group;
     private Vehicle vehicle;
     private String makeModelYear;
@@ -119,6 +125,12 @@ public class VehicleReportItem
     public void setGoTo(String goTo)
     {
         this.goTo = goTo;
+    }
+    
+    @Override
+    public int compareTo(VehicleReportItem item)
+    {
+        return this.getVehicle().getName().toLowerCase().compareTo(item.getVehicle().getName().toLowerCase());
     }
 
 }

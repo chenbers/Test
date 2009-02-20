@@ -2,7 +2,7 @@ package com.inthinc.pro.model;
 
 import java.text.NumberFormat;
 
-public class IdlingReportItem extends BaseEntity
+public class IdlingReportItem extends BaseEntity implements Comparable<IdlingReportItem>
 {
    
     private static final long serialVersionUID = 835696282264901782L;
@@ -181,5 +181,11 @@ public class IdlingReportItem extends BaseEntity
             format.setMaximumFractionDigits(2);
             format.setMinimumFractionDigits(2);
             return format.format(flt);
+    }
+    
+    @Override
+    public int compareTo(IdlingReportItem item)
+    { 
+        return this.getDriver().getPerson().getFullName().toLowerCase().compareTo(item.getDriver().getPerson().getFullName().toLowerCase());
     }
 }

@@ -1,7 +1,13 @@
 package com.inthinc.pro.model;
 
-public class DriverReportItem extends BaseEntity
+public class DriverReportItem extends BaseEntity implements Comparable<DriverReportItem>
 {
+    
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 6797365101619066450L;
+    
     private String group;
     private String employeeID;
     private String employee;
@@ -146,5 +152,11 @@ public class DriverReportItem extends BaseEntity
     public void setGoTo(String goTo)
     {
         this.goTo = goTo;
+    }
+    
+    @Override
+    public int compareTo(DriverReportItem o)
+    {
+        return getEmployee().toLowerCase().compareTo(o.getEmployee().toLowerCase());
     }
 }
