@@ -162,7 +162,8 @@
 								<h:inputHidden value="#{trendFlyoutBean.lineDef}" id="trendDataInputHidden" />
 								<script type="text/javascript">
 									 var trendDataElement = document.getElementById("trendDataInputHidden");
-									
+
+								     //When this is called the first time nothing will occurr. This behavior is expected and desired.
 									 chartObj = getChartFromId("TrendChartId");
 	   						   		
 									 chartObj.setDataXML(trendDataElement.value);
@@ -183,6 +184,7 @@
 
 		<div class="spacer"></div>
 			
+	    <!--  
 		<rich:panel id="countPanel" style="height:30;width:800;position:relative;">	
 					
 				<div style="text-align: right;" >													
@@ -191,7 +193,8 @@
 					</h:outputText>						
 				</div>					
 													
-		</rich:panel>					
+		</rich:panel>	
+		-->				
 
 		<div class="datagrid">
 		
@@ -209,6 +212,7 @@
 
 									<h:selectBooleanCheckbox id="showCheckBox" value="#{item.show}" >
 									   	<a4j:support event="onclick" reRender="trendDateLinks,xypanel,countPanel,hiddenField12">
+									   		<f:setPropertyActionListener target="#{trendFlyoutBean.animateChartData}" value="FALSE"/>		
 									   		<f:param name="selected" value="#{item.se.entityID}">
 									   		</f:param>
 									   	</a4j:support>

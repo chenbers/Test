@@ -150,7 +150,7 @@ public class GraphicUtil {
 	    return months;
 	}
 	
-	public static String getXYControlParameters() {
+	public static String getXYControlParameters(boolean animate) {
 		StringBuffer sb = new StringBuffer();
 		
 		sb.append("<chart ");
@@ -171,8 +171,15 @@ public class GraphicUtil {
 		sb.append("divLineColor=\'cfcfcf\' ");
 		sb.append("divLineIsDashed=\'1\' ");
 		sb.append("imageSaveURL=\'" + FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/secured/FusionChartsSave.jsp\'");
-		sb.append("imageSave=\'1\'");	 
-		sb.append("animation=\'1\' ");
+		sb.append("imageSave=\'1\'");
+		if(animate)
+		{
+		    sb.append("animation=\'1\' ");
+		}
+		else
+		{
+		    sb.append("animation=\'0\' ");
+		}
 		sb.append("bgColor=\'#ffffff\' ");
 		sb.append("borderThickness=\'1\' ");
 		sb.append("showToolTips=\'1\' ");

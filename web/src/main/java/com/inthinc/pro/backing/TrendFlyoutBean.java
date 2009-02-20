@@ -54,6 +54,7 @@ public class TrendFlyoutBean extends BaseBean
     
     private int selected = -1;
     private boolean resetFlyout = false;
+    private Boolean animateChartData = Boolean.TRUE;
     
     public TrendFlyoutBean()
     {
@@ -99,8 +100,9 @@ public class TrendFlyoutBean extends BaseBean
         StringBuffer sb = new StringBuffer();
         lineDef = new String();
 
+        logger.debug("Animate Chart: " + animateChartData);
         // Control parameters
-        sb.append(GraphicUtil.getXYControlParameters());
+        sb.append(GraphicUtil.getXYControlParameters(animateChartData));
 
         // Fetch to get parents children, qualifier is groupId (parent),
         // date from, date to
@@ -528,6 +530,17 @@ public class TrendFlyoutBean extends BaseBean
             }
         }
             
+    }
+
+    public void setAnimateChartData(String animateChartData)
+    {
+        logger.debug("setAnimateChartData: " + animateChartData);
+        this.animateChartData = Boolean.valueOf(animateChartData);
+    }
+
+    public String getAnimateChartData()
+    {
+        return animateChartData.toString();
     }
 
 }

@@ -49,6 +49,7 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg>
     
     private ReportRenderer reportRenderer;
     private ReportCriteriaService reportCriteriaService;
+    private Boolean animateChartData = Boolean.TRUE;
 
     public TrendBean()
     {
@@ -132,7 +133,7 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg>
         lineDef = new String();
 
         // Control parameters
-        sb.append(GraphicUtil.getXYControlParameters());
+        sb.append(GraphicUtil.getXYControlParameters(animateChartData));
 
         // Fetch to get parents children, qualifier is groupId (parent),
         // date from, date to
@@ -440,6 +441,17 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg>
     public ReportCriteriaService getReportCriteriaService()
     {
         return reportCriteriaService;
+    }
+
+    public void setAnimateChartData(String animateChartData)
+    {
+        this.animateChartData = Boolean.valueOf(animateChartData);
+        
+    }
+
+    public String isAnimateChartData()
+    {
+        return animateChartData.toString();
     }
 
 }
