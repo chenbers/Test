@@ -22,14 +22,12 @@ import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
-import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.util.ColorSelectorStandard;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.wrapper.ScoreableEntityPkg;
 
-public class TrendBean extends BaseBean
+public class TrendBean extends CustomSortBean<ScoreableEntityPkg>
 {
 
     private static final Logger logger = Logger.getLogger(TrendBean.class);
@@ -48,12 +46,6 @@ public class TrendBean extends BaseBean
     
     private String countString = null;
     private Integer tmpGroupID = null;
-/*    
-    private Boolean sortItFirst = new Boolean(true);
-    private Boolean sortItSecond = new Boolean(false);
-*/    
-    private String sortItFirst = "true";
-    private String sortItSecond = "false";    
     
     private ReportRenderer reportRenderer;
     private ReportCriteriaService reportCriteriaService;
@@ -81,6 +73,8 @@ public class TrendBean extends BaseBean
                tmpGroupID = new Integer(value);
            }
         }
+        
+        setSortColumn("se.identifier");
     }
 
     public String getLineDef()
@@ -93,6 +87,44 @@ public class TrendBean extends BaseBean
     {
         this.lineDef = lineDef;
     }
+    
+    @Override
+    public Comparator<ScoreableEntityPkg> createComparator()
+    {
+        Comparator<ScoreableEntityPkg> comparator = null;
+        if(getSortColumn().equals("se.identifier"))
+        {
+            comparator = new Comparator<ScoreableEntityPkg>()
+            {
+            
+                @Override
+                public int compare(ScoreableEntityPkg se1, ScoreableEntityPkg se2)
+                {
+                    return se1.getSe().getIdentifier().compareTo(se2.getSe().getIdentifier());
+                }
+            };
+        }
+        else
+        {
+            comparator = new Comparator<ScoreableEntityPkg>()
+            {
+            
+                @Override
+                public int compare(ScoreableEntityPkg se1, ScoreableEntityPkg se2)
+                {
+                    return se1.getSe().getScore().compareTo(se2.getSe().getScore());
+                }
+            };
+        }
+        
+        return comparator;
+    }
+    
+    @Override
+    public List<ScoreableEntityPkg> getItems()
+    {
+        return getScoreableEntities();
+    }
 
     private String createLineDef()
     {
@@ -104,25 +136,10 @@ public class TrendBean extends BaseBean
 
         // Fetch to get parents children, qualifier is groupId (parent),
         // date from, date to
-        List<ScoreableEntity> s = null;
-        s = getScores();
-        
-        // Apply any sorting
-        if ( this.sortItFirst.equalsIgnoreCase("true") ) 
-        {
-            s = sortOnIdentifier(s);
-        } 
-        if ( this.sortItSecond.equalsIgnoreCase("true") )
-        {
-            s = sortOnScore(s);
-        }
+        List<ScoreableEntityPkg> s = getScoreableEntities();
         
         // Adjust the count values
         this.maxCount = s.size(); 
-//        this.end = this.numRowsPerPg;
-//        if ( this.maxCount < this.end ) {
-//            this.end = this.maxCount;
-//        }
 
         // X-coordinates
         sb.append("<categories>");
@@ -139,13 +156,13 @@ public class TrendBean extends BaseBean
             if (s.size() < i)
                 continue;
             
-            ScoreableEntity se = s.get(i-1);
+            ScoreableEntityPkg se = s.get(i-1);
             // Fetch to get children's observations
-            List<ScoreableEntity> ss = groupTrendMap.get(se.getEntityID());
+            List<ScoreableEntity> ss = groupTrendMap.get(se.getSe().getEntityID());
 
             // Y-coordinates
             sb.append("<dataset seriesName=\'\' color=\'");
-            sb.append(cs.getEntityColorKey(i-1).substring(1));
+            sb.append(se.getColorKey());
             sb.append("\'>");
 
             // Not a full range, pad w/ zero
@@ -183,7 +200,10 @@ public class TrendBean extends BaseBean
 
     public List<ScoreableEntityPkg> getScoreableEntities()
     {   
-        createScoreableEntities();
+        if (scoreableEntities == null || scoreableEntities.isEmpty()) {
+            createScoreableEntities();
+        }  
+        
         return scoreableEntities;
     }
     
@@ -194,22 +214,18 @@ public class TrendBean extends BaseBean
 
     public List<ScoreableEntityPkg> createScoreableEntities()
     {
-        if ( scoreableEntities != null ) {
+        if (scoreableEntities != null && !scoreableEntities.isEmpty()) {
             logger.debug("scoreableentities size " + scoreableEntities.size());
         }        
         this.scoreableEntities = new ArrayList<ScoreableEntityPkg>();
         List<ScoreableEntity> s = null;
         s = getScores();
         
-        // Apply any sorting
-        if ( this.sortItFirst.equalsIgnoreCase("true") ) 
-        {
-            s = sortOnIdentifier(s);
-        } 
-        if ( this.sortItSecond.equalsIgnoreCase("true") )
-        {
-            s = sortOnScore(s);
-        }
+        Collections.sort(s, new Comparator<ScoreableEntity>() {
+            public int compare(ScoreableEntity se1, ScoreableEntity se2) {
+                return se1.getIdentifier().compareToIgnoreCase(se2.getIdentifier());
+            }            
+        });  
 
         // Populate the table
         String contextPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
@@ -233,48 +249,11 @@ public class TrendBean extends BaseBean
             scoreableEntities.add(se);
             score = null;
         }
+        
         this.maxCount = this.scoreableEntities.size();        
         return this.scoreableEntities;
     }
-    private List<ScoreableEntity> sortOnIdentifier(List<ScoreableEntity> sLocal )
-    {
-        List<ScoreableEntity> sTemp = sLocal;
-        
-        Collections.sort(sTemp, new Comparator() {
-            public int compare(Object o1, Object o2) {
-                ScoreableEntity s1 = (ScoreableEntity)o1;
-                ScoreableEntity s2 = (ScoreableEntity)o2;
-                return s2.getIdentifier().compareToIgnoreCase(s1.getIdentifier());
-            }            
-        });  
     
-        if ( this.navigation.getSortedFirst().equalsIgnoreCase("false") )             
-        {
-            Collections.reverse(sTemp);            
-        }        
-        
-        return sTemp;
-    }
-        
-    private List<ScoreableEntity> sortOnScore(List<ScoreableEntity> sLocal )
-    {
-        List<ScoreableEntity> sTemp = sLocal;
-        
-        Collections.sort(sTemp, new Comparator() {
-            public int compare(Object o1, Object o2) {
-                ScoreableEntity s1 = (ScoreableEntity)o1;
-                ScoreableEntity s2 = (ScoreableEntity)o2;
-                return s2.getScore().compareTo(s1.getScore());      
-            }            
-        });  
-    
-        if ( this.navigation.getSortedSecond().equalsIgnoreCase("false") )            
-        {
-            Collections.reverse(sTemp);            
-        }        
-        
-        return sTemp;
-    }
     
     
     private List<ScoreableEntity> getScores() {
@@ -453,44 +432,6 @@ public class TrendBean extends BaseBean
         return reportRenderer;
     }
     
-    public String getSortItFirst()
-    {
-        return sortItFirst;
-    }
-
-    public void setSortItFirst(String sortItFirst)
-    {
-        this.sortItFirst = sortItFirst;
-        
-        if (        this.navigation.getSortedFirst().equalsIgnoreCase("true") )
-        {
-            this.navigation.setSortedFirst("false");
-        } 
-        else if (   this.navigation.getSortedFirst().equalsIgnoreCase("false") )
-        {
-            this.navigation.setSortedFirst("true");
-        }
-    }
-
-    public String getSortItSecond()
-    {
-        return sortItSecond;
-    }
-    
-    public void setSortItSecond(String sortItSecond)
-    {
-        this.sortItSecond = sortItSecond;
-        
-        if (        this.navigation.getSortedSecond().equalsIgnoreCase("true") )
-        {
-            this.navigation.setSortedSecond("false");
-        } 
-        else if (   this.navigation.getSortedSecond().equalsIgnoreCase("false") )
-        {
-            this.navigation.setSortedSecond("true");
-        }
-    }
-
     public void setReportCriteriaService(ReportCriteriaService reportCriteriaService)
     {
         this.reportCriteriaService = reportCriteriaService;
@@ -500,6 +441,5 @@ public class TrendBean extends BaseBean
     {
         return reportCriteriaService;
     }
-
 
 }

@@ -5,7 +5,8 @@
   			xmlns:rich="http://richfaces.org/rich"
   			xmlns:a4j="http://richfaces.org/a4j"
   			xmlns:iwi="http://pro.tiwi.com/jsf"
-  			xmlns:f="http://java.sun.com/jsf/core">
+  			xmlns:f="http://java.sun.com/jsf/core"
+  			xmlns:t="http://myfaces.apache.org/tomahawk">
   			
 	<ui:define name="scripts">
 		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>	
@@ -17,6 +18,10 @@
 	<ui:param name="helpFile" value="Overall_Score-Division_Level.htm" />
 	
 	<ui:define name="content">
+	
+		<t:saveState value="#{trendBean.sortColumn}"></t:saveState>
+		<t:saveState value="#{trendBean.sortDirection}"></t:saveState>
+		<t:saveState value="#{trendBean.scoreableEntities}"></t:saveState>
 	
 		<h:form id="setupGroup">
 			<h:inputHidden value="#{groupLevelBean.ping}" />
@@ -59,23 +64,41 @@
 					<div class="panel_w">
 
 						<div class="panel_content">
-				<!-- Start xy graph --> 
+							<rich:panel style="height:300;width:445">
+									
+	
+									<div id="chartdiv2" align="center"></div>
+									<script type="text/javascript">
+										var trendChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSLine.swf", "TrendChartId", "445", "300", "0", "1");						   						   		
+										trendChart.setDataXML("<chart></chart>");
+										trendChart.setTransparent(true);
+										trendChart.render("chartdiv2");
+									</script>
+							</rich:panel> 	
+								<!-- Start xy graph --> 	
 							<rich:panel id="xypanel" 
 									style="height:300;width:445">
-								<h:inputHidden value="#{trendBean.lineDef}" 
-									id="hiddenField1" />
-
-								<div id="chartdiv2" align="center"></div>
-								<script type="text/javascript">
-									var targetElement = document.getElementById("hiddenField1");
-							
-									var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSLine.swf", "ChartId", "445", "300", "0", "0");						   						   		
-									chart.setDataXML(targetElement.value);
-									chart.setTransparent(true);
-									chart.render("chartdiv2");
-								</script>
+									<h:inputHidden value="#{trendBean.lineDef}" id="trendDataInputHidden" />
+									<script type="text/javascript">
+										 var trendDataElement = document.getElementById("trendDataInputHidden");
+										
+										 chartObj = getChartFromId("TrendChartId");
+		   						   		
+										 chartObj.setDataXML(trendDataElement.value);
+								
+	
+										 function FC_Rendered(DOMId){
+									        
+									         if (DOMId=="TrendChartId"){
+												chartObj = getChartFromId("TrendChartId");
+														   						   		
+												chartObj.setDataXML(trendDataElement.value);
+									            return;
+									         }
+									      }
+									</script>
 							</rich:panel> 
-				<!-- End xy graph -->
+							<!-- End xy graph -->
 
 							<div class="spacer"></div>
 							<div class="spacer"></div>				
@@ -119,30 +142,34 @@
 													style="background-color:#{item.colorKey};border-style:solid;border-width:1px;border-color:#000000">
 												</rich:spacer>
 											</rich:column>
-											<rich:column
-												headerClass="sortable-text #{trendBean.sortItFirst eq 'true'? (trendBean.navigation.sortedFirst eq 'false' ? 'forwardSort' : 'reverseSort') : ''}">
+											<rich:column 
+												headerClass="sortable-text #{trendBean.sortColumn eq 'se.identifier'? (trendBean.sortDirection eq 'ASC' ? 'forwardSort' : 'reverseSort') : ''}">
 												<f:facet name="header">
 													<a4j:commandLink 
 														value="#{messages.trendReport_header_divisionTeam}" 
-														reRender="xypanel,topScroller,bottomScroller,items">
-														<f:setPropertyActionListener target="#{trendBean.sortItFirst}" value="true" />			
-														<f:setPropertyActionListener target="#{trendBean.sortItSecond}" value="false" />													
+														reRender="xypanel,topScroller,bottomScroller,items"
+														action="#{trendBean.sort}" ajaxSingle="true">
+														<f:setPropertyActionListener target="#{trendBean.sortDirection}" value="#{trendBean.sortDirection eq 'DESC' ? 'ASC' : 'DESC'}"/>
+														<f:setPropertyActionListener target="#{trendBean.sortColumn}" value="se.identifier" />										
 													</a4j:commandLink>
+
 												</f:facet>
 												<h:outputLink value="#{item.goTo}">
 													<h:outputText value="#{item.se.identifier}" />
 												</h:outputLink>
 
 											</rich:column>
-											<rich:column width="73"
-												headerClass="sortable-text #{trendBean.sortItSecond eq 'true'? (trendBean.navigation.sortedSecond eq 'false' ? 'forwardSort' : 'reverseSort') : ''}">
+											<rich:column width="73" 
+												headerClass="sortable-text #{trendBean.sortColumn eq 'se.score'? (trendBean.sortDirection eq 'ASC' ? 'forwardSort' : 'reverseSort') : ''}">
 												<f:facet name="header">
 													<a4j:commandLink 
 														value="#{messages.trendReport_header_score}" 
-														reRender="xypanel,topScroller,bottomScroller,items">
-														<f:setPropertyActionListener target="#{trendBean.sortItSecond}" value="true" />
-														<f:setPropertyActionListener target="#{trendBean.sortItFirst}" value="false" />															
+														reRender="xypanel,topScroller,bottomScroller,items"
+														action="#{trendBean.sort}" ajaxSingle="true">
+														<f:setPropertyActionListener target="#{trendBean.sortDirection}" value="#{trendBean.sortDirection eq 'DESC' ? 'ASC' : 'DESC'}"/>		
+														<f:setPropertyActionListener target="#{trendBean.sortColumn}" value="se.score" />																			
 													</a4j:commandLink>
+
 												</f:facet>
 												<iwi:scoreBox style="#{item.style}" score="#{item.se.score}"/>
 												

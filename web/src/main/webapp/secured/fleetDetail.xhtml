@@ -5,7 +5,8 @@
 		  			xmlns:rich="http://richfaces.org/rich"
 		  			xmlns:a4j="http://richfaces.org/a4j"
 		  			xmlns:iwi="http://pro.tiwi.com/jsf"
-		  			xmlns:f="http://java.sun.com/jsf/core">
+		  			xmlns:f="http://java.sun.com/jsf/core"
+		  			xmlns:t="http://myfaces.apache.org/tomahawk">
   			
 	<ui:define name="scripts">
  		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>	
@@ -38,7 +39,6 @@
 	<ui:param name="homeSelected" value="current" />
 
 	<ui:define name="content">
-	
 		<h:form id="setupGroup">
 			<h:inputHidden value="#{groupLevelBean.ping}" />
 		</h:form>
@@ -136,23 +136,38 @@
 					
 					  <div class="panel_content">
 					  	<!-- Start xy graph --> 
-				<rich:panel id="xypanel" 
-					style="height:600;width:600;">
-					<h:inputHidden value="#{trendFlyoutBean.lineDef}" 
-						id="hiddenField12" />
-
-					<div id="chartdiv2" align="center"></div>
-					<script type="text/javascript">
-						var targetElement = document.getElementById("hiddenField12");
-						
-						var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSLine.swf", "ChartId", "800", "600", "0", "0");		
-						chart.setTransparent(true);				   						   		
-						chart.setDataXML(targetElement.value);
-					   			   
-						chart.render("chartdiv2");
-					</script>
-				</rich:panel> 
-				<!-- End xy graph -->
+							<rich:panel style="height:600;width:600">
+								<div id="chartdiv2" align="center"></div>
+								<script type="text/javascript">
+									var trendChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSLine.swf", "TrendChartId", "800", "600", "0", "1");						   						   		
+									trendChart.setDataXML("<chart></chart>");
+									trendChart.setTransparent(true);
+									trendChart.render("chartdiv2");
+								</script>
+							</rich:panel> 	
+								<!-- Start xy graph --> 	
+							<rich:panel id="xypanel">
+									<h:inputHidden value="#{trendFlyoutBean.lineDef}" id="trendDataInputHidden" />
+									<script type="text/javascript">
+										 var trendDataElement = document.getElementById("trendDataInputHidden");
+										
+										 chartObj = getChartFromId("TrendChartId");
+		   						   		
+										 chartObj.setDataXML(trendDataElement.value);
+								
+	
+										 function FC_Rendered(DOMId){
+									        
+									         if (DOMId=="TrendChartId"){
+												chartObj = getChartFromId("TrendChartId");
+														   						   		
+												chartObj.setDataXML(trendDataElement.value);
+									            return;
+									         }
+									      }
+									</script>
+							</rich:panel> 
+							<!-- End xy graph -->
 
 				<div class="spacer"></div>	
 				<div class="spacer"></div>				
