@@ -66,18 +66,6 @@
         	return marker;
         }
 
-	    //Unload Google Map objects
-		function bodyUnload()
-		{
-			GUnload();
-		}	
-
-		function bodyLoad()
-		{
-			initMap(#{vehicleTripsBean.selectedTrips[0].routeLastStep.lat}, #{vehicleTripsBean.selectedTrips[0].routeLastStep.lng}, 14);
-	   		showTrips();
-		}
-
 	    // Show Warnings Checkbox changed   //TODO: CLEANER WAY TO DO THIS??
 	    function showWarningsChanged()
 	    {
@@ -119,6 +107,20 @@
 		
 	<rich:panel id="script">
 		<script type="text/javascript">
+		
+	    //Unload Google Map objects
+		function bodyUnload()
+		{
+			GUnload();
+		}	
+
+		// This is called on pageLoad and A4J re-renders
+		function bodyLoad()
+		{
+			initMap(#{vehicleTripsBean.selectedTrips[0].routeLastStep.lat}, #{vehicleTripsBean.selectedTrips[0].routeLastStep.lng}, 14);
+	   		showTrips();
+		}
+		
 		//alert('script got rendered');
    		function drawSelectedTrips()
    		{
