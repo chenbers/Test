@@ -3,13 +3,16 @@ package com.inthinc.pro.backing;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.PersonDAO;
+import com.inthinc.pro.dao.hessian.exceptions.DuplicateEmailException;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.validators.EmailValidator;
@@ -48,10 +51,29 @@ public class MyAccountBean extends BaseBean
 
     public String saveFormAction()
     {
-        personDAO.update(getUser().getPerson());
+        try
+        {
+            personDAO.update(getUser().getPerson());
+        }
+        catch (DuplicateEmailException ex)
+        {
+            FacesContext context = FacesContext.getCurrentInstance();
+            FacesMessage message = new FacesMessage();
+            message.setSummary(MessageUtil.getMessageString("editPerson_uniqueEmail") + " " + getUser().getPerson().getPriEmail());
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            context.addMessage("my_form:priEmail", message);
+            
+            restorePerson();
+            return null;
+        }
+        
         return "go_myAccount";
+        
     }
-    
+    private void restorePerson()
+    {
+        getUser().setPerson(personDAO.findByID(getUser().getPerson().getPersonID()));
+    }
     public String getRegionName()
     {
         final Group group = getGroupHierarchy().getGroup(getUser().getGroupID());
