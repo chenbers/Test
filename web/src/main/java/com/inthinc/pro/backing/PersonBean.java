@@ -494,7 +494,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                     valid = false;
                     final String summary = MessageUtil.getMessageString("editPerson_uniqueEmail");
                     final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                    context.addMessage("edit-form:email", message);
+                    context.addMessage("edit-form:priEmail", message);
                 }
             }
 
