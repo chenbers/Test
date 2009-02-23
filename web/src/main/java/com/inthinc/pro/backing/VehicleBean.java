@@ -49,6 +49,7 @@ public class VehicleBean extends BaseBean
     private EventDAO eventDAO;
     private NavigationBean navigation;
     private DurationBean durationBean;
+    private AddressLookup addressLookup;
 
     private TripDisplay lastTrip;
     private List<Event> violationEvents = new ArrayList<Event>();
@@ -85,10 +86,10 @@ public class VehicleBean extends BaseBean
             violationEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), start, end, types);
     
             // Lookup Addresses for events
-            AddressLookup lookup = new AddressLookup();
+            
             for (Event event : violationEvents)
             {
-                event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
+                event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
             }
         }
     }
@@ -165,7 +166,7 @@ public class VehicleBean extends BaseBean
                 hasLastTrip = true;
                 navigation.setDriver(driverDAO.findByID(tempTrip.getDriverID()));
 
-                TripDisplay trip = new TripDisplay(tempTrip, navigation.getDriver().getPerson().getTimeZone());
+                TripDisplay trip = new TripDisplay(tempTrip, navigation.getDriver().getPerson().getTimeZone(), addressLookup.getMapServerURLString());
                 setLastTrip(trip);
                 initViolations(trip.getTrip().getStartTime(), trip.getTrip().getEndTime());
             }
@@ -242,6 +243,16 @@ public class VehicleBean extends BaseBean
     public void setDriverDAO(DriverDAO driverDAO)
     {
         this.driverDAO = driverDAO;
+    }
+
+    public AddressLookup getAddressLookup()
+    {
+        return addressLookup;
+    }
+
+    public void setAddressLookup(AddressLookup addressLookup)
+    {
+        this.addressLookup = addressLookup;
     }
 
     // MPG PROPERTIES

@@ -35,6 +35,7 @@ public class VehicleSpeedBean extends BaseBean
     private ScoreDAO scoreDAO;
     private EventDAO eventDAO;
     private TableStatsBean tableStatsBean;
+    private AddressLookup addressLookup;
 
     private Integer speedScoreOverall;
     private String speedScoreOverallStyle;
@@ -107,13 +108,12 @@ public class VehicleSpeedBean extends BaseBean
 
             tempEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), durationBean.getStartDate(), durationBean.getEndDate(), types);
 
-            AddressLookup lookup = new AddressLookup();
 
             for (Event event : tempEvents)
             {
                 // TODO: Lookup each driver and get timezone.
 
-                event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
+                event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
                 speedingEvents.add(new EventReportItem(event, null));
             }
 
@@ -385,7 +385,16 @@ public class VehicleSpeedBean extends BaseBean
         this.eventDAO = eventDAO;
     }
 
-    
+    public AddressLookup getAddressLookup()
+    {
+        return addressLookup;
+    }
+
+    public void setAddressLookup(AddressLookup addressLookup)
+    {
+        this.addressLookup = addressLookup;
+    }
+
     public TableStatsBean getTableStatsBean()
     {
         return tableStatsBean;

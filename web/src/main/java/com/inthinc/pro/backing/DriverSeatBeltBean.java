@@ -34,6 +34,7 @@ public class DriverSeatBeltBean extends BaseBean
     private ScoreDAO scoreDAO;
     private EventDAO eventDAO;
     private TableStatsBean tableStatsBean;
+    private AddressLookup addressLookup;
 
     private Integer seatBeltScore;
     private String seatBeltScoreHistoryOverall;
@@ -67,10 +68,10 @@ public class DriverSeatBeltBean extends BaseBean
             List<Event> tempEvents = new ArrayList<Event>();
             tempEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), durationBean.getStartDate(), durationBean.getEndDate(), types);
 
-            AddressLookup lookup = new AddressLookup();
+            
             for (Event event : tempEvents)
             {
-                event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
+                event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
                 seatBeltEvents.add(new EventReportItem(event, this.navigation.getDriver().getPerson().getTimeZone()));
             }
             tableStatsBean.setTableSize(seatBeltEvents.size());
@@ -176,6 +177,16 @@ public class DriverSeatBeltBean extends BaseBean
     public void setEventDAO(EventDAO eventDAO)
     {
         this.eventDAO = eventDAO;
+    }
+
+    public AddressLookup getAddressLookup()
+    {
+        return addressLookup;
+    }
+
+    public void setAddressLookup(AddressLookup addressLookup)
+    {
+        this.addressLookup = addressLookup;
     }
 
     // SEATBELT EVENTS LIST

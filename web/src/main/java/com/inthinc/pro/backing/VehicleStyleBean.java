@@ -34,6 +34,7 @@ public class VehicleStyleBean extends BaseBean
     private ScoreDAO scoreDAO;
     private EventDAO eventDAO;
     private TableStatsBean tableStatsBean;
+    private AddressLookup addressLookup;
 
     private Integer styleScoreOverall;
     private String styleScoreOverallStyle;
@@ -97,10 +98,9 @@ public class VehicleStyleBean extends BaseBean
 
             tempEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), durationBean.getStartDate(), durationBean.getEndDate(), types);
 
-            AddressLookup lookup = new AddressLookup();
             for (Event event : tempEvents)
             {
-                event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
+                event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
                 styleEvents.add(new EventReportItem(event, null));
             }
 
@@ -356,6 +356,16 @@ public class VehicleStyleBean extends BaseBean
     public void setDurationBean(DurationBean durationBean)
     {
         this.durationBean = durationBean;
+    }
+    
+    public AddressLookup getAddressLookup()
+    {
+        return addressLookup;
+    }
+
+    public void setAddressLookup(AddressLookup addressLookup)
+    {
+        this.addressLookup = addressLookup;
     }
     
     public TableStatsBean getTableStatsBean()

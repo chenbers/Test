@@ -43,7 +43,7 @@ public class DriverLocationBean extends BaseBean {
 	private GroupHierarchy       organizationHierarchy;
 	private Integer selectedDriverID;
 	private Integer selectedVehicleID;
-	private AddressLookup addressLookup = new AddressLookup();
+	private AddressLookup addressLookup;
 
 	public DriverLocationBean() {
 		super();
@@ -198,7 +198,16 @@ public class DriverLocationBean extends BaseBean {
 		this.navigation = navigation;
 	}
 
-	public LatLng getCenter() {
+	public AddressLookup getAddressLookup()
+    {
+        return addressLookup;
+    }
+	
+    public void setAddressLookup(AddressLookup addressLookup)
+    {
+        this.addressLookup = addressLookup;
+    }
+    public LatLng getCenter() {
 		return center;
 	}
 

@@ -34,7 +34,7 @@ public class LiveFleetBean extends BaseBean
     private Integer              selectedVehicleID;
     private Integer              selectedDriverID;
     private List<Group>          displayedGroups;
-    private AddressLookup        addressLookup = new AddressLookup();
+    private AddressLookup        addressLookup;
 
     public void initBean()
     {
@@ -145,6 +145,16 @@ public class LiveFleetBean extends BaseBean
     public void setVehicleDAO(VehicleDAO vehicleDAO)
     {
         this.vehicleDAO = vehicleDAO;
+    }
+    
+    public AddressLookup getAddressLookup()
+    {
+        return addressLookup;
+    }
+
+    public void setAddressLookup(AddressLookup addressLookup)
+    {
+        this.addressLookup = addressLookup;
     }
 
     // ADDRESS LATLNG PROPERTIES

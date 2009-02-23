@@ -26,6 +26,7 @@ public class DriverTripsBean extends BaseBean
     private NavigationBean      navigation;
     private DriverDAO           driverDAO;
     private EventDAO            eventDAO;
+    private AddressLookup       addressLookup;
 
     private Date                startDate;
     private Date                endDate;
@@ -56,7 +57,7 @@ public class DriverTripsBean extends BaseBean
             for (Trip trip : tempTrips)
             {
                 // Add/Insert trip to index 0. to reverse list.
-                trips.add(0, new TripDisplay(trip, navigation.getDriver().getPerson().getTimeZone()));
+                trips.add(0, new TripDisplay(trip, navigation.getDriver().getPerson().getTimeZone(), addressLookup.getMapServerURLString()));
             }
     
             numTrips = trips.size();
@@ -86,14 +87,13 @@ public class DriverTripsBean extends BaseBean
             idleEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), start, end, idleTypes);
 
             // Lookup Addresses for events
-            AddressLookup lookup = new AddressLookup();
             for (Event event : violationEvents)
             {
-                event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
+                event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
             }
             for (Event event : idleEvents)
             {
-                event.setAddressStr(lookup.getAddress(event.getLatitude(), event.getLongitude()));
+                event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
             }
 
             allEvents.clear();
@@ -397,6 +397,16 @@ public class DriverTripsBean extends BaseBean
     public void setEventDAO(EventDAO eventDAO)
     {
         this.eventDAO = eventDAO;
+    }
+
+    public AddressLookup getAddressLookup()
+    {
+        return addressLookup;
+    }
+
+    public void setAddressLookup(AddressLookup addressLookup)
+    {
+        this.addressLookup = addressLookup;
     }
 
     // SELECTED TRIPS PROPERTIES

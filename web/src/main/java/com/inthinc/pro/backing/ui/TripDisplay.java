@@ -28,7 +28,7 @@ public class TripDisplay
     
     private static DateFormat dateFormatter;
     
-    public TripDisplay(Trip trip, TimeZone timeZone)
+    public TripDisplay(Trip trip, TimeZone timeZone, String mapServerUrl)
     {
         this.trip = trip;
         this.timeZone = timeZone;
@@ -51,6 +51,7 @@ public class TripDisplay
         setDistance(mileageDouble.toString());
         
         AddressLookup lookup = new AddressLookup();
+        lookup.setMapServerURLString(mapServerUrl);
 
         if(route.size() > 0)
         {
