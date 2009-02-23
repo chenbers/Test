@@ -6,6 +6,11 @@ import com.inthinc.pro.model.app.Roles;
 
 public class Role extends BaseEntity implements ReferenceEntity, Comparable<Role>
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -5621595749335872123L;
+
     @ID
     Integer roleID;
     

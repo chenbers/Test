@@ -69,7 +69,6 @@ public class Roles implements BaseAppEntity
         return roleDAO;
     }
 
-
     public void setRoleDAO(RoleDAO roleDAO)
     {
         this.roleDAO = roleDAO;

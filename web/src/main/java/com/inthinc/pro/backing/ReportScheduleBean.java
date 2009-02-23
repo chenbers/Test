@@ -120,7 +120,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             for (ReportGroup rt : EnumSet.allOf(ReportGroup.class))
             {
                 List<GroupType> groupTypes = Arrays.asList(rt.getGroupTypes());
-                if(groupTypes.contains(getGroupHierarchy().getTopGroup().getType()))
+                if(getGroupHierarchy().containsGroupTypes(groupTypes))
                 {
                     reportGroups.add(new SelectItem(rt.getCode(), rt.getLabel()));
                 }

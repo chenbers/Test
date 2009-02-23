@@ -21,6 +21,7 @@ import java.util.TreeMap;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
 import org.jasypt.util.password.PasswordEncryptor;
 import org.springframework.beans.BeanUtils;
@@ -184,7 +185,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private DriverDAO                          driverDAO;
     private PasswordEncryptor                  passwordEncryptor;
     private List<PersonChangeListener>         changeListeners;
-    private Map<String, Role>                  roles;
+    private List<SelectItem>                   roles;
 
     public void setPersonDAO(PersonDAO personDAO)
     {
@@ -714,19 +715,27 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         return TIMEZONES;
     }
 
-    public Map<String, Role> getRoles()
+    public List<SelectItem> getRoles()
     {
-        if (roles == null)
+//        if (roles == null)
+//        {
+//            roles = new LinkedHashMap<String, Role>();
+//            for (final Role role : Roles.getRoleMap().values())
+//            {
+//                roles.put(role.getName(), role);
+//                if (role.equals(getUser().getRole()))
+//                    break;
+//            }
+//        }
+//        return roles;
+        List<SelectItem> roleList = new ArrayList<SelectItem>();
+        for(Role role : Roles.getRoleList())
         {
-            roles = new LinkedHashMap<String, Role>();
-            for (final Role role : Roles.getRoleMap().values())
-            {
-                roles.put(role.getName(), role);
-                if (role.equals(getUser().getRole()))
-                    break;
-            }
+            roleList.add(new SelectItem(role,role.getName()));
         }
-        return roles;
+        roleList.add(0,new SelectItem(null,""));
+        
+        return roleList;
     }
 
     public Map<String, String> getLicenseClasses()

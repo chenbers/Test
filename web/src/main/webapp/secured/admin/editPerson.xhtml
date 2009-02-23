@@ -431,9 +431,11 @@
                             <h:outputText rendered="#{not personBean.batchEdit}" styleClass="required" value=" *" />
                           </td>
                           <td>
-                            <h:selectOneMenu value="#{personBean.item.user.role}" id="user_role" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)">
-                              <f:converter  converterId="RoleConverter"/>
-                              <f:selectItems value="#{personBean.roles}" />
+                            <h:selectOneMenu value="#{personBean.item.user.role}" id="user_role" 
+                            		converter="SimpleBeanConverter"
+                            		disabled="#{!personBean.item.userEditable}" 
+                            		onchange="checkMultiple(this)">
+                              	<f:selectItems value="#{personBean.roles}" />
                             </h:selectOneMenu>
                           </td>
                         </tr>
