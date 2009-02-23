@@ -25,7 +25,7 @@ public class MpgCustomizer extends JRAbstractChartCustomizer
             for(int j = 0; j < plot.getDataset().getRowCount();j++)
             {
                 Number value = plot.getDataset().getValue(j,i);
-                if(value.intValue() > 0){
+                if(value != null && value.intValue() > 0){
                     foundData = true;
                     break;
                 }
