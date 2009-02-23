@@ -2,7 +2,6 @@ package com.inthinc.pro.reports.service.impl;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -179,8 +178,12 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
             }
             for (ScoreableEntity scoreableEntity : scoreableEntityList)
             {
-                Float score = new Float((scoreableEntity.getScore() == null || scoreableEntity.getScore() < 0) ? 5 : scoreableEntity.getScore() / 10.0);
-                lineGraphDataList.add(new CategorySeriesData(se.getIdentifier(), monthList.get(index++), score, se.getIdentifier()));
+                if(scoreableEntity.getScore() != null && scoreableEntity.getScore() >= 0)
+                {
+                    Float score = new Float((scoreableEntity.getScore() == null || scoreableEntity.getScore() < 0) ? 5 : scoreableEntity.getScore() / 10.0);
+                    lineGraphDataList.add(new CategorySeriesData(se.getIdentifier(), monthList.get(index++), score, se.getIdentifier()));
+                }
+               
             }
 
         }

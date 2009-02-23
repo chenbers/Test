@@ -171,7 +171,7 @@ public class TrendFlyoutBean extends BaseBean
             }
             for (int k = 0; k < holes; k++)
             {
-                sb.append("<set value=\'0.0\'/>");
+                sb.append("<set value=\'0.0\' alpha=\'0\'/>");
             }
 
             ScoreableEntity sss = null;
@@ -182,7 +182,12 @@ public class TrendFlyoutBean extends BaseBean
                 sb.append("<set value=\'");
                 Float score = new Float((sss.getScore()==null || sss.getScore() < 0) ? 5 : sss.getScore() / 10.0); 
                 sb.append(score.toString()).substring(0, 3);
-                sb.append("'/>");
+                sb.append("\'");
+                if(sss.getScore() == null || sss.getScore() < 0)
+                {
+                    sb.append("alpha=\'0\' ");
+                }
+                sb.append("/>");
             }
             sb.append("</dataset>");
             }
