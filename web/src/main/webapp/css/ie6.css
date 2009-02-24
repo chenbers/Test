@@ -472,5 +472,8 @@ a.ls_tab_mile {
 	margin: 0 0 0 8px;
 	}
 
+.datagrid td {
+   border-bottom: 1px solid #8BAD37; 
+}
 
 

@@ -337,10 +337,10 @@
 					<div class="panel_title">
 						<span class=""><h:outputText>Stats:&#160;</h:outputText>
 						<h:outputText value="#{driverTripsBean.startDate}">
-							<f:convertDateTime pattern="#{messages.dateFormat}" />
+							<f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{navigationBean.driver.person.timeZone}"/>
 						</h:outputText>&#160;to&#160; 
 						<h:outputText value="#{driverTripsBean.endDate}">
-							<f:convertDateTime pattern="#{messages.dateFormat}" />
+							<f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{navigationBean.driver.person.timeZone}"/>
 						</h:outputText>
 						</span>
 						<span class="panel_links"></span>
@@ -558,23 +558,23 @@
 			  <rich:panel id="tripsPanel" bodyClass="panel_content" align="center">
 				<!-- Start Trip table --> 
 					<a4j:form id="tripsTableForm">
-						<rich:dataTable 
-						value="#{driverTripsBean.trips}" id="tripsTable" var="item" styleClass="datagrid"
-						rowClasses="tableOdd,tableEven" cellspacing="1" rows="4"  
-						width="100%" style="text-align: left;">
+						<rich:extendedDataTable 
+						value="#{driverTripsBean.trips}" id="tripsTable" var="item" styleClass="datagrid" 
+						rowClasses="tableOdd,tableEven" rows="4" selectedClass="selectedRow"
+						width="100%" height="210px" style="border: 0px;">
 
-							<!-- Data -->
+					        <a4j:support event="onRowClick" reRender="script,bubbles,selectedTrip" oncomplete="bodyLoad();">
+					          <f:setPropertyActionListener value="#{item}" target="#{driverTripsBean.selectedTrip}" />
+					        </a4j:support> 
 										
-							<rich:column sortBy="#{item.dateShort}" >
+							<rich:column sortBy="#{item.trip.startTime}" label="Date">
 								<f:facet name="header">
 									<h:outputText value="Date" />
 								</f:facet>
-									<a4j:commandLink value="#{item.dateShort}" reRender="script,bubbles,selectedTrip" immediate="true" oncomplete="bodyLoad();">
-										<f:setPropertyActionListener value="#{item}" target="#{driverTripsBean.selectedTrip}" />
-									</a4j:commandLink>
+									<h:outputText value="#{item.dateShort}" />
 							</rich:column>
 							
-							<rich:column sortBy="#{item.timeStartShort}" width="90">
+							<rich:column sortBy="#{item.trip.startTime}" width="115" label="Time">
 								<f:facet name="header" >
 									<h:outputText value="Time" />
 								</f:facet>
@@ -582,35 +582,36 @@
 									<h:outputText value="#{item.timeEndShort}" />
 							</rich:column>
 							
-							<rich:column sortBy="#{item.distance}">
+							
+							<rich:column sortBy="#{item.distance}" label="Distance" width="80">
 								<f:facet name="header">
 									<h:outputText value="Dist" />
 								</f:facet>
-								<h:outputText value="#{item.distance}" />		
+								<h:outputText value="#{item.distance} #{messages.mi_label}" />		
 							</rich:column>
 							
-							<rich:column sortBy="#{item.startAddress}">
+							<rich:column sortBy="#{item.startAddress}" label="Start Address">
 								<f:facet name="header">
 									<h:outputText value="Start" />
 								</f:facet>
 								<h:outputText value="#{item.startAddress}" />
 							</rich:column>
 							
-							<rich:column sortBy="#{item.endAddress}">
+							<rich:column sortBy="#{item.endAddress}" label="End Address">
 								<f:facet name="header">
 									<h:outputText value="End" />
 								</f:facet>
 								<h:outputText value="#{item.endAddress}" />
 							</rich:column>
 							
-							<rich:column sortBy="#{item.duration}">
+							<rich:column sortBy="#{item.duration}" label="Duration" width="80">
 								<f:facet name="header">
 									<h:outputText value="Dur" />
 								</f:facet>
 								<h:outputText value="#{item.duration}" />
 							</rich:column>
-						</rich:dataTable>
-						<div class="spacer"></div>
+						</rich:extendedDataTable>
+						
 						<rich:datascroller align="center" for="tripsTable" id="scroller" reRender="tripsTable" />
 					</a4j:form> 
 				<!-- End Trip table -->

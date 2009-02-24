@@ -24,3 +24,9 @@ ul.fdtablePaginater {display:inline;}
 ul.fdtablePaginater li {float:left;}
 ul.fdtablePaginater {text-align:center;}
 /* table { border-bottom:1px solid #8BAD37; } */
+
+.datagrid td
+{
+   border-bottom: 1px solid #8BAD37; 
+}
+        

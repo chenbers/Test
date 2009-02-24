@@ -2104,7 +2104,7 @@ color: #fff;
 .datagrid th {
         font: bold 10px Verdana, Arial, Helvetica, sans-serif;
         color: #333;
-        /* border-right: 1px solid #8BAD37; */
+        border-right: 1px solid #8BAD37;
         border-bottom: 1px solid #8BAD37;
         border-top: 1px solid #8BAD37;
         letter-spacing: 1px;
@@ -2195,8 +2195,8 @@ These styles should be added when very long tables are expected
 */
 .datagrid td {
         font: normal 10px Verdana, Arial, Helvetica, sans-serif;
-        /* border-right: 1px solid #8BAD37; */
-        border-bottom: 1px solid #8BAD37;
+        /*border-right: 1px solid #8BAD37; 
+        border-bottom: 1px solid #8BAD37; */
         padding: 6px 12px 6px 12px;
         color: #333;
         }
@@ -2622,17 +2622,21 @@ table.clearit td {
 	margin: 0; */
 	}
 
+/* The following was being applied to ALL tables.
 table {
 	border: 0;
-	/* padding: 0;
-	margin: 0; */
+	//padding: 0;
+	//margin: 0;
 	}
 	
 table td {
-	border: 0;
-	/* padding: 5px;
-	margin: 0; */
+	border: 1;
+	//padding: 5px;
+	//margin: 0;  
 	}
+	
+	*/
+	
 
 /*  MAP CAR LEGEND */
 
@@ -2780,28 +2784,38 @@ ul.legend {
 	color: gray;
 }
 
-/*  Trend table definitions */
+/*  Trend table definitions  */
 
 .trendTableOdd {
 	background: #ffffff;
+	border-bottom: 1px solid #8BAD37;
 }
 .trendTableEven {
 	background: #EBFFCA;
+	border-bottom: 1px solid #8BAD37;
 }
 
 /* Regular table definitions */
 
 .tableOdd {
 	background: #ffffff;
+	border-right: 1px solid #8BAD37;
+	border-bottom: 1px solid #8BAD37;
 }
 .tableEven {
 	background: #EBFFCA;
+	border-right: 1px solid #8BAD37;
+	border-bottom: 1px solid #8BAD37;
 }
 .selectedRow {
 	background: #f7d673;
+	border: 1px solid #8BAD37;
 }
 
-
+.extdt-cell {
+	border-right: 1px solid #8BAD37;	
+	border-bottom: 1px solid #8BAD37;	
+}
 /* HORIZONTAL TABS FOR THE TEAMS PAGE, MAYBE OTHERS ... */
 
 ul.htabs {
