@@ -541,7 +541,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
             criteria.addKeyValue("driverID", id);
         else criteria.addKeyValue("vehicleID", id);
         
-        criteria.addKeyValueRange("startTime", startDate, endDate);
+        criteria.addKeyValueRange("startTime", DateUtil.convertTimeInSecondsToDate(startDate), DateUtil.convertTimeInSecondsToDate(endDate));
 
         List<Map<String, Object>> matches = MockData.getInstance().lookupList(Trip.class, criteria);
         return matches;
