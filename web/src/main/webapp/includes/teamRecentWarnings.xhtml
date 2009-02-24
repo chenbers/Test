@@ -22,7 +22,7 @@
 			<h:form id="teamWarningsForm">
 			<rich:dataTable value="#{teamWarningsBean.warnings}" id="teamWarnings"
 						var="event" styleClass="datagrid"
-						rowClasses="trendTableOdd,trendTableEven" cellspacing="0" rows="5"
+						rowClasses="tableOdd,tableEven" cellspacing="0" rows="5"
 						width="100%">
 					<rich:column sortBy="#{event.eventType}" width="20%" height="27" >
 						<f:facet name="header">

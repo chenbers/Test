@@ -22,7 +22,7 @@
 			<h:form id="teamRecentEventsForm">
 			<rich:dataTable value="#{teamRecentEventsBean.recentEvents}" id="teamRecentEvents"
 						var="event" styleClass="datagrid"
-						rowClasses="trendTableOdd,trendTableEven" cellspacing="0" rows="5"
+						rowClasses="tableOdd,tableEven" cellspacing="0" rows="5"
 						width="100%">
 					<rich:column sortBy="#{event.eventType}" width="35%" height="27" >
 						<f:facet name="header">

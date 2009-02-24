@@ -82,7 +82,7 @@
 				<f:setPropertyActionListener target="#{mpgBean.sortOnLight}" value="#{mpgBean.sortOnLight}" />
 			</rich:datascroller>
 
-			<rich:dataTable value="#{mpgBean.mpgEntities}" id="items" var="item" styleClass="datagrid" rows="#{mpgBean.numRowsPerPg}" rowClasses="trendTableOdd,trendTableEven"
+			<rich:dataTable value="#{mpgBean.mpgEntities}" id="items" var="item" styleClass="datagrid" rows="#{mpgBean.numRowsPerPg}" rowClasses="tableOdd,tableEven"
 				cellspacing="1" width="100%">
 
 				<rich:column headerClass="sortable-text #{mpgBean.sortOnName eq '' ? '' : (mpgBean.sortOnName eq 'asc' ? 'forwardSort' : 'reverseSort')}">

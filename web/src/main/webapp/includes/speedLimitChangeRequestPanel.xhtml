@@ -158,7 +158,7 @@
 		
 		<rich:dataTable value="#{speedLimitChangeRequests.changeRequests}" id="items"
 			var="item" styleClass="datagrid" rowkey="row" rowkeyVar="rowVar"
-			rowClasses="trendTableOdd,trendTableEven" cellspacing="1" rows="100"
+			rowClasses="tableOdd,tableEven" cellspacing="1" rows="100"
 			width="50%" onRowClick="selectSegment(#{item.linkId})" 
 						onRowMouseOver="hoverSegment(#{item.linkId},this)" 
 						onRowMouseOut="hoverDeselectAllSegments(this)" >
