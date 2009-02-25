@@ -3,6 +3,7 @@ package com.inthinc.pro.backing;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -114,6 +115,7 @@ public class DriverSpeedBean extends BaseBean
                 speedingEvents.add(new EventReportItem(event, this.navigation.getDriver().getPerson().getTimeZone()));
             }
             
+            Collections.reverse(speedingEvents);
             tableStatsBean.setTableSize(speedingEvents.size());
         }
     }
@@ -128,7 +130,7 @@ public class DriverSpeedBean extends BaseBean
 
         List<ScoreableEntity> scoreList = scoreDAO
                 .getDriverScoreHistory(navigation.getDriver().getDriverID(), durationBean.getDuration(), scoreType, GraphicUtil.getDurationSize(durationBean.getDuration()));
-        // 10);
+   
         DateFormat dateFormatter = new SimpleDateFormat(durationBean.getDuration().getDatePattern());
 
         // Get "x" values
@@ -137,7 +139,6 @@ public class DriverSpeedBean extends BaseBean
         int cnt = 0;
         for (ScoreableEntity e : scoreList)
         {
-            // sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt) }));
             if (e.getScore() != null)
             {
                 sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt) }));
@@ -146,8 +147,6 @@ public class DriverSpeedBean extends BaseBean
             {
                 sb.append(line.getChartItem(new Object[] { null, monthList.get(cnt) }));
             }
-            // sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d),
-            // dateFormatter.format(e.getCreated()) }));
             cnt++;
         }
 
@@ -471,7 +470,11 @@ public class DriverSpeedBean extends BaseBean
             int count = 0;
             for (ScoreableEntity se : scoreList)
             {
-                returnList.add(new CategorySeriesData(MessageUtil.getMessageString(st.toString()), monthList.get(count).toString(), se.getScore() / 10.0D, monthList.get(count)
+                Double score = null;
+                if(se.getScore() != null)
+                    score = se.getScore() / 10.0D;
+                
+                returnList.add(new CategorySeriesData(MessageUtil.getMessageString(st.toString()), monthList.get(count).toString(), score, monthList.get(count)
                         .toString()));
 
                 count++;
