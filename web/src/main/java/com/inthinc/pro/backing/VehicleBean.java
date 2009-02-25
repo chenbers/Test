@@ -386,7 +386,11 @@ public class VehicleBean extends BaseBean
         int count = 0;
         for (ScoreableEntity se : scoreList)
         {
-            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString(scoreType.toString()), monthList.get(count).toString(), se.getScore() / 10.0D, monthList.get(
+            Double score = null;
+            if(se.getScore() != null)
+                score = se.getScore() / 10.0D;
+            
+            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString(scoreType.toString()), monthList.get(count).toString(),score , monthList.get(
                     count).toString()));
             count++;
         }

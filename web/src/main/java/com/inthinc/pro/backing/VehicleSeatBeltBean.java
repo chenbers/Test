@@ -269,7 +269,11 @@ public class VehicleSeatBeltBean extends BaseBean
             int count = 0;
             for (ScoreableEntity se : scoreList)
             {
-                returnList.add(new CategorySeriesData(MessageUtil.getMessageString(st.toString()), monthList.get(count).toString(), se.getScore() / 10.0D, monthList.get(count)
+                Double score = null;
+                if(se.getScore() != null)
+                    score = se.getScore() / 10.0D;
+                
+                returnList.add(new CategorySeriesData(MessageUtil.getMessageString(st.toString()), monthList.get(count).toString(), score, monthList.get(count)
                         .toString()));
 
                 count++;
