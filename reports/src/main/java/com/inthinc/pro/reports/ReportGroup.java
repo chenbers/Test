@@ -13,6 +13,10 @@ public enum ReportGroup
             new CriteriaType[]{CriteriaType.DURATION}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET},
             ReportType.OVERALL_SCORE,ReportType.TREND,ReportType.MPG_GROUP),
+//    TEAM_REPORT("Team Report",1,EntityType.ENTITY_GROUP,
+//            new CriteriaType[]{CriteriaType.DURATION}, 
+//            new GroupType[]{GroupType.TEAM},
+//            ReportType.OVERALL_SCORE,ReportType.MPG_GROUP),
     DRIVERS_REPORT("Driver Report",2,EntityType.ENTITY_GROUP,
             new CriteriaType[]{CriteriaType.DURATION}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM},
@@ -36,7 +40,9 @@ public enum ReportGroup
     private String label;
     private EntityType entityType; //Type of entity this report is bound to
     private CriteriaType[] criterias;
-    private GroupType[] groupTypes;
+    
+    //GroupTypes These are used to indicate which groups have access to the report as well as which type of groups that this report can be ran against
+    private GroupType[] groupTypes; 
    
     /**
      * 

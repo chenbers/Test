@@ -1,6 +1,8 @@
 package com.inthinc.pro.model;
 
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import com.inthinc.pro.dao.annotations.ID;
 import com.inthinc.pro.model.app.Roles;
 
@@ -61,14 +63,24 @@ public class Role extends BaseEntity implements ReferenceEntity, Comparable<Role
     {
         return roleID;
     }
+    
     @Override
     public boolean equals(Object obj)
     {
-        if (obj instanceof Role)
+        if (obj != null && obj instanceof Role && retrieveID() != null && ((Role)obj).retrieveID() != null)
             return ((Role) obj).retrieveID().equals(retrieveID());
         else
             return false;
     }
+    
+    @Override
+    public int hashCode()
+    {
+        HashCodeBuilder hcb = new HashCodeBuilder(5,9);
+        hcb.append(this.retrieveID());
+        return hcb.toHashCode();
+    }
+    
     @Override
     public int compareTo(Role o)
     {

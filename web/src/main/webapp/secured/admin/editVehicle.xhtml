@@ -11,7 +11,7 @@
   <ui:param name="helpFile" value="Admin_Add_Vehicle_-_Details.htm" />
 
   <ui:define name="content">
-
+	
     <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
       <tr>
         <td valign="top" width="130">
@@ -76,10 +76,15 @@
                               </ui:fragment>
                               <tr>
                                 <td width="100" valign="top">
-                                  <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_make" value="#{vehiclesBean.updateField['make']}" />
-                                  <h:outputText value="#{messages.editVehicle_make}" />
-                                  <h:outputText rendered="#{not vehiclesBean.batchEdit}" styleClass="required" value=" *" />
+                                  <ui:include src="../../includes/inputLabel.xhtml">
+										<ui:param name="required" value="TRUE"/>
+										<ui:param name="reRender" value="make"/>
+										<ui:param name="fieldName" value="make"/>
+										<ui:param name="editBean" value="#{vehiclesBean}"/>
+										<ui:param name="label" value="#{messages.editVehicle_make}"/>
+								  </ui:include>
                                 </td>
+                                
                                 <td>
                                   <rich:message for="make" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{vehiclesBean.item.make}" id="make" onchange="checkMultiple(this)" styleClass="text" size="30"
@@ -88,9 +93,13 @@
                               </tr>
                               <tr>
                                 <td width="100" valign="top">
-                                  <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_model" value="#{vehiclesBean.updateField['model']}" />
-                                  <h:outputText value="#{messages.editVehicle_model}" />
-                                  <h:outputText rendered="#{not vehiclesBean.batchEdit}" styleClass="required" value=" *" />
+                                  <ui:include src="../../includes/inputLabel.xhtml">
+										<ui:param name="required" value="TRUE"/>
+										<ui:param name="reRender" value="model"/>
+										<ui:param name="fieldName" value="model"/>
+										<ui:param name="editBean" value="#{vehiclesBean}"/>
+										<ui:param name="label" value="#{messages.editVehicle_model}"/>
+								  </ui:include>
                                 </td>
                                 <td>
                                   <rich:message for="model" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -100,9 +109,13 @@
                               </tr>
                               <tr>
                                 <td width="100" valign="top">
-                                  <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_year" value="#{vehiclesBean.updateField['year']}" />
-                                  <h:outputText value="#{messages.editVehicle_year}" />
-                                  <h:outputText rendered="#{not vehiclesBean.batchEdit}" styleClass="required" value=" *" />
+                                  <ui:include src="../../includes/inputLabel.xhtml">
+										<ui:param name="required" value="TRUE"/>
+										<ui:param name="reRender" value="year"/>
+										<ui:param name="fieldName" value="year"/>
+										<ui:param name="editBean" value="#{vehiclesBean}"/>
+								  		<ui:param name="label" value="#{messages.editVehicle_year}"/>
+								  </ui:include>
                                 </td>
                                 <td>
                                   <h:selectOneMenu value="#{vehiclesBean.item.year}" id="year" onchange="checkMultiple(this)">
@@ -121,9 +134,13 @@
                               </tr>
                               <tr>
                                 <td width="100" valign="top">
-                                  <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_type" value="#{vehiclesBean.updateField['vtype']}" />
-                                  <h:outputText value="#{messages.editVehicle_type}" />
-                                  <h:outputText rendered="#{not vehiclesBean.batchEdit}" styleClass="required" value=" *" />
+                                  <ui:include src="../../includes/inputLabel.xhtml">
+										<ui:param name="required" value="TRUE"/>
+										<ui:param name="reRender" value="type"/>
+										<ui:param name="fieldName" value="type"/>
+										<ui:param name="editBean" value="#{vehiclesBean}"/>
+										<ui:param name="label" value="#{messages.editVehicle_type}"/>
+								  </ui:include>
                                 </td>
                                 <td>
                                   <h:selectOneMenu value="#{vehiclesBean.item.vtype}" id="type" onchange="checkMultiple(this)">
@@ -209,9 +226,13 @@
                             <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                               <tr>
                                 <td width="100" valign="top">
-                                  <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_groupID" value="#{vehiclesBean.updateField['groupID']}" />
-                                  <h:outputText value="#{messages.editVehicle_groupID}" />
-                                  <h:outputText rendered="#{not vehiclesBean.batchEdit}" styleClass="required" value=" *" />
+                                  <ui:include src="../../includes/inputLabel.xhtml">
+										<ui:param name="required" value="TRUE"/>
+										<ui:param name="reRender" value="groupID"/>
+										<ui:param name="fieldName" value="groupID"/>
+										<ui:param name="editBean" value="#{vehiclesBean}"/>
+										<ui:param name="label" value="#{messages.editVehicle_groupID}"/>
+								  </ui:include>
                                 </td>
                                 <td>
                                   <rich:message for="groupID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -244,7 +265,7 @@
 
                       <div><h:outputText value="#{messages.editVehicle_speedSensitivityTab}" /></div>
 
-                      <div class="required-key"><h:outputText rendered="#{not vehiclesBean.batchEdit}" value="#{messages.requiredKey}" /></div>
+                      <div class="required-key"><h:outputText value="#{messages.requiredKey}" /></div>
 
                       <div class="spacer"></div>
 
@@ -314,6 +335,8 @@
       <ui:param name="editorBean" value="#{vehiclesBean}" />
       <ui:param name="reRender" value="edit-form:driverID" />
     </ui:include>
+    
+    <ui:include src="../../includes/adminEditScripts.xhtml"/>
 
     <script type="text/javascript">
   var formElements = ["text", "checkbox", "radio", "select-one", "select-multiple", "textarea"];

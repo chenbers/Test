@@ -1,0 +1,32 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+	
+  <!-- 
+  	Params:
+  		editBean: backing bean reference.
+  		fieldName: field name.
+  		label: text for label.
+  		reRender: list of id's of components to reRender
+  		required: is field required.
+  
+   -->
+  <ui:composition>
+	 <h:selectBooleanCheckbox 
+	 		rendered="#{editBean.batchEdit}" 
+	 		id="update_#{fieldName}" 
+	 		value="#{editBean.updateField[fieldName]}">
+	 	<a4j:support event="onchange" reRender="#{reRender}" ajaxSingle="true"></a4j:support>
+	 </h:selectBooleanCheckbox>
+     <h:outputText value="#{label}" />
+	 <h:outputText 
+	 		id="update_#{fieldName}_required_flag" 
+	 		rendered="#{required eq 'TRUE'}" 
+	 		style="display: #{(not editBean.batchEdit) or editBean.updateField[fieldName] ? 'inline' : 'none'}" 
+	 		styleClass="required" value=" *" />
+  </ui:composition>
+</html>

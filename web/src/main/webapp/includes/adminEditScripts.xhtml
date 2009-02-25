@@ -1,0 +1,33 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+
+  <ui:composition>
+
+    <script type="text/javascript">
+    	jQuery(document).ready(function() { 
+		  	 /*
+		  	 	Toggles the required indicator if in batch edit mode
+		  	 */
+	  		 jQuery("input:checkbox").click(function(){
+	  	     	var requiredFlagID = "#" + this.id + "_required_flag";
+	  	     	requiredFlagID = requiredFlagID.replace(":","\\:");
+	  	     	var checked = this.checked;
+	  	     	jQuery(requiredFlagID).attr("style",function(index){
+	  	  	    	 	if(checked){
+							return "display:inline";
+	  	  	  	    	}else{
+	  	  	  	  	    	return "display:none";
+	  	  	  	    	} 
+	  	    	});
+	  	     });
+		});  
+    </script>
+
+  </ui:composition>
+</html>

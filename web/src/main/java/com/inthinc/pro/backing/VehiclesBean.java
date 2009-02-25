@@ -299,11 +299,21 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     {
         // prefix the sensitivity settings with "device."
         final Map<String, Boolean> updateField = getUpdateField();
+        Map<String,Boolean> tempUpdateField = new HashMap<String, Boolean>();
         if (updateField != null)
         {
             for (final String key : updateField.keySet())
+            {
                 if (key.startsWith("hard"))
-                    updateField.put("device." + key, updateField.get(key));
+                {
+                    tempUpdateField.put("device." + key,  updateField.get(key));
+                }
+            }
+            
+            for(final String key : tempUpdateField.keySet())
+            {
+                updateField.put(key, tempUpdateField.get(key));
+            }
         }
 
         // if ((getItem().getDevice() != null) && getItem().getDevice().isSensitivitiesInverted())
@@ -329,6 +339,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
                 context.addMessage("edit-form:VIN", message);
             }
+            
+            
         }
         return valid;
     }

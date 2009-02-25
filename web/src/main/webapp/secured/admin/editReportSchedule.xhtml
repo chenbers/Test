@@ -64,9 +64,13 @@
 							</ui:fragment>
 							<tr>
 								<td width="100" valign="top">
-									<h:selectBooleanCheckbox rendered="#{reportScheduleBean.batchEdit}" id="update_status" value="#{reportScheduleBean.updateField['status']}" />
-									<h:outputText value="#{messages.reportSchedule_status}" />
-									<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
+									<ui:include src="../../includes/inputLabel.xhtml">
+										<ui:param name="required" value="TRUE"/>
+										<ui:param name="reRender" value="status"/>
+										<ui:param name="fieldName" value="status"/>
+										<ui:param name="editBean" value="#{reportScheduleBean}"/>
+										<ui:param name="label" value="#{messages.reportSchedule_status}"/>
+									</ui:include>
 								</td>
 								<td>
 									<h:selectOneMenu id="status" value="#{reportScheduleBean.item.status}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
@@ -77,9 +81,13 @@
 							</tr>
 							<tr>
 								<td width="100" valign="top">
-									<h:selectBooleanCheckbox rendered="#{reportScheduleBean.batchEdit}" id="update_startDate" value="#{reportScheduleBean.updateField['startDate']}" />
-									<h:outputText value="#{messages.reportSchedule_startDate}" />
-									<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
+									<ui:include src="../../includes/inputLabel.xhtml">
+										<ui:param name="required" value="TRUE"/>
+										<ui:param name="reRender" value="startDate"/>
+										<ui:param name="fieldName" value="startDate"/>
+										<ui:param name="editBean" value="#{reportScheduleBean}"/>
+										<ui:param name="label" value="#{messages.reportSchedule_startDate}"/>
+									</ui:include>
 								</td>
 								<td>
 									<rich:message for="startDate" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -107,9 +115,13 @@
 							</tr>
 							<tr>
 								<td width="100" valign="top">
-									<h:selectBooleanCheckbox rendered="#{reportScheduleBean.batchEdit}" id="update_timeOfDay" value="#{reportScheduleBean.updateField['timeOfDay']}"/>
-									<h:outputText value="#{messages.reportSchedule_timeOfDay}" />
-									<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
+									<ui:include src="../../includes/inputLabel.xhtml">
+										<ui:param name="required" value="TRUE"/>
+										<ui:param name="reRender" value="timeOfDay"/>
+										<ui:param name="fieldName" value="timeOfDay"/>
+										<ui:param name="editBean" value="#{reportScheduleBean}"/>
+										<ui:param name="label" value="#{messages.reportSchedule_timeOfDay}"/>
+									</ui:include>
 								</td>
 								<td>
 									
@@ -122,9 +134,13 @@
 							</tr>
 							<tr>
 								<td width="100" valign="top">
-									<h:selectBooleanCheckbox rendered="#{reportScheduleBean.batchEdit}" id="update_occurrence" value="#{reportScheduleBean.updateField['occurrence']}" />
-									<h:outputText value="#{messages.reportSchedule_occurrence}"/>
-									<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
+									<ui:include src="../../includes/inputLabel.xhtml">
+										<ui:param name="required" value="TRUE"/>
+										<ui:param name="reRender" value="occurrence"/>
+										<ui:param name="fieldName" value="occurrence"/>
+										<ui:param name="editBean" value="#{reportScheduleBean}"/>
+										<ui:param name="label" value="#{messages.reportSchedule_occurrence}"/>
+									</ui:include>
 								</td>
 								<td>
 									<rich:message for="occurrence" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -243,7 +259,7 @@
 					</tr>
 				</table>
 				
-				 <div class="required-key"><h:outputText rendered="#{not zoneAlertsBean.batchEdit}" value="#{messages.requiredKey}" /></div>
+				 <div class="required-key"><h:outputText value="#{messages.requiredKey}" /></div>
 				 
 				 <ul id="grid_nav" style="margin: 0;">
                    	<li class="r">
@@ -263,6 +279,7 @@
 				</td>
 			</tr>
 		</table>
+		<ui:include src="../../includes/adminEditScripts.xhtml"/>
 		  <script type="text/javascript">
 		         var formElements = ["text", "checkbox", "radio", "select-one", "select-multiple", "textarea"];
 				 function bodyLoad()
