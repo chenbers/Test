@@ -70,7 +70,7 @@ public class TeamOverviewBean extends BaseBean
             logger.error(ex);
 
         }
-        if (scoreableEntity == null)
+        if (scoreableEntity.getScore() == null)
             return -1;
         return scoreableEntity.getScore();
     }
