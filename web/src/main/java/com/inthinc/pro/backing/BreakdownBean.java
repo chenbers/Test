@@ -97,10 +97,10 @@ public class BreakdownBean extends BaseBean
 
     private void initStyle()
     {
-        if (overallScore == null)
-        {
-            init();
-        }
+        //if (overallScore == null)
+        //{
+        //    init();
+        //}
 
         setOverallScoreStyle(ScoreBox.GetStyleFromScore(getOverallScore(), ScoreBoxSizes.LARGE));
     }
@@ -123,10 +123,10 @@ public class BreakdownBean extends BaseBean
     public Integer getOverallScore()
     {
 
-        if (overallScore == null)
-        {
-            init();
-        }
+        //if (overallScore == null)
+        //{
+        //    init();
+        //}
         return overallScore;
     }
 
