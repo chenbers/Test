@@ -22,7 +22,10 @@ public enum ReportType
     VEHICLE_SUMMARY_P2("Vehicle Summary Report P2", "DriverVehicleSummaryReport2.jrxml"),
     VEHICLE_SPEED("Vehicle Speed Report", "DriverVehicleSpeedReport.jrxml"),
     VEHICLE_STYLE("Vehicle Style Report", "DriverVehicleStyleReport.jrxml"),
-    VEHICLE_SEATBELT("Vehicle Seat Belt Report", "DriverVehicleSeatBeltReport.jrxml");
+    VEHICLE_SEATBELT("Vehicle Seat Belt Report", "DriverVehicleSeatBeltReport.jrxml"),
+    EVENT_REPORT("Event Report", "EventReport.jrxml"),
+    WARNING_REPORT("Warning Report", "WarningReport.jrxml"),
+    RED_FLAG_REPORT("Red Flag Report", "RedFlagReport.jrxml");
   
     private String filename;
     private String label;

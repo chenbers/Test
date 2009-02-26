@@ -9,8 +9,10 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.DeviceDAO;
+import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.MpgDAO;
+import com.inthinc.pro.dao.RedFlagDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Device;
@@ -18,10 +20,12 @@ import com.inthinc.pro.model.DeviceReportItem;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.Vehicle;
@@ -40,7 +44,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     private ScoreDAO scoreDAO;
     private MpgDAO mpgDAO;
     private VehicleDAO vehicleDAO;
+    private EventDAO eventDAO;
+    private RedFlagDAO redFlagDAO;
   
+
     private DeviceDAO deviceDAO;
 
     private static final Logger logger = Logger.getLogger(ReportCriteriaServiceImpl.class);
@@ -326,6 +333,36 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         reportCriteria.setMainDataset(idlingReportItems);
         return reportCriteria;
     }
+    
+    @Override
+    public ReportCriteria getEventsReportCriteria(Integer groupID)
+    {
+        List<Event> eventList = eventDAO.getViolationEventsForGroup(groupID,7);
+        Group tmpGroup = groupDAO.findByID(groupID);
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.EVENT_REPORT,tmpGroup.getName());
+        reportCriteria.setMainDataset(eventList);
+        return reportCriteria;
+    }
+    
+    @Override
+    public ReportCriteria getRedFlagsReportCriteria(Integer groupID)
+    {
+        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(groupID, 7);
+        Group tmpGroup = groupDAO.findByID(groupID);
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.RED_FLAG_REPORT,tmpGroup.getName());
+        reportCriteria.setMainDataset(redFlagList);
+        return reportCriteria;
+    }
+    
+    @Override
+    public ReportCriteria getWarningsReportCriteria(Integer groupID)
+    {
+        List<Event> eventList = eventDAO.getWarningEventsForGroup(groupID,7);
+        Group tmpGroup = groupDAO.findByID(groupID);
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.WARNING_REPORT,tmpGroup.getName());
+        reportCriteria.setMainDataset(eventList);
+        return reportCriteria;
+    }
 
     public void setGroupDAO(GroupDAO groupDAO)
     {
@@ -375,6 +412,27 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     public void setDeviceDAO(DeviceDAO deviceDAO)
     {
         this.deviceDAO = deviceDAO;
+    }
+    
+
+    public EventDAO getEventDAO()
+    {
+        return eventDAO;
+    }
+
+    public void setEventDAO(EventDAO eventDAO)
+    {
+        this.eventDAO = eventDAO;
+    }
+
+    public void setRedFlagDAO(RedFlagDAO redFlagDAO)
+    {
+        this.redFlagDAO = redFlagDAO;
+    }
+
+    public RedFlagDAO getRedFlagDAO()
+    {
+        return redFlagDAO;
     }
 
 

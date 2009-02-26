@@ -14,4 +14,7 @@ public interface ReportCriteriaService
     ReportCriteria getVehicleReportCriteria(Integer groupID,Duration duration);
     ReportCriteria getIdlingReportCriteria(Integer groupID,Date startDate,Date endDate);
     ReportCriteria getDevicesReportCriteria(Integer groupID);
+    ReportCriteria getEventsReportCriteria(Integer groupID);
+    ReportCriteria getRedFlagsReportCriteria(Integer groupID);
+    ReportCriteria getWarningsReportCriteria(Integer groupID);
 }
