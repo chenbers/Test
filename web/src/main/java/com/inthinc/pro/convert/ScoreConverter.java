@@ -25,7 +25,7 @@ public class ScoreConverter extends BaseConverter
         format.setMaximumFractionDigits(1);
         format.setMinimumFractionDigits(1);
 
-        if(score < 0)
+        if(score == null || score < 0)
             return "N/A";
         else
             return format.format((double)((double)score/(double)10.0));
