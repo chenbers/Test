@@ -17,6 +17,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.BeanInitializationException;
 
+import com.inthinc.pro.model.ReferenceEntity;
+import com.inthinc.pro.model.app.BaseAppEntity;
+
 /**
  * Methods for working with beans, complements the methods in {@link BeanUtils}.
  * 
@@ -116,7 +119,8 @@ public class BeanUtil
                             if(sourceProperty == null)
                                 writeMethod.invoke(target, sourceProperty);
                             // simple copy
-                            else if (BeanUtils.isSimpleProperty(clazz) || clazz.isEnum() || clazz.isArray() || clazz.isAssignableFrom(Date.class))
+                            else if (BeanUtils.isSimpleProperty(clazz) || clazz.isEnum() || clazz.isArray() || clazz.isAssignableFrom(Date.class) 
+                                    || ReferenceEntity.class.isAssignableFrom(clazz))
                                 writeMethod.invoke(target, sourceProperty);
                             // circular reference: simply store the target reference
                             else if (map.get(sourceProperty) != null)
@@ -231,8 +235,9 @@ public class BeanUtil
                                 if (clazz != null)
                                 {
                                     // recursive compare
+
                                     if (!BeanUtils.isSimpleProperty(clazz) && !clazz.isEnum() && !Collection.class.isAssignableFrom(clazz) && !Map.class.isAssignableFrom(clazz)
-                                            && !clazz.isArray() && !Date.class.isAssignableFrom(clazz))
+                                            && !clazz.isArray() && !Date.class.isAssignableFrom(clazz) && !ReferenceEntity.class.isAssignableFrom(clazz))
                                     {
                                         compared.add(o1);
                                         compareAndInit(o1, o2, compared);
@@ -314,7 +319,7 @@ public class BeanUtil
             {
                 try
                 {
-                    if (BeanUtils.isSimpleProperty(clazz) || clazz.isEnum() || clazz.isAssignableFrom(Date.class))
+                    if (BeanUtils.isSimpleProperty(clazz) || clazz.isEnum() || clazz.isAssignableFrom(Date.class) || ReferenceEntity.class.isAssignableFrom(clazz))
                     {
                         if (!"class".equals(descriptor.getName()))
                             names.add(prefix + descriptor.getName());
