@@ -97,10 +97,10 @@ public class BreakdownBean extends BaseBean
 
     private void initStyle()
     {
-        //if (overallScore == null)
-        //{
-        //    init();
-        //}
+        if (overallScore == null)
+        {
+            init();
+        }
 
         setOverallScoreStyle(ScoreBox.GetStyleFromScore(getOverallScore(), ScoreBoxSizes.LARGE));
     }
@@ -114,19 +114,18 @@ public class BreakdownBean extends BaseBean
             groupID = getUser().getGroupID();
         }
         ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(groupID, durationBean.getDuration(), ScoreType.SCORE_OVERALL);
-        if (scoreableEntity == null)
-            setOverallScore(0);
+        if (scoreableEntity.getScore() == null)
+            setOverallScore(-1);
         else
             setOverallScore(scoreableEntity.getScore());
     }
 
     public Integer getOverallScore()
     {
-
-        //if (overallScore == null)
-        //{
-        //    init();
-        //}
+        if (overallScore == null)
+        {
+            init();
+        }
         return overallScore;
     }
 
