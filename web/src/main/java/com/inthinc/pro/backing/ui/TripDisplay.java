@@ -7,11 +7,12 @@ import java.util.TimeZone;
 
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.map.AddressLookup;
+import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.util.MessageUtil;
 
-public class TripDisplay
+public class TripDisplay implements Comparable<TripDisplay>
 {
     String dateShort;       // Jul 01
     String timeStartShort;  // 1:32 PM
@@ -192,6 +193,11 @@ public class TripDisplay
     public void setTimeZone(TimeZone timeZone)
     {
         this.timeZone = timeZone;
+    }
+    @Override
+    public int compareTo(TripDisplay o)
+    {
+        return trip.getStartTime().compareTo(o.getTrip().getStartTime());
     }
     
 }

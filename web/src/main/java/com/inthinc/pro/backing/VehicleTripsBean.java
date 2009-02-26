@@ -61,10 +61,11 @@ public class VehicleTripsBean extends BaseBean
           
             for (Trip trip : tempTrips)
             {
-                // Add/Insert trip to index 0. to reverse list.
-                trips.add(0, new TripDisplay(trip, this.timeZone, addressLookup.getMapServerURLString()));
+                trips.add(new TripDisplay(trip, this.timeZone, addressLookup.getMapServerURLString()));
             }
-    
+            Collections.sort(trips);
+            Collections.reverse(trips);
+            
             numTrips = trips.size();
             if (numTrips > 0)
             {

@@ -53,12 +53,13 @@ public class DriverTripsBean extends BaseBean
         {
             List<Trip> tempTrips = new ArrayList<Trip>();
             tempTrips = driverDAO.getTrips(navigation.getDriver().getDriverID(), getStartDate(), getEndDate());
-      
+            
             for (Trip trip : tempTrips)
             {
-                // Add/Insert trip to index 0. to reverse list.
-                trips.add(0, new TripDisplay(trip, navigation.getDriver().getPerson().getTimeZone(), addressLookup.getMapServerURLString()));
+                trips.add(new TripDisplay(trip, navigation.getDriver().getPerson().getTimeZone(), addressLookup.getMapServerURLString()));
             }
+            Collections.sort(trips);
+            Collections.reverse(trips);
     
             numTrips = trips.size();
             if (numTrips > 0)
@@ -142,7 +143,7 @@ public class DriverTripsBean extends BaseBean
         {
             // Set start date to 7 days ago, apply driver's time zone..
             Calendar calendar = Calendar.getInstance();
-            calendar.setTimeZone(navigation.getDriver().getPerson().getTimeZone());
+            //calendar.setTimeZone(navigation.getDriver().getPerson().getTimeZone());
             calendar.add(Calendar.DAY_OF_MONTH, -7);
             calendar.set(Calendar.HOUR_OF_DAY, 0);
             calendar.set(Calendar.MINUTE, 0);
@@ -178,7 +179,7 @@ public class DriverTripsBean extends BaseBean
     {
         // Adjust time using TimeZome and set to 11:59:59
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeZone(tz);
+        //calendar.setTimeZone(tz);
         calendar.setTime(date);
         calendar.set(Calendar.HOUR_OF_DAY, 23);
         calendar.set(Calendar.MINUTE, 59);
