@@ -207,8 +207,13 @@
                               </ui:fragment>
                               <tr>
                                 <td width="100" valign="top">
-                                  <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_status" value="#{vehiclesBean.updateField['status']}" />
-                                  <h:outputText value="#{messages.editVehicle_status}" />
+                                  <ui:include src="../../includes/inputLabel.xhtml">
+										<ui:param name="required" value="TRUE"/>
+										<ui:param name="reRender" value="status"/>
+										<ui:param name="fieldName" value="status"/>
+										<ui:param name="editBean" value="#{vehiclesBean}"/>
+										<ui:param name="label" value="#{messages.editVehicle_status}"/>
+								  </ui:include>
                                 </td>
                                 <td>
                                   <h:selectOneMenu value="#{vehiclesBean.item.status}" id="status" onchange="checkMultiple(this)">
