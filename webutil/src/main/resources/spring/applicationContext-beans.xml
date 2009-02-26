@@ -17,7 +17,7 @@
 		<property name="siloServiceCreator" ref="siloServiceCreator" />
 		<property name="reportServiceCreator" ref="reportServiceCreator" />
     </bean>
-    <bean id="fwdcmdBean" class="com.inthinc.pro.backing.FwdCmdBean">
+    <bean id="fwdcmdBean" class="com.inthinc.pro.backing.FwdCmdBean" scope="request">
 		<property name="deviceDAO" ref="deviceDAO" />
 	</bean>
     
