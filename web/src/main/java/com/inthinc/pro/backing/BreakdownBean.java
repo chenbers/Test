@@ -114,7 +114,7 @@ public class BreakdownBean extends BaseBean
             groupID = getUser().getGroupID();
         }
         ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(groupID, durationBean.getDuration(), ScoreType.SCORE_OVERALL);
-        if (scoreableEntity.getScore() == null)
+        if (scoreableEntity == null || scoreableEntity.getScore() == null)
             setOverallScore(-1);
         else
             setOverallScore(scoreableEntity.getScore());
