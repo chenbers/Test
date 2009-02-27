@@ -348,10 +348,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     @Override
     public ReportCriteria getRedFlagsReportCriteria(Integer groupID)
     {
-        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(groupID, 7);
+        //List<RedFlag> redFlagList = redFlagDAO.getRedFlags(groupID, 7);
         Group tmpGroup = groupDAO.findByID(groupID);
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.RED_FLAG_REPORT,tmpGroup.getName());
-        reportCriteria.setMainDataset(redFlagList);
+        //reportCriteria.setMainDataset(redFlagList);
         return reportCriteria;
     }
     

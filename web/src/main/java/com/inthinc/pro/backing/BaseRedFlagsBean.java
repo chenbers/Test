@@ -8,6 +8,8 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventType;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.reports.ReportRenderer;
+import com.inthinc.pro.reports.service.ReportCriteriaService;
 
 public class BaseRedFlagsBean extends BaseBean
 {
@@ -22,6 +24,10 @@ public class BaseRedFlagsBean extends BaseBean
     private Map<EventType, String> vehicleActionMap;
 
     private Event selectedEvent;
+    
+    private ReportRenderer      reportRenderer;
+    private ReportCriteriaService reportCriteriaService;
+    private String emailAddress;
     
 
     public void initBean()
@@ -124,5 +130,35 @@ public class BaseRedFlagsBean extends BaseBean
     public void setSelectedEvent(Event selectedEvent)
     {
         this.selectedEvent = selectedEvent;
+    }
+    
+    public void setReportRenderer(ReportRenderer reportRenderer)
+    {
+        this.reportRenderer = reportRenderer;
+    }
+
+    public ReportRenderer getReportRenderer()
+    {
+        return reportRenderer;
+    }
+
+    public void setReportCriteriaService(ReportCriteriaService reportCriteriaService)
+    {
+        this.reportCriteriaService = reportCriteriaService;
+    }
+
+    public ReportCriteriaService getReportCriteriaService()
+    {
+        return reportCriteriaService;
+    }
+
+    public void setEmailAddress(String emailAddress)
+    {
+        this.emailAddress = emailAddress;
+    }
+
+    public String getEmailAddress()
+    {
+        return emailAddress;
     }
 }

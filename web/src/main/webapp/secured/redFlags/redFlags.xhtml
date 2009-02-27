@@ -23,7 +23,10 @@
       <!-- START PANEL -->
       <h:panelGroup layout="block" styleClass="">
         <h:panelGroup layout="block" styleClass="panel_nw">
-          <div class="panel_title"> <span class="redflag">#{messages.redflags_title}</span><span class="panel_links"></span>
+          <div class="panel_title"> <span class="redflag">#{messages.redflags_title}</span>
+          	<span class="panel_links">
+
+          	</span>
            </div>
         </h:panelGroup>
 
@@ -74,15 +77,29 @@
 					</f:facet>
 				</a4j:status>
 			  </li>
-			  
+			    <li class="r grid_icon">
+				<h:panelGroup id="redFlagReportToolImageId">
+					<h:graphicImage value="/images/ico_tools.png"/>
+				</h:panelGroup>
+			  </li>
+			  	<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
+			  </li>
 			  <li class="r text">
 			  	<h:outputFormat id="header" value="#{messages.redflags_recordCountHeader}">
 					<a4j:actionparam value="#{redFlagsBean.start}"/>
 					<a4j:actionparam value="#{redFlagsBean.end}"/>
 					<a4j:actionparam value="#{redFlagsBean.maxCount}"/>
 				</h:outputFormat>
-               </li>          							
-            </ul>
+				</li>
+            
+             
+              </ul>
+               	<ui:include src="/includes/reportsContextMenu.xhtml">	
+					<ui:param  name="emailModalPanelID" value="redflagsReportEmailModal" />
+					<ui:param  name="reportBean" value="#{redFlagsBean}"/>
+					<ui:param  name="attachTo" value="redFlagReportToolImageId"/>
+					<ui:param  name="exportExcel" value="TRUE"/>
+				</ui:include>
     		</a4j:form>
     		</a4j:region>
     		        

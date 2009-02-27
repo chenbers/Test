@@ -2,6 +2,7 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.TableType;
+import com.inthinc.pro.reports.ReportCriteria;
 
 public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<RedFlagReportItem>, PersonChangeListener
 {
@@ -437,6 +439,29 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     public void setEventDAO(EventDAO eventDAO)
     {
         this.eventDAO = eventDAO;
+    }
+    
+    public void exportReportToPdf()
+    {
+        getReportRenderer().exportSingleReportToPDF(getReportCriteria(), getFacesContext());
+    }
+    
+    public void emailReport()
+    {
+        getReportRenderer().exportReportToEmail(getReportCriteria(),getEmailAddress());
+    }
+    
+    public void exportReportToExcel()
+    {
+        getReportRenderer().exportReportToExcel(getReportCriteria(), getFacesContext());
+    }
+    
+    private ReportCriteria getReportCriteria()
+    {
+        ReportCriteria reportCriteria = getReportCriteriaService().getRedFlagsReportCriteria(getUser().getGroupID());
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
+        reportCriteria.setMainDataset(getTableData());
+        return reportCriteria;
     }
 
 }

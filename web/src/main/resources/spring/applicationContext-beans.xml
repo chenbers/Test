@@ -347,6 +347,8 @@
     <bean id="baseRedFlagsBean" class="com.inthinc.pro.backing.BaseRedFlagsBean" scope="session" parent="baseBean">
         <property name="driverDAO" ref="driverDAO"/>
         <property name="vehicleDAO" ref="vehicleDAO"/>
+        <property name="reportRenderer" ref="reportRenderer"></property>
+        <property name="reportCriteriaService" ref="reportCriteriaService"></property>
     </bean>
     <bean id="redFlagsBean" class="com.inthinc.pro.backing.RedFlagsBean" scope="session" parent="baseRedFlagsBean" init-method="initBean">
         <property name="redFlagDAO" ref="redFlagDAO"></property>
