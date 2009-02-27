@@ -1,18 +1,17 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
-import org.richfaces.event.DataScrollerEvent;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.model.GroupLevel;
 import com.inthinc.pro.dao.MpgDAO;
-import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
@@ -30,23 +29,13 @@ public class MpgBean extends BaseBean
     private DurationBean durationBean;
     private ReportRenderer reportRenderer;
     private ReportCriteriaService reportCriteriaService;
-    private List<MpgEntityPkg> mpgEntities = new ArrayList<MpgEntityPkg>();
+    private List<MpgEntityPkg> mpgEntities;
 
-    private Integer numRowsPerPg = 5;
-    private Integer maxCount = 0;
-    private Integer start = 1;
-    private Integer end = numRowsPerPg;
-
-    private String sortOnName = "";
-    private String sortOnLight = "";
-    private String sortOnMedium = "";
-    private String sortOnHeavy = "";
-
-    private String countString = null;
+    private Boolean ascending;
+    private String sortColumn;
 
     private String barDef;
-    
-    
+
     public String getBarDef()
     {
         if (barDef == null)
@@ -64,33 +53,19 @@ public class MpgBean extends BaseBean
     public String createBarDef()
     {
         StringBuffer sb = new StringBuffer();
-
         // Control parameters
         sb.append(GraphicUtil.getBarControlParameters());
+        logger.debug("getting scores for groupID: " + this.navigation.getGroupID());
+        sb.append(GraphicUtil.createMpgXML(getMpgEntities()));
+        sb.append("</chart>");
 
-        // get the data
-        List<MpgEntityPkg> entities = null;
-        try
-        {
-            logger.debug("getting scores for groupID: " + this.navigation.getGroupID());
-            entities = getPagedMpgEntities();
-
-            sb.append(GraphicUtil.createMpgXML(entities));
-        }
-        catch (Exception e)
-        {
-            logger.error("mpgDAO error", e);
-        }
+        return sb.toString();
 
         // Bar parameters
         // MAKE SURE YOU LOAD REAL DATA SO, IF THERE IS FEWER OBSERVATIONS
         // THAN THE REQUESTED INTERVAL I.E. 22 DAYS WHEN YOU NEED 30, YOU
         // PAD THE FRONT WITH ZEROES
         // sb.append(GraphicUtil.createFakeBarData());
-
-        sb.append("</chart>");
-
-        return sb.toString();
     }
 
     public NavigationBean getNavigation()
@@ -113,19 +88,33 @@ public class MpgBean extends BaseBean
         this.durationBean = durationBean;
     }
 
-    public void scrollerListener(DataScrollerEvent se)
+    public Boolean getAscending()
     {
-        this.start = (se.getPage() - 1) * this.numRowsPerPg + 1;
-        this.end = (se.getPage()) * this.numRowsPerPg;
+        return ascending;
+    }
 
-        // Partial page
-        if (this.end > this.mpgEntities.size())
+    public void setAscending(Boolean ascending)
+    {
+        this.ascending = ascending;
+    }
+
+    public String getSortColumn()
+    {
+        return sortColumn;
+    }
+
+    public void setSortColumn(String sortColumn)
+    {
+        this.sortColumn = sortColumn;
+        sort(sortColumn);
+    }
+
+    public void sort(String column)
+    {
+        if (column.equals(""))
         {
-            this.end = this.mpgEntities.size();
+            // Collections.sort(mpgEntities);
         }
-
-        navigation.setStart(this.start);
-        navigation.setEnd(this.end);
     }
 
     public MpgDAO getMpgDAO()
@@ -145,10 +134,11 @@ public class MpgBean extends BaseBean
 
     public List<MpgEntityPkg> getMpgEntities()
     {
-        if (mpgEntities.size() == 0)
+        if (mpgEntities == null)
         {
-            Group parentGroup = this.getNavigation().getGroup();
-            List<MpgEntity> tempEntities = mpgDAO.getEntities(parentGroup, durationBean.getDuration());
+            List<MpgEntity> tempEntities = mpgDAO.getEntities(navigation.getGroup(), durationBean.getDuration());
+            Collections.sort(tempEntities);
+            mpgEntities = new ArrayList<MpgEntityPkg>();
 
             // Populate the table
             String contextPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
@@ -168,34 +158,27 @@ public class MpgBean extends BaseBean
                     this.mpgEntities.add(pkg);
                 }
             }
-            this.maxCount = mpgEntities.size();
         }
         return this.mpgEntities;
     }
 
-    public List<MpgEntityPkg> getPagedMpgEntities()
+    public void setMpgEntities(List<MpgEntityPkg> mpgEntities)
     {
-        List<MpgEntityPkg> pagedMpgEntities = new ArrayList<MpgEntityPkg>();
-        getMpgEntities(); // make sure list is initialized
-        for (int i = this.start; i <= this.end; i++)
-        {
-            if (mpgEntities.size() < i)
-                break;
-            pagedMpgEntities.add(mpgEntities.get(i - 1));
-        }
-        return pagedMpgEntities;
+        this.mpgEntities = mpgEntities;
     }
 
-    public String getCountString()
-    {
-        countString = "Showing " + this.start + " to " + Math.min(this.maxCount, this.end) + " of " + this.maxCount + " records";
-        return countString;
-    }
-
-    public void setCountString(String countString)
-    {
-        this.countString = countString;
-    }
+    // public List<MpgEntityPkg> getPagedMpgEntities()
+    // {
+    // List<MpgEntityPkg> pagedMpgEntities = new ArrayList<MpgEntityPkg>();
+    // getMpgEntities(); // make sure list is initialized
+    // for (int i = this.start; i <= this.end; i++)
+    // {
+    // if (mpgEntities.size() < i)
+    // break;
+    // pagedMpgEntities.add(mpgEntities.get(i - 1));
+    // }
+    // return pagedMpgEntities;
+    // }
 
     public String exportToPDF()
     {
@@ -221,86 +204,6 @@ public class MpgBean extends BaseBean
     public ReportRenderer getReportRenderer()
     {
         return reportRenderer;
-    }
-
-    public Integer getNumRowsPerPg()
-    {
-        return numRowsPerPg;
-    }
-
-    public void setNumRowsPerPg(Integer numRowsPerPg)
-    {
-        this.numRowsPerPg = numRowsPerPg;
-    }
-
-    public Integer getMaxCount()
-    {
-        return maxCount;
-    }
-
-    public void setMaxCount(Integer maxCount)
-    {
-        this.maxCount = maxCount;
-    }
-
-    public Integer getStart()
-    {
-        return start;
-    }
-
-    public void setStart(Integer start)
-    {
-        this.start = start;
-    }
-
-    public Integer getEnd()
-    {
-        return end;
-    }
-
-    public void setEnd(Integer end)
-    {
-        this.end = end;
-    }
-
-    public String getSortOnName()
-    {
-        return sortOnName;
-    }
-
-    public void setSortOnName(String sortOnName)
-    {
-        this.sortOnName = sortOnName;
-    }
-
-    public String getSortOnLight()
-    {
-        return sortOnLight;
-    }
-
-    public void setSortOnLight(String sortOnLight)
-    {
-        this.sortOnLight = sortOnLight;
-    }
-
-    public String getSortOnMedium()
-    {
-        return sortOnMedium;
-    }
-
-    public void setSortOnMedium(String sortOnMedium)
-    {
-        this.sortOnMedium = sortOnMedium;
-    }
-
-    public String getSortOnHeavy()
-    {
-        return sortOnHeavy;
-    }
-
-    public void setSortOnHeavy(String sortOnHeavy)
-    {
-        this.sortOnHeavy = sortOnHeavy;
     }
 
     public void setReportCriteriaService(ReportCriteriaService reportCriteriaService)

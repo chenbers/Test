@@ -296,11 +296,6 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>opensymphony</groupId>
-            <artifactId>quartz</artifactId>
-            <version>1.6.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.jasypt</groupId>
             <artifactId>jasypt</artifactId>
             <version>1.5</version>
@@ -394,6 +389,21 @@
             <version>2.4</version>
             <type>jar</type>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+        	<groupId>org.apache.myfaces.tomahawk</groupId>
+        	<artifactId>tomahawk12</artifactId>
+        	<version>1.1.8</version>
+        	<type>jar</type>
+        	<classifier>tlddoc</classifier>
+        	<scope>compile</scope>
+        </dependency>
+        <dependency>
+        	<groupId>org.opensymphony.quartz</groupId>
+        	<artifactId>quartz</artifactId>
+        	<version>1.6.1</version>
+        	<type>jar</type>
+        	<scope>compile</scope>
         </dependency>
     </dependencies>
     <build>

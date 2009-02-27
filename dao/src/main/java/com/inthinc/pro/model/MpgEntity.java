@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.inthinc.pro.dao.annotations.ID;
 
-public class MpgEntity extends BaseEntity {
+public class MpgEntity extends BaseEntity implements Comparable<MpgEntity> {
 	@ID
 	private Integer entityID;
 	private String entityName;
@@ -105,6 +105,12 @@ public class MpgEntity extends BaseEntity {
     public void setOdometer(Integer odometer)
     {
         this.odometer = odometer;
+    }
+
+    @Override
+    public int compareTo(MpgEntity o)
+    {
+        return this.entityName.compareTo(o.getEntityName());
     }
 
 }
