@@ -24,7 +24,7 @@ public class DurationBean
     private Integer             tableRowStart       = 1;
     private Integer             tableRowEnd;
     
-    private List<DurationChangeListener> durationChangeListenerList;
+    private List<DurationChangeListener> durationChangeListenerList = new ArrayList<DurationChangeListener>();
 
     public DurationBean()
     {
