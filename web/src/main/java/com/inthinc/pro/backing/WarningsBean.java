@@ -56,6 +56,7 @@ public class WarningsBean extends BaseEventsBean
     {
         ReportCriteria reportCriteria = getReportCriteriaService().getWarningsReportCriteria(getUser().getGroupID());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
+        reportCriteria.setMainDataset(getTableData());
         return reportCriteria;
     }
 }

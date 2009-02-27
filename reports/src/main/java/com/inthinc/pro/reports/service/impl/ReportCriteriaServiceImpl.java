@@ -358,14 +358,14 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     @Override
     public ReportCriteria getWarningsReportCriteria(Integer groupID)
     {
-        List<Event> eventList = eventDAO.getWarningEventsForGroup(groupID,7);
+        //List<Event> eventList = eventDAO.getWarningEventsForGroup(groupID,7);
         Group tmpGroup = groupDAO.findByID(groupID);
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.WARNING_REPORT,tmpGroup.getName());
-        reportCriteria.setMainDataset(eventList);
+        //reportCriteria.setMainDataset(eventList);
         return reportCriteria;
     }
 
-    public void setGroupDAO(GroupDAO groupDAO)
+    public void setGroupDAO(GroupDAO groupDAO) 
     {
         this.groupDAO = groupDAO;
     }
