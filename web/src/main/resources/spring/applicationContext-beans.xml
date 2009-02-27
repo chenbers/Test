@@ -356,6 +356,8 @@
     <bean id="baseEventsBean" class="com.inthinc.pro.backing.BaseEventsBean" scope="session" parent="baseRedFlagsBean">
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
+        <property name="reportRenderer" ref="reportRenderer"></property>
+        <property name="reportCriteriaService" ref="reportCriteriaService"></property>
     </bean>
     <bean id="eventsBean" class="com.inthinc.pro.backing.EventsBean" scope="session" parent="baseEventsBean"  init-method="initBean">
     </bean>
@@ -391,4 +393,7 @@
     <bean id="vehicleSeatBeltDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
     <bean id="vehicleSpeedDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
     <bean id="vehicleStyleDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
+    
+    
+    
 </beans>

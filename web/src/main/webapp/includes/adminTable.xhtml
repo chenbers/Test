@@ -4,7 +4,8 @@
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:c="http://java.sun.com/jstl/core"
     xmlns:a4j="http://richfaces.org/a4j"
-    xmlns:rich="http://richfaces.org/rich">
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
 
 <!--
   A table that supports picking columns, sorting, searching, editing, batch editing and batch deleting.
@@ -59,14 +60,14 @@
 -->
 
   <ui:composition>
-
+	
     <c:if test="#{empty rows}">
       <c:set var="rows" value="10" />
     </c:if>
     <c:set var="firstRecord" value="#{rows * (page - 1)}" />
 
     <a4j:form id="admin-table-form">
-
+    
       <div class="panel_w">
         <div class="panel_content">
           <ul id="grid_nav" style="margin: 0;">

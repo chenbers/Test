@@ -1,11 +1,13 @@
 package com.inthinc.pro.backing;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.TableType;
+import com.inthinc.pro.reports.ReportCriteria;
 
 public class WarningsBean extends BaseEventsBean
 {
@@ -33,5 +35,27 @@ public class WarningsBean extends BaseEventsBean
         
         refreshAction();
         return "go_warnings";
+    }
+    
+    public void exportReportToPdf()
+    {
+        getReportRenderer().exportSingleReportToPDF(getReportCriteria(), getFacesContext());
+    }
+    
+    public void emailReport()
+    {
+        getReportRenderer().exportReportToEmail(getReportCriteria(),getEmailAddress());
+    }
+    
+    public void exportReportToExcel()
+    {
+        getReportRenderer().exportReportToExcel(getReportCriteria(), getFacesContext());
+    }
+    
+    private ReportCriteria getReportCriteria()
+    {
+        ReportCriteria reportCriteria = getReportCriteriaService().getWarningsReportCriteria(getUser().getGroupID());
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
+        return reportCriteria;
     }
 }

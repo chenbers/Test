@@ -73,6 +73,13 @@
 					</f:facet>
 				</a4j:status>
 			  </li>
+			  <li class="r grid_icon">
+				<h:panelGroup id="eventReportToolImageId">
+					<h:graphicImage value="/images/ico_tools.png"/>
+				</h:panelGroup>
+			  </li>
+			  <li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
+			  </li> 
 			  <li class="r text">
 			  	<h:outputFormat id="header" value="#{messages.events_recordCountHeader}">
 					<a4j:actionparam value="#{eventsBean.start}"/>
@@ -81,6 +88,13 @@
 				</h:outputFormat>
                </li>          							
             </ul>
+            
+            <ui:include src="/includes/reportsContextMenu.xhtml">	
+				<ui:param  name="emailModalPanelID" value="eventsReportEmailModal" />
+				<ui:param  name="reportBean" value="#{eventsBean}"/>
+				<ui:param  name="attachTo" value="eventReportToolImageId"/>
+				<ui:param  name="exportExcel" value="TRUE"/>
+			</ui:include>
     		</a4j:form>
     		</a4j:region>
     		        
@@ -117,7 +131,7 @@
   </tr>
 </table>
 	
-	
+
 	</ui:define>
 
 </ui:composition>

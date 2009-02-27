@@ -17,6 +17,8 @@
     	<property name="mpgDAO" ref="mpgDAO"/>
     	<property name="vehicleDAO" ref="vehicleDAO"/>
     	<property name="deviceDAO" ref="deviceDAO"/>
+    	<property name="eventDAO" ref="eventDAO"/>
+    	<property name="redFlagDAO" ref="redFlagDAO"/>
     </bean>
     
 </beans>

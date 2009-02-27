@@ -1,6 +1,7 @@
 package com.inthinc.pro.reports.service.impl;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -337,10 +338,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     @Override
     public ReportCriteria getEventsReportCriteria(Integer groupID)
     {
-        List<Event> eventList = eventDAO.getViolationEventsForGroup(groupID,7);
+        //List<Event> eventList = eventDAO.getViolationEventsForGroup(groupID,7);
         Group tmpGroup = groupDAO.findByID(groupID);
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.EVENT_REPORT,tmpGroup.getName());
-        reportCriteria.setMainDataset(eventList);
+        //reportCriteria.setMainDataset(eventList);
         return reportCriteria;
     }
     

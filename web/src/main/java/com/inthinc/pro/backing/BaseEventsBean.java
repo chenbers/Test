@@ -17,6 +17,8 @@ import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.TableType;
+import com.inthinc.pro.reports.ReportRenderer;
+import com.inthinc.pro.reports.service.ReportCriteriaService;
 
 public class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions<EventReportItem>, PersonChangeListener
 {
@@ -31,6 +33,7 @@ public class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions
     private Integer                 maxCount;
     private List<EventReportItem> tableData;
     private List<EventReportItem> filteredTableData;
+    private String emailAddress;
 
     private EventDAO                eventDAO;
     private TablePreferenceDAO tablePreferenceDAO;
@@ -41,6 +44,8 @@ public class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions
     private Event eventFilter;
     
     private String searchText;
+    private ReportRenderer      reportRenderer;
+    private ReportCriteriaService reportCriteriaService;
     
     private TablePref<EventReportItem> tablePref;
 
@@ -404,6 +409,36 @@ public class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions
     public void setEventDAO(EventDAO eventDAO)
     {
         this.eventDAO = eventDAO;
+    }
+
+    public void setReportRenderer(ReportRenderer reportRenderer)
+    {
+        this.reportRenderer = reportRenderer;
+    }
+
+    public ReportRenderer getReportRenderer()
+    {
+        return reportRenderer;
+    }
+
+    public void setReportCriteriaService(ReportCriteriaService reportCriteriaService)
+    {
+        this.reportCriteriaService = reportCriteriaService;
+    }
+
+    public ReportCriteriaService getReportCriteriaService()
+    {
+        return reportCriteriaService;
+    }
+
+    public void setEmailAddress(String emailAddress)
+    {
+        this.emailAddress = emailAddress;
+    }
+
+    public String getEmailAddress()
+    {
+        return emailAddress;
     }
 
 }

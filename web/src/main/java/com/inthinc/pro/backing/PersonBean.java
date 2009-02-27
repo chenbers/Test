@@ -717,17 +717,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
     public List<SelectItem> getRoles()
     {
-//        if (roles == null)
-//        {
-//            roles = new LinkedHashMap<String, Role>();
-//            for (final Role role : Roles.getRoleMap().values())
-//            {
-//                roles.put(role.getName(), role);
-//                if (role.equals(getUser().getRole()))
-//                    break;
-//            }
-//        }
-//        return roles;
         List<SelectItem> roleList = new ArrayList<SelectItem>();
         for(Role role : Roles.getRoleList())
         {

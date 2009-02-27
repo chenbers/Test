@@ -18,7 +18,6 @@ import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.BeanInitializationException;
 
 import com.inthinc.pro.model.ReferenceEntity;
-import com.inthinc.pro.model.app.BaseAppEntity;
 
 /**
  * Methods for working with beans, complements the methods in {@link BeanUtils}.
