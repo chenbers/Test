@@ -28,8 +28,9 @@
 	<ui:param name="helpFile" value="Driving_Style.htm" />
 
 	<ui:define name="content">
+	<t:saveState value="#{driverStyleBean.styleEvents}"/>
+	<t:saveState value="#{driverStyleBean.tableStatsBean}"/>
 	
-	<t:saveState value="#{driverStyleBean}"/>
 <div id="wrapper">
 
 <h:form>
@@ -116,30 +117,30 @@ var firstLoad = new Boolean(true);
 								<rich:spacer width="10" />
 								<a4j:commandLink title="#{messages.duration_days}" immediate="true"
 									styleClass="#{(driverStyleDurationBean.duration eq 'DAYS') ? 'on' : ''}"		
-									reRender="dateLinksForm,breakdown_panel,eventsTable"
+									reRender="dateLinksForm,breakdown_panel,eventsPanel"
 									value="#{messages.duration_days}">
-									<a4j:actionparam name="duration" assignTo="#{driverStyleDurationBean.duration}"	value="DAYS" />
+									<a4j:actionparam name="duration" assignTo="#{driverStyleBean.duration}"	value="DAYS" />
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
 								<a4j:commandLink title="#{messages.duration_three}" immediate="true"
 									styleClass="#{(driverStyleDurationBean.duration eq 'THREE') ? 'on' : ''}"	
-									reRender="dateLinksForm,breakdown_panel,eventsTable"
+									reRender="dateLinksForm,breakdown_panel,eventsPanel"
 									value="#{messages.duration_three}">
-									<a4j:actionparam name="duration" assignTo="#{driverStyleDurationBean.duration}"	value="THREE" />
+									<a4j:actionparam name="duration" assignTo="#{driverStyleBean.duration}"	value="THREE" />
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
 								<a4j:commandLink title="#{messages.duration_six}" immediate="true"
 									styleClass="#{(driverStyleDurationBean.duration eq 'SIX') ? 'on' : ''}"	
-									reRender="dateLinksForm,breakdown_panel,eventsTable"
+									reRender="dateLinksForm,breakdown_panel,eventsPanel"
 									value="#{messages.duration_six}">
-									<a4j:actionparam name="duration" assignTo="#{driverStyleDurationBean.duration}"	value="SIX" />
+									<a4j:actionparam name="duration" assignTo="#{driverStyleBean.duration}"	value="SIX" />
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
 								<a4j:commandLink title="#{messages.duration_twelve}" immediate="true"
 									styleClass="#{(driverStyleDurationBean.duration eq 'TWELVE') ? 'on' : ''}"	
-									reRender="dateLinksForm,breakdown_panel,eventsTable"
+									reRender="dateLinksForm,breakdown_panel,eventsPanel"
 									value="#{messages.duration_twelve}">
-									<a4j:actionparam name="duration" assignTo="#{driverStyleDurationBean.duration}"	value="TWELVE" />
+									<a4j:actionparam name="duration" assignTo="#{driverStyleBean.duration}"	value="TWELVE" />
 								</a4j:commandLink>
 								</span>
 								<span class="panel_ico">
@@ -405,6 +406,7 @@ var firstLoad = new Boolean(true);
 		<div class="spacer"></div>
 		
 		<!-- START PANEL -->
+		<rich:panel id="eventsPanel">
 			<div class="" style="width: 938px;">
 				<rich:panel id="tableStats" bodyClass="panel_nw">
 					<div class="panel_title">
@@ -425,7 +427,7 @@ var firstLoad = new Boolean(true);
 			<div class="datagrid">
 				<!-- Start Event table --> 
 					<h:form id="eventTable">
-					<rich:datascroller align="center" for="eventsTable" immediate="true"
+					<rich:datascroller align="center" for="eventsTable" immediate="true" page="#{driverStyleBean.tableStatsBean.page}"
 							id="scrollerTop" reRender="eventsTable,scrollerBottom,tableStats" scrollerListener="#{driverStyleBean.tableStatsBean.scrollerListener}" />
 						<rich:dataTable value="#{driverStyleBean.styleEvents}" 
 						id="eventsTable" var="item" styleClass="datagrid"
@@ -491,7 +493,7 @@ var firstLoad = new Boolean(true);
 							
 						</rich:dataTable>
 						
-						<rich:datascroller align="center" for="eventsTable" immediate="true" id="scrollerBottom" 
+						<rich:datascroller align="center" for="eventsTable" immediate="true" id="scrollerBottom" page="#{driverStyleBean.tableStatsBean.page}"
 						reRender="eventsTable,scrollerTop,tableStats" scrollerListener="#{driverStyleBean.tableStatsBean.scrollerListener}"/>
 					</h:form> 
 				<!-- End Event table -->
@@ -499,6 +501,7 @@ var firstLoad = new Boolean(true);
 				</div>
 				</div>
 			</div>
+			</rich:panel>
 		</td>
     </tr>
 </table>

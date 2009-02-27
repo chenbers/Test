@@ -3,6 +3,7 @@ package com.inthinc.pro.backing;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -28,42 +30,40 @@ import com.inthinc.pro.util.MessageUtil;
 
 public class VehicleStyleBean extends BaseBean
 {
-    private static final Logger logger = Logger.getLogger(VehicleStyleBean.class);
-    private NavigationBean navigation;
-    private DurationBean durationBean;
-    private ScoreDAO scoreDAO;
-    private EventDAO eventDAO;
-    private TableStatsBean tableStatsBean;
-    private AddressLookup addressLookup;
+    private static final Logger   logger      = Logger.getLogger(VehicleStyleBean.class);
+    private NavigationBean        navigation;
+    private DurationBean          durationBean;
+    private ScoreDAO              scoreDAO;
+    private EventDAO              eventDAO;
+    private TableStatsBean        tableStatsBean;
+    private AddressLookup         addressLookup;
 
-    private Integer styleScoreOverall;
-    private String styleScoreOverallStyle;
-    private Integer styleScoreAccel;
-    private String styleScoreAccelStyle;
-    private Integer styleScoreBrake;
-    private String styleScoreBrakeStyle;
-    private Integer styleScoreBump;
-    private String styleScoreBumpStyle;
-    private Integer styleScoreTurn;
-    private String styleScoreTurnStyle;
+    private Integer               styleScoreOverall;
+    private String                styleScoreOverallStyle;
+    private Integer               styleScoreAccel;
+    private String                styleScoreAccelStyle;
+    private Integer               styleScoreBrake;
+    private String                styleScoreBrakeStyle;
+    private Integer               styleScoreBump;
+    private String                styleScoreBumpStyle;
+    private Integer               styleScoreTurn;
+    private String                styleScoreTurnStyle;
 
-    private String styleScoreHistoryOverall;
-    private String styleScoreHistoryAccel;
-    private String styleScoreHistoryBrake;
-    private String styleScoreHistoryBump;
-    private String styleScoreHistoryTurn;
+    private String                styleScoreHistoryOverall;
+    private String                styleScoreHistoryAccel;
+    private String                styleScoreHistoryBrake;
+    private String                styleScoreHistoryBump;
+    private String                styleScoreHistoryTurn;
 
-    private EventReportItem clearItem;
-    private static final Integer NO_SCORE = -1;
-    private ReportRenderer reportRenderer;
-    private String emailAddress;
+    private EventReportItem       clearItem;
+    private static final Integer  NO_SCORE    = -1;
+    private ReportRenderer        reportRenderer;
+    private String                emailAddress;
 
     private List<EventReportItem> styleEvents = new ArrayList<EventReportItem>();
 
     private void init()
     {
-        tableStatsBean.setTableRowCount(10);
-
         int vehicleID = navigation.getVehicle().getVehicleID();
 
         Map<ScoreType, ScoreableEntity> scoreMap = scoreDAO.getVehicleScoreBreakdownByType(vehicleID, durationBean.getDuration(), ScoreType.SCORE_DRIVING_STYLE);
@@ -82,9 +82,6 @@ public class VehicleStyleBean extends BaseBean
 
         se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
         setStyleScoreTurn(se == null ? NO_SCORE : se.getScore());
-
-        getViolations();
-
     }
 
     public void getViolations()
@@ -92,7 +89,7 @@ public class VehicleStyleBean extends BaseBean
         if (styleEvents.isEmpty())
         {
             List<Integer> types = new ArrayList<Integer>();
-            types.add(2);
+            types.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
 
             List<Event> tempEvents = new ArrayList<Event>();
 
@@ -101,9 +98,12 @@ public class VehicleStyleBean extends BaseBean
             for (Event event : tempEvents)
             {
                 event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
-                styleEvents.add(new EventReportItem(event, null));
+                styleEvents.add(new EventReportItem(event, getUser().getPerson().getTimeZone()));
             }
+            Collections.reverse(styleEvents);
 
+            tableStatsBean.setPage(1);
+            tableStatsBean.setTableRowCount(10);
             tableStatsBean.setTableSize(styleEvents.size());
         }
     }
@@ -118,7 +118,7 @@ public class VehicleStyleBean extends BaseBean
 
         List<ScoreableEntity> scoreList = scoreDAO.getVehicleScoreHistory(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), scoreType, GraphicUtil
                 .getDurationSize(durationBean.getDuration()));
-        // 10);
+
         DateFormat dateFormatter = new SimpleDateFormat(durationBean.getDuration().getDatePattern());
 
         // Get "x" values
@@ -127,7 +127,6 @@ public class VehicleStyleBean extends BaseBean
         int cnt = 0;
         for (ScoreableEntity e : scoreList)
         {
-            // sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt)}));
             if (e.getScore() != null)
             {
                 sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt) }));
@@ -136,8 +135,6 @@ public class VehicleStyleBean extends BaseBean
             {
                 sb.append(line.getChartItem(new Object[] { null, monthList.get(cnt) }));
             }
-            // sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d),
-            // dateFormatter.format(e.getCreated()) }));
             cnt++;
         }
 
@@ -357,7 +354,7 @@ public class VehicleStyleBean extends BaseBean
     {
         this.durationBean = durationBean;
     }
-    
+
     public AddressLookup getAddressLookup()
     {
         return addressLookup;
@@ -367,9 +364,10 @@ public class VehicleStyleBean extends BaseBean
     {
         this.addressLookup = addressLookup;
     }
-    
+
     public TableStatsBean getTableStatsBean()
     {
+        getViolations();
         return tableStatsBean;
     }
 
@@ -377,10 +375,13 @@ public class VehicleStyleBean extends BaseBean
     {
         this.tableStatsBean = tableStatsBean;
     }
+
     public void setDuration(Duration duration)
     {
         durationBean.setDuration(duration);
         init();
+        styleEvents.clear();
+        getViolations();
     }
 
     public List<EventReportItem> getStyleEvents()
@@ -419,19 +420,18 @@ public class VehicleStyleBean extends BaseBean
 
         for (ScoreType st : scoreTypes)
         {
-            List<ScoreableEntity> scoreList = scoreDAO
-                    .getVehicleScoreHistory(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), st, GraphicUtil.getDurationSize(durationBean.getDuration()));
+            List<ScoreableEntity> scoreList = scoreDAO.getVehicleScoreHistory(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), st, GraphicUtil
+                    .getDurationSize(durationBean.getDuration()));
 
             List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration());
             int count = 0;
             for (ScoreableEntity se : scoreList)
             {
                 Double score = null;
-                if(se.getScore() != null)
+                if (se.getScore() != null)
                     score = se.getScore() / 10.0D;
-                
-                returnList.add(new CategorySeriesData(MessageUtil.getMessageString(st.toString()), monthList.get(count).toString(), score, monthList.get(count)
-                        .toString()));
+
+                returnList.add(new CategorySeriesData(MessageUtil.getMessageString(st.toString()), monthList.get(count).toString(), score, monthList.get(count).toString()));
 
                 count++;
             }
@@ -496,7 +496,7 @@ public class VehicleStyleBean extends BaseBean
     {
         getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
     }
-    
+
     public void exportReportToExcel()
     {
         getReportRenderer().exportReportToExcel(buildReport(), getFacesContext());

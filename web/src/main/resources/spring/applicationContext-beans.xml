@@ -177,7 +177,7 @@
         <property name="vehiclesBean" ref="vehiclesBean"></property>
     </bean>
     
-   <bean id="vehicleBean" class="com.inthinc.pro.backing.VehicleBean" scope="request">
+   <bean id="vehicleBean" class="com.inthinc.pro.backing.VehicleBean" scope="request" parent="baseBean">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="driverDAO" ref="driverDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
@@ -189,7 +189,7 @@
         <property name="addressLookup" ref="addressLookupBean"></property>
     </bean>
     
-    <bean id="vehicleSpeedBean" class="com.inthinc.pro.backing.VehicleSpeedBean" scope="request" init-method="init">
+    <bean id="vehicleSpeedBean" class="com.inthinc.pro.backing.VehicleSpeedBean" scope="request" parent="baseBean" init-method="init">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
@@ -199,7 +199,7 @@
         <property name="addressLookup" ref="addressLookupBean"></property>
     </bean>
     
-    <bean id="vehicleStyleBean" class="com.inthinc.pro.backing.VehicleStyleBean" scope="request" init-method="init">
+    <bean id="vehicleStyleBean" class="com.inthinc.pro.backing.VehicleStyleBean" scope="request" parent="baseBean" init-method="init">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
@@ -209,7 +209,7 @@
         <property name="addressLookup" ref="addressLookupBean"></property>
     </bean>
         
-    <bean id="vehicleSeatBeltBean" class="com.inthinc.pro.backing.VehicleSeatBeltBean" scope="request">
+    <bean id="vehicleSeatBeltBean" class="com.inthinc.pro.backing.VehicleSeatBeltBean" scope="request" parent="baseBean" init-method="init">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
@@ -227,7 +227,7 @@
         <property name="addressLookup" ref="addressLookupBean"></property>
     </bean>
     
-    <bean id="driverBean" class="com.inthinc.pro.backing.DriverBean" scope="request">
+    <bean id="driverBean" class="com.inthinc.pro.backing.DriverBean" scope="request" parent="baseBean">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="mpgDAO" ref="mpgDAO"></property>
 	    <property name="driverDAO" ref="driverDAO"></property>
@@ -238,7 +238,7 @@
         <property name="addressLookup" ref="addressLookupBean"></property>
     </bean>
 
-    <bean id="driverSpeedBean" class="com.inthinc.pro.backing.DriverSpeedBean" scope="request" init-method="init">
+    <bean id="driverSpeedBean" class="com.inthinc.pro.backing.DriverSpeedBean" scope="request"  parent="baseBean" init-method="init">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
@@ -248,7 +248,7 @@
         <property name="addressLookup" ref="addressLookupBean"></property>
     </bean>
 
-    <bean id="driverStyleBean" class="com.inthinc.pro.backing.DriverStyleBean" scope="request" init-method="init">
+    <bean id="driverStyleBean" class="com.inthinc.pro.backing.DriverStyleBean" scope="request" parent="baseBean" init-method="init">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
@@ -258,7 +258,7 @@
         <property name="addressLookup" ref="addressLookupBean"></property>
     </bean>
 
-    <bean id="driverSeatBeltBean" class="com.inthinc.pro.backing.DriverSeatBeltBean" scope="request" init-method="init">
+    <bean id="driverSeatBeltBean" class="com.inthinc.pro.backing.DriverSeatBeltBean" scope="request" parent="baseBean" init-method="init">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="navigation" ref="navigationBean"></property>

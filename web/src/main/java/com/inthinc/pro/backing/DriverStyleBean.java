@@ -3,6 +3,7 @@ package com.inthinc.pro.backing;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -29,42 +30,40 @@ import com.inthinc.pro.util.MessageUtil;
 
 public class DriverStyleBean extends BaseBean
 {
-    private static final Logger logger = Logger.getLogger(DriverStyleBean.class);
-    private NavigationBean navigation;
-    private DurationBean durationBean;
-    private ScoreDAO scoreDAO;
-    private EventDAO eventDAO;
-    private TableStatsBean tableStatsBean;
-    private AddressLookup addressLookup;
+    private static final Logger   logger      = Logger.getLogger(DriverStyleBean.class);
+    private NavigationBean        navigation;
+    private DurationBean          durationBean;
+    private ScoreDAO              scoreDAO;
+    private EventDAO              eventDAO;
+    private TableStatsBean        tableStatsBean;
+    private AddressLookup         addressLookup;
 
-    private Integer styleScoreOverall;
-    private String styleScoreOverallStyle;
-    private Integer styleScoreAccel;
-    private String styleScoreAccelStyle;
-    private Integer styleScoreBrake;
-    private String styleScoreBrakeStyle;
-    private Integer styleScoreBump;
-    private String styleScoreBumpStyle;
-    private Integer styleScoreTurn;
-    private String styleScoreTurnStyle;
+    private Integer               styleScoreOverall;
+    private String                styleScoreOverallStyle;
+    private Integer               styleScoreAccel;
+    private String                styleScoreAccelStyle;
+    private Integer               styleScoreBrake;
+    private String                styleScoreBrakeStyle;
+    private Integer               styleScoreBump;
+    private String                styleScoreBumpStyle;
+    private Integer               styleScoreTurn;
+    private String                styleScoreTurnStyle;
 
-    private String styleScoreHistoryOverall;
-    private String styleScoreHistoryAccel;
-    private String styleScoreHistoryBrake;
-    private String styleScoreHistoryBump;
-    private String styleScoreHistoryTurn;
+    private String                styleScoreHistoryOverall;
+    private String                styleScoreHistoryAccel;
+    private String                styleScoreHistoryBrake;
+    private String                styleScoreHistoryBump;
+    private String                styleScoreHistoryTurn;
 
-    private EventReportItem clearItem;
-    private static final Integer NO_SCORE = -1;
-    private ReportRenderer reportRenderer;
-    private String emailAddress;
+    private EventReportItem       clearItem;
+    private static final Integer  NO_SCORE    = -1;
+    private ReportRenderer        reportRenderer;
+    private String                emailAddress;
 
     private List<EventReportItem> styleEvents = new ArrayList<EventReportItem>();
 
     private void init()
     {
-        tableStatsBean.setTableRowCount(10);
-
         int driverID = navigation.getDriver().getDriverID();
 
         Map<ScoreType, ScoreableEntity> scoreMap = scoreDAO.getDriverScoreBreakdownByType(driverID, durationBean.getDuration(), ScoreType.SCORE_DRIVING_STYLE);
@@ -83,20 +82,16 @@ public class DriverStyleBean extends BaseBean
 
         se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
         setStyleScoreTurn(se == null ? NO_SCORE : se.getScore());
-
-        getViolations();
-
     }
 
     public void getViolations()
     {
-        if (styleEvents.size() < 1)
+        if (styleEvents.isEmpty())
         {
             List<Integer> types = new ArrayList<Integer>();
             types.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
 
             List<Event> tempEvents = new ArrayList<Event>();
-
             tempEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), durationBean.getStartDate(), durationBean.getEndDate(), types);
 
             for (Event event : tempEvents)
@@ -104,7 +99,10 @@ public class DriverStyleBean extends BaseBean
                 event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
                 styleEvents.add(new EventReportItem(event, this.navigation.getDriver().getPerson().getTimeZone()));
             }
+            Collections.reverse(styleEvents);
 
+            tableStatsBean.setPage(1);
+            tableStatsBean.setTableRowCount(10);
             tableStatsBean.setTableSize(styleEvents.size());
         }
     }
@@ -119,8 +117,6 @@ public class DriverStyleBean extends BaseBean
 
         List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistory(navigation.getDriver().getDriverID(), durationBean.getDuration(), scoreType, GraphicUtil
                 .getDurationSize(durationBean.getDuration()));
-        // 10);
-        DateFormat dateFormatter = new SimpleDateFormat(durationBean.getDuration().getDatePattern());
 
         // Get "x" values
         List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration());
@@ -128,7 +124,6 @@ public class DriverStyleBean extends BaseBean
         int cnt = 0;
         for (ScoreableEntity e : scoreList)
         {
-            // sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt)}));
             if (e.getScore() != null)
             {
                 sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt) }));
@@ -137,8 +132,6 @@ public class DriverStyleBean extends BaseBean
             {
                 sb.append(line.getChartItem(new Object[] { null, monthList.get(cnt) }));
             }
-            // sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d),
-            // dateFormatter.format(e.getCreated()) }));
             cnt++;
         }
 
@@ -353,7 +346,7 @@ public class DriverStyleBean extends BaseBean
     {
         return durationBean;
     }
-    
+
     public AddressLookup getAddressLookup()
     {
         return addressLookup;
@@ -366,6 +359,7 @@ public class DriverStyleBean extends BaseBean
 
     public TableStatsBean getTableStatsBean()
     {
+        getViolations();
         return tableStatsBean;
     }
 
@@ -383,6 +377,8 @@ public class DriverStyleBean extends BaseBean
     {
         durationBean.setDuration(duration);
         init();
+        styleEvents.clear();
+        getViolations();
     }
 
     public List<EventReportItem> getStyleEvents()
@@ -421,18 +417,18 @@ public class DriverStyleBean extends BaseBean
 
         for (ScoreType st : scoreTypes)
         {
-            List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistory(navigation.getDriver().getDriverID(), durationBean.getDuration(), st, GraphicUtil.getDurationSize(durationBean.getDuration()));
+            List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistory(navigation.getDriver().getDriverID(), durationBean.getDuration(), st, GraphicUtil
+                    .getDurationSize(durationBean.getDuration()));
 
             List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration());
             int count = 0;
             for (ScoreableEntity se : scoreList)
             {
                 Double score = null;
-                if(se.getScore() != null)
+                if (se.getScore() != null)
                     score = se.getScore() / 10.0D;
-                
-                returnList.add(new CategorySeriesData(MessageUtil.getMessageString(st.toString()), monthList.get(count).toString(), score, monthList.get(count)
-                        .toString()));
+
+                returnList.add(new CategorySeriesData(MessageUtil.getMessageString(st.toString()), monthList.get(count).toString(), score, monthList.get(count).toString()));
 
                 count++;
             }
@@ -492,7 +488,7 @@ public class DriverStyleBean extends BaseBean
     {
         getReportRenderer().exportSingleReportToPDF(buildReport(), getFacesContext());
     }
-    
+
     public void emailReport()
     {
         getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());

@@ -11,6 +11,7 @@ public class TableStatsBean
     private Integer tableRowCount = 0;
     private Integer tableRowStart;
     private Integer tableRowEnd   = 0;
+    private Integer Page;
 
     public Integer getTableRowStart()
     {
@@ -63,7 +64,10 @@ public class TableStatsBean
     public void setTableSize(Integer tableSize)
     {   
         if(tableSize > 0)
+        {
             tableRowStart = 1;
+            tableRowEnd = tableRowCount;
+        }
         
         this.tableSize = tableSize;
     }
@@ -75,6 +79,16 @@ public class TableStatsBean
 
         if (tableRowEnd > getTableSize())
             tableRowEnd = getTableSize();
+    }
+
+    public Integer getPage()
+    {
+        return Page;
+    }
+
+    public void setPage(Integer page)
+    {
+        Page = page;
     }
 
 }

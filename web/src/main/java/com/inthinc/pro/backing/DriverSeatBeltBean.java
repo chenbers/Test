@@ -3,6 +3,7 @@ package com.inthinc.pro.backing;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -16,6 +17,7 @@ import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -27,53 +29,52 @@ import com.inthinc.pro.util.MessageUtil;
 
 public class DriverSeatBeltBean extends BaseBean
 {
-    private static final Logger logger = Logger.getLogger(DriverSeatBeltBean.class);
+    private static final Logger   logger         = Logger.getLogger(DriverSeatBeltBean.class);
 
-    private NavigationBean navigation;
-    private DurationBean durationBean;
-    private ScoreDAO scoreDAO;
-    private EventDAO eventDAO;
-    private TableStatsBean tableStatsBean;
-    private AddressLookup addressLookup;
+    private NavigationBean        navigation;
+    private DurationBean          durationBean;
+    private ScoreDAO              scoreDAO;
+    private EventDAO              eventDAO;
+    private TableStatsBean        tableStatsBean;
+    private AddressLookup         addressLookup;
 
-    private Integer seatBeltScore;
-    private String seatBeltScoreHistoryOverall;
-    private String seatBeltScoreStyle;
-    private EventReportItem clearItem;
-    private ReportRenderer reportRenderer;
-    private String emailAddress;
+    private Integer               seatBeltScore;
+    private String                seatBeltScoreHistoryOverall;
+    private String                seatBeltScoreStyle;
+    private EventReportItem       clearItem;
+    private ReportRenderer        reportRenderer;
+    private String                emailAddress;
 
     private List<EventReportItem> seatBeltEvents = new ArrayList<EventReportItem>();
 
     private void init()
     {
-        tableStatsBean.setTableRowCount(10);
-
         ScoreableEntity seatBeltSe = scoreDAO.getDriverAverageScoreByType(navigation.getDriver().getDriverID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
         if (seatBeltSe == null)
             setSeatBeltScore(-1);
         else
             setSeatBeltScore(seatBeltSe.getScore());
-
-        getViolations();
     }
 
     public void getViolations()
     {
-        if (seatBeltEvents.size() < 1)
+        if (seatBeltEvents.isEmpty())
         {
             List<Integer> types = new ArrayList<Integer>();
-            types.add(3);
+            types.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
 
             List<Event> tempEvents = new ArrayList<Event>();
             tempEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), durationBean.getStartDate(), durationBean.getEndDate(), types);
 
-            
             for (Event event : tempEvents)
             {
                 event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
                 seatBeltEvents.add(new EventReportItem(event, this.navigation.getDriver().getPerson().getTimeZone()));
             }
+            Collections.reverse(seatBeltEvents);
+            
+            tableStatsBean.setPage(1);
+            tableStatsBean.setTableRowCount(10);
             tableStatsBean.setTableSize(seatBeltEvents.size());
         }
     }
@@ -81,9 +82,6 @@ public class DriverSeatBeltBean extends BaseBean
     // SCORE PROPERTIES
     public Integer getSeatBeltScore()
     {
-        if (seatBeltScore == null)
-            init();
-
         return seatBeltScore;
     }
 
@@ -127,10 +125,8 @@ public class DriverSeatBeltBean extends BaseBean
         // Start XML Data
         sb.append(line.getControlParameters());
 
-        List<ScoreableEntity> scoreList = scoreDAO
-                .getDriverScoreHistory(navigation.getDriver().getDriverID(), durationBean.getDuration(), scoreType, GraphicUtil.getDurationSize(durationBean.getDuration()));
-        // 10);
-        DateFormat dateFormatter = new SimpleDateFormat(durationBean.getDuration().getDatePattern());
+        List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistory(navigation.getDriver().getDriverID(), durationBean.getDuration(), scoreType, GraphicUtil
+                .getDurationSize(durationBean.getDuration()));
 
         // Get "x" values
         List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration());
@@ -138,7 +134,6 @@ public class DriverSeatBeltBean extends BaseBean
         int cnt = 0;
         for (ScoreableEntity e : scoreList)
         {
-            // sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt) }));
             if (e.getScore() != null)
             {
                 sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt) }));
@@ -147,8 +142,6 @@ public class DriverSeatBeltBean extends BaseBean
             {
                 sb.append(line.getChartItem(new Object[] { null, monthList.get(cnt) }));
             }
-            // sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d),
-            // dateFormatter.format(e.getCreated()) }));
             cnt++;
         }
 
@@ -204,6 +197,9 @@ public class DriverSeatBeltBean extends BaseBean
     public void setDuration(Duration duration)
     {
         durationBean.setDuration(duration);
+        init();
+        seatBeltEvents.clear();
+        getViolations();
     }
 
     // NAVIGATION BEAN PROPERTIES
@@ -219,6 +215,7 @@ public class DriverSeatBeltBean extends BaseBean
 
     public TableStatsBean getTableStatsBean()
     {
+        getViolations();
         return tableStatsBean;
     }
 
@@ -262,18 +259,18 @@ public class DriverSeatBeltBean extends BaseBean
 
         for (ScoreType st : scoreTypes)
         {
-            List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistory(navigation.getDriver().getDriverID(), durationBean.getDuration(), st, GraphicUtil.getDurationSize(durationBean.getDuration()));
+            List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistory(navigation.getDriver().getDriverID(), durationBean.getDuration(), st, GraphicUtil
+                    .getDurationSize(durationBean.getDuration()));
 
             List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration());
             int count = 0;
             for (ScoreableEntity se : scoreList)
             {
                 Double score = null;
-                if(se.getScore() != null)
+                if (se.getScore() != null)
                     score = se.getScore() / 10.0D;
-                
-                returnList.add(new CategorySeriesData(MessageUtil.getMessageString(st.toString()), monthList.get(count).toString(), score, monthList.get(count)
-                        .toString()));
+
+                returnList.add(new CategorySeriesData(MessageUtil.getMessageString(st.toString()), monthList.get(count).toString(), score, monthList.get(count).toString()));
 
                 count++;
             }
@@ -329,8 +326,8 @@ public class DriverSeatBeltBean extends BaseBean
     public void emailReport()
     {
         getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
-    }    
-    
+    }
+
     public void exportReportToExcel()
     {
         getReportRenderer().exportReportToExcel(buildReport(), getFacesContext());

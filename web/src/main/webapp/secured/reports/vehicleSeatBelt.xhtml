@@ -27,7 +27,8 @@
 	<ui:param name="reportsSelected" value="current" />
 	<ui:param name="helpFile" value="Seat_Belt.htm" />
 	<ui:define name="content">
-	<t:saveState value="#{vehicleSeatBeltBean}"/>
+	<t:saveState value="#{vehicleSeatBeltBean.seatBeltEvents}"/>
+	<t:saveState value="#{vehicleSeatBeltBean.tableStatsBean}"/>
 <div id="wrapper">
 
 <h:form>
@@ -73,30 +74,30 @@
 								<rich:spacer width="10" />
 								<a4j:commandLink title="#{messages.duration_days}" immediate="true"
 									styleClass="#{(vehicleSeatBeltDurationBean.duration eq 'DAYS') ? 'on' : ''}"		
-									reRender="dateLinksForm,overallPanel,eventsTable"
+									reRender="dateLinksForm,overallPanel,eventsPanel"
 									value="#{messages.duration_days}">
-									<a4j:actionparam name="duration" assignTo="#{vehicleSeatBeltDurationBean.duration}"	value="DAYS" />
+									<a4j:actionparam name="duration" assignTo="#{vehicleSeatBeltBean.duration}"	value="DAYS" />
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
 								<a4j:commandLink title="#{messages.duration_three}" immediate="true"
 									styleClass="#{(vehicleSeatBeltDurationBean.duration eq 'THREE') ? 'on' : ''}"	
-									reRender="dateLinksForm,overallPanel,eventsTable"
+									reRender="dateLinksForm,overallPanel,eventsPanel"
 									value="#{messages.duration_three}">
-									<a4j:actionparam name="duration" assignTo="#{vehicleSeatBeltDurationBean.duration}"	value="THREE" />
+									<a4j:actionparam name="duration" assignTo="#{vehicleSeatBeltBean.duration}"	value="THREE" />
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
 								<a4j:commandLink title="#{messages.duration_six}" immediate="true"
 									styleClass="#{(vehicleSeatBeltDurationBean.duration eq 'SIX') ? 'on' : ''}"	
-									reRender="dateLinksForm,overallPanel,eventsTable"
+									reRender="dateLinksForm,overallPanel,eventsPanel"
 									value="#{messages.duration_six}">
-									<a4j:actionparam name="duration" assignTo="#{vehicleSeatBeltDurationBean.duration}"	value="SIX" />
+									<a4j:actionparam name="duration" assignTo="#{vehicleSeatBeltBean.duration}"	value="SIX" />
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
 								<a4j:commandLink title="#{messages.duration_twelve}" immediate="true"
 									styleClass="#{(vehicleSeatBeltDurationBean.duration eq 'TWELVE') ? 'on' : ''}"	
-									reRender="dateLinksForm,overallPanel,eventsTable"
+									reRender="dateLinksForm,overallPanel,eventsPanel"
 									value="#{messages.duration_twelve}">
-									<a4j:actionparam name="duration" assignTo="#{vehicleSeatBeltDurationBean.duration}"	value="TWELVE" />
+									<a4j:actionparam name="duration" assignTo="#{vehicleSeatBeltBean.duration}"	value="TWELVE" />
 								</a4j:commandLink>
 								</span>
 								<span class="panel_ico">
@@ -187,6 +188,7 @@
   <tr>
     <td width="465" valign="top">
 		<!-- START PANEL -->
+		<rich:panel id="eventsPanel">
 			<div class="" style="width: 938px;">
 				<rich:panel id="tableStats" bodyClass="panel_nw">
 					<div class="panel_title">
@@ -207,7 +209,7 @@
 			<rich:panel id="eventsTable" bodyClass="datagrid">
 				<!-- Start Event table --> 
 					<h:form id="eventTableForm">
-					<rich:datascroller align="center" for="eventsTable" id="scrollerTop" 
+					<rich:datascroller align="center" for="eventsTable" id="scrollerTop" page="#{vehicleSeatBeltBean.tableStatsBean.page}"
 					reRender="eventsTable,scrollerBottom,tableStats" immediate="true" scrollerListener="#{vehicleSeatBeltBean.tableStatsBean.scrollerListener}"/>
 						<rich:dataTable 
 							value="#{vehicleSeatBeltBean.seatBeltEvents}" 
@@ -272,7 +274,7 @@
     						</rich:column>
 						</rich:dataTable>
 						
-						<rich:datascroller align="center" for="eventsTable" id="scrollerBottom" 
+						<rich:datascroller align="center" for="eventsTable" id="scrollerBottom" page="#{vehicleSeatBeltBean.tableStatsBean.page}"
 						reRender="eventsTable,scrollerTop,tableStats" immediate="true" scrollerListener="#{vehicleSeatBeltBean.tableStatsBean.scrollerListener}"/>
 					</h:form> 
 				<!-- End Event table -->
@@ -280,6 +282,7 @@
 				</div>
 				</div>
 				</div>
+			</rich:panel>
 			</td>
 	    </tr>
 	</table>

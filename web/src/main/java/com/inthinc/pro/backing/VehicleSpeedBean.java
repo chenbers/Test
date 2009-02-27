@@ -3,6 +3,7 @@ package com.inthinc.pro.backing;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
@@ -29,45 +30,42 @@ import com.inthinc.pro.util.MessageUtil;
 
 public class VehicleSpeedBean extends BaseBean
 {
-    private static final Logger logger = Logger.getLogger(VehicleSpeedBean.class);
-    private NavigationBean navigation;
-    private DurationBean durationBean;
-    private ScoreDAO scoreDAO;
-    private EventDAO eventDAO;
-    private TableStatsBean tableStatsBean;
-    private AddressLookup addressLookup;
+    private static final Logger   logger         = Logger.getLogger(VehicleSpeedBean.class);
+    private NavigationBean        navigation;
+    private DurationBean          durationBean;
+    private ScoreDAO              scoreDAO;
+    private EventDAO              eventDAO;
+    private TableStatsBean        tableStatsBean;
+    private AddressLookup         addressLookup;
 
-    private Integer speedScoreOverall;
-    private String speedScoreOverallStyle;
-    private Integer speedScoreTwentyOne;
-    private String speedScoreTwentyOneStyle;
-    private Integer speedScoreThirtyOne;
-    private String speedScoreThirtyOneStyle;
-    private Integer speedScoreFourtyOne;
-    private String speedScoreFourtyOneStyle;
-    private Integer speedScoreFiftyFive;
-    private String speedScoreFiftyFiveStyle;
-    private Integer speedScoreSixtyFive;
-    private String speedScoreSixtyFiveStyle;
+    private Integer               speedScoreOverall;
+    private String                speedScoreOverallStyle;
+    private Integer               speedScoreTwentyOne;
+    private String                speedScoreTwentyOneStyle;
+    private Integer               speedScoreThirtyOne;
+    private String                speedScoreThirtyOneStyle;
+    private Integer               speedScoreFourtyOne;
+    private String                speedScoreFourtyOneStyle;
+    private Integer               speedScoreFiftyFive;
+    private String                speedScoreFiftyFiveStyle;
+    private Integer               speedScoreSixtyFive;
+    private String                speedScoreSixtyFiveStyle;
 
-    private String speedScoreHistoryOverall;
-    private String speedScoreHistoryTwentyOne;
-    private String speedScoreHistoryThirtyOne;
-    private String speedScoreHistoryFourtyOne;
-    private String speedScoreHistoryFiftyFive;
-    private String speedScoreHistorySixtyFive;
+    private String                speedScoreHistoryOverall;
+    private String                speedScoreHistoryTwentyOne;
+    private String                speedScoreHistoryThirtyOne;
+    private String                speedScoreHistoryFourtyOne;
+    private String                speedScoreHistoryFiftyFive;
+    private String                speedScoreHistorySixtyFive;
 
-    private static final Integer NO_SCORE = -1;
+    private static final Integer  NO_SCORE       = -1;
     private List<EventReportItem> speedingEvents = new ArrayList<EventReportItem>();
-    private EventReportItem clearItem;
-    private ReportRenderer reportRenderer;
-    private String emailAddress;
+    private EventReportItem       clearItem;
+    private ReportRenderer        reportRenderer;
+    private String                emailAddress;
 
     private void init()
     {
-        // Set Events table rows per page in BaseDurationBean
-        tableStatsBean.setTableRowCount(10);
-
         if (navigation.getVehicle() == null)
         {
             return;
@@ -93,30 +91,30 @@ public class VehicleSpeedBean extends BaseBean
 
         se = scoreMap.get(ScoreType.SCORE_SPEEDING_65_80);
         setSpeedScoreSixtyFive(se == null ? NO_SCORE : se.getScore());
-
-        getViolations();
     }
 
     public void getViolations()
     {
-        
         if (speedingEvents.isEmpty())
         {
-            List<Event> tempEvents = new ArrayList<Event>();
             List<Integer> types = new ArrayList<Integer>();
             types.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
 
+            List<Event> tempEvents = new ArrayList<Event>();
             tempEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), durationBean.getStartDate(), durationBean.getEndDate(), types);
-
 
             for (Event event : tempEvents)
             {
-                // TODO: Lookup each driver and get timezone.
-
+                // Apply street address to Event.
                 event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
-                speedingEvents.add(new EventReportItem(event, null));
-            }
 
+                // Apply logged in user's TimeZone
+                speedingEvents.add(new EventReportItem(event, getUser().getPerson().getTimeZone()));
+            }
+            Collections.reverse(speedingEvents);
+
+            tableStatsBean.setPage(1);
+            tableStatsBean.setTableRowCount(10);
             tableStatsBean.setTableSize(speedingEvents.size());
         }
     }
@@ -131,7 +129,7 @@ public class VehicleSpeedBean extends BaseBean
 
         List<ScoreableEntity> scoreList = scoreDAO.getVehicleScoreHistory(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), scoreType, GraphicUtil
                 .getDurationSize(durationBean.getDuration()));
-        // 10);
+
         DateFormat dateFormatter = new SimpleDateFormat(durationBean.getDuration().getDatePattern());
 
         // Get "x" values
@@ -140,7 +138,6 @@ public class VehicleSpeedBean extends BaseBean
         int cnt = 0;
         for (ScoreableEntity e : scoreList)
         {
-            // sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt) }));
             if (e.getScore() != null)
             {
                 sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt) }));
@@ -149,14 +146,11 @@ public class VehicleSpeedBean extends BaseBean
             {
                 sb.append(line.getChartItem(new Object[] { null, monthList.get(cnt) }));
             }
-            // sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d),
-            // dateFormatter.format(e.getCreated()) }));
             cnt++;
         }
 
         // End XML Data
         sb.append(line.getClose());
-
         return sb.toString();
     }
 
@@ -397,6 +391,7 @@ public class VehicleSpeedBean extends BaseBean
 
     public TableStatsBean getTableStatsBean()
     {
+        getViolations();
         return tableStatsBean;
     }
 
@@ -409,6 +404,8 @@ public class VehicleSpeedBean extends BaseBean
     {
         durationBean.setDuration(duration);
         init();
+        speedingEvents.clear();
+        getViolations();
     }
 
     // SPEEDING EVENTS LIST
@@ -469,19 +466,18 @@ public class VehicleSpeedBean extends BaseBean
 
         for (ScoreType st : scoreTypes)
         {
-            List<ScoreableEntity> scoreList = scoreDAO
-                    .getVehicleScoreHistory(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), st, GraphicUtil.getDurationSize(durationBean.getDuration()));
+            List<ScoreableEntity> scoreList = scoreDAO.getVehicleScoreHistory(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), st, GraphicUtil
+                    .getDurationSize(durationBean.getDuration()));
 
             List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration());
             int count = 0;
             for (ScoreableEntity se : scoreList)
             {
                 Double score = null;
-                if(se.getScore() != null)
+                if (se.getScore() != null)
                     score = se.getScore() / 10.0D;
-                
-                returnList.add(new CategorySeriesData(MessageUtil.getMessageString(st.toString()), monthList.get(count).toString(), score, monthList.get(count)
-                        .toString()));
+
+                returnList.add(new CategorySeriesData(MessageUtil.getMessageString(st.toString()), monthList.get(count).toString(), score, monthList.get(count).toString()));
 
                 count++;
             }
@@ -543,7 +539,7 @@ public class VehicleSpeedBean extends BaseBean
     {
         getReportRenderer().exportSingleReportToPDF(buildReport(), getFacesContext());
     }
-    
+
     public void emailReport()
     {
         getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
