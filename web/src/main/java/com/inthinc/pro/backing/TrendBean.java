@@ -13,6 +13,7 @@ import javax.faces.context.FacesContext;
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
+import com.inthinc.pro.backing.listener.DurationChangeListener;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.ScoreDAO;
@@ -27,7 +28,7 @@ import com.inthinc.pro.util.ColorSelectorStandard;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.wrapper.ScoreableEntityPkg;
 
-public class TrendBean extends CustomSortBean<ScoreableEntityPkg>
+public class TrendBean extends CustomSortBean<ScoreableEntityPkg> implements DurationChangeListener
 {
 
     private static final Logger logger = Logger.getLogger(TrendBean.class);
@@ -76,6 +77,12 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg>
         }
         
         setSortColumn("se.identifier");
+    }
+    
+    public void init()
+    {
+        createScoreableEntities();
+        navigation.getDurationBean().addDurationChangeListener(this);
     }
 
     public String getLineDef()
@@ -206,10 +213,6 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg>
 
     public List<ScoreableEntityPkg> getScoreableEntities()
     {   
-        if (scoreableEntities == null || scoreableEntities.isEmpty()) {
-            createScoreableEntities();
-        }  
-        
         return scoreableEntities;
     }
     
@@ -226,6 +229,8 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg>
         this.scoreableEntities = new ArrayList<ScoreableEntityPkg>();
         List<ScoreableEntity> s = null;
         s = getScores();
+        
+       
         
         Collections.sort(s, new Comparator<ScoreableEntity>() {
             public int compare(ScoreableEntity se1, ScoreableEntity se2) {
@@ -267,6 +272,10 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg>
         try
         {
             s = scoreDAO.getScores(this.navigation.getGroupID(), navigation.getDurationBean().getDuration(), ScoreType.SCORE_OVERALL);
+            if(s == null)
+            {
+                s = Collections.emptyList();
+            }
         }
         catch (Exception e)
         {
@@ -457,6 +466,12 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg>
     public String isAnimateChartData()
     {
         return animateChartData.toString();
+    }
+    
+    @Override
+    public void onDurationChange(Duration d)
+    {
+        createScoreableEntities();
     }
 
 }

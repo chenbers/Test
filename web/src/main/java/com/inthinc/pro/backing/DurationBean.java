@@ -1,10 +1,13 @@
 package com.inthinc.pro.backing;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.richfaces.event.DataScrollerEvent;
 
+import com.inthinc.pro.backing.listener.DurationChangeListener;
 import com.inthinc.pro.model.Duration;
 
 public class DurationBean
@@ -20,6 +23,8 @@ public class DurationBean
     private Integer             tableRowCount;
     private Integer             tableRowStart       = 1;
     private Integer             tableRowEnd;
+    
+    private List<DurationChangeListener> durationChangeListenerList;
 
     public DurationBean()
     {
@@ -34,6 +39,10 @@ public class DurationBean
     public void setDuration(Duration duration)
     {
         this.duration = duration;
+        for(DurationChangeListener durationChangeListener: durationChangeListenerList)
+        {
+            durationChangeListener.onDurationChange(duration);
+        }
     }
 
     public String getStyleClass30Days()
@@ -66,5 +75,25 @@ public class DurationBean
     public Date getEndDate()
     {
         return new Date();
+    }
+
+    public void setDurationChangeListenerList(List<DurationChangeListener> durationChangeListenerList)
+    {
+        this.durationChangeListenerList = durationChangeListenerList;
+    }
+
+    public List<DurationChangeListener> getDurationChangeListenerList()
+    {
+        return durationChangeListenerList;
+    }
+    
+    public void addDurationChangeListener(DurationChangeListener durationChangeListener)
+    {
+        if(durationChangeListenerList == null)
+        {
+            durationChangeListenerList = new ArrayList<DurationChangeListener>();
+        }
+        durationChangeListenerList.add(durationChangeListener);
+        
     }
 }
