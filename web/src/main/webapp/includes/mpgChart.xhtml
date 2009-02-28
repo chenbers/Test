@@ -67,12 +67,9 @@
     </rich:panel> <rich:panel rendered="#{displayTable}">
         <div class="spacer"></div>
 
-        <div class="datagrid">
-        
-        <a4j:form id="mpgTableForm" ajaxSubmit="true" reRender="mpgTable, mpgTableTopScroller">
+        <div class="datagrid"><a4j:form id="mpgTableForm" ajaxSubmit="true" reRender="mpgTable, mpgTableTopScroller">
             <t:dataTable value="#{mpgBean.mpgEntities}" id="mpgTable" var="item" styleClass="datagrid" sortAscending="#{mpgBean.ascending}" sortColumn="#{mpgBean.sortColumn}"
-                preserveSort="true" rowClasses="trendTableOdd,trendTableEven" cellspacing="1" width="100%">
-
+                preserveSort="true" rowClasses="tableOdd,tableEven" cellspacing="0" width="100%">
                 <t:column defaultSorted="true" sortable="true">
                     <f:facet name="header">
                         <t:commandSortHeader columnName="entity.entityName" propertyName="entity.entityName" arrow="true">
@@ -108,9 +105,7 @@
                     <h:outputText value="#{item.entity.heavyValue}" />
                 </t:column>
             </t:dataTable>
-        </a4j:form>
-        
-        </div>
+        </a4j:form></div>
 
     </rich:panel></div>
     </div>
