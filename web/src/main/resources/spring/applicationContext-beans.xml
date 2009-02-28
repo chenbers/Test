@@ -12,10 +12,6 @@
         <property name="accountDAO" ref="accountDAO" />
     </bean>
     <bean id="testBean" class="com.inthinc.pro.backing.TestBean" scope="session" parent="baseBean"></bean>
-    <bean id="testTableBean" class="com.inthinc.pro.backing.TestTableBean" scope="session" init-method="init">
-        <property name="mpgDAO" ref="mpgDAO"/>
-        <property name="groupDAO" ref="groupDAO"/>
-    </bean>
     <bean id="versionBean" class="com.inthinc.pro.backing.VersionBean" init-method="init"></bean>
 
     <bean id="groupLevelBean" class="com.inthinc.pro.backing.GroupLevelBean" scope="request" parent="baseBean" init-method="initGroupID">
