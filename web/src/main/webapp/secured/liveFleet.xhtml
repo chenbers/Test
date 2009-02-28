@@ -58,7 +58,8 @@
 		
 		/* CreateMarker(GLatLng, divID, GIcon or null)
 		 *	
-		 * Creates a marker using specified GIcon or default icon if null is passed for iconImage.
+		 * Creates a marker using specified GIcon or
+		 * default icon if null is passed for iconImage.
 		 * divID is the id of a DIV you want displayed in the info window. 
 		 */
         function createMarker(point, divID, iconImage) 
@@ -92,6 +93,7 @@
 
 		function showDriver(lat, lng, divId)
 		{
+			// TODO Find existing marker and Show it.  This code creates a new one.
 			var point = new GLatLng(lat, lng);
 			var node = document.getElementById(divId).cloneNode(true);
   				node.style.display = 'block';
@@ -110,6 +112,11 @@
 			
 			//Immediately display info window.
 			marker.openInfoWindow(node);
+		}
+
+		function refresh()
+		{
+			processForm('addressTextBox', 'countComboBox');
 		}
 	    
    		function processForm(addressId, countId)
@@ -159,7 +166,9 @@
 	   	      }
    	    }
 
-		//Process form if user pressed enter in form fields.
+		/* Check if Enter pressed in form.
+		 * Process form if user pressed enter in form fields.
+		 */
    		function checkEnter(e)
    		{ 
    			var characterCode;
@@ -336,7 +345,12 @@
 					<div class="" style="width: 600px; margin: 0 auto 0 auto;">
 
 				<div class="panel_nw">
-					<div class="panel_title"><span class="map">Live Fleet</span></div>
+					<div class="panel_title">
+						<span class="map">Live Fleet</span>
+						<span class="panel_ico">
+							<h:graphicImage value="/images/ico_refresh.png" style="cursor: pointer;" onclick="refresh();"/>
+						</span>
+					</div>
 				</div>
 				<div class="panel_w">
 					<div class="panel_content" align="center">
@@ -382,7 +396,7 @@
 			    	
 			    </div>
 				</h:form>
-					<a4j:form>
+					<a4j:form id="jsForm">
 						<a4j:jsFunction reRender="driversDataTable,mapPopups,driverScroller,fleetLegend" name="notifyBean" oncomplete="bodyLoad()">				
 							<a4j:actionparam name="param1" assignTo="#{liveFleetBean.addressLatLng.lat}" />
 							<a4j:actionparam name="param2" assignTo="#{liveFleetBean.addressLatLng.lng}" />
