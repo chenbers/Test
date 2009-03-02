@@ -9,129 +9,132 @@
 	<ui:param name="redFlagsSelected" value="current" />
 	<ui:param name="eventsSubSelected" value="current" />
 	
-	
 	<ui:define name="subnavigation">
 		<ui:include src="/includes/redFlags/subNavigation.xhtml" />
 	</ui:define>
 	
-
 	<ui:define name="content">
 	
-<table width="920" border="0" align="center" cellpadding="0" cellspacing="0" style="margin: 0 auto 0 auto;">
-  <tr>
-    <td valign="top">
-      <!-- START PANEL -->
-      <h:panelGroup layout="block" styleClass="">
-        <h:panelGroup layout="block" styleClass="panel_nw">
-          <div class="panel_title"> <span class="event">#{messages.events_title}</span><span class="panel_links"></span>
-           </div>
-        </h:panelGroup>
-
-        <h:panelGroup layout="block" styleClass="panel_w">
-          <h:panelGroup layout="block" styleClass="panel_content">
-
-			<a4j:region id="eventsearchRegion">							
-			<a4j:form id="eventsearch">							
-            <ul id="grid_nav" style="margin: 0;">
-              <li class="l">
-                <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
-                  <tr>
-                    <td>#{messages.events_search}</td>
-                    <td>
-                      <h:inputText id="searchText" value="#{eventsBean.searchText}" styleClass="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('eventsearch:searchButton').onclick(); return false; } return true;" />
-                    </td>
-                  </tr>
-                </table>
-              </li>
-			  <li class="l">
-					<a4j:commandButton id="searchButton" action="#{eventsBean.searchAction}" 
-            					reRender="header,eventsTableForm:items,eventsTableForm:bottomScroller,eventsTableForm:topScroller" styleClass="left">
-            				<span class="search">
-            					<h:outputText value="#{messages.button_search}" />
-            				</span>
-            		</a4j:commandButton>            								
-			   </li>
-			  <li class="l text">
-				<a4j:commandLink styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('editColumns')" 
-					reRender="editColumnsForm:editColumnGrid">
-					#{messages.button_editColumns}
-				</a4j:commandLink>
-			  </li>  
-			  <li class="l">
-				<a4j:commandButton styleClass="left"
-							reRender="header,eventsTableForm:items,eventsTableForm:bottomScroller,eventsTableForm:topScroller" 
-							action="#{eventsBean.refreshAction}">
-            				<span class="refresh">
-            					<h:outputText value="#{messages.refresh}" />
-            				</span>
-				</a4j:commandButton>
-			  </li>  
-			  <li class="l text">
-				<a4j:status id="eventsStatus" for="eventsearchRegion">
-					<f:facet name="start">
-						<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
-					</f:facet>
-				</a4j:status>
-			  </li>
-			  <li class="r grid_icon">
-				<h:panelGroup id="eventReportToolImageId">
-					<h:graphicImage value="/images/ico_tools.png"/>
-				</h:panelGroup>
-			  </li>
-			  <li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
-			  </li> 
-			  <li class="r text">
-			  	<h:outputFormat id="header" value="#{messages.events_recordCountHeader}">
-					<a4j:actionparam value="#{eventsBean.start}"/>
-					<a4j:actionparam value="#{eventsBean.end}"/>
-					<a4j:actionparam value="#{eventsBean.maxCount}"/>
-				</h:outputFormat>
-               </li>          							
-            </ul>
-            
-            <ui:include src="/includes/reportsContextMenu.xhtml">	
-				<ui:param  name="emailModalPanelID" value="eventsReportEmailModal" />
-				<ui:param  name="reportBean" value="#{eventsBean}"/>
-				<ui:param  name="attachTo" value="eventReportToolImageId"/>
-				<ui:param  name="exportExcel" value="TRUE"/>
-			</ui:include>
-    		</a4j:form>
-    		</a4j:region>
-    		        
-			<div class="spacer"></div>
-			
-            <h:panelGroup id="eventsTable" layout="block" styleClass="datagrid">
-				<ui:include src="/includes/eventsTable.xhtml">	
-					<ui:param name="numRowsPerPg" value="#{eventsBean.numRowsPerPg}"/>									
-             		<ui:param name="tableData" value="#{eventsBean.tableData}"/>             						
-             		<ui:param name="tableColumns" value="#{eventsBean.tableColumns}"/>
-    				<ui:param name="bean" value="#{eventsBean}"/>
-    				<ui:param name="formId" value="eventsTableForm"/>
-             		<ui:param name="clearTitle" value="#{messages.events_clearTitle}"/>
-             		<ui:param name="clearInst" value="#{messages.events_clearInst}"/>
-             		<ui:param name="clearRerender" value="eventsearch:header,eventsTableForm:items"/>
-    			</ui:include>    							
-            </h:panelGroup>
-            
-          </h:panelGroup>
-		</h:panelGroup>
-
-		<ui:include src="/includes/editColumnsPopup.xhtml">
-			<ui:param name="bean" value="#{eventsBean}"/>	
-			<ui:param name="reRender" value="eventsTableForm:items" />
-		</ui:include>    
+		<table width="920" border="0" align="center" cellpadding="0" cellspacing="0" style="margin: 0 auto 0 auto;">
+		  <tr>
+		    <td valign="top">
+		      <!-- START PANEL -->
+		      <h:panelGroup layout="block" styleClass="">
+		        <h:panelGroup layout="block" styleClass="panel_nw">
+		          <div class="panel_title"> <span class="event">#{messages.events_title}</span><span class="panel_links"></span>
+		           </div>
+		        </h:panelGroup>
 		
-        <h:panelGroup layout="block" styleClass="panel_sw">
-          <h:panelGroup layout="block" styleClass="panel_statusbar"/>
-		</h:panelGroup>
-
-      </h:panelGroup>
-      <!-- END PANEL -->
-    </td>
-  </tr>
-</table>
-	
-
+		        <h:panelGroup layout="block" styleClass="panel_w">
+		          <h:panelGroup layout="block" styleClass="panel_content">
+		
+					<a4j:region id="eventsearchRegion">							
+					<a4j:form id="eventsearch">							
+		            <ul id="grid_nav" style="margin: 0;">
+		              <li class="l">
+		                <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
+		                  <tr>
+		                    <td>#{messages.events_search}</td>
+		                    <td>
+		                      <h:inputText id="searchText" value="#{eventsBean.searchText}" styleClass="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('eventsearch:searchButton').onclick(); return false; } return true;" />
+		                    </td>
+		                  </tr>
+		                </table>
+		              </li>
+					  <li class="l">
+							<a4j:commandButton id="searchButton" action="#{eventsBean.searchAction}" 
+		            					reRender="header,eventsTableForm:items,eventsTableForm:bottomScroller,eventsTableForm:topScroller" styleClass="left">
+		            				<span class="search">
+		            					<h:outputText value="#{messages.button_search}" />
+		            				</span>
+		            		</a4j:commandButton>            								
+					   </li>
+					  <li class="l text">
+						<a4j:commandLink styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('editColumns')" 
+							reRender="editColumnsForm:editColumnGrid">
+							#{messages.button_editColumns}
+						</a4j:commandLink>
+					  </li>  
+					  <li class="l">
+						<a4j:commandButton styleClass="left"
+									reRender="header,eventsTableForm:items,eventsTableForm:bottomScroller,eventsTableForm:topScroller" 
+									action="#{eventsBean.refreshAction}">
+		            				<span class="refresh">
+		            					<h:outputText value="#{messages.refresh}" />
+		            				</span>
+						</a4j:commandButton>
+					  </li>  
+					  <li class="l text">
+						<a4j:status id="eventsStatus" for="eventsearchRegion">
+							<f:facet name="start">
+								<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
+							</f:facet>
+						</a4j:status>
+					  </li>
+					  <li class="r grid_icon">
+						<h:panelGroup id="eventReportToolImageId">
+							<h:graphicImage value="/images/ico_tools.png"/>
+						</h:panelGroup>
+					  </li>
+					  <li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
+					  </li> 
+					  <li class="r text">
+					  	<h:outputFormat id="header" value="#{messages.events_recordCountHeader}">
+							<a4j:actionparam value="#{eventsBean.start}"/>
+							<a4j:actionparam value="#{eventsBean.end}"/>
+							<a4j:actionparam value="#{eventsBean.maxCount}"/>
+						</h:outputFormat>
+		               </li>          							
+		            </ul>
+		            
+		            <ui:include src="/includes/reportsContextMenu.xhtml">	
+						<ui:param  name="emailModalPanelID" value="eventsReportEmailModal" />
+						<ui:param  name="reportBean" value="#{eventsBean}"/>
+						<ui:param  name="attachTo" value="eventReportToolImageId"/>
+						<ui:param  name="exportExcel" value="TRUE"/>
+					</ui:include>
+		    		</a4j:form>
+		    		</a4j:region>
+		    		        
+					<div class="spacer"></div>
+					
+		            <h:panelGroup id="eventsTable" layout="block" styleClass="datagrid">
+						<ui:include src="/includes/eventsTable.xhtml">	
+							<ui:param name="numRowsPerPg" value="#{eventsBean.numRowsPerPg}"/>									
+		             		<ui:param name="tableData" value="#{eventsBean.tableData}"/>             						
+		             		<ui:param name="tableColumns" value="#{eventsBean.tableColumns}"/>
+		    				<ui:param name="bean" value="#{eventsBean}"/>
+		    				<ui:param name="formId" value="eventsTableForm"/>
+		             		<ui:param name="clearTitle" value="#{messages.events_clearTitle}"/>
+		             		<ui:param name="clearInst" value="#{messages.events_clearInst}"/>
+		             		<ui:param name="clearRerender" value="eventsearch:header,eventsTableForm:items"/>
+		    			</ui:include>    							
+		            </h:panelGroup>
+		            
+		          </h:panelGroup>
+				</h:panelGroup>
+		
+				<ui:include src="/includes/editColumnsPopup.xhtml">
+					<ui:param name="bean" value="#{eventsBean}"/>	
+					<ui:param name="reRender" value="eventsTableForm:items" />
+				</ui:include>    
+				
+		        <h:panelGroup layout="block" styleClass="panel_sw">
+		          <h:panelGroup layout="block" styleClass="panel_statusbar"/>
+				</h:panelGroup>
+		
+		      </h:panelGroup>
+		      <!-- END PANEL -->
+		    </td>
+		  </tr>
+		</table>
+		
+		<h:outputText id="event_email_modalPanel">
+			<ui:include src="/includes/emailReportPopup.xhtml">	
+				<ui:param  name="id" value="eventsReportEmailModal" />
+				<ui:param  name="reportBean" value="#{eventsBean}"/>
+			</ui:include>
+		</h:outputText>
 	</ui:define>
 
 </ui:composition>
