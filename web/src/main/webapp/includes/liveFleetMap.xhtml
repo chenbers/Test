@@ -9,6 +9,8 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk">
 	
 	<t:saveState value="#{driverLocationBean.driverLastLocationBeans}"/>
+	<t:saveState value="#{driverLocationBean.legendIcons}"/>
+	<t:saveState value="#{driverLocationBean.mapIconMap}"/>
 	
         <c:choose>
           <c:when test="#{flyOutImage == 'ico_minimize.png'}">
