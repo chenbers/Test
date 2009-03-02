@@ -359,7 +359,7 @@
 							  <tr>
 								<td>Total Miles Driven:</td>
 								<td></td>
-								<td><h:outputText>#{driverTripsBean.milesDriven}</h:outputText></td>
+								<td><h:outputText value="#{driverTripsBean.milesDriven}" converter="DistanceConverter"/></td>
 							  </tr>
 							  <tr>
 							    <td>Total Idle Time: </td>

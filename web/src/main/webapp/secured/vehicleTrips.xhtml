@@ -360,7 +360,7 @@
 								  <tr>
 									<td>Total Miles Driven:</td>
 									<td></td>
-									<td><h:outputText>#{vehicleTripsBean.milesDriven}</h:outputText></td>
+									<td><h:outputText value="#{vehicleTripsBean.milesDriven}" converter="DistanceConverter"/></td>
 								  </tr>
 								  <tr>
 								    <td>Total Idle Time: </td>

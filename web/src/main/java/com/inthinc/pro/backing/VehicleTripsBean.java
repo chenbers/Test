@@ -34,7 +34,7 @@ public class VehicleTripsBean extends BaseBean
     private Date                startDate;
     private Date                endDate;
 
-    private Double              milesDriven       = 0.0D;
+    private Integer             milesDriven       = 0;
     private Integer             idleSeconds       = 0;
     private Integer             numTrips          = 0;
     private Integer             totalDriveSeconds = 0;
@@ -69,7 +69,7 @@ public class VehicleTripsBean extends BaseBean
             numTrips = trips.size();
             if (numTrips > 0)
             {
-                logger.debug(numTrips.toString() + "Trips Found.");
+                //logger.debug(numTrips.toString() + "Trips Found.");
                 
                 // Set selected trip and get associated events.
                 // Generate Stats on selected
@@ -114,7 +114,7 @@ public class VehicleTripsBean extends BaseBean
 
     public void generateStats()
     {
-        milesDriven = 0D;
+        milesDriven = 0;
         totalDriveSeconds = 0;
         idleSeconds = 0;
         
@@ -204,12 +204,12 @@ public class VehicleTripsBean extends BaseBean
     }
 
     // MILES PROPERTIES
-    public Double getMilesDriven()
+    public Integer getMilesDriven()
     {
-        return milesDriven / 100;
+        return milesDriven;
     }
 
-    public void setMilesDriven(Double milesDriven)
+    public void setMilesDriven(Integer milesDriven)
     {
         this.milesDriven = milesDriven;
     }

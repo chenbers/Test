@@ -30,8 +30,7 @@ public class DriverTripsBean extends BaseBean
 
     private Date                startDate;
     private Date                endDate;
-
-    private Double              milesDriven       = 0.0D;
+    private Integer             milesDriven       = 0;
     private Integer             idleSeconds       = 0;
     private Integer             numTrips          = 0;
     private Integer             totalDriveSeconds = 0;
@@ -107,7 +106,7 @@ public class DriverTripsBean extends BaseBean
 
     public void generateStats()
     {
-        milesDriven = 0D;
+        milesDriven = 0;
         totalDriveSeconds = 0;
         idleSeconds = 0;
         
@@ -126,9 +125,7 @@ public class DriverTripsBean extends BaseBean
         List<Event> tmpIdleEvents = new ArrayList<Event>();
         tmpIdleEvents = eventDAO.getEventsForDriver(
                                  navigation.getDriver().getDriverID(), getStartDate(), getEndDate(), idleTypes);        
-
-        logger.debug("generateStats() - " + DateUtil.convertDateToSeconds(getStartDate()) + " - " + DateUtil.convertDateToSeconds(getStartDate()));
-                
+      
         for (Event event : tmpIdleEvents)
         {
             idleSeconds += ((IdleEvent) event).getHighIdle();
@@ -199,12 +196,12 @@ public class DriverTripsBean extends BaseBean
     }
 
     // MILES PROPERTIES
-    public Double getMilesDriven()
+    public Integer getMilesDriven()
     {
-        return milesDriven / 100;
+        return milesDriven;
     }
 
-    public void setMilesDriven(Double milesDriven)
+    public void setMilesDriven(Integer milesDriven)
     {
         this.milesDriven = milesDriven;
     }
