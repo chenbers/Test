@@ -563,7 +563,7 @@
 						rowClasses="tableOdd,tableEven" rows="4" selectedClass="selectedRow"
 						width="100%" height="210px" style="border: 0px;">
 
-					        <a4j:support event="onRowClick" reRender="script,bubbles,selectedTrip" oncomplete="bodyLoad();">
+					        <a4j:support event="onRowClick" reRender="script,bubbles,selectedTrip,showLastTenForm" oncomplete="bodyLoad();">
 					          <f:setPropertyActionListener value="#{item}" target="#{vehicleTripsBean.selectedTrip}" />
 					        </a4j:support> 
 										
