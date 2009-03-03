@@ -1,14 +1,21 @@
 package com.inthinc.pro.reports.jasper;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import jxl.Workbook;
+import jxl.write.WritableWorkbook;
+import jxl.write.WriteException;
+import jxl.write.biff.RowsExceededException;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JExcelApiExporter;
+import net.sf.jasperreports.engine.export.JRXlsAbstractExporterParameter;
+import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 
 import org.apache.log4j.Logger;
@@ -50,10 +57,10 @@ public class JasperReport implements Report
     }
 
     @Override
-    public void exportReportToStream(FormatType formatType, OutputStream outputStream)
+    public void exportReportToStream(FormatType formatType, OutputStream outputStream) 
     {
         byte[] data = null;
-        JasperPrint jp = reportBuilder.buildReport(reportCriteriaList);
+        JasperPrint jp = reportBuilder.buildReport(reportCriteriaList,formatType);
         if(jp != null)
         {
             try
@@ -78,7 +85,7 @@ public class JasperReport implements Report
     public void exportReportToEmail(String email, FormatType formatType)
     {
 
-        JasperPrint jp = reportBuilder.buildReport(reportCriteriaList);
+        JasperPrint jp = reportBuilder.buildReport(reportCriteriaList,formatType);
         byte[] bytes;
         try
         {
@@ -109,8 +116,8 @@ public class JasperReport implements Report
     }
 
     private void exportToExcelStream(OutputStream out,JasperPrint jasperPrint) throws JRException
-    {
-        JExcelApiExporter jexcelexporter = new JExcelApiExporter();
+    {   
+        JRXlsExporter jexcelexporter = new JRXlsExporter();
         jexcelexporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, jasperPrint);
         jexcelexporter.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, out);
         jexcelexporter.setParameter(JRXlsExporterParameter.IS_WHITE_PAGE_BACKGROUND, Boolean.FALSE);
@@ -118,7 +125,9 @@ public class JasperReport implements Report
         jexcelexporter.setParameter(JRXlsExporterParameter.IS_IGNORE_GRAPHICS, Boolean.TRUE);
         jexcelexporter.setParameter(JRXlsExporterParameter.IS_IGNORE_CELL_BORDER, Boolean.TRUE);
         jexcelexporter.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS, Boolean.TRUE);
+        jexcelexporter.setParameter(JRXlsExporterParameter.IS_COLLAPSE_ROW_SPAN, Boolean.TRUE);
         jexcelexporter.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, Boolean.TRUE);
+        
         jexcelexporter.exportReport();
     }
 

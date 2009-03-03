@@ -5,6 +5,7 @@ import java.io.InputStream;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.ReportType;
 
 
@@ -16,12 +17,17 @@ public class ReportUtils
     private static final Logger logger = Logger.getLogger(ReportUtils.class);
     private static final String PACKAGE_PATH = "com/inthinc/pro/reports/jasper/";
 
-    public static JasperReport loadReport(ReportType reportSection)
+    public static JasperReport loadReport(ReportType reportType,FormatType formatType)
     {
         InputStream in = null;
         try
         {
-            in = loadFile(reportSection.getFilename());
+            if(formatType != null && formatType.equals(FormatType.EXCEL))
+                in = loadFile(reportType.getRawTemplate());
+            else
+                in = loadFile(reportType.getPrettyTemplate());
+            
+            
             JasperReport jasperReport = JasperCompileManager.compileReport(in);
 
             return jasperReport;

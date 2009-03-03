@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.model.ChartData;
 
@@ -36,7 +37,7 @@ public class JasperReportBuilder
      */
     public JasperPrint buildReport(ReportCriteria reportCriteria)
     {
-        processReportCriteria(reportCriteria);
+        processReportCriteria(reportCriteria,null);
         return jasperPrint;
     }
 
@@ -45,33 +46,33 @@ public class JasperReportBuilder
      * @param reportCriteriaList
      * @return JasperPrint Object - will contain multiple page report dependent on the ReportCriteriaList
      */
-    public JasperPrint buildReport(List<ReportCriteria> reportCriteriaList)
+    public JasperPrint buildReport(List<ReportCriteria> reportCriteriaList,FormatType formatType)
     {
         for (ReportCriteria reportCriteria : reportCriteriaList)
         {
-            processReportCriteria(reportCriteria);
+            processReportCriteria(reportCriteria,formatType);
         }
         return jasperPrint;
     }
 
-    private void processReportCriteria(ReportCriteria reportCriteria)
+    private void processReportCriteria(ReportCriteria reportCriteria,FormatType formatType)
     {
         if (reportCriteria.getRecordsPerReport() != null)
         {
-            breakUpReport(reportCriteria);
+            breakUpReport(reportCriteria,formatType);
         }
         else
         {
-            populateReport(reportCriteria);
+            populateReport(reportCriteria,formatType);
         }
     }
 
-    private void populateReport(ReportCriteria reportCriteria)
+    private void populateReport(ReportCriteria reportCriteria,FormatType formatType)
     {
         JasperPrint jp = null;
         try
         {
-            JasperReport jr = ReportUtils.loadReport(reportCriteria.getReport());
+            JasperReport jr = ReportUtils.loadReport(reportCriteria.getReport(),formatType);
             InputStream imageInputStream = ReportUtils.loadFile("logo_main.gif");
             if(imageInputStream != null)
             {
@@ -105,7 +106,7 @@ public class JasperReportBuilder
      * breaks up the report into pages according to the reportCriteria.getRecordsPerReport property
      * 
      */
-    private void breakUpReport(ReportCriteria reportCriteria)
+    private void breakUpReport(ReportCriteria reportCriteria,FormatType formatType)
     {
         List mainDataSet = new ArrayList();
         for (int i = 0; i < reportCriteria.getMainDataset().size(); i++)
@@ -118,7 +119,7 @@ public class JasperReportBuilder
                     ReportCriteria rc = new ReportCriteria(reportCriteria);
                     rc.setMainDataset(mainDataSet);
                     rc.addPramMap(getNewParamMap(reportCriteria.getPramMap(), reportCriteria.getMainDataSetIdField(),reportCriteria.getChartDataSetIdField(), mainDataSet));
-                    populateReport(rc);
+                    populateReport(rc,formatType);
                 }
                 // Clear mainData without touching the last one created
                 mainDataSet = new ArrayList();

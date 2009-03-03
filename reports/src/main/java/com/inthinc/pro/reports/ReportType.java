@@ -6,10 +6,10 @@ import java.util.Map;
 
 public enum ReportType
 {
-    DRIVER_REPORT("Driver Report","DriverReport.jrxml"), //Change to "DRIVERS" (plural)   ? 
-    VEHICLE_REPORT("Vehicle Report","VehicleReport.jrxml"),
-    IDLING_REPORT("Idling Report","IdlingReport.jrxml"),
-    DEVICES_REPORT("Devices Report","DevicesReport.jrxml"),
+    DRIVER_REPORT("Driver Report","DriverReport.jrxml","DriverReportRaw.jrxml"),
+    VEHICLE_REPORT("Vehicle Report","VehicleReport.jrxml","VehicleReportRaw.jrxml"),
+    IDLING_REPORT("Idling Report","IdlingReport.jrxml","IdlingReportRaw.jrxml"),
+    DEVICES_REPORT("Devices Report","DevicesReport.jrxml","DevicesReportRaw.jrxml"),
     OVERALL_SCORE("Overal Score","ScorePieReport.jrxml"),
     TREND("Trend Report","TrendReport.jrxml"),
     MPG_GROUP("MPG Report","MPGGroupReport.jrxml"),
@@ -23,16 +23,23 @@ public enum ReportType
     VEHICLE_SPEED("Vehicle Speed Report", "DriverVehicleSpeedReport.jrxml"),
     VEHICLE_STYLE("Vehicle Style Report", "DriverVehicleStyleReport.jrxml"),
     VEHICLE_SEATBELT("Vehicle Seat Belt Report", "DriverVehicleSeatBeltReport.jrxml"),
-    EVENT_REPORT("Event Report", "EventReport.jrxml"),
-    WARNING_REPORT("Warning Report", "WarningReport.jrxml"),
-    RED_FLAG_REPORT("Red Flag Report", "RedFlagReport.jrxml");
+    EVENT_REPORT("Event Report", "EventReport.jrxml","EventReportRaw.jrxml"),
+    WARNING_REPORT("Warning Report", "WarningReport.jrxml","WarningReportRaw.jrxml"),
+    RED_FLAG_REPORT("Red Flag Report", "RedFlagReport.jrxml","RedFlagReportRaw.jrxml");
   
-    private String filename;
+    private String prettyTemplate;
+    private String rawTemplate;
     private String label;
     
-    private ReportType(String label,String filename){
+    private ReportType(String label,String prettyTemplate){
         this.label = label;
-        this.filename = filename;
+        this.prettyTemplate = prettyTemplate;
+    }
+    
+    private ReportType(String label,String prettyTemplate, String rawTemplate){
+        this.label = label;
+        this.prettyTemplate = prettyTemplate;
+        this.rawTemplate = rawTemplate;
     }
     
     private static final Map<String, ReportType> lookup = new HashMap<String, ReportType>();
@@ -49,11 +56,23 @@ public enum ReportType
         return lookup.get(stringValue);
     }
     
-    public String getFilename(){
-        return filename;
-    }
-    
     public String getLabel(){
         return label;
     }
+
+    public String getPrettyTemplate()
+    {
+        return prettyTemplate;
+    }
+
+    public String getRawTemplate()
+    {
+        return rawTemplate;
+    }
+
+    
+    
+    
+
+  
 }
