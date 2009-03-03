@@ -2,14 +2,14 @@
   <parent>
     <artifactId>root</artifactId>
     <groupId>com.inthinc.pro</groupId>
-    <version>0.6-BETA-SNAPSHOT</version>
+    <version>0.6-BETA</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.inthinc.pro.reports</groupId>
   <artifactId>reports</artifactId>
   <name>Pro Portal - Reporting</name>
   <packaging>jar</packaging>
-  <version>0.6-BETA-SNAPSHOT</version>
+  <version>0.6-BETA</version>
   <url>http://maven.apache.org</url>
   <dependencies>
     <dependency>
