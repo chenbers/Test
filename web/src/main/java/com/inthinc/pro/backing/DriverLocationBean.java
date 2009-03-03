@@ -315,6 +315,7 @@ public class DriverLocationBean extends BaseBean {
 		private String iconURL;
 		private double lat;
 		private double lng;
+		private Integer entityID;
 		
 		public double getLat() {
 			return lat;
@@ -333,12 +334,13 @@ public class DriverLocationBean extends BaseBean {
 		}
 
 
-		public LegendIcon(String caption, String iconURL, double lat, double lng) {
+		public LegendIcon(String caption, String iconURL, double lat, double lng, Integer entityID) {
 			super();
 			this.caption = caption;
 			this.iconURL = iconURL;
 			this.lat = lat;
 			this.lng = lng;
+			this.entityID = entityID;
 		}
 
 		public String getCaption() {
@@ -356,6 +358,16 @@ public class DriverLocationBean extends BaseBean {
 		public void setIconURL(String iconURL) {
 			this.iconURL = iconURL;
 		}
+
+        public Integer getEntityID()
+        {
+            return entityID;
+        }
+
+        public void setEntityID(Integer entityID)
+        {
+            this.entityID = entityID;
+        }
 		
 	}
 	private class MapAndLegendIconManager {
@@ -386,11 +398,11 @@ public class DriverLocationBean extends BaseBean {
         	mapIconMap.addIcon(key, mapIconIt.next().getUrl());
         	if (latLng != null){
         		
-        		legendIcons.add(new LegendIcon(caption, legendIt.next().getUrl(), latLng.getLat(),latLng.getLng()));
+        		legendIcons.add(new LegendIcon(caption, legendIt.next().getUrl(), latLng.getLat(),latLng.getLng(), key));
         	}
         	else {
         		
-           		legendIcons.add(new LegendIcon(caption, legendIt.next().getUrl(),361,361));
+           		legendIcons.add(new LegendIcon(caption, legendIt.next().getUrl(),361,361,key));
         	}
 		}
 	}

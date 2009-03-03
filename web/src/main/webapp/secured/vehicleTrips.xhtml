@@ -158,7 +158,7 @@
 
 					//End of trip marker
 					endlatlng = new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng});
-					marker = createMarker(endlatlng, "#{trip.trip.endTime}_START", "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
+					marker = createMarker(endlatlng, "#{trip.trip.endTime}_END", "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());
   				</ui:repeat>
