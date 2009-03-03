@@ -65,6 +65,15 @@
 
         	return marker;
         }
+        
+        function showInfoWindow(noteID, latLng)
+        {
+        	var node = document.getElementById(noteID).cloneNode(true);
+  			node.style.display = 'block';
+
+  			map.openInfoWindow(latLng, node);
+        	
+        }
 
 	    // Show Warnings Checkbox changed   //TODO: CLEANER WAY TO DO THIS??
 	    function showWarningsChanged()
@@ -143,13 +152,13 @@
 
 					//Start of trip marker
 					startlatlng = new GLatLng(#{trip.route[0].lat}, #{trip.route[0].lng});
-					marker = createMarker(startlatlng, "#{trip.trip.tripID}_START", "#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
+					marker = createMarker(startlatlng, "#{trip.trip.startTime}_START", "#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());
 
 					//End of trip marker
 					endlatlng = new GLatLng(#{trip.routeLastStep.lat}, #{trip.routeLastStep.lng});
-					marker = createMarker(endlatlng, "#{trip.trip.tripID}_END", "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
+					marker = createMarker(endlatlng, "#{trip.trip.endTime}_START", "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());
   				</ui:repeat>
@@ -193,7 +202,7 @@
 <!-- BEGIN GOOGLE BUBBLES -->
 <ui:repeat value="#{vehicleTripsBean.selectedTrips}" var="trip">
 	<ui:include src="/includes/tripBubble.xhtml">
-           <ui:param name="hiddenDivID" value="#{trip.trip.tripID}_START" />
+           <ui:param name="hiddenDivID" value="#{trip.trip.startTime}_START" />
            <ui:param name="bubbleTitle" value="#{messages.TRIP_START}" />
            <ui:param name="timeZoneObject" value="#{navigationBean.driver.person.timeZone}" />
            <ui:param name="eventDateTime" value="#{trip.trip.startTime}" />
@@ -201,7 +210,7 @@
            <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
 	</ui:include>
 	<ui:include src="/includes/tripBubble.xhtml">
-           <ui:param name="hiddenDivID" value="#{trip.trip.tripID}_END" />
+           <ui:param name="hiddenDivID" value="#{trip.trip.endTime}_END" />
            <ui:param name="bubbleTitle" value="#{messages.TRIP_END}" />
            <ui:param name="eventDateTime" value="#{trip.trip.endTime}" />
            <ui:param name="eventLocation" value="#{trip.endAddress}" />
@@ -406,22 +415,23 @@
 						<rich:dataTable 
 						value="#{vehicleTripsBean.allEvents}" id="selectedTripTable"
 						var="item" styleClass="datagrid"
-						rowClasses="tableOdd,tableEven" cellspacing="1" rows="5" width="100%">
+						rowClasses="tableOdd,tableEven" cellspacing="1" rows="5" width="100%"
+						onRowClick="showInfoWindow('#{item.noteID}', new GLatLng(#{item.latitude}, #{item.longitude}));">
 		
 							<!-- Data -->
-							<rich:column sortBy="#{item.addressStr}">
+							<rich:column sortBy="#{item.addressStr}" style="cursor: pointer;">
 								<h:graphicImage value="/images/ico_idle.png" rendered="#{item.type eq 208}" alt="#{item.eventType}" />
 								<h:graphicImage value="/images/ico_violation.png" rendered="#{item.type ne 208}" alt="#{item.eventType}" />
 							</rich:column>
 
-							<rich:column sortBy="#{item.addressStr}">
+							<rich:column sortBy="#{item.addressStr}" style="cursor: pointer;">
 								<f:facet name="header">
 									<h:outputText value="Address" />
 								</f:facet>
 								<h:outputText value="#{item.addressStr}" />
 							</rich:column>
 							
-							<rich:column sortBy="#{item.time}">
+							<rich:column sortBy="#{item.time}" style="cursor: pointer;">
 								<f:facet name="header">
 									<h:outputText value="Date/Time" />
 								</f:facet>
