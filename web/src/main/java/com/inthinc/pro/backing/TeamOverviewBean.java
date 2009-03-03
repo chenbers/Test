@@ -57,20 +57,8 @@ public class TeamOverviewBean extends BaseBean
 
     private Integer initOverallScore(ScoreType scoreType)
     {
-
-        ScoreableEntity scoreableEntity = null;
-        try
-        {
-            scoreableEntity = scoreDAO.getAverageScoreByType(getGroupID(), durationBean.getDuration(), scoreType);
-            logger.debug("TeamOverviewBean OVERALL score groupID[" + getGroupID() + "] scoretype " + scoreType + " score " + scoreableEntity.getScore());
-        }
-        catch (Exception ex)
-        {
-            // TODO: handle this
-            logger.error(ex);
-
-        }
-        if (scoreableEntity.getScore() == null)
+        ScoreableEntity scoreableEntity = scoreDAO.getAverageScoreByType(getGroupID(), durationBean.getDuration(), scoreType);
+        if (scoreableEntity == null || scoreableEntity.getScore() == null)
             return -1;
         return scoreableEntity.getScore();
     }
