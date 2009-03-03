@@ -121,10 +121,10 @@
 						  
 						  <rich:dataList value="#{driverLocationBean.legendIcons}" var="icon" styleClass="legend" 
 						  			rendered="#{driverLocationBean.teamLevel}">
-							  	<a onmouseover="selectMarker(#{icon.lat},#{icon.lng})" onclick="selectMarker(#{icon.lat},#{icon.lng})">
+							  	<div onclick="showInfoWindow('#{icon.entityID}', new GLatLng(#{icon.lat},#{icon.lng}))" style="cursor: pointer;">
 		 						  	<img src="#{icon.iconURL}" style="vertical-align:middle"/> 
-								  	<h:outputText value="#{icon.caption}" style="margin-left:5px"></h:outputText>
-							  	</a>
+								  	<h:outputText value="#{icon.caption}" style="margin-left:5px" /></div>
+							  	
 						</rich:dataList>
 						  <rich:dataList value="#{driverLocationBean.legendIcons}" var="icon" styleClass="legend" 
 						  		rendered="#{!driverLocationBean.teamLevel}">

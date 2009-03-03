@@ -64,7 +64,17 @@
          return marker;
        }
 	
-		function selectMarker(lat,lng){
+		function selectMarker(lat,lng)
+		{
 			
 			map.panTo(new GLatLng(lat, lng));
 		}
+		
+        function showInfoWindow(noteID, latLng)
+        {
+        	var node = document.getElementById(noteID).cloneNode(true);
+  			node.style.display = 'block';
+
+  			map.openInfoWindow(latLng, node);
+        	
+        }

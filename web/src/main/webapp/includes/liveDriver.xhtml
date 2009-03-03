@@ -1,0 +1,96 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+
+<!-- 
+	Prameters
+		title:       Title of the dialog
+		explanation: Text to be displayed in the header section	
+		id:          Modal Panel ID
+ -->
+
+  <ui:composition>
+		<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{gmBean.key}" type="text/javascript"></script>
+		<script type="text/javascript">
+		var map;
+		var baseIcon = new GIcon();
+			baseIcon.iconSize = new GSize(21, 20);
+			baseIcon.iconAnchor = new GPoint(6, 20);
+			baseIcon.infoWindowAnchor = new GPoint(5, 1);
+		var bounds = new GLatLngBounds();
+		
+		function initMap(lat,lng,zoom)
+		{
+			
+   			if (GBrowserIsCompatible()) 
+			{
+		 	  	map = new GMap2(document.getElementById("live-driver-canvas"));
+				map.addControl(new GLargeMapControl());
+				map.addControl(new GMapTypeControl());
+				map.addControl(new GOverviewMapControl()); 
+				map.setCenter(new GLatLng(lat, lng), zoom);
+				map.setMapType(G_NORMAL_MAP);
+				bounds = new GLatLngBounds();
+			}
+		}	
+		
+		function createMarker(point, divID, iconImage) 
+        {
+        	var markerIcon;
+        	var marker;
+
+			//Use passed in image.
+        	if(iconImage != null)
+        	{
+				markerIcon = new GIcon(baseIcon);
+	       	    markerIcon.image = iconImage;
+	       	 	markerOptions = { icon:markerIcon };
+	       	 	marker = new GMarker(point, markerOptions);
+        	}
+        	//Use default GoogleMap marker image.
+        	else
+        	{
+		      	markerIcon = new GIcon();
+				marker = new GMarker(point);
+        	}
+       
+       		GEvent.addListener(marker, "click", function() {
+					var node = document.getElementById(divID).cloneNode(true);
+          			node.style.display = 'block';
+		            marker.openInfoWindow(node);
+		 			});
+
+        	return marker;
+        }
+	</script>
+	
+
+	<rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">
+		<f:facet name="header">
+	    	<h:outputText value="Event Location" />
+	    </f:facet>
+	    <f:facet name="controls">
+	    	<h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('eventLocationModal')" />
+	    </f:facet>
+	
+	    <div class="eventmap-border">
+	    	<div id="address-canvas" style="width: 522px; height: 355px; border: 0"></div>
+	    </div>
+	
+	    <div class="popupactions">
+	    	<a4j:commandButton value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('eventLocationModal')" styleClass="left">
+	   			<span class="edit">
+	   				<h:outputText value="#{messages.button_close}" />
+	   			</span>
+		 	</a4j:commandButton>
+	    </div>
+	</rich:modalPanel>
+
+  </ui:composition>
+
+</html>
