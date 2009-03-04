@@ -17,6 +17,8 @@
 	  		 jQuery("input:checkbox").click(function(){
 	  	     	var requiredFlagID = "#" + this.id + "_required_flag";
 	  	     	requiredFlagID = requiredFlagID.replace(":","\\:");
+	  	     	var inputFieldID = this.id.replace("update_","");
+	  	     	
 	  	     	var checked = this.checked;
 	  	     	jQuery(requiredFlagID).attr("style",function(index){
 	  	  	    	 	if(checked){
@@ -25,8 +27,9 @@
 	  	  	  	  	    	return "display:none";
 	  	  	  	    	} 
 	  	    	});
+
 	  	     });
-		});  
+		});
     </script>
 
   </ui:composition>

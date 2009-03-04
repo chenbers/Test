@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -48,7 +49,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     private static final long serialVersionUID = -8422069679000248942L;
 
     private static final List<String> AVAILABLE_COLUMNS;
-    private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 3, 5 };
+    private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 4 };
     private static final List<SelectItem> DURATIONS;
     private static final List<SelectItem> OCCURRENCES;
     private static final List<SelectItem> STATUSES;
@@ -73,8 +74,6 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         // available columns
         AVAILABLE_COLUMNS = new ArrayList<String>();
         AVAILABLE_COLUMNS.add("name");
-        AVAILABLE_COLUMNS.add("startDate");
-        AVAILABLE_COLUMNS.add("endDate");
         AVAILABLE_COLUMNS.add("occurrence");
         AVAILABLE_COLUMNS.add("lastEmail");
         AVAILABLE_COLUMNS.add("report");
@@ -91,7 +90,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         OCCURRENCES.add(new SelectItem(null, ""));
         for (Occurrence o : EnumSet.allOf(Occurrence.class))
         {
-            OCCURRENCES.add(new SelectItem(o, o.getDescription()));
+            if(o.getStatus().equals(Status.ACTIVE))
+                OCCURRENCES.add(new SelectItem(o, o.getDescription()));
         }
 
         STATUSES = new ArrayList<SelectItem>();
@@ -240,23 +240,27 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
 
     }
 
-//    @Override
-//    public String save()
-//    {
-////        getUpdateField().put("startDate", Boolean.TRUE);
-////        getUpdateField().put("endDate", Boolean.TRUE);
-////        getUpdateField().put("dayOfWeek", Boolean.TRUE);
-////        getUpdateField().put("timeOfDay", Boolean.TRUE);
-////        getUpdateField().put("status", Boolean.TRUE);
-////        getUpdateField().put("occurrence", Boolean.TRUE);
-//        return super.save();
-//    }
-
     @Override
     protected void doSave(List<ReportScheduleView> saveItems, boolean create)
     {
         for (final ReportScheduleView reportSchedule : saveItems)
         {
+            
+            if(reportSchedule.getOccurrence().equals(Occurrence.DAILY) || reportSchedule.getOccurrence().equals(Occurrence.WEEKLY))
+            {
+                Calendar now = Calendar.getInstance(getUtcTimeZone());
+                reportSchedule.setStartDate(now.getTime());
+            } else if (reportSchedule.getOccurrence().equals(Occurrence.MONTHLY))
+            {
+                logger.debug("Day of Month: " + reportSchedule.getDayOfMonth());
+                Calendar now = Calendar.getInstance(getUtcTimeZone());
+                now.set(Calendar.DATE, reportSchedule.getDayOfMonth());
+                reportSchedule.setStartDate(now.getTime());
+            } 
+            
+            //Get rid of all end dates
+            reportSchedule.setEndDate(null);
+            
             if (create)
             {
                 reportSchedule.setReportScheduleID(reportScheduleDAO.create(getAccountID(), reportSchedule));
@@ -283,6 +287,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
                 Group group = groupDAO.findByID(reportSchedule.getGroupID());
                 reportSchedule.setGroupName(group.getName());
             }
+           
 
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "reportSchedule_added" : "reportSchedule_updated", reportSchedule.getName());
@@ -413,9 +418,34 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         if (reportSchedule.getGroupID() != null)
         {
             Group group = groupDAO.findByID(reportScheduleView.getGroupID());
-            reportScheduleView.setGroupName(group.getName());
+            if(group != null)
+            {
+                reportScheduleView.setGroupName(group.getName());
+            }
         }
+        
+        if (reportSchedule.getStartDate() != null && reportSchedule.getOccurrence().equals(Occurrence.MONTHLY))
+        {
+            Calendar calendar = Calendar.getInstance(getUtcTimeZone());
+            calendar.setTime(reportSchedule.getStartDate());
+            
+            reportScheduleView.setDayOfMonth(calendar.get(Calendar.DATE));
+        }
+        
+        if(reportSchedule.getDayOfWeek() == null || reportSchedule.getDayOfWeek().size() < 6)
+        {
+            List<Boolean> booleanList = new ArrayList<Boolean>();
+            booleanList.add(Boolean.FALSE);
+            booleanList.add(Boolean.FALSE);
+            booleanList.add(Boolean.FALSE);
+            booleanList.add(Boolean.FALSE);
+            booleanList.add(Boolean.FALSE);
+            booleanList.add(Boolean.FALSE);
+            booleanList.add(Boolean.FALSE);
 
+            reportSchedule.setDayOfWeek(booleanList);
+        }
+       
         return reportScheduleView;
     }
 
@@ -478,6 +508,9 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
 
         @Column(updateable = false)
         private ReportGroup report;
+        
+        @Column(updateable = true)
+        private Integer dayOfMonth;
 
         @Override
         public boolean isSelected()
@@ -539,6 +572,16 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         public void setReport(ReportGroup report)
         {
             this.report = report;
+        }
+
+        public void setDayOfMonth(Integer dayOfMonth)
+        {
+            this.dayOfMonth = dayOfMonth;
+        }
+
+        public Integer getDayOfMonth()
+        {
+            return dayOfMonth;
         }
     }
 

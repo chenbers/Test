@@ -6,18 +6,20 @@ import java.util.Map;
 
 public enum Occurrence implements BaseEnum
 {
-    DAILY(0,"Daily"),
-    DAILY_CUSTOM(1,"Daily - Customizable"),
-    WEEKLY(2,"Weekly"),
-    MONTHLY(3,"Monthly");
+    DAILY(0,"Daily",Status.ACTIVE),
+    DAILY_CUSTOM(1,"Daily - Customizable",Status.INACTIVE),
+    WEEKLY(2,"Weekly",Status.ACTIVE),
+    MONTHLY(3,"Monthly",Status.ACTIVE);
     
     private Integer code;
     private String description;
+    private Status status;
     
-    private Occurrence(Integer code,String description)
+    private Occurrence(Integer code,String description,Status status)
     {
         this.code = code;
         this.description = description;
+        this.status = status;
     }
     
     private static final Map<Integer, Occurrence> lookup = new HashMap<Integer, Occurrence>();
@@ -42,6 +44,11 @@ public enum Occurrence implements BaseEnum
     public String getDescription()
     {
         return description;
+    }
+    
+    public Status getStatus()
+    {
+        return this.status;
     }
     
     @Override

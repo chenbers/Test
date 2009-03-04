@@ -19,4 +19,6 @@ public interface ReportRenderer
     public void exportReportToEmail(List<ReportCriteria> reportCriteriaList,String email);
     
     public void exportReportToEmail(ReportCriteria reportCriteria,String email);
+    
+    public void exportReportToHTML(List<ReportCriteria> reportCriteriaList,FacesContext facesContext);
 }

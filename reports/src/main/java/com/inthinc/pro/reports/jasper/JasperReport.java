@@ -14,6 +14,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JExcelApiExporter;
+import net.sf.jasperreports.engine.export.JRHtmlExporter;
 import net.sf.jasperreports.engine.export.JRXlsAbstractExporterParameter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
@@ -69,6 +70,9 @@ public class JasperReport implements Report
             case EXCEL:
                 exportToExcelStream(outputStream,jp);
                 break;
+            case HTML:
+                exportToHtmlStream(outputStream, jp);
+                break;
             default:
                 exportToPdfStream(outputStream,jp);
                 break;
@@ -84,7 +88,12 @@ public class JasperReport implements Report
     @Override
     public void exportReportToEmail(String email, FormatType formatType)
     {
-
+        exportReportToEmail(email, formatType,null,null);
+    } 
+    
+    @Override
+    public void exportReportToEmail(String email, FormatType formatType, String subject, String message)
+    {
         JasperPrint jp = reportBuilder.buildReport(reportCriteriaList,formatType);
         byte[] bytes;
         try
@@ -95,18 +104,14 @@ public class JasperReport implements Report
             attachments.add(reportAttatchment);
             String[] emails = email.split(",");
             List<String> emailList = Arrays.asList(emails);
-            reportMailer.emailReport(emailList, attachments);
+            reportMailer.emailReport(emailList, attachments,subject,message);
         }
         catch (JRException e)
         {
+            // We want to know why the report isn't sent but because this is used in the scheduler, we don't want to push it up.
             logger.error(e);
         }
-        catch (Exception e)
-        {
-            logger.error(e);
-        }
-
-    } 
+    }
 
     private void exportToPdfStream(OutputStream out,JasperPrint jasperPrint) throws JRException
     {
@@ -129,6 +134,14 @@ public class JasperReport implements Report
         jexcelexporter.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, Boolean.TRUE);
         
         jexcelexporter.exportReport();
+    }
+    
+    private void exportToHtmlStream(OutputStream out,JasperPrint jasperPrint) throws JRException
+    {   
+        JRHtmlExporter exporter = new JRHtmlExporter();
+        exporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, jasperPrint);
+        exporter.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, out);
+        exporter.exportReport();
     }
 
     public void setReportMailer(ReportMailer reportMailer)

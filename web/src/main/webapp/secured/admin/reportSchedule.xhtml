@@ -69,27 +69,6 @@
 							</tr>
 							<tr>
 								<td width="100" valign="top"><h:outputText
-									value="#{messages.reportSchedule_startDate}" />
-								</td>
-								<td>
-									<h:outputText value="#{reportScheduleBean.item.startDate}">
-										<f:convertDateTime timeZone="#{reportScheduleBean.utcTimeZone}" type="date" />
-									</h:outputText>	
-								</td>
-								
-							</tr>
-							<tr>
-								<td width="100" valign="top"><h:outputText
-									value="#{messages.reportSchedule_endDate}" />
-								</td>
-								<td>
-									<h:outputText value="#{reportScheduleBean.item.endDate}">
-										<f:convertDateTime timeZone="#{reportScheduleBean.utcTimeZone}" type="date" />
-									</h:outputText>	
-								</td>
-							</tr>
-							<tr>
-								<td width="100" valign="top"><h:outputText
 									value="#{messages.reportSchedule_timeOfDay}" />
 								</td>
 								<td>
@@ -109,7 +88,7 @@
 									<h:outputText value="#{reportScheduleBean.item.occurrence}"/>
 								</td>
 							</tr>
-							<h:outputText rendered="#{reportScheduleBean.item.occurrence eq 'DAILY_CUSTOM'}">
+							<h:outputText rendered="#{reportScheduleBean.item.occurrence eq 'WEEKLY'}">
 							<tr>
 								<td width="100" valign="top"><h:outputText
 									value="#{messages.reportSchedule_daysOfWeek}" />
@@ -119,6 +98,16 @@
 		                                <ui:param name="days" value="#{reportScheduleBean.item.dayOfWeek}" />
 		                                <ui:param name="disabled" value="true" />
                               		</ui:include>	
+								</td>
+							</tr>
+							</h:outputText>
+							<h:outputText rendered="#{reportScheduleBean.item.occurrence eq 'MONTHLY'}">
+							<tr>
+								<td width="100" valign="top"><h:outputText
+									value="#{messages.reportSchedule_dayOfMonth}" />
+								</td>
+								<td>
+									<h:outputText value="#{reportScheduleBean.item.dayOfMonth}"/>
 								</td>
 							</tr>
 							</h:outputText>

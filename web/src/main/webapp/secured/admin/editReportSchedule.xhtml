@@ -67,23 +67,25 @@
 									<ui:include src="../../includes/inputLabel.xhtml">
 										<ui:param name="required" value="TRUE"/>
 										<ui:param name="reRender" value="status"/>
+										<ui:param name="for" value="status"/>
 										<ui:param name="fieldName" value="status"/>
 										<ui:param name="editBean" value="#{reportScheduleBean}"/>
 										<ui:param name="label" value="#{messages.reportSchedule_status}"/>
 									</ui:include>
 								</td>
 								<td>
-									<h:selectOneMenu id="status" value="#{reportScheduleBean.item.status}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
-										<f:selectItems value="#{reportScheduleBean.statuses}"/> 
-									</h:selectOneMenu>
+      								<h:selectOneMenu id="status" value="#{reportScheduleBean.item.status}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
+      									<f:selectItems value="#{reportScheduleBean.statuses}"/> 
+      								</h:selectOneMenu>
 								</td>
 								
 							</tr>
-							<tr>
+							<!-- <tr>
 								<td width="100" valign="top">
 									<ui:include src="../../includes/inputLabel.xhtml">
 										<ui:param name="required" value="TRUE"/>
 										<ui:param name="reRender" value="startDate"/>
+										<ui:param name="for" value="startDate"/>
 										<ui:param name="fieldName" value="startDate"/>
 										<ui:param name="editBean" value="#{reportScheduleBean}"/>
 										<ui:param name="label" value="#{messages.reportSchedule_startDate}"/>
@@ -112,13 +114,14 @@
 										oninputchange="checkMultiple('endDate')" ondateselect="checkMultiple('endDate')">
 									</rich:calendar>	
 								</td>
-							</tr>
+							</tr> -->
 							<tr>
 								<td width="100" valign="top">
 									<ui:include src="../../includes/inputLabel.xhtml">
 										<ui:param name="required" value="TRUE"/>
 										<ui:param name="reRender" value="timeOfDay"/>
 										<ui:param name="fieldName" value="timeOfDay"/>
+										<ui:param name="for" value="timeOfDay"/>
 										<ui:param name="editBean" value="#{reportScheduleBean}"/>
 										<ui:param name="label" value="#{messages.reportSchedule_timeOfDay}"/>
 									</ui:include>
@@ -138,6 +141,7 @@
 										<ui:param name="required" value="TRUE"/>
 										<ui:param name="reRender" value="occurrence"/>
 										<ui:param name="fieldName" value="occurrence"/>
+										<ui:param name="for" value="occurrence"/>
 										<ui:param name="editBean" value="#{reportScheduleBean}"/>
 										<ui:param name="label" value="#{messages.reportSchedule_occurrence}"/>
 									</ui:include>
@@ -145,22 +149,23 @@
 								<td>
 									<rich:message for="occurrence" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 									<h:selectOneMenu id="occurrence" value="#{reportScheduleBean.item.occurrence}" converter="SimpleBeanConverter" required="#{(not reportScheduleBean.batchEdit) or reportScheduleBean.updateField['occurrence']}" requiredMessage="#{messages.required}">
-										<a4j:support event="onchange" reRender="dayOfWeekPanel" ajaxSingle="true" onsubmit="checkMultiple(this)"/>
+										<a4j:support event="onchange" reRender="occurenceDetailPanel" ajaxSingle="true" onsubmit="checkMultiple(this)"/>
 										<f:selectItems value="#{reportScheduleBean.occurrences}"/> 
 									</h:selectOneMenu>
 								</td>
 							</tr>
 						</table>
-						 <h:panelGroup id="dayOfWeekPanel">
+						<h:panelGroup id="occurenceDetailPanel">
+						 <h:panelGroup id="dayOfWeekPanel" rendered="#{reportScheduleBean.item.occurrence eq 'WEEKLY'}">
 							<table width="350" border="0" cellspacing="2" cellpadding="4"
 								align="center">
 								<tr>
 									<td width="100" valign="top">
-										<h:selectBooleanCheckbox rendered="#{reportScheduleBean.batchEdit and reportScheduleBean.item.occurrence eq 'DAILY_CUSTOM'}" id="update_dayOfWeek" value="#{reportScheduleBean.updateField['dayOfWeek']}" />
-										<h:outputText value="#{messages.reportSchedule_daysOfWeek}" rendered="#{reportScheduleBean.item.occurrence eq 'DAILY_CUSTOM'}"/>
+										<h:selectBooleanCheckbox rendered="#{reportScheduleBean.batchEdit and reportScheduleBean.item.occurrence eq 'WEEKLY'}" id="update_dayOfWeek" value="#{reportScheduleBean.updateField['dayOfWeek']}" />
+										<h:outputText value="#{messages.reportSchedule_daysOfWeek}" rendered="#{reportScheduleBean.item.occurrence eq 'WEEKLY'}"/>
 									</td>
 									<td>
-										<h:outputText rendered="#{reportScheduleBean.item.occurrence eq 'DAILY_CUSTOM'}">
+										<h:outputText rendered="#{reportScheduleBean.item.occurrence eq 'WEEKLY'}">
 										<ui:include src="../../includes/dayPicker.xhtml">
 			                                <ui:param name="days" value="#{reportScheduleBean.item.dayOfWeek}" />
 			                                <ui:param name="onchange" value="checkMultiple('dayOfWeek')" />
@@ -169,6 +174,29 @@
 									</td>
 								</tr>
 							</table>
+						</h:panelGroup>
+						<h:panelGroup id="dayOfMonthPanel" rendered="#{reportScheduleBean.item.occurrence eq 'MONTHLY'}">
+							<table width="350" border="0" cellspacing="2" cellpadding="4"
+								align="center">
+								<tr>
+									<td width="100" valign="top">
+										<ui:include src="../../includes/inputLabel.xhtml">
+											<ui:param name="reRender" value="dayOfMonth"/>
+											<ui:param name="fieldName" value="dayOfMonth"/>
+											<ui:param name="for" value="dayOfMonth"/>
+											<ui:param name="editBean" value="#{reportScheduleBean}"/>
+											<ui:param name="label" value="#{messages.reportSchedule_dayOfMonth}"/>
+										</ui:include>
+									</td>
+									<td>
+										<h:outputText rendered="#{reportScheduleBean.item.occurrence eq 'MONTHLY'}">
+                                            <rich:message for="dayOfMonth" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+											<rich:inputNumberSpinner id="dayOfMonth" value="#{reportScheduleBean.item.dayOfMonth}" minValue="1" maxValue="31" required="#{(not reportScheduleBean.batchEdit) or reportScheduleBean.updateField['dayOfMonth']}" requiredMessage="#{messages.required}" ></rich:inputNumberSpinner>
+	                              		</h:outputText>
+									</td>
+								</tr>
+							</table>
+						</h:panelGroup>
 						</h:panelGroup>
 						</td>
 						<td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
@@ -295,23 +323,35 @@
 				        }
 				  }
 				  
-				function checkMultiple(item)
-			      {
-			        var id;
-			        if (typeof(item) == "string")
-			          id = item;
-			        else
-			          id = item.id;
-			
-			        var box;
-			        var index = id.indexOf(":");
-			        if (index > 0)
-			          box = document.getElementById("edit-form:update_" + id.substring(index + 1));
-			        else
-			          box = document.getElementById("edit-form:update_" + id);
-			        if (box)
-			          box.checked = true;
-			      }
+				 function checkMultiple(item)
+				  {
+				    var id;
+				    if (typeof(item) == "string")
+				      id = item;
+				    else
+				      id = item.id;
+
+				    var box;
+				    var index = id.indexOf(":");
+				    if (index > 0)
+				      box = document.getElementById("edit-form:update_" + id.substring(index + 1));
+				    else
+				      box = document.getElementById("edit-form:update_" + id);
+				    if (box)
+				    {
+				      box.checked = true;
+				    }
+
+				    var span;
+				    if (index > 0)
+				      span = document.getElementById("edit-form:update_" + id.substring(index + 1) + "_required_flag");
+				    else
+				      span = document.getElementById("edit-form:update_" + id + "_required_flag");
+				    if (span)
+				    {
+				      span.style.display = "inline";
+				    }
+				  }
 	      </script>
 	</ui:define>
 

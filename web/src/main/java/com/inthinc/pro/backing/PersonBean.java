@@ -71,6 +71,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private static final Map<String, State>    STATES;
     private static final Map<String, Status>   STATUSES;
     private static final Map<String, Integer> ALERT_OPTIONS;
+    private static final String                REQUIRED = "required";
 
     static
     {
@@ -482,9 +483,15 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     protected boolean validate(List<PersonView> saveItems)
     {
         boolean valid = true;
+        
         final FacesContext context = FacesContext.getCurrentInstance();
+        
         for (final PersonView person : saveItems)
         {
+            
+           
+            
+            
             // unique primary e-mail
             if (!isBatchEdit() && (person.getPriEmail() != null) && (person.getPriEmail().length() > 0))
             {
@@ -512,9 +519,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             }
 
             // driver license expiration
-            if (person.isDriverSelected())
+            if (person.isDriverSelected() )
             {
-                if ((person.getDriver().getExpiration() != null) && person.getDriver().getExpiration().before(new Date()))
+                if ((person.getDriver().getExpiration() != null) && person.getDriver().getExpiration().before(new Date())
+                        && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.expiration"))))
                 {
                     final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_expirationTooSoon"), null);
                     context.addMessage("edit-form:driver_expiration", message);

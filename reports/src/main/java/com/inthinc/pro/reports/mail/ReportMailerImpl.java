@@ -16,6 +16,7 @@ public class ReportMailerImpl implements ReportMailer
     
     private static final Logger logger = Logger.getLogger(ReportMailerImpl.class);
     
+    //TODO get these constants tied to a resource bundle
     private static final String DEFAULT_SUBJECT = "tiwiPRO Report";
     private static final String DEFAULT_MESSAGE = "View the attatchment(s) to see the report";
     private String from;
@@ -34,11 +35,26 @@ public class ReportMailerImpl implements ReportMailer
     }
     
     @Override
+    public void emailReport(List<String> toAddress, List<ReportAttatchment> attachments, String message, String subject)
+    {
+        emailReport(toAddress, from, attachments, message == null? DEFAULT_MESSAGE: message,  subject == null ? DEFAULT_SUBJECT : subject);
+    }
+    
+    @Override
     public void emailReport(List<String> toAddress, String fromAddress, List<ReportAttatchment> attachments, String message, String subject)
     {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage(); 
         try
         {
+            if(message == null)
+            {
+                message = DEFAULT_MESSAGE;
+            }
+            
+            if(subject == null)
+            {
+                subject = DEFAULT_SUBJECT;
+            }
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,true);
             mimeMessageHelper.setTo(toAddress.toArray(new String[toAddress.size()]));
             mimeMessageHelper.setFrom(fromAddress);

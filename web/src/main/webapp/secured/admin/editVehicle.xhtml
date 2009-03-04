@@ -79,6 +79,7 @@
                                   <ui:include src="../../includes/inputLabel.xhtml">
 										<ui:param name="required" value="TRUE"/>
 										<ui:param name="reRender" value="make"/>
+										<ui:param name="for" value="make"/>
 										<ui:param name="fieldName" value="make"/>
 										<ui:param name="editBean" value="#{vehiclesBean}"/>
 										<ui:param name="label" value="#{messages.editVehicle_make}"/>
@@ -96,6 +97,7 @@
                                   <ui:include src="../../includes/inputLabel.xhtml">
 										<ui:param name="required" value="TRUE"/>
 										<ui:param name="reRender" value="model"/>
+										<ui:param name="for" value="model"/>
 										<ui:param name="fieldName" value="model"/>
 										<ui:param name="editBean" value="#{vehiclesBean}"/>
 										<ui:param name="label" value="#{messages.editVehicle_model}"/>
@@ -112,6 +114,7 @@
                                   <ui:include src="../../includes/inputLabel.xhtml">
 										<ui:param name="required" value="TRUE"/>
 										<ui:param name="reRender" value="year"/>
+										<ui:param name="for" value="year"/>
 										<ui:param name="fieldName" value="year"/>
 										<ui:param name="editBean" value="#{vehiclesBean}"/>
 								  		<ui:param name="label" value="#{messages.editVehicle_year}"/>
@@ -137,6 +140,7 @@
                                   <ui:include src="../../includes/inputLabel.xhtml">
 										<ui:param name="required" value="TRUE"/>
 										<ui:param name="reRender" value="type"/>
+										<ui:param name="for" value="type"/>
 										<ui:param name="fieldName" value="type"/>
 										<ui:param name="editBean" value="#{vehiclesBean}"/>
 										<ui:param name="label" value="#{messages.editVehicle_type}"/>
@@ -210,6 +214,7 @@
                                   <ui:include src="../../includes/inputLabel.xhtml">
 										<ui:param name="required" value="TRUE"/>
 										<ui:param name="reRender" value="status"/>
+										<ui:param name="for" value="status"/>
 										<ui:param name="fieldName" value="status"/>
 										<ui:param name="editBean" value="#{vehiclesBean}"/>
 										<ui:param name="label" value="#{messages.editVehicle_status}"/>
@@ -233,6 +238,7 @@
                                   <ui:include src="../../includes/inputLabel.xhtml">
 										<ui:param name="required" value="TRUE"/>
 										<ui:param name="reRender" value="groupID"/>
+										<ui:param name="for" value="groupID"/>
 										<ui:param name="fieldName" value="groupID"/>
 										<ui:param name="editBean" value="#{vehiclesBean}"/>
 										<ui:param name="label" value="#{messages.editVehicle_groupID}"/>
@@ -374,7 +380,19 @@
     else
       box = document.getElementById("edit-form:update_" + id);
     if (box)
+    {
       box.checked = true;
+    }
+
+    var span;
+    if (index > 0)
+      span = document.getElementById("edit-form:update_" + id.substring(index + 1) + "_required_flag");
+    else
+      span = document.getElementById("edit-form:update_" + id + "_required_flag");
+    if (span)
+    {
+      span.style.display = "inline";
+    }
   }
     </script>
 

@@ -26,6 +26,7 @@ import com.inthinc.pro.reports.ReportCreator;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
+import com.inthinc.pro.scheduler.i18n.LocalizedMessage;
 
 /**
  * 
@@ -64,8 +65,7 @@ public class EmailReportJob extends QuartzJobBean
         {
             reportSchedules.addAll(reportScheduleDAO.getReportSchedulesByAccountID(account.getAcctID()));
         }
-        
-        
+
         for (ReportSchedule reportSchedule : reportSchedules)
         {
             logger.debug("EmailReportJob: Begin Validation: " + reportSchedule.getName());
@@ -123,30 +123,27 @@ public class EmailReportJob extends QuartzJobBean
 
             }
         }
-        
-        //TODO I don't want to pull the user this often. But for now it will have to do.
-        
+
+        // TODO I don't want to pull the user this often. But for now it will have to do.
+
         User user = userDAO.findByID(reportSchedule.getUserID());
-        //Set the current date of the reports
-        for(ReportCriteria reportCriteria: reportCriteriaList){
+        // Set the current date of the reports
+        for (ReportCriteria reportCriteria : reportCriteriaList)
+        {
             reportCriteria.setReportDate(new Date(), user.getPerson().getTimeZone());
         }
 
         Report report = reportCreator.getReport(reportCriteriaList);
-        report.exportReportToEmail(reportSchedule.getEmailToString(), FormatType.PDF);
+        String subject = LocalizedMessage.getString("reportSchedule.emailSubject");
+        report.exportReportToEmail(reportSchedule.getEmailToString(), FormatType.PDF, null, subject + reportSchedule.getName());
     }
 
     /*
      * To determine if we should send a report out the following must be met.
      * 
-     * Rule 1: Must be between the start date and end date; 
-     * Rule 2: OCCURRENCE.Daily (Custom) - Must be scheduled to run on the day of week it currently is. 
-     * Rule 3: The Schduled Time cannot be greater than the current time. 
-     * Rule 4: The scheduled time has to be within the last hour from the current time. If not, it will not occure till the next scheduled date.
-     * Rule 5: Report Schedule must be active. 
-     * Rule 6: OCCURRENCE.Weekly - Check to see if currenty day of week is the same as the start date day
-     * of week. 
-     * Rule 7: OCCURRENCE.Monthly - Make sure currenty day of month is the same ans the start date day of month.
+     * Rule 1: Must be between the start date and end date; Rule 2: OCCURRENCE.Weekly - Must be scheduled to run on the day of week it currently is. Rule 3: The Schduled Time
+     * cannot be greater than the current time. Rule 4: The scheduled time has to be within the last hour from the current time. If not, it will not occure till the next scheduled
+     * date. Rule 5: Report Schedule must be active. Rule 7: OCCURRENCE.Monthly - Make sure currenty day of month is the same ans the start date day of month.
      */
     protected boolean emailReport(ReportSchedule reportSchedule)
     {
@@ -201,7 +198,7 @@ public class EmailReportJob extends QuartzJobBean
         }
 
         // Rule 2:
-        if (reportSchedule.getOccurrence().equals(Occurrence.DAILY_CUSTOM) && !isValidDayOfWeek(reportSchedule.getDayOfWeek(), dayOfWeek))
+        if (reportSchedule.getOccurrence().equals(Occurrence.WEEKLY) && !isValidDayOfWeek(reportSchedule.getDayOfWeek(), dayOfWeek))
         {
             if (logger.isDebugEnabled())
             {
@@ -214,7 +211,6 @@ public class EmailReportJob extends QuartzJobBean
         // Rule 3:
         Integer currentTimeInMinutes = currentDateTime.get(Calendar.HOUR_OF_DAY) * 60;
         currentTimeInMinutes += currentDateTime.get(Calendar.MINUTE);
-        
 
         if (reportSchedule.getTimeOfDay() == null)
         {
@@ -233,8 +229,8 @@ public class EmailReportJob extends QuartzJobBean
             }
             return false;
         }
-        
-        //Rule 4: 
+
+        // Rule 4:
         if ((currentTimeInMinutes - 60) >= reportSchedule.getTimeOfDay())
         {
             if (logger.isDebugEnabled())
@@ -253,17 +249,6 @@ public class EmailReportJob extends QuartzJobBean
             if (logger.isDebugEnabled())
             {
                 logger.debug("Report Not Sent: Report is not active");
-                logger.debug("Name: " + reportSchedule.getName());
-            }
-            return false;
-        }
-
-        // Rule 6:
-        if (reportSchedule.getOccurrence().equals(Occurrence.WEEKLY) && startCalendar.get(Calendar.DAY_OF_WEEK) != currentDateTime.get(Calendar.DAY_OF_WEEK))
-        {
-            if (logger.isDebugEnabled())
-            {
-                logger.debug("Report Not Sent: Report is not scheduled to run on current day of week");
                 logger.debug("Name: " + reportSchedule.getName());
             }
             return false;
