@@ -4,7 +4,7 @@
 
 
     <!-- Backing Beans -->
-    <bean id="newAccountBean" class="com.inthinc.pro.backing.NewAccountBean" init-method="init">
+    <bean id="newAccountBean" class="com.inthinc.pro.backing.NewAccountBean" init-method="init" scope="request">
 		<property name="accountDAO" ref="accountDAO" />
 		<property name="personDAO" ref="personDAO" />
 		<property name="userDAO" ref="userDAO" />
@@ -13,7 +13,7 @@
     </bean>
 
     
-    <bean id="daoUtilBean" class="com.inthinc.pro.backing.dao.DaoUtilBean">
+    <bean id="daoUtilBean" class="com.inthinc.pro.backing.dao.DaoUtilBean" scope="request">
 		<property name="siloServiceCreator" ref="siloServiceCreator" />
 		<property name="reportServiceCreator" ref="reportServiceCreator" />
     </bean>

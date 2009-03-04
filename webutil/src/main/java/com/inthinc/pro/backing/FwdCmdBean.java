@@ -66,8 +66,8 @@ public class FwdCmdBean
     {
         if (imeiInput.isValid())
         {
-            try
-            {
+//            try
+//            {
                 device = deviceDAO.findByIMEI((String) value);
                 if (device == null)
                 {
@@ -76,16 +76,16 @@ public class FwdCmdBean
                     message.setSeverity(FacesMessage.SEVERITY_ERROR);
                     throw new ValidatorException(message);
                 }
-            }
-            catch (Exception e)
-            {
-                // if this this bean begins to be used by more than QA, then
-                // exception/message handling needs to be more refined
-                FacesMessage message = new FacesMessage();
-                message.setSummary("The IMEI does not exist or a data access problem occured");
-                message.setSeverity(FacesMessage.SEVERITY_ERROR);
-                throw new ValidatorException(message);
-            }
+//            }
+//            catch (Exception e)
+//            {
+//                // if this this bean begins to be used by more than QA, then
+//                // exception/message handling needs to be more refined
+//                FacesMessage message = new FacesMessage();
+//                message.setSummary("The IMEI does not exist or a data access problem occured");
+//                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+//                throw new ValidatorException(message);
+//            }
         }
     }
 
