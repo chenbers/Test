@@ -5,7 +5,7 @@ package com.inthinc.pro.backing;
 
 import java.io.Serializable;
 import java.text.NumberFormat;
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -70,8 +70,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private static final Map<String, String>   LICENSE_CLASSES;
     private static final Map<String, State>    STATES;
     private static final Map<String, Status>   STATUSES;
-    private static final Map<String, Integer> ALERT_OPTIONS;
-    private static final String                REQUIRED = "required";
+    private static final Map<String, Integer>  ALERT_OPTIONS;
+    private static final String                REQUIRED_KEY = "required";
 
     static
     {
@@ -489,7 +489,14 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         for (final PersonView person : saveItems)
         {
             
-           
+            // required Time Zone
+            if(person.getTimeZone() == null 
+                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("timeZone"))))
+            {
+                valid = false;
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
+                context.addMessage("edit-form:timeZone", message);
+            }
             
             
             // unique primary e-mail
@@ -519,8 +526,27 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             }
 
             // driver license expiration
-            if (person.isDriverSelected() )
+            if (person.isDriverSelected())
             {
+                // required team
+                if(person.getDriver().getGroupID() == null 
+                        && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.groupID"))))
+                {
+                    valid = false;
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
+                    context.addMessage("edit-form:driver_groupID", message);
+                }
+
+                
+                // required user status
+                if(person.getDriver().getStatus() == null 
+                        && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.status"))))
+                {
+                    valid = false;
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
+                    context.addMessage("edit-form:driver_status", message);
+                }
+                
                 if ((person.getDriver().getExpiration() != null) && person.getDriver().getExpiration().before(new Date())
                         && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.expiration"))))
                 {
@@ -545,6 +571,33 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             // unique username
             if (person.isUserSelected())
             {
+                // required groupID
+                if(person.getUser().getGroupID() == null 
+                        && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.groupID"))))
+                {
+                    valid = false;
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
+                    context.addMessage("edit-form:user_groupID", message);
+                }
+                
+                // required user role
+                if(person.getUser().getRole() == null 
+                        && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.role"))))
+                {
+                    valid = false;
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
+                    context.addMessage("edit-form:user_role", message);
+                }
+                
+                // required user status
+                if(person.getUser().getStatus() == null 
+                        && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.status"))))
+                {
+                    valid = false;
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
+                    context.addMessage("edit-form:user_status", message);
+                }
+                
                 if (!isBatchEdit())
                 {
                     final User byUsername = userDAO.findByUserName(person.getUser().getUsername());

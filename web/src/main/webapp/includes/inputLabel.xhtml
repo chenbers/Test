@@ -23,10 +23,9 @@
 	 		id="update_#{for}" 
 	 		value="#{editBean.updateField[fieldName]}"
 	 		disabled="#{enableCheckbox}">
-	 	<a4j:support event="onchange" reRender="#{reRender}" ajaxSingle="true"></a4j:support>
 	 </h:selectBooleanCheckbox>
 	 <h:graphicImage rendered="#{!personBean.batchEdit and iconSrc ne null}" value="#{iconSrc}" width="16" height="16" style="valign:middle" />
-     <h:outputText value="#{label}" />
+     <h:outputText value=" #{label}" />
 	 <h:outputText 
 	 		id="update_#{for}_required_flag" 
 	 		rendered="#{required eq 'TRUE'}" 

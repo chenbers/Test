@@ -282,9 +282,14 @@
                       <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                         <tr>
                           <td width="100">
-                          	<h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_info" disabled="#{!personBean.item.userEditable}" value="#{personBean.updateField['info']}" />
-                            <h:graphicImage rendered="#{!personBean.batchEdit}" value="/images/ico_info.png" width="16" height="16" style="valign:middle" />
-                            <h:outputText value=" #{messages.myAccount_information}" />
+                            <ui:include src="../../includes/inputLabel.xhtml">
+                                 <ui:param name="required" value="TRUE"/>
+                                 <ui:param name="fieldName" value="info"/>
+                                 <ui:param name="for" value="info"/>
+                                 <ui:param name="iconSrc" value="/images/ico_info.png"/>
+                                 <ui:param name="editBean" value="#{personBean}"/>
+                                 <ui:param name="label" value="#{messages.myAccount_information}"/>
+                            </ui:include>
                           </td>
                           <td>
                             <h:selectOneMenu value="#{personBean.item.info}" id="info" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" style="width:200px">
@@ -294,9 +299,14 @@
                         </tr>
                         <tr>
                           <td width="100">
-                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_warn" disabled="#{!personBean.item.userEditable}" value="#{personBean.updateField['warn']}" />
-                            <h:graphicImage rendered="#{!personBean.batchEdit}" value="/images/ico_warning.png" width="16" height="16" style="valign:middle" />
-                            <h:outputText value=" #{messages.myAccount_warning}" />
+                            <ui:include src="../../includes/inputLabel.xhtml">
+                                 <ui:param name="required" value="TRUE"/>
+                                 <ui:param name="fieldName" value="warn"/>
+                                 <ui:param name="for" value="warn"/>
+                                 <ui:param name="iconSrc" value="/images/ico_warning.png"/>
+                                 <ui:param name="editBean" value="#{personBean}"/>
+                                 <ui:param name="label" value="#{messages.myAccount_warning}"/>
+                            </ui:include>
                           </td>
                           <td>
                             <h:selectOneMenu value="#{personBean.item.warn}" id="warn" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" style="width:200px">
@@ -306,9 +316,14 @@
                         </tr>
                         <tr>
                           <td width="100">
-                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_crit" disabled="#{!personBean.item.userEditable}" value="#{personBean.updateField['crit']}" />
-                            <h:graphicImage rendered="#{!personBean.batchEdit}" value="/images/ico_critical.png" width="16" height="16" style="valign:middle" />
-                            <h:outputText value=" #{messages.myAccount_critical}" />
+                            <ui:include src="../../includes/inputLabel.xhtml">
+                                 <ui:param name="required" value="TRUE"/>
+                                 <ui:param name="fieldName" value="crit"/>
+                                 <ui:param name="for" value="crit"/>
+                                 <ui:param name="iconSrc" value="/images/ico_critical.png"/>
+                                 <ui:param name="editBean" value="#{personBean}"/>
+                                 <ui:param name="label" value="#{messages.myAccount_critical}"/>
+                            </ui:include>
                           </td>
                           <td>
                             <h:selectOneMenu value="#{personBean.item.crit}" id="crit" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" style="width:200px">
@@ -348,7 +363,6 @@
                           <td width="100" valign="top">
                           	<ui:include src="../../includes/inputLabel.xhtml">
 								<ui:param name="required" value="TRUE"/>
-								<ui:param name="reRender" value="timeZone"/>
 								<ui:param name="for" value="timeZone"/>
 								<ui:param name="fieldName" value="timeZone"/>
 								<ui:param name="editBean" value="#{personBean}"/>
@@ -357,7 +371,12 @@
                           </td>
                           <td>
                             <rich:message for="timeZone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:selectOneMenu value="#{personBean.item.timeZone}" id="timeZone" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" style="width:200px" required="#{(not personBean.batchEdit) or personBean.updateField['timeZone']}" requiredMessage="#{messages.required}">
+                            <h:selectOneMenu value="#{personBean.item.timeZone}" 
+                                    id="timeZone" disabled="#{!personBean.item.userEditable}" 
+                                    onchange="checkMultiple(this)"
+                                    required="#{not personBean.batchEdit}" 
+                                    requiredMessage="#{messages.required}" 
+                                    style="width:200px">
                               <f:selectItem itemLabel="" />
                               <f:converter  converterId="TimeZoneConverter" />
                               <f:selectItems value="#{personBean.timeZones}" />
@@ -419,8 +438,8 @@
                           <td width="100" valign="top">
                           	<ui:include src="../../includes/inputLabel.xhtml">
 								<ui:param name="required" value="TRUE"/>
-								<ui:param name="reRender" value="user_groupID"/>
 								<ui:param name="fieldName" value="user.groupID"/>
+                                <ui:param name="for" value="user_groupID"/>
 								<ui:param name="editBean" value="#{personBean}"/>
 								<ui:param name="label" value="#{messages.editPerson_user_group}"/>
 							</ui:include>
@@ -429,9 +448,9 @@
                             <rich:message for="user_groupID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:selectOneMenu value="#{personBean.item.user.groupID}" 
                             	id="user_groupID" disabled="#{!personBean.item.userEditable}" 
-                            	required="#{personBean.item.userSelected and ((not personBean.batchEdit) or personBean.updateField['user.groupID'])}" 
-                            	onchange="checkMultiple(this)"
-                            	requiredMessage="#{messages.required}">
+                            	required="#{not personBean.batchEdit}" 
+                                 requiredMessage="#{messages.required}"
+                            	onchange="checkMultiple(this)">
                               <f:selectItem itemLabel="" />
                               <f:selectItems value="#{personBean.groups}" />
                             </h:selectOneMenu>
@@ -441,7 +460,6 @@
                           <td width="100" valign="top">
                           	<ui:include src="../../includes/inputLabel.xhtml">
 								<ui:param name="required" value="TRUE"/>
-								<ui:param name="reRender" value="user_role"/>
 								<ui:param name="for" value="user_role"/>
 								<ui:param name="fieldName" value="user.role"/>
 								<ui:param name="editBean" value="#{personBean}"/>
@@ -449,10 +467,12 @@
 							</ui:include>
                           </td>
                           <td>
+                            <rich:message for="user_role" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:selectOneMenu value="#{personBean.item.user.role}" id="user_role" 
                             		converter="SimpleBeanConverter"
                             		disabled="#{!personBean.item.userEditable}" 
-                            		required="#{personBean.item.userSelected and ((not personBean.batchEdit) or personBean.updateField['user.role'])}" 
+                                    required="#{not personBean.batchEdit}" 
+                                    requiredMessage="#{messages.required}"
                             		onchange="checkMultiple(this)">
                               	<f:selectItems value="#{personBean.roles}" />
                             </h:selectOneMenu>
@@ -462,7 +482,6 @@
                           <td width="100" valign="top">
                           	<ui:include src="../../includes/inputLabel.xhtml">
 								<ui:param name="required" value="TRUE"/>
-								<ui:param name="reRender" value="user_status"/>
 								<ui:param name="for" value="user_status"/>
 								<ui:param name="fieldName" value="user.status"/>
 								<ui:param name="editBean" value="#{personBean}"/>
@@ -470,9 +489,12 @@
 							</ui:include>
                           </td>
                           <td>
+                            <rich:message for="user_status" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:selectOneMenu value="#{personBean.item.user.status}" 
-                            id="user_status" disabled="#{!personBean.item.userEditable}" 
-                            onchange="checkMultiple(this)">
+                                 id="user_status" disabled="#{!personBean.item.userEditable}" 
+                                 required="#{not personBean.batchEdit}" 
+                               requiredMessage="#{messages.required}"
+                                  onchange="checkMultiple(this)">
                               <f:selectItems value="#{personBean.statuses}"/>
                             </h:selectOneMenu>
                           </td>
@@ -574,7 +596,6 @@
                           <td width="100" valign="top">
 	                          <ui:include src="../../includes/inputLabel.xhtml">
 									<ui:param name="required" value="TRUE"/>
-									<ui:param name="reRender" value="driver_groupID"/>
 									<ui:param name="for" value="driver_groupID"/>
 									<ui:param name="fieldName" value="driver.groupID"/>
 									<ui:param name="editBean" value="#{personBean}"/>
@@ -585,7 +606,7 @@
                             <rich:message for="driver_groupID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:selectOneMenu value="#{personBean.item.driver.groupID}" 
                             	id="driver_groupID" 
-                            	required="#{personBean.item.driverSelected and ((not personBean.batchEdit) or personBean.updateField['driver.groupID'])}" 
+                            	required="#{personBean.item.driverSelected and (not personBean.batchEdit)}" 
                             	requiredMessage="#{messages.required}"
                             	onchange="checkMultiple(this)">
                               <f:selectItem itemLabel="" />
@@ -597,7 +618,6 @@
                           <td width="100" valign="top">
                           	 <ui:include src="../../includes/inputLabel.xhtml">
 									<ui:param name="required" value="TRUE"/>
-									<ui:param name="reRender" value="driver_status"/>
 									<ui:param name="fieldName" value="driver.status"/>
 									<ui:param name="for" value="driver_status"/>
 									<ui:param name="editBean" value="#{personBean}"/>
@@ -605,9 +625,11 @@
 							 </ui:include>
                           </td>
                           <td>
+                            <rich:message for="driver_status" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:selectOneMenu value="#{personBean.item.driver.status}" 
                             	id="driver_status" 
-                            	required="#{personBean.item.driverSelected and ((not personBean.batchEdit) or personBean.updateField['driver.status'])}"
+                                required="#{personBean.item.driverSelected and (not personBean.batchEdit)}" 
+                                requiredMessage="#{messages.required}"
                             	onchange="checkMultiple(this)">
                               <f:selectItems value="#{personBean.statuses}"/>
                             </h:selectOneMenu>
