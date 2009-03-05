@@ -115,7 +115,13 @@ public class EmailReportJob extends QuartzJobBean
             case IDLING_REPORT:
                 final Calendar endDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
                 Calendar startDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-                startDate.roll(Calendar.DATE, -7); // Roll back 7 days
+                startDate.add(Calendar.DATE, -7);
+                if(logger.isDebugEnabled())
+                {
+                    SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy");
+                    logger.debug("Start Time: " + sdf.format(startDate.getTime()));
+                    logger.debug("End Time: " + sdf.format(endDate.getTime()));
+                }
                 reportCriteriaList.add(reportCriteriaService.getIdlingReportCriteria(reportSchedule.getGroupID(), startDate.getTime(), endDate.getTime()));
                 break;
             default:
