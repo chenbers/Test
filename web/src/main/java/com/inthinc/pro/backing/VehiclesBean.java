@@ -327,9 +327,32 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     {
         final FacesContext context = FacesContext.getCurrentInstance();
         boolean valid = true;
+        final String required = "required";
 
         for (final VehicleView vehicle : saveItems)
         {
+            // Required fields check
+            if(vehicle.getMake() == null || vehicle.getMake().equals(""))
+            {
+                valid = false;
+                String summary = MessageUtil.getMessageString(required);
+                context.addMessage("edit-form:make", new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null));
+            }
+            
+            if(vehicle.getModel() == null || vehicle.getModel().equals(""))
+            {
+                valid = false;
+                String summary = MessageUtil.getMessageString(required);
+                context.addMessage("edit-form:model", new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null));
+            }
+            
+            if(vehicle.getGroupID() == null || vehicle.getGroupID().equals(""))
+            {
+                valid = false;
+                String summary = MessageUtil.getMessageString(required);
+                context.addMessage("edit-form:groupID", new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null));
+            }
+            
             // unique VIN
             final Vehicle byVIN = vehicleDAO.findByVIN(vehicle.getVIN());
             if ((byVIN != null) && !byVIN.getVehicleID().equals(vehicle.getVehicleID()))

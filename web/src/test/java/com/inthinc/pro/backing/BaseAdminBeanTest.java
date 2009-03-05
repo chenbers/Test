@@ -225,6 +225,8 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
 
         // save
         int count = adminBean.getItemCount();
+        
+        //TODO uncomment the following code and get the test to work.
         //assertEquals(adminBean.save(), adminBean.getDisplayRedirect());
         assertEquals(adminBean.getItemCount(), count);
     }
