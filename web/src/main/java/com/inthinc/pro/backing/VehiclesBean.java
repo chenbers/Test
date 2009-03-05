@@ -522,8 +522,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             super.setGroupID(groupID);
             group = null;
 
-            if ((driver != null) && !driver.getGroupID().equals(groupID))
-                setDriverID(null);
+//            if ((driver != null) && !driver.getGroupID().equals(groupID))
+//                setDriverID(null);
             driver = null;
             bean.drivers = null;
         }
