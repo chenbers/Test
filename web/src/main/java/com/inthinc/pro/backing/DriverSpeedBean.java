@@ -108,7 +108,6 @@ public class DriverSpeedBean extends BaseBean
                 event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
                 speedingEvents.add(new EventReportItem(event, this.navigation.getDriver().getPerson().getTimeZone()));
             }
-            Collections.reverse(speedingEvents);
             
             tableStatsBean.setPage(1);
             tableStatsBean.setTableRowCount(10);

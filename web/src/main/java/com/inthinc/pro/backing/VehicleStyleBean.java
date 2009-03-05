@@ -100,7 +100,6 @@ public class VehicleStyleBean extends BaseBean
                 event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
                 styleEvents.add(new EventReportItem(event, getUser().getPerson().getTimeZone()));
             }
-            Collections.reverse(styleEvents);
 
             tableStatsBean.setPage(1);
             tableStatsBean.setTableRowCount(10);

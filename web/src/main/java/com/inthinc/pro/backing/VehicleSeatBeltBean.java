@@ -71,7 +71,6 @@ public class VehicleSeatBeltBean extends BaseBean
                 event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
                 seatBeltEvents.add(new EventReportItem(event, getUser().getPerson().getTimeZone()));
             }
-            Collections.reverse(seatBeltEvents);
 
             tableStatsBean.setPage(1);
             tableStatsBean.setTableRowCount(10);

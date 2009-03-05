@@ -111,7 +111,6 @@ public class VehicleSpeedBean extends BaseBean
                 // Apply logged in user's TimeZone
                 speedingEvents.add(new EventReportItem(event, getUser().getPerson().getTimeZone()));
             }
-            Collections.reverse(speedingEvents);
 
             tableStatsBean.setPage(1);
             tableStatsBean.setTableRowCount(10);

@@ -71,7 +71,6 @@ public class DriverSeatBeltBean extends BaseBean
                 event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
                 seatBeltEvents.add(new EventReportItem(event, this.navigation.getDriver().getPerson().getTimeZone()));
             }
-            Collections.reverse(seatBeltEvents);
             
             tableStatsBean.setPage(1);
             tableStatsBean.setTableRowCount(10);
