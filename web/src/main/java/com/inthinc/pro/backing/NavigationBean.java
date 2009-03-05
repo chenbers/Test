@@ -101,6 +101,7 @@ public class NavigationBean extends BaseBean
     public void setVehicle(Vehicle vehicle)
     {
         this.vehicle = vehicle;
+        setGroupID(vehicle.getGroupID());
     }
 
     public Integer getStart()
