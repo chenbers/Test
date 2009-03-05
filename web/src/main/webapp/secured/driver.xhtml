@@ -417,14 +417,18 @@
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="seatbelt">Seat Belt</span>
-						<span class="panel_links"><h:form id="seatBelt_report_link"><h:commandLink value="view report" action="go_reportDriverSeatBelt" /></h:form></span></div>
+						<span class="panel_links">
+							<h:form id="seatBelt_report_link">
+								<h:commandLink value="view report" action="go_reportDriverSeatBelt" />
+							</h:form>
+						</span>
+					</div>
 				</div>
 					<div class="panel_w">
 					  <rich:panel bodyClass="panel_content" id="seatBeltPanel" border="0">
 					    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
                           <tr>
                             <td width="373">
-                              <div id="seatbelt_chart"></div>
                       		<ui:include src="../includes/lineChart.xhtml">
 						            <ui:param name="lineChartDef" value="#{driverSeatBeltBean.seatBeltScoreHistoryOverall}" />
 						            <ui:param name="hiddenFieldID" value="HiddenField3" />

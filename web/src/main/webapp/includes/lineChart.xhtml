@@ -18,7 +18,8 @@
 				xmlns:rich="http://richfaces.org/rich"
 				xmlns:c="http://java.sun.com/jstl/core">
 
-	<rich:panel id="#{ChartDivID}" style="height: #{height};"></rich:panel>
+<rich:panel style="height:#{height};width:#{width}">
+	<div id="#{ChartDivID}" ></div>
 	<h:inputHidden value="#{lineChartDef}" id="#{hiddenFieldID}" />
 	<script type="text/javascript">
 		var #{tartgetElementVar} = document.getElementById("#{hiddenFieldID}");
@@ -39,5 +40,6 @@
 		#{chartVar}.setTransparent(true);
 		#{chartVar}.render("#{ChartDivID}");
 	</script>
+	</rich:panel>
 
 </ui:composition>
