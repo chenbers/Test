@@ -22,7 +22,7 @@ public class ReportUtils
         InputStream in = null;
         try
         {
-            if(formatType != null && formatType.equals(FormatType.EXCEL))
+            if(formatType != null && formatType.equals(FormatType.EXCEL) && reportType.getRawTemplate() != null)
                 in = loadFile(reportType.getRawTemplate());
             else
                 in = loadFile(reportType.getPrettyTemplate());
