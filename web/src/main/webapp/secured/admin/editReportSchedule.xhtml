@@ -52,7 +52,7 @@
 							align="center">
 							<ui:fragment rendered="#{not reportScheduleBean.batchEdit}">
 								<tr>
-									<td width="100" valign="top"><h:outputText
+									<td width="115" valign="top"><h:outputText
 										value="#{messages.reportSchedule_name}" />
 										<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
 									</td>
@@ -63,7 +63,7 @@
 								</tr>
 							</ui:fragment>
 							<tr>
-								<td width="100" valign="top">
+								<td width="115" valign="top">
 									<ui:include src="../../includes/inputLabel.xhtml">
 										<ui:param name="required" value="TRUE"/>
 										<ui:param name="reRender" value="status"/>
@@ -80,43 +80,9 @@
 								</td>
 								
 							</tr>
-							<!-- <tr>
-								<td width="100" valign="top">
-									<ui:include src="../../includes/inputLabel.xhtml">
-										<ui:param name="required" value="TRUE"/>
-										<ui:param name="reRender" value="startDate"/>
-										<ui:param name="for" value="startDate"/>
-										<ui:param name="fieldName" value="startDate"/>
-										<ui:param name="editBean" value="#{reportScheduleBean}"/>
-										<ui:param name="label" value="#{messages.reportSchedule_startDate}"/>
-									</ui:include>
-								</td>
-								<td>
-									<rich:message for="startDate" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-									<rich:calendar id="startDate" value="#{reportScheduleBean.item.startDate}" 
-											required="#{(not reportScheduleBean.batchEdit) or reportScheduleBean.updateField['startDate']}" 
-											requiredMessage="#{messages.required}" todayControlMode="hidden" enableManualInput="true" 
-											converterMessage="#{messages.editPerson_dateFormat}" timeZone="#{reportScheduleBean.utcTimeZone}" 
-											oninputchange="checkMultiple('startDate')" ondateselect="checkMultiple('startDate')">
-									</rich:calendar>	
-								</td>
-								
-							</tr>
+							
 							<tr>
-								<td width="100" valign="top">
-									<h:selectBooleanCheckbox rendered="#{reportScheduleBean.batchEdit}" id="update_endDate" value="#{reportScheduleBean.updateField['endDate']}"/>
-									<h:outputText value="#{messages.reportSchedule_endDate}" />
-								</td>
-								<td>
-									<rich:message for="endDate" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-									<rich:calendar id="endDate" value="#{reportScheduleBean.item.endDate}" todayControlMode="hidden" enableManualInput="true" 
-										converterMessage="#{messages.editPerson_dateFormat}" timeZone="#{reportScheduleBean.utcTimeZone}" 
-										oninputchange="checkMultiple('endDate')" ondateselect="checkMultiple('endDate')">
-									</rich:calendar>	
-								</td>
-							</tr> -->
-							<tr>
-								<td width="100" valign="top">
+								<td width="115" valign="top">
 									<ui:include src="../../includes/inputLabel.xhtml">
 										<ui:param name="required" value="TRUE"/>
 										<ui:param name="reRender" value="timeOfDay"/>
@@ -136,7 +102,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td width="100" valign="top">
+								<td width="115" valign="top">
 									<ui:include src="../../includes/inputLabel.xhtml">
 										<ui:param name="required" value="TRUE"/>
 										<ui:param name="reRender" value="occurrence"/>
@@ -148,7 +114,7 @@
 								</td>
 								<td>
 									<rich:message for="occurrence" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-									<h:selectOneMenu id="occurrence" value="#{reportScheduleBean.item.occurrence}" converter="SimpleBeanConverter" required="#{(not reportScheduleBean.batchEdit) or reportScheduleBean.updateField['occurrence']}" requiredMessage="#{messages.required}">
+									<h:selectOneMenu id="occurrence" value="#{reportScheduleBean.item.occurrence}" converter="SimpleBeanConverter" required="#{not reportScheduleBean.batchEdit}" requiredMessage="#{messages.required}">
 										<a4j:support event="onchange" reRender="occurenceDetailPanel" ajaxSingle="true" onsubmit="checkMultiple(this)"/>
 										<f:selectItems value="#{reportScheduleBean.occurrences}"/> 
 									</h:selectOneMenu>
@@ -160,7 +126,7 @@
 							<table width="350" border="0" cellspacing="2" cellpadding="4"
 								align="center">
 								<tr>
-									<td width="100" valign="top">
+									<td width="115" valign="top">
 										<h:selectBooleanCheckbox rendered="#{reportScheduleBean.batchEdit and reportScheduleBean.item.occurrence eq 'WEEKLY'}" id="update_dayOfWeek" value="#{reportScheduleBean.updateField['dayOfWeek']}" />
 										<h:outputText value="#{messages.reportSchedule_daysOfWeek}" rendered="#{reportScheduleBean.item.occurrence eq 'WEEKLY'}"/>
 									</td>
@@ -179,10 +145,11 @@
 							<table width="350" border="0" cellspacing="2" cellpadding="4"
 								align="center">
 								<tr>
-									<td width="100" valign="top">
+									<td width="115" valign="top">
 										<ui:include src="../../includes/inputLabel.xhtml">
 											<ui:param name="reRender" value="dayOfMonth"/>
 											<ui:param name="fieldName" value="dayOfMonth"/>
+                                            <ui:param name="required" value="TRUE"/>
 											<ui:param name="for" value="dayOfMonth"/>
 											<ui:param name="editBean" value="#{reportScheduleBean}"/>
 											<ui:param name="label" value="#{messages.reportSchedule_dayOfMonth}"/>
@@ -191,7 +158,7 @@
 									<td>
 										<h:outputText rendered="#{reportScheduleBean.item.occurrence eq 'MONTHLY'}">
                                             <rich:message for="dayOfMonth" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-											<rich:inputNumberSpinner id="dayOfMonth" value="#{reportScheduleBean.item.dayOfMonth}" minValue="1" maxValue="31" required="#{(not reportScheduleBean.batchEdit) or reportScheduleBean.updateField['dayOfMonth']}" requiredMessage="#{messages.required}" ></rich:inputNumberSpinner>
+											<rich:inputNumberSpinner id="dayOfMonth" value="#{reportScheduleBean.item.dayOfMonth}" onchange="checkMultiple('dayOfMonth')" minValue="1" maxValue="31" required="#{not reportScheduleBean.batchEdit}" requiredMessage="#{messages.required}" ></rich:inputNumberSpinner>
 	                              		</h:outputText>
 									</td>
 								</tr>

@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.BeanUtils;
@@ -295,6 +296,32 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         }
 
     }
+    
+    @Override
+    protected boolean validate(List<ReportScheduleView> saveItems)
+    {
+        Boolean valid = true;
+        valid = super.validate(saveItems);
+        for(ReportScheduleView reportScheduleView: saveItems)
+        {
+            if(reportScheduleView.getOccurrence() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("occurrence"))))
+            {
+                valid = false;
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
+                getFacesContext().addMessage("edit-form:occurrence", message);
+            }
+            
+            if(reportScheduleView.getOccurrence() != null && reportScheduleView.getOccurrence().equals(Occurrence.MONTHLY) && reportScheduleView.getDayOfMonth() == null
+                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("dayOfMonth"))))
+            {
+                valid = false;
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
+                getFacesContext().addMessage("edit-form:dayOfMonth", message);
+            }
+            
+        }
+        return valid;
+    }
 
     @Override
     public String fieldValue(ReportScheduleView item, String column)
@@ -303,8 +330,6 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         String returnString = "";
         SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy");
         sdf.setTimeZone(getUtcTimeZone());
-        
-        
         
         if ("name".equals(column))
             returnString = item.getName();
