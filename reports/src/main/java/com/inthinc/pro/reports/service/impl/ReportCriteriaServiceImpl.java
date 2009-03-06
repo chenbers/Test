@@ -291,10 +291,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     {
         Group group = groupDAO.findByID(groupID);
         
-            
-//        final Calendar endDate = Calendar.getInstance();
-//        Calendar startDate = Calendar.getInstance();
-//        startDate.roll(Calendar.DATE, -7);  //Roll back 7 days
 
         List<IdlingReportItem> idlingReportItems = scoreDAO.getIdlingReportData(groupID,startDate, endDate);
    
@@ -303,31 +299,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
             //Group name
             Group tmpGroup = groupDAO.findByID(idlingReportItem.getGroupID());
             idlingReportItem.setGroup(tmpGroup.getName());
-            
-            //Total idling            
-            Float tot = idlingReportItem.getLowHrs() + idlingReportItem.getHighHrs();
-            idlingReportItem.setTotalHrs(tot);
-            
-            //Percentages, if any driving
-            idlingReportItem.setLowPercent("0.0");
-            idlingReportItem.setHighPercent("0.0");
-            idlingReportItem.setTotalPercent("0.0");
-            Float totHrs = new Float(idlingReportItem.getDriveTime()) +
-            idlingReportItem.getLowHrs() + idlingReportItem.getHighHrs();                
-            
-            if ( totHrs != 0.0f ) {
-                Float lo = 100.0f*idlingReportItem.getLowHrs()/totHrs;  
-                String fmt = lo.toString();
-                idlingReportItem.setLowPercent(fmt.substring(0,3));  
-                
-                Float hi = 100.0f*idlingReportItem.getHighHrs()/totHrs;
-                fmt = hi.toString();
-                idlingReportItem.setHighPercent(fmt.substring(0,3));
-                
-                Float to = 100.0f*idlingReportItem.getTotalHrs()/totHrs;
-                fmt = to.toString();
-                idlingReportItem.setTotalPercent(fmt.substring(0,3));
-            }          
         }   
         
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.IDLING_REPORT,group.getName());

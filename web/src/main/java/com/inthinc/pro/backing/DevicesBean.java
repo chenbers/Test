@@ -1,11 +1,14 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -208,6 +211,45 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         if (Boolean.parseBoolean(params.get("immediate")) && !isAdd() && !isBatchEdit())
             assignVehicle(getItem());
     }
+    
+    @Override
+    protected boolean validate(List<DeviceView> saveItems)
+    {
+        boolean valid = true;
+        final String required = "required";
+        
+        valid = super.validate(saveItems);
+        
+        for(DeviceView deviceView:saveItems)
+        {
+            if(!isBatchEdit() || (isBatchEdit() && getUpdateField().get("ephone")))
+            {
+                if(deviceView.getEphone() == null || deviceView.getEphone().equals(""))
+                {
+                    valid = false;
+                    final String summary = MessageUtil.getMessageString(required);
+                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                    getFacesContext().addMessage("edit-form:ephone", message);
+                }
+                
+                if(deviceView.getEphone() != null)
+                {
+                    
+                    
+                    if(!deviceView.getEphone().matches("\\D?\\d{3}\\D*\\d{3}\\D?\\d{4}")){
+                        valid = false;
+                    }
+                    
+                    final String summary = MessageUtil.getMessageString("editDevice_phoneFormat");
+                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                    getFacesContext().addMessage("edit-form:ephone", message);
+                   
+                }
+            }
+        }
+        
+        return valid;
+    }
 
     public void validateImei(FacesContext context, UIComponent component, Object value)
     {
@@ -390,7 +432,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         @Override
         public void setEphone(String ephone)
         {
-            super.setEphone(MiscUtil.unformatPhone(ephone));
+            super.setEphone(ephone);
         }
 
         @Override

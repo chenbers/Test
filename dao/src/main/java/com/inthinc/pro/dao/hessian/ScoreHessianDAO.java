@@ -1,5 +1,6 @@
 package com.inthinc.pro.dao.hessian;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -465,6 +466,30 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 {
                     iri.setDriveTime(((float) dqm.getDriveTime() / this.SECONDS_TO_HOURS));
                 }
+                
+                //Total idling            
+                Float tot = iri.getLowHrs() + iri.getHighHrs();
+                iri.setTotalHrs(tot);
+                
+                //Percentages, if any driving
+                iri.setLowPercent("0.0");
+                iri.setHighPercent("0.0");
+                iri.setTotalPercent("0.0");
+                Float totHrs = new Float(iri.getDriveTime()) +
+                    iri.getLowHrs() + iri.getHighHrs();                
+                NumberFormat format = NumberFormat.getInstance();
+                format.setMaximumFractionDigits(1);
+                format.setMinimumFractionDigits(1);
+                if ( totHrs != 0.0f ) {
+                    Float low = 100.0f*iri.getLowHrs()/totHrs; 
+                    iri.setLowPercent(format.format(low));  
+                    
+                    Float hi = 100.0f*iri.getHighHrs()/totHrs;
+                    iri.setHighPercent(format.format(hi));
+                    
+                    Float total = 100.0f*iri.getTotalHrs()/totHrs;
+                    iri.setTotalPercent(format.format(total));
+                } 
 
                 lIri.add(iri);
                 iri = null;

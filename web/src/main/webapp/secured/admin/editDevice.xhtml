@@ -115,16 +115,18 @@
                               </ui:fragment>
                               <tr>
                                 <td width="100" valign="top">
-                                  <h:selectBooleanCheckbox rendered="#{devicesBean.batchEdit}" id="update_ephone" value="#{devicesBean.updateField['ephone']}" />
-                                  <h:outputText value="#{messages.editDevice_ephone}" />
-                                  <h:outputText rendered="#{not devicesBean.batchEdit}" styleClass="required" value=" *" />
+                                  <ui:include src="../../includes/inputLabel.xhtml">
+                                       <ui:param name="required" value="TRUE"/>
+                                       <ui:param name="for" value="ephone"/>
+                                       <ui:param name="fieldName" value="ephone"/>
+                                       <ui:param name="editBean" value="#{devicesBean}"/>
+                                       <ui:param name="label" value="#{messages.editDevice_ephone}"/>
+                                  </ui:include>
                                 </td>
                                 <td>
                                   <rich:message for="ephone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{devicesBean.item.ephone}" id="ephone" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="22" required="#{(not devicesBean.batchEdit) or devicesBean.updateField['ephone']}" requiredMessage="#{messages.required}" validatorMessage="#{messages.editDevice_phoneFormat}">
-                                    <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
-                                    <f:attribute name="regex" value="\D?\d{3}\D*\d{3}\D?\d{4}" />
+                                    maxlength="22" required="#{not devicesBean.batchEdit}" requiredMessage="#{messages.required}">  
                                   </h:inputText>
                                 </td>
                               </tr>
@@ -139,9 +141,13 @@
                             <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                               <tr>
                                 <td width="100" valign="top">
-                                  <h:selectBooleanCheckbox rendered="#{devicesBean.batchEdit}" id="update_status" value="#{devicesBean.updateField['status']}" />
-                                  <h:outputText value="#{messages.editDevice_status}" />
-                                  <h:outputText rendered="#{not devicesBean.batchEdit}" styleClass="required" value=" *" />
+                                  <ui:include src="../../includes/inputLabel.xhtml">
+                                       <ui:param name="required" value="TRUE"/>
+                                       <ui:param name="for" value="status"/>
+                                       <ui:param name="fieldName" value="status"/>
+                                       <ui:param name="editBean" value="#{devicesBean}"/>
+                                       <ui:param name="label" value="#{messages.editDevice_status}"/>
+                                  </ui:include>
                                 </td>
                                 <td>
                                   <h:selectOneMenu value="#{devicesBean.item.status}" id="status" onchange="checkMultiple(this)">
@@ -239,7 +245,7 @@
       <ui:param name="editorBean" value="#{devicesBean}" />
       <ui:param name="reRender" value="edit-form:vehicleID" />
     </ui:include>
-
+    <ui:include src="../../includes/adminEditScripts.xhtml"/>
     <script type="text/javascript">
   var formElements = ["text", "checkbox", "radio", "select-one", "select-multiple", "textarea"];
 
@@ -273,6 +279,17 @@
       box = document.getElementById("edit-form:update_" + id);
     if (box)
       box.checked = true;
+
+
+    var span;
+    if (index > 0)
+      span = document.getElementById("edit-form:update_" + id.substring(index + 1) + "_required_flag");
+    else
+      span = document.getElementById("edit-form:update_" + id + "_required_flag");
+    if (span)
+    {
+      span.style.display = "inline";
+    }
   }
     </script>
 
