@@ -210,8 +210,10 @@ public class OrganizationBean extends BaseBean
 
         dragTreeNode.getGroup().setParentID(dropTreeNode.getGroup().getGroupID());
         dragTreeNode.setParent(dropTreeNode);
-
+        
         groupDAO.update(dragTreeNode.getGroup());
+        treeStateMap.put(dropTreeNode.getGroup().getGroupID(), Boolean.TRUE);
+        dropTreeNode.sortChildren();
     }
     
     private void setExpandedNode(TreeNodeImpl treeNode)

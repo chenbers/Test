@@ -20,7 +20,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Vehicle;
 
-public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable
+public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable, Comparable<TreeNodeImpl>
 {
 
     private static final long serialVersionUID = 6735997209608844223L;
@@ -373,17 +373,7 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable
        
         childGroupTreeNodes = childNodes;
         
-        //Sort the child nodes by the label in accending order
-        Collections.sort(childGroupTreeNodes,new Comparator<TreeNodeImpl>()
-        {
-        
-            @Override
-            public int compare(TreeNodeImpl o1, TreeNodeImpl o2)
-            {
-                
-                return o1.getLabel().compareTo(o2.getLabel());
-            }
-        });
+        sortChildren();
         return childGroupTreeNodes;
     }
 
@@ -442,6 +432,17 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable
         }
 
         return treeNodeType;
+    }
+    
+    public void sortChildren()
+    {
+        Collections.sort(childGroupTreeNodes);
+    }
+    
+    @Override
+    public int compareTo(TreeNodeImpl treeNodeImpl)
+    {
+        return this.getLabel().compareToIgnoreCase(treeNodeImpl.getLabel());
     }
 
     /**
