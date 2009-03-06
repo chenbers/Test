@@ -131,16 +131,17 @@
 									<h:outputText value="#{reportScheduleBean.item.report.label}"/>
 								</td>
 							</tr>
-							<tr>
-								<td width="100" valign="top">
-									<h:outputText value="#{messages.reportSchedule_duration}"/>
-								</td>
-								<td>
-									<h:outputText value="#{reportScheduleBean.item.reportDuration}"/>
-								</td>
-							</tr>
-							
-							
+                     
+                            <h:outputText rendered="#{reportScheduleBean.item.reportDuration ne null}">
+                                 <tr>
+                                    <td width="100" valign="top">
+                                       <h:outputText value="#{messages.reportSchedule_duration}"/>
+                                    </td>
+                                    <td>
+                                       <h:outputText value="#{reportScheduleBean.item.reportDuration}"/>
+                                    </td>
+                                 </tr>
+                           </h:outputText>
 							<h:outputText rendered="#{reportScheduleBean.item.groupName ne null}">
 									<tr>
 										<td width="100" valign="top">
