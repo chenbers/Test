@@ -305,6 +305,7 @@ public class DriverBean extends BaseBean
             else
             {
                 sb.append(line.getChartItem(new Object[] { null, monthList.get(cnt) }));
+               logger.debug("CreateLineDef: " + scoreType.toString() + " " + cnt + " is null");
             }
             cnt++;
         }
@@ -356,7 +357,7 @@ public class DriverBean extends BaseBean
         return chartDataList;
     }
 
-    public List<ReportCriteria> buildReport() throws IOException
+    public List<ReportCriteria> buildReportCriteria()
     {
         List<ReportCriteria> tempCriteria = new ArrayList<ReportCriteria>();
 
@@ -455,13 +456,13 @@ public class DriverBean extends BaseBean
         this.emailAddress = emailAddress;
     }
 
-    public void exportReportToPdf() throws IOException
+    public void exportReportToPdf()
     {
-        getReportRenderer().exportReportToPDF(buildReport(), getFacesContext());
+        getReportRenderer().exportReportToPDF(buildReportCriteria(), getFacesContext());
     }
 
-    public void emailReport() throws IOException
+    public void emailReport()
     {
-        getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
+        getReportRenderer().exportReportToEmail(buildReportCriteria(), getEmailAddress());
     }
 }

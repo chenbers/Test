@@ -200,6 +200,10 @@ public class DriverSeatBeltBean extends BaseBean
         seatBeltEvents.clear();
         getViolations();
     }
+    public Duration getDuration()
+    {
+        return durationBean.getDuration();
+    }
 
     // NAVIGATION BEAN PROPERTIES
     public NavigationBean getNavigation()

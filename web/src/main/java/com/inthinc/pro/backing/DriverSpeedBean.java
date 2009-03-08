@@ -404,6 +404,10 @@ public class DriverSpeedBean extends BaseBean
         speedingEvents.clear();
         getViolations();
     }
+    public Duration getDuration()
+    {
+        return durationBean.getDuration();
+    }
 
     // SPEEDING EVENTS LIST
     public List<EventReportItem> getSpeedingEvents()

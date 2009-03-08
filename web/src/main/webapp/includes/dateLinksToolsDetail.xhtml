@@ -1,0 +1,99 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+
+	<c:choose>
+		<c:when test="#{flyOutImage == 'ico_minimize.png'}">
+			<c:set var="flyoutTitle" value="#{messages.flyout_restore}" />
+		</c:when>
+		<c:otherwise>
+			<c:set var="flyoutTitle" value="#{messages.flyout_maximize}" />
+		</c:otherwise>
+	</c:choose>
+
+	<a4j:region id="#{ajaxForm}_region">
+		<a4j:form id="#{ajaxForm}">
+		<span class="panel_links_ico" style="#{showTools eq 'TRUE' ? '' : 'right: 30px;'}">
+			<a4j:status id="#{ajaxForm}_status" for="#{ajaxForm}_region" >
+				<f:facet name="start">
+					<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
+				</f:facet>
+			</a4j:status>
+			<rich:spacer width="10" />
+			<a4j:commandLink title="#{messages.duration_days}" immediate="true"
+				styleClass="#{thirtyDaysOn}"		
+				reRender="#{reRenderList}"
+				value="#{messages.duration_days}">
+				<a4j:actionparam name="duration" assignTo="#{duration}"	value="DAYS" />
+			</a4j:commandLink>
+			<rich:spacer width="5"></rich:spacer>
+			<a4j:commandLink title="#{messages.duration_three}" immediate="true"
+				styleClass="#{threeMonthsOn}"	
+				reRender="#{reRenderList}"
+				value="#{messages.duration_three}">
+				<a4j:actionparam name="duration" assignTo="#{duration}"	value="THREE" />
+			</a4j:commandLink>
+			<rich:spacer width="5"></rich:spacer>
+			<a4j:commandLink title="#{messages.duration_six}" immediate="true"
+				styleClass="#{sixMonthsOn}"	
+				reRender="#{reRenderList}"
+				value="#{messages.duration_six}">
+				<a4j:actionparam name="duration" assignTo="#{duration}"	value="SIX" />
+			</a4j:commandLink>
+			<rich:spacer width="5"></rich:spacer>
+			<a4j:commandLink title="#{messages.duration_twelve}" immediate="true"
+				styleClass="#{twelveMonthsOn}"	
+				reRender="#{reRenderList}"
+				value="#{messages.duration_twelve}">
+				<a4j:actionparam name="duration" assignTo="#{duration}"	value="TWELVE" />
+			</a4j:commandLink>
+			</span>
+			<span class="panel_ico">
+				<h:panelGroup id="toolsIcon" rendered="#{showTools eq 'TRUE' ? true : false}">
+					<h:graphicImage value="/images/ico_tools.png" alt="Tools" />
+					<rich:spacer width="2" /> 
+				</h:panelGroup>
+				<a4j:htmlCommandLink action="#{flyOutBean.flyNavRuleAction}" rendered="#{showDetail eq 'TRUE' ? true : false}">
+					<img src="#{facesContext.externalContext.request.contextPath}/images/#{flyOutImage}" border="0" title="#{flyoutTitle}" />
+					<f:setPropertyActionListener value="#{flyNavRule}" target="#{flyOutBean.navigationRule}" />
+				</a4j:htmlCommandLink>
+			</span>
+				<rich:contextMenu event="onclick" attachTiming="onavailable"
+					disableDefaultMenu="false" submitMode="server"
+					attachTo="toolsIcon">
+					<rich:menuItem ajaxSingle="true" rendered="true"
+									iconDisabled="/images/ico_email.gif" 
+									icon="/images/ico_email.gif" 
+									onclick="Richfaces.showModalPanel('#{ajaxForm}_singleEmail');return false;"
+									value="#{messages.contextMenu_email_this_report}" id="emailMenuItem" submitMode="none">
+					</rich:menuItem>
+					<rich:menuItem ajaxSingle="true"
+									iconDisabled="/images/ico_pdf.gif" icon="/images/ico_pdf.gif"
+									value="Export To PDF"
+									action="#{reportBean.exportReportToPdf}"
+									id="export_menu_item">
+					</rich:menuItem>
+					<rich:menuItem ajaxSingle="true" rendered="#{showExcel eq 'TRUE' ? true : false}"
+									iconDisabled="/images/ico_excel.png" icon="/images/ico_excel.png"
+									value="Export To Excel"
+									action="#{reportBean.exportReportToExcel}"
+									id="exportExcelMenuItem">
+					</rich:menuItem>
+				</rich:contextMenu>
+		</a4j:form>
+	
+	<!-- START EMAIL MODAL -->
+		<h:outputText id="#{ajaxForm}_emailModal">
+			<ui:include src="/includes/emailReportPopup.xhtml">	
+				<ui:param name="id" value="#{ajaxForm}_singleEmail" />
+				<ui:param name="reportBean" value="#{reportBean}"/>
+			</ui:include>
+		</h:outputText>
+	<!-- END EMAIL MODAL -->
+	</a4j:region>
+	
+</ui:composition>

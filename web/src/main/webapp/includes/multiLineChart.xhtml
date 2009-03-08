@@ -29,9 +29,13 @@
 	    	#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("showYAxisValues=\'1\'", "showYAxisValues=\'0\'");
 	    </c:if>
 
-		#{chartVar}.setDataXML(#{tartgetElementVar}.value);			   
+	    <c:if test="#{disableDecimals}">
+			#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("forceDecimals=\'1\'", "forceDecimals=\'0\'");
+		</c:if>
+
+		#{chartVar}.setDataXML(#{tartgetElementVar}.value);	
+		#{chartVar}.setTransparent(true);		   
 		#{chartVar}.render("#{ChartDivID}");
-		#{chartVar}.addParam('wmode', 'transparent');
 	</script>
 
 </ui:composition>

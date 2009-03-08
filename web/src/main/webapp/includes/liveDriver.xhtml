@@ -1,96 +1,111 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:c="http://java.sun.com/jstl/core"
-    xmlns:a4j="http://richfaces.org/a4j"
-    xmlns:rich="http://richfaces.org/rich"
-    xmlns:t="http://myfaces.apache.org/tomahawk">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:a4j="http://richfaces.org/a4j"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:rich="http://richfaces.org/rich">
 
-<!-- 
-	Prameters
-		title:       Title of the dialog
-		explanation: Text to be displayed in the header section	
-		id:          Modal Panel ID
- -->
+	<rich:modalPanel id="liveDriverModal" width="540" height="450" headerClass="popupHeader"
+	 				 onshow="initDriverMap();" >
+	
+	<script type="text/javascript">
+		var dMap;
+		var dBaseIcon = new GIcon();
+			dBaseIcon.iconSize = new GSize(21, 20);
+			dBaseIcon.iconAnchor = new GPoint(6, 20);
+			dBaseIcon.infoWindowAnchor = new GPoint(5, 1);
+		var dBounds = new GLatLngBounds();
 
-  <ui:composition>
-		<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{gmBean.key}" type="text/javascript"></script>
-		<script type="text/javascript">
-		var map;
-		var baseIcon = new GIcon();
-			baseIcon.iconSize = new GSize(21, 20);
-			baseIcon.iconAnchor = new GPoint(6, 20);
-			baseIcon.infoWindowAnchor = new GPoint(5, 1);
-		var bounds = new GLatLngBounds();
+		var lastPoint = null;
 		
-		function initMap(lat,lng,zoom)
+		function initDriverMap()
 		{
-			
    			if (GBrowserIsCompatible()) 
 			{
-		 	  	map = new GMap2(document.getElementById("live-driver-canvas"));
-				map.addControl(new GLargeMapControl());
-				map.addControl(new GMapTypeControl());
-				map.addControl(new GOverviewMapControl()); 
-				map.setCenter(new GLatLng(lat, lng), zoom);
-				map.setMapType(G_NORMAL_MAP);
-				bounds = new GLatLngBounds();
+   				dMap = new GMap2(document.getElementById("live-driver-canvas"));
+   				dMap.addControl(new GSmallMapControl());
+   				dMap.addControl(new GMapTypeControl());
+   				dMap.setCenter(new GLatLng(#{liveFleetBean.liveDriverLastLoc.loc.lat}0, #{liveFleetBean.liveDriverLastLoc.loc.lng}0), 12);
+   				dMap.setMapType(G_NORMAL_MAP);
+   				dBounds = new GLatLngBounds();
+   				
 			}
 		}	
-		
-		function createMarker(point, divID, iconImage) 
-        {
-        	var markerIcon;
-        	var marker;
 
-			//Use passed in image.
-        	if(iconImage != null)
-        	{
-				markerIcon = new GIcon(baseIcon);
-	       	    markerIcon.image = iconImage;
-	       	 	markerOptions = { icon:markerIcon };
-	       	 	marker = new GMarker(point, markerOptions);
-        	}
-        	//Use default GoogleMap marker image.
-        	else
-        	{
-		      	markerIcon = new GIcon();
-				marker = new GMarker(point);
-        	}
-       
-       		GEvent.addListener(marker, "click", function() {
-					var node = document.getElementById(divID).cloneNode(true);
-          			node.style.display = 'block';
-		            marker.openInfoWindow(node);
-		 			});
-
-        	return marker;
-        }
 	</script>
-	
-
-	<rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">
+	<a4j:form id="pollForm">
+		
+		<a4j:poll id="poll" interval="2000" enabled="#{liveFleetBean.livePollEnabled}"
+                reRender="drawStepPanel" oncomplete="drawStep()" />
+	</a4j:form>
+		
+		
 		<f:facet name="header">
-	    	<h:outputText value="Event Location" />
+	    	<h:outputText value="Live Driver" />
+	    
 	    </f:facet>
 	    <f:facet name="controls">
-	    	<h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('eventLocationModal')" />
+	    	<h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('liveDriverModal')" />
 	    </f:facet>
 	
 	    <div class="eventmap-border">
-	    	<div id="address-canvas" style="width: 522px; height: 355px; border: 0"></div>
+	    	<div id="live-driver-canvas" style="width: 522px; height: 355px; border: 0"></div>
 	    </div>
 	
 	    <div class="popupactions">
-	    	<a4j:commandButton value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('eventLocationModal')" styleClass="left">
+	    <a4j:form id="controlsForm">
+	    	<a4j:commandButton value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('liveDriverModal')" styleClass="left">
 	   			<span class="edit">
 	   				<h:outputText value="#{messages.button_close}" />
 	   			</span>
 		 	</a4j:commandButton>
+		    
+		     <a4j:commandButton styleClass="left" id="control"
+                    value="#{liveFleetBean.livePollEnabled ? 'Stop' : 'Start'} Polling"
+                    reRender="pollForm,controlsForm">
+                    <span class="edit">
+	   				<h:outputText value="#{liveFleetBean.livePollEnabled ? 'Stop' : 'Start'} Polling" />
+	   			</span>
+                    <a4j:actionparam name="polling" value="#{!liveFleetBean.livePollEnabled}"
+                        assignTo="#{liveFleetBean.livePollEnabled}" />
+                </a4j:commandButton>
+                </a4j:form>
 	    </div>
-	</rich:modalPanel>
+	
+	<rich:panel id="drawStepPanel">
+		<script type="text/javascript">
+		
+			function drawStep()
+			{
+				//alert('drawStep called');
+				
+				var point = new GLatLng(#{liveFleetBean.liveDriverLastLoc.loc.lat}0, #{liveFleetBean.liveDriverLastLoc.loc.lng}0);
+				
+				if(lastPoint == null)
+				{
+					lastPoint = point;
+				}
 
-  </ui:composition>
+				// Return if no change of position.
+				if(lastPoint.lat == point.lat)
+				{
+					if(lastPoint.lng == point.lng)
+					{
+						return;
+					}
+				}
 
-</html>
+				var polyline = new GPolyline([ lastPoint, point ], "#00ff00", 6);
+				lastPoint = point;
+				
+				dBounds.extend(point);
+				dMap.addOverlay(createMarker(point, #{liveFleetBean.liveDriverLastLoc.driverID}, null));
+ 				dMap.addOverlay(polyline);
+
+ 				//dMap.setZoom(dMap.getBoundsZoomLevel(dBounds));
+ 				dMap.setCenter(dBounds.getCenter());
+				
+			}
+		</script>
+	</rich:panel>
+  </rich:modalPanel>
+</ui:composition>
