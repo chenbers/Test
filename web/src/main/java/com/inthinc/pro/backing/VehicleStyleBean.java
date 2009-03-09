@@ -382,6 +382,10 @@ public class VehicleStyleBean extends BaseBean
         styleEvents.clear();
         getViolations();
     }
+    public Duration getDuration()
+    {
+        return durationBean.getDuration();
+    }
 
     public List<EventReportItem> getStyleEvents()
     {

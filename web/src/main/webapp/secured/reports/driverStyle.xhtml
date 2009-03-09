@@ -521,14 +521,5 @@ var firstLoad = new Boolean(true);
 </rich:modalPanel>
 <!-- END LOCATION MODAL -->
 
-<!-- START EMAIL MODAL -->
-	<h:outputText id="driver_email_modalPanel">
-		<ui:include src="/includes/emailReportPopup.xhtml">	
-			<ui:param  name="id" value="driverReportEmailModal" />
-			<ui:param  name="reportBean" value="#{driverStyleBean}"/>
-		</ui:include>
-	</h:outputText>
-<!-- END EMAIL MODAL -->
-
 </ui:define>
 </ui:composition>

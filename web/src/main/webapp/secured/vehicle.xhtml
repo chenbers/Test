@@ -209,42 +209,30 @@
 								<rich:spacer width="10" />
 								<a4j:commandLink title="#{messages.duration_days}" immediate="true"
 									styleClass="#{(vehicleDurationBean.duration eq 'DAYS') ? 'on' : ''}"		
-									reRender="dateLinksForm,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
+									reRender="dateLinksForm,overallPanel,mpgPanel,coachingPanel"
 									value="#{messages.duration_days}">
 									<a4j:actionparam name="duration" assignTo="#{vehicleDurationBean.duration}"	value="DAYS" />
-									<a4j:actionparam name="duration" assignTo="#{vehicleSpeedDurationBean.duration}"	value="DAYS" />
-									<a4j:actionparam name="duration" assignTo="#{vehicleStyleDurationBean.duration}"	value="DAYS" />
-									<a4j:actionparam name="duration" assignTo="#{vehicleSeatBeltDurationBean.duration}"	value="DAYS" />
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
 								<a4j:commandLink title="#{messages.duration_three}" immediate="true"
 									styleClass="#{(vehicleDurationBean.duration eq 'THREE') ? 'on' : ''}"	
-									reRender="dateLinksForm,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
+									reRender="dateLinksForm,overallPanel,mpgPanel,coachingPanel"
 									value="#{messages.duration_three}">
 									<a4j:actionparam name="duration" assignTo="#{vehicleDurationBean.duration}" value="THREE" />
-									<a4j:actionparam name="duration" assignTo="#{vehicleSpeedDurationBean.duration}"	value="THREE" />
-									<a4j:actionparam name="duration" assignTo="#{vehicleStyleDurationBean.duration}"	value="THREE" />
-									<a4j:actionparam name="duration" assignTo="#{vehicleSeatBeltDurationBean.duration}"	value="THREE" />
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
 								<a4j:commandLink title="#{messages.duration_six}" immediate="true"
 									styleClass="#{(vehicleDurationBean.duration eq 'SIX') ? 'on' : ''}"	
-									reRender="dateLinksForm,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
+									reRender="dateLinksForm,overallPanel,mpgPanel,coachingPanel"
 									value="#{messages.duration_six}">
 									<a4j:actionparam name="duration" assignTo="#{vehicleDurationBean.duration}" value="SIX" />
-									<a4j:actionparam name="duration" assignTo="#{vehicleSpeedDurationBean.duration}"	value="SIX" />
-									<a4j:actionparam name="duration" assignTo="#{vehicleStyleDurationBean.duration}"	value="SIX" />
-									<a4j:actionparam name="duration" assignTo="#{vehicleSeatBeltDurationBean.duration}"	value="SIX" />
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
 								<a4j:commandLink title="#{messages.duration_twelve}" immediate="true"
 									styleClass="#{(vehicleDurationBean.duration eq 'TWELVE') ? 'on' : ''}"	
-									reRender="dateLinksForm,overallPanel,speedPanel,stylePanel,seatBeltPanel,mpgPanel,coachingPanel"
+									reRender="dateLinksForm,overallPanel,mpgPanel,coachingPanel"
 									value="#{messages.duration_twelve}">
 									<a4j:actionparam name="duration" assignTo="#{vehicleDurationBean.duration}" value="TWELVE" />
-									<a4j:actionparam name="duration" assignTo="#{vehicleSpeedDurationBean.duration}"	value="TWELVE" />
-									<a4j:actionparam name="duration" assignTo="#{vehicleStyleDurationBean.duration}"	value="TWELVE" />
-									<a4j:actionparam name="duration" assignTo="#{vehicleSeatBeltDurationBean.duration}"	value="TWELVE" />
 								</a4j:commandLink>
 								</span>
 								<span class="panel_ico">
@@ -326,11 +314,20 @@
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="speed">Speed</span>
-						<span class="panel_links">
-							<h:form id="speed_report_link">
-							<h:commandLink action="go_reportVehicleSpeed" value="view report" />
-							</h:form>
-						</span>
+						<ui:include src="../includes/dateLinksToolsDetail.xhtml">
+							<ui:param name="ajaxForm" value="speedForm"/>
+							<ui:param name="reRenderList" value="speedPanel,speedForm"/>			
+							<ui:param name="thirtyDaysOn" value="#{(vehicleSpeedBean.durationBean.duration eq 'DAYS') ? 'on' : ''}"/>
+							<ui:param name="threeMonthsOn" value="#{(vehicleSpeedBean.durationBean.duration eq 'THREE') ? 'on' : ''}"/>
+							<ui:param name="sixMonthsOn" value="#{(vehicleSpeedBean.durationBean.duration eq 'SIX') ? 'on' : ''}"/>
+							<ui:param name="twelveMonthsOn" value="#{(vehicleSpeedBean.durationBean.duration eq 'TWELVE') ? 'on' : ''}"/>
+				  			<ui:param name="duration" value="#{vehicleSpeedBean.durationBean.duration}" />
+				  			<ui:param name="flyNavRule" value="go_reportVehicleSpeed" />
+				  			<ui:param name="flyOutImage" value="ico_expand.png" /> 
+				  			<ui:param name="reportBean" value="#{vehicleSpeedBean}" />
+				  			<ui:param name="showTools" value="FALSE" /> 
+  							<ui:param name="showDetail" value="TRUE" />  
+						</ui:include>	
 					</div>
 				</div>
 					<div class="panel_w">
@@ -372,11 +369,20 @@
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="vehicle">Driving Style</span>
-						<span class="panel_links">
-							<h:form id="style_report_link">
-							<h:commandLink action="go_reportVehicleStyle" value="view report" />
-							</h:form>
-						</span>
+						<ui:include src="../includes/dateLinksToolsDetail.xhtml">
+							<ui:param name="ajaxForm" value="styleForm"/>
+							<ui:param name="reRenderList" value="stylePanel,styleForm"/>			
+							<ui:param name="thirtyDaysOn" value="#{(vehicleStyleBean.durationBean.duration eq 'DAYS') ? 'on' : ''}"/>
+							<ui:param name="threeMonthsOn" value="#{(vehicleStyleBean.durationBean.duration eq 'THREE') ? 'on' : ''}"/>
+							<ui:param name="sixMonthsOn" value="#{(vehicleStyleBean.durationBean.duration eq 'SIX') ? 'on' : ''}"/>
+							<ui:param name="twelveMonthsOn" value="#{(vehicleStyleBean.durationBean.duration eq 'TWELVE') ? 'on' : ''}"/>
+				  			<ui:param name="duration" value="#{vehicleStyleBean.durationBean.duration}" />
+				  			<ui:param name="flyNavRule" value="go_reportVehicleStyle" />
+				  			<ui:param name="flyOutImage" value="ico_expand.png" /> 
+				  			<ui:param name="reportBean" value="#{vehicleStyleBean}" />
+				  			<ui:param name="showTools" value="FALSE" /> 
+  							<ui:param name="showDetail" value="TRUE" />  
+						</ui:include>
 					</div>
 				</div>
 					<div class="panel_w">
@@ -417,14 +423,27 @@
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="seatbelt">Seat Belt</span>
-						<span class="panel_links"><h:form id="seatBelt_report_link"><h:commandLink value="view report" action="go_reportVehicleSeatBelt" /></h:form></span></div>
+							<ui:include src="../includes/dateLinksToolsDetail.xhtml">
+							<ui:param name="ajaxForm" value="seatBeltForm"/>
+							<ui:param name="reRenderList" value="seatBeltPanel,seatBeltForm"/>			
+							<ui:param name="thirtyDaysOn" value="#{(vehicleSeatBeltBean.durationBean.duration eq 'DAYS') ? 'on' : ''}"/>
+							<ui:param name="threeMonthsOn" value="#{(vehicleSeatBeltBean.durationBean.duration eq 'THREE') ? 'on' : ''}"/>
+							<ui:param name="sixMonthsOn" value="#{(vehicleSeatBeltBean.durationBean.duration eq 'SIX') ? 'on' : ''}"/>
+							<ui:param name="twelveMonthsOn" value="#{(vehicleSeatBeltBean.durationBean.duration eq 'TWELVE') ? 'on' : ''}"/>
+				  			<ui:param name="duration" value="#{vehicleSeatBeltBean.durationBean.duration}" />
+				  			<ui:param name="flyNavRule" value="go_reportVehicleSeatBelt" />
+				  			<ui:param name="flyOutImage" value="ico_expand.png" /> 
+				  			<ui:param name="reportBean" value="#{vehicleSeatBeltBean}" />
+				  			<ui:param name="showTools" value="FALSE" /> 
+  							<ui:param name="showDetail" value="TRUE" />  
+						</ui:include>
+					</div>
 				</div>
 					<div class="panel_w">
 					  <rich:panel bodyClass="panel_content" id="seatBeltPanel" border="0">
 					    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
                           <tr>
                             <td width="373">
-                              <div id="seatbelt_chart"></div>
                       		<ui:include src="../includes/lineChart.xhtml">
 						            <ui:param name="lineChartDef" value="#{vehicleSeatBeltBean.seatBeltScoreHistoryOverall}" />
 						            <ui:param name="hiddenFieldID" value="HiddenField3" />
