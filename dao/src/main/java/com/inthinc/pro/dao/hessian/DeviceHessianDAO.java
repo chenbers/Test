@@ -75,12 +75,16 @@ public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer> impleme
         {
             Map<String, Object> returnMap = getSiloService().getID(CENTRAL_ID_KEY, imei);
             Integer deviceId = getCentralId(returnMap);
-            Device device =  findByID(deviceId);
-            if (device != null)
-            {
-                checkForPendingDeviceSensitivity(device);
-            }
-            return device;
+            return findByID(deviceId);
+            
+//            the following was invoking checkForPendingDeviceSensitivity a second time. It was previously invoked form the findByID method
+
+//            Device device =  findByID(deviceId);
+//            if (device != null)
+//            {
+//                checkForPendingDeviceSensitivity(device);
+//            }
+//            return device;
         }
         catch (EmptyResultSetException e)
         {
