@@ -1,17 +1,15 @@
-<html xmlns="http://www.w3.org/1999/xhtml" 
+<ui:composition template="/template/template.xhtml"
+   xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
 	xmlns:h="http://java.sun.com/jsf/html"
-	 xmlns:f="http://java.sun.com/jsf/core" 
-	 xmlns:a4j="http://richfaces.org/a4j" 
-	 xmlns:rich="http://richfaces.org/rich">
-
-<head>
-<title>New Account</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  	xmlns:f="http://java.sun.com/jsf/core" 
+  	xmlns:a4j="http://richfaces.org/a4j" 
+  	xmlns:rich="http://richfaces.org/rich">
 
 
-</head>
-<f:view contentType="text/html" >
-<body>
+<ui:param name="panelTitle" value="New Account"/>
+<ui:param name="groupSelected" value="MAIN"/>
+<ui:define name="content">
 
 <div>
     <rich:panel id="newAccount-panel">
@@ -64,6 +62,5 @@
 
 </div><!-- end page -->
 <div> </div> 
-</body>
-</f:view>
-</html>
+</ui:define>
+</ui:composition>

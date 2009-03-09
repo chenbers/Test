@@ -1,29 +1,62 @@
-<html xmlns="http://www.w3.org/1999/xhtml" 
+<ui:composition template="/template/template.xhtml"
+   xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
 	xmlns:h="http://java.sun.com/jsf/html"
-	 xmlns:f="http://java.sun.com/jsf/core" 
-	 xmlns:a4j="http://richfaces.org/a4j" 
-	 xmlns:rich="http://richfaces.org/rich"
-	 xmlns:acegi-jsf="http://sourceforge.net/projects/jsf-comp/acegijsf">
-
-<f:view contentType="text/html"> 
-
-<head>
-<title>TeenServer Forward Command</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
-<!-- javascript here -->
+  	xmlns:f="http://java.sun.com/jsf/core" 
+  	xmlns:a4j="http://richfaces.org/a4j" 
+  	xmlns:rich="http://richfaces.org/rich">
 
 
-</head>
-<body>
+<ui:param name="panelTitle" value="Forward Command"/>
+<ui:param name="groupSelected" value="MAIN"/>
+<ui:define name="content">
     <div id="middle">
     <div id="content">
     
     <a4j:form>
       <rich:panel>
+         <f:facet name="header">
+           Select Devices
+         </f:facet>
+         
+         <table>
+            <tr>
+               <td>
+                  <span>
+                     <h:outputText value="Account: " />
+                     <h:selectOneMenu value="#{fwdcmdBean.acctID}">
+                         <f:selectItems value="#{fwdcmdBean.accountList}"/>
+                     </h:selectOneMenu>
+                  </span>
+               </td>
+              </tr>
+              <tr>
+               <td>
+                  <rich:dataTable value="#{fwtcmdBean.devices}" var="device">
+                     <rich:column>
+                        <f:facet name="header">
+                           <h:outputText value="Device ID"/>
+                        </f:facet>
+                     </rich:column>
+                     <rich:column>
+                        <f:facet name="header">
+                           <h:outputText value="Device ID"/>
+                        </f:facet>
+                     </rich:column>
+                  </rich:dataTable>
+               </td>
+            </tr>
+         </table>
+         
+      </rich:panel>
+      
+      <br/>
+      
+      <rich:panel>
         <f:facet name="header">
-        Send Foward Commands
+         Send Foward Commands
       </f:facet>
+        
         <h:panelGrid columns="3">
 
           <h:outputText value="IMEI: " />
@@ -77,7 +110,6 @@
         <a4j:commandButton onclick="Richfaces.hideModalPanel('successPanel')" value="ok"></a4j:commandButton>
       </a4j:form>
     </rich:modalPanel>
-</body>
-</f:view>
-</html>
+</ui:define>
+</ui:composition>
     

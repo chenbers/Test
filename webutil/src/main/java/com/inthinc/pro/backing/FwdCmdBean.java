@@ -1,30 +1,43 @@
 package com.inthinc.pro.backing;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 
+import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DeviceDAO;
+import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.ForwardCommand;
-import com.inthinc.pro.model.ForwardCommandID;
 import com.inthinc.pro.model.ForwardCommandStatus;
 
 public class FwdCmdBean 
 {
 
+    //Forward Command Excetion
     private String imei;
     private Integer fwdcmd;
     private Integer intData;
     private String stringData;
     private Device device;
-
     private UIInput imeiInput;
+    //Device Selection
+    private List<SelectItem> accountList;
+    private Integer acctID;
+    private String  userName;
+    private List<Device> devices = new ArrayList<Device>();
+
     
     private DeviceDAO deviceDAO;
-
+    private AccountDAO accountDAO;
+    
+  
     public FwdCmdBean()
     {
         super();
@@ -88,6 +101,11 @@ public class FwdCmdBean
 //            }
         }
     }
+    
+    public void loadDevices()
+    {
+        devices = deviceDAO.getDevicesByAcctID(acctID);
+    }
 
     public void sendFwdCmdAction()
     {
@@ -106,6 +124,11 @@ public class FwdCmdBean
             data = Integer.valueOf(0);
         }
         deviceDAO.queueForwardCommand(device.getDeviceID(), new ForwardCommand(0, fwdcmd, data, ForwardCommandStatus.STATUS_QUEUED));
+    }
+    
+    public String search()
+    {
+        return null;
     }
 
 
@@ -142,5 +165,74 @@ public class FwdCmdBean
     public void setDeviceDAO(DeviceDAO deviceDAO)
     {
         this.deviceDAO = deviceDAO;
+    }
+
+
+    public void setAccountDAO(AccountDAO accountDAO)
+    {
+        this.accountDAO = accountDAO;
+    }
+
+
+    public AccountDAO getAccountDAO()
+    {
+        return accountDAO;
+    }
+
+
+    public void setAccountList(List<SelectItem> accountList)
+    {
+        this.accountList = accountList;
+    }
+
+    public List<SelectItem> getAccountList()
+    {
+        if(accountList == null)
+        {
+            accountList = new ArrayList<SelectItem>();
+           
+            List<Account> accounts = accountDAO.getAllAcctIDs();
+            for(Account account: accounts)
+            {
+                accountList.add(new SelectItem(account.getAcctID(),account.getAcctName() == null ? account.getAcctID().toString() : account.getAcctName()));
+            }
+        }
+        return accountList;
+    }
+
+
+    public void setAcctID(Integer acctID)
+    {
+        this.acctID = acctID;
+    }
+
+
+    public Integer getAcctID()
+    {
+        return acctID;
+    }
+
+
+    public void setUserName(String userName)
+    {
+        this.userName = userName;
+    }
+
+
+    public String getUserName()
+    {
+        return userName;
+    }
+
+
+    public void setDevices(List<Device> devices)
+    {
+        this.devices = devices;
+    }
+
+
+    public List<Device> getDevices()
+    {
+        return devices;
     }
 }

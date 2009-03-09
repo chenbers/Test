@@ -1,24 +1,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" 
+<ui:composition template="/template/template.xhtml"
+   xmlns="http://www.w3.org/1999/xhtml" 
 	xmlns:ui="http://java.sun.com/jsf/facelets" 
 	xmlns:h="http://java.sun.com/jsf/html"
   	xmlns:f="http://java.sun.com/jsf/core" 
   	xmlns:a4j="http://richfaces.org/a4j" 
   	xmlns:rich="http://richfaces.org/rich">
 
-<f:view contentType="text/html"> 
-
-<head>
-<title>tiwiPro DAO</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
-<!-- javascript here -->
-
-
-</head>
-<body style="font: normal 12px Verdana, Arial, Helvetica, sans-serif;">
+<ui:param name="panelTitle" value="DAO Utils"/>
+<ui:param name="groupSelected" value="MAIN"/>
+<ui:define name="content">
 	<h:panelGrid columns="2">
 		<h:panelGroup>
 			<h:outputText value="Method:"/>
@@ -113,7 +105,5 @@
 		<rich:datascroller id="resultScroll" for="result"/>
 		</a4j:form>		
 	</rich:panel>
-
-</body>
-</f:view>
-</html>
+</ui:define>
+</ui:composition>

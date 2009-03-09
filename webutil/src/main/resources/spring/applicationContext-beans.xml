@@ -19,6 +19,7 @@
     </bean>
     <bean id="fwdcmdBean" class="com.inthinc.pro.backing.FwdCmdBean" scope="request">
 		<property name="deviceDAO" ref="deviceDAO" />
+		<property name="accountDAO" ref="accountDAO" />
 	</bean>
     
 </beans>
