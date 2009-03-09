@@ -110,7 +110,7 @@ public class MpgEntity extends BaseEntity implements Comparable<MpgEntity> {
     @Override
     public int compareTo(MpgEntity o)
     {
-        return this.entityName.compareTo(o.getEntityName());
+        return this.entityName.toUpperCase().compareTo(o.getEntityName().toUpperCase());
     }
 
 }

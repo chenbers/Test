@@ -21,30 +21,30 @@
     <div class="panel_title" style="z-index: #{zorder}"><span class="gas">#{title}</span> <c:choose>
         <c:when test="#{empty flyNavRule}">
             <ui:include src="/includes/dateLinks.xhtml">
-                <ui:param name="ajaxForm" value="#{ajaxForm}" />
-                <ui:param name="ajaxStatusID" value="#{ajaxStatusID}" />
-                <ui:param name="reRenderList" value="#{reRenderList}" />
-                <ui:param name="thirtyDaysOn" value="#{thirtyDaysOn}" />
-                <ui:param name="threeMonthsOn" value="#{threeMonthsOn}" />
-                <ui:param name="sixMonthsOn" value="#{sixMonthsOn}" />
-                <ui:param name="twelveMonthsOn" value="#{twelveMonthsOn}" />
-                <ui:param name="duration" value="#{duration}" />
+                <ui:param name="ajaxForm" value="mpgForm" />
+                <ui:param name="ajaxStatusID" value="mpg_status" />
+                <ui:param name="reRenderList" value="mpgPanel,mpgTableForm,#{ajaxForm}" />
+                <ui:param name="duration" value="#{mpgDurationBean.duration}" />
+                <ui:param name="thirtyDaysOn" value="#{mpgDurationBean.styleClass30Days}" />
+                <ui:param name="threeMonthsOn" value="#{mpgDurationBean.styleClass3Months}" />
+                <ui:param name="sixMonthsOn" value="#{mpgDurationBean.styleClass6Months}" />
+                <ui:param name="twelveMonthsOn" value="#{mpgDurationBean.styleClass12Months}" />
             </ui:include>
         </c:when>
         <c:otherwise>
             <ui:include src="/includes/dateLinksWithFlyOut.xhtml">
-                <ui:param name="ajaxForm" value="#{ajaxForm}" />
-                <ui:param name="ajaxStatusID" value="#{ajaxStatusID}" />
-                <ui:param name="reRenderList" value="#{reRenderList}" />
-                <ui:param name="thirtyDaysOn" value="#{thirtyDaysOn}" />
-                <ui:param name="threeMonthsOn" value="#{threeMonthsOn}" />
-                <ui:param name="sixMonthsOn" value="#{sixMonthsOn}" />
-                <ui:param name="twelveMonthsOn" value="#{twelveMonthsOn}" />
-                <ui:param name="duration" value="#{duration}" />
+                <ui:param name="ajaxForm" value="mpgForm" />
+                <ui:param name="ajaxStatusID" value="mpg_status" />
+                <ui:param name="reRenderList" value="mpgPanel,mpgTableForm,#{ajaxForm}" />
+                <ui:param name="duration" value="#{mpgDurationBean.duration}" />
+                <ui:param name="thirtyDaysOn" value="#{mpgDurationBean.styleClass30Days}" />
+                <ui:param name="threeMonthsOn" value="#{mpgDurationBean.styleClass3Months}" />
+                <ui:param name="sixMonthsOn" value="#{mpgDurationBean.styleClass6Months}" />
+                <ui:param name="twelveMonthsOn" value="#{mpgDurationBean.styleClass12Months}" />
                 <ui:param name="flyNavRule" value="#{flyNavRule}" />
                 <ui:param name="flyOutImage" value="#{flyOutImage}" />
                 <ui:param name="flySelectedTab" value="mpg_full_screen" />
-                <ui:param name="groupID" value="#{mpgBean.groupID}" />
+                <ui:param name="groupID" value="#{navigationBean.groupID}" />
                 <ui:param name="report" value="MPG_GROUP" />
             </ui:include>
         </c:otherwise>
@@ -67,45 +67,37 @@
     </rich:panel> <rich:panel rendered="#{displayTable}">
         <div class="spacer"></div>
 
-        <div class="datagrid"><a4j:form id="mpgTableForm" ajaxSubmit="true" reRender="mpgTable, mpgTableTopScroller">
-            <t:dataTable value="#{mpgBean.mpgEntities}" id="mpgTable" var="item" styleClass="datagrid" sortAscending="#{mpgBean.ascending}" sortColumn="#{mpgBean.sortColumn}"
-                preserveSort="true" rowClasses="tableOdd,tableEven" cellspacing="0" width="100%">
-                <t:column defaultSorted="true" sortable="true">
+        <a4j:form id="mpgTableForm" ajaxSubmit="true" reRender="mpgTable">
+            <rich:dataTable id="mpgTable" value="#{mpgBean.mpgEntities}" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" width="100%">
+                <rich:column sortBy="#{item.entity.entityName}">
                     <f:facet name="header">
-                        <t:commandSortHeader columnName="entity.entityName" propertyName="entity.entityName" arrow="true">
-                            <h:outputText value="Name" />
-                        </t:commandSortHeader>
+                        <h:outputText value="#{messages.mpg_name_column}" />
                     </f:facet>
-                    <h:commandLink action="#{mpgBean.navigateAction}" value="#{item.entity.entityName}">
-                        <f:param value="#{item.entity.groupID}" />
-                    </h:commandLink>
-                </t:column>
-                <t:column sortable="true">
+                    <h:outputLink value="#{item.goTo}">
+                        <h:outputText value="#{item.entity.entityName}" />
+                    </h:outputLink>
+                </rich:column>
+                <rich:column sortBy="#{item.entity.lightValue}">
                     <f:facet name="header">
-                        <t:commandSortHeader columnName="entity.lightValue" arrow="true">
-                            <h:outputText value="Light" />
-                        </t:commandSortHeader>
+                        <h:outputText value="#{messages.mpg_light_column}" />
                     </f:facet>
                     <h:outputText value="#{item.entity.lightValue}" />
-                </t:column>
-                <t:column sortable="true">
+                </rich:column>
+                <rich:column sortBy="#{item.entity.mediumValue}">
                     <f:facet name="header">
-                        <t:commandSortHeader columnName="entity.mediumValue" arrow="true">
-                            <h:outputText value="Medium" />
-                        </t:commandSortHeader>
+                        <h:outputText value="#{messages.mpg_medium_column}" />
                     </f:facet>
                     <h:outputText value="#{item.entity.mediumValue}" />
-                </t:column>
-                <t:column sortable="true">
+                </rich:column>
+                <rich:column sortBy="#{item.entity.heavyValue}">
                     <f:facet name="header">
-                        <t:commandSortHeader columnName="entity.heavyValue" arrow="true">
-                            <h:outputText value="Heavy" />
-                        </t:commandSortHeader>
+                        <h:outputText value="#{messages.mpg_heavy_column}" />
                     </f:facet>
                     <h:outputText value="#{item.entity.heavyValue}" />
-                </t:column>
-            </t:dataTable>
-        </a4j:form></div>
+                </rich:column>
+            </rich:dataTable>
+        </a4j:form>
+
 
     </rich:panel></div>
     </div>
@@ -114,3 +106,45 @@
     <div class="panel_statusbar"></div>
     </div>
 </ui:composition>
+<!-- 
+<a4j:form id="mpgTableForm" ajaxSubmit="true" reRender="mpgTable, mpgTableTopScroller">
+            <t:dataTable id="mpgTable" value="#{mpgBean.mpgEntities}" var="item" forceIdIndexFormula="#{item.entity.entityID}" styleClass="datagrid" sortable="true"
+                sortAscending="#{mpgBean.ascending}" sortColumn="#{mpgBean.sortColumnName}" preserveSort="true" rowClasses="tableOdd,tableEven" border="0" cellpadding="0"
+                cellspacing="" width="100%">
+                <t:column defaultSorted="true" sortable="true">
+                    <f:facet name="header">
+                        <t:commandSortHeader columnName="Name" propertyName="entity.entityName" arrow="true">
+                            <h:outputText value="Name" />
+                        </t:commandSortHeader>
+                    </f:facet>
+                    <h:outputLink value="#{item.goTo}">
+                        <h:outputText value="#{item.entity.entityName}" />
+                    </h:outputLink>
+                </t:column>
+                <t:column sortable="true">
+                    <f:facet name="header">
+                        <t:commandSortHeader columnName="Light" arrow="true">
+                            <h:outputText value="Light" />
+                        </t:commandSortHeader>
+                    </f:facet>
+                    <h:outputText value="#{item.entity.lightValue}" />
+                </t:column>
+                <t:column sortable="true">
+                    <f:facet name="header">
+                        <t:commandSortHeader columnName="Medium" arrow="true">
+                            <h:outputText value="Medium" />
+                        </t:commandSortHeader>
+                    </f:facet>
+                    <h:outputText value="#{item.entity.mediumValue}" />
+                </t:column>
+                <t:column sortable="true">
+                    <f:facet name="header">
+                        <t:commandSortHeader columnName="Heavy" arrow="true">
+                            <h:outputText value="Heavy" />
+                        </t:commandSortHeader>
+                    </f:facet>
+                    <h:outputText value="#{item.entity.heavyValue}" />
+                </t:column>
+            </t:dataTable>
+        </a4j:form>
+         -->

@@ -8,6 +8,7 @@ import java.util.List;
 import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
+import org.richfaces.model.Ordering;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.backing.model.GroupLevel;
@@ -30,11 +31,30 @@ public class MpgBean extends BaseBean
     private ReportRenderer reportRenderer;
     private ReportCriteriaService reportCriteriaService;
     private List<MpgEntityPkg> mpgEntities;
-
-    private Boolean ascending;
-    private String sortColumn;
-
     private String barDef;
+    private Ordering sortOrder = Ordering.ASCENDING;
+
+    public void init()
+    {
+    }
+
+    public Ordering getSortOrder()
+    {
+        return sortOrder;
+    }
+
+    public void setSortOrder(Ordering sortOrder)
+    {
+        this.sortOrder = sortOrder;
+    }
+
+    private boolean isAcending()
+    {
+        if (sortOrder.equals(Ordering.ASCENDING))
+            return true;
+        else
+            return false;
+    }
 
     public String getBarDef()
     {
@@ -88,35 +108,6 @@ public class MpgBean extends BaseBean
         this.durationBean = durationBean;
     }
 
-    public Boolean getAscending()
-    {
-        return ascending;
-    }
-
-    public void setAscending(Boolean ascending)
-    {
-        this.ascending = ascending;
-    }
-
-    public String getSortColumn()
-    {
-        return sortColumn;
-    }
-
-    public void setSortColumn(String sortColumn)
-    {
-        this.sortColumn = sortColumn;
-        sort(sortColumn);
-    }
-
-    public void sort(String column)
-    {
-        if (column.equals(""))
-        {
-            // Collections.sort(mpgEntities);
-        }
-    }
-
     public MpgDAO getMpgDAO()
     {
         return mpgDAO;
@@ -127,22 +118,20 @@ public class MpgBean extends BaseBean
         this.mpgDAO = mpgDAO;
     }
 
-    public Integer getGroupID()
-    {
-        return this.getNavigation().getGroupID();
-    }
-
     public List<MpgEntityPkg> getMpgEntities()
     {
+
+        // If the mpgEntities list is null, then populate it
         if (mpgEntities == null)
         {
-            List<MpgEntity> tempEntities = mpgDAO.getEntities(navigation.getGroup(), durationBean.getDuration());
-            Collections.sort(tempEntities);
             mpgEntities = new ArrayList<MpgEntityPkg>();
 
             // Populate the table
             String contextPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
-            for (MpgEntity entity : tempEntities)
+
+            List<MpgEntity> list = mpgDAO.getEntities(navigation.getGroup(), durationBean.getDuration());
+            Collections.sort(list);
+            for (MpgEntity entity : list)
             {
                 MpgEntityPkg pkg = new MpgEntityPkg();
                 pkg.setEntity(entity);
@@ -159,26 +148,14 @@ public class MpgBean extends BaseBean
                 }
             }
         }
-        return this.mpgEntities;
+
+        return mpgEntities;
     }
 
     public void setMpgEntities(List<MpgEntityPkg> mpgEntities)
     {
         this.mpgEntities = mpgEntities;
     }
-
-    // public List<MpgEntityPkg> getPagedMpgEntities()
-    // {
-    // List<MpgEntityPkg> pagedMpgEntities = new ArrayList<MpgEntityPkg>();
-    // getMpgEntities(); // make sure list is initialized
-    // for (int i = this.start; i <= this.end; i++)
-    // {
-    // if (mpgEntities.size() < i)
-    // break;
-    // pagedMpgEntities.add(mpgEntities.get(i - 1));
-    // }
-    // return pagedMpgEntities;
-    // }
 
     public String exportToPDF()
     {
@@ -215,4 +192,73 @@ public class MpgBean extends BaseBean
     {
         return reportCriteriaService;
     }
+
+    // public String sortAction()
+    // {
+    // Collections.sort(mpgEntities, new Comparator<MpgEntityPkg>()
+    // {
+    // public int compare(MpgEntityPkg mpg1, MpgEntityPkg mpg2)
+    // {
+    // MpgEntity e1 = mpg1.getEntity();
+    // MpgEntity e2 = mpg2.getEntity();
+    // if (sortColumnName == null)
+    // {
+    // return 0;
+    // }
+    // if (sortColumnName.equals(nameColumnName))
+    // {
+    // if (e1.getEntityName() == null && e2.getEntityName() != null)
+    // return -1;
+    // if (e2.getEntityName() == null && e1.getEntityName() != null)
+    // return 1;
+    // if (e1.getEntityName() == null && e2.getEntityName() == null)
+    // return 0;
+    //
+    // if (e1.getEntityName().equalsIgnoreCase("Hardware"))
+    // return isAcending() ? -1 : 1;
+    // if (e2.getEntityName().equalsIgnoreCase("Hardware"))
+    // return isAcending() ? 1 : -1;
+    //
+    // return isAcending() ? e1.getEntityName().toUpperCase().compareTo(e2.getEntityName().toUpperCase()) : e2.getEntityName().toUpperCase().compareTo(
+    // e1.getEntityName().toUpperCase());
+    // }
+    // if (sortColumnName.equals(lightColumnName))
+    // {
+    // if (e1.getLightValue() == null && e2.getLightValue() != null)
+    // return -1;
+    // if (e2.getLightValue() == null && e1.getLightValue() != null)
+    // return 1;
+    // if (e1.getLightValue() == null && e2.getLightValue() == null)
+    // return 0;
+    //
+    // return isAcending() ? e1.getLightValue().compareTo(e2.getLightValue()) : e2.getLightValue().compareTo(e1.getLightValue());
+    // }
+    // if (sortColumnName.equals(mediumColumnName))
+    // {
+    // if (e1.getMediumValue() == null && e2.getMediumValue() != null)
+    // return -1;
+    // if (e2.getMediumValue() == null && e1.getMediumValue() != null)
+    // return 1;
+    // if (e1.getMediumValue() == null && e2.getMediumValue() == null)
+    // return 0;
+    //
+    // return isAcending() ? e1.getMediumValue().compareTo(e2.getMediumValue()) : e2.getMediumValue().compareTo(e1.getMediumValue());
+    // }
+    // if (sortColumnName.equals(heavyColumnName))
+    // {
+    // if (e1.getHeavyValue() == null && e2.getHeavyValue() != null)
+    // return -1;
+    // if (e2.getHeavyValue() == null && e1.getHeavyValue() != null)
+    // return 1;
+    // if (e1.getHeavyValue() == null && e2.getHeavyValue() == null)
+    // return 0;
+    //
+    // return isAcending() ? e1.getHeavyValue().compareTo(e2.getHeavyValue()) : e2.getHeavyValue().compareTo(e1.getHeavyValue());
+    // }
+    // return 0;
+    // }
+    // });
+    // table.setValue(mpgEntities);
+    // return null;
+    // }
 }

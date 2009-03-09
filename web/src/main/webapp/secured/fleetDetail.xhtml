@@ -66,16 +66,8 @@
 				</td>
 				<td><!-- START PANEL -->
 				<div><ui:include src="/includes/mpgChart.xhtml">
-					<ui:param name="reRenderList" value="mpgForm,mpgDataElement,mpgPanel" />
 					<ui:param name="title" value="#{messages.mpg_title}" />
-					<ui:param name="ajaxForm" value="mpgForm" />
-					<ui:param name="ajaxStatusID" value="mpg_status" />
 					<ui:param name="barDef" value="#{mpgBean.barDef}" />
-					<ui:param name="duration" value="#{mpgDurationBean.duration}" />
-					<ui:param name="thirtyDaysOn" value="#{mpgDurationBean.styleClass30Days}" />
-					<ui:param name="threeMonthsOn" value="#{mpgDurationBean.styleClass3Months}" />
-					<ui:param name="sixMonthsOn" value="#{mpgDurationBean.styleClass6Months}" />
-					<ui:param name="twelveMonthsOn" value="#{mpgDurationBean.styleClass12Months}" />
 					<ui:param name="xyheight" value="600" />
 					<ui:param name="xywidth" value="800" />
 					<ui:param name="flyNavRule" value="go_home" />
