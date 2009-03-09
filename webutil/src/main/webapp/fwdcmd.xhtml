@@ -14,43 +14,6 @@
     <div id="content">
     
     <a4j:form>
-      <rich:panel>
-         <f:facet name="header">
-           Select Devices
-         </f:facet>
-         
-         <table>
-            <tr>
-               <td>
-                  <span>
-                     <h:outputText value="Account: " />
-                     <h:selectOneMenu value="#{fwdcmdBean.acctID}">
-                         <f:selectItems value="#{fwdcmdBean.accountList}"/>
-                     </h:selectOneMenu>
-                  </span>
-               </td>
-              </tr>
-              <tr>
-               <td>
-                  <rich:dataTable value="#{fwtcmdBean.devices}" var="device">
-                     <rich:column>
-                        <f:facet name="header">
-                           <h:outputText value="Device ID"/>
-                        </f:facet>
-                     </rich:column>
-                     <rich:column>
-                        <f:facet name="header">
-                           <h:outputText value="Device ID"/>
-                        </f:facet>
-                     </rich:column>
-                  </rich:dataTable>
-               </td>
-            </tr>
-         </table>
-         
-      </rich:panel>
-      
-      <br/>
       
       <rich:panel>
         <f:facet name="header">
