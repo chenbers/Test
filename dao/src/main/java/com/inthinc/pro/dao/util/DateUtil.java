@@ -184,4 +184,12 @@ public class DateUtil
     
         return gc.getTime();
     }  
+    
+    
+    public static Integer differenceInDays(Date startDate,Date endDate)
+    {
+        Integer difInDays = (int) ((endDate.getTime() - startDate.getTime())/(1000*60*60*24));
+        return difInDays;
+        
+    }
 }

@@ -20,10 +20,10 @@ public class TablePrefMapper extends AbstractMapper
         {
             List<Boolean> visible = new ArrayList<Boolean>();
             
-            String[] list = ((String)value).split(" ");
-            for (int i = 0; i < list.length; i++)
+            String list = (String)value;
+            for (int i = 0; i < list.length(); i++)
             {
-                   visible.add(list[i].equals("1"));
+                visible.add(list.charAt(i) == '1');   
             }
             
             
@@ -42,7 +42,7 @@ public class TablePrefMapper extends AbstractMapper
             StringBuffer buf = new StringBuffer();
             for (Boolean visible : tablePref.getVisible())
             {
-                buf.append(visible ? "1 " :  "0 ");
+                buf.append(visible ? "1" :  "0");
             }
             tablePref.setFlags(buf.toString());
             ((Map<String, Object>)value).put("flags", buf.toString());
