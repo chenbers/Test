@@ -21,7 +21,7 @@
         <f:param name="displayID" value="#{item.id}" />
       </a4j:htmlCommandLink>
     </rich:column>
-    <rich:column rendered="#{vehiclesBean.tableColumns['driverID'].visible}" sortBy="#{item.driver.person.first}">
+    <rich:column rendered="#{vehiclesBean.tableColumns['driverID'].visible}" sortBy="#{item.driver.person.fullName}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_driverID}" /></f:facet>
       <h:outputText value="#{item.driver.person.fullName}" />
     </rich:column>

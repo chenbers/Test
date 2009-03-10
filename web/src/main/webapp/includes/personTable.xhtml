@@ -19,7 +19,7 @@
       <f:facet name="header"><h:outputText value="#{messages.personHeader_empid}" /></f:facet>
       <h:outputText value="#{item.empid}" />
     </rich:column>
-    <rich:column rendered="#{personBean.tableColumns['fullName'].visible}" sortBy="#{item.first}" sortOrder="ASCENDING">
+    <rich:column rendered="#{personBean.tableColumns['fullName'].visible}" sortBy="#{item.fullName}" sortOrder="ASCENDING">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_fullName}" /></f:facet>
       <a4j:htmlCommandLink action="#{personBean.display}">
         <f:param name="displayID" value="#{item.id}" />
