@@ -44,7 +44,7 @@
             <f:facet name="header"><h:outputText value="#{messages.personHeader_empid}" /></f:facet>
             <h:outputText value="#{item.person.empid}" />
           </rich:column>
-          <rich:column sortBy="#{item.person.first}">
+          <rich:column sortBy="#{item.person.fullName}">
             <f:facet name="header"><h:outputText value="#{messages.personHeader_fullName}" /></f:facet>
             <h:outputText value="#{item.person.fullName}" />
           </rich:column>
