@@ -227,14 +227,19 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg> implements Dur
             logger.debug("scoreableentities size " + scoreableEntities.size());
         }        
         this.scoreableEntities = new ArrayList<ScoreableEntityPkg>();
-        List<ScoreableEntity> s = null;
+        List<ScoreableEntity> s = new ArrayList<ScoreableEntity>();
         s = getScores();
         
        
         
         Collections.sort(s, new Comparator<ScoreableEntity>() {
             public int compare(ScoreableEntity se1, ScoreableEntity se2) {
-                return se1.getIdentifier().compareToIgnoreCase(se2.getIdentifier());
+                if(se1 != null && se2 != null)
+                    return se1.getIdentifier().compareToIgnoreCase(se2.getIdentifier());
+                else
+                    return -1;
+
+               
             }            
         });  
 
@@ -268,7 +273,7 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg> implements Dur
     
     
     private List<ScoreableEntity> getScores() {
-        List<ScoreableEntity> s = null;
+        List<ScoreableEntity> s = new ArrayList<ScoreableEntity>();
         try
         {
             s = scoreDAO.getScores(this.navigation.getGroupID(), navigation.getDurationBean().getDuration(), ScoreType.SCORE_OVERALL);
