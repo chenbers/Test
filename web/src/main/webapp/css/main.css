@@ -2877,29 +2877,27 @@ ul.htabs li.seatbelt_on {
 	color: #ff0000;
 	}
 
-.google_popups a:link, a:visited, a:hover, a:active {
-	color: #333;
-	}
-
-.google_popups_rows {
-	vertical-align: top;
-	text-align: left;
-	}
-	
-.google_popups_rows a:link, a:visited, a:active, a:hover {
-	color: #333;
-	}
-
 .google_popups_header {
 	font-size: 	13px;
 	text-align: left;
 	color: #333;
 	}
-	
-.google_popups_header a:link, a:visited, a:active, a:hover {
+
+.google_popups_header a:link {
 	color: #333;
 	}
 
+.google_popups_header a:visited {
+	color: #333;
+	}
+	
+.google_popups_rows a:link {
+	color: #333;
+	}
+	
+.google_popups_rows a:visited {
+	color: #333;
+	}
 
 /*
 
