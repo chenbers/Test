@@ -178,7 +178,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
 
         try
         {
-            List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getDvqMetric(), duration.getDvqCount());
+            List<Map<String, Object>> list = reportService.getSDTrendsByGTC(groupID, duration.getCode(), duration.getDvqCount());
             List<GQVMap> gqvList = getMapper().convertToModelObject(list, GQVMap.class);
 
             Map<Integer, List<ScoreableEntity>> returnMap = new HashMap<Integer, List<ScoreableEntity>>();
@@ -242,9 +242,16 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     @Override
     public List<ScoreableEntity> getDriverScoreHistory(Integer driverID, Duration duration, ScoreType scoreType, Integer count)
     {
+        // Condition added for Coaching Events.  Do not get rolling average for Coaching events only
+        Integer code;
+        if(scoreType == ScoreType.SCORE_COACHING_EVENTS && duration.getCode() == 1)
+            code = duration.getDvqMetric();
+        else
+            code = duration.getCode();
+           
         try
         {
-            List<Map<String, Object>> list = reportService.getDTrendByDTC(driverID, duration.getDvqMetric(), duration.getDvqCount());
+            List<Map<String, Object>> list = reportService.getDTrendByDTC(driverID, code, duration.getDvqCount());
             List<DriveQMap> driveQList = getMapper().convertToModelObject(list, DriveQMap.class);
 
             List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
@@ -272,11 +279,17 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     // TODO: refactor since count is determined from the duration, we can get rid of that param on the dao call
     @Override
     public List<ScoreableEntity> getVehicleScoreHistory(Integer vehicleID, Duration duration, ScoreType scoreType, Integer count)
-    {
-
+    { 
+        // Condition added for Coaching Events.  Do not get rolling average for Coaching events only
+        Integer code;
+        if(scoreType == ScoreType.SCORE_COACHING_EVENTS && duration.getCode() == 1)
+            code = duration.getDvqMetric();
+        else
+            code = duration.getCode();
+        
         try
         {
-            List<Map<String, Object>> list = reportService.getVTrendByVTC(vehicleID, duration.getDvqMetric(), duration.getDvqCount());
+            List<Map<String, Object>> list = reportService.getVTrendByVTC(vehicleID, code, duration.getDvqCount());
             List<DriveQMap> driveQList = getMapper().convertToModelObject(list, DriveQMap.class);
 
             List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
