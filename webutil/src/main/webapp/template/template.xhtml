@@ -1,74 +1,42 @@
-<html xmlns="http://www.w3.org/1999/xhtml" 
-   xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core" 
-    xmlns:a4j="http://richfaces.org/a4j" 
-    xmlns:rich="http://richfaces.org/rich"
-    xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition template="/template/baseTemplate.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
 
-<head>
-<title>tiwipro Utilities</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<style>
-   body {
-      background: #EEE;
-      background-position: top center;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 12px;
-      text-align: left;
-   }
-   .mainmenu{
-      font-size: 16px;
-   }
-   
-    .cols{
-            vertical-align:top;
-            width:50%;
-        }
-   
-</style>
+    <ui:define name="content">
+        <rich:panel id="util-panel" styleClass="mainmenu">
+            <f:facet name="header">
+                <h:panelGroup>
+                    <h:panelGrid columns="2" styleClass="header" columnClasses="header_col1, header_col2">
+                        <h:outputText value="Pro Utility Pages" />
+                        <h:outputLink value="#{facesContext.externalContext.requestContextPath}/j_spring_security_logout">Log Out</h:outputLink>
+                    </h:panelGrid>
+                </h:panelGroup>
+            </f:facet>
 
-</head>
-<f:view contentType="text/html" >
-<body>
-    <rich:panel id="util-panel" styleClass="mainmenu">
-      <f:facet name="header">
-         <h:outputText value="tiwipro Utility Pages" />
-      </f:facet>
-     
-         <table width="100%">
-            <tr valign="top">
-               <td width="200">
-                     <a4j:form  styleClass="menuPanel">
-                     <rich:panelMenu mode="server" style="width:200px"
-                      iconExpandedGroup="disc" iconCollapsedGroup="disc" 
-                       iconExpandedTopGroup="chevronUp" iconGroupTopPosition="right" 
-                       iconCollapsedTopGroup="chevronDown" iconCollapsedTopPosition="right">
-                        <rich:panelMenuGroup label="Web Utils Menu" expanded="true">
-                           <rich:panelMenuItem label="DAO Util" action="go_daoUtil" ajaxSingle="false">
-                           </rich:panelMenuItem>
-                           <rich:panelMenuItem label="Create New Account" action="go_newAccount" ajaxSingle="false">
-                           </rich:panelMenuItem>
-                           <rich:panelMenuItem label="Forward Commands" action="go_forwardCmd" ajaxSingle="false">
-                           </rich:panelMenuItem>
-                        </rich:panelMenuGroup>
-                     </rich:panelMenu>
-                     </a4j:form>
-                  </td>
-                  <td>  
-                   <rich:panel bodyClass="rich-laguna-panel-no-header">
+            <table width="100%">
+                <tr valign="top">
+                    <td width="200"><a4j:form styleClass="menuPanel">
+                        <rich:panelMenu mode="server" style="width:200px" iconExpandedGroup="disc" iconCollapsedGroup="disc" iconExpandedTopGroup="chevronUp"
+                            iconGroupTopPosition="right" iconCollapsedTopGroup="chevronDown" iconCollapsedTopPosition="right">
+                            <rich:panelMenuGroup label="Web Utils Menu" expanded="true">
+                                <rich:panelMenuItem label="DAO Util" action="go_daoUtil" ajaxSingle="false">
+                                </rich:panelMenuItem>
+                                <rich:panelMenuItem label="Create New Account" action="go_newAccount" ajaxSingle="false">
+                                </rich:panelMenuItem>
+                                <rich:panelMenuItem label="Forward Commands" action="go_forwardCmd" ajaxSingle="false">
+                                </rich:panelMenuItem>
+                            </rich:panelMenuGroup>
+                        </rich:panelMenu>
+                    </a4j:form></td>
+                    <td><rich:panel bodyClass="rich-laguna-panel-no-header">
                         <f:facet name="header">
-                           <h:outputText value="#{panelTitle}" />
+                            <h:outputText value="#{panelTitle}" />
                         </f:facet>
-                       <ui:insert name="content">
-                       </ui:insert>
-                   </rich:panel>
-               </td>
-            </tr>
-          </table>
-          
-   </rich:panel>
-</body>
-</f:view>
-</html>
+                        <ui:insert name="util_content">
+                        </ui:insert>
+                    </rich:panel></td>
+                </tr>
+            </table>
+
+        </rich:panel>
+    </ui:define>
+</ui:composition>

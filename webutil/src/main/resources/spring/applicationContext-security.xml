@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security" xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.1.xsd">
+    <http auto-config="false" session-fixation-protection="newSession" entry-point-ref="authenticationProcessingFilterEntryPoint">
+        <!--  error if user logs in concurrently (only one login allowed at a time)  -->
+        <concurrent-session-control max-sessions="1" exception-if-maximum-exceeded="true" />
+        <intercept-url pattern="/secured/**" access="ROLE_SUPERUSER" />
+        <logout logout-success-url="/login.faces" />
+    </http>
+
+    <!--  i.e. fleet, region, team, and eventually driver levels  -->
+    <beans:bean id="proFilter" class="com.inthinc.pro.security.ProAuthenticationProcessingFilter">
+        <beans:property name="authenticationManager" ref="authenticationManager" />
+        <beans:property name="authenticationFailureUrl" value="/login.faces" />
+        <beans:property name="defaultTargetUrl" value="/secured/dao.faces" />
+        <beans:property name="filterProcessesUrl" value="/j_spring_security_check" />
+        <beans:property name="alwaysUseDefaultTargetUrl" value="true"/>
+        <custom-filter position="AUTHENTICATION_PROCESSING_FILTER" />
+    </beans:bean>
+    <beans:bean id="authenticationProcessingFilterEntryPoint" class="org.springframework.security.ui.webapp.AuthenticationProcessingFilterEntryPoint">
+        <beans:property name="loginFormUrl" value="/login.faces" />
+        <beans:property name="forceHttps" value="false" />
+    </beans:bean>
+    <beans:bean id="authenticationManager" class="org.springframework.security.providers.ProviderManager">
+        <beans:property name="providers">
+            <beans:list>
+                <beans:ref local="daoAuthenticationProvider" />
+                <beans:ref local="anonymousAuthenticationProvider" />
+            </beans:list>
+        </beans:property>
+    </beans:bean>
+    <beans:bean id="daoAuthenticationProvider" class="org.springframework.security.providers.dao.DaoAuthenticationProvider">
+        <beans:property name="userDetailsService" ref="userDetailsService" />
+        <beans:property name="passwordEncoder">
+            <beans:ref bean="passwordEncoder" />
+        </beans:property>
+    </beans:bean>
+
+    <!--  not sure why this need to be here, since it seems redundant with the daoAuthenticationProvider above, but throws error without it -->
+    <authentication-provider user-service-ref="userDetailsService">
+        <password-encoder ref="passwordEncoder" />
+    </authentication-provider>
+    <beans:bean id="userDetailsService" class="com.inthinc.pro.security.userdetails.ProUserServiceImpl">
+        <beans:property name="userDAO" ref="userDAO" />
+    </beans:bean>
+
+    <!--  Password encryption  -->
+    <beans:bean id="jasyptPasswordEncryptor" class="org.jasypt.util.password.StrongPasswordEncryptor" />
+    <beans:bean id="passwordEncoder" class="org.jasypt.spring.security2.PasswordEncoder">
+        <beans:property name="passwordEncryptor">
+            <beans:ref bean="jasyptPasswordEncryptor" />
+        </beans:property>
+    </beans:bean>
+
+    <!--  Anonymous - Not sure if we need this, but leave it for now.  -->
+    <beans:bean id="anonymousAuthenticationProvider" class="org.springframework.security.providers.anonymous.AnonymousAuthenticationProvider">
+        <beans:property name="key" value="anonymous" />
+    </beans:bean>
+    <beans:bean id="anonymousProcessingFilter" class="org.springframework.security.providers.anonymous.AnonymousProcessingFilter">
+        <beans:property name="key" value="anonymous" />
+        <beans:property name="userAttribute" value="anonymous,ROLE_ANONYMOUS" />
+        <custom-filter position="ANONYMOUS_FILTER" />
+    </beans:bean>
+    <beans:bean id="authErrorBean" class="com.inthinc.pro.security.AuthErrorBean" scope="request" init-method="init">
+    </beans:bean>
+</beans:beans>
