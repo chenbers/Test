@@ -390,11 +390,13 @@
                       <rich:message for="isUser" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                       <div class="add_section_title">
                         <h:selectBooleanCheckbox rendered="#{not personBean.batchEdit}" id="isUser" disabled="#{!personBean.item.userEditable}" value="#{personBean.item.userSelected}">
-                          <a4j:support event="onclick" onsubmit="showSection('userTable', this.checked)" ajaxSingle="true" reRender="emailRequired,isUser" limitToList="true" />
+                          <a4j:support event="onclick" ajaxSingle="true" reRender="emailRequired,isUser,userInfoPanel" limitToList="true" />
                         </h:selectBooleanCheckbox>
                         <h:outputText value="#{messages.editPerson_userInformation}" />
                       </div>
-
+   
+                      <h:panelGroup id="userInfoPanel">
+                      <h:outputText rendered="#{personBean.item.userSelected}">
                       <table id="userTable" width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                         <ui:fragment rendered="#{not personBean.batchEdit}">
                         <tr>
@@ -500,7 +502,8 @@
                           </td>
                         </tr>
                       </table>
-
+                      </h:outputText>
+                      </h:panelGroup>
                       <div class="spacer"></div>
 
                       <div class="add_section_title">
