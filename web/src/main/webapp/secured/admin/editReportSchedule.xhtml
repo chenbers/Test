@@ -58,7 +58,7 @@
 									</td>
 									<td>
 										<rich:message for="scheduleName" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-										<h:inputText id="scheduleName" value="#{reportScheduleBean.item.name}" styleClass="text" size="30" required="true" requiredMessage="#{messages.required}"></h:inputText>	
+										<h:inputText id="scheduleName" value="#{reportScheduleBean.item.name}" styleClass="text" size="30" maxlength="30" required="true" requiredMessage="#{messages.required}"></h:inputText>	
 									</td>
 								</tr>
 							</ui:fragment>
