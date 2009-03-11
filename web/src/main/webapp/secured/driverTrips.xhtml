@@ -183,6 +183,34 @@
 				}	
 			}
 
+   		var isReady;
+		isReady = false;
+		function dynamicTableStyles()
+		{
+			
+			jQuery('#tripsTableForm\\:tripsTable tbody tr').click(function(){
+                			jQuery('.datagrid tbody tr.selected-row').each(function() {
+								jQuery(this).removeClass('selected-row');
+								jQuery(this).children().removeClass('selected-row');
+								
+							});
+							jQuery(this).addClass('selected-row');
+							jQuery(this).children().addClass('selected-row');
+			});
+			
+		}
+		function onReRender()
+		{
+			isReady = true;
+			dynamicTableStyles();
+			//jQuery('#tripsTableForm\\:tripsTable tbody tr:eq(1)').click();
+		}
+		function onReRenderWithSelection()
+		{	
+			isReady = true;
+			dynamicTableStyles();
+		}
+
 		</script>
 	</rich:panel>
 		
@@ -566,24 +594,23 @@
 			<div class="panel_w">
 			  <rich:panel id="tripsPanel" bodyClass="panel_content" align="center">
 				<!-- Start Trip table --> 
-					<a4j:form id="tripsTableForm">
-						<rich:extendedDataTable 
+					<h:form id="tripsTableForm">
+						<rich:dataTable
 						value="#{driverTripsBean.trips}" id="tripsTable" var="item" styleClass="datagrid" 
-						rowClasses="tableOdd,tableEven" rows="4" selectedClass="selectedRow"
-						width="100%" height="210px" style="border: 0px;">
+						rowClasses="tableOdd,tableEven" rows="4" width="100%" height="210px">
 
 					        <a4j:support event="onRowClick" reRender="script,bubbles,selectedTrip,showLastTenForm" oncomplete="bodyLoad();">
 					          <f:setPropertyActionListener value="#{item}" target="#{driverTripsBean.selectedTrip}" />
 					        </a4j:support> 
 										
-							<rich:column sortBy="#{item.trip.startTime}" label="Date">
+							<rich:column sortBy="#{item.trip.startTime}" label="Date" >
 								<f:facet name="header">
 									<h:outputText value="Date" />
 								</f:facet>
 									<h:outputText value="#{item.dateShort}" />
 							</rich:column>
 							
-							<rich:column sortBy="#{item.trip.startTime}" width="115" label="Time">
+							<rich:column sortBy="#{item.trip.startTime}" label="Time">
 								<f:facet name="header" >
 									<h:outputText value="Time" />
 								</f:facet>
@@ -591,8 +618,7 @@
 									<h:outputText value="#{item.timeEndShort}" />
 							</rich:column>
 							
-							
-							<rich:column sortBy="#{item.distance}" label="Distance" width="80">
+							<rich:column sortBy="#{item.distance}" label="Distance">
 								<f:facet name="header">
 									<h:outputText value="Dist" />
 								</f:facet>
@@ -619,10 +645,15 @@
 								</f:facet>
 								<h:outputText value="#{item.duration}" />
 							</rich:column>
-						</rich:extendedDataTable>
+												
+						</rich:dataTable>
 						
-						<rich:datascroller align="center" for="tripsTable" id="scroller" reRender="tripsTable" />
-					</a4j:form> 
+						<rich:datascroller align="center" for="tripsTable" onpagechange="dynamicTableStyles();" id="scroller"/>
+						
+						
+						
+					</h:form> 
+					<rich:jQuery id="jQueryTable" timing="onload" selector="document" query="ready(function(){onReRender()})"/>
 				<!-- End Trip table -->
 			  </rich:panel>
 			</div>
