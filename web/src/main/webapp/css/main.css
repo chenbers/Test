@@ -2899,6 +2899,19 @@ ul.htabs li.seatbelt_on {
 	color: #333;
 	}
 
+
+
+.active-row
+{
+	background-color: #f7d673;
+	color: #333333;
+}
+.selected-row
+{
+	background-color: #f7d673;
+	color: #333333;
+}
+
 /*
 
 ok, so sometimes, do not show that top pagination navigation!!!
