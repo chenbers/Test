@@ -29,6 +29,8 @@ public class EventReportItem implements Comparable<EventReportItem>
     private RedFlagLevel level;
     private boolean alert;
     
+    private long noteID;
+    
     private static DateFormat dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"));
 
     
@@ -64,6 +66,7 @@ public class EventReportItem implements Comparable<EventReportItem>
         
         setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType().getKey())));
 
+        setNoteID(event.getNoteID());
     }
     
     public EventReportItem(Event event, TimeZone tz)
@@ -166,6 +169,16 @@ public class EventReportItem implements Comparable<EventReportItem>
     public void setVehicleName(String vehicleName)
     {
         this.vehicleName = vehicleName;
+    }
+
+    public long getNoteID()
+    {
+        return noteID;
+    }
+
+    public void setNoteID(long noteID)
+    {
+        this.noteID = noteID;
     }
 
     
