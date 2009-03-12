@@ -133,7 +133,6 @@
 	   		if(address.length == 0)  
    			{
 	   			notifyBean(mapDefaultLoc.lat(), mapDefaultLoc.lng(), count);
-	   			mapNeedsInit = true;
    				return;
    	   		}
 
@@ -199,10 +198,7 @@
 		{
 			initMap();
 			addMarkers();
-			map.setZoom(map.getBoundsZoomLevel(bounds));
-
-			if(mapNeedsInit == true)
-		    	map.setCenter(bounds.getCenter());
+			
 		}
 	</script>	
 
@@ -227,6 +223,10 @@
 				map.addOverlay(marker);
 				bounds.extend(marker.getPoint());
 				</ui:repeat>
+
+				map.setZoom(map.getBoundsZoomLevel(bounds));
+
+		    	map.setCenter(bounds.getCenter());
 			}
 		</script>
 		<ui:repeat value="#{liveFleetBean.drivers}" var="driverLoc">
