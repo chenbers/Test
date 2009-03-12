@@ -52,6 +52,7 @@
 						<a4j:htmlCommandLink action="#{teamRecentEventsBean.detailsAction}" value="#{messages.team_recentEventsDetails}">
 							<f:setPropertyActionListener value="#{event.event.driver}" target="#{teamRecentEventsBean.navigation.driver}" />
 							<f:setPropertyActionListener value="#{event}" target="#{teamRecentEventsBean.selectedEvent}" />
+							<f:setPropertyActionListener value="#{event.event.noteID}" target="#{eventsBean.linkFromTeam}"/>							
 						</a4j:htmlCommandLink>
 					</rich:column>
 			</rich:dataTable>
