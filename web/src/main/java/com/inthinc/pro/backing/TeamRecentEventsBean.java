@@ -117,6 +117,7 @@ public class TeamRecentEventsBean extends BaseBean
         if (selectedEvent != null)
         {
             EventType eventType = selectedEvent.getEvent().getEventType();
+            
             if (eventType.equals(EventType.SEATBELT))
             {
                 return "go_reportDriverSeatBelt";
@@ -124,6 +125,10 @@ public class TeamRecentEventsBean extends BaseBean
             else if (eventType.equals(EventType.SPEEDING))
             {
                 return "go_reportDriverSpeed";
+            }
+            else if (eventType.equals(EventType.IDLING))
+            {
+                return "go_events";
             }
             return "go_reportDriverStyle";
         }
