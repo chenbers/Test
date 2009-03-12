@@ -417,6 +417,12 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
             for (final String key : updateField.keySet())
                 if (!updateField.get(key))
                     ignoreFields.add(key);
+            
+            //we need to validate the item before we copy the properties. 
+            if(!validateBatchEdit(item))
+            {
+                return null;
+            }
 
             // copy properties
             for (final T t : selected)
@@ -631,6 +637,25 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
      * @return Whether the items passed validation.
      */
     protected boolean validate(List<T> saveItems)
+    {
+        return true;
+    }
+    
+    /**
+     * Performs custom validation on the batch edit item. If there is invalid data, we don't want the data to make it into the orginal selected list
+     * The changes won't make it back to the db, but if they are propogated to the selected list, 
+     * they will show up in the data table or where ever else they are needed.
+     * 
+     * <pre>
+     * final String summary = MessageUtil.getMessageString(&quot;error_message&quot;);
+     * final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+     * context.addMessage(&quot;my-form:component-id&quot;, message);
+     * </pre
+     * 
+     * @param batchEditItem
+     * @return
+     */
+    protected boolean validateBatchEdit(T batchEditItem)
     {
         return true;
     }

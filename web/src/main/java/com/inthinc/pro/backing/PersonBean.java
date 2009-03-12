@@ -398,10 +398,13 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
         // if displaying the current user, reload from the DB in case changed elsewhere
         if (getItem().isUserSelected() && getItem().getUser().getUserID().equals(getUserID()))
+        {
             item = revertItem(getItem());
+        }
 
         return redirect;
     }
+    
 
     @Override
     public String edit()
@@ -410,7 +413,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
         // if editing the current user, reload from the DB in case changed elsewhere
         if (getItem().isUserSelected() && getItem().getUser().getUserID().equals(getUserID()))
+        {
             item = revertItem(getItem());
+        }
 
         return redirect;
     }
@@ -478,155 +483,170 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             context.addMessage(null, message);
         }
     }
+    
+    @Override
+    protected boolean validateBatchEdit(PersonView batchEditItem)
+    {
+        return personBeanValidation(batchEditItem);
+    }
 
     @Override
     protected boolean validate(List<PersonView> saveItems)
     {
         boolean valid = true;
-        
-        final FacesContext context = FacesContext.getCurrentInstance();
-        
+
         for (final PersonView person : saveItems)
         {
-            
-            // required Time Zone
-            if(person.getTimeZone() == null 
-                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("timeZone"))))
+           valid =  personBeanValidation(person);
+           if(!valid)
+               break;
+        }
+        return valid;
+    }
+    
+    private boolean personBeanValidation(PersonView person)
+    {
+        final FacesContext context = FacesContext.getCurrentInstance();
+        boolean valid = true;
+        
+        // required Time Zone
+        if(person.getTimeZone() == null 
+                && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("timeZone"))))
+        {
+            valid = false;
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
+            context.addMessage("edit-form:timeZone", message);
+        }
+        
+        
+        // unique primary e-mail
+        if (!isBatchEdit() && (person.getPriEmail() != null) && (person.getPriEmail().length() > 0))
+        {
+            final Person byEmail = personDAO.findByEmail(person.getPriEmail());
+            if ((byEmail != null) && !byEmail.getPersonID().equals(person.getPersonID()))
             {
                 valid = false;
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
-                context.addMessage("edit-form:timeZone", message);
+                final String summary = MessageUtil.getMessageString("editPerson_uniqueEmail");
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                context.addMessage("edit-form:priEmail", message);
             }
-            
-            
-            // unique primary e-mail
-            if (!isBatchEdit() && (person.getPriEmail() != null) && (person.getPriEmail().length() > 0))
+        }
+
+        // birth date
+        if (!isBatchEdit() && (person.getDob() != null))
+        {
+            Calendar latest = Calendar.getInstance();
+            latest.add(Calendar.YEAR, -16);
+            if (person.getDob().after(latest.getTime()))
             {
-                final Person byEmail = personDAO.findByEmail(person.getPriEmail());
-                if ((byEmail != null) && !byEmail.getPersonID().equals(person.getPersonID()))
-                {
-                    valid = false;
-                    final String summary = MessageUtil.getMessageString("editPerson_uniqueEmail");
-                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                    context.addMessage("edit-form:priEmail", message);
-                }
-            }
-
-            // birth date
-            if (!isBatchEdit() && (person.getDob() != null))
-            {
-                Calendar latest = Calendar.getInstance();
-                latest.add(Calendar.YEAR, -16);
-                if (person.getDob().after(latest.getTime()))
-                {
-                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_dobTooLate"), null);
-                    context.addMessage("edit-form:dob", message);
-                    valid = false;
-                }
-            }
-
-            // driver license expiration
-            if (person.isDriverSelected())
-            {
-                // required team
-                if(person.getDriver().getGroupID() == null 
-                        && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.groupID"))))
-                {
-                    valid = false;
-                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
-                    context.addMessage("edit-form:driver_groupID", message);
-                }
-
-                
-                // required user status
-                if(person.getDriver().getStatus() == null 
-                        && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.status"))))
-                {
-                    valid = false;
-                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
-                    context.addMessage("edit-form:driver_status", message);
-                }
-                
-                if ((person.getDriver().getExpiration() != null) && person.getDriver().getExpiration().before(new Date())
-                        && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.expiration"))))
-                {
-                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_expirationTooSoon"), null);
-                    context.addMessage("edit-form:driver_expiration", message);
-                    valid = false;
-                }
-
-                // unique RFID
-                if (!isBatchEdit() && (person.getDriver().getRFID() != null) && (person.getDriver().getRFID() != 0))
-                {
-                    final Integer byRFID = driverDAO.getDriverIDForRFID(person.getDriver().getRFID());
-                    if ((byRFID != null) && !byRFID.equals(person.getDriver().getDriverID()))
-                    {
-                        final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_uniqueRFID"), null);
-                        context.addMessage("edit-form:driver_RFID", message);
-                        valid = false;
-                    }
-                }
-            }
-
-            // unique username
-            if (person.isUserSelected())
-            {
-                // required groupID
-                if(person.getUser().getGroupID() == null 
-                        && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.groupID"))))
-                {
-                    valid = false;
-                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
-                    context.addMessage("edit-form:user_groupID", message);
-                }
-                
-                // required user role
-                if(person.getUser().getRole() == null 
-                        && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.role"))))
-                {
-                    valid = false;
-                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
-                    context.addMessage("edit-form:user_role", message);
-                }
-                
-                // required user status
-                if(person.getUser().getStatus() == null 
-                        && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.status"))))
-                {
-                    valid = false;
-                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
-                    context.addMessage("edit-form:user_status", message);
-                }
-                
-                if (!isBatchEdit())
-                {
-                    final User byUsername = userDAO.findByUserName(person.getUser().getUsername());
-                    if ((byUsername != null) && !byUsername.getPersonID().equals(person.getPersonID()))
-                    {
-                        valid = false;
-                        final String summary = MessageUtil.getMessageString("editPerson_uniqueUsername");
-                        final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                        context.addMessage("edit-form:user_username", message);
-                    }
-
-                    // matching passwords
-                    if ((person.getPassword() != null) && (person.getPassword().length() > 0) && !person.getPassword().equals(person.getConfirmPassword()))
-                    {
-                        final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_passwordsMismatched"), null);
-                        context.addMessage("edit-form:confirmPassword", message);
-                        valid = false;
-                        break;
-                    }
-                }
-            }
-            // must be a user or a driver or both
-            else if (!person.isDriverSelected())
-            {
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_userOrDriver"), null);
-                context.addMessage("edit-form:isUser", message);
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_dobTooLate"), null);
+                context.addMessage("edit-form:dob", message);
                 valid = false;
             }
         }
+
+        // driver license expiration
+        if (person.isDriverSelected())
+        {
+            // required team
+            if(person.getDriver().getGroupID() == null 
+                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.groupID"))))
+            {
+                valid = false;
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
+                context.addMessage("edit-form:driver_groupID", message);
+            }
+
+            
+            // required user status
+            if(person.getDriver().getStatus() == null 
+                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.status"))))
+            {
+                valid = false;
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
+                context.addMessage("edit-form:driver_status", message);
+            }
+            
+            if ((person.getDriver().getExpiration() != null) && person.getDriver().getExpiration().before(new Date())
+                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.expiration"))))
+            {
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_expirationTooSoon"), null);
+                context.addMessage("edit-form:driver_expiration", message);
+                valid = false;
+            }
+
+            // unique RFID
+            if (!isBatchEdit() && (person.getDriver().getRFID() != null) && (person.getDriver().getRFID() != 0))
+            {
+                final Integer byRFID = driverDAO.getDriverIDForRFID(person.getDriver().getRFID());
+                if ((byRFID != null) && !byRFID.equals(person.getDriver().getDriverID()))
+                {
+                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_uniqueRFID"), null);
+                    context.addMessage("edit-form:driver_RFID", message);
+                    valid = false;
+                }
+            }
+        }
+
+        // unique username
+        if (person.isUserSelected())
+        {
+            // required groupID
+            if(person.getUser().getGroupID() == null 
+                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.groupID"))))
+            {
+                valid = false;
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
+                context.addMessage("edit-form:user_groupID", message);
+            }
+            
+            // required user role
+            if(person.getUser().getRole() == null 
+                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.role"))))
+            {
+                valid = false;
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
+                context.addMessage("edit-form:user_role", message);
+            }
+            
+            // required user status
+            if(person.getUser().getStatus() == null 
+                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.status"))))
+            {
+                valid = false;
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
+                context.addMessage("edit-form:user_status", message);
+            }
+            
+            if (!isBatchEdit())
+            {
+                final User byUsername = userDAO.findByUserName(person.getUser().getUsername());
+                if ((byUsername != null) && !byUsername.getPersonID().equals(person.getPersonID()))
+                {
+                    valid = false;
+                    final String summary = MessageUtil.getMessageString("editPerson_uniqueUsername");
+                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                    context.addMessage("edit-form:user_username", message);
+                }
+
+                // matching passwords
+                if ((person.getPassword() != null) && (person.getPassword().length() > 0) && !person.getPassword().equals(person.getConfirmPassword()))
+                {
+                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_passwordsMismatched"), null);
+                    context.addMessage("edit-form:confirmPassword", message);
+                    valid = false;
+                    
+                }
+            }
+        }
+        // must be a user or a driver or both
+        else if (!person.isDriverSelected())
+        {
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_userOrDriver"), null);
+            context.addMessage("edit-form:isUser", message);
+            valid = false;
+        }
+        
         return valid;
     }
 
