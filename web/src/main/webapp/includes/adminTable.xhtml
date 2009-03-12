@@ -65,9 +65,9 @@
       <c:set var="rows" value="10" />
     </c:if>
     <c:set var="firstRecord" value="#{rows * (page - 1)}" />
-
+    <a4j:region id="admin-table-region">
     <a4j:form id="admin-table-form">
-    
+     
       <div class="panel_w">
         <div class="panel_content">
           <ul id="grid_nav" style="margin: 0;">
@@ -89,6 +89,17 @@
 					reRender="editColumnsForm:editColumnGrid">
 					#{messages.button_editColumns}
 				</a4j:commandLink>
+            </li>
+            <li class="r text">
+              <a4j:status 
+				id="tableActionStatus" for="admin-table-region">
+      				<f:facet name="start">
+      					<h:outputText>
+      						<img 
+      							src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" 
+      							align="top" />&#160;</h:outputText>
+      				</f:facet>
+			   </a4j:status>
             </li>
             <li class="r text">
               <h:outputFormat id="recordCounts" value="#{messages.recordCounts}">
@@ -139,7 +150,7 @@ TODO: the top scroller doesn't work right with filtering
 
         </div>
       </div>
-
+      
     </a4j:form>
 
     <ui:include src="confirmDelete.xhtml">
@@ -152,6 +163,8 @@ TODO: the top scroller doesn't work right with filtering
       <ui:param name="bean" value="#{editorBean}" />
       <ui:param name="reRender" value="dataTable" />
     </ui:include>
+    
+    </a4j:region>
 
   </ui:composition>
 
