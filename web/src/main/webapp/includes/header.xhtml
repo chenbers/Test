@@ -17,7 +17,7 @@
 	<div id="horz_nav">
 	<h:form id="header-form">
 		<ul>
-			<li class="l text"><a class="tb-help" href="#{facesContext.externalContext.requestContextPath}/secured/help/#{helpFile ne null ? helpFile : 'Home.htm'}">#{messages.header_help}</a></li>
+			<li class="l text"><a class="tb-help" href="#{facesContext.externalContext.requestContextPath}/secured/help/#{helpFile ne null ? helpFile : 'Home.htm'}" target="new">#{messages.header_help}</a></li>
 			<li class="l text"><h:outputLink styleClass="tb-account" value="#{facesContext.externalContext.requestContextPath}/secured/myAccount.faces">#{messages.header_myAccount}</h:outputLink></li>
 			<li class="l text"><h:outputLink styleClass="tb-logout" value="#{facesContext.externalContext.requestContextPath}/j_spring_security_logout">#{messages.header_logout}</h:outputLink></li>
 		</ul>
