@@ -1,10 +1,13 @@
 package com.inthinc.pro.backing;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -59,4 +62,49 @@ public class EventsBean extends BaseEventsBean
         reportCriteria.setMainDataset(getTableData());
         return reportCriteria;
     }
+    
+    public void setLinkFromTeam(String linkFromTeam)
+    {      
+        // MUST re-initialize every time to get fresh search. This 
+        //  will also do a search filter with nothing set, giving us
+        //  everything to start with.
+        setTableData(null);
+        setFilteredTableData(null);              
+        getTableData();
+     
+        // Search ALL columns for the passed search field.  Did not 
+        //  drive the method further down as I thought it would be 
+        //  used exclusively here for these types of "items".
+        final ArrayList<EventReportItem> searchTableDataResult = new ArrayList<EventReportItem>();
+        searchTableDataResult.addAll(getFilteredTableData());
+        filterOnLinkFromTeam(searchTableDataResult,linkFromTeam,true);
+        setFilteredTableData(searchTableDataResult);        
+    }    
+    
+    public void filterOnLinkFromTeam(List<EventReportItem> filterItems, String filterValue, boolean matchAllWords)
+    {
+        if ((filterValue != null) && (filterValue.length() > 0))
+        {
+            final String[] filterWords = filterValue.toLowerCase().split("\\s+");
+            for (Iterator<EventReportItem> i = filterItems.iterator(); i.hasNext();)
+            {
+                final EventReportItem o = i.next();
+                boolean matched = false;
+                for (final String word : filterWords)
+                {
+                     
+                    final String value = String.valueOf(o.getNoteID());
+                    if ((value != null) && value.toLowerCase().contains(word))
+                        matched = true;
+
+                    // we can break if we didn't match and we're required to match all words,
+                    // or if we did match and we're only required to match one word
+                    if (matched ^ matchAllWords)
+                        break;
+                }
+                if (!matched)
+                    i.remove();
+            }
+        }
+    }        
 }
