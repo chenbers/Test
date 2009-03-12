@@ -15,6 +15,7 @@ import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.TripDisplay;
+import com.inthinc.pro.charts.FusionColumnChart;
 import com.inthinc.pro.charts.FusionMultiLineChart;
 import com.inthinc.pro.charts.Line;
 import com.inthinc.pro.dao.DriverDAO;
@@ -139,7 +140,7 @@ public class VehicleBean extends BaseBean
     // COACHING properties
     public String getCoachingHistory()
     {
-        setCoachingHistory(createLineDef(ScoreType.SCORE_COACHING_EVENTS));
+        setCoachingHistory(createColumnDef(ScoreType.SCORE_COACHING_EVENTS));
         return coachingHistory;
     }
 
@@ -321,11 +322,7 @@ public class VehicleBean extends BaseBean
         {
             if (e.getScore() != null)
             {
-              //Adding special condition for coaching events.
-                if(scoreType == ScoreType.SCORE_COACHING_EVENTS)
-                    sb.append(line.getChartItem(new Object[] { (int) (e.getScore()), monthList.get(cnt) }));
-                else
-                    sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt) }));
+                sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt) }));
             }
             else
             {
@@ -340,6 +337,41 @@ public class VehicleBean extends BaseBean
 
         return sb.toString();
     }
+    
+    public String createColumnDef(ScoreType scoreType)
+    {
+        StringBuffer sb = new StringBuffer();
+        FusionColumnChart column = new FusionColumnChart();
+
+        // Start XML Data
+        sb.append(column.getControlParameters());
+              
+        List<ScoreableEntity> scoreList = scoreDAO
+                .getVehicleScoreHistory(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), scoreType, GraphicUtil.getDurationSize(durationBean.getDuration()));
+
+        // Get "x" values
+        List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration());
+
+        int cnt = 0;
+        for (ScoreableEntity e : scoreList)
+        {
+            if (e.getScore() != null)
+            {
+                sb.append(column.getChartItem(new Object[] { (e.getScore() / 10), monthList.get(cnt) }));
+            }
+            else
+            {
+                sb.append(column.getChartItem(new Object[] { null, monthList.get(cnt) }));
+            }
+            cnt++;
+        }
+
+        // End XML Data
+        sb.append(column.getClose());
+
+        return sb.toString();
+    }
+
 
     // NAVIGATION BEAN PROPERTIES
     public NavigationBean getNavigation()

@@ -244,7 +244,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     {
         // Condition added for Coaching Events.  Do not get rolling average for Coaching events only
         Integer code;
-        if(scoreType == ScoreType.SCORE_COACHING_EVENTS && duration.getCode() == 1)
+        if(scoreType == ScoreType.SCORE_COACHING_EVENTS)
             code = duration.getDvqMetric();
         else
             code = duration.getCode();
@@ -282,7 +282,7 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
     { 
         // Condition added for Coaching Events.  Do not get rolling average for Coaching events only
         Integer code;
-        if(scoreType == ScoreType.SCORE_COACHING_EVENTS && duration.getCode() == 1)
+        if(scoreType == ScoreType.SCORE_COACHING_EVENTS)
             code = duration.getDvqMetric();
         else
             code = duration.getCode();

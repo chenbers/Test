@@ -1,0 +1,34 @@
+<!-- 
+	To use:
+	
+	<ui:include src="../includes/columnChart.xhtml">
+            <ui:param name="lineChartDef" value="#{yourBean.lineDef}" />
+            <ui:param name="hiddenFieldID" value="HiddenField3" />
+            <ui:param name="width" value="380" /> 
+            <ui:param name="height" value="200" />  
+            <ui:param name="tartgetElementVar" value="targetElement6" />
+            <ui:param name="ChartDivID" value="style_chart" />
+            <ui:param name="chartVar" value="overallChart" />
+            <ui:param name="disableLabels" value="true" />
+	</ui:include>
+-->
+
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:rich="http://richfaces.org/rich"
+				xmlns:c="http://java.sun.com/jstl/core">
+
+<rich:panel style="height:#{height};width:#{width}">
+	<div id="#{ChartDivID}" ></div>
+	<h:inputHidden value="#{lineChartDef}" id="#{hiddenFieldID}" />
+	<script type="text/javascript">
+		var #{tartgetElementVar} = document.getElementById("#{hiddenFieldID}");
+		var #{chartVar} = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Column2D.swf", "#{chartVar}Id", "#{width}", "#{height}", "0", "1");
+
+		#{chartVar}.setDataXML(#{tartgetElementVar}.value);			   
+		#{chartVar}.setTransparent(true);
+		#{chartVar}.render("#{ChartDivID}");
+	</script>
+	</rich:panel>
+
+</ui:composition>

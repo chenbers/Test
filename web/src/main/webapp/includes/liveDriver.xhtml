@@ -3,6 +3,16 @@
 				xmlns:a4j="http://richfaces.org/a4j"
 				xmlns:f="http://java.sun.com/jsf/core"
 				xmlns:rich="http://richfaces.org/rich">
+				
+	<!-- 
+	to display modal:
+					
+			<a4j:commandLink style="cursor:pointer" rendered="#{allowWatch eq 'TRUE' ? true : false}" value="view live" immediate="true"
+							 oncomplete="javascript:Richfaces.showModalPanel('liveDriverModal')" >
+				<f:setPropertyActionListener value="#{driver.driverID}" target="#{liveFleetBean.liveDriverID}" />
+            </a4j:commandLink>
+				
+	 -->
 
 	<rich:modalPanel id="liveDriverModal" width="540" height="450" headerClass="popupHeader"
 	 				 onshow="initDriverMap();" >
