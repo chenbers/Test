@@ -2877,6 +2877,7 @@ ul.htabs li.seatbelt_on {
 	color: #ff0000;
 	}
 
+
 .google_popups_header {
 	font-size: 	13px;
 	text-align: left;
@@ -2889,6 +2890,11 @@ ul.htabs li.seatbelt_on {
 
 .google_popups_header a:visited {
 	color: #333;
+	}
+	
+.google_popups_rows {
+	text-align: left;
+	vertical-align: top;
 	}
 	
 .google_popups_rows a:link {
