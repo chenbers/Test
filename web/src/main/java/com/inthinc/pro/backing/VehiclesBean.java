@@ -321,39 +321,59 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
         return super.save();
     }
+    
+    @Override
+    protected boolean validateBatchEdit(VehicleView batchEditItem)
+    {
+        return validateVehicle(batchEditItem);
+    }
 
     @Override
     protected boolean validate(List<VehicleView> saveItems)
     {
+        boolean valid = true;
+        for (final VehicleView vehicle : saveItems)
+        {
+            valid = validateVehicle(vehicle);
+            if(!valid)
+                break;
+            
+        }
+        return valid;
+    }
+    
+    private boolean validateVehicle(VehicleView vehicle)
+    {
         final FacesContext context = FacesContext.getCurrentInstance();
         boolean valid = true;
         final String required = "required";
-
-        for (final VehicleView vehicle : saveItems)
+        // Required fields check
+        if(vehicle.getMake() == null || vehicle.getMake().equals("")
+                && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("make"))))
         {
-            // Required fields check
-            if(vehicle.getMake() == null || vehicle.getMake().equals(""))
-            {
-                valid = false;
-                String summary = MessageUtil.getMessageString(required);
-                context.addMessage("edit-form:make", new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null));
-            }
-            
-            if(vehicle.getModel() == null || vehicle.getModel().equals(""))
-            {
-                valid = false;
-                String summary = MessageUtil.getMessageString(required);
-                context.addMessage("edit-form:model", new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null));
-            }
-            
-            if(vehicle.getGroupID() == null || vehicle.getGroupID().equals(""))
-            {
-                valid = false;
-                String summary = MessageUtil.getMessageString(required);
-                context.addMessage("edit-form:groupID", new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null));
-            }
-            
-            // unique VIN
+            valid = false;
+            String summary = MessageUtil.getMessageString(required);
+            context.addMessage("edit-form:make", new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null));
+        }
+        
+        if(vehicle.getModel() == null || vehicle.getModel().equals("")
+                && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("model"))))
+        {
+            valid = false;
+            String summary = MessageUtil.getMessageString(required);
+            context.addMessage("edit-form:model", new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null));
+        }
+        
+        if(vehicle.getGroupID() == null || vehicle.getGroupID().equals("")
+                && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("groupID"))))
+        {
+            valid = false;
+            String summary = MessageUtil.getMessageString(required);
+            context.addMessage("edit-form:groupID", new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null));
+        }
+        
+        // unique VIN
+        if (!isBatchEdit()){
             final Vehicle byVIN = vehicleDAO.findByVIN(vehicle.getVIN());
             if ((byVIN != null) && !byVIN.getVehicleID().equals(vehicle.getVehicleID()))
             {
@@ -362,9 +382,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
                 context.addMessage("edit-form:VIN", message);
             }
-            
-            
         }
+        
         return valid;
     }
 
