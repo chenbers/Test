@@ -1,18 +1,12 @@
-<ui:composition template="/layout/layout.xhtml" 
-				xmlns="http://www.w3.org/1999/xhtml" 
-				xmlns:ui="http://java.sun.com/jsf/facelets"
-	  			xmlns:h="http://java.sun.com/jsf/html" 
-	  			xmlns:rich="http://richfaces.org/rich"
-	  			xmlns:a4j="http://richfaces.org/a4j"
-	  			xmlns:c="http://java.sun.com/jstl/core"
-	  			xmlns:f="http://java.sun.com/jsf/core"
-	  			xmlns:t="http://myfaces.apache.org/tomahawk">
+<ui:composition template="/layout/layout.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich" xmlns:a4j="http://richfaces.org/a4j" xmlns:c="http://java.sun.com/jstl/core" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
 
-<ui:define name="scripts">
+    <ui:define name="scripts">
 
-		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>	
-		<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{gmBean.key}" type="text/javascript"></script>
-		<script type="text/javascript">
+        <script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>
+        <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{gmBean.key}" type="text/javascript"></script>
+        <script type="text/javascript">
 		var map;
 		var showWarnings = new Boolean(true);
 		var showIdleMarkers = new Boolean(true);
@@ -113,9 +107,9 @@
 		    map.setCenter(bounds.getCenter());
 	    }
 		</script>
-		
-	<rich:panel id="script">
-		<script type="text/javascript">
+
+        <rich:panel id="script">
+            <script type="text/javascript">
 		
 	    //Unload Google Map objects
 		function bodyUnload()
@@ -182,496 +176,459 @@
 					</ui:repeat>
 				}	
 			}
+       		var isReady;
+    		isReady = false;
+    		function dynamicTableStyles()
+    		{
+    			
+    			jQuery('#tripsTableForm\\:tripsTable tr').click(function(){
+                    			jQuery('#tripsTableForm\\:tripsTable tr').each(function() {
+    								jQuery(this).removeClass('selected-row');
+    								jQuery(this).children().removeClass('selected-row');
+    								
+    							});
+    							jQuery(this).addClass('selected-row');
+    							jQuery(this).children().addClass('selected-row');
+    			});
+    			
+    		}
+    		function onReRender()
+    		{
+    			isReady = true;
+    			dynamicTableStyles();
+    		}
+    		function onReRenderWithSelection()
+    		{	
+    			isReady = true;
+    			dynamicTableStyles();
+    		}
 
 		</script>
-	</rich:panel>
-		
-	</ui:define>
-<ui:param name="homeSelected" value="current" />
-<ui:param name="helpFile" value="Trips.htm" />
+        </rich:panel>
 
-<ui:define name="content">
-<t:saveState value="#{vehicleTripsBean.trips}" />
-<t:saveState value="#{vehicleTripsBean.numTrips}" />
-<t:saveState value="#{vehicleTripsBean.selectedDriver}" />
-<t:saveState value="#{vehicleTripsBean.idleEvents}" />
-<t:saveState value="#{vehicleTripsBean.violationEvents}" />
-<t:saveState value="#{vehicleTripsBean.allEvents}" />
+    </ui:define>
+    <ui:param name="homeSelected" value="current" />
+    <ui:param name="helpFile" value="Trips.htm" />
 
-<rich:panel id="bubbles">
-<!-- BEGIN GOOGLE BUBBLES -->
-<ui:repeat value="#{vehicleTripsBean.selectedTrips}" var="trip">
-	<ui:include src="/includes/tripBubble.xhtml">
-           <ui:param name="hiddenDivID" value="#{trip.trip.startTime}_START" />
-           <ui:param name="bubbleTitle" value="#{messages.TRIP_START}" />
-           <ui:param name="timeZoneObject" value="#{navigationBean.driver.person.timeZone}" />
-           <ui:param name="eventDateTime" value="#{trip.trip.startTime}" />
-           <ui:param name="eventLocation" value="#{trip.startAddress}" />
-           <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
-	</ui:include>
-	<ui:include src="/includes/tripBubble.xhtml">
-           <ui:param name="hiddenDivID" value="#{trip.trip.endTime}_END" />
-           <ui:param name="bubbleTitle" value="#{messages.TRIP_END}" />
-           <ui:param name="eventDateTime" value="#{trip.trip.endTime}" />
-           <ui:param name="eventLocation" value="#{trip.endAddress}" />
-           <ui:param name="timeZoneObject" value="#{navigationBean.driver.person.timeZone}" />
-           <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
-	</ui:include>
-</ui:repeat>
-<ui:repeat value="#{vehicleTripsBean.allEvents}" var="violation">
-	<ui:include src="/includes/eventBubble.xhtml">
-            <ui:param name="hiddenDivID" value="#{violation.noteID}" />
-            <ui:param name="eventType" value="#{violation.eventType}" />
-            <ui:param name="eventDateTime" value="#{violation.time}" />
-            <ui:param name="eventLocation" value="#{violation.addressStr}" />
-            <ui:param name="timeZoneObject" value="#{navigationBean.driver.person.timeZone}" />
-            <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
-            <ui:param name="eventSpeedLimit" value="#{violation.speedLimit}" />
-            <ui:param name="eventAvgSpeed" value="#{violation.avgSpeed}" />
-            <ui:param name="eventTopSpeed" value="#{violation.topSpeed}" />
-            <ui:param name="eventDistance" value="#{violation.distance}" />
-            <ui:param name="eventSpeed" value="#{violation.speed}" />
-            <ui:param name="eventSeverity" value="#{violation.severity}" />
-            <ui:param name="eventLowIdle" value="#{violation.lowIdleDuration}" />
-            <ui:param name="eventHighIdle" value="#{violation.highIdleDuration}" />
-	</ui:include>
-</ui:repeat>
-</rich:panel>
-	
-<!-- END GOOGLE BUBBLES -->
+    <ui:define name="content">
+        <t:saveState value="#{vehicleTripsBean.trips}" />
+        <t:saveState value="#{vehicleTripsBean.numTrips}" />
+        <t:saveState value="#{vehicleTripsBean.selectedDriver}" />
+        <t:saveState value="#{vehicleTripsBean.idleEvents}" />
+        <t:saveState value="#{vehicleTripsBean.violationEvents}" />
+        <t:saveState value="#{vehicleTripsBean.allEvents}" />
 
-<div id="wrapper">
-<h:form>
-	<ul id="grid_nav">
-		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
-		<li class="l grid_title">Vehicle Trips:&#160;<h:commandLink action="go_vehicle" value="#{navigationBean.vehicle.fullName}" /></li>
-		<li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li>
-		
-		<li class="l">
-			<ui:include src="/includes/breadcrumb.xhtml">
-				<ui:param name="groupTreeNode" value="#{navigationBean.groupTreeNode}" />
-				<ui:param name="lastBreadCrumb" value="true" />
-			</ui:include>
-		</li>
-		
-		<li class="l" style="margin-left: -15px;">
-			<ul id="breadcrumb">
-				<li><h:commandLink action="go_vehicle" value="#{navigationBean.vehicle.fullName}" /></li>
-				<li class="last">Trips</li>
-			</ul>
-		</li>
-	</ul>
-</h:form>
-<div class="spacer"></div>
-<table width="940" border="0" cellspacing="0" cellpadding="0" align="center">
-  <tr>
-    <td width="330" valign="top">
-<!-- START PANEL -->
-<div class="">
-	    <rich:panel id="date_picker_panel">
-			<a4j:region id="dateFormRegion">
-				<a4j:form id="dateForm">
-				<div class="panel_nw">			
-					<div class="panel_title">
-						<span class="cal">Date Range </span>
-						<span class="panel_links">
-						 	<a4j:status id="dateFormStatus" for="dateFormRegion">
-								<f:facet name="start">
-									<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
-								</f:facet>
-							</a4j:status>
-						</span>
-					</div>
-				</div>
-					<div class="panel_w">
-					  <div class="panel_content">
+        <rich:panel id="bubbles">
+            <!-- BEGIN GOOGLE BUBBLES -->
+            <ui:repeat value="#{vehicleTripsBean.selectedTrips}" var="trip">
+                <ui:include src="/includes/tripBubble.xhtml">
+                    <ui:param name="hiddenDivID" value="#{trip.trip.startTime}_START" />
+                    <ui:param name="bubbleTitle" value="#{messages.TRIP_START}" />
+                    <ui:param name="timeZoneObject" value="#{navigationBean.driver.person.timeZone}" />
+                    <ui:param name="eventDateTime" value="#{trip.trip.startTime}" />
+                    <ui:param name="eventLocation" value="#{trip.startAddress}" />
+                    <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
+                </ui:include>
+                <ui:include src="/includes/tripBubble.xhtml">
+                    <ui:param name="hiddenDivID" value="#{trip.trip.endTime}_END" />
+                    <ui:param name="bubbleTitle" value="#{messages.TRIP_END}" />
+                    <ui:param name="eventDateTime" value="#{trip.trip.endTime}" />
+                    <ui:param name="eventLocation" value="#{trip.endAddress}" />
+                    <ui:param name="timeZoneObject" value="#{navigationBean.driver.person.timeZone}" />
+                    <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
+                </ui:include>
+            </ui:repeat>
+            <ui:repeat value="#{vehicleTripsBean.allEvents}" var="violation">
+                <ui:include src="/includes/eventBubble.xhtml">
+                    <ui:param name="hiddenDivID" value="#{violation.noteID}" />
+                    <ui:param name="eventType" value="#{violation.eventType}" />
+                    <ui:param name="eventDateTime" value="#{violation.time}" />
+                    <ui:param name="eventLocation" value="#{violation.addressStr}" />
+                    <ui:param name="timeZoneObject" value="#{navigationBean.driver.person.timeZone}" />
+                    <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
+                    <ui:param name="eventSpeedLimit" value="#{violation.speedLimit}" />
+                    <ui:param name="eventAvgSpeed" value="#{violation.avgSpeed}" />
+                    <ui:param name="eventTopSpeed" value="#{violation.topSpeed}" />
+                    <ui:param name="eventDistance" value="#{violation.distance}" />
+                    <ui:param name="eventSpeed" value="#{violation.speed}" />
+                    <ui:param name="eventSeverity" value="#{violation.severity}" />
+                    <ui:param name="eventLowIdle" value="#{violation.lowIdleDuration}" />
+                    <ui:param name="eventHighIdle" value="#{violation.highIdleDuration}" />
+                </ui:include>
+            </ui:repeat>
+        </rich:panel>
 
-								<table width="320" cellpadding="4" cellspacing="0" class="" id="">
-								  <tbody>
-									  <tr>
-										<td width="80">Start Date </td>
-										<td width="178">
-											<a4j:outputPanel id="calendarStart" layout="block">
-				                   		 	<rich:calendar value="#{vehicleTripsBean.startDate}"
-				                	        	locale="en/US" popup="true" immediate="true"
-				               		         	datePattern="#{messages.dateFormat}"
-				               			         	showApplyButton="false" cellWidth="24px" cellHeight="22px"/>
-				           					</a4j:outputPanel> 
-										</td>
-											<td></td>
-									  </tr>
-									  <tr>
-											<td>End Date </td>
-											<td>
-								  				<a4j:outputPanel id="calendarEnd" layout="block">
-				                    				<rich:calendar value="#{vehicleTripsBean.endDate}"
-				                        				locale="en/US" popup="true" immediate="true"
-				                        				datePattern="#{messages.dateFormat}"
-				                        				showApplyButton="false" cellWidth="24px" cellHeight="22px"/>
-				           							</a4j:outputPanel>
-											</td>
-											<td></td>
-									  </tr>
-									  <tr>
-										    <td> </td>
-										    <td>
-					    					  <a4j:commandButton action="#{vehicleTripsBean.DateChangedAction}" 
-				    					 					reRender="script,statsPanel,tripsPanel,bubbles,selectedTrip,selectedTripMap"
-				    					 					immediate="false" styleClass="left" oncomplete="bodyLoad();">
-					          					<span class="edit">
-					          						<h:outputText value="Update Date Range" />
-					          					</span>
-				    					 		</a4j:commandButton>		 
-							   				 </td>
-										    <td></td>
-								    </tr>
-								  </tbody>
-						  	</table>
-					  </div>
-					</div>
-					</a4j:form>
-				</a4j:region>
-			</rich:panel>
-		
-			<div class="panel_sw">
-				<div class="panel_statusbar"></div>
-			</div>
-		</div>
-		<!-- END PANEL -->
-		
-		<div class="spacer"></div>
-		
-		<!-- START PANEL -->
-			<rich:panel id="statsPanel">
-				<div class="panel_nw">
-					<div class="panel_title">
-						<span class=""><h:outputText>Stats:&#160;</h:outputText>
-						<h:outputText value="#{vehicleTripsBean.startDate}">
-							<f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{vehicleTripsBean.timeZone}"/>
-						</h:outputText>&#160;to&#160; 
-						<h:outputText value="#{vehicleTripsBean.endDate}">
-							<f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{vehicleTripsBean.timeZone}"/>
-						</h:outputText>
-						</span>
-						<span class="panel_links"></span>
-					</div>
-				</div>
-					<div class="panel_w">
-					  <div class="panel_content">
-					    <div class="" id="">
-								<table id="" cellpadding="4" cellspacing="0" class="">
-								  <tbody>
-								  <tr>
-								    <td>Total Drive Time:</td>
-								    <td><rich:spacer width="4" /></td>
-								    <td><h:outputText>#{vehicleTripsBean.totalDriveTime}</h:outputText></td>
-								    </tr>
-								  <tr>
-									<td>Total Miles Driven:</td>
-									<td></td>
-									<td><h:outputText value="#{vehicleTripsBean.milesDriven}" converter="DistanceConverter"/></td>
-								  </tr>
-								  <tr>
-								    <td>Total Idle Time: </td>
-								    <td></td>
-								    <td><h:outputText>#{vehicleTripsBean.idleTime}</h:outputText></td>
-								    </tr>
-								  <tr>
-								    <td>Total Trips:</td>
-								    <td></td>
-								    <td><h:outputText>#{vehicleTripsBean.numTrips}</h:outputText></td>
-								  </tr>
-								  <tr>
-								    <td valign="top">Vehicle Time Zone:</td>
-								    <td></td>
-								    <td><h:outputText>#{vehicleTripsBean.timeZone.displayName}</h:outputText></td>
-								  </tr>
-								  </tbody>
-						  </table>
-						</div>
-					  </div>
-					</div>
-				<div class="panel_sw">
-					<div class="panel_statusbar"></div>
-				</div>
-			</rich:panel>
-		<!-- END PANEL -->
-		
-		<div class="spacer"></div>
-		
-		<!-- START PANEL -->
-			<div class="">
-				<div class="panel_nw">
-					<div class="panel_title">
-						<span class="">Events</span>
-						<span class="panel_links"></span>
-					</div>
-				</div>
-					<div class="panel_w">
-					  <div class="panel_content">
-				<!-- Start Trip table --> 
-				<rich:panel id="selectedTrip">
-					<a4j:form>
-						<rich:dataTable 
-						value="#{vehicleTripsBean.allEvents}" id="selectedTripTable"
-						var="item" styleClass="datagrid"
-						rowClasses="tableOdd,tableEven" cellspacing="1" rows="5" width="100%"
-						onRowClick="showInfoWindow('#{item.noteID}', new GLatLng(#{item.latitude}, #{item.longitude}));">
-		
-							<!-- Data -->
-							<rich:column sortBy="#{item.addressStr}" style="cursor: pointer;">
-								<h:graphicImage value="/images/ico_idle.png" rendered="#{item.type eq 208}" alt="#{item.eventType}" />
-								<h:graphicImage value="/images/ico_violation.png" rendered="#{item.type ne 208}" alt="#{item.eventType}" />
-							</rich:column>
+        <!-- END GOOGLE BUBBLES -->
 
-							<rich:column sortBy="#{item.addressStr}" style="cursor: pointer;">
-								<f:facet name="header">
-									<h:outputText value="Address" />
-								</f:facet>
-								<h:outputText value="#{item.addressStr}" />
-							</rich:column>
-							
-							<rich:column sortBy="#{item.time}" style="cursor: pointer;">
-								<f:facet name="header">
-									<h:outputText value="Date/Time" />
-								</f:facet>
-								
-								<h:outputText value="#{item.time}" >
-									<f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{vehicleTripsBean.timeZone}" />
-								</h:outputText>
-							
-							</rich:column>
-						</rich:dataTable>
-						<rich:datascroller align="center" for="selectedTripTable"
-           				 					id="eventScroller" reRender="script,selectedTripTable" />
-					 </a4j:form>
-					 </rich:panel>
-				<!-- End Trip table -->
-					    
-					  </div>
-					</div>
-				<div class="panel_sw">
-					<div class="panel_statusbar"></div>
-				</div>
-			</div>
-		<!-- END PANEL -->
-		
-		<div class="spacer"></div>
-		
-		<!-- START PANEL -->
-			<div class="">
-				<div class="panel_nw">
-					<div class="panel_title">
-						<span class="">Settings </span>
-						<span class="panel_links"></span>
-					</div>
-				</div>
-					<div class="panel_w">
-					  <div class="panel_content">
-					    <div class="" id="">
-					    <a4j:region id="optionsRegion">
-							<table width="320" cellpadding="4" cellspacing="0" class="" id="settings">
-								  <tbody>
-								  <tr>
-									<td width="290">Show last 10 trips on map</td>
-								    <td width="25">
-									    <a4j:status id="showLastTenStatus" for="optionsRegion">
-											<f:facet name="start">
-												<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
-											</f:facet>
-										</a4j:status>
-									</td>
-									<td width="20">
-									    <a4j:form id="showLastTenForm" reRender="script,selectedTripMap,selectedTrip">
-										    <h:selectBooleanCheckbox id="showAllCheckBox" value="#{vehicleTripsBean.showLastTenTrips}" >
-										    	<a4j:support event="onclick" reRender="script,bubbles,selectedTrip" oncomplete="bodyLoad();" />
-										    </h:selectBooleanCheckbox>
-										</a4j:form>
-								    </td>
-								    </tr>
-								  <tr>
-									<td>Show idle markers</td>
-									<td></td>
-								    <td>
-								      <h:selectBooleanCheckbox id="showIdleCheckBox" value="#{vehicleTripsBean.showIdleMarkers}" onclick="showIdleChanged();"/>
-								    </td>
-								    </tr>
-								  <tr>
-								    <td>Show warnings</td>
-								    <td></td>
-								    <td>
-								      <h:selectBooleanCheckbox id="showWarningsCheckBox" value="#{vehicleTripsBean.showWarnings}" onclick="showWarningsChanged();"/>
-								    </td>
-								    </tr>
-								  </tbody>
-								</table>
-							</a4j:region>
-						</div>
-					  </div>
-					</div>
-				<div class="panel_sw">
-					<div class="panel_statusbar"></div>
-				</div>
-			</div>
-		<!-- END PANEL -->
-		
-		<div class="spacer"></div>
-		
-		<!-- START PANEL -->
-			<div class="">
-				<div class="panel_nw">
-					<div class="panel_title">
-						<span class="">Legend</span>
-						<span class="panel_links"></span>
-					</div>
-				</div>
-					<div class="panel_w">
-					  <div class="panel_content">
-					    <div class="" id="">
-							<div class="" id="">
-								<table width="320" id="legend" cellpadding="4" cellspacing="0">
-								  <tbody>
-								  <tr>
-									<td width="25"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_start.png" width="21" height="20" /></td>
-									<td width="120">Start</td>
-								    <td width="30"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_idle.png" width="20" height="20" /></td>
-								    <td width="119">Engine Idle</td>
-								  </tr>
-								  <tr>
-									<td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_violation.png" width="20" height="20" /></td>
-									<td>Violation</td>
-								    <td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png" width="21" height="20" /></td>
-								    <td>End</td>
-								  </tr>
-								  </tbody>
-								</table>
-							</div>
-						</div>
-					  </div>
-					</div>
-				<div class="panel_sw">
-					<div class="panel_statusbar"></div>
-				</div>
-			</div>
-		<!-- END PANEL -->
-	</td>
-    <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
-    <td width="600" valign="top">
-		<!-- START PANEL -->
-		<div class="" style="width:600px; margin: 0 auto 0 auto;">
-			<div class="panel_nw">
-				<div class="panel_title">
-					<span class="vehicle">Trips by #{navigationBean.vehicle.fullName}</span>
-					<span class="panel_links"></span></div>
-			</div>
-			<div class="panel_w">
-			  <rich:panel id="tripsPanel" bodyClass="panel_content" align="center">
-				<!-- Start Trip table --> 
-					<a4j:form id="tripsTableForm">
-						<rich:extendedDataTable 
-						value="#{vehicleTripsBean.trips}" id="tripsTable" var="item" styleClass="datagrid" 
-						rowClasses="tableOdd,tableEven" rows="4" selectedClass="selectedRow"
-						width="100%" height="210px" style="border: 0px;">
+        <div id="wrapper"><h:form>
+            <ul id="grid_nav">
+                <li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
+                <li class="l grid_title">Vehicle Trips:&#160;<h:commandLink action="go_vehicle" value="#{navigationBean.vehicle.fullName}" /></li>
+                <li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li>
 
-					        <a4j:support event="onRowClick" reRender="script,bubbles,selectedTrip,showLastTenForm" oncomplete="bodyLoad();">
-					          <f:setPropertyActionListener value="#{item}" target="#{vehicleTripsBean.selectedTrip}" />
-					        </a4j:support> 
-										
-							<rich:column sortBy="#{item.trip.startTime}" label="Date">
-								<f:facet name="header">
-									<h:outputText value="Date" />
-								</f:facet>
-									<h:outputText value="#{item.dateShort}" />
-							</rich:column>
-							
-							<rich:column sortBy="#{item.trip.startTime}" width="115" label="Time">
-								<f:facet name="header" >
-									<h:outputText value="Time" />
-								</f:facet>
-									<h:outputText value="#{item.timeStartShort}" /><br />
-									<h:outputText value="#{item.timeEndShort}" />
-							</rich:column>
-							
-							
-							<rich:column sortBy="#{item.distance}" label="Distance" width="80">
-								<f:facet name="header">
-									<h:outputText value="Dist" />
-								</f:facet>
-								<h:outputText value="#{item.distance} #{messages.mi_label}" />		
-							</rich:column>
-							
-							<rich:column sortBy="#{item.startAddress}" label="Start Address">
-								<f:facet name="header">
-									<h:outputText value="Start" />
-								</f:facet>
-								<h:outputText value="#{item.startAddress}" />
-							</rich:column>
-							
-							<rich:column sortBy="#{item.endAddress}" label="End Address">
-								<f:facet name="header">
-									<h:outputText value="End" />
-								</f:facet>
-								<h:outputText value="#{item.endAddress}" />
-							</rich:column>
-							
-							<rich:column sortBy="#{item.duration}" label="Duration" width="80">
-								<f:facet name="header">
-									<h:outputText value="Dur" />
-								</f:facet>
-								<h:outputText value="#{item.duration}" />
-							</rich:column>
-						</rich:extendedDataTable>
-						
-						<rich:datascroller align="center" for="tripsTable" id="scroller" reRender="tripsTable" />
-					</a4j:form> 
-				<!-- End Trip table -->
-			  </rich:panel>
-			</div>
-			<div class="panel_sw">
-				<div class="panel_statusbar"></div>
-			</div>
-		</div>
-		<!-- END PANEL -->
-		
-		<div class="spacer"></div>
-		
-		<!-- START PANEL -->
-		<div class="" style="width:600px; margin: 0 auto 0 auto;">
-			<div class="panel_nw">
-				<div class="panel_title">
-					<h:form id="selectDriverForm">
-						<span class="map">
-							<h:outputText value="">Driver:</h:outputText><rich:spacer width="5" />
-							<h:commandLink action="go_driver" value="#{vehicleTripsBean.selectedDriver.person.fullName}">
-								<f:setPropertyActionListener value="#{vehicleTripsBean.selectedDriver}" target="#{navigationBean.driver}" />
-							</h:commandLink>
-						</span>
-						<span class="panel_links"></span>
-					</h:form>
-				</div>
-			</div>
-			<div class="panel_w">
-			  <rich:panel bodyClass="panel_content" id="selectedTripMap">
-				  		<h:outputText rendered="#{vehicleTripsBean.numTrips gt 0}">
-							<h:panelGroup styleClass="map-border" layout="block">
-								<div id="map-canvas" style="width:588px;height:400px;border:0"></div>
-							</h:panelGroup>
-						</h:outputText>
-		  					
-						<h:outputText rendered="#{vehicleTripsBean.numTrips lt 1}">
-							<h2>#{messages.no_trips_found}</h2>
-						</h:outputText>
-			  </rich:panel>
-			</div>
-			<div class="panel_sw">
-				<div class="panel_statusbar"></div>
-			</div>
-		</div>
-		<!-- END PANEL -->
-	</td>
-  </tr>
-</table>
-</div>
-</ui:define>
+                <li class="l"><ui:include src="/includes/breadcrumb.xhtml">
+                    <ui:param name="groupTreeNode" value="#{navigationBean.groupTreeNode}" />
+                    <ui:param name="lastBreadCrumb" value="true" />
+                </ui:include></li>
+
+                <li class="l" style="margin-left: -15px;">
+                <ul id="breadcrumb">
+                    <li><h:commandLink action="go_vehicle" value="#{navigationBean.vehicle.fullName}" /></li>
+                    <li class="last">Trips</li>
+                </ul>
+                </li>
+            </ul>
+        </h:form>
+        <div class="spacer"></div>
+        <table width="940" border="0" cellspacing="0" cellpadding="0" align="center">
+            <tr>
+                <td width="330" valign="top"><!-- START PANEL -->
+                <div class=""><rich:panel id="date_picker_panel">
+                    <a4j:region id="dateFormRegion">
+                        <a4j:form id="dateForm">
+                            <div class="panel_nw">
+                            <div class="panel_title"><span class="cal">Date Range </span> <span class="panel_links"> <a4j:status id="dateFormStatus"
+                                for="dateFormRegion">
+                                <f:facet name="start">
+                                    <h:outputText>
+                                        <img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
+                                </f:facet>
+                            </a4j:status> </span></div>
+                            </div>
+                            <div class="panel_w">
+                            <div class="panel_content">
+
+                            <table width="320" cellpadding="4" cellspacing="0" class="" id="">
+                                <tbody>
+                                    <tr>
+                                        <td width="80">Start Date</td>
+                                        <td width="178"><a4j:outputPanel id="calendarStart" layout="block">
+                                            <rich:calendar value="#{vehicleTripsBean.startDate}" locale="en/US" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
+                                                showApplyButton="false" cellWidth="24px" cellHeight="22px" />
+                                        </a4j:outputPanel></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>End Date</td>
+                                        <td><a4j:outputPanel id="calendarEnd" layout="block">
+                                            <rich:calendar value="#{vehicleTripsBean.endDate}" locale="en/US" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
+                                                showApplyButton="false" cellWidth="24px" cellHeight="22px" />
+                                        </a4j:outputPanel></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td><a4j:commandButton action="#{vehicleTripsBean.DateChangedAction}"
+                                            reRender="script,statsPanel,tripsPanel,bubbles,selectedTrip,selectedTripMap" immediate="false" styleClass="left"
+                                            oncomplete="bodyLoad();">
+                                            <span class="edit"> <h:outputText value="Update Date Range" /> </span>
+                                        </a4j:commandButton></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </div>
+                            </div>
+                        </a4j:form>
+                    </a4j:region>
+                </rich:panel>
+
+                <div class="panel_sw">
+                <div class="panel_statusbar"></div>
+                </div>
+                </div>
+                <!-- END PANEL -->
+
+                <div class="spacer"></div>
+
+                <!-- START PANEL --> <rich:panel id="statsPanel">
+                    <div class="panel_nw">
+                    <div class="panel_title"><span class=""><h:outputText>Stats:&#160;</h:outputText> <h:outputText value="#{vehicleTripsBean.startDate}">
+                        <f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{vehicleTripsBean.timeZone}" />
+                    </h:outputText>&#160;to&#160; <h:outputText value="#{vehicleTripsBean.endDate}">
+                        <f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{vehicleTripsBean.timeZone}" />
+                    </h:outputText> </span> <span class="panel_links"></span></div>
+                    </div>
+                    <div class="panel_w">
+                    <div class="panel_content">
+                    <div class="" id="">
+                    <table id="" cellpadding="4" cellspacing="0" class="">
+                        <tbody>
+                            <tr>
+                                <td>Total Drive Time:</td>
+                                <td><rich:spacer width="4" /></td>
+                                <td><h:outputText>#{vehicleTripsBean.totalDriveTime}</h:outputText></td>
+                            </tr>
+                            <tr>
+                                <td>Total Miles Driven:</td>
+                                <td></td>
+                                <td><h:outputText value="#{vehicleTripsBean.milesDriven}" converter="DistanceConverter" /></td>
+                            </tr>
+                            <tr>
+                                <td>Total Idle Time:</td>
+                                <td></td>
+                                <td><h:outputText>#{vehicleTripsBean.idleTime}</h:outputText></td>
+                            </tr>
+                            <tr>
+                                <td>Total Trips:</td>
+                                <td></td>
+                                <td><h:outputText>#{vehicleTripsBean.numTrips}</h:outputText></td>
+                            </tr>
+                            <tr>
+                                <td valign="top">Vehicle Time Zone:</td>
+                                <td></td>
+                                <td><h:outputText>#{vehicleTripsBean.timeZone.displayName}</h:outputText></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                    </div>
+                    </div>
+                    <div class="panel_sw">
+                    <div class="panel_statusbar"></div>
+                    </div>
+                </rich:panel> <!-- END PANEL -->
+
+                <div class="spacer"></div>
+
+                <!-- START PANEL -->
+                <div class="">
+                <div class="panel_nw">
+                <div class="panel_title"><span class="">Events</span> <span class="panel_links"></span></div>
+                </div>
+                <div class="panel_w">
+                <div class="panel_content"><!-- Start Trip table --> <rich:panel id="selectedTrip">
+                    <a4j:form>
+                        <rich:dataTable value="#{vehicleTripsBean.allEvents}" id="selectedTripTable" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven"
+                            cellspacing="1" rows="5" width="100%" onRowClick="showInfoWindow('#{item.noteID}', new GLatLng(#{item.latitude}, #{item.longitude}));">
+
+                            <!-- Data -->
+                            <rich:column sortBy="#{item.addressStr}" style="cursor: pointer;">
+                                <h:graphicImage value="/images/ico_idle.png" rendered="#{item.type eq 208}" alt="#{item.eventType}" />
+                                <h:graphicImage value="/images/ico_violation.png" rendered="#{item.type ne 208}" alt="#{item.eventType}" />
+                            </rich:column>
+
+                            <rich:column sortBy="#{item.addressStr}" style="cursor: pointer;">
+                                <f:facet name="header">
+                                    <h:outputText value="Address" />
+                                </f:facet>
+                                <h:outputText value="#{item.addressStr}" />
+                            </rich:column>
+
+                            <rich:column sortBy="#{item.time}" style="cursor: pointer;">
+                                <f:facet name="header">
+                                    <h:outputText value="Date/Time" />
+                                </f:facet>
+
+                                <h:outputText value="#{item.time}">
+                                    <f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{vehicleTripsBean.timeZone}" />
+                                </h:outputText>
+
+                            </rich:column>
+                        </rich:dataTable>
+                        <rich:datascroller align="center" for="selectedTripTable" id="eventScroller" reRender="script,selectedTripTable" />
+                    </a4j:form>
+                </rich:panel> <!-- End Trip table --></div>
+                </div>
+                <div class="panel_sw">
+                <div class="panel_statusbar"></div>
+                </div>
+                </div>
+                <!-- END PANEL -->
+
+                <div class="spacer"></div>
+
+                <!-- START PANEL -->
+                <div class="">
+                <div class="panel_nw">
+                <div class="panel_title"><span class="">Settings </span> <span class="panel_links"></span></div>
+                </div>
+                <div class="panel_w">
+                <div class="panel_content">
+                <div class="" id=""><a4j:region id="optionsRegion">
+                    <table width="320" cellpadding="4" cellspacing="0" class="" id="settings">
+                        <tbody>
+                            <tr>
+                                <td width="290">Show last 10 trips on map</td>
+                                <td width="25"><a4j:status id="showLastTenStatus" for="optionsRegion">
+                                    <f:facet name="start">
+                                        <h:outputText>
+                                            <img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
+                                    </f:facet>
+                                </a4j:status></td>
+                                <td width="20"><a4j:form id="showLastTenForm" reRender="script,selectedTripMap,selectedTrip">
+                                    <h:selectBooleanCheckbox id="showAllCheckBox" value="#{vehicleTripsBean.showLastTenTrips}">
+                                        <a4j:support event="onclick" reRender="script,bubbles,selectedTrip" oncomplete="bodyLoad();" />
+                                    </h:selectBooleanCheckbox>
+                                </a4j:form></td>
+                            </tr>
+                            <tr>
+                                <td>Show idle markers</td>
+                                <td></td>
+                                <td><h:selectBooleanCheckbox id="showIdleCheckBox" value="#{vehicleTripsBean.showIdleMarkers}" onclick="showIdleChanged();" /></td>
+                            </tr>
+                            <tr>
+                                <td>Show warnings</td>
+                                <td></td>
+                                <td><h:selectBooleanCheckbox id="showWarningsCheckBox" value="#{vehicleTripsBean.showWarnings}" onclick="showWarningsChanged();" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </a4j:region></div>
+                </div>
+                </div>
+                <div class="panel_sw">
+                <div class="panel_statusbar"></div>
+                </div>
+                </div>
+                <!-- END PANEL -->
+
+                <div class="spacer"></div>
+
+                <!-- START PANEL -->
+                <div class="">
+                <div class="panel_nw">
+                <div class="panel_title"><span class="">Legend</span> <span class="panel_links"></span></div>
+                </div>
+                <div class="panel_w">
+                <div class="panel_content">
+                <div class="" id="">
+                <div class="" id="">
+                <table width="320" id="legend" cellpadding="4" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <td width="25"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_start.png" width="21" height="20" /></td>
+                            <td width="120">Start</td>
+                            <td width="30"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_idle.png" width="20" height="20" /></td>
+                            <td width="119">Engine Idle</td>
+                        </tr>
+                        <tr>
+                            <td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_violation.png" width="20" height="20" /></td>
+                            <td>Violation</td>
+                            <td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png" width="21" height="20" /></td>
+                            <td>End</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                </div>
+                <div class="panel_sw">
+                <div class="panel_statusbar"></div>
+                </div>
+                </div>
+                <!-- END PANEL --></td>
+                <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
+                <td width="600" valign="top"><!-- START PANEL -->
+                <div class="" style="width: 600px; margin: 0 auto 0 auto;"><a4j:form id="tripsTableForm">
+                    <div class="panel_nw">
+
+                    <div class="panel_title"><span class="vehicle">Trips by #{navigationBean.vehicle.fullName}</span> <a4j:status onstop="onReRender();">
+                        <f:facet name="start">
+                            <h:graphicImage value="/images/ajax-loader.gif" style="padding-left: 10px" />
+                        </f:facet>
+                    </a4j:status> <span class="panel_links"></span></div>
+                    </div>
+                    <div class="panel_w"><rich:panel id="tripsPanel" bodyClass="panel_content" align="center">
+                        <!-- Start Trip table -->
+                        <rich:dataTable value="#{vehicleTripsBean.trips}" id="tripsTable" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" rows="4" width="100%"
+                            height="210px">
+
+                            <a4j:support event="onRowClick" reRender="script,bubbles,selectedTrip,showLastTenForm" oncomplete="bodyLoad();">
+                                <f:setPropertyActionListener value="#{item}" target="#{vehicleTripsBean.selectedTrip}" />
+                            </a4j:support>
+
+                            <rich:column sortBy="#{item.trip.startTime}" label="Date">
+                                <f:facet name="header">
+                                    <h:outputText value="Date" />
+                                </f:facet>
+                                <h:outputText value="#{item.dateShort}" />
+                            </rich:column>
+
+                            <rich:column sortBy="#{item.trip.startTime}" width="115" label="Time">
+                                <f:facet name="header">
+                                    <h:outputText value="Time" />
+                                </f:facet>
+                                <h:outputText value="#{item.timeStartShort}" />
+                                <br />
+                                <h:outputText value="#{item.timeEndShort}" />
+                            </rich:column>
+
+
+                            <rich:column sortBy="#{item.distance}" label="Distance" width="80">
+                                <f:facet name="header">
+                                    <h:outputText value="Dist" />
+                                </f:facet>
+                                <h:outputText value="#{item.distance} #{messages.mi_label}" />
+                            </rich:column>
+
+                            <rich:column sortBy="#{item.startAddress}" label="Start Address">
+                                <f:facet name="header">
+                                    <h:outputText value="Start" />
+                                </f:facet>
+                                <h:outputText value="#{item.startAddress}" />
+                            </rich:column>
+
+                            <rich:column sortBy="#{item.endAddress}" label="End Address">
+                                <f:facet name="header">
+                                    <h:outputText value="End" />
+                                </f:facet>
+                                <h:outputText value="#{item.endAddress}" />
+                            </rich:column>
+
+                            <rich:column sortBy="#{item.duration}" label="Duration" width="80">
+                                <f:facet name="header">
+                                    <h:outputText value="Dur" />
+                                </f:facet>
+                                <h:outputText value="#{item.duration}" />
+                            </rich:column>
+                        </rich:dataTable>
+
+                        <rich:datascroller align="center" for="tripsTable" id="scroller" oncomplete="onReRender();" reRender="tripsTable" />
+
+                        <rich:jQuery selector="document" query="ready(function(){onReRender()})" />
+                        <!-- End Trip table -->
+                    </rich:panel></div>
+                </a4j:form>
+                <div class="panel_sw">
+                <div class="panel_statusbar"></div>
+                </div>
+                </div>
+                <!-- END PANEL -->
+
+                <div class="spacer"></div>
+
+                <!-- START PANEL -->
+                <div class="" style="width: 600px; margin: 0 auto 0 auto;">
+                <div class="panel_nw">
+                <div class="panel_title"><h:form id="selectDriverForm">
+                    <span class="map"> <h:outputText value="">Driver:</h:outputText><rich:spacer width="5" /> <h:commandLink action="go_driver"
+                        value="#{vehicleTripsBean.selectedDriver.person.fullName}">
+                        <f:setPropertyActionListener value="#{vehicleTripsBean.selectedDriver}" target="#{navigationBean.driver}" />
+                    </h:commandLink> </span>
+                    <span class="panel_links"></span>
+                </h:form></div>
+                </div>
+                <div class="panel_w"><rich:panel bodyClass="panel_content" id="selectedTripMap">
+                    <h:outputText rendered="#{vehicleTripsBean.numTrips gt 0}">
+                        <h:panelGroup styleClass="map-border" layout="block">
+                            <div id="map-canvas" style="width: 588px; height: 400px; border: 0"></div>
+                        </h:panelGroup>
+                    </h:outputText>
+
+                    <h:outputText rendered="#{vehicleTripsBean.numTrips lt 1}">
+                        <h2>#{messages.no_trips_found}</h2>
+                    </h:outputText>
+                </rich:panel></div>
+                <div class="panel_sw">
+                <div class="panel_statusbar"></div>
+                </div>
+                </div>
+                <!-- END PANEL --></td>
+            </tr>
+        </table>
+        </div>
+    </ui:define>
 
 </ui:composition>
