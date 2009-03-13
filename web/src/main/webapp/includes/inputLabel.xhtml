@@ -18,18 +18,20 @@
   		enableCheckbox: if in batch edit mode, disables the checkbox (optional)
    -->
   <ui:composition>
-	 <h:selectBooleanCheckbox 
-	 		rendered="#{editBean.batchEdit}" 
-	 		id="update_#{for}" 
-	 		value="#{editBean.updateField[fieldName]}"
-	 		disabled="#{enableCheckbox}">
-	 </h:selectBooleanCheckbox>
-	 <h:graphicImage rendered="#{!personBean.batchEdit and iconSrc ne null}" value="#{iconSrc}" width="16" height="16" style="valign:middle" />
-     <h:outputText value=" #{label}" />
-	 <h:outputText 
-	 		id="update_#{for}_required_flag" 
-	 		rendered="#{required eq 'TRUE'}" 
-	 		style="display: #{(not editBean.batchEdit) or editBean.updateField[fieldName] ? 'inline' : 'none'}" 
-	 		styleClass="required" value=" *" />
+     <a4j:region>
+      	 <h:selectBooleanCheckbox 
+      	 		rendered="#{editBean.batchEdit}" 
+      	 		id="update_#{for}" 
+      	 		value="#{editBean.updateField[fieldName]}"
+      	 		disabled="#{enableCheckbox}">
+      	 </h:selectBooleanCheckbox>
+      	 <h:graphicImage rendered="#{!personBean.batchEdit and iconSrc ne null}" value="#{iconSrc}" width="16" height="16" style="valign:middle" />
+           <h:outputText value=" #{label}" />
+      	 <h:outputText 
+      	 		id="update_#{for}_required_flag" 
+      	 		rendered="#{required eq 'TRUE'}" 
+      	 		style="display: #{(not editBean.batchEdit) or editBean.updateField[fieldName] ? 'inline' : 'none'}" 
+      	 		styleClass="required" value=" *" />
+     </a4j:region>
   </ui:composition>
 </html>

@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -638,7 +639,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                     
                 }
             }
-        }
+            
+            
+        }  
         // must be a user or a driver or both
         else if (!person.isDriverSelected())
         {

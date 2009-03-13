@@ -8,29 +8,35 @@
 
 
   <ui:composition>
-
-    <script type="text/javascript">
-    	jQuery(document).ready(function() { 
-		  	 /*
-		  	 	Toggles the required indicator if in batch edit mode
-		  	 */
-	  		 jQuery("input:checkbox").click(function(){
-	  	     	var requiredFlagID = "#" + this.id + "_required_flag";
-	  	     	requiredFlagID = requiredFlagID.replace(":","\\:");
-	  	     	var inputFieldID = this.id.replace("update_","");
-	  	     	
-	  	     	var checked = this.checked;
-	  	     	jQuery(requiredFlagID).attr("style",function(index){
-	  	  	    	 	if(checked){
-							return "display:inline";
-	  	  	  	    	}else{
-	  	  	  	  	    	return "display:none";
-	  	  	  	    	} 
-	  	    	});
-
-	  	     });
-		});
-    </script>
-
+       <script type="text/javascript">
+       	jQuery(document).ready(function() { 
+   		  	 /*
+   		  	 	Toggles the required indicator if in batch edit mode
+   		  	 */
+   	  		 jQuery("input:checkbox").click(function(){
+   	  	     	var requiredFlagID = "#" + this.id + "_required_flag";
+   	  	     	requiredFlagID = requiredFlagID.replace(":","\\:");
+   	  	     	var inputFieldID = this.id.replace("update_","");
+   	  	     	
+   	  	     	var checked = this.checked;
+   	  	     	jQuery(requiredFlagID).attr("style",function(index){
+   	  	  	    	 	if(checked){
+   							return "display:inline";
+   	  	  	  	    	}else{
+   	  	  	  	  	    	return "display:none";
+   	  	  	  	    	} 
+   	  	    	});
+   
+   	            if(!checked)
+   	            {
+                     var inputID = this.id.replace("update_","");
+                     inputID = inputID.replace("edit-form:","");
+                     jQuery("input:text[id*='"+ inputID + "']").val('');
+                     jQuery("select[id*='"+ inputID + "']").val('');
+   	            }
+   
+   	  	     });
+   		});
+       </script>
   </ui:composition>
 </html>
