@@ -50,7 +50,9 @@
                       <ui:fragment rendered="${tiwiprofn:messagesAvailable()}">
                         <dl id="display-form:j_id122" class="rich-messages msg" style="">
                            <dt class="error">
-                              #{messages.errorsOnPage}
+                              <h:outputFormat value="#{messages.error_validationMsg}">
+                                 <f:param value="${tiwiprofn:getMessageCount()}"/>
+                              </h:outputFormat>
                            </dt>
                         </dl>
                       </ui:fragment>

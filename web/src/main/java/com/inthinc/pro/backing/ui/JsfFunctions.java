@@ -3,15 +3,16 @@ package com.inthinc.pro.backing.ui;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.TimeZone;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.reports.ReportType;
-import com.sun.facelets.FaceletContext;
 
 public class JsfFunctions
 {
@@ -60,6 +61,19 @@ public class JsfFunctions
             return Boolean.TRUE;
         else
             return Boolean.FALSE;
+    }
+    
+    public static Integer getMessageCount()
+    {
+        int count = 0;
+        Iterator<FacesMessage> iterator = FacesContext.getCurrentInstance().getMessages();
+        while(iterator.hasNext())
+        {
+            iterator.next();
+            count++;
+        }
+        
+        return Integer.valueOf(count);
     }
 
 }
