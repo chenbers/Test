@@ -144,6 +144,10 @@
 					], "#0000ff", 6);
 					map.addOverlay(polyline);
 
+					<ui:repeat value="#{trip.route}" var="rt2">
+						bounds.extend(new GLatLng(#{rt2.lat}, #{rt2.lng}));
+					</ui:repeat>
+
 					//Start of trip marker
 					startlatlng = new GLatLng(#{trip.route[0].lat}, #{trip.route[0].lng});
 					marker = createMarker(startlatlng, "#{trip.trip.startTime}_START", "#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
@@ -176,32 +180,33 @@
 					</ui:repeat>
 				}	
 			}
-       		var isReady;
-    		isReady = false;
-    		function dynamicTableStyles()
-    		{
-    			
-    			jQuery('#tripsTableForm\\:tripsTable tr').click(function(){
-                    			jQuery('#tripsTableForm\\:tripsTable tr').each(function() {
-    								jQuery(this).removeClass('selected-row');
-    								jQuery(this).children().removeClass('selected-row');
-    								
-    							});
-    							jQuery(this).addClass('selected-row');
-    							jQuery(this).children().addClass('selected-row');
-    			});
-    			
-    		}
-    		function onReRender()
-    		{
-    			isReady = true;
-    			dynamicTableStyles();
-    		}
-    		function onReRenderWithSelection()
-    		{	
-    			isReady = true;
-    			dynamicTableStyles();
-    		}
+		
+   		var isReady;
+		isReady = false;
+		function dynamicTableStyles()
+		{
+			
+			jQuery('#tripsTableForm\\:tripsTable tr').click(function(){
+                			jQuery('#tripsTableForm\\:tripsTable tr').each(function() {
+								jQuery(this).removeClass('selected-row');
+								jQuery(this).children().removeClass('selected-row');
+								
+							});
+							jQuery(this).addClass('selected-row');
+							jQuery(this).children().addClass('selected-row');
+			});
+			
+		}
+		function onReRender()
+		{
+			isReady = true;
+			dynamicTableStyles();
+		}
+		function onReRenderWithSelection()
+		{	
+			isReady = true;
+			dynamicTableStyles();
+		}
 
 		</script>
         </rich:panel>
@@ -426,6 +431,7 @@
 
                             </rich:column>
                         </rich:dataTable>
+                        <rich:spacer height="5" />
                         <rich:datascroller align="center" for="selectedTripTable" id="eventScroller" reRender="script,selectedTripTable" />
                     </a4j:form>
                 </rich:panel> <!-- End Trip table --></div>
@@ -532,21 +538,21 @@
                     </div>
                     <div class="panel_w"><rich:panel id="tripsPanel" bodyClass="panel_content" align="center">
                         <!-- Start Trip table -->
-                        <rich:dataTable value="#{vehicleTripsBean.trips}" id="tripsTable" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" rows="4" width="100%"
-                            height="210px">
+                        <rich:dataTable value="#{vehicleTripsBean.trips}" id="tripsTable" var="item" 
+                        styleClass="datagrid" rowClasses="tableOdd,tableEven" rows="4" width="100%">
 
                             <a4j:support event="onRowClick" reRender="script,bubbles,selectedTrip,showLastTenForm" oncomplete="bodyLoad();">
                                 <f:setPropertyActionListener value="#{item}" target="#{vehicleTripsBean.selectedTrip}" />
                             </a4j:support>
 
-                            <rich:column sortBy="#{item.trip.startTime}" label="Date">
+                            <rich:column id="date_column" sortBy="#{item.trip.startTime}" label="Date" style="white-space:nowrap; cursor: pointer;">
                                 <f:facet name="header">
                                     <h:outputText value="Date" />
                                 </f:facet>
                                 <h:outputText value="#{item.dateShort}" />
                             </rich:column>
 
-                            <rich:column sortBy="#{item.trip.startTime}" width="115" label="Time">
+                            <rich:column id="time_column" sortBy="#{item.trip.startTime}" label="Time" style="white-space:nowrap; cursor: pointer;">
                                 <f:facet name="header">
                                     <h:outputText value="Time" />
                                 </f:facet>
@@ -556,35 +562,35 @@
                             </rich:column>
 
 
-                            <rich:column sortBy="#{item.distance}" label="Distance" width="80">
+                            <rich:column id="distance_column" sortBy="#{item.distance}" label="Distance" style="white-space:nowrap; cursor: pointer;">
                                 <f:facet name="header">
                                     <h:outputText value="Dist" />
                                 </f:facet>
                                 <h:outputText value="#{item.distance} #{messages.mi_label}" />
                             </rich:column>
 
-                            <rich:column sortBy="#{item.startAddress}" label="Start Address">
+                            <rich:column id="start_column" sortBy="#{item.startAddress}" label="Start Address" style="cursor: pointer;">
                                 <f:facet name="header">
                                     <h:outputText value="Start" />
                                 </f:facet>
                                 <h:outputText value="#{item.startAddress}" />
                             </rich:column>
 
-                            <rich:column sortBy="#{item.endAddress}" label="End Address">
+                            <rich:column id="end_column" sortBy="#{item.endAddress}" label="End Address" style="cursor: pointer;">
                                 <f:facet name="header">
                                     <h:outputText value="End" />
                                 </f:facet>
                                 <h:outputText value="#{item.endAddress}" />
                             </rich:column>
 
-                            <rich:column sortBy="#{item.duration}" label="Duration" width="80">
+                            <rich:column id="duration_column" sortBy="#{item.duration}" label="Duration" style="white-space:nowrap; cursor: pointer;">
                                 <f:facet name="header">
                                     <h:outputText value="Dur" />
                                 </f:facet>
                                 <h:outputText value="#{item.duration}" />
                             </rich:column>
                         </rich:dataTable>
-
+						<rich:spacer height="5" />
                         <rich:datascroller align="center" for="tripsTable" id="scroller" oncomplete="onReRender();" reRender="tripsTable" />
 
                         <rich:jQuery selector="document" query="ready(function(){onReRender()})" />

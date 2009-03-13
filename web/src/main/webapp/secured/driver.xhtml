@@ -43,6 +43,11 @@
 									  	new GLatLng(#{driverBean.lastTrip.routeLastStep.lat}, #{driverBean.lastTrip.routeLastStep.lng})	], "#0000ff", 6);
 
 					map.addOverlay(polyline);
+
+					<ui:repeat value="#{driverBean.lastTrip.route}" var="rt2">
+						bounds.extend(new GLatLng(#{rt2.lat}, #{rt2.lng}));
+					</ui:repeat>
+				
 		
 					//Start of trip marker
 					var startlatlng = new GLatLng(#{driverBean.lastTrip.route[0].lat}, #{driverBean.lastTrip.route[0].lng});

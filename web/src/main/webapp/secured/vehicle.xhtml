@@ -42,7 +42,12 @@
 									  	new GLatLng(#{vehicleBean.lastTrip.routeLastStep.lat}, #{vehicleBean.lastTrip.routeLastStep.lng})	], "#0000ff", 6);
 
 					map.addOverlay(polyline);
-		
+
+
+					<ui:repeat value="#{vehicleBean.lastTrip.route}" var="rt2">
+						bounds.extend(new GLatLng(#{rt2.lat}, #{rt2.lng}));
+					</ui:repeat>
+				
 					//Start of trip marker
 					var startlatlng = new GLatLng(#{vehicleBean.lastTrip.route[0].lat}, #{vehicleBean.lastTrip.route[0].lng});
 					marker = createMarker(startlatlng, "tripStartBubble", "#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
