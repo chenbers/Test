@@ -78,7 +78,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     {
         // available columns
         AVAILABLE_COLUMNS = new ArrayList<String>();
-        AVAILABLE_COLUMNS.add("empid");
         AVAILABLE_COLUMNS.add("fullName");
         AVAILABLE_COLUMNS.add("priPhone");
         AVAILABLE_COLUMNS.add("secPhone");
@@ -90,6 +89,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         AVAILABLE_COLUMNS.add("warn");
         AVAILABLE_COLUMNS.add("crit");
         AVAILABLE_COLUMNS.add("timeZone");
+        AVAILABLE_COLUMNS.add("empid");
         AVAILABLE_COLUMNS.add("reportsTo");
         AVAILABLE_COLUMNS.add("title");
         AVAILABLE_COLUMNS.add("dob");

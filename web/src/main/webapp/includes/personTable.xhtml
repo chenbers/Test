@@ -15,10 +15,6 @@
   <ui:param name="editorBean" value="#{personBean}" />
 
   <ui:define name="columns">
-    <rich:column rendered="#{personBean.tableColumns['empid'].visible}" sortBy="#{item.empid}">
-      <f:facet name="header"><h:outputText value="#{messages.personHeader_empid}" /></f:facet>
-      <h:outputText value="#{item.empid}" />
-    </rich:column>
     <rich:column rendered="#{personBean.tableColumns['fullName'].visible}" sortBy="#{item.fullName}" sortOrder="ASCENDING">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_fullName}" /></f:facet>
       <a4j:htmlCommandLink action="#{personBean.display}">
@@ -84,6 +80,10 @@
     <rich:column rendered="#{personBean.tableColumns['timeZone'].visible}" sortBy="#{item.timeZone.displayName}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_timeZone}" /></f:facet>
       <h:outputText value="#{item.timeZone.displayName}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.tableColumns['empid'].visible}" sortBy="#{item.empid}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_empid}" /></f:facet>
+      <h:outputText value="#{item.empid}" />
     </rich:column>
     <rich:column rendered="#{personBean.tableColumns['reportsTo'].visible}" sortBy="#{item.reportsTo}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_reportsTo}" /></f:facet>

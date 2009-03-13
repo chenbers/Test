@@ -55,17 +55,6 @@
                         <ui:fragment rendered="#{not personBean.batchEdit}">
                         <tr>
                           <td width="100" valign="top">
-                            <h:outputText value="#{messages.editPerson_empid}" />
-                            <span class="required">*</span>
-                          </td>
-                          <td>
-                            <rich:message for="empid" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.empid}" id="empid" disabled="#{!personBean.item.userEditable}" onkeydown="checkMultiple(this)" styleClass="text" size="30"
-                              maxlength="20" required="#{(not personBean.batchEdit) or personBean.updateField['empid']}" requiredMessage="#{messages.required}" />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td width="100" valign="top">
                             <h:outputText value="#{messages.editPerson_first}" />
                             <span class="required">*</span>
                           </td>
@@ -337,7 +326,19 @@
 
                       <div class="add_section_title"><h:outputText value="#{messages.editPerson_employeeInformation}" /></div>
 
-                      <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                      <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">     
+                      <ui:fragment rendered="#{not personBean.batchEdit}">  
+                        <tr>
+                          <td width="100" valign="top">
+                            <h:outputText value="#{messages.editPerson_empid}" />
+                          </td>
+                          <td>
+                            <rich:message for="empid" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{personBean.item.empid}" id="empid" disabled="#{!personBean.item.userEditable}" onkeydown="checkMultiple(this)" styleClass="text" size="30"
+                              maxlength="20"/>
+                          </td>
+                        </tr>   
+                        </ui:fragment>
                         <tr>
                           <td width="100" valign="top">
                             <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_reportsTo" disabled="#{!personBean.item.userEditable}" value="#{personBean.updateField['reportsTo']}" />

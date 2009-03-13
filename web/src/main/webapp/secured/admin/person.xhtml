@@ -55,10 +55,6 @@
                   
                         <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_empid}" /></td>
-                            <td><h:outputText value="#{personBean.item.empid}" /></td>
-                          </tr>
-                          <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_first}" /></td>
                             <td><h:outputText value="#{personBean.item.first}" /></td>
                           </tr>
@@ -182,6 +178,10 @@
                         <div class="add_section_title"><h:outputText value="#{messages.editPerson_employeeInformation}" /></div>
 
                         <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_empid}" /></td>
+                            <td><h:outputText value="#{personBean.item.empid}" /></td>
+                          </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_reportsTo}" /></td>
                             <td><h:outputText value="#{personBean.item.reportsTo}" /></td>
