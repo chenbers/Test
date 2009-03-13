@@ -5,7 +5,8 @@
               xmlns:rich="http://richfaces.org/rich"
               xmlns:a4j="http://richfaces.org/a4j"
               xmlns:f="http://java.sun.com/jsf/core"
-              xmlns:security="http://pro.tiwi.com/jsf/security">
+              xmlns:security="http://pro.tiwi.com/jsf/security"
+              xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
 
   <ui:param name="adminSelected" value="current" />
   <ui:param name="helpFile" value="Admin_Add_Vehicle_-_Details.htm" />
@@ -45,7 +46,14 @@
                           <h:outputText value=" " /><h:commandButton action="#{vehiclesBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
                         </li>
                       </ul>
-
+                        
+                      <ui:fragment rendered="${tiwiprofn:messagesAvailable()}">
+                        <dl id="display-form:j_id122" class="rich-messages msg" style="">
+                           <dt class="error">
+                              #{messages.errorsOnPage}
+                           </dt>
+                        </dl>
+                      </ui:fragment>
                       <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
 
                       <div class="spacer"></div>

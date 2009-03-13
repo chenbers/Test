@@ -6,7 +6,8 @@
               xmlns:a4j="http://richfaces.org/a4j"
               xmlns:f="http://java.sun.com/jsf/core"
               xmlns:security="http://pro.tiwi.com/jsf/security"
-              xmlns:t="http://myfaces.apache.org/tomahawk">
+              xmlns:t="http://myfaces.apache.org/tomahawk"
+              xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
 
   <ui:param name="adminSelected" value="current" />
   <ui:param name="helpFile" value="Add_Zone_Alert.htm" />
@@ -57,7 +58,13 @@
                       <h:outputText value=" " /><h:commandButton action="#{zoneAlertsBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
                     </li>
                   </ul>
-
+                   <ui:fragment rendered="${tiwiprofn:messagesAvailable()}">
+                     <dl id="display-form:j_id122" class="rich-messages msg" style="">
+                        <dt class="error">
+                           #{messages.errorsOnPage}
+                        </dt>
+                     </dl>
+                  </ui:fragment>
                   <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
 
                   <div class="add_section_title"><h:outputText value="#{messages.editZoneAlert_nameDescriptionZone}" /></div>
@@ -71,9 +78,13 @@
                         <table width="100%" border="0" cellspacing="2" cellpadding="4" style="background-color: #f2efe9; border: 1px solid #acacac; border-right-width: 0px;">
                           <tr>
                             <td width="100" valign="top">
-                              <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_zoneID" value="#{zoneAlertsBean.updateField['zoneID']}" />
-                              <h:outputText value="#{messages.editZoneAlert_zone}" />
-                              <h:outputText rendered="#{not zoneAlertsBean.batchEdit}" styleClass="required" value=" *" />
+                              <ui:include src="../../includes/inputLabel.xhtml">
+                                 <ui:param name="required" value="TRUE"/>
+                                 <ui:param name="for" value="zoneID"/>
+                                 <ui:param name="fieldName" value="zoneID"/>
+                                 <ui:param name="editBean" value="#{zoneAlertsBean}"/>
+                                 <ui:param name="label" value="#{messages.editZoneAlert_zone}"/>
+                              </ui:include>
                             </td>
                             <td>
                               <rich:message for="zoneID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -88,9 +99,13 @@
                         <table width="100%" border="0" cellspacing="2" cellpadding="4">
                           <tr>
                             <td width="100" valign="top">
-                              <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_name" value="#{zoneAlertsBean.updateField['name']}" />
-                              <h:outputText value="#{messages.editAlerts_name}" />
-                              <h:outputText rendered="#{not zoneAlertsBean.batchEdit}" styleClass="required" value=" *" />
+                              <ui:include src="../../includes/inputLabel.xhtml">
+                                 <ui:param name="required" value="TRUE"/>
+                                 <ui:param name="for" value="name"/>
+                                 <ui:param name="fieldName" value="name"/>
+                                 <ui:param name="editBean" value="#{zoneAlertsBean}"/>
+                                 <ui:param name="label" value="#{messages.editAlerts_name}"/>
+                              </ui:include>
                             </td>
                             <td>
                               <rich:message for="name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -110,9 +125,13 @@
                           </tr>
                           <tr>
                             <td width="100" valign="top">
-                              <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_dayOfWeek" value="#{zoneAlertsBean.updateField['dayOfWeek']}" />
-                              <h:outputText value="#{messages.editAlerts_dayOfWeek}" />
-                              <h:outputText rendered="#{not zoneAlertsBean.batchEdit}" styleClass="required" value=" *" />
+                              <ui:include src="../../includes/inputLabel.xhtml">
+                                 <ui:param name="required" value="TRUE"/>
+                                 <ui:param name="for" value="dayOfWeek"/>
+                                 <ui:param name="fieldName" value="dayOfWeek"/>
+                                 <ui:param name="editBean" value="#{zoneAlertsBean}"/>
+                                 <ui:param name="label" value="#{messages.editAlerts_dayOfWeek}"/>
+                              </ui:include>
                             </td>
                             <td>
                               <rich:message for="day0" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -124,9 +143,13 @@
                           </tr>
                           <tr>
                             <td width="100" valign="top">
-                              <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_timeframe" value="#{zoneAlertsBean.updateField['timeframe']}" />
-                              <h:outputText value="#{messages.editAlerts_timeframe}" />
-                              <h:outputText rendered="#{not zoneAlertsBean.batchEdit}" styleClass="required" value=" *" />
+                              <ui:include src="../../includes/inputLabel.xhtml">
+                                 <ui:param name="required" value="TRUE"/>
+                                 <ui:param name="for" value="timeframe"/>
+                                 <ui:param name="fieldName" value="timeframe"/>
+                                 <ui:param name="editBean" value="#{zoneAlertsBean}"/>
+                                 <ui:param name="label" value="#{messages.editAlerts_timeframe}"/>
+                              </ui:include>
                             </td>
                             <td>
                               <rich:message for="stopTOD" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -171,9 +194,13 @@
                       <td width="390" valign="top">
 
                         <div class="add_section_title">
-                          <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_defineAlerts" value="#{zoneAlertsBean.updateField['defineAlerts']}" />
-                          <h:outputText value="#{messages.editZoneAlert_defineAlerts}" />
-                          <h:outputText rendered="#{not zoneAlertsBean.batchEdit}" styleClass="required" value=" *" />
+                          <ui:include src="../../includes/inputLabel.xhtml">
+                              <ui:param name="required" value="TRUE"/>
+                              <ui:param name="for" value="defineAlerts"/>
+                              <ui:param name="fieldName" value="defineAlerts"/>
+                              <ui:param name="editBean" value="#{zoneAlertsBean}"/>
+                              <ui:param name="label" value="#{messages.editZoneAlert_defineAlerts}"/>
+                          </ui:include>
                         </div>
 
                         <rich:message for="arrival" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -196,9 +223,13 @@
                       <td width="390" valign="top">
 
                         <div class="add_section_title">
-                          <h:selectBooleanCheckbox rendered="#{zoneAlertsBean.batchEdit}" id="update_assignTo" value="#{zoneAlertsBean.updateField['assignTo']}" />
-                          <h:outputText value="#{messages.editAlerts_assignTo}" />
-                          <h:outputText rendered="#{not zoneAlertsBean.batchEdit}" styleClass="required" value=" *" />
+                          <ui:include src="../../includes/inputLabel.xhtml">
+                              <ui:param name="required" value="TRUE"/>
+                              <ui:param name="for" value="assignTo"/>
+                              <ui:param name="fieldName" value="assignTo"/>
+                              <ui:param name="editBean" value="#{zoneAlertsBean}"/>
+                              <ui:param name="label" value="#{messages.editAlerts_assignTo}"/>
+                          </ui:include>
                         </div>
 
                         <rich:message for="alertAssignFrom" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -250,7 +281,7 @@
                     </tr>
                   </table>
 
-                  <div class="required-key"><h:outputText rendered="#{not zoneAlertsBean.batchEdit}" value="#{messages.requiredKey}" /></div>
+                  <div class="required-key"><h:outputText value="#{messages.requiredKey}" /></div>
 
                   <div class="spacer"></div>
 
@@ -275,6 +306,8 @@
         </td>
       </tr>
     </table>
+    
+    <ui:include src="../../includes/adminEditScripts.xhtml"/>
 
     <script type="text/javascript">
       function showZone()
@@ -337,7 +370,19 @@
         else
           box = document.getElementById("edit-form:update_" + id);
         if (box)
+        {
           box.checked = true;
+        }
+
+        var span;
+        if (index > 0)
+          span = document.getElementById("edit-form:update_" + id.substring(index + 1) + "_required_flag");
+        else
+          span = document.getElementById("edit-form:update_" + id + "_required_flag");
+        if (span)
+        {
+          span.style.display = "inline";
+        }
       }
     </script>
 

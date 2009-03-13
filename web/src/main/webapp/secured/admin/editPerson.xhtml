@@ -5,7 +5,8 @@
               xmlns:rich="http://richfaces.org/rich"
               xmlns:a4j="http://richfaces.org/a4j"
               xmlns:f="http://java.sun.com/jsf/core"
-              xmlns:security="http://pro.tiwi.com/jsf/security">
+              xmlns:security="http://pro.tiwi.com/jsf/security"
+              xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
 
   <ui:param name="adminSelected" value="current" />
   <ui:param name="helpFile" value="Add_a_Person.htm" />
@@ -40,8 +41,16 @@
                     <h:outputText value=" " /><h:commandButton action="#{personBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
                   </li>
                 </ul>
-
-                <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
+                
+                <ui:fragment rendered="${tiwiprofn:messagesAvailable()}">
+                  <dl id="display-form:j_id122" class="rich-messages msg" style="">
+                     <dt class="error">
+                        #{messages.errorsOnPage}
+                     </dt>
+                  </dl>
+                </ui:fragment>
+                
+                <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg"/>
 
                 <div class="spacer"></div>
 
@@ -187,7 +196,7 @@
                           </td>
                           <td>
                             <rich:message for="address_zip" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.address.zip}" id="address_zip" disabled="#{!personBean.item.userEditable}" onkeydown="checkMultiple(this)" styleClass="text" size="10" maxlength="10" validatorMessage="#{messages.editPerson_zipFormat}">
+                            <h:inputText value="#{personBean.item.address.zip}" label="#{messages.editPerson_address_zip}" id="address_zip" disabled="#{!personBean.item.userEditable}" onkeydown="checkMultiple(this)" styleClass="text" size="10" maxlength="10" validatorMessage="#{messages.editPerson_zipFormat}">
                               <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
                               <f:attribute name="regex" value="\d{5}(-\d{4})?" />
                             </h:inputText>
@@ -498,7 +507,7 @@
                                  required="#{not personBean.batchEdit}" 
                                requiredMessage="#{messages.required}"
                                   onchange="checkMultiple(this)">
-                              <f:selectItems value="#{personBean.statuses}"/>
+                             <f:selectItems value="#{personBean.statuses}"/>
                             </h:selectOneMenu>
                           </td>
                         </tr>
@@ -562,7 +571,8 @@
                             	oninputchange="checkMultiple('driver_expiration')" ondateselect="checkMultiple('driver_expiration')" 
                             	enableManualInput="true" 
                             	converterMessage="#{messages.editPerson_dateFormat}" 
-                            	timeZone="#{personBean.utcTimeZone}" />
+                            	timeZone="#{personBean.utcTimeZone}" /> 
+                                
                           </td>
                         </tr>
                         <ui:fragment rendered="#{not personBean.batchEdit}">

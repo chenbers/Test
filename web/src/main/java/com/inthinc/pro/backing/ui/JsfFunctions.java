@@ -6,9 +6,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import javax.faces.context.FacesContext;
+
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.reports.ReportType;
+import com.sun.facelets.FaceletContext;
 
 public class JsfFunctions
 {
@@ -49,6 +52,14 @@ public class JsfFunctions
             sdf.setTimeZone(timeZone);
         }
         return sdf.format(date);
+    }
+    
+    public static Boolean messagesAvailable()
+    {
+        if(FacesContext.getCurrentInstance().getMessages().hasNext())
+            return Boolean.TRUE;
+        else
+            return Boolean.FALSE;
     }
 
 }
