@@ -23,6 +23,7 @@ public class TeamWarningsBean extends BaseBean
     private List<EventDisplay> warnings;
     private Integer groupID;
     private static final EventCategory category = EventCategory.WARNING;
+    private String groupName;
 
     public List<EventDisplay> getWarnings()
     {
@@ -129,6 +130,16 @@ public class TeamWarningsBean extends BaseBean
     public void setVehicleDAO(VehicleDAO vehicleDAO)
     {
         this.vehicleDAO = vehicleDAO;
+    }
+
+    public String getGroupName()
+    {
+        return groupName = (getGroupHierarchy().getGroup(getGroupID())).getName();
+    }
+
+    public void setGroupName(String groupName)
+    {
+        this.groupName = groupName;
     }
 
 

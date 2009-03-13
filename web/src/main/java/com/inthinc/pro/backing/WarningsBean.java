@@ -11,7 +11,7 @@ import com.inthinc.pro.reports.ReportCriteria;
 
 public class WarningsBean extends BaseEventsBean
 {
-    private static final Logger     logger                  = Logger.getLogger(WarningsBean.class);
+    private static final Logger     logger                  = Logger.getLogger(WarningsBean.class);  
     
     @Override
     protected List<Event> getEventsForGroup(Integer groupID)
@@ -29,7 +29,7 @@ public class WarningsBean extends BaseEventsBean
 
     public String showAllFromRecentAction()
     {
-        setSearchText(null);
+//        setSearchText(null);
         setCategoryFilter(null);
         setEventFilter(null);
         
@@ -59,4 +59,5 @@ public class WarningsBean extends BaseEventsBean
         reportCriteria.setMainDataset(getTableData());
         return reportCriteria;
     }
+
 }

@@ -11,7 +11,9 @@
 			<span class="event">#{messages.team_recentEvents}</span>
 			<span class="panel_links">
 			<h:form id="teamEventsShowAllForm">
-				<h:commandLink action="#{eventsBean.showAllFromRecentAction}" value="#{messages.team_recentEventsShowAll}"/>
+				<h:commandLink action="#{eventsBean.showAllFromRecentAction}" value="#{messages.team_recentEventsShowAll}">				
+					<f:setPropertyActionListener value="#{teamRecentEventsBean.groupName}" target="#{eventsBean.searchText}" />				
+				</h:commandLink>
 			</h:form>	
 			</span>
 		</h:panelGroup>	

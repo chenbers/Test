@@ -32,7 +32,7 @@ public class EventsBean extends BaseEventsBean
     
     public String showAllFromRecentAction()
     {
-        setSearchText(null);
+//        setSearchText(null);
         setCategoryFilter(null);
         setEventFilter(null);
         
@@ -43,8 +43,8 @@ public class EventsBean extends BaseEventsBean
     public void exportReportToPdf()
     {
         getReportRenderer().exportSingleReportToPDF(getReportCriteria(), getFacesContext());
-    }
-    
+    }    
+
     public void emailReport()
     {
         getReportRenderer().exportReportToEmail(getReportCriteria(),getEmailAddress());

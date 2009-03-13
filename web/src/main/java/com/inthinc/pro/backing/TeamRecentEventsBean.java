@@ -29,6 +29,7 @@ public class TeamRecentEventsBean extends BaseBean
     private Integer groupID;
     private EventDisplay selectedEvent;
     private static final EventCategory category = EventCategory.VIOLATION;
+    private String groupName;
 
 
     public EventDisplay getSelectedEvent()
@@ -78,6 +79,16 @@ public class TeamRecentEventsBean extends BaseBean
         }
     }
 
+    public String getGroupName()
+    {        
+        return groupName = (getGroupHierarchy().getGroup(getGroupID())).getName();
+    }
+
+    public void setGroupName(String groupName)
+    {
+        this.groupName = groupName;
+    }
+
     public NavigationBean getNavigation()
     {
         return navigation;
@@ -103,7 +114,8 @@ public class TeamRecentEventsBean extends BaseBean
         if (groupID == null)
         {
             setGroupID(getUser().getGroupID());
-        }
+        }        
+        
         return groupID;
     }
 

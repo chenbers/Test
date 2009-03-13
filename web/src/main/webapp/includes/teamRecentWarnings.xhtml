@@ -11,7 +11,9 @@
 			<span class="warningtitle">#{messages.team_warnings}</span>
 			<span class="panel_links">
 			<h:form id="teamWarningsShowAllForm">
-				<h:commandLink action="#{warningsBean.showAllFromRecentAction}" value="#{messages.team_warningsShowAll}"/>
+				<h:commandLink action="#{warningsBean.showAllFromRecentAction}" value="#{messages.team_warningsShowAll}">				
+					<f:setPropertyActionListener value="#{teamWarningsBean.groupName}" target="#{warningsBean.searchText}" />								
+				</h:commandLink>
 			</h:form>	
 			</span>
 		</h:panelGroup>	
