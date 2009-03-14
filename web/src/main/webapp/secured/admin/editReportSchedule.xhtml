@@ -139,15 +139,21 @@
 								align="center">
 								<tr>
 									<td width="115" valign="top">
-										<h:selectBooleanCheckbox rendered="#{reportScheduleBean.batchEdit and reportScheduleBean.item.occurrence eq 'WEEKLY'}" id="update_dayOfWeek" value="#{reportScheduleBean.updateField['dayOfWeek']}" />
-										<h:outputText value="#{messages.reportSchedule_daysOfWeek}" rendered="#{reportScheduleBean.item.occurrence eq 'WEEKLY'}"/>
+                                        <ui:include src="../../includes/inputLabel.xhtml">
+                                          <ui:param name="required" value="TRUE"/>
+                                          <ui:param name="fieldName" value="dayOfWeek"/>
+                                          <ui:param name="for" value="dayOfWeek"/>
+                                          <ui:param name="editBean" value="#{reportScheduleBean}"/>
+                                          <ui:param name="label" value="#{messages.reportSchedule_daysOfWeek}"/>
+                                       </ui:include>
 									</td>
 									<td>
 										<h:outputText rendered="#{reportScheduleBean.item.occurrence eq 'WEEKLY'}">
-										<ui:include src="../../includes/dayPicker.xhtml">
-			                                <ui:param name="days" value="#{reportScheduleBean.item.dayOfWeek}" />
-			                                <ui:param name="onchange" value="checkMultiple('dayOfWeek')" />
-	                              		</ui:include>	
+                                            <rich:message for="day0" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+      										<ui:include src="../../includes/dayPicker.xhtml">
+      			                                <ui:param name="days" value="#{reportScheduleBean.item.dayOfWeek}" />
+      			                                <ui:param name="onchange" value="checkMultiple('dayOfWeek')" />
+      	                              		</ui:include>	
 	                              		</h:outputText>
 									</td>
 								</tr>
