@@ -1,12 +1,12 @@
-<ui:composition template="/layout/layout.xhtml" 
-              xmlns="http://www.w3.org/1999/xhtml" 
-              xmlns:ui="http://java.sun.com/jsf/facelets"
-              xmlns:h="http://java.sun.com/jsf/html"
-              xmlns:rich="http://richfaces.org/rich"
-              xmlns:a4j="http://richfaces.org/a4j"
-              xmlns:f="http://java.sun.com/jsf/core"
-              xmlns:security="http://pro.tiwi.com/jsf/security"
-              xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
+<ui:composition template="/layout/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:security="http://pro.tiwi.com/jsf/security"
+     xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
 
   <ui:param name="adminSelected" value="current" />
   <ui:param name="helpFile" value="Add_a_Person.htm" />
@@ -226,21 +226,6 @@
                           </td>
                         </tr>
                         <tr>
-                          <td width="100" valign="top">
-                            <h:outputText value="#{messages.editPerson_priEmail}" />
-                            <a4j:outputPanel id="emailRequired">
-                              <h:outputText rendered="#{personBean.item.userSelected}" styleClass="required" value=" *" />
-                            </a4j:outputPanel>
-                          </td>
-                          <td>
-                            <rich:message for="priEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.priEmail}" id="priEmail" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onkeydown="checkMultiple(this)" styleClass="text" size="30"
-                              maxlength="62" required="#{personBean.item.userSelected}" requiredMessage="#{messages.required}" validatorMessage="#{messages.editPerson_emailFormat}">
-                              <f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
-                            </h:inputText>
-                          </td>
-                        </tr>
-                        <tr>
                           <td width="100" valign="top"><h:outputText value="#{messages.editPerson_secEmail}" /></td>
                           <td>
                             <rich:message for="secEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -402,7 +387,7 @@
                       <rich:message for="isUser" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                       <div class="add_section_title">
                         <h:selectBooleanCheckbox rendered="#{not personBean.batchEdit}" id="isUser" disabled="#{!personBean.item.userEditable}" value="#{personBean.item.userSelected}">
-                          <a4j:support event="onclick" ajaxSingle="true" reRender="emailRequired,isUser,userInfoPanel" limitToList="true" />
+                          <a4j:support event="onclick" ajaxSingle="true" reRender="isUser,userInfoPanel" limitToList="true" />
                         </h:selectBooleanCheckbox>
                         <h:outputText value="#{messages.editPerson_userInformation}" />
                       </div>
@@ -445,6 +430,19 @@
                             <rich:message for="confirmPassword" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputSecret value="#{personBean.item.confirmPassword}" id="confirmPassword" disabled="#{!personBean.item.userEditable}" redisplay="true" onkeydown="checkMultiple(this)" styleClass="text" size="30"
                               maxlength="30" required="#{personBean.item.userSelected and empty personBean.item.user.password}" requiredMessage="#{messages.required}" />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="100" valign="top">
+                            <h:outputText value="#{messages.editPerson_priEmail}" />
+                            <h:outputText styleClass="required" value=" *" />
+                          </td>
+                          <td>
+                            <rich:message for="priEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{personBean.item.priEmail}" id="priEmail" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onkeydown="checkMultiple(this)" styleClass="text" size="30"
+                              maxlength="62" required="#{personBean.item.userSelected}" requiredMessage="#{messages.required}" validatorMessage="#{messages.editPerson_emailFormat}">
+                              <f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
+                            </h:inputText>
                           </td>
                         </tr>
                         </ui:fragment>
