@@ -156,6 +156,12 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     {
         return filteredItems.size();
     }
+    
+    public void refreshItems()
+    {
+        items = null;
+        page = 1;
+    }
 
     /**
      * @return the filterValue
