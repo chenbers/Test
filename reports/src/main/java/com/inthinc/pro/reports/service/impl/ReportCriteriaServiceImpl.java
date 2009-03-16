@@ -3,9 +3,11 @@ package com.inthinc.pro.reports.service.impl;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 
@@ -16,6 +18,7 @@ import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.RedFlagDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceReportItem;
 import com.inthinc.pro.model.Driver;
@@ -73,6 +76,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 
         }
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_REPORT, group.getName());
+        reportCriteria.setDuration(duration);
         reportCriteria.setMainDataset(driverReportItems);
 
         return reportCriteria;
@@ -228,6 +232,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         }
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_REPORT, group.getName());
         reportCriteria.setMainDataset(vehicleReportItems);
+        reportCriteria.setDuration(duration);
 
         return reportCriteria;
     }
@@ -303,8 +308,14 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.IDLING_REPORT,group.getName());
         reportCriteria.setMainDataset(idlingReportItems);
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy");
+        reportCriteria.addParameter("BEGIN_DATE", sdf.format(startDate));
+        reportCriteria.addParameter("END_DATE", sdf.format(endDate));
+        
         return reportCriteria;
     }
+    
+    
     
     @Override
     public ReportCriteria getEventsReportCriteria(Integer groupID)

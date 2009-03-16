@@ -108,8 +108,7 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
     
     private Date getGregDate(Date in) 
     {
-        GregorianCalendar gc = new GregorianCalendar(
-                TimeZone.getTimeZone("GMT"));        
+        GregorianCalendar gc = new GregorianCalendar(getUser().getPerson().getTimeZone());        
         
         // Date supplied, reset to...
         if ( in != null ) {

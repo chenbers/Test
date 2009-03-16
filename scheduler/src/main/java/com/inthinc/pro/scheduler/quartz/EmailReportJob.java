@@ -90,7 +90,7 @@ public class EmailReportJob extends QuartzJobBean
     {
         ReportGroup reportGroup = ReportGroup.valueOf(reportSchedule.getReportID());
         List<ReportCriteria> reportCriteriaList = new ArrayList<ReportCriteria>();
-
+        User user = userDAO.findByID(reportSchedule.getUserID());
         for (int i = 0; i < reportGroup.getReports().length; i++)
         {
             switch (reportGroup.getReports()[i]) {
@@ -113,8 +113,8 @@ public class EmailReportJob extends QuartzJobBean
                 reportCriteriaList.add(reportCriteriaService.getVehicleReportCriteria(reportSchedule.getGroupID(), reportSchedule.getReportDuration()));
                 break;
             case IDLING_REPORT:
-                final Calendar endDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-                Calendar startDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+                final Calendar endDate = Calendar.getInstance(user.getPerson().getTimeZone());
+                Calendar startDate = Calendar.getInstance(user.getPerson().getTimeZone());
                 startDate.add(Calendar.DATE, -7);
                 if(logger.isDebugEnabled())
                 {
@@ -129,10 +129,6 @@ public class EmailReportJob extends QuartzJobBean
 
             }
         }
-
-        // TODO I don't want to pull the user this often. But for now it will have to do.
-
-        User user = userDAO.findByID(reportSchedule.getUserID());
         // Set the current date of the reports
         for (ReportCriteria reportCriteria : reportCriteriaList)
         {

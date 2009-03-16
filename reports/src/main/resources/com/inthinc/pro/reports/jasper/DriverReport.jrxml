@@ -30,6 +30,7 @@
 	<parameter name="RECORD_COUNT" isForPrompting="false" class="java.lang.Integer"/>
 	<parameter name="REPORT_LOGO" isForPrompting="false" class="java.io.InputStream"/>
 	<parameter name="REPORT_DATE_AS_STRING" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="DURATION" isForPrompting="false" class="java.lang.String"/>
 
 	<field name="employeeID" class="java.lang.String"/>
 	<field name="employee" class="java.lang.String"/>
@@ -122,6 +123,19 @@
 						<font/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ENTITY_NAME}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="628"
+						y="34"
+						width="153"
+						height="14"
+						key="textField-16"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Top">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Duration: " + $P{DURATION}]]></textFieldExpression>
 				</textField>
 			</band>
 		</title>

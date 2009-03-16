@@ -60,9 +60,10 @@ public class ReportCriteria
         return report;
     }
 
-    public void addParameter(String name, Object value)
+    public ReportCriteria addParameter(String name, Object value)
     {
         paramMap.put(name, value);
+        return this;
     }
     
     public void addPramMap(Map<String, Object> paramMap)

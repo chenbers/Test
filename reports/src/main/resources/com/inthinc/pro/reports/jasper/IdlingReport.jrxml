@@ -30,6 +30,8 @@
 	<parameter name="RECORD_COUNT" isForPrompting="false" class="java.lang.Integer"/>
 	<parameter name="REPORT_DATE_AS_STRING" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="REPORT_LOGO" isForPrompting="false" class="java.io.InputStream"/>
+	<parameter name="BEGIN_DATE" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="END_DATE" isForPrompting="false" class="java.lang.String"/>
 
 	<field name="group" class="java.lang.String"/>
 	<field name="driver.person.fullName" class="java.lang.String"/>
@@ -123,6 +125,19 @@
 						<font/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["Idling Count: " + $P{RECORD_COUNT}.toString()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="417"
+						y="31"
+						width="365"
+						height="17"
+						key="textField-20"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Days Reported: " + $P{BEGIN_DATE} + " - " + $P{END_DATE}]]></textFieldExpression>
 				</textField>
 			</band>
 		</title>
