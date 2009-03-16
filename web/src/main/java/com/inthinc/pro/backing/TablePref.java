@@ -98,10 +98,8 @@ public class TablePref<T>
         for (TablePreference pref : tablePreferenceList)
         {
             if (pref.getTableType().equals(tablePrefOptions.getTableType()))
-            {
-                
-                int columnCount = tablePrefOptions.getAvailableColumns().size();
-                
+            {                
+                int columnCount = tablePrefOptions.getAvailableColumns().size();                
                 // case were we add/delete some columns after some preferences are already saved in backend
                 // in this case delete from db and re-init to all visible
                 if (pref.getVisible().size() != columnCount)
@@ -127,9 +125,7 @@ public class TablePref<T>
         
         Integer tablePrefID = tablePrefOptions.getTablePreferenceDAO().create(tablePrefOptions.getUserID(), pref);
         pref.setTablePrefID(tablePrefID);
-        setTablePreference(pref);
-        
-        
+        setTablePreference(pref);   
     }
 
     /**

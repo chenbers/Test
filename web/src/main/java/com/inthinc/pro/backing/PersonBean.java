@@ -56,7 +56,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private static final long                  serialVersionUID       = 1L;
 
     private static final List<String>          AVAILABLE_COLUMNS;
-    private static final int[]                 DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 13, 24 };
+    private static final int[]                 DEFAULT_COLUMN_INDICES = new int[] { 0, 14, 24, 11 };
 
     private static final Map<String, Gender>   GENDERS;
     private static final Map<String, Integer>  HEIGHTS;

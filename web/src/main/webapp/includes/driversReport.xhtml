@@ -1,163 +1,107 @@
-<ui:composition 
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:rich="http://richfaces.org/rich"
-	xmlns:f="http://java.sun.com/jsf/core"
-  	xmlns:iwi="http://pro.tiwi.com/jsf"
-	xmlns:h="http://java.sun.com/jsf/html">
-		
-		
-			<div class="datagrid">
-			<div class="spacer"></div> 
-			
-		
-			
-        	<rich:datascroller id="topScroller" for="items" immediate="true"
-        		scrollerListener="#{driverReportBean.scrollerListener}"
-        		reRender="bottomScroller,items,headerDrivers"
-        		requestDelay="200" eventsQueue="pagerQueue">
-        	</rich:datascroller>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:iwi="http://pro.tiwi.com/jsf" xmlns:h="http://java.sun.com/jsf/html">
 
-			
-        	
-			      		        						
-				<rich:dataTable value="#{driverData}" id="items"
-					var="item" styleClass="datagrid" 
-					rowClasses="tableOdd,tableEven" cellspacing="1" 
-					rows="#{numRowsPerPg}"
-					width="100%">
- 
-					<rich:column rendered="#{driverColumns['group'].visible}" 
-						sortBy="#{item.group}">
-						<f:facet name="header">
-							<h:outputText value="#{messages.reports_group}" />
-						</f:facet>							
-						<h:outputLink value="#{item.goTo}">
-							<h:outputText value="#{item.group}" />
-						</h:outputLink>											
-    				</rich:column>
-    				<rich:column rendered="#{driverColumns['driver_person_empid'].visible}" 
-    					sortBy="#{item.driver.person.empid}">
-      					<f:facet name="header">
-      						<h:outputText value="#{messages.reports_userID}" />
-      					</f:facet>
-						<h:outputText value="#{item.driver.person.empid}" />      
-    				</rich:column>
-    				<rich:column rendered="#{driverColumns['driver_person_fullName'].visible}" 
-    					sortBy="#{item.driver.person.first}">    					
-      					<f:facet name="header">
-      						<h:outputText value="#{messages.reports_driver}" />
-      					</f:facet>
-      					<a4j:htmlCommandLink action="go_driver" 
-      						value="#{item.driver.person.fullName}">
-							<f:setPropertyActionListener 
-								value="#{item.driver}" 
-								target="#{navigationBean.driver}">
-							</f:setPropertyActionListener>
-						</a4j:htmlCommandLink>      					     					
-    				</rich:column>
-    				<rich:column rendered="#{driverColumns['vehicle_name'].visible}" 
-    					sortBy="#{item.vehicle.name}">
-      					<f:facet name="header">
-      						<h:outputText value="#{messages.reports_vehicle}" />
-      					</f:facet>
-      					<a4j:htmlCommandLink rendered="#{item.vehicle.name != 'None Assigned'}" 
-      						action="go_vehicle" value="#{item.vehicle.name}">
-							<f:setPropertyActionListener 
-								value="#{item.vehicle}" 
-								target="#{navigationBean.vehicle}">
-							</f:setPropertyActionListener>
-						</a4j:htmlCommandLink>   
-						<h:outputText rendered="#{item.vehicle.name == 'None Assigned'}" 
-							value="#{item.vehicle.name}">
-						</h:outputText>   					
-    				</rich:column>
-    				<rich:column rendered="#{driverColumns['milesDriven'].visible}" 
-    					sortBy="#{item.milesDriven}">
-      					<f:facet name="header">
-      						<h:outputText value="#{messages.reports_milesdriven}" />
-      					</f:facet>
-      					<h:outputText value="#{item.milesDriven}" />
-    				</rich:column>
-    				<rich:column rendered="#{driverColumns['overallScore'].visible}"
-    					sortBy="#{item.overallScore}">
-      					<f:facet name="header">
-      						<h:outputText value="#{messages.reports_overall}" />
-      					</f:facet>
-      					<div class="#{item.styleOverall}">
-      						<div class="score">
-      							<a4j:htmlCommandLink action="go_driver">
-      								<h:outputText value="#{item.overallScore}" converter="ScoreConverter" />
-									<f:setPropertyActionListener 
-										value="#{item.driver}" 
-										target="#{navigationBean.driver}">
-									</f:setPropertyActionListener>
-								</a4j:htmlCommandLink>					
-							</div>
-						</div>      					
-    				</rich:column>
-    				<rich:column rendered="#{driverColumns['speedScore'].visible}"
-    					sortBy="#{item.speedScore}">
-      					<f:facet name="header">
-      						<h:outputText value="#{messages.reports_speed}" />
-      					</f:facet>
-      					<div class="#{item.styleSpeed}">
-      						<div class="score">      					
-      							<a4j:htmlCommandLink action="go_reportDriverSpeed">
-      								<h:outputText value="#{item.speedScore}" converter="ScoreConverter" />  
-									<f:setPropertyActionListener 
-										value="#{item.driver}" 
-										target="#{navigationBean.driver}">
-									</f:setPropertyActionListener>
-								</a4j:htmlCommandLink>  
-							</div>
-						</div>      					
-    				</rich:column>
-    				<rich:column rendered="#{driverColumns['styleScore'].visible}"
-    					sortBy="#{item.styleScore}">
-      					<f:facet name="header">
-      						<h:outputText value="#{messages.reports_style}" />
-      					</f:facet>
-      					<div class="#{item.styleStyle}">
-      						<div class="score">         					
-      							<a4j:htmlCommandLink action="go_reportDriverStyle">
-      								<h:outputText value="#{item.styleScore}"  converter="ScoreConverter"/>      
-									<f:setPropertyActionListener 
-										value="#{item.driver}" 
-										target="#{navigationBean.driver}">
-									</f:setPropertyActionListener>
-								</a4j:htmlCommandLink>
-							</div>
-						</div>        					
-    				</rich:column>
-    				<rich:column rendered="#{driverColumns['seatBeltScore'].visible}"
-    					sortBy="#{item.seatBeltScore}">
-      					<f:facet name="header">
-      						<h:outputText value="#{messages.reports_seatbelt}" />
-      					</f:facet>  
-      					<div class="#{item.styleSeatBelt}">
-      						<div class="score">        					
-      							<a4j:htmlCommandLink action="go_reportDriverSeatBelt">
-      								<h:outputText value="#{item.seatBeltScore}" converter="ScoreConverter" />
-									<f:setPropertyActionListener 
-										value="#{item.driver}" 
-										target="#{navigationBean.driver}">
-									</f:setPropertyActionListener>
-								</a4j:htmlCommandLink> 
-							</div>
-						</div>    					      					
-    				</rich:column>
-    			</rich:dataTable>    	
-    			
-    			<rich:datascroller id="bottomScroller" for="items" immediate="true"
-    				scrollerListener="#{driverReportBean.scrollerListener}"
-        			reRender="topScroller,items,headerDrivers"
-        			requestDelay="200" eventsQueue="pagerQueue">        			
-        		</rich:datascroller>
-        		
-        	
-        		
-			</div>
-		
+
+    <div class="datagrid">
+    <div class="spacer"></div>
+
+
+
+    <rich:datascroller id="topScroller" for="items" immediate="true" scrollerListener="#{driverReportBean.scrollerListener}" reRender="bottomScroller,items,headerDrivers"
+        requestDelay="200" eventsQueue="pagerQueue">
+    </rich:datascroller> <rich:dataTable value="#{driverData}" id="items" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{numRowsPerPg}" width="100%">
+
+        <rich:column rendered="#{driverColumns['group'].visible}" sortBy="#{item.group}">
+            <f:facet name="header">
+                <h:outputText value="#{messages.reports_group}" />
+            </f:facet>
+            <h:outputLink value="#{item.goTo}">
+                <h:outputText value="#{item.group}" />
+            </h:outputLink>
+        </rich:column>
+        <rich:column rendered="#{driverColumns['driver_person_empid'].visible}" sortBy="#{item.driver.person.empid}">
+            <f:facet name="header">
+                <h:outputText value="#{messages.reports_empID}" />
+            </f:facet>
+            <h:outputText value="#{item.driver.person.empid}" />
+        </rich:column>
+        <rich:column rendered="#{driverColumns['driver_person_fullName'].visible}" sortBy="#{item.driver.person.first}">
+            <f:facet name="header">
+                <h:outputText value="#{messages.reports_driver}" />
+            </f:facet>
+            <a4j:htmlCommandLink action="go_driver" value="#{item.driver.person.fullName}">
+                <f:setPropertyActionListener value="#{item.driver}" target="#{navigationBean.driver}">
+                </f:setPropertyActionListener>
+            </a4j:htmlCommandLink>
+        </rich:column>
+        <rich:column rendered="#{driverColumns['vehicle_name'].visible}" sortBy="#{item.vehicle.name}">
+            <f:facet name="header">
+                <h:outputText value="#{messages.reports_vehicle}" />
+            </f:facet>
+            <a4j:htmlCommandLink rendered="#{item.vehicle.name != 'None Assigned'}" action="go_vehicle" value="#{item.vehicle.name}">
+                <f:setPropertyActionListener value="#{item.vehicle}" target="#{navigationBean.vehicle}">
+                </f:setPropertyActionListener>
+            </a4j:htmlCommandLink>
+            <h:outputText rendered="#{item.vehicle.name == 'None Assigned'}" value="#{item.vehicle.name}">
+            </h:outputText>
+        </rich:column>
+        <rich:column rendered="#{driverColumns['milesDriven'].visible}" sortBy="#{item.milesDriven}">
+            <f:facet name="header">
+                <h:outputText value="#{messages.reports_milesdriven}" />
+            </f:facet>
+            <h:outputText value="#{item.milesDriven}" />
+        </rich:column>
+        <rich:column rendered="#{driverColumns['overallScore'].visible}" sortBy="#{item.overallScore}">
+            <f:facet name="header">
+                <h:outputText value="#{messages.reports_overall}" />
+            </f:facet>
+            <div class="#{item.styleOverall}">
+            <div class="score"><a4j:htmlCommandLink action="go_driver">
+                <h:outputText value="#{item.overallScore}" converter="ScoreConverter" />
+                <f:setPropertyActionListener value="#{item.driver}" target="#{navigationBean.driver}">
+                </f:setPropertyActionListener>
+            </a4j:htmlCommandLink></div>
+            </div>
+        </rich:column>
+        <rich:column rendered="#{driverColumns['speedScore'].visible}" sortBy="#{item.speedScore}">
+            <f:facet name="header">
+                <h:outputText value="#{messages.reports_speed}" />
+            </f:facet>
+            <div class="#{item.styleSpeed}">
+            <div class="score"><a4j:htmlCommandLink action="go_reportDriverSpeed">
+                <h:outputText value="#{item.speedScore}" converter="ScoreConverter" />
+                <f:setPropertyActionListener value="#{item.driver}" target="#{navigationBean.driver}">
+                </f:setPropertyActionListener>
+            </a4j:htmlCommandLink></div>
+            </div>
+        </rich:column>
+        <rich:column rendered="#{driverColumns['styleScore'].visible}" sortBy="#{item.styleScore}">
+            <f:facet name="header">
+                <h:outputText value="#{messages.reports_style}" />
+            </f:facet>
+            <div class="#{item.styleStyle}">
+            <div class="score"><a4j:htmlCommandLink action="go_reportDriverStyle">
+                <h:outputText value="#{item.styleScore}" converter="ScoreConverter" />
+                <f:setPropertyActionListener value="#{item.driver}" target="#{navigationBean.driver}">
+                </f:setPropertyActionListener>
+            </a4j:htmlCommandLink></div>
+            </div>
+        </rich:column>
+        <rich:column rendered="#{driverColumns['seatBeltScore'].visible}" sortBy="#{item.seatBeltScore}">
+            <f:facet name="header">
+                <h:outputText value="#{messages.reports_seatbelt}" />
+            </f:facet>
+            <div class="#{item.styleSeatBelt}">
+            <div class="score"><a4j:htmlCommandLink action="go_reportDriverSeatBelt">
+                <h:outputText value="#{item.seatBeltScore}" converter="ScoreConverter" />
+                <f:setPropertyActionListener value="#{item.driver}" target="#{navigationBean.driver}">
+                </f:setPropertyActionListener>
+            </a4j:htmlCommandLink></div>
+            </div>
+        </rich:column>
+    </rich:dataTable> <rich:datascroller id="bottomScroller" for="items" immediate="true" scrollerListener="#{driverReportBean.scrollerListener}" reRender="topScroller,items,headerDrivers"
+        requestDelay="200" eventsQueue="pagerQueue">
+    </rich:datascroller></div>
+
 
 </ui:composition>
