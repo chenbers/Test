@@ -6,6 +6,15 @@
               xmlns:a4j="http://richfaces.org/a4j"
               xmlns:f="http://java.sun.com/jsf/core"
               xmlns:security="http://pro.tiwi.com/jsf/security">
+
+	<ui:define name="scripts">              
+		<script type="text/javascript">
+			function bodyLoad()
+			{
+				reInitTable();
+			}
+		</script>             
+	</ui:define>		 
               
 	<ui:param name="reportsSelected" value="current" />
 	<ui:param name="driversSelected" value="current" />
@@ -120,8 +129,7 @@
 								<ui:include src="/includes/driversReport.xhtml">	
 									<ui:param name="numRowsPerPg" value="#{driverReportBean.numRowsPerPg}"/>									
              						<ui:param name="driverData" value="#{driverReportBean.driverData}"/>             						
-             						<ui:param name="driverColumns" value="#{driverReportBean.tableColumns}"/>
-             						<ui:param name="driverTable" value="#{driverReportTable.table}"/>
+             						<ui:param name="driverColumns" value="#{driverReportBean.tableColumns}"/>             						
     							</ui:include>   
     							</div>	
     							</a4j:form>
@@ -148,6 +156,11 @@
 				<ui:param  name="reportBean" value="#{driverReportBean}"/>
 			</ui:include>
 		</h:outputText>
+		
+		<a4j:form id="reIntTab">
+			<a4j:jsFunction name="reInitTable" reRender="outerDriverReport:items" >
+			</a4j:jsFunction>
+		</a4j:form>			
 	</ui:define>
 	
 </ui:composition>

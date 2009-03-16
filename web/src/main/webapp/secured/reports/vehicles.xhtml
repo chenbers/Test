@@ -6,6 +6,15 @@
             xmlns:a4j="http://richfaces.org/a4j"  			
   			xmlns:f="http://java.sun.com/jsf/core">
 
+	<ui:define name="scripts">              
+		<script type="text/javascript">
+			function bodyLoad()
+			{
+				reInitTable();
+			}
+		</script>             
+	</ui:define>  			
+
 	<ui:param name="reportsSelected" value="current" />
 	<ui:param name="vehiclesSelected" value="current" />
 	<ui:param name="helpFile" value="Vehicles.htm" />
@@ -140,12 +149,18 @@
 					</td>
 				</tr>
 			</table>
-			<h:outputText id="vehicle_email_modalPanel">
+			
+		<h:outputText id="vehicle_email_modalPanel">
 			<ui:include src="/includes/emailReportPopup.xhtml">	
 				<ui:param  name="id" value="vehicleReportEmailModal" />
 				<ui:param  name="reportBean" value="#{vehicleReportBean}"/>
 			</ui:include>
 		</h:outputText>
+					
+		<a4j:form id="reIntTab">
+			<a4j:jsFunction name="reInitTable" reRender="outerVehicleReport:items" >
+			</a4j:jsFunction>
+		</a4j:form>					
 	</ui:define>
 	
 
