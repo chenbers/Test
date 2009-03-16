@@ -38,10 +38,11 @@
                                           align="top" />&#160;</h:outputText>
                                  </f:facet>
                         </a4j:status>
-                        <a4j:commandButton image="/images/ico_refresh.png" immediate="true"
+                        <!-- <a4j:commandButton image="/images/ico_refresh.png" immediate="true"
                            reRender="dataTable,bottomScroller" action="#{devicesBean.refreshItems}"
                            value="#{messages.refresh}">
-                        </a4j:commandButton>
+                        </a4j:commandButton> -->
+                        <a4j:jsFunction name="refreshList" action="#{devicesBean.refreshItems}" reRender="dataTable,bottomScroller"></a4j:jsFunction>
                      </a4j:form>
                    </a4j:region>
                 </span>
@@ -60,7 +61,9 @@
 
       </tr>
     </table>
-
+    <script type="text/javascript">
+         refreshList();
+    </script>
   </ui:define>
 
 </ui:composition>
