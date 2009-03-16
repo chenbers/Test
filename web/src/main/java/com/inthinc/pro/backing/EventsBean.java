@@ -63,7 +63,7 @@ public class EventsBean extends BaseEventsBean
         return reportCriteria;
     }
     
-    public void setLinkFromTeam(String linkFromTeam)
+    public void setLinkFromTeam(long linkFromTeam)
     {      
         // MUST re-initialize every time to get fresh search. This 
         //  will also do a search filter with nothing set, giving us
@@ -81,8 +81,9 @@ public class EventsBean extends BaseEventsBean
         setFilteredTableData(searchTableDataResult);        
     }    
     
-    public void filterOnLinkFromTeam(List<EventReportItem> filterItems, String filterValue, boolean matchAllWords)
+    public void filterOnLinkFromTeam(List<EventReportItem> filterItems, long filterValueInt, boolean matchAllWords)
     {
+        String filterValue = String.valueOf(filterValueInt);
         if ((filterValue != null) && (filterValue.length() > 0))
         {
             final String[] filterWords = filterValue.toLowerCase().split("\\s+");
