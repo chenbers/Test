@@ -87,7 +87,8 @@
 
         <!-- START MPG PANEL -->
         <ui:include src="/includes/mpgChart.xhtml"> 
-          <ui:param name="title" value="#{messages.mpg_title}"/>  
+          <ui:param name="title" value="#{messages.mpg_title}"/>
+          <ui:param name="barDef" value="#{mpgBean.barDef}"/>  
           <ui:param name="xyheight" value="350"/>
           <ui:param name="xywidth" value="440"/>
         </ui:include>
