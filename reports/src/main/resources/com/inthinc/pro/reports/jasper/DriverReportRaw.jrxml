@@ -80,7 +80,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<text><![CDATA[User ID]]></text>
+				<text><![CDATA[Employee ID]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
