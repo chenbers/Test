@@ -165,6 +165,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             getItem().setHardTurnSelected(false);
             getItem().setHardVerticalSelected(false);
             getItem().setSeatBeltLevel(RedFlagLevel.NONE);
+            getItem().setCrashLevel(RedFlagLevel.NONE);
 
             // if batch editing and changing speed, make sure the nulled items get set
             if (isBatchEdit())
@@ -176,6 +177,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
                         updateField.put("hardTurnLevel", true);
                         updateField.put("hardVerticalLevel", true);
                         updateField.put("seatBeltLevel", true);
+                        updateField.put("crashLevel", true);
                         break;
                     }
         }
@@ -185,6 +187,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             getItem().setSpeedLevels(null);
             getItem().setSpeedSelected(null);
             getItem().setSeatBeltLevel(RedFlagLevel.NONE);
+            getItem().setCrashLevel(RedFlagLevel.NONE);
 
             if (!getItem().isHardAccelerationSelected())
                 getItem().setHardAccelerationLevel(RedFlagLevel.NONE);
@@ -209,6 +212,8 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
                         if (key.startsWith("speed") && (key.length() <= 7))
                             updateField.put(key, true);
                     updateField.put("seatBeltLevel", true);
+                    updateField.put("crashLevel", true);
+                    
                 }
             }
         }
@@ -225,9 +230,37 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             getItem().setHardBrakeSelected(false);
             getItem().setHardTurnSelected(false);
             getItem().setHardVerticalSelected(false);
+            getItem().setCrashLevel(RedFlagLevel.NONE);
 
             // if batch editing and changing safety, make sure the nulled items get set
             if (isBatchEdit() && updateField.get("seatBeltLevel"))
+            {
+                for (final String key : updateField.keySet())
+                    if (key.startsWith("speed") && (key.length() <= 7))
+                        updateField.put(key, true);
+                updateField.put("hardAccelerationLevel", true);
+                updateField.put("hardBrakeLevel", true);
+                updateField.put("hardTurnLevel", true);
+                updateField.put("hardVerticalLevel", true);
+            }
+        }
+        else if (getItem().getType().equals("crash"))
+        {
+            getItem().setSpeedSettings(null);
+            getItem().setSpeedLevels(null);
+            getItem().setSpeedSelected(null);
+            getItem().setHardAccelerationLevel(RedFlagLevel.NONE);
+            getItem().setHardBrakeLevel(RedFlagLevel.NONE);
+            getItem().setHardTurnLevel(RedFlagLevel.NONE);
+            getItem().setHardVerticalLevel(RedFlagLevel.NONE);
+            getItem().setHardAccelerationSelected(false);
+            getItem().setHardBrakeSelected(false);
+            getItem().setHardTurnSelected(false);
+            getItem().setHardVerticalSelected(false);
+            getItem().setSeatBeltLevel(RedFlagLevel.NONE);
+
+            // if batch editing and changing crash, make sure the nulled items get set
+            if (isBatchEdit() && updateField.get("crashLevel"))
             {
                 for (final String key : updateField.keySet())
                     if (key.startsWith("speed") && (key.length() <= 7))
@@ -393,6 +426,8 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
                     type = "safety";
                 else if (isHardAccelerationSelected() || isHardBrakeSelected() || isHardTurnSelected() || isHardVerticalSelected())
                     type = "drivingStyle";
+                else if (getCrashLevel() != RedFlagLevel.NONE)
+                    type = "crash";
                 else
                     type = "speed";
             }

@@ -63,6 +63,7 @@ public class EventMapper
     static
     {
         typeMap.put(TIWIPRO_EVENT_BASE, Event.class);
+        typeMap.put(TIWIPRO_EVENT_FULLEVENT, FullEvent.class);
         typeMap.put(TIWIPRO_EVENT_NOTEEVENT, AggressiveDrivingEvent.class);
         typeMap.put(TIWIPRO_EVENT_SPEEDING, SpeedingEvent.class);
         typeMap.put(TIWIPRO_EVENT_SPEEDING_EX3, SpeedingEvent.class);
@@ -76,7 +77,9 @@ public class EventMapper
         typeMap.put(TIWIPRO_EVENT_LOW_BATTERY, LowBatteryEvent.class);
         typeMap.put(TIWIPRO_EVENT_LOW_TIWI_BATTERY, DeviceLowBatteryEvent.class);
         typeMap.put(TIWIPRO_EVENT_IDLE, IdleEvent.class);
+        typeMap.put(TIWIPRO_EVENT_ROLLOVER, RollOverEvent.class);
         typeMap.put(TIWIPRO_EVENT_POWER_ON, PowerOnEvent.class);
+        
     }
     @SuppressWarnings("unchecked")
     private static final Map<EventCategory, List<Integer>> categoryMap = new HashMap<EventCategory, List<Integer>> (); 
@@ -94,6 +97,8 @@ public class EventMapper
         warningList.add(TIWIPRO_EVENT_LOW_BATTERY);
         warningList.add(TIWIPRO_EVENT_LOW_TIWI_BATTERY);
         warningList.add(TIWIPRO_EVENT_UNPLUGGED);
+        warningList.add(TIWIPRO_EVENT_ROLLOVER);
+        warningList.add(TIWIPRO_EVENT_FULLEVENT);
         categoryMap.put(EventCategory.WARNING, warningList);
 
         List<Integer> driverCatList = new ArrayList<Integer>();
@@ -101,6 +106,8 @@ public class EventMapper
         driverCatList.add(TIWIPRO_EVENT_WSZONES_DEPARTURE_EX);
         driverCatList.add(TIWIPRO_EVENT_ZONE_ENTER_ALERTED);
         driverCatList.add(TIWIPRO_EVENT_ZONE_EXIT_ALERTED);
+        driverCatList.add(TIWIPRO_EVENT_ROLLOVER);
+        driverCatList.add(TIWIPRO_EVENT_FULLEVENT);
         categoryMap.put(EventCategory.DRIVER, driverCatList);
     }
     

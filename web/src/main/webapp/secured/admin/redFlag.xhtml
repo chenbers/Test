@@ -214,6 +214,21 @@
                           </table>
 
                         </h:panelGroup>
+                        
+                         <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'crash'}">
+
+                          <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
+                            <tr>
+                              <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
+                              <th width="100"><h:outputText value="#{messages.editRedFlag_severity}" /></th>
+                            </tr>
+                            <tr class="tableEven">
+                              <td><h:outputText value="#{messages.editRedFlag_crash}" /></td>
+                              <td><h:outputText value="#{redFlagAlertsBean.item.crashLevel.description}" /></td>
+                            </tr>
+                          </table>
+
+                        </h:panelGroup>
 
                       </td>
                     </tr>

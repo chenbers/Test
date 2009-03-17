@@ -28,6 +28,7 @@ public class RedFlagAlert extends BaseAlert
     private RedFlagLevel      hardTurnLevel;
     private RedFlagLevel      hardVerticalLevel;
     private RedFlagLevel      seatBeltLevel;
+    private RedFlagLevel      crashLevel;
     
     public RedFlagAlert()
     {
@@ -184,4 +185,16 @@ public class RedFlagAlert extends BaseAlert
     {
         this.seatBeltLevel = seatBeltLevel;
     }
+
+    public RedFlagLevel getCrashLevel()
+    {
+        return crashLevel;
+    }
+
+    public void setCrashLevel(RedFlagLevel crashLevel)
+    {
+        this.crashLevel = crashLevel;
+    }
+    
+    
 }
