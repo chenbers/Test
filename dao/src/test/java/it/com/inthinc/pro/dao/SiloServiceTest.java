@@ -578,6 +578,7 @@ public class SiloServiceTest
                 RedFlagLevel.WARNING,
                 RedFlagLevel.WARNING,
                 RedFlagLevel.WARNING,
+                RedFlagLevel.WARNING,
                 RedFlagLevel.WARNING);
 
         

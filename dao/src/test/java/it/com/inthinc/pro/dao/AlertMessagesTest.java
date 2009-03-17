@@ -706,6 +706,7 @@ public class AlertMessagesTest
                 RedFlagLevel.WARNING,
                 RedFlagLevel.WARNING,
                 RedFlagLevel.WARNING,
+                RedFlagLevel.WARNING,
                 RedFlagLevel.WARNING);
 
         
