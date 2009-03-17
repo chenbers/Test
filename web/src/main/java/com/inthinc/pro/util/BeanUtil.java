@@ -18,6 +18,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.BeanInitializationException;
 
+import com.inthinc.pro.backing.BaseBean;
 import com.inthinc.pro.model.ReferenceEntity;
 
 /**
@@ -120,7 +121,9 @@ public class BeanUtil
                                 writeMethod.invoke(target, sourceProperty);
                             // simple copy
                             else if (BeanUtils.isSimpleProperty(clazz) || clazz.isEnum() || clazz.isArray() || clazz.isAssignableFrom(Date.class) 
-                                    || clazz.isAssignableFrom(TimeZone.class) || ReferenceEntity.class.isAssignableFrom(clazz))
+                                    || clazz.isAssignableFrom(TimeZone.class) || ReferenceEntity.class.isAssignableFrom(clazz) 
+                                    || BaseBean.class.isAssignableFrom(clazz) 
+                                    || (SimpleType.valueOf(source.getClass()) != null && SimpleType.valueOf(source.getClass()).getSimpleTypes().contains(clazz)))
                                 writeMethod.invoke(target, sourceProperty);
                             // circular reference: simply store the target reference
                             else if (map.get(sourceProperty) != null)
@@ -189,6 +192,7 @@ public class BeanUtil
      * @throws BeanInitializationException
      * @throws FatalBeanException
      */
+    @SuppressWarnings("unchecked")
     public static void compareAndInit(Object item, Object compareTo)
     {
         final HashSet<Object> compared = new HashSet<Object>();
@@ -237,7 +241,9 @@ public class BeanUtil
                                     // recursive compare
 
                                     if (!BeanUtils.isSimpleProperty(clazz) && !clazz.isEnum() && !Collection.class.isAssignableFrom(clazz) && !Map.class.isAssignableFrom(clazz)
-                                            && !clazz.isArray() && !Date.class.isAssignableFrom(clazz) && !TimeZone.class.isAssignableFrom(clazz) && !ReferenceEntity.class.isAssignableFrom(clazz))
+                                            && !clazz.isArray() && !Date.class.isAssignableFrom(clazz) && !TimeZone.class.isAssignableFrom(clazz) 
+                                            && !ReferenceEntity.class.isAssignableFrom(clazz) && !BaseBean.class.isAssignableFrom(clazz) 
+                                            && !(SimpleType.valueOf(item.getClass()) != null && SimpleType.valueOf(item.getClass()).getSimpleTypes().contains(clazz)))
                                     {
                                         compared.add(o1);
                                         compareAndInit(o1, o2, compared);
@@ -319,7 +325,8 @@ public class BeanUtil
             {
                 try
                 {
-                    if (BeanUtils.isSimpleProperty(clazz) || clazz.isEnum() || clazz.isAssignableFrom(Date.class) || clazz.isAssignableFrom(TimeZone.class) || ReferenceEntity.class.isAssignableFrom(clazz))
+                    if (BeanUtils.isSimpleProperty(clazz) || clazz.isEnum() || clazz.isAssignableFrom(Date.class) || clazz.isAssignableFrom(TimeZone.class) || 
+                            ReferenceEntity.class.isAssignableFrom(clazz) || BaseBean.class.isAssignableFrom(clazz))
                     {
                         if (!"class".equals(descriptor.getName()))
                             names.add(prefix + descriptor.getName());

@@ -574,7 +574,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
                 // null out properties that are not common
                 for (T t : getSelectedItems())
                     BeanUtil.compareAndInit(item, t);
-            }
+            } 
         }
         return item;
     }
