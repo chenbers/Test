@@ -128,7 +128,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
             items = loadItems();
             if (items == null)
                 items = new LinkedList<T>();
-            applyFilter();
+            applyFilter(getPage());
         }
         return items;
     }
@@ -160,7 +160,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     public void refreshItems()
     {
         items = null;
-        page = 1;
+        //page = 1;
     }
 
     /**
@@ -192,16 +192,16 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         if (changed)
         {
             this.filterValue = filterValue;
-            applyFilter();
+            applyFilter(1);
         }
     }
 
     /**
      * Applies the filter.
      */
-    protected void applyFilter()
+    protected void applyFilter(int page)
     {
-        setPage(1);
+        setPage(page);
 
         filteredItems.clear();
         filteredItems.addAll(items);
@@ -389,7 +389,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
             final int index = getItems().indexOf(getItem());
             if (index != -1)
                 items.set(index, revertItem(item));
-            applyFilter();
+            applyFilter(getPage());
         }
 
         // deselect all edit items
@@ -455,7 +455,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         if (add)
         {
             items.add(item);
-            applyFilter();
+            applyFilter(1);
         }
 
         // deselect all edited items
