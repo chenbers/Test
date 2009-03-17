@@ -273,61 +273,78 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
 
         return super.save();
     }
+    
+    @Override
+    protected boolean validateBatchEdit(T batchEditItem) {
+        return validateSaveItem(batchEditItem);
+    };
+    
 
     @Override
     protected boolean validate(List<T> saveItems)
     {
+        boolean valid = true;
+        for (final T saveItem : saveItems)
+        {
+            valid = validateSaveItem(saveItem);
+            if(!valid)
+                break;
+        }
+        return valid;
+    }
+    
+    protected boolean validateSaveItem(T saveItem)
+    {
         final FacesContext context = FacesContext.getCurrentInstance();
 
         boolean valid = true;
-        for (final BaseAlertView alert : saveItems)
+        
+        // at least one day chosen
+        boolean dayPicked = false;
+        for (boolean day : saveItem.getDayOfWeek())
+            if (day)
+            {
+                dayPicked = true;
+                break;
+            }
+        if (!dayPicked)
         {
-            // at least one day chosen
-            boolean dayPicked = false;
-            for (boolean day : alert.getDayOfWeek())
-                if (day)
-                {
-                    dayPicked = true;
-                    break;
-                }
-            if (!dayPicked)
-            {
-                final String summary = MessageUtil.formatMessageString("editAlerts_noDays");
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                context.addMessage("edit-form:day0", message);
-                valid = false;
-            }
+            final String summary = MessageUtil.formatMessageString("editAlerts_noDays");
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+            context.addMessage("edit-form:day0", message);
+            valid = false;
+        }
 
-            // assigned to something
-            boolean assigned = (alert.getGroupIDs() != null) && (alert.getGroupIDs().size() > 0);
-            if (!assigned)
-                assigned = (alert.getDriverIDs() != null) && (alert.getDriverIDs().size() > 0);
-            if (!assigned)
-                assigned = (alert.getVehicleIDs() != null) && (alert.getVehicleIDs().size() > 0);
-            if (!assigned)
-                assigned = (alert.getVehicleTypes() != null) && (alert.getVehicleTypes().size() > 0);
-            if (!assigned)
-            {
-                final String summary = MessageUtil.formatMessageString("editAlerts_unassigned");
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                context.addMessage("edit-form:alertAssignFrom", message);
-                valid = false;
-            }
+        // assigned to something
+        boolean assigned = (saveItem.getGroupIDs() != null) && (saveItem.getGroupIDs().size() > 0);
+        if (!assigned)
+            assigned = (saveItem.getDriverIDs() != null) && (saveItem.getDriverIDs().size() > 0);
+        if (!assigned)
+            assigned = (saveItem.getVehicleIDs() != null) && (saveItem.getVehicleIDs().size() > 0);
+        if (!assigned)
+            assigned = (saveItem.getVehicleTypes() != null) && (saveItem.getVehicleTypes().size() > 0);
+        if (!assigned)
+        {
+            final String summary = MessageUtil.formatMessageString("editAlerts_unassigned");
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+            context.addMessage("edit-form:alertAssignFrom", message);
+            valid = false;
+        }
 
-            // valid e-mail addresses
-            for (final String email : alert.getEmailTo())
+        // valid e-mail addresses
+        for (final String email : saveItem.getEmailTo())
+        {
+            final Matcher matcher = EmailValidator.EMAIL_REGEX.matcher(email);
+            if (!matcher.matches())
             {
-                final Matcher matcher = EmailValidator.EMAIL_REGEX.matcher(email);
-                if (!matcher.matches())
-                {
-                    final String summary = MessageUtil.formatMessageString("editAlerts_emailFormat", email);
-                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                    context.addMessage("edit-form:emailToString", message);
-                    valid = false;
-                    break;
-                }
+                final String summary = MessageUtil.formatMessageString("editAlerts_emailFormat", email);
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                context.addMessage("edit-form:emailToString", message);
+                valid = false;
+                break;
             }
         }
+        
         return valid;
     }
 

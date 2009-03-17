@@ -280,19 +280,17 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
     {
         return createRedFlagAlertView(redFlagAlertDAO.findByID(editItem.getRedFlagAlertID()));
     }
-
-    @Override
-    protected boolean validate(List<RedFlagAlertView> saveItems)
+    
+    protected boolean validateSaveItem(RedFlagAlertView saveItem)
     {
-        boolean valid = super.validate(saveItems);
-        for (final RedFlagAlertView flag : saveItems)
-            if ((flag.getName() == null) || (flag.getName().length() == 0))
-            {
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
-                FacesContext.getCurrentInstance().addMessage("edit-form:name", message);
-                valid = false;
-            }
-        return valid;
+        boolean valid = super.validateSaveItem(saveItem);
+        if ((saveItem.getName() == null) || (saveItem.getName().length() == 0))
+        {
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
+            FacesContext.getCurrentInstance().addMessage("edit-form:name", message);
+            valid = false;
+        }
+        return super.validateSaveItem(saveItem);
     }
 
     @Override

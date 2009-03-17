@@ -175,22 +175,20 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
 
         return super.save();
     }
-
-    @Override
-    protected boolean validate(List<ZoneAlertView> saveItems)
+    
+    protected boolean validateSaveItem(ZoneAlertView saveItem)
     {
         final FacesContext context = FacesContext.getCurrentInstance();
-        boolean valid = super.validate(saveItems);
-
-        // at least one alert is defined
-        for (final ZoneAlertView alert : saveItems)
-            if (!Boolean.TRUE.equals(alert.getArrival()) && !Boolean.TRUE.equals(alert.getDeparture()))
-            {
-                final String summary = MessageUtil.formatMessageString("editZoneAlert_noAlerts");
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                context.addMessage("edit-form:arrival", message);
-                valid = false;
-            }
+        boolean valid = true;
+        valid = super.validateSaveItem(saveItem);
+        if (!Boolean.TRUE.equals(saveItem.getArrival()) && !Boolean.TRUE.equals(saveItem.getDeparture()))
+        {
+            final String summary = MessageUtil.formatMessageString("editZoneAlert_noAlerts");
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+            context.addMessage("edit-form:arrival", message);
+            valid = false;
+        }
+        
         return valid;
     }
 
