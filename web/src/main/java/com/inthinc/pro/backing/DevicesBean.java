@@ -213,43 +213,58 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     }
     
     @Override
+    protected boolean validateBatchEdit(DeviceView batchEditItem)
+    {
+        return validateDevice(batchEditItem);
+    }
+    
+    @Override
     protected boolean validate(List<DeviceView> saveItems)
     {
         boolean valid = true;
-        final String required = "required";
-        
         valid = super.validate(saveItems);
-        
         for(DeviceView deviceView:saveItems)
         {
-            if(!isBatchEdit() || (isBatchEdit() && getUpdateField().get("ephone")))
+            valid = validateDevice(deviceView);
+            if(!valid)
+                break;
+        }
+        
+        return valid;
+    }
+    
+    private boolean validateDevice(DeviceView deviceView)
+    {
+        boolean valid = true;
+        final String required = "required";
+        if(!isBatchEdit() || (isBatchEdit() && getUpdateField().get("ephone")))
+        {
+            if(deviceView.getEphone() == null || deviceView.getEphone().equals(""))
             {
-                if(deviceView.getEphone() == null || deviceView.getEphone().equals(""))
-                {
+                valid = false;
+                final String summary = MessageUtil.getMessageString(required);
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                getFacesContext().addMessage("edit-form:ephone", message);
+            }
+            
+            if(deviceView.getEphone() != null)
+            {
+                
+                
+                if(!deviceView.getEphone().matches("\\D?\\d{3}\\D*\\d{3}\\D?\\d{4}")){
                     valid = false;
-                    final String summary = MessageUtil.getMessageString(required);
-                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                    getFacesContext().addMessage("edit-form:ephone", message);
                 }
                 
-                if(deviceView.getEphone() != null)
-                {
-                    
-                    
-                    if(!deviceView.getEphone().matches("\\D?\\d{3}\\D*\\d{3}\\D?\\d{4}")){
-                        valid = false;
-                    }
-                    
-                    final String summary = MessageUtil.getMessageString("editDevice_phoneFormat");
-                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                    getFacesContext().addMessage("edit-form:ephone", message);
-                   
-                }
+                final String summary = MessageUtil.getMessageString("editDevice_phoneFormat");
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                getFacesContext().addMessage("edit-form:ephone", message);
+               
             }
         }
         
         return valid;
     }
+    
 
     public void validateImei(FacesContext context, UIComponent component, Object value)
     {
