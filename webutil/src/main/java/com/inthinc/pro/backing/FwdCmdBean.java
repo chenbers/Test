@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -9,6 +10,8 @@ import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
+
+import org.richfaces.model.selection.Selection;
 
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DeviceDAO;
@@ -24,14 +27,16 @@ public class FwdCmdBean
     private String imei;
     private Integer fwdcmd;
     private Integer intData;
-    private String stringData;
-    private Device device;
+    private String  stringData;
+    private Device  device;
     private UIInput imeiInput;
     //Device Selection
     private List<SelectItem> accountList;
     private Integer acctID;
     private String  userName;
-    private List<Device> devices = new ArrayList<Device>();
+    private List<Device> devices;
+    private List<Device> selectedDevices = new ArrayList<Device>();
+    private Selection deviceSelection;
 
     
     private DeviceDAO deviceDAO;
@@ -104,7 +109,16 @@ public class FwdCmdBean
     
     public void loadDevices()
     {
-        devices = deviceDAO.getDevicesByAcctID(acctID);
+        if(acctID != null)
+        {
+            devices = new ArrayList<Device>();
+            devices = deviceDAO.getDevicesByAcctID(acctID);
+        }
+        else
+            devices = new ArrayList<Device>();
+        
+        selectedDevices.clear();
+        
     }
 
     public void sendFwdCmdAction()
@@ -124,6 +138,27 @@ public class FwdCmdBean
             data = Integer.valueOf(0);
         }
         deviceDAO.queueForwardCommand(device.getDeviceID(), new ForwardCommand(0, fwdcmd, data, ForwardCommandStatus.STATUS_QUEUED));
+    }
+    
+    public String importSelection()
+    {
+        Iterator<Object> iterator = deviceSelection.getKeys();
+        while(iterator.hasNext())
+        {
+            selectedDevices.add((Device)iterator.next());
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        if(imei != null)
+           sb.append(imei);
+        for(Device device:selectedDevices)
+        {
+            sb.append(device.getDeviceID());
+            sb.append(",");
+        }
+        
+        imei = sb.toString();
+        return null;
     }
     
     public String search()
@@ -196,6 +231,7 @@ public class FwdCmdBean
             {
                 accountList.add(new SelectItem(account.getAcctID(),account.getAcctName() == null ? account.getAcctID().toString() : account.getAcctName()));
             }
+            accountList.set(0,new SelectItem(null,""));
         }
         return accountList;
     }
@@ -234,5 +270,28 @@ public class FwdCmdBean
     public List<Device> getDevices()
     {
         return devices;
+    }
+
+
+    public void setSelectedDevices(List<Device> selectedDevices)
+    {
+        this.selectedDevices = selectedDevices;
+    }
+
+
+    public List<Device> getSelectedDevices()
+    {
+        return selectedDevices;
+    }
+
+    public void setDeviceSelection(Selection deviceSelection)
+    {
+        this.deviceSelection = deviceSelection;
+    }
+
+
+    public Selection getDeviceSelection()
+    {
+        return deviceSelection;
     }
 }
