@@ -28,7 +28,7 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
     private List<DriverReportItem> driversData = new ArrayList<DriverReportItem>();
     private List<DriverReportItem> driverData = new ArrayList<DriverReportItem>();
 
-    private static final List<String> AVAILABLE_COLUMNS;
+    static final List<String> AVAILABLE_COLUMNS;
     private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 2, 3, 4, 5, 7, 8 };
 
     private ScoreDAO scoreDAO;

@@ -1,15 +1,11 @@
 package com.inthinc.pro.backing;
 
-import static org.junit.Assert.assertNotNull;
-
-import java.util.List;
 import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.inthinc.pro.backing.ui.RedFlagReportItem;
 import com.inthinc.pro.backing.ui.TableColumn;
 
 public class DriverReportBeanTest extends BaseBeanTest
