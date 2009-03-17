@@ -10,6 +10,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
+import com.inthinc.pro.backing.listener.SearchChangeListener;
 import com.inthinc.pro.backing.ui.RedFlagReportItem;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.EventDAO;
@@ -22,7 +23,7 @@ import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.reports.ReportCriteria;
 
-public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<RedFlagReportItem>, PersonChangeListener
+public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<RedFlagReportItem>, PersonChangeListener, SearchChangeListener
 {
     private static final Logger     logger                  = Logger.getLogger(RedFlagsBean.class);
 
@@ -48,8 +49,10 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     private Event eventFilter;
     
     private String searchText;
+    private SearchCoordinationBean searchCoordinationBean;
     
-    private TablePref<RedFlagReportItem> tablePref;
+
+	private TablePref<RedFlagReportItem> tablePref;
 
     // package level -- so unit test can get it
     static final List<String>       AVAILABLE_COLUMNS;
@@ -74,6 +77,9 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     {
         super.initBean();
         tablePref = new TablePref<RedFlagReportItem>(this);
+        searchCoordinationBean.addSearchChangeListener(this);
+		searchText = searchCoordinationBean.getSearchFor();
+
     }
     
     public void scrollerListener(DataScrollerEvent event)
@@ -346,7 +352,12 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
             setCategoryFilter(null);
             setEventFilter(null);
         }
-        this.searchText = searchText;
+     	if (searchText != null) {
+    		
+	        this.searchText = searchText;
+	        searchCoordinationBean.notifySearchChangeListeners(this,searchText);
+    	}
+
     }
     
     public void searchAction()
@@ -463,5 +474,29 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
         reportCriteria.setMainDataset(getTableData());
         return reportCriteria;
     }
+
+	@Override
+	public synchronized void searchChanged(String searchFor) {
+
+        if (searchFor == null || searchFor.isEmpty())
+        {
+            setCategoryFilter(null);
+            setEventFilter(null);
+        }
+     	if (searchFor != null) {
+    		
+	        this.searchText = searchFor;
+    	}
+		filterTableData();
+	}
+	
+    public SearchCoordinationBean getSearchCoordinationBean() {
+		return searchCoordinationBean;
+	}
+
+	public void setSearchCoordinationBean(
+			SearchCoordinationBean searchCoordinationBean) {
+		this.searchCoordinationBean = searchCoordinationBean;
+	}
 
 }

@@ -191,4 +191,10 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
     {
         return TableType.VEHICLE_REPORT;
     }
+    @Override
+	public String updateSearchAction() {
+    	
+		super.updateSearchAction();
+		return "go_vehicles";
+	}
 }

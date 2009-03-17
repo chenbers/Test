@@ -21,7 +21,7 @@
     <!-- Navigation bean -->
     <bean id="navigationBean" class="com.inthinc.pro.backing.NavigationBean" scope="session" parent="baseBean">
     	 <property name="groupDAO" ref="groupDAO"></property>
-        <property name="durationBean" ref="navigationDurationBean"/>
+         <property name="durationBean" ref="navigationDurationBean"/>
     </bean>
     
     <!-- Printing Reports -->
@@ -331,6 +331,7 @@
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
         <property name="reportRenderer" ref="reportRenderer"></property>
         <property name="reportCriteriaService" ref="reportCriteriaService"></property>
+        <property name="searchCoordinationBean" ref="searchCoordinationBean"></property>
     </bean>
     <bean id="driverReportTable" class="com.inthinc.pro.backing.ui.DriverReportTable" scope="session"></bean>
     <bean id="vehicleReportBean" class="com.inthinc.pro.backing.VehicleReportBean" scope="session" parent="baseBean" init-method="init">
@@ -338,6 +339,7 @@
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
         <property name="reportRenderer" ref="reportRenderer"></property>
         <property name="reportCriteriaService" ref="reportCriteriaService"></property>
+        <property name="searchCoordinationBean" ref="searchCoordinationBean"></property>
     </bean>
     <bean id="vehicleReportTable" class="com.inthinc.pro.backing.ui.VehicleReportTable" scope="session"></bean>
     <bean id="baseRedFlagsBean" class="com.inthinc.pro.backing.BaseRedFlagsBean" scope="session" parent="baseBean">
@@ -350,6 +352,7 @@
         <property name="redFlagDAO" ref="redFlagDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
+        <property name="searchCoordinationBean" ref="searchCoordinationBean"></property>
     </bean>
     <bean id="baseEventsBean" class="com.inthinc.pro.backing.BaseEventsBean" scope="session" parent="baseRedFlagsBean">
         <property name="eventDAO" ref="eventDAO"></property>
@@ -358,14 +361,17 @@
         <property name="reportCriteriaService" ref="reportCriteriaService"></property>
     </bean>
     <bean id="eventsBean" class="com.inthinc.pro.backing.EventsBean" scope="session" parent="baseEventsBean"  init-method="initBean">
+        <property name="searchCoordinationBean" ref="searchCoordinationBean"></property>
     </bean>
     <bean id="warningsBean" class="com.inthinc.pro.backing.WarningsBean" scope="session" parent="baseEventsBean" init-method="initBean">
+        <property name="searchCoordinationBean" ref="searchCoordinationBean"></property>
     </bean>
     <bean id="idlingReportBean" class="com.inthinc.pro.backing.IdlingReportBean" scope="session" parent="baseBean" init-method="init">
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
         <property name="scoreDAO" ref="scoreDAO"></property>   
         <property name="reportRenderer" ref="reportRenderer"></property>    
         <property name="reportCriteriaService" ref="reportCriteriaService"></property> 
+        <property name="searchCoordinationBean" ref="searchCoordinationBean"></property>
     </bean>
     <bean id="idlingReportTable" class="com.inthinc.pro.backing.ui.IdlingReportTable" scope="session"></bean>
     <bean id="deviceReportBean" class="com.inthinc.pro.backing.DeviceReportBean" scope="session" parent="baseBean" init-method="init">
@@ -374,6 +380,7 @@
         <property name="deviceDAO" ref="deviceDAO"/>
         <property name="reportRenderer" ref="reportRenderer"></property>
         <property name="reportCriteriaService" ref="reportCriteriaService"></property>
+        <property name="searchCoordinationBean" ref="searchCoordinationBean"></property>
     </bean>    
     
     <bean id="tableStatsBean" class="com.inthinc.pro.backing.TableStatsBean" scope="request"/>
@@ -392,6 +399,7 @@
     <bean id="vehicleSpeedDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
     <bean id="vehicleStyleDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
     
-    
+    <!-- Search Bean -->
+     <bean id="searchCoordinationBean" class="com.inthinc.pro.backing.SearchCoordinationBean" scope="session"/>
     
 </beans>

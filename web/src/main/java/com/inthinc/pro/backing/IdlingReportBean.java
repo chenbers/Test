@@ -342,5 +342,11 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
         reportCriteria.setMainDataset(idlingData);
         getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
     }
+    @Override
+	public String updateSearchAction() {
+    	
+		super.updateSearchAction();
+		return "go_idling";
+	}
 }
 

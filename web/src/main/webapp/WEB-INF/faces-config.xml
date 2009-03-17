@@ -137,6 +137,24 @@
 	</navigation-rule>
 	<navigation-rule>
 		<navigation-case>
+			<from-outcome>go_vehicles</from-outcome>
+			<to-view-id>/secured/reports/vehicles.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>go_devices</from-outcome>
+			<to-view-id>/secured/reports/devices.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>go_idling</from-outcome>
+			<to-view-id>/secured/reports/idling.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<navigation-case>
 			<from-outcome>go_emailReports</from-outcome>
 			<to-view-id>/secured/reports/emailReport.xhtml</to-view-id>
 		</navigation-case>

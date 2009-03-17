@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
+import com.inthinc.pro.backing.listener.SearchChangeListener;
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.EventDAO;
@@ -20,7 +21,7 @@ import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 
-public class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions<EventReportItem>, PersonChangeListener
+public class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions<EventReportItem>, PersonChangeListener, SearchChangeListener
 {
     private static final Logger     logger                  = Logger.getLogger(EventsBean.class);
 
@@ -44,6 +45,8 @@ public class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions
     private Event eventFilter;
     
     private String searchText;
+    private SearchCoordinationBean searchCoordinationBean;
+    
     private ReportRenderer      reportRenderer;
     private ReportCriteriaService reportCriteriaService;
     
@@ -70,7 +73,10 @@ public class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions
     {
         super.initBean();
         tablePref = new TablePref<EventReportItem>(this);
-    }
+        
+        searchCoordinationBean.addSearchChangeListener(this);
+		searchText = searchCoordinationBean.getSearchFor();
+   }
 
     public TablePref<EventReportItem> getTablePref()
     {
@@ -330,6 +336,7 @@ public class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions
             setEventFilter(null);
         }
         this.searchText = searchText;
+        searchCoordinationBean.notifySearchChangeListeners(this,searchText);
     }
     
     public void searchAction()
@@ -440,6 +447,21 @@ public class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions
     {
         return emailAddress;
     }
+	@Override
+	public synchronized void searchChanged(String searchFor) {
+
+        this.searchText = searchFor;
+		filterTableData();
+	}
+	
+    public SearchCoordinationBean getSearchCoordinationBean() {
+		return searchCoordinationBean;
+	}
+
+	public void setSearchCoordinationBean(
+			SearchCoordinationBean searchCoordinationBean) {
+		this.searchCoordinationBean = searchCoordinationBean;
+	}
 
 }
 

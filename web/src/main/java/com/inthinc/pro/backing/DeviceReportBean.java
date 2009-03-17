@@ -70,6 +70,8 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
     @Override
     protected void loadDBData()
     {
+    	devicesData.clear();
+    	
         List<Vehicle> vehicList = 
             vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
 
@@ -193,6 +195,12 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
         reportCriteria.setMainDataset(deviceData);
         getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
     }
+    @Override
+	public String updateSearchAction() {
+    	
+		super.updateSearchAction();
+		return "go_devices";
+	}
 
 }
 

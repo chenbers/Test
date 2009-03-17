@@ -2,23 +2,22 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 import org.richfaces.event.DataScrollerEvent;
 
+import com.inthinc.pro.backing.listener.SearchChangeListener;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 
-public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOptions<T>
+public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOptions<T>, SearchChangeListener
 {
-    private static final Logger logger       = Logger.getLogger(BaseReportBean.class);
+    @SuppressWarnings("unused")
+	private static final Logger logger       = Logger.getLogger(BaseReportBean.class);
 
     private boolean             mainMenu;
     private TablePreferenceDAO  tablePreferenceDAO;
@@ -31,10 +30,13 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     private Integer             start        = 1;
     private Integer             end          = numRowsPerPg;
 
-    protected String              searchFor    = "";
+    protected String            searchFor    = "";
+//    private boolean				searchChanged = true;
     private String              secret       = "";
 
-    public BaseReportBean()
+    private SearchCoordinationBean searchCoordinationBean;
+
+	public BaseReportBean()
     {
 
     }
@@ -42,21 +44,37 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     public void init() 
     {
         setTablePref(new TablePref<T>(this));
-
+        
+        searchCoordinationBean.addSearchChangeListener(this);
+        
+        // On init the search string can either be from the main menu, which can be found in the request map
+        // or from the latest search done in the red flags or other report page.
+        
         searchFor = checkForRequestMap();
         
-        loadDBData();
+        if (isMainMenu()){
+        	
+        	searchCoordinationBean.notifySearchChangeListeners(this,searchFor);
+        	setMainMenu(false);
+        }
+        else {
+        	
+        	searchFor = searchCoordinationBean.getSearchFor();
+         }	
+ 
+//       	searchChanged = true;
+//        loadDBData();
         
         //Bean creation could be from Reports selection or
         //  search on main menu. This accounts for a search
         //  from the main menu w/ never having been to the 
         //  Drivers report page.
-        if (  isMainMenu() ) {  
-            checkOnSearch();
-            setMainMenu(false);
-        } else {
-            loadResults(getDisplayData());
-        }
+ //       if (  isMainMenu() ) {  
+ //           checkOnSearch();
+ //           setMainMenu(false);
+ //       } else {
+ //           loadResults(getDisplayData());
+ //       }
     }
 
     public TablePreferenceDAO getTablePreferenceDAO()
@@ -114,17 +132,30 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
 
     protected void checkOnSearch()
     {
-        if ((searchFor != null) && (searchFor.trim().length() != 0))
-        {
-            search();
-        }
-        else
-        {
-            loadResults(getDBData());
-        }
-
-        maxCount = getDisplayData().size();
-        resetCounts();
+//    	if (searchChanged){
+    		
+    	loadDBData();
+    	if ((searchFor != null) && (!searchFor.isEmpty()))
+	        {
+	        	getDisplayData().clear();
+	 
+	            final List<T> matchedItems = new ArrayList<T>();
+	            matchedItems.addAll(getDBData());
+	
+	            tablePref.filter(matchedItems, searchFor, matchAllFilterWords());
+	
+	            loadResults(matchedItems);
+	            this.maxCount = matchedItems.size();
+	        }
+	        else
+	        {
+	            loadResults(getDBData());
+	            maxCount = getDisplayData().size();
+	        }
+	
+	        resetCounts();
+//    	}
+//    	searchChanged = false;
     }
 
     public void search()
@@ -203,27 +234,24 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
 
     public String getSecret()
     {
-        String searchForLocal = checkForRequestMap();
-        String search = searchForLocal.toLowerCase().trim();
-        if ((search.length() != 0) && (!search.equalsIgnoreCase(this.searchFor)))
-        {
-            this.searchFor = searchForLocal.toLowerCase().trim();
-        }
-
-        if (isMainMenu())
-        {
-            checkOnSearch();
-            setMainMenu(false);
-        }
-        else if (this.searchFor.trim().length() != 0)
-        {
-            checkOnSearch();
-        }
-        else
-        {
-            loadResults(getDBData());
-        }
-
+	    String searchForLocal = checkForRequestMap();
+	    
+	    if ((searchForLocal != null) && !searchForLocal.isEmpty() && !searchForLocal.equalsIgnoreCase(this.searchFor))
+	    {
+	        this.searchFor = searchForLocal;
+//	        searchChanged = true;
+	    	searchCoordinationBean.notifySearchChangeListeners(this,searchFor);
+		    checkOnSearch();
+	    	setMainMenu(false);
+	    }
+		else {
+			
+		    checkOnSearch();
+		}
+//		else
+//		{
+//		    loadResults(getDBData());
+//		}
         return secret;
     }
 
@@ -279,35 +307,23 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
 
     public void setSearchFor(String searchFor)
     {
-        this.searchFor = searchFor;
+    	if (searchFor != null ){
+    		
+	        this.searchFor = searchFor;
+//	        searchChanged = true;
+	        searchCoordinationBean.notifySearchChangeListeners(this,searchFor);
+    	}
     }
 
     protected String checkForRequestMap()
     {
-        String searchFor = "";
-        mainMenu = false;
-
-        Map<String, String> m = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        Iterator<Map.Entry<String, String>> imap = m.entrySet().iterator();
-
-        // if there is a map, the request came from the
-        // main menu search, so grab it
-        while (imap.hasNext())
-        {
-            Map.Entry<String, String> entry = imap.next();
-            String key = entry.getKey();
-            String value = entry.getValue();
-
-            // search param, either from the search in the main menu or
-            // one from the report
-            if (key.equalsIgnoreCase("searchFor"))
-            {
-                searchFor = value;
-                mainMenu = true;
-            }
-        }
-
-        return searchFor;
+        String requestSearchFor = (String)getParameter("searchFor");
+        
+        if (requestSearchFor != null) requestSearchFor = requestSearchFor.trim();
+        
+        mainMenu = ((requestSearchFor != null) && !requestSearchFor.isEmpty());
+        
+       	return requestSearchFor;
     }
 
     protected Integer floatToInteger(float value)
@@ -367,4 +383,26 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     {
         return reportCriteriaService;
     }
+    
+    public SearchCoordinationBean getSearchCoordinationBean() {
+		return searchCoordinationBean;
+	}
+
+	public void setSearchCoordinationBean(
+			SearchCoordinationBean searchCoordinationBean) {
+		this.searchCoordinationBean = searchCoordinationBean;
+	}
+	
+	public String updateSearchAction(){
+		
+		searchCoordinationBean.notifySearchChangeListeners(this,searchFor);
+		return null;
+	}
+	@Override
+	public synchronized void searchChanged(String searchFor) {
+
+		this.searchFor = searchFor;
+//		searchChanged = true;
+	}
+
 }

@@ -45,16 +45,8 @@
 									<a4j:form id="outerDriverReport">	
 									
 										<h:inputHidden value="#{driverReportBean.secret}"/>
-																											
-										<div class="msg">
-											<p id="redflag">
-												<h:outputFormat id="headerRedDriver" 
-													value="#{messages.reports_redflagscountheader}">
-													<a4j:actionparam value="#{redFlagsBean.maxCount}"/>
-												</h:outputFormat>												
-												(<a href="#{facesContext.externalContext.request.contextPath}/secured/redFlags/redFlags.faces">#{messages.reports_view}</a>) 
-											</p>
-										</div>									  	
+											<ui:include src="/includes/redFlagsCount.xhtml" />	
+																										
 										<ul id="grid_nav" style="margin: 0;">            							
             								<li class="l">
               									<table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
@@ -70,7 +62,7 @@
             								</li>
             								<li class="l">
             									<a4j:commandButton id="searchButton" action="#{driverReportBean.search}" 
-            										reRender="items,topScroller,bottomScroller,headerDrivers" styleClass="left">
+            										reRender="headerRedCount,items,topScroller,bottomScroller,headerDrivers" styleClass="left">
             											<span class="search">
             												<h:outputText value="#{messages.button_search}" />
             											</span>
