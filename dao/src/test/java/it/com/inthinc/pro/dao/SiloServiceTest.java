@@ -481,7 +481,7 @@ public class SiloServiceTest
         
         for (Trip t : tripList)
         {
-//            assertEquals(TESTING_DRIVER_ID, t.getDriverID());
+            assertEquals(TESTING_DRIVER_ID, t.getDriverID());
             assertTrue(startDate.before(t.getStartTime()));
             assertTrue(endDate.after(t.getEndTime()));
             assertTrue(t.getMileage() > 0);

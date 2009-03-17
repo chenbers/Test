@@ -14,6 +14,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
@@ -416,6 +417,7 @@ public class MockData
         user.getPerson().setPriEmail(email);
         user.getPerson().setFirst(username.substring(0, username.length() / 2));
         user.getPerson().setLast(username.substring(username.length() / 2));
+        user.getPerson().setTimeZone(TimeZone.getTimeZone("MST"));
         user.getPerson().setUser(user);
         return user;
     }
