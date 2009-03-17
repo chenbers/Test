@@ -79,7 +79,7 @@ public class SpeedingEvent extends Event
     }
     public String getDetails(String formatStr)
     {
-        return MessageFormat.format(formatStr, new Object[] {avgSpeed, speedLimit});
+        return MessageFormat.format(formatStr, new Object[] {topSpeed, speedLimit});
     }
 
 }
