@@ -184,7 +184,7 @@
                           <a4j:support event="onclick" reRender="speed,drivingStyle,safety,crash" limitToList="true" />
                           <f:selectItem itemValue="speed" itemLabel="#{messages.redFlag_speed}" />
                           <f:selectItem itemValue="drivingStyle" itemLabel="#{messages.redFlag_drivingStyle}" />
-                          <f:selectItem itemValue="safety" itemLabel="#{messages.redFlag_safety}" />
+                          <f:selectItem itemValue="seatBelt" itemLabel="#{messages.redFlag_seatBelt}" />
                           <f:selectItem itemValue="crash" itemLabel="#{messages.redFlag_crash}" />
                         </h:selectOneRadio>
                       </td>
@@ -319,7 +319,7 @@
                         </a4j:outputPanel>
 
                         <a4j:outputPanel id="safety">
-                          <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'safety'}">
+                          <h:panelGroup rendered="#{redFlagAlertsBean.item.type == 'seatBelt'}">
 
                             <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
                               <tr>

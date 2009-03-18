@@ -217,7 +217,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
                 }
             }
         }
-        else if (getItem().getType().equals("safety"))
+        else if (getItem().getType().equals("seatBelt"))
         {
             getItem().setSpeedSettings(null);
             getItem().setSpeedLevels(null);
@@ -232,7 +232,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             getItem().setHardVerticalSelected(false);
             getItem().setCrashLevel(RedFlagLevel.NONE);
 
-            // if batch editing and changing safety, make sure the nulled items get set
+            // if batch editing and changing seatBelt, make sure the nulled items get set
             if (isBatchEdit() && updateField.get("seatBeltLevel"))
             {
                 for (final String key : updateField.keySet())
@@ -420,11 +420,11 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         {
             if (type == null)
             {
-                if (getSeatBeltLevel() != RedFlagLevel.NONE)
-                    type = "safety";
+                if (getSeatBeltLevel() != null && getSeatBeltLevel() != RedFlagLevel.NONE)
+                    type = "seatBelt";
                 else if (isHardAccelerationSelected() || isHardBrakeSelected() || isHardTurnSelected() || isHardVerticalSelected())
                     type = "drivingStyle";
-                else if (getCrashLevel() != RedFlagLevel.NONE)
+                else if (getCrashLevel() != null && getCrashLevel() != RedFlagLevel.NONE)
                     type = "crash";
                 else
                     type = "speed";
