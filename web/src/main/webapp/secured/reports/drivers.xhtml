@@ -150,7 +150,8 @@
 		</h:outputText>
 		
 		<a4j:form id="reIntTab">
-			<a4j:jsFunction name="reInitTable" reRender="outerDriverReport:items" >
+			<a4j:jsFunction name="reInitTable" 
+			reRender="outerDriverReport:items,outerDriverReport:topScroller,outerDriverReport:bottomScroller" >
 			</a4j:jsFunction>
 		</a4j:form>			
 	</ui:define>
