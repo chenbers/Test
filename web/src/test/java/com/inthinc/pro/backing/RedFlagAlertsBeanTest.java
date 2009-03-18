@@ -35,7 +35,7 @@ public class RedFlagAlertsBeanTest extends BaseAdminBeanTest<RedFlagAlertsBean.R
             dayOfWeek.add(new Boolean(MiscUtil.randomInt(0, 1) == 1));
         editItem.setDayOfWeek(dayOfWeek);
         editItem.setSeatBeltLevel(RedFlagLevel.WARNING);
-        assertEquals("safety", editItem.getType());
+        assertEquals("seatBelt", editItem.getType());
         final List<SelectItem> pickedGroups = new ArrayList<SelectItem>();
         pickedGroups.add(new SelectItem("group101"));
         ((RedFlagAlertsBean) adminBean).getAssignPicker().setPicked(pickedGroups);
