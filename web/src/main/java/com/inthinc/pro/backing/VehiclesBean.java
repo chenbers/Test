@@ -346,7 +346,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             context.addMessage("edit-form:model", new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null));
         }
         
-        if(vehicle.getGroupID() == null || vehicle.getGroupID().equals("")
+        if((vehicle.getGroupID() == null || vehicle.getGroupID().equals(""))
                 && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("groupID"))))
         {
             valid = false;
