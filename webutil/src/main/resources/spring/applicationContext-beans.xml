@@ -20,6 +20,8 @@
     <bean id="fwdcmdBean" class="com.inthinc.pro.backing.FwdCmdBean" scope="session">
 		<property name="deviceDAO" ref="deviceDAO" />
 		<property name="accountDAO" ref="accountDAO" />
+		<property name="userDAO" ref="userDAO" />
+		<property name="groupDAO" ref="groupDAO" />
 	</bean>
     
 </beans>

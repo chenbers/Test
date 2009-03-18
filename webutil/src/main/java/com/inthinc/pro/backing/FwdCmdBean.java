@@ -15,20 +15,22 @@ import org.richfaces.model.selection.Selection;
 
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DeviceDAO;
+import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.ForwardCommand;
 import com.inthinc.pro.model.ForwardCommandStatus;
+import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.User;
 
 public class FwdCmdBean
 {
 
     // Forward Command Excetion
-    private String imei;
     private Integer fwdcmd;
     private Integer intData;
     private String stringData;
-    private Device device;
     private UIInput imeiInput;
     // Device Selection
     private List<SelectItem> accountList;
@@ -40,6 +42,9 @@ public class FwdCmdBean
 
     private DeviceDAO deviceDAO;
     private AccountDAO accountDAO;
+    private UserDAO userDAO;
+    private GroupDAO groupDAO;
+    private Integer page;
 
     public FwdCmdBean()
     {
@@ -76,24 +81,6 @@ public class FwdCmdBean
         this.stringData = stringData;
     }
 
-    public void validateIMEI(FacesContext context, UIComponent component, Object value)
-    {
-        if (imeiInput.isValid())
-        {
-            if (String.class.isInstance(value))
-            {
-                device = deviceDAO.findByIMEI(String.valueOf(value));
-                if (device == null)
-                {
-                    FacesMessage message = new FacesMessage();
-                    message.setSummary("A device with that IMEI does not exist.");
-                    message.setSeverity(FacesMessage.SEVERITY_ERROR);
-                    throw new ValidatorException(message);
-                }
-            }
-        }
-    }
-
     public void loadDevices()
     {
         if (acctID != null)
@@ -101,16 +88,32 @@ public class FwdCmdBean
             devices = new ArrayList<Device>();
             devices = deviceDAO.getDevicesByAcctID(acctID);
         }
+        else if(userName != null)
+        {
+            
+            User user = userDAO.findByUserName(userName);
+            if(user != null)
+            {
+                Group group = groupDAO.findByID(user.getGroupID());
+                devices = new ArrayList<Device>();
+                devices = deviceDAO.getDevicesByAcctID(group.getAccountID());
+            }
+        }
         else
             devices = new ArrayList<Device>();
 
         selectedDevices.clear();
-
     }
 
     public void sendFwdCmdAction()
     {
-
+        selectedDevices.clear();
+        Iterator<Object> iterator = deviceSelection.getKeys();
+        while(iterator.hasNext())
+        {
+            selectedDevices.add(devices.get((Integer)iterator.next()));
+        }
+        
         Object data = null;
         if (stringData != null && !stringData.isEmpty())
         {
@@ -124,43 +127,23 @@ public class FwdCmdBean
         {
             data = Integer.valueOf(0);
         }
-        deviceDAO.queueForwardCommand(device.getDeviceID(), new ForwardCommand(0, fwdcmd, data, ForwardCommandStatus.STATUS_QUEUED));
+        
+        for(Device device:selectedDevices)
+        {
+            deviceDAO.queueForwardCommand(device.getDeviceID(), new ForwardCommand(0, fwdcmd, data, ForwardCommandStatus.STATUS_QUEUED));
+        }
+       
     }
-
-    public String importSelection()
+    
+    public void clearSelection()
     {
-        Iterator<Object> iterator = deviceSelection.getKeys();
-        while (iterator.hasNext())
-        {
-            selectedDevices.add((Device) iterator.next());
-        }
-
-        StringBuilder sb = new StringBuilder();
-        if (imei != null)
-            sb.append(imei);
-        for (Device device : selectedDevices)
-        {
-            sb.append(device.getDeviceID());
-            sb.append(",");
-        }
-
-        imei = sb.toString();
-        return null;
+        selectedDevices.clear();
+        page = 1;
     }
 
     public String search()
     {
         return null;
-    }
-
-    public String getImei()
-    {
-        return imei;
-    }
-
-    public void setImei(String imei)
-    {
-        this.imei = imei;
     }
 
     public UIInput getImeiInput()
@@ -262,5 +245,35 @@ public class FwdCmdBean
     public Selection getDeviceSelection()
     {
         return deviceSelection;
+    }
+
+    public void setUserDAO(UserDAO userDAO)
+    {
+        this.userDAO = userDAO;
+    }
+
+    public UserDAO getUserDAO()
+    {
+        return userDAO;
+    }
+
+    public void setGroupDAO(GroupDAO groupDAO)
+    {
+        this.groupDAO = groupDAO;
+    }
+
+    public GroupDAO getGroupDAO()
+    {
+        return groupDAO;
+    }
+
+    public void setPage(Integer page)
+    {
+        this.page = page;
+    }
+
+    public Integer getPage()
+    {
+        return page;
     }
 }

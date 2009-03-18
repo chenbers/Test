@@ -1,185 +1,201 @@
 <ui:composition template="/template/template.xhtml"
-   xmlns="http://www.w3.org/1999/xhtml" 
-	xmlns:ui="http://java.sun.com/jsf/facelets" 
-	xmlns:h="http://java.sun.com/jsf/html"
-  	xmlns:f="http://java.sun.com/jsf/core" 
-  	xmlns:a4j="http://richfaces.org/a4j" 
-  	xmlns:rich="http://richfaces.org/rich"
-    xmlns:t="http://myfaces.apache.org/tomahawk">
+   xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:a4j="http://richfaces.org/a4j"
+   xmlns:rich="http://richfaces.org/rich"
+   xmlns:t="http://myfaces.apache.org/tomahawk">
 
 
-<ui:param name="panelTitle" value="Forward Command"/>
-<ui:param name="groupSelected" value="MAIN"/>
-<ui:define name="util_content"> 
-    <t:saveState value="#{fwdcmdBean}"/>
-    <div id="middle">
-    <div id="content">
-    
-    <a4j:form>
-        
-         <a4j:region id="deviceTableRegion">
-            
-         <table width="100%">
-               <tr>
-                  <td>
-                     <span>
-                        <h:outputText value="Account ID: " />
-                        <h:inputText value="#{fwdcmdBean.acctID}" validatorMessage="ID Must be an Integer">
-                           
-                        </h:inputText>
-                        <rich:message for="intdata">
-                  <f:facet name="errorMarker">
-                    <h:graphicImage value="/images/error.gif" />
-                  </f:facet>
-                </rich:message>
-                        <!--  <h:selectOneMenu id="accountID" value="#{fwdcmdBean.acctID}">
-                            <f:selectItems value="#{fwdcmdBean.accountList}"/>
-                        </h:selectOneMenu>-->
-                        <a4j:commandButton value="Load Devices" action="#{fwdcmdBean.loadDevices}" reRender="deviceTablePanel"></a4j:commandButton>
-                        
-                        <a4j:status 
-                           id="deviceTableStatus" for="deviceTableRegion">
-                           <f:facet name="start">
-                              <h:outputText>
-                                 <img 
-                                    src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" 
-                                    align="top" />&#160;</h:outputText>
-                           </f:facet>
-                        </a4j:status>
-                     </span>
-                  </td>
-                 </tr>
-                 <tr>
-                  <td style="width=100%">
-                    <h:panelGroup id="deviceTablePanel" style="width=100%">
-                        
-                        <rich:extendedDataTable id="deviceTable" value="#{fwdcmdBean.devices}" var="device" width="100%" height="300px"
-                           selectedClass="dataTableSelectedRow" sortMode="single" selectionMode="multi"
+   <ui:param name="panelTitle" value="Forward Command" />
+   <ui:param name="groupSelected" value="MAIN" />
+   <ui:define name="util_content">
+      <t:saveState value="#{fwdcmdBean}" />
+      <div id="middle">
+      <div id="content">
+         <a4j:form>
+            <a4j:region id="deviceTableRegion">
+               <table width="100%">
+                  <tr>
+                     <td><span> <h:outputText
+                        value="User Name: " /> <h:inputText
+                        value="#{fwdcmdBean.userName}"
+                        validatorMessage="ID Must be an Integer">
+   
+                     </h:inputText> <rich:message for="intdata">
+                        <f:facet name="errorMarker">
+                           <h:graphicImage value="/images/error.gif" />
+                        </f:facet>
+                     </rich:message> <!--  <h:selectOneMenu id="accountID" value="#{fwdcmdBean.acctID}">
+                               <f:selectItems value="#{fwdcmdBean.accountList}"/>
+                           </h:selectOneMenu>--> <a4j:commandButton
+                        value="Search For Devices"
+                        action="#{fwdcmdBean.loadDevices}"
+                        reRender="deviceTablePanel"></a4j:commandButton> <a4j:status
+                        id="deviceTableStatus" for="deviceTableRegion">
+                        <f:facet name="start">
+                           <h:outputText>
+                              <img
+                                 src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif"
+                                 align="top" />&#160;</h:outputText>
+                        </f:facet>
+                     </a4j:status> </span></td>
+                  </tr>
+               </table>
+            </a4j:region>
+            <a4j:region>
+               <table width="100%">
+                  <tr>
+                     <td style=""><h:panelGroup id="deviceTablePanel"
+                        style="width=100%">
+      
+                        <rich:extendedDataTable id="deviceTable"
+                           value="#{fwdcmdBean.devices}" var="device"
+                           width="100%" height="300px"
+                           selectedClass="dataTableSelectedRow"
+                           sortMode="single" selectionMode="multi"
                            selection="#{fwdcmdBean.deviceSelection}">
                            <f:facet name="header">
-                                 <h:outputText value="Available Devices"/>
-                              </f:facet>
-                              
-                           <rich:column width="150" label="IMEI" sortBy="#{device.imei}" filterBy="#{device.imei}">
+                              <h:outputText value="Available Devices" />
+                           </f:facet>
+      
+                           <rich:column width="150" label="IMEI"
+                              sortBy="#{device.imei}"
+                              filterBy="#{device.imei}">
                               <f:facet name="header">
-                                 <h:outputText value="IMEI"/>
+                                 <h:outputText value="IMEI" />
                               </f:facet>
-                              <h:outputText value="#{device.imei}"/>
+                              <h:outputText value="#{device.imei}" />
                            </rich:column>
-                            <rich:column width="150" label="Name" sortBy="#{device.name}" filterBy="#{device.name}">
+                           <rich:column width="150" label="Name"
+                              sortBy="#{device.name}"
+                              filterBy="#{device.name}">
                               <f:facet name="header">
-                                 <h:outputText value="Name"/>
+                                 <h:outputText value="Name" />
                               </f:facet>
-                              <h:outputText value="#{device.name}"/>
+                              <h:outputText value="#{device.name}" />
                            </rich:column>
-                            <rich:column  width="150" label="Status" sortBy="#{device.status}" filterBy="#{device.status}">
+                           <rich:column width="150" label="Status"
+                              sortBy="#{device.status}"
+                              filterBy="#{device.status}">
                               <f:facet name="header">
-                                 <h:outputText value="Status"/>
+                                 <h:outputText value="Status" />
                               </f:facet>
-                              <h:outputText value="#{device.status}"/>
+                              <h:outputText value="#{device.status}" />
                            </rich:column>
-                            <rich:column width="150" label="SIM" sortBy="#{device.sim}" filterBy="#{device.sim}" >
+                           <rich:column width="150" label="SIM"
+                              sortBy="#{device.sim}" filterBy="#{device.sim}">
                               <f:facet name="header">
-                                 <h:outputText value="SIM"/>
+                                 <h:outputText value="SIM" />
                               </f:facet>
-                              <h:outputText value="#{device.sim}"/>
+                              <h:outputText value="#{device.sim}" />
                            </rich:column>
-                           
+      
                         </rich:extendedDataTable>
-                    </h:panelGroup>
-                  </td>
+                     </h:panelGroup></td>
+                  </tr>
+               </table>
+            </a4j:region>
+         <br />
+         <rich:panel id="forwardCommandFormPanel">
+            <f:facet name="header">
+         Send Foward Commands
+          </f:facet>
+            <table width="100%">
+               <tr valign="top">
+                  <td width="150px"><h:outputText
+                     value="Forward Command ID: " /></td>
+                  <td colspan="2"><h:inputText id="fwdcmd"
+                     label="FwdCmd" value="#{fwdcmdBean.fwdcmd}"
+                     required="true" /> <rich:message for="fwdcmd">
+                     <f:facet name="errorMarker">
+                        <h:graphicImage value="/images/error.gif" />
+                     </f:facet>
+                  </rich:message></td>
+               </tr>
+               <tr valign="top">
+                  <td width="150px"><h:outputText
+                     value="Integer Data: " /></td>
+                  <td colspan="2"><h:inputText id="intdata"
+                     label="Integer Data" value="#{fwdcmdBean.intData}" />
+                  <rich:message for="intdata">
+                     <f:facet name="errorMarker">
+                        <h:graphicImage value="/images/error.gif" />
+                     </f:facet>
+                  </rich:message></td>
+               </tr>
+               <tr valign="top">
+                  <td width="150px"><h:outputText
+                     value="String Data: " /></td>
+                  <td colspan="2"><h:inputText id="stringdata"
+                     label="String Data"
+                     value="#{fwdcmdBean.stringData}" /> <rich:message
+                     for="stringdata">
+                     <f:facet name="errorMarker">
+                        <h:graphicImage value="/images/error.gif" />
+                     </f:facet>
+                  </rich:message></td>
                </tr>
             </table>
-             
-         </a4j:region>
-      <br/>
-      
-      <rich:panel id="forwardCommandFormPanel">
-        <f:facet name="header">
-         Send Foward Commands
-      </f:facet>
-      
-      <table width="100%">
-         <tr valign="top">
-            <td width="150px">
-               <h:outputText value="IMEI: " />
-               <br/>
-               <h:outputText value="(comma seperated list) " style="font-size: smaller;color:grey"/>
-            </td>
-            <td>
-               <h:inputTextarea id="imei" label="IMEI" value="#{fwdcmdBean.imei}" binding="#{fwdcmdBean.imeiInput}" cols="80"
-                  validator="#{fwdcmdBean.validateIMEI}" required="true" />
-               <rich:message for="imei">
-                  <f:facet name="errorMarker">
-                    <h:graphicImage value="/images/error.gif" />
-                  </f:facet>
-               </rich:message>
-            </td>
-            <td>
-               <a4j:region >
-                  <a4j:commandButton value="Import Selection" action="#{fwdcmdBean.importSelection}" reRender="forwardCommandFormPanel"></a4j:commandButton>
-               </a4j:region>
-            </td>
-         </tr>
-         <tr valign="top">
-            <td width="150px">
-               <h:outputText value="Forward Command ID: " />
-            </td>
-            <td colspan="2">
-               <h:inputText id="fwdcmd" label="FwdCmd" value="#{fwdcmdBean.fwdcmd}" required="true" />
-                <rich:message for="fwdcmd">
-                  <f:facet name="errorMarker">
-                    <h:graphicImage value="/images/error.gif" />
-                  </f:facet>
-                </rich:message>
-            </td>
-         </tr>
-         <tr valign="top">
-            <td width="150px">
-              <h:outputText value="Integer Data: " />
-            </td>
-            <td colspan="2">
-               <h:inputText id="intdata" label="Integer Data" value="#{fwdcmdBean.intData}" />
-                <rich:message for="intdata">
-                  <f:facet name="errorMarker">
-                    <h:graphicImage value="/images/error.gif" />
-                  </f:facet>
-                </rich:message>
-            </td>
-         </tr>
-         <tr valign="top">
-            <td width="150px">
-              <h:outputText value="String Data: " />
-            </td>
-            <td colspan="2">
-               <h:inputText id="stringdata" label="String Data" value="#{fwdcmdBean.stringData}" />
-                <rich:message for="stringdata">
-                  <f:facet name="errorMarker">
-                    <h:graphicImage value="/images/error.gif" />
-                  </f:facet>
-                </rich:message>
-            </td>
-         </tr>
-      </table>
-        
-        
-      </rich:panel>
-      <a4j:commandButton value="Send Command" action="#{fwdcmdBean.sendFwdCmdAction}" oncomplete="javascript:if(#{empty facesContext.maximumSeverity}){Richfaces.showModalPanel('successPanel')}" />
-      <a4j:commandButton value="Done" action="go_home" immediate="true" />
-    </a4j:form>
-    
-    </div>
-    </div>
+         </rich:panel>
+         <a4j:commandButton value="Send Command"
+            action="#{fwdcmdBean.sendFwdCmdAction}" reRender="selectedDeviceTable"
+            oncomplete="javascript:if(#{empty facesContext.maximumSeverity}){Richfaces.showModalPanel('successPanel')}" />
+         <a4j:commandButton value="Done" action="go_home"
+            immediate="true" />
+         </a4j:form>
+         </div>
+      </div>
+      <rich:modalPanel id="successPanel" width="400" height="350" onshow="reRenderTable()"
+         zindex="2000">
+           
+         <f:facet name="header">
+            <h:outputText value="Send Foward Command" />
+         </f:facet>
+         <a4j:jsFunction name="reRenderTable" reRender="selectedDeviceTable"></a4j:jsFunction>
+         <a4j:form>
+         <p><h:outputText value="Forward command sent successfully to the following devices:" /></p>
+            
+            <rich:dataTable id="selectedDeviceTable"
+                     value="#{fwdcmdBean.selectedDevices}" var="device"
+                     width="100%" rows="7">
+                     <f:facet name="header">
+                        <h:outputText value="Selected Devices" />
+                     </f:facet>
 
-    <rich:modalPanel id="successPanel" width="200" height="120" zindex="2000">
-      <f:facet name="header">
-        <h:outputText value="Send Foward Command" />
-      </f:facet>
-      <p><h:outputText value="Forward command sent successfully" /></p>
-      <a4j:form>
-        <a4j:commandButton onclick="Richfaces.hideModalPanel('successPanel')" value="ok"></a4j:commandButton>
-      </a4j:form>
-    </rich:modalPanel>
-</ui:define>
+                     <rich:column width="150" >
+                        <f:facet name="header">
+                           <h:outputText value="IMEI" />
+                        </f:facet>
+                        <h:outputText value="#{device.imei}" />
+                     </rich:column>
+                     <rich:column width="150" >
+                        <f:facet name="header">
+                           <h:outputText value="Name" />
+                        </f:facet>
+                        <h:outputText value="#{device.name}" />
+                     </rich:column>
+                     <rich:column width="150">
+                        <f:facet name="header">
+                           <h:outputText value="Status" />
+                        </f:facet>
+                        <h:outputText value="#{device.status}" />
+                     </rich:column>
+                     <rich:column width="150">
+                        <f:facet name="header">
+                           <h:outputText value="SIM" />
+                        </f:facet>
+                        <h:outputText value="#{device.sim}" />
+                     </rich:column>
+
+               </rich:dataTable> 
+            <rich:datascroller id="datascroller" for="selectedDeviceTable" page="#{fwdcmdBean.page}"/>  
+            <a4j:commandButton
+               action="#{fwdcmdBean.clearSelection}"
+               oncomplete="Richfaces.hideModalPanel('successPanel')"
+               value="ok"></a4j:commandButton>
+         </a4j:form>
+      </rich:modalPanel>
+   </ui:define>
 </ui:composition>
-    
