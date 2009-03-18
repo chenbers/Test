@@ -11,6 +11,10 @@
 							 oncomplete="javascript:Richfaces.showModalPanel('liveDriverModal')" >
 				<f:setPropertyActionListener value="#{driver.driverID}" target="#{liveFleetBean.liveDriverID}" />
             </a4j:commandLink>
+            
+    private LastLocation         liveDriverLastLoc;
+    private Integer              liveDriverID;
+    private Boolean              livePollEnabled = false;;
 				
 	 -->
 
