@@ -23,6 +23,7 @@ import com.inthinc.pro.model.ForwardCommand;
 import com.inthinc.pro.model.ForwardCommandStatus;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.User;
+import com.inthinc.pro.util.MessageUtil;
 
 public class FwdCmdBean
 {
@@ -83,6 +84,9 @@ public class FwdCmdBean
 
     public void loadDevices()
     {
+        if(devices != null)
+            devices.clear();
+        selectedDevices.clear();
         if (acctID != null)
         {
             devices = new ArrayList<Device>();
@@ -101,8 +105,14 @@ public class FwdCmdBean
         }
         else
             devices = new ArrayList<Device>();
+        
+        if(devices == null || devices.isEmpty())
+        {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "No account/devices could be found for this user", null);
+            FacesContext.getCurrentInstance().addMessage(null,message);
+        }
 
-        selectedDevices.clear();
+        
     }
 
     public void sendFwdCmdAction()
