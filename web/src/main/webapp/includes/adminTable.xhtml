@@ -110,7 +110,7 @@
             </li>
           </ul>
 
-          <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
+          <h:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
 
           <div class="spacer"></div>
 
@@ -118,7 +118,7 @@
 TODO: the top scroller doesn't work right with filtering
           <rich:datascroller id="topScroller" for="dataTable" reRender="recordCounts,dataTable,bottomScroller" page="#{page}" />
 -->
-
+          <a4j:region>
           <div class="datagrid" style="width: 790px; overflow: auto">
 
             <rich:dataTable id="dataTable" value="#{items}" var="item" rowKeyVar="index" styleClass="datagrid"
@@ -147,6 +147,8 @@ TODO: the top scroller doesn't work right with filtering
           </div>
     
           <rich:datascroller id="bottomScroller" for="dataTable" reRender="recordCounts,dataTable" page="#{page}" />
+          
+          </a4j:region>
 
         </div>
       </div>

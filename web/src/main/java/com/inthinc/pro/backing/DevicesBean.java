@@ -213,27 +213,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     }
     
     @Override
-    protected boolean validateBatchEdit(DeviceView batchEditItem)
-    {
-        return validateDevice(batchEditItem);
-    }
-    
-    @Override
-    protected boolean validate(List<DeviceView> saveItems)
-    {
-        boolean valid = true;
-        valid = super.validate(saveItems);
-        for(DeviceView deviceView:saveItems)
-        {
-            valid = validateDevice(deviceView);
-            if(!valid)
-                break;
-        }
-        
-        return valid;
-    }
-    
-    private boolean validateDevice(DeviceView deviceView)
+    protected boolean validateSaveItem(DeviceView deviceView)
     {
         boolean valid = true;
         final String required = "required";

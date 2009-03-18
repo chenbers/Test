@@ -284,7 +284,8 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
     protected boolean validateSaveItem(RedFlagAlertView saveItem)
     {
         boolean valid = super.validateSaveItem(saveItem);
-        if ((saveItem.getName() == null) || (saveItem.getName().length() == 0))
+        if ((saveItem.getName() == null) || (saveItem.getName().length() == 0)
+                && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("name"))))
         {
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
             FacesContext.getCurrentInstance().addMessage("edit-form:name", message);

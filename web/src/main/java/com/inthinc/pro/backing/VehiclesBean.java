@@ -322,27 +322,9 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         return super.save();
     }
     
-    @Override
-    protected boolean validateBatchEdit(VehicleView batchEditItem)
-    {
-        return validateVehicle(batchEditItem);
-    }
-
-    @Override
-    protected boolean validate(List<VehicleView> saveItems)
-    {
-        boolean valid = true;
-        for (final VehicleView vehicle : saveItems)
-        {
-            valid = validateVehicle(vehicle);
-            if(!valid)
-                break;
-            
-        }
-        return valid;
-    }
     
-    private boolean validateVehicle(VehicleView vehicle)
+    @Override
+    protected boolean validateSaveItem(VehicleView vehicle)
     {
         final FacesContext context = FacesContext.getCurrentInstance();
         boolean valid = true;

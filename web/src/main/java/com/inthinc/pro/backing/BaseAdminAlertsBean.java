@@ -275,24 +275,6 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     }
     
     @Override
-    protected boolean validateBatchEdit(T batchEditItem) {
-        return validateSaveItem(batchEditItem);
-    };
-    
-
-    @Override
-    protected boolean validate(List<T> saveItems)
-    {
-        boolean valid = true;
-        for (final T saveItem : saveItems)
-        {
-            valid = validateSaveItem(saveItem);
-            if(!valid)
-                break;
-        }
-        return valid;
-    }
-    
     protected boolean validateSaveItem(T saveItem)
     {
         final FacesContext context = FacesContext.getCurrentInstance();
@@ -300,48 +282,57 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         boolean valid = true;
         
         // at least one day chosen
-        boolean dayPicked = false;
-        for (boolean day : saveItem.getDayOfWeek())
-            if (day)
+        if(!isBatchEdit() || (isBatchEdit() && getUpdateField().get("dayOfWeek")))
+        {
+            boolean dayPicked = false;
+            for (boolean day : saveItem.getDayOfWeek())
+                if (day)
+                {
+                    dayPicked = true;
+                    break;
+                }
+            if (!dayPicked)
             {
-                dayPicked = true;
-                break;
-            }
-        if (!dayPicked)
-        {
-            final String summary = MessageUtil.formatMessageString("editAlerts_noDays");
-            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-            context.addMessage("edit-form:day0", message);
-            valid = false;
-        }
-
-        // assigned to something
-        boolean assigned = (saveItem.getGroupIDs() != null) && (saveItem.getGroupIDs().size() > 0);
-        if (!assigned)
-            assigned = (saveItem.getDriverIDs() != null) && (saveItem.getDriverIDs().size() > 0);
-        if (!assigned)
-            assigned = (saveItem.getVehicleIDs() != null) && (saveItem.getVehicleIDs().size() > 0);
-        if (!assigned)
-            assigned = (saveItem.getVehicleTypes() != null) && (saveItem.getVehicleTypes().size() > 0);
-        if (!assigned)
-        {
-            final String summary = MessageUtil.formatMessageString("editAlerts_unassigned");
-            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-            context.addMessage("edit-form:alertAssignFrom", message);
-            valid = false;
-        }
-
-        // valid e-mail addresses
-        for (final String email : saveItem.getEmailTo())
-        {
-            final Matcher matcher = EmailValidator.EMAIL_REGEX.matcher(email);
-            if (!matcher.matches())
-            {
-                final String summary = MessageUtil.formatMessageString("editAlerts_emailFormat", email);
+                final String summary = MessageUtil.formatMessageString("editAlerts_noDays");
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                context.addMessage("edit-form:emailToString", message);
+                context.addMessage("edit-form:day0", message);
                 valid = false;
-                break;
+            }
+        }
+
+        if(!isBatchEdit() || (isBatchEdit() && getUpdateField().get("assignTo")))
+        {
+            // assigned to something
+            boolean assigned = (saveItem.getGroupIDs() != null) && (saveItem.getGroupIDs().size() > 0);
+            if (!assigned)
+                assigned = (saveItem.getDriverIDs() != null) && (saveItem.getDriverIDs().size() > 0);
+            if (!assigned)
+                assigned = (saveItem.getVehicleIDs() != null) && (saveItem.getVehicleIDs().size() > 0);
+            if (!assigned)
+                assigned = (saveItem.getVehicleTypes() != null) && (saveItem.getVehicleTypes().size() > 0);
+            if (!assigned)
+            {
+                final String summary = MessageUtil.formatMessageString("editAlerts_unassigned");
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                context.addMessage("edit-form:alertAssignFrom", message);
+                valid = false;
+            }
+        }
+
+        if(!isBatchEdit() || (isBatchEdit() && getUpdateField().get("emailToString")))
+        {
+            // valid e-mail addresses
+            for (final String email : saveItem.getEmailTo())
+            {
+                final Matcher matcher = EmailValidator.EMAIL_REGEX.matcher(email);
+                if (!matcher.matches())
+                {
+                    final String summary = MessageUtil.formatMessageString("editAlerts_emailFormat", email);
+                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                    context.addMessage("edit-form:emailToString", message);
+                    valid = false;
+                    break;
+                }
             }
         }
         

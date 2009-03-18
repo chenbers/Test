@@ -508,6 +508,8 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         else
             return null;
     }
+    
+    
 
     /**
      * @return Whether the current edit operation is an item add.
@@ -630,7 +632,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     protected abstract T createAddItem();
 
     /**
-     * Perform custom validation on the list of items to save. If invalid, messages may be displayed via code similar to:
+     * Perform custom on an individual save item. validation errors can be display using the following code. 
      * 
      * <pre>
      * final String summary = MessageUtil.getMessageString(&quot;error_message&quot;);
@@ -638,32 +640,46 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
      * context.addMessage(&quot;my-form:component-id&quot;, message);
      * </pre>
      * 
+     * @param saveItem
+     *            The item to save.
+     * @return Whether the items passed validation.
+     */
+    protected abstract boolean validateSaveItem(T saveItem);
+    
+    
+    /**
+     * Perform custom validation on the list of items to save.
+     * 
+     * 
      * @param saveItems
      *            The items to save.
      * @return Whether the items passed validation.
      */
     protected boolean validate(List<T> saveItems)
     {
-        return true;
+        boolean valid = true;
+        for (final T saveItem : saveItems)
+        {
+            valid = validateSaveItem(saveItem);
+            if(!valid)
+                break;
+        }
+        return valid;
     }
+   
     
     /**
      * Performs custom validation on the batch edit item. If there is invalid data, we don't want the data to make it into the orginal selected list
      * The changes won't make it back to the db, but if they are propogated to the selected list, 
      * they will show up in the data table or where ever else they are needed.
      * 
-     * <pre>
-     * final String summary = MessageUtil.getMessageString(&quot;error_message&quot;);
-     * final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-     * context.addMessage(&quot;my-form:component-id&quot;, message);
-     * </pre
      * 
      * @param batchEditItem
      * @return
      */
     protected boolean validateBatchEdit(T batchEditItem)
     {
-        return true;
+        return validateSaveItem(batchEditItem);
     }
 
     /**
@@ -707,4 +723,6 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
      * @return A redirect to navigate to when a user has finished or canceled editing.
      */
     protected abstract String getFinishedRedirect();
+
+
 }

@@ -296,28 +296,6 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         }
 
     }
-
-    @Override
-    protected boolean validateBatchEdit(ReportScheduleView batchEditItem)
-    {
-        return validateReportSchedule(batchEditItem);
-    }
-
-    @Override
-    protected boolean validate(List<ReportScheduleView> saveItems)
-    {
-        Boolean valid = true;
-        valid = super.validate(saveItems);
-        for (ReportScheduleView reportScheduleView : saveItems)
-        {
-
-            valid = validateReportSchedule(reportScheduleView);
-            if (!valid)
-                break;
-
-        }
-        return valid;
-    }
     
     @Override
     public ReportScheduleView getItem()
@@ -334,7 +312,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         return reportScheduleView;
     }
 
-    private boolean validateReportSchedule(ReportScheduleView reportScheduleView)
+    @Override
+    protected boolean validateSaveItem(ReportScheduleView reportScheduleView)
     {
         boolean valid = true;
 

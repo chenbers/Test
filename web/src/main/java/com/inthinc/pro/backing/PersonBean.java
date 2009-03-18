@@ -486,26 +486,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     }
     
     @Override
-    protected boolean validateBatchEdit(PersonView batchEditItem)
-    {
-        return personBeanValidation(batchEditItem);
-    }
-
-    @Override
-    protected boolean validate(List<PersonView> saveItems)
-    {
-        boolean valid = true;
-
-        for (final PersonView person : saveItems)
-        {
-           valid =  personBeanValidation(person);
-           if(!valid)
-               break;
-        }
-        return valid;
-    }
-    
-    private boolean personBeanValidation(PersonView person)
+    protected boolean validateSaveItem(PersonView person)
     {
         final FacesContext context = FacesContext.getCurrentInstance();
         boolean valid = true;
