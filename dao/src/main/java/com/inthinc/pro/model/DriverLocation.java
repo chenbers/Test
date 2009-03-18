@@ -11,6 +11,7 @@ public class DriverLocation
     private LatLng loc;                  // last location of driver
     private Date time;
     private String addressStr;
+    private Integer dist;
     
     public LatLng getLoc()
     {
@@ -51,6 +52,14 @@ public class DriverLocation
     public void setAddressStr(String addressStr)
     {
         this.addressStr = addressStr;
+    }
+    public Integer getDist()
+    {
+        return dist;
+    }
+    public void setDist(Integer dist)
+    {
+        this.dist = dist;
     }
  
 }

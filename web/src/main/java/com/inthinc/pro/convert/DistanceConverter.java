@@ -1,6 +1,7 @@
 package com.inthinc.pro.convert;
 
 import java.text.NumberFormat;
+import java.util.Date;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -27,10 +28,20 @@ public class DistanceConverter extends BaseConverter
         {
             return "";
         }
-        Integer distance = (Integer)value;
+        
+        Double miles = 0.0D;
+        
+        if( value instanceof Double)
+        {
+            miles = (Double)value;
+        }
+        else if( value instanceof Integer)
+        {
+            miles = (Integer)value / 100D;
+        }
+        
         NumberFormat format = NumberFormat.getInstance();
         format.setMaximumFractionDigits(2);
-        Float miles = distance/100.0f;
 
         if (getIsMetric())
         {

@@ -279,11 +279,11 @@
 									</h:commandLink>
 								</rich:column>
 	
-								<rich:column sortBy="#{item.time}" selfSorted="true"  sortOrder="DESCENDING">
+								<rich:column sortBy="#{item.dist}" selfSorted="true"  sortOrder="ASCENDING">
 									<f:facet name="header">
-										<h:outputText value="Updated" />
+										<h:outputText value="Distance" />
 									</f:facet>
-									<h:outputText value="#{item.time}" converter="TimeAgoConverter"/>
+									<h:outputText value="#{item.dist}" converter="DistanceConverter"/>
 								</rich:column>
 	
 								<rich:column sortBy="#{item.driver.groupID}">
