@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Device Report" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" isIgnorePagination="true">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="ACCOUNT_NAME" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ENTITY_NAME" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="RECORD_COUNT" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="REPORT_DATE_AS_STRING" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="REPORT_LOGO" class="java.io.InputStream" isForPrompting="false"/>
+	<field name="event.addressStr" class="java.lang.String"/>
+	<field name="date" class="java.lang.String"/>
+	<field name="event.avgSpeed" class="java.lang.Integer"/>
+	<field name="event.topSpeed" class="java.lang.Integer"/>
+	<field name="event.distance" class="java.lang.Integer"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band/>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band height="21">
+			<staticText>
+				<reportElement key="staticText-1" x="58" y="16" width="0" height="1"/>
+				<textElement/>
+				<text><![CDATA[Static Text]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="1" y="4" width="280" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Location]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" x="281" y="4" width="222" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Date/Time]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-4" x="598" y="4" width="105" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Top Speed]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-5" x="703" y="4" width="79" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Distance]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-11" x="126" y="2" width="0" height="2"/>
+				<textElement/>
+				<text><![CDATA[Static Text]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-12" x="503" y="4" width="95" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Avg Speed]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-1" x="1" y="3" width="280" height="17"/>
+				<textElement rotation="None"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{event.addressStr}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-2" x="281" y="3" width="222" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{date}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement key="textField-4" x="598" y="3" width="105" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{event.topSpeed}.toString() + " mph"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-5" x="703" y="3" width="79" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[new java.math.BigDecimal($F{event.distance}.intValue()).movePointLeft(2).toString()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement key="textField-10" x="503" y="3" width="95" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{event.avgSpeed}.toString() + " mph"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band/>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>
