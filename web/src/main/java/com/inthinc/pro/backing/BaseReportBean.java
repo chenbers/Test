@@ -62,19 +62,6 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
         	searchFor = searchCoordinationBean.getSearchFor();
          }	
  
-//       	searchChanged = true;
-//        loadDBData();
-        
-        //Bean creation could be from Reports selection or
-        //  search on main menu. This accounts for a search
-        //  from the main menu w/ never having been to the 
-        //  Drivers report page.
- //       if (  isMainMenu() ) {  
- //           checkOnSearch();
- //           setMainMenu(false);
- //       } else {
- //           loadResults(getDisplayData());
- //       }
     }
 
     public TablePreferenceDAO getTablePreferenceDAO()
@@ -132,8 +119,6 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
 
     protected void checkOnSearch()
     {
-//    	if (searchChanged){
-    		
     	loadDBData();
     	if ((searchFor != null) && (!searchFor.isEmpty()))
 	        {
@@ -154,8 +139,6 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
 	        }
 	
 	        resetCounts();
-//    	}
-//    	searchChanged = false;
     }
 
     public void search()
@@ -168,7 +151,7 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
         final List<T> matchedItems = new ArrayList<T>();
         matchedItems.addAll(getDBData());
 
-        tablePref.filter(matchedItems, searchFor.trim(), matchAllFilterWords());
+        tablePref.filter(matchedItems, searchFor, matchAllFilterWords());
 
         loadResults(matchedItems);
         this.maxCount = matchedItems.size();

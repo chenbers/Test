@@ -74,29 +74,52 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
     }
 
     @Override
+	public void init() {
+    	
+		super.init();
+		
+		//Set start and end date to last 7 days
+        endDate = new Date();
+        startDate = new Date();
+        startDate.setTime(endDate.getTime() - DAYS_BACK);
+		
+        // Start with today
+        intEndDate = getGregDate(null);
+       
+        // Now, seven days back
+        intStartDate = new Date();
+        intStartDate.setTime(intEndDate.getTime() - DAYS_BACK);         
+	}
+
+	@Override
     protected void loadDBData()
     {
         // Dates for show
-        this.endDate = new Date();
-        this.startDate = new Date();
-        this.startDate.setTime(this.endDate.getTime() - DAYS_BACK);
+//        this.endDate = new Date();
+//        this.startDate = new Date();
+//        this.startDate.setTime(this.endDate.getTime() - DAYS_BACK);
 
         // Start with today
-        this.intEndDate = getGregDate(null);
-       
-        // Now, seven days back
-        this.intStartDate = new Date();
-        this.intStartDate.setTime(
-                this.intEndDate.getTime() - DAYS_BACK);         
-                                
-        // Get some other dates, for use if none input        
-        this.defaultEndDate = this.intEndDate;   
-        this.defaultStartDate = this.intStartDate;         
-
-        this.idlingsData = 
-            scoreDAO.getIdlingReportData(
-                    getUser().getGroupID(),
-                    intStartDate, intEndDate);
+//        this.intEndDate = getGregDate(null);
+//       
+//        // Now, seven days back
+//        this.intStartDate = new Date();
+//        this.intStartDate.setTime(
+//                this.intEndDate.getTime() - DAYS_BACK);      
+		
+//		intStartDate = startDate;
+//		intEndDate = endDate;
+//                                
+//        // Get some other dates, for use if none input        
+//        defaultEndDate = intEndDate;   
+//        defaultStartDate = intStartDate;         
+//
+//        this.idlingsData = 
+//            scoreDAO.getIdlingReportData(
+//                    getUser().getGroupID(),
+//                    intStartDate, intEndDate);
+		
+		search();
     }
 
     @Override
