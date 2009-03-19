@@ -328,6 +328,12 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
                         flag.getSpeedLevels()[index] = getItem().getSpeedLevels()[index];
                     }
             }
+            
+            if(flag.isAnytime())
+            {
+                flag.setStartTOD(BaseAlert.MIN_TOD);
+                flag.setStopTOD(BaseAlert.MIN_TOD);
+            }
 
             // since getItem auto-creates the below, null 'em here before saving
             if (flag.getSpeedSettings() != null && flag.getSpeedSettings()[0] == null)

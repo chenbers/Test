@@ -112,7 +112,7 @@
                             <td>
                               <rich:message for="name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                               <h:inputText value="#{zoneAlertsBean.item.name}" id="name" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                maxlength="30" required="#{(not zoneAlertsBean.batchEdit) or zoneAlertsBean.updateField['name']}" requiredMessage="#{messages.required}" />
+                                maxlength="30" required="#{not zoneAlertsBean.batchEdit}" requiredMessage="#{messages.required}" />
                             </td>
                           </tr>
                           <tr>
@@ -155,7 +155,7 @@
                             </td>
                             <td>
                               <rich:message for="stopTOD" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                              <h:selectOneRadio id="timeframe" value="#{zoneAlertsBean.item.anytime}" onclick="document.getElementById('timeframePickers').style.display = (this.value == 'true' ? 'none' : '')" enabledClass="radioitem">
+                              <h:selectOneRadio id="timeframe" onchange="checkMultiple('timeframe')" value="#{zoneAlertsBean.item.anytime}" onclick="document.getElementById('timeframePickers').style.display = (this.value == 'true' ? 'none' : '')" enabledClass="radioitem">
                                 <f:selectItem itemValue="true" itemLabel="#{messages.editAlerts_timeframeAnytime}" />
                                 <f:selectItem itemValue="false" itemLabel="#{messages.editAlerts_timeframeBetween}" />
                               </h:selectOneRadio>

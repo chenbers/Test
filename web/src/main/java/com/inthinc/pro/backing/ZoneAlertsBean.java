@@ -202,6 +202,15 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
             valid = false;
         }
         
+        //Validate required name field
+        if ((saveItem.getName() == null) || (saveItem.getName().length() == 0)
+                && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("name"))))
+        {
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
+            FacesContext.getCurrentInstance().addMessage("edit-form:name", message);
+            valid = false;
+        }
+        
         return valid;
     }
 
@@ -218,6 +227,12 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
 
         for (final ZoneAlertView alert : saveItems)
         {
+            if(alert.isAnytime())
+            {
+                alert.setStartTOD(BaseAlert.MIN_TOD);
+                alert.setStopTOD(BaseAlert.MIN_TOD);
+            }
+            
             if (create)
                 alert.setZoneAlertID(zoneAlertDAO.create(getAccountID(), alert));
             else
