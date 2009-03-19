@@ -65,8 +65,12 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
     private RedFlagAlertView createRedFlagAlertView(RedFlagAlert flag)
     {
         final RedFlagAlertView flagView = new RedFlagAlertView();
-        flagView.setAnytime(false);
+        flagView.setAnytime(true);
         BeanUtils.copyProperties(flag, flagView);
+        if(flagView.getStartTOD() == null)
+            flagView.setStartTOD(BaseAlert.MIN_TOD);
+        if(flagView.getStopTOD() == null)
+            flagView.setStopTOD(BaseAlert.MIN_TOD);
         flagView.setAnytime(isAnytime(flagView));
         flagView.setSelected(false);
         return flagView;
@@ -117,6 +121,14 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             item.setSpeedLevels(new RedFlagLevel[Device.NUM_SPEEDS]);
         return item;
     }
+    
+    @Override
+    public String batchEdit()
+    {
+        String returnString = super.batchEdit();
+        getItem().setAnytime(isAnytime(getItem()));
+        return returnString;
+    }
 
     @Override
     protected void doDelete(List<RedFlagAlertView> deleteItems)
@@ -147,7 +159,13 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
     {
         final Map<String, Boolean> updateField = getUpdateField();
         if (isBatchEdit())
+        {
             updateField.put("type", true);
+            if(updateField.get("anytime")){
+                updateField.put("startTOD",true);
+                updateField.put("stopTOD",true);
+            }
+        }
 
         // null out unselected items
         if (getItem().getType().equals("speed"))
@@ -284,6 +302,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
     protected boolean validateSaveItem(RedFlagAlertView saveItem)
     {
         boolean valid = super.validateSaveItem(saveItem);
+        valid = super.validateSaveItem(saveItem);
         if ((saveItem.getName() == null) || (saveItem.getName().length() == 0)
                 && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("name"))))
         {
@@ -291,7 +310,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             FacesContext.getCurrentInstance().addMessage("edit-form:name", message);
             valid = false;
         }
-        return super.validateSaveItem(saveItem);
+        return valid;
     }
 
     @Override
@@ -382,39 +401,39 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
 
         public boolean isAnytime()
         {
-            if (anytime == null)
-            {
-                if (getStartTOD() == null)
-                    super.setStartTOD(BaseAlert.MIN_TOD);
-                if (getStopTOD() == null)
-                    super.setStopTOD(BaseAlert.MIN_TOD);
-                anytime = BaseAdminAlertsBean.isAnytime(this);
-            }
             return anytime;
         }
 
         public void setAnytime(boolean anytime)
         {
             this.anytime = anytime;
-            BaseAdminAlertsBean.onSetAnytime(this, anytime);
         }
-
+        
         @Override
         public void setStartTOD(Integer startTOD)
         {
-            if (!isAnytime())
-                super.setStartTOD(startTOD);
-            else
+            if(startTOD == null)
+            {
                 super.setStartTOD(BaseAlert.MIN_TOD);
+            }
+            else
+            {
+                super.setStartTOD(startTOD);
+            }
         }
-
+        
         @Override
         public void setStopTOD(Integer stopTOD)
         {
-            if (!isAnytime())
-                super.setStopTOD(stopTOD);
-            else
+          
+            if(stopTOD == null)
+            {
                 super.setStopTOD(BaseAlert.MIN_TOD);
+            }
+            else
+            {
+                super.setStopTOD(stopTOD);
+            }
         }
 
         public String getType()

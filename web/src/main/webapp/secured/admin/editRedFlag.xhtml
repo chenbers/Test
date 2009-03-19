@@ -76,7 +76,7 @@
                             <td>
                               <rich:message for="name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                               <h:inputText value="#{redFlagAlertsBean.item.name}" id="name" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                maxlength="30" validatorMessage="#{messages.required}" />
+                                maxlength="30" required="#{not redFlagAlertsBean.batchEdit}" requiredMessage="#{messages.required}" />
                             </td>
                           </tr>
                           <tr>
@@ -112,7 +112,7 @@
                                <ui:include src="../../includes/inputLabel.xhtml">
                                  <ui:param name="required" value="TRUE"/>
                                  <ui:param name="for" value="timeframe"/>
-                                 <ui:param name="fieldName" value="timeframe"/>
+                                 <ui:param name="fieldName" value="anytime"/>
                                  <ui:param name="editBean" value="#{redFlagAlertsBean}"/>
                                  <ui:param name="label" value="#{messages.editAlerts_timeframe}"/>
                               </ui:include>
