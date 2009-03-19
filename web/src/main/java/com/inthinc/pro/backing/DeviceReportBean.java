@@ -195,12 +195,6 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
         reportCriteria.setMainDataset(deviceData);
         getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
     }
-    @Override
-	public String updateSearchAction() {
-    	
-		super.updateSearchAction();
-		return "go_devices";
-	}
 
 }
 

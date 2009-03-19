@@ -19,7 +19,6 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     @SuppressWarnings("unused")
 	private static final Logger logger       = Logger.getLogger(BaseReportBean.class);
 
-    private boolean             mainMenu;
     private TablePreferenceDAO  tablePreferenceDAO;
     private TablePref<T>        tablePref;
     private String              emailAddress;
@@ -31,7 +30,6 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     private Integer             end          = numRowsPerPg;
 
     protected String            searchFor    = "";
-//    private boolean				searchChanged = true;
     private String              secret       = "";
 
     private SearchCoordinationBean searchCoordinationBean;
@@ -50,15 +48,16 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
         // On init the search string can either be from the main menu, which can be found in the request map
         // or from the latest search done in the red flags or other report page.
         
-        searchFor = checkForRequestMap();
+        searchFor = checkForRequestMapSearch();
         
-        if (isMainMenu()){
+        if (searchFor != null){
         	
+        	//Use main menu and notify other search listeners
         	searchCoordinationBean.notifySearchChangeListeners(this,searchFor);
-        	setMainMenu(false);
         }
         else {
         	
+        	//Use the latest search
         	searchFor = searchCoordinationBean.getSearchFor();
          }	
  
@@ -217,24 +216,18 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
 
     public String getSecret()
     {
-	    String searchForLocal = checkForRequestMap();
+    	String searchForLocal = checkForRequestMapSearch();
 	    
-	    if ((searchForLocal != null) && !searchForLocal.isEmpty() && !searchForLocal.equalsIgnoreCase(this.searchFor))
+	    if (searchForLocal != null)
 	    {
-	        this.searchFor = searchForLocal;
-//	        searchChanged = true;
+	    	//If there is a search parameter from the main menu use that and notify others
+	    	//Otherwise stick with the current search.
+	    	
+	        searchFor = searchForLocal;
 	    	searchCoordinationBean.notifySearchChangeListeners(this,searchFor);
-		    checkOnSearch();
-	    	setMainMenu(false);
 	    }
-		else {
-			
-		    checkOnSearch();
-		}
-//		else
-//		{
-//		    loadResults(getDBData());
-//		}
+		checkOnSearch();
+		
         return secret;
     }
 
@@ -290,21 +283,31 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
 
     public void setSearchFor(String searchFor)
     {
+    	
     	if (searchFor != null ){
     		
-	        this.searchFor = searchFor;
-//	        searchChanged = true;
-	        searchCoordinationBean.notifySearchChangeListeners(this,searchFor);
+    		searchFor = searchFor.trim();
+    		if ( !searchFor.equalsIgnoreCase(this.searchFor)){
+    		
+		        this.searchFor = searchFor;
+		        searchCoordinationBean.notifySearchChangeListeners(this,searchFor);
+	    	}
     	}
     }
 
-    protected String checkForRequestMap()
+    private String checkForRequestMapSearch()
     {
         String requestSearchFor = (String)getParameter("searchFor");
         
-        if (requestSearchFor != null) requestSearchFor = requestSearchFor.trim();
-        
-        mainMenu = ((requestSearchFor != null) && !requestSearchFor.isEmpty());
+        if (requestSearchFor != null) {
+        	
+        	requestSearchFor = requestSearchFor.trim();
+        	
+        	if (requestSearchFor.equalsIgnoreCase(searchFor)){
+        		
+        		requestSearchFor = null;
+        	}
+        }
         
        	return requestSearchFor;
     }
@@ -325,16 +328,6 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
         }
 
         return result;
-    }
-
-    public boolean isMainMenu()
-    {
-        return mainMenu;
-    }
-
-    public void setMainMenu(boolean mainMenu)
-    {
-        this.mainMenu = mainMenu;
     }
 
     public void setEmailAddress(String emailAddress)
@@ -376,16 +369,10 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
 		this.searchCoordinationBean = searchCoordinationBean;
 	}
 	
-	public String updateSearchAction(){
-		
-		searchCoordinationBean.notifySearchChangeListeners(this,searchFor);
-		return null;
-	}
 	@Override
 	public synchronized void searchChanged(String searchFor) {
 
 		this.searchFor = searchFor;
-//		searchChanged = true;
 	}
 
 }
