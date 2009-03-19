@@ -18,6 +18,7 @@ import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.TableType;
+import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
 
 public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.RedFlagAlertView>
@@ -122,13 +123,6 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         return item;
     }
     
-    @Override
-    public String batchEdit()
-    {
-        String returnString = super.batchEdit();
-        getItem().setAnytime(isAnytime(getItem()));
-        return returnString;
-    }
 
     @Override
     protected void doDelete(List<RedFlagAlertView> deleteItems)

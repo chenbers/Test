@@ -34,6 +34,7 @@ import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.reports.ReportGroup;
+import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
 
 /**
@@ -310,6 +311,18 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             reportScheduleView.setDayOfWeek(dayOfWeek);
         }
         return reportScheduleView;
+    }
+    
+    @Override
+    public String batchEdit()
+    {
+        String resultValue = super.batchEdit();
+        
+        //Set all the boolean values of the day of week list to false if the two lists don't match
+        for (ReportScheduleView t : getSelectedItems())
+            BeanUtil.compareAndInitBoolList(getItem().getDayOfWeek(), t.getDayOfWeek());
+        
+        return resultValue;
     }
 
     @Override

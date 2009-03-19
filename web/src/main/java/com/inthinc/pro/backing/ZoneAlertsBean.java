@@ -84,8 +84,12 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
     private ZoneAlertView createZoneAlertView(ZoneAlert alert)
     {
         final ZoneAlertView alertView = new ZoneAlertView();
-        alertView.setAnytime(false);
+        alertView.setAnytime(true);
         BeanUtils.copyProperties(alert, alertView);
+        if(alertView.getStartTOD() == null)
+            alertView.setStartTOD(BaseAlert.MIN_TOD);
+        if(alertView.getStopTOD() == null)
+            alertView.setStopTOD(BaseAlert.MIN_TOD);
         alertView.setAnytime(isAnytime(alertView));
         alertView.setZoneAlertsBean(this);
         alertView.setSelected(false);
@@ -172,6 +176,14 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
         updateField.put("cautionArea", defineAlerts);
         updateField.put("disableRF", defineAlerts);
         updateField.put("monitorIdle", defineAlerts);
+        
+        if(isBatchEdit())
+        {
+            if(updateField.get("anytime")){
+                updateField.put("startTOD",true);
+                updateField.put("stopTOD",true);
+            }
+        }
 
         return super.save();
     }
@@ -181,7 +193,8 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
         final FacesContext context = FacesContext.getCurrentInstance();
         boolean valid = true;
         valid = super.validateSaveItem(saveItem);
-        if (!Boolean.TRUE.equals(saveItem.getArrival()) && !Boolean.TRUE.equals(saveItem.getDeparture()))
+        if ((!Boolean.TRUE.equals(saveItem.getArrival()) && !Boolean.TRUE.equals(saveItem.getDeparture())) 
+                && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("defineAlerts"))))
         {
             final String summary = MessageUtil.formatMessageString("editZoneAlert_noAlerts");
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
@@ -291,39 +304,39 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
 
         public boolean isAnytime()
         {
-            if (anytime == null)
-            {
-                if (getStartTOD() == null)
-                    super.setStartTOD(BaseAlert.MIN_TOD);
-                if (getStopTOD() == null)
-                    super.setStopTOD(BaseAlert.MIN_TOD);
-                anytime = BaseAdminAlertsBean.isAnytime(this);
-            }
             return anytime;
         }
 
         public void setAnytime(boolean anytime)
         {
             this.anytime = anytime;
-            BaseAdminAlertsBean.onSetAnytime(this, anytime);
         }
 
         @Override
         public void setStartTOD(Integer startTOD)
         {
-            if (!isAnytime())
-                super.setStartTOD(startTOD);
-            else
+            if(startTOD == null)
+            {
                 super.setStartTOD(BaseAlert.MIN_TOD);
+            }
+            else
+            {
+                super.setStartTOD(startTOD);
+            }
         }
-
+        
         @Override
         public void setStopTOD(Integer stopTOD)
         {
-            if (!isAnytime())
-                super.setStopTOD(stopTOD);
-            else
+          
+            if(stopTOD == null)
+            {
                 super.setStopTOD(BaseAlert.MIN_TOD);
+            }
+            else
+            {
+                super.setStopTOD(stopTOD);
+            }
         }
 
         public boolean isSelected()

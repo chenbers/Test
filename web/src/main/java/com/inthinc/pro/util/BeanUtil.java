@@ -353,4 +353,29 @@ public class BeanUtil
             }
         }
     }
+    
+    /**
+     * This is more of a specialized copy and init. Used for areas in the app where we store boolean arrays.
+     * 
+     * @param target - resulting item
+     * @param source - item to compare resulting item with
+     */
+    public static void compareAndInitBoolList(List<Boolean> target,List<Boolean> source)
+    {
+        boolean reset = false;
+        for(int i = 0;i < target.size();i++)
+        {
+            if(source.get(i) != null && target.get(i) != null && !target.get(i).equals(source.get(i)))
+            {
+                reset = true;
+                break;
+            }
+        }
+        
+        if(reset)
+            for(int i = 0;i < target.size();i++)
+            {
+                target.set(i, Boolean.FALSE);
+            }
+    }
 }

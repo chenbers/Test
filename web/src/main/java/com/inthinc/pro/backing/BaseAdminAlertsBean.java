@@ -10,6 +10,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
+import com.inthinc.pro.backing.RedFlagAlertsBean.RedFlagAlertView;
 import com.inthinc.pro.backing.VehiclesBean.VehicleView;
 import com.inthinc.pro.backing.ui.AutocompletePicker;
 import com.inthinc.pro.backing.ui.ListPicker;
@@ -21,6 +22,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
+import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.MiscUtil;
 import com.inthinc.pro.validators.EmailValidator;
@@ -208,6 +210,19 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
             item.setDayOfWeek(dayOfWeek);
         }
         return item;
+    }
+    
+    @Override
+    public String batchEdit()
+    {
+        String returnString = super.batchEdit();
+        item.setAnytime(isAnytime(getItem()));
+        
+        // null out properties that are not common
+        for (T t : getSelectedItems())
+            BeanUtil.compareAndInitBoolList(getItem().getDayOfWeek(), t.getDayOfWeek());
+            
+        return returnString;
     }
 
     @Override
