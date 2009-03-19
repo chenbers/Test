@@ -394,40 +394,40 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         try
         {
             List<DVQMap> result = getMapper().convertToModelObject(reportService.getDVScoresByGT(groupID, duration.getCode()), DVQMap.class);
-            List<DriverReportItem> lDri = new ArrayList<DriverReportItem>();
-            DriverReportItem dri = null;
+            List<DriverReportItem> driverReportItemList = new ArrayList<DriverReportItem>();
+            DriverReportItem driverReportItem = null;
 
-            for (DVQMap d : result)
+            for (DVQMap dvq : result)
             {
-                dri = new DriverReportItem();
-                Driver v = d.getDriver();
-                DriveQMap dqm = d.getDriveQ();
+                driverReportItem = new DriverReportItem();
+                Driver driver = dvq.getDriver();
+                DriveQMap driverQMap = dvq.getDriveQ();
 
-                dri.setDriver(v);
+                driverReportItem.setDriver(driver);
 
-                dri.setGroupID(v.getGroupID());
-                dri.setEmployeeID(v.getPerson().getEmpid());
-                dri.setEmployee(v.getPerson().getFirst() + " " + v.getPerson().getLast());
+                driverReportItem.setGroupID(driver.getGroupID());
+                driverReportItem.setEmployeeID(driver.getPerson().getEmpid());
+                driverReportItem.setEmployee(driver.getPerson().getFirst() + " " + driver.getPerson().getLast());
 
                 // May or may not have a vehicle assigned
-                dri.setVehicle(null);
-                if (d.getVehicle() != null)
+                driverReportItem.setVehicle(null);
+                if (dvq.getVehicle() != null)
                 {
-                    dri.setVehicle(d.getVehicle());
+                    driverReportItem.setVehicle(dvq.getVehicle());
                 }
-                dri.setMilesDriven(dqm.getOdometer() == null ? 0 : dqm.getOdometer() / 100);
-                dri.setOverallScore(dqm.getOverall() == null ? NO_SCORE : dqm.getOverall());
-                dri.setSpeedScore(dqm.getSpeeding() == null ? NO_SCORE : dqm.getSpeeding());
-                dri.setStyleScore(dqm.getDrivingStyle() == null ? NO_SCORE : dqm.getDrivingStyle());
-                dri.setSeatBeltScore(dqm.getSeatbelt() == null ? NO_SCORE : dqm.getSeatbelt());
+                driverReportItem.setMilesDriven(driverQMap.getOdometer() == null ? 0 : driverQMap.getOdometer() / 100);
+                driverReportItem.setOverallScore(driverQMap.getOverall() == null ? NO_SCORE : driverQMap.getOverall());
+                driverReportItem.setSpeedScore(driverQMap.getSpeeding() == null ? NO_SCORE : driverQMap.getSpeeding());
+                driverReportItem.setStyleScore(driverQMap.getDrivingStyle() == null ? NO_SCORE : driverQMap.getDrivingStyle());
+                driverReportItem.setSeatBeltScore(driverQMap.getSeatbelt() == null ? NO_SCORE : driverQMap.getSeatbelt());
 
-                lDri.add(dri);
-                dri = null;
+                driverReportItemList.add(driverReportItem);
+                driverReportItem = null;
             }
 
-            Collections.sort(lDri);
+            Collections.sort(driverReportItemList);
 
-            return lDri;
+            return driverReportItemList;
 
         }
         catch (EmptyResultSetException e)
