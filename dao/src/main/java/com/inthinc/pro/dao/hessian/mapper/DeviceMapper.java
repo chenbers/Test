@@ -69,7 +69,7 @@ public class DeviceMapper extends AbstractMapper
         
         if (value == null)
         {
-            device.setHardVertical(Device.DEFAULT_LEVEL);
+            device.setHardVertical(Device.DEFAULT_BUMP_LEVEL);
         }
 
         if (value instanceof String)

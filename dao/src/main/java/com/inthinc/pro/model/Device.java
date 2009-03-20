@@ -9,7 +9,10 @@ public class Device extends BaseEntity
 {
     
     @Column(updateable = false)
-    public static final Integer DEFAULT_LEVEL = 4;
+    public static final Integer DEFAULT_LEVEL = 2;
+    
+    @Column(updateable = false)
+    public static final Integer DEFAULT_BUMP_LEVEL = 3;
 
     @Column(updateable = false)
     public static final int NUM_SPEEDS = 15;
@@ -226,7 +229,7 @@ public class Device extends BaseEntity
     public Integer getHardVertical()
     {
         if (hardVertical == null)
-            return DEFAULT_LEVEL;
+            return DEFAULT_BUMP_LEVEL;
         return hardVertical;
     }
 
