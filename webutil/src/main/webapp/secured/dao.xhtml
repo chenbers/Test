@@ -1,109 +1,91 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition template="/template/template.xhtml"
-   xmlns="http://www.w3.org/1999/xhtml" 
-	xmlns:ui="http://java.sun.com/jsf/facelets" 
-	xmlns:h="http://java.sun.com/jsf/html"
-  	xmlns:f="http://java.sun.com/jsf/core" 
-  	xmlns:a4j="http://richfaces.org/a4j" 
-  	xmlns:rich="http://richfaces.org/rich">
+<ui:composition template="/template/template.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
 
-<ui:param name="panelTitle" value="DAO Utils"/>
-<ui:param name="groupSelected" value="MAIN"/>
-<ui:define name="util_content">
-	<h:panelGrid columns="2">
-		<h:panelGroup>
-			<h:outputText value="Method:"/>
-			<a4j:form id="method-select-form">
-				<div id="page_top_left">
-					<h:selectOneMenu id="method-select-menu" onchange="submit()" value="#{daoUtilBean.selectedMethod}">
-						<f:selectItems value="#{daoUtilBean.methodSelectList}" />
-				        <a4j:support event="onchange" reRender="paramPanel,resultsPanel,description"/>
-					</h:selectOneMenu>        
-				</div>
-		    </a4j:form>
-    	</h:panelGroup>
-		<a4j:region id="description"  >
-	    		<h:outputText value="#{daoUtilBean.selectedMethodDescription}" style="margin-left:20px;"/>
-	   	</a4j:region>
-    </h:panelGrid>
-	<br/>
-	<br/>
-	
-	<rich:panel id="paramPanel">
-		<f:facet name="header">
-			<h:outputText value="#{daoUtilBean.selectedMethod} - PARAMETERS"/>
-		</f:facet>
-		<a4j:form>
-			<rich:dataTable  rendered="#{daoUtilBean.paramList != null}" value="#{daoUtilBean.paramList}" var="p" id="param">
-				<rich:column>
-	            	<f:facet name="header">
-	                	<h:outputText value="Name"/>
-					</f:facet>
-	                <h:outputText id="name" value="#{p.paramName}"/>
-   	            </rich:column>
-				<rich:column>
-	            	<f:facet name="header">
-	                	<h:outputText value="Type"/>
-					</f:facet>
-	                <h:outputText id="type" value="#{p.paramTypeName}"/>
-   	            </rich:column>
-				<rich:column>
-	            	<f:facet name="header">
-	                	<h:outputText value="Expected Input Format"/>
-					</f:facet>
-	                <h:outputText id="desc" value="#{p.paramInputDesc}"/>
-   	            </rich:column>
-				<rich:column>
-	            	<f:facet name="header">
-	                	<h:outputText value="Value"/>
-					</f:facet>
-					<h:panelGroup rendered="#{!p.dateType}">
-	                	<h:inputText id="value" value="#{p.paramValue}" size="30" required="true" requiredMessage="required"/>
-	                	<rich:message for="value"/>
-	                </h:panelGroup>
-					<h:panelGroup rendered="#{p.dateType}">
-						<rich:calendar id="calendar" inputSize="20" 
-											value="#{p.dateValue}" 
-            								currentDate="#{p.dateValue}"   
-            								required="true" requiredMessage="required"
-            								enableManualInput="true"
-            								datePattern="MM/dd/yy hh:mm"/>
-	                	<rich:message for="calendar"/>
-	                </h:panelGroup>
-	                
-   	            </rich:column>
-			</rich:dataTable>
-			<br/>
-			<a4j:commandButton id="query" value="run" reRender="resultsPanel" 
-					style="float:left"  action="#{daoUtilBean.resultsAction}"/>
-			<br/>
-		</a4j:form>
-	</rich:panel>
-	<br/>
-	<br/>
-	
-	<rich:panel id="resultsPanel">
-		<f:facet name="header">
-			<h:outputText value="#{daoUtilBean.selectedMethod} - RESULTS"/>
-		</f:facet>
-		<a4j:form>
-		<rich:dataTable rows="30" value="#{daoUtilBean.results}" var="result" id="result">
-				<rich:column>
-	            	<f:facet name="header">
-	                	<h:outputText value="Name"/>
-					</f:facet>
-	                <h:outputText id="name" value="#{result.name}"/>
-   	            </rich:column>
-				<rich:column>
-	            	<f:facet name="header">
-	                	<h:outputText value="Value"/>
-					</f:facet>
-	                <h:outputText id="value" value="#{result.value}"/>
-   	            </rich:column>
-		</rich:dataTable>
-		<rich:datascroller id="resultScroll" for="result"/>
-		</a4j:form>		
-	</rich:panel>
-</ui:define>
+    <ui:param name="panelTitle" value="DAO Utils" />
+    <ui:param name="groupSelected" value="MAIN" />
+    <ui:define name="util_content">
+        <h:panelGrid columns="2">
+            <h:panelGroup>
+                <h:outputText value="Method:" />
+                <a4j:form id="method-select-form">
+                    <div id="page_top_left"><h:selectOneMenu id="method-select-menu" onchange="submit()" value="#{daoUtilBean.selectedMethod}">
+                        <f:selectItems value="#{daoUtilBean.methodSelectList}" />
+                        <a4j:support event="onchange" reRender="paramPanel,resultsPanel,description" />
+                    </h:selectOneMenu></div>
+                </a4j:form>
+            </h:panelGroup>
+            <a4j:region id="description">
+                <h:outputText value="#{daoUtilBean.selectedMethodDescription}" style="margin-left:20px;" />
+            </a4j:region>
+        </h:panelGrid>
+        <br />
+        <br />
+
+        <rich:panel id="paramPanel">
+            <f:facet name="header">
+                <h:outputText value="#{daoUtilBean.selectedMethod} - PARAMETERS" />
+            </f:facet>
+            <a4j:form>
+                <rich:dataTable rendered="#{daoUtilBean.paramList != null}" value="#{daoUtilBean.paramList}" var="p" id="param">
+                    <rich:column>
+                        <f:facet name="header">
+                            <h:outputText value="Name" />
+                        </f:facet>
+                        <h:outputText id="name" value="#{p.paramName}" />
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header">
+                            <h:outputText value="Type" />
+                        </f:facet>
+                        <h:outputText id="type" value="#{p.paramTypeName}" />
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header">
+                            <h:outputText value="Expected Input Format" />
+                        </f:facet>
+                        <h:outputText id="desc" value="#{p.paramInputDesc}" />
+                    </rich:column>
+                    <rich:column>
+                        <f:facet name="header">
+                            <h:outputText value="Value" />
+                        </f:facet>
+                        <h:panelGroup rendered="#{!p.dateType}">
+                            <h:inputText id="value" value="#{p.paramValue}" size="30" required="true" requiredMessage="required" />
+                            <rich:message for="value" />
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{p.dateType}">
+                            <rich:calendar id="calendar" inputSize="20" value="#{p.dateValue}" currentDate="#{p.dateValue}" required="true" requiredMessage="required"
+                                enableManualInput="true" datePattern="MM/dd/yy hh:mm" />
+                            <rich:message for="calendar" />
+                        </h:panelGroup>
+
+                    </rich:column>
+                </rich:dataTable>
+                <br />
+                <a4j:commandButton id="query" value="run" reRender="resultsPanel" style="float:left" action="#{daoUtilBean.resultsAction}" />
+                <br />
+            </a4j:form>
+        </rich:panel>
+        <br />
+        <br />
+
+        <h:form>
+        <rich:panel id="resultsPanel">
+            <f:facet name="header">
+                <h:outputText value="#{daoUtilBean.selectedMethod} - RESULTS" />
+            </f:facet>
+                <rich:dataTable rows="30" value="#{daoUtilBean.records}" var="record" id="result">
+                    <rich:columns value="#{daoUtilBean.columnHeaders}" var="col" index="index">
+                        <f:facet name="header">
+                            <h:outputText value="#{col}" />
+                        </f:facet>
+                        <h:outputText value="#{record[index]}" />
+                    </rich:columns>
+                </rich:dataTable>
+                <rich:datascroller id="resultScroll" for="result" />
+        </rich:panel>
+        </h:form>
+    </ui:define>
 </ui:composition>

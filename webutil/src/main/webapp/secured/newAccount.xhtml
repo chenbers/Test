@@ -19,6 +19,10 @@
 	<h:form>
 	<h:outputText id="inst" value="This page should only be used by inthinc to create test tiwipro accounts.  The account, top level group, and superuser will be created.  The email and username must be unique." />
 	<h:panelGrid columns="3">
+    
+        <h:outputText value="Account Name:" />
+        <h:inputText id="accountName" value="#{newAccountBean.accountName}" required="true" requiredMessage="Account Name is required"/>
+        <rich:message for="accountName"/>
 	
 		<h:outputText value="Username:" />
 		<h:inputText  id="userName" value="#{newAccountBean.username}" required="true" requiredMessage="Username is required."/>
