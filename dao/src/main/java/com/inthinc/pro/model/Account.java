@@ -36,6 +36,16 @@ public class Account extends BaseEntity
         this.billID = billID;
         this.status = status;
     }
+    
+    public Account(Integer acctID, String acctName, Integer mailID, Integer billID, Status status)
+    {
+        super();
+        this.acctID = acctID;
+        this.acctName = acctName;
+        this.mailID = mailID;
+        this.billID = billID;
+        this.status = status;
+    }
 
     public Integer getAcctID()
     {
