@@ -428,6 +428,15 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         notifyChangeListeners();
         return result;
     }
+    
+    @Override
+    public String batchEdit()
+    {
+        String returnValue = super.batchEdit();
+        item.setUserSelected(true);
+        item.setDriverSelected(true);
+        return returnValue;
+    }
 
     @Override
     public String save()
@@ -623,8 +632,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             
             
         }  
-        // must be a user or a driver or both
-        else if (!person.isDriverSelected())
+        // must be a user or a driver or both while not in batch edit.
+        else if (!person.isDriverSelected() && !isBatchEdit())
         {
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_userOrDriver"), null);
             context.addMessage("edit-form:isUser", message);
