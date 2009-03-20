@@ -11,6 +11,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 
+import org.richfaces.component.html.HtmlExtendedDataTable;
+import org.richfaces.component.html.HtmlScrollableDataTable;
 import org.richfaces.model.selection.Selection;
 
 import com.inthinc.pro.dao.AccountDAO;
@@ -23,7 +25,6 @@ import com.inthinc.pro.model.ForwardCommand;
 import com.inthinc.pro.model.ForwardCommandStatus;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.User;
-import com.inthinc.pro.util.MessageUtil;
 
 public class FwdCmdBean
 {
@@ -33,6 +34,9 @@ public class FwdCmdBean
     private Integer intData;
     private String stringData;
     private UIInput imeiInput;
+    private String  imei;
+    private Device device;
+    
     // Device Selection
     private List<SelectItem> accountList;
     private Integer acctID;
@@ -40,6 +44,10 @@ public class FwdCmdBean
     private List<Device> devices;
     private List<Device> selectedDevices = new ArrayList<Device>();
     private Selection deviceSelection;
+    private SearchType searchType;
+    private HtmlExtendedDataTable scrollableDataTable;
+    
+    public enum SearchType {DEVICES_BY_USER,DEVICE_BY_USER,DEVICE_BY_ACCOUNT}
 
     private DeviceDAO deviceDAO;
     private AccountDAO accountDAO;
@@ -114,16 +122,27 @@ public class FwdCmdBean
 
         
     }
+    
+    public void validateIMEI(FacesContext context, UIComponent component, Object value)
+    {
+        if (imeiInput.isValid())
+        {
+            if (String.class.isInstance(value))
+            {
+                device = deviceDAO.findByIMEI(String.valueOf(value));
+                if (device == null)
+                {
+                    FacesMessage message = new FacesMessage();
+                    message.setSummary("A device with that IMEI does not exist.");
+                    message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                    throw new ValidatorException(message);
+                }
+            }
+        }
+    }
 
     public void sendFwdCmdAction()
     {
-        selectedDevices.clear();
-        Iterator<Object> iterator = deviceSelection.getKeys();
-        while(iterator.hasNext())
-        {
-            selectedDevices.add(devices.get((Integer)iterator.next()));
-        }
-        
         Object data = null;
         if (stringData != null && !stringData.isEmpty())
         {
@@ -138,10 +157,34 @@ public class FwdCmdBean
             data = Integer.valueOf(0);
         }
         
-        for(Device device:selectedDevices)
+        //Entering IMEI data manually overrides, device selection
+        if(device == null)
         {
+            selectedDevices.clear();
+            Iterator<Object> iterator = deviceSelection.getKeys();
+            while(iterator.hasNext())
+            {
+                Object key =  iterator.next();
+                scrollableDataTable.setRowKey(key);
+                if(scrollableDataTable.isRowAvailable())
+                {
+                    Device d = (Device)scrollableDataTable.getRowData();
+                    selectedDevices.add(d);
+                }
+            }
+            
+            for(Device d:selectedDevices)
+            {
+                deviceDAO.queueForwardCommand(d.getDeviceID(), new ForwardCommand(0, fwdcmd, data, ForwardCommandStatus.STATUS_QUEUED));
+            }
+        }
+        else
+        {
+            selectedDevices.add(device);
             deviceDAO.queueForwardCommand(device.getDeviceID(), new ForwardCommand(0, fwdcmd, data, ForwardCommandStatus.STATUS_QUEUED));
         }
+        
+        
        
     }
     
@@ -149,6 +192,7 @@ public class FwdCmdBean
     {
         selectedDevices.clear();
         page = 1;
+        device = null;
     }
 
     public String search()
@@ -285,5 +329,35 @@ public class FwdCmdBean
     public Integer getPage()
     {
         return page;
+    }
+
+    public void setImei(String imei)
+    {
+        this.imei = imei;
+    }
+
+    public String getImei()
+    {
+        return imei;
+    }
+
+    public void setSearchType(SearchType searchType)
+    {
+        this.searchType = searchType;
+    }
+
+    public SearchType getSearchType()
+    {
+        return searchType;
+    }
+
+    public void setScrollableDataTable(HtmlExtendedDataTable scrollableDataTable)
+    {
+        this.scrollableDataTable = scrollableDataTable;
+    }
+
+    public HtmlExtendedDataTable getScrollableDataTable()
+    {
+        return scrollableDataTable;
     }
 }

@@ -16,35 +16,49 @@
       <div id="content">
          <rich:messages globalOnly="true" style="color:red"></rich:messages>
          <a4j:form>
-            <a4j:region id="deviceTableRegion">
-               <table width="100%">
-                  <tr>
-                     <td valign="top" width="100%">
-                        <h:outputText
-                           value="User Name: " /> 
-                        <h:inputText id="userName"
-                           value="#{fwdcmdBean.userName}"
-                           validatorMessage="ID Must be an Integer" required="true" requiredMessage="Required.">
-                        </h:inputText> 
-                        
-                        <rich:message for="userName" style="color:red"/>
-                        
-                        <a4j:commandButton
-                           value="Search For Devices"
-                           action="#{fwdcmdBean.loadDevices}"
-                           reRender="deviceTablePanel">
-                        </a4j:commandButton> 
-                        <a4j:status id="deviceTableStatus" for="deviceTableRegion">
-                           <f:facet name="start">
-                              <h:outputText>
-                                 <img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;
-                              </h:outputText>
-                           </f:facet>
-                        </a4j:status> 
-                    </td>
-                  </tr>
-               </table>
+            <a4j:region id="searchCriteriaRegion">
+            <rich:panel>
+               <f:facet name="header">
+                  Device Search Criteria
+               </f:facet>
+               
+               The following criteria will be used to bring back a list of devices for performing batch updates. If a value is entered in the IMEI field, 
+               this will override device selection from list.
+               <ul>
+                  <li>
+                     User Name: Searches for all devices located within this users account.
+                  </li>
+               </ul>
+               
+               <rich:separator height="2" lineType="dashed"/><br/> 
+               
+               <h:outputText
+                  value="User Name:" /><h:outputText value=" " />
+               <h:inputText id="userName"
+                  value="#{fwdcmdBean.userName}"
+                  validatorMessage="ID Must be an Integer" required="true" requiredMessage="Required.">
+               </h:inputText> 
+               <h:outputText value=" " />
+               <rich:message for="userName" style="color:red"/>
+               <h:outputText value=" " />
+               <a4j:commandButton
+                  value="Search For Devices"
+                  action="#{fwdcmdBean.loadDevices}"
+                  reRender="deviceTablePanel">
+               </a4j:commandButton> 
+               
+               <a4j:status id="deviceTableStatus" for="searchCriteriaRegion">
+                        <f:facet name="start">
+                           <h:outputText>
+                              <img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;
+                           </h:outputText>
+                        </f:facet>
+               </a4j:status>   
+            </rich:panel>
             </a4j:region>
+         </a4j:form>
+         
+         <a4j:form>
             <a4j:region>
                <table width="100%">
                   <tr>
@@ -56,30 +70,31 @@
                            width="100%" height="300px"
                            selectedClass="dataTableSelectedRow"
                            sortMode="single" selectionMode="multi"
-                           selection="#{fwdcmdBean.deviceSelection}">
+                           selection="#{fwdcmdBean.deviceSelection}"
+                           binding="#{fwdcmdBean.scrollableDataTable}">
                            <f:facet name="header">
                               <h:outputText value="Available Devices" />
                            </f:facet>
       
-                           <rich:column width="150" label="IMEI" sortBy="#{device.imei}">
+                           <rich:column width="150" label="IMEI" filterBy="#{device.imei}" sortBy="#{device.imei}">
                               <f:facet name="header">
                                  <h:outputText value="IMEI" />
                               </f:facet>
                               <h:outputText value="#{device.imei}" />
                            </rich:column>
-                           <rich:column width="150" label="Name" sortBy="#{device.name}">
+                           <rich:column width="150" label="Name" filterBy="#{device.name}" sortBy="#{device.name}">
                               <f:facet name="header">
                                  <h:outputText value="Name" />
                               </f:facet>
                               <h:outputText value="#{device.name}" />
                            </rich:column>
-                           <rich:column width="150" label="Status" sortBy="#{device.status}">
+                           <rich:column width="150" label="Status" filterBy="#{device.status}" sortBy="#{device.status}">
                               <f:facet name="header">
                                  <h:outputText value="Status" />
                               </f:facet>
                               <h:outputText value="#{device.status}" />
                            </rich:column>
-                           <rich:column width="150" label="SIM" sortBy="#{device.sim}">
+                           <rich:column width="150" label="SIM" filterBy="#{device.sim}" sortBy="#{device.sim}">
                               <f:facet name="header">
                                  <h:outputText value="SIM" />
                               </f:facet>
@@ -98,7 +113,22 @@
             </f:facet>
             <table width="100%">
                <tr valign="top">
-                  <td width="150px"><h:outputText
+                  <td width="175px">
+                     <h:outputText value="IMEI: " />
+                  </td>
+                  <td>
+                     <h:inputText id="imei" label="IMEI" value="#{fwdcmdBean.imei}" binding="#{fwdcmdBean.imeiInput}"
+                        validator="#{fwdcmdBean.validateIMEI}">
+                     </h:inputText>
+                      <rich:message for="imei">
+                        <f:facet name="errorMarker">
+                          <h:graphicImage value="/images/error.gif" />
+                        </f:facet>
+                      </rich:message>
+                  </td>
+               </tr>
+               <tr valign="top">
+                  <td width="175px"><h:outputText
                      value="Forward Command ID: " /></td>
                   <td colspan="2"><h:inputText id="fwdcmd"
                      label="FwdCmd" value="#{fwdcmdBean.fwdcmd}"
@@ -109,7 +139,7 @@
                   </rich:message></td>
                </tr>
                <tr valign="top">
-                  <td width="150px"><h:outputText
+                  <td width="175px"><h:outputText
                      value="Integer Data: " /></td>
                   <td colspan="2"><h:inputText id="intdata"
                      label="Integer Data" value="#{fwdcmdBean.intData}" />
@@ -120,7 +150,7 @@
                   </rich:message></td>
                </tr>
                <tr valign="top">
-                  <td width="150px"><h:outputText
+                  <td width="175px"><h:outputText
                      value="String Data: " /></td>
                   <td colspan="2"><h:inputText id="stringdata"
                      label="String Data"
