@@ -115,6 +115,7 @@ public class NewAccountBean
     {
         setErrorMsg(null);
         setSuccessMsg(null);
+        setAccountName(null);
         setUsername(null);
         setEmail(null);
     }
