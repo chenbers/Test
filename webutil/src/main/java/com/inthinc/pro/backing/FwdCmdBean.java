@@ -12,7 +12,6 @@ import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 
 import org.richfaces.component.html.HtmlExtendedDataTable;
-import org.richfaces.component.html.HtmlScrollableDataTable;
 import org.richfaces.model.selection.Selection;
 
 import com.inthinc.pro.dao.AccountDAO;
@@ -23,6 +22,7 @@ import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.ForwardCommand;
 import com.inthinc.pro.model.ForwardCommandStatus;
+import com.inthinc.pro.model.ForwardCommandType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.User;
 
@@ -54,6 +54,7 @@ public class FwdCmdBean
     private UserDAO userDAO;
     private GroupDAO groupDAO;
     private Integer page;
+        
 
     public FwdCmdBean()
     {
@@ -249,6 +250,11 @@ public class FwdCmdBean
             accountList.set(0, new SelectItem(null, ""));
         }
         return accountList;
+    }
+    
+    public ForwardCommandType[] getFwdCmdDescriptions()
+    {        
+        return ForwardCommandType.values();
     }
 
     public void setAcctID(Integer acctID)

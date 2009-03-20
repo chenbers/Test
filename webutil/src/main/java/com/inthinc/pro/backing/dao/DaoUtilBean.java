@@ -230,7 +230,7 @@ public class DaoUtilBean
                         columnHeaders.add(key);
                 }
             }
-
+            // populate recordList
             for (Map<String, Object> map : recordMaps)
             {
                 List<String> recordList = new ArrayList<String>();

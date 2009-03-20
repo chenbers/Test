@@ -171,6 +171,25 @@
          </a4j:form>
          </div>
       </div>
+      
+      <rich:panel>
+      <f:facet name="header">Forward Command Descriptions</f:facet>
+        <rich:dataTable value="#{fwdcmdBean.fwdCmdDescriptions}" var="fwdcmd">
+            <rich:column>
+                <f:facet name="header">Code</f:facet>
+                <h:outputText value="#{fwdcmd.code}" />
+            </rich:column>
+            <rich:column>
+                <f:facet name="header">Name</f:facet>
+                <h:outputText value="#{fwdcmd.name}" />
+            </rich:column>
+            <rich:column>
+                <f:facet name="header">Description</f:facet>
+                <h:outputText value="#{fwdcmd.description}" />
+            </rich:column>
+        </rich:dataTable>
+      </rich:panel>
+      
       <rich:modalPanel id="successPanel" width="400" height="350" onshow="reRenderTable()"
          zindex="2000">
            

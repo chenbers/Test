@@ -1,16 +1,11 @@
 package com.inthinc.pro.model;
 
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
- * List of forward command IDs.   These must match the list for the device (snitch).
- * Only a subset of these will be sent by the portal.
- * This is a list of constants instead of an enum, so that it can be extended without having to change portal code.
- *
+ * List of forward command IDs. These must match the list for the device (snitch). Only a subset of these will be sent by the portal. This is a list of constants instead of an
+ * enum, so that it can be extended without having to change portal code.
+ * 
  */
-public interface ForwardCommandID 
+public interface ForwardCommandID
 {
     public static Integer GET_GPS_GET_LOCATION = 10;
     public static Integer SEND_POWER_CYCLE = 11; // reboot the unit
@@ -85,12 +80,12 @@ public interface ForwardCommandID
     public static Integer SET_WSZONES_MODULE_DISABLED = 387;
 
     public static Integer SET_TRIAX_Z_LEVEL = 449; // next byte of data is sent to triax for the z level
-    public static Integer SET_TRIAX_RMS_LEVEL = 450;  // next byte of data is sent to triax for the rms level
-    public static Integer SET_TRIAX_RMS_WINDOW = 451;  // next byte of data is sent to triax for the rms window
-    public static Integer SET_TRIAX_Y_WINDOW = 452;  // next byte of data is sent to triax for the y window
-    public static Integer SET_TRIAX_Y_LEVEL = 453;  // next byte of data is sent to triax for the y level
-    public static Integer SET_TRIAX_X_ACCEL = 454;  // next byte of data is sent to triax for the x accel
-    public static Integer SET_TRIAX_DVX = 455;  // next byte of data is sent to triax for the dvx level
+    public static Integer SET_TRIAX_RMS_LEVEL = 450; // next byte of data is sent to triax for the rms level
+    public static Integer SET_TRIAX_RMS_WINDOW = 451; // next byte of data is sent to triax for the rms window
+    public static Integer SET_TRIAX_Y_WINDOW = 452; // next byte of data is sent to triax for the y window
+    public static Integer SET_TRIAX_Y_LEVEL = 453; // next byte of data is sent to triax for the y level
+    public static Integer SET_TRIAX_X_ACCEL = 454; // next byte of data is sent to triax for the x accel
+    public static Integer SET_TRIAX_DVX = 455; // next byte of data is sent to triax for the dvx level
 
     public static Integer GET_TRIAX_STATUS = 470;
     public static Integer SET_TRIAX_SLOPE = 490; // next byte of data is sent to triax to set the slope
@@ -131,15 +126,14 @@ public interface ForwardCommandID
     public static Integer SET_SERVER_URL = 692; // server string follows the forward command
     public static Integer SET_SERVER_CONTEXT = 708; // context string follows the forward command
 
-
     // added for the teen product
-    public static Integer SYSTEM_RESET            = 2000;
-    public static Integer GET_DIAGNOSTICS_REPORT    = 2001;
-    public static Integer RESET_DIAGNOSTICS     = 2002;
+    public static Integer SYSTEM_RESET = 2000;
+    public static Integer GET_DIAGNOSTICS_REPORT = 2001;
+    public static Integer RESET_DIAGNOSTICS = 2002;
     public static Integer SET_GPS_LOCATION_VARIABLE = 2003; // 0 for disabled; seconds otherwise
     public static Integer SET_RPM_VIOLATION_VARIABLE = 2004; // 0 for disabled; rpm otherwise
     public static Integer SET_SEATBELT_GRACE_PERIOD_VARIABLE = 2005; // seconds
-//  SET_NO_LOCK_BUFFER_VARIABLE = 2006; // seconds
+    // SET_NO_LOCK_BUFFER_VARIABLE = 2006; // seconds
     public static Integer SET_RAMP_SPEED_LIMIT_VARIABLE = 2007; // 0 for same as unit; mph otherwise
     public static Integer SET_RAMP_SPEED_LIMIT_VARIABLE_KPH = 2008; // 0 for same as unit; kph otherwise
     public static Integer SET_SEATBELT_VIOLATION_VARIABLE = 2009; // 0 for disabled; mph otherwise
@@ -150,37 +144,34 @@ public interface ForwardCommandID
     public static Integer SET_SPEEDLIM_CHANGE_GRACE_PERIOD_VARIABLE = 2014; // seconds
     public static Integer SET_SPEEDING_GRACE_PERIOD_VARIABLE = 2015; // seconds
 
-    public static Integer SMS_PING = 2016;          // added by Cheryl 11-30; will send sms back to sms sender with diag and version
-    public static Integer SMS_TOGGLE_PING = 2017;       // added by Cheryl 12-12; will turn on/off periodic SMS sending of diagnostics
-    public static Integer SET_CALL_NUMBER = 2018;       // added by Cheryl 1-18; will set phone number for unit to call
-                                                        // primary e-call number -- expects string data with phone number (xxxxxxxxxx no dashes)
-    public static Integer MAKE_AUDIO_CALL = 2019;       // added by Cheryl 1-18; will have unit initialize call to its programmed phone number
-    
+    public static Integer SMS_PING = 2016; // added by Cheryl 11-30; will send sms back to sms sender with diag and version
+    public static Integer SMS_TOGGLE_PING = 2017; // added by Cheryl 12-12; will turn on/off periodic SMS sending of diagnostics
+    public static Integer SET_CALL_NUMBER = 2018; // added by Cheryl 1-18; will set phone number for unit to call
+    // primary e-call number -- expects string data with phone number (xxxxxxxxxx no dashes)
+    public static Integer MAKE_AUDIO_CALL = 2019; // added by Cheryl 1-18; will have unit initialize call to its programmed phone number
+
     public static Integer SET_SERVER_PORT = 2020;
 
     public static Integer SEND_TRIAX_ORIENT = 2021;
-    
+
     public static Integer SET_MSGS_PER_NOTIFICATION = 2022; // next value specifies # of messages
 
-    
-    public static Integer SET_PARENT_MODE_ENABLE = 2029;    // put the unit in 'parent' mode so it doesn't communicate and the buzzers are off
-    public static Integer SET_PARENT_MODE_DISABLE = 2030;   // put the unit back into regular mode
-    
-    public static Integer SET_SPEED_BUFFER_SLOPE = 2045;   // pass in the value * 100 in the int data (e.g. for a value of 1.04 pass in 104)
-    
-    
-    public static Integer ADD_VALID_CALLER = 2055; 
-                                                    // addition e-call number -- expects string data with index and phone number (# xxxxxxxxxx)
-                                                    // always leave index 0 for the primary (see SET_CALL_NUMBER)
-    
-    public static Integer SET_SPEED_ALARMS = 2067;   // value is a space delimited list of the mph values for when speed alarm sounds
-                                                     // expects 15 values for speed limits 5 10 15 20 25 30 35 40 45 50 55 60 65 70 75
-                                                     // so for example if alarm should sound at 3 over the speed limit we would pass in
-                                                     // 8 13 18 23 28 33 38 43 48 53 58 63 68 73 78
+    public static Integer SET_PARENT_MODE_ENABLE = 2029; // put the unit in 'parent' mode so it doesn't communicate and the buzzers are off
+    public static Integer SET_PARENT_MODE_DISABLE = 2030; // put the unit back into regular mode
+
+    public static Integer SET_SPEED_BUFFER_SLOPE = 2045; // pass in the value * 100 in the int data (e.g. for a value of 1.04 pass in 104)
+
+    public static Integer ADD_VALID_CALLER = 2055;
+    // addition e-call number -- expects string data with index and phone number (# xxxxxxxxxx)
+    // always leave index 0 for the primary (see SET_CALL_NUMBER)
+
+    public static Integer SET_SPEED_ALARMS = 2067; // value is a space delimited list of the mph values for when speed alarm sounds
+    // expects 15 values for speed limits 5 10 15 20 25 30 35 40 45 50 55 60 65 70 75
+    // so for example if alarm should sound at 3 over the speed limit we would pass in
+    // 8 13 18 23 28 33 38 43 48 53 58 63 68 73 78
 
     public static Integer DMM_SET_HARD_ACCEL = 2091;
     public static Integer DMM_SET_HARD_BRAKE = 2092;
     public static Integer DMM_SET_HARD_TURN = 2093;
     public static Integer DMM_SET_HARD_VERT = 2094;
 }
-
