@@ -50,7 +50,7 @@
                   <input type="hidden" id="firstPoints" value="#{zonesBean.pointsString}" />
 
                   <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
-
+					
                   <a4j:outputPanel id="displayZone">
                     <h:panelGroup rendered="#{not zonesBean.editing}">
 
@@ -92,7 +92,12 @@
 
                   <a4j:outputPanel id="editZone">
                     <h:panelGroup rendered="#{zonesBean.editing}">
-
+                    <div class="msg">
+						<p id="info">
+							<h:outputText  id="editMessage1" value="#{messages.zone_buffer1}" rendered="#{zonesBean.editing}"/><br/>
+							<h:outputText  id="editMessage2" value="#{messages.zone_buffer2}" rendered="#{zonesBean.editing}"/>
+						</p>
+					</div>
                       <input type="hidden" id="backupPoints" value="#{zonesBean.pointsString}" />
 
                       <ul id="grid_nav" style="margin: 0;">
@@ -131,6 +136,7 @@
                           </table>
                         </li>
                         <li class="l">
+                        
                           <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
                             <tr>
                               <td><h:outputText value="#{messages.zones_address}" /></td>
@@ -142,13 +148,15 @@
                         </li>
                         <li class="l"><button type="submit" class="left" onclick="showAddress(document.getElementById('zones-form:zoneAddress').value); return false;"><span class="search"><h:outputText value="#{messages.zones_locate}" /></span></button></li>
                       </ul>
-
+						
                     </h:panelGroup>
+                    
                   </a4j:outputPanel>
-
+					
                   <div class="spacer"></div>
 
                   <h:panelGroup styleClass="map-border" layout="block">
+                  
                     <div id="map-canvas" style="height:100%;height:700px;border:0"></div>
                     <div id="map-cover" style="position:absolute; display:none; overflow:hidden; cursor:crosshair; zIndex:101;">
                       <div id="rect-outline" style="position:absolute; display:none; border:2px dotted #0033FF"></div>

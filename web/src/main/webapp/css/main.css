@@ -2035,6 +2035,12 @@ color: #fff;
 	color: #395898;
 	}
 	
+#info {
+	background: #ebf0fa url(../images/icon_msg_info.png) top left no-repeat;
+	border: 1px solid #75a3ed;
+	color: #395898;
+}
+	
 .error {
 	background: #fce9e9 url(../images/icon_msg_err.png) top left no-repeat;
 	border: 1px solid #f46666;
