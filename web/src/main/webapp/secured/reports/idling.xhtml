@@ -62,19 +62,13 @@
             								    <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
 													<tr>
             								         	<td>								
-            												<h:outputText value="Date Range " />
+            												<h:outputText value="#{messages.idlingReports_dateRange} " />
             											</td>
             											<td>            									
-            												<rich:calendar id="startCalendar" inputSize="10" 
-            													value="#{idlingReportBean.startDate}" 
-            													currentDate="#{idlingReportBean.startDate}"            												
-            													datePattern="#{messages.dateFormat}"/>
+            												<rich:calendar id="startCalendar" inputSize="10" value="#{idlingReportBean.startDate}" datePattern="#{messages.dateFormat}"/>
             											</td>
             											<td>
-            												<rich:calendar id="endCalendar" inputSize="10" 
-            													value="#{idlingReportBean.endDate}" 
-            													currentDate="#{idlingReportBean.endDate}"            													
-            													datePattern="#{messages.dateFormat}"/>
+            												<rich:calendar id="endCalendar" inputSize="10" value="#{idlingReportBean.endDate}" datePattern="#{messages.dateFormat}"/>
             											</td>
             										</tr>
             									</table>

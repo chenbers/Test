@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 
@@ -344,7 +343,7 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
 
     public void exportReportToPdf()
     {
-        ReportCriteria reportCriteria = getReportCriteriaService().getIdlingReportCriteria(getGroupHierarchy().getTopGroup().getGroupID(), intStartDate, intEndDate);
+        ReportCriteria reportCriteria = getReportCriteriaService().getIdlingReportCriteria(getGroupHierarchy().getTopGroup().getGroupID(), startDate, endDate);
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(idlingData);
         getReportRenderer().exportSingleReportToPDF(reportCriteria, getFacesContext());
@@ -352,7 +351,7 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
     
     public void emailReport()
     {
-        ReportCriteria reportCriteria = getReportCriteriaService().getIdlingReportCriteria(getGroupHierarchy().getTopGroup().getGroupID(), intStartDate, intEndDate);
+        ReportCriteria reportCriteria = getReportCriteriaService().getIdlingReportCriteria(getGroupHierarchy().getTopGroup().getGroupID(), startDate, endDate);
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(idlingData);
         getReportRenderer().exportReportToEmail(reportCriteria,getEmailAddress());
@@ -360,7 +359,7 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
     
     public void exportReportToExcel()
     {
-        ReportCriteria reportCriteria = getReportCriteriaService().getIdlingReportCriteria(getGroupHierarchy().getTopGroup().getGroupID(), intStartDate, intEndDate);
+        ReportCriteria reportCriteria = getReportCriteriaService().getIdlingReportCriteria(getGroupHierarchy().getTopGroup().getGroupID(), startDate, endDate);
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(idlingData);
         getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
