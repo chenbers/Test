@@ -292,8 +292,10 @@
 
                     </rich:tab>
 
-                    <rich:tab id="speedSensitivity" label="#{messages.device_speedSensitivity}">
-
+                    <rich:tab id="speedSensitivity" label="#{messages.device_speedSensitivity}" ontabenter="reRenderTab()" ontableave="reRenderTab()">
+                        
+                      <a4j:region>
+                         <a4j:jsFunction name="reRenderTab" reRender="speeedSettingsPanel"></a4j:jsFunction>
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="r">
                           <h:commandButton action="#{vehiclesBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
@@ -302,20 +304,23 @@
                       </ul>
 
                       <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
-
+                     
+                      
                       <ui:fragment rendered="#{empty vehiclesBean.item.device}">
                         <div class="msg" >
                           <p class="warning"><h:outputText value="#{messages.editVehicle_noDevice}" /></p>
                         </div>
                       </ui:fragment>
-
-                      <ui:fragment rendered="#{not empty vehiclesBean.item.device}">
-                        <ui:include src="../../includes/speedSensitivity.xhtml">
-                          <ui:param name="device" value="#{vehiclesBean.item.device}" />
-                          <ui:param name="batchEdit" value="#{vehiclesBean.batchEdit}" />
-                          <ui:param name="updateField" value="#{vehiclesBean.updateField}" />
-                        </ui:include>
-                      </ui:fragment>
+                      
+                       <h:panelGroup id="speeedSettingsPanel">
+                         <ui:fragment rendered="#{not empty vehiclesBean.item.device}">
+                           <ui:include src="../../includes/speedSensitivity.xhtml">
+                             <ui:param name="device" value="#{vehiclesBean.item.device}" />
+                             <ui:param name="batchEdit" value="#{vehiclesBean.batchEdit}" />
+                             <ui:param name="updateField" value="#{vehiclesBean.updateField}" />
+                           </ui:include>
+                         </ui:fragment>
+                      </h:panelGroup>
 
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="r">
@@ -323,7 +328,8 @@
                           <h:outputText value=" " /><h:commandButton action="#{vehiclesBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
                         </li>
                       </ul>
-
+                      </a4j:region>
+                      
                     </rich:tab>
 
                   </rich:tabPanel>
