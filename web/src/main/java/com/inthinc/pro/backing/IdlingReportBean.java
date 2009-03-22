@@ -3,7 +3,6 @@ package com.inthinc.pro.backing;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -83,7 +82,7 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
         startDate.setTime(endDate.getTime() - DAYS_BACK);
 		
         // Start with today
-        intEndDate = getGregDate(null);
+        intEndDate = resetTime(null);
        
         // Now, seven days back
         intStartDate = new Date();
@@ -93,31 +92,6 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
 	@Override
     protected void loadDBData()
     {
-        // Dates for show
-//        this.endDate = new Date();
-//        this.startDate = new Date();
-//        this.startDate.setTime(this.endDate.getTime() - DAYS_BACK);
-
-        // Start with today
-//        this.intEndDate = getGregDate(null);
-//       
-//        // Now, seven days back
-//        this.intStartDate = new Date();
-//        this.intStartDate.setTime(
-//                this.intEndDate.getTime() - DAYS_BACK);      
-		
-//		intStartDate = startDate;
-//		intEndDate = endDate;
-//                                
-//        // Get some other dates, for use if none input        
-//        defaultEndDate = intEndDate;   
-//        defaultStartDate = intStartDate;         
-//
-//        this.idlingsData = 
-//            scoreDAO.getIdlingReportData(
-//                    getUser().getGroupID(),
-//                    intStartDate, intEndDate);
-		
 		search();
     }
 
@@ -125,27 +99,22 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
     public void personListChanged()
     {
         loadDBData();
-        search();
     }
     
-    private Date getGregDate(Date in) 
+    /**
+     * Sets the minute,hour, and second to 0
+     * 
+     * @param date
+     * @return
+     */
+    private Date resetTime(Date date) 
     {
-        GregorianCalendar gc = new GregorianCalendar(getUser().getPerson().getTimeZone());        
-        
-        // Date supplied, reset to...
-        if ( in != null ) {
-            gc.setTimeInMillis(in.getTime());
-        }
-            
-        gc.clear(Calendar.HOUR_OF_DAY);
-        gc.clear(Calendar.HOUR);
-        gc.set(Calendar.HOUR_OF_DAY, 0);
-        gc.clear(Calendar.MINUTE);
-        gc.set(Calendar.MINUTE, 0);
-        gc.clear(Calendar.SECOND);
-        gc.set(Calendar.SECOND,0);
-    
-        return gc.getTime();
+        Calendar calendar = Calendar.getInstance(getUser().getPerson().getTimeZone());       
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND,0);
+        return calendar.getTime();
     }    
 
     public List<IdlingReportItem> getIdlingData()
@@ -173,10 +142,10 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
     @Override
     public void search()
     {
-        // snagged from the db
-        if ( this.idlingsData.size() > 0 ) {
-            this.idlingsData.clear();
-        }
+//        // snagged from the db
+//        if ( this.idlingsData.size() > 0 ) {
+//            this.idlingsData.clear();
+//        }
         
         // always hit the database, no matter what, 
         //   because of date range....
@@ -225,8 +194,8 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
         badDates = sb.toString();
         
         // CAREFULLY compute the search dates      
-        this.internalStartDate = getGregDate(this.startDate);   
-        this.internalEndDate   = getGregDate(this.endDate);   
+        this.internalStartDate = resetTime(this.startDate);   
+        this.internalEndDate   = resetTime(this.endDate);   
     }
 
     @Override
@@ -343,26 +312,28 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
 
     public void exportReportToPdf()
     {
-        ReportCriteria reportCriteria = getReportCriteriaService().getIdlingReportCriteria(getGroupHierarchy().getTopGroup().getGroupID(), startDate, endDate);
-        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
-        reportCriteria.setMainDataset(idlingData);
+        ReportCriteria reportCriteria = loadReportCriteria();
         getReportRenderer().exportSingleReportToPDF(reportCriteria, getFacesContext());
     }
     
     public void emailReport()
     {
-        ReportCriteria reportCriteria = getReportCriteriaService().getIdlingReportCriteria(getGroupHierarchy().getTopGroup().getGroupID(), startDate, endDate);
-        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
-        reportCriteria.setMainDataset(idlingData);
+        ReportCriteria reportCriteria = loadReportCriteria();
         getReportRenderer().exportReportToEmail(reportCriteria,getEmailAddress());
     }
     
     public void exportReportToExcel()
     {
+        ReportCriteria reportCriteria = loadReportCriteria();
+        getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
+    }
+    
+    private ReportCriteria loadReportCriteria()
+    {
         ReportCriteria reportCriteria = getReportCriteriaService().getIdlingReportCriteria(getGroupHierarchy().getTopGroup().getGroupID(), startDate, endDate);
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(idlingData);
-        getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
+        return reportCriteria;
     }
 }
 
