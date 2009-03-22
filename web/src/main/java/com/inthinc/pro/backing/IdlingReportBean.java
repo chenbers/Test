@@ -109,8 +109,9 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
      */
     private Date resetTime(Date date) 
     {
-        Calendar calendar = Calendar.getInstance(getUser().getPerson().getTimeZone());       
-        calendar.setTime(date);
+        Calendar calendar = Calendar.getInstance(getUser().getPerson().getTimeZone());
+        if(date != null) //Otherwise it will be the current date
+            calendar.setTime(date);
         calendar.set(Calendar.HOUR, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND,0);
@@ -330,7 +331,7 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
     
     private ReportCriteria loadReportCriteria()
     {
-        ReportCriteria reportCriteria = getReportCriteriaService().getIdlingReportCriteria(getGroupHierarchy().getTopGroup().getGroupID(), startDate, endDate);
+        ReportCriteria reportCriteria = getReportCriteriaService().getIdlingReportCriteria(getGroupHierarchy().getTopGroup().getGroupID(), internalStartDate, internalEndDate);
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(idlingData);
         return reportCriteria;
