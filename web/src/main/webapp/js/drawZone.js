@@ -190,7 +190,9 @@ function getLatLngBounds(outline)
 function disableEditing()
 {
   if (polygon)
-    GEvent.clearListeners(polygon, "mouseover");
+  {
+	  polygon.disableEditing({onEvent: "mouseover"}); 
+  }
 }
 
 /**
