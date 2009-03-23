@@ -204,121 +204,147 @@
                             </h:inputText>
                           </td>
                         </tr>
+                      </table>
+                       
+                      <div class="spacer"></div>
+
+                      <div class="add_section_title">
+                        <h:selectBooleanCheckbox rendered="#{not personBean.batchEdit}" id="isDriver" value="#{personBean.item.driverSelected}">
+                          <a4j:support event="onclick" onsubmit="showSection('driverTable', this.checked)" ajaxSingle="true" reRender="isDriver" limitToList="true" />
+                        </h:selectBooleanCheckbox>
+                        <h:outputText value="#{messages.editPerson_driverInformation}" />
+                      </div>
+
+                      <table id="driverTable" width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                         <ui:fragment rendered="#{not personBean.batchEdit}">
                         <tr>
-                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_priPhone}" /></td>
+                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_driver_license}" /></td>
                           <td>
-                            <rich:message for="priPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.priPhone}" id="priPhone" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onkeydown="checkMultiple(this)" styleClass="text" size="30" maxlength="22" validatorMessage="#{messages.editPerson_phoneFormat}" converter="PhoneNumberConverter">
-                              <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
-                              <f:attribute name="regex" value="\D?\d{3}\D*\d{3}\D?\d{4}" />
-                            </h:inputText>
+                            <rich:message for="driver_license" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{personBean.item.driver.license}" id="driver_license" onkeydown="checkMultiple(this)" styleClass="text" size="30" maxlength="10" />
+                          </td>
+                        </tr>
+                        </ui:fragment>
+                        <tr>
+                          <td width="100" valign="top">
+                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_driver_licenseClass" value="#{personBean.updateField['driver.licenseClass']}" />
+                            <h:outputText value="#{messages.editPerson_driver_licenseClass}" />
+                          </td>
+                          <td>
+                            <h:selectOneMenu value="#{personBean.item.driver.licenseClass}" id="driver_licenseClass" onchange="checkMultiple(this)">
+                              <f:selectItem itemLabel="" />
+                              <f:selectItems value="#{personBean.licenseClasses}" />
+                            </h:selectOneMenu>
                           </td>
                         </tr>
                         <tr>
-                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_secPhone}" /></td>
+                          <td width="100" valign="top">
+                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_driver_state" value="#{personBean.updateField['driver.state']}" />
+                            <h:outputText value="#{messages.editPerson_driver_state}" />
+                          </td>
                           <td>
-                            <rich:message for="secPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.secPhone}" id="secPhone" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onkeydown="checkMultiple(this)" styleClass="text" size="30" maxlength="22" validatorMessage="#{messages.editPerson_phoneFormat}" converter="PhoneNumberConverter">
-                              <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
-                              <f:attribute name="regex" value="\D?\d{3}\D*\d{3}\D?\d{4}" />
-                            </h:inputText>
+                            <rich:message for="driver_state" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:selectOneMenu value="#{personBean.item.driver.state}" id="driver_state" onchange="checkMultiple(this)">
+                         <f:selectItem itemLabel="" />
+                         <f:converter  converterId="StateConverter"/>
+                              <f:selectItems value="#{personBean.states}" />
+                            </h:selectOneMenu>
                           </td>
                         </tr>
                         <tr>
-                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_secEmail}" /></td>
+                          <td width="100" valign="top">
+                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_driver_expiration" value="#{personBean.updateField['driver.expiration']}" />
+                            <h:outputText value="#{messages.editPerson_driver_expiration}" />
+                          </td>
                           <td>
-                            <rich:message for="secEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.secEmail}" id="secEmail" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onkeydown="checkMultiple(this)" styleClass="text" size="30"
-                              maxlength="62" validatorMessage="#{messages.editPerson_emailFormat}">
-                              <f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
-                            </h:inputText>
+                            <rich:message for="driver_expiration" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <rich:calendar value="#{personBean.item.driver.expiration}" id="driver_expiration" 
+                              onkeydown="checkMultiple('driver_expiration')" 
+                              oninputchange="checkMultiple('driver_expiration')" ondateselect="checkMultiple('driver_expiration')" 
+                              enableManualInput="true" 
+                              converterMessage="#{messages.editPerson_dateFormat}" 
+                              timeZone="#{personBean.utcTimeZone}" /> 
+                                
                           </td>
                         </tr>
+                        <ui:fragment rendered="#{not personBean.batchEdit}">
                         <tr>
-                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_priText}" /></td>
+                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_driver_RFID}" /></td>
                           <td>
-                            <rich:message for="priText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.priText}" id="priText" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onkeydown="checkMultiple(this)" styleClass="text" size="30"
-                              maxlength="62" validatorMessage="#{messages.editPerson_textMessageFormat}">
-                              <f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
-                            </h:inputText>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_secText}" /></td>
-                          <td>
-                            <rich:message for="secText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.secText}" id="secText" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onkeydown="checkMultiple(this)" styleClass="text" size="30"
-                              maxlength="62" validatorMessage="#{messages.editPerson_textMessageFormat}">
-                              <f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
+                            <rich:message for="driver_RFID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{personBean.item.driver.RFID}" id="driver_RFID" onkeydown="checkMultiple(this)" styleClass="text" size="30"
+                              maxlength="16" required="false" converterMessage="#{messages.editPerson_RFIDFormat}" validatorMessage="#{messages.editPerson_RFIDFormat}">
+                              <f:validateLongRange minimum="-2305843009213693952" maximum="-2233785415175766017" />
+                              <f:converter converterId="HexConverter" />
                             </h:inputText>
                           </td>
                         </tr>
                         </ui:fragment>
+                        <tr>
+                          <td width="100" valign="top">
+                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_driver_certifications" value="#{personBean.updateField['driver.certifications']}" />
+                            <h:outputText value="#{messages.editPerson_driver_certifications}" />
+                          </td>
+                          <td>
+                            <h:inputText value="#{personBean.item.driver.certifications}" id="driver_certifications" onkeydown="checkMultiple(this)" styleClass="text" size="30" maxlength="160" />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="100" valign="top">
+                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_driver_dot" value="#{personBean.updateField['driver.dot']}" />
+                            <h:outputText value="#{messages.editPerson_driver_dot}" />
+                          </td>
+                          <td>
+                            <h:inputText value="#{personBean.item.driver.dot}" id="driver_dot" onkeydown="checkMultiple(this)" styleClass="text" size="30" maxlength="160" />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="100" valign="top">
+                             <ui:include src="../../includes/inputLabel.xhtml">
+                           <ui:param name="required" value="TRUE"/>
+                           <ui:param name="for" value="driver_groupID"/>
+                           <ui:param name="fieldName" value="driver.groupID"/>
+                           <ui:param name="editBean" value="#{personBean}"/>
+                           <ui:param name="label" value="#{messages.editPerson_driver_team}"/>
+                       </ui:include>
+                          </td>
+                          <td>
+                            <rich:message for="driver_groupID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:selectOneMenu value="#{personBean.item.driver.groupID}" 
+                              id="driver_groupID" 
+                              required="#{personBean.item.driverSelected and (not personBean.batchEdit)}" 
+                              requiredMessage="#{messages.required}"
+                              onchange="checkMultiple(this)">
+                              <f:selectItem itemLabel="" />
+                              <f:selectItems value="#{personBean.teams}" />
+                            </h:selectOneMenu>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="100" valign="top">
+                            <ui:include src="../../includes/inputLabel.xhtml">
+                           <ui:param name="required" value="TRUE"/>
+                           <ui:param name="fieldName" value="driver.status"/>
+                           <ui:param name="for" value="driver_status"/>
+                           <ui:param name="editBean" value="#{personBean}"/>
+                           <ui:param name="label" value="#{messages.editPerson_driver_status}"/>
+                      </ui:include>
+                          </td>
+                          <td>
+                            <rich:message for="driver_status" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:selectOneMenu value="#{personBean.item.driver.status}" 
+                              id="driver_status" 
+                                required="#{personBean.item.driverSelected and (not personBean.batchEdit)}" 
+                                requiredMessage="#{messages.required}"
+                              onchange="checkMultiple(this)">
+                              <f:selectItems value="#{personBean.statuses}"/>
+                            </h:selectOneMenu>
+                          </td>
+                        </tr>
                       </table>
-
                     </td>
                     <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
                     <td width="390" valign="top">
-
-                      <div class="add_section_title"><h:outputText value="#{messages.editPerson_notifications}" /></div>
-
-                      <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
-                        <tr>
-                          <td width="100">
-                            <ui:include src="../../includes/inputLabel.xhtml">
-                                 <ui:param name="required" value="TRUE"/>
-                                 <ui:param name="fieldName" value="info"/>
-                                 <ui:param name="for" value="info"/>
-                                 <ui:param name="iconSrc" value="/images/ico_info.png"/>
-                                 <ui:param name="editBean" value="#{personBean}"/>
-                                 <ui:param name="label" value="#{messages.myAccount_information}"/>
-                            </ui:include>
-                          </td>
-                          <td>
-                            <h:selectOneMenu value="#{personBean.item.info}" id="info" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" style="width:200px">
-                              <f:selectItems value="#{personBean.alertOptions}" />
-                            </h:selectOneMenu>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td width="100">
-                            <ui:include src="../../includes/inputLabel.xhtml">
-                                 <ui:param name="required" value="TRUE"/>
-                                 <ui:param name="fieldName" value="warn"/>
-                                 <ui:param name="for" value="warn"/>
-                                 <ui:param name="iconSrc" value="/images/ico_warning.png"/>
-                                 <ui:param name="editBean" value="#{personBean}"/>
-                                 <ui:param name="label" value="#{messages.myAccount_warning}"/>
-                            </ui:include>
-                          </td>
-                          <td>
-                            <h:selectOneMenu value="#{personBean.item.warn}" id="warn" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" style="width:200px">
-                              <f:selectItems value="#{personBean.alertOptions}" />
-                            </h:selectOneMenu>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td width="100">
-                            <ui:include src="../../includes/inputLabel.xhtml">
-                                 <ui:param name="required" value="TRUE"/>
-                                 <ui:param name="fieldName" value="crit"/>
-                                 <ui:param name="for" value="crit"/>
-                                 <ui:param name="iconSrc" value="/images/ico_critical.png"/>
-                                 <ui:param name="editBean" value="#{personBean}"/>
-                                 <ui:param name="label" value="#{messages.myAccount_critical}"/>
-                            </ui:include>
-                          </td>
-                          <td>
-                            <h:selectOneMenu value="#{personBean.item.crit}" id="crit" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" style="width:200px">
-                              <f:selectItems value="#{personBean.alertOptions}" />
-                            </h:selectOneMenu>
-                          </td>
-                        </tr>
-                      </table>
-
-                      <div class="spacer"></div>
 
                       <div class="add_section_title"><h:outputText value="#{messages.editPerson_employeeInformation}" /></div>
 
@@ -381,13 +407,11 @@
                           </td>
                         </tr>
                       </table>
-
-                      <div class="spacer"></div>
-
+                      
                       <rich:message for="isUser" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                       <div class="add_section_title">
                         <h:selectBooleanCheckbox rendered="#{not personBean.batchEdit}" id="isUser" disabled="#{!personBean.item.userEditable}" value="#{personBean.item.userSelected}">
-                          <a4j:support event="onclick" ajaxSingle="true" reRender="isUser,userInfoPanel" limitToList="true" />
+                          <a4j:support event="onclick" ajaxSingle="true" reRender="isUser,userInfoPanel,emailRequired" limitToList="true" />
                         </h:selectBooleanCheckbox>
                         <h:outputText value="#{messages.editPerson_userInformation}" />
                       </div>
@@ -432,19 +456,7 @@
                               maxlength="30" required="#{personBean.item.userSelected and empty personBean.item.user.password}" requiredMessage="#{messages.required}" />
                           </td>
                         </tr>
-                        <tr>
-                          <td width="100" valign="top">
-                            <h:outputText value="#{messages.editPerson_priEmail}" />
-                            <h:outputText styleClass="required" value=" *" />
-                          </td>
-                          <td>
-                            <rich:message for="priEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.priEmail}" id="priEmail" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onkeydown="checkMultiple(this)" styleClass="text" size="30"
-                              maxlength="62" required="#{personBean.item.userSelected}" requiredMessage="#{messages.required}" validatorMessage="#{messages.editPerson_emailFormat}">
-                              <f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
-                            </h:inputText>
-                          </td>
-                        </tr>
+                        
                         </ui:fragment>
                         <tr>
                           <td width="100" valign="top">
@@ -514,138 +526,126 @@
                       </table>
                       </h:outputText>
                       </h:panelGroup>
+                      
                       <div class="spacer"></div>
+                      <div class="add_section_title"><h:outputText value="#{messages.editPerson_notifications}" /></div>
 
-                      <div class="add_section_title">
-                        <h:selectBooleanCheckbox rendered="#{not personBean.batchEdit}" id="isDriver" value="#{personBean.item.driverSelected}">
-                          <a4j:support event="onclick" onsubmit="showSection('driverTable', this.checked)" ajaxSingle="true" reRender="isDriver" limitToList="true" />
-                        </h:selectBooleanCheckbox>
-                        <h:outputText value="#{messages.editPerson_driverInformation}" />
-                      </div>
-
-                      <table id="driverTable" width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                      <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                         <ui:fragment rendered="#{not personBean.batchEdit}">
                         <tr>
-                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_driver_license}" /></td>
-                          <td>
-                            <rich:message for="driver_license" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.driver.license}" id="driver_license" onkeydown="checkMultiple(this)" styleClass="text" size="30" maxlength="10" />
-                          </td>
-                        </tr>
-                        </ui:fragment>
-                        <tr>
                           <td width="100" valign="top">
-                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_driver_licenseClass" value="#{personBean.updateField['driver.licenseClass']}" />
-                            <h:outputText value="#{messages.editPerson_driver_licenseClass}" />
+                            <h:outputText value="#{messages.editPerson_priEmail}" />
+                            <a4j:outputPanel id="emailRequired">
+                              <h:outputText rendered="#{personBean.item.userSelected}" styleClass="required" value=" *" />
+                            </a4j:outputPanel>
                           </td>
                           <td>
-                            <h:selectOneMenu value="#{personBean.item.driver.licenseClass}" id="driver_licenseClass" onchange="checkMultiple(this)">
-                              <f:selectItem itemLabel="" />
-                              <f:selectItems value="#{personBean.licenseClasses}" />
-                            </h:selectOneMenu>
+                            <rich:message for="priEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{personBean.item.priEmail}" id="priEmail" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onkeydown="checkMultiple(this)" styleClass="text" size="30"
+                              maxlength="62" validatorMessage="#{messages.editPerson_emailFormat}">
+                              <f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
+                            </h:inputText>
                           </td>
                         </tr>
                         <tr>
-                          <td width="100" valign="top">
-                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_driver_state" value="#{personBean.updateField['driver.state']}" />
-                            <h:outputText value="#{messages.editPerson_driver_state}" />
-                          </td>
+                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_secEmail}" /></td>
                           <td>
-                            <rich:message for="driver_state" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:selectOneMenu value="#{personBean.item.driver.state}" id="driver_state" onchange="checkMultiple(this)">
-					          <f:selectItem itemLabel="" />
-					          <f:converter  converterId="StateConverter"/>
-                              <f:selectItems value="#{personBean.states}" />
-                            </h:selectOneMenu>
+                            <rich:message for="secEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{personBean.item.secEmail}" id="secEmail" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onkeydown="checkMultiple(this)" styleClass="text" size="30"
+                              maxlength="62" validatorMessage="#{messages.editPerson_emailFormat}">
+                              <f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
+                            </h:inputText>
                           </td>
                         </tr>
                         <tr>
-                          <td width="100" valign="top">
-                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_driver_expiration" value="#{personBean.updateField['driver.expiration']}" />
-                            <h:outputText value="#{messages.editPerson_driver_expiration}" />
-                          </td>
+                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_priText}" /></td>
                           <td>
-                            <rich:message for="driver_expiration" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <rich:calendar value="#{personBean.item.driver.expiration}" id="driver_expiration" 
-                            	onkeydown="checkMultiple('driver_expiration')" 
-                            	oninputchange="checkMultiple('driver_expiration')" ondateselect="checkMultiple('driver_expiration')" 
-                            	enableManualInput="true" 
-                            	converterMessage="#{messages.editPerson_dateFormat}" 
-                            	timeZone="#{personBean.utcTimeZone}" /> 
-                                
+                            <rich:message for="priText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{personBean.item.priText}" id="priText" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onkeydown="checkMultiple(this)" styleClass="text" size="30"
+                              maxlength="62" validatorMessage="#{messages.editPerson_textMessageFormat}">
+                              <f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
+                            </h:inputText>
                           </td>
                         </tr>
-                        <ui:fragment rendered="#{not personBean.batchEdit}">
                         <tr>
-                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_driver_RFID}" /></td>
+                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_secText}" /></td>
                           <td>
-                            <rich:message for="driver_RFID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.driver.RFID}" id="driver_RFID" onkeydown="checkMultiple(this)" styleClass="text" size="30"
-                              maxlength="16" required="false" converterMessage="#{messages.editPerson_RFIDFormat}" validatorMessage="#{messages.editPerson_RFIDFormat}">
-                              <f:validateLongRange minimum="-2305843009213693952" maximum="-2233785415175766017" />
-                              <f:converter converterId="HexConverter" />
+                            <rich:message for="secText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{personBean.item.secText}" id="secText" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onkeydown="checkMultiple(this)" styleClass="text" size="30"
+                              maxlength="62" validatorMessage="#{messages.editPerson_textMessageFormat}">
+                              <f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
+                            </h:inputText>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_priPhone}" /></td>
+                          <td>
+                            <rich:message for="priPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{personBean.item.priPhone}" id="priPhone" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onkeydown="checkMultiple(this)" styleClass="text" size="30" maxlength="22" validatorMessage="#{messages.editPerson_phoneFormat}" converter="PhoneNumberConverter">
+                              <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
+                              <f:attribute name="regex" value="\D?\d{3}\D*\d{3}\D?\d{4}" />
+                            </h:inputText>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_secPhone}" /></td>
+                          <td>
+                            <rich:message for="secPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{personBean.item.secPhone}" id="secPhone" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onkeydown="checkMultiple(this)" styleClass="text" size="30" maxlength="22" validatorMessage="#{messages.editPerson_phoneFormat}" converter="PhoneNumberConverter">
+                              <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
+                              <f:attribute name="regex" value="\D?\d{3}\D*\d{3}\D?\d{4}" />
                             </h:inputText>
                           </td>
                         </tr>
                         </ui:fragment>
                         <tr>
-                          <td width="100" valign="top">
-                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_driver_certifications" value="#{personBean.updateField['driver.certifications']}" />
-                            <h:outputText value="#{messages.editPerson_driver_certifications}" />
+                          <td width="100">
+                            <ui:include src="../../includes/inputLabel.xhtml">
+                                 <ui:param name="required" value="FALSE"/>
+                                 <ui:param name="fieldName" value="info"/>
+                                 <ui:param name="for" value="info"/>
+                                 <ui:param name="iconSrc" value="/images/ico_info.png"/>
+                                 <ui:param name="editBean" value="#{personBean}"/>
+                                 <ui:param name="label" value="#{messages.myAccount_information}"/>
+                            </ui:include>
                           </td>
                           <td>
-                            <h:inputText value="#{personBean.item.driver.certifications}" id="driver_certifications" onkeydown="checkMultiple(this)" styleClass="text" size="30" maxlength="160" />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td width="100" valign="top">
-                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_driver_dot" value="#{personBean.updateField['driver.dot']}" />
-                            <h:outputText value="#{messages.editPerson_driver_dot}" />
-                          </td>
-                          <td>
-                            <h:inputText value="#{personBean.item.driver.dot}" id="driver_dot" onkeydown="checkMultiple(this)" styleClass="text" size="30" maxlength="160" />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td width="100" valign="top">
-	                          <ui:include src="../../includes/inputLabel.xhtml">
-									<ui:param name="required" value="TRUE"/>
-									<ui:param name="for" value="driver_groupID"/>
-									<ui:param name="fieldName" value="driver.groupID"/>
-									<ui:param name="editBean" value="#{personBean}"/>
-									<ui:param name="label" value="#{messages.editPerson_driver_team}"/>
-							  </ui:include>
-                          </td>
-                          <td>
-                            <rich:message for="driver_groupID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:selectOneMenu value="#{personBean.item.driver.groupID}" 
-                            	id="driver_groupID" 
-                            	required="#{personBean.item.driverSelected and (not personBean.batchEdit)}" 
-                            	requiredMessage="#{messages.required}"
-                            	onchange="checkMultiple(this)">
-                              <f:selectItem itemLabel="" />
-                              <f:selectItems value="#{personBean.teams}" />
+                            <h:selectOneMenu value="#{personBean.item.info}" id="info" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" style="width:200px">
+                              <f:selectItems value="#{personBean.alertOptions}" />
                             </h:selectOneMenu>
                           </td>
                         </tr>
                         <tr>
-                          <td width="100" valign="top">
-                          	 <ui:include src="../../includes/inputLabel.xhtml">
-									<ui:param name="required" value="TRUE"/>
-									<ui:param name="fieldName" value="driver.status"/>
-									<ui:param name="for" value="driver_status"/>
-									<ui:param name="editBean" value="#{personBean}"/>
-									<ui:param name="label" value="#{messages.editPerson_driver_status}"/>
-							 </ui:include>
+                          <td width="100">
+                            <ui:include src="../../includes/inputLabel.xhtml">
+                                 <ui:param name="required" value="FALSE"/>
+                                 <ui:param name="fieldName" value="warn"/>
+                                 <ui:param name="for" value="warn"/>
+                                 <ui:param name="iconSrc" value="/images/ico_warning.png"/>
+                                 <ui:param name="editBean" value="#{personBean}"/>
+                                 <ui:param name="label" value="#{messages.myAccount_warning}"/>
+                            </ui:include>
                           </td>
                           <td>
-                            <rich:message for="driver_status" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:selectOneMenu value="#{personBean.item.driver.status}" 
-                            	id="driver_status" 
-                                required="#{personBean.item.driverSelected and (not personBean.batchEdit)}" 
-                                requiredMessage="#{messages.required}"
-                            	onchange="checkMultiple(this)">
-                              <f:selectItems value="#{personBean.statuses}"/>
+                            <h:selectOneMenu value="#{personBean.item.warn}" id="warn" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" style="width:200px">
+                              <f:selectItems value="#{personBean.alertOptions}" />
+                            </h:selectOneMenu>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="100">
+                            <ui:include src="../../includes/inputLabel.xhtml">
+                                 <ui:param name="required" value="FALSE"/>
+                                 <ui:param name="fieldName" value="crit"/>
+                                 <ui:param name="for" value="crit"/>
+                                 <ui:param name="iconSrc" value="/images/ico_critical.png"/>
+                                 <ui:param name="editBean" value="#{personBean}"/>
+                                 <ui:param name="label" value="#{messages.myAccount_critical}"/>
+                            </ui:include>
+                          </td>
+                          <td>
+                            <h:selectOneMenu value="#{personBean.item.crit}" id="crit" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" style="width:200px">
+                              <f:selectItems value="#{personBean.alertOptions}" />
                             </h:selectOneMenu>
                           </td>
                         </tr>

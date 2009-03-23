@@ -120,109 +120,7 @@
                             <td width="100"><h:outputText value="#{messages.editPerson_address_zip}" /></td>
                             <td><h:outputText value="#{personBean.item.address.zip}" /></td>
                           </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_priPhone }" /></td>
-                            <td><h:outputText value="#{personBean.item.priPhone}" converter="PhoneNumberConverter" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_secPhone}" /></td>
-                            <td><h:outputText value="#{personBean.item.secPhone}" converter="PhoneNumberConverter" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_priEmail}" /></td>
-                            <td><a href="mailto:#{personBean.item.priEmail}"><h:outputText value="#{personBean.item.priEmail}" /></a></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_secEmail}" /></td>
-                            <td><a href="mailto:#{personBean.item.secEmail}"><h:outputText value="#{personBean.item.secEmail}" /></a></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_priText}" /></td>
-                            <td><h:outputText value="#{personBean.item.priText}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_secText}" /></td>
-                            <td><h:outputText value="#{personBean.item.secText}" /></td>
-                          </tr>
                         </table>
-
-                      </td>
-                      <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
-                      <td width="390" valign="top">
-
-                        <div class="add_section_title"><h:outputText value="#{messages.editPerson_notifications}" /></div>
-
-                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
-                          <tr>
-                            <td width="16"><h:graphicImage value="/images/ico_info.png" width="16" height="16" /></td>
-                            <td width="74"><h:outputText value="#{messages.myAccount_information}" /></td>
-                            <c:set var="alertText" value="myAccount_alertText#{personBean.item.info}" />
-                            <td><h:outputText value="#{messages[alertText]}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="16"><h:graphicImage value="/images/ico_warning.png" width="16" height="16" /></td>
-                            <td width="74"><h:outputText value="#{messages.myAccount_warning}" /></td>
-                            <c:set var="alertText" value="myAccount_alertText#{personBean.item.warn}" />
-                            <td><h:outputText value="#{messages[alertText]}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="16"><h:graphicImage value="/images/ico_critical.png" width="16" height="16" /></td>
-                            <td width="74"><h:outputText value="#{messages.myAccount_critical}" /></td>
-                            <c:set var="alertText" value="myAccount_alertText#{personBean.item.crit}" />
-                            <td><h:outputText value="#{messages[alertText]}" /></td>
-                          </tr>
-                        </table>
-
-                        <div class="spacer"></div>
-
-                        <div class="add_section_title"><h:outputText value="#{messages.editPerson_employeeInformation}" /></div>
-
-                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_empid}" /></td>
-                            <td><h:outputText value="#{personBean.item.empid}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_reportsTo}" /></td>
-                            <td><h:outputText value="#{personBean.item.reportsTo}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_title}" /></td>
-                            <td><h:outputText value="#{personBean.item.title}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_timeZone}" /></td>
-                            <td><h:outputText value="#{personBean.item.timeZone.ID}" /></td>
-                          </tr>
-                        </table>
-
-                        <ui:fragment rendered="#{personBean.item.userSelected}">
-
-                        <div class="spacer"></div>
-
-                        <div class="add_section_title"><h:outputText value="#{messages.editPerson_userInformation}" /></div>
-
-                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_user_username}" /></td>
-                            <td><h:outputText value="#{personBean.item.user.username}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_user_group}" /></td>
-                            <td><h:outputText value="#{personBean.item.group.name}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_user_role}" /></td>
-                            <td><h:outputText value="#{personBean.item.user.role.name}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_user_status}" /></td>
-                            <td><c:set var="status" value="status#{personBean.item.user.status.code}" /><h:outputText value="#{messages[status]}" /></td>
-                          </tr>
-                        </table>
-
-                        </ui:fragment>
-
                         <ui:fragment rendered="#{personBean.item.driverSelected}">
 
                         <div class="spacer"></div>
@@ -273,6 +171,105 @@
                         </table>
 
                         </ui:fragment>
+                      </td>
+                      <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
+                      <td width="390" valign="top">
+
+                        <div class="add_section_title"><h:outputText value="#{messages.editPerson_employeeInformation}" /></div>
+
+                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_empid}" /></td>
+                            <td><h:outputText value="#{personBean.item.empid}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_reportsTo}" /></td>
+                            <td><h:outputText value="#{personBean.item.reportsTo}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_title}" /></td>
+                            <td><h:outputText value="#{personBean.item.title}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_timeZone}" /></td>
+                            <td><h:outputText value="#{personBean.item.timeZone.ID}" /></td>
+                          </tr>
+                        </table>
+
+                        <ui:fragment rendered="#{personBean.item.userSelected}">
+
+                        <div class="spacer"></div>
+
+                        <div class="add_section_title"><h:outputText value="#{messages.editPerson_userInformation}" /></div>
+
+                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_user_username}" /></td>
+                            <td><h:outputText value="#{personBean.item.user.username}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_user_group}" /></td>
+                            <td><h:outputText value="#{personBean.item.group.name}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_user_role}" /></td>
+                            <td><h:outputText value="#{personBean.item.user.role.name}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_user_status}" /></td>
+                            <td><c:set var="status" value="status#{personBean.item.user.status.code}" /><h:outputText value="#{messages[status]}" /></td>
+                          </tr>
+                        </table>
+
+                        </ui:fragment>
+
+                        <div class="spacer"></div>
+                        <div class="add_section_title"><h:outputText value="#{messages.editPerson_notifications}" /></div>
+
+                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_priEmail}" /></td>
+                            <td><a href="mailto:#{personBean.item.priEmail}"><h:outputText value="#{personBean.item.priEmail}" /></a></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_secEmail}" /></td>
+                            <td><a href="mailto:#{personBean.item.secEmail}"><h:outputText value="#{personBean.item.secEmail}" /></a></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_priText}" /></td>
+                            <td><h:outputText value="#{personBean.item.priText}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_secText}" /></td>
+                            <td><h:outputText value="#{personBean.item.secText}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_priPhone }" /></td>
+                            <td><h:outputText value="#{personBean.item.priPhone}" converter="PhoneNumberConverter" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_secPhone}" /></td>
+                            <td><h:outputText value="#{personBean.item.secPhone}" converter="PhoneNumberConverter" /></td>
+                          </tr>
+                          <tr>
+                            <td width="16"><h:graphicImage value="/images/ico_info.png" width="16" height="16" /></td>
+                            <td width="74"><h:outputText value="#{messages.myAccount_information}" /></td>
+                            <c:set var="alertText" value="myAccount_alertText#{personBean.item.info}" />
+                            <td><h:outputText value="#{messages[alertText]}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="16"><h:graphicImage value="/images/ico_warning.png" width="16" height="16" /></td>
+                            <td width="74"><h:outputText value="#{messages.myAccount_warning}" /></td>
+                            <c:set var="alertText" value="myAccount_alertText#{personBean.item.warn}" />
+                            <td><h:outputText value="#{messages[alertText]}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="16"><h:graphicImage value="/images/ico_critical.png" width="16" height="16" /></td>
+                            <td width="74"><h:outputText value="#{messages.myAccount_critical}" /></td>
+                            <c:set var="alertText" value="myAccount_alertText#{personBean.item.crit}" />
+                            <td><h:outputText value="#{messages[alertText]}" /></td>
+                          </tr>
+                        </table>
 
                       </td>
                     </tr>

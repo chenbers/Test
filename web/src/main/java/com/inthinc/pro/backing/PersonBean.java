@@ -630,6 +630,15 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 }
             }
             
+            // required pri email
+            if (!isBatchEdit() && (person.getPriEmail() == null || person.getPriEmail().equals("")))
+            {
+                valid = false;
+                final String summary = MessageUtil.getMessageString(REQUIRED_KEY);
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                context.addMessage("edit-form:priEmail", message);
+            }
+            
             
         }  
         // must be a user or a driver or both while not in batch edit.
