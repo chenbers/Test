@@ -1,7 +1,6 @@
 package com.inthinc.pro.backing;
 
 import java.io.Serializable;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -13,13 +12,11 @@ import javax.mail.internet.MimeMessage;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.util.StringUtils;
 
 import com.inthinc.pro.model.LatLng;
-import com.inthinc.pro.sbs.Tiger;
+import com.inthinc.pro.sbs.baseDao.TigerDAO;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.validators.EmailValidator;
 import com.iwi.teenserver.dao.GenericDataAccess;
@@ -36,11 +33,12 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 
     private NavigationBean 			navigation;
     private GenericDataAccess 		teenServerDAO; //From teenserverDAO
-    private int 					sbsUserId;
+    private TigerDAO				tigerDao;
+	private int 					sbsUserId;
     private String 					sbsUserName;
     private List<SBSChangeRequest> 	changeRequests;
     private JavaMailSenderImpl 		mailSender;
-    private SimpleMailMessage 		speedLimitChangeRequestReceivedMessage;
+//    private SimpleMailMessage 		speedLimitChangeRequestReceivedMessage;
     private double 					lat;
     private double 					lng;
     private String 					address;
@@ -55,6 +53,13 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
     private boolean					success;
     private boolean					emailSent;
     
+    public TigerDAO getTigerDao() {
+		return tigerDao;
+	}
+	public void setTigerDao(TigerDAO tigerDao) {
+		this.tigerDao = tigerDao;
+	}
+	
 	public boolean isRequestSent() {
 		return requestSent;
 	}
@@ -85,14 +90,14 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 		success = false;
 		emailSent = false;
 	}
-	public SimpleMailMessage getSpeedLimitChangeRequestReceivedMessage() {
-		return speedLimitChangeRequestReceivedMessage;
-	}
-
-	public void setSpeedLimitChangeRequestReceivedMessage(
-			SimpleMailMessage speedLimitChangeRequestReceivedMessage) {
-		this.speedLimitChangeRequestReceivedMessage = speedLimitChangeRequestReceivedMessage;
-	}
+//	public SimpleMailMessage getSpeedLimitChangeRequestReceivedMessage() {
+//		return speedLimitChangeRequestReceivedMessage;
+//	}
+//
+//	public void setSpeedLimitChangeRequestReceivedMessage(
+//			SimpleMailMessage speedLimitChangeRequestReceivedMessage) {
+//		this.speedLimitChangeRequestReceivedMessage = speedLimitChangeRequestReceivedMessage;
+//	}
 
 	public JavaMailSenderImpl getMailSender() {
 		return mailSender;
@@ -129,7 +134,7 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 		if ((lat < 360)&& (lng < 360)){
 			
 			try{
-				SBSChangeRequest sbscr = Tiger.getCompleteChains(lat, lng, getAddressNumber(address));
+				SBSChangeRequest sbscr = tigerDao.getCompleteChains(lat, lng, getAddressNumber(address));
 				
 				if (!duplicateLinkId(sbscr.getLinkId())){
 					sbscr.setAddress(this.makeCompositeAddress(address, sbscr.getAddress()));
@@ -165,12 +170,12 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 				}
 	
 			}
-			catch(SQLException sqle){
-				
-				logger.debug("addSegment - SQLException: "+sqle.getMessage());
-				setCaption("Could not access database - please try again later");
-				return null;
-			}
+//			catch(SQLException sqle){
+//				
+//				logger.debug("addSegment - SQLException: "+sqle.getMessage());
+//				setCaption("Could not access database - please try again later");
+//				return null;
+//			}
 			catch(ParserConfigurationException pce){
 				
 				logger.debug("addSegment - ParserConfigurationException: "+pce.getMessage());
@@ -349,9 +354,9 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 	public void sendEmailToUser(SBSChangeRequest speedLimitBean) {
 		
 		try {
-			MimeMessage message = mailSender.createMimeMessage();
+			MimeMessage emailText = mailSender.createMimeMessage();
 			// use the true flag to indicate you need a multipart message
-			MimeMessageHelper helper = new MimeMessageHelper(message, true);
+			MimeMessageHelper helper = new MimeMessageHelper(emailText, true);
 			//String emailAddresses = "jacquie_howard@hotmail.com";
 			String emailAddresses =getEmailAddress();
 			if (emailAddresses == null) return;
@@ -359,18 +364,17 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 			helper.setTo(email[0]);
 
 			logger.debug("sendEmailToUser email address is "+email[0]);
-		
-			SimpleMailMessage justTheText 
-					= new SimpleMailMessage(getSpeedLimitChangeRequestReceivedMessage());
-			String text = justTheText.getText();
-			text = StringUtils.replace(text, "%ADDRESS%",speedLimitBean.getAddress());
-			text = StringUtils.replace(text, "%SPEED%",""+speedLimitBean.getNewSpeedLimit());
+			
+			
+			String text = MessageUtil.formatMessageString("sbs_emailText",speedLimitBean.getNewSpeedLimit(),speedLimitBean.getAddress());
+			
 			helper.setText(text,true);
-			helper.setFrom(justTheText.getFrom());
-			helper.setSubject(justTheText.getSubject());
+			helper.setFrom(MessageUtil.getMessageString("sbs_email_from"));
+			helper.setSubject(MessageUtil.getMessageString("sbs_email_subject"));
 			speedLimitBean.setEmail(email[0]);
 			
-			mailSender.send(message);
+			mailSender.send(emailText);
+			message =MessageUtil.getMessageString("sbs_caption_queued");
 			
 		} catch (MessagingException e) {
 			// 
@@ -469,13 +473,13 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 					compositeAddress.append(gStreet[i]);
 					compositeAddress.append(" ");
 				}
-				compositeAddress.replace(compositeAddress.length()-1, compositeAddress.length()-1, ",");
+				compositeAddress.replace(compositeAddress.length()-1, compositeAddress.length(), ",");
 				for (int i=1; i<gTokens.length; i++){
 					
 					compositeAddress.append(gTokens[i]);
 					compositeAddress.append(",");
 				}
-				compositeAddress.replace(compositeAddress.length()-1, compositeAddress.length()-1, "");
+				compositeAddress.replace(compositeAddress.length()-1, compositeAddress.length(), "");
 				break;
 			}
 		}
@@ -497,7 +501,7 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 					compositeAddress.append(gTokens[i]);
 					compositeAddress.append(",");
 				}
-				compositeAddress.replace(compositeAddress.length()-1, compositeAddress.length()-1, "");
+				compositeAddress.replace(compositeAddress.length()-1, compositeAddress.length(), "");
 			}
 		}
 		return compositeAddress.toString();

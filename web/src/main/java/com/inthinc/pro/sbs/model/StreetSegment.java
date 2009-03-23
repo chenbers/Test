@@ -1,67 +1,70 @@
-package com.inthinc.pro.backing;
+package com.inthinc.pro.sbs.model;
 
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.postgis.Point;
 
-import com.iwi.teenserver.model.SpeedLimitChangeRequest;
+public class StreetSegment {
 
-public class SBSChangeRequest implements EditItem, Serializable{
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
 	private String linkId;
+
+	private int featureId;
+
 	private String numbers;
 	private String address;
 	private String zipCode;
 	private List<Point> streetSegmentPoints;
+	private List<Point> endPoints;
+	
+
 	private int category;
 	private int speedLimit;
-	private int newSpeedLimit;
-	private String comment;
-	private boolean selected;
-	private String email;
-	private SpeedLimitChangeRequest changeRequest;
+	
+	private float opacity = 0.9f;
+	
+	
 	private boolean containsAddress;
 	
-	@Override
-	public Integer getId() {
-		// TODO Auto-generated method stub
-		return null;
+	public int getFeatureId() {
+		return featureId;
 	}
-	@Override
-    public String getName()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	public void setFeatureId(int featureId) {
+		this.featureId = featureId;
+	}
+	
+	public String getLinkId() {
+		return linkId;
+	}
+	public void setLinkId(String linkId) {
+		this.linkId = linkId;
+	}
+	public List<Point> getEndPoints() {
+		return endPoints;
+	}
+	public void setEndPoints(List<Point> endPoints) {
+		this.endPoints = endPoints;
+	}
+	private void makeEndPoints(){
+		
+		endPoints = new ArrayList<Point>();
+		if ((streetSegmentPoints != null) && (streetSegmentPoints.size()>0)){
+			
+			endPoints.add(streetSegmentPoints.get(0));
+			endPoints.add(streetSegmentPoints.get(streetSegmentPoints.size()-1));
+		}
+	}
 	public boolean isContainsAddress() {
 		return containsAddress;
 	}
 	public void setContainsAddress(boolean containsAddress) {
 		this.containsAddress = containsAddress;
 	}
-   public boolean isSelected() {
-		return selected;
+	public String getNumbers() {
+		return numbers;
 	}
-	public void setSelected(boolean selected) {
-		this.selected = selected;
-	}
-	public SBSChangeRequest() {
-		super();
-		streetSegmentPoints = new ArrayList<Point>();
-	}
-	public String getLinkId() {
-		return linkId;
-	}
-	public void setLinkId(String linkId) {
-		this.linkId = linkId;
+	public void setNumbers(String numbers) {
+		this.numbers = numbers;
 	}
 	public String getAddress() {
 		return address;
@@ -69,6 +72,30 @@ public class SBSChangeRequest implements EditItem, Serializable{
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	public void setAddress(String fromAddrRight, String toAddrRight, String fromAddrLeft, String toAddrLeft,  
+    		String fedirp, String st_typ_bef, String fename, String st_nm_suff, String fetype, String fedirs, int inAddress){
+		
+		List<String> processedAddress = makeAddress(fromAddrRight, toAddrRight, fromAddrLeft, toAddrLeft, 
+    		fedirp, st_typ_bef, fename, st_nm_suff, fetype, fedirs, inAddress);
+		
+		address = processedAddress.get(1);
+	}		
+	public void setAddress(String fromAddrRight, 
+    		String fedirp, String st_typ_bef, String fename, String st_nm_suff, String fetype, String fedirs, int inAddress){
+		
+        StringBuilder builder = new StringBuilder();
+        append(builder, fromAddrRight);
+//        append(builder, "*");
+        append(builder, " ");
+        append(builder, fedirp);
+        append(builder, st_typ_bef);
+        append(builder, fename);
+        append(builder, st_nm_suff);
+        append(builder, fetype);
+        append(builder, fedirs);
+        
+        address = builder.toString();
+	}	
 	public String getZipCode() {
 		return zipCode;
 	}
@@ -78,10 +105,12 @@ public class SBSChangeRequest implements EditItem, Serializable{
 	public List<Point> getStreetSegmentPoints() {
 		return streetSegmentPoints;
 	}
-	public void setStreetSegmentPoints(List<Point> streetSegment) {
-		this.streetSegmentPoints = streetSegment;
+	public void setStreetSegmentPoints(List<Point> streetSegmentPoints) {
+		
+		this.streetSegmentPoints = streetSegmentPoints;
+		makeEndPoints();
 	}
-	public void setStreetSegment(String tigerLine){
+	public void setStreetSegmentPoints(String tigerLine){
         //Get line segment
 //         logger.info(tigerLine);
 		streetSegmentPoints = new ArrayList<Point>();
@@ -97,6 +126,13 @@ public class SBSChangeRequest implements EditItem, Serializable{
             Point point = new Point(lat1,lng1);
             streetSegmentPoints.add(point);
         }
+		makeEndPoints();
+	}
+	public int getCategory() {
+		return category;
+	}
+	public void setCategory(int category) {
+		this.category = category;
 	}
 	public int getSpeedLimit() {
 		return speedLimit;
@@ -104,77 +140,6 @@ public class SBSChangeRequest implements EditItem, Serializable{
 	public void setSpeedLimit(int speedLimit) {
 		this.speedLimit = speedLimit;
 	}
-	public int getNewSpeedLimit() {
-		return newSpeedLimit;
-	}
-	public void setNewSpeedLimit(int newSpeedLimit) {
-		this.newSpeedLimit = newSpeedLimit;
-	}
-	public String getComment() {
-		return comment;
-	}
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
-	public int getCategory() {
-		return category;
-	}
-	public void setCategory(int category) {
-		this.category = category;
-	}	
-	public SpeedLimitChangeRequest getChangeRequest() {
-		
-		changeRequest = new SpeedLimitChangeRequest();
-		changeRequest.setAddress(address);
-		changeRequest.setComment(comment);
-		changeRequest.setLinkId(new Integer(linkId));
-		changeRequest.setNewSpeedLimit(newSpeedLimit);
-		changeRequest.setStatus(SpeedLimitChangeRequest.STATUS_NEW);
-		
-		return changeRequest;
-	}
-	public void setChangeRequest(SpeedLimitChangeRequest changeRequest) {
-		this.changeRequest = changeRequest;
-	}
-	public String getNumbers() {
-		return numbers;
-	}
-	public void setNumbers(String numbers) {
-		this.numbers = numbers;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public boolean isGood(){
-		
-		return (address!=null)&& (!address.isEmpty()) && (newSpeedLimit != 0);
-	}
-	public void setAddress(String fromAddrRight, String toAddrRight, String fromAddrLeft, String toAddrLeft,  
-    		String fedirp, String st_typ_bef, String fename, String st_nm_suff, String fetype, String fedirs, int inAddress){
-		
-		List<String> processedAddress = makeAddress(fromAddrRight, toAddrRight, fromAddrLeft, toAddrLeft, 
-    		fedirp, st_typ_bef, fename, st_nm_suff, fetype, fedirs, inAddress);
-		
-		address = processedAddress.get(1);
-	}		
-	public void setAddress(String fromAddrRight, 
-    		String fedirp, String st_typ_bef, String fename, String st_nm_suff, String fetype, String fedirs, int inAddress){
-		
-        StringBuilder builder = new StringBuilder();
-        append(builder, fromAddrRight);
-        append(builder, " ");
-        append(builder, fedirp);
-        append(builder, st_typ_bef);
-        append(builder, fename);
-        append(builder, st_nm_suff);
-        append(builder, fetype);
-        append(builder, fedirs);
-        
-        address = builder.toString();
-	}	
 	public void setSpeedLimit(int fromSpeedLimit, int toSpeedLimit, int category){
 		
 		speedLimit = deduceSpeedLimit(fromSpeedLimit, toSpeedLimit, category);
@@ -257,11 +222,15 @@ public class SBSChangeRequest implements EditItem, Serializable{
         }
         List<String> result = new ArrayList<String>();
         result.add(builder.toString().trim());
-
+        containsAddress = false;
         //Check if the address supplied is in the address range
-        containsAddress =(((address == -1) ||((address != -1)&& ((( address >= fromLeft)&&(address <= toLeft)) || ((address >= fromRight)&&(address <= toRight))))));
-
+        if ((address == -1) ||((address != -1)&& ((( address >= fromLeft)&&(address <= toLeft)) || ((address >= fromRight)&&(address <= toRight))))){
+        	
+        	containsAddress = true;;
+        }
+        
         return result;
+
     }
     private List<String> makeAddress(String fromAddrRight, String toAddrRight, String fromAddrLeft, String toAddrLeft, 
     		String fedirp, String st_typ_bef, String fename, String st_nm_suff, String fetype, String fedirs, int address){
@@ -315,22 +284,15 @@ public class SBSChangeRequest implements EditItem, Serializable{
         }
     	else return speedLimit;
     }
-    
-	public void setStreetSegmentPoints(String tigerLine){
-        //Get line segment
-//         logger.info(tigerLine);
-		streetSegmentPoints = new ArrayList<Point>();
-        tigerLine = tigerLine.substring("MULTILINESTRING((".length(),
-        		 tigerLine.length() - 2);
-        String[] points = tigerLine.split(",");
-        for (String point1 : points) {
-
-            Double lng1 = Double.parseDouble(point1.substring(0, point1
-                    .indexOf(" ")));
-            Double lat1 = Double.parseDouble(point1.substring(point1
-                    .indexOf(" ")));
-            Point point = new Point(lat1,lng1);
-            streetSegmentPoints.add(point);
-        }
+	public float getOpacity() {
+		return opacity;
+	}
+	public void setOpacity(float opacity) {
+		this.opacity = opacity;
+	}
+	
+	public boolean isIncluded(){
+		
+		return opacity > 0.8f;
 	}
 }

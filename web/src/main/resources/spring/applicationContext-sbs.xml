@@ -13,38 +13,25 @@
    </bean>
    <bean id="speedLimitChangeRequests" class="com.inthinc.pro.backing.SpeedLimitChangeRequestBean" scope="request" parent="baseBean" init-method="init">
      	<property name="mailSender" ref="mailSenderBean" />
- 		<property name="speedLimitChangeRequestReceivedMessage" ref="speedLimitChangeRequestReceivedMessage" />
  		<property name="sbsUserId" value="${teenproxy.sbsUserId}"/>
 		<property name="sbsUserName" value="${teenproxy.sbsUserName}"/>
 		<property name="teenServerDAO" ref="sbsDataAccessBean"/>
+		<property name="tigerDao" ref="tigerDao"/>
 		
    </bean>
-   <bean id="speedLimitChangeRequestReceivedMessage" class="org.springframework.mail.SimpleMailMessage">
-      <property name="from">
-         <value><![CDATA[tiwi Support <speedbystreet@tiwi.com>]]></value>
-      </property>
-	  <property name="subject" value="tiwiPro speed limit feedback received" />
-	  <property name="text">
-	   <value>
-	     <![CDATA[<html><body>
-	    <p> Thank you for taking the time to submit speed limit feedback of %SPEED%mph for %ADDRESS%.  Your assistance as part of our tiwi community is appreciated.</p> 
-
- 
-
-<p>We will review your request and use our best efforts to get back to you within two business days as to any possible updates.</p>
-
- 
-
-<p>Thanks again,</p>
-
- 
-
-<p>The tiwi Speed-By-Street Data Team</p>
-
-<p><a href="www.tiwipro.com">www.tiwipro.com</a></p></body></html>]]>
-		</value>
-	      </property>
-   </bean>
      <bean id="slcrTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request"></bean>
+  
+     <bean id="tigerDataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="org.postgresql.Driver" />
+		<property name="url" value="jdbc:postgresql://192.168.11.80:5432/iwigis" />
+		<property name="username" value="development" />
+		<property name="password" value="w1tn3ss" />
+		<property name="initialSize" value="5" />
+		<property name="maxActive" value="10" />
+   </bean>
+   
+   <bean id="tigerDao" class="com.inthinc.pro.sbs.jdbc.JdbcTigerDAO">
+		<property name="dataSource" ref="tigerDataSource" />
+   </bean>
    
 </beans>

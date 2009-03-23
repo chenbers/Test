@@ -1,5 +1,5 @@
-<Context>
-   <Resource name="jdbc/tiger" auth="Container" type="javax.sql.DataSource" maxActive="100" maxIdle="30" maxWait="10000"
-      username="development" password="w1tn3ss" driverClassName="org.postgresql.Driver"
-      url="jdbc:postgresql://192.168.11.80:5432/iwigis" />
-</Context>
+<!--<Context docBase="C:\Projects\inthinc\pro\workspace\root\web\target\tiwipro" path="/tiwipro" reloadable="true">-->
+<!--   <Resource name="jdbc/tiger" auth="Container" type="javax.sql.DataSource" maxActive="100" maxIdle="30" maxWait="10000"-->
+<!--      username="development" password="w1tn3ss" driverClassName="org.postgresql.Driver"-->
+<!--      url="jdbc:postgresql://192.168.11.80:5432/iwigis" />-->
+<!--</Context>-->

@@ -83,7 +83,7 @@
 		         	
 			         // Do polyline for segment    
 			         gLatLngArray = new Array();
-			         <ui:repeat value="#{changeRequest.streetSegment}" var="point">
+			         <ui:repeat value="#{changeRequest.streetSegmentPoints}" var="point">
 				           var lat = #{point.x};
 				           var lng = #{point.y};
 				           gLatLngArray.push(new GLatLng(lat,lng));

@@ -33,68 +33,68 @@ public class Tiger {
     }
 
 	
-    public static SBSChangeRequest getCompleteChains(double lat, double lng, int address) throws SQLException, ParserConfigurationException
-    {
-
-		Connection connection = ds.getConnection();
-		Statement stmt = connection.createStatement();
-		
-		String point = "Point(" + lng + " " + lat + ")";
-		
-		String query = "select link_id as ogc_fid,st_nm_pref as fedirp,st_typ_bef,st_nm_base as fename,st_nm_suff,st_typ_aft as fetype ,l_refaddr as fraddl,l_nrefaddr as toaddl,"+
-				"r_refaddr as fraddr,r_nrefaddr as toaddr,l_postcode as zipL,r_postcode as zipR,"+
-				"distance(the_geom,setsrid(GeomFromText('"+point+"',32767),4326)) as dist, "+
-				"astext(the_geom) as tigerline, COALESCE(streets.iwi_speed_cat,"+ 
-				"streets_sif.speed_cat, streets.speed_cat) AS speed_cat, COALESCE(streets.iwi_fr_spd_lim, streets_sif.fr_spd_lim," +
-				"streets.fr_spd_lim) AS fr_spd_lim,COALESCE(streets.iwi_to_spd_lim," +
-				"streets_sif.to_spd_lim, streets.to_spd_lim) AS to_spd_lim "+
-				"from streets LEFT JOIN streets_sif USING (link_id)"+
-				"where the_geom && " +
-				"expand(setsrid(geomFromText('"+point+"',32767),4326),0.002) order by dist limit 10";
-		/*       String query = "select ogc_fid,tlid,fedirp,fename,fetype,fedirs,fraddl,toaddl,fraddr,toaddr,zipL,zipR,countyL,countyR,stateL,stateR,us_fips.placename as placenameL,cfcc,distance(wkb_geometry,GeomFromText('"
-		        + point
-		        + "',32767)) as dist from COMPLETECHAIN,US_FIPS where wkb_geometry &&  expand(geomFromText('"
-		        + point
-		        + "',32767),0.002) "
-		        + " and COMPLETECHAIN.placeL = US_FIPS.fipsplace_numeric and COMPLETECHAIN.stateL = US_FIPS.state_numeric and COMPLETECHAIN.countyL = US_FIPS.fipscounty_numeric"
-		        + " and cfcc like 'A%' order by dist limit 10";*/
-		
-		ResultSet rs = stmt.executeQuery(query);
-		List<SBSChangeRequest> backups = new ArrayList<SBSChangeRequest>();
-		while (rs.next()){
-			
-			SBSChangeRequest sbsChangeRequest = new SBSChangeRequest();
-			List<String> processedAddress = makeAddress(rs.getString("fraddr"),rs.getString("toaddr"),
-					rs.getString("fraddl"),rs.getString("toaddl"),
-					rs.getString("fedirp"),rs.getString("st_typ_bef"),
-					rs.getString("fename"),rs.getString("st_nm_suff"),
-					rs.getString("fetype"),"", address);
-			sbsChangeRequest.setAddress(processedAddress.get(2));
-			sbsChangeRequest.setLinkId(rs.getString("ogc_fid"));
-			sbsChangeRequest.setZipCode(rs.getString("zipL"));
-			sbsChangeRequest.setSpeedLimit(deduceSpeedLimit(rs.getInt("fr_spd_lim"),rs.getInt("to_spd_lim"),rs.getInt("speed_cat")));
-			
-			sbsChangeRequest.setCategory(rs.getInt("speed_cat"));
-			sbsChangeRequest.setStreetSegment(rs.getString("tigerLine"));
-			
-			//test if we have a segment in the right range and return 
-			if (processedAddress.get(1).equals("*")){
-				
-				return sbsChangeRequest;
-			}
-			else {
-
-				backups.add(sbsChangeRequest);
-			}
-		}
-		if (backups.size() > 0) {
-			return backups.get(0);
-		}
-		else {
-			return null;
-		}
-	
-	}
+//    public static SBSChangeRequest getCompleteChains(double lat, double lng, int address) throws SQLException, ParserConfigurationException
+//    {
+//
+//		Connection connection = ds.getConnection();
+//		Statement stmt = connection.createStatement();
+//		
+//		String point = "Point(" + lng + " " + lat + ")";
+//		
+//		String query = "select link_id as ogc_fid,st_nm_pref as fedirp,st_typ_bef,st_nm_base as fename,st_nm_suff,st_typ_aft as fetype ,l_refaddr as fraddl,l_nrefaddr as toaddl,"+
+//				"r_refaddr as fraddr,r_nrefaddr as toaddr,l_postcode as zipL,r_postcode as zipR,"+
+//				"distance(the_geom,setsrid(GeomFromText('"+point+"',32767),4326)) as dist, "+
+//				"astext(the_geom) as tigerline, COALESCE(streets.iwi_speed_cat,"+ 
+//				"streets_sif.speed_cat, streets.speed_cat) AS speed_cat, COALESCE(streets.iwi_fr_spd_lim, streets_sif.fr_spd_lim," +
+//				"streets.fr_spd_lim) AS fr_spd_lim,COALESCE(streets.iwi_to_spd_lim," +
+//				"streets_sif.to_spd_lim, streets.to_spd_lim) AS to_spd_lim "+
+//				"from streets LEFT JOIN streets_sif USING (link_id)"+
+//				"where the_geom && " +
+//				"expand(setsrid(geomFromText('"+point+"',32767),4326),0.002) order by dist limit 10";
+//		/*       String query = "select ogc_fid,tlid,fedirp,fename,fetype,fedirs,fraddl,toaddl,fraddr,toaddr,zipL,zipR,countyL,countyR,stateL,stateR,us_fips.placename as placenameL,cfcc,distance(wkb_geometry,GeomFromText('"
+//		        + point
+//		        + "',32767)) as dist from COMPLETECHAIN,US_FIPS where wkb_geometry &&  expand(geomFromText('"
+//		        + point
+//		        + "',32767),0.002) "
+//		        + " and COMPLETECHAIN.placeL = US_FIPS.fipsplace_numeric and COMPLETECHAIN.stateL = US_FIPS.state_numeric and COMPLETECHAIN.countyL = US_FIPS.fipscounty_numeric"
+//		        + " and cfcc like 'A%' order by dist limit 10";*/
+//		
+//		ResultSet rs = stmt.executeQuery(query);
+//		List<SBSChangeRequest> backups = new ArrayList<SBSChangeRequest>();
+//		while (rs.next()){
+//			
+//			SBSChangeRequest sbsChangeRequest = new SBSChangeRequest();
+//			List<String> processedAddress = makeAddress(rs.getString("fraddr"),rs.getString("toaddr"),
+//					rs.getString("fraddl"),rs.getString("toaddl"),
+//					rs.getString("fedirp"),rs.getString("st_typ_bef"),
+//					rs.getString("fename"),rs.getString("st_nm_suff"),
+//					rs.getString("fetype"),"", address);
+//			sbsChangeRequest.setAddress(processedAddress.get(2));
+//			sbsChangeRequest.setLinkId(rs.getString("ogc_fid"));
+//			sbsChangeRequest.setZipCode(rs.getString("zipL"));
+//			sbsChangeRequest.setSpeedLimit(deduceSpeedLimit(rs.getInt("fr_spd_lim"),rs.getInt("to_spd_lim"),rs.getInt("speed_cat")));
+//			
+//			sbsChangeRequest.setCategory(rs.getInt("speed_cat"));
+//			sbsChangeRequest.setStreetSegment(rs.getString("tigerLine"));
+//			
+//			//test if we have a segment in the right range and return 
+//			if (processedAddress.get(1).equals("*")){
+//				
+//				return sbsChangeRequest;
+//			}
+//			else {
+//
+//				backups.add(sbsChangeRequest);
+//			}
+//		}
+//		if (backups.size() > 0) {
+//			return backups.get(0);
+//		}
+//		else {
+//			return null;
+//		}
+//	
+//	}
     private static List<String> getNumbers (String fromAddrRight, String toAddrRight, String fromAddrLeft, String toAddrLeft, int address) {
     	
     	int fromRight = -1, fromLeft = -1, toRight = -1, toLeft = -1;
