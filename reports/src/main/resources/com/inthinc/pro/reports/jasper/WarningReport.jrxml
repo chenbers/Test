@@ -68,7 +68,7 @@
 					<textElement textAlignment="Left">
 						<font size="16"/>
 					</textElement>
-				<text><![CDATA[Warning Report]]></text>
+				<text><![CDATA[Diagnostic Report]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -81,7 +81,7 @@
 					<textElement textAlignment="Right" verticalAlignment="Bottom">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Warning Count: " + $P{RECORD_COUNT}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Diagnostic Count: " + $P{RECORD_COUNT}.toString()]]></textFieldExpression>
 				</textField>
 				<image  scaleImage="RetainShape" vAlign="Top" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
