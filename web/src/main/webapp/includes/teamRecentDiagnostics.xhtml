@@ -8,10 +8,10 @@
 <h:panelGroup layout="block" styleClass="">
 	<h:panelGroup layout="block" styleClass="panel_nw">
 		<h:panelGroup layout="block" styleClass="panel_title">
-			<span class="warningtitle">#{messages.team_warnings}</span>
+			<span class="warningtitle">#{messages.team_diagnostics}</span>
 			<span class="panel_links">
 			<h:form id="teamWarningsShowAllForm">
-				<h:commandLink action="#{warningsBean.showAllFromRecentAction}" value="#{messages.team_warningsShowAll}">				
+				<h:commandLink action="#{warningsBean.showAllFromRecentAction}" value="#{messages.team_diagnosticsShowAll}">				
 					<f:setPropertyActionListener value="#{teamWarningsBean.groupName}" target="#{warningsBean.searchText}" />								
 				</h:commandLink>
 			</h:form>	
@@ -28,13 +28,13 @@
 						width="100%">
 					<rich:column sortBy="#{event.eventType}" width="20%" height="27" >
 						<f:facet name="header">
-							<h:outputText value="#{messages.team_warningWarning}" />
+							<h:outputText value="#{messages.team_diagnosticsEvent}" />
 						</f:facet>
 						<h:outputText value="#{event.eventType}"/>
 					</rich:column>
 					<rich:column sortBy="#{event.vehicleName}" width="15%" height="27" >
 						<f:facet name="header">
-							<h:outputText value="#{messages.team_warningVehicle}" />
+							<h:outputText value="#{messages.team_diagnosticsVehicle}" />
 						</f:facet>
 						<!-- TODO:  hook up vehicle link to correct page -->
 						<a4j:htmlCommandLink action="go_vehicle" value="#{event.vehicleName}">
@@ -43,7 +43,7 @@
 					</rich:column>
 					<rich:column sortBy="#{event.driverName}" width="45%" height="27" >
 						<f:facet name="header">
-							<h:outputText value="#{messages.team_warningDriver}" />
+							<h:outputText value="#{messages.team_diagnosticsDriver}" />
 						</f:facet>
 						<a4j:htmlCommandLink action="go_driver" value="#{event.driverName}">
 							<f:setPropertyActionListener value="#{event.event.driver}" target="#{teamWarningsBean.navigation.driver}" />
@@ -51,7 +51,7 @@
 					</rich:column>
 					<rich:column sortBy="#{event.time}" width="15%" height="27" >
 						<f:facet name="header">
-							<h:outputText value="#{messages.team_warningWhen}"/>
+							<h:outputText value="#{messages.team_diagnosticsWhen}"/>
 						</f:facet>
 						<h:outputText value="#{event.dateStr}"/>
 					</rich:column>
@@ -59,7 +59,7 @@
 						<f:facet name="header">
 							<h:outputText value="" />
 						</f:facet>
-						<a4j:htmlCommandLink action="go_warnings" value="#{messages.team_warningDetails}">
+						<a4j:htmlCommandLink action="go_warnings" value="#{messages.team_diagnosticsDetails}">
 							<f:setPropertyActionListener value="#{event.event}" target="#{warningsBean.eventFilter}" />
 						</a4j:htmlCommandLink>
 					</rich:column>

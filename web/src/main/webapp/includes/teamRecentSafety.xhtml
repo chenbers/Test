@@ -8,10 +8,10 @@
 <h:panelGroup layout="block" styleClass="">
 	<h:panelGroup layout="block" styleClass="panel_nw">
 		<h:panelGroup layout="block" styleClass="panel_title">
-			<span class="event">#{messages.team_recentEvents}</span>
+			<span class="event">#{messages.team_safetyEvents}</span>
 			<span class="panel_links">
 			<h:form id="teamEventsShowAllForm">
-				<h:commandLink action="#{eventsBean.showAllFromRecentAction}" value="#{messages.team_recentEventsShowAll}">				
+				<h:commandLink action="#{eventsBean.showAllFromRecentAction}" value="#{messages.team_safetyEventsShowAll}">				
 					<f:setPropertyActionListener value="#{teamRecentEventsBean.groupName}" target="#{eventsBean.searchText}" />				
 				</h:commandLink>
 			</h:form>	
@@ -28,13 +28,13 @@
 						width="100%">
 					<rich:column sortBy="#{event.eventType}" width="35%" height="27" >
 						<f:facet name="header">
-							<h:outputText value="#{messages.team_recentEventsEvent}" />
+							<h:outputText value="#{messages.team_safetyEventsEvent}" />
 						</f:facet>
 						<h:outputText value="#{event.eventType}"/>
 					</rich:column>
 					<rich:column sortBy="#{event.driverName}" width="35%" height="27" >
 						<f:facet name="header">
-							<h:outputText value="#{messages.team_recentEventsDriver}" />
+							<h:outputText value="#{messages.team_safetyEventsDriver}" />
 						</f:facet>
 						<a4j:htmlCommandLink action="go_driver" value="#{event.driverName}">
 							<f:setPropertyActionListener value="#{event.event.driver}" target="#{teamRecentEventsBean.navigation.driver}" />
@@ -42,7 +42,7 @@
 					</rich:column>
 					<rich:column sortBy="#{event.time}" width="20%" height="27" >
 						<f:facet name="header">
-							<h:outputText value="#{messages.team_recentEventsWhen}"/>
+							<h:outputText value="#{messages.team_safetyEventsWhen}"/>
 						</f:facet>
 						<h:outputText value="#{event.dateStr}"/>
 					</rich:column>
@@ -51,7 +51,7 @@
 							<h:outputText value="" />
 						</f:facet>
 						<!-- TODO:  should go to a page based on the event type -->
-						<a4j:htmlCommandLink action="#{teamRecentEventsBean.detailsAction}" value="#{messages.team_recentEventsDetails}">
+						<a4j:htmlCommandLink action="#{teamRecentEventsBean.detailsAction}" value="#{messages.team_safetyEventsDetails}">
 							<f:setPropertyActionListener value="#{event.event.driver}" target="#{teamRecentEventsBean.navigation.driver}" />
 							<f:setPropertyActionListener value="#{event}" target="#{teamRecentEventsBean.selectedEvent}" />
 							<f:setPropertyActionListener value="#{event.event.noteID}" target="#{eventsBean.linkFromTeam}"/>							
