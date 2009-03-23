@@ -1,0 +1,137 @@
+<ui:composition template="redFlags.xhtml" 
+			xmlns="http://www.w3.org/1999/xhtml" 
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+  			xmlns:h="http://java.sun.com/jsf/html" 
+              xmlns:rich="http://richfaces.org/rich"
+              xmlns:a4j="http://richfaces.org/a4j"
+  			xmlns:f="http://java.sun.com/jsf/core">
+
+	<ui:param name="customSubSelected" value="current" />
+	<ui:param name="helpFile" value="Red_Flags.htm" />
+	
+
+	<ui:define name="content">
+		<table width="920" border="0" align="center" cellpadding="0" cellspacing="0" style="margin: 0 auto 0 auto;">
+		  <tr>
+		    <td valign="top">
+		      <!-- START PANEL -->
+		      <h:panelGroup layout="block" styleClass="">
+		        <h:panelGroup layout="block" styleClass="panel_nw">
+		          <div class="panel_title"> <span class="redflag">#{messages.custom_title}</span>
+		          	<span class="panel_links">
+		
+		          	</span>
+		           </div>
+		        </h:panelGroup>
+		
+		        <h:panelGroup layout="block" styleClass="panel_w">
+		          <h:panelGroup layout="block" styleClass="panel_content">
+		
+					<a4j:region id="redFlagSearch_region">
+		
+					<a4j:form id="redFlagSearch">							
+		            <ul id="grid_nav" style="margin: 0;">
+		              <li class="l">
+		                <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
+		                  <tr>
+		                    <td>#{messages.custom_search}</td>
+		                    <td>
+		                      <h:inputText id="searchText" value="#{redFlagsBean.searchText}" styleClass="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('redFlagSearch:searchButton').onclick(); return false; } return true;" />
+		                    </td>
+		                  </tr>
+		                </table>
+		              </li>
+					  <li class="l">
+							<a4j:commandButton id="searchButton" action="#{redFlagsBean.searchAction}" 
+		            					reRender="header,redFlagsTableForm:items,redFlagsTableForm:bottomScroller,redFlagsTableForm:topScroller" styleClass="left">
+		            				<span class="search">
+		            					<h:outputText value="#{messages.button_search}" />
+		            				</span>
+		            		</a4j:commandButton>            								
+					   </li>
+					  <li class="l text">
+						<a4j:commandLink styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('editColumns')" 
+							reRender="editColumnsForm:editColumnGrid">
+							#{messages.button_editColumns}
+						</a4j:commandLink>
+					  </li>  
+					  <li class="l">
+						<a4j:commandButton styleClass="left"
+									reRender="header,redFlagsTableForm:items,redFlagsTableForm:bottomScroller,redFlagsTableForm:topScroller" 
+									action="#{redFlagsBean.refreshAction}">
+		            				<span class="refresh">
+		            					<h:outputText value="#{messages.refresh}" />
+		            				</span>
+						</a4j:commandButton>
+					  </li>  
+					  <li class="l text">
+						<a4j:status id="redFlagsStatus" for="redFlagSearch_region">
+							<f:facet name="start">
+								<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
+							</f:facet>
+						</a4j:status>
+					  </li>
+					    <li class="r grid_icon">
+						<h:panelGroup id="redFlagReportToolImageId">
+							<h:graphicImage value="/images/ico_tools.png"/>
+						</h:panelGroup>
+					  </li>
+					  	<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
+					  </li>
+					  <li class="r text">
+					  	<h:outputFormat id="header" value="#{messages.custom_recordCountHeader}">
+							<a4j:actionparam value="#{redFlagsBean.start}"/>
+							<a4j:actionparam value="#{redFlagsBean.end}"/>
+							<a4j:actionparam value="#{redFlagsBean.maxCount}"/>
+						</h:outputFormat>
+						</li>
+		            
+		             
+		              </ul>
+		               	<ui:include src="/includes/reportsContextMenu.xhtml">	
+							<ui:param  name="emailModalPanelID" value="redflagsReportEmailModal" />
+							<ui:param  name="reportBean" value="#{redFlagsBean}"/>
+							<ui:param  name="attachTo" value="redFlagReportToolImageId"/>
+							<ui:param  name="exportExcel" value="TRUE"/>
+						</ui:include>
+		    		</a4j:form>
+		    		</a4j:region>
+		    		        
+					<div class="spacer"></div>
+					
+		            <h:panelGroup id="redFlagsTable" layout="block" styleClass="datagrid">
+						<ui:include src="/includes/redFlagsTable.xhtml">	
+							<ui:param name="numRowsPerPg" value="#{redFlagsBean.numRowsPerPg}"/>									
+		             		<ui:param name="tableData" value="#{redFlagsBean.tableData}"/>             						
+		             		<ui:param name="tableColumns" value="#{redFlagsBean.tableColumns}"/>
+							<ui:param name="clearRerender" value="redFlagSearch:header,redFlagsTableForm:items" />
+		    			</ui:include>    							
+		            </h:panelGroup>
+		            
+		          </h:panelGroup>
+				</h:panelGroup>
+		
+				<ui:include src="/includes/editColumnsPopup.xhtml">
+					<ui:param name="bean" value="#{redFlagsBean}"/>	
+					<ui:param name="reRender" value="redFlagsTableForm:items" />
+				</ui:include>    
+				
+		        <h:panelGroup layout="block" styleClass="panel_sw">
+		          <h:panelGroup layout="block" styleClass="panel_statusbar"/>
+				</h:panelGroup>
+		
+		      </h:panelGroup>
+		      <!-- END PANEL -->
+		    </td>
+		  </tr>
+		</table>
+	<h:outputText id="redflag_email_modalPanel">
+		<ui:include src="/includes/emailReportPopup.xhtml">	
+			<ui:param  name="id" value="redflagsReportEmailModal" />
+			<ui:param  name="reportBean" value="#{redFlagsBean}"/>
+		</ui:include>
+	</h:outputText>
+	
+	</ui:define>
+
+</ui:composition>

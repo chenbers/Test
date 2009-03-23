@@ -1,4 +1,4 @@
-<ui:composition template="/layout/layout.xhtml" 
+<ui:composition template="redFlags.xhtml" 
 			xmlns="http://www.w3.org/1999/xhtml" 
 			xmlns:ui="http://java.sun.com/jsf/facelets"
   			xmlns:h="http://java.sun.com/jsf/html" 
@@ -10,10 +10,6 @@
 	<ui:param name="warningsSubSelected" value="current" />
 	<ui:param name="helpFile" value="Warnings.htm" />
 	
-	<ui:define name="subnavigation">
-		<ui:include src="/includes/redFlags/subNavigation.xhtml" />
-	</ui:define>
-	
 
 	<ui:define name="content">
 	
@@ -23,7 +19,7 @@
 		      <!-- START PANEL -->
 		      <h:panelGroup layout="block" styleClass="">
 		        <h:panelGroup layout="block" styleClass="panel_nw">
-		          <div class="panel_title"> <span class="warningtitle">#{messages.warnings_title}</span><span class="panel_links"></span>
+		          <div class="panel_title"> <span class="warningtitle">#{messages.diagnostics_title}</span><span class="panel_links"></span>
 		           </div>
 		        </h:panelGroup>
 		
@@ -36,7 +32,7 @@
 		              <li class="l">
 		                <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
 		                  <tr>
-		                    <td>#{messages.warnings_search}</td>
+		                    <td>#{messages.diagnostics_search}</td>
 		                    <td>
 		                      <h:inputText id="searchText" value="#{warningsBean.searchText}" styleClass="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('warningsearch:searchButton').onclick(); return false; } return true;" />
 		                    </td>
@@ -81,7 +77,7 @@
 					  <li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
 					  </li> 
 					  <li class="r text">
-					  	<h:outputFormat id="header" value="#{messages.warnings_recordCountHeader}">
+					  	<h:outputFormat id="header" value="#{messages.diagnostics_recordCountHeader}">
 							<a4j:actionparam value="#{warningsBean.start}"/>
 							<a4j:actionparam value="#{warningsBean.end}"/>
 							<a4j:actionparam value="#{warningsBean.maxCount}"/>
@@ -105,8 +101,8 @@
 		             		<ui:param name="tableColumns" value="#{warningsBean.tableColumns}"/>
 		             		<ui:param name="bean" value="#{warningsBean}"/>
 		             		<ui:param name="formId" value="warningsTableForm"/>
-		             		<ui:param name="clearTitle" value="#{messages.warnings_clearTitle}"/>
-		             		<ui:param name="clearInst" value="#{messages.warnings_clearInst}"/>
+		             		<ui:param name="clearTitle" value="#{messages.diagnostics_clearTitle}"/>
+		             		<ui:param name="clearInst" value="#{messages.diagnostics_clearInst}"/>
 		             		<ui:param name="clearRerender" value="warningsearch:header,warningsTableForm:items"/>
 		    			</ui:include>    							
 		            </h:panelGroup>
