@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.TreeMap;
-import java.util.regex.Matcher;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -322,6 +320,16 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             if (value == null)
                 value = 0;
             return MessageUtil.getMessageString("myAccount_alertText" + value);
+        }
+        else if (column.equals("driver_RFID"))
+        {
+            Long value = null;
+           
+            if(person.getDriver() != null)
+                value = person.getDriver().getRFID();
+            if (value == null)
+                value = 0L;
+            return Long.toHexString(value);
         }
         else
             return super.fieldValue(person, column);
