@@ -124,12 +124,18 @@
 			GUnload();
 		}	
 
-	    // This is called on pageLoad and A4J re-renders
+	    // This is called on pageLoad 
 		function bodyLoad()
 		{
 			initMap(#{driverTripsBean.selectedTrips[0].routeLastStep.lat}, #{driverTripsBean.selectedTrips[0].routeLastStep.lng}, 14);
 	   		showTrips();
 		}
+
+        //This is called after a new trip is selected.
+	    function reRenderMap()
+	    {
+	    	showTrips();
+	    }
 		
 		//alert('script got rendered');
    		function drawSelectedTrips()
@@ -555,7 +561,7 @@
                             styleClass="datagrid" rowClasses="tableOdd,tableEven" rows="4" width="100%">
                                 
     
-                                <a4j:support event="onRowClick" reRender="script,bubbles,selectedTrip,showLastTenForm" oncomplete="bodyLoad();">
+                                <a4j:support event="onRowClick" reRender="script,bubbles,selectedTrip,showLastTenForm" oncomplete="reRenderMap();">
                                     <f:setPropertyActionListener value="#{item}" target="#{driverTripsBean.selectedTrip}" />
                                 </a4j:support>
     
