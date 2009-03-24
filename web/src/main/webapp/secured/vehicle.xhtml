@@ -517,6 +517,16 @@
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="gas">Miles Per Gallon</span>
+							<ui:include src="../includes/dateLinks.xhtml">
+							<ui:param name="ajaxForm" value="mpgForm"/>
+							<ui:param name="reRenderList" value="mpgPanel,mpgForm"/>			
+							<ui:param name="thirtyDaysOn" value="#{(vehicleBean.mpgDurationBean.duration eq 'DAYS') ? 'on' : ''}"/>
+							<ui:param name="threeMonthsOn" value="#{(vehicleBean.mpgDurationBean.duration eq 'THREE') ? 'on' : ''}"/>
+							<ui:param name="sixMonthsOn" value="#{(vehicleBean.mpgDurationBean.duration eq 'SIX') ? 'on' : ''}"/>
+							<ui:param name="twelveMonthsOn" value="#{(vehicleBean.mpgDurationBean.duration eq 'TWELVE') ? 'on' : ''}"/>
+				  			<ui:param name="duration" value="#{vehicleBean.mpgDurationBean.duration}" />
+				  			<ui:param name="ajaxStatusID" value="mpgStatus" />
+						</ui:include>
 					</div>
 				</div>
 					<div class="panel_w">
@@ -550,6 +560,16 @@
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="coaching">Coaching Events </span>
+						<ui:include src="../includes/dateLinks.xhtml">
+							<ui:param name="ajaxForm" value="coachingForm"/>
+							<ui:param name="reRenderList" value="coachingPanel,coachingForm"/>			
+							<ui:param name="thirtyDaysOn" value="#{(vehicleBean.coachDurationBean.duration eq 'DAYS') ? 'on' : ''}"/>
+							<ui:param name="threeMonthsOn" value="#{(vehicleBean.coachDurationBean.duration eq 'THREE') ? 'on' : ''}"/>
+							<ui:param name="sixMonthsOn" value="#{(vehicleBean.coachDurationBean.duration eq 'SIX') ? 'on' : ''}"/>
+							<ui:param name="twelveMonthsOn" value="#{(vehicleBean.coachDurationBean.duration eq 'TWELVE') ? 'on' : ''}"/>
+				  			<ui:param name="duration" value="#{vehicleBean.coachDurationBean.duration}" />
+				  			<ui:param name="ajaxStatusID" value="coachingStatus" />
+						</ui:include>
 					</div>
 				</div>
 					<div class="panel_w">

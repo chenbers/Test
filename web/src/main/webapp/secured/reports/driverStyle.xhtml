@@ -108,7 +108,7 @@ var firstLoad = new Boolean(true);
 						<span class="vehicle" id="titleSpan"></span>
 						<ui:include src="../../includes/dateLinksToolsDetail.xhtml">
 							<ui:param name="ajaxForm" value="styleForm"/>
-							<ui:param name="reRenderList" value="styleForm,breakdown_panel,eventsPanel"/>			
+							<ui:param name="reRenderList" value="styleForm,overallScoreBox,breakdown_panel,eventsPanel"/>			
 							<ui:param name="thirtyDaysOn" value="#{(driverStyleBean.duration eq 'DAYS') ? 'on' : ''}"/>
 							<ui:param name="threeMonthsOn" value="#{(driverStyleBean.duration eq 'THREE') ? 'on' : ''}"/>
 							<ui:param name="sixMonthsOn" value="#{(driverStyleBean.duration eq 'SIX') ? 'on' : ''}"/>
@@ -128,25 +128,27 @@ var firstLoad = new Boolean(true);
 				  <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
 					  <tr>
 						<td valign="top" width="600">
-						   <rich:panel id="overallChartDiv" style="height: 200;"></rich:panel>
+						   <div id="overallChartDiv" style="height: 200;"></div>
 						 		<script type="text/javascript">
 									var overallChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Area2D.swf", "overallChartId", "650", "200", "0", "1");
 								</script>
 						</td>
 						<td valign="top" align="right">
-							<table width="220" border="0" cellspacing="0" cellpadding="0" class="scorebox" style="margin: 20px 20px 0 0;">
-							  <tr>
-								<td>
-									<h4>Overall Score</h4>
-								</td>
-								<td width="80" align="center">
-									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverStyleBean.styleScoreOverall}" />
-								            <ui:param name="scoreStyle" value="#{driverStyleBean.styleScoreOverallStyle}" />
-									</ui:include>
-								</td>
-							  </tr>
-							</table>
+							<rich:panel id="overallScoreBox">
+								<table width="220" border="0" cellspacing="0" cellpadding="0" class="scorebox" style="margin: 20px 20px 0 0;">
+								  <tr>
+									<td>
+										<h4>Overall Score</h4>
+									</td>
+									<td width="80" align="center">
+										<ui:include src="../../includes/scoreBox.xhtml">
+									            <ui:param name="score" value="#{driverStyleBean.styleScoreOverall}" />
+									            <ui:param name="scoreStyle" value="#{driverStyleBean.styleScoreOverallStyle}" />
+										</ui:include>
+									</td>
+								  </tr>
+								</table>
+							</rich:panel>
 						</td>
 					  </tr>
 					</table>

@@ -44,16 +44,17 @@ public class VehicleSeatBeltBean extends BaseBean
     private EventReportItem       clearItem;
     private ReportRenderer        reportRenderer;
     private String                emailAddress;
+    private static final Integer  NO_SCORE       = -1;
+    private Boolean               initComplete = false;
 
     private List<EventReportItem> seatBeltEvents = new ArrayList<EventReportItem>();
 
     private void init()
     {
-        ScoreableEntity seatBeltSe = scoreDAO.getVehicleAverageScoreByType(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
-        if (seatBeltSe == null)
-            setSeatBeltScore(-1);
-        else
-            setSeatBeltScore(seatBeltSe.getScore());
+        ScoreableEntity se = scoreDAO.getVehicleAverageScoreByType(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
+        setSeatBeltScore(se.getScore() == null ? NO_SCORE : se.getScore());
+        
+        initComplete = true;
     }
 
     public void getViolations()
@@ -81,6 +82,9 @@ public class VehicleSeatBeltBean extends BaseBean
     // SCORE PROPERTIES
     public Integer getSeatBeltScore()
     {
+        if(!initComplete)
+            init();
+        
         return seatBeltScore;
     }
 
@@ -105,6 +109,9 @@ public class VehicleSeatBeltBean extends BaseBean
     // SCOREBOX STYLE PROPERTIES
     public String getSeatBeltScoreStyle()
     {
+        if(!initComplete)
+            init();
+        
         return seatBeltScoreStyle;
     }
 
@@ -123,8 +130,6 @@ public class VehicleSeatBeltBean extends BaseBean
 
         List<ScoreableEntity> scoreList = scoreDAO.getVehicleScoreHistory(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), scoreType, GraphicUtil
                 .getDurationSize(durationBean.getDuration()));
-
-        DateFormat dateFormatter = new SimpleDateFormat(durationBean.getDuration().getDatePattern());
 
         // Get "x" values
         List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration());

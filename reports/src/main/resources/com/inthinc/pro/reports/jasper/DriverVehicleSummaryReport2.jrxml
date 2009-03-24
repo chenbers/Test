@@ -54,6 +54,8 @@
 	<parameter name="END_TIME" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="END_LOCATION" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="REPORT_LOGO" isForPrompting="false" class="java.io.InputStream"/>
+	<parameter name="COACH_DUR" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="MPG_DUR" isForPrompting="false" class="java.lang.String"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -86,19 +88,6 @@
 						<font size="14"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{REPORT_NAME}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="341"
-						y="17"
-						width="194"
-						height="16"
-						key="textField-10"/>
-					<box></box>
-					<textElement textAlignment="Right">
-						<font/>
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Duration: " + $P{DURATION}.toString()]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -275,45 +264,6 @@
 					</textElement>
 				<text><![CDATA[Coaching Events:]]></text>
 				</staticText>
-				<lineChart>
-					<chart  hyperlinkTarget="Self"  customizerClass="com.inthinc.pro.reports.jasper.customizer.MpgLineChartCustomizer" >
-					<reportElement
-						x="7"
-						y="461"
-						width="450"
-						height="150"
-						key="element-2"/>
-					<box></box>
-						<chartLegend textColor="#000000" backgroundColor="#FFFFFF" >
-					</chartLegend>
-					</chart>
-					<categoryDataset>
-						<dataset >
-							<datasetRun subDataset="coachingDataSet">
-					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_2})]]></dataSourceExpression>
-							</datasetRun>
-						</dataset>
-						<categorySeries>
-							<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
-							<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
-							<valueExpression><![CDATA[$F{value}]]></valueExpression>
-							<labelExpression><![CDATA[$F{label}]]></labelExpression>
-				<itemHyperlink >
-				</itemHyperlink>
-						</categorySeries>
-					</categoryDataset>
-					<linePlot isShowShapes="false" >
-						<plot />
-						<categoryAxisFormat>
-							<axisFormat >
-							</axisFormat>
-						</categoryAxisFormat>
-						<valueAxisFormat>
-							<axisFormat >
-							</axisFormat>
-						</valueAxisFormat>
-					</linePlot>
-				</lineChart>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="368"
@@ -377,6 +327,71 @@
 					<graphicElement stretchType="NoStretch"/>
 					<imageExpression class="java.net.URL"><![CDATA[new java.net.URL($P{MAP_URL})]]></imageExpression>
 				</image>
+				<barChart>
+					<chart isShowLegend="false"  hyperlinkTarget="Self"  customizerClass="com.inthinc.pro.reports.jasper.customizer.MpgLineChartCustomizer" >
+					<reportElement
+						x="7"
+						y="463"
+						width="451"
+						height="157"
+						key="element-2"/>
+					<box></box>
+					</chart>
+					<categoryDataset>
+						<dataset resetType="None" >
+							<datasetRun subDataset="coachingDataSet">
+					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_2})]]></dataSourceExpression>
+							</datasetRun>
+						</dataset>
+						<categorySeries>
+							<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{value}]]></valueExpression>
+							<labelExpression><![CDATA[$F{label}]]></labelExpression>
+				<itemHyperlink >
+				</itemHyperlink>
+						</categorySeries>
+					</categoryDataset>
+					<barPlot >
+						<plot >
+							<seriesColor seriesOrder="0" color="#A8C634"/>
+</plot>
+						<categoryAxisFormat>
+							<axisFormat >
+							</axisFormat>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat >
+							</axisFormat>
+						</valueAxisFormat>
+					</barPlot>
+				</barChart>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="262"
+						y="257"
+						width="194"
+						height="16"
+						key="textField-10"/>
+					<box></box>
+					<textElement textAlignment="Right">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Duration: " + $P{MPG_DUR}.toString()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="262"
+						y="443"
+						width="194"
+						height="16"
+						key="textField-11"/>
+					<box></box>
+					<textElement textAlignment="Right">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Duration: " + $P{COACH_DUR}.toString()]]></textFieldExpression>
+				</textField>
 			</band>
 		</pageHeader>
 		<columnHeader>

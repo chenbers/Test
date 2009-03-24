@@ -63,6 +63,7 @@ public class VehicleSpeedBean extends BaseBean
     private EventReportItem       clearItem;
     private ReportRenderer        reportRenderer;
     private String                emailAddress;
+    private Boolean               initComplete = false;
 
     private void init()
     {
@@ -91,6 +92,8 @@ public class VehicleSpeedBean extends BaseBean
 
         se = scoreMap.get(ScoreType.SCORE_SPEEDING_65_80);
         setSpeedScoreSixtyFive(se == null ? NO_SCORE : se.getScore());
+        
+        initComplete = true;
     }
 
     public void getViolations()
@@ -156,6 +159,9 @@ public class VehicleSpeedBean extends BaseBean
     // SPEED OVERALL SCORE PROPERTY
     public Integer getSpeedScoreOverall()
     {
+        if(!initComplete) 
+            init();
+        
         return speedScoreOverall;
     }
 
@@ -167,6 +173,9 @@ public class VehicleSpeedBean extends BaseBean
 
     public String getSpeedScoreOverallStyle()
     {
+        if(!initComplete) 
+            init();
+        
         return speedScoreOverallStyle;
     }
 
@@ -178,6 +187,9 @@ public class VehicleSpeedBean extends BaseBean
     // SPEED SCORE 21-30 MPH
     public Integer getSpeedScoreTwentyOne()
     {
+        if(!initComplete) 
+            init();
+        
         return speedScoreTwentyOne;
     }
 
@@ -189,6 +201,9 @@ public class VehicleSpeedBean extends BaseBean
 
     public String getSpeedScoreTwentyOneStyle()
     {
+        if(!initComplete) 
+            init();
+        
         return speedScoreTwentyOneStyle;
     }
 
@@ -200,6 +215,9 @@ public class VehicleSpeedBean extends BaseBean
     // SPEED SCORE 31-40 MPH
     public Integer getSpeedScoreThirtyOne()
     {
+        if(!initComplete) 
+            init();
+        
         return speedScoreThirtyOne;
     }
 
@@ -211,6 +229,9 @@ public class VehicleSpeedBean extends BaseBean
 
     public String getSpeedScoreThirtyOneStyle()
     {
+        if(!initComplete) 
+            init();
+        
         return speedScoreThirtyOneStyle;
     }
 
@@ -222,6 +243,9 @@ public class VehicleSpeedBean extends BaseBean
     // SPEED SCORE 41-54 MPH
     public Integer getSpeedScoreFourtyOne()
     {
+        if(!initComplete) 
+            init();
+        
         return speedScoreFourtyOne;
     }
 
@@ -233,6 +257,9 @@ public class VehicleSpeedBean extends BaseBean
 
     public String getSpeedScoreFourtyOneStyle()
     {
+        if(!initComplete) 
+            init();
+        
         return speedScoreFourtyOneStyle;
     }
 
@@ -244,6 +271,9 @@ public class VehicleSpeedBean extends BaseBean
     // SPEED SCORE 55-64 MPH
     public Integer getSpeedScoreFiftyFive()
     {
+        if(!initComplete) 
+            init();
+        
         return speedScoreFiftyFive;
     }
 
@@ -255,6 +285,9 @@ public class VehicleSpeedBean extends BaseBean
 
     public String getSpeedScoreFiftyFiveStyle()
     {
+        if(!initComplete) 
+            init();
+        
         return speedScoreFiftyFiveStyle;
     }
 
@@ -266,6 +299,9 @@ public class VehicleSpeedBean extends BaseBean
     // SPEED SCORE 65+
     public Integer getSpeedScoreSixtyFive()
     {
+        if(!initComplete) 
+            init();
+        
         return speedScoreSixtyFive;
     }
 
@@ -277,6 +313,9 @@ public class VehicleSpeedBean extends BaseBean
 
     public String getSpeedScoreSixtyFiveStyle()
     {
+        if(!initComplete) 
+            init();
+        
         return speedScoreSixtyFiveStyle;
     }
 

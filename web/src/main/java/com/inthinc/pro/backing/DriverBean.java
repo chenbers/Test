@@ -1,8 +1,5 @@
 package com.inthinc.pro.backing;
 
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +16,7 @@ import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.map.AddressLookup;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.MpgEntity;
@@ -43,6 +41,11 @@ public class DriverBean extends BaseBean
     private EventDAO eventDAO;
     private NavigationBean navigation;
     private DurationBean durationBean;
+    private DurationBean coachDurationBean;
+    private DurationBean mpgDurationBean;
+    private DurationBean speedDurationBean;
+    private DurationBean styleDurationBean;
+    private DurationBean seatBeltDurationBean;
     private AddressLookup addressLookup;
 
     private TripDisplay lastTrip;
@@ -56,14 +59,14 @@ public class DriverBean extends BaseBean
     private ReportRenderer reportRenderer;
     private String emailAddress;
 
-    private Integer initAverageScore(ScoreType scoreType)
+    private Integer initAverageScore(ScoreType scoreType, Duration duration)
     {
-        ScoreableEntity se = scoreDAO.getDriverAverageScoreByType(navigation.getDriver().getDriverID(), durationBean.getDuration(), scoreType);
-
-        if (se == null)
-            return -1;
-        else
+        ScoreableEntity se = scoreDAO.getDriverAverageScoreByType(navigation.getDriver().getDriverID(), duration, scoreType);
+        
+        if(se != null && se.getScore() != null)
             return se.getScore();
+        else
+            return -1;
     }
 
     // INIT VIOLATIONS
@@ -93,7 +96,7 @@ public class DriverBean extends BaseBean
     {
         if (overallScore == null)
         {
-            setOverallScore(initAverageScore(ScoreType.SCORE_OVERALL));
+            setOverallScore(initAverageScore(ScoreType.SCORE_OVERALL, durationBean.getDuration()));
         }
         return overallScore;
     }
@@ -120,7 +123,7 @@ public class DriverBean extends BaseBean
     {
         if (overallScoreStyle == null)
         {
-            setOverallScore(initAverageScore(ScoreType.SCORE_OVERALL));
+            setOverallScore(initAverageScore(ScoreType.SCORE_OVERALL, durationBean.getDuration()));
         }
         return overallScoreStyle;
     }
@@ -133,7 +136,7 @@ public class DriverBean extends BaseBean
     // COACHING properties
     public String getCoachingHistory()
     {
-        setCoachingHistory(createColumnDef(ScoreType.SCORE_COACHING_EVENTS));
+        setCoachingHistory(createColumnDef(ScoreType.SCORE_COACHING_EVENTS, coachDurationBean.getDuration()));
         return coachingHistory;
     }
 
@@ -247,8 +250,8 @@ public class DriverBean extends BaseBean
 
     private String createMultiLineDef()
     {
-        List<MpgEntity> mpgEntities = mpgDAO.getDriverEntities(navigation.getDriver().getDriverID(), durationBean.getDuration(), null);
-        List<String> catLabelList = GraphicUtil.createMonthList(durationBean.getDuration());
+        List<MpgEntity> mpgEntities = mpgDAO.getDriverEntities(navigation.getDriver().getDriverID(), mpgDurationBean.getDuration(), null);
+        List<String> catLabelList = GraphicUtil.createMonthList(mpgDurationBean.getDuration());
 
         StringBuffer sb = new StringBuffer();
         FusionMultiLineChart multiLineChart = new FusionMultiLineChart();
@@ -312,7 +315,7 @@ public class DriverBean extends BaseBean
 
         return sb.toString();
     }
-    public String createColumnDef(ScoreType scoreType)
+    public String createColumnDef(ScoreType scoreType, Duration duration)
     {
         StringBuffer sb = new StringBuffer();
         FusionColumnChart column = new FusionColumnChart();
@@ -321,10 +324,10 @@ public class DriverBean extends BaseBean
         sb.append(column.getControlParameters());
               
         List<ScoreableEntity> scoreList = scoreDAO
-                .getDriverScoreHistory(navigation.getDriver().getDriverID(), durationBean.getDuration(), scoreType, GraphicUtil.getDurationSize(durationBean.getDuration()));
+                .getDriverScoreHistory(navigation.getDriver().getDriverID(), duration, scoreType, GraphicUtil.getDurationSize(duration));
 
         // Get "x" values
-        List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration());
+        List<String> monthList = GraphicUtil.createMonthList(duration);
 
         int cnt = 0;
         for (ScoreableEntity e : scoreList)
@@ -346,13 +349,13 @@ public class DriverBean extends BaseBean
         return sb.toString();
     }
 
-    public List<CategorySeriesData> createJasperDef(ScoreType scoreType)
+    public List<CategorySeriesData> createJasperDef(ScoreType scoreType, Duration duration)
     {
         List<ScoreableEntity> scoreList = scoreDAO
-                .getDriverScoreHistory(navigation.getDriver().getDriverID(), durationBean.getDuration(), scoreType, GraphicUtil.getDurationSize(durationBean.getDuration()));
+                .getDriverScoreHistory(navigation.getDriver().getDriverID(), duration, scoreType, GraphicUtil.getDurationSize(duration));
 
         List<CategorySeriesData> chartDataList = new ArrayList<CategorySeriesData>();
-        List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration());
+        List<String> monthList = GraphicUtil.createMonthList(duration);
 
         int count = 0;
         for (ScoreableEntity se : scoreList)
@@ -361,8 +364,10 @@ public class DriverBean extends BaseBean
             if(se.getScore() != null)
                 score = se.getScore() / 10.0D;
             
-            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString(scoreType.toString()), monthList.get(count).toString(),score , monthList.get(
-                    count).toString()));
+            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString(scoreType.toString()), 
+                                                    monthList.get(count).toString(),
+                                                    score, 
+                                                    monthList.get(count).toString()));
             count++;
         }
         return chartDataList;
@@ -371,9 +376,9 @@ public class DriverBean extends BaseBean
     public List<CategorySeriesData> createMpgJasperDef()
     {
         List<CategorySeriesData> chartDataList = new ArrayList<CategorySeriesData>();
-        List<MpgEntity> mpgEntities = mpgDAO.getDriverEntities(navigation.getDriver().getDriverID(), durationBean.getDuration(), null);
+        List<MpgEntity> mpgEntities = mpgDAO.getDriverEntities(navigation.getDriver().getDriverID(), mpgDurationBean.getDuration(), null);
 
-        List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration());
+        List<String> monthList = GraphicUtil.createMonthList(mpgDurationBean.getDuration());
 
         int count = 0;
         for (MpgEntity me : mpgEntities)
@@ -393,18 +398,20 @@ public class DriverBean extends BaseBean
 
         // Page 1
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_SUMMARY_P1, getGroupHierarchy().getTopGroup().getName());
-
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.addParameter("REPORT_NAME", "Driver Performance: Summary");
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
         reportCriteria.addParameter("DRIVER_NAME", this.getNavigation().getDriver().getPerson().getFullName());
-        reportCriteria.addParameter("SPEED_SCORE", initAverageScore(ScoreType.SCORE_SPEEDING) / 10.0D);
-        reportCriteria.addParameter("STYLE_SCORE", initAverageScore(ScoreType.SCORE_DRIVING_STYLE) / 10.0D);
-        reportCriteria.addParameter("SEATBELT_SCORE", initAverageScore(ScoreType.SCORE_SEATBELT) / 10.0D);
-        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_OVERALL));
-        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_SPEEDING));
-        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_DRIVING_STYLE));
-        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_SEATBELT));
+        reportCriteria.addParameter("SPEED_SCORE", initAverageScore(ScoreType.SCORE_SPEEDING, speedDurationBean.getDuration()) / 10.0D);
+        reportCriteria.addParameter("STYLE_SCORE", initAverageScore(ScoreType.SCORE_DRIVING_STYLE, styleDurationBean.getDuration()) / 10.0D);
+        reportCriteria.addParameter("SEATBELT_SCORE", initAverageScore(ScoreType.SCORE_SEATBELT, seatBeltDurationBean.getDuration()) / 10.0D);
+        reportCriteria.addParameter("SPEED_DUR", speedDurationBean.getDuration().toString());
+        reportCriteria.addParameter("STYLE_DUR", styleDurationBean.getDuration().toString());
+        reportCriteria.addParameter("SEATBELT_DUR", seatBeltDurationBean.getDuration().toString());
+        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_OVERALL, durationBean.getDuration()));
+        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_SPEEDING, speedDurationBean.getDuration()));
+        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_DRIVING_STYLE, styleDurationBean.getDuration()));
+        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_SEATBELT, seatBeltDurationBean.getDuration()));
         tempCriteria.add(reportCriteria);
 
         // Page 2
@@ -424,9 +431,10 @@ public class DriverBean extends BaseBean
             String imageUrl = MapLookup.getMap(lastTrip.getRouteLastStep().getLat(), lastTrip.getRouteLastStep().getLng(), 250, 200); 
             reportCriteria.addParameter("MAP_URL", imageUrl);
         }
-
         reportCriteria.addChartDataSet(createMpgJasperDef());
-        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_COACHING_EVENTS));
+        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_COACHING_EVENTS, coachDurationBean.getDuration()));
+        reportCriteria.addParameter("COACH_DUR", coachDurationBean.getDuration().toString());
+        reportCriteria.addParameter("MPG_DUR", mpgDurationBean.getDuration().toString());
         tempCriteria.add(reportCriteria);
 
         return tempCriteria;
@@ -451,6 +459,56 @@ public class DriverBean extends BaseBean
     public void setDurationBean(DurationBean durationBean)
     {
         this.durationBean = durationBean;
+    }
+
+    public DurationBean getSpeedDurationBean()
+    {
+        return speedDurationBean;
+    }
+
+    public void setSpeedDurationBean(DurationBean speedDurationBean)
+    {
+        this.speedDurationBean = speedDurationBean;
+    }
+
+    public DurationBean getStyleDurationBean()
+    {
+        return styleDurationBean;
+    }
+
+    public void setStyleDurationBean(DurationBean styleDurationBean)
+    {
+        this.styleDurationBean = styleDurationBean;
+    }
+
+    public DurationBean getSeatBeltDurationBean()
+    {
+        return seatBeltDurationBean;
+    }
+
+    public void setSeatBeltDurationBean(DurationBean seatBeltDurationBean)
+    {
+        this.seatBeltDurationBean = seatBeltDurationBean;
+    }
+
+    public DurationBean getCoachDurationBean()
+    {
+        return coachDurationBean;
+    }
+
+    public void setCoachDurationBean(DurationBean coachDurationBean)
+    {
+        this.coachDurationBean = coachDurationBean;
+    }
+
+    public DurationBean getMpgDurationBean()
+    {
+        return mpgDurationBean;
+    }
+
+    public void setMpgDurationBean(DurationBean mpgDurationBean)
+    {
+        this.mpgDurationBean = mpgDurationBean;
     }
 
     public Boolean getHasLastTrip()

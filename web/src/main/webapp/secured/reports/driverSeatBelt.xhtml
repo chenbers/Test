@@ -65,7 +65,7 @@
 						<span class="seatbelt">#{messages.SCORE_SEATBELT}: #{messages.SCORE_OVERALL}</span>
 						<ui:include src="../../includes/dateLinksToolsDetail.xhtml">
 							<ui:param name="ajaxForm" value="seatBeltForm"/>
-							<ui:param name="reRenderList" value="seatBeltForm,breakdown_panel,eventsPanel"/>			
+							<ui:param name="reRenderList" value="seatBeltForm,overallScoreBox,breakdown_panel,eventsPanel"/>			
 							<ui:param name="thirtyDaysOn" value="#{(driverSeatBeltBean.duration eq 'DAYS') ? 'on' : ''}"/>
 							<ui:param name="threeMonthsOn" value="#{(driverSeatBeltBean.duration eq 'THREE') ? 'on' : ''}"/>
 							<ui:param name="sixMonthsOn" value="#{(driverSeatBeltBean.duration eq 'SIX') ? 'on' : ''}"/>
@@ -96,19 +96,21 @@
 							</ui:include>
 						</td>
 						<td valign="top" align="right">
-						<table width="220" border="0" cellspacing="0" cellpadding="0" class="scorebox" style="margin: 20px 20px 0 0;">
-							  <tr>
-								<td>
-									<h4>Overall Score</h4>
-								</td>
-								<td width="80" align="center">
-									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverSeatBeltBean.seatBeltScore}" />
-								            <ui:param name="scoreStyle" value="#{driverSeatBeltBean.seatBeltScoreStyle}" />
-									</ui:include>
-								</td>
-							  </tr>
-							</table>
+							<rich:panel id="overallScoreBox">
+								<table width="220" border="0" cellspacing="0" cellpadding="0" class="scorebox" style="margin: 20px 20px 0 0;">
+								  <tr>
+									<td>
+										<h4>Overall Score</h4>
+									</td>
+									<td width="80" align="center">
+										<ui:include src="../../includes/scoreBox.xhtml">
+									            <ui:param name="score" value="#{driverSeatBeltBean.seatBeltScore}" />
+									            <ui:param name="scoreStyle" value="#{driverSeatBeltBean.seatBeltScoreStyle}" />
+										</ui:include>
+									</td>
+								  </tr>
+								</table>
+							</rich:panel>
 						</td>
 					  </tr>
 					</table>

@@ -44,16 +44,21 @@ public class DriverSeatBeltBean extends BaseBean
     private EventReportItem       clearItem;
     private ReportRenderer        reportRenderer;
     private String                emailAddress;
+    private Boolean               initComplete   = false;
+    private static final Integer  NO_SCORE       = -1;
 
     private List<EventReportItem> seatBeltEvents = new ArrayList<EventReportItem>();
 
     private void init()
     {
-        ScoreableEntity seatBeltSe = scoreDAO.getDriverAverageScoreByType(navigation.getDriver().getDriverID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
-        if (seatBeltSe == null)
-            setSeatBeltScore(-1);
+        ScoreableEntity se = scoreDAO.getDriverAverageScoreByType(navigation.getDriver().getDriverID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
+        
+        if(se != null && se.getScore() != null)    
+            setSeatBeltScore(se.getScore());
         else
-            setSeatBeltScore(seatBeltSe.getScore());
+            setSeatBeltScore(NO_SCORE);
+
+        initComplete = true;
     }
 
     public void getViolations()
@@ -81,6 +86,9 @@ public class DriverSeatBeltBean extends BaseBean
     // SCORE PROPERTIES
     public Integer getSeatBeltScore()
     {
+        if(!initComplete) 
+            init();
+        
         return seatBeltScore;
     }
 
@@ -105,7 +113,7 @@ public class DriverSeatBeltBean extends BaseBean
     // SCOREBOX STYLE PROPERTIES
     public String getSeatBeltScoreStyle()
     {
-        if (seatBeltScoreStyle == null)
+        if(!initComplete) 
             init();
 
         return seatBeltScoreStyle;
@@ -235,6 +243,16 @@ public class DriverSeatBeltBean extends BaseBean
     public void setDurationBean(DurationBean durationBean)
     {
         this.durationBean = durationBean;
+    }
+
+    public Boolean getInitComplete()
+    {
+        return initComplete;
+    }
+
+    public void setInitComplete(Boolean initComplete)
+    {
+        this.initComplete = initComplete;
     }
 
     public void ClearEventAction()

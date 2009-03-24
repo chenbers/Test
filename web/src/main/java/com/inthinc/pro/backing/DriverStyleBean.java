@@ -59,6 +59,7 @@ public class DriverStyleBean extends BaseBean
     private static final Integer  NO_SCORE    = -1;
     private ReportRenderer        reportRenderer;
     private String                emailAddress;
+    private Boolean               initComplete = false;
 
     private List<EventReportItem> styleEvents = new ArrayList<EventReportItem>();
 
@@ -82,6 +83,8 @@ public class DriverStyleBean extends BaseBean
 
         se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
         setStyleScoreTurn(se == null ? NO_SCORE : se.getScore());
+        
+        initComplete = true;
     }
 
     public void getViolations()
@@ -143,6 +146,9 @@ public class DriverStyleBean extends BaseBean
     // STYLE OVERALL SCORE PROPERTY
     public Integer getStyleScoreOverall()
     {
+        if(!initComplete) 
+            init();
+        
         return styleScoreOverall;
     }
 
@@ -154,6 +160,9 @@ public class DriverStyleBean extends BaseBean
 
     public String getStyleScoreOverallStyle()
     {
+        if(!initComplete) 
+            init();
+        
         return styleScoreOverallStyle;
     }
 
@@ -165,6 +174,9 @@ public class DriverStyleBean extends BaseBean
     // STYLE SCORE HARD ACCEL
     public Integer getStyleScoreAccel()
     {
+        if(!initComplete) 
+            init();
+        
         return styleScoreAccel;
     }
 
@@ -176,6 +188,9 @@ public class DriverStyleBean extends BaseBean
 
     public String getStyleScoreAccelStyle()
     {
+        if(!initComplete) 
+            init();
+        
         return styleScoreAccelStyle;
     }
 
@@ -187,6 +202,9 @@ public class DriverStyleBean extends BaseBean
     // STYLE SCORE HARD BRAKE
     public Integer getStyleScoreBrake()
     {
+        if(!initComplete) 
+            init();
+        
         return styleScoreBrake;
     }
 
@@ -198,6 +216,9 @@ public class DriverStyleBean extends BaseBean
 
     public String getStyleScoreBrakeStyle()
     {
+        if(!initComplete) 
+            init();
+        
         return styleScoreBrakeStyle;
     }
 
@@ -209,6 +230,9 @@ public class DriverStyleBean extends BaseBean
     // STYLE SCORE HARD BUMP
     public Integer getStyleScoreBump()
     {
+        if(!initComplete) 
+            init();
+        
         return styleScoreBump;
     }
 
@@ -220,6 +244,9 @@ public class DriverStyleBean extends BaseBean
 
     public String getStyleScoreBumpStyle()
     {
+        if(!initComplete) 
+            init();
+        
         return styleScoreBumpStyle;
     }
 
@@ -231,6 +258,9 @@ public class DriverStyleBean extends BaseBean
     // STYLE SCORE HARD TURN
     public Integer getStyleScoreTurn()
     {
+        if(!initComplete) 
+            init();
+        
         return styleScoreTurn;
     }
 
@@ -242,6 +272,9 @@ public class DriverStyleBean extends BaseBean
 
     public String getStyleScoreTurnStyle()
     {
+        if(!initComplete) 
+            init();
+        
         return styleScoreTurnStyle;
     }
 

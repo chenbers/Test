@@ -44,6 +44,7 @@ public class DriverSpeedBeanTest extends BaseBeanTest
 
         d.setPerson(p);
         driverSpeedBean.getNavigation().setDriver(d);
+        driverSpeedBean.setInitComplete(true);
         
         driverSpeedBean.setSpeedScoreTwentyOne(33);
         String Test = driverSpeedBean.getSpeedScoreTwentyOneStyle();
