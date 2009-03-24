@@ -59,7 +59,7 @@
 						<f:facet name="header">
 							<h:outputText value="" />
 						</f:facet>
-						<a4j:htmlCommandLink action="go_warnings" value="#{messages.team_diagnosticsDetails}">
+						<a4j:htmlCommandLink action="go_diagnostics" value="#{messages.team_diagnosticsDetails}">
 							<f:setPropertyActionListener value="#{event.event}" target="#{warningsBean.eventFilter}" />
 						</a4j:htmlCommandLink>
 					</rich:column>
