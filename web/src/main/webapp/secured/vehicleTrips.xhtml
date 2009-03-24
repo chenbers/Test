@@ -15,20 +15,27 @@
 			baseIcon.iconAnchor = new GPoint(6, 20);
 			baseIcon.infoWindowAnchor = new GPoint(5, 1);
 		var bounds = new GLatLngBounds();
+		var mapNeedsInit = true;
 		
 		function initMap(lat,lng,zoom)
 		{
-			
-   			if (GBrowserIsCompatible()) 
+			if(mapNeedsInit == true)
 			{
-		 	  	map = new GMap2(document.getElementById("map-canvas"));
-				map.addControl(new GLargeMapControl());
-				map.addControl(new GMapTypeControl());
-				map.addControl(new GOverviewMapControl()); 
-				map.setCenter(new GLatLng(lat, lng), zoom);
-				map.setMapType(G_NORMAL_MAP);
-				bounds = new GLatLngBounds();
+	   			if (GBrowserIsCompatible()) 
+				{
+			 	  	map = new GMap2(document.getElementById("map-canvas"));
+					map.addControl(new GLargeMapControl());
+					map.addControl(new GMapTypeControl());
+					map.addControl(new GOverviewMapControl()); 
+					map.setCenter(new GLatLng(lat, lng), zoom);
+					map.setMapType(G_NORMAL_MAP);
+					bounds = new GLatLngBounds();
+					mapNeedsInit = false;
+				}
 			}
+
+   			map.setMapType(G_NORMAL_MAP);
+			bounds = new GLatLngBounds();
 		}	
 		
 		function createMarker(point, divID, iconImage) 
@@ -324,7 +331,7 @@
                                     <tr>
                                         <td></td>
                                         <td><a4j:commandButton action="#{vehicleTripsBean.DateChangedAction}"
-                                            reRender="script,statsPanel,tripsPanel,bubbles,selectedTrip,selectedTripMap" immediate="false" styleClass="left"
+                                            reRender="script,statsPanel,tripsPanel,bubbles,selectedTrip" immediate="false" styleClass="left"
                                             oncomplete="bodyLoad();">
                                             <span class="edit"> <h:outputText value="Update Date Range" /> </span>
                                         </a4j:commandButton></td>
