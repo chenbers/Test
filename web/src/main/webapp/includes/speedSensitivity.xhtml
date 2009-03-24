@@ -31,7 +31,11 @@
     <c:if test="empty device">
       <c:set var="disabled" value="true" />
     </c:if>
-
+	    <div class="msg">
+			<p id="info">
+				<h:outputText  id="editMessage1" value="#{messages.editDevice_speedSensitivityInfo}"/>
+			</p>
+		</div>
                       <table width="790" border="0" cellspacing="0" cellpadding="0">
                         <tr>
                           <td width="390" valign="top">

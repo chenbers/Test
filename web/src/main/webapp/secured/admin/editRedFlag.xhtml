@@ -44,7 +44,11 @@
                       <h:outputText value=" " /><h:commandButton action="#{redFlagAlertsBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
                     </li>
                   </ul>
-                  
+                   <div class="msg">
+						<p id="info">
+							<h:outputText  id="editMessage1" value="#{messages.editRedFlag_message}"/>
+						</p>
+					</div>
                    <ui:fragment rendered="${tiwiprofn:messagesAvailable()}">
                      <dl id="display-form:j_id122" class="rich-messages msg" style="">
                         <dt class="error">
