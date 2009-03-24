@@ -7,7 +7,7 @@
 	  			xmlns:a4j="http://richfaces.org/a4j"
 	  			xmlns:t="http://myfaces.apache.org/tomahawk"
 	  			xmlns:security="http://pro.tiwi.com/jsf/security"
-                 xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
+                xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
 
 	<ui:param name="liveFleetSelected" value="current" />
 	<ui:param name="helpFile" value="Live_Fleet.htm" />
@@ -231,7 +231,7 @@
 			}
 		</script>
 		<ui:repeat value="#{liveFleetBean.drivers}" var="driverLoc">
-			<ui:include src="../includes/vehicleBubble.xhtml">
+			<ui:include src="../includes/driverBubble.xhtml">
 	            <ui:param name="hiddenDivID" value="#{driverLoc.driver.driverID}_#{driverLoc.vehicle.vehicleID}" />
 	            <ui:param name="driver" value="#{driverLoc.driver}" />
 	        	<ui:param name="vehicle" value="#{driverLoc.vehicle}" />
@@ -354,6 +354,11 @@
 					<div class="panel_title">
 						<span class="map">Live Fleet</span>
 						<span class="panel_ico">
+							<a4j:status id="JSFormStatus" for="jsFormRegion" >
+								<f:facet name="start">
+									<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/ajax-loader.gif" align="top" />&#160;</h:outputText>
+								</f:facet>
+							</a4j:status>
 							<h:graphicImage value="/images/ico_refresh.png" style="cursor: pointer;" onclick="refresh();" title="#{messages.refresh}" alt="#{messages.refresh}"/>
 						</span>
 					</div>
@@ -402,6 +407,7 @@
 			    	
 			    </div>
 				</h:form>
+				<a4j:region id="jsFormRegion">
 					<a4j:form id="jsForm">
 						<a4j:jsFunction reRender="driversDataTable,mapPopups,driverScroller,fleetLegend" name="notifyBean" oncomplete="bodyLoad()">				
 							<a4j:actionparam name="param1" assignTo="#{liveFleetBean.addressLatLng.lat}" />
@@ -409,6 +415,7 @@
 							<a4j:actionparam name="param3" assignTo="#{liveFleetBean.maxCount}" />	
 						</a4j:jsFunction>
 					</a4j:form>
+				</a4j:region>
 				</div>
 				</div>
 				<div class="panel_sw">

@@ -53,7 +53,7 @@
 	<h:form>
 	<rich:panel id="mapPopups">
 		<ui:repeat value="#{driverLocationBean.driverLastLocationBeans}" var="driverLocation">		
-			<ui:include src="../includes/vehicleBubble.xhtml">
+			<ui:include src="../includes/driverBubble.xhtml">
 	            <ui:param name="hiddenDivID" value="#{driverLocation.driver.driverID}" />
 	            <ui:param name="driver" value="#{driverLocation.driver}" />
 	        	<ui:param name="vehicle" value="#{driverLocation.vehicle}" />
