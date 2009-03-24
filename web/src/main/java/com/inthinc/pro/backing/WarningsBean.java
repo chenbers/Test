@@ -34,7 +34,7 @@ public class WarningsBean extends BaseEventsBean
         setEventFilter(null);
         
         refreshAction();
-        return "go_warnings";
+        return "go_diagnostics";
     }
     
     public void exportReportToPdf()

@@ -37,7 +37,7 @@ public class EventsBean extends BaseEventsBean
         setEventFilter(null);
         
         refreshAction();
-        return "go_events";
+        return "go_safety";
     }
     
     public void exportReportToPdf()
