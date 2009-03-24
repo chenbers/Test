@@ -66,7 +66,7 @@
 <ui:insert name="scripts" />
 
 </head>
-<body onload="if (typeof bodyLoad != 'undefined') bodyLoad()" onunload="if (typeof bodyUnload != 'undefined') bodyUnload()">
+<body onload="reloadAjaxPanels();if (typeof bodyLoad != 'undefined') bodyLoad()" onunload="if (typeof bodyUnload != 'undefined') bodyUnload()">
 <ui:insert name="header">
   <ui:include src="/includes/header.xhtml">
   	<ui:param name="helpFile" value="#{helpFile}" />
@@ -94,6 +94,12 @@
 		<ui:include src="/includes/errorPopup.xhtml"/>
 </ui:insert>
 
+<a4j:form>
+    <a4j:jsFunction name="reloadAjaxPanels" reRender="#{ajaxPanels}" />
+</a4j:form>
+<iframe style="height:0px;width:0px;visibility:hidden" src="about:blank">
+        this frame prevents back forward cache in safari
+    </iframe>
 </body>
 </f:view>
 </html>

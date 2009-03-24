@@ -7,18 +7,12 @@
               xmlns:f="http://java.sun.com/jsf/core"
               xmlns:security="http://pro.tiwi.com/jsf/security">
 
-	<ui:define name="scripts">              
-		<script type="text/javascript">
-			function bodyLoad()
-			{
-				reInitTable();
-			}
-		</script>             
-	</ui:define>		 
+	 
               
 	<ui:param name="reportsSelected" value="current" />
 	<ui:param name="driversSelected" value="current" />
 	<ui:param name="helpFile" value="Drivers.htm" />
+    <ui:param name="ajaxPanels" value="outerDriverReport" />
 
 	<ui:define name="subnavigation">
 		<ui:include src="/includes/reports/subNavigation.xhtml" />
@@ -149,11 +143,7 @@
 			</ui:include>
 		</h:outputText>
 		
-		<a4j:form id="reIntTab">
-			<a4j:jsFunction name="reInitTable" 
-			reRender="outerDriverReport:items,outerDriverReport:topScroller,outerDriverReport:bottomScroller" >
-			</a4j:jsFunction>
-		</a4j:form>			
+
 	</ui:define>
 	
 </ui:composition>

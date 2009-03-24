@@ -140,7 +140,7 @@ public class TeamRecentEventsBean extends BaseBean
             }
             else if (eventType.equals(EventType.IDLING))
             {
-                return "go_events";
+                return "go_safety";
             }
             return "go_reportDriverStyle";
         }
