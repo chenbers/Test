@@ -6,7 +6,8 @@
 	  			xmlns:rich="http://richfaces.org/rich"
 	  			xmlns:a4j="http://richfaces.org/a4j"
 	  			xmlns:t="http://myfaces.apache.org/tomahawk"
-	  			xmlns:security="http://pro.tiwi.com/jsf/security">
+	  			xmlns:security="http://pro.tiwi.com/jsf/security"
+                 xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
 
 	<ui:param name="liveFleetSelected" value="current" />
 	<ui:param name="helpFile" value="Live_Fleet.htm" />
@@ -314,16 +315,21 @@
 				<div class="">
 					<div class="panel_nw">
 						<div class="panel_title">
-							<span class="legend">Fleet Legend</span>
+							<span class="legend">#{messages.livefleetmap_legend}</span>
 							<span class="panel_links"></span>
 						</div>
 					</div>	
 	 				<div class="panel_w">
 						<div class="panel_content">
 							<rich:dataList id="fleetLegend" value="#{liveFleetBean.displayedGroups}" var="group" styleClass="legend">
-							  		<img src="#{liveFleetBean.legendIconMap.icons[group.groupID]}" style="vertical-align:middle"/> 
-								  	<h:outputText value="#{group.name}" style="margin-left:5px"></h:outputText>
-							  </rich:dataList>
+                               
+                               <h:outputLink value="${tiwiprofn:getGroupURL(group)}">
+                                  <img border="0" src="#{liveFleetBean.legendIconMap.icons[group.groupID]}" style="vertical-align:middle"/>
+                               </h:outputLink>
+                               <h:outputLink style="margin-left:5px" value="${tiwiprofn:getGroupURL(group)}" >
+								  <h:outputText value="#{group.name}" ></h:outputText>
+                               </h:outputLink>
+							</rich:dataList>
 						</div>
 						<div style="clear:both"/>
 	  					
@@ -381,7 +387,7 @@
 					</tr>
 				</table>
 				<hr />
-	<!-- END INPUT FORM -->
+	            <!-- END INPUT FORM -->
 				<h:form name="mapLinks2">
 				<h:panelGroup styleClass="map-border" layout="block">
 					 <div id="map-canvas" style="width: 580px; height: 425px; border: 0"></div> 

@@ -12,6 +12,8 @@ import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.backing.model.GroupLevel;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.reports.ReportType;
 
 public class JsfFunctions
@@ -74,6 +76,32 @@ public class JsfFunctions
         }
         
         return Integer.valueOf(count);
+    }
+    
+    /**
+     * Utility method to get back a URL for navigating to any group. The reason for this is if bookmarking is necessary, an h:outputLink 
+     * may be used to embed the request in the URL.
+     * 
+     * @param group
+     * @return URL of the group.
+     */
+    public static String getGroupURL(Group group)
+    {
+        String url = null;
+        switch(group.getType())
+        {
+        case DIVISION: 
+            url = GroupLevel.DIVISION.getUrl() + "?groupID=" + group.getGroupID().toString();
+            break;
+        case FLEET:
+            url = GroupLevel.FLEET.getUrl() + "?groupID=" + group.getGroupID().toString();
+            break;
+        case TEAM:
+            url = GroupLevel.TEAM.getUrl() + "?groupID=" + group.getGroupID().toString();
+            break;
+        }
+        
+        return FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/" +  url;
     }
 
 }

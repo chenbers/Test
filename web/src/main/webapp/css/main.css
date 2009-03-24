@@ -2656,6 +2656,18 @@ ul.legend {
 	float: left;
 	width: 125px;
 	}
+	
+.legend li a {
+	color:#333333;
+	text-decoration:underline;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
+	font-size:10px;
+	font-size-adjust:none;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:normal;
+	}
 
 .legend li.red {
 	background: url(../images/ico_car_red.png) no-repeat 0 50%;
@@ -2692,6 +2704,8 @@ ul.legend {
 .legend li.pink {
 	background: url(../images/ico_car_pink.png) no-repeat 0 50%;
 	}
+	
+
 
 
 .lgnd {
