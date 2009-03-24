@@ -10,7 +10,7 @@
 	        	<ui:param name="targetDriverID" value="#{liveFleetBean.selectedDriverID}" />
 	        	<ui:param name="messagePriPhone" value="#{messages.livefleet_priPhone}" />
 	        	<ui:param name="messageSecPhone" value="#{messages.livefleet_secPhone}" />
-	        	<ui:param name="messageVehicle" value="#{messages.livefleet_vehicle}" />
+	        	<ui:param name="messageDriver" value="#{messages.livefleet_driver}" />
 	        	<ui:param name="vehicleAction" value="#{liveFleetBean.vehicleDetailAction}" />
 	        	<ui:param name="targetVehicleID" value="#{liveFleetBean.selectedVehicleID}" />
 	        	<ui:param name="messageVehicleType" value="#{messages.livefleet_vehicleType}" />
@@ -18,6 +18,8 @@
 	        	<ui:param name="vehicleTime" value="#{driverLoc.time}" />
 	        	<ui:param name="messageAddress" value="#{messages.livefleet_address}" />
 	        	<ui:param name="vehicleAddress" value="#{driverLoc.addressStr}" />
+	        	<ui:param name="distance" value="#{driverLoc.dist}" />   							*OPTIONAL*
+	        	<ui:param name="messageDistance" value="#{messages.livefleet_distance}" /> 
 			</ui:include>
 			
 			The backing bean must implement two actions:  driverDetailAction and vehicleDetailAction
@@ -38,31 +40,33 @@
 
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
 				xmlns:h="http://java.sun.com/jsf/html"
-				xmlns:a4j="http://richfaces.org/a4j"
 				xmlns:f="http://java.sun.com/jsf/core">
 				
 
 	<div id="#{hiddenDivID}" style="display:none">
-		<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header">
+		<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header" footerClass="google_popups_footer">
 			<f:facet name="header">
-				<h:commandLink value="#{driver.person.fullName}" action="go_driver">
-					<f:setPropertyActionListener value="#{driver}" target="#{navigationBean.driver}" />
-				</h:commandLink>
+				<h:commandLink value="#{vehicle.name}" action="go_vehicle">
+					<f:setPropertyActionListener value="#{vehicle}" target="#{navigationBean.vehicle}" />
+			</h:commandLink>
 			</f:facet>
 			<h:outputText value="#{messagePriPhone}:"/>
 			<h:outputText value="#{driver.person.priPhone}" converter="PhoneNumberConverter" />
 			<h:outputText value="#{messageSecPhone}:"/>
 			<h:outputText value="#{driver.person.secPhone}" converter="PhoneNumberConverter" />
-			<h:outputText value="#{messageVehicle}:"/>					
-			<h:commandLink value="#{vehicle.name}" action="go_vehicle">
-					<f:setPropertyActionListener value="#{vehicle}" target="#{navigationBean.vehicle}" />
-			</h:commandLink>
+			<h:outputText value="#{messageDriver}:" styleClass="google_popups_header"/>	
+				<h:commandLink value="#{driver.person.fullName}" action="go_driver" styleClass="google_popups_header">
+					<f:setPropertyActionListener value="#{driver}" target="#{navigationBean.driver}" />
+				</h:commandLink>	
 			<h:outputText value="#{messageVehicleType}:"/>
 			<h:outputText value="#{vehicle.vtype}" />
 			<h:outputText value="#{messageLastUpdated}:" />
 			<h:outputText value="#{vehicleTime}" converter="TimeAgoConverter"/>
 			<h:outputText value="#{messageAddress}:"/>
 			<h:outputText value="#{vehicleAddress}" />
+			<f:facet name="footer">
+				<h:outputText value="#{distance}" rendered="#{distance ne null}" converter="DistanceConverter">#{messageDistance}&#160;</h:outputText>
+			</f:facet>
 		</h:panelGrid>
 	</div>
 </ui:composition>

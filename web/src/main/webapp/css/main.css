@@ -2922,8 +2922,12 @@ ul.htabs li.seatbelt_on {
 .google_popups_rows a:visited {
 	color: #333;
 	}
-
-
+	
+.google_popups_footer {
+	font-size: 	13px;
+	text-align: left;
+	color: #333;
+	}
 
 .active-row
 {

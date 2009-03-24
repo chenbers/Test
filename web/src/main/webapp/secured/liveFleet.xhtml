@@ -231,7 +231,7 @@
 			}
 		</script>
 		<ui:repeat value="#{liveFleetBean.drivers}" var="driverLoc">
-			<ui:include src="../includes/driverBubble.xhtml">
+			<ui:include src="../includes/vehicleBubble.xhtml">
 	            <ui:param name="hiddenDivID" value="#{driverLoc.driver.driverID}_#{driverLoc.vehicle.vehicleID}" />
 	            <ui:param name="driver" value="#{driverLoc.driver}" />
 	        	<ui:param name="vehicle" value="#{driverLoc.vehicle}" />
@@ -239,13 +239,15 @@
 	        	<ui:param name="targetDriverID" value="#{liveFleetBean.selectedDriverID}" />
 	        	<ui:param name="messagePriPhone" value="#{messages.livefleet_priPhone}" />
 	        	<ui:param name="messageSecPhone" value="#{messages.livefleet_secPhone}" />
-	        	<ui:param name="messageVehicle" value="#{messages.livefleet_vehicle}" />
+	        	<ui:param name="messageDriver" value="#{messages.livefleet_driver}" />
 	        	<ui:param name="targetVehicleID" value="#{liveFleetBean.selectedVehicleID}" />
 	        	<ui:param name="messageVehicleType" value="#{messages.livefleet_vehicleType}" />
 	        	<ui:param name="messageLastUpdated" value="#{messages.livefleet_updated}" />
 	        	<ui:param name="vehicleTime" value="#{driverLoc.time}" />
 	        	<ui:param name="messageAddress" value="#{messages.livefleet_address}" />
 	        	<ui:param name="vehicleAddress" value="#{driverLoc.addressStr}" />
+	        	<ui:param name="distance" value="#{driverLoc.dist}" />
+	        	<ui:param name="messageDistance" value="#{messages.livefleet_distance}" /> 
 			</ui:include>
 		</ui:repeat>
 	</rich:panel>
@@ -271,6 +273,13 @@
 									id="driversDataTable" var="item" styleClass="datagrid" sortMode="single"
 									rowClasses="tableOdd,tableEven" cellspacing="1" rows="10" width="100%">
 								
+								<rich:column sortBy="#{item.position}">
+									<f:facet name="header">
+										<h:outputText value="#" />
+									</f:facet>
+									<h:outputText value="#{item.position}"/>
+								</rich:column>
+								
 								<rich:column sortBy="#{item.driver.person.fullName}">
 									<f:facet name="header">
 										<h:outputText value="Driver" />
@@ -280,11 +289,13 @@
 									</h:commandLink>
 								</rich:column>
 	
-								<rich:column sortBy="#{item.dist}" selfSorted="true"  sortOrder="ASCENDING">
+								<rich:column sortBy="#{item.vehicle.name}">
 									<f:facet name="header">
-										<h:outputText value="Distance" />
+										<h:outputText value="Vehicle" />
 									</f:facet>
-									<h:outputText value="#{item.dist}" converter="DistanceConverter"/>
+									<h:commandLink value="#{item.vehicle.name}" action="#{liveFleetBean.vehicleDetailAction}">
+										<f:setPropertyActionListener value="#{item.vehicle.vehicleID}" target="#{liveFleetBean.selectedVehicleID}" />
+									</h:commandLink>
 								</rich:column>
 	
 								<rich:column sortBy="#{item.driver.groupID}">
@@ -427,7 +438,5 @@
 				</td>
 			</tr>
 		</table>
-
-		
 	</ui:define>
 </ui:composition>

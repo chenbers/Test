@@ -12,6 +12,7 @@ public class DriverLocation
     private Date time;
     private String addressStr;
     private Double dist;
+    private Integer position;
     
     public LatLng getLoc()
     {
@@ -60,6 +61,14 @@ public class DriverLocation
     public void setDist(Double dist)
     {
         this.dist = dist;
+    }
+    public Integer getPosition()
+    {
+        return position;
+    }
+    public void setPosition(Integer position)
+    {
+        this.position = position;
     }
  
 }

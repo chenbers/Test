@@ -52,8 +52,12 @@ public class VehicleSeatBeltBean extends BaseBean
     private void init()
     {
         ScoreableEntity se = scoreDAO.getVehicleAverageScoreByType(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
-        setSeatBeltScore(se.getScore() == null ? NO_SCORE : se.getScore());
         
+        if(se != null && se.getScore() != null)    
+            setSeatBeltScore(se.getScore());
+        else
+            setSeatBeltScore(NO_SCORE);
+
         initComplete = true;
     }
 

@@ -44,6 +44,8 @@ public class LiveFleetBean extends BaseBean
         
         if (maxCount == null)
             maxCount = 10;
+        
+       
     }
 
     private void populateDriverLocations()
@@ -69,8 +71,10 @@ public class LiveFleetBean extends BaseBean
         legendIconMap = new IconMap();
         displayedGroups = new ArrayList<Group>();
 
+        Integer count = 1;
         for (DriverLocation driver : drivers)
         {
+            driver.setPosition((count++));
             driver.setAddressStr(addressLookup.getAddress(driver.getLoc().getLat(), driver.getLoc().getLng()));
             
             // Add groups to Group map for Legend
