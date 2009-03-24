@@ -7,8 +7,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:security="http://pro.tiwi.com/jsf/security"
-	xmlns:t="http://myfaces.apache.org/tomahawk"
-	>
+	xmlns:t="http://myfaces.apache.org/tomahawk">
 
 	<ui:param name="adminSelected" value="current" />
     <ui:param name="helpFile" value="Organization.htm" />
@@ -34,7 +33,7 @@
 					src="/includes/adminSideNav.xhtml">
 					<ui:param name="selectedAction" value="go_adminOrganization" />
 				</ui:include></td>
-				<td valign="top"><!-- START PANEL --> 
+				<td valign="top">
 				  <a4j:form id="display-form">
 					<div class="">
 					<div class="panel_nw">
@@ -78,7 +77,7 @@
 										var="item"
 										nodeFace="#{item.data.treeNodeType}"
 										nodeSelectListener="#{organizationBean.selectNode}"
-										reRender="driverPanel,vehiclePanel,groupPanel"
+										reRender="contentPanel"
 										dragValue="#{item.data}" dropValue="#{item.data}"
 										adviseNodeSelected="#{organizationBean.adviseNodeSelected}"
 										adviseNodeOpened="#{organizationBean.adviseNodeExpanded}"
@@ -121,11 +120,15 @@
 								</h:panelGroup>
 								</a4j:region>
 								<rich:dragIndicator id="indicator" />
+                                <!-- onDrop of a tree node reRender tree. Also set the deleay to 200 -->
 								<script type="text/javascript">
 									function doRefreshTree(){
 										setTimeout('refreshTree()', 200)
-						
 										}
+                                    function submitSelection()
+                                    {
+                                        
+                                    }
 									
 								</script>
 								 <a4j:jsFunction name="refreshTree"
@@ -139,56 +142,52 @@
 								id="contentPanel">
 								<!-- 
 								The GROUP PANEL, DRIVER PANEL, AND VEHICLE PANEL are all here at the same level. When an action is fired we only want to reRender
-								each panel individually. If we reRender a higher level panel, the the map gets reloaded and the page is much slower. To speed up
-								performance, we have the map at this level as well
+								each panel individually. 
 								 -->
-								<h:panelGroup id="groupPanel">
-									<ui:fragment
-										rendered="#{organizationBean.selectedGroupNode ne null and organizationBean.selectedGroupNode.group ne null}">
-										<ui:fragment
-											rendered="#{organizationBean.groupState eq 'VIEW'}">
-											<ui:include src="/includes/admin/groupView.xhtml">
-												<ui:param name="groupTreeNode"
-													value="#{organizationBean.selectedGroupNode}" />
-											</ui:include>
-										</ui:fragment>
+								
+                                
+      							<ui:fragment
+      								rendered="#{organizationBean.selectedGroupNode ne null and organizationBean.selectedGroupNode.group ne null}">
+      								<ui:fragment
+      									rendered="#{organizationBean.groupState eq 'VIEW'}">
+      									<ui:include src="/includes/admin/groupView.xhtml">
+      										<ui:param name="groupTreeNode"
+      											value="#{organizationBean.selectedGroupNode}" />
+      									</ui:include>
+      								</ui:fragment>
+      
+      								<ui:fragment
+      									rendered="#{organizationBean.groupState ne 'VIEW'}">
+      									<ui:include src="/includes/admin/groupEdit.xhtml">
+      										<ui:param name="groupTreeNode"
+      											value="#{organizationBean.tempGroupTreeNode}" />
+      									</ui:include>
+      
+      								</ui:fragment>
+      							</ui:fragment>
+      							
+      						
+      
+      
+      							<ui:fragment
+      								rendered="#{organizationBean.selectedGroupNode.treeNodeType eq 'DRIVER'}">
+      
+      								<ui:include src="/includes/admin/driverSubview.xhtml">
+      									<ui:param name="driver"
+      										value="#{organizationBean.selectedGroupNode.driver}" />
+      								</ui:include>
+                                </ui:fragment>
 
-										<ui:fragment
-											rendered="#{organizationBean.groupState ne 'VIEW'}">
-											<ui:include src="/includes/admin/groupEdit.xhtml">
-												<ui:param name="groupTreeNode"
-													value="#{organizationBean.tempGroupTreeNode}" />
-											</ui:include>
-
-										</ui:fragment>
-									</ui:fragment>
-									
-								</h:panelGroup>
-
-								<h:panelGroup id="driverPanel">
-									<h:outputText
-										rendered="#{organizationBean.selectedGroupNode.treeNodeType eq 'DRIVER'}">
-
-										<ui:include src="/includes/admin/driverSubview.xhtml">
-											<ui:param name="driver"
-												value="#{organizationBean.selectedGroupNode.driver}" />
-										</ui:include>
-									</h:outputText>
-								</h:panelGroup>
-
-								<h:panelGroup id="vehiclePanel">
-
-									<h:outputText
-										rendered="#{organizationBean.selectedGroupNode.treeNodeType eq 'VEHICLE'}">
-										<ui:include src="/includes/admin/vehicleSubview.xhtml">
-											<ui:param name="vehicle"
-												value="#{organizationBean.selectedGroupNode.vehicle}" />
-										</ui:include>
-									</h:outputText>
-								</h:panelGroup>
-
-
-							</h:panelGroup></div></a4j:region>
+      							<ui:fragment
+      								rendered="#{organizationBean.selectedGroupNode.treeNodeType eq 'VEHICLE'}">
+      								<ui:include src="/includes/admin/vehicleSubview.xhtml">
+      									<ui:param name="vehicle"
+      										value="#{organizationBean.selectedGroupNode.vehicle}" />
+      								</ui:include>
+      							</ui:fragment>
+							</h:panelGroup>
+                           </div>
+                        </a4j:region>
 							</td>
 						</tr>
 					</table>
@@ -214,6 +213,7 @@
 	        	initMap();
 	    	}
 	    </script>
+       
 	</ui:define>
 
 </ui:composition>

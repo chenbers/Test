@@ -13,14 +13,14 @@
 			<li class="r">
 				<h:commandButton rendered="#{organizationBean.groupState ne 'VIEW'}"
 					action="#{organizationBean.view}"
-					reRender="groupPanel,organizationTreePanel" immediate="true" styleClass="left">
+					reRender="contentPanel,organizationTreePanel" immediate="true" styleClass="left">
 					<span class="cancel"><h:outputText
 						value="#{messages.button_cancel}" /></span></h:commandButton>
 			</li>
 			<li class="r">
 				<a4j:commandButton rendered="#{organizationBean.groupState eq 'EDIT'}"
 					action="#{organizationBean.update}"
-					reRender="groupPanel,organizationTreePanel" styleClass="left">
+					reRender="contentPanel,organizationTreePanel" styleClass="left">
 					<f:param name="state" value="VIEW" />
 					<span class="save"><h:outputText
 						value="#{messages.button_save}" /></span></a4j:commandButton>
@@ -28,7 +28,7 @@
 			<li class="r">
 				<a4j:commandButton rendered="#{organizationBean.groupState eq 'ADD'}"
 					action="#{organizationBean.save}"
-					reRender="groupPanel,organizationTreePanel" styleClass="left">
+					reRender="contentPanel,organizationTreePanel" styleClass="left">
 					<f:param name="state" value="VIEW" />
 					<span class="save"><h:outputText
 						value="#{messages.button_save}" /></span></a4j:commandButton>
@@ -135,14 +135,14 @@
 			<li class="r">
 				<h:commandButton rendered="#{organizationBean.groupState ne 'VIEW'}"
 					action="#{organizationBean.view}"
-					reRender="groupPanel,organizationTreePanel" immediate="true" styleClass="left">
+					reRender="contentPanel,organizationTreePanel" immediate="true" styleClass="left">
 					<span class="cancel"><h:outputText
 						value="#{messages.button_cancel}" /></span></h:commandButton>
 			</li>
 			<li class="r">
 				<a4j:commandButton rendered="#{organizationBean.groupState eq 'EDIT'}"
 					action="#{organizationBean.update}"
-					reRender="groupPanel,organizationTreePanel" styleClass="left">
+					reRender="contentPanel,organizationTreePanel" styleClass="left">
 					<f:param name="state" value="VIEW" />
 					<span class="save"><h:outputText
 						value="#{messages.button_save}" /></span></a4j:commandButton>
@@ -150,7 +150,7 @@
 			<li class="r">
 				<a4j:commandButton rendered="#{organizationBean.groupState eq 'ADD'}"
 					action="#{organizationBean.save}"
-					reRender="groupPanel,organizationTreePanel" styleClass="left">
+					reRender="contentPanel,organizationTreePanel" styleClass="left">
 					<f:param name="state" value="VIEW" />
 					<span class="add"><h:outputText
 						value="#{messages.button_create_unit}" /></span></a4j:commandButton>
