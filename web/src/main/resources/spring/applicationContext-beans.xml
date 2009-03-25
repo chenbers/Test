@@ -92,6 +92,7 @@
     <bean id="liveFleetBean" class="com.inthinc.pro.backing.LiveFleetBean" scope="request" init-method="initBean">
         <property name="driverDAO" ref="driverDAO"></property>
         <property name="vehicleDAO" ref="vehicleDAO"></property>
+        <property name="deviceDAO" ref="deviceDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
         <property name="groupDAO" ref="groupDAO"></property>
         <property name="addressLookup" ref="addressLookupBean"></property>

@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.apache.log4j.Logger;
 import com.inthinc.pro.backing.model.GroupHierarchy;
+import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.VehicleDAO;
@@ -23,6 +24,7 @@ public class LiveFleetBean extends BaseBean
     private GroupDAO             groupDAO;
     private DriverDAO            driverDAO;
     private VehicleDAO           vehicleDAO;
+    private DeviceDAO            deviceDAO;
     private LatLng               addressLatLng;
     private Integer              addressZoom;
     private Integer              maxCount;
@@ -44,20 +46,14 @@ public class LiveFleetBean extends BaseBean
         
         if (maxCount == null)
             maxCount = 10;
-        
-       
     }
 
     private void populateDriverLocations()
     {
-        logger.debug("getDriver hit.");
-
         // Get drivers
         Group fleetGroup = organizationHierarchy.getTopGroup();
         setDrivers(vehicleDAO.getVehiclesNearLoc(fleetGroup.getGroupID(), maxCount, addressLatLng.getLat(), addressLatLng.getLng()));
         setNumRecords(drivers.size());
-
-        logger.debug("getDrivers retieved: " + drivers.size());
 
         // Get colored map icons.
         MapIconFactory mif = new MapIconFactory();
@@ -76,6 +72,7 @@ public class LiveFleetBean extends BaseBean
         {
             driver.setPosition((count++));
             driver.setAddressStr(addressLookup.getAddress(driver.getLoc().getLat(), driver.getLoc().getLng()));
+            driver.setDevice(deviceDAO.findByID(driver.getVehicle().getDeviceID()));  // ADD TO return map for getVehiclesNearLoc()
             
             // Add groups to Group map for Legend
             if (!displayedGroups.contains(organizationHierarchy.getGroup(driver.getDriver().getGroupID())))
@@ -151,6 +148,16 @@ public class LiveFleetBean extends BaseBean
         this.vehicleDAO = vehicleDAO;
     }
     
+    public DeviceDAO getDeviceDAO()
+    {
+        return deviceDAO;
+    }
+
+    public void setDeviceDAO(DeviceDAO deviceDAO)
+    {
+        this.deviceDAO = deviceDAO;
+    }
+
     public AddressLookup getAddressLookup()
     {
         return addressLookup;

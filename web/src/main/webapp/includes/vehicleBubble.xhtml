@@ -5,6 +5,7 @@
 	            <ui:param name="hiddenDivID" value="#{driverLoc.driver.driverID}_#{driverLoc.vehicle.vehicleID}" />
 	            <ui:param name="driver" value="#{driverLoc.driver}" />
 	        	<ui:param name="vehicle" value="#{driverLoc.vehicle}" />
+	        	<ui:param name="device" value="#{driverLoc.device}" />
 	        	<ui:param name="bean" value="#{liveFleetBean}" />
 	        	<ui:param name="driverAction" value="#{liveFleetBean.driverDetailAction}" />
 	        	<ui:param name="targetDriverID" value="#{liveFleetBean.selectedDriverID}" />
@@ -41,7 +42,6 @@
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
 				xmlns:h="http://java.sun.com/jsf/html"
 				xmlns:f="http://java.sun.com/jsf/core">
-				
 
 	<div id="#{hiddenDivID}" style="display:none">
 		<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header" footerClass="google_popups_footer">
@@ -54,12 +54,12 @@
 			<h:outputText value="#{driver.person.priPhone}" converter="PhoneNumberConverter" />
 			<h:outputText value="#{messageSecPhone}:"/>
 			<h:outputText value="#{driver.person.secPhone}" converter="PhoneNumberConverter" />
-			<h:outputText value="#{messageDriver}:" styleClass="google_popups_header"/>	
+			<h:outputText value="#{messageDriver}:"/>	
 				<h:commandLink value="#{driver.person.fullName}" action="go_driver" styleClass="google_popups_header">
 					<f:setPropertyActionListener value="#{driver}" target="#{navigationBean.driver}" />
 				</h:commandLink>	
-			<h:outputText value="#{messageVehicleType}:"/>
-			<h:outputText value="#{vehicle.vtype}" />
+			<h:outputText value="#{messageDevicePhone}:"/>
+			<h:outputText value="#{device.phone}" converter="PhoneNumberConverter" />
 			<h:outputText value="#{messageLastUpdated}:" />
 			<h:outputText value="#{vehicleTime}" converter="TimeAgoConverter"/>
 			<h:outputText value="#{messageAddress}:"/>
