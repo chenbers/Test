@@ -330,7 +330,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     {
         boolean valid = true;
 
-        if(reportScheduleView.getOccurrence().equals(Occurrence.WEEKLY))
+        if(reportScheduleView.getOccurrence() != null && reportScheduleView.getOccurrence().equals(Occurrence.WEEKLY))
         {
             if (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("dayOfWeek")))
             {

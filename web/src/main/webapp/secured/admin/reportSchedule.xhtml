@@ -1,4 +1,4 @@
-<ui:composition template="/layout/layout.xhtml"
+<ui:composition template="/layout/adminLayout.xhtml"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -9,198 +9,180 @@
 	xmlns:c="http://java.sun.com/jstl/core">
 
 	<ui:param name="adminSelected" value="current" />
+    <ui:param name="selectedAction" value="#{(reportScheduleBean.add) ? 'go_adminAddReportSchedule' : 'go_adminReportSchedules'}" />
+    <ui:param name="parentAction" value="go_adminReportSchedules" />
+    <ui:param name="adminHeader"  value="#{messages.adminHeader_reportScheduleDetails}"/>
+	<ui:define name="adminContent">
 
-	<ui:define name="content">
-		
-		<table width="920" height="430" border="0" cellspacing="0"
-			cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
-			<tr>
-				<td valign="top" width="130">
-					<ui:include src="/includes/adminSideNav.xhtml">
-						<ui:param name="selectedAction" value="#{(reportScheduleBean.add) ? 'go_adminAddReportSchedule' : 'go_adminReportSchedules'}" />
-			            <ui:param name="parentAction" value="go_adminReportSchedules" />
-					</ui:include>
-				</td>
-				<td valign="top">
-				<a4j:form id="edit-form">
-				<div class="">
-				<div class="panel_nw">
-				<div class="panel_title">
-					<span class="email"><h:outputFormat value="#{messages.adminHeader_reportScheduleDetails}"><f:param value="#{reportScheduleBean.item.name}" /></h:outputFormat></span>
-					<span class="panel_links"></span></div>
-				</div>
+        <a4j:form id="edit-form">
+      	<div class="panel_w"><!-- MAIN CONTENT -->
+      	<div class="panel_content"><rich:messages globalOnly="true"
+      		errorClass="error" fatalClass="error" warnClass="warning"
+      		infoClass="info" styleClass="msg" />
+      		
+      	<ul id="grid_nav" style="margin: 0;">
+      		 <li class="l text"><a4j:htmlCommandLink action="#{reportScheduleBean.cancelDisplay}" value="#{messages.reportSchedule_backToSchedules}" /></li>
+                	 <li class="r">
+                   <a4j:commandButton styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
+                   <h:outputText value=" " /><h:commandButton action="#{reportScheduleBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>
+                	 </li>
+             </ul>
+      
+      	<table width="650" border="0" cellspacing="0" cellpadding="0">
+      		<tr>
+      			<td width="350" valign="top" align="left">
+      			<div class="add_section_title"><h:outputText
+      				value="#{messages.reportSchedule_reportScheduling}" /></div>
+      
+      			<table width="350" border="0" cellspacing="2" cellpadding="4"
+      				align="center">
+      				<tr>
+      					<td width="100" valign="top"><h:outputText
+      						value="#{messages.reportSchedule_name}" />
+      					</td>
+      					<td>
+      						<h:outputText value="#{reportScheduleBean.item.name}"></h:outputText>	
+      					</td>
+      				</tr>
+      				<tr>
+      					<td width="100" valign="top"><h:outputText
+      						value="#{messages.reportSchedule_status}" />
+      					</td>
+      					<td>
+      						<h:outputText value="#{reportScheduleBean.item.status}"/>
+      					</td>
+      				</tr>
+      				<tr>
+      					<td width="100" valign="top"><h:outputText
+      						value="#{messages.reportSchedule_timeOfDay}" />
+      					</td>
+      					<td>
+      						<c:set var="hours" value="#{((reportScheduleBean.item.timeOfDay - (reportScheduleBean.item.timeOfDay % 60)) / 60 % 12)}" />
+                                <c:if test="#{hours == 0}">
+                                  <c:set var="hours" value="12" />
+                                </c:if>
+                                <h:outputText value="#{hours}"><f:convertNumber integerOnly="true" /></h:outputText>:<h:outputText value="#{reportScheduleBean.item.timeOfDay % 60}"><f:convertNumber integerOnly="true" minIntegerDigits="2" maxIntegerDigits="2" /></h:outputText>
+                                <h:outputText value="#{(reportScheduleBean.item.timeOfDay ge 720) ? messages.timePicker_pm : messages.timePicker_am}" />
+      					</td>
+      				</tr>
+      				<tr>
+      					<td width="100" valign="top">
+      						<h:outputText value="#{messages.reportSchedule_occurrence}"/>
+      					</td>
+      					<td>
+      						<h:outputText value="#{reportScheduleBean.item.occurrence}"/>
+      					</td>
+      				</tr>
+      				<h:outputText rendered="#{reportScheduleBean.item.occurrence eq 'WEEKLY'}">
+      				<tr>
+      					<td width="100" valign="top"><h:outputText
+      						value="#{messages.reportSchedule_daysOfWeek}" />
+      					</td>
+      					<td>
+      						<ui:include src="../../includes/dayPicker.xhtml">
+                                   <ui:param name="days" value="#{reportScheduleBean.item.dayOfWeek}" />
+                                   <ui:param name="disabled" value="true" />
+                           		</ui:include>	
+      					</td>
+      				</tr>
+      				</h:outputText>
+      				<h:outputText rendered="#{reportScheduleBean.item.occurrence eq 'MONTHLY'}">
+      				<tr>
+      					<td width="100" valign="top"><h:outputText
+      						value="#{messages.reportSchedule_dayOfMonth}" />
+      					</td>
+      					<td>
+      						<h:outputText value="#{reportScheduleBean.item.dayOfMonth}"/>
+      					</td>
+      				</tr>
+      				</h:outputText>
+      				
+      			</table>
+      			
+      			</td>
+      			<td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
+      			<td width="400" valign="top" align="left">
+      				
+      			<div class="add_section_title"><h:outputText
+      				value="#{messages.reportSchedule_reportConfiguration}" /></div>
+      			<h:panelGroup id="reportConfigTable" >
+      			<table width="350" border="0" cellspacing="2" cellpadding="4"
+      				align="center">
+      				<tr>
+      					<td width="100" valign="top">
+      						<h:outputText value="#{messages.reportSchedule_report}"/>
+      					</td>
+      					<td>
+      						<h:outputText value="#{reportScheduleBean.item.report.label}"/>
+      					</td>
+      				</tr>
+                  
+                         <h:outputText rendered="#{reportScheduleBean.item.reportDuration ne null}">
+                              <tr>
+                                 <td width="100" valign="top">
+                                    <h:outputText value="#{messages.reportSchedule_daysReported}"/>
+                                 </td>
+                                 <td>
+                                    <h:outputText value="#{reportScheduleBean.item.reportDuration}"/>
+                                 </td>
+                              </tr>
+                        </h:outputText>
+      				<h:outputText rendered="#{reportScheduleBean.item.groupName ne null}">
+      						<tr>
+      							<td width="100" valign="top">
+      								<h:outputText value="#{messages.reportSchedule_group}"/>
+      							</td>
+      							<td>
+      								<h:outputText value="#{reportScheduleBean.item.groupName}"/>
+      							</td>
+      						</tr>
+      				</h:outputText>
+      				<h:outputText rendered="#{reportScheduleBean.item.driverName ne null}">
+      						<tr>
+      							<td width="100" valign="top">
+      								<h:outputText value="#{messages.reportSchedule_driver}"/>
+      							</td>
+      							<td>
+      								<h:outputText value="#{reportScheduleBean.item.driverName}"/>
+      							</td>
+      						</tr>
+      				</h:outputText>
+      				<h:outputText rendered="#{reportScheduleBean.item.vehicleName ne null}">
+      						<tr>
+      							<td width="100" valign="top">
+      								<h:outputText value="#{messages.reportSchedule_driver}"/>
+      							</td>
+      							<td>
+      								<h:outputText value="#{reportScheduleBean.item.vehicleName}"/>
+      							</td>
+      						</tr>
+      				</h:outputText>
+      			</table>
+      			</h:panelGroup>
+      				<div class="add_section_title"><h:outputText
+      						value="#{messages.reportSchedule_email}" /></div>
+      				
+      				<table width="350" border="0" cellspacing="2" cellpadding="4"
+      					align="center">
+      					<tr>
+      						<td>
+      							<h:outputText cols ="40" rows="5" value="#{reportScheduleBean.item.emailToString}" />
+      						</td>
+      					</tr>
+      					
+      				</table>
+      			</td>
+      		</tr>
+      	</table>
+      	</div>
+      
+      	</div>
+      
+      	<div class="panel_sw">
+      	<div class="panel_statusbar"></div>
+      	</div>
+        </a4j:form>
 
-				<div class="panel_w"><!-- MAIN CONTENT -->
-				<div class="panel_content"><rich:messages globalOnly="true"
-					errorClass="error" fatalClass="error" warnClass="warning"
-					infoClass="info" styleClass="msg" />
-					
-				<ul id="grid_nav" style="margin: 0;">
-					 <li class="l text"><a4j:htmlCommandLink action="#{reportScheduleBean.cancelDisplay}" value="#{messages.reportSchedule_backToSchedules}" /></li>
-                   	 <li class="r">
-                      <a4j:commandButton styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
-                      <h:outputText value=" " /><h:commandButton action="#{reportScheduleBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>
-                   	 </li>
-                </ul>
-
-				<table width="650" border="0" cellspacing="0" cellpadding="0">
-					<tr>
-						<td width="350" valign="top" align="left">
-						<div class="add_section_title"><h:outputText
-							value="#{messages.reportSchedule_reportScheduling}" /></div>
-
-						<table width="350" border="0" cellspacing="2" cellpadding="4"
-							align="center">
-							<tr>
-								<td width="100" valign="top"><h:outputText
-									value="#{messages.reportSchedule_name}" />
-								</td>
-								<td>
-									<h:outputText value="#{reportScheduleBean.item.name}"></h:outputText>	
-								</td>
-							</tr>
-							<tr>
-								<td width="100" valign="top"><h:outputText
-									value="#{messages.reportSchedule_status}" />
-								</td>
-								<td>
-									<h:outputText value="#{reportScheduleBean.item.status}"/>
-								</td>
-							</tr>
-							<tr>
-								<td width="100" valign="top"><h:outputText
-									value="#{messages.reportSchedule_timeOfDay}" />
-								</td>
-								<td>
-									<c:set var="hours" value="#{((reportScheduleBean.item.timeOfDay - (reportScheduleBean.item.timeOfDay % 60)) / 60 % 12)}" />
-	                                <c:if test="#{hours == 0}">
-	                                  <c:set var="hours" value="12" />
-	                                </c:if>
-	                                <h:outputText value="#{hours}"><f:convertNumber integerOnly="true" /></h:outputText>:<h:outputText value="#{reportScheduleBean.item.timeOfDay % 60}"><f:convertNumber integerOnly="true" minIntegerDigits="2" maxIntegerDigits="2" /></h:outputText>
-	                                <h:outputText value="#{(reportScheduleBean.item.timeOfDay ge 720) ? messages.timePicker_pm : messages.timePicker_am}" />
-								</td>
-							</tr>
-							<tr>
-								<td width="100" valign="top">
-									<h:outputText value="#{messages.reportSchedule_occurrence}"/>
-								</td>
-								<td>
-									<h:outputText value="#{reportScheduleBean.item.occurrence}"/>
-								</td>
-							</tr>
-							<h:outputText rendered="#{reportScheduleBean.item.occurrence eq 'WEEKLY'}">
-							<tr>
-								<td width="100" valign="top"><h:outputText
-									value="#{messages.reportSchedule_daysOfWeek}" />
-								</td>
-								<td>
-									<ui:include src="../../includes/dayPicker.xhtml">
-		                                <ui:param name="days" value="#{reportScheduleBean.item.dayOfWeek}" />
-		                                <ui:param name="disabled" value="true" />
-                              		</ui:include>	
-								</td>
-							</tr>
-							</h:outputText>
-							<h:outputText rendered="#{reportScheduleBean.item.occurrence eq 'MONTHLY'}">
-							<tr>
-								<td width="100" valign="top"><h:outputText
-									value="#{messages.reportSchedule_dayOfMonth}" />
-								</td>
-								<td>
-									<h:outputText value="#{reportScheduleBean.item.dayOfMonth}"/>
-								</td>
-							</tr>
-							</h:outputText>
-							
-						</table>
-						
-						</td>
-						<td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
-						<td width="400" valign="top" align="left">
-							
-						<div class="add_section_title"><h:outputText
-							value="#{messages.reportSchedule_reportConfiguration}" /></div>
-						<h:panelGroup id="reportConfigTable" >
-						<table width="350" border="0" cellspacing="2" cellpadding="4"
-							align="center">
-							<tr>
-								<td width="100" valign="top">
-									<h:outputText value="#{messages.reportSchedule_report}"/>
-								</td>
-								<td>
-									<h:outputText value="#{reportScheduleBean.item.report.label}"/>
-								</td>
-							</tr>
-                     
-                            <h:outputText rendered="#{reportScheduleBean.item.reportDuration ne null}">
-                                 <tr>
-                                    <td width="100" valign="top">
-                                       <h:outputText value="#{messages.reportSchedule_daysReported}"/>
-                                    </td>
-                                    <td>
-                                       <h:outputText value="#{reportScheduleBean.item.reportDuration}"/>
-                                    </td>
-                                 </tr>
-                           </h:outputText>
-							<h:outputText rendered="#{reportScheduleBean.item.groupName ne null}">
-									<tr>
-										<td width="100" valign="top">
-											<h:outputText value="#{messages.reportSchedule_group}"/>
-										</td>
-										<td>
-											<h:outputText value="#{reportScheduleBean.item.groupName}"/>
-										</td>
-									</tr>
-							</h:outputText>
-							<h:outputText rendered="#{reportScheduleBean.item.driverName ne null}">
-									<tr>
-										<td width="100" valign="top">
-											<h:outputText value="#{messages.reportSchedule_driver}"/>
-										</td>
-										<td>
-											<h:outputText value="#{reportScheduleBean.item.driverName}"/>
-										</td>
-									</tr>
-							</h:outputText>
-							<h:outputText rendered="#{reportScheduleBean.item.vehicleName ne null}">
-									<tr>
-										<td width="100" valign="top">
-											<h:outputText value="#{messages.reportSchedule_driver}"/>
-										</td>
-										<td>
-											<h:outputText value="#{reportScheduleBean.item.vehicleName}"/>
-										</td>
-									</tr>
-							</h:outputText>
-						</table>
-						</h:panelGroup>
-							<div class="add_section_title"><h:outputText
-									value="#{messages.reportSchedule_email}" /></div>
-							
-							<table width="350" border="0" cellspacing="2" cellpadding="4"
-								align="center">
-								<tr>
-									<td>
-										<h:outputText cols ="40" rows="5" value="#{reportScheduleBean.item.emailToString}" />
-									</td>
-								</tr>
-								
-							</table>
-						</td>
-					</tr>
-				</table>
-				</div>
-
-				</div>
-
-				<div class="panel_sw">
-				<div class="panel_statusbar"></div>
-				</div>
-				</div>
-					</a4j:form>
-				</td>
-			</tr>
-		</table>
 		
 		<ui:include src="../../includes/confirmDelete.xhtml">
 	      <ui:param name="deleteBean" value="#{reportScheduleBean}" />

@@ -103,5 +103,5 @@ public class JsfFunctions
         
         return FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/" +  url;
     }
-
+    
 }

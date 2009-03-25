@@ -1,4 +1,4 @@
-<ui:composition template="/layout/layout.xhtml"
+<ui:composition template="/layout/adminLayout.xhtml"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
@@ -9,289 +9,272 @@
      xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
 
 	<ui:param name="adminSelected" value="current" />
-
-	<ui:define name="content">
+    <ui:param name="selectedAction" value="#{(reportScheduleBean.add) ? 'go_adminAddReportSchedule' : 'go_adminReportSchedules'}" />
+    <ui:param name="parentAction" value="go_adminReportSchedules" />
+    <ui:param name="adminHeader" value="#{reportScheduleBean.add ? messages.adminHeader_addReportSchedule : (reportScheduleBean.batchEdit ? messages.adminHeader_editReportSchedules : messages.adminHeader_editReportSchedule)}"/>
+	<ui:define name="adminContent">
 		
-		<table width="920" height="430" border="0" cellspacing="0"
-			cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
-			<tr>
-				<td valign="top" width="130">
-					<ui:include src="/includes/adminSideNav.xhtml">
-						<ui:param name="selectedAction" value="#{(reportScheduleBean.add) ? 'go_adminAddReportSchedule' : 'go_adminReportSchedules'}" />
-			            <ui:param name="parentAction" value="go_adminReportSchedules" />
-					</ui:include>
-				</td>
-				<td valign="top">
-				<a4j:form id="edit-form">
-				<div class="">
-				<div class="panel_nw">
-				<div class="panel_title">
-					<span class="email"><h:outputText value="#{reportScheduleBean.add ? messages.adminHeader_addReportSchedule : (reportScheduleBean.batchEdit ? messages.adminHeader_editReportSchedules : messages.adminHeader_editReportSchedule)}"/></span>
-					<span class="panel_links"></span></div>
-				</div>
-
-				<div class="panel_w"><!-- MAIN CONTENT -->
-				<div class="panel_content">
-                
-				<rich:messages globalOnly="true"
-					errorClass="error" fatalClass="error" warnClass="warning"
-					infoClass="info" styleClass="msg" />
-					
-				<ul id="grid_nav" style="margin: 0;">
-                   	<li class="r">
-                      <h:commandButton action="#{reportScheduleBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
-                      <h:outputText value=" " /><h:commandButton action="#{reportScheduleBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
-                    </li>
-                </ul>
-                
-                <ui:fragment rendered="${tiwiprofn:messagesAvailable()}">
-                  <dl id="display-form:j_id122" class="rich-messages msg" style="">
-                     <dt class="error">
-                        <h:outputFormat value="#{messages.error_validationMsg}">
-                           <f:param value="${tiwiprofn:getMessageCount()}"/>
-                        </h:outputFormat>
-                     </dt>
-                  </dl>
-                </ui:fragment>
-			   
-				<table width="650" border="0" cellspacing="0" cellpadding="0">
-					<tr>
-						<td width="350" valign="top" align="left">
-						<div class="add_section_title"><h:outputText
-							value="#{messages.reportSchedule_reportScheduling}" /></div>
-						
-						<table width="350" border="0" cellspacing="2" cellpadding="4"
-							align="center">
-							<ui:fragment rendered="#{not reportScheduleBean.batchEdit}">
-								<tr>
-									<td width="115" valign="top"><h:outputText
-										value="#{messages.reportSchedule_name}" />
-										<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
-									</td>
-									<td>
-										<rich:message for="scheduleName" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-										<h:inputText id="scheduleName" value="#{reportScheduleBean.item.name}" styleClass="text" size="30" maxlength="30" required="true" requiredMessage="#{messages.required}"></h:inputText>	
-									</td>
-								</tr>
-							</ui:fragment>
-							<tr>
-								<td width="115" valign="top">
-									<ui:include src="../../includes/inputLabel.xhtml">
-										<ui:param name="required" value="TRUE"/>
-										<ui:param name="reRender" value="status"/>
-										<ui:param name="for" value="status"/>
-										<ui:param name="fieldName" value="status"/>
-										<ui:param name="editBean" value="#{reportScheduleBean}"/>
-										<ui:param name="label" value="#{messages.reportSchedule_status}"/>
-									</ui:include>
-								</td>
-								<td>
-      								<h:selectOneMenu id="status" value="#{reportScheduleBean.item.status}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
-      									<f:selectItems value="#{reportScheduleBean.statuses}"/> 
-      								</h:selectOneMenu>
-								</td>
-								
-							</tr>
-							
-							<tr>
-								<td width="115" valign="top">
-									<ui:include src="../../includes/inputLabel.xhtml">
-										<ui:param name="required" value="TRUE"/>
-										<ui:param name="reRender" value="timeOfDay"/>
-										<ui:param name="fieldName" value="timeOfDay"/>
-										<ui:param name="for" value="timeOfDay"/>
-										<ui:param name="editBean" value="#{reportScheduleBean}"/>
-										<ui:param name="label" value="#{messages.reportSchedule_timeOfDay}"/>
-									</ui:include>
-								</td>
-								<td>
-									
-									<ui:include src="../../includes/timePicker.xhtml">
-                                      <ui:param name="id" value="timeOfDay" />
-                                      <ui:param name="value" value="#{reportScheduleBean.item.timeOfDay}" />
-                                      <ui:param name="onchange" value="checkMultiple('timeOfDay')" />
+		
+        <a4j:form id="edit-form">
+      	<div class="panel_w"><!-- MAIN CONTENT -->
+      	<div class="panel_content">
+             
+      	<rich:messages globalOnly="true"
+      		errorClass="error" fatalClass="error" warnClass="warning"
+      		infoClass="info" styleClass="msg" />
+      		
+      	<ul id="grid_nav" style="margin: 0;">
+                	<li class="r">
+                   <h:commandButton action="#{reportScheduleBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
+                   <h:outputText value=" " /><h:commandButton action="#{reportScheduleBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
+                 </li>
+             </ul>
+             
+             <ui:fragment rendered="${tiwiprofn:messagesAvailable()}">
+               <dl id="display-form:j_id122" class="rich-messages msg" style="">
+                  <dt class="error">
+                     <h:outputFormat value="#{messages.error_validationMsg}">
+                        <f:param value="${tiwiprofn:getMessageCount()}"/>
+                     </h:outputFormat>
+                  </dt>
+               </dl>
+             </ui:fragment>
+         
+      	<table width="650" border="0" cellspacing="0" cellpadding="0">
+      		<tr>
+      			<td width="350" valign="top" align="left">
+      			<div class="add_section_title"><h:outputText
+      				value="#{messages.reportSchedule_reportScheduling}" /></div>
+      			
+      			<table width="350" border="0" cellspacing="2" cellpadding="4"
+      				align="center">
+      				<ui:fragment rendered="#{not reportScheduleBean.batchEdit}">
+      					<tr>
+      						<td width="115" valign="top"><h:outputText
+      							value="#{messages.reportSchedule_name}" />
+      							<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
+      						</td>
+      						<td>
+      							<rich:message for="scheduleName" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+      							<h:inputText id="scheduleName" value="#{reportScheduleBean.item.name}" styleClass="text" size="30" maxlength="30" required="true" requiredMessage="#{messages.required}"></h:inputText>	
+      						</td>
+      					</tr>
+      				</ui:fragment>
+      				<tr>
+      					<td width="115" valign="top">
+      						<ui:include src="../../includes/inputLabel.xhtml">
+      							<ui:param name="required" value="TRUE"/>
+      							<ui:param name="reRender" value="status"/>
+      							<ui:param name="for" value="status"/>
+      							<ui:param name="fieldName" value="status"/>
+      							<ui:param name="editBean" value="#{reportScheduleBean}"/>
+      							<ui:param name="label" value="#{messages.reportSchedule_status}"/>
+      						</ui:include>
+      					</td>
+      					<td>
+      							<h:selectOneMenu id="status" value="#{reportScheduleBean.item.status}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
+      								<f:selectItems value="#{reportScheduleBean.statuses}"/> 
+      							</h:selectOneMenu>
+      					</td>
+      					
+      				</tr>
+      				
+      				<tr>
+      					<td width="115" valign="top">
+      						<ui:include src="../../includes/inputLabel.xhtml">
+      							<ui:param name="required" value="TRUE"/>
+      							<ui:param name="reRender" value="timeOfDay"/>
+      							<ui:param name="fieldName" value="timeOfDay"/>
+      							<ui:param name="for" value="timeOfDay"/>
+      							<ui:param name="editBean" value="#{reportScheduleBean}"/>
+      							<ui:param name="label" value="#{messages.reportSchedule_timeOfDay}"/>
+      						</ui:include>
+      					</td>
+      					<td>
+      						
+      						<ui:include src="../../includes/timePicker.xhtml">
+                                   <ui:param name="id" value="timeOfDay" />
+                                   <ui:param name="value" value="#{reportScheduleBean.item.timeOfDay}" />
+                                   <ui:param name="onchange" value="checkMultiple('timeOfDay')" />
+                                 </ui:include>
+      					</td>
+      				</tr>
+      				<tr>
+      					<td width="115" valign="top">
+      						<ui:include src="../../includes/inputLabel.xhtml">
+      							<ui:param name="required" value="TRUE"/>
+      							<ui:param name="reRender" value="occurrence"/>
+      							<ui:param name="fieldName" value="occurrence"/>
+      							<ui:param name="for" value="occurrence"/>
+      							<ui:param name="editBean" value="#{reportScheduleBean}"/>
+      							<ui:param name="label" value="#{messages.reportSchedule_occurrence}"/>
+      						</ui:include>
+      					</td>
+      					<td>
+      						<rich:message for="occurrence" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+      						<h:selectOneMenu id="occurrence" value="#{reportScheduleBean.item.occurrence}" converter="SimpleBeanConverter" required="#{not reportScheduleBean.batchEdit}" requiredMessage="#{messages.required}">
+      							<a4j:support event="onchange" reRender="occurenceDetailPanel" ajaxSingle="true" onsubmit="checkMultiple(this)"/>
+      							<f:selectItems value="#{reportScheduleBean.occurrences}"/> 
+      						</h:selectOneMenu>
+      					</td>
+      				</tr>
+      			</table>
+      			<h:panelGroup id="occurenceDetailPanel">
+      			 <h:panelGroup id="dayOfWeekPanel" rendered="#{reportScheduleBean.item.occurrence eq 'WEEKLY'}">
+      				<table width="350" border="0" cellspacing="2" cellpadding="4"
+      					align="center">
+      					<tr>
+      						<td width="115" valign="top">
+                                     <ui:include src="../../includes/inputLabel.xhtml">
+                                       <ui:param name="required" value="TRUE"/>
+                                       <ui:param name="fieldName" value="dayOfWeek"/>
+                                       <ui:param name="for" value="dayOfWeek"/>
+                                       <ui:param name="editBean" value="#{reportScheduleBean}"/>
+                                       <ui:param name="label" value="#{messages.reportSchedule_daysOfWeek}"/>
                                     </ui:include>
-								</td>
-							</tr>
-							<tr>
-								<td width="115" valign="top">
-									<ui:include src="../../includes/inputLabel.xhtml">
-										<ui:param name="required" value="TRUE"/>
-										<ui:param name="reRender" value="occurrence"/>
-										<ui:param name="fieldName" value="occurrence"/>
-										<ui:param name="for" value="occurrence"/>
-										<ui:param name="editBean" value="#{reportScheduleBean}"/>
-										<ui:param name="label" value="#{messages.reportSchedule_occurrence}"/>
-									</ui:include>
-								</td>
-								<td>
-									<rich:message for="occurrence" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-									<h:selectOneMenu id="occurrence" value="#{reportScheduleBean.item.occurrence}" converter="SimpleBeanConverter" required="#{not reportScheduleBean.batchEdit}" requiredMessage="#{messages.required}">
-										<a4j:support event="onchange" reRender="occurenceDetailPanel" ajaxSingle="true" onsubmit="checkMultiple(this)"/>
-										<f:selectItems value="#{reportScheduleBean.occurrences}"/> 
-									</h:selectOneMenu>
-								</td>
-							</tr>
-						</table>
-						<h:panelGroup id="occurenceDetailPanel">
-						 <h:panelGroup id="dayOfWeekPanel" rendered="#{reportScheduleBean.item.occurrence eq 'WEEKLY'}">
-							<table width="350" border="0" cellspacing="2" cellpadding="4"
-								align="center">
-								<tr>
-									<td width="115" valign="top">
-                                        <ui:include src="../../includes/inputLabel.xhtml">
-                                          <ui:param name="required" value="TRUE"/>
-                                          <ui:param name="fieldName" value="dayOfWeek"/>
-                                          <ui:param name="for" value="dayOfWeek"/>
-                                          <ui:param name="editBean" value="#{reportScheduleBean}"/>
-                                          <ui:param name="label" value="#{messages.reportSchedule_daysOfWeek}"/>
-                                       </ui:include>
-									</td>
-									<td>
-										<h:outputText rendered="#{reportScheduleBean.item.occurrence eq 'WEEKLY'}">
-                                            <rich:message for="day0" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-      										<ui:include src="../../includes/dayPicker.xhtml">
-      			                                <ui:param name="days" value="#{reportScheduleBean.item.dayOfWeek}" />
-      			                                <ui:param name="onchange" value="checkMultiple('dayOfWeek')" />
-      	                              		</ui:include>	
-	                              		</h:outputText>
-									</td>
-								</tr>
-							</table>
-						</h:panelGroup>
-						<h:panelGroup id="dayOfMonthPanel" rendered="#{reportScheduleBean.item.occurrence eq 'MONTHLY'}">
-							<table width="350" border="0" cellspacing="2" cellpadding="4"
-								align="center">
-								<tr>
-									<td width="115" valign="top">
-										<ui:include src="../../includes/inputLabel.xhtml">
-											<ui:param name="reRender" value="dayOfMonth"/>
-											<ui:param name="fieldName" value="dayOfMonth"/>
-                                            <ui:param name="required" value="TRUE"/>
-											<ui:param name="for" value="dayOfMonth"/>
-											<ui:param name="editBean" value="#{reportScheduleBean}"/>
-											<ui:param name="label" value="#{messages.reportSchedule_dayOfMonth}"/>
-										</ui:include>
-									</td>
-									<td>
-										<h:outputText rendered="#{reportScheduleBean.item.occurrence eq 'MONTHLY'}">
-                                            <rich:message for="dayOfMonth" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-											<rich:inputNumberSpinner id="dayOfMonth" value="#{reportScheduleBean.item.dayOfMonth}" onchange="checkMultiple('dayOfMonth')" minValue="1" maxValue="31" required="#{not reportScheduleBean.batchEdit}" requiredMessage="#{messages.required}" ></rich:inputNumberSpinner>
-	                              		</h:outputText>
-									</td>
-								</tr>
-							</table>
-						</h:panelGroup>
-						</h:panelGroup>
-						</td>
-						<td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
-						<td width="400" valign="top" align="left">
-							
-						<ui:fragment rendered="#{not reportScheduleBean.batchEdit}">
-						<div class="add_section_title"><h:outputText
-							value="#{messages.reportSchedule_reportConfiguration}" /></div>
-						<h:panelGroup id="reportConfigTable" >
-						<table width="350" border="0" cellspacing="2" cellpadding="4"
-							align="center">
-							<tr>
-								<td width="100" valign="top">
-									<h:outputText value="#{messages.reportSchedule_report}"/>
-									<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
-								</td>
-								<td>
-									<rich:message for="report" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-									<h:selectOneMenu id="report" value="#{reportScheduleBean.item.reportID}" required="true" requiredMessage="#{messages.required}">
-										<a4j:support event="onchange" reRender="reportConfigTable" ajaxSingle="true"/>
-										<f:selectItems value="#{reportScheduleBean.reportGroups}"/> 
-									</h:selectOneMenu>
-								</td>
-							</tr>
-							
-							<ui:repeat value="#{reportScheduleBean.item.report.criterias}" var="criteria">
-								<h:outputText rendered="#{criteria eq 'DURATION'}">
-									<tr>
-										<td width="100" valign="top">
-											<h:outputText value="#{messages.reportSchedule_daysReported}"/>
-											<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
-										</td>
-										<td>
-											<rich:message for="reportDuration" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-											<h:selectOneMenu id="reportDuration" value="#{reportScheduleBean.item.reportDuration}" converter="SimpleBeanConverter" required="true" requiredMessage="#{messages.required}">
-												<f:selectItems value="#{reportScheduleBean.durations}"/> 
-											</h:selectOneMenu>
-										</td>
-									</tr>
-								</h:outputText>
-							</ui:repeat>
-							<h:outputText rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP'}">
-								<tr>
-									<td width="100" valign="top">
-										<h:outputText value="#{messages.reportSchedule_group}"/>
-										<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
-									</td>
-									<td>
-										<rich:message for="group" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-										<h:selectOneMenu id="group" value="#{reportScheduleBean.item.groupID}" required="true" requiredMessage="#{messages.required}">
-											<f:selectItems value="#{reportScheduleBean.groups}"/> 
-										</h:selectOneMenu>
-									</td>
-								</tr>
-							</h:outputText>
-							<h:outputText rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_DRIVER'}">
-									<tr>
-										<td width="100" valign="top">
-											<h:outputText value="#{messages.reportSchedule_driver}"/>
-											<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
-										</td>
-										<td>
-											<rich:message for="driver" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-											<h:selectOneMenu id="driver" value="#{reportScheduleBean.item.driverID}" required="true" requiredMessage="#{messages.required}">
-												<f:selectItems value="#{reportScheduleBean.drivers}"/> 
-											</h:selectOneMenu>
-										</td>
-									</tr>
-							</h:outputText>
-
-						</table>
-						</h:panelGroup>
-						<div class="add_section_title"><h:outputText
-								value="#{messages.reportSchedule_email}" /></div>
-						
-						<table width="350" border="0" cellspacing="2" cellpadding="4"
-							align="center">
-							<tr>
-								<td>
-									<div class="instructions"><h:outputText value="#{messages.editReportSchedule_reportsByEmailInstructions}" /></div>
-									<h:inputTextarea cols ="40" rows="5" value="#{reportScheduleBean.item.emailToString}" />
-								</td>
-							</tr>
-							
-						</table>
-						</ui:fragment>
-						</td>
-					</tr>
-				</table>
+      						</td>
+      						<td>
+      							<h:outputText rendered="#{reportScheduleBean.item.occurrence eq 'WEEKLY'}">
+                                         <rich:message for="day0" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+      									<ui:include src="../../includes/dayPicker.xhtml">
+      		                                <ui:param name="days" value="#{reportScheduleBean.item.dayOfWeek}" />
+      		                                <ui:param name="onchange" value="checkMultiple('dayOfWeek')" />
+                                    		</ui:include>	
+                              		</h:outputText>
+      						</td>
+      					</tr>
+      				</table>
+      			</h:panelGroup>
+      			<h:panelGroup id="dayOfMonthPanel" rendered="#{reportScheduleBean.item.occurrence eq 'MONTHLY'}">
+      				<table width="350" border="0" cellspacing="2" cellpadding="4"
+      					align="center">
+      					<tr>
+      						<td width="115" valign="top">
+      							<ui:include src="../../includes/inputLabel.xhtml">
+      								<ui:param name="reRender" value="dayOfMonth"/>
+      								<ui:param name="fieldName" value="dayOfMonth"/>
+                                         <ui:param name="required" value="TRUE"/>
+      								<ui:param name="for" value="dayOfMonth"/>
+      								<ui:param name="editBean" value="#{reportScheduleBean}"/>
+      								<ui:param name="label" value="#{messages.reportSchedule_dayOfMonth}"/>
+      							</ui:include>
+      						</td>
+      						<td>
+      							<h:outputText rendered="#{reportScheduleBean.item.occurrence eq 'MONTHLY'}">
+                                         <rich:message for="dayOfMonth" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+      								<rich:inputNumberSpinner id="dayOfMonth" value="#{reportScheduleBean.item.dayOfMonth}" onchange="checkMultiple('dayOfMonth')" minValue="1" maxValue="31" required="#{not reportScheduleBean.batchEdit}" requiredMessage="#{messages.required}" ></rich:inputNumberSpinner>
+                              		</h:outputText>
+      						</td>
+      					</tr>
+      				</table>
+      			</h:panelGroup>
+      			</h:panelGroup>
+      			</td>
+      			<td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
+      			<td width="400" valign="top" align="left">
+      				
+      			<ui:fragment rendered="#{not reportScheduleBean.batchEdit}">
+      			<div class="add_section_title"><h:outputText
+      				value="#{messages.reportSchedule_reportConfiguration}" /></div>
+      			<h:panelGroup id="reportConfigTable" >
+      			<table width="350" border="0" cellspacing="2" cellpadding="4"
+      				align="center">
+      				<tr>
+      					<td width="100" valign="top">
+      						<h:outputText value="#{messages.reportSchedule_report}"/>
+      						<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
+      					</td>
+      					<td>
+      						<rich:message for="report" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+      						<h:selectOneMenu id="report" value="#{reportScheduleBean.item.reportID}" required="true" requiredMessage="#{messages.required}">
+      							<a4j:support event="onchange" reRender="reportConfigTable" ajaxSingle="true"/>
+      							<f:selectItems value="#{reportScheduleBean.reportGroups}"/> 
+      						</h:selectOneMenu>
+      					</td>
+      				</tr>
+      				
+      				<ui:repeat value="#{reportScheduleBean.item.report.criterias}" var="criteria">
+      					<h:outputText rendered="#{criteria eq 'DURATION'}">
+      						<tr>
+      							<td width="100" valign="top">
+      								<h:outputText value="#{messages.reportSchedule_daysReported}"/>
+      								<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
+      							</td>
+      							<td>
+      								<rich:message for="reportDuration" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+      								<h:selectOneMenu id="reportDuration" value="#{reportScheduleBean.item.reportDuration}" converter="SimpleBeanConverter" required="true" requiredMessage="#{messages.required}">
+      									<f:selectItems value="#{reportScheduleBean.durations}"/> 
+      								</h:selectOneMenu>
+      							</td>
+      						</tr>
+      					</h:outputText>
+      				</ui:repeat>
+      				<h:outputText rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP'}">
+      					<tr>
+      						<td width="100" valign="top">
+      							<h:outputText value="#{messages.reportSchedule_group}"/>
+      							<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
+      						</td>
+      						<td>
+      							<rich:message for="group" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+      							<h:selectOneMenu id="group" value="#{reportScheduleBean.item.groupID}" required="true" requiredMessage="#{messages.required}">
+      								<f:selectItems value="#{reportScheduleBean.groups}"/> 
+      							</h:selectOneMenu>
+      						</td>
+      					</tr>
+      				</h:outputText>
+      				<h:outputText rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_DRIVER'}">
+      						<tr>
+      							<td width="100" valign="top">
+      								<h:outputText value="#{messages.reportSchedule_driver}"/>
+      								<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
+      							</td>
+      							<td>
+      								<rich:message for="driver" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+      								<h:selectOneMenu id="driver" value="#{reportScheduleBean.item.driverID}" required="true" requiredMessage="#{messages.required}">
+      									<f:selectItems value="#{reportScheduleBean.drivers}"/> 
+      								</h:selectOneMenu>
+      							</td>
+      						</tr>
+      				</h:outputText>
+      
+      			</table>
+      			</h:panelGroup>
+      			<div class="add_section_title"><h:outputText
+      					value="#{messages.reportSchedule_email}" /></div>
+      			
+      			<table width="350" border="0" cellspacing="2" cellpadding="4"
+      				align="center">
+      				<tr>
+      					<td>
+      						<div class="instructions"><h:outputText value="#{messages.editReportSchedule_reportsByEmailInstructions}" /></div>
+      						<h:inputTextarea cols ="40" rows="5" value="#{reportScheduleBean.item.emailToString}" />
+      					</td>
+      				</tr>
+      				
+      			</table>
+      			</ui:fragment>
+      			</td>
+      		</tr>
+      	</table>
+      	
+      	 <div class="required-key"><h:outputText value="#{messages.requiredKey}" /></div>
+      	 
+      	 <ul id="grid_nav" style="margin: 0;">
+                	<li class="r">
+                   <h:commandButton action="#{reportScheduleBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
+                   <h:outputText value=" " /><h:commandButton action="#{reportScheduleBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
+                 </li>
+              </ul>
+      	</div>
+      
+      	</div>
+      
+      	<div class="panel_sw">
+      	<div class="panel_statusbar"></div>
+      	</div>
+        </a4j:form>
 				
-				 <div class="required-key"><h:outputText value="#{messages.requiredKey}" /></div>
-				 
-				 <ul id="grid_nav" style="margin: 0;">
-                   	<li class="r">
-                      <h:commandButton action="#{reportScheduleBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
-                      <h:outputText value=" " /><h:commandButton action="#{reportScheduleBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
-                    </li>
-                 </ul>
-				</div>
-
-				</div>
-
-				<div class="panel_sw">
-				<div class="panel_statusbar"></div>
-				</div>
-				</div>
-					</a4j:form>
-				</td>
-			</tr>
-		</table>
 		<ui:include src="../../includes/adminEditScripts.xhtml"/>
 		  <script type="text/javascript">
 		         var formElements = ["text", "checkbox", "radio", "select-one", "select-multiple", "textarea"];
