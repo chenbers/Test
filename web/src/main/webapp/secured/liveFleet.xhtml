@@ -13,7 +13,7 @@
 	<ui:param name="helpFile" value="Live_Fleet.htm" />
 	
 	<ui:define name="scripts">
-		<script src="http://maps.google.com/maps?file=api&amp;v=2.x&amp;key=#{gmBean.key}" type="text/javascript"></script>
+		<script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}" type="text/javascript"></script>
 		<script type="text/javascript">
 		var map = null;
 	    var geocoder = null;
@@ -226,7 +226,6 @@
 				</ui:repeat>
 
 				map.setZoom(map.getBoundsZoomLevel(bounds));
-
 		    	map.setCenter(bounds.getCenter());
 			}
 		</script>
@@ -235,6 +234,7 @@
 	            <ui:param name="hiddenDivID" value="#{driverLoc.driver.driverID}_#{driverLoc.vehicle.vehicleID}" />
 	            <ui:param name="driver" value="#{driverLoc.driver}" />
 	        	<ui:param name="vehicle" value="#{driverLoc.vehicle}" />
+	        	<ui:param name="device" value="#{driverLoc.device}" />
 	        	<ui:param name="bean" value="#{liveFleetBean}" />
 	        	<ui:param name="targetDriverID" value="#{liveFleetBean.selectedDriverID}" />
 	        	<ui:param name="messagePriPhone" value="#{messages.livefleet_priPhone}" />
@@ -248,6 +248,7 @@
 	        	<ui:param name="vehicleAddress" value="#{driverLoc.addressStr}" />
 	        	<ui:param name="distance" value="#{driverLoc.dist}" />
 	        	<ui:param name="messageDistance" value="#{messages.livefleet_distance}" /> 
+	        	<ui:param name="messageDevicePhone" value="#{messages.livefleet_devicePhone}" /> 
 			</ui:include>
 		</ui:repeat>
 	</rich:panel>
@@ -367,7 +368,7 @@
 						<span class="panel_ico">
 							<a4j:status id="JSFormStatus" for="jsFormRegion" >
 								<f:facet name="start">
-									<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/ajax-loader.gif" align="top" />&#160;</h:outputText>
+									<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
 								</f:facet>
 							</a4j:status>
 							<h:graphicImage value="/images/ico_refresh.png" style="cursor: pointer;" onclick="refresh();" title="#{messages.refresh}" alt="#{messages.refresh}"/>

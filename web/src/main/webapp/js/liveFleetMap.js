@@ -2,14 +2,20 @@
   	var map;
   	var mgr;
   	var bounds; 
+  	var mapNeedsInit = true;
   	
   	function initMap(lat,lng,zoom)
   	{
 		if (GBrowserIsCompatible()) {
-	 		map = new GMap2(document.getElementById("map-canvas"));
-			map.addControl(new GLargeMapControl());
-	 		map.addControl(new GMapTypeControl());
-	 		map.addControl(new GOverviewMapControl()); 
+			
+			if(mapNeedsInit == true)
+			{
+		 		map = new GMap2(document.getElementById("map-canvas"));
+				map.addControl(new GLargeMapControl());
+		 		map.addControl(new GMapTypeControl());
+		 		map.addControl(new GOverviewMapControl()); 
+		 		mapNeedsInit = false;
+			}
 			map.setMapType(G_NORMAL_MAP);
 			map.setCenter(new GLatLng(lat, lng));
 			bounds = new GLatLngBounds();

@@ -27,6 +27,14 @@ public class GoogleMapBacking
         return googleMapsKey;
     }
 
+    public String getVersion()
+    {
+        String version = googleMapKeys.getProperty("version");
+        if(version == null || version.isEmpty())
+            version = "2";
+        
+        return version;
+    }
 
     public GoogleMapKeys getGoogleMapKeys()
     {

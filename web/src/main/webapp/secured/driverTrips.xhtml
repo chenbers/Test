@@ -3,9 +3,8 @@
     xmlns:t="http://myfaces.apache.org/tomahawk">
 
     <ui:define name="scripts">
-
         <script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>
-        <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=#{gmBean.key}" type="text/javascript"></script>
+        <script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}" type="text/javascript"></script>
         <script type="text/javascript">
 		var map;
 		var showWarnings = new Boolean(true);
@@ -15,27 +14,19 @@
 			baseIcon.iconAnchor = new GPoint(6, 20);
 			baseIcon.infoWindowAnchor = new GPoint(5, 1);
 		var bounds = new GLatLngBounds();
-		var mapNeedsInit = new Boolean(true);
 		
 		function initMap(lat,lng,zoom)
 		{
-			if(mapNeedsInit == true)
+   			if (GBrowserIsCompatible()) 
 			{
-	   			if (GBrowserIsCompatible()) 
-				{
-			 	  	map = new GMap2(document.getElementById("map-canvas"));
-					map.addControl(new GLargeMapControl());
-					map.addControl(new GMapTypeControl());
-					map.addControl(new GOverviewMapControl()); 
-					map.setCenter(new GLatLng(lat, lng), zoom);
-					map.setMapType(G_NORMAL_MAP);
-					bounds = new GLatLngBounds();
-					mapNeedsInit = false;
-				}
+		 	  	map = new GMap2(document.getElementById("map-canvas"));
+				map.addControl(new GLargeMapControl());
+				map.addControl(new GMapTypeControl());
+				map.addControl(new GOverviewMapControl()); 
+				map.setCenter(new GLatLng(lat, lng), zoom);
+				map.setMapType(G_NORMAL_MAP);
+				bounds = new GLatLngBounds();
 			}
-
-   			map.setMapType(G_NORMAL_MAP);
-			bounds = new GLatLngBounds();
 		}	
 		
 		function createMarker(point, divID, iconImage) 
@@ -73,7 +64,6 @@
   			node.style.display = 'block';
 
   			map.openInfoWindow(latLng, node);
-        	
         }
 
 	    // Show Warnings Checkbox changed   //TODO: CLEANER WAY TO DO THIS??
@@ -113,10 +103,37 @@
 		    map.setZoom(map.getBoundsZoomLevel(bounds));
 		    map.setCenter(bounds.getCenter());
 	    }
+
+   		var isReady;
+		isReady = false;
+		function dynamicTableStyles()
+		{
+			
+			jQuery('#tripsTableForm\\:tripsTable tr').click(function(){
+                			jQuery('#tripsTableForm\\:tripsTable tr').each(function() {
+								jQuery(this).removeClass('selected-row');
+								jQuery(this).children().removeClass('selected-row');
+								
+							});
+							jQuery(this).addClass('selected-row');
+							jQuery(this).children().addClass('selected-row');
+			});
+			
+		}
+		function onReRender()
+		{
+			isReady = true;
+			dynamicTableStyles();
+		}
+		function onReRenderWithSelection()
+		{	
+			isReady = true;
+			dynamicTableStyles();
+		}
 		</script>
 
-        <rich:panel id="script">
-            <script type="text/javascript">
+   <rich:panel id="script">
+        <script type="text/javascript">
 		
 	    // Unload Google Map objects
 		function bodyUnload()
@@ -127,16 +144,10 @@
 	    // This is called on pageLoad 
 		function bodyLoad()
 		{
-			initMap(#{driverTripsBean.selectedTrips[0].routeLastStep.lat}, #{driverTripsBean.selectedTrips[0].routeLastStep.lng}, 14);
+			initMap(#{driverTripsBean.selectedTrips[0].routeLastStep.lat}0, #{driverTripsBean.selectedTrips[0].routeLastStep.lng}0, 14);
 	   		showTrips();
 		}
 
-        //This is called after a new trip is selected.
-	    function reRenderMap()
-	    {
-	    	showTrips();
-	    }
-		
 		//alert('script got rendered');
    		function drawSelectedTrips()
    		{
@@ -193,34 +204,7 @@
 					</ui:repeat>
 				}	
 			}
-
-   		var isReady;
-		isReady = false;
-		function dynamicTableStyles()
-		{
-			
-			jQuery('#tripsTableForm\\:tripsTable tr').click(function(){
-                			jQuery('#tripsTableForm\\:tripsTable tr').each(function() {
-								jQuery(this).removeClass('selected-row');
-								jQuery(this).children().removeClass('selected-row');
-								
-							});
-							jQuery(this).addClass('selected-row');
-							jQuery(this).children().addClass('selected-row');
-			});
-			
-		}
-		function onReRender()
-		{
-			isReady = true;
-			dynamicTableStyles();
-		}
-		function onReRenderWithSelection()
-		{	
-			isReady = true;
-			dynamicTableStyles();
-		}
-
+		
 		</script>
         </rich:panel>
 
@@ -336,7 +320,7 @@
                                     <tr>
                                         <td></td>
                                         <td><a4j:commandButton action="#{driverTripsBean.DateChangedAction}"
-                                            reRender="script,statsPanel,tripsPanel,bubbles,selectedTrip" immediate="false" styleClass="left"
+                                            reRender="script,statsPanel,tripsPanel,bubbles,selectedTrip,selectedTripMap" immediate="false" styleClass="left"
                                             oncomplete="bodyLoad();">
                                             <span class="edit"> <h:outputText value="Update Date Range" /> </span>
                                         </a4j:commandButton></td>
@@ -561,7 +545,7 @@
                             styleClass="datagrid" rowClasses="tableOdd,tableEven" rows="4" width="100%">
                                 
     
-                                <a4j:support event="onRowClick" reRender="script,bubbles,selectedTrip,showLastTenForm" oncomplete="reRenderMap();">
+                                <a4j:support event="onRowClick" reRender="script,bubbles,selectedTrip,showLastTenForm" oncomplete="bodyLoad();">
                                     <f:setPropertyActionListener value="#{item}" target="#{driverTripsBean.selectedTrip}" />
                                 </a4j:support>
     
