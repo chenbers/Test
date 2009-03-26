@@ -1,6 +1,7 @@
 package com.inthinc.pro.model;
 
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 import com.inthinc.pro.dao.annotations.Column;
@@ -104,7 +105,12 @@ public class Person extends BaseEntity implements Comparable<Person>
     {
         return timeZone;
     }
-
+    
+    public String getDisplayTimeZone(){
+    	
+    	return timeZone.getDisplayName(timeZone.inDaylightTime(new GregorianCalendar(timeZone).getTime()), TimeZone.LONG);
+    }
+    
     public void setTimeZone(TimeZone timeZone)
     {
         this.timeZone = timeZone;

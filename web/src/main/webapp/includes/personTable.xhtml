@@ -77,7 +77,7 @@
       <c:set var="alertText" value="myAccount_alertText#{item.crit}" />
       <h:outputText value="#{messages[alertText]}" />
     </rich:column>
-    <rich:column rendered="#{personBean.tableColumns['timeZone'].visible}" sortBy="#{item.timeZone.displayName}">
+    <rich:column rendered="#{personBean.tableColumns['timeZone'].visible}" sortBy="#{item.displayTimeZone}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_timeZone}" /></f:facet>
       <h:outputText value="#{item.timeZone.ID}" />
     </rich:column>

@@ -38,7 +38,6 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
     private String 					sbsUserName;
     private List<SBSChangeRequest> 	changeRequests;
     private JavaMailSenderImpl 		mailSender;
-//    private SimpleMailMessage 		speedLimitChangeRequestReceivedMessage;
     private double 					lat;
     private double 					lng;
     private String 					address;
@@ -90,14 +89,6 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 		success = false;
 		emailSent = false;
 	}
-//	public SimpleMailMessage getSpeedLimitChangeRequestReceivedMessage() {
-//		return speedLimitChangeRequestReceivedMessage;
-//	}
-//
-//	public void setSpeedLimitChangeRequestReceivedMessage(
-//			SimpleMailMessage speedLimitChangeRequestReceivedMessage) {
-//		this.speedLimitChangeRequestReceivedMessage = speedLimitChangeRequestReceivedMessage;
-//	}
 
 	public JavaMailSenderImpl getMailSender() {
 		return mailSender;

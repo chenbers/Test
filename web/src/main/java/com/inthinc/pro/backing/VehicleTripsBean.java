@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -455,6 +456,11 @@ public class VehicleTripsBean extends BaseBean
         this.selectedDriver = selectedDriver;
     }
 
+    public String getDisplayTimeZone(){
+    	
+     	return getTimeZone().getDisplayName(timeZone.inDaylightTime(new GregorianCalendar(timeZone).getTime()), TimeZone.LONG);
+    }
+    
     public TimeZone getTimeZone()
     {
         //Get Time Zone from driver
