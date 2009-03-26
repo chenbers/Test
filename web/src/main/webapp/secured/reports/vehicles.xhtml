@@ -5,19 +5,12 @@
             xmlns:rich="http://richfaces.org/rich"
             xmlns:a4j="http://richfaces.org/a4j"  			
   			xmlns:f="http://java.sun.com/jsf/core">
-
-	<ui:define name="scripts">              
-		<script type="text/javascript">
-			function bodyLoad()
-			{
-				reInitTable();
-			}
-		</script>             
-	</ui:define>  			
+			
 
 	<ui:param name="reportsSelected" value="current" />
 	<ui:param name="vehiclesSelected" value="current" />
 	<ui:param name="helpFile" value="Vehicles.htm" />
+    <ui:param name="ajaxPanels" value="outerVehicleReport" />
 
 	<ui:define name="subnavigation">
 		<ui:include src="/includes/reports/subNavigation.xhtml" />
@@ -157,12 +150,7 @@
 				<ui:param  name="reportBean" value="#{vehicleReportBean}"/>
 			</ui:include>
 		</h:outputText>
-					
-		<a4j:form id="reIntTab">
-			<a4j:jsFunction name="reInitTable" 
-				reRender="outerVehicleReport:items,outerVehicleReport:topScroller,outerVehicleReport:bottomScroller" >
-			</a4j:jsFunction>
-		</a4j:form>					
+				
 	</ui:define>
 	
 
