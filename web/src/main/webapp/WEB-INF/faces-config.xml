@@ -162,19 +162,19 @@
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>go_redFlags</from-outcome>
-			<to-view-id>/secured/redFlags/custom.xhtml</to-view-id>
+			<to-view-id>/secured/notifications/redflags.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>go_safety</from-outcome>
-			<to-view-id>/secured/redFlags/safety.xhtml</to-view-id>
+			<to-view-id>/secured/notifications/safety.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>go_diagnostics</from-outcome>
-			<to-view-id>/secured/redFlags/diagnostics.xhtml</to-view-id>
+			<to-view-id>/secured/notifications/diagnostics.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>

@@ -13,7 +13,7 @@
 				value="#{messages.reports_redflagscountheader}">
 				<a4j:actionparam value="#{redFlagsBean.maxCount}"/>
 			</h:outputFormat>												
-			(<a href="#{facesContext.externalContext.request.contextPath}/secured/redFlags/redFlags.faces">#{messages.reports_view}</a>) 
+			(<h:commandLink action="go_redFlags" value="#{messages.reports_view}" />) 
 		</p>
 	</div>									  	
 
