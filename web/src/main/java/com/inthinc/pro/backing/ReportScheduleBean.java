@@ -257,7 +257,9 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             {
                 logger.debug("Day of Month: " + reportSchedule.getDayOfMonth());
                 Calendar now = Calendar.getInstance(getUtcTimeZone());
-                now.set(Calendar.DATE, reportSchedule.getDayOfMonth());
+                if(reportSchedule.getDayOfMonth() != null){
+                    now.set(Calendar.DATE, reportSchedule.getDayOfMonth());
+                }
                 reportSchedule.setStartDate(now.getTime());
             }
 
