@@ -95,6 +95,9 @@ public class VehicleTripsBean extends BaseBean
             violationEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), start, end, vioTypes);
             idleEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), start, end, idleTypes);
             
+            logger.debug("event counts: " + violationEvents.size() + ", " + idleEvents.size());
+            logger.debug(navigation.getVehicle().getVehicleID() + "start: " + start + " end: " + end);
+            
             //Lookup Addresses for events
             for (Event event: violationEvents)
             {

@@ -243,7 +243,7 @@ public class ReportServiceTest
                 assertNotNull("getDriverScoreBreakdownByType for duration " + d.toString() + " scoreType " + st.toString(), scoreBreakdownMap);
                 assertEquals("getDriverScoreBreakdownByType for duration " + d.toString() + " scoreType " + st.toString(), st.getSubTypes().size(),  scoreBreakdownMap.size());
                 
-                List<ScoreableEntity> scoreList = scoreDAO.getDriverScoreHistory(TEST_DRIVER_ID, d, st, 5);
+                List<ScoreableEntity> scoreList = scoreDAO.getDriverTrendCumulative(TEST_DRIVER_ID, d, st);
                 assertNotNull("getDriverScoreHistory for duration " + d.toString() + " scoreType " + st.toString(), scoreList);
                 assertTrue("getDriverScoreHistory for duration " + d.toString() + " scoreType " + st.toString(), scoreList.size() > 0 );
             }
@@ -276,7 +276,7 @@ public class ReportServiceTest
                 assertNotNull("getVehicleScoreBreakdownByType for duration " + d.toString() + " scoreType " + st.toString(), scoreBreakdownMap);
                 assertEquals("getVehicleScoreBreakdownByType for duration " + d.toString() + " scoreType " + st.toString(), st.getSubTypes().size(),  scoreBreakdownMap.size());
 
-                List<ScoreableEntity> scoreList = scoreDAO.getVehicleScoreHistory(TEST_VEHICLE_ID, d, st, 5);
+                List<ScoreableEntity> scoreList = scoreDAO.getDriverTrendCumulative(TEST_VEHICLE_ID, d, st);
                 assertNotNull("getVehicleScoreHistory for duration " + d.toString() + " scoreType " + st.toString(), scoreList);
                 assertTrue("getVehicleScoreHistory for duration " + d.toString() + " scoreType " + st.toString(), scoreList.size() > 0);
             }

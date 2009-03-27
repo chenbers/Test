@@ -214,28 +214,28 @@
 								<rich:spacer width="10" />
 								<a4j:commandLink title="#{messages.duration_days}" immediate="true"
 									styleClass="#{(driverDurationBean.duration eq 'DAYS') ? 'on' : ''}"		
-									reRender="dateLinksForm,overallPanel"
+									reRender="dateLinksForm,overall_script,overallScoreBox"
 									value="#{messages.duration_days}">
 									<a4j:actionparam name="duration" assignTo="#{driverDurationBean.duration}"	value="DAYS" />
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
 								<a4j:commandLink title="#{messages.duration_three}" immediate="true"
 									styleClass="#{(driverDurationBean.duration eq 'THREE') ? 'on' : ''}"	
-									reRender="dateLinksForm,overallPanel"
+									reRender="dateLinksForm,overall_script,overallScoreBox"
 									value="#{messages.duration_three}">
 									<a4j:actionparam name="duration" assignTo="#{driverDurationBean.duration}" value="THREE" />
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
 								<a4j:commandLink title="#{messages.duration_six}" immediate="true"
 									styleClass="#{(driverDurationBean.duration eq 'SIX') ? 'on' : ''}"	
-									reRender="dateLinksForm,overallPanel"
+									reRender="dateLinksForm,overall_script,overallScoreBox"
 									value="#{messages.duration_six}">
 									<a4j:actionparam name="duration" assignTo="#{driverDurationBean.duration}" value="SIX" />
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
 								<a4j:commandLink title="#{messages.duration_twelve}" immediate="true"
 									styleClass="#{(driverDurationBean.duration eq 'TWELVE') ? 'on' : ''}"	
-									reRender="dateLinksForm,overallPanel"
+									reRender="dateLinksForm,overall_script,overallScoreBox"
 									value="#{messages.duration_twelve}">
 									<a4j:actionparam name="duration" assignTo="#{driverDurationBean.duration}" value="TWELVE" />
 								</a4j:commandLink>
@@ -277,23 +277,28 @@
 						            <ui:param name="height" value="200" />  
 						            <ui:param name="tartgetElementVar" value="targetElement" />
 						            <ui:param name="ChartDivID" value="overall_chart" />
+						            <ui:param name="ScriptDivID" value="overall_script" />
 						            <ui:param name="chartVar" value="overallChart" />
 							</ui:include>
 						</td>
 						<td valign="top" align="right">
-							<table width="220" border="0" cellspacing="0" cellpadding="0" class="scorebox" style="margin: 20px 20px 0 0;">
-							  <tr>
-								<td>
-									<h4>Overall Score</h4>
-								</td>
-								<td width="80" align="center">
-									<ui:include src="../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverBean.overallScore}" />
-								            <ui:param name="scoreStyle" value="#{driverBean.overallScoreStyle}" />
-									</ui:include>
-								</td>
-							  </tr>
-							</table>
+							<rich:panel id="overallScoreBox">
+								<table width="220" border="0" cellspacing="0" cellpadding="0" class="scorebox" style="margin: 20px 20px 0 0;">
+								  <tr>
+									<td>
+										<h4>Overall Score</h4>
+									</td>
+									<td width="80" align="center">
+									
+										<ui:include src="../includes/scoreBox.xhtml">
+									            <ui:param name="score" value="#{driverBean.overallScore}" />
+									            <ui:param name="scoreStyle" value="#{driverBean.overallScoreStyle}" />
+										</ui:include>
+									
+									</td>
+								  </tr>
+								</table>
+							</rich:panel>
 						</td>
 					  </tr>
 					</table>
@@ -319,7 +324,7 @@
 						<span class="speed">Speed</span>
 						<ui:include src="../includes/dateLinksToolsDetail.xhtml">
 							<ui:param name="ajaxForm" value="speedForm"/>
-							<ui:param name="reRenderList" value="speedPanel"/>			
+							<ui:param name="reRenderList" value="speed_script,speedForm,speedScoreBox"/>			
 							<ui:param name="thirtyDaysOn" value="#{(driverSpeedBean.durationBean.duration eq 'DAYS') ? 'on' : ''}"/>
 							<ui:param name="threeMonthsOn" value="#{(driverSpeedBean.durationBean.duration eq 'THREE') ? 'on' : ''}"/>
 							<ui:param name="sixMonthsOn" value="#{(driverSpeedBean.durationBean.duration eq 'SIX') ? 'on' : ''}"/>
@@ -345,14 +350,17 @@
 						            <ui:param name="height" value="200" />  
 						            <ui:param name="tartgetElementVar" value="targetElement1" />
 						            <ui:param name="ChartDivID" value="speed_chart" />
+						            <ui:param name="ScriptDivID" value="speed_script" />
 						            <ui:param name="chartVar" value="speed_chart" />
 							</ui:include>
 							</td>
                             <td width="80" align="center">
+                            <rich:panel id="speedScoreBox">
 							    <ui:include src="../includes/scoreBox.xhtml">
 							            <ui:param name="score" value="#{driverSpeedBean.speedScoreOverall}" />
 							            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreOverallStyle}" />
 								</ui:include>
+							</rich:panel>
 							</td>
                           </tr>
                         </table>
@@ -374,7 +382,7 @@
 						<span class="vehicle">Driving Style</span>
 						<ui:include src="../includes/dateLinksToolsDetail.xhtml">
 							<ui:param name="ajaxForm" value="styleForm"/>
-							<ui:param name="reRenderList" value="stylePanel,styleForm"/>			
+							<ui:param name="reRenderList" value="style_script,styleForm,styleScoreBox"/>			
 							<ui:param name="thirtyDaysOn" value="#{(driverStyleBean.durationBean.duration eq 'DAYS') ? 'on' : ''}"/>
 							<ui:param name="threeMonthsOn" value="#{(driverStyleBean.durationBean.duration eq 'THREE') ? 'on' : ''}"/>
 							<ui:param name="sixMonthsOn" value="#{(driverStyleBean.durationBean.duration eq 'SIX') ? 'on' : ''}"/>
@@ -400,14 +408,17 @@
 						            <ui:param name="height" value="200" />  
 						            <ui:param name="tartgetElementVar" value="targetElement2" />
 						            <ui:param name="ChartDivID" value="style_chart" />
+						            <ui:param name="ScriptDivID" value="style_script" />
 						            <ui:param name="chartVar" value="style_chart" />
 							</ui:include>
                             </td>
                             <td width="80" align="center">
+                            <rich:panel id="styleScoreBox">
                                 <ui:include src="../includes/scoreBox.xhtml">
 							            <ui:param name="score" value="#{driverStyleBean.styleScoreOverall}" />
 							            <ui:param name="scoreStyle" value="#{driverStyleBean.styleScoreOverallStyle}" />
 								</ui:include>
+							</rich:panel>
                             </td>
                           </tr>
                         </table>
@@ -428,7 +439,7 @@
 						<span class="seatbelt">Seat Belt</span>
 							<ui:include src="../includes/dateLinksToolsDetail.xhtml">
 							<ui:param name="ajaxForm" value="seatBeltForm"/>
-							<ui:param name="reRenderList" value="seatBeltPanel,seatBeltForm"/>			
+							<ui:param name="reRenderList" value="seatBelt_script,seatBeltForm,seatBeltScoreBox"/>			
 							<ui:param name="thirtyDaysOn" value="#{(driverSeatBeltBean.durationBean.duration eq 'DAYS') ? 'on' : ''}"/>
 							<ui:param name="threeMonthsOn" value="#{(driverSeatBeltBean.durationBean.duration eq 'THREE') ? 'on' : ''}"/>
 							<ui:param name="sixMonthsOn" value="#{(driverSeatBeltBean.durationBean.duration eq 'SIX') ? 'on' : ''}"/>
@@ -454,14 +465,17 @@
 						            <ui:param name="height" value="200" />
 						            <ui:param name="tartgetElementVar" value="targetElement3" />
 						            <ui:param name="ChartDivID" value="seatBelt_chart" />
+						            <ui:param name="ScriptDivID" value="seatBelt_script" />
 						            <ui:param name="chartVar" value="seatBelt_chart" />
 							</ui:include>
                             </td>
                             <td width="80" align="center">
+                            <rich:panel id="seatBeltScoreBox">
                        	        <ui:include src="../includes/scoreBox.xhtml">
 							            <ui:param name="score" value="#{driverSeatBeltBean.seatBeltScore}" />
 							            <ui:param name="scoreStyle" value="#{driverSeatBeltBean.seatBeltScoreStyle}" />
 								</ui:include>
+							</rich:panel>
                             </td>
                           </tr>
                         </table>
@@ -517,7 +531,7 @@
 						<span class="gas">Miles Per Gallon</span>
 						<ui:include src="../includes/dateLinks.xhtml">
 							<ui:param name="ajaxForm" value="mpgForm"/>
-							<ui:param name="reRenderList" value="mpgPanel,mpgForm"/>			
+							<ui:param name="reRenderList" value="mpg_script,mpgForm"/>			
 							<ui:param name="thirtyDaysOn" value="#{(driverBean.mpgDurationBean.duration eq 'DAYS') ? 'on' : ''}"/>
 							<ui:param name="threeMonthsOn" value="#{(driverBean.mpgDurationBean.duration eq 'THREE') ? 'on' : ''}"/>
 							<ui:param name="sixMonthsOn" value="#{(driverBean.mpgDurationBean.duration eq 'SIX') ? 'on' : ''}"/>
@@ -532,14 +546,18 @@
 					    <table width="450" border="0" align="center" cellpadding="0" cellspacing="0">
                           <tr>
                             <td>
-                            <rich:panel id="mpg_chart"></rich:panel>
-                            <h:inputHidden value="#{driverBean.mpgHistory}" id="hiddenField5" />
+                            <div id="mpg_chart"></div>
+                            
+                            <rich:panel id="mpg_script">
+                            	<h:inputHidden value="#{driverBean.mpgHistory}" id="hiddenField5"/>
+                            
 							<script type="text/javascript">
-								var targetElement5 = document.getElementById("hiddenField5");
 								var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSArea.swf", "ChartId", "450", "300", "0", "0");
+								var targetElement5 = document.getElementById("hiddenField5");
 								chart.setDataXML(targetElement5.value);
 								chart.render("mpg_chart");
 							</script>
+							</rich:panel>
                             </td>
                           </tr>
                         </table>
@@ -560,7 +578,7 @@
 						<span class="coaching">Coaching Events </span>
 						<ui:include src="../includes/dateLinks.xhtml">
 							<ui:param name="ajaxForm" value="coachingForm"/>
-							<ui:param name="reRenderList" value="coachingPanel,coachingForm"/>			
+							<ui:param name="reRenderList" value="coaching_script,coachingForm"/>			
 							<ui:param name="thirtyDaysOn" value="#{(driverBean.coachDurationBean.duration eq 'DAYS') ? 'on' : ''}"/>
 							<ui:param name="threeMonthsOn" value="#{(driverBean.coachDurationBean.duration eq 'THREE') ? 'on' : ''}"/>
 							<ui:param name="sixMonthsOn" value="#{(driverBean.coachDurationBean.duration eq 'SIX') ? 'on' : ''}"/>
@@ -582,6 +600,7 @@
 						            <ui:param name="height" value="200" />
 						            <ui:param name="tartgetElementVar" value="targetElement4" />
 						            <ui:param name="ChartDivID" value="coaching_chart" />
+						            <ui:param name="ScriptDivID" value="coaching_script" />
 						            <ui:param name="chartVar" value="coaching_chart" />
 							</ui:include>
                             </td>

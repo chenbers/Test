@@ -132,8 +132,7 @@ public class VehicleSeatBeltBean extends BaseBean
         // Start XML Data
         sb.append(line.getControlParameters());
 
-        List<ScoreableEntity> scoreList = scoreDAO.getVehicleScoreHistory(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), scoreType, GraphicUtil
-                .getDurationSize(durationBean.getDuration()));
+        List<ScoreableEntity> scoreList = scoreDAO.getDriverTrendCumulative(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), scoreType);
 
         // Get "x" values
         List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration());
@@ -270,8 +269,7 @@ public class VehicleSeatBeltBean extends BaseBean
 
         for (ScoreType st : scoreTypes)
         {
-            List<ScoreableEntity> scoreList = scoreDAO.getVehicleScoreHistory(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), st, GraphicUtil
-                    .getDurationSize(durationBean.getDuration()));
+            List<ScoreableEntity> scoreList = scoreDAO.getDriverTrendCumulative(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), st);
 
             List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration());
             int count = 0;

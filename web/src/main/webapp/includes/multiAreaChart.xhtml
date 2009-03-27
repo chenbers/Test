@@ -18,32 +18,17 @@
 				xmlns:rich="http://richfaces.org/rich"
 				xmlns:c="http://java.sun.com/jstl/core">
 
-<c:if test="#{empty ScriptDivID}">
-      <c:set var="ScriptDivID" value="#{ChartDivID}_script" />
-    </c:if>
-				
-<div id="#{ChartDivID}"></div>
-<rich:panel id="#{ScriptDivID}">
-<h:inputHidden value="#{lineChartDef}" id="#{hiddenFieldID}" />
+<rich:panel style="height:#{height};width:#{width}">
+	<div id="#{ChartDivID}" ></div>
+	<h:inputHidden value="#{lineChartDef}" id="#{hiddenFieldID}" />
 	<script type="text/javascript">
 		var #{tartgetElementVar} = document.getElementById("#{hiddenFieldID}");
-		var #{chartVar} = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Area2D.swf", "#{chartVar}Id", "#{width}", "#{height}", "0", "1");
-
-	    <c:if test="#{disableLabels}">
-	    	#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("showLabels=\'1\'", "showLabels=\'0\'");
-	    	#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("showYAxisValues=\'1\'", "showYAxisValues=\'0\'");
-	    	#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("anchorSides=\'4\'", "anchorSides=\'0\'");
-	    	
-	    </c:if>
-
-	    <c:if test="#{disableDecimals}">
-    		#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("forceDecimals=\'1\'", "forceDecimals=\'0\'");
-    	</c:if>
+		var #{chartVar} = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSCombi2D.swf", "#{chartVar}Id", "#{width}", "#{height}", "0", "1");
 
 		#{chartVar}.setDataXML(#{tartgetElementVar}.value);			   
 		#{chartVar}.setTransparent(true);
 		#{chartVar}.render("#{ChartDivID}");
 	</script>
-</rich:panel>
+	</rich:panel>
 
 </ui:composition>

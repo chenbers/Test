@@ -146,23 +146,40 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
 
     
     /**
-     * Retrieve the driver scores by type and duration.
+     * Retrieve cumulative driver scores by type and duration.
      * 
      * @param driverID
      * @param duration
      * @param scoreType
      */
-    List<ScoreableEntity> getDriverScoreHistory(Integer driverID, Duration duration, ScoreType scoreType, Integer count);
+    List<ScoreableEntity> getDriverTrendCumulative(Integer driverID, Duration duration, ScoreType scoreType);
     
     /**
-     * Retrieve the vehicle scores by type and duration.
+     * Retrieve daily driver scores by type and duration.
+     * 
+     * @param driverID
+     * @param duration
+     * @param scoreType
+     */
+    List<ScoreableEntity> getDriverTrendDaily(Integer driverID, Duration duration, ScoreType scoreType);
+    
+    /**
+     * Retrieve cumulative vehicle scores by type and duration.
      * 
      * @param vehicleID
      * @param duration
      * @param scoreType
      */
-    List<ScoreableEntity> getVehicleScoreHistory(Integer vehicleID, Duration duration, ScoreType scoreType, Integer count);
+    List<ScoreableEntity> getVehicleTrendCumulative(Integer vehicleID, Duration duration, ScoreType scoreType);
     
+    /**
+     * Retrieve daily vehicle scores by type and duration.
+     * 
+     * @param driverID
+     * @param duration
+     * @param scoreType
+     */
+    List<ScoreableEntity> getVehicleTrendDaily(Integer driverID, Duration duration, ScoreType scoreType);
     
     /**
      * Retrieve the individual lines in the Vehicle Report.

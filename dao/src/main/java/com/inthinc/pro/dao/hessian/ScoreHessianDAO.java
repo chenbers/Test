@@ -238,9 +238,8 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
     }
 
-    // TODO: refactor since count is determined from the duration, we can get rid of that param on the dao call
     @Override
-    public List<ScoreableEntity> getDriverScoreHistory(Integer driverID, Duration duration, ScoreType scoreType, Integer count)
+    public List<ScoreableEntity> getDriverTrendCumulative(Integer driverID, Duration duration, ScoreType scoreType)
     {
         // Condition added for Coaching Events.  Do not get rolling average for Coaching events only
         Integer code;
@@ -251,9 +250,9 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
            
         try
         {
-            List<Map<String, Object>> list = reportService.getDTrendByDTC(driverID, code, duration.getDvqCount());
-            List<DriveQMap> driveQList = getMapper().convertToModelObject(list, DriveQMap.class);
-
+            List<Map<String, Object>> cumulativList = reportService.getDTrendByDTC(driverID, code, duration.getDvqCount());
+            List<DriveQMap> driveQList = getMapper().convertToModelObject(cumulativList, DriveQMap.class);
+             
             List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
 
             for (DriveQMap driveQMap : driveQList)
@@ -262,7 +261,36 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 entity.setEntityID(driverID);
                 entity.setEntityType(EntityType.ENTITY_DRIVER);
                 entity.setScoreType(scoreType);
-                //Integer score = driveQMap.getScoreMap().get(scoreType);
+                entity.setScore(driveQMap.getScoreMap().get(scoreType));
+                entity.setDate(driveQMap.getEndingDate());
+                scoreList.add(entity);
+            }
+
+            return scoreList;
+        }
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
+    }
+    
+    @Override
+    public List<ScoreableEntity> getDriverTrendDaily(Integer driverID, Duration duration, ScoreType scoreType)
+    {
+        try
+        {
+            List<Map<String, Object>> cummulativList = reportService.getDTrendByDTC(driverID, duration.getDvqMetric(), duration.getDvqCount());
+            List<DriveQMap> driveQList = getMapper().convertToModelObject(cummulativList, DriveQMap.class);
+             
+            List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
+
+            for (DriveQMap driveQMap : driveQList)
+            {
+                ScoreableEntity entity = new ScoreableEntity();
+                entity.setEntityID(driverID);
+                entity.setEntityType(EntityType.ENTITY_DRIVER);
+                entity.setScoreType(scoreType);
+                entity.setIdentifier(driveQMap.getOdometer() == null ? "" : driveQMap.getOdometer().toString());
                 entity.setScore(driveQMap.getScoreMap().get(scoreType));
                 entity.setDate(driveQMap.getEndingDate());
                 scoreList.add(entity);
@@ -276,11 +304,10 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
     }
 
-    // TODO: refactor since count is determined from the duration, we can get rid of that param on the dao call
     @Override
-    public List<ScoreableEntity> getVehicleScoreHistory(Integer vehicleID, Duration duration, ScoreType scoreType, Integer count)
+    public List<ScoreableEntity> getVehicleTrendCumulative(Integer vehicleID, Duration duration, ScoreType scoreType)
     { 
-        // Condition added for Coaching Events.  Do not get rolling average for Coaching events only
+        // Condition added for Coaching Events.  Do not get cumulative average for Coaching events only
         Integer code;
         if(scoreType == ScoreType.SCORE_COACHING_EVENTS)
             code = duration.getDvqMetric();
@@ -290,6 +317,38 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         try
         {
             List<Map<String, Object>> list = reportService.getVTrendByVTC(vehicleID, code, duration.getDvqCount());
+            List<DriveQMap> driveQList = getMapper().convertToModelObject(list, DriveQMap.class);
+
+            List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
+
+            for (DriveQMap driveQMap : driveQList)
+            {
+                ScoreableEntity entity = new ScoreableEntity();
+                entity.setEntityID(vehicleID);
+                entity.setEntityType(EntityType.ENTITY_VEHICLE);
+                entity.setScoreType(scoreType);
+                //Integer score = driveQMap.getScoreMap().get(scoreType);
+                entity.setScore(driveQMap.getScoreMap().get(scoreType));
+                entity.setDate(driveQMap.getEndingDate());
+                scoreList.add(entity);
+            }
+
+            return scoreList;
+        }
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
+
+    }
+    
+    @Override
+    public List<ScoreableEntity> getVehicleTrendDaily(Integer vehicleID, Duration duration, ScoreType scoreType)
+    { 
+         
+        try
+        {
+            List<Map<String, Object>> list = reportService.getVTrendByVTC(vehicleID, duration.getDvqMetric(), duration.getDvqCount());
             List<DriveQMap> driveQList = getMapper().convertToModelObject(list, DriveQMap.class);
 
             List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();

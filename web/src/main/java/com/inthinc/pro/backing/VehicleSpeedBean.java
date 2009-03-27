@@ -129,8 +129,7 @@ public class VehicleSpeedBean extends BaseBean
         // Start XML Data
         sb.append(line.getControlParameters());
 
-        List<ScoreableEntity> scoreList = scoreDAO.getVehicleScoreHistory(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), scoreType, GraphicUtil
-                .getDurationSize(durationBean.getDuration()));
+        List<ScoreableEntity> scoreList = scoreDAO.getDriverTrendCumulative(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), scoreType);
 
         DateFormat dateFormatter = new SimpleDateFormat(durationBean.getDuration().getDatePattern());
 
@@ -508,8 +507,7 @@ public class VehicleSpeedBean extends BaseBean
 
         for (ScoreType st : scoreTypes)
         {
-            List<ScoreableEntity> scoreList = scoreDAO.getVehicleScoreHistory(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), st, GraphicUtil
-                    .getDurationSize(durationBean.getDuration()));
+            List<ScoreableEntity> scoreList = scoreDAO.getDriverTrendCumulative(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), st);
 
             List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration());
             int count = 0;

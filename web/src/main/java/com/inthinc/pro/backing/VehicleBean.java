@@ -64,7 +64,11 @@ public class VehicleBean extends BaseBean
     private Integer initAverageScore(ScoreType scoreType, Duration duration)
     {
         ScoreableEntity se = scoreDAO.getVehicleAverageScoreByType(navigation.getVehicle().getVehicleID(), duration, scoreType);
-        return se == null ? -1 : se.getScore();
+        
+        if(se != null && se.getScore() != null)
+            return se.getScore();
+        else
+            return -1;
     }
 
     // INIT VIOLATIONS
@@ -107,8 +111,7 @@ public class VehicleBean extends BaseBean
 
     public String getOverallScoreHistory()
     {
-
-        setOverallScoreHistory(createLineDef(ScoreType.SCORE_OVERALL));
+        setOverallScoreHistory(createLineDef(ScoreType.SCORE_OVERALL, durationBean.getDuration()));
         return overallScoreHistory;
     }
 
@@ -298,7 +301,7 @@ public class VehicleBean extends BaseBean
         return sb.toString();
     }
 
-    public String createLineDef(ScoreType scoreType)
+    public String createLineDef(ScoreType scoreType, Duration duration)
     {
         StringBuffer sb = new StringBuffer();
         Line line = new Line();
@@ -306,10 +309,9 @@ public class VehicleBean extends BaseBean
         // Start XML Data
         sb.append(line.getControlParameters());
 
-        List<ScoreableEntity> scoreList = scoreDAO.getVehicleScoreHistory(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), scoreType, GraphicUtil
-                .getDurationSize(durationBean.getDuration()));
+        List<ScoreableEntity> scoreList = scoreDAO.getDriverTrendCumulative(navigation.getVehicle().getVehicleID(), duration, scoreType);
 
-        List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration());
+        List<String> monthList = GraphicUtil.createMonthList(duration);
 
         int cnt = 0;
         for (ScoreableEntity e : scoreList)
@@ -341,7 +343,7 @@ public class VehicleBean extends BaseBean
         sb.append(column.getControlParameters());
               
         List<ScoreableEntity> scoreList = scoreDAO
-                .getVehicleScoreHistory(navigation.getVehicle().getVehicleID(), duration, scoreType, GraphicUtil.getDurationSize(durationBean.getDuration()));
+                .getDriverTrendCumulative(navigation.getVehicle().getVehicleID(), duration, scoreType);
 
         // Get "x" values
         List<String> monthList = GraphicUtil.createMonthList(duration);
@@ -453,8 +455,7 @@ public class VehicleBean extends BaseBean
 
     public List<CategorySeriesData> createJasperDef(ScoreType scoreType, Duration duration)
     {
-        List<ScoreableEntity> scoreList = scoreDAO.getVehicleScoreHistory(navigation.getVehicle().getVehicleID(), duration, scoreType, GraphicUtil
-                .getDurationSize(duration));
+        List<ScoreableEntity> scoreList = scoreDAO.getDriverTrendCumulative(navigation.getVehicle().getVehicleID(), duration, scoreType);
 
         List<CategorySeriesData> chartDataList = new ArrayList<CategorySeriesData>();
         List<String> monthList = GraphicUtil.createMonthList(duration);

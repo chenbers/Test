@@ -9,6 +9,7 @@ import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.TripDisplay;
 import com.inthinc.pro.charts.FusionColumnChart;
+import com.inthinc.pro.charts.FusionMultiAreaChart;
 import com.inthinc.pro.charts.FusionMultiLineChart;
 import com.inthinc.pro.charts.Line;
 import com.inthinc.pro.dao.DriverDAO;
@@ -110,7 +111,7 @@ public class DriverBean extends BaseBean
     public String getOverallScoreHistory()
     {
 
-        setOverallScoreHistory(createLineDef(ScoreType.SCORE_OVERALL));
+        setOverallScoreHistory(createLineDef(ScoreType.SCORE_OVERALL, durationBean.getDuration()));
         return overallScoreHistory;
     }
 
@@ -282,7 +283,65 @@ public class DriverBean extends BaseBean
         return sb.toString();
     }
 
-    public String createLineDef(ScoreType scoreType)
+    public String createNewLineDef(ScoreType scoreType, Duration duration)
+    {
+        StringBuffer sb = new StringBuffer();
+        FusionMultiAreaChart multiAreaChart = new FusionMultiAreaChart();
+
+        // Start XML Data
+        sb.append(multiAreaChart.getControlParameters());
+              
+        List<ScoreableEntity> cumulativeList = scoreDAO.getDriverTrendCumulative
+                                        (navigation.getDriver().getDriverID(), duration, scoreType);
+        
+        List<ScoreableEntity> dailyList = scoreDAO.getDriverTrendDaily
+                                        (navigation.getDriver().getDriverID(), duration, scoreType);
+        
+        List<String> catLabelList = GraphicUtil.createMonthList(duration);
+
+        Double cumulativeValues[] = new Double[cumulativeList.size()];
+        Double dailyValues[] = new Double[dailyList.size()];
+        
+        int cnt = 0;
+        sb.append(multiAreaChart.getCategoriesStart());
+        for (ScoreableEntity entity : cumulativeList)
+        {
+            cumulativeValues[cnt] = entity.getScore() == null ? null : entity.getScore() / 10D;
+            
+            
+            sb.append(multiAreaChart.getCategoryLabel(catLabelList.get(cnt)));
+            
+                       
+            cnt++;
+        }
+        sb.append(multiAreaChart.getCategoriesEnd());
+        
+        cnt = 0;
+        String odometer = "";
+        for (ScoreableEntity entity : dailyList)
+        {
+            Double score;
+            
+            if(odometer != "" && odometer == entity.getIdentifier())
+                score = null;
+            else
+                score = entity.getScore() == null ? null : entity.getScore() / 10D;
+            
+            dailyValues[cnt] = score;
+            
+            cnt++;
+            odometer = entity.getIdentifier();
+        }
+        
+        sb.append(multiAreaChart.getChartLineDataSet("Daily Score", "#407EFF", dailyValues, catLabelList));
+        sb.append(multiAreaChart.getChartAreaDataSet("Cumulative Score", "#B0CB48", cumulativeValues, catLabelList));
+
+        sb.append(multiAreaChart.getClose());
+
+        return sb.toString();
+    }
+    
+    public String createLineDef(ScoreType scoreType, Duration duration)
     {
         StringBuffer sb = new StringBuffer();
         Line line = new Line();
@@ -291,10 +350,10 @@ public class DriverBean extends BaseBean
         sb.append(line.getControlParameters());
               
         List<ScoreableEntity> scoreList = scoreDAO
-                .getDriverScoreHistory(navigation.getDriver().getDriverID(), durationBean.getDuration(), scoreType, GraphicUtil.getDurationSize(durationBean.getDuration()));
+                .getDriverTrendCumulative(navigation.getDriver().getDriverID(), duration, scoreType);
 
         // Get "x" values
-        List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration());
+        List<String> monthList = GraphicUtil.createMonthList(duration);
 
         int cnt = 0;
         for (ScoreableEntity e : scoreList)
@@ -315,6 +374,7 @@ public class DriverBean extends BaseBean
 
         return sb.toString();
     }
+    
     public String createColumnDef(ScoreType scoreType, Duration duration)
     {
         StringBuffer sb = new StringBuffer();
@@ -324,7 +384,7 @@ public class DriverBean extends BaseBean
         sb.append(column.getControlParameters());
               
         List<ScoreableEntity> scoreList = scoreDAO
-                .getDriverScoreHistory(navigation.getDriver().getDriverID(), duration, scoreType, GraphicUtil.getDurationSize(duration));
+                .getDriverTrendDaily(navigation.getDriver().getDriverID(), duration, scoreType);
 
         // Get "x" values
         List<String> monthList = GraphicUtil.createMonthList(duration);
@@ -352,7 +412,7 @@ public class DriverBean extends BaseBean
     public List<CategorySeriesData> createJasperDef(ScoreType scoreType, Duration duration)
     {
         List<ScoreableEntity> scoreList = scoreDAO
-                .getDriverScoreHistory(navigation.getDriver().getDriverID(), duration, scoreType, GraphicUtil.getDurationSize(duration));
+                .getDriverTrendCumulative(navigation.getDriver().getDriverID(), duration, scoreType);
 
         List<CategorySeriesData> chartDataList = new ArrayList<CategorySeriesData>();
         List<String> monthList = GraphicUtil.createMonthList(duration);
