@@ -1,24 +1,31 @@
-<ui:composition template="/layout/layout.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:rich="http://richfaces.org/rich" xmlns:a4j="http://richfaces.org/a4j" xmlns:f="http://java.sun.com/jsf/core">
+<ui:composition template="/layout/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:f="http://java.sun.com/jsf/core">
 
-    <ui:param name="redFlagsSelected" value="current" />
+	<ui:param name="redFlagsSelected" value="current" />
 
-    <ui:define name="subnavigation">
-        <div class="sub_nav">
-        <div class="sub_nav-bg">
-        <ul>
-            <li class="#{customSubSelected}"><h:outputLink value="#{facesContext.externalContext.requestContextPath}/secured/redFlags/custom.faces">
-                <span>#{messages.subNavigation_custom}</span>
-            </h:outputLink></li>
-            <li class="#{safetySubSelected}"><h:outputLink value="#{facesContext.externalContext.requestContextPath}/secured/redFlags/safety.faces">
-                <span>#{messages.subNavigation_safety}</span>
-            </h:outputLink></li>
-            <li class="#{diagnosticsSubSelected}"><h:outputLink value="#{facesContext.externalContext.requestContextPath}/secured/redFlags/diagnostics.faces">
-                <span>#{messages.subNavigation_diagnostics}</span>
-            </h:outputLink></li>
-        </ul>
-        </div>
-        </div>
-    </ui:define>
-
+	<ui:define name="subnavigation">
+		<div class="sub_nav">
+		<div class="sub_nav-bg"><h:form>
+			<ul>
+				<li id="customtab" class="#{customSubSelected}"><h:commandLink
+					action="go_redFlags">
+					<span>#{messages.subNavigation_custom}</span>
+				</h:commandLink></li>
+				<li id="safetytab" class="#{safetySubSelected}"><h:commandLink
+					action="go_safety">
+					<span>#{messages.subNavigation_safety}</span>
+				</h:commandLink></li>
+				<li id="diagnosticstab" class="#{diagnosticsSubSelected}"><h:commandLink
+					action="go_diagnostics">
+					<span>#{messages.subNavigation_diagnostics}</span>
+				</h:commandLink></li>
+			</ul>
+		</h:form></div>
+		</div>
+	</ui:define>
 </ui:composition>
