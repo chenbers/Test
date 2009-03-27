@@ -17,9 +17,14 @@
 		      <!-- START PANEL -->
 		      <h:panelGroup layout="block" styleClass="">
 		        <h:panelGroup layout="block" styleClass="panel_nw">
-		          <div class="panel_title"> <span class="redflag">#{messages.custom_title}</span>
+		          <div id="panel_title" class="panel_title"> <span class="redflag">#{messages.custom_title}</span>
+                  <span class="redflag_subnav_description">#{messages.custom_description}</span>
 		          	<span class="panel_links">
-		
+		                <a4j:status>
+                            <f:facet name="start">
+                                <h:graphicImage value="/images/ajax-loader.gif" style="padding-left: 10px" />
+                            </f:facet>
+                        </a4j:status> 
 		          	</span>
 		           </div>
 		        </h:panelGroup>

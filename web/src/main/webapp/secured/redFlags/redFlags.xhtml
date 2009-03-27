@@ -7,13 +7,13 @@
         <div class="sub_nav">
         <div class="sub_nav-bg">
         <ul>
-            <li class="#{customSubSelected}"><h:outputLink value="#{facesContext.externalContext.requestContextPath}/secured/redFlags/custom.faces">
+            <li id="customtab" class="#{customSubSelected}"><h:outputLink value="#{facesContext.externalContext.requestContextPath}/secured/redFlags/custom.faces">
                 <span>#{messages.subNavigation_custom}</span>
             </h:outputLink></li>
-            <li class="#{safetySubSelected}"><h:outputLink value="#{facesContext.externalContext.requestContextPath}/secured/redFlags/safety.faces">
+            <li id="safetytab" class="#{safetySubSelected}"><h:outputLink value="#{facesContext.externalContext.requestContextPath}/secured/redFlags/safety.faces">
                 <span>#{messages.subNavigation_safety}</span>
             </h:outputLink></li>
-            <li class="#{diagnosticsSubSelected}"><h:outputLink value="#{facesContext.externalContext.requestContextPath}/secured/redFlags/diagnostics.faces">
+            <li id="diagnosticstab" class="#{diagnosticsSubSelected}"><h:outputLink value="#{facesContext.externalContext.requestContextPath}/secured/redFlags/diagnostics.faces">
                 <span>#{messages.subNavigation_diagnostics}</span>
             </h:outputLink></li>
         </ul>
