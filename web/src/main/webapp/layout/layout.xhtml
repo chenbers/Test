@@ -94,9 +94,11 @@
 		<ui:include src="/includes/errorPopup.xhtml"/>
 </ui:insert>
 
-<a4j:form>
-    <a4j:jsFunction name="reloadAjaxPanels" reRender="#{ajaxPanels}" />
-</a4j:form>
+<ui:fragment rendered="#{ajaxPanels}">
+   <a4j:form>
+       <a4j:jsFunction name="reloadAjaxPanels" reRender="#{ajaxPanels}" />
+   </a4j:form>
+</ui:fragment>
 <iframe style="height:0px;width:0px;visibility:hidden" src="about:blank">
         this frame prevents back forward cache in safari
     </iframe>
