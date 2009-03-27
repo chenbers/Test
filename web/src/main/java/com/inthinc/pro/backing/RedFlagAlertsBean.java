@@ -296,7 +296,6 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
     protected boolean validateSaveItem(RedFlagAlertView saveItem)
     {
         boolean valid = super.validateSaveItem(saveItem);
-        valid = super.validateSaveItem(saveItem);
         if ((saveItem.getName() == null) || (saveItem.getName().length() == 0)
                 && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("name"))))
         {
@@ -574,5 +573,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         {
             this.selected = selected;
         }
+        
+        
     }
 }
