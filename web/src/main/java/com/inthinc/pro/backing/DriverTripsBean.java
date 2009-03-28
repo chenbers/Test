@@ -38,7 +38,6 @@ public class DriverTripsBean extends BaseBean
     private boolean             showLastTenTrips  = false;
     private boolean             showIdleMarkers   = true;
     private boolean             showWarnings      = true;
-    private boolean             dateChanged       = true;
 
     private List<TripDisplay>   trips             = new ArrayList<TripDisplay>();
     private List<TripDisplay>   selectedTrips     = new ArrayList<TripDisplay>();
@@ -49,7 +48,7 @@ public class DriverTripsBean extends BaseBean
 
     public void initTrips()
     {
-        if(dateChanged == true)
+        if(trips.isEmpty())
         {
             List<Trip> tempTrips = new ArrayList<Trip>();
             tempTrips = driverDAO.getTrips(navigation.getDriver().getDriverID(), getStartDate(), getEndDate());
@@ -69,7 +68,6 @@ public class DriverTripsBean extends BaseBean
                 setSelectedTrip(trips.get(0));
                 generateStats();
             }
-            dateChanged = false;
         }
     }
 
@@ -424,7 +422,6 @@ public class DriverTripsBean extends BaseBean
     public void DateChangedAction()
     {
         trips.clear();
-        dateChanged = true;
         initTrips();
     }
 }
