@@ -171,7 +171,7 @@ body {
 		left;
 }
 
-.panel_title span.warningtitle {
+.panel_title span.diagnostics_title {
 	padding: 0 0 0 20px;
 	background: transparent url(../images/ico_critical.png) no-repeat center
 		left;

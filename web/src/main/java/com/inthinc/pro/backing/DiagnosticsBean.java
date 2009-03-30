@@ -9,10 +9,10 @@ import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.reports.ReportCriteria;
 
-public class WarningsBean extends BaseEventsBean
+public class DiagnosticsBean extends BaseEventsBean
 {
-    private static final Logger     logger                  = Logger.getLogger(WarningsBean.class);  
-    
+    private static final Logger logger = Logger.getLogger(DiagnosticsBean.class);
+
     @Override
     protected List<Event> getEventsForGroup(Integer groupID)
     {
@@ -24,34 +24,34 @@ public class WarningsBean extends BaseEventsBean
     @Override
     public TableType getTableType()
     {
-        return TableType.WARNINGS;
+        return TableType.DIAGNOSTICS;
     }
 
     public String showAllFromRecentAction()
     {
-//        setSearchText(null);
+        // setSearchText(null);
         setCategoryFilter(null);
         setEventFilter(null);
-        
+
         refreshAction();
         return "go_diagnostics";
     }
-    
+
     public void exportReportToPdf()
     {
         getReportRenderer().exportSingleReportToPDF(getReportCriteria(), getFacesContext());
     }
-    
+
     public void emailReport()
     {
-        getReportRenderer().exportReportToEmail(getReportCriteria(),getEmailAddress());
+        getReportRenderer().exportReportToEmail(getReportCriteria(), getEmailAddress());
     }
-    
+
     public void exportReportToExcel()
     {
         getReportRenderer().exportReportToExcel(getReportCriteria(), getFacesContext());
     }
-    
+
     private ReportCriteria getReportCriteria()
     {
         ReportCriteria reportCriteria = getReportCriteriaService().getWarningsReportCriteria(getUser().getGroupID());

@@ -111,7 +111,7 @@
             <ref local="zoneAlertsBean" />
             <ref local="redFlagAlertsBean" />
             <ref local="eventsBean" />
-            <ref local="warningsBean" />
+            <ref local="diagnosticsBean" />
             <ref local="redFlagsBean" />
             <ref local="idlingReportBean" />
             <ref local="driverReportBean" />
@@ -374,7 +374,7 @@
     <bean id="eventsBean" class="com.inthinc.pro.backing.EventsBean" scope="session" parent="baseEventsBean"  init-method="initBean">
         <property name="searchCoordinationBean" ref="searchCoordinationBean"></property>
     </bean>
-    <bean id="warningsBean" class="com.inthinc.pro.backing.WarningsBean" scope="session" parent="baseEventsBean" init-method="initBean">
+    <bean id="diagnosticsBean" class="com.inthinc.pro.backing.DiagnosticsBean" scope="session" parent="baseEventsBean" init-method="initBean">
         <property name="searchCoordinationBean" ref="searchCoordinationBean"></property>
     </bean>
     <bean id="idlingReportBean" class="com.inthinc.pro.backing.IdlingReportBean" scope="session" parent="baseBean" init-method="init">

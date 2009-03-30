@@ -18,7 +18,7 @@
 		      <!-- START PANEL -->
 		      <h:panelGroup layout="block" styleClass="">
 		        <h:panelGroup layout="block" styleClass="panel_nw">
-		          <div class="panel_title"> <span class="warningtitle">#{messages.notes_diagnostics_title}</span>
+		          <div class="panel_title"> <span class="diagnostics_title">#{messages.notes_diagnostics_title}</span>
 		          	<span class="panel_links">
                     #{messages.notes_diagnostics_description}
 		          	</span>
@@ -28,22 +28,22 @@
 		        <h:panelGroup layout="block" styleClass="panel_w">
 		          <h:panelGroup layout="block" styleClass="panel_content">
 		
-					<a4j:region id="warningsearchRegion">							
-					<a4j:form id="warningsearch">							
+					<a4j:region id="diagnostics_search_region">							
+					<a4j:form id="diagnostics_search">							
 		            <ul id="grid_nav" style="margin: 0;">
 		              <li class="l">
 		                <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
 		                  <tr>
 		                    <td>#{messages.notes_diagnostics_search}</td>
 		                    <td>
-		                      <h:inputText id="searchText" value="#{warningsBean.searchText}" styleClass="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('warningsearch:searchButton').onclick(); return false; } return true;" />
+		                      <h:inputText id="searchText" value="#{diagnoticsBean.searchText}" styleClass="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('diagnostics_search:searchButton').onclick(); return false; } return true;" />
 		                    </td>
 		                  </tr>
 		                </table>
 		              </li>
 					  <li class="l">
-							<a4j:commandButton id="searchButton" action="#{warningsBean.searchAction}" 
-		            					reRender="header,warningsTableForm:items,warningsTableForm:bottomScroller,warningsTableForm:topScroller" styleClass="left">
+							<a4j:commandButton id="searchButton" action="#{diagnoticsBean.searchAction}" 
+		            					reRender="header,diagnostics_table_form:items,diagnostics_table_form:bottomScroller,diagnostics_table_form:topScroller" styleClass="left">
 		            				<span class="search">
 		            					<h:outputText value="#{messages.button_search}" />
 		            				</span>
@@ -57,22 +57,22 @@
 					  </li>  
 					  <li class="l">
 						<a4j:commandButton styleClass="left"
-		           					reRender="header,warningsTableForm:items,warningsTableForm:bottomScroller,warningsTableForm:topScroller"
-									action="#{warningsBean.refreshAction}">
+		           					reRender="header,diagnostics_table_form:items,diagnostics_table_form:bottomScroller,diagnostics_table_form:topScroller"
+									action="#{diagnoticsBean.refreshAction}">
 		            				<span class="refresh">
 		            					<h:outputText value="#{messages.refresh}" />
 		            				</span>
 						</a4j:commandButton>
 					  </li>  
 					  <li class="l text">
-						<a4j:status id="warningsStatus" for="warningsearchRegion">
+						<a4j:status id="diagnostics_status" for="diagnostics_search_region">
 							<f:facet name="start">
 								<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
 							</f:facet>
 						</a4j:status>
 					  </li>
 					  <li class="r grid_icon">
-						<h:panelGroup id="warningReportToolImageId">
+						<h:panelGroup id="diagnostics_report_tool_image_id">
 							<h:graphicImage value="/images/ico_tools.png"/>
 						</h:panelGroup>
 					  </li>
@@ -80,32 +80,32 @@
 					  </li> 
 					  <li class="r text">
 					  	<h:outputFormat id="header" value="#{messages.notes_diagnostics_recordCountHeader}">
-							<a4j:actionparam value="#{warningsBean.start}"/>
-							<a4j:actionparam value="#{warningsBean.end}"/>
-							<a4j:actionparam value="#{warningsBean.maxCount}"/>
+							<a4j:actionparam value="#{diagnoticsBean.start}"/>
+							<a4j:actionparam value="#{diagnoticsBean.end}"/>
+							<a4j:actionparam value="#{diagnoticsBean.maxCount}"/>
 						</h:outputFormat>
 		               </li>          							
 		            </ul>
 		            <ui:include src="/includes/reportsContextMenu.xhtml">	
-						<ui:param  name="emailModalPanelID" value="warningsReportEmailModal" />
-						<ui:param  name="reportBean" value="#{warningsBean}"/>
-						<ui:param  name="attachTo" value="warningReportToolImageId"/>
+						<ui:param  name="emailModalPanelID" value="diagnostics_report_email_modal" />
+						<ui:param  name="reportBean" value="#{diagnoticsBean}"/>
+						<ui:param  name="attachTo" value="diagnostics_report_tool_image_id"/>
 						<ui:param  name="exportExcel" value="TRUE"/>
 					</ui:include>
 		    		</a4j:form>
 		    		</a4j:region>        
 					<div class="spacer"></div>
 					
-		            <h:panelGroup id="warningsTable" layout="block" styleClass="datagrid">
+		            <h:panelGroup id="diagnostics_table" layout="block" styleClass="datagrid">
 						<ui:include src="/includes/notificationsTable.xhtml">	
-							<ui:param name="numRowsPerPg" value="#{warningsBean.numRowsPerPg}"/>									
-		             		<ui:param name="tableData" value="#{warningsBean.tableData}"/>             						
-		             		<ui:param name="tableColumns" value="#{warningsBean.tableColumns}"/>
-		             		<ui:param name="bean" value="#{warningsBean}"/>
-		             		<ui:param name="formId" value="warningsTableForm"/>
+							<ui:param name="numRowsPerPg" value="#{diagnoticsBean.numRowsPerPg}"/>									
+		             		<ui:param name="tableData" value="#{diagnoticsBean.tableData}"/>             						
+		             		<ui:param name="tableColumns" value="#{diagnoticsBean.tableColumns}"/>
+		             		<ui:param name="bean" value="#{diagnoticsBean}"/>
+		             		<ui:param name="formId" value="diagnostics_table_form"/>
 		             		<ui:param name="clearTitle" value="#{messages.notes_diagnostics_clearTitle}"/>
 		             		<ui:param name="clearInst" value="#{messages.notes_diagnostics_clearInst}"/>
-		             		<ui:param name="clearRerender" value="warningsearch:header,warningsTableForm:items"/>
+		             		<ui:param name="clearRerender" value="diagnostics_search:header,diagnostics_table_form:items"/>
 		    			</ui:include>    							
 		            </h:panelGroup>
 		            
@@ -113,8 +113,8 @@
 				</h:panelGroup>
 		
 				<ui:include src="/includes/editColumnsPopup.xhtml">
-					<ui:param name="bean" value="#{warningsBean}"/>	
-					<ui:param name="reRender" value="warningsTableForm:items" />
+					<ui:param name="bean" value="#{diagnoticsBean}"/>	
+					<ui:param name="reRender" value="diagnostics_table_form:items" />
 				</ui:include>    
 				
 		        <h:panelGroup layout="block" styleClass="panel_sw">
@@ -128,8 +128,8 @@
 		</table>
 	<h:outputText id="redflag_email_modalPanel">
 		<ui:include src="/includes/emailReportPopup.xhtml">	
-			<ui:param  name="id" value="warningsReportEmailModal" />
-			<ui:param  name="reportBean" value="#{warningsBean}"/>
+			<ui:param  name="id" value="diagnostics_report_email_modal" />
+			<ui:param  name="reportBean" value="#{diagnoticsBean}"/>
 		</ui:include>
 	</h:outputText>
 	

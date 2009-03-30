@@ -11,8 +11,8 @@
 			<span class="warningtitle">#{messages.team_diagnostics}</span>
 			<span class="panel_links">
 			<h:form id="teamWarningsShowAllForm">
-				<h:commandLink action="#{warningsBean.showAllFromRecentAction}" value="#{messages.team_diagnosticsShowAll}">				
-					<f:setPropertyActionListener value="#{teamWarningsBean.groupName}" target="#{warningsBean.searchText}" />								
+				<h:commandLink action="#{diagnosticsBean.showAllFromRecentAction}" value="#{messages.team_diagnosticsShowAll}">				
+					<f:setPropertyActionListener value="#{teamWarningsBean.groupName}" target="#{diagnosticsBean.searchText}" />								
 				</h:commandLink>
 			</h:form>	
 			</span>
@@ -60,7 +60,7 @@
 							<h:outputText value="" />
 						</f:facet>
 						<a4j:htmlCommandLink action="go_diagnostics" value="#{messages.team_diagnosticsDetails}">
-							<f:setPropertyActionListener value="#{event.event}" target="#{warningsBean.eventFilter}" />
+							<f:setPropertyActionListener value="#{event.event}" target="#{diagnosticsBBean.eventFilter}" />
 						</a4j:htmlCommandLink>
 					</rich:column>
 			</rich:dataTable>
