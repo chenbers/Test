@@ -87,7 +87,11 @@ public class JsfFunctions
      */
     public static String getGroupURL(Group group)
     {
+        if (group == null)
+            return FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+        
         String url = null;
+        
         switch(group.getType())
         {
         case DIVISION: 
