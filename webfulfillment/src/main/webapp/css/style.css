@@ -1,0 +1,41 @@
+@CHARSET "UTF-8";
+
+body {
+	background: #EEE;
+	background-position: top center;
+	margin: 0;
+	padding: 0;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	text-align: left;
+}
+
+.mainmenu {
+	font-size: 16px;
+}
+
+.cols {
+	vertical-align: top;
+	width: 50%;
+}
+
+#login_panel {
+	margin: 35px auto;
+	width: 300px;
+}
+
+.header {
+	width: 100%;
+}
+
+.header_col1 {
+	
+}
+
+.header_col2 {
+	text-align: right;
+}
+
+#login_btn {
+	float: right;
+}

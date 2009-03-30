@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/template/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<ui:param name="panelTitle" value="Assign Tiwi to Customer" />
+	<ui:param name="groupSelected" value="MAIN" />
+	<ui:define name="util_content">
+		<h:panelGrid columns="2">
+			<h:panelGroup>
+				<h:outputText value="Customer Account:" />
+				<br/>
+				<h:outputText style="font-size:35px;color: red;" value="#{daoUtilBean.selectedAccountName}"
+						escape="false" />
+				<h:form id="mainform" focus="imei">
+					<div id="page_top_left"><h:selectOneMenu
+						id="account-select-menu" onchange="submit()"
+						value="#{daoUtilBean.selectedAccountID}">
+						<f:selectItems value="#{daoUtilBean.accountSelectList}" />
+					</h:selectOneMenu> <br />
+					<br />
+					Scan the IMEI barcode or type manually:<br/>
+					<h:inputText id="imei" value="#{daoUtilBean.imei}" size="30"
+						required="false" requiredMessage="required" /> <rich:message
+						for="imei" /> <br />
+					<script>
+    						document.getElementById('mainform:imei').focus();
+  </script> <br />
+					<h:commandButton value="Assign IMEI"
+						action="#{daoUtilBean.moveDeviceAction}" /> <br />
+					<br />
+					<p><h:outputText value="#{daoUtilBean.successMsg}"
+						escape="false" /></p>
+					</div>
+				</h:form>
+			</h:panelGroup>
+		</h:panelGrid>
+		<h:panelGroup id="statusPanel">
+			<rich:modalPanel id="errorPanel" styleClass="errorPopup"
+				showWhenRendered="#{not empty daoUtilBean.errorMsg}" width="300"
+				height="200" zindex="2000">
+				<f:facet name="header">
+					<h:outputText value="Assignment Error" />
+				</f:facet>
+				<p><h:outputText value="#{daoUtilBean.errorMsg}" escape="false" /></p>
+				<h:form>
+					<h:commandButton onclick="Richfaces.hideModalPanel('errorPanel')"
+						value="OK" action="#{daoUtilBean.clearErrorAction}"
+						style="float:right" />
+				</h:form>
+			</rich:modalPanel>
+		</h:panelGroup>
+		<br />
+		<br />
+
+	</ui:define>
+</ui:composition>
