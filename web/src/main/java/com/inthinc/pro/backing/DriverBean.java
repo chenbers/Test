@@ -415,7 +415,7 @@ public class DriverBean extends BaseBean
                 .getDriverTrendCumulative(navigation.getDriver().getDriverID(), duration, scoreType);
 
         List<CategorySeriesData> chartDataList = new ArrayList<CategorySeriesData>();
-        List<String> monthList = GraphicUtil.createMonthList(duration);
+        List<String> monthList = GraphicUtil.createMonthList(duration, "M/dd");
 
         int count = 0;
         for (ScoreableEntity se : scoreList)
@@ -438,7 +438,7 @@ public class DriverBean extends BaseBean
         List<CategorySeriesData> chartDataList = new ArrayList<CategorySeriesData>();
         List<MpgEntity> mpgEntities = mpgDAO.getDriverEntities(navigation.getDriver().getDriverID(), mpgDurationBean.getDuration(), null);
 
-        List<String> monthList = GraphicUtil.createMonthList(mpgDurationBean.getDuration());
+        List<String> monthList = GraphicUtil.createMonthList(mpgDurationBean.getDuration(), "M/dd");
 
         int count = 0;
         for (MpgEntity me : mpgEntities)
@@ -458,6 +458,7 @@ public class DriverBean extends BaseBean
 
         // Page 1
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_SUMMARY_P1, getGroupHierarchy().getTopGroup().getName());
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.addParameter("REPORT_NAME", "Driver Performance: Summary");
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
@@ -476,6 +477,7 @@ public class DriverBean extends BaseBean
 
         // Page 2
         reportCriteria = new ReportCriteria(ReportType.DRIVER_SUMMARY_P2, getGroupHierarchy().getTopGroup().getName());
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.addParameter("REPORT_NAME", "Driver Performance: Summary");
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);

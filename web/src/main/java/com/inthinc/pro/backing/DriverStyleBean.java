@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -476,6 +477,7 @@ public class DriverStyleBean extends BaseBean
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_STYLE, getGroupHierarchy().getTopGroup().getName());
 
         reportCriteria.setDuration(durationBean.getDuration());
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.addParameter("REPORT_NAME", "Driver Performance: Style");
         reportCriteria.addParameter("ENTITY_NAME", this.getNavigation().getDriver().getPerson().getFullName());
         reportCriteria.addParameter("RECORD_COUNT", this.getStyleEvents().size());

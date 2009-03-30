@@ -458,7 +458,7 @@ public class VehicleBean extends BaseBean
         List<ScoreableEntity> scoreList = scoreDAO.getDriverTrendCumulative(navigation.getVehicle().getVehicleID(), duration, scoreType);
 
         List<CategorySeriesData> chartDataList = new ArrayList<CategorySeriesData>();
-        List<String> monthList = GraphicUtil.createMonthList(duration);
+        List<String> monthList = GraphicUtil.createMonthList(duration, "M/dd");
 
         int count = 0;
         for (ScoreableEntity se : scoreList)
@@ -479,7 +479,7 @@ public class VehicleBean extends BaseBean
         List<CategorySeriesData> chartDataList = new ArrayList<CategorySeriesData>();
         List<MpgEntity> mpgEntities = mpgDAO.getVehicleEntities(navigation.getVehicle().getVehicleID(), mpgDurationBean.getDuration(), null);
 
-        List<String> monthList = GraphicUtil.createMonthList(mpgDurationBean.getDuration());
+        List<String> monthList = GraphicUtil.createMonthList(mpgDurationBean.getDuration(), "M/dd");
 
         int count = 0;
         for (MpgEntity me : mpgEntities)
@@ -499,6 +499,7 @@ public class VehicleBean extends BaseBean
 
         // Page 1
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_SUMMARY_P1, getGroupHierarchy().getTopGroup().getName());
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.addParameter("REPORT_NAME", "Vehicle Performance: Summary");
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
@@ -517,6 +518,7 @@ public class VehicleBean extends BaseBean
 
         // Page 2
         reportCriteria = new ReportCriteria(ReportType.VEHICLE_SUMMARY_P2, getGroupHierarchy().getTopGroup().getName());
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.addParameter("REPORT_NAME", "Vehicle Performance: Summary");
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);

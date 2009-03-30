@@ -44,6 +44,7 @@
 	<parameter name="SPEED_MEASUREMENT" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="DURATION" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="REPORT_LOGO" isForPrompting="false" class="java.io.InputStream"/>
+	<parameter name="REPORT_DATE_AS_STRING" isForPrompting="false" class="java.lang.String"/>
 
 	<field name="event.addressStr" class="java.lang.String"/>
 	<field name="date" class="java.lang.String"/>
@@ -127,7 +128,7 @@
 						</categorySeries>
 					</categoryDataset>
 					<linePlot isShowShapes="false" >
-						<plot />
+						<plot labelRotation="-45.0" />
 						<categoryAxisFormat>
 							<axisFormat >
 							</axisFormat>
@@ -160,7 +161,7 @@
 					<reportElement
 						x="60"
 						y="329"
-						width="54"
+						width="62"
 						height="34"
 						key="textField-16"/>
 					<box></box>
@@ -433,10 +434,23 @@
 						height="17"
 						key="textField-14"/>
 					<box></box>
-					<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<textElement textAlignment="Right" verticalAlignment="Top">
 						<font/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["Page " + $V{PAGE_NUMBER}.toString()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="11"
+						width="198"
+						height="14"
+						key="textField-20"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{REPORT_DATE_AS_STRING}]]></textFieldExpression>
 				</textField>
 			</band>
 		</pageFooter>
@@ -459,10 +473,23 @@
 						height="17"
 						key="textField-15"/>
 					<box></box>
-					<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<textElement textAlignment="Right" verticalAlignment="Top">
 						<font/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["Page " + $V{PAGE_NUMBER}.toString()]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="1"
+						y="10"
+						width="198"
+						height="14"
+						key="textField-19"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{REPORT_DATE_AS_STRING}]]></textFieldExpression>
 				</textField>
 			</band>
 		</lastPageFooter>

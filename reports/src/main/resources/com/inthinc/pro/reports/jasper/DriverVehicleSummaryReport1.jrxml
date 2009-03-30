@@ -78,6 +78,7 @@
 	<parameter name="SPEED_DUR" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="STYLE_DUR" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="SEATBELT_DUR" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="REPORT_DATE_AS_STRING" isForPrompting="false" class="java.lang.String"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -183,7 +184,7 @@
 						</categorySeries>
 					</categoryDataset>
 					<linePlot isShowShapes="false" >
-						<plot >
+						<plot labelRotation="-45.0" >
 							<seriesColor seriesOrder="0" color="#A8C634"/>
 </plot>
 						<categoryAxisFormat>
@@ -222,6 +223,7 @@
 					</textElement>
 				<text><![CDATA[Overall Score]]></text>
 				</staticText>
+				<elementGroup><!--  Start: 1 !-->
 				<lineChart>
 					<chart isShowLegend="false"  hyperlinkTarget="Self"  customizerClass="com.inthinc.pro.reports.jasper.customizer.DriverLineChartCustomizer" >
 					<reportElement
@@ -248,7 +250,7 @@
 						</categorySeries>
 					</categoryDataset>
 					<linePlot isShowShapes="false" >
-						<plot >
+						<plot labelRotation="-45.0" >
 							<seriesColor seriesOrder="0" color="#A8C634"/>
 </plot>
 						<categoryAxisFormat>
@@ -261,6 +263,7 @@
 						</valueAxisFormat>
 					</linePlot>
 				</lineChart>
+				</elementGroup><!-- End 1 !-->
 				<staticText>
 					<reportElement
 						x="454"
@@ -290,9 +293,9 @@
 				<lineChart>
 					<chart isShowLegend="false"  hyperlinkTarget="Self"  customizerClass="com.inthinc.pro.reports.jasper.customizer.DriverLineChartCustomizer" >
 					<reportElement
-						x="0"
+						x="1"
 						y="339"
-						width="450"
+						width="449"
 						height="150"
 						key="element-3"/>
 					<box></box>
@@ -313,7 +316,7 @@
 						</categorySeries>
 					</categoryDataset>
 					<linePlot isShowShapes="false" >
-						<plot >
+						<plot labelRotation="-45.0" >
 							<seriesColor seriesOrder="0" color="#A8C634"/>
 </plot>
 						<categoryAxisFormat>
@@ -355,9 +358,9 @@
 				<lineChart>
 					<chart isShowLegend="false"  hyperlinkTarget="Self"  customizerClass="com.inthinc.pro.reports.jasper.customizer.DriverLineChartCustomizer" >
 					<reportElement
-						x="0"
+						x="1"
 						y="499"
-						width="450"
+						width="449"
 						height="150"
 						key="element-4"/>
 					<box></box>
@@ -378,7 +381,7 @@
 						</categorySeries>
 					</categoryDataset>
 					<linePlot isShowShapes="false" >
-						<plot >
+						<plot labelRotation="-45.0" >
 							<seriesColor seriesOrder="0" color="#A8C634"/>
 </plot>
 						<categoryAxisFormat>
@@ -546,6 +549,19 @@
 		</pageFooter>
 		<lastPageFooter>
 			<band height="19"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="1"
+						y="3"
+						width="198"
+						height="14"
+						key="textField-11"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{REPORT_DATE_AS_STRING}]]></textFieldExpression>
+				</textField>
 			</band>
 		</lastPageFooter>
 		<summary>

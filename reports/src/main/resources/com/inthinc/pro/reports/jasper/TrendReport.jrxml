@@ -103,7 +103,7 @@
 						</categorySeries>
 					</categoryDataset>
 					<linePlot isShowShapes="false" >
-						<plot >
+						<plot labelRotation="-45.0" >
 							<seriesColor seriesOrder="0" color="#FF0000"/>
 							<seriesColor seriesOrder="1" color="#00FF00"/>
 							<seriesColor seriesOrder="2" color="#0000FF"/>

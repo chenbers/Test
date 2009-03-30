@@ -166,7 +166,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         // Loop over returned set of group ids, controlled by scroller
         Map<Integer, List<ScoreableEntity>> groupTrendMap = scoreDAO.getTrendScores(groupID, duration);
 
-        List<String> monthList = ReportUtil.createMonthList(duration);
+        List<String> monthList = ReportUtil.createMonthList(duration, "M/dd");
 
         for (int i = 0; i < groupTrendMap.size(); i++)
         {

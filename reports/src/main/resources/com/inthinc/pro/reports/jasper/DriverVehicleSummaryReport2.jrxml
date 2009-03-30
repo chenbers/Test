@@ -56,6 +56,7 @@
 	<parameter name="REPORT_LOGO" isForPrompting="false" class="java.io.InputStream"/>
 	<parameter name="COACH_DUR" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="MPG_DUR" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="REPORT_DATE_AS_STRING" isForPrompting="false" class="java.lang.String"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -158,7 +159,7 @@
 						</categorySeries>
 					</categoryDataset>
 					<linePlot >
-						<plot >
+						<plot labelRotation="-45.0" >
 							<seriesColor seriesOrder="0" color="#B1D1DC"/>
 							<seriesColor seriesOrder="1" color="#C8A1D1"/>
 							<seriesColor seriesOrder="2" color="#A8C634"/>
@@ -353,7 +354,7 @@
 						</categorySeries>
 					</categoryDataset>
 					<barPlot >
-						<plot >
+						<plot labelRotation="-45.0" >
 							<seriesColor seriesOrder="0" color="#A8C634"/>
 </plot>
 						<categoryAxisFormat>
@@ -370,7 +371,7 @@
 					<reportElement
 						x="262"
 						y="257"
-						width="194"
+						width="196"
 						height="16"
 						key="textField-10"/>
 					<box></box>
@@ -412,6 +413,19 @@
 		</pageFooter>
 		<lastPageFooter>
 			<band height="19"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="1"
+						y="3"
+						width="198"
+						height="14"
+						key="textField-12"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{REPORT_DATE_AS_STRING}]]></textFieldExpression>
+				</textField>
 			</band>
 		</lastPageFooter>
 		<summary>

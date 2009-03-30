@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -457,7 +458,7 @@ public class VehicleStyleBean extends BaseBean
         {
             List<ScoreableEntity> scoreList = scoreDAO.getDriverTrendCumulative(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), st);
 
-            List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration());
+            List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration(), "M/dd");
             int count = 0;
             for (ScoreableEntity se : scoreList)
             {
@@ -479,6 +480,7 @@ public class VehicleStyleBean extends BaseBean
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_STYLE, getGroupHierarchy().getTopGroup().getName());
 
         reportCriteria.setDuration(durationBean.getDuration());
+        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.addParameter("REPORT_NAME", "Vehicle Performance: Style");
         reportCriteria.addParameter("ENTITY_NAME", this.getNavigation().getVehicle().getFullName());
         reportCriteria.addParameter("RECORD_COUNT", this.getStyleEvents().size());

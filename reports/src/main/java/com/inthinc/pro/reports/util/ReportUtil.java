@@ -44,10 +44,15 @@ public class ReportUtil
     
     public static List<String> createMonthList(Duration duration)
     {
+        return createMonthList(duration, "dd");
+    }
+    
+    public static List<String> createMonthList(Duration duration, String dateFormat)
+    {
         List<String> monthList = new ArrayList<String>();
         
         Calendar cal;
-        DateFormat dateFormatter = new SimpleDateFormat("dd");
+        DateFormat dateFormatter = new SimpleDateFormat(dateFormat);
         
         if ( duration == Duration.DAYS ) {
             for ( int i = 0; i <= 29; i++ )
