@@ -16,9 +16,9 @@
 		      <!-- START PANEL -->
 		      <h:panelGroup layout="block" styleClass="">
 		        <h:panelGroup layout="block" styleClass="panel_nw">
-		          <div class="panel_title"> <span class="event">#{messages.safety_title}</span>
+		          <div class="panel_title"> <span class="event">#{messages.notes_safety_title}</span>
 		          	<span class="panel_links">
-                    #{messages.safety_description}
+                    #{messages.notes_safety_description}
 		          	</span>
 		           </div>
 		        </h:panelGroup>
@@ -32,7 +32,7 @@
 		              <li class="l">
 		                <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
 		                  <tr>
-		                    <td>#{messages.safety_search}</td>
+		                    <td>#{messages.notes_safety_search}</td>
 		                    <td>
 		                      <h:inputText id="searchText" value="#{eventsBean.searchText}" styleClass="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('eventsearch:searchButton').onclick(); return false; } return true;" />
 		                    </td>
@@ -41,7 +41,7 @@
 		              </li>
 					  <li class="l">
 							<a4j:commandButton id="searchButton" action="#{eventsBean.searchAction}" 
-		            					reRender="header,eventsTableForm:items,eventsTableForm:bottomScroller,eventsTableForm:topScroller" styleClass="left">
+		            					reRender="header,notificationsTableForm:items,notificationsTableForm:bottomScroller,notificationsTableForm:topScroller" styleClass="left">
 		            				<span class="search">
 		            					<h:outputText value="#{messages.button_search}" />
 		            				</span>
@@ -55,7 +55,7 @@
 					  </li>  
 					  <li class="l">
 						<a4j:commandButton styleClass="left"
-									reRender="header,eventsTableForm:items,eventsTableForm:bottomScroller,eventsTableForm:topScroller" 
+									reRender="header,notificationsTableForm:items,notificationsTableForm:bottomScroller,notificationsTableForm:topScroller" 
 									action="#{eventsBean.refreshAction}">
 		            				<span class="refresh">
 		            					<h:outputText value="#{messages.refresh}" />
@@ -77,7 +77,7 @@
 					  <li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
 					  </li> 
 					  <li class="r text">
-					  	<h:outputFormat id="header" value="#{messages.safety_recordCountHeader}">
+					  	<h:outputFormat id="header" value="#{messages.notes_safety_recordCountHeader}">
 							<a4j:actionparam value="#{eventsBean.start}"/>
 							<a4j:actionparam value="#{eventsBean.end}"/>
 							<a4j:actionparam value="#{eventsBean.maxCount}"/>
@@ -96,16 +96,16 @@
 		    		        
 					<div class="spacer"></div>
 					
-		            <h:panelGroup id="eventsTable" layout="block" styleClass="datagrid">
-						<ui:include src="/includes/eventsTable.xhtml">	
+		            <h:panelGroup id="notificationsTable" layout="block" styleClass="datagrid">
+						<ui:include src="/includes/notificationsTable.xhtml">	
 							<ui:param name="numRowsPerPg" value="#{eventsBean.numRowsPerPg}"/>									
 		             		<ui:param name="tableData" value="#{eventsBean.tableData}"/>             						
 		             		<ui:param name="tableColumns" value="#{eventsBean.tableColumns}"/>
 		    				<ui:param name="bean" value="#{eventsBean}"/>
-		    				<ui:param name="formId" value="eventsTableForm"/>
-		             		<ui:param name="clearTitle" value="#{messages.safety_clearTitle}"/>
-		             		<ui:param name="clearInst" value="#{messages.safety_clearInst}"/>
-		             		<ui:param name="clearRerender" value="eventsearch:header,eventsTableForm:items"/>
+		    				<ui:param name="formId" value="notificationsTableForm"/>
+		             		<ui:param name="clearTitle" value="#{messages.notes_safety_clearTitle}"/>
+		             		<ui:param name="clearInst" value="#{messages.notes_safety_clearInst}"/>
+		             		<ui:param name="clearRerender" value="eventsearch:header,notificationsTableForm:items"/>
 		    			</ui:include>    							
 		            </h:panelGroup>
 		            
@@ -114,7 +114,7 @@
 		
 				<ui:include src="/includes/editColumnsPopup.xhtml">
 					<ui:param name="bean" value="#{eventsBean}"/>	
-					<ui:param name="reRender" value="eventsTableForm:items" />
+					<ui:param name="reRender" value="notificationsTableForm:items" />
 				</ui:include>    
 				
 		        <h:panelGroup layout="block" styleClass="panel_sw">

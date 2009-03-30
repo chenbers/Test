@@ -18,9 +18,9 @@
 		      <!-- START PANEL -->
 		      <h:panelGroup layout="block" styleClass="">
 		        <h:panelGroup layout="block" styleClass="panel_nw">
-		          <div class="panel_title"> <span class="warningtitle">#{messages.diagnostics_title}</span>
+		          <div class="panel_title"> <span class="warningtitle">#{messages.notes_diagnostics_title}</span>
 		          	<span class="panel_links">
-                    #{messages.diagnostics_description}
+                    #{messages.notes_diagnostics_description}
 		          	</span>
 		           </div>
 		        </h:panelGroup>
@@ -34,7 +34,7 @@
 		              <li class="l">
 		                <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
 		                  <tr>
-		                    <td>#{messages.diagnostics_search}</td>
+		                    <td>#{messages.notes_diagnostics_search}</td>
 		                    <td>
 		                      <h:inputText id="searchText" value="#{warningsBean.searchText}" styleClass="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('warningsearch:searchButton').onclick(); return false; } return true;" />
 		                    </td>
@@ -79,7 +79,7 @@
 					  <li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
 					  </li> 
 					  <li class="r text">
-					  	<h:outputFormat id="header" value="#{messages.diagnostics_recordCountHeader}">
+					  	<h:outputFormat id="header" value="#{messages.notes_diagnostics_recordCountHeader}">
 							<a4j:actionparam value="#{warningsBean.start}"/>
 							<a4j:actionparam value="#{warningsBean.end}"/>
 							<a4j:actionparam value="#{warningsBean.maxCount}"/>
@@ -97,14 +97,14 @@
 					<div class="spacer"></div>
 					
 		            <h:panelGroup id="warningsTable" layout="block" styleClass="datagrid">
-						<ui:include src="/includes/eventsTable.xhtml">	
+						<ui:include src="/includes/notificationsTable.xhtml">	
 							<ui:param name="numRowsPerPg" value="#{warningsBean.numRowsPerPg}"/>									
 		             		<ui:param name="tableData" value="#{warningsBean.tableData}"/>             						
 		             		<ui:param name="tableColumns" value="#{warningsBean.tableColumns}"/>
 		             		<ui:param name="bean" value="#{warningsBean}"/>
 		             		<ui:param name="formId" value="warningsTableForm"/>
-		             		<ui:param name="clearTitle" value="#{messages.diagnostics_clearTitle}"/>
-		             		<ui:param name="clearInst" value="#{messages.diagnostics_clearInst}"/>
+		             		<ui:param name="clearTitle" value="#{messages.notes_diagnostics_clearTitle}"/>
+		             		<ui:param name="clearInst" value="#{messages.notes_diagnostics_clearInst}"/>
 		             		<ui:param name="clearRerender" value="warningsearch:header,warningsTableForm:items"/>
 		    			</ui:include>    							
 		            </h:panelGroup>

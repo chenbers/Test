@@ -378,10 +378,10 @@ var firstLoad = new Boolean(true);
 			<div class="datagrid">
 				<!-- Start Event table --> 
 					<h:form id="eventTable">
-					<rich:datascroller align="center" for="eventsTable" immediate="true" page="#{driverStyleBean.tableStatsBean.page}"
-							id="scrollerTop" reRender="eventsTable,scrollerBottom,tableStats" scrollerListener="#{driverStyleBean.tableStatsBean.scrollerListener}" />
+					<rich:datascroller align="center" for="notificationsTable" immediate="true" page="#{driverStyleBean.tableStatsBean.page}"
+							id="scrollerTop" reRender="notificationsTable,scrollerBottom,tableStats" scrollerListener="#{driverStyleBean.tableStatsBean.scrollerListener}" />
 						<rich:dataTable value="#{driverStyleBean.styleEvents}" 
-						id="eventsTable" var="item" styleClass="datagrid"
+						id="notificationsTable" var="item" styleClass="datagrid"
 						rowClasses="tableOdd,tableEven" cellspacing="1" 
 						rows="#{driverStyleBean.tableStatsBean.tableRowCount}" width="100%">
 						
@@ -444,8 +444,8 @@ var firstLoad = new Boolean(true);
 							
 						</rich:dataTable>
 						
-						<rich:datascroller align="center" for="eventsTable" immediate="true" id="scrollerBottom" page="#{driverStyleBean.tableStatsBean.page}"
-						reRender="eventsTable,scrollerTop,tableStats" scrollerListener="#{driverStyleBean.tableStatsBean.scrollerListener}"/>
+						<rich:datascroller align="center" for="notificationsTable" immediate="true" id="scrollerBottom" page="#{driverStyleBean.tableStatsBean.page}"
+						reRender="notificationsTable,scrollerTop,tableStats" scrollerListener="#{driverStyleBean.tableStatsBean.scrollerListener}"/>
 					</h:form> 
 				<!-- End Event table -->
 				</div>
@@ -487,7 +487,7 @@ var firstLoad = new Boolean(true);
         <div class="popupactions">
           <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_no}" /></span></button>
           <a4j:commandLink action="#{driverStyleBean.ClearEventAction}"         				
-          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel')" reRender="eventsTable,tableStats">
+          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel')" reRender="notificationsTable,tableStats">
 	          				<button type="submit" class="left">
 	          					<span class="apply">
 	          						<h:outputText value="#{messages.button_yes}" />

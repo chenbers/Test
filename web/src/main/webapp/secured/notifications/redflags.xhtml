@@ -17,9 +17,9 @@
 		      <!-- START PANEL -->
 		      <h:panelGroup layout="block" styleClass="">
 		        <h:panelGroup layout="block" styleClass="panel_nw">
-		          <div id="panel_title" class="panel_title"> <span class="redflag">#{messages.custom_title}</span>
+		          <div id="panel_title" class="panel_title"> <span class="redflag">#{messages.notes_redflags_title}</span>
 		          	<span class="panel_links">
-                        #{messages.custom_description}
+                        #{messages.notes_redflags_description}
 		          	</span>
 		           </div>
 		        </h:panelGroup>
@@ -34,7 +34,7 @@
 		              <li class="l">
 		                <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
 		                  <tr>
-		                    <td>#{messages.custom_search}</td>
+		                    <td>#{messages.notes_redflags_search}</td>
 		                    <td>
 		                      <h:inputText id="searchText" value="#{redFlagsBean.searchText}" styleClass="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('redFlagSearch:searchButton').onclick(); return false; } return true;" />
 		                    </td>
@@ -79,7 +79,7 @@
 					  	<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
 					  </li>
 					  <li class="r text">
-					  	<h:outputFormat id="header" value="#{messages.custom_recordCountHeader}">
+					  	<h:outputFormat id="header" value="#{messages.notes_redflags_recordCountHeader}">
 							<a4j:actionparam value="#{redFlagsBean.start}"/>
 							<a4j:actionparam value="#{redFlagsBean.end}"/>
 							<a4j:actionparam value="#{redFlagsBean.maxCount}"/>

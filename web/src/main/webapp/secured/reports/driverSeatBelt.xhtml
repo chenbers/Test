@@ -158,14 +158,14 @@
 				  <div class="panel_content">
 				     
 
-			<rich:panel id="eventsTable" bodyClass="datagrid">
+			<rich:panel id="notificationsTable" bodyClass="datagrid">
 				<!-- Start Event table --> 
 					<h:form id="eventTableForm">
-					<rich:datascroller align="center" for="eventsTable" id="scrollerTop" page="#{driverSeatBeltBean.tableStatsBean.page}"
-					reRender="eventsTable,scrollerBottom,tableStats" immediate="true" scrollerListener="#{driverSeatBeltBean.tableStatsBean.scrollerListener}"/>
+					<rich:datascroller align="center" for="notificationsTable" id="scrollerTop" page="#{driverSeatBeltBean.tableStatsBean.page}"
+					reRender="notificationsTable,scrollerBottom,tableStats" immediate="true" scrollerListener="#{driverSeatBeltBean.tableStatsBean.scrollerListener}"/>
 						<rich:dataTable 
 							value="#{driverSeatBeltBean.seatBeltEvents}" 
-							id="eventsTable" var="item" styleClass="datagrid"
+							id="notificationsTable" var="item" styleClass="datagrid"
 							rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{driverSeatBeltBean.tableStatsBean.tableRowCount}"  
 							width="100%"> 
 						<!-- Data -->
@@ -226,8 +226,8 @@
     						</rich:column>
 						</rich:dataTable>
 						
-						<rich:datascroller align="center" for="eventsTable" id="scrollerBottom" page="#{driverSeatBeltBean.tableStatsBean.page}"
-						reRender="eventsTable,scrollerTop,tableStats" immediate="true" scrollerListener="#{driverSeatBeltBean.tableStatsBean.scrollerListener}"/>
+						<rich:datascroller align="center" for="notificationsTable" id="scrollerBottom" page="#{driverSeatBeltBean.tableStatsBean.page}"
+						reRender="notificationsTable,scrollerTop,tableStats" immediate="true" scrollerListener="#{driverSeatBeltBean.tableStatsBean.scrollerListener}"/>
 					</h:form> 
 				<!-- End Event table -->
 				</rich:panel>
@@ -268,7 +268,7 @@
         <div class="popupactions">
           <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_no}" /></span></button>
           <a4j:commandLink action="#{driverSeatBeltBean.ClearEventAction}"         				
-          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel')" reRender="eventsTable,tableStats">
+          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel')" reRender="notificationsTable,tableStats">
 	          				<button type="submit" class="left">
 	          					<span class="apply">
 	          						<h:outputText value="#{messages.button_yes}" />

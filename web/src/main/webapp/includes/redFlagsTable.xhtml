@@ -24,35 +24,35 @@
 					<rich:column rendered="#{tableColumns['level'].visible}" 
 						sortBy="#{item.redFlag.level}" width="10%">
 						<f:facet name="header">
-							<h:outputText value="#{messages.custom_level}" />
+							<h:outputText value="#{messages.notes_redflags_level}" />
 						</f:facet>
 						<h:outputText styleClass="ls_tab_#{item.redFlag.level}" value="#{item.redFlag.level.description}"/>
     				</rich:column>
     				<rich:column rendered="#{tableColumns['alerts'].visible}" 
     					sortBy="#{item.redFlag.alert}" width="5%">
       					<f:facet name="header">
-      						<h:outputText value="#{messages.custom_alerts}" />
+      						<h:outputText value="#{messages.notes_redflags_alerts}" />
       					</f:facet>
 						<h:outputText value="#{(item.redFlag.alert) ? 'yes' : 'no'}" />      
     				</rich:column>
     				<rich:column rendered="#{tableColumns['date'].visible}" 
     					sortBy="#{item.redFlag.event.time}"  width="15%">
       					<f:facet name="header">
-      						<h:outputText value="#{messages.custom_date}" />
+      						<h:outputText value="#{messages.notes_redflags_date}" />
       					</f:facet>
       					<h:outputText value="#{item.date}"/>
     				</rich:column>
     				<rich:column rendered="#{tableColumns['group'].visible}" 
     					sortBy="#{item.group}"  width="10%">
       					<f:facet name="header">
-      						<h:outputText value="#{messages.custom_group}" />
+      						<h:outputText value="#{messages.notes_redflags_group}" />
       					</f:facet>
       					<h:outputText value="#{item.group}"/>
     				</rich:column>
     				<rich:column rendered="#{tableColumns['driver'].visible}" 
     					sortBy="#{item.driverName}"  width="10%">
       					<f:facet name="header">
-      						<h:outputText value="#{messages.custom_driver}" />
+      						<h:outputText value="#{messages.notes_redflags_driver}" />
       					</f:facet>
 						<a4j:htmlCommandLink action="#{redFlagsBean.driverAction}" value="#{item.driverName}">
 							<f:setPropertyActionListener value="#{item.redFlag.event}" target="#{redFlagsBean.selectedEvent}" />
@@ -62,7 +62,7 @@
     				<rich:column rendered="#{tableColumns['vehicle'].visible}" 
     					sortBy="#{item.vehicleName}"  width="10%">
       					<f:facet name="header">
-      						<h:outputText value="#{messages.custom_vehicle}" />
+      						<h:outputText value="#{messages.notes_redflags_vehicle}" />
       					</f:facet>
       					<a4j:htmlCommandLink action="#{redFlagsBean.vehicleAction}" value="#{item.vehicleName}">
 							<f:setPropertyActionListener value="#{item.redFlag.event}" target="#{redFlagsBean.selectedEvent}" />
@@ -72,14 +72,14 @@
     				<rich:column rendered="#{tableColumns['category'].visible}" 
     					sortBy="#{item.category}"  width="20%">
       					<f:facet name="header">
-      						<h:outputText value="#{messages.custom_category}" />
+      						<h:outputText value="#{messages.notes_redflags_category}" />
       					</f:facet>
       					<h:outputText value="#{item.category}" />
     				</rich:column>
     				<rich:column rendered="#{tableColumns['detail'].visible}"
     					sortBy="#{item.detail}"  width="20%">
       					<f:facet name="header">
-      						<h:outputText value="#{messages.custom_detail}" />
+      						<h:outputText value="#{messages.notes_redflags_detail}" />
       					</f:facet>
       					<h:outputText value="#{item.detail}" />
     				</rich:column>
@@ -87,8 +87,8 @@
       					<f:facet name="header">
       						<h:outputText value="" />
       					</f:facet>
-						<a4j:commandLink title="#{messages.custom_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearRedFlagPanel')" reRender="clearItemForm:clearItem" >
-							<h:outputText value="#{messages.custom_clear}" />
+						<a4j:commandLink title="#{messages.notes_redflags_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearRedFlagPanel')" reRender="clearItemForm:clearItem" >
+							<h:outputText value="#{messages.notes_redflags_clear}" />
 							<f:setPropertyActionListener target="#{redFlagsBean.clearItem}" value="#{item}" />
 						</a4j:commandLink>
     				</rich:column>
@@ -105,14 +105,14 @@
     <rich:modalPanel id="clearRedFlagPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="50" autosized="true" resizeable="false" zindex="2000"
     		onshow="document.getElementById('clearItemForm:yesButton').focus();">
       <f:facet name="header">
-        <h:outputText value="#{messages.custom_clearTitle}" />
+        <h:outputText value="#{messages.notes_redflags_clearTitle}" />
       </f:facet>
       <f:facet name="controls">
         <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('clearRedFlagPanel')" />
       </f:facet>
 
       <h:panelGroup layout="block" styleClass="popupsubtitle">
-      	<h:outputText value="#{messages.custom_clearInst}"/>
+      	<h:outputText value="#{messages.notes_redflags_clearInst}"/>
       </h:panelGroup>
 
       <a4j:form id="clearItemForm">
