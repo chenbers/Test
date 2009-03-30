@@ -80,6 +80,7 @@
         <module>webutil</module>
         <module>scheduler</module>
     	<module>reports</module>
+        <module>webfulfillment</module>
   	</modules>
     <properties>
         <compileSource>1.6</compileSource>
