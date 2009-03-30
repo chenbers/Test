@@ -24,21 +24,21 @@
     				<rich:column rendered="#{tableColumns['date'].visible}" 
     					sortBy="#{item.event.time}"  width="20%"> 
       					<f:facet name="header">
-      						<h:outputText value="#{messages.events_date}" />
+      						<h:outputText value="#{messages.notes_date}" />
       					</f:facet>
       					<h:outputText value="#{item.date}"/>
     				</rich:column>
     				<rich:column rendered="#{tableColumns['group'].visible}" 
     					sortBy="#{item.group}"  width="10%" >
       					<f:facet name="header">
-      						<h:outputText value="#{messages.events_group}" />
+      						<h:outputText value="#{messages.notes_group}" />
       					</f:facet>
       					<h:outputText value="#{item.group}"/>
     				</rich:column>
     				<rich:column rendered="#{tableColumns['driver'].visible}" 
     					sortBy="#{item.driverName}"  width="10%">
       					<f:facet name="header">
-      						<h:outputText value="#{messages.events_driver}" />
+      						<h:outputText value="#{messages.notes_driver}" />
       					</f:facet>
 						<a4j:htmlCommandLink action="#{bean.driverAction}" value="#{item.driverName}">
 							<f:setPropertyActionListener value="#{item.event}" target="#{bean.selectedEvent}" />
@@ -48,7 +48,7 @@
     				<rich:column rendered="#{tableColumns['vehicle'].visible}" 
     					sortBy="#{item.vehicleName}"  width="10%">
       					<f:facet name="header">
-      						<h:outputText value="#{messages.events_vehicle}" />
+      						<h:outputText value="#{messages.notes_vehicle}" />
       					</f:facet>
       					<a4j:htmlCommandLink action="#{bean.vehicleAction}" value="#{item.vehicleName}" rendered="#{item.vehicleName != 'None Assigned'}">
 							<f:setPropertyActionListener value="#{item.event}" target="#{bean.selectedEvent}" />
@@ -61,14 +61,14 @@
     				<rich:column rendered="#{tableColumns['category'].visible}" 
     					sortBy="#{item.category}"  width="20%">
       					<f:facet name="header">
-      						<h:outputText value="#{messages.events_category}" />
+      						<h:outputText value="#{messages.notes_category}" />
       					</f:facet>
       					<h:outputText value="#{item.category}" />
     				</rich:column>
     				<rich:column rendered="#{tableColumns['detail'].visible}"
     					sortBy="#{item.detail}"  width="20%">
       					<f:facet name="header">
-      						<h:outputText value="#{messages.events_detail}" />
+      						<h:outputText value="#{messages.notes_detail}" />
       					</f:facet>
       					<h:outputText value="#{item.detail}" />
     				</rich:column>
@@ -76,8 +76,8 @@
       					<f:facet name="header">
       						<h:outputText value="" />
       					</f:facet>
-						<a4j:commandLink title="#{messages.events_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem" >
-							<h:outputText value="#{messages.events_clear}" />
+						<a4j:commandLink title="#{messages.notes_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem" >
+							<h:outputText value="#{messages.notes_clear}" />
 							<f:setPropertyActionListener target="#{bean.clearItem}" value="#{item}" />
 						</a4j:commandLink>
     				</rich:column>
