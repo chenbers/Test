@@ -31,7 +31,8 @@
 							id="addressTextBox"
 							value="" tabindex="6"/></td>
 						<td width="50" align="left">
-							<a4j:commandButton immediate="true" onclick="showAddress(document.getElementById('addressTextBox').value);" styleClass="left">
+							<a4j:commandButton immediate="true" tabindex="7" onclick="showAddress(document.getElementById('addressTextBox').value);" styleClass="left">
+                     
 								<span class="search">
 									#{messages.group_locate}
 								</span>
@@ -110,7 +111,6 @@
 										map.disableDoubleClickZoom();
 									</h:outputText>
 									<h:outputText rendered="#{not readOnly}">
-										map.enableGoogleBar();
 										map.addControl(new GLargeMapControl());
 									</h:outputText>
 						
