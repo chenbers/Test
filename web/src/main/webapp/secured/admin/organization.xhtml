@@ -79,24 +79,20 @@
 										adviseNodeSelected="#{organizationBean.adviseNodeSelected}"
 										adviseNodeOpened="#{organizationBean.adviseNodeExpanded}"
 										changeExpandListener="#{organizationBean.changeExpandListener}"
-										ajaxSubmitSelection="true"
-										ondrop="doRefreshTree()">
+										ajaxSubmitSelection="true">
 										<rich:treeNode type="FLEET" iconLeaf="/images/ico_truck.png"
-											icon="/images/ico_truck.png" acceptedTypes="DIVISION,TEAM"
-											dragType="FLEET">
+											icon="/images/ico_truck.png">
 											<rich:dndParam name="label" type="drag" value="#{item.label}"/>
 											<h:outputText value="#{item.label}" />
 										</rich:treeNode>
 										<rich:treeNode type="DIVISION"
 											iconLeaf="/images/ico_trucks.png"
-											icon="/images/ico_trucks.png" acceptedTypes="DIVISION,TEAM"
-											dragType="DIVISION">
+											icon="/images/ico_trucks.png">
 											<rich:dndParam name="label" type="drag" value="#{item.label}"/>
 											<h:outputText value="#{item.label}" />
 										</rich:treeNode>
 										<rich:treeNode type="TEAM" iconLeaf="/images/ico_team.png"
-											icon="/images/ico_team.png"
-											dragType="TEAM">
+											icon="/images/ico_team.png">
 											<rich:dndParam name="label" type="drag" value="#{item.label}"/>
 											<h:outputText value="#{item.label}" />
 										</rich:treeNode>
@@ -111,6 +107,12 @@
 											<rich:dndParam name="label" type="drag" value="#{item.label}"/>
 											<h:outputText value="#{item.label}" />
 										</rich:treeNode>
+                                        <rich:treeNode type="DEVICE"
+                                          iconLeaf="/images/ico_tiwi.png"
+                                          icon="/images/ico_tiwi.png">
+                                          <rich:dndParam name="label" type="drag" value="#{item.label}"/>
+                                          <h:outputText value="#{item.label}" />
+                                        </rich:treeNode>
 									</rich:tree>
 								</h:panelGroup>
 								</a4j:region>
