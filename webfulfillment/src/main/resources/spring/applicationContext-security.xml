@@ -2,13 +2,12 @@
 <beans:beans xmlns="http://www.springframework.org/schema/security" xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
                         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.1.xsd">
-    <http auto-config="false" session-fixation-protection="newSession" entry-point-ref="authenticationProcessingFilterEntryPoint">
+    <http auto-config="false" session-fixation-protection="newSession" access-denied-page="/accessDenied.faces" entry-point-ref="authenticationProcessingFilterEntryPoint">
         <!--  error if user logs in concurrently (only one login allowed at a time)  -->
         <concurrent-session-control max-sessions="1" exception-if-maximum-exceeded="true" />
         <intercept-url pattern="/secured/**" access="ROLE_ROLE_READONLY,ROLE_NORMALUSER,ROLE_SUPERVISOR,ROLE_CUSTOMUSER,ROLE_SUPERUSERSUPERUSER" />
         <logout logout-success-url="/login.faces" />
     </http>
-
     <!--  i.e. fleet, region, team, and eventually driver levels  -->
     <beans:bean id="proFilter" class="com.inthinc.pro.security.ProAuthenticationProcessingFilter">
         <beans:property name="authenticationManager" ref="authenticationManager" />

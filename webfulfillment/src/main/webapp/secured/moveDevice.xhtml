@@ -38,6 +38,9 @@
 						escape="false" /></p>
 					</div>
 				</h:form>
+				<rich:dataList rendered="#{daoUtilBean.messageList != null}" value="#{daoUtilBean.messageList}" id="messages" var="message" title="Messages">
+				<h:outputText value="#{message}"/><br/>
+				</rich:dataList>
 			</h:panelGroup>
 		</h:panelGrid>
 		<h:panelGroup id="statusPanel">

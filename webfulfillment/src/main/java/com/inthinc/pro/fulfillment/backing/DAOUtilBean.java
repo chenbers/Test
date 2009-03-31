@@ -47,6 +47,7 @@ public class DAOUtilBean {
 
 	private String errorMsg;
 	private String successMsg;
+	private List<String> messageList;
 	
 	
 	public DAOUtilBean()
@@ -71,6 +72,8 @@ public class DAOUtilBean {
 		Roles roles = new Roles();
         roles.setRoleDAO(roleDAO);
         roles.init();
+        
+        messageList = new ArrayList<String>();
 
     }
 
@@ -101,15 +104,15 @@ public class DAOUtilBean {
 		eventTypes.add(EventMapper.TIWIPRO_EVENT_POWER_ON);
 		List<Event> events = eventDAO.getEventsForVehicle(vehicleID, startDate,
 				endDate, eventTypes);
-		for (Iterator<Event> iter = events.iterator(); iter.hasNext();) {
-			Event event = iter.next();
-			System.out.println(EventMapper.getEventType(event.getType()) + " "
-					+ event.getTime());
-		}
+//		for (Iterator<Event> iter = events.iterator(); iter.hasNext();) {
+//			Event event = iter.next();
+//			System.out.println(EventMapper.getEventType(event.getType()) + " "
+//					+ event.getTime());
+//		}
 
 		if (loc != null)
 		{
-			System.out.println(loc.getLoc().getLat() + " "
+			messageList.add("GPS OK - Last fix " + loc.getTime() + " " + loc.getLoc().getLat() + " "
 					+ loc.getLoc().getLng());
 		}
 		else
@@ -117,7 +120,16 @@ public class DAOUtilBean {
 			warning += "Warning - Device never achieved GPS fix. ";
 			success = false;
 		}
-		if (events.isEmpty())
+		if (!events.isEmpty())
+		{
+			Event event = events.get(0);
+			messageList.add("OTA OK - First Event " + EventMapper.getEventType(event.getType()) + " "
+					+ event.getTime());
+			event = events.get(events.size()-1);
+			messageList.add("OTA OK - Last Event " + EventMapper.getEventType(event.getType()) + " "
+					+ event.getTime());
+		}
+		else
 		{
 			warning += "Warning - No power up events for device. Device never connected OTA. ";
 			success = false;
@@ -133,7 +145,7 @@ public class DAOUtilBean {
 			setErrorMsg("Error - Device not found: " + imei);
 	}
 	public void moveDeviceAction() {
-		setErrorMsg(null);
+		reInitAction();
 		loadDevice();
 		if (selectedAccountID==null || selectedAccountID<0)
 		{
@@ -205,8 +217,7 @@ public class DAOUtilBean {
 	}
     public void clearErrorAction()
     {
-        setErrorMsg(null);
-        setSuccessMsg(null);
+    	reInitAction();
         setImei(null);
     }
 
@@ -214,7 +225,7 @@ public class DAOUtilBean {
     {
         setErrorMsg(null);
         setSuccessMsg(null);
-        setImei(null);
+        messageList.clear();
     }
 
     public AccountDAO getAccountDAO()
@@ -293,6 +304,11 @@ public class DAOUtilBean {
 		if (selectedAccountID==null || selectedAccountID<0 )
 			return "--Select a Account--";
 		return getAccountMap().get(this.selectedAccountID);
+	}
+	
+	public List<String> getMessageList()
+	{
+		return messageList;
 	}
 
 	public String getImei() {

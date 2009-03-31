@@ -1,0 +1,14 @@
+<ui:composition template="/template/baseTemplate.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+
+    <ui:define name="content">
+        <rich:panel id="login_panel">
+            <f:facet name="header">
+                <h:outputText value="Access Denied" />
+            </f:facet>
+            <h:outputText value="You do not have sufficent rights to access this application" />
+            <p/>
+            <h:outputLink value="#{facesContext.externalContext.requestContextPath}/j_spring_security_logout">Back to login</h:outputLink>
+        </rich:panel>
+    </ui:define>
+</ui:composition>
