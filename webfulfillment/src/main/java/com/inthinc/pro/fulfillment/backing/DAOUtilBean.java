@@ -11,6 +11,9 @@ import java.util.Map;
 
 import javax.faces.model.SelectItem;
 
+import org.springframework.security.AuthenticationException;
+import org.springframework.security.context.SecurityContextHolder;
+
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.EventDAO;
@@ -26,6 +29,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.app.Roles;
+import com.inthinc.pro.security.userdetails.ProUser;
 
 public class DAOUtilBean {
 
@@ -59,6 +63,11 @@ public class DAOUtilBean {
 
 	}
 
+	public ProUser getProUser()
+    {
+        return (ProUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
 	public void init() throws Exception
     {
 		String username = "TiwiInstallation";
@@ -66,8 +75,11 @@ public class DAOUtilBean {
 		User mainuser = userDAO.findByUserName(username);
 		if (mainuser == null)
 			throw new Exception("Main user not found:" + username);
-
+		
 		mainAccountID = mainuser.getPerson().getAcctID();
+		Integer userAccountID = getProUser().getUser().getPerson().getAcctID();
+		if (!mainAccountID.equals(userAccountID))
+			throw new Exception("User not in main account");
 
 		Roles roles = new Roles();
         roles.setRoleDAO(roleDAO);
