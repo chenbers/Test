@@ -90,7 +90,6 @@ public class EventMapper
         violationList.add(TIWIPRO_EVENT_SPEEDING);
         violationList.add(TIWIPRO_EVENT_SPEEDING_EX3);
         violationList.add(TIWIPRO_EVENT_SEATBELT);
-        violationList.add(TIWIPRO_EVENT_IDLE);
         categoryMap.put(EventCategory.VIOLATION, violationList);
         
         List<Integer> warningList = new ArrayList<Integer>();
@@ -99,6 +98,7 @@ public class EventMapper
         warningList.add(TIWIPRO_EVENT_UNPLUGGED);
         warningList.add(TIWIPRO_EVENT_ROLLOVER);
         warningList.add(TIWIPRO_EVENT_FULLEVENT);
+        warningList.add(TIWIPRO_EVENT_IDLE);
         categoryMap.put(EventCategory.WARNING, warningList);
 
         List<Integer> driverCatList = new ArrayList<Integer>();

@@ -36,13 +36,13 @@
 		                  <tr>
 		                    <td>#{messages.notes_diagnostics_search}</td>
 		                    <td>
-		                      <h:inputText id="searchText" value="#{diagnoticsBean.searchText}" styleClass="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('diagnostics_search:searchButton').onclick(); return false; } return true;" />
+		                      <h:inputText id="searchText" value="#{diagnosticsBean.searchText}" styleClass="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('diagnostics_search:searchButton').onclick(); return false; } return true;" />
 		                    </td>
 		                  </tr>
 		                </table>
 		              </li>
 					  <li class="l">
-							<a4j:commandButton id="searchButton" action="#{diagnoticsBean.searchAction}" 
+							<a4j:commandButton id="searchButton" action="#{diagnosticsBean.searchAction}" 
 		            					reRender="header,diagnostics_table_form:items,diagnostics_table_form:bottomScroller,diagnostics_table_form:topScroller" styleClass="left">
 		            				<span class="search">
 		            					<h:outputText value="#{messages.button_search}" />
@@ -58,7 +58,7 @@
 					  <li class="l">
 						<a4j:commandButton styleClass="left"
 		           					reRender="header,diagnostics_table_form:items,diagnostics_table_form:bottomScroller,diagnostics_table_form:topScroller"
-									action="#{diagnoticsBean.refreshAction}">
+									action="#{diagnosticsBean.refreshAction}">
 		            				<span class="refresh">
 		            					<h:outputText value="#{messages.refresh}" />
 		            				</span>
@@ -80,15 +80,15 @@
 					  </li> 
 					  <li class="r text">
 					  	<h:outputFormat id="header" value="#{messages.notes_diagnostics_recordCountHeader}">
-							<a4j:actionparam value="#{diagnoticsBean.start}"/>
-							<a4j:actionparam value="#{diagnoticsBean.end}"/>
-							<a4j:actionparam value="#{diagnoticsBean.maxCount}"/>
+							<a4j:actionparam value="#{diagnosticsBean.start}"/>
+							<a4j:actionparam value="#{diagnosticsBean.end}"/>
+							<a4j:actionparam value="#{diagnosticsBean.maxCount}"/>
 						</h:outputFormat>
 		               </li>          							
 		            </ul>
 		            <ui:include src="/includes/reportsContextMenu.xhtml">	
 						<ui:param  name="emailModalPanelID" value="diagnostics_report_email_modal" />
-						<ui:param  name="reportBean" value="#{diagnoticsBean}"/>
+						<ui:param  name="reportBean" value="#{diagnosticsBean}"/>
 						<ui:param  name="attachTo" value="diagnostics_report_tool_image_id"/>
 						<ui:param  name="exportExcel" value="TRUE"/>
 					</ui:include>
@@ -98,10 +98,10 @@
 					
 		            <h:panelGroup id="diagnostics_table" layout="block" styleClass="datagrid">
 						<ui:include src="/includes/notificationsTable.xhtml">	
-							<ui:param name="numRowsPerPg" value="#{diagnoticsBean.numRowsPerPg}"/>									
-		             		<ui:param name="tableData" value="#{diagnoticsBean.tableData}"/>             						
-		             		<ui:param name="tableColumns" value="#{diagnoticsBean.tableColumns}"/>
-		             		<ui:param name="bean" value="#{diagnoticsBean}"/>
+							<ui:param name="numRowsPerPg" value="#{diagnosticsBean.numRowsPerPg}"/>									
+		             		<ui:param name="tableData" value="#{diagnosticsBean.tableData}"/>             						
+		             		<ui:param name="tableColumns" value="#{diagnosticsBean.tableColumns}"/>
+		             		<ui:param name="bean" value="#{diagnosticsBean}"/>
 		             		<ui:param name="formId" value="diagnostics_table_form"/>
 		             		<ui:param name="clearTitle" value="#{messages.notes_diagnostics_clearTitle}"/>
 		             		<ui:param name="clearInst" value="#{messages.notes_diagnostics_clearInst}"/>
@@ -113,7 +113,7 @@
 				</h:panelGroup>
 		
 				<ui:include src="/includes/editColumnsPopup.xhtml">
-					<ui:param name="bean" value="#{diagnoticsBean}"/>	
+					<ui:param name="bean" value="#{diagnosticsBean}"/>	
 					<ui:param name="reRender" value="diagnostics_table_form:items" />
 				</ui:include>    
 				
@@ -129,7 +129,7 @@
 	<h:outputText id="redflag_email_modalPanel">
 		<ui:include src="/includes/emailReportPopup.xhtml">	
 			<ui:param  name="id" value="diagnostics_report_email_modal" />
-			<ui:param  name="reportBean" value="#{diagnoticsBean}"/>
+			<ui:param  name="reportBean" value="#{diagnosticsBean}"/>
 		</ui:include>
 	</h:outputText>
 	

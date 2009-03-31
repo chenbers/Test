@@ -70,7 +70,7 @@ public class IdleEvent extends Event
 	}
     public EventCategory getEventCategory()
     {
-        return EventCategory.VIOLATION;
+        return EventCategory.WARNING;
     }
     public String getDetails(String formatStr)
     {
