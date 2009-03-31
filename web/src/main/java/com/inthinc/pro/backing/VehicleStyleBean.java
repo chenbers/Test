@@ -64,7 +64,27 @@ public class VehicleStyleBean extends BaseBean
 
     private List<EventReportItem> styleEvents = new ArrayList<EventReportItem>();
 
-    private void init()
+    private List<EventReportItem> filteredStyleEvents = new ArrayList<EventReportItem>(); 	//filtered list
+    
+    private String 				  selectedEventType = "";
+
+    public List<EventReportItem> getFilteredStyleEvents() {
+		return filteredStyleEvents;
+	}
+
+	public void setFilteredStyleEvents(List<EventReportItem> filteredStyleEvents) {
+		this.filteredStyleEvents = filteredStyleEvents;
+	}
+
+	public String getSelectedEventType() {
+		return selectedEventType;
+	}
+
+	public void setSelectedEventType(String selectedEventType) {
+		this.selectedEventType = selectedEventType;
+	}
+
+	private void init()
     {
         int vehicleID = navigation.getVehicle().getVehicleID();
 
@@ -84,6 +104,8 @@ public class VehicleStyleBean extends BaseBean
 
         se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
         setStyleScoreTurn(se == null ? NO_SCORE : se.getScore());
+        
+        getViolations();
         
         initComplete = true;
     }
@@ -105,9 +127,11 @@ public class VehicleStyleBean extends BaseBean
                 styleEvents.add(new EventReportItem(event, getUser().getPerson().getTimeZone()));
             }
 
-            tableStatsBean.setPage(1);
-            tableStatsBean.setTableRowCount(10);
-            tableStatsBean.setTableSize(styleEvents.size());
+            filterEventsAction();
+//        	setTableStatsBean();
+//           tableStatsBean.setPage(1);
+//            tableStatsBean.setTableRowCount(10);
+//            tableStatsBean.setTableSize(styleEvents.size());
         }
     }
 
@@ -412,8 +436,8 @@ public class VehicleStyleBean extends BaseBean
     {
         durationBean.setDuration(duration);
         init();
-        styleEvents.clear();
-        getViolations();
+//        styleEvents.clear();
+//        getViolations();
     }
     public Duration getDuration()
     {
@@ -422,13 +446,15 @@ public class VehicleStyleBean extends BaseBean
 
     public List<EventReportItem> getStyleEvents()
     {
-        getViolations();
+//        getViolations();
         return styleEvents;
     }
 
     public void setStyleEvents(List<EventReportItem> styleEvents)
     {
         this.styleEvents = styleEvents;
+        filterEventsAction();
+//    	setTableStatsBean();
     }
 
     public void ClearEventAction()
@@ -436,7 +462,7 @@ public class VehicleStyleBean extends BaseBean
         Integer temp = eventDAO.forgive(navigation.getVehicle().getVehicleID(), clearItem.getEvent().getNoteID());
         // logger.debug("Clearing event " + clearItem.getNoteID() + " result: " + temp.toString());
 
-        styleEvents.clear();
+//        styleEvents.clear();
         getViolations();
     }
 
@@ -537,4 +563,34 @@ public class VehicleStyleBean extends BaseBean
     {
         getReportRenderer().exportReportToExcel(buildReport(), getFacesContext());
     }
+	private void setTableStatsBean(){
+		
+        tableStatsBean.setPage(1);
+        tableStatsBean.setTableRowCount(10);
+        tableStatsBean.setTableSize(filteredStyleEvents.size());
+
+	}
+	public String filterEventsAction(){
+		
+		filteredStyleEvents = new ArrayList<EventReportItem>();
+		
+		if (selectedEventType.isEmpty()){
+			
+            filteredStyleEvents.addAll(styleEvents);
+
+		}
+		else {
+			
+			for (EventReportItem eri: styleEvents){
+				
+				if(eri.getEvent().getEventType().getKey().equals(selectedEventType)){
+					
+					filteredStyleEvents.add(eri);
+				}
+			}
+		}
+    	setTableStatsBean();
+		return "";
+	}
+
 }

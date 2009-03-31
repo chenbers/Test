@@ -62,15 +62,20 @@ public class DriverStyleBean extends BaseBean
     private String                emailAddress;
     private Boolean               initComplete = false;
 
-    private List<EventReportItem> styleEvents = new ArrayList<EventReportItem>();
+    private List<EventReportItem> styleEvents = new ArrayList<EventReportItem>(); //whole list
+    private List<EventReportItem> filteredStyleEvents = new ArrayList<EventReportItem>(); 	//filtered list
+    
+    private String 				  selectedEventType = "";
+    
 
-    private void init()
+	private void init()
     {
         int driverID = navigation.getDriver().getDriverID();
 
         Map<ScoreType, ScoreableEntity> scoreMap = scoreDAO.getDriverScoreBreakdownByType(driverID, durationBean.getDuration(), ScoreType.SCORE_DRIVING_STYLE);
-
+        
         ScoreableEntity se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE);
+        
         setStyleScoreOverall(se == null ? NO_SCORE : se.getScore());
 
         se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL);
@@ -85,13 +90,18 @@ public class DriverStyleBean extends BaseBean
         se = scoreMap.get(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
         setStyleScoreTurn(se == null ? NO_SCORE : se.getScore());
         
+        getViolations();
+        
         initComplete = true;
+       
     }
 
-    public void getViolations()
+    private void getViolations()
     {
-        if (styleEvents.isEmpty())
-        {
+//        if (styleEvents.isEmpty())
+//        {
+    		styleEvents = new ArrayList<EventReportItem>();
+    		
             List<Integer> types = new ArrayList<Integer>();
             types.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
 
@@ -103,11 +113,13 @@ public class DriverStyleBean extends BaseBean
                 event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
                 styleEvents.add(new EventReportItem(event, this.navigation.getDriver().getPerson().getTimeZone()));
             }
+            filterEventsAction();
+ //       	setTableStatsBean();
 
-            tableStatsBean.setPage(1);
-            tableStatsBean.setTableRowCount(10);
-            tableStatsBean.setTableSize(styleEvents.size());
-        }
+//            tableStatsBean.setPage(1);
+//            tableStatsBean.setTableRowCount(10);
+//            tableStatsBean.setTableSize(filteredStyleEvents.size());
+//        }
     }
 
     public String createLineDef(ScoreType scoreType)
@@ -391,7 +403,6 @@ public class DriverStyleBean extends BaseBean
 
     public TableStatsBean getTableStatsBean()
     {
-        getViolations();
         return tableStatsBean;
     }
 
@@ -409,8 +420,8 @@ public class DriverStyleBean extends BaseBean
     {
         durationBean.setDuration(duration);
         init();
-        styleEvents.clear();
-        getViolations();
+//        getViolations();
+
     }
     public Duration getDuration()
     {
@@ -419,13 +430,17 @@ public class DriverStyleBean extends BaseBean
 
     public List<EventReportItem> getStyleEvents()
     {
-        getViolations();
+//        getViolations();
+//        setTableStatsBean();
         return styleEvents;
     }
 
     public void setStyleEvents(List<EventReportItem> styleEvents)
     {
         this.styleEvents = styleEvents;
+        filterEventsAction();
+//    	setTableStatsBean();
+
     }
 
     public void ClearEventAction()
@@ -433,8 +448,11 @@ public class DriverStyleBean extends BaseBean
         Integer temp = eventDAO.forgive(navigation.getDriver().getDriverID(), clearItem.getEvent().getNoteID());
         // logger.debug("Clearing event " + clearItem.getNoteID() + " result: " + temp.toString());
 
-        styleEvents.clear();
+//        styleEvents.clear();
+//        filteredStyleEvents.clear();
         getViolations();
+//    	setTableStatsBean();
+
     }
 
     public EventReportItem getClearItem()
@@ -534,4 +552,54 @@ public class DriverStyleBean extends BaseBean
     {
         getReportRenderer().exportReportToExcel(buildReport(), getFacesContext());
     }
+    
+    public List<EventReportItem> getFilteredStyleEvents() {
+    	
+//        getViolations();
+//        setTableStatsBean();
+		return filteredStyleEvents;
+	}
+
+	public void setFilteredStyleEvents(List<EventReportItem> filteredStyleEvents) {
+		this.filteredStyleEvents = filteredStyleEvents;
+	}
+	
+	public String getSelectedEventType() {
+		
+		return selectedEventType;
+	}
+
+	public void setSelectedEventType(String selectedEventType) {
+		
+		this.selectedEventType = selectedEventType;
+	}
+	private void setTableStatsBean(){
+		
+        tableStatsBean.setPage(1);
+        tableStatsBean.setTableRowCount(10);
+        tableStatsBean.setTableSize(filteredStyleEvents.size());
+
+	}
+	public String filterEventsAction(){
+		
+		filteredStyleEvents = new ArrayList<EventReportItem>();
+		
+		if (selectedEventType.isEmpty()){
+			
+            filteredStyleEvents.addAll(styleEvents);
+
+		}
+		else {
+			
+			for (EventReportItem eri: styleEvents){
+				
+				if(eri.getEvent().getEventType().getKey().equals(selectedEventType)){
+					
+					filteredStyleEvents.add(eri);
+				}
+			}
+		}
+    	setTableStatsBean();
+		return "";
+	}
 }

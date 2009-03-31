@@ -28,8 +28,10 @@
 	<ui:param name="helpFile" value="Driving_Style.htm" />
 
 	<ui:define name="content">
-	<t:saveState value="#{driverStyleBean.styleEvents}"/>
-	<t:saveState value="#{driverStyleBean.tableStatsBean}"/>
+	<t:saveState value="#{driverStyleBean}"/>
+<!--	<t:saveState value="#{driverStyleBean.styleEvents}"/>-->
+<!--	<t:saveState value="#{driverStyleBean.filteredStyleEvents}"/>-->
+<!--	<t:saveState value="#{driverStyleBean.tableStatsBean}"/>-->
 	
 <div id="wrapper">
 
@@ -189,7 +191,14 @@ var firstLoad = new Boolean(true);
 					  <tr>
 					    <td id="OVERALL" valign="top" class="tiny_chart">
 						  <div class="tiny_title">
-							  <div onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_OVERALL}')">#{messages.SCORE_OVERALL}</div>
+						  <h:form>
+						  	  <a4j:commandLink  onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_OVERALL}')" 
+						  	  					action="#{driverStyleBean.filterEventsAction}" reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
+						  	  		<a4j:actionparam name="eventType" value="" assignTo="#{driverStyleBean.selectedEventType}"/>
+						  	  		<h:outputText value="#{messages.SCORE_OVERALL}"/>
+						  	  </a4j:commandLink>
+						  </h:form>
+<!--							  <div onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_OVERALL}')">#{messages.SCORE_OVERALL}</div>-->
 						  </div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
@@ -216,7 +225,15 @@ var firstLoad = new Boolean(true);
 						</td>
 					    <td id="BRAKE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-								<div onclick="SelectBreakDown('BRAKE', chartBrake, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_BRAKE}')">#{messages.SCORE_DRIVING_STYLE_HARD_BRAKE}</div>
+						  <h:form>
+						  	  <a4j:commandLink  onclick="SelectBreakDown('BRAKE', chartBrake, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_BRAKE}')" 
+						  	  					action="#{driverStyleBean.filterEventsAction}"
+						  	  					reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
+						  	  		<a4j:actionparam name="eventType" value="HARD_BRAKE" assignTo="#{driverStyleBean.selectedEventType}"/>
+						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_BRAKE}"/>
+						  	  </a4j:commandLink>
+						  </h:form>
+<!--								<div onclick="SelectBreakDown('BRAKE', chartBrake, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_BRAKE}')">#{messages.SCORE_DRIVING_STYLE_HARD_BRAKE}</div>-->
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
@@ -243,7 +260,15 @@ var firstLoad = new Boolean(true);
 						</td>
 					    <td id="ACCELERATE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-								<div onclick="SelectBreakDown('ACCELERATE', chartAccel, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_ACCEL}')">#{messages.SCORE_DRIVING_STYLE_HARD_ACCEL}</div>
+						  <h:form>
+						  	  <a4j:commandLink  onclick="SelectBreakDown('ACCELERATE', chartAccel, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_ACCEL}')" 
+						  	  					action="#{driverStyleBean.filterEventsAction}"
+						  	  					reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
+						  	  		<a4j:actionparam name="eventType" value="HARD_ACCEL" assignTo="#{driverStyleBean.selectedEventType}"/>
+						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_ACCEL}"/>
+						  	  </a4j:commandLink>
+						  </h:form>
+<!--								<div onclick="SelectBreakDown('ACCELERATE', chartAccel, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_ACCEL}')">#{messages.SCORE_DRIVING_STYLE_HARD_ACCEL}</div>-->
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
@@ -272,7 +297,15 @@ var firstLoad = new Boolean(true);
 					  <tr>
 						<td id="TURN" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-								<div onclick="SelectBreakDown('TURN', chartTurn, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_TURN}')">#{messages.SCORE_DRIVING_STYLE_HARD_TURN}</div>
+						  <h:form>
+						  	  <a4j:commandLink  onclick="SelectBreakDown('TURN', chartTurn, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_TURN}')" 
+						  	  					action="#{driverStyleBean.filterEventsAction}"
+						  	  					reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
+						  	  		<a4j:actionparam name="eventType" value="HARD_TURN" assignTo="#{driverStyleBean.selectedEventType}"/>
+						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_TURN}"/>
+						  	  </a4j:commandLink>
+						  </h:form>
+<!--								<div onclick="SelectBreakDown('TURN', chartTurn, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_TURN}')">#{messages.SCORE_DRIVING_STYLE_HARD_TURN}</div>-->
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
@@ -300,7 +333,15 @@ var firstLoad = new Boolean(true);
 						
 					    <td id="BUMP" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-								<div onclick="SelectBreakDown('BUMP', chartBump, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_BUMP}')">#{messages.SCORE_DRIVING_STYLE_HARD_BUMP}</div>
+						  <h:form>
+						  	  <a4j:commandLink  onclick="SelectBreakDown('BUMP', chartBump, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_BUMP}')" 
+						  	  					action="#{driverStyleBean.filterEventsAction}"
+						  	  					reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
+						  	  		<a4j:actionparam name="eventType" value="HARD_VERT" assignTo="#{driverStyleBean.selectedEventType}"/>
+						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_BUMP}"/>
+						  	  </a4j:commandLink>
+						  </h:form>
+<!--								<div onclick="SelectBreakDown('BUMP', chartBump, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_BUMP}')">#{messages.SCORE_DRIVING_STYLE_HARD_BUMP}</div>-->
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
@@ -380,7 +421,7 @@ var firstLoad = new Boolean(true);
 					<h:form id="eventTable">
 					<rich:datascroller align="center" for="notificationsTable" immediate="true" page="#{driverStyleBean.tableStatsBean.page}"
 							id="scrollerTop" reRender="notificationsTable,scrollerBottom,tableStats" scrollerListener="#{driverStyleBean.tableStatsBean.scrollerListener}" />
-						<rich:dataTable value="#{driverStyleBean.styleEvents}" 
+						<rich:dataTable value="#{driverStyleBean.filteredStyleEvents}" 
 						id="notificationsTable" var="item" styleClass="datagrid"
 						rowClasses="tableOdd,tableEven" cellspacing="1" 
 						rows="#{driverStyleBean.tableStatsBean.tableRowCount}" width="100%">
@@ -487,7 +528,7 @@ var firstLoad = new Boolean(true);
         <div class="popupactions">
           <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_no}" /></span></button>
           <a4j:commandLink action="#{driverStyleBean.ClearEventAction}"         				
-          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel')" reRender="notificationsTable,tableStats">
+          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel')" reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
 	          				<button type="submit" class="left">
 	          					<span class="apply">
 	          						<h:outputText value="#{messages.button_yes}" />

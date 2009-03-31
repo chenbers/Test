@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
@@ -45,8 +46,8 @@ public class VehicleSpeedBean extends BaseBean
     private String                speedScoreTwentyOneStyle;
     private Integer               speedScoreThirtyOne;
     private String                speedScoreThirtyOneStyle;
-    private Integer               speedScoreFourtyOne;
-    private String                speedScoreFourtyOneStyle;
+    private Integer               speedScoreFortyOne;
+    private String                speedScoreFortyOneStyle;
     private Integer               speedScoreFiftyFive;
     private String                speedScoreFiftyFiveStyle;
     private Integer               speedScoreSixtyFive;
@@ -55,7 +56,7 @@ public class VehicleSpeedBean extends BaseBean
     private String                speedScoreHistoryOverall;
     private String                speedScoreHistoryTwentyOne;
     private String                speedScoreHistoryThirtyOne;
-    private String                speedScoreHistoryFourtyOne;
+    private String                speedScoreHistoryFortyOne;
     private String                speedScoreHistoryFiftyFive;
     private String                speedScoreHistorySixtyFive;
 
@@ -65,6 +66,31 @@ public class VehicleSpeedBean extends BaseBean
     private ReportRenderer        reportRenderer;
     private String                emailAddress;
     private Boolean               initComplete = false;
+    
+    private List<EventReportItem> filteredSpeedingEvents; 	//filtered list
+    
+    private String 				  selectedSpeed  = "OVERALL";
+
+    private Map<String, List<EventReportItem>> speedingListsMap;
+
+    public List<EventReportItem> getFilteredSpeedingEvents() {
+		return filteredSpeedingEvents;
+	}
+
+	public void setFilteredSpeedingEvents(
+			List<EventReportItem> filteredSpeedingEvents) {
+		this.filteredSpeedingEvents = filteredSpeedingEvents;
+	}
+
+	public String getSelectedSpeed() {
+		return selectedSpeed;
+	}
+
+	public void setSelectedSpeed(String selectedSpeed) {
+		this.selectedSpeed = selectedSpeed;
+		setFilteredSpeedingEvents(speedingListsMap.get(selectedSpeed));
+    	setTableStatsBean();
+	}
 
     private void init()
     {
@@ -86,7 +112,7 @@ public class VehicleSpeedBean extends BaseBean
         setSpeedScoreThirtyOne(se == null ? NO_SCORE : se.getScore());
 
         se = scoreMap.get(ScoreType.SCORE_SPEEDING_55_64);
-        setSpeedScoreFourtyOne(se == null ? NO_SCORE : se.getScore());
+        setSpeedScoreFortyOne(se == null ? NO_SCORE : se.getScore());
 
         se = scoreMap.get(ScoreType.SCORE_SPEEDING_55_64);
         setSpeedScoreFiftyFive(se == null ? NO_SCORE : se.getScore());
@@ -94,18 +120,18 @@ public class VehicleSpeedBean extends BaseBean
         se = scoreMap.get(ScoreType.SCORE_SPEEDING_65_80);
         setSpeedScoreSixtyFive(se == null ? NO_SCORE : se.getScore());
         
+        getViolations();
         initComplete = true;
     }
 
     public void getViolations()
     {
-        if (speedingEvents.isEmpty())
-        {
             List<Integer> types = new ArrayList<Integer>();
             types.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
 
             List<Event> tempEvents = new ArrayList<Event>();
             tempEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), durationBean.getStartDate(), durationBean.getEndDate(), types);
+            speedingEvents = new ArrayList<EventReportItem>();
 
             for (Event event : tempEvents)
             {
@@ -116,10 +142,9 @@ public class VehicleSpeedBean extends BaseBean
                 speedingEvents.add(new EventReportItem(event, getUser().getPerson().getTimeZone()));
             }
 
-            tableStatsBean.setPage(1);
-            tableStatsBean.setTableRowCount(10);
-            tableStatsBean.setTableSize(speedingEvents.size());
-        }
+            sortSpeedingEvents();
+        	setTableStatsBean();
+
     }
 
     public String createLineDef(ScoreType scoreType)
@@ -241,31 +266,31 @@ public class VehicleSpeedBean extends BaseBean
     }
 
     // SPEED SCORE 41-54 MPH
-    public Integer getSpeedScoreFourtyOne()
+    public Integer getSpeedScoreFortyOne()
     {
         if(!initComplete) 
             init();
         
-        return speedScoreFourtyOne;
+        return speedScoreFortyOne;
     }
 
-    public void setSpeedScoreFourtyOne(Integer speedScoreFourtyOne)
+    public void setSpeedScoreFortyOne(Integer speedScoreFortyOne)
     {
-        setSpeedScoreFourtyOneStyle(ScoreBox.GetStyleFromScore(speedScoreFourtyOne, ScoreBoxSizes.MEDIUM));
-        this.speedScoreFourtyOne = speedScoreFourtyOne;
+        setSpeedScoreFortyOneStyle(ScoreBox.GetStyleFromScore(speedScoreFortyOne, ScoreBoxSizes.MEDIUM));
+        this.speedScoreFortyOne = speedScoreFortyOne;
     }
 
-    public String getSpeedScoreFourtyOneStyle()
+    public String getSpeedScoreFortyOneStyle()
     {
         if(!initComplete) 
             init();
         
-        return speedScoreFourtyOneStyle;
+        return speedScoreFortyOneStyle;
     }
 
-    public void setSpeedScoreFourtyOneStyle(String speedScoreFourtyOneStyle)
+    public void setSpeedScoreFortyOneStyle(String speedScoreFortyOneStyle)
     {
-        this.speedScoreFourtyOneStyle = speedScoreFourtyOneStyle;
+        this.speedScoreFortyOneStyle = speedScoreFortyOneStyle;
     }
 
     // SPEED SCORE 55-64 MPH
@@ -361,15 +386,15 @@ public class VehicleSpeedBean extends BaseBean
     }
 
     // SPEED HISTORY 41-54 MPH
-    public String getSpeedScoreHistoryFourtyOne()
+    public String getSpeedScoreHistoryFortyOne()
     {
-        setSpeedScoreHistoryFourtyOne(createLineDef(ScoreType.SCORE_SPEEDING_41_54));
-        return speedScoreHistoryFourtyOne;
+        setSpeedScoreHistoryFortyOne(createLineDef(ScoreType.SCORE_SPEEDING_41_54));
+        return speedScoreHistoryFortyOne;
     }
 
-    public void setSpeedScoreHistoryFourtyOne(String speedScoreHistoryFourtyOne)
+    public void setSpeedScoreHistoryFortyOne(String speedScoreHistoryFortyOne)
     {
-        this.speedScoreHistoryFourtyOne = speedScoreHistoryFourtyOne;
+        this.speedScoreHistoryFortyOne = speedScoreHistoryFortyOne;
     }
 
     // SPEED HISTORY 55-64 MPH
@@ -429,7 +454,6 @@ public class VehicleSpeedBean extends BaseBean
 
     public TableStatsBean getTableStatsBean()
     {
-        getViolations();
         return tableStatsBean;
     }
 
@@ -442,8 +466,6 @@ public class VehicleSpeedBean extends BaseBean
     {
         durationBean.setDuration(duration);
         init();
-        speedingEvents.clear();
-        getViolations();
     }
     public Duration getDuration()
     {
@@ -453,21 +475,22 @@ public class VehicleSpeedBean extends BaseBean
     // SPEEDING EVENTS LIST
     public List<EventReportItem> getSpeedingEvents()
     {
-        getViolations();
         return speedingEvents;
     }
 
     public void setSpeedingEvents(List<EventReportItem> speedingEvents)
     {
         this.speedingEvents = speedingEvents;
+        sortSpeedingEvents();
+    	setTableStatsBean();
     }
 
-    public void ClearEventAction()
+    public void clearEventAction()
     {
         Integer temp = eventDAO.forgive(navigation.getVehicle().getVehicleID(), clearItem.getEvent().getNoteID());
         // logger.debug("Clearing event " + clearItem.getNoteID() + " result: " + temp.toString());
 
-        speedingEvents.clear();
+//        speedingEvents.clear();
         getViolations();
     }
 
@@ -540,7 +563,7 @@ public class VehicleSpeedBean extends BaseBean
         reportCriteria.addParameter("SPEED_MEASUREMENT", MessageUtil.getMessageString("measurement_speed"));
         reportCriteria.addParameter("SCORE_TWENTYONE", this.getSpeedScoreTwentyOne() / 10.0D);
         reportCriteria.addParameter("SCORE_THIRTYONE", this.getSpeedScoreThirtyOne() / 10.0D);
-        reportCriteria.addParameter("SCORE_FOURTYONE", this.getSpeedScoreFourtyOne() / 10.0D);
+        reportCriteria.addParameter("SCORE_FOURTYONE", this.getSpeedScoreFortyOne() / 10.0D);
         reportCriteria.addParameter("SCORE_FIFTYFIVE", this.getSpeedScoreFiftyFive() / 10.0D);
         reportCriteria.addParameter("SCORE_SIXTYFIVE", this.getSpeedScoreSixtyFive() / 10.0D);
 
@@ -591,4 +614,55 @@ public class VehicleSpeedBean extends BaseBean
     {
         getReportRenderer().exportReportToExcel(buildReport(), getFacesContext());
     }
+	private void setTableStatsBean(){
+		
+        tableStatsBean.setPage(1);
+        tableStatsBean.setTableRowCount(10);
+        tableStatsBean.setTableSize(filteredSpeedingEvents.size());
+
+	}
+	private void sortSpeedingEvents(){
+		
+		speedingListsMap = new HashMap<String,List<EventReportItem>>();
+		List<EventReportItem> speedAll = new ArrayList<EventReportItem>();
+		speedingListsMap.put("OVERALL",speedAll);
+		List<EventReportItem> speed20 = new ArrayList<EventReportItem>();
+		speedingListsMap.put("TWENTYONE",speed20);
+		List<EventReportItem> speed30 = new ArrayList<EventReportItem>();
+		speedingListsMap.put("THIRTYONE",speed30);
+		List<EventReportItem> speed40 = new ArrayList<EventReportItem>();
+		speedingListsMap.put("FORTYONE",speed40);
+		List<EventReportItem> speed50 = new ArrayList<EventReportItem>();
+		speedingListsMap.put("FIFTYFIVE",speed50);
+		List<EventReportItem> speed60 = new ArrayList<EventReportItem>();
+		speedingListsMap.put("SIXTYFIVE",speed60);
+		
+		speedAll.addAll(speedingEvents);
+		
+		for (EventReportItem eri: speedingEvents){
+			
+			if((((SpeedingEvent)eri.getEvent()).getSpeedLimit() > 20)&&(((SpeedingEvent)eri.getEvent()).getSpeedLimit() < 31)){
+				
+				speed20.add(eri);
+			}
+			else if ((((SpeedingEvent)eri.getEvent()).getSpeedLimit() > 30)&&(((SpeedingEvent)eri.getEvent()).getSpeedLimit() < 41)){
+				
+				speed30.add(eri);
+			}
+			else if ((((SpeedingEvent)eri.getEvent()).getSpeedLimit() > 40)&&(((SpeedingEvent)eri.getEvent()).getSpeedLimit() < 55)){
+				
+				speed40.add(eri);
+			}
+			else if ((((SpeedingEvent)eri.getEvent()).getSpeedLimit() > 54)&&(((SpeedingEvent)eri.getEvent()).getSpeedLimit() < 65)){
+				
+				speed50.add(eri);
+			}
+			else if ((((SpeedingEvent)eri.getEvent()).getSpeedLimit() > 64)&&(((SpeedingEvent)eri.getEvent()).getSpeedLimit() < 81)){
+				
+				speed60.add(eri);
+			}
+		}
+		filteredSpeedingEvents = speedingListsMap.get(selectedSpeed);
+	}
+
 }

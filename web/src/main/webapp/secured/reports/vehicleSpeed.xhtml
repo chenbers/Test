@@ -31,8 +31,9 @@
 	
 	
 	<ui:define name="content">
-	<t:saveState value="#{vehicleSpeedBean.speedingEvents}"/>
-	<t:saveState value="#{vehicleSpeedBean.tableStatsBean}"/>
+		<t:saveState value="#{vehicleSpeedBean}"/>
+<!--	<t:saveState value="#{vehicleSpeedBean.speedingEvents}"/>-->
+<!--	<t:saveState value="#{vehicleSpeedBean.tableStatsBean}"/>-->
 
 	
 <div id="wrapper">
@@ -192,7 +193,14 @@ var firstLoad = new Boolean(true);
 					  <tr>
 					    <td id="OVERALL" valign="top" class="tiny_chart">
 						  <div class="tiny_title">
-								<div onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.reports_speed}: #{messages.SCORE_OVERALL}')">#{messages.SCORE_OVERALL}</div>
+						  <h:form>
+						  	  <a4j:commandLink  onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.reports_speed}: #{messages.SCORE_OVERALL}')" 
+						  	  					reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
+						  	  		<a4j:actionparam name="speed" value="OVERALL" assignTo="#{vehicleSpeedBean.selectedSpeed}"/>
+						  	  		<h:outputText value="#{messages.SCORE_OVERALL}"/>
+						  	  </a4j:commandLink>
+						  </h:form>
+<!--								<div onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.reports_speed}: #{messages.SCORE_OVERALL}')">#{messages.SCORE_OVERALL}</div>-->
 						  </div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
@@ -219,7 +227,14 @@ var firstLoad = new Boolean(true);
 						</td>
 					    <td id="TWENTYONE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-								<div onclick="SelectBreakDown('TWENTYONE', chart21, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_21_30}')">#{messages.SCORE_SPEEDING_21_30}</div>
+						  <h:form>
+						  	  <a4j:commandLink  onclick="SelectBreakDown('TWENTYONE', chart21, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_21_30}')" 
+						  	  					reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
+						  	  		<a4j:actionparam name="speed" value="TWENTYONE" assignTo="#{vehicleSpeedBean.selectedSpeed}"/>
+						  	  		<h:outputText value="#{messages.SCORE_SPEEDING_21_30}"/>
+						  	  </a4j:commandLink>
+						  </h:form>
+<!--								<div onclick="SelectBreakDown('TWENTYONE', chart21, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_21_30}')">#{messages.SCORE_SPEEDING_21_30}</div>-->
 								
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
@@ -247,7 +262,14 @@ var firstLoad = new Boolean(true);
 						</td>
 					    <td id="THIRTYONE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-								<div onclick="SelectBreakDown('THIRTYONE', chart31, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_31_40}')">#{messages.SCORE_SPEEDING_31_40}</div>
+						  <h:form>
+						  	  <a4j:commandLink  onclick="SelectBreakDown('THIRTYONE', chart31, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_31_40}')" 
+						  	  					reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
+						  	  		<a4j:actionparam name="speed" value="THIRTYONE" assignTo="#{vehicleSpeedBean.selectedSpeed}"/>
+						  	  		<h:outputText value="#{messages.SCORE_SPEEDING_31_40}"/>
+						  	  </a4j:commandLink>
+						  </h:form>
+<!--								<div onclick="SelectBreakDown('THIRTYONE', chart31, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_31_40}')">#{messages.SCORE_SPEEDING_31_40}</div>-->
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
@@ -274,16 +296,23 @@ var firstLoad = new Boolean(true);
 						</td>
 				      </tr>
 					  <tr>
-						<td id="FOURTYONE" valign="top" class="tiny_chart">
+						<td id="FORTYONE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-								<div onclick="SelectBreakDown('FOURTYONE', chart41, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_41_54}')">#{messages.SCORE_SPEEDING_41_54}</div>
+						  <h:form>
+						  	  <a4j:commandLink  onclick="SelectBreakDown('FORTYONE', chart41, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_41_54}')" 
+						  	  					reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
+						  	  		<a4j:actionparam name="speed" value="FORTYONE" assignTo="#{vehicleSpeedBean.selectedSpeed}"/>
+						  	  		<h:outputText value="#{messages.SCORE_SPEEDING_41_54}"/>
+						  	  </a4j:commandLink>
+						  </h:form>
+<!--								<div onclick="SelectBreakDown('FORTYONE', chart41, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_41_54}')">#{messages.SCORE_SPEEDING_41_54}</div>-->
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-								            <ui:param name="lineChartDef" value="##{vehicleSpeedBean.speedScoreHistoryFourtyOne}" />
-								            <ui:param name="hiddenFieldID" value="HiddenFOURTYONE" />
+								            <ui:param name="lineChartDef" value="##{vehicleSpeedBean.speedScoreHistoryFortyOne}" />
+								            <ui:param name="hiddenFieldID" value="HiddenFORTYONE" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
 								            <ui:param name="tartgetElementVar" value="targetElement41" />
@@ -294,8 +323,8 @@ var firstLoad = new Boolean(true);
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{vehicleSpeedBean.speedScoreFourtyOne}" />
-								            <ui:param name="scoreStyle" value="#{vehicleSpeedBean.speedScoreFourtyOneStyle}" /> 
+								            <ui:param name="score" value="#{vehicleSpeedBean.speedScoreFortyOne}" />
+								            <ui:param name="scoreStyle" value="#{vehicleSpeedBean.speedScoreFortyOneStyle}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -303,7 +332,14 @@ var firstLoad = new Boolean(true);
 						</td>
 						<td id="FIFTYFIVE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-								<div onclick="SelectBreakDown('FIFTYFIVE', chart55, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_55_64}')">#{messages.SCORE_SPEEDING_55_64}</div>
+						  <h:form>
+						  	  <a4j:commandLink  onclick="SelectBreakDown('FIFTYFIVE', chart55, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_55_64}')" 
+						  	  					reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
+						  	  		<a4j:actionparam name="speed" value="FIFTYFIVE" assignTo="#{vehicleSpeedBean.selectedSpeed}"/>
+						  	  		<h:outputText value="#{messages.SCORE_SPEEDING_55_64}"/>
+						  	  </a4j:commandLink>
+						  </h:form>
+<!--								<div onclick="SelectBreakDown('FIFTYFIVE', chart55, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_55_64}')">#{messages.SCORE_SPEEDING_55_64}</div>-->
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
@@ -330,7 +366,14 @@ var firstLoad = new Boolean(true);
 						</td>
 					    <td id="SIXTYFIVE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
-								<div onclick="SelectBreakDown('SIXTYFIVE', chart65, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_65_80}')">#{messages.SCORE_SPEEDING_65_80}</div>
+						  <h:form>
+						  	  <a4j:commandLink  onclick="SelectBreakDown('SIXTYFIVE', chart65, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_65_80}')" 
+						  	  					SIXTYFIVEreRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
+						  	  		<a4j:actionparam name="speed" value="SIXTYFIVE" assignTo="#{vehicleSpeedBean.selectedSpeed}"/>
+						  	  		<h:outputText value="#{messages.SCORE_SPEEDING_65_80}"/>
+						  	  </a4j:commandLink>
+						  </h:form>
+<!--								<div onclick="SelectBreakDown('SIXTYFIVE', chart65, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_65_80}')">#{messages.SCORE_SPEEDING_65_80}</div>-->
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
@@ -372,7 +415,7 @@ var firstLoad = new Boolean(true);
 							if(selected == 'OVERALL') SelectBreakDown(selected, overallChart2, selectedTitle);
 							if(selected == 'TWENTYONE') SelectBreakDown(selected, chart21, selectedTitle);
 							if(selected == 'THIRTYONE') SelectBreakDown(selected, chart31, selectedTitle);
-							if(selected == 'FOURTYONE') SelectBreakDown(selected, chart41, selectedTitle);
+							if(selected == 'FORTYONE') SelectBreakDown(selected, chart41, selectedTitle);
 							if(selected == 'FIFTYFIVE') SelectBreakDown(selected, chart55, selectedTitle);
 							if(selected == 'SIXTYFIVE') SelectBreakDown(selected, chart65, selectedTitle);
 						}
@@ -411,7 +454,7 @@ var firstLoad = new Boolean(true);
 								       scrollerListener="#{vehicleSpeedBean.tableStatsBean.scrollerListener}" />
 								
 						<rich:dataTable 
-						value="#{vehicleSpeedBean.speedingEvents}" 
+						value="#{vehicleSpeedBean.filteredSpeedingEvents}" 
 						id="notificationsTable" var="item" styleClass="datagrid"
 						rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{vehicleSpeedBean.tableStatsBean.tableRowCount}" width="100%">			
 
@@ -533,8 +576,8 @@ var firstLoad = new Boolean(true);
 	
         <div class="popupactions">
           <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="cancel"><h:outputText value="#{messages.button_no}" /></span></button>
-          <a4j:commandLink action="#{vehicleSpeedBean.ClearEventAction}"         				
-          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel')" reRender="notificationsTable,tableStats">
+          <a4j:commandLink action="#{vehicleSpeedBean.clearEventAction}"         				
+          				   oncomplete="Richfaces.hideModalPanel('clearEventPanel')" reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
 	          				<button type="submit" class="left">
 	          					<span class="apply">
 	          						<h:outputText value="#{messages.button_yes}" />

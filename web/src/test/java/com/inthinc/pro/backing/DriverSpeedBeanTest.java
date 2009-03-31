@@ -54,8 +54,8 @@ public class DriverSpeedBeanTest extends BaseBeanTest
         Test = driverSpeedBean.getSpeedScoreThirtyOneStyle();
         assertEquals(Test, "score_med_3");
         
-        driverSpeedBean.setSpeedScoreFourtyOne(44);
-        Test = driverSpeedBean.getSpeedScoreFourtyOneStyle();
+        driverSpeedBean.setSpeedScoreFortyOne(44);
+        Test = driverSpeedBean.getSpeedScoreFortyOneStyle();
         assertEquals(Test, "score_med_5");
         
         driverSpeedBean.setSpeedScoreFiftyFive(11);

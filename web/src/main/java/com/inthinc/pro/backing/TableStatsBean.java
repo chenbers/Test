@@ -15,10 +15,14 @@ public class TableStatsBean
 
     public Integer getTableRowStart()
     {
-        if(tableRowStart == null && tableSize > 0)
-            tableRowStart = 1;
-        else if(tableRowStart == null && tableSize == 0)
-            tableRowStart = 0;
+    	if(tableRowStart == null){
+    		
+    		tableRowStart = tableSize > 0?1:0;
+    	}
+//        if(tableRowStart == null && tableSize > 0)
+//            tableRowStart = 1;
+//        else if(tableRowStart == null && tableSize == 0)
+//            tableRowStart = 0;
 
         return tableRowStart;
     }
@@ -68,7 +72,11 @@ public class TableStatsBean
             tableRowStart = 1;
             tableRowEnd = tableRowCount;
         }
-        
+        else {
+            tableRowStart = 0;
+            tableRowEnd = tableRowCount;
+       	
+        }
         this.tableSize = tableSize;
     }
 
