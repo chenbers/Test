@@ -26,7 +26,7 @@
       <table width="130" border="0" cellpadding="0" cellspacing="0" style="margin-top: 40px;">
         <tr>
           <td valign="top" class="#{(selectedAction == 'go_adminPeople') ? 'ls_tab_on' : 'ls_tab_off'}">
-            <a4j:htmlCommandLink action="go_adminPeople" value="#{messages.adminSideNav_go_adminPeople}" styleClass="ls_tab_driver" immediate="true" />
+            <a4j:htmlCommandLink action="#{personBean.getResetListRedirect}" value="#{messages.adminSideNav_go_adminPeople}" styleClass="ls_tab_driver" immediate="true" />
           </td>
         </tr>
         <ui:fragment rendered="#{parentAction == 'go_adminPeople'}">
@@ -40,7 +40,7 @@
         </ui:fragment>
         <tr>
           <td valign="top" class="#{(selectedAction == 'go_adminVehicles') ? 'ls_tab_on' : 'ls_tab_off'}">
-            <a4j:htmlCommandLink action="go_adminVehicles" value="#{messages.adminSideNav_go_adminVehicles}" styleClass="ls_tab_vehicle" immediate="true" />
+            <a4j:htmlCommandLink action="#{vehiclesBean.getResetListRedirect}" value="#{messages.adminSideNav_go_adminVehicles}" styleClass="ls_tab_vehicle" immediate="true" />
           </td>
         </tr>
         <ui:fragment rendered="#{parentAction == 'go_adminVehicles'}">
@@ -54,7 +54,7 @@
         </ui:fragment>
         <tr>
           <td valign="top" class="#{(selectedAction == 'go_adminDevices') ? 'ls_tab_on' : 'ls_tab_off'}">
-            <a4j:htmlCommandLink action="go_adminDevices" value="#{messages.adminSideNav_go_adminDevices}" styleClass="ls_tab_tiwi" immediate="true" />
+            <a4j:htmlCommandLink action="#{devicesBean.getResetListRedirect}" value="#{messages.adminSideNav_go_adminDevices}" styleClass="ls_tab_tiwi" immediate="true" />
           </td>
         </tr>
         <ui:fragment rendered="#{parentAction == 'go_adminDevices'}">
@@ -73,7 +73,7 @@
         </tr>
         <tr>
           <td valign="top" class="#{(selectedAction == 'go_adminZoneAlerts') ? 'ls_tab_on' : 'ls_tab_off'}">
-            <a4j:htmlCommandLink action="go_adminZoneAlerts" value="#{messages.adminSideNav_go_adminZoneAlerts}" styleClass="ls_tab_zone_alerts" immediate="true" />
+            <a4j:htmlCommandLink action="#{zoneAlertsBean.getResetListRedirect}" value="#{messages.adminSideNav_go_adminZoneAlerts}" styleClass="ls_tab_zone_alerts" immediate="true" />
           </td>
         </tr>
         <ui:fragment rendered="#{parentAction == 'go_adminZoneAlerts'}">
@@ -87,7 +87,7 @@
         </ui:fragment>
         <tr>
           <td valign="top" class="#{(selectedAction == 'go_adminRedFlags') ? 'ls_tab_on' : 'ls_tab_off'}">
-            <a4j:htmlCommandLink action="go_adminRedFlags" value="#{messages.adminSideNav_go_adminRedFlags}" styleClass="ls_tab_redflag" immediate="true" />
+            <a4j:htmlCommandLink action="#{redFlagAlertsBean.getResetListRedirect}" value="#{messages.adminSideNav_go_adminRedFlags}" styleClass="ls_tab_redflag" immediate="true" />
           </td>
         </tr>
         <ui:fragment rendered="#{parentAction == 'go_adminRedFlags'}">
@@ -101,7 +101,7 @@
         </ui:fragment>
         <tr>
           <td valign="top" class="#{(selectedAction == 'go_adminReportSchedules') ? 'ls_tab_on' : 'ls_tab_off'}">
-            <a4j:htmlCommandLink action="go_adminReportSchedules" value="#{messages.adminSideNav_go_adminReportSchedules}" styleClass="ls_tab_report_schedule" immediate="true" />
+            <a4j:htmlCommandLink action="#{reportScheduleBean.getResetListRedirect}" value="#{messages.adminSideNav_go_adminReportSchedules}" styleClass="ls_tab_report_schedule" immediate="true" />
           </td>
         </tr>
         <ui:fragment rendered="#{parentAction == 'go_adminReportSchedules'}">

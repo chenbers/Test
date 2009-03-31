@@ -10,7 +10,7 @@
   <ui:param name="adminSelected" value="current" />
   <ui:param name="helpFile" value="Admin_Vehicles.htm" />
   <ui:define name="content">
-
+   
     <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
       <tr>
       <td valign="top" width="130">
@@ -22,7 +22,6 @@
       <td valign="top">
         <!-- START PANEL -->
           <div class="">
-
             <div class="panel_nw">
               <div class="panel_title">
                 <span class="admin"><h:outputText value="#{messages.adminHeader_vehicles}" /></span>
@@ -33,42 +32,25 @@
                            id="tableRefreshStatus" for="refreshRegion">
                                  <f:facet name="start">
                                     <h:outputText>
-                                       <img 
-                                          src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" 
-                                          align="top" />&#160;</h:outputText>
+                                       <img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;
+                                    </h:outputText>
                                  </f:facet>
                         </a4j:status>
-                        <!-- <a4j:commandButton image="/images/ico_refresh.png" immediate="true"
-                           reRender="dataTable,bottomScroller" action="#{vehiclesBean.refreshItems}"
-                           value="#{messages.refresh}">
-                        </a4j:commandButton> 
-                        -->
-                       
-                        <a4j:jsFunction name="refreshList" action="#{vehiclesBean.refreshItems}" reRender="dataTable,bottomScroller" requestDelay="200"></a4j:jsFunction>
                      </a4j:form>
-                     </a4j:region>
+                   </a4j:region>
                 </span>
               </div>
             </div>
-
             <ui:include src="/includes/vehiclesTable.xhtml" />
-
             <div class="panel_sw">
               <div class="panel_statusbar"></div>
             </div>
-
           </div>
           <!-- END PANEL -->            
         </td>
-
       </tr>
     </table>
    
-    <script type="text/javascript">
-      function bodyLoad(){
-         refreshList();
-      }
-    </script>
   </ui:define>
 
 </ui:composition>
