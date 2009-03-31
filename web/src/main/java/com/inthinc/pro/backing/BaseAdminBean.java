@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -723,6 +724,15 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
      * @return A redirect to navigate to when a user has finished or canceled editing.
      */
     protected abstract String getFinishedRedirect();
+    
+    /**
+     * @return before redericting clears the list so that the next time the list is loaded, it's a new one.
+     */
+    public String getResetListRedirect()
+    {
+        refreshItems();
+        return getFinishedRedirect();
+    }
 
 
 }
