@@ -43,7 +43,8 @@
                            value="#{messages.refresh}">
                         </a4j:commandButton> 
                         -->
-                        <a4j:jsFunction name="refreshList" action="#{vehiclesBean.refreshItems}" reRender="dataTable,bottomScroller"></a4j:jsFunction>
+                       
+                        <a4j:jsFunction name="refreshList" action="#{vehiclesBean.refreshItems}" reRender="dataTable,bottomScroller" requestDelay="200"></a4j:jsFunction>
                      </a4j:form>
                      </a4j:region>
                 </span>
@@ -62,8 +63,11 @@
 
       </tr>
     </table>
+   
     <script type="text/javascript">
+      function bodyLoad(){
          refreshList();
+      }
     </script>
   </ui:define>
 
