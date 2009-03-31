@@ -58,9 +58,9 @@
         <ui:param name="editorBean" value="#{myBean}" />
       </ui:include>
 -->
-
+   
   <ui:composition>
-	
+	<ui:param name="ajaxPanels" value="tablePanel"/>
     <c:if test="#{empty rows}">
       <c:set var="rows" value="10" />
     </c:if>
@@ -118,6 +118,7 @@
 TODO: the top scroller doesn't work right with filtering
           <rich:datascroller id="topScroller" for="dataTable" reRender="recordCounts,dataTable,bottomScroller" page="#{page}" />
 -->
+          <a4j:outputPanel id="tablePanel">
           <a4j:region>
           <div class="datagrid" style="width: 790px; overflow: auto">
 
@@ -149,7 +150,7 @@ TODO: the top scroller doesn't work right with filtering
           <rich:datascroller id="bottomScroller" for="dataTable" reRender="recordCounts,dataTable" page="#{page}" />
           
           </a4j:region>
-
+          </a4j:outputPanel>
         </div>
       </div>
       
