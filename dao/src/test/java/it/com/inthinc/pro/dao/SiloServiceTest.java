@@ -1191,7 +1191,7 @@ public class SiloServiceTest
         
         for (Person person : personList)
         {
-//            reportSchedules(acctID, person.getUser().getUserID(), groupID);
+            reportSchedules(acctID, person.getUser().getUserID(), groupID);
         }
 
         // TODO: remove status
@@ -1241,12 +1241,13 @@ public class SiloServiceTest
         reportSchedule.setAccountID(acctID);
         
         
-        Calendar firstOfMonth = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        firstOfMonth.set(Calendar.DATE, 1);
-        firstOfMonth.set(Calendar.HOUR, 0);
-        firstOfMonth.set(Calendar.MINUTE, 0);
-        firstOfMonth.set(Calendar.SECOND, 0);
-        firstOfMonth.set(Calendar.MILLISECOND, 0);
+        Calendar lastDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        lastDate.set(Calendar.HOUR, 0);
+        lastDate.set(Calendar.MINUTE, 0);
+        lastDate.set(Calendar.SECOND, 0);
+        lastDate.set(Calendar.MILLISECOND, 0);
+        lastDate.add(Calendar.DATE, -7);
+        
         
         Calendar endDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         endDate.set(Calendar.HOUR, 0);
@@ -1254,9 +1255,9 @@ public class SiloServiceTest
         endDate.set(Calendar.SECOND, 0);
         endDate.set(Calendar.MILLISECOND, 0);
         
-        reportSchedule.setLastDate(firstOfMonth.getTime());
+        reportSchedule.setLastDate(lastDate.getTime());
         reportSchedule.setEndDate(endDate.getTime());
-        reportSchedule.setStartDate(firstOfMonth.getTime());
+        reportSchedule.setStartDate(lastDate.getTime());
         
         List<String> emailList = new ArrayList<String>();
         emailList.add("foo@inthinc.com");
