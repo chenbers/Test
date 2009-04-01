@@ -1,0 +1,117 @@
+﻿BODY { 
+      font-weight:bold; 
+      font-style:normal; 
+      background-color:#ffffff; 
+      font-family:"Trebuchet MS" , sans-serif; 
+      color:#000000;  }
+H1 { 
+    font-weight:bold; 
+    font-size:30; 
+    font-family:"Trebuchet MS" , sans-serif; 
+    border-left-style:Solid; 
+    border-right-style:Solid; 
+    border-top-style:Solid; 
+    border-bottom-style:Solid; 
+    background-color:#000000; 
+    margin-left:0pt; 
+    color:#8cae39; 
+    border-left-width:4px; 
+    border-right-width:4px; 
+    border-top-width:4px; 
+    border-bottom-width:4px; 
+    border-left-color:#8cae39; 
+    border-right-color:#8cae39; 
+    border-top-color:#8cae39; 
+    border-bottom-color:#8cae39;  }
+LI.H1 { 
+       font-weight:bold; 
+       font-size:30; 
+       font-family:"Trebuchet MS" , sans-serif; 
+       color:#8cae39;  }
+H2 { 
+    font-weight:bold; 
+    font-size:24; 
+    font-family:"Trebuchet MS" , sans-serif;  }
+LI.H2 { 
+       font-weight:bold; 
+       font-size:24; 
+       font-family:"Trebuchet MS" , sans-serif;  }
+H3 { 
+    font-weight:bold; 
+    font-size:18pt; 
+    font-family:"Trebuchet MS" , sans-serif;  }
+LI.H3 { 
+       font-weight:bold; 
+       font-size:18pt; 
+       font-family:"Trebuchet MS" , sans-serif;  }
+H4 { 
+    font-weight:bold; 
+    font-size:12.0pt; 
+    font-family:treb;  }
+LI.H4 { 
+       font-weight:bold; 
+       font-size:12.0pt; 
+       font-family:treb;  }
+H5 { 
+    font-weight:bold; 
+    font-size:10.0pt; 
+    font-family:"Trebuchet MS" , sans-serif;  }
+LI.H5 { 
+       font-weight:bold; 
+       font-size:10.0pt; 
+       font-family:"Trebuchet MS" , sans-serif;  }
+H6 { 
+    font-weight:bold; 
+    font-size:8.0pt;  }
+LI.H6 { 
+       font-weight:bold; 
+       font-size:8.0pt;  }
+P { 
+   font-size:14pt; 
+   margin-top:8pt; 
+   margin-bottom:8pt; 
+   font-family:"Trebuchet MS" , sans-serif; 
+   font-weight:normal; 
+   font-style:normal;  }
+LI.P { 
+      font-size:14pt; 
+      font-family:"Trebuchet MS" , sans-serif; 
+      font-weight:normal; 
+      font-style:normal;  }
+A.expandspot { 
+              color:#008000; 
+              cursor:hand; 
+              font-style:italic; 
+              text-decoration:none;  }
+SPAN.expandtext { 
+                 font-style:italic; 
+                 font-weight:normal; 
+                 color:#ff0000;  }
+A.dropspot { 
+            cursor:hand; 
+            color:#008000; 
+            font-style:italic; 
+            text-decoration:none;  }
+A.glossterm { 
+             color:#800000; 
+             cursor:hand; 
+             font-style:italic; 
+             text-decoration:none;  }
+SPAN.glosstext { 
+                font-style:italic; 
+                font-weight:normal; 
+                color:#0000ff;  }
+OL { 
+    margin-top:0px; 
+    margin-bottom:0px;  }
+UL { 
+    margin-top:0px; 
+    margin-bottom:0px;  }
+A:link { 
+        color:#8cae39;  }
+A:active { 
+          color:#0000a6;  }
+A:hover { 
+         color:#8cae39;  }
+A:visited { 
+           color:#8a0000;  }
