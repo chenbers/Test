@@ -1,19 +1,17 @@
 package it.com.inthinc.pro.dao;
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import it.config.IntegrationConfig;
 
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
-import it.config.IntegrationConfig;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
@@ -22,7 +20,6 @@ import com.inthinc.pro.dao.hessian.MpgHessianDAO;
 import com.inthinc.pro.dao.hessian.RoleHessianDAO;
 import com.inthinc.pro.dao.hessian.ScoreHessianDAO;
 import com.inthinc.pro.dao.hessian.StateHessianDAO;
-import com.inthinc.pro.dao.hessian.extension.HessianDebug;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
 import com.inthinc.pro.dao.hessian.proserver.ReportServiceCreator;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
@@ -30,7 +27,6 @@ import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.model.DriverScore;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;

@@ -1191,7 +1191,7 @@ public class SiloServiceTest
         
         for (Person person : personList)
         {
-            reportSchedules(acctID, person.getUser().getUserID(), groupID);
+//            reportSchedules(acctID, person.getUser().getUserID(), groupID);
         }
 
         // TODO: remove status
