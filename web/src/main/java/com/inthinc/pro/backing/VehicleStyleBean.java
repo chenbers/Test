@@ -60,7 +60,7 @@ public class VehicleStyleBean extends BaseBean
     private static final Integer  NO_SCORE    = -1;
     private ReportRenderer        reportRenderer;
     private String                emailAddress;
-    private Boolean               initComplete = false;
+//    private Boolean               initComplete = false;
 
     private List<EventReportItem> styleEvents = new ArrayList<EventReportItem>();
 
@@ -107,7 +107,7 @@ public class VehicleStyleBean extends BaseBean
         
         getViolations();
         
-        initComplete = true;
+//        initComplete = true;
     }
 
     public void getViolations()
@@ -173,8 +173,8 @@ public class VehicleStyleBean extends BaseBean
     // STYLE OVERALL SCORE PROPERTY
     public Integer getStyleScoreOverall()
     {
-        if(!initComplete) 
-            init();
+//        if(!initComplete) 
+//            init();
         
         return styleScoreOverall;
     }
@@ -187,8 +187,8 @@ public class VehicleStyleBean extends BaseBean
 
     public String getStyleScoreOverallStyle()
     {
-        if(!initComplete) 
-            init();
+//        if(!initComplete) 
+//            init();
         
         return styleScoreOverallStyle;
     }
@@ -201,8 +201,8 @@ public class VehicleStyleBean extends BaseBean
     // STYLE SCORE HARD ACCEL
     public Integer getStyleScoreAccel()
     {
-        if(!initComplete) 
-            init();
+//        if(!initComplete) 
+//            init();
         
         return styleScoreAccel;
     }
@@ -215,8 +215,8 @@ public class VehicleStyleBean extends BaseBean
 
     public String getStyleScoreAccelStyle()
     {
-        if(!initComplete) 
-            init();
+//        if(!initComplete) 
+//            init();
         
         return styleScoreAccelStyle;
     }
@@ -229,8 +229,8 @@ public class VehicleStyleBean extends BaseBean
     // STYLE SCORE HARD BRAKE
     public Integer getStyleScoreBrake()
     {
-        if(!initComplete) 
-            init();
+//        if(!initComplete) 
+//            init();
         
         return styleScoreBrake;
     }
@@ -243,8 +243,8 @@ public class VehicleStyleBean extends BaseBean
 
     public String getStyleScoreBrakeStyle()
     {
-        if(!initComplete) 
-            init();
+//        if(!initComplete) 
+//            init();
         
         return styleScoreBrakeStyle;
     }
@@ -257,8 +257,8 @@ public class VehicleStyleBean extends BaseBean
     // STYLE SCORE HARD BUMP
     public Integer getStyleScoreBump()
     {
-        if(!initComplete) 
-            init();
+//        if(!initComplete) 
+//            init();
         
         return styleScoreBump;
     }
@@ -271,8 +271,8 @@ public class VehicleStyleBean extends BaseBean
 
     public String getStyleScoreBumpStyle()
     {
-        if(!initComplete) 
-            init();
+//        if(!initComplete) 
+//            init();
         
         return styleScoreBumpStyle;
     }
@@ -285,8 +285,8 @@ public class VehicleStyleBean extends BaseBean
     // STYLE SCORE HARD TURN
     public Integer getStyleScoreTurn()
     {
-        if(!initComplete) 
-            init();
+//        if(!initComplete) 
+//            init();
         
         return styleScoreTurn;
     }
@@ -299,8 +299,8 @@ public class VehicleStyleBean extends BaseBean
 
     public String getStyleScoreTurnStyle()
     {
-        if(!initComplete) 
-            init();
+//        if(!initComplete) 
+//            init();
         
         return styleScoreTurnStyle;
     }

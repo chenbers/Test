@@ -65,7 +65,7 @@ public class DriverSpeedBean extends BaseBean
     private EventReportItem       clearItem;
     private ReportRenderer        reportRenderer;
     private String                emailAddress;
-    private Boolean               initComplete = false;
+//    private Boolean               initComplete = false;
 
     private List<EventReportItem> filteredSpeedingEvents; 	//filtered list
     
@@ -123,7 +123,7 @@ public class DriverSpeedBean extends BaseBean
         
         getViolations();
         
-        initComplete = true;
+//        initComplete = true;
     }
 
     public void getViolations()
@@ -191,9 +191,9 @@ public class DriverSpeedBean extends BaseBean
     // SPEED OVERALL SCORE PROPERTY
     public Integer getSpeedScoreOverall()
     {
-        if(!initComplete) 
-            init();
-        
+//        if(!initComplete) 
+//            init();
+//        
         return speedScoreOverall;
     }
 
@@ -205,8 +205,8 @@ public class DriverSpeedBean extends BaseBean
 
     public String getSpeedScoreOverallStyle()
     {
-        if(!initComplete) 
-            init();
+//        if(!initComplete) 
+//            init();
         
         return speedScoreOverallStyle;
     }
@@ -219,8 +219,8 @@ public class DriverSpeedBean extends BaseBean
     // SPEED SCORE 21-30 MPH
     public Integer getSpeedScoreTwentyOne()
     {
-        if(!initComplete) 
-            init();
+//        if(!initComplete) 
+//            init();
         
         return speedScoreTwentyOne;
     }
@@ -233,8 +233,8 @@ public class DriverSpeedBean extends BaseBean
 
     public String getSpeedScoreTwentyOneStyle()
     {
-        if(!initComplete) 
-            init();
+//        if(!initComplete) 
+//            init();
         
         return speedScoreTwentyOneStyle;
     }
@@ -247,8 +247,8 @@ public class DriverSpeedBean extends BaseBean
     // SPEED SCORE 31-40 MPH
     public Integer getSpeedScoreThirtyOne()
     {
-        if(!initComplete) 
-            init();
+//        if(!initComplete) 
+//            init();
         
         return speedScoreThirtyOne;
     }
@@ -261,8 +261,8 @@ public class DriverSpeedBean extends BaseBean
 
     public String getSpeedScoreThirtyOneStyle()
     {
-        if(!initComplete) 
-            init();
+//        if(!initComplete) 
+//            init();
         
         return speedScoreThirtyOneStyle;
     }
@@ -275,8 +275,8 @@ public class DriverSpeedBean extends BaseBean
     // SPEED SCORE 41-54 MPH
     public Integer getSpeedScoreFortyOne()
     {
-        if(!initComplete) 
-            init();
+//        if(!initComplete) 
+//            init();
         
         return speedScoreFortyOne;
     }
@@ -289,9 +289,9 @@ public class DriverSpeedBean extends BaseBean
 
     public String getSpeedScoreFortyOneStyle()
     {
-        if(!initComplete) 
-            init();
-        
+//        if(!initComplete) 
+//            init();
+//        
         return speedScoreFortyOneStyle;
     }
 
@@ -303,9 +303,9 @@ public class DriverSpeedBean extends BaseBean
     // SPEED SCORE 55-64 MPH
     public Integer getSpeedScoreFiftyFive()
     {
-        if(!initComplete) 
-            init();
-        
+//        if(!initComplete) 
+//            init();
+//        
         return speedScoreFiftyFive;
     }
 
@@ -317,8 +317,8 @@ public class DriverSpeedBean extends BaseBean
 
     public String getSpeedScoreFiftyFiveStyle()
     {
-        if(!initComplete) 
-            init();
+//        if(!initComplete) 
+//            init();
         
         return speedScoreFiftyFiveStyle;
     }
@@ -331,8 +331,8 @@ public class DriverSpeedBean extends BaseBean
     // SPEED SCORE 65+
     public Integer getSpeedScoreSixtyFive()
     {
-        if(!initComplete) 
-            init();
+//        if(!initComplete) 
+//            init();
         
         
         return speedScoreSixtyFive;
@@ -346,9 +346,9 @@ public class DriverSpeedBean extends BaseBean
 
     public String getSpeedScoreSixtyFiveStyle()
     {
-        if(!initComplete) 
-            init();
-        
+//        if(!initComplete) 
+//            init();
+//        
         return speedScoreSixtyFiveStyle;
     }
 
@@ -534,15 +534,15 @@ public class DriverSpeedBean extends BaseBean
         this.durationBean = durationBean;
     }
 
-    public Boolean getInitComplete()
-    {
-        return initComplete;
-    }
-
-    public void setInitComplete(Boolean initComplete)
-    {
-        this.initComplete = initComplete;
-    }
+//    public Boolean getInitComplete()
+//    {
+//        return initComplete;
+//    }
+//
+//    public void setInitComplete(Boolean initComplete)
+//    {
+//        this.initComplete = initComplete;
+//    }
 
     public List<CategorySeriesData> createJasperDef(List<ScoreType> scoreTypes)
     {

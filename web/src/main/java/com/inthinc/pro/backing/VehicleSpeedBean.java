@@ -65,7 +65,7 @@ public class VehicleSpeedBean extends BaseBean
     private EventReportItem       clearItem;
     private ReportRenderer        reportRenderer;
     private String                emailAddress;
-    private Boolean               initComplete = false;
+//    private Boolean               initComplete = false;
     
     private List<EventReportItem> filteredSpeedingEvents; 	//filtered list
     
@@ -121,7 +121,7 @@ public class VehicleSpeedBean extends BaseBean
         setSpeedScoreSixtyFive(se == null ? NO_SCORE : se.getScore());
         
         getViolations();
-        initComplete = true;
+//        initComplete = true;
     }
 
     public void getViolations()
@@ -184,8 +184,8 @@ public class VehicleSpeedBean extends BaseBean
     // SPEED OVERALL SCORE PROPERTY
     public Integer getSpeedScoreOverall()
     {
-        if(!initComplete) 
-            init();
+//        if(!initComplete) 
+//            init();
         
         return speedScoreOverall;
     }
@@ -198,8 +198,8 @@ public class VehicleSpeedBean extends BaseBean
 
     public String getSpeedScoreOverallStyle()
     {
-        if(!initComplete) 
-            init();
+//        if(!initComplete) 
+//            init();
         
         return speedScoreOverallStyle;
     }
@@ -212,8 +212,8 @@ public class VehicleSpeedBean extends BaseBean
     // SPEED SCORE 21-30 MPH
     public Integer getSpeedScoreTwentyOne()
     {
-        if(!initComplete) 
-            init();
+//        if(!initComplete) 
+//            init();
         
         return speedScoreTwentyOne;
     }
@@ -226,8 +226,8 @@ public class VehicleSpeedBean extends BaseBean
 
     public String getSpeedScoreTwentyOneStyle()
     {
-        if(!initComplete) 
-            init();
+//        if(!initComplete) 
+//            init();
         
         return speedScoreTwentyOneStyle;
     }
@@ -240,9 +240,9 @@ public class VehicleSpeedBean extends BaseBean
     // SPEED SCORE 31-40 MPH
     public Integer getSpeedScoreThirtyOne()
     {
-        if(!initComplete) 
-            init();
-        
+//        if(!initComplete) 
+//            init();
+//        
         return speedScoreThirtyOne;
     }
 
@@ -254,8 +254,8 @@ public class VehicleSpeedBean extends BaseBean
 
     public String getSpeedScoreThirtyOneStyle()
     {
-        if(!initComplete) 
-            init();
+//        if(!initComplete) 
+//            init();
         
         return speedScoreThirtyOneStyle;
     }
@@ -268,9 +268,9 @@ public class VehicleSpeedBean extends BaseBean
     // SPEED SCORE 41-54 MPH
     public Integer getSpeedScoreFortyOne()
     {
-        if(!initComplete) 
-            init();
-        
+//        if(!initComplete) 
+//            init();
+//        
         return speedScoreFortyOne;
     }
 
@@ -282,9 +282,9 @@ public class VehicleSpeedBean extends BaseBean
 
     public String getSpeedScoreFortyOneStyle()
     {
-        if(!initComplete) 
-            init();
-        
+//        if(!initComplete) 
+//            init();
+//        
         return speedScoreFortyOneStyle;
     }
 
@@ -296,9 +296,9 @@ public class VehicleSpeedBean extends BaseBean
     // SPEED SCORE 55-64 MPH
     public Integer getSpeedScoreFiftyFive()
     {
-        if(!initComplete) 
-            init();
-        
+//        if(!initComplete) 
+//            init();
+//        
         return speedScoreFiftyFive;
     }
 
@@ -310,8 +310,8 @@ public class VehicleSpeedBean extends BaseBean
 
     public String getSpeedScoreFiftyFiveStyle()
     {
-        if(!initComplete) 
-            init();
+//        if(!initComplete) 
+//            init();
         
         return speedScoreFiftyFiveStyle;
     }
@@ -324,9 +324,9 @@ public class VehicleSpeedBean extends BaseBean
     // SPEED SCORE 65+
     public Integer getSpeedScoreSixtyFive()
     {
-        if(!initComplete) 
-            init();
-        
+//        if(!initComplete) 
+//            init();
+//        
         return speedScoreSixtyFive;
     }
 
@@ -338,8 +338,8 @@ public class VehicleSpeedBean extends BaseBean
 
     public String getSpeedScoreSixtyFiveStyle()
     {
-        if(!initComplete) 
-            init();
+//        if(!initComplete) 
+//            init();
         
         return speedScoreSixtyFiveStyle;
     }
