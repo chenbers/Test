@@ -4,13 +4,13 @@
     <parent>
         <groupId>com.inthinc.pro</groupId>
         <artifactId>root</artifactId>
-        <version>0.13-BETA</version>
+        <version>0.14-BETA-SNAPSHOT</version>
     </parent>
     <groupId>com.inthinc.pro.webfulfillment</groupId>
     <artifactId>webfulfillment</artifactId>
     <packaging>war</packaging>
     <name>Pro Portal - Fulfillment</name>
-    <version>0.13-BETA</version>
+    <version>0.14-BETA-SNAPSHOT</version>
     <profiles>
         <profile>
             <id>local</id>
