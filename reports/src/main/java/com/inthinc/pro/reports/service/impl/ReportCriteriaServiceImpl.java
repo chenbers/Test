@@ -50,7 +50,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     private VehicleDAO vehicleDAO;
     private EventDAO eventDAO;
     private RedFlagDAO redFlagDAO;
-  
 
     private DeviceDAO deviceDAO;
 
@@ -190,12 +189,12 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
             }
             for (ScoreableEntity scoreableEntity : scoreableEntityList)
             {
-                if(scoreableEntity.getScore() != null && scoreableEntity.getScore() >= 0)
+                if (scoreableEntity.getScore() != null && scoreableEntity.getScore() >= 0)
                 {
                     Float score = new Float((scoreableEntity.getScore() == null || scoreableEntity.getScore() < 0) ? 5 : scoreableEntity.getScore() / 10.0);
                     lineGraphDataList.add(new CategorySeriesData(se.getIdentifier(), monthList.get(index++), score, se.getIdentifier()));
                 }
-               
+
             }
 
         }
@@ -214,21 +213,22 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     {
         Group group = groupDAO.findByID(groupID);
         List<VehicleReportItem> vehicleReportItems = scoreDAO.getVehicleReportData(groupID, duration);
-        
-        for(VehicleReportItem vehicleReportItem:vehicleReportItems)
+
+        for (VehicleReportItem vehicleReportItem : vehicleReportItems)
         {
             Group tmpGroup = groupDAO.findByID(vehicleReportItem.getGroupID());
             vehicleReportItem.setGroup(tmpGroup.getName());
-    
-            //Driver, none assigned
-            if ( vehicleReportItem.getDriver() == null ) {
+
+            // Driver, none assigned
+            if (vehicleReportItem.getDriver() == null)
+            {
                 Driver d = new Driver();
                 Person p = new Person();
                 p.setFirst("None");
                 p.setLast("Assigned");
                 d.setPerson(p);
                 vehicleReportItem.setDriver(d);
-            }          
+            }
         }
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_REPORT, group.getName());
         reportCriteria.setMainDataset(vehicleReportItems);
@@ -258,27 +258,28 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         Group group = groupDAO.findByID(groupID);
         List<Vehicle> vehicList = vehicleDAO.getVehiclesInGroupHierarchy(groupID);
         List<DeviceReportItem> deviceReportItems = new ArrayList<DeviceReportItem>();
-        for( Vehicle v: vehicList )
+        for (Vehicle v : vehicList)
         {
-            if ( v.getDeviceID() != null ) {
-                Device dev = deviceDAO.findByID(v.getDeviceID());            
- 
+            if (v.getDeviceID() != null)
+            {
+                Device dev = deviceDAO.findByID(v.getDeviceID());
+
                 DeviceReportItem deviceReportItem = new DeviceReportItem();
-                
+
                 deviceReportItem.setDevice(dev);
                 deviceReportItem.getDevice().setEphone(formatPhone(deviceReportItem.getDevice().getEphone()));
                 deviceReportItem.getDevice().setPhone(formatPhone(deviceReportItem.getDevice().getPhone()));
                 deviceReportItem.setVehicle(v);
-                
+
                 deviceReportItems.add(deviceReportItem);
             }
         }
-        
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DEVICES_REPORT,group.getName());
+
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DEVICES_REPORT, group.getName());
         reportCriteria.setMainDataset(deviceReportItems);
         return reportCriteria;
     }
-    
+
     private String formatPhone(String incoming)
     {
         String result = "";
@@ -292,62 +293,70 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     }
 
     @Override
-    public ReportCriteria getIdlingReportCriteria(Integer groupID,Date startDate,Date endDate)
+    public ReportCriteria getIdlingReportCriteria(Integer groupID, Date startDate, Date endDate)
     {
         Group group = groupDAO.findByID(groupID);
-        
 
-        List<IdlingReportItem> idlingReportItems = scoreDAO.getIdlingReportData(groupID,startDate, endDate);
-   
-        for ( IdlingReportItem idlingReportItem: idlingReportItems ) {
-                    
-            //Group name
+        List<IdlingReportItem> idlingReportItems = scoreDAO.getIdlingReportData(groupID, startDate, endDate);
+
+        for (IdlingReportItem idlingReportItem : idlingReportItems)
+        {
+
+            // Group name
             Group tmpGroup = groupDAO.findByID(idlingReportItem.getGroupID());
             idlingReportItem.setGroup(tmpGroup.getName());
-        }   
-        
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.IDLING_REPORT,group.getName());
+        }
+
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.IDLING_REPORT, group.getName());
         reportCriteria.setMainDataset(idlingReportItems);
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy");
         reportCriteria.addParameter("BEGIN_DATE", sdf.format(startDate));
         reportCriteria.addParameter("END_DATE", sdf.format(endDate));
-        
-        return reportCriteria;
-    }
-    
-    
-    
-    @Override
-    public ReportCriteria getEventsReportCriteria(Integer groupID)
-    {
-        //List<Event> eventList = eventDAO.getViolationEventsForGroup(groupID,7);
-        Group tmpGroup = groupDAO.findByID(groupID);
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.EVENT_REPORT,tmpGroup.getName());
-        //reportCriteria.setMainDataset(eventList);
-        return reportCriteria;
-    }
-    
-    @Override
-    public ReportCriteria getRedFlagsReportCriteria(Integer groupID)
-    {
-        //List<RedFlag> redFlagList = redFlagDAO.getRedFlags(groupID, 7);
-        Group tmpGroup = groupDAO.findByID(groupID);
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.RED_FLAG_REPORT,tmpGroup.getName());
-        //reportCriteria.setMainDataset(redFlagList);
-        return reportCriteria;
-    }
-    
-    @Override
-    public ReportCriteria getWarningsReportCriteria(Integer groupID)
-    {
-        //List<Event> eventList = eventDAO.getWarningEventsForGroup(groupID,7);
-        Group tmpGroup = groupDAO.findByID(groupID);
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.WARNING_REPORT,tmpGroup.getName());
-        //reportCriteria.setMainDataset(eventList);
+
         return reportCriteria;
     }
 
-    public void setGroupDAO(GroupDAO groupDAO) 
+    @Override
+    public ReportCriteria getEventsReportCriteria(Integer groupID)
+    {
+        // List<Event> eventList = eventDAO.getViolationEventsForGroup(groupID,7);
+        Group tmpGroup = groupDAO.findByID(groupID);
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.EVENT_REPORT, tmpGroup.getName());
+        // reportCriteria.setMainDataset(eventList);
+        return reportCriteria;
+    }
+
+    @Override
+    public ReportCriteria getRedFlagsReportCriteria(Integer groupID)
+    {
+        // List<RedFlag> redFlagList = redFlagDAO.getRedFlags(groupID, 7);
+        Group tmpGroup = groupDAO.findByID(groupID);
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.RED_FLAG_REPORT, tmpGroup.getName());
+        // reportCriteria.setMainDataset(redFlagList);
+        return reportCriteria;
+    }
+
+    @Override
+    public ReportCriteria getWarningsReportCriteria(Integer groupID)
+    {
+        // List<Event> eventList = eventDAO.getWarningEventsForGroup(groupID,7);
+        Group tmpGroup = groupDAO.findByID(groupID);
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.WARNING_REPORT, tmpGroup.getName());
+        // reportCriteria.setMainDataset(eventList);
+        return reportCriteria;
+    }
+
+    @Override
+    public ReportCriteria getEmergencyReportCriteria(Integer groupID)
+    {
+        // List<Event> eventList = eventDAO.getWarningEventsForGroup(groupID,7);
+        Group tmpGroup = groupDAO.findByID(groupID);
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.WARNING_REPORT, tmpGroup.getName());
+        // reportCriteria.setMainDataset(eventList);
+        return reportCriteria;
+    }
+
+    public void setGroupDAO(GroupDAO groupDAO)
     {
         this.groupDAO = groupDAO;
     }
@@ -376,7 +385,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     {
         return mpgDAO;
     }
-    
+
     public VehicleDAO getVehicleDAO()
     {
         return vehicleDAO;
@@ -396,7 +405,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     {
         this.deviceDAO = deviceDAO;
     }
-    
 
     public EventDAO getEventDAO()
     {
@@ -417,6 +425,5 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     {
         return redFlagDAO;
     }
-
 
 }

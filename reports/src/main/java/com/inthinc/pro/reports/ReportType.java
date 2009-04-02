@@ -25,6 +25,7 @@ public enum ReportType
     VEHICLE_SEATBELT("Vehicle Seat Belt Report", "DriverVehicleSeatBeltReport.jrxml", "DVSeatBeltReportRaw.jrxml"),
     EVENT_REPORT("Event Report", "EventReport.jrxml","EventReportRaw.jrxml"),
     WARNING_REPORT("Warning Report", "WarningReport.jrxml","WarningReportRaw.jrxml"),
+    EMERGENCY_REPORT("Emergency Report", "EmergencyReport.jrxml","EmergencyReportRaw.jrxml"),
     RED_FLAG_REPORT("Red Flag Report", "RedFlagReport.jrxml","RedFlagReportRaw.jrxml");
   
     private String prettyTemplate;

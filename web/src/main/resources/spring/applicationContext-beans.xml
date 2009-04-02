@@ -353,7 +353,7 @@
         <property name="searchCoordinationBean" ref="searchCoordinationBean"></property>
     </bean>
     <bean id="vehicleReportTable" class="com.inthinc.pro.backing.ui.VehicleReportTable" scope="session"></bean>
-    <bean id="baseRedFlagsBean" class="com.inthinc.pro.backing.BaseRedFlagsBean" scope="session" parent="baseBean">
+    <bean id="baseRedFlagsBean" class="com.inthinc.pro.backing.BaseRedFlagsBean" scope="session" parent="baseBean" abstract="true">
         <property name="driverDAO" ref="driverDAO"/>
         <property name="vehicleDAO" ref="vehicleDAO"/>
         <property name="reportRenderer" ref="reportRenderer"></property>
@@ -365,18 +365,16 @@
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
         <property name="searchCoordinationBean" ref="searchCoordinationBean"></property>
     </bean>
-    <bean id="baseEventsBean" class="com.inthinc.pro.backing.BaseEventsBean" scope="session" parent="baseRedFlagsBean">
+    <bean id="baseEventsBean" class="com.inthinc.pro.backing.BaseEventsBean" scope="session" parent="baseRedFlagsBean" abstract="true">
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
         <property name="reportRenderer" ref="reportRenderer"></property>
+        <property name="searchCoordinationBean" ref="searchCoordinationBean"></property>
         <property name="reportCriteriaService" ref="reportCriteriaService"></property>
     </bean>
-    <bean id="eventsBean" class="com.inthinc.pro.backing.EventsBean" scope="session" parent="baseEventsBean"  init-method="initBean">
-        <property name="searchCoordinationBean" ref="searchCoordinationBean"></property>
-    </bean>
-    <bean id="diagnosticsBean" class="com.inthinc.pro.backing.DiagnosticsBean" scope="session" parent="baseEventsBean" init-method="initBean">
-        <property name="searchCoordinationBean" ref="searchCoordinationBean"></property>
-    </bean>
+    <bean id="eventsBean" class="com.inthinc.pro.backing.EventsBean" scope="session" parent="baseEventsBean"  init-method="initBean"/>
+    <bean id="diagnosticsBean" class="com.inthinc.pro.backing.DiagnosticsBean" scope="session" parent="baseEventsBean" init-method="initBean"/>
+    <bean id="emergencyBean" class="com.inthinc.pro.backing.EmergencyBean" scope="session" parent="baseEventsBean" init-method="initBean"/>
     <bean id="idlingReportBean" class="com.inthinc.pro.backing.IdlingReportBean" scope="session" parent="baseBean" init-method="init">
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
         <property name="scoreDAO" ref="scoreDAO"></property>   

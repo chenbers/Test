@@ -3,28 +3,27 @@ package com.inthinc.pro.dao;
 import java.util.Date;
 import java.util.List;
 
-import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 
-
-public interface EventDAO  extends GenericDAO<Event, Integer>
+public interface EventDAO extends GenericDAO<Event, Integer>
 {
 
     /**
-     * getMostRecentEvents -- get a list of the most recent events for a group 
+     * getMostRecentEvents -- get a list of the most recent events for a group
      * 
      * @param groupID
-     * @param eventCnt  -- max events to retrieve
+     * @param eventCnt
+     *            -- max events to retrieve
      * @return
      */
     List<Event> getMostRecentEvents(Integer groupID, Integer eventCnt);
 
-
     /**
-     * getMostRecentWarnings -- get a list of the most recent warnings for a group 
+     * getMostRecentWarnings -- get a list of the most recent warnings for a group
      * 
      * @param groupID
-     * @param eventCnt  -- max events to retrieve
+     * @param eventCnt
+     *            -- max events to retrieve
      * @return
      */
     List<Event> getMostRecentWarnings(Integer groupID, Integer eventCnt);
@@ -36,20 +35,24 @@ public interface EventDAO  extends GenericDAO<Event, Integer>
     List<Event> getEventsForDriverByMiles(Integer driverID, Integer milesBack, List<Integer> eventTypes);
 
     List<Event> getEventsForDriver(Integer driverID, Date startDate, Date endDate, List<Integer> eventTypes);
-    
+
     List<Event> getEventsForVehicle(Integer vehicleID, Date startDate, Date endDate, List<Integer> eventTypes);
-    
+
     List<Event> getEventsForVehicleByMiles(Integer vehicleID, Integer milesBack, List<Integer> eventTypes);
-    
+
     Integer forgive(Integer driverID, Long noteID);
-    
+
     Integer unforgive(Integer driverID, Long noteID);
-    
+
     List<Event> getViolationEventsForGroup(Integer groupID, Integer daysBack);
-    
+
     List<Event> getWarningEventsForGroup(Integer groupID, Integer daysBack);
 
+    List<Event> getEmergencyEventsForGroup(Integer groupID, Integer daysBack);
+
     List<Event> getViolationEventsForGroup(Integer groupID, Date startDate, Date endDate);
-    
+
     List<Event> getWarningEventsForGroup(Integer groupID, Date startDate, Date endDate);
+
+    List<Event> getEmergencyEventsForGroup(Integer groupID, Date startDate, Date endDate);
 }

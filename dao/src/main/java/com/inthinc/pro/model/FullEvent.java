@@ -21,7 +21,7 @@ public class FullEvent extends Event
 	}
     public EventCategory getEventCategory()
     {
-        return EventCategory.DRIVER;
+        return EventCategory.EMERGENCY;
     }
     public String getDetails(String formatStr)
     {

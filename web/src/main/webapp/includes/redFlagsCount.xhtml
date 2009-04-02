@@ -1,20 +1,13 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:rich="http://richfaces.org/rich"
-	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:c="http://java.sun.com/jstl/core"
-	xmlns:security="http://pro.tiwi.com/jsf/security">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:rich="http://richfaces.org/rich"
+    xmlns:a4j="http://richfaces.org/a4j" xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jstl/core" xmlns:security="http://pro.tiwi.com/jsf/security">
 
-	<div class="msg">
-		<p id="redflag">
-			<h:outputFormat id="headerRedCount" 
-				value="#{messages.reports_redflagscountheader}">
-				<a4j:actionparam value="#{redFlagsBean.maxCount}"/>
-			</h:outputFormat>												
-			(<h:commandLink action="go_redFlags" value="#{messages.reports_view}" />) 
-		</p>
-	</div>									  	
+    <div class="msg">
+        <p id="redflag">
+            <h:outputFormat id="headerRedCount" value="#{messages.reports_redflagscountheader}">
+                <a4j:actionparam value="#{redFlagsBean.maxCount}" />
+            </h:outputFormat> 
+            (<a4j:htmlCommandLink action="go_redFlags" value="#{messages.reports_view}" />)
+        </p>
+    </div>
 
 </ui:composition>

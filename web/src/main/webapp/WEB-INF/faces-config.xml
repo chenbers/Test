@@ -177,6 +177,12 @@
 			<to-view-id>/secured/notifications/diagnostics.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+    <navigation-rule>
+        <navigation-case>
+            <from-outcome>go_emergency</from-outcome>
+            <to-view-id>/secured/notifications/emergency.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>go_liveFleet</from-outcome>

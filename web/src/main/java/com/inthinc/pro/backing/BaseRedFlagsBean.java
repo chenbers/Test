@@ -11,7 +11,7 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 
-public class BaseRedFlagsBean extends BaseBean
+public abstract class BaseRedFlagsBean extends BaseBean
 {
     private DriverDAO               driverDAO;
     private VehicleDAO               vehicleDAO;

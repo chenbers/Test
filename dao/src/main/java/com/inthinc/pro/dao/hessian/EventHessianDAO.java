@@ -1,6 +1,5 @@
 package com.inthinc.pro.dao.hessian;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -20,9 +19,10 @@ import com.inthinc.pro.model.EventMapper;
 
 public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implements EventDAO
 {
-    
+
     private static final Logger logger = Logger.getLogger(EventHessianDAO.class);
     private static final Integer EXCLUDE_FORGIVEN = 0;
+
     public EventHessianDAO()
     {
         super();
@@ -63,15 +63,17 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
         try
         {
             Integer[] eventTypesArray = eventTypes.toArray(new Integer[0]);
-            
-            return getMapper().convertToModelObject(getSiloService().getDriverNote(driverID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), EXCLUDE_FORGIVEN, eventTypesArray), Event.class);
+
+            return getMapper().convertToModelObject(
+                    getSiloService().getDriverNote(driverID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), EXCLUDE_FORGIVEN, eventTypesArray),
+                    Event.class);
         }
         catch (EmptyResultSetException e)
         {
             return Collections.emptyList();
         }
     }
-    
+
     @Override
     public List<Event> getEventsForVehicle(Integer vehicleID, Date startDate, Date endDate, List<Integer> eventTypes)
     {
@@ -79,14 +81,17 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
         {
             Integer[] eventTypesArray = eventTypes.toArray(new Integer[0]);
 
-            return getMapper().convertToModelObject(getSiloService().getVehicleNote(vehicleID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), EXCLUDE_FORGIVEN, eventTypesArray), Event.class);
+            return getMapper()
+                    .convertToModelObject(
+                            getSiloService().getVehicleNote(vehicleID, DateUtil.convertDateToSeconds(startDate), DateUtil.convertDateToSeconds(endDate), EXCLUDE_FORGIVEN,
+                                    eventTypesArray), Event.class);
         }
         catch (EmptyResultSetException e)
         {
             return Collections.emptyList();
         }
     }
-    
+
     @Override
     public List<Event> getEventsForDriverByMiles(Integer driverID, Integer milesBack, List<Integer> eventTypes)
     {
@@ -110,7 +115,7 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
             throw ex;
         }
     }
-    
+
     @Override
     public List<Event> getEventsForVehicleByMiles(Integer vehicleID, Integer milesBack, List<Integer> eventTypes)
     {
@@ -163,6 +168,12 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
     }
 
     @Override
+    public List<Event> getEmergencyEventsForGroup(Integer groupID, Integer daysBack)
+    {
+        return getEventsForGroup(groupID, daysBack, EventMapper.getEventTypesInCategory(EventCategory.EMERGENCY));
+    }
+
+    @Override
     public List<Event> getViolationEventsForGroup(Integer groupID, Date startDate, Date endDate)
     {
         return getEventsForGroup(groupID, startDate, endDate, EventMapper.getEventTypesInCategory(EventCategory.VIOLATION));
@@ -174,15 +185,20 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
         return getEventsForGroup(groupID, startDate, endDate, EventMapper.getEventTypesInCategory(EventCategory.WARNING));
     }
 
+    @Override
+    public List<Event> getEmergencyEventsForGroup(Integer groupID, Date startDate, Date endDate)
+    {
+        return getEventsForGroup(groupID, startDate, endDate, EventMapper.getEventTypesInCategory(EventCategory.EMERGENCY));
+    }
 
-    public List<Event> getEventsForGroup(Integer groupID, Integer daysBack, List<Integer>eventTypes)
+    public List<Event> getEventsForGroup(Integer groupID, Integer daysBack, List<Integer> eventTypes)
     {
         Date endDate = new Date();
         Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
         return getEventsForGroup(groupID, startDate, endDate, eventTypes);
     }
-    
-    public List<Event> getEventsForGroup(Integer groupID, Date startDate, Date endDate, List<Integer>eventTypes)
+
+    public List<Event> getEventsForGroup(Integer groupID, Date startDate, Date endDate, List<Integer> eventTypes)
     {
         List<Driver> driverList = getMapper().convertToModelObject(this.getSiloService().getDriversByGroupIDDeep(groupID), Driver.class);
         List<Event> eventList = new ArrayList<Event>();
@@ -197,6 +213,5 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
         }
         return eventList;
     }
-
 
 }

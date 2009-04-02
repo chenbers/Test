@@ -20,7 +20,8 @@ public enum TableType implements BaseEnum
     IDLING_REPORT(11, "IDLING_REPORT"),
     EVENTS(12, "EVENTS"),
     DIAGNOSTICS(13, "DIAGNOSTICS"),
-    REPORT_SCHEDULES(14,"REPORT_SCHEDULES");
+    REPORT_SCHEDULES(14,"REPORT_SCHEDULES"),
+    EMERGENCY(15, "EMERGENCY");
 
     private String description;
     private int    code;
