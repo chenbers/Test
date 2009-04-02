@@ -4,7 +4,7 @@ import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 import com.inthinc.pro.model.app.States;
 
-public class State extends BaseEntity implements ReferenceEntity
+public class State extends BaseEntity implements ReferenceEntity, Comparable<State>
 {
     @Column(updateable = false)
     private static final long serialVersionUID = -5519902086559670626L;
@@ -66,6 +66,12 @@ public class State extends BaseEntity implements ReferenceEntity
     public static State valueOf(Integer ID)
     {
         return States.getStateById(ID);
+    }
+    
+    @Override
+    public int compareTo(State state)
+    {
+        return state.name.compareToIgnoreCase(this.name);
     }
 
     @Override
