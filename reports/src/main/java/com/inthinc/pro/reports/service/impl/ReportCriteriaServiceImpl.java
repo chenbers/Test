@@ -351,7 +351,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     {
         // List<Event> eventList = eventDAO.getWarningEventsForGroup(groupID,7);
         Group tmpGroup = groupDAO.findByID(groupID);
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.WARNING_REPORT, tmpGroup.getName());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.EMERGENCY_REPORT, tmpGroup.getName());
         // reportCriteria.setMainDataset(eventList);
         return reportCriteria;
     }
