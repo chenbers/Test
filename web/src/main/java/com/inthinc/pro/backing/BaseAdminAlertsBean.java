@@ -216,7 +216,10 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     public String batchEdit()
     {
         String returnString = super.batchEdit();
-        item.setAnytime(isAnytime(getItem()));
+        if(item != null)
+        {
+            item.setAnytime(isAnytime(getItem()));
+        }
         
         // null out properties that are not common
         for (T t : getSelectedItems())

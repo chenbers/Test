@@ -441,8 +441,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     public String batchEdit()
     {
         String returnValue = super.batchEdit();
-        item.setUserSelected(true);
-        item.setDriverSelected(true);
+        if(item != null)
+        {
+            item.setUserSelected(true);
+            item.setDriverSelected(true);
+        }
         return returnValue;
     }
 
