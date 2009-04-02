@@ -20,7 +20,16 @@
 					rows="#{numRowsPerPg}"
 					width="100%">
 					
-					<!-- Data -->
+					<!-- Data -->            
+                    <rich:column>
+                        <a4j:commandLink style="cursor:pointer">
+                            <h:graphicImage value="/images/ico_map.png"  style="border:none"/>
+                            <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
+                                <f:param name="lat" value="#{item.redFlag.event.latitude}" />
+                                <f:param name="lng" value="#{item.redFlag.event.longitude}" />
+                            </rich:componentControl>
+                        </a4j:commandLink>
+                    </rich:column>
 					<rich:column rendered="#{tableColumns['level'].visible}" 
 						sortBy="#{item.redFlag.level}" width="10%">
 						<f:facet name="header">
@@ -138,6 +147,23 @@
 
     </rich:modalPanel>
 
-			
+    <!-- START LOCATION MODAL -->
+    <rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">
+        <f:facet name="header">
+            <h:outputText value="Event Location" />
+        </f:facet>
+        <f:facet name="controls">
+            <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('eventLocationModal')" />
+        </f:facet>
+
+        <div class="eventmap-border">
+        <div id="address-canvas" style="width: 522px; height: 355px; border: 0"></div>
+        </div>
+
+        <div class="popupactions"><a4j:commandButton value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('eventLocationModal')" styleClass="left">
+            <span class="edit"> <h:outputText value="#{messages.button_close}" /> </span>
+        </a4j:commandButton></div>
+    </rich:modalPanel>
+    <!-- END LOCATION MODAL -->
 
 </ui:composition>

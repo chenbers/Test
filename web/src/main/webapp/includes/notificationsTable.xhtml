@@ -1,132 +1,131 @@
-<ui:composition 
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:rich="http://richfaces.org/rich"
-	xmlns:f="http://java.sun.com/jsf/core"
-  	xmlns:iwi="http://pro.tiwi.com/jsf"
-	xmlns:h="http://java.sun.com/jsf/html">
-		
-		<div class="datagrid">
-				<h:form id="#{formId}">
-	
-    	    	<rich:datascroller id="topScroller" for="items" immediate="true"
-        			scrollerListener="#{bean.scrollerListener}"
-        			reRender="bottomScroller,items,header">
-        		</rich:datascroller>
-        		
-				<rich:dataTable value="#{tableData}" id="items"
-					var="item" styleClass="datagrid"
-					rowClasses="tableOdd,tableEven" cellspacing="1" 
-					rows="#{numRowsPerPg}"
-					width="100%" >
-					
-					<!-- Data -->
-    				<rich:column rendered="#{tableColumns['date'].visible}" 
-    					sortBy="#{item.event.time}"  width="20%"> 
-      					<f:facet name="header">
-      						<h:outputText value="#{messages.notes_date}" />
-      					</f:facet>
-      					<h:outputText value="#{item.date}"/>
-    				</rich:column>
-    				<rich:column rendered="#{tableColumns['group'].visible}" 
-    					sortBy="#{item.group}"  width="10%" >
-      					<f:facet name="header">
-      						<h:outputText value="#{messages.notes_group}" />
-      					</f:facet>
-      					<h:outputText value="#{item.group}"/>
-    				</rich:column>
-    				<rich:column rendered="#{tableColumns['driver'].visible}" 
-    					sortBy="#{item.driverName}"  width="10%">
-      					<f:facet name="header">
-      						<h:outputText value="#{messages.notes_driver}" />
-      					</f:facet>
-						<a4j:htmlCommandLink action="#{bean.driverAction}" value="#{item.driverName}">
-							<f:setPropertyActionListener value="#{item.event}" target="#{bean.selectedEvent}" />
-							<f:setPropertyActionListener value="#{item.event.driver}" target="#{navigationBean.driver}" />
-						</a4j:htmlCommandLink>
-    				</rich:column>
-    				<rich:column rendered="#{tableColumns['vehicle'].visible}" 
-    					sortBy="#{item.vehicleName}"  width="10%">
-      					<f:facet name="header">
-      						<h:outputText value="#{messages.notes_vehicle}" />
-      					</f:facet>
-      					<a4j:htmlCommandLink action="#{bean.vehicleAction}" value="#{item.vehicleName}" rendered="#{item.vehicleName != 'None Assigned'}">
-							<f:setPropertyActionListener value="#{item.event}" target="#{bean.selectedEvent}" />
- 							<f:setPropertyActionListener value="#{item.event.vehicle}" target="#{navigationBean.vehicle}" />
-						</a4j:htmlCommandLink>
-						<h:outputText rendered="#{item.vehicleName == 'None Assigned'}" 
-							value="#{item.vehicleName}">
-						</h:outputText>   
-    				</rich:column>
-    				<rich:column rendered="#{tableColumns['category'].visible}" 
-    					sortBy="#{item.category}"  width="20%">
-      					<f:facet name="header">
-      						<h:outputText value="#{messages.notes_category}" />
-      					</f:facet>
-      					<h:outputText value="#{item.category}" />
-    				</rich:column>
-    				<rich:column rendered="#{tableColumns['detail'].visible}"
-    					sortBy="#{item.detail}"  width="20%">
-      					<f:facet name="header">
-      						<h:outputText value="#{messages.notes_detail}" />
-      					</f:facet>
-      					<h:outputText value="#{item.detail}" />
-    				</rich:column>
-    				<rich:column rendered="#{tableColumns['clear'].visible}"  width="10%">
-      					<f:facet name="header">
-      						<h:outputText value="" />
-      					</f:facet>
-						<a4j:commandLink title="#{messages.notes_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem" >
-							<h:outputText value="#{messages.notes_clear}" />
-							<f:setPropertyActionListener target="#{bean.clearItem}" value="#{item}" />
-						</a4j:commandLink>
-    				</rich:column>
-    			</rich:dataTable>
-    			
-    			<rich:datascroller id="bottomScroller" for="items" immediate="true"    			
-    				scrollerListener="#{bean.scrollerListener}"
-        			reRender="topScroller,items,header">        			
-        		</rich:datascroller>
-    			</h:form>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:iwi="http://pro.tiwi.com/jsf" xmlns:h="http://java.sun.com/jsf/html">
 
-			</div>	
-			
+    <div class="datagrid"><h:form id="#{formId}">
+
+        <rich:datascroller id="topScroller" for="items" immediate="true" scrollerListener="#{bean.scrollerListener}" reRender="bottomScroller,items,header">
+        </rich:datascroller>
+
+        <rich:dataTable value="#{tableData}" id="items" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{numRowsPerPg}" width="100%">
+
+            <!-- Data -->
+            <rich:column>
+                <a4j:commandLink style="cursor:pointer">
+                    <h:graphicImage value="/images/ico_map.png"  style="border:none"/>
+                    <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
+                        <f:param name="lat" value="#{item.event.latitude}" />
+                        <f:param name="lng" value="#{item.event.longitude}" />
+                    </rich:componentControl>
+                </a4j:commandLink>
+            </rich:column>
+            <rich:column rendered="#{tableColumns['date'].visible}" sortBy="#{item.event.time}" width="20%">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_date}" />
+                </f:facet>
+                <h:outputText value="#{item.date}" />
+            </rich:column>
+            <rich:column rendered="#{tableColumns['group'].visible}" sortBy="#{item.group}" width="10%">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_group}" />
+                </f:facet>
+                <h:outputText value="#{item.group}" />
+            </rich:column>
+            <rich:column rendered="#{tableColumns['driver'].visible}" sortBy="#{item.driverName}" width="10%">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_driver}" />
+                </f:facet>
+                <a4j:htmlCommandLink action="#{bean.driverAction}" value="#{item.driverName}">
+                    <f:setPropertyActionListener value="#{item.event}" target="#{bean.selectedEvent}" />
+                    <f:setPropertyActionListener value="#{item.event.driver}" target="#{navigationBean.driver}" />
+                </a4j:htmlCommandLink>
+            </rich:column>
+            <rich:column rendered="#{tableColumns['vehicle'].visible}" sortBy="#{item.vehicleName}" width="10%">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_vehicle}" />
+                </f:facet>
+                <a4j:htmlCommandLink action="#{bean.vehicleAction}" value="#{item.vehicleName}" rendered="#{item.vehicleName != 'None Assigned'}">
+                    <f:setPropertyActionListener value="#{item.event}" target="#{bean.selectedEvent}" />
+                    <f:setPropertyActionListener value="#{item.event.vehicle}" target="#{navigationBean.vehicle}" />
+                </a4j:htmlCommandLink>
+                <h:outputText rendered="#{item.vehicleName == 'None Assigned'}" value="#{item.vehicleName}">
+                </h:outputText>
+            </rich:column>
+            <rich:column rendered="#{tableColumns['category'].visible}" sortBy="#{item.category}" width="20%">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_category}" />
+                </f:facet>
+                <h:outputText value="#{item.category}" />
+            </rich:column>
+            <rich:column rendered="#{tableColumns['detail'].visible}" sortBy="#{item.detail}" width="20%">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_detail}" />
+                </f:facet>
+                <h:outputText value="#{item.detail}" />
+            </rich:column>
+            <rich:column rendered="#{tableColumns['clear'].visible}" width="10%">
+                <f:facet name="header">
+                    <h:outputText value="" />
+                </f:facet>
+                <a4j:commandLink title="#{messages.notes_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearEventPanel')" reRender="clearItemForm:clearItem">
+                    <h:outputText value="#{messages.notes_clear}" />
+                    <f:setPropertyActionListener target="#{bean.clearItem}" value="#{item}" />
+                </a4j:commandLink>
+            </rich:column>
+        </rich:dataTable>
+
+        <rich:datascroller id="bottomScroller" for="items" immediate="true" scrollerListener="#{bean.scrollerListener}" reRender="topScroller,items,header">
+        </rich:datascroller>
+    </h:form></div>
+
     <rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="50" autosized="true" resizeable="false" zindex="2000"
-    		onshow="document.getElementById('clearItemForm:yesButton').focus();">
-      <f:facet name="header">
-        <h:outputText value="#{clearTitle}" />
-      </f:facet>
-      <f:facet name="controls">
-        <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('clearEventPanel')" />
-      </f:facet>
+        onshow="document.getElementById('clearItemForm:yesButton').focus();">
+        <f:facet name="header">
+            <h:outputText value="#{clearTitle}" />
+        </f:facet>
+        <f:facet name="controls">
+            <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('clearEventPanel')" />
+        </f:facet>
 
-      <h:panelGroup layout="block" styleClass="popupsubtitle">
-      	<h:outputText value="#{clearInst}"/>
-      </h:panelGroup>
+        <h:panelGroup layout="block" styleClass="popupsubtitle">
+            <h:outputText value="#{clearInst}" />
+        </h:panelGroup>
 
-      <a4j:form id="clearItemForm">
-		<h:panelGroup layout="block"  styleClass="popupcontent" id="clearItem">
-			<h:outputText value="#{bean.clearItem.detail}"/><br/>
-      		<h:outputText value="#{bean.clearItem.date}"/>
-      	</h:panelGroup>
-	
-        <div class="popupactions">
-          <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="no"><h:outputText value="#{messages.button_no}" /></span></button>
-          <a4j:commandButton id="yesButton"
-          				action="#{bean.clearItemAction}"         				
-          				oncomplete="Richfaces.hideModalPanel('clearEventPanel')" 
-          				onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;"
-          				reRender="#{clearRerender}" styleClass="left">
-          					<span class="yes">
-          						<h:outputText value="#{messages.button_yes}" />
-          					</span>
-			</a4j:commandButton>
-        </div>
+        <a4j:form id="clearItemForm">
+            <h:panelGroup layout="block" styleClass="popupcontent" id="clearItem">
+                <h:outputText value="#{bean.clearItem.detail}" />
+                <br />
+                <h:outputText value="#{bean.clearItem.date}" />
+            </h:panelGroup>
 
-      </a4j:form>
+            <div class="popupactions">
+            <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearEventPanel'); return false;"><span class="no"><h:outputText
+                value="#{messages.button_no}" /></span></button>
+            <a4j:commandButton id="yesButton" action="#{bean.clearItemAction}" oncomplete="Richfaces.hideModalPanel('clearEventPanel')"
+                onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" reRender="#{clearRerender}" styleClass="left">
+                <span class="yes"> <h:outputText value="#{messages.button_yes}" /> </span>
+            </a4j:commandButton></div>
+
+        </a4j:form>
 
     </rich:modalPanel>
 
-			
+    <!-- START LOCATION MODAL -->
+    <rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">
+        <f:facet name="header">
+            <h:outputText value="Event Location" />
+        </f:facet>
+        <f:facet name="controls">
+            <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('eventLocationModal')" />
+        </f:facet>
+
+        <div class="eventmap-border">
+        <div id="address-canvas" style="width: 522px; height: 355px; border: 0"></div>
+        </div>
+
+        <div class="popupactions"><a4j:commandButton value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('eventLocationModal')" styleClass="left">
+            <span class="edit"> <h:outputText value="#{messages.button_close}" /> </span>
+        </a4j:commandButton></div>
+    </rich:modalPanel>
+    <!-- END LOCATION MODAL -->
 
 </ui:composition>
