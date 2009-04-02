@@ -4,17 +4,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+
 
 import com.inthinc.pro.dao.ZoneAlertDAO;
 import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.model.Zone;
+import com.inthinc.pro.util.FormUtil;
 import com.inthinc.pro.util.MessageUtil;
 
 public class ZonesBean extends BaseBean
@@ -106,8 +108,12 @@ public class ZonesBean extends BaseBean
         editing = false;
         if (isAdd())
             item = null;
+        
+        UIComponent uiComponent = FacesContext.getCurrentInstance().getViewRoot().findComponent("zones-form");
+        FormUtil.resetForm((UIForm)uiComponent);
     }
-
+    
+   
     /**
      * Called when the user clicks to save changes when adding or editing.
      */
@@ -275,4 +281,6 @@ public class ZonesBean extends BaseBean
         }
         return true;
     }
+    
+    
 }

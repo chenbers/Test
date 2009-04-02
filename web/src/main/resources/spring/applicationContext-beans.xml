@@ -151,7 +151,7 @@
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
     </bean>
 
-    <bean id="zonesBean" class="com.inthinc.pro.backing.ZonesBean" scope="session">
+    <bean id="zonesBean" class="com.inthinc.pro.backing.ZonesBean" scope="request">
         <property name="zoneAlertDAO" ref="zoneAlertDAO"></property>
         <property name="zoneDAO" ref="zoneDAO"></property>
     </bean>

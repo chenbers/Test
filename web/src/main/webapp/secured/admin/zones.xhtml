@@ -6,7 +6,8 @@
               xmlns:a4j="http://richfaces.org/a4j"
               xmlns:f="http://java.sun.com/jsf/core"
               xmlns:c="http://java.sun.com/jstl/core"
-              xmlns:security="http://pro.tiwi.com/jsf/security">
+              xmlns:security="http://pro.tiwi.com/jsf/security"
+              xmlns:t="http://myfaces.apache.org/tomahawk">
 
   <ui:param name="adminSelected" value="current" />
   <ui:param name="helpFile" value="Zones.htm" />
@@ -20,7 +21,7 @@
   </ui:define>
 
   <ui:define name="content">
-
+    <t:saveState value="#{zonesBean}"></t:saveState>
     <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
       <tr>
         <td valign="top" width="130">
@@ -47,6 +48,7 @@
                 <a4j:form id="zones-form">
                   <h:inputHidden id="points" value="#{zonesBean.pointsString}" />
                   <h:inputHidden id="address" value="#{zonesBean.address}" />
+
                   <input type="hidden" id="firstPoints" value="#{zonesBean.pointsString}" />
 
                   <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
@@ -119,8 +121,8 @@
                           </table>
                         </li>
                         <li class="r">
-                          <a4j:commandButton action="#{zonesBean.save}" onclick="stopDrawing()" reRender="displayZone,editZone" oncomplete="disableEditing()" styleClass="left"><span class="save"><h:outputText value="#{messages.zones_save}" /></span></a4j:commandButton>
-                          <h:outputText value="&#160;" /><a4j:commandButton action="#{zonesBean.cancelEdit}" onclick="cancelEdit()" reRender="points,displayZone,editZone" oncomplete="showZone(false)" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></a4j:commandButton>
+                           <a4j:commandButton action="#{zonesBean.save}" onclick="stopDrawing()" reRender="displayZone,editZone" oncomplete="disableEditing()" styleClass="left"><span class="save"><h:outputText value="#{messages.zones_save}" /></span></a4j:commandButton>
+                          <h:outputText value="&#160;" /><a4j:commandButton action="#{zonesBean.cancelEdit}"  onclick="cancelEdit()" reRender="points,displayZone,editZone" oncomplete="showZone(false)" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></a4j:commandButton>
                         </li>
                       </ul>
 
