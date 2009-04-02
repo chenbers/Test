@@ -24,54 +24,54 @@ import com.inthinc.pro.dao.util.DateUtil;
 
 public class VehicleTripsBean extends BaseBean
 {
-    private static final Logger logger            = Logger.getLogger(VehicleTripsBean.class);
+    private static final Logger logger = Logger.getLogger(VehicleTripsBean.class);
 
-    private NavigationBean      navigation;
-    private VehicleDAO          vehicleDAO;
-    private DriverDAO           driverDAO;
-    private EventDAO            eventDAO;
-    private AddressLookup       addressLookup;
+    private NavigationBean navigation;
+    private VehicleDAO vehicleDAO;
+    private DriverDAO driverDAO;
+    private EventDAO eventDAO;
+    private AddressLookup addressLookup;
 
-    private Date                startDate;
-    private Date                endDate;
+    private Date startDate;
+    private Date endDate;
 
-    private Integer             milesDriven       = 0;
-    private Integer             idleSeconds       = 0;
-    private Integer             numTrips          = 0;
-    private Integer             totalDriveSeconds = 0;
+    private Integer milesDriven = 0;
+    private Integer idleSeconds = 0;
+    private Integer numTrips = 0;
+    private Integer totalDriveSeconds = 0;
 
-    private boolean             showLastTenTrips  = false;
-    private boolean             showIdleMarkers   = true;
-    private boolean             showWarnings      = true;
+    private boolean showLastTenTrips = false;
+    private boolean showIdleMarkers = true;
+    private boolean showWarnings = true;
 
-    private List<TripDisplay>   trips             = new ArrayList<TripDisplay>();
-    private List<TripDisplay>   selectedTrips     = new ArrayList<TripDisplay>();
-    private TripDisplay         selectedTrip;
-    private Driver              selectedDriver;
-    private List<Event>         violationEvents   = new ArrayList<Event>();
-    private List<Event>         idleEvents        = new ArrayList<Event>();
-    private List<Event>         allEvents         = new ArrayList<Event>();
-    private TimeZone            timeZone;
+    private List<TripDisplay> trips = new ArrayList<TripDisplay>();
+    private List<TripDisplay> selectedTrips = new ArrayList<TripDisplay>();
+    private TripDisplay selectedTrip;
+    private Driver selectedDriver;
+    private List<Event> violationEvents = new ArrayList<Event>();
+    private List<Event> idleEvents = new ArrayList<Event>();
+    private List<Event> allEvents = new ArrayList<Event>();
+    private TimeZone timeZone;
 
     public void initTrips()
     {
-        if(trips.isEmpty())
+        if (trips.isEmpty())
         {
             List<Trip> tempTrips = new ArrayList<Trip>();
             tempTrips = vehicleDAO.getTrips(navigation.getVehicle().getVehicleID(), getStartDate(), getEndDate());
-          
+
             for (Trip trip : tempTrips)
             {
                 trips.add(new TripDisplay(trip, this.timeZone, addressLookup.getMapServerURLString()));
             }
             Collections.sort(trips);
             Collections.reverse(trips);
-            
+
             numTrips = trips.size();
             if (numTrips > 0)
             {
-                //logger.debug(numTrips.toString() + "Trips Found.");
-                
+                // logger.debug(numTrips.toString() + "Trips Found.");
+
                 // Set selected trip and get associated events.
                 // Generate Stats on selected
                 setSelectedTrip(trips.get(0));
@@ -82,32 +82,32 @@ public class VehicleTripsBean extends BaseBean
 
     public void initViolations(Date start, Date end)
     {
-        if(violationEvents.isEmpty())
+        if (violationEvents.isEmpty())
         {
             List<Integer> vioTypes = new ArrayList<Integer>();
             vioTypes.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
             vioTypes.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
             vioTypes.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
-    
+
             List<Integer> idleTypes = new ArrayList<Integer>();
             idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
-    
+
             violationEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), start, end, vioTypes);
             idleEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), start, end, idleTypes);
-            
+
             logger.debug("event counts: " + violationEvents.size() + ", " + idleEvents.size());
             logger.debug(navigation.getVehicle().getVehicleID() + "start: " + start + " end: " + end);
-            
-            //Lookup Addresses for events
-            for (Event event: violationEvents)
+
+            // Lookup Addresses for events
+            for (Event event : violationEvents)
             {
                 event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
             }
-            for (Event event: idleEvents)
+            for (Event event : idleEvents)
             {
                 event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
             }
-            
+
             allEvents.clear();
             allEvents.addAll(violationEvents);
             allEvents.addAll(idleEvents);
@@ -121,22 +121,21 @@ public class VehicleTripsBean extends BaseBean
         milesDriven = 0;
         totalDriveSeconds = 0;
         idleSeconds = 0;
-        
+
         for (TripDisplay trip : trips)
         {
             milesDriven += trip.getTrip().getMileage();
-       
+
             Long tempLong = (trip.getDurationMiliSeconds() / 1000L);
             totalDriveSeconds += tempLong.intValue();
         }
-        
+
         // Get events over date picker date range
         List<Integer> idleTypes = new ArrayList<Integer>();
-                      idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
-                      
+        idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
+
         List<Event> tmpIdleEvents = new ArrayList<Event>();
-        tmpIdleEvents = eventDAO.getEventsForVehicle(
-                                 navigation.getVehicle().getVehicleID(), startDate, endDate, idleTypes);        
+        tmpIdleEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), startDate, endDate, idleTypes);
 
         for (Event event : tmpIdleEvents)
         {
@@ -148,7 +147,7 @@ public class VehicleTripsBean extends BaseBean
     // DATE PROPERTIES
     public Date getStartDate()
     {
-        if(startDate == null)
+        if (startDate == null)
         {
             // Set start date to 7 days ago, apply driver's time zone..
             Calendar calendar = Calendar.getInstance();
@@ -169,7 +168,7 @@ public class VehicleTripsBean extends BaseBean
 
     public Date getEndDate()
     {
-        if(endDate == null)
+        if (endDate == null)
         {
             // Set end date to now using driver's time zone.
             endDate = SetTimeToEndOfDay(new Date(), getTimeZone());
@@ -179,11 +178,11 @@ public class VehicleTripsBean extends BaseBean
 
     public void setEndDate(Date endDate)
     {
-        //Set Time to 11:59:99 PM Always
+        // Set Time to 11:59:99 PM Always
         endDate = SetTimeToEndOfDay(endDate, getTimeZone());
         this.endDate = endDate;
     }
-    
+
     public Date SetTimeToEndOfDay(Date date, TimeZone tz)
     {
         // Adjust time using TimeZome and set to 11:59:59
@@ -192,10 +191,11 @@ public class VehicleTripsBean extends BaseBean
         calendar.setTime(date);
         calendar.set(Calendar.HOUR_OF_DAY, 23);
         calendar.set(Calendar.MINUTE, 59);
-        calendar.set(Calendar.SECOND,59);
-        
+        calendar.set(Calendar.SECOND, 59);
+
         return calendar.getTime();
     }
+
     // TRIP DAO PROPERTIES
     public VehicleDAO getVehicleDAO()
     {
@@ -286,7 +286,7 @@ public class VehicleTripsBean extends BaseBean
                 selectedTrips.add(trip); // Trips are already in reverse order. (Most recent first)
                 count++;
             }
-            
+
             // Load events for given list.
             this.violationEvents.clear();
             initViolations(selectedTrips.get(selectedTrips.size() - 1).getTrip().getStartTime(), selectedTrips.get(0).getTrip().getEndTime());
@@ -345,15 +345,15 @@ public class VehicleTripsBean extends BaseBean
 
     public void setSelectedTrip(TripDisplay selectedTrip)
     {
-        //Add this trip to the list of selected trips.
+        // Add this trip to the list of selected trips.
         selectedTrips.clear();
         selectedTrips.add(selectedTrip);
         this.showLastTenTrips = false;
-        
-        //Get Driver for this Trip
+
+        // Get Driver for this Trip
         setSelectedDriver(driverDAO.findByID(selectedTrip.getTrip().getDriverID()));
-        
-        //Get Violations for this Trip
+
+        // Get Violations for this Trip
         violationEvents.clear();
         idleEvents.clear();
         initViolations(selectedTrip.getTrip().getStartTime(), selectedTrip.getTrip().getEndTime());
@@ -390,16 +390,17 @@ public class VehicleTripsBean extends BaseBean
     {
         this.idleEvents = idleEvents;
     }
-    
+
     public List<Event> getAllEvents()
     {
         return allEvents;
     }
-    
+
     public void setAllEvents(List<Event> allEvents)
     {
         this.allEvents = allEvents;
     }
+
     // EVENT DAO PROPERTIES
     public EventDAO getEventDAO()
     {
@@ -432,7 +433,7 @@ public class VehicleTripsBean extends BaseBean
     {
         this.selectedTrips = selectedTrips;
     }
-    
+
     public void DateChangedAction()
     {
         trips.clear();
@@ -459,25 +460,29 @@ public class VehicleTripsBean extends BaseBean
         this.selectedDriver = selectedDriver;
     }
 
-    public String getDisplayTimeZone(){
-    	
-     	return getTimeZone().getDisplayName(timeZone.inDaylightTime(new GregorianCalendar(timeZone).getTime()), TimeZone.LONG);
+    public String getDisplayTimeZone()
+    {
+
+        return getTimeZone().getDisplayName(timeZone.inDaylightTime(new GregorianCalendar(timeZone).getTime()), TimeZone.LONG);
     }
-    
+
     public TimeZone getTimeZone()
     {
-        //Get Time Zone from driver
-        Driver driver = driverDAO.findByID(navigation.getVehicle().getDriverID());
-        if(driver != null)
+        // Get Time Zone from driver
+        if (timeZone == null)
         {
-            timeZone = driver.getPerson().getTimeZone();
+            Driver driver = driverDAO.findByID(navigation.getVehicle().getDriverID());
+            if (driver != null && driver.getPerson() != null && driver.getPerson().getTimeZone() != null)
+            {
+                timeZone = driver.getPerson().getTimeZone();
+            }
+            else
+            {
+                // Use GMT for default if no driver associated.
+                timeZone = TimeZone.getTimeZone("GMT");
+            }
         }
-        else
-        {
-            //Use GMT for default if no driver associated.
-            timeZone = TimeZone.getTimeZone("GMT");
-        }
-        
+
         return timeZone;
     }
 
