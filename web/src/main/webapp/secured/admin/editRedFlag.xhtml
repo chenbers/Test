@@ -456,6 +456,7 @@
     </table>
 
     <ui:include src="../../includes/adminEditScripts.xhtml"/>
+    
     <script type="text/javascript">
       var formElements = ["text", "checkbox", "radio", "select-one", "select-multiple", "textarea"];
 
@@ -491,6 +492,16 @@
           box = document.getElementById(id + "update_");
         if (box)
           box.checked = true;
+
+        var span;
+        if (index > 0)
+          span = document.getElementById("edit-form:update_" + id.substring(index + 1) + "_required_flag");
+        else
+          span = document.getElementById("edit-form:update_" + id + "_required_flag");
+        if (span)
+        {
+          span.style.display = "inline";
+        }
       }
     </script>
 
