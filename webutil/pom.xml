@@ -9,7 +9,7 @@
     <artifactId>webutil</artifactId>
     <version>0.13-BETA-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>Tiwi Pro Portal - Web Utilities App</name>
+    <name>Pro Portal - Web Utilities App</name>
     <profiles>
         <profile>
             <id>local</id>

@@ -11,7 +11,7 @@
   <version>0.13-BETA-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>Tiwi Pro Portal - Data Layer</name>
+  <name>Pro Portal - Data Layer</name>
 
   <build>  
     <finalName>dao</finalName>

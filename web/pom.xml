@@ -9,7 +9,7 @@
     <artifactId>web</artifactId>
     <version>0.13-BETA-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>Pro Portal - Reports</name>
+    <name>Pro Portal - Web</name>
     <profiles>
         <profile>
             <id>local</id>
