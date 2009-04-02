@@ -109,7 +109,7 @@
     </rich:column>
     <rich:column rendered="#{personBean.tableColumns['height'].visible}" sortBy="#{item.height}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_height}" /></f:facet>
-      <ui:fragment rendered="#{personBean.item.height > 0}">
+      <ui:fragment rendered="#{item.height > 0}">
         <h:outputText value="#{(item.height - (item.height % 12)) / 12}"><f:convertNumber integerOnly="true" /></h:outputText>
         <h:outputText value="' " />
         <h:outputText value="#{item.height % 12}" />
