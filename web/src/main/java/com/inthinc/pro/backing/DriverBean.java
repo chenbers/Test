@@ -53,6 +53,7 @@ public class DriverBean extends BaseBean
     private List<Event> violationEvents = new ArrayList<Event>();
     private Integer overallScore;
     private String overallScoreHistory;
+    private String overallScoreHistory2;  //FOR TESTING..  used in driverTest.xhtml
     private String overallScoreStyle;
     private String mpgHistory;
     private String coachingHistory;
@@ -111,13 +112,26 @@ public class DriverBean extends BaseBean
     public String getOverallScoreHistory()
     {
 
-        setOverallScoreHistory(createLineDef(ScoreType.SCORE_OVERALL, durationBean.getDuration()));
+        setOverallScoreHistory(createSingleLineDef(ScoreType.SCORE_OVERALL, durationBean.getDuration()));
         return overallScoreHistory;
     }
 
     public void setOverallScoreHistory(String overallScoreHistory)
     {
         this.overallScoreHistory = overallScoreHistory;
+    }
+    
+    //TESING PROPERTIES
+    public String getOverallScoreHistory2()
+    {
+
+        setOverallScoreHistory2(createMultiLineDef(ScoreType.SCORE_OVERALL, durationBean.getDuration()));
+        return overallScoreHistory2;
+    }
+
+    public void setOverallScoreHistory2(String overallScoreHistory2)
+    {
+        this.overallScoreHistory2 = overallScoreHistory2;
     }
 
     public String getOverallScoreStyle()
@@ -239,7 +253,7 @@ public class DriverBean extends BaseBean
     public String getMpgHistory()
     {
         if (mpgHistory == null)
-            mpgHistory = this.createMultiLineDef();
+            mpgHistory = this.createMpgLineDef();
 
         return mpgHistory;
     }
@@ -249,7 +263,7 @@ public class DriverBean extends BaseBean
         this.mpgHistory = mpgHistory;
     }
 
-    private String createMultiLineDef()
+    private String createMpgLineDef()
     {
         List<MpgEntity> mpgEntities = mpgDAO.getDriverEntities(navigation.getDriver().getDriverID(), mpgDurationBean.getDuration(), null);
         List<String> catLabelList = GraphicUtil.createMonthList(mpgDurationBean.getDuration());
@@ -283,7 +297,7 @@ public class DriverBean extends BaseBean
         return sb.toString();
     }
 
-    public String createNewLineDef(ScoreType scoreType, Duration duration)
+    public String createMultiLineDef(ScoreType scoreType, Duration duration)
     {
         StringBuffer sb = new StringBuffer();
         FusionMultiAreaChart multiAreaChart = new FusionMultiAreaChart();
@@ -291,57 +305,71 @@ public class DriverBean extends BaseBean
         // Start XML Data
         sb.append(multiAreaChart.getControlParameters());
               
-        List<ScoreableEntity> cumulativeList = scoreDAO.getDriverTrendCumulative
-                                        (navigation.getDriver().getDriverID(), duration, scoreType);
+        List<ScoreableEntity> cumulativeList = scoreDAO.getDriverTrendCumulativeTest
+                                            (navigation.getDriver().getDriverID(), duration, scoreType);
         
         List<ScoreableEntity> dailyList = scoreDAO.getDriverTrendDaily
-                                        (navigation.getDriver().getDriverID(), duration, scoreType);
+                                            (navigation.getDriver().getDriverID(), duration, scoreType);
         
         List<String> catLabelList = GraphicUtil.createMonthList(duration);
 
-        Double cumulativeValues[] = new Double[cumulativeList.size()];
-        Double dailyValues[] = new Double[dailyList.size()];
+        Double cumulativeValues[]   = new Double[cumulativeList.size()];
+        Double dailyValues[]        = new Double[dailyList.size()];
+        Double odometerValues[]     = new Double[dailyList.size()];
+        
+        //Start Categories List
+        sb.append(multiAreaChart.getCategoriesStart());
         
         int cnt = 0;
-        sb.append(multiAreaChart.getCategoriesStart());
-        for (ScoreableEntity entity : cumulativeList)
-        {
-            cumulativeValues[cnt] = entity.getScore() == null ? null : entity.getScore() / 10D;
-            
-            
-            sb.append(multiAreaChart.getCategoryLabel(catLabelList.get(cnt)));
-            
-                       
-            cnt++;
-        }
-        sb.append(multiAreaChart.getCategoriesEnd());
-        
-        cnt = 0;
-        String odometer = "";
         for (ScoreableEntity entity : dailyList)
         {
             Double score;
-            
-            if(odometer != "" && odometer == entity.getIdentifier())
+            // Set Score to NULL on non driving days 
+            if(entity.getIdentifierNum() != null && entity.getIdentifierNum() == 0)
                 score = null;
             else
                 score = entity.getScore() == null ? null : entity.getScore() / 10D;
             
+            //Add Score to array.
             dailyValues[cnt] = score;
             
+            //logger.debug("mileage " + entity.getIdentifierNum());
+            if(entity.getIdentifierNum() != null)
+            {
+                odometerValues[cnt] = entity.getIdentifierNum() / 100D;  // Odometer values in this entity are miles driven for the day.
+            }
+            sb.append(multiAreaChart.getCategoryLabel(catLabelList.get(cnt)));     
             cnt++;
-            odometer = entity.getIdentifier();
         }
+        sb.append(multiAreaChart.getCategoriesEnd());
         
+        
+        cnt = 0;
+        for (ScoreableEntity entity : cumulativeList)
+        {
+            Double score;
+
+            // Set Score to NULL on non driving days. 
+            if(odometerValues[cnt] != null && odometerValues[cnt] == 0)
+                score = null;
+            else
+                score = entity.getScore() == null ? null : entity.getScore() / 10D;
+            
+            cumulativeValues[cnt] = score;
+            //logger.debug("mileage " + entity.getIdentifierNum());
+                  
+            cnt++;
+        }
+  
         sb.append(multiAreaChart.getChartLineDataSet("Daily Score", "#407EFF", dailyValues, catLabelList));
         sb.append(multiAreaChart.getChartAreaDataSet("Cumulative Score", "#B0CB48", cumulativeValues, catLabelList));
-
+        sb.append(multiAreaChart.getChartBarDataSet("Mileage", "#C0C0C0", odometerValues, catLabelList));
         sb.append(multiAreaChart.getClose());
 
         return sb.toString();
     }
     
-    public String createLineDef(ScoreType scoreType, Duration duration)
+    public String createSingleLineDef(ScoreType scoreType, Duration duration)
     {
         StringBuffer sb = new StringBuffer();
         Line line = new Line();
@@ -409,7 +437,7 @@ public class DriverBean extends BaseBean
         return sb.toString();
     }
 
-    public List<CategorySeriesData> createJasperDef(ScoreType scoreType, Duration duration)
+    public List<CategorySeriesData> createSingleJasperDef(ScoreType scoreType, Duration duration)
     {
         List<ScoreableEntity> scoreList = scoreDAO
                 .getDriverTrendCumulative(navigation.getDriver().getDriverID(), duration, scoreType);
@@ -469,10 +497,10 @@ public class DriverBean extends BaseBean
         reportCriteria.addParameter("SPEED_DUR", speedDurationBean.getDuration().toString());
         reportCriteria.addParameter("STYLE_DUR", styleDurationBean.getDuration().toString());
         reportCriteria.addParameter("SEATBELT_DUR", seatBeltDurationBean.getDuration().toString());
-        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_OVERALL, durationBean.getDuration()));
-        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_SPEEDING, speedDurationBean.getDuration()));
-        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_DRIVING_STYLE, styleDurationBean.getDuration()));
-        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_SEATBELT, seatBeltDurationBean.getDuration()));
+        reportCriteria.addChartDataSet(createSingleJasperDef(ScoreType.SCORE_OVERALL, durationBean.getDuration()));
+        reportCriteria.addChartDataSet(createSingleJasperDef(ScoreType.SCORE_SPEEDING, speedDurationBean.getDuration()));
+        reportCriteria.addChartDataSet(createSingleJasperDef(ScoreType.SCORE_DRIVING_STYLE, styleDurationBean.getDuration()));
+        reportCriteria.addChartDataSet(createSingleJasperDef(ScoreType.SCORE_SEATBELT, seatBeltDurationBean.getDuration()));
         tempCriteria.add(reportCriteria);
 
         // Page 2
@@ -494,7 +522,7 @@ public class DriverBean extends BaseBean
             reportCriteria.addParameter("MAP_URL", imageUrl);
         }
         reportCriteria.addChartDataSet(createMpgJasperDef());
-        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_COACHING_EVENTS, coachDurationBean.getDuration()));
+        reportCriteria.addChartDataSet(createSingleJasperDef(ScoreType.SCORE_COACHING_EVENTS, coachDurationBean.getDuration()));
         reportCriteria.addParameter("COACH_DUR", coachDurationBean.getDuration().toString());
         reportCriteria.addParameter("MPG_DUR", mpgDurationBean.getDuration().toString());
         tempCriteria.add(reportCriteria);
