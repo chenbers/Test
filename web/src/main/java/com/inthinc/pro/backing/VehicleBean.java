@@ -309,7 +309,7 @@ public class VehicleBean extends BaseBean
         // Start XML Data
         sb.append(line.getControlParameters());
 
-        List<ScoreableEntity> scoreList = scoreDAO.getDriverTrendCumulative(navigation.getVehicle().getVehicleID(), duration, scoreType);
+        List<ScoreableEntity> scoreList = scoreDAO.getVehicleTrendCumulative(navigation.getVehicle().getVehicleID(), duration, scoreType);
 
         List<String> monthList = GraphicUtil.createMonthList(duration);
 
@@ -343,7 +343,7 @@ public class VehicleBean extends BaseBean
         sb.append(column.getControlParameters());
               
         List<ScoreableEntity> scoreList = scoreDAO
-                .getDriverTrendCumulative(navigation.getVehicle().getVehicleID(), duration, scoreType);
+                .getVehicleTrendCumulative(navigation.getVehicle().getVehicleID(), duration, scoreType);
 
         // Get "x" values
         List<String> monthList = GraphicUtil.createMonthList(duration);
@@ -455,7 +455,7 @@ public class VehicleBean extends BaseBean
 
     public List<CategorySeriesData> createJasperDef(ScoreType scoreType, Duration duration)
     {
-        List<ScoreableEntity> scoreList = scoreDAO.getDriverTrendCumulative(navigation.getVehicle().getVehicleID(), duration, scoreType);
+        List<ScoreableEntity> scoreList = scoreDAO.getVehicleTrendCumulative(navigation.getVehicle().getVehicleID(), duration, scoreType);
 
         List<CategorySeriesData> chartDataList = new ArrayList<CategorySeriesData>();
         List<String> monthList = GraphicUtil.createMonthList(duration, "M/dd");
@@ -522,7 +522,7 @@ public class VehicleBean extends BaseBean
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.addParameter("REPORT_NAME", "Vehicle Performance: Summary");
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
-        reportCriteria.addParameter("DRIVER_NAME", this.getNavigation().getDriver().getPerson().getFullName());
+        reportCriteria.addParameter("DRIVER_NAME", this.getNavigation().getVehicle().getFullName());
 
         if (lastTrip != null)
         {
