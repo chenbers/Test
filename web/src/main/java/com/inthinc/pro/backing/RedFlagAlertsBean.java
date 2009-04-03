@@ -153,7 +153,20 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         final Map<String, Boolean> updateField = getUpdateField();
         if (isBatchEdit())
         {
-            updateField.put("type", true);
+            boolean updateType = Boolean.TRUE.equals(getUpdateField().get("type"));
+            updateField.put("speedLevels", updateType);
+            updateField.put("speedSettings", updateType);
+            updateField.put("hardAccelerationLevel", updateType);
+            updateField.put("hardBrakeLevel", updateType);
+            updateField.put("hardTurnLevel", updateType);
+            updateField.put("hardVerticalLevel", updateType);
+            updateField.put("hardAcceleration", updateType);
+            updateField.put("hardBrake", updateType);
+            updateField.put("hardTurn", updateType);
+            updateField.put("hardVertical", updateType);
+            updateField.put("seatBeltLevel", updateType);
+            updateField.put("crashLevel", updateType);
+            
             if(updateField.get("anytime")){
                 updateField.put("startTOD",true);
                 updateField.put("stopTOD",true);
@@ -178,19 +191,6 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             getItem().setSeatBeltLevel(RedFlagLevel.NONE);
             getItem().setCrashLevel(RedFlagLevel.NONE);
 
-            // if batch editing and changing speed, make sure the nulled items get set
-            if (isBatchEdit())
-                for (final String key : updateField.keySet())
-                    if (key.startsWith("speed") && updateField.get(key))
-                    {
-                        updateField.put("hardAccelerationLevel", true);
-                        updateField.put("hardBrakeLevel", true);
-                        updateField.put("hardTurnLevel", true);
-                        updateField.put("hardVerticalLevel", true);
-                        updateField.put("seatBeltLevel", true);
-                        updateField.put("crashLevel", true);
-                        break;
-                    }
         }
         else if (getItem().getType().equals("drivingStyle"))
         {
@@ -209,24 +209,6 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             if (!getItem().isHardVerticalSelected())
                 getItem().setHardVerticalLevel(RedFlagLevel.NONE);
 
-            // if batch editing and changing driving style, make sure the nulled items get set
-            if (isBatchEdit())
-            {
-                updateField.put("hardAccelerationLevel", updateField.get("hardAcceleration"));
-                updateField.put("hardBrakeLevel", updateField.get("hardBrake"));
-                updateField.put("hardTurnLevel", updateField.get("hardTurn"));
-                updateField.put("hardVerticalLevel", updateField.get("hardVertical"));
-
-                if (updateField.get("hardAcceleration") || updateField.get("hardBrake") || updateField.get("hardTurn") || updateField.get("hardVertical"))
-                {
-                    for (final String key : updateField.keySet())
-                        if (key.startsWith("speed") && (key.length() <= 7))
-                            updateField.put(key, true);
-                    updateField.put("seatBeltLevel", true);
-                    updateField.put("crashLevel", true);
-                    
-                }
-            }
         }
         else if (getItem().getType().equals("seatBelt"))
         {
@@ -243,17 +225,6 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             getItem().setHardVerticalSelected(false);
             getItem().setCrashLevel(RedFlagLevel.NONE);
 
-            // if batch editing and changing seatBelt, make sure the nulled items get set
-            if (isBatchEdit() && updateField.get("seatBeltLevel"))
-            {
-                for (final String key : updateField.keySet())
-                    if (key.startsWith("speed") && (key.length() <= 7))
-                        updateField.put(key, true);
-                updateField.put("hardAccelerationLevel", true);
-                updateField.put("hardBrakeLevel", true);
-                updateField.put("hardTurnLevel", true);
-                updateField.put("hardVerticalLevel", true);
-            }
         }
         else if (getItem().getType().equals("crash"))
         {
@@ -270,17 +241,6 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             getItem().setHardVerticalSelected(false);
             getItem().setSeatBeltLevel(RedFlagLevel.NONE);
 
-            // if batch editing and changing crash, make sure the nulled items get set
-            if (isBatchEdit() && updateField.get("crashLevel"))
-            {
-                for (final String key : updateField.keySet())
-                    if (key.startsWith("speed") && (key.length() <= 7))
-                        updateField.put(key, true);
-                updateField.put("hardAccelerationLevel", true);
-                updateField.put("hardBrakeLevel", true);
-                updateField.put("hardTurnLevel", true);
-                updateField.put("hardVerticalLevel", true);
-            }
         }
 
         return super.save();
@@ -319,7 +279,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
                 
                 if (flag.getSpeedSettings() == null)
                     flag.setSpeedSettings(new Integer[Device.NUM_SPEEDS]);
-                if (flag.getSpeedLevels() == null)
+                if (flag.getSpeedLevels() == null || (flag.getSpeedLevels().length  >0 && flag.getSpeedLevels()[0] == null))
                     flag.setSpeedLevels(new RedFlagLevel[Device.NUM_SPEEDS]);
 
                 final Map<String, Boolean> updateField = getUpdateField();

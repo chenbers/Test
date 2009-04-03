@@ -177,14 +177,23 @@
 
                   <div class="spacer"></div>
 
-                  <div class="add_section_title"><h:outputText value="#{messages.editRedFlag_defineRedFlag}" /></div>
+                  <div class="add_section_title">
+                  <ui:include src="../../includes/inputLabel.xhtml">
+                     <ui:param name="required" value="false"/>
+                     <ui:param name="for" value="type"/>
+                     <ui:param name="fieldName" value="type"/>
+                     <ui:param name="editBean" value="#{redFlagAlertsBean}"/>
+                     <ui:param name="label" value="#{messages.editRedFlag_defineRedFlag}"/>
+                  </ui:include>
+                  </div>
 
                   <div class="spacer"></div>
 
                   <table width="790" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td width="130" valign="top">
-                        <h:selectOneRadio value="#{redFlagAlertsBean.item.type}" layout="pageDirection" style="width:100%" styleClass="ls_tab_table" enabledClass="radioitem">
+                        <h:selectOneRadio id="type" value="#{redFlagAlertsBean.item.type}" layout="pageDirection" style="width:100%" styleClass="ls_tab_table" enabledClass="radioitem"
+                           onchange="checkMultiple('type')">
                           <a4j:support event="onclick" reRender="speed,drivingStyle,safety,crash" limitToList="true" />
                           <f:selectItem itemValue="speed" itemLabel="#{messages.redFlag_speed}" />
                           <f:selectItem itemValue="drivingStyle" itemLabel="#{messages.redFlag_drivingStyle}" />
@@ -200,9 +209,6 @@
 
                             <table width="100%" border="0" cellpadding="2" cellspacing="0">
                               <tr class="datagrid">
-                                <ui:fragment rendered="#{redFlagAlertsBean.batchEdit}">
-                                  <th><h:outputText value="#{messages.editRedFlag_batchEdit}" /></th>
-                                </ui:fragment>
                                 <th><h:outputText value="#{messages.editRedFlag_speedHeader}" /></th>
                                 <th width="300" colspan="2"><h:outputText value="#{messages.editRedFlag_speedSettingHeader}" /></th>
                                 <th width="100"><h:outputText value="#{messages.editRedFlag_severity}" /></th>
@@ -211,24 +217,19 @@
                                 <c:set var="id" value="speed#{index}" />
                                 <c:set var="minimum" value="#{(index lt 4) ? ((-index * 5) - 5) : -25}" />
                                 <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
-                                  <ui:fragment rendered="#{redFlagAlertsBean.batchEdit}">
-                                    <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                      <h:selectBooleanCheckbox id="update_#{id}" value="#{redFlagAlertsBean.updateField[id]}" />
-                                    </td>
-                                  </ui:fragment>
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:selectBooleanCheckbox id="#{id}Selected" value="#{redFlagAlertsBean.item.speedSelected[index]}" onchange="checkMultiple(this.id.substring(0, this.id.length - 8))" />
+                                    <h:selectBooleanCheckbox id="#{id}Selected" value="#{redFlagAlertsBean.item.speedSelected[index]}" onchange="checkMultiple('type')" />
                                     <h:outputText value="#{(index * 5) + 5}" />
                                     <h:outputText value=" mph" />
                                   </td>
                                   <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;" width="250">
-                                    <rich:inputNumberSlider id="#{id}" value="#{redFlagAlertsBean.item.speedSettings[index]}" width="250" showToolTip="false" showBoundaryValues="false" minValue="#{minimum}" maxValue="25" step="1" onchange="checkMultiple(this.mainTable.id); document.getElementById(this.mainTable.id + 'Selected').checked = true;" />
+                                    <rich:inputNumberSlider id="#{id}" value="#{redFlagAlertsBean.item.speedSettings[index]}" width="250" showToolTip="false" showBoundaryValues="false" minValue="#{minimum}" maxValue="25" step="1" onchange="checkMultiple('type'); document.getElementById(this.mainTable.id + 'Selected').checked = true;" />
                                   </td>
                                   <td style="padding: 6px 12px 6px 2px; border-bottom: 1px solid #8BAD37;">
                                     <h:outputText value=" mph" />
                                   </td>
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:selectOneMenu id="#{id}Severity" value="#{redFlagAlertsBean.item.speedLevels[index]}" onchange="var id = this.id.substring(0, this.id.length - 8); checkMultiple(id); document.getElementById(id + 'Selected').checked = true;">
+                                    <h:selectOneMenu id="#{id}Severity" value="#{redFlagAlertsBean.item.speedLevels[index]}" onchange="var id = this.id.substring(0, this.id.length - 8); checkMultiple('type'); document.getElementById(id + 'Selected').checked = true;">
                                       <f:selectItem itemValue="INFO" itemLabel="#{messages.redFlag_info}" />
                                       <f:selectItem itemValue="WARNING" itemLabel="#{messages.redFlag_warning}" />
                                       <f:selectItem itemValue="CRITICAL" itemLabel="#{messages.redFlag_critical}" />
@@ -279,9 +280,6 @@
 
                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
                               <tr class="datagrid">
-                                <ui:fragment rendered="#{redFlagAlertsBean.batchEdit}">
-                                  <th><h:outputText value="#{messages.editRedFlag_batchEdit}" /></th>
-                                </ui:fragment>
                                 <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
                                 <th width="300" colspan="2"><h:outputText value="#{messages.editRedFlag_sensitivity}" /></th>
                                 <th width="100"><h:outputText value="#{messages.editRedFlag_severity}" /></th>
@@ -289,19 +287,14 @@
                               <c:forEach begin="1" var="index" end="4">
                                 <c:set var="sensitivityItem" value="#{(index == 1) ? 'hardAcceleration' : ((index == 2) ? 'hardBrake' : ((index == 3) ? 'hardTurn' : 'hardVertical'))}" />
                                 <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
-                                  <ui:fragment rendered="#{redFlagAlertsBean.batchEdit}">
-                                    <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                      <h:selectBooleanCheckbox id="update_#{sensitivityItem}" value="#{redFlagAlertsBean.updateField[sensitivityItem]}" />
-                                    </td>
-                                  </ui:fragment>
                                   <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <c:set var="sensitivitySelected" value="#{sensitivityItem}Selected" />
-                                    <h:selectBooleanCheckbox id="#{sensitivityItem}Selected" value="#{redFlagAlertsBean.item[sensitivitySelected]}" onchange="checkMultiple(this.id.substring(0, this.id.length - 8))" />
+                                    <h:selectBooleanCheckbox id="#{sensitivityItem}Selected" value="#{redFlagAlertsBean.item[sensitivitySelected]}" onchange="checkMultiple('type')" />
                                     <c:set var="sensitivityLabel" value="editDevice_#{sensitivityItem}" />
                                     <h:outputText value="#{messages[sensitivityLabel]}" />
                                   </td>
                                   <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" width="200">
-                                    <rich:inputNumberSlider id="#{sensitivityItem}" value="#{redFlagAlertsBean.item[sensitivityItem]}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="1" maxValue="5" onchange="checkMultiple(this.mainTable.id); document.getElementById(this.mainTable.id + 'Selected').checked = true; document.getElementById(this.mainTable.id + 'Level').innerHTML = sensitivities[this.value]" />
+                                    <rich:inputNumberSlider id="#{sensitivityItem}" value="#{redFlagAlertsBean.item[sensitivityItem]}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="1" maxValue="5" onchange="checkMultiple('type'); document.getElementById(this.mainTable.id + 'Selected').checked = true; document.getElementById(this.mainTable.id + 'Level').innerHTML = sensitivities[this.value]" />
                                   </td>
                                   <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;">
                                     <c:set var="sensitivityLevel" value="editDevice_sensitivity#{redFlagAlertsBean.item[sensitivityItem]}" />
@@ -309,7 +302,7 @@
                                   </td>
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <c:set var="sensitivityLevel" value="#{sensitivityItem}Level" />
-                                    <h:selectOneMenu id="#{sensitivityItem}Severity" value="#{redFlagAlertsBean.item[sensitivityLevel]}" onchange="var id = this.id.substring(0, this.id.length - 8); checkMultiple(id); document.getElementById(id + 'Selected').checked = true;">
+                                    <h:selectOneMenu id="#{sensitivityItem}Severity" value="#{redFlagAlertsBean.item[sensitivityLevel]}" onchange="var id = this.id.substring(0, this.id.length - 8); checkMultiple('type'); document.getElementById(id + 'Selected').checked = true;">
                                       <f:selectItem itemValue="INFO" itemLabel="#{messages.redFlag_info}" />
                                       <f:selectItem itemValue="WARNING" itemLabel="#{messages.redFlag_warning}" />
                                       <f:selectItem itemValue="CRITICAL" itemLabel="#{messages.redFlag_critical}" />
@@ -327,23 +320,15 @@
 
                             <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
                               <tr>
-                                <ui:fragment rendered="#{redFlagAlertsBean.batchEdit}">
-                                  <th><h:outputText value="#{messages.editRedFlag_batchEdit}" /></th>
-                                </ui:fragment>
                                 <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
                                 <th width="100"><h:outputText value="#{messages.editRedFlag_severity}" /></th>
                               </tr>
                               <tr class="tableEven">
-                                <ui:fragment rendered="#{redFlagAlertsBean.batchEdit}">
-                                  <td>
-                                    <h:selectBooleanCheckbox id="update_seatBeltLevel" value="#{redFlagAlertsBean.updateField['seatBeltLevel']}" />
-                                  </td>
-                                </ui:fragment>
                                 <td>
                                   <h:outputText value="#{messages.editRedFlag_seatBelt}" />
                                 </td>
                                 <td>
-                                  <h:selectOneMenu id="seatBeltLevelSeverity" value="#{redFlagAlertsBean.item.seatBeltLevel}" onchange="checkMultiple('seatBeltLevel')">
+                                  <h:selectOneMenu id="seatBeltLevelSeverity" value="#{redFlagAlertsBean.item.seatBeltLevel}" onchange="checkMultiple('type')">
                                     <f:selectItem itemValue="INFO" itemLabel="#{messages.redFlag_info}" />
                                     <f:selectItem itemValue="WARNING" itemLabel="#{messages.redFlag_warning}" />
                                     <f:selectItem itemValue="CRITICAL" itemLabel="#{messages.redFlag_critical}" />
@@ -360,23 +345,15 @@
 
                             <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
                               <tr>
-                                <ui:fragment rendered="#{redFlagAlertsBean.batchEdit}">
-                                  <th><h:outputText value="#{messages.editRedFlag_batchEdit}" /></th>
-                                </ui:fragment>
                                 <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
                                 <th width="100"><h:outputText value="#{messages.editRedFlag_severity}" /></th>
                               </tr>
                               <tr class="tableEven">
-                                <ui:fragment rendered="#{redFlagAlertsBean.batchEdit}">
-                                  <td>
-                                    <h:selectBooleanCheckbox id="update_crashLevel" value="#{redFlagAlertsBean.updateField['crashLevel']}" />
-                                  </td>
-                                </ui:fragment>
                                 <td>
                                   <h:outputText value="#{messages.editRedFlag_crash}" />
                                 </td>
                                 <td>
-                                  <h:selectOneMenu id="crashLevelSeverity" value="#{redFlagAlertsBean.item.crashLevel}" onchange="checkMultiple('crashLevel')">
+                                  <h:selectOneMenu id="crashLevelSeverity" value="#{redFlagAlertsBean.item.crashLevel}" onchange="checkMultiple('type')">
                                     <f:selectItem itemValue="INFO" itemLabel="#{messages.redFlag_info}" />
                                     <f:selectItem itemValue="WARNING" itemLabel="#{messages.redFlag_warning}" />
                                     <f:selectItem itemValue="CRITICAL" itemLabel="#{messages.redFlag_critical}" />
