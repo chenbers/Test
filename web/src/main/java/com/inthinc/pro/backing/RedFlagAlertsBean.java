@@ -18,7 +18,6 @@ import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.TableType;
-import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
 
 public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.RedFlagAlertView>
@@ -317,6 +316,11 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
             if (isBatchEdit())
             {
                 flag.setSpeedSelected(null);
+                
+                if (flag.getSpeedSettings() == null)
+                    flag.setSpeedSettings(new Integer[Device.NUM_SPEEDS]);
+                if (flag.getSpeedLevels() == null)
+                    flag.setSpeedLevels(new RedFlagLevel[Device.NUM_SPEEDS]);
 
                 final Map<String, Boolean> updateField = getUpdateField();
                 for (final String key : updateField.keySet())

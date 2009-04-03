@@ -9,9 +9,9 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.FindByKey;
+import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.mapper.DeviceMapper;
-import com.inthinc.pro.dao.hessian.mapper.TablePrefMapper;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.ForwardCommand;
 import com.inthinc.pro.model.ForwardCommandID;
@@ -26,6 +26,7 @@ public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer> impleme
     private static final String CENTRAL_ID_KEY = "mcmid";
 
     private DeviceMapper deviceMapper;
+    private VehicleDAO vehicleDAO;
     public DeviceHessianDAO()
     {
         super();
@@ -287,6 +288,25 @@ public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer> impleme
             }
         }
 
+    }
+    
+    @Override
+    public Integer deleteByID(Integer id)
+    {
+        Device device = findByID(id);
+        if(device.getVehicleID() != null)
+            vehicleDAO.clearVehicleDevice(device.getVehicleID(), id);
+        return super.deleteByID(id);
+    }
+
+    public void setVehicleDAO(VehicleDAO vehicleDAO)
+    {
+        this.vehicleDAO = vehicleDAO;
+    }
+
+    public VehicleDAO getVehicleDAO()
+    {
+        return vehicleDAO;
     }
 
 }
