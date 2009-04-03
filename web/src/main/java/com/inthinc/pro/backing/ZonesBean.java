@@ -27,6 +27,7 @@ public class ZonesBean extends BaseBean
     private boolean              editing;
     private ZoneDAO              zoneDAO;
     private ZoneAlertDAO         zoneAlertDAO;
+    private String               helpFile = "Zones.htm";
 
     public void setZoneDAO(ZoneDAO zoneDAO)
     {
@@ -65,6 +66,16 @@ public class ZonesBean extends BaseBean
         return zoneIDs;
     }
 
+    public String getHelpFile()
+    {
+        return helpFile;
+    }
+
+    public void setHelpFile(String helpFile)
+    {
+        this.helpFile = helpFile;
+    }
+
     private void sortZones()
     {
         Collections.sort(zones, new Comparator<Zone>()
@@ -90,6 +101,7 @@ public class ZonesBean extends BaseBean
         item = new Zone();
         item.setCreated(new Date());
         editing = true;
+        helpFile = "Admin_Add_Zone.htm";
     }
 
     /**
@@ -98,6 +110,7 @@ public class ZonesBean extends BaseBean
     public void edit()
     {
         editing = true;
+        helpFile = "Admin_Add_Zone.htm";
     }
 
     /**
@@ -106,6 +119,7 @@ public class ZonesBean extends BaseBean
     public void cancelEdit()
     {
         editing = false;
+        helpFile = "Zones.htm";
         if (isAdd())
             item = null;
         
@@ -151,6 +165,7 @@ public class ZonesBean extends BaseBean
         zoneIDs = null;
 
         editing = false;
+        helpFile = "Zones.htm";
     }
 
     /**
