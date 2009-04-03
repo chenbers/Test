@@ -75,21 +75,21 @@ public class LiveFleetBean extends BaseBean
             driver.setDevice(deviceDAO.findByID(driver.getVehicle().getDeviceID()));  // ADD TO return map for getVehiclesNearLoc()
             
             // Add groups to Group map for Legend
-            if (!displayedGroups.contains(organizationHierarchy.getGroup(driver.getDriver().getGroupID())))
+            if (!displayedGroups.contains(organizationHierarchy.getGroup(driver.getVehicle().getGroupID())))
             {
-                displayedGroups.add(organizationHierarchy.getGroup(driver.getDriver().getGroupID()));
+                displayedGroups.add(organizationHierarchy.getGroup(driver.getVehicle().getGroupID()));
             }
 
             // Build list of map icons
-            if (!mapIconMap.icons.containsKey(driver.getDriver().getGroupID()))
+            if (!mapIconMap.icons.containsKey(driver.getVehicle().getGroupID()))
             {
-                mapIconMap.addIcon(driver.getDriver().getGroupID(), mapIconIt.next().getUrl());
+                mapIconMap.addIcon(driver.getVehicle().getGroupID(), mapIconIt.next().getUrl());
             }
 
             // Build list of legend icons
-            if (!legendIconMap.icons.containsKey(driver.getDriver().getGroupID()))
+            if (!legendIconMap.icons.containsKey(driver.getVehicle().getGroupID()))
             {
-                legendIconMap.addIcon(driver.getDriver().getGroupID(), legendIconIt.next().getUrl());
+                legendIconMap.addIcon(driver.getVehicle().getGroupID(), legendIconIt.next().getUrl());
             }
         }
     }

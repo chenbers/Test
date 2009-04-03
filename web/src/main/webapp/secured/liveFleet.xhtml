@@ -220,7 +220,7 @@
 				<ui:repeat value="#{liveFleetBean.drivers}" var="driver">
 					driverLoc = new GLatLng(#{driver.loc.lat}, #{driver.loc.lng});
 			
-				marker = createMarker(driverLoc, '#{driver.driver.driverID}_#{driver.vehicle.vehicleID}', "#{liveFleetBean.mapIconMap.icons[driver.driver.groupID]}");
+				marker = createMarker(driverLoc, '#{driver.driver.driverID}_#{driver.vehicle.vehicleID}', "#{liveFleetBean.mapIconMap.icons[driver.vehicle.groupID]}");
 				map.addOverlay(marker);
 				bounds.extend(marker.getPoint());
 				</ui:repeat>
@@ -299,12 +299,12 @@
 									</h:commandLink>
 								</rich:column>
 	
-								<rich:column sortBy="#{item.driver.groupID}">
+								<rich:column sortBy="#{item.vehicle.groupID}">
 									<f:facet name="header">
 									
 									</f:facet>
 									<a href="#" onclick="showDriver(#{item.loc.lat}, #{item.loc.lng}, '#{item.driver.driverID}_#{item.vehicle.vehicleID}');">
-										<img src="#{liveFleetBean.legendIconMap.icons[item.driver.groupID]}" style="cursor: pointer;" border="0" />
+										<img src="#{liveFleetBean.legendIconMap.icons[item.vehicle.groupID]}" style="cursor: pointer;" border="0" />
 									</a>
 								</rich:column>
 	
