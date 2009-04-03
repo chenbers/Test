@@ -10,7 +10,7 @@
 	<div class="main_nav-right"></div>
 	<div class="main_nav-left"></div>
 	<div class="main_nav-bg">
-	<h:form id="navigation" onsubmit="goTo();return false;"> 
+	<h:form id="navigation" > 
 		<ul>
 			<li class="#{homeSelected}">	
 				<h:commandLink title="#{messages.navigation_home}" action="#{navigationBean.homeAction}">
@@ -49,10 +49,10 @@
 				  <tr>
 					<td class="left"><h:graphicImage value="/images/search_box_left.png" /></td>
 					<td width="105" height="100" class="middle">
-					  <h:inputText id="redirectSearch" value="" styleClass="text" size="15"/>
+					  <h:inputText id="redirectSearch" value="#{searchCoordinationBean.searchFor}" styleClass="text" size="15"/>
 					</td>
                     <td class="middle">
-                      <h:selectOneMenu id="redirectTo" value="" styleClass="text" style="width: 95px;margin-top:0">
+                      <h:selectOneMenu id="redirectTo" value="#{searchCoordinationBean.navigation}" styleClass="text" style="width: 95px;margin-top:0">
                         <f:selectItem itemLabel="#{messages.navigation_searchDrivers}" itemValue="1"/>                         
                                       <f:selectItem itemLabel="#{messages.navigation_searchDevices}" itemValue="4"/>  
                                       <f:selectItem itemLabel="#{messages.navigation_searchIdlings}" itemValue="3"/>
@@ -60,8 +60,13 @@
                       </h:selectOneMenu>
                     </td>
 					<td class="middle" width="25" align="center">
-						<input type="image" src="#{facesContext.externalContext.request.contextPath}/images/ico_search.gif" value="Find" 
-                          title="#{messages.navigation_searchToolTip}"/>
+						<h:commandButton action="#{searchCoordinationBean.navigationAction}" 
+										title="#{messages.navigation_searchToolTip}" image="/images/ico_search.gif"
+										style="vertical-align:middle;margin-left:10px">
+						</h:commandButton>
+					
+<!--						<input type="image" src="#{facesContext.externalContext.request.contextPath}/images/ico_search.gif" value="Find" -->
+<!--                          title="#{messages.navigation_searchToolTip}"/>-->
 					</td>
 					<td class="right">
 						<h:graphicImage value="/images/search_box_right.png" />

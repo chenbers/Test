@@ -38,7 +38,7 @@
 									
 									<a4j:form id="outerDriverReport">	
 									
-										<h:inputHidden value="#{driverReportBean.secret}"/>
+<!--										<h:inputHidden value="#{driverReportBean.secret}"/>-->
 											<ui:include src="/includes/redFlagsCount.xhtml" />	
 																										
 										<ul id="grid_nav" style="margin: 0;">            							
@@ -49,7 +49,7 @@
                   											<h:outputText value="#{messages.button_search}" />
                   										</td>
                   										<td>
-                    										<h:inputText id="filterTable" value="#{driverReportBean.searchFor}" class="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('outerDriverReport:searchButton').onclick(); return false; } return true;" />
+                    										<h:inputText id="filterTable" value="#{searchCoordinationBean.searchFor}" class="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('outerDriverReport:searchButton').onclick(); return false; } return true;" />
                   										</td>
                 									</tr>
               									</table>

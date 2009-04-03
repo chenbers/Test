@@ -72,9 +72,9 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
     }
 
     @Override
-	public void init() {
+	public void initBean() {
     	
-		super.init();
+		super.initBean();
 		
 		//Set start and end date to last 7 days
         endDate = new Date();
@@ -202,10 +202,11 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
     @Override
     protected void loadResults(List <IdlingReportItem> idlsData) 
     {     
-        if ( this.idlingData.size() > 0 ) {
-            this.idlingData.clear();
-        }
-                
+//        if ( this.idlingData.size() > 0 ) {
+//            this.idlingData.clear();
+//        }
+
+    	idlingData = new ArrayList <IdlingReportItem>();
         iri = new IdlingReportItem();
                 
         for ( IdlingReportItem i: idlsData ) {
@@ -336,5 +337,12 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
         reportCriteria.setMainDataset(idlingData);
         return reportCriteria;
     }
+
+	@Override
+	protected void setDisplayData(List<IdlingReportItem> displayData) {
+
+		idlingData = displayData;
+		
+	}
 }
 

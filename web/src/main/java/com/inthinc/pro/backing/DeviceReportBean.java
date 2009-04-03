@@ -52,9 +52,9 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
     }
     
     @Override
-    public void init() 
+    public void initBean() 
     {
-        super.init();
+        super.initBean();
        
         Collections.sort(this.devicesData,new Comparator<DeviceReportItem>()
         {
@@ -119,10 +119,7 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
     @Override
     protected void loadResults(List <DeviceReportItem> devicData)
     {     
-        if ( this.deviceData.size() > 0 ) {
-            this.deviceData.clear();
-        }
- 
+    	deviceData = new ArrayList<DeviceReportItem>();
         for ( DeviceReportItem a: devicData ) { 
             dri = new DeviceReportItem();
             dri.setDevice(a.getDevice());
@@ -195,6 +192,13 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
         reportCriteria.setMainDataset(deviceData);
         getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
     }
+
+	@Override
+	protected void setDisplayData(List<DeviceReportItem> displayData) {
+
+		deviceData = displayData;
+		
+	}
 
 }
 

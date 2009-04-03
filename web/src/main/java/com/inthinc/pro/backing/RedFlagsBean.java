@@ -48,11 +48,7 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     private EventCategory categoryFilter;
     private Event eventFilter;
     
-    private String searchText;
-    private SearchCoordinationBean searchCoordinationBean;
-    
-
-	private TablePref<RedFlagReportItem> tablePref;
+private TablePref<RedFlagReportItem> tablePref;
 
     // package level -- so unit test can get it
     static final List<String>       AVAILABLE_COLUMNS;
@@ -78,7 +74,6 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
         super.initBean();
         tablePref = new TablePref<RedFlagReportItem>(this);
         searchCoordinationBean.addSearchChangeListener(this);
-		searchText = searchCoordinationBean.getSearchFor();
 
     }
     
@@ -131,7 +126,9 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
         setTableData(null);
         init();
     }
-    private void filterTableData()
+    
+    @Override
+    protected void filterTableData()
     {
         setFilteredTableData(tableData); 
         if (getCategoryFilter() != null)
@@ -163,11 +160,11 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
                 }
             }
         }
-        if (searchText != null && !searchText.trim().isEmpty())
+        if (searchCoordinationBean.isGoodSearch())
         {
             final ArrayList<RedFlagReportItem> searchTableData = new ArrayList<RedFlagReportItem>();
             searchTableData.addAll(filteredTableData);
-            tablePref.filter(searchTableData, searchText, true);
+            tablePref.filter(searchTableData, searchCoordinationBean.getSearchFor(), true);
             setFilteredTableData(searchTableData);
         }
         setMaxCount(filteredTableData.size());
@@ -339,31 +336,7 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
         this.categoryFilter = null;
         this.eventFilter = eventFilter;
     }
-
-    public String getSearchText()
-    {
-        return searchText;
-    }
-
-    public void setSearchText(String searchText)
-    {
-        if (searchText == null || searchText.isEmpty())
-        {
-            setCategoryFilter(null);
-            setEventFilter(null);
-        }
-     	if (searchText != null) {
-    		
-	        this.searchText = searchText;
-	        searchCoordinationBean.notifySearchChangeListeners(this,searchText);
-    	}
-
-    }
     
-    public void searchAction()
-    {
-        filterTableData();
-    }
     public void showAllAction()
     {
         setCategoryFilter(null);
@@ -476,27 +449,14 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     }
 
 	@Override
-	public synchronized void searchChanged(String searchFor) {
+	public synchronized void searchChanged() {
 
-        if (searchFor == null || searchFor.isEmpty())
+        if (!searchCoordinationBean.isGoodSearch())
         {
             setCategoryFilter(null);
             setEventFilter(null);
         }
-     	if (searchFor != null) {
-    		
-	        this.searchText = searchFor;
-    	}
 		filterTableData();
-	}
-	
-    public SearchCoordinationBean getSearchCoordinationBean() {
-		return searchCoordinationBean;
-	}
-
-	public void setSearchCoordinationBean(
-			SearchCoordinationBean searchCoordinationBean) {
-		this.searchCoordinationBean = searchCoordinationBean;
 	}
 
 }

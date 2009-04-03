@@ -6,6 +6,7 @@
               xmlns:a4j="http://richfaces.org/a4j"
   			xmlns:f="http://java.sun.com/jsf/core">
 
+	
 	<ui:param name="diagnosticsSubSelected" value="current" />
 	<ui:param name="helpFile" value="Warnings.htm" />
 	
@@ -36,7 +37,7 @@
 		                  <tr>
 		                    <td>#{messages.notes_diagnostics_search}</td>
 		                    <td>
-		                      <h:inputText id="searchText" value="#{diagnosticsBean.searchText}" styleClass="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('diagnostics_search:searchButton').onclick(); return false; } return true;" />
+		                      <h:inputText id="searchText" value="#{searchCoordinationBean.searchFor}" styleClass="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('diagnostics_search:searchButton').onclick(); return false; } return true;" />
 		                    </td>
 		                  </tr>
 		                </table>
@@ -132,8 +133,7 @@
 			<ui:param  name="reportBean" value="#{diagnosticsBean}"/>
 		</ui:include>
 	</h:outputText>
-	
-	
+		
 	</ui:define>
 
 </ui:composition>

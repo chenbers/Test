@@ -1,7 +1,6 @@
 <ui:composition template="notifications.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
     xmlns:rich="http://richfaces.org/rich" xmlns:a4j="http://richfaces.org/a4j" xmlns:f="http://java.sun.com/jsf/core">
 
-
     <ui:param name="emergencySubSelected" value="current" />
     <ui:param name="helpFile" value="Warnings.htm" />
 
@@ -26,7 +25,7 @@
                                         <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
                                             <tr>
                                                 <td>#{messages.notes_emergency_search}</td>
-                                                <td><h:inputText id="searchText" value="#{emergencyBean.searchText}" styleClass="text" size="25"
+                                                <td><h:inputText id="searchText" value="#{searchCoordinationBean.searchFor}" styleClass="text" size="25"
                                                     onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('emergency_search:searchButton').onclick(); return false; } return true;" />
                                                 </td>
                                             </tr>

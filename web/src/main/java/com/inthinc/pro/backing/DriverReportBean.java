@@ -103,10 +103,10 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
     @Override
     protected void loadResults(List <DriverReportItem> drvsData)
     {
-        if ( this.driverData.size() > 0 ) {
-            this.driverData.clear();
-        }
-       
+//        if ( this.driverData.size() > 0 ) {
+//            this.driverData.clear();
+//        }
+    	driverData = new ArrayList<DriverReportItem>();
         String contextPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
         
         for ( DriverReportItem d: drvsData ) {
@@ -208,4 +208,11 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
             columns.put(availableColumns.get(i), true);
         return columns;
     }
+
+	@Override
+	protected void setDisplayData(List<DriverReportItem> displayData) {
+
+		driverData = displayData;
+		
+	}
 }

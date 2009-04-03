@@ -151,26 +151,26 @@ public class RedFlagsBeanTest extends BaseBeanTest
         assertNotNull(tableData);
         int totalRows = tableData.size();
         
-        redFlagsBean.setSearchText("info");
+        redFlagsBean.getSearchCoordinationBean().setSearchFor("info");
         redFlagsBean.searchAction();
         tableData = redFlagsBean.getTableData();
         int infoRows = tableData.size();
         assertTrue("found some info rows", infoRows > 0);
         
-        redFlagsBean.setSearchText("warning");
+        redFlagsBean.getSearchCoordinationBean().setSearchFor("warning");
         redFlagsBean.searchAction();
         tableData = redFlagsBean.getTableData();
         int warningRows = tableData.size();
         assertTrue("found some warning rows", warningRows > 0);
         
-        redFlagsBean.setSearchText("critical");
+        redFlagsBean.getSearchCoordinationBean().setSearchFor("critical");
         redFlagsBean.searchAction();
         tableData = redFlagsBean.getTableData();
         int criticalRows = tableData.size();
         assertTrue("found some critical rows", criticalRows > 0);
         
         
-        redFlagsBean.setSearchText("");
+        redFlagsBean.getSearchCoordinationBean().setSearchFor("");
         redFlagsBean.searchAction();
         tableData = redFlagsBean.getTableData();
         int noSearchRows = tableData.size();

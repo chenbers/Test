@@ -21,7 +21,7 @@ import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 
-public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions<EventReportItem>, PersonChangeListener, SearchChangeListener
+public class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions<EventReportItem>, PersonChangeListener, SearchChangeListener
 {
     private static final Logger     logger                  = Logger.getLogger(EventsBean.class);
 
@@ -43,9 +43,6 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
     
     private EventCategory categoryFilter;
     private Event eventFilter;
-    
-    private String searchText;
-    private SearchCoordinationBean searchCoordinationBean;
     
     private ReportRenderer      reportRenderer;
     private ReportCriteriaService reportCriteriaService;
@@ -73,9 +70,7 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
     {
         super.initBean();
         tablePref = new TablePref<EventReportItem>(this);
-        
         searchCoordinationBean.addSearchChangeListener(this);
-		searchText = searchCoordinationBean.getSearchFor();
    }
 
     public TablePref<EventReportItem> getTablePref()
@@ -146,7 +141,8 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
         }
 
     }
-    private void filterTableData()
+    @Override
+    protected void filterTableData()
     {
         setFilteredTableData(tableData); 
         if (getCategoryFilter() != null)
@@ -178,11 +174,11 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
                 }
             }
         }
-        if (searchText != null && !searchText.trim().isEmpty())
+        if (searchCoordinationBean.isGoodSearch())
         {
             final ArrayList<EventReportItem> searchTableDataResult = new ArrayList<EventReportItem>();
             searchTableDataResult.addAll(filteredTableData);
-            tablePref.filter(searchTableDataResult, searchText, true);
+            tablePref.filter(searchTableDataResult, searchCoordinationBean.getSearchFor(), true);
             setFilteredTableData(searchTableDataResult);
         }
         setMaxCount(filteredTableData.size());
@@ -322,28 +318,7 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
         this.categoryFilter = null;
         this.eventFilter = eventFilter;
     }
-
-    public String getSearchText()
-    {
-        return searchText;
-    }
-
-    public void setSearchText(String searchText)
-    {
-        if (searchText == null || searchText.isEmpty())
-        {
-            setCategoryFilter(null);
-            setEventFilter(null);
-        }
-        this.searchText = searchText;
-        searchCoordinationBean.notifySearchChangeListeners(this,searchText);
-    }
     
-    public void searchAction()
-    {
-        filterTableData();
-    }
-
     @Override
     public String fieldValue(EventReportItem item, String column)
     {
@@ -447,20 +422,11 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
     {
         return emailAddress;
     }
-	@Override
-	public synchronized void searchChanged(String searchFor) {
-
-        this.searchText = searchFor;
-		filterTableData();
-	}
-	
-    public SearchCoordinationBean getSearchCoordinationBean() {
-		return searchCoordinationBean;
-	}
-
-	public void setSearchCoordinationBean(
-			SearchCoordinationBean searchCoordinationBean) {
-		this.searchCoordinationBean = searchCoordinationBean;
+    
+    @Override
+	public void searchChanged() {
+    	
+    	reinit();
 	}
 
 }

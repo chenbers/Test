@@ -95,10 +95,10 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
     @Override
     protected void loadResults(List <VehicleReportItem> vehicData) 
     {
-        if ( this.vehicleData.size() > 0 ) {
-            this.vehicleData.clear();
-        }   
-        
+//        if ( this.vehicleData.size() > 0 ) {
+//            this.vehicleData.clear();
+//        }   
+        vehicleData = new ArrayList <VehicleReportItem>();
         String contextPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
                 
         for ( VehicleReportItem v: vehicData ) {          
@@ -191,4 +191,10 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
     {
         return TableType.VEHICLE_REPORT;
     }
+
+	@Override
+	protected void setDisplayData(List<VehicleReportItem> displayData) {
+
+		vehicleData = displayData;
+	}
 }

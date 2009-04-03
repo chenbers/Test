@@ -43,7 +43,7 @@
 	function goTo() 
 	{		
 		var urlToGoTo = "#{facesContext.externalContext.request.contextPath}/secured/reports/";
-		var search = document.getElementById('navigation:redirectSearch').value;
+//		var search = document.getElementById('navigation:redirectSearch').value;
 		
 		if (		document.getElementById('navigation:redirectTo').value == "1" ) {
 			urlToGoTo += "drivers.faces";
@@ -59,7 +59,7 @@
 		
 		}
 		
-		urlToGoTo = urlToGoTo + "?searchFor=" + search;
+//		urlToGoTo = urlToGoTo + "?searchFor=" + search;
 		window.location.href=urlToGoTo;
 	}
 </script>

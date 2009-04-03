@@ -35,7 +35,7 @@
 									
 									<a4j:form id="outerIdlingReport">	
 									
-										<h:inputHidden value="#{idlingReportBean.secret}"/>									
+<!--										<h:inputHidden value="#{idlingReportBean.secret}"/>									-->
 											<ui:include src="/includes/redFlagsCount.xhtml" />																
 																				
 										<ul id="grid_nav" style="margin: 0;">            							
@@ -46,7 +46,7 @@
                   											<h:outputText value="#{messages.button_search}" />
                   										</td>
                   										<td>
-                    										<h:inputText id="filterTable" value="#{idlingReportBean.searchFor}" class="text" size="15" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('outerIdlingReport:searchButton').onclick(); return false; } return true;" />
+                    										<h:inputText id="filterTable" value="#{searchCoordinationBean.searchFor}" class="text" size="15" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('outerIdlingReport:searchButton').onclick(); return false; } return true;" />
                   										</td>
                 									</tr>
               									</table>

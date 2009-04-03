@@ -2,6 +2,7 @@ package com.inthinc.pro.backing;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.inthinc.pro.backing.listener.SearchChangeListener;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Driver;
@@ -11,9 +12,9 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 
-public abstract class BaseRedFlagsBean extends BaseBean
+public abstract class BaseRedFlagsBean extends BaseBean 
 {
-    private DriverDAO               driverDAO;
+	private DriverDAO               driverDAO;
     private VehicleDAO               vehicleDAO;
     
     
@@ -28,6 +29,8 @@ public abstract class BaseRedFlagsBean extends BaseBean
     private ReportRenderer      reportRenderer;
     private ReportCriteriaService reportCriteriaService;
     private String emailAddress;
+    
+	protected SearchCoordinationBean searchCoordinationBean;
     
 
     public void initBean()
@@ -50,6 +53,7 @@ public abstract class BaseRedFlagsBean extends BaseBean
         vehicleActionMap.put(EventType.SPEEDING, "go_reportVehicleSpeed");
         vehicleActionMap.put(EventType.SEATBELT, "go_reportVehicleSeatBelt");
         vehicleActionMap.put(EventType.IDLING, "go_vehicleTrips");
+        
     }
 
 
@@ -161,4 +165,23 @@ public abstract class BaseRedFlagsBean extends BaseBean
     {
         return emailAddress;
     }
+
+
+	public SearchCoordinationBean getSearchCoordinationBean() {
+		return searchCoordinationBean;
+	}
+
+
+	public void setSearchCoordinationBean(SearchCoordinationBean searchCoordinationBean) {
+		this.searchCoordinationBean = searchCoordinationBean;
+	}
+
+
+	public void searchAction() {
+		
+	    filterTableData();
+	}
+	protected abstract void filterTableData();
+	
+
 }
