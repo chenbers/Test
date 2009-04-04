@@ -263,7 +263,7 @@
 					<textElement>
 						<font size="14"/>
 					</textElement>
-				<text><![CDATA[Coaching Events:]]></text>
+				<text><![CDATA[Coaching Events]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

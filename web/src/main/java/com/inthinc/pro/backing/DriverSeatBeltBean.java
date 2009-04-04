@@ -284,7 +284,7 @@ public class DriverSeatBeltBean extends BaseBean
             List<ScoreableEntity> scoreList = scoreDAO.getDriverTrendCumulative
             (navigation.getDriver().getDriverID(), durationBean.getDuration(), st);
 
-            List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration());
+            List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration(), "M/dd");
             int count = 0;
             for (ScoreableEntity se : scoreList)
             {
