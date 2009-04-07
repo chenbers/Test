@@ -6,7 +6,8 @@ public enum TreeNodeType {
 	TEAM,
 	DRIVER,
 	VEHICLE,
-	DEVICE;
+	DEVICE,
+	USER;
 	
 	private TreeNodeType(){};
 
