@@ -28,10 +28,10 @@
 	<ui:param name="helpFile" value="Driving_Style.htm" />
 
 	<ui:define name="content">
-	<t:saveState value="#{driverStyleBean}"/>
-<!--	<t:saveState value="#{driverStyleBean.styleEvents}"/>-->
-<!--	<t:saveState value="#{driverStyleBean.filteredStyleEvents}"/>-->
-<!--	<t:saveState value="#{driverStyleBean.tableStatsBean}"/>-->
+	<t:saveState value="#{driverStyleBean.styleEvents}"/>
+	<t:saveState value="#{driverStyleBean.filteredStyleEvents}"/>
+	<t:saveState value="#{driverStyleBean.tableStatsBean}"/>
+	<t:saveState value="#{driverStyleBean.selectedEventType}"/>
 	
 <div id="wrapper">
 
@@ -144,8 +144,8 @@ var firstLoad = new Boolean(true);
 									</td>
 									<td width="80" align="center">
 										<ui:include src="../../includes/scoreBox.xhtml">
-									            <ui:param name="score" value="#{driverStyleBean.styleScoreOverall}" />
-									            <ui:param name="scoreStyle" value="#{driverStyleBean.styleScoreOverallStyle}" />
+									            <ui:param name="score" value="#{driverStyleBean.scoreMap['SCORE_DRIVING_STYLE']}" />
+									            <ui:param name="scoreStyle" value="#{driverStyleBean.styleMap['SCORE_DRIVING_STYLE']}" />
 										</ui:include>
 									</td>
 								  </tr>
@@ -198,13 +198,12 @@ var firstLoad = new Boolean(true);
 						  	  		<h:outputText value="#{messages.SCORE_OVERALL}"/>
 						  	  </a4j:commandLink>
 						  </h:form>
-<!--							  <div onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_OVERALL}')">#{messages.SCORE_OVERALL}</div>-->
 						  </div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-								            <ui:param name="lineChartDef" value="#{driverStyleBean.styleScoreHistoryOverall}" />
+								            <ui:param name="lineChartDef" value="#{driverStyleBean.trendMap['SCORE_DRIVING_STYLE']}" />
 								            <ui:param name="hiddenFieldID" value="HiddenOverall" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
@@ -216,8 +215,8 @@ var firstLoad = new Boolean(true);
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverStyleBean.styleScoreOverall}" />
-								            <ui:param name="scoreStyle" value="#{driverStyleBean.styleScoreOverallStyle}" /> 
+								            <ui:param name="score" value="#{driverStyleBean.scoreMap['SCORE_DRIVING_STYLE']}" />
+								            <ui:param name="scoreStyle" value="#{driverStyleBean.styleMap['SCORE_DRIVING_STYLE']}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -233,13 +232,12 @@ var firstLoad = new Boolean(true);
 						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_BRAKE}"/>
 						  	  </a4j:commandLink>
 						  </h:form>
-<!--								<div onclick="SelectBreakDown('BRAKE', chartBrake, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_BRAKE}')">#{messages.SCORE_DRIVING_STYLE_HARD_BRAKE}</div>-->
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-									            <ui:param name="lineChartDef" value="#{driverStyleBean.styleScoreHistoryBrake}" />
+									            <ui:param name="lineChartDef" value="#{driverStyleBean.trendMap['SCORE_DRIVING_STYLE_HARD_BRAKE']}" />
 									            <ui:param name="hiddenFieldID" value="HiddenBRAKE" />
 									            <ui:param name="width" value="220" /> 
 									            <ui:param name="height" value="90" />  
@@ -251,8 +249,8 @@ var firstLoad = new Boolean(true);
 								</td>
 								<td align="center">
 								<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverStyleBean.styleScoreBrake}" />
-								            <ui:param name="scoreStyle" value="#{driverStyleBean.styleScoreBrakeStyle}" /> 
+								            <ui:param name="score" value="#{driverStyleBean.scoreMap['SCORE_DRIVING_STYLE_HARD_BRAKE']}" />
+								            <ui:param name="scoreStyle" value="#{driverStyleBean.styleMap['SCORE_DRIVING_STYLE_HARD_BRAKE']}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -268,13 +266,12 @@ var firstLoad = new Boolean(true);
 						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_ACCEL}"/>
 						  	  </a4j:commandLink>
 						  </h:form>
-<!--								<div onclick="SelectBreakDown('ACCELERATE', chartAccel, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_ACCEL}')">#{messages.SCORE_DRIVING_STYLE_HARD_ACCEL}</div>-->
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-								            <ui:param name="lineChartDef" value="#{driverStyleBean.styleScoreHistoryAccel}" />
+								            <ui:param name="lineChartDef" value="#{driverStyleBean.trendMap['SCORE_DRIVING_STYLE_HARD_ACCEL']}" />
 								            <ui:param name="hiddenFieldID" value="HiddenACCEL" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
@@ -286,8 +283,8 @@ var firstLoad = new Boolean(true);
 									</td>
 									<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverStyleBean.styleScoreAccel}" />
-								            <ui:param name="scoreStyle" value="#{driverStyleBean.styleScoreAccelStyle}" /> 
+								            <ui:param name="score" value="#{driverStyleBean.scoreMap['SCORE_DRIVING_STYLE_HARD_ACCEL']}" />
+								            <ui:param name="scoreStyle" value="#{driverStyleBean.styleMap['SCORE_DRIVING_STYLE_HARD_ACCEL']}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -311,7 +308,7 @@ var firstLoad = new Boolean(true);
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-								            <ui:param name="lineChartDef" value="##{driverStyleBean.styleScoreHistoryTurn}" />
+								            <ui:param name="lineChartDef" value="#{driverStyleBean.trendMap['SCORE_DRIVING_STYLE_HARD_TURN']}" />
 								            <ui:param name="hiddenFieldID" value="HiddenTURN" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
@@ -323,8 +320,8 @@ var firstLoad = new Boolean(true);
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverStyleBean.styleScoreTurn}" />
-								            <ui:param name="scoreStyle" value="#{driverStyleBean.styleScoreTurnStyle}" /> 
+								            <ui:param name="score" value="#{driverStyleBean.scoreMap['SCORE_DRIVING_STYLE_HARD_TURN']}" />
+								            <ui:param name="scoreStyle" value="#{driverStyleBean.styleMap['SCORE_DRIVING_STYLE_HARD_TURN']}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -341,13 +338,12 @@ var firstLoad = new Boolean(true);
 						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_BUMP}"/>
 						  	  </a4j:commandLink>
 						  </h:form>
-<!--								<div onclick="SelectBreakDown('BUMP', chartBump, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_BUMP}')">#{messages.SCORE_DRIVING_STYLE_HARD_BUMP}</div>-->
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-								            <ui:param name="lineChartDef" value="#{driverStyleBean.styleScoreHistoryBump}" />
+								            <ui:param name="lineChartDef" value="#{driverStyleBean.trendMap['SCORE_DRIVING_STYLE_HARD_BUMP']}" />
 								            <ui:param name="hiddenFieldID" value="HiddenBUMP" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
@@ -359,8 +355,8 @@ var firstLoad = new Boolean(true);
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverStyleBean.styleScoreBump}" />
-								            <ui:param name="scoreStyle" value="#{driverStyleBean.styleScoreBumpStyle}" /> 
+								            <ui:param name="score" value="#{driverStyleBean.scoreMap['SCORE_DRIVING_STYLE_HARD_BUMP']}" />
+								            <ui:param name="scoreStyle" value="#{driverStyleBean.styleMap['SCORE_DRIVING_STYLE_HARD_BUMP']}" /> 
 									</ui:include>
 								</td>
 							  </tr>

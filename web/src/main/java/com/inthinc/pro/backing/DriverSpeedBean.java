@@ -152,16 +152,6 @@ public class DriverSpeedBean extends BasePerformanceBean
         this.eventDAO = eventDAO;
     }
 
-    public AddressLookup getAddressLookup()
-    {
-        return addressLookup;
-    }
-
-    public void setAddressLookup(AddressLookup addressLookup)
-    {
-        this.addressLookup = addressLookup;
-    }
-
     public Map<String, List<EventReportItem>> getSpeedingListsMap()
     {
         return speedingListsMap;
