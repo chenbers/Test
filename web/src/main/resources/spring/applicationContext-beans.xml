@@ -191,14 +191,10 @@
         <property name="addressLookup" ref="addressLookupBean"></property>
     </bean>
     
-    <bean id="vehicleSpeedBean" class="com.inthinc.pro.backing.VehicleSpeedBean" scope="request" parent="baseBean" init-method="init">
+    <bean id="vehicleSpeedBean" class="com.inthinc.pro.backing.VehicleSpeedBean" scope="request" parent="basePerformanceBean">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
-        <property name="navigation" ref="navigationBean"></property>
-        <property name="reportRenderer" ref="reportRenderer"></property>
         <property name="durationBean" ref="vehicleSpeedDurationBean"/>
-        <property name="tableStatsBean" ref="tableStatsBean" />
-        <property name="addressLookup" ref="addressLookupBean"></property>
     </bean>
     
     <bean id="vehicleStyleBean" class="com.inthinc.pro.backing.VehicleStyleBean" scope="request" parent="baseBean" init-method="init">
@@ -245,14 +241,10 @@
         <property name="addressLookup" ref="addressLookupBean"></property>
     </bean>
 
-    <bean id="driverSpeedBean" class="com.inthinc.pro.backing.DriverSpeedBean" scope="request"  parent="baseBean" init-method="init">
+    <bean id="driverSpeedBean" class="com.inthinc.pro.backing.DriverSpeedBean" scope="request"  parent="basePerformanceBean">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
-        <property name="navigation" ref="navigationBean"></property>
         <property name="durationBean" ref="driverSpeedDurationBean"/>
-        <property name="reportRenderer" ref="reportRenderer"></property>
-        <property name="tableStatsBean" ref="tableStatsBean" />
-        <property name="addressLookup" ref="addressLookupBean"></property>
     </bean>
 
     <bean id="driverStyleBean" class="com.inthinc.pro.backing.DriverStyleBean" scope="request" parent="baseBean" init-method="init">
@@ -391,6 +383,13 @@
     </bean>    
     
     <bean id="tableStatsBean" class="com.inthinc.pro.backing.TableStatsBean" scope="request"/>
+    
+    <bean id="basePerformanceBean" class="com.inthinc.pro.backing.BasePerformanceBean" scope="request">
+    	<property name="navigation" ref="navigationBean"></property>
+    	<property name="reportRenderer" ref="reportRenderer"></property>
+        <property name="tableStatsBean" ref="tableStatsBean" />
+        <property name="addressLookup" ref="addressLookupBean"></property>
+    </bean>
     
     <!-- Duration Beans -->
     <bean id="breakdownDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>

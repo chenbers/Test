@@ -31,10 +31,11 @@
 	
 	
 	<ui:define name="content">
-		<t:saveState value="#{driverSpeedBean}"/>
-<!--	<t:saveState value="#{driverSpeedBean.speedingEvents}"/>-->
-<!--	<t:saveState value="#{driverSpeedBean.tableStatsBean}"/>-->
-
+		<t:saveState value="#{driverSpeedBean.speedingEvents}"/>
+		<t:saveState value="#{driverSpeedBean.filteredSpeedingEvents}"/>
+		<t:saveState value="#{driverSpeedBean.speedingListsMap}"/>
+		<t:saveState value="#{driverSpeedBean.tableStatsBean}"/>
+		<t:saveState value="#{driverSpeedBean.selectedSpeed}"/>
 	
 <div id="wrapper">
 <h:form>
@@ -146,8 +147,8 @@ var firstLoad = new Boolean(true);
 									</td>
 									<td width="80" align="center">
 										<ui:include src="../../includes/scoreBox.xhtml">
-									            <ui:param name="score" value="#{driverSpeedBean.speedScoreOverall}" />
-									            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreOverallStyle}" />
+									            <ui:param name="score" value="#{driverSpeedBean.scoreMap['SCORE_SPEEDING']}" />
+									            <ui:param name="scoreStyle" value="#{driverSpeedBean.styleMap['SCORE_SPEEDING']}" />
 										</ui:include>
 									</td>
 								  </tr>
@@ -207,7 +208,7 @@ var firstLoad = new Boolean(true);
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-								            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistoryOverall}" />
+								            <ui:param name="lineChartDef" value="#{driverSpeedBean.trendMap['SCORE_SPEEDING']}" />
 								            <ui:param name="hiddenFieldID" value="HiddenOverall" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
@@ -219,8 +220,8 @@ var firstLoad = new Boolean(true);
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverSpeedBean.speedScoreOverall}" />
-								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreOverallStyle}" /> 
+								            <ui:param name="score" value="#{driverSpeedBean.scoreMap['SCORE_SPEEDING']}" />
+								            <ui:param name="scoreStyle" value="#{driverSpeedBean.styleMap['SCORE_SPEEDING']}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -242,7 +243,7 @@ var firstLoad = new Boolean(true);
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-									            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistoryTwentyOne}" />
+									            <ui:param name="lineChartDef" value="#{driverSpeedBean.trendMap['SCORE_SPEEDING_21_30']}" />
 									            <ui:param name="hiddenFieldID" value="HiddenTWENTYONE" />
 									            <ui:param name="width" value="220" /> 
 									            <ui:param name="height" value="90" />  
@@ -254,8 +255,8 @@ var firstLoad = new Boolean(true);
 								</td>
 								<td align="center">
 								<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverSpeedBean.speedScoreTwentyOne}" />
-								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreTwentyOneStyle}" /> 
+								            <ui:param name="score" value="#{driverSpeedBean.scoreMap['SCORE_SPEEDING_21_30']}" />
+								            <ui:param name="scoreStyle" value="#{driverSpeedBean.styleMap['SCORE_SPEEDING_21_30']}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -276,7 +277,7 @@ var firstLoad = new Boolean(true);
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-								            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistoryThirtyOne}" />
+								            <ui:param name="lineChartDef" value="#{driverSpeedBean.trendMap['SCORE_SPEEDING_31_40']}" />
 								            <ui:param name="hiddenFieldID" value="HiddenTHIRTYONE" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
@@ -288,8 +289,8 @@ var firstLoad = new Boolean(true);
 									</td>
 									<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverSpeedBean.speedScoreThirtyOne}" />
-								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreThirtyOneStyle}" /> 
+								            <ui:param name="score" value="#{driverSpeedBean.scoreMap['SCORE_SPEEDING_31_40']}" />
+								            <ui:param name="scoreStyle" value="#{driverSpeedBean.styleMap['SCORE_SPEEDING_31_40']}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -312,7 +313,7 @@ var firstLoad = new Boolean(true);
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-								            <ui:param name="lineChartDef" value="##{driverSpeedBean.speedScoreHistoryFortyOne}" />
+								            <ui:param name="lineChartDef" value="#{driverSpeedBean.trendMap['SCORE_SPEEDING_41_54']}" />
 								            <ui:param name="hiddenFieldID" value="HiddenFORTYONE" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
@@ -324,8 +325,8 @@ var firstLoad = new Boolean(true);
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverSpeedBean.speedScoreFortyOne}" />
-								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreFortyOneStyle}" /> 
+								            <ui:param name="score" value="#{driverSpeedBean.scoreMap['SCORE_SPEEDING_41_54']}" />
+								            <ui:param name="scoreStyle" value="#{driverSpeedBean.styleMap['SCORE_SPEEDING_41_54']}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -346,7 +347,7 @@ var firstLoad = new Boolean(true);
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-								            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistoryFiftyFive}" />
+								            <ui:param name="lineChartDef" value="#{driverSpeedBean.trendMap['SCORE_SPEEDING_55_64']}" />
 								            <ui:param name="hiddenFieldID" value="HiddenFIFTYFIVE" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
@@ -358,8 +359,8 @@ var firstLoad = new Boolean(true);
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverSpeedBean.speedScoreFiftyFive}" />
-								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreFiftyFiveStyle}" /> 
+								            <ui:param name="score" value="#{driverSpeedBean.scoreMap['SCORE_SPEEDING_55_64']}" />
+								            <ui:param name="scoreStyle" value="#{driverSpeedBean.styleMap['SCORE_SPEEDING_55_64']}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -380,7 +381,7 @@ var firstLoad = new Boolean(true);
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-								            <ui:param name="lineChartDef" value="#{driverSpeedBean.speedScoreHistorySixtyFive}" />
+								            <ui:param name="lineChartDef" value="#{driverSpeedBean.trendMap['SCORE_SPEEDING_65_80']}" />
 								            <ui:param name="hiddenFieldID" value="HiddenSIXTYFIVE" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
@@ -392,8 +393,8 @@ var firstLoad = new Boolean(true);
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverSpeedBean.speedScoreSixtyFive}" />
-								            <ui:param name="scoreStyle" value="#{driverSpeedBean.speedScoreSixtyFiveStyle}" /> 
+								            <ui:param name="score" value="#{driverSpeedBean.scoreMap['SCORE_SPEEDING_65_80']}" />
+								            <ui:param name="scoreStyle" value="#{driverSpeedBean.styleMap['SCORE_SPEEDING_65_80']}" /> 
 									</ui:include>
 								</td>
 							  </tr>

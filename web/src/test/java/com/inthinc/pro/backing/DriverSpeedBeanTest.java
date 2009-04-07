@@ -1,14 +1,32 @@
 package com.inthinc.pro.backing;
 
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.inthinc.pro.backing.ui.EventReportItem;
+import com.inthinc.pro.backing.ui.ScoreBox;
+import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.ScoreType;
+import com.inthinc.pro.model.ScoreableEntity;
+import com.inthinc.pro.model.SpeedingEvent;
 
 public class DriverSpeedBeanTest extends BaseBeanTest
 {
+    private Map<String, Integer> scoreMap;
+    private Map<String, String>  styleMap;
+    
     @BeforeClass
     public static void setUpBeforeClass() throws Exception
     {
@@ -36,6 +54,7 @@ public class DriverSpeedBeanTest extends BaseBeanTest
         Person p = new Person();
         p.setFirst("John");
         p.setLast("Doe");
+        p.setTimeZone(TimeZone.getTimeZone("MST"));
         
         Driver d = new Driver();
         d.setDriverID(101);
@@ -44,26 +63,54 @@ public class DriverSpeedBeanTest extends BaseBeanTest
 
         d.setPerson(p);
         driverSpeedBean.getNavigation().setDriver(d);
-//        driverSpeedBean.setInitComplete(true);
         
-        driverSpeedBean.setSpeedScoreTwentyOne(33);
-        String Test = driverSpeedBean.getSpeedScoreTwentyOneStyle();
-        assertEquals(Test, "score_med_4");
+        // Test Scores and Styles
+        scoreMap = new HashMap<String, Integer>();
+        styleMap = new HashMap<String, String>();
         
-        driverSpeedBean.setSpeedScoreThirtyOne(22);
-        Test = driverSpeedBean.getSpeedScoreThirtyOneStyle();
-        assertEquals(Test, "score_med_3");
+        scoreMap.put(ScoreType.SCORE_SPEEDING.toString(), 4);
+        styleMap.put(ScoreType.SCORE_SPEEDING.toString(), ScoreBox.GetStyleFromScore(4, ScoreBoxSizes.MEDIUM));
         
-        driverSpeedBean.setSpeedScoreFortyOne(44);
-        Test = driverSpeedBean.getSpeedScoreFortyOneStyle();
-        assertEquals(Test, "score_med_5");
+        scoreMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), 8);
+        styleMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), ScoreBox.GetStyleFromScore(8, ScoreBoxSizes.MEDIUM));
         
-        driverSpeedBean.setSpeedScoreFiftyFive(11);
-        Test = driverSpeedBean.getSpeedScoreFiftyFiveStyle();
-        assertEquals(Test, "score_med_2");
+        scoreMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), 18);
+        styleMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), ScoreBox.GetStyleFromScore(18, ScoreBoxSizes.MEDIUM));
         
-        driverSpeedBean.setSpeedScoreSixtyFive(44);
-        Test = driverSpeedBean.getSpeedScoreSixtyFiveStyle();
-        assertEquals(Test, "score_med_5");
+        scoreMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), 28);
+        styleMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), ScoreBox.GetStyleFromScore(28, ScoreBoxSizes.MEDIUM));
+        
+        scoreMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), 38);
+        styleMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), ScoreBox.GetStyleFromScore(38, ScoreBoxSizes.MEDIUM));
+        
+        scoreMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), 48);
+        styleMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), ScoreBox.GetStyleFromScore(48, ScoreBoxSizes.MEDIUM));
+        
+        driverSpeedBean.setScoreMap(scoreMap);
+        driverSpeedBean.setStyleMap(styleMap);
+        
+        Integer score = driverSpeedBean.getScoreMap().get( ScoreType.SCORE_SPEEDING_21_30.toString());        
+        assertEquals( score.toString(), "8");
+        assertEquals( driverSpeedBean.getStyleMap().get( ScoreType.SCORE_SPEEDING_21_30.toString() ) , "score_med_1" );
+        
+        score = driverSpeedBean.getScoreMap().get( ScoreType.SCORE_SPEEDING_65_80.toString()); 
+        assertEquals( score.toString(), "48");
+        assertEquals( driverSpeedBean.getStyleMap().get( ScoreType.SCORE_SPEEDING_65_80.toString() ) , "score_med_5" );
+        
+        // Test Event Sorting
+        List<EventReportItem> speedingEvents = new ArrayList<EventReportItem>();
+        
+        SpeedingEvent se = new SpeedingEvent();
+        se.setSpeedLimit(45);
+        se.setTime(new Date());
+        
+        EventReportItem eri = new EventReportItem(se, p.getTimeZone());
+        speedingEvents.add(eri);
+        
+        driverSpeedBean.setSpeedingEvents(speedingEvents);
+        driverSpeedBean.setSelectedSpeed("FORTYONE");
+        assertTrue(driverSpeedBean.getFilteredSpeedingEvents().size() > 0);
+        
+
     }
 }

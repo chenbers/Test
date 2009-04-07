@@ -31,10 +31,11 @@
 	
 	
 	<ui:define name="content">
-		<t:saveState value="#{vehicleSpeedBean}"/>
-<!--	<t:saveState value="#{vehicleSpeedBean.speedingEvents}"/>-->
-<!--	<t:saveState value="#{vehicleSpeedBean.tableStatsBean}"/>-->
-
+	<t:saveState value="#{vehicleSpeedBean.speedingEvents}"/>
+	<t:saveState value="#{vehicleSpeedBean.filteredSpeedingEvents}"/>
+	<t:saveState value="#{vehicleSpeedBean.speedingListsMap}"/>
+	<t:saveState value="#{vehicleSpeedBean.tableStatsBean}"/>
+	<t:saveState value="#{vehicleSpeedBean.selectedSpeed}"/>
 	
 <div id="wrapper">
 <h:form>
@@ -146,8 +147,8 @@ var firstLoad = new Boolean(true);
 									</td>
 									<td width="80" align="center">
 										<ui:include src="../../includes/scoreBox.xhtml">
-									            <ui:param name="score" value="#{vehicleSpeedBean.speedScoreOverall}" />
-									            <ui:param name="scoreStyle" value="#{vehicleSpeedBean.speedScoreOverallStyle}" />
+									            <ui:param name="score" value="#{vehicleSpeedBean.scoreMap['SCORE_SPEEDING']}" />
+									            <ui:param name="scoreStyle" value="#{vehicleSpeedBean.styleMap['SCORE_SPEEDING']}" />
 										</ui:include>
 									</td>
 								  </tr>
@@ -206,7 +207,7 @@ var firstLoad = new Boolean(true);
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-								            <ui:param name="lineChartDef" value="#{vehicleSpeedBean.speedScoreHistoryOverall}" />
+								            <ui:param name="lineChartDef" value="#{vehicleSpeedBean.trendMap['SCORE_SPEEDING']}" />
 								            <ui:param name="hiddenFieldID" value="HiddenOverall" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
@@ -218,8 +219,8 @@ var firstLoad = new Boolean(true);
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{vehicleSpeedBean.speedScoreOverall}" />
-								            <ui:param name="scoreStyle" value="#{vehicleSpeedBean.speedScoreOverallStyle}" /> 
+								            <ui:param name="score" value="#{vehicleSpeedBean.scoreMap['SCORE_SPEEDING']}" />
+								            <ui:param name="scoreStyle" value="#{vehicleSpeedBean.styleMap['SCORE_SPEEDING']}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -241,7 +242,7 @@ var firstLoad = new Boolean(true);
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-									            <ui:param name="lineChartDef" value="#{vehicleSpeedBean.speedScoreHistoryTwentyOne}" />
+									            <ui:param name="lineChartDef" value="#{vehicleSpeedBean.trendMap['SCORE_SPEEDING_21_30']}" />
 									            <ui:param name="hiddenFieldID" value="HiddenTWENTYONE" />
 									            <ui:param name="width" value="220" /> 
 									            <ui:param name="height" value="90" />  
@@ -253,8 +254,8 @@ var firstLoad = new Boolean(true);
 								</td>
 								<td align="center">
 								<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{vehicleSpeedBean.speedScoreTwentyOne}" />
-								            <ui:param name="scoreStyle" value="#{vehicleSpeedBean.speedScoreTwentyOneStyle}" /> 
+								            <ui:param name="score" value="#{vehicleSpeedBean.scoreMap['SCORE_SPEEDING_21_30']}" />
+								            <ui:param name="scoreStyle" value="#{vehicleSpeedBean.styleMap['SCORE_SPEEDING_21_30']}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -275,7 +276,7 @@ var firstLoad = new Boolean(true);
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-								            <ui:param name="lineChartDef" value="#{vehicleSpeedBean.speedScoreHistoryThirtyOne}" />
+								            <ui:param name="lineChartDef" value="#{vehicleSpeedBean.trendMap['SCORE_SPEEDING_31_40']}" />
 								            <ui:param name="hiddenFieldID" value="HiddenTHIRTYONE" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
@@ -287,8 +288,8 @@ var firstLoad = new Boolean(true);
 									</td>
 									<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{vehicleSpeedBean.speedScoreThirtyOne}" />
-								            <ui:param name="scoreStyle" value="#{vehicleSpeedBean.speedScoreThirtyOneStyle}" /> 
+								            <ui:param name="score" value="#{vehicleSpeedBean.scoreMap['SCORE_SPEEDING_31_40']}" />
+								            <ui:param name="scoreStyle" value="#{vehicleSpeedBean.styleMap['SCORE_SPEEDING_31_40']}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -305,13 +306,12 @@ var firstLoad = new Boolean(true);
 						  	  		<h:outputText value="#{messages.SCORE_SPEEDING_41_54}"/>
 						  	  </a4j:commandLink>
 						  </h:form>
-<!--								<div onclick="SelectBreakDown('FORTYONE', chart41, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_41_54}')">#{messages.SCORE_SPEEDING_41_54}</div>-->
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-								            <ui:param name="lineChartDef" value="##{vehicleSpeedBean.speedScoreHistoryFortyOne}" />
+								            <ui:param name="lineChartDef" value="#{vehicleSpeedBean.trendMap['SCORE_SPEEDING_41_54']}" />
 								            <ui:param name="hiddenFieldID" value="HiddenFORTYONE" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
@@ -323,8 +323,8 @@ var firstLoad = new Boolean(true);
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{vehicleSpeedBean.speedScoreFortyOne}" />
-								            <ui:param name="scoreStyle" value="#{vehicleSpeedBean.speedScoreFortyOneStyle}" /> 
+								            <ui:param name="score" value="#{vehicleSpeedBean.scoreMap['SCORE_SPEEDING_41_54']}" />
+								            <ui:param name="scoreStyle" value="#{vehicleSpeedBean.styleMap['SCORE_SPEEDING_41_54']}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -339,13 +339,12 @@ var firstLoad = new Boolean(true);
 						  	  		<h:outputText value="#{messages.SCORE_SPEEDING_55_64}"/>
 						  	  </a4j:commandLink>
 						  </h:form>
-<!--								<div onclick="SelectBreakDown('FIFTYFIVE', chart55, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_55_64}')">#{messages.SCORE_SPEEDING_55_64}</div>-->
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-								            <ui:param name="lineChartDef" value="#{vehicleSpeedBean.speedScoreHistoryFiftyFive}" />
+								            <ui:param name="lineChartDef" value="#{vehicleSpeedBean.trendMap['SCORE_SPEEDING_55_64']}" />
 								            <ui:param name="hiddenFieldID" value="HiddenFIFTYFIVE" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
@@ -357,8 +356,8 @@ var firstLoad = new Boolean(true);
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{vehicleSpeedBean.speedScoreFiftyFive}" />
-								            <ui:param name="scoreStyle" value="#{vehicleSpeedBean.speedScoreFiftyFiveStyle}" /> 
+								            <ui:param name="score" value="#{vehicleSpeedBean.scoreMap['SCORE_SPEEDING_55_64']}" />
+								            <ui:param name="scoreStyle" value="#{vehicleSpeedBean.styleMap['SCORE_SPEEDING_55_64']}" /> 
 									</ui:include>
 								</td>
 							  </tr>
@@ -373,13 +372,12 @@ var firstLoad = new Boolean(true);
 						  	  		<h:outputText value="#{messages.SCORE_SPEEDING_65_80}"/>
 						  	  </a4j:commandLink>
 						  </h:form>
-<!--								<div onclick="SelectBreakDown('SIXTYFIVE', chart65, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_65_80}')">#{messages.SCORE_SPEEDING_65_80}</div>-->
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td>
 									<ui:include src="../../includes/lineChart.xhtml">
-								            <ui:param name="lineChartDef" value="#{vehicleSpeedBean.speedScoreHistorySixtyFive}" />
+								            <ui:param name="lineChartDef" value="#{vehicleSpeedBean.trendMap['SCORE_SPEEDING_65_80']}" />
 								            <ui:param name="hiddenFieldID" value="HiddenSIXTYFIVE" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
@@ -391,8 +389,8 @@ var firstLoad = new Boolean(true);
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{vehicleSpeedBean.speedScoreSixtyFive}" />
-								            <ui:param name="scoreStyle" value="#{vehicleSpeedBean.speedScoreSixtyFiveStyle}" /> 
+								            <ui:param name="score" value="#{vehicleSpeedBean.scoreMap['SCORE_SPEEDING_65_80']}" />
+								            <ui:param name="scoreStyle" value="#{vehicleSpeedBean.styleMap['SCORE_SPEEDING_65_80']}" /> 
 									</ui:include>
 								</td>
 							  </tr>
