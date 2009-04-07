@@ -27,6 +27,7 @@
   <item name="Red Flags" url="Notifications.htm" />
   <item name="Safety" url="Events.htm" />
   <item name="Diagnostics" url="Warnings.htm" />
+  <item name="Emergencies" url="Emergency.htm" />
 </book>
 <item name="Live Fleet" url="Live_Fleet.htm" />
 <book name="Admin" url="Admin.htm" >
