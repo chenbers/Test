@@ -65,7 +65,7 @@
 						<span class="seatbelt">#{messages.SCORE_SEATBELT}: #{messages.SCORE_OVERALL}</span>
 						<ui:include src="../../includes/dateLinksToolsDetail.xhtml">
 							<ui:param name="ajaxForm" value="seatBeltForm"/>
-							<ui:param name="reRenderList" value="seatBeltForm,overallScoreBox,breakdown_panel,eventsPanel"/>			
+							<ui:param name="reRenderList" value="seatBeltForm,overallScoreBox,overall_script,eventsPanel"/>			
 							<ui:param name="thirtyDaysOn" value="#{(driverSeatBeltBean.duration eq 'DAYS') ? 'on' : ''}"/>
 							<ui:param name="threeMonthsOn" value="#{(driverSeatBeltBean.duration eq 'THREE') ? 'on' : ''}"/>
 							<ui:param name="sixMonthsOn" value="#{(driverSeatBeltBean.duration eq 'SIX') ? 'on' : ''}"/>
@@ -92,6 +92,7 @@
 						            <ui:param name="height" value="200" />  
 						            <ui:param name="tartgetElementVar" value="targetElement" />
 						            <ui:param name="ChartDivID" value="overall_chart" />
+						            <ui:param name="ScriptDivID" value="overall_script" />
 						            <ui:param name="chartVar" value="overallChart" />
 							</ui:include>
 						</td>

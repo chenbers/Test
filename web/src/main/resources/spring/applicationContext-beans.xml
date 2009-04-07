@@ -203,14 +203,10 @@
         <property name="durationBean" ref="vehicleStyleDurationBean"/>
     </bean>
         
-    <bean id="vehicleSeatBeltBean" class="com.inthinc.pro.backing.VehicleSeatBeltBean" scope="request" parent="baseBean">
+    <bean id="vehicleSeatBeltBean" class="com.inthinc.pro.backing.VehicleSeatBeltBean" scope="request" parent="basePerformanceBean">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
-        <property name="navigation" ref="navigationBean"></property>
-        <property name="reportRenderer" ref="reportRenderer"></property>
         <property name="durationBean" ref="vehicleSeatBeltDurationBean"/>
-        <property name="tableStatsBean" ref="tableStatsBean" />
-        <property name="addressLookup" ref="addressLookupBean"></property>
     </bean>
     
     <bean id="vehicleTripsBean" class="com.inthinc.pro.backing.VehicleTripsBean" scope="request" parent="baseBean">
@@ -249,14 +245,10 @@
         <property name="durationBean" ref="driverStyleDurationBean"></property>
     </bean>
 
-    <bean id="driverSeatBeltBean" class="com.inthinc.pro.backing.DriverSeatBeltBean" scope="request" parent="baseBean">
+    <bean id="driverSeatBeltBean" class="com.inthinc.pro.backing.DriverSeatBeltBean" scope="request" parent="basePerformanceBean">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
-        <property name="navigation" ref="navigationBean"></property>
-        <property name="reportRenderer" ref="reportRenderer"></property>
         <property name="durationBean" ref="driverSeatBeltDurationBean"/>
-        <property name="tableStatsBean" ref="tableStatsBean" />
-        <property name="addressLookup" ref="addressLookupBean"></property>
     </bean>
 
     <bean id="driverTripsBean" class="com.inthinc.pro.backing.DriverTripsBean" scope="request" parent="baseBean">

@@ -402,7 +402,7 @@
                           <tr>
                             <td width="373">
                       		<ui:include src="../includes/lineChart.xhtml">
-						            <ui:param name="lineChartDef" value="#{vehicleStyleBean.styleScoreHistoryOverall}" />
+						            <ui:param name="lineChartDef" value="#{vehicleStyleBean.trendMap['SCORE_DRIVING_STYLE']}" />
 						            <ui:param name="hiddenFieldID" value="HiddenField2" />
 						            <ui:param name="width" value="380" /> 
 						            <ui:param name="height" value="200" />  
@@ -415,8 +415,8 @@
                             <td width="80" align="center">
                             <rich:panel id="styleScoreBox">
                                 <ui:include src="../includes/scoreBox.xhtml">
-							            <ui:param name="score" value="#{vehicleStyleBean.styleScoreOverall}" />
-							            <ui:param name="scoreStyle" value="#{vehicleStyleBean.styleScoreOverallStyle}" />
+							            <ui:param name="score" value="#{vehicleStyleBean.scoreMap['SCORE_DRIVING_STYLE']}" />
+							            <ui:param name="scoreStyle" value="#{vehicleStyleBean.styleMap['SCORE_DRIVING_STYLE']}" />
 								</ui:include>
 							</rich:panel>
                             </td>

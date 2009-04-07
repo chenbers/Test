@@ -1,94 +1,88 @@
 package com.inthinc.pro.backing;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
+
 import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
-import com.inthinc.pro.charts.Line;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.ScoreDAO;
-import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.reports.ReportCriteria;
-import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.model.CategorySeriesData;
-import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.util.MessageUtil;
 
-public class VehicleSeatBeltBean extends BaseBean
+public class VehicleSeatBeltBean extends BasePerformanceBean
 {
     private static final Logger   logger         = Logger.getLogger(VehicleSeatBeltBean.class);
 
-    private NavigationBean        navigation;
-    private DurationBean          durationBean;
     private ScoreDAO              scoreDAO;
     private EventDAO              eventDAO;
-    private TableStatsBean        tableStatsBean;
-    private AddressLookup         addressLookup;
 
     private Integer               seatBeltScore;
     private String                seatBeltScoreHistoryOverall;
     private String                seatBeltScoreStyle;
     private EventReportItem       clearItem;
-    private ReportRenderer        reportRenderer;
     private String                emailAddress;
     private static final Integer  NO_SCORE       = -1;
-    private Boolean               initComplete = false;
 
-    private List<EventReportItem> seatBeltEvents = new ArrayList<EventReportItem>();
+    private List<EventReportItem> seatBeltEvents ;
 
-    private void init()
+    @Override
+    protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
+    {
+        return scoreDAO.getVehicleTrendCumulative(id, duration, scoreType);
+    }
+    
+    private void initScores()
     {
         ScoreableEntity se = scoreDAO.getVehicleAverageScoreByType(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
         
-        if(se != null && se.getScore() != null)    
+        if(se != null && se.getScore() != null)
             setSeatBeltScore(se.getScore());
         else
             setSeatBeltScore(NO_SCORE);
-
-        initComplete = true;
+        
+        setSeatBeltScoreStyle(ScoreBox.GetStyleFromScore(getSeatBeltScore(), ScoreBoxSizes.MEDIUM));
     }
 
-    public void getViolations()
+    public void initEvents()
     {
-        if (seatBeltEvents.isEmpty())
+        List<Integer> types = new ArrayList<Integer>();
+        types.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
+
+        List<Event> tempEvents = new ArrayList<Event>();
+        tempEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), durationBean.getStartDate(), durationBean.getEndDate(), types);
+
+        seatBeltEvents = new ArrayList<EventReportItem>();
+        for (Event event : tempEvents)
         {
-            List<Integer> types = new ArrayList<Integer>();
-            types.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
-
-            List<Event> tempEvents = new ArrayList<Event>();
-            tempEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), durationBean.getStartDate(), durationBean.getEndDate(), types);
-
-            for (Event event : tempEvents)
-            {
-                event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
-                seatBeltEvents.add(new EventReportItem(event, getUser().getPerson().getTimeZone()));
-            }
-
-            tableStatsBean.setPage(1);
-            tableStatsBean.setTableRowCount(10);
-            tableStatsBean.setTableSize(seatBeltEvents.size());
+            event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
+            seatBeltEvents.add(new EventReportItem(event, getUser().getPerson().getTimeZone()));
         }
+        
+        tableStatsBean.setPage(1);
+        tableStatsBean.setTableRowCount(10);
+        tableStatsBean.setTableSize(seatBeltEvents.size());
     }
 
-    // SCORE PROPERTIES
+    public void initTrends()
+    {
+        seatBeltScoreHistoryOverall = createFusionLineDef(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
+    }
+
     public Integer getSeatBeltScore()
     {
-        if(!initComplete)
-            init();
+        if(seatBeltScore == null) 
+            initScores();
         
         return seatBeltScore;
     }
@@ -96,13 +90,13 @@ public class VehicleSeatBeltBean extends BaseBean
     public void setSeatBeltScore(Integer seatBeltScore)
     {
         this.seatBeltScore = seatBeltScore;
-        setSeatBeltScoreStyle(ScoreBox.GetStyleFromScore(seatBeltScore, ScoreBoxSizes.MEDIUM));
     }
 
-    // SCORE HISTORY PROPERTIES
     public String getSeatBeltScoreHistoryOverall()
     {
-        setSeatBeltScoreHistoryOverall(createLineDef(ScoreType.SCORE_SEATBELT));
+        if(seatBeltScoreHistoryOverall == null)
+            initTrends();
+        
         return seatBeltScoreHistoryOverall;
     }
 
@@ -111,12 +105,11 @@ public class VehicleSeatBeltBean extends BaseBean
         this.seatBeltScoreHistoryOverall = seatBeltScoreHistoryOverall;
     }
 
-    // SCOREBOX STYLE PROPERTIES
     public String getSeatBeltScoreStyle()
     {
-        if(!initComplete)
-            init();
-        
+        if(seatBeltScore == null) 
+            initScores();
+
         return seatBeltScoreStyle;
     }
 
@@ -125,40 +118,6 @@ public class VehicleSeatBeltBean extends BaseBean
         this.seatBeltScoreStyle = seatBeltScoreStyle;
     }
 
-    public String createLineDef(ScoreType scoreType)
-    {
-        StringBuffer sb = new StringBuffer();
-        Line line = new Line();
-
-        // Start XML Data
-        sb.append(line.getControlParameters());
-
-        List<ScoreableEntity> scoreList = scoreDAO.getVehicleTrendCumulative(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), scoreType);
-
-        // Get "x" values
-        List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration());
-
-        int cnt = 0;
-        for (ScoreableEntity e : scoreList)
-        {
-            if (e.getScore() != null)
-            {
-                sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt) }));
-            }
-            else
-            {
-                sb.append(line.getChartItem(new Object[] { null, monthList.get(cnt) }));
-            }
-            cnt++;
-        }
-
-        // End XML Data
-        sb.append(line.getClose());
-
-        return sb.toString();
-    }
-
-    // DAO PROPERTIES
     public ScoreDAO getScoreDAO()
     {
         return scoreDAO;
@@ -179,20 +138,11 @@ public class VehicleSeatBeltBean extends BaseBean
         this.eventDAO = eventDAO;
     }
 
-    public AddressLookup getAddressLookup()
-    {
-        return addressLookup;
-    }
-
-    public void setAddressLookup(AddressLookup addressLookup)
-    {
-        this.addressLookup = addressLookup;
-    }
-
-    // SEATBELT EVENTS LIST
     public List<EventReportItem> getSeatBeltEvents()
     {
-        getViolations();
+        if(seatBeltEvents == null)
+            initEvents();
+        
         return seatBeltEvents;
     }
 
@@ -204,54 +154,20 @@ public class VehicleSeatBeltBean extends BaseBean
     public void setDuration(Duration duration)
     {
         durationBean.setDuration(duration);
-        init();
-        seatBeltEvents.clear();
-        getViolations();
+        initScores();
+        initTrends();
+        initEvents();
     }
     public Duration getDuration()
     {
         return durationBean.getDuration();
     }
 
-    // NAVIGATION BEAN PROPERTIES
-    public NavigationBean getNavigation()
-    {
-        return navigation;
-    }
-
-    public void setNavigation(NavigationBean navigation)
-    {
-        this.navigation = navigation;
-    }
-
-    public DurationBean getDurationBean()
-    {
-        return durationBean;
-    }
-
-    public void setDurationBean(DurationBean durationBean)
-    {
-        this.durationBean = durationBean;
-    }
-
-    public TableStatsBean getTableStatsBean()
-    {
-        getViolations();
-        return tableStatsBean;
-    }
-
-    public void setTableStatsBean(TableStatsBean tableStatsBean)
-    {
-        this.tableStatsBean = tableStatsBean;
-    }
-
     public void ClearEventAction()
     {
-        Integer temp = eventDAO.forgive(navigation.getVehicle().getVehicleID(), clearItem.getEvent().getNoteID());
-        // logger.debug("Clearing event " + clearItem.getNoteID() + " result: " + temp.toString());
-
+        eventDAO.forgive(navigation.getVehicle().getVehicleID(), clearItem.getEvent().getNoteID());
         seatBeltEvents.clear();
-        getViolations();
+        initEvents();
     }
 
     public EventReportItem getClearItem()
@@ -264,59 +180,24 @@ public class VehicleSeatBeltBean extends BaseBean
         this.clearItem = clearItem;
     }
 
-    public List<CategorySeriesData> createJasperDef(List<ScoreType> scoreTypes)
-    {
-        List<CategorySeriesData> returnList = new ArrayList<CategorySeriesData>();
-
-        for (ScoreType st : scoreTypes)
-        {
-            List<ScoreableEntity> scoreList = scoreDAO.getVehicleTrendCumulative(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), st);
-
-            List<String> monthList = GraphicUtil.createMonthList(durationBean.getDuration(), "M/dd");
-            int count = 0;
-            for (ScoreableEntity se : scoreList)
-            {
-                Double score = null;
-                if (se.getScore() != null)
-                    score = se.getScore() / 10.0D;
-
-                returnList.add(new CategorySeriesData(MessageUtil.getMessageString(st.toString()), monthList.get(count).toString(), score, monthList.get(count).toString()));
-
-                count++;
-            }
-        }
-        return returnList;
-    }
-
     public ReportCriteria buildReport()
     {
         // Page 1
-        ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_SEATBELT, getGroupHierarchy().getTopGroup().getName());
-
-        reportCriteria.setDuration(durationBean.getDuration());
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_SEATBELT, getGroupHierarchy().getTopGroup().getName());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
+        reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.addParameter("REPORT_NAME", "Vehicle Performance: Seat Belt");
-        reportCriteria.addParameter("ENTITY_NAME", this.getNavigation().getVehicle().getFullName());
-        reportCriteria.addParameter("RECORD_COUNT", this.getSeatBeltEvents().size());
-        reportCriteria.addParameter("OVERALL_SCORE", this.getSeatBeltScore() / 10.0D);
+        reportCriteria.addParameter("ENTITY_NAME", navigation.getVehicle().getFullName());
+        reportCriteria.addParameter("RECORD_COUNT", getSeatBeltEvents().size());
+        reportCriteria.addParameter("OVERALL_SCORE", getSeatBeltScore() / 10.0D);
         reportCriteria.addParameter("SPEED_MEASUREMENT", MessageUtil.getMessageString("measurement_speed"));
 
         List<ScoreType> scoreTypes = new ArrayList<ScoreType>();
         scoreTypes.add(ScoreType.SCORE_SEATBELT);
-        reportCriteria.addChartDataSet(this.createJasperDef(scoreTypes));
-        reportCriteria.setMainDataset(this.seatBeltEvents);
+        reportCriteria.addChartDataSet(createJasperMultiLineDef(navigation.getVehicle().getVehicleID(), scoreTypes, durationBean.getDuration()));
+        reportCriteria.setMainDataset(seatBeltEvents);
 
         return reportCriteria;
-    }
-
-    public void setReportRenderer(ReportRenderer reportRenderer)
-    {
-        this.reportRenderer = reportRenderer;
-    }
-
-    public ReportRenderer getReportRenderer()
-    {
-        return reportRenderer;
     }
 
     public String getEmailAddress()
