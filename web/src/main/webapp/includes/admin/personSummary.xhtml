@@ -1,0 +1,194 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:security="http://pro.tiwi.com/jsf/security">
+
+	<ul id="grid_nav_dark">
+		<li class="l">
+		</li>
+		<li class="r text"><h:commandLink action="#{personBean.edit}"
+			value="#{messages.adminTable_edit}">
+			<f:param name="editID" value="#{person.personID}" />
+		</h:commandLink></li>
+	</ul>
+
+	<div style="padding-left: 11px; padding-bottom: 10px">
+	<table>
+		<tr>
+			<td width="500" valign="top">
+			<div class="add_section_title"><h:outputText
+				value="#{messages.editPerson_personalInformation}" /></div>
+
+			<table width="500" border="0" cellspacing="2" cellpadding="4"
+				align="center">
+				<tr>
+					<td width="100"><h:outputText
+						value="#{messages.editPerson_first}" /></td>
+					<td><h:outputText value="#{person.first}" /></td>
+				</tr>
+				<tr>
+					<td width="100"><h:outputText
+						value="#{messages.editPerson_middle}" /></td>
+					<td><h:outputText value="#{person.middle}" /></td>
+				</tr>
+				<tr>
+					<td width="100"><h:outputText
+						value="#{messages.editPerson_last}" /></td>
+					<td><h:outputText value="#{person.last}" /></td>
+				</tr>
+				<tr>
+					<td width="100"><h:outputText
+						value="#{messages.editPerson_suffix}" /></td>
+					<td><h:outputText value="#{person.suffix}" /></td>
+				</tr>
+				<tr>
+					<td width="100"><h:outputText
+						value="#{messages.editPerson_dob}" /></td>
+					<td><h:outputText value="#{person.dob}">
+						<f:convertDateTime dateStyle="long" timeZone="UTC" />
+					</h:outputText></td>
+				</tr>
+				<tr>
+					<td width="100"><h:outputText
+						value="#{messages.editPerson_gender}" /></td>
+					<td><h:outputText value="#{person.gender}" /></td>
+				</tr>
+				<tr>
+					<td width="100"><h:outputText
+						value="#{messages.editPerson_height}" /></td>
+					<td><h:outputText
+						value="#{(person.height - (person.height % 12)) / 12}">
+						<f:convertNumber integerOnly="true" />
+					</h:outputText><h:outputText value="' " /><h:outputText
+						value="#{person.height % 12}" /><h:outputText
+						value="&quot;" /></td>
+				</tr>
+				<tr>
+					<td width="100"><h:outputText
+						value="#{messages.editPerson_weight}" /></td>
+					<td><h:outputText value="#{person.weight}" /></td>
+				</tr>
+			</table>
+
+			<div class="spacer"></div>
+
+			<div class="add_section_title"><h:outputText
+				value="#{messages.editPerson_contactInformation}" /></div>
+
+			<table width="500" border="0" cellspacing="2" cellpadding="4"
+				align="center">
+				<tr>
+					<td width="100"><h:outputText
+						value="#{messages.editPerson_address_addr1}" /></td>
+					<td><h:outputText value="#{person.address.addr1}" /></td>
+				</tr>
+				<tr>
+					<td width="100"><h:outputText
+						value="#{messages.editPerson_address_addr2}" /></td>
+					<td><h:outputText value="#{person.address.addr2}" /></td>
+				</tr>
+				<tr>
+					<td width="100"><h:outputText
+						value="#{messages.editPerson_address_city}" /></td>
+					<td><h:outputText value="#{person.address.city}" /></td>
+				</tr>
+				<tr>
+					<td width="100"><h:outputText
+						value="#{messages.editPerson_address_state}" /></td>
+					<td><h:outputText value="#{person.address.state.name}" /></td>
+				</tr>
+				<tr>
+					<td width="100"><h:outputText
+						value="#{messages.editPerson_address_zip}" /></td>
+					<td><h:outputText value="#{person.address.zip}" /></td>
+				</tr>
+                <tr>
+                  <td width="100"><h:outputText value="#{messages.editPerson_priPhone }" /></td>
+                  <td><h:outputText value="#{person.priPhone}" converter="PhoneNumberConverter" /></td>
+                </tr>
+                <tr>
+                  <td width="100"><h:outputText value="#{messages.editPerson_secPhone}" /></td>
+                  <td><h:outputText value="#{person.secPhone}" converter="PhoneNumberConverter" /></td>
+                </tr>
+                <tr>
+                  <td width="100"><h:outputText value="#{messages.editPerson_priEmail}" /></td>
+                  <td><a href="mailto:#{person.priEmail}"><h:outputText value="#{person.priEmail}" /></a></td>
+                </tr>
+                <tr>
+                  <td width="100"><h:outputText value="#{messages.editPerson_secEmail}" /></td>
+                  <td><a href="mailto:#{person.secEmail}"><h:outputText value="#{person.secEmail}" /></a></td>
+                </tr>
+                <tr>
+                  <td width="100"><h:outputText value="#{messages.editPerson_priText}" /></td>
+                  <td><h:outputText value="#{person.priText}" /></td>
+                </tr>
+                <tr>
+                  <td width="100"><h:outputText value="#{messages.editPerson_secText}" /></td>
+                  <td><h:outputText value="#{person.secText}" /></td>
+                </tr>
+			</table>
+            <ui:fragment rendered="#{driver ne null}">
+			<div class="spacer"></div>
+
+			<div class="add_section_title">#{messages.editPerson_driverInformation}</div>
+
+			<table width="500" border="0" cellspacing="2" cellpadding="4"
+				align="center">
+				<tr>
+					<td width="100"><h:outputText
+						value="#{messages.editPerson_driver_license}" /></td>
+					<td><h:outputText value="#{driver.license}" /></td>
+				</tr>
+				<tr>
+					<td width="100"><h:outputText
+						value="#{messages.editPerson_driver_licenseClass}" /></td>
+					<td><h:outputText
+						value="#{driver.licenseClass}" /></td>
+				</tr>
+				<tr>
+					<td width="100"><h:outputText
+						value="#{messages.editPerson_driver_state}" /></td>
+					<td><h:outputText value="#{driver.state.name}" /></td>
+				</tr>
+				<tr>
+					<td width="100"><h:outputText
+						value="#{messages.editPerson_driver_expiration}" /></td>
+					<td><h:outputText value="#{driver.expiration}">
+						<f:convertDateTime dateStyle="long" timeZone="UTC" />
+					</h:outputText></td>
+				</tr>
+				<tr>
+					<td width="100"><h:outputText
+						value="#{messages.editPerson_driver_RFID}" /></td>
+					<td><h:outputText value="#{driver.RFID}" /></td>
+				</tr>
+				<tr>
+					<td width="100"><h:outputText
+						value="#{messages.editPerson_driver_status}" /></td>
+					<td><c:set var="status" value="status#{driver.status.code}" /><h:outputText value="#{messages[status]}" /></td>
+				</tr>
+			   </table>
+         
+                  <div class="spacer"></div>      
+                 <div class="add_section_title"><h:outputText value="#{messages.organization_driverAssignments}" /></div>
+                  <table width="500" border="0" cellspacing="2" cellpadding="4" align="center">
+                    <tr>
+                      <td width="100"><h:outputText value="#{messages.organization_assignedVehicle}:" /></td>
+                      <td><h:outputText value="#{vehicle.name}" /></td>
+                    </tr>
+                    <tr>
+                      <td width="100"><h:outputText value="#{messages.organization_assignedDevice}:" /></td>
+                      <td><h:outputText value="#{device.name}" /></td>
+                    </tr>
+                  </table>
+               </ui:fragment>
+			</td>
+		</tr>
+	</table>
+	</div>
+
+</ui:composition>

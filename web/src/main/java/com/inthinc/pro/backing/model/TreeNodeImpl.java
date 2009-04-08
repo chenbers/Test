@@ -12,13 +12,16 @@ import org.apache.log4j.Logger;
 import org.richfaces.model.SwingTreeNodeImpl;
 
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.BaseEntity;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 
+@Deprecated
 public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable, Comparable<TreeNodeImpl>
 {
 
@@ -27,6 +30,8 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable, Com
     private Group group;
     private transient Vehicle vehicle;
     private transient Driver driver;
+    private transient User user;
+    
     private TreeNodeType treeNodeType;
     private Integer id;
     private String label;
@@ -40,14 +45,11 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable, Com
 
     private transient VehicleDAO vehicleDAO;
     private transient DriverDAO driverDAO;
+    private transient UserDAO userDAO;
 
     // We are storing these values here because once loaded, we don't want to have to pull them again.
     private static final Logger logger = Logger.getLogger(TreeNodeImpl.class);
 
-    /*
-     * Make sure that any group that is passed in has a parent. For some reason the tree view doesn't render correctly if there is no parent.
-     */
-    // TODO use generics
     public TreeNodeImpl(BaseEntity hierarchalEntity, GroupHierarchy groupHierarchy)
     {
         initialize(hierarchalEntity, groupHierarchy, null);
@@ -73,13 +75,19 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable, Com
         {
             this.driver = (Driver) hierarchalEntity;
             this.setId(this.driver.getDriverID());
-            this.setLabel(this.getDriver().getPerson().getFirst() + " " + this.getDriver().getPerson().getLast());
+            this.setLabel(this.getDriver().getPerson().getFullName());
         }
         else if (hierarchalEntity instanceof Vehicle)
         {
             this.vehicle = (Vehicle) hierarchalEntity;
             this.setLabel(this.getVehicle().getName());
             this.setId(this.vehicle.getVehicleID());
+        }
+        else if (hierarchalEntity instanceof User)
+        {
+            this.user = (User) hierarchalEntity;
+            this.setLabel(this.getUser().getPerson().getFullName());
+            this.setId(getUser().getUserID());
         }
         this.groupHierarchyUtil = groupHierarchy;
         this.parentGroupTreeNode = parent;
@@ -132,7 +140,7 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable, Com
         case TEAM:
             breadCrumbList.add(node);
         }
-        if (node.getParent() != null && levelIndex > 1)
+        if (node.getParent() != null && levelIndex > 1 && node.getGroup() != null)
         {
             loadBreadCrumbs(node.getParent(), breadCrumbList,--levelIndex);
         }
@@ -272,7 +280,7 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable, Com
             {
                 parentGroupTreeNode = new TreeNodeImpl(parentGroup, groupHierarchyUtil);
             }
-            else
+            else //The reason for creating this empty tree node is because if the root node doesn't have a parent, it doesn't display in the tree.
             {
                 parentGroupTreeNode = new TreeNodeImpl(null, groupHierarchyUtil);
             }
@@ -332,10 +340,11 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable, Com
                         g.setMapCenter(new LatLng(group.getMapCenter().getLat(), group.getMapCenter().getLng()));
                         g.setMapZoom(group.getMapZoom());
                     }
-                    TreeNodeImpl groupTreeNode = new TreeNodeImpl(g, groupHierarchyUtil, this);
-                    groupTreeNode.setDriverDAO(driverDAO);
-                    groupTreeNode.setVehicleDAO(vehicleDAO);
-                    childNodes.add(groupTreeNode);
+                    TreeNodeImpl treeNode = new TreeNodeImpl(g, groupHierarchyUtil, this);
+                    treeNode.setDriverDAO(driverDAO);
+                    treeNode.setVehicleDAO(vehicleDAO);
+                    treeNode.setUserDAO(userDAO);
+                    childNodes.add(treeNode);
                 }
             }
 
@@ -348,10 +357,11 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable, Com
             {
                 for (Driver d : driverList)
                 {
-                    TreeNodeImpl groupTreeNode = new TreeNodeImpl(d, groupHierarchyUtil, this);
-                    groupTreeNode.setDriverDAO(driverDAO);
-                    groupTreeNode.setVehicleDAO(vehicleDAO);
-                    childNodes.add(groupTreeNode);
+                    TreeNodeImpl treeNode = new TreeNodeImpl(d, groupHierarchyUtil, this);
+                    treeNode.setDriverDAO(driverDAO);
+                    treeNode.setVehicleDAO(vehicleDAO);
+                    treeNode.setUserDAO(userDAO);
+                    childNodes.add(treeNode);
 
                 }
             }
@@ -360,16 +370,32 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable, Com
             {
                 for (Vehicle v : vehicleList)
                 {
-                    TreeNodeImpl groupTreeNode = new TreeNodeImpl(v, groupHierarchyUtil, this);
-                    groupTreeNode.setDriverDAO(driverDAO);
-                    groupTreeNode.setVehicleDAO(vehicleDAO);
-                    childNodes.add(groupTreeNode);
+                    TreeNodeImpl treeNode = new TreeNodeImpl(v, groupHierarchyUtil, this);
+                    treeNode.setDriverDAO(driverDAO);
+                    treeNode.setVehicleDAO(vehicleDAO);
+                    treeNode.setUserDAO(userDAO);
+                    childNodes.add(treeNode);
 
                 }
             }
         }
-      
-       
+        
+        //Load Users
+        if(group != null)
+        {
+            List<User> userList = userDAO.getUsersInGroupHierarchy(group.getGroupID());
+            for(User u:userList)
+            {
+                if(group.getGroupID().equals(u.getGroupID()))
+                {
+                    TreeNodeImpl treeNode = new TreeNodeImpl(u,groupHierarchyUtil,this);
+                    treeNode.setDriverDAO(driverDAO);
+                    treeNode.setVehicleDAO(vehicleDAO);
+                    treeNode.setUserDAO(userDAO);
+                    childNodes.add(treeNode);
+                }
+            }
+        }
         childGroupTreeNodes = childNodes;
         
         sortChildren();
@@ -424,9 +450,13 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable, Com
             {
                 treeNodeType = TreeNodeType.VEHICLE;
             }
-            else
+            else if (driver != null)
             {
                 treeNodeType = TreeNodeType.DRIVER;
+            }
+            else 
+            {
+                treeNodeType = TreeNodeType.USER;
             }
         }
 
@@ -441,7 +471,13 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable, Com
     @Override
     public int compareTo(TreeNodeImpl treeNodeImpl)
     {
-        return this.getLabel().compareToIgnoreCase(treeNodeImpl.getLabel());
+        if(!this.getTreeNodeType().equals(treeNodeImpl.getTreeNodeType()))
+        {
+            return this.getTreeNodeType().compareTo(treeNodeImpl.getTreeNodeType());
+        } else
+        {
+            return this.getLabel().compareToIgnoreCase(treeNodeImpl.getLabel());
+        }
     }
 
     /**
@@ -533,5 +569,27 @@ public class TreeNodeImpl extends SwingTreeNodeImpl implements Serializable, Com
     {
         return id;
     }
+
+    public User getUser()
+    {
+        return user;
+    }
+
+    public void setUser(User user)
+    {
+        this.user = user;
+    }
+
+    public void setUserDAO(UserDAO userDAO)
+    {
+        this.userDAO = userDAO;
+    }
+
+    public UserDAO getUserDAO()
+    {
+        return userDAO;
+    }
+    
+    
 
 }

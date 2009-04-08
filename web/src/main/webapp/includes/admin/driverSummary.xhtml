@@ -162,35 +162,35 @@
 				<tr>
 					<td width="100"><h:outputText
 						value="#{messages.editPerson_driver_license}" /></td>
-					<td><h:outputText value="#{driver.person.driver.license}" /></td>
+					<td><h:outputText value="#{driver.license}" /></td>
 				</tr>
 				<tr>
 					<td width="100"><h:outputText
 						value="#{messages.editPerson_driver_licenseClass}" /></td>
 					<td><h:outputText
-						value="#{driver.person.driver.licenseClass}" /></td>
+						value="#{driver.licenseClass}" /></td>
 				</tr>
 				<tr>
 					<td width="100"><h:outputText
 						value="#{messages.editPerson_driver_state}" /></td>
-					<td><h:outputText value="#{driver.person.driver.state.name}" /></td>
+					<td><h:outputText value="#{driver.state.name}" /></td>
 				</tr>
 				<tr>
 					<td width="100"><h:outputText
 						value="#{messages.editPerson_driver_expiration}" /></td>
-					<td><h:outputText value="#{driver.person.driver.expiration}">
+					<td><h:outputText value="#{driver.expiration}">
 						<f:convertDateTime dateStyle="long" timeZone="UTC" />
 					</h:outputText></td>
 				</tr>
 				<tr>
 					<td width="100"><h:outputText
 						value="#{messages.editPerson_driver_RFID}" /></td>
-					<td><h:outputText value="#{driver.person.driver.RFID}" /></td>
+					<td><h:outputText value="#{driver.driver.RFID}" /></td>
 				</tr>
 				<tr>
 					<td width="100"><h:outputText
 						value="#{messages.editPerson_driver_status}" /></td>
-					<td><c:set var="status" value="status#{driver.person.driver.status.code}" /><h:outputText value="#{messages[status]}" /></td>
+					<td><c:set var="status" value="status#{driver.status.code}" /><h:outputText value="#{messages[status]}" /></td>
 				</tr>
 			</table>
 			</td>

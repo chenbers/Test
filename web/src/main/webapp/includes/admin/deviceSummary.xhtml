@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:rich="http://richfaces.org/rich"
+   xmlns:a4j="http://richfaces.org/a4j"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:c="http://java.sun.com/jstl/core"
+   xmlns:security="http://pro.tiwi.com/jsf/security">
+
+   <ul id="grid_nav_dark">
+      <li class="l">
+      </li>
+      <li class="r text"><h:commandLink action="#{devicesBean.edit}"
+         value="#{messages.adminTable_edit}">
+         <f:param name="editID" value="#{device.deviceID}" />
+      </h:commandLink></li>
+   </ul>
+
+   <div style="padding-left: 11px; padding-bottom: 10px">
+   <table>
+      <tr>
+         <td width="500" valign="top">
+            <div class="add_section_title"><h:outputText value="#{messages.editDevice_deviceInformation}" /></div>
+                  
+             <table width="500" border="0" cellspacing="2" cellpadding="4" align="center">
+               <tr>
+                 <td width="100"><h:outputText value="#{messages.editDevice_name}" /></td>
+                 <td><h:outputText value="#{device.name}" /></td>
+               </tr>
+               <tr>
+                 <td width="100"><h:outputText value="#{messages.editDevice_imei}" /></td>
+                 <td><h:outputText value="#{device.imei}" /></td>
+               </tr>
+               <tr>
+                 <td width="100"><h:outputText value="#{messages.editDevice_sim}" /></td>
+                 <td><h:outputText value="#{device.sim}" /></td>
+               </tr>
+               <tr>
+                 <td width="100"><h:outputText value="#{messages.editDevice_phone}" /></td>
+                 <td><h:outputText value="#{device.phone}" /></td>
+               </tr>
+               <tr>
+                 <td width="100"><h:outputText value="#{messages.editDevice_ephone}" /></td>
+                 <td><h:outputText value="#{device.ephone}" /></td>
+               </tr>
+             </table>
+              <div class="add_section_title"><h:outputText value="#{messages.organization_deviceAssignments}" /></div>
+               <table width="500" border="0" cellspacing="2" cellpadding="4" align="center">
+                 <tr>
+                   <td width="100"><h:outputText value="#{messages.organization_assignedDriver}:" /></td>
+                   <td><h:outputText value="#{driver.person.fullName}" /></td>
+                 </tr>
+                 <tr>
+                   <td width="100"><h:outputText value="#{messages.organization_assignedVehicle}:" /></td>
+                   <td><h:outputText value="#{vehicle.name}" /></td>
+                 </tr>
+               </table>
+         </td>
+      </tr>
+   </table>
+   </div>
+
+</ui:composition>

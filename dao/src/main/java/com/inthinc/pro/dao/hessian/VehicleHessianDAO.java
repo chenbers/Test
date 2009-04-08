@@ -115,6 +115,20 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
             return null;
         }
     }
+    
+    @Override
+    public Vehicle findByDriverInGroup(Integer driverID, Integer groupID)
+    {
+        List<Vehicle> vehicleList = getVehiclesInGroupHierarchy(groupID);
+        for(Vehicle vehicle : vehicleList)
+        {
+            if(vehicle.getDriverID() != null && vehicle.getDriverID().equals(driverID))
+            {
+                return vehicle;
+            }
+        }
+        return null;
+    }
 
     @Override
     public Trip getLastTrip(Integer vehicleID)

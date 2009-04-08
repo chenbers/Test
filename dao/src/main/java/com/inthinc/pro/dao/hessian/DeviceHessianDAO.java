@@ -61,11 +61,13 @@ public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer> impleme
         }
         return device;
     }
+    
     @Override
     public Device findByKey(String key)
     {
         return findByIMEI(key);
     }
+    
     @Override
     public Device findByIMEI(String imei)
     {

@@ -71,6 +71,18 @@
                       <td><c:set var="status" value="status#{vehicle.status.code}" /><h:outputText value="#{messages[status]}" /></td>
                     </tr>
                   </table>
+                  <div class="spacer"></div>      
+                 <div class="add_section_title"><h:outputText value="#{messages.organization_vehicleAssignments}" /></div>
+                  <table width="500" border="0" cellspacing="2" cellpadding="4" align="center">
+                    <tr>
+                      <td width="100"><h:outputText value="#{messages.organization_assignedDriver}:" /></td>
+                      <td><h:outputText value="#{driver.person.fullName}" /></td>
+                    </tr>
+                    <tr>
+                      <td width="100"><h:outputText value="#{messages.organization_assignedDevice}:" /></td>
+                      <td><h:outputText value="#{device.name}" /></td>
+                    </tr>
+                  </table>
 				</td>
 			</tr>
 		</table>

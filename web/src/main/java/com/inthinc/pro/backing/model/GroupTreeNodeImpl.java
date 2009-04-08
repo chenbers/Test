@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.VehicleDAO;
-import com.inthinc.pro.model.BaseEntity;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LatLng;
@@ -30,6 +30,7 @@ public class GroupTreeNodeImpl extends BaseTreeNodeImpl<Group>
     private transient VehicleDAO vehicleDAO;
     private transient DriverDAO driverDAO;
     private transient UserDAO userDAO;
+    private transient DeviceDAO deviceDAO;
     
     @SuppressWarnings("unchecked")
     public GroupTreeNodeImpl(Group group,BaseTreeNodeImpl parentNode,GroupHierarchy groupHierarchy)
@@ -41,7 +42,6 @@ public class GroupTreeNodeImpl extends BaseTreeNodeImpl<Group>
         
     }
     
-    @SuppressWarnings("unchecked")
     public GroupTreeNodeImpl(Group group,GroupHierarchy groupHierarchy)
     {
         super(group);
@@ -106,6 +106,7 @@ public class GroupTreeNodeImpl extends BaseTreeNodeImpl<Group>
                     treeNode.setDriverDAO(driverDAO);
                     treeNode.setVehicleDAO(vehicleDAO);
                     treeNode.setUserDAO(userDAO);
+                    treeNode.setDeviceDAO(deviceDAO);
                     childNodes.add(treeNode);
                 }
             }
@@ -120,6 +121,9 @@ public class GroupTreeNodeImpl extends BaseTreeNodeImpl<Group>
                 for (Driver d : driverList)
                 {
                     DriverTreeNodeImpl treeNode = new DriverTreeNodeImpl(d, this);
+                    treeNode.setDeviceDAO(deviceDAO);
+                    treeNode.setVehicleDAO(vehicleDAO);
+                    treeNode.setGroupHeHierarchy(groupHierarchy);
                     childNodes.add(treeNode);
                 }
             }
@@ -128,9 +132,11 @@ public class GroupTreeNodeImpl extends BaseTreeNodeImpl<Group>
             {
                 for (Vehicle v : vehicleList)
                 {
-                    VehicleTreeNodeImpl treeNode = new VehicleTreeNodeImpl(v, this);
-                    childNodes.add(treeNode);
-
+                    VehicleTreeNodeImpl vehicleTreeNodeImpl = new VehicleTreeNodeImpl(v, this);
+                    vehicleTreeNodeImpl.setDeviceDAO(deviceDAO);
+                    vehicleTreeNodeImpl.setDriverDAO(driverDAO);
+                    vehicleTreeNodeImpl.setVehicleDAO(vehicleDAO);
+                    childNodes.add(vehicleTreeNodeImpl);
                 }
             }
         }
@@ -216,8 +222,17 @@ public class GroupTreeNodeImpl extends BaseTreeNodeImpl<Group>
                 {
                     if (node == null)
                     {
-                        GroupTreeNodeImpl groupTreeNode = (GroupTreeNodeImpl)treeNode;
-                        node = groupTreeNode.findTreeNodeByGroupId(groupID);
+                        switch(treeNode.getTreeNodeType())
+                        {
+                        case DIVISION:
+                        case FLEET:
+                        case TEAM:  
+                            GroupTreeNodeImpl groupTreeNode = (GroupTreeNodeImpl)treeNode;
+                            node = groupTreeNode.findTreeNodeByGroupId(groupID);
+                            break;
+                        default:
+                        }
+                       
                     }
 
                 }
@@ -266,5 +281,15 @@ public class GroupTreeNodeImpl extends BaseTreeNodeImpl<Group>
     public Group getGroup()
     {
         return baseEntity;
+    }
+
+    public void setDeviceDAO(DeviceDAO deviceDAO)
+    {
+        this.deviceDAO = deviceDAO;
+    }
+
+    public DeviceDAO getDeviceDAO()
+    {
+        return deviceDAO;
     }
 }

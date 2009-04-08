@@ -19,6 +19,9 @@ public class UserTreeNodeImpl extends BaseTreeNodeImpl<User>
         super(baseEntity, parentNode);
         setLabel(baseEntity.getPerson().getFullName());
         setId(baseEntity.getUserID());
+        StringBuilder sb = new StringBuilder(TreeNodeType.USER.getCode());
+        sb.append(baseEntity.getUserID());
+        this.setId(Integer.valueOf(sb.toString()));
     }
 
     @SuppressWarnings("unchecked")
@@ -47,6 +50,11 @@ public class UserTreeNodeImpl extends BaseTreeNodeImpl<User>
     {
         // TODO Auto-generated method stub
         return false;
+    }
+    
+    public User getUser()
+    {
+        return baseEntity;
     }
 
 }

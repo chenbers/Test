@@ -139,7 +139,9 @@
         <property name="groupDAO" ref="groupDAO"></property>
         <property name="personDAO" ref="personDAO"></property>
         <property name="vehicleDAO" ref="vehicleDAO"></property>
+        <property name="userDAO" ref="userDAO"></property>
         <property name="driverDAO" ref="driverDAO"></property>
+        <property name="deviceDAO" ref="deviceDAO"></property>
         <property name="accountDAO" ref="accountDAO"></property>
     </bean>
     
@@ -394,6 +396,6 @@
     <bean id="vehicleMpgDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
     
     <!-- Search Bean -->
-     <bean id="searchCoordinationBean" class="com.inthinc.pro.backing.SearchCoordinationBean" scope="session"/>
+    <bean id="searchCoordinationBean" class="com.inthinc.pro.backing.SearchCoordinationBean" scope="session"/>
     
 </beans>

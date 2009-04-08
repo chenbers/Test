@@ -241,7 +241,7 @@ public abstract class BaseTreeNodeImpl<T extends BaseEntity> extends SwingTreeNo
     public boolean equals(Object obj)
     {
         boolean isEqual = false;
-        if (obj instanceof Group)
+        if (obj instanceof BaseTreeNodeImpl)
         {
             EqualsBuilder eb = new EqualsBuilder().append(this.getId(), ((BaseTreeNodeImpl)obj).getId());
             isEqual = eb.isEquals();

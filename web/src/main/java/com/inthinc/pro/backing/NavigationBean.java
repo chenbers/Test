@@ -4,7 +4,9 @@ import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.backing.model.BaseTreeNodeImpl;
 import com.inthinc.pro.backing.model.GroupLevel;
+import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.backing.model.TreeNodeImpl;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Driver;
@@ -25,7 +27,7 @@ public class NavigationBean extends BaseBean
     private Group group;
 
     // This is used for the bread crumbs
-    private TreeNodeImpl groupTreeNode;
+    private GroupTreeNodeImpl groupTreeNode;
     
     // Passed to various pages
     private Driver driver;
@@ -74,7 +76,7 @@ public class NavigationBean extends BaseBean
         {
             group = getGroupHierarchy().getGroup(groupID);
            
-            this.setGroupTreeNode(new TreeNodeImpl(group, getGroupHierarchy()));
+            this.setGroupTreeNode(new GroupTreeNodeImpl(group, getGroupHierarchy()));
             logger.debug("Navigation setGroup:" + group.getName());
         }
         logger.debug("Navigation setGroupID: " + groupID);
@@ -144,12 +146,12 @@ public class NavigationBean extends BaseBean
         return group;
     }
 
-    public void setGroupTreeNode(TreeNodeImpl groupTreeNode)
+    public void setGroupTreeNode(GroupTreeNodeImpl groupTreeNode)
     {
         this.groupTreeNode = groupTreeNode;
     }
 
-    public TreeNodeImpl getGroupTreeNode()
+    public GroupTreeNodeImpl getGroupTreeNode()
     {
         return groupTreeNode;
     }

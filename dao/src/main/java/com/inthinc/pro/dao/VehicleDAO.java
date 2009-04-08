@@ -22,6 +22,8 @@ public interface VehicleDAO extends GenericDAO<Vehicle, Integer>
 
     Vehicle findByVIN(String vin);
     
+    Vehicle findByDriverInGroup(Integer driverID,Integer groupID);
+    
     LastLocation getLastLocation(Integer vehicleID);
     
     List<Trip> getTrips(Integer vehicleID, Date startDate, Date endDate);
