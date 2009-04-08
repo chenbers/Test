@@ -140,31 +140,33 @@
 
                     </rich:tab>
 
-                    <rich:tab id="speedSensitivity" label="#{messages.device_speedSensitivity}">
-
-                      <ul id="grid_nav" style="margin: 0;">
-                        <li class="l text"><a4j:htmlCommandLink action="#{vehiclesBean.cancelDisplay}" value="#{messages.vehicle_backToVehicles}" /></li>
-                        <li class="r">
-                          <a4j:commandButton styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
-                          <h:outputText value=" " /><h:commandButton action="#{vehiclesBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>
-                        </li>
-                      </ul>
-
-                      <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
-
-                      <ui:fragment rendered="#{empty vehiclesBean.item.device}">
-                        <div class="msg" >
-                          <p class="warning"><h:outputText value="#{messages.vehicle_noDevice}" /></p>
-                        </div>
-                      </ui:fragment>
-
-                      <ui:fragment rendered="#{not empty vehiclesBean.item.device}">
-                        <ui:include src="../../includes/speedSensitivity.xhtml">
-                          <ui:param name="device" value="#{vehiclesBean.item.device}" />
-                          <ui:param name="disabled" value="true" />
-                        </ui:include>
-                      </ui:fragment>
-
+                    <rich:tab id="speedSensitivity" label="#{messages.device_speedSensitivity}" ontabenter="reRenderTab()" ontableave="reRenderTab()">
+                      <a4j:region>
+                         <a4j:jsFunction name="reRenderTab" reRender="speeedSettingsPanel"></a4j:jsFunction>
+                         <ul id="grid_nav" style="margin: 0;">
+                           <li class="l text"><a4j:htmlCommandLink action="#{vehiclesBean.cancelDisplay}" value="#{messages.vehicle_backToVehicles}" /></li>
+                           <li class="r">
+                             <a4j:commandButton styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
+                             <h:outputText value=" " /><h:commandButton action="#{vehiclesBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>
+                           </li>
+                         </ul>
+   
+                         <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
+   
+                         <ui:fragment rendered="#{empty vehiclesBean.item.device}">
+                           <div class="msg" >
+                             <p class="warning"><h:outputText value="#{messages.vehicle_noDevice}" /></p>
+                           </div>
+                         </ui:fragment>
+                         <h:panelGroup id="speeedSettingsPanel">
+                            <ui:fragment rendered="#{not empty vehiclesBean.item.device}">
+                              <ui:include src="../../includes/speedSensitivity.xhtml">
+                                <ui:param name="device" value="#{vehiclesBean.item.device}" />
+                                <ui:param name="disabled" value="true" />
+                              </ui:include>
+                            </ui:fragment>
+                         </h:panelGroup>
+                      </a4j:region>
                     </rich:tab>
 
                   </rich:tabPanel>
