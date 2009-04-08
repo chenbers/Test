@@ -15,7 +15,8 @@ public class Param
     String paramName;
     String paramInputDesc;
     Class<?> paramConvert;
-    boolean dateType;
+    Class<?> parentType; //If this is a Hessian Entity
+	boolean dateType;
 
     public boolean getDateType()
     {
@@ -136,4 +137,10 @@ public class Param
     {
         this.dateValue = dateValue;
     }
+    public Class<?> getParentType() {
+		return parentType;
+	}
+	public void setParentType(Class<?> parentType) {
+		this.parentType = parentType;
+	}
 }

@@ -1,11 +1,13 @@
 package com.inthinc.pro.backing.dao;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -18,8 +20,12 @@ import com.inthinc.pro.backing.dao.annotation.DaoParam;
 import com.inthinc.pro.backing.dao.annotation.MethodDescription;
 import com.inthinc.pro.backing.dao.impl.ReportServiceImpl;
 import com.inthinc.pro.backing.dao.impl.SiloServiceImpl;
+import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.dao.hessian.mapper.SimpleMapper;
 import com.inthinc.pro.dao.hessian.proserver.ReportServiceCreator;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
+import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.Address;
 
 public class DaoUtilBean
 {
@@ -32,6 +38,7 @@ public class DaoUtilBean
     String selectedMethodDescription;
     Map<String, DaoMethod> methodMap;
     List<Param> paramList;
+    Address address;
 //    List<Result> results;
 
     List<String> columnHeaders;
@@ -41,6 +48,7 @@ public class DaoUtilBean
 
     private Class<?> dataAccessInterfaces[] = { SiloServiceImpl.class, ReportServiceImpl.class };
     private Object dataAccess[];
+    private List<String> excludedMethods = Arrays.asList("toString", "getClass", "equals", "wait", "hashCode", "notify", "notifyAll");
 
     private Object getDataAccess(int interfaceIdx) throws MalformedURLException
     {
@@ -93,7 +101,12 @@ public class DaoUtilBean
                 Method[] methods = dataAccessInterfaces[j].getMethods();
                 for (int i = 0; i < methods.length; i++)
                 {
-                    if (methods[i].getName().startsWith("get") && !methods[i].getName().equals("getClass"))
+                    if (
+                    		
+                    		/* methods[i].getName().startsWith("get") && */
+                    		
+                    		!excludedMethods.contains(methods[i].getName())
+                    		)
                     {
                         methodMap.put(methods[i].getName(), new DaoMethod(methods[i], j));
                     }
@@ -123,30 +136,82 @@ public class DaoUtilBean
                 {
                     if (paramList == null)
                         paramList = new ArrayList<Param>();
-                    Param param = new Param();
                     DaoParam webParm = getDaoParamAnnotaion(annotation, i);
-                    if (webParm != null)
+                    if(paramTypes[i].getSimpleName().equals("Map"))
                     {
-                        param.setParamName(webParm.name());
+                        if (webParm != null)
+                        {
+							for (Field field : webParm.type().getDeclaredFields())
+							{
+				                Column column = null;
+
+								String mname = field.getName();
+								if (mname.equals("serialVersionUID"))
+									continue;
+							
+				                if (field.isAnnotationPresent(Column.class))
+				                    column = field.getAnnotation(Column.class);
+				                if (column != null)
+				                {
+				                    // If the field has been annotated with the @Column(updateable=false), then skip
+				                    if (!column.updateable())
+				                        continue;
+				                    if (!column.name().isEmpty())
+				                        mname = column.name();
+				                }
+
+			                    Param param = new Param();
+			                    
+								System.out.println(mname + " " + field.getType().getName());
+	                            param.setParamName(mname);
+	                        	
+	                            param.setParamInputDesc("");
+	                            param.setParamConvert(com.inthinc.pro.convert.BaseConvert.class);
+	                            param.setParamType(field.getType());
+	                            param.setDateType(field.getType().getSimpleName().equals("Date"));
+	                            param.setParamValue(null);
+	                            param.setParentType(webParm.type());
+	                            if (field.getType().getSimpleName().equals("Date"))
+	                            {
+		                            param.setParamConvert(com.inthinc.pro.convert.DateConvert.class);
+		                            param.setParamInputDesc("MM/dd/yyyy hh:mm");
+	                            }
+	                            
+		                        paramList.add(param);
+							}
+                        }
                     }
                     else
                     {
-                        param.setParamName("" + (i + 1));
-                    }
-                    param.setParamType(paramTypes[i]);
-                    logger.debug(paramTypes[i].toString());
-                    logger.debug(paramTypes[i].getName());
-                    if (webParm != null)
-                    {
-                        param.setParamInputDesc(webParm.inputDesc());
-                        param.setParamConvert(webParm.inputConvert());
-                        param.setDateType(webParm.isDate());
-                    }
-                    param.setParamValue(null);
+                        Param param = new Param();
+                        if (webParm != null)
+                        {
+                            param.setParamName(webParm.name());
+                        }
+                        else
+                        {
+                            param.setParamName("" + (i + 1));
+                        }
+                        param.setParamType(paramTypes[i]);
+                        logger.debug(paramTypes[i].toString());
+                        logger.debug(paramTypes[i].getName());
+                        if (webParm != null)
+                        {
+                            param.setParamInputDesc(webParm.inputDesc());
+                        }
+                    	param.setDateType(false);
+                        if (paramTypes[i].getSimpleName().equals("Date"))
+                        {
+                        	param.setDateType(true);
+                            param.setParamConvert(com.inthinc.pro.convert.DateConvert.class);
+                        }
+                        else
+                        	param.setParamConvert(com.inthinc.pro.convert.BaseConvert.class);
+                        param.setParamValue(null);
 
-                    paramList.add(param);
+                        paramList.add(param);
+                    }                    
                 }
-
             }
         }
         return paramList;
@@ -170,22 +235,64 @@ public class DaoUtilBean
 
     public void resultsAction()
     {
-        Object args[] = new Object[(paramList == null) ? 0 : paramList.size()];
+    	//TODO We are only going to handle one complex entity type
+    	int numEntityParams=0;
+    	Map<String,Object> entityMap = new TreeMap<String,Object>();
+    	for (Param param :paramList)
+    	{
+    		if (param.parentType!=null)
+    		{
+    			numEntityParams++;
+    		}
+    	}
+    	int numParams = paramList.size();
+    	if (numEntityParams>0)
+    	{
+    		numParams = numParams-numEntityParams+1;
+    	}
+        Object args[] = new Object[(paramList == null) ? 0 : numParams];
         int cnt = 0;
         if (paramList != null)
         {
+        	boolean entitySet=false;
             for (Param param : paramList)
             {
                 logger.debug(param.getParamName() + " = " + param.getParamValue());
-                if (param.getParamType().isArray())
+                if (param.getParentType()!=null)
                 {
-                    args[cnt++] = param.getParamValueObjectArray();
+                	entitySet=true;
+                    if (param.getParamType().isArray())
+                    {
+                    	entityMap.put(param.getParamName(), param.getParamValueObjectArray());
+                    }
+                    else
+                    {
+                    	entityMap.put(param.getParamName(), param.getParamValueObject());
+                    }
+
                 }
                 else
                 {
-                    args[cnt++] = param.getParamValueObject();
+                	if (entitySet)
+                	{
+                		args[cnt++] = entityMap;
+                		entitySet=false;
+                	}
+                    if (param.getParamType().isArray())
+                    {
+                        args[cnt++] = param.getParamValueObjectArray();
+                    }
+                    else
+                    {
+                        args[cnt++] = param.getParamValueObject();
+                    }
                 }
             }
+        	if (entitySet)
+        	{
+        		args[cnt++] = entityMap;
+        		entitySet=false;
+        	}
         }
 
         try
@@ -218,6 +325,7 @@ public class DaoUtilBean
         records = new ArrayList<List<String>>();
 
         // if the method returns a List or Maps
+        Account acct;
         if (method.getReturnType().isAssignableFrom(List.class))
         {
             List<Map<String, Object>> recordMaps = (List<Map<String, Object>>) returnObject;
