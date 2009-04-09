@@ -42,6 +42,12 @@ public class DriverSeatBeltBean extends BasePerformanceBean
         return scoreDAO.getDriverTrendCumulative(id, duration, scoreType);
     }
     
+    @Override
+    protected List<ScoreableEntity> getTrendDaily(Integer id, Duration duration, ScoreType scoreType)
+    {
+        return scoreDAO.getDriverTrendDaily(id, duration, scoreType);
+    }
+    
     private void initScores()
     {
         ScoreableEntity se = scoreDAO.getDriverAverageScoreByType(navigation.getDriver().getDriverID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
@@ -76,7 +82,7 @@ public class DriverSeatBeltBean extends BasePerformanceBean
 
     public void initTrends()
     {
-        seatBeltScoreHistoryOverall = createFusionLineDef(navigation.getDriver().getDriverID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
+        seatBeltScoreHistoryOverall = createFusionMultiLineDef(navigation.getDriver().getDriverID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
     }
 
     public Integer getSeatBeltScore()
@@ -224,4 +230,6 @@ public class DriverSeatBeltBean extends BasePerformanceBean
     {
         getReportRenderer().exportReportToExcel(buildReport(), getFacesContext());
     }
+
+
 }

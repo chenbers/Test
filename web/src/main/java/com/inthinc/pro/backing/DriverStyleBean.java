@@ -39,6 +39,12 @@ public class DriverStyleBean extends BasePerformanceBean
         return scoreDAO.getDriverTrendCumulative(id, duration, scoreType);
     }
 
+    @Override
+    protected List<ScoreableEntity> getTrendDaily(Integer id, Duration duration, ScoreType scoreType)
+    {
+        return scoreDAO.getDriverTrendDaily(id, duration, scoreType);
+    }
+    
     private void initScores()
     {
         Map<ScoreType, ScoreableEntity> tempMap = scoreDAO
@@ -72,11 +78,11 @@ public class DriverStyleBean extends BasePerformanceBean
     {
         Integer id = navigation.getDriver().getDriverID();
         trendMap = new HashMap<String, String>();
-        trendMap.put(ScoreType.SCORE_DRIVING_STYLE.toString(), createFusionLineDef(id, durationBean.getDuration(), ScoreType.SCORE_DRIVING_STYLE));
-        trendMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL.toString(), createFusionLineDef(id, durationBean.getDuration(), ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL));
-        trendMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE.toString(), createFusionLineDef(id, durationBean.getDuration(), ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE));
-        trendMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP.toString(), createFusionLineDef(id, durationBean.getDuration(), ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP));
-        trendMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN.toString(), createFusionLineDef(id, durationBean.getDuration(), ScoreType.SCORE_DRIVING_STYLE_HARD_TURN));
+        trendMap.put(ScoreType.SCORE_DRIVING_STYLE.toString(), createFusionMultiLineDef(id, durationBean.getDuration(), ScoreType.SCORE_DRIVING_STYLE));
+        trendMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL.toString(), createFusionMultiLineDef(id, durationBean.getDuration(), ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL));
+        trendMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE.toString(), createFusionMultiLineDef(id, durationBean.getDuration(), ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE));
+        trendMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP.toString(), createFusionMultiLineDef(id, durationBean.getDuration(), ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP));
+        trendMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN.toString(), createFusionMultiLineDef(id, durationBean.getDuration(), ScoreType.SCORE_DRIVING_STYLE_HARD_TURN));
     }
 
     public void initEvents()

@@ -32,7 +32,7 @@ import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.util.MessageUtil;
 
-public class VehicleBean extends BaseBean
+public class VehicleBean extends BasePerformanceBean
 {
     private static final Logger logger = Logger.getLogger(VehicleBean.class);
 
@@ -41,15 +41,13 @@ public class VehicleBean extends BaseBean
     private ScoreDAO scoreDAO;
     private MpgDAO mpgDAO;
     private EventDAO eventDAO;
-    private NavigationBean navigation;
-    private DurationBean durationBean;
+
     private DurationBean coachDurationBean;
     private DurationBean mpgDurationBean;
     private DurationBean speedDurationBean;
     private DurationBean styleDurationBean;
     private DurationBean seatBeltDurationBean;
-    
-    private AddressLookup addressLookup;
+
     private TripDisplay lastTrip;
     private List<Event> violationEvents = new ArrayList<Event>();
     private Integer overallScore;
@@ -58,9 +56,21 @@ public class VehicleBean extends BaseBean
     private String mpgHistory;
     private String coachingHistory;
     private Boolean hasLastTrip;
-    private ReportRenderer reportRenderer;
+
     private String emailAddress;
 
+    @Override
+    protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
+    {
+        return scoreDAO.getVehicleTrendCumulative(id, duration, scoreType);
+    }
+
+    @Override
+    protected List<ScoreableEntity> getTrendDaily(Integer id, Duration duration, ScoreType scoreType)
+    {
+        return scoreDAO.getVehicleTrendDaily(id, duration, scoreType);
+    }
+    
     private Integer initAverageScore(ScoreType scoreType, Duration duration)
     {
         ScoreableEntity se = scoreDAO.getVehicleAverageScoreByType(navigation.getVehicle().getVehicleID(), duration, scoreType);
@@ -111,7 +121,7 @@ public class VehicleBean extends BaseBean
 
     public String getOverallScoreHistory()
     {
-        setOverallScoreHistory(createLineDef(ScoreType.SCORE_OVERALL, durationBean.getDuration()));
+        setOverallScoreHistory(createFusionMultiLineDef(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), ScoreType.SCORE_OVERALL));
         return overallScoreHistory;
     }
 
@@ -137,7 +147,7 @@ public class VehicleBean extends BaseBean
     // COACHING properties
     public String getCoachingHistory()
     {
-        setCoachingHistory(createColumnDef(ScoreType.SCORE_COACHING_EVENTS, coachDurationBean.getDuration()));
+        setCoachingHistory(createColumnDef(navigation.getVehicle().getVehicleID(), ScoreType.SCORE_COACHING_EVENTS, coachDurationBean.getDuration()));
         return coachingHistory;
     }
 
@@ -243,16 +253,6 @@ public class VehicleBean extends BaseBean
         this.driverDAO = driverDAO;
     }
 
-    public AddressLookup getAddressLookup()
-    {
-        return addressLookup;
-    }
-
-    public void setAddressLookup(AddressLookup addressLookup)
-    {
-        this.addressLookup = addressLookup;
-    }
-
     // MPG PROPERTIES
     public String getMpgHistory()
     {
@@ -301,94 +301,7 @@ public class VehicleBean extends BaseBean
         return sb.toString();
     }
 
-    public String createLineDef(ScoreType scoreType, Duration duration)
-    {
-        StringBuffer sb = new StringBuffer();
-        Line line = new Line();
-
-        // Start XML Data
-        sb.append(line.getControlParameters());
-
-        List<ScoreableEntity> scoreList = scoreDAO.getVehicleTrendCumulative(navigation.getVehicle().getVehicleID(), duration, scoreType);
-
-        List<String> monthList = GraphicUtil.createMonthList(duration);
-
-        int cnt = 0;
-        for (ScoreableEntity e : scoreList)
-        {
-            if (e.getScore() != null)
-            {
-                sb.append(line.getChartItem(new Object[] { (double) (e.getScore() / 10.0d), monthList.get(cnt) }));
-            }
-            else
-            {
-                sb.append(line.getChartItem(new Object[] { null, monthList.get(cnt) }));
-            }
-
-            cnt++;
-        }
-
-        // End XML Data
-        sb.append(line.getClose());
-
-        return sb.toString();
-    }
     
-    public String createColumnDef(ScoreType scoreType, Duration duration)
-    {
-        StringBuffer sb = new StringBuffer();
-        FusionColumnChart column = new FusionColumnChart();
-
-        // Start XML Data
-        sb.append(column.getControlParameters());
-              
-        List<ScoreableEntity> scoreList = scoreDAO
-                .getVehicleTrendCumulative(navigation.getVehicle().getVehicleID(), duration, scoreType);
-
-        // Get "x" values
-        List<String> monthList = GraphicUtil.createMonthList(duration);
-
-        int cnt = 0;
-        for (ScoreableEntity e : scoreList)
-        {
-            if (e.getScore() != null)
-            {
-                sb.append(column.getChartItem(new Object[] { (e.getScore() / 10), monthList.get(cnt) }));
-            }
-            else
-            {
-                sb.append(column.getChartItem(new Object[] { null, monthList.get(cnt) }));
-            }
-            cnt++;
-        }
-
-        // End XML Data
-        sb.append(column.getClose());
-
-        return sb.toString();
-    }
-
-
-    // NAVIGATION BEAN PROPERTIES
-    public NavigationBean getNavigation()
-    {
-        return navigation;
-    }
-
-    public void setNavigation(NavigationBean navigation)
-    {
-        this.navigation = navigation;
-    }
-
-    public DurationBean getDurationBean()
-    {
-        return durationBean;
-    }
-
-    public void setDurationBean(DurationBean durationBean)
-    {
-        this.durationBean = durationBean;
-    }
 
     public DurationBean getCoachDurationBean()
     {
@@ -453,26 +366,7 @@ public class VehicleBean extends BaseBean
         this.hasLastTrip = hasLastTrip;
     }
 
-    public List<CategorySeriesData> createJasperDef(ScoreType scoreType, Duration duration)
-    {
-        List<ScoreableEntity> scoreList = scoreDAO.getVehicleTrendCumulative(navigation.getVehicle().getVehicleID(), duration, scoreType);
 
-        List<CategorySeriesData> chartDataList = new ArrayList<CategorySeriesData>();
-        List<String> monthList = GraphicUtil.createMonthList(duration, "M/dd");
-
-        int count = 0;
-        for (ScoreableEntity se : scoreList)
-        {
-            Double score = null;
-            if(se.getScore() != null)
-                score = se.getScore() / 10.0D;
-            
-            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString(scoreType.toString()), monthList.get(count).toString(),score , monthList.get(
-                    count).toString()));
-            count++;
-        }
-        return chartDataList;
-    }
 
     public List<CategorySeriesData> createMpgJasperDef()
     {
@@ -496,6 +390,7 @@ public class VehicleBean extends BaseBean
     public List<ReportCriteria> buildReport()
     {
         List<ReportCriteria> tempCriteria = new ArrayList<ReportCriteria>();
+        Integer id = navigation.getVehicle().getVehicleID();
 
         // Page 1
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_SUMMARY_P1, getGroupHierarchy().getTopGroup().getName());
@@ -510,10 +405,10 @@ public class VehicleBean extends BaseBean
         reportCriteria.addParameter("SPEED_DUR", speedDurationBean.getDuration().toString());
         reportCriteria.addParameter("STYLE_DUR", styleDurationBean.getDuration().toString());
         reportCriteria.addParameter("SEATBELT_DUR", seatBeltDurationBean.getDuration().toString());
-        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_OVERALL, durationBean.getDuration()));
-        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_SPEEDING, speedDurationBean.getDuration()));
-        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_DRIVING_STYLE, styleDurationBean.getDuration()));
-        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_SEATBELT, seatBeltDurationBean.getDuration()));
+        reportCriteria.addChartDataSet(createSingleJasperDef(id, ScoreType.SCORE_OVERALL, durationBean.getDuration()));
+        reportCriteria.addChartDataSet(createSingleJasperDef(id, ScoreType.SCORE_SPEEDING, speedDurationBean.getDuration()));
+        reportCriteria.addChartDataSet(createSingleJasperDef(id, ScoreType.SCORE_DRIVING_STYLE, styleDurationBean.getDuration()));
+        reportCriteria.addChartDataSet(createSingleJasperDef(id, ScoreType.SCORE_SEATBELT, seatBeltDurationBean.getDuration()));
         tempCriteria.add(reportCriteria);
 
         // Page 2
@@ -535,22 +430,12 @@ public class VehicleBean extends BaseBean
             reportCriteria.addParameter("MAP_URL", imageUrl);
         }
         reportCriteria.addChartDataSet(createMpgJasperDef());
-        reportCriteria.addChartDataSet(createJasperDef(ScoreType.SCORE_COACHING_EVENTS, coachDurationBean.getDuration()));
+        reportCriteria.addChartDataSet(createSingleJasperDef(id, ScoreType.SCORE_COACHING_EVENTS, coachDurationBean.getDuration()));
         reportCriteria.addParameter("COACH_DUR", coachDurationBean.getDuration().toString());
         reportCriteria.addParameter("MPG_DUR", mpgDurationBean.getDuration().toString());
         tempCriteria.add(reportCriteria);
 
         return tempCriteria;
-    }
-
-    public void setReportRenderer(ReportRenderer reportRenderer)
-    {
-        this.reportRenderer = reportRenderer;
-    }
-
-    public ReportRenderer getReportRenderer()
-    {
-        return reportRenderer;
     }
 
     public String getEmailAddress()

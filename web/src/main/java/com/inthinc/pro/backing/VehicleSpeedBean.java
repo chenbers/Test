@@ -44,6 +44,12 @@ public class VehicleSpeedBean extends BasePerformanceBean
     {
         return scoreDAO.getVehicleTrendCumulative(id, duration, scoreType);
     }
+    
+    @Override
+    protected List<ScoreableEntity> getTrendDaily(Integer id, Duration duration, ScoreType scoreType)
+    {
+        return scoreDAO.getVehicleTrendDaily(id, duration, scoreType);
+    }
 
     private void initScores()
     {
@@ -81,12 +87,12 @@ public class VehicleSpeedBean extends BasePerformanceBean
     {
         Integer id = navigation.getVehicle().getVehicleID();
         trendMap = new HashMap<String, String>();
-        trendMap.put(ScoreType.SCORE_SPEEDING.toString(), createFusionLineDef(id, durationBean.getDuration(), ScoreType.SCORE_SPEEDING));
-        trendMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), createFusionLineDef(id, durationBean.getDuration(), ScoreType.SCORE_SPEEDING_21_30));
-        trendMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), createFusionLineDef(id, durationBean.getDuration(), ScoreType.SCORE_SPEEDING_31_40));
-        trendMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), createFusionLineDef(id, durationBean.getDuration(), ScoreType.SCORE_SPEEDING_41_54));
-        trendMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), createFusionLineDef(id, durationBean.getDuration(), ScoreType.SCORE_SPEEDING_55_64));
-        trendMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), createFusionLineDef(id, durationBean.getDuration(), ScoreType.SCORE_SPEEDING_65_80));
+        trendMap.put(ScoreType.SCORE_SPEEDING.toString(), createFusionMultiLineDef(id, durationBean.getDuration(), ScoreType.SCORE_SPEEDING));
+        trendMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), createFusionMultiLineDef(id, durationBean.getDuration(), ScoreType.SCORE_SPEEDING_21_30));
+        trendMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), createFusionMultiLineDef(id, durationBean.getDuration(), ScoreType.SCORE_SPEEDING_31_40));
+        trendMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), createFusionMultiLineDef(id, durationBean.getDuration(), ScoreType.SCORE_SPEEDING_41_54));
+        trendMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), createFusionMultiLineDef(id, durationBean.getDuration(), ScoreType.SCORE_SPEEDING_55_64));
+        trendMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), createFusionMultiLineDef(id, durationBean.getDuration(), ScoreType.SCORE_SPEEDING_65_80));
     }
 
     public void initEvents() 

@@ -85,15 +85,17 @@
 				  <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
 					  <tr>
 						<td valign="top" width="600">
-						   <ui:include src="../../includes/lineChart.xhtml">
+						   <ui:include src="../../includes/multiLineChart.xhtml">
 						            <ui:param name="lineChartDef" value="#{driverSeatBeltBean.seatBeltScoreHistoryOverall}" />
 						            <ui:param name="hiddenFieldID" value="HiddenField" />
 						            <ui:param name="width" value="650" /> 
-						            <ui:param name="height" value="200" />  
+						            <ui:param name="height" value="230" />  
 						            <ui:param name="tartgetElementVar" value="targetElement" />
 						            <ui:param name="ChartDivID" value="overall_chart" />
 						            <ui:param name="ScriptDivID" value="overall_script" />
 						            <ui:param name="chartVar" value="overallChart" />
+						            <ui:param name="pYAxisName" value="Score" />
+						            <ui:param name="sYAxisName" value="Miles" />
 							</ui:include>
 						</td>
 						<td valign="top" align="right">

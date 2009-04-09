@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.charts.FusionColumnChart;
+import com.inthinc.pro.charts.FusionMultiAreaChart;
 import com.inthinc.pro.charts.Line;
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Duration;
@@ -30,7 +32,12 @@ public abstract class BasePerformanceBean extends BaseBean
     protected Map<String, String>  trendMap;
 
     protected abstract List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType);
+    protected abstract List<ScoreableEntity> getTrendDaily(Integer id, Duration duration, ScoreType scoreType);
 
+    
+    /*
+     *  Create Fusion Charts Multi Line chart.
+     */
     public String createFusionLineDef(Integer id, Duration duration, ScoreType scoreType)
     {
         StringBuffer sb = new StringBuffer();
@@ -42,7 +49,6 @@ public abstract class BasePerformanceBean extends BaseBean
 
         // Get "x" values
         List<String> monthList = GraphicUtil.createMonthList(duration); 
-        logger.debug(duration.toString() + " monthList " + monthList.size());
         
         int cnt = 0;
         for (ScoreableEntity e : scoreList)
@@ -63,6 +69,80 @@ public abstract class BasePerformanceBean extends BaseBean
         return sb.toString();
     }
     
+    /*
+     *  Create Fusion Charts Multi Line chart.
+     *  Set no Drive days to dashed line.
+     *  Integrated bar chart for mileage
+     */
+    public String createFusionMultiLineDef(Integer id, Duration duration, ScoreType scoreType)
+    {
+        StringBuffer sb = new StringBuffer();
+        FusionMultiAreaChart multiAreaChart = new FusionMultiAreaChart();
+
+        // Start XML Data       
+        sb.append(multiAreaChart.getControlParameters());
+              
+        List<ScoreableEntity> cumulativeList = getTrendCumulative(id, duration, scoreType);
+        List<ScoreableEntity> dailyList = getTrendDaily(id, duration, scoreType);
+        
+        List<String> catLabelList = GraphicUtil.createMonthList(duration);
+
+        Double cumulativeValues[]   = new Double[cumulativeList.size()];
+        Double dailyValues[]        = new Double[dailyList.size()];
+        Double odometerValues[]     = new Double[dailyList.size()];
+        
+        //Start Categories List
+        sb.append(multiAreaChart.getCategoriesStart());
+        
+        int cnt = 0;
+        for (ScoreableEntity entity : dailyList)
+        {
+            Double score;
+            // Set Score to NULL on non driving days 
+            if(entity.getIdentifierNum() != null && entity.getIdentifierNum() == 0)
+                score = null;
+            else
+                score = entity.getScore() == null ? null : entity.getScore() / 10D;
+            
+            //Add Score to array.
+            dailyValues[cnt] = score;
+            
+            if(entity.getIdentifierNum() != null)
+            {
+                // Odometer values in this entity are miles driven for the day.
+                odometerValues[cnt] = entity.getIdentifierNum() / 100D;  
+            }
+            sb.append(multiAreaChart.getCategoryLabel(catLabelList.get(cnt)));     
+            cnt++;
+        }
+        sb.append(multiAreaChart.getCategoriesEnd());
+        
+        cnt = 0;
+        for (ScoreableEntity entity : cumulativeList)
+        {
+            Double score;
+            // Set Score to NULL on non driving days. 
+            if(odometerValues[cnt] != null && odometerValues[cnt] == 0)
+                score = null;
+            else
+                score = entity.getScore() == null ? null : entity.getScore() / 10D;
+            
+            cumulativeValues[cnt] = score;            
+            cnt++;
+        }
+  
+        //Not displaying daily score in chart.
+        //sb.append(multiAreaChart.getChartLineDataSet("Daily Score", "#407EFF", dailyValues, catLabelList));
+        sb.append(multiAreaChart.getChartAreaDataSet("Cumulative Score", "#B0CB48", cumulativeValues, catLabelList));
+        sb.append(multiAreaChart.getChartBarDataSet("Mileage", "#C0C0C0", odometerValues, catLabelList));
+        sb.append(multiAreaChart.getClose());
+
+        return sb.toString();
+    }
+    
+    /*
+     *  Create Jasper Charts Multi Line chart for Speed,Style,SeatBelt.
+     */
     public List<CategorySeriesData> createJasperMultiLineDef(Integer id, List<ScoreType> scoreTypes, Duration duration)
     {
         List<CategorySeriesData> returnList = new ArrayList<CategorySeriesData>();
@@ -87,6 +167,66 @@ public abstract class BasePerformanceBean extends BaseBean
             }
         }
         return returnList;
+    }
+    
+    /*
+     * Create Jasper Charts Single Line chart for Speed,Style,SeatBelt.
+     */
+    public List<CategorySeriesData> createSingleJasperDef(Integer id, ScoreType scoreType, Duration duration)
+    {
+        List<ScoreableEntity> scoreList = getTrendCumulative(id, duration, scoreType);
+
+        List<CategorySeriesData> chartDataList = new ArrayList<CategorySeriesData>();
+        List<String> monthList = GraphicUtil.createMonthList(duration, "M/dd");
+
+        int count = 0;
+        for (ScoreableEntity se : scoreList)
+        {
+            Double score = null;
+            if(se.getScore() != null)
+                score = se.getScore() / 10.0D;
+            
+            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString(scoreType.toString()), monthList.get(count).toString(),score , monthList.get(
+                    count).toString()));
+            count++;
+        }
+        return chartDataList;
+    }
+    
+    /*
+     *  Create Fusion Charts XML bar chart for Coaching Events.
+     */
+    public String createColumnDef(Integer id, ScoreType scoreType, Duration duration)
+    {
+        StringBuffer sb = new StringBuffer();
+        FusionColumnChart column = new FusionColumnChart();
+
+        // Start XML Data
+        sb.append(column.getControlParameters());
+              
+        List<ScoreableEntity> scoreList = getTrendCumulative(id, duration, scoreType);
+
+        // Get "x" values
+        List<String> monthList = GraphicUtil.createMonthList(duration);
+
+        int cnt = 0;
+        for (ScoreableEntity e : scoreList)
+        {
+            if (e.getScore() != null)
+            {
+                sb.append(column.getChartItem(new Object[] { (e.getScore() / 10), monthList.get(cnt) }));
+            }
+            else
+            {
+                sb.append(column.getChartItem(new Object[] { null, monthList.get(cnt) }));
+            }
+            cnt++;
+        }
+
+        // End XML Data
+        sb.append(column.getClose());
+
+        return sb.toString();
     }
 
     public NavigationBean getNavigation()

@@ -87,6 +87,11 @@ var firstLoad = new Boolean(true);
 	    data = data.replace("showLabels=\'0\'", "showLabels=\'1\'");
 	    data = data.replace("showYAxisValues=\'0\'", "showYAxisValues=\'1\'");
 	    data = data.replace("anchorSides=\'0\'", "anchorSides=\'4\'");
+	    data = data.replace("showLegend=\'0\'", "showLegend=\'1\'");
+	    data = data.replace("pYAxisName=\'\'", "pYAxisName=\'Score\'");
+	    data = data.replace("sYAxisName=\'\'", "sYAxisName=\'Miles\'");
+	   	data = data.replace("showDivLineSecondaryValue=\'0\'", "showDivLineSecondaryValue=\'1\'");
+	   	data = data.replace("showSecondaryLimits=\'0\'", "showSecondaryLimits=\'1\'");
 
 		//Set overall chart to data from selected chart.
 		overallChart.setDataXML(data);
@@ -135,7 +140,7 @@ var firstLoad = new Boolean(true);
 						<td valign="top" width="600">
 						   <div id="overallChartDiv" style="height: 200;"></div>
 						 		<script type="text/javascript">
-									var overallChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Area2D.swf", "overallChartId", "650", "200", "0", "1");
+									var overallChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSCombiDY2D.swf", "overallChartId", "650", "230", "0", "1");
 								</script>
 						</td>
 						<td valign="top" align="right">
@@ -205,8 +210,8 @@ var firstLoad = new Boolean(true);
 						  </div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
-								<td>
-									<ui:include src="../../includes/lineChart.xhtml">
+								<td align="center">
+									<ui:include src="../../includes/multiLineChart.xhtml">
 								            <ui:param name="lineChartDef" value="#{vehicleSpeedBean.trendMap['SCORE_SPEEDING']}" />
 								            <ui:param name="hiddenFieldID" value="HiddenOverall" />
 								            <ui:param name="width" value="220" /> 
@@ -214,7 +219,9 @@ var firstLoad = new Boolean(true);
 								            <ui:param name="tartgetElementVar" value="targetElement1" />
 								            <ui:param name="ChartDivID" value="speed_chart_tiny_overall" />
 								            <ui:param name="chartVar" value="overallChart2" />
-								            <ui:param name="disableLabels" value="true" />
+								            <ui:param name="hideLabels" value="TRUE" />
+								            <ui:param name="hideLegend" value="TRUE" />
+								            <ui:param name="hideNames" value="TRUE" />
 									</ui:include>
 								</td>
 								<td align="center">
@@ -240,8 +247,8 @@ var firstLoad = new Boolean(true);
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
-								<td>
-									<ui:include src="../../includes/lineChart.xhtml">
+								<td align="center">
+									<ui:include src="../../includes/multiLineChart.xhtml">
 									            <ui:param name="lineChartDef" value="#{vehicleSpeedBean.trendMap['SCORE_SPEEDING_21_30']}" />
 									            <ui:param name="hiddenFieldID" value="HiddenTWENTYONE" />
 									            <ui:param name="width" value="220" /> 
@@ -249,7 +256,9 @@ var firstLoad = new Boolean(true);
 									            <ui:param name="tartgetElementVar" value="targetElement21" />
 									            <ui:param name="ChartDivID" value="speed_chart_tiny_21-30" />
 									            <ui:param name="chartVar" value="chart21" />
-									            <ui:param name="disableLabels" value="true" />
+									            <ui:param name="hideLabels" value="TRUE" />
+								            	<ui:param name="hideLegend" value="TRUE" />
+								            	<ui:param name="hideNames" value="TRUE" />
 									</ui:include>
 								</td>
 								<td align="center">
@@ -274,8 +283,8 @@ var firstLoad = new Boolean(true);
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
-								<td>
-									<ui:include src="../../includes/lineChart.xhtml">
+								<td align="center">
+									<ui:include src="../../includes/multiLineChart.xhtml">
 								            <ui:param name="lineChartDef" value="#{vehicleSpeedBean.trendMap['SCORE_SPEEDING_31_40']}" />
 								            <ui:param name="hiddenFieldID" value="HiddenTHIRTYONE" />
 								            <ui:param name="width" value="220" /> 
@@ -283,7 +292,9 @@ var firstLoad = new Boolean(true);
 								            <ui:param name="tartgetElementVar" value="targetElement31" />
 								            <ui:param name="ChartDivID" value="speed_chart_tiny_31-40" />
 								            <ui:param name="chartVar" value="chart31" />
-								            <ui:param name="disableLabels" value="true" />
+								            <ui:param name="hideLabels" value="TRUE" />
+								            <ui:param name="hideLegend" value="TRUE" />
+								            <ui:param name="hideNames" value="TRUE" />
 									</ui:include>
 									</td>
 									<td align="center">
@@ -309,8 +320,8 @@ var firstLoad = new Boolean(true);
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
-								<td>
-									<ui:include src="../../includes/lineChart.xhtml">
+								<td align="center">
+									<ui:include src="../../includes/multiLineChart.xhtml">
 								            <ui:param name="lineChartDef" value="#{vehicleSpeedBean.trendMap['SCORE_SPEEDING_41_54']}" />
 								            <ui:param name="hiddenFieldID" value="HiddenFORTYONE" />
 								            <ui:param name="width" value="220" /> 
@@ -318,7 +329,9 @@ var firstLoad = new Boolean(true);
 								            <ui:param name="tartgetElementVar" value="targetElement41" />
 								            <ui:param name="ChartDivID" value="speed_chart_tiny_41-54" />
 								            <ui:param name="chartVar" value="chart41" />
-								            <ui:param name="disableLabels" value="true" />
+								            <ui:param name="hideLabels" value="TRUE" />
+								            <ui:param name="hideLegend" value="TRUE" />
+								            <ui:param name="hideNames" value="TRUE" />
 									</ui:include>
 								</td>
 								<td align="center">
@@ -342,8 +355,8 @@ var firstLoad = new Boolean(true);
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
-								<td>
-									<ui:include src="../../includes/lineChart.xhtml">
+								<td align="center">
+									<ui:include src="../../includes/multiLineChart.xhtml">
 								            <ui:param name="lineChartDef" value="#{vehicleSpeedBean.trendMap['SCORE_SPEEDING_55_64']}" />
 								            <ui:param name="hiddenFieldID" value="HiddenFIFTYFIVE" />
 								            <ui:param name="width" value="220" /> 
@@ -351,7 +364,9 @@ var firstLoad = new Boolean(true);
 								            <ui:param name="tartgetElementVar" value="targetElement55" />
 								            <ui:param name="ChartDivID" value="speed_chart_tiny_55-64" />
 								            <ui:param name="chartVar" value="chart55" />
-								            <ui:param name="disableLabels" value="true" />
+								            <ui:param name="hideLabels" value="TRUE" />
+								            <ui:param name="hideLegend" value="TRUE" />
+								            <ui:param name="hideNames" value="TRUE" />
 									</ui:include>
 								</td>
 								<td align="center">
@@ -375,8 +390,8 @@ var firstLoad = new Boolean(true);
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
-								<td>
-									<ui:include src="../../includes/lineChart.xhtml">
+								<td align="center">
+									<ui:include src="../../includes/multiLineChart.xhtml">
 								            <ui:param name="lineChartDef" value="#{vehicleSpeedBean.trendMap['SCORE_SPEEDING_65_80']}" />
 								            <ui:param name="hiddenFieldID" value="HiddenSIXTYFIVE" />
 								            <ui:param name="width" value="220" /> 
@@ -384,7 +399,9 @@ var firstLoad = new Boolean(true);
 								            <ui:param name="tartgetElementVar" value="targetElement65" />
 								            <ui:param name="ChartDivID" value="speed_chart_tiny_65-80" />
 								            <ui:param name="chartVar" value="chart65" />
-								            <ui:param name="disableLabels" value="true" />
+								            <ui:param name="hideLabels" value="TRUE" />
+								            <ui:param name="hideLegend" value="TRUE" />
+								            <ui:param name="hideNames" value="TRUE" />
 									</ui:include>
 								</td>
 								<td align="center">

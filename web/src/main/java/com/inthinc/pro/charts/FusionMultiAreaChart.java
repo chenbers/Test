@@ -15,9 +15,9 @@ public class FusionMultiAreaChart implements BaseChart
     private static final String AREA_CONTROL_PARAMS ="<chart " +
                                                      "bgcolor=\'#ffffff\' " +
                                                      "borderColor=\'#ffffff\' " +
-                                                     "pYAxisName=\'Score\' " +
+                                                     "pYAxisName=\'Name\' " +
                                                      "pYAxisMaxValue=\'5\' " +
-                                                     "sYAxisName=\'Miles\' " +
+                                                     "sYAxisName=\'Name\' " +
                                                      "showValues=\'0\' " +
                                                      "rotateLabels=\'1\' " +
                                                      "slantLabels=\'1\' " +
@@ -25,9 +25,16 @@ public class FusionMultiAreaChart implements BaseChart
                                                      "drawAnchors=\'1\' " +
                                                      "anchorSides=\'4\' " +
                                                      "forceDecimals=\'1\' " +
-                                                     
+                                                     "decimals=\'1\' " +
+                                                     "showLegend=\'1\' " +
                                                      "showLabels=\'1\' " +
                                                      "showYAxisValues=\'1\' " +
+                                                     
+                                                     "showDivLineSecondaryValue=\'1\' " + 
+                                                     "showSecondaryLimits=\'1\' " +
+                                                     
+                                                     "chartLeftMargin=\'3\' " +
+                                                     "chartRightMargin=\'3\' " +
                                                      
                                                      "areaOverColumns=\'0\'> ";
     
@@ -35,21 +42,19 @@ public class FusionMultiAreaChart implements BaseChart
     private static final String CHART_CAT_LABEL=" <category label=''{0}''/>";
     private static final String CHART_CAT_END="</categories>";
     
-    private static final String CHART_ITEM_FORMAT = "<set value=''{0}'' label=''{1}''/>";
-    private static final String CHART_ITEM_FORMAT_DASHED = "<set value=''{0}'' label=''{1}'' dashed=''1''/>";
+    private static final String CHART_ITEM_FORMAT = "<set toolText=''{1}'' value=''{0}'' />";
+    private static final String CHART_ITEM_FORMAT_DASHED = "<set toolText=''{1}'' value=''{0}'' dashed=''1''/>";
     
-    private static final String CHART_DATASET_AREA_START="<dataset seriesName=''{0}'' renderAs=\"Area\" color=''{1}'' anchorBorderColor=''{1}'' anchorAlpha =''100'' parentYAxis=''P''>";
+    private static final String CHART_DATASET_AREA_START="<dataset seriesName=''{0}'' renderAs=\"Area\" color=''{1}'' anchorBorderColor=''#333333'' anchorAlpha =''100'' parentYAxis=''P''>";
     private static final String CHART_DATASET_LINE_START="<dataset seriesName=''{0}'' renderAs=\"Line\" color=''{1}'' parentYAxis=''P'' alpha=''75''>";
     private static final String CHART_DATASET_COLUMN_START="<dataset seriesName=''{0}'' renderAs=\"Column\" color=''{1}'' parentYAxis=''S'' alpha=''25''>";
  
     private static final String CHART_DATASET_END="</dataset>";
     private static final String CHART_CLOSE = "</chart>"; 
-
-
+    
     @Override
     public String getControlParameters()
     {
-        
         return AREA_CONTROL_PARAMS;
     }
 
@@ -91,11 +96,13 @@ public class FusionMultiAreaChart implements BaseChart
         buffer.append(MessageFormat.format(CHART_DATASET_AREA_START, new Object[] { title, color}));
         for (int i = 0; i < values.length; i++)
         {
-            String label = title + " " + catLabels.get(i) + ", " + values[i];  
+            String label = catLabels.get(i) + " " + title + ": " + values[i];
             
             //Set Chart item to "Dashed" version if next item in array is null, see example XML output at bottom.
-            if(values[i] != null && i < values.length-1 && values[i+1] == null && values[i-1] != null)
+            if(values[i] != null && i < values.length-1 && values[i+1] == null && i > 0 && values[i-1] != null)
+            {
                 buffer.append(getChartItemDashed(new Object[] { values[i], label}));
+            }
             else
                 buffer.append(getChartItem(new Object[] { values[i], label}));
         }
@@ -109,10 +116,10 @@ public class FusionMultiAreaChart implements BaseChart
         buffer.append(MessageFormat.format(CHART_DATASET_LINE_START, new Object[] { title, color}));
         for (int i = 0; i < values.length; i++)
         {
-            String label = title + " " + catLabels.get(i) + ", " + values[i];
+            String label = catLabels.get(i) + " " + title + ": " + values[i];
             
             //Set Chart item to "Dashed" version if next item in array is null, see example XML output at bottom.
-            if(values[i] != null && i < values.length-1 && values[i+1] == null && values[i-1] != null)  
+            if(values[i] != null && i < values.length-1 && values[i+1] == null && i > 0 && values[i-1] != null)  
                 buffer.append(getChartItemDashed(new Object[] { values[i], label}));
             else
                 buffer.append(getChartItem(new Object[] { values[i], label}));
@@ -127,12 +134,14 @@ public class FusionMultiAreaChart implements BaseChart
         buffer.append(MessageFormat.format(CHART_DATASET_COLUMN_START, new Object[] { title, color}));
         for (int i = 0; i < values.length; i++)
         {
-            String label = title + " " + catLabels.get(i) + ", " + values[i];  
+            String label = catLabels.get(i) + " " + title  + ": " + values[i];  
             buffer.append(getChartItem(new Object[] { values[i], label}));
         }
         buffer.append(CHART_DATASET_END);
         return buffer.toString();
     }
+
+
     
 }
 

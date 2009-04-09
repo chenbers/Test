@@ -270,15 +270,17 @@
 				  <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
 					  <tr>
 						<td valign="top" width="600">
-						   <ui:include src="../includes/lineChart.xhtml">
+						   <ui:include src="../includes/multiLineChart.xhtml">
 						            <ui:param name="lineChartDef" value="#{vehicleBean.overallScoreHistory}" />
 						            <ui:param name="hiddenFieldID" value="HiddenField" />
 						            <ui:param name="width" value="650" /> 
-						            <ui:param name="height" value="200" />  
+						            <ui:param name="height" value="230" />  
 						            <ui:param name="tartgetElementVar" value="targetElement" />
 						            <ui:param name="ChartDivID" value="overall_chart" />
 						            <ui:param name="ScriptDivID" value="overall_script" />
 						            <ui:param name="chartVar" value="overallChart" />
+						            <ui:param name="pYAxisName" value="Score" />
+						            <ui:param name="sYAxisName" value="Miles" />
 							</ui:include>
 						</td>
 						<td valign="top" align="right">
@@ -343,7 +345,7 @@
 					    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">                        
                           <tr>
                             <td width="373">
-				            <ui:include src="../includes/lineChart.xhtml">
+				            <ui:include src="../includes/multiLineChart.xhtml">
 						            <ui:param name="lineChartDef" value="#{vehicleSpeedBean.trendMap['SCORE_SPEEDING']}" />
 						            <ui:param name="hiddenFieldID" value="HiddenField1" />
 						            <ui:param name="width" value="380" /> 
@@ -352,6 +354,8 @@
 						            <ui:param name="ChartDivID" value="speed_chart" />
 						            <ui:param name="ScriptDivID" value="speed_script" />
 						            <ui:param name="chartVar" value="speed_chart" />
+						            <ui:param name="hideLegend" value="TRUE" />
+						            <ui:param name="hideNames" value="TRUE" />
 							</ui:include>
 							</td>
                             <td width="80" align="center">
@@ -401,7 +405,7 @@
 					    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
                           <tr>
                             <td width="373">
-                      		<ui:include src="../includes/lineChart.xhtml">
+                      		<ui:include src="../includes/multiLineChart.xhtml">
 						            <ui:param name="lineChartDef" value="#{vehicleStyleBean.trendMap['SCORE_DRIVING_STYLE']}" />
 						            <ui:param name="hiddenFieldID" value="HiddenField2" />
 						            <ui:param name="width" value="380" /> 
@@ -410,6 +414,8 @@
 						            <ui:param name="ChartDivID" value="style_chart" />
 						            <ui:param name="ScriptDivID" value="style_script" />
 						            <ui:param name="chartVar" value="style_chart" />
+						            <ui:param name="hideLegend" value="TRUE" />
+						            <ui:param name="hideNames" value="TRUE" />
 							</ui:include>
                             </td>
                             <td width="80" align="center">
@@ -458,7 +464,7 @@
 					    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
                           <tr>
                             <td width="373">
-                      		<ui:include src="../includes/lineChart.xhtml">
+                      		<ui:include src="../includes/multiLineChart.xhtml">
 						            <ui:param name="lineChartDef" value="#{vehicleSeatBeltBean.seatBeltScoreHistoryOverall}" />
 						            <ui:param name="hiddenFieldID" value="HiddenField3" />
 						            <ui:param name="width" value="380" /> 
@@ -467,6 +473,8 @@
 						            <ui:param name="ChartDivID" value="seatBelt_chart" />
 						            <ui:param name="ScriptDivID" value="seatBelt_script" />
 						            <ui:param name="chartVar" value="seatBelt_chart" />
+						            <ui:param name="hideLegend" value="TRUE" />
+						            <ui:param name="hideNames" value="TRUE" />
 							</ui:include>
                             </td>
                             <td width="80" align="center">

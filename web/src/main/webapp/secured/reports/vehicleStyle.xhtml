@@ -79,11 +79,16 @@ var firstLoad = new Boolean(true);
 		//change style to new selected region.
 		document.getElementById(region).className="tiny_selected";
 		
-		//turn on X and Y axis labels.
+		//turn on Labels, Legend, Anchors, Names
 		var data = chartVar.variables.dataXML;
 	    data = data.replace("showLabels=\'0\'", "showLabels=\'1\'");
 	    data = data.replace("showYAxisValues=\'0\'", "showYAxisValues=\'1\'");
 	    data = data.replace("anchorSides=\'0\'", "anchorSides=\'4\'");
+	    data = data.replace("showLegend=\'0\'", "showLegend=\'1\'");
+	    data = data.replace("pYAxisName=\'\'", "pYAxisName=\'Score\'");
+	    data = data.replace("sYAxisName=\'\'", "sYAxisName=\'Miles\'");
+	   	data = data.replace("showDivLineSecondaryValue=\'0\'", "showDivLineSecondaryValue=\'1\'");
+	   	data = data.replace("showSecondaryLimits=\'0\'", "showSecondaryLimits=\'1\'");
 
 		//Set overall chart to data from selected chart.
 		overallChart.setDataXML(data);
@@ -132,7 +137,7 @@ var firstLoad = new Boolean(true);
 						<td valign="top" width="600">
 						   	   <div id="overallChartDiv" style="height: 200;"></div>
 						 		<script type="text/javascript">
-									var overallChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Area2D.swf", "overallChartId", "650", "200", "0", "1");
+									var overallChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSCombiDY2D.swf", "overallChartId", "650", "230", "0", "1");
 								</script>
 						</td>
 						<td valign="top" align="right">
@@ -202,8 +207,8 @@ var firstLoad = new Boolean(true);
 						  </div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
-								<td>
-									<ui:include src="../../includes/lineChart.xhtml">
+								<td align="center">
+									<ui:include src="../../includes/multiLineChart.xhtml">
 								            <ui:param name="lineChartDef" value="#{vehicleStyleBean.trendMap['SCORE_DRIVING_STYLE']}" />
 								            <ui:param name="hiddenFieldID" value="HiddenOverall" />
 								            <ui:param name="width" value="220" /> 
@@ -211,7 +216,9 @@ var firstLoad = new Boolean(true);
 								            <ui:param name="tartgetElementVar" value="targetElement1" />
 								            <ui:param name="ChartDivID" value="style_chart_tiny_overall" />
 								            <ui:param name="chartVar" value="overallChart2" />
-								            <ui:param name="disableLabels" value="true" />
+								            <ui:param name="hideLabels" value="TRUE" />
+								            <ui:param name="hideLegend" value="TRUE" />
+								            <ui:param name="hideNames" value="TRUE" />
 									</ui:include>
 								</td>
 								<td align="center">
@@ -237,8 +244,8 @@ var firstLoad = new Boolean(true);
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
-								<td>
-									<ui:include src="../../includes/lineChart.xhtml">
+								<td align="center">
+									<ui:include src="../../includes/multiLineChart.xhtml">
 									            <ui:param name="lineChartDef" value="#{vehicleStyleBean.trendMap['SCORE_DRIVING_STYLE_HARD_BRAKE']}" />
 									            <ui:param name="hiddenFieldID" value="HiddenBRAKE" />
 									            <ui:param name="width" value="220" /> 
@@ -246,7 +253,9 @@ var firstLoad = new Boolean(true);
 									            <ui:param name="tartgetElementVar" value="targetElementBrake" />
 									            <ui:param name="ChartDivID" value="style_chart_tiny_brake" />
 									            <ui:param name="chartVar" value="chartBrake" />
-									            <ui:param name="disableLabels" value="true" />
+									            <ui:param name="hideLabels" value="TRUE" />
+								            	<ui:param name="hideLegend" value="TRUE" />
+								            	<ui:param name="hideNames" value="TRUE" />
 									</ui:include>
 								</td>
 								<td align="center">
@@ -271,8 +280,8 @@ var firstLoad = new Boolean(true);
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
-								<td>
-									<ui:include src="../../includes/lineChart.xhtml">
+								<td align="center">
+									<ui:include src="../../includes/multiLineChart.xhtml">
 								            <ui:param name="lineChartDef" value="#{vehicleStyleBean.trendMap['SCORE_DRIVING_STYLE_HARD_ACCEL']}" />
 								            <ui:param name="hiddenFieldID" value="HiddenACCEL" />
 								            <ui:param name="width" value="220" /> 
@@ -280,7 +289,9 @@ var firstLoad = new Boolean(true);
 								            <ui:param name="tartgetElementVar" value="targetElementAccel" />
 								            <ui:param name="ChartDivID" value="style_chart_tiny_Accel" />
 								            <ui:param name="chartVar" value="chartAccel" />
-								            <ui:param name="disableLabels" value="true" />
+								            <ui:param name="hideLabels" value="TRUE" />
+								            <ui:param name="hideLegend" value="TRUE" />
+								            <ui:param name="hideNames" value="TRUE" />
 									</ui:include>
 									</td>
 									<td align="center">
@@ -307,8 +318,8 @@ var firstLoad = new Boolean(true);
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
-								<td>
-									<ui:include src="../../includes/lineChart.xhtml">
+								<td align="center">
+									<ui:include src="../../includes/multiLineChart.xhtml">
 								            <ui:param name="lineChartDef" value="#{vehicleStyleBean.trendMap['SCORE_DRIVING_STYLE_HARD_TURN']}" />
 								            <ui:param name="hiddenFieldID" value="HiddenTURN" />
 								            <ui:param name="width" value="220" /> 
@@ -316,7 +327,9 @@ var firstLoad = new Boolean(true);
 								            <ui:param name="tartgetElementVar" value="targetElementTurn" />
 								            <ui:param name="ChartDivID" value="style_chart_tiny_turn" />
 								            <ui:param name="chartVar" value="chartTurn" />
-								            <ui:param name="disableLabels" value="true" />
+								            <ui:param name="hideLabels" value="TRUE" />
+								            <ui:param name="hideLegend" value="TRUE" />
+								            <ui:param name="hideNames" value="TRUE" />
 									</ui:include>
 								</td>
 								<td align="center">
@@ -342,8 +355,8 @@ var firstLoad = new Boolean(true);
 							</div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
-								<td>
-									<ui:include src="../../includes/lineChart.xhtml">
+								<td align="center">
+									<ui:include src="../../includes/multiLineChart.xhtml">
 								            <ui:param name="lineChartDef" value="#{vehicleStyleBean.trendMap['SCORE_DRIVING_STYLE_HARD_BUMP']}" />
 								            <ui:param name="hiddenFieldID" value="HiddenBUMP" />
 								            <ui:param name="width" value="220" /> 
@@ -351,7 +364,9 @@ var firstLoad = new Boolean(true);
 								            <ui:param name="tartgetElementVar" value="targetElementBump" />
 								            <ui:param name="ChartDivID" value="style_chart_tiny_bump" />
 								            <ui:param name="chartVar" value="chartBump" />
-								            <ui:param name="disableLabels" value="true" />
+								            <ui:param name="hideLabels" value="TRUE" />
+								            <ui:param name="hideLegend" value="TRUE" />
+								            <ui:param name="hideNames" value="TRUE" />
 									</ui:include>
 								</td>
 								<td align="center">
