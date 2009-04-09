@@ -225,7 +225,7 @@ public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer> impleme
         for (Integer speed : speedSettings)
         {
             if(speed == null)
-                speed = 0;
+                speed = 0 - baseSpeed;
             if (sb.length() > 0)
                 sb.append(' ');
             sb.append(baseSpeed+speed);
