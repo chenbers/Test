@@ -237,18 +237,22 @@ public class DaoUtilBean
     {
     	//TODO We are only going to handle one complex entity type
     	int numEntityParams=0;
+    	int numParams=0;
     	Map<String,Object> entityMap = new TreeMap<String,Object>();
-    	for (Param param :paramList)
+    	if (paramList!=null)
     	{
-    		if (param.parentType!=null)
-    		{
-    			numEntityParams++;
-    		}
-    	}
-    	int numParams = paramList.size();
-    	if (numEntityParams>0)
-    	{
-    		numParams = numParams-numEntityParams+1;
+        	for (Param param : paramList)
+        	{
+        		if (param.parentType!=null)
+        		{
+        			numEntityParams++;
+        		}
+        	}
+        	numParams = paramList.size();
+        	if (numEntityParams>0)
+        	{
+        		numParams = numParams-numEntityParams+1;
+        	}
     	}
         Object args[] = new Object[(paramList == null) ? 0 : numParams];
         int cnt = 0;
