@@ -259,8 +259,8 @@ public class SiloServiceImpl implements SiloService
     @Override
     @MethodDescription(description="Fetches notes associated with this driver, within the specified timeframe (start, stop). (optional)typeList would contain a list of note types to be fetched. Returns a list of noteMap, or an Integer error.")
     public List<Map<String, Object>> getDriverNote(@DaoParam(name="driverID")Integer driverID, 
-            @DaoParam(name="startDate", inputDesc="MM/dd/yyyy hh:mm")Long startDate,
-            @DaoParam(name="endDate", inputDesc="MM/dd/yyyy hh:mm")Long endDate,
+            @DaoParam(name="startDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm")Long startDate,
+            @DaoParam(name="endDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm")Long endDate,
             @DaoParam(name="includeForgiven", inputDesc="1 - include forgiven, 0 - exclude forgiven")Integer includeForgiven,
             @DaoParam(name="types[]", inputDesc="comma sep list of event types")Integer[] types)
     {
@@ -320,8 +320,8 @@ public class SiloServiceImpl implements SiloService
     @Override
     @MethodDescription(description="Fetches notes from this group(deep) that have been 'flagged', within the specified timeframe (start, stop). Returns a list of redFlagMap, or an Integer error.")
     public List<Map<String, Object>> getRedFlags(@DaoParam(name="groupID")Integer groupID, 
-            @DaoParam(name="startDate", inputDesc="MM/dd/yyyy hh:mm")Long startDate,
-            @DaoParam(name="endDate", inputDesc="MM/dd/yyyy hh:mm")Long endDate)
+            @DaoParam(name="startDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm")Long startDate,
+            @DaoParam(name="endDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm")Long endDate)
             throws ProDAOException
     {
         return null;
@@ -367,8 +367,8 @@ public class SiloServiceImpl implements SiloService
     @MethodDescription(description="Fetches trips associated with this ID (which: 1=driver,2=vehicle), within the timeframe specified (start, stop). Returns a list of tripMap, or an Integer error.")
     public List<Map<String, Object>> getTrips(@DaoParam(name="id", inputDesc="driverID or vehicleID")Integer id, 
                                         @DaoParam(name="type", inputDesc="1 - DRIVER, 2 - VEHICLE")Integer reqType, 
-                                        @DaoParam(name="startDate", inputDesc="MM/dd/yyyy hh:mm")Long startDate,
-                                        @DaoParam(name="endDate", inputDesc="MM/dd/yyyy hh:mm")Long endDate
+                                        @DaoParam(name="startDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm")Long startDate,
+                                        @DaoParam(name="endDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm")Long endDate
                                         ) throws ProDAOException
     {
         return null;
@@ -395,8 +395,8 @@ public class SiloServiceImpl implements SiloService
     @Override
     @MethodDescription(description="Fetches notes associated with this vehicle, within the specified timeframe (start, stop). (optional)typeList would contain a list of note types to be fetched. Returns a list of noteMap, or an Integer error.")
     public List<Map<String, Object>> getVehicleNote(@DaoParam(name="vehicleID")Integer vehicleID, 
-            @DaoParam(name="startDate", inputDesc="MM/dd/yyyy hh:mm")Long startDate,
-            @DaoParam(name="endDate", inputDesc="MM/dd/yyyy hh:mm")Long endDate,
+            @DaoParam(name="startDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm")Long startDate,
+            @DaoParam(name="endDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm")Long endDate,
             @DaoParam(name="includeForgiven", inputDesc="1 - include forgiven, 0 - exclude forgiven")Integer includeForgiven,
             @DaoParam(name="types", inputDesc="comma sep list of event types")Integer[] types)
     {

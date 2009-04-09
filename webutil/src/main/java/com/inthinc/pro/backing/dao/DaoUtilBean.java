@@ -21,6 +21,7 @@ import com.inthinc.pro.backing.dao.annotation.MethodDescription;
 import com.inthinc.pro.backing.dao.impl.ReportServiceImpl;
 import com.inthinc.pro.backing.dao.impl.SiloServiceImpl;
 import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.mapper.SimpleMapper;
 import com.inthinc.pro.dao.hessian.proserver.ReportServiceCreator;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
@@ -33,8 +34,10 @@ public class DaoUtilBean
 
     SiloServiceCreator siloServiceCreator;
     ReportServiceCreator reportServiceCreator;
+    String errorMsg;
 
-    String selectedMethod;
+
+	String selectedMethod;
     String selectedMethodDescription;
     Map<String, DaoMethod> methodMap;
     List<Param> paramList;
@@ -68,6 +71,7 @@ public class DaoUtilBean
 
     public void setSelectedMethod(String selectedMethod)
     {
+    	setErrorMsg("");
         this.selectedMethod = selectedMethod;
         DaoMethod m = getMethodMap().get(selectedMethod);
         if (m.getMethod().isAnnotationPresent(MethodDescription.class))
@@ -200,7 +204,7 @@ public class DaoUtilBean
                             param.setParamInputDesc(webParm.inputDesc());
                         }
                     	param.setDateType(false);
-                        if (paramTypes[i].getSimpleName().equals("Date"))
+                        if (paramTypes[i].getSimpleName().equals("Date") || webParm!=null && webParm.isDate())
                         {
                         	param.setDateType(true);
                             param.setParamConvert(com.inthinc.pro.convert.DateConvert.class);
@@ -235,6 +239,7 @@ public class DaoUtilBean
 
     public void resultsAction()
     {
+    	setErrorMsg("");
     	//TODO We are only going to handle one complex entity type
     	int numEntityParams=0;
     	int numParams=0;
@@ -312,14 +317,16 @@ public class DaoUtilBean
 //
 //            setReturnResults(method, handler.invoke(dataAccess, method, args));
         }
-        catch (MalformedURLException e)
+        catch (Exception e)
         {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            setErrorMsg(e.getMessage() + e);
         }
         catch (Throwable t)
         {
             t.printStackTrace();
+            setErrorMsg(t.getMessage() + t);
         }
     }
 
@@ -500,4 +507,11 @@ public class DaoUtilBean
         this.selectedMethodDescription = selectedMethodDescription;
     }
 
+    public String getErrorMsg() {
+		return errorMsg;
+	}
+
+	public void setErrorMsg(String errorMsg) {
+		this.errorMsg = errorMsg;
+	}
 }

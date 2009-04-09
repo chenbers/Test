@@ -12,4 +12,5 @@ public @interface DaoParam
     public abstract java.lang.String name() default "";    
     public abstract java.lang.String inputDesc() default "";
     public abstract java.lang.Class type() default java.lang.String.class;
+    public abstract boolean isDate() default false;
 }

@@ -45,8 +45,8 @@ public class ReportServiceImpl implements ReportService
     @Override
     @MethodDescription(description="Returns a list of DVQMaps.  Each DVQMap contains a driverMap, an optional vehicleMap and a driveQMap.  The vehicleMap will be included if the driver is mapped to a vehicle.")  
     public List<Map<String, Object>> getDVScoresByGSE(@DaoParam(name="groupID")Integer groupID,             
-            @DaoParam(name="startDate", inputDesc="MM/dd/yyyy hh:mm")Long startDate,
-            @DaoParam(name="endDate", inputDesc="MM/dd/yyyy hh:mm")Long endDate
+            @DaoParam(name="startDate", isDate=true,  inputDesc="MM/dd/yyyy hh:mm")Long startDate,
+            @DaoParam(name="endDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm")Long endDate
             )
 
     {
@@ -66,8 +66,8 @@ public class ReportServiceImpl implements ReportService
     @Override
     @MethodDescription(description="Returns list of driver scores for all drivers in the specified group and time frame specified by start/end date.")
     public Map<String, Object> getGDScoreByGSE(@DaoParam(name="groupID")Integer groupID, 
-            @DaoParam(name="startDate", inputDesc="MM/dd/yyyy hh:mm")Long startDate,
-            @DaoParam(name="endDate", inputDesc="MM/dd/yyyy hh:mm")Long endDate
+            @DaoParam(name="startDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm")Long startDate,
+            @DaoParam(name="endDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm")Long endDate
             )
     {
         // TODO Auto-generated method stub
@@ -95,8 +95,8 @@ public class ReportServiceImpl implements ReportService
     @Override
     @MethodDescription(description="Returns list of driver scores for all vehicles in the specified group and time frame specified by start/end date.")
     public Map<String, Object> getGVScoreByGSE(@DaoParam(name="groupID")Integer groupID, 
-            @DaoParam(name="startDate", inputDesc="MM/dd/yyyy hh:mm")Long startDate,
-            @DaoParam(name="endDate", inputDesc="MM/dd/yyyy hh:mm")Long endDate
+            @DaoParam(name="startDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm")Long startDate,
+            @DaoParam(name="endDate", isDate=true, inputDesc="MM/dd/yyyy hh:mm")Long endDate
             )
     {
         // TODO Auto-generated method stub
