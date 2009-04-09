@@ -4,13 +4,13 @@
   	xmlns:f="http://java.sun.com/jsf/core" 
   	xmlns:a4j="http://richfaces.org/a4j"
   	xmlns:rich="http://richfaces.org/rich"
-  	xmlns:security="http://pro.tiwi.com/jsf/security"
-    xmlns:j4j="http://javascript4jsf.dev.java.net">  	
+  	xmlns:security="http://pro.tiwi.com/jsf/security">  	
  	  	
 <div class="main_nav">
 	<div class="main_nav-right"></div>
 	<div class="main_nav-left"></div>
 	<div class="main_nav-bg">
+    
 	<h:form id="navigation" > 
 		<ul>
 			<li class="#{homeSelected}">	
@@ -50,7 +50,9 @@
 				  <tr>
 					<td class="left"><h:graphicImage value="/images/search_box_left.png" /></td>
 					<td width="105" height="100" class="middle">
-					  <h:inputText id="redirectSearch" value="#{searchCoordinationBean.searchFor}" styleClass="text" size="15" onkeydown="submitSearch()"/>
+                      <!-- What the? I thought the same thing. This hidden field is needed for the enter key to work in IE -->
+                      <h:inputText id="hiddenField" value="hiddenField" style="display:none"/>
+					  <h:inputText id="redirectSearch" value="#{searchCoordinationBean.searchFor}" styleClass="text" size="15"/>
 					</td>
                     <td class="middle">
                       <h:selectOneMenu id="redirectTo" value="#{searchCoordinationBean.navigation}" styleClass="text" style="width: 95px;margin-top:0">
@@ -61,20 +63,10 @@
                       </h:selectOneMenu>
                     </td>
 					<td class="middle" width="25" align="center">
-                        <script type="text/javascript">
-                           function submitSearch()
-                           {
-                              if(window.event.keyCode == 13)
-                              {
-                                 doSearch();
-                              }
-                           }
-						</script>
-                        <a4j:jsFunction name="doSearch" action="#{searchCoordinationBean.navigationAction}">
-                        </a4j:jsFunction>
+                       
 						<h:commandButton action="#{searchCoordinationBean.navigationAction}" id="navigation_search_button"
 										title="#{messages.navigation_searchToolTip}" image="/images/ico_search.gif"
-										style="vertical-align:middle;margin-left:10px" value=" ">
+										style="vertical-align:middle;margin-left:10px">
 						</h:commandButton>
 					
 <!--						<input type="image" src="#{facesContext.externalContext.request.contextPath}/images/ico_search.gif" value="Find" -->
