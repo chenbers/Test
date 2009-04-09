@@ -161,6 +161,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     public void refreshItems()
     {
         items = null;
+        item = null;
         //page = 1;
     }
 
