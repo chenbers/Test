@@ -39,6 +39,8 @@ import com.inthinc.pro.util.MessageUtil;
 public class OrganizationBean extends BaseBean
 {
 
+    //TODO Mike - I'd like to create a OrganizationTreeViewBean and added it to this OrganizationBean. Wire it up using Spring.
+    
     private static final Logger logger = Logger.getLogger(OrganizationBean.class);
     /*
      * Spring managed beans
@@ -279,6 +281,9 @@ public class OrganizationBean extends BaseBean
         selectedParentGroup = null;
     }
 
+    /**
+     * Setting up the bean for editing a group.
+     */
     public void edit()
     {
         groupState = State.EDIT;
@@ -298,8 +303,8 @@ public class OrganizationBean extends BaseBean
         return "go_adminOrganization";
     }
 
-    /*
-     * Seting up the bean for adding a new group
+    /**
+     * Setting up the bean for adding a new group
      */
     public void add()
     {
@@ -358,11 +363,18 @@ public class OrganizationBean extends BaseBean
                 tempGroupTreeNode.setId(id);
                 setSelectedGroupNode(tempGroupTreeNode);
                 setSelectedTreeNode(tempGroupTreeNode);
+
+                // Update The Group Heirarchy Stored in the Session.
                 updateUsersGroupHeirarchy();
-                treeStateMap.put(selectedParentGroup.getGroupID(), Boolean.TRUE);
+
+                // Set the current parent node as expanded and all of its parents up to the root node.
+                setExpandedNode(getTopLevelNodes().findTreeNodeByGroupId(selectedParentGroup.getGroupID()));
                 cleanFields();
-                this.addInfoMessage(selectedGroupNode.getLabel() + " " + MessageUtil.getMessageString("group_save_confirmation"));
+
+                // Reset the state back to display
                 groupState = State.VIEW;
+
+                this.addInfoMessage(selectedGroupNode.getLabel() + " " + MessageUtil.getMessageString("group_save_confirmation"));
             }
             else
             {
@@ -453,6 +465,16 @@ public class OrganizationBean extends BaseBean
         return true;
     }
 
+    /**
+     * Creates a copy of GroupTreeNodes.
+     * 
+     * @param copyFromNode
+     *            Node from which to copy.
+     * @param copyToNode
+     *            Node to copy too.
+     * @param updateTree
+     *            Indicates if the copyToNode should be tied to the TreeNodes Collection. (It will be visible in the TreeView if indicated as "true".
+     */
     private void copyGroupTreeNode(GroupTreeNodeImpl copyFromNode, GroupTreeNodeImpl copyToNode, boolean updateTree)
     {
         Group group = (Group) copyToNode.getBaseEntity();

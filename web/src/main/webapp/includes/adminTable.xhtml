@@ -58,9 +58,10 @@
         <ui:param name="editorBean" value="#{myBean}" />
       </ui:include>
 -->
-   
+  
+  
   <ui:composition>
-	<ui:param name="ajaxPanels" value="tablePanel"/>
+	
     <c:if test="#{empty rows}">
       <c:set var="rows" value="10" />
     </c:if>
