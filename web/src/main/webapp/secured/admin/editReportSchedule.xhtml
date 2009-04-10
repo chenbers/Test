@@ -54,14 +54,14 @@
                   </dl>
                 </ui:fragment>
 			   
-				<table width="650" border="0" cellspacing="0" cellpadding="0">
+				<table width="790" border="0" cellspacing="0" cellpadding="0">
 					<tr>
-						<td width="350" valign="top" align="left">
+						<td width="390" valign="top" align="left">
+                        <div class="spacer"></div>
 						<div class="add_section_title"><h:outputText
-							value="#{messages.reportSchedule_reportScheduling}" /></div>
+							value="#{messages.reportSchedule_reportNameStatusTime}" /></div>
 						
-						<table width="350" border="0" cellspacing="2" cellpadding="4"
-							align="center">
+						<table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
 							<ui:fragment rendered="#{not reportScheduleBean.batchEdit}">
 								<tr>
 									<td width="115" valign="top"><h:outputText
@@ -113,16 +113,26 @@
                                     </ui:include>
 								</td>
 							</tr>
+                        </table>
+                        
+                        <div class="spacer"></div>
+                        
+                        <div class="add_section_title">
+                           <ui:include src="../../includes/inputLabel.xhtml">
+                              <ui:param name="required" value="TRUE"/>
+                              <ui:param name="reRender" value="occurrence"/>
+                              <ui:param name="fieldName" value="occurrence"/>
+                              <ui:param name="for" value="occurrence"/>
+                              <ui:param name="editBean" value="#{reportScheduleBean}"/>
+                              <ui:param name="label" value="#{messages.reportSchedule_reportOccurrence}"/>
+                           </ui:include>
+                        </div>
+						
+					   <table width="370" border="0" cellspacing="2" cellpadding="4"
+							align="center"> 
 							<tr>
 								<td width="115" valign="top">
-									<ui:include src="../../includes/inputLabel.xhtml">
-										<ui:param name="required" value="TRUE"/>
-										<ui:param name="reRender" value="occurrence"/>
-										<ui:param name="fieldName" value="occurrence"/>
-										<ui:param name="for" value="occurrence"/>
-										<ui:param name="editBean" value="#{reportScheduleBean}"/>
-										<ui:param name="label" value="#{messages.reportSchedule_occurrence}"/>
-									</ui:include>
+                                    <h:outputText value="#{messages.reportSchedule_occurrence}" />
 								</td>
 								<td>
 									<rich:message for="occurrence" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -135,24 +145,18 @@
 						</table>
 						<h:panelGroup id="occurenceDetailPanel">
 						 <h:panelGroup id="dayOfWeekPanel" rendered="#{reportScheduleBean.item.occurrence eq 'WEEKLY'}">
-							<table width="350" border="0" cellspacing="2" cellpadding="4"
+							<table width="370" border="0" cellspacing="2" cellpadding="4"
 								align="center">
 								<tr>
 									<td width="115" valign="top">
-                                        <ui:include src="../../includes/inputLabel.xhtml">
-                                          <ui:param name="required" value="TRUE"/>
-                                          <ui:param name="fieldName" value="dayOfWeek"/>
-                                          <ui:param name="for" value="dayOfWeek"/>
-                                          <ui:param name="editBean" value="#{reportScheduleBean}"/>
-                                          <ui:param name="label" value="#{messages.reportSchedule_daysOfWeek}"/>
-                                       </ui:include>
+                                        <h:outputText value="#{messages.reportSchedule_daysOfWeek}" />
 									</td>
 									<td>
 										<h:outputText rendered="#{reportScheduleBean.item.occurrence eq 'WEEKLY'}">
                                             <rich:message for="day0" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
       										<ui:include src="../../includes/dayPicker.xhtml">
       			                                <ui:param name="days" value="#{reportScheduleBean.item.dayOfWeek}" />
-      			                                <ui:param name="onchange" value="checkMultiple('dayOfWeek')" />
+      			                                <ui:param name="onchange" value="checkMultiple('occurrence')" />
       	                              		</ui:include>	
 	                              		</h:outputText>
 									</td>
@@ -160,23 +164,16 @@
 							</table>
 						</h:panelGroup>
 						<h:panelGroup id="dayOfMonthPanel" rendered="#{reportScheduleBean.item.occurrence eq 'MONTHLY'}">
-							<table width="350" border="0" cellspacing="2" cellpadding="4"
+							<table width="370" border="0" cellspacing="2" cellpadding="4"
 								align="center">
 								<tr>
 									<td width="115" valign="top">
-										<ui:include src="../../includes/inputLabel.xhtml">
-											<ui:param name="reRender" value="dayOfMonth"/>
-											<ui:param name="fieldName" value="dayOfMonth"/>
-                                            <ui:param name="required" value="TRUE"/>
-											<ui:param name="for" value="dayOfMonth"/>
-											<ui:param name="editBean" value="#{reportScheduleBean}"/>
-											<ui:param name="label" value="#{messages.reportSchedule_dayOfMonth}"/>
-										</ui:include>
+                                        <h:outputText value="#{messages.reportSchedule_dayOfMonth}" />
 									</td>
 									<td>
 										<h:outputText rendered="#{reportScheduleBean.item.occurrence eq 'MONTHLY'}">
                                             <rich:message for="dayOfMonth" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-											<rich:inputNumberSpinner id="dayOfMonth" value="#{reportScheduleBean.item.dayOfMonth}" onchange="checkMultiple('dayOfMonth')" minValue="1" maxValue="31" required="#{not reportScheduleBean.batchEdit}" requiredMessage="#{messages.required}" ></rich:inputNumberSpinner>
+											<rich:inputNumberSpinner id="dayOfMonth" value="#{reportScheduleBean.item.dayOfMonth}" onchange="checkMultiple('occurrence')" minValue="1" maxValue="31" required="#{not reportScheduleBean.batchEdit}" requiredMessage="#{messages.required}" ></rich:inputNumberSpinner>
 	                              		</h:outputText>
 									</td>
 								</tr>
@@ -185,13 +182,14 @@
 						</h:panelGroup>
 						</td>
 						<td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
-						<td width="400" valign="top" align="left">
+						<td width="390" valign="top" align="left">
 							
 						<ui:fragment rendered="#{not reportScheduleBean.batchEdit}">
+                        <div class="spacer"></div>
 						<div class="add_section_title"><h:outputText
 							value="#{messages.reportSchedule_reportConfiguration}" /></div>
 						<h:panelGroup id="reportConfigTable" >
-						<table width="350" border="0" cellspacing="2" cellpadding="4"
+						<table width="370" border="0" cellspacing="2" cellpadding="4"
 							align="center">
 							<tr>
 								<td width="100" valign="top">
@@ -254,10 +252,12 @@
 
 						</table>
 						</h:panelGroup>
+                  
+                        <div class="spacer"></div>
 						<div class="add_section_title"><h:outputText
 								value="#{messages.reportSchedule_email}" /></div>
 						
-						<table width="350" border="0" cellspacing="2" cellpadding="4"
+						<table width="370" border="0" cellspacing="2" cellpadding="4"
 							align="center">
 							<tr>
 								<td>
@@ -337,6 +337,8 @@
 				      span.style.display = "inline";
 				    }
 				  }
+
+				  
 	      </script>
 	</ui:define>
 

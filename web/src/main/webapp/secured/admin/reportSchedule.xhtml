@@ -43,13 +43,15 @@
                    	 </li>
                 </ul>
 
-				<table width="650" border="0" cellspacing="0" cellpadding="0">
+				<table width="790" border="0" cellspacing="0" cellpadding="0">
 					<tr>
-						<td width="350" valign="top" align="left">
+						<td width="390" valign="top" align="left">
+                  
+                        <div class="spacer"></div>
 						<div class="add_section_title"><h:outputText
-							value="#{messages.reportSchedule_reportScheduling}" /></div>
+							value="#{messages.reportSchedule_reportNameStatusTime}" /></div>
 
-						<table width="350" border="0" cellspacing="2" cellpadding="4"
+						<table width="370" border="0" cellspacing="2" cellpadding="4"
 							align="center">
 							<tr>
 								<td width="100" valign="top"><h:outputText
@@ -80,6 +82,14 @@
 	                                <h:outputText value="#{(reportScheduleBean.item.timeOfDay ge 720) ? messages.timePicker_pm : messages.timePicker_am}" />
 								</td>
 							</tr>
+                           </table>
+                           
+                            <div class="spacer"></div>
+                           <div class="add_section_title"><h:outputText
+                              value="#{messages.reportSchedule_reportOccurrence}" /></div>
+         
+                           <table width="370" border="0" cellspacing="2" cellpadding="4"
+                              align="center">
 							<tr>
 								<td width="100" valign="top">
 									<h:outputText value="#{messages.reportSchedule_occurrence}"/>
@@ -116,12 +126,14 @@
 						
 						</td>
 						<td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
-						<td width="400" valign="top" align="left">
-							
+						<td width="390" valign="top" align="left">
+                  
+						<div class="spacer"></div>	
+                  
 						<div class="add_section_title"><h:outputText
 							value="#{messages.reportSchedule_reportConfiguration}" /></div>
 						<h:panelGroup id="reportConfigTable" >
-						<table width="350" border="0" cellspacing="2" cellpadding="4"
+						<table width="370" border="0" cellspacing="2" cellpadding="4"
 							align="center">
 							<tr>
 								<td width="100" valign="top">
@@ -174,10 +186,11 @@
 							</h:outputText>
 						</table>
 						</h:panelGroup>
+                            <div class="spacer"></div>
 							<div class="add_section_title"><h:outputText
 									value="#{messages.reportSchedule_email}" /></div>
 							
-							<table width="350" border="0" cellspacing="2" cellpadding="4"
+							<table width="370" border="0" cellspacing="2" cellpadding="4"
 								align="center">
 								<tr>
 									<td>

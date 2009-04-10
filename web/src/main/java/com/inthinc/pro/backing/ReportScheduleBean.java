@@ -241,6 +241,24 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         }
 
     }
+    
+    
+    @Override
+    public String save()
+    {
+        if (isBatchEdit())
+        {
+            final boolean occurrence = Boolean.TRUE.equals(getUpdateField().get("occurrence"));
+            if(item.getOccurrence() != null && item.getOccurrence().equals(Occurrence.WEEKLY))
+            {
+                getUpdateField().put("dayOfWeek", occurrence);
+            }else if (item.getOccurrence() != null && item.getOccurrence().equals(Occurrence.MONTHLY))
+            {
+                getUpdateField().put("dayOfMonth",occurrence);
+            }
+        }
+        return super.save();
+    }
 
     @Override
     protected void doSave(List<ReportScheduleView> saveItems, boolean create)
@@ -320,9 +338,21 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     {
         String resultValue = super.batchEdit();
         
-        //Set all the boolean values of the day of week list to false if the two lists don't match
-        for (ReportScheduleView t : getSelectedItems())
-            BeanUtil.compareAndInitBoolList(getItem().getDayOfWeek(), t.getDayOfWeek());
+        //If occurrences are different then null out dayOfWekk and dayOfMonth
+        if(item.getOccurrence() == null)
+        {
+            item.setDayOfMonth(1);
+            item.setDayOfWeek(createDayOfWeekList());
+        }else
+        {
+            //Set all the boolean values of the day of week list to false if the two lists don't match
+            for (ReportScheduleView t : getSelectedItems())
+               BeanUtil.compareAndInitBoolList(getItem().getDayOfWeek(), t.getDayOfWeek());
+        }
+        
+      
+        
+        
         
         return resultValue;
     }
@@ -334,7 +364,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
 
         if(reportScheduleView.getOccurrence() != null && reportScheduleView.getOccurrence().equals(Occurrence.WEEKLY))
         {
-            if (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("dayOfWeek")))
+            if (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("occurrence")))
             {
                 boolean dayPicked = false;
                 for (boolean day : reportScheduleView.getDayOfWeek())
@@ -509,19 +539,22 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
 
         if (reportSchedule.getDayOfWeek() == null || reportSchedule.getDayOfWeek().size() < 6)
         {
-            List<Boolean> booleanList = new ArrayList<Boolean>();
-            booleanList.add(Boolean.FALSE);
-            booleanList.add(Boolean.FALSE);
-            booleanList.add(Boolean.FALSE);
-            booleanList.add(Boolean.FALSE);
-            booleanList.add(Boolean.FALSE);
-            booleanList.add(Boolean.FALSE);
-            booleanList.add(Boolean.FALSE);
-
-            reportSchedule.setDayOfWeek(booleanList);
+            reportSchedule.setDayOfWeek(createDayOfWeekList());
         }
 
         return reportScheduleView;
+    }
+    
+    private List<Boolean> createDayOfWeekList(){
+        List<Boolean> booleanList = new ArrayList<Boolean>();
+        booleanList.add(Boolean.FALSE);
+        booleanList.add(Boolean.FALSE);
+        booleanList.add(Boolean.FALSE);
+        booleanList.add(Boolean.FALSE);
+        booleanList.add(Boolean.FALSE);
+        booleanList.add(Boolean.FALSE);
+        booleanList.add(Boolean.FALSE);
+        return booleanList;
     }
 
     public void setReportScheduleDAO(ReportScheduleDAO reportScheduleDAO)
