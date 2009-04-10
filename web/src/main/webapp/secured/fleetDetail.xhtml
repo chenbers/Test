@@ -6,11 +6,6 @@
 		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>
 		<script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}" type="text/javascript"></script>
 
-		<script type="text/javascript" src="#{facesContext.externalContext.request.contextPath}/js/c_config.js"></script>
-		<script type="text/javascript" src="#{facesContext.externalContext.request.contextPath}/js/c_smartmenus.js"></script>
-		<script type="text/javascript" src="#{facesContext.externalContext.request.contextPath}/js/c_addon_popup_menus.js"></script>
-
-
 		<script type="text/JavaScript">
 
 		// Show and Hide Tabs.
@@ -239,7 +234,7 @@
 				<div class="panel_title"><span class="overall">Overall Score </span> <ui:include src="/includes/dateLinksWithFlyOut.xhtml">
 					<ui:param name="ajaxForm" value="dateLinksFormForm" />
 					<ui:param name="ajaxStatusID" value="overall_status" />
-					<ui:param name="reRenderList" value="overall_script,speed_script,style_script,seatBelt_script,dateLinksFormForm" />
+					<ui:param name="reRenderList" value="overallScore,overall_script,speed_script,style_script,seatBelt_script,dateLinksFormForm" />
 					<ui:param name="thirtyDaysOn" value="#{breakdownDurationBean.styleClass30Days}" />
 					<ui:param name="threeMonthsOn" value="#{breakdownDurationBean.styleClass3Months}" />
 					<ui:param name="sixMonthsOn" value="#{breakdownDurationBean.styleClass6Months}" />
@@ -260,10 +255,14 @@
 									<td colspan="2" align="right" valign="top">&#160;</td>
 								</tr>
 								<tr>
-									<td align="center" valign="top" width="120"><ui:include src="/includes/overallScoreBox.xhtml">
-										<ui:param name="scoreStyle" value="#{breakdownBean.overallScoreStyle}" />
-										<ui:param name="score" value="#{breakdownBean.overallScore}" />
-									</ui:include></td>
+									<td align="center" valign="top" width="120">
+									<rich:panel id="overallScore">
+										<ui:include src="/includes/overallScoreBox.xhtml">
+											<ui:param name="scoreStyle" value="#{breakdownBean.overallScoreStyle}" />
+											<ui:param name="score" value="#{breakdownBean.overallScore}" />
+										</ui:include>
+									</rich:panel>
+								</td>
 
 									<td rowspan="2" width="">
 									<div id="overall_pie"> </div>
