@@ -155,15 +155,6 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
     List<ScoreableEntity> getDriverTrendCumulative(Integer driverID, Duration duration, ScoreType scoreType);
     
     /**
-     * Retrieve cumulative driver scores by type and duration.
-     * 
-     * @param driverID
-     * @param duration
-     * @param scoreType
-     */
-    List<ScoreableEntity> getDriverTrendCumulativeTest(Integer driverID, Duration duration, ScoreType scoreType);
-    
-    /**
      * Retrieve daily driver scores by type and duration.
      * 
      * @param driverID

@@ -99,10 +99,8 @@ public class FusionMultiAreaChart implements BaseChart
             String label = catLabels.get(i) + " " + title + ": " + values[i];
             
             //Set Chart item to "Dashed" version if next item in array is null, see example XML output at bottom.
-            if(values[i] != null && i < values.length-1 && values[i+1] == null && i > 0 && values[i-1] != null)
-            {
+            if(values[i] != null && i < values.length-1 && values[i+1] == null)
                 buffer.append(getChartItemDashed(new Object[] { values[i], label}));
-            }
             else
                 buffer.append(getChartItem(new Object[] { values[i], label}));
         }
@@ -119,7 +117,7 @@ public class FusionMultiAreaChart implements BaseChart
             String label = catLabels.get(i) + " " + title + ": " + values[i];
             
             //Set Chart item to "Dashed" version if next item in array is null, see example XML output at bottom.
-            if(values[i] != null && i < values.length-1 && values[i+1] == null && i > 0 && values[i-1] != null)  
+            if(values[i] != null && i < values.length-1 && values[i+1] == null) 
                 buffer.append(getChartItemDashed(new Object[] { values[i], label}));
             else
                 buffer.append(getChartItem(new Object[] { values[i], label}));
@@ -141,8 +139,6 @@ public class FusionMultiAreaChart implements BaseChart
         return buffer.toString();
     }
 
-
-    
 }
 
 //<chart bgcolor='#ffffff' 
@@ -177,7 +173,7 @@ public class FusionMultiAreaChart implements BaseChart
 //        <set value='3' label='Daily Score 06, 3.0'/>
 //        <set value='2.8' label='Daily Score 07, 2.8' dashed='1'/>   *** the item after this is null. use "Dashed"
 //        <set value='null' label='Daily Score 08, null'/>
-//        <set value='3' label='Daily Score 09, 3.0'/>
+//        <set value='3' label='Daily Score 09, null'/>
 //        <set value='2.7' label='Daily Score 10, 2.7'/>
 //    </dataset>
 //    

@@ -88,55 +88,31 @@ public abstract class BasePerformanceBean extends BaseBean
         List<String> catLabelList = GraphicUtil.createMonthList(duration);
 
         Double cumulativeValues[]   = new Double[cumulativeList.size()];
-        Double dailyValues[]        = new Double[dailyList.size()];
         Double odometerValues[]     = new Double[dailyList.size()];
         
         //Start Categories List
         sb.append(multiAreaChart.getCategoriesStart());
         
-        int cnt = 0;
-        for (ScoreableEntity entity : dailyList)
-        {
-            Double score;
-            // Set Score to NULL on non driving days 
-            if(entity.getIdentifierNum() != null && entity.getIdentifierNum() == 0)
-                score = null;
+        for (int i = 0; i < cumulativeList.size(); i++)
+        { 
+            // Get mileage for day.
+            if(dailyList.get(i).getIdentifierNum() != null)
+                odometerValues[i] = dailyList.get(i).getIdentifierNum() / 100D;
+            
+            // Set Score to NULL on non driving days.
+            if(odometerValues[i] == null || odometerValues[i] == 0)
+                cumulativeValues[i] = null;
             else
-                score = entity.getScore() == null ? null : entity.getScore() / 10D;
-            
-            //Add Score to array.
-            dailyValues[cnt] = score;
-            
-            if(entity.getIdentifierNum() != null)
-            {
-                // Odometer values in this entity are miles driven for the day.
-                odometerValues[cnt] = entity.getIdentifierNum() / 100D;  
-            }
-            sb.append(multiAreaChart.getCategoryLabel(catLabelList.get(cnt)));     
-            cnt++;
-        }
+                cumulativeValues[i] = cumulativeList.get(i).getScore() == null ? null : cumulativeList.get(i).getScore() / 10D;
+                
+            sb.append(multiAreaChart.getCategoryLabel(catLabelList.get(i)));     
+         }
         sb.append(multiAreaChart.getCategoriesEnd());
-        
-        cnt = 0;
-        for (ScoreableEntity entity : cumulativeList)
-        {
-            Double score;
-            // Set Score to NULL on non driving days. 
-            if(odometerValues[cnt] != null && odometerValues[cnt] == 0)
-                score = null;
-            else
-                score = entity.getScore() == null ? null : entity.getScore() / 10D;
-            
-            cumulativeValues[cnt] = score;            
-            cnt++;
-        }
   
         //Not displaying daily score in chart.
-        //sb.append(multiAreaChart.getChartLineDataSet("Daily Score", "#407EFF", dailyValues, catLabelList));
         sb.append(multiAreaChart.getChartAreaDataSet("Cumulative Score", "#B0CB48", cumulativeValues, catLabelList));
         sb.append(multiAreaChart.getChartBarDataSet("Mileage", "#C0C0C0", odometerValues, catLabelList));
         sb.append(multiAreaChart.getClose());
-
         return sb.toString();
     }
     

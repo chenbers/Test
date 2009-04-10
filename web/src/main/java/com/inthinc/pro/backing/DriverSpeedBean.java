@@ -298,29 +298,6 @@ public class DriverSpeedBean extends BasePerformanceBean
         tableStatsBean.setTableSize(filteredSpeedingEvents.size());
     }
 
-    // public String filterEventsAction(){
-    //		
-    // filteredSpeedingEvents = new ArrayList<EventReportItem>();
-    //		
-    // if (selectedSpeed == 0){
-    //			
-    // filteredSpeedingEvents.addAll(speedingEvents);
-    //
-    // }
-    // else {
-    //			
-    // for (EventReportItem eri: speedingEvents){
-    //				
-    // if(eri.getEvent().getEventType().getKey().equals(selectedSpeed)){
-    //					
-    // filteredSpeedingEvents.add(eri);
-    // }
-    // }
-    // }
-    // setTableStatsBean();
-    // return "";
-    // }
-
     private void sortSpeedingEvents()
     {
         speedingListsMap = new HashMap<String, List<EventReportItem>>();

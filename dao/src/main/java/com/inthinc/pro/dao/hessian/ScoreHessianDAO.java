@@ -275,44 +275,6 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
         }
     }
     
-    
-    @Override
-    public List<ScoreableEntity> getDriverTrendCumulativeTest(Integer driverID, Duration duration, ScoreType scoreType)
-    {
-        // Condition added for Coaching Events.  Do not get rolling average for Coaching events only
-        Integer code;
-        if(scoreType == ScoreType.SCORE_COACHING_EVENTS)
-            code = duration.getDvqMetric();
-        else
-            code = duration.getDvqCode();
-           
-        try
-        {
-            List<Map<String, Object>> cumulativList = reportService.getDTrendByDTC(driverID, code, duration.getDvqCount());
-            List<DriveQMap> driveQList = getMapper().convertToModelObject(cumulativList, DriveQMap.class);
-             
-            List<ScoreableEntity> scoreList = new ArrayList<ScoreableEntity>();
-
-            for (DriveQMap driveQMap : driveQList)
-            {
-                ScoreableEntity entity = new ScoreableEntity();
-                entity.setEntityID(driverID);
-                entity.setEntityType(EntityType.ENTITY_DRIVER);
-                entity.setScoreType(scoreType);
-                entity.setIdentifierNum(driveQMap.getOdometer());
-                entity.setScore(driveQMap.getScoreMap().get(scoreType));
-                entity.setDate(driveQMap.getEndingDate());
-                scoreList.add(entity);
-            }
-
-            return scoreList;
-        }
-        catch (EmptyResultSetException e)
-        {
-            return Collections.emptyList();
-        }
-    }
-    
     @Override
     public List<ScoreableEntity> getDriverTrendDaily(Integer driverID, Duration duration, ScoreType scoreType)
     {

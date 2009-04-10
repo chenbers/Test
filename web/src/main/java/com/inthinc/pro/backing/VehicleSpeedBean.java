@@ -247,8 +247,6 @@ public class VehicleSpeedBean extends BasePerformanceBean
         return trendMap;
     }
 
-
-
     public ReportCriteria buildReport(ReportType reportType)
     {
         ReportCriteria reportCriteria = new ReportCriteria(reportType, getGroupHierarchy().getTopGroup().getName());
@@ -309,29 +307,6 @@ public class VehicleSpeedBean extends BasePerformanceBean
         tableStatsBean.setTableRowCount(10);
         tableStatsBean.setTableSize(filteredSpeedingEvents.size());
     }
-
-    // public String filterEventsAction(){
-    //      
-    // filteredSpeedingEvents = new ArrayList<EventReportItem>();
-    //      
-    // if (selectedSpeed == 0){
-    //          
-    // filteredSpeedingEvents.addAll(speedingEvents);
-    //
-    // }
-    // else {
-    //          
-    // for (EventReportItem eri: speedingEvents){
-    //              
-    // if(eri.getEvent().getEventType().getKey().equals(selectedSpeed)){
-    //                  
-    // filteredSpeedingEvents.add(eri);
-    // }
-    // }
-    // }
-    // setTableStatsBean();
-    // return "";
-    // }
 
     private void sortSpeedingEvents()
     {
