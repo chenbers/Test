@@ -239,7 +239,7 @@
 				<div class="panel_title"><span class="overall">Overall Score </span> <ui:include src="/includes/dateLinksWithFlyOut.xhtml">
 					<ui:param name="ajaxForm" value="dateLinksFormForm" />
 					<ui:param name="ajaxStatusID" value="overall_status" />
-					<ui:param name="reRenderList" value="overallPanel,dateLinksFormForm" />
+					<ui:param name="reRenderList" value="overall_script,speed_script,style_script,seatBelt_script,dateLinksFormForm" />
 					<ui:param name="thirtyDaysOn" value="#{breakdownDurationBean.styleClass30Days}" />
 					<ui:param name="threeMonthsOn" value="#{breakdownDurationBean.styleClass3Months}" />
 					<ui:param name="sixMonthsOn" value="#{breakdownDurationBean.styleClass6Months}" />
@@ -265,14 +265,17 @@
 										<ui:param name="score" value="#{breakdownBean.overallScore}" />
 									</ui:include></td>
 
-									<td rowspan="2" width=""><rich:panel id="overall_pie" align="center"></rich:panel> <h:inputHidden value="#{breakdownBean.overallPieDef}" id="hiddenField1" /> <script
+									<td rowspan="2" width="">
+									<div id="overall_pie"> </div>
+									<rich:panel id="overall_script" align="center"> <h:inputHidden value="#{breakdownBean.overallPieDef}" id="hiddenField1" /> <script
 										type="text/javascript">
 												var targetElement1 = document.getElementById("hiddenField1");
 												var pie1 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "450", "450", "0", "0");										
 												pie1.setDataXML(targetElement1.value);		
 												pie1.setTransparent(true);							   	   
 												pie1.render("overall_pie");
-											</script></td>
+											</script>
+											</rich:panel></td>
 								</tr>
 								<tr>
 
@@ -285,31 +288,34 @@
 
 							<td width="225" valign="top" style="border-right: 1px solid #e1e1e1;">
 							<div class="piegrid_label"><a href="#" class="ls_tab_drivestyle">Driving Style</a></div>
-							<rich:panel id="style_pie" align="center"></rich:panel> <h:inputHidden value="#{breakdownBean.stylePieDef}" id="hiddenField2" /> <script type="text/javascript">
+							<div id="style_pie"> </div>
+							<rich:panel id="style_script" align="center"> <h:inputHidden value="#{breakdownBean.stylePieDef}" id="hiddenField2" /> <script type="text/javascript">
 												var targetElement2 = document.getElementById("hiddenField2");
 												var pie2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "220", "180", "0", "0");										
 												pie2.setDataXML(targetElement2.value);	
 												pie2.setTransparent(true);								   	   
 												pie2.render("style_pie");
-											</script></td>
+											</script></rich:panel></td>
 							<td width="225" valign="top" style="border-right: 1px solid #e1e1e1;">
 							<div class="piegrid_label"><a href="#" class="ls_tab_seatbelt">Seat Belt</a></div>
-							<rich:panel id="seatBelt_pie" align="center"></rich:panel> <h:inputHidden value="#{breakdownBean.seatBeltPieDef}" id="hiddenField3" /> <script type="text/javascript">
+							<div id="seatBelt_pie"> </div>
+							<rich:panel id="seatBelt_script" align="center"> <h:inputHidden value="#{breakdownBean.seatBeltPieDef}" id="hiddenField3" /> <script type="text/javascript">
 												var targetElement3 = document.getElementById("hiddenField3");
 												var pie3 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "220", "180", "0", "0");										
 												pie3.setDataXML(targetElement3.value);	
 												pie3.setTransparent(true);								   	   
 												pie3.render("seatBelt_pie");
-											</script></td>
+											</script></rich:panel></td>
 							<td width="225" valign="top" style="border-right: 1px solid #e1e1e1;">
 							<div class="piegrid_label"><a href="#" class="ls_tab_speed">Speed</a></div>
-							<rich:panel id="speed_pie" align="center"></rich:panel> <h:inputHidden value="#{breakdownBean.speedPieDef}" id="hiddenField4" /> <script type="text/javascript">
+							<div id="speed_pie"> </div>
+							<rich:panel id="speed_script" align="center"> <h:inputHidden value="#{breakdownBean.speedPieDef}" id="hiddenField4" /> <script type="text/javascript">
 												var targetElement4 = document.getElementById("hiddenField4");
 												var pie4 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "220", "180", "0", "0");										
 												pie4.setDataXML(targetElement4.value);	
 												pie4.setTransparent(true);								   	   
 												pie4.render("speed_pie");
-											</script></td>
+											</script></rich:panel></td>
 						</tr>
 					</table>
 
