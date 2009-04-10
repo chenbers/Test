@@ -468,7 +468,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         if (isBatchEdit())
         {
             item = null;
-            return getFinishedRedirect();
+            return getResetListRedirect();
         }
         else
             return getDisplayRedirect();
