@@ -339,27 +339,32 @@ public class DriverSpeedBean extends BasePerformanceBean
 
         speedAll.addAll(speedingEvents);
 
+        SpeedingEvent event;
         for (EventReportItem eri : speedingEvents)
         {
-            if ((((SpeedingEvent) eri.getEvent()).getSpeedLimit() > 20) && (((SpeedingEvent) eri.getEvent()).getSpeedLimit() < 31))
+            event = (SpeedingEvent)eri.getEvent();
+            
+            if(event.getSpeedLimit() == null)
+                continue;
+            
+            if (event.getSpeedLimit() > 20 && event.getSpeedLimit() < 31)
             {
                 speed20.add(eri);
             }
-            else if ((((SpeedingEvent) eri.getEvent()).getSpeedLimit() > 30) && (((SpeedingEvent) eri.getEvent()).getSpeedLimit() < 41))
+            else if (event.getSpeedLimit() > 30 && event.getSpeedLimit() < 41)
             {
                 speed30.add(eri);
             }
-            else if ((((SpeedingEvent) eri.getEvent()).getSpeedLimit() > 40) && (((SpeedingEvent) eri.getEvent()).getSpeedLimit() < 55))
+            else if (event.getSpeedLimit() > 40 && event.getSpeedLimit() < 55)
             {
                 speed40.add(eri);
             }
-            else if ((((SpeedingEvent) eri.getEvent()).getSpeedLimit() > 54) && (((SpeedingEvent) eri.getEvent()).getSpeedLimit() < 65))
+            else if (event.getSpeedLimit() > 54 && event.getSpeedLimit() < 65)
             {
                 speed50.add(eri);
             }
-            else if ((((SpeedingEvent) eri.getEvent()).getSpeedLimit() > 64) && (((SpeedingEvent) eri.getEvent()).getSpeedLimit() < 81))
+            else if (event.getSpeedLimit() > 64 && event.getSpeedLimit() < 81)
             {
-
                 speed60.add(eri);
             }
         }
