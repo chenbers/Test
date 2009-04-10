@@ -468,6 +468,9 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         if (isBatchEdit())
         {
             item = null;
+            //return getFinishedRedirect()
+            //Reload the item list (We'll see how this works or if it's too much of a performance hit). 
+            //TODO Mike - verify performance.
             return getResetListRedirect();
         }
         else
