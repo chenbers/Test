@@ -1,7 +1,6 @@
 package com.inthinc.pro.backing;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -14,9 +13,7 @@ import javax.faces.validator.ValidatorException;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpUtils;
 
-import org.ajax4jsf.util.base64.Base64;
 import org.apache.log4j.Logger;
 import org.jasypt.util.text.BasicTextEncryptor;
 import org.springframework.context.MessageSource;

@@ -4,10 +4,8 @@ import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.backing.model.BaseTreeNodeImpl;
 import com.inthinc.pro.backing.model.GroupLevel;
 import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
-import com.inthinc.pro.backing.model.TreeNodeImpl;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;

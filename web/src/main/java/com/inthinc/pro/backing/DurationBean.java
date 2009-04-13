@@ -5,8 +5,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.richfaces.event.DataScrollerEvent;
-
 import com.inthinc.pro.backing.listener.DurationChangeListener;
 import com.inthinc.pro.model.Duration;
 

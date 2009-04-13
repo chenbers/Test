@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 import org.richfaces.model.SwingTreeNodeImpl;
 
 import com.inthinc.pro.model.BaseEntity;
-import com.inthinc.pro.model.Group;
 
 public abstract class BaseTreeNodeImpl<T extends BaseEntity> extends SwingTreeNodeImpl implements Serializable, Comparable<BaseTreeNodeImpl>
 {
