@@ -613,14 +613,14 @@ var firstLoad = new Boolean(true);
 
 <!-- START SBS MODAL -->
 	<rich:modalPanel id="SLChangeRequestPanel" headerClass="popupHeader" controlsClass="popupControls" autosized="true" onshow="reverseGeocode(event.parameters.lat,event.parameters.lon, null);"
-					onhide="clearSegments()">
+					onhide="clearSegments();reset();">
       <f:facet name="header">
         <h:outputText value="#{messages.sbs_header}" />
       </f:facet>
       <f:facet name="controls">
         <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('SLChangeRequestPanel')" />
       </f:facet>
-		<ui:include src="../../includes/speedLimitChangeRequestPanel.xhtml" />
+	  <ui:include src="../../includes/speedLimitChangeRequestPanel.xhtml" />
 	</rich:modalPanel>	
 <!-- END SBS MODAL -->
 
