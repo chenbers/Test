@@ -52,29 +52,10 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
     }
     
     @Override
-    public void initBean() 
-    {
-        super.initBean();
-       
-        Collections.sort(this.devicesData,new Comparator<DeviceReportItem>()
-        {
-        
-            @Override
-            public int compare(DeviceReportItem o1, DeviceReportItem o2)
-            {
-                return o1.getDevice().getName().toLowerCase().compareTo(o2.getDevice().getName().toLowerCase());
-            }
-        });  
-    }
-
-    @Override
     protected void loadDBData()
-    {
-    	devicesData.clear();
-    	
-        List<Vehicle> vehicList = 
-            vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
-
+    {       
+        List<Vehicle> vehicList = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
+        List <DeviceReportItem> list = new ArrayList<DeviceReportItem>();
         for( Vehicle v: vehicList )
         {
             // save only vehicles that have devices associated to them
@@ -88,9 +69,20 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
                 dri.getDevice().setPhone(formatPhone(dri.getDevice().getPhone()));
                 dri.setVehicle(v);
                 
-                this.devicesData.add(dri);
+                list.add(dri);
             }
         }
+        
+        Collections.sort(list, new Comparator<DeviceReportItem>()
+        {        
+            @Override
+            public int compare(DeviceReportItem o1, DeviceReportItem o2)
+            {
+                return o1.getDevice().getName().toLowerCase().compareTo(o2.getDevice().getName().toLowerCase());
+            }
+        });  
+        
+        devicesData = list;
     }
         
 

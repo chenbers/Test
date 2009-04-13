@@ -27,7 +27,7 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
 {
     private static final Logger     logger                  = Logger.getLogger(RedFlagsBean.class);
 
-    private final static String COLUMN_LABEL_PREFIX = "redflags_";
+    private final static String COLUMN_LABEL_PREFIX = "notes_redflags_";
     
     // TODO: what should this number be (settable by user?)
     private static final Integer    RED_FLAG_COUNT = 500;

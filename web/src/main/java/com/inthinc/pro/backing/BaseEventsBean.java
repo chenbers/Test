@@ -25,7 +25,7 @@ public class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions
 {
     private static final Logger     logger                  = Logger.getLogger(EventsBean.class);
 
-    private final static String COLUMN_LABEL_PREFIX = "events_";
+    private final static String COLUMN_LABEL_PREFIX = "notes_";
     protected final static Integer DAYS_BACK = 7;
 
     private static final Integer                 numRowsPerPg = 25;

@@ -391,5 +391,9 @@
     
     <!-- Search Bean -->
     <bean id="searchCoordinationBean" class="com.inthinc.pro.backing.SearchCoordinationBean" scope="session"/>
-    
+      
+    <!-- Address Lookup -->
+    <bean id="addressLookupBean" class="com.inthinc.pro.map.AddressLookup">
+      <property name="mapServerURLString" value="${mapserver.url}"/>
+    </bean>
 </beans>
