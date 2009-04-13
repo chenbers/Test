@@ -64,80 +64,80 @@ var cursor;
 		entryPoint = 1;
 	}
 		
-    function initializeMap() {
-    
-      if (GBrowserIsCompatible()) {
-        var opts = { onMarkersSetCallback: processMarkers, resultList : G_GOOGLEBAR_RESULT_LIST_SUPPRESS, showOnLoad: true};
-          mapsbs = new GMap2(document.getElementById("map-area"), {googleBarOptions: opts});
-	       mapsbs.setCenter(new GLatLng(40.723535,-111.9334),2);
- 	       mapsbs.addControl(new GLargeMapControl());
- 	       mapsbs.addControl(new GScaleControl()); 
-	       mapsbs.addControl(new GMapTypeControl());
-	       mapsbs.enableScrollWheelZoom();
- 	       geocoder = new GClientGeocoder();
- 	       
- 	       if (entryPoint==1){
- 	       
-		       if (geocoder) {
-			        geocoder.getLatLng(
-			          address,
-			          function(point) {
-			            if (point) {
-			            
-			              	mapsbs.setCenter(point, 16);
-			            }
-			          }
-			        );
-	      	   }
-	      	   
-	       }
-	       else {
-	       
-	       		reverseGeocode(lat,lon,"");
-			   	mapsbs.setCenter(new GLatLng(lat,lon), 16);
-	       }	       
-	       
- 	       
- 	       createStreetLayer();
- 	       			
-//         var ovmap = new GOverviewMapControl(new GSize(200,200));
-//        mapsbs.addControl(ovmap);
-//		streetviewOverlay = new GStreetviewOverlay();
-//        mapsbs.addOverlay(streetviewOverlay);
-        mapsbs.enableGoogleBar();
-
-//        client = new GStreetviewClient();
-        streetSegments = new Array();
-        
-       	GEvent.addListener(mapsbs, "click", function(overlay, point) {
-
-        if (overlay) {
-          
-          	var segment = whichSegment(overlay);
-          	if (segment != null){
-          	
- 				selectSegment(segment.id);
- 			}	
-          } else {
-          
-            reverseGeocode(point.y,point.x,"");
-            
-	      }
-        });
-        
-       	GEvent.addListener(mapsbs, "singlerightclick", function(point, source, overlay) {
-          if (overlay) {
-          	var segment = whichSegment(overlay);
-          	if (segment != null){
-          	
-          		var point = segment.polyline.getVertex(0);
-          	
-				openPanoramaBubblePolyline(point);
- 			}	
-        }
-      });
-    }
-}
+//    function initializeMap() {
+//    
+//      if (GBrowserIsCompatible()) {
+//        var opts = { onMarkersSetCallback: processMarkers, resultList : G_GOOGLEBAR_RESULT_LIST_SUPPRESS, showOnLoad: true};
+//          mapsbs = new GMap2(document.getElementById("map-area"), {googleBarOptions: opts});
+//	       mapsbs.setCenter(new GLatLng(40.723535,-111.9334),2);
+// 	       mapsbs.addControl(new GLargeMapControl());
+// 	       mapsbs.addControl(new GScaleControl()); 
+//	       mapsbs.addControl(new GMapTypeControl());
+//	       mapsbs.enableScrollWheelZoom();
+// 	       geocoder = new GClientGeocoder();
+// 	       
+// 	       if (entryPoint==1){
+// 	       
+//		       if (geocoder) {
+//			        geocoder.getLatLng(
+//			          address,
+//			          function(point) {
+//			            if (point) {
+//			            
+//			              	mapsbs.setCenter(point, 16);
+//			            }
+//			          }
+//			        );
+//	      	   }
+//	      	   
+//	       }
+//	       else {
+//	       
+//	       		reverseGeocode(lat,lon,"");
+//			   	mapsbs.setCenter(new GLatLng(lat,lon), 16);
+//	       }	       
+//	       
+// 	       
+// 	       createStreetLayer();
+// 	       			
+////         var ovmap = new GOverviewMapControl(new GSize(200,200));
+////        mapsbs.addControl(ovmap);
+////		streetviewOverlay = new GStreetviewOverlay();
+////        mapsbs.addOverlay(streetviewOverlay);
+//        mapsbs.enableGoogleBar();
+//
+////        client = new GStreetviewClient();
+//        streetSegments = new Array();
+//        
+//       	GEvent.addListener(mapsbs, "click", function(overlay, point) {
+//
+//        if (overlay) {
+//          
+//          	var segment = whichSegment(overlay);
+//          	if (segment != null){
+//          	
+// 				selectSegment(segment.id);
+// 			}	
+//          } else {
+//          
+//            reverseGeocode(point.y,point.x,"");
+//            
+//	      }
+//        });
+//        
+//       	GEvent.addListener(mapsbs, "singlerightclick", function(point, source, overlay) {
+//          if (overlay) {
+//          	var segment = whichSegment(overlay);
+//          	if (segment != null){
+//          	
+//          		var point = segment.polyline.getVertex(0);
+//          	
+//				openPanoramaBubblePolyline(point);
+// 			}	
+//        }
+//      });
+//    }
+//}
 
 	function showSelected(row){
 	

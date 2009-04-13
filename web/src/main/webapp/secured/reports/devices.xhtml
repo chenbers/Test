@@ -56,7 +56,7 @@
             							</li>
             							<li class="l">
             								<a4j:commandButton id="searchButton" action="#{deviceReportBean.search}" 
-            									reRender="headerRedCount,items,topScroller,bottomScroller,headerDevices" styleClass="left">
+            									reRender="navigation:redirectSearch,headerRedCount,items,topScroller,bottomScroller,headerDevices" styleClass="left">
             										<span class="search">
             											<h:outputText value="#{messages.button_search}" />
             										</span>
