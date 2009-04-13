@@ -76,7 +76,7 @@
                                 <td>
                                   <rich:message for="name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{devicesBean.item.name}" id="name" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="20" required="#{(not devicesBean.batchEdit) or devicesBean.updateField['name']}" requiredMessage="#{messages.required}" />
+                                    maxlength="20" />
                                 </td>
                               </tr>
                               <tr>
@@ -88,7 +88,7 @@
                                 <td>
                                   <rich:message for="imei" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{devicesBean.item.imei}" id="imei" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="15" required="#{(not devicesBean.batchEdit) or devicesBean.updateField['imei']}" requiredMessage="#{messages.required}" validator="#{devicesBean.validateImei}" />
+                                    maxlength="15"  validator="#{devicesBean.validateImei}" />
                                 </td>
                               </tr>
                               <tr>
@@ -100,7 +100,7 @@
                                 <td>
                                   <rich:message for="sim" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{devicesBean.item.sim}" id="sim" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="19" required="#{(not devicesBean.batchEdit) or devicesBean.updateField['sim']}" requiredMessage="#{messages.required}" validatorMessage="#{messages.editDevice_simFormat}">
+                                    maxlength="19"  validatorMessage="#{messages.editDevice_simFormat}">
                                     <f:validateLength minimum="19" maximum="19" />
                                     <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
                                     <f:attribute name="regex" value="[0-9]+" />
@@ -116,10 +116,7 @@
                                 <td>
                                   <rich:message for="phone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{devicesBean.item.phone}" id="phone" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="22" required="#{(not devicesBean.batchEdit) or devicesBean.updateField['phone']}" requiredMessage="#{messages.required}" validatorMessage="#{messages.editDevice_phoneFormat}">
-                                    <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
-                                    <f:attribute name="regex" value="\D?\d{3}\D*\d{3}\D?\d{4}" />
-                                  </h:inputText>
+                                    maxlength="22" />
                                 </td>
                               </tr>
                               </ui:fragment>
@@ -137,7 +134,7 @@
                                   <h:message for="ephone" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" >
                                   </h:message>
                                   <h:inputText value="#{devicesBean.item.ephone}" id="ephone" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="22" required="#{not devicesBean.batchEdit}" requiredMessage="#{messages.required}">  
+                                    maxlength="22">  
                                   </h:inputText>
                                 </td>
                               </tr>

@@ -55,7 +55,7 @@ public class OrganizationBean extends BaseBean
     /*
      * Organization Tree Specific
      */
-    private GroupTreeNodeImpl topLevelNode;
+    private GroupTreeNodeImpl rootGroupNode;
 
     private GroupHierarchy organizationHierarchy;
 
@@ -98,25 +98,25 @@ public class OrganizationBean extends BaseBean
      * This returns a list of nodes that are contained in top level that the user has access to view. This bean is session scope so in order to reload the group heirarchy, the
      * topLevelNodes variable needs to be set to null
      */
-    public GroupTreeNodeImpl getTopLevelNodes()
+    public GroupTreeNodeImpl getRootGroupNode()
     {
-        if (topLevelNode == null)
+        if (rootGroupNode == null)
         {
             organizationHierarchy = new GroupHierarchy(groupDAO.getGroupHierarchy(getAccountID(), getTopGroup().getGroupID()));
             final Group topLevelGroup = organizationHierarchy.getTopGroup();
-            topLevelNode = createNewGroupNode(topLevelGroup);
+            rootGroupNode = createNewGroupNode(topLevelGroup);
             // UnassignedDevicesTreeNodeImpl devicesTreeNodeImpl = new UnassignedDevicesTreeNodeImpl(getAccountID());
             // devicesTreeNodeImpl.setDeviceDAO(deviceDAO);
             // topLevelNode.addChildNode(devicesTreeNodeImpl);
             if (selectedGroupNode == null)
             {
-                setSelectedTreeNode(topLevelNode);
-                setSelectedGroupNode(topLevelNode);
+                setSelectedTreeNode(rootGroupNode);
+                setSelectedGroupNode(rootGroupNode);
             }
             logger.debug("Group Hirarchy was Loaded");
 
         }
-        return topLevelNode;
+        return rootGroupNode;
     }
 
     protected Group getTopGroup()
@@ -133,9 +133,9 @@ public class OrganizationBean extends BaseBean
         return null;
     }
 
-    public void setTopLevelNodes(GroupTreeNodeImpl topLevelNode)
+    public void setRootGroupNode(GroupTreeNodeImpl topLevelNode)
     {
-        this.topLevelNode = topLevelNode;
+        this.rootGroupNode = topLevelNode;
     }
 
     public boolean adviseNodeSelected(UITree tree)
@@ -350,7 +350,7 @@ public class OrganizationBean extends BaseBean
     public void save()
     {
         BaseTreeNodeImpl parentNode = null;
-        parentNode = topLevelNode.findTreeNodeByGroupId(selectedParentGroup.getGroupID());
+        parentNode = rootGroupNode.findTreeNodeByGroupId(selectedParentGroup.getGroupID());
         tempGroupTreeNode.setParent(parentNode);
         ((GroupTreeNodeImpl) tempGroupTreeNode).getBaseEntity().setParentID(((GroupTreeNodeImpl) parentNode).getBaseEntity().getGroupID());
         tempGroupTreeNode.setLabel(((GroupTreeNodeImpl) tempGroupTreeNode).getBaseEntity().getName());
@@ -368,7 +368,7 @@ public class OrganizationBean extends BaseBean
                 updateUsersGroupHeirarchy();
 
                 // Set the current parent node as expanded and all of its parents up to the root node.
-                setExpandedNode(getTopLevelNodes().findTreeNodeByGroupId(selectedParentGroup.getGroupID()));
+                setExpandedNode(getRootGroupNode().findTreeNodeByGroupId(selectedParentGroup.getGroupID()));
                 cleanFields();
 
                 // Reset the state back to display
@@ -389,7 +389,7 @@ public class OrganizationBean extends BaseBean
         if (selectedGroupNode.getBaseEntity() != null)
         {
             // Validation
-            if (selectedGroupNode.equals(topLevelNode))
+            if (selectedGroupNode.equals(rootGroupNode))
             {
                 addErrorMessage(MessageUtil.getMessageString("group_delete_error_top"));
             }
@@ -404,7 +404,7 @@ public class OrganizationBean extends BaseBean
                 selectedGroupNode.setParent(null);
                 selectedGroupNode = (GroupTreeNodeImpl) parentNode;
                 // Make sure when the page refreshed that we pull a new list in
-                topLevelNode = null;
+                rootGroupNode = null;
                 updateUsersGroupHeirarchy();
             }
         }
@@ -501,7 +501,7 @@ public class OrganizationBean extends BaseBean
         GroupTreeNodeImpl parentNode = null;
         if (selectedParentGroup != null && updateTree)
         {
-            parentNode = topLevelNode.findTreeNodeByGroupId(selectedParentGroup.getGroupID());
+            parentNode = rootGroupNode.findTreeNodeByGroupId(selectedParentGroup.getGroupID());
             copyToNode.getBaseEntity().setParentID(parentNode.getBaseEntity().getGroupID());
             copyToNode.setParent(parentNode);
         }
@@ -567,10 +567,10 @@ public class OrganizationBean extends BaseBean
     public List<SelectItem> getParentGroups()
     {
         List<SelectItem> selectItemList = new ArrayList<SelectItem>();
-        if (topLevelNode.getTreeNodeType() == TreeNodeType.FLEET || topLevelNode.getTreeNodeType() == TreeNodeType.DIVISION)
+        if (rootGroupNode.getTreeNodeType() == TreeNodeType.FLEET || rootGroupNode.getTreeNodeType() == TreeNodeType.DIVISION)
         {
-            selectItemList.add(new SelectItem(topLevelNode.getBaseEntity(), topLevelNode.getLabel()));
-            selectItemList.addAll(getChildNodesAsSelectItems(topLevelNode));
+            selectItemList.add(new SelectItem(rootGroupNode.getBaseEntity(), rootGroupNode.getLabel()));
+            selectItemList.addAll(getChildNodesAsSelectItems(rootGroupNode));
         }
         selectItemList.add(0, new SelectItem(null, ""));
         return selectItemList;

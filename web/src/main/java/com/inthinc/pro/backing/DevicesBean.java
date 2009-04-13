@@ -1,14 +1,11 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
-import java.util.Formatter;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -104,6 +101,8 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         deviceView.setVehicleDAO(vehicleDAO);
         deviceView.setOldVehicleID(device.getVehicleID());
         deviceView.setSelected(false);
+        deviceView.setPhone(device.getPhone());
+        deviceView.setEphone(device.getEphone());
         return deviceView;
     }
 
@@ -242,6 +241,50 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             }
         }
         
+        //Name
+        if((deviceView.getName() == null || deviceView.getName().equals("")) && !isBatchEdit() || (isBatchEdit() && getUpdateField().get("name")))
+        {
+            final String summary = MessageUtil.getMessageString(required);
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+            getFacesContext().addMessage("edit-form:name", message);
+        }
+        
+        //IMEI
+        if((deviceView.getImei() == null || deviceView.getImei().equals("")) && !isBatchEdit() || (isBatchEdit() && getUpdateField().get("imei")))
+        {
+            final String summary = MessageUtil.getMessageString(required);
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+            getFacesContext().addMessage("edit-form:imei", message);
+        }
+        
+        //SIM
+        if((deviceView.getSim() == null || deviceView.getSim().equals("")) && !isBatchEdit() || (isBatchEdit() && getUpdateField().get("sim")))
+        {
+            final String summary = MessageUtil.getMessageString(required);
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+            getFacesContext().addMessage("edit-form:sim", message);
+        }
+        
+        //PHONE
+        if(!isBatchEdit() || (isBatchEdit() && getUpdateField().get("phone")))
+        {
+            if(deviceView.getPhone() == null || deviceView.getPhone().equals(""))
+            {
+                final String summary = MessageUtil.getMessageString(required);
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                getFacesContext().addMessage("edit-form:phone", message);
+            }
+            
+            if(deviceView.getPhone() != null && !deviceView.getPhone().matches("\\D?\\d{3}\\D*\\d{3}\\D?\\d{4}")){
+                valid = false;
+                final String summary = MessageUtil.getMessageString("editDevice_phoneFormat");
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                getFacesContext().addMessage("edit-form:phone", message);
+            }
+        }
+        
+        
+        
         return valid;
     }
     
@@ -272,7 +315,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     {
         return createDeviceView(deviceDAO.findByID(editItem.getDeviceID()));
     }
-
+    
     @Override
     protected void doSave(List<DeviceView> saveItems, boolean create)
     {
@@ -280,6 +323,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 
         for (final DeviceView device : saveItems)
         {
+            device.setPhone(MiscUtil.unformatPhone(device.getPhone()));
             // if batch editing, copy individual speed settings by hand
             if (isBatchEdit())
             {
@@ -410,30 +454,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             if (vehicle == null && getVehicleID() != null)
                 vehicle = vehicleDAO.findByID(getVehicleID());
             return vehicle;
-        }
-
-        @Override
-        public String getEphone()
-        {
-            return MiscUtil.formatPhone(super.getEphone());
-        }
-
-        @Override
-        public String getPhone()
-        {
-            return MiscUtil.formatPhone(super.getPhone());
-        }
-
-        @Override
-        public void setEphone(String ephone)
-        {
-            super.setEphone(ephone);
-        }
-
-        @Override
-        public void setPhone(String phone)
-        {
-            super.setPhone(MiscUtil.unformatPhone(phone));
         }
 
         public boolean isSelected()

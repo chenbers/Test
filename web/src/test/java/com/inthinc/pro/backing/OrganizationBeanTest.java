@@ -45,7 +45,7 @@ public class OrganizationBeanTest extends BaseBeanTest
     public void testOrganizationBeanEdit()
     {
         setup();
-        GroupTreeNodeImpl treeNode = organizationBean.getTopLevelNodes();
+        GroupTreeNodeImpl treeNode = organizationBean.getRootGroupNode();
         organizationBean.getSelectedPerson();
 
         assertNotNull(treeNode);
@@ -72,8 +72,8 @@ public class OrganizationBeanTest extends BaseBeanTest
     public void testOrganizationBeanAdd()
     {
         setup();
-        GroupTreeNodeImpl treeNode = organizationBean.getTopLevelNodes();
-        organizationBean.setTopLevelNodes(treeNode);
+        GroupTreeNodeImpl treeNode = organizationBean.getRootGroupNode();
+        organizationBean.setRootGroupNode(treeNode);
 
         assertNotNull(treeNode);
 
@@ -93,7 +93,7 @@ public class OrganizationBeanTest extends BaseBeanTest
         organizationBean.setSelectedParentGroup(treeNode.getGroup());
         //assertEquals(treeNode, organizationBean.getTopLevelNodes());
         organizationBean.save();
-        assertEquals(treeNode, organizationBean.getTopLevelNodes());
+        assertEquals(treeNode, organizationBean.getRootGroupNode());
         
         //Reset for other tests
         organizationBean.setSelectedGroupNode(treeNode);
@@ -108,8 +108,8 @@ public class OrganizationBeanTest extends BaseBeanTest
         setup();
         
         //Request Add
-        GroupTreeNodeImpl topLevelTreeNode = organizationBean.getTopLevelNodes();
-        organizationBean.setTopLevelNodes(topLevelTreeNode);
+        GroupTreeNodeImpl topLevelTreeNode = organizationBean.getRootGroupNode();
+        organizationBean.setRootGroupNode(topLevelTreeNode);
         //We should be adding to the the root node here.
         organizationBean.add();
         GroupTreeNodeImpl inProgressNodeImpl = organizationBean.getTempGroupTreeNode();
@@ -126,7 +126,7 @@ public class OrganizationBeanTest extends BaseBeanTest
         selectedGroup.setManagerID(220);
         organizationBean = (OrganizationBean) applicationContext.getBean("organizationBean");
         restoreState(organizationBean);
-        assertEquals(topLevelTreeNode, organizationBean.getTopLevelNodes());
+        assertEquals(topLevelTreeNode, organizationBean.getRootGroupNode());
         
         organizationBean.save();
        
@@ -142,7 +142,7 @@ public class OrganizationBeanTest extends BaseBeanTest
         organizationBean.edit();
         GroupTreeNodeImpl selectedNodeImpl = organizationBean.getSelectedGroupNode();
         inProgressNodeImpl = organizationBean.getTempGroupTreeNode();
-        assertEquals(topLevelTreeNode, organizationBean.getTopLevelNodes());
+        assertEquals(topLevelTreeNode, organizationBean.getRootGroupNode());
         saveState(organizationBean);
         
         //Request Update
@@ -157,7 +157,7 @@ public class OrganizationBeanTest extends BaseBeanTest
         
         organizationBean = (OrganizationBean) applicationContext.getBean("organizationBean");
         restoreState(organizationBean);
-        assertEquals(topLevelTreeNode, organizationBean.getTopLevelNodes());
+        assertEquals(topLevelTreeNode, organizationBean.getRootGroupNode());
         
         organizationBean.update();
         assertEquals(selectedNodeImpl, organizationBean.getSelectedGroupNode()); //Theese should be the same.
@@ -173,7 +173,7 @@ public class OrganizationBeanTest extends BaseBeanTest
     private void saveState(OrganizationBean organizationBean)
     {
       //saveState
-        conversationContext.put("topLevelNodes",organizationBean.getTopLevelNodes());
+        conversationContext.put("topLevelNodes",organizationBean.getRootGroupNode());
         conversationContext.put("selectedGroupNode",organizationBean.getSelectedGroupNode());
         conversationContext.put("inProgressGroupNode",organizationBean.getTempGroupTreeNode());
         conversationContext.put("selectedParentGroup",organizationBean.getSelectedParentGroup());
@@ -183,7 +183,7 @@ public class OrganizationBeanTest extends BaseBeanTest
     
     private void restoreState(OrganizationBean organizationBean)
     {
-        organizationBean.setTopLevelNodes((GroupTreeNodeImpl)conversationContext.get("topLevelNodes"));
+        organizationBean.setRootGroupNode((GroupTreeNodeImpl)conversationContext.get("topLevelNodes"));
         organizationBean.setSelectedGroupNode((GroupTreeNodeImpl)conversationContext.get("selectedGroupNode"));
         organizationBean.setTempGroupTreeNode((GroupTreeNodeImpl)conversationContext.get("inProgressGroupNode"));
         organizationBean.setSelectedParentGroup((Group)conversationContext.get("selectedParentGroup"));
@@ -196,8 +196,8 @@ public class OrganizationBeanTest extends BaseBeanTest
     public void testTreeViewListeners()
     {
         setup();
-        GroupTreeNodeImpl treeNode = organizationBean.getTopLevelNodes();
-        organizationBean.setTopLevelNodes(treeNode);
+        GroupTreeNodeImpl treeNode = organizationBean.getRootGroupNode();
+        organizationBean.setRootGroupNode(treeNode);
 
         assertNotNull(treeNode);
 
