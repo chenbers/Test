@@ -113,7 +113,7 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
                     "?groupID="+v.getGroupID());   
             
             //Driver, none assigned
-            if ( v.getDriver() == null ) {
+            if ( v.getDriver() == null || v.getDriver().getPerson() == null ) {
                 Driver d = new Driver();
                 Person p = new Person();
                 p.setFirst("None");
