@@ -177,12 +177,10 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
         updateField.put("disableRF", defineAlerts);
         updateField.put("monitorIdle", defineAlerts);
         
-        if(isBatchEdit())
+        if(isBatchEdit() && updateField.get("anytime"))
         {
-            if(updateField.get("anytime")){
-                updateField.put("startTOD",true);
-                updateField.put("stopTOD",true);
-            }
+            updateField.put("startTOD",true);
+            updateField.put("stopTOD",true);
         }
 
         return super.save();

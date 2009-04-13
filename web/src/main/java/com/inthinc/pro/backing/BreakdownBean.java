@@ -21,7 +21,7 @@ public class BreakdownBean extends BaseBean
 
     private static final Logger logger = Logger.getLogger(BreakdownBean.class);
 
-    public static List<String> entityColorKey = new ArrayList<String>()
+    public final static List<String> entityColorKey = new ArrayList<String>()
     {
         {
             add("FF0101");

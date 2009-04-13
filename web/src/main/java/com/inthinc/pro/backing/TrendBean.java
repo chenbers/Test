@@ -156,7 +156,7 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg> implements Dur
 
         // Loop over returned set of group ids, controlled by scroller
         Map<Integer, List<ScoreableEntity>> groupTrendMap = scoreDAO.getTrendScores(
-                this.navigation.getGroupID(), navigation.getDurationBean().getDuration());;
+                this.navigation.getGroupID(), navigation.getDurationBean().getDuration());
         ColorSelectorStandard cs = new ColorSelectorStandard();
         
         for (int i = this.start; i <= this.end; i++)

@@ -5,7 +5,6 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
-import org.richfaces.event.DataScrollerEvent;
 import org.springframework.security.Authentication;
 import org.springframework.security.context.SecurityContextHolder;
 

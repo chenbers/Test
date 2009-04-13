@@ -185,7 +185,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private DriverDAO                          driverDAO;
     private PasswordEncryptor                  passwordEncryptor;
     private List<PersonChangeListener>         changeListeners;
-    private List<SelectItem>                   roles;
 
     public void setPersonDAO(PersonDAO personDAO)
     {

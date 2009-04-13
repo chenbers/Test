@@ -226,7 +226,7 @@ public class StreetSegment {
         //Check if the address supplied is in the address range
         if ((address == -1) ||((address != -1)&& ((( address >= fromLeft)&&(address <= toLeft)) || ((address >= fromRight)&&(address <= toRight))))){
         	
-        	containsAddress = true;;
+        	containsAddress = true;
         }
         
         return result;

@@ -13,23 +13,25 @@ public class IdlingReportTable
 
     private HtmlDataTable table = new HtmlDataTable();
     private HtmlDatascroller idlingReportScroller;
-    
-    public void actionListener(ActionEvent event) {
+
+    public void actionListener(ActionEvent event)
+    {
         HtmlDataTable table = getTable();
         logger.debug("idlingreporttable");
         if (table != null)
         {
             Object row = table.getRowKey();
             if (row instanceof Integer)
-            {               
+            {
 
-            } else 
+            }
+            else
             {
                 logger.debug("no valid row found in table");
-            }                       
+            }
         }
     }
-    
+
     public HtmlDataTable getTable()
     {
         return table;
@@ -39,21 +41,19 @@ public class IdlingReportTable
     {
         this.table = table;
     }
-    
-    
+
     public HtmlDatascroller getIdlingReportScroller()
     {
         return idlingReportScroller;
     }
-    
+
     public void setIdlingReportScroller(HtmlDatascroller idlingReportScroller)
     {
         this.idlingReportScroller = idlingReportScroller;
-    }   
-    
+    }
+
     public void idlingReportChangeListener(ValueChangeEvent event)
     {
 
     }
 }
-

@@ -135,7 +135,7 @@ public class TrendFlyoutBean extends BaseBean
 
         // Loop over returned set of group ids, controlled by scroller
         Map<Integer, List<ScoreableEntity>> groupTrendMap = scoreDAO.getTrendScores(
-                this.navigation.getGroupID(), navigation.getDurationBean().getDuration());;
+                this.navigation.getGroupID(), navigation.getDurationBean().getDuration());
         ColorSelectorStandard cs = new ColorSelectorStandard();
         
         for (int i = 1; i <= this.maxCount; i++)

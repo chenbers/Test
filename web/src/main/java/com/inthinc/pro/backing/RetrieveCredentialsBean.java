@@ -156,10 +156,11 @@ public class RetrieveCredentialsBean extends BaseBean
             success = true;
             JavaMailSender javaMailSender = (JavaMailSender) mailSender;
 
-            if (false)
-            {
-                return "go_retrieveCredentialsComplete";
-            }
+            //Couldn't see the purpose of this - Mike
+//            if (false)
+//            {
+//                return "go_retrieveCredentialsComplete";
+//            }
             
             javaMailSender.send(
 

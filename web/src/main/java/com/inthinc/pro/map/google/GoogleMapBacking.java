@@ -18,11 +18,8 @@ public class GoogleMapBacking
         String serverName = webUtil.getRequestServerName();
         int serverPort = webUtil.getRequestServerPort();
         String googleMapsKey = googleMapKeys.getProperty(serverName);
-        if (serverPort != 80) {
-            if (googleMapKeys.getProperty(serverName + ":" + serverPort) != null) 
-            {
-                googleMapsKey = googleMapKeys.getProperty(serverName + ":" + serverPort);
-            }
+        if (serverPort != 80 && googleMapKeys.getProperty(serverName + ":" + serverPort) != null) {
+            googleMapsKey = googleMapKeys.getProperty(serverName + ":" + serverPort);
         }
         return googleMapsKey;
     }
