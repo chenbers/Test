@@ -16,6 +16,7 @@ import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.util.MiscUtil;
 
 public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
 {
@@ -65,8 +66,8 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
                 dri = new DeviceReportItem();
                 
                 dri.setDevice(dev);
-                dri.getDevice().setEphone(formatPhone(dri.getDevice().getEphone()));
-                dri.getDevice().setPhone(formatPhone(dri.getDevice().getPhone()));
+                dri.getDevice().setEphone(MiscUtil.formatPhone(dri.getDevice().getEphone()));
+                dri.getDevice().setPhone(MiscUtil.formatPhone(dri.getDevice().getPhone()));
                 dri.setVehicle(v);
                 
                 list.add(dri);

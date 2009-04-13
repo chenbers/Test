@@ -101,8 +101,10 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         deviceView.setVehicleDAO(vehicleDAO);
         deviceView.setOldVehicleID(device.getVehicleID());
         deviceView.setSelected(false);
-        deviceView.setPhone(device.getPhone());
-        deviceView.setEphone(device.getEphone());
+        if(device.getPhone() != null)
+            deviceView.setPhone(MiscUtil.formatPhone(device.getPhone()));
+        if(device.getEphone() != null)
+            deviceView.setEphone(MiscUtil.formatPhone(device.getEphone()));
         return deviceView;
     }
 
@@ -324,6 +326,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         for (final DeviceView device : saveItems)
         {
             device.setPhone(MiscUtil.unformatPhone(device.getPhone()));
+            device.setEphone(MiscUtil.unformatPhone(device.getEphone()));
             // if batch editing, copy individual speed settings by hand
             if (isBatchEdit())
             {
