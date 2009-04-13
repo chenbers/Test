@@ -505,6 +505,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
 
         items.removeAll(selected);
         filteredItems.removeAll(selected);
+        selected.clear();
         item = null;
 
         if (displayed)
