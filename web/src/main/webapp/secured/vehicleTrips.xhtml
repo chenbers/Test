@@ -561,7 +561,7 @@
                         <!-- Start Trip table -->
                         <rich:dataTable value="#{vehicleTripsBean.trips}" id="tripsTable" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" rows="4" width="100%">
 
-                            <a4j:support event="onRowClick" reRender="script,bubbles,selectedTrip,showLastTenForm" oncomplete="bodyLoad();">
+                            <a4j:support event="onRowClick" reRender="script,bubbles,selectedTrip,showLastTenForm,selectDriverForm" oncomplete="bodyLoad();">
                                 <f:setPropertyActionListener value="#{item}" target="#{vehicleTripsBean.selectedTrip}" />
                             </a4j:support>
 
@@ -629,11 +629,14 @@
                 <!-- START PANEL -->
                 <div class="" style="width: 600px; margin: 0 auto 0 auto;">
                 <div class="panel_nw">
-                <div class="panel_title"><h:form id="selectDriverForm">
-                    <span class="map"> <h:outputText value="">Driver:</h:outputText><rich:spacer width="5" /> <h:commandLink action="go_driver"
-                        value="#{vehicleTripsBean.selectedDriver.person.fullName}">
-                        <f:setPropertyActionListener value="#{vehicleTripsBean.selectedDriver}" target="#{navigationBean.driver}" />
-                    </h:commandLink> </span>
+                <div class="panel_title">
+                <h:form id="selectDriverForm">
+                    <span class="map">
+	                    <h:outputText value="">Driver:</h:outputText><rich:spacer width="5" />
+	                     <a4j:htmlCommandLink action="go_driver" value="#{vehicleTripsBean.selectedDriver.person.fullName}">
+	                        <f:setPropertyActionListener value="#{vehicleTripsBean.selectedDriver}" target="#{navigationBean.driver}" />
+	                    </a4j:htmlCommandLink>
+                    </span>
                     <span class="panel_links"></span>
                 </h:form></div>
                 </div>
