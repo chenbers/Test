@@ -107,8 +107,10 @@ public class Person extends BaseEntity implements Comparable<Person>
     }
     
     public String getDisplayTimeZone(){
-    	
-    	return timeZone.getDisplayName(timeZone.inDaylightTime(new GregorianCalendar(timeZone).getTime()), TimeZone.LONG);
+    	if(timeZone !=  null)
+    	    return timeZone.getDisplayName(timeZone.inDaylightTime(new GregorianCalendar(timeZone).getTime()), TimeZone.LONG);
+    	else
+    	    return null;
     }
     
     public void setTimeZone(TimeZone timeZone)
