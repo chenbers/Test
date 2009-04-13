@@ -382,7 +382,7 @@ var firstLoad = new Boolean(true);
 							<div class="tiny_title">
 						  <h:form>
 						  	  <a4j:commandLink  onclick="SelectBreakDown('SIXTYFIVE', chart65, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_65_80}')" 
-						  	  					SIXTYFIVEreRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
+						  	  				reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="SIXTYFIVE" assignTo="#{vehicleSpeedBean.selectedSpeed}"/>
 						  	  		<h:outputText value="#{messages.SCORE_SPEEDING_65_80}"/>
 						  	  </a4j:commandLink>
