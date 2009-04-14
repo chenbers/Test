@@ -30,8 +30,8 @@ import com.inthinc.pro.util.MiscUtil;
  */
 public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 {
-    private static final List<String>              AVAILABLE_COLUMNS;
-    private static final int[]                     DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 4, 6 };
+    private static final List<String> AVAILABLE_COLUMNS;
+    private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 4, 6 };
 
     private static final Map<String, DeviceStatus> STATUSES;
 
@@ -54,9 +54,9 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
                 STATUSES.put(MessageUtil.getMessageString("status" + status.getCode()), status);
     }
 
-    private DeviceDAO                              deviceDAO;
-    private VehicleDAO                             vehicleDAO;
-    private VehiclesBean                           vehiclesBean;
+    private DeviceDAO deviceDAO;
+    private VehicleDAO vehicleDAO;
+    private VehiclesBean vehiclesBean;
 
     public void setDeviceDAO(DeviceDAO deviceDAO)
     {
@@ -101,9 +101,9 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         deviceView.setVehicleDAO(vehicleDAO);
         deviceView.setOldVehicleID(device.getVehicleID());
         deviceView.setSelected(false);
-        if(device.getPhone() != null)
+        if (device.getPhone() != null)
             deviceView.setPhone(MiscUtil.formatPhone(device.getPhone()));
-        if(device.getEphone() != null)
+        if (device.getEphone() != null)
             deviceView.setEphone(MiscUtil.formatPhone(device.getEphone()));
         return deviceView;
     }
@@ -212,84 +212,82 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         if (Boolean.parseBoolean(params.get("immediate")) && !isAdd() && !isBatchEdit())
             assignVehicle(getItem());
     }
-    
+
     @Override
     protected boolean validateSaveItem(DeviceView deviceView)
     {
         boolean valid = true;
         final String required = "required";
-        if(!isBatchEdit() || (isBatchEdit() && getUpdateField().get("ephone")))
+        //Ephone
+        if (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("ephone")))
         {
-            if(deviceView.getEphone() == null || deviceView.getEphone().equals(""))
+            if (deviceView.getEphone() == null || deviceView.getEphone().equals(""))
             {
                 valid = false;
                 final String summary = MessageUtil.getMessageString(required);
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
                 getFacesContext().addMessage("edit-form:ephone", message);
             }
-            
-            if(deviceView.getEphone() != null)
+            else if (deviceView.getEphone() != null)
             {
-                
-                
-                if(!deviceView.getEphone().matches("\\D?\\d{3}\\D*\\d{3}\\D?\\d{4}")){
+                if (!deviceView.getEphone().matches("\\D?\\d{3}\\D*\\d{3}\\D?\\d{4}"))
+                {
                     valid = false;
+                    final String summary = MessageUtil.getMessageString("editDevice_phoneFormat");
+                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                    getFacesContext().addMessage("edit-form:ephone", message);
                 }
-                
-                final String summary = MessageUtil.getMessageString("editDevice_phoneFormat");
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                getFacesContext().addMessage("edit-form:ephone", message);
-               
             }
         }
-        
-        //Name
-        if((deviceView.getName() == null || deviceView.getName().equals("")) && !isBatchEdit() || (isBatchEdit() && getUpdateField().get("name")))
+
+        // Name
+        if ((deviceView.getName() == null || deviceView.getName().equals("")) && !isBatchEdit() || (isBatchEdit() && getUpdateField().get("name")))
         {
+            valid = false;
             final String summary = MessageUtil.getMessageString(required);
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
             getFacesContext().addMessage("edit-form:name", message);
         }
-        
-        //IMEI
-        if((deviceView.getImei() == null || deviceView.getImei().equals("")) && !isBatchEdit() || (isBatchEdit() && getUpdateField().get("imei")))
+
+        // IMEI
+        if ((deviceView.getImei() == null || deviceView.getImei().equals("")) && !isBatchEdit() || (isBatchEdit() && getUpdateField().get("imei")))
         {
+            valid = false;
             final String summary = MessageUtil.getMessageString(required);
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
             getFacesContext().addMessage("edit-form:imei", message);
         }
-        
-        //SIM
-        if((deviceView.getSim() == null || deviceView.getSim().equals("")) && !isBatchEdit() || (isBatchEdit() && getUpdateField().get("sim")))
+
+        // SIM
+        if ((deviceView.getSim() == null || deviceView.getSim().equals("")) && !isBatchEdit() || (isBatchEdit() && getUpdateField().get("sim")))
         {
+            valid = false;
             final String summary = MessageUtil.getMessageString(required);
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
             getFacesContext().addMessage("edit-form:sim", message);
         }
-        
-        //PHONE
-        if(!isBatchEdit() || (isBatchEdit() && getUpdateField().get("phone")))
+
+        // PHONE
+        if (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("phone")))
         {
-            if(deviceView.getPhone() == null || deviceView.getPhone().equals(""))
+            if (deviceView.getPhone() == null || deviceView.getPhone().equals(""))
             {
+                valid = false;
                 final String summary = MessageUtil.getMessageString(required);
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
                 getFacesContext().addMessage("edit-form:phone", message);
             }
-            
-            if(deviceView.getPhone() != null && !deviceView.getPhone().matches("\\D?\\d{3}\\D*\\d{3}\\D?\\d{4}")){
+            else if (deviceView.getPhone() != null && !deviceView.getPhone().matches("\\D?\\d{3}\\D*\\d{3}\\D?\\d{4}"))
+            {
                 valid = false;
                 final String summary = MessageUtil.getMessageString("editDevice_phoneFormat");
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
                 getFacesContext().addMessage("edit-form:phone", message);
             }
         }
-        
-        
-        
+
         return valid;
     }
-    
 
     public void validateImei(FacesContext context, UIComponent component, Object value)
     {
@@ -317,7 +315,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     {
         return createDeviceView(deviceDAO.findByID(editItem.getDeviceID()));
     }
-    
+
     @Override
     protected void doSave(List<DeviceView> saveItems, boolean create)
     {
@@ -412,13 +410,13 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         private static final long serialVersionUID = 8372507838051791866L;
 
         @Column(updateable = false)
-        private VehicleDAO        vehicleDAO;
+        private VehicleDAO vehicleDAO;
         @Column(updateable = false)
-        private Integer           oldVehicleID;
+        private Integer oldVehicleID;
         @Column(updateable = false)
-        private Vehicle           vehicle;
+        private Vehicle vehicle;
         @Column(updateable = false)
-        private boolean           selected;
+        private boolean selected;
 
         public Integer getId()
         {
@@ -443,6 +441,18 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         public boolean isVehicleChanged()
         {
             return (oldVehicleID != getVehicleID()) && ((getVehicleID() == null) || !getVehicleID().equals(oldVehicleID));
+        }
+        
+        @Override
+        public String getEphone()
+        {
+            return MiscUtil.formatPhone(super.getEphone());
+        }
+        
+        @Override
+        public String getPhone()
+        {
+            return MiscUtil.formatPhone(super.getPhone());
         }
 
         @Override

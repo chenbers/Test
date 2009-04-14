@@ -74,7 +74,7 @@
                                   <span class="required">*</span>
                                 </td>
                                 <td>
-                                  <rich:message for="name" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                  <h:message for="name" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" />
                                   <h:inputText value="#{devicesBean.item.name}" id="name" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     maxlength="20" />
                                 </td>
@@ -86,7 +86,7 @@
                                   <span class="required">*</span>
                                 </td>
                                 <td>
-                                  <rich:message for="imei" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                  <h:message for="imei" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" />
                                   <h:inputText value="#{devicesBean.item.imei}" id="imei" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     maxlength="15"  validator="#{devicesBean.validateImei}" />
                                 </td>
@@ -98,7 +98,7 @@
                                   <span class="required">*</span>
                                 </td>
                                 <td>
-                                  <rich:message for="sim" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                  <h:message for="sim" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" />
                                   <h:inputText value="#{devicesBean.item.sim}" id="sim" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     maxlength="19"  validatorMessage="#{messages.editDevice_simFormat}">
                                     <f:validateLength minimum="19" maximum="19" />
@@ -114,7 +114,7 @@
                                   <span class="required">*</span>
                                 </td>
                                 <td>
-                                  <rich:message for="phone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                  <h:message for="phone" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" />
                                   <h:inputText value="#{devicesBean.item.phone}" id="phone" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     maxlength="22" />
                                 </td>
