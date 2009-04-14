@@ -71,14 +71,14 @@
                           </td>
                           <td>
                             <rich:message for="first" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.first}" id="first" disabled="#{!personBean.item.userEditable}" onkeydown="checkMultiple(this)" styleClass="text" size="30"
+                            <h:inputText value="#{personBean.item.first}" id="first" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" styleClass="text" size="30"
                               maxlength="20" required="#{(not personBean.batchEdit) or personBean.updateField['first']}" requiredMessage="#{messages.required}" />
                           </td>
                         </tr>
                         <tr>
                           <td width="100" valign="top"><h:outputText value="#{messages.editPerson_middle}" /></td>
                           <td>
-                            <h:inputText value="#{personBean.item.middle}" id="middle" disabled="#{!personBean.item.userEditable}" onkeydown="checkMultiple(this)" styleClass="text" size="30" maxlength="20" />
+                            <h:inputText value="#{personBean.item.middle}" id="middle" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="20" />
                           </td>
                         </tr>
                         <tr>
@@ -88,7 +88,7 @@
                           </td>
                           <td>
                             <rich:message for="last" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.last}" id="last" disabled="#{!personBean.item.userEditable}" onkeydown="checkMultiple(this)" styleClass="text" size="30"
+                            <h:inputText value="#{personBean.item.last}" id="last" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" styleClass="text" size="30"
                               maxlength="20" required="#{(not personBean.batchEdit) or personBean.updateField['last']}" requiredMessage="#{messages.required}" />
                           </td>
                         </tr>
@@ -157,13 +157,13 @@
                           <td width="100" valign="top"><h:outputText value="#{messages.editPerson_address_addr1}" /></td>
                           <td>
                             <rich:message for="address_addr1" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.address.addr1}" id="address_addr1" disabled="#{!personBean.item.userEditable}" onkeydown="checkMultiple(this)" styleClass="text" size="30" maxlength="126" />
+                            <h:inputText value="#{personBean.item.address.addr1}" id="address_addr1" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="126" />
                           </td>
                         </tr>
                         <tr>
                           <td width="100" valign="top"><h:outputText value="#{messages.editPerson_address_addr2}" /></td>
                           <td>
-                            <h:inputText value="#{personBean.item.address.addr2}" id="address_addr2" disabled="#{!personBean.item.userEditable}" onkeydown="checkMultiple(this)" styleClass="text" size="30" maxlength="126" />
+                            <h:inputText value="#{personBean.item.address.addr2}" id="address_addr2" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="126" />
                           </td>
                         </tr>
                         </ui:fragment>
@@ -174,7 +174,7 @@
                           </td>
                           <td>
                             <rich:message for="address_city" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.address.city}" id="address_city" disabled="#{!personBean.item.userEditable}" onkeydown="checkMultiple(this)" styleClass="text" size="30" maxlength="30" />
+                            <h:inputText value="#{personBean.item.address.city}" id="address_city" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="30" />
                           </td>
                         </tr>
                         <tr>
@@ -198,7 +198,7 @@
                           </td>
                           <td>
                             <rich:message for="address_zip" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.address.zip}" label="#{messages.editPerson_address_zip}" id="address_zip" disabled="#{!personBean.item.userEditable}" onkeydown="checkMultiple(this)" styleClass="text" size="10" maxlength="10" validatorMessage="#{messages.editPerson_zipFormat}">
+                            <h:inputText value="#{personBean.item.address.zip}" label="#{messages.editPerson_address_zip}" id="address_zip" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" styleClass="text" size="10" maxlength="10" validatorMessage="#{messages.editPerson_zipFormat}">
                               <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
                               <f:attribute name="regex" value="\d{5}(-\d{4})?" />
                             </h:inputText>
@@ -221,7 +221,7 @@
                           <td width="100" valign="top"><h:outputText value="#{messages.editPerson_driver_license}" /></td>
                           <td>
                             <rich:message for="driver_license" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.driver.license}" id="driver_license" onkeydown="checkMultiple(this)" styleClass="text" size="30" maxlength="10" />
+                            <h:inputText value="#{personBean.item.driver.license}" id="driver_license" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="10" />
                           </td>
                         </tr>
                         </ui:fragment>
@@ -259,7 +259,7 @@
                           <td>
                             <rich:message for="driver_expiration" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <rich:calendar value="#{personBean.item.driver.expiration}" id="driver_expiration" 
-                              onkeydown="checkMultiple('driver_expiration')" 
+                              onchange="checkMultiple('driver_expiration')" 
                               oninputchange="checkMultiple('driver_expiration')" ondateselect="checkMultiple('driver_expiration')" 
                               enableManualInput="true" 
                               converterMessage="#{messages.editPerson_dateFormat}" 
@@ -272,7 +272,7 @@
                           <td width="100" valign="top"><h:outputText value="#{messages.editPerson_driver_RFID}" /></td>
                           <td>
                             <rich:message for="driver_RFID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.driver.RFID}" id="driver_RFID" onkeydown="checkMultiple(this)" styleClass="text" size="30"
+                            <h:inputText value="#{personBean.item.driver.RFID}" id="driver_RFID" onchange="checkMultiple(this)" styleClass="text" size="30"
                               maxlength="16" required="false" converterMessage="#{messages.editPerson_RFIDFormat}" validatorMessage="#{messages.editPerson_RFIDFormat}">
                               <f:validateLongRange minimum="-2305843009213693952" maximum="-2233785415175766017" />
                               <f:converter converterId="HexConverter" />
@@ -286,7 +286,7 @@
                             <h:outputText value="#{messages.editPerson_driver_certifications}" />
                           </td>
                           <td>
-                            <h:inputText value="#{personBean.item.driver.certifications}" id="driver_certifications" onkeydown="checkMultiple(this)" styleClass="text" size="30" maxlength="160" />
+                            <h:inputText value="#{personBean.item.driver.certifications}" id="driver_certifications" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="160" />
                           </td>
                         </tr>
                         <tr>
@@ -295,7 +295,7 @@
                             <h:outputText value="#{messages.editPerson_driver_dot}" />
                           </td>
                           <td>
-                            <h:inputText value="#{personBean.item.driver.dot}" id="driver_dot" onkeydown="checkMultiple(this)" styleClass="text" size="30" maxlength="160" />
+                            <h:inputText value="#{personBean.item.driver.dot}" id="driver_dot" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="160" />
                           </td>
                         </tr>
                         <tr>
@@ -356,7 +356,7 @@
                           </td>
                           <td>
                             <rich:message for="empid" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.empid}" id="empid" disabled="#{!personBean.item.userEditable}" onkeydown="checkMultiple(this)" styleClass="text" size="30"
+                            <h:inputText value="#{personBean.item.empid}" id="empid" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" styleClass="text" size="30"
                               maxlength="20"/>
                           </td>
                         </tr>   
@@ -367,7 +367,7 @@
                             <h:outputText value="#{messages.editPerson_reportsTo}" />
                           </td>
                           <td>
-                            <h:inputText value="#{personBean.item.reportsTo}" id="reportsTo" disabled="#{!personBean.item.userEditable}" onkeydown="checkMultiple(this)" styleClass="text" size="30" maxlength="60" />
+                            <h:inputText value="#{personBean.item.reportsTo}" id="reportsTo" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="60" />
                             <rich:suggestionbox for="reportsTo" suggestionAction="#{personBean.findPeople}" eventsQueue="reportsToQueue" var="personName">
                               <h:column><h:outputText value="#{personName}"/></h:column>
                             </rich:suggestionbox>
@@ -379,7 +379,7 @@
                             <h:outputText value="#{messages.editPerson_title}" />
                           </td>
                           <td>
-                            <h:inputText value="#{personBean.item.title}" id="title" disabled="#{!personBean.item.userEditable}" onkeydown="checkMultiple(this)" styleClass="text" size="30" maxlength="30" />
+                            <h:inputText value="#{personBean.item.title}" id="title" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="30" />
                           </td>
                         </tr>
                         <tr>
@@ -427,7 +427,7 @@
                           </td>
                           <td>
                             <rich:message for="user_username" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.user.username}" id="user_username" disabled="#{!personBean.item.userEditable}" onkeydown="checkMultiple(this)" styleClass="text" size="30"
+                            <h:inputText value="#{personBean.item.user.username}" id="user_username" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" styleClass="text" size="30"
                               maxlength="30" required="#{personBean.item.userSelected and ((not personBean.batchEdit) or personBean.updateField['user.username'])}" requiredMessage="#{messages.required}" />
                           </td>
                         </tr>
@@ -438,7 +438,7 @@
                           </td>
                           <td>
                             <rich:message for="user_password" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputSecret value="#{personBean.item.password}" id="user_password" disabled="#{!personBean.item.userEditable}" redisplay="true" onkeydown="checkMultiple(this)" styleClass="text" size="30"
+                            <h:inputSecret value="#{personBean.item.password}" id="user_password" disabled="#{!personBean.item.userEditable}" redisplay="true" onchange="checkMultiple(this)" styleClass="text" size="30"
                               maxlength="30" required="#{personBean.item.userSelected and empty personBean.item.user.password}" requiredMessage="#{messages.required}" validatorMessage="#{messages.editPerson_passwordFormat}">
                               <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
                               <f:attribute name="regex" value="\S{6,12}" />
@@ -452,7 +452,7 @@
                           </td>
                           <td>
                             <rich:message for="confirmPassword" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputSecret value="#{personBean.item.confirmPassword}" id="confirmPassword" disabled="#{!personBean.item.userEditable}" redisplay="true" onkeydown="checkMultiple(this)" styleClass="text" size="30"
+                            <h:inputSecret value="#{personBean.item.confirmPassword}" id="confirmPassword" disabled="#{!personBean.item.userEditable}" redisplay="true" onchange="checkMultiple(this)" styleClass="text" size="30"
                               maxlength="30" required="#{personBean.item.userSelected and empty personBean.item.user.password}" requiredMessage="#{messages.required}" />
                           </td>
                         </tr>
@@ -541,7 +541,7 @@
                           </td>
                           <td>
                             <rich:message for="priEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.priEmail}" id="priEmail" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onkeydown="checkMultiple(this)" styleClass="text" size="30"
+                            <h:inputText value="#{personBean.item.priEmail}" id="priEmail" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30"
                               maxlength="62" validatorMessage="#{messages.editPerson_emailFormat}">
                               <f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
                             </h:inputText>
@@ -551,7 +551,7 @@
                           <td width="100" valign="top"><h:outputText value="#{messages.editPerson_secEmail}" /></td>
                           <td>
                             <rich:message for="secEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.secEmail}" id="secEmail" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onkeydown="checkMultiple(this)" styleClass="text" size="30"
+                            <h:inputText value="#{personBean.item.secEmail}" id="secEmail" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30"
                               maxlength="62" validatorMessage="#{messages.editPerson_emailFormat}">
                               <f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
                             </h:inputText>
@@ -561,7 +561,7 @@
                           <td width="100" valign="top"><h:outputText value="#{messages.editPerson_priText}" /></td>
                           <td>
                             <rich:message for="priText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.priText}" id="priText" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onkeydown="checkMultiple(this)" styleClass="text" size="30"
+                            <h:inputText value="#{personBean.item.priText}" id="priText" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30"
                               maxlength="62" validatorMessage="#{messages.editPerson_textMessageFormat}">
                               <f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
                             </h:inputText>
@@ -571,7 +571,7 @@
                           <td width="100" valign="top"><h:outputText value="#{messages.editPerson_secText}" /></td>
                           <td>
                             <rich:message for="secText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.secText}" id="secText" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onkeydown="checkMultiple(this)" styleClass="text" size="30"
+                            <h:inputText value="#{personBean.item.secText}" id="secText" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30"
                               maxlength="62" validatorMessage="#{messages.editPerson_textMessageFormat}">
                               <f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
                             </h:inputText>
@@ -581,7 +581,7 @@
                           <td width="100" valign="top"><h:outputText value="#{messages.editPerson_priPhone}" /></td>
                           <td>
                             <rich:message for="priPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.priPhone}" id="priPhone" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onkeydown="checkMultiple(this)" styleClass="text" size="30" maxlength="22" validatorMessage="#{messages.editPerson_phoneFormat}" converter="PhoneNumberConverter">
+                            <h:inputText value="#{personBean.item.priPhone}" id="priPhone" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="22" validatorMessage="#{messages.editPerson_phoneFormat}" converter="PhoneNumberConverter">
                               <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
                               <f:attribute name="regex" value="\D?\d{3}\D*\d{3}\D?\d{4}" />
                             </h:inputText>
@@ -591,7 +591,7 @@
                           <td width="100" valign="top"><h:outputText value="#{messages.editPerson_secPhone}" /></td>
                           <td>
                             <rich:message for="secPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.secPhone}" id="secPhone" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onkeydown="checkMultiple(this)" styleClass="text" size="30" maxlength="22" validatorMessage="#{messages.editPerson_phoneFormat}" converter="PhoneNumberConverter">
+                            <h:inputText value="#{personBean.item.secPhone}" id="secPhone" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="22" validatorMessage="#{messages.editPerson_phoneFormat}" converter="PhoneNumberConverter">
                               <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
                               <f:attribute name="regex" value="\D?\d{3}\D*\d{3}\D?\d{4}" />
                             </h:inputText>
