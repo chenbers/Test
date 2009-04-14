@@ -194,7 +194,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
                     Float score = new Float((scoreableEntity.getScore() == null || scoreableEntity.getScore() < 0) ? 5 : scoreableEntity.getScore() / 10.0);
                     lineGraphDataList.add(new CategorySeriesData(se.getIdentifier(), monthList.get(index++), score, se.getIdentifier()));
                 }
-
+                else
+                {
+                    lineGraphDataList.add(new CategorySeriesData(se.getIdentifier(), monthList.get(index++), null, se.getIdentifier()));
+                } 
             }
 
         }
