@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.inthinc.pro.backing.listener.SearchChangeListener;
+import com.inthinc.pro.model.Group;
 
 public class SearchCoordinationBean {
 
 	private String searchFor = "";
+	private Group group;
 	private int navigation;
 	
 
@@ -19,15 +21,20 @@ public class SearchCoordinationBean {
 	}
 	public boolean isGoodSearch(){
 		
-		return searchFor !=null && !searchFor.isEmpty();
+		return searchFor !=null && !searchFor.isEmpty() && group==null;
 	}
 	
+	public boolean isGoodGroupId(){
+		
+		return group != null;
+	}
 	public void setSearchFor(String searchFor) {
 		
    		searchFor = searchFor.trim();
 		if ( !searchFor.equalsIgnoreCase(this.searchFor)){
 
 			this.searchFor = searchFor;
+			group = null;
 			notifySearchChangeListeners();
 		}		
 	}
@@ -71,6 +78,18 @@ public class SearchCoordinationBean {
 		for(SearchChangeListener scl:searchChangeListeners){
 			
 			scl.searchChanged();
+		}
+	}
+	public Group getGroup() {
+		return group;
+	}
+	public void setGroup(Group group) {
+		
+		if (this.group != group){
+			
+			this.group = group;
+			searchFor = group.getName();
+			notifySearchChangeListeners();
 		}
 	}
 }

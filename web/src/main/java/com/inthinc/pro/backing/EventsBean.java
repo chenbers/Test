@@ -32,7 +32,6 @@ public class EventsBean extends BaseEventsBean
     
     public String showAllFromRecentAction()
     {
-//        setSearchText(null);
         setCategoryFilter(null);
         setEventFilter(null);
         

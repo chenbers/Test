@@ -202,7 +202,7 @@ private TablePref<RedFlagReportItem> tablePref;
     {
         setFilteredTableData(null);
         
-        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(getUser().getGroupID(), 7);
+        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(getEffectiveGroupId(), 7);
         List<RedFlagReportItem> redFlagReportItemList = new ArrayList<RedFlagReportItem>();
         for (RedFlag redFlag : redFlagList)
         {

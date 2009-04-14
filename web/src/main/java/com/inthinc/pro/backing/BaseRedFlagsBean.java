@@ -183,5 +183,17 @@ public abstract class BaseRedFlagsBean extends BaseBean
 	}
 	protected abstract void filterTableData();
 	
+    protected Integer getEffectiveGroupId(){
+    	
+     	if (getSearchCoordinationBean().isGoodGroupId()){
+    		
+    		return getSearchCoordinationBean().getGroup().getGroupID();
+    	}
+    	else {
+    		
+    		return getUser().getGroupID();
+    	}
+    }
+
 
 }

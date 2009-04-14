@@ -154,7 +154,7 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
         
         this.idlingsData = 
             scoreDAO.getIdlingReportData(
-                    getUser().getGroupID(),
+            		getEffectiveGroupId(),
                     this.internalStartDate, 
                     this.internalEndDate);
 

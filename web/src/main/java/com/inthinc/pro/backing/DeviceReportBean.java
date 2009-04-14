@@ -55,7 +55,7 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
     @Override
     protected void loadDBData()
     {       
-        List<Vehicle> vehicList = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
+        List<Vehicle> vehicList = vehicleDAO.getVehiclesInGroupHierarchy(getEffectiveGroupId());
         List <DeviceReportItem> list = new ArrayList<DeviceReportItem>();
         for( Vehicle v: vehicList )
         {

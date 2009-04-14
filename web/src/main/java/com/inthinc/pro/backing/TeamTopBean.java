@@ -106,7 +106,6 @@ public class TeamTopBean extends BaseBean
 
     public String getTeamName()
     {
-
         return navigation.getGroupHierarchy().getGroup(navigation.getGroupID()).getName();
     }
 }

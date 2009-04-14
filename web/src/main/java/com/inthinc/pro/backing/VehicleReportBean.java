@@ -58,7 +58,7 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
     {
         vehiclesData = 
             scoreDAO.getVehicleReportData(
-                    getUser().getGroupID(),
+            		getEffectiveGroupId(),
                     Duration.TWELVE);
     }
 

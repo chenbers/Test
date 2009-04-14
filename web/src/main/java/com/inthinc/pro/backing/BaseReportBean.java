@@ -29,8 +29,6 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     private Integer               start;
     private Integer               end;
 
-//    private String                secret       = "";
-
     private NavigationBean navigation;
 	private SearchCoordinationBean searchCoordinationBean;
 	
@@ -108,13 +106,23 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     protected abstract void setDisplayData(List<T> displayData);
     
     protected abstract void loadResults(List<T> data);
-
+    
+    protected Integer getEffectiveGroupId(){
+    	
+     	if (getSearchCoordinationBean().isGoodGroupId()){
+    		
+    		return getSearchCoordinationBean().getGroup().getGroupID();
+    	}
+    	else {
+    		
+    		return getUser().getGroupID();
+    	}
+    }
     protected void checkOnSearch()
     {
     	loadDBData();
     	if (searchCoordinationBean.isGoodSearch())
 	        {
-//	        	getDisplayData().clear();
 	 
 	            final List<T> matchedItems = new ArrayList<T>();
 	            matchedItems.addAll(getDBData());
@@ -135,10 +143,6 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
 
     public void search()
     {
-//        if (getDisplayData().size() > 0)
-//        {
-//            getDisplayData().clear();
-//        }
         
         final List<T> matchedItems = new ArrayList<T>();
         matchedItems.addAll(getDBData());
@@ -190,18 +194,6 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
             this.end = getDisplayData().size();
         }
     }
-
-//    public String getSecret()
-//    {
-//		checkOnSearch();
-//		
-//        return secret;
-//    }
-//
-//    public void setSecret(String secret)
-//    {
-//        this.secret = secret;
-//    }
 
     public Integer getStart()
     {

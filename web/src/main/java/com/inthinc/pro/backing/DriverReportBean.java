@@ -63,7 +63,7 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
     {
         this.driversData = 
             scoreDAO.getDriverReportData(            
-                    getUser().getGroupID(),
+            		getEffectiveGroupId(),
                     Duration.TWELVE);
         //Once loaded, set the group name NOW so it can be searchable IMMEDIATELY
         for ( DriverReportItem dri : this.driversData ) {

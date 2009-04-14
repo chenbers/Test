@@ -21,7 +21,7 @@ import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 
-public class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions<EventReportItem>, PersonChangeListener, SearchChangeListener
+public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions<EventReportItem>, PersonChangeListener, SearchChangeListener
 {
     private static final Logger     logger                  = Logger.getLogger(EventsBean.class);
 
@@ -190,7 +190,7 @@ public class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions
     {
         setFilteredTableData(null);
 
-        List<Event> eventList = getEventsForGroup(getUser().getGroupID());
+        List<Event> eventList = getEventsForGroup(getEffectiveGroupId());
         List<EventReportItem> eventReportItemList = new ArrayList<EventReportItem>();
         for (Event event : eventList)
         {
@@ -204,10 +204,7 @@ public class BaseEventsBean extends BaseRedFlagsBean implements TablePrefOptions
 
     }
 
-    protected List<Event> getEventsForGroup(Integer groupID)
-    {
-        return null;
-    }
+    protected abstract List<Event> getEventsForGroup(Integer groupID);
 
     public void setTableData(List<EventReportItem> tableData)
     {
