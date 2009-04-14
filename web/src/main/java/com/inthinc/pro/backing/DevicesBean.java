@@ -218,7 +218,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     {
         boolean valid = true;
         final String required = "required";
-        //Ephone
+        // Ephone
         if (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("ephone")))
         {
             if (deviceView.getEphone() == null || deviceView.getEphone().equals(""))
@@ -249,13 +249,34 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             getFacesContext().addMessage("edit-form:name", message);
         }
 
+        Device byImei = null;
+        if (deviceView.getImei() != null)
+            byImei = deviceDAO.findByIMEI(deviceView.getImei());
         // IMEI
-        if ((deviceView.getImei() == null || deviceView.getImei().equals("")) && !isBatchEdit() || (isBatchEdit() && getUpdateField().get("imei")))
+        if (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("imei")))
         {
-            valid = false;
-            final String summary = MessageUtil.getMessageString(required);
-            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-            getFacesContext().addMessage("edit-form:imei", message);
+          
+            if ((deviceView.getImei() == null || deviceView.getImei().equals("")))
+            {
+                valid = false;
+                final String summary = MessageUtil.getMessageString(required);
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                getFacesContext().addMessage("edit-form:imei", message);
+            }
+            else if (!deviceView.getImei().matches("[0-9]{15}")) // format
+            {
+                valid = false;
+                final String summary = MessageUtil.getMessageString("editDevice_imeiFormat");
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                getFacesContext().addMessage("edit-form:imei", message);
+            }
+            else if ((byImei != null) && !byImei.getDeviceID().equals(getItem().getDeviceID())) // unique
+            {
+                valid = false;
+                final String summary = MessageUtil.getMessageString("editDevice_uniqueImei");
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                getFacesContext().addMessage("edit-form:imei", message);
+            }
         }
 
         // SIM
@@ -289,12 +310,14 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         return valid;
     }
 
+    @Deprecated
     public void validateImei(FacesContext context, UIComponent component, Object value)
     {
         final String imei = (String) value;
 
         if (!imei.matches("[0-9]{15}"))
         {
+
             final String summary = MessageUtil.getMessageString("editDevice_imeiFormat");
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
             throw new ValidatorException(message);
@@ -442,13 +465,13 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         {
             return (oldVehicleID != getVehicleID()) && ((getVehicleID() == null) || !getVehicleID().equals(oldVehicleID));
         }
-        
+
         @Override
         public String getEphone()
         {
             return MiscUtil.formatPhone(super.getEphone());
         }
-        
+
         @Override
         public String getPhone()
         {
