@@ -12,7 +12,7 @@
 			<span class="panel_links">
 			<h:form id="teamEventsShowAllForm">
 				<h:commandLink action="#{eventsBean.showAllFromRecentAction}" value="#{messages.team_safetyEventsShowAll}">				
-					<f:setPropertyActionListener value="#{teamRecentEventsBean.groupName}" target="#{eventsBean.searchText}" />				
+					<f:setPropertyActionListener value="#{navigationBean.group}" target="#{searchCoordinationBean.group}" />								
 				</h:commandLink>
 			</h:form>	
 			</span>

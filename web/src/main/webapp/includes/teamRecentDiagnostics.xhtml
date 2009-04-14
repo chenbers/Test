@@ -12,7 +12,7 @@
 			<span class="panel_links">
 			<h:form id="teamWarningsShowAllForm">
 				<h:commandLink action="#{diagnosticsBean.showAllFromRecentAction}" value="#{messages.team_diagnosticsShowAll}">				
-					<f:setPropertyActionListener value="#{teamWarningsBean.groupName}" target="#{diagnosticsBean.searchText}" />								
+					<f:setPropertyActionListener value="#{navigationBean.group}" target="#{searchCoordinationBean.group}" />								
 				</h:commandLink>
 			</h:form>	
 			</span>
