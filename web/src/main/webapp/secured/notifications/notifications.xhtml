@@ -18,8 +18,7 @@
           function initializeTable()
           {
               jQuery(".clickable-map-icon").click(function(){
-                  var address = jQuery(this).siblings("span[id$='addressToolTip']").find("span[id$='address']").text();
-                  alert(address);
+                  var address = jQuery(this).siblings("[id$='addressToolTip']").find("[id$='address']").text();
                   jQuery('#mapModalHeader').text("Event Location: " + address);
                 });
           }
