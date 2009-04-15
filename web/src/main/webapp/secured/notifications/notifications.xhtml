@@ -6,7 +6,7 @@
     <ui:define name="scripts">
         <script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}" type="text/javascript"></script>
         <script type="text/javascript">
-          function initialize(lat, lng) 
+          function initializeMap(lat, lng) 
           {
             if (GBrowserIsCompatible()) {
               var map = new GMap2(document.getElementById("address-canvas"));
@@ -14,6 +14,14 @@
               map.setCenter(location, 15);
               map.addOverlay(new GMarker(location)); 
             }
+          }
+          function initializeTable()
+          {
+              jQuery(".clickable-map-icon").click(function(){
+                  var address = jQuery(this).siblings("span[id$='addressToolTip']").find("span[id$='address']").text();
+                  alert(address);
+                  jQuery('#mapModalHeader').text("Event Location: " + address);
+                });
           }
         </script>
     </ui:define>

@@ -6,6 +6,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -14,16 +16,15 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.model.LatLng;
 public class AddressLookup
 {
     public static Logger logger = Logger.getLogger(AddressLookup.class);
-    String mapServerURLString;
+    private String mapServerURLString;
+    private NavigableMap<LatLng, String> addressMap = new TreeMap<LatLng, String>();
 
     public AddressLookup()
     {
-        // logger.debug("AddressLookup - constructor");
-        // mapServerURLString = "http://testteen.iwiglobal.com:8081/geonames/servlet/iwiglobal?srv=findNearbyAddress";
-
     }
 
     public String getMapServerURLString()
@@ -39,31 +40,42 @@ public class AddressLookup
 
     public String getAddress(double lat, double lng)
     {
-
+        return getAddress(new LatLng(lat, lng));
+    }
+    public String getAddress(LatLng latLng)
+    {
+        if (addressMap.containsKey(latLng))
+            return addressMap.get(latLng);
         if (getMapServerURLString().isEmpty())
         {
             logger.debug("AddressLookup - Map Server URL not set.");
             return "";
         }
-
-        String address;
         try
         {
-            address = sendRequest(new URL(getMapServerURLString() + "&lat=" + lat + "&lng=" + lng));
-            return address.length() < 1 ? "No address found at location." : address;
+            String address = sendRequest(new URL(getMapServerURLString() + "&lat=" + latLng.getLat() + "&lng=" + latLng.getLng()));
+            if (address != null && !address.isEmpty())
+            {
+                checkMapSize();
+                addressMap.put(latLng, address);
+                if(logger.isDebugEnabled())
+                    logger.debug("Address lookup for Latitude: " + latLng.getLat() + " Longitude: " + latLng.getLng() + " returned Address: " + address );
+            }
+            else
+            {
+                address = "No address found at location.";
+            }
+            return address;
         }
         catch (MalformedURLException e)
         {
             logger.debug(e);
+            return "";
         }
-
-        return "";
-
     }
 
     protected String sendRequest(URL mapServerURL)
     {
-
         URLConnection conn;
         HttpURLConnection httpConn = null;
         try
@@ -73,7 +85,6 @@ public class AddressLookup
             {
                 httpConn = (HttpURLConnection) conn;
             }
-
             String status = httpConn.getResponseMessage();
             if (status.equals("OK"))
             {
@@ -86,13 +97,12 @@ public class AddressLookup
         }
         finally
         {
-            if(httpConn != null)
+            if (httpConn != null)
             {
                 httpConn.disconnect();
                 httpConn = null;
             }
         }
-
         return "";
     }
 
@@ -104,7 +114,6 @@ public class AddressLookup
         try
         {
             reader = inputFactory.createXMLStreamReader(is);
-
             while (reader.hasNext())
             {
                 int event = reader.next();
@@ -113,7 +122,6 @@ public class AddressLookup
                     String name = reader.getLocalName();
                     if (name == null)
                         continue;
-
                     if (reader.hasNext())
                     {
                         event = reader.next();
@@ -130,7 +138,6 @@ public class AddressLookup
                                 address.setState(text);
                             else if (name.equalsIgnoreCase("postalcode") && text.length() >= 5)
                                 address.setZip(text);
-
                         }
                     }
                 }
@@ -156,8 +163,18 @@ public class AddressLookup
                 reader = null;
             }
         }
-
         return address.toString();
+    }
+
+    private void checkMapSize()
+    {
+        if (addressMap.size() > 2000)
+        {
+            for (int i = 0; i < 500; i++)
+            {
+                addressMap.pollFirstEntry();
+            }
+        }
     }
 
     class Address
@@ -170,7 +187,6 @@ public class AddressLookup
 
         public Address()
         {
-
         }
 
         public String getAddr1()
@@ -239,9 +255,7 @@ public class AddressLookup
             if (buffer.length() > 0)
                 buffer.append(" ");
             buffer.append(zip);
-
             return buffer.toString();
         }
     }
-
 }

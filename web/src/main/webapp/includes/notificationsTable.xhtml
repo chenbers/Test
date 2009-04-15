@@ -2,21 +2,22 @@
     xmlns:iwi="http://pro.tiwi.com/jsf" xmlns:h="http://java.sun.com/jsf/html">
 
     <div class="datagrid"><h:form id="#{formId}">
+        <rich:jQuery selector="document" query="ready(function(){initializeTable()})" />
+        <rich:datascroller id="topScroller" for="items" immediate="true" scrollerListener="#{bean.scrollerListener}" reRender="bottomScroller,items,header" oncomplete="initializeTable();"/>
 
-        <rich:datascroller id="topScroller" for="items" immediate="true" scrollerListener="#{bean.scrollerListener}" reRender="bottomScroller,items,header">
-        </rich:datascroller>
-
-        <rich:dataTable value="#{tableData}" id="items" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{numRowsPerPg}" width="100%">
+        <rich:dataTable id="items" value="#{tableData}" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{numRowsPerPg}" width="100%">
 
             <!-- Data -->
-            <rich:column>
-                <a4j:commandLink style="cursor:pointer">
-                    <h:graphicImage value="/images/ico_map.png"  style="border:none"/>
+            <rich:column id="mapColumn">
+                <h:graphicImage value="/images/ico_map.png" id="mapIcon" styleClass="clickable-map-icon">
                     <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
                         <f:param name="lat" value="#{item.event.latitude}" />
                         <f:param name="lng" value="#{item.event.longitude}" />
                     </rich:componentControl>
-                </a4j:commandLink>
+                </h:graphicImage>
+                <rich:toolTip id="addressToolTip" mode="ajax">
+                    <h:outputText id="address" value="#{item.event.latLng}" converter="#{latLngAddressConverter}" />
+                </rich:toolTip>
             </rich:column>
             <rich:column rendered="#{tableColumns['date'].visible}" sortBy="#{item.event.time}" width="20%">
                 <f:facet name="header">
@@ -73,8 +74,7 @@
             </rich:column>
         </rich:dataTable>
 
-        <rich:datascroller id="bottomScroller" for="items" immediate="true" scrollerListener="#{bean.scrollerListener}" reRender="topScroller,items,header">
-        </rich:datascroller>
+        <rich:datascroller id="bottomScroller" for="items" immediate="true" scrollerListener="#{bean.scrollerListener}" reRender="topScroller,items,header" oncomplete="initializeTable();"/>
     </h:form></div>
 
     <rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="50" autosized="true" resizeable="false" zindex="2000"
@@ -110,9 +110,9 @@
     </rich:modalPanel>
 
     <!-- START LOCATION MODAL -->
-    <rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">
+    <rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initializeMap(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">
         <f:facet name="header">
-            <h:outputText value="Event Location" />
+            <h:outputText id="mapModalHeader" value="Event Location" />
         </f:facet>
         <f:facet name="controls">
             <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('eventLocationModal')" />

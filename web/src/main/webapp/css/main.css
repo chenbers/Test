@@ -3010,6 +3010,10 @@ Tree View
 	background-color: #FEF2C6
 }
 
+.clickable-map-icon {
+    cursor:pointer;
+    border: none;
+}
+
 .rich-tool-tip {
-	width: 350px
 }

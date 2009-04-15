@@ -1,156 +1,130 @@
-<ui:composition 
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:rich="http://richfaces.org/rich"
-	xmlns:f="http://java.sun.com/jsf/core"
-  	xmlns:iwi="http://pro.tiwi.com/jsf"
-	xmlns:h="http://java.sun.com/jsf/html">
-		
-		<div class="datagrid">
-				<h:form id="redFlagsTableForm">
-	
-    	    	<rich:datascroller id="topScroller" for="items" immediate="true"
-        			scrollerListener="#{redFlagsBean.scrollerListener}"
-        			reRender="bottomScroller,items,header">
-        		</rich:datascroller>
-        		
-				<rich:dataTable value="#{tableData}" id="items"
-					var="item" styleClass="datagrid"
-					rowClasses="tableOdd,tableEven" cellspacing="1" 
-					rows="#{numRowsPerPg}"
-					width="100%">
-					
-					<!-- Data -->            
-                    <rich:column>
-                        <a4j:commandLink style="cursor:pointer">
-                            <h:graphicImage value="/images/ico_map.png"  style="border:none"/>
-                            <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
-                                <f:param name="lat" value="#{item.redFlag.event.latitude}" />
-                                <f:param name="lng" value="#{item.redFlag.event.longitude}" />
-                            </rich:componentControl>
-                        </a4j:commandLink>
-                    </rich:column>
-					<rich:column rendered="#{tableColumns['level'].visible}" 
-						sortBy="#{item.redFlag.level}" width="10%">
-						<f:facet name="header">
-							<h:outputText value="#{messages.notes_redflags_level}" />
-						</f:facet>
-						<h:outputText styleClass="ls_tab_#{item.redFlag.level}" value="#{item.redFlag.level.description}"/>
-    				</rich:column>
-    				<rich:column rendered="#{tableColumns['alerts'].visible}" 
-    					sortBy="#{item.redFlag.alert}" width="5%">
-      					<f:facet name="header">
-      						<h:outputText value="#{messages.notes_redflags_alerts}" />
-      					</f:facet>
-						<h:outputText value="#{(item.redFlag.alert) ? 'yes' : 'no'}" />      
-    				</rich:column>
-    				<rich:column rendered="#{tableColumns['date'].visible}" 
-    					sortBy="#{item.redFlag.event.time}"  width="15%">
-      					<f:facet name="header">
-      						<h:outputText value="#{messages.notes_redflags_date}" />
-      					</f:facet>
-      					<h:outputText value="#{item.date}"/>
-    				</rich:column>
-    				<rich:column rendered="#{tableColumns['group'].visible}" 
-    					sortBy="#{item.group}"  width="10%">
-      					<f:facet name="header">
-      						<h:outputText value="#{messages.notes_redflags_group}" />
-      					</f:facet>
-      					<h:outputText value="#{item.group}"/>
-    				</rich:column>
-    				<rich:column rendered="#{tableColumns['driver'].visible}" 
-    					sortBy="#{item.driverName}"  width="10%">
-      					<f:facet name="header">
-      						<h:outputText value="#{messages.notes_redflags_driver}" />
-      					</f:facet>
-						<a4j:htmlCommandLink action="#{redFlagsBean.driverAction}" value="#{item.driverName}">
-							<f:setPropertyActionListener value="#{item.redFlag.event}" target="#{redFlagsBean.selectedEvent}" />
-							<f:setPropertyActionListener value="#{item.redFlag.event.driver}" target="#{navigationBean.driver}" />
-						</a4j:htmlCommandLink>
-    				</rich:column>
-    				<rich:column rendered="#{tableColumns['vehicle'].visible}" 
-    					sortBy="#{item.vehicleName}"  width="10%">
-      					<f:facet name="header">
-      						<h:outputText value="#{messages.notes_redflags_vehicle}" />
-      					</f:facet>
-      					<a4j:htmlCommandLink action="#{redFlagsBean.vehicleAction}" value="#{item.vehicleName}">
-							<f:setPropertyActionListener value="#{item.redFlag.event}" target="#{redFlagsBean.selectedEvent}" />
- 							<f:setPropertyActionListener value="#{item.redFlag.event.vehicle}" target="#{navigationBean.vehicle}" />
-						</a4j:htmlCommandLink>
-    				</rich:column>
-    				<rich:column rendered="#{tableColumns['category'].visible}" 
-    					sortBy="#{item.category}"  width="20%">
-      					<f:facet name="header">
-      						<h:outputText value="#{messages.notes_redflags_category}" />
-      					</f:facet>
-      					<h:outputText value="#{item.category}" />
-    				</rich:column>
-    				<rich:column rendered="#{tableColumns['detail'].visible}"
-    					sortBy="#{item.detail}"  width="20%">
-      					<f:facet name="header">
-      						<h:outputText value="#{messages.notes_redflags_detail}" />
-      					</f:facet>
-      					<h:outputText value="#{item.detail}" />
-    				</rich:column>
-    				<rich:column rendered="#{tableColumns['clear'].visible}"  width="10%">
-      					<f:facet name="header">
-      						<h:outputText value="" />
-      					</f:facet>
-						<a4j:commandLink title="#{messages.notes_redflags_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearRedFlagPanel')" reRender="clearItemForm:clearItem" >
-							<h:outputText value="#{messages.notes_redflags_clear}" />
-							<f:setPropertyActionListener target="#{redFlagsBean.clearItem}" value="#{item}" />
-						</a4j:commandLink>
-    				</rich:column>
-    			</rich:dataTable>
-    			
-    			<rich:datascroller id="bottomScroller" for="items" immediate="true"    			
-    				scrollerListener="#{redFlagsBean.scrollerListener}"
-        			reRender="topScroller,items,header">        			
-        		</rich:datascroller>
-    			</h:form>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:iwi="http://pro.tiwi.com/jsf" xmlns:h="http://java.sun.com/jsf/html">
 
-			</div>	
-			
+    <div class="datagrid"><h:form id="redFlagsTableForm">
+        <rich:jQuery selector="document" query="ready(function(){initializeTable()})" />
+        <rich:datascroller id="topScroller" for="items" immediate="true" scrollerListener="#{redFlagsBean.scrollerListener}" reRender="bottomScroller,items,header" oncomplete="initializeTable();"/>
+
+        <rich:dataTable value="#{tableData}" id="items" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{numRowsPerPg}" width="100%">
+
+            <!-- Data -->
+            <rich:column id="mapColumn">
+                <h:graphicImage value="/images/ico_map.png" id="mapIcon" styleClass="clickable-map-icon" >
+                    <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
+                        <f:param name="lat" value="#{item.redFlag.event.latitude}" />
+                        <f:param name="lng" value="#{item.redFlag.event.longitude}" />
+                    </rich:componentControl>
+                </h:graphicImage>
+                <rich:toolTip id="addressToolTip" mode="ajax">
+                    <h:outputText id="address" value="#{item.redFlag.event.latLng}" converter="#{latLngAddressConverter}" />
+                </rich:toolTip>
+            </rich:column>
+            <rich:column rendered="#{tableColumns['level'].visible}" sortBy="#{item.redFlag.level}" width="10%">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_redflags_level}" />
+                </f:facet>
+                <h:outputText styleClass="ls_tab_#{item.redFlag.level}" value="#{item.redFlag.level.description}" />
+            </rich:column>
+            <rich:column rendered="#{tableColumns['alerts'].visible}" sortBy="#{item.redFlag.alert}" width="5%">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_redflags_alerts}" />
+                </f:facet>
+                <h:outputText value="#{(item.redFlag.alert) ? 'yes' : 'no'}" />
+            </rich:column>
+            <rich:column rendered="#{tableColumns['date'].visible}" sortBy="#{item.redFlag.event.time}" width="15%">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_redflags_date}" />
+                </f:facet>
+                <h:outputText value="#{item.date}" />
+            </rich:column>
+            <rich:column rendered="#{tableColumns['group'].visible}" sortBy="#{item.group}" width="10%">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_redflags_group}" />
+                </f:facet>
+                <h:outputText value="#{item.group}" />
+            </rich:column>
+            <rich:column rendered="#{tableColumns['driver'].visible}" sortBy="#{item.driverName}" width="10%">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_redflags_driver}" />
+                </f:facet>
+                <a4j:htmlCommandLink action="#{redFlagsBean.driverAction}" value="#{item.driverName}">
+                    <f:setPropertyActionListener value="#{item.redFlag.event}" target="#{redFlagsBean.selectedEvent}" />
+                    <f:setPropertyActionListener value="#{item.redFlag.event.driver}" target="#{navigationBean.driver}" />
+                </a4j:htmlCommandLink>
+            </rich:column>
+            <rich:column rendered="#{tableColumns['vehicle'].visible}" sortBy="#{item.vehicleName}" width="10%">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_redflags_vehicle}" />
+                </f:facet>
+                <a4j:htmlCommandLink action="#{redFlagsBean.vehicleAction}" value="#{item.vehicleName}">
+                    <f:setPropertyActionListener value="#{item.redFlag.event}" target="#{redFlagsBean.selectedEvent}" />
+                    <f:setPropertyActionListener value="#{item.redFlag.event.vehicle}" target="#{navigationBean.vehicle}" />
+                </a4j:htmlCommandLink>
+            </rich:column>
+            <rich:column rendered="#{tableColumns['category'].visible}" sortBy="#{item.category}" width="20%">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_redflags_category}" />
+                </f:facet>
+                <h:outputText value="#{item.category}" />
+            </rich:column>
+            <rich:column rendered="#{tableColumns['detail'].visible}" sortBy="#{item.detail}" width="20%">
+                <f:facet name="header">
+                    <h:outputText value="#{messages.notes_redflags_detail}" />
+                </f:facet>
+                <h:outputText value="#{item.detail}" />
+            </rich:column>
+            <rich:column rendered="#{tableColumns['clear'].visible}" width="10%">
+                <f:facet name="header">
+                    <h:outputText value="" />
+                </f:facet>
+                <a4j:commandLink title="#{messages.notes_redflags_clear}" oncomplete="javascript:Richfaces.showModalPanel('clearRedFlagPanel')" reRender="clearItemForm:clearItem">
+                    <h:outputText value="#{messages.notes_redflags_clear}" />
+                    <f:setPropertyActionListener target="#{redFlagsBean.clearItem}" value="#{item}" />
+                </a4j:commandLink>
+            </rich:column>
+        </rich:dataTable>
+
+        <rich:datascroller id="bottomScroller" for="items" immediate="true" scrollerListener="#{redFlagsBean.scrollerListener}" reRender="topScroller,items,header" oncomplete="initializeTable();"/>
+
+    </h:form></div>
+
     <rich:modalPanel id="clearRedFlagPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="50" autosized="true" resizeable="false" zindex="2000"
-    		onshow="document.getElementById('clearItemForm:yesButton').focus();">
-      <f:facet name="header">
-        <h:outputText value="#{messages.notes_redflags_clearTitle}" />
-      </f:facet>
-      <f:facet name="controls">
-        <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('clearRedFlagPanel')" />
-      </f:facet>
+        onshow="document.getElementById('clearItemForm:yesButton').focus();">
+        <f:facet name="header">
+            <h:outputText value="#{messages.notes_redflags_clearTitle}" />
+        </f:facet>
+        <f:facet name="controls">
+            <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('clearRedFlagPanel')" />
+        </f:facet>
 
-      <h:panelGroup layout="block" styleClass="popupsubtitle">
-      	<h:outputText value="#{messages.notes_redflags_clearInst}"/>
-      </h:panelGroup>
+        <h:panelGroup layout="block" styleClass="popupsubtitle">
+            <h:outputText value="#{messages.notes_redflags_clearInst}" />
+        </h:panelGroup>
 
-      <a4j:form id="clearItemForm">
-		<h:panelGroup layout="block"  styleClass="popupcontent" id="clearItem">
-			<h:outputText value="#{redFlagsBean.clearItem.detail}"/><br/>
-      		<h:outputText value="#{redFlagsBean.clearItem.date}"/>
-      	</h:panelGroup>
-	
-        <div class="popupactions">
-          <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearRedFlagPanel'); return false;"><span class="no"><h:outputText value="#{messages.button_no}" /></span></button>
-          <a4j:commandButton id="yesButton"
-          				action="#{redFlagsBean.clearItemAction}"         				
-          				oncomplete="Richfaces.hideModalPanel('clearRedFlagPanel')" 
-          				onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;"
-          				reRender="#{clearRerender}" styleClass="left">
-          					<span class="yes">
-          						<h:outputText value="#{messages.button_yes}" />
-          					</span>
-			</a4j:commandButton>
-        </div>
+        <a4j:form id="clearItemForm">
+            <h:panelGroup layout="block" styleClass="popupcontent" id="clearItem">
+                <h:outputText value="#{redFlagsBean.clearItem.detail}" />
+                <br />
+                <h:outputText value="#{redFlagsBean.clearItem.date}" />
+            </h:panelGroup>
 
-      </a4j:form>
+            <div class="popupactions">
+            <button type="submit" class="left" onclick="Richfaces.hideModalPanel('clearRedFlagPanel'); return false;"><span class="no"><h:outputText
+                value="#{messages.button_no}" /></span></button>
+            <a4j:commandButton id="yesButton" action="#{redFlagsBean.clearItemAction}" oncomplete="Richfaces.hideModalPanel('clearRedFlagPanel')"
+                onkeypress="if (event &amp;&amp; event.keyCode == 13) return false; return true;" reRender="#{clearRerender}" styleClass="left">
+                <span class="yes"> <h:outputText value="#{messages.button_yes}" /> </span>
+            </a4j:commandButton></div>
+
+        </a4j:form>
 
     </rich:modalPanel>
 
+
     <!-- START LOCATION MODAL -->
-    <rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">
+    <rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initializeMap(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">
         <f:facet name="header">
-            <h:outputText value="Event Location" />
+            <h:outputText id="mapModalHeader" value="Event Location" />
         </f:facet>
         <f:facet name="controls">
             <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('eventLocationModal')" />
