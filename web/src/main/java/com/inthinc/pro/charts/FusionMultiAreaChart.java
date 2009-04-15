@@ -42,8 +42,8 @@ public class FusionMultiAreaChart implements BaseChart
     private static final String CHART_CAT_LABEL=" <category label=''{0}''/>";
     private static final String CHART_CAT_END="</categories>";
     
-    private static final String CHART_ITEM_FORMAT = "<set toolText=''{1}'' value=''{0}'' />";
-    private static final String CHART_ITEM_FORMAT_DASHED = "<set toolText=''{1}'' value=''{0}'' dashed=''1''/>";
+    private static final String CHART_ITEM_FORMAT = "<set toolText=''{1}'' value=''{0,number,#.##}'' />";
+    private static final String CHART_ITEM_FORMAT_DASHED = "<set toolText=''{1}'' value=''{0,number,#.##}'' dashed=''1''/>";
     
     private static final String CHART_DATASET_AREA_START="<dataset seriesName=''{0}'' renderAs=\"Area\" color=''{1}'' anchorBorderColor=''#333333'' anchorAlpha =''100'' parentYAxis=''P''>";
     private static final String CHART_DATASET_LINE_START="<dataset seriesName=''{0}'' renderAs=\"Line\" color=''{1}'' parentYAxis=''P'' alpha=''75''>";
