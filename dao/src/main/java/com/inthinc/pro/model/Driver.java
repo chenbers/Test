@@ -5,6 +5,13 @@ import java.util.Date;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
+/**
+ * You'll see this through out this bean. It is mainly used so that the table sorting on these fields treats "" and null the same.
+ * if(fieldName != null && fieldName.equals(""))
+ *      return null
+ *
+ */
+
 public class Driver extends BaseEntity implements Comparable<Driver>
 {
     @Column(updateable = false)
@@ -93,6 +100,8 @@ public class Driver extends BaseEntity implements Comparable<Driver>
 
     public String getLicense()
     {
+        if(license != null && license.equals(""))
+            return null;
         return license;
     }
 
@@ -113,6 +122,8 @@ public class Driver extends BaseEntity implements Comparable<Driver>
 
     public String getLicenseClass()
     {
+        if(licenseClass != null && licenseClass.equals(""))
+            return null;
         return licenseClass;
     }
 
@@ -133,6 +144,8 @@ public class Driver extends BaseEntity implements Comparable<Driver>
 
     public String getCertifications()
     {
+        if(certifications != null && certifications.equals(""))
+            return null;
         return certifications;
     }
 

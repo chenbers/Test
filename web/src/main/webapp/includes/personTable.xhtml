@@ -67,9 +67,9 @@
       <c:set var="alertText" value="myAccount_alertText#{item.info}" />
       <h:outputText value="#{messages[alertText]}" />
     </rich:column>
-    <rich:column rendered="#{personBean.tableColumns['warn'].visible}" sortBy="#{item.warn}">
+    <c:set var="alertText" value="myAccount_alertText#{item.warn}" />
+    <rich:column rendered="#{personBean.tableColumns['warn'].visible}" sortBy="#{messages[alertText]}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_warn}" /></f:facet>
-      <c:set var="alertText" value="myAccount_alertText#{item.warn}" />
       <h:outputText value="#{messages[alertText]}" />
     </rich:column>
     <rich:column rendered="#{personBean.tableColumns['crit'].visible}" sortBy="#{item.crit}">
@@ -77,7 +77,7 @@
       <c:set var="alertText" value="myAccount_alertText#{item.crit}" />
       <h:outputText value="#{messages[alertText]}" />
     </rich:column>
-    <rich:column rendered="#{personBean.tableColumns['timeZone'].visible}" sortBy="#{item.displayTimeZone}">
+    <rich:column rendered="#{personBean.tableColumns['timeZone'].visible}" sortBy="#{item.timeZone.ID}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_timeZone}" /></f:facet>
       <h:outputText value="#{item.timeZone.ID}" />
     </rich:column>

@@ -403,6 +403,7 @@ public class OrganizationBean extends BaseBean
                 BaseTreeNodeImpl parentNode = selectedGroupNode.getParent();
                 selectedGroupNode.setParent(null);
                 selectedGroupNode = (GroupTreeNodeImpl) parentNode;
+                selectedTreeNode = parentNode;
                 // Make sure when the page refreshed that we pull a new list in
                 rootGroupNode = null;
                 updateUsersGroupHeirarchy();
