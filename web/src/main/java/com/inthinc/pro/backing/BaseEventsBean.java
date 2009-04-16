@@ -32,8 +32,8 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
     private Integer                 start;
     private Integer                 end;
     private Integer                 maxCount;
-    private List<EventReportItem> tableData;
-    private List<EventReportItem> filteredTableData;
+    private List<EventReportItem>   tableData;
+    private List<EventReportItem>   filteredTableData;
     private String emailAddress;
 
     private EventDAO                eventDAO;
@@ -64,6 +64,8 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
         AVAILABLE_COLUMNS.add("clear");
 
     }
+    
+    
 
     @Override
     public void initBean()
@@ -72,6 +74,17 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
         tablePref = new TablePref<EventReportItem>(this);
         searchCoordinationBean.addSearchChangeListener(this);
    }
+    
+    /*
+     *When the search button is actually clicked, we want to make sure we use what's in
+     *the searchFor field
+     */
+    @Override
+    public void searchAction()
+    {
+        setEventFilter(null);  
+        super.searchAction();
+    }
 
     public TablePref<EventReportItem> getTablePref()
     {
@@ -161,6 +174,8 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
                 }
             }
         }
+        
+        //Filter if search is based on single event
         if (getEventFilter() != null)
         {    
             filteredTableData = new ArrayList<EventReportItem>();
@@ -174,6 +189,21 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
                 }
             }
         }
+        
+        //Filter if search is based on group.
+        if (!getEffectiveGroupId().equals(getUser().getGroupID()))
+        {
+            filteredTableData = new ArrayList<EventReportItem>();
+            
+            for (EventReportItem item : tableData)
+            {
+                if (item.getEvent().getGroupID().equals(getEffectiveGroupId()))
+                {
+                    filteredTableData.add(item);
+                }
+            }
+        }
+        
         if (searchCoordinationBean.isGoodSearch())
         {
             final ArrayList<EventReportItem> searchTableDataResult = new ArrayList<EventReportItem>();
@@ -190,7 +220,7 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
     {
         setFilteredTableData(null);
 
-        List<Event> eventList = getEventsForGroup(getEffectiveGroupId());
+        List<Event> eventList = getEventsForGroup(getUser().getGroupID());
         List<EventReportItem> eventReportItemList = new ArrayList<EventReportItem>();
         for (Event event : eventList)
         {
