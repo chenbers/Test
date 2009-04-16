@@ -13,7 +13,6 @@
 				<span class="top5">#{messages.teamTop_top}</span>
 				<span class="panel_links">
 				<h:commandLink action="go_reports" value="#{messages.teamTop_showAll}">
-					<f:setPropertyActionListener value="1" target="#{searchCoordinationBean.navigation}" />
 					<f:setPropertyActionListener value="#{navigationBean.group}" target="#{searchCoordinationBean.group}" />
 				</h:commandLink>
 								
@@ -67,7 +66,6 @@
 				<span class="thumbsdown">#{messages.teamTop_bottom}</span>
 				<span class="panel_links">
 				<h:commandLink action="go_reports" value="#{messages.teamTop_showAll}">
-					<f:setPropertyActionListener value="1" target="#{searchCoordinationBean.navigation}" />
 					<f:setPropertyActionListener value="#{navigationBean.group}" target="#{searchCoordinationBean.group}" />
 				</h:commandLink>
 				</span>
