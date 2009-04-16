@@ -3,6 +3,7 @@ package com.inthinc.pro.backing;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 import com.inthinc.pro.backing.ui.ScoreBox;
@@ -163,18 +164,19 @@ public class VehicleBean extends BasePerformanceBean
         {
             Trip tempTrip = vehicleDAO.getLastTrip(navigation.getVehicle().getVehicleID());
 
-            if(tempTrip == null)
-            {
-                logger.debug("LastTrip NULL - VehicleID: " + navigation.getVehicle().getVehicleID());
-            }
-            
             if (tempTrip != null && tempTrip.getRoute().size() > 0)
             {
-                logger.debug("LastTrip found for - VehicleID: " + navigation.getVehicle().getVehicleID());
                 hasLastTrip = true;
                 navigation.setDriver(driverDAO.findByID(tempTrip.getDriverID()));
 
-                TripDisplay trip = new TripDisplay(tempTrip, navigation.getDriver().getPerson().getTimeZone(), addressLookup.getMapServerURLString());
+                TimeZone tz;
+                
+                if(navigation.getDriver() == null || navigation.getDriver().getPerson() == null)
+                    tz = TimeZone.getTimeZone("GMT");
+                else
+                    tz = navigation.getDriver().getPerson().getTimeZone();
+                
+                TripDisplay trip = new TripDisplay(tempTrip, tz, addressLookup.getMapServerURLString());
                 setLastTrip(trip);
                 initViolations(trip.getTrip().getStartTime(), trip.getTrip().getEndTime());
             }
