@@ -481,7 +481,8 @@ public class SiloServiceTest
         
         for (Trip t : tripList)
         {
-            assertEquals(TESTING_DRIVER_ID, t.getDriverID());
+            //It is possible that a trip is associated to the Unknown Driver
+//            assertEquals(TESTING_DRIVER_ID, t.getDriverID());
             assertTrue(startDate.before(t.getStartTime()));
             assertTrue(endDate.after(t.getEndTime()));
             assertTrue(t.getMileage() > 0);
