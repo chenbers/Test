@@ -12,12 +12,14 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
+import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.util.MessageUtil;
 
 public class DriverReportBean extends BaseReportBean<DriverReportItem> implements PersonChangeListener
 {
@@ -65,9 +67,15 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
             scoreDAO.getDriverReportData(            
             		getEffectiveGroupId(),
                     Duration.TWELVE);
+        
         //Once loaded, set the group name NOW so it can be searchable IMMEDIATELY
         for ( DriverReportItem dri : this.driversData ) {
             dri.setGroup(this.getGroupHierarchy().getGroup(dri.getGroupID()).getName());
+            if(dri.getVehicle() == null){
+                Vehicle v = new Vehicle();                
+                v.setName(MessageUtil.getMessageString("reports_none_assigned"));
+                dri.setVehicle(v);
+            }
         }
     }
 
@@ -119,7 +127,7 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
             //Vehicle, none assigned
             if ( d.getVehicle() == null ) {
                 Vehicle v = new Vehicle();                
-                v.setName("None Assigned");
+                v.setName(MessageUtil.getMessageString("reports_none_assigned"));
                 drt.setVehicle(v);
             }  
             
@@ -214,5 +222,10 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
 
 		driverData = displayData;
 		
+	}
+	
+	public Map<String, TableColumn> getDriverColumns()
+	{
+	    return super.getTableColumns();
 	}
 }

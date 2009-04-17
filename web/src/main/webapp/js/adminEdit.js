@@ -31,6 +31,9 @@ jQuery(document).ready( function() {
 
 });
 
+var formElements = [ "text", "checkbox", "radio", "select-one",
+		"select-multiple", "textarea" ];
+
 function checkMultiple(item) {
 	var id;
 	if (typeof (item) == "string")
@@ -59,8 +62,4 @@ function checkMultiple(item) {
 	if (span) {
 		span.style.display = "inline";
 	}
-}
-
-for ( var i = 0; int < array.length; int++) {
-	
 }

@@ -11,6 +11,11 @@
 
   <ui:param name="adminSelected" value="current" />
   <ui:param name="helpFile" value="Admin_Add_Profile.htm" />
+  
+  <ui:define name="scripts">
+      <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/adminEdit.js"></script>
+  </ui:define>
+  
   <ui:define name="content">
 
     <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
@@ -431,8 +436,6 @@
         </td>
       </tr>
     </table>
-
-    <ui:include src="../../includes/adminEditScripts.xhtml"/>
     
     <script type="text/javascript">
       var formElements = ["text", "checkbox", "radio", "select-one", "select-multiple", "textarea"];
@@ -449,36 +452,6 @@
               elements[i].focus();
               return;
             }
-      }
-
-      function checkMultiple(item)
-      {
-        var id;
-        if (typeof(item) == "string")
-          id = item;
-        else
-          id = item.id;
-
-        var box;
-        var index = id.indexOf(":");
-        if (index > 0)
-          box = document.getElementById("edit-form:update_" + id.substring(index + 1));
-        else
-          box = document.getElementById("edit-form:update_" + id);
-        if (!box)
-          box = document.getElementById(id + "update_");
-        if (box)
-          box.checked = true;
-
-        var span;
-        if (index > 0)
-          span = document.getElementById("edit-form:update_" + id.substring(index + 1) + "_required_flag");
-        else
-          span = document.getElementById("edit-form:update_" + id + "_required_flag");
-        if (span)
-        {
-          span.style.display = "inline";
-        }
       }
     </script>
 

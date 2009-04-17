@@ -3,6 +3,7 @@ package com.inthinc.pro.backing;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.context.FacesContext;
 
@@ -10,6 +11,7 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
+import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
@@ -17,6 +19,7 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.VehicleReportItem;
 import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.util.MessageUtil;
 
 public class VehicleReportBean extends BaseReportBean<VehicleReportItem> implements PersonChangeListener
 {
@@ -60,6 +63,18 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
             scoreDAO.getVehicleReportData(
             		getEffectiveGroupId(),
                     Duration.TWELVE);
+        
+        for(VehicleReportItem v: vehiclesData)
+        {
+            //Driver, none assigned
+            if ( v.getDriver() == null || v.getDriver().getPerson() == null ) {
+                Driver d = new Driver();
+                Person p = new Person();
+                p.setFirst(MessageUtil.getMessageString("reports_none_assigned"));
+                d.setPerson(p);
+                v.setDriver(d);
+            }
+        }         
     }
 
     @Override
@@ -196,5 +211,10 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
 	protected void setDisplayData(List<VehicleReportItem> displayData) {
 
 		vehicleData = displayData;
+	}
+	
+	public Map<String, TableColumn> getVehicleColumns()
+	{
+	    return super.getTableColumns();
 	}
 }

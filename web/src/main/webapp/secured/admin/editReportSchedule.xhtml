@@ -6,10 +6,15 @@
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:security="http://pro.tiwi.com/jsf/security"
-     xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
+    xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
 
 	<ui:param name="adminSelected" value="current" />
 	<ui:param name="helpFile" value="Add_Edit_a_Report.htm" />
+   
+    <ui:define name="scripts">
+      <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/adminEdit.js"></script>
+    </ui:define>
+    
 	<ui:define name="content">
 		
 		<table width="920" height="430" border="0" cellspacing="0"
@@ -292,7 +297,6 @@
 				</td>
 			</tr>
 		</table>
-		<ui:include src="../../includes/adminEditScripts.xhtml"/>
 		  <script type="text/javascript">
 		         var formElements = ["text", "checkbox", "radio", "select-one", "select-multiple", "textarea"];
 				 function bodyLoad()
@@ -308,37 +312,7 @@
 				        }
 				  }
 				  
-				 function checkMultiple(item)
-				  {
-				    var id;
-				    if (typeof(item) == "string")
-				      id = item;
-				    else
-				      id = item.id;
-
-				    var box;
-				    var index = id.indexOf(":");
-				    if (index > 0)
-				      box = document.getElementById("edit-form:update_" + id.substring(index + 1));
-				    else
-				      box = document.getElementById("edit-form:update_" + id);
-				    if (box)
-				    {
-				      box.checked = true;
-				    }
-
-				    var span;
-				    if (index > 0)
-				      span = document.getElementById("edit-form:update_" + id.substring(index + 1) + "_required_flag");
-				    else
-				      span = document.getElementById("edit-form:update_" + id + "_required_flag");
-				    if (span)
-				    {
-				      span.style.display = "inline";
-				    }
-				  }
-
-				  
+				 
 	      </script>
 	</ui:define>
 

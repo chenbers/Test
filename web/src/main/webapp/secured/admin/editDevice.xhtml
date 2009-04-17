@@ -10,6 +10,11 @@
 
   <ui:param name="adminSelected" value="current" />
   <ui:param name="helpFile" value="Add_a_Device_-_Details.htm" />
+  
+  <ui:define name="scripts">
+      <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/adminEdit.js"></script>
+  </ui:define>
+  
   <ui:define name="content">
 
     <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
@@ -41,8 +46,8 @@
 
                       <ul id="grid_nav" style="margin: 0;">
                         <li class="r">
-                          <h:commandButton action="#{devicesBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
-                          <h:outputText value=" " /><h:commandButton action="#{devicesBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
+                          <h:commandButton action="#{devicesBean.save}" id="saveButton" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
+                          <h:outputText value=" " /><h:commandButton action="#{devicesBean.cancelEdit}" id="cancelButton" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
                         </li>
                       </ul>
                      
@@ -256,7 +261,6 @@
       <ui:param name="editorBean" value="#{devicesBean}" />
       <ui:param name="reRender" value="edit-form:vehicleID" />
     </ui:include>
-    <ui:include src="../../includes/adminEditScripts.xhtml"/>
     <script type="text/javascript">
   var formElements = ["text", "checkbox", "radio", "select-one", "select-multiple", "textarea"];
 
@@ -274,34 +278,6 @@
         }
   }
 
-  function checkMultiple(item)
-  {
-    var id;
-    if (typeof(item) == "string")
-      id = item;
-    else
-      id = item.id;
-
-    var box;
-    var index = id.indexOf(":");
-    if (index > 0)
-      box = document.getElementById("edit-form:update_" + id.substring(index + 1));
-    else
-      box = document.getElementById("edit-form:update_" + id);
-    if (box)
-      box.checked = true;
-
-
-    var span;
-    if (index > 0)
-      span = document.getElementById("edit-form:update_" + id.substring(index + 1) + "_required_flag");
-    else
-      span = document.getElementById("edit-form:update_" + id + "_required_flag");
-    if (span)
-    {
-      span.style.display = "inline";
-    }
-  }
     </script>
 
   </ui:define>
