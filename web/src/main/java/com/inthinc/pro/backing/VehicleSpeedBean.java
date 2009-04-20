@@ -38,6 +38,7 @@ public class VehicleSpeedBean extends BasePerformanceBean
     private List<EventReportItem>              filteredSpeedingEvents;
     private List<EventReportItem>              speedingEvents;
     private Map<String, List<EventReportItem>> speedingListsMap;
+    private final Integer                      ROWCOUNT = 10;
 
     @Override
     protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
@@ -110,13 +111,16 @@ public class VehicleSpeedBean extends BasePerformanceBean
             speedingEvents.add(new EventReportItem(event, getUser().getPerson().getTimeZone()));
         }
         sortSpeedingEvents();
-        setTableStatsBean();
+      
     }
 
     public List<EventReportItem> getFilteredSpeedingEvents()
     {
         if (filteredSpeedingEvents == null)
+        {
             initEvents();
+            tableStatsBean.reset(ROWCOUNT, getSpeedingListsMap().get(selectedSpeed).size());
+        }
 
         return filteredSpeedingEvents;
     }
@@ -134,8 +138,12 @@ public class VehicleSpeedBean extends BasePerformanceBean
     public void setSelectedSpeed(String selectedSpeed)
     {
         this.selectedSpeed = selectedSpeed;
-        setFilteredSpeedingEvents(speedingListsMap.get(selectedSpeed));
-        setTableStatsBean();
+        setFilteredSpeedingEvents(getSpeedingListsMap().get(selectedSpeed));
+    }
+    
+    public void selectBreakdownChanged()
+    {
+        tableStatsBean.reset(ROWCOUNT, getSpeedingListsMap().get(selectedSpeed).size());
     }
 
     public ScoreDAO getScoreDAO()
@@ -170,6 +178,9 @@ public class VehicleSpeedBean extends BasePerformanceBean
 
     public Map<String, List<EventReportItem>> getSpeedingListsMap()
     {
+        if(speedingListsMap == null)
+            initEvents();
+        
         return speedingListsMap;
     }
 
@@ -184,7 +195,7 @@ public class VehicleSpeedBean extends BasePerformanceBean
         initScores();
         initTrends();
         initEvents();
-        logger.debug("VehicleSpeedBean - setDuration called");
+        tableStatsBean.reset(ROWCOUNT, getSpeedingListsMap().get(selectedSpeed).size());
     }
 
     public Duration getDuration()
@@ -200,14 +211,16 @@ public class VehicleSpeedBean extends BasePerformanceBean
     public void setSpeedingEvents(List<EventReportItem> speedingEvents)
     {
         this.speedingEvents = speedingEvents;
-        sortSpeedingEvents();
-        setTableStatsBean();
     }
 
     public void clearEventAction()
     {
-        eventDAO.forgive(navigation.getVehicle().getVehicleID(), clearItem.getEvent().getNoteID());
-        initEvents();
+        Integer result = eventDAO.forgive(navigation.getVehicle().getVehicleID(), clearItem.getEvent().getNoteID());
+        if(result >= 1)
+            {
+                initEvents();
+                tableStatsBean.updateSize(getSpeedingListsMap().get(selectedSpeed).size());
+            }
     }
 
     public EventReportItem getClearItem()
@@ -301,13 +314,6 @@ public class VehicleSpeedBean extends BasePerformanceBean
         getReportRenderer().exportReportToExcel(buildReport(ReportType.VEHICLE_SPEED), getFacesContext());
     }
 
-    private void setTableStatsBean()
-    {
-        tableStatsBean.setPage(1);
-        tableStatsBean.setTableRowCount(10);
-        tableStatsBean.setTableSize(filteredSpeedingEvents.size());
-    }
-
     private void sortSpeedingEvents()
     {
         speedingListsMap = new HashMap<String, List<EventReportItem>>();
@@ -318,7 +324,7 @@ public class VehicleSpeedBean extends BasePerformanceBean
         List<EventReportItem> speed30 = new ArrayList<EventReportItem>();
         speedingListsMap.put("THIRTYONE", speed30);
         List<EventReportItem> speed40 = new ArrayList<EventReportItem>();
-        speedingListsMap.put("FORTYONE", speed40);
+        speedingListsMap.put("FOURTYONE", speed40);
         List<EventReportItem> speed50 = new ArrayList<EventReportItem>();
         speedingListsMap.put("FIFTYFIVE", speed50);
         List<EventReportItem> speed60 = new ArrayList<EventReportItem>();

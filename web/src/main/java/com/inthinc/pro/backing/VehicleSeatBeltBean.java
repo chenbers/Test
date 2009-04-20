@@ -33,6 +33,7 @@ public class VehicleSeatBeltBean extends BasePerformanceBean
     private EventReportItem       clearItem;
     private String                emailAddress;
     private static final Integer  NO_SCORE       = -1;
+    private final Integer         ROWCOUNT       = 10;
 
     private List<EventReportItem> seatBeltEvents ;
 
@@ -74,10 +75,7 @@ public class VehicleSeatBeltBean extends BasePerformanceBean
             event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
             seatBeltEvents.add(new EventReportItem(event, getUser().getPerson().getTimeZone()));
         }
-        
-        tableStatsBean.setPage(1);
-        tableStatsBean.setTableRowCount(10);
-        tableStatsBean.setTableSize(seatBeltEvents.size());
+        tableStatsBean.reset(ROWCOUNT, seatBeltEvents.size());
     }
 
     public void initTrends()
@@ -171,9 +169,12 @@ public class VehicleSeatBeltBean extends BasePerformanceBean
 
     public void ClearEventAction()
     {
-        eventDAO.forgive(navigation.getVehicle().getVehicleID(), clearItem.getEvent().getNoteID());
-        seatBeltEvents.clear();
-        initEvents();
+        Integer result = eventDAO.forgive(navigation.getVehicle().getVehicleID(), clearItem.getEvent().getNoteID());
+        if(result >= 1)
+            {
+                seatBeltEvents.remove(clearItem);
+                tableStatsBean.updateSize(seatBeltEvents.size());
+            }
     }
 
     public EventReportItem getClearItem()

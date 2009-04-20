@@ -11,18 +11,32 @@ public class TableStatsBean
     private Integer tableRowCount = 0;
     private Integer tableRowStart;
     private Integer tableRowEnd   = 0;
-    private Integer Page;
+    private Integer Page = 1;
 
+    public void reset(Integer rowCount, Integer size)
+    {
+        this.setPage(size > 0 ? 1 : 0);
+        this.setTableRowCount(rowCount);
+        this.setTableSize(size);
+    }
+    
+    public void updateSize(Integer size)
+    {
+        this.tableSize = size;
+        
+        if(tableRowEnd > size)
+            tableRowEnd = size;
+        
+        if(tableRowStart > size)
+            tableRowStart = size;
+    }
+    
     public Integer getTableRowStart()
     {
     	if(tableRowStart == null){
     		
     		tableRowStart = tableSize > 0?1:0;
     	}
-//        if(tableRowStart == null && tableSize > 0)
-//            tableRowStart = 1;
-//        else if(tableRowStart == null && tableSize == 0)
-//            tableRowStart = 0;
 
         return tableRowStart;
     }
@@ -67,12 +81,15 @@ public class TableStatsBean
 
     public void setTableSize(Integer tableSize)
     {   
-        if(tableSize > 0)
+        if(tableSize > 0 && Page <= 1 )
         {
             tableRowStart = 1;
             tableRowEnd = tableRowCount;
+           
         }
-        else {
+        else if (tableSize < 1)
+        {
+            Page = 0;
             tableRowStart = 0;
             tableRowEnd = tableRowCount;
        	
@@ -98,5 +115,7 @@ public class TableStatsBean
     {
         Page = page;
     }
+    
+
 
 }

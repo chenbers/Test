@@ -32,6 +32,7 @@ public class DriverStyleBean extends BasePerformanceBean
     private List<EventReportItem> styleEvents;
     private List<EventReportItem> filteredStyleEvents;
     private String                selectedEventType = "";
+    private final Integer         ROWCOUNT          = 10;
 
     @Override
     protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
@@ -128,6 +129,7 @@ public class DriverStyleBean extends BasePerformanceBean
         initScores();
         initTrends();
         initEvents();
+        tableStatsBean.reset(ROWCOUNT, filteredStyleEvents.size());
     }
 
     public Duration getDuration()
@@ -151,8 +153,12 @@ public class DriverStyleBean extends BasePerformanceBean
 
     public void ClearEventAction()
     {
-        eventDAO.forgive(navigation.getDriver().getDriverID(), clearItem.getEvent().getNoteID());
-        initEvents();
+        Integer result = eventDAO.forgive(navigation.getDriver().getDriverID(), clearItem.getEvent().getNoteID());
+        if(result >= 1)
+            {
+                filteredStyleEvents.remove(clearItem);
+                tableStatsBean.updateSize(filteredStyleEvents.size());
+            }
     }
 
     public EventReportItem getClearItem()
@@ -249,7 +255,11 @@ public class DriverStyleBean extends BasePerformanceBean
     public List<EventReportItem> getFilteredStyleEvents()
     {
         if(filteredStyleEvents == null)
+        {
             initEvents();
+            filterEventsAction();
+            tableStatsBean.reset(ROWCOUNT, filteredStyleEvents.size());
+        }
             
         return filteredStyleEvents;
     }
@@ -267,22 +277,15 @@ public class DriverStyleBean extends BasePerformanceBean
     public void setSelectedEventType(String selectedEventType)
     {
         this.selectedEventType = selectedEventType;
-    }
-
-    private void setTableStatsBean()
-    {
-        tableStatsBean.setPage(1);
-        tableStatsBean.setTableRowCount(10);
-        tableStatsBean.setTableSize(filteredStyleEvents.size());
+        
     }
 
     public String filterEventsAction()
-    {
+    { 
         filteredStyleEvents = new ArrayList<EventReportItem>();
 
         if (selectedEventType.isEmpty())
         {
-            
             filteredStyleEvents.addAll(getStyleEvents());
         }
         else
@@ -295,7 +298,8 @@ public class DriverStyleBean extends BasePerformanceBean
                 }
             }
         }
-        setTableStatsBean();
+        
+        tableStatsBean.reset(ROWCOUNT, filteredStyleEvents.size());
         return "";
     }
 }

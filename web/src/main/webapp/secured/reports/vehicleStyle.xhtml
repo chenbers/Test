@@ -115,7 +115,7 @@ var firstLoad = new Boolean(true);
 						<span class="vehicle" id="titleSpan"></span>
 						<ui:include src="../../includes/dateLinksToolsDetail.xhtml">
 							<ui:param name="ajaxForm" value="styleForm"/>
-							<ui:param name="reRenderList" value="styleForm,overallScoreBox,breakdown_panel,eventsPanel"/>			
+							<ui:param name="reRenderList" value="styleForm,overallScoreBox,OVERALL_script,BRAKE_script,ACCELERATE_script,TURN_script,BUMP_script,selectScript,eventsPanel"/>			
 							<ui:param name="thirtyDaysOn" value="#{(vehicleStyleBean.duration eq 'DAYS') ? 'on' : ''}"/>
 							<ui:param name="threeMonthsOn" value="#{(vehicleStyleBean.duration eq 'THREE') ? 'on' : ''}"/>
 							<ui:param name="sixMonthsOn" value="#{(vehicleStyleBean.duration eq 'SIX') ? 'on' : ''}"/>
@@ -191,7 +191,7 @@ var firstLoad = new Boolean(true);
 						<span class="panel_links"></span></div>
 				</div>
 				<div class="panel_w">
-				  <rich:panel bodyClass="panel_content" id="breakdown_panel" border="0">
+				  <div class="panel_content" id="breakdown_panel">
 					<table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
 					  <tr>
 					    <td id="OVERALL" valign="top" class="tiny_chart">
@@ -203,7 +203,6 @@ var firstLoad = new Boolean(true);
 						  	  		<h:outputText value="#{messages.SCORE_OVERALL}"/>
 						  	  </a4j:commandLink>
 						  </h:form>
-<!--							  <div onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_OVERALL}')">#{messages.SCORE_OVERALL}</div>-->
 						  </div>
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
@@ -215,6 +214,7 @@ var firstLoad = new Boolean(true);
 								            <ui:param name="height" value="90" />  
 								            <ui:param name="tartgetElementVar" value="targetElement1" />
 								            <ui:param name="ChartDivID" value="style_chart_tiny_overall" />
+								            <ui:param name="ScriptDivID" value="OVERALL_script" />
 								            <ui:param name="chartVar" value="overallChart2" />
 								            <ui:param name="hideLabels" value="TRUE" />
 								            <ui:param name="hideLegend" value="TRUE" />
@@ -252,6 +252,7 @@ var firstLoad = new Boolean(true);
 									            <ui:param name="height" value="90" />  
 									            <ui:param name="tartgetElementVar" value="targetElementBrake" />
 									            <ui:param name="ChartDivID" value="style_chart_tiny_brake" />
+									            <ui:param name="ScriptDivID" value="BRAKE_script" />
 									            <ui:param name="chartVar" value="chartBrake" />
 									            <ui:param name="hideLabels" value="TRUE" />
 								            	<ui:param name="hideLegend" value="TRUE" />
@@ -288,6 +289,7 @@ var firstLoad = new Boolean(true);
 								            <ui:param name="height" value="90" />  
 								            <ui:param name="tartgetElementVar" value="targetElementAccel" />
 								            <ui:param name="ChartDivID" value="style_chart_tiny_Accel" />
+								            <ui:param name="ScriptDivID" value="ACCELERATE_script" />
 								            <ui:param name="chartVar" value="chartAccel" />
 								            <ui:param name="hideLabels" value="TRUE" />
 								            <ui:param name="hideLegend" value="TRUE" />
@@ -326,6 +328,7 @@ var firstLoad = new Boolean(true);
 								            <ui:param name="height" value="90" />  
 								            <ui:param name="tartgetElementVar" value="targetElementTurn" />
 								            <ui:param name="ChartDivID" value="style_chart_tiny_turn" />
+								            <ui:param name="ScriptDivID" value="TURN_script" />
 								            <ui:param name="chartVar" value="chartTurn" />
 								            <ui:param name="hideLabels" value="TRUE" />
 								            <ui:param name="hideLegend" value="TRUE" />
@@ -363,6 +366,7 @@ var firstLoad = new Boolean(true);
 								            <ui:param name="height" value="90" />  
 								            <ui:param name="tartgetElementVar" value="targetElementBump" />
 								            <ui:param name="ChartDivID" value="style_chart_tiny_bump" />
+								            <ui:param name="ScriptDivID" value="BUMP_script" />
 								            <ui:param name="chartVar" value="chartBump" />
 								            <ui:param name="hideLabels" value="TRUE" />
 								            <ui:param name="hideLegend" value="TRUE" />
@@ -380,27 +384,29 @@ var firstLoad = new Boolean(true);
 						</td>
 					  </tr>
 					</table>
-					<script type="text/javascript">
-
-					// This code gets called on first load and A4J Re-Renders
-			  		// Reselect last selected region.
-			  		
-						if(firstLoad == true)
-						{
-							SelectBreakDown('OVERALL', overallChart2, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_OVERALL}');
-							firstLoad = false;
-						}
-						else
-						{
-							if(selected == 'OVERALL') SelectBreakDown(selected, overallChart2, selectedTitle);
-							if(selected == 'BRAKE') SelectBreakDown(selected, chartBrake, selectedTitle);
-							if(selected == 'ACCELERATE') SelectBreakDown(selected, chartAccel, selectedTitle);
-							if(selected == 'TURN') SelectBreakDown(selected, chartTurn, selectedTitle);
-							if(selected == 'BUMP') SelectBreakDown(selected, chartBump, selectedTitle);
-						}
-
-				  </script>
-				  </rich:panel>
+					<rich:panel id="selectScript">
+						<script type="text/javascript">
+	
+						// This code gets called on first load and A4J Re-Renders
+				  		// Reselect last selected region.
+				  		
+							if(firstLoad == true)
+							{
+								SelectBreakDown('OVERALL', overallChart2, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_OVERALL}');
+								firstLoad = false;
+							}
+							else
+							{
+								if(selected == 'OVERALL') SelectBreakDown(selected, overallChart2, selectedTitle);
+								if(selected == 'BRAKE') SelectBreakDown(selected, chartBrake, selectedTitle);
+								if(selected == 'ACCELERATE') SelectBreakDown(selected, chartAccel, selectedTitle);
+								if(selected == 'TURN') SelectBreakDown(selected, chartTurn, selectedTitle);
+								if(selected == 'BUMP') SelectBreakDown(selected, chartBump, selectedTitle);
+							}
+	
+						 </script>
+				 	 </rich:panel>
+				  </div>
 				</div>
 				<div class="panel_sw">
 					<div class="panel_statusbar"></div>
