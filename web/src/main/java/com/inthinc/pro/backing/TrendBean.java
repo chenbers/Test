@@ -201,7 +201,7 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg> implements Dur
                 {
                     sb.append("alpha=\'0\' ");
                 }
-                sb.append("/>");
+                sb.append(" anchorBgColor=\'" + se.getColorKey() + "\' anchorBgAlpha=\'100\'/>");
             }
             sb.append("</dataset>");
         }
