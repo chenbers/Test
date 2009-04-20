@@ -94,6 +94,13 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
     {
 		search();
     }
+	
+	@Override
+	protected void filterResults(List<IdlingReportItem> data)
+	{
+	    // TODO Auto-generated method stub
+	    
+	}
 
     @Override
     public void personListChanged()

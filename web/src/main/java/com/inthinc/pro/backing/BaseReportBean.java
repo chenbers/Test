@@ -17,40 +17,42 @@ import com.inthinc.pro.reports.service.ReportCriteriaService;
 public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOptions<T>, SearchChangeListener
 {
     @SuppressWarnings("unused")
-	private static final Logger logger       = Logger.getLogger(BaseReportBean.class);
- 
-    private TablePreferenceDAO    tablePreferenceDAO;
-    private TablePref<T>          tablePref;
-    private String                emailAddress;
-    private ReportRenderer        reportRenderer;
+    private static final Logger logger = Logger.getLogger(BaseReportBean.class);
+
+    private TablePreferenceDAO tablePreferenceDAO;
+    private TablePref<T> tablePref;
+    private String emailAddress;
+    private ReportRenderer reportRenderer;
     private ReportCriteriaService reportCriteriaService;
-    private Integer               numRowsPerPg = 25;
-    protected Integer             maxCount;
-    private Integer               start;
-    private Integer               end;
-    private Integer               page;
+    private Integer numRowsPerPg = 25;
+    protected Integer maxCount;
+    private Integer start;
+    private Integer end;
+    private Integer page;
 
     private NavigationBean navigation;
-	private SearchCoordinationBean searchCoordinationBean;
-	
-    public NavigationBean getNavigation() {
-		return navigation;
-	}
+    private SearchCoordinationBean searchCoordinationBean;
 
-	public void setNavigation(NavigationBean navigation) {
-		this.navigation = navigation;
-	}
+    public NavigationBean getNavigation()
+    {
+        return navigation;
+    }
 
-	public BaseReportBean()
+    public void setNavigation(NavigationBean navigation)
+    {
+        this.navigation = navigation;
+    }
+
+    public BaseReportBean()
     {
 
     }
 
-    public void initBean() 
+    public void initBean()
     {
         setTablePref(new TablePref<T>(this));
         searchCoordinationBean.addSearchChangeListener(this);
-         
+
     }
 
     public TablePreferenceDAO getTablePreferenceDAO()
@@ -103,50 +105,63 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     protected abstract List<T> getDBData();
 
     protected abstract List<T> getDisplayData();
-    
+
     protected abstract void setDisplayData(List<T> displayData);
-    
+
     protected abstract void loadResults(List<T> data);
-    
-    protected Integer getEffectiveGroupId(){
-    	
-     	if (getSearchCoordinationBean().isGoodGroupId()){
-    		
-    		return getSearchCoordinationBean().getGroup().getGroupID();
-    	}
-    	else {
-    		
-    		return getUser().getGroupID();
-    	}
+
+    protected abstract void filterResults(List<T> data);
+
+    protected Integer getEffectiveGroupId()
+    {
+
+        if (getSearchCoordinationBean().isGoodGroupId())
+        {
+
+            return getSearchCoordinationBean().getGroup().getGroupID();
+        }
+        else
+        {
+
+            return getUser().getGroupID();
+        }
     }
+
     protected void checkOnSearch()
     {
-    	loadDBData();
-    	if (searchCoordinationBean.isGoodSearch())
-	        {
-	 
-	            final List<T> matchedItems = new ArrayList<T>();
-	            matchedItems.addAll(getDBData());
-	
-	            tablePref.filter(matchedItems, searchCoordinationBean.getSearchFor(), matchAllFilterWords());
-	
-	            loadResults(matchedItems);
-	            this.maxCount = matchedItems.size();
-	        }
-	        else
-	        {
-	            loadResults(getDBData());
-	            maxCount = getDisplayData().size();
-	        }
-	
-	        resetCounts();
+        loadDBData();
+        if (searchCoordinationBean.isGoodSearch())
+        {
+
+            final List<T> matchedItems = new ArrayList<T>();
+            matchedItems.addAll(getDBData());
+
+            filterResults(matchedItems);
+
+            tablePref.filter(matchedItems, searchCoordinationBean.getSearchFor(), matchAllFilterWords());
+
+            loadResults(matchedItems);
+            this.maxCount = matchedItems.size();
+        }
+        else
+        {
+            final List<T> matchedItems = new ArrayList<T>();
+            matchedItems.addAll(getDBData());
+
+            filterResults(matchedItems);
+            loadResults(matchedItems);
+            maxCount = getDisplayData().size();
+        }
+
+        resetCounts();
     }
 
     public void search()
     {
-        
+
         final List<T> matchedItems = new ArrayList<T>();
         matchedItems.addAll(getDBData());
+        filterResults(matchedItems);
 
         tablePref.filter(matchedItems, searchCoordinationBean.getSearchFor(), matchAllFilterWords());
 
@@ -179,12 +194,12 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
 
     protected void resetCounts()
     {
-        start = getDisplayData().size()==0?0:1;
+        start = getDisplayData().size() == 0 ? 0 : 1;
 
-        end = getDisplayData().size() <= numRowsPerPg?getDisplayData().size():numRowsPerPg;
-        
+        end = getDisplayData().size() <= numRowsPerPg ? getDisplayData().size() : numRowsPerPg;
+
         page = 1;
-     }
+    }
 
     public void scrollerListener(DataScrollerEvent se)
     {
@@ -202,7 +217,7 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     {
         if (start == null)
         {
-        	checkOnSearch();
+            checkOnSearch();
         }
         return start;
     }
@@ -216,7 +231,7 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     {
         if (end == null)
         {
-        	checkOnSearch();
+            checkOnSearch();
         }
         return end;
     }
@@ -228,9 +243,9 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
 
     public Integer getMaxCount()
     {
-        if (maxCount == null) 
+        if (maxCount == null)
         {
-        	checkOnSearch();
+            checkOnSearch();
         }
         return maxCount;
     }
@@ -239,7 +254,6 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     {
         this.maxCount = maxCount;
     }
-
 
     public Integer getNumRowsPerPg()
     {
@@ -250,7 +264,6 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     {
         this.numRowsPerPg = numRowsPerPg;
     }
-
 
     protected Integer floatToInteger(float value)
     {
@@ -299,14 +312,17 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     {
         return reportCriteriaService;
     }
-    
-    public SearchCoordinationBean getSearchCoordinationBean() {
-		return searchCoordinationBean;
-	}
 
-	public void setSearchCoordinationBean(SearchCoordinationBean searchCoordinationBean) {
-		this.searchCoordinationBean = searchCoordinationBean;
-	}
+    public SearchCoordinationBean getSearchCoordinationBean()
+    {
+        return searchCoordinationBean;
+    }
+
+    public void setSearchCoordinationBean(SearchCoordinationBean searchCoordinationBean)
+    {
+        this.searchCoordinationBean = searchCoordinationBean;
+    }
+
     private void reinit()
     {
         setDisplayData(null);
@@ -316,10 +332,11 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     }
 
     @Override
-	public void searchChanged() {
-    
-    	reinit();
-	}
+    public void searchChanged()
+    {
+
+        reinit();
+    }
 
     public void setPage(Integer page)
     {
@@ -330,5 +347,5 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     {
         return page;
     }
-	
+
 }

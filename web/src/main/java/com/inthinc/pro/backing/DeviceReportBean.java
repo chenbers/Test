@@ -85,6 +85,13 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
         
         devicesData = list;
     }
+    
+    @Override
+    protected void filterResults(List<DeviceReportItem> data)
+    {
+        // TODO Auto-generated method stub
+        
+    }
         
 
     public List<DeviceReportItem> getDeviceData()

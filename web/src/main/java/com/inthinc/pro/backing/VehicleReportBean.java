@@ -143,6 +143,13 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
         this.maxCount = this.vehicleData.size();   
         resetCounts();            
     }
+    
+    @Override
+    protected void filterResults(List<VehicleReportItem> data)
+    {
+        // TODO Auto-generated method stub
+        
+    }
 
     private void setStyles() 
     {

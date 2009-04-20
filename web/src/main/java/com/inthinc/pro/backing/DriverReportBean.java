@@ -65,7 +65,7 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
     {
         this.driversData = 
             scoreDAO.getDriverReportData(            
-            		getEffectiveGroupId(),
+            		getUser().getGroupID(),
                     Duration.TWELVE);
         
         //Once loaded, set the group name NOW so it can be searchable IMMEDIATELY
@@ -77,6 +77,7 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
                 dri.setVehicle(v);
             }
         }
+        
     }
 
     @Override
@@ -106,6 +107,26 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
     protected List<DriverReportItem> getDisplayData()
     {
         return driverData;
+    }
+    
+    @Override
+    protected void filterResults(List<DriverReportItem> filteredTableData)
+    {
+        
+        //Filter if search is based on group.
+        if (!getEffectiveGroupId().equals(getUser().getGroupID()))
+        {
+            filteredTableData.clear();
+            
+            for (DriverReportItem item : this.driversData)
+            {
+                if (item.getGroupID().equals(getEffectiveGroupId()))
+                {
+                    filteredTableData.add(item);
+                }
+            }
+        }
+        
     }
 
     @Override

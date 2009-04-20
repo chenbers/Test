@@ -147,6 +147,7 @@ private TablePref<RedFlagReportItem> tablePref;
                 }
             }
         }
+        
         if (getEventFilter() != null)
         {    
             filteredTableData = new ArrayList<RedFlagReportItem>();
@@ -160,6 +161,22 @@ private TablePref<RedFlagReportItem> tablePref;
                 }
             }
         }
+        
+        //Filter if search is based on group.
+        if (!getEffectiveGroupId().equals(getUser().getGroupID()))
+        {
+            filteredTableData = new ArrayList<RedFlagReportItem>();
+            
+            for (RedFlagReportItem item : tableData)
+            {
+
+                if (item.getRedFlag().getEvent().getGroupID().equals(getEffectiveGroupId()))
+                {
+                    filteredTableData.add(item);
+                }
+            }
+        }
+        
         if (searchCoordinationBean.isGoodSearch())
         {
             final ArrayList<RedFlagReportItem> searchTableData = new ArrayList<RedFlagReportItem>();
@@ -170,6 +187,7 @@ private TablePref<RedFlagReportItem> tablePref;
         setMaxCount(filteredTableData.size());
         setStart(filteredTableData.size() > 0 ? 1 : 0);
         setEnd(filteredTableData.size() > getNumRowsPerPg() ? getNumRowsPerPg() : filteredTableData.size());
+        setPage(1);
     }
 
     /**
