@@ -108,7 +108,7 @@ public class DriverSpeedBeanTest extends BaseBeanTest
         speedingEvents.add(eri);
         
         driverSpeedBean.setSpeedingEvents(speedingEvents);
-        driverSpeedBean.setSelectedSpeed("FORTYONE");
+        driverSpeedBean.setSelectedSpeed("FOURTYONE");
         assertTrue(driverSpeedBean.getFilteredSpeedingEvents().size() > 0);
         
 
