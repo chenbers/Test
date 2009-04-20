@@ -2,7 +2,6 @@ package com.inthinc.pro.backing;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.inthinc.pro.backing.listener.SearchChangeListener;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Driver;
@@ -29,6 +28,8 @@ public abstract class BaseRedFlagsBean extends BaseBean
     private ReportRenderer      reportRenderer;
     private ReportCriteriaService reportCriteriaService;
     private String emailAddress;
+    
+    private Integer page;
     
 	protected SearchCoordinationBean searchCoordinationBean;
     
@@ -178,8 +179,9 @@ public abstract class BaseRedFlagsBean extends BaseBean
 
 
 	public void searchAction() {
-		
+		page = 1;
 	    filterTableData();
+	    
 	}
 	protected abstract void filterTableData();
 	
@@ -193,6 +195,18 @@ public abstract class BaseRedFlagsBean extends BaseBean
     		
     		return getUser().getGroupID();
     	}
+    }
+
+
+    public void setPage(Integer page)
+    {
+        this.page = page;
+    }
+
+
+    public Integer getPage()
+    {
+        return page;
     }
 
 

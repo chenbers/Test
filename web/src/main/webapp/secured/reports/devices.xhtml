@@ -116,7 +116,8 @@
 										<ui:include src="/includes/devicesReport.xhtml">	
 											<ui:param name="numRowsPerPg" value="#{deviceReportBean.numRowsPerPg}"/>									
              								<ui:param name="deviceData" value="#{deviceReportBean.deviceData}"/>             						
-             								<ui:param name="deviceColumns" value="#{deviceReportBean.tableColumns}"/>             								
+             								<ui:param name="deviceColumns" value="#{deviceReportBean.tableColumns}"/>
+                                            <ui:param name="page" value="#{deviceReportBean.page}"/>             								
     									</ui:include>   
     								</div>	
     							</a4j:form>

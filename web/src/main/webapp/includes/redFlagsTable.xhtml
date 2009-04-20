@@ -3,7 +3,7 @@
 
     <div class="datagrid"><h:form id="redFlagsTableForm">
         <rich:jQuery selector="document" query="ready(function(){initializeTable()})" />
-        <rich:datascroller id="topScroller" for="items" immediate="true" scrollerListener="#{redFlagsBean.scrollerListener}" reRender="bottomScroller,items,header" oncomplete="initializeTable();"/>
+        <rich:datascroller id="topScroller" for="items" immediate="true" scrollerListener="#{redFlagsBean.scrollerListener}" reRender="bottomScroller,items,header" oncomplete="initializeTable();" page="#{page}"/>
 
         <rich:dataTable value="#{tableData}" id="items" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{numRowsPerPg}" width="100%">
 
@@ -84,7 +84,7 @@
             </rich:column>
         </rich:dataTable>
 
-        <rich:datascroller id="bottomScroller" for="items" immediate="true" scrollerListener="#{redFlagsBean.scrollerListener}" reRender="topScroller,items,header" oncomplete="initializeTable();"/>
+        <rich:datascroller id="bottomScroller" for="items" immediate="true" scrollerListener="#{redFlagsBean.scrollerListener}" reRender="topScroller,items,header" oncomplete="initializeTable();" page="#{page}"/>
 
     </h:form></div>
 

@@ -28,6 +28,7 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     protected Integer             maxCount;
     private Integer               start;
     private Integer               end;
+    private Integer               page;
 
     private NavigationBean navigation;
 	private SearchCoordinationBean searchCoordinationBean;
@@ -181,6 +182,8 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
         start = getDisplayData().size()==0?0:1;
 
         end = getDisplayData().size() <= numRowsPerPg?getDisplayData().size():numRowsPerPg;
+        
+        page = 1;
      }
 
     public void scrollerListener(DataScrollerEvent se)
@@ -317,5 +320,15 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
     
     	reinit();
 	}
+
+    public void setPage(Integer page)
+    {
+        this.page = page;
+    }
+
+    public Integer getPage()
+    {
+        return page;
+    }
 	
 }

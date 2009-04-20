@@ -3,7 +3,7 @@
 
     <div class="datagrid"><h:form id="#{formId}">
         <rich:jQuery selector="document" query="ready(function(){initializeTable()})" />
-        <rich:datascroller id="topScroller" for="items" immediate="true" scrollerListener="#{bean.scrollerListener}" reRender="bottomScroller,items,header" oncomplete="initializeTable();"/>
+        <rich:datascroller id="topScroller" for="items" immediate="true" scrollerListener="#{bean.scrollerListener}" reRender="bottomScroller,items,header" oncomplete="initializeTable();" page="#{bean.page}"/>
 
         <rich:dataTable id="items" value="#{tableData}" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{numRowsPerPg}" width="100%">
 
@@ -74,7 +74,7 @@
             </rich:column>
         </rich:dataTable>
 
-        <rich:datascroller id="bottomScroller" for="items" immediate="true" scrollerListener="#{bean.scrollerListener}" reRender="topScroller,items,header" oncomplete="initializeTable();"/>
+        <rich:datascroller id="bottomScroller" for="items" immediate="true" scrollerListener="#{bean.scrollerListener}" reRender="topScroller,items,header" oncomplete="initializeTable();" page="#{bean.page}"/>
     </h:form></div>
 
     <rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="50" autosized="true" resizeable="false" zindex="2000"

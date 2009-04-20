@@ -114,7 +114,8 @@
 								<ui:include src="/includes/driversReport.xhtml">	
 									<ui:param name="numRowsPerPg" value="#{driverReportBean.numRowsPerPg}"/>									
              						<ui:param name="driverData" value="#{driverReportBean.driverData}"/>             						
-             						<ui:param name="driverColumns" value="#{driverReportBean.tableColumns}"/>             						
+             						<ui:param name="driverColumns" value="#{driverReportBean.tableColumns}"/>  
+                                    <ui:param name="page" value="#{driverReportBean.page}"/>           						
     							</ui:include>   
     							</div>	
     							</a4j:form>

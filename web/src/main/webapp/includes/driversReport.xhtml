@@ -7,9 +7,21 @@
 
 
 
-    <rich:datascroller id="topScroller" for="items" immediate="true" scrollerListener="#{driverReportBean.scrollerListener}" reRender="bottomScroller,items,headerDrivers"
-        requestDelay="200" eventsQueue="pagerQueue">
-    </rich:datascroller> <rich:dataTable value="#{driverData}" id="items" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{numRowsPerPg}" width="100%">
+    <rich:datascroller id="topScroller" for="items" 
+         immediate="true" scrollerListener="#{driverReportBean.scrollerListener}" 
+         reRender="bottomScroller,items,headerDrivers"
+         requestDelay="200" eventsQueue="pagerQueue"
+         page="#{page}">
+    </rich:datascroller> 
+    
+    <rich:dataTable value="#{driverData}" 
+         id="items" 
+         var="item" 
+         styleClass="datagrid" 
+         rowClasses="tableOdd,tableEven" 
+         cellspacing="1" 
+         rows="#{numRowsPerPg}" 
+         width="100%">
 
         <rich:column rendered="#{driverColumns['group'].visible}" sortBy="#{item.group}">
             <f:facet name="header">
@@ -100,7 +112,7 @@
             </div>
         </rich:column>
     </rich:dataTable> <rich:datascroller id="bottomScroller" for="items" immediate="true" scrollerListener="#{driverReportBean.scrollerListener}" reRender="topScroller,items,headerDrivers"
-        requestDelay="200" eventsQueue="pagerQueue">
+        requestDelay="200" eventsQueue="pagerQueue" page="#{page}">
     </rich:datascroller></div>
 
 
