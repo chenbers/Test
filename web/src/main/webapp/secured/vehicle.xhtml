@@ -178,7 +178,7 @@
 <h:form>
 	<ul id="grid_nav">
 		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
-		<li class="l grid_title">Vehicle Performance:&#160;<h:commandLink action="go_vehicle" value="#{navigationBean.vehicle.fullName}" /></li>
+		<li class="l grid_title"><h:outputText value="#{messages.vehiclePerformanceName} "/><h:commandLink action="go_vehicle" value="#{navigationBean.vehicle.name}" /></li>
 		<li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li>
 		
 		<li class="l">
@@ -189,7 +189,7 @@
 		</li>
 		<li class="l" style="margin-left: -15px;">
 			<ul id="breadcrumb">
-				<li class="last"><h:outputText value="#{navigationBean.vehicle.fullName}" /><h:outputText value=" (ID: #{navigationBean.vehicle.name})" /></li>
+				<li class="last"><h:outputText value="#{navigationBean.vehicle.name}" /></li>
 			</ul>
 		</li>
 	</ul>
