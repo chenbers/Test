@@ -270,7 +270,7 @@
         <div id="wrapper"><h:form>
             <ul id="grid_nav">
                 <li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
-                <li class="l grid_title">Vehicle Trips:&#160;<h:commandLink action="go_vehicle" value="#{navigationBean.vehicle.fullName}" /></li>
+                <li class="l grid_title">Vehicle Trips:&#160;<h:commandLink action="go_vehicle" value="#{navigationBean.vehicle.name}" /></li>
                 <li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li>
 
                 <li class="l"><ui:include src="/includes/breadcrumb.xhtml">
@@ -280,7 +280,7 @@
 
                 <li class="l" style="margin-left: -15px;">
                 <ul id="breadcrumb">
-                    <li><h:commandLink action="go_vehicle" value="#{navigationBean.vehicle.fullName}" /></li>
+                    <li><h:commandLink action="go_vehicle" value="#{navigationBean.vehicle.name}" /></li>
                     <li class="last">Trips</li>
                 </ul>
                 </li>
