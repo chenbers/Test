@@ -53,8 +53,7 @@
 						<!-- TODO:  should go to a page based on the event type -->
 						<a4j:htmlCommandLink action="#{teamRecentEventsBean.detailsAction}" value="#{messages.team_safetyEventsDetails}">
 							<f:setPropertyActionListener value="#{event.event.driver}" target="#{teamRecentEventsBean.navigation.driver}" />
-							<f:setPropertyActionListener value="#{event}" target="#{teamRecentEventsBean.selectedEvent}" />
-							<f:setPropertyActionListener value="#{event.event.noteID}" target="#{eventsBean.linkFromTeam}"/>							
+							<f:setPropertyActionListener value="#{event}" target="#{teamRecentEventsBean.selectedEvent}" />							
 						</a4j:htmlCommandLink>
 					</rich:column>
 			</rich:dataTable>

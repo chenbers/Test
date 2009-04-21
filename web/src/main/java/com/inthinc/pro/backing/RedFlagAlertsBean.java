@@ -537,7 +537,5 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         {
             this.selected = selected;
         }
-        
-        
     }
 }
