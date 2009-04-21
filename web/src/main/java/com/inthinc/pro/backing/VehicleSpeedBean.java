@@ -211,6 +211,7 @@ public class VehicleSpeedBean extends BasePerformanceBean
     public void setSpeedingEvents(List<EventReportItem> speedingEvents)
     {
         this.speedingEvents = speedingEvents;
+        this.sortSpeedingEvents();
     }
 
     public void clearEventAction()
