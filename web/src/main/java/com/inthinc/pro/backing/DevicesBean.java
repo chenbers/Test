@@ -24,7 +24,6 @@ import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.MiscUtil;
-
 /**
  * @author David Gileadi
  */
@@ -32,9 +31,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 {
     private static final List<String> AVAILABLE_COLUMNS;
     private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 4, 6 };
-
     private static final Map<String, DeviceStatus> STATUSES;
-
     static
     {
         // available columns
@@ -46,14 +43,12 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         AVAILABLE_COLUMNS.add("phone");
         AVAILABLE_COLUMNS.add("ephone");
         AVAILABLE_COLUMNS.add("status");
-
         // statuses
         STATUSES = new LinkedHashMap<String, DeviceStatus>();
         for (final DeviceStatus status : DeviceStatus.values())
             if (status != DeviceStatus.DELETED)
                 STATUSES.put(MessageUtil.getMessageString("status" + status.getCode()), status);
     }
-
     private DeviceDAO deviceDAO;
     private VehicleDAO vehicleDAO;
     private VehiclesBean vehiclesBean;
@@ -78,12 +73,10 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     {
         // get the devices
         final List<Device> plainDevices = deviceDAO.getDevicesByAcctID(getAccountID());
-
         // convert the Devices to DeviceViews
         final LinkedList<DeviceView> items = new LinkedList<DeviceView>();
         for (final Device device : plainDevices)
             items.add(createDeviceView(device));
-
         return items;
     }
 
@@ -123,7 +116,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
                 return MessageUtil.getMessageString(device.getStatus().getDescription().toLowerCase());
             return null;
         }
-
         return super.fieldValue(device, columnName);
     }
 
@@ -182,14 +174,11 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     protected void doDelete(List<DeviceView> deleteItems)
     {
         final FacesContext context = FacesContext.getCurrentInstance();
-
         for (final DeviceView device : deleteItems)
         {
             if (device.getVehicleID() != null)
                 setVehicleDevice(device.getVehicleID(), null);
-
             deviceDAO.deleteByID(device.getDeviceID());
-
             // add a message
             final String summary = MessageUtil.formatMessageString("device_deleted", device.getName());
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
@@ -208,7 +197,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         final String vehicleID = params.get("vehicleID");
         if (vehicleID != null)
             getItem().setVehicleID(Integer.parseInt(vehicleID));
-
         if (Boolean.parseBoolean(params.get("immediate")) && !isAdd() && !isBatchEdit())
             assignVehicle(getItem());
     }
@@ -228,18 +216,14 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
                 getFacesContext().addMessage("edit-form:ephone", message);
             }
-            else if (deviceView.getEphone() != null)
+            else if (deviceView.getEphone() != null && !deviceView.getEphone().matches("\\D?\\d{3}\\D*\\d{3}\\D?\\d{4}"))
             {
-                if (!deviceView.getEphone().matches("\\D?\\d{3}\\D*\\d{3}\\D?\\d{4}"))
-                {
-                    valid = false;
-                    final String summary = MessageUtil.getMessageString("editDevice_phoneFormat");
-                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                    getFacesContext().addMessage("edit-form:ephone", message);
-                }
+                valid = false;
+                final String summary = MessageUtil.getMessageString("editDevice_phoneFormat");
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                getFacesContext().addMessage("edit-form:ephone", message);
             }
         }
-
         // Name
         if ((deviceView.getName() == null || deviceView.getName().equals("")) && !isBatchEdit() || (isBatchEdit() && getUpdateField().get("name")))
         {
@@ -248,14 +232,12 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
             getFacesContext().addMessage("edit-form:name", message);
         }
-
         Device byImei = null;
         if (deviceView.getImei() != null)
             byImei = deviceDAO.findByIMEI(deviceView.getImei());
         // IMEI
         if (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("imei")))
         {
-          
             if ((deviceView.getImei() == null || deviceView.getImei().equals("")))
             {
                 valid = false;
@@ -278,7 +260,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
                 getFacesContext().addMessage("edit-form:imei", message);
             }
         }
-
         // SIM
         if ((deviceView.getSim() == null || deviceView.getSim().equals("")) && !isBatchEdit() || (isBatchEdit() && getUpdateField().get("sim")))
         {
@@ -287,7 +268,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
             getFacesContext().addMessage("edit-form:sim", message);
         }
-
         // PHONE
         if (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("phone")))
         {
@@ -306,7 +286,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
                 getFacesContext().addMessage("edit-form:phone", message);
             }
         }
-
         return valid;
     }
 
@@ -314,15 +293,12 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     public void validateImei(FacesContext context, UIComponent component, Object value)
     {
         final String imei = (String) value;
-
         if (!imei.matches("[0-9]{15}"))
         {
-
             final String summary = MessageUtil.getMessageString("editDevice_imeiFormat");
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
             throw new ValidatorException(message);
         }
-
         // unique
         final Device byImei = deviceDAO.findByIMEI(imei);
         if ((byImei != null) && !byImei.getDeviceID().equals(getItem().getDeviceID()))
@@ -343,7 +319,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     protected void doSave(List<DeviceView> saveItems, boolean create)
     {
         final FacesContext context = FacesContext.getCurrentInstance();
-
         for (final DeviceView device : saveItems)
         {
             device.setPhone(MiscUtil.unformatPhone(device.getPhone()));
@@ -359,15 +334,12 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
                         device.getSpeedSettings()[index] = getItem().getSpeedSettings()[index];
                     }
             }
-
             if (create)
                 device.setDeviceID(deviceDAO.create(getAccountID(), device));
             else
                 deviceDAO.update(device);
-
             if (device.isVehicleChanged())
                 assignVehicle(device);
-
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "device_added" : "device_updated", device.getName());
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
@@ -379,7 +351,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     {
         if (device.getOldVehicleID() != null)
             setVehicleDevice(device.getOldVehicleID(), null);
-
         if (device.getVehicleID() != null)
             for (final DeviceView otherDevice : getItems())
                 if (device.getVehicleID().equals(otherDevice.getVehicleID()) && !otherDevice.getDeviceID().equals(device.getDeviceID()))
@@ -388,7 +359,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
                     otherDevice.setVehicleID(null);
                     otherDevice.setOldVehicleID(null);
                 }
-
         vehicleDAO.setVehicleDevice(device.getVehicleID(), device.getDeviceID());
         setVehicleDevice(device.getVehicleID(), device.getDeviceID());
         device.setOldVehicleID(device.getVehicleID());
@@ -431,7 +401,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     {
         @Column(updateable = false)
         private static final long serialVersionUID = 8372507838051791866L;
-
         @Column(updateable = false)
         private VehicleDAO vehicleDAO;
         @Column(updateable = false)
@@ -502,5 +471,4 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             this.selected = selected;
         }
     }
-
 }
