@@ -265,7 +265,7 @@
         <div id="wrapper"><h:form>
             <ul id="grid_nav">
                 <li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
-                <li class="l grid_title">Driver Trips:&#160;<h:commandLink action="go_driver" value="#{navigationBean.driver.person.fullName}" /></li>
+                <li class="l grid_title">#{messages.drivertrip_title}:<h:commandLink action="go_driver" value=" #{navigationBean.driver.person.fullName}" /></li>
                 <li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li>
 
                 <li class="l"><ui:include src="/includes/breadcrumb.xhtml">
@@ -276,7 +276,7 @@
                 <li class="l" style="margin-left: -15px;">
                 <ul id="breadcrumb">
                     <li><h:commandLink action="go_driver" value="#{navigationBean.driver.person.fullName}" /></li>
-                    <li class="last">Trips</li>
+                    <li class="last">#{messages.drivertrip_trips}</li>
                 </ul>
                 </li>
             </ul>
@@ -289,7 +289,7 @@
                     <a4j:region id="dateFormRegion">
                         <a4j:form id="dateForm">
                             <div class="panel_nw">
-                            <div class="panel_title"><span class="cal">Date Range </span> <span class="panel_links"> <a4j:status id="dateFormStatus"
+                            <div class="panel_title"><span class="cal">#{messages.drivertrip_date_range}</span> <span class="panel_links"> <a4j:status id="dateFormStatus"
                                 for="dateFormRegion">
                                 <f:facet name="start">
                                     <h:outputText>
@@ -303,7 +303,7 @@
                             <table width="320" cellpadding="4" cellspacing="0" class="" id="">
                                 <tbody>
                                     <tr>
-                                        <td width="80">Start Date</td>
+                                        <td width="80">#{messages.drivertrip_start_date}</td>
                                         <td width="178"><a4j:outputPanel id="calendarStart" layout="block">
                                             <rich:calendar value="#{driverTripsBean.startDate}" locale="en/US" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
                                                 showApplyButton="false" cellWidth="24px" cellHeight="22px" />
@@ -311,7 +311,7 @@
                                         <td></td>
                                     </tr>
                                     <tr>
-                                        <td>End Date</td>
+                                        <td>#{messages.drivertrip_end_date}</td>
                                         <td><a4j:outputPanel id="calendarEnd" layout="block">
                                             <rich:calendar value="#{driverTripsBean.endDate}" locale="en/US" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
                                                 showApplyButton="false" cellWidth="24px" cellHeight="22px" />
@@ -345,11 +345,17 @@
 
                 <!-- START PANEL --> <rich:panel id="statsPanel">
                     <div class="panel_nw">
-                    <div class="panel_title"><span class=""><h:outputText>Stats:&#160;</h:outputText> <h:outputText value="#{driverTripsBean.startDate}">
-                        <f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{navigationBean.driver.person.timeZone}" />
-                    </h:outputText>&#160;to&#160; <h:outputText value="#{driverTripsBean.endDate}">
-                        <f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{navigationBean.driver.person.timeZone}" />
-                    </h:outputText> </span> <span class="panel_links"></span></div>
+                        <div class="panel_title">
+                            <h:outputText style="" value="#{messages.drivertrip_stats}: "/>
+                            <h:outputText value="#{driverTripsBean.startDate}">
+                                <f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{navigationBean.driver.person.timeZone}" />
+                            </h:outputText>                            
+                            <h:outputText value=" #{messages.drivertrip_to} "/>
+                            <h:outputText value="#{driverTripsBean.endDate}">
+                                <f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{navigationBean.driver.person.timeZone}" />
+                            </h:outputText> 
+                            <span class="panel_links"></span>
+                        </div>
                     </div>
                     <div class="panel_w">
                     <div class="panel_content">
@@ -357,27 +363,27 @@
                     <table id="" cellpadding="4" cellspacing="0" class="">
                         <tbody>
                             <tr>
-                                <td>Total Drive Time:</td>
+                                <td>#{messages.drivertrip_total_drive_time}:</td>
                                 <td><rich:spacer width="4" /></td>
                                 <td><h:outputText>#{driverTripsBean.totalDriveTime}</h:outputText></td>
                             </tr>
                             <tr>
-                                <td>Total Miles Driven:</td>
+                                <td>#{messages.drivertrip_total_miles_driven}:</td>
                                 <td></td>
                                 <td><h:outputText value="#{driverTripsBean.milesDriven}" converter="DistanceConverter" /></td>
                             </tr>
                             <tr>
-                                <td>Total Idle Time:</td>
+                                <td>#{messages.drivertrip_total_idle_time}:</td>
                                 <td></td>
                                 <td><h:outputText>#{driverTripsBean.idleTime}</h:outputText></td>
                             </tr>
                             <tr>
-                                <td>Total Trips:</td>
+                                <td>#{messages.drivertrip_total_trips}:</td>
                                 <td></td>
                                 <td><h:outputText>#{driverTripsBean.numTrips}</h:outputText></td>
                             </tr>
                             <tr>
-                                <td valign="top">Driver Time Zone:</td>
+                                <td valign="top">#{messages.drivertrip_driver_timezone}:</td>
                                 <td></td>
                                 <td><h:outputText>#{navigationBean.driver.person.displayTimeZone}</h:outputText></td>
                             </tr>
@@ -396,7 +402,7 @@
                 <!-- START PANEL -->
                 <div class="">
                 <div class="panel_nw">
-                <div class="panel_title"><span class="">Events</span> <span class="panel_links"></span></div>
+                <div class="panel_title"><span class="">#{messages.drivertrip_events}</span> <span class="panel_links"></span></div>
                 </div>
                 <div class="panel_w">
                 <div class="panel_content"><!-- Start Trip table --> <rich:panel id="selectedTrip">
@@ -444,7 +450,7 @@
                 <!-- START PANEL -->
                 <div class="">
                 <div class="panel_nw">
-                <div class="panel_title"><span class="">Settings </span> <span class="panel_links"></span></div>
+                <div class="panel_title"><span class="">#{messages.drivertrip_settings}</span> <span class="panel_links"></span></div>
                 </div>
                 <div class="panel_w">
                 <div class="panel_content">
@@ -452,7 +458,7 @@
                     <table width="320" cellpadding="4" cellspacing="0" class="" id="settings">
                         <tbody>
                             <tr>
-                                <td width="290">Show last 10 trips on map</td>
+                                <td width="290">#{messages.drivertrip_last_ten_trips}</td>
                                 <td width="25"><a4j:status id="showLastTenStatus" for="optionsRegion">
                                     <f:facet name="start">
                                         <h:outputText>
@@ -466,12 +472,12 @@
                                 </a4j:form></td>
                             </tr>
                             <tr>
-                                <td>Show idle markers</td>
+                                <td>#{messages.drivertrip_show_idle_marker}</td>
                                 <td></td>
                                 <td><h:selectBooleanCheckbox id="showIdleCheckBox" value="#{driverTripsBean.showIdleMarkers}" onclick="showIdleChanged();" /></td>
                             </tr>
                             <tr>
-                                <td>Show warnings</td>
+                                <td>#{messages.drivertrip_show_warnings}</td>
                                 <td></td>
                                 <td><h:selectBooleanCheckbox id="showWarningsCheckBox" value="#{driverTripsBean.showWarnings}" onclick="showWarningsChanged();" /></td>
                             </tr>
@@ -491,7 +497,7 @@
                 <!-- START PANEL -->
                 <div class="">
                 <div class="panel_nw">
-                <div class="panel_title"><span class="">Legend</span> <span class="panel_links"></span></div>
+                <div class="panel_title"><span class="">#{messages.drivertrip_legend}</span> <span class="panel_links"></span></div>
                 </div>
                 <div class="panel_w">
                 <div class="panel_content">
@@ -501,15 +507,15 @@
                     <tbody>
                         <tr>
                             <td width="25"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_start.png" width="21" height="20" /></td>
-                            <td width="120">Start</td>
+                            <td width="120">#{messages.drivertrip_legend_start}</td>
                             <td width="30"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_idle.png" width="20" height="20" /></td>
-                            <td width="119">Engine Idle</td>
+                            <td width="119">#{messages.drivertrip_legend_engine_idle}</td>
                         </tr>
                         <tr>
                             <td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_violation.png" width="20" height="20" /></td>
-                            <td>Violation</td>
+                            <td>#{messages.drivertrip_legend_violation}</td>
                             <td><img src="#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png" width="21" height="20" /></td>
-                            <td>End</td>
+                            <td>#{messages.drivertrip_legend_end}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -529,7 +535,7 @@
                 <div class="" style="width: 600px; margin: 0 auto 0 auto;">
                     <div class="panel_nw">                            
                     <div class="panel_title">
-                        <span class="vehicle">Trips by #{navigationBean.driver.person.fullName}</span>                    
+                        <h:outputText value="#{messages.drivertrip_trips_by} #{navigationBean.driver.person.fullName}" styleClass="vehicle" />            
                         <span class="panel_links">
                         <a4j:status onstop="onReRenderWithSelection();">
                             <f:facet name="start">
@@ -615,7 +621,7 @@
                 <!-- START PANEL -->
                 <div class="" style="width: 600px; margin: 0 auto 0 auto;">
                 <div class="panel_nw">
-                <div class="panel_title"><span class="map">Map</span> <span class="panel_links"></span></div>
+                <div class="panel_title"><span class="map">#{messages.drivertrip_map}</span> <span class="panel_links"></span></div>
                 </div>
                 <div class="panel_w"><a4j:form id="selectedTripMap">
                     <rich:panel bodyClass="panel_content">
@@ -626,7 +632,7 @@
                         </h:outputText>
 
                         <h:outputText rendered="#{driverTripsBean.numTrips lt 1}">
-                            <h2>#{messages.no_trips_found}</h2>
+                            <h2>#{messages.drivertrips_no_trips_found}</h2>
                         </h:outputText>
                     </rich:panel>
                 </a4j:form></div>
