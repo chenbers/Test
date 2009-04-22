@@ -540,9 +540,8 @@ public class OrganizationBean extends BaseBean
     {
         List<SelectItem> selectItems = new ArrayList<SelectItem>();
         selectItems.add(new SelectItem(null, ""));
-
-        selectItems.add(new SelectItem(GroupType.DIVISION, GroupType.DIVISION.toString()));
-        selectItems.add(new SelectItem(GroupType.TEAM, GroupType.TEAM.toString()));
+        selectItems.add(new SelectItem(GroupType.DIVISION, MessageUtil.getMessageString(GroupType.DIVISION.toString())));
+        selectItems.add(new SelectItem(GroupType.TEAM, MessageUtil.getMessageString(GroupType.TEAM.toString())));
 
         return selectItems;
     }

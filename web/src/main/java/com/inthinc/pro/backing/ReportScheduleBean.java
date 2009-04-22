@@ -85,7 +85,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         DURATIONS.add(new SelectItem(null, ""));
         for (Duration d : EnumSet.allOf(Duration.class))
         {
-            DURATIONS.add(new SelectItem(d, d.toString()));
+            DURATIONS.add(new SelectItem(d, MessageUtil.getMessageString(d.toString())));
         }
 
         OCCURRENCES = new ArrayList<SelectItem>();

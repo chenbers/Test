@@ -6,16 +6,14 @@ import java.util.Map;
 
 public enum GroupType implements BaseEnum
 {
-    FLEET(1, "Fleet"), 
-    DIVISION(2, "Division"), 
-    TEAM(3, "Team");
+    FLEET(1), 
+    DIVISION(2), 
+    TEAM(3);
 
     private Integer code;
-    private String description;
 
-    private GroupType(Integer code, String description)
+    private GroupType(Integer code)
     {
-        this.description = description;
         this.code = code;
     }
 
@@ -37,10 +35,13 @@ public enum GroupType implements BaseEnum
     {
         return lookup.get(code);
     }
-
+    
     @Override
     public String toString()
     {
-        return this.description;
+        StringBuilder sb = new StringBuilder(this.getClass().getSimpleName());
+        sb.append(".");
+        sb.append(this.name());
+        return sb.toString();
     }
 }

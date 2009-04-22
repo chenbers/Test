@@ -16,10 +16,8 @@ import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.ScoreType;
-import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SpeedingEvent;
 
 public class DriverSpeedBeanTest extends BaseBeanTest

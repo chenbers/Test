@@ -24,5 +24,4 @@ import java.io.Serializable;
 public interface BaseEnum extends Serializable
 {
     public Integer getCode();
-
 }
