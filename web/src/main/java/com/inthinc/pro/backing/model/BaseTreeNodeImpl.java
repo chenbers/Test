@@ -230,9 +230,6 @@ public abstract class BaseTreeNodeImpl<T extends BaseEntity> extends SwingTreeNo
         sb.append(getId());
         sb.append(", Label=");
         sb.append(getLabel());
-        sb.append(", Data=");
-        sb.append(getData());
-        
         return sb.toString();
     }
     
