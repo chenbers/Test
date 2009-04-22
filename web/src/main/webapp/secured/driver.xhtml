@@ -178,7 +178,7 @@
 <h:form>
 	<ul id="grid_nav">
 		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
-		<li class="l grid_title">Driver Performance:&#160;<h:commandLink action="go_driver" value="#{navigationBean.driver.person.fullName}" /></li>
+		<li class="l grid_title"><h:outputText value="#{messages.driverPerformanceName}&#160;" /><h:commandLink action="go_driver" value="#{navigationBean.driver.person.fullName}" /></li>
 		<li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li>
 		
 		<li class="l">
@@ -189,7 +189,7 @@
 		</li>
 		<li class="l" style="margin-left: -15px;">
 			<ul id="breadcrumb">
-				<li class="last"><h:outputText value="#{navigationBean.driver.person.fullName}" /></li>
+				<li class="last"><h:outputText value="#{navigationBean.driver.person.fullNameWithId}" /></li>
 			</ul>
 		</li>
 	</ul>
