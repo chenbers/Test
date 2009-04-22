@@ -311,7 +311,7 @@
                                         <td width="80">Start Date</td>
                                         <td width="178"><a4j:outputPanel id="calendarStart" layout="block">
                                             <rich:calendar value="#{vehicleTripsBean.startDate}" locale="en/US" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
-                                                showApplyButton="false" cellWidth="24px" cellHeight="22px" />
+                                               timeZone="#{vehicleTripsBean.timeZone}" showApplyButton="false" cellWidth="24px" cellHeight="22px" />
                                         </a4j:outputPanel></td>
                                         <td></td>
                                     </tr>
@@ -319,7 +319,7 @@
                                         <td>End Date</td>
                                         <td><a4j:outputPanel id="calendarEnd" layout="block">
                                             <rich:calendar value="#{vehicleTripsBean.endDate}" locale="en/US" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
-                                                showApplyButton="false" cellWidth="24px" cellHeight="22px" />
+                                               timeZone="#{vehicleTripsBean.timeZone}" showApplyButton="false" cellWidth="24px" cellHeight="22px" />
                                         </a4j:outputPanel></td>
                                         <td></td>
                                     </tr>
