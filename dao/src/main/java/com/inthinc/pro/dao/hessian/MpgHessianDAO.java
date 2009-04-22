@@ -9,17 +9,14 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
-import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.proserver.ReportService;
 import com.inthinc.pro.model.DVQMap;
 import com.inthinc.pro.model.DriveQMap;
 import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.GQMap;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.MpgEntity;
-import com.inthinc.pro.model.ScoreableEntity;
 
 public class MpgHessianDAO extends GenericHessianDAO<MpgEntity, Integer> implements MpgDAO
 {

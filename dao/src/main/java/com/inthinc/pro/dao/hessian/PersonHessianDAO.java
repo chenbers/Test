@@ -17,7 +17,7 @@ import com.inthinc.pro.model.User;
 
 public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> implements PersonDAO, FindByKey<Person>
 {
-    private static final Logger logger         = Logger.getLogger(PersonHessianDAO.class);
+    private static final Logger logger = Logger.getLogger(PersonHessianDAO.class);
 
     private static final String CENTRAL_ID_KEY = "priEmail";
 
@@ -53,12 +53,20 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
     @Override
     public Integer update(Person person)
     {
-        Integer changedCount = super.update(person);
+        
 
-        if ((person.getAddress() != null) && !isEmpty(person.getAddress()))
+        if ((person.getAddress() != null) && !isEmpty(person.getAddress()) && person.getAddress().getAddrID() != null)
         {
             getSiloService().updateAddr(person.getAddressID(), getMapper().convertToMap(person.getAddress()));
         }
+        else if (person.getAddress() != null && person.getAddressID() == 0)
+        {
+            Integer addressID = getReturnKey(getSiloService().createAddr(person.getAcctID(), getMapper().convertToMap(person.getAddress())), Address.class);
+            person.getAddress().setAddrID(addressID);
+            person.setAddressID(addressID);
+        }
+        
+        Integer changedCount = super.update(person);
 
         if (person.getDriver() != null)
         {
