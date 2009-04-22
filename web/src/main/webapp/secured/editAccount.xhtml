@@ -19,8 +19,8 @@
  
     <ul id="grid_nav">
       <li class="r">
-        <h:commandButton action="#{myAccountBean.saveFormAction}" styleClass="left"><span class="save">Save</span></h:commandButton>
-        <h:outputText value=" " /><button type="submit" class="left" onclick="parent.location.href='myAccount.faces'; return false;"><span class="cancel">Cancel</span></button>
+        <h:commandButton action="#{myAccountBean.saveFormAction}" styleClass="left" value="#{messages.button_save} "><h:outputText value="#{messages.button_save} " styleClass="save"/></h:commandButton>
+        <button type="submit" class="left" onclick="parent.location.href='myAccount.faces'; return false;"><h:outputText value="#{messages.button_cancel}" styleClass="cancel"/></button>
       </li>
     </ul>
     

@@ -262,7 +262,7 @@
 				<!-- START PANEL -->
 				<div class="">
 					<div class="panel_nw">
-						<div class="panel_title"><span class="vehicle">Dispatch</span>
+						<div class="panel_title"><span class="vehicle">#{messages.livefleet_dispatch}</span>
 							<span class="panel_links"></span></div>
 						</div>
 						<div class="panel_w">
@@ -364,7 +364,7 @@
 
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="map">Live Fleet</span>
+						<span class="map">#{messages.livefleet}</span>
 						<span class="panel_ico">
 							<a4j:status id="JSFormStatus" for="jsFormRegion" >
 								<f:facet name="start">
@@ -380,19 +380,19 @@
 
 				<table width="580" border="0" cellpadding="4" cellspacing="0">
 					<tr>
-						<td width="90">Find Address:</td>
+						<td width="90">#{messages.livefleet_find_address}:</td>
 						<td width="301">
 							<input type="text" size="40" id="addressTextBox" value="" onKeyPress="checkEnter(event);" />
 						</td>
 						<td width="165" rowspan="2">
 							<button name="locationButton" value="" class="left" onclick="processForm('addressTextBox', 'countComboBox');">
-								<span class="search">Locate</span>
+								<span class="search">#{messages.livefleet_locate}</span>
 							</button>
 						</td>
 					</tr>
 					<tr>
 						<td></td>
-						<td>Display<rich:spacer width="5" />
+						<td><h:outputText value="#{messages.livefleet_display}     " />  
 						<select
 							id="countComboBox">
 							<option value="5">5</option>
@@ -400,7 +400,7 @@
 							<option value="25">25</option>
 							<option value="50">50</option>
 							<option value="100">100</option>
-						</select> <rich:spacer width="5" /> nearest vehicles.</td>
+						</select> <h:outputText value="     #{messages.livefleet_nearest_vehicles}." /></td>
 					</tr>
 				</table>
 				<hr />
@@ -411,10 +411,10 @@
 				</h:panelGroup>
 				<div id="defaultMessage" style="display: none">
 					<br/>
-						<h2>Live Fleet</h2>
-				    			This is the default view for your division.
+						<h2>#{messages.livefleet}</h2>
+				    			#{messages.livefleet_default_view}.
 				    			<security:authorize ifAnyGranted="ROLE_CUSTOMUSER,ROLE_SUPERUSER">
-				    				[<h:commandLink action="go_adminOrganization" value="change" />]
+				    				[<h:commandLink action="go_adminOrganization" value="#{messages.livefleet_change}" />]
 				    			</security:authorize>
 			    	
 			    </div>
