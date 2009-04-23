@@ -202,7 +202,7 @@
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="overall">Overall Score </span>
+						<span class="overall">#{messages.vehicle_overallscore}</span>
 						<a4j:region id="dateLinksForm_region">
 							<a4j:form id="dateLinksForm">
 							<span class="panel_links_ico" style="right: 30px;">
@@ -288,7 +288,7 @@
 								<table width="220" border="0" cellspacing="0" cellpadding="0" class="scorebox" style="margin: 20px 20px 0 0;">
 								  <tr>
 									<td>
-										<h4>Overall Score</h4>
+										<h4>#{messages.vehicle_overallscore}</h4>
 									</td>
 									<td width="80" align="center">
 										<ui:include src="../includes/scoreBox.xhtml">
@@ -323,7 +323,7 @@
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="speed">Speed</span>
+						<span class="speed">#{messages.vehicle_speed}</span>
 						<ui:include src="../includes/dateLinksToolsDetail.xhtml">
 							<ui:param name="ajaxForm" value="speedForm"/>
 							<ui:param name="reRenderList" value="speed_script,speedForm,speedScoreBox"/>			
@@ -383,7 +383,7 @@
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="vehicle">Driving Style</span>
+						<span class="vehicle">#{messages.vehicle_driving_style}</span>
 						<ui:include src="../includes/dateLinksToolsDetail.xhtml">
 							<ui:param name="ajaxForm" value="styleForm"/>
 							<ui:param name="reRenderList" value="style_script,styleForm,styleScoreBox"/>			
@@ -442,7 +442,7 @@
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="seatbelt">Seat Belt</span>
+						<span class="seatbelt">#{messages.vehicle_seatbelt}</span>
 							<ui:include src="../includes/dateLinksToolsDetail.xhtml">
 							<ui:param name="ajaxForm" value="seatBeltForm"/>
 							<ui:param name="reRenderList" value="seatBelt_script,seatBeltForm,seatBeltScoreBox"/>			
@@ -501,14 +501,14 @@
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="map">Last Trip:&#160;
+						<span class="map"><h:outputText value="#{messages.vehicle_lasttrip}: " />
 						<h:outputText rendered="#{vehicleBean.lastTrip ne null}">
 							<h:outputText value="#{vehicleBean.lastTrip.trip.endTime}">
 								<f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{vehicleBean.lastTrip.timeZone}" />
 							</h:outputText>
 						</h:outputText>
 						</span>
-						<span class="panel_links"><h:form><h:commandLink value="view all trips" action="go_vehicleTrips">
+						<span class="panel_links"><h:form><h:commandLink value="#{messages.vehicle_view_all}" action="go_vehicleTrips">
 						</h:commandLink></h:form></span>
 					</div>
 				</div>
@@ -536,7 +536,7 @@
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="gas">Miles Per Gallon</span>
+						<span class="gas">#{messages.vehicle_mpg}</span>
 							<ui:include src="../includes/dateLinks.xhtml">
 							<ui:param name="ajaxForm" value="mpgForm"/>
 							<ui:param name="reRenderList" value="mpg_script,mpgForm"/>			
@@ -582,7 +582,7 @@
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="coaching">Coaching Events </span>
+						<span class="coaching">#{messages.vehicle_coaching}</span>
 						<ui:include src="../includes/dateLinks.xhtml">
 							<ui:param name="ajaxForm" value="coachingForm"/>
 							<ui:param name="reRenderList" value="coaching_script,coachingForm"/>			
