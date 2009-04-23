@@ -8,11 +8,13 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.FindByKey;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
@@ -23,7 +25,8 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
     private static final Logger logger = Logger.getLogger(DriverHessianDAO.class);
     private static final String CENTRAL_ID_KEY = "vin";
     private static final Integer VEHICLE_TYPE = 2;
-
+    
+    private DeviceDAO deviceDAO;
 
     @Override
     public List<Vehicle> getVehiclesInGroupHierarchy(Integer groupID)
@@ -70,12 +73,18 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
     @Override
     public void setVehicleDevice(Integer vehicleID, Integer deviceID)
     {
+        Device device = deviceDAO.findByID(deviceID);
+        if(device != null && device.getDeviceID() != null && device.getVehicleID() != null)
+        {
+            clearVehicleDevice(device.getVehicleID(), device.getDeviceID());
+        }
         getSiloService().setVehicleDevice(vehicleID, deviceID);
     }
 
     @Override
     public void clearVehicleDevice(Integer vehicleID, Integer deviceID)
     {
+        logger.debug("Cleared VehicleID: " + vehicleID + " DeviceID:" + deviceID);
         getSiloService().clrVehicleDevice(vehicleID, deviceID);
     }
 
@@ -187,6 +196,16 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
             }
             throw ex;
         }
+    }
+
+    public void setDeviceDAO(DeviceDAO deviceDAO)
+    {
+        this.deviceDAO = deviceDAO;
+    }
+
+    public DeviceDAO getDeviceDAO()
+    {
+        return deviceDAO;
     }
    
 }
