@@ -43,7 +43,7 @@ public class EventDisplay
         }
         
         setDateStr(dateFormatter.format(event.getTime()));
-        setEventType(event.getEventType().toString());
+        setEventType(MessageUtil.getMessageString(event.getEventType().toString()));
         setTime(event.getTime());
     }
     

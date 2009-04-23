@@ -58,7 +58,10 @@ public enum EventType implements BaseEnum
     @Override
     public String toString()
     {
-        return this.description;
+        StringBuilder sb = new StringBuilder(this.getClass().getSimpleName());
+        sb.append(".");
+        sb.append(this.name());
+        return sb.toString();
     }
 
     public String getKey()

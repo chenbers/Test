@@ -62,7 +62,7 @@ public class EventReportItem implements Comparable<EventReportItem>
         setVehicleName((event.getVehicle() == null)? "None Assigned" : event.getVehicle().getName());
 
         String catFormat = MessageUtil.getMessageString("redflags_cat" + event.getEventCategory().toString());
-        setCategory(MessageFormat.format(catFormat, new Object[] {event.getEventType().toString()}));
+        setCategory(MessageFormat.format(catFormat, new Object[] {MessageUtil.getMessageString(event.getEventType().toString())}));
         
         setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType().getKey())));
 
@@ -77,7 +77,7 @@ public class EventReportItem implements Comparable<EventReportItem>
         setDate(dateFormatter.format(event.getTime()));
         
         String catFormat = MessageUtil.getMessageString("redflags_cat" + event.getEventCategory().toString());
-        setCategory(MessageFormat.format(catFormat, new Object[] {event.getEventType().toString()}));
+        setCategory(MessageFormat.format(catFormat, new Object[] {MessageUtil.getMessageString(event.getEventType().toString())}));
         
         setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType().getKey())));
     }
