@@ -8,7 +8,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
@@ -16,8 +18,10 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.model.ChartData;
+import com.inthinc.pro.reports.util.ReportMessageUtil;
 
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.JRPrintPage;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -29,6 +33,7 @@ public class JasperReportBuilder
 
     private static Logger logger = Logger.getLogger(JasperReportBuilder.class);
     private JasperPrint jasperPrint;
+    private static final Locale DEFAULT_LOCALE = Locale.ENGLISH;
 
     /**
      * 
@@ -78,6 +83,14 @@ public class JasperReportBuilder
             {
                 reportCriteria.getPramMap().put("REPORT_LOGO", imageInputStream);
             }
+            
+            Locale locale = DEFAULT_LOCALE;
+            if(reportCriteria.getLocale() != null)
+            {
+                locale = reportCriteria.getLocale();
+            }
+            ResourceBundle resourceBundle = ReportMessageUtil.getBundle(locale);
+            reportCriteria.getPramMap().put(JRParameter.REPORT_RESOURCE_BUNDLE, resourceBundle);
 
             // Lets break up the report if the recordsPerReport is set
             JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource(reportCriteria.getMainDataset() != null? reportCriteria.getMainDataset() : Collections.EMPTY_LIST);

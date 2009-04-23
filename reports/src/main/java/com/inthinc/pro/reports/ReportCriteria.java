@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -19,6 +20,7 @@ public class ReportCriteria
     private Integer recordsPerReport;
     private String mainDatasetIdField;
     private String chartDataSetIdField;
+    private Locale locale;
 
     private static final String INTHINC_NAME = "Inthinc";
     private static final String REPORT_DATE_STRING = "REPORT_DATE_AS_STRING";
@@ -146,6 +148,16 @@ public class ReportCriteria
     public String getChartDataSetIdField()
     {
         return chartDataSetIdField;
+    }
+
+    public void setLocale(Locale locale)
+    {
+        this.locale = locale;
+    }
+
+    public Locale getLocale()
+    {
+        return locale;
     }
 
 }
