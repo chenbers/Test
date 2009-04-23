@@ -114,7 +114,7 @@ var firstLoad = new Boolean(true);
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="speed" id="titleSpan">Speed: Overall</span>
+						<span class="speed" id="titleSpan">#{messages.vehicle_speed_overall}</span>
 							<ui:include src="../../includes/dateLinksToolsDetail.xhtml">
 							<ui:param name="ajaxForm" value="speedForm"/>
 							<ui:param name="reRenderList" value="speedForm,overallScoreBox,OVERALL_script,TWENTYONE_script,THIRTYONE_script,FOURTYONE_script,FIFTYFIVE_script,SIXTYFIVE_script,selectScript,eventsPanel"/>			
@@ -147,7 +147,7 @@ var firstLoad = new Boolean(true);
 								<table width="220" border="0" cellspacing="0" cellpadding="0" class="scorebox" style="margin: 20px 20px 0 0;">
 								  <tr>
 									<td>
-										<h4>Overall Score</h4>
+										<h4>#{messages.vehicle_speed_overall}</h4>
 									</td>
 									<td width="80" align="center">
 										<ui:include src="../../includes/scoreBox.xhtml">
@@ -189,7 +189,7 @@ var firstLoad = new Boolean(true);
 			<div class="" style="width: 938px;">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="speed">Breakdown by Speed Limit</span>
+						<span class="speed">#{messages.vehicle_breakdown_speed}</span>
 						<span class="panel_links"></span></div>
 				</div>
 				<div class="panel_w">
@@ -459,7 +459,7 @@ var firstLoad = new Boolean(true);
 			<div class="" style="width: 938px;">
 				<rich:panel id="tableStats" bodyClass="panel_nw">
 					<div class="panel_title">
-						<span class="details">Details</span>
+						<span class="details">#{messages.vehicle_details}</span>
 						<span class="panel_content_right">
 						  	<h:outputFormat id="headerEvents" value="#{messages.recordCounts}">
 								<a4j:actionparam value="#{vehicleSpeedBean.tableStatsBean.tableRowStart}"/>
@@ -485,7 +485,7 @@ var firstLoad = new Boolean(true);
 
 							<rich:column>
 								<f:facet name="header">
-									<h:outputText value="Location" />
+									<h:outputText value="#{messages.vehicle_location}" />
 								</f:facet>
 								<div class="maplink">
 					              <a4j:commandLink style="cursor:pointer">
@@ -500,7 +500,7 @@ var firstLoad = new Boolean(true);
 							
 							<rich:column sortBy="#{item.event.time}" >
 								<f:facet name="header">
-									<h:outputText value="Date/Time" />
+									<h:outputText value="#{messages.vehicle_datetime}" />
 								</f:facet>
 									<h:outputText value="#{item.event.time}">
 										<f:convertDateTime timeZone="#{vehicleSpeedBean.user.person.timeZone}" pattern="#{messages.dateTimeFormat}" />
@@ -510,7 +510,7 @@ var firstLoad = new Boolean(true);
 							
 							<rich:column sortBy="#{item.event.speedLimit}">
 								<f:facet name="header">
-									<h:outputText value="Posted Speed" />
+									<h:outputText value="#{messages.vehicle_posted_speed}" />
 								</f:facet>
 								<strong><h:outputText value="#{item.event.speedLimit} #{messages.measurement_speed}" /></strong>
 								<a4j:commandButton onclick="javascript:Richfaces.showModalPanel('SLChangeRequestPanel',{lat:'#{item.event.latitude}',lon:'#{item.event.longitude}'});"  
@@ -522,7 +522,7 @@ var firstLoad = new Boolean(true);
 							
 							<rich:column sortBy="#{item.event.avgSpeed}">
 								<f:facet name="header">
-									<h:outputText value="Avg Speed" />
+									<h:outputText value="#{messages.vehicle_avg_speed}" />
 								</f:facet>
 								<strong><h:outputText value="#{item.event.avgSpeed} #{messages.measurement_speed}" /></strong>
 								<br />
@@ -532,7 +532,7 @@ var firstLoad = new Boolean(true);
 							
 							<rich:column sortBy="#{item.event.topSpeed}">
 								<f:facet name="header">
-									<h:outputText value="Top Speed" />
+									<h:outputText value="#{messages.vehicle_top_speed}" />
 								</f:facet>
 								<strong><h:outputText value="#{item.event.topSpeed} #{messages.measurement_speed}" /></strong>
 								<br />
@@ -542,7 +542,7 @@ var firstLoad = new Boolean(true);
 							
 							<rich:column sortBy="#{item.event.distance}">
 								<f:facet name="header">
-									<h:outputText value="Distance" />
+									<h:outputText value="#{messages.vehicle_distance}" />
 								</f:facet>
 								<h:outputText value="#{item.event.distance}" converter="DistanceConverter" />
 							</rich:column>
@@ -588,7 +588,7 @@ var firstLoad = new Boolean(true);
       </f:facet>
 
       <h:panelGroup layout="block" styleClass="popupsubtitle">
-      	<h:outputText value="Clear the following Event? This action is irreversible."/>
+      	<h:outputText value="#{messages.vehicle_clear_event}"/>
       </h:panelGroup>
 
       <a4j:form id="clearItemForm">
@@ -631,7 +631,7 @@ var firstLoad = new Boolean(true);
 <!-- START LOCATION MODAL -->
 	<rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">
 		<f:facet name="header">
-	    	<h:outputText value="Event Location" />
+	    	<h:outputText value="#{messages.vehicle_event_location}" />
 	    </f:facet>
 	    <f:facet name="controls">
 	    	<h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('eventLocationModal')" />

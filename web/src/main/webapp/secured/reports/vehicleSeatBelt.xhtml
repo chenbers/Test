@@ -100,7 +100,7 @@
 								<table width="220" border="0" cellspacing="0" cellpadding="0" class="scorebox" style="margin: 20px 20px 0 0;">
 							  	<tr>
 									<td>
-										<h4>Overall Score</h4>
+										<h4>#{messages.vehicle_overallscore}</h4>
 									</td>
 									<td width="80" align="center">
 										<ui:include src="../../includes/scoreBox.xhtml">
@@ -143,7 +143,7 @@
 			<div class="" style="width: 938px;">
 				<rich:panel id="tableStats" bodyClass="panel_nw">
 					<div class="panel_title">
-						<span class="details">Details</span>
+						<span class="details">#{messages.vehicle_details}</span>
 							<span class="panel_content_right">
 						  	<h:outputFormat id="headerEvents" value="#{messages.recordCounts}">
 								<a4j:actionparam value="#{vehicleSeatBeltBean.tableStatsBean.tableRowStart}"/>
@@ -171,7 +171,7 @@
 						
 							<rich:column>
 								<f:facet name="header">
-									<h:outputText value="Location" />
+									<h:outputText value="#{messages.vehicle_location}" />
 								</f:facet>
 								<div class="maplink">
 					              <a4j:commandLink style="cursor:pointer">
@@ -186,7 +186,7 @@
 							
 							<rich:column sortBy="#{item.event.time}">
 								<f:facet name="header">
-									<h:outputText value="Date/Time" />
+									<h:outputText value="#{messages.vehicle_datetime}" />
 								</f:facet>
 									<h:outputText value="#{item.event.time}">
 										<f:convertDateTime timeZone="#{vehicleSeatBeltBean.user.person.timeZone}" pattern="#{messages.dateTimeFormat}" />
@@ -195,21 +195,21 @@
 							
 							<rich:column sortBy="#{item.event.avgSpeed}">
 								<f:facet name="header">
-									<h:outputText value="Avg Speed" />
+									<h:outputText value="#{messages.vehicle_avg_speed}" />
 								</f:facet>
 								<strong><h:outputText value="#{item.event.avgSpeed} #{messages.measurement_speed}" /></strong>
 							</rich:column>
 							
 							<rich:column sortBy="#{item.event.topSpeed}">
 								<f:facet name="header">
-									<h:outputText value="Top Speed" />
+									<h:outputText value="#{messages.vehicle_top_speed}" />
 								</f:facet>
 								<strong><h:outputText value="#{item.event.topSpeed} #{messages.measurement_speed}" /></strong>
 							</rich:column>
 							
 							<rich:column sortBy="#{item.event.distance}">
 								<f:facet name="header">
-									<h:outputText value="Distance" />
+									<h:outputText value="#{messages.vehicle_distance}" />
 								</f:facet>
 								<h:outputText value="#{item.event.distance}" converter="DistanceConverter" />
 							</rich:column>
@@ -284,7 +284,7 @@
 <rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">
       
 	<f:facet name="header">
-    	<h:outputText value="Event Location" />
+    	<h:outputText value="#{messages.vehicle_event_location}" />
     </f:facet>
     <f:facet name="controls">
     	<h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('eventLocationModal')" />

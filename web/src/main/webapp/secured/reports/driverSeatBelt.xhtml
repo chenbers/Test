@@ -34,7 +34,7 @@
 <h:form>
 	<ul id="grid_nav">
 		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
-		<li class="l grid_title">Driver Performance:&#160;<h:commandLink action="go_driver" value="#{navigationBean.driver.person.fullName}" /></li>
+		<li class="l grid_title"><h:outputText value="#{messages.driverPerformanceName} " /><h:commandLink action="go_driver" value="#{navigationBean.driver.person.fullName}" /></li>
 		<li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li>
 		
 		<li class="l">
@@ -49,7 +49,7 @@
 		<li class="l" style="margin-left: -15px;">
 			<ul id="breadcrumb">
 				<li><h:commandLink action="go_driver" value="#{navigationBean.driver.person.fullNameWithId}" /></li>
-				<li class="last">Seat Belt</li>
+				<li class="last">#{messages.driver_seatbelt}</li>
 			</ul>
 		</li>
 	</ul>
@@ -103,7 +103,7 @@
 								<table width="220" border="0" cellspacing="0" cellpadding="0" class="scorebox" style="margin: 20px 20px 0 0;">
 								  <tr>
 									<td>
-										<h4>Overall Score</h4>
+										<h4>#{messages.driver_overallscore}</h4>
 									</td>
 									<td width="80" align="center">
 										<ui:include src="../../includes/scoreBox.xhtml">
@@ -146,7 +146,7 @@
 			<div class="" style="width: 938px;">
 				<rich:panel id="tableStats" bodyClass="panel_nw">
 					<div class="panel_title">
-						<span class="details">Details</span>
+						<span class="details">#{messages.driver_details}</span>
 							<span class="panel_content_right">
 						  	<h:outputFormat id="headerEvents" value="#{messages.recordCounts}">
 								<a4j:actionparam value="#{driverSeatBeltBean.tableStatsBean.tableRowStart}"/>
@@ -175,7 +175,7 @@
 						
 							<rich:column>
 								<f:facet name="header">
-									<h:outputText value="Location" />
+									<h:outputText value="#{messages.driver_location}" />
 								</f:facet>
 								<div class="maplink">
 					              <a4j:commandLink style="cursor:pointer">
@@ -190,7 +190,7 @@
 							
 							<rich:column sortBy="#{item.event.time}">
 								<f:facet name="header">
-									<h:outputText value="Date/Time" />
+									<h:outputText value="#{messages.driver_datetime}" />
 								</f:facet>
 									<h:outputText value="#{item.event.time}">
 										<f:convertDateTime timeZone="#{navigationBean.driver.person.timeZone}" pattern="#{messages.dateTimeFormat}"/>
@@ -199,21 +199,21 @@
 							
 							<rich:column sortBy="#{item.event.avgSpeed}">
 								<f:facet name="header">
-									<h:outputText value="Avg Speed" />
+									<h:outputText value="#{messages.driver_avg_speed}" />
 								</f:facet>
 								<strong><h:outputText value="#{item.event.avgSpeed} #{messages.measurement_speed}" /></strong>
 							</rich:column>
 							
 							<rich:column sortBy="#{item.event.topSpeed}">
 								<f:facet name="header">
-									<h:outputText value="Top Speed" />
+									<h:outputText value="#{messages.driver_top_speed}" />
 								</f:facet>
 								<strong><h:outputText value="#{item.event.topSpeed} #{messages.measurement_speed}" /></strong>
 							</rich:column>
 							
 							<rich:column sortBy="#{item.event.distance}">
 								<f:facet name="header">
-									<h:outputText value="Distance" />
+									<h:outputText value="#{messages.driver_distance}" />
 								</f:facet>
 								<h:outputText value="#{item.event.distance}" converter="DistanceConverter" />
 							</rich:column>
@@ -257,7 +257,7 @@
       </f:facet>
 
       <h:panelGroup layout="block" styleClass="popupsubtitle">
-      	<h:outputText value="Clear the following Event? This action is irreversible."/>
+      	<h:outputText value="#{messages.driver_clear_event}"/>
       </h:panelGroup>
 
       <a4j:form id="clearItemForm">
@@ -288,7 +288,7 @@
 <rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">
       
 	<f:facet name="header">
-    	<h:outputText value="Event Location" />
+    	<h:outputText value="#{messages.driver_event_location}" />
     </f:facet>
     <f:facet name="controls">
     	<h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('eventLocationModal')" />

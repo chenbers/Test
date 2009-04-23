@@ -144,7 +144,7 @@ var firstLoad = new Boolean(true);
 								<table width="220" border="0" cellspacing="0" cellpadding="0" class="scorebox" style="margin: 20px 20px 0 0;">
 								  <tr>
 									<td>
-										<h4>Overall Score</h4>
+										<h4>#{messages.vehicle_overallscore}</h4>
 									</td>
 									<td width="80" align="center">
 										<ui:include src="../../includes/scoreBox.xhtml">
@@ -186,7 +186,7 @@ var firstLoad = new Boolean(true);
 			<div class="" style="width: 938px;">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="vehicle">Breakdown by Driving Style</span>
+						<span class="vehicle">#{messages.vehicle_breakdown_style}</span>
 						<span class="panel_links"></span></div>
 				</div>
 				<div class="panel_w">
@@ -419,7 +419,7 @@ var firstLoad = new Boolean(true);
 			<div class="" style="width: 938px;">
 				<rich:panel id="tableStats" bodyClass="panel_nw">
 					<div class="panel_title">
-						<span class="details">Details</span>
+						<span class="details">#{messages.vehicle_details}</span>
 						<span class="panel_content_right">
 						  	<h:outputFormat id="headerEvents" value="#{messages.recordCounts}">
 								<a4j:actionparam value="#{vehicleStyleBean.tableStatsBean.tableRowStart}"/>
@@ -445,7 +445,7 @@ var firstLoad = new Boolean(true);
 						
 							<rich:column>
 								<f:facet name="header">
-									<h:outputText value="Location" />
+									<h:outputText value="#{messages.vehicle_location}" />
 								</f:facet>
 								<div class="maplink">
 					              <a4j:commandLink style="cursor:pointer">
@@ -460,7 +460,7 @@ var firstLoad = new Boolean(true);
 							
 							<rich:column sortBy="#{item.event.time}">
 								<f:facet name="header">
-									<h:outputText value="Date/Time" />
+									<h:outputText value="#{messages.vehicle_datetime}" />
 								</f:facet>
 									<h:outputText value="#{item.event.time}">
 										<f:convertDateTime timeZone="#{vehicleStyleBean.user.person.timeZone}" pattern="#{messages.dateTimeFormat}" />
@@ -469,21 +469,21 @@ var firstLoad = new Boolean(true);
 							
 							<rich:column sortBy="#{item.event.eventType}">
 								<f:facet name="header">
-									<h:outputText value="Event" />
+									<h:outputText value="#{messages.vehicle_event}" />
 								</f:facet>
-								<strong><h:outputText value="#{item.event.eventType}" /></strong>		
+								<strong><h:outputText value="#{messages[item.event.eventType]}" /></strong>		
 							</rich:column>
 							
 							<rich:column sortBy="#{item.event.speed}">
 								<f:facet name="header">
-									<h:outputText value="Avg Speed" />
+									<h:outputText value="#{messages.vehicle_avg_speed}" />
 								</f:facet>
 								<strong><h:outputText value="#{item.event.speed} #{messages.measurement_speed}" /></strong>
 							</rich:column>
 							
 							<rich:column sortBy="#{item.event.severity}">
 								<f:facet name="header">
-									<h:outputText value="Severity" />
+									<h:outputText value="#{messages.vehicle_severity}" />
 								</f:facet>
 								<div class="#{(item.event.severity gt 4) ? 'sev_bar_ex' : ''}
 											#{(item.event.severity lt 5) and (item.event.severity gt 2) ? 'sev_bar_med' : ''}
@@ -531,7 +531,7 @@ var firstLoad = new Boolean(true);
       </f:facet>
 
       <h:panelGroup layout="block" styleClass="popupsubtitle">
-      	<h:outputText value="Clear the following Event? This action is irreversible."/>
+      	<h:outputText value="#{messages.vehicle_clear_event}"/>
       </h:panelGroup>
 
       <a4j:form id="clearItemForm">
@@ -561,7 +561,7 @@ var firstLoad = new Boolean(true);
 <!-- START LOCATION MODAL -->
 <rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initialize(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">
 	<f:facet name="header">
-    	<h:outputText value="Event Location" />
+    	<h:outputText value="#{messages.vehicle_event_location}" />
     </f:facet>
     <f:facet name="controls">
     	<h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('eventLocationModal')" />
