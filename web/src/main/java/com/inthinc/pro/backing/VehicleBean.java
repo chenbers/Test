@@ -293,17 +293,15 @@ public class VehicleBean extends BasePerformanceBean
 
         }
         sb.append(multiLineChart.getCategoriesEnd());
-
-        sb.append(multiLineChart.getChartDataSet("Light", "B1D1DC", "B1D1DC", lightValues, catLabelList));
-        sb.append(multiLineChart.getChartDataSet("Medium", "C8A1D1", "C8A1D1", medValues, catLabelList));
-        sb.append(multiLineChart.getChartDataSet("Heavy", "A8C634", "A8C634", heavyValues, catLabelList));
+        
+        sb.append(multiLineChart.getChartDataSet(MessageUtil.getMessageString("vehicle_mpg_light"), "B1D1DC", "B1D1DC", lightValues, catLabelList));
+        sb.append(multiLineChart.getChartDataSet(MessageUtil.getMessageString("vehicle_mpg_medium"), "C8A1D1", "C8A1D1", medValues, catLabelList));
+        sb.append(multiLineChart.getChartDataSet(MessageUtil.getMessageString("vehicle_mpg_heavy"), "A8C634", "A8C634", heavyValues, catLabelList));
 
         sb.append(multiLineChart.getClose());
 
         return sb.toString();
     }
-
-    
 
     public DurationBean getCoachDurationBean()
     {
@@ -380,9 +378,9 @@ public class VehicleBean extends BasePerformanceBean
         int count = 0;
         for (MpgEntity me : mpgEntities)
         {
-            chartDataList.add(new CategorySeriesData("Light", monthList.get(count).toString(), me.getLightValue(), monthList.get(count).toString()));
-            chartDataList.add(new CategorySeriesData("Medium", monthList.get(count).toString(), me.getMediumValue(), monthList.get(count).toString()));
-            chartDataList.add(new CategorySeriesData("Heavy", monthList.get(count).toString(), me.getHeavyValue(), monthList.get(count).toString()));
+            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString("vehicle_mpg_light"), monthList.get(count).toString(), me.getLightValue(), monthList.get(count).toString()));
+            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString("vehicle_mpg_medium"), monthList.get(count).toString(), me.getMediumValue(), monthList.get(count).toString()));
+            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString("vehicle_mpg_heavy"), monthList.get(count).toString(), me.getHeavyValue(), monthList.get(count).toString()));
 
             count++;
         }
