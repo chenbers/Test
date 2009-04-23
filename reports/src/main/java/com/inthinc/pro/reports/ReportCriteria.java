@@ -33,12 +33,14 @@ public class ReportCriteria
     {
         setReport(reportCriteria.getReport());
         paramMap.put("ENTITY_NAME", reportCriteria.getPramMap().get("ENTITY_NAME"));
+        paramMap.put("REPORT_NAME", report.toString());
     }
 
     public ReportCriteria(ReportType report, String entityName)
     {
         setReport(report);
         paramMap.put("ENTITY_NAME", entityName);
+        paramMap.put("REPORT_NAME", report.toString());
     }
 
     public void setMainDataset(List mainDataset)

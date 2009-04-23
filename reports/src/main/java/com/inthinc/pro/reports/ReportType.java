@@ -24,8 +24,8 @@ public enum ReportType
     VEHICLE_STYLE("Vehicle Style Report", "DriverVehicleStyleReport.jrxml", "DVStyleReportRaw.jrxml"),
     VEHICLE_SEATBELT("Vehicle Seat Belt Report", "DriverVehicleSeatBeltReport.jrxml", "DVSeatBeltReportRaw.jrxml"),
     EVENT_REPORT("Event Report", "EventReport.jrxml","EventReportRaw.jrxml"),
-    WARNING_REPORT("Warning Report", "WarningReport.jrxml","WarningReportRaw.jrxml"),
-    EMERGENCY_REPORT("Emergency Report", "EmergencyReport.jrxml","EmergencyReportRaw.jrxml"),
+    WARNING_REPORT("Warning Report", "EventReport.jrxml","EventReportRaw.jrxml"),
+    EMERGENCY_REPORT("Emergency Report", "EventReport.jrxml","EventReportRaw.jrxml"),
     RED_FLAG_REPORT("Red Flag Report", "RedFlagReport.jrxml","RedFlagReportRaw.jrxml");
   
     private String prettyTemplate;
@@ -69,6 +69,15 @@ public enum ReportType
     public String getRawTemplate()
     {
         return rawTemplate;
+    }
+    
+    @Override
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder(this.getClass().getSimpleName());
+        sb.append(".");
+        sb.append(this.name());
+        return sb.toString();
     }
 
     

@@ -30,6 +30,7 @@
 	<parameter name="RECORD_COUNT" isForPrompting="false" class="java.lang.Integer"/>
 	<parameter name="REPORT_LOGO" isForPrompting="false" class="java.io.InputStream"/>
 	<parameter name="REPORT_DATE_AS_STRING" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="REPORT_NAME" isForPrompting="false" class="java.lang.String"/>
 
 	<field name="group" class="java.lang.String"/>
 	<field name="driverName" class="java.lang.String"/>
@@ -44,32 +45,19 @@
 		</background>
 		<title>
 			<band height="50"  isSplitAllowed="true" >
-				<staticText>
-					<reportElement
-						x="128"
-						y="33"
-						width="0"
-						height="2"
-						key="staticText-9"/>
-					<box></box>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[Static Text]]></text>
-				</staticText>
-				<staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="53"
 						y="21"
-						width="115"
+						width="189"
 						height="20"
-						key="staticText-10"/>
+						key="textField-10"/>
 					<box></box>
 					<textElement textAlignment="Left">
 						<font size="16"/>
 					</textElement>
-				<text><![CDATA[Safety Report]]></text>
-				</staticText>
+				<textFieldExpression   class="java.lang.String"><![CDATA[str($P{REPORT_NAME})]]></textFieldExpression>
+				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="543"
@@ -81,7 +69,7 @@
 					<textElement textAlignment="Right" verticalAlignment="Bottom">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Safety Event Count: " + $P{RECORD_COUNT}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.event.count}+" " + $P{RECORD_COUNT}.toString()]]></textFieldExpression>
 				</textField>
 				<image  scaleImage="RetainShape" vAlign="Top" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -94,19 +82,19 @@
 					<graphicElement stretchType="NoStretch"/>
 					<imageExpression class="java.io.InputStream"><![CDATA[$P{REPORT_LOGO}]]></imageExpression>
 				</image>
-				<staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="55"
 						y="5"
 						width="122"
 						height="16"
-						key="staticText-16"/>
+						key="textField-16"/>
 					<box></box>
 					<textElement textAlignment="Left" verticalAlignment="Top">
 						<font/>
 					</textElement>
-				<text><![CDATA[tiwiPRO - Portal]]></text>
-				</staticText>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.header.system.name}]]></textFieldExpression>
+				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="628"
@@ -140,71 +128,45 @@
 						key="rectangle-3"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
-				<staticText>
-					<reportElement
-						x="60"
-						y="16"
-						width="0"
-						height="1"
-						key="staticText-1"/>
-					<box></box>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[Static Text]]></text>
-				</staticText>
-				<staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="152"
 						y="12"
 						width="118"
 						height="16"
-						key="staticText-2"/>
+						key="textField-2"/>
 					<box></box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<text><![CDATA[Group]]></text>
-				</staticText>
-				<staticText>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.event.group}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="270"
 						y="12"
 						width="125"
 						height="16"
-						key="staticText-3"/>
+						key="textField-3"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<text><![CDATA[Driver]]></text>
-				</staticText>
-				<staticText>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.event.driver}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="635"
 						y="12"
 						width="136"
 						height="16"
-						key="staticText-4"/>
+						key="textField-4"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<text><![CDATA[Detail]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="128"
-						y="10"
-						width="0"
-						height="2"
-						key="staticText-11"/>
-					<box></box>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[Static Text]]></text>
-				</staticText>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.event.detail}]]></textFieldExpression>
+				</textField>
 				<rectangle>
 					<reportElement
 						x="196"
@@ -214,45 +176,45 @@
 						key="rectangle-2"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
-				<staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="519"
 						y="12"
 						width="116"
 						height="16"
-						key="staticText-12"/>
+						key="textField-12"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<text><![CDATA[Category]]></text>
-				</staticText>
-				<staticText>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.event.category}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="395"
 						y="12"
 						width="124"
 						height="16"
-						key="staticText-13"/>
+						key="textField-13"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<text><![CDATA[Vehicle]]></text>
-				</staticText>
-				<staticText>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.event.vehicle}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="7"
 						y="12"
 						width="145"
 						height="16"
-						key="staticText-14"/>
+						key="textField-14"/>
 					<box></box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<text><![CDATA[Date/Time]]></text>
-				</staticText>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.event.date.time}]]></textFieldExpression>
+				</textField>
 			</band>
 		</columnHeader>
 		<detail>
@@ -363,7 +325,7 @@
 					<textElement textAlignment="Right" verticalAlignment="Top">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Page " + $V{PAGE_NUMBER}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.footer.page} + " " + $V{PAGE_NUMBER}.toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -393,7 +355,7 @@
 					<textElement textAlignment="Right" verticalAlignment="Top">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Page " + $V{PAGE_NUMBER}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.footer.page} + " " + $V{PAGE_NUMBER}.toString()]]></textFieldExpression>
 				</textField>
 				<line direction="TopDown">
 					<reportElement
