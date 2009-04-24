@@ -59,14 +59,14 @@
       						<h:outputText value="#{messages.reports_driver}" />
       					</f:facet>
       					<a4j:htmlCommandLink action="go_driver" 
-      						rendered="#{item.driver.person.first != 'None'}"
+      						rendered="#{item.driver.groupID ne null}"
       						value="#{item.driver.person.fullName}">
 							<f:setPropertyActionListener 
 								value="#{item.driver}" 
 								target="#{navigationBean.driver}">
 							</f:setPropertyActionListener>
 						</a4j:htmlCommandLink>   
-						<h:outputText rendered="#{item.driver.person.first == 'None'}"
+						<h:outputText rendered="#{item.driver.groupID eq null}"
 							value="None Assigned">
 						</h:outputText>      										
     				</rich:column>
