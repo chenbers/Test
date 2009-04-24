@@ -266,7 +266,6 @@ public class VehicleSpeedBean extends BasePerformanceBean
         ReportCriteria reportCriteria = new ReportCriteria(reportType, getGroupHierarchy().getTopGroup().getName());
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
-        reportCriteria.addParameter("REPORT_NAME", "Vehicle Performance: Speed");
         reportCriteria.addParameter("ENTITY_NAME", this.getNavigation().getVehicle().getFullName());
         reportCriteria.addParameter("RECORD_COUNT", speedingListsMap.size());
         reportCriteria.addParameter("OVERALL_SCORE", getScoreMap().get(ScoreType.SCORE_SPEEDING.toString()) / 10.0D);

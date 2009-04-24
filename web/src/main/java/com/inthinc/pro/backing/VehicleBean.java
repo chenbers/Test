@@ -396,7 +396,6 @@ public class VehicleBean extends BasePerformanceBean
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_SUMMARY_P1, getGroupHierarchy().getTopGroup().getName());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setDuration(durationBean.getDuration());
-        reportCriteria.addParameter("REPORT_NAME", "Vehicle Performance: Summary");
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
         reportCriteria.addParameter("DRIVER_NAME", this.getNavigation().getVehicle().getFullName());
         reportCriteria.addParameter("SPEED_SCORE", initAverageScore(ScoreType.SCORE_SPEEDING, speedDurationBean.getDuration()) / 10.0D);
@@ -415,7 +414,6 @@ public class VehicleBean extends BasePerformanceBean
         reportCriteria = new ReportCriteria(ReportType.VEHICLE_SUMMARY_P2, getGroupHierarchy().getTopGroup().getName());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setDuration(durationBean.getDuration());
-        reportCriteria.addParameter("REPORT_NAME", "Vehicle Performance: Summary");
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
         reportCriteria.addParameter("DRIVER_NAME", this.getNavigation().getVehicle().getFullName());
 

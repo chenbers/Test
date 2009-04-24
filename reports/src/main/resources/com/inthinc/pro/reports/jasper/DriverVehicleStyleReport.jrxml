@@ -76,7 +76,7 @@
 					<textElement textAlignment="Right" verticalAlignment="Bottom">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Event Count: " + $P{RECORD_COUNT}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.dv.event.count} + " " + $P{RECORD_COUNT}.toString()]]></textFieldExpression>
 				</textField>
 				<lineChart>
 					<chart  hyperlinkTarget="Self"  customizerClass="com.inthinc.pro.reports.jasper.customizer.DriverLineChartCustomizer" >
@@ -122,19 +122,19 @@
 						</valueAxisFormat>
 					</linePlot>
 				</lineChart>
-				<staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="82"
 						y="302"
 						width="80"
 						height="15"
-						key="staticText-14"/>
+						key="textField-14"/>
 					<box></box>
 					<textElement>
 						<font size="12"/>
 					</textElement>
-				<text><![CDATA[Overall Score]]></text>
-				</staticText>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.dvstyle.overall.score}]]></textFieldExpression>
+				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="93"
@@ -148,19 +148,19 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$P{OVERALL_SCORE}]]></textFieldExpression>
 				</textField>
-				<staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="228"
 						y="302"
 						width="80"
 						height="15"
-						key="staticText-15"/>
+						key="textField-15"/>
 					<box></box>
 					<textElement>
 						<font size="12"/>
 					</textElement>
-				<text><![CDATA[Hard Brake]]></text>
-				</staticText>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.dvstyle.hard.brake}]]></textFieldExpression>
+				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="239"
@@ -174,19 +174,19 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$P{SCORE_HARDBRAKE}]]></textFieldExpression>
 				</textField>
-				<staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="370"
 						y="302"
 						width="106"
 						height="15"
-						key="staticText-16"/>
+						key="textField-16"/>
 					<box></box>
 					<textElement>
 						<font size="12"/>
 					</textElement>
-				<text><![CDATA[Hard Accelerate]]></text>
-				</staticText>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.dvstyle.hard.accelerate}]]></textFieldExpression>
+				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="381"
@@ -200,19 +200,19 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$P{SCORE_HARDACCEL}]]></textFieldExpression>
 				</textField>
-				<staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="232"
 						y="380"
 						width="80"
 						height="15"
-						key="staticText-17"/>
+						key="textField-17"/>
 					<box></box>
 					<textElement>
 						<font size="12"/>
 					</textElement>
-				<text><![CDATA[Hard Bump]]></text>
-				</staticText>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.dvstyle.hard.bump}]]></textFieldExpression>
+				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="243"
@@ -226,19 +226,19 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$P{SCORE_HARDBUMP}]]></textFieldExpression>
 				</textField>
-				<staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="82"
 						y="380"
 						width="80"
 						height="15"
-						key="staticText-18"/>
+						key="textField-18"/>
 					<box></box>
 					<textElement>
 						<font size="12"/>
 					</textElement>
-				<text><![CDATA[Hard Turn]]></text>
-				</staticText>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.dvstyle.hard.turn}]]></textFieldExpression>
+				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="93"
@@ -265,19 +265,6 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{ENTITY_NAME}]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement
-						x="128"
-						y="33"
-						width="0"
-						height="2"
-						key="staticText-19"/>
-					<box></box>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[Static Text]]></text>
-				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="323"
@@ -289,7 +276,7 @@
 					<textElement textAlignment="Right">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Duration: " + $P{DURATION}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.header.duration} + " " + str($P{DURATION}.toString())]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -302,21 +289,8 @@
 					<textElement>
 						<font size="14"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{REPORT_NAME}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[str($P{REPORT_NAME})]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement
-						x="128"
-						y="33"
-						width="0"
-						height="2"
-						key="staticText-20"/>
-					<box></box>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[Static Text]]></text>
-				</staticText>
 				<image  scaleImage="RetainShape" vAlign="Top" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="1"
@@ -328,19 +302,19 @@
 					<graphicElement stretchType="NoStretch"/>
 					<imageExpression class="java.io.InputStream"><![CDATA[$P{REPORT_LOGO}]]></imageExpression>
 				</image>
-				<staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="55"
 						y="5"
 						width="122"
 						height="16"
-						key="staticText-21"/>
+						key="textField-21"/>
 					<box></box>
 					<textElement textAlignment="Left" verticalAlignment="Top">
 						<font/>
 					</textElement>
-				<text><![CDATA[tiwiPRO - Portal]]></text>
-				</staticText>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.header.system.name}]]></textFieldExpression>
+				</textField>
 			</band>
 		</title>
 		<pageHeader>
@@ -361,71 +335,45 @@
 						key="rectangle-3"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
-				<staticText>
-					<reportElement
-						x="60"
-						y="17"
-						width="0"
-						height="1"
-						key="staticText-1"/>
-					<box></box>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[Static Text]]></text>
-				</staticText>
-				<staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="7"
 						y="14"
 						width="109"
 						height="16"
-						key="staticText-2"/>
+						key="textField-2"/>
 					<box></box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<text><![CDATA[Location]]></text>
-				</staticText>
-				<staticText>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.dvstyle.location}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="133"
 						y="14"
 						width="104"
 						height="16"
-						key="staticText-3"/>
+						key="textField-3"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<text><![CDATA[Date/Time]]></text>
-				</staticText>
-				<staticText>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.dvstyle.date.time}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="474"
 						y="14"
 						width="54"
 						height="16"
-						key="staticText-4"/>
+						key="textField-4"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<text><![CDATA[Severity]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="128"
-						y="11"
-						width="0"
-						height="2"
-						key="staticText-11"/>
-					<box></box>
-					<textElement>
-						<font/>
-					</textElement>
-				<text><![CDATA[Static Text]]></text>
-				</staticText>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.dvstyle.severity}]]></textFieldExpression>
+				</textField>
 				<rectangle>
 					<reportElement
 						x="196"
@@ -435,32 +383,32 @@
 						key="rectangle-2"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
-				<staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="413"
 						y="14"
 						width="56"
 						height="16"
-						key="staticText-12"/>
+						key="textField-12"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<text><![CDATA[Speed]]></text>
-				</staticText>
-				<staticText>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.dvstyle.speed}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="294"
 						y="14"
 						width="68"
 						height="16"
-						key="staticText-13"/>
+						key="textField-13"/>
 					<box></box>
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<text><![CDATA[Event]]></text>
-				</staticText>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.dvstyle.event}]]></textFieldExpression>
+				</textField>
 			</band>
 		</columnHeader>
 		<detail>
@@ -558,7 +506,7 @@
 					<textElement textAlignment="Right" verticalAlignment="Top">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Page " + $V{PAGE_NUMBER}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.footer.page} + " " + $V{PAGE_NUMBER}.toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -597,7 +545,7 @@
 					<textElement textAlignment="Right" verticalAlignment="Top">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Page " + $V{PAGE_NUMBER}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.footer.page} + " " + $V{PAGE_NUMBER}.toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

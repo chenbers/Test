@@ -193,7 +193,6 @@ public class VehicleSeatBeltBean extends BasePerformanceBean
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_SEATBELT, getGroupHierarchy().getTopGroup().getName());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setDuration(durationBean.getDuration());
-        reportCriteria.addParameter("REPORT_NAME", "Vehicle Performance: Seat Belt");
         reportCriteria.addParameter("ENTITY_NAME", navigation.getVehicle().getFullName());
         reportCriteria.addParameter("RECORD_COUNT", getSeatBeltEvents().size());
         reportCriteria.addParameter("OVERALL_SCORE", getSeatBeltScore() / 10.0D);

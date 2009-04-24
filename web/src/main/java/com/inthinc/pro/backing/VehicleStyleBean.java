@@ -205,7 +205,6 @@ public class VehicleStyleBean extends BasePerformanceBean
 
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
-        reportCriteria.addParameter("REPORT_NAME", "Vehicle Performance: Style");
         reportCriteria.addParameter("ENTITY_NAME", getNavigation().getVehicle().getFullName());
         reportCriteria.addParameter("RECORD_COUNT", getStyleEvents().size());
         reportCriteria.addParameter("OVERALL_SCORE", getScoreMap().get(ScoreType.SCORE_DRIVING_STYLE.toString()) / 10.0D);
