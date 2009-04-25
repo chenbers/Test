@@ -291,7 +291,7 @@ public class DriverStyleBean extends BasePerformanceBean
         {
             for (EventReportItem eri : getStyleEvents())
             {
-                if (eri.getEvent().getEventType().getKey().equals(selectedEventType))
+                if (eri.getEvent().getEventType().name().equals(selectedEventType))
                 {
                     filteredStyleEvents.add(eri);
                 }

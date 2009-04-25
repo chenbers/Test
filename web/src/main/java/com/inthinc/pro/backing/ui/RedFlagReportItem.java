@@ -60,7 +60,7 @@ public class RedFlagReportItem implements Comparable<RedFlagReportItem>
         String catFormat = MessageUtil.getMessageString("redflags_cat" + redFlag.getEvent().getEventCategory().toString());
         setCategory(MessageFormat.format(catFormat, new Object[] {MessageUtil.getMessageString(redFlag.getEvent().getEventType().toString())}));
         
-        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + redFlag.getEvent().getEventType().getKey())));
+        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + redFlag.getEvent().getEventType().name())));
 
     }
     

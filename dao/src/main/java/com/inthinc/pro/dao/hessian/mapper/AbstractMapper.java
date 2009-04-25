@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -22,7 +23,6 @@ import com.inthinc.pro.dao.annotations.ConvertFieldToColumn;
 import com.inthinc.pro.dao.hessian.exceptions.MappingException;
 import com.inthinc.pro.model.BaseEnum;
 import com.inthinc.pro.model.ReferenceEntity;
-
 public abstract class AbstractMapper implements Mapper
 {
     private static final long serialVersionUID = 4820133473373187598L;
@@ -51,7 +51,6 @@ public abstract class AbstractMapper implements Mapper
                 convertToColumnMap.put(method.getAnnotation(ConvertFieldToColumn.class).fieldName(), method);
             }
         }
-
     }
 
     // public T convertToModelObject(Map<String, Object> map)
@@ -73,7 +72,6 @@ public abstract class AbstractMapper implements Mapper
     //
     // return convertToModelObject(map, modelObject);
     // }
-
     public <E> E convertToModelObject(Map<String, Object> map, Class<E> type)
     {
         E modelObject;
@@ -100,7 +98,6 @@ public abstract class AbstractMapper implements Mapper
             String columnName = entry.getKey();
             Object value = entry.getValue();
             String key = null;
-
             for (Field field : fieldList)
             {
                 if (field.isAnnotationPresent(Column.class))
@@ -115,7 +112,6 @@ public abstract class AbstractMapper implements Mapper
             }
             if (key == null)
                 key = columnName;
-
             // Check to see if the key/value pair in the map is associated with a custom converter.
             // If so, invoke the converter. If not, do normal mapping from map key/value to field in modelObject
             if (convertToFieldMap.containsKey(columnName))
@@ -135,10 +131,8 @@ public abstract class AbstractMapper implements Mapper
                 }
                 continue;
             }
-
             setProperty(modelObject, key, value, fieldList);
         }
-
         return modelObject;
     }
 
@@ -157,7 +151,6 @@ public abstract class AbstractMapper implements Mapper
     // {
     // return convertToModelObject(list, modelClass);
     // }
-
     public <E> List<E> convertToModelObject(List<Map<String, Object>> list, Class<E> type)
     {
         List<E> returnList = new ArrayList<E>();
@@ -234,7 +227,8 @@ public abstract class AbstractMapper implements Mapper
         }
     }
 
-    private Object convertProperty(Class<?> propertyType, String key, Object value, List<Field> fieldList) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, NoSuchFieldException, InstantiationException
+    private Object convertProperty(Class<?> propertyType, String key, Object value, List<Field> fieldList) throws NoSuchMethodException, IllegalAccessException,
+            InvocationTargetException, NoSuchFieldException, InstantiationException
     {
         if (propertyType != null)
         {
@@ -251,6 +245,14 @@ public abstract class AbstractMapper implements Mapper
             {
                 String tzID = (String) value;
                 value = TimeZone.getTimeZone(tzID);
+            }
+            else if (propertyType.equals(Locale.class) && value instanceof String)
+            {
+                String[] locale = ((String) value).split("_");
+                if (locale.length == 1)
+                    value = new Locale(locale[0]);
+                else if (locale.length == 2)
+                    value = new Locale(locale[0], locale[1]);
             }
             else if (propertyType.equals(Boolean.class) && value instanceof Integer)
             {
@@ -298,11 +300,11 @@ public abstract class AbstractMapper implements Mapper
                 }
             }
         }
-    
         return value;
     }
 
-    public <T> T[] createArray(List<T> list, Class<?> propertyType, List<Field> fieldList) throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, NoSuchFieldException
+    public <T> T[] createArray(List<T> list, Class<?> propertyType, List<Field> fieldList) throws InstantiationException, IllegalAccessException, NoSuchMethodException,
+            InvocationTargetException, NoSuchFieldException
     {
         final T[] array = (T[]) Array.newInstance(propertyType.getComponentType(), list.size());
         for (int i = 0; i < array.length; i++)
@@ -321,20 +323,17 @@ public abstract class AbstractMapper implements Mapper
     {
         if (modelObject == null)
             return null;
-
         Map<String, Object> map = new HashMap<String, Object>();
         if (handled.get(modelObject) != null)
             return handled.get(modelObject);
         else
             handled.put(modelObject, map);
-
         Class<?> clazz = modelObject.getClass();
         while (clazz != null)
         {
             for (Field field : clazz.getDeclaredFields())
             {
                 field.setAccessible(true);
-
                 Column column = null;
                 String name = null;
                 if (field.isAnnotationPresent(Column.class))
@@ -353,7 +352,6 @@ public abstract class AbstractMapper implements Mapper
                 {
                     name = field.getName();
                 }
-
                 Object value = null;
                 try
                 {
@@ -367,8 +365,6 @@ public abstract class AbstractMapper implements Mapper
                                 + "\" caused an exception", e);
                     }
                 }
-
-
                 // Start checking the value for special cases. If a case doesn't exist, just put the field name and value in the map
                 if (value != null && Class.class.isInstance(value))
                     continue;
@@ -407,9 +403,6 @@ public abstract class AbstractMapper implements Mapper
         return map;
     }
 
-    
-
-    
     private Object convertToHessian(Object value, Map<Object, Map<String, Object>> handled, Field field, boolean includeNonUpdateables)
     {
         if (value == null)
@@ -558,7 +551,5 @@ public abstract class AbstractMapper implements Mapper
                 return field;
         }
         throw new NoSuchFieldException();
-
     }
-
 }

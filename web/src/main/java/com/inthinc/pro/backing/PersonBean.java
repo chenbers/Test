@@ -5,7 +5,7 @@ package com.inthinc.pro.backing;
 
 import java.io.Serializable;
 import java.text.NumberFormat;
-import java.util.ArrayList; 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.TreeMap;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -45,33 +46,29 @@ import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.app.SupportedTimeZones;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
-
 /**
  * @author David Gileadi
  */
 public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements Serializable
 {
-    private static final long                  serialVersionUID       = 1L;
-
-    private static final List<String>          AVAILABLE_COLUMNS;
-    private static final int[]                 DEFAULT_COLUMN_INDICES = new int[] { 0, 14, 24, 11 };
-
-    private static final Map<String, Gender>   GENDERS;
-    private static final Map<String, Integer>  HEIGHTS;
-    private static final int                   MIN_HEIGHT             = 48;
-    private static final int                   MAX_HEIGHT             = 86;
-    private static final Map<String, Integer>  WEIGHTS;
-    private static final int                   MIN_WEIGHT             = 75;
-    private static final int                   MAX_WEIGHT             = 300;
+    private static final long serialVersionUID = 1L;
+    private static final List<String> AVAILABLE_COLUMNS;
+    private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 14, 24, 11 };
+    private static final Map<String, Gender> GENDERS;
+    private static final Map<String, Integer> HEIGHTS;
+    private static final int MIN_HEIGHT = 48;
+    private static final int MAX_HEIGHT = 86;
+    private static final Map<String, Integer> WEIGHTS;
+    private static final int MIN_WEIGHT = 75;
+    private static final int MAX_WEIGHT = 300;
     private static final Map<String, TimeZone> TIMEZONES;
-    private static final int                   MILLIS_PER_MINUTE      = 1000 * 60;
-    private static final int                   MILLIS_PER_HOUR        = MILLIS_PER_MINUTE * 60;
-    private static final Map<String, String>   LICENSE_CLASSES;
-    private static final Map<String, State>    STATES;
-    private static final Map<String, Status>   STATUSES;
-    private static final Map<String, Integer>  ALERT_OPTIONS;
-    private static final String                REQUIRED_KEY = "required";
-
+    private static final int MILLIS_PER_MINUTE = 1000 * 60;
+    private static final int MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60;
+    private static final Map<String, String> LICENSE_CLASSES;
+    private static final Map<String, State> STATES;
+    private static final Map<String, Status> STATUSES;
+    private static final Map<String, Integer> ALERT_OPTIONS;
+    private static final String REQUIRED_KEY = "required";
     static
     {
         // available columns
@@ -112,12 +109,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         AVAILABLE_COLUMNS.add("driver_dot");
         AVAILABLE_COLUMNS.add("driver_RFID");
         AVAILABLE_COLUMNS.add("driver_groupID");
-
         // genders
         GENDERS = new TreeMap<String, Gender>();
         for (final Gender gender : Gender.values())
             GENDERS.put(gender.getDescription(), gender);
-
         // heights
         HEIGHTS = new LinkedHashMap<String, Integer>();
         for (int i = MIN_HEIGHT; i < MAX_HEIGHT; i++)
@@ -125,12 +120,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 HEIGHTS.put((i / 12) + "' " + (i % 12) + '"', i);
             else
                 HEIGHTS.put((i / 12) + "'", i);
-
         // weights
         WEIGHTS = new TreeMap<String, Integer>();
         for (int i = MIN_WEIGHT; i < MAX_WEIGHT; i++)
             WEIGHTS.put(String.valueOf(i), i);
-
         // time zones
         final List<String> timeZones = SupportedTimeZones.getSupportedTimeZones();
         // sort by offset from GMT
@@ -157,34 +150,29 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             else
                 TIMEZONES.put(timeZone.getID() + " (GMT+" + offsetHours + ':' + format.format(offsetMinutes) + ')', timeZone);
         }
-
         // license classes
         LICENSE_CLASSES = new TreeMap<String, String>();
         for (char c = 'A'; c <= 'P'; c++)
             LICENSE_CLASSES.put(String.valueOf(c), String.valueOf(c));
-
         // states
         STATES = new TreeMap<String, State>();
         for (final State state : States.getStates().values())
             STATES.put(state.getName(), state);
-
         // statuses
         STATUSES = new TreeMap<String, Status>();
         STATUSES.put(MessageUtil.getMessageString("status" + Status.ACTIVE.getCode()), Status.ACTIVE);
         STATUSES.put(MessageUtil.getMessageString("status" + Status.INACTIVE.getCode()), Status.INACTIVE);
-
         // alert options
         ALERT_OPTIONS = new LinkedHashMap<String, Integer>();
         for (int i = 0; i < 8; i++)
             if (i != 5) // skip cell phone
                 ALERT_OPTIONS.put(MessageUtil.getMessageString("myAccount_alertText" + i), i);
     }
-
-    private PersonDAO                          personDAO;
-    private UserDAO                            userDAO;
-    private DriverDAO                          driverDAO;
-    private PasswordEncryptor                  passwordEncryptor;
-    private List<PersonChangeListener>         changeListeners;
+    private PersonDAO personDAO;
+    private UserDAO userDAO;
+    private DriverDAO driverDAO;
+    private PasswordEncryptor passwordEncryptor;
+    private List<PersonChangeListener> changeListeners;
 
     public void setPersonDAO(PersonDAO personDAO)
     {
@@ -223,7 +211,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     {
         // get the people
         final List<Person> plainPeople = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID(), getUser().getGroupID());
-
         // filter out people who don't belong
         for (final Iterator<Person> i = plainPeople.iterator(); i.hasNext();)
         {
@@ -231,12 +218,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             if ((person.getDriver() == null) && (getGroupHierarchy().getGroup(person.getUser().getGroupID()) == null))
                 i.remove();
         }
-
         // convert the people to PersonViews
         final LinkedList<PersonView> items = new LinkedList<PersonView>();
         for (final Person person : plainPeople)
             items.add(createPersonView(person));
-
         return items;
     }
 
@@ -252,7 +237,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         final PersonView personView = new PersonView();
         personView.bean = this;
         BeanUtils.copyProperties(person, personView);
-
         if (personView.getAddress() == null)
             personView.setAddress(new Address());
         personView.setUserSelected(person.getUser() != null);
@@ -262,7 +246,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             personView.getUser().setPerson(personView);
         if ((person.getDriver() != null) && (person.getDriver().getRFID() != null) && (person.getDriver().getRFID() == 0))
             person.getDriver().setRFID(null);
-
         return personView;
     }
 
@@ -323,8 +306,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         else if (column.equals("driver_RFID"))
         {
             Long value = null;
-           
-            if(person.getDriver() != null)
+            if (person.getDriver() != null)
                 value = person.getDriver().getRFID();
             if (value == null)
                 value = 0L;
@@ -372,7 +354,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         // TODO: maybe use the browser's time zone instead, if possible...
         person.setTimeZone(TimeZone.getDefault());
         person.setAddress(new Address());
-        person.getUser().setRole(Role.valueOf(2));  // normal user
+        person.getUser().setRole(Role.valueOf(2)); // normal user
         person.getUser().setPerson(person);
         person.setDriver(new Driver());
         person.setUserSelected(true);
@@ -403,28 +385,23 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     public String display()
     {
         final String redirect = super.display();
-
         // if displaying the current user, reload from the DB in case changed elsewhere
         if (getItem().isUserSelected() && getItem().getUser().getUserID().equals(getUserID()))
         {
             item = revertItem(getItem());
         }
-
         return redirect;
     }
-    
 
     @Override
     public String edit()
     {
         final String redirect = super.edit();
-
         // if editing the current user, reload from the DB in case changed elsewhere
         if (getItem().isUserSelected() && getItem().getUser().getUserID().equals(getUserID()))
         {
             item = revertItem(getItem());
         }
-
         return redirect;
     }
 
@@ -435,12 +412,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         notifyChangeListeners();
         return result;
     }
-    
+
     @Override
     public String batchEdit()
     {
         String returnValue = super.batchEdit();
-        if(item != null)
+        if (item != null)
         {
             item.setUserSelected(true);
             item.setDriverSelected(true);
@@ -457,7 +434,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             getUpdateField().put("user.role.roleID", role);
             getUpdateField().put("user.role.name", role);
         }
-
         // see if we're partially editing one of the batch items
         boolean partialEdit = isBatchEdit() && getItem().isUserEditable();
         if (partialEdit)
@@ -470,20 +446,16 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                     break;
                 }
         }
-
         final String result = super.save();
-
         // revert partial-edit changes if user editable
         if ((result != null) && partialEdit)
         {
             items = null;
             getItems();
-
             final String summary = MessageUtil.getMessageString("editPerson_partialUpdate");
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, summary, null);
             FacesContext.getCurrentInstance().addMessage(null, message);
         }
-
         notifyChangeListeners();
         return result;
     }
@@ -492,34 +464,28 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     protected void doDelete(List<PersonView> deleteItems)
     {
         final FacesContext context = FacesContext.getCurrentInstance();
-
         for (final PersonView person : deleteItems)
         {
             personDAO.delete(person);
-
             // add a message
             final String summary = MessageUtil.formatMessageString("person_deleted", person.getFirst(), person.getLast());
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
             context.addMessage(null, message);
         }
     }
-    
+
     @Override
     protected boolean validateSaveItem(PersonView person)
     {
         final FacesContext context = FacesContext.getCurrentInstance();
         boolean valid = true;
-        
         // required Time Zone
-        if(person.getTimeZone() == null 
-                && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("timeZone"))))
+        if (person.getTimeZone() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("timeZone"))))
         {
             valid = false;
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
             context.addMessage("edit-form:timeZone", message);
         }
-        
-        
         // unique primary e-mail
         if (!isBatchEdit() && (person.getPriEmail() != null) && (person.getPriEmail().length() > 0))
         {
@@ -532,7 +498,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 context.addMessage("edit-form:priEmail", message);
             }
         }
-
         // birth date
         if (!isBatchEdit() && (person.getDob() != null))
         {
@@ -545,29 +510,23 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 valid = false;
             }
         }
-
         // driver license expiration
         if (person.isDriverSelected())
         {
             // required team
-            if(person.getDriver().getGroupID() == null 
-                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.groupID"))))
+            if (person.getDriver().getGroupID() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.groupID"))))
             {
                 valid = false;
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
                 context.addMessage("edit-form:driver_groupID", message);
             }
-
-            
             // required user status
-            if(person.getDriver().getStatus() == null 
-                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.status"))))
+            if (person.getDriver().getStatus() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.status"))))
             {
                 valid = false;
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
                 context.addMessage("edit-form:driver_status", message);
             }
-            
             if ((person.getDriver().getExpiration() != null) && person.getDriver().getExpiration().before(new Date())
                     && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.expiration"))))
             {
@@ -575,7 +534,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 context.addMessage("edit-form:driver_expiration", message);
                 valid = false;
             }
-
             // unique RFID
             if (!isBatchEdit() && (person.getDriver().getRFID() != null) && (person.getDriver().getRFID() != 0))
             {
@@ -588,37 +546,30 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 }
             }
         }
-
         // unique username
         if (person.isUserSelected())
         {
             // required groupID
-            if(person.getUser().getGroupID() == null 
-                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.groupID"))))
+            if (person.getUser().getGroupID() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.groupID"))))
             {
                 valid = false;
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
                 context.addMessage("edit-form:user_groupID", message);
             }
-            
             // required user role
-            if(person.getUser().getRole() == null 
-                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.role"))))
+            if (person.getUser().getRole() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.role"))))
             {
                 valid = false;
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
                 context.addMessage("edit-form:user_role", message);
             }
-            
             // required user status
-            if(person.getUser().getStatus() == null 
-                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.status"))))
+            if (person.getUser().getStatus() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.status"))))
             {
                 valid = false;
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
                 context.addMessage("edit-form:user_status", message);
             }
-            
             if (!isBatchEdit())
             {
                 final User byUsername = userDAO.findByUserName(person.getUser().getUsername());
@@ -629,17 +580,14 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                     final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
                     context.addMessage("edit-form:user_username", message);
                 }
-
                 // matching passwords
                 if ((person.getPassword() != null) && (person.getPassword().length() > 0) && !person.getPassword().equals(person.getConfirmPassword()))
                 {
                     final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_passwordsMismatched"), null);
                     context.addMessage("edit-form:confirmPassword", message);
                     valid = false;
-                    
                 }
             }
-            
             // required pri email
             if (!isBatchEdit() && (person.getPriEmail() == null || person.getPriEmail().equals("")))
             {
@@ -648,9 +596,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
                 context.addMessage("edit-form:priEmail", message);
             }
-            
-            
-        }  
+        }
         // must be a user or a driver or both while not in batch edit.
         else if (!person.isDriverSelected() && !isBatchEdit())
         {
@@ -658,7 +604,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             context.addMessage("edit-form:isUser", message);
             valid = false;
         }
-        
         return valid;
     }
 
@@ -672,12 +617,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     protected void doSave(List<PersonView> saveItems, boolean create)
     {
         final FacesContext context = FacesContext.getCurrentInstance();
-
         for (final PersonView person : saveItems)
         {
             if ((person.getPassword() != null) && (person.getPassword().length() > 0))
                 person.getUser().setPassword(passwordEncryptor.encryptPassword(person.getPassword()));
-
             // null out the user/driver before saving
             if (!person.isUserSelected() && (person.getUser() != null))
             {
@@ -691,13 +634,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                     driverDAO.deleteByID(person.getDriver().getDriverID());
                 person.setDriver(null);
             }
-
             // set null dropdown items to empty
             if (person.getSuffix() == null)
                 person.setSuffix("");
             if ((person.getDriver() != null) && (person.getDriver().getLicenseClass() == null))
                 person.getDriver().setLicenseClass("");
-
             // null numbers are zero for the DB
             if (person.getHeight() == null)
                 person.setHeight(0);
@@ -705,7 +646,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 person.setWeight(0);
             if ((person.getDriver() != null) && (person.getDriver().getRFID() == null))
                 person.getDriver().setRFID(0L);
-
             // insert or update
             if (create)
                 person.setPersonID(personDAO.create(getAccountID(), person));
@@ -715,16 +655,13 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                     personDAO.update(person);
                 else if (person.isDriverSelected())
                     driverDAO.update(person.getDriver());
-
                 // if updating the currently-logged-in person, update the proUser
                 if ((person.getUser() != null) && person.getUser().getUserID().equals(getUserID()))
                     BeanUtil.deepCopy(person.getUser(), getUser());
             }
-
             // set zero RFID back to null
             if ((person.getDriver() != null) && (person.getDriver().getRFID() == 0))
                 person.getDriver().setRFID(null);
-
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "person_added" : "person_updated", person.getFirst(), person.getLast());
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
@@ -811,12 +748,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     public List<SelectItem> getRoles()
     {
         List<SelectItem> roleList = new ArrayList<SelectItem>();
-        for(Role role : Roles.getRoleList())
+        for (Role role : Roles.getRoleList())
         {
-            roleList.add(new SelectItem(role,role.getName()));
+            roleList.add(new SelectItem(role, role.getName()));
         }
-        roleList.add(0,new SelectItem(null,""));
-        
+        roleList.add(0, new SelectItem(null, ""));
         return roleList;
     }
 
@@ -839,25 +775,24 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     {
         @Column(updateable = false)
         private static final long serialVersionUID = 8954277815270194338L;
-
         @Column(updateable = false)
-        private PersonBean        bean;
+        private PersonBean bean;
         @Column(updateable = false)
-        private Boolean           userEditable;
+        private Boolean userEditable;
         @Column(updateable = false)
-        private Group             group;
+        private Group group;
         @Column(updateable = false)
-        private Group             team;
+        private Group team;
         @Column(updateable = false)
-        private String            password;
+        private String password;
         @Column(updateable = false)
-        private String            confirmPassword;
+        private String confirmPassword;
         @Column(updateable = false)
-        private boolean           userSelected;
+        private boolean userSelected;
         @Column(updateable = false)
-        private boolean           driverSelected;
+        private boolean driverSelected;
         @Column(updateable = false)
-        private boolean           selected;
+        private boolean selected;
 
         public Integer getId()
         {

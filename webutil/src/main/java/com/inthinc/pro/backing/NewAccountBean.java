@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -84,7 +85,7 @@ public class NewAccountBean
         }
 
         // create the superuser
-        User user = new User(0, person.getPersonID(), getSuperUserRole(), Status.ACTIVE, getUsername(), PASSWORD, groupID);
+        User user = new User(0, person.getPersonID(), getSuperUserRole(), Status.ACTIVE, getUsername(), PASSWORD, groupID, Locale.getDefault());
         Integer userID = null;
         try
         {

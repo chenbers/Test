@@ -1,29 +1,25 @@
 package com.inthinc.pro.model;
 
+import java.util.Locale;
+
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
-
 public class User extends BaseEntity
 {
     @ID
     private Integer userID;
-
     private Integer personID;
-    
     @Column(updateable = false)
-    private Person  person;
-    
+    private Person person;
     @Column(name = "roleID")
-    private Role    role;
-    
+    private Role role;
     private Status status;
-    
-    private String  username;
-    private String  password;
-    
+    private String username;
+    private String password;
     private Integer groupID;
-    
-    public User(Integer userID, Integer personID, Role role, Status status, String username, String password, Integer groupID)
+    private Locale locale;
+
+    public User(Integer userID, Integer personID, Role role, Status status, String username, String password, Integer groupID, Locale locale)
     {
         super();
         this.userID = userID;
@@ -33,6 +29,7 @@ public class User extends BaseEntity
         this.username = username;
         this.password = password;
         this.groupID = groupID;
+        this.locale = locale;
     }
 
     public User()
@@ -123,6 +120,14 @@ public class User extends BaseEntity
     {
         this.groupID = groupID;
     }
-    
 
+    public Locale getLocale()
+    {
+        return locale;
+    }
+
+    public void setLocale(Locale locale)
+    {
+        this.locale = locale;
+    }
 }

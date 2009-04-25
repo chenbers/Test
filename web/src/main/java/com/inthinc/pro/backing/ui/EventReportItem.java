@@ -64,7 +64,7 @@ public class EventReportItem implements Comparable<EventReportItem>
         String catFormat = MessageUtil.getMessageString("redflags_cat" + event.getEventCategory().toString());
         setCategory(MessageFormat.format(catFormat, new Object[] {MessageUtil.getMessageString(event.getEventType().toString())}));
         
-        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType().getKey())));
+        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType().name())));
 
         setNoteID(event.getNoteID());
     }
@@ -79,7 +79,7 @@ public class EventReportItem implements Comparable<EventReportItem>
         String catFormat = MessageUtil.getMessageString("redflags_cat" + event.getEventCategory().toString());
         setCategory(MessageFormat.format(catFormat, new Object[] {MessageUtil.getMessageString(event.getEventType().toString())}));
         
-        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType().getKey())));
+        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType().name())));
     }
     
     public String getDate()

@@ -371,6 +371,8 @@
         <property name="addressLookup" ref="addressLookupBean"></property>
     </bean>
     
+    <bean id="localeBean" class="com.inthinc.pro.backing.LocaleBean" scope="request"/>
+    
     <!-- Duration Beans -->
     <bean id="breakdownDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
     <bean id="driverDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>

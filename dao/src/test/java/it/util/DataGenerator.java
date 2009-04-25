@@ -8,6 +8,7 @@ import java.beans.XMLEncoder;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
@@ -204,7 +205,7 @@ public class DataGenerator
 
 
         String username = "user_"+person.getPersonID();
-        user = new User(0, person.getPersonID(), Roles.getRoleByName("superUser"), Status.ACTIVE, username, PASSWORD, groupID);
+        user = new User(0, person.getPersonID(), Roles.getRoleByName("superUser"), Status.ACTIVE, username, PASSWORD, groupID, Locale.getDefault());
         Integer userID = userDAO.create(person.getPersonID(), user);
         user.setUserID(userID);
         
