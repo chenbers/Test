@@ -73,6 +73,14 @@
                                 <td width="100"><h:outputText value="#{messages.myAccount_userName}" /></td>
                                 <td><h:outputText value="#{myAccountBean.user.username}"/></td>
                               </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.myAccount_locale}" /></td>
+                                <td>
+                                    <h:selectOneMenu value="#{myAccountBean.user.locale}" converter="SimpleBeanConverter">
+                                        <f:selectItems value="#{localeBean.supportedLocalesItems}"/>
+                                    </h:selectOneMenu>
+                                </td>
+                              </tr>
                             </tbody>
                           </table>
                         </td>

@@ -280,8 +280,9 @@
         <property name="passwordEncryptor" ref="jasyptPasswordEncryptor"></property>
     </bean>
     <bean id="myAccountBean" class="com.inthinc.pro.backing.MyAccountBean" scope="session" parent="baseBean">
-        <property name="personDAO" ref="personDAO" />
-        <property name="driverDAO" ref="driverDAO"></property>
+        <property name="personDAO" ref="personDAO"/>
+        <property name="userDAO" ref="userDAO"/>
+        <property name="driverDAO" ref="driverDAO"/>
     </bean>
 
     <!-- Map Backing Beans -->

@@ -7,22 +7,19 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
-
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.PersonDAO;
+import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEmailException;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.validators.EmailValidator;
-
 public class MyAccountBean extends BaseBean
 {
     private static final Logger logger = Logger.getLogger(MyAccountBean.class);
-
     private static final Map<String, Integer> ALERT_OPTIONS;
-
     static
     {
         // alert options
@@ -31,15 +28,15 @@ public class MyAccountBean extends BaseBean
             if (i != 5) // skip cell phone
                 ALERT_OPTIONS.put(MessageUtil.getMessageString("myAccount_alertText" + i), i);
     }
-
     private PersonDAO personDAO;
+    private UserDAO userDAO;
     private DriverDAO driverDAO;
-    
+
     public MyAccountBean()
     {
         super();
     }
-    
+
     public void validateEmail(FacesContext context, UIComponent component, Object value)
     {
         String valueStr = (String) value;
@@ -62,18 +59,18 @@ public class MyAccountBean extends BaseBean
             message.setSummary(MessageUtil.getMessageString("editPerson_uniqueEmail") + " " + getUser().getPerson().getPriEmail());
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             context.addMessage("my_form:priEmail", message);
-            
             restorePerson();
             return null;
         }
-        
+        userDAO.update(getUser());
         return "go_myAccount";
-        
     }
+
     private void restorePerson()
     {
         getUser().setPerson(personDAO.findByID(getUser().getPerson().getPersonID()));
     }
+
     public String getRegionName()
     {
         final Group group = getGroupHierarchy().getGroup(getUser().getGroupID());
@@ -108,5 +105,10 @@ public class MyAccountBean extends BaseBean
     public void setDriverDAO(DriverDAO driverDAO)
     {
         this.driverDAO = driverDAO;
+    }
+
+    public void setUserDAO(UserDAO userDAO)
+    {
+        this.userDAO = userDAO;
     }
 }

@@ -469,6 +469,10 @@ public abstract class AbstractMapper implements Mapper
         {
             value = ((ReferenceEntity) value).retrieveID();
         }
+        else if (Locale.class.isInstance(value))
+        {
+            value = ((Locale)value).toString();
+        }
         else if (BaseEnum.class.isInstance(value))
         {
             value = ((BaseEnum) value).getCode();

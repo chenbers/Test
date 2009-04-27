@@ -75,6 +75,10 @@
                               <td width="100"><h:outputText value="#{messages.myAccount_userName}" /></td>
                               <td><h:outputText value="#{myAccountBean.user.username}"/></td>
                             </tr>
+                            <tr>
+                              <td width="100"><h:outputText value="#{messages.myAccount_locale}" /></td>
+                              <td><h:outputText value="#{myAccountBean.user.locale.displayName}"/></td>
+                            </tr>
                           </tbody>
                         </table>
                       </td>
