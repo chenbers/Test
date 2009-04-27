@@ -9,15 +9,13 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.TripDisplay;
-import com.inthinc.pro.charts.FusionColumnChart;
 import com.inthinc.pro.charts.FusionMultiLineChart;
-import com.inthinc.pro.charts.Line;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.ScoreDAO;
-import com.inthinc.pro.map.AddressLookup;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
@@ -26,7 +24,6 @@ import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.reports.ReportCriteria;
-import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.map.MapLookup;
 import com.inthinc.pro.reports.model.CategorySeriesData;
@@ -35,30 +32,30 @@ import com.inthinc.pro.util.MessageUtil;
 
 public class VehicleBean extends BasePerformanceBean
 {
-    private static final Logger logger = Logger.getLogger(VehicleBean.class);
+    private static final Logger logger          = Logger.getLogger(VehicleBean.class);
 
-    private VehicleDAO vehicleDAO;
-    private DriverDAO driverDAO;
-    private ScoreDAO scoreDAO;
-    private MpgDAO mpgDAO;
-    private EventDAO eventDAO;
+    private VehicleDAO          vehicleDAO;
+    private DriverDAO           driverDAO;
+    private ScoreDAO            scoreDAO;
+    private MpgDAO              mpgDAO;
+    private EventDAO            eventDAO;
 
-    private DurationBean coachDurationBean;
-    private DurationBean mpgDurationBean;
-    private DurationBean speedDurationBean;
-    private DurationBean styleDurationBean;
-    private DurationBean seatBeltDurationBean;
+    private DurationBean        coachDurationBean;
+    private DurationBean        mpgDurationBean;
+    private DurationBean        speedDurationBean;
+    private DurationBean        styleDurationBean;
+    private DurationBean        seatBeltDurationBean;
 
-    private TripDisplay lastTrip;
-    private List<Event> violationEvents = new ArrayList<Event>();
-    private Integer overallScore;
-    private String overallScoreHistory;
-    private String overallScoreStyle;
-    private String mpgHistory;
-    private String coachingHistory;
-    private Boolean hasLastTrip;
-
-    private String emailAddress;
+    private TripDisplay         lastTrip;
+    private List<Event>         violationEvents = new ArrayList<Event>();
+    private Integer             overallScore;
+    private String              overallScoreHistory;
+    private String              overallScoreStyle;
+    private String              mpgHistory;
+    private String              coachingHistory;
+    private Boolean             hasLastTrip;
+    private TimeZone            timeZone;
+    private String              emailAddress;
 
     @Override
     protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
@@ -71,18 +68,17 @@ public class VehicleBean extends BasePerformanceBean
     {
         return scoreDAO.getVehicleTrendDaily(id, duration, scoreType);
     }
-    
+
     private Integer initAverageScore(ScoreType scoreType, Duration duration)
     {
         ScoreableEntity se = scoreDAO.getVehicleAverageScoreByType(navigation.getVehicle().getVehicleID(), duration, scoreType);
-        
-        if(se != null && se.getScore() != null)
+
+        if (se != null && se.getScore() != null)
             return se.getScore();
         else
             return -1;
     }
 
-    // INIT VIOLATIONS
     public void initViolations(Date start, Date end)
     {
         if (violationEvents.isEmpty())
@@ -92,11 +88,11 @@ public class VehicleBean extends BasePerformanceBean
             types.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
             types.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
             types.add(EventMapper.TIWIPRO_EVENT_IDLE);
-    
+
             violationEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), start, end, types);
-    
+
             // Lookup Addresses for events
-            
+
             for (Event event : violationEvents)
             {
                 event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
@@ -104,7 +100,6 @@ public class VehicleBean extends BasePerformanceBean
         }
     }
 
-    // OVERALL SCORE properties
     public Integer getOverallScore()
     {
         if (overallScore == null)
@@ -145,7 +140,6 @@ public class VehicleBean extends BasePerformanceBean
         this.overallScoreStyle = overallScoreStyle;
     }
 
-    // COACHING properties
     public String getCoachingHistory()
     {
         setCoachingHistory(createColumnDef(navigation.getVehicle().getVehicleID(), ScoreType.SCORE_COACHING_EVENTS, coachDurationBean.getDuration()));
@@ -157,7 +151,6 @@ public class VehicleBean extends BasePerformanceBean
         this.coachingHistory = coachingHistory;
     }
 
-    // LAST TRIP
     public TripDisplay getLastTrip()
     {
         if (lastTrip == null)
@@ -169,14 +162,7 @@ public class VehicleBean extends BasePerformanceBean
                 hasLastTrip = true;
                 navigation.setDriver(driverDAO.findByID(tempTrip.getDriverID()));
 
-                TimeZone tz;
-                
-                if(navigation.getDriver() == null || navigation.getDriver().getPerson() == null)
-                    tz = TimeZone.getTimeZone("GMT");
-                else
-                    tz = navigation.getDriver().getPerson().getTimeZone();
-                
-                TripDisplay trip = new TripDisplay(tempTrip, tz, addressLookup.getMapServerURLString());
+                TripDisplay trip = new TripDisplay(tempTrip, getTimeZone(), addressLookup.getMapServerURLString());
                 setLastTrip(trip);
                 initViolations(trip.getTrip().getStartTime(), trip.getTrip().getEndTime());
             }
@@ -193,7 +179,36 @@ public class VehicleBean extends BasePerformanceBean
         this.lastTrip = lastTrip;
     }
 
-    // VIOLATIONS PROPERTIES
+    private TimeZone getTimeZoneFromDriver(Integer driverID)
+    {
+        TimeZone tz;
+        Driver driver = driverDAO.findByID(driverID);
+        if (driver != null && driver.getPerson() != null && driver.getPerson().getTimeZone() != null)
+        {
+            tz = driver.getPerson().getTimeZone();
+        }
+        else
+        {
+            // Use GMT for default if "Unknown Driver"
+            tz = TimeZone.getTimeZone("GMT");
+        }
+
+        return tz;
+    }
+
+    public TimeZone getTimeZone()
+    {
+        if (timeZone == null)
+            timeZone = getTimeZoneFromDriver(navigation.getVehicle().getDriverID());
+
+        return timeZone;
+    }
+
+    public void setTimeZone(TimeZone timeZone)
+    {
+        this.timeZone = timeZone;
+    }
+
     public List<Event> getViolationEvents()
     {
         return violationEvents;
@@ -204,7 +219,6 @@ public class VehicleBean extends BasePerformanceBean
         this.violationEvents = violationEvents;
     }
 
-    // DAO PROPERTIES
     public ScoreDAO getScoreDAO()
     {
         return scoreDAO;
@@ -255,7 +269,6 @@ public class VehicleBean extends BasePerformanceBean
         this.driverDAO = driverDAO;
     }
 
-    // MPG PROPERTIES
     public String getMpgHistory()
     {
         if (mpgHistory == null)
@@ -290,10 +303,9 @@ public class VehicleBean extends BasePerformanceBean
             heavyValues[cnt] = entity.getHeavyValue() == null ? 0 : entity.getHeavyValue();
             sb.append(multiLineChart.getCategoryLabel(catLabelList.get(cnt)));
             cnt++;
-
         }
         sb.append(multiLineChart.getCategoriesEnd());
-        
+
         sb.append(multiLineChart.getChartDataSet(MessageUtil.getMessageString("vehicle_mpg_light"), "B1D1DC", "B1D1DC", lightValues, catLabelList));
         sb.append(multiLineChart.getChartDataSet(MessageUtil.getMessageString("vehicle_mpg_medium"), "C8A1D1", "C8A1D1", medValues, catLabelList));
         sb.append(multiLineChart.getChartDataSet(MessageUtil.getMessageString("vehicle_mpg_heavy"), "A8C634", "A8C634", heavyValues, catLabelList));
@@ -355,9 +367,9 @@ public class VehicleBean extends BasePerformanceBean
 
     public Boolean getHasLastTrip()
     {
-        if(this.lastTrip == null)
+        if (this.lastTrip == null)
             this.getLastTrip();
-        
+
         return hasLastTrip;
     }
 
@@ -365,8 +377,6 @@ public class VehicleBean extends BasePerformanceBean
     {
         this.hasLastTrip = hasLastTrip;
     }
-
-
 
     public List<CategorySeriesData> createMpgJasperDef()
     {
@@ -378,9 +388,14 @@ public class VehicleBean extends BasePerformanceBean
         int count = 0;
         for (MpgEntity me : mpgEntities)
         {
-            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString("vehicle_mpg_light"), monthList.get(count).toString(), me.getLightValue(), monthList.get(count).toString()));
-            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString("vehicle_mpg_medium"), monthList.get(count).toString(), me.getMediumValue(), monthList.get(count).toString()));
-            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString("vehicle_mpg_heavy"), monthList.get(count).toString(), me.getHeavyValue(), monthList.get(count).toString()));
+            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString("vehicle_mpg_light"), 
+                    monthList.get(count).toString(), me.getLightValue(), monthList.get(count).toString()));
+            
+            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString("vehicle_mpg_medium"), 
+                    monthList.get(count).toString(), me.getMediumValue(), monthList.get(count).toString()));
+            
+            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString("vehicle_mpg_heavy"),
+                    monthList.get(count).toString(), me.getHeavyValue(), monthList.get(count).toString()));
 
             count++;
         }
@@ -423,8 +438,8 @@ public class VehicleBean extends BasePerformanceBean
             reportCriteria.addParameter("START_LOCATION", lastTrip.getStartAddress());
             reportCriteria.addParameter("END_TIME", lastTrip.getEndDateString());
             reportCriteria.addParameter("END_LOCATION", lastTrip.getEndAddress());
-            
-            String imageUrl = MapLookup.getMap(lastTrip.getRouteLastStep().getLat(), lastTrip.getRouteLastStep().getLng(), 250, 200); 
+
+            String imageUrl = MapLookup.getMap(lastTrip.getRouteLastStep().getLat(), lastTrip.getRouteLastStep().getLng(), 250, 200);
             reportCriteria.addParameter("MAP_URL", imageUrl);
         }
         reportCriteria.addChartDataSet(createMpgJasperDef());
@@ -446,12 +461,12 @@ public class VehicleBean extends BasePerformanceBean
         this.emailAddress = emailAddress;
     }
 
-    public void exportReportToPdf() 
+    public void exportReportToPdf()
     {
         getReportRenderer().exportReportToPDF(buildReport(), getFacesContext());
     }
 
-    public void emailReport() 
+    public void emailReport()
     {
         getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
     }

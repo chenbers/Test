@@ -1,6 +1,11 @@
-<ui:composition template="/layout/layout.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:rich="http://richfaces.org/rich" xmlns:a4j="http://richfaces.org/a4j" xmlns:c="http://java.sun.com/jstl/core" xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:t="http://myfaces.apache.org/tomahawk">
+<ui:composition template="/layout/layout.xhtml" 
+				xmlns="http://www.w3.org/1999/xhtml" 
+				xmlns:ui="http://java.sun.com/jsf/facelets" 
+				xmlns:h="http://java.sun.com/jsf/html"
+			    xmlns:rich="http://richfaces.org/rich" 
+			    xmlns:a4j="http://richfaces.org/a4j" 
+			    xmlns:f="http://java.sun.com/jsf/core"
+			    xmlns:t="http://myfaces.apache.org/tomahawk">
 
     <ui:define name="scripts">
         <script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>
@@ -412,8 +417,8 @@
 
                             <!-- Data -->
                             <rich:column sortBy="#{item.addressStr}" style="cursor: pointer;">
-                                <h:graphicImage value="/images/ico_idle.png" rendered="#{item.type eq 208}" alt="#{item.eventType}" />
-                                <h:graphicImage value="/images/ico_violation.png" rendered="#{item.type ne 208}" alt="#{item.eventType}" />
+                                <h:graphicImage value="/images/ico_idle.png" rendered="#{item.type eq 208}" title="#{messages[item.eventType]}" />
+                                <h:graphicImage value="/images/ico_violation.png" rendered="#{item.type ne 208}" title="#{messages[item.eventType]}" />
                             </rich:column>
 
                             <rich:column sortBy="#{item.addressStr}" style="cursor: pointer;">
@@ -435,7 +440,7 @@
                             </rich:column>
                         </rich:dataTable>
                         <rich:spacer height="5" />
-                        <rich:datascroller align="center" for="selectedTripTable" id="eventScroller" reRender="selectedTripTable" />
+                        <rich:datascroller align="center" for="selectedTripTable" id="eventScroller" reRender="selectedTripTable" page="#{driverTripsBean.eventsPage}"/>
                     </a4j:form>
                 </rich:panel> <!-- End Trip table --></div>
                 </div>

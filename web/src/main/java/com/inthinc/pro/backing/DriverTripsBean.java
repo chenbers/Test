@@ -34,6 +34,7 @@ public class DriverTripsBean extends BaseBean
     private Integer             idleSeconds       = 0;
     private Integer             numTrips          = 0;
     private Integer             totalDriveSeconds = 0;
+    private Integer             eventsPage        = 0;
 
     private boolean             showLastTenTrips  = false;
     private boolean             showIdleMarkers   = true;
@@ -423,5 +424,15 @@ public class DriverTripsBean extends BaseBean
     {
         trips.clear();
         initTrips();
+    }
+    
+    public Integer getEventsPage()
+    {
+        return eventsPage;
+    }
+
+    public void setEventsPage(Integer eventsPage)
+    {
+        this.eventsPage = eventsPage;
     }
 }

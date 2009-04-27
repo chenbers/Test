@@ -13,16 +13,24 @@
 
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
 				xmlns:h="http://java.sun.com/jsf/html"
-				xmlns:f="http://java.sun.com/jsf/core">
+				xmlns:f="http://java.sun.com/jsf/core" 
+				xmlns:tiwi="http://pro.tiwi.com/jsf">
 
 <div id="#{hiddenDivID}" style="display:none">
 	<h:panelGrid columns="1" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header">
 		<f:facet name="header">
 			<h:outputText value="#{bubbleTitle}" />
 		</f:facet>
-		<h:outputText value="#{eventDateTime}">
+		<h:outputText value="#{eventDateTime}" >
 			<f:convertDateTime timeZone="#{timeZoneObject}" pattern="#{datePattern}"/>
-		</h:outputText>
+		</h:outputText> 
+		
+		<!--
+		 Format DateTime with TimeZone in bean if this include is used in ui:repeater.
+		 
+		 Cannot get f:convert or custom converter (tiwi:dateTimeOutputConverter) to work when 
+		 timeZone property is inside current list being iterated through. kselman
+		-->
 		<h:outputText value="#{eventLocation}" />
 	</h:panelGrid>
 </div>

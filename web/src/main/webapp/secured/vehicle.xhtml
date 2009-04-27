@@ -138,7 +138,7 @@
 	<ui:include src="/includes/tripBubble.xhtml">
             <ui:param name="hiddenDivID" value="tripStartBubble" />
             <ui:param name="bubbleTitle" value="#{messages.TRIP_START}" />
-            <ui:param name="timeZoneObject" value="#{navigationBean.driver.person.timeZone}" />
+            <ui:param name="timeZoneObject" value="#{vehicleBean.timeZone}" />
             <ui:param name="eventDateTime" value="#{vehicleBean.lastTrip.trip.startTime}" />
             <ui:param name="eventLocation" value="#{vehicleBean.lastTrip.startAddress}" />
             <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
@@ -149,7 +149,7 @@
             <ui:param name="bubbleTitle" value="#{messages.TRIP_END}" />
             <ui:param name="eventDateTime" value="#{vehicleBean.lastTrip.trip.endTime}" />
             <ui:param name="eventLocation" value="#{vehicleBean.lastTrip.endAddress}" />
-            <ui:param name="timeZoneObject" value="#{navigationBean.driver.person.timeZone}" />
+            <ui:param name="timeZoneObject" value="#{vehicleBean.timeZone}" />
             <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
 	</ui:include>
 	
@@ -159,7 +159,7 @@
 	            <ui:param name="eventType" value="#{violation.eventType}" />
 	            <ui:param name="eventDateTime" value="#{violation.time}" />
 	            <ui:param name="eventLocation" value="#{violation.addressStr}" />
-	            <ui:param name="timeZoneObject" value="#{navigationBean.driver.person.timeZone}" />
+	            <ui:param name="timeZoneObject" value="#{vehicleBean.timeZone}" />
 	            <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
 	            <ui:param name="eventSpeedLimit" value="#{violation.speedLimit}" />
 	            <ui:param name="eventAvgSpeed" value="#{violation.avgSpeed}" />

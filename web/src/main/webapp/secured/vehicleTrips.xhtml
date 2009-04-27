@@ -1,9 +1,13 @@
-<ui:composition template="/layout/layout.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:rich="http://richfaces.org/rich" xmlns:a4j="http://richfaces.org/a4j" xmlns:c="http://java.sun.com/jstl/core" xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:t="http://myfaces.apache.org/tomahawk">
+<ui:composition template="/layout/layout.xhtml" 
+				xmlns="http://www.w3.org/1999/xhtml" 
+				xmlns:ui="http://java.sun.com/jsf/facelets" 
+				xmlns:h="http://java.sun.com/jsf/html"
+			    xmlns:rich="http://richfaces.org/rich" 
+			    xmlns:a4j="http://richfaces.org/a4j" 
+			    xmlns:f="http://java.sun.com/jsf/core"
+			    xmlns:t="http://myfaces.apache.org/tomahawk">
 
     <ui:define name="scripts">
-
         <script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>
         <script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}" type="text/javascript"></script>
         <script type="text/javascript">
@@ -192,9 +196,9 @@
   				if(showWarnings == true)
 				{
 	  				var violation;
-					<ui:repeat value="#{vehicleTripsBean.violationEvents}" var="violation">
-						violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
-						map.addOverlay(createMarker(violation, "#{violation.noteID}", "#{facesContext.externalContext.request.contextPath}/images/ico_violation.png"));
+					<ui:repeat value="#{vehicleTripsBean.violationEvents}" var="vio">
+						violation = new GLatLng(#{vio.event.latitude}, #{vio.event.longitude});
+						map.addOverlay(createMarker(violation, "#{vio.event.noteID}", "#{facesContext.externalContext.request.contextPath}/images/ico_violation.png"));
 					</ui:repeat>
 				}
 
@@ -203,8 +207,8 @@
 				{
 					var idle;
 					<ui:repeat value="#{vehicleTripsBean.idleEvents}" var="idle">
-						idle = new GLatLng(#{idle.latitude}, #{idle.longitude});
-						map.addOverlay(createMarker(idle, "#{idle.noteID}", "#{facesContext.externalContext.request.contextPath}/images/ico_idle.png"));
+						idle = new GLatLng(#{idle.event.latitude}, #{idle.event.longitude});
+						map.addOverlay(createMarker(idle, "#{idle.event.noteID}", "#{facesContext.externalContext.request.contextPath}/images/ico_idle.png"));
 					</ui:repeat>
 				}	
 			}
@@ -230,37 +234,35 @@
             <ui:repeat value="#{vehicleTripsBean.selectedTrips}" var="trip">
                 <ui:include src="/includes/tripBubble.xhtml">
                     <ui:param name="hiddenDivID" value="#{trip.trip.startTime}_START" />
-                    <ui:param name="bubbleTitle" value="#{messages.TRIP_START}" />
-                    <ui:param name="timeZoneObject" value="#{vehicleTripsBean.timeZone}" />
-                    <ui:param name="eventDateTime" value="#{trip.trip.startTime}" />
+                    <ui:param name="bubbleTitle" value="#{messages.TRIP_START}" />                  
+                    <ui:param name="eventDateTime" value="#{trip.dateShort} #{trip.timeStartShort}" />
+                    <ui:param name="dateFormatPattern" value="#{messages.dateTimeFormat}" />
                     <ui:param name="eventLocation" value="#{trip.startAddress}" />
-                    <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
                 </ui:include>
                 <ui:include src="/includes/tripBubble.xhtml">
                     <ui:param name="hiddenDivID" value="#{trip.trip.endTime}_END" />
                     <ui:param name="bubbleTitle" value="#{messages.TRIP_END}" />
-                    <ui:param name="eventDateTime" value="#{trip.trip.endTime}" />
+                    <ui:param name="eventDateTime" value="#{trip.dateShort} #{trip.timeEndShort}" />
+                    <ui:param name="dateFormatPattern" value="#{messages.dateTimeFormat}" />
                     <ui:param name="eventLocation" value="#{trip.endAddress}" />
-                    <ui:param name="timeZoneObject" value="#{vehicleTripsBean.timeZone}" />
-                    <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
                 </ui:include>
             </ui:repeat>
-            <ui:repeat value="#{vehicleTripsBean.allEvents}" var="violation">
+            <ui:repeat value="#{vehicleTripsBean.allEvents}" var="evt">
                 <ui:include src="/includes/eventBubble.xhtml">
-                    <ui:param name="hiddenDivID" value="#{violation.noteID}" />
-                    <ui:param name="eventType" value="#{violation.eventType}" />
-                    <ui:param name="eventDateTime" value="#{violation.time}" />
-                    <ui:param name="eventLocation" value="#{violation.addressStr}" />
-                    <ui:param name="timeZoneObject" value="#{vehicleTripsBean.timeZone}" />
+                    <ui:param name="hiddenDivID" value="#{evt.event.noteID}" />
+                    <ui:param name="eventType" value="#{evt.event.eventType}" />
+                    <ui:param name="eventDateTime" value="#{evt.date}" />
+                    <ui:param name="eventLocation" value="#{evt.event.addressStr}" />
+                    <ui:param name="timeZoneObject" value="#{evt.timeZone}" />
                     <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
-                    <ui:param name="eventSpeedLimit" value="#{violation.speedLimit}" />
-                    <ui:param name="eventAvgSpeed" value="#{violation.avgSpeed}" />
-                    <ui:param name="eventTopSpeed" value="#{violation.topSpeed}" />
-                    <ui:param name="eventDistance" value="#{violation.distance}" />
-                    <ui:param name="eventSpeed" value="#{violation.speed}" />
-                    <ui:param name="eventSeverity" value="#{violation.severity}" />
-                    <ui:param name="eventLowIdle" value="#{violation.lowIdleDuration}" />
-                    <ui:param name="eventHighIdle" value="#{violation.highIdleDuration}" />
+                    <ui:param name="eventSpeedLimit" value="#{evt.event.speedLimit}" />
+                    <ui:param name="eventAvgSpeed" value="#{evt.event.avgSpeed}" />
+                    <ui:param name="eventTopSpeed" value="#{evt.event.topSpeed}" />
+                    <ui:param name="eventDistance" value="#{evt.event.distance}" />
+                    <ui:param name="eventSpeed" value="#{evt.event.speed}" />
+                    <ui:param name="eventSeverity" value="#{evt.event.severity}" />
+                    <ui:param name="eventLowIdle" value="#{evt.event.lowIdleDuration}" />
+                    <ui:param name="eventHighIdle" value="#{evt.event.highIdleDuration}" />
                 </ui:include>
             </ui:repeat>
         </rich:panel>
@@ -414,34 +416,34 @@
                 <div class="panel_content"><!-- Start Trip table --> <rich:panel id="selectedTrip">
                     <a4j:form>
                         <rich:dataTable value="#{vehicleTripsBean.allEvents}" id="selectedTripTable" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven"
-                            cellspacing="1" rows="5" width="100%" onRowClick="showInfoWindow('#{item.noteID}', new GLatLng(#{item.latitude}, #{item.longitude}));">
+                            cellspacing="1" rows="5" width="100%" onRowClick="showInfoWindow('#{item.event.noteID}', new GLatLng(#{item.event.latitude}, #{item.event.longitude}));">
 
                             <!-- Data -->
-                            <rich:column sortBy="#{item.addressStr}" style="cursor: pointer;">
-                                <h:graphicImage value="/images/ico_idle.png" rendered="#{item.type eq 208}" alt="#{item.eventType}" />
-                                <h:graphicImage value="/images/ico_violation.png" rendered="#{item.type ne 208}" alt="#{item.eventType}" />
+                            <rich:column sortBy="#{item.event.addressStr}" style="cursor: pointer;">
+                                <h:graphicImage value="/images/ico_idle.png" rendered="#{item.event.type eq 208}" title="#{messages[item.event.eventType]}" />
+                                <h:graphicImage value="/images/ico_violation.png" rendered="#{item.event.type ne 208}" title="#{messages[item.event.eventType]}" />
                             </rich:column>
 
-                            <rich:column sortBy="#{item.addressStr}" style="cursor: pointer;">
+                            <rich:column sortBy="#{item.event.addressStr}" style="cursor: pointer;">
                                 <f:facet name="header">
                                     <h:outputText value="#{messages.vehicletrip_event_address}" />
                                 </f:facet>
-                                <h:outputText value="#{item.addressStr}" />
+                                <h:outputText value="#{item.event.addressStr}" />
                             </rich:column>
 
-                            <rich:column sortBy="#{item.time}" style="cursor: pointer;">
+                            <rich:column sortBy="#{item.event.time}" style="cursor: pointer;">
                                 <f:facet name="header">
                                     <h:outputText value="#{messages.vehicletrip_event_datetime}" />
                                 </f:facet>
 
-                                <h:outputText value="#{item.time}">
-                                    <f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{vehicleTripsBean.timeZone}" />
+                                <h:outputText value="#{item.date}">
+                                    <f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{item.timeZone}" />
                                 </h:outputText>
 
                             </rich:column>
                         </rich:dataTable>
                         <rich:spacer height="5" />
-                        <rich:datascroller align="center" for="selectedTripTable" id="eventScroller" reRender="script,selectedTripTable" />
+                        <rich:datascroller align="center" for="selectedTripTable" id="eventScroller" reRender="script,selectedTripTable" page="#{vehicleTripsBean.eventsPage}" />
                     </a4j:form>
                 </rich:panel> <!-- End Trip table --></div>
                 </div>

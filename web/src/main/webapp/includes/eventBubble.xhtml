@@ -1,6 +1,5 @@
 <!-- 
 	To use:
-	
 		<ui:include src="/includes/eventBubble.xhtml">
 	            <ui:param name="hiddenDivID" value="#{violation.noteID}" />
 	            <ui:param name="eventType" value="#{violation.eventType}" />
@@ -24,7 +23,7 @@
 <div id="#{hiddenDivID}" style="display:none">
 	<h:panelGrid columns="1" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header">
 		<f:facet name="header">
-			<h:outputText value="#{eventType}" />
+			<h:outputText value="#{messages[eventType]}" />
 		</f:facet>
 		<h:outputText value="#{eventDateTime}">
 			<f:convertDateTime timeZone="#{timeZoneObject}" pattern="#{datePattern}"/>
