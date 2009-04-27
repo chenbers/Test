@@ -170,7 +170,7 @@
 				</itemHyperlink>
 						</categorySeries>
 					</categoryDataset>
-					<linePlot isShowShapes="false" >
+					<linePlot >
 						<plot labelRotation="-45.0" >
 							<seriesColor seriesOrder="0" color="#A8C634"/>
 </plot>
@@ -236,7 +236,7 @@
 				</itemHyperlink>
 						</categorySeries>
 					</categoryDataset>
-					<linePlot isShowShapes="false" >
+					<linePlot >
 						<plot labelRotation="-45.0" >
 							<seriesColor seriesOrder="0" color="#A8C634"/>
 </plot>
@@ -302,7 +302,7 @@
 				</itemHyperlink>
 						</categorySeries>
 					</categoryDataset>
-					<linePlot isShowShapes="false" >
+					<linePlot >
 						<plot labelRotation="-45.0" >
 							<seriesColor seriesOrder="0" color="#A8C634"/>
 </plot>
@@ -367,7 +367,7 @@
 				</itemHyperlink>
 						</categorySeries>
 					</categoryDataset>
-					<linePlot isShowShapes="false" >
+					<linePlot >
 						<plot labelRotation="-45.0" >
 							<seriesColor seriesOrder="0" color="#A8C634"/>
 </plot>

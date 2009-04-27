@@ -114,7 +114,7 @@
 				</itemHyperlink>
 						</categorySeries>
 					</categoryDataset>
-					<linePlot isShowShapes="false" >
+					<linePlot >
 						<plot labelRotation="-45.0" />
 						<categoryAxisFormat>
 							<axisFormat >
