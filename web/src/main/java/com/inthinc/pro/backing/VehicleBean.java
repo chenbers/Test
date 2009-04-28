@@ -423,6 +423,7 @@ public class VehicleBean extends BasePerformanceBean
         reportCriteria.addChartDataSet(createSingleJasperDef(id, ScoreType.SCORE_SPEEDING, speedDurationBean.getDuration()));
         reportCriteria.addChartDataSet(createSingleJasperDef(id, ScoreType.SCORE_DRIVING_STYLE, styleDurationBean.getDuration()));
         reportCriteria.addChartDataSet(createSingleJasperDef(id, ScoreType.SCORE_SEATBELT, seatBeltDurationBean.getDuration()));
+        reportCriteria.setLocale(getUser().getLocale());
         tempCriteria.add(reportCriteria);
 
         // Page 2

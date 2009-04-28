@@ -59,6 +59,7 @@ public class EventsBean extends BaseEventsBean
         ReportCriteria reportCriteria = getReportCriteriaService().getEventsReportCriteria(getUser().getGroupID());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(getTableData());
+        reportCriteria.setLocale(getUser().getLocale());
         return reportCriteria;
     }
     

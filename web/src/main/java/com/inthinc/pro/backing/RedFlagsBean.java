@@ -463,6 +463,7 @@ private TablePref<RedFlagReportItem> tablePref;
         ReportCriteria reportCriteria = getReportCriteriaService().getRedFlagsReportCriteria(getUser().getGroupID());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(getTableData());
+        reportCriteria.setLocale(getUser().getLocale());
         return reportCriteria;
     }
 

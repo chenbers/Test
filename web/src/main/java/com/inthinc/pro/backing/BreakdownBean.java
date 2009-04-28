@@ -235,6 +235,7 @@ public class BreakdownBean extends BaseBean
     public ReportCriteria buildReportCriteria(){
         ReportCriteria reportCriteria = reportCriteriaService.getOverallScoreReportCriteria(navigation.getGroupID(), durationBean.getDuration());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
+        reportCriteria.setLocale(getUser().getLocale());
         return reportCriteria;
     }
     

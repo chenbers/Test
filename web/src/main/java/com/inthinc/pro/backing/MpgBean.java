@@ -162,7 +162,7 @@ public class MpgBean extends BaseBean
 
         ReportCriteria reportCriteria = buildReportCriteria();
         reportRenderer.exportSingleReportToPDF(reportCriteria, getFacesContext());
-
+        
         return null;
     }
 
@@ -170,6 +170,7 @@ public class MpgBean extends BaseBean
     {
         ReportCriteria reportCriteria = reportCriteriaService.getMpgReportCriteria(navigation.getGroupID(), durationBean.getDuration());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
+        reportCriteria.setLocale(getUser().getLocale());
         return reportCriteria;
     }
 

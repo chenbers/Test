@@ -197,6 +197,7 @@ public class VehicleSeatBeltBean extends BasePerformanceBean
         reportCriteria.addParameter("RECORD_COUNT", getSeatBeltEvents().size());
         reportCriteria.addParameter("OVERALL_SCORE", getSeatBeltScore() / 10.0D);
         reportCriteria.addParameter("SPEED_MEASUREMENT", MessageUtil.getMessageString("measurement_speed"));
+        reportCriteria.setLocale(getUser().getLocale());
 
         List<ScoreType> scoreTypes = new ArrayList<ScoreType>();
         scoreTypes.add(ScoreType.SCORE_SEATBELT);
