@@ -73,7 +73,9 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
     @Override
     public void setVehicleDevice(Integer vehicleID, Integer deviceID)
     {
-        Device device = deviceDAO.findByID(deviceID);
+        Device device = null;
+        if(deviceID != null)
+            device = deviceDAO.findByID(deviceID);
         if(device != null && device.getDeviceID() != null && device.getVehicleID() != null)
         {
             clearVehicleDevice(device.getVehicleID(), device.getDeviceID());

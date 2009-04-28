@@ -1497,6 +1497,9 @@ public class SiloServiceTest
     {
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
         vehicleDAO.setSiloService(siloService);
+        DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
+        deviceDAO.setSiloService(siloService);
+        vehicleDAO.setDeviceDAO(deviceDAO);
 
         List<Vehicle> groupVehicles = vehicleDAO.getVehiclesInGroupHierarchy(groupID);
         assertEquals(Integer.valueOf(VEHICLE_COUNT), Integer.valueOf(groupVehicles.size()));
