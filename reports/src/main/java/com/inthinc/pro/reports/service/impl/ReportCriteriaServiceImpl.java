@@ -3,11 +3,10 @@ package com.inthinc.pro.reports.service.impl;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 
@@ -18,18 +17,15 @@ import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.RedFlagDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.VehicleDAO;
-import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceReportItem;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.Person;
-import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.Vehicle;
@@ -52,6 +48,9 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     private RedFlagDAO redFlagDAO;
 
     private DeviceDAO deviceDAO;
+    
+    //Locale
+    private Locale locale;
 
     private static final Logger logger = Logger.getLogger(ReportCriteriaServiceImpl.class);
 
@@ -76,6 +75,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         }
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_REPORT, group.getName());
         reportCriteria.setDuration(duration);
+        if(locale != null)
+        {
+            reportCriteria.setLocale(locale);
+        }
         reportCriteria.setMainDataset(driverReportItems);
 
         return reportCriteria;
@@ -104,6 +107,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         reportCriteria.setMainDataset(entities);
         reportCriteria.addChartDataSet(seriesData);
         reportCriteria.setDuration(duration);
+        if(locale != null)
+        {
+            reportCriteria.setLocale(locale);
+        }
         reportCriteria.setRecordsPerReportParameters(4, "entityName", "category");
         return reportCriteria;
     }
@@ -127,6 +134,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         reportCriteria.addParameter("SEATBELT_USE_DATA", getPieScoreData(ScoreType.SCORE_SEATBELT, groupID, duration));
         reportCriteria.addParameter("SPEED_DATA", getPieScoreData(ScoreType.SCORE_SPEEDING, groupID, duration));
         reportCriteria.setDuration(duration);
+        if(locale != null)
+        {
+            reportCriteria.setLocale(locale);
+        }
         return reportCriteria;
     }
 
@@ -208,6 +219,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         reportCriteria.setMainDataset(s);
         reportCriteria.setDuration(duration);
         reportCriteria.setRecordsPerReportParameters(8, "identifier", "seriesID");
+        if(locale != null)
+        {
+            reportCriteria.setLocale(locale);
+        }
         return reportCriteria;
     }
 
@@ -236,7 +251,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_REPORT, group.getName());
         reportCriteria.setMainDataset(vehicleReportItems);
         reportCriteria.setDuration(duration);
-
+        if(locale != null)
+        {
+            reportCriteria.setLocale(locale);
+        }
         return reportCriteria;
     }
 
@@ -277,9 +295,13 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
                 deviceReportItems.add(deviceReportItem);
             }
         }
-
+        
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.DEVICES_REPORT, group.getName());
         reportCriteria.setMainDataset(deviceReportItems);
+        if(locale != null)
+        {
+            reportCriteria.setLocale(locale);
+        }
         return reportCriteria;
     }
 
@@ -315,6 +337,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy");
         reportCriteria.addParameter("BEGIN_DATE", sdf.format(startDate));
         reportCriteria.addParameter("END_DATE", sdf.format(endDate));
+        if(locale != null)
+        {
+            reportCriteria.setLocale(locale);
+        }
 
         return reportCriteria;
     }
@@ -335,6 +361,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         // List<RedFlag> redFlagList = redFlagDAO.getRedFlags(groupID, 7);
         Group tmpGroup = groupDAO.findByID(groupID);
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.RED_FLAG_REPORT, tmpGroup.getName());
+        if(locale != null)
+        {
+            reportCriteria.setLocale(locale);
+        }
         // reportCriteria.setMainDataset(redFlagList);
         return reportCriteria;
     }
@@ -345,6 +375,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         // List<Event> eventList = eventDAO.getWarningEventsForGroup(groupID,7);
         Group tmpGroup = groupDAO.findByID(groupID);
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.WARNING_REPORT, tmpGroup.getName());
+        if(locale != null)
+        {
+            reportCriteria.setLocale(locale);
+        }
         // reportCriteria.setMainDataset(eventList);
         return reportCriteria;
     }
@@ -355,6 +389,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         // List<Event> eventList = eventDAO.getWarningEventsForGroup(groupID,7);
         Group tmpGroup = groupDAO.findByID(groupID);
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.EMERGENCY_REPORT, tmpGroup.getName());
+        if(locale != null)
+        {
+            reportCriteria.setLocale(locale);
+        }
         // reportCriteria.setMainDataset(eventList);
         return reportCriteria;
     }
@@ -427,6 +465,16 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     public RedFlagDAO getRedFlagDAO()
     {
         return redFlagDAO;
+    }
+
+    public void setLocale(Locale locale)
+    {
+        this.locale = locale;
+    }
+
+    public Locale getLocale()
+    {
+        return locale;
     }
 
 }

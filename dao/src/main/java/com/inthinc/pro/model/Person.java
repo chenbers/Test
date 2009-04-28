@@ -297,7 +297,7 @@ public class Person extends BaseEntity implements Comparable<Person>
     public String getFullNameWithId()
     {
         StringBuilder result = new StringBuilder();
-        if(!empid.isEmpty())
+        if(empid != null && !empid.isEmpty())
         {
             result.append(getFullName());
             result.append(' ');

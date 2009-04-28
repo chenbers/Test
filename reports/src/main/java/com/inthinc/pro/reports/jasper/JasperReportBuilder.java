@@ -131,6 +131,7 @@ public class JasperReportBuilder
                 {
                     ReportCriteria rc = new ReportCriteria(reportCriteria);
                     rc.setMainDataset(mainDataSet);
+                    rc.setLocale(reportCriteria.getLocale());
                     rc.addPramMap(getNewParamMap(reportCriteria.getPramMap(), reportCriteria.getMainDataSetIdField(),reportCriteria.getChartDataSetIdField(), mainDataSet));
                     populateReport(rc,formatType);
                 }

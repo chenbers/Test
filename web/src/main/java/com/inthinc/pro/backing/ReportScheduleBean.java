@@ -93,12 +93,12 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         for (Occurrence o : EnumSet.allOf(Occurrence.class))
         {
             if (o.getStatus().equals(Status.ACTIVE))
-                OCCURRENCES.add(new SelectItem(o, o.getDescription()));
+                OCCURRENCES.add(new SelectItem(o, MessageUtil.getMessageString(o.toString())));
         }
 
         STATUSES = new ArrayList<SelectItem>();
-        STATUSES.add(new SelectItem(Status.ACTIVE, Status.ACTIVE.getDescription()));
-        STATUSES.add(new SelectItem(Status.INACTIVE, Status.INACTIVE.getDescription()));
+        STATUSES.add(new SelectItem(Status.ACTIVE, MessageUtil.getMessageString(Status.ACTIVE.toString())));
+        STATUSES.add(new SelectItem(Status.INACTIVE, MessageUtil.getMessageString(Status.INACTIVE.toString())));
 
     }
 
@@ -109,7 +109,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             @Override
             public int compare(SelectItem o1, SelectItem o2)
             {
-                return o1.getLabel().toLowerCase().compareTo(o2.getLabel().toLowerCase());
+                return MessageUtil.getMessageString(o1.toString()).toLowerCase().compareTo(MessageUtil.getMessageString(o2.toString()).toLowerCase());
             }
         });
     }
@@ -125,7 +125,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
                 List<GroupType> groupTypes = Arrays.asList(rt.getGroupTypes());
                 if (getGroupHierarchy().containsGroupTypes(groupTypes))
                 {
-                    reportGroups.add(new SelectItem(rt.getCode(), rt.getLabel()));
+                    reportGroups.add(new SelectItem(rt.getCode(), MessageUtil.getMessageString(rt.toString())));
                 }
             }
             sort(reportGroups);

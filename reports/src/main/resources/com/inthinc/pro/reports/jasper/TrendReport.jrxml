@@ -153,7 +153,7 @@
 					<reportElement
 						x="54"
 						y="17"
-						width="182"
+						width="328"
 						height="26"
 						key="textField-6"/>
 					<box></box>

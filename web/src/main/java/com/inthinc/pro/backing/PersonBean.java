@@ -112,7 +112,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         // genders
         GENDERS = new TreeMap<String, Gender>();
         for (final Gender gender : Gender.values())
-            GENDERS.put(gender.getDescription(), gender);
+            GENDERS.put(MessageUtil.getMessageString(gender.toString()), gender);
         // heights
         HEIGHTS = new LinkedHashMap<String, Integer>();
         for (int i = MIN_HEIGHT; i < MAX_HEIGHT; i++)

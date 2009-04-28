@@ -282,7 +282,7 @@
 					<reportElement
 						x="55"
 						y="21"
-						width="230"
+						width="268"
 						height="19"
 						key="textField-23"/>
 					<box></box>

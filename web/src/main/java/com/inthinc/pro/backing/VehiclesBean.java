@@ -83,7 +83,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         // types
         TYPES = new LinkedHashMap<String, VehicleType>();
         for (final VehicleType type : VehicleType.values())
-            TYPES.put(type.getDescription(), type);
+            TYPES.put(MessageUtil.getMessageString(type.toString()), type);
 
         // states
         STATES = new TreeMap<String, State>();

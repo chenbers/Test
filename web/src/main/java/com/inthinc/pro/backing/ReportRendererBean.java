@@ -59,6 +59,7 @@ public class ReportRendererBean extends BaseBean
         {
             for(ReportCriteria rt:reportCriteriaList){
                 rt.setDuration(this.duration);
+                rt.setLocale(getUser().getLocale());
             }
         }
         
@@ -84,6 +85,7 @@ public class ReportRendererBean extends BaseBean
         {
             for(ReportCriteria rt:reportCriteriaList){
                 rt.setDuration(this.duration);
+                rt.setLocale(getUser().getLocale());
             }
         }
         
