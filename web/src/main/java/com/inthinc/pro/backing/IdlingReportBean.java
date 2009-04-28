@@ -342,6 +342,7 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
         ReportCriteria reportCriteria = getReportCriteriaService().getIdlingReportCriteria(getGroupHierarchy().getTopGroup().getGroupID(), internalStartDate, internalEndDate);
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(idlingData);
+        reportCriteria.setLocale(getUser().getLocale());
         return reportCriteria;
     }
 

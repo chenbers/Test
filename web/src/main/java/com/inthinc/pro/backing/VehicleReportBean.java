@@ -177,6 +177,7 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
         ReportCriteria reportCriteria = getReportCriteriaService().getVehicleReportCriteria(getUser().getGroupID(), Duration.TWELVE);
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(vehicleData);
+        reportCriteria.setLocale(getUser().getLocale());
         getReportRenderer().exportSingleReportToPDF(reportCriteria, getFacesContext());
     }
     
@@ -185,6 +186,7 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
         ReportCriteria reportCriteria = getReportCriteriaService().getVehicleReportCriteria(getUser().getGroupID(), Duration.TWELVE);
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(vehicleData);
+        reportCriteria.setLocale(getUser().getLocale());
         getReportRenderer().exportReportToEmail(reportCriteria,getEmailAddress());
     }
     
@@ -193,6 +195,7 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
         ReportCriteria reportCriteria = getReportCriteriaService().getVehicleReportCriteria(getUser().getGroupID(), Duration.TWELVE);
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(vehicleData);
+        reportCriteria.setLocale(getUser().getLocale());
         getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
     }
 

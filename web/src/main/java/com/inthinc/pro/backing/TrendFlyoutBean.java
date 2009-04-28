@@ -452,6 +452,7 @@ public class TrendFlyoutBean extends BaseBean
         reportCriteria.setMainDataset(scoreableEntityDataSet);
         reportCriteria.setDuration(getNavigation().getDurationBean().getDuration());
         reportCriteria.setRecordsPerReportParameters(8, "se.identifier", "seriesID");
+        reportCriteria.setLocale(getUser().getLocale());
         return reportCriteria;
     }
 

@@ -208,6 +208,7 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
         ReportCriteria reportCriteria = getReportCriteriaService().getDriverReportCriteria(getUser().getGroupID(), Duration.TWELVE);
         reportCriteria.setMainDataset(driverData);
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
+        reportCriteria.setLocale(getUser().getLocale());
         getReportRenderer().exportSingleReportToPDF(reportCriteria, getFacesContext());
     }
     
@@ -216,6 +217,7 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
         ReportCriteria reportCriteria = getReportCriteriaService().getDriverReportCriteria(getUser().getGroupID(), Duration.TWELVE);
         reportCriteria.setMainDataset(driverData);
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
+        reportCriteria.setLocale(getUser().getLocale());
         getReportRenderer().exportReportToEmail(reportCriteria,getEmailAddress());
     }
     
@@ -224,6 +226,7 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
         ReportCriteria reportCriteria = getReportCriteriaService().getDriverReportCriteria(getUser().getGroupID(), Duration.TWELVE);
         reportCriteria.setMainDataset(driverData);
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
+        reportCriteria.setLocale(getUser().getLocale());
         getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
     }
 

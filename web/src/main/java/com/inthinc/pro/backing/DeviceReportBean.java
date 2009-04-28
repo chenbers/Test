@@ -174,6 +174,7 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.DEVICES_REPORT,getGroupHierarchy().getTopGroup().getName());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(deviceData);
+        reportCriteria.setLocale(getUser().getLocale());
         getReportRenderer().exportSingleReportToPDF(reportCriteria, getFacesContext());
     }
     
@@ -182,6 +183,7 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.DEVICES_REPORT,getGroupHierarchy().getTopGroup().getName());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(deviceData);
+        reportCriteria.setLocale(getUser().getLocale());
         getReportRenderer().exportReportToEmail(reportCriteria,getEmailAddress());
     }
     
@@ -190,6 +192,7 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.DEVICES_REPORT,getGroupHierarchy().getTopGroup().getName());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(deviceData);
+        reportCriteria.setLocale(getUser().getLocale());
         getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
     }
 
