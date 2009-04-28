@@ -412,7 +412,7 @@
                 <div class="panel_w">
                 <div class="panel_content"><!-- Start Trip table --> <rich:panel id="selectedTrip">
                     <a4j:form>
-                        <rich:dataTable value="#{driverTripsBean.allEvents}" id="selectedTripTable" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1"
+                        <rich:dataTable value="#{driverTripsBean.allEvents}" id="selectedTripTable" var="item" styleClass="datatable" rowClasses="tableOdd,tableEven"
                             rows="5" width="100%" onRowClick="showInfoWindow('#{item.noteID}', new GLatLng(#{item.latitude}, #{item.longitude}));">
 
                             <!-- Data -->
@@ -439,8 +439,11 @@
 
                             </rich:column>
                         </rich:dataTable>
-                        <rich:spacer height="5" />
-                        <rich:datascroller align="center" for="selectedTripTable" id="eventScroller" reRender="selectedTripTable" page="#{driverTripsBean.eventsPage}"/>
+                     
+                        <table align="center"><tr><td>
+                        <rich:datascroller align="center" for="selectedTripTable" id="eventScroller" maxPages="5" 
+                        				   reRender="selectedTripTable" page="#{driverTripsBean.eventsPage}" styleClass="dataScrollerSmall"/>
+                        </td></tr></table>
                     </a4j:form>
                 </rich:panel> <!-- End Trip table --></div>
                 </div>
@@ -555,7 +558,7 @@
                         <rich:panel id="tripsPanel" bodyClass="panel_content" align="center">
                         <!-- Start Trip table -->
                             <rich:dataTable value="#{driverTripsBean.trips}" id="tripsTable" var="item"
-                            styleClass="datagrid" rowClasses="tableOdd,tableEven" rows="4" width="100%">
+                            styleClass="datatable" rowClasses="tableOdd,tableEven" rows="4" width="100%">
                                 
     
                                 <a4j:support event="onRowClick" reRender="script,bubbles,selectedTrip,showLastTenForm" oncomplete="bodyLoad();">
@@ -606,8 +609,7 @@
                                     <h:outputText value="#{item.duration}" />
                                 </rich:column>
                             </rich:dataTable>
-    					  <rich:spacer height="5" />
-                          <rich:datascroller align="center" for="tripsTable" oncomplete="onReRender();" id="scroller" />
+                          <rich:datascroller align="center" for="tripsTable" oncomplete="onReRender();" id="scroller" styleClass="dataScrollerSmall"/>
                         
                         <rich:jQuery selector="document" query="ready(function(){onReRender()})" />
                         <!-- End Trip table -->

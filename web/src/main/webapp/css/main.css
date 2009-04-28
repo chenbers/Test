@@ -2118,7 +2118,7 @@ ul#pagination {
 .datagrid table {
 	padding: 0;
 	margin: 0 auto 1.5em auto;
-	/* border-left: 1px solid #8BAD37; */
+	/*border: 1px solid #8BAD37; */ 
 	/*border-collapse:collapse; This doesn't work in IE*/
 }
 
@@ -2266,6 +2266,113 @@ These styles should be added when very long tables are expected
 * html .datagrid tr td.alt,* html .datagrid tr.alt td.alt {
 	background-color: #CADF9A;
 }
+/* Data Table */
+
+.datatable {
+	padding: 0;
+	margin: 0 auto 1.5em auto;
+	border: 1px solid #8BAD37; 
+}
+
+.datatable th {
+	font: bold 10px Verdana, Arial, Helvetica, sans-serif;
+	color: #333;
+	border-right: 1px solid #8BAD37;
+	border-bottom: 1px solid #8BAD37;
+	border-top: 1px solid #8BAD37;
+	letter-spacing: 1px;
+	/* text-transform: uppercase; */
+	text-align: left;
+	padding: 8px 12px 4px 12px;
+	background: #8EAF3C url(../images/bg_header.jpg) no-repeat;
+	vertical-align: middle;
+}
+
+.datatable th.sortable,.datatable th.sortable-text,.datatable th.sortable-date,.datatable th.sortable-keep,.datatable th.sortable-date-dmy,.datatable th.sortable-numeric,.datatable th.sortable-currency,.datatable th.sortable-sortByTwelveHourTimestamp,.datatable th.sortable-sortIPAddress,.datatable th.sortable-sortEnglishLonghandDateFormat,.datatable th.sortable-sortScientificNotation,.datatable th.sortable-sortImage,.datatable th.sortable-sortFileSize,.datatable th.sortable-sortAlphaNumeric,.datatable th.sortable-sortEnglishDateTime
+	{
+	cursor: pointer;
+	background: #8EAF3C url(../images/bg_header_sortable.jpg) no-repeat;
+	padding: 8px 12px 4px 16px;
+}
+
+.datatable th.forwardSort {
+	background: #8EAF3C url(../images/bg_header_down.jpg) no-repeat 0 0;
+}
+
+.datatable th.reverseSort {
+	background: #8EAF3C url(../images/bg_header_up.jpg) no-repeat 0 0;
+}
+
+.datatable table thead th.forwardSort a,.datatable table thead th.reverseSort a {
+	color: #000;
+	text-decoration: none;
+}
+
+.datatable th a {
+	text-decoration: none;
+	color: #4f6b72;
+	background: transparent;
+}
+
+.datatable td a {
+	text-decoration: underline;
+	color: #333;
+}
+
+.datatable td {
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	
+        border-bottom: 1px solid #8BAD37;
+	padding: 6px 12px 6px 12px;
+	color: #333;
+}
+
+.datatable td.lft {
+	text-align: left;
+}
+
+.datatable tr.alt {
+	background: #EBFFCA;
+	color: #333;
+}
+
+/* Large Scroller  */
+
+.dataScrollerLarge table
+{
+	padding: 0;
+}
+
+.dataScrollerLarge td a {
+	text-decoration: underline;
+	color: #333;
+}
+
+.dataScrollerLarge td {
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	padding: 6px 12px 6px 12px;
+	color: #333;
+}
+
+
+/* Small Scroller */
+.dataScrollerSmall table
+{
+	padding: 0;
+}
+
+.dataScrollerSmall td a {
+	text-decoration: underline;
+	color: #333;
+}
+
+.dataScrollerSmall td {
+	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+	padding: 2px 4px 2px 4px;
+	color: #333;
+}
+
+
 
 /* Pagination list styles */
 ul.fdtablePaginater {
