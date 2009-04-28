@@ -16,8 +16,8 @@
  
   <ul id="grid_nav">
     <li class="r">
-      <button type="submit" class="left" onclick="Richfaces.showModalPanel('changePasswordPanel');return false;"><span class="login">Change Password</span></button>
-      <h:outputText value="&#160;" /><button type="submit" class="left" onclick="parent.location.href='editAccount.faces'; return false;"><span class="edit">Edit</span></button>
+      <button type="submit" class="left" onclick="Richfaces.showModalPanel('changePasswordPanel');return false;"><h:outputText styleClass="login" value="#{messages.myAccount_change_password} " /></button>
+      <button type="submit" class="left" onclick="parent.location.href='editAccount.faces'; return false;"><h:outputText styleClass="edit" value="#{messages.myAccount_edit}"/></button>
     </li>
   </ul>
   
