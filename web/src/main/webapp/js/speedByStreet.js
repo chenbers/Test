@@ -230,8 +230,11 @@ var cursor;
     function addAddressToList(response) {
 // 		clearList();
       if (!response || response.Status.code != 200) {
-        alert("Sorry, we were unable to geocode that address - repsonse is: "+response);
-        if (response) {alert ("response status code is: "+response.Status.code);}
+    	  
+    	  setUnableToGeocodeError();
+
+//        alert("Sorry, we were unable to geocode that address - repsonse is: "+response);
+//        if (response) {alert ("response status code is: "+response.Status.code);}
       } else {
       
          place = response.Placemark[0];
@@ -263,8 +266,11 @@ var cursor;
     function addAddressToMap(response) {
 // 		clearList();
       if (!response || response.Status.code != 200) {
-        alert("Sorry, we were unable to geocode that address - repsonse is: "+response);
-        if (response) {alert ("response status code is: "+response.Status.code);}
+    	  
+    	  setUnableToGeocodeError();
+    	  
+//        alert("Sorry, we were unable to geocode that address - repsonse is: "+response);
+//        if (response) {alert ("response status code is: "+response.Status.code);}
       } else {
       
          place = response.Placemark[0];

@@ -59,6 +59,10 @@
 	}
 	function bodyUnload(){
 		GUnload();
+	}
+	function setUnableToGeocodeError(){
+  	  document.getElementById("speedLimitChangeRequestTable:items:caption").innerHTML = '#{messages.sbs_badLatLng}'; 	  
+  		
 	}	
 	</script>
 	</ui:define>  			
