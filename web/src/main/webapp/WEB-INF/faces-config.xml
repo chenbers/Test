@@ -505,6 +505,8 @@
 			<default-locale>en_US</default-locale>
 			<supported-locale>en_US</supported-locale>
             <supported-locale>ro</supported-locale>
+            <supported-locale>es</supported-locale>
+            <supported-locale>ja</supported-locale>
 		</locale-config>
 		<resource-bundle>
 			<base-name>com.inthinc.pro.resources.Messages</base-name>

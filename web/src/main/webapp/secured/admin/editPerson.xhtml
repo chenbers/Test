@@ -435,6 +435,7 @@
                               maxlength="30" required="#{personBean.item.userSelected and ((not personBean.batchEdit) or personBean.updateField['user.username'])}" requiredMessage="#{messages.required}" />
                           </td>
                         </tr>
+                        
                         <tr>
                           <td width="100" valign="top">
                             <h:outputText value="#{messages.editPerson_user_password}" />
@@ -462,6 +463,23 @@
                         </tr>
                         
                         </ui:fragment>
+                        <tr>
+                             <td width="100">
+                                 <ui:include src="../../includes/inputLabel.xhtml">
+                                    <ui:param name="required" value="TRUE"/>
+                                    <ui:param name="fieldName" value="user.locale"/>
+                                    <ui:param name="for" value="user_locale"/>
+                                    <ui:param name="editBean" value="#{personBean}"/>
+                                    <ui:param name="label" value="#{messages.editPerson_user_locale}"/>
+                                 </ui:include>
+                             </td>
+                             <td>
+                                 <rich:message for="user_locale" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                 <h:selectOneMenu id="user_locale" value="#{personBean.item.user.locale}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
+                                     <f:selectItems value="#{localeBean.supportedLocalesItems}"/>
+                                 </h:selectOneMenu>
+                             </td>
+                        </tr>
                         <tr>
                           <td width="100" valign="top">
                           	<ui:include src="../../includes/inputLabel.xhtml">

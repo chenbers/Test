@@ -570,6 +570,15 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
                 context.addMessage("edit-form:user_status", message);
             }
+            
+            // required locale
+            if (person.getUser().getStatus() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.locale"))))
+            {
+                valid = false;
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
+                context.addMessage("edit-form:user_locale", message);
+            }
+            
             if (!isBatchEdit())
             {
                 final User byUsername = userDAO.findByUserName(person.getUser().getUsername());

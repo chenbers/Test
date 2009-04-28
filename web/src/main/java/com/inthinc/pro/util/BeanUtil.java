@@ -10,9 +10,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
+
+import net.sf.cglib.core.Local;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.FatalBeanException;
@@ -123,7 +126,8 @@ public class BeanUtil
                             else if (BeanUtils.isSimpleProperty(clazz) || clazz.isEnum() || clazz.isArray() || clazz.isAssignableFrom(Date.class) 
                                     || clazz.isAssignableFrom(TimeZone.class) || ReferenceEntity.class.isAssignableFrom(clazz) 
                                     || BaseBean.class.isAssignableFrom(clazz) 
-                                    || (SimpleType.valueOf(source.getClass()) != null && SimpleType.valueOf(source.getClass()).getSimpleTypes().contains(clazz)))
+                                    || (SimpleType.valueOf(source.getClass()) != null && SimpleType.valueOf(source.getClass()).getSimpleTypes().contains(clazz))
+                                    || clazz.isAssignableFrom(Locale.class))
                                 writeMethod.invoke(target, sourceProperty);
                             // circular reference: simply store the target reference
                             else if (map.get(sourceProperty) != null)
@@ -243,7 +247,8 @@ public class BeanUtil
                                     if (!BeanUtils.isSimpleProperty(clazz) && !clazz.isEnum() && !Collection.class.isAssignableFrom(clazz) && !Map.class.isAssignableFrom(clazz)
                                             && !clazz.isArray() && !Date.class.isAssignableFrom(clazz) && !TimeZone.class.isAssignableFrom(clazz) 
                                             && !ReferenceEntity.class.isAssignableFrom(clazz) && !BaseBean.class.isAssignableFrom(clazz) 
-                                            && !(SimpleType.valueOf(item.getClass()) != null && SimpleType.valueOf(item.getClass()).getSimpleTypes().contains(clazz)))
+                                            && !(SimpleType.valueOf(item.getClass()) != null && SimpleType.valueOf(item.getClass()).getSimpleTypes().contains(clazz))
+                                            && !Locale.class.isAssignableFrom(clazz))
                                     {
                                         compared.add(o1);
                                         compareAndInit(o1, o2, compared);
