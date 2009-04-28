@@ -16,10 +16,10 @@ import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.util.GraphicUtil;
 
-public class BreakdownBean extends BaseBean
+public class OverallScoreBean extends BaseBean
 {
 
-    private static final Logger logger = Logger.getLogger(BreakdownBean.class);
+    private static final Logger logger = Logger.getLogger(OverallScoreBean.class);
 
     public final static List<String> entityColorKey = new ArrayList<String>()
     {
@@ -88,7 +88,7 @@ public class BreakdownBean extends BaseBean
         {
             se = (ScoreableEntity) s.get(i);
             Integer percent = se.getScore();
-            sb.append("<set value=\'" + percent.toString() + "\' " + "label=\'\' color=\'" + (BreakdownBean.entityColorKey.get(i)) + "\'/>");
+            sb.append("<set value=\'" + percent.toString() + "\' " + "label=\'\' color=\'" + (OverallScoreBean.entityColorKey.get(i)) + "\'/>");
         }
         sb.append("</chart>");
 

@@ -20,7 +20,7 @@ public class ReportRendererBean extends BaseBean
 
     // Report Beans
     private MpgBean mpgBean;
-    private BreakdownBean breakdownBean;
+    private OverallScoreBean overallScoreBean;
     private TrendBean trendBean;
     private ReportRenderer reportRenderer;
     
@@ -49,7 +49,7 @@ public class ReportRendererBean extends BaseBean
         for(ReportType rt:reports)
         {
             switch(rt){
-            case OVERALL_SCORE:reportCriteriaList.add(breakdownBean.buildReportCriteria());break;
+            case OVERALL_SCORE:reportCriteriaList.add(overallScoreBean.buildReportCriteria());break;
             case TREND: reportCriteriaList.add(trendBean.buildReportCriteria());break;
             case MPG_GROUP: reportCriteriaList.add(mpgBean.buildReportCriteria());break;
             }
@@ -74,7 +74,7 @@ public class ReportRendererBean extends BaseBean
         for(ReportType rt:reports)
         {
             switch(rt){
-            case OVERALL_SCORE:reportCriteriaList.add(breakdownBean.buildReportCriteria());break;
+            case OVERALL_SCORE:reportCriteriaList.add(overallScoreBean.buildReportCriteria());break;
             case TREND: reportCriteriaList.add(trendBean.buildReportCriteria());break;
             case MPG_GROUP: reportCriteriaList.add(mpgBean.buildReportCriteria());break;
             }
@@ -120,14 +120,14 @@ public class ReportRendererBean extends BaseBean
         this.mpgBean = mpgBean;
     }
 
-    public BreakdownBean getBreakdownBean()
+    public OverallScoreBean getOverallScoreBean()
     {
-        return breakdownBean;
+        return overallScoreBean;
     }
 
-    public void setBreakdownBean(BreakdownBean breakdownBean)
+    public void setOverallScoreBean(OverallScoreBean overallScoreBean)
     {
-        this.breakdownBean = breakdownBean;
+        this.overallScoreBean = overallScoreBean;
     }
 
     public TrendBean getTrendBean()

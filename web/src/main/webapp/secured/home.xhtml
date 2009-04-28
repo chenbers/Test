@@ -32,17 +32,17 @@
     			<td width="465" valign="top">
 					<!-- START OVERALL/R PANEL -->
 					<!-- leave reRenderList alone -->
-					<ui:include src="/includes/breakdown.xhtml">
-						<ui:param name="reRenderList" value="breakdownForm,overallPanel,hiddenField3"/>
+					<ui:include src="/includes/overallScore.xhtml">
+						<ui:param name="reRenderList" value="overallScoreForm,overallPanel,hiddenField3"/>
 						<ui:param name="ajaxStatusID" value="overall_status_2" /> 
-						<ui:param name="pieDef" value="#{breakdownBean.overallPieDef}"/>
-						<ui:param name="overallScoreStyle" value="#{breakdownBean.overallScoreStyle}"/>
-						<ui:param name="overallScore" value="#{breakdownBean.overallScore}"/>
-						<ui:param name="duration" value="#{breakdownDurationBean.duration}" />   
-            			<ui:param name="thirtyDaysOn" value="#{breakdownDurationBean.styleClass30Days}"/>
-						<ui:param name="threeMonthsOn" value="#{breakdownDurationBean.styleClass3Months}"/>
-						<ui:param name="sixMonthsOn" value="#{breakdownDurationBean.styleClass6Months}"/>
-						<ui:param name="twelveMonthsOn" value="#{breakdownDurationBean.styleClass12Months}" />  
+						<ui:param name="pieDef" value="#{overallScoreBean.overallPieDef}"/>
+						<ui:param name="overallScoreStyle" value="#{overallScoreBean.overallScoreStyle}"/>
+						<ui:param name="overallScore" value="#{overallScoreBean.overallScore}"/>
+						<ui:param name="duration" value="#{overallScoreDurationBean.duration}" />   
+            			<ui:param name="thirtyDaysOn" value="#{overallScoreDurationBean.styleClass30Days}"/>
+						<ui:param name="threeMonthsOn" value="#{overallScoreDurationBean.styleClass3Months}"/>
+						<ui:param name="sixMonthsOn" value="#{overallScoreDurationBean.styleClass6Months}"/>
+						<ui:param name="twelveMonthsOn" value="#{overallScoreDurationBean.styleClass12Months}" />  
 						<ui:param name="flyNavRule" value="go_fleetDetail" />
 						<ui:param name="flySelectedTab" value="overall_full_screen" />  
 						<ui:param name="flyOutImage" value="ico_expand.png" />

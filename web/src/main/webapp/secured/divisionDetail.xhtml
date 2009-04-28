@@ -321,8 +321,8 @@
 					                    <td align="center" valign="top" width="120">
 					                    <rich:panel id="overallScore">
 					    					<ui:include src="/includes/overallScoreBox.xhtml">	
-												<ui:param name="scoreStyle" value="#{breakdownBean.overallScoreStyle}"/>									
-				        	  					<ui:param name="score" value="#{breakdownBean.overallScore}"/>             						
+												<ui:param name="scoreStyle" value="#{overallScoreBean.overallScoreStyle}"/>									
+				        	  					<ui:param name="score" value="#{overallScoreBean.overallScore}"/>             						
 				    						</ui:include>   
 				    						</rich:panel> 							
 										</td>
@@ -330,7 +330,7 @@
 					                    <td rowspan="2" width="">
 					                    	<div id="overall_pie"></div>
 					                    	<rich:panel id="overall_script" align="center">
-								  			<h:inputHidden value="#{breakdownBean.overallPieDef}" id="hiddenField1"/>
+								  			<h:inputHidden value="#{overallScoreBean.overallPieDef}" id="hiddenField1"/>
 											<script type="text/javascript">
 												var targetElement1 = document.getElementById("hiddenField1");
 												var pie1 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "450", "450", "0", "0");										
@@ -356,7 +356,7 @@
                               			<div class="piegrid_label"><a href="#" class="ls_tab_drivestyle">Driving Style</a></div>
                               			<div id="style_pie"></div>
                                      	<rich:panel id="style_script" align="center">
-								  			<h:inputHidden value="#{breakdownBean.stylePieDef}" id="hiddenField2"/>
+								  			<h:inputHidden value="#{overallScoreBean.stylePieDef}" id="hiddenField2"/>
 											<script type="text/javascript">
 												var targetElement2 = document.getElementById("hiddenField2");
 												var pie2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "220", "180", "0", "0");										
@@ -370,7 +370,7 @@
                              			<div class="piegrid_label"><a href="#" class="ls_tab_seatbelt">Seat Belt</a></div>
                              			<div id="seatBelt_pie"></div>
 										<rich:panel id="seatBelt_script" align="center">
-								  			<h:inputHidden value="#{breakdownBean.seatBeltPieDef}" id="hiddenField3"/>
+								  			<h:inputHidden value="#{overallScoreBean.seatBeltPieDef}" id="hiddenField3"/>
 											<script type="text/javascript">
 												var targetElement3 = document.getElementById("hiddenField3");
 												var pie3 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "220", "180", "0", "0");										
@@ -384,7 +384,7 @@
                               <div class="piegrid_label"><a href="#" class="ls_tab_speed">Speed</a></div>
                               		<div id="speed_pie"></div>
                                      <rich:panel id="speed_script" align="center">
-								  			<h:inputHidden value="#{breakdownBean.speedPieDef}" id="hiddenField4"/>
+								  			<h:inputHidden value="#{overallScoreBean.speedPieDef}" id="hiddenField4"/>
 											<script type="text/javascript">
 												var targetElement4 = document.getElementById("hiddenField4");
 												var pie4 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "220", "180", "0", "0");										

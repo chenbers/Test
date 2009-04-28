@@ -9,9 +9,9 @@
 	<div class="">
 		<div class="panel_nw">
 			<div class="panel_title" style="z-index: #{zorder}">
-				<span class="overall">Overall Score</span> 
+				<span class="overall">#{messages.overallscore}</span> 
 					<ui:include src="/includes/dateLinksWithFlyOut.xhtml">
-						<ui:param name="ajaxForm" value="breakdownForm"/>
+						<ui:param name="ajaxForm" value="overallScoreForm"/>
 						<ui:param name="ajaxStatusID" value="#{ajaxStatusID}"/>
 						<ui:param name="reRenderList" value="#{reRenderList}"/>			
 						<ui:param name="thirtyDaysOn" value="#{thirtyDaysOn}"/>
