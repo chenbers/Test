@@ -52,6 +52,8 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
     private boolean					success;
     private boolean					emailSent;
     
+    private static final int outOfRangeLatLngDummyValue = 360;
+    
     public TigerDAO getTigerDao() {
 		return tigerDao;
 	}
@@ -77,11 +79,11 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 	public void init(){
 		
 		changeRequests = new ArrayList<SBSChangeRequest>();
-		maplat = 360;
-		maplng = 360;
+		maplat = outOfRangeLatLngDummyValue;
+		maplng = outOfRangeLatLngDummyValue;
 		mapzoom = 10;
-		lat =360;
-		lng = 360;
+		lat =outOfRangeLatLngDummyValue;
+		lng = outOfRangeLatLngDummyValue;
 		caption = MessageUtil.getMessageString("sbs_caption_select");
 		emailAddress = getUser().getPerson().getPriEmail();
 		message = MessageUtil.getMessageString("sbs_emailIntro");
@@ -118,66 +120,49 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 		return changeRequests;
 	}
 
-	public String addChangeRequest() {
+	public void addChangeRequest() {
 		
 		setCaption(MessageUtil.getMessageString("sbs_caption_select"));
 
-		if ((lat < 360)&& (lng < 360)){
+		if ((lat < outOfRangeLatLngDummyValue)&& (lng < outOfRangeLatLngDummyValue)){
 			
 			try{
 				SBSChangeRequest sbscr = tigerDao.getCompleteChains(lat, lng, getAddressNumber(address));
 				
+				if (sbscr ==  null){
+					
+					setCaption(MessageUtil.getMessageString("sbs_noNearbyRoad"));
+					return;
+				}
 				if (!duplicateLinkId(sbscr.getLinkId())){
 					sbscr.setAddress(this.makeCompositeAddress(address, sbscr.getAddress()));
 					changeRequests.add(0,sbscr);
-				
-//				int i = changeRequests.size();
-//				SBSChangeRequest sbscr = new SBSChangeRequest();
-//				sbscr.setAddress(address);
-//				sbscr.setCategory(i);
-//				sbscr.setComment("hello");
-//				sbscr.setLinkId(""+i);
-//				sbscr.setSpeedLimit(30);
-//				List<Point> streetSegment = new ArrayList<Point>();
-//				logger.debug("lat,lng is: "+lat+","+lng);
-//				streetSegment.add(new Point(lat,lng));
-//				for (int j=0; j<3; j++){
-//					double randomLat = lat+Math.random()/1000;
-//					double randomLng = lng+Math.random()/1000;
-//					logger.debug("randomLat,randomLng is: "+randomLat+","+randomLng);
-//					
-//					Point point = new Point(randomLat,randomLng);
-//					streetSegment.add(point);
-//				}
-//				sbscr.setStreetSegment(streetSegment);
-//				sbscr.setZipCode("84121");
-//				changeRequests.add(0, sbscr);
-					maplat = lat;
-					maplng = lng;
-					lat = 360;
-					lng = 360;
-	
-					return "";
+					
+					centerMap();
+					
+					return;
 				}
 	
 			}
-//			catch(SQLException sqle){
-//				
-//				logger.debug("addSegment - SQLException: "+sqle.getMessage());
-//				setCaption("Could not access database - please try again later");
-//				return null;
-//			}
 			catch(ParserConfigurationException pce){
 				
 				logger.debug("addSegment - ParserConfigurationException: "+pce.getMessage());
-				setCaption("Could not interpret latitude and longitude - please try again");
-				return null;
+				setCaption(MessageUtil.getMessageString("sbs_badLatLng"));
+				return;
 			}
 		}
 			
-		return "";
+		return;
 	}
+	
+	private void centerMap(){
+		
+		maplat = lat;
+		maplng = lng;
+		lat = outOfRangeLatLngDummyValue;
+		lng = outOfRangeLatLngDummyValue;
 
+	}
 	public void setChangeRequests(List<SBSChangeRequest> changeRequests) {
 		this.changeRequests = changeRequests;
 	}
@@ -231,7 +216,7 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 	}
 	private void setMapCenter(){
 		
-		if (maplat >= 360){
+		if (maplat >= outOfRangeLatLngDummyValue){
 			
 			//use default map center from hierarchy
 			LatLng mapCenter = getGroupHierarchy().getTopGroup().getMapCenter();
