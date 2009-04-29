@@ -19,6 +19,11 @@ ul#grid_nav li.divider {
 	margin: 0;
 	}
 	
+button
+{
+	margin-right: 5px;
+}
+	
 ul.fdtablePaginater {display:inline-block;}
 ul.fdtablePaginater {display:inline;}
 ul.fdtablePaginater li {float:left;}
