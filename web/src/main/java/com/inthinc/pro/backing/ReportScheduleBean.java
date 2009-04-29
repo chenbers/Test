@@ -339,7 +339,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         String resultValue = super.batchEdit();
         
         //If occurrences are different then null out dayOfWekk and dayOfMonth
-        if(item.getOccurrence() == null)
+        if(item != null && item.getOccurrence() == null)
         {
             item.setDayOfMonth(1);
             item.setDayOfWeek(createDayOfWeekList());
@@ -349,11 +349,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             for (ReportScheduleView t : getSelectedItems())
                BeanUtil.compareAndInitBoolList(getItem().getDayOfWeek(), t.getDayOfWeek());
         }
-        
-      
-        
-        
-        
+   
         return resultValue;
     }
 
