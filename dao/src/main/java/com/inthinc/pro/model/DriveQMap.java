@@ -11,6 +11,11 @@ public class DriveQMap extends BaseEntity
     private Integer startingOdometer;
     private Integer endingOdometer;
     private Integer odometer;
+    private Integer odometer1;
+    private Integer odometer2;
+    private Integer odometer3;
+    private Integer odometer4;
+    private Integer odometer5;
     private Integer overall;
     private Integer speeding;
     private Integer speeding1;
@@ -62,6 +67,46 @@ public class DriveQMap extends BaseEntity
     public void setOdometer(Integer odometer)
     {
         this.odometer = odometer;
+    }
+    public Integer getOdometer1()
+    {
+        return odometer1;
+    }
+    public void setOdometer1(Integer odometer1)
+    {
+        this.odometer1 = odometer1;
+    }
+    public Integer getOdometer2()
+    {
+        return odometer2;
+    }
+    public void setOdometer2(Integer odometer2)
+    {
+        this.odometer2 = odometer2;
+    }
+    public Integer getOdometer3()
+    {
+        return odometer3;
+    }
+    public void setOdometer3(Integer odometer3)
+    {
+        this.odometer3 = odometer3;
+    }
+    public Integer getOdometer4()
+    {
+        return odometer4;
+    }
+    public void setOdometer4(Integer odometer4)
+    {
+        this.odometer4 = odometer4;
+    }
+    public Integer getOdometer5()
+    {
+        return odometer5;
+    }
+    public void setOdometer5(Integer odometer5)
+    {
+        this.odometer5 = odometer5;
     }
     public Integer getOverall()
     {

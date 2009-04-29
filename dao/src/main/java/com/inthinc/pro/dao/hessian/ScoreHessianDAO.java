@@ -291,7 +291,22 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 entity.setEntityID(driverID);
                 entity.setEntityType(EntityType.ENTITY_DRIVER);
                 entity.setScoreType(scoreType);
-                entity.setIdentifierNum(driveQMap.getOdometer());
+                
+                if(scoreType == ScoreType.SCORE_SPEEDING)
+                    entity.setIdentifierNum(driveQMap.getOdometer());
+                else if(scoreType == ScoreType.SCORE_SPEEDING_21_30)
+                    entity.setIdentifierNum(driveQMap.getOdometer1());
+                else if(scoreType == ScoreType.SCORE_SPEEDING_31_40)
+                    entity.setIdentifierNum(driveQMap.getOdometer2());
+                else if(scoreType == ScoreType.SCORE_SPEEDING_41_54)
+                    entity.setIdentifierNum(driveQMap.getOdometer3());
+                else if(scoreType == ScoreType.SCORE_SPEEDING_55_64)
+                    entity.setIdentifierNum(driveQMap.getOdometer4());
+                else if(scoreType == ScoreType.SCORE_SPEEDING_65_80)
+                    entity.setIdentifierNum(driveQMap.getOdometer5());
+                else
+                    entity.setIdentifierNum(driveQMap.getOdometer());
+                
                 entity.setScore(driveQMap.getScoreMap().get(scoreType));
                 entity.setDate(driveQMap.getEndingDate());
                 scoreList.add(entity);
@@ -360,7 +375,22 @@ public class ScoreHessianDAO extends GenericHessianDAO<ScoreableEntity, Integer>
                 entity.setEntityID(vehicleID);
                 entity.setEntityType(EntityType.ENTITY_VEHICLE);
                 entity.setScoreType(scoreType);
-                entity.setIdentifierNum(driveQMap.getOdometer());
+                
+                if(scoreType == ScoreType.SCORE_SPEEDING)
+                    entity.setIdentifierNum(driveQMap.getOdometer());
+                else if(scoreType == ScoreType.SCORE_SPEEDING_21_30)
+                    entity.setIdentifierNum(driveQMap.getOdometer1());
+                else if(scoreType == ScoreType.SCORE_SPEEDING_31_40)
+                    entity.setIdentifierNum(driveQMap.getOdometer2());
+                else if(scoreType == ScoreType.SCORE_SPEEDING_41_54)
+                    entity.setIdentifierNum(driveQMap.getOdometer3());
+                else if(scoreType == ScoreType.SCORE_SPEEDING_55_64)
+                    entity.setIdentifierNum(driveQMap.getOdometer4());
+                else if(scoreType == ScoreType.SCORE_SPEEDING_65_80)
+                    entity.setIdentifierNum(driveQMap.getOdometer5());
+                else
+                    entity.setIdentifierNum(driveQMap.getOdometer());
+                
                 entity.setScore(driveQMap.getScoreMap().get(scoreType));
                 entity.setDate(driveQMap.getEndingDate());
                 scoreList.add(entity);
