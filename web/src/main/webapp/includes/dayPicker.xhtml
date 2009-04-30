@@ -4,7 +4,8 @@
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:c="http://java.sun.com/jstl/core"
     xmlns:a4j="http://richfaces.org/a4j"
-    xmlns:rich="http://richfaces.org/rich">
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
 
 <!--
   Parameters:
@@ -33,13 +34,13 @@
         <c:if test="#{not disabled}">
           <th align="center"><h:outputText value="#{messages.dayPicker_all}" /></th>
         </c:if>
-        <th align="center"><h:outputText value="#{messages.dayPicker_sunday}" /></th>
-        <th align="center"><h:outputText value="#{messages.dayPicker_monday}" /></th>
-        <th align="center"><h:outputText value="#{messages.dayPicker_tuesday}" /></th>
-        <th align="center"><h:outputText value="#{messages.dayPicker_wednesday}" /></th>
-        <th align="center"><h:outputText value="#{messages.dayPicker_thursday}" /></th>
-        <th align="center"><h:outputText value="#{messages.dayPicker_friday}" /></th>
-        <th align="center"><h:outputText value="#{messages.dayPicker_saturday}" /></th>
+        <th align="center"><h:outputText value="${tiwiprofn:getFirstCharacter(messages.dayPicker_sunday)}" /></th>
+        <th align="center"><h:outputText value="${tiwiprofn:getFirstCharacter(messages.dayPicker_monday)}" /></th>
+        <th align="center"><h:outputText value="${tiwiprofn:getFirstCharacter(messages.dayPicker_tuesday)}" /></th>
+        <th align="center"><h:outputText value="${tiwiprofn:getFirstCharacter(messages.dayPicker_wednesday)}" /></th>
+        <th align="center"><h:outputText value="${tiwiprofn:getFirstCharacter(messages.dayPicker_thursday)}" /></th>
+        <th align="center"><h:outputText value="${tiwiprofn:getFirstCharacter(messages.dayPicker_friday)}" /></th>
+        <th align="center"><h:outputText value="${tiwiprofn:getFirstCharacter(messages.dayPicker_saturday)}" /></th>
       </tr>
       <tr>
         <c:if test="#{not disabled}">

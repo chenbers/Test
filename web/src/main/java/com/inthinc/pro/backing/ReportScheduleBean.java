@@ -15,6 +15,7 @@ import java.util.TimeZone;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
+
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.BeanUtils;
 
@@ -36,6 +37,7 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.SelectItemUtil;
 
 /**
  * 
@@ -52,9 +54,6 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
 
     private static final List<String> AVAILABLE_COLUMNS;
     private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 4 };
-    private static final List<SelectItem> DURATIONS;
-    private static final List<SelectItem> OCCURRENCES;
-    private static final List<SelectItem> STATUSES;
 
     private static final String REDIRECT_REPORT_SCHEDULES = "go_adminReportSchedules";
     private static final String REDIRECT_REPORT_SCHEDULE = "go_adminReportSchedule";
@@ -81,24 +80,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         AVAILABLE_COLUMNS.add("report");
         AVAILABLE_COLUMNS.add("status");
 
-        DURATIONS = new ArrayList<SelectItem>();
-        DURATIONS.add(new SelectItem(null, ""));
-        for (Duration d : EnumSet.allOf(Duration.class))
-        {
-            DURATIONS.add(new SelectItem(d, MessageUtil.getMessageString(d.toString())));
-        }
-
-        OCCURRENCES = new ArrayList<SelectItem>();
-        OCCURRENCES.add(new SelectItem(null, ""));
-        for (Occurrence o : EnumSet.allOf(Occurrence.class))
-        {
-            if (o.getStatus().equals(Status.ACTIVE))
-                OCCURRENCES.add(new SelectItem(o, MessageUtil.getMessageString(o.toString())));
-        }
-
-        STATUSES = new ArrayList<SelectItem>();
-        STATUSES.add(new SelectItem(Status.ACTIVE, MessageUtil.getMessageString(Status.ACTIVE.toString())));
-        STATUSES.add(new SelectItem(Status.INACTIVE, MessageUtil.getMessageString(Status.INACTIVE.toString())));
+        
 
     }
 
@@ -116,21 +98,20 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
 
     public List<SelectItem> getReportGroups()
     {
-        if (reportGroups == null)
-        {
-            reportGroups = new ArrayList<SelectItem>();
 
-            for (ReportGroup rt : EnumSet.allOf(ReportGroup.class))
+        reportGroups = new ArrayList<SelectItem>();
+
+        for (ReportGroup rt : EnumSet.allOf(ReportGroup.class))
+        {
+            List<GroupType> groupTypes = Arrays.asList(rt.getGroupTypes());
+            if (getGroupHierarchy().containsGroupTypes(groupTypes))
             {
-                List<GroupType> groupTypes = Arrays.asList(rt.getGroupTypes());
-                if (getGroupHierarchy().containsGroupTypes(groupTypes))
-                {
-                    reportGroups.add(new SelectItem(rt.getCode(), MessageUtil.getMessageString(rt.toString())));
-                }
+                reportGroups.add(new SelectItem(rt.getCode(), MessageUtil.getMessageString(rt.toString())));
             }
-            sort(reportGroups);
-            reportGroups.add(0, new SelectItem(null, ""));
         }
+        sort(reportGroups);
+        reportGroups.add(0, new SelectItem(null, ""));
+        
         return reportGroups;
     }
 
@@ -146,17 +127,17 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
 
     public List<SelectItem> getDurations()
     {
-        return DURATIONS;
+        return SelectItemUtil.toList(Duration.class, true);
     }
 
     public List<SelectItem> getOccurrences()
     {
-        return OCCURRENCES;
+        return SelectItemUtil.toList(Occurrence.class, true,Occurrence.DAILY_CUSTOM);
     }
 
     public List<SelectItem> getStatuses()
     {
-        return STATUSES;
+        return SelectItemUtil.toList(Status.class, false, Status.DELETED);
     }
 
     @SuppressWarnings("unchecked")

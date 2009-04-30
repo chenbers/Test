@@ -108,4 +108,13 @@ public class JsfFunctions
         return FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/" +  url;
     }
     
+    public static String getFirstCharacter(String value)
+    {
+        
+        if(value != null)
+            return value.substring(0, 1);
+        else
+            return null;
+    }
+    
 }

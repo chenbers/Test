@@ -20,7 +20,7 @@ public class LocaleBean extends BaseBean
         {
             Locale locale = iterator.next();
             supportedLocles.add(locale);
-            supportedLocalesItems.add(new SelectItem(locale, locale.getDisplayName()));
+            supportedLocalesItems.add(new SelectItem(locale, locale.getDisplayName(locale)));
         }
     }
 
@@ -32,6 +32,8 @@ public class LocaleBean extends BaseBean
             return FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
         else
             return getUser().getLocale();
+        
+        
     }
 
     public List<Locale> getSupportedLocales()

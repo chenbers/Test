@@ -23,6 +23,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
+import org.apache.commons.lang.SystemUtils;
 import org.jasypt.util.password.PasswordEncryptor;
 import org.springframework.beans.BeanUtils;
 
@@ -46,6 +47,7 @@ import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.app.SupportedTimeZones;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.SelectItemUtil;
 /**
  * @author David Gileadi
  */
@@ -54,7 +56,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private static final long serialVersionUID = 1L;
     private static final List<String> AVAILABLE_COLUMNS;
     private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 14, 24, 11 };
-    private static final Map<String, Gender> GENDERS;
     private static final Map<String, Integer> HEIGHTS;
     private static final int MIN_HEIGHT = 48;
     private static final int MAX_HEIGHT = 86;
@@ -66,8 +67,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private static final int MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60;
     private static final Map<String, String> LICENSE_CLASSES;
     private static final Map<String, State> STATES;
-    private static final Map<String, Status> STATUSES;
-    private static final Map<String, Integer> ALERT_OPTIONS;
     private static final String REQUIRED_KEY = "required";
     static
     {
@@ -109,10 +108,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         AVAILABLE_COLUMNS.add("driver_dot");
         AVAILABLE_COLUMNS.add("driver_RFID");
         AVAILABLE_COLUMNS.add("driver_groupID");
-        // genders
-        GENDERS = new TreeMap<String, Gender>();
-        for (final Gender gender : Gender.values())
-            GENDERS.put(MessageUtil.getMessageString(gender.toString()), gender);
         // heights
         HEIGHTS = new LinkedHashMap<String, Integer>();
         for (int i = MIN_HEIGHT; i < MAX_HEIGHT; i++)
@@ -158,15 +153,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         STATES = new TreeMap<String, State>();
         for (final State state : States.getStates().values())
             STATES.put(state.getName(), state);
-        // statuses
-        STATUSES = new TreeMap<String, Status>();
-        STATUSES.put(MessageUtil.getMessageString("status" + Status.ACTIVE.getCode()), Status.ACTIVE);
-        STATUSES.put(MessageUtil.getMessageString("status" + Status.INACTIVE.getCode()), Status.INACTIVE);
-        // alert options
-        ALERT_OPTIONS = new LinkedHashMap<String, Integer>();
-        for (int i = 0; i < 8; i++)
-            if (i != 5) // skip cell phone
-                ALERT_OPTIONS.put(MessageUtil.getMessageString("myAccount_alertText" + i), i);
+       
+        
     }
     private PersonDAO personDAO;
     private UserDAO userDAO;
@@ -701,9 +689,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         return TimeZone.getTimeZone("UTC");
     }
 
-    public Map<String, Gender> getGenders()
+    public List<SelectItem> getGenders()
     {
-        return GENDERS;
+        return SelectItemUtil.toList(Gender.class, false);
     }
 
     public Map<String, Integer> getHeights()
@@ -718,7 +706,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
     public Map<String, Integer> getAlertOptions()
     {
-        return ALERT_OPTIONS;
+        // alert options
+        LinkedHashMap<String, Integer> alertOptions = new LinkedHashMap<String, Integer>();
+        for (int i = 0; i < 8; i++)
+            if (i != 5) // skip cell phone
+                alertOptions.put(MessageUtil.getMessageString("myAccount_alertText" + i), i);
+        return alertOptions;
     }
 
     public List<String> findPeople(Object event)
@@ -775,9 +768,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         return STATES;
     }
 
-    public Map<String, Status> getStatuses()
+    public List<SelectItem> getStatuses()
     {
-        return STATUSES;
+        return SelectItemUtil.toList(Status.class, false, Status.DELETED);
     }
 
     public static class PersonView extends Person implements EditItem

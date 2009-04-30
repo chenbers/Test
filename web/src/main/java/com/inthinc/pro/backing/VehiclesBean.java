@@ -13,6 +13,7 @@ import java.util.TreeMap;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
 import org.springframework.beans.BeanUtils;
 
@@ -31,6 +32,7 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.SelectItemUtil;
 
 /**
  * @author David Gileadi
@@ -43,9 +45,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     private static final int[]                    DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 8, 12 };
 
     private static final Map<String, String>      YEARS;
-    private static final Map<String, VehicleType> TYPES;
     private static final Map<String, State>       STATES;
-    private static final Map<String, Status>      STATUSES;
 
     static
     {
@@ -80,20 +80,10 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         for (int year = 1970; year <= nextYear; year++)
             YEARS.put(String.valueOf(year), String.valueOf(year));
 
-        // types
-        TYPES = new LinkedHashMap<String, VehicleType>();
-        for (final VehicleType type : VehicleType.values())
-            TYPES.put(MessageUtil.getMessageString(type.toString()), type);
-
         // states
         STATES = new TreeMap<String, State>();
         for (final State state : States.getStates().values())
             STATES.put(state.getName(), state);
-
-        // statuses
-        STATUSES = new TreeMap<String, Status>();
-        STATUSES.put(MessageUtil.getMessageString("status" + Status.ACTIVE.getCode()), Status.ACTIVE);
-        STATUSES.put(MessageUtil.getMessageString("status" + Status.INACTIVE.getCode()), Status.INACTIVE);
     }
 
     private VehicleDAO                            vehicleDAO;
@@ -449,9 +439,9 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         return YEARS;
     }
 
-    public Map<String, VehicleType> getTypes()
+    public List<SelectItem> getTypes()
     {
-        return TYPES;
+        return SelectItemUtil.toList(VehicleType.class, false);
     }
 
     public Map<String, State> getStates()
@@ -459,9 +449,9 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         return STATES;
     }
 
-    public Map<String, Status> getStatuses()
+    public List<SelectItem> getStatuses()
     {
-        return STATUSES;
+        return SelectItemUtil.toList(Status.class, false, Status.DELETED);
     }
 
     public TreeMap<String, Integer> getTeams()

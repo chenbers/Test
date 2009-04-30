@@ -2,7 +2,6 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +9,7 @@ import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 
 import org.springframework.beans.BeanUtils;
@@ -20,10 +20,12 @@ import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.MiscUtil;
+import com.inthinc.pro.util.SelectItemUtil;
 /**
  * @author David Gileadi
  */
@@ -31,7 +33,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 {
     private static final List<String> AVAILABLE_COLUMNS;
     private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 4, 6 };
-    private static final Map<String, DeviceStatus> STATUSES;
     static
     {
         // available columns
@@ -43,11 +44,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         AVAILABLE_COLUMNS.add("phone");
         AVAILABLE_COLUMNS.add("ephone");
         AVAILABLE_COLUMNS.add("status");
-        // statuses
-        STATUSES = new LinkedHashMap<String, DeviceStatus>();
-        for (final DeviceStatus status : DeviceStatus.values())
-            if (status != DeviceStatus.DELETED)
-                STATUSES.put(MessageUtil.getMessageString("status" + status.getCode()), status);
     }
     private DeviceDAO deviceDAO;
     private VehicleDAO vehicleDAO;
@@ -392,9 +388,9 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         return "go_adminDevices";
     }
 
-    public Map<String, DeviceStatus> getStatuses()
+    public List<SelectItem> getStatuses()
     {
-        return STATUSES;
+        return SelectItemUtil.toList(Status.class, false, Status.DELETED);
     }
 
     public static class DeviceView extends Device implements EditItem

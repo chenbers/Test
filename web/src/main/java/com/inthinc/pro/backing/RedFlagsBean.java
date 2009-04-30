@@ -48,7 +48,7 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     private EventCategory categoryFilter;
     private Event eventFilter;
     
-private TablePref<RedFlagReportItem> tablePref;
+    private TablePref<RedFlagReportItem> tablePref;
 
     // package level -- so unit test can get it
     static final List<String>       AVAILABLE_COLUMNS;
