@@ -58,7 +58,7 @@
 					<f:setPropertyActionListener value="#{vehicle}" target="#{navigationBean.vehicle}" />
 			</h:commandLink>
 			<h:outputText value="#{messageVehicleType}:"/>
-			<h:outputText value="#{vehicle.vtype}" />
+			<h:outputText value="#{messages[vehicle.vtype]}" />
 			<h:outputText value="#{messageLastUpdated}:" />
 			<h:outputText value="#{vehicleTime}" converter="TimeAgoConverter"/>
 			<h:outputText value="#{messageAddress}:"/>
