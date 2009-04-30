@@ -340,7 +340,8 @@
                               id="driver_status" 
                                 required="#{personBean.item.driverSelected and (not personBean.batchEdit)}" 
                                 requiredMessage="#{messages.required}"
-                              onchange="checkMultiple(this)">
+                                onchange="checkMultiple(this)"
+                                converter="SimpleBeanConverter">
                               <f:selectItems value="#{personBean.statuses}"/>
                             </h:selectOneMenu>
                           </td>
@@ -540,7 +541,8 @@
                                  id="user_status" disabled="#{!personBean.item.userEditable}" 
                                  required="#{not personBean.batchEdit}" 
                                requiredMessage="#{messages.required}"
-                                  onchange="checkMultiple(this)">
+                                  onchange="checkMultiple(this)"
+                                  converter="SimpleBeanConverter">
                              <f:selectItems value="#{personBean.statuses}"/>
                             </h:selectOneMenu>
                           </td>

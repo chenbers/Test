@@ -157,7 +157,7 @@
 								  </ui:include>
                                 </td>
                                 <td>
-                                  <h:selectOneMenu value="#{vehiclesBean.item.vtype}" id="type" onchange="checkMultiple(this)">
+                                  <h:selectOneMenu value="#{vehiclesBean.item.vtype}" id="type" onchange="checkMultiple(this)" converter="SimpleBeanConverter">
                                     <f:selectItems value="#{vehiclesBean.types}" />
                                   </h:selectOneMenu>
                                 </td>
@@ -230,7 +230,7 @@
 								  </ui:include>
                                 </td>
                                 <td>
-                                  <h:selectOneMenu value="#{vehiclesBean.item.status}" id="status" onchange="checkMultiple(this)">
+                                  <h:selectOneMenu value="#{vehiclesBean.item.status}" id="status" onchange="checkMultiple(this)" converter="SimpleBeanConverter">
                                     <f:selectItems value="#{vehiclesBean.statuses}"/>
                                   </h:selectOneMenu>
                                 </td>
