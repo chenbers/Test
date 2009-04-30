@@ -430,7 +430,7 @@ public class OrganizationBean extends BaseBean
     {
 
         // Rule 1
-        if (groupState == State.EDIT && treeNode.getBaseEntity().getType() != GroupType.TEAM)
+        if (groupState == State.EDIT && !treeNode.getBaseEntity().getType().equals(GroupType.TEAM))
         {
             List<Driver> driverList = driverDAO.getDrivers(treeNode.getBaseEntity().getGroupID());
             List<Vehicle> vehicleList = vehicleDAO.getVehiclesInGroup(treeNode.getBaseEntity().getGroupID());
@@ -442,8 +442,7 @@ public class OrganizationBean extends BaseBean
         }
 
         // Rule 2
-        if (groupState == State.EDIT && treeNode.getBaseEntity().getType() == GroupType.TEAM && !treeNode.getChildrenNodes().isEmpty()
-                && treeNode.getChildrenNodes().get(0).getBaseEntity() != null)
+        if (groupState == State.EDIT && treeNode.getBaseEntity().getType() == GroupType.TEAM && treeNode.hasChildCroups())
         {
             addErrorMessage(MessageUtil.getMessageString("group_edit_error_team"));
             return false;

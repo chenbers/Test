@@ -17,7 +17,7 @@ import com.inthinc.pro.model.Vehicle;
 
 public class GroupTreeNodeImpl extends BaseTreeNodeImpl<Group>
 {
-    
+
     /**
      * 
      */
@@ -26,39 +26,39 @@ public class GroupTreeNodeImpl extends BaseTreeNodeImpl<Group>
     private static final Logger logger = Logger.getLogger(GroupTreeNodeImpl.class);
 
     private GroupHierarchy groupHierarchy;
-    
+
     private transient VehicleDAO vehicleDAO;
     private transient DriverDAO driverDAO;
     private transient UserDAO userDAO;
     private transient DeviceDAO deviceDAO;
-    
+
     @SuppressWarnings("unchecked")
-    public GroupTreeNodeImpl(Group group,BaseTreeNodeImpl parentNode,GroupHierarchy groupHierarchy)
+    public GroupTreeNodeImpl(Group group, BaseTreeNodeImpl parentNode, GroupHierarchy groupHierarchy)
     {
-        super(group,parentNode);
+        super(group, parentNode);
         setId(group.getGroupID());
         setLabel(group.getName());
         this.groupHierarchy = groupHierarchy;
-        
+
     }
-    
-    public GroupTreeNodeImpl(Group group,GroupHierarchy groupHierarchy)
+
+    public GroupTreeNodeImpl(Group group, GroupHierarchy groupHierarchy)
     {
         super(group);
-        if(group!= null && group.getGroupID() != null)
+        if (group != null && group.getGroupID() != null)
         {
             setId(group.getGroupID());
             setLabel(group.getName());
         }
         this.groupHierarchy = groupHierarchy;
-        
+
     }
-    
+
     @Override
     public TreeNodeType loadTreeNodeType()
     {
         TreeNodeType resultType = TreeNodeType.TEAM;
-        if (baseEntity != null  && baseEntity.getType() != null)
+        if (baseEntity != null && baseEntity.getType() != null)
         {
             switch (baseEntity.getType()) {
             case FLEET:
@@ -75,7 +75,7 @@ public class GroupTreeNodeImpl extends BaseTreeNodeImpl<Group>
         }
         return resultType;
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     protected List<BaseTreeNodeImpl> loadChildNodes()
@@ -89,7 +89,6 @@ public class GroupTreeNodeImpl extends BaseTreeNodeImpl<Group>
             childNodes.add(groupTreeNode);
         }
 
-       
         if (!getTreeNodeType().equals(TreeNodeType.TEAM))
         {
             List<Group> groupList = groupHierarchy.getChildren(baseEntity);
@@ -102,7 +101,7 @@ public class GroupTreeNodeImpl extends BaseTreeNodeImpl<Group>
                         g.setMapCenter(new LatLng(baseEntity.getMapCenter().getLat(), baseEntity.getMapCenter().getLng()));
                         g.setMapZoom(baseEntity.getMapZoom());
                     }
-                    GroupTreeNodeImpl treeNode = new GroupTreeNodeImpl(g,this,groupHierarchy);
+                    GroupTreeNodeImpl treeNode = new GroupTreeNodeImpl(g, this, groupHierarchy);
                     treeNode.setDriverDAO(driverDAO);
                     treeNode.setVehicleDAO(vehicleDAO);
                     treeNode.setUserDAO(userDAO);
@@ -140,26 +139,26 @@ public class GroupTreeNodeImpl extends BaseTreeNodeImpl<Group>
                 }
             }
         }
-        
-        //Load Users
-        if(baseEntity != null)
+
+        // Load Users
+        if (baseEntity != null)
         {
             List<User> userList = userDAO.getUsersInGroupHierarchy(baseEntity.getGroupID());
-            for(User u:userList)
+            for (User u : userList)
             {
-                if(baseEntity.getGroupID().equals(u.getGroupID()))
+                if (baseEntity.getGroupID().equals(u.getGroupID()))
                 {
-                    UserTreeNodeImpl treeNode = new UserTreeNodeImpl(u,this);
+                    UserTreeNodeImpl treeNode = new UserTreeNodeImpl(u, this);
                     childNodes.add(treeNode);
                 }
             }
         }
         this.childNodes = childNodes;
-        
+
         sortChildren();
         return childNodes;
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public BaseTreeNodeImpl getParent()
@@ -171,7 +170,8 @@ public class GroupTreeNodeImpl extends BaseTreeNodeImpl<Group>
             {
                 parentNode = new GroupTreeNodeImpl(parentGroup, groupHierarchy);
             }
-            else //The reason for creating this empty tree node is because if the root node doesn't have a parent, it doesn't display in the tree.
+            else
+            // The reason for creating this empty tree node is because if the root node doesn't have a parent, it doesn't display in the tree.
             {
                 parentNode = new GroupTreeNodeImpl(null, groupHierarchy);
             }
@@ -179,24 +179,24 @@ public class GroupTreeNodeImpl extends BaseTreeNodeImpl<Group>
 
         return parentNode;
     }
-    
+
     @Override
     public boolean getAllowsChildren()
     {
         return true;
     }
-    
+
     @Override
     public boolean isLeaf()
     {
         boolean returnBoolean = super.isLeaf();
-        if(baseEntity == null)
+        if (baseEntity == null)
         {
             returnBoolean = true;
         }
         return returnBoolean;
     }
-    
+
     /**
      * find a matching tree node within itself and its children
      * 
@@ -222,17 +222,16 @@ public class GroupTreeNodeImpl extends BaseTreeNodeImpl<Group>
                 {
                     if (node == null)
                     {
-                        switch(treeNode.getTreeNodeType())
-                        {
+                        switch (treeNode.getTreeNodeType()) {
                         case DIVISION:
                         case FLEET:
-                        case TEAM:  
-                            GroupTreeNodeImpl groupTreeNode = (GroupTreeNodeImpl)treeNode;
+                        case TEAM:
+                            GroupTreeNodeImpl groupTreeNode = (GroupTreeNodeImpl) treeNode;
                             node = groupTreeNode.findTreeNodeByGroupId(groupID);
                             break;
                         default:
                         }
-                       
+
                     }
 
                 }
@@ -242,7 +241,22 @@ public class GroupTreeNodeImpl extends BaseTreeNodeImpl<Group>
         return node;
 
     }
-    
+
+    public boolean hasChildCroups()
+    {
+        for(BaseTreeNodeImpl<?> treeNode : getChildrenNodes())
+        {
+            switch(treeNode.getTreeNodeType())
+            {
+            case DIVISION:
+            case FLEET:
+            case TEAM: return true;
+            }
+        }
+        
+        return false;
+    }
+
     public GroupLevel getGroupLevel()
     {
         return groupHierarchy.getGroupLevel(this.baseEntity);
@@ -277,7 +291,7 @@ public class GroupTreeNodeImpl extends BaseTreeNodeImpl<Group>
     {
         return userDAO;
     }
-    
+
     public Group getGroup()
     {
         return baseEntity;
