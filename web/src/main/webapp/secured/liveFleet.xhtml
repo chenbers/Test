@@ -11,7 +11,7 @@
 
 	<ui:param name="liveFleetSelected" value="current" />
 	<ui:param name="helpFile" value="Live_Fleet.htm" />
-	
+	<ui:param name="ajaxPanels" value="inputFormPanel"/>
 	<ui:define name="scripts">
 		<script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}" type="text/javascript"></script>
 		<script type="text/javascript">
@@ -376,13 +376,15 @@
 					</div>
 				</div>
 				<div class="panel_w">
-					<div class="panel_content" align="center">
+				
+			<div class="panel_content" align="center">
 
+				<rich:panel id="inputFormPanel">
 				<table width="580" border="0" cellpadding="4" cellspacing="0">
 					<tr>
 						<td width="90">#{messages.livefleet_find_address}:</td>
 						<td width="301">
-							<input type="text" size="40" id="addressTextBox" value="" onKeyPress="checkEnter(event);" />
+							<h:inputText id="addressTextBox" size="40" value="" onkeypress="checkEnter(event);" />
 						</td>
 						<td width="165" rowspan="2">
 							<button name="locationButton" value="" class="left" onclick="processForm('addressTextBox', 'countComboBox');">
@@ -403,6 +405,7 @@
 						</select> <h:outputText value="     #{messages.livefleet_nearest_vehicles}." /></td>
 					</tr>
 				</table>
+				</rich:panel>
 				<hr />
 	            <!-- END INPUT FORM -->
 				<h:form name="mapLinks2">
