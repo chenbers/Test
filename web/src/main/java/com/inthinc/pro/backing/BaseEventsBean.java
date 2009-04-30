@@ -214,6 +214,7 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
         setMaxCount(filteredTableData.size());
         setStart(filteredTableData.size() > 0 ? 1 : 0);
         setEnd(filteredTableData.size() > getNumRowsPerPg() ? getNumRowsPerPg() : filteredTableData.size());
+        setPage(1);
     }
 
     private void initTableData()
