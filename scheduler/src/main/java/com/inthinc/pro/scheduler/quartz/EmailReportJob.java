@@ -133,8 +133,9 @@ public class EmailReportJob extends QuartzJobBean
         for (ReportCriteria reportCriteria : reportCriteriaList)
         {
             reportCriteria.setReportDate(new Date(), user.getPerson().getTimeZone());
+            reportCriteria.setLocale(user.getLocale());
         }
-
+        
         Report report = reportCreator.getReport(reportCriteriaList);
         String subject = LocalizedMessage.getString("reportSchedule.emailSubject");
         report.exportReportToEmail(reportSchedule.getEmailToString(), FormatType.PDF, null, subject + reportSchedule.getName());
@@ -143,9 +144,13 @@ public class EmailReportJob extends QuartzJobBean
     /*
      * To determine if we should send a report out the following must be met.
      * 
-     * Rule 1: Must be between the start date and end date; Rule 2: OCCURRENCE.Weekly - Must be scheduled to run on the day of week it currently is. Rule 3: The Schduled Time
-     * cannot be greater than the current time. Rule 4: The scheduled time has to be within the last hour from the current time. If not, it will not occure till the next scheduled
-     * date. Rule 5: Report Schedule must be active. Rule 7: OCCURRENCE.Monthly - Make sure currenty day of month is the same ans the start date day of month.
+     * Rule 1: Must be between the start date and end date; 
+     * Rule 2: OCCURRENCE.Weekly - Must be scheduled to run on the day of week it currently is. 
+     * Rule 3: The Schduled Time cannot be greater than the current time. 
+     * Rule 4: The scheduled time has to be within the last hour from the current time. If not, it will not occure till the next scheduled
+     * date. 
+     * Rule 5: Report Schedule must be active. 
+     * Rule 7: OCCURRENCE.Monthly - Make sure currenty day of month is the same ans the start date day of month.
      */
     protected boolean emailReport(ReportSchedule reportSchedule)
     {
@@ -167,7 +172,7 @@ public class EmailReportJob extends QuartzJobBean
         df.setTimeZone(user.getPerson().getTimeZone());
 
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy.MM.dd G 'at' HH:mm:ss a z");
-        sdf2.setTimeZone(TimeZone.getTimeZone("UTC"));
+        sdf2.setTimeZone(TimeZone.getTimeZone("www."));
 
         // Rule 1:
         if (compareDates(currentDateTime, startCalendar) < 0)
