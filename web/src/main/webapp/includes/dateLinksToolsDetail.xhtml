@@ -55,12 +55,13 @@
 			<span class="panel_ico">
 				<h:panelGroup id="toolsIcon" rendered="#{showTools eq 'TRUE' ? true : false}">
 					<h:graphicImage value="/images/ico_tools.png" alt="Tools" />
-					<rich:spacer width="2" /> 
+					<rich:spacer width="4" /> 
 				</h:panelGroup>
-				<a4j:htmlCommandLink action="#{flyOutBean.flyNavRuleAction}" rendered="#{showDetail eq 'TRUE' ? true : false}">
-					<img src="#{facesContext.externalContext.request.contextPath}/images/#{flyOutImage}" border="0" title="#{flyoutTitle}" />
-					<f:setPropertyActionListener value="#{flyNavRule}" target="#{flyOutBean.navigationRule}" />
-				</a4j:htmlCommandLink>
+				<h:commandButton action="#{flyOutBean.flyNavRuleAction}" 
+								 rendered="#{showDetail eq 'TRUE' ? true : false}"
+								 image="/images/#{flyOutImage}" title="#{flyoutTitle}">
+				<f:setPropertyActionListener value="#{flyNavRule}" target="#{flyOutBean.navigationRule}" />
+				</h:commandButton>
 			</span>
 				<rich:contextMenu event="onclick" attachTiming="onavailable"
 					disableDefaultMenu="false" submitMode="server"
