@@ -23,7 +23,10 @@
 					</ui:include>
 				</li>
 				
-				<li class="r grid_icon"><img src="#{facesContext.externalContext.request.contextPath}/images/ico_help.png" /></li>
+				<li class="r grid_icon">
+				<h:outputLink value="#{facesContext.externalContext.requestContextPath}/secured/help/#{helpFile ne null ? helpFile : 'Home.htm'}" target="new">
+					<h:graphicImage value="/images/ico_help.png" style="border: 0px"/>
+				</h:outputLink></li>
 				<h:outputText rendered="#{showContextMenu eq 'true'}">
 				<li class="r grid_icon">
 					<h:panelGroup id="overview_tools_icon">
