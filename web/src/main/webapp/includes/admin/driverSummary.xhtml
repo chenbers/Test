@@ -9,26 +9,7 @@
 
 	<ul id="grid_nav_dark">
 		<li class="l">
-		<!--  
-		<ul id="breadcrumb">
-			<ui:repeat
-				value="#{organizationBean.selectedGroupNode.groupBreadCrumb}"
-				var="crumb">
-				<li class=""><a4j:commandLink value="#{crumb.group.name}"
-					reRender="groupPanel,groupContent,organizationTreePanel">
-					<a4j:actionparam converter="SimpleBeanConverter" name="groupNode"
-						value="#{crumb}"
-						actionListener="#{organizationBean.changeSelectedGroup}"
-						assignTo="#{organizationBean.selectedGroupNode}" />
-				</a4j:commandLink></li>
-			</ui:repeat>
-			<li class="last"><h:outputFormat
-				value="#{messages.group_driver}">
-				<f:param value="#{driver.person.first}" />
-				<f:param value="#{driver.person.last}" />
-			</h:outputFormat></li>
-		</ul>
-		-->
+	
 
 		</li>
 		<li class="r text"><h:commandLink action="#{personBean.edit}"
@@ -185,7 +166,10 @@
 				<tr>
 					<td width="100"><h:outputText
 						value="#{messages.editPerson_driver_RFID}" /></td>
-					<td><h:outputText value="#{driver.driver.RFID}" /></td>
+					<td><h:outputText value="#{driver.RFID}" >
+                           <f:converter converterId="HexConverter" />
+                        </h:outputText>
+                     </td>
 				</tr>
 				<tr>
 					<td width="100"><h:outputText
