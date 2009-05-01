@@ -380,7 +380,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             if (vehicle.isDriverChanged())
                 assignDriver(vehicle);
 
-            if (vehicle.getDevice() != null)
+            if (vehicle.getDevice() != null && vehicle.getDeviceID() != null && vehicle.getDeviceID() != 0)
             {
                 // if batch editing, copy individual speed settings by hand
                 if (isBatchEdit())
