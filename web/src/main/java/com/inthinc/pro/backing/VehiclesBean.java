@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -557,6 +556,11 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             if (device == null)
                 device = bean.deviceDAO.findByID(getDeviceID());
             return device;
+        }
+        
+        public void setDevice(Device device)
+        {
+            this.device = device;
         }
 
         public Double getCostPerHourDollars()

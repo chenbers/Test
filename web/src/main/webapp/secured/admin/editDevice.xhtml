@@ -163,7 +163,7 @@
                                   </ui:include>
                                 </td>
                                 <td>
-                                  <h:selectOneMenu value="#{devicesBean.item.status}" id="status" onchange="checkMultiple(this)">
+                                  <h:selectOneMenu value="#{devicesBean.item.status}" id="status" onchange="checkMultiple(this)" converter="SimpleBeanConverter">
                                     <f:selectItems value="#{devicesBean.statuses}" />
                                   </h:selectOneMenu>
                                 </td>

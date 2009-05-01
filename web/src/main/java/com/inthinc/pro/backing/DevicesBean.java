@@ -390,7 +390,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 
     public List<SelectItem> getStatuses()
     {
-        return SelectItemUtil.toList(Status.class, false, Status.DELETED);
+        return SelectItemUtil.toList(DeviceStatus.class, false, DeviceStatus.DELETED);
     }
 
     public static class DeviceView extends Device implements EditItem
