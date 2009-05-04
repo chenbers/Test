@@ -128,7 +128,7 @@ public class RedFlagAlert extends BaseAlert
     public Integer getHardVertical()
     {
         if (hardVertical == null)
-            return Device.DEFAULT_LEVEL;
+            return Device.DEFAULT_BUMP_LEVEL;
         return hardVertical;
     }
 
