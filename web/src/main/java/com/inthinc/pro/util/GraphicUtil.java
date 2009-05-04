@@ -360,35 +360,46 @@ public class GraphicUtil {
 	}
 		
 	public static String getBarControlParameters() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("<chart ");
-        sb.append("caption=\'\' ");
-        sb.append("xAxisName=\'\' ");
-        sb.append("yAxisName=\'\' ");
-        sb.append("showValues=\'0\' ");
-        sb.append("decimals=\'0\' ");
-        sb.append("formatNumberScale=\'0\' ");
-        sb.append("numberSuffix=\'\' ");
-        sb.append("animation=\'1\' ");
-        sb.append("bgColor=\'#ffffff\' ");
-        sb.append("borderThickness=\'1\' ");
-        sb.append("showToolTips=\'1\' ");
-        sb.append("showLegend=\'0\' ");
-        sb.append("legendBorderThickness=\'0\' ");
-        sb.append("legendShadow=\'0\' ");
-        sb.append("labelDisplay=\'\' ");
-        sb.append("slantLabels=\'\' ");
-        sb.append("canvasBorderColor=\'#ffffff\' ");
-        sb.append("canvasBorderThickness=\'0\' ");
-        sb.append("showPlotBorder=\'0\' ");
-        sb.append("plotFillRatio=\'100\' ");
+	    String vehicleType = MessageUtil.getMessageString("mpg_vehicle_type");
+        StringBuilder sb = new StringBuilder();
+        sb.append("<chart ")
+        .append("caption=\'\' ")
+        .append("xAxisName=\'\' ")
+        .append("yAxisName=\'\' ")
+        .append("showValues=\'0\' ")
+        .append("decimals=\'0\' ")
+        .append("formatNumberScale=\'0\' ")
+        .append("numberSuffix=\'\' ")
+        .append("animation=\'1\' ")
+        .append("bgColor=\'#ffffff\' ")
+        .append("borderThickness=\'1\' ")
+        .append("showToolTips=\'1\' ")
+        .append("showLegend=\'1\' ")
+        .append("legendPosition=\'BOTTOM\' ")
+        .append("legendCaption=\'").append(vehicleType).append(":\' ")
+        .append("legendMarkerCircle=\'0\' ")
+        .append("legendBgColor=\'E5E5E5\' ")
+        .append("legendBorderColor=\'CCCCCC\' ")
+        .append("legendBorderThickness=\'0\' ")
+        .append("legendShadow=\'0\' ")
+        .append("labelDisplay=\'\' ")
+        .append("slantLabels=\'\' ")
+        .append("canvasBorderColor=\'#ffffff\' ")
+        .append("canvasBorderThickness=\'0\' ")
+        .append("showPlotBorder=\'0\' ")
+        .append("plotFillRatio=\'100\' ");
+        
         sb.append(">");
         return sb.toString();
 	}	
 	
 	public static String createMpgXML(List<MpgEntityPkg> entities)
 	{
-	    StringBuffer sb = new StringBuffer();
+
+        String lightString = MessageUtil.getMessageString("mpg_light_column");
+        String mediumString = MessageUtil.getMessageString("mpg_medium_column");
+        String heavyString = MessageUtil.getMessageString("mpg_heavy_column");
+	    StringBuilder sb = new StringBuilder();
 	    int numEntities = entities.size();
 	    Integer[] light = new Integer[numEntities];
 	    Integer[] medium = new Integer[numEntities];
@@ -407,21 +418,21 @@ public class GraphicUtil {
         }
         sb.append("</categories>");
         
-        sb.append("<dataset seriesName=\'Light\'>");
+        sb.append("<dataset seriesName=\'").append(lightString).append("\'>");
         for (Integer value : light)
         {
             sb.append("<set value=\'" + (value != null ? value.toString() : "0") + "\'/>");
         }
         sb.append("</dataset>");
-        
-        sb.append("<dataset seriesName=\'Medium\'>");
+
+        sb.append("<dataset seriesName=\'").append(mediumString).append("\'>");
         for (Integer value : medium)
         {
             sb.append("<set value=\'" + (value != null ? value.toString() : "0") + "\'/>");
         }
         sb.append("</dataset>");
-        
-        sb.append("<dataset seriesName=\'Heavy\'>");
+
+        sb.append("<dataset seriesName=\'").append(heavyString).append("\'>");
         for (Integer value : heavy)
         {
             sb.append("<set value=\'" + (value != null ? value.toString() : "0") + "\'/>");
