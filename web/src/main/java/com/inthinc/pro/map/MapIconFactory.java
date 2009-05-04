@@ -6,17 +6,20 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.WebUtil;
 
 public class MapIconFactory {
 
 	private static final Logger logger = Logger.getLogger(MapIconFactory.class);
 	
+	private static final String ICON_MARKERS_DIRECTORY = "/googleMapIcons/";
+	private static final String ICON_LEGENDS_DIRECTORY = "/legendIcons/";
+	private static final String ICON_MAP_LEGEND_DIRECTORY = "/mapLegendIcons/";
+	
 	public enum IconType {
-								MARKER(MessageUtil.getMessageString("icons_markers")/*"/googleMapIcons/"*/),
-								LEGEND(MessageUtil.getMessageString("icons_legend")/*"/legendIcons/"*/),
-								MAP_LEGEND(MessageUtil.getMessageString("icons_mapLegend")/*"/mapLegendIcons/"*/);
+								MARKER(ICON_MARKERS_DIRECTORY),
+								LEGEND(ICON_LEGENDS_DIRECTORY),
+								MAP_LEGEND(ICON_MAP_LEGEND_DIRECTORY);
 								
 		private final String url;
 		private int count;
