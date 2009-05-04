@@ -2979,57 +2979,115 @@ ul.legend {
 
 /* HORIZONTAL TABS FOR THE TEAMS PAGE, MAYBE OTHERS ... */
 ul.htabs {
-	border-bottom: 1px solid #8BAD37;
-	margin: 0;
-	padding: 0;
-	height: 28px;
+   	border-bottom: 1px solid #8BAD37;
+   	margin: 0;
+   	padding: 0;
+   	height: 28px;
 }
 
 ul.htabs li {
-	list-style: none;
-	float: left;
-	margin: 0;
-	padding: 0 2px 0 0;
+   list-style: none;
+   float: left;
+   margin: 0;
+   padding: 0 2px 0 0;
 }
 
-ul.htabs li.overall_off {
-	width: 108px;
-	background: url(../images/htab_over_off.png) no-repeat;
+ul.htabs li.inactive .tabLeft {
+	background: #fff url(../images/top_left.gif) no-repeat;
+	height: 28px;
 }
 
-ul.htabs li.overall_on {
-	width: 108px;
-	background: url(../images/htab_over_on.png) no-repeat;
+
+ul.htabs li.inactive .tabRight {
+	background: url(../images/top_right.gif) repeat-x right top;
+	color: #333;
+	font: bold 14px "Trebuchet MS", Verdana, Tahoma, Arial, sans-serif;
+	height: 28px;
+ padding-right: 15px;
+	margin-left: 10px;
+	position: relative;
 }
 
-ul.htabs li.driving_off {
-	width: 104px;
-	background: url(../images/htab_driving_off.png) no-repeat;
+ul.htabs li.active .tabLeft {
+   background: #fff url(../images/top_left_on.gif) no-repeat;
+   height: 28px;
 }
 
-ul.htabs li.driving_on {
-	width: 104px;
-	background: url(../images/htab_driving_on.png) no-repeat;
+
+ul.htabs li.active .tabRight {
+   background: url(../images/top_right_on.gif) repeat-x right top;
+   color: #333;
+   font: bold 14px "Trebuchet MS", Verdana, Tahoma, Arial, sans-serif;
+   height: 28px;
+ padding-right: 15px;
+   margin-left: 10px;
+   position: relative;
 }
 
-ul.htabs li.speed_off {
-	width: 70px;
-	background: url(../images/htab_speed_off.png) no-repeat;
+ul.htabs .tabBorder {
+  padding: 5px 0 0 0;
 }
 
-ul.htabs li.speed_on {
-	width: 70px;
-	background: url(../images/htab_speed_on.png) no-repeat;
+
+ul.htabs span.overall {
+   padding: 0 0 0 20px;
+   background: transparent url(../images/ico_overall.png) no-repeat center
+      left;
 }
 
-ul.htabs li.seatbelt_off {
-	width: 85px;
-	background: url(../images/htab_seatbelt_off.png) no-repeat;
+ul.htabs span.speed {
+   padding: 0 0 0 20px;
+   background: transparent url(../images/ico_speed.png) no-repeat center
+      left;
 }
 
-ul.htabs li.seatbelt_on {
-	width: 85px;
-	background: url(../images/htab_seatbelt_on.png) no-repeat;
+ul.htabs span.seatbelt {
+   padding: 0 0 0 20px;
+   background: transparent url(../images/ico_seatbelt.png) no-repeat center
+      left;
+}
+
+ul.htabs span.driving {
+   padding: 0 0 0 20px;
+   background: transparent url(../images/ico_vehicle.png) no-repeat center
+      left;
+}
+
+ul.htabs span.tab a:link {
+   color: #333;
+}
+
+ul.htabs span.tab a:hover {
+   color: #333;
+}
+
+ul.htabs span.tab a:active {
+   color: #333;
+}
+
+ul.htabs span.tab a:visited {
+   color: #333;
+}
+
+ul.htabs li.inactive span.tab a {
+   color: #333;
+   font-size: 12px;
+   font-weight: normal;
+   text-decoration: none;
+}
+
+ul.htabs li.inactive span.tab a {
+   color: #333;
+   font-size: 12px;
+   font-weight: normal;
+   text-decoration: none;
+}
+
+ul.htabs li.active span.tab a {
+   color: #333;
+   font-weight: bold;
+   font-size: 12px;
+   text-decoration: none;
 }
 
 .red {

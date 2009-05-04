@@ -44,16 +44,32 @@
 			<h:panelGrid width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;" >
 				<h:panelGroup>
 					<a4j:form id="overview-form">
+               
 					<ul class="htabs">
+
 				      <ui:repeat value="#{teamOverviewBean.actions}" var="action" id="menu">
-                    	<li class="#{(action.key == teamOverviewBean.selectedAction.key) ? action.onStyle : action.offStyle}">
-				            <a4j:commandLink title="#{action.displayString}" reRender="overview-header,overview-form,overview-content,duration-links">
-								<h:graphicImage value="/images/x.gif" width="#{action.width}" height="27"  style="border:none"/>
-				            	<f:setPropertyActionListener target="#{teamOverviewBean.selectedAction}" value="#{action}" />
-				            </a4j:commandLink>	
-                    	</li>
+                         <li class="#{(action.key == teamOverviewBean.selectedAction.key) ? 'active' : 'inactive'}" onclick="#{action.key}_setTabActive();"> 
+                              <div class="tabLeft">
+      							<div class="tabRight">
+                                   <div class="tabBorder">
+                                   <span class="#{action.key} tab">
+                                          <a4j:commandLink title="#{action.displayString}" reRender="overview-header,overview-form,overview-content,duration-links"
+                                                value="#{action.displayString}">
+                                                <f:setPropertyActionListener target="#{teamOverviewBean.selectedAction}" value="#{action}" />
+                                          </a4j:commandLink>   
+                                    </span>
+                                    </div>
+                                  </div>
+                              </div>
+                          </li>
+                           
+                          <a4j:jsFunction name="#{action.key}_setTabActive" reRender="overview-header,overview-form,overview-content,duration-links">
+                            <f:setPropertyActionListener target="#{teamOverviewBean.selectedAction}" value="#{action}" />
+                          </a4j:jsFunction>
+                          
 				      </ui:repeat>
  					</ul>
+                     
 					</a4j:form>
 				</h:panelGroup>
 				
