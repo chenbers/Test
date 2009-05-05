@@ -79,7 +79,7 @@
 						</categorySeries>
 					</categoryDataset>
 					<barPlot >
-						<plot >
+						<plot labelRotation="-30.0" >
 							<seriesColor seriesOrder="0" color="#AFD8F8"/>
 							<seriesColor seriesOrder="1" color="#F6BD0F"/>
 							<seriesColor seriesOrder="2" color="#8BBA00"/>

@@ -111,7 +111,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         {
             reportCriteria.setLocale(locale);
         }
-        reportCriteria.setRecordsPerReportParameters(4, "entityName", "category");
+        reportCriteria.setRecordsPerReportParameters(6, "entityName", "category");
         return reportCriteria;
     }
 
