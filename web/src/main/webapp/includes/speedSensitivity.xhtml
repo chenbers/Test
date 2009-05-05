@@ -57,7 +57,7 @@
                                     <h:outputText value="#{(index * 5) + 5}" />
                                   </td>
                                   <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <rich:inputNumberSlider disabled="#{disabled}" id="#{id}" value="#{device.speedSettings[index]}" width="250" showToolTip="false" showBoundaryValues="false" minValue="#{minimum}" maxValue="25" step="1" onchange="if (checkMultiple) checkMultiple(this.mainTable.id)" />
+                                    <rich:inputNumberSlider disabled="#{disabled}" onfocus="this.select();" id="#{id}" value="#{device.speedSettings[index]}" width="250" showToolTip="false" showBoundaryValues="false" minValue="#{minimum}" maxValue="25" step="1" onchange="if (checkMultiple) checkMultiple(this.mainTable.id)" />
                                   </td>
                                   <td style="padding: 6px 12px 6px 2px; border-bottom: 1px solid #8BAD37;">
                                     <h:outputText value=" mph" />

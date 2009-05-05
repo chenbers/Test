@@ -229,7 +229,7 @@
                                     <h:outputText value=" mph" />
                                   </td>
                                   <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;" width="250">
-                                    <rich:inputNumberSlider id="#{id}" value="#{redFlagAlertsBean.item.speedSettings[index]}" width="250" showToolTip="false" showBoundaryValues="false" minValue="#{minimum}" maxValue="25" step="1" onchange="checkMultiple('type'); document.getElementById(this.mainTable.id + 'Selected').checked = true;" />
+                                    <rich:inputNumberSlider id="#{id}" value="#{redFlagAlertsBean.item.speedSettings[index]}" width="250" onfocus="this.select();" showToolTip="false" showBoundaryValues="false" minValue="#{minimum}" maxValue="25" step="1" onchange="checkMultiple('type'); document.getElementById(this.mainTable.id + 'Selected').checked = true;" />
                                   </td>
                                   <td style="padding: 6px 12px 6px 2px; border-bottom: 1px solid #8BAD37;">
                                     <h:outputText value=" mph" />
