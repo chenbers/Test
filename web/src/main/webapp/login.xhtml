@@ -55,7 +55,9 @@
 	</div>
   
   
-	<rich:modalPanel id="forgotPasswordPanel" headerClass="popupHeader" controlsClass="popupControls" autosized="true">
+	<rich:modalPanel id="forgotPasswordPanel" headerClass="popupHeader" controlsClass="popupControls" autosized="true" width="350"
+				     onshow="document.getElementById('changePasswordForm:PasswordSubmitButton').focus();"
+				     onhide="document.getElementById('changePasswordForm:email').value = '';">
       <f:facet name="header">
         <h:outputText value="#{messages.credentials_header}" />
       </f:facet>
@@ -71,7 +73,7 @@
 	<ui:define name="errorPopup">
 		<rich:modalPanel id="errorPanel" headerClass="popupHeader" controlsClass="popupControls" 
 				showWhenRendered="#{not empty authErrorBean.errorMessage}"  
-				width="300" height="50" autosized="true" resizeable="false" zindex="2000" 
+				 height="50" autosized="true" resizeable="false" zindex="2000" 
 				onshow="document.getElementById('loginErrorForm:okButton').focus();">
 		    <f:facet name="header">
 		      <h:outputText value="#{messages.login_error_title}"/>

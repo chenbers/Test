@@ -41,7 +41,7 @@
     	<property name="host" value="${mailserver}"  />
     </bean>
     <bean id="retrieveCredentialsBean" class="com.inthinc.pro.backing.RetrieveCredentialsBean" scope="request" parent="baseBean">
-        <property name="from"><value><![CDATA[tiwi support <unknown@unknown.com>]]></value></property>
+        <property name="from"><value><![CDATA[tiwiPRO Support <support@inthinc.com>]]></value></property>
         <property name="mailSender" ref="mailSenderBean" />
         <property name="encryptPassword" value="j$2yptt3xt3ncrypt0r23cr3tp422w0rd" />
         <property name="messageSource" ref="messageSource" />
