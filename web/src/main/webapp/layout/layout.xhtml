@@ -6,15 +6,17 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets" 
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:c="http://java.sun.com/jstl/core"
 	xmlns:a4j="http://richfaces.org/a4j" 
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:tiwi="http://pro.tiwi.com/jsf">
 
 <f:view contentType="text/html" locale="#{localeBean.locale}"> 
-<f:loadBundle basename="com.inthinc.pro.resources.Messages" var="messages"/>
+<f:loadBundle basename="com.inthinc.pro.resources.Messages" var="messages" />
 
 <head>
-<title>${messages.title}</title>
+<c:set var="titleText" value="#{title} - #{messages.title}"/>
+<title>#{title ne null ? titleText : messages.title}</title>
 <link media="screen" type="text/css" href="#{facesContext.externalContext.requestContextPath}/css/richfaces.css" rel="stylesheet" />
 <link media="screen" type="text/css" href="#{facesContext.externalContext.requestContextPath}/css/main.css" rel="stylesheet" />
 

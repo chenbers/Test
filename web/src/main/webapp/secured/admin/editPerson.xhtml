@@ -10,7 +10,7 @@
 
   <ui:param name="adminSelected" value="current" />
   <ui:param name="helpFile" value="Add_a_Person.htm" />
-  
+  <ui:param name="title" value="#{personBean.add ? messages.adminHeader_addPerson : (personBean.batchEdit ? messages.adminHeader_editPeople : messages.adminHeader_editPerson)}"/>
   <ui:define name="scripts">
       <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/adminEdit.js"></script>
   </ui:define>
