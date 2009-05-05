@@ -88,6 +88,10 @@ public class OverallScoreBean extends BaseBean
         {
             se = (ScoreableEntity) s.get(i);
             Integer percent = se.getScore();
+            
+            if(percent == 0) // Do not display 0% pie slices.
+                continue;
+            
             sb.append("<set value=\'" + percent.toString() + "\' " + "label=\'\' color=\'" + (OverallScoreBean.entityColorKey.get(i)) + "\'/>");
         }
         sb.append("</chart>");
