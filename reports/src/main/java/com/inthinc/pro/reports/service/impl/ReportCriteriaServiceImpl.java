@@ -130,6 +130,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.OVERALL_SCORE, group.getName());
         reportCriteria.setMainDataset(getPieScoreData(ScoreType.SCORE_OVERALL, groupID, duration));
         reportCriteria.addParameter("OVERALL_SCORE", overallScore);
+        reportCriteria.addParameter("OVERALL_SCORE_DATA", getPieScoreData(ScoreType.SCORE_OVERALL, groupID, duration));
         reportCriteria.addParameter("DRIVER_STYLE_DATA", getPieScoreData(ScoreType.SCORE_DRIVING_STYLE, groupID, duration));
         reportCriteria.addParameter("SEATBELT_USE_DATA", getPieScoreData(ScoreType.SCORE_SEATBELT, groupID, duration));
         reportCriteria.addParameter("SPEED_DATA", getPieScoreData(ScoreType.SCORE_SPEEDING, groupID, duration));

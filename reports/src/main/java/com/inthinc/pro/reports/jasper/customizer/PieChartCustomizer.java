@@ -2,20 +2,16 @@ package com.inthinc.pro.reports.jasper.customizer;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Paint;
-import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.labels.PieSectionLabelGenerator;
-import org.jfree.chart.plot.PiePlot;
-import org.jfree.data.general.PieDataset;
-import org.jfree.ui.RectangleInsets;
-import org.jfree.util.Rotation;
-
 import net.sf.jasperreports.engine.JRAbstractChartCustomizer;
 import net.sf.jasperreports.engine.JRChart;
+
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.ui.RectangleInsets;
+import org.jfree.util.Rotation;
 
 public class PieChartCustomizer extends JRAbstractChartCustomizer
 {
@@ -35,8 +31,8 @@ public class PieChartCustomizer extends JRAbstractChartCustomizer
     public void customize(JFreeChart jFreeChart, JRChart arg1)
     {
         PiePlot plot = (PiePlot)jFreeChart.getPlot();
-        plot.setIgnoreNullValues(false);
-        plot.setIgnoreZeroValues(false);
+        plot.setIgnoreNullValues(true);
+        plot.setIgnoreZeroValues(true);
         plot.setNoDataMessage("No Data Available");
         
         //Looks better with a white border.
@@ -69,6 +65,9 @@ public class PieChartCustomizer extends JRAbstractChartCustomizer
                 colorIndex++;
             }
         }
+        
+        
+       
         
     }
 
