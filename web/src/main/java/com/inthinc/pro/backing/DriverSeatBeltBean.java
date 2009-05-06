@@ -209,6 +209,10 @@ public class DriverSeatBeltBean extends BasePerformanceBean
 
     public String getEmailAddress()
     {
+        if(emailAddress == null){
+            emailAddress = getProUser().getUser().getPerson().getPriEmail();
+        }
+        
         return emailAddress;
     }
 
@@ -226,7 +230,7 @@ public class DriverSeatBeltBean extends BasePerformanceBean
     {
         getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
     }
-
+    
     public void exportReportToExcel()
     {
         getReportRenderer().exportReportToExcel(buildReport(), getFacesContext());

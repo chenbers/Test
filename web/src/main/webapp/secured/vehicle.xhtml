@@ -262,6 +262,14 @@
 										</rich:menuItem>
 									</rich:contextMenu>
 							</a4j:form>
+							<!-- START EMAIL MODAL -->
+								<h:outputText id="driver_email_modalPanel">
+									<ui:include src="/includes/emailReportPopup.xhtml">	
+										<ui:param name="id" value="driverReportEmailModal" />
+										<ui:param name="reportBean" value="#{vehicleBean}"/>
+									</ui:include>
+								</h:outputText>
+							<!-- END EMAIL MODAL -->
 							</a4j:region>
 						</div>
 				</div>
@@ -625,13 +633,6 @@
 </table>
 </div>
  	
-<!-- START EMAIL MODAL -->
-	<h:outputText id="driver_email_modalPanel">
-		<ui:include src="/includes/emailReportPopup.xhtml">	
-			<ui:param  name="id" value="driverReportEmailModal" />
-			<ui:param  name="reportBean" value="#{vehicleBean}"/>
-		</ui:include>
-	</h:outputText>
-<!-- END EMAIL MODAL -->
+
 </ui:define>
 </ui:composition>

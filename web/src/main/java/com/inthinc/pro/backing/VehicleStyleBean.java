@@ -229,6 +229,10 @@ public class VehicleStyleBean extends BasePerformanceBean
 
     public String getEmailAddress()
     {
+        if(emailAddress == null){
+            emailAddress = getProUser().getUser().getPerson().getPriEmail();
+        }
+        
         return emailAddress;
     }
 
