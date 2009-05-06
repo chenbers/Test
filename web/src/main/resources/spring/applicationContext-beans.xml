@@ -264,6 +264,7 @@
     <bean id="teamTopBean" class="com.inthinc.pro.backing.TeamTopBean" scope="request" parent="baseBean" init-method="init">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="navigation" ref="navigationBean"></property>
+        <property name="durationBean" ref="teamOverviewDurationBean"/>
     </bean>
     <bean id="driverLocationBean" class="com.inthinc.pro.backing.DriverLocationBean" scope="request" parent="baseBean" init-method="init">
         <property name="driverDAO" ref="driverDAO"></property>

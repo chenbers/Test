@@ -69,12 +69,12 @@ public interface ScoreDAO extends GenericDAO<ScoreableEntity, Integer>
 
     
     /**
-     * Retrieve the list of overall scores for drivers in group for the last 30 days sorted highest to lowest scoring.
+     * Retrieve the list of overall scores for drivers in group based on duration.
      * 
      * @param groupID
      * @return
      */
-    List<DriverScore> getSortedDriverScoreList(Integer groupID);
+    List<DriverScore> getSortedDriverScoreList(Integer groupID, Duration duration);
 
     /**
      * Retrieve the list of 5 percentage scores for the specified group.  The list contains the following:

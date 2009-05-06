@@ -76,12 +76,13 @@
     	<div class="spacer"></div>		
     
 		<!-- START PANEL -->
+		<rich:panel id="teamTopTables" >
    			<ui:include src="/includes/teamTop.xhtml">	
              <ui:param name="topScores" value="#{teamTopBean.topDrivers}"/>
              <ui:param name="bottomScores" value="#{teamTopBean.bottomDrivers}"/>
              <ui:param name="table" value="#{trendTable.table}"/>
     		</ui:include>
-        
+        </rich:panel>
         
         <div class="spacer"></div>
 

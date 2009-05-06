@@ -203,7 +203,7 @@ public class ReportServiceTest
         scoreDAO.setReportService(reportService);
      
         Integer groupID = TEST_TEAM_GROUP_ID;
-        List<DriverScore> scoreList = scoreDAO.getSortedDriverScoreList(groupID);
+        List<DriverScore> scoreList = scoreDAO.getSortedDriverScoreList(groupID, Duration.DAYS);
         assertNotNull(scoreList);
         
         // expect list to be sorted largest to smallest score

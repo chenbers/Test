@@ -15,26 +15,27 @@ import com.inthinc.pro.util.GraphicUtil;
 
 public class TeamTopBean extends BaseBean
 {
-    private static final Logger logger = Logger.getLogger(TeamTopBean.class);
+    private static final Logger   logger = Logger.getLogger(TeamTopBean.class);
 
-    private ScoreDAO scoreDAO;
-    private NavigationBean navigation;
+    private ScoreDAO              scoreDAO;
+    private NavigationBean        navigation;
+    private DurationBean          durationBean;
 
     private List<DriverScoreItem> topDrivers;
     private List<DriverScoreItem> bottomDrivers;
 
     public void init()
     {
-        List<DriverScore> tempList = scoreDAO.getSortedDriverScoreList(navigation.getGroupID());
+        List<DriverScore> tempList = scoreDAO.getSortedDriverScoreList(navigation.getGroupID(), durationBean.getDuration());
         List<DriverScore> scoreList = new ArrayList<DriverScore>();
-        
+
         // Remove N/A drivers
-        for (DriverScore d: tempList)
+        for (DriverScore d : tempList)
         {
-            if(d.getScore() != null && d.getScore() > 0)
+            if (d.getScore() != null && d.getScore() > 0)
                 scoreList.add(d);
         }
-         
+
         topDrivers = convertToDriverScoreItemList(scoreList.subList(0, scoreList.size() > 5 ? 5 : scoreList.size()));
 
         Collections.reverse(scoreList);
@@ -67,13 +68,13 @@ public class TeamTopBean extends BaseBean
         int cnt = 1;
         for (DriverScore score : scores)
         {
-            if(score == null || score.getScore() < 0)
-                continue;  //Skip N/A drivers
-            
+            if (score == null || score.getScore() < 0)
+                continue; // Skip N/A drivers
+
             DriverScoreItem item = new DriverScoreItem(score);
             ScoreBox sb = new ScoreBox(0, ScoreBoxSizes.SMALL);
             item.setPosition(cnt++);
-            if (score.getScore() != null )
+            if (score.getScore() != null)
             {
                 sb.setScore(score.getScore());
             }
@@ -102,6 +103,16 @@ public class TeamTopBean extends BaseBean
     public void setScoreDAO(ScoreDAO scoreDAO)
     {
         this.scoreDAO = scoreDAO;
+    }
+
+    public DurationBean getDurationBean()
+    {
+        return durationBean;
+    }
+
+    public void setDurationBean(DurationBean durationBean)
+    {
+        this.durationBean = durationBean;
     }
 
     public String getTeamName()
