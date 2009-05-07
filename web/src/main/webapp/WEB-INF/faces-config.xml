@@ -118,7 +118,7 @@
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>go_home</from-outcome>
-			<to-view-id>/secured/home.xhtml</to-view-id>
+			<to-view-id>/secured/groupOverview.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
 	</navigation-rule>
@@ -384,7 +384,7 @@
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>go_division</from-outcome>
-			<to-view-id>/secured/division.xhtml</to-view-id>
+			<to-view-id>/secured/groupOverview.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
@@ -402,7 +402,7 @@
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>go_team</from-outcome>
-			<to-view-id>/secured/team.xhtml</to-view-id>
+			<to-view-id>/secured/groupOverview.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 
@@ -508,6 +508,7 @@
             <supported-locale>es</supported-locale>
             <supported-locale>ja</supported-locale>
             <supported-locale>fr</supported-locale>
+            <supported-locale>de</supported-locale>
 		</locale-config>
 		<resource-bundle>
 			<base-name>com.inthinc.pro.resources.Messages</base-name>
