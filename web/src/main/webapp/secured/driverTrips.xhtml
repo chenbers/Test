@@ -222,6 +222,7 @@
         <t:saveState value="#{driverTripsBean.trips}" />
         <t:saveState value="#{driverTripsBean.numTrips}" />
         <t:saveState value="#{driverTripsBean.allEvents}" />
+        <t:saveState value="#{driverTripsBean.selectedVehicle}" />
         <t:saveState value="#{driverTripsBean.violationEvents}" />
         <t:saveState value="#{driverTripsBean.idleEvents}" />
 
@@ -561,7 +562,7 @@
                             styleClass="datatable" rowClasses="tableOdd,tableEven" rows="4" width="100%">
                                 
     
-                                <a4j:support event="onRowClick" reRender="script,bubbles,selectedTrip,showLastTenForm" oncomplete="bodyLoad();">
+                                <a4j:support event="onRowClick" reRender="script,bubbles,selectedTrip,showLastTenForm,selectVehicleForm" oncomplete="bodyLoad();">
                                     <f:setPropertyActionListener value="#{item}" target="#{driverTripsBean.selectedTrip}" />
                                 </a4j:support>
     
@@ -628,7 +629,17 @@
                 <!-- START PANEL -->
                 <div class="" style="width: 600px; margin: 0 auto 0 auto;">
                 <div class="panel_nw">
-                <div class="panel_title"><span class="map">#{messages.drivertrip_map}</span> <span class="panel_links"></span></div>
+                <div class="panel_title">
+	                  <h:form id="selectVehicleForm">
+	                    <span class="map">
+		                    <h:outputText value="">#{messages.drivertrip_vehicle}</h:outputText><rich:spacer width="5" />
+		                     <a4j:htmlCommandLink action="go_vehicle" value="#{driverTripsBean.selectedVehicle.name}">
+		                        <f:setPropertyActionListener value="#{driverTripsBean.selectedVehicle}" target="#{navigationBean.vehicle}" />
+		                    </a4j:htmlCommandLink>
+	                    </span>
+	                    <span class="panel_links"></span>
+	                </h:form>
+                </div>
                 </div>
                 <div class="panel_w"><a4j:form id="selectedTripMap">
                     <rich:panel bodyClass="panel_content">

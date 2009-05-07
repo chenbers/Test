@@ -15,8 +15,10 @@ import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.IdleEvent;
 import com.inthinc.pro.model.Trip;
+import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 
 public class DriverTripsBean extends BaseBean
@@ -25,6 +27,7 @@ public class DriverTripsBean extends BaseBean
 
     private NavigationBean      navigation;
     private DriverDAO           driverDAO;
+    private VehicleDAO          vehicleDAO;
     private EventDAO            eventDAO;
     private AddressLookup       addressLookup;
 
@@ -43,6 +46,7 @@ public class DriverTripsBean extends BaseBean
     private List<TripDisplay>   trips             = new ArrayList<TripDisplay>();
     private List<TripDisplay>   selectedTrips     = new ArrayList<TripDisplay>();
     private TripDisplay         selectedTrip;
+    private Vehicle             selectedVehicle;
     private List<Event>         violationEvents   = new ArrayList<Event>();
     private List<Event>         idleEvents        = new ArrayList<Event>();
     private List<Event>         allEvents         = new ArrayList<Event>();
@@ -338,6 +342,7 @@ public class DriverTripsBean extends BaseBean
         selectedTrips.clear();
         selectedTrips.add(selectedTrip);
         this.showLastTenTrips = false;
+        setSelectedVehicle(vehicleDAO.findByID(selectedTrip.getTrip().getVehicleID()));
         
         //Get Violations for this Trip
         violationEvents.clear();
@@ -398,6 +403,16 @@ public class DriverTripsBean extends BaseBean
         this.eventDAO = eventDAO;
     }
 
+    public VehicleDAO getVehicleDAO()
+    {
+        return vehicleDAO;
+    }
+
+    public void setVehicleDAO(VehicleDAO vehicleDAO)
+    {
+        this.vehicleDAO = vehicleDAO;
+    }
+
     public AddressLookup getAddressLookup()
     {
         return addressLookup;
@@ -435,4 +450,15 @@ public class DriverTripsBean extends BaseBean
     {
         this.eventsPage = eventsPage;
     }
+
+    public Vehicle getSelectedVehicle()
+    {
+        return selectedVehicle;
+    }
+
+    public void setSelectedVehicle(Vehicle selectedVehicle)
+    {
+        this.selectedVehicle = selectedVehicle;
+    }
+    
 }
