@@ -190,7 +190,10 @@
 							<f:facet name="header">
 								<h:outputText value="Score" />
 							</f:facet>
-							<iwi:scoreBox style="#{item.style}" score="#{item.se.score}" />
+                            <ui:include src="/includes/scoreBox.xhtml">  
+                                <ui:param name="scoreStyle" value="#{item.style}"/>                                  
+                                <ui:param name="score" value="#{item.se.score}"/>                                    
+                            </ui:include> 
 						</rich:column>
 
 					</rich:dataTable>

@@ -6,10 +6,6 @@
 <facelet-taglib>
 	<namespace>http://pro.tiwi.com/jsf</namespace>
 	<tag>
-		<tag-name>scoreBox</tag-name>
-		<source>scoreBox.xhtml</source>
-	</tag>
-	<tag>
 		<tag-name>dateTimeOutputConverter</tag-name>
 		<converter>
          	<converter-id>DateTimeConverter</converter-id>

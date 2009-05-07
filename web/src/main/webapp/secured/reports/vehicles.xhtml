@@ -110,12 +110,127 @@
 								</rich:contextMenu>																																	
 								
 								<div class="datagrid">
-								<ui:include src="/includes/vehiclesReport.xhtml">	
-									<ui:param name="numRowsPerPg" value="#{vehicleReportBean.numRowsPerPg}"/>									
-             						<ui:param name="vehicleData" value="#{vehicleReportBean.vehicleData}"/>             						
-             						<ui:param name="vehicleColumns" value="#{vehicleReportBean.tableColumns}"/>
-                                    <ui:param name="page" value="#{vehicleReportBean.page}"/>
-    							</ui:include>    		
+                                                                    
+                                <div class="spacer"></div> 
+                                
+                                
+                                
+                                <rich:datascroller id="topScroller" for="items" immediate="true"
+                                    scrollerListener="#{vehicleReportBean.scrollerListener}"
+                                    reRender="bottomScroller,items,headerVehicles"
+                                    requestDelay="200" eventsQueue="pagerQueue" page="#{vehicleReportBean.page}">
+                                </rich:datascroller>
+                                                    
+                                    <rich:dataTable value="#{vehicleReportBean.vehicleData}" id="items"
+                                        var="item" styleClass="datagrid"
+                                        rowClasses="tableOdd,tableEven" cellspacing="1" 
+                                        rows="#{vehicleReportBean.numRowsPerPg}"
+                                        width="100%">
+                                        
+                                        <rich:column rendered="#{vehicleReportBean.tableColumns['group'].visible}" 
+                                            sortBy="#{item.group}">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{messages.reports_group}" />
+                                            </f:facet>                      
+                                            <h:outputLink value="#{item.goTo}">
+                                                <h:outputText value="#{item.group}" />
+                                            </h:outputLink>                                                                     
+                                        </rich:column>
+                                        <rich:column rendered="#{vehicleReportBean.tableColumns['vehicle_name'].visible}" 
+                                            sortBy="#{item.vehicle.name}">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{messages.reports_vehicleID}" />
+                                            </f:facet>
+                                            <a4j:htmlCommandLink action="go_vehicle" 
+                                                value="#{item.vehicle.name}">
+                                                <f:setPropertyActionListener 
+                                                        value="#{item.vehicle}" 
+                                                        target="#{navigationBean.vehicle}">
+                                                </f:setPropertyActionListener>
+                                            </a4j:htmlCommandLink>                          
+                                        </rich:column>
+                                        <rich:column rendered="#{vehicleReportBean.tableColumns['makeModelYear'].visible}" 
+                                            sortBy="#{item.makeModelYear}">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{messages.reports_makemodelyear}" />
+                                            </f:facet>
+                                            <h:outputText value="#{item.makeModelYear}" />     
+                                        </rich:column>
+                                        <rich:column rendered="#{vehicleReportBean.tableColumns['driver_person_fullName'].visible}" 
+                                            sortBy="#{item.driver.person.first}">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{messages.reports_driver}" />
+                                            </f:facet>
+                                            <a4j:htmlCommandLink action="go_driver" 
+                                                rendered="#{item.driver.groupID ne null}"
+                                                value="#{item.driver.person.fullName}">
+                                                <f:setPropertyActionListener 
+                                                    value="#{item.driver}" 
+                                                    target="#{navigationBean.driver}">
+                                                </f:setPropertyActionListener>
+                                            </a4j:htmlCommandLink>   
+                                            <h:outputText rendered="#{item.driver.groupID eq null}"
+                                                value="None Assigned">
+                                            </h:outputText>                                             
+                                        </rich:column>
+                                        <rich:column rendered="#{vehicleReportBean.tableColumns['milesDriven'].visible}" 
+                                            sortBy="#{item.milesDriven}">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{messages.reports_milesdriven}" />
+                                            </f:facet>
+                                            <h:outputText value="#{item.milesDriven}" />
+                                        </rich:column>
+                                        <rich:column rendered="#{vehicleReportBean.tableColumns['overallScore'].visible}"
+                                            sortBy="#{item.overallScore}">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{messages.reports_overall}" />
+                                            </f:facet>
+                                            <ui:include src="/includes/scoreBox.xhtml">
+                                                    <ui:param name="score" value="#{item.overallScore}" />
+                                                    <ui:param name="scoreStyle" value="#{item.styleOverall}" /> 
+                                                    <ui:param name="actionBean" value="#{vehicleReportBean}" /> 
+                                                    <ui:param name="action" value="vehicleAction" /> 
+                                                    <ui:param name="propertyActionListenerValue" value="#{item.vehicle}" /> 
+                                                    <ui:param name="propertyActionListenerTarget" value="#{navigationBean.vehicle}" /> 
+                                            </ui:include>               
+                                        </rich:column>
+                                        <rich:column rendered="#{vehicleReportBean.tableColumns['speedScore'].visible}"
+                                            sortBy="#{item.speedScore}">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{messages.reports_speed}" />
+                                            </f:facet>                                           
+                                            <ui:include src="/includes/scoreBox.xhtml">
+                                                    <ui:param name="score" value="#{item.speedScore}" />
+                                                    <ui:param name="scoreStyle" value="#{item.styleSpeed}" /> 
+                                                    <ui:param name="actionBean" value="#{vehicleReportBean}" /> 
+                                                    <ui:param name="action" value="reportVehicleSpeedAction" /> 
+                                                    <ui:param name="propertyActionListenerValue" value="#{item.vehicle}" /> 
+                                                    <ui:param name="propertyActionListenerTarget" value="#{navigationBean.vehicle}" /> 
+                                            </ui:include>            
+                                        </rich:column>
+                                        <rich:column rendered="#{vehicleReportBean.tableColumns['styleScore'].visible}"
+                                            sortBy="#{item.styleScore}">
+                                            <f:facet name="header">
+                                                <h:outputText value="#{messages.reports_style}" />
+                                            </f:facet>                                       
+                                            <ui:include src="/includes/scoreBox.xhtml">
+                                                    <ui:param name="score" value="#{item.styleScore}" />
+                                                    <ui:param name="scoreStyle" value="#{item.styleStyle}" /> 
+                                                    <ui:param name="actionBean" value="#{vehicleReportBean}" /> 
+                                                    <ui:param name="action" value="reportVehicleStyleAction" /> 
+                                                    <ui:param name="propertyActionListenerValue" value="#{item.vehicle}" /> 
+                                                    <ui:param name="propertyActionListenerTarget" value="#{navigationBean.vehicle}" /> 
+                                            </ui:include>           
+                                        </rich:column>
+                                    </rich:dataTable>               
+                                    
+                                <rich:datascroller id="bottomScroller" for="items" immediate="true"
+                                    scrollerListener="#{vehicleReportBean.scrollerListener}"
+                                    reRender="topScroller,items,headerVehicles"
+                                    requestDelay="200" eventsQueue="pagerQueue" page="#{vehicleReportBean.page}">                 
+                                </rich:datascroller>
+                                
+                                           		
     							</div>	   
     							</a4j:form> 										
 								<ui:include src="/includes/editColumnsPopup.xhtml">

@@ -46,7 +46,10 @@
 						<f:facet name="header">
 							<h:outputText value="#{messages.teamTop_score}" />
 						</f:facet>
-						<iwi:scoreBox style="#{topItem.style}" score="#{topItem.driverScore.score}"/>
+                        <ui:include src="/includes/scoreBox.xhtml">  
+                            <ui:param name="scoreStyle" value="#{topItem.style}"/>                                  
+                            <ui:param name="score" value="#{topItem.driverScore.score}"/>                                    
+                        </ui:include> 
 					</rich:column>
 
 					</rich:dataTable>
@@ -103,7 +106,10 @@
 						<f:facet name="header">
 							<h:outputText value="Score" />
 						</f:facet>
-						<iwi:scoreBox style="#{bottomItem.style}" score="#{bottomItem.driverScore.score}"/>
+                        <ui:include src="/includes/scoreBox.xhtml">  
+                            <ui:param name="scoreStyle" value="#{bottomItem.style}"/>                                  
+                            <ui:param name="score" value="#{bottomItem.driverScore.score}"/>                                    
+                        </ui:include> 
 												
 					</rich:column>
 

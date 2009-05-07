@@ -1,6 +1,4 @@
-<html xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:h="http://java.sun.com/jsf/html">
+
 
 <!-- 
 	Score Styles - specifies which color to use for the box.
@@ -13,17 +11,21 @@
 	
 	To use:
 	==============
-	<ui:include src="../includes/scoreBox.xhtml">
+	<ui:include src="/includes/scoreBox.xhtml">
             <ui:param name="score" value="#{yourBean.Score}" />
             <ui:param name="scoreStyle" value="#{yourBean.ScoreCSSStyle}" /> 
 	</ui:include>
+    
+    
 	
  -->
-	<ui:composition>
-	<div class="#{scoreStyle}" onclick="location.href='#';">
-		<div class="score">
-			<h:outputText value="#{score}" converter="ScoreConverter"/>
-		</div>
-	</div>
-	</ui:composition>
-</html>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:iwi="http://pro.tiwi.com/jsf" xmlns:h="http://java.sun.com/jsf/html">
+    <div class="#{scoreStyle} score"> 
+        <h:outputText value="#{score}" converter="ScoreConverter" rendered="#{empty action}"/> 
+        <a4j:htmlCommandLink action="#{actionBean[action]}" rendered="#{not empty action}">
+            <h:outputText value="#{score}" converter="ScoreConverter" />
+            <f:setPropertyActionListener value="#{propertyActionListenerValue}" target="#{propertyActionListenerTarget}" />
+        </a4j:htmlCommandLink> 
+    </div>
+</ui:composition>

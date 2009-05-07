@@ -1,4 +1,4 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:f="http://java.sun.com/jsf/core"
@@ -17,7 +17,6 @@
   		iconSrc: path to an icon to display next to this field (optional)
   		enableCheckbox: if in batch edit mode, disables the checkbox (optional)
    -->
-  <ui:composition>
      <a4j:region>
       	 <h:selectBooleanCheckbox 
       	 		rendered="#{editBean.batchEdit}" 
@@ -34,4 +33,3 @@
       	 		styleClass="required" value=" *" />
      </a4j:region>
   </ui:composition>
-</html>

@@ -252,4 +252,32 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
 	{
 	    return super.getTableColumns();
 	}
+	
+
+    /*
+        When using Facelets <ui:include>, you can not pass a String as a <ui:param> that equals the action. For example:
+                        <ui:include src="/includes/scoreBox.xhtml">
+                                <ui:param name="action" value="go_reportVehicleStyle" /> 
+                        </ui:include>
+                        
+        Instead, you must pass a bean and the name of the action that will be called, like this:                                 
+                        <ui:include src="/includes/scoreBox.xhtml">
+                                <ui:param name="actionBean" value="#{vehicleReportBean}" /> 
+                                <ui:param name="action" value="reportVehicleStyleAction" /> 
+                        </ui:include> 
+                        
+        The following actions exist to accomplish what was described above
+     */
+	public String reportDriverSpeedAction()
+	{
+	    return "go_reportDriverSpeed";
+	}
+	public String reportDriverStyleAction()
+	{
+	    return "go_reportDriverStyle";
+	}
+	public String reportDriverSeatBeltAction()
+	{
+	    return "go_reportDriverSeatBelt";
+	}
 }

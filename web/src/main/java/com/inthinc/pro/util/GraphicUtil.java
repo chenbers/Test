@@ -378,7 +378,7 @@ public class GraphicUtil {
         .append("legendPosition=\'BOTTOM\' ")
         .append("legendCaption=\'").append(vehicleType).append(":\' ")
         .append("legendMarkerCircle=\'0\' ")
-        .append("legendBgColor=\'E5E5E5\' ")
+//        .append("legendBgColor=\'E5E5E5\' ")
         .append("legendBorderColor=\'CCCCCC\' ")
         .append("legendBorderThickness=\'0\' ")
         .append("legendShadow=\'0\' ")
