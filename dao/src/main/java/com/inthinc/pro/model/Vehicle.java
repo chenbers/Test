@@ -130,12 +130,19 @@ public class Vehicle extends BaseEntity
 
     public Integer getWeight()
     {
-        return weight;
+        // Value of 1 is treated as null.
+        if(weight != null && weight == 1)
+            return null;
+        else
+            return weight;
     }
 
     public void setWeight(Integer weight)
     {
-        this.weight = weight;
+        if(weight == null)
+            this.weight = 1;
+        else
+            this.weight = weight;
     }
 
     public String getLicense()
