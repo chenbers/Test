@@ -402,7 +402,8 @@ public class OrganizationBean extends BaseBean
                 groupDAO.deleteByID(((GroupTreeNodeImpl) selectedGroupNode).getBaseEntity().getGroupID());
                 BaseTreeNodeImpl parentNode = selectedGroupNode.getParent();
                 selectedGroupNode.setParent(null);
-                selectedGroupNode = (GroupTreeNodeImpl) parentNode;
+                setSelectedGroupNode((GroupTreeNodeImpl) parentNode);
+                //selectedGroupNode = (GroupTreeNodeImpl) parentNode;
                 selectedTreeNode = parentNode;
                 // Make sure when the page refreshed that we pull a new list in
                 rootGroupNode = null;
