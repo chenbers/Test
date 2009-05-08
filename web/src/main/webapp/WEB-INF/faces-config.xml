@@ -133,72 +133,84 @@
 		<navigation-case>
 			<from-outcome>go_reports</from-outcome>
 			<to-view-id>/secured/reports/drivers.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
     <navigation-rule>
         <navigation-case>
             <from-outcome>go_drivers</from-outcome>
             <to-view-id>/secured/reports/drivers.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>go_vehicles</from-outcome>
 			<to-view-id>/secured/reports/vehicles.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>go_devices</from-outcome>
 			<to-view-id>/secured/reports/devices.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>go_idling</from-outcome>
 			<to-view-id>/secured/reports/idling.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>go_emailReports</from-outcome>
 			<to-view-id>/secured/reports/emailReport.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>go_redFlags</from-outcome>
 			<to-view-id>/secured/notifications/redflags.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>go_safety</from-outcome>
 			<to-view-id>/secured/notifications/safety.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>go_diagnostics</from-outcome>
 			<to-view-id>/secured/notifications/diagnostics.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
     <navigation-rule>
         <navigation-case>
             <from-outcome>go_emergency</from-outcome>
             <to-view-id>/secured/notifications/emergency.xhtml</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>go_liveFleet</from-outcome>
 			<to-view-id>/secured/liveFleet.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>go_myAccount</from-outcome>
 			<to-view-id>/secured/myAccount.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
@@ -211,18 +223,21 @@
 		<navigation-case>
 			<from-outcome>go_admin</from-outcome>
 			<to-view-id>/secured/admin/people.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
 		<navigation-case>
 			<from-outcome>go_adminPeople</from-outcome>
 			<to-view-id>/secured/admin/people.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
     <navigation-rule>
       <navigation-case>
         <from-outcome>go_adminPerson</from-outcome>
         <to-view-id>/secured/admin/person.xhtml</to-view-id>
+        <redirect />
       </navigation-case>
     </navigation-rule>
     <navigation-rule>
@@ -241,12 +256,14 @@
 		<navigation-case>
 			<from-outcome>go_adminReportSchedules</from-outcome>
 			<to-view-id>/secured/admin/reportSchedules.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
     <navigation-rule>
       <navigation-case>
         <from-outcome>go_adminReportSchedule</from-outcome>
         <to-view-id>/secured/admin/reportSchedule.xhtml</to-view-id>
+        <redirect />
       </navigation-case>
     </navigation-rule>
     <navigation-rule>
@@ -265,12 +282,14 @@
 		<navigation-case>
 			<from-outcome>go_adminVehicles</from-outcome>
 			<to-view-id>/secured/admin/vehicles.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
     <navigation-rule>
       <navigation-case>
         <from-outcome>go_adminVehicle</from-outcome>
         <to-view-id>/secured/admin/vehicle.xhtml</to-view-id>
+        <redirect />
       </navigation-case>
     </navigation-rule>
     <navigation-rule>
@@ -289,12 +308,14 @@
 		<navigation-case>
 			<from-outcome>go_adminDevices</from-outcome>
 			<to-view-id>/secured/admin/devices.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
     <navigation-rule>
       <navigation-case>
         <from-outcome>go_adminDevice</from-outcome>
         <to-view-id>/secured/admin/device.xhtml</to-view-id>
+        <redirect />
       </navigation-case>
     </navigation-rule>
     <navigation-rule>
@@ -313,18 +334,21 @@
       <navigation-case>
         <from-outcome>go_adminZones</from-outcome>
         <to-view-id>/secured/admin/zones.xhtml</to-view-id>
+        <redirect />
       </navigation-case>
     </navigation-rule>
     <navigation-rule>
       <navigation-case>
         <from-outcome>go_adminZoneAlerts</from-outcome>
         <to-view-id>/secured/admin/zoneAlerts.xhtml</to-view-id>
+        <redirect />
       </navigation-case>
     </navigation-rule>
     <navigation-rule>
       <navigation-case>
         <from-outcome>go_adminZoneAlert</from-outcome>
         <to-view-id>/secured/admin/zoneAlert.xhtml</to-view-id>
+        <redirect />
       </navigation-case>
     </navigation-rule>
     <navigation-rule>
@@ -343,12 +367,14 @@
       <navigation-case>
         <from-outcome>go_adminOrganization</from-outcome>
         <to-view-id>/secured/admin/organization.xhtml</to-view-id>
+        <redirect />
       </navigation-case>
     </navigation-rule>
     <navigation-rule>
       <navigation-case>
         <from-outcome>go_adminSBSCR</from-outcome>
         <to-view-id>/secured/admin/speedByStreetChangeRequest.xhtml</to-view-id>
+        <redirect />
       </navigation-case>
     </navigation-rule>
     <navigation-rule>
@@ -441,6 +467,7 @@
 		<navigation-case>
 			<from-outcome>go_driver</from-outcome>
 			<to-view-id>/secured/driver.xhtml</to-view-id>
+			 <redirect />
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>

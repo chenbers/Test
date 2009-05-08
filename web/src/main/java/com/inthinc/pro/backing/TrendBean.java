@@ -26,6 +26,7 @@ import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.util.ColorSelectorStandard;
 import com.inthinc.pro.util.GraphicUtil;
+import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.wrapper.ScoreableEntityPkg;
 
 public class TrendBean extends CustomSortBean<ScoreableEntityPkg> implements DurationChangeListener
@@ -45,7 +46,6 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg> implements Dur
     private Integer start = 1;
     private Integer end = numRowsPerPg;
     
-    private String countString = null;
     private Integer tmpGroupID = null;
     
     private ReportRenderer reportRenderer;
@@ -408,14 +408,7 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg> implements Dur
 
     public String getCountString()
     {
-        countString = "Showing " + this.start + " to " + 
-            this.end + " of " + this.maxCount + " records";
-        return countString;
-    }
-
-    public void setCountString(String countString)
-    {
-        this.countString = countString;
+        return MessageUtil.formatMessageString("recordCounts", this.start,this.end,this.maxCount);
     }
 
     public Integer getNumRowsPerPg()

@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.model.GroupLevel;
 import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
+import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
@@ -17,6 +18,7 @@ public class NavigationBean extends BaseBean
 
     // Spring managed beans
     private GroupDAO groupDAO;
+    private DriverDAO driverDAO;
 
     private DurationBean durationBean;
     
@@ -29,6 +31,7 @@ public class NavigationBean extends BaseBean
     
     // Passed to various pages
     private Driver driver;
+    private Integer driverID;
     private Vehicle vehicle;
     
     // Trend chart function
@@ -64,6 +67,7 @@ public class NavigationBean extends BaseBean
 
     public Integer getGroupID()
     {
+        initGroup();
         return groupID;
     }
 
@@ -141,6 +145,7 @@ public class NavigationBean extends BaseBean
 
     public Group getGroup()
     {
+        initGroup();
         return group;
     }
 
@@ -243,6 +248,52 @@ public class NavigationBean extends BaseBean
     public void setFlyout(HashMap flyout)
     {
         this.flyout = flyout;
-    }    
+    }
+    
+    private void initGroup(){
+//       //DebugUtil.dumpRequestParameterMap();
+//
+//        //Initially the site was set up so that if no groupID was sent in the request, then the group would be
+//        // set to the top level group. This is how I believe it should be, but there are many requests that are not including the groupID.
+//        // Because of this, this bean was changed to leave the group alone if the groupID is not passed... A quick fix is included to set the group to the
+//        // top level if it is the home page. This needs to be changed in the future.
+//        FacesContext ctx = FacesContext.getCurrentInstance();
+//        String groupID = (String) ctx.getExternalContext().getRequestParameterMap().get("groupID");
+//       
+//        if (groupID != null)
+//        {
+//            logger.debug("initGroupID from request: " + groupID);
+//            setGroupID(Integer.valueOf(groupID));
+//        }
+    }
+
+    public void setDriverDAO(DriverDAO driverDAO)
+    {
+        this.driverDAO = driverDAO;
+    }
+
+    public DriverDAO getDriverDAO()
+    {
+        return driverDAO;
+    }
+
+    public void setDriverID(Integer driverID)
+    {
+        logger.debug("DRIVER ID: " + driverID);
+        driver = driverDAO.findByID(driverID);
+        if(driverID != null && driver != null)
+        {
+            setDriver(driver);
+        }
+            
+        
+        
+        this.driverID = driverID;
+    }
+
+    public Integer getDriverID()
+    {
+        return driverID;
+    }
   
 }

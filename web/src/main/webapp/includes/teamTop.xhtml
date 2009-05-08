@@ -4,7 +4,8 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:f="http://java.sun.com/jsf/core"
   	xmlns:iwi="http://pro.tiwi.com/jsf"
-	xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:pretty="http://ocpsoft.com/prettyfaces">
 	<div class="">
 		
 	<h:form id="teamTopFiveShowAllForm">
@@ -38,9 +39,10 @@
 						<f:facet name="header">
 							<h:outputText value="#{messages.teamTop_driver}" />
 						</f:facet>
-						<a4j:htmlCommandLink action="go_driver" value="#{topItem.driverName}">
-							<f:setPropertyActionListener value="#{topItem.driverScore.driver}" target="#{navigationBean.driver}" />
-						</a4j:htmlCommandLink>
+                        <pretty:link mappingId="driverPerformance">
+                                  #{topItem.driverName}
+                              <f:param value="#{topItem.driverScore.driver.driverID}"/>
+                        </pretty:link>
 					</rich:column>
 					<rich:column width="10%">
 						<f:facet name="header">
@@ -97,9 +99,10 @@
 						<f:facet name="header">
 							<h:outputText value="Driver" />
 						</f:facet>
-						<a4j:htmlCommandLink action="go_driver" value="#{bottomItem.driverName}">
-							<f:setPropertyActionListener value="#{bottomItem.driverScore.driver}" target="#{navigationBean.driver}" />
-						</a4j:htmlCommandLink>
+						<pretty:link mappingId="driverPerformance">
+                            #{bottomItem.driverName}
+							<f:param value="#{bottomItem.driverScore.driver.driverID}"/>
+						</pretty:link>
 
 					</rich:column>
 					<rich:column width="10%">

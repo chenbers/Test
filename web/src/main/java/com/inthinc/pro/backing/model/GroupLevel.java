@@ -6,9 +6,9 @@ import java.util.Map;
 
 public enum GroupLevel
 {
-    FLEET(1, "FLEET", "/secured/home.faces", "go_home"), 
-    DIVISION(2, "DIVISION", "/secured/division.faces", "go_division"), 
-    TEAM(3, "TEAM", "/secured/team.faces", "go_team");
+    FLEET(1, "FLEET", "/secured/groupOverview", "go_home"), 
+    DIVISION(2, "DIVISION", "/secured/groupOverview", "go_division"), 
+    TEAM(3, "TEAM", "/secured/groupOverview", "go_team");
 
     private String description;
     private int    code;
