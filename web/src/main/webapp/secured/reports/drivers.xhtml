@@ -5,7 +5,8 @@
               xmlns:rich="http://richfaces.org/rich"
               xmlns:a4j="http://richfaces.org/a4j"
               xmlns:f="http://java.sun.com/jsf/core"
-              xmlns:security="http://pro.tiwi.com/jsf/security">
+              xmlns:security="http://pro.tiwi.com/jsf/security"
+              xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 	 
               
@@ -109,17 +110,16 @@
 										id="exportExcelMEnuItem">
 									</rich:menuItem>
 								</rich:contextMenu>
-                                
-                                <div class="datagrid">
-                                    <div class="spacer"></div>                     
-                                
-                                    <rich:datascroller id="topScroller" for="items" 
-                                         immediate="true" scrollerListener="#{driverReportBean.scrollerListener}" 
-                                         reRender="bottomScroller,items,headerDrivers"
-                                         requestDelay="200" eventsQueue="pagerQueue"
-                                         page="#{driverReportBean.page}">
-                                    </rich:datascroller> 
-                                    
+                                <div class="spacer"></div>
+                                <rich:datascroller id="topScroller" for="items"  styleClass="datascroller"
+                                      immediate="true" scrollerListener="#{driverReportBean.scrollerListener}" 
+                                      reRender="bottomScroller,items,headerDrivers"
+                                      requestDelay="200" eventsQueue="pagerQueue"
+                                      page="#{driverReportBean.page}">
+                                 </rich:datascroller> 
+                             
+                                <div class="datagrid" style="width: 925px; overflow: auto; ">
+
                                     <rich:dataTable value="#{driverReportBean.driverData}" 
                                          id="items" 
                                          var="item" 
@@ -147,10 +147,11 @@
                                             <f:facet name="header">
                                                 <h:outputText value="#{messages.reports_driver}" />
                                             </f:facet>
-                                            <a4j:htmlCommandLink action="go_driver" value="#{item.driver.person.fullName}">
-                                                <f:setPropertyActionListener value="#{item.driver}" target="#{navigationBean.driver}">
-                                                </f:setPropertyActionListener>
-                                            </a4j:htmlCommandLink>
+                                            <pretty:link mappingId="driverPerformance">
+                                                <h:outputText value="#{item.driver.person.fullName}"/>
+                                                <f:param value="#{item.driver.driverID}"/>
+                                            </pretty:link>
+                                        
                                         </rich:column>
                                         <rich:column rendered="#{driverReportBean.tableColumns['vehicle_name'].visible}" sortBy="#{item.vehicle.name}">
                                             <f:facet name="header">
@@ -219,11 +220,17 @@
                                                     <ui:param name="propertyActionListenerTarget" value="#{navigationBean.driver}" /> 
                                             </ui:include> 
                                         </rich:column>
-                                    </rich:dataTable> <rich:datascroller id="bottomScroller" for="items" immediate="true" scrollerListener="#{driverReportBean.scrollerListener}" reRender="topScroller,items,headerDrivers"
-                                        requestDelay="200" eventsQueue="pagerQueue" page="#{driverReportBean.page}">
-                                    </rich:datascroller>
+                                    </rich:dataTable> 
                                 </div>
-                                
+                                <div class="spacer"></div>
+                                <rich:datascroller id="bottomScroller" 
+                                          for="items" immediate="true" 
+                                          scrollerListener="#{driverReportBean.scrollerListener}" 
+                                          eRender="topScroller,items,headerDrivers"
+                                          requestDelay="200" eventsQueue="pagerQueue" 
+                                          page="#{driverReportBean.page}"
+                                          styleClass="datascroller">
+                                    </rich:datascroller>
                                 
                                 
     							</a4j:form>

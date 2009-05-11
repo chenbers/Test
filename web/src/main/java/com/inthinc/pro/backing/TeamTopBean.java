@@ -11,7 +11,6 @@ import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.DriverScore;
-import com.inthinc.pro.util.GraphicUtil;
 
 public class TeamTopBean extends BaseBean
 {

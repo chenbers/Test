@@ -110,18 +110,18 @@
 											action="#{deviceReportBean.exportReportToExcel}"
 											id="exportExcelMEnuItem">
 										</rich:menuItem>
-									</rich:contextMenu>																																	
+									</rich:contextMenu>		
+                                    <div class="spacer"></div>                                        
+                                    
+                                       
+                                    <rich:datascroller id="topScroller" for="items" immediate="true"
+                                       scrollerListener="#{deviceReportBean.scrollerListener}"
+                                       reRender="bottomScroller,items,headerDevices"
+                                       requestDelay="200" eventsQueue="pagerQueue" page="#{deviceReportBean.page}" 
+                                       styleClass="datascroller">
+                                    </rich:datascroller>																															
 									
-                                	<div class="datagrid">
-                                			<div class="spacer"></div>                                			
-                                		
-                                			
-                                        	<rich:datascroller id="topScroller" for="items" immediate="true"
-                                        		scrollerListener="#{deviceReportBean.scrollerListener}"
-                                        		reRender="bottomScroller,items,headerDevices"
-                                        		requestDelay="200" eventsQueue="pagerQueue" page="#{deviceReportBean.page}">
-                                        	</rich:datascroller>
-                                			      		        						
+                                	<div class="datagrid" style="width:925px; overflow: auto">		        						
                                 				<rich:dataTable value="#{deviceReportBean.deviceData}" id="items"
                                 					var="item" styleClass="datagrid" 
                                 					rowClasses="tableOdd,tableEven" cellspacing="1" 
@@ -177,16 +177,12 @@
                                       					<h:outputText value="#{item.device.ephone}" />
                                     				</rich:column>   		
                                     			</rich:dataTable>    	
-                                    			
-                                    			<rich:datascroller id="bottomScroller" for="items" immediate="true"
-                                    				scrollerListener="#{deviceReportBean.scrollerListener}"
-                                        			reRender="topScroller,items,headerDevices"
-                                        			requestDelay="200" eventsQueue="pagerQueue" page="#{deviceReportBean.page}">        			
-                                        		</rich:datascroller>
-                                        		
-                                        	
-                                        		
                                 			</div>
+                                       <rich:datascroller id="bottomScroller" for="items" immediate="true"
+                                          scrollerListener="#{deviceReportBean.scrollerListener}"
+                                          reRender="topScroller,items,headerDevices"
+                                          requestDelay="200" eventsQueue="pagerQueue" page="#{deviceReportBean.page}" styleClass="datascroller">                 
+                                       </rich:datascroller>
     							</a4j:form>
 								<ui:include src="/includes/editColumnsPopup.xhtml">
 									<ui:param name="bean" value="#{deviceReportBean}"/>	

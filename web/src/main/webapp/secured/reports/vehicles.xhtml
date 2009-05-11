@@ -108,19 +108,18 @@
 										id="exportExcelMEnuItem">
 									</rich:menuItem>
 								</rich:contextMenu>																																	
-								
-								<div class="datagrid">
-                                                                    
+                        
                                 <div class="spacer"></div> 
-                                
-                                
                                 
                                 <rich:datascroller id="topScroller" for="items" immediate="true"
                                     scrollerListener="#{vehicleReportBean.scrollerListener}"
                                     reRender="bottomScroller,items,headerVehicles"
-                                    requestDelay="200" eventsQueue="pagerQueue" page="#{vehicleReportBean.page}">
+                                    requestDelay="200" eventsQueue="pagerQueue" 
+                                    page="#{vehicleReportBean.page}"
+                                    styleClass="datascroller">
                                 </rich:datascroller>
-                                                    
+								
+								<div class="datagrid" style="width: 925px; overflow: auto; ">               
                                     <rich:dataTable value="#{vehicleReportBean.vehicleData}" id="items"
                                         var="item" styleClass="datagrid"
                                         rowClasses="tableOdd,tableEven" cellspacing="1" 
@@ -222,16 +221,19 @@
                                                     <ui:param name="propertyActionListenerTarget" value="#{navigationBean.vehicle}" /> 
                                             </ui:include>           
                                         </rich:column>
-                                    </rich:dataTable>               
-                                    
+                                    </rich:dataTable>                     		
+    							</div>	
+                        
+                                <div class="spacer"></div>
+                                
                                 <rich:datascroller id="bottomScroller" for="items" immediate="true"
                                     scrollerListener="#{vehicleReportBean.scrollerListener}"
                                     reRender="topScroller,items,headerVehicles"
-                                    requestDelay="200" eventsQueue="pagerQueue" page="#{vehicleReportBean.page}">                 
-                                </rich:datascroller>
+                                    requestDelay="200" eventsQueue="pagerQueue" 
+                                    page="#{vehicleReportBean.page}"             
+                                    styleClass="datascroller">
+                                </rich:datascroller>   
                                 
-                                           		
-    							</div>	   
     							</a4j:form> 										
 								<ui:include src="/includes/editColumnsPopup.xhtml">
 									<ui:param name="bean" value="#{vehicleReportBean}"/>	

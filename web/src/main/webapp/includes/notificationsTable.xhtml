@@ -1,9 +1,19 @@
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:f="http://java.sun.com/jsf/core"
     xmlns:iwi="http://pro.tiwi.com/jsf" xmlns:h="http://java.sun.com/jsf/html">
-
-    <div class="datagrid"><h:form id="#{formId}">
-        <rich:jQuery selector="document" query="ready(function(){initializeTable()})" />
-        <rich:datascroller id="topScroller" for="items" immediate="true" scrollerListener="#{bean.scrollerListener}" reRender="bottomScroller,items,header" oncomplete="initializeTable();" page="#{bean.page}"/>
+    
+    
+    <h:form id="#{formId}">
+    <rich:jQuery selector="document" query="ready(function(){initializeTable()})" />
+    <rich:datascroller id="topScroller" 
+               for="items" immediate="true" 
+               scrollerListener="#{bean.scrollerListener}" 
+               reRender="bottomScroller,items,header" 
+               oncomplete="initializeTable();" page="#{bean.page}"
+               styleClass="datascroller"/>
+        
+        
+    <div class="datagrid" style="width:925px; overflow: auto">
+        
 
         <rich:dataTable id="items" value="#{tableData}" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{numRowsPerPg}" width="100%">
 
@@ -73,9 +83,14 @@
                 </a4j:commandLink>
             </rich:column>
         </rich:dataTable>
-
-        <rich:datascroller id="bottomScroller" for="items" immediate="true" scrollerListener="#{bean.scrollerListener}" reRender="topScroller,items,header" oncomplete="initializeTable();" page="#{bean.page}"/>
-    </h:form></div>
+    </div>
+    
+    <rich:datascroller id="bottomScroller" for="items" 
+            immediate="true" scrollerListener="#{bean.scrollerListener}" 
+            reRender="topScroller,items,header" oncomplete="initializeTable();" 
+            page="#{bean.page}" styleClass="dataScroller"/>
+            
+    </h:form>
 
     <rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="50" autosized="true" resizeable="false" zindex="2000"
         onshow="document.getElementById('clearItemForm:yesButton').focus();">

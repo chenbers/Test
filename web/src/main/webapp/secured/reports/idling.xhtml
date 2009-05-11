@@ -121,25 +121,27 @@
 										action="#{idlingReportBean.exportReportToExcel}"
 										id="exportExcelMEnuItem">
 									</rich:menuItem>
-								</rich:contextMenu>																																	
-                            	<div class="datagrid">
-                            			<div class="spacer"></div> 
-                            						        	        	
-                                    	<table border="0">
-                                    		<tr>
-                                    			<td><h:outputText 
-                                    				id="errMsg" style="color:red"
-                                    				value="#{idlingReportBean.badDates}"/>
-                                    			</td>
-                                    		</tr>
-                                    	</table>					
-                            			
-                                    	<rich:datascroller id="topScroller" for="items" immediate="true" 
-                                    		scrollerListener="#{idlingReportBean.scrollerListener}"
-                                    		reRender="bottomScroller,items,headerIdlings"
-                                    		requestDelay="200" eventsQueue="pagerQueue" page="#{idlingReportBean.page}">
-                                    	</rich:datascroller>
-                            			      		        						
+								</rich:contextMenu>	
+                        
+                                <div class="spacer"></div> 
+                                                               
+                                 <table border="0">
+                                    <tr>
+                                       <td><h:outputText 
+                                          id="errMsg" style="color:red"
+                                          value="#{idlingReportBean.badDates}"/>
+                                       </td>
+                                    </tr>
+                                 </table>             
+                                    
+                                 <rich:datascroller id="topScroller" for="items" immediate="true" 
+                                    scrollerListener="#{idlingReportBean.scrollerListener}"
+                                    reRender="bottomScroller,items,headerIdlings"
+                                    requestDelay="200" eventsQueue="pagerQueue" 
+                                    page="#{idlingReportBean.page}"
+                                    styleClass="datascroller">
+                                 </rich:datascroller>																																
+                            	 <div class="datagrid" style="width:925px; overflow: auto">		        						
                             				<rich:dataTable value="#{idlingReportBean.idlingData}" id="items"
                             					var="item" styleClass="datagrid" 
                             					rowClasses="tableOdd,tableEven" cellspacing="1" 
@@ -225,13 +227,14 @@
                                   					</a4j:htmlCommandLink>  					      					
                                 				</rich:column>
                                 			</rich:dataTable>    	
-                                			
-                                			<rich:datascroller id="bottomScroller" for="items" immediate="true" 
-                                				scrollerListener="#{idlingReportBean.scrollerListener}"
-                                    			reRender="topScroller,items,headerIdlings"
-                                    			requestDelay="200" eventsQueue="pagerQueue" page="#{idlingReportBean.page}">        			
-                                    		</rich:datascroller>
                             	</div>	
+                                <div class="spacer"/>
+                                <rich:datascroller id="bottomScroller" for="items" immediate="true" 
+                                          scrollerListener="#{idlingReportBean.scrollerListener}"
+                                             reRender="topScroller,items,headerIdlings"
+                                             requestDelay="200" eventsQueue="pagerQueue" page="#{idlingReportBean.page}"
+                                             styleClass="datascroller">                 
+                                          </rich:datascroller>
     							</a4j:form>
 								<ui:include src="/includes/editColumnsPopup.xhtml">
 									<ui:param name="bean" value="#{idlingReportBean}"/>	
