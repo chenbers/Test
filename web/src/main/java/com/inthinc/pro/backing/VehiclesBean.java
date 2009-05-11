@@ -13,7 +13,6 @@ import java.util.TreeMap;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.dao.DeviceDAO;
@@ -41,11 +40,11 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     private static final long                     serialVersionUID       = 1L;
 
     private static final List<String>             AVAILABLE_COLUMNS;
-    private static final int[]                    DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 8, 12 };
+    private static final int[]                    DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 8, 12, 13 };
 
     private static final Map<String, String>      YEARS;
     private static final Map<String, State>       STATES;
-
+    private Map<Integer, Device>                  devices;
     static
     {
         // available columns
@@ -63,6 +62,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         AVAILABLE_COLUMNS.add("license");
         AVAILABLE_COLUMNS.add("state");
         AVAILABLE_COLUMNS.add("status");
+        AVAILABLE_COLUMNS.add("deviceID");
 
         // years
         final Calendar cal = Calendar.getInstance();
@@ -109,13 +109,28 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     @Override
     protected List<VehicleView> loadItems()
     {
-        // get the vehicles
+        // Get all the vehicles
         final List<Vehicle> plainVehicles = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
-
-        // convert the Vehicles to VehicleViews
+        
+        // Get all the devices
+        final List<Device> plainDevices = deviceDAO.getDevicesByAcctID(getAccountID());
+        
+        // Map all devices by deviceID
+        devices = new HashMap<Integer, Device>();
+        for (final Device device : plainDevices)
+        {
+            devices.put(device.getDeviceID(), device);
+        }
+        
+        // Wrap Vehicles and Devices
         final LinkedList<VehicleView> items = new LinkedList<VehicleView>();
         for (final Vehicle vehicle : plainVehicles)
-            items.add(createVehicleView(vehicle));
+        {
+            VehicleView view = createVehicleView(vehicle);
+            view.setDevice(devices.get(vehicle.getDeviceID()));
+            
+            items.add(view);   
+        }
 
         return items;
     }
@@ -156,6 +171,12 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         {
             if (vehicle.getStatus() != null)
                 return MessageUtil.getMessageString(vehicle.getStatus().getDescription().toLowerCase());
+            return null;
+        }
+        else if (column.equals("deviceID"))
+        {
+            if(vehicle.getDevice() != null)
+                return vehicle.getDevice().getName();
             return null;
         }
 
@@ -249,7 +270,13 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     {
         drivers = null;
     }
+    
+    public Integer getAccountID()
+    {
+        return getProUser().getGroupHierarchy().getTopGroup().getAccountID();
 
+    }
+    
     public TreeMap<Integer, String> getGroupNames()
     {
         final TreeMap<Integer, String> groupNames = new TreeMap<Integer, String>();
