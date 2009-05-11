@@ -7,17 +7,33 @@
 		<pattern>/login </pattern>
 		<view-id>/login.faces </view-id>
 	</url-mapping>
+    <url-mapping id="dashBoard">
+        <pattern>/secured/dashBoard</pattern>
+        <view-id>#{dashBoardBean.getViewPath}</view-id>
+    </url-mapping>   
 	<url-mapping id="groupOverview">
-		<pattern> 
-			/secured/groupOverview
-		</pattern>
+		<pattern>/secured/groupOverview</pattern>
 		<query-param name="groupID">#{navigationBean.groupID}</query-param>
 		<view-id>/secured/groupOverview.faces</view-id>
 	</url-mapping>
 	<url-mapping id="driverPerformance">
-		<pattern> 
-			/secured/driver/#{navigationBean.driverID}
-		</pattern>
+		<pattern>/secured/driver/#{navigationBean.driverID}</pattern>
 		<view-id>/secured/driver.faces</view-id>
 	</url-mapping>
+    <url-mapping id="driversReport">
+        <pattern>/secured/reports/driversReport</pattern>
+        <view-id>/secured/reports/drivers.faces</view-id>
+    </url-mapping>
+    <url-mapping id="vehiclesReport">
+        <pattern>/secured/reports/vehiclesReport</pattern>
+        <view-id>/secured/reports/vehicles.faces</view-id>
+    </url-mapping>
+    <url-mapping id="idlingReport">
+        <pattern>/secured/reports/idlingReport</pattern>
+        <view-id>/secured/reports/idling.faces</view-id>
+    </url-mapping>
+    <url-mapping id="devicesReport">
+        <pattern>/secured/reports/devicesReport</pattern>
+        <view-id>/secured/reports/devices.faces</view-id>
+    </url-mapping>
 </pretty-config>
