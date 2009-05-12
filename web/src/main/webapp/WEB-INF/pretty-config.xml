@@ -36,4 +36,105 @@
         <pattern>/secured/reports/devicesReport</pattern>
         <view-id>/secured/reports/devices.faces</view-id>
     </url-mapping>
+    
+    <!-- ADMIN MAPPING RULES -->
+    
+    <url-mapping id="adminPeople">
+		<pattern>/secured/admin/people</pattern>
+		<view-id>/secured/admin/people.faces</view-id>
+	</url-mapping>
+	<url-mapping id="adminEditPerson">
+		<pattern>/secured/admin/person-edit</pattern>
+		<view-id>/secured/admin/editPerson.faces</view-id>
+	</url-mapping>
+	<url-mapping id="adminPerson">
+		<pattern>/secured/admin/person/#{personBean.itemID}</pattern>
+		<view-id>/secured/admin/person.faces</view-id>
+		<action>#{personBean.view}</action>
+	</url-mapping>
+	
+	<url-mapping id="adminVehicles">
+		<pattern>/secured/admin/vehicles</pattern>
+		<view-id>/secured/admin/vehicles.faces</view-id>
+	</url-mapping>
+	<url-mapping id="adminEditVehicle">
+		<pattern>/secured/admin/vehicle-edit</pattern>
+		<view-id>/secured/admin/editVehicle.faces</view-id>
+	</url-mapping>
+	<url-mapping id="adminVehicle">
+		<pattern>/secured/admin/vehicle/#{vehiclesBean.itemID}</pattern>
+		<view-id>/secured/admin/vehicle.faces</view-id>
+		<action>#{vehiclesBean.view}</action>
+	</url-mapping>
+	
+	<url-mapping id="adminDevices">
+		<pattern>/secured/admin/devices</pattern>
+		<view-id>/secured/admin/devices.faces</view-id>
+	</url-mapping>
+	<url-mapping id="adminEditDevice">
+		<pattern>/secured/admin/device-edit</pattern>
+		<view-id>/secured/admin/editDevice.faces</view-id>
+	</url-mapping>
+	<url-mapping id="adminDevice">
+		<pattern>/secured/admin/device/#{devicesBean.itemID}</pattern>
+		<view-id>/secured/admin/device.faces</view-id>
+		<action>#{devicesBean.view}</action>
+	</url-mapping>
+	
+	<url-mapping id="adminZoneAlerts">
+		<pattern>/secured/admin/zoneAlerts</pattern>
+		<view-id>/secured/admin/zoneAlerts.faces</view-id>
+	</url-mapping>
+	<url-mapping id="adminEditZoneAlert">
+		<pattern>/secured/admin/editZoneAlert</pattern>
+		<view-id>/secured/admin/editZoneAlert.faces</view-id>
+	</url-mapping>
+	<url-mapping id="adminZoneAlert">
+		<pattern>/secured/admin/zoneAlert/#{zoneAlertsBean.itemID}</pattern>
+		<view-id>/secured/admin/zoneAlert.faces</view-id>
+		<action>#{zoneAlertsBean.view}</action>
+	</url-mapping>
+	
+	<url-mapping id="adminRedFlags">
+		<pattern>/secured/admin/redFlags</pattern>
+		<view-id>/secured/admin/redFlags.faces</view-id>
+	</url-mapping>
+	<url-mapping id="adminEditRedFlags">
+		<pattern>/secured/admin/editRedFlag</pattern>
+		<view-id>/secured/admin/editRedFlag.faces</view-id>
+	</url-mapping>
+	<url-mapping id="adminRedFlag">
+		<pattern>/secured/admin/redFlag/#{redFlagAlertsBean.itemID}</pattern>
+		<view-id>/secured/admin/redFlag.faces</view-id>
+		<action>#{redFlagAlertsBean.view}</action>
+	</url-mapping>
+	
+	<url-mapping id="adminReportSchedules">
+		<pattern>/secured/admin/reports</pattern>
+		<view-id>/secured/admin/reportSchedules.faces</view-id>
+	</url-mapping>
+	<url-mapping id="adminEditReportSchedule">
+		<pattern>/secured/admin/editReport</pattern>
+		<view-id>/secured/admin/editReportSchedule.faces</view-id>
+	</url-mapping>
+	<url-mapping id="adminReportSchedule">
+		<pattern>/secured/admin/report/#{reportScheduleBean.itemID}</pattern>
+		<view-id>/secured/admin/reportSchedule.faces</view-id>
+		<action>#{reportScheduleBean.view}</action>
+	</url-mapping>
+	
+	<url-mapping id="adminZones">
+		<pattern>/secured/admin/zones</pattern>
+		<view-id>/secured/admin/zones.faces</view-id>
+	</url-mapping>
+	
+	<url-mapping id="adminOrganization">
+		<pattern>/secured/admin/organization</pattern>
+		<view-id>/secured/admin/organization.faces</view-id>
+	</url-mapping>
+	
+	<url-mapping id="adminSpeedByStreet">
+		<pattern>/secured/admin/sbs</pattern>
+		<view-id>/secured/admin/speedByStreetChangeRequest.faces</view-id>
+	</url-mapping>
 </pretty-config>

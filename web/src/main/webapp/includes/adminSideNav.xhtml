@@ -3,7 +3,8 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:c="http://java.sun.com/jstl/core"
                 xmlns:a4j="http://richfaces.org/a4j"
-                xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 <!-- 
   Parameters:
@@ -68,7 +69,7 @@
         </ui:fragment>
         <tr>
           <td valign="top" class="#{(selectedAction == 'go_adminZones') ? 'ls_tab_on' : 'ls_tab_off'}">
-            <a4j:htmlCommandLink action="go_adminZones" value="#{messages.adminSideNav_go_adminZones}" styleClass="ls_tab_zones" immediate="true" />
+            <a4j:htmlCommandLink action="pretty:adminZones" value="#{messages.adminSideNav_go_adminZones}" styleClass="ls_tab_zones" immediate="true" />
           </td>
         </tr>
         <tr>
@@ -115,12 +116,12 @@
         </ui:fragment>
         <tr>
           <td valign="top" class="#{(selectedAction == 'go_adminOrganization') ? 'ls_tab_on' : 'ls_tab_off'}">
-            <a4j:htmlCommandLink action="go_adminOrganization" value="#{messages.adminSideNav_go_adminOrganization}" styleClass="ls_tab_organization" immediate="true" />
+            <a4j:htmlCommandLink action="pretty:adminOrganization" value="#{messages.adminSideNav_go_adminOrganization}" styleClass="ls_tab_organization" immediate="true" />
           </td>
         </tr>
         <tr>
           <td valign="top" class="#{(selectedAction == 'go_adminSBSCR') ? 'ls_tab_on' : 'ls_tab_off'}">
-            <a4j:htmlCommandLink action="go_adminSBSCR" value="#{messages.adminSideNav_go_adminSBSCR}" styleClass="ls_tab_sbscr" immediate="true" />
+            <a4j:htmlCommandLink action="pretty:adminSpeedByStreet" value="#{messages.adminSideNav_go_adminSBSCR}" styleClass="ls_tab_sbscr" immediate="true" />
           </td>
         </tr>
        </table>

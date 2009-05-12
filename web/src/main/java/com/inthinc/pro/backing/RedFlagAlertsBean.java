@@ -320,19 +320,19 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
     @Override
     protected String getDisplayRedirect()
     {
-        return "go_adminRedFlag";
+        return "pretty:adminRedFlag";
     }
 
     @Override
     protected String getEditRedirect()
     {
-        return "go_adminEditRedFlag";
+        return "pretty:adminEditRedFlag";
     }
 
     @Override
     protected String getFinishedRedirect()
     {
-        return "go_adminRedFlags";
+        return "pretty:adminRedFlags";
     }
 
     public static class RedFlagAlertView extends RedFlagAlert implements BaseAdminAlertsBean.BaseAlertView

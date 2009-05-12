@@ -23,7 +23,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
-import org.apache.commons.lang.SystemUtils;
 import org.jasypt.util.password.PasswordEncryptor;
 import org.springframework.beans.BeanUtils;
 
@@ -670,19 +669,19 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     @Override
     protected String getDisplayRedirect()
     {
-        return "go_adminPerson";
+        return "pretty:adminPerson";
     }
 
     @Override
     protected String getEditRedirect()
     {
-        return "go_adminEditPerson";
+        return "pretty:adminEditPerson";
     }
 
     @Override
     protected String getFinishedRedirect()
     {
-        return "go_adminPeople";
+        return "pretty:adminPeople";
     }
 
     public TimeZone getUtcTimeZone()

@@ -248,19 +248,19 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
     @Override
     protected String getDisplayRedirect()
     {
-        return "go_adminZoneAlert";
+        return "pretty:adminZoneAlert";
     }
 
     @Override
     protected String getEditRedirect()
     {
-        return "go_adminEditZoneAlert";
+        return "pretty:adminEditZoneAlert";
     }
 
     @Override
     protected String getFinishedRedirect()
     {
-        return "go_adminZoneAlerts";
+        return "pretty:adminZoneAlerts";
     }
 
     public List<SelectItem> getZones()

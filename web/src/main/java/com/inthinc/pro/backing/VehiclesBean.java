@@ -445,19 +445,19 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     @Override
     protected String getDisplayRedirect()
     {
-        return "go_adminVehicle";
+        return "pretty:adminVehicle";
     }
 
     @Override
     protected String getEditRedirect()
     {
-        return "go_adminEditVehicle";
+        return "pretty:adminEditVehicle";
     }
 
     @Override
     protected String getFinishedRedirect()
     {
-        return "go_adminVehicles";
+        return "pretty:adminVehicles";
     }
 
     public Map<String, String> getYears()

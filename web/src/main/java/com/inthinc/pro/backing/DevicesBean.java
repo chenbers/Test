@@ -20,7 +20,6 @@ import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
-import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.MessageUtil;
@@ -373,19 +372,19 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     @Override
     protected String getDisplayRedirect()
     {
-        return "go_adminDevice";
+        return "pretty:adminDevice";
     }
 
     @Override
     protected String getEditRedirect()
     {
-        return "go_adminEditDevice";
+        return "pretty:adminEditDevice";
     }
 
     @Override
     protected String getFinishedRedirect()
     {
-        return "go_adminDevices";
+        return "pretty:adminDevices";
     }
 
     public List<SelectItem> getStatuses()

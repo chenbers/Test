@@ -55,9 +55,9 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     private static final List<String> AVAILABLE_COLUMNS;
     private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 4 };
 
-    private static final String REDIRECT_REPORT_SCHEDULES = "go_adminReportSchedules";
-    private static final String REDIRECT_REPORT_SCHEDULE = "go_adminReportSchedule";
-    private static final String REDIRECT_EDIT_REPORT_SCHEDULE = "go_adminEditReportSchedule";
+    private static final String REDIRECT_REPORT_SCHEDULES = "pretty:adminReportSchedules";
+    private static final String REDIRECT_REPORT_SCHEDULE = "pretty:adminReportSchedule";
+    private static final String REDIRECT_EDIT_REPORT_SCHEDULE = "pretty:adminEditReportSchedule";
 
     private List<SelectItem> reportGroups;
 

@@ -37,6 +37,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     protected int                 page          = 1;
     private boolean               displayed;
     protected T                   item;
+    private Integer               itemID;
     private boolean               batchEdit;
     private boolean               selectAll;
     private Map<String, Boolean>  updateField;
@@ -276,6 +277,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     {
         displayed = true;
         selectItem("displayID");
+        setItemID(item.getId());
         return getDisplayRedirect();
     }
 
@@ -310,6 +312,21 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
 
         return getEditRedirect();
     }
+    
+    public void view(){
+        if(itemID != null)
+            selectItem(itemID);
+    }
+    
+    public void setItemID(Integer itemID)
+    {
+        this.itemID = itemID;
+    }
+
+    public Integer getItemID()
+    {
+        return itemID;
+    }
 
     /**
      * Called when the user chooses to edit an item.
@@ -322,6 +339,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         allGroups = null;
         return getEditRedirect();
     }
+    
 
     /**
      * Populates the edit item based on the value in the given param name.
@@ -335,16 +353,31 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         if (parameterMap.get(paramName) != null)
         {
             final int editID = Integer.parseInt(parameterMap.get(paramName));
-            for (final T t : getItems())
-                t.setSelected(t.getId().equals(editID));
-
-            item = null;
-            getItem();
-            item.setSelected(false);
+            selectItem(editID);
             return true;
         }
         return false;
     }
+    
+    /**
+     * Populates the edit item based on the value in the given param name.
+     * 
+     * @param paramName
+     *            The name of a param containing the edit item's ID.
+     */
+    protected void selectItem(Integer id)
+    {
+            for (final T t : getItems())
+                t.setSelected(t.getId().equals(id));
+
+            item = null;
+            getItem();
+            item.setSelected(false);
+    }
+   
+    
+    
+
 
     /**
      * Called when the user chooses to add an item or edit one or more selected items. Default processing is first performed by {@link #internalEdit()}.
@@ -398,7 +431,10 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
             item.setSelected(false);
 
         if (displayed)
+        {
+            setItemID(item.getId());
             return getDisplayRedirect();
+        }
         else
         {
             item = null;
@@ -473,8 +509,11 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
             //TODO Mike - verify performance.
             return getResetListRedirect();
         }
-        else
+        else{
+            setItemID(item.getId());
             return getDisplayRedirect();
+        }
+            
     }
 
     /**
@@ -739,5 +778,6 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         return getFinishedRedirect();
     }
 
+    
 
 }
