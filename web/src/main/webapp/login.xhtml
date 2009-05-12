@@ -26,14 +26,14 @@
 		<table width="100%" border="0" cellspacing="0" cellpadding="4">
 		  <tr>
 			<td><h:outputText value="#{messages.login_username}:"/></td>
-			<td><h:inputText id="j_username" styleClass="txt" /></td>
+			<td><h:inputText id="j_username" styleClass="txt" tabindex="1" /></td>
 		  </tr>
 		  <tr>
 			<td><h:outputText value="#{messages.login_password}:"/></td>
-			<td><h:inputSecret id="j_password" styleClass="txt" /></td>
+			<td><h:inputSecret id="j_password" styleClass="txt" tabindex="2" /></td>
 		  </tr>
 		  <tr>
-			<td colspan="2" align="center"><button type="submit" id="login_btn" class="left"><span class="login">#{messages.login_button}</span></button></td>
+			<td colspan="2" align="center"><button type="submit" id="login_btn" tabindex="3" class="left"><span class="login">#{messages.login_button}</span></button></td>
 			</tr>
 		</table>
 		</form>
@@ -44,6 +44,11 @@
               {
                 var emailElement = document.getElementById("changePasswordForm:email");
                 emailElement.focus();
+              }
+
+              function bodyLoad()
+              {
+            	  document.getElementById("j_username").focus();
               }
             </script>
 		</h:form>
