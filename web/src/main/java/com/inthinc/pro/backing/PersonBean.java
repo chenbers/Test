@@ -31,6 +31,7 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Gender;
@@ -824,6 +825,28 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             return weight;
         }
 
+        @Override
+        public Date getDob()
+        {
+            if(super.getDob() == null || DateUtil.convertDateToSeconds(super.getDob()) == 0)
+                return null;
+            else
+                return super.getDob();
+        }
+        
+        public Date getDriverExp()
+        {
+            if(super.getDriver().getExpiration() == null || DateUtil.convertDateToSeconds(super.getDriver().getExpiration()) == 0)
+                return null;
+            else
+                return super.getDriver().getExpiration();
+        }
+        
+        public void setDriverExp(Date driverExp)
+        {
+            super.getDriver().setExpiration(driverExp);
+        }
+        
         public Group getGroup()
         {
             if ((getUser() != null) && ((group == null) || (group.getGroupID() == null) || !group.getGroupID().equals(getUser().getGroupID())))
