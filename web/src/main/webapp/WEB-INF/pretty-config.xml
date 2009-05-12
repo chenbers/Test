@@ -4,13 +4,30 @@
 	xsi:schemaLocation="http://ocpsoft.com/prettyfaces-xsd 
 	http://ocpsoft.com/xml/ns/prettyfaces/pretty-1.0.xsd">
 	<url-mapping id="login">
-		<pattern>/login </pattern>
-		<view-id>/login.faces </view-id>
+		<pattern>/login</pattern>
+		<view-id>/login.faces</view-id>
 	</url-mapping>
-    <url-mapping id="dashBoard">
-        <pattern>/secured/dashBoard</pattern>
+    <url-mapping id="init-dashboard">
+        <pattern>/secured/dashboard</pattern>
+        <view-id>#{dashBoardBean.getViewPath}</view-id>    
+    </url-mapping>
+    <url-mapping id="dashboard">
+        <pattern>/secured/dashboard/#{dashBoardBean.groupID}</pattern>
         <view-id>#{dashBoardBean.getViewPath}</view-id>
+    </url-mapping>  
+    <url-mapping id="fleet">
+        <pattern>/secured/fleet/#{navigationBean.groupID}</pattern>
+        <view-id>/secured/home.faces</view-id>
+    </url-mapping> 
+    <url-mapping id="division">
+        <pattern>/secured/division/#{navigationBean.groupID}</pattern>
+        <view-id>/secured/division.faces</view-id>
+    </url-mapping> 
+    <url-mapping id="team">
+        <pattern>/secured/team/#{navigationBean.groupID}</pattern>
+        <view-id>/secured/team.faces</view-id>
     </url-mapping>   
+    
 	<url-mapping id="groupOverview">
 		<pattern>/secured/groupOverview</pattern>
 		<query-param name="groupID">#{navigationBean.groupID}</query-param>
@@ -20,6 +37,11 @@
 		<pattern>/secured/driver/#{navigationBean.driverID}</pattern>
 		<view-id>/secured/driver.faces</view-id>
 	</url-mapping>
+    <!-- Reports Section -->
+    <url-mapping id="reports">
+        <pattern>/secured/reports/</pattern>
+        <view-id>/secured/reports/drivers.faces</view-id>
+    </url-mapping>
     <url-mapping id="driversReport">
         <pattern>/secured/reports/driversReport</pattern>
         <view-id>/secured/reports/drivers.faces</view-id>
@@ -36,13 +58,44 @@
         <pattern>/secured/reports/devicesReport</pattern>
         <view-id>/secured/reports/devices.faces</view-id>
     </url-mapping>
+    <!-- Notifications Section -->
+    <url-mapping id="notifications">
+        <pattern>/secured/notifications/</pattern>
+        <view-id>/secured/notifications/redflags.faces</view-id>
+    </url-mapping>
+    <url-mapping id="redFlags">
+        <pattern>/secured/notifications/redflags</pattern>
+        <view-id>/secured/notifications/redflags.faces</view-id>
+    </url-mapping>
+    <url-mapping id="safety">
+        <pattern>/secured/notifications/safety</pattern>
+        <view-id>/secured/notifications/safety.faces</view-id>
+    </url-mapping>
+    <url-mapping id="emergency">
+        <pattern>/secured/notifications/emergency</pattern>
+        <view-id>/secured/notifications/emergency.faces</view-id>
+    </url-mapping>
+    <url-mapping id="diagnostics">
+        <pattern>/secured/notifications/diagnostics</pattern>
+        <view-id>/secured/notifications/diagnostics.faces</view-id>
+    </url-mapping>
+    <!-- Live Fleet Section -->
+    <url-mapping id="liveFleet">
+        <pattern>/secured/liveFleet</pattern>
+        <view-id>/secured/liveFleet.faces</view-id>
+    </url-mapping>
     
     <!-- ADMIN MAPPING RULES -->
     
-    <url-mapping id="adminPeople">
-		<pattern>/secured/admin/people</pattern>
+    <url-mapping id="admin">
+		<pattern>/secured/admin/</pattern>
 		<view-id>/secured/admin/people.faces</view-id>
 	</url-mapping>
+    
+    <url-mapping id="adminPeople">
+        <pattern>/secured/admin/people</pattern>
+        <view-id>/secured/admin/people.faces</view-id>
+    </url-mapping>
 	<url-mapping id="adminEditPerson">
 		<pattern>/secured/admin/person-edit</pattern>
 		<view-id>/secured/admin/editPerson.faces</view-id>
