@@ -4,7 +4,8 @@
   	xmlns:f="http://java.sun.com/jsf/core" 
   	xmlns:a4j="http://richfaces.org/a4j"
   	xmlns:rich="http://richfaces.org/rich"
-  	xmlns:security="http://pro.tiwi.com/jsf/security">  	
+  	xmlns:security="http://pro.tiwi.com/jsf/security"
+    xmlns:pretty="http://ocpsoft.com/prettyfaces">  	
  	  	
 <div class="main_nav">
 	<div class="main_nav-right"></div>
@@ -13,33 +14,23 @@
     
 	<h:form id="navigation" > 
 		<ul>
-			<li class="#{homeSelected}">	
-				<h:commandLink title="#{messages.navigation_home}" action="#{navigationBean.homeAction}">
-					<span>#{messages.navigation_home}</span>
-				</h:commandLink>
+			<li class="#{homeSelected}">
+                <pretty:link mappingId="init-dashboard"><span>#{messages.navigation_home}</span></pretty:link>
 			</li>
 			<li class="#{reportsSelected}">
-				<h:commandLink title="#{messages.navigation_reports}" action="go_reports">
-					<span>#{messages.navigation_reports}</span>
-				</h:commandLink>
+                <pretty:link mappingId="reports"><span>#{messages.navigation_reports}</span></pretty:link>
 			</li>
-			<li class="#{redFlagsSelected}">
-				<h:commandLink title="#{messages.navigation_redFlags}"  action="go_redFlags">
-					<span>#{messages.navigation_redFlags}</span>
-				</h:commandLink>
+			<li class="#{notificationsSelected}">
+                <pretty:link mappingId="notifications"><span>#{messages.navigation_notifications}</span></pretty:link>
 			</li>
 			<security:authorize ifAnyGranted="ROLE_CUSTOMUSER,ROLE_SUPERUSER">
-			<li class="#{liveFleetSelected}">
-				<h:commandLink title="#{messages.navigation_liveFleet}" action="go_liveFleet">
-					<span>#{messages.navigation_liveFleet}</span>
-				</h:commandLink>
-			</li>
+    			<li class="#{liveFleetSelected}">
+                    <pretty:link mappingId="liveFleet"><span>#{messages.navigation_liveFleet}</span></pretty:link>
+    			</li>
 			</security:authorize>
 			<security:authorize ifAnyGranted="ROLE_CUSTOMUSER,ROLE_SUPERUSER">
 				<li class="#{adminSelected}">
-					<h:commandLink title="#{messages.navigation_admin}" action="go_admin">
-						<span>#{messages.navigation_admin}</span>
-					</h:commandLink>
+                    <pretty:link mappingId="admin"><span>#{messages.navigation_admin}</span></pretty:link>
 				</li>
 			</security:authorize>
 			<li style="float:right">

@@ -25,19 +25,19 @@ public class ProAuthenticationProcessingFilter extends AuthenticationProcessingF
         this.groupDAO = groupDAO;
     }
 
-    @Override
-    public String getDefaultTargetUrl()
-    {
-        ProUser proUser = (ProUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String url = getTargetUrlFromGroupHierarchy(proUser.getGroupHierarchy());
-
-        if (url != null)
-        {
-            return url;
-        }
-        logger.debug("Default Target URL: " + url);
-        return super.getDefaultTargetUrl();
-    }
+//    @Override
+//    public String getDefaultTargetUrl()
+//    {
+//        ProUser proUser = (ProUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        String url = getTargetUrlFromGroupHierarchy(proUser.getGroupHierarchy());
+//
+//        if (url != null)
+//        {
+//            return url;
+//        }
+//        logger.debug("Default Target URL: " + url);
+//        return super.getDefaultTargetUrl();
+//    }
 
     private String getTargetUrlFromGroupHierarchy(GroupHierarchy groupHierarchy)
     {

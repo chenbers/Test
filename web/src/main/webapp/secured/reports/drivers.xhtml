@@ -173,13 +173,13 @@
                                         <rich:column rendered="#{driverReportBean.tableColumns['overallScore'].visible}" sortBy="#{item.overallScore}">
                                             <f:facet name="header">
                                                 <h:outputText value="#{messages.reports_overall}" />
-                                            </f:facet>
-                                            <div class="#{item.styleOverall} score">
-                                                <a4j:htmlCommandLink action="go_driver">
-                                                    <h:outputText value="#{item.overallScore}" converter="ScoreConverter" />
-                                                    <f:setPropertyActionListener value="#{item.driver}" target="#{navigationBean.driver}"/>
-                                                </a4j:htmlCommandLink>
-                                            </div>
+                                            </f:facet>                       
+                                            <ui:include src="/includes/scoreBox.xhtml">
+                                                    <ui:param name="score" value="#{item.overallScore}" />
+                                                    <ui:param name="scoreStyle" value="#{item.styleOverall}" /> 
+                                                    <ui:param name="item" value="#{item.driver.driverID}" /> 
+                                                    <ui:param name="scoreMappingId" value="driverPerformance"/>
+                                            </ui:include> 
                                         </rich:column>
                                         <rich:column rendered="#{driverReportBean.tableColumns['speedScore'].visible}" sortBy="#{item.speedScore}">
                                             <f:facet name="header">
@@ -188,10 +188,8 @@
                                             <ui:include src="/includes/scoreBox.xhtml">
                                                     <ui:param name="score" value="#{item.speedScore}" />
                                                     <ui:param name="scoreStyle" value="#{item.styleSpeed}" /> 
-                                                    <ui:param name="actionBean" value="#{driverReportBean}" /> 
-                                                    <ui:param name="action" value="reportDriverSpeedAction" /> 
-                                                    <ui:param name="propertyActionListenerValue" value="#{item.driver}" /> 
-                                                    <ui:param name="propertyActionListenerTarget" value="#{navigationBean.driver}" /> 
+                                                    <ui:param name="item" value="#{item.driver.driverID}" /> 
+                                                    <ui:param name="scoreMappingId" value="driverPerformance"/>
                                             </ui:include> 
                                         </rich:column>
                                         <rich:column rendered="#{driverReportBean.tableColumns['styleScore'].visible}" sortBy="#{item.styleScore}">
@@ -201,10 +199,8 @@
                                             <ui:include src="/includes/scoreBox.xhtml">
                                                     <ui:param name="score" value="#{item.styleScore}" />
                                                     <ui:param name="scoreStyle" value="#{item.styleStyle}" /> 
-                                                    <ui:param name="actionBean" value="#{driverReportBean}" /> 
-                                                    <ui:param name="action" value="reportDriverStyleAction" /> 
-                                                    <ui:param name="propertyActionListenerValue" value="#{item.driver}" /> 
-                                                    <ui:param name="propertyActionListenerTarget" value="#{navigationBean.driver}" /> 
+                                                    <ui:param name="item" value="#{item.driver.driverID}" />  
+                                                    <ui:param name="scoreMappingId" value="driverPerformance"/>
                                             </ui:include> 
                                         </rich:column>
                                         <rich:column rendered="#{driverReportBean.tableColumns['seatBeltScore'].visible}" sortBy="#{item.seatBeltScore}">
@@ -214,10 +210,8 @@
                                             <ui:include src="/includes/scoreBox.xhtml">
                                                     <ui:param name="score" value="#{item.seatBeltScore}" />
                                                     <ui:param name="scoreStyle" value="#{item.styleSeatBelt}" /> 
-                                                    <ui:param name="actionBean" value="#{driverReportBean}" /> 
-                                                    <ui:param name="action" value="reportDriverSeatBeltAction" /> 
-                                                    <ui:param name="propertyActionListenerValue" value="#{item.driver}" /> 
-                                                    <ui:param name="propertyActionListenerTarget" value="#{navigationBean.driver}" /> 
+                                                    <ui:param name="item" value="#{item.driver.driverID}" /> 
+                                                    <ui:param name="scoreMappingId" value="driverPerformance"/>
                                             </ui:include> 
                                         </rich:column>
                                     </rich:dataTable> 

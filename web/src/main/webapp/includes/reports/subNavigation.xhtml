@@ -1,22 +1,27 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" 
+    xmlns:a4j="http://richfaces.org/a4j" 
+    xmlns:rich="http://richfaces.org/rich" 
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:iwi="http://pro.tiwi.com/jsf" 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
     <div class="sub_nav">
-    <div class="sub_nav-bg"><h:form>
-        <ul>
-            <li class="#{driversSelected}"><a4j:htmlCommandLink action="go_drivers">
-                <span>#{messages.subNavigation_drivers}</span>
-            </a4j:htmlCommandLink></li>
-            <li class="#{vehiclesSelected}"><a4j:htmlCommandLink action="go_vehicles">
-                <span>#{messages.subNavigation_vehicles}</span>
-            </a4j:htmlCommandLink></li>
-            <li class="#{idlingSelected}"><a4j:htmlCommandLink action="go_idling">
-                <span>#{messages.subNavigation_idling}</span>
-            </a4j:htmlCommandLink></li>
-            <li class="#{devicesSelected}"><a4j:htmlCommandLink action="go_devices">
-                <span>#{messages.subNavigation_devices}</span>
-            </a4j:htmlCommandLink></li>
-        </ul>
-    </h:form></div>
+        <div class="sub_nav-bg">
+            <ul>
+                <li class="#{driversSelected}">
+                    <pretty:link mappingId="driversReport"><span>#{messages.subNavigation_drivers}</span></pretty:link>
+                </li>
+                <li class="#{vehiclesSelected}">
+                    <pretty:link mappingId="vehiclesReport"><span>#{messages.subNavigation_vehicles}</span></pretty:link>
+                </li>
+                <li class="#{idlingSelected}">
+                    <pretty:link mappingId="idlingReport"><span>#{messages.subNavigation_idling}</span></pretty:link>
+                </li>
+                <li class="#{devicesSelected}">
+                    <pretty:link mappingId="devicesReport"><span>#{messages.subNavigation_devices}</span></pretty:link>
+                </li>
+            </ul>
+        </div>
     </div>
 </ui:composition>

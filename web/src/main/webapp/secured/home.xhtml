@@ -1,213 +1,224 @@
-<ui:composition
-				xmlns="http://www.w3.org/1999/xhtml" 
-				xmlns:ui="http://java.sun.com/jsf/facelets"
-  				xmlns:h="http://java.sun.com/jsf/html" 
-  				xmlns:rich="http://richfaces.org/rich"
-  				xmlns:a4j="http://richfaces.org/a4j"
-  				xmlns:iwi="http://pro.tiwi.com/jsf"
-  				xmlns:f="http://java.sun.com/jsf/core"
-  				xmlns:t="http://myfaces.apache.org/tomahawk">
-  			
-
+<ui:composition template="/layout/layout.xhtml" 
+            xmlns="http://www.w3.org/1999/xhtml" 
+            xmlns:ui="http://java.sun.com/jsf/facelets"
+            xmlns:h="http://java.sun.com/jsf/html" 
+            xmlns:rich="http://richfaces.org/rich"
+            xmlns:a4j="http://richfaces.org/a4j"
+            xmlns:c="http://java.sun.com/jstl/core"
+            xmlns:f="http://java.sun.com/jsf/core"
+            xmlns:t="http://myfaces.apache.org/tomahawk"
+            xmlns:pretty="http://ocpsoft.com/prettyfaces">
+         
+       <ui:define name="scripts">
+          <script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>   
+          <script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}&amp;hl=#{localeBean.locale.language}" type="text/javascript"></script>
+          <script src="#{facesContext.externalContext.request.contextPath}/js/markermanager.js"  type="text/javascript"></script>
+       </ui:define>  
+       
       	<ui:param name="homeSelected" value="current" />
       	<ui:param name="helpFile" value="Overall_Score-Fleet_Level.htm" />
 	
 		<t:saveState value="#{trendBean.sortColumn}"></t:saveState>
 		<t:saveState value="#{trendBean.sortDirection}"></t:saveState>
 		<t:saveState value="#{trendBean.scoreableEntities}"></t:saveState>
-		
-		<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" class="dash_table">
-  			<tr>
-    			<td width="465" valign="top">
-					<!-- START OVERALL/R PANEL -->
-					<!-- leave reRenderList alone -->
-					<ui:include src="/includes/overallScore.xhtml">
-						<ui:param name="reRenderList" value="overallScoreForm,overallPanel,hiddenField3"/>
-						<ui:param name="ajaxStatusID" value="overall_status_2" /> 
-						<ui:param name="pieDef" value="#{overallScoreBean.overallPieDef}"/>
-						<ui:param name="overallScoreStyle" value="#{overallScoreBean.overallScoreStyle}"/>
-						<ui:param name="overallScore" value="#{overallScoreBean.overallScore}"/>
-						<ui:param name="duration" value="#{overallScoreDurationBean.duration}" />   
-            			<ui:param name="thirtyDaysOn" value="#{overallScoreDurationBean.styleClass30Days}"/>
-						<ui:param name="threeMonthsOn" value="#{overallScoreDurationBean.styleClass3Months}"/>
-						<ui:param name="sixMonthsOn" value="#{overallScoreDurationBean.styleClass6Months}"/>
-						<ui:param name="twelveMonthsOn" value="#{overallScoreDurationBean.styleClass12Months}" />  
-						<ui:param name="flyNavRule" value="go_fleetDetail" />
-						<ui:param name="flySelectedTab" value="overall_full_screen" />  
-						<ui:param name="flyOutImage" value="ico_expand.png" />
-						<ui:param name="zorder" value="6"/>	
-					</ui:include>		
-					<!-- END PANEL -->
-					<div class="spacer"></div>
-				
-					<!-- START MPG PANEL -->
-					<ui:include src="/includes/mpgChart.xhtml">	
-						<ui:param name="title" value="#{messages.mpg_title}"/>	
-            			<ui:param name="barDef" value="#{mpgBean.barDef}"/>  
-                        <ui:param name="xyheight" value="350"/>
-                        <ui:param name="xywidth" value="440"/>  
-                        <ui:param name="flyNavRule" value="go_fleetDetail" />
-                        <ui:param name="inFlyOut" value="false" /> 
-                        <ui:param name="zorder" value="6"/>	
-					</ui:include>
-					<!-- END MPG -->	
-
-				</td>
-	
-    			<td width="10"><img src="#{facesContext.externalContext.request.contextPath}/images/x.gif" width="10" /></td>
-	
-	    		<td width="465" valign="top">
-
-					<!-- START TREND PANEL -->
-
-					<div class="">
-
-						<div class="panel_nw">
-							<div class="panel_title">
-								<span class="line">#{messages.trendReport_header}</span> 
-								<ui:include src="/includes/dateLinksWithFlyOut.xhtml">
-									<ui:param name="ajaxForm" value="trend_form" />
-									<ui:param name="ajaxStatusID" value="trend_status" /> 
-									<ui:param name="reRenderList" value="hiddenField1,xypanel,trendTable:items,trend_form,countString"/>
-									<ui:param name="thirtyDaysOn" value="#{navigationDurationBean.styleClass30Days}"/>
-									<ui:param name="threeMonthsOn" value="#{navigationDurationBean.styleClass3Months}"/>
-									<ui:param name="sixMonthsOn" value="#{navigationDurationBean.styleClass6Months}"/>
-									<ui:param name="twelveMonthsOn" value="#{navigationDurationBean.styleClass12Months}"/>
-			            			<ui:param name="duration" value="#{navigationDurationBean.duration}" />
-			            			<ui:param name="flyNavRule" value="go_fleetDetail" />
-									<ui:param name="flySelectedTab" value="trend_full_screen" />  
-									<ui:param name="flyOutImage" value="ico_expand.png" />
-									<ui:param name="report" value="TREND" />
-								</ui:include>	
-							</div>
-		
-						</div>
-
-
-						<div class="panel_w">
-								<div class="panel_content">
-								<rich:panel style="height:300;width:445">
-									<div id="chartdiv2" align="center"></div>
-									<script type="text/javascript">
-										var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSLine.swf", "TrendChartId", "445", "300", "0", "1");						   						   		
-										chart.setDataXML("<chart></chart>");
-										chart.setTransparent(true);
-										chart.render("chartdiv2");
-									</script>
-								</rich:panel> 	
-								<!-- Start xy graph --> 	
-								<rich:panel id="xypanel">
-								<h:inputHidden value="#{trendBean.lineDef}" id="hiddenField1" />
-
-								<script type="text/javascript">
-									 var targetElement = document.getElementById("hiddenField1");
-									 var chartObj = getChartFromId("TrendChartId");
-
-									 chartObj.setDataXML(targetElement.value);
-
-									 function FC_Rendered(DOMId)
-									 {
-								         //If it's our required chart
-								         if (DOMId=="TrendChartId"){
-								            //Simply alert
-										           
-											chartObj = getChartFromId("TrendChartId");
-											chartObj.setDataXML(targetElement.value);
-								            return;
-								         }
-								      }
-								</script>
-							</rich:panel> 
-							<!-- End xy graph -->			
-	
-							<div style="text-align: right;" >													
-								<h:outputText id="countString" value="#{trendBean.countString}"/><rich:spacer width="15" height="5"/>
-							</div>					
-						
-							<div class="datagrid">
-							<h:form id="trendTable">
-								<table style="margin-bottom: 0px;">
-									<tr>
-										<td style="border-bottom: 0px;">
-											<rich:datascroller id="topScroller" for="items" immediate="true"
-			        								scrollerListener="#{trendBean.scrollerListener}" maxPages="5" align="center"
-			        								reRender="bottomScroller,countString,items,xypanel">        			
-					        				</rich:datascroller>
-					        			</td>
-				        			</tr>
-			        			</table>
-        							
-   								<h:inputHidden id="hiddenGroupID" value="#{navigationBean.groupID}"/>   						
-								<rich:dataTable value="#{trendBean.scoreableEntities}" id="items"
-											var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" 
-											cellspacing="1" rows="#{trendBean.numRowsPerPg}" width="100%">
-									
-									<rich:column width="20">
-										<f:facet name="header">
-											<h:outputText value=" " />
-										</f:facet>
-										<rich:spacer width="17" height="17"
-											style="background-color:#{item.colorKey};border-style:solid;border-width:1px;border-color:#000000">
-										</rich:spacer>
-									</rich:column>
-									<rich:column headerClass="sortable-text #{trendBean.sortColumn eq 'se.identifier'? (trendBean.sortDirection eq 'ASC' ? 'forwardSort' : 'reverseSort') : ''}">
-										<f:facet name="header">
-											<a4j:commandLink 
-												value="#{messages.trendReport_header_divisionTeam}" 
-												reRender="xypanel,topScroller,bottomScroller,items"
-												action="#{trendBean.sort}" ajaxSingle="true">
-												<f:setPropertyActionListener target="#{trendBean.sortDirection}" value="#{trendBean.sortDirection eq 'DESC' ? 'ASC' : 'DESC'}"/>
-												<f:setPropertyActionListener target="#{trendBean.sortColumn}" value="se.identifier" />										
-											</a4j:commandLink>
-										</f:facet>
-										<h:outputLink value="#{item.goTo}">
-											<h:outputText value="#{item.se.identifier}" />
-										</h:outputLink>
-									</rich:column>
-									<rich:column width="73" 
-										headerClass="sortable-text #{trendBean.sortColumn eq 'se.score'? (trendBean.sortDirection eq 'ASC' ? 'forwardSort' : 'reverseSort') : ''}">
-										<f:facet name="header">
-											<a4j:commandLink 
-												value="#{messages.trendReport_header_score}" 
-												reRender="xypanel,topScroller,bottomScroller,items"
-												action="#{trendBean.sort}" ajaxSingle="true">
-												<f:setPropertyActionListener target="#{trendBean.sortDirection}" value="#{trendBean.sortDirection eq 'DESC' ? 'ASC' : 'DESC'}"/>		
-												<f:setPropertyActionListener target="#{trendBean.sortColumn}" value="se.score" />																			
-											</a4j:commandLink>
-
-										</f:facet>
-                                        <ui:include src="/includes/scoreBox.xhtml">  
-                                            <ui:param name="scoreStyle" value="#{item.style}"/>                                  
-                                            <ui:param name="score" value="#{item.se.score}"/>                                    
-                                        </ui:include> 
-									</rich:column>
-								</rich:dataTable>
-									
-								<table>
-									<tr><td style="border-bottom: 0px;">
-										<rich:datascroller id="bottomScroller" for="items" immediate="true" align="center"
-	    									scrollerListener="#{trendBean.scrollerListener}" maxPages="5"
-	        								reRender="topScroller,countString,items,xypanel">        			
-	        							</rich:datascroller>
-	        						</td></tr>
-	        					</table>
-						
-							</h:form> 
-							</div>
-						
-						</div>
-
-						<div class="panel_sw">
-							<div class="panel_statusbar"></div>
-						</div>
-					</div>
-	
-					</div>								
-
-					<!-- END PANEL -->
-		
-				</td>
-  			</tr>
-		</table>
-
+    	<ui:define name="content">
+           <ui:include src="/includes/overviewHeader.xhtml">
+             <ui:param name="showContextMenu" value="true"/>
+           </ui:include>
+    		<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" class="dash_table">
+      			<tr>
+        			<td width="465" valign="top">
+    					<!-- START OVERALL/R PANEL -->
+    					<!-- leave reRenderList alone -->
+    					<ui:include src="/includes/overallScore.xhtml">
+    						<ui:param name="reRenderList" value="overallScoreForm,overallPanel,hiddenField3"/>
+    						<ui:param name="ajaxStatusID" value="overall_status_2" /> 
+    						<ui:param name="pieDef" value="#{overallScoreBean.overallPieDef}"/>
+    						<ui:param name="overallScoreStyle" value="#{overallScoreBean.overallScoreStyle}"/>
+    						<ui:param name="overallScore" value="#{overallScoreBean.overallScore}"/>
+    						<ui:param name="duration" value="#{overallScoreDurationBean.duration}" />   
+                			<ui:param name="thirtyDaysOn" value="#{overallScoreDurationBean.styleClass30Days}"/>
+    						<ui:param name="threeMonthsOn" value="#{overallScoreDurationBean.styleClass3Months}"/>
+    						<ui:param name="sixMonthsOn" value="#{overallScoreDurationBean.styleClass6Months}"/>
+    						<ui:param name="twelveMonthsOn" value="#{overallScoreDurationBean.styleClass12Months}" />  
+    						<ui:param name="flyNavRule" value="go_fleetDetail" />
+    						<ui:param name="flySelectedTab" value="overall_full_screen" />  
+    						<ui:param name="flyOutImage" value="ico_expand.png" />
+    						<ui:param name="zorder" value="6"/>	
+    					</ui:include>		
+    					<!-- END PANEL -->
+    					<div class="spacer"></div>
+    				
+    					<!-- START MPG PANEL -->
+    					<ui:include src="/includes/mpgChart.xhtml">	
+    						<ui:param name="title" value="#{messages.mpg_title}"/>	
+                			<ui:param name="barDef" value="#{mpgBean.barDef}"/>  
+                            <ui:param name="xyheight" value="350"/>
+                            <ui:param name="xywidth" value="440"/>  
+                            <ui:param name="flyNavRule" value="go_fleetDetail" />
+                            <ui:param name="inFlyOut" value="false" /> 
+                            <ui:param name="zorder" value="6"/>	
+    					</ui:include>
+    					<!-- END MPG -->	
+    
+    				</td>
+    	
+        			<td width="10"><img src="#{facesContext.externalContext.request.contextPath}/images/x.gif" width="10" /></td>
+    	
+    	    		<td width="465" valign="top">
+    
+    					<!-- START TREND PANEL -->
+    
+    					<div class="">
+    
+    						<div class="panel_nw">
+    							<div class="panel_title">
+    								<span class="line">#{messages.trendReport_header}</span> 
+    								<ui:include src="/includes/dateLinksWithFlyOut.xhtml">
+    									<ui:param name="ajaxForm" value="trend_form" />
+    									<ui:param name="ajaxStatusID" value="trend_status" /> 
+    									<ui:param name="reRenderList" value="hiddenField1,xypanel,trendTable:items,trend_form,countString"/>
+    									<ui:param name="thirtyDaysOn" value="#{navigationDurationBean.styleClass30Days}"/>
+    									<ui:param name="threeMonthsOn" value="#{navigationDurationBean.styleClass3Months}"/>
+    									<ui:param name="sixMonthsOn" value="#{navigationDurationBean.styleClass6Months}"/>
+    									<ui:param name="twelveMonthsOn" value="#{navigationDurationBean.styleClass12Months}"/>
+    			            			<ui:param name="duration" value="#{navigationDurationBean.duration}" />
+    			            			<ui:param name="flyNavRule" value="go_fleetDetail" />
+    									<ui:param name="flySelectedTab" value="trend_full_screen" />  
+    									<ui:param name="flyOutImage" value="ico_expand.png" />
+    									<ui:param name="report" value="TREND" />
+    								</ui:include>	
+    							</div>
+    		
+    						</div>
+    
+    
+    						<div class="panel_w">
+    								<div class="panel_content">
+    								<rich:panel style="height:300;width:445">
+    									<div id="chartdiv2" align="center"></div>
+    									<script type="text/javascript">
+    										var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSLine.swf", "TrendChartId", "445", "300", "0", "1");						   						   		
+    										chart.setDataXML("<chart></chart>");
+    										chart.setTransparent(true);
+    										chart.render("chartdiv2");
+    									</script>
+    								</rich:panel> 	
+    								<!-- Start xy graph --> 	
+    								<rich:panel id="xypanel">
+    								<h:inputHidden value="#{trendBean.lineDef}" id="hiddenField1" />
+    
+    								<script type="text/javascript">
+    									 var targetElement = document.getElementById("hiddenField1");
+    									 var chartObj = getChartFromId("TrendChartId");
+    
+    									 chartObj.setDataXML(targetElement.value);
+    
+    									 function FC_Rendered(DOMId)
+    									 {
+    								         //If it's our required chart
+    								         if (DOMId=="TrendChartId"){
+    								            //Simply alert
+    										           
+    											chartObj = getChartFromId("TrendChartId");
+    											chartObj.setDataXML(targetElement.value);
+    								            return;
+    								         }
+    								      }
+    								</script>
+    							</rich:panel> 
+    							<!-- End xy graph -->			
+    	
+    							<div style="text-align: right;" >													
+    								<h:outputText id="countString" value="#{trendBean.countString}"/><rich:spacer width="15" height="5"/>
+    							</div>					
+    						
+    							<div class="datagrid">
+    							<h:form id="trendTable">
+    								<table style="margin-bottom: 0px;">
+    									<tr>
+    										<td style="border-bottom: 0px;">
+    											<rich:datascroller id="topScroller" for="items" immediate="true"
+    			        								scrollerListener="#{trendBean.scrollerListener}" maxPages="5" align="center"
+    			        								reRender="bottomScroller,countString,items,xypanel">        			
+    					        				</rich:datascroller>
+    					        			</td>
+    				        			</tr>
+    			        			</table>
+            							
+       								<h:inputHidden id="hiddenGroupID" value="#{navigationBean.groupID}"/>   						
+    								<rich:dataTable value="#{trendBean.scoreableEntities}" id="items"
+    											var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" 
+    											cellspacing="1" rows="#{trendBean.numRowsPerPg}" width="100%">
+    									
+    									<rich:column width="20">
+    										<f:facet name="header">
+    											<h:outputText value=" " />
+    										</f:facet>
+    										<rich:spacer width="17" height="17"
+    											style="background-color:#{item.colorKey};border-style:solid;border-width:1px;border-color:#000000">
+    										</rich:spacer>
+    									</rich:column>
+    									<rich:column headerClass="sortable-text #{trendBean.sortColumn eq 'se.identifier'? (trendBean.sortDirection eq 'ASC' ? 'forwardSort' : 'reverseSort') : ''}">
+    										<f:facet name="header">
+    											<a4j:commandLink 
+    												value="#{messages.trendReport_header_divisionTeam}" 
+    												reRender="xypanel,topScroller,bottomScroller,items"
+    												action="#{trendBean.sort}" ajaxSingle="true">
+    												<f:setPropertyActionListener target="#{trendBean.sortDirection}" value="#{trendBean.sortDirection eq 'DESC' ? 'ASC' : 'DESC'}"/>
+    												<f:setPropertyActionListener target="#{trendBean.sortColumn}" value="se.identifier" />										
+    											</a4j:commandLink>
+    										</f:facet>
+                                            <pretty:link mappingId="dashboard">
+                                                <f:param value="#{item.se.entityID}"/>
+                                                <h:outputText value="#{item.se.identifier}" />
+                                            </pretty:link>
+    									</rich:column>
+    									<rich:column width="73" 
+    										headerClass="sortable-text #{trendBean.sortColumn eq 'se.score'? (trendBean.sortDirection eq 'ASC' ? 'forwardSort' : 'reverseSort') : ''}">
+    										<f:facet name="header">
+    											<a4j:commandLink 
+    												value="#{messages.trendReport_header_score}" 
+    												reRender="xypanel,topScroller,bottomScroller,items"
+    												action="#{trendBean.sort}" ajaxSingle="true">
+    												<f:setPropertyActionListener target="#{trendBean.sortDirection}" value="#{trendBean.sortDirection eq 'DESC' ? 'ASC' : 'DESC'}"/>		
+    												<f:setPropertyActionListener target="#{trendBean.sortColumn}" value="se.score" />																			
+    											</a4j:commandLink>
+    
+    										</f:facet>
+                                            <ui:include src="/includes/scoreBox.xhtml">  
+                                                <ui:param name="scoreStyle" value="#{item.style}"/>                                  
+                                                <ui:param name="score" value="#{item.se.score}"/>                                    
+                                            </ui:include> 
+    									</rich:column>
+    								</rich:dataTable>
+    									
+    								<table>
+    									<tr><td style="border-bottom: 0px;">
+    										<rich:datascroller id="bottomScroller" for="items" immediate="true" align="center"
+    	    									scrollerListener="#{trendBean.scrollerListener}" maxPages="5"
+    	        								reRender="topScroller,countString,items,xypanel">        			
+    	        							</rich:datascroller>
+    	        						</td></tr>
+    	        					</table>
+    						
+    							</h:form> 
+    							</div>
+    						
+    						</div>
+    
+    						<div class="panel_sw">
+    							<div class="panel_statusbar"></div>
+    						</div>
+    					</div>
+    	
+    					</div>								
+    
+    					<!-- END PANEL -->
+    		
+    				</td>
+      			</tr>
+    		</table>
+        </ui:define>
 </ui:composition>
+

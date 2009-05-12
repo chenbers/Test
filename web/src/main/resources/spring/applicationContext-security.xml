@@ -7,15 +7,15 @@
         <concurrent-session-control max-sessions="1" exception-if-maximum-exceeded="true" />
         <intercept-url pattern="/secured/admin/**" access="ROLE_CUSTOMUSER,ROLE_SUPERUSER" />
         <intercept-url pattern="/secured/**" access="ROLE_READONLY,ROLE_NORMALUSER,ROLE_SUPERVISOR,ROLE_CUSTOMUSER,ROLE_SUPERUSER" />
-        <logout logout-success-url="/login.faces" />
+        <logout logout-success-url="/login" />
     </http>
 
     <!--  Overriding the default AuthenticationProcessingFilter so that we can redirect to the correct page based on the user's group level -->
     <!--  i.e. fleet, region, team, and eventually driver levels  -->
     <beans:bean id="proFilter" class="com.inthinc.pro.security.ProAuthenticationProcessingFilter">
         <beans:property name="authenticationManager" ref="authenticationManager" />
-        <beans:property name="authenticationFailureUrl" value="/login.faces" />
-        <beans:property name="defaultTargetUrl" value="/secured/home.faces" />
+        <beans:property name="authenticationFailureUrl" value="/login" />
+        <beans:property name="defaultTargetUrl" value="/secured/dashboard" />
         <beans:property name="filterProcessesUrl" value="/j_spring_security_check" />
         <beans:property name="alwaysUseDefaultTargetUrl" value="true"/>
         <custom-filter position="AUTHENTICATION_PROCESSING_FILTER" />
@@ -24,7 +24,7 @@
         <beans:property name="groupDAO" ref="groupDAO" />
     </beans:bean>
     <beans:bean id="authenticationProcessingFilterEntryPoint" class="org.springframework.security.ui.webapp.AuthenticationProcessingFilterEntryPoint">
-        <beans:property name="loginFormUrl" value="/login.faces" />
+        <beans:property name="loginFormUrl" value="/login" />
         <beans:property name="forceHttps" value="false" />
     </beans:bean>
     <beans:bean id="authenticationManager" class="org.springframework.security.providers.ProviderManager">

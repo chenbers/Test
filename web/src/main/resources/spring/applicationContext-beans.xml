@@ -24,6 +24,10 @@
     	 <property name="driverDAO" ref="driverDAO"></property>
          <property name="durationBean" ref="navigationDurationBean"/>
     </bean>
+    <bean id="dashBoardBean" class="com.inthinc.pro.backing.DashBoardBean" scope="request" parent="baseBean">
+        <property name="groupDAO" ref="groupDAO"/>
+        <property name="navigationBean" ref="navigationBean"/>
+    </bean>
     
     <!-- Printing Reports -->
     <bean id="reportRenderer" class="com.inthinc.pro.reports.ReportRendererImpl" scope="request">

@@ -102,7 +102,7 @@
 
     <!-- Welcome files -->
     <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
+        <welcome-file>login</welcome-file>
     </welcome-file-list>
     <!-- length of session before logging off -->
     <session-config>

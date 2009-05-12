@@ -1,7 +1,7 @@
 <ui:composition template="/layout/layout.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:rich="http://richfaces.org/rich" xmlns:a4j="http://richfaces.org/a4j" xmlns:f="http://java.sun.com/jsf/core">
+    xmlns:rich="http://richfaces.org/rich" xmlns:a4j="http://richfaces.org/a4j" xmlns:f="http://java.sun.com/jsf/core" xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
-    <ui:param name="redFlagsSelected" value="current" />
+    <ui:param name="notificationsSelected" value="current" />
 
     <ui:define name="scripts">
         <script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}" type="text/javascript"></script>
@@ -27,22 +27,22 @@
 
     <ui:define name="subnavigation">
         <div class="sub_nav">
-        <div class="sub_nav-bg"><h:form>
-            <ul>
-                <li id="redflagtab" class="#{customSubSelected}"><a4j:htmlCommandLink action="go_redFlags">
-                    <span>#{messages.notes_tab_redflag}</span>
-                </a4j:htmlCommandLink></li>
-                <li id="safetytab" class="#{safetySubSelected}"><a4j:htmlCommandLink action="go_safety">
-                    <span>#{messages.notes_tab_safety}</span>
-                </a4j:htmlCommandLink></li>
-                <li id="diagnosticstab" class="#{diagnosticsSubSelected}"><a4j:htmlCommandLink action="go_diagnostics">
-                    <span>#{messages.notes_tab_diagnostics}</span>
-                </a4j:htmlCommandLink></li>
-                <li id="emergencytab" class="#{emergencySubSelected}"><a4j:htmlCommandLink action="go_emergency">
-                    <span>#{messages.notes_tab_emergency}</span>
-                </a4j:htmlCommandLink></li>
-            </ul>
-        </h:form></div>
+            <div class="sub_nav-bg">
+                <ul>
+                    <li id="redflagtab" class="#{customSubSelected}">
+                        <pretty:link mappingId="redflags"><span>#{messages.notes_tab_redflag}</span></pretty:link>
+                    </li>
+                    <li id="safetytab" class="#{safetySubSelected}">
+                        <pretty:link mappingId="safety"><span>#{messages.notes_tab_safety}</span></pretty:link>
+                    </li>
+                    <li id="diagnosticstab" class="#{diagnosticsSubSelected}">
+                        <pretty:link mappingId="diagnostics"><span>#{messages.notes_tab_diagnostics}</span></pretty:link>
+                    </li>
+                    <li id="emergencytab" class="#{emergencySubSelected}">
+                        <pretty:link mappingId="emergency"><span>#{messages.notes_tab_emergency}</span></pretty:link>
+                    </li>
+                </ul>
+            </div>
         </div>
     </ui:define>
 </ui:composition>
