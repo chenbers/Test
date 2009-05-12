@@ -1,5 +1,8 @@
 package com.inthinc.pro.model;
 
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 public enum ForwardCommandType
 {
     GET_GPS_GET_LOCATION(10),
@@ -145,17 +148,31 @@ public enum ForwardCommandType
         this.code = code;
         this.description = "";
     }
+
+    private static final Map<Integer, ForwardCommandType> lookup = new HashMap<Integer, ForwardCommandType>();
+    static
+    {
+        for (ForwardCommandType p : EnumSet.allOf(ForwardCommandType.class))
+        {
+            lookup.put(p.code, p);
+        }
+    }
     
+    public static ForwardCommandType getForwardCommandType(Integer code)
+    {
+        return lookup.get(code);
+    }
+
     public String getName()
     {
         return this.name();
     }
-    
+
     public Integer getCode()
     {
         return this.code;
     }
-    
+
     public String getDescription()
     {
         return this.description;
