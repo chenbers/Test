@@ -14,10 +14,12 @@ import com.inthinc.pro.backing.VehiclesBean.VehicleView;
 import com.inthinc.pro.backing.ui.AutocompletePicker;
 import com.inthinc.pro.backing.ui.ListPicker;
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.BaseAlert;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
@@ -29,6 +31,7 @@ import com.inthinc.pro.validators.EmailValidator;
 public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAlertView> extends BaseAdminBean<T> implements PersonChangeListener
 {
     protected UserDAO          userDAO;
+    protected PersonDAO        personDAO;
     protected DriverDAO        driverDAO;
     private VehiclesBean       vehiclesBean;
     private String             assignType;
@@ -42,6 +45,11 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     public void setUserDAO(UserDAO userDAO)
     {
         this.userDAO = userDAO;
+    }
+
+    public void setPersonDAO(PersonDAO personDAO)
+    {
+        this.personDAO = personDAO;
     }
 
     public void setDriverDAO(DriverDAO driverDAO)
@@ -153,11 +161,15 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     {
         if (peoplePicker == null)
         {
-            final List<User> users = userDAO.getUsersInGroupHierarchy(getTopGroup().getGroupID());
-            final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(users.size());
-            for (final User user : users)
-                allUsers.add(new SelectItem(user.getUserID(), user.getPerson().getFirst() + ' ' + user.getPerson().getLast()));
-            MiscUtil.sortSelectItems(allUsers);
+            //final List<User> users = userDAO.getUsersInGroupHierarchy(getTopGroup().getGroupID());
+            final List<Person> people = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());
+            final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(people.size());
+            
+            for (final Person person : people)
+                allUsers.add(new SelectItem(person.getPersonID(), person.getFirst() + " " + person.getLast()));
+                //allUsers.add(new SelectItem(user.getUserID(), user.getPerson().getFirst() + ' ' + user.getPerson().getLast()));
+            
+                MiscUtil.sortSelectItems(allUsers);
 
             final ArrayList<SelectItem> notifyPeople = getNotifyPicked();
 
@@ -173,9 +185,10 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         {
             for (final Integer id : getItem().getNotifyUserIDs())
             {
-                final User user = userDAO.findByID(id);
-                if (user != null)
-                    notifyPeople.add(new SelectItem(user.getUserID(), user.getPerson().getFirst() + ' ' + user.getPerson().getLast()));
+                //final User user = userDAO.findByID(id);
+                final Person person = personDAO.findByID(id);
+                if (person != null)
+                    notifyPeople.add(new SelectItem(person.getPersonID(), person.getFirst() + ' ' + person.getLast()));
             }
             MiscUtil.sortSelectItems(notifyPeople);
         }
@@ -284,8 +297,10 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
 
         // set notify user IDs
         final ArrayList<Integer> userIDs = new ArrayList<Integer>(getPeoplePicker().getPicked().size());
+        
         for (final SelectItem item : getPeoplePicker().getPicked())
             userIDs.add((Integer) item.getValue());
+        
         getItem().setNotifyUserIDs(userIDs);
 
         return super.save();
