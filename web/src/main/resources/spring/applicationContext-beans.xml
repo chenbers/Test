@@ -163,6 +163,7 @@
         <property name="zoneAlertDAO" ref="zoneAlertDAO"></property>
         <property name="groupDAO" ref="groupDAO"></property>
         <property name="driverDAO" ref="driverDAO"></property>
+        <property name="personDAO" ref="personDAO"></property>
         <property name="userDAO" ref="userDAO"></property>
         <property name="tablePreferenceDAO" ref="tablePreferenceDAO"></property>
         <property name="zonesBean" ref="zonesBean"></property>
