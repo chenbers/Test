@@ -17,15 +17,15 @@
     </url-mapping>  
     <url-mapping id="fleet">
         <pattern>/secured/fleet/#{navigationBean.groupID}</pattern>
-        <view-id>/secured/home.faces</view-id>
+        <view-id>/secured/dashboard/home.faces</view-id>
     </url-mapping> 
     <url-mapping id="division">
         <pattern>/secured/division/#{navigationBean.groupID}</pattern>
-        <view-id>/secured/division.faces</view-id>
+        <view-id>/secured/dashboard/division.faces</view-id>
     </url-mapping> 
     <url-mapping id="team">
         <pattern>/secured/team/#{navigationBean.groupID}</pattern>
-        <view-id>/secured/team.faces</view-id>
+        <view-id>/secured/dashboard/team.faces</view-id>
     </url-mapping>   
     
 	<url-mapping id="groupOverview">
