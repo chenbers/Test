@@ -8,7 +8,7 @@
 		<view-id>/login.faces</view-id>
 	</url-mapping>
     <url-mapping id="init-dashboard">
-        <pattern>/secured/dashboard</pattern>
+        <pattern>/secured/dashboard/</pattern>
         <view-id>#{dashBoardBean.getViewPath}</view-id>    
     </url-mapping>
     <url-mapping id="dashboard">
