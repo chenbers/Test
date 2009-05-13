@@ -19,6 +19,7 @@ import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.Device;
+import com.inthinc.pro.model.DeviceReportItem;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
@@ -467,3 +468,31 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         }
     }
 }
+  /*
+    
+    private List<Vehicle> vehicleList;
+    private List<Device> accountDeviceList;
+    private List<DeviceReportItem> deviceList;
+
+    public void init()
+    {
+        vehicleList = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
+        accountDeviceList = deviceDAO.getDevicesByAcctID(getAccountID());
+        deviceList = new ArrayList<DeviceReportItem>();
+        for (Device device : accountDeviceList)
+        {
+            for (Vehicle vehicle : vehicleList)
+            {
+                if (vehicle.getDeviceID().equals(device.getDeviceID()))
+                {
+                    DeviceReportItem item = new DeviceReportItem();
+                    item.setDevice(device);
+                    item.setVehicle(vehicle);
+                    deviceList.add(item);
+                }
+            }
+        }
+    }
+
+
+*/
