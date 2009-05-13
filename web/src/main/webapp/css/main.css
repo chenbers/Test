@@ -1396,7 +1396,6 @@ table.left_tab_table tr
 
 table.left_tab_table td
 {
-      padding: 4px 0px;
       padding: 7px;
       background: url(../images/ls_tab_off_top.png) no-repeat top left;
       font: normal 10px Verdana, Arial, Helvetica, sans-serif;

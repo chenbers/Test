@@ -34,4 +34,25 @@ ul.fdtablePaginater {text-align:center;}
 {
    border-bottom: 1px solid #8BAD37; 
 }
+
+/* LEFT Tabs for radio button list */
+
+table.left_tab_table {
+	border-spacing: 0px;
+}
+
+table.left_tab_table tr
+{
+      background: none;
+}
+
+table.left_tab_table td
+{
+      padding: 7px;
+      background: #F0F0F0;
+      border-left: solid 1px #E1E1E1;
+      border-top: solid 1px #E1E1E1;
+      border-bottom: solid 1px #E1E1E1;
+      font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+}
         
