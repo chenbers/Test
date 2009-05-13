@@ -1,0 +1,35 @@
+<ui:composition
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:pretty="http://ocpsoft.com/prettyfaces">
+       
+       <!-- PARAMETERS
+          tabSelected - boolean value 'true' or 'false'
+          iconFileName - file name of the tab icon
+          mappingId - pretty faces mapping id
+          value - value to be displayed
+        -->
+       
+       <dl class="#{(tabSelected == 'true') ? 'vl_tab_on' : 'vl_tab_off'}">
+         <dt></dt>
+         <dd>
+            <table>
+               <tr>
+                  <td align="center" valign="top">
+                     <img src="#{facesContext.externalContext.request.contextPath}/images/#{iconFileName}" align="left" />
+                  </td>
+                  <td>
+                     <pretty:link mappingId="#{mappingId}">
+                        <h:outputText value="#{value}"/>
+                     </pretty:link>
+                  </td>
+               </tr>
+            </table>
+         </dd>
+       </dl>
+          
+</ui:composition>

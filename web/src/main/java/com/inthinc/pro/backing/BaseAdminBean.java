@@ -777,6 +777,11 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         refreshItems();
         return getFinishedRedirect();
     }
+    
+    public void resetList()
+    {
+        refreshItems();
+    }
 
     
 

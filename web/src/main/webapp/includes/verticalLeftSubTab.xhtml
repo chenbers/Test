@@ -1,0 +1,32 @@
+<ui:composition
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:pretty="http://ocpsoft.com/prettyfaces">
+       
+       <!-- PARAMETERS
+          tabSelected - boolean value 'true' or 'false' defaults to false.
+          iconFileName - (optional) file name of the tab icon
+          action - required
+          actionBean - required
+          value - value to be displayed
+        -->
+       
+       <div class="#{(tabSelected == 'true') ? 'ls_tab_sub_on' : 'ls_tab_sub_off'}">
+            <table>
+               <tr>
+                  <td align="center" valign="top">
+                     <img src="#{facesContext.externalContext.request.contextPath}/images/#{iconFileName}" align="left" />
+                  </td>
+                  <td>
+                     <!-- for now this works in place of the pretty:link. Needs major refactoring to use pretty link -->
+                     <a4j:htmlCommandLink action="#{actionBean[action]}" value="#{value}" immediate="true" />
+                  </td>
+               </tr>
+            </table>
+      </div>
+          
+</ui:composition>

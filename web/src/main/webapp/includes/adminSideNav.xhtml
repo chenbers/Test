@@ -4,7 +4,8 @@
                 xmlns:c="http://java.sun.com/jstl/core"
                 xmlns:a4j="http://richfaces.org/a4j"
                 xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-                xmlns:pretty="http://ocpsoft.com/prettyfaces">
+                xmlns:pretty="http://ocpsoft.com/prettyfaces"
+                xmlns:tiwipro="http://pro.tiwi.com/jsf">
 
 <!-- 
   Parameters:
@@ -18,110 +19,177 @@
     <ui:param name="selectedAction" value="action2_a" />
     <ui:param name="parentAction" value="action2" />
   </ui:include>
-
  -->
   <ui:composition>
-
     <h:form id="side-nav-form">
-
+      
       <table width="130" border="0" cellpadding="0" cellspacing="0" style="margin-top: 40px;">
         <tr>
-          <td valign="top" class="#{(selectedAction == 'go_adminPeople') ? 'ls_tab_on' : 'ls_tab_off'}">
-            <a4j:htmlCommandLink action="#{personBean.getResetListRedirect}" value="#{messages.adminSideNav_go_adminPeople}" styleClass="ls_tab_driver" immediate="true" />
+          <td valign="top">
+               <ui:include src="verticalLeftTab.xhtml">
+                  <ui:param name="iconFileName" value="ico_driver.png"/>
+                  <ui:param name="mappingId" value="adminPeople"/>
+                  <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminPeople') ? 'true' : 'false'}"/>
+                  <ui:param name="value" value="#{messages.adminSideNav_go_adminPeople}"/>
+               </ui:include>
           </td>
         </tr>
         <ui:fragment rendered="#{parentAction == 'go_adminPeople'}">
           <tr>
             <td valign="top" class="sub_wrapper">
-              <div class="#{(selectedAction == 'go_adminAddPerson') ? 'ls_tab_sub_active' : 'ls_tab_sub'}">
-                <a4j:htmlCommandLink action="#{personBean.add}" value="#{messages.adminSideNav_go_adminAddPerson}" styleClass="ls_tab_add_driver" immediate="true" />
-              </div>
+              <ui:include src="verticalLeftSubTab.xhtml">
+                  <ui:param name="iconFileName" value="ico_add_driver.png"/>
+                  <ui:param name="actionBean" value="#{personBean}"/>
+                  <ui:param name="action" value="add"/>
+                  <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminAddPerson') ? 'true' : 'false'}"/>
+                  <ui:param name="value" value="#{messages.adminSideNav_go_adminAddPerson}"/>
+              </ui:include>
             </td>
           </tr>
         </ui:fragment>
         <tr>
-          <td valign="top" class="#{(selectedAction == 'go_adminVehicles') ? 'ls_tab_on' : 'ls_tab_off'}">
-            <a4j:htmlCommandLink action="#{vehiclesBean.getResetListRedirect}" value="#{messages.adminSideNav_go_adminVehicles}" styleClass="ls_tab_vehicle" immediate="true" />
+          <td valign="top">
+            <ui:include src="verticalLeftTab.xhtml">
+               <ui:param name="iconFileName" value="ico_vehicle.png"/>
+               <ui:param name="mappingId" value="adminVehicles"/>
+               <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminVehicles') ? 'true' : 'false'}"/>
+               <ui:param name="value" value="#{messages.adminSideNav_go_adminVehicles}"/>
+            </ui:include>
           </td>
         </tr>
         <ui:fragment rendered="#{parentAction == 'go_adminVehicles'}">
           <tr>
             <td valign="top" class="sub_wrapper">
-              <div class="#{(selectedAction == 'go_adminAddVehicle') ? 'ls_tab_sub_active' : 'ls_tab_sub'}">
-                <a4j:htmlCommandLink action="#{vehiclesBean.add}" value="#{messages.adminSideNav_go_adminAddVehicle}" styleClass="ls_tab_add_vehicle" immediate="true" />
-              </div>
+              <ui:include src="verticalLeftSubTab.xhtml">
+                  <ui:param name="iconFileName" value="ico_add_vehicle.png"/>
+                  <ui:param name="actionBean" value="#{vehiclesBean}"/>
+                  <ui:param name="action" value="add"/>
+                  <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminAddVehicle') ? 'true' : 'false'}"/>
+                  <ui:param name="value" value="#{messages.adminSideNav_go_adminAddVehicle}"/>
+              </ui:include>
             </td>
           </tr>
         </ui:fragment>
         <tr>
-          <td valign="top" class="#{(selectedAction == 'go_adminDevices') ? 'ls_tab_on' : 'ls_tab_off'}">
-            <a4j:htmlCommandLink action="#{devicesBean.getResetListRedirect}" value="#{messages.adminSideNav_go_adminDevices}" styleClass="ls_tab_tiwi" immediate="true" />
+          <td valign="top">
+            <ui:include src="verticalLeftTab.xhtml">
+               <ui:param name="iconFileName" value="ico_tiwi.png"/>
+               <ui:param name="mappingId" value="adminDevices"/>
+               <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminDevices') ? 'true' : 'false'}"/>
+               <ui:param name="value" value="#{messages.adminSideNav_go_adminDevices}"/>
+            </ui:include>
           </td>
         </tr>
         <ui:fragment rendered="#{parentAction == 'go_adminDevices'}">
           <tr>
             <td valign="top" class="sub_wrapper">
-              <div class="#{(selectedAction == 'go_adminAddDevice') ? 'ls_tab_sub_active' : 'ls_tab_sub'}">
-                <a4j:htmlCommandLink action="#{devicesBean.add}" value="#{messages.adminSideNav_go_adminAddDevice}" styleClass="ls_tab_add_tiwi" immediate="true" />
-              </div>
+              <ui:include src="verticalLeftSubTab.xhtml">
+                  <ui:param name="iconFileName" value="ico_add_tiwi.png"/>
+                  <ui:param name="actionBean" value="#{devicesBean}"/>
+                  <ui:param name="action" value="add"/>
+                  <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminAddDevice') ? 'true' : 'false'}"/>
+                  <ui:param name="value" value="#{messages.adminSideNav_go_adminAddDevice}"/>
+              </ui:include>
             </td>
           </tr>
         </ui:fragment>
         <tr>
-          <td valign="top" class="#{(selectedAction == 'go_adminZones') ? 'ls_tab_on' : 'ls_tab_off'}">
-            <a4j:htmlCommandLink action="pretty:adminZones" value="#{messages.adminSideNav_go_adminZones}" styleClass="ls_tab_zones" immediate="true" />
+          <td valign="top">
+            <ui:include src="verticalLeftTab.xhtml">
+               <ui:param name="iconFileName" value="ico_zones.png"/>
+               <ui:param name="mappingId" value="adminZones"/>
+               <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminZones') ? 'true' : 'false'}"/>
+               <ui:param name="value" value="#{messages.adminSideNav_go_adminZones}"/>
+            </ui:include>
           </td>
         </tr>
         <tr>
-          <td valign="top" class="#{(selectedAction == 'go_adminZoneAlerts') ? 'ls_tab_on' : 'ls_tab_off'}">
-            <a4j:htmlCommandLink action="#{zoneAlertsBean.getResetListRedirect}" value="#{messages.adminSideNav_go_adminZoneAlerts}" styleClass="ls_tab_zone_alerts" immediate="true" />
+          <td valign="top">
+            <ui:include src="verticalLeftTab.xhtml">
+               <ui:param name="iconFileName" value="ico_zone_alerts.png"/>
+               <ui:param name="mappingId" value="adminZoneAlerts"/>
+               <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminZoneAlerts') ? 'true' : 'false'}"/>
+               <ui:param name="value" value="#{messages.adminSideNav_go_adminZoneAlerts}"/>
+            </ui:include>
           </td>
         </tr>
         <ui:fragment rendered="#{parentAction == 'go_adminZoneAlerts'}">
           <tr>
             <td valign="top" class="sub_wrapper">
-              <div class="#{(selectedAction == 'go_adminAddZoneAlert') ? 'ls_tab_sub_active' : 'ls_tab_sub'}">
-                <a4j:htmlCommandLink action="#{zoneAlertsBean.add}" value="#{messages.adminSideNav_go_adminAddZoneAlert}" styleClass="ls_tab_add_zone_alerts" immediate="true" />
-              </div>
+               <ui:include src="verticalLeftSubTab.xhtml">
+                  <ui:param name="iconFileName" value="ico_add_zone_alerts.png"/>
+                  <ui:param name="actionBean" value="#{zoneAlertsBean}"/>
+                  <ui:param name="action" value="add"/>
+                  <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminAddZoneAlert') ? 'true' : 'false'}"/>
+                  <ui:param name="value" value="#{messages.adminSideNav_go_adminAddZoneAlert}"/>
+               </ui:include>
             </td>
           </tr>
         </ui:fragment>
         <tr>
-          <td valign="top" class="#{(selectedAction == 'go_adminRedFlags') ? 'ls_tab_on' : 'ls_tab_off'}">
-            <a4j:htmlCommandLink action="#{redFlagAlertsBean.getResetListRedirect}" value="#{messages.adminSideNav_go_adminRedFlags}" styleClass="ls_tab_redflag" immediate="true" />
+          <td valign="top">
+            <ui:include src="verticalLeftTab.xhtml">
+               <ui:param name="iconFileName" value="ico_red_flag.png"/>
+               <ui:param name="mappingId" value="adminRedFlags"/>
+               <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminRedFlags') ? 'true' : 'false'}"/>
+               <ui:param name="value" value="#{messages.adminSideNav_go_adminRedFlags}"/>
+            </ui:include>
           </td>
         </tr>
         <ui:fragment rendered="#{parentAction == 'go_adminRedFlags'}">
           <tr>
             <td valign="top" class="sub_wrapper">
-              <div class="#{(selectedAction == 'go_adminAddRedFlag') ? 'ls_tab_sub_active' : 'ls_tab_sub'}">
-                <a4j:htmlCommandLink action="#{redFlagAlertsBean.add}" value="#{messages.adminSideNav_go_adminAddRedFlag}" styleClass="ls_tab_add_redflag" immediate="true" />
-              </div>
+              <ui:include src="verticalLeftSubTab.xhtml">
+                  <ui:param name="iconFileName" value="ico_add_redflag.png"/>
+                  <ui:param name="actionBean" value="#{redFlagAlertsBean}"/>
+                  <ui:param name="action" value="add"/>
+                  <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminAddRedFlag') ? 'true' : 'false'}"/>
+                  <ui:param name="value" value="#{messages.adminSideNav_go_adminAddRedFlag}"/>
+               </ui:include>
             </td>
           </tr>
         </ui:fragment>
         <tr>
-          <td valign="top" class="#{(selectedAction == 'go_adminReportSchedules') ? 'ls_tab_on' : 'ls_tab_off'}">
-            <a4j:htmlCommandLink action="#{reportScheduleBean.getResetListRedirect}" value="#{messages.adminSideNav_go_adminReportSchedules}" styleClass="ls_tab_report_schedule" immediate="true" />
+          <td valign="top">
+            <ui:include src="verticalLeftTab.xhtml">
+               <ui:param name="iconFileName" value="ico_email.png"/>
+               <ui:param name="mappingId" value="adminReportSchedules"/>
+               <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminReportSchedules') ? 'true' : 'false'}"/>
+               <ui:param name="value" value="#{messages.adminSideNav_go_adminReportSchedules}"/>
+            </ui:include>
           </td>
         </tr>
         <ui:fragment rendered="#{parentAction == 'go_adminReportSchedules'}">
         	<tr>
             <td valign="top" class="sub_wrapper">
-              <div class="#{(selectedAction == 'go_adminAddReportSchedule') ? 'ls_tab_sub_active' : 'ls_tab_sub'}">
-                <a4j:htmlCommandLink action="#{reportScheduleBean.add}" value="#{messages.adminSideNav_go_adminAddReportSchedule}" styleClass="ls_tab_add_report_schedule" immediate="true" />
-              </div>
+              <ui:include src="verticalLeftSubTab.xhtml">
+                  <ui:param name="iconFileName" value="ico_email.png"/>
+                  <ui:param name="actionBean" value="#{reportScheduleBean}"/>
+                  <ui:param name="action" value="add"/>
+                  <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminAddReportSchedule') ? 'true' : 'false'}"/>
+                  <ui:param name="value" value="#{messages.adminSideNav_go_adminAddReportSchedule}"/>
+               </ui:include>
             </td>
           </tr>
         </ui:fragment>
         <tr>
-          <td valign="top" class="#{(selectedAction == 'go_adminOrganization') ? 'ls_tab_on' : 'ls_tab_off'}">
-            <a4j:htmlCommandLink action="pretty:adminOrganization" value="#{messages.adminSideNav_go_adminOrganization}" styleClass="ls_tab_organization" immediate="true" />
+          <td valign="top">
+            <ui:include src="verticalLeftTab.xhtml">
+               <ui:param name="iconFileName" value="ico_building.png"/>
+               <ui:param name="mappingId" value="adminOrganization"/>
+               <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminOrganization') ? 'true' : 'false'}"/>
+               <ui:param name="value" value="#{messages.adminSideNav_go_adminOrganization}"/>
+            </ui:include>
           </td>
         </tr>
         <tr>
-          <td valign="top" class="#{(selectedAction == 'go_adminSBSCR') ? 'ls_tab_on' : 'ls_tab_off'}">
-            <a4j:htmlCommandLink action="pretty:adminSpeedByStreet" value="#{messages.adminSideNav_go_adminSBSCR}" styleClass="ls_tab_sbscr" immediate="true" />
+          <td valign="top">
+            <ui:include src="verticalLeftTab.xhtml">
+               <ui:param name="iconFileName" value="ico_spd_limit.png"/>
+               <ui:param name="mappingId" value="adminSpeedByStreet"/>
+               <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminSBSCR') ? 'true' : 'false'}"/>
+               <ui:param name="value" value="#{messages.adminSideNav_go_adminSBSCR}"/>
+            </ui:include>
           </td>
         </tr>
        </table>

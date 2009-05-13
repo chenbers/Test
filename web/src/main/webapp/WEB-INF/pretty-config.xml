@@ -90,6 +90,7 @@
     <url-mapping id="admin">
 		<pattern>/secured/admin/</pattern>
 		<view-id>/secured/admin/people.faces</view-id>
+		<action>#{personBean.resetList}</action>
 	</url-mapping>
     
     <url-mapping id="adminPeople">
@@ -97,7 +98,7 @@
         <view-id>/secured/admin/people.faces</view-id>
     </url-mapping>
 	<url-mapping id="adminEditPerson">
-		<pattern>/secured/admin/person-edit</pattern>
+		<pattern>/secured/admin/editPerson</pattern>
 		<view-id>/secured/admin/editPerson.faces</view-id>
 	</url-mapping>
 	<url-mapping id="adminPerson">
@@ -111,7 +112,7 @@
 		<view-id>/secured/admin/vehicles.faces</view-id>
 	</url-mapping>
 	<url-mapping id="adminEditVehicle">
-		<pattern>/secured/admin/vehicle-edit</pattern>
+		<pattern>/secured/admin/editVehicle</pattern>
 		<view-id>/secured/admin/editVehicle.faces</view-id>
 	</url-mapping>
 	<url-mapping id="adminVehicle">
@@ -125,7 +126,7 @@
 		<view-id>/secured/admin/devices.faces</view-id>
 	</url-mapping>
 	<url-mapping id="adminEditDevice">
-		<pattern>/secured/admin/device-edit</pattern>
+		<pattern>/secured/admin/editDevice</pattern>
 		<view-id>/secured/admin/editDevice.faces</view-id>
 	</url-mapping>
 	<url-mapping id="adminDevice">
@@ -152,7 +153,7 @@
 		<pattern>/secured/admin/redFlags</pattern>
 		<view-id>/secured/admin/redFlags.faces</view-id>
 	</url-mapping>
-	<url-mapping id="adminEditRedFlags">
+	<url-mapping id="adminEditRedFlag">
 		<pattern>/secured/admin/editRedFlag</pattern>
 		<view-id>/secured/admin/editRedFlag.faces</view-id>
 	</url-mapping>
