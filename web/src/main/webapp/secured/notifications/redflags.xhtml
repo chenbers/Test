@@ -78,16 +78,15 @@
 					  </li>
 					  	<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
 					  </li>
-					  <li class="r text">
-					  	<h:outputFormat id="header" value="#{messages.notes_redflags_recordCountHeader}">
+		              </ul>
+                    
+                      <div align="right" style="width: 100%"> 
+                         <h:outputFormat id="header" value="#{messages.notes_redflags_recordCountHeader}">
 							<a4j:actionparam value="#{redFlagsBean.start}"/>
 							<a4j:actionparam value="#{redFlagsBean.end}"/>
 							<a4j:actionparam value="#{redFlagsBean.maxCount}"/>
-						</h:outputFormat>
-						</li>
-		            
-		             
-		              </ul>
+						 </h:outputFormat>
+                      </div>    
 		               	<ui:include src="/includes/reportsContextMenu.xhtml">	
 							<ui:param  name="emailModalPanelID" value="redflagsReportEmailModal" />
 							<ui:param  name="reportBean" value="#{redFlagsBean}"/>

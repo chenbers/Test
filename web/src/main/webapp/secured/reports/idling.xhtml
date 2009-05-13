@@ -89,15 +89,15 @@
 												</h:panelGroup>
 											</li>
 											<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
-											</li>
-            								<li class="r text">
-              									<h:outputFormat id="headerIdlings" value="#{messages.recordCountHeader}">
-													<a4j:actionparam value="#{idlingReportBean.start}"/>
-													<a4j:actionparam value="#{idlingReportBean.end}"/>
-													<a4j:actionparam value="#{idlingReportBean.maxCount}"/>
-												</h:outputFormat> 
-            								</li>          							
-          								</ul>		
+											</li>      							
+          								</ul>
+                                <div align="right" style="width: 100%"> 
+                                    <h:outputFormat id="headerIdlings" value="#{messages.recordCountHeader}">
+										<a4j:actionparam value="#{idlingReportBean.start}"/>
+										<a4j:actionparam value="#{idlingReportBean.end}"/>
+										<a4j:actionparam value="#{idlingReportBean.maxCount}"/>
+									</h:outputFormat> 
+                                </div> 		
           								
           						<rich:contextMenu event="onclick" attachTiming="onavailable"
 									disableDefaultMenu="false" submitMode="server"

@@ -102,14 +102,15 @@
       				</f:facet>
 			   </a4j:status>
             </li>
-            <li class="r text">
-              <h:outputFormat id="recordCounts" value="#{messages.recordCounts}">
-                <f:param value="#{(recordCount gt 0) ? (firstRecord lt recordCount ? firstRecord : (recordCount - (recordCount % rows) - rows)) + 1 : 0}"/>
-                <f:param value="#{((firstRecord + rows) lt recordCount) ? (firstRecord + rows) : recordCount}"/>
-                <f:param value="#{recordCount}"/>
-              </h:outputFormat>
-            </li>
           </ul>
+          
+          <div align="right" style="width: 100%"> 
+             <h:outputFormat id="recordCounts" value="#{messages.recordCounts}">
+                   <f:param value="#{(recordCount gt 0) ? (firstRecord lt recordCount ? firstRecord : (recordCount - (recordCount % rows) - rows)) + 1 : 0}"/>
+                   <f:param value="#{((firstRecord + rows) lt recordCount) ? (firstRecord + rows) : recordCount}"/>
+                   <f:param value="#{recordCount}"/>
+             </h:outputFormat>
+          </div>
 
           <h:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
 

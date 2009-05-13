@@ -75,15 +75,16 @@
 												</h:panelGroup>
 											</li>
 											<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
-											</li>
-            								<li class="r text">
-              									<h:outputFormat id="headerVehicles" value="#{messages.recordCountHeader}">
-													<a4j:actionparam value="#{vehicleReportBean.start}"/>
-													<a4j:actionparam value="#{vehicleReportBean.end}"/>
-													<a4j:actionparam value="#{vehicleReportBean.maxCount}"/>
-												</h:outputFormat> 
-            								</li>          							
+											</li>          							
           								</ul>
+                                 
+                                <div align="right" style="width: 100%"> 
+                                    <h:outputFormat id="headerVehicles" value="#{messages.recordCountHeader}">
+      									<a4j:actionparam value="#{vehicleReportBean.start}"/>
+      									<a4j:actionparam value="#{vehicleReportBean.end}"/>
+      									<a4j:actionparam value="#{vehicleReportBean.maxCount}"/>
+      								</h:outputFormat> 
+                                </div>  
           								
           						<rich:contextMenu event="onclick" attachTiming="onavailable"
 									disableDefaultMenu="false" submitMode="server"

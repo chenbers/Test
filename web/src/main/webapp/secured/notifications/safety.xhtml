@@ -77,15 +77,16 @@
 						</h:panelGroup>
 					  </li>
 					  <li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
-					  </li> 
-					  <li class="r text">
-					  	<h:outputFormat id="header" value="#{messages.notes_safety_recordCountHeader}">
+					  </li>          							
+		            </ul>
+                  
+                    <div align="right" style="width: 100%"> 
+                         <h:outputFormat id="header" value="#{messages.notes_safety_recordCountHeader}">
 							<a4j:actionparam value="#{eventsBean.start}"/>
 							<a4j:actionparam value="#{eventsBean.end}"/>
 							<a4j:actionparam value="#{eventsBean.maxCount}"/>
 						</h:outputFormat>
-		               </li>          							
-		            </ul>
+                    </div>
 		            
 		            <ui:include src="/includes/reportsContextMenu.xhtml">	
 						<ui:param  name="emailModalPanelID" value="eventsReportEmailModal" />
