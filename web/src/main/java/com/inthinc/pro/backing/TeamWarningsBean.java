@@ -1,6 +1,8 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,13 @@ public class TeamWarningsBean extends BaseBean
     private Integer groupID;
     private static final EventCategory category = EventCategory.WARNING;
     private String groupName;
+    
+    static final Comparator<EventDisplay> EVENT_ORDER =  new Comparator<EventDisplay>()  {
+        public int compare(EventDisplay e1, EventDisplay e2) 
+        {       if( e2.getTime().compareTo(e1.getTime()) == 0 )
+                    return e2.getDriverName().compareTo(e1.getDriverName());       
+                else
+                    return e2.getTime().compareTo(e1.getTime());  } };
 
     public List<EventDisplay> getWarnings()
     {
@@ -39,6 +48,7 @@ public class TeamWarningsBean extends BaseBean
             {
                 warnings.add(new EventDisplay(event));
             }
+            Collections.sort(warnings, EVENT_ORDER);
 
         }
         return warnings;
@@ -57,6 +67,7 @@ public class TeamWarningsBean extends BaseBean
             {
                 emergencies.add(new EventDisplay(event));
             }
+            Collections.sort(emergencies, EVENT_ORDER);
         }
         return emergencies;
     }
@@ -89,7 +100,6 @@ public class TeamWarningsBean extends BaseBean
             }
         }
     }
-
 
     public NavigationBean getNavigation()
     {

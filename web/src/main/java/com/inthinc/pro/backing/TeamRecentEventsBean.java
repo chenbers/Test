@@ -1,6 +1,8 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +31,12 @@ public class TeamRecentEventsBean extends BaseBean
     private static final EventCategory category = EventCategory.VIOLATION;
     private String groupName;
 
+    static final Comparator<EventDisplay> EVENT_ORDER =  new Comparator<EventDisplay>()  {
+                public int compare(EventDisplay e1, EventDisplay e2) 
+                {       if( e2.getTime().compareTo(e1.getTime()) == 0 )
+                            return e2.getDriverName().compareTo(e1.getDriverName());       
+                        else
+                            return e2.getTime().compareTo(e1.getTime());  } };
 
     public EventDisplay getSelectedEvent()
     {
@@ -52,6 +60,7 @@ public class TeamRecentEventsBean extends BaseBean
             {
                 recentEvents.add(new EventDisplay(event));
             }
+            Collections.sort(recentEvents, EVENT_ORDER);
             
         }
         return recentEvents;

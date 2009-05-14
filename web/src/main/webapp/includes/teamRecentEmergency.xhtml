@@ -23,16 +23,17 @@
 			<h:panelGroup layout="block" styleClass="datagrid">
 			<h:form id="teamEmergencyForm">
 			<rich:dataTable value="#{teamWarningsBean.emergencies}" id="teamEmergencies"
-						var="event" styleClass="datagrid"
-						rowClasses="tableOdd,tableEven" cellspacing="0" rows="5"
-						width="100%" sortPriority="#{event.time}">
-					<rich:column width="20%" height="27" >
+						    var="event" styleClass="datagrid"
+						    rowClasses="tableOdd,tableEven" cellspacing="0" rows="5"
+						    width="100%">
+						
+					<rich:column width="15%" height="50">
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_emergencyEvent}" />
 						</f:facet>
 						<h:outputText value="#{event.eventType}"/>
 					</rich:column>
-					<rich:column width="15%" height="27" >
+					<rich:column width="25%">
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_emergencyVehicle}" />
 						</f:facet>
@@ -41,7 +42,7 @@
  							<f:setPropertyActionListener value="#{event.event.vehicle}" target="#{navigationBean.vehicle}" />
 						</a4j:htmlCommandLink>
 					</rich:column>
-					<rich:column width="45%" height="27" >
+					<rich:column width="25%">
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_emergencyDriver}" />
 						</f:facet>
@@ -49,13 +50,13 @@
 							<f:setPropertyActionListener value="#{event.event.driver}" target="#{teamWarningsBean.navigation.driver}" />
 						</a4j:htmlCommandLink>
 					</rich:column>
-					<rich:column width="15%" height="27" >
+					<rich:column width="25%">
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_emergencyWhen}"/>
 						</f:facet>
 						<h:outputText value="#{event.dateStr}"/>
 					</rich:column>
-					<rich:column width="5%" height="27" >
+					<rich:column width="10%">
 						<f:facet name="header">
 							<h:outputText value="" />
 						</f:facet>

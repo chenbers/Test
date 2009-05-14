@@ -25,28 +25,28 @@
 			<rich:dataTable value="#{teamRecentEventsBean.recentEvents}" id="teamRecentEvents"
 						var="event" styleClass="datagrid"
 						rowClasses="tableOdd,tableEven" cellspacing="0" rows="5"
-						width="100%" sortPriority="#{event.time}">
-					<rich:column width="35%" height="27" >
+						width="100%" sortMode="multi">
+					<rich:column height="50" width="30%">
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_safetyEventsEvent}" />
 						</f:facet>
 						<h:outputText value="#{event.eventType}"/>
 					</rich:column>
-					<rich:column width="35%" height="27" >
-						<f:facet name="header">
+					<rich:column width="35%">
+						<f:facet name="header" >
 							<h:outputText value="#{messages.team_safetyEventsDriver}" />
 						</f:facet>
 						<a4j:htmlCommandLink action="go_driver" value="#{event.driverName}">
 							<f:setPropertyActionListener value="#{event.event.driver}" target="#{teamRecentEventsBean.navigation.driver}" />
 						</a4j:htmlCommandLink>
 					</rich:column>
-					<rich:column width="20%" height="27" >
+					<rich:column width="25%">
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_safetyEventsWhen}"/>
 						</f:facet>
 						<h:outputText value="#{event.dateStr}"/>
 					</rich:column>
-					<rich:column width="10%" height="27" >
+					<rich:column width="10%">
 						<f:facet name="header">
 							<h:outputText value="" />
 						</f:facet>
