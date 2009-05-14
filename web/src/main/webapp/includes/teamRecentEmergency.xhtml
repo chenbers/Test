@@ -8,10 +8,10 @@
 <h:panelGroup layout="block" styleClass="">
 	<h:panelGroup layout="block" styleClass="panel_nw">
 		<h:panelGroup layout="block" styleClass="panel_title">
-			<span class="event">#{messages.team_safetyEvents}</span>
+			<span class="diagnostics_title">#{messages.team_emergency}</span>
 			<span class="panel_links">
-			<h:form id="teamEventsShowAllForm">
-				<h:commandLink action="#{eventsBean.showAllFromRecentAction}" value="#{messages.team_safetyEventsShowAll}">				
+			<h:form id="teamDiagnosticsShowAllForm">
+				<h:commandLink action="#{emergencyBean.showAllFromRecentAction}" value="#{messages.team_emergencyShowAll}">				
 					<f:setPropertyActionListener value="#{navigationBean.group}" target="#{searchCoordinationBean.group}" />								
 				</h:commandLink>
 			</h:form>	
@@ -21,39 +21,46 @@
 	<h:panelGroup layout="block" styleClass="panel_w">
 		<h:panelGroup layout="block" styleClass="panel_content">
 			<h:panelGroup layout="block" styleClass="datagrid">
-			<h:form id="teamRecentEventsForm">
-			<rich:dataTable value="#{teamRecentEventsBean.recentEvents}" id="teamRecentEvents"
+			<h:form id="teamEmergencyForm">
+			<rich:dataTable value="#{teamWarningsBean.emergencies}" id="teamEmergencies"
 						var="event" styleClass="datagrid"
 						rowClasses="tableOdd,tableEven" cellspacing="0" rows="5"
 						width="100%" sortPriority="#{event.time}">
-					<rich:column width="35%" height="27" >
+					<rich:column width="20%" height="27" >
 						<f:facet name="header">
-							<h:outputText value="#{messages.team_safetyEventsEvent}" />
+							<h:outputText value="#{messages.team_emergencyEvent}" />
 						</f:facet>
 						<h:outputText value="#{event.eventType}"/>
 					</rich:column>
-					<rich:column width="35%" height="27" >
+					<rich:column width="15%" height="27" >
 						<f:facet name="header">
-							<h:outputText value="#{messages.team_safetyEventsDriver}" />
+							<h:outputText value="#{messages.team_emergencyVehicle}" />
 						</f:facet>
-						<a4j:htmlCommandLink action="go_driver" value="#{event.driverName}">
-							<f:setPropertyActionListener value="#{event.event.driver}" target="#{teamRecentEventsBean.navigation.driver}" />
+						<!-- TODO:  hook up vehicle link to correct page -->
+						<a4j:htmlCommandLink action="go_vehicle" value="#{event.vehicleName}">
+ 							<f:setPropertyActionListener value="#{event.event.vehicle}" target="#{navigationBean.vehicle}" />
 						</a4j:htmlCommandLink>
 					</rich:column>
-					<rich:column width="20%" height="27" >
+					<rich:column width="45%" height="27" >
 						<f:facet name="header">
-							<h:outputText value="#{messages.team_safetyEventsWhen}"/>
+							<h:outputText value="#{messages.team_emergencyDriver}" />
+						</f:facet>
+						<a4j:htmlCommandLink action="go_driver" value="#{event.driverName}">
+							<f:setPropertyActionListener value="#{event.event.driver}" target="#{teamWarningsBean.navigation.driver}" />
+						</a4j:htmlCommandLink>
+					</rich:column>
+					<rich:column width="15%" height="27" >
+						<f:facet name="header">
+							<h:outputText value="#{messages.team_emergencyWhen}"/>
 						</f:facet>
 						<h:outputText value="#{event.dateStr}"/>
 					</rich:column>
-					<rich:column width="10%" height="27" >
+					<rich:column width="5%" height="27" >
 						<f:facet name="header">
 							<h:outputText value="" />
 						</f:facet>
-						<!-- TODO:  should go to a page based on the event type -->
-						<a4j:htmlCommandLink action="#{teamRecentEventsBean.detailsAction}" value="#{messages.team_safetyEventsDetails}">
-							<f:setPropertyActionListener value="#{event.event.driver}" target="#{teamRecentEventsBean.navigation.driver}" />
-							<f:setPropertyActionListener value="#{event}" target="#{teamRecentEventsBean.selectedEvent}" />							
+						<a4j:htmlCommandLink action="go_emergency" value="#{messages.team_emergencyDetails}">
+							<f:setPropertyActionListener value="#{event.event}" target="#{emergencyBean.eventFilter}" />
 						</a4j:htmlCommandLink>
 					</rich:column>
 			</rich:dataTable>

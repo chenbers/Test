@@ -177,6 +177,11 @@ body {
 		left;
 }
 
+.panel_title span.emergency_title {
+    padding: 0 0 0 20px;
+    background: transparent url(../images/ico_critical.png) no-repeat center left;
+}
+
 .panel_title span.gas {
 	padding: 0 0 0 20px;
 	background: transparent url(../images/ico_gas.png) no-repeat center left

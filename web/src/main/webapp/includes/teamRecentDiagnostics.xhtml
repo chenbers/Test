@@ -25,14 +25,14 @@
 			<rich:dataTable value="#{teamWarningsBean.warnings}" id="teamWarnings"
 						var="event" styleClass="datagrid"
 						rowClasses="tableOdd,tableEven" cellspacing="0" rows="5"
-						width="100%">
-					<rich:column sortBy="#{event.eventType}" width="20%" height="27" >
+						width="100%" sortPriority="#{event.time}">
+					<rich:column width="20%" height="27" >
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_diagnosticsEvent}" />
 						</f:facet>
 						<h:outputText value="#{event.eventType}"/>
 					</rich:column>
-					<rich:column sortBy="#{event.vehicleName}" width="15%" height="27" >
+					<rich:column width="15%" height="27" >
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_diagnosticsVehicle}" />
 						</f:facet>
@@ -41,7 +41,7 @@
  							<f:setPropertyActionListener value="#{event.event.vehicle}" target="#{navigationBean.vehicle}" />
 						</a4j:htmlCommandLink>
 					</rich:column>
-					<rich:column sortBy="#{event.driverName}" width="45%" height="27" >
+					<rich:column width="45%" height="27" >
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_diagnosticsDriver}" />
 						</f:facet>
@@ -49,7 +49,7 @@
 							<f:setPropertyActionListener value="#{event.event.driver}" target="#{teamWarningsBean.navigation.driver}" />
 						</a4j:htmlCommandLink>
 					</rich:column>
-					<rich:column sortBy="#{event.time}" width="15%" height="27" >
+					<rich:column width="15%" height="27" >
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_diagnosticsWhen}"/>
 						</f:facet>

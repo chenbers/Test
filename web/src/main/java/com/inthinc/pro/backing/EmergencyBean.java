@@ -33,7 +33,7 @@ public class EmergencyBean extends BaseEventsBean
         setEventFilter(null);
 
         refreshAction();
-        return "go_diagnostics";
+        return "go_emergency";
     }
 
     public void exportReportToPdf()

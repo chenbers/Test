@@ -27,6 +27,8 @@ public interface EventDAO extends GenericDAO<Event, Integer>
      * @return
      */
     List<Event> getMostRecentWarnings(Integer groupID, Integer eventCnt);
+    
+    List<Event> getMostRecentEmergencies(Integer groupID, Integer eventCnt);
 
     List<Event> getViolationEventsForDriver(Integer driverID, Date startDate, Date endDate);
 

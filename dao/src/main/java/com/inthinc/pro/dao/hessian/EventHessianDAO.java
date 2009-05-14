@@ -56,6 +56,20 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
             return Collections.emptyList();
         }
     }
+    
+    @Override
+    public List<Event> getMostRecentEmergencies(Integer groupID, Integer eventCnt)
+    {
+        try
+        {
+            Integer[] eventTypes = EventMapper.getEventTypesInCategory(EventCategory.EMERGENCY).toArray(new Integer[0]);
+            return getMapper().convertToModelObject(getSiloService().getRecentNotes(groupID, eventCnt, eventTypes), Event.class);
+        }
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
+    }
 
     @Override
     public List<Event> getEventsForDriver(Integer driverID, Date startDate, Date endDate, List<Integer> eventTypes)

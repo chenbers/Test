@@ -21,6 +21,7 @@ public class TeamWarningsBean extends BaseBean
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
     private List<EventDisplay> warnings;
+    private List<EventDisplay> emergencies;
     private Integer groupID;
     private static final EventCategory category = EventCategory.WARNING;
     private String groupName;
@@ -38,9 +39,26 @@ public class TeamWarningsBean extends BaseBean
             {
                 warnings.add(new EventDisplay(event));
             }
-            
+
         }
         return warnings;
+    }
+
+    public List<EventDisplay> getEmergencies()
+    {
+        if(emergencies == null)
+        {
+            List<Event> events = eventDAO.getMostRecentEmergencies(getGroupID(), 5);
+            populateDriverVehicle(events);
+            
+            emergencies = new ArrayList<EventDisplay>();
+            
+            for (Event event : events)
+            {
+                emergencies.add(new EventDisplay(event));
+            }
+        }
+        return emergencies;
     }
 
     // TODO: if this becomes a performance issue -- ask back end to populate this in getRecentNotes() method

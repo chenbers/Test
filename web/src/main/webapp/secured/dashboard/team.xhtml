@@ -13,8 +13,7 @@
           <script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>   
           <script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}&amp;hl=#{localeBean.locale.language}" type="text/javascript"></script>
           <script src="#{facesContext.externalContext.request.contextPath}/js/markermanager.js"  type="text/javascript"></script>
-       </ui:define>  
-  						
+       </ui:define>  		
 
 	<ui:param name="homeSelected" value="current" />
 	<ui:param name="helpFile" value="Overall_Score_-_Team_Level.htm" />
@@ -34,14 +33,12 @@
     		</ui:include>
     	</td>
 	  </tr>
-  <tr>
-    <td colspan="3" valign="top"><h:graphicImage value="/images/x.gif" width="10" height="10" /></td>
-    </tr>
-  <tr>
-    <td width="465" valign="top">
-    
-    	<div class="spacer"></div>	
-    		
+	  <tr>
+	    <td colspan="3" valign="top"><div class="spacer"></div></td>
+	    </tr>
+	  <tr>
+    	<td width="465" valign="top">
+
 		<!-- START PANEL -->
 			<div class="">
 				
@@ -67,16 +64,12 @@
 		<div class="spacer"></div>
 
 		<ui:include src="/includes/teamRecentDiagnostics.xhtml"/>	
-		
-		
+	
 	</td>
 	
     <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
 	
     <td width="465" valign="top">
-    
-    	<div class="spacer"></div>		
-    
 		<!-- START PANEL -->
 		<rich:panel id="teamTopTables" >
    			<ui:include src="/includes/teamTop.xhtml">	
@@ -96,6 +89,10 @@
           <ui:param name="xywidth" value="440"/>
         </ui:include>
         <!-- END MPG -->  
+        
+        <div class="spacer"></div>
+
+		<ui:include src="/includes/teamRecentEmergency.xhtml"/>		
         
     	</td>
 	  </tr>
