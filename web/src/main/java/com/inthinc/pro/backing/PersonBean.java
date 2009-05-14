@@ -835,7 +835,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         
         public Date getDriverExp()
         {
-            if(super.getDriver().getExpiration() == null || DateUtil.convertDateToSeconds(super.getDriver().getExpiration()) == 0)
+            if(getDriver() == null || super.getDriver().getExpiration() == null || DateUtil.convertDateToSeconds(super.getDriver().getExpiration()) == 0)
                 return null;
             else
                 return super.getDriver().getExpiration();
@@ -843,7 +843,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         
         public void setDriverExp(Date driverExp)
         {
-            super.getDriver().setExpiration(driverExp);
+            if(getDriver() != null)
+                super.getDriver().setExpiration(driverExp);
         }
         
         public Group getGroup()
