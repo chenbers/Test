@@ -7,7 +7,8 @@
 	  			xmlns:a4j="http://richfaces.org/a4j"
 	  			xmlns:t="http://myfaces.apache.org/tomahawk"
 	  			xmlns:security="http://pro.tiwi.com/jsf/security"
-                xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
+                xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions"
+                xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 	<ui:param name="liveFleetSelected" value="current" />
 	<ui:param name="helpFile" value="Live_Fleet.htm" />
@@ -285,15 +286,17 @@
 									<f:facet name="header">
 										<h:outputText value="#{messages.livefleet_driver}" />
 									</f:facet>
-									<h:commandLink value="#{item.driver.person.fullName}" action="#{liveFleetBean.driverDetailAction}">
-										<f:setPropertyActionListener value="#{item.driver.driverID}" target="#{liveFleetBean.selectedDriverID}" />
-									</h:commandLink>
+                                    <pretty:link mappingId="driverPerformance">
+                                       <h:outputText value="#{item.driver.person.fullName}"/>
+                                       <f:param value="#{item.driver.driverID}"/>
+                                    </pretty:link>
 								</rich:column>
 	
 								<rich:column sortBy="#{item.vehicle.name}">
 									<f:facet name="header">
 										<h:outputText value="#{messages.livefleet_vehicle}" />
 									</f:facet>
+                           
 									<h:commandLink value="#{item.vehicle.name}" action="#{liveFleetBean.vehicleDetailAction}">
 										<f:setPropertyActionListener value="#{item.vehicle.vehicleID}" target="#{liveFleetBean.selectedVehicleID}" />
 									</h:commandLink>
@@ -334,13 +337,14 @@
 	 				<div class="panel_w">
 						<div class="panel_content">
 							<rich:dataList id="fleetLegend" value="#{liveFleetBean.displayedGroups}" var="group" styleClass="legend">
-                               
-                               <h:outputLink value="${tiwiprofn:getGroupURL(group)}">
+                               <pretty:link mappingId="dashboard">
                                   <img border="0" src="#{liveFleetBean.legendIconMap.icons[group.groupID]}" style="vertical-align:middle"/>
-                               </h:outputLink>
-                               <h:outputLink style="margin-left:5px" value="${tiwiprofn:getGroupURL(group)}" >
-								  <h:outputText value="#{group.name}" ></h:outputText>
-                               </h:outputLink>
+                                  <f:param value="#{group.groupID}"/>
+                               </pretty:link>
+                               <pretty:link mappingId="dashboard">
+                                  <h:outputText value="#{group.name}"/>
+                                  <f:param value="#{group.groupID}"/>
+                               </pretty:link>
 							</rich:dataList>
 						</div>
 						<div style="clear:both"/>
