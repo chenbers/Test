@@ -202,7 +202,7 @@
                           </td>
                           <td>
                             <rich:message for="address_zip" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.address.zip}" label="#{messages.editPerson_address_zip}" id="address_zip" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" styleClass="text" size="10" maxlength="10" validatorMessage="#{messages.editPerson_zipFormat}">
+                            <h:inputText value="#{personBean.item.address.zip}" label="#{messages.editPerson_address_zip}" id="address_zip" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" styleClass="text" size="12" maxlength="10" validatorMessage="#{messages.editPerson_zipFormat}">
                               <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
                               <f:attribute name="regex" value="\d{5}(-\d{4})?" />
                             </h:inputText>
