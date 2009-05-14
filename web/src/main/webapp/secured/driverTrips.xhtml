@@ -9,7 +9,7 @@
 
     <ui:define name="scripts">
         <script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>
-        <script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}" type="text/javascript"></script>
+        <script src="http://maps.google.com/maps?file=api&amp;v=#{gmBean.version}&amp;key=#{gmBean.key}&amp;hl=#{localeBean.locale.language}" type="text/javascript"></script>
         <script type="text/javascript">
 		var map;
 		var showWarnings = new Boolean(true);
@@ -329,7 +329,7 @@
                                         <td><a4j:commandButton action="#{driverTripsBean.DateChangedAction}"
                                             reRender="script,statsPanel,tripsPanel,bubbles,selectedTrip,selectedTripMap" immediate="false" styleClass="left"
                                             oncomplete="bodyLoad();">
-                                            <span class="edit"> <h:outputText value="Update Date Range" /> </span>
+                                            <span class="edit"> <h:outputText value="#{messages.drivertrip_updateDateRange}" /> </span>
                                         </a4j:commandButton></td>
                                         <td></td>
                                     </tr>
@@ -568,14 +568,14 @@
     
                                 <rich:column id="date_column" sortBy="#{item.trip.startTime}" label="#{messages.drivertrip_date}" style="white-space:nowrap; cursor: pointer;">
                                     <f:facet name="header">
-                                        <h:outputText value="Date" />
+                                        <h:outputText value="#{messages.drivertrip_date}" />
                                     </f:facet>
                                     <h:outputText value="#{item.dateShort}" />
                                 </rich:column>
     
                                 <rich:column id="time_column" sortBy="#{item.trip.startTime}" label="#{messages.drivertrip_time}" style="white-space:nowrap; cursor: pointer;">
                                     <f:facet name="header">
-                                        <h:outputText value="Time" />
+                                        <h:outputText value="#{messages.drivertrip_time}" />
                                     </f:facet>
                                     <h:outputText value="#{item.timeStartShort}" />
                                     <br />
@@ -584,28 +584,28 @@
     
                                 <rich:column id="distance_column" sortBy="#{item.distance}" label="#{messages.drivertrip_distance}" style="white-space:nowrap; cursor: pointer;">
                                     <f:facet name="header">
-                                        <h:outputText value="Dist" />
+                                        <h:outputText value="#{messages.drivertrip_distance}" />
                                     </f:facet>
                                     <h:outputText value="#{item.distance} #{messages.mi_label}" />
                                 </rich:column>
     
                                 <rich:column id="start_column" sortBy="#{item.startAddress}" label="#{messages.drivertrip_start_address}" style="cursor: pointer;">
                                     <f:facet name="header">
-                                        <h:outputText value="Start" />
+                                        <h:outputText value="#{messages.drivertrip_start_address}" />
                                     </f:facet>
                                     <h:outputText value="#{item.startAddress}" />
                                 </rich:column>
     
                                 <rich:column id="end_column" sortBy="#{item.endAddress}" label="#{messages.drivertrip_end_address}" style="cursor: pointer;">
                                     <f:facet name="header">
-                                        <h:outputText value="End" />
+                                        <h:outputText value="#{messages.drivertrip_end_address}" />
                                     </f:facet>
                                     <h:outputText value="#{item.endAddress}" />
                                 </rich:column>
     
                                 <rich:column id="duration_column" sortBy="#{item.duration}" label="#{messages.drivertrip_duration}" style="white-space:nowrap; cursor: pointer;">
                                     <f:facet name="header">
-                                        <h:outputText value="Dur" />
+                                        <h:outputText value="#{messages.drivertrip_duration}" />
                                     </f:facet>
                                     <h:outputText value="#{item.duration}" />
                                 </rich:column>

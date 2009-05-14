@@ -33,37 +33,39 @@
 		 <!-- SPEEDING EVENT -->
 		<h:outputText rendered="#{eventType.code eq '3'}" >
 			<ul>
-				<li>Speed Limit: <h:outputText value="#{eventSpeedLimit}" converter="SpeedConverter" /></li>
-				<li>Average Speed: <h:outputText value="#{eventAvgSpeed}" converter="SpeedConverter" /></li>
-				<li>Top Speed: <h:outputText value="#{eventTopSpeed}" converter="SpeedConverter" /></li>
-				<li>Distance: <h:outputText value="#{eventDistance}" converter="DistanceConverter" /></li>
+				<li>#{messages.eventBubble_speedLimit}:<h:outputText value="#{eventSpeedLimit}" converter="SpeedConverter" /></li>
+				<li>#{messages.eventBubble_averageSpeed}: <h:outputText value="#{eventAvgSpeed}" converter="SpeedConverter" /></li>
+				<li>#{messages.eventBubble_topSpeed}: <h:outputText value="#{eventTopSpeed}" converter="SpeedConverter" /></li>
+				<li>#{messages.eventBubble_distance}: <h:outputText value="#{eventDistance}" converter="DistanceConverter" /></li>
 			</ul>
 		</h:outputText>
 		
 		<!-- AGGRESSIVE DRIVING EVENT -->
 		<h:outputText rendered="#{eventType.code eq '4' || eventType.code eq '5' || eventType.code eq '6' || eventType.code eq '8'}" >
 			<ul>
-				<li>Speed: <h:outputText value="#{eventSpeed}" converter="SpeedConverter" /></li>
-				<li>Severity:<div class="#{(eventSeverity gt 4) ? 'sev_bar_ex' : ''}
-											#{(eventSeverity lt 5) and (eventSeverity gt 2) ? 'sev_bar_med' : ''}
-											#{(eventSeverity lt 3) ? 'sev_bar_low' : ''}"></div></li>
+				<li>#{messages.eventBubble_speed}: <h:outputText value="#{eventSpeed}" converter="SpeedConverter" /></li>
+				<li>#{messages.eventBubble_severity}:
+                  <ui:include src="/includes/severityGraphic.xhtml">
+                     <ui:param name="severity" value="#{eventSeverity}" />
+                  </ui:include>
+                </li>
 			</ul>
 		</h:outputText>
 		
 		<!-- SEAT BELT EVENT -->
 		<h:outputText rendered="#{eventType.code eq '2'}" >
 			<ul>
-				<li>Average Speed: <h:outputText value="#{eventAvgSpeed}" converter="SpeedConverter" /></li>
-				<li>Top Speed: <h:outputText value="#{eventTopSpeed}" converter="SpeedConverter" /></li>
-				<li>Distance: <h:outputText value="#{eventDistance}" converter="DistanceConverter" /></li>
+				<li>#{messages.eventBubble_averageSpeed}: <h:outputText value="#{eventAvgSpeed}" converter="SpeedConverter" /></li>
+				<li>#{messages.eventBubble_topSpeed}: <h:outputText value="#{eventTopSpeed}" converter="SpeedConverter" /></li>
+				<li>#{messages.eventBubble_distance}: <h:outputText value="#{eventDistance}" converter="DistanceConverter" /></li>
 			</ul>
 		</h:outputText>
 		
 			<!-- IDLING EVENT -->
 		<h:outputText rendered="#{eventType.code eq '13'}" >
 			<ul>
-				<li>Low idle duration: <h:outputText value="#{eventLowIdle}"  /></li>
-				<li>High idle duration: <h:outputText value="#{eventHighIdle}"  /></li>
+				<li>#{messages.eventBubble_lowIdleDuration}: <h:outputText value="#{eventLowIdle}"  /></li>
+				<li>#{messages.eventBubble_highIdleDuration}: <h:outputText value="#{eventHighIdle}"  /></li>
 			</ul>
 		</h:outputText>
 	</h:panelGrid>

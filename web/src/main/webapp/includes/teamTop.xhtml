@@ -97,7 +97,7 @@
 					</rich:column>
 					<rich:column width="40%">
 						<f:facet name="header">
-							<h:outputText value="Driver" />
+							<h:outputText value="#{messages.teamTop_driver}" />
 						</f:facet>
 						<pretty:link mappingId="driverPerformance">
                             #{bottomItem.driverName}
@@ -107,7 +107,7 @@
 					</rich:column>
 					<rich:column width="10%">
 						<f:facet name="header">
-							<h:outputText value="Score" />
+							<h:outputText value="#{messages.teamTop_score}" />
 						</f:facet>
                         <ui:include src="/includes/scoreBox.xhtml">  
                             <ui:param name="scoreStyle" value="#{bottomItem.style}"/>                                  

@@ -1,0 +1,41 @@
+<ui:composition
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:pretty="http://ocpsoft.com/prettyfaces">
+       
+       <!-- PARAMETERS
+          severity - boolean value 'true' or 'false'
+        -->
+       
+       <table cellpadding="0" cellspacing="0">
+            <tr>
+               <h:outputText rendered="#{severity gt 4}">
+                  <td align="right"  style="padding: 0px;padding-right: 10px;">
+                     <h:outputText value="#{messages.severityGraphic_extreme}"/>
+                  </td>
+               </h:outputText>
+               <h:outputText rendered="#{(severity lt 5) and (item.event.severity gt 2)}">
+                  <td align="center"  style="padding: 0px;">
+                     <h:outputText value="#{messages.severityGraphic_medium}"/>
+                  </td>
+               </h:outputText>
+               <h:outputText rendered="#{severity lt 3}">
+                  <td align="left"  style="padding: 0px; padding-left: 10px;">
+                     <h:outputText value="#{messages.severityGraphic_low}"/>
+                  </td>
+               </h:outputText>
+            </tr>
+            <tr>
+               <td  style="padding: 0px" align="center">
+                  <h:graphicImage rendered="#{severity gt 4}" value="/images/sev_bar_ex.png"/>
+                  <h:graphicImage rendered="#{(severity lt 5) and (item.event.severity gt 2)}" value="/images/sev_bar_med.png"/>
+                  <h:graphicImage rendered="#{severity lt 3}" value="/images/sev_bar_low.png"/>
+               </td>
+            </tr>   
+       </table>
+          
+</ui:composition>

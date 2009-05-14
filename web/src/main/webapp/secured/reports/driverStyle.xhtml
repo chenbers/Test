@@ -486,9 +486,9 @@ var firstLoad = new Boolean(true);
 								<f:facet name="header">
 									<h:outputText value="#{messages.driver_severity}" />
 								</f:facet>
-								<div class="#{(item.event.severity gt 4) ? 'sev_bar_ex' : ''}
-											#{(item.event.severity lt 5) and (item.event.severity gt 2) ? 'sev_bar_med' : ''}
-											#{(item.event.severity lt 3) ? 'sev_bar_low' : ''}"></div>
+                                <ui:include src="/includes/severityGraphic.xhtml">
+                                    <ui:param name="severity" value="#{item.event.severity}" />
+                                </ui:include>
 							</rich:column>
 							
 							<rich:column>
