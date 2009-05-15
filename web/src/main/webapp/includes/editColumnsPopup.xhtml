@@ -22,10 +22,10 @@
         <ui:param name="reRender" value="myStuff" />
       </ui:include>
 -->
-
+	
     <rich:modalPanel id="editColumns" headerClass="popupHeader" controlsClass="popupControls" width="500" height="50" 
-    	autosized="true" resizeable="false" zindex="2000"	
-		onshow="document.getElementById('editColumnsForm:editColumnGrid:0:col').focus();">
+    	autosized="true" resizeable="false" zindex="2000" 
+    	onshow="document.getElementById('editColForm:editGrid:0:col').focus();">
 										 
       <f:facet name="header">
         <h:outputText value="#{messages.editColumns_title}" />
@@ -38,14 +38,15 @@
         <h:outputText value="#{messages.editColumns_explanation}"/>
       </h:panelGroup>
 
-      <a4j:form id="editColumnsForm">
 
-        <rich:dataGrid id="editColumnGrid" columns="3" value="#{bean.availableColumns}" var="col" width="100%" style="border:0" >
+      <a4j:form id="editColForm">
+
+        <rich:dataGrid id="editGrid" columns="3" value="#{bean.availableColumns}" var="col" width="100%" style="border:0">
           <h:outputLabel rendered="#{bean.tableColumns[col].canHide}">
            <h:selectBooleanCheckbox label="#{col}" value="#{bean.tableColumns[col].visible}" id="col" tabindex="1"/>
            <h:outputText value="#{bean.tableColumns[col].colLabel}" />
           </h:outputLabel>
-    </rich:dataGrid>
+    	</rich:dataGrid>
 
         <div class="popupactions">
           <a4j:commandButton id="cancelButton"
@@ -70,6 +71,7 @@
           </a4j:commandButton>
         </div>
       </a4j:form>
+    
 
     </rich:modalPanel>
 
