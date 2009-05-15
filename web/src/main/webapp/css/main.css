@@ -2430,7 +2430,9 @@ These styles should be added when very long tables are expected
 
 .datatable th a {
 	text-decoration: none;
-	color: #4f6b72;
+	color: #333;
+	
+	
 	background: transparent;
 }
 
@@ -2486,6 +2488,13 @@ These styles should be added when very long tables are expected
 	padding: 2px 4px 2px 4px;
 	color: #333;
 }
+
+.sortArrows
+{
+	border: 0px;
+	vertical-align: middle;
+}
+
 
 /* Pagination list styles */
 ul.fdtablePaginater {
@@ -3065,6 +3074,11 @@ ul.legend {
 .trendTableEven {
 	background: #EBFFCA;
 	border-bottom: 1px solid #8BAD37;
+}
+
+.trendTableScore {
+	text-align: center;	
+	
 }
 
 /* Regular table definitions */
