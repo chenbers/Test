@@ -20,11 +20,12 @@
       	<ui:param name="homeSelected" value="current" />
       	<ui:param name="helpFile" value="Overall_Score-Division_Level.htm" />
 	
+		<ui:define name="content">
 	
 		<t:saveState value="#{trendBean.sortColumn}"></t:saveState>
 		<t:saveState value="#{trendBean.sortDirection}"></t:saveState>
 		<t:saveState value="#{trendBean.scoreableEntities}"></t:saveState>
-        <ui:define name="content">
+        
            <ui:include src="/includes/overviewHeader.xhtml">
              <ui:param name="showContextMenu" value="true"/>
            </ui:include>
@@ -96,93 +97,73 @@
 							</rich:panel> 
 							<!-- End xy graph -->
 					
-								<rich:panel>	
-									<rich:spacer height="10"/>
-									<div style="text-align: right;" >													
-										<h:outputText 
-											id="countString" value="#{trendBean.countString}"/>
-										<rich:spacer width="10"/>
-									</div>									
-								</rich:panel>
-							
-				
-							<div class="spacer"></div>	
-				
-							<div class="datagrid">
+								<div style="text-align: right;" >													
+    								<h:outputText id="countString" value="#{trendBean.countString}"/><rich:spacer width="15" height="5"/>
+    							</div>					
+    							<rich:spacer height="3" />
 				
 								<h:form id="trendTable">	
 								
-									<table><tr><td align="center">
-        							<rich:datascroller id="topScroller" for="items" immediate="true"
-        								scrollerListener="#{trendBean.scrollerListener}"  maxPages="5"
-        								reRender="bottomScroller,countString,items,xypanel">        			
-        							</rich:datascroller>
-        							</td></tr></table>					
+									<rich:datascroller id="topScroller" for="items" immediate="true" styleClass="dataScrollerLarge"
+	        								scrollerListener="#{trendBean.scrollerListener}" maxPages="5" align="center"
+	        								reRender="bottomScroller,countString,items,xypanel">        			
+			        				</rich:datascroller>
+    					        	<rich:spacer height="15" />				
 														
 										<h:inputHidden id="hiddenGroupID" value="#{navigationBean.groupID}" />
 
 										<rich:dataTable value="#{trendBean.scoreableEntities}" id="items"
-											var="item" styleClass="datagrid"
-											rowClasses="tableOdd,tableEven" 
-											cellspacing="1" rows="#{trendBean.numRowsPerPg}" width="100%">
-
-											<rich:column width="20">
-												<f:facet name="header">
-													<h:outputText value=" " />
-												</f:facet>
-												<rich:spacer width="17" height="17"
-													style="background-color:#{item.colorKey};border-style:solid;border-width:1px;border-color:#000000">
-												</rich:spacer>
-											</rich:column>
-											<rich:column 
-												headerClass="sortable-text #{trendBean.sortColumn eq 'se.identifier'? (trendBean.sortDirection eq 'ASC' ? 'forwardSort' : 'reverseSort') : ''}">
-												<f:facet name="header">
-													<a4j:commandLink 
-														value="#{messages.trendReport_header_divisionTeam}" 
-														reRender="xypanel,topScroller,bottomScroller,items"
-														action="#{trendBean.sort}" ajaxSingle="true">
-														<f:setPropertyActionListener target="#{trendBean.sortDirection}" value="#{trendBean.sortDirection eq 'DESC' ? 'ASC' : 'DESC'}"/>
-														<f:setPropertyActionListener target="#{trendBean.sortColumn}" value="se.identifier" />										
-													</a4j:commandLink>
-
-												</f:facet>
+    											var="item" styleClass="datatable" rowClasses="tableOdd,tableEven" 
+    											cellspacing="1" rows="#{trendBean.numRowsPerPg}" width="100%">
+    									
+    									<rich:column width="10%">
+    										<f:facet name="header">
+    											<h:outputText value=" " />
+    										</f:facet>
+    										<rich:spacer width="17" height="17"
+    											style="background-color:#{item.colorKey};border-style:solid;border-width:1px;border-color:#000000">
+    										</rich:spacer>
+    									</rich:column>
+    									<rich:column width="65%">
+    										<f:facet name="header">
+    											<a4j:commandLink value="#{messages.trendReport_header_divisionTeam}" 
+    															 reRender="xypanel,topScroller,bottomScroller,items" action="#{trendBean.sort}" ajaxSingle="true">
+    												<f:setPropertyActionListener target="#{trendBean.sortDirection}" value="#{trendBean.sortDirection eq 'DESC' ? 'ASC' : 'DESC'}"/>
+    												<f:setPropertyActionListener target="#{trendBean.sortColumn}" value="se.identifier" />	
+    												<h:graphicImage styleClass="sortArrows" rendered="#{trendBean.sortColumn eq 'se.identifier'}" value="/images/#{trendBean.sortDirection eq 'DESC' ? 'sort_desc.gif' : 'sort_asc.gif'}" />
+    												<h:graphicImage styleClass="sortArrows" rendered="#{trendBean.sortColumn eq 'se.score'}" value="/images/sort_available.gif" />		
+    											</a4j:commandLink>
+    										</f:facet>
                                             <pretty:link mappingId="dashboard">
                                                 <f:param value="#{item.se.entityID}"/>
                                                 <h:outputText value="#{item.se.identifier}" />
                                             </pretty:link>
-
-											</rich:column>
-											<rich:column width="73" 
-												headerClass="sortable-text #{trendBean.sortColumn eq 'se.score'? (trendBean.sortDirection eq 'ASC' ? 'forwardSort' : 'reverseSort') : ''}">
-												<f:facet name="header">
-													<a4j:commandLink 
-														value="#{messages.trendReport_header_score}" 
-														reRender="xypanel,topScroller,bottomScroller,items"
-														action="#{trendBean.sort}" ajaxSingle="true">
-														<f:setPropertyActionListener target="#{trendBean.sortDirection}" value="#{trendBean.sortDirection eq 'DESC' ? 'ASC' : 'DESC'}"/>		
-														<f:setPropertyActionListener target="#{trendBean.sortColumn}" value="se.score" />																			
-													</a4j:commandLink>
-
-												</f:facet>
-                                                <ui:include src="/includes/scoreBox.xhtml">  
-                                                    <ui:param name="scoreStyle" value="#{item.style}"/>                                  
-                                                    <ui:param name="score" value="#{item.se.score}"/>                                    
-                                                </ui:include> 
-												
-											</rich:column>
-
-										</rich:dataTable>
+    									</rich:column>
+    									<rich:column width="25%" styleClass="trendTableScore">
+    										<f:facet name="header">
+    											<a4j:commandLink value="#{messages.trendReport_header_score}" 
+    															 reRender="xypanel,topScroller,bottomScroller,items" action="#{trendBean.sort}" ajaxSingle="true">
+    												<f:setPropertyActionListener target="#{trendBean.sortDirection}" value="#{trendBean.sortDirection eq 'DESC' ? 'ASC' : 'DESC'}"/>		
+    												<f:setPropertyActionListener target="#{trendBean.sortColumn}" value="se.score" />	
+    												<h:graphicImage styleClass="sortArrows" rendered="#{trendBean.sortColumn eq 'se.score'}" value="/images/#{trendBean.sortDirection eq 'DESC' ? 'sort_desc.gif' : 'sort_asc.gif'}" />
+    												<h:graphicImage styleClass="sortArrows" rendered="#{trendBean.sortColumn eq 'se.identifier'}" value="/images/sort_available.gif" />															
+    											</a4j:commandLink>
+    										</f:facet>
+                                            <ui:include src="/includes/scoreBox.xhtml">  
+                                                <ui:param name="scoreStyle" value="#{item.style}"/>                                  
+                                                <ui:param name="score" value="#{item.se.score}"/>                                    
+                                            </ui:include>
+    									</rich:column>
+    								</rich:dataTable>
 									
-									<table><tr><td align="center">
-									<rich:datascroller id="bottomScroller" for="items" immediate="true"
-    									scrollerListener="#{trendBean.scrollerListener}" maxPages="5"
-        								reRender="topScroller,countString,items,xypanel">        			
-        							</rich:datascroller> 
-        							</td></tr></table>       		
+									<rich:datascroller id="bottomScroller" for="items" immediate="true" align="center" styleClass="dataScrollerLarge"
+	   									scrollerListener="#{trendBean.scrollerListener}" maxPages="5"
+	       								reRender="topScroller,countString,items,xypanel">        			
+	       							</rich:datascroller>     		
         		
 								</h:form> 
 				<!-- End Trend table -->
-							</div>
+					
               
 						</div>
 
