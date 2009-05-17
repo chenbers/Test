@@ -310,10 +310,11 @@ public class VehicleTripsBean extends BaseBean
                 if (count == 10)
                     break;
 
-                selectedTrips.add(trip); // Trips are already in reverse order. (Most recent first)
+                selectedTrips.add(trip);
                 count++;
             }
-
+            Collections.reverse(selectedTrips);
+            
             // Load events for given list.
             this.violationEvents.clear();
             initViolations(selectedTrips.get(selectedTrips.size() - 1).getTrip().getStartTime(), selectedTrips.get(0).getTrip().getEndTime());

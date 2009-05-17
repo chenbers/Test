@@ -33,8 +33,13 @@
 				map.setMapType(G_NORMAL_MAP);
 				bounds = new GLatLngBounds();
 			}
-		}	
-		
+		}
+			
+	    function orderOfCreation(marker,b) 
+	    {
+	          return 1;
+	    }	
+	    
 		function createMarker(point, divID, iconImage) 
         {
         	var markerIcon;
@@ -45,7 +50,7 @@
         	{
 				markerIcon = new GIcon(baseIcon);
 	       	    markerIcon.image = iconImage;
-	       	 	markerOptions = { icon:markerIcon };
+	       	 	markerOptions = { icon:markerIcon,zIndexProcess:orderOfCreation };
 	       	 	marker = new GMarker(point, markerOptions);
         	}
         	//Use default GoogleMap marker image.
@@ -590,13 +595,6 @@
                                     <h:outputText value="#{messages.vehicletrip_distance}" />
                                 </f:facet>
                                 <h:outputText value="#{item.distance} #{messages.mi_label}" />
-                            </rich:column>
-
-                            <rich:column id="start_column" sortBy="#{item.startAddress}" label="#{messages.vehicletrip_start_address}" style="cursor: pointer;">
-                                <f:facet name="header">
-                                    <h:outputText value="#{messages.vehicletrip_start_address}" />
-                                </f:facet>
-                                <h:outputText value="#{item.startAddress}" />
                             </rich:column>
 
                             <rich:column id="end_column" sortBy="#{item.endAddress}" label="#{messages.vehicletrip_end_address}" style="cursor: pointer;">

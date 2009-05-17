@@ -276,9 +276,11 @@ public class DriverTripsBean extends BaseBean
                 if (count == 10)
                     break;
 
-                selectedTrips.add(trip); // Trips are already in reverse order. (Most recent first)
+                selectedTrips.add(trip);
                 count++;
             }
+            //Reverse list, oldest is first
+            Collections.reverse(selectedTrips);
             
             // Load events for given list.
             this.violationEvents.clear();
