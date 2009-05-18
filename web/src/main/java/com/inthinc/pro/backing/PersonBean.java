@@ -380,6 +380,16 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         }
         return redirect;
     }
+    
+    @Override
+    public void view()
+    {
+        super.view();
+        if (getItem().isUserSelected() && getItem().getUser().getUserID().equals(getUserID()))
+        {
+            item = revertItem(getItem());
+        }
+    }
 
     @Override
     public String edit()
