@@ -100,13 +100,25 @@ public class GraphicUtil {
 	    Calendar cal;
 	    DateFormat dateFormatter = new SimpleDateFormat(dateFormat);
 	    
+	    //On the first of every month use the following DateFormat
+	    DateFormat altDateFormatter = new SimpleDateFormat("MMM dd");
+	    
 	    if ( duration == Duration.DAYS ) {
             for ( int i = 0; i <= 29; i++ )
             {
                 cal = Calendar.getInstance();
                 cal.add(Calendar.DAY_OF_MONTH, -i);
+                
+                String day = dateFormatter.format(cal.getTime());
+                
+                // If day is first of month (01) format as "Apr 01" 
+                // else continue formatting using passed in pattern.
+                if(dateFormat.equals("dd") && day.equals("01"))
+                {
+                     day = altDateFormatter.format(cal.getTime());
+                }
            
-                monthList.add(0, dateFormatter.format(cal.getTime()));
+                monthList.add(0, day);
             }       
         } else {
             int num = convertToMonths(duration);             
