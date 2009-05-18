@@ -265,6 +265,7 @@ var cursor;
     // showing the nicely formatted version of the address and the country code.
     function addAddressToMap(response) {
 // 		clearList();
+
       if (!response || response.Status.code != 200) {
     	  
     	  setUnableToGeocodeError();
@@ -272,10 +273,29 @@ var cursor;
 //        alert("Sorry, we were unable to geocode that address - repsonse is: "+response);
 //        if (response) {alert ("response status code is: "+response.Status.code);}
       } else {
-      
-         place = response.Placemark[0];
+    	  
+          place = response.Placemark[0];
+          
+          if(place.AddressDetails.Accuracy < 5 )
+          {	
+        	  setUnableToGeocodeError();
+        	  return;
+          }
+//    	  Accuracy Codes
+//    	  0 	 Unknown location.
+//    	  1 	Country level accuracy.
+//    	  2 	Region (state, province, prefecture, etc.) level accuracy.
+//    	  3 	Sub-region (county, municipality, etc.) level accuracy.
+//    	  4 	Town (city, village) level accuracy.
+//    	  5 	Post code (zip code) level accuracy.
+//    	  6 	Street level accuracy.
+//    	  7 	Intersection level accuracy.
+//    	  8 	Address level accuracy.
+//    	  9 	Premise (building name, property name, shopping center, etc.) 
+
         point = new GLatLng(place.Point.coordinates[1],
                             place.Point.coordinates[0]);
+        
         streetViewPoint = point;
         var fullAddress = place.address;
 //        makeMarker(point);
