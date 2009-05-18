@@ -39,14 +39,27 @@ public class ZonesBean extends BaseBean
         this.zoneAlertDAO = zoneAlertDAO;
     }
 
+    public void LoadZones()
+    {
+        zones = zoneDAO.getZones(getAccountID());
+        if (zones.isEmpty())
+            zones = new ArrayList<Zone>();
+        sortZones();
+        
+        zoneIDs = new ArrayList<SelectItem>();
+        for(final Zone zone: getZones())
+        {
+            zoneIDs.add(new SelectItem(zone.getZoneID(),zone.getName()));
+        }
+        //zoneIDs.add(0,new SelectItem(null,""));
+        
+    }
+    
     public List<Zone> getZones()
     {
         if (zones == null)
         {
-            zones = zoneDAO.getZones(getAccountID());
-            if (zones.isEmpty())
-                zones = new ArrayList<Zone>();
-            sortZones();
+            LoadZones();
         }
         return zones;
     }
@@ -55,12 +68,7 @@ public class ZonesBean extends BaseBean
     {
         if (zoneIDs == null)
         {
-            zoneIDs = new ArrayList<SelectItem>();
-            for(final Zone zone: getZones())
-            {
-                zoneIDs.add(new SelectItem(zone.getZoneID(),zone.getName()));
-            }
-            //zoneIDs.add(0,new SelectItem(null,""));
+            LoadZones();
         }
 
         return zoneIDs;
