@@ -97,9 +97,9 @@
                             <td><h:outputText value="#{personBean.item.weight}" /></td>
                           </tr>
                         </table>
-
+                        <!--  
                         <div class="spacer"></div>
-
+   
                         <div class="add_section_title"><h:outputText value="#{messages.editPerson_contactInformation}" /></div>
 
                         <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
@@ -124,8 +124,9 @@
                             <td><h:outputText value="#{personBean.item.address.zip}" /></td>
                           </tr>
                         </table>
+                        -->
                         <ui:fragment rendered="#{personBean.item.driverSelected}">
-
+               
                         <div class="spacer"></div>
 
                         <div class="add_section_title">#{messages.editPerson_driverInformation}</div>
