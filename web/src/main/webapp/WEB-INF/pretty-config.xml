@@ -37,6 +37,10 @@
 		<pattern>/secured/driver/#{navigationBean.driverID}</pattern>
 		<view-id>/secured/driver.faces</view-id>
 	</url-mapping>
+	<url-mapping id="vehiclePerformance">
+		<pattern>/secured/vehicle/#{navigationBean.vehicleID}</pattern>
+		<view-id>/secured/vehicle.faces</view-id>
+	</url-mapping>
     <!-- Reports Section -->
     <url-mapping id="reports">
         <pattern>/secured/reports/</pattern>

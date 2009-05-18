@@ -22,6 +22,7 @@
     <bean id="navigationBean" class="com.inthinc.pro.backing.NavigationBean" scope="session" parent="baseBean">
     	 <property name="groupDAO" ref="groupDAO"></property>
     	 <property name="driverDAO" ref="driverDAO"></property>
+    	 <property name="vehicleDAO" ref="vehicleDAO"></property>
          <property name="durationBean" ref="navigationDurationBean"/>
     </bean>
     <bean id="dashBoardBean" class="com.inthinc.pro.backing.DashBoardBean" scope="request" parent="baseBean">

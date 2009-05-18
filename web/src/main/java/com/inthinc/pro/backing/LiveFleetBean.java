@@ -269,10 +269,4 @@ public class LiveFleetBean extends BaseBean
         navigation.setDriver(driverDAO.findByID(selectedDriverID));
         return "go_driver";
     }
-
-    public String vehicleDetailAction()
-    {
-        navigation.setVehicle(vehicleDAO.findByID(selectedVehicleID));
-        return "go_vehicle";
-    }
 }

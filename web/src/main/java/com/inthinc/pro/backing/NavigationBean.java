@@ -8,6 +8,7 @@ import com.inthinc.pro.backing.model.GroupLevel;
 import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Vehicle;
@@ -19,6 +20,9 @@ public class NavigationBean extends BaseBean
     // Spring managed beans
     private GroupDAO groupDAO;
     private DriverDAO driverDAO;
+    private VehicleDAO vehicleDAO;
+
+   
 
     private DurationBean durationBean;
     
@@ -286,14 +290,28 @@ public class NavigationBean extends BaseBean
             setDriver(driver);
         }
             
-        
-        
         this.driverID = driverID;
+    }
+    
+    public void setVehicleID(Integer vehicleID)
+    {
+        if(vehicleID != null)
+            vehicle = vehicleDAO.findByID(vehicleID);
     }
 
     public Integer getDriverID()
     {
         return driverID;
+    }
+    
+    public VehicleDAO getVehicleDAO()
+    {
+        return vehicleDAO;
+    }
+
+    public void setVehicleDAO(VehicleDAO vehicleDAO)
+    {
+        this.vehicleDAO = vehicleDAO;
     }
   
 }
