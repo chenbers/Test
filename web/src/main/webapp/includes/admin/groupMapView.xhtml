@@ -18,6 +18,7 @@
 		readOnly(required)
 		formName(required)
 		uniqueID(optional) I had to add this because I was using the map in different includes. This is optional
+        mapId(optional) This indicates which map api will be used. ('google','microsoft') Default is 'google'
 	 -->
 	<h:panelGroup id="#{uniqueID}-mapPanel">
 		
@@ -51,8 +52,9 @@
 							<div id="map-canvas"
 								style="width: 500px; height: 500px; border: 0"></div>
 							</h:panelGroup> 
-							<script type="text/javascript">	
-							function showAddress(address) {
+							<script type="text/javascript">
+							var mapstraction = null;	
+							/*function showAddress(address) {
 								  
 								  var geocoder = new GClientGeocoder();
 								  var zoomLookup = new Array(2,4,6,10,12,13,16,16,17);
@@ -73,9 +75,33 @@
 									    }
 								    );
 																		  
+							}*/
+
+							function showAddress(address) {
+								  
+								  var geocoder = new GClientGeocoder();
+								  var zoomLookup = new Array(2,4,6,10,12,13,16,16,17);
+								  geocoder.getLocations(address,
+									    function(response) {
+									      if(response.Status.code!=200){
+									        alert('"' + address + '" not found');
+									      } else {
+									        var place = response.Placemark[0];
+									        var accuracy = place.AddressDetails.Accuracy;
+									        var point = new LatLonPoint(place.Point.coordinates[1],place.Point.coordinates[0]);
+									        mapstraction.setCenterAndZoom(point, zoomLookup[accuracy]);
+									        updateMapValues(point.lat,point.lon,zoomLookup[accuracy]);
+									        var marker = new Marker(point);
+									        mapstraction.addMarker(marker);
+                                            marker.setInfoBubble(address);
+									        marker.openBubble();
+									      }
+									    }
+								    );
+																		  
 							}
 							
-							
+							/*
 							function initMap(){			    
 								if (GBrowserIsCompatible()) {
 									
@@ -118,7 +144,46 @@
 					
 								
 							}
+                            */
+                            function initMap()
+                            {
+                                mapstraction = new Mapstraction('map-canvas',"#{mapId ne null ? 'mapId' : 'google'}");
+                                // create a lat/lon object
+                                var myPoint = new LatLonPoint(#{latValue},#{longValue});
 
+                                // display the map centered on a latitude and longitude (Google zoom levels)
+                                mapstraction.setCenterAndZoom(myPoint, #{zoomLevel});
+
+                                mapstraction.addEventListener('moveend',function() {
+                                   var center = mapstraction.getCenter();
+                                   var zoom = mapstraction.getZoom();
+                                   updateMapValues(center.lat,center.lon,zoom);
+                                });
+					
+								
+                                                                
+                                <h:outputText rendered="#{readOnly}">
+                                   mapstraction.dragging(false);
+      							</h:outputText>
+      							<h:outputText rendered="#{not readOnly}">
+      							    mapstraction.addControls({
+                                        pan: true, 
+                                        zoom: 'large',
+                                        map_type: true});
+      							</h:outputText>                                
+                            }
+
+                            function updateMapValues(lat,lng,zoom){
+            					
+								var latField = document.getElementById('#{formName}:#{uniqueID}-latvalue');
+								var longField = document.getElementById('#{formName}:#{uniqueID}-longvalue');
+								var zoomField = document.getElementById('#{formName}:#{uniqueID}-zoomlevel');
+				
+								latField.value = lat;
+								longField.value = lng;
+								zoomField.value = zoom;
+                                
+							};
 							initMap();
 						</script> 
 						<h:inputHidden id="#{uniqueID}-latvalue" value="#{latValue}" />

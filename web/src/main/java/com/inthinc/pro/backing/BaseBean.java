@@ -10,6 +10,7 @@ import org.springframework.security.context.SecurityContextHolder;
 
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.AccountDAO;
+import com.inthinc.pro.map.MapType;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.security.userdetails.ProUser;
@@ -19,6 +20,8 @@ public class BaseBean
     private static final Logger logger = Logger.getLogger(BaseBean.class);
     private ErrorBean errorBean;
     private AccountDAO accountDAO;
+    
+    private static final MapType mapType = MapType.GOOGLE;
 
     public BaseBean()
     {
@@ -118,6 +121,11 @@ public class BaseBean
         Account account = getAccountDAO().findByID(getAccountID());
         String name = account.getAcctName();
         return name;
+    }
+
+    public MapType getMapType()
+    {
+        return mapType;
     }
 
 
