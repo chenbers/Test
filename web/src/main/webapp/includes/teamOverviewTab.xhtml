@@ -1,11 +1,4 @@
-<ui:composition 
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:rich="http://richfaces.org/rich"
-	xmlns:f="http://java.sun.com/jsf/core"
-  	xmlns:iwi="http://pro.tiwi.com/jsf"
-	xmlns:h="http://java.sun.com/jsf/html">
-	
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets">
 							
 <table width="920" border="0" cellspacing="0" cellpadding="0" align="center">
 	<tr>
@@ -14,8 +7,8 @@
 	<tr>
 		<td width="120" align="center" valign="middle">
         	<ui:include src="/includes/overallScoreBox.xhtml">	
-				<ui:param name="scoreStyle" value="#{teamOverviewBean.overallScoreStyle}"/>									
-          		<ui:param name="score" value="#{teamOverviewBean.selectedOverallScore}"/>             						
+				<ui:param name="overallScoreStyle" value="#{teamOverviewBean.overallScoreStyle}" />									
+          		<ui:param name="overallScore" value="#{teamOverviewBean.selectedOverallScore}" />             						
     		</ui:include>    							
 			<ui:include src="/includes/scoreBoxLegend.xhtml"/>
 		</td>
