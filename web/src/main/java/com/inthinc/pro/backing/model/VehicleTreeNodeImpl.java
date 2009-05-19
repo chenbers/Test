@@ -30,7 +30,7 @@ public class VehicleTreeNodeImpl extends BaseTreeNodeImpl<Vehicle>
     public VehicleTreeNodeImpl(Vehicle baseEntity, BaseTreeNodeImpl parentNode)
     {
         super(baseEntity, parentNode);
-        setLabel(baseEntity.getFullName());
+        setLabel(baseEntity.getName());
         StringBuilder sb = new StringBuilder(TreeNodeType.VEHICLE.getCode());
         sb.append(baseEntity.getVehicleID());
         setId(Integer.valueOf(sb.toString()));
