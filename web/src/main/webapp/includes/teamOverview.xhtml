@@ -11,7 +11,8 @@
 	{
 		var barDef = document.getElementById(barElement);
 		var barChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSCombi3D.swf", "ChartId", width, height, "0", "0");										
-		barChart.setDataXML(barDef.value);									   	   
+		barChart.setDataXML(barDef.value);	
+		barChart.setTransparent(true);								   	   
 		barChart.render(barDiv);
 	}
 	function renderTypeBar(type, width, height)
