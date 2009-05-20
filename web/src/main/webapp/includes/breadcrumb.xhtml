@@ -5,15 +5,17 @@
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:c="http://java.sun.com/jstl/core"
-	xmlns:security="http://pro.tiwi.com/jsf/security">
+	xmlns:security="http://pro.tiwi.com/jsf/security"
+    xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 	<ul id="breadcrumb">
 		<a4j:repeat value="#{groupTreeNode.groupBreadCrumb}" var="crumb" rowKeyVar="rowKey">
 			<li class="#{(rowKey eq (groupTreeNode.breadCrumbCount - 1) and lastBreadCrumb eq null)?'last':''}">
-              <h:outputLink value="#{facesContext.externalContext.request.contextPath}#{crumb.groupLevel.url}" >
-					<h:outputText value="#{crumb.label}"/>
-					<f:param name="groupID" value="#{crumb.id}"/>
-				</h:outputLink></li>
+               <pretty:link mappingId="dashboard">
+                  <h:outputText value="#{crumb.label}"/>
+                  <f:param value="#{crumb.id}"/>
+               </pretty:link>
+            </li>
 		</a4j:repeat>
 	</ul>
 	
