@@ -1,9 +1,12 @@
 package com.inthinc.pro.backing;
+
 import java.util.HashMap;
 import java.util.Map;
 
+import com.inthinc.pro.backing.ui.RedFlagReportItem;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventType;
@@ -11,28 +14,27 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 
-public abstract class BaseRedFlagsBean extends BaseBean 
+public abstract class BaseRedFlagsBean extends BaseBean
 {
-	private DriverDAO               driverDAO;
+    private DriverDAO                driverDAO;
     private VehicleDAO               vehicleDAO;
-    
-    
-    private Map<Integer, Driver> driverMap;
-    private Map<Integer, Vehicle> vehicleMap;
 
-    private Map<EventType, String> driverActionMap;
-    private Map<EventType, String> vehicleActionMap;
+    private Map<Integer, Driver>     driverMap;
+    private Map<Integer, Vehicle>    vehicleMap;
 
-    private Event selectedEvent;
-    
-    private ReportRenderer      reportRenderer;
-    private ReportCriteriaService reportCriteriaService;
-    private String emailAddress;
-    
-    private Integer page;
-    
-	protected SearchCoordinationBean searchCoordinationBean;
-    
+    private Map<EventType, String>   driverActionMap;
+    private Map<EventType, String>   vehicleActionMap;
+
+    private Event                    selectedEvent;
+
+    private ReportRenderer           reportRenderer;
+    private ReportCriteriaService    reportCriteriaService;
+    private String                   emailAddress;
+    private RedFlagReportItem        selectedRedFlag;
+
+    private Integer                  page;
+
+    protected SearchCoordinationBean searchCoordinationBean;
 
     public void initBean()
     {
@@ -54,9 +56,8 @@ public abstract class BaseRedFlagsBean extends BaseBean
         vehicleActionMap.put(EventType.SPEEDING, "go_reportVehicleSpeed");
         vehicleActionMap.put(EventType.SEATBELT, "go_reportVehicleSeatBelt");
         vehicleActionMap.put(EventType.IDLING, "go_vehicleTrips");
-        
-    }
 
+    }
 
     public DriverDAO getDriverDAO()
     {
@@ -90,10 +91,9 @@ public abstract class BaseRedFlagsBean extends BaseBean
                 driverMap.put(event.getDriverID(), driver);
             }
             event.setDriver(driver);
-        }   
+        }
     }
 
-    
     protected void fillInVehicle(Event event)
     {
         Vehicle vehicle = event.getVehicle();
@@ -108,7 +108,7 @@ public abstract class BaseRedFlagsBean extends BaseBean
             event.setVehicle(vehicle);
         }
     }
-    
+
     public String driverAction()
     {
         String action = driverActionMap.get(selectedEvent.getEventType());
@@ -116,7 +116,7 @@ public abstract class BaseRedFlagsBean extends BaseBean
             return "go_driver";
         return action;
     }
-    
+
     public String vehicleAction()
     {
         String action = vehicleActionMap.get(selectedEvent.getEventType());
@@ -125,18 +125,16 @@ public abstract class BaseRedFlagsBean extends BaseBean
         return action;
     }
 
-
     public Event getSelectedEvent()
     {
         return selectedEvent;
     }
 
-
     public void setSelectedEvent(Event selectedEvent)
     {
         this.selectedEvent = selectedEvent;
     }
-    
+
     public void setReportRenderer(ReportRenderer reportRenderer)
     {
         this.reportRenderer = reportRenderer;
@@ -167,47 +165,58 @@ public abstract class BaseRedFlagsBean extends BaseBean
         return emailAddress;
     }
 
-
-	public SearchCoordinationBean getSearchCoordinationBean() {
-		return searchCoordinationBean;
-	}
-
-
-	public void setSearchCoordinationBean(SearchCoordinationBean searchCoordinationBean) {
-		this.searchCoordinationBean = searchCoordinationBean;
-	}
-
-
-	public void searchAction() {
-		page = 1;
-	    filterTableData();
-	    
-	}
-	protected abstract void filterTableData();
-	
-    protected Integer getEffectiveGroupId(){
-    	
-     	if (getSearchCoordinationBean().isGoodGroupId()){
-    		
-    		return getSearchCoordinationBean().getGroup().getGroupID();
-    	}
-    	else {
-    		
-    		return getUser().getGroupID();
-    	}
+    public SearchCoordinationBean getSearchCoordinationBean()
+    {
+        return searchCoordinationBean;
     }
 
+    public void setSearchCoordinationBean(SearchCoordinationBean searchCoordinationBean)
+    {
+        this.searchCoordinationBean = searchCoordinationBean;
+    }
+
+    public void searchAction()
+    {
+        page = 1;
+        filterTableData();
+
+    }
+
+    protected abstract void filterTableData();
+
+    protected Integer getEffectiveGroupId()
+    {
+
+        if (getSearchCoordinationBean().isGoodGroupId())
+        {
+
+            return getSearchCoordinationBean().getGroup().getGroupID();
+        }
+        else
+        {
+
+            return getUser().getGroupID();
+        }
+    }
 
     public void setPage(Integer page)
     {
         this.page = page;
     }
 
-
     public Integer getPage()
     {
         return page;
     }
 
+    public RedFlagReportItem getSelectedRedFlag()
+    {
+        return selectedRedFlag;
+    }
+
+    public void setSelectedRedFlag(RedFlagReportItem selectedRedFlag)
+    {
+        this.selectedRedFlag = selectedRedFlag;
+    }
 
 }

@@ -10,6 +10,9 @@ import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.RedFlag;
+import com.inthinc.pro.model.Zone;
+import com.inthinc.pro.model.ZoneArrivalEvent;
+import com.inthinc.pro.model.ZoneDepartureEvent;
 import com.inthinc.pro.util.MessageUtil;
 
 public class RedFlagReportItem implements Comparable<RedFlagReportItem>
@@ -24,6 +27,7 @@ public class RedFlagReportItem implements Comparable<RedFlagReportItem>
     private String category;
     private String detail;
     
+    private Zone zone;
     private RedFlag redFlag;
     
     private static DateFormat dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"));
@@ -131,6 +135,16 @@ public class RedFlagReportItem implements Comparable<RedFlagReportItem>
     public void setVehicleName(String vehicleName)
     {
         this.vehicleName = vehicleName;
+    }
+
+    public Zone getZone()
+    {
+        return zone;
+    }
+
+    public void setZone(Zone zone)
+    {
+        this.zone = zone;
     }
     
     

@@ -16,11 +16,37 @@
                     <rich:componentControl for="eventLocationModal" event="onclick" disableDefault="true" operation="show">
                         <f:param name="lat" value="#{item.redFlag.event.latitude}" />
                         <f:param name="lng" value="#{item.redFlag.event.longitude}" />
+                  		<f:param name="zonePoints" value="#{item.zone.pointsString}" />
+                  		<f:param name="noteID" value="#{item.redFlag.event.noteID}" />
                     </rich:componentControl>
                 </h:graphicImage>
                 <rich:toolTip id="addressToolTip" mode="ajax">
-                    <h:outputText id="address" value="#{item.redFlag.event.latLng}" converter="#{latLngAddressConverter}" />
+                	<div id="address">
+	                    <h:outputText rendered="#{item.zone eq null}" value="#{item.redFlag.event.latLng}" converter="#{latLngAddressConverter}" />
+	                    <h:outputText rendered="#{item.zone ne null}" value="#{item.zone.name}" />
+                    </div>
                 </rich:toolTip>
+                
+                	<div id="#{item.redFlag.event.noteID}" style="display: none;">
+                	<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header">
+						<f:facet name="header">
+							<a4j:htmlCommandLink action="#{redFlagsBean.driverAction}" value="#{item.driverName}">
+			                    <f:setPropertyActionListener value="#{item.redFlag.event}" target="#{redFlagsBean.selectedEvent}" />
+			                    <f:setPropertyActionListener value="#{item.redFlag.event.driver}" target="#{navigationBean.driver}" />
+			                </a4j:htmlCommandLink>
+						</f:facet>
+						<h:outputText rendered="#{item.zone ne null}" value="#{messages.zones_zone}"/>
+						<h:outputText rendered="#{item.zone ne null}" value="#{item.zone.name}" />
+						
+						<h:outputText value="#{messages.notes_redflags_date}"/>
+						<h:outputText value="#{item.date}" />
+                		
+                		<h:outputText value="#{messages.notes_redflags_detail}"/>
+						<h:outputText value="#{item.detail}" />
+                	</h:panelGrid>
+                	</div>
+                	
+              
             </rich:column>
             <rich:column rendered="#{tableColumns['level'].visible}" sortBy="#{item.redFlag.level}" width="10%">
                 <f:facet name="header">
@@ -131,7 +157,7 @@
 
 
     <!-- START LOCATION MODAL -->
-    <rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initializeMap(event.parameters.lat, event.parameters.lng);" onhide="GUnload()">
+    <rich:modalPanel id="eventLocationModal" width="540" height="450" headerClass="popupHeader" onshow="initializeMap(event.parameters.lat, event.parameters.lng, event.parameters.zonePoints, event.parameters.noteID);" onhide="GUnload()">
         <f:facet name="header">
             <h:outputText id="mapModalHeader" value="Event Location" />
         </f:facet>
@@ -140,11 +166,11 @@
         </f:facet>
 
         <div class="eventmap-border">
-        <div id="address-canvas" style="width: 522px; height: 355px; border: 0"></div>
+        	<div id="address-canvas" style="width: 522px; height: 355px; border: 0"></div>
         </div>
 
         <div class="popupactions"><a4j:commandButton value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('eventLocationModal')" styleClass="left">
-            <span class="edit"> <h:outputText value="#{messages.button_close}" /> </span>
+            <span class="edit"> <h:outputText value="#{messages.button_close}" /></span>
         </a4j:commandButton></div>
     </rich:modalPanel>
     <!-- END LOCATION MODAL -->

@@ -16,11 +16,14 @@ import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.RedFlagDAO;
 import com.inthinc.pro.dao.TablePreferenceDAO;
+import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventCategory;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.TableType;
+import com.inthinc.pro.model.ZoneArrivalEvent;
+import com.inthinc.pro.model.ZoneDepartureEvent;
 import com.inthinc.pro.reports.ReportCriteria;
 
 public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<RedFlagReportItem>, PersonChangeListener, SearchChangeListener
@@ -41,6 +44,7 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
 
     private EventDAO                eventDAO;
     private RedFlagDAO              redFlagDAO;
+    private ZoneDAO                 zoneDAO;
     private TablePreferenceDAO tablePreferenceDAO;
     
     private RedFlagReportItem   clearItem;
@@ -49,6 +53,7 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     private Event eventFilter;
     
     private TablePref<RedFlagReportItem> tablePref;
+    
 
     // package level -- so unit test can get it
     static final List<String>       AVAILABLE_COLUMNS;
@@ -220,13 +225,25 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     {
         setFilteredTableData(null);
         
-        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(getEffectiveGroupId(), 7);
+        List<RedFlag> redFlagList = redFlagDAO.getRedFlags(getEffectiveGroupId(), 30);
         List<RedFlagReportItem> redFlagReportItemList = new ArrayList<RedFlagReportItem>();
         for (RedFlag redFlag : redFlagList)
         {
             fillInDriver(redFlag.getEvent());
             fillInVehicle(redFlag.getEvent());
-            redFlagReportItemList.add(new RedFlagReportItem(redFlag, getGroupHierarchy()));
+            
+            RedFlagReportItem item = new RedFlagReportItem(redFlag, getGroupHierarchy());
+            
+            if(redFlag.getEvent() instanceof ZoneDepartureEvent)
+            {
+                item.setZone(zoneDAO.findByID(((ZoneDepartureEvent)redFlag.getEvent()).getZoneID()));
+            }
+            if(redFlag.getEvent() instanceof ZoneArrivalEvent)
+            {
+                item.setZone(zoneDAO.findByID(((ZoneArrivalEvent)redFlag.getEvent()).getZoneID()));
+            }
+            
+            redFlagReportItemList.add(item);
         }
         Collections.sort(redFlagReportItemList);
         setTableData(redFlagReportItemList);
@@ -245,6 +262,16 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     public void setRedFlagDAO(RedFlagDAO redFlagDAO)
     {
         this.redFlagDAO = redFlagDAO;
+    }
+
+    public ZoneDAO getZoneDAO()
+    {
+        return zoneDAO;
+    }
+
+    public void setZoneDAO(ZoneDAO zoneDAO)
+    {
+        this.zoneDAO = zoneDAO;
     }
 
     public Integer getStart()
