@@ -21,6 +21,8 @@ public abstract class BaseRedFlagsBean extends BaseBean
 
     private Map<Integer, Driver>     driverMap;
     private Map<Integer, Vehicle>    vehicleMap;
+    
+    private ZoneDAO                  zoneDAO;
 
     private Map<EventType, String>   driverActionMap;
     private Map<EventType, String>   vehicleActionMap;
@@ -217,6 +219,16 @@ public abstract class BaseRedFlagsBean extends BaseBean
     public void setSelectedRedFlag(RedFlagReportItem selectedRedFlag)
     {
         this.selectedRedFlag = selectedRedFlag;
+    }
+
+    public void setZoneDAO(ZoneDAO zoneDAO)
+    {
+        this.zoneDAO = zoneDAO;
+    }
+
+    public ZoneDAO getZoneDAO()
+    {
+        return zoneDAO;
     }
 
 }
