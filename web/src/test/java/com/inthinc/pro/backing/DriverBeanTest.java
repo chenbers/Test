@@ -31,7 +31,6 @@ public class DriverBeanTest extends BaseBeanTest
         DriverBean driverBean = (DriverBean)applicationContext.getBean("driverBean");
         NavigationBean nav = (NavigationBean)applicationContext.getBean("navigationBean");
         
-        driverBean.setNavigation(nav);
         
         Person p = new Person();
         p.setFirst("John");
@@ -44,7 +43,7 @@ public class DriverBeanTest extends BaseBeanTest
 
         d.setPerson(p);
         
-        driverBean.getNavigation().setDriver(d);
+        driverBean.setDriver(d);
         
         // make sure the spring injection worked
         assertNotNull(driverBean.getOverallScore());

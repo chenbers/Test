@@ -31,7 +31,6 @@ public class VehicleSeatBeltBeanTest extends BaseBeanTest
         VehicleSeatBeltBean vehicleSeatBeltBean = (VehicleSeatBeltBean)applicationContext.getBean("vehicleSeatBeltBean");
         NavigationBean nav = (NavigationBean)applicationContext.getBean("navigationBean");
      
-        vehicleSeatBeltBean.setNavigation(nav);
         
         Vehicle v = new Vehicle();
         v.setDriverID(101);
@@ -39,7 +38,7 @@ public class VehicleSeatBeltBeanTest extends BaseBeanTest
         v.setGroupID(102);
 
         
-        vehicleSeatBeltBean.getNavigation().setVehicle(v);
+        vehicleSeatBeltBean.setVehicle(v);
         
         Person p = new Person();
         p.setFirst("John");
@@ -52,7 +51,7 @@ public class VehicleSeatBeltBeanTest extends BaseBeanTest
         d.setPerson(p);
         
         
-        vehicleSeatBeltBean.getNavigation().setDriver(d);
+        vehicleSeatBeltBean.setDriver(d);
         
         // make sure the spring injection worked
         assertNotNull(vehicleSeatBeltBean.getSeatBeltScore());

@@ -49,9 +49,7 @@ public class VehicleStyleBeanTest extends BaseBeanTest
         // get the bean from the applicationContext (initialized by Spring injection)
         VehicleStyleBean vehicleStyleBean = (VehicleStyleBean)applicationContext.getBean("vehicleStyleBean");
         NavigationBean nav = (NavigationBean)applicationContext.getBean("navigationBean");
-        
-        vehicleStyleBean.setNavigation(nav);
-        
+              
         Person p = new Person();
         p.setFirst("John");
         p.setLast("Doe");
@@ -63,7 +61,7 @@ public class VehicleStyleBeanTest extends BaseBeanTest
         d.setGroupID(101);
 
         d.setPerson(p);
-        vehicleStyleBean.getNavigation().setDriver(d);
+        vehicleStyleBean.setDriver(d);
         
         // Test Scores and Styles
         scoreMap = new HashMap<String, Integer>();

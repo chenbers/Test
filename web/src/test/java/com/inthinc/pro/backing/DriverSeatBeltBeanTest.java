@@ -30,8 +30,7 @@ public class DriverSeatBeltBeanTest extends BaseBeanTest
         // get the bean from the applicationContext (initialized by Spring injection)
         DriverSeatBeltBean driverSeatBeltBean = (DriverSeatBeltBean)applicationContext.getBean("driverSeatBeltBean");
         NavigationBean nav = (NavigationBean)applicationContext.getBean("navigationBean");
-        
-        driverSeatBeltBean.setNavigation(nav);
+
         
         Person p = new Person();
         p.setFirst("John");
@@ -44,7 +43,7 @@ public class DriverSeatBeltBeanTest extends BaseBeanTest
 
         d.setPerson(p);
         
-        driverSeatBeltBean.getNavigation().setDriver(d);
+        driverSeatBeltBean.setDriver(d);
         
         // make sure the spring injection worked
         assertNotNull(driverSeatBeltBean.getSeatBeltScore());

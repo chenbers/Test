@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+
+import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
@@ -49,7 +51,7 @@ public class VehicleStyleBean extends BasePerformanceBean
     private void initScores()
     {
         Map<ScoreType, ScoreableEntity> tempMap = scoreDAO
-                .getVehicleScoreBreakdownByType(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), ScoreType.SCORE_DRIVING_STYLE);
+                .getVehicleScoreBreakdownByType(getVehicle().getVehicleID(), durationBean.getDuration(), ScoreType.SCORE_DRIVING_STYLE);
 
         scoreMap = new HashMap<String, Integer>();
         styleMap = new HashMap<String, String>();
@@ -77,7 +79,7 @@ public class VehicleStyleBean extends BasePerformanceBean
 
     private void initTrends()
     {
-        Integer id = navigation.getVehicle().getVehicleID();
+        Integer id = getVehicle().getVehicleID();
         trendMap = new HashMap<String, String>();
         trendMap.put(ScoreType.SCORE_DRIVING_STYLE.toString(), createFusionMultiLineDef(id, durationBean.getDuration(), ScoreType.SCORE_DRIVING_STYLE));
         trendMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL.toString(), createFusionMultiLineDef(id, durationBean.getDuration(), ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL));
@@ -92,7 +94,7 @@ public class VehicleStyleBean extends BasePerformanceBean
         List<Integer> types = new ArrayList<Integer>();
         types.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
 
-        tempEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), durationBean.getStartDate(), durationBean.getEndDate(), types);
+        tempEvents = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), durationBean.getStartDate(), durationBean.getEndDate(), types);
         styleEvents = new ArrayList<EventReportItem>();
 
         for (Event event : tempEvents)
@@ -153,7 +155,7 @@ public class VehicleStyleBean extends BasePerformanceBean
 
     public void ClearEventAction()
     {
-        Integer result = eventDAO.forgive(navigation.getVehicle().getVehicleID(), clearItem.getEvent().getNoteID());
+        Integer result = eventDAO.forgive(getVehicle().getVehicleID(), clearItem.getEvent().getNoteID());
         if(result >= 1)
             {
                 filteredStyleEvents.remove(clearItem);
@@ -205,7 +207,7 @@ public class VehicleStyleBean extends BasePerformanceBean
 
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
-        reportCriteria.addParameter("ENTITY_NAME", getNavigation().getVehicle().getFullName());
+        reportCriteria.addParameter("ENTITY_NAME", getVehicle().getFullName());
         reportCriteria.addParameter("RECORD_COUNT", getStyleEvents().size());
         reportCriteria.addParameter("OVERALL_SCORE", getScoreMap().get(ScoreType.SCORE_DRIVING_STYLE.toString()) / 10.0D);
         reportCriteria.addParameter("SPEED_MEASUREMENT", MessageUtil.getMessageString("measurement_style"));
@@ -221,7 +223,7 @@ public class VehicleStyleBean extends BasePerformanceBean
         scoreTypes.add(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE);
         scoreTypes.add(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP);
         scoreTypes.add(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
-        reportCriteria.addChartDataSet(createJasperMultiLineDef(navigation.getVehicle().getVehicleID(), scoreTypes, durationBean.getDuration()));
+        reportCriteria.addChartDataSet(createJasperMultiLineDef(getVehicle().getVehicleID(), scoreTypes, durationBean.getDuration()));
         reportCriteria.setMainDataset(getStyleEvents());
 
         return reportCriteria;
@@ -304,5 +306,12 @@ public class VehicleStyleBean extends BasePerformanceBean
         }
         tableStatsBean.reset(ROWCOUNT, filteredStyleEvents.size());
         return "";
+    }
+    
+    public void setVehicleID(Integer vehicleID)
+    {
+        this.vehicle = vehicleDAO.findByID(vehicleID);
+        groupTreeNodeImpl = new GroupTreeNodeImpl(groupDAO.findByID(vehicle.getGroupID()),getGroupHierarchy());
+        this.vehicleID = vehicleID;
     }
 }

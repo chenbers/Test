@@ -6,11 +6,14 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+
+import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.ScoreDAO;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
@@ -34,6 +37,8 @@ public class DriverSeatBeltBean extends BasePerformanceBean
     private String                emailAddress;
     private static final Integer  NO_SCORE = -1;
     private final Integer         ROWCOUNT = 10;
+   
+    private Integer               driverID;
 
     private List<EventReportItem> seatBeltEvents ;
 
@@ -51,7 +56,7 @@ public class DriverSeatBeltBean extends BasePerformanceBean
     
     private void initScores()
     {
-        ScoreableEntity se = scoreDAO.getDriverAverageScoreByType(navigation.getDriver().getDriverID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
+        ScoreableEntity se = scoreDAO.getDriverAverageScoreByType(getDriver().getDriverID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
         
         if(se != null && se.getScore() != null)
             setSeatBeltScore(se.getScore());
@@ -67,20 +72,20 @@ public class DriverSeatBeltBean extends BasePerformanceBean
         types.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
 
         List<Event> tempEvents = new ArrayList<Event>();
-        tempEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), durationBean.getStartDate(), durationBean.getEndDate(), types);
+        tempEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), durationBean.getStartDate(), durationBean.getEndDate(), types);
 
         seatBeltEvents = new ArrayList<EventReportItem>();
         for (Event event : tempEvents)
         {
             event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
-            seatBeltEvents.add(new EventReportItem(event, this.navigation.getDriver().getPerson().getTimeZone()));
+            seatBeltEvents.add(new EventReportItem(event, this.getDriver().getPerson().getTimeZone()));
         }
         tableStatsBean.reset(ROWCOUNT, seatBeltEvents.size());
     }
 
     public void initTrends()
     {
-        seatBeltScoreHistoryOverall = createFusionMultiLineDef(navigation.getDriver().getDriverID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
+        seatBeltScoreHistoryOverall = createFusionMultiLineDef(getDriver().getDriverID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
     }
 
     public Integer getSeatBeltScore()
@@ -169,7 +174,7 @@ public class DriverSeatBeltBean extends BasePerformanceBean
 
     public void ClearEventAction()
     {
-        Integer result = eventDAO.forgive(navigation.getDriver().getDriverID(), clearItem.getEvent().getNoteID());
+        Integer result = eventDAO.forgive(getDriver().getDriverID(), clearItem.getEvent().getNoteID());
         if(result >= 1)
             {
                 seatBeltEvents.remove(clearItem);
@@ -193,7 +198,7 @@ public class DriverSeatBeltBean extends BasePerformanceBean
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_SEATBELT, getGroupHierarchy().getTopGroup().getName());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setDuration(durationBean.getDuration());
-        reportCriteria.addParameter("ENTITY_NAME", this.getNavigation().getDriver().getPerson().getFullName());
+        reportCriteria.addParameter("ENTITY_NAME", this.getDriver().getPerson().getFullName());
         reportCriteria.addParameter("RECORD_COUNT", this.getSeatBeltEvents().size());
         reportCriteria.addParameter("OVERALL_SCORE", this.getSeatBeltScore() / 10.0D);
         reportCriteria.addParameter("SPEED_MEASUREMENT", MessageUtil.getMessageString("measurement_speed"));
@@ -201,7 +206,7 @@ public class DriverSeatBeltBean extends BasePerformanceBean
 
         List<ScoreType> scoreTypes = new ArrayList<ScoreType>();
         scoreTypes.add(ScoreType.SCORE_SEATBELT);
-        reportCriteria.addChartDataSet(createJasperMultiLineDef(navigation.getDriver().getDriverID(), scoreTypes, durationBean.getDuration()));
+        reportCriteria.addChartDataSet(createJasperMultiLineDef(getDriver().getDriverID(), scoreTypes, durationBean.getDuration()));
         reportCriteria.setMainDataset(seatBeltEvents);
 
         return reportCriteria;
@@ -234,6 +239,14 @@ public class DriverSeatBeltBean extends BasePerformanceBean
     public void exportReportToExcel()
     {
         getReportRenderer().exportReportToExcel(buildReport(), getFacesContext());
+    }
+
+    @Override
+    public void setDriverID(Integer driverId)
+    {
+        driver = driverDAO.findByID(driverId);
+        groupTreeNodeImpl = new GroupTreeNodeImpl(groupDAO.findByID(driver.getGroupID()),getGroupHierarchy());
+        this.driverID = driverId;
     }
 
 

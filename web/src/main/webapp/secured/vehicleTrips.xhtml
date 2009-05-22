@@ -5,7 +5,8 @@
 			    xmlns:rich="http://richfaces.org/rich" 
 			    xmlns:a4j="http://richfaces.org/a4j" 
 			    xmlns:f="http://java.sun.com/jsf/core"
-			    xmlns:t="http://myfaces.apache.org/tomahawk">
+			    xmlns:t="http://myfaces.apache.org/tomahawk"
+                xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
     <ui:define name="scripts">
         <script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>
@@ -233,6 +234,8 @@
         <t:saveState value="#{vehicleTripsBean.idleEvents}" />
         <t:saveState value="#{vehicleTripsBean.violationEvents}" />
         <t:saveState value="#{vehicleTripsBean.allEvents}" />
+        <t:saveState value="#{vehicleTripsBean.vehicle}" />
+        <t:saveState value="#{vehicleTripsBean.groupTreeNodeImpl}" />
 
         <rich:panel id="bubbles">
             <!-- BEGIN GOOGLE BUBBLES -->
@@ -277,19 +280,30 @@
         <div id="wrapper"><h:form>
             <ul id="grid_nav">
                 <li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
-                <li class="l grid_title">#{messages.vehicletrip_title}:<h:commandLink action="go_vehicle" value=" #{navigationBean.vehicle.name}" /></li>
+                <li class="l grid_title">#{messages.vehicletrip_title}:
+                     <pretty:link mappingId="vehiclePerformance">
+                        <h:outputText value="#{vehicleTripsBean.vehicle.name}"/>
+                        <f:param value="#{vehicleTripsBean.vehicle.vehicleID}"/>
+                     </pretty:link>
+                </li>
                 <li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li>
 
-                <li class="l"><ui:include src="/includes/breadcrumb.xhtml">
-                    <ui:param name="groupTreeNode" value="#{navigationBean.groupTreeNode}" />
-                    <ui:param name="lastBreadCrumb" value="true" />
-                </ui:include></li>
-
+                <li class="l">
+                  <ui:include src="/includes/breadcrumb.xhtml">
+                     <ui:param name="groupTreeNode" value="#{vehicleTripsBean.groupTreeNodeImpl}" />
+                     <ui:param name="lastBreadCrumb" value="true" />
+                  </ui:include>
+               </li>
                 <li class="l" style="margin-left: -15px;">
-                <ul id="breadcrumb">
-                    <li><h:commandLink action="go_vehicle" value="#{navigationBean.vehicle.name}" /></li>
-                    <li class="last">#{messages.vehicletrip_trips}</li>
-                </ul>
+                  <ul id="breadcrumb">
+                        <li>
+                           <pretty:link mappingId="vehiclePerformance">
+                              <h:outputText value="#{vehicleTripsBean.vehicle.name}"/>
+                              <f:param value="#{vehicleTripsBean.vehicle.vehicleID}"/>
+                           </pretty:link>
+                        </li>
+                        <li class="last"><h:outputText value="#{messages.vehicletrip_trips}" /></li>
+                  </ul>
                 </li>
             </ul>
         </h:form>

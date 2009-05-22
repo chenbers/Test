@@ -27,19 +27,50 @@
         <pattern>/secured/team/#{navigationBean.groupID}</pattern>
         <view-id>/secured/dashboard/team.faces</view-id>
     </url-mapping>   
-    
 	<url-mapping id="groupOverview">
 		<pattern>/secured/groupOverview</pattern>
 		<query-param name="groupID">#{navigationBean.groupID}</query-param>
 		<view-id>/secured/groupOverview.faces</view-id>
 	</url-mapping>
 	<url-mapping id="driverPerformance">
-		<pattern>/secured/driver/#{navigationBean.driverID}</pattern>
+		<pattern>/secured/driver/#{driverBean.driverID}</pattern>
 		<view-id>/secured/driver.faces</view-id>
 	</url-mapping>
+	<url-mapping id="driverPerformanceSpeed">
+		<pattern>/secured/driver/speed/#{driverSpeedBean.driverID}</pattern>
+		<view-id>/secured/reports/driverSpeed.faces</view-id>
+	</url-mapping>
+	<url-mapping id="driverPerformanceStyle">
+		<pattern>/secured/driver/style/#{driverStyleBean.driverID}</pattern>
+		<view-id>/secured/reports/driverStyle.faces</view-id>
+	</url-mapping>
+	<url-mapping id="driverPerformanceSeatBelt">
+		<pattern>/secured/driver/seatBelt/#{driverSeatBeltBean.driverID}</pattern>
+		<view-id>/secured/reports/driverSeatBelt.faces</view-id>
+	</url-mapping>
+	<url-mapping id="driverTrips">
+		<pattern>/secured/driver/trips/#{driverTripsBean.driverID}</pattern>
+		<view-id>/secured/driverTrips.faces</view-id>
+	</url-mapping>
 	<url-mapping id="vehiclePerformance">
-		<pattern>/secured/vehicle/#{navigationBean.vehicleID}</pattern>
+		<pattern>/secured/vehicle/#{vehicleBean.vehicleID}</pattern>
 		<view-id>/secured/vehicle.faces</view-id>
+	</url-mapping>
+	<url-mapping id="vehiclePerformanceSpeed">
+		<pattern>/secured/vehicle/speed/#{vehicleSpeedBean.vehicleID}</pattern>
+		<view-id>/secured/reports/vehicleSpeed.faces</view-id>
+	</url-mapping>
+	<url-mapping id="vehiclePerformanceStyle">
+		<pattern>/secured/vehicle/style/#{vehicleStyleBean.vehicleID}</pattern>
+		<view-id>/secured/reports/vehicleStyle.faces</view-id>
+	</url-mapping>
+	<url-mapping id="vehiclePerformanceSeatBelt">
+		<pattern>/secured/vehicle/seatBelt/#{vehicleSeatBeltBean.vehicleID}</pattern>
+		<view-id>/secured/reports/vehicleSeatBelt.faces</view-id>
+	</url-mapping>
+	<url-mapping id="vehicleTrips">
+		<pattern>/secured/vehicle/trips/#{vehicleTripsBean.vehicleID}</pattern>
+		<view-id>/secured/vehicleTrips.faces</view-id>
 	</url-mapping>
     <!-- Reports Section -->
     <url-mapping id="reports">

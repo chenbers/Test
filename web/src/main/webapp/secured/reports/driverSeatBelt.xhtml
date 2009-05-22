@@ -5,7 +5,8 @@
   				xmlns:rich="http://richfaces.org/rich"
   				xmlns:a4j="http://richfaces.org/a4j"
   				xmlns:f="http://java.sun.com/jsf/core"
-  				xmlns:t="http://myfaces.apache.org/tomahawk">
+  				xmlns:t="http://myfaces.apache.org/tomahawk"
+                xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 	<ui:define name="scripts">
 		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>	
@@ -29,27 +30,41 @@
 	<ui:define name="content">
 	<t:saveState value="#{driverSeatBeltBean.seatBeltEvents}"/>
 	<t:saveState value="#{driverSeatBeltBean.tableStatsBean}"/>
+    <t:saveState value="#{driverSeatBeltBean.driver}"></t:saveState>
+    <t:saveState value="#{driverSeatBeltBean.groupTreeNodeImpl}"></t:saveState>
 <div id="wrapper">
 
 <h:form>
 	<ul id="grid_nav">
 		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
-		<li class="l grid_title"><h:outputText value="#{messages.driverPerformanceName} " /><h:commandLink action="go_driver" value="#{navigationBean.driver.person.fullName}" /></li>
+		<li class="l grid_title"><h:outputText value="#{messages.driverPerformanceName} " />
+            <pretty:link mappingId="driverPerformance">
+               <h:outputText value="#{driverSeatBeltBean.driver.person.fullName}"/>
+               <f:param value="#{driverSeatBeltBean.driver.driverID}"/>
+            </pretty:link>
+        </li>
 		<li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li>
 		
 		<li class="l">
 			<ui:include src="/includes/breadcrumb.xhtml">
-				<ui:param name="groupTreeNode"
-					value="#{navigationBean.groupTreeNode}" />
-					<ui:param name="lastBreadCrumb" value="true" />
-			
+				<ui:param name="groupTreeNode" value="#{driverSeatBeltBean.groupTreeNodeImpl}" />
+				<ui:param name="lastBreadCrumb" value="true" />
 			</ui:include>
 		</li>
-	
+		
 		<li class="l" style="margin-left: -15px;">
 			<ul id="breadcrumb">
-				<li><h:commandLink action="go_driver" value="#{navigationBean.driver.person.fullNameWithId}" /></li>
-				<li class="last">#{messages.driver_seatbelt}</li>
+				<li>
+                     <h:graphicImage value="/images/x.gif" width="10" height="10" />
+                     <pretty:link mappingId="driverPerformance">
+                        <h:outputText value="#{driverSeatBeltBean.driver.person.fullNameWithId}"/>
+                        <f:param value="#{driverSeatBeltBean.driver.driverID}"/>
+                     </pretty:link>
+                </li>
+				<li class="last">
+                     <h:graphicImage value="/images/x.gif" width="10" height="10" />
+                     #{messages.driver_driving_style}
+                </li>
 			</ul>
 		</li>
 	</ul>
@@ -65,7 +80,7 @@
 						<span class="seatbelt">#{messages.SCORE_SEATBELT}: #{messages.SCORE_OVERALL}</span>
 						<ui:include src="../../includes/dateLinksToolsDetail.xhtml">
 							<ui:param name="ajaxForm" value="seatBeltForm"/>
-							<ui:param name="reRenderList" value="seatBeltForm,overallScoreBox,overall_script,eventsPanel"/>			
+							<ui:param name="reRenderList" value="seatBeltForm,overallScoreBox,overallChart,eventsPanel"/>			
 							<ui:param name="thirtyDaysOn" value="#{(driverSeatBeltBean.duration eq 'DAYS') ? 'on' : ''}"/>
 							<ui:param name="threeMonthsOn" value="#{(driverSeatBeltBean.duration eq 'THREE') ? 'on' : ''}"/>
 							<ui:param name="sixMonthsOn" value="#{(driverSeatBeltBean.duration eq 'SIX') ? 'on' : ''}"/>
@@ -76,7 +91,9 @@
 				  			<ui:param name="reportBean" value="#{driverSeatBeltBean}" />
 				  			<ui:param name="showTools" value="TRUE" /> 
 				  			<ui:param name="showExcel" value="TRUE" /> 
-  							<ui:param name="showDetail" value="TRUE" />  
+  							<ui:param name="showDetail" value="TRUE" /> 
+                            <ui:param name="mappingId" value="driverPerformance"/>
+                            <ui:param name="entityId" value="#{driverSeatBeltBean.driver.driverID}"/> 
 						</ui:include>									
 					</div>
 				</div>
@@ -87,12 +104,9 @@
 						<td valign="top" width="600">
 						   <ui:include src="../../includes/multiLineChart.xhtml">
 						            <ui:param name="lineChartDef" value="#{driverSeatBeltBean.seatBeltScoreHistoryOverall}" />
-						            <ui:param name="hiddenFieldID" value="HiddenField" />
+						            <ui:param name="id" value="overallChart" />
 						            <ui:param name="width" value="650" /> 
 						            <ui:param name="height" value="230" />  
-						            <ui:param name="tartgetElementVar" value="targetElement" />
-						            <ui:param name="ChartDivID" value="overall_chart" />
-						            <ui:param name="ScriptDivID" value="overall_script" />
 						            <ui:param name="chartVar" value="overallChart" />
 						            <ui:param name="pYAxisName" value="#{messages.driver_chart_score}" />
 						            <ui:param name="sYAxisName" value="#{messages.driver_chart_miles}" />
@@ -193,7 +207,7 @@
 									<h:outputText value="#{messages.driver_datetime}" />
 								</f:facet>
 									<h:outputText value="#{item.event.time}">
-										<f:convertDateTime timeZone="#{navigationBean.driver.person.timeZone}" pattern="#{messages.dateTimeFormat}"/>
+										<f:convertDateTime timeZone="#{driverSeatBeltBean.driver.person.timeZone}" pattern="#{messages.dateTimeFormat}"/>
 									</h:outputText>
 							</rich:column>
 							
@@ -264,7 +278,7 @@
 	   	<h:panelGroup layout="block"  styleClass="popupcontent" id="clearItem">
 			<h:outputText value="#{driverSeatBeltBean.clearItem.detail}"/><br/>
       		<h:outputText value="#{driverSeatBeltBean.clearItem.event.time}">
-      			<f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{navigationBean.driver.person.timeZone}" />
+      			<f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{driverSeatBeltBean.driver.person.timeZone}" />
 			</h:outputText>
       	</h:panelGroup>
 	

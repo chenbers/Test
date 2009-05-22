@@ -46,14 +46,13 @@ public class VehicleSpeedBeanTest extends BaseBeanTest
         VehicleSpeedBean vehicleSpeedBean = (VehicleSpeedBean)applicationContext.getBean("vehicleSpeedBean");
         NavigationBean nav = (NavigationBean)applicationContext.getBean("navigationBean");
         
-        vehicleSpeedBean.setNavigation(nav);
         
         Vehicle v = new Vehicle();
         v.setDriverID(101);
         v.setVehicleID(1111);
         v.setGroupID(0);
 
-        vehicleSpeedBean.getNavigation().setVehicle(v);
+        vehicleSpeedBean.setVehicle(v);
         
         // Test Scores and Styles
         scoreMap = new HashMap<String, Integer>();

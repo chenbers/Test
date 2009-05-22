@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+
+import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
@@ -51,7 +53,7 @@ public class VehicleSeatBeltBean extends BasePerformanceBean
     
     private void initScores()
     {
-        ScoreableEntity se = scoreDAO.getVehicleAverageScoreByType(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
+        ScoreableEntity se = scoreDAO.getVehicleAverageScoreByType(getVehicle().getVehicleID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
         
         if(se != null && se.getScore() != null)
             setSeatBeltScore(se.getScore());
@@ -67,7 +69,7 @@ public class VehicleSeatBeltBean extends BasePerformanceBean
         types.add(EventMapper.TIWIPRO_EVENT_SEATBELT);
 
         List<Event> tempEvents = new ArrayList<Event>();
-        tempEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), durationBean.getStartDate(), durationBean.getEndDate(), types);
+        tempEvents = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), durationBean.getStartDate(), durationBean.getEndDate(), types);
 
         seatBeltEvents = new ArrayList<EventReportItem>();
         for (Event event : tempEvents)
@@ -80,7 +82,7 @@ public class VehicleSeatBeltBean extends BasePerformanceBean
 
     public void initTrends()
     {
-        seatBeltScoreHistoryOverall = createFusionMultiLineDef(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
+        seatBeltScoreHistoryOverall = createFusionMultiLineDef(getVehicle().getVehicleID(), durationBean.getDuration(), ScoreType.SCORE_SEATBELT);
     }
 
     public Integer getSeatBeltScore()
@@ -169,7 +171,7 @@ public class VehicleSeatBeltBean extends BasePerformanceBean
 
     public void ClearEventAction()
     {
-        Integer result = eventDAO.forgive(navigation.getVehicle().getVehicleID(), clearItem.getEvent().getNoteID());
+        Integer result = eventDAO.forgive(getVehicle().getVehicleID(), clearItem.getEvent().getNoteID());
         if(result >= 1)
             {
                 seatBeltEvents.remove(clearItem);
@@ -193,7 +195,7 @@ public class VehicleSeatBeltBean extends BasePerformanceBean
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_SEATBELT, getGroupHierarchy().getTopGroup().getName());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setDuration(durationBean.getDuration());
-        reportCriteria.addParameter("ENTITY_NAME", navigation.getVehicle().getFullName());
+        reportCriteria.addParameter("ENTITY_NAME", getVehicle().getFullName());
         reportCriteria.addParameter("RECORD_COUNT", getSeatBeltEvents().size());
         reportCriteria.addParameter("OVERALL_SCORE", getSeatBeltScore() / 10.0D);
         reportCriteria.addParameter("SPEED_MEASUREMENT", MessageUtil.getMessageString("measurement_speed"));
@@ -201,7 +203,7 @@ public class VehicleSeatBeltBean extends BasePerformanceBean
 
         List<ScoreType> scoreTypes = new ArrayList<ScoreType>();
         scoreTypes.add(ScoreType.SCORE_SEATBELT);
-        reportCriteria.addChartDataSet(createJasperMultiLineDef(navigation.getVehicle().getVehicleID(), scoreTypes, durationBean.getDuration()));
+        reportCriteria.addChartDataSet(createJasperMultiLineDef(getVehicle().getVehicleID(), scoreTypes, durationBean.getDuration()));
         reportCriteria.setMainDataset(seatBeltEvents);
 
         return reportCriteria;
@@ -234,5 +236,12 @@ public class VehicleSeatBeltBean extends BasePerformanceBean
     public void exportReportToExcel()
     {
         getReportRenderer().exportReportToExcel(buildReport(), getFacesContext());
+    }
+    
+    public void setVehicleID(Integer vehicleID)
+    {
+        this.vehicle = vehicleDAO.findByID(vehicleID);
+        groupTreeNodeImpl = new GroupTreeNodeImpl(groupDAO.findByID(vehicle.getGroupID()),getGroupHierarchy());
+        this.vehicleID = vehicleID;
     }
 }

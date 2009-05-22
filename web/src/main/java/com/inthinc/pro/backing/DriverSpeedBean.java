@@ -8,11 +8,13 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.ScoreDAO;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
@@ -37,6 +39,7 @@ public class DriverSpeedBean extends BasePerformanceBean
     private Map<String, List<EventReportItem>> speedingListsMap;
     private final Integer                      ROWCOUNT = 10;
 
+
     @Override
     protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
     {
@@ -51,7 +54,7 @@ public class DriverSpeedBean extends BasePerformanceBean
     
     private void initScores()
     {
-        Map<ScoreType, ScoreableEntity> tempMap = scoreDAO.getDriverScoreBreakdownByType(navigation.getDriver().getDriverID(), durationBean.getDuration(), ScoreType.SCORE_SPEEDING);
+        Map<ScoreType, ScoreableEntity> tempMap = scoreDAO.getDriverScoreBreakdownByType(getDriver().getDriverID(), durationBean.getDuration(), ScoreType.SCORE_SPEEDING);
 
         scoreMap = new HashMap<String, Integer>();
         styleMap = new HashMap<String, String>();
@@ -83,7 +86,7 @@ public class DriverSpeedBean extends BasePerformanceBean
 
     private void initTrends()
     {
-        Integer id = navigation.getDriver().getDriverID();
+        Integer id = getDriver().getDriverID();
         trendMap = new HashMap<String, String>();
         trendMap.put(ScoreType.SCORE_SPEEDING.toString(), createFusionMultiLineDef(id, durationBean.getDuration(), ScoreType.SCORE_SPEEDING));
         trendMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), createFusionMultiLineDef(id, durationBean.getDuration(), ScoreType.SCORE_SPEEDING_21_30));
@@ -99,13 +102,13 @@ public class DriverSpeedBean extends BasePerformanceBean
         List<Integer> types = new ArrayList<Integer>();
         types.add(EventMapper.TIWIPRO_EVENT_SPEEDING_EX3);
 
-        tempEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), durationBean.getStartDate(), durationBean.getEndDate(), types);
+        tempEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), durationBean.getStartDate(), durationBean.getEndDate(), types);
         speedingEvents = new ArrayList<EventReportItem>();
 
         for (Event event : tempEvents)
         {
             event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
-            speedingEvents.add(new EventReportItem(event, this.navigation.getDriver().getPerson().getTimeZone()));
+            speedingEvents.add(new EventReportItem(event, this.getDriver().getPerson().getTimeZone()));
         }
         sortSpeedingEvents();
     }
@@ -202,7 +205,7 @@ public class DriverSpeedBean extends BasePerformanceBean
 
     public void clearEventAction()
     {
-        Integer result = eventDAO.forgive(navigation.getDriver().getDriverID(), clearItem.getEvent().getNoteID());
+        Integer result = eventDAO.forgive(getDriver().getDriverID(), clearItem.getEvent().getNoteID());
         if(result >= 1)
             {
                 initEvents();
@@ -252,7 +255,7 @@ public class DriverSpeedBean extends BasePerformanceBean
         ReportCriteria reportCriteria = new ReportCriteria(reportType, getGroupHierarchy().getTopGroup().getName());
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
-        reportCriteria.addParameter("ENTITY_NAME", this.getNavigation().getDriver().getPerson().getFullName());
+        reportCriteria.addParameter("ENTITY_NAME", this.getDriver().getPerson().getFullName());
         reportCriteria.addParameter("RECORD_COUNT", speedingListsMap.size());
         reportCriteria.addParameter("OVERALL_SCORE", getScoreMap().get(ScoreType.SCORE_SPEEDING.toString()) / 10.0D);
         reportCriteria.addParameter("SPEED_MEASUREMENT", MessageUtil.getMessageString("measurement_speed"));
@@ -270,7 +273,7 @@ public class DriverSpeedBean extends BasePerformanceBean
         scoreTypes.add(ScoreType.SCORE_SPEEDING_41_54);
         scoreTypes.add(ScoreType.SCORE_SPEEDING_55_64);
         scoreTypes.add(ScoreType.SCORE_SPEEDING_65_80);
-        reportCriteria.addChartDataSet(this.createJasperMultiLineDef(navigation.getDriver().getDriverID(), scoreTypes, durationBean.getDuration()));
+        reportCriteria.addChartDataSet(this.createJasperMultiLineDef(getDriver().getDriverID(), scoreTypes, durationBean.getDuration()));
         reportCriteria.setMainDataset(this.speedingEvents);
 
         return reportCriteria;
@@ -353,5 +356,13 @@ public class DriverSpeedBean extends BasePerformanceBean
             }
         }
         filteredSpeedingEvents = speedingListsMap.get(selectedSpeed);
+    }
+
+    @Override
+    public void setDriverID(Integer driverId)
+    {
+        driver = driverDAO.findByID(driverId);
+        groupTreeNodeImpl = new GroupTreeNodeImpl(groupDAO.findByID(driver.getGroupID()),getGroupHierarchy());
+        this.driverID = driverId;
     }
 }

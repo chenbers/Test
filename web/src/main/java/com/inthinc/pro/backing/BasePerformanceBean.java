@@ -6,13 +6,19 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.charts.FusionColumnChart;
 import com.inthinc.pro.charts.FusionMultiAreaChart;
 import com.inthinc.pro.charts.Line;
+import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.map.AddressLookup;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
+import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.util.GraphicUtil;
@@ -21,15 +27,25 @@ import com.inthinc.pro.util.MessageUtil;
 public abstract class BasePerformanceBean extends BaseBean
 {
     private static final Logger    logger         = Logger.getLogger(VehicleSpeedBean.class);
-    protected NavigationBean       navigation;
     protected DurationBean         durationBean;
     protected TableStatsBean       tableStatsBean;
     protected AddressLookup        addressLookup;
     protected ReportRenderer       reportRenderer;
+    protected GroupDAO             groupDAO;
+    protected GroupTreeNodeImpl    groupTreeNodeImpl;
+    
+    //I don't like all these in the base bean, but it's better than putting them in all of the children.
+    protected Driver               driver;
+    protected Integer              driverID;
+    protected Vehicle              vehicle;
+    protected Integer              vehicleID;
+    protected DriverDAO            driverDAO;
+    protected VehicleDAO           vehicleDAO;
     
     protected Map<String, Integer> scoreMap;
     protected Map<String, String>  styleMap;
     protected Map<String, String>  trendMap;
+    
 
     protected abstract List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType);
     protected abstract List<ScoreableEntity> getTrendDaily(Integer id, Duration duration, ScoreType scoreType);
@@ -205,16 +221,6 @@ public abstract class BasePerformanceBean extends BaseBean
         return sb.toString();
     }
 
-    public NavigationBean getNavigation()
-    {
-        return navigation;
-    }
-
-    public void setNavigation(NavigationBean navigation)
-    {
-        this.navigation = navigation;
-    }
-
     public Map<String, Integer> getScoreMap()
     {
         return scoreMap;
@@ -284,4 +290,78 @@ public abstract class BasePerformanceBean extends BaseBean
     {
         return reportRenderer;
     }
+    
+    public GroupDAO getGroupDAO()
+    {
+        return groupDAO;
+    }
+    
+    public void setGroupDAO(GroupDAO groupDAO)
+    {
+        this.groupDAO = groupDAO;
+    }
+    
+    public GroupTreeNodeImpl getGroupTreeNodeImpl()
+    {
+        return groupTreeNodeImpl;
+    }
+    
+    public void setGroupTreeNodeImpl(GroupTreeNodeImpl groupTreeNodeImpl)
+    {
+        this.groupTreeNodeImpl = groupTreeNodeImpl;
+    }
+    public Driver getDriver()
+    {
+        return driver;
+    }
+    public void setDriver(Driver driver)
+    {
+        this.driver = driver;
+    }
+    public Integer getDriverID()
+    {
+        return driverID;
+    }
+    public void setDriverID(Integer driverID)
+    {
+        this.driverID = driverID;
+    }
+    public Vehicle getVehicle()
+    {
+        return vehicle;
+    }
+    public void setVehicle(Vehicle vehicle)
+    {
+        this.vehicle = vehicle;
+    }
+    public Integer getVehicleID()
+    {
+        return vehicleID;
+    }
+    public void setVehicleID(Integer vehicleID)
+    {
+        this.vehicleID = vehicleID;
+    }
+    public DriverDAO getDriverDAO()
+    {
+        return driverDAO;
+    }
+    public void setDriverDAO(DriverDAO driverDAO)
+    {
+        this.driverDAO = driverDAO;
+    }
+    public VehicleDAO getVehicleDAO()
+    {
+        return vehicleDAO;
+    }
+    public void setVehicleDAO(VehicleDAO vehicleDAO)
+    {
+        this.vehicleDAO = vehicleDAO;
+    }
+    
+    
+    
+    
+    
+    
 }

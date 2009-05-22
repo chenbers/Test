@@ -1,63 +1,66 @@
-<!-- 
-	To use:
-	
-	<ui:include src="../includes/multiLineChart.xhtml">
-            <ui:param name="lineChartDef" value="#{yourBean.lineDef}" />
-            <ui:param name="hiddenFieldID" value="HiddenField3" />
-            <ui:param name="width" value="380" /> 
-            <ui:param name="height" value="200" />  
-            <ui:param name="tartgetElementVar" value="targetElement6" />
-            <ui:param name="ChartDivID" value="style_chart" />
-            <ui:param name="chartVar" value="overallChart" />
-            <ui:param name="disableLabels" value="true" />
-	</ui:include>
--->
-
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
 				xmlns:h="http://java.sun.com/jsf/html"
 				xmlns:rich="http://richfaces.org/rich"
 				xmlns:c="http://java.sun.com/jstl/core">
+            
+      <!-- 
+         To use:
+         
+         <ui:include src="../includes/multiLineChart.xhtml">
+                  <ui:param name="lineChartDef" value="#{yourBean.lineDef}" />
+                  <ui:param name="width" value="380" /> 
+                  <ui:param name="height" value="200" />  
+                  <ui:param name="id" value="someId"/>
+                  <ui:param name="disableLabels" value="true" /> default = false
+         </ui:include>
+      -->
+      
 
-<c:if test="#{empty ScriptDivID}">
-   <c:set var="ScriptDivID" value="#{ChartDivID}_script" />
-</c:if>
-				
-<div id="#{ChartDivID}"></div>
-<rich:panel id="#{ScriptDivID}">
-<h:inputHidden value="#{lineChartDef}" id="#{hiddenFieldID}" />
-	<script type="text/javascript">
-		var #{tartgetElementVar} = document.getElementById("#{hiddenFieldID}");
-		var #{chartVar} = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSCombiDY2D.swf", "#{chartVar}Id", "#{width}", "#{height}", "0", "1");
-
-		<h:outputText rendered="#{hideLabels eq 'TRUE' ? true : false}">
-	    	#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("showLabels=\'1\'", "showLabels=\'0\'");
-	    	#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("showYAxisValues=\'1\'", "showYAxisValues=\'0\'");
-	    	#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("anchorSides=\'4\'", "anchorSides=\'0\'");
-	    </h:outputText> 
-
-	    <h:outputText rendered="#{hideLegend eq 'TRUE' ? true : false}">
-	    	#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("showLegend=\'1\'", "showLegend=\'0\'");
-	    </h:outputText>
-
-	    <h:outputText rendered="#{hideNames eq 'TRUE' ? true : false}">
-		    #{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("sYAxisName=\'Name\'", "sYAxisName=\'\'");
-		    #{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("pYAxisName=\'Name\'", "pYAxisName=\'\'");
-		    #{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("showDivLineSecondaryValue=\'1\'", "showDivLineSecondaryValue=\'0\'");
-		    #{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("showSecondaryLimits=\'1\'", "showSecondaryLimits=\'0\'");
-	    </h:outputText>
-
-	    <h:outputText rendered="#{pYAxisName ne null ? true : false}">
-    		#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("pYAxisName=\'Name\'", "pYAxisName=\'#{pYAxisName}\'");
-    	</h:outputText>
-	    
-	    <h:outputText rendered="#{sYAxisName ne null ? true : false}">
-	    	#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("sYAxisName=\'Name\'", "sYAxisName=\'#{sYAxisName}\'");
-	    </h:outputText>
-	    
-		#{chartVar}.setDataXML(#{tartgetElementVar}.value);			   
-		#{chartVar}.setTransparent(true);
-		#{chartVar}.render("#{ChartDivID}");
-	</script>
-</rich:panel>
+      <c:set var="tartgetElementVar" value="#{id}_target_element"/>
+      <c:if test="#{empty chartVar}">
+          <c:set var="chartVar" value="#{id}_chartVar"/> 
+      </c:if>
+      <c:set var="ChartDivID" value="#{id}_chart_div_id"/>
+      <c:set var="hiddenFieldID" value="#{id}_hidden_field_id"/>
+      <c:set var="ScriptDivID" value="#{id}"/>
+      
+      <div id="#{ChartDivID}"></div>
+      <rich:panel id="#{ScriptDivID}">
+         
+        <h:inputHidden value="#{lineChartDef}" id="#{hiddenFieldID}" />
+      	<script type="text/javascript">
+      		var #{tartgetElementVar} = document.getElementById("#{hiddenFieldID}");
+      		var #{chartVar} = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSCombiDY2D.swf", "#{chartVar}Id", "#{width}", "#{height}", "0", "1");
+      
+      		<h:outputText rendered="#{hideLabels eq 'true' ? true : false}">
+      	    	#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("showLabels=\'1\'", "showLabels=\'0\'");
+      	    	#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("showYAxisValues=\'1\'", "showYAxisValues=\'0\'");
+      	    	#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("anchorSides=\'4\'", "anchorSides=\'0\'");
+      	    </h:outputText> 
+      
+      	    <h:outputText rendered="#{hideLegend eq 'true' ? true : false}">
+      	    	#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("showLegend=\'1\'", "showLegend=\'0\'");
+      	    </h:outputText>
+      
+      	    <h:outputText rendered="#{hideNames eq 'true' ? true : false}">
+      		    #{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("sYAxisName=\'Name\'", "sYAxisName=\'\'");
+      		    #{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("pYAxisName=\'Name\'", "pYAxisName=\'\'");
+      		    #{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("showDivLineSecondaryValue=\'1\'", "showDivLineSecondaryValue=\'0\'");
+      		    #{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("showSecondaryLimits=\'1\'", "showSecondaryLimits=\'0\'");
+      	    </h:outputText>
+      
+      	    <h:outputText rendered="#{pYAxisName ne null ? true : false}">
+          		#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("pYAxisName=\'Name\'", "pYAxisName=\'#{pYAxisName}\'");
+          	</h:outputText>
+      	    
+      	    <h:outputText rendered="#{sYAxisName ne null ? true : false}">
+      	    	#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("sYAxisName=\'Name\'", "sYAxisName=\'#{sYAxisName}\'");
+      	    </h:outputText>
+      	    
+      		#{chartVar}.setDataXML(#{tartgetElementVar}.value);			   
+      		#{chartVar}.setTransparent(true);
+      		#{chartVar}.render("#{ChartDivID}");
+      	</script>
+      </rich:panel>
 
 </ui:composition>

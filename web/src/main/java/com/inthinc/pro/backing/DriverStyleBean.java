@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+
+import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
@@ -33,6 +35,7 @@ public class DriverStyleBean extends BasePerformanceBean
     private List<EventReportItem> filteredStyleEvents;
     private String                selectedEventType = "";
     private final Integer         ROWCOUNT          = 10;
+    private Integer               driverID;
 
     @Override
     protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
@@ -49,7 +52,7 @@ public class DriverStyleBean extends BasePerformanceBean
     private void initScores()
     {
         Map<ScoreType, ScoreableEntity> tempMap = scoreDAO
-                .getDriverScoreBreakdownByType(navigation.getDriver().getDriverID(), durationBean.getDuration(), ScoreType.SCORE_DRIVING_STYLE);
+                .getDriverScoreBreakdownByType(getDriver().getDriverID(), durationBean.getDuration(), ScoreType.SCORE_DRIVING_STYLE);
 
         scoreMap = new HashMap<String, Integer>();
         styleMap = new HashMap<String, String>();
@@ -77,7 +80,7 @@ public class DriverStyleBean extends BasePerformanceBean
 
     private void initTrends()
     {
-        Integer id = navigation.getDriver().getDriverID();
+        Integer id = getDriver().getDriverID();
         trendMap = new HashMap<String, String>();
         trendMap.put(ScoreType.SCORE_DRIVING_STYLE.toString(), createFusionMultiLineDef(id, durationBean.getDuration(), ScoreType.SCORE_DRIVING_STYLE));
         trendMap.put(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL.toString(), createFusionMultiLineDef(id, durationBean.getDuration(), ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL));
@@ -92,13 +95,13 @@ public class DriverStyleBean extends BasePerformanceBean
         List<Integer> types = new ArrayList<Integer>();
         types.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
 
-        tempEvents = eventDAO.getEventsForDriver(navigation.getDriver().getDriverID(), durationBean.getStartDate(), durationBean.getEndDate(), types);
+        tempEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), durationBean.getStartDate(), durationBean.getEndDate(), types);
         styleEvents = new ArrayList<EventReportItem>();
 
         for (Event event : tempEvents)
         {
             event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
-            styleEvents.add(new EventReportItem(event, this.navigation.getDriver().getPerson().getTimeZone()));
+            styleEvents.add(new EventReportItem(event, this.getDriver().getPerson().getTimeZone()));
         }
         filterEventsAction();
     }
@@ -153,7 +156,7 @@ public class DriverStyleBean extends BasePerformanceBean
 
     public void ClearEventAction()
     {
-        Integer result = eventDAO.forgive(navigation.getDriver().getDriverID(), clearItem.getEvent().getNoteID());
+        Integer result = eventDAO.forgive(getDriver().getDriverID(), clearItem.getEvent().getNoteID());
         if(result >= 1)
             {
                 filteredStyleEvents.remove(clearItem);
@@ -205,7 +208,7 @@ public class DriverStyleBean extends BasePerformanceBean
 
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
-        reportCriteria.addParameter("ENTITY_NAME", getNavigation().getDriver().getPerson().getFullName());
+        reportCriteria.addParameter("ENTITY_NAME", getDriver().getPerson().getFullName());
         reportCriteria.addParameter("RECORD_COUNT", getStyleEvents().size());
         reportCriteria.addParameter("OVERALL_SCORE", getScoreMap().get(ScoreType.SCORE_DRIVING_STYLE.toString()) / 10.0D);
         reportCriteria.addParameter("SPEED_MEASUREMENT", MessageUtil.getMessageString("measurement_style"));
@@ -221,7 +224,7 @@ public class DriverStyleBean extends BasePerformanceBean
         scoreTypes.add(ScoreType.SCORE_DRIVING_STYLE_HARD_BRAKE);
         scoreTypes.add(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP);
         scoreTypes.add(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN);
-        reportCriteria.addChartDataSet(createJasperMultiLineDef(navigation.getDriver().getDriverID(), scoreTypes, durationBean.getDuration()));
+        reportCriteria.addChartDataSet(createJasperMultiLineDef(getDriver().getDriverID(), scoreTypes, durationBean.getDuration()));
         reportCriteria.setMainDataset(getStyleEvents());
 
         return reportCriteria;
@@ -305,5 +308,13 @@ public class DriverStyleBean extends BasePerformanceBean
         
         tableStatsBean.reset(ROWCOUNT, filteredStyleEvents.size());
         return "";
+    }
+
+    @Override
+    public void setDriverID(Integer driverId)
+    {
+        driver = driverDAO.findByID(driverId);
+        groupTreeNodeImpl = new GroupTreeNodeImpl(groupDAO.findByID(driver.getGroupID()),getGroupHierarchy());
+        this.driverID = driverId;
     }
 }

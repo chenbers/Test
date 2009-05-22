@@ -5,7 +5,8 @@
   				xmlns:rich="http://richfaces.org/rich"
   				xmlns:a4j="http://richfaces.org/a4j"
   				xmlns:f="http://java.sun.com/jsf/core"
-  				xmlns:t="http://myfaces.apache.org/tomahawk">
+  				xmlns:t="http://myfaces.apache.org/tomahawk"
+                xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 	<ui:define name="scripts">
 		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>	
@@ -29,26 +30,38 @@
 	<ui:define name="content">
 	<t:saveState value="#{vehicleSeatBeltBean.seatBeltEvents}"/>
 	<t:saveState value="#{vehicleSeatBeltBean.tableStatsBean}"/>
+    <t:saveState value="#{vehicleSeatBeltBean.vehicle}"/>
+    <t:saveState value="#{vehicleSeatBeltBean.groupTreeNodeImpl}"/>
 <div id="wrapper">
 
 <h:form>
 	<ul id="grid_nav">
 		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
-		<li class="l grid_title"><h:outputText value="#{messages.vehiclePerformanceName} "/><h:commandLink action="go_vehicle" value="#{navigationBean.vehicle.name}" /></li>
+		<li class="l grid_title"><h:outputText value="#{messages.vehiclePerformanceName} "/>
+            <pretty:link mappingId="vehiclePerformance">
+               <h:outputText value="#{vehicleSeatBeltBean.vehicle.name}"/>
+               <f:param value="#{vehicleSeatBeltBean.vehicle.vehicleID}"/>
+            </pretty:link>
+        </li>
 		<li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li>
-		
-		<li class="l">
-			<ui:include src="/includes/breadcrumb.xhtml">
-				<ui:param name="groupTreeNode" value="#{navigationBean.groupTreeNode}" />
-				<ui:param name="lastBreadCrumb" value="true" />
-			</ui:include>
-		</li>
-		<li class="l" style="margin-left: -15px;">
-			<ul id="breadcrumb">
-				<li><h:commandLink action="go_vehicle" value="#{navigationBean.vehicle.name}" /></li>
-				<li class="last">#{messages.SCORE_SEATBELT}</li>
-			</ul>
-		</li>
+      
+         <li class="l">
+            <ui:include src="/includes/breadcrumb.xhtml">
+               <ui:param name="groupTreeNode" value="#{vehicleSeatBeltBean.groupTreeNodeImpl}" />
+               <ui:param name="lastBreadCrumb" value="true" />
+            </ui:include>
+         </li>
+          <li class="l" style="margin-left: -15px;">
+            <ul id="breadcrumb">
+                  <li>
+                     <pretty:link mappingId="vehiclePerformance">
+                        <h:outputText value="#{vehicleSeatBeltBean.vehicle.name}"/>
+                        <f:param value="#{vehicleSeatBeltBean.vehicle.vehicleID}"/>
+                     </pretty:link>
+                  </li>
+                  <li class="last"><h:outputText value="#{messages.SCORE_SEATBELT}" /></li>
+            </ul>
+          </li>
 	</ul>
 </h:form>
 
@@ -61,20 +74,22 @@
 					<div class="panel_title">
 						<span class="seatbelt">#{messages.SCORE_SEATBELT}: #{messages.SCORE_OVERALL}</span>
 							<ui:include src="../../includes/dateLinksToolsDetail.xhtml">
-							<ui:param name="ajaxForm" value="seatBeltForm"/>
-							<ui:param name="reRenderList" value="seatBeltForm,overallScoreBox,overall_script,eventsPanel"/>			
-							<ui:param name="thirtyDaysOn" value="#{(vehicleSeatBeltBean.duration eq 'DAYS') ? 'on' : ''}"/>
-							<ui:param name="threeMonthsOn" value="#{(vehicleSeatBeltBean.duration eq 'THREE') ? 'on' : ''}"/>
-							<ui:param name="sixMonthsOn" value="#{(vehicleSeatBeltBean.duration eq 'SIX') ? 'on' : ''}"/>
-							<ui:param name="twelveMonthsOn" value="#{(vehicleSeatBeltBean.duration eq 'TWELVE') ? 'on' : ''}"/>
-				  			<ui:param name="duration" value="#{vehicleSeatBeltBean.duration}" />
-				  			<ui:param name="flyNavRule" value="go_vehicle" />
-				  			<ui:param name="flyOutImage" value="ico_minimize.png" /> 
-				  			<ui:param name="reportBean" value="#{vehicleSeatBeltBean}" />
-				  			<ui:param name="showTools" value="TRUE" /> 
-				  			<ui:param name="showExcel" value="TRUE" /> 
-  							<ui:param name="showDetail" value="TRUE" />  
-						</ui:include>
+   							<ui:param name="ajaxForm" value="seatBeltForm"/>
+   							<ui:param name="reRenderList" value="seatBeltForm,overallScoreBox,overall_script,eventsPanel"/>			
+   							<ui:param name="thirtyDaysOn" value="#{(vehicleSeatBeltBean.duration eq 'DAYS') ? 'on' : ''}"/>
+   							<ui:param name="threeMonthsOn" value="#{(vehicleSeatBeltBean.duration eq 'THREE') ? 'on' : ''}"/>
+   							<ui:param name="sixMonthsOn" value="#{(vehicleSeatBeltBean.duration eq 'SIX') ? 'on' : ''}"/>
+   							<ui:param name="twelveMonthsOn" value="#{(vehicleSeatBeltBean.duration eq 'TWELVE') ? 'on' : ''}"/>
+   				  			<ui:param name="duration" value="#{vehicleSeatBeltBean.duration}" />
+   				  			<ui:param name="flyNavRule" value="go_vehicle" />
+   				  			<ui:param name="flyOutImage" value="ico_minimize.png" /> 
+   				  			<ui:param name="reportBean" value="#{vehicleSeatBeltBean}" />
+   				  			<ui:param name="showTools" value="TRUE" /> 
+   				  			<ui:param name="showExcel" value="TRUE" /> 
+     						<ui:param name="showDetail" value="TRUE" /> 
+                            <ui:param name="mappingId"  value="vehiclePerformance"/>
+                            <ui:param name="entityId"   value="#{vehicleSeatBeltBean.vehicle.vehicleID}"/>  
+   						</ui:include>
 					</div>
 				</div>
 				<div class="panel_w">
@@ -84,12 +99,9 @@
 						<td valign="top" width="600">
 						   <ui:include src="../../includes/multiLineChart.xhtml">
 						            <ui:param name="lineChartDef" value="#{vehicleSeatBeltBean.seatBeltScoreHistoryOverall}" />
-						            <ui:param name="hiddenFieldID" value="HiddenField" />
 						            <ui:param name="width" value="650" /> 
 						            <ui:param name="height" value="230" />  
-						            <ui:param name="tartgetElementVar" value="targetElement" />
-						            <ui:param name="ChartDivID" value="overall_chart" />
-						            <ui:param name="ScriptDivID" value="overall_script" />
+						            <ui:param name="id" value="overall_script" />
 						            <ui:param name="chartVar" value="overallChart" />
    									<ui:param name="pYAxisName" value="#{messages.vehicle_chart_score}" />
 						            <ui:param name="sYAxisName" value="#{messages.vehicle_chart_miles}" />

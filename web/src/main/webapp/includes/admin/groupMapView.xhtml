@@ -147,7 +147,7 @@
                             */
                             function initMap()
                             {
-                                mapstraction = new Mapstraction('map-canvas',"#{mapId ne null ? 'mapId' : 'google'}");
+                                mapstraction = new Mapstraction('map-canvas',"#{mapId ne null ? mapId : 'google'}");
                                 // create a lat/lon object
                                 var myPoint = new LatLonPoint(#{latValue},#{longValue});
 

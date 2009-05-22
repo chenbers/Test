@@ -50,7 +50,6 @@ public class DriverStyleBeanTest extends BaseBeanTest
         DriverStyleBean driverStyleBean = (DriverStyleBean)applicationContext.getBean("driverStyleBean");
         NavigationBean nav = (NavigationBean)applicationContext.getBean("navigationBean");
         
-        driverStyleBean.setNavigation(nav);
         
         Person p = new Person();
         p.setFirst("John");
@@ -63,7 +62,7 @@ public class DriverStyleBeanTest extends BaseBeanTest
         d.setGroupID(101);
 
         d.setPerson(p);
-        driverStyleBean.getNavigation().setDriver(d);
+        driverStyleBean.setDriver(d);
         
         // Test Scores and Styles
         scoreMap = new HashMap<String, Integer>();

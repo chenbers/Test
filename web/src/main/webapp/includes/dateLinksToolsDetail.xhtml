@@ -3,7 +3,8 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:c="http://java.sun.com/jstl/core"
-	xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 
 	<c:choose>
@@ -57,11 +58,10 @@
 					<h:graphicImage value="/images/ico_tools.png" alt="Tools" />
 					<rich:spacer width="4" /> 
 				</h:panelGroup>
-				<h:commandButton action="#{flyOutBean.flyNavRuleAction}" 
-								 rendered="#{showDetail eq 'TRUE' ? true : false}"
-								 image="/images/#{flyOutImage}" title="#{flyoutTitle}">
-				<f:setPropertyActionListener value="#{flyNavRule}" target="#{flyOutBean.navigationRule}" />
-				</h:commandButton>
+                <pretty:link mappingId="#{mappingId}" rendered="#{showDetail eq 'TRUE' ? true : false}" style="text-decoration: none">
+                   <h:graphicImage value="/images/#{flyOutImage}" style="border: none" />
+                   <f:param value="#{entityId}"/>
+                </pretty:link>
 			</span>
 				<rich:contextMenu event="onclick" attachTiming="onavailable"
 					disableDefaultMenu="false" submitMode="server"

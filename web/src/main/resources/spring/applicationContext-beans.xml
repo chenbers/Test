@@ -196,6 +196,9 @@
         <property name="seatBeltDurationBean" ref="vehicleSeatBeltDurationBean"></property>
         <property name="coachDurationBean" ref="vehicleCoachingDurationBean"></property>
         <property name="mpgDurationBean" ref="vehicleMpgDurationBean"></property>
+        <property name="vehicleSpeedBean" ref="vehicleSpeedBean"/>
+        <property name="vehicleStyleBean" ref="vehicleStyleBean"/>
+        <property name="vehicleSeatBeltBean" ref="vehicleSeatBeltBean"/>
     </bean>
     
     <bean id="vehicleSpeedBean" class="com.inthinc.pro.backing.VehicleSpeedBean" scope="request" parent="basePerformanceBean">
@@ -218,7 +221,7 @@
     
     <bean id="vehicleTripsBean" class="com.inthinc.pro.backing.VehicleTripsBean" scope="request" parent="baseBean">
         <property name="vehicleDAO" ref="vehicleDAO"></property>
-        <property name="navigation" ref="navigationBean"></property>
+        <property name="groupDAO" ref="groupDAO"></property>
         <property name="driverDAO" ref="driverDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="addressLookup" ref="addressLookupBean"></property>
@@ -235,6 +238,9 @@
         <property name="seatBeltDurationBean" ref="driverSeatBeltDurationBean"></property>
         <property name="coachDurationBean" ref="driverCoachingDurationBean"></property>
         <property name="mpgDurationBean" ref="driverMpgDurationBean"></property>
+        <property name="driverSpeedBean" ref="driverSpeedBean"/>
+        <property name="driverStyleBean" ref="driverStyleBean"/>
+        <property name="driverSeatBeltBean" ref="driverSeatBeltBean"/>
     </bean>
 
     <bean id="driverSpeedBean" class="com.inthinc.pro.backing.DriverSpeedBean" scope="request"  parent="basePerformanceBean">
@@ -258,7 +264,7 @@
     <bean id="driverTripsBean" class="com.inthinc.pro.backing.DriverTripsBean" scope="request" parent="baseBean">
         <property name="driverDAO" ref="driverDAO"></property>
         <property name="vehicleDAO" ref="vehicleDAO"></property>
-        <property name="navigation" ref="navigationBean"></property>
+        <property name="groupDAO" ref="groupDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="addressLookup" ref="addressLookupBean"></property>
     </bean>
@@ -377,10 +383,12 @@
     <bean id="tableStatsBean" class="com.inthinc.pro.backing.TableStatsBean" scope="request"/>
     
     <bean id="basePerformanceBean" class="com.inthinc.pro.backing.BasePerformanceBean" scope="request">
-    	<property name="navigation" ref="navigationBean"></property>
-    	<property name="reportRenderer" ref="reportRenderer"></property>
+    	<property name="reportRenderer" ref="reportRenderer"/>
         <property name="tableStatsBean" ref="tableStatsBean" />
-        <property name="addressLookup" ref="addressLookupBean"></property>
+        <property name="addressLookup" ref="addressLookupBean"/>
+        <property name="groupDAO" ref="groupDAO"/>
+        <property name="vehicleDAO" ref="vehicleDAO"/>
+        <property name="driverDAO" ref="driverDAO"/>
     </bean>
     
     <bean id="localeBean" class="com.inthinc.pro.backing.LocaleBean" scope="request"/>

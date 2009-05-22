@@ -47,7 +47,6 @@ public class DriverSpeedBeanTest extends BaseBeanTest
         DriverSpeedBean driverSpeedBean = (DriverSpeedBean)applicationContext.getBean("driverSpeedBean");
         NavigationBean nav = (NavigationBean)applicationContext.getBean("navigationBean");
         
-        driverSpeedBean.setNavigation(nav);
         
         Person p = new Person();
         p.setFirst("John");
@@ -60,7 +59,7 @@ public class DriverSpeedBeanTest extends BaseBeanTest
         d.setGroupID(101);
 
         d.setPerson(p);
-        driverSpeedBean.getNavigation().setDriver(d);
+        driverSpeedBean.setDriver(d);
         
         // Test Scores and Styles
         scoreMap = new HashMap<String, Integer>();

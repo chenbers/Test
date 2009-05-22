@@ -5,7 +5,8 @@
   				xmlns:rich="http://richfaces.org/rich"
   				xmlns:a4j="http://richfaces.org/a4j"
   				xmlns:f="http://java.sun.com/jsf/core"
-  				xmlns:t="http://myfaces.apache.org/tomahawk">
+  				xmlns:t="http://myfaces.apache.org/tomahawk"
+                xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 	<ui:define name="scripts">
 		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>	
@@ -36,25 +37,41 @@
 		<t:saveState value="#{driverSpeedBean.speedingListsMap}"/>
 		<t:saveState value="#{driverSpeedBean.tableStatsBean}"/>
 		<t:saveState value="#{driverSpeedBean.selectedSpeed}"/>
+        <t:saveState value="#{driverBean.driver}"></t:saveState>
+        <t:saveState value="#{driverBean.groupTreeNodeImpl}"></t:saveState>
 	
 <div id="wrapper">
 <h:form>
 	<ul id="grid_nav">
 		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
-		<li class="l grid_title"><h:outputText value="#{messages.driverPerformanceName} " /><h:commandLink action="go_driver" value="#{navigationBean.driver.person.fullName}" /></li>
+		<li class="l grid_title"><h:outputText value="#{messages.driverPerformanceName} " />
+            <pretty:link mappingId="driverPerformance">
+               <h:outputText value="#{driverSpeedBean.driver.person.fullName}"/>
+               <f:param value="#{driverSpeedBean.driver.driverID}"/>
+            </pretty:link>
+        </li>
 		<li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li>
 		
-		<li class="l">
-			<ui:include src="/includes/breadcrumb.xhtml">
-				<ui:param name="groupTreeNode" value="#{navigationBean.groupTreeNode}" />
-				<ui:param name="lastBreadCrumb" value="true" />
-			</ui:include>
-		</li>
-		
+         <li class="l">
+            <ui:include src="/includes/breadcrumb.xhtml">
+               <ui:param name="groupTreeNode" value="#{driverSpeedBean.groupTreeNodeImpl}" />
+               <ui:param name="lastBreadCrumb" value="true" />
+            </ui:include>
+         </li>
+      
 		<li class="l" style="margin-left: -15px;">
 			<ul id="breadcrumb">
-				<li><h:commandLink action="go_driver" value="#{navigationBean.driver.person.fullNameWithId}" /></li>
-				<li class="last">#{messages.driver_speed}</li>
+				<li>
+                     <h:graphicImage value="/images/x.gif" width="10" height="10" />
+                     <pretty:link mappingId="driverPerformance">
+                        <h:outputText value="#{driverSpeedBean.driver.person.fullNameWithId}"/>
+                        <f:param value="#{driverSpeedBean.driver.driverID}"/>
+                     </pretty:link>
+                </li>
+				<li class="last">
+                     <h:graphicImage value="/images/x.gif" width="10" height="10" />
+                     #{messages.driver_driving_style}
+                </li>
 			</ul>
 		</li>
 	</ul>
@@ -118,7 +135,7 @@ var firstLoad = new Boolean(true);
 						<span class="speed" id="titleSpan">#{messages.driver_speed_overall}</span>
 						<ui:include src="../../includes/dateLinksToolsDetail.xhtml">
 							<ui:param name="ajaxForm" value="speedForm"/>
-							<ui:param name="reRenderList" value="speedForm,overallScoreBox,OVERALL_script,TWENTYONE_script,THIRTYONE_script,FOURTYONE_script,FIFTYFIVE_script,SIXTYFIVE_script,selectScript,eventsPanel"/>			
+							<ui:param name="reRenderList" value="speedForm,overallScoreBox,OVERALL_CHART,TWENTYONE_CHART,THIRTYONE_CHART,FOURTYONE_CHART,FIFTYFIVE_CHART,SIXTYFIVE_CHART,selectScript,eventsPanel"/>			
 							<ui:param name="thirtyDaysOn" value="#{(driverSpeedBean.duration eq 'DAYS') ? 'on' : ''}"/>
 							<ui:param name="threeMonthsOn" value="#{(driverSpeedBean.duration eq 'THREE') ? 'on' : ''}"/>
 							<ui:param name="sixMonthsOn" value="#{(driverSpeedBean.duration eq 'SIX') ? 'on' : ''}"/>
@@ -130,6 +147,8 @@ var firstLoad = new Boolean(true);
 				  			<ui:param name="showTools" value="TRUE" /> 
 				  			<ui:param name="showExcel" value="TRUE" /> 
   							<ui:param name="showDetail" value="TRUE" />  
+                            <ui:param name="mappingId" value="driverPerformance" />
+                            <ui:param name="entityId" value="#{driverSpeedBean.driver.driverID}" />
 						</ui:include>	
 					</div>
 				</div>
@@ -202,7 +221,7 @@ var firstLoad = new Boolean(true);
 						  <div class="tiny_title">
 						  <h:form>
 						  	  <a4j:commandLink action="#{driverSpeedBean.selectBreakdownChanged}"
-						  	  				   onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.reports_speed}: #{messages.SCORE_OVERALL}')" 
+						  	  				   onclick="SelectBreakDown('OVERALL', overallChartVar, '#{messages.reports_speed}: #{messages.SCORE_OVERALL}')" 
 						  	  				   reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="OVERALL" assignTo="#{driverSpeedBean.selectedSpeed}"/>
 						  	  		<h:outputText value="#{messages.SCORE_OVERALL}"/>
@@ -214,16 +233,13 @@ var firstLoad = new Boolean(true);
 								<td align="center">
 									<ui:include src="../../includes/multiLineChart.xhtml">
 								            <ui:param name="lineChartDef" value="#{driverSpeedBean.trendMap['SCORE_SPEEDING']}" />
-								            <ui:param name="hiddenFieldID" value="HiddenOverall" />
+								            <ui:param name="id" value="OVERALL_CHART" />
+                                            <ui:param name="chartVar" value="overallChartVar" />
 								            <ui:param name="width" value="220" /> 
-								            <ui:param name="height" value="90" />  
-								            <ui:param name="tartgetElementVar" value="targetElement1" />
-								            <ui:param name="ChartDivID" value="speed_chart_tiny_overall" />
-								            <ui:param name="ScriptDivID" value="OVERALL_script" />
-								            <ui:param name="chartVar" value="overallChart2" />
-								            <ui:param name="hideLabels" value="TRUE" />
-								            <ui:param name="hideLegend" value="TRUE" />
-								            <ui:param name="hideNames" value="TRUE" />
+								            <ui:param name="height" value="90" /> 
+								            <ui:param name="hideLabels" value="true" />
+								            <ui:param name="hideLegend" value="true" />
+								            <ui:param name="hideNames" value="true" />
 									</ui:include>
 								</td>
 								<td align="center">
@@ -239,7 +255,7 @@ var firstLoad = new Boolean(true);
 							<div class="tiny_title">
 						  <h:form>
 						  	  <a4j:commandLink action="#{driverSpeedBean.selectBreakdownChanged}" 
-						  	  				   onclick="SelectBreakDown('TWENTYONE', chart21, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_21_30}')" 
+						  	  				   onclick="SelectBreakDown('TWENTYONE', twentyOneChartVar, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_21_30}')" 
 						  	  				   reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="TWENTYONE" assignTo="#{driverSpeedBean.selectedSpeed}"/>
 						  	  		<h:outputText value="#{messages.SCORE_SPEEDING_21_30}"/>
@@ -251,16 +267,13 @@ var firstLoad = new Boolean(true);
 								<td align="center">
 									<ui:include src="../../includes/multiLineChart.xhtml">
 									            <ui:param name="lineChartDef" value="#{driverSpeedBean.trendMap['SCORE_SPEEDING_21_30']}" />
-									            <ui:param name="hiddenFieldID" value="HiddenTWENTYONE" />
+									            <ui:param name="id" value="TWENTYONE_CHART" />
+                                                <ui:param name="chartVar" value="twentyOneChartVar" />
 									            <ui:param name="width" value="220" /> 
 									            <ui:param name="height" value="90" />  
-									            <ui:param name="tartgetElementVar" value="targetElement21" />
-									            <ui:param name="ChartDivID" value="speed_chart_tiny_21-30" />
-									            <ui:param name="ScriptDivID" value="TWENTYONE_script" />
-									            <ui:param name="chartVar" value="chart21" />
-									            <ui:param name="hideLabels" value="TRUE" />
-									            <ui:param name="hideLegend" value="TRUE" />
-									            <ui:param name="hideNames" value="TRUE" />
+									            <ui:param name="hideLabels" value="true" />
+									            <ui:param name="hideLegend" value="true" />
+									            <ui:param name="hideNames" value="true" />
 									</ui:include>
 								</td>
 								<td align="center">
@@ -276,7 +289,7 @@ var firstLoad = new Boolean(true);
 							<div class="tiny_title">
 						  <h:form>
 						  	  <a4j:commandLink action="#{driverSpeedBean.selectBreakdownChanged}" 
-						  	  					onclick="SelectBreakDown('THIRTYONE', chart31, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_31_40}')" 
+						  	  					onclick="SelectBreakDown('THIRTYONE', thirtyOneChartVar, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_31_40}')" 
 						  	  					reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="THIRTYONE" assignTo="#{driverSpeedBean.selectedSpeed}"/>
 						  	  		<h:outputText value="#{messages.SCORE_SPEEDING_31_40}"/>
@@ -288,16 +301,13 @@ var firstLoad = new Boolean(true);
 								<td align="center">
 									<ui:include src="../../includes/multiLineChart.xhtml">
 								            <ui:param name="lineChartDef" value="#{driverSpeedBean.trendMap['SCORE_SPEEDING_31_40']}" />
-								            <ui:param name="hiddenFieldID" value="HiddenTHIRTYONE" />
+								            <ui:param name="id" value="THIRTYONE_CHART" />
+                                            <ui:param name="chartVar" value="thirtyOneChartVar" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
-								            <ui:param name="tartgetElementVar" value="targetElement31" />
-								            <ui:param name="ChartDivID" value="speed_chart_tiny_31-40" />
-								            <ui:param name="ScriptDivID" value="THIRTYONE_script" />
-								            <ui:param name="chartVar" value="chart31" />
-								            <ui:param name="hideLabels" value="TRUE" />
-								            <ui:param name="hideLegend" value="TRUE" />
-								            <ui:param name="hideNames" value="TRUE" />
+								            <ui:param name="hideLabels" value="true" />
+								            <ui:param name="hideLegend" value="true" />
+								            <ui:param name="hideNames" value="true" />
 									</ui:include>
 									</td>
 									<td align="center">
@@ -315,7 +325,7 @@ var firstLoad = new Boolean(true);
 							<div class="tiny_title">
 						  <h:form>
 						  	  <a4j:commandLink action="#{driverSpeedBean.selectBreakdownChanged}" 
-						  	   				   onclick="SelectBreakDown('FOURTYONE', chart41, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_41_54}')" 
+						  	   				   onclick="SelectBreakDown('FOURTYONE', fourtyOneChartVar, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_41_54}')" 
 						  	  				   reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="FOURTYONE" assignTo="#{driverSpeedBean.selectedSpeed}"/>
 						  	  		<h:outputText value="#{messages.SCORE_SPEEDING_41_54}"/>
@@ -327,16 +337,13 @@ var firstLoad = new Boolean(true);
 								<td align="center">
 									<ui:include src="../../includes/multiLineChart.xhtml">
 								            <ui:param name="lineChartDef" value="#{driverSpeedBean.trendMap['SCORE_SPEEDING_41_54']}" />
-								            <ui:param name="hiddenFieldID" value="HiddenFOURTYONE" />
+								            <ui:param name="id" value="FOURTYONE_CHART" />
+                                            <ui:param name="chartVar" value="fourtyOneChartVar" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
-								            <ui:param name="tartgetElementVar" value="targetElement41" />
-								            <ui:param name="ChartDivID" value="speed_chart_tiny_41-54" />
-								            <ui:param name="ScriptDivID" value="FOURTYONE_script" />
-								            <ui:param name="chartVar" value="chart41" />
-								            <ui:param name="hideLabels" value="TRUE" />
-								            <ui:param name="hideLegend" value="TRUE" />
-								            <ui:param name="hideNames" value="TRUE" />
+								            <ui:param name="hideLabels" value="true" />
+								            <ui:param name="hideLegend" value="true" />
+								            <ui:param name="hideNames" value="true" />
 									</ui:include>
 								</td>
 								<td align="center">
@@ -352,7 +359,7 @@ var firstLoad = new Boolean(true);
 							<div class="tiny_title">
 						  <h:form>
 						  	  <a4j:commandLink action="#{driverSpeedBean.selectBreakdownChanged}" 
-						  	              	   onclick="SelectBreakDown('FIFTYFIVE', chart55, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_55_64}')" 
+						  	              	   onclick="SelectBreakDown('FIFTYFIVE', fiftyFiveChartVar, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_55_64}')" 
 						  	  				   reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="FIFTYFIVE" assignTo="#{driverSpeedBean.selectedSpeed}"/>
 						  	  		<h:outputText value="#{messages.SCORE_SPEEDING_55_64}"/>
@@ -364,16 +371,13 @@ var firstLoad = new Boolean(true);
 								<td align="center">
 									<ui:include src="../../includes/multiLineChart.xhtml">
 								            <ui:param name="lineChartDef" value="#{driverSpeedBean.trendMap['SCORE_SPEEDING_55_64']}" />
-								            <ui:param name="hiddenFieldID" value="HiddenFIFTYFIVE" />
+								            <ui:param name="id" value="FIFTYFIVE_CHART" />
+                                            <ui:param name="chartVar" value="fiftyFiveChartVar" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
-								            <ui:param name="tartgetElementVar" value="targetElement55" />
-								            <ui:param name="ChartDivID" value="speed_chart_tiny_55-64" />
-								            <ui:param name="ScriptDivID" value="FIFTYFIVE_script" />
-								            <ui:param name="chartVar" value="chart55" />
-								            <ui:param name="hideLabels" value="TRUE" />
-								            <ui:param name="hideLegend" value="TRUE" />
-								            <ui:param name="hideNames" value="TRUE" />
+								            <ui:param name="hideLabels" value="true" />
+								            <ui:param name="hideLegend" value="true" />
+								            <ui:param name="hideNames" value="true" />
 									</ui:include>
 								</td>
 								<td align="center">
@@ -389,7 +393,7 @@ var firstLoad = new Boolean(true);
 							<div class="tiny_title">
 						  <h:form>
 						  	  <a4j:commandLink action="#{driverSpeedBean.selectBreakdownChanged}"
-						  	  				   onclick="SelectBreakDown('SIXTYFIVE', chart65, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_65_80}')" 
+						  	  				   onclick="SelectBreakDown('SIXTYFIVE', sixtyFiveChartVar, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_65_80}')" 
 						  	  				   reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="SIXTYFIVE" assignTo="#{driverSpeedBean.selectedSpeed}"/>
 						  	  		<h:outputText value="#{messages.SCORE_SPEEDING_65_80}"/>
@@ -401,16 +405,13 @@ var firstLoad = new Boolean(true);
 								<td align="center">
 									<ui:include src="../../includes/multiLineChart.xhtml">
 								            <ui:param name="lineChartDef" value="#{driverSpeedBean.trendMap['SCORE_SPEEDING_65_80']}" />
-								            <ui:param name="hiddenFieldID" value="HiddenSIXTYFIVE" />
+								            <ui:param name="id" value="SIXTYFIVE_CHART" />
+                                            <ui:param name="chartVar" value="sixtyFiveChartVar" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
-								            <ui:param name="tartgetElementVar" value="targetElement65" />
-								            <ui:param name="ChartDivID" value="speed_chart_tiny_65-80" />
-								            <ui:param name="ScriptDivID" value="SIXTYFIVE_script" />
-								            <ui:param name="chartVar" value="chart65" />
-								            <ui:param name="hideLabels" value="TRUE" />
-								            <ui:param name="hideLegend" value="TRUE" />
-								            <ui:param name="hideNames" value="TRUE" />
+								            <ui:param name="hideLabels" value="true" />
+								            <ui:param name="hideLegend" value="true" />
+								            <ui:param name="hideNames" value="true" />
 									</ui:include>
 								</td>
 								<td align="center">
@@ -432,17 +433,17 @@ var firstLoad = new Boolean(true);
 				  		
 							if(firstLoad == true)
 							{
-								SelectBreakDown('OVERALL', overallChart2, '#{messages.reports_speed}: #{messages.SCORE_OVERALL}');
+								SelectBreakDown('OVERALL', overallChartVar, '#{messages.reports_speed}: #{messages.SCORE_OVERALL}');
 								firstLoad = false;
 							}
 							else
 							{
-								if(selected == 'OVERALL') SelectBreakDown(selected, overallChart2, selectedTitle);
-								if(selected == 'TWENTYONE') SelectBreakDown(selected, chart21, selectedTitle);
-								if(selected == 'THIRTYONE') SelectBreakDown(selected, chart31, selectedTitle);
-								if(selected == 'FOURTYONE') SelectBreakDown(selected, chart41, selectedTitle);
-								if(selected == 'FIFTYFIVE') SelectBreakDown(selected, chart55, selectedTitle);
-								if(selected == 'SIXTYFIVE') SelectBreakDown(selected, chart65, selectedTitle);
+								if(selected == 'OVERALL') SelectBreakDown(selected, overallChartVar, selectedTitle);
+								if(selected == 'TWENTYONE') SelectBreakDown(selected, twentyOneChartVar, selectedTitle);
+								if(selected == 'THIRTYONE') SelectBreakDown(selected, thirtyOneChartVar, selectedTitle);
+								if(selected == 'FOURTYONE') SelectBreakDown(selected, fourtyOneChartVar, selectedTitle);
+								if(selected == 'FIFTYFIVE') SelectBreakDown(selected, fiftyFiveChartVar, selectedTitle);
+								if(selected == 'SIXTYFIVE') SelectBreakDown(selected, sixtyFiveChartVar, selectedTitle);
 							}
 	
 						 </script>
@@ -506,7 +507,7 @@ var firstLoad = new Boolean(true);
 									<h:outputText value="#{messages.driver_datetime}" />
 								</f:facet>
 									<h:outputText value="#{item.event.time}">
-										<f:convertDateTime timeZone="#{navigationBean.driver.person.timeZone}" pattern="#{messages.dateTimeFormat}"/>
+										<f:convertDateTime timeZone="#{driverSpeedBean.driver.person.timeZone}" pattern="#{messages.dateTimeFormat}"/>
 									</h:outputText>
 							</rich:column>
 							
@@ -596,7 +597,7 @@ var firstLoad = new Boolean(true);
 	   	<h:panelGroup layout="block"  styleClass="popupcontent" id="clearItem">
 			<h:outputText value="#{driverSpeedBean.clearItem.detail}"/><br/>
       		<h:outputText value="#{driverSpeedBean.clearItem.event.time}">
-      			<f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{navigationBean.driver.person.timeZone}" />
+      			<f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{driverSpeedBean.driver.person.timeZone}" />
 			</h:outputText>
       	</h:panelGroup>
 	

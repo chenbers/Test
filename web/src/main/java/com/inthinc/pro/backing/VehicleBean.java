@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
+
+import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.TripDisplay;
@@ -56,6 +58,12 @@ public class VehicleBean extends BasePerformanceBean
     private Boolean             hasLastTrip;
     private TimeZone            timeZone;
     private String              emailAddress;
+    
+    private VehicleSpeedBean    vehicleSpeedBean;
+    private VehicleStyleBean    vehicleStyleBean;
+    private VehicleSeatBeltBean vehicleSeatBeltBean;
+    
+    
 
     @Override
     protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
@@ -71,7 +79,7 @@ public class VehicleBean extends BasePerformanceBean
 
     private Integer initAverageScore(ScoreType scoreType, Duration duration)
     {
-        ScoreableEntity se = scoreDAO.getVehicleAverageScoreByType(navigation.getVehicle().getVehicleID(), duration, scoreType);
+        ScoreableEntity se = scoreDAO.getVehicleAverageScoreByType(getVehicle().getVehicleID(), duration, scoreType);
 
         if (se != null && se.getScore() != null)
             return se.getScore();
@@ -89,7 +97,7 @@ public class VehicleBean extends BasePerformanceBean
             types.add(EventMapper.TIWIPRO_EVENT_NOTEEVENT);
             types.add(EventMapper.TIWIPRO_EVENT_IDLE);
 
-            violationEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), start, end, types);
+            violationEvents = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), start, end, types);
 
             // Lookup Addresses for events
 
@@ -117,7 +125,7 @@ public class VehicleBean extends BasePerformanceBean
 
     public String getOverallScoreHistory()
     {
-        setOverallScoreHistory(createFusionMultiLineDef(navigation.getVehicle().getVehicleID(), durationBean.getDuration(), ScoreType.SCORE_OVERALL));
+        setOverallScoreHistory(createFusionMultiLineDef(getVehicle().getVehicleID(), durationBean.getDuration(), ScoreType.SCORE_OVERALL));
         return overallScoreHistory;
     }
 
@@ -142,7 +150,7 @@ public class VehicleBean extends BasePerformanceBean
 
     public String getCoachingHistory()
     {
-        setCoachingHistory(createColumnDef(navigation.getVehicle().getVehicleID(), ScoreType.SCORE_COACHING_EVENTS, coachDurationBean.getDuration()));
+        setCoachingHistory(createColumnDef(getVehicle().getVehicleID(), ScoreType.SCORE_COACHING_EVENTS, coachDurationBean.getDuration()));
         return coachingHistory;
     }
 
@@ -155,12 +163,12 @@ public class VehicleBean extends BasePerformanceBean
     {
         if (lastTrip == null)
         {
-            Trip tempTrip = vehicleDAO.getLastTrip(navigation.getVehicle().getVehicleID());
+            Trip tempTrip = vehicleDAO.getLastTrip(getVehicle().getVehicleID());
 
             if (tempTrip != null && tempTrip.getRoute().size() > 0)
             {
                 hasLastTrip = true;
-                navigation.setDriver(driverDAO.findByID(tempTrip.getDriverID()));
+                setDriver(driverDAO.findByID(tempTrip.getDriverID()));
 
                 TripDisplay trip = new TripDisplay(tempTrip, getTimeZone(), addressLookup.getMapServerURLString());
                 setLastTrip(trip);
@@ -199,7 +207,7 @@ public class VehicleBean extends BasePerformanceBean
     public TimeZone getTimeZone()
     {
         if (timeZone == null)
-            timeZone = getTimeZoneFromDriver(navigation.getVehicle().getDriverID());
+            timeZone = getTimeZoneFromDriver(getVehicle().getDriverID());
 
         return timeZone;
     }
@@ -284,7 +292,7 @@ public class VehicleBean extends BasePerformanceBean
 
     private String createMultiLineDef()
     {
-        List<MpgEntity> mpgEntities = mpgDAO.getVehicleEntities(navigation.getVehicle().getVehicleID(), mpgDurationBean.getDuration(), null);
+        List<MpgEntity> mpgEntities = mpgDAO.getVehicleEntities(getVehicle().getVehicleID(), mpgDurationBean.getDuration(), null);
         List<String> catLabelList = GraphicUtil.createMonthList(mpgDurationBean.getDuration());
 
         StringBuffer sb = new StringBuffer();
@@ -381,7 +389,7 @@ public class VehicleBean extends BasePerformanceBean
     public List<CategorySeriesData> createMpgJasperDef()
     {
         List<CategorySeriesData> chartDataList = new ArrayList<CategorySeriesData>();
-        List<MpgEntity> mpgEntities = mpgDAO.getVehicleEntities(navigation.getVehicle().getVehicleID(), mpgDurationBean.getDuration(), null);
+        List<MpgEntity> mpgEntities = mpgDAO.getVehicleEntities(getVehicle().getVehicleID(), mpgDurationBean.getDuration(), null);
 
         List<String> monthList = GraphicUtil.createMonthList(mpgDurationBean.getDuration(), "M/dd");
 
@@ -405,14 +413,14 @@ public class VehicleBean extends BasePerformanceBean
     public List<ReportCriteria> buildReport()
     {
         List<ReportCriteria> tempCriteria = new ArrayList<ReportCriteria>();
-        Integer id = navigation.getVehicle().getVehicleID();
+        Integer id = getVehicle().getVehicleID();
 
         // Page 1
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_SUMMARY_P1, getGroupHierarchy().getTopGroup().getName());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
-        reportCriteria.addParameter("DRIVER_NAME", this.getNavigation().getVehicle().getFullName());
+        reportCriteria.addParameter("DRIVER_NAME", getVehicle().getFullName());
         reportCriteria.addParameter("SPEED_SCORE", initAverageScore(ScoreType.SCORE_SPEEDING, speedDurationBean.getDuration()) / 10.0D);
         reportCriteria.addParameter("STYLE_SCORE", initAverageScore(ScoreType.SCORE_DRIVING_STYLE, styleDurationBean.getDuration()) / 10.0D);
         reportCriteria.addParameter("SEATBELT_SCORE", initAverageScore(ScoreType.SCORE_SEATBELT, seatBeltDurationBean.getDuration()) / 10.0D);
@@ -431,7 +439,7 @@ public class VehicleBean extends BasePerformanceBean
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setDuration(durationBean.getDuration());
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
-        reportCriteria.addParameter("DRIVER_NAME", this.getNavigation().getVehicle().getFullName());
+        reportCriteria.addParameter("DRIVER_NAME", getVehicle().getFullName());
 
         if (lastTrip != null)
         {
@@ -474,6 +482,46 @@ public class VehicleBean extends BasePerformanceBean
     public void emailReport()
     {
         getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
+    }
+
+    public void setVehicleSpeedBean(VehicleSpeedBean vehicleSpeedBean)
+    {
+        this.vehicleSpeedBean = vehicleSpeedBean;
+    }
+
+    public VehicleSpeedBean getVehicleSpeedBean()
+    {
+        return vehicleSpeedBean;
+    }
+
+    public void setVehicleStyleBean(VehicleStyleBean vehicleStyleBean)
+    {
+        this.vehicleStyleBean = vehicleStyleBean;
+    }
+
+    public VehicleStyleBean getVehicleStyleBean()
+    {
+        return vehicleStyleBean;
+    }
+
+    public void setVehicleSeatBeltBean(VehicleSeatBeltBean vehicleSeatBeltBean)
+    {
+        this.vehicleSeatBeltBean = vehicleSeatBeltBean;
+    }
+
+    public VehicleSeatBeltBean getVehicleSeatBeltBean()
+    {
+        return vehicleSeatBeltBean;
+    }
+    
+    public void setVehicleID(Integer vehicleID)
+    {
+        this.vehicle = vehicleDAO.findByID(vehicleID);
+        this.vehicleSeatBeltBean.setVehicle(vehicle);
+        this.vehicleSpeedBean.setVehicle(vehicle);
+        this.vehicleStyleBean.setVehicle(vehicle);
+        groupTreeNodeImpl = new GroupTreeNodeImpl(groupDAO.findByID(vehicle.getGroupID()),getGroupHierarchy());
+        this.vehicleID = vehicleID;
     }
 
 }

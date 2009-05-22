@@ -127,6 +127,7 @@
 			value="#{organizationBean.groupState eq 'VIEW'}" />
 		<ui:param name="formName" value="display-form" />
 		<ui:param name="uniqueID" value="EDIT"/>
+        <ui:param name="mapId" value="#{organizationBean.mapType.mapId}"/>
 	</ui:include></div>
 
 	<h:outputText rendered="#{organizationBean.groupState eq 'EDIT'}">

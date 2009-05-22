@@ -12,6 +12,7 @@ import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.TripDisplay;
 import com.inthinc.pro.map.AddressLookup;
@@ -20,8 +21,10 @@ import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.IdleEvent;
 import com.inthinc.pro.model.Trip;
+import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 
@@ -29,10 +32,10 @@ public class VehicleTripsBean extends BaseBean
 {
     private static final Logger   logger            = Logger.getLogger(VehicleTripsBean.class);
 
-    private NavigationBean        navigation;
     private VehicleDAO            vehicleDAO;
     private DriverDAO             driverDAO;
     private EventDAO              eventDAO;
+    private GroupDAO              groupDAO;
     private AddressLookup         addressLookup;
 
     private Date                  startDate;
@@ -57,13 +60,18 @@ public class VehicleTripsBean extends BaseBean
     private List<EventReportItem> idleEvents        = new ArrayList<EventReportItem>();
     private List<EventReportItem> allEvents         = new ArrayList<EventReportItem>();
     private TimeZone              timeZone;
+    
+    private Vehicle               vehicle;
+    private Integer               vehicleID;
+    
+    private GroupTreeNodeImpl     groupTreeNodeImpl;
 
     public void initTrips()
     {
         if (trips.isEmpty())
         {
             List<Trip> tempTrips = new ArrayList<Trip>();
-            tempTrips = vehicleDAO.getTrips(navigation.getVehicle().getVehicleID(), getStartDate(), getEndDate());
+            tempTrips = vehicleDAO.getTrips(getVehicle().getVehicleID(), getStartDate(), getEndDate());
 
             for (Trip trip : tempTrips)
             {
@@ -97,8 +105,8 @@ public class VehicleTripsBean extends BaseBean
             List<Event> tempViolations = new ArrayList<Event>();
             List<Event> tempIdle = new ArrayList<Event>();
 
-            tempViolations = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), start, end, vioTypes);
-            tempIdle = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), start, end, idleTypes);
+            tempViolations = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), start, end, vioTypes);
+            tempIdle = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), start, end, idleTypes);
 
             // Lookup Addresses for events
             for (Event event : tempViolations)
@@ -139,7 +147,7 @@ public class VehicleTripsBean extends BaseBean
         idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
 
         List<Event> tmpIdleEvents = new ArrayList<Event>();
-        tmpIdleEvents = eventDAO.getEventsForVehicle(navigation.getVehicle().getVehicleID(), startDate, endDate, idleTypes);
+        tmpIdleEvents = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), startDate, endDate, idleTypes);
 
         for (Event event : tmpIdleEvents)
         {
@@ -388,17 +396,6 @@ public class VehicleTripsBean extends BaseBean
         initViolations(selectedTrip.getTrip().getStartTime(), selectedTrip.getTrip().getEndTime());
     }
 
-    // NAVIGATION PROPERTIES
-    public NavigationBean getNavigation()
-    {
-        return navigation;
-    }
-
-    public void setNavigation(NavigationBean navigation)
-    {
-        this.navigation = navigation;
-    }
-
     // VIOLATIONS PROPERTIES
     public List<EventReportItem> getViolationEvents()
     {
@@ -500,7 +497,7 @@ public class VehicleTripsBean extends BaseBean
         // Get Time Zone from driver
         if (timeZone == null)
         {
-            timeZone = getTimeZoneFromDriver(navigation.getVehicle().getDriverID());
+            timeZone = getTimeZoneFromDriver(getVehicle().getDriverID());
         }
 
         return timeZone;
@@ -529,6 +526,49 @@ public class VehicleTripsBean extends BaseBean
     public void setEventsPage(Integer eventsPage)
     {
         this.eventsPage = eventsPage;
+    }
+
+    public void setVehicle(Vehicle vehicle)
+    {
+        this.vehicle = vehicle;
+    }
+
+    public Vehicle getVehicle()
+    {
+        return vehicle;
+    }
+
+    public void setVehicleID(Integer vehicleID)
+    {
+        this.vehicle = vehicleDAO.findByID(vehicleID);
+        groupTreeNodeImpl = new GroupTreeNodeImpl(groupDAO.findByID(vehicle.getGroupID()),getGroupHierarchy());
+        this.vehicleID = vehicleID;
+    }
+
+    public Integer getVehicleID()
+    {
+        
+        return vehicleID;
+    }
+
+    public void setGroupDAO(GroupDAO groupDAO)
+    {
+        this.groupDAO = groupDAO;
+    }
+
+    public GroupDAO getGroupDAO()
+    {
+        return groupDAO;
+    }
+
+    public void setGroupTreeNodeImpl(GroupTreeNodeImpl groupTreeNodeImpl)
+    {
+        this.groupTreeNodeImpl = groupTreeNodeImpl;
+    }
+
+    public GroupTreeNodeImpl getGroupTreeNodeImpl()
+    {
+        return groupTreeNodeImpl;
     }
 
 }

@@ -37,7 +37,6 @@ public class DriverTripsBeanTest extends BaseBeanTest
         
         // get the bean from the applicationContext (initialized by Spring injection)
         DriverTripsBean tripsBean = (DriverTripsBean)applicationContext.getBean("driverTripsBean");
-        tripsBean.setNavigation((NavigationBean)applicationContext.getBean("navigationBean"));
         tripsBean.setDriverDAO((DriverDAO)applicationContext.getBean("driverDAO"));
         
         Person p = new Person();
@@ -52,7 +51,7 @@ public class DriverTripsBeanTest extends BaseBeanTest
 
         d.setPerson(p);
         
-        tripsBean.getNavigation().setDriver(d);
+        tripsBean.setDriver(d);
         
 //        // Get trips from DAO
 //        tripsBean.initTrips();
