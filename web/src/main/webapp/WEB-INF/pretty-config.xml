@@ -53,8 +53,8 @@
 		<view-id>/secured/driverTrips.faces</view-id>
 	</url-mapping>
 	<url-mapping id="vehiclePerformance">
-		<pattern>/secured/vehicle/#{vehicleBean.vehicleID}</pattern>
-		<view-id>/secured/vehicle.faces</view-id>
+		<pattern>/secured/vehicle/#{vehiclePerformanceBean.vehicleID}</pattern>
+		<view-id>/secured/vehiclePerformance.faces</view-id>
 	</url-mapping>
 	<url-mapping id="vehiclePerformanceSpeed">
 		<pattern>/secured/vehicle/speed/#{vehicleSpeedBean.vehicleID}</pattern>

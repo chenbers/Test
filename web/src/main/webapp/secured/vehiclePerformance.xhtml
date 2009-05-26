@@ -34,29 +34,29 @@
 			}
 			function drawTrip()
 			{
-				<h:outputText rendered="#{vehicleBean.hasLastTrip}">
+				<h:outputText rendered="#{vehiclePerformanceBean.hasLastTrip}">
 					var polyline = new GPolyline([
-										<ui:repeat value="#{vehicleBean.lastTrip.route}" var="route">
+										<ui:repeat value="#{vehiclePerformanceBean.lastTrip.route}" var="route">
 											new GLatLng(#{route.lat}, #{route.lng}),
 									  	</ui:repeat>
 									  	//Repeating the last step to finish JS array.
-									  	new GLatLng(#{vehicleBean.lastTrip.routeLastStep.lat}, #{vehicleBean.lastTrip.routeLastStep.lng})	], "#0000ff", 6);
+									  	new GLatLng(#{vehiclePerformanceBean.lastTrip.routeLastStep.lat}, #{vehiclePerformanceBean.lastTrip.routeLastStep.lng})	], "#0000ff", 6);
 
 					map.addOverlay(polyline);
 
 
-					<ui:repeat value="#{vehicleBean.lastTrip.route}" var="rt2">
+					<ui:repeat value="#{vehiclePerformanceBean.lastTrip.route}" var="rt2">
 						bounds.extend(new GLatLng(#{rt2.lat}, #{rt2.lng}));
 					</ui:repeat>
 				
 					//Start of trip marker
-					var startlatlng = new GLatLng(#{vehicleBean.lastTrip.route[0].lat}, #{vehicleBean.lastTrip.route[0].lng});
+					var startlatlng = new GLatLng(#{vehiclePerformanceBean.lastTrip.route[0].lat}, #{vehiclePerformanceBean.lastTrip.route[0].lng});
 					marker = createMarker(startlatlng, "tripStartBubble", "#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());
 		
 					//End of trip marker
-					var endlatlng = new GLatLng(#{vehicleBean.lastTrip.routeLastStep.lat}, #{vehicleBean.lastTrip.routeLastStep.lng});
+					var endlatlng = new GLatLng(#{vehiclePerformanceBean.lastTrip.routeLastStep.lat}, #{vehiclePerformanceBean.lastTrip.routeLastStep.lng});
 					marker = createMarker(endlatlng, "tripEndBubble", "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());
@@ -64,7 +64,7 @@
 					//Create Violation markers. //IDLE EVENT is the only event with different icon.
 					var violation;
 					var image;
-					<ui:repeat value="#{vehicleBean.violationEvents}" var="violation">
+					<ui:repeat value="#{vehiclePerformanceBean.violationEvents}" var="violation">
 						violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
 
 						<h:outputText rendered="#{violation.eventType.code eq '13'}" >
@@ -122,8 +122,8 @@
 			function bodyLoad()
 			{
 				// Init Google map if hasLastTrip is true;
-				<h:outputText rendered="#{vehicleBean.hasLastTrip}">
-					initMap(#{vehicleBean.lastTrip.routeLastStep.lat}, #{vehicleBean.lastTrip.routeLastStep.lng}, 14);
+				<h:outputText rendered="#{vehiclePerformanceBean.hasLastTrip}">
+					initMap(#{vehiclePerformanceBean.lastTrip.routeLastStep.lat}, #{vehiclePerformanceBean.lastTrip.routeLastStep.lng}, 14);
 					drawTrip();
 		 		</h:outputText>
 			}
@@ -134,35 +134,35 @@
 	<ui:param name="helpFile" value="Vehicle_Performance.htm" />
 	
 	<ui:define name="content">
-	<t:saveState value="#{vehicleBean.vehicle}"/>
-    <t:saveState value="#{vehicleBean.groupTreeNodeImpl}"/>
+	<t:saveState value="#{vehiclePerformanceBean.vehicle}"/>
+    <t:saveState value="#{vehiclePerformanceBean.groupTreeNodeImpl}"/>
    
 <!-- BEGIN GOOGLE BUBBLES -->
 	<ui:include src="/includes/tripBubble.xhtml">
             <ui:param name="hiddenDivID" value="tripStartBubble" />
             <ui:param name="bubbleTitle" value="#{messages.TRIP_START}" />
-            <ui:param name="timeZoneObject" value="#{vehicleBean.timeZone}" />
-            <ui:param name="eventDateTime" value="#{vehicleBean.lastTrip.trip.startTime}" />
-            <ui:param name="eventLocation" value="#{vehicleBean.lastTrip.startAddress}" />
+            <ui:param name="timeZoneObject" value="#{vehiclePerformanceBean.timeZone}" />
+            <ui:param name="eventDateTime" value="#{vehiclePerformanceBean.lastTrip.trip.startTime}" />
+            <ui:param name="eventLocation" value="#{vehiclePerformanceBean.lastTrip.startAddress}" />
             <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
 	</ui:include>
 	
 	<ui:include src="/includes/tripBubble.xhtml">
             <ui:param name="hiddenDivID" value="tripEndBubble" />
             <ui:param name="bubbleTitle" value="#{messages.TRIP_END}" />
-            <ui:param name="eventDateTime" value="#{vehicleBean.lastTrip.trip.endTime}" />
-            <ui:param name="eventLocation" value="#{vehicleBean.lastTrip.endAddress}" />
-            <ui:param name="timeZoneObject" value="#{vehicleBean.timeZone}" />
+            <ui:param name="eventDateTime" value="#{vehiclePerformanceBean.lastTrip.trip.endTime}" />
+            <ui:param name="eventLocation" value="#{vehiclePerformanceBean.lastTrip.endAddress}" />
+            <ui:param name="timeZoneObject" value="#{vehiclePerformanceBean.timeZone}" />
             <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
 	</ui:include>
 	
-	<ui:repeat value="#{vehicleBean.violationEvents}" var="violation">
+	<ui:repeat value="#{vehiclePerformanceBean.violationEvents}" var="violation">
 		<ui:include src="/includes/eventBubble.xhtml">
 	            <ui:param name="hiddenDivID" value="#{violation.noteID}" />
 	            <ui:param name="eventType" value="#{violation.eventType}" />
 	            <ui:param name="eventDateTime" value="#{violation.time}" />
 	            <ui:param name="eventLocation" value="#{violation.addressStr}" />
-	            <ui:param name="timeZoneObject" value="#{vehicleBean.timeZone}" />
+	            <ui:param name="timeZoneObject" value="#{vehiclePerformanceBean.timeZone}" />
 	            <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
 	            <ui:param name="eventSpeedLimit" value="#{violation.speedLimit}" />
 	            <ui:param name="eventAvgSpeed" value="#{violation.avgSpeed}" />
@@ -183,21 +183,21 @@
 		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
 		<li class="l grid_title"><h:outputText value="#{messages.vehiclePerformanceName} "/>
             <pretty:link mappingId="vehiclePerformance">
-               <h:outputText value="#{vehicleBean.vehicle.name}"/>
-               <f:param value="#{vehicleBean.vehicle.vehicleID}"/>
+               <h:outputText value="#{vehiclePerformanceBean.vehicle.name}"/>
+               <f:param value="#{vehiclePerformanceBean.vehicle.vehicleID}"/>
             </pretty:link>
         </li>
 		<li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li>
 		
 		<li class="l">
 			<ui:include src="/includes/breadcrumb.xhtml">
-				<ui:param name="groupTreeNode" value="#{vehicleBean.groupTreeNodeImpl}" />
+				<ui:param name="groupTreeNode" value="#{vehiclePerformanceBean.groupTreeNodeImpl}" />
 				<ui:param name="lastBreadCrumb" value="true" />
 			</ui:include>
 		</li>
 		<li class="l" style="margin-left: -15px;">
 			<ul id="breadcrumb">
-				<li class="last"><h:outputText value="#{vehicleBean.vehicle.name}" /></li>
+				<li class="last"><h:outputText value="#{vehiclePerformanceBean.vehicle.name}" /></li>
 			</ul>
 		</li>
 	</ul>
@@ -265,7 +265,7 @@
 										<rich:menuItem ajaxSingle="true"
 														iconDisabled="/images/ico_pdf.gif" icon="/images/ico_pdf.gif"
 														value="Export To PDF"
-														action="#{vehicleBean.exportReportToPdf}"
+														action="#{vehiclePerformanceBean.exportReportToPdf}"
 														id="export_menu_item">
 										</rich:menuItem>
 									</rich:contextMenu>
@@ -274,7 +274,7 @@
 								<h:outputText id="driver_email_modalPanel">
 									<ui:include src="/includes/emailReportPopup.xhtml">	
 										<ui:param name="id" value="driverReportEmailModal" />
-										<ui:param name="reportBean" value="#{vehicleBean}"/>
+										<ui:param name="reportBean" value="#{vehiclePerformanceBean}"/>
 									</ui:include>
 								</h:outputText>
 							<!-- END EMAIL MODAL -->
@@ -287,7 +287,7 @@
 					  <tr>
 						<td valign="top" width="600">
 						   <ui:include src="../includes/multiLineChart.xhtml">
-						            <ui:param name="lineChartDef" value="#{vehicleBean.overallScoreHistory}" />
+						            <ui:param name="lineChartDef" value="#{vehiclePerformanceBean.overallScoreHistory}" />
 						            <ui:param name="id" value="overallLineChart" />
 						            <ui:param name="width" value="650" /> 
 						            <ui:param name="height" value="230" />  
@@ -305,8 +305,8 @@
 									</td>
 									<td width="80" align="center">
 										<ui:include src="../includes/scoreBox.xhtml">
-									            <ui:param name="score" value="#{vehicleBean.overallScore}" />
-									            <ui:param name="scoreStyle" value="#{vehicleBean.overallScoreStyle}" />
+									            <ui:param name="score" value="#{vehiclePerformanceBean.overallScore}" />
+									            <ui:param name="scoreStyle" value="#{vehiclePerformanceBean.overallScoreStyle}" />
 										</ui:include>
 									</td>
 								  </tr>
@@ -340,18 +340,18 @@
 						<ui:include src="../includes/dateLinksToolsDetail.xhtml">
 							<ui:param name="ajaxForm" value="speedForm"/>
 							<ui:param name="reRenderList" value="speedChart,speedForm,speedScoreBox"/>			
-							<ui:param name="thirtyDaysOn" value="#{(vehicleBean.vehicleSpeedBean.durationBean.duration eq 'DAYS') ? 'on' : ''}"/>
-							<ui:param name="threeMonthsOn" value="#{(vehicleBean.vehicleSpeedBean.durationBean.duration eq 'THREE') ? 'on' : ''}"/>
-							<ui:param name="sixMonthsOn" value="#{(vehicleBean.vehicleSpeedBean.durationBean.duration eq 'SIX') ? 'on' : ''}"/>
-							<ui:param name="twelveMonthsOn" value="#{(vehicleBean.vehicleSpeedBean.durationBean.duration eq 'TWELVE') ? 'on' : ''}"/>
-				  			<ui:param name="duration" value="#{vehicleBean.vehicleSpeedBean.durationBean.duration}" />
+							<ui:param name="thirtyDaysOn" value="#{(vehiclePerformanceBean.vehicleSpeedBean.durationBean.duration eq 'DAYS') ? 'on' : ''}"/>
+							<ui:param name="threeMonthsOn" value="#{(vehiclePerformanceBean.vehicleSpeedBean.durationBean.duration eq 'THREE') ? 'on' : ''}"/>
+							<ui:param name="sixMonthsOn" value="#{(vehiclePerformanceBean.vehicleSpeedBean.durationBean.duration eq 'SIX') ? 'on' : ''}"/>
+							<ui:param name="twelveMonthsOn" value="#{(vehiclePerformanceBean.vehicleSpeedBean.durationBean.duration eq 'TWELVE') ? 'on' : ''}"/>
+				  			<ui:param name="duration" value="#{vehiclePerformanceBean.vehicleSpeedBean.durationBean.duration}" />
 				  			<ui:param name="flyNavRule" value="go_reportVehicleSpeed" />
 				  			<ui:param name="flyOutImage" value="ico_expand.png" /> 
-				  			<ui:param name="reportBean" value="#{vehicleBean.vehicleSpeedBean}" />
+				  			<ui:param name="reportBean" value="#{vehiclePerformanceBean.vehicleSpeedBean}" />
 				  			<ui:param name="showTools" value="FALSE" /> 
   							<ui:param name="showDetail" value="TRUE" />
                             <ui:param name="mappingId"  value="vehiclePerformanceSpeed"/>
-                            <ui:param name="entityId"   value="#{vehicleBean.vehicle.vehicleID}"/> 
+                            <ui:param name="entityId"   value="#{vehiclePerformanceBean.vehicle.vehicleID}"/> 
 						</ui:include>	
 					</div>
 				</div>
@@ -361,7 +361,7 @@
                           <tr>
                             <td width="373">
 				            <ui:include src="../includes/multiLineChart.xhtml">
-						            <ui:param name="lineChartDef" value="#{vehicleBean.vehicleSpeedBean.trendMap['SCORE_SPEEDING']}" />
+						            <ui:param name="lineChartDef" value="#{vehiclePerformanceBean.vehicleSpeedBean.trendMap['SCORE_SPEEDING']}" />
 						            <ui:param name="id" value="speedChart" />
 						            <ui:param name="width" value="380" /> 
 						            <ui:param name="height" value="200" />  
@@ -373,8 +373,8 @@
                             <td width="80" align="center">
                             <rich:panel id="speedScoreBox">
 							    <ui:include src="../includes/scoreBox.xhtml">
-							            <ui:param name="score" value="#{vehicleBean.vehicleSpeedBean.scoreMap['SCORE_SPEEDING']}" />
-							            <ui:param name="scoreStyle" value="#{vehicleBean.vehicleSpeedBean.styleMap['SCORE_SPEEDING']}" />
+							            <ui:param name="score" value="#{vehiclePerformanceBean.vehicleSpeedBean.scoreMap['SCORE_SPEEDING']}" />
+							            <ui:param name="scoreStyle" value="#{vehiclePerformanceBean.vehicleSpeedBean.styleMap['SCORE_SPEEDING']}" />
 								</ui:include>
 							</rich:panel>
 							</td>
@@ -399,18 +399,18 @@
 						<ui:include src="../includes/dateLinksToolsDetail.xhtml">
 							<ui:param name="ajaxForm" value="styleForm"/>
 							<ui:param name="reRenderList" value="styleChart,styleForm,styleScoreBox"/>			
-							<ui:param name="thirtyDaysOn" value="#{(vehicleBean.vehicleStyleBean.durationBean.duration eq 'DAYS') ? 'on' : ''}"/>
-							<ui:param name="threeMonthsOn" value="#{(vehicleBean.vehicleStyleBean.durationBean.duration eq 'THREE') ? 'on' : ''}"/>
-							<ui:param name="sixMonthsOn" value="#{(vehicleBean.vehicleStyleBean.durationBean.duration eq 'SIX') ? 'on' : ''}"/>
-							<ui:param name="twelveMonthsOn" value="#{(vehicleBean.vehicleStyleBean.durationBean.duration eq 'TWELVE') ? 'on' : ''}"/>
-				  			<ui:param name="duration" value="#{vehicleBean.vehicleStyleBean.durationBean.duration}" />
+							<ui:param name="thirtyDaysOn" value="#{(vehiclePerformanceBean.vehicleStyleBean.durationBean.duration eq 'DAYS') ? 'on' : ''}"/>
+							<ui:param name="threeMonthsOn" value="#{(vehiclePerformanceBean.vehicleStyleBean.durationBean.duration eq 'THREE') ? 'on' : ''}"/>
+							<ui:param name="sixMonthsOn" value="#{(vehiclePerformanceBean.vehicleStyleBean.durationBean.duration eq 'SIX') ? 'on' : ''}"/>
+							<ui:param name="twelveMonthsOn" value="#{(vehiclePerformanceBean.vehicleStyleBean.durationBean.duration eq 'TWELVE') ? 'on' : ''}"/>
+				  			<ui:param name="duration" value="#{vehiclePerformanceBean.vehicleStyleBean.durationBean.duration}" />
 				  			<ui:param name="flyNavRule" value="go_reportVehicleStyle" />
 				  			<ui:param name="flyOutImage" value="ico_expand.png" /> 
-				  			<ui:param name="reportBean" value="#{vehicleBean.vehicleStyleBean}" />
+				  			<ui:param name="reportBean" value="#{vehiclePerformanceBean.vehicleStyleBean}" />
 				  			<ui:param name="showTools" value="FALSE" /> 
   							<ui:param name="showDetail" value="TRUE" />
                             <ui:param name="mappingId"  value="vehiclePerformanceStyle"/>
-                            <ui:param name="entityId"   value="#{vehicleBean.vehicle.vehicleID}"/>   
+                            <ui:param name="entityId"   value="#{vehiclePerformanceBean.vehicle.vehicleID}"/>   
 						</ui:include>
 					</div>
 				</div>
@@ -420,7 +420,7 @@
                           <tr>
                             <td width="373">
                       		<ui:include src="../includes/multiLineChart.xhtml">
-						            <ui:param name="lineChartDef" value="#{vehicleBean.vehicleStyleBean.trendMap['SCORE_DRIVING_STYLE']}" />
+						            <ui:param name="lineChartDef" value="#{vehiclePerformanceBean.vehicleStyleBean.trendMap['SCORE_DRIVING_STYLE']}" />
 						            <ui:param name="id" value="styleChart" />
 						            <ui:param name="width" value="380" /> 
 						            <ui:param name="height" value="200" />  
@@ -432,8 +432,8 @@
                             <td width="80" align="center">
                             <rich:panel id="styleScoreBox">
                                 <ui:include src="../includes/scoreBox.xhtml">
-							            <ui:param name="score" value="#{vehicleBean.vehicleStyleBean.scoreMap['SCORE_DRIVING_STYLE']}" />
-							            <ui:param name="scoreStyle" value="#{vehicleBean.vehicleStyleBean.styleMap['SCORE_DRIVING_STYLE']}" />
+							            <ui:param name="score" value="#{vehiclePerformanceBean.vehicleStyleBean.scoreMap['SCORE_DRIVING_STYLE']}" />
+							            <ui:param name="scoreStyle" value="#{vehiclePerformanceBean.vehicleStyleBean.styleMap['SCORE_DRIVING_STYLE']}" />
 								</ui:include>
 							</rich:panel>
                             </td>
@@ -457,18 +457,18 @@
 							<ui:include src="../includes/dateLinksToolsDetail.xhtml">
 							<ui:param name="ajaxForm" value="seatBeltForm"/>
 							<ui:param name="reRenderList" value="seatBeltChart,seatBeltForm,seatBeltScoreBox"/>			
-							<ui:param name="thirtyDaysOn" value="#{(vehicleBean.vehicleSeatBeltBean.durationBean.duration eq 'DAYS') ? 'on' : ''}"/>
-							<ui:param name="threeMonthsOn" value="#{(vehicleBean.vehicleSeatBeltBean.durationBean.duration eq 'THREE') ? 'on' : ''}"/>
-							<ui:param name="sixMonthsOn" value="#{(vehicleBean.vehicleSeatBeltBean.durationBean.duration eq 'SIX') ? 'on' : ''}"/>
-							<ui:param name="twelveMonthsOn" value="#{(vehicleBean.vehicleSeatBeltBean.durationBean.duration eq 'TWELVE') ? 'on' : ''}"/>
-				  			<ui:param name="duration" value="#{vehicleBean.vehicleSeatBeltBean.durationBean.duration}" />
+							<ui:param name="thirtyDaysOn" value="#{(vehiclePerformanceBean.vehicleSeatBeltBean.durationBean.duration eq 'DAYS') ? 'on' : ''}"/>
+							<ui:param name="threeMonthsOn" value="#{(vehiclePerformanceBean.vehicleSeatBeltBean.durationBean.duration eq 'THREE') ? 'on' : ''}"/>
+							<ui:param name="sixMonthsOn" value="#{(vehiclePerformanceBean.vehicleSeatBeltBean.durationBean.duration eq 'SIX') ? 'on' : ''}"/>
+							<ui:param name="twelveMonthsOn" value="#{(vehiclePerformanceBean.vehicleSeatBeltBean.durationBean.duration eq 'TWELVE') ? 'on' : ''}"/>
+				  			<ui:param name="duration" value="#{vehiclePerformanceBean.vehicleSeatBeltBean.durationBean.duration}" />
 				  			<ui:param name="flyNavRule" value="go_reportVehicleSeatBelt" />
 				  			<ui:param name="flyOutImage" value="ico_expand.png" /> 
-				  			<ui:param name="reportBean" value="#{vehicleBean.vehicleSeatBeltBean}" />
+				  			<ui:param name="reportBean" value="#{vehiclePerformanceBean.vehicleSeatBeltBean}" />
 				  			<ui:param name="showTools" value="FALSE" /> 
   							<ui:param name="showDetail" value="TRUE" />  
                             <ui:param name="mappingId"  value="vehiclePerformanceSeatBelt"/>
-                            <ui:param name="entityId"   value="#{vehicleBean.vehicle.vehicleID}"/>   
+                            <ui:param name="entityId"   value="#{vehiclePerformanceBean.vehicle.vehicleID}"/>   
 						</ui:include>
 					</div>
 				</div>
@@ -478,7 +478,7 @@
                           <tr>
                             <td width="373">
                       		<ui:include src="../includes/multiLineChart.xhtml">
-						            <ui:param name="lineChartDef" value="#{vehicleBean.vehicleSeatBeltBean.seatBeltScoreHistoryOverall}" />
+						            <ui:param name="lineChartDef" value="#{vehiclePerformanceBean.vehicleSeatBeltBean.seatBeltScoreHistoryOverall}" />
 						            <ui:param name="id" value="seatBeltChart" />
 						            <ui:param name="width" value="380" /> 
 						            <ui:param name="height" value="200" />
@@ -490,8 +490,8 @@
                             <td width="80" align="center">
                             <rich:panel id="seatBeltScoreBox">
                        	        <ui:include src="../includes/scoreBox.xhtml">
-						            <ui:param name="score" value="#{vehicleBean.vehicleSeatBeltBean.seatBeltScore}" />
-						            <ui:param name="scoreStyle" value="#{vehicleBean.vehicleSeatBeltBean.seatBeltScoreStyle}" />
+						            <ui:param name="score" value="#{vehiclePerformanceBean.vehicleSeatBeltBean.seatBeltScore}" />
+						            <ui:param name="scoreStyle" value="#{vehiclePerformanceBean.vehicleSeatBeltBean.seatBeltScoreStyle}" />
 								</ui:include>
 							</rich:panel>
                             </td>
@@ -512,9 +512,9 @@
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="map"><h:outputText value="#{messages.vehicle_lasttrip}: " />
-						<h:outputText rendered="#{vehicleBean.lastTrip ne null}">
-							<h:outputText value="#{vehicleBean.lastTrip.trip.endTime}">
-								<f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{vehicleBean.lastTrip.timeZone}" />
+						<h:outputText rendered="#{vehiclePerformanceBean.lastTrip ne null}">
+							<h:outputText value="#{vehiclePerformanceBean.lastTrip.trip.endTime}">
+								<f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{vehiclePerformanceBean.lastTrip.timeZone}" />
 							</h:outputText>
 						</h:outputText>
 						</span>
@@ -522,7 +522,7 @@
 
                            <pretty:link mappingId="vehicleTrips">
                               <h:outputText value="#{messages.driver_view_all}"/>
-                              <f:param value="#{vehicleBean.vehicle.vehicleID}"/>
+                              <f:param value="#{vehiclePerformanceBean.vehicle.vehicleID}"/>
                            </pretty:link>
                         </span>
 					</div>
@@ -531,7 +531,7 @@
 					  <div class="panel_content">
 					  
 					  	<h:panelGroup styleClass="map-border" layout="block">
-							<h:outputText rendered="#{vehicleBean.hasLastTrip eq false}">
+							<h:outputText rendered="#{vehiclePerformanceBean.hasLastTrip eq false}">
 	  							<h3>#{messages.no_last_trip_found}</h3>
 	  						</h:outputText>
 								<div id="map-canvas" style="width:458px;height:300px;border:0"></div>
@@ -555,11 +555,11 @@
 							<ui:include src="../includes/dateLinks.xhtml">
 							<ui:param name="ajaxForm" value="mpgForm"/>
 							<ui:param name="reRenderList" value="mpg_script,mpgForm"/>			
-							<ui:param name="thirtyDaysOn" value="#{(vehicleBean.mpgDurationBean.duration eq 'DAYS') ? 'on' : ''}"/>
-							<ui:param name="threeMonthsOn" value="#{(vehicleBean.mpgDurationBean.duration eq 'THREE') ? 'on' : ''}"/>
-							<ui:param name="sixMonthsOn" value="#{(vehicleBean.mpgDurationBean.duration eq 'SIX') ? 'on' : ''}"/>
-							<ui:param name="twelveMonthsOn" value="#{(vehicleBean.mpgDurationBean.duration eq 'TWELVE') ? 'on' : ''}"/>
-				  			<ui:param name="duration" value="#{vehicleBean.mpgDurationBean.duration}" />
+							<ui:param name="thirtyDaysOn" value="#{(vehiclePerformanceBean.mpgDurationBean.duration eq 'DAYS') ? 'on' : ''}"/>
+							<ui:param name="threeMonthsOn" value="#{(vehiclePerformanceBean.mpgDurationBean.duration eq 'THREE') ? 'on' : ''}"/>
+							<ui:param name="sixMonthsOn" value="#{(vehiclePerformanceBean.mpgDurationBean.duration eq 'SIX') ? 'on' : ''}"/>
+							<ui:param name="twelveMonthsOn" value="#{(vehiclePerformanceBean.mpgDurationBean.duration eq 'TWELVE') ? 'on' : ''}"/>
+				  			<ui:param name="duration" value="#{vehiclePerformanceBean.mpgDurationBean.duration}" />
 				  			<ui:param name="ajaxStatusID" value="mpgStatus" />
 						</ui:include>
 					</div>
@@ -571,7 +571,7 @@
                             <td>
                             <div id="mpg_chart"></div>
                             <rich:panel id="mpg_script">
-                            <h:inputHidden value="#{vehicleBean.mpgHistory}" id="hiddenField5" />
+                            <h:inputHidden value="#{vehiclePerformanceBean.mpgHistory}" id="hiddenField5" />
 							<script type="text/javascript">
 								var targetElement5 = document.getElementById("hiddenField5");
 								var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSArea.swf", "ChartId", "450", "300", "0", "0");
@@ -601,11 +601,11 @@
 						<ui:include src="../includes/dateLinks.xhtml">
 							<ui:param name="ajaxForm" value="coachingForm"/>
 							<ui:param name="reRenderList" value="coaching_script,coachingForm"/>			
-							<ui:param name="thirtyDaysOn" value="#{(vehicleBean.coachDurationBean.duration eq 'DAYS') ? 'on' : ''}"/>
-							<ui:param name="threeMonthsOn" value="#{(vehicleBean.coachDurationBean.duration eq 'THREE') ? 'on' : ''}"/>
-							<ui:param name="sixMonthsOn" value="#{(vehicleBean.coachDurationBean.duration eq 'SIX') ? 'on' : ''}"/>
-							<ui:param name="twelveMonthsOn" value="#{(vehicleBean.coachDurationBean.duration eq 'TWELVE') ? 'on' : ''}"/>
-				  			<ui:param name="duration" value="#{vehicleBean.coachDurationBean.duration}" />
+							<ui:param name="thirtyDaysOn" value="#{(vehiclePerformanceBean.coachDurationBean.duration eq 'DAYS') ? 'on' : ''}"/>
+							<ui:param name="threeMonthsOn" value="#{(vehiclePerformanceBean.coachDurationBean.duration eq 'THREE') ? 'on' : ''}"/>
+							<ui:param name="sixMonthsOn" value="#{(vehiclePerformanceBean.coachDurationBean.duration eq 'SIX') ? 'on' : ''}"/>
+							<ui:param name="twelveMonthsOn" value="#{(vehiclePerformanceBean.coachDurationBean.duration eq 'TWELVE') ? 'on' : ''}"/>
+				  			<ui:param name="duration" value="#{vehiclePerformanceBean.coachDurationBean.duration}" />
 				  			<ui:param name="ajaxStatusID" value="coachingStatus" />
 						</ui:include>
 					</div>
@@ -616,7 +616,7 @@
                           <tr>
                             <td>
                             <ui:include src="../includes/columnChart.xhtml">
-						            <ui:param name="lineChartDef" value="#{vehicleBean.coachingHistory}" />
+						            <ui:param name="lineChartDef" value="#{vehiclePerformanceBean.coachingHistory}" />
 						            <ui:param name="hiddenFieldID" value="HiddenField4" />
 						            <ui:param name="width" value="450" /> 
 						            <ui:param name="height" value="200" />

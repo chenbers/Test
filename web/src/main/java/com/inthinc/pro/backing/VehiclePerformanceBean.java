@@ -32,9 +32,9 @@ import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.util.MessageUtil;
 
-public class VehicleBean extends BasePerformanceBean
+public class VehiclePerformanceBean extends BasePerformanceBean
 {
-    private static final Logger logger          = Logger.getLogger(VehicleBean.class);
+    private static final Logger logger          = Logger.getLogger(VehiclePerformanceBean.class);
 
     private VehicleDAO          vehicleDAO;
     private DriverDAO           driverDAO;
