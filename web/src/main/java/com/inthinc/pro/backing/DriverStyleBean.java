@@ -35,7 +35,6 @@ public class DriverStyleBean extends BasePerformanceBean
     private List<EventReportItem> filteredStyleEvents;
     private String                selectedEventType = "";
     private final Integer         ROWCOUNT          = 10;
-    private Integer               driverID;
 
     @Override
     protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
@@ -310,11 +309,4 @@ public class DriverStyleBean extends BasePerformanceBean
         return "";
     }
 
-    @Override
-    public void setDriverID(Integer driverId)
-    {
-        driver = driverDAO.findByID(driverId);
-        groupTreeNodeImpl = new GroupTreeNodeImpl(groupDAO.findByID(driver.getGroupID()),getGroupHierarchy());
-        this.driverID = driverId;
-    }
 }

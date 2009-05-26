@@ -37,8 +37,7 @@ public class DriverSeatBeltBean extends BasePerformanceBean
     private String                emailAddress;
     private static final Integer  NO_SCORE = -1;
     private final Integer         ROWCOUNT = 10;
-   
-    private Integer               driverID;
+
 
     private List<EventReportItem> seatBeltEvents ;
 
@@ -240,14 +239,5 @@ public class DriverSeatBeltBean extends BasePerformanceBean
     {
         getReportRenderer().exportReportToExcel(buildReport(), getFacesContext());
     }
-
-    @Override
-    public void setDriverID(Integer driverId)
-    {
-        driver = driverDAO.findByID(driverId);
-        groupTreeNodeImpl = new GroupTreeNodeImpl(groupDAO.findByID(driver.getGroupID()),getGroupHierarchy());
-        this.driverID = driverId;
-    }
-
 
 }

@@ -357,12 +357,4 @@ public class DriverSpeedBean extends BasePerformanceBean
         }
         filteredSpeedingEvents = speedingListsMap.get(selectedSpeed);
     }
-
-    @Override
-    public void setDriverID(Integer driverId)
-    {
-        driver = driverDAO.findByID(driverId);
-        groupTreeNodeImpl = new GroupTreeNodeImpl(groupDAO.findByID(driver.getGroupID()),getGroupHierarchy());
-        this.driverID = driverId;
-    }
 }

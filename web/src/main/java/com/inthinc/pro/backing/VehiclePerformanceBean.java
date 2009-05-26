@@ -513,15 +513,5 @@ public class VehiclePerformanceBean extends BasePerformanceBean
     {
         return vehicleSeatBeltBean;
     }
-    
-    public void setVehicleID(Integer vehicleID)
-    {
-        this.vehicle = vehicleDAO.findByID(vehicleID);
-        this.vehicleSeatBeltBean.setVehicle(vehicle);
-        this.vehicleSpeedBean.setVehicle(vehicle);
-        this.vehicleStyleBean.setVehicle(vehicle);
-        groupTreeNodeImpl = new GroupTreeNodeImpl(groupDAO.findByID(vehicle.getGroupID()),getGroupHierarchy());
-        this.vehicleID = vehicleID;
-    }
 
 }

@@ -308,10 +308,4 @@ public class VehicleStyleBean extends BasePerformanceBean
         return "";
     }
     
-    public void setVehicleID(Integer vehicleID)
-    {
-        this.vehicle = vehicleDAO.findByID(vehicleID);
-        groupTreeNodeImpl = new GroupTreeNodeImpl(groupDAO.findByID(vehicle.getGroupID()),getGroupHierarchy());
-        this.vehicleID = vehicleID;
-    }
 }

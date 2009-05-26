@@ -184,6 +184,10 @@
         <property name="vehiclesBean" ref="vehiclesBean"></property>
     </bean>
     
+   <bean id="vehicleBean" class="com.inthinc.pro.backing.VehicleBean" scope="session" parent="baseBean">
+    	<property name="vehicleDAO" ref="vehicleDAO"/>
+    </bean>
+    
    <bean id="vehiclePerformanceBean" class="com.inthinc.pro.backing.VehiclePerformanceBean" scope="request" parent="basePerformanceBean">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="driverDAO" ref="driverDAO"></property>
@@ -227,10 +231,13 @@
         <property name="addressLookup" ref="addressLookupBean"></property>
     </bean>
     
+    <bean id="driverBean" class="com.inthinc.pro.backing.DriverBean" scope="session" parent="baseBean">
+    	<property name="driverDAO" ref="driverDAO"/>
+    </bean>
+    
     <bean id="driverPerformanceBean" class="com.inthinc.pro.backing.DriverPerformanceBean" scope="request" parent="basePerformanceBean">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="mpgDAO" ref="mpgDAO"></property>
-	    <property name="driverDAO" ref="driverDAO"></property>
         <property name="eventDAO" ref="eventDAO"></property>
         <property name="durationBean" ref="driverDurationBean"></property>
         <property name="speedDurationBean" ref="driverSpeedDurationBean"></property>
@@ -384,11 +391,11 @@
     
     <bean id="basePerformanceBean" class="com.inthinc.pro.backing.BasePerformanceBean" scope="request">
     	<property name="reportRenderer" ref="reportRenderer"/>
+    	<property name="groupDAO" ref="groupDAO"/>
         <property name="tableStatsBean" ref="tableStatsBean" />
         <property name="addressLookup" ref="addressLookupBean"/>
-        <property name="groupDAO" ref="groupDAO"/>
-        <property name="vehicleDAO" ref="vehicleDAO"/>
-        <property name="driverDAO" ref="driverDAO"/>
+        <property name="driverBean" ref="driverBean"/>
+        <property name="vehicleBean" ref="vehicleBean"/>
     </bean>
     
     <bean id="localeBean" class="com.inthinc.pro.backing.LocaleBean" scope="request"/>

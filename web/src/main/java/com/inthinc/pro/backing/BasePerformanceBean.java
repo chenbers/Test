@@ -10,9 +10,7 @@ import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.charts.FusionColumnChart;
 import com.inthinc.pro.charts.FusionMultiAreaChart;
 import com.inthinc.pro.charts.Line;
-import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
-import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
@@ -26,33 +24,27 @@ import com.inthinc.pro.util.MessageUtil;
 
 public abstract class BasePerformanceBean extends BaseBean
 {
-    private static final Logger    logger         = Logger.getLogger(VehicleSpeedBean.class);
-    protected DurationBean         durationBean;
-    protected TableStatsBean       tableStatsBean;
-    protected AddressLookup        addressLookup;
-    protected ReportRenderer       reportRenderer;
-    protected GroupDAO             groupDAO;
-    protected GroupTreeNodeImpl    groupTreeNodeImpl;
-    
-    //I don't like all these in the base bean, but it's better than putting them in all of the children.
-    protected Driver               driver;
-    protected Integer              driverID;
-    protected Vehicle              vehicle;
-    protected Integer              vehicleID;
-    protected DriverDAO            driverDAO;
-    protected VehicleDAO           vehicleDAO;
-    
+    private static final Logger logger = Logger.getLogger(VehicleSpeedBean.class);
+    protected DurationBean durationBean;
+    protected TableStatsBean tableStatsBean;
+    protected AddressLookup addressLookup;
+    protected ReportRenderer reportRenderer;
+    protected GroupDAO groupDAO;
+    protected GroupTreeNodeImpl groupTreeNodeImpl;
+
+    protected VehicleBean vehicleBean;
+    protected DriverBean driverBean;
+
     protected Map<String, Integer> scoreMap;
-    protected Map<String, String>  styleMap;
-    protected Map<String, String>  trendMap;
-    
+    protected Map<String, String> styleMap;
+    protected Map<String, String> trendMap;
 
     protected abstract List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType);
+
     protected abstract List<ScoreableEntity> getTrendDaily(Integer id, Duration duration, ScoreType scoreType);
 
-    
     /*
-     *  Create Fusion Charts Multi Line chart.
+     * Create Fusion Charts Multi Line chart.
      */
     public String createFusionLineDef(Integer id, Duration duration, ScoreType scoreType)
     {
@@ -64,8 +56,8 @@ public abstract class BasePerformanceBean extends BaseBean
         List<ScoreableEntity> scoreList = getTrendCumulative(id, duration, scoreType);
 
         // Get "x" values
-        List<String> monthList = GraphicUtil.createMonthList(duration); 
-        
+        List<String> monthList = GraphicUtil.createMonthList(duration);
+
         int cnt = 0;
         for (ScoreableEntity e : scoreList)
         {
@@ -84,56 +76,54 @@ public abstract class BasePerformanceBean extends BaseBean
         sb.append(line.getClose());
         return sb.toString();
     }
-    
+
     /*
-     *  Create Fusion Charts Multi Line chart.
-     *  Set no Drive days to dashed line.
-     *  Integrated bar chart for mileage
+     * Create Fusion Charts Multi Line chart. Set no Drive days to dashed line. Integrated bar chart for mileage
      */
     public String createFusionMultiLineDef(Integer id, Duration duration, ScoreType scoreType)
     {
         StringBuffer sb = new StringBuffer();
         FusionMultiAreaChart multiAreaChart = new FusionMultiAreaChart();
 
-        // Start XML Data       
+        // Start XML Data
         sb.append(multiAreaChart.getControlParameters());
-              
+
         List<ScoreableEntity> cumulativeList = getTrendCumulative(id, duration, scoreType);
         List<ScoreableEntity> dailyList = getTrendDaily(id, duration, scoreType);
-        
+
         List<String> catLabelList = GraphicUtil.createMonthList(duration);
 
-        Double cumulativeValues[]   = new Double[cumulativeList.size()];
-        Double odometerValues[]     = new Double[dailyList.size()];
-        
-        //Start Categories List
+        Double cumulativeValues[] = new Double[cumulativeList.size()];
+        Double odometerValues[] = new Double[dailyList.size()];
+
+        // Start Categories List
         sb.append(multiAreaChart.getCategoriesStart());
-        
+
         for (int i = 0; i < cumulativeList.size(); i++)
-        { 
+        {
             // Get mileage for day.
-            if(dailyList.get(i).getIdentifierNum() != null)
+            if (dailyList.get(i).getIdentifierNum() != null)
                 odometerValues[i] = dailyList.get(i).getIdentifierNum() / 100D;
-            
+
             // Set Score to NULL on non driving days.
-            if(odometerValues[i] == null || odometerValues[i] == 0)
+            if (odometerValues[i] == null || odometerValues[i] == 0)
                 cumulativeValues[i] = null;
             else
                 cumulativeValues[i] = cumulativeList.get(i).getScore() == null ? null : cumulativeList.get(i).getScore() / 10D;
-                
-            sb.append(multiAreaChart.getCategoryLabel(catLabelList.get(i)));     
-         }
+
+            sb.append(multiAreaChart.getCategoryLabel(catLabelList.get(i)));
+        }
         sb.append(multiAreaChart.getCategoriesEnd());
-  
-        //Not displaying daily score in chart.
+
+        // Not displaying daily score in chart.
         sb.append(multiAreaChart.getChartAreaDataSet(MessageUtil.getMessageString("driver_chart_cumulative"), "#B0CB48", cumulativeValues, catLabelList));
         sb.append(multiAreaChart.getChartBarDataSet(MessageUtil.getMessageString("driver_chart_daily"), "#C0C0C0", odometerValues, catLabelList));
         sb.append(multiAreaChart.getClose());
         return sb.toString();
     }
-    
+
     /*
-     *  Create Jasper Charts Multi Line chart for Speed,Style,SeatBelt.
+     * Create Jasper Charts Multi Line chart for Speed,Style,SeatBelt.
      */
     public List<CategorySeriesData> createJasperMultiLineDef(Integer id, List<ScoreType> scoreTypes, Duration duration)
     {
@@ -151,16 +141,14 @@ public abstract class BasePerformanceBean extends BaseBean
                 if (se.getScore() != null)
                     score = se.getScore() / 10.0D;
 
-                returnList.add(new CategorySeriesData(MessageUtil.getMessageString(scoreType.toString()), 
-                                                      monthList.get(count).toString(), 
-                                                      score, monthList.get(count).toString()));
+                returnList.add(new CategorySeriesData(MessageUtil.getMessageString(scoreType.toString()), monthList.get(count).toString(), score, monthList.get(count).toString()));
 
                 count++;
             }
         }
         return returnList;
     }
-    
+
     /*
      * Create Jasper Charts Single Line chart for Speed,Style,SeatBelt.
      */
@@ -175,18 +163,17 @@ public abstract class BasePerformanceBean extends BaseBean
         for (ScoreableEntity se : scoreList)
         {
             Double score = null;
-            if(se.getScore() != null)
+            if (se.getScore() != null)
                 score = se.getScore() / 10.0D;
-            
-            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString(scoreType.toString()), monthList.get(count).toString(),score , monthList.get(
-                    count).toString()));
+
+            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString(scoreType.toString()), monthList.get(count).toString(), score, monthList.get(count).toString()));
             count++;
         }
         return chartDataList;
     }
-    
+
     /*
-     *  Create Fusion Charts XML bar chart for Coaching Events.
+     * Create Fusion Charts XML bar chart for Coaching Events.
      */
     public String createColumnDef(Integer id, ScoreType scoreType, Duration duration)
     {
@@ -195,7 +182,7 @@ public abstract class BasePerformanceBean extends BaseBean
 
         // Start XML Data
         sb.append(column.getControlParameters());
-              
+
         List<ScoreableEntity> scoreList = getTrendCumulative(id, duration, scoreType);
 
         // Get "x" values
@@ -290,78 +277,87 @@ public abstract class BasePerformanceBean extends BaseBean
     {
         return reportRenderer;
     }
-    
+
     public GroupDAO getGroupDAO()
     {
         return groupDAO;
     }
-    
+
     public void setGroupDAO(GroupDAO groupDAO)
     {
         this.groupDAO = groupDAO;
     }
-    
+
     public GroupTreeNodeImpl getGroupTreeNodeImpl()
     {
         return groupTreeNodeImpl;
     }
-    
+
     public void setGroupTreeNodeImpl(GroupTreeNodeImpl groupTreeNodeImpl)
     {
         this.groupTreeNodeImpl = groupTreeNodeImpl;
     }
+
     public Driver getDriver()
     {
-        return driver;
+        return driverBean.getDriver();
     }
+
     public void setDriver(Driver driver)
     {
-        this.driver = driver;
+        driverBean.setDriver(driver);
     }
+
     public Integer getDriverID()
     {
-        return driverID;
+        return driverBean.getDriverID();
     }
+
     public void setDriverID(Integer driverID)
     {
-        this.driverID = driverID;
+        this.driverBean.setDriverID(driverID);
+        this.groupTreeNodeImpl = new GroupTreeNodeImpl(groupDAO.findByID(this.driverBean.getDriver().getGroupID()),getGroupHierarchy());
     }
+
     public Vehicle getVehicle()
     {
-        return vehicle;
+        return vehicleBean.getVehicle();
     }
+
     public void setVehicle(Vehicle vehicle)
     {
-        this.vehicle = vehicle;
+        vehicleBean.setVehicle(vehicle);
     }
+
     public Integer getVehicleID()
     {
-        return vehicleID;
+        return vehicleBean.getVehicleID();
     }
+
     public void setVehicleID(Integer vehicleID)
     {
-        this.vehicleID = vehicleID;
+        this.vehicleBean.setVehicleID(vehicleID);
+        this.groupTreeNodeImpl = new GroupTreeNodeImpl(groupDAO.findByID(this.vehicleBean.getVehicle().getGroupID()),getGroupHierarchy());
     }
-    public DriverDAO getDriverDAO()
+
+    public VehicleBean getVehicleBean()
     {
-        return driverDAO;
+        return vehicleBean;
     }
-    public void setDriverDAO(DriverDAO driverDAO)
+
+    public void setVehicleBean(VehicleBean vehicleBean)
     {
-        this.driverDAO = driverDAO;
+        this.vehicleBean = vehicleBean;
     }
-    public VehicleDAO getVehicleDAO()
+
+    public DriverBean getDriverBean()
     {
-        return vehicleDAO;
+        return driverBean;
     }
-    public void setVehicleDAO(VehicleDAO vehicleDAO)
+
+    public void setDriverBean(DriverBean driverBean)
     {
-        this.vehicleDAO = vehicleDAO;
+        this.driverBean = driverBean;
     }
-    
-    
-    
-    
-    
-    
+
 }
