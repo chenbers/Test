@@ -35,29 +35,29 @@
 			
 			function drawTrip()
 			{
-				<h:outputText rendered="#{driverBean.hasLastTrip}">
+				<h:outputText rendered="#{driverPerformanceBean.hasLastTrip}">
 					var polyline = new GPolyline([
-										<ui:repeat value="#{driverBean.lastTrip.route}" var="route">
+										<ui:repeat value="#{driverPerformanceBean.lastTrip.route}" var="route">
 											new GLatLng(#{route.lat}, #{route.lng}),
 									  	</ui:repeat>
 									  	//Repeating the last step to finish JS array.
-									  	new GLatLng(#{driverBean.lastTrip.routeLastStep.lat}, #{driverBean.lastTrip.routeLastStep.lng})	], "#0000ff", 6);
+									  	new GLatLng(#{driverPerformanceBean.lastTrip.routeLastStep.lat}, #{driverPerformanceBean.lastTrip.routeLastStep.lng})	], "#0000ff", 6);
 
 					map.addOverlay(polyline);
 
-					<ui:repeat value="#{driverBean.lastTrip.route}" var="rt2">
+					<ui:repeat value="#{driverPerformanceBean.lastTrip.route}" var="rt2">
 						bounds.extend(new GLatLng(#{rt2.lat}, #{rt2.lng}));
 					</ui:repeat>
 				
 		
 					//Start of trip marker
-					var startlatlng = new GLatLng(#{driverBean.lastTrip.route[0].lat}, #{driverBean.lastTrip.route[0].lng});
+					var startlatlng = new GLatLng(#{driverPerformanceBean.lastTrip.route[0].lat}, #{driverPerformanceBean.lastTrip.route[0].lng});
 					marker = createMarker(startlatlng, "tripStartBubble", "#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());
 		
 					//End of trip marker
-					var endlatlng = new GLatLng(#{driverBean.lastTrip.routeLastStep.lat}, #{driverBean.lastTrip.routeLastStep.lng});
+					var endlatlng = new GLatLng(#{driverPerformanceBean.lastTrip.routeLastStep.lat}, #{driverPerformanceBean.lastTrip.routeLastStep.lng});
 					marker = createMarker(endlatlng, "tripEndBubble", "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png");
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());
@@ -65,7 +65,7 @@
 					//Create Violation markers. //IDLE EVENT is the only event with different icon.
 					var violation;
 					var image;
-					<ui:repeat value="#{driverBean.violationEvents}" var="violation">
+					<ui:repeat value="#{driverPerformanceBean.violationEvents}" var="violation">
 						violation = new GLatLng(#{violation.latitude}, #{violation.longitude});
 
 						<h:outputText rendered="#{violation.eventType.code eq '13'}" >
@@ -123,8 +123,8 @@
 			function bodyLoad()
 			{
 				// Init Google map if hasLastTrip is true;
-				<h:outputText rendered="#{driverBean.hasLastTrip}">
-					initMap(#{driverBean.lastTrip.routeLastStep.lat}, #{driverBean.lastTrip.routeLastStep.lng}, 14);
+				<h:outputText rendered="#{driverPerformanceBean.hasLastTrip}">
+					initMap(#{driverPerformanceBean.lastTrip.routeLastStep.lat}, #{driverPerformanceBean.lastTrip.routeLastStep.lng}, 14);
 					drawTrip();
 		 		</h:outputText>
 			}
@@ -135,34 +135,34 @@
 	<ui:param name="helpFile" value="Overall_Score_Driver.htm" />
 	
 	<ui:define name="content">
-    <t:saveState value="#{driverBean.driver}"></t:saveState>
-    <t:saveState value="#{driverBean.groupTreeNodeImpl}"></t:saveState>
+    <t:saveState value="#{driverPerformanceBean.driver}"></t:saveState>
+    <t:saveState value="#{driverPerformanceBean.groupTreeNodeImpl}"></t:saveState>
 <!-- BEGIN GOOGLE BUBBLES -->
 	<ui:include src="/includes/tripBubble.xhtml">
             <ui:param name="hiddenDivID" value="tripStartBubble" />
             <ui:param name="bubbleTitle" value="#{messages.TRIP_START}" />
-            <ui:param name="timeZoneObject" value="#{driverBean.driver.person.timeZone}" />
-            <ui:param name="eventDateTime" value="#{driverBean.lastTrip.trip.startTime}" />
-            <ui:param name="eventLocation" value="#{driverBean.lastTrip.startAddress}" />
+            <ui:param name="timeZoneObject" value="#{driverPerformanceBean.driver.person.timeZone}" />
+            <ui:param name="eventDateTime" value="#{driverPerformanceBean.lastTrip.trip.startTime}" />
+            <ui:param name="eventLocation" value="#{driverPerformanceBean.lastTrip.startAddress}" />
             <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
 	</ui:include>
 	
 	<ui:include src="/includes/tripBubble.xhtml">
             <ui:param name="hiddenDivID" value="tripEndBubble" />
             <ui:param name="bubbleTitle" value="#{messages.TRIP_END}" />
-            <ui:param name="eventDateTime" value="#{driverBean.lastTrip.trip.endTime}" />
-            <ui:param name="eventLocation" value="#{driverBean.lastTrip.endAddress}" />
-            <ui:param name="timeZoneObject" value="#{driverBean.driver.person.timeZone}" />
+            <ui:param name="eventDateTime" value="#{driverPerformanceBean.lastTrip.trip.endTime}" />
+            <ui:param name="eventLocation" value="#{driverPerformanceBean.lastTrip.endAddress}" />
+            <ui:param name="timeZoneObject" value="#{driverPerformanceBean.driver.person.timeZone}" />
             <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
 	</ui:include>
 	
-	<ui:repeat value="#{driverBean.violationEvents}" var="violation">
+	<ui:repeat value="#{driverPerformanceBean.violationEvents}" var="violation">
 		<ui:include src="/includes/eventBubble.xhtml">
 	            <ui:param name="hiddenDivID" value="#{violation.noteID}" />
 	            <ui:param name="eventType" value="#{violation.eventType}" />
 	            <ui:param name="eventDateTime" value="#{violation.time}" />
 	            <ui:param name="eventLocation" value="#{violation.addressStr}" />
-	            <ui:param name="timeZoneObject" value="#{driverBean.driver.person.timeZone}" />
+	            <ui:param name="timeZoneObject" value="#{driverPerformanceBean.driver.person.timeZone}" />
 	            <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
 	            <ui:param name="eventSpeedLimit" value="#{violation.speedLimit}" />
 	            <ui:param name="eventAvgSpeed" value="#{violation.avgSpeed}" />
@@ -182,21 +182,21 @@
 		<li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
 		<li class="l grid_title"><h:outputText value="#{messages.driverPerformanceName}&#160;" />
             <pretty:link mappingId="driverPerformance">
-               <h:outputText value="#{driverBean.driver.person.fullName}"/>
-               <f:param value="#{driverBean.driver.driverID}"/>
+               <h:outputText value="#{driverPerformanceBean.driver.person.fullName}"/>
+               <f:param value="#{driverPerformanceBean.driver.driverID}"/>
             </pretty:link>
         </li>
 		<li class="l divider"><h:graphicImage value="/images/grid_nav_divider.png" /></li>
 		
 		<li class="l">
 			<ui:include src="/includes/breadcrumb.xhtml">
-				<ui:param name="groupTreeNode" value="#{driverBean.groupTreeNodeImpl}" />
+				<ui:param name="groupTreeNode" value="#{driverPerformanceBean.groupTreeNodeImpl}" />
 				<ui:param name="lastBreadCrumb" value="true" />
 			</ui:include>
 		</li>
 		<li class="l" style="margin-left: -15px;">
 			<ul id="breadcrumb">
-				<li class="last"><h:outputText value="#{driverBean.driver.person.fullNameWithId}" /></li>
+				<li class="last"><h:outputText value="#{driverPerformanceBean.driver.person.fullNameWithId}" /></li>
 			</ul>
 		</li>
 	</ul>
@@ -220,31 +220,31 @@
 								</a4j:status>
 								<rich:spacer width="10" />
 								<a4j:commandLink title="#{messages.duration_days}" immediate="true"
-									styleClass="#{(driverBean.durationBean.duration eq 'DAYS') ? 'on' : ''}"		
+									styleClass="#{(driverPerformanceBean.durationBean.duration eq 'DAYS') ? 'on' : ''}"		
 									reRender="dateLinksForm,overallScoreChart,overallScoreBox"
 									value="#{messages.duration_days}">
-									<a4j:actionparam name="duration" assignTo="#{driverBean.durationBean.duration}"	value="DAYS" />
+									<a4j:actionparam name="duration" assignTo="#{driverPerformanceBean.durationBean.duration}"	value="DAYS" />
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
 								<a4j:commandLink title="#{messages.duration_three}" immediate="true"
-									styleClass="#{(driverBean.durationBean.duration eq 'THREE') ? 'on' : ''}"	
-									reRender="dateLinksForm,ooverallScoreChart,overallScoreBox"
+									styleClass="#{(driverPerformanceBean.durationBean.duration eq 'THREE') ? 'on' : ''}"	
+									reRender="dateLinksForm,overallScoreChart,overallScoreBox"
 									value="#{messages.duration_three}">
-									<a4j:actionparam name="duration" assignTo="#{driverBean.durationBean.duration}" value="THREE" />
+									<a4j:actionparam name="duration" assignTo="#{driverPerformanceBean.durationBean.duration}" value="THREE" />
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
 								<a4j:commandLink title="#{messages.duration_six}" immediate="true"
-									styleClass="#{(driverBean.durationBean.duration eq 'SIX') ? 'on' : ''}"	
+									styleClass="#{(driverPerformanceBean.durationBean.duration eq 'SIX') ? 'on' : ''}"	
 									reRender="dateLinksForm,overallScoreChart,overallScoreBox"
 									value="#{messages.duration_six}">
-									<a4j:actionparam name="duration" assignTo="#{driverBean.durationBean.duration}" value="SIX" />
+									<a4j:actionparam name="duration" assignTo="#{driverPerformanceBean.durationBean.duration}" value="SIX" />
 								</a4j:commandLink>
 								<rich:spacer width="5"></rich:spacer>
 								<a4j:commandLink title="#{messages.duration_twelve}" immediate="true"
-									styleClass="#{(driverBean.durationBean.duration eq 'TWELVE') ? 'on' : ''}"	
+									styleClass="#{(driverPerformanceBean.durationBean.duration eq 'TWELVE') ? 'on' : ''}"	
 									reRender="dateLinksForm,overallScoreChart,overallScoreBox"
 									value="#{messages.duration_twelve}">
-									<a4j:actionparam name="duration" assignTo="#{driverBean.durationBean.duration}" value="TWELVE" />
+									<a4j:actionparam name="duration" assignTo="#{driverPerformanceBean.durationBean.duration}" value="TWELVE" />
 								</a4j:commandLink>
 								</span>
 								<span class="panel_ico">
@@ -264,7 +264,7 @@
 										<rich:menuItem ajaxSingle="true"
 														iconDisabled="/images/ico_pdf.gif" icon="/images/ico_pdf.gif"
 														value="Export To PDF"
-														action="#{driverBean.exportReportToPdf}"
+														action="#{driverPerformanceBean.exportReportToPdf}"
 														id="export_menu_item">
 										</rich:menuItem>
 									</rich:contextMenu>
@@ -274,7 +274,7 @@
 								<h:outputText id="driver_email_modalPanel">
 									<ui:include src="/includes/emailReportPopup.xhtml">	
 										<ui:param  name="id" value="driverReportEmailModal" />
-										<ui:param  name="reportBean" value="#{driverBean}"/>
+										<ui:param  name="reportBean" value="#{driverPerformanceBean}"/>
 									</ui:include>
 								</h:outputText>
 							<!-- END EMAIL MODAL -->
@@ -288,7 +288,7 @@
 					  <tr>
 						<td valign="top" width="600">
 						   <ui:include src="../includes/multiLineChart.xhtml">
-						            <ui:param name="lineChartDef" value="#{driverBean.overallScoreHistory}" />
+						            <ui:param name="lineChartDef" value="#{driverPerformanceBean.overallScoreHistory}" />
 						            <ui:param name="id" value="overallScoreChart" />
 						            <ui:param name="width" value="650" /> 
 						            <ui:param name="height" value="230" />  
@@ -306,8 +306,8 @@
 									<td width="80" align="center">
 									
 										<ui:include src="../includes/scoreBox.xhtml">
-									            <ui:param name="score" value="#{driverBean.overallScore}" />
-									            <ui:param name="scoreStyle" value="#{driverBean.overallScoreStyle}" />
+									            <ui:param name="score" value="#{driverPerformanceBean.overallScore}" />
+									            <ui:param name="scoreStyle" value="#{driverPerformanceBean.overallScoreStyle}" />
 										</ui:include>
 									
 									</td>
@@ -340,17 +340,17 @@
 						<ui:include src="../includes/dateLinksToolsDetail.xhtml">
 							<ui:param name="ajaxForm" value="speedForm"/>
 							<ui:param name="reRenderList" value="speed_multi_line_chart,speedForm,speedScoreBox"/>			
-							<ui:param name="thirtyDaysOn" value="#{(driverBean.driverSpeedBean.durationBean.duration eq 'DAYS') ? 'on' : ''}"/>
-							<ui:param name="threeMonthsOn" value="#{(driverBean.driverSpeedBean.durationBean.duration eq 'THREE') ? 'on' : ''}"/>
-							<ui:param name="sixMonthsOn" value="#{(driverBean.driverSpeedBean.durationBean.duration eq 'SIX') ? 'on' : ''}"/>
-							<ui:param name="twelveMonthsOn" value="#{(driverBean.driverSpeedBean.durationBean.duration eq 'TWELVE') ? 'on' : ''}"/>
-				  			<ui:param name="duration" value="#{driverBean.driverSpeedBean.durationBean.duration}" />
+							<ui:param name="thirtyDaysOn" value="#{(driverPerformanceBean.driverSpeedBean.durationBean.duration eq 'DAYS') ? 'on' : ''}"/>
+							<ui:param name="threeMonthsOn" value="#{(driverPerformanceBean.driverSpeedBean.durationBean.duration eq 'THREE') ? 'on' : ''}"/>
+							<ui:param name="sixMonthsOn" value="#{(driverPerformanceBean.driverSpeedBean.durationBean.duration eq 'SIX') ? 'on' : ''}"/>
+							<ui:param name="twelveMonthsOn" value="#{(driverPerformanceBean.driverSpeedBean.durationBean.duration eq 'TWELVE') ? 'on' : ''}"/>
+				  			<ui:param name="duration" value="#{driverPerformanceBean.driverSpeedBean.durationBean.duration}" />
 				  			<ui:param name="flyNavRule" value="go_reportDriverSpeed" />
 				  			<ui:param name="flyOutImage" value="ico_expand.png" />  
-				  			<ui:param name="reportBean" value="#{driverBean.driverSpeedBean}" />
+				  			<ui:param name="reportBean" value="#{driverPerformanceBean.driverSpeedBean}" />
 				  			<ui:param name="showTools" value="FALSE" /> 
   							<ui:param name="showDetail" value="TRUE" /> 
-                            <ui:param name="entityId" value="#{driverBean.driver.driverID}" /> 
+                            <ui:param name="entityId" value="#{driverPerformanceBean.driver.driverID}" /> 
                             <ui:param name="mappingId" value="driverPerformanceSpeed" />
 						</ui:include>	
 					</div>
@@ -361,7 +361,7 @@
                           <tr>
                             <td width="373">
 				            <ui:include src="../includes/multiLineChart.xhtml">
-						            <ui:param name="lineChartDef" value="#{driverBean.driverSpeedBean.trendMap['SCORE_SPEEDING']}" />
+						            <ui:param name="lineChartDef" value="#{driverPerformanceBean.driverSpeedBean.trendMap['SCORE_SPEEDING']}" />
 						            <ui:param name="width" value="380" /> 
 						            <ui:param name="height" value="200" />  
                                     <ui:param name="id" value="speed_multi_line_chart"/>
@@ -398,17 +398,17 @@
 						<ui:include src="../includes/dateLinksToolsDetail.xhtml">
 							<ui:param name="ajaxForm" value="styleForm"/>
 							<ui:param name="reRenderList" value="driverStyleChart,styleForm,styleScoreBox"/>			
-							<ui:param name="thirtyDaysOn" value="#{(driverBean.driverStyleBean.durationBean.duration eq 'DAYS') ? 'on' : ''}"/>
-							<ui:param name="threeMonthsOn" value="#{(driverBean.driverStyleBean.durationBean.duration eq 'THREE') ? 'on' : ''}"/>
-							<ui:param name="sixMonthsOn" value="#{(driverBean.driverStyleBean.durationBean.duration eq 'SIX') ? 'on' : ''}"/>
-							<ui:param name="twelveMonthsOn" value="#{(driverBean.driverStyleBean.durationBean.duration eq 'TWELVE') ? 'on' : ''}"/>
-				  			<ui:param name="duration" value="#{driverBean.driverStyleBean.durationBean.duration}" />
+							<ui:param name="thirtyDaysOn" value="#{(driverPerformanceBean.driverStyleBean.durationBean.duration eq 'DAYS') ? 'on' : ''}"/>
+							<ui:param name="threeMonthsOn" value="#{(driverPerformanceBean.driverStyleBean.durationBean.duration eq 'THREE') ? 'on' : ''}"/>
+							<ui:param name="sixMonthsOn" value="#{(driverPerformanceBean.driverStyleBean.durationBean.duration eq 'SIX') ? 'on' : ''}"/>
+							<ui:param name="twelveMonthsOn" value="#{(driverPerformanceBean.driverStyleBean.durationBean.duration eq 'TWELVE') ? 'on' : ''}"/>
+				  			<ui:param name="duration" value="#{driverPerformanceBean.driverStyleBean.durationBean.duration}" />
 				  			<ui:param name="flyNavRule" value="go_reportDriverStyle" />
 				  			<ui:param name="flyOutImage" value="ico_expand.png" /> 
-				  			<ui:param name="reportBean" value="#{driverBean.driverStyleBean}" />
+				  			<ui:param name="reportBean" value="#{driverPerformanceBean.driverStyleBean}" />
 				  			<ui:param name="showTools" value="FALSE" /> 
   							<ui:param name="showDetail" value="TRUE" />  
-                            <ui:param name="entityId" value="#{driverBean.driver.driverID}" />
+                            <ui:param name="entityId" value="#{driverPerformanceBean.driver.driverID}" />
                             <ui:param name="mappingId" value="driverPerformanceStyle" /> 
 						</ui:include>
 					</div>
@@ -419,7 +419,7 @@
                           <tr>
                             <td width="373">
                       		<ui:include src="../includes/multiLineChart.xhtml">
-						            <ui:param name="lineChartDef" value="#{driverBean.driverStyleBean.trendMap['SCORE_DRIVING_STYLE']}" />
+						            <ui:param name="lineChartDef" value="#{driverPerformanceBean.driverStyleBean.trendMap['SCORE_DRIVING_STYLE']}" />
 						            <ui:param name="id" value="driverStyleChart" />
 						            <ui:param name="width" value="380" /> 
 						            <ui:param name="height" value="200" />  
@@ -455,17 +455,17 @@
 							<ui:include src="../includes/dateLinksToolsDetail.xhtml">
 							<ui:param name="ajaxForm" value="seatBeltForm"/>
 							<ui:param name="reRenderList" value="driverSeatBeltChart,seatBeltForm,seatBeltScoreBox"/>			
-							<ui:param name="thirtyDaysOn" value="#{(driverBean.driverSeatBeltBean.durationBean.duration eq 'DAYS') ? 'on' : ''}"/>
-							<ui:param name="threeMonthsOn" value="#{(driverBean.driverSeatBeltBean.durationBean.duration eq 'THREE') ? 'on' : ''}"/>
-							<ui:param name="sixMonthsOn" value="#{(driverBean.driverSeatBeltBean.durationBean.duration eq 'SIX') ? 'on' : ''}"/>
-							<ui:param name="twelveMonthsOn" value="#{(driverBean.driverSeatBeltBean.durationBean.duration eq 'TWELVE') ? 'on' : ''}"/>
-				  			<ui:param name="duration" value="#{driverBean.driverSeatBeltBean.durationBean.duration}" />
+							<ui:param name="thirtyDaysOn" value="#{(driverPerformanceBean.driverSeatBeltBean.durationBean.duration eq 'DAYS') ? 'on' : ''}"/>
+							<ui:param name="threeMonthsOn" value="#{(driverPerformanceBean.driverSeatBeltBean.durationBean.duration eq 'THREE') ? 'on' : ''}"/>
+							<ui:param name="sixMonthsOn" value="#{(driverPerformanceBean.driverSeatBeltBean.durationBean.duration eq 'SIX') ? 'on' : ''}"/>
+							<ui:param name="twelveMonthsOn" value="#{(driverPerformanceBean.driverSeatBeltBean.durationBean.duration eq 'TWELVE') ? 'on' : ''}"/>
+				  			<ui:param name="duration" value="#{driverPerformanceBean.driverSeatBeltBean.durationBean.duration}" />
 				  			<ui:param name="flyNavRule" value="go_reportDriverSeatBelt" />
 				  			<ui:param name="flyOutImage" value="ico_expand.png" /> 
-				  			<ui:param name="reportBean" value="#{driverBean.driverSeatBeltBean}" />
+				  			<ui:param name="reportBean" value="#{driverPerformanceBean.driverSeatBeltBean}" />
 				  			<ui:param name="showTools" value="FALSE" /> 
   							<ui:param name="showDetail" value="TRUE" /> 
-                            <ui:param name="entityId" value="#{driverBean.driver.driverID}" /> 
+                            <ui:param name="entityId" value="#{driverPerformanceBean.driver.driverID}" /> 
                             <ui:param name="mappingId" value="driverPerformanceSeatBelt" />
 						</ui:include>
 					</div>
@@ -476,7 +476,7 @@
                           <tr>
                             <td width="373">
                       		<ui:include src="../includes/multiLineChart.xhtml">
-						            <ui:param name="lineChartDef" value="#{driverBean.driverSeatBeltBean.seatBeltScoreHistoryOverall}" />
+						            <ui:param name="lineChartDef" value="#{driverPerformanceBean.driverSeatBeltBean.seatBeltScoreHistoryOverall}" />
 						            <ui:param name="id" value="driverSeatBeltChart" />
 						            <ui:param name="width" value="380" /> 
 						            <ui:param name="height" value="200" />
@@ -509,8 +509,8 @@
 				<div class="panel_nw">
 					<div class="panel_title">
 						<span class="map"><h:outputText value="#{messages.driver_lasttrip}: " />
-						<h:outputText rendered="#{driverBean.hasLastTrip eq true}">
-							<h:outputText value="#{driverBean.lastTrip.trip.endTime}">
+						<h:outputText rendered="#{driverPerformanceBean.hasLastTrip eq true}">
+							<h:outputText value="#{driverPerformanceBean.lastTrip.trip.endTime}">
 								<f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{navigationBean.driver.person.timeZone}" />
 							</h:outputText>
 						</h:outputText>
@@ -518,7 +518,7 @@
 						<span class="panel_links">
                            <pretty:link mappingId="driverTrips">
                               <h:outputText value="#{messages.driver_view_all}"/>
-                              <f:param value="#{driverBean.driver.driverID}"/>
+                              <f:param value="#{driverPerformanceBean.driver.driverID}"/>
                            </pretty:link>
                         </span>
 					</div>
@@ -527,7 +527,7 @@
 					  <div class="panel_content">
 					  
 					  	<h:panelGroup styleClass="map-border" layout="block">
-							<h:outputText rendered="#{driverBean.hasLastTrip eq false}">
+							<h:outputText rendered="#{driverPerformanceBean.hasLastTrip eq false}">
 	  							<h3>#{messages.no_last_trip_found}</h3>
 	  						</h:outputText>
 							<div id="map-canvas" style="width:458px;height:300px;border:0"></div>
@@ -551,11 +551,11 @@
 						<ui:include src="../includes/dateLinks.xhtml">
 							<ui:param name="ajaxForm" value="mpgForm"/>
 							<ui:param name="reRenderList" value="mpg_script,mpgForm"/>			
-							<ui:param name="thirtyDaysOn" value="#{(driverBean.mpgDurationBean.duration eq 'DAYS') ? 'on' : ''}"/>
-							<ui:param name="threeMonthsOn" value="#{(driverBean.mpgDurationBean.duration eq 'THREE') ? 'on' : ''}"/>
-							<ui:param name="sixMonthsOn" value="#{(driverBean.mpgDurationBean.duration eq 'SIX') ? 'on' : ''}"/>
-							<ui:param name="twelveMonthsOn" value="#{(driverBean.mpgDurationBean.duration eq 'TWELVE') ? 'on' : ''}"/>
-				  			<ui:param name="duration" value="#{driverBean.mpgDurationBean.duration}" />
+							<ui:param name="thirtyDaysOn" value="#{(driverPerformanceBean.mpgDurationBean.duration eq 'DAYS') ? 'on' : ''}"/>
+							<ui:param name="threeMonthsOn" value="#{(driverPerformanceBean.mpgDurationBean.duration eq 'THREE') ? 'on' : ''}"/>
+							<ui:param name="sixMonthsOn" value="#{(driverPerformanceBean.mpgDurationBean.duration eq 'SIX') ? 'on' : ''}"/>
+							<ui:param name="twelveMonthsOn" value="#{(driverPerformanceBean.mpgDurationBean.duration eq 'TWELVE') ? 'on' : ''}"/>
+				  			<ui:param name="duration" value="#{driverPerformanceBean.mpgDurationBean.duration}" />
 				  			<ui:param name="ajaxStatusID" value="mpgStatus" />
 						</ui:include>
 					</div>
@@ -568,7 +568,7 @@
                             <div id="mpg_chart"></div>
                             
                             <rich:panel id="mpg_script">
-                            	<h:inputHidden value="#{driverBean.mpgHistory}" id="hiddenField5"/>
+                            	<h:inputHidden value="#{driverPerformanceBean.mpgHistory}" id="hiddenField5"/>
                             
 							<script type="text/javascript">
 								var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSArea.swf", "ChartId", "450", "300", "0", "0");
@@ -599,11 +599,11 @@
 						<ui:include src="../includes/dateLinks.xhtml">
 							<ui:param name="ajaxForm" value="coachingForm"/>
 							<ui:param name="reRenderList" value="coaching_script,coachingForm"/>			
-							<ui:param name="thirtyDaysOn" value="#{(driverBean.coachDurationBean.duration eq 'DAYS') ? 'on' : ''}"/>
-							<ui:param name="threeMonthsOn" value="#{(driverBean.coachDurationBean.duration eq 'THREE') ? 'on' : ''}"/>
-							<ui:param name="sixMonthsOn" value="#{(driverBean.coachDurationBean.duration eq 'SIX') ? 'on' : ''}"/>
-							<ui:param name="twelveMonthsOn" value="#{(driverBean.coachDurationBean.duration eq 'TWELVE') ? 'on' : ''}"/>
-				  			<ui:param name="duration" value="#{driverBean.coachDurationBean.duration}" />
+							<ui:param name="thirtyDaysOn" value="#{(driverPerformanceBean.coachDurationBean.duration eq 'DAYS') ? 'on' : ''}"/>
+							<ui:param name="threeMonthsOn" value="#{(driverPerformanceBean.coachDurationBean.duration eq 'THREE') ? 'on' : ''}"/>
+							<ui:param name="sixMonthsOn" value="#{(driverPerformanceBean.coachDurationBean.duration eq 'SIX') ? 'on' : ''}"/>
+							<ui:param name="twelveMonthsOn" value="#{(driverPerformanceBean.coachDurationBean.duration eq 'TWELVE') ? 'on' : ''}"/>
+				  			<ui:param name="duration" value="#{driverPerformanceBean.coachDurationBean.duration}" />
 				  			<ui:param name="ajaxStatusID" value="coachingStatus" />
 						</ui:include>
 					</div>
@@ -614,7 +614,7 @@
                           <tr>
                             <td>
                             <ui:include src="../includes/columnChart.xhtml">
-						            <ui:param name="lineChartDef" value="#{driverBean.coachingHistory}" />
+						            <ui:param name="lineChartDef" value="#{driverPerformanceBean.coachingHistory}" />
 						            <ui:param name="hiddenFieldID" value="HiddenField4" />
 						            <ui:param name="width" value="450" /> 
 						            <ui:param name="height" value="200" />

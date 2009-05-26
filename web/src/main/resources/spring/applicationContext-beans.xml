@@ -227,7 +227,7 @@
         <property name="addressLookup" ref="addressLookupBean"></property>
     </bean>
     
-    <bean id="driverBean" class="com.inthinc.pro.backing.DriverBean" scope="request" parent="basePerformanceBean">
+    <bean id="driverPerformanceBean" class="com.inthinc.pro.backing.DriverPerformanceBean" scope="request" parent="basePerformanceBean">
         <property name="scoreDAO" ref="scoreDAO"></property>
         <property name="mpgDAO" ref="mpgDAO"></property>
 	    <property name="driverDAO" ref="driverDAO"></property>

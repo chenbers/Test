@@ -28,9 +28,9 @@ import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.util.MessageUtil;
 
-public class DriverBean extends BasePerformanceBean
+public class DriverPerformanceBean extends BasePerformanceBean
 {
-    private static final Logger logger          = Logger.getLogger(DriverBean.class);
+    private static final Logger logger          = Logger.getLogger(DriverPerformanceBean.class);
 
     private ScoreDAO            scoreDAO;
     private MpgDAO              mpgDAO;

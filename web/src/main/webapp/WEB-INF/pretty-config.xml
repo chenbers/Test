@@ -33,8 +33,8 @@
 		<view-id>/secured/groupOverview.faces</view-id>
 	</url-mapping>
 	<url-mapping id="driverPerformance">
-		<pattern>/secured/driver/#{driverBean.driverID}</pattern>
-		<view-id>/secured/driver.faces</view-id>
+		<pattern>/secured/driver/#{driverPerformanceBean.driverID}</pattern>
+		<view-id>/secured/driverPerformance.faces</view-id>
 	</url-mapping>
 	<url-mapping id="driverPerformanceSpeed">
 		<pattern>/secured/driver/speed/#{driverSpeedBean.driverID}</pattern>

@@ -28,7 +28,7 @@ public class DriverBeanTest extends BaseBeanTest
         loginUser("normal101");
         
         // get the bean from the applicationContext (initialized by Spring injection)
-        DriverBean driverBean = (DriverBean)applicationContext.getBean("driverBean");
+        DriverPerformanceBean driverBean = (DriverPerformanceBean)applicationContext.getBean("driverPerformanceBean");
         NavigationBean nav = (NavigationBean)applicationContext.getBean("navigationBean");
         
         

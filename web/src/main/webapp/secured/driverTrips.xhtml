@@ -241,7 +241,7 @@
                 <ui:include src="/includes/tripBubble.xhtml">
                     <ui:param name="hiddenDivID" value="#{trip.trip.startTime}_START" />
                     <ui:param name="bubbleTitle" value="#{messages.TRIP_START}" />
-                    <ui:param name="timeZoneObject" value="#{driverBean.driver.person.timeZone}" />
+                    <ui:param name="timeZoneObject" value="#{driverTripsBean.driver.person.timeZone}" />
                     <ui:param name="eventDateTime" value="#{trip.trip.startTime}" />
                     <ui:param name="eventLocation" value="#{trip.startAddress}" />
                     <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
@@ -251,7 +251,7 @@
                     <ui:param name="bubbleTitle" value="#{messages.TRIP_END}" />
                     <ui:param name="eventDateTime" value="#{trip.trip.endTime}" />
                     <ui:param name="eventLocation" value="#{trip.endAddress}" />
-                    <ui:param name="timeZoneObject" value="#{driverBean.driver.person.timeZone}" />
+                    <ui:param name="timeZoneObject" value="#{driverTripsBean.driver.person.timeZone}" />
                     <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
                 </ui:include>
             </ui:repeat>
@@ -261,7 +261,7 @@
                     <ui:param name="eventType" value="#{violation.eventType}" />
                     <ui:param name="eventDateTime" value="#{violation.time}" />
                     <ui:param name="eventLocation" value="#{violation.addressStr}" />
-                    <ui:param name="timeZoneObject" value="#{driverBean.driver.person.timeZone}" />
+                    <ui:param name="timeZoneObject" value="#{driverTripsBean.driver.person.timeZone}" />
                     <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
                     <ui:param name="eventSpeedLimit" value="#{violation.speedLimit}" />
                     <ui:param name="eventAvgSpeed" value="#{violation.avgSpeed}" />
@@ -380,11 +380,11 @@
                         <div class="panel_title">
                             <h:outputText style="" value="#{messages.drivertrip_stats}: "/>
                             <h:outputText value="#{driverTripsBean.startDate}">
-                                <f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{driverBean.driver.person.timeZone}" />
+                                <f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{driverTripsBean.driver.person.timeZone}" />
                             </h:outputText>                            
                             <h:outputText value=" #{messages.drivertrip_to} "/>
                             <h:outputText value="#{driverTripsBean.endDate}">
-                                <f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{driverBean.driver.person.timeZone}" />
+                                <f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{driverTripsBean.driver.person.timeZone}" />
                             </h:outputText> 
                             <span class="panel_links"></span>
                         </div>
@@ -417,7 +417,7 @@
                             <tr>
                                 <td valign="top">#{messages.drivertrip_driver_timezone}:</td>
                                 <td></td>
-                                <td><h:outputText>#{driverBean.driver.person.displayTimeZone}</h:outputText></td>
+                                <td><h:outputText>#{driverTripsBean.driver.person.displayTimeZone}</h:outputText></td>
                             </tr>
                         </tbody>
                     </table>
@@ -461,7 +461,7 @@
                                 </f:facet>
 
                                 <h:outputText value="#{item.time}">
-                                    <f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{driverBean.driver.person.timeZone}" />
+                                    <f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{driverTripsBean.driver.person.timeZone}" />
                                 </h:outputText>
 
                             </rich:column>
@@ -570,7 +570,7 @@
                 <div class="" style="width: 600px; margin: 0 auto 0 auto;">
                     <div class="panel_nw">                            
                     <div class="panel_title">
-                        <h:outputText value="#{messages.drivertrip_trips_by} #{driverBean.driver.person.fullName}" styleClass="vehicle" />            
+                        <h:outputText value="#{messages.drivertrip_trips_by} #{driverTripsBean.driver.person.fullName}" styleClass="vehicle" />            
                         <span class="panel_links">
                         <a4j:status onstop="onReRenderWithSelection();">
                             <f:facet name="start">
@@ -653,7 +653,7 @@
 	                    <span class="map">
 		                    <h:outputText value="">#{messages.drivertrip_vehicle}</h:outputText><rich:spacer width="5" />
 		                     <a4j:htmlCommandLink action="go_vehicle" value="#{driverTripsBean.selectedVehicle.name}">
-		                        <f:setPropertyActionListener value="#{driverTripsBean.selectedVehicle}" target="#{driverBean.vehicle}" />
+		                        <f:setPropertyActionListener value="#{driverTripsBean.selectedVehicle}" target="#{driverTripsBean.vehicle}" />
 		                    </a4j:htmlCommandLink>
 	                    </span>
 	                    <span class="panel_links"></span>
