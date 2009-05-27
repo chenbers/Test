@@ -135,9 +135,10 @@
                                             <f:facet name="header">
                                                 <h:outputText value="#{messages.reports_group}" />
                                             </f:facet>
-                                            <h:outputLink value="#{item.goTo}">
-                                                <h:outputText value="#{item.group}" />
-                                            </h:outputLink>
+                                            <pretty:link mappingId="dashboard">
+                                                <h:outputText value="#{item.group}"/>
+                                                <f:param value="#{item.groupID}"/>
+                                            </pretty:link> 
                                         </rich:column>
                                         <rich:column rendered="#{driverReportBean.tableColumns['driver_person_empid'].visible}" sortBy="#{item.driver.person.empid}">
                                             <f:facet name="header">
@@ -159,12 +160,11 @@
                                             <f:facet name="header">
                                                 <h:outputText value="#{messages.reports_vehicle}" />
                                             </f:facet>
-                                            <a4j:htmlCommandLink rendered="#{item.vehicle.name != 'None Assigned'}" action="go_vehicle" value="#{item.vehicle.name}">
-                                                <f:setPropertyActionListener value="#{item.vehicle}" target="#{navigationBean.vehicle}">
-                                                </f:setPropertyActionListener>
-                                            </a4j:htmlCommandLink>
-                                            <h:outputText rendered="#{item.vehicle.name == 'None Assigned'}" value="#{item.vehicle.name}">
-                                            </h:outputText>
+                                            <pretty:link mappingId="vehiclePerformance" rendered="#{item.vehicle.name != 'None Assigned'}">
+                                                <h:outputText value="#{item.vehicle.name}"/>
+                                                <f:param value="#{item.vehicle.vehicleID}"/>
+                                            </pretty:link>
+                                            <h:outputText rendered="#{item.vehicle.name == 'None Assigned'}" value="#{item.vehicle.name}" />
                                         </rich:column>
                                         <rich:column rendered="#{driverReportBean.tableColumns['milesDriven'].visible}" sortBy="#{item.milesDriven}">
                                             <f:facet name="header">

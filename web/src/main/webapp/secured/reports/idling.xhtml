@@ -4,7 +4,8 @@
   			xmlns:h="http://java.sun.com/jsf/html" 
   			xmlns:rich="http://richfaces.org/rich"
             xmlns:a4j="http://richfaces.org/a4j"
-  			xmlns:f="http://java.sun.com/jsf/core">
+  			xmlns:f="http://java.sun.com/jsf/core"
+            xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 	<ui:param name="reportsSelected" value="current" />
 	<ui:param name="idlingSelected" value="current" />
@@ -160,13 +161,11 @@
                                   					<f:facet name="header">
                                   						<h:outputText value="#{messages.reports_driver}" />
                                   					</f:facet>
-                            						<a4j:htmlCommandLink action="go_driver" 
-                            							value="#{item.driver.person.fullName}">
-                                  						<f:setPropertyActionListener 
-                            								value="#{item.driver}" 
-                            								target="#{navigationBean.driver}">
-                            							</f:setPropertyActionListener>
-                                  					</a4j:htmlCommandLink>       
+                                                    <pretty:link mappingId="driverPerformance">
+                                                         <h:outputText value="#{item.driver.person.fullName}"/>
+                                                         <f:param value="#{item.driver.driverID}"/>
+                                                    </pretty:link>
+                            						
                                 				</rich:column>
                                 				<rich:column rendered="#{idlingReportBean.tableColumns['driveTime'].visible}" 
                                 					sortBy="#{item.driveTime}">    					

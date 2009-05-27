@@ -4,7 +4,8 @@
   			xmlns:h="http://java.sun.com/jsf/html" 
             xmlns:rich="http://richfaces.org/rich"
             xmlns:a4j="http://richfaces.org/a4j"  			
-  			xmlns:f="http://java.sun.com/jsf/core">
+  			xmlns:f="http://java.sun.com/jsf/core"
+            xmlns:pretty="http://ocpsoft.com/prettyfaces">
 			
 
 	<ui:param name="reportsSelected" value="current" />
@@ -131,23 +132,21 @@
                                             sortBy="#{item.group}">
                                             <f:facet name="header">
                                                 <h:outputText value="#{messages.reports_group}" />
-                                            </f:facet>                      
-                                            <h:outputLink value="#{item.goTo}">
-                                                <h:outputText value="#{item.group}" />
-                                            </h:outputLink>                                                                     
+                                            </f:facet>          
+                                            <pretty:link mappingId="dashboard">
+                                                <h:outputText value="#{item.group}"/>
+                                                <f:param value="#{item.groupID}"/>
+                                            </pretty:link>                                                                                
                                         </rich:column>
                                         <rich:column rendered="#{vehicleReportBean.tableColumns['vehicle_name'].visible}" 
                                             sortBy="#{item.vehicle.name}">
                                             <f:facet name="header">
                                                 <h:outputText value="#{messages.reports_vehicleID}" />
                                             </f:facet>
-                                            <a4j:htmlCommandLink action="go_vehicle" 
-                                                value="#{item.vehicle.name}">
-                                                <f:setPropertyActionListener 
-                                                        value="#{item.vehicle}" 
-                                                        target="#{navigationBean.vehicle}">
-                                                </f:setPropertyActionListener>
-                                            </a4j:htmlCommandLink>                          
+                                            <pretty:link mappingId="vehiclePerformance">
+                                                <h:outputText value="#{item.vehicle.name}"/>
+                                                <f:param value="#{item.vehicle.vehicleID}"/>
+                                            </pretty:link>                        
                                         </rich:column>
                                         <rich:column rendered="#{vehicleReportBean.tableColumns['makeModelYear'].visible}" 
                                             sortBy="#{item.makeModelYear}">
@@ -161,14 +160,10 @@
                                             <f:facet name="header">
                                                 <h:outputText value="#{messages.reports_driver}" />
                                             </f:facet>
-                                            <a4j:htmlCommandLink action="go_driver" 
-                                                rendered="#{item.driver.groupID ne null}"
-                                                value="#{item.driver.person.fullName}">
-                                                <f:setPropertyActionListener 
-                                                    value="#{item.driver}" 
-                                                    target="#{navigationBean.driver}">
-                                                </f:setPropertyActionListener>
-                                            </a4j:htmlCommandLink>   
+                                            <pretty:link mappingId="driverPerformance" rendered="#{item.driver.groupID ne null}">
+                                                <h:outputText value="#{item.driver.person.fullName}"/>
+                                                <f:param value="#{item.driver.driverID}"/>
+                                            </pretty:link>  
                                             <h:outputText rendered="#{item.driver.groupID eq null}"
                                                 value="None Assigned">
                                             </h:outputText>                                             
@@ -188,10 +183,8 @@
                                             <ui:include src="/includes/scoreBox.xhtml">
                                                     <ui:param name="score" value="#{item.overallScore}" />
                                                     <ui:param name="scoreStyle" value="#{item.styleOverall}" /> 
-                                                    <ui:param name="actionBean" value="#{vehicleReportBean}" /> 
-                                                    <ui:param name="action" value="vehicleAction" /> 
-                                                    <ui:param name="propertyActionListenerValue" value="#{item.vehicle}" /> 
-                                                    <ui:param name="propertyActionListenerTarget" value="#{navigationBean.vehicle}" /> 
+                                                    <ui:param name="item" value="#{item.vehicle.vehicleID}" /> 
+                                                    <ui:param name="scoreMappingId" value="vehiclePerformance"/> 
                                             </ui:include>               
                                         </rich:column>
                                         <rich:column rendered="#{vehicleReportBean.tableColumns['speedScore'].visible}"
@@ -202,10 +195,8 @@
                                             <ui:include src="/includes/scoreBox.xhtml">
                                                     <ui:param name="score" value="#{item.speedScore}" />
                                                     <ui:param name="scoreStyle" value="#{item.styleSpeed}" /> 
-                                                    <ui:param name="actionBean" value="#{vehicleReportBean}" /> 
-                                                    <ui:param name="action" value="reportVehicleSpeedAction" /> 
-                                                    <ui:param name="propertyActionListenerValue" value="#{item.vehicle}" /> 
-                                                    <ui:param name="propertyActionListenerTarget" value="#{navigationBean.vehicle}" /> 
+                                                    <ui:param name="item" value="#{item.vehicle.vehicleID}" /> 
+                                                    <ui:param name="scoreMappingId" value="vehiclePerformance"/>
                                             </ui:include>            
                                         </rich:column>
                                         <rich:column rendered="#{vehicleReportBean.tableColumns['styleScore'].visible}"
@@ -216,10 +207,8 @@
                                             <ui:include src="/includes/scoreBox.xhtml">
                                                     <ui:param name="score" value="#{item.styleScore}" />
                                                     <ui:param name="scoreStyle" value="#{item.styleStyle}" /> 
-                                                    <ui:param name="actionBean" value="#{vehicleReportBean}" /> 
-                                                    <ui:param name="action" value="reportVehicleStyleAction" /> 
-                                                    <ui:param name="propertyActionListenerValue" value="#{item.vehicle}" /> 
-                                                    <ui:param name="propertyActionListenerTarget" value="#{navigationBean.vehicle}" /> 
+                                                    <ui:param name="item" value="#{item.vehicle.vehicleID}" /> 
+                                                    <ui:param name="scoreMappingId" value="vehiclePerformance"/>
                                             </ui:include>           
                                         </rich:column>
                                     </rich:dataTable>                     		
