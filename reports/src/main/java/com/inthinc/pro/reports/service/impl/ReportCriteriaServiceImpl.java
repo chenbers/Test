@@ -36,6 +36,7 @@ import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.reports.model.PieScoreData;
 import com.inthinc.pro.reports.model.PieScoreRange;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
+import com.inthinc.pro.reports.util.ReportMessageUtil;
 import com.inthinc.pro.reports.util.ReportUtil;
 
 public class ReportCriteriaServiceImpl implements ReportCriteriaService
@@ -62,16 +63,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         for (DriverReportItem driverReportItem : driverReportItems)
         {
             Group tmpGroup = groupDAO.findByID(driverReportItem.getGroupID());
-            driverReportItem.setGroup(tmpGroup.getName());
-
-            // Vehicle, none assigned
-            if (driverReportItem.getVehicle() == null)
-            {
-                Vehicle v = new Vehicle();
-                v.setName("None Assigned");
-                driverReportItem.setVehicle(v);
-            }
-
+            driverReportItem.setGroup(tmpGroup.getName()); 
         }
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.DRIVER_REPORT, group.getName());
         reportCriteria.setDuration(duration);
@@ -237,17 +229,6 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         {
             Group tmpGroup = groupDAO.findByID(vehicleReportItem.getGroupID());
             vehicleReportItem.setGroup(tmpGroup.getName());
-
-            // Driver, none assigned
-            if (vehicleReportItem.getDriver() == null)
-            {
-                Driver d = new Driver();
-                Person p = new Person();
-                p.setFirst("None");
-                p.setLast("Assigned");
-                d.setPerson(p);
-                vehicleReportItem.setDriver(d);
-            }
         }
         ReportCriteria reportCriteria = new ReportCriteria(ReportType.VEHICLE_REPORT, group.getName());
         reportCriteria.setMainDataset(vehicleReportItems);

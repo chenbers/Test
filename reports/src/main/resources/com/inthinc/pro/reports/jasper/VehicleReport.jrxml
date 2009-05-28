@@ -337,7 +337,7 @@
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{driver.person.first}  + " " + $F{driver.person.last}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{driver.person.first} != null ? $F{driver.person.first}  + " " + $F{driver.person.last} : $R{report.none.assigned}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="###0" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
