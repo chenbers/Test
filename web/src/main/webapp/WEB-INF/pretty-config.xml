@@ -72,27 +72,54 @@
 		<pattern>/secured/vehicle/trips/#{vehicleTripsBean.vehicleID}</pattern>
 		<view-id>/secured/vehicleTrips.faces</view-id>
 	</url-mapping>
+	
     <!-- Reports Section -->
     <url-mapping id="reports">
         <pattern>/secured/reports/</pattern>
         <view-id>/secured/reports/drivers.faces</view-id>
+        <action>#{driverReportBean.search}</action>
     </url-mapping>
     <url-mapping id="driversReport">
         <pattern>/secured/reports/driversReport</pattern>
         <view-id>/secured/reports/drivers.faces</view-id>
+        <action>#{driverReportBean.search}</action>
+    </url-mapping>
+    <url-mapping id="driversReportWithCriteria">
+        <pattern>/secured/reports/driversReport/#{searchCoordinationBean.searchFor}</pattern>
+        <view-id>/secured/reports/drivers.faces</view-id>
+        <action>#{driverReportBean.search}</action>
     </url-mapping>
     <url-mapping id="vehiclesReport">
         <pattern>/secured/reports/vehiclesReport</pattern>
         <view-id>/secured/reports/vehicles.faces</view-id>
+        <action>#{vehicleReportBean.search}</action>
+    </url-mapping>
+    <url-mapping id="vehiclesReportWithCriteria">
+        <pattern>/secured/reports/vehiclesReport/#{searchCoordinationBean.searchFor}</pattern>
+        <view-id>/secured/reports/vehicles.faces</view-id>
+        <action>#{vehicleReportBean.search}</action>
     </url-mapping>
     <url-mapping id="idlingReport">
         <pattern>/secured/reports/idlingReport</pattern>
         <view-id>/secured/reports/idling.faces</view-id>
+        <action>#{idlingReportBean.search}</action>
+    </url-mapping>
+    <url-mapping id="idlingReportWithCriteria">
+        <pattern>/secured/reports/idlingReport/#{searchCoordinationBean.searchFor}</pattern>
+        <view-id>/secured/reports/idling.faces</view-id>
+        <action>#{idlingReportBean.search}</action>
     </url-mapping>
     <url-mapping id="devicesReport">
         <pattern>/secured/reports/devicesReport</pattern>
         <view-id>/secured/reports/devices.faces</view-id>
+        <action>#{devicesReportBean.search}</action>
     </url-mapping>
+    <url-mapping id="devicesReportWithCriteria">
+        <pattern>/secured/reports/devicesReport/#{searchCoordinationBean.searchFor}</pattern>
+        <view-id>/secured/reports/devices.faces</view-id>
+        <action>#{devicesReportBean.search}</action>
+    </url-mapping>
+    
     <!-- Notifications Section -->
     <url-mapping id="notifications">
         <pattern>/secured/notifications/</pattern>

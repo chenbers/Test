@@ -120,13 +120,7 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
     protected void loadResults(List <DeviceReportItem> devicData)
     {     
     	deviceData = new ArrayList<DeviceReportItem>();
-        for ( DeviceReportItem a: devicData ) { 
-            dri = new DeviceReportItem();
-            dri.setDevice(a.getDevice());
-            dri.setVehicle(a.getVehicle());
-            deviceData.add(dri);                        
-        }
-        
+    	deviceData.addAll(devicData);
         this.maxCount = this.deviceData.size();   
         resetCounts(); 
     }
@@ -202,6 +196,18 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
 		deviceData = displayData;
 		
 	}
+	
+	@Override
+    public String getMappingId()
+    {
+        return "pretty:devicesReport";
+    }
+    
+    @Override
+    public String getMappingIdWithCriteria()
+    {
+        return "pretty:devicesReportWithCriteria";
+    }
 
 }
 

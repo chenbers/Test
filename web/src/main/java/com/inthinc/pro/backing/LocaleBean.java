@@ -13,6 +13,8 @@ public class LocaleBean extends BaseBean
 {
     private static final List<Locale> supportedLocles = new ArrayList<Locale>();
     private static final List<SelectItem> supportedLocalesItems = new ArrayList<SelectItem>();
+    private static Locale currentLocale;
+    
     static
     {
         Iterator<Locale> iterator = FacesContext.getCurrentInstance().getApplication().getSupportedLocales();
@@ -29,11 +31,22 @@ public class LocaleBean extends BaseBean
         // If the user has NOT logged in yet, the Principle will be the String "Anonymous". In this case, return the requests locale
         // If the user has logged in, then the Principle will be a User object which contains a Locale
         if (String.class.isInstance(SecurityContextHolder.getContext().getAuthentication().getPrincipal()))
+        {
+            currentLocale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
             return FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
+        }
         else
-            return getUser().getLocale();
+        {
+            currentLocale = getUser().getLocale();
+            return currentLocale;
+        }
         
         
+    }
+    
+    public static Locale getCurrentLocale()
+    {
+        return currentLocale;
     }
 
     public List<Locale> getSupportedLocales()

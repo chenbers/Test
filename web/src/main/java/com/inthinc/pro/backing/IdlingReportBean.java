@@ -26,8 +26,6 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
 
     private ScoreDAO scoreDAO;
     
-    private IdlingReportItem iri = null;
-    
     private final static String COLUMN_LABEL_PREFIX = "idlingReports_";
     
     private Date startDate = null;
@@ -92,7 +90,12 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
 	@Override
     protected void loadDBData()
     {
-		search();
+	    checkDates();
+	    this.idlingsData = 
+            scoreDAO.getIdlingReportData(
+                    getEffectiveGroupId(),
+                    this.internalStartDate, 
+                    this.internalEndDate);
     }
 	
 	@Override
@@ -147,27 +150,6 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
         return idlingData;
     }
     
-    @Override
-    public void search()
-    {
-//        // snagged from the db
-//        if ( this.idlingsData.size() > 0 ) {
-//            this.idlingsData.clear();
-//        }
-        
-        // always hit the database, no matter what, 
-        //   because of date range....
-        checkDates();
-        
-        this.idlingsData = 
-            scoreDAO.getIdlingReportData(
-            		getEffectiveGroupId(),
-                    this.internalStartDate, 
-                    this.internalEndDate);
-
-        super.search();
-    }
-    
     private void checkDates() {
         StringBuffer sb = new StringBuffer();
         sb.append("Search Dates: ");
@@ -209,21 +191,12 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
     @Override
     protected void loadResults(List <IdlingReportItem> idlsData) 
     {     
-//        if ( this.idlingData.size() > 0 ) {
-//            this.idlingData.clear();
-//        }
-
     	idlingData = new ArrayList <IdlingReportItem>();
-        iri = new IdlingReportItem();
                 
-        for ( IdlingReportItem i: idlsData ) {
-            iri = i;    
-                    
+        for ( IdlingReportItem i: idlsData ) {        
             //Group name
-            iri.setGroup(this.getGroupHierarchy().getGroup(i.getGroupID()).getName());
-            
- 
-            idlingData.add(iri);            
+            i.setGroup(this.getGroupHierarchy().getGroup(i.getGroupID()).getName());
+            idlingData.add(i);            
         }   
         
         this.maxCount = this.idlingData.size();   
@@ -351,6 +324,18 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
 
 		idlingData = displayData;
 		
+	}
+	
+	@Override
+	public String getMappingId()
+	{
+	    return "pretty:idlingReport";
+	}
+	
+	@Override
+	public String getMappingIdWithCriteria()
+	{
+	    return "pretty:idlingReportWithCriteria";
 	}
 }
 

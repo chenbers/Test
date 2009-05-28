@@ -12,10 +12,20 @@ public class MessageUtil
 {
     public static String getMessageString(String key)
     {
-        return getMessageString(FacesContext.getCurrentInstance(), key);
+        return getMessageString(FacesContext.getCurrentInstance(), key, null);
+    }
+    
+    public static String getMessageString(String key, Locale locale)
+    {
+        return getMessageString(FacesContext.getCurrentInstance(), key,locale);
+    }
+    
+    public static String getMessageString(FacesContext facesContext, String key)
+    {
+        return getMessageString(facesContext, key,null);
     }
 
-    public static String getMessageString(FacesContext facesContext, String key)
+    public static String getMessageString(FacesContext facesContext, String key, Locale locale)
     {
         if (facesContext == null)
         {
@@ -24,7 +34,7 @@ public class MessageUtil
                 return key;
         }
         
-        ResourceBundle bundle = getApplicationBundle(facesContext, facesContext.getViewRoot().getLocale());
+        ResourceBundle bundle = getApplicationBundle(facesContext, locale);
         return getBundleString(bundle, key);
     }
 
@@ -35,7 +45,7 @@ public class MessageUtil
 
     public static String formatMessageString(FacesContext facesContext, String key, Object... values)
     {
-        final String message = getMessageString(facesContext, key);
+        final String message = getMessageString(facesContext, key,null);
         if (message != null)
             return MessageFormat.format(message, values);
         return null;
@@ -58,7 +68,7 @@ public class MessageUtil
     {
         String bundleName = facesContext.getApplication().getMessageBundle();
         
-        return bundleName != null ? getBundle(facesContext, locale, bundleName) : null;
+        return bundleName != null ? getBundle(facesContext, locale != null ? locale : facesContext.getViewRoot() != null ? facesContext.getViewRoot().getLocale() : facesContext.getExternalContext().getRequestLocale(), bundleName) : null;
     }
 
     public  static ResourceBundle getDefaultBundle(FacesContext facesContext,

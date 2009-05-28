@@ -54,7 +54,7 @@
               									</table>
             								</li>
             								<li class="l">
-            									<a4j:commandButton id="searchButton" action="#{vehicleReportBean.search}" 
+            									<a4j:commandButton id="searchButton" action="#{vehicleReportBean.doSearch}" 
             										reRender="navigation:redirectSearch,headerRedCount,items,topScroller,bottomScroller,headerVehicles" styleClass="left">
             											<span class="search">
             												<h:outputText value="#{messages.button_search}" />
@@ -160,13 +160,11 @@
                                             <f:facet name="header">
                                                 <h:outputText value="#{messages.reports_driver}" />
                                             </f:facet>
-                                            <pretty:link mappingId="driverPerformance" rendered="#{item.driver.groupID ne null}">
+                                            <pretty:link mappingId="driverPerformance" rendered="#{item.driver ne null and item.driver.driverID ne null}">
                                                 <h:outputText value="#{item.driver.person.fullName}"/>
                                                 <f:param value="#{item.driver.driverID}"/>
-                                            </pretty:link>  
-                                            <h:outputText rendered="#{item.driver.groupID eq null}"
-                                                value="None Assigned">
-                                            </h:outputText>                                             
+                                            </pretty:link>
+                                            <h:outputText rendered="#{item.driver eq null or item.driver.driverID eq null}" value="#{messages.reports_none_assigned}" />                                            
                                         </rich:column>
                                         <rich:column rendered="#{vehicleReportBean.tableColumns['milesDriven'].visible}" 
                                             sortBy="#{item.milesDriven}">

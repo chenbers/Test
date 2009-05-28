@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.context.FacesContext;
-
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
@@ -32,8 +30,6 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
     static final List<String> AVAILABLE_COLUMNS;
     
     private ScoreDAO scoreDAO;
-    
-    private VehicleReportItem vrt = null;
     
     private final static String COLUMN_LABEL_PREFIX = "vehicleReports_";
     
@@ -110,34 +106,13 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
     @Override
     protected void loadResults(List <VehicleReportItem> vehicData) 
     {
-//        if ( this.vehicleData.size() > 0 ) {
-//            this.vehicleData.clear();
-//        }   
         vehicleData = new ArrayList <VehicleReportItem>();
-        String contextPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
                 
         for ( VehicleReportItem v: vehicData ) {          
-            vrt = v;
-            setStyles();
-                        
+            setStyles(v);  
             //Group name
-            vrt.setGroup(this.getGroupHierarchy().getGroup(v.getGroupID()).getName());
-                        
-            //Where to go - make sure you go to the correct level            
-            vrt.setGoTo(contextPath + this.getGroupHierarchy().getGroupLevel(v.getGroupID()).getUrl() +
-                    "?groupID="+v.getGroupID());   
-            
-            //Driver, none assigned
-            if ( v.getDriver() == null || v.getDriver().getPerson() == null ) {
-                Driver d = new Driver();
-                Person p = new Person();
-                p.setFirst("None");
-                p.setLast("Assigned");
-                d.setPerson(p);
-                vrt.setDriver(d);
-            }            
-            
-            vehicleData.add(vrt);            
+            v.setGroup(this.getGroupHierarchy().getGroup(v.getGroupID()).getName());
+            vehicleData.add(v);            
         }    
                 
         this.maxCount = this.vehicleData.size();   
@@ -151,7 +126,7 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
         
     }
 
-    private void setStyles() 
+    private void setStyles(VehicleReportItem vrt) 
     {
         
         vrt.setStyleOverall(ScoreBox.GetStyleFromScore(vrt.getOverallScore(), ScoreBoxSizes.SMALL));
@@ -174,29 +149,26 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
     
     public void exportReportToPdf()
     {
-        ReportCriteria reportCriteria = getReportCriteriaService().getVehicleReportCriteria(getUser().getGroupID(), Duration.TWELVE);
-        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
-        reportCriteria.setMainDataset(vehicleData);
-        reportCriteria.setLocale(getUser().getLocale());
-        getReportRenderer().exportSingleReportToPDF(reportCriteria, getFacesContext());
+        getReportRenderer().exportSingleReportToPDF(buildReportCriteria(), getFacesContext());
     }
     
     public void emailReport()
     {
-        ReportCriteria reportCriteria = getReportCriteriaService().getVehicleReportCriteria(getUser().getGroupID(), Duration.TWELVE);
-        reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
-        reportCriteria.setMainDataset(vehicleData);
-        reportCriteria.setLocale(getUser().getLocale());
-        getReportRenderer().exportReportToEmail(reportCriteria,getEmailAddress());
+        getReportRenderer().exportReportToEmail(buildReportCriteria(),getEmailAddress());
     }
     
     public void exportReportToExcel()
+    {
+        getReportRenderer().exportReportToExcel(buildReportCriteria(), getFacesContext());
+    }
+    
+    private ReportCriteria buildReportCriteria()
     {
         ReportCriteria reportCriteria = getReportCriteriaService().getVehicleReportCriteria(getUser().getGroupID(), Duration.TWELVE);
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(vehicleData);
         reportCriteria.setLocale(getUser().getLocale());
-        getReportRenderer().exportReportToExcel(reportCriteria, getFacesContext());
+        return reportCriteria;
     }
 
     @Override
@@ -228,30 +200,16 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
 	    return super.getTableColumns();
 	}
 	
-	/*
-	    When using Facelets <ui:include>, you can not pass a String as a <ui:param> that equals the action. For example:
-                        <ui:include src="/includes/scoreBox.xhtml">
-                                <ui:param name="action" value="go_reportVehicleStyle" /> 
-                        </ui:include>
-                        
-        Instead, you must pass a bean and the name of the action that will be called, like this:                                 
-                        <ui:include src="/includes/scoreBox.xhtml">
-                                <ui:param name="actionBean" value="#{vehicleReportBean}" /> 
-                                <ui:param name="action" value="reportVehicleStyleAction" /> 
-                        </ui:include> 
-                        
-        The following actions exist to accomplish what was described above
-	 */
-	public String vehicleAction()
-	{
-	    return "go_vehicle";
-	}
-	public String reportVehicleSpeedAction()
-	{
-	    return "go_reportVehicleSpeed";
-	}
-	public String reportVehicleStyleAction()
-	{
-	    return "go_reportVehicleStyle";
-	}
+	
+	@Override
+    public String getMappingId()
+    {
+        return "pretty:vehiclesReport";
+    }
+    
+    @Override
+    public String getMappingIdWithCriteria()
+    {
+        return "pretty:vehiclesReportWithCriteria";
+    }
 }

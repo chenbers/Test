@@ -55,7 +55,7 @@
               									</table>
             								</li>
             								<li class="l">
-            									<a4j:commandButton id="searchButton" action="#{driverReportBean.search}" 
+            									<a4j:commandButton id="searchButton" action="#{driverReportBean.doSearch}" 
             										reRender="navigation:redirectSearch,headerRedCount,items,topScroller,bottomScroller,headerDrivers" styleClass="left">
             											<span class="search">
             												<h:outputText value="#{messages.button_search}" />
@@ -160,11 +160,12 @@
                                             <f:facet name="header">
                                                 <h:outputText value="#{messages.reports_vehicle}" />
                                             </f:facet>
-                                            <pretty:link mappingId="vehiclePerformance" rendered="#{item.vehicle.name != 'None Assigned'}">
+                                            <pretty:link mappingId="vehiclePerformance" rendered="#{item.vehicle ne null}">
                                                 <h:outputText value="#{item.vehicle.name}"/>
                                                 <f:param value="#{item.vehicle.vehicleID}"/>
                                             </pretty:link>
-                                            <h:outputText rendered="#{item.vehicle.name == 'None Assigned'}" value="#{item.vehicle.name}" />
+                                            
+                                            <h:outputText rendered="#{item.vehicle eq null}" value="#{messages.reports_none_assigned}" />
                                         </rich:column>
                                         <rich:column rendered="#{driverReportBean.tableColumns['milesDriven'].visible}" sortBy="#{item.milesDriven}">
                                             <f:facet name="header">
@@ -191,7 +192,7 @@
                                                     <ui:param name="score" value="#{item.speedScore}" />
                                                     <ui:param name="scoreStyle" value="#{item.styleSpeed}" /> 
                                                     <ui:param name="item" value="#{item.driver.driverID}" /> 
-                                                    <ui:param name="scoreMappingId" value="driverPerformance"/>
+                                                    <ui:param name="scoreMappingId" value="driverPerformanceSpeed"/>
                                             </ui:include> 
                                         </rich:column>
                                         <rich:column rendered="#{driverReportBean.tableColumns['styleScore'].visible}" sortBy="#{item.styleScore}">
@@ -202,7 +203,7 @@
                                                     <ui:param name="score" value="#{item.styleScore}" />
                                                     <ui:param name="scoreStyle" value="#{item.styleStyle}" /> 
                                                     <ui:param name="item" value="#{item.driver.driverID}" />  
-                                                    <ui:param name="scoreMappingId" value="driverPerformance"/>
+                                                    <ui:param name="scoreMappingId" value="driverPerformanceStyle"/>
                                             </ui:include> 
                                         </rich:column>
                                         <rich:column rendered="#{driverReportBean.tableColumns['seatBeltScore'].visible}" sortBy="#{item.seatBeltScore}">
@@ -213,7 +214,7 @@
                                                     <ui:param name="score" value="#{item.seatBeltScore}" />
                                                     <ui:param name="scoreStyle" value="#{item.styleSeatBelt}" /> 
                                                     <ui:param name="item" value="#{item.driver.driverID}" /> 
-                                                    <ui:param name="scoreMappingId" value="driverPerformance"/>
+                                                    <ui:param name="scoreMappingId" value="driverPerformanceSeatBelt"/>
                                             </ui:include> 
                                         </rich:column>
                                     </rich:dataTable> 

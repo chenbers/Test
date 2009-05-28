@@ -127,7 +127,7 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
         }
     }
 
-    protected void checkOnSearch()
+    public void search()
     {
         loadDBData();
         if (searchCoordinationBean.isGoodSearch())
@@ -155,19 +155,16 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
 
         resetCounts();
     }
-
-    public void search()
+    
+    public abstract String getMappingId();
+    public abstract String getMappingIdWithCriteria();
+    
+    public String doSearch()
     {
-
-        final List<T> matchedItems = new ArrayList<T>();
-        matchedItems.addAll(getDBData());
-        filterResults(matchedItems);
-
-        tablePref.filter(matchedItems, searchCoordinationBean.getSearchFor(), matchAllFilterWords());
-
-        loadResults(matchedItems);
-        this.maxCount = matchedItems.size();
-        resetCounts();
+        if (searchCoordinationBean.isGoodSearch())
+            return getMappingIdWithCriteria();
+        else
+            return getMappingId();
     }
 
     /**
@@ -215,10 +212,6 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
 
     public Integer getStart()
     {
-        if (start == null)
-        {
-            checkOnSearch();
-        }
         return start;
     }
 
@@ -229,10 +222,6 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
 
     public Integer getEnd()
     {
-        if (end == null)
-        {
-            checkOnSearch();
-        }
         return end;
     }
 
@@ -243,10 +232,6 @@ public abstract class BaseReportBean<T> extends BaseBean implements TablePrefOpt
 
     public Integer getMaxCount()
     {
-        if (maxCount == null)
-        {
-            checkOnSearch();
-        }
         return maxCount;
     }
 

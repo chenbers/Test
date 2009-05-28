@@ -4,24 +4,35 @@
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:iwi="http://pro.tiwi.com/jsf" 
     xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
     xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
-    <div class="sub_nav">
-        <div class="sub_nav-bg">
-            <ul>
-                <li class="#{driversSelected}">
-                    <pretty:link mappingId="driversReport"><span>#{messages.subNavigation_drivers}</span></pretty:link>
-                </li>
-                <li class="#{vehiclesSelected}">
-                    <pretty:link mappingId="vehiclesReport"><span>#{messages.subNavigation_vehicles}</span></pretty:link>
-                </li>
-                <li class="#{idlingSelected}">
-                    <pretty:link mappingId="idlingReport"><span>#{messages.subNavigation_idling}</span></pretty:link>
-                </li>
-                <li class="#{devicesSelected}">
-                    <pretty:link mappingId="devicesReport"><span>#{messages.subNavigation_devices}</span></pretty:link>
-                </li>
-            </ul>
-        </div>
-    </div>
+    <h:form>
+       <div class="sub_nav">
+           <div class="sub_nav-bg">
+               <ul>
+                   <li class="#{driversSelected}">
+                       <a4j:htmlCommandLink action="#{driverReportBean.doSearch}">
+                           <span>#{messages.subNavigation_drivers}</span>
+                       </a4j:htmlCommandLink>
+                   </li>
+                   <li class="#{vehiclesSelected}">
+                       <a4j:htmlCommandLink action="#{vehicleReportBean.doSearch}">
+                           <span>#{messages.subNavigation_vehicles}</span>
+                       </a4j:htmlCommandLink>
+                   </li>
+                   <li class="#{idlingSelected}">
+                        <a4j:htmlCommandLink action="#{idlingReportBean.doSearch}">
+                           <span>#{messages.subNavigation_idling}</span>
+                       </a4j:htmlCommandLink>
+                   </li>
+                   <li class="#{devicesSelected}">
+                       <a4j:htmlCommandLink action="#{deviceReportBean.doSearch}">
+                           <span>#{messages.subNavigation_devices}</span>
+                       </a4j:htmlCommandLink>
+                   </li>
+               </ul>
+           </div>
+       </div>
+    </h:form>
 </ui:composition>
