@@ -127,7 +127,7 @@ var firstLoad = new Boolean(true);
 						<span class="vehicle" id="titleSpan"></span>
 						<ui:include src="../../includes/dateLinksToolsDetail.xhtml">
 							<ui:param name="ajaxForm" value="styleForm"/>
-							<ui:param name="reRenderList" value="styleForm,overallScoreBox,OVERALL_script,BRAKE_script,ACCELERATE_script,TURN_script,BUMP_script,selectScript,eventsPanel"/>			
+							<ui:param name="reRenderList" value="styleForm,overallScoreBox,breakdownPanel,selectScript,eventsPanel"/>			
 							<ui:param name="thirtyDaysOn" value="#{(vehicleStyleBean.duration eq 'DAYS') ? 'on' : ''}"/>
 							<ui:param name="threeMonthsOn" value="#{(vehicleStyleBean.duration eq 'THREE') ? 'on' : ''}"/>
 							<ui:param name="sixMonthsOn" value="#{(vehicleStyleBean.duration eq 'SIX') ? 'on' : ''}"/>
@@ -205,7 +205,8 @@ var firstLoad = new Boolean(true);
 						<span class="panel_links"></span></div>
 				</div>
 				<div class="panel_w">
-				  <div class="panel_content" id="breakdown_panel">
+				  <div class="panel_content" id="breakdown_panel">   
+                    <rich:panel id="breakdownPanel">
 					<table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
 					  <tr>
 					    <td id="OVERALL" valign="top" class="tiny_chart">
@@ -386,6 +387,7 @@ var firstLoad = new Boolean(true);
 						</td>
 					  </tr>
 					</table>
+                    </rich:panel>
 					<rich:panel id="selectScript">
 						<script type="text/javascript">
 	
@@ -488,9 +490,9 @@ var firstLoad = new Boolean(true);
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_severity}" />
 								</f:facet>
-								<div class="#{(item.event.severity gt 4) ? 'sev_bar_ex' : ''}
-											#{(item.event.severity lt 5) and (item.event.severity gt 2) ? 'sev_bar_med' : ''}
-											#{(item.event.severity lt 3) ? 'sev_bar_low' : ''}"></div>
+                                <ui:include src="/includes/severityGraphic.xhtml">
+                                    <ui:param name="severity" value="#{item.event.severity}" />
+                                </ui:include>
 							</rich:column>
 							
 							<rich:column>

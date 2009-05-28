@@ -129,7 +129,7 @@ var firstLoad = new Boolean(true);
 						<span class="speed" id="titleSpan">#{messages.vehicle_speed_overall}</span>
 							<ui:include src="../../includes/dateLinksToolsDetail.xhtml">
 							<ui:param name="ajaxForm" value="speedForm"/>
-							<ui:param name="reRenderList" value="speedForm,overallScoreBox,overallChart,twentyOneChart,thirtyOneChart,fourtyOneChart,fiftyFiveChart,sixtyFiveChart,selectScript,eventsPanel"/>			
+							<ui:param name="reRenderList" value="speedForm,overallScoreBox,breakdownPanel,selectScript,eventsPanel"/>			
 							<ui:param name="thirtyDaysOn" value="#{(vehicleSpeedBean.duration eq 'DAYS') ? 'on' : ''}"/>
 							<ui:param name="threeMonthsOn" value="#{(vehicleSpeedBean.duration eq 'THREE') ? 'on' : ''}"/>
 							<ui:param name="sixMonthsOn" value="#{(vehicleSpeedBean.duration eq 'SIX') ? 'on' : ''}"/>
@@ -208,6 +208,7 @@ var firstLoad = new Boolean(true);
 				</div>
 				<div class="panel_w">
 				  <div class="panel_content" id="breakdown_panel">
+                    <rich:panel id="breakdownPanel">
 					<table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
 					  <tr>
 					    <td id="OVERALL" valign="top" class="tiny_chart">
@@ -222,6 +223,7 @@ var firstLoad = new Boolean(true);
 						  </h:form>
 <!--								<div onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.reports_speed}: #{messages.SCORE_OVERALL}')">#{messages.SCORE_OVERALL}</div>-->
 						  </div>
+                            
 							<table width="300" border="0" cellspacing="0" cellpadding="0">
 							  <tr>
 								<td align="center">
@@ -237,6 +239,7 @@ var firstLoad = new Boolean(true);
 									</ui:include>
 								</td>
 								<td align="center">
+                                  
 									<ui:include src="../../includes/scoreBox.xhtml">
 								            <ui:param name="score" value="#{vehicleSpeedBean.scoreMap['SCORE_SPEEDING']}" />
 								            <ui:param name="scoreStyle" value="#{vehicleSpeedBean.styleMap['SCORE_SPEEDING']}" /> 
@@ -244,6 +247,7 @@ var firstLoad = new Boolean(true);
 								</td>
 							  </tr>
 							</table>
+                            
 						</td>
 					    <td id="TWENTYONE" valign="top" class="tiny_chart">
 							<div class="tiny_title">
@@ -419,6 +423,7 @@ var firstLoad = new Boolean(true);
 						</td>
 					  </tr>
 					</table>
+                    </rich:panel>
 					<rich:panel id="selectScript">
 						<script type="text/javascript">
 	

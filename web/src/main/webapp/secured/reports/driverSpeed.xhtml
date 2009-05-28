@@ -135,7 +135,7 @@ var firstLoad = new Boolean(true);
 						<span class="speed" id="titleSpan">#{messages.driver_speed_overall}</span>
 						<ui:include src="../../includes/dateLinksToolsDetail.xhtml">
 							<ui:param name="ajaxForm" value="speedForm"/>
-							<ui:param name="reRenderList" value="speedForm,overallScoreBox,OVERALL_CHART,TWENTYONE_CHART,THIRTYONE_CHART,FOURTYONE_CHART,FIFTYFIVE_CHART,SIXTYFIVE_CHART,selectScript,eventsPanel"/>			
+							<ui:param name="reRenderList" value="speedForm,overallScoreBox,breakdownPanel,selectScript,eventsPanel"/>			
 							<ui:param name="thirtyDaysOn" value="#{(driverSpeedBean.duration eq 'DAYS') ? 'on' : ''}"/>
 							<ui:param name="threeMonthsOn" value="#{(driverSpeedBean.duration eq 'THREE') ? 'on' : ''}"/>
 							<ui:param name="sixMonthsOn" value="#{(driverSpeedBean.duration eq 'SIX') ? 'on' : ''}"/>
@@ -214,7 +214,7 @@ var firstLoad = new Boolean(true);
 				</div>
 				<div class="panel_w">
 				  <div class="panel_content" border="0">
-
+                    <rich:panel id="breakdownPanel">
 					<table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
 					  <tr>
 					    <td id="OVERALL" valign="top" class="tiny_chart">
@@ -425,6 +425,7 @@ var firstLoad = new Boolean(true);
 						</td>
 					  </tr>
 					</table>
+                    </rich:panel>
 					<rich:panel id="selectScript">
 						<script type="text/javascript">
 	
