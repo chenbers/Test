@@ -194,7 +194,7 @@
                                                     <ui:param name="score" value="#{item.speedScore}" />
                                                     <ui:param name="scoreStyle" value="#{item.styleSpeed}" /> 
                                                     <ui:param name="item" value="#{item.vehicle.vehicleID}" /> 
-                                                    <ui:param name="scoreMappingId" value="vehiclePerformance"/>
+                                                    <ui:param name="scoreMappingId" value="vehiclePerformanceSpeed"/>
                                             </ui:include>            
                                         </rich:column>
                                         <rich:column rendered="#{vehicleReportBean.tableColumns['styleScore'].visible}"
@@ -206,7 +206,7 @@
                                                     <ui:param name="score" value="#{item.styleScore}" />
                                                     <ui:param name="scoreStyle" value="#{item.styleStyle}" /> 
                                                     <ui:param name="item" value="#{item.vehicle.vehicleID}" /> 
-                                                    <ui:param name="scoreMappingId" value="vehiclePerformance"/>
+                                                    <ui:param name="scoreMappingId" value="vehiclePerformanceStyle"/>
                                             </ui:include>           
                                         </rich:column>
                                     </rich:dataTable>                     		
