@@ -1,71 +1,81 @@
-<ui:composition 
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:rich="http://richfaces.org/rich"
-	xmlns:f="http://java.sun.com/jsf/core"
-  	xmlns:iwi="http://pro.tiwi.com/jsf"
-	xmlns:h="http://java.sun.com/jsf/html">
-	
-	<div class="">
-		<div class="panel_nw">
-			<div class="panel_title" style="z-index: #{zorder}">
-				<span class="overall">#{messages.overallscore}</span> 
-					<ui:include src="/includes/dateLinksWithFlyOut.xhtml">
-						<ui:param name="ajaxForm" value="overallScoreForm"/>
-						<ui:param name="ajaxStatusID" value="#{ajaxStatusID}"/>
-						<ui:param name="reRenderList" value="#{reRenderList}"/>			
-						<ui:param name="thirtyDaysOn" value="#{thirtyDaysOn}"/>
-						<ui:param name="threeMonthsOn" value="#{threeMonthsOn}"/>
-						<ui:param name="sixMonthsOn" value="#{sixMonthsOn}"/>
-						<ui:param name="twelveMonthsOn" value="#{twelveMonthsOn}"/>
-            			<ui:param name="duration" value="#{duration}" />
-            			<ui:param name="flyNavRule" value="#{flyNavRule}" />
-            			<ui:param name="flySelectedTab" value="#{flySelectedTab}" /> 
-            			<ui:param name="flyOutImage" value="#{flyOutImage}" /> 
-            			<ui:param name="report" value="OVERALL_SCORE" />
-					</ui:include>	
-			</div>
-		</div>	
-		
-		<div class="panel_w">
-			<rich:panel bodyClass="panel_content" id="overallPanel" border="0">
-		 		<table width="455" height="100" border="0" cellspacing="0" cellpadding="0" align="center">
-	            	<tr>
-	                	<td colspan="2" align="right" valign="top">&#160;</td>
-	                </tr>
-	                <tr>
-	                    <td align="center" valign="top" width="120">
-	    					<ui:include src="/includes/overallScoreBox.xhtml">	
-								<ui:param name="scoreStyle" value="#{overallScoreStyle}"/>									
-        	  					<ui:param name="score" value="#{overallScore}"/>             						
-    						</ui:include>    							
-						</td>
-							
-	                    <td rowspan="2" width="">
-	                    	<div id="chartdiv" align="center"></div>
-				  			<h:inputHidden value="#{pieDef}" id="hiddenField3"/>
-							<script type="text/javascript">
-								var targetElement3 = document.getElementById("hiddenField3");
-								var chart2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf?", "ChartId", "320", "300", "0", "1");										
-								chart2.setDataXML(targetElement3.value);	
-								chart2.setTransparent(true);								   	   
-								chart2.render("chartdiv");
-							</script>
-	                    </td>
-	                 </tr>
-	                 <tr>
-	                 	
-	                    <td align="center" valign="top" width="120">
-							<ui:include src="/includes/scoreBoxLegend.xhtml"/>
-	                    </td>
-	                 </tr>
-				</table>
-			</rich:panel>
-			 		
-		</div>
-		<div class="panel_sw">
-			<div class="panel_statusbar"></div>
-		</div>
-	</div>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	            xmlns:ui="http://java.sun.com/jsf/facelets"
+	            xmlns:h="http://java.sun.com/jsf/html" 
+	            xmlns:rich="http://richfaces.org/rich"
+	            xmlns:a4j="http://richfaces.org/a4j"
+	            xmlns:c="http://java.sun.com/jstl/core"
+	            xmlns:f="http://java.sun.com/jsf/core"
+	            xmlns:t="http://myfaces.apache.org/tomahawk"
+	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+    <t:saveState value="#{overallScoreBean.groupID}"/>
+
+    <a4j:outputPanel id="overallOutputPanel">
+    <ui:param name="zorder" value="#{not empty zorder ? zorder : '6'}" />
+    	<div class="">
+    		<div class="panel_nw">
+    			<div class="panel_title" style="z-index: #{zorder}">
+    				<span class="overall">#{messages.overallscore}</span>  
+                    <pretty:urlbuffer var="detailedDashboardLink" mappingId="detailedDashboard">
+                        <f:param value="#{overallScoreBean.groupID}"/>
+                        <f:param value="OVERALL"/>
+                    </pretty:urlbuffer> 
+                    <pretty:urlbuffer var="dashboardLink" mappingId="dashboard">
+                        <f:param value="#{overallScoreBean.groupID}"/>
+                    </pretty:urlbuffer>
+                        
+                    <ui:include src="/includes/durationPanelHeader.xhtml">
+                        <ui:param name="reRenderList" value="overallOutputPanel" />
+                        <ui:param name="duration" value="#{overallScoreDurationBean.duration}" />
+                        <ui:param name="report" value="OVERALL_SCORE" />
+                        <ui:param name="id" value="overall" />
+                        <ui:param name="groupID" value="#{overallScoreBean.groupID}"/>
+                        <ui:param name="detailLink" value="#{maximized ? requestScope.dashboardLink : requestScope.detailedDashboardLink}"/>
+                        <ui:param name="maximized" value="#{not empty maximized ? maximized : false}"/>
+                    </ui:include>
+    			</div>
+    		</div>	
+    		
+    		<div class="panel_w">
+    			<rich:panel bodyClass="panel_content" id="overallPanel" border="0">
+    		 		<table width="455" height="100" border="0" cellspacing="0" cellpadding="0" align="center">
+    	            	<tr>
+    	                	<td colspan="2" align="right" valign="top">&#160;</td>
+    	                </tr>
+    	                <tr>
+    	                    <td align="center" valign="top" width="120">
+    	    					<ui:include src="/includes/overallScoreBox.xhtml">	
+    								<ui:param name="scoreStyle" value="#{overallScoreBean.overallScoreStyle}"/>									
+            	  					<ui:param name="score" value="#{overallScoreBean.overallScore}"/>             						
+        						</ui:include>    							
+    						</td>
+    							
+    	                    <td rowspan="2" width="">
+    	                    	<div id="chartdiv" align="center"></div>
+    				  			<h:inputHidden value="#{overallScoreBean.overallPieDef}" id="hiddenField3"/>
+    							<script type="text/javascript">
+    								var targetElement3 = document.getElementById("hiddenField3");
+    								var chart2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf?", "ChartId", "320", "300", "0", "1");										
+    								chart2.setDataXML(targetElement3.value);	
+    								chart2.setTransparent(true);								   	   
+    								chart2.render("chartdiv");
+    							</script>
+    	                    </td>
+    	                 </tr>
+    	                 <tr>
+    	                 	
+    	                    <td align="center" valign="top" width="120">
+    							<ui:include src="/includes/scoreBoxLegend.xhtml"/>
+    	                    </td>
+    	                 </tr>
+    				</table>
+    			</rich:panel>
+    			 		
+    		</div>
+    		<div class="panel_sw">
+    			<div class="panel_statusbar"></div>
+    		</div>
+    	</div>
+    </a4j:outputPanel>
 		
 </ui:composition>	

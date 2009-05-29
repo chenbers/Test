@@ -5,6 +5,8 @@ import com.inthinc.pro.model.Group;
 public class DashBoardBean extends BaseBean
 {
     private NavigationBean navigationBean;
+    private MpgBean mpgBean;
+    private OverallScoreBean overallScoreBean;
     private Integer groupID;
     private GroupDAO groupDAO;
 
@@ -12,18 +14,19 @@ public class DashBoardBean extends BaseBean
     {
         if(groupID == null)
             groupID = getUser().getGroupID();
-        
+        //TODO: try to pull the group from the group hierarchy before looking it up
         Group group = groupDAO.findByID(groupID);
+
+        navigationBean.setGroupID(groupID);
+        mpgBean.setGroupID(groupID);
+        overallScoreBean.setGroupID(groupID);
         
         switch (group.getType()) {
         case FLEET:
-            navigationBean.setGroupID(groupID);
             return "pretty:fleet";
         case DIVISION:
-            navigationBean.setGroupID(groupID);
             return "pretty:division";
         case TEAM:
-            navigationBean.setGroupID(groupID);
             return "pretty:team";
         }
         
@@ -38,6 +41,26 @@ public class DashBoardBean extends BaseBean
     public void setNavigationBean(NavigationBean navigationBean)
     {
         this.navigationBean = navigationBean;
+    }
+
+    public MpgBean getMpgBean()
+    {
+        return mpgBean;
+    }
+
+    public void setMpgBean(MpgBean mpgBean)
+    {
+        this.mpgBean = mpgBean;
+    }
+
+    public OverallScoreBean getOverallScoreBean()
+    {
+        return overallScoreBean;
+    }
+
+    public void setOverallScoreBean(OverallScoreBean overallScoreBean)
+    {
+        this.overallScoreBean = overallScoreBean;
     }
 
     public Integer getGroupID()

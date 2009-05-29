@@ -5,6 +5,10 @@ body {
 	font: normal 12px Verdana, Arial, Helvetica, sans-serif;
 }
 
+img {
+    border: none;
+}
+
 #header {
 	width: 960px;
 	height: 80px;
@@ -314,48 +318,25 @@ body {
 		center left;
 }
 
-.panel_title span.panel_links a:link {
-	color: #333;
+.panel_title .ajax_status {
+    vertical-align: top;
+    padding-right: 10px;
 }
 
-.panel_title span.panel_links a:visited {
-	color: #333;
-}
-
-.panel_title span.panel_links a:hover {
-	color: #333;
-}
-
-.panel_title span.panel_links a:active {
-	color: #333;
-}
-
-.panel_title span.panel_links a.on {
+.panel_title .panel_links a.on {
 	color: #6B9D1B;
 	font-weight: bold;
 	text-decoration: none;
 }
 
-.panel_title span.panel_links_ico a:link {
-	color: #333;
+.panel_links .selected_duration {
+    color: #6B9D1B !important;
+    font-weight: bold !important;
+    text-decoration: none !important;
 }
 
-.panel_title span.panel_links_ico a:hover {
+.panel_title a:link, .panel_links a:hover, .panel_links a:active, .panel_links a:visited {
 	color: #333;
-}
-
-.panel_title span.panel_links_ico a:active {
-	color: #333;
-}
-
-.panel_title span.panel_links_ico a:visited {
-	color: #333;
-}
-
-.panel_title span.panel_links_ico a.on {
-	color: #6B9D1B;
-	font-weight: bold;
-	text-decoration: none;
 }
 
 .panel_links {
@@ -363,6 +344,10 @@ body {
 	position: absolute;
 	top: 7px;
 	right: 8px;
+}
+
+.panel_links td {
+    padding:0 3px;
 }
 
 .panel_links_ico {
@@ -1025,116 +1010,117 @@ ul#grid_nav_dark li.text a:active,ul#grid_nav_dark li.text a:link,ul#grid_nav_da
 	height: 10px;
 }
 
-/* SCORES */ /*
- a score box div needs both the generic 'score' class and the specific 'score_[size]_[range]' class
- example <div class="score_lg_4 score">4.1</div>
-*/ /* Generic Styles for Score Boxes */
+/* SCORES */ 
+
+/* Generic Styles for Score Boxes */
 .score {
 	font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 	font-weight: bold;
 	color: #333;
-	text-align: center;
-	vertical-align: middle;
-	display: table-cell;
 }
 
-.score a:visited,.score a:link,.score a:active {
+.score td {
+	text-align: center;
+	vertical-align: middle;
+}
+    
+
+.score a:visited,.score a:link,.score a:active, .score a:hover {
 	text-decoration: none;
+	color: #333;
 }
 
 /* Large Score Box */
-.score_lg_1,.score_lg_2,.score_lg_3,.score_lg_4,.score_lg_5,.score_lg_na
-	{
+.score_lg_1 td,.score_lg_2 td,.score_lg_3 td,.score_lg_4 td,.score_lg_5 td,.score_lg_na td {
 	font-size: 32px;
 	height: 90px;
 	width: 90px;
 }
 
-.score_lg_1 {
+.score_lg_1 td {
 	background: url(../images/score_lg_1.png) no-repeat;
 }
 
-.score_lg_2 {
+.score_lg_2 td {
 	background: url(../images/score_lg_2.png) no-repeat;
 }
 
-.score_lg_3 {
+.score_lg_3 td {
 	background: url(../images/score_lg_3.png) no-repeat;
 }
 
-.score_lg_4 {
+.score_lg_4 td {
 	background: url(../images/score_lg_4.png) no-repeat;
 }
 
-.score_lg_5 {
+.score_lg_5 td {
 	background: url(../images/score_lg_5.png) no-repeat;
 }
 
-.score_lg_na {
+.score_lg_na td {
 	background: url(../images/score_lg_na.png) no-repeat;
 }
 
 /* Medium Score Box*/
-.score_med_1,.score_med_2,.score_med_3,.score_med_4,.score_med_5,.score_med_na
+.score_med_1 td,.score_med_2 td,.score_med_3 td,.score_med_4 td,.score_med_5 td,.score_med_na td
 	{
 	width: 60px;
 	height: 60px;
 	font-size: 24px;
 }
 
-.score_med_1 {
+.score_med_1 td {
 	background: url(../images/score_med_1.png) no-repeat;
 }
 
-.score_med_2 {
+.score_med_2 td {
 	background: url(../images/score_med_2.png) no-repeat;
 }
 
-.score_med_3 {
+.score_med_3 td {
 	background: url(../images/score_med_3.png) no-repeat;
 }
 
-.score_med_4 {
+.score_med_4 td {
 	background: url(../images/score_med_4.png) no-repeat;
 }
 
-.score_med_5 {
+.score_med_5 td {
 	background: url(../images/score_med_5.png) no-repeat;
 }
 
-.score_med_na {
+.score_med_na td {
 	background: url(../images/score_med_na.png) no-repeat;
 }
 
 /* Small Score Box*/
-.score_sm_1,.score_sm_2,.score_sm_3,.score_sm_4,.score_sm_5,.score_sm_na
-	{
+.score_sm_1 td,.score_sm_2 td,.score_sm_3 td,.score_sm_4 td,.score_sm_5 td,.score_sm_na td {
 	width: 40px;
 	height: 40px;
 	font-size: 18px;
 }
 
-.score_sm_1 {
+.score_sm_1 td {
 	background: url(../images/score_sm_1.png) no-repeat;
 }
 
-.score_sm_2 {
+.score_sm_2 td {
 	background: url(../images/score_sm_2.png) no-repeat;
 }
 
-.score_sm_3 {
+.score_sm_3 td {
 	background: url(../images/score_sm_3.png) no-repeat;
 }
 
-.score_sm_4 {
+.score_sm_4 td {
 	background: url(../images/score_sm_4.png) no-repeat;
 }
 
-.score_sm_5 {
+.score_sm_5 td {
 	background: url(../images/score_sm_5.png) no-repeat;
 }
 
-.score_sm_na {
+.score_sm_na td {
 	background: url(../images/score_sm_na.png) no-repeat;
 }
 
@@ -1817,6 +1803,41 @@ a.ls_tab_add_sbscr {
 	margin: 0 0 0 8px;
 }
 
+/* DASHBOARD DETAILS */
+
+.dashboard_detail {
+    padding-top: 10px;
+}
+
+.dashboard_detail_tabs {
+    vertical-align: top;
+    padding: 40px 0 0 10px;
+}
+
+
+.dashboard_detail_tabs .tab{
+	background: url(../images/ls_tab_off.png) no-repeat; 
+    height:31px;
+    width:125px;
+}
+.dashboard_detail_tabs .selected_tab{
+	background: url(../images/ls_tab_on.png) no-repeat;
+}
+.dashboard_detail_tabs a{    
+	text-decoration: none;
+	color: #000;
+	font-size: 10px;
+}
+
+.dashboard_detail_tabs img {
+    border: none;
+    padding:0 5px 0 8px;
+}
+
+.dashboard_detail_content{
+}
+
+
 /* SCORE BOX */
 .scorebox {
 	width: 220px;
@@ -2234,9 +2255,17 @@ ul#pagination {
 }
 
 /*  NEW AND IMPROVED DATA GRID STYLES */
-.datagrid table {
-	padding: 0;
-	margin: 0 auto 1.5em auto;
+.datagrid_panel {
+    padding: 1px;
+    overflow: auto;
+}
+
+.datagrid_panel > table {
+    width: 100%;
+}
+
+.datagrid {
+    margin: 1px;
 	/*border: 1px solid #8BAD37; */
 	/*border-collapse:collapse; This doesn't work in IE*/
 }
@@ -2264,9 +2293,7 @@ ul#pagination {
 .datagrid th {
 	font: bold 10px Verdana, Arial, Helvetica, sans-serif;
 	color: #333;
-	border-right: 1px solid #8BAD37;
-	border-bottom: 1px solid #8BAD37;
-	border-top: 1px solid #8BAD37;
+	border: 1px solid #8BAD37;
 	letter-spacing: 1px;
 	/* text-transform: uppercase; */
 	text-align: left;
@@ -2301,7 +2328,7 @@ ul#pagination {
 	background: #8EAF3C url(../images/bg_header_up.jpg) no-repeat 0 0;
 }
 
-.datagrid table thead th.forwardSort a,.datagrid table thead th.reverseSort a
+.datagrid thead th.forwardSort a,.datagrid thead th.reverseSort a
 	{
 	color: #000;
 	text-decoration: none;
@@ -2324,7 +2351,7 @@ These styles should be added when very long tables are expected
 	background: transparent;
 }
 
-.datagrid td a {
+.datagrid > tbody > tr > td > a {
 	text-decoration: underline;
 	color: #333;
 }
@@ -2341,7 +2368,7 @@ These styles should be added when very long tables are expected
         background:transparent;
         }
 */
-.datagrid td {
+.datagrid > tbody > tr > td {
 	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
 	/*border-right: 1px solid #8BAD37; 
         border-bottom: 1px solid #8BAD37; */
@@ -2436,12 +2463,12 @@ These styles should be added when very long tables are expected
 	background: transparent;
 }
 
-.datatable td a {
+.datatable > tbody > tr > td a {
 	text-decoration: underline;
 	color: #333;
 }
 
-.datatable td {
+.datatable > tbody > tr > td {
 	font: normal 10px Verdana, Arial, Helvetica, sans-serif;
 	border-bottom: 1px solid #8BAD37;
 	padding: 6px 12px 6px 12px;
@@ -3068,12 +3095,10 @@ ul.legend {
 /*  Trend table definitions  */
 .trendTableOdd {
 	background: #ffffff;
-	border-bottom: 1px solid #8BAD37;
 }
 
 .trendTableEven {
 	background: #EBFFCA;
-	border-bottom: 1px solid #8BAD37;
 }
 
 .trendTableScore {
@@ -3082,16 +3107,21 @@ ul.legend {
 }
 
 /* Regular table definitions */
+
+.rich-table {
+    border: 1px solid #8BAD37;
+}
+
+.rich-table-cell {
+    border-bottom: 1px solid #8BAD37;
+}
+
 .tableOdd {
 	background: #ffffff;
-	border-right: 1px solid #8BAD37;
-	border-bottom: 1px solid #8BAD37;
 }
 
 .tableEven {
 	background: #EBFFCA;
-	border-right: 1px solid #8BAD37;
-	border-bottom: 1px solid #8BAD37;
 }
 
 .selectedRow {
@@ -3101,6 +3131,7 @@ ul.legend {
 
 .extdt-cell {
 	border-right: 1px solid #8BAD37;
+	border-left: 1px solid #8BAD37;
 	border-bottom: 1px solid #8BAD37;
 }
 

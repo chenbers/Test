@@ -1,155 +1,98 @@
-<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:c="http://java.sun.com/jstl/core" xmlns:iwi="http://pro.tiwi.com/jsf" xmlns:h="http://java.sun.com/jsf/html" xmlns:t="http://myfaces.apache.org/tomahawk">
-
-
-    <c:if test="#{empty inFlyOut}">
-        <c:set var="inFlyOut" value="false" />
-    </c:if>
-    <c:choose>
-        <c:when test="#{inFlyOut == 'true'}">
-            <c:set var="displayTable" value="true" />
-            <c:set var="flyOutImage" value="ico_minimize.png" />
-        </c:when>
-        <c:otherwise>
-            <c:set var="displayTable" value="false" />
-            <c:set var="flyOutImage" value="ico_expand.png" />
-        </c:otherwise>
-    </c:choose>
-
-    <div class="panel_nw">
-
-    <div class="panel_title" style="z-index: #{zorder}"><span class="gas">#{title}</span> <c:choose>
-        <c:when test="#{empty flyNavRule}">
-            <ui:include src="/includes/dateLinks.xhtml">
-                <ui:param name="ajaxForm" value="mpgForm" />
-                <ui:param name="ajaxStatusID" value="mpg_status" />
-                <ui:param name="reRenderList" value="mpgPanel,mpgTableForm,#{ajaxForm}" />
-                <ui:param name="duration" value="#{mpgDurationBean.duration}" />
-                <ui:param name="thirtyDaysOn" value="#{mpgDurationBean.styleClass30Days}" />
-                <ui:param name="threeMonthsOn" value="#{mpgDurationBean.styleClass3Months}" />
-                <ui:param name="sixMonthsOn" value="#{mpgDurationBean.styleClass6Months}" />
-                <ui:param name="twelveMonthsOn" value="#{mpgDurationBean.styleClass12Months}" />
-            </ui:include>
-        </c:when>
-        <c:otherwise>
-            <ui:include src="/includes/dateLinksWithFlyOut.xhtml">
-                <ui:param name="ajaxForm" value="mpgForm" />
-                <ui:param name="ajaxStatusID" value="mpg_status" />
-                <ui:param name="reRenderList" value="mpg_script,mpgTableForm,#{ajaxForm}" />
-                <ui:param name="duration" value="#{mpgDurationBean.duration}" />
-                <ui:param name="thirtyDaysOn" value="#{mpgDurationBean.styleClass30Days}" />
-                <ui:param name="threeMonthsOn" value="#{mpgDurationBean.styleClass3Months}" />
-                <ui:param name="sixMonthsOn" value="#{mpgDurationBean.styleClass6Months}" />
-                <ui:param name="twelveMonthsOn" value="#{mpgDurationBean.styleClass12Months}" />
-                <ui:param name="flyNavRule" value="#{flyNavRule}" />
-                <ui:param name="flyOutImage" value="#{flyOutImage}" />
-                <ui:param name="flySelectedTab" value="mpg_full_screen" />
-                <ui:param name="groupID" value="#{navigationBean.groupID}" />
-                <ui:param name="report" value="MPG_GROUP" />
-            </ui:include>
-        </c:otherwise>
-    </c:choose></div>
-    </div>
-    <div class="panel_w">
-    <div class="panel_content"><!-- Start xy graph --> 
-    <div id="mpgPanel" style="height:#{xyheight};width:#{xywidth}">
-        <div id="mpgChartDiv" align="center"></div>
-        <rich:panel id="mpg_script" >
-	        <h:inputHidden value="#{barDef}" id="mpgDataElement" />
-	        <script type="text/javascript">
-	            var targetElement = document.getElementById("mpgDataElement");
-	              
-	            var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/ScrollColumn2D.swf", "ChartId", "#{xywidth}", "#{xyheight}", "0", "0");                                
-	            chart.setDataXML(targetElement.value);
-	            chart.setTransparent(true);          
-	            chart.render("mpgChartDiv");
-	          </script>
-          </rich:panel>
-          
-    </div> <!-- End xy graph --> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	            xmlns:ui="http://java.sun.com/jsf/facelets"
+	            xmlns:h="http://java.sun.com/jsf/html" 
+	            xmlns:rich="http://richfaces.org/rich"
+	            xmlns:a4j="http://richfaces.org/a4j"
+	            xmlns:c="http://java.sun.com/jstl/core"
+	            xmlns:f="http://java.sun.com/jsf/core"
+	            xmlns:t="http://myfaces.apache.org/tomahawk"
+	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
+        
+    <t:saveState value="#{mpgBean.duration}"/>
+    <t:saveState value="#{mpgBean.groupID}"/>
+    <a4j:outputPanel id="mpgOutputPanel">    
+        <div class="panel_nw">    
+            <div class="panel_title" style="z-index: #{zorder}"><span class="gas">#{messages.mpg_title}</span>   
+                <pretty:urlbuffer var="detailedDashboardLink" mappingId="detailedDashboard">
+                    <f:param value="#{mpgBean.groupID}"/>
+                    <f:param value="MPG"/>
+                </pretty:urlbuffer> 
+                <pretty:urlbuffer var="dashboardLink" mappingId="dashboard">
+                    <f:param value="#{mpgBean.groupID}"/>
+                </pretty:urlbuffer>
+                <ui:include src="/includes/durationPanelHeader.xhtml">
+                    <ui:param name="reRenderList" value="mpgOutputPanel" />
+                    <ui:param name="duration" value="#{mpgBean.duration}" />
+                    <ui:param name="report" value="MPG_GROUP" />
+                    <ui:param name="id" value="mpg" />
+                    <ui:param name="groupID" value="#{mpgBean.groupID}"/>
+                    <ui:param name="detailLink" value="#{maximized ? requestScope.dashboardLink : requestScope.detailedDashboardLink}"/>
+                    <ui:param name="maximized" value="#{not empty maximized ? maximized : false}"/>
+                </ui:include>
+            </div>
+        </div>
+        <div class="panel_w">
+            <div class="panel_content">
+                <!-- Start xy graph --> 
+                <div style="height:#{xyheight};width:#{xywidth}">
+                    <div id="mpgChartDiv" align="center"></div>
+                    <rich:panel>
+            	        <h:inputHidden value="#{barDef}" id="mpgDataElement" />
+            	        <script type="text/javascript">
+            	            var targetElement = document.getElementById("mpgDataElement");
+            	              
+            	            var chart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/ScrollColumn2D.swf", "ChartId", "#{xywidth}", "#{xyheight}", "0", "0");                                
+            	            chart.setDataXML(targetElement.value);
+            	            chart.setTransparent(true);          
+            	            chart.render("mpgChartDiv");
+            	          </script>
+                     </rich:panel>                  
+                </div> 
+                <!-- End xy graph --> 
     
-    
-     <rich:panel rendered="#{displayTable}">
-        <div class="spacer"></div>
+                 <c:if test="#{includeTable}">
+                     <rich:panel>
+                        <div class="spacer"></div>            
+                        <a4j:form id="mpgTableForm" ajaxSubmit="true" reRender="mpgTable">
+                            <rich:dataTable id="mpgTable" value="#{mpgBean.mpgEntities}" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" width="100%">
+                                <rich:column sortBy="#{item.entityName}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{messages.mpg_name_column}" />
+                                    </f:facet>
+                                    <pretty:link mappingId="dashboard">
+                                        <f:param value="#{item.groupID}"/>
+                                        <h:outputText value="#{item.entityName}" />
+                                    </pretty:link>
+                                </rich:column>
+                                <rich:column sortBy="#{item.entity.lightValue}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{messages.mpg_light_column}" />
+                                    </f:facet>
+                                    <h:outputText value="#{item.lightValue}" />
+                                </rich:column>
+                                <rich:column sortBy="#{item.entity.mediumValue}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{messages.mpg_medium_column}" />
+                                    </f:facet>
+                                    <h:outputText value="#{item.mediumValue}" />
+                                </rich:column>
+                                <rich:column sortBy="#{item.entity.heavyValue}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{messages.mpg_heavy_column}" />
+                                    </f:facet>
+                                    <h:outputText value="#{item.heavyValue}" />
+                                </rich:column>
+                            </rich:dataTable>
+                        </a4j:form>        
+                    </rich:panel>
+                </c:if>
+            </div>
+        </div>
+        
+        <div class="panel_sw">
+            <div class="panel_statusbar"/>
+        </div>
+    </a4j:outputPanel>
+    <!-- End xy graph --> 
 
-        <a4j:form id="mpgTableForm" ajaxSubmit="true" reRender="mpgTable">
-            <rich:dataTable id="mpgTable" value="#{mpgBean.mpgEntities}" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" width="100%">
-                <rich:column sortBy="#{item.entity.entityName}">
-                    <f:facet name="header">
-                        <h:outputText value="#{messages.mpg_name_column}" />
-                    </f:facet>
-                    <h:outputLink value="#{item.goTo}">
-                        <h:outputText value="#{item.entity.entityName}" />
-                    </h:outputLink>
-                </rich:column>
-                <rich:column sortBy="#{item.entity.lightValue}">
-                    <f:facet name="header">
-                        <h:outputText value="#{messages.mpg_light_column}" />
-                    </f:facet>
-                    <h:outputText value="#{item.entity.lightValue}" />
-                </rich:column>
-                <rich:column sortBy="#{item.entity.mediumValue}">
-                    <f:facet name="header">
-                        <h:outputText value="#{messages.mpg_medium_column}" />
-                    </f:facet>
-                    <h:outputText value="#{item.entity.mediumValue}" />
-                </rich:column>
-                <rich:column sortBy="#{item.entity.heavyValue}">
-                    <f:facet name="header">
-                        <h:outputText value="#{messages.mpg_heavy_column}" />
-                    </f:facet>
-                    <h:outputText value="#{item.entity.heavyValue}" />
-                </rich:column>
-            </rich:dataTable>
-        </a4j:form>
-
-
-    </rich:panel></div>
-    </div>
-
-    <div class="panel_sw">
-    <div class="panel_statusbar"></div>
-    </div>
 </ui:composition>
-<!-- 
-<a4j:form id="mpgTableForm" ajaxSubmit="true" reRender="mpgTable, mpgTableTopScroller">
-            <t:dataTable id="mpgTable" value="#{mpgBean.mpgEntities}" var="item" forceIdIndexFormula="#{item.entity.entityID}" styleClass="datagrid" sortable="true"
-                sortAscending="#{mpgBean.ascending}" sortColumn="#{mpgBean.sortColumnName}" preserveSort="true" rowClasses="tableOdd,tableEven" border="0" cellpadding="0"
-                cellspacing="" width="100%">
-                <t:column defaultSorted="true" sortable="true">
-                    <f:facet name="header">
-                        <t:commandSortHeader columnName="Name" propertyName="entity.entityName" arrow="true">
-                            <h:outputText value="Name" />
-                        </t:commandSortHeader>
-                    </f:facet>
-                    <h:outputLink value="#{item.goTo}">
-                        <h:outputText value="#{item.entity.entityName}" />
-                    </h:outputLink>
-                </t:column>
-                <t:column sortable="true">
-                    <f:facet name="header">
-                        <t:commandSortHeader columnName="Light" arrow="true">
-                            <h:outputText value="Light" />
-                        </t:commandSortHeader>
-                    </f:facet>
-                    <h:outputText value="#{item.entity.lightValue}" />
-                </t:column>
-                <t:column sortable="true">
-                    <f:facet name="header">
-                        <t:commandSortHeader columnName="Medium" arrow="true">
-                            <h:outputText value="Medium" />
-                        </t:commandSortHeader>
-                    </f:facet>
-                    <h:outputText value="#{item.entity.mediumValue}" />
-                </t:column>
-                <t:column sortable="true">
-                    <f:facet name="header">
-                        <t:commandSortHeader columnName="Heavy" arrow="true">
-                            <h:outputText value="Heavy" />
-                        </t:commandSortHeader>
-                    </f:facet>
-                    <h:outputText value="#{item.entity.heavyValue}" />
-                </t:column>
-            </t:dataTable>
-        </a4j:form>
-         -->

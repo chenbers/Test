@@ -405,7 +405,7 @@ public class GraphicUtil {
         return sb.toString();
 	}	
 	
-	public static String createMpgXML(List<MpgEntityPkg> entities)
+	public static String createMpgXML(List<MpgEntity> entities)
 	{
 
         String lightString = MessageUtil.getMessageString("mpg_light_column");
@@ -420,8 +420,7 @@ public class GraphicUtil {
         sb.append("<categories>");
         for (int i = 0; i < numEntities; i++)
         {
-            MpgEntityPkg pkg = entities.get(i);
-            MpgEntity entity = pkg.getEntity();
+            MpgEntity entity = entities.get(i);
             light[i] = entity.getLightValue();
             medium[i] = entity.getMediumValue();
             heavy[i] = entity.getHeavyValue();

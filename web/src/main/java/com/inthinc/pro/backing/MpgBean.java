@@ -1,38 +1,36 @@
 package com.inthinc.pro.backing;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-
-import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 import org.richfaces.model.Ordering;
 
-import com.inthinc.pro.backing.model.GroupHierarchy;
-import com.inthinc.pro.backing.model.GroupLevel;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.MpgDAO;
+import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.util.GraphicUtil;
-import com.inthinc.pro.wrapper.MpgEntityPkg;
-
 public class MpgBean extends BaseBean
 {
-
     private static final Logger logger = Logger.getLogger(MpgBean.class);
-
     private MpgDAO mpgDAO;
-    private NavigationBean navigation;
-    private DurationBean durationBean;
+    private GroupDAO groupDAO;
+    // private NavigationBean navigation;
+    //private DurationBean durationBean;
+    private Duration duration = Duration.DAYS;
     private ReportRenderer reportRenderer;
     private ReportCriteriaService reportCriteriaService;
-    private List<MpgEntityPkg> mpgEntities;
+    // private List<MpgEntityPkg> mpgEntities;
+    private List<MpgEntity> mpgEntities;
     private String barDef;
     private Ordering sortOrder = Ordering.ASCENDING;
+    private Integer groupID;
+    private Group group;
 
     public void init()
     {
@@ -75,12 +73,10 @@ public class MpgBean extends BaseBean
         StringBuffer sb = new StringBuffer();
         // Control parameters
         sb.append(GraphicUtil.getBarControlParameters());
-        logger.debug("getting scores for groupID: " + this.navigation.getGroupID());
+        logger.debug("getting scores for groupID: " + groupID);
         sb.append(GraphicUtil.createMpgXML(getMpgEntities()));
         sb.append("</chart>");
-
         return sb.toString();
-
         // Bar parameters
         // MAKE SURE YOU LOAD REAL DATA SO, IF THERE IS FEWER OBSERVATIONS
         // THAN THE REQUESTED INTERVAL I.E. 22 DAYS WHEN YOU NEED 30, YOU
@@ -88,24 +84,54 @@ public class MpgBean extends BaseBean
         // sb.append(GraphicUtil.createFakeBarData());
     }
 
-    public NavigationBean getNavigation()
+    public Integer getGroupID()
     {
-        return navigation;
+        return groupID;
     }
 
-    public void setNavigation(NavigationBean navigation)
+    public void setGroupID(Integer groupID)
     {
-        this.navigation = navigation;
+        this.groupID = groupID;
+        //TODO: pull group from group hierarchy
+        group = groupDAO.findByID(groupID);
     }
 
-    public DurationBean getDurationBean()
+    public Group getGroup()
     {
-        return durationBean;
+        return group;
     }
 
-    public void setDurationBean(DurationBean durationBean)
+    public void setGroup(Group group)
     {
-        this.durationBean = durationBean;
+        this.group = group;
+    }
+
+    // public NavigationBean getNavigation()
+    // {
+    // return navigation;
+    // }
+    //
+    // public void setNavigation(NavigationBean navigation)
+    // {
+    // this.navigation = navigation;
+    // }
+//    public DurationBean getDurationBean()
+//    {
+//        return durationBean;
+//    }
+//
+//    public void setDurationBean(DurationBean durationBean)
+//    {
+//        this.durationBean = durationBean;
+//    }
+    public Duration getDuration()
+    {
+        return duration;
+    }
+
+    public void setDuration(Duration duration)
+    {
+        this.duration = duration;
     }
 
     public MpgDAO getMpgDAO()
@@ -118,57 +144,69 @@ public class MpgBean extends BaseBean
         this.mpgDAO = mpgDAO;
     }
 
-    public List<MpgEntityPkg> getMpgEntities()
+    public GroupDAO getGroupDAO()
     {
-
-        // If the mpgEntities list is null, then populate it
-        if (mpgEntities == null)
-        {
-            mpgEntities = new ArrayList<MpgEntityPkg>();
-
-            // Populate the table
-            String contextPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
-
-            List<MpgEntity> list = mpgDAO.getEntities(navigation.getGroup(), durationBean.getDuration());
-            Collections.sort(list);
-            for (MpgEntity entity : list)
-            {
-                MpgEntityPkg pkg = new MpgEntityPkg();
-                pkg.setEntity(entity);
-                GroupHierarchy groupHierarchy = getGroupHierarchy();
-                GroupLevel groupLevel = groupHierarchy.getGroupLevel(entity.getEntityID());
-                if (groupLevel == null)
-                {
-                    groupLevel = groupHierarchy.getGroupLevel(entity.getGroupID());
-                }
-                if (groupLevel != null)
-                {
-                    pkg.setGoTo(contextPath + groupLevel.getUrl() + "?groupID=" + entity.getEntityID());
-                    this.mpgEntities.add(pkg);
-                }
-            }
-        }
-
-        return mpgEntities;
+        return groupDAO;
     }
 
-    public void setMpgEntities(List<MpgEntityPkg> mpgEntities)
+    public void setGroupDAO(GroupDAO groupDAO)
+    {
+        this.groupDAO = groupDAO;
+    }
+
+    // public List<MpgEntityPkg> getMpgEntities()
+    // {
+    //
+    // // If the mpgEntities list is null, then populate it
+    // if (mpgEntities == null)
+    // {
+    // mpgEntities = new ArrayList<MpgEntityPkg>();
+    //
+    // // Populate the table
+    // String contextPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+    //
+    // List<MpgEntity> list = mpgDAO.getEntities(navigation.getGroup(), duration);
+    // Collections.sort(list);
+    // for (MpgEntity entity : list)
+    // {
+    // MpgEntityPkg pkg = new MpgEntityPkg();
+    // pkg.setEntity(entity);
+    // GroupHierarchy groupHierarchy = getGroupHierarchy();
+    // GroupLevel groupLevel = groupHierarchy.getGroupLevel(entity.getEntityID());
+    // if (groupLevel == null)
+    // {
+    // groupLevel = groupHierarchy.getGroupLevel(entity.getGroupID());
+    // }
+    // if (groupLevel != null)
+    // {
+    // pkg.setGoTo(contextPath + groupLevel.getUrl() + "?groupID=" + entity.getEntityID());
+    // this.mpgEntities.add(pkg);
+    // }
+    // }
+    // }
+    //
+    // return mpgEntities;
+    // }
+    public List<MpgEntity> getMpgEntities()
+    {
+        return mpgDAO.getEntities(group, duration);
+    }
+
+    public void setMpgEntities(List<MpgEntity> mpgEntities)
     {
         this.mpgEntities = mpgEntities;
     }
 
     public String exportToPDF()
     {
-
         ReportCriteria reportCriteria = buildReportCriteria();
         reportRenderer.exportSingleReportToPDF(reportCriteria, getFacesContext());
-        
         return null;
     }
 
     public ReportCriteria buildReportCriteria()
     {
-        ReportCriteria reportCriteria = reportCriteriaService.getMpgReportCriteria(navigation.getGroupID(), durationBean.getDuration());
+        ReportCriteria reportCriteria = reportCriteriaService.getMpgReportCriteria(getGroupID(), getDuration());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setLocale(getUser().getLocale());
         return reportCriteria;
@@ -193,73 +231,4 @@ public class MpgBean extends BaseBean
     {
         return reportCriteriaService;
     }
-
-    // public String sortAction()
-    // {
-    // Collections.sort(mpgEntities, new Comparator<MpgEntityPkg>()
-    // {
-    // public int compare(MpgEntityPkg mpg1, MpgEntityPkg mpg2)
-    // {
-    // MpgEntity e1 = mpg1.getEntity();
-    // MpgEntity e2 = mpg2.getEntity();
-    // if (sortColumnName == null)
-    // {
-    // return 0;
-    // }
-    // if (sortColumnName.equals(nameColumnName))
-    // {
-    // if (e1.getEntityName() == null && e2.getEntityName() != null)
-    // return -1;
-    // if (e2.getEntityName() == null && e1.getEntityName() != null)
-    // return 1;
-    // if (e1.getEntityName() == null && e2.getEntityName() == null)
-    // return 0;
-    //
-    // if (e1.getEntityName().equalsIgnoreCase("Hardware"))
-    // return isAcending() ? -1 : 1;
-    // if (e2.getEntityName().equalsIgnoreCase("Hardware"))
-    // return isAcending() ? 1 : -1;
-    //
-    // return isAcending() ? e1.getEntityName().toUpperCase().compareTo(e2.getEntityName().toUpperCase()) : e2.getEntityName().toUpperCase().compareTo(
-    // e1.getEntityName().toUpperCase());
-    // }
-    // if (sortColumnName.equals(lightColumnName))
-    // {
-    // if (e1.getLightValue() == null && e2.getLightValue() != null)
-    // return -1;
-    // if (e2.getLightValue() == null && e1.getLightValue() != null)
-    // return 1;
-    // if (e1.getLightValue() == null && e2.getLightValue() == null)
-    // return 0;
-    //
-    // return isAcending() ? e1.getLightValue().compareTo(e2.getLightValue()) : e2.getLightValue().compareTo(e1.getLightValue());
-    // }
-    // if (sortColumnName.equals(mediumColumnName))
-    // {
-    // if (e1.getMediumValue() == null && e2.getMediumValue() != null)
-    // return -1;
-    // if (e2.getMediumValue() == null && e1.getMediumValue() != null)
-    // return 1;
-    // if (e1.getMediumValue() == null && e2.getMediumValue() == null)
-    // return 0;
-    //
-    // return isAcending() ? e1.getMediumValue().compareTo(e2.getMediumValue()) : e2.getMediumValue().compareTo(e1.getMediumValue());
-    // }
-    // if (sortColumnName.equals(heavyColumnName))
-    // {
-    // if (e1.getHeavyValue() == null && e2.getHeavyValue() != null)
-    // return -1;
-    // if (e2.getHeavyValue() == null && e1.getHeavyValue() != null)
-    // return 1;
-    // if (e1.getHeavyValue() == null && e2.getHeavyValue() == null)
-    // return 0;
-    //
-    // return isAcending() ? e1.getHeavyValue().compareTo(e2.getHeavyValue()) : e2.getHeavyValue().compareTo(e1.getHeavyValue());
-    // }
-    // return 0;
-    // }
-    // });
-    // table.setValue(mpgEntities);
-    // return null;
-    // }
 }

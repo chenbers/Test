@@ -121,12 +121,11 @@
                                     styleClass="datascroller">
                                 </rich:datascroller>
 								
-								<div class="datagrid" style="width: 925px; overflow: auto; ">               
+								<div class="datagrid_panel" style="width: 925px;">               
                                     <rich:dataTable value="#{vehicleReportBean.vehicleData}" id="items"
                                         var="item" styleClass="datagrid"
-                                        rowClasses="tableOdd,tableEven" cellspacing="1" 
-                                        rows="#{vehicleReportBean.numRowsPerPg}"
-                                        width="100%">
+                                        rowClasses="tableOdd,tableEven"
+                                        rows="#{vehicleReportBean.numRowsPerPg}">
                                         
                                         <rich:column rendered="#{vehicleReportBean.tableColumns['group'].visible}" 
                                             sortBy="#{item.group}">

@@ -1,0 +1,101 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+
+
+    <ui:param name="includeDetailsLink" value="#{not empty includeDetailsLink ? includeDetailsLink : true}"/>
+    <ui:param name="detailImage" value="#{maximized ? '/images/ico_minimize.png': '/images/ico_expand.png'}"/>
+        <a4j:form id="${id}_form" style="display: inline;">
+            <a4j:region>
+                <table class="panel_links" cellpadding="0" cellspacing="0"> 
+                    <tr>
+                        <td>
+                            <a4j:status>
+                                <f:facet name="start">                    
+                                    <h:graphicImage styleClass="ajax_status" value="/images/progress2.gif"/>
+                                </f:facet>
+                            </a4j:status> 
+                            <a4j:commandLink 
+                                title="#{messages.duration_days}" 
+                                immediate="true" 
+                                styleClass="#{duration eq 'DAYS' ? 'selected_duration' : ''}" 
+                                reRender="#{reRenderList}" 
+                                value="#{messages.duration_days}">
+                                <a4j:actionparam name="duration" assignTo="#{duration}" value="DAYS" />
+                            </a4j:commandLink>
+                            <rich:spacer width="5"/>
+                            <a4j:commandLink 
+                                title="#{messages.duration_three}" 
+                                immediate="true" 
+                                styleClass="#{duration eq 'THREE' ? 'selected_duration' : ''}" 
+                                reRender="#{reRenderList}" 
+                                value="#{messages.duration_three}">
+                                <a4j:actionparam name="duration" assignTo="#{duration}" value="THREE" />
+                            </a4j:commandLink> 
+                            <rich:spacer width="5"/>
+                            <a4j:commandLink 
+                                title="#{messages.duration_six}" 
+                                immediate="true" 
+                                styleClass="#{duration eq 'SIX' ? 'selected_duration' : ''}" 
+                                reRender="#{reRenderList}" 
+                                value="#{messages.duration_six}">
+                                <a4j:actionparam name="duration" assignTo="#{duration}" value="SIX" />
+                            </a4j:commandLink> 
+                            <rich:spacer width="5"/>
+                            <a4j:commandLink 
+                                title="#{messages.duration_twelve}" 
+                                immediate="true" 
+                                styleClass="#{duration eq 'TWELVE' ? 'selected_duration' : ''}" 
+                                reRender="#{reRenderList}" 
+                                value="#{messages.duration_twelve}">
+                                <a4j:actionparam name="duration" assignTo="#{duration}" value="TWELVE" />
+                            </a4j:commandLink> 
+                        </td>
+                
+                    <c:if test="#{includeDetailsLink}">
+                        <td>
+                            <h:graphicImage id="#{id}_toolImage" value="/images/ico_tools.png" style="cursor: pointer;" />
+                            <a href="#{detailLink}"><h:graphicImage value="#{detailImage}" /></a>
+            
+                            <!--
+                                IMPORTANT!!!!!!! Regarless of what the z-index is set to on this context menu, the parent div has a relative position. So if you're having trouble getting the
+                                contextMenu to come to the front in IE6, then you will have to set the z-index on the parent div with the relative position. (This will be the div with
+                                style="position:relative")
+                            -->
+                            <rich:contextMenu event="onclick" attatched="true" disableDefaultMenu="false" submitMode="server" attachTo="#{id}_toolImage">
+                                <rich:menuItem ajaxSingle="true" rendered="true" iconDisabled="/images/ico_email.gif" icon="/images/ico_email.gif"
+                                    onclick="Richfaces.showModalPanel('#{id}_singleEmail');return false;" value="#{messages.contextMenu_email_this_report}" id="#{id}_email" submitMode="none">
+                                </rich:menuItem>
+                
+                                <rich:menuItem ajaxSingle="true" iconDisabled="/images/ico_pdf.gif" disabled="#{report eq null?'true':'false'}" icon="/images/ico_pdf.gif"
+                                    value="#{messages.contextMenu_export_to_pdf}" action="#{reportRendererBean.exportReportToPDF}" id="export">
+                                    <a4j:actionparam assignTo="#{reportRendererBean.report}" value="#{report}" />
+                                    <a4j:actionparam assignTo="#{duration}" converter="SimpleBeanConverter" value="#{duration}" />
+                                </rich:menuItem>
+                            </rich:contextMenu>
+                
+                            <h:outputText id="#{id}_modalPanel">
+                                <ui:include src="/includes/emailReportPopup.xhtml">
+                                    <ui:param name="report" value="#{report}" />
+                                    <ui:param name="duration" value="#{duration}" />
+                                    <ui:param name="id" value="#{id}_singleEmail" />
+                                    <ui:param name="reportBean" value="#{reportRendererBean}" />
+                                </ui:include>
+                            </h:outputText>
+                        </td>
+                    </c:if>
+                
+                    </tr>
+                </table>
+            </a4j:region>
+        </a4j:form>
+
+</ui:composition>

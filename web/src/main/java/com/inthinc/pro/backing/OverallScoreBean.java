@@ -8,7 +8,9 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.ScoreDAO;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -33,8 +35,12 @@ public class OverallScoreBean extends BaseBean
     };
 
     private ScoreDAO scoreDAO;
+    private GroupDAO groupDAO;
+    
+    private Integer groupID;
+    private Group group;
   
-    private NavigationBean navigation;
+//    private NavigationBean navigation;
     private DurationBean durationBean;
     private ReportRenderer reportRenderer;
     private ReportCriteriaService reportCriteriaService;
@@ -70,10 +76,10 @@ public class OverallScoreBean extends BaseBean
         List<ScoreableEntity> s = null;
         try
         {
-            logger.debug("getting scores for groupID: " + this.navigation.getGroupID());
+            logger.debug("getting scores for groupID: " + groupID);
             // s = scoreDAO.getScores(this.navigation.getGroupID(),
             // startDate, endDate, ScoreType.SCORE_OVERALL_PERCENTAGES);
-            s = scoreDAO.getScoreBreakdown(this.navigation.getGroupID(), durationBean.getDuration(), scoreType);
+            s = scoreDAO.getScoreBreakdown(groupID, durationBean.getDuration(), scoreType);
         }
         catch (Exception e)
         {
@@ -112,7 +118,7 @@ public class OverallScoreBean extends BaseBean
     private void init()
     {
         logger.debug("init()");
-        Integer groupID = navigation.getGroupID();
+//        Integer groupID = navigation.getGroupID();
         if (groupID == null)
         {
             groupID = getUser().getGroupID();
@@ -171,16 +177,50 @@ public class OverallScoreBean extends BaseBean
         this.scoreDAO = scoreDAO;
     }
 
-    // NAVIGATION BEAN PROPERTIES
-    public NavigationBean getNavigation()
+    public GroupDAO getGroupDAO()
     {
-        return navigation;
+        return groupDAO;
     }
 
-    public void setNavigation(NavigationBean navigation)
+    public void setGroupDAO(GroupDAO groupDAO)
     {
-        this.navigation = navigation;
+        this.groupDAO = groupDAO;
+        //TODO: pull group from group hierarchy
+        group = groupDAO.findByID(groupID);
     }
+
+    public Integer getGroupID()
+    {
+        return groupID;
+    }
+
+    public void setGroupID(Integer groupID)
+    {
+        this.groupID = groupID;
+        //TODO: pull group from group hierarchy
+        group = groupDAO.findByID(groupID);
+    }
+
+    public Group getGroup()
+    {
+        return group;
+    }
+
+    public void setGroup(Group group)
+    {
+        this.group = group;
+    }
+
+//    // NAVIGATION BEAN PROPERTIES
+//    public NavigationBean getNavigation()
+//    {
+//        return navigation;
+//    }
+//
+//    public void setNavigation(NavigationBean navigation)
+//    {
+//        this.navigation = navigation;
+//    }
 
     public DurationBean getDurationBean()
     {
@@ -237,7 +277,7 @@ public class OverallScoreBean extends BaseBean
     }
     
     public ReportCriteria buildReportCriteria(){
-        ReportCriteria reportCriteria = reportCriteriaService.getOverallScoreReportCriteria(navigation.getGroupID(), durationBean.getDuration());
+        ReportCriteria reportCriteria = reportCriteriaService.getOverallScoreReportCriteria(groupID, durationBean.getDuration());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setLocale(getUser().getLocale());
         return reportCriteria;

@@ -26,11 +26,13 @@
 	
  -->
 
-    <div class="#{scoreStyle} score"> 
-        <h:outputText value="#{score}" converter="ScoreConverter" rendered="#{empty scoreMappingId}"/>
-        <pretty:link mappingId="#{scoreMappingId}"  rendered="#{not empty scoreMappingId}">
-            <h:outputText value="#{score}" converter="ScoreConverter" />
-        <f:param value="#{item}" />
-        </pretty:link> 
-    </div>
+    <h:panelGrid columns="1" styleClass="#{scoreStyle} score" cellpadding="0" cellspacing="0"> 
+        <h:panelGroup>
+            <h:outputText value="#{score}" converter="ScoreConverter" rendered="#{empty scoreMappingId}"/>
+            <pretty:link mappingId="#{scoreMappingId}"  rendered="#{not empty scoreMappingId}">
+                <h:outputText value="#{score}" converter="ScoreConverter" />
+                <f:param value="#{item}" />
+            </pretty:link>
+        </h:panelGroup> 
+    </h:panelGrid>
 </ui:composition>

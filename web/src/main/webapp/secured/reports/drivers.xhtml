@@ -120,16 +120,14 @@
                                       page="#{driverReportBean.page}">
                                  </rich:datascroller> 
                              
-                                <div class="datagrid" style="width: 925px; overflow: auto; ">
+                                <div class="datagrid_panel" style="width: 925px;">
 
                                     <rich:dataTable value="#{driverReportBean.driverData}" 
                                          id="items" 
                                          var="item" 
                                          styleClass="datagrid" 
                                          rowClasses="tableOdd,tableEven" 
-                                         cellspacing="1" 
-                                         rows="#{driverReportBean.numRowsPerPg}" 
-                                         width="100%">
+                                         rows="#{driverReportBean.numRowsPerPg}" >
                                 
                                         <rich:column rendered="#{driverReportBean.tableColumns['group'].visible}" sortBy="#{item.group}">
                                             <f:facet name="header">

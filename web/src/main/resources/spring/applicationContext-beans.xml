@@ -28,6 +28,12 @@
     <bean id="dashBoardBean" class="com.inthinc.pro.backing.DashBoardBean" scope="request" parent="baseBean">
         <property name="groupDAO" ref="groupDAO"/>
         <property name="navigationBean" ref="navigationBean"/>
+        <property name="mpgBean" ref="mpgBean"/>
+        <property name="overallScoreBean" ref="overallScoreBean"/>
+    </bean>
+    <bean id="dashBoardDetailBean" class="com.inthinc.pro.backing.DashBoardDetailBean" scope="request" parent="baseBean">
+        <property name="mpgBean" ref="mpgBean"/>
+        <property name="overallScoreBean" ref="overallScoreBean"/>
     </bean>
     
     <!-- Printing Reports -->
@@ -63,10 +69,11 @@
 
     <!-- Beans used in fusion chart displays -->
     <bean id="trendBean" class="com.inthinc.pro.backing.TrendBean" scope="request" parent="baseBean" init-method="init">
-        <property name="scoreDAO" ref="scoreDAO"></property>
+        <property name="scoreDAO" ref="scoreDAO"/>
+        <property name="reportRenderer" ref="reportRenderer"/>
+        <property name="reportCriteriaService" ref="reportCriteriaService"/>
         <property name="navigation" ref="navigationBean"></property>
-        <property name="reportRenderer" ref="reportRenderer"></property>
-        <property name="reportCriteriaService" ref="reportCriteriaService"></property>
+        <!-- <property name="durationBean" ref="trendDurationBean"/> -->
     </bean>
     <bean id="trendFlyoutBean" class="com.inthinc.pro.backing.TrendFlyoutBean" scope="request" parent="baseBean">
         <property name="scoreDAO" ref="scoreDAO"></property>
@@ -75,18 +82,24 @@
     </bean>        
     <bean id="trendTable" class="com.inthinc.pro.backing.ui.TrendTable" scope="request"></bean>
     <bean id="overallScoreBean" class="com.inthinc.pro.backing.OverallScoreBean" scope="request" parent="baseBean">
-        <property name="scoreDAO" ref="scoreDAO"></property>
-        <property name="navigation" ref="navigationBean"></property>
-        <property name="reportRenderer" ref="reportRenderer"></property>
-        <property name="reportCriteriaService" ref="reportCriteriaService"></property>
+        <property name="scoreDAO" ref="scoreDAO"/>
+        <property name="groupDAO" ref="groupDAO"/>
+        <property name="reportRenderer" ref="reportRenderer"/>
+        <property name="reportCriteriaService" ref="reportCriteriaService"/>
         <property name="durationBean" ref="overallScoreDurationBean"/>
+        <!-- 
+        <property name="navigation" ref="navigationBean"></property>
+         -->
     </bean>
     <bean id="mpgBean" class="com.inthinc.pro.backing.MpgBean" scope="request" parent="baseBean">
-        <property name="mpgDAO" ref="mpgDAO"></property>
-        <property name="navigation" ref="navigationBean"></property>
-        <property name="reportRenderer" ref="reportRenderer"></property>
-        <property name="reportCriteriaService" ref="reportCriteriaService"></property>
+        <property name="mpgDAO" ref="mpgDAO"/>
+        <property name="groupDAO" ref="groupDAO"/>
+        <property name="reportRenderer" ref="reportRenderer"/>
+        <property name="reportCriteriaService" ref="reportCriteriaService"/>
+        <!--  
         <property name="durationBean" ref="mpgDurationBean"/>
+        <property name="navigation" ref="navigationBean"></property>
+        -->
     </bean>
     <bean id="fleetOverviewBean" class="com.inthinc.pro.backing.FleetOverviewBean" scope="request" parent="baseBean">
         <property name="scoreDAO" ref="scoreDAO"></property>
@@ -402,6 +415,7 @@
     
     <!-- Duration Beans -->
     <bean id="overallScoreDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
+    <bean id="trendDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
     <bean id="driverDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
     <bean id="driverSeatBeltDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
     <bean id="driverSpeedDurationBean" class="com.inthinc.pro.backing.DurationBean" scope="session"/>
