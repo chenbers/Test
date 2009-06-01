@@ -2351,7 +2351,7 @@ These styles should be added when very long tables are expected
 	background: transparent;
 }
 
-.datagrid > tbody > tr > td > a {
+.datagrid a {
 	text-decoration: underline;
 	color: #333;
 }

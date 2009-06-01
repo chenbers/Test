@@ -1,20 +1,23 @@
 <ui:composition 
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:rich="http://richfaces.org/rich"
-	xmlns:f="http://java.sun.com/jsf/core"
-  	xmlns:iwi="http://pro.tiwi.com/jsf"
-	xmlns:h="http://java.sun.com/jsf/html">
+            xmlns="http://www.w3.org/1999/xhtml" 
+            xmlns:ui="http://java.sun.com/jsf/facelets"
+            xmlns:h="http://java.sun.com/jsf/html" 
+            xmlns:rich="http://richfaces.org/rich"
+            xmlns:a4j="http://richfaces.org/a4j"
+            xmlns:iwi="http://pro.tiwi.com/jsf"
+            xmlns:c="http://java.sun.com/jstl/core"
+            xmlns:f="http://java.sun.com/jsf/core"
+            xmlns:t="http://myfaces.apache.org/tomahawk"
+            xmlns:pretty="http://ocpsoft.com/prettyfaces">
+            
 <h:panelGroup layout="block" styleClass="">
 	<h:panelGroup layout="block" styleClass="panel_nw">
 		<h:panelGroup layout="block" styleClass="panel_title">
 			<span class="event">#{messages.team_safetyEvents}</span>
 			<span class="panel_links">
-			<h:form id="teamEventsShowAllForm">
-				<h:commandLink action="#{eventsBean.showAllFromRecentAction}" value="#{messages.team_safetyEventsShowAll}">				
-					<f:setPropertyActionListener value="#{navigationBean.group}" target="#{searchCoordinationBean.group}" />								
-				</h:commandLink>
-			</h:form>	
+            <pretty:link mappingId="safety">
+                #{messages.team_safetyEventsShowAll}
+            </pretty:link>
 			</span>
 		</h:panelGroup>	
 	</h:panelGroup>					
@@ -36,9 +39,10 @@
 						<f:facet name="header" >
 							<h:outputText value="#{messages.team_safetyEventsDriver}" />
 						</f:facet>
-						<a4j:htmlCommandLink action="go_driver" value="#{event.driverName}">
-							<f:setPropertyActionListener value="#{event.event.driver}" target="#{teamRecentEventsBean.navigation.driver}" />
-						</a4j:htmlCommandLink>
+                        <pretty:link mappingId="driverPerformance">
+                            <f:param value="#{event.event.driver.driverID}"/>
+                            #{event.driverName}
+                        </pretty:link>
 					</rich:column>
 					<rich:column width="25%">
 						<f:facet name="header">
@@ -50,11 +54,11 @@
 						<f:facet name="header">
 							<h:outputText value="" />
 						</f:facet>
-						<!-- TODO:  should go to a page based on the event type -->
-						<a4j:htmlCommandLink action="#{teamRecentEventsBean.detailsAction}" value="#{messages.team_safetyEventsDetails}">
-							<f:setPropertyActionListener value="#{event.event.driver}" target="#{teamRecentEventsBean.navigation.driver}" />
-							<f:setPropertyActionListener value="#{event}" target="#{teamRecentEventsBean.selectedEvent}" />							
-						</a4j:htmlCommandLink>
+                        <!-- this is a hack, <c:if> would not work inside <rich:column>, need to come back to this and clean it up -->            
+                        <pretty:link mappingId="#{event.event.eventType == 'SPEEDING' ? 'driverPerformanceSpeed' : 'driverPerformanceSeatBelt'}">
+                            <f:param value="#{event.event.driver.driverID}"/>
+                            #{messages.team_safetyEventsDetails}
+                        </pretty:link>
 					</rich:column>
 			</rich:dataTable>
 			</h:form>		

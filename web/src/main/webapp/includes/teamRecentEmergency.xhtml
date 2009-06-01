@@ -1,20 +1,23 @@
 <ui:composition 
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:rich="http://richfaces.org/rich"
-	xmlns:f="http://java.sun.com/jsf/core"
-  	xmlns:iwi="http://pro.tiwi.com/jsf"
-	xmlns:h="http://java.sun.com/jsf/html">
+            xmlns="http://www.w3.org/1999/xhtml" 
+            xmlns:ui="http://java.sun.com/jsf/facelets"
+            xmlns:h="http://java.sun.com/jsf/html" 
+            xmlns:rich="http://richfaces.org/rich"
+            xmlns:a4j="http://richfaces.org/a4j"
+            xmlns:iwi="http://pro.tiwi.com/jsf"
+            xmlns:c="http://java.sun.com/jstl/core"
+            xmlns:f="http://java.sun.com/jsf/core"
+            xmlns:t="http://myfaces.apache.org/tomahawk"
+            xmlns:pretty="http://ocpsoft.com/prettyfaces">
+            
 <h:panelGroup layout="block" styleClass="">
 	<h:panelGroup layout="block" styleClass="panel_nw">
 		<h:panelGroup layout="block" styleClass="panel_title">
 			<span class="diagnostics_title">#{messages.team_emergency}</span>
 			<span class="panel_links">
-			<h:form id="teamDiagnosticsShowAllForm">
-				<h:commandLink action="#{emergencyBean.showAllFromRecentAction}" value="#{messages.team_emergencyShowAll}">				
-					<f:setPropertyActionListener value="#{navigationBean.group}" target="#{searchCoordinationBean.group}" />								
-				</h:commandLink>
-			</h:form>	
+            <pretty:link mappingId="emergency">
+                #{messages.team_emergencyShowAll}
+            </pretty:link>
 			</span>
 		</h:panelGroup>	
 	</h:panelGroup>					
@@ -37,18 +40,19 @@
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_emergencyVehicle}" />
 						</f:facet>
-						<!-- TODO:  hook up vehicle link to correct page -->
-						<a4j:htmlCommandLink action="go_vehicle" value="#{event.vehicleName}">
- 							<f:setPropertyActionListener value="#{event.event.vehicle}" target="#{navigationBean.vehicle}" />
-						</a4j:htmlCommandLink>
+                        <pretty:link mappingId="vehiclePerformance">
+                            <f:param value="#{event.event.vehicle.vehicleID}"/>
+                            #{event.vehicleName}
+                        </pretty:link>
 					</rich:column>
 					<rich:column width="25%">
 						<f:facet name="header">
 							<h:outputText value="#{messages.team_emergencyDriver}" />
 						</f:facet>
-						<a4j:htmlCommandLink action="go_driver" value="#{event.driverName}">
-							<f:setPropertyActionListener value="#{event.event.driver}" target="#{teamWarningsBean.navigation.driver}" />
-						</a4j:htmlCommandLink>
+                        <pretty:link mappingId="driverPerformance">
+                            <f:param value="#{event.event.driver.driverID}"/>
+                            #{event.driverName}
+                        </pretty:link>
 					</rich:column>
 					<rich:column width="25%">
 						<f:facet name="header">
@@ -60,9 +64,9 @@
 						<f:facet name="header">
 							<h:outputText value="" />
 						</f:facet>
-						<a4j:htmlCommandLink action="go_emergency" value="#{messages.team_emergencyDetails}">
-							<f:setPropertyActionListener value="#{event.event}" target="#{emergencyBean.eventFilter}" />
-						</a4j:htmlCommandLink>
+                        <pretty:link mappingId="emergency">
+                            #{messages.team_emergencyDetails}
+                        </pretty:link>
 					</rich:column>
 			</rich:dataTable>
 			</h:form>		
