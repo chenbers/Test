@@ -180,9 +180,9 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     private ArrayList<SelectItem> getNotifyPicked()
     {
         final ArrayList<SelectItem> notifyPeople = new ArrayList<SelectItem>();
-        if (getItem().getNotifyUserIDs() != null)
+        if (getItem().getNotifyPersonIDs() != null)
         {
-            for (final Integer id : getItem().getNotifyUserIDs())
+            for (final Integer id : getItem().getNotifyPersonIDs())
             {
                 //final User user = userDAO.findByID(id);
                 final Person person = personDAO.findByID(id);
@@ -300,7 +300,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         for (final SelectItem item : getPeoplePicker().getPicked())
             userIDs.add((Integer) item.getValue());
         
-        getItem().setNotifyUserIDs(userIDs);
+        getItem().setNotifyPersonIDs(userIDs);
 
         return super.save();
     }
@@ -435,9 +435,9 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
 
         public void setVehicleTypes(List<VehicleType> vehicleTypes);
 
-        public List<Integer> getNotifyUserIDs();
+        public List<Integer> getNotifyPersonIDs();
 
-        public void setNotifyUserIDs(List<Integer> notifyUserIDs);
+        public void setNotifyPersonIDs(List<Integer> notifyUserIDs);
 
         public List<String> getEmailTo();
 

@@ -929,7 +929,7 @@ public class MockData
             for (final Object person : people)
                 if (randomInt(0, 5) == 0)
                     personIDs.add(((Person) person).getPersonID());
-            alert.setNotifyUserIDs(personIDs);
+            alert.setNotifyPersonIDs(personIDs);
 
             // e-mail to
             if (randomInt(0, 1) == 1)
@@ -1038,7 +1038,7 @@ public class MockData
             for (final Object person : people)
                 if (randomInt(0, 5) == 0)
                     personIDs.add(((Person) person).getPersonID());
-            flag.setNotifyUserIDs(personIDs);
+            flag.setNotifyPersonIDs(personIDs);
 
             // e-mail to
             if (randomInt(0, 1) == 1)

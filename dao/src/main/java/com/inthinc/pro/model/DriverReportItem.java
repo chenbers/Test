@@ -27,7 +27,6 @@ public class DriverReportItem extends BaseEntity implements Comparable<DriverRep
     private String styleSeatBelt;
     private Driver driver;   
     private Integer groupID;
-    private String goTo;
     
     public String getGroup()
     {
@@ -148,14 +147,6 @@ public class DriverReportItem extends BaseEntity implements Comparable<DriverRep
     public void setGroupID(Integer groupID)
     {
         this.groupID = groupID;
-    }
-    public String getGoTo()
-    {
-        return goTo;
-    }
-    public void setGoTo(String goTo)
-    {
-        this.goTo = goTo;
     }
     
     public String getSpeedScoreAsString()

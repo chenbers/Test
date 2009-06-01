@@ -8,6 +8,11 @@ import com.inthinc.pro.dao.annotations.Column;
 
 public abstract class BaseAlert extends BaseEntity
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    
     @Column(updateable = false)
     public static final int     MIN_TOD           = 0;
     @Column(updateable = false)
@@ -28,7 +33,7 @@ public abstract class BaseAlert extends BaseEntity
     private List<Integer>       driverIDs;
     private List<Integer>       vehicleIDs;
     private List<VehicleType>   vehicleTypes;
-    private List<Integer>       notifyUserIDs;
+    private List<Integer>       notifyPersonIDs;
     private List<String>        emailTo;
     private Status  status;
 
@@ -51,7 +56,7 @@ public abstract class BaseAlert extends BaseEntity
         this.driverIDs = driverIDs;
         this.vehicleIDs = vehicleIDs;
         this.vehicleTypes = vehicleTypes;
-        this.notifyUserIDs = notifyPersonIDs;
+        this.notifyPersonIDs = notifyPersonIDs;
         this.emailTo = emailTo;
         this.status = Status.ACTIVE;
     }
@@ -164,16 +169,16 @@ public abstract class BaseAlert extends BaseEntity
         this.vehicleTypes = vehicleTypes;
     }
 
-    public List<Integer> getNotifyUserIDs()
+    public List<Integer> getNotifyPersonIDs()
     {
-        if (notifyUserIDs == null)
+        if (notifyPersonIDs == null)
             return new ArrayList<Integer>();
-        return notifyUserIDs;
+        return notifyPersonIDs;
     }
 
-    public void setNotifyUserIDs(List<Integer> notifyUserIDs)
+    public void setNotifyPersonIDs(List<Integer> notifyUserIDs)
     {
-        this.notifyUserIDs = notifyUserIDs;
+        this.notifyPersonIDs = notifyUserIDs;
     }
 
     public List<String> getEmailTo()

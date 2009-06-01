@@ -541,7 +541,7 @@ public class AlertMessagesTest
                 zoneAlert.setGroupIDs(emptyList);
                 zoneAlert.setVehicleIDs(emptyList);
                 zoneAlert.setVehicleTypes(emptyVTList);
-                zoneAlert.setNotifyUserIDs(emptyList);
+                zoneAlert.setNotifyPersonIDs(emptyList);
                 zoneAlert.setEmailTo(emailList);
                 break;
             case VEHICLES:
@@ -549,7 +549,7 @@ public class AlertMessagesTest
                 zoneAlert.setGroupIDs(emptyList);
                 zoneAlert.setVehicleIDs(vehicleIDs);
                 zoneAlert.setVehicleTypes(emptyVTList);
-                zoneAlert.setNotifyUserIDs(emptyList);
+                zoneAlert.setNotifyPersonIDs(emptyList);
                 zoneAlert.setEmailTo(emailList);
                 break;
             case VEHICLE_TYPES:
@@ -557,7 +557,7 @@ public class AlertMessagesTest
                 zoneAlert.setGroupIDs(emptyList);
                 zoneAlert.setVehicleIDs(emptyList);
                 zoneAlert.setVehicleTypes(vehicleTypes);
-                zoneAlert.setNotifyUserIDs(emptyList);
+                zoneAlert.setNotifyPersonIDs(emptyList);
                 zoneAlert.setEmailTo(emailList);
                 break;
             case GROUPS:
@@ -565,7 +565,7 @@ public class AlertMessagesTest
                 zoneAlert.setGroupIDs(groupIDList);
                 zoneAlert.setVehicleIDs(emptyList);
                 zoneAlert.setVehicleTypes(emptyVTList);
-                zoneAlert.setNotifyUserIDs(emptyList);
+                zoneAlert.setNotifyPersonIDs(emptyList);
                 zoneAlert.setEmailTo(emailList);
                 break;
             case CONTACT_INFO:
@@ -573,7 +573,7 @@ public class AlertMessagesTest
                 zoneAlert.setGroupIDs(groupIDList);
                 zoneAlert.setVehicleIDs(emptyList);
                 zoneAlert.setVehicleTypes(emptyVTList);
-                zoneAlert.setNotifyUserIDs(notifyUserIDs);
+                zoneAlert.setNotifyPersonIDs(notifyUserIDs);
                 zoneAlert.setEmailTo(new ArrayList<String>());
                 break;
             case ANY_TIME:
@@ -581,7 +581,7 @@ public class AlertMessagesTest
                 zoneAlert.setGroupIDs(groupIDList);
                 zoneAlert.setVehicleIDs(null);
                 zoneAlert.setVehicleTypes(null);
-                zoneAlert.setNotifyUserIDs(null);
+                zoneAlert.setNotifyPersonIDs(null);
                 zoneAlert.setStartTOD(0);
                 zoneAlert.setStopTOD(0);
                 zoneAlert.setEmailTo(emailList);
@@ -624,7 +624,7 @@ public class AlertMessagesTest
                 redFlagAlert.setGroupIDs(emptyList );
                 redFlagAlert.setVehicleIDs(emptyList );
                 redFlagAlert.setVehicleTypes(emptyVTList );
-                redFlagAlert.setNotifyUserIDs(emptyList);
+                redFlagAlert.setNotifyPersonIDs(emptyList);
                 redFlagAlert.setEmailTo(emailList);
                 break;
             case VEHICLES:
@@ -632,7 +632,7 @@ public class AlertMessagesTest
                 redFlagAlert.setGroupIDs(emptyList );
                 redFlagAlert.setVehicleIDs(vehicleIDs);
                 redFlagAlert.setVehicleTypes(emptyVTList );
-                redFlagAlert.setNotifyUserIDs(emptyList);
+                redFlagAlert.setNotifyPersonIDs(emptyList);
                 redFlagAlert.setEmailTo(emailList);
                 break;
             case VEHICLE_TYPES:
@@ -640,7 +640,7 @@ public class AlertMessagesTest
                 redFlagAlert.setGroupIDs(emptyList );
                 redFlagAlert.setVehicleIDs(emptyList );
                 redFlagAlert.setVehicleTypes(vehicleTypes);
-                redFlagAlert.setNotifyUserIDs(emptyList);
+                redFlagAlert.setNotifyPersonIDs(emptyList);
                 redFlagAlert.setEmailTo(emailList);
                 break;
             case GROUPS:
@@ -648,7 +648,7 @@ public class AlertMessagesTest
                 redFlagAlert.setGroupIDs(groupIDList);
                 redFlagAlert.setVehicleIDs(emptyList );
                 redFlagAlert.setVehicleTypes(emptyVTList );
-                redFlagAlert.setNotifyUserIDs(emptyList);
+                redFlagAlert.setNotifyPersonIDs(emptyList);
                 redFlagAlert.setEmailTo(emailList);
                 break;
             case CONTACT_INFO:
@@ -656,7 +656,7 @@ public class AlertMessagesTest
                 redFlagAlert.setGroupIDs(groupIDList);
                 redFlagAlert.setVehicleIDs(emptyList );
                 redFlagAlert.setVehicleTypes(emptyVTList );
-                redFlagAlert.setNotifyUserIDs(notifyUserIDs);
+                redFlagAlert.setNotifyPersonIDs(notifyUserIDs);
                 redFlagAlert.setEmailTo(new ArrayList<String>());
                 break;
             case ANY_TIME:
@@ -664,7 +664,7 @@ public class AlertMessagesTest
                 redFlagAlert.setGroupIDs(groupIDList);
                 redFlagAlert.setVehicleIDs(emptyList );
                 redFlagAlert.setVehicleTypes(emptyVTList );
-                redFlagAlert.setNotifyUserIDs(emptyList);
+                redFlagAlert.setNotifyPersonIDs(emptyList);
                 redFlagAlert.setEmailTo(emailList);
                 redFlagAlert.setStartTOD(0);
                 redFlagAlert.setStopTOD(1439);
