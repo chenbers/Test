@@ -8,7 +8,6 @@
 	            xmlns:t="http://myfaces.apache.org/tomahawk"
 	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
         
-    <t:saveState value="#{mpgBean.duration}"/>
     <t:saveState value="#{mpgBean.groupID}"/>
     <a4j:outputPanel id="mpgOutputPanel">    
         <div class="panel_nw">    
@@ -22,7 +21,7 @@
                 </pretty:urlbuffer>
                 <ui:include src="/includes/durationPanelHeader.xhtml">
                     <ui:param name="reRenderList" value="mpgOutputPanel" />
-                    <ui:param name="duration" value="#{mpgBean.duration}" />
+                    <ui:param name="duration" value="#{mpgDurationBean.duration}" />
                     <ui:param name="report" value="MPG_GROUP" />
                     <ui:param name="id" value="mpg" />
                     <ui:param name="groupID" value="#{mpgBean.groupID}"/>

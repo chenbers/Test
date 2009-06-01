@@ -44,16 +44,18 @@
                                     </pretty:link>
                                 </td>
                             </tr>
-                            <tr>
-                                <td class="tab #{dashBoardDetailBean.tabType == 'MAP' ? 'selected_tab' : ''}">
-                                    <pretty:link mappingId="detailedDashboard">
-                                        <f:param value="#{dashBoardDetailBean.groupID}"/>
-                                        <f:param value="MAP"/>
-                                        <h:graphicImage value="/images/ico_map.png" />
-                                        <span>#{messages.detail_fleet_map}</span>
-                                    </pretty:link>
-                                </td>
-                            </tr>
+                            <c:if test="#{dashBoardDetailBean.group.type != 'FLEET'}">
+                                <tr>
+                                    <td class="tab #{dashBoardDetailBean.tabType == 'MAP' ? 'selected_tab' : ''}">
+                                        <pretty:link mappingId="detailedDashboard">
+                                            <f:param value="#{dashBoardDetailBean.groupID}"/>
+                                            <f:param value="MAP"/>
+                                            <h:graphicImage value="/images/ico_map.png" />
+                                            <span>#{messages.detail_fleet_map}</span>
+                                        </pretty:link>
+                                    </td>
+                                </tr>
+                            </c:if>
                             <tr>
                                 <td class="tab #{dashBoardDetailBean.tabType == 'MPG' ? 'selected_tab' : ''}">
                                     <pretty:link mappingId="detailedDashboard">
@@ -67,290 +69,292 @@
                         </table>   
                     </td>
                     <td>                
-                        <t:panelStack selectedPanel="#{dashBoardDetailBean.tabType}">
-                        
-                            <t:panelGroup id="MPG" styleClass="dashboard_detail_content">
-                                <ui:include src="/includes/mpgChart.xhtml"> 
-                                    <ui:param name="barDef" value="#{mpgBean.barDef}"/>  
-                                    <ui:param name="xyheight" value="600"/>
-                                    <ui:param name="xywidth" value="800"/>  
-                                    <ui:param name="includeTable" value="true"/>
-                                    <ui:param name="maximized" value="true"/>
-                                    <ui:param name="zorder" value="6"/> 
-                                </ui:include>
-                            </t:panelGroup>
+                        <div class="dashboard_detail_content">
+                            <c:choose>
+                                <c:when test="#{dashBoardDetailBean.tabType == 'MPG'}">
+                                    <ui:include src="/includes/mpgChart.xhtml"> 
+                                        <ui:param name="barDef" value="#{mpgBean.barDef}"/>  
+                                        <ui:param name="xyheight" value="600"/>
+                                        <ui:param name="xywidth" value="800"/>  
+                                        <ui:param name="includeTable" value="true"/>
+                                        <ui:param name="maximized" value="true"/>
+                                        <ui:param name="zorder" value="6"/> 
+                                    </ui:include>
+                                </c:when>
+                                
+                                <c:when test="#{dashBoardDetailBean.tabType == 'MAP'}">
+                                    <ui:include src="/includes/liveFleetMap.xhtml">
+                                        <ui:param name="mapheight" value="height:800px"/>
+                                        <ui:param name="mapwidth" value="width:800px"/>
+                                        <ui:param name="mapxcenter" value="#{navigationBean.group.mapLat}"/>
+                                        <ui:param name="mapycenter" value="#{navigationBean.group.mapLng}"/>
+                                        <ui:param name="mapzoom" value="#{navigationBean.group.mapZoom}"/>
+                                        <ui:param name="flyNavRule" value="go_division" />
+                                        <ui:param name="flyOutImage" value="ico_minimize.png" />
+                                    </ui:include>
+                                </c:when>>
+                                
+                                <c:when test="#{dashBoardDetailBean.tabType == 'TREND'}">
+                                    <a4j:outputPanel id="trendOutputPanel">
+                                        <div class="">
+                                            <div class="panel_nw">
                             
-                            <t:panelGroup id="MAP" styleClass="dashboard_detail_content">
-                                <ui:include src="/includes/liveFleetMap.xhtml">
-                                    <ui:param name="mapheight" value="height:800px"/>
-                                    <ui:param name="mapwidth" value="width:800px"/>
-                                    <ui:param name="mapxcenter" value="#{navigationBean.group.mapLat}"/>
-                                    <ui:param name="mapycenter" value="#{navigationBean.group.mapLng}"/>
-                                    <ui:param name="mapzoom" value="#{navigationBean.group.mapZoom}"/>
-                                    <ui:param name="flyNavRule" value="go_division" />
-                                    <ui:param name="flyOutImage" value="ico_minimize.png" />
-                                </ui:include>
-                            </t:panelGroup>
+                                                <div class="panel_title">
+                                                    <span class="line">Trend</span>
+                                                        <pretty:urlbuffer var="dashboardLink" mappingId="dashboard">
+                                                            <f:param value="#{navigationBean.groupID}"/>
+                                                        </pretty:urlbuffer>
+                                                        <ui:include src="/includes/durationPanelHeader.xhtml">
+                                                            <ui:param name="reRenderList" value="trendOutputPanel" />
+                                                            <ui:param name="duration" value="#{navigationDurationBean.duration}" />
+                                                            <ui:param name="groupID" value="#{navigationBean.groupID}"/>
+                                                            <ui:param name="report" value="TREND" />
+                                                            <ui:param name="id" value="trend" />
+                                                            <ui:param name="detailLink" value="#{requestScope.dashboardLink}"/>
+                                                            <ui:param name="maximized" value="true"/>
+                                                        </ui:include>
+                                                </div>
+                                            </div>
+                                                <div class="panel_w">
+                                                
+                                                  <div class="panel_content">
+                                                    <!-- Start xy graph --> 
+                                                    <rich:panel style="height:600;width:600">
+                                                        <div id="chartdiv2" align="center"></div>
+                                                        <script type="text/javascript">
+                                                            var trendChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSLine.swf", "TrendChartId", "800", "600", "0", "1");                                                       
+                                                            trendChart.setDataXML("<chart></chart>");
+                                                            trendChart.setTransparent(true);
+                                                            trendChart.render("chartdiv2");
+                                                        </script>
+                                                    </rich:panel>   
+                                                        <!-- Start xy graph -->     
+                                                    <rich:panel id="xypanel">
+                                                            <h:inputHidden value="#{trendFlyoutBean.lineDef}" id="trendDataInputHidden" />
+                                                            <script type="text/javascript">
+                                                                 var trendDataElement = document.getElementById("trendDataInputHidden");
                             
-                            <t:panelGroup id="TREND" styleClass="dashboard_detail_content">
-                                <a4j:outputPanel id="trendOutputPanel">
-                                    <div class="">
-                                        <div class="panel_nw">
-                        
-                                            <div class="panel_title">
-                                                <span class="line">Trend</span>
+                                                                 //When this is called the first time nothing will occurr. This behavior is expected and desired.
+                                                                 chartObj = getChartFromId("TrendChartId");
+                                                                
+                                                                 chartObj.setDataXML(trendDataElement.value);
+                                                        
+                            
+                                                                 function FC_Rendered(DOMId){
+                                                                    
+                                                                     if (DOMId=="TrendChartId"){
+                                                                        chartObj = getChartFromId("TrendChartId");
+                                                                                                                
+                                                                        chartObj.setDataXML(trendDataElement.value);
+                                                                        return;
+                                                                     }
+                                                                  }
+                                                            </script>
+                                                    </rich:panel> 
+                                                    <!-- End xy graph -->
+                            
+                                    <div class="spacer"></div>
+                                             
+                            
+                                    <div class="datagrid">
+                                    
+                                            <a4j:form id="viewControl" reRender="trendDateLinks,xypanel,countPanel,hiddenField12,items">
+                                        
+                                                    
+                                                    <h:inputHidden id="hiddenGroupID" value="#{navigationBean.groupID}"/>                                               
+                                            
+                                                    <rich:dataTable value="#{trendFlyoutBean.scoreableEntities}" id="items"
+                                                        var="item" styleClass="datagrid"
+                                                        rowClasses="trendTableOdd,trendTableEven" 
+                                                        cellspacing="1" width="100%">
+                            
+                                                        <rich:column width="20">
+                            
+                                                                <h:selectBooleanCheckbox id="showCheckBox" value="#{item.show}" >
+                                                                    <a4j:support event="onclick" reRender="trendDateLinks,xypanel,countPanel,hiddenField12">
+                                                                        <f:setPropertyActionListener target="#{trendFlyoutBean.animateChartData}" value="FALSE"/>       
+                                                                        <f:param name="selected" value="#{item.se.entityID}">
+                                                                        </f:param>
+                                                                    </a4j:support>
+                                                                </h:selectBooleanCheckbox>
+                                                            
+                                                        </rich:column>      
+                            
+                                                        <!-- Data -->
+                                                        <rich:column width="20">
+                                                            <f:facet name="header">
+                                                                <h:outputText value=" " />
+                                                            </f:facet>
+                                                            <rich:spacer width="17" height="17"
+                                                                style="background-color:#{item.colorKey};border-style:solid;border-width:1px;border-color:#000000"></rich:spacer>
+                                                        </rich:column>
+                                                        <rich:column sortBy="#{item.se.identifier}">
+                                                            <f:facet name="header">
+                                                                <h:outputText value="#{messages.trendReport_header_divisionTeam}"/>
+                                                            </f:facet>
+                                                            <h:outputLink value="#{item.goTo}">
+                                                                <h:outputText value="#{item.se.identifier}" />
+                                                            </h:outputLink>                         
+                            
+                                                        </rich:column>
+                                                            
+                                                        <rich:column width="73" sortBy="#{item.se.score}">
+                                                            <f:facet name="header">
+                                                                <h:outputText value="#{messages.trendReport_header_score}"/>
+                                                            </f:facet>
+                                                            
+                                                            <ui:include src="/includes/scoreBox.xhtml">  
+                                                                <ui:param name="scoreStyle" value="#{item.style}"/>                                  
+                                                                <ui:param name="score" value="#{item.se.score}"/>                                    
+                                                            </ui:include> 
+                                                                            
+                                                        </rich:column>
+                                                    </rich:dataTable>   
+                                                    
+                                                                
+                                        </a4j:form>
+                            
+                                                <!-- End Trend table -->
+                                                
+                                                <!-- END PANEL -->
+                                                    
+                                                    </div>
+                                                    
+                                                  </div>
+                                                </div>
+                                            <div class="panel_sw">
+                                                <div class="panel_statusbar"></div>
+                                            </div>
+                                        </div>
+                                        </a4j:outputPanel>
+                                </c:when>>
+                                
+                                
+                                <c:when test="#{dashBoardDetailBean.tabType == 'OVERALL'}">
+                                    <!-- START PANEL -->
+                                       <a4j:outputPanel id="overallOutputPanel">
+                            			<div class="">
+                            				<div class="panel_nw">
+                            					<div class="panel_title">
+                            						<span class="overall">Overall Score </span>       
                                                     <pretty:urlbuffer var="dashboardLink" mappingId="dashboard">
                                                         <f:param value="#{navigationBean.groupID}"/>
                                                     </pretty:urlbuffer>
+                                                        
                                                     <ui:include src="/includes/durationPanelHeader.xhtml">
-                                                        <ui:param name="reRenderList" value="trendOutputPanel" />
-                                                        <ui:param name="duration" value="#{navigationDurationBean.duration}" />
+                                                        <ui:param name="reRenderList" value="overallOutputPanel" />
+                                                        <ui:param name="duration" value="#{duration}" />
+                                                        <ui:param name="report" value="OVERALL_SCORE" />
+                                                        <ui:param name="id" value="overall" />
                                                         <ui:param name="groupID" value="#{navigationBean.groupID}"/>
-                                                        <ui:param name="report" value="TREND" />
-                                                        <ui:param name="id" value="trend" />
                                                         <ui:param name="detailLink" value="#{requestScope.dashboardLink}"/>
                                                         <ui:param name="maximized" value="true"/>
                                                     </ui:include>
-                                            </div>
-                                        </div>
-                                            <div class="panel_w">
-                                            
-                                              <div class="panel_content">
-                                                <!-- Start xy graph --> 
-                                                <rich:panel style="height:600;width:600">
-                                                    <div id="chartdiv2" align="center"></div>
-                                                    <script type="text/javascript">
-                                                        var trendChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSLine.swf", "TrendChartId", "800", "600", "0", "1");                                                       
-                                                        trendChart.setDataXML("<chart></chart>");
-                                                        trendChart.setTransparent(true);
-                                                        trendChart.render("chartdiv2");
-                                                    </script>
-                                                </rich:panel>   
-                                                    <!-- Start xy graph -->     
-                                                <rich:panel id="xypanel">
-                                                        <h:inputHidden value="#{trendFlyoutBean.lineDef}" id="trendDataInputHidden" />
-                                                        <script type="text/javascript">
-                                                             var trendDataElement = document.getElementById("trendDataInputHidden");
-                        
-                                                             //When this is called the first time nothing will occurr. This behavior is expected and desired.
-                                                             chartObj = getChartFromId("TrendChartId");
-                                                            
-                                                             chartObj.setDataXML(trendDataElement.value);
                                                     
-                        
-                                                             function FC_Rendered(DOMId){
-                                                                
-                                                                 if (DOMId=="TrendChartId"){
-                                                                    chartObj = getChartFromId("TrendChartId");
-                                                                                                            
-                                                                    chartObj.setDataXML(trendDataElement.value);
-                                                                    return;
-                                                                 }
-                                                              }
-                                                        </script>
-                                                </rich:panel> 
-                                                <!-- End xy graph -->
-                        
-                                <div class="spacer"></div>
-                                         
-                        
-                                <div class="datagrid">
-                                
-                                        <a4j:form id="viewControl" reRender="trendDateLinks,xypanel,countPanel,hiddenField12,items">
-                                    
-                                                
-                                                <h:inputHidden id="hiddenGroupID" value="#{navigationBean.groupID}"/>                                               
-                                        
-                                                <rich:dataTable value="#{trendFlyoutBean.scoreableEntities}" id="items"
-                                                    var="item" styleClass="datagrid"
-                                                    rowClasses="trendTableOdd,trendTableEven" 
-                                                    cellspacing="1" width="100%">
-                        
-                                                    <rich:column width="20">
-                        
-                                                            <h:selectBooleanCheckbox id="showCheckBox" value="#{item.show}" >
-                                                                <a4j:support event="onclick" reRender="trendDateLinks,xypanel,countPanel,hiddenField12">
-                                                                    <f:setPropertyActionListener target="#{trendFlyoutBean.animateChartData}" value="FALSE"/>       
-                                                                    <f:param name="selected" value="#{item.se.entityID}">
-                                                                    </f:param>
-                                                                </a4j:support>
-                                                            </h:selectBooleanCheckbox>
-                                                        
-                                                    </rich:column>      
-                        
-                                                    <!-- Data -->
-                                                    <rich:column width="20">
-                                                        <f:facet name="header">
-                                                            <h:outputText value=" " />
-                                                        </f:facet>
-                                                        <rich:spacer width="17" height="17"
-                                                            style="background-color:#{item.colorKey};border-style:solid;border-width:1px;border-color:#000000"></rich:spacer>
-                                                    </rich:column>
-                                                    <rich:column sortBy="#{item.se.identifier}">
-                                                        <f:facet name="header">
-                                                            <h:outputText value="#{messages.trendReport_header_divisionTeam}"/>
-                                                        </f:facet>
-                                                        <h:outputLink value="#{item.goTo}">
-                                                            <h:outputText value="#{item.se.identifier}" />
-                                                        </h:outputLink>                         
-                        
-                                                    </rich:column>
-                                                        
-                                                    <rich:column width="73" sortBy="#{item.se.score}">
-                                                        <f:facet name="header">
-                                                            <h:outputText value="#{messages.trendReport_header_score}"/>
-                                                        </f:facet>
-                                                        
-                                                        <ui:include src="/includes/scoreBox.xhtml">  
-                                                            <ui:param name="scoreStyle" value="#{item.style}"/>                                  
-                                                            <ui:param name="score" value="#{item.se.score}"/>                                    
-                                                        </ui:include> 
-                                                                        
-                                                    </rich:column>
-                                                </rich:dataTable>   
-                                                
-                                                            
-                                    </a4j:form>
-                        
-                                            <!-- End Trend table -->
-                                            
-                                            <!-- END PANEL -->
-                                                
                                                 </div>
-                                                
-                                              </div>
-                                            </div>
-                                        <div class="panel_sw">
-                                            <div class="panel_statusbar"></div>
-                                        </div>
-                                    </div>
-                                    </a4j:outputPanel>
-                            </t:panelGroup>
-                            <t:panelGroup id="OVERALL" styleClass="dashboard_detail_content">
-                                <!-- START PANEL -->
-                                   <a4j:outputPanel id="overallOutputPanel">
-                        			<div class="">
-                        				<div class="panel_nw">
-                        					<div class="panel_title">
-                        						<span class="overall">Overall Score </span>       
-                                                <pretty:urlbuffer var="dashboardLink" mappingId="dashboard">
-                                                    <f:param value="#{navigationBean.groupID}"/>
-                                                </pretty:urlbuffer>
-                                                    
-                                                <ui:include src="/includes/durationPanelHeader.xhtml">
-                                                    <ui:param name="reRenderList" value="overallOutputPanel" />
-                                                    <ui:param name="duration" value="#{duration}" />
-                                                    <ui:param name="report" value="OVERALL_SCORE" />
-                                                    <ui:param name="id" value="overall" />
-                                                    <ui:param name="groupID" value="#{navigationBean.groupID}"/>
-                                                    <ui:param name="detailLink" value="#{requestScope.dashboardLink}"/>
-                                                    <ui:param name="maximized" value="true"/>
-                                                </ui:include>
-                                                
-                                            </div>
-                        				</div>
-                        					<div class="panel_w">
-                        					  <rich:panel bodyClass="panel_content" id="overallPanel">
-                        					  
-                        					  <table width="800" height="" border="0" align="center" cellpadding="0" cellspacing="0">
-                                                    <tr>
-                                                      <td colspan="3" valign="top" style="border-bottom: 1px solid #e1e1e1;">
-                        						 		<table width="455" height="100" border="0" cellspacing="0" cellpadding="0" align="center">
-                        					            	<tr>
-                        					                	<td colspan="2" align="right" valign="top">&#160;</td>
-                        					                </tr>
-                        					                <tr>
-                        					                    <td align="center" valign="top" width="120">
-                        					                    <rich:panel id="overallScore">
-                        					    					<ui:include src="/includes/overallScoreBox.xhtml">	
-                        												<ui:param name="scoreStyle" value="#{overallScoreBean.overallScoreStyle}"/>									
-                        				        	  					<ui:param name="score" value="#{overallScoreBean.overallScore}"/>             						
-                        				    						</ui:include>   
-                        				    						</rich:panel> 							
-                        										</td>
-                        											
-                        					                    <td rowspan="2" width="">
-                        					                    	<div id="overall_pie"></div>
-                        					                    	<rich:panel id="overall_script" align="center">
-                        								  			<h:inputHidden value="#{overallScoreBean.overallPieDef}" id="hiddenField1"/>
-                        											<script type="text/javascript">
-                        												var targetElement1 = document.getElementById("hiddenField1");
-                        												var pie1 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "450", "450", "0", "0");										
-                        												pie1.setDataXML(targetElement1.value);
-                        												pie1.setTransparent(true);									   	   
-                        												pie1.render("overall_pie");
-                        											</script>
-                        											</rich:panel>
-                        					                    </td>
-                        					                 </tr>
-                        					                 <tr>
-                        					                 	
-                        					                    <td align="center" valign="top" width="120">
-                        											<ui:include src="/includes/scoreBoxLegend.xhtml"/>
-                        					                    </td>
-                        					                 </tr>
-                        								</table>
-                                                      </td>
-                                                    </tr>
-                                                    <tr>
-                        
-                                                      <td width="225" valign="top" style="border-right: 1px solid #e1e1e1;">
-                                                      			<div class="piegrid_label"><a href="#" class="ls_tab_drivestyle">Driving Style</a></div>
-                                                      			<div id="style_pie"></div>
-                                                             	<rich:panel id="style_script" align="center">
-                        								  			<h:inputHidden value="#{overallScoreBean.stylePieDef}" id="hiddenField2"/>
-                        											<script type="text/javascript">
-                        												var targetElement2 = document.getElementById("hiddenField2");
-                        												var pie2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "220", "180", "0", "0");										
-                        												pie2.setDataXML(targetElement2.value);	
-                        												pie2.setTransparent(true);								   	   
-                        												pie2.render("style_pie");
-                        											</script>
-                        										</rich:panel>
-                                                      </td>
-                                                      <td width="225" valign="top" style="border-right: 1px solid #e1e1e1;">
-                                                     			<div class="piegrid_label"><a href="#" class="ls_tab_seatbelt">Seat Belt</a></div>
-                                                     			<div id="seatBelt_pie"></div>
-                        										<rich:panel id="seatBelt_script" align="center">
-                        								  			<h:inputHidden value="#{overallScoreBean.seatBeltPieDef}" id="hiddenField3"/>
-                        											<script type="text/javascript">
-                        												var targetElement3 = document.getElementById("hiddenField3");
-                        												var pie3 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "220", "180", "0", "0");										
-                        												pie3.setDataXML(targetElement3.value);
-                        												pie3.setTransparent(true);									   	   
-                        												pie3.render("seatBelt_pie");
-                        											</script>
-                        										</rich:panel>
-                                                      </td>
-                                                      <td width="225" valign="top" style="border-right: 1px solid #e1e1e1;">
-                                                      <div class="piegrid_label"><a href="#" class="ls_tab_speed">Speed</a></div>
-                                                      		<div id="speed_pie"></div>
-                                                             <rich:panel id="speed_script" align="center">
-                        								  			<h:inputHidden value="#{overallScoreBean.speedPieDef}" id="hiddenField4"/>
-                        											<script type="text/javascript">
-                        												var targetElement4 = document.getElementById("hiddenField4");
-                        												var pie4 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "220", "180", "0", "0");										
-                        												pie4.setDataXML(targetElement4.value);
-                        												pie4.setTransparent(true);									   	   
-                        												pie4.render("speed_pie");
-                        											</script>
-                        									</rich:panel>
-                        
-                                                      </td>
-                                                    </tr>
-                                                  </table>
-                        					  
-                        					  </rich:panel>
-                        					</div>
-                        				<div class="panel_sw">
-                        					<div class="panel_statusbar"></div>
-                        				</div>
-                        			</div>
-                                    </a4j:outputPanel>
-                        		<!-- END PANEL -->
-                            </t:panelGroup>
-                        
-                        </t:panelStack>
+                            				</div>
+                            					<div class="panel_w">
+                            					  <rich:panel bodyClass="panel_content" id="overallPanel">
+                            					  
+                            					  <table width="800" height="" border="0" align="center" cellpadding="0" cellspacing="0">
+                                                        <tr>
+                                                          <td colspan="3" valign="top" style="border-bottom: 1px solid #e1e1e1;">
+                            						 		<table width="455" height="100" border="0" cellspacing="0" cellpadding="0" align="center">
+                            					            	<tr>
+                            					                	<td colspan="2" align="right" valign="top">&#160;</td>
+                            					                </tr>
+                            					                <tr>
+                            					                    <td align="center" valign="top" width="120">
+                            					                    <rich:panel id="overallScore">
+                            					    					<ui:include src="/includes/overallScoreBox.xhtml">	
+                            												<ui:param name="scoreStyle" value="#{overallScoreBean.overallScoreStyle}"/>									
+                            				        	  					<ui:param name="score" value="#{overallScoreBean.overallScore}"/>             						
+                            				    						</ui:include>   
+                            				    						</rich:panel> 							
+                            										</td>
+                            											
+                            					                    <td rowspan="2" width="">
+                            					                    	<div id="overall_pie"></div>
+                            					                    	<rich:panel id="overall_script" align="center">
+                            								  			<h:inputHidden value="#{overallScoreBean.overallPieDef}" id="hiddenField1"/>
+                            											<script type="text/javascript">
+                            												var targetElement1 = document.getElementById("hiddenField1");
+                            												var pie1 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "450", "450", "0", "0");										
+                            												pie1.setDataXML(targetElement1.value);
+                            												pie1.setTransparent(true);									   	   
+                            												pie1.render("overall_pie");
+                            											</script>
+                            											</rich:panel>
+                            					                    </td>
+                            					                 </tr>
+                            					                 <tr>
+                            					                 	
+                            					                    <td align="center" valign="top" width="120">
+                            											<ui:include src="/includes/scoreBoxLegend.xhtml"/>
+                            					                    </td>
+                            					                 </tr>
+                            								</table>
+                                                          </td>
+                                                        </tr>
+                                                        <tr>
+                            
+                                                          <td width="225" valign="top" style="border-right: 1px solid #e1e1e1;">
+                                                          			<div class="piegrid_label"><a href="#" class="ls_tab_drivestyle">Driving Style</a></div>
+                                                          			<div id="style_pie"></div>
+                                                                 	<rich:panel id="style_script" align="center">
+                            								  			<h:inputHidden value="#{overallScoreBean.stylePieDef}" id="hiddenField2"/>
+                            											<script type="text/javascript">
+                            												var targetElement2 = document.getElementById("hiddenField2");
+                            												var pie2 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "220", "180", "0", "0");										
+                            												pie2.setDataXML(targetElement2.value);	
+                            												pie2.setTransparent(true);								   	   
+                            												pie2.render("style_pie");
+                            											</script>
+                            										</rich:panel>
+                                                          </td>
+                                                          <td width="225" valign="top" style="border-right: 1px solid #e1e1e1;">
+                                                         			<div class="piegrid_label"><a href="#" class="ls_tab_seatbelt">Seat Belt</a></div>
+                                                         			<div id="seatBelt_pie"></div>
+                            										<rich:panel id="seatBelt_script" align="center">
+                            								  			<h:inputHidden value="#{overallScoreBean.seatBeltPieDef}" id="hiddenField3"/>
+                            											<script type="text/javascript">
+                            												var targetElement3 = document.getElementById("hiddenField3");
+                            												var pie3 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "220", "180", "0", "0");										
+                            												pie3.setDataXML(targetElement3.value);
+                            												pie3.setTransparent(true);									   	   
+                            												pie3.render("seatBelt_pie");
+                            											</script>
+                            										</rich:panel>
+                                                          </td>
+                                                          <td width="225" valign="top" style="border-right: 1px solid #e1e1e1;">
+                                                          <div class="piegrid_label"><a href="#" class="ls_tab_speed">Speed</a></div>
+                                                          		<div id="speed_pie"></div>
+                                                                 <rich:panel id="speed_script" align="center">
+                            								  			<h:inputHidden value="#{overallScoreBean.speedPieDef}" id="hiddenField4"/>
+                            											<script type="text/javascript">
+                            												var targetElement4 = document.getElementById("hiddenField4");
+                            												var pie4 = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/Pie2D.swf", "ChartId", "220", "180", "0", "0");										
+                            												pie4.setDataXML(targetElement4.value);
+                            												pie4.setTransparent(true);									   	   
+                            												pie4.render("speed_pie");
+                            											</script>
+                            									</rich:panel>
+                            
+                                                          </td>
+                                                        </tr>
+                                                      </table>
+                            					  
+                            					  </rich:panel>
+                            					</div>
+                            				<div class="panel_sw">
+                            					<div class="panel_statusbar"></div>
+                            				</div>
+                            			</div>
+                                        </a4j:outputPanel>
+                            		<!-- END PANEL -->
+                                </c:when>
+                            </c:choose>
+                        </div>
                     </td>
                 </tr>
           </table>

@@ -20,9 +20,7 @@ public class MpgBean extends BaseBean
     private static final Logger logger = Logger.getLogger(MpgBean.class);
     private MpgDAO mpgDAO;
     private GroupDAO groupDAO;
-    // private NavigationBean navigation;
-    //private DurationBean durationBean;
-    private Duration duration = Duration.DAYS;
+    private DurationBean durationBean;
     private ReportRenderer reportRenderer;
     private ReportCriteriaService reportCriteriaService;
     // private List<MpgEntityPkg> mpgEntities;
@@ -32,9 +30,6 @@ public class MpgBean extends BaseBean
     private Integer groupID;
     private Group group;
 
-    public void init()
-    {
-    }
 
     public Ordering getSortOrder()
     {
@@ -92,46 +87,17 @@ public class MpgBean extends BaseBean
     public void setGroupID(Integer groupID)
     {
         this.groupID = groupID;
-        //TODO: pull group from group hierarchy
-        group = groupDAO.findByID(groupID);
+        group = getGroupHierarchy().getGroup(groupID);
     }
 
-    public Group getGroup()
+    public DurationBean getDurationBean()
     {
-        return group;
+        return durationBean;
     }
 
-    public void setGroup(Group group)
+    public void setDurationBean(DurationBean durationBean)
     {
-        this.group = group;
-    }
-
-    // public NavigationBean getNavigation()
-    // {
-    // return navigation;
-    // }
-    //
-    // public void setNavigation(NavigationBean navigation)
-    // {
-    // this.navigation = navigation;
-    // }
-//    public DurationBean getDurationBean()
-//    {
-//        return durationBean;
-//    }
-//
-//    public void setDurationBean(DurationBean durationBean)
-//    {
-//        this.durationBean = durationBean;
-//    }
-    public Duration getDuration()
-    {
-        return duration;
-    }
-
-    public void setDuration(Duration duration)
-    {
-        this.duration = duration;
+        this.durationBean = durationBean;
     }
 
     public MpgDAO getMpgDAO()
@@ -189,7 +155,9 @@ public class MpgBean extends BaseBean
     // }
     public List<MpgEntity> getMpgEntities()
     {
-        return mpgDAO.getEntities(group, duration);
+        if(mpgEntities == null)
+            mpgEntities = mpgDAO.getEntities(group, durationBean.getDuration());
+        return mpgEntities;
     }
 
     public void setMpgEntities(List<MpgEntity> mpgEntities)
@@ -206,7 +174,7 @@ public class MpgBean extends BaseBean
 
     public ReportCriteria buildReportCriteria()
     {
-        ReportCriteria reportCriteria = reportCriteriaService.getMpgReportCriteria(getGroupID(), getDuration());
+        ReportCriteria reportCriteria = reportCriteriaService.getMpgReportCriteria(getGroupID(), durationBean.getDuration());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setLocale(getUser().getLocale());
         return reportCriteria;

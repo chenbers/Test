@@ -2,6 +2,7 @@ package com.inthinc.pro.backing;
 
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.Group;
 public class DashBoardDetailBean extends BaseBean
 {
     public enum TabType
@@ -10,6 +11,7 @@ public class DashBoardDetailBean extends BaseBean
     }
 
     private Integer groupID;
+    private Group group;
     private TabType tabType;
     private Duration duration;
     
@@ -26,7 +28,17 @@ public class DashBoardDetailBean extends BaseBean
     public void setGroupID(Integer groupID)
     {
         this.groupID = groupID;
-//        mpgBean.setGroupID(groupID);
+        group = getGroupHierarchy().getGroup(groupID);
+    }
+
+    public Group getGroup()
+    {
+        return group;
+    }
+
+    public void setGroup(Group group)
+    {
+        this.group = group;
     }
 
     public TabType getTabType()
