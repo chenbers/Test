@@ -238,15 +238,15 @@
                             					<div class="panel_title">
                             						<span class="overall">Overall Score </span>       
                                                     <pretty:urlbuffer var="dashboardLink" mappingId="dashboard">
-                                                        <f:param value="#{navigationBean.groupID}"/>
+                                                        <f:param value="#{overallScoreBean.groupID}"/>
                                                     </pretty:urlbuffer>
                                                         
                                                     <ui:include src="/includes/durationPanelHeader.xhtml">
                                                         <ui:param name="reRenderList" value="overallOutputPanel" />
-                                                        <ui:param name="duration" value="#{duration}" />
+                                                        <ui:param name="duration" value="#{overallScoreDurationBean.duration}" />
                                                         <ui:param name="report" value="OVERALL_SCORE" />
                                                         <ui:param name="id" value="overall" />
-                                                        <ui:param name="groupID" value="#{navigationBean.groupID}"/>
+                                                        <ui:param name="groupID" value="#{overallScoreBean.groupID}"/>
                                                         <ui:param name="detailLink" value="#{requestScope.dashboardLink}"/>
                                                         <ui:param name="maximized" value="true"/>
                                                     </ui:include>
@@ -267,8 +267,8 @@
                             					                    <td align="center" valign="top" width="120">
                             					                    <rich:panel id="overallScore">
                             					    					<ui:include src="/includes/overallScoreBox.xhtml">	
-                            												<ui:param name="scoreStyle" value="#{overallScoreBean.overallScoreStyle}"/>									
-                            				        	  					<ui:param name="score" value="#{overallScoreBean.overallScore}"/>             						
+                            												<ui:param name="overallScoreStyle" value="#{overallScoreBean.overallScoreStyle}"/>									
+                            				        	  					<ui:param name="overallScore" value="#{overallScoreBean.overallScore}"/>             						
                             				    						</ui:include>   
                             				    						</rich:panel> 							
                             										</td>

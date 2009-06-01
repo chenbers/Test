@@ -195,13 +195,7 @@
     		<td width="465" valign="top">
     			<!-- START PANEL -->
 				<!-- leave reRenderList alone -->	
-				<ui:include src="/includes/overallScore.xhtml">
-					<ui:param name="pieDef" value="#{overallScoreBean.overallPieDef}"/>
-					<ui:param name="overallScoreStyle" value="#{overallScoreBean.overallScoreStyle}"/>
-					<ui:param name="overallScore" value="#{overallScoreBean.overallScore}"/>
-					<ui:param name="duration" value="#{overallScoreDurationBean.duration}" />  
-					<ui:param name="zorder" value="6"/>	
-				</ui:include>		
+				<ui:include src="/includes/overallScore.xhtml"/>
 				<!-- END PANEL -->
 				
 				<div class="spacer"></div>		

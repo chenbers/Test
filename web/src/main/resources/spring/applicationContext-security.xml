@@ -17,7 +17,7 @@
         <beans:property name="authenticationFailureUrl" value="/login" />
         <beans:property name="defaultTargetUrl" value="/secured/dashboard" />
         <beans:property name="filterProcessesUrl" value="/j_spring_security_check" />
-        <beans:property name="alwaysUseDefaultTargetUrl" value="true"/>
+        <beans:property name="alwaysUseDefaultTargetUrl" value="false"/>
         <custom-filter position="AUTHENTICATION_PROCESSING_FILTER" />
 
         <!--  our additional properties  -->

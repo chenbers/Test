@@ -19,11 +19,9 @@ public class MpgBean extends BaseBean
 {
     private static final Logger logger = Logger.getLogger(MpgBean.class);
     private MpgDAO mpgDAO;
-    private GroupDAO groupDAO;
     private DurationBean durationBean;
     private ReportRenderer reportRenderer;
     private ReportCriteriaService reportCriteriaService;
-    // private List<MpgEntityPkg> mpgEntities;
     private List<MpgEntity> mpgEntities;
     private String barDef;
     private Ordering sortOrder = Ordering.ASCENDING;
@@ -109,50 +107,7 @@ public class MpgBean extends BaseBean
     {
         this.mpgDAO = mpgDAO;
     }
-
-    public GroupDAO getGroupDAO()
-    {
-        return groupDAO;
-    }
-
-    public void setGroupDAO(GroupDAO groupDAO)
-    {
-        this.groupDAO = groupDAO;
-    }
-
-    // public List<MpgEntityPkg> getMpgEntities()
-    // {
-    //
-    // // If the mpgEntities list is null, then populate it
-    // if (mpgEntities == null)
-    // {
-    // mpgEntities = new ArrayList<MpgEntityPkg>();
-    //
-    // // Populate the table
-    // String contextPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
-    //
-    // List<MpgEntity> list = mpgDAO.getEntities(navigation.getGroup(), duration);
-    // Collections.sort(list);
-    // for (MpgEntity entity : list)
-    // {
-    // MpgEntityPkg pkg = new MpgEntityPkg();
-    // pkg.setEntity(entity);
-    // GroupHierarchy groupHierarchy = getGroupHierarchy();
-    // GroupLevel groupLevel = groupHierarchy.getGroupLevel(entity.getEntityID());
-    // if (groupLevel == null)
-    // {
-    // groupLevel = groupHierarchy.getGroupLevel(entity.getGroupID());
-    // }
-    // if (groupLevel != null)
-    // {
-    // pkg.setGoTo(contextPath + groupLevel.getUrl() + "?groupID=" + entity.getEntityID());
-    // this.mpgEntities.add(pkg);
-    // }
-    // }
-    // }
-    //
-    // return mpgEntities;
-    // }
+    
     public List<MpgEntity> getMpgEntities()
     {
         if(mpgEntities == null)

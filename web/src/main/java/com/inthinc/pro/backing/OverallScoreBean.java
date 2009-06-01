@@ -35,12 +35,10 @@ public class OverallScoreBean extends BaseBean
     };
 
     private ScoreDAO scoreDAO;
-    private GroupDAO groupDAO;
     
     private Integer groupID;
     private Group group;
   
-//    private NavigationBean navigation;
     private DurationBean durationBean;
     private ReportRenderer reportRenderer;
     private ReportCriteriaService reportCriteriaService;
@@ -177,18 +175,6 @@ public class OverallScoreBean extends BaseBean
         this.scoreDAO = scoreDAO;
     }
 
-    public GroupDAO getGroupDAO()
-    {
-        return groupDAO;
-    }
-
-    public void setGroupDAO(GroupDAO groupDAO)
-    {
-        this.groupDAO = groupDAO;
-        //TODO: pull group from group hierarchy
-        group = groupDAO.findByID(groupID);
-    }
-
     public Integer getGroupID()
     {
         return groupID;
@@ -197,8 +183,7 @@ public class OverallScoreBean extends BaseBean
     public void setGroupID(Integer groupID)
     {
         this.groupID = groupID;
-        //TODO: pull group from group hierarchy
-        group = groupDAO.findByID(groupID);
+        group = getGroupHierarchy().getGroup(groupID);
     }
 
     public Group getGroup()
@@ -210,17 +195,6 @@ public class OverallScoreBean extends BaseBean
     {
         this.group = group;
     }
-
-//    // NAVIGATION BEAN PROPERTIES
-//    public NavigationBean getNavigation()
-//    {
-//        return navigation;
-//    }
-//
-//    public void setNavigation(NavigationBean navigation)
-//    {
-//        this.navigation = navigation;
-//    }
 
     public DurationBean getDurationBean()
     {
