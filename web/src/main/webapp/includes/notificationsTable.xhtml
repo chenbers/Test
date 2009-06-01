@@ -1,5 +1,12 @@
-<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:iwi="http://pro.tiwi.com/jsf" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	            xmlns:ui="http://java.sun.com/jsf/facelets"
+	            xmlns:h="http://java.sun.com/jsf/html" 
+	            xmlns:rich="http://richfaces.org/rich"
+	            xmlns:a4j="http://richfaces.org/a4j"
+	            xmlns:c="http://java.sun.com/jstl/core"
+	            xmlns:f="http://java.sun.com/jsf/core"
+	            xmlns:t="http://myfaces.apache.org/tomahawk"
+	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
     
     
     <h:form id="#{formId}">
@@ -45,19 +52,19 @@
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_driver}" />
                 </f:facet>
-                <a4j:htmlCommandLink action="#{bean.driverAction}" value="#{item.driverName}">
-                    <f:setPropertyActionListener value="#{item.event}" target="#{bean.selectedEvent}" />
-                    <f:setPropertyActionListener value="#{item.event.driver}" target="#{navigationBean.driver}" />
-                </a4j:htmlCommandLink>
+                <pretty:link mappingId="driverPerformance">
+                    <f:param value="#{item.event.driver.driverID}"/>
+                    #{item.driverName}
+                </pretty:link>
             </rich:column>
             <rich:column rendered="#{tableColumns['vehicle'].visible}" sortBy="#{item.vehicleName}" width="10%">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_vehicle}" />
                 </f:facet>
-                <a4j:htmlCommandLink action="#{bean.vehicleAction}" value="#{item.vehicleName}" rendered="#{item.vehicleName != 'None Assigned'}">
-                    <f:setPropertyActionListener value="#{item.event}" target="#{bean.selectedEvent}" />
-                    <f:setPropertyActionListener value="#{item.event.vehicle}" target="#{navigationBean.vehicle}" />
-                </a4j:htmlCommandLink>
+                <pretty:link mappingId="vehiclePerformance" rendered="#{item.vehicleName != 'None Assigned'}">
+                    <f:param value="#{item.event.vehicle.vehicleID}"/>
+                    #{item.vehicleName}
+                </pretty:link>
                 <h:outputText rendered="#{item.vehicleName == 'None Assigned'}" value="#{item.vehicleName}">
                 </h:outputText>
             </rich:column>

@@ -1,5 +1,12 @@
-<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:iwi="http://pro.tiwi.com/jsf" xmlns:h="http://java.sun.com/jsf/html">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	            xmlns:ui="http://java.sun.com/jsf/facelets"
+	            xmlns:h="http://java.sun.com/jsf/html" 
+	            xmlns:rich="http://richfaces.org/rich"
+	            xmlns:a4j="http://richfaces.org/a4j"
+	            xmlns:c="http://java.sun.com/jstl/core"
+	            xmlns:f="http://java.sun.com/jsf/core"
+	            xmlns:t="http://myfaces.apache.org/tomahawk"
+	            xmlns:pretty="http://ocpsoft.com/prettyfaces">
     
     <h:form id="redFlagsTableForm">
     <rich:jQuery selector="document" query="ready(function(){initializeTable()})" />
@@ -30,10 +37,10 @@
                 	<div id="#{item.redFlag.event.noteID}" style="display: none;">
                 	<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header">
 						<f:facet name="header">
-							<a4j:htmlCommandLink action="#{redFlagsBean.driverAction}" value="#{item.driverName}">
-			                    <f:setPropertyActionListener value="#{item.redFlag.event}" target="#{redFlagsBean.selectedEvent}" />
-			                    <f:setPropertyActionListener value="#{item.redFlag.event.driver}" target="#{navigationBean.driver}" />
-			                </a4j:htmlCommandLink>
+                            <pretty:link mappingId="driverPerformance">
+                                <f:param value="#{item.redFlag.event.driver.driverID}"/>
+                                #{item.driverName}
+                            </pretty:link>
 						</f:facet>
 						<h:outputText rendered="#{item.zone ne null}" value="#{messages.zones_zone}"/>
 						<h:outputText rendered="#{item.zone ne null}" value="#{item.zone.name}" />
@@ -76,19 +83,19 @@
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_redflags_driver}" />
                 </f:facet>
-                <a4j:htmlCommandLink action="#{redFlagsBean.driverAction}" value="#{item.driverName}">
-                    <f:setPropertyActionListener value="#{item.redFlag.event}" target="#{redFlagsBean.selectedEvent}" />
-                    <f:setPropertyActionListener value="#{item.redFlag.event.driver}" target="#{navigationBean.driver}" />
-                </a4j:htmlCommandLink>
+                            <pretty:link mappingId="driverPerformance">
+                                <f:param value="#{item.redFlag.event.driver.driverID}"/>
+                                #{item.driverName}
+                            </pretty:link>
             </rich:column>
             <rich:column rendered="#{tableColumns['vehicle'].visible}" sortBy="#{item.vehicleName}" width="10%">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_redflags_vehicle}" />
                 </f:facet>
-                <a4j:htmlCommandLink action="#{redFlagsBean.vehicleAction}" value="#{item.vehicleName}">
-                    <f:setPropertyActionListener value="#{item.redFlag.event}" target="#{redFlagsBean.selectedEvent}" />
-                    <f:setPropertyActionListener value="#{item.redFlag.event.vehicle}" target="#{navigationBean.vehicle}" />
-                </a4j:htmlCommandLink>
+                <pretty:link mappingId="vehiclePerformance">
+                    <f:param value="#{item.redFlag.event.vehicle.vehicleID}"/>
+                    #{item.vehicleName}
+                </pretty:link>
             </rich:column>
             <rich:column rendered="#{tableColumns['category'].visible}" sortBy="#{item.category}" width="20%">
                 <f:facet name="header">
