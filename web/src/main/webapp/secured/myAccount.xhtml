@@ -6,7 +6,8 @@
   				xmlns:a4j="http://richfaces.org/a4j"
   				xmlns:iwi="http://pro.tiwi.com/jsf"
   				xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:c="http://java.sun.com/jstl/core">
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:pretty="http://ocpsoft.com/prettyfaces">
   
   <ui:param name="helpFile" value="My_Account.htm" />
   <ui:define name="content">
@@ -17,7 +18,9 @@
   <ul id="grid_nav">
     <li class="r">
       <button type="submit" class="left" onclick="Richfaces.showModalPanel('changePasswordPanel');return false;"><h:outputText styleClass="login" value="#{messages.myAccount_change_password}" /></button>
-      <button type="submit" class="left" onclick="parent.location.href='editAccount.faces'; return false;"><h:outputText styleClass="edit" value="#{messages.myAccount_edit}"/></button>
+      <pretty:link mappingId="editMyAccount">
+         <button type="submit" class="left"><h:outputText styleClass="edit" value="#{messages.myAccount_edit}"/></button>
+      </pretty:link>
     </li>
   </ul>
   

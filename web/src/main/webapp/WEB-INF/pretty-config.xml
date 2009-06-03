@@ -7,6 +7,17 @@
 		<pattern>/login</pattern>
 		<view-id>/login.faces</view-id>
 	</url-mapping>
+	
+	<url-mapping id="myAccount">
+		<pattern>/secured/account</pattern>
+		<view-id>/secured/myAccount.faces</view-id>
+	</url-mapping>
+	
+	<url-mapping id="editMyAccount">
+		<pattern>/secured/account/edit</pattern>
+		<view-id>/secured/editAccount.faces</view-id>
+	</url-mapping>
+	
     <url-mapping id="init-dashboard">
         <pattern>/secured/dashboard/</pattern>
         <view-id>#{dashBoardBean.getViewPath}</view-id>    
@@ -90,7 +101,8 @@
         <action>#{driverReportBean.search}</action>
     </url-mapping>
     <url-mapping id="driversReportWithCriteria">
-        <pattern>/secured/reports/driversReport/#{searchCoordinationBean.searchFor}</pattern>
+        <pattern>/secured/reports/driversReport</pattern>
+        <query-param name="searchCriteria">#{searchCoordinationBean.searchFor}</query-param> 
         <view-id>/secured/reports/drivers.faces</view-id>
         <action>#{driverReportBean.search}</action>
     </url-mapping>
@@ -100,7 +112,8 @@
         <action>#{vehicleReportBean.search}</action>
     </url-mapping>
     <url-mapping id="vehiclesReportWithCriteria">
-        <pattern>/secured/reports/vehiclesReport/#{searchCoordinationBean.searchFor}</pattern>
+        <pattern>/secured/reports/vehiclesReport</pattern>
+         <query-param name="searchCriteria">#{searchCoordinationBean.searchFor}</query-param> 
         <view-id>/secured/reports/vehicles.faces</view-id>
         <action>#{vehicleReportBean.search}</action>
     </url-mapping>
@@ -110,7 +123,8 @@
         <action>#{idlingReportBean.search}</action>
     </url-mapping>
     <url-mapping id="idlingReportWithCriteria">
-        <pattern>/secured/reports/idlingReport/#{searchCoordinationBean.searchFor}</pattern>
+        <pattern>/secured/reports/idlingReport</pattern>
+        <query-param name="searchCriteria">#{searchCoordinationBean.searchFor}</query-param> 
         <view-id>/secured/reports/idling.faces</view-id>
         <action>#{idlingReportBean.search}</action>
     </url-mapping>
@@ -120,7 +134,8 @@
         <action>#{devicesReportBean.search}</action>
     </url-mapping>
     <url-mapping id="devicesReportWithCriteria">
-        <pattern>/secured/reports/devicesReport/#{searchCoordinationBean.searchFor}</pattern>
+        <pattern>/secured/reports/devicesReport</pattern>
+         <query-param name="searchCriteria">#{searchCoordinationBean.searchFor}</query-param> 
         <view-id>/secured/reports/devices.faces</view-id>
         <action>#{devicesReportBean.search}</action>
     </url-mapping>

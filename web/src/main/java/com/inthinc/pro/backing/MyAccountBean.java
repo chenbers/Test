@@ -63,7 +63,7 @@ public class MyAccountBean extends BaseBean
             return null;
         }
         userDAO.update(getUser());
-        return "go_myAccount";
+        return "pretty:myAccount";
     }
 
     private void restorePerson()
