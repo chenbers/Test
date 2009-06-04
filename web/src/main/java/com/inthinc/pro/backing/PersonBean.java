@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.TreeMap;
@@ -344,6 +345,14 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         person.setAddress(new Address());
         person.getUser().setRole(Role.valueOf(2)); // normal user
         person.getUser().setPerson(person);
+        
+        Locale locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
+        
+        if(LocaleBean.supportedLocale(locale))
+            person.getUser().setLocale(locale);
+        else
+            person.getUser().setLocale(Locale.US);
+        
         person.setDriver(new Driver());
         person.setUserSelected(true);
         person.setDriverSelected(true);

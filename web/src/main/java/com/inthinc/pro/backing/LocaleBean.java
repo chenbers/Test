@@ -44,6 +44,18 @@ public class LocaleBean extends BaseBean
         
     }
     
+    public static boolean supportedLocale(Locale locale)
+    {
+        boolean supported = false;
+        for(Locale l: supportedLocles)
+        {
+            if(l.equals(locale))
+                supported = true;
+        }
+        
+        return supported;
+    }
+    
     public static Locale getCurrentLocale()
     {
         return currentLocale;
