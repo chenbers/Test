@@ -172,13 +172,13 @@
     <url-mapping id="admin">
 		<pattern>/secured/admin/</pattern>
 		<view-id>/secured/admin/people.faces</view-id>
-		<action>#{personBean.resetList}</action>
+		<action onPostback="false">#{personBean.resetList}</action>
 	</url-mapping>
     
     <url-mapping id="adminPeople">
         <pattern>/secured/admin/people</pattern>
         <view-id>/secured/admin/people.faces</view-id>
-        <action>#{personBean.refreshList}</action>
+        <action onPostback="false">#{personBean.resetList}</action>
     </url-mapping>
 	<url-mapping id="adminEditPerson">
 		<pattern>/secured/admin/editPerson</pattern>
@@ -193,7 +193,7 @@
 	<url-mapping id="adminVehicles">
 		<pattern>/secured/admin/vehicles</pattern>
 		<view-id>/secured/admin/vehicles.faces</view-id>
-		<action>#{vehiclesBean.refreshList}</action>
+		<action onPostback="false">#{vehiclesBean.resetList}</action>
 	</url-mapping>
 	<url-mapping id="adminEditVehicle">
 		<pattern>/secured/admin/editVehicle</pattern>
@@ -208,7 +208,7 @@
 	<url-mapping id="adminDevices">
 		<pattern>/secured/admin/devices</pattern>
 		<view-id>/secured/admin/devices.faces</view-id>
-		<action>#{devicesBean.refreshList}</action>
+		<action onPostback="false">#{devicesBean.resetList}</action>
 	</url-mapping>
 	<url-mapping id="adminEditDevice">
 		<pattern>/secured/admin/editDevice</pattern>
@@ -223,7 +223,7 @@
 	<url-mapping id="adminZoneAlerts">
 		<pattern>/secured/admin/zoneAlerts</pattern>
 		<view-id>/secured/admin/zoneAlerts.faces</view-id>
-		<action>#{zoneAlertsBean.refreshList}</action>
+		<action onPostback="false">#{zoneAlertsBean.resetList}</action>
 	</url-mapping>
 	<url-mapping id="adminEditZoneAlert">
 		<pattern>/secured/admin/editZoneAlert</pattern>
@@ -238,7 +238,7 @@
 	<url-mapping id="adminRedFlags">
 		<pattern>/secured/admin/redFlags</pattern>
 		<view-id>/secured/admin/redFlags.faces</view-id>
-		<action>#{redFlagAlertsBean.refreshList}</action>
+		<action onPostback="false">#{redFlagAlertsBean.resetList}</action>
 	</url-mapping>
 	<url-mapping id="adminEditRedFlag">
 		<pattern>/secured/admin/editRedFlag</pattern>
@@ -253,7 +253,7 @@
 	<url-mapping id="adminReportSchedules">
 		<pattern>/secured/admin/reports</pattern>
 		<view-id>/secured/admin/reportSchedules.faces</view-id>
-		<action>#{reportScheduleBean.refreshList}</action>
+		<action onPostback="false">#{reportScheduleBean.resetList}</action>
 	</url-mapping>
 	<url-mapping id="adminEditReportSchedule">
 		<pattern>/secured/admin/editReport</pattern>
