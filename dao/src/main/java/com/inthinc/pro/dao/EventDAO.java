@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.SpeedingEvent;
 
 public interface EventDAO extends GenericDAO<Event, Integer>
 {
@@ -53,8 +54,12 @@ public interface EventDAO extends GenericDAO<Event, Integer>
     List<Event> getEmergencyEventsForGroup(Integer groupID, Integer daysBack);
 
     List<Event> getViolationEventsForGroup(Integer groupID, Date startDate, Date endDate);
+    
+    List<Event> getZoneAlertsForGroup(Integer groupID, Integer daysBack);
 
     List<Event> getWarningEventsForGroup(Integer groupID, Date startDate, Date endDate);
 
-    List<Event> getEmergencyEventsForGroup(Integer groupID, Date startDate, Date endDate);
+    List<Event> getEmergencyEventsForGroup(Integer groupID, Date startDate, Date endDate); 
+    
+    <T> T getEventByType(Long noteID, Class<T> clazz);
 }

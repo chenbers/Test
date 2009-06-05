@@ -161,6 +161,10 @@
         <pattern>/secured/notifications/diagnostics</pattern>
         <view-id>/secured/notifications/diagnostics.faces</view-id>
     </url-mapping>
+    <url-mapping id="zoneAlerts">
+        <pattern>/secured/notifications/zoneAlerts</pattern>
+        <view-id>/secured/notifications/zoneAlerts.faces</view-id>
+    </url-mapping>
     <!-- Live Fleet Section -->
     <url-mapping id="liveFleet">
         <pattern>/secured/liveFleet</pattern>

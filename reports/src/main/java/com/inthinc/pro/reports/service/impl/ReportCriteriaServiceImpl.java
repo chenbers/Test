@@ -378,6 +378,21 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         // reportCriteria.setMainDataset(eventList);
         return reportCriteria;
     }
+    
+    @Override
+    public ReportCriteria getZoneAlertsReportCriteria(Integer groupID)
+    {
+
+        // List<Event> eventList = eventDAO.getZoneAlertsForGroup(groupID,7);
+        Group tmpGroup = groupDAO.findByID(groupID);
+        ReportCriteria reportCriteria = new ReportCriteria(ReportType.EMERGENCY_REPORT, tmpGroup.getName());
+        if(locale != null)
+        {
+            reportCriteria.setLocale(locale);
+        }
+        // reportCriteria.setMainDataset(eventList);
+        return reportCriteria;
+    }
 
     public void setGroupDAO(GroupDAO groupDAO)
     {

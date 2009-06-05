@@ -1,4 +1,4 @@
-package com.inthinc.pro.dao.hessian.proserver;
+    package com.inthinc.pro.dao.hessian.proserver;
 
 import java.util.List;
 import java.util.Map;
@@ -164,6 +164,8 @@ public interface SiloService extends HessianService
      *          list of note/event types (see EventMapper)
      * @return
      */
+    Map<String, Object> getNote(Long noteID);
+    
     List<Map<String, Object>> getDriverNote(Integer driverID, Long startDate, Long endDate, Integer includeForgiven, Integer types[]);
     
     List<Map<String, Object>> getVehicleNote(Integer vehicleID, Long startDate, Long endDate, Integer includeForgiven, Integer types[]);

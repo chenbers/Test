@@ -30,12 +30,15 @@ import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.Event;
+import com.inthinc.pro.model.ForwardCommand;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.ReportSchedule;
+import com.inthinc.pro.model.SensitivityForwardCommandMapping;
+import com.inthinc.pro.model.SensitivityType;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.User;
@@ -1105,8 +1108,29 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     @Override
     public List<Map<String, Object>> getSensitivityMaps()
     {
-        // TODO Auto-generated method stub
-        return null;
+        Map<String, Object> sensitivityMapping1 = new HashMap<String, Object>();
+        sensitivityMapping1.put("setting", 1);
+        sensitivityMapping1.put("fwdCmd", 101);
+        
+        Map<String, Object> sensitivityMapping2 = new HashMap<String, Object>();
+        sensitivityMapping2.put("setting", 2);
+        sensitivityMapping2.put("fwdCmd", 101);
+        
+        Map<String, Object> sensitivityMapping3 = new HashMap<String, Object>();
+        sensitivityMapping3.put("setting", 3);
+        sensitivityMapping3.put("fwdCmd", 101);
+        
+        Map<String, Object> sensitivityMapping4 = new HashMap<String, Object>();
+        sensitivityMapping4.put("setting", 4);
+        sensitivityMapping4.put("fwdCmd", 101);
+        
+        List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+        list.add(sensitivityMapping1);
+        list.add(sensitivityMapping2);
+        list.add(sensitivityMapping3);
+        list.add(sensitivityMapping4);
+        
+        return list;
     }
 
     @Override
@@ -1250,6 +1274,13 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
             throw new EmptyResultSetException("getMessages() returned no value for alertMessageType=" + alertMessageType, "getMessages()", 0);
         }
         return returnList;
+    }
+    
+    @Override
+    public Map<String, Object> getNote(Long noteID)
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     @Override

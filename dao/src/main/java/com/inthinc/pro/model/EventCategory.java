@@ -10,7 +10,8 @@ public enum EventCategory implements BaseEnum
     WARNING(2, "WARNING"),
     DRIVER(3, "DRIVER"),
     NONE(4, "NONE"),
-    EMERGENCY(5, "EMERGENCY");
+    EMERGENCY(5, "EMERGENCY"),
+    ZONE_ALERT(6,"ZONE_ALERT");
 
     private String description;
     private int code;

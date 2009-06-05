@@ -1,0 +1,141 @@
+<ui:composition template="notifications.xhtml" 
+         xmlns="http://www.w3.org/1999/xhtml" 
+         xmlns:ui="http://java.sun.com/jsf/facelets"
+         xmlns:h="http://java.sun.com/jsf/html" 
+              xmlns:rich="http://richfaces.org/rich"
+              xmlns:a4j="http://richfaces.org/a4j"
+         xmlns:f="http://java.sun.com/jsf/core">
+
+   <ui:param name="zoneAlertSubSelected" value="current" />
+   <ui:param name="helpFile" value="Events.htm" />
+    <ui:param name="ajaxPanels" value="notificationsTable,eventsearch"/>
+   <ui:define name="content">
+   
+   
+      <table width="940" border="0" align="center" cellpadding="0" cellspacing="0" style="margin: 0 auto 0 auto;">
+        <tr>
+          <td valign="top">
+            <!-- START PANEL -->
+            <h:panelGroup layout="block" styleClass="">
+              <h:panelGroup layout="block" styleClass="panel_nw">
+                <div class="panel_title"> <span class="event">#{messages.notes_zone_alert_title}</span>
+                  <span class="panel_links">
+                    #{messages.notes_zone_alert_description}
+                  </span>
+                 </div>
+              </h:panelGroup>
+      
+              <h:panelGroup layout="block" styleClass="panel_w">
+                <h:panelGroup layout="block" styleClass="panel_content">
+      
+               <a4j:region id="eventsearchRegion">                   
+               <a4j:form id="eventsearch">                     
+                  <ul id="grid_nav" style="margin: 0;">
+                    <li class="l">
+                      <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
+                        <tr>
+                          <td>#{messages.notes_zone_alert_search}</td>
+                          <td>
+                            <h:inputText id="searchText" value="#{searchCoordinationBean.searchFor}" styleClass="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('eventsearch:searchButton').onclick(); return false; } return true;" />
+                          </td>
+                        </tr>
+                      </table>
+                    </li>
+                 <li class="l">
+                     <a4j:commandButton id="searchButton" action="#{zoneAlertEventsBean.searchAction}" 
+                                 reRender="navigation:redirectSearch,header,notificationsTableForm:items,notificationsTableForm:bottomScroller,notificationsTableForm:topScroller" styleClass="left">
+                              <span class="search">
+                                 <h:outputText value="#{messages.button_search}" />
+                              </span>
+                        </a4j:commandButton>                                  
+                  </li>
+                 <li class="l text">
+                  <a4j:commandLink styleClass="ls_tab_edit_columns" title="#{messages.button_editColumns}" oncomplete="javascript:Richfaces.showModalPanel('editColumns')" 
+                     reRender="editColumnsForm:editColumnGrid">
+                     #{messages.button_editColumns}
+                  </a4j:commandLink>
+                 </li>  
+                 <li class="l">
+                  <a4j:commandButton styleClass="left"
+                           reRender="header,notificationsTableForm:items,notificationsTableForm:bottomScroller,notificationsTableForm:topScroller" 
+                           action="#{zoneAlertEventsBean.refreshAction}">
+                              <span class="refresh">
+                                 <h:outputText value="#{messages.refresh}" />
+                              </span>
+                  </a4j:commandButton>
+                 </li>  
+                 <li class="l text">
+                  <a4j:status id="eventsStatus" for="eventsearchRegion">
+                     <f:facet name="start">
+                        <h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
+                     </f:facet>
+                  </a4j:status>
+                 </li>
+                 <li class="r grid_icon">
+                  <h:panelGroup id="zoneAlertEventReportToolImageId">
+                     <h:graphicImage value="/images/ico_tools.png"/>
+                  </h:panelGroup>
+                 </li>
+                 <li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
+                 </li>                             
+                  </ul>
+                  
+                    <div align="right" style="width: 100%"> 
+                         <h:outputFormat id="header" value="#{messages.notes_safety_recordCountHeader}">
+                     <a4j:actionparam value="#{zoneAlertEventsBean.start}"/>
+                     <a4j:actionparam value="#{zoneAlertEventsBean.end}"/>
+                     <a4j:actionparam value="#{zoneAlertEventsBean.maxCount}"/>
+                  </h:outputFormat>
+                    </div>
+                  
+                  <ui:include src="/includes/reportsContextMenu.xhtml"> 
+                  <ui:param  name="emailModalPanelID" value="zoneAlertsReportEmailModal" />
+                  <ui:param  name="reportBean" value="#{zoneAlertEventsBean}"/>
+                  <ui:param  name="attachTo" value="zoneAlertEventReportToolImageId"/>
+                  <ui:param  name="exportExcel" value="TRUE"/>
+               </ui:include>
+               </a4j:form>
+               </a4j:region>
+                       
+               <div class="spacer"></div>
+               
+                  <h:panelGroup id="notificationsTable" layout="block" styleClass="datagrid">
+                  <ui:include src="/includes/notificationsTable.xhtml"> 
+                        <ui:param name="numRowsPerPg" value="#{zoneAlertEventsBean.numRowsPerPg}"/>                           
+                        <ui:param name="tableData" value="#{zoneAlertEventsBean.tableData}"/>                              
+                        <ui:param name="tableColumns" value="#{zoneAlertEventsBean.tableColumns}"/>
+                        <ui:param name="bean" value="#{zoneAlertEventsBean}"/>
+                        <ui:param name="formId" value="notificationsTableForm"/>
+                        <ui:param name="clearTitle" value="#{messages.notes_safety_clearTitle}"/>
+                        <ui:param name="clearInst" value="#{messages.notes_safety_clearInst}"/>
+                        <ui:param name="clearRerender" value="eventsearch:header,notificationsTableForm:items"/>
+                  </ui:include>                       
+                  </h:panelGroup>
+                  
+                </h:panelGroup>
+            </h:panelGroup>
+      
+            <ui:include src="/includes/editColumnsPopup.xhtml">
+               <ui:param name="bean" value="#{zoneAlertEventsBean}"/>   
+               <ui:param name="reRender" value="notificationsTableForm:items" />
+            </ui:include>    
+            
+              <h:panelGroup layout="block" styleClass="panel_sw">
+                <h:panelGroup layout="block" styleClass="panel_statusbar"/>
+            </h:panelGroup>
+      
+            </h:panelGroup>
+            <!-- END PANEL -->
+          </td>
+        </tr>
+      </table>
+      
+      <h:outputText id="event_email_modalPanel">
+         <ui:include src="/includes/emailReportPopup.xhtml">   
+            <ui:param  name="id" value="zoneAlertsReportEmailModal" />
+            <ui:param  name="reportBean" value="#{zoneAlertEventsBean}"/>
+         </ui:include>
+      </h:outputText>
+   </ui:define>
+
+</ui:composition>

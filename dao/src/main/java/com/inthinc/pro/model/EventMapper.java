@@ -111,6 +111,13 @@ public class EventMapper
         emergencyList.add(TIWIPRO_EVENT_ROLLOVER);
         emergencyList.add(TIWIPRO_EVENT_FULLEVENT);
         categoryMap.put(EventCategory.EMERGENCY, emergencyList);
+        
+        List<Integer> zoneAlertList = new ArrayList<Integer>();
+        zoneAlertList.add(TIWIPRO_EVENT_WSZONES_ARRIVAL_EX);
+        zoneAlertList.add(TIWIPRO_EVENT_WSZONES_DEPARTURE_EX);
+        categoryMap.put(EventCategory.ZONE_ALERT, zoneAlertList);
+        
+        
     }
     
     

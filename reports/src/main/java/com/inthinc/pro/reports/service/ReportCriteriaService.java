@@ -18,4 +18,5 @@ public interface ReportCriteriaService
     ReportCriteria getRedFlagsReportCriteria(Integer groupID);
     ReportCriteria getWarningsReportCriteria(Integer groupID);
     ReportCriteria getEmergencyReportCriteria(Integer groupID);
+    ReportCriteria getZoneAlertsReportCriteria(Integer groupID);
 }

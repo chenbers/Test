@@ -192,6 +192,12 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
     {
         return getEventsForGroup(groupID, startDate, endDate, EventMapper.getEventTypesInCategory(EventCategory.VIOLATION));
     }
+    
+    @Override
+    public List<Event> getZoneAlertsForGroup(Integer groupID, Integer daysBack)
+    {
+        return getEventsForGroup(groupID, daysBack, EventMapper.getEventTypesInCategory(EventCategory.DRIVER));
+    }
 
     @Override
     public List<Event> getWarningEventsForGroup(Integer groupID, Date startDate, Date endDate)
@@ -227,5 +233,20 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
         }
         return eventList;
     }
+    
+    @Override
+    public <T> T getEventByType(Long noteID, Class<T> clazz)
+    {
+        return getMapper().convertToModelObject(this.getSiloService().getNote(noteID), clazz);
+    }
+    
+    @Override
+    public Event findByID(Integer id) throws UnsupportedOperationException
+    {
+        throw new UnsupportedOperationException("This method is not supported in this DAO");
+    }
+    
+    
+ 
 
 }
