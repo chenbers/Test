@@ -6,8 +6,9 @@ import org.apache.log4j.Logger;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import com.inthinc.pro.model.AlertMessage;
+import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
+import com.inthinc.pro.scheduler.i18n.LocalizedMessage;
 
 public class SMSAlertJob extends BaseAlertJob
 {
@@ -16,13 +17,14 @@ public class SMSAlertJob extends BaseAlertJob
     protected void executeInternal(JobExecutionContext ctx) throws JobExecutionException
     {
         logger.debug("SMSAlertJob: START");
-        List<AlertMessage> messageList = getMessages(AlertMessageDeliveryType.TEXT_MESSAGE);
-        
-        for (AlertMessage message : messageList)
+        List<AlertMessageBuilder> messageList = getMessageBuilders(AlertMessageDeliveryType.TEXT_MESSAGE);
+
+        for (AlertMessageBuilder message : messageList)
         {
-            logger.debug("MessageID: " + message.getMessageID() + " Emailed to: " + message.getAddress());
-            getMailDispatcher().send(message.getAddress(), getSubject(message), message.getMessage());
-            
+            logger.debug("MessageID: " + message.getAlertMessageID() + " Emailed to: " + message.getAddress());
+            String text = LocalizedMessage.getStringWithValues(message.getAlertMessageType().toString(),(String[])message.getParamterList().toArray(new String[message.getParamterList().size()]));
+            getMailDispatcher().send(message.getAddress(), getSubject(message),text);
+
         }
         logger.debug("SMSAlertJob: END");
 

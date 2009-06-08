@@ -9,6 +9,7 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import com.inthinc.pro.dao.AlertMessageDAO;
 import com.inthinc.pro.model.AlertMessage;
+import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.scheduler.dispatch.MailDispatcher;
 import com.inthinc.pro.scheduler.dispatch.PhoneDispatcher;
@@ -46,8 +47,22 @@ public class BaseAlertJob extends QuartzJobBean
             throw new JobExecutionException(e);
         }
     }
+    
+    protected List<AlertMessageBuilder>getMessageBuilders(AlertMessageDeliveryType messageType) throws JobExecutionException
+    {
+        try
+        {
+            return alertMessageDAO.getMessageBuilders(messageType);
+        }
+        catch (Exception e)
+        {
+            logger.error("Error getting messages from dataAccess: ", e);
+            // repackage exception
+            throw new JobExecutionException(e);
+        }
+    }
 
-    protected String getSubject(AlertMessage message)
+    protected String getSubject(AlertMessageBuilder message)
     {
         return LocalizedMessage.getString("SUBJECT_" + message.getAlertMessageType().getDescription());
         // TODO: I think we should do a lookup in a messages.properties

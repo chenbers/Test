@@ -7,7 +7,9 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import com.inthinc.pro.model.AlertMessage;
+import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
+import com.inthinc.pro.scheduler.i18n.LocalizedMessage;
 
 public class PhoneAlertJob extends BaseAlertJob
 {
@@ -16,12 +18,13 @@ public class PhoneAlertJob extends BaseAlertJob
     protected void executeInternal(JobExecutionContext ctx) throws JobExecutionException
     {
         logger.debug("PhoneAlertJob: START");
-        List<AlertMessage> messageList = getMessages(AlertMessageDeliveryType.PHONE);
+        List<AlertMessageBuilder> messageList = getMessageBuilders(AlertMessageDeliveryType.PHONE);
         
-        for (AlertMessage message : messageList)
+        for (AlertMessageBuilder message : messageList)
         {
-            logger.debug("PHONE Message: " + message.getAddress() + " " + message.getMessage());
-            getPhoneDispatcher().send(message.getAddress(), message.getMessage());
+            String text = LocalizedMessage.getStringWithValues(message.getAlertMessageType().toString(),(String[])message.getParamterList().toArray(new String[message.getParamterList().size()]));
+            logger.debug("PHONE Message: " + message.getAddress() + " " + text);
+            getPhoneDispatcher().send(message.getAddress(),text);
         }
         logger.debug("PhoneAlertJob: END");
     }
