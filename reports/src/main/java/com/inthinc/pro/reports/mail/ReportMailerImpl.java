@@ -8,8 +8,6 @@ import org.apache.log4j.Logger;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
-
-
 public class ReportMailerImpl implements ReportMailer
 {
     private JavaMailSender javaMailSender;
@@ -55,7 +53,8 @@ public class ReportMailerImpl implements ReportMailer
             {
                 subject = DEFAULT_SUBJECT;
             }
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,true);
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,true,"UTF-8");
+            
             mimeMessageHelper.setTo(toAddress.toArray(new String[toAddress.size()]));
             mimeMessageHelper.setFrom(fromAddress);
             for(ReportAttatchment reportAttatchment:attachments)

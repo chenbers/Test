@@ -27,7 +27,6 @@ import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.scheduler.i18n.LocalizedMessage;
-
 /**
  * 
  * @author mstrong
@@ -137,8 +136,8 @@ public class EmailReportJob extends QuartzJobBean
         }
         
         Report report = reportCreator.getReport(reportCriteriaList);
-        String subject = LocalizedMessage.getString("reportSchedule.emailSubject");
-        report.exportReportToEmail(reportSchedule.getEmailToString(), FormatType.PDF, null, subject + reportSchedule.getName());
+        String subject = LocalizedMessage.getString("reportSchedule.emailSubject") + reportSchedule.getName();
+        report.exportReportToEmail(reportSchedule.getEmailToString(), FormatType.PDF, null, subject);
     }
 
     /*
