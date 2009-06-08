@@ -6,7 +6,8 @@
   	xmlns:iwi="http://pro.tiwi.com/jsf"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:c="http://java.sun.com/jstl/core"
-	xmlns:t="http://myfaces.apache.org/tomahawk">
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:pretty="http://ocpsoft.com/prettyfaces">
 	
 	<t:saveState value="#{driverLocationBean.driverLastLocationBeans}"/>
 	<t:saveState value="#{driverLocationBean.legendIcons}"/>
@@ -91,11 +92,21 @@
 							value="#{messages.refresh}">
 						</a4j:commandButton>
 						<rich:spacer width="2" />
-			   			<h:commandLink action="#{flyOutBean.flyNavRuleAction}" rendered="#{!driverLocationBean.teamLevel}">
-			   				<img src="#{facesContext.externalContext.request.contextPath}/images/#{flyOutImage}" border="0" title="#{flyoutTitle}" />
-			   				<f:setPropertyActionListener value="#{flyNavRule}" target="#{flyOutBean.navigationRule}" />
-			   				<f:setPropertyActionListener value="#{flySelectedTab}" target="#{flyOutBean.selectedTab}" />
-			   			</h:commandLink>
+                        <c:choose>
+                           <c:when test="#{maximized eq 'true'}">
+                              <pretty:link mappingId="dashboard">
+                                 <img src="#{facesContext.externalContext.request.contextPath}/images/#{flyOutImage}" border="0" title="#{flyoutTitle}" />
+                                 <f:param value="#{navigationBean.groupID}"/>
+                              </pretty:link>
+                           </c:when>
+                           <c:otherwise>
+                              <pretty:link mappingId="detailedDashboard">
+                                 <img src="#{facesContext.externalContext.request.contextPath}/images/#{flyOutImage}" border="0" title="#{flyoutTitle}" />
+                                 <f:param value="#{navigationBean.groupID}"/>
+                                 <f:param value="MAP"/>
+                              </pretty:link>
+                           </c:otherwise>
+                        </c:choose>
 						</a4j:form>
 						</span>
 					</div>
