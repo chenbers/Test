@@ -6,7 +6,8 @@
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:security="http://pro.tiwi.com/jsf/security"
-     xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
+     xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions"
+     xmlns:t="http://myfaces.apache.org/tomahawk">
 
   <ui:param name="adminSelected" value="current" />
   <ui:param name="helpFile" value="Add_a_Person.htm" />
@@ -568,7 +569,7 @@
                             <rich:message for="priEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText value="#{personBean.item.priEmail}" id="priEmail" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30"
                               maxlength="62" validatorMessage="#{messages.editPerson_emailFormat}">
-                              <f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
+                             <t:validateEmail />
                             </h:inputText>
                           </td>
                         </tr>
@@ -578,7 +579,7 @@
                             <rich:message for="secEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText value="#{personBean.item.secEmail}" id="secEmail" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30"
                               maxlength="62" validatorMessage="#{messages.editPerson_emailFormat}">
-                              <f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
+                              <t:validateEmail />
                             </h:inputText>
                           </td>
                         </tr>
