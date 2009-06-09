@@ -26,9 +26,10 @@ public class HexConverter extends BaseConverter
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException
     {
-        if (value instanceof Long)
-            return Long.toHexString((Long) value).toUpperCase();
-        else
+        if (value instanceof Long){
+            String hexString = Long.toHexString((Long) value).toUpperCase();
+            return hexString.equals("0")? "" : hexString;
+        }else
             return null;
     }
 }
