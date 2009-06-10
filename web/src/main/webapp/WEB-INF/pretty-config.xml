@@ -131,13 +131,13 @@
     <url-mapping id="devicesReport">
         <pattern>/secured/reports/devicesReport</pattern>
         <view-id>/secured/reports/devices.faces</view-id>
-        <action>#{devicesReportBean.search}</action>
+        <action>#{deviceReportBean.search}</action>
     </url-mapping>
     <url-mapping id="devicesReportWithCriteria">
         <pattern>/secured/reports/devicesReport</pattern>
          <query-param name="searchCriteria">#{searchCoordinationBean.searchFor}</query-param> 
         <view-id>/secured/reports/devices.faces</view-id>
-        <action>#{devicesReportBean.search}</action>
+        <action>#{deviceReportBean.search}</action>
     </url-mapping>
     
     <!-- Notifications Section -->
