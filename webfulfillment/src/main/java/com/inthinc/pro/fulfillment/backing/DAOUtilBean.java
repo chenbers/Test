@@ -42,7 +42,8 @@ public class DAOUtilBean {
 
 	private RoleDAO roleDAO;
 
-	private Integer mainAccountID;
+	private Integer shipAccountID;
+	private Integer rmaAccountID;
 	private Device device;
 
 	private Map<Integer, String> accountMap;
@@ -52,7 +53,13 @@ public class DAOUtilBean {
 	private String errorMsg;
 	private String successMsg;
 	private List<String> messageList;
+	private Account rmaAccount;
+	private Account shipAccount;
 	
+	private static final String rmausername = "RMA";
+	private static final String shipusername = "TiwiInstallation";
+	
+
 	
 	public DAOUtilBean()
 	{
@@ -70,20 +77,27 @@ public class DAOUtilBean {
 
 	public void init() throws Exception
     {
-		String username = "TiwiInstallation";
-		// username = "dhock";
-		User mainuser = userDAO.findByUserName(username);
-		if (mainuser == null)
-			throw new Exception("Main user not found:" + username);
+		User shipuser = userDAO.findByUserName(shipusername);
+		if (shipuser == null)
+			throw new Exception("Fulfillment user not found:" + shipusername);
 		
-		mainAccountID = mainuser.getPerson().getAcctID();
-		Integer userAccountID = getProUser().getUser().getPerson().getAcctID();
-		if (!mainAccountID.equals(userAccountID))
-			throw new Exception("User not in main account");
+		User rmauser = userDAO.findByUserName(rmausername);
+		if (rmauser == null)
+			throw new Exception("RMA user not found:" + rmausername);
 
-		Roles roles = new Roles();
-        roles.setRoleDAO(roleDAO);
-        roles.init();
+		shipAccountID = shipuser.getPerson().getAcctID();
+		rmaAccountID = rmauser.getPerson().getAcctID();
+		
+		shipAccount = accountDAO.findByID(shipAccountID);
+		rmaAccount = accountDAO.findByID(rmaAccountID);
+		
+		Integer userAccountID = getProUser().getUser().getPerson().getAcctID();
+		if (!shipAccountID.equals(userAccountID) || !rmaAccountID.equals(userAccountID))
+			throw new Exception("Logged in User not in ship or rma account");
+
+//		Roles roles = new Roles();
+//        roles.setRoleDAO(roleDAO);
+//        roles.init();
         
         messageList = new ArrayList<String>();
 
@@ -116,11 +130,7 @@ public class DAOUtilBean {
 		eventTypes.add(EventMapper.TIWIPRO_EVENT_POWER_ON);
 		List<Event> events = eventDAO.getEventsForVehicle(vehicleID, startDate,
 				endDate, eventTypes);
-//		for (Iterator<Event> iter = events.iterator(); iter.hasNext();) {
-//			Event event = iter.next();
-//			System.out.println(EventMapper.getEventType(event.getType()) + " "
-//					+ event.getTime());
-//		}
+
 
 		if (loc != null)
 		{
@@ -156,6 +166,52 @@ public class DAOUtilBean {
 		if (device==null)
 			setErrorMsg("Error - Device not found: " + imei);
 	}
+	public void rmaDeviceAction()
+	{
+		reInitAction();
+		loadDevice();
+		if (selectedAccountID==null || selectedAccountID<0)
+		{
+			setErrorMsg("Please select a customer account");
+		}
+		else if (device != null)
+		{
+			if (!device.getAccountID().equals(selectedAccountID)) {
+				Account assignedAccount = accountDAO.findByID(device.getAccountID());
+				setErrorMsg("Error - Device "+ imei + " assigned to account " + assignedAccount.getAcctName());
+			} else 
+			{
+				deviceDAO.deleteByID(device.getDeviceID());
+				device.setAccountID(selectedAccountID);
+				// TODO should we set ephone to tech support??
+				device.setEphone(null);
+				deviceDAO.create(selectedAccountID, device);
+				setSuccessMsg("Device " + imei + " successfully moved to account: " + rmaAccount.getAcctName());
+			}
+		}
+		setImei(null);
+	}
+	public void reworkDeviceAction()
+	{
+		reInitAction();
+		loadDevice();
+		if (device != null)
+		{
+			if (!device.getAccountID().equals(rmaAccount.getAcctID())) {
+				Account assignedAccount = accountDAO.findByID(device.getAccountID());
+				setErrorMsg("Error - Device "+ imei + " assigned to account " + assignedAccount.getAcctName());
+			} else 
+			{
+				deviceDAO.deleteByID(device.getDeviceID());
+				device.setAccountID(selectedAccountID);
+				// TODO should we set ephone to tech support??
+				device.setEphone(null);
+				deviceDAO.create(selectedAccountID, device);
+				setSuccessMsg("Device " + imei + " successfully moved to account: " + shipAccount.getAcctName());
+			}
+		}
+		setImei(null);
+	}
 	public void moveDeviceAction() {
 		reInitAction();
 		loadDevice();
@@ -165,7 +221,7 @@ public class DAOUtilBean {
 		}
 		else if (device != null)
 		{
-			if (!device.getAccountID().equals(mainAccountID)) {
+			if (!device.getAccountID().equals(shipAccountID)) {
 				Account assignedAccount = accountDAO.findByID(device.getAccountID());
 				setErrorMsg("Error - Device "+ imei + " already assigned to account " + assignedAccount.getAcctName());
 			} else if (checkDevice())
@@ -175,7 +231,7 @@ public class DAOUtilBean {
 				// TODO should we set ephone to tech support??
 				device.setEphone(null);
 				deviceDAO.create(selectedAccountID, device);
-				setSuccessMsg("Device " + imei + " successfully assigned to " + getSelectedAccountName());
+				setSuccessMsg("Device " + imei + " successfully assigned to account: " + getSelectedAccountName());
 			}
 		}
 		setImei(null);
@@ -186,7 +242,7 @@ public class DAOUtilBean {
 		accountList.add(new SelectItem(-1,
 				"--Select a Account--"));
 		for (Integer accountID : getAccountMap().keySet()) {
-			if (!accountID.equals(this.mainAccountID))
+			if (!accountID.equals(this.shipAccountID))
 				accountList.add(new SelectItem(accountID, getAccountMap().get(
 					accountID)));
 		}
@@ -195,34 +251,32 @@ public class DAOUtilBean {
 
 	public Map<Integer, String> getAccountMap() {
 
-		if (accountMap == null) {
-			accountMap = new Hashtable<Integer, String>();
-			int limit = 20; // TODO Lose this!!
-			List<Account> accounts = accountDAO.getAllAcctIDs();
-			for (Iterator<Account> aiter = accounts.iterator(); aiter.hasNext()
-					&& limit > 0;) {
-				Account account = aiter.next();
-				account = accountDAO.findByID(account.getAcctID());
-				// System.out.println(address.getAddr1());
-				String acctName = account.getAcctName();
-				// TODO acctName should NOT be null
-				if (acctName == null) {
-					groupDAO.getGroupsByAcctID(account.getAcctID());
-					List<Group> groups = groupDAO.getGroupsByAcctID(account
-							.getAcctID());
-					for (Iterator<Group> giter = groups.iterator(); giter
-							.hasNext();) {
-						Group grp = giter.next();
-						if (grp.getParentID() == 0) {
-							acctName = grp.getName();
-							break;
-						}
+		accountMap = new Hashtable<Integer, String>();
+		int limit = 20; // TODO Lose this!!
+		List<Account> accounts = accountDAO.getAllAcctIDs();
+		for (Iterator<Account> aiter = accounts.iterator(); aiter.hasNext()
+				&& limit > 0;) {
+			Account account = aiter.next();
+			account = accountDAO.findByID(account.getAcctID());
+			// System.out.println(address.getAddr1());
+			String acctName = account.getAcctName();
+			// TODO acctName should NOT be null
+			if (acctName == null) {
+				groupDAO.getGroupsByAcctID(account.getAcctID());
+				List<Group> groups = groupDAO.getGroupsByAcctID(account
+						.getAcctID());
+				for (Iterator<Group> giter = groups.iterator(); giter
+						.hasNext();) {
+					Group grp = giter.next();
+					if (grp.getParentID() == 0) {
+						acctName = grp.getName();
+						break;
 					}
 				}
-				if (acctName != null && !acctName.equals("Top"))
-					accountMap.put(account.getAcctID(), acctName);
-				limit--;
 			}
+			if (acctName != null && !acctName.equals("Top"))
+				accountMap.put(account.getAcctID(), acctName);
+			limit--;
 		}
 		return accountMap;
 

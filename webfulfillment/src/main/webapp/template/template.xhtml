@@ -6,7 +6,7 @@
             <f:facet name="header">
                 <h:panelGroup>
                     <h:panelGrid columns="2" styleClass="header" columnClasses="header_col1, header_col2">
-                        <h:outputText value="Pro Order Fulfillment" />
+                        <h:outputText value="TiwiPro Device Management" />
                         <h:outputLink value="#{facesContext.externalContext.requestContextPath}/j_spring_security_logout">Log Out</h:outputLink>
                     </h:panelGrid>
                 </h:panelGroup>
@@ -14,7 +14,21 @@
 
             <table width="100%">
                 <tr valign="top">
-                    <td width="200"><rich:panel bodyClass="rich-laguna-panel-no-header">
+                                    <td width="200"><a4j:form styleClass="menuPanel">
+                        <rich:panelMenu mode="server" style="width:200px" iconExpandedGroup="disc" iconCollapsedGroup="disc" iconExpandedTopGroup="chevronUp"
+                            iconGroupTopPosition="right" iconCollapsedTopGroup="chevronDown" iconCollapsedTopPosition="right">
+                            <rich:panelMenuGroup label="Device Menu" expanded="true">
+                                <rich:panelMenuItem label="Fullfillment/Install" action="go_moveDevice" ajaxSingle="false">
+                                </rich:panelMenuItem>
+                                <rich:panelMenuItem label="RMA" action="go_rmaDevice" ajaxSingle="false">
+                                </rich:panelMenuItem>
+                                <rich:panelMenuItem label="Restock/Reworked" action="go_reworkDevice" ajaxSingle="false">
+                                </rich:panelMenuItem>
+                            </rich:panelMenuGroup>
+                        </rich:panelMenu>
+                    </a4j:form></td>
+                
+                    <td ><rich:panel bodyClass="rich-laguna-panel-no-header">
                         <f:facet name="header">
                             <h:outputText value="#{panelTitle}" />
                         </f:facet>

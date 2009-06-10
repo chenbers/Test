@@ -14,6 +14,18 @@
    <to-view-id>/secured/moveDevice.xhtml</to-view-id>
   </navigation-case>
  </navigation-rule>
+ <navigation-rule>
+  <navigation-case>
+   <from-outcome>go_rmaDevice</from-outcome>
+   <to-view-id>/secured/rmaDevice.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>
+  <navigation-case>
+   <from-outcome>go_reworkDevice</from-outcome>
+   <to-view-id>/secured/reworkDevice.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
  
  
  

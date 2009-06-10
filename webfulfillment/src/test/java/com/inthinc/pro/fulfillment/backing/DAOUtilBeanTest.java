@@ -59,7 +59,7 @@ public class DAOUtilBeanTest {
 		assertTrue(dm.getErrorMsg().indexOf("Device not found")>0);
 	}
 
-	@Ignore("not ready yet")
+	
 	@Test
 	public void TestMoveDevice() {
 		dm.setImei("XXXXXXX");
