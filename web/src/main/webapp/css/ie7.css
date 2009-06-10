@@ -30,6 +30,12 @@ ul.fdtablePaginater li {float:left;}
 ul.fdtablePaginater {text-align:center;}
 /* table { border-bottom:1px solid #8BAD37; } */
 
+.datagrid_panel {
+    overflow-x: auto;
+    overflow-y:hidden;
+    min-height:50px;	
+}
+
 .datagrid td
 {
    border-bottom: 1px solid #8BAD37; 

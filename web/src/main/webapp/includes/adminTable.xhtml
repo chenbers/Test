@@ -1,4 +1,4 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:f="http://java.sun.com/jsf/core"
@@ -60,7 +60,7 @@
 -->
   
   
-  <ui:composition>
+
 	
     <c:if test="#{empty rows}">
       <c:set var="rows" value="10" />
@@ -122,7 +122,7 @@
          -->
           <a4j:outputPanel id="tablePanel">
           <a4j:region>
-          <div class="datagrid" style="width: 790px; overflow: auto">
+          <div class="datagrid_panel" style="width: 790px">
 
             <rich:dataTable id="dataTable" value="#{items}" var="item" rowKeyVar="index" styleClass="datagrid"
               rows="#{rows}" rowClasses="tableOdd,tableEven" width="100%">
@@ -172,6 +172,5 @@
     
     </a4j:region>
 
-  </ui:composition>
+</ui:composition>
 
-</html>

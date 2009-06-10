@@ -471,6 +471,12 @@ a.ls_tab_mile {
 	color: #000;
 	margin: 0 0 0 8px;
 	}
+	
+.datagrid_panel {
+    overflow-x: auto;
+    overflow-y:hidden;
+    min-height:50px;	
+}
 
 .datagrid td {
    border-bottom: 1px solid #8BAD37; 
