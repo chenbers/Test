@@ -518,6 +518,12 @@
 	<!-- render kits -->
 	
 	<!-- lifecycle -->
+	<lifecycle>
+		<phase-listener>
+			com.inthinc.pro.backing.listener.MultiPageMessagesSupport
+		</phase-listener>
+	</lifecycle>
+	
     <!-- 
 	<lifecycle>
 		<phase-listener>com.inthinc.pro.util.DebugPhaseTracker</phase-listener>
