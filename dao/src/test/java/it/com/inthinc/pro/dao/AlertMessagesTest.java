@@ -165,6 +165,7 @@ public class AlertMessagesTest
     }
 
     @Test
+    @Ignore
     public void zoneAlerts()
     {
         
