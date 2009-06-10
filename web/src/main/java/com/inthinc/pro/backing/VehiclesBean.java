@@ -316,6 +316,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         // prefix the sensitivity settings with "device."
         final Map<String, Boolean> updateField = getUpdateField();
         Map<String,Boolean> tempUpdateField = new HashMap<String, Boolean>();
+        
+        
         if (updateField != null)
         {
             for (final String key : updateField.keySet())
