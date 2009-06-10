@@ -83,14 +83,16 @@
                                 </c:when>
                                 
                                 <c:when test="#{dashBoardDetailBean.tabType == 'MAP'}">
+                                    <pretty:urlbuffer var="dashboardLink" mappingId="dashboard">
+                                        <f:param value="#{navigationBean.groupID}"/>
+                                    </pretty:urlbuffer>
                                     <ui:include src="/includes/liveFleetMap.xhtml">
                                         <ui:param name="mapheight" value="height:800px"/>
                                         <ui:param name="mapwidth" value="width:800px"/>
                                         <ui:param name="mapxcenter" value="#{navigationBean.group.mapLat}"/>
                                         <ui:param name="mapycenter" value="#{navigationBean.group.mapLng}"/>
                                         <ui:param name="mapzoom" value="#{navigationBean.group.mapZoom}"/>
-                                        <ui:param name="flyNavRule" value="go_division" />
-                                        <ui:param name="flyOutImage" value="ico_minimize.png" />
+                                        <ui:param name="detailLink" value="#{requestScope.dashboardLink}"/>
                                         <ui:param name="maximized" value="true"/>
                                     </ui:include>
                                 </c:when>>

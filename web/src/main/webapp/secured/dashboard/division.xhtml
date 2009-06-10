@@ -39,7 +39,7 @@
 		<div class="panel_nw">
 			<div class="panel_title" style="z-index: 6">
 				<span class="line">#{messages.trendReport_header}</span> 
-                       <pretty:urlbuffer var="detailedDashboardLink" mappingId="detailedDashboard">
+                       <pretty:urlbuffer var="trendDetailedDashboardLink" mappingId="detailedDashboard">
                             <f:param value="#{navigationBean.groupID}"/>
                             <f:param value="TREND"/>
                         </pretty:urlbuffer> 
@@ -49,7 +49,7 @@
                             <ui:param name="groupID" value="#{navigationBean.groupID}"/>
                             <ui:param name="report" value="TREND" />
                             <ui:param name="id" value="trend" />
-                            <ui:param name="detailLink" value="#{requestScope.detailedDashboardLink}"/>
+                            <ui:param name="detailLink" value="#{requestScope.trendDetailedDashboardLink}"/>
                         </ui:include>
 			</div>
 
@@ -202,16 +202,17 @@
 
 				<!-- START FLEET MAP PANEL -->
 				<!-- leave reRenderList alone -->	
+               <pretty:urlbuffer var="mapDetailedDashboardLink" mappingId="detailedDashboard">
+                    <f:param value="#{navigationBean.groupID}"/>
+                    <f:param value="MAP"/>
+                </pretty:urlbuffer> 
 				<ui:include src="/includes/liveFleetMap.xhtml">
 					<ui:param name="mapheight" value="height:360px"/>
 					<ui:param name="mapwidth" value="width:445px"/>
 					<ui:param name="mapxcenter" value="#{navigationBean.group.mapLat}"/>
 					<ui:param name="mapycenter" value="#{navigationBean.group.mapLng}"/>
 					<ui:param name="mapzoom" value="#{navigationBean.group.mapZoom}"/>
-					<ui:param name="flyNavRule" value="go_divisionDetail" />
-					<ui:param name="flySelectedTab" value="fleet_full_screen" />
-					<ui:param name="flyOutImage" value="ico_expand.png" />  
-					<ui:param name="numRowsPerPg" value="10"/> 
+                    <ui:param name="detailLink" value="#{requestScope.mapDetailedDashboardLink}"/>
 				</ui:include>
 				<!-- END PANEL -->
 		
