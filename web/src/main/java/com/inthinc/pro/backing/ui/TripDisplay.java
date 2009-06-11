@@ -23,6 +23,7 @@ public class TripDisplay implements Comparable<TripDisplay>
     String duration;        // 1:32
     List<LatLng> route;
     LatLng routeLastStep;
+    LatLng beginningPoint;
     Long durationMiliSeconds;
     Trip trip;
     TimeZone timeZone;
@@ -57,6 +58,10 @@ public class TripDisplay implements Comparable<TripDisplay>
         if(route.size() > 0)
         {
             routeLastStep = route.get(route.size()-1);
+            routeLastStep.setLat(routeLastStep.getLat() + 0.00001);
+            
+            beginningPoint = route.get(0);
+            beginningPoint.setLat(beginningPoint.getLat() - 0.00001);
             
             setStartAddress(lookup.getAddress(route.get(0).getLat(), route.get(0).getLng()));
             setEndAddress(lookup.getAddress(route.get(route.size()-1).getLat(), route.get(route.size()-1).getLng()));
@@ -199,5 +204,19 @@ public class TripDisplay implements Comparable<TripDisplay>
     {
         return trip.getStartTime().compareTo(o.getTrip().getStartTime());
     }
+    
+    public LatLng getBeginningPoint()
+    {
+        return beginningPoint;
+    }
+    
+    public void setBeginningPoint(LatLng beginningPoint)
+    {
+        this.beginningPoint = beginningPoint;
+    }
+    
+    
+    
+    
     
 }

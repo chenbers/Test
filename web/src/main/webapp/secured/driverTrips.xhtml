@@ -186,7 +186,7 @@
 					</ui:repeat>
 					
 					//Start of trip marker
-					startlatlng = new GLatLng(#{trip.route[0].lat}, #{trip.route[0].lng});
+					startlatlng = new GLatLng(#{trip.beginningPoint.lat}, #{trip.beginningPoint.lng});
 					marker = createMarker(startlatlng, "#{trip.trip.startTime}_START", "#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());

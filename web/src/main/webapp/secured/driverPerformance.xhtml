@@ -51,7 +51,7 @@
 				
 		
 					//Start of trip marker
-					var startlatlng = new GLatLng(#{driverPerformanceBean.lastTrip.route[0].lat}, #{driverPerformanceBean.lastTrip.route[0].lng});
+					var startlatlng = new GLatLng(#{driverPerformanceBean.lastTrip.beginningPoint.lat}, #{driverPerformanceBean.lastTrip.beginningPoint.lng});
 					marker = createMarker(startlatlng, "tripStartBubble", "#{facesContext.externalContext.request.contextPath}/images/ico_start.png");
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());
