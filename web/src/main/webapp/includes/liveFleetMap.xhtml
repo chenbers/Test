@@ -14,7 +14,7 @@
 	<t:saveState value="#{driverLocationBean.mapIconMap}"/>
 	
     <ui:param name="detailImage" value="#{maximized ? '/images/ico_minimize.png': '/images/ico_expand.png'}"/>
-    <ui:param name="detailTitle" value="#{maximized ? messages.flyout_restore : messages.flyout_maximize}"/>
+    <ui:param name="detailTitle" value="#{maximized ? messages.restore : messages.maximize}"/>
   
 		<script src="#{facesContext.externalContext.request.contextPath}/js/liveFleetMap.js"  type="text/javascript"></script>
 		<script type="text/javascript">
@@ -82,7 +82,7 @@
 						<span class="panel_links">
 						<a4j:form id="refresh">
 						<a4j:commandButton image="/images/ico_refresh.png" immediate="true"
-							reRender="scripts" oncomplete="refreshMap()" title="#{messages.refresh}" alt="#{messages.refresh}"
+							reRender="scripts" oncomplete="refreshMap()" title="#{messages.refresh}"  alt="#{messages.refresh}"
 							value="#{messages.refresh}">
 						</a4j:commandButton>
                         <a href="#{detailLink}" title="#{detailTitle}"><h:graphicImage value="#{detailImage}" /></a>

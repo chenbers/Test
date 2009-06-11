@@ -13,6 +13,7 @@
 
     <ui:param name="includeDetailsLink" value="#{not empty includeDetailsLink ? includeDetailsLink : true}"/>
     <ui:param name="detailImage" value="#{maximized ? '/images/ico_minimize.png': '/images/ico_expand.png'}"/>
+    <ui:param name="detailTitle" value="#{maximized ? messages.restore : messages.maximize}"/>
         <a4j:form id="${id}_form" style="display: inline;">
             <a4j:region>
                 <table class="panel_links" cellpadding="0" cellspacing="0"> 
@@ -62,8 +63,8 @@
                 
                     <c:if test="#{includeDetailsLink}">
                         <td>
-                            <h:graphicImage id="#{id}_toolImage" value="/images/ico_tools.png" style="cursor: pointer;" />
-                            <a href="#{detailLink}"><h:graphicImage value="#{detailImage}" /></a>
+                            <h:graphicImage id="#{id}_toolImage" value="/images/ico_tools.png" style="cursor: pointer;" title="#{messages.tool_menu}" />
+                            <a href="#{detailLink}" title="#{detailTitle}"><h:graphicImage value="#{detailImage}" /></a>
             
                             <!--
                                 IMPORTANT!!!!!!! Regarless of what the z-index is set to on this context menu, the parent div has a relative position. So if you're having trouble getting the

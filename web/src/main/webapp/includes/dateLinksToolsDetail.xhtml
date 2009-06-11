@@ -9,10 +9,10 @@
 
 	<c:choose>
 		<c:when test="#{flyOutImage == 'ico_minimize.png'}">
-			<c:set var="flyoutTitle" value="#{messages.flyout_restore}" />
+			<c:set var="detailTitle" value="#{messages.restore}" />
 		</c:when>
 		<c:otherwise>
-			<c:set var="flyoutTitle" value="#{messages.flyout_maximize}" />
+			<c:set var="detailTitle" value="#{messages.maximize}" />
 		</c:otherwise>
 	</c:choose>
 
@@ -55,10 +55,10 @@
 			</span>
 			<span class="panel_ico">
 				<h:panelGroup id="toolsIcon" rendered="#{showTools eq 'TRUE' ? true : false}">
-					<h:graphicImage value="/images/ico_tools.png" alt="Tools" />
+					<h:graphicImage value="/images/ico_tools.png" style="cursor: pointer;" alt="#{messages.tool_menu}" title="#{messages.tool_menu}" />
 					<rich:spacer width="4" /> 
 				</h:panelGroup>
-                <pretty:link mappingId="#{mappingId}" rendered="#{showDetail eq 'TRUE' ? true : false}" style="text-decoration: none">
+                <pretty:link mappingId="#{mappingId}" rendered="#{showDetail eq 'TRUE' ? true : false}" style="text-decoration: none; cursor: pointer" title="#{detailTitle}">
                    <h:graphicImage value="/images/#{flyOutImage}" style="border: none" />
                    <f:param value="#{entityId}"/>
                 </pretty:link>

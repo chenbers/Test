@@ -25,12 +25,12 @@
 				
 				<li class="r grid_icon">
 				<h:outputLink value="#{facesContext.externalContext.requestContextPath}/secured/help/#{helpFile ne null ? helpFile : 'Home.htm'}" target="new">
-					<h:graphicImage value="/images/ico_help.png" style="border: 0px"/>
+					<h:graphicImage value="/images/ico_help.png" style="border: 0px" title="#{messages.help}"/>
 				</h:outputLink></li>
 				<h:outputText rendered="#{showContextMenu eq 'true'}">
 				<li class="r grid_icon">
 					<h:panelGroup id="overview_tools_icon">
-						<h:graphicImage value="/images/ico_tools.png"/>
+						<h:graphicImage value="/images/ico_tools.png" style="cursor: pointer;" title="#{messages.tool_menu}"/>
 					</h:panelGroup>
 				</li>
 				</h:outputText>
