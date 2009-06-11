@@ -252,10 +252,9 @@ public class DAOUtilBean {
 	public Map<Integer, String> getAccountMap() {
 
 		accountMap = new Hashtable<Integer, String>();
-		int limit = 20; // TODO Lose this!!
+//		int limit = 20; // TODO Lose this!!
 		List<Account> accounts = accountDAO.getAllAcctIDs();
-		for (Iterator<Account> aiter = accounts.iterator(); aiter.hasNext()
-				&& limit > 0;) {
+		for (Iterator<Account> aiter = accounts.iterator(); aiter.hasNext();){
 			Account account = aiter.next();
 			account = accountDAO.findByID(account.getAcctID());
 			// System.out.println(address.getAddr1());
@@ -276,7 +275,6 @@ public class DAOUtilBean {
 			}
 			if (acctName != null && !acctName.equals("Top"))
 				accountMap.put(account.getAcctID(), acctName);
-			limit--;
 		}
 		return accountMap;
 
