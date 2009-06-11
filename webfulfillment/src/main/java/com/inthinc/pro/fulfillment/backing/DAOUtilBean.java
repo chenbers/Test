@@ -92,7 +92,7 @@ public class DAOUtilBean {
 		rmaAccount = accountDAO.findByID(rmaAccountID);
 		
 		Integer userAccountID = getProUser().getUser().getPerson().getAcctID();
-		if (!shipAccountID.equals(userAccountID) || !rmaAccountID.equals(userAccountID))
+		if (!shipAccountID.equals(userAccountID) && !rmaAccountID.equals(userAccountID))
 			throw new Exception("Logged in User not in ship or rma account");
 
 //		Roles roles = new Roles();
