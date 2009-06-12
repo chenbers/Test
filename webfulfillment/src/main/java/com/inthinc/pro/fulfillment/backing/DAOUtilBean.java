@@ -251,30 +251,22 @@ public class DAOUtilBean {
 
 	public Map<Integer, String> getAccountMap() {
 
-		accountMap = new Hashtable<Integer, String>();
-//		int limit = 20; // TODO Lose this!!
-		List<Account> accounts = accountDAO.getAllAcctIDs();
-		for (Iterator<Account> aiter = accounts.iterator(); aiter.hasNext();){
-			Account account = aiter.next();
-			account = accountDAO.findByID(account.getAcctID());
-			// System.out.println(address.getAddr1());
-			String acctName = account.getAcctName();
-			// TODO acctName should NOT be null
-			if (acctName == null) {
-				groupDAO.getGroupsByAcctID(account.getAcctID());
-				List<Group> groups = groupDAO.getGroupsByAcctID(account
-						.getAcctID());
-				for (Iterator<Group> giter = groups.iterator(); giter
-						.hasNext();) {
-					Group grp = giter.next();
-					if (grp.getParentID() == 0) {
-						acctName = grp.getName();
-						break;
-					}
+		if (accountMap==null)
+		{
+			accountMap = new Hashtable<Integer, String>();
+			int limit = 500; // TODO Lose this!!
+			List<Account> accounts = accountDAO.getAllAcctIDs();
+			for (Iterator<Account> aiter = accounts.iterator(); aiter.hasNext() && limit > 0; 
+			limit --
+			){
+				Account account = aiter.next();
+				account = accountDAO.findByID(account.getAcctID());
+				String acctName = account.getAcctName();
+				if (acctName == null) {
+					acctName = account.getAcctID().toString();
 				}
-			}
-			if (acctName != null && !acctName.equals("Top"))
 				accountMap.put(account.getAcctID(), acctName);
+			}
 		}
 		return accountMap;
 
