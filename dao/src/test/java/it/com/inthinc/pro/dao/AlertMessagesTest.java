@@ -549,7 +549,7 @@ public class AlertMessagesTest
                 zoneAlert.setGroupIDs(emptyList);
                 zoneAlert.setVehicleIDs(emptyList);
                 zoneAlert.setVehicleTypes(emptyVTList);
-                zoneAlert.setNotifyPersonIDs(emptyList);
+                zoneAlert.setNotifyPersonIDs(notifyUserIDs);
                 zoneAlert.setEmailTo(emailList);
                 break;
             case VEHICLES:
@@ -557,7 +557,7 @@ public class AlertMessagesTest
                 zoneAlert.setGroupIDs(emptyList);
                 zoneAlert.setVehicleIDs(vehicleIDs);
                 zoneAlert.setVehicleTypes(emptyVTList);
-                zoneAlert.setNotifyPersonIDs(emptyList);
+                zoneAlert.setNotifyPersonIDs(notifyUserIDs);
                 zoneAlert.setEmailTo(emailList);
                 break;
             case VEHICLE_TYPES:
@@ -565,7 +565,7 @@ public class AlertMessagesTest
                 zoneAlert.setGroupIDs(emptyList);
                 zoneAlert.setVehicleIDs(emptyList);
                 zoneAlert.setVehicleTypes(vehicleTypes);
-                zoneAlert.setNotifyPersonIDs(emptyList);
+                zoneAlert.setNotifyPersonIDs(notifyUserIDs);
                 zoneAlert.setEmailTo(emailList);
                 break;
             case GROUPS:
@@ -573,7 +573,7 @@ public class AlertMessagesTest
                 zoneAlert.setGroupIDs(groupIDList);
                 zoneAlert.setVehicleIDs(emptyList);
                 zoneAlert.setVehicleTypes(emptyVTList);
-                zoneAlert.setNotifyPersonIDs(emptyList);
+                zoneAlert.setNotifyPersonIDs(notifyUserIDs);
                 zoneAlert.setEmailTo(emailList);
                 break;
             case CONTACT_INFO:
@@ -589,7 +589,7 @@ public class AlertMessagesTest
                 zoneAlert.setGroupIDs(groupIDList);
                 zoneAlert.setVehicleIDs(null);
                 zoneAlert.setVehicleTypes(null);
-                zoneAlert.setNotifyPersonIDs(null);
+                zoneAlert.setNotifyPersonIDs(notifyUserIDs);
                 zoneAlert.setStartTOD(0);
                 zoneAlert.setStopTOD(0);
                 zoneAlert.setEmailTo(emailList);
