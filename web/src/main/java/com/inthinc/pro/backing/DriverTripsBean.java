@@ -11,18 +11,19 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.backing.ui.TripDisplay;
+import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.EventDAO;
+import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.IdleEvent;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.dao.EventDAO;
-import com.inthinc.pro.dao.DriverDAO;
-import com.inthinc.pro.dao.GroupDAO;
-import com.inthinc.pro.dao.VehicleDAO;
-import com.inthinc.pro.dao.util.DateUtil;
 
 public class DriverTripsBean extends BaseBean
 {
@@ -68,6 +69,7 @@ public class DriverTripsBean extends BaseBean
             
             for (Trip trip : tempTrips)
             {
+                
                 trips.add(new TripDisplay(trip, getDriver().getPerson().getTimeZone(), addressLookup.getMapServerURLString()));
             }
             Collections.sort(trips);
@@ -100,14 +102,8 @@ public class DriverTripsBean extends BaseBean
             idleEvents = eventDAO.getEventsForDriver(getDriver().getDriverID(), start, end, idleTypes);
 
             // Lookup Addresses for events
-            for (Event event : violationEvents)
-            {
-                event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
-            }
-            for (Event event : idleEvents)
-            {
-                event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
-            }
+            populateAddresses(violationEvents);
+            populateAddresses(idleEvents);
 
             allEvents.clear();
             allEvents.addAll(violationEvents);
@@ -117,6 +113,21 @@ public class DriverTripsBean extends BaseBean
         }
     }
 
+    private void populateAddresses(List<Event> eventList)
+    {
+        LatLng lastValidLatLng = selectedTrip.getBeginningPoint();
+        for (Event event : eventList)
+        {
+            if((event.getLatitude() < 0.005 && event.getLatitude() > -0.005) || (event.getLongitude() < 0.005 && event.getLongitude() > -0.005))
+            {                
+                event.setLatitude(lastValidLatLng.getLat() + 0.00001);
+                event.setLongitude(lastValidLatLng.getLng());
+            }
+            event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
+            lastValidLatLng = event.getLatLng();
+        }
+    }
+    
     public void generateStats()
     {
         milesDriven = 0;
@@ -347,6 +358,7 @@ public class DriverTripsBean extends BaseBean
 
     public void setSelectedTrip(TripDisplay selectedTrip)
     {
+        this.selectedTrip = selectedTrip;
         //Add this trip to the list of selected trips.
         selectedTrips.clear();
         selectedTrips.add(selectedTrip);

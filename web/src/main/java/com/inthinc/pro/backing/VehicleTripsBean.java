@@ -20,6 +20,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
 import com.inthinc.pro.model.IdleEvent;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.dao.DriverDAO;
@@ -102,23 +103,15 @@ public class VehicleTripsBean extends BaseBean
             List<Integer> idleTypes = new ArrayList<Integer>();
             idleTypes.add(EventMapper.TIWIPRO_EVENT_IDLE);
 
-            List<Event> tempViolations = new ArrayList<Event>();
-            List<Event> tempIdle = new ArrayList<Event>();
+            List<Event> tempViolations;
+            List<Event> tempIdle;
 
             tempViolations = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), start, end, vioTypes);
             tempIdle = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), start, end, idleTypes);
 
             // Lookup Addresses for events
-            for (Event event : tempViolations)
-            {
-                event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
-                violationEvents.add(new EventReportItem(event, getTimeZoneFromDriver(event.getDriverID())));
-            }
-            for (Event event : tempIdle)
-            {
-                event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
-                idleEvents.add(new EventReportItem(event, getTimeZoneFromDriver(event.getDriverID())));
-            }
+            violationEvents = populateAddresses(tempViolations);
+            idleEvents = populateAddresses(tempIdle);
 
             allEvents.clear();
             allEvents.addAll(violationEvents);
@@ -128,6 +121,24 @@ public class VehicleTripsBean extends BaseBean
         }
     }
 
+    private List<EventReportItem> populateAddresses(List<Event> eventList)
+    {
+        List<EventReportItem> returnList = new ArrayList<EventReportItem>();
+        LatLng lastValidLatLng = selectedTrip.getBeginningPoint();
+        for (Event event : eventList)
+        {
+            if((event.getLatitude() < 0.005 && event.getLatitude() > -0.005) || (event.getLongitude() < 0.005 && event.getLongitude() > -0.005))
+            {                
+                event.setLatitude(lastValidLatLng.getLat() + 0.00001);
+                event.setLongitude(lastValidLatLng.getLng());
+            }
+            event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
+            lastValidLatLng = event.getLatLng();
+            returnList.add(new EventReportItem(event, getTimeZoneFromDriver(event.getDriverID())));
+        }
+        return returnList;
+    }
+    
     public void generateStats()
     {
         milesDriven = 0;
@@ -381,6 +392,7 @@ public class VehicleTripsBean extends BaseBean
 
     public void setSelectedTrip(TripDisplay selectedTrip)
     {
+        this.selectedTrip = selectedTrip;
         // Add this trip to the list of selected trips.
         selectedTrips.clear();
         selectedTrips.add(selectedTrip);
