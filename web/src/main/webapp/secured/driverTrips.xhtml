@@ -6,7 +6,8 @@
 			    xmlns:a4j="http://richfaces.org/a4j" 
 			    xmlns:f="http://java.sun.com/jsf/core"
 			    xmlns:t="http://myfaces.apache.org/tomahawk"
-                xmlns:pretty="http://ocpsoft.com/prettyfaces">
+                xmlns:pretty="http://ocpsoft.com/prettyfaces"
+                xmlns:c="http://java.sun.com/jstl/core">
 
     <ui:define name="scripts">
         
@@ -652,9 +653,13 @@
 	                  <h:form id="selectVehicleForm">
 	                    <span class="map">
 		                    <h:outputText value="">#{messages.drivertrip_vehicle}</h:outputText><rich:spacer width="5" />
-		                     <a4j:htmlCommandLink action="go_vehicle" value="#{driverTripsBean.selectedVehicle.name}">
-		                        <f:setPropertyActionListener value="#{driverTripsBean.selectedVehicle}" target="#{driverTripsBean.vehicle}" />
-		                    </a4j:htmlCommandLink>
+                            <c:if test="#{driverTripsBean.selectedVehicle ne null}">
+                              <pretty:link mappingId="vehiclePerformance">
+                                 <h:outputText value="#{driverTripsBean.selectedVehicle.name}"/>
+                                 <f:param value="#{driverTripsBean.selectedVehicle.vehicleID}"/>
+                               </pretty:link>
+                            </c:if>
+                            
 	                    </span>
 	                    <span class="panel_links"></span>
 	                </h:form>
