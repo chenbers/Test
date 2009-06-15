@@ -1,4 +1,4 @@
-package com.inthinc.pro.util;
+package com.inthinc.pro.dao.util;
 
 import java.math.BigDecimal;
 
@@ -11,13 +11,28 @@ import java.math.BigDecimal;
  * 
  */
 
-public class MetricConversionUtil
+public class MeasurementConversionUtil
 {
     public static Float fromMilesToKilometers(Long miles)
     {
         Double kilometers = miles * 1.609344;
         BigDecimal bigDecimal =  new BigDecimal(Math.round(kilometers * 100));
         return bigDecimal.movePointLeft(2).floatValue();
+    }
+    
+    public static Float fromKilometersToMiles(Long kilometers)
+    {
+        Double miles = kilometers * 0.62137;
+        BigDecimal bigDecimal =  new BigDecimal(Math.round(miles * 100));
+        return bigDecimal.movePointLeft(2).floatValue();
+    }
+    
+    public static Float convertDistance(Long distance,boolean convertToMetric)
+    {
+        if(convertToMetric){
+            return fromMilesToKilometers(distance);
+        }else
+            return fromKilometersToMiles(distance);
     }
     
     public static Long fromMPHtoKPH(Long milesPerHour)
@@ -36,6 +51,13 @@ public class MetricConversionUtil
     {
         Double milesPerLiter = milesPerGallon * 0.42514;
         return Math.round(milesPerLiter);
+    }
+    
+    public static Long convertSpeed(Long speed,boolean convertToMetric){
+        if(convertToMetric)
+            return fromMPHtoKPH(speed);
+        else
+            return fromKPHtoMPH(speed);
     }
 
 }

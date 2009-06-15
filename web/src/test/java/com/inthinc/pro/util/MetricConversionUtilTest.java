@@ -4,6 +4,10 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+
+
+
 
 public class MetricConversionUtilTest
 {
@@ -14,19 +18,19 @@ public class MetricConversionUtilTest
     {
         Long expectedkph = 89L;
         Long actualmph = 55L;
-        Long kilometersperhour = MetricConversionUtil.fromMPHtoKPH(actualmph);
+        Long kilometersperhour = MeasurementConversionUtil.fromMPHtoKPH(actualmph);
         logger.debug(actualmph + " mph = " +  kilometersperhour.toString() + " kph");
         Assert.assertEquals(expectedkph, kilometersperhour);
         
         expectedkph = 56L;
         actualmph = 35L;
-        kilometersperhour = MetricConversionUtil.fromMPHtoKPH(actualmph);
+        kilometersperhour = MeasurementConversionUtil.fromMPHtoKPH(actualmph);
         logger.debug(actualmph + " mph = " +  kilometersperhour.toString() + " kph");
         Assert.assertEquals(expectedkph, kilometersperhour);
         
         expectedkph = 72L;
         actualmph = 45L;
-        kilometersperhour = MetricConversionUtil.fromMPHtoKPH(actualmph);
+        kilometersperhour = MeasurementConversionUtil.fromMPHtoKPH(actualmph);
         logger.debug(actualmph + " mph = " +  kilometersperhour.toString() + " kph");
         Assert.assertEquals(expectedkph, kilometersperhour);
     }
@@ -36,7 +40,7 @@ public class MetricConversionUtilTest
     {
         Long expectedmph = 43L;
         Long actualkph = 70L;
-        Long milesperhour = MetricConversionUtil.fromKPHtoMPH(actualkph);
+        Long milesperhour = MeasurementConversionUtil.fromKPHtoMPH(actualkph);
         logger.debug(actualkph + " kph = " +  milesperhour.toString() + " mph");
         Assert.assertEquals(expectedmph, milesperhour);
     }
@@ -46,7 +50,7 @@ public class MetricConversionUtilTest
     {
         Long expecedcKPL = 10L;
         Long actualMPG = 23L;
-        Long kilometersPerLiter = MetricConversionUtil.fromMPGtoKPL(actualMPG);
+        Long kilometersPerLiter = MeasurementConversionUtil.fromMPGtoKPL(actualMPG);
         Assert.assertEquals(expecedcKPL, kilometersPerLiter);
     }
     
@@ -55,7 +59,7 @@ public class MetricConversionUtilTest
     {
         Float expectedKilometers = 27.36F;
         Long actualMiles = 17L;
-        Float kilometers = MetricConversionUtil.fromMilesToKilometers(actualMiles);        
+        Float kilometers = MeasurementConversionUtil.fromMilesToKilometers(actualMiles);        
         Assert.assertEquals(expectedKilometers.toString(), kilometers.toString());
     }
 
