@@ -49,5 +49,14 @@ public class MetricConversionUtilTest
         Long kilometersPerLiter = MetricConversionUtil.fromMPGtoKPL(actualMPG);
         Assert.assertEquals(expecedcKPL, kilometersPerLiter);
     }
+    
+    @Test
+    public void testMilesToKiloMeters()
+    {
+        Float expectedKilometers = 27.36F;
+        Long actualMiles = 17L;
+        Float kilometers = MetricConversionUtil.fromMilesToKilometers(actualMiles);        
+        Assert.assertEquals(expectedKilometers.toString(), kilometers.toString());
+    }
 
 }

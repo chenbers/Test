@@ -1,5 +1,7 @@
 package com.inthinc.pro.util;
 
+import java.math.BigDecimal;
+
 /**
  * Utility for converty units of measurment from metric to english and eglish to metric MPH = Miles Per Hour KPH = Kilometers Per Hour MPS = Meters Per Second
  * MPG = Miles Per Gallon KPL = Kilometers Per Liter
@@ -11,6 +13,13 @@ package com.inthinc.pro.util;
 
 public class MetricConversionUtil
 {
+    public static Float fromMilesToKilometers(Long miles)
+    {
+        Double kilometers = miles * 1.609344;
+        BigDecimal bigDecimal =  new BigDecimal(Math.round(kilometers * 100));
+        return bigDecimal.movePointLeft(2).floatValue();
+    }
+    
     public static Long fromMPHtoKPH(Long milesPerHour)
     {
         Double kilometersPerHour = milesPerHour * 1.609344;
