@@ -110,9 +110,10 @@ public class SiloServiceTest
     
     private static final String PASSWORD="nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7"; // password
 
-    private static final Integer TESTING_DRIVER_ID = 1; // speedracer
-    private static final Integer TESTING_VEHICLE_ID = 1; // speedracer
-    private static final Integer TESTING_GROUP_ID = 2; // speedracer
+    private static final String SPEEDRACER = "speedracer";
+    private static Integer TESTING_DRIVER_ID; // speedracer
+    private static Integer TESTING_VEHICLE_ID = 1; // speedracer
+    private static Integer TESTING_GROUP_ID; // speedracer
     
     @BeforeClass
     public static void setUpBeforeClass() throws Exception
@@ -154,6 +155,25 @@ public class SiloServiceTest
         DeviceSensitivityMapping mapping = new DeviceSensitivityMapping();
         mapping.setDeviceDAO(deviceDAO);
         mapping.init();
+        
+        UserHessianDAO userDAO = new UserHessianDAO();
+        userDAO.setSiloService(siloService);
+        
+        User user = userDAO.findByUserName(SPEEDRACER);
+        TESTING_GROUP_ID = user.getGroupID();
+        
+        DriverHessianDAO driverDAO = new DriverHessianDAO();
+        driverDAO.setSiloService(siloService);
+        
+        Driver driver = driverDAO.getDriverByPersonID(user.getPerson().getPersonID());
+        TESTING_DRIVER_ID = driver.getDriverID();
+        
+        VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
+        vehicleDAO.setSiloService(siloService);
+        
+        Vehicle vehicle = vehicleDAO.findByDriverInGroup(TESTING_DRIVER_ID, TESTING_GROUP_ID);
+        
+        TESTING_VEHICLE_ID = vehicle.getVehicleID();
         
     }
 
@@ -226,6 +246,7 @@ public class SiloServiceTest
         assertEquals(TESTING_DRIVER_ID, loc.getDriverID());
         assertNotNull(loc.getTime());
         assertNotNull(loc.getLoc().getLat());
+        assertNotNull(loc.getLoc().getLng());
         assertNotNull(loc.getLoc().getLng());
     }    
     
