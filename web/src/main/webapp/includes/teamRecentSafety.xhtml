@@ -55,7 +55,7 @@
 							<h:outputText value="" />
 						</f:facet>
                         <!-- this is a hack, <c:if> would not work inside <rich:column>, need to come back to this and clean it up -->            
-                        <pretty:link mappingId="#{event.event.eventType == 'SPEEDING' ? 'driverPerformanceSpeed' : 'driverPerformanceSeatBelt'}">
+                        <pretty:link mappingId="#{event.event.eventType == 'SPEEDING' ? 'driverPerformanceSpeed' : 'driverPerformanceStyle'}">
                             <f:param value="#{event.event.driver.driverID}"/>
                             #{messages.team_safetyEventsDetails}
                         </pretty:link>
