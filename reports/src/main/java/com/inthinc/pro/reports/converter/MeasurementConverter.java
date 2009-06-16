@@ -26,7 +26,7 @@ public class MeasurementConverter
         
     }
     
-    public static Float convertDistance(Integer distance,Boolean convertToMetric){
+    public static Float convertDistance(Float distance,Boolean convertToMetric){
         logger.debug("Distance: " + distance + " Convert To Metric: " + convertToMetric);
         if(convertToMetric)
             return MeasurementConversionUtil.convertDistance(distance, MeasurementType.METRIC);

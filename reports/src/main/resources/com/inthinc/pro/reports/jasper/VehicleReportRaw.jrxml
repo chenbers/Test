@@ -31,6 +31,7 @@
 	<parameter name="RECORD_COUNT" isForPrompting="false" class="java.lang.Integer"/>
 	<parameter name="REPORT_DATE_AS_STRING" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="REPORT_LOGO" isForPrompting="false" class="java.io.InputStream"/>
+	<parameter name="USE_METRIC" isForPrompting="false" class="java.lang.Boolean"/>
 
 	<field name="overallScoreAsString" class="java.lang.String"/>
 	<field name="speedScoreAsString" class="java.lang.String"/>
@@ -132,7 +133,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.vehicle.miles.driven}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{USE_METRIC} == Boolean.TRUE ? $R{report.vehicle.kilometers.driven} : $R{report.vehicle.miles.driven}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -253,7 +254,7 @@
 					<textElement textAlignment="Left">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{milesDriven}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertDistance(Float.valueOf($F{milesDriven}),$P{USE_METRIC}).toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

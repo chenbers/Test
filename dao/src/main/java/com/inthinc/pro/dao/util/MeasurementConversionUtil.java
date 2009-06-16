@@ -40,7 +40,7 @@ public class MeasurementConversionUtil
         return bigDecimal.movePointLeft(1).floatValue();
     }
 
-    public static Float convertDistance(Integer distance, MeasurementType convertToMeasurementType)
+    public static Float convertDistance(Float distance, MeasurementType convertToMeasurementType)
     {
         if (convertToMeasurementType == MeasurementType.METRIC)
         {

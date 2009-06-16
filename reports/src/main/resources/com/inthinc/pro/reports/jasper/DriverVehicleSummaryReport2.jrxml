@@ -25,6 +25,7 @@
 
 	<subDataset name="mpgDataSet" >
 
+		<parameter name="USE_METRIC" isForPrompting="false" class="java.lang.Boolean"/>
 
 		<field name="seriesID" class="java.lang.String"/>
 		<field name="category" class="java.lang.String"/>
@@ -57,6 +58,7 @@
 	<parameter name="COACH_DUR" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="MPG_DUR" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="REPORT_DATE_AS_STRING" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="USE_METRIC" isForPrompting="false" class="java.lang.Boolean"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -133,13 +135,16 @@
 					<categoryDataset>
 						<dataset resetType="None" >
 							<datasetRun subDataset="mpgDataSet">
+								<datasetParameter  name="USE_METRIC">
+									<datasetParameterExpression><![CDATA[$P{USE_METRIC}]]></datasetParameterExpression>
+								</datasetParameter>
 					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_1})]]></dataSourceExpression>
 							</datasetRun>
 						</dataset>
 						<categorySeries>
 							<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
 							<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
-							<valueExpression><![CDATA[$F{value}]]></valueExpression>
+							<valueExpression><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertMileage(Integer.valueOf($F{value}.intValue()),$P{USE_METRIC})]]></valueExpression>
 							<labelExpression><![CDATA[$F{label}]]></labelExpression>
 				<itemHyperlink >
 				</itemHyperlink>
@@ -230,14 +235,14 @@
 					<reportElement
 						x="7"
 						y="252"
-						width="152"
+						width="248"
 						height="19"
 						key="textField-13"/>
 					<box></box>
 					<textElement>
 						<font size="14"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.dvsummary.miles.per.gallon}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{USE_METRIC} == Boolean.TRUE ? $R{report.dvsummary.kilometers.per.liter} : $R{report.dvsummary.miles.per.gallon}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

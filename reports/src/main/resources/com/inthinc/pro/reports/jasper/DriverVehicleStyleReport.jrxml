@@ -49,6 +49,7 @@
 	<parameter name="DURATION" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="REPORT_LOGO" isForPrompting="false" class="java.io.InputStream"/>
 	<parameter name="REPORT_DATE_AS_STRING" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="USE_METRIC" isForPrompting="false" class="java.lang.Boolean"/>
 
 	<field name="event.addressStr" class="java.lang.String"/>
 	<field name="date" class="java.lang.String"/>
@@ -463,7 +464,7 @@
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{event.eventTypeString}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[str($F{event.eventTypeString})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -476,7 +477,7 @@
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{event.speed}.toString() + " mph"]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertSpeed($F{event.speed},$P{USE_METRIC}).toString() + " " + ($P{USE_METRIC} == Boolean.TRUE? $R{report.kph} : $R{report.mph}).toString()]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
