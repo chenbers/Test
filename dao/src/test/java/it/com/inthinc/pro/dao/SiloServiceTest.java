@@ -1192,7 +1192,7 @@ public class SiloServiceTest
             assertEquals("user update count " + user.getUserID(), Integer.valueOf(1), changedCount);
             
             // find user by ID
-            String ignoreFields[] = {"modified", "person"};
+            String ignoreFields[] = {"modified", "person", "measurementType"};
             User returnedUser = userDAO.findByID(user.getUserID());
             Util.compareObjects(user, returnedUser, ignoreFields);
 
@@ -1219,7 +1219,7 @@ public class SiloServiceTest
         }
 
         // TODO: remove status
-        String ignoreFields[] = {"modified", "costPerHour", "address", "status"};
+        String ignoreFields[] = {"modified", "costPerHour", "address", "status", "measurementType"};
         for (Person person : personList)
         {
             Person returnedPerson = personDAO.findByID(person.getPersonID());
@@ -1231,7 +1231,7 @@ public class SiloServiceTest
         List<Person> groupPersonList = personDAO.getPeopleInGroupHierarchy(groupID);
         assertEquals("people count for group", Integer.valueOf(PERSON_COUNT), new Integer(groupPersonList.size()));
 
-        String ignoreFields2[] = {"modified", "costPerHour", "address", "status", "user", "driver"};
+        String ignoreFields2[] = {"modified", "costPerHour", "address", "status", "user", "driver", "measurementType"};
         for (Person person : personList)
         {
             for (Person groupPerson : groupPersonList)
@@ -1607,7 +1607,7 @@ public class SiloServiceTest
         assertNotNull("personID in driver not set", person.getDriver().getPersonID());
 
         Person returnPerson = personDAO.findByID(personID);
-        String[] ignoreFields = {"modified"};
+        String[] ignoreFields = {"modified", "measurementType"};
         Util.compareObjects(person, returnPerson, ignoreFields);
 
 // TODO: This did not work        
@@ -1627,7 +1627,7 @@ public class SiloServiceTest
 
         UserHessianDAO userDAO = new UserHessianDAO();
         userDAO.setSiloService(siloService);
-        findByKey(userDAO, userList.get(0), userList.get(0).getUsername(), new String[]{"modified", "person"});
+        findByKey(userDAO, userList.get(0), userList.get(0).getUsername(), new String[]{"modified", "person", "measurementType"});
         findByKeyExpectNoResult(userDAO, "BAD_USER");
 
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
