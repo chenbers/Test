@@ -11,7 +11,10 @@
     <t:saveState value="#{mpgBean.groupID}"/>
     <a4j:outputPanel id="mpgOutputPanel">    
         <div class="panel_nw">    
-            <div class="panel_title" style="z-index: #{zorder}"><span class="gas">#{messages.mpg_title}</span>   
+            <div class="panel_title" style="z-index: #{zorder}">
+                <span class="gas">
+                    <h:outputText value="Miles_Per_Gallon" converter="MeasurementConverter"/>
+                </span>   
                 <pretty:urlbuffer var="detailedDashboardLink" mappingId="detailedDashboard">
                     <f:param value="#{mpgBean.groupID}"/>
                     <f:param value="MPG"/>

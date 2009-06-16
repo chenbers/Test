@@ -61,6 +61,10 @@
 	      <property-class>java.lang.String</property-class>
    	  </property>
 	</converter>
+    <converter>
+        <converter-id>MeasurementConverter</converter-id>
+        <converter-class>com.inthinc.pro.convert.MeasurementConverter</converter-class>
+    </converter>
 	
 	<!-- Components -->
 	<component>
