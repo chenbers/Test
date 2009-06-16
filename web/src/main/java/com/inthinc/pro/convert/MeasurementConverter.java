@@ -25,14 +25,13 @@ public class MeasurementConverter extends BaseConverter implements Converter
         
         if(String.class.isInstance(value))
         {
-            MeasurementType measurementType = getUser().getUser().getMeasurementType();
+            MeasurementType measurementType = getUser().getUser().getPerson().getMeasurementType();
             String text = String.class.cast(value);
             if(measurementType == null || measurementType.equals(MeasurementType.ENGLISH))
                 return MessageUtil.getMessageString(ENGLISH_PREFIX + text, getUser().getUser().getLocale());
-            if(getUser().getUser().getMeasurementType().equals(MeasurementType.METRIC))
+            if(measurementType.equals(MeasurementType.METRIC))
                 return MessageUtil.getMessageString(METRIC_PREFIX + text, getUser().getUser().getLocale());
         }
-        // TODO Auto-generated method stub
         return null;
     }
 }

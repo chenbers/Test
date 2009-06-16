@@ -6,51 +6,50 @@ import java.util.TimeZone;
 
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
-
 public class Person extends BaseEntity implements Comparable<Person>
 {
     private static final long serialVersionUID = -7162580776394490873L;
-
     @ID
-    private Integer           personID;
+    private Integer personID;
     @Column(name = "tzName")
-    private TimeZone          timeZone;
-    private Integer           costPerHour;                             // in cents
+    private TimeZone timeZone;
+    private Integer costPerHour; // in cents
     // contact information
     @Column(name = "addrID")
-    private Integer           addressID;
+    private Integer addressID;
     @Column(updateable = false)
-    private Address           address;
-    private String            priEmail;
-    private String            secEmail;
-    private String            priPhone;
-    private String            secPhone;
-    private String            priText;
-    private String            secText;
-    private Integer           info;
-    private Integer           warn;
-    private Integer           crit;
+    private Address address;
+    private String priEmail;
+    private String secEmail;
+    private String priPhone;
+    private String secPhone;
+    private String priText;
+    private String secText;
+    private Integer info;
+    private Integer warn;
+    private Integer crit;
     // employee information
-    private String            empid;
-    private String            reportsTo;
-    private String            title;
-    private String            dept;
+    private String empid;
+    private String reportsTo;
+    private String title;
+    private String dept;
     // personal information
-    private String            first;
-    private String            middle;
-    private String            last;
-    private String            suffix;
-    private Gender            gender;
-    private Integer           height;                                  // inches
-    private Integer           weight;                                  // pounds
-    private Date              dob;
+    private String first;
+    private String middle;
+    private String last;
+    private String suffix;
+    private Gender gender;
+    private Integer height; // inches
+    private Integer weight; // pounds
+    private Date dob;
     // user, driver (may be null)
     @Column(updateable = false)
-    private User              user;
+    private User user;
     @Column(updateable = false)
-    private Driver            driver;
-    private Status            status;
-    private Integer           acctID;
+    private Driver driver;
+    private Status status;
+    private Integer acctID;
+    private MeasurementType measurementType;
 
     public Person()
     {
@@ -59,7 +58,7 @@ public class Person extends BaseEntity implements Comparable<Person>
 
     public Person(Integer personID, Integer acctID, TimeZone timeZone, Integer costPerHour, Integer addressID, String priEmail, String secEmail, String priPhone, String secPhone,
             String priText, String secText, Integer info, Integer warn, Integer crit, String empid, String reportsTo, String title, String dept, String first, String middle,
-            String last, String suffix, Gender gender, Integer height, Integer weight, Date dob, Status status)
+            String last, String suffix, Gender gender, Integer height, Integer weight, Date dob, Status status, MeasurementType measurementType)
     {
         super();
         this.acctID = acctID;
@@ -89,6 +88,7 @@ public class Person extends BaseEntity implements Comparable<Person>
         this.weight = weight;
         this.dob = dob;
         this.status = status;
+        this.measurementType = measurementType;
     }
 
     public Integer getPersonID()
@@ -105,14 +105,15 @@ public class Person extends BaseEntity implements Comparable<Person>
     {
         return timeZone;
     }
-    
-    public String getDisplayTimeZone(){
-    	if(timeZone !=  null)
-    	    return timeZone.getDisplayName(timeZone.inDaylightTime(new GregorianCalendar(timeZone).getTime()), TimeZone.LONG);
-    	else
-    	    return null;
+
+    public String getDisplayTimeZone()
+    {
+        if (timeZone != null)
+            return timeZone.getDisplayName(timeZone.inDaylightTime(new GregorianCalendar(timeZone).getTime()), TimeZone.LONG);
+        else
+            return null;
     }
-    
+
     public void setTimeZone(TimeZone timeZone)
     {
         this.timeZone = timeZone;
@@ -293,11 +294,11 @@ public class Person extends BaseEntity implements Comparable<Person>
         }
         return result.toString();
     }
-    
+
     public String getFullNameWithId()
     {
         StringBuilder result = new StringBuilder();
-        if(empid != null && !empid.isEmpty())
+        if (empid != null && !empid.isEmpty())
         {
             result.append(getFullName());
             result.append(' ');
@@ -307,7 +308,6 @@ public class Person extends BaseEntity implements Comparable<Person>
         {
             result.append(getFullName());
         }
-        
         return result.toString();
     }
 
@@ -441,17 +441,25 @@ public class Person extends BaseEntity implements Comparable<Person>
         this.acctID = acctID;
     }
 
+    public MeasurementType getMeasurementType()
+    {
+        return measurementType;
+    }
+
+    public void setMeasurementType(MeasurementType measurementType)
+    {
+        this.measurementType = measurementType;
+    }
+
     @Override
     public int compareTo(Person o)
     {
-        //for now, use the name fields to determine the natural order of person objects
-        int result = (this.last.toUpperCase()).compareTo(o.getLast().toUpperCase());        
-        if(result == 0)
-            result = (this.first.toUpperCase()).compareTo(o.getFirst().toUpperCase());        
-        if(result == 0)
+        // for now, use the name fields to determine the natural order of person objects
+        int result = (this.last.toUpperCase()).compareTo(o.getLast().toUpperCase());
+        if (result == 0)
+            result = (this.first.toUpperCase()).compareTo(o.getFirst().toUpperCase());
+        if (result == 0)
             result = (this.middle.toUpperCase()).compareTo(o.getMiddle().toUpperCase());
-        
         return result;
     }
-
 }

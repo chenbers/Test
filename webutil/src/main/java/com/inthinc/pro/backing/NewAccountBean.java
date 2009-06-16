@@ -68,7 +68,7 @@ public class NewAccountBean
 
         // create the person record for the superuser
         Person person = new Person(new Integer(0), acctID, TimeZone.getDefault(), null, null, email, null, "5555555555", "5555555555", null, null, null, null, null, "0", null,
-                "title", "dept", "first", "m", "last", "jr", Gender.FEMALE, 65, 180, new Date(), Status.ACTIVE);
+                "title", "dept", "first", "m", "last", "jr", Gender.FEMALE, 65, 180, new Date(), Status.ACTIVE, MeasurementType.ENGLISH);
         person.setAddress(new Address(null, "", null, "", null, ""));
         Integer personID = null;
         try
@@ -86,7 +86,7 @@ public class NewAccountBean
         }
 
         // create the superuser
-        User user = new User(0, person.getPersonID(), getSuperUserRole(), Status.ACTIVE, getUsername(), PASSWORD, groupID, Locale.getDefault(), MeasurementType.ENGLISH);
+        User user = new User(0, person.getPersonID(), getSuperUserRole(), Status.ACTIVE, getUsername(), PASSWORD, groupID, Locale.getDefault());
         Integer userID = null;
         try
         {

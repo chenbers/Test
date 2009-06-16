@@ -18,9 +18,8 @@ public class User extends BaseEntity
     private String password;
     private Integer groupID;
     private Locale locale;
-    private MeasurementType measurementType;
 
-    public User(Integer userID, Integer personID, Role role, Status status, String username, String password, Integer groupID, Locale locale, MeasurementType measurementType)
+    public User(Integer userID, Integer personID, Role role, Status status, String username, String password, Integer groupID, Locale locale)
     {
         super();
         this.userID = userID;
@@ -31,7 +30,6 @@ public class User extends BaseEntity
         this.password = password;
         this.groupID = groupID;
         this.locale = locale;
-        this.measurementType = measurementType;
     }
 
     public User()
@@ -131,15 +129,5 @@ public class User extends BaseEntity
     public void setLocale(Locale locale)
     {
         this.locale = locale;
-    }
-
-    public MeasurementType getMeasurementType()
-    {
-        return measurementType;
-    }
-
-    public void setMeasurementType(MeasurementType measurementType)
-    {
-        this.measurementType = measurementType;
     }
 }

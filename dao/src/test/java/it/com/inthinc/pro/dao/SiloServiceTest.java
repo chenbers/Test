@@ -1176,8 +1176,8 @@ public class SiloServiceTest
             Date dob = Util.genDate(1959, 8, 30);
             String email =  "email_"+groupID+"_"+i+"@yahoo.com";
             Person person = new Person(0, acctID, TimeZone.getDefault(), null, address.getAddrID(), email, null, "555555555" + i, "555555555" + i, null, null, null, null, null, "emp"+i,
-                            null, "title"+i, "dept" + i, "first"+i, "m"+i, "last"+i, "jr", Gender.MALE, 65, 180, dob, Status.ACTIVE);
-            User user = new User(0, 0, randomRole(), Status.ACTIVE, "user"+groupID+"_"+i, PASSWORD, groupID, Locale.getDefault(), MeasurementType.ENGLISH);
+                            null, "title"+i, "dept" + i, "first"+i, "m"+i, "last"+i, "jr", Gender.MALE, 65, 180, dob, Status.ACTIVE, MeasurementType.ENGLISH);
+            User user = new User(0, 0, randomRole(), Status.ACTIVE, "user"+groupID+"_"+i, PASSWORD, groupID, Locale.getDefault());
             person.setUser(user);
             
             Integer personID = personDAO.create(acctID, person);
@@ -1192,7 +1192,7 @@ public class SiloServiceTest
             assertEquals("user update count " + user.getUserID(), Integer.valueOf(1), changedCount);
             
             // find user by ID
-            String ignoreFields[] = {"modified", "person", "measurementType"};
+            String ignoreFields[] = {"modified", "person"};
             User returnedUser = userDAO.findByID(user.getUserID());
             Util.compareObjects(user, returnedUser, ignoreFields);
 
@@ -1588,11 +1588,11 @@ public class SiloServiceTest
                 randomState(), "12345");
         Driver driver = new Driver(0, 0, Status.ACTIVE, null, "l"+groupID, 
                 randomState(), "ABCD", expired, null, null, groupID);
-        User user = new User(0, 0, randomRole(), Status.ACTIVE, "deepuser_"+groupID, PASSWORD, groupID, Locale.getDefault(), MeasurementType.ENGLISH);
+        User user = new User(0, 0, randomRole(), Status.ACTIVE, "deepuser_"+groupID, PASSWORD, groupID, Locale.getDefault());
         Date dob = Util.genDate(1959, 8, 30);
         Person person = new Person(0, acctID, TimeZone.getDefault(), null, address.getAddrID(), "priEmail" + groupID + "@test.com", "secEmail@test.com", "8015551111", "8015552222", "8015554444@texter.com", "8015555555@texter.com", 1, 2, 3, "emp"+groupID,
                 null, "title"+groupID, "dept" + groupID, "first"+groupID, "m"+groupID, "last"+groupID, "jr", Gender.MALE, 65, 180, dob, 
-                Status.ACTIVE);
+                Status.ACTIVE, MeasurementType.ENGLISH);
         person.setUser(user);
         person.setDriver(driver);
         person.setAddress(address);
@@ -1622,12 +1622,12 @@ public class SiloServiceTest
         // do these last to allow back end more time to update it's cache (can take up to 5 min)
         PersonHessianDAO personDAO = new PersonHessianDAO();
         personDAO.setSiloService(siloService);
-        findByKey(personDAO, personList.get(0), personList.get(0).getPriEmail(), new String[] {"modified", "address", "driver", "user"});
+        findByKey(personDAO, personList.get(0), personList.get(0).getPriEmail(), new String[] {"modified", "address", "driver", "user", "measurementType"});
         findByKeyExpectNoResult(personDAO, "BAD_EMAIL");
 
         UserHessianDAO userDAO = new UserHessianDAO();
         userDAO.setSiloService(siloService);
-        findByKey(userDAO, userList.get(0), userList.get(0).getUsername(), new String[]{"modified", "person", "measurementType"});
+        findByKey(userDAO, userList.get(0), userList.get(0).getUsername(), new String[]{"modified", "person"});
         findByKeyExpectNoResult(userDAO, "BAD_USER");
 
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
