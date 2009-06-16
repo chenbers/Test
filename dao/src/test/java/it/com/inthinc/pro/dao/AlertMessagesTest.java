@@ -60,6 +60,7 @@ import com.inthinc.pro.model.Gender;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagAlert;
@@ -403,7 +404,7 @@ public class AlertMessagesTest
                 randomState(), "12345");
         Driver driver = new Driver(0, 0, Status.ACTIVE, 100l + groupID.longValue(), "l"+groupID, 
                 randomState(), "ABCD", expired, null, null, groupID);
-        User user = new User(0, 0, randomRole(), Status.ACTIVE, "deepuser_"+groupID, PASSWORD, groupID, Locale.getDefault());
+        User user = new User(0, 0, randomRole(), Status.ACTIVE, "deepuser_"+groupID, PASSWORD, groupID, Locale.getDefault(), MeasurementType.ENGLISH);
         Date dob = Util.genDate(1959, 8, 30);
         person = new Person(0, acctID, TimeZone.getTimeZone("MST"), null, address.getAddrID(), "email"+groupID+"@email.com", "secEmail@test.com", "8015551111", "8015552222", "8015554444@texter.com", "8015555555@texter.com", 1, 1, 1, "emp"+groupID, 
                 null, "title"+groupID, "dept" + groupID, "first"+groupID, "m"+groupID, "last"+groupID, "jr", Gender.MALE, 65, 180, dob, 

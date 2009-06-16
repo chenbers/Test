@@ -34,6 +34,7 @@ import com.inthinc.pro.model.Gender;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
@@ -205,7 +206,7 @@ public class DataGenerator
 
 
         String username = "user_"+person.getPersonID();
-        user = new User(0, person.getPersonID(), Roles.getRoleByName("superUser"), Status.ACTIVE, username, PASSWORD, groupID, Locale.getDefault());
+        user = new User(0, person.getPersonID(), Roles.getRoleByName("superUser"), Status.ACTIVE, username, PASSWORD, groupID, Locale.getDefault(), MeasurementType.ENGLISH);
         Integer userID = userDAO.create(person.getPersonID(), user);
         user.setUserID(userID);
         

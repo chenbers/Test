@@ -18,6 +18,7 @@ import com.inthinc.pro.model.Gender;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.Status;
@@ -85,7 +86,7 @@ public class NewAccountBean
         }
 
         // create the superuser
-        User user = new User(0, person.getPersonID(), getSuperUserRole(), Status.ACTIVE, getUsername(), PASSWORD, groupID, Locale.getDefault());
+        User user = new User(0, person.getPersonID(), getSuperUserRole(), Status.ACTIVE, getUsername(), PASSWORD, groupID, Locale.getDefault(), MeasurementType.ENGLISH);
         Integer userID = null;
         try
         {

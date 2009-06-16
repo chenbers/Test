@@ -5,7 +5,7 @@ import java.util.Locale;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 public class User extends BaseEntity
-{
+{    
     @ID
     private Integer userID;
     private Integer personID;
@@ -18,8 +18,9 @@ public class User extends BaseEntity
     private String password;
     private Integer groupID;
     private Locale locale;
+    private MeasurementType measurementType;
 
-    public User(Integer userID, Integer personID, Role role, Status status, String username, String password, Integer groupID, Locale locale)
+    public User(Integer userID, Integer personID, Role role, Status status, String username, String password, Integer groupID, Locale locale, MeasurementType measurementType)
     {
         super();
         this.userID = userID;
@@ -30,6 +31,7 @@ public class User extends BaseEntity
         this.password = password;
         this.groupID = groupID;
         this.locale = locale;
+        this.measurementType = measurementType;
     }
 
     public User()
@@ -129,5 +131,15 @@ public class User extends BaseEntity
     public void setLocale(Locale locale)
     {
         this.locale = locale;
+    }
+
+    public MeasurementType getMeasurementType()
+    {
+        return measurementType;
+    }
+
+    public void setMeasurementType(MeasurementType measurementType)
+    {
+        this.measurementType = measurementType;
     }
 }
