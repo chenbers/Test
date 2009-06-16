@@ -17,6 +17,7 @@ public class ReportMessageUtil
         ResourceBundle bundle = getBundle(locale);
         return getBundleString(bundle, key);
     }
+    
 
     private static String getBundleString(ResourceBundle bundle, String key)
     {

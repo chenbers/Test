@@ -31,6 +31,7 @@
 	<parameter name="REPORT_LOGO" isForPrompting="false" class="java.io.InputStream"/>
 	<parameter name="REPORT_DATE_AS_STRING" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="DURATION" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="USE_METRIC" isForPrompting="false" class="java.lang.Boolean"/>
 
 	<field name="employeeID" class="java.lang.String"/>
 	<field name="employee" class="java.lang.String"/>
@@ -233,7 +234,7 @@
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.driver.miles.driven}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{USE_METRIC} == Boolean.TRUE ? $R{report.driver.kilometers.driven} : $R{report.driver.miles.driven}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -367,7 +368,7 @@
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.Integer"><![CDATA[$F{milesDriven}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertDistance($F{milesDriven},$P{USE_METRIC}).toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -395,7 +396,7 @@
 						x="0"
 						y="3"
 						width="781"
-						height="0"
+						height="1"
 						key="line-1"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
@@ -447,7 +448,7 @@
 						x="0"
 						y="3"
 						width="781"
-						height="0"
+						height="1"
 						key="line-2"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>

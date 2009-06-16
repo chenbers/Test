@@ -25,6 +25,7 @@
 
 	<subDataset name="CategorySeriesSubDataset" >
 
+		<parameter name="USE_METRIC" isForPrompting="false" class="java.lang.Boolean"/>
 
 		<field name="seriesID" class="java.lang.String"/>
 		<field name="category" class="java.lang.String"/>
@@ -39,6 +40,7 @@
 	<parameter name="DURATION" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="REPORT_LOGO" isForPrompting="false" class="java.io.InputStream"/>
 	<parameter name="REPORT_DATE_AS_STRING" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="USE_METRIC" isForPrompting="false" class="java.lang.Boolean"/>
 
 	<field name="entityName" class="java.lang.String"/>
 	<field name="lightValue" class="java.lang.Integer"/>
@@ -66,13 +68,16 @@
 					<categoryDataset>
 						<dataset >
 							<datasetRun subDataset="CategorySeriesSubDataset">
+								<datasetParameter  name="USE_METRIC">
+									<datasetParameterExpression><![CDATA[$P{USE_METRIC}]]></datasetParameterExpression>
+								</datasetParameter>
 					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_1})]]></dataSourceExpression>
 							</datasetRun>
 						</dataset>
 						<categorySeries>
 							<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
 							<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
-							<valueExpression><![CDATA[$F{value}]]></valueExpression>
+							<valueExpression><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertMileage(Integer.valueOf($F{value}.intValue()),$P{USE_METRIC})]]></valueExpression>
 							<labelExpression><![CDATA[$F{label}]]></labelExpression>
 				<itemHyperlink >
 				</itemHyperlink>
@@ -131,7 +136,7 @@
 					<textElement>
 						<font size="16"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.mpg.header}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{USE_METRIC} == Boolean.TRUE ?  $R{report.kpl.header} : $R{report.mpg.header}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -164,6 +169,15 @@
 						width="535"
 						height="0"
 						key="line-4"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="651"
+						y="258"
+						width="4"
+						height="0"
+						key="line-5"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 			</band>
@@ -275,7 +289,7 @@
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{lightValue}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertMileage($F{lightValue},$P{USE_METRIC})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -289,7 +303,7 @@
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{mediumValue}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertMileage($F{mediumValue},$P{USE_METRIC})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -303,7 +317,7 @@
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{heavyValue}.toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertMileage($F{heavyValue},$P{USE_METRIC})]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

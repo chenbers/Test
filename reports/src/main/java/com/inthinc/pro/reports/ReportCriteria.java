@@ -21,13 +21,22 @@ public class ReportCriteria
     private String mainDatasetIdField;
     private String chartDataSetIdField;
     private Locale locale;
+    private Boolean useMetric;
 
     private static final String INTHINC_NAME = "Inthinc";
     private static final String REPORT_DATE_STRING = "REPORT_DATE_AS_STRING";
+    private static final String USE_METRIC = "USE_METRIC";
 
     public static final String SUB_DATASET = "SUB_DATASET";
     public static final String RECORD_COUNT = "RECORD_COUNT";
+    
     private int subsetIndex = 1;
+    
+    
+    //Initialization Block
+    {
+        paramMap.put(USE_METRIC, Boolean.FALSE);
+    }
     
     public ReportCriteria(ReportCriteria reportCriteria)
     {
@@ -90,6 +99,16 @@ public class ReportCriteria
     {
         paramMap.put("DURATION", duration.toString());
         this.duration = duration;
+    }
+    
+    public void setUseMetric(Boolean useMetric)
+    {
+        paramMap.put(USE_METRIC, useMetric);
+        this.useMetric = useMetric;
+    }
+    
+    public Boolean getUseMetric(){
+        return useMetric;
     }
 
     public Duration getDuration()
@@ -161,5 +180,6 @@ public class ReportCriteria
     {
         return locale;
     }
+
 
 }
