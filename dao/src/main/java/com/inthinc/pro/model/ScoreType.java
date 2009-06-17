@@ -96,6 +96,14 @@ public enum ScoreType implements BaseEnum
     {
         return lookup.get(code);
     }
+    
+    public String getKey()
+    {
+        StringBuilder sb = new StringBuilder(this.getClass().getSimpleName());
+        sb.append(".");
+        sb.append(this.name());
+        return sb.toString();
+    }
 
     @Override
     public String toString()
