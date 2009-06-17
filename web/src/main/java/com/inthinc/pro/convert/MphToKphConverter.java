@@ -25,6 +25,6 @@ public class MphToKphConverter extends BaseConverter
             if (getUser().getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC))
                 return MeasurementConversionUtil.fromMPHtoKPH(Long.class.cast(value)).toString();
         }
-        return null;
+        return value.toString();
     }    
 }

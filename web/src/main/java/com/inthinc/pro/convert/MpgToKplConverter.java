@@ -8,7 +8,6 @@ import org.apache.commons.lang.NotImplementedException;
 
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.MeasurementType;
-
 public class MpgToKplConverter extends BaseConverter
 {
     @Override
@@ -20,11 +19,11 @@ public class MpgToKplConverter extends BaseConverter
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException
     {
-        if(Long.class.isInstance(value))
+        if (Long.class.isInstance(value))
         {
-            if(getUser().getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC))
-            return MeasurementConversionUtil.fromMPGtoKPL(Long.class.cast(value)).toString();
+            if (getUser().getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC))
+                return MeasurementConversionUtil.fromMPGtoKPL(Long.class.cast(value)).toString();
         }
-        return null;        
-    }    
+        return value.toString();
+    }
 }
