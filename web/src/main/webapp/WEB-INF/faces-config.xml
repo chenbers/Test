@@ -65,6 +65,18 @@
         <converter-id>MeasurementTextConverter</converter-id>
         <converter-class>com.inthinc.pro.convert.MeasurementTextConverter</converter-class>
     </converter>
+    <converter>
+        <converter-id>MilesToKilometersConverter</converter-id>
+        <converter-class>com.inthinc.pro.convert.MilesToKilometersConverter</converter-class>
+    </converter>
+    <converter>
+        <converter-id>MpgToKplConverter</converter-id>
+        <converter-class>com.inthinc.pro.convert.MpgToKplConverter</converter-class>
+    </converter>
+    <converter>
+        <converter-id>MphToKphConverter</converter-id>
+        <converter-class>com.inthinc.pro.convert.MphToKphConverter</converter-class>
+    </converter>
 	
 	<!-- Components -->
 	<component>
