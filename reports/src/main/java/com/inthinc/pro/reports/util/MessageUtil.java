@@ -6,9 +6,9 @@ import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
 
-public class ReportMessageUtil
+public class MessageUtil
 {
-    private static final Logger logger = Logger.getLogger(ReportMessageUtil.class);
+    private static final Logger logger = Logger.getLogger(MessageUtil.class);
 
     private static final String BUNDLE_NAME = "com.inthinc.pro.ReportMessages";
     

@@ -18,7 +18,7 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.model.ChartData;
-import com.inthinc.pro.reports.util.ReportMessageUtil;
+import com.inthinc.pro.reports.util.MessageUtil;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRParameter;
@@ -89,7 +89,7 @@ public class JasperReportBuilder
             {
                 locale = reportCriteria.getLocale();
             }
-            ResourceBundle resourceBundle = ReportMessageUtil.getBundle(locale);
+            ResourceBundle resourceBundle = MessageUtil.getBundle(locale);
             reportCriteria.getPramMap().put(JRParameter.REPORT_RESOURCE_BUNDLE, resourceBundle);
 
             // Lets break up the report if the recordsPerReport is set

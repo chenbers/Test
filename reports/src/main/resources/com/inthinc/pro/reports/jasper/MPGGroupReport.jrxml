@@ -136,7 +136,7 @@
 					<textElement>
 						<font size="16"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{USE_METRIC} == Boolean.TRUE ?  $R{report.kpl.header} : $R{report.mpg.header}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.mpg.header",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

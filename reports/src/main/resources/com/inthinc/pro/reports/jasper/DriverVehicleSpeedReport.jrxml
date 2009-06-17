@@ -25,6 +25,7 @@
 
 	<subDataset name="speedChartDataSet" >
 
+		<parameter name="USE_METRIC" isForPrompting="false" class="java.lang.Boolean"/>
 
 		<field name="seriesID" class="java.lang.String"/>
 		<field name="category" class="java.lang.String"/>
@@ -109,11 +110,17 @@
 					<categoryDataset>
 						<dataset >
 							<datasetRun subDataset="speedChartDataSet">
+								<datasetParameter  name="USE_METRIC">
+									<datasetParameterExpression><![CDATA[$P{USE_METRIC}]]></datasetParameterExpression>
+								</datasetParameter>
+								<datasetParameter  name="REPORT_LOCALE">
+									<datasetParameterExpression><![CDATA[$P{REPORT_LOCALE}]]></datasetParameterExpression>
+								</datasetParameter>
 					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_1})]]></dataSourceExpression>
 							</datasetRun>
 						</dataset>
 						<categorySeries>
-							<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
+							<seriesExpression><![CDATA[com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage($F{seriesID},$P{REPORT_LOCALE},$P{USE_METRIC})]]></seriesExpression>
 							<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
 							<valueExpression><![CDATA[$F{value}]]></valueExpression>
 							<labelExpression><![CDATA[$F{label}]]></labelExpression>
@@ -175,7 +182,7 @@
 					<textElement>
 						<font size="12"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.dvspeed.21.30}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.dvspeed.21.30",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -201,7 +208,7 @@
 					<textElement>
 						<font size="12"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.dvspeed.31.40}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.dvspeed.31.40",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -227,7 +234,7 @@
 					<textElement>
 						<font size="12"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.dvspeed.55.64}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.dvspeed.55.64",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -253,7 +260,7 @@
 					<textElement>
 						<font size="12"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.dvspeed.41.54}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.dvspeed.41.54",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -279,7 +286,7 @@
 					<textElement>
 						<font size="12"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$R{report.dvspeed.65}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.dvspeed.65",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -492,7 +499,7 @@
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{event.topSpeed}.toString() + " mph"]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertSpeed($F{event.topSpeed},$P{USE_METRIC}).toString() + " " + com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.mpg",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -518,7 +525,7 @@
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{event.speedLimit}.toString() + " mph"]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertSpeed($F{event.speedLimit},$P{USE_METRIC}).toString() + " " + com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.mpg",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -531,7 +538,7 @@
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{event.avgSpeed}.toString() + " mph"]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertSpeed($F{event.avgSpeed},$P{USE_METRIC}).toString() + " " + com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.mpg",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

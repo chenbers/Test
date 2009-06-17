@@ -158,7 +158,7 @@
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{event.topSpeed}.toString() + " mph"]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertSpeed($F{event.topSpeed},$P{USE_METRIC}).toString() + " " + ($P{USE_METRIC} == Boolean.TRUE? $R{report.kph} : $R{report.mph}).toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -171,7 +171,7 @@
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[new java.math.BigDecimal($F{event.distance}.intValue()).movePointLeft(2).toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertDistance(com.inthinc.pro.reports.converter.MileageConverter.convertMileage($F{event.distance}),$P{USE_METRIC}).toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
