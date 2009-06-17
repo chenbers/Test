@@ -14,6 +14,7 @@ import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.reports.ReportCriteria;
 
@@ -185,7 +186,8 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
         ReportCriteria reportCriteria = getReportCriteriaService().getDriverReportCriteria(getUser().getGroupID(), Duration.TWELVE);
         reportCriteria.setMainDataset(driverData);
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
-        reportCriteria.setLocale(getUser().getLocale());
+        reportCriteria.setLocale(getLocale());
+        reportCriteria.setUseMetric(getMeasurmentType() == MeasurementType.METRIC);
         return reportCriteria;
     }
 

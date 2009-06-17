@@ -9,6 +9,7 @@ import javax.faces.model.SelectItem;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.ReportType;
@@ -59,7 +60,8 @@ public class ReportRendererBean extends BaseBean
         {
             for(ReportCriteria rt:reportCriteriaList){
                 rt.setDuration(this.duration);
-                rt.setLocale(getUser().getLocale());
+                rt.setLocale(getLocale());
+                rt.setUseMetric(getMeasurmentType() == MeasurementType.METRIC);
             }
         }
         
@@ -85,7 +87,8 @@ public class ReportRendererBean extends BaseBean
         {
             for(ReportCriteria rt:reportCriteriaList){
                 rt.setDuration(this.duration);
-                rt.setLocale(getUser().getLocale());
+                rt.setLocale(getLocale());
+                rt.setUseMetric(getMeasurmentType() == MeasurementType.METRIC);
             }
         }
         

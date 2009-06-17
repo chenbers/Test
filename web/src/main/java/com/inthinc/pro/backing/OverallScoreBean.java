@@ -11,6 +11,7 @@ import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -253,7 +254,8 @@ public class OverallScoreBean extends BaseBean
     public ReportCriteria buildReportCriteria(){
         ReportCriteria reportCriteria = reportCriteriaService.getOverallScoreReportCriteria(groupID, durationBean.getDuration());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
-        reportCriteria.setLocale(getUser().getLocale());
+        reportCriteria.setLocale(getLocale());
+        reportCriteria.setUseMetric(getMeasurmentType() == MeasurementType.METRIC);
         return reportCriteria;
     }
     

@@ -1,5 +1,7 @@
 package com.inthinc.pro.backing;
 
+import java.util.Locale;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -12,6 +14,7 @@ import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.map.MapType;
 import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.security.userdetails.ProUser;
 
@@ -20,7 +23,7 @@ public class BaseBean
     private static final Logger logger = Logger.getLogger(BaseBean.class);
     private ErrorBean errorBean;
     private AccountDAO accountDAO;
-    
+
     private static final MapType mapType = MapType.GOOGLE;
 
     public BaseBean()
@@ -116,6 +119,22 @@ public class BaseBean
         return accountDAO;
     }
 
+    public Locale getLocale()
+    {
+        if (getUser().getLocale() != null)
+            return getUser().getLocale();
+        else
+            return Locale.ENGLISH;
+    }
+
+    public MeasurementType getMeasurmentType()
+    {
+        if (getUser().getPerson().getMeasurementType() != null)
+            return getUser().getPerson().getMeasurementType();
+        else
+            return MeasurementType.ENGLISH;
+    }
+
     public String getAccountName()
     {
         Account account = getAccountDAO().findByID(getAccountID());
@@ -127,6 +146,5 @@ public class BaseBean
     {
         return mapType;
     }
-
 
 }

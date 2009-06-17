@@ -3,10 +3,12 @@ package com.inthinc.pro.reports;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+
 import com.inthinc.pro.backing.ReportRendererBean;
 
 public class ReportRendererImpl implements ReportRenderer

@@ -158,7 +158,7 @@
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertSpeed($F{event.topSpeed},$P{USE_METRIC}).toString() + " " + ($P{USE_METRIC} == Boolean.TRUE? $R{report.kph} : $R{report.mph}).toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertSpeed($F{event.topSpeed},$P{USE_METRIC}).toString() + " " + com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.mph",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -184,7 +184,8 @@
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{event.avgSpeed}.toString() + " mph"]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertSpeed($F{event.avgSpeed},$P{USE_METRIC}).toString() + " " + com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.mph",$P{REPORT_LOCALE},$P{USE_METRIC})
+]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

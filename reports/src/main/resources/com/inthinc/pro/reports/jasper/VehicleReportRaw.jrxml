@@ -254,7 +254,7 @@
 					<textElement textAlignment="Left">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertDistance(Float.valueOf($F{milesDriven}),$P{USE_METRIC}).toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertDistance(Float.valueOf($F{milesDriven}.intValue()),$P{USE_METRIC}).toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

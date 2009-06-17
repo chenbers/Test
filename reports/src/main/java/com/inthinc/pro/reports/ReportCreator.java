@@ -3,6 +3,7 @@ package com.inthinc.pro.reports;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
+
 import com.inthinc.pro.reports.jasper.JasperReport;
 import com.inthinc.pro.reports.jasper.JasperReportBuilder;
 import com.inthinc.pro.reports.mail.ReportMailer;
@@ -31,17 +32,17 @@ public class ReportCreator<T extends Report>
     @SuppressWarnings("unchecked")
     public T getReport(List<ReportCriteria> reportCriteriaList)
     {
-      
-            if (reportType.equals(JasperReport.class))
-            {
-                JasperReport jr = new JasperReport();
-                jr.setReportBuilder(new JasperReportBuilder());
-                jr.setReportMailer(reportMailer);
-                jr.setReportCriteriaList(reportCriteriaList);
-                report = (T) jr;
-            }
+        if (reportType.equals(JasperReport.class))
+        {
+            JasperReport jr = new JasperReport();
+            jr.setReportBuilder(new JasperReportBuilder());
+            jr.setReportMailer(reportMailer);
+            jr.setReportCriteriaList(reportCriteriaList);
+            report = (T) jr;
+        }
             
         
         return report;
     }
+  
 }

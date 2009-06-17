@@ -18,6 +18,7 @@ import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SpeedingEvent;
@@ -276,7 +277,8 @@ public class VehicleSpeedBean extends BasePerformanceBean
         reportCriteria.addParameter("SCORE_FOURTYONE", getScoreMap().get(ScoreType.SCORE_SPEEDING_41_54.toString()) / 10.0D);
         reportCriteria.addParameter("SCORE_FIFTYFIVE", getScoreMap().get(ScoreType.SCORE_SPEEDING_55_64.toString()) / 10.0D);
         reportCriteria.addParameter("SCORE_SIXTYFIVE", getScoreMap().get(ScoreType.SCORE_SPEEDING_65_80.toString()) / 10.0D);
-        reportCriteria.setLocale(getUser().getLocale());
+        reportCriteria.setLocale(getLocale());
+        reportCriteria.setUseMetric(getMeasurmentType() == MeasurementType.METRIC);
 
         List<ScoreType> scoreTypes = new ArrayList<ScoreType>();
         scoreTypes.add(ScoreType.SCORE_SPEEDING);

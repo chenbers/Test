@@ -17,6 +17,7 @@ import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -215,7 +216,8 @@ public class DriverStyleBean extends BasePerformanceBean
         reportCriteria.addParameter("SCORE_HARDACCEL", getScoreMap().get(ScoreType.SCORE_DRIVING_STYLE_HARD_ACCEL.toString()) / 10.0D);
         reportCriteria.addParameter("SCORE_HARDTURN", getScoreMap().get(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN.toString()) / 10.0D);
         reportCriteria.addParameter("SCORE_HARDBUMP", getScoreMap().get(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP.toString()) / 10.0D);
-        reportCriteria.setLocale(getUser().getLocale());
+        reportCriteria.setLocale(getLocale());
+        reportCriteria.setUseMetric(getMeasurmentType() == MeasurementType.METRIC);
 
         List<ScoreType> scoreTypes = new ArrayList<ScoreType>();
         scoreTypes.add(ScoreType.SCORE_DRIVING_STYLE);

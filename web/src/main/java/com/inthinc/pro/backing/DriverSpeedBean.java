@@ -8,16 +8,15 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.ScoreDAO;
-import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.SpeedingEvent;
@@ -264,7 +263,8 @@ public class DriverSpeedBean extends BasePerformanceBean
         reportCriteria.addParameter("SCORE_FOURTYONE", getScoreMap().get(ScoreType.SCORE_SPEEDING_41_54.toString()) / 10.0D);
         reportCriteria.addParameter("SCORE_FIFTYFIVE", getScoreMap().get(ScoreType.SCORE_SPEEDING_55_64.toString()) / 10.0D);
         reportCriteria.addParameter("SCORE_SIXTYFIVE", getScoreMap().get(ScoreType.SCORE_SPEEDING_65_80.toString()) / 10.0D);
-        reportCriteria.setLocale(getUser().getLocale());
+        reportCriteria.setLocale(getLocale());
+        reportCriteria.setUseMetric(getMeasurmentType() == MeasurementType.METRIC);
 
         List<ScoreType> scoreTypes = new ArrayList<ScoreType>();
         scoreTypes.add(ScoreType.SCORE_SPEEDING);

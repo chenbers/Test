@@ -17,6 +17,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -201,7 +202,8 @@ public class DriverSeatBeltBean extends BasePerformanceBean
         reportCriteria.addParameter("RECORD_COUNT", this.getSeatBeltEvents().size());
         reportCriteria.addParameter("OVERALL_SCORE", this.getSeatBeltScore() / 10.0D);
         reportCriteria.addParameter("SPEED_MEASUREMENT", MessageUtil.getMessageString("measurement_speed"));
-        reportCriteria.setLocale(getUser().getLocale());
+        reportCriteria.setLocale(getLocale());
+        reportCriteria.setUseMetric(getMeasurmentType() == MeasurementType.METRIC);
 
         List<ScoreType> scoreTypes = new ArrayList<ScoreType>();
         scoreTypes.add(ScoreType.SCORE_SEATBELT);

@@ -10,6 +10,7 @@ import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
@@ -131,7 +132,8 @@ public class MpgBean extends BaseBean
     {
         ReportCriteria reportCriteria = reportCriteriaService.getMpgReportCriteria(getGroupID(), durationBean.getDuration());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
-        reportCriteria.setLocale(getUser().getLocale());
+        reportCriteria.setLocale(getLocale());
+        reportCriteria.setUseMetric(getMeasurmentType() == MeasurementType.METRIC);
         return reportCriteria;
     }
 

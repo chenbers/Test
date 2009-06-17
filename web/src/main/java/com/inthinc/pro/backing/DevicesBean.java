@@ -19,7 +19,6 @@ import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.Device;
-import com.inthinc.pro.model.DeviceReportItem;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;

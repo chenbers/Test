@@ -13,6 +13,7 @@ import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.VehicleReportItem;
@@ -167,7 +168,8 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
         ReportCriteria reportCriteria = getReportCriteriaService().getVehicleReportCriteria(getUser().getGroupID(), Duration.TWELVE);
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setMainDataset(vehicleData);
-        reportCriteria.setLocale(getUser().getLocale());
+        reportCriteria.setLocale(getLocale());
+        reportCriteria.setUseMetric(getMeasurmentType() == MeasurementType.METRIC);
         return reportCriteria;
     }
 

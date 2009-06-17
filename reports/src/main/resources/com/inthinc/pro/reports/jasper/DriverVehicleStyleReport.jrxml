@@ -477,7 +477,7 @@
 					<textElement>
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertSpeed($F{event.speed},$P{USE_METRIC}).toString() + " " + ($P{USE_METRIC} == Boolean.TRUE? $R{report.kph} : $R{report.mph}).toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertSpeed($F{event.speed},$P{USE_METRIC}).toString() + " " + com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.mph",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

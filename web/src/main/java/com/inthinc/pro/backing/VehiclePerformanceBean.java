@@ -21,6 +21,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
@@ -431,7 +432,8 @@ public class VehiclePerformanceBean extends BasePerformanceBean
         reportCriteria.addChartDataSet(createSingleJasperDef(id, ScoreType.SCORE_SPEEDING, speedDurationBean.getDuration()));
         reportCriteria.addChartDataSet(createSingleJasperDef(id, ScoreType.SCORE_DRIVING_STYLE, styleDurationBean.getDuration()));
         reportCriteria.addChartDataSet(createSingleJasperDef(id, ScoreType.SCORE_SEATBELT, seatBeltDurationBean.getDuration()));
-        reportCriteria.setLocale(getUser().getLocale());
+        reportCriteria.setLocale(getLocale());
+        reportCriteria.setUseMetric(getMeasurmentType() == MeasurementType.METRIC);
         tempCriteria.add(reportCriteria);
 
         // Page 2

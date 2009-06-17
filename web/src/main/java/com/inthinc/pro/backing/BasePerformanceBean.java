@@ -141,7 +141,7 @@ public abstract class BasePerformanceBean extends BaseBean
                 if (se.getScore() != null)
                     score = se.getScore() / 10.0D;
 
-                returnList.add(new CategorySeriesData(MessageUtil.getMessageString(scoreType.toString()), monthList.get(count).toString(), score, monthList.get(count).toString()));
+                returnList.add(new CategorySeriesData(scoreType.getKey(), monthList.get(count).toString(), score, monthList.get(count).toString()));
 
                 count++;
             }

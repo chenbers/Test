@@ -19,6 +19,7 @@ import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -432,7 +433,8 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg> implements Dur
     {
         ReportCriteria reportCriteria = reportCriteriaService.getTrendChartReportCriteria(this.navigation.getGroupID(), this.navigation.getDurationBean().getDuration());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
-        reportCriteria.setLocale(getUser().getLocale());
+        reportCriteria.setLocale(getLocale());
+        reportCriteria.setUseMetric(getMeasurmentType() == MeasurementType.METRIC);
         return reportCriteria;
     }
 

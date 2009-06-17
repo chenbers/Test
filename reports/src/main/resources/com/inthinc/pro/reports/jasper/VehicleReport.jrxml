@@ -230,7 +230,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{USE_METRIC} == Boolean.TRUE ? $R{report.vehicle.kilometers.driven} : $R{report.vehicle.miles.driven}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.vehicle.miles.driven",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -351,7 +351,7 @@
 					<textElement textAlignment="Left">
 						<font/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertDistance(Float.valueOf($F{milesDriven}),$P{USE_METRIC}).toString()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertDistance(Float.valueOf($F{milesDriven}.intValue()),$P{USE_METRIC}).toString()]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
