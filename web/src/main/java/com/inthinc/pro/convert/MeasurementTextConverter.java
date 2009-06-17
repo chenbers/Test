@@ -7,7 +7,7 @@ import javax.faces.convert.Converter;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.util.MessageUtil;
 
-public class MeasurementConverter extends BaseConverter implements Converter
+public class MeasurementTextConverter extends BaseConverter implements Converter
 {
     private static final String METRIC_PREFIX = "metric_";
     private static final String ENGLISH_PREFIX = "english_";

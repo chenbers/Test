@@ -62,8 +62,8 @@
    	  </property>
 	</converter>
     <converter>
-        <converter-id>MeasurementConverter</converter-id>
-        <converter-class>com.inthinc.pro.convert.MeasurementConverter</converter-class>
+        <converter-id>MeasurementTextConverter</converter-id>
+        <converter-class>com.inthinc.pro.convert.MeasurementTextConverter</converter-class>
     </converter>
 	
 	<!-- Components -->
