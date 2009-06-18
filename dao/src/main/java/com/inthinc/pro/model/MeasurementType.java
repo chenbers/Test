@@ -25,7 +25,7 @@ public enum MeasurementType implements BaseEnum
         }
     }
     
-    public static MeasurementType valueOf(int code)
+    public static MeasurementType valueOf(Integer code)
     {
         return lookup.get(code);
     }

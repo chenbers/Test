@@ -8,6 +8,7 @@ import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 public class Person extends BaseEntity implements Comparable<Person>
 {
+    @Column(updateable = false)
     private static final long serialVersionUID = -7162580776394490873L;
     @ID
     private Integer personID;

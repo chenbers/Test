@@ -549,6 +549,23 @@
                             </h:selectOneMenu>
                           </td>
                         </tr>
+                        <tr>
+                             <td width="100">
+                                 <ui:include src="../../includes/inputLabel.xhtml">
+                                    <ui:param name="required" value="TRUE"/>
+                                    <ui:param name="fieldName" value="user.person.measurementType"/>
+                                    <ui:param name="for" value="user_person_measurementType"/>
+                                    <ui:param name="editBean" value="#{personBean}"/>
+                                    <ui:param name="label" value="#{messages.editPerson_user_measurementType}"/>
+                                 </ui:include>
+                             </td>
+                             <td>
+                                 <rich:message for="user_person_measurementType" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                 <h:selectOneMenu id="user_person_measurementType" value="#{measurementBean.person.measurementType}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
+                                        <f:selectItems value="#{measurementBean.measurementTypeItems}"/>
+                                 </h:selectOneMenu>
+                             </td>
+                        </tr>
                       </table>
                       </h:outputText>
                       </h:panelGroup>

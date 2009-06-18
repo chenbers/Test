@@ -584,6 +584,14 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 valid = false;
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
                 context.addMessage("edit-form:user_locale", message);
+            }            
+            
+            // required measurementType
+            if (person.getUser().getStatus() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.person.measurementType"))))
+            {
+                valid = false;
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
+                context.addMessage("edit-form:user_person_measurementType", message);
             }
             
             if (!isBatchEdit())

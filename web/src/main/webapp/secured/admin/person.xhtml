@@ -227,6 +227,10 @@
                             <td width="100"><h:outputText value="#{messages.editPerson_user_status}" /></td>
                             <td><c:set var="status" value="status#{personBean.item.user.status.code}" /><h:outputText value="#{messages[status]}" /></td>
                           </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_user_measurementType}" /></td>
+                            <td><h:outputText value="#{messages[personBean.item.user.person.measurementType]}" /></td>
+                          </tr>
                         </table>
 
                         </ui:fragment>
