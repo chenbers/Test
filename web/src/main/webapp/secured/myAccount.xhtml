@@ -79,8 +79,12 @@
                               <td><h:outputText value="#{myAccountBean.user.username}"/></td>
                             </tr>
                             <tr>
-                              <td width="100"><h:outputText value="#{messages.myAccount_locale}" /></td>
+                              <td width="100"><h:outputText value="#{messages.myAccount_locale}:" /></td>
                               <td><h:outputText value="#{myAccountBean.user.locale.displayName}"/></td>
+                            </tr>
+                            <tr>
+                              <td width="100"><h:outputText value="#{messages.myAccount_measurement}:" /></td>
+                              <td><h:outputText value="#{measurementBean.person.measurementType}"/></td>
                             </tr>
                           </tbody>
                         </table>

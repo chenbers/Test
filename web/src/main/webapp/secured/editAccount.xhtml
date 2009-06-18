@@ -77,10 +77,18 @@
                                 <td><h:outputText value="#{myAccountBean.user.username}"/></td>
                               </tr>
                               <tr>
-                                <td width="100"><h:outputText value="#{messages.myAccount_locale}" /></td>
+                                <td width="100"><h:outputText value="#{messages.myAccount_locale}:" /></td>
                                 <td>
-                                    <h:selectOneMenu value="#{myAccountBean.user.locale}" converter="SimpleBeanConverter">
+                                    <h:selectOneMenu value="#{localeBean.user.locale}" converter="SimpleBeanConverter">
                                         <f:selectItems value="#{localeBean.supportedLocalesItems}"/>
+                                    </h:selectOneMenu>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.myAccount_measurement}:" /></td>
+                                <td>
+                                    <h:selectOneMenu value="#{measurementBean.person.measurementType}" converter="SimpleBeanConverter">
+                                        <f:selectItems value="#{messages[measurementBean.measurementTypeItems]}"/>
                                     </h:selectOneMenu>
                                 </td>
                               </tr>

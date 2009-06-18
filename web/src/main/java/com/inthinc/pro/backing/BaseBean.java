@@ -15,6 +15,7 @@ import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.map.MapType;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.security.userdetails.ProUser;
 
@@ -59,6 +60,11 @@ public class BaseBean
     public boolean isLoggedIn()
     {
         return isProUserLoggedIn();
+    }
+    
+    public Person getPerson()
+    {
+        return getProUser().getUser().getPerson();
     }
 
     public User getUser()

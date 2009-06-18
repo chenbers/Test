@@ -73,7 +73,7 @@ public class MeasurementConversionUtil
         if (convertToMeasurmentType == MeasurementType.METRIC)
             return fromKPHtoMPH(mileage.longValue());
         else
-            return fromKPHtoMPH(mileage.longValue());
+            return fromMPHtoKPH(mileage.longValue());
     }
 
     public static Long convertSpeed(Integer speed,  MeasurementType convertToMeasurmentType)
