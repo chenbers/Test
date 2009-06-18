@@ -6,18 +6,21 @@ import java.util.Map;
 
 public enum SensitivityType implements BaseEnum
 {
-    HARD_ACCEL_SETTING(1, "HARD_ACCEL_SETTING"),
-    HARD_BRAKE_SETTING(2, "HARD_BRAKE_SETTING"),
-    HARD_TURN_SETTING(3, "HARD_TURN_SETTING"),
-    HARD_VERT_SETTING(4, "HARD_VERT_SETTING");
+    HARD_ACCEL_SETTING(1,10,5),
+    HARD_BRAKE_SETTING(2,10,5),
+    HARD_TURN_SETTING(3,10,5),
+    HARD_VERT_SETTING(4,15,10),
+    SEVERE_PEAK_2_PEAK(5,15,10);
 
-    private String description;
-    private int code;
+    private Integer       settingsCount; //This is how many possible values there are for this device setting
+    private Integer       defaultSetting;  //This is the index of the default value for this setting.
+    private int       code;
 
-    private SensitivityType(int code, String description)
+    private SensitivityType(int code, Integer settingsCount,Integer defaultSetting)
     {
         this.code = code;
-        this.description = description;
+        this.settingsCount = settingsCount;
+        this.defaultSetting = defaultSetting;
     }
 
     private static final Map<Integer, SensitivityType> lookup = new HashMap<Integer, SensitivityType>();
@@ -42,13 +45,23 @@ public enum SensitivityType implements BaseEnum
     @Override
     public String toString()
     {
-        return this.description;
+        StringBuilder sb = new StringBuilder(this.getClass().getSimpleName());
+        sb.append(".");
+        sb.append(this.name());
+        return sb.toString();
     }
 
-    public String getDescription()
+    public Integer getSettingsCount()
     {
-        return description;
+        return settingsCount;
     }
+
+    public Integer getDefaultSetting()
+    {
+        return defaultSetting;
+    }
+    
+    
 
 }
 

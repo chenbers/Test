@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,6 +21,7 @@ import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
+import com.inthinc.pro.model.SensitivityType;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.MessageUtil;
@@ -61,6 +63,15 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     public void setVehiclesBean(VehiclesBean vehiclesBean)
     {
         this.vehiclesBean = vehiclesBean;
+    }
+    
+    public List<SensitivityType> getSensitivityTypes(){
+        List<SensitivityType> sensitivityTypeList = new ArrayList<SensitivityType>();
+        sensitivityTypeList.add(SensitivityType.HARD_VERT_SETTING);
+        sensitivityTypeList.add(SensitivityType.HARD_ACCEL_SETTING);
+        sensitivityTypeList.add(SensitivityType.HARD_BRAKE_SETTING);
+        sensitivityTypeList.add(SensitivityType.HARD_TURN_SETTING);
+        return sensitivityTypeList;
     }
 
     @Override
@@ -147,6 +158,10 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     {
         final Device device = new Device();
         device.setStatus(DeviceStatus.NEW);
+        device.setHardAcceleration(SensitivityType.HARD_ACCEL_SETTING.getDefaultSetting());
+        device.setHardBrake(SensitivityType.HARD_BRAKE_SETTING.getDefaultSetting());
+        device.setHardTurn(SensitivityType.HARD_TURN_SETTING.getDefaultSetting());
+        device.setHardVertical(SensitivityType.HARD_VERT_SETTING.getDefaultSetting());
         // device.setSpeedSettings(new Integer[Device.NUM_SPEEDS]);
         return createDeviceView(device);
     }

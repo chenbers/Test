@@ -148,6 +148,7 @@ public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer> impleme
          if (device.getHardVertical() != null)
          {
              queueForwardCommand(deviceID, DeviceSensitivityMapping.getForwardCommand(SensitivityType.HARD_VERT_SETTING, device.getHardVertical()));
+             queueForwardCommand(deviceID, DeviceSensitivityMapping.getForwardCommand(SensitivityType.SEVERE_PEAK_2_PEAK, device.getHardVertical()));
          }
          
          // speed settings
@@ -177,6 +178,8 @@ public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer> impleme
             Device originalDevice = findByID(device.getDeviceID());
          
             // sensitivity
+            // We need to que up the forward commands to set the devices sensitivty. The HARD_VERTICAL needs an additional forward command sent for the
+            // sever peak to peak.
             if (!originalDevice.getHardAcceleration().equals(device.getHardAcceleration()))
             {
                 queueForwardCommand(device.getDeviceID(), DeviceSensitivityMapping.getForwardCommand(SensitivityType.HARD_ACCEL_SETTING, device.getHardAcceleration()));
@@ -192,6 +195,7 @@ public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer> impleme
             if (!originalDevice.getHardVertical().equals(device.getHardVertical()))
             {
                 queueForwardCommand(device.getDeviceID(), DeviceSensitivityMapping.getForwardCommand(SensitivityType.HARD_VERT_SETTING, device.getHardVertical()));
+                queueForwardCommand(device.getDeviceID(), DeviceSensitivityMapping.getForwardCommand(SensitivityType.SEVERE_PEAK_2_PEAK, device.getHardVertical()));
             }
             
             // speed settings

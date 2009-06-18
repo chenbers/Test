@@ -100,6 +100,23 @@
                                 <c:set var="sLevel" value="editDevice_sensitivity#{sensitivity}" />
                                 sensitivities[#{sensitivity}] = '<h:outputText value="#{messages[sLevel]}" />';
                               </c:forEach>
+
+                              function getCurrentValueLabel(currentValue , defaultValue)
+                              {
+                                  if(currentValue > defaultValue)
+                                  {
+                                      var positive = currentValue - defaultValue;
+                                      return "#{messages.editDevice_more} (+" + positive + ")";
+                                  }
+                                  if(currentValue == defaultValue)
+                                  {
+                                     return "#{messages.editDevice_average}";
+                                  }
+
+                                  var negative = defaultValue - currentValue;
+                                  return "#{messages.editDevice_less} (-" + negative + ")";
+                                 
+                              }
                             </script>
 
                             <div class="add_section_title"><h:outputText value="#{messages.editDevice_sensitivityTitle}" /></div>
@@ -108,36 +125,49 @@
                             <table width="100%" border="0" cellpadding="0" cellspacing="0">
                               <tr class="datagrid">
                                 <th><h:outputText value="#{messages.editDevice_sensitivityHeader}" /></th>
-                                <th colspan="3"><h:outputText value="#{messages.editDevice_sensitivitySettingHeader}" /></th>
+                                <th colspan="3"><h:outputText value="#{messages.editDevice_sensitivitySettingHeader}"  /></th>
                               </tr>
-                              <c:forEach begin="1" var="index" end="4">
-                                <c:set var="sensitivityItem" value="#{(index == 1) ? 'hardAcceleration' : ((index == 2) ? 'hardBrake' : ((index == 3) ? 'hardTurn' : 'hardVertical'))}" />
-                                <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
-                                  <td></td>
-                                  <td style="padding: 6px 12px 0px 12px" colspan="2" align="right">
-                                    <h:outputText value="#{messages.editDevice_currentSensitivity}" />
-                                    <c:set var="sensitivityLevel" value="editDevice_sensitivity#{device[sensitivityItem]}" />
-                                    <h:outputText id="#{sensitivityItem}Level" style="font-weight:bold" value="#{messages[sensitivityLevel]}" />
-                                  </td>
-                                  <td></td>
-                                </tr>
-                                <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{sensitivityItem}" value="#{updateField[sensitivityItem]}" />
-                                    <c:set var="sensitivityLabel" value="editDevice_#{sensitivityItem}" />
-                                    <h:outputText value="#{messages[sensitivityLabel]}" />
-                                  </td>
-                                  <td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;"><h:outputText value="#{messages.editDevice_sensitivity1}" /></td>
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                    <rich:inputNumberSlider id="#{sensitivityItem}" disabled="#{disabled}" value="#{device[sensitivityItem]}" showToolTip="false" showBoundaryValues="false" showInput="false" minValue="1" maxValue="5" onchange="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById(this.mainTable.id + 'Level').innerHTML = sensitivities[this.value]" />
-                                  </td>
-                                  
-                                  <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;"><h:outputText value="#{messages.editDevice_sensitivity5}" /></td>
-                                </tr>
-                                <script type="text/javascript">
-                                  document.getElementById('edit-form:#{sensitivityItem}Level').innerHTML = sensitivities[document.getElementById('edit-form:#{sensitivityItem}Input').value];
-                                </script>
-                              </c:forEach>
+                              
+                              <a4j:repeat value="#{devicesBean.sensitivityTypes}" var="sensitivityType" rowKeyVar="index">
+                                 <c:set var="sensitivityItem" value="#{(sensitivityType == 'HARD_ACCEL_SETTING') ? 'hardAcceleration' : ((sensitivityType == 'HARD_BRAKE_SETTING') ? 'hardBrake' : ((sensitivityType == 'HARD_TURN_SETTING') ? 'hardTurn' : 'hardVertical'))}" />
+                                 <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
+                                     <td></td>
+                                     <td style="padding: 6px 12px 0px 12px" colspan="2" align="right">
+                                       <h:outputText value="#{messages.editDevice_currentSensitivity}" />
+                                       <span id="#{sensitivityItem}Level" style="font-weight:bold">
+                                       </span>
+                                       <script type="text/javascript">
+                                           document.getElementById("#{sensitivityItem}Level").innerHTML = getCurrentValueLabel(#{device[sensitivityItem]},#{sensitivityType.defaultSetting});
+                                       </script>
+                                     </td>
+                                     <td></td>
+                                 </tr>
+                                 <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
+                                     <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{sensitivityItem}" value="#{updateField[sensitivityItem]}" />
+                                       <h:outputText value="#{messages[sensitivityType]}" />
+                                     </td>
+                                     <td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                          <h:outputText value="#{messages.editDevice_sensitivity1}" />
+                                     </td>
+                                     <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                       <rich:inputNumberSlider id="#{sensitivityItem}" 
+                                             disabled="#{disabled}" 
+                                             value="#{device[sensitivityItem]}" 
+                                             showToolTip="false" showBoundaryValues="false" 
+                                             handleSelectedClass="handleSelected"
+                                             showInput="false" minValue="1" maxValue="#{sensitivityType.settingsCount}" 
+                                             barStyle="padding:0;height:10px;background-color:black;background-image:url('#{facesContext.externalContext.requestContextPath}/images/slider_bar_#{sensitivityType.settingsCount}.png')"
+                                             onslide="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('#{sensitivityItem}Level').innerHTML = getCurrentValueLabel(this.value,#{sensitivityType.defaultSetting})"
+                                             onchange="if (checkMultiple) checkMultiple(this.mainTable.id); document.getElementById('#{sensitivityItem}Level').innerHTML = getCurrentValueLabel(this.value,#{sensitivityType.defaultSetting})" />
+                                    </td>
+                                    <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;">
+                                          <h:outputText value="#{messages.editDevice_sensitivity5}" />
+                                    </td>
+                                 </tr>
+                              </a4j:repeat>
+                              
+                             
                             </table>
 
                           </td>

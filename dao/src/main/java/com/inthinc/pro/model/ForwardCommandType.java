@@ -90,6 +90,7 @@ public enum ForwardCommandType
     SET_GPRS_APN(688, "apn string follows the forward command"),
     SET_SERVER_URL(692, "server string follows the forward command"),
     SET_SERVER_CONTEXT(708, "context string follows the forward command"),
+    SEVERE_PEAK_2_PEAK(802),
     SYSTEM_RESET(2000),
     GET_DIAGNOSTICS_REPORT(2001),
     RESET_DIAGNOSTICS(2002),

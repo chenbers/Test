@@ -12,8 +12,6 @@ import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.backing.model.GroupLevel;
-import com.inthinc.pro.model.Group;
 import com.inthinc.pro.reports.ReportType;
 
 public class JsfFunctions

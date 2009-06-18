@@ -1,6 +1,5 @@
 package com.inthinc.pro.model.app;
 
-import java.util.List;
 import java.util.Map;
 
 import com.inthinc.pro.dao.DeviceDAO;
@@ -38,6 +37,10 @@ public class DeviceSensitivityMapping implements BaseAppEntity
 	{
 	    String levelStr = level.toString();
         SensitivityForwardCommandMapping mapping = sensitivityMapping.get(setting);
+        
+        if(SensitivityType.SEVERE_PEAK_2_PEAK == setting)
+            return new ForwardCommand(0,mapping.getFwdCmd(),Integer.valueOf(mapping.getValues().get(level-1)),ForwardCommandStatus.STATUS_QUEUED);
+        
         for (String value : mapping.getValues())
         {
             if (value.endsWith(levelStr))
