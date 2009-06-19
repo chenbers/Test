@@ -168,9 +168,9 @@
                                         <rich:column rendered="#{vehicleReportBean.tableColumns['milesDriven'].visible}" 
                                             sortBy="#{item.milesDriven}">
                                             <f:facet name="header">
-                                                <h:outputText value="#{messages.reports_milesdriven}" />
+                                                <h:outputText value="reports_milesdriven" converter="MeasurementTextConverter"/>
                                             </f:facet>
-                                            <h:outputText value="#{item.milesDriven}" />
+                                            <h:outputText value="#{item.milesDriven}" converter="MilesToKilometersConverter"/>
                                         </rich:column>
                                         <rich:column rendered="#{vehicleReportBean.tableColumns['overallScore'].visible}"
                                             sortBy="#{item.overallScore}">
