@@ -15,7 +15,7 @@ public class MeasurementBean extends BaseBean
     {
         for(MeasurementType type : MeasurementType.values())
         {
-            measurementTypeItems.add(new SelectItem(type, MessageUtil.getMessageString(type.name(),getUser().getLocale())));
+            measurementTypeItems.add(new SelectItem(type, MessageUtil.getMessageString(type.toString(),getUser().getLocale())));
         }
     }
     public List<SelectItem> getMeasurementTypeItems()
