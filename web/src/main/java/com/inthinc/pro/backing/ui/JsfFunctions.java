@@ -11,8 +11,12 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
+import org.springframework.security.context.SecurityContextHolder;
 
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.security.userdetails.ProUser;
 
 public class JsfFunctions
 {
@@ -83,6 +87,23 @@ public class JsfFunctions
             return value.substring(0, 1);
         else
             return null;
+    }
+    
+    public static Integer fromMphToKph(Integer value)
+    {
+        if(getUser().getUser().getPerson().getMeasurementType() == MeasurementType.METRIC)
+            return MeasurementConversionUtil.fromMPHtoKPH(value.longValue()).intValue();
+        else
+            return value;
+    }
+    
+    private static ProUser getUser()
+    {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof ProUser)
+            return (ProUser)principal;
+        
+        return null;
     }
     
 }

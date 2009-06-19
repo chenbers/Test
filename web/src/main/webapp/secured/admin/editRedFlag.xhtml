@@ -225,14 +225,20 @@
                                 <tr class="#{((index % 2) == 0) ? 'tableOdd' : 'tableEven'}">
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <h:selectBooleanCheckbox id="#{id}Selected" value="#{redFlagAlertsBean.item.speedSelected[index]}" onchange="checkMultiple('type')" />
-                                    <h:outputText value="#{(index * 5) + 5}" />
-                                    <h:outputText value=" mph" />
+                                    <h:outputText value="#{(index * 5) + 5}" converter="MphToKphConverter"/>
+                                    <h:outputText value=" " />
+                                    <h:outputText value="editRedFlag_mph" converter="MeasurementTextConverter"/>
                                   </td>
                                   <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;" width="250">
-                                    <rich:inputNumberSlider id="#{id}" value="#{redFlagAlertsBean.item.speedSettings[index]}" width="250" onfocus="this.select();" showToolTip="false" showBoundaryValues="false" minValue="#{minimum}" maxValue="25" step="1" onchange="checkMultiple('type'); document.getElementById(this.mainTable.id + 'Selected').checked = true;" />
+                                    <rich:inputNumberSlider id="#{id}" value="#{redFlagAlertsBean.item.speedSettings[index]}" 
+                                          width="250" onfocus="this.select();" showToolTip="false" 
+                                          showBoundaryValues="false" minValue="${tiwiprofn:fromMphToKph(minimum)}" maxValue="${tiwiprofn:fromMphToKph(25)}" step="1" 
+                                          converter="MphToKphConverter"
+                                          convertonchange="checkMultiple('type'); document.getElementById(this.mainTable.id + 'Selected').checked = true;" />
                                   </td>
                                   <td style="padding: 6px 12px 6px 2px; border-bottom: 1px solid #8BAD37;">
-                                    <h:outputText value=" mph" />
+                                     <h:outputText value=" " />
+                                     <h:outputText value="editRedFlag_mph" converter="MeasurementTextConverter"/>
                                   </td>
                                   <td style="padding: 6px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <h:selectOneMenu id="#{id}Severity" value="#{redFlagAlertsBean.item.speedLevels[index]}" onchange="var id = this.id.substring(0, this.id.length - 8); checkMultiple('type'); document.getElementById(id + 'Selected').checked = true;">
