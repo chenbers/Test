@@ -165,12 +165,13 @@
                               <tr>
                                 <td width="100" valign="top">
                                   <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_weight" value="#{vehiclesBean.updateField['weight']}" />
-                                  <h:outputText value="#{messages.editVehicle_weight}" />
+                                  <h:outputText value="editVehicle_weight" converter="MeasurementTextConverter" />
                                 </td>
                                 <td>
                                   <rich:message for="weight" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{vehiclesBean.item.weight}" id="weight" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="9"
                                     converterMessage="#{messages.editVehicle_weightFormat}" validatorMessage="#{messages.editVehicle_weightFormat}">
+                                    <f:converter converterId="LbsToKgConverter"/>
                                     <f:validateLongRange minimum="1" />
                                   </h:inputText>
                                 </td>

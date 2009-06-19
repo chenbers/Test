@@ -77,6 +77,10 @@
         <converter-id>MphToKphConverter</converter-id>
         <converter-class>com.inthinc.pro.convert.MphToKphConverter</converter-class>
     </converter>
+    <converter>
+        <converter-id>LbsToKgConverter</converter-id>
+        <converter-class>com.inthinc.pro.convert.LbsToKgConverter</converter-class>
+    </converter>
 	
 	<!-- Components -->
 	<component>

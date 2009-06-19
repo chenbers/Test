@@ -84,8 +84,10 @@
                                 <td><h:outputText value="#{vehiclesBean.item.vtype.description}" /></td>
                               </tr>
                               <tr>
-                                <td width="100"><h:outputText value="#{messages.editVehicle_weight}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.item.weight}"><f:convertNumber /></h:outputText></td>
+                                <td width="100">
+                                <h:outputText value="editVehicle_weight" converter="MeasurementTextConverter" />
+                                </td>
+                                <td><h:outputText value="#{vehiclesBean.item.weight}" converter="LbsToKgConverter"></h:outputText></td>
                               </tr>
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editVehicle_license}" /></td>
