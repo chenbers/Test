@@ -35,4 +35,13 @@ public enum MeasurementType implements BaseEnum
     {
         return this.code;
     }
+    
+    @Override
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder(this.getClass().getSimpleName());
+        sb.append(".");
+        sb.append(this.name());
+        return sb.toString();
+    }
 }
