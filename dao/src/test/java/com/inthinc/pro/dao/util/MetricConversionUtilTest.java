@@ -1,10 +1,11 @@
-package com.inthinc.pro.util;
+package com.inthinc.pro.dao.util;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.MeasurementType;
 
 
 
@@ -61,6 +62,31 @@ public class MetricConversionUtilTest
         Long actualMiles = 17L;
         Float kilometers = MeasurementConversionUtil.fromMilesToKilometers(actualMiles);        
         Assert.assertEquals(expectedKilometers.toString(), kilometers.toString());
+    }
+    
+    @Test
+    public void testPoundConversion()
+    {
+        Long kg = 73L;
+        Long pounds = 160L;
+        Long actualKg = MeasurementConversionUtil.convertWeight(pounds,MeasurementType.METRIC);
+        Assert.assertEquals(kg, actualKg);
+        
+        pounds=161L;
+        Long actualPounds = MeasurementConversionUtil.convertWeight(kg, MeasurementType.ENGLISH);
+        Assert.assertEquals(pounds, actualPounds);
+    }
+    
+    @Test
+    public void testHeightConversion()
+    {
+        Long inches = 67L;
+        Long centimeters = 170L;
+        Long actualCm = MeasurementConversionUtil.fromInchesToCentimeters(inches.intValue());
+        Assert.assertEquals(centimeters, actualCm);
+        
+        actualCm = MeasurementConversionUtil.fromFeetInchToCentimeters(5, 7);
+        Assert.assertEquals(centimeters,actualCm);
     }
 
 }

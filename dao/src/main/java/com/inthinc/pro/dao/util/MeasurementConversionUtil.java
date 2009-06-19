@@ -83,5 +83,45 @@ public class MeasurementConversionUtil
         else
             return fromKPHtoMPH(speed.longValue());
     }
+    
+    //Convert Pounds
+    public static Long fromPoundsToKg(Long pounds)
+    {
+        return Math.round(pounds * .45359237);
+    }
+    
+    public static Long fromKgToPounds(Long kg)
+    {
+        return Math.round(kg / .45359237);
+    }
+    
+    public static Long convertWeight(Long weight, MeasurementType convertToMeasurementType)
+    {
+        if(convertToMeasurementType == MeasurementType.METRIC)
+            return fromPoundsToKg(weight);
+        else
+            return fromKgToPounds(weight);
+    }
+    
+    public static Long fromFeetInchToCentimeters(Integer feet,Integer inches)
+    {
+        
+        inches = (feet * 12) + inches;
+        return fromInchesToCentimeters(inches);
+        
+    }
+    
+    public static Long fromInchesToCentimeters(Integer inches)
+    {
+        
+        return Math.round(inches * 2.54);
+    }
+    
+    public static Long fromCentimetersToInches(Integer cm)
+    {
+        return Math.round(cm / 2.54);
+    }
+    
+    
 
 }
