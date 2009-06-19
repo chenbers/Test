@@ -232,7 +232,7 @@ public class SiloServiceTest
         Map<SensitivityType, SensitivityForwardCommandMapping> fcList = deviceDAO.getSensitivityForwardCommandMapping();
 
         
-        assertEquals("The sensitivity forward command mapping list should contain 4 items.", 4, fcList.size());
+        assertEquals("The sensitivity forward command mapping list should contain 5 items.", 5, fcList.size());
     }
     
     @Test
@@ -1018,7 +1018,7 @@ public class SiloServiceTest
             assertEquals("Device update count " + device.getName(), Integer.valueOf(1), changedCount);
             
             List<ForwardCommand> fwdCmdQueue = deviceDAO.getForwardCommands(device.getDeviceID(), ForwardCommandStatus.STATUS_QUEUED);
-            assertEquals("expected 14 forward commands to be queued for device: " + device.getDeviceID(), 14, fwdCmdQueue.size());
+            assertEquals("expected 16 forward commands to be queued for device: " + device.getDeviceID(), 16, fwdCmdQueue.size());
         }
         
         
