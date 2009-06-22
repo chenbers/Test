@@ -214,4 +214,5 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
     {
         return "pretty:vehiclesReportWithCriteria";
     }
+
 }

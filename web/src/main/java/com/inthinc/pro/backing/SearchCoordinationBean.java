@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.inthinc.pro.backing.listener.SearchChangeListener;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Group;
 
 public class SearchCoordinationBean {
@@ -11,6 +12,8 @@ public class SearchCoordinationBean {
 	private String searchFor = "";
 	private Group group;
 	private int navigation;
+	private Integer groupID;
+	private GroupDAO groupDAO;
 	
 
 	private List<SearchChangeListener> searchChangeListeners = new ArrayList<SearchChangeListener>();
@@ -92,4 +95,21 @@ public class SearchCoordinationBean {
 			notifySearchChangeListeners();
 		}
 	}
+    public void setGroupID(Integer groupID)
+    {
+        this.group = groupDAO.findByID(groupID);
+        this.groupID = groupID;
+    }
+    public Integer getGroupID()
+    {
+        return groupID;
+    }
+    public void setGroupDAO(GroupDAO groupDAO)
+    {
+        this.groupDAO = groupDAO;
+    }
+    public GroupDAO getGroupDAO()
+    {
+        return groupDAO;
+    }
 }

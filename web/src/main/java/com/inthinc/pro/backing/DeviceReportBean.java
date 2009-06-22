@@ -209,6 +209,7 @@ public class DeviceReportBean extends BaseReportBean<DeviceReportItem>
         return "pretty:devicesReportWithCriteria";
     }
 
+
 }
 
 

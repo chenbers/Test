@@ -307,4 +307,5 @@ public class IdlingReportBean extends BaseReportBean<IdlingReportItem> implement
     {
         return "pretty:idlingReportWithCriteria";
     }
+
 }
