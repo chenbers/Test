@@ -42,7 +42,8 @@
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
 				xmlns:h="http://java.sun.com/jsf/html"
 				xmlns:f="http://java.sun.com/jsf/core"
-               xmlns:pretty="http://ocpsoft.com/prettyfaces">
+                xmlns:pretty="http://ocpsoft.com/prettyfaces"
+                xmlns:a4j="http://richfaces.org/a4j">
 
 	<div id="#{hiddenDivID}" style="display:none">
 		<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header" footerClass="google_popups_footer">
@@ -68,7 +69,13 @@
 			<h:outputText value="#{messageAddress}:"/>
 			<h:outputText value="#{vehicleAddress}" />
 			<f:facet name="footer">
-				<h:outputText value="#{distance}" rendered="#{distance ne null}" converter="DistanceConverter">#{messageDistance}&#160;</h:outputText>
+			   
+               <h:outputFormat value="#{messages.vehicleBubble_distance}" rendered="#{distance ne null}">
+                     <h:outputText value="#{messageDistance} "/>
+                     <a4j:actionparam value="#{distance}" converter="MilesToKilometersConverter"/>
+                     <a4j:actionparam value="miles" converter="MeasurementTextConverter"/>
+                </h:outputFormat>
+                
 			</f:facet>
 		</h:panelGrid>
 	</div>

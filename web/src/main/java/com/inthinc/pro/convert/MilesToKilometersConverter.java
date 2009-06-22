@@ -19,11 +19,18 @@ public class MilesToKilometersConverter extends BaseConverter
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException
     {
-        if (Long.class.isInstance(value))
+        if (getUser().getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC))
         {
-            if (getUser().getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC))
-                return MeasurementConversionUtil.fromMilesToKilometers(Long.class.cast(value)).toString();
+            if (Long.class.isInstance(value))
+            {
+                    return MeasurementConversionUtil.fromMilesToKilometers(Long.class.cast(value)).toString();
+            }
+            if(Double.class.isInstance(value))
+            {
+                    return MeasurementConversionUtil.fromMilesToKilometers(((Double)value).longValue()).toString();
+            }
         }
+        
         return value.toString();
     }
 }

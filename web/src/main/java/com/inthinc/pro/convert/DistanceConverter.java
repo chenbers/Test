@@ -6,6 +6,8 @@ import java.util.Date;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.ConverterException;
+
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.util.MessageUtil;
 
 public class DistanceConverter extends BaseConverter
@@ -43,7 +45,7 @@ public class DistanceConverter extends BaseConverter
         NumberFormat format = NumberFormat.getInstance();
         format.setMaximumFractionDigits(2);
 
-        if (getIsMetric())
+        if (getUser().getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC))
         {
             return format.format(KILOMETERS_PER_MILE * miles) + " " + MessageUtil.getMessageString(context, "km_label");
             
