@@ -20,6 +20,7 @@ import com.inthinc.pro.model.AggressiveDrivingEvent;
 import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LowBatteryEvent;
@@ -164,12 +165,15 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
     {
         if(alertMessage.getPersonID() == null || alertMessage.getPersonID() == 0)
             return null;
+        
+        
         Person person = personDAO.findByID(alertMessage.getPersonID());
+        Driver driver = driverDAO.findByID(event.getDriverID());
         Vehicle vehicle = vehicleDAO.findByID(event.getVehicleID());
         Locale locale = Locale.ENGLISH;
         if (person.getUser() != null && person.getUser().getLocale() != null)
             locale = person.getUser().getLocale();
-
+        
         AlertMessageBuilder alertMessageBuilder = new AlertMessageBuilder();
         alertMessageBuilder.setLocale(locale);
         alertMessageBuilder.setAddress(alertMessage.getAddress());
@@ -178,11 +182,11 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
         List<String> parameterList = new ArrayList<String>();
         
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d, yyyy h:mm a (z)");
-        simpleDateFormat.setTimeZone(person.getTimeZone());
+        simpleDateFormat.setTimeZone(driver.getPerson().getTimeZone());
         
         //Construct the message parameter list
         parameterList.add(simpleDateFormat.format(event.getTime()));
-        parameterList.add(person.getFullName());
+        parameterList.add(driver.getPerson().getFullName());
         parameterList.add(vehicle.getName());
  
         switch(alertMessage.getAlertMessageType())
