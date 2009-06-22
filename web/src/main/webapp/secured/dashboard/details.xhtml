@@ -11,7 +11,9 @@
     <ui:param name="homeSelected" value="current" />
 
     <ui:define name="content">
-
+        <t:saveState value="#{dashBoardDetailBean.groupID}"/>
+        <t:saveState value="#{dashBoardDetailBean.tabType}"/>
+        
         <ul id="grid_nav">
             <li class="l grid_icon"><h:graphicImage value="/images/ico_line.png" /></li>
             <li class="l grid_title">#{messages.detail_overview}</li>

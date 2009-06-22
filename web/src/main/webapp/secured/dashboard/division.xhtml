@@ -34,27 +34,26 @@
   			<tr>
     			<td width="465" valign="top">
     			<!-- START TREND PANEL -->		
-				<!-- leave reRenderList alone -->												
-		<div class="">
-		<div class="panel_nw">
-			<div class="panel_title" style="z-index: 6">
-				<span class="line">#{messages.trendReport_header}</span> 
-                       <pretty:urlbuffer var="trendDetailedDashboardLink" mappingId="detailedDashboard">
-                            <f:param value="#{navigationBean.groupID}"/>
-                            <f:param value="TREND"/>
-                        </pretty:urlbuffer> 
-                        <ui:include src="/includes/durationPanelHeader.xhtml">
-                            <ui:param name="reRenderList" value="trendOutputPanel" />
-                            <ui:param name="duration" value="#{navigationDurationBean.duration}" />
-                            <ui:param name="groupID" value="#{navigationBean.groupID}"/>
-                            <ui:param name="report" value="TREND" />
-                            <ui:param name="id" value="trend" />
-                            <ui:param name="detailLink" value="#{requestScope.trendDetailedDashboardLink}"/>
-                        </ui:include>
-			</div>
-
-		
-		</div>
+				<!-- leave reRenderList alone -->	
+         <a4j:outputPanel id="trendOutputPanel">											
+		 <div class="">
+      		 <div class="panel_nw">
+      			<div class="panel_title" style="z-index: 6">
+      				<span class="line">#{messages.trendReport_header}</span> 
+                    <pretty:urlbuffer var="trendDetailedDashboardLink" mappingId="detailedDashboard">
+                         <f:param value="#{navigationBean.groupID}"/>
+                         <f:param value="TREND"/>
+                     </pretty:urlbuffer> 
+                     <ui:include src="/includes/durationPanelHeader.xhtml">
+                         <ui:param name="reRenderList" value="trendOutputPanel" />
+                         <ui:param name="duration" value="#{navigationDurationBean.duration}" />
+                         <ui:param name="groupID" value="#{navigationBean.groupID}"/>
+                         <ui:param name="report" value="TREND" />
+                         <ui:param name="id" value="trend" />
+                         <ui:param name="detailLink" value="#{requestScope.trendDetailedDashboardLink}"/>
+                     </ui:include>
+      			</div>
+      		 </div>
 
 
 					<div class="panel_w">
@@ -172,7 +171,7 @@
 					</div>
 	
 				</div>							 
-
+                </a4j:outputPanel>
 				<!-- END PANEL -->
         
                 <div class="spacer"></div>
