@@ -547,7 +547,7 @@
 			<div class="">
 				<div class="panel_nw">
 					<div class="panel_title">
-						<span class="gas">#{messages.driver_mpg}</span>
+						<span class="gas"><h:outputText value="Miles_Per_Gallon" converter="MeasurementTextConverter"/></span>
 						<ui:include src="../includes/dateLinks.xhtml">
 							<ui:param name="ajaxForm" value="mpgForm"/>
 							<ui:param name="reRenderList" value="mpg_script,mpgForm"/>			

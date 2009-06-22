@@ -62,7 +62,7 @@
                                         <f:param value="#{dashBoardDetailBean.groupID}"/>
                                         <f:param value="MPG"/>
                                         <h:graphicImage value="/images/ico_gas.png" />
-                                        <span>#{messages.detail_mpg}</span>
+                                        <span><h:outputText value="MPG" converter="MeasurementTextConverter"/></span>
                                     </pretty:link>
                                 </td>
                             </tr>

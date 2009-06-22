@@ -68,7 +68,7 @@ public class MpgBean extends BaseBean
         // Control parameters
         sb.append(GraphicUtil.getBarControlParameters());
         logger.debug("getting scores for groupID: " + groupID);
-        sb.append(GraphicUtil.createMpgXML(getMpgEntities()));
+        sb.append(GraphicUtil.createMpgXML(getMpgEntities(), getPerson().getMeasurementType()));
         sb.append("</chart>");
         return sb.toString();
         // Bar parameters

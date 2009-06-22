@@ -12,7 +12,9 @@ import java.util.Random;
 import javax.faces.context.FacesContext;
 
 import com.inthinc.pro.charts.Line;
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.wrapper.MpgEntityPkg;
@@ -405,7 +407,7 @@ public class GraphicUtil {
         return sb.toString();
 	}	
 	
-	public static String createMpgXML(List<MpgEntity> entities)
+	public static String createMpgXML(List<MpgEntity> entities, MeasurementType measurementType)
 	{
 
         String lightString = MessageUtil.getMessageString("mpg_light_column");
@@ -432,21 +434,21 @@ public class GraphicUtil {
         sb.append("<dataset seriesName=\'").append(lightString).append("\'>");
         for (Integer value : light)
         {
-            sb.append("<set value=\'" + (value != null ? value.toString() : "0") + "\'/>");
+            sb.append("<set value=\'" + (value != null ? MeasurementConversionUtil.convertMileage(value, measurementType).toString() : "0") + "\'/>");
         }
         sb.append("</dataset>");
 
         sb.append("<dataset seriesName=\'").append(mediumString).append("\'>");
         for (Integer value : medium)
         {
-            sb.append("<set value=\'" + (value != null ? value.toString() : "0") + "\'/>");
+            sb.append("<set value=\'" + (value != null ? MeasurementConversionUtil.convertMileage(value, measurementType).toString() : "0") + "\'/>");
         }
         sb.append("</dataset>");
 
         sb.append("<dataset seriesName=\'").append(heavyString).append("\'>");
         for (Integer value : heavy)
         {
-            sb.append("<set value=\'" + (value != null ? value.toString() : "0") + "\'/>");
+            sb.append("<set value=\'" + (value != null ? MeasurementConversionUtil.convertMileage(value, measurementType).toString() : "0") + "\'/>");
         }
         sb.append("</dataset>");
         return sb.toString();
