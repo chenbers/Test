@@ -313,5 +313,10 @@ public class NavigationBean extends BaseBean
     {
         this.vehicleDAO = vehicleDAO;
     }
+    
+    public void testAction()
+    {
+        logger.debug("in test action");
+    }
   
 }

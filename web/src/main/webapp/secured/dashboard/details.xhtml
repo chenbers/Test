@@ -236,6 +236,7 @@
                                 
                                 
                                 <c:when test="#{dashBoardDetailBean.tabType == 'OVERALL'}">
+                                    <t:saveState value="#{overallScoreBean.groupID}"/>
                                     <!-- START PANEL -->
                                        <a4j:outputPanel id="overallOutputPanel">
                             			<div class="">

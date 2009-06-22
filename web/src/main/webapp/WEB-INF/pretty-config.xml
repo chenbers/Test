@@ -9,138 +9,138 @@
 	</url-mapping>
 	
 	<url-mapping id="myAccount">
-		<pattern>/secured/account</pattern>
+		<pattern>/app/account</pattern>
 		<view-id>/secured/myAccount.faces</view-id>
 	</url-mapping>
 	
 	<url-mapping id="editMyAccount">
-		<pattern>/secured/account/edit</pattern>
+		<pattern>/app/account/edit</pattern>
 		<view-id>/secured/editAccount.faces</view-id>
 	</url-mapping>
 	
     <url-mapping id="init-dashboard">
-        <pattern>/secured/dashboard/</pattern>
+        <pattern>/app/dashboard/</pattern>
         <view-id>#{dashBoardBean.getViewPath}</view-id>    
     </url-mapping>
     <url-mapping id="dashboard">
-        <pattern>/secured/dashboard/#{dashBoardBean.groupID}</pattern>
+        <pattern>/app/dashboard/#{dashBoardBean.groupID}</pattern>
         <view-id>#{dashBoardBean.getViewPath}</view-id>
     </url-mapping>
     <url-mapping id="detailedDashboard">
-        <pattern>/secured/dashboard/detail/#{dashBoardDetailBean.groupID}/#{dashBoardDetailBean.tabType}</pattern>
+        <pattern>/app/dashboard/detail/#{dashBoardDetailBean.groupID}/#{dashBoardDetailBean.tabType}</pattern>
         <view-id>/secured/dashboard/details.faces</view-id>
         <action>#{dashBoardDetailBean.initAction}</action>
     </url-mapping>  
     <url-mapping id="fleet">
-        <pattern>/secured/fleet/#{navigationBean.groupID}</pattern>
+        <pattern>/app/fleet/#{navigationBean.groupID}</pattern>
         <view-id>/secured/dashboard/home.faces</view-id>
     </url-mapping> 
     <url-mapping id="division">
-        <pattern>/secured/division/#{navigationBean.groupID}</pattern>
+        <pattern>/app/division/#{navigationBean.groupID}</pattern>
         <view-id>/secured/dashboard/division.faces</view-id>
     </url-mapping> 
     <url-mapping id="team">
-        <pattern>/secured/team/#{navigationBean.groupID}</pattern>
+        <pattern>/app/team/#{navigationBean.groupID}</pattern>
         <view-id>/secured/dashboard/team.faces</view-id>
     </url-mapping>   
 	<url-mapping id="groupOverview">
-		<pattern>/secured/groupOverview</pattern>
+		<pattern>/app/groupOverview</pattern>
 		<query-param name="groupID">#{navigationBean.groupID}</query-param>
 		<view-id>/secured/groupOverview.faces</view-id>
 	</url-mapping>
 	<url-mapping id="driverPerformance">
-		<pattern>/secured/driver/#{driverPerformanceBean.driverID}</pattern>
+		<pattern>/app/driver/#{driverPerformanceBean.driverID}</pattern>
 		<view-id>/secured/driverPerformance.faces</view-id>
 	</url-mapping>
 	<url-mapping id="driverPerformanceSpeed">
-		<pattern>/secured/driver/speed/#{driverSpeedBean.driverID}</pattern>
+		<pattern>/app/driver/speed/#{driverSpeedBean.driverID}</pattern>
 		<view-id>/secured/reports/driverSpeed.faces</view-id>
 	</url-mapping>
 	<url-mapping id="driverPerformanceStyle">
-		<pattern>/secured/driver/style/#{driverStyleBean.driverID}</pattern>
+		<pattern>/app/driver/style/#{driverStyleBean.driverID}</pattern>
 		<view-id>/secured/reports/driverStyle.faces</view-id>
 	</url-mapping>
 	<url-mapping id="driverPerformanceSeatBelt">
-		<pattern>/secured/driver/seatBelt/#{driverSeatBeltBean.driverID}</pattern>
+		<pattern>/app/driver/seatBelt/#{driverSeatBeltBean.driverID}</pattern>
 		<view-id>/secured/reports/driverSeatBelt.faces</view-id>
 	</url-mapping>
 	<url-mapping id="driverTrips">
-		<pattern>/secured/driver/trips/#{driverTripsBean.driverID}</pattern>
+		<pattern>/app/driver/trips/#{driverTripsBean.driverID}</pattern>
 		<view-id>/secured/driverTrips.faces</view-id>
 	</url-mapping>
 	<url-mapping id="vehiclePerformance">
-		<pattern>/secured/vehicle/#{vehiclePerformanceBean.vehicleID}</pattern>
+		<pattern>/app/vehicle/#{vehiclePerformanceBean.vehicleID}</pattern>
 		<view-id>/secured/vehiclePerformance.faces</view-id>
 	</url-mapping>
 	<url-mapping id="vehiclePerformanceSpeed">
-		<pattern>/secured/vehicle/speed/#{vehicleSpeedBean.vehicleID}</pattern>
+		<pattern>/app/vehicle/speed/#{vehicleSpeedBean.vehicleID}</pattern>
 		<view-id>/secured/reports/vehicleSpeed.faces</view-id>
 	</url-mapping>
 	<url-mapping id="vehiclePerformanceStyle">
-		<pattern>/secured/vehicle/style/#{vehicleStyleBean.vehicleID}</pattern>
+		<pattern>/app/vehicle/style/#{vehicleStyleBean.vehicleID}</pattern>
 		<view-id>/secured/reports/vehicleStyle.faces</view-id>
 	</url-mapping>
 	<url-mapping id="vehiclePerformanceSeatBelt">
-		<pattern>/secured/vehicle/seatBelt/#{vehicleSeatBeltBean.vehicleID}</pattern>
+		<pattern>/app/vehicle/seatBelt/#{vehicleSeatBeltBean.vehicleID}</pattern>
 		<view-id>/secured/reports/vehicleSeatBelt.faces</view-id>
 	</url-mapping>
 	<url-mapping id="vehicleTrips">
-		<pattern>/secured/vehicle/trips/#{vehicleTripsBean.vehicleID}</pattern>
+		<pattern>/app/vehicle/trips/#{vehicleTripsBean.vehicleID}</pattern>
 		<view-id>/secured/vehicleTrips.faces</view-id>
 	</url-mapping>
 	
     <!-- Reports Section -->
     <url-mapping id="reports">
-        <pattern>/secured/reports/</pattern>
+        <pattern>/app/reports/</pattern>
         <view-id>/secured/reports/drivers.faces</view-id>
         <action>#{driverReportBean.search}</action>
     </url-mapping>
     <url-mapping id="driversReport">
-        <pattern>/secured/reports/driversReport</pattern>
+        <pattern>/app/reports/driversReport</pattern>
         <view-id>/secured/reports/drivers.faces</view-id>
         <action>#{driverReportBean.search}</action>
     </url-mapping>
     <url-mapping id="driversReportWithCriteria">
-        <pattern>/secured/reports/driversReport</pattern>
+        <pattern>/app/reports/driversReport</pattern>
         <query-param name="searchCriteria">#{searchCoordinationBean.searchFor}</query-param> 
         <view-id>/secured/reports/drivers.faces</view-id>
         <action>#{driverReportBean.search}</action>
     </url-mapping>
     <url-mapping id="driversReportWithGroupID">
-        <pattern>/secured/reports/driversReport</pattern>
+        <pattern>/app/reports/driversReport</pattern>
         <query-param name="groupID">#{searchCoordinationBean.groupID}</query-param> 
         <view-id>/secured/reports/drivers.faces</view-id>
         <action>#{driverReportBean.search}</action>
     </url-mapping>
     <url-mapping id="vehiclesReport">
-        <pattern>/secured/reports/vehiclesReport</pattern>
+        <pattern>/app/reports/vehiclesReport</pattern>
         <view-id>/secured/reports/vehicles.faces</view-id>
         <action>#{vehicleReportBean.search}</action>
     </url-mapping>
     <url-mapping id="vehiclesReportWithCriteria">
-        <pattern>/secured/reports/vehiclesReport</pattern>
+        <pattern>/app/reports/vehiclesReport</pattern>
          <query-param name="searchCriteria">#{searchCoordinationBean.searchFor}</query-param> 
         <view-id>/secured/reports/vehicles.faces</view-id>
         <action>#{vehicleReportBean.search}</action>
     </url-mapping>
     <url-mapping id="idlingReport">
-        <pattern>/secured/reports/idlingReport</pattern>
+        <pattern>/app/reports/idlingReport</pattern>
         <view-id>/secured/reports/idling.faces</view-id>
         <action>#{idlingReportBean.search}</action>
     </url-mapping>
     <url-mapping id="idlingReportWithCriteria">
-        <pattern>/secured/reports/idlingReport</pattern>
+        <pattern>/app/reports/idlingReport</pattern>
         <query-param name="searchCriteria">#{searchCoordinationBean.searchFor}</query-param> 
         <view-id>/secured/reports/idling.faces</view-id>
         <action>#{idlingReportBean.search}</action>
     </url-mapping>
     <url-mapping id="devicesReport">
-        <pattern>/secured/reports/devicesReport</pattern>
+        <pattern>/app/reports/devicesReport</pattern>
         <view-id>/secured/reports/devices.faces</view-id>
         <action>#{deviceReportBean.search}</action>
     </url-mapping>
     <url-mapping id="devicesReportWithCriteria">
-        <pattern>/secured/reports/devicesReport</pattern>
+        <pattern>/app/reports/devicesReport</pattern>
          <query-param name="searchCriteria">#{searchCoordinationBean.searchFor}</query-param> 
         <view-id>/secured/reports/devices.faces</view-id>
         <action>#{deviceReportBean.search}</action>
@@ -148,160 +148,160 @@
     
     <!-- Notifications Section -->
     <url-mapping id="notifications">
-        <pattern>/secured/notifications/</pattern>
+        <pattern>/app/notifications/</pattern>
         <view-id>/secured/notifications/redflags.faces</view-id>
     </url-mapping>
     <url-mapping id="redFlags">
-        <pattern>/secured/notifications/redflags</pattern>
+        <pattern>/app/notifications/redflags</pattern>
         <view-id>/secured/notifications/redflags.faces</view-id>
     </url-mapping>
     <url-mapping id="safety">
-        <pattern>/secured/notifications/safety</pattern>
+        <pattern>/app/notifications/safety</pattern>
         <view-id>/secured/notifications/safety.faces</view-id>
     </url-mapping>
     <url-mapping id="safetyWithGroupID">
-        <pattern>/secured/notifications/safety</pattern>
+        <pattern>/app/notifications/safety</pattern>
         <query-param name="groupID">#{searchCoordinationBean.groupID}</query-param>
         <view-id>/secured/notifications/safety.faces</view-id>
     </url-mapping>
     <url-mapping id="emergency">
-        <pattern>/secured/notifications/emergency</pattern>
+        <pattern>/app/notifications/emergency</pattern>
         <view-id>/secured/notifications/emergency.faces</view-id>
     </url-mapping>
      <url-mapping id="emergencyWithGroupID">
-        <pattern>/secured/notifications/emergency</pattern>
+        <pattern>/app/notifications/emergency</pattern>
         <query-param name="groupID">#{searchCoordinationBean.groupID}</query-param>
         <view-id>/secured/notifications/emergency.faces</view-id>
     </url-mapping>
     <url-mapping id="diagnostics">
-        <pattern>/secured/notifications/diagnostics</pattern>
+        <pattern>/app/notifications/diagnostics</pattern>
         <view-id>/secured/notifications/diagnostics.faces</view-id>
     </url-mapping>
     <url-mapping id="diagnosticsWithGroupID">
-        <pattern>/secured/notifications/diagnostics</pattern>
+        <pattern>/app/notifications/diagnostics</pattern>
         <query-param name="groupID">#{searchCoordinationBean.groupID}</query-param>
         <view-id>/secured/notifications/diagnostics.faces</view-id>
     </url-mapping>
     <url-mapping id="zoneAlerts">
-        <pattern>/secured/notifications/zoneAlerts</pattern>
+        <pattern>/app/notifications/zoneAlerts</pattern>
         <view-id>/secured/notifications/zoneAlerts.faces</view-id>
     </url-mapping>
     <!-- Live Fleet Section -->
     <url-mapping id="liveFleet">
-        <pattern>/secured/liveFleet</pattern>
+        <pattern>/app/liveFleet</pattern>
         <view-id>/secured/liveFleet.faces</view-id>
     </url-mapping>
     
     <!-- ADMIN MAPPING RULES -->
     
     <url-mapping id="admin">
-		<pattern>/secured/admin/</pattern>
+		<pattern>/app/admin/</pattern>
 		<view-id>/secured/admin/people.faces</view-id>
 		<action onPostback="false">#{personBean.resetList}</action>
 	</url-mapping>
     
     <url-mapping id="adminPeople">
-        <pattern>/secured/admin/people</pattern>
+        <pattern>/app/admin/people</pattern>
         <view-id>/secured/admin/people.faces</view-id>
         <action onPostback="false">#{personBean.resetList}</action>
     </url-mapping>
 	<url-mapping id="adminEditPerson">
-		<pattern>/secured/admin/editPerson</pattern>
+		<pattern>/app/admin/editPerson</pattern>
 		<view-id>/secured/admin/editPerson.faces</view-id>
 	</url-mapping>
 	<url-mapping id="adminPerson">
-		<pattern>/secured/admin/person/#{personBean.itemID}</pattern>
+		<pattern>/app/admin/person/#{personBean.itemID}</pattern>
 		<view-id>/secured/admin/person.faces</view-id>
 		<action>#{personBean.view}</action>
 	</url-mapping>
 	
 	<url-mapping id="adminVehicles">
-		<pattern>/secured/admin/vehicles</pattern>
+		<pattern>/app/admin/vehicles</pattern>
 		<view-id>/secured/admin/vehicles.faces</view-id>
 		<action onPostback="false">#{vehiclesBean.resetList}</action>
 	</url-mapping>
 	<url-mapping id="adminEditVehicle">
-		<pattern>/secured/admin/editVehicle</pattern>
+		<pattern>/app/admin/editVehicle</pattern>
 		<view-id>/secured/admin/editVehicle.faces</view-id>
 	</url-mapping>
 	<url-mapping id="adminVehicle">
-		<pattern>/secured/admin/vehicle/#{vehiclesBean.itemID}</pattern>
+		<pattern>/app/admin/vehicle/#{vehiclesBean.itemID}</pattern>
 		<view-id>/secured/admin/vehicle.faces</view-id>
 		<action>#{vehiclesBean.view}</action>
 	</url-mapping>
 	
 	<url-mapping id="adminDevices">
-		<pattern>/secured/admin/devices</pattern>
+		<pattern>/app/admin/devices</pattern>
 		<view-id>/secured/admin/devices.faces</view-id>
 		<action onPostback="false">#{devicesBean.resetList}</action>
 	</url-mapping>
 	<url-mapping id="adminEditDevice">
-		<pattern>/secured/admin/editDevice</pattern>
+		<pattern>/app/admin/editDevice</pattern>
 		<view-id>/secured/admin/editDevice.faces</view-id>
 	</url-mapping>
 	<url-mapping id="adminDevice">
-		<pattern>/secured/admin/device/#{devicesBean.itemID}</pattern>
+		<pattern>/app/admin/device/#{devicesBean.itemID}</pattern>
 		<view-id>/secured/admin/device.faces</view-id>
 		<action>#{devicesBean.view}</action>
 	</url-mapping>
 	
 	<url-mapping id="adminZoneAlerts">
-		<pattern>/secured/admin/zoneAlerts</pattern>
+		<pattern>/app/admin/zoneAlerts</pattern>
 		<view-id>/secured/admin/zoneAlerts.faces</view-id>
 		<action onPostback="false">#{zoneAlertsBean.resetList}</action>
 	</url-mapping>
 	<url-mapping id="adminEditZoneAlert">
-		<pattern>/secured/admin/editZoneAlert</pattern>
+		<pattern>/app/admin/editZoneAlert</pattern>
 		<view-id>/secured/admin/editZoneAlert.faces</view-id>
 	</url-mapping>
 	<url-mapping id="adminZoneAlert">
-		<pattern>/secured/admin/zoneAlert/#{zoneAlertsBean.itemID}</pattern>
+		<pattern>/app/admin/zoneAlert/#{zoneAlertsBean.itemID}</pattern>
 		<view-id>/secured/admin/zoneAlert.faces</view-id>
 		<action>#{zoneAlertsBean.view}</action>
 	</url-mapping>
 	
 	<url-mapping id="adminRedFlags">
-		<pattern>/secured/admin/redFlags</pattern>
+		<pattern>/app/admin/redFlags</pattern>
 		<view-id>/secured/admin/redFlags.faces</view-id>
 		<action onPostback="false">#{redFlagAlertsBean.resetList}</action>
 	</url-mapping>
 	<url-mapping id="adminEditRedFlag">
-		<pattern>/secured/admin/editRedFlag</pattern>
+		<pattern>/app/admin/editRedFlag</pattern>
 		<view-id>/secured/admin/editRedFlag.faces</view-id>
 	</url-mapping>
 	<url-mapping id="adminRedFlag">
-		<pattern>/secured/admin/redFlag/#{redFlagAlertsBean.itemID}</pattern>
+		<pattern>/app/admin/redFlag/#{redFlagAlertsBean.itemID}</pattern>
 		<view-id>/secured/admin/redFlag.faces</view-id>
 		<action>#{redFlagAlertsBean.view}</action>
 	</url-mapping>
 	
 	<url-mapping id="adminReportSchedules">
-		<pattern>/secured/admin/reports</pattern>
+		<pattern>/app/admin/reports</pattern>
 		<view-id>/secured/admin/reportSchedules.faces</view-id>
 		<action onPostback="false">#{reportScheduleBean.resetList}</action>
 	</url-mapping>
 	<url-mapping id="adminEditReportSchedule">
-		<pattern>/secured/admin/editReport</pattern>
+		<pattern>/app/admin/editReport</pattern>
 		<view-id>/secured/admin/editReportSchedule.faces</view-id>
 	</url-mapping>
 	<url-mapping id="adminReportSchedule">
-		<pattern>/secured/admin/report/#{reportScheduleBean.itemID}</pattern>
+		<pattern>/app/admin/report/#{reportScheduleBean.itemID}</pattern>
 		<view-id>/secured/admin/reportSchedule.faces</view-id>
 		<action>#{reportScheduleBean.view}</action>
 	</url-mapping>
 	
 	<url-mapping id="adminZones">
-		<pattern>/secured/admin/zones</pattern>
+		<pattern>/app/admin/zones</pattern>
 		<view-id>/secured/admin/zones.faces</view-id>
 	</url-mapping>
 	
 	<url-mapping id="adminOrganization">
-		<pattern>/secured/admin/organization</pattern>
+		<pattern>/app/admin/organization</pattern>
 		<view-id>/secured/admin/organization.faces</view-id>
 	</url-mapping>
 	
 	<url-mapping id="adminSpeedByStreet">
-		<pattern>/secured/admin/sbs</pattern>
+		<pattern>/app/admin/sbs</pattern>
 		<view-id>/secured/admin/speedByStreetChangeRequest.faces</view-id>
 	</url-mapping>
 </pretty-config>

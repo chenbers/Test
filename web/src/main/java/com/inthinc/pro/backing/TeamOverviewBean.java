@@ -20,10 +20,8 @@ import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreTypeBreakdown;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.util.MessageUtil;
-
 public class TeamOverviewBean extends BaseBean
 {
-
     private ScoreDAO scoreDAO;
     private Map<ScoreType, String> barDefMap;
     private Map<ScoreType, Integer> overallScoreMap;
@@ -31,11 +29,8 @@ public class TeamOverviewBean extends BaseBean
     private TabAction selectedAction;
     private NavigationBean navigation;
     private DurationBean durationBean;
-
     private Integer groupID;
-
     private String ping;
-
     private static final Logger logger = Logger.getLogger(TeamOverviewBean.class);
 
     public TeamOverviewBean()
@@ -81,13 +76,11 @@ public class TeamOverviewBean extends BaseBean
     public String getSelectedBarDef()
     {
         TabAction action = getSelectedAction();
-
         ScoreType scoreType = action.getScoreType();
         if (getBarDefMap().get(scoreType) == null)
         {
             barDefMap.put(scoreType, createBar3DChart(scoreType));
         }
-
         return getBarDefMap().get(scoreType);
     }
 
@@ -99,7 +92,6 @@ public class TeamOverviewBean extends BaseBean
     public String createBar3DChart(ScoreType scoreType)
     {
         List<ScoreTypeBreakdown> scoreDataList = null;
-
         try
         {
             logger.debug("TeamOverviewBean 3D BAR score groupID[" + getGroupID() + "] scoreType " + scoreType);
@@ -109,31 +101,40 @@ public class TeamOverviewBean extends BaseBean
         {
             scoreDataList = new ArrayList<ScoreTypeBreakdown>();
         }
-
         List<String> categoryLabelList = new ArrayList<String>();
         boolean first = true;
-        for (ScoreType subType : scoreType.getSubTypes())
+        if (scoreType.equals(ScoreType.SCORE_SPEEDING))
         {
-            if (first)
+            for (ScoreType subType : scoreType.getSubTypes())
             {
-                categoryLabelList.add(MessageUtil.getMessageString(ScoreType.SCORE_OVERALL.toString()));
-                first = false;
-            }
-            else
-            {
-                categoryLabelList.add(MessageUtil.getMessageString(subType.toString()));
+                if (subType.equals(ScoreType.SCORE_SPEEDING))
+                    categoryLabelList.add(MessageUtil.getMessageString(ScoreType.SCORE_OVERALL.toString(), getUser().getLocale()));
+                else
+                    categoryLabelList.add(MessageUtil.getMessageString(getPerson().getMeasurementType() + "_" + subType.toString(), getUser().getLocale()));
             }
         }
-
+        else
+        {
+            for (ScoreType subType : scoreType.getSubTypes())
+            {
+                if (first)
+                {
+                    categoryLabelList.add(MessageUtil.getMessageString(ScoreType.SCORE_OVERALL.toString(), getUser().getLocale()));
+                    first = false;
+                }
+                else
+                {
+                    categoryLabelList.add(MessageUtil.getMessageString(subType.toString(), getUser().getLocale()));
+                }
+            }
+        }
         StringBuffer sb = new StringBuffer();
         Bar3D bar3d = new Bar3D();
-
         // Control parameters
         sb.append(bar3d.getControlParameters());
         sb.append(bar3d.getCategories(categoryLabelList));
         if (scoreDataList.size() > 0)
         {
-
             List<ScoreCategory> categoryList = Collections.list(Collections.enumeration(EnumSet.allOf(ScoreCategory.class)));
             Collections.reverse(categoryList);
             for (ScoreCategory category : categoryList)
@@ -150,7 +151,6 @@ public class TeamOverviewBean extends BaseBean
             }
         }
         sb.append(bar3d.getClose());
-
         return sb.toString();
     }
 
@@ -160,7 +160,6 @@ public class TeamOverviewBean extends BaseBean
         {
             barDefMap = new HashMap<ScoreType, String>();
         }
-
         return barDefMap;
     }
 
@@ -186,13 +185,11 @@ public class TeamOverviewBean extends BaseBean
     public Integer getSelectedOverallScore()
     {
         TabAction action = getSelectedAction();
-
         ScoreType scoreType = action.getScoreType();
         if (getOverallScoreMap().get(scoreType) == null)
         {
             overallScoreMap.put(scoreType, initOverallScore(scoreType));
         }
-
         return getOverallScoreMap().get(scoreType);
     }
 
@@ -209,7 +206,6 @@ public class TeamOverviewBean extends BaseBean
             int[] width = { 108, 104, 70, 85 };
             ScoreType[] scoreTypes = { ScoreType.SCORE_OVERALL, ScoreType.SCORE_DRIVING_STYLE, ScoreType.SCORE_SPEEDING, ScoreType.SCORE_SEATBELT };
             actions = new ArrayList<TabAction>();
-
             for (int i = 0; i < actionKeys.length; i++)
             {
                 actions.add(new TabAction(actionKeys[i], actionKeys[i], MessageUtil.getMessageString("teamOverviewSideNav_" + actionKeys[i]), actionKeys[i] + "_on", actionKeys[i]
@@ -277,10 +273,8 @@ public class TeamOverviewBean extends BaseBean
     public void setDuration(Duration duration)
     {
         durationBean.setDuration(duration);
-
         setOverallScoreMap(null);
         setBarDefMap(null);
-
     }
 
     public String exportToPDF()
@@ -288,5 +282,4 @@ public class TeamOverviewBean extends BaseBean
         // TODO Auto-generated method stub
         return null;
     }
-
 }
