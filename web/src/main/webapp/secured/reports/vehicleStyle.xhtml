@@ -92,13 +92,14 @@ var firstLoad = new Boolean(true);
 		document.getElementById(region).className="tiny_selected";
 		
 		//turn on Labels, Legend, Anchors, Names
+        <ui:param name="MilesMsgKey" value="#{vehicleStyleBean.person.measurementType}_Miles"/>
 		var data = chartVar.variables.dataXML;
 	    data = data.replace("showLabels=\'0\'", "showLabels=\'1\'");
 	    data = data.replace("showYAxisValues=\'0\'", "showYAxisValues=\'1\'");
 	    data = data.replace("anchorSides=\'0\'", "anchorSides=\'4\'");
 	    data = data.replace("showLegend=\'0\'", "showLegend=\'1\'");
 	    data = data.replace("pYAxisName=\'\'", "pYAxisName=\'#{messages.vehicle_chart_score}\'");
-	    data = data.replace("sYAxisName=\'\'", "sYAxisName=\'#{messages.vehicle_chart_miles}\'");
+	    data = data.replace("sYAxisName=\'\'", "sYAxisName=\'#{messages[MilesMsgKey]}\'");
 	   	data = data.replace("showDivLineSecondaryValue=\'0\'", "showDivLineSecondaryValue=\'1\'");
 	   	data = data.replace("showSecondaryLimits=\'0\'", "showSecondaryLimits=\'1\'");
 
@@ -483,7 +484,7 @@ var firstLoad = new Boolean(true);
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_avg_speed}" />
 								</f:facet>
-								<strong><h:outputText value="#{item.event.speed} #{messages.measurement_speed}" /></strong>
+								<strong><h:outputText value="#{item.event.speed}" converter="MphToKphConverter"/>#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
 							</rich:column>
 							
 							<rich:column sortBy="#{item.event.severity}">

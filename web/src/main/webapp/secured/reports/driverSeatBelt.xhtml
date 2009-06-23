@@ -102,6 +102,7 @@
 				  <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
 					  <tr>
 						<td valign="top" width="600">
+                           <ui:param name="MilesMsgKey" value="#{driverSeatBeltBean.person.measurementType}_Miles"/>
 						   <ui:include src="../../includes/multiLineChart.xhtml">
 						            <ui:param name="lineChartDef" value="#{driverSeatBeltBean.seatBeltScoreHistoryOverall}" />
 						            <ui:param name="id" value="overallChart" />
@@ -109,7 +110,7 @@
 						            <ui:param name="height" value="230" />  
 						            <ui:param name="chartVar" value="overallChart" />
 						            <ui:param name="pYAxisName" value="#{messages.driver_chart_score}" />
-						            <ui:param name="sYAxisName" value="#{messages.driver_chart_miles}" />
+						            <ui:param name="sYAxisName" value="#{messages[MilesMsgKey]}" />
 							</ui:include>
 						</td>
 						<td valign="top" align="right">
@@ -215,14 +216,14 @@
 								<f:facet name="header">
 									<h:outputText value="#{messages.driver_avg_speed}" />
 								</f:facet>
-								<strong><h:outputText value="#{item.event.avgSpeed} #{messages.measurement_speed}" /></strong>
+								<strong><h:outputText value="#{item.event.avgSpeed}" convert="MphToKphConverter"/>#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
 							</rich:column>
 							
 							<rich:column sortBy="#{item.event.topSpeed}">
 								<f:facet name="header">
 									<h:outputText value="#{messages.driver_top_speed}" />
 								</f:facet>
-								<strong><h:outputText value="#{item.event.topSpeed} #{messages.measurement_speed}" /></strong>
+								<strong><h:outputText value="#{item.event.topSpeed}" convert="MphToKphConverter"/>#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
 							</rich:column>
 							
 							<rich:column sortBy="#{item.event.distance}">

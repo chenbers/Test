@@ -33,9 +33,9 @@
 		 <!-- SPEEDING EVENT -->
 		<h:outputText rendered="#{eventType.code eq '3'}" >
 			<ul>
-				<li>#{messages.eventBubble_speedLimit}:<h:outputText value="#{eventSpeedLimit}" converter="SpeedConverter" /></li>
-				<li>#{messages.eventBubble_averageSpeed}: <h:outputText value="#{eventAvgSpeed}" converter="SpeedConverter" /></li>
-				<li>#{messages.eventBubble_topSpeed}: <h:outputText value="#{eventTopSpeed}" converter="SpeedConverter" /></li>
+				<li>#{messages.eventBubble_speedLimit}:<h:outputText value="#{eventSpeedLimit}" converter="MphToKphConverter" />#{' '} <h:outputText value="mph" converter="MeasurementTextConverter" /></li>
+				<li>#{messages.eventBubble_averageSpeed}: <h:outputText value="#{eventAvgSpeed}" converter="MphToKphConverter" />#{' '} <h:outputText value="mph" converter="MeasurementTextConverter" /></li>
+				<li>#{messages.eventBubble_topSpeed}: <h:outputText value="#{eventTopSpeed}" converter="MphToKphConverter" />#{' '} <h:outputText value="mph" converter="MeasurementTextConverter" /></li>
 				<li>#{messages.eventBubble_distance}: <h:outputText value="#{eventDistance}" converter="DistanceConverter" /></li>
 			</ul>
 		</h:outputText>
@@ -43,7 +43,7 @@
 		<!-- AGGRESSIVE DRIVING EVENT -->
 		<h:outputText rendered="#{eventType.code eq '4' || eventType.code eq '5' || eventType.code eq '6' || eventType.code eq '8'}" >
 			<ul>
-				<li>#{messages.eventBubble_speed}: <h:outputText value="#{eventSpeed}" converter="SpeedConverter" /></li>
+				<li>#{messages.eventBubble_speed}: <h:outputText value="#{eventSpeed}" converter="MphToKphConverter" />#{' '} <h:outputText value="mph" converter="MeasurementTextConverter" /></li>
 				<li>#{messages.eventBubble_severity}:
                   <ui:include src="/includes/severityGraphic.xhtml">
                      <ui:param name="severity" value="#{eventSeverity}" />
@@ -55,8 +55,8 @@
 		<!-- SEAT BELT EVENT -->
 		<h:outputText rendered="#{eventType.code eq '2'}" >
 			<ul>
-				<li>#{messages.eventBubble_averageSpeed}: <h:outputText value="#{eventAvgSpeed}" converter="SpeedConverter" /></li>
-				<li>#{messages.eventBubble_topSpeed}: <h:outputText value="#{eventTopSpeed}" converter="SpeedConverter" /></li>
+				<li>#{messages.eventBubble_averageSpeed}: <h:outputText value="#{eventAvgSpeed}" converter="MphToKphConverter" />#{' '} <h:outputText value="mph" converter="MeasurementTextConverter" /></li>
+				<li>#{messages.eventBubble_topSpeed}: <h:outputText value="#{eventTopSpeed}" converter="MphToKphConverter" />#{' '} <h:outputText value="mph" converter="MeasurementTextConverter" /></li>
 				<li>#{messages.eventBubble_distance}: <h:outputText value="#{eventDistance}" converter="DistanceConverter" /></li>
 			</ul>
 		</h:outputText>

@@ -401,7 +401,11 @@
                                 <td><h:outputText>#{driverTripsBean.totalDriveTime}</h:outputText></td>
                             </tr>
                             <tr>
-                                <td>#{messages.drivertrip_total_miles_driven}:</td>
+                                <td>
+                                    <h:outputFormat value="#{messages.drivertrip_total_miles_driven}">
+                                        <a4j:actionparam value="Miles" converter="MeasurementTextConverter"/>
+                                    </h:outputFormat>
+                                </td>
                                 <td></td>
                                 <td><h:outputText value="#{driverTripsBean.milesDriven}" converter="DistanceConverter" /></td>
                             </tr>
@@ -613,7 +617,7 @@
                                     <f:facet name="header">
                                         <h:outputText value="#{messages.drivertrip_distance}" />
                                     </f:facet>
-                                    <h:outputText value="#{item.distance} #{messages.mi_label}" />
+                                    <h:outputText value="#{item.distance}" converter="MilesToKilometersConverter" />#{' '}<h:outputText value="mi" converter="MeasurementTextConverter" />
                                 </rich:column>
     
                                 <rich:column id="end_column" sortBy="#{item.endAddress}" label="#{messages.drivertrip_end_address}" style="cursor: pointer;">
