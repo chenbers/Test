@@ -107,6 +107,7 @@
       <f:facet name="header"><h:outputText value="#{messages.personHeader_gender}" /></f:facet>
       <h:outputText value="#{item.gender}" />
     </rich:column>
+    <!-- 
     <rich:column rendered="#{personBean.tableColumns['height'].visible}" sortBy="#{item.height}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_height}" /></f:facet>
       <ui:fragment rendered="#{item.height > 0}">
@@ -120,6 +121,7 @@
       <f:facet name="header"><h:outputText value="#{messages.personHeader_weight}" /></f:facet>
       <h:outputText value="#{item.weight}" />
     </rich:column>
+    -->
     <rich:column rendered="#{personBean.tableColumns['address_addr1'].visible}" sortBy="#{item.address.addr1}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_address_addr1}" /></f:facet>
       <h:outputText value="#{item.address.addr1}" />

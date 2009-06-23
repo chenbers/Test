@@ -89,8 +89,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         AVAILABLE_COLUMNS.add("title");
         AVAILABLE_COLUMNS.add("dob");
         AVAILABLE_COLUMNS.add("gender");
-        AVAILABLE_COLUMNS.add("height");
-        AVAILABLE_COLUMNS.add("weight");
         AVAILABLE_COLUMNS.add("address_addr1");
         AVAILABLE_COLUMNS.add("address_addr2");
         AVAILABLE_COLUMNS.add("address_city");
