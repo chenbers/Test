@@ -15,7 +15,7 @@ public class MphToKphConverter extends BaseConverter
         if(value != null){
             if(getUser().getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC))
             {
-                Long speed = Long.valueOf(value);
+                Integer speed = Integer.valueOf(value);
                 return MeasurementConversionUtil.fromKPHtoMPH(speed).intValue(); 
             }
             else
@@ -32,13 +32,13 @@ public class MphToKphConverter extends BaseConverter
         if (Long.class.isInstance(value))
         {
             if (getUser().getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC))
-                return MeasurementConversionUtil.fromMPHtoKPH(Long.class.cast(value)).toString();
+                return MeasurementConversionUtil.fromMPHtoKPH(Long.class.cast(value).intValue()).toString();
         }
         
         if (Integer.class.isInstance(value))
         {
             if (getUser().getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC))
-                return MeasurementConversionUtil.fromMPHtoKPH(Integer.class.cast(value).longValue()).toString();
+                return MeasurementConversionUtil.fromMPHtoKPH(Integer.class.cast(value)).toString();
         }
         
      

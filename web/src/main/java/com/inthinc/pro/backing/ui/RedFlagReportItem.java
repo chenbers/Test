@@ -33,6 +33,9 @@ public class RedFlagReportItem implements Comparable<RedFlagReportItem>
     private Zone zone;
     private RedFlag redFlag;
     
+    private static final String METRIC_MPH_KEY = "metric_mph";
+    private static final String ENGLISH_MPH_KEY = "english_mph";
+    
     private static DateFormat dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"));
 
     
@@ -67,9 +70,9 @@ public class RedFlagReportItem implements Comparable<RedFlagReportItem>
         String catFormat = MessageUtil.getMessageString("redflags_cat" + redFlag.getEvent().getEventCategory().toString());
         setCategory(MessageFormat.format(catFormat, new Object[] {MessageUtil.getMessageString(redFlag.getEvent().getEventType().toString())}));
         
-        String mphString = MessageUtil.getMessageString("english_mph");
+        String mphString = MessageUtil.getMessageString(ENGLISH_MPH_KEY);
         if(measurementType.equals(MeasurementType.METRIC))
-            mphString = MessageUtil.getMessageString("metric_mph");
+            mphString = MessageUtil.getMessageString(METRIC_MPH_KEY);
         
         setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + redFlag.getEvent().getEventType().name()),measurementType,mphString));
     }

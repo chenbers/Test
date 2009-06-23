@@ -92,7 +92,7 @@ public class JsfFunctions
     public static Integer fromMphToKph(Integer value)
     {
         if(getUser().getUser().getPerson().getMeasurementType() == MeasurementType.METRIC)
-            return MeasurementConversionUtil.fromMPHtoKPH(value.longValue()).intValue();
+            return MeasurementConversionUtil.fromMPHtoKPH(value).intValue();
         else
             return value;
     }

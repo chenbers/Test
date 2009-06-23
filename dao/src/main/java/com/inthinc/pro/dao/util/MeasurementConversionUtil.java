@@ -49,16 +49,17 @@ public class MeasurementConversionUtil
             return fromKilometersToMiles(distance.longValue());
     }
 
-    public static Long fromMPHtoKPH(Long milesPerHour)
+    public static Integer fromMPHtoKPH(Integer milesPerHour)
     {
         Double kilometersPerHour = milesPerHour * 1.609344;
-        return Math.round(kilometersPerHour);
+        
+        return Long.valueOf(Math.round(kilometersPerHour)).intValue();
     }
 
-    public static Long fromKPHtoMPH(Long kilometersPerHour)
+    public static Integer fromKPHtoMPH(Integer kilometersPerHour)
     {
         Double milesPerHour = kilometersPerHour * 0.62137;
-        return Math.round(milesPerHour);
+        return Long.valueOf(Math.round(milesPerHour)).intValue();
     }
 
     public static Long fromMPGtoKPL(Long milesPerGallon)
@@ -70,17 +71,17 @@ public class MeasurementConversionUtil
     public static Long convertMileage(Integer mileage, MeasurementType convertToMeasurmentType)
     {
         if (convertToMeasurmentType == MeasurementType.METRIC)
-            return fromKPHtoMPH(mileage.longValue());
+            return fromMPGtoKPL(mileage.longValue());
         else
-            return fromMPHtoKPH(mileage.longValue());
+            return fromMPGtoKPL(mileage.longValue());
     }
 
-    public static Long convertSpeed(Integer speed,  MeasurementType convertToMeasurmentType)
+    public static Integer convertSpeed(Integer speed,  MeasurementType convertToMeasurmentType)
     {
         if (convertToMeasurmentType == MeasurementType.METRIC)
-            return fromMPHtoKPH(speed.longValue());
+            return fromMPHtoKPH(speed);
         else
-            return fromKPHtoMPH(speed.longValue());
+            return fromKPHtoMPH(speed);
     }
     
     //Convert Pounds

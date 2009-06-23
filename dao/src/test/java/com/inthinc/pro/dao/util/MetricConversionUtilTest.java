@@ -17,20 +17,20 @@ public class MetricConversionUtilTest
     @Test
     public void testFromMPHtoKPH()
     {
-        Long expectedkph = 89L;
-        Long actualmph = 55L;
-        Long kilometersperhour = MeasurementConversionUtil.fromMPHtoKPH(actualmph);
+        Integer expectedkph = 89;
+        Integer actualmph = 55;
+        Integer kilometersperhour = MeasurementConversionUtil.fromMPHtoKPH(actualmph);
         logger.debug(actualmph + " mph = " +  kilometersperhour.toString() + " kph");
         Assert.assertEquals(expectedkph, kilometersperhour);
         
-        expectedkph = 56L;
-        actualmph = 35L;
+        expectedkph = 56;
+        actualmph = 35;
         kilometersperhour = MeasurementConversionUtil.fromMPHtoKPH(actualmph);
         logger.debug(actualmph + " mph = " +  kilometersperhour.toString() + " kph");
         Assert.assertEquals(expectedkph, kilometersperhour);
         
-        expectedkph = 72L;
-        actualmph = 45L;
+        expectedkph = 72;
+        actualmph = 45;
         kilometersperhour = MeasurementConversionUtil.fromMPHtoKPH(actualmph);
         logger.debug(actualmph + " mph = " +  kilometersperhour.toString() + " kph");
         Assert.assertEquals(expectedkph, kilometersperhour);
@@ -39,9 +39,9 @@ public class MetricConversionUtilTest
     @Test
     public void testFromKPHtoMPH()
     {
-        Long expectedmph = 43L;
-        Long actualkph = 70L;
-        Long milesperhour = MeasurementConversionUtil.fromKPHtoMPH(actualkph);
+        Integer expectedmph = 43;
+        Integer actualkph = 70;
+        Integer milesperhour = MeasurementConversionUtil.fromKPHtoMPH(actualkph);
         logger.debug(actualkph + " kph = " +  milesperhour.toString() + " mph");
         Assert.assertEquals(expectedmph, milesperhour);
     }
