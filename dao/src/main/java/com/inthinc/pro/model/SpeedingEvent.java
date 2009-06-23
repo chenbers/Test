@@ -96,8 +96,12 @@ public class SpeedingEvent extends Event
     @Override
     public String getDetails(String formatStr,MeasurementType measurementType,String mphString)
     {
-        Long topSpeed = this.topSpeed.longValue();
-        Long speedLimit = this.speedLimit.longValue();
+        Long topSpeed = 0L;
+        if(this.topSpeed != null)
+         topSpeed =  this.topSpeed.longValue();
+        Long speedLimit = 0L;
+        if(this.speedLimit != null)
+            speedLimit = this.speedLimit.longValue();
         if(measurementType.equals(MeasurementType.METRIC))
         {
             topSpeed = MeasurementConversionUtil.fromMPHtoKPH(topSpeed);
