@@ -15,7 +15,9 @@ import org.apache.log4j.Logger;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.sbs.baseDao.TigerDAO;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.validators.EmailValidator;
@@ -341,8 +343,14 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 
 			logger.debug("sendEmailToUser email address is "+email[0]);
 			
-			
-			String text = MessageUtil.formatMessageString("sbs_emailText",speedLimitBean.getNewSpeedLimit(),speedLimitBean.getAddress());
+			String mphText = MessageUtil.getMessageString("english_mph");
+			Integer newSpeed = speedLimitBean.getNewSpeedLimit();
+			if(getMeasurmentType().equals(MeasurementType.METRIC))
+			{
+			    mphText = MessageUtil.getMessageString("metric_mph");
+			    newSpeed = MeasurementConversionUtil.fromMPHtoKPH(newSpeed.longValue()).intValue();
+			}
+			String text = MessageUtil.formatMessageString("sbs_emailText",newSpeed,speedLimitBean.getAddress(),mphText);
 			
 			helper.setText(text,true);
 			helper.setFrom(MessageUtil.getMessageString("sbs_email_from"));

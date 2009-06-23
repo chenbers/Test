@@ -143,16 +143,16 @@
 					</rich:column>
 					<rich:column width="20">
 						<f:facet name="header">
-							<h:outputText value="#{messages.sbs_mph}" />
+							<h:outputText value="sbs_mph" converter="MeasurementTextConverter"/>
 						</f:facet>
-						<h:outputText value="#{item.speedLimit}"/>
+						<h:outputText value="#{item.speedLimit}" converter="MphToKphConverter"/>
 
 					</rich:column>
 					<rich:column width="20">
 						<f:facet name="header">
-							<h:outputText value="#{messages.sbs_newmph}" />
+							<h:outputText value="sbs_newmph" converter="MeasurementTextConverter"/>
 						</f:facet>
-						<h:inputText value="#{item.newSpeedLimit}" required="true" size="3" onclick="check = true" onkeyup="validate(this,0,199)" id="s"/>
+						<h:inputText value="#{item.newSpeedLimit}" required="true" size="3" onclick="check = true" onkeyup="validate(this,0,199)" id="s" converter="MphToKphConverter"/>
 
 					</rich:column>
 					<rich:column width="68">
