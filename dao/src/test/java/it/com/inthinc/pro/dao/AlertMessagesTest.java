@@ -166,6 +166,7 @@ public class AlertMessagesTest
     }
 
     @Test
+    @Ignore
     public void zoneAlerts()
     {
         
@@ -178,36 +179,36 @@ public class AlertMessagesTest
         
         pollForMessages("Zone Alert Groups Set");
         
-//        modZoneAlertPref(DRIVERS);
-//        if (!genZoneEvent(IMEI, zoneID))
-//            fail("Unable to generate zone arrival event");
-//        
-//        pollForMessages("Zone Alert Drivers Set");
-//
-//
-//        modZoneAlertPref(VEHICLES);
-//        if (!genZoneEvent(IMEI, zoneID))
-//            fail("Unable to generate zone arrival event");
-//        
-//        pollForMessages("Zone Alert Vehicles Set");
-//
-//        modZoneAlertPref(VEHICLE_TYPES);
-//        if (!genZoneEvent(IMEI, zoneID))
-//            fail("Unable to generate zone arrival event");
-//        
-//        pollForMessages("Zone Alert Vehicle Types Set");
-//
-//        modZoneAlertPref(CONTACT_INFO);
-//        if (!genZoneEvent(IMEI, zoneID))
-//            fail("Unable to generate zone arrival event");
-//        
-//        pollForMessages("Zone Alert Contact Info Set");
-//
-//        modZoneAlertPref(ANY_TIME);
-//        if (!genZoneEvent(IMEI, zoneID))
-//            fail("Unable to generate zone arrival event");
-//        
-//        pollForMessages("Zone Alert ANY TIME (0,0) Set");
+        modZoneAlertPref(DRIVERS);
+        if (!genZoneEvent(IMEI, zoneID))
+            fail("Unable to generate zone arrival event");
+        
+        pollForMessages("Zone Alert Drivers Set");
+
+
+        modZoneAlertPref(VEHICLES);
+        if (!genZoneEvent(IMEI, zoneID))
+            fail("Unable to generate zone arrival event");
+        
+        pollForMessages("Zone Alert Vehicles Set");
+
+        modZoneAlertPref(VEHICLE_TYPES);
+        if (!genZoneEvent(IMEI, zoneID))
+            fail("Unable to generate zone arrival event");
+        
+        pollForMessages("Zone Alert Vehicle Types Set");
+
+        modZoneAlertPref(CONTACT_INFO);
+        if (!genZoneEvent(IMEI, zoneID))
+            fail("Unable to generate zone arrival event");
+        
+        pollForMessages("Zone Alert Contact Info Set");
+
+        modZoneAlertPref(ANY_TIME);
+        if (!genZoneEvent(IMEI, zoneID))
+            fail("Unable to generate zone arrival event");
+        
+        pollForMessages("Zone Alert ANY TIME (0,0) Set");
 
     }
 
