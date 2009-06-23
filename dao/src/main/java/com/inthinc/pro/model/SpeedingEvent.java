@@ -104,7 +104,7 @@ public class SpeedingEvent extends Event
             speedLimit = MeasurementConversionUtil.fromMPHtoKPH(speedLimit);
         }
         
-        return MessageFormat.format(formatStr, new Object[] { topSpeed, speedLimit , mphString});
+        return MessageFormat.format(formatStr, topSpeed, speedLimit , mphString, mphString);
     }
 
 }
