@@ -75,7 +75,11 @@ public class AggressiveDrivingEvent extends Event
     @Override
     public String getDetails(String formatStr,MeasurementType measurementType,String mphString)
     {
-        Integer speed = getSpeed();
+        Integer speed = 0;
+        
+        if(this.getSpeed() != null)
+            speed = this.getSpeed();
+        
         if(measurementType.equals(MeasurementType.METRIC))
             speed = MeasurementConversionUtil.fromMPHtoKPH(speed);
         return MessageFormat.format(formatStr, new Object[] {speed, mphString});
