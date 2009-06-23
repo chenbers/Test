@@ -11,7 +11,7 @@ public class LbsToKgConverter extends BaseConverter
     @Override
     public Object getAsObject(FacesContext context, UIComponent compoent, String value)
     {
-        if(value != null){
+        if(value != null && !value.equals("")){
             if(getUser().getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC))
             {
                 Long weight = Long.valueOf(value);
