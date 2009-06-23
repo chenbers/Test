@@ -11,6 +11,7 @@ import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.model.Alert;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.util.MessageUtil;
 
@@ -34,7 +35,7 @@ public class EventReportItem implements Comparable<EventReportItem>
     private static DateFormat dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"));
 
     
-    public EventReportItem(Event event, Alert rfAlert, GroupHierarchy groupHierarchy)
+    public EventReportItem(Event event, Alert rfAlert, GroupHierarchy groupHierarchy,MeasurementType measurementType)
     {
         this.event = event;
         alert = (rfAlert != null);
@@ -64,12 +65,16 @@ public class EventReportItem implements Comparable<EventReportItem>
         String catFormat = MessageUtil.getMessageString("redflags_cat" + event.getEventCategory().toString());
         setCategory(MessageFormat.format(catFormat, new Object[] {MessageUtil.getMessageString(event.getEventType().toString())}));
         
-        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType().name())));
+        String mphString = MessageUtil.getMessageString("english_mph");
+        if(measurementType.equals(MeasurementType.METRIC))
+            mphString = MessageUtil.getMessageString("metric_mph");
+        
+        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType().name()),measurementType,mphString));
 
         setNoteID(event.getNoteID());
     }
     
-    public EventReportItem(Event event, TimeZone tz)
+    public EventReportItem(Event event, TimeZone tz,MeasurementType measurementType)
     {
         this.event = event;
         
@@ -79,7 +84,11 @@ public class EventReportItem implements Comparable<EventReportItem>
         String catFormat = MessageUtil.getMessageString("redflags_cat" + event.getEventCategory().toString());
         setCategory(MessageFormat.format(catFormat, new Object[] {MessageUtil.getMessageString(event.getEventType().toString())}));
         
-        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType().name())));
+        String mphString = MessageUtil.getMessageString("english_mph");
+        if(measurementType.equals(MeasurementType.METRIC))
+            mphString = MessageUtil.getMessageString("metric_mph");
+        
+        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType().name()),measurementType,mphString));
     }
     
     public String getDate()

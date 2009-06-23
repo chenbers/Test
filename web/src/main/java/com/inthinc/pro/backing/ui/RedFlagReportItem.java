@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing.ui;
 
+import java.awt.TrayIcon.MessageType;
 import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -9,7 +10,9 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.backing.model.GroupHierarchy;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.RedFlag;
+import com.inthinc.pro.model.SpeedingEvent;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneArrivalEvent;
 import com.inthinc.pro.model.ZoneDepartureEvent;
@@ -33,7 +36,7 @@ public class RedFlagReportItem implements Comparable<RedFlagReportItem>
     private static DateFormat dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"));
 
     
-    public RedFlagReportItem(RedFlag redFlag, GroupHierarchy groupHierarchy)
+    public RedFlagReportItem(RedFlag redFlag, GroupHierarchy groupHierarchy,MeasurementType measurementType)
     {
         this.redFlag = redFlag;
 
@@ -64,8 +67,11 @@ public class RedFlagReportItem implements Comparable<RedFlagReportItem>
         String catFormat = MessageUtil.getMessageString("redflags_cat" + redFlag.getEvent().getEventCategory().toString());
         setCategory(MessageFormat.format(catFormat, new Object[] {MessageUtil.getMessageString(redFlag.getEvent().getEventType().toString())}));
         
-        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + redFlag.getEvent().getEventType().name())));
-
+        String mphString = MessageUtil.getMessageString("english_mph");
+        if(measurementType.equals(MeasurementType.METRIC))
+            mphString = MessageUtil.getMessageString("metric_mph");
+        
+        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + redFlag.getEvent().getEventType().name()),measurementType,mphString));
     }
     
     public String getDate()

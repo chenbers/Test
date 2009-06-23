@@ -69,13 +69,11 @@
 			<h:outputText value="#{messageAddress}:"/>
 			<h:outputText value="#{vehicleAddress}" />
 			<f:facet name="footer">
-			   
                <h:outputFormat value="#{messages.vehicleBubble_distance}" rendered="#{distance ne null}">
                      <h:outputText value="#{messageDistance} "/>
                      <a4j:actionparam value="#{distance}" converter="MilesToKilometersConverter"/>
                      <a4j:actionparam value="miles" converter="MeasurementTextConverter"/>
                 </h:outputFormat>
-                
 			</f:facet>
 		</h:panelGrid>
 	</div>

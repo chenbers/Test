@@ -20,6 +20,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EventType;
 import com.inthinc.pro.model.FullEvent;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
@@ -90,7 +91,7 @@ public class VehicleStyleBeanTest extends BaseBeanTest
         assertTrue( e.getEventType() == EventType.HARD_VERT); 
         
         // Test Event Filtering
-        EventReportItem eri = new EventReportItem(e, p.getTimeZone());
+        EventReportItem eri = new EventReportItem(e, p.getTimeZone(),MeasurementType.ENGLISH);
         styleEvents.add(eri);
 
         vehicleStyleBean.setSelectedEventType("HARD_VERT");

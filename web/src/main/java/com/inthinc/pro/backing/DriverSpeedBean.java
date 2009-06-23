@@ -107,7 +107,7 @@ public class DriverSpeedBean extends BasePerformanceBean
         for (Event event : tempEvents)
         {
             event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
-            speedingEvents.add(new EventReportItem(event, this.getDriver().getPerson().getTimeZone()));
+            speedingEvents.add(new EventReportItem(event, this.getDriver().getPerson().getTimeZone(),getMeasurmentType()));
         }
         sortSpeedingEvents();
     }

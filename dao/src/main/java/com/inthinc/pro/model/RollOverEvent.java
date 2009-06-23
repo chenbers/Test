@@ -23,9 +23,5 @@ public class RollOverEvent extends Event
     {
         return EventCategory.EMERGENCY;
     }
-    public String getDetails(String formatStr)
-    {
-        return formatStr;
-    }
 
 }

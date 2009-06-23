@@ -263,7 +263,16 @@ public class Event implements Comparable<Event>, Serializable
         return EventCategory.NONE;
     }
     
-    public String getDetails(String formatStr)
+    /**
+     * This method will typically be overridden by a child class. The child class will pass in the appropriate parameters
+     * needed for the formatStr. 
+     * 
+     * 
+     * @param formatStr String that will be formatted by one of the child classes. T
+     * @param measurementType
+     * @return Formatted Message String
+     */
+    public String getDetails(String formatStr, MeasurementType measurementType,String mphString)
     {
         return formatStr;
     }

@@ -75,7 +75,7 @@ public class VehicleSeatBeltBean extends BasePerformanceBean
         for (Event event : tempEvents)
         {
             event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
-            seatBeltEvents.add(new EventReportItem(event, getUser().getPerson().getTimeZone()));
+            seatBeltEvents.add(new EventReportItem(event, getUser().getPerson().getTimeZone(),getMeasurmentType()));
         }
         tableStatsBean.reset(ROWCOUNT, seatBeltEvents.size());
     }

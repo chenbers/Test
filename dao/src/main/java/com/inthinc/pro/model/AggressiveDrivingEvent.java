@@ -3,6 +3,8 @@ package com.inthinc.pro.model;
 import java.text.MessageFormat;
 import java.util.Date;
 
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+
 public class AggressiveDrivingEvent extends Event
 {
     /**
@@ -69,9 +71,14 @@ public class AggressiveDrivingEvent extends Event
     {
         return EventCategory.VIOLATION;
     }
-    public String getDetails(String formatStr)
+    
+    @Override
+    public String getDetails(String formatStr,MeasurementType measurementType,String mphString)
     {
-        return MessageFormat.format(formatStr, new Object[] {getSpeed()});
+        Long speed = getSpeed().longValue();
+        if(measurementType.equals(MeasurementType.METRIC))
+            speed = MeasurementConversionUtil.fromMPHtoKPH(speed);
+        return MessageFormat.format(formatStr, new Object[] {speed, mphString});
     }
 
     public Integer getDeltaX()

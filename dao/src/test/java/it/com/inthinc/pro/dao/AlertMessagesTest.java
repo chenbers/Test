@@ -166,7 +166,6 @@ public class AlertMessagesTest
     }
 
     @Test
-    @Ignore
     public void zoneAlerts()
     {
         
@@ -177,7 +176,7 @@ public class AlertMessagesTest
         if (!genZoneEvent(IMEI, zoneID))
             fail("Unable to generate zone arrival event");
         
-//        pollForMessages("Zone Alert Groups Set");
+        pollForMessages("Zone Alert Groups Set");
         
 //        modZoneAlertPref(DRIVERS);
 //        if (!genZoneEvent(IMEI, zoneID))

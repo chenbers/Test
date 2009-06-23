@@ -110,7 +110,7 @@ public class VehicleSpeedBean extends BasePerformanceBean
         for (Event event : tempEvents)
         {
             event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
-            speedingEvents.add(new EventReportItem(event, getUser().getPerson().getTimeZone()));
+            speedingEvents.add(new EventReportItem(event, getUser().getPerson().getTimeZone(),getMeasurmentType()));
         }
         sortSpeedingEvents();
       

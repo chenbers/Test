@@ -15,6 +15,7 @@ import org.junit.Test;
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.SpeedingEvent;
 import com.inthinc.pro.model.Vehicle;
@@ -94,7 +95,7 @@ public class VehicleSpeedBeanTest extends BaseBeanTest
         se.setSpeedLimit(45);
         se.setTime(new Date());
         
-        EventReportItem eri = new EventReportItem(se, TimeZone.getTimeZone("MST"));
+        EventReportItem eri = new EventReportItem(se, TimeZone.getTimeZone("MST"),MeasurementType.ENGLISH);
         speedingEvents.add(eri);
         
         vehicleSpeedBean.setSpeedingEvents(speedingEvents);

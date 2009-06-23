@@ -16,6 +16,7 @@ import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.SpeedingEvent;
@@ -101,7 +102,7 @@ public class DriverSpeedBeanTest extends BaseBeanTest
         se.setSpeedLimit(45);
         se.setTime(new Date());
         
-        EventReportItem eri = new EventReportItem(se, p.getTimeZone());
+        EventReportItem eri = new EventReportItem(se, p.getTimeZone(),MeasurementType.ENGLISH);
         speedingEvents.add(eri);
         
         driverSpeedBean.setSpeedingEvents(speedingEvents);

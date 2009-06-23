@@ -25,6 +25,7 @@ import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.ZoneArrivalEvent;
 import com.inthinc.pro.model.ZoneDepartureEvent;
 import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.util.MessageUtil;
 
 public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<RedFlagReportItem>, PersonChangeListener, SearchChangeListener
 {
@@ -232,7 +233,7 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
             fillInDriver(redFlag.getEvent());
             fillInVehicle(redFlag.getEvent());
             
-            RedFlagReportItem item = new RedFlagReportItem(redFlag, getGroupHierarchy());
+            RedFlagReportItem item = new RedFlagReportItem(redFlag, getGroupHierarchy(),getMeasurmentType());
             
             if(redFlag.getEvent() instanceof ZoneDepartureEvent)
             {

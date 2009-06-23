@@ -101,7 +101,7 @@ public class VehicleStyleBean extends BasePerformanceBean
         for (Event event : tempEvents)
         {
             event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
-            styleEvents.add(new EventReportItem(event, getUser().getPerson().getTimeZone()));
+            styleEvents.add(new EventReportItem(event, getUser().getPerson().getTimeZone(),getMeasurmentType()));
         }
         filterEventsAction();
     }

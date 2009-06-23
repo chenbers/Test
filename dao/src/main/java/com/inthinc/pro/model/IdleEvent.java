@@ -72,7 +72,9 @@ public class IdleEvent extends Event
     {
         return EventCategory.WARNING;
     }
-    public String getDetails(String formatStr)
+    
+    @Override
+    public String getDetails(String formatStr,MeasurementType measurementType,String mphString)
     {
         return MessageFormat.format(formatStr, new Object[] {getLowIdle() == null ? 0 : getLowIdle(), getHighIdle() == null ? 0 : getHighIdle()});
     }

@@ -25,7 +25,6 @@ public class MeasurementConversionUtil
         Double kilometers = miles * 1.609344;
         BigDecimal bigDecimal = new BigDecimal(Math.round(kilometers * 10));
         return bigDecimal.movePointLeft(1).floatValue();
-
     }
 
     /**

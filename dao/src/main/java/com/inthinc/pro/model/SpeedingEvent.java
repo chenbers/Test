@@ -3,6 +3,8 @@ package com.inthinc.pro.model;
 import java.text.MessageFormat;
 import java.util.Date;
 
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+
 public class SpeedingEvent extends Event
 {
     /**
@@ -91,9 +93,18 @@ public class SpeedingEvent extends Event
         return EventCategory.VIOLATION;
     }
 
-    public String getDetails(String formatStr)
+    @Override
+    public String getDetails(String formatStr,MeasurementType measurementType,String mphString)
     {
-        return MessageFormat.format(formatStr, new Object[] { topSpeed, speedLimit });
+        Long topSpeed = this.topSpeed.longValue();
+        Long speedLimit = this.speedLimit.longValue();
+        if(measurementType.equals(MeasurementType.METRIC))
+        {
+            topSpeed = MeasurementConversionUtil.fromMPHtoKPH(topSpeed);
+            speedLimit = MeasurementConversionUtil.fromMPHtoKPH(speedLimit);
+        }
+        
+        return MessageFormat.format(formatStr, new Object[] { topSpeed, speedLimit , mphString});
     }
 
 }
