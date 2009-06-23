@@ -492,7 +492,7 @@
 					<reportElement
 						x="421"
 						y="3"
-						width="47"
+						width="55"
 						height="17"
 						key="textField-4"/>
 					<box></box>
