@@ -199,8 +199,7 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
         case ALERT_TYPE_SPEEDING:
             parameterList.add(String.valueOf(((SpeedingEvent)event).getTopSpeed()));
             parameterList.add(String.valueOf(((SpeedingEvent)event).getSpeedLimit()));
-            parameterList.add("54");
-            parameterList.add("74");
+            parameterList.add(event.getAddressStr());
         default:
             parameterList.add(alertMessage.getAddress());
         }

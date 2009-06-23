@@ -246,6 +246,12 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
         throw new UnsupportedOperationException("This method is not supported in this DAO");
     }
     
+    @Override
+    public Event findByID(Long id)
+    {
+        return getMapper().convertToModelObject(this.getSiloService().getNote(id), Event.class);
+    }
+    
     
  
 
