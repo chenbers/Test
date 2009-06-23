@@ -348,7 +348,7 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 			
 			String mphText = MessageUtil.getMessageString(ENGLISH_MPH_KEY);
 			Integer newSpeed = speedLimitBean.getNewSpeedLimit();
-			if(getMeasurmentType().equals(MeasurementType.METRIC))
+			if(getMeasurementType().equals(MeasurementType.METRIC))
 			{
 			    mphText = MessageUtil.getMessageString(METRIC_MPH_KEY);
 			    newSpeed = MeasurementConversionUtil.fromMPHtoKPH(newSpeed).intValue();

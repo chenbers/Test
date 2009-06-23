@@ -133,7 +133,7 @@ public class BaseBean
             return Locale.ENGLISH;
     }
 
-    public MeasurementType getMeasurmentType()
+    public MeasurementType getMeasurementType()
     {
         if (getUser().getPerson().getMeasurementType() != null)
             return getUser().getPerson().getMeasurementType();

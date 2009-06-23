@@ -134,7 +134,7 @@ public class VehicleTripsBean extends BaseBean
             }
             event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
             lastValidLatLng = event.getLatLng();
-            returnList.add(new EventReportItem(event, getTimeZoneFromDriver(event.getDriverID()),getMeasurmentType()));
+            returnList.add(new EventReportItem(event, getTimeZoneFromDriver(event.getDriverID()),getMeasurementType()));
         }
         return returnList;
     }

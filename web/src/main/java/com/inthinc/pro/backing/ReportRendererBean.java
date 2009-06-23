@@ -61,7 +61,7 @@ public class ReportRendererBean extends BaseBean
             for(ReportCriteria rt:reportCriteriaList){
                 rt.setDuration(this.duration);
                 rt.setLocale(getLocale());
-                rt.setUseMetric(getMeasurmentType() == MeasurementType.METRIC);
+                rt.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
             }
         }
         
@@ -88,7 +88,7 @@ public class ReportRendererBean extends BaseBean
             for(ReportCriteria rt:reportCriteriaList){
                 rt.setDuration(this.duration);
                 rt.setLocale(getLocale());
-                rt.setUseMetric(getMeasurmentType() == MeasurementType.METRIC);
+                rt.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
             }
         }
         

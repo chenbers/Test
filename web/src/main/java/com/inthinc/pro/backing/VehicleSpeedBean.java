@@ -110,7 +110,7 @@ public class VehicleSpeedBean extends BasePerformanceBean
         for (Event event : tempEvents)
         {
             event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
-            speedingEvents.add(new EventReportItem(event, getUser().getPerson().getTimeZone(),getMeasurmentType()));
+            speedingEvents.add(new EventReportItem(event, getUser().getPerson().getTimeZone(),getMeasurementType()));
         }
         sortSpeedingEvents();
       
@@ -278,7 +278,7 @@ public class VehicleSpeedBean extends BasePerformanceBean
         reportCriteria.addParameter("SCORE_FIFTYFIVE", getScoreMap().get(ScoreType.SCORE_SPEEDING_55_64.toString()) / 10.0D);
         reportCriteria.addParameter("SCORE_SIXTYFIVE", getScoreMap().get(ScoreType.SCORE_SPEEDING_65_80.toString()) / 10.0D);
         reportCriteria.setLocale(getLocale());
-        reportCriteria.setUseMetric(getMeasurmentType() == MeasurementType.METRIC);
+        reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
 
         List<ScoreType> scoreTypes = new ArrayList<ScoreType>();
         scoreTypes.add(ScoreType.SCORE_SPEEDING);

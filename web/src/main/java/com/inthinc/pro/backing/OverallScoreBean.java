@@ -255,7 +255,7 @@ public class OverallScoreBean extends BaseBean
         ReportCriteria reportCriteria = reportCriteriaService.getOverallScoreReportCriteria(groupID, durationBean.getDuration());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setLocale(getLocale());
-        reportCriteria.setUseMetric(getMeasurmentType() == MeasurementType.METRIC);
+        reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
         return reportCriteria;
     }
     

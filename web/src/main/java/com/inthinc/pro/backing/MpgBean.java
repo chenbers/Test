@@ -133,7 +133,7 @@ public class MpgBean extends BaseBean
         ReportCriteria reportCriteria = reportCriteriaService.getMpgReportCriteria(getGroupID(), durationBean.getDuration());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setLocale(getLocale());
-        reportCriteria.setUseMetric(getMeasurmentType() == MeasurementType.METRIC);
+        reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
         return reportCriteria;
     }
 

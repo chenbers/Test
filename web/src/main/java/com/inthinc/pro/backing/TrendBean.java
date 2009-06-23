@@ -434,7 +434,7 @@ public class TrendBean extends CustomSortBean<ScoreableEntityPkg> implements Dur
         ReportCriteria reportCriteria = reportCriteriaService.getTrendChartReportCriteria(this.navigation.getGroupID(), this.navigation.getDurationBean().getDuration());
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setLocale(getLocale());
-        reportCriteria.setUseMetric(getMeasurmentType() == MeasurementType.METRIC);
+        reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
         return reportCriteria;
     }
 

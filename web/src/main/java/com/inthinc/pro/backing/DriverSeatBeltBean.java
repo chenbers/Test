@@ -78,7 +78,7 @@ public class DriverSeatBeltBean extends BasePerformanceBean
         for (Event event : tempEvents)
         {
             event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
-            seatBeltEvents.add(new EventReportItem(event, this.getDriver().getPerson().getTimeZone(),getMeasurmentType()));
+            seatBeltEvents.add(new EventReportItem(event, this.getDriver().getPerson().getTimeZone(),getMeasurementType()));
         }
         tableStatsBean.reset(ROWCOUNT, seatBeltEvents.size());
     }
@@ -203,7 +203,7 @@ public class DriverSeatBeltBean extends BasePerformanceBean
         reportCriteria.addParameter("OVERALL_SCORE", this.getSeatBeltScore() / 10.0D);
         reportCriteria.addParameter("SPEED_MEASUREMENT", MessageUtil.getMessageString("measurement_speed"));
         reportCriteria.setLocale(getLocale());
-        reportCriteria.setUseMetric(getMeasurmentType() == MeasurementType.METRIC);
+        reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
 
         List<ScoreType> scoreTypes = new ArrayList<ScoreType>();
         scoreTypes.add(ScoreType.SCORE_SEATBELT);

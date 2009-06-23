@@ -187,7 +187,7 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
         reportCriteria.setMainDataset(driverData);
         reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
         reportCriteria.setLocale(getLocale());
-        reportCriteria.setUseMetric(getMeasurmentType() == MeasurementType.METRIC);
+        reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
         return reportCriteria;
     }
 

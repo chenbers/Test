@@ -101,7 +101,7 @@ public class VehicleStyleBean extends BasePerformanceBean
         for (Event event : tempEvents)
         {
             event.setAddressStr(addressLookup.getAddress(event.getLatitude(), event.getLongitude()));
-            styleEvents.add(new EventReportItem(event, getUser().getPerson().getTimeZone(),getMeasurmentType()));
+            styleEvents.add(new EventReportItem(event, getUser().getPerson().getTimeZone(),getMeasurementType()));
         }
         filterEventsAction();
     }
@@ -217,7 +217,7 @@ public class VehicleStyleBean extends BasePerformanceBean
         reportCriteria.addParameter("SCORE_HARDTURN", getScoreMap().get(ScoreType.SCORE_DRIVING_STYLE_HARD_TURN.toString()) / 10.0D);
         reportCriteria.addParameter("SCORE_HARDBUMP", getScoreMap().get(ScoreType.SCORE_DRIVING_STYLE_HARD_BUMP.toString()) / 10.0D);
         reportCriteria.setLocale(getLocale());
-        reportCriteria.setUseMetric(getMeasurmentType() == MeasurementType.METRIC);
+        reportCriteria.setUseMetric(getMeasurementType() == MeasurementType.METRIC);
 
         List<ScoreType> scoreTypes = new ArrayList<ScoreType>();
         scoreTypes.add(ScoreType.SCORE_DRIVING_STYLE);

@@ -228,7 +228,7 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
         {
             fillInDriver(event);
             fillInVehicle(event);
-            eventReportItemList.add(new EventReportItem(event, null, getGroupHierarchy(),getMeasurmentType()));
+            eventReportItemList.add(new EventReportItem(event, null, getGroupHierarchy(),getMeasurementType()));
         }
         Collections.sort(eventReportItemList);
         Collections.reverse(eventReportItemList);

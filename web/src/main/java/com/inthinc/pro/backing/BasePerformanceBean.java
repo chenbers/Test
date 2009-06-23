@@ -118,7 +118,7 @@ public abstract class BasePerformanceBean extends BaseBean
 
         // Not displaying daily score in chart.
         sb.append(multiAreaChart.getChartAreaDataSet(MessageUtil.getMessageString("driver_chart_cumulative"), "#B0CB48", cumulativeValues, catLabelList));
-        sb.append(multiAreaChart.getChartBarDataSet(MessageUtil.getMessageString(getMeasurmentType() + "_Miles"), "#C0C0C0", odometerValues, catLabelList));
+        sb.append(multiAreaChart.getChartBarDataSet(MessageUtil.getMessageString(getMeasurementType() + "_Miles"), "#C0C0C0", odometerValues, catLabelList));
         sb.append(multiAreaChart.getClose());
         return sb.toString();
     }

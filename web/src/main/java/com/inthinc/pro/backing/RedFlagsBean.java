@@ -233,7 +233,7 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
             fillInDriver(redFlag.getEvent());
             fillInVehicle(redFlag.getEvent());
             
-            RedFlagReportItem item = new RedFlagReportItem(redFlag, getGroupHierarchy(),getMeasurmentType());
+            RedFlagReportItem item = new RedFlagReportItem(redFlag, getGroupHierarchy(),getMeasurementType());
             
             if(redFlag.getEvent() instanceof ZoneDepartureEvent)
             {
