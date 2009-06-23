@@ -287,13 +287,14 @@
 				  <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
 					  <tr>
 						<td valign="top" width="600">
+                           <ui:param name="MilesMsgKey" value="#{driverPerformanceBean.person.measurementType}_Miles"/>
 						   <ui:include src="../includes/multiLineChart.xhtml">
 						            <ui:param name="lineChartDef" value="#{driverPerformanceBean.overallScoreHistory}" />
 						            <ui:param name="id" value="overallScoreChart" />
 						            <ui:param name="width" value="650" /> 
 						            <ui:param name="height" value="230" />  
 						            <ui:param name="pYAxisName" value="#{messages.driver_chart_score}" />
-						            <ui:param name="sYAxisName" value="#{messages.driver_chart_miles}" />
+						            <ui:param name="sYAxisName" value="#{messages[MilesMsgKey]}" />
 							</ui:include>
 						</td>
 						<td valign="top" align="right">

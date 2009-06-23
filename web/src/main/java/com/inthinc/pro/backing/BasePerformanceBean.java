@@ -11,6 +11,7 @@ import com.inthinc.pro.charts.FusionColumnChart;
 import com.inthinc.pro.charts.FusionMultiAreaChart;
 import com.inthinc.pro.charts.Line;
 import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
@@ -103,7 +104,7 @@ public abstract class BasePerformanceBean extends BaseBean
         {
             // Get mileage for day.
             if (dailyList.get(i).getIdentifierNum() != null)
-                odometerValues[i] = dailyList.get(i).getIdentifierNum() / 100D;
+                odometerValues[i] = MeasurementConversionUtil.convertDistance(dailyList.get(i).getIdentifierNum().floatValue(), getPerson().getMeasurementType()).intValue()  / 100D;
 
             // Set Score to NULL on non driving days.
             if (odometerValues[i] == null || odometerValues[i] == 0)
@@ -117,7 +118,7 @@ public abstract class BasePerformanceBean extends BaseBean
 
         // Not displaying daily score in chart.
         sb.append(multiAreaChart.getChartAreaDataSet(MessageUtil.getMessageString("driver_chart_cumulative"), "#B0CB48", cumulativeValues, catLabelList));
-        sb.append(multiAreaChart.getChartBarDataSet(MessageUtil.getMessageString("driver_chart_daily"), "#C0C0C0", odometerValues, catLabelList));
+        sb.append(multiAreaChart.getChartBarDataSet(MessageUtil.getMessageString(getMeasurmentType() + "_Miles"), "#C0C0C0", odometerValues, catLabelList));
         sb.append(multiAreaChart.getClose());
         return sb.toString();
     }

@@ -32,17 +32,17 @@
       		var #{tartgetElementVar} = document.getElementById("#{hiddenFieldID}");
       		var #{chartVar} = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSCombiDY2D.swf", "#{chartVar}Id", "#{width}", "#{height}", "0", "1");
       
-      		<h:outputText rendered="#{hideLabels eq 'true' ? true : false}">
+      		<h:outputText rendered="#{hideLabels}">
       	    	#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("showLabels=\'1\'", "showLabels=\'0\'");
       	    	#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("showYAxisValues=\'1\'", "showYAxisValues=\'0\'");
       	    	#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("anchorSides=\'4\'", "anchorSides=\'0\'");
       	    </h:outputText> 
       
-      	    <h:outputText rendered="#{hideLegend eq 'true' ? true : false}">
+      	    <h:outputText rendered="#{hideLegend}">
       	    	#{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("showLegend=\'1\'", "showLegend=\'0\'");
       	    </h:outputText>
       
-      	    <h:outputText rendered="#{hideNames eq 'true' ? true : false}">
+      	    <h:outputText rendered="#{hideNames}">
       		    #{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("sYAxisName=\'Name\'", "sYAxisName=\'\'");
       		    #{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("pYAxisName=\'Name\'", "pYAxisName=\'\'");
       		    #{tartgetElementVar}.value = #{tartgetElementVar}.value.replace("showDivLineSecondaryValue=\'1\'", "showDivLineSecondaryValue=\'0\'");

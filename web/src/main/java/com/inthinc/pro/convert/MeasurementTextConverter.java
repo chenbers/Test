@@ -10,8 +10,6 @@ import com.inthinc.pro.util.MessageUtil;
 
 public class MeasurementTextConverter extends BaseConverter
 {
-    private static final String METRIC_PREFIX = "metric_";
-    private static final String ENGLISH_PREFIX = "english_";
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value)
@@ -28,9 +26,9 @@ public class MeasurementTextConverter extends BaseConverter
             MeasurementType measurementType = getUser().getUser().getPerson().getMeasurementType();
             String text = String.class.cast(value);
             if(measurementType == null || measurementType.equals(MeasurementType.ENGLISH))
-                return MessageUtil.getMessageString(ENGLISH_PREFIX + text, getUser().getUser().getLocale());
+                return MessageUtil.getMessageString(MeasurementType.ENGLISH + "_" + text, getUser().getUser().getLocale());
             if(measurementType.equals(MeasurementType.METRIC))
-                return MessageUtil.getMessageString(METRIC_PREFIX + text, getUser().getUser().getLocale());
+                return MessageUtil.getMessageString(MeasurementType.METRIC + "_" + text, getUser().getUser().getLocale());
         }
         return null;
     }

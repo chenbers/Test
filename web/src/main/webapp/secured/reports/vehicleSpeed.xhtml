@@ -94,13 +94,15 @@ var firstLoad = new Boolean(true);
 		document.getElementById(region).className="tiny_selected";
 		
 		//turn on X and Y axis labels.
+        
+        <ui:param name="MilesMsgKey" value="#{vehicleSpeedBean.person.measurementType}_Miles"/>
 		var data = chartVar.variables.dataXML;
 	    data = data.replace("showLabels=\'0\'", "showLabels=\'1\'");
 	    data = data.replace("showYAxisValues=\'0\'", "showYAxisValues=\'1\'");
 	    data = data.replace("anchorSides=\'0\'", "anchorSides=\'4\'");
 	    data = data.replace("showLegend=\'0\'", "showLegend=\'1\'");
 	    data = data.replace("pYAxisName=\'\'", "pYAxisName=\'#{messages.vehicle_chart_score}\'");
-	    data = data.replace("sYAxisName=\'\'", "sYAxisName=\'#{messages.vehicle_chart_miles}\'");
+	    data = data.replace("sYAxisName=\'\'", "sYAxisName=\'#{messages[MilesMsgKey]}\'");
 	   	data = data.replace("showDivLineSecondaryValue=\'0\'", "showDivLineSecondaryValue=\'1\'");
 	   	data = data.replace("showSecondaryLimits=\'0\'", "showSecondaryLimits=\'1\'");
 
@@ -256,7 +258,7 @@ var firstLoad = new Boolean(true);
 						  	  					onclick="SelectBreakDown('TWENTYONE', chart21, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_21_30}')" 
 						  	  					reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="TWENTYONE" assignTo="#{vehicleSpeedBean.selectedSpeed}"/>
-						  	  		<h:outputText value="#{messages.SCORE_SPEEDING_21_30}"/>
+                                    <h:outputText value="SCORE_SPEEDING_21_30" converter="MeasurementTextConverter"/>
 						  	  </a4j:commandLink>
 						  </h:form>
 							</div>
@@ -290,7 +292,7 @@ var firstLoad = new Boolean(true);
 						  	  					onclick="SelectBreakDown('THIRTYONE', chart31, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_31_40}')" 
 						  	  					reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="THIRTYONE" assignTo="#{vehicleSpeedBean.selectedSpeed}"/>
-						  	  		<h:outputText value="#{messages.SCORE_SPEEDING_31_40}"/>
+                                    <h:outputText value="SCORE_SPEEDING_31_40" converter="MeasurementTextConverter"/>
 						  	  </a4j:commandLink>
 						  </h:form>
 							</div>
@@ -326,7 +328,7 @@ var firstLoad = new Boolean(true);
 						  	 					onclick="SelectBreakDown('FOURTYONE', chart41, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_41_54}')" 
 						  	  					reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="FOURTYONE" assignTo="#{vehicleSpeedBean.selectedSpeed}"/>
-						  	  		<h:outputText value="#{messages.SCORE_SPEEDING_41_54}"/>
+                                    <h:outputText value="SCORE_SPEEDING_41_54" converter="MeasurementTextConverter"/>
 						  	  </a4j:commandLink>
 						  </h:form>
 							</div>
@@ -360,7 +362,7 @@ var firstLoad = new Boolean(true);
 						  	  					onclick="SelectBreakDown('FIFTYFIVE', chart55, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_55_64}')" 
 						  	  					reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="FIFTYFIVE" assignTo="#{vehicleSpeedBean.selectedSpeed}"/>
-						  	  		<h:outputText value="#{messages.SCORE_SPEEDING_55_64}"/>
+                                    <h:outputText value="SCORE_SPEEDING_55_64" converter="MeasurementTextConverter"/>
 						  	  </a4j:commandLink>
 						  </h:form>
 							</div>
@@ -394,7 +396,7 @@ var firstLoad = new Boolean(true);
 						  	  					onclick="SelectBreakDown('SIXTYFIVE', chart65, '#{messages.reports_speed}: #{messages.SCORE_SPEEDING_65_80}')" 
 						  	  					reRender="notificationsTable,scrollerTop,tableStats,scrollerBottom">
 						  	  		<a4j:actionparam name="speed" value="SIXTYFIVE" assignTo="#{vehicleSpeedBean.selectedSpeed}"/>
-						  	  		<h:outputText value="#{messages.SCORE_SPEEDING_65_80}"/>
+                                    <h:outputText value="SCORE_SPEEDING_65_80" converter="MeasurementTextConverter"/>
 						  	  </a4j:commandLink>
 						  </h:form>
 							</div>
@@ -513,7 +515,7 @@ var firstLoad = new Boolean(true);
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_posted_speed}" />
 								</f:facet>
-								<strong><h:outputText value="#{item.event.speedLimit} #{messages.measurement_speed}" /></strong>
+								<strong><h:outputText value="#{item.event.speedLimit}" converter="MphToKphConverter"/>#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
 								<a4j:commandButton onclick="javascript:Richfaces.showModalPanel('SLChangeRequestPanel',{lat:'#{item.event.latitude}',lon:'#{item.event.longitude}'});"  
 												title="#{messages.sbs_submitRequest}" image="/images/ico_limit_edit.png"
 												style="vertical-align:middle;margin-left:10px">
@@ -525,20 +527,20 @@ var firstLoad = new Boolean(true);
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_avg_speed}" />
 								</f:facet>
-								<strong><h:outputText value="#{item.event.avgSpeed} #{messages.measurement_speed}" /></strong>
+								<strong><h:outputText value="#{item.event.avgSpeed}" converter="MphToKphConverter" />#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
 								<br />
 					            <h:outputText class="red" value="+"/>
-					            <h:outputText class="red" value="#{item.event.avgSpeed - item.event.speedLimit}" converter="SpeedConverter" />
+					            <h:outputText class="red" value="#{item.event.avgSpeed - item.event.speedLimit}" converter="MphToKphConverter" />
 							</rich:column>
 							
 							<rich:column sortBy="#{item.event.topSpeed}">
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_top_speed}" />
 								</f:facet>
-								<strong><h:outputText value="#{item.event.topSpeed} #{messages.measurement_speed}" /></strong>
+								<strong><h:outputText value="#{item.event.topSpeed}"  converter="MphToKphConverter" />#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
 								<br />
               					<h:outputText class="red" value="+"/>
-        					    <h:outputText class="red" value="#{item.event.topSpeed - item.event.speedLimit}" converter="SpeedConverter" />
+        					    <h:outputText class="red" value="#{item.event.topSpeed - item.event.speedLimit}" converter="MphToKphConverter" />
 							</rich:column>
 							
 							<rich:column sortBy="#{item.event.distance}">

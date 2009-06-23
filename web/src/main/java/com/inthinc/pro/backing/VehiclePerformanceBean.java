@@ -17,6 +17,7 @@ import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.ScoreDAO;
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
@@ -300,16 +301,16 @@ public class VehiclePerformanceBean extends BasePerformanceBean
         FusionMultiLineChart multiLineChart = new FusionMultiLineChart();
         sb.append(multiLineChart.getControlParameters());
 
-        Integer lightValues[] = new Integer[mpgEntities.size()];
-        Integer medValues[] = new Integer[mpgEntities.size()];
-        Integer heavyValues[] = new Integer[mpgEntities.size()];
+        Long lightValues[] = new Long[mpgEntities.size()];
+        Long medValues[] = new Long[mpgEntities.size()];
+        Long heavyValues[] = new Long[mpgEntities.size()];
         int cnt = 0;
         sb.append(multiLineChart.getCategoriesStart());
         for (MpgEntity entity : mpgEntities)
         {
-            lightValues[cnt] = entity.getLightValue() == null ? 0 : entity.getLightValue();
-            medValues[cnt] = entity.getMediumValue() == null ? 0 : entity.getMediumValue();
-            heavyValues[cnt] = entity.getHeavyValue() == null ? 0 : entity.getHeavyValue();
+            lightValues[cnt] = entity.getLightValue() == null ? 0 : MeasurementConversionUtil.convertMileage(entity.getLightValue(), getPerson().getMeasurementType());
+            medValues[cnt] = entity.getMediumValue() == null ? 0 : MeasurementConversionUtil.convertMileage(entity.getMediumValue(), getPerson().getMeasurementType());
+            heavyValues[cnt] = entity.getHeavyValue() == null ? 0 : MeasurementConversionUtil.convertMileage(entity.getHeavyValue(), getPerson().getMeasurementType());
             sb.append(multiLineChart.getCategoryLabel(catLabelList.get(cnt)));
             cnt++;
         }

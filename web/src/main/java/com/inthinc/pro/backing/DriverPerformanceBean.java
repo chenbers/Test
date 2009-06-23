@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.backing.model.GroupTreeNodeImpl;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.TripDisplay;
@@ -14,6 +13,7 @@ import com.inthinc.pro.charts.FusionMultiLineChart;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.ScoreDAO;
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Event;
 import com.inthinc.pro.model.EventMapper;
@@ -246,16 +246,16 @@ public class DriverPerformanceBean extends BasePerformanceBean
         FusionMultiLineChart multiLineChart = new FusionMultiLineChart();
         sb.append(multiLineChart.getControlParameters());
 
-        Integer lightValues[] = new Integer[mpgEntities.size()];
-        Integer medValues[] = new Integer[mpgEntities.size()];
-        Integer heavyValues[] = new Integer[mpgEntities.size()];
+        Long lightValues[] = new Long[mpgEntities.size()];
+        Long medValues[] = new Long[mpgEntities.size()];
+        Long heavyValues[] = new Long[mpgEntities.size()];
         int cnt = 0;
         sb.append(multiLineChart.getCategoriesStart());
         for (MpgEntity entity : mpgEntities)
         {
-            lightValues[cnt] = entity.getLightValue() == null ? 0 : entity.getLightValue();
-            medValues[cnt] = entity.getMediumValue() == null ? 0 : entity.getMediumValue();
-            heavyValues[cnt] = entity.getHeavyValue() == null ? 0 : entity.getHeavyValue();
+            lightValues[cnt] = entity.getLightValue() == null ? 0 : MeasurementConversionUtil.convertMileage(entity.getLightValue(), getPerson().getMeasurementType());
+            medValues[cnt] = entity.getMediumValue() == null ? 0 : MeasurementConversionUtil.convertMileage(entity.getMediumValue(), getPerson().getMeasurementType());
+            heavyValues[cnt] = entity.getHeavyValue() == null ? 0 : MeasurementConversionUtil.convertMileage(entity.getHeavyValue(), getPerson().getMeasurementType());
             sb.append(multiLineChart.getCategoryLabel(catLabelList.get(cnt)));
             cnt++;
 
@@ -281,9 +281,9 @@ public class DriverPerformanceBean extends BasePerformanceBean
         int count = 0;
         for (MpgEntity me : mpgEntities)
         {
-            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString("driver_mpg_light"), monthList.get(count).toString(), me.getLightValue(), monthList.get(count).toString()));
-            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString("driver_mpg_medium"), monthList.get(count).toString(), me.getMediumValue(), monthList.get(count).toString()));
-            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString("driver_mpg_heavy"), monthList.get(count).toString(), me.getHeavyValue(), monthList.get(count).toString()));
+            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString("driver_mpg_light"), monthList.get(count).toString(), MeasurementConversionUtil.convertMileage(me.getLightValue(), getPerson().getMeasurementType()), monthList.get(count).toString()));
+            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString("driver_mpg_medium"), monthList.get(count).toString(), MeasurementConversionUtil.convertMileage(me.getMediumValue(), getPerson().getMeasurementType()), monthList.get(count).toString()));
+            chartDataList.add(new CategorySeriesData(MessageUtil.getMessageString("driver_mpg_heavy"), monthList.get(count).toString(), MeasurementConversionUtil.convertMileage(me.getHeavyValue(), getPerson().getMeasurementType()), monthList.get(count).toString()));
 
             count++;
         }

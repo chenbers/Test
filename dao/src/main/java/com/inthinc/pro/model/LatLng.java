@@ -59,6 +59,28 @@ public class LatLng implements Serializable, Comparable<LatLng>
         return buffer.toString();
     }
 
+    
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if(LatLng.class.isInstance(obj))
+        {
+            LatLng that = LatLng.class.cast(obj);
+            if(this.getLat() == that.getLat() && this.getLng() == that.getLng())
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        HashCodeBuilder hcb = new HashCodeBuilder(5,9);
+        hcb.append(this.getLat());
+        hcb.append(this.getLng());
+        return hcb.toHashCode();
+    }
 
     @Override
     public int compareTo(LatLng o)

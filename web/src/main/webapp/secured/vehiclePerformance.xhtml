@@ -286,6 +286,7 @@
 				  <table width="920" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 10px auto 0 auto;">
 					  <tr>
 						<td valign="top" width="600">
+                           <ui:param name="MilesMsgKey" value="#{vehiclePerformanceBean.person.measurementType}_Miles"/>
 						   <ui:include src="../includes/multiLineChart.xhtml">
 						            <ui:param name="lineChartDef" value="#{vehiclePerformanceBean.overallScoreHistory}" />
 						            <ui:param name="id" value="overallLineChart" />
@@ -293,7 +294,7 @@
 						            <ui:param name="height" value="230" />  
 						            <ui:param name="chartVar" value="overallChart" />
 						            <ui:param name="pYAxisName" value="#{messages.vehicle_chart_score}" />
-						            <ui:param name="sYAxisName" value="#{messages.vehicle_chart_miles}" />
+						            <ui:param name="sYAxisName" value="#{messages[MilesMsgKey]}" />
 							</ui:include>
 						</td>
 						<td valign="top" align="right">
@@ -366,8 +367,8 @@
 						            <ui:param name="width" value="380" /> 
 						            <ui:param name="height" value="200" />  
 						            <ui:param name="chartVar" value="speed_chart" />
-						            <ui:param name="hideLegend" value="TRUE" />
-						            <ui:param name="hideNames" value="TRUE" />
+						            <ui:param name="hideLegend" value="true" />
+						            <ui:param name="hideNames" value="true" />
 							</ui:include>
 							</td>
                             <td width="80" align="center">
