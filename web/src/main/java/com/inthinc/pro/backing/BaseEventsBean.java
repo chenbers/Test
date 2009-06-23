@@ -460,9 +460,18 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
 
     public void setEventFilterID(Long eventFilterID)
     {
-        Event event = eventDAO.findByID(eventFilterID);
-        setEventFilter(event);
-        this.eventFilterID = eventFilterID;
+        if(eventFilterID != null && eventFilterID != 0)
+        {
+            Event event = eventDAO.findByID(eventFilterID);
+            event.setNoteID(eventFilterID);  //TODO Got to find out why noteID is not being set.
+            setEventFilter(event);
+            this.eventFilterID = eventFilterID;
+        }else
+        {
+            this.eventFilterID = null;
+            setEventFilter(null);
+        }
+        
     }
 
     public Long getEventFilterID()

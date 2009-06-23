@@ -88,16 +88,20 @@ public class SearchCoordinationBean {
 	}
 	public void setGroup(Group group) {
 		
-		if (this.group != group){
-			
-			this.group = group;
+		if (group != null && this.group != group){
 			searchFor = group.getName();
-			notifySearchChangeListeners();
 		}
+		else
+		{
+		    setSearchFor("");
+		}
+		
+		notifySearchChangeListeners();
+		this.group = group;
 	}
     public void setGroupID(Integer groupID)
     {
-        this.group = groupDAO.findByID(groupID);
+        setGroup(groupDAO.findByID(groupID));
         this.groupID = groupID;
     }
     public Integer getGroupID()
