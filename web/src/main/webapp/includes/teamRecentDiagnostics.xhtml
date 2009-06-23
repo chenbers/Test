@@ -65,7 +65,8 @@
 							<h:outputText value="" />
 						</f:facet>
                         <pretty:link mappingId="diagnostics">
-                            #{messages.team_diagnosticsDetails}
+                              #{messages.team_diagnosticsDetails}
+                              <f:param name="eventID" value="#{event.event.noteID}"/>
                         </pretty:link>
 					</rich:column>
 			</rich:dataTable>

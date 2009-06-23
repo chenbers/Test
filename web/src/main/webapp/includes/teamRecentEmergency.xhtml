@@ -67,6 +67,7 @@
 						</f:facet>
                         <pretty:link mappingId="emergency">
                             #{messages.team_emergencyDetails}
+                             <f:param name="eventID" value="#{event.event.noteID}"/>
                         </pretty:link>
 					</rich:column>
 			</rich:dataTable>

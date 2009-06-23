@@ -43,6 +43,7 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
     
     private EventCategory categoryFilter;
     private Event eventFilter;
+    private Long eventFilterID;
     
     private ReportRenderer      reportRenderer;
     private ReportCriteriaService reportCriteriaService;
@@ -456,6 +457,18 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
     	
     	reinit();
 	}
+
+    public void setEventFilterID(Long eventFilterID)
+    {
+        Event event = eventDAO.findByID(eventFilterID);
+        setEventFilter(event);
+        this.eventFilterID = eventFilterID;
+    }
+
+    public Long getEventFilterID()
+    {
+        return eventFilterID;
+    }
 
 }
 
