@@ -81,11 +81,19 @@
 						<span class="map">#{messages.livefleet}</span>
 						<span class="panel_links">
 						<a4j:form id="refresh">
-						<a4j:commandButton image="/images/ico_refresh.png" immediate="true"
-							reRender="scripts" oncomplete="refreshMap()" title="#{messages.refresh}"  alt="#{messages.refresh}"
-							value="#{messages.refresh}">
-						</a4j:commandButton>
-                        <a href="#{detailLink}" title="#{detailTitle}"><h:graphicImage value="#{detailImage}" /></a>
+      						<a4j:commandButton image="/images/ico_refresh.png" immediate="true"
+      							reRender="scripts" oncomplete="refreshMap()" title="#{messages.refresh}"  alt="#{messages.refresh}"
+      							value="#{messages.refresh}">
+      						</a4j:commandButton>
+                        
+                            <!-- If the details parameter is not there, do not show the details image link -->
+                            <ui:fragment rendered="#{detailLink ne null}">
+                               <rich:spacer width="5px"></rich:spacer>
+                               <h:outputLink value="#{detailLink}" title="#{detailTitle}" >
+                                  <h:graphicImage value="#{detailImage}" />
+                               </h:outputLink>
+                            </ui:fragment>
+                            
 						</a4j:form>
 						</span>
 					</div>
@@ -94,7 +102,7 @@
 					
 				 	 <rich:panel  id="map">
 						<div class="panel_content">
-								<h:form name="maplinks2"> <div id="map-canvas" style="#{mapwidth};#{mapheight};border:0"></div></h:form>
+							<h:form name="maplinks2"> <div id="map-canvas" style="#{mapwidth};#{mapheight};border:0"></div></h:form>
 	 					</div>
  					 </rich:panel>
  				</div>		
