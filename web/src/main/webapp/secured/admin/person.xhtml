@@ -79,7 +79,7 @@
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_gender}" /></td>
-                            <td><h:outputText value="#{personBean.item.gender}" /></td>
+                            <td><h:outputText value="#{messages[personBean.item.gender]}" /></td>
                           </tr>
                           <!--  <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_height}" /></td>
@@ -265,20 +265,23 @@
                             <td><h:outputText value="#{personBean.item.secPhone}" converter="PhoneNumberConverter" /></td>
                           </tr>
                           <tr>
-                            <td width="16"><h:graphicImage value="/images/ico_info.png" width="16" height="16" /></td>
-                            <td width="74"><h:outputText value="#{messages.myAccount_information}" /></td>
+                            <td width="100"><h:graphicImage value="/images/ico_info.png" width="16" height="16" />
+                            <rich:spacer width="5px"></rich:spacer>
+                            <h:outputText value="#{messages.myAccount_information}" /></td>
                             <c:set var="alertText" value="myAccount_alertText#{personBean.item.info}" />
                             <td><h:outputText value="#{messages[alertText]}" /></td>
                           </tr>
                           <tr>
-                            <td width="16"><h:graphicImage value="/images/ico_warning.png" width="16" height="16" /></td>
-                            <td width="74"><h:outputText value="#{messages.myAccount_warning}" /></td>
+                            <td width="100"><h:graphicImage value="/images/ico_warning.png" width="16" height="16" />
+                            <rich:spacer width="5px"></rich:spacer>
+                            <h:outputText value="#{messages.myAccount_warning}" /></td>
                             <c:set var="alertText" value="myAccount_alertText#{personBean.item.warn}" />
                             <td><h:outputText value="#{messages[alertText]}" /></td>
                           </tr>
                           <tr>
-                            <td width="16"><h:graphicImage value="/images/ico_critical.png" width="16" height="16" /></td>
-                            <td width="74"><h:outputText value="#{messages.myAccount_critical}" /></td>
+                            <td width="100"><h:graphicImage value="/images/ico_critical.png" width="16" height="16" />
+                            <rich:spacer width="5px"></rich:spacer>
+                            <h:outputText value="#{messages.myAccount_critical}" /></td>
                             <c:set var="alertText" value="myAccount_alertText#{personBean.item.crit}" />
                             <td><h:outputText value="#{messages[alertText]}" /></td>
                           </tr>

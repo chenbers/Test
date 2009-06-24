@@ -105,7 +105,7 @@
     </rich:column>
     <rich:column rendered="#{personBean.tableColumns['gender'].visible}" sortBy="#{item.gender}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_gender}" /></f:facet>
-      <h:outputText value="#{item.gender}" />
+      <h:outputText value="#{messages[item.gender]}" />
     </rich:column>
     <!-- 
     <rich:column rendered="#{personBean.tableColumns['height'].visible}" sortBy="#{item.height}">
