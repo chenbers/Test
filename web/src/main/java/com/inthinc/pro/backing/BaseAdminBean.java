@@ -561,7 +561,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
      */
     public boolean isAdd()
     {
-        return !isBatchEdit() && (item != null) && (item.getId() == null);
+        return !isBatchEdit() && (getItem() != null) && (getItem().getId() == null);
     }
 
     /**
