@@ -94,11 +94,14 @@
 					<categoryDataset>
 						<dataset >
 							<datasetRun subDataset="styleChartDataSet">
+								<datasetParameter  name="REPORT_RESOURCE_BUNDLE">
+									<datasetParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></datasetParameterExpression>
+								</datasetParameter>
 					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{SUB_DATASET_1})]]></dataSourceExpression>
 							</datasetRun>
 						</dataset>
 						<categorySeries>
-							<seriesExpression><![CDATA[$F{seriesID}]]></seriesExpression>
+							<seriesExpression><![CDATA[str($F{seriesID})]]></seriesExpression>
 							<categoryExpression><![CDATA[$F{category}]]></categoryExpression>
 							<valueExpression><![CDATA[$F{value}]]></valueExpression>
 							<labelExpression><![CDATA[$F{label}]]></labelExpression>
