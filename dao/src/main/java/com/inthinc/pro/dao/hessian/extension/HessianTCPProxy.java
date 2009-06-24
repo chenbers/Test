@@ -3,33 +3,40 @@ package com.inthinc.pro.dao.hessian.extension;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.util.CommonsLogWriter;
 
 import com.caucho.hessian.client.HessianProxyFactory;
 import com.caucho.hessian.client.HessianRuntimeException;
 import com.caucho.hessian.io.AbstractHessianInput;
 import com.caucho.hessian.io.AbstractHessianOutput;
+import com.caucho.hessian.io.HessianDebugInputStream;
+import com.caucho.hessian.io.HessianDebugOutputStream;
 import com.caucho.hessian.io.HessianProtocolException;
 import com.inthinc.pro.dao.hessian.exceptions.HessianExceptionConverter;
 
 public class HessianTCPProxy implements InvocationHandler
 {
+    private Log log = LogFactory.getLog(HessianTCPProxy.class);
+
+    PrintWriter debugWriter = new PrintWriter(new CommonsLogWriter(log));
 
     static class ResultInputStream extends InputStream
     {
-        private InputStream          _connIs;
+        private InputStream _connIs;
 
-        private InputStream          _hessianIs;
+        private InputStream _hessianIs;
 
         private AbstractHessianInput _in;
 
-        private Socket               _socket;
+        private Socket _socket;
 
         ResultInputStream(Socket socket, InputStream is, AbstractHessianInput in, InputStream hessianIs)
         {
@@ -104,12 +111,12 @@ public class HessianTCPProxy implements InvocationHandler
         }
     }
 
-    private static final Logger log = Logger.getLogger(HessianTCPProxy.class);
+    // private static final Logger log = Logger.getLogger(HessianTCPProxy.class);
 
     private HessianProxyFactory _factory;
-    private String              hostName;
+    private String hostName;
 
-    private int                 port;
+    private int port;
 
     public HessianTCPProxy(HessianProxyFactory factory, String hostName, int port)
     {
@@ -132,30 +139,19 @@ public class HessianTCPProxy implements InvocationHandler
     {
 
         String methodName = method.getName();
-
         InputStream is = null;
-
         Socket socket = null;
-        if (HessianDebug.debugIn)
-        {
-            HessianDebug.debugInput(methodName, args, _factory);
-        }
 
         try
         {
-
             socket = sendRequest(methodName, args);
-
             is = socket.getInputStream();
-            if (HessianDebug.debugOut)
-            {
-                is = HessianDebug.debugOutput(methodName, is);
-            }
+
+            if (log.isTraceEnabled())
+                is = new HessianDebugInputStream(is, debugWriter);
 
             AbstractHessianInput in = _factory.getHessianInput(is);
-
             in.startReply();
-
             Object value = in.readObject();
 
             if (method.getReturnType().isInstance(value))
@@ -205,17 +201,14 @@ public class HessianTCPProxy implements InvocationHandler
 
     protected Socket sendRequest(String methodName, Object[] args) throws IOException
     {
-        if (HessianDebug.debugRequest)
-        {
-            HessianDebug.debugRequest(methodName, args);
-        }
-
-
         Socket socket = null;
         socket = new Socket(InetAddress.getByName(hostName), port);
 
         OutputStream os = null;
         os = socket.getOutputStream();
+
+        if (log.isTraceEnabled())
+            os = new HessianDebugOutputStream(os, debugWriter);
 
         AbstractHessianOutput out = _factory.getHessianOutput(os);
         out.call(methodName, args);
@@ -223,6 +216,5 @@ public class HessianTCPProxy implements InvocationHandler
 
         return socket;
     }
-
 
 }
