@@ -182,10 +182,10 @@ public class DAOUtilBean {
 			} else 
 			{
 				deviceDAO.deleteByID(device.getDeviceID());
-				device.setAccountID(selectedAccountID);
+				device.setAccountID(rmaAccountID);
 				// TODO should we set ephone to tech support??
 				device.setEphone(null);
-				deviceDAO.create(selectedAccountID, device);
+				deviceDAO.create(rmaAccountID, device);
 				setSuccessMsg("Device " + imei + " successfully moved to account: " + rmaAccount.getAcctName());
 			}
 		}
@@ -203,10 +203,10 @@ public class DAOUtilBean {
 			} else 
 			{
 				deviceDAO.deleteByID(device.getDeviceID());
-				device.setAccountID(selectedAccountID);
+				device.setAccountID(shipAccountID);
 				// TODO should we set ephone to tech support??
 				device.setEphone(null);
-				deviceDAO.create(selectedAccountID, device);
+				deviceDAO.create(shipAccountID, device);
 				setSuccessMsg("Device " + imei + " successfully moved to account: " + shipAccount.getAcctName());
 			}
 		}
