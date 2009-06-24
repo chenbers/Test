@@ -44,6 +44,7 @@ public class AddressLookup
     }
     public String getAddress(LatLng latLng)
     {
+        //The caching is broken until David Story or Dave Harry update their hessian library to handle many references to one object. After this is done, the equals() an hashcode() methods in the LatLng class need to be uncommented.
         if (addressMap.containsKey(latLng))
             return addressMap.get(latLng);
         if (getMapServerURLString().isEmpty())
