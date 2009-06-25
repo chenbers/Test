@@ -47,8 +47,8 @@
                    </tr>
                   
                    <tr>
-                     <td width="100"><h:outputText value="#{messages.editVehicle_weight}" /></td>
-                     <td><h:outputText value="#{vehicle.weight}"><f:convertNumber /></h:outputText></td>
+                     <td width="100"><h:outputText value="editVehicle_weight" converter="MeasurementTextConverter"/></td>
+                     <td><h:outputText value="#{vehicle.weight}" converter="LbsToKgConverter"></h:outputText></td>
                    </tr>
                    <tr>
                      <td width="100"><h:outputText value="#{messages.editVehicle_license}" /></td>
