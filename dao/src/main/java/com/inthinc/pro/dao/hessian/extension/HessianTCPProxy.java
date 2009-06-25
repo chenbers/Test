@@ -24,9 +24,8 @@ import com.inthinc.pro.dao.hessian.exceptions.HessianExceptionConverter;
 
 public class HessianTCPProxy implements InvocationHandler
 {
-    private Log log = LogFactory.getLog(HessianTCPProxy.class);
+    private static final Log log = LogFactory.getLog(HessianTCPProxy.class);
 
-    PrintWriter debugWriter = new PrintWriter(new CommonsLogWriter(log));
 
     static class ResultInputStream extends InputStream
     {
@@ -148,7 +147,7 @@ public class HessianTCPProxy implements InvocationHandler
             is = socket.getInputStream();
 
             if (log.isTraceEnabled())
-                is = new HessianDebugInputStream(is, debugWriter);
+                is = new HessianDebugInputStream(is, new PrintWriter(new CommonsLogWriter(log)));
 
             AbstractHessianInput in = _factory.getHessianInput(is);
             in.startReply();
@@ -208,7 +207,7 @@ public class HessianTCPProxy implements InvocationHandler
         os = socket.getOutputStream();
 
         if (log.isTraceEnabled())
-            os = new HessianDebugOutputStream(os, debugWriter);
+            os = new HessianDebugOutputStream(os, new PrintWriter(new CommonsLogWriter(log)));
 
         AbstractHessianOutput out = _factory.getHessianOutput(os);
         out.call(methodName, args);
