@@ -42,12 +42,20 @@ function checkMultiple(item) {
 		id = item.id;
 
 	var box;
-	var index = id.indexOf(":");
-	if (index > 0)
-		box = document.getElementById("edit-form:update_"
-				+ id.substring(index + 1));
-	else
-		box = document.getElementById("edit-form:update_" + id);
+	var index = id.lastIndexOf(":");
+	var formName = "edit-form:update_";
+	var relativeId = id.substring(index + 1);
+	if (index > 0){
+		formName = id.substring(0,index + 1);
+		relativeId = "update_" + id.substring(index + 1,id.length);
+	}
+	
+	var absoluteCheckBoxId = formName + relativeId;
+	
+	if (index > 0){
+		box = document.getElementById(absoluteCheckBoxId);
+	}else
+		box = document.getElementById(absoluteCheckBoxId);
 	if (box) {
 		box.checked = true;
 	}

@@ -423,6 +423,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
                         }
                 }
 
+                vehicle.getDevice().setDeviceID(vehicle.getDeviceID()); //TODO Patch Work - why isn't the device id already there????
                 deviceDAO.update(vehicle.getDevice());
             }
 
