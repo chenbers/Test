@@ -32,6 +32,8 @@
         <property name="overallScoreBean" ref="overallScoreBean"/>
     </bean>
     <bean id="dashBoardDetailBean" class="com.inthinc.pro.backing.DashBoardDetailBean" scope="request" parent="baseBean">
+        <property name="dashBoardBean" ref="dashBoardBean"/>
+        <property name="navigationBean" ref="navigationBean"/>
         <property name="mpgBean" ref="mpgBean"/>
         <property name="overallScoreBean" ref="overallScoreBean"/>
     </bean>

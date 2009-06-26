@@ -16,7 +16,9 @@ public class DashBoardDetailBean extends BaseBean
     private Duration duration;
     
     private MpgBean mpgBean;
+    private DashBoardBean dashBoardBean;
     private OverallScoreBean overallScoreBean;
+    private NavigationBean navigationBean;
     
     private GroupDAO groupDAO;
 
@@ -71,6 +73,16 @@ public class DashBoardDetailBean extends BaseBean
         this.mpgBean = mpgBean;
     }
     
+    public DashBoardBean getDashBoardBean()
+    {
+        return dashBoardBean;
+    }
+
+    public void setDashBoardBean(DashBoardBean dashBoardBean)
+    {
+        this.dashBoardBean = dashBoardBean;
+    }
+
     public OverallScoreBean getOverallScoreBean()
     {
         return overallScoreBean;
@@ -79,6 +91,16 @@ public class DashBoardDetailBean extends BaseBean
     public void setOverallScoreBean(OverallScoreBean overallScoreBean)
     {
         this.overallScoreBean = overallScoreBean;
+    }
+
+    public NavigationBean getNavigationBean()
+    {
+        return navigationBean;
+    }
+
+    public void setNavigationBean(NavigationBean navigationBean)
+    {
+        this.navigationBean = navigationBean;
     }
 
     public GroupDAO getGroupDAO()
@@ -92,8 +114,10 @@ public class DashBoardDetailBean extends BaseBean
     }
 
     public void initAction()
-    {
+    {        
         mpgBean.setGroupID(groupID);
+        dashBoardBean.setGroupID(groupID);
         overallScoreBean.setGroupID(groupID);
+        navigationBean.setGroupID(groupID);
     }
 }
