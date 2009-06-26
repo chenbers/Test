@@ -17,10 +17,10 @@
  
   <ul id="grid_nav">
     <li class="r">
-      <button type="submit" class="left" onclick="Richfaces.showModalPanel('changePasswordPanel');return false;"><h:outputText styleClass="login" value="#{messages.myAccount_change_password}" /></button>
-      <pretty:link mappingId="editMyAccount">
-         <button type="submit" class="left"><h:outputText styleClass="edit" value="#{messages.myAccount_edit}"/></button>
-      </pretty:link>
+        <button type="submit" class="left" onclick="Richfaces.showModalPanel('changePasswordPanel');return false;"><h:outputText styleClass="login" value="#{messages.myAccount_change_password}" /></button>
+        
+        <pretty:urlbuffer var="editMyAccountLink" mappingId="editMyAccount"/>
+        <button type="button" class="left" onclick="location.href = '#{requestScope.editMyAccountLink}';"><h:outputText styleClass="edit" value="#{messages.myAccount_edit}"/></button>
     </li>
   </ul>
   

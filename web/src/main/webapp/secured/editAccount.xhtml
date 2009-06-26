@@ -21,9 +21,9 @@
     <ul id="grid_nav">
       <li class="r">
         <h:commandButton action="#{myAccountBean.saveFormAction}" styleClass="left" value="#{messages.button_save} "><h:outputText value="#{messages.button_save} " styleClass="save"/></h:commandButton>
-        <pretty:link mappingId="myAccount">
-            <button type="submit" class="left"><h:outputText value="#{messages.button_cancel}" styleClass="cancel"/></button>
-        </pretty:link>
+        
+        <pretty:urlbuffer var="myAccountLink" mappingId="myAccount"/>
+        <button type="button" class="left" onclick="location.href = '#{requestScope.myAccountLink}';"><h:outputText styleClass="cancel" value="#{messages.button_cancel}"/></button>
       </li>
     </ul>
     
