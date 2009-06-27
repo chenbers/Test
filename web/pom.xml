@@ -149,13 +149,13 @@
         <dependency>
             <groupId>org.richfaces.framework</groupId>
             <artifactId>richfaces-api</artifactId>
-            <version>3.3.0.GA</version>
+            <version>3.3.1.GA</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.richfaces.framework</groupId>
             <artifactId>richfaces-impl</artifactId>
-            <version>3.3.0.GA</version>
+            <version>3.3.1.GA</version>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>
@@ -179,7 +179,7 @@
         <dependency>
             <groupId>org.richfaces.ui</groupId>
             <artifactId>richfaces-ui</artifactId>
-            <version>3.3.0.GA</version>
+            <version>3.3.1.GA</version>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>
