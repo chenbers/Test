@@ -56,9 +56,6 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
     
     private static final int outOfRangeLatLngDummyValue = 360;
     
-    private static final String METRIC_MPH_KEY = "metric_mph";
-    private static final String ENGLISH_MPH_KEY = "english_mph";
-    
     public TigerDAO getTigerDao() {
 		return tigerDao;
 	}
@@ -346,11 +343,11 @@ public class SpeedLimitChangeRequestBean extends BaseBean implements Serializabl
 
 			logger.debug("sendEmailToUser email address is "+email[0]);
 			
-			String mphText = MessageUtil.getMessageString(ENGLISH_MPH_KEY);
+			String mphText = MessageUtil.getMessageString(MeasurementType.ENGLISH.toString() + "_mph");
 			Integer newSpeed = speedLimitBean.getNewSpeedLimit();
 			if(getMeasurementType().equals(MeasurementType.METRIC))
 			{
-			    mphText = MessageUtil.getMessageString(METRIC_MPH_KEY);
+			    mphText = MessageUtil.getMessageString(MeasurementType.METRIC.toString() + "_mph");
 			    newSpeed = MeasurementConversionUtil.fromMPHtoKPH(newSpeed).intValue();
 			}
 			String text = MessageUtil.formatMessageString("sbs_emailText",newSpeed,speedLimitBean.getAddress(),mphText);
