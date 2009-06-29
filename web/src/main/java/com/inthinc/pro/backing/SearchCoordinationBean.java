@@ -51,15 +51,15 @@ public class SearchCoordinationBean {
 		
 		switch (navigation){
 		case 1:
-			 return "go_reports";
+			 return "pretty:driversReportWithCriteria";
 		case 2:
-			return "go_vehicles";
+			return "pretty:vehiclesReportWithCriteria";
 		case 3:
-			return "go_idling";
+			return "pretty:idlingReportWithCriteria";
 		case 4: 
-			return "go_devices";
+			return "pretty:devicesReportWithCriteria";
 		}
-		return "go_reports";
+		return "pretty:driversReportWithCriteria";
 	}
 	public List<SearchChangeListener> getSearchChangeListeners() {
 		

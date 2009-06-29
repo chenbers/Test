@@ -12,6 +12,7 @@ import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.ScoreDAO;
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.MeasurementType;
@@ -128,6 +129,20 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
 
         this.maxCount = this.driverData.size();
         resetCounts();
+    }
+    
+    @Override
+    public String fieldValue(DriverReportItem item, String column)
+    {
+        if("distanceDriven".equals(column))
+        {
+            if(getMeasurementType().equals(MeasurementType.ENGLISH))
+                return item.getMilesDriven().toString();
+            else
+                return MeasurementConversionUtil.fromMilesToKilometers(item.getMilesDriven().doubleValue()).toString();
+        }
+        
+        return super.fieldValue(item, column);
     }
 
     private void setScoreBoxStyles(DriverReportItem drt)

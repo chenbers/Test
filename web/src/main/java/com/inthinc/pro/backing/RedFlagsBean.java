@@ -114,6 +114,8 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
     {
         refreshAction();
     }
+    
+    
 
     private void init()
     {
@@ -219,6 +221,10 @@ public class RedFlagsBean extends BaseRedFlagsBean implements TablePrefOptions<R
         }
         else if ("level".equals(column))
             column = "redFlag_level_description";
+        else if("alerts".equals(column))
+            return "";
+        else if("clear".equals(column))
+            return "";
         return TablePref.fieldValue(item, column);
     }
 

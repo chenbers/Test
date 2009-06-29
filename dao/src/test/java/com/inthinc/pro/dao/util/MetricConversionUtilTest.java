@@ -58,7 +58,7 @@ public class MetricConversionUtilTest
     @Test
     public void testMilesToKiloMeters()
     {
-        Float expectedKilometers = 27.4F;
+        Float expectedKilometers = 27.36F;
         Double actualMiles = 17D;
         Float kilometers = MeasurementConversionUtil.fromMilesToKilometers(actualMiles);        
         Assert.assertEquals(expectedKilometers.toString(), kilometers.toString());

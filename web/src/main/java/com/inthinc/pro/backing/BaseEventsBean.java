@@ -355,6 +355,8 @@ public abstract class BaseEventsBean extends BaseRedFlagsBean implements TablePr
             column = "driverName";
         else if ("vehicle".equals(column))
             column = "vehicleName";
+        else if ("clear".equals(column))
+            return "";
         return TablePref.fieldValue(item, column);
     }
 

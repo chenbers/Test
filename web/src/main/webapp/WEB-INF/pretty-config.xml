@@ -97,18 +97,13 @@
     </url-mapping>
     <url-mapping id="driversReport">
         <pattern>/app/reports/driversReport</pattern>
+        <query-param name="groupID">#{searchCoordinationBean.groupID}</query-param> 
         <view-id>/secured/reports/drivers.faces</view-id>
         <action>#{driverReportBean.search}</action>
     </url-mapping>
     <url-mapping id="driversReportWithCriteria">
         <pattern>/app/reports/driversReport</pattern>
         <query-param name="searchCriteria">#{searchCoordinationBean.searchFor}</query-param> 
-        <view-id>/secured/reports/drivers.faces</view-id>
-        <action>#{driverReportBean.search}</action>
-    </url-mapping>
-    <url-mapping id="driversReportWithGroupID">
-        <pattern>/app/reports/driversReport</pattern>
-        <query-param name="groupID">#{searchCoordinationBean.groupID}</query-param> 
         <view-id>/secured/reports/drivers.faces</view-id>
         <action>#{driverReportBean.search}</action>
     </url-mapping>

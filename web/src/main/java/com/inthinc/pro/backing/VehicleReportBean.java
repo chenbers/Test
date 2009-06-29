@@ -11,7 +11,9 @@ import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.ScoreDAO;
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
@@ -125,6 +127,20 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
     {
         // TODO Auto-generated method stub
         
+    }
+    
+    @Override
+    public String fieldValue(VehicleReportItem item, String column)
+    {
+        if("distanceDriven".equals(column))
+        {
+            if(getMeasurementType().equals(MeasurementType.ENGLISH))
+                return item.getMilesDriven().toString();
+            else
+                return MeasurementConversionUtil.fromMilesToKilometers(item.getMilesDriven().doubleValue()).toString();
+        }
+        
+        return super.fieldValue(item, column);
     }
 
     private void setStyles(VehicleReportItem vrt) 
