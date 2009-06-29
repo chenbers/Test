@@ -20,11 +20,11 @@ public class MeasurementConversionUtil
      * @param miles
      * @return kilometers rounded to the nearest tenth
      */
-    public static Float fromMilesToKilometers(Long miles)
+    public static Float fromMilesToKilometers(Double miles)
     {
         Double kilometers = miles * 1.609344;
-        BigDecimal bigDecimal = new BigDecimal(Math.round(kilometers * 10));
-        return bigDecimal.movePointLeft(1).floatValue();
+        BigDecimal bigDecimal = new BigDecimal(Math.round(kilometers * 100));
+        return bigDecimal.movePointLeft(2).floatValue();
     }
 
     /**
@@ -32,21 +32,21 @@ public class MeasurementConversionUtil
      * @param kilometers
      * @return miles rounded to the nearest tenth
      */
-    public static Float fromKilometersToMiles(Long kilometers)
+    public static Float fromKilometersToMiles(Double kilometers)
     {
         Double miles = kilometers * 0.62137;
-        BigDecimal bigDecimal = new BigDecimal(Math.round(miles * 10));
-        return bigDecimal.movePointLeft(1).floatValue();
+        BigDecimal bigDecimal = new BigDecimal(Math.round(miles * 100));
+        return bigDecimal.movePointLeft(2).floatValue();
     }
 
     public static Float convertDistance(Float distance, MeasurementType convertToMeasurementType)
     {
         if (convertToMeasurementType == MeasurementType.METRIC)
         {
-            return fromMilesToKilometers(distance.longValue());
+            return fromMilesToKilometers(distance.doubleValue());
         }
         else
-            return fromKilometersToMiles(distance.longValue());
+            return fromKilometersToMiles(distance.doubleValue());
     }
 
     public static Integer fromMPHtoKPH(Integer milesPerHour)

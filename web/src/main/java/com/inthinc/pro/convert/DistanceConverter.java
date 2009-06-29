@@ -7,17 +7,12 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.ConverterException;
 
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.util.MessageUtil;
 
 public class DistanceConverter extends BaseConverter
 {
-
-    // converts distance to mi/km string
-    // distance is an integer in hundreths of miles
-    
-    Boolean isMetric;
-    private static final double KILOMETERS_PER_MILE = 1.609344;
 
     public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException
     {
@@ -47,26 +42,14 @@ public class DistanceConverter extends BaseConverter
 
         if (getUser().getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC))
         {
-            return format.format(KILOMETERS_PER_MILE * miles) + " " + MessageUtil.getMessageString(context, "km_label");
+            return MeasurementConversionUtil.fromMilesToKilometers(miles).toString();
             
         }
         else
         {
-            return format.format(miles) + " " + MessageUtil.getMessageString(context, "mi_label");
+            return format.format(miles);
         }
         
     }
 
-    public Boolean getIsMetric()
-    {
-        //TODO: get isMetric from the user record
-        return (isMetric == null) ? false : isMetric;
-    }
-
-    public void setIsMetric(Boolean isMetric)
-    {
-        this.isMetric = isMetric;
-    }
-
-    
 }
