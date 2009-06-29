@@ -165,12 +165,15 @@
                                             </pretty:link>
                                             <h:outputText rendered="#{item.driver eq null or item.driver.driverID eq null}" value="#{messages.reports_none_assigned}" />                                            
                                         </rich:column>
-                                        <rich:column rendered="#{vehicleReportBean.tableColumns['milesDriven'].visible}" 
+                                        <rich:column rendered="#{vehicleReportBean.tableColumns['distanceDriven'].visible}" 
                                             sortBy="#{item.milesDriven}">
                                             <f:facet name="header">
-                                                <h:outputText value="reports_milesdriven" converter="MeasurementTextConverter"/>
+                                                <h:outputText value="#{messages.reports_distanceDriven}"/>
                                             </f:facet>
-                                            <h:outputText value="#{item.milesDriven}" converter="MilesToKilometersConverter"/>
+                                            <h:outputFormat value="#{messages.reports_distanceDrivenInUnits}" >
+                                                <a4j:actionparam value="#{item.milesDriven}" converter="MilesToKilometersConverter"/>
+                                                <a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
+                                            </h:outputFormat>
                                         </rich:column>
                                         <rich:column rendered="#{vehicleReportBean.tableColumns['overallScore'].visible}"
                                             sortBy="#{item.overallScore}">

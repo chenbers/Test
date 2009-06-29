@@ -42,7 +42,7 @@ public class DriverReportBean extends BaseReportBean<DriverReportItem> implement
         AVAILABLE_COLUMNS.add("driver_person_empid");
         AVAILABLE_COLUMNS.add("driver_person_fullName");
         AVAILABLE_COLUMNS.add("vehicle_name");
-        AVAILABLE_COLUMNS.add("milesDriven");
+        AVAILABLE_COLUMNS.add("distanceDriven");
         AVAILABLE_COLUMNS.add("overallScore");
         AVAILABLE_COLUMNS.add("speedScore");
         AVAILABLE_COLUMNS.add("styleScore");

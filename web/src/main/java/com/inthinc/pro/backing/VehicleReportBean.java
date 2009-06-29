@@ -42,7 +42,7 @@ public class VehicleReportBean extends BaseReportBean<VehicleReportItem> impleme
         AVAILABLE_COLUMNS.add("vehicle_name");
         AVAILABLE_COLUMNS.add("makeModelYear");
         AVAILABLE_COLUMNS.add("driver_person_fullName");
-        AVAILABLE_COLUMNS.add("milesDriven");
+        AVAILABLE_COLUMNS.add("distanceDriven");
         AVAILABLE_COLUMNS.add("overallScore");
         AVAILABLE_COLUMNS.add("speedScore");
         AVAILABLE_COLUMNS.add("styleScore");
