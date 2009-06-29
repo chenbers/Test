@@ -478,6 +478,10 @@ a.ls_tab_mile {
     min-height:50px;	
 }
 
+.datagrid {
+	margin-bottom: 18px;
+}
+
 .datagrid td {
    border-bottom: 1px solid #8BAD37; 
 }

@@ -32,8 +32,12 @@ ul.fdtablePaginater {text-align:center;}
 
 .datagrid_panel {
     overflow-x: auto;
-    overflow-y:hidden;
-    min-height:50px;	
+    overflow-y: hidden;
+    min-height: 50px;	
+}
+
+.datagrid {
+	margin-bottom: 18px;
 }
 
 .datagrid td
