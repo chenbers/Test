@@ -11,11 +11,12 @@
         <property name="siloService" ref="siloServiceBean" />
     </bean>
     <bean id="alertMessageDAO" class="com.inthinc.pro.dao.hessian.AlertMessageHessianDAO" parent="genericDAO">
-    	<property name="groupDAO" ref="groupDAO"></property>
-    	<property name="personDAO" ref="personDAO"></property>
-    	<property name="driverDAO" ref="driverDAO"></property>
-    	<property name="vehicleDAO" ref="vehicleDAO"></property>
-    	<property name="eventDAO" ref="eventDAO"></property>
+    	<property name="groupDAO"      ref="groupDAO"></property>
+    	<property name="personDAO"     ref="personDAO"></property>
+    	<property name="driverDAO"     ref="driverDAO"></property>
+    	<property name="vehicleDAO"    ref="vehicleDAO"></property>
+    	<property name="eventDAO"      ref="eventDAO"></property>
+    	<property name="addressLookup" ref="addressLookupBean"></property>
     </bean>
     <bean id="groupDAO" class="com.inthinc.pro.dao.hessian.GroupHessianDAO" parent="genericDAO"></bean>
     <bean id="personDAO" class="com.inthinc.pro.dao.hessian.PersonHessianDAO" parent="genericDAO"></bean>
@@ -34,5 +35,10 @@
     </bean>
     <bean id="mpgDAO" class="com.inthinc.pro.dao.hessian.MpgHessianDAO" parent="genericDAO">
         <property name="reportService" ref="reportServiceBean" />
+    </bean>
+    
+    <!-- Address Lookup -->
+    <bean id="addressLookupBean" class="com.inthinc.pro.map.AddressLookup">
+      	<property name="mapServerURLString" value="${mapserver.url}"/>
     </bean>
 </beans>

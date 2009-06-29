@@ -37,4 +37,9 @@
     <bean id="stateDAO" class="com.inthinc.pro.dao.hessian.StateHessianDAO" parent="genericDAO"></bean>
     <bean id="timeZoneDAO" class="com.inthinc.pro.dao.hessian.TimeZoneHessianDAO" parent="genericDAO"></bean>
     <bean id="reportScheduleDAO" class="com.inthinc.pro.dao.hessian.ReportScheduleHessianDAO" parent="genericDAO"></bean>
+    
+    <!-- Address Lookup -->
+    <bean id="addressLookupBean" class="com.inthinc.pro.map.AddressLookup">
+      	<property name="mapServerURLString" value="${mapserver.url}"/>
+    </bean>
 </beans>

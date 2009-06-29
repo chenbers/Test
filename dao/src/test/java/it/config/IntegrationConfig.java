@@ -18,6 +18,7 @@ public class IntegrationConfig extends Properties
     public final static String SILO_PORT = "siloDataAccessPort";
     public final static String MCM_HOST = "mcmDataAccessHost";
     public final static String MCM_PORT = "mcmDataAccessPort";
+    public final static String MAP_SERVER_URL = "mapserver.url";
 
     public IntegrationConfig()
     {

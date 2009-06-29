@@ -434,10 +434,6 @@
     	<property name="groupDAO" ref="groupDAO"/>
     </bean>
       
-    <!-- Address Lookup -->
-    <bean id="addressLookupBean" class="com.inthinc.pro.map.AddressLookup">
-      <property name="mapServerURLString" value="${mapserver.url}"/>
-    </bean>
     <!-- Converter Beans -->
     <bean id="latLngAddressConverter" class="com.inthinc.pro.convert.LatLngAddressConverter">
         <property name="addressLookup" ref="addressLookupBean"/>

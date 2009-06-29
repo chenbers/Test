@@ -47,6 +47,7 @@ import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
+import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.AlertMessageBuilder;
@@ -100,6 +101,7 @@ public class AlertMessagesTest
     private static RedFlagAlert redFlagAlert;
     private static String IMEI;
     private static Integer zoneID;
+    private static String mapServerURL;
 
     private static final String PASSWORD="nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7"; // password
     
@@ -117,6 +119,7 @@ public class AlertMessagesTest
 
         String host = config.get(IntegrationConfig.SILO_HOST).toString();
         Integer port = Integer.valueOf(config.get(IntegrationConfig.SILO_PORT).toString());
+        mapServerURL = config.get(IntegrationConfig.MAP_SERVER_URL).toString();
         
         siloService = new SiloServiceCreator(host, port).getService();
         
@@ -822,6 +825,8 @@ public class AlertMessagesTest
         GroupHessianDAO groupDAO = new GroupHessianDAO();
         PersonHessianDAO personDAO = new PersonHessianDAO();
         VehicleHessianDAO vehicleDAO =new VehicleHessianDAO();
+        AddressLookup addressLookup= new AddressLookup();
+        addressLookup.setMapServerURLString(mapServerURL);
         driverDAO.setSiloService(siloService);
         groupDAO.setSiloService(siloService);
         eventDAO.setSiloService(siloService);
@@ -832,6 +837,7 @@ public class AlertMessagesTest
         alertMessageDAO.setEventDAO(eventDAO);
         alertMessageDAO.setGroupDAO(groupDAO);
         alertMessageDAO.setPersonDAO(personDAO);
+        alertMessageDAO.setAddressLookup(addressLookup);
        
         
         System.out.print("Poll for message");

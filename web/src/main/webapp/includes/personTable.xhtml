@@ -121,7 +121,7 @@
       <f:facet name="header"><h:outputText value="#{messages.personHeader_weight}" /></f:facet>
       <h:outputText value="#{item.weight}" />
     </rich:column>
-    -->
+    
     <rich:column rendered="#{personBean.tableColumns['address_addr1'].visible}" sortBy="#{item.address.addr1}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_address_addr1}" /></f:facet>
       <h:outputText value="#{item.address.addr1}" />
@@ -141,6 +141,15 @@
     <rich:column rendered="#{personBean.tableColumns['address_zip'].visible}" sortBy="#{item.address.zip}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_address_zip}" /></f:facet>
       <h:outputText value="#{item.address.zip}" />
+    </rich:column>
+    -->
+    <rich:column rendered="#{personBean.tableColumns['locale'].visible}" sortBy="#{item.user.locale.displayName}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_locale}" /></f:facet>
+      <h:outputText value="#{item.user.locale.displayName}" />
+    </rich:column>
+    <rich:column rendered="#{personBean.tableColumns['measurementType'].visible}" sortBy="#{messages[item.measurementType]}">
+      <f:facet name="header"><h:outputText value="#{messages.personHeader_measurementType}" /></f:facet>
+      <h:outputText value="#{messages[item.measurementType]}" />
     </rich:column>
     <rich:column rendered="#{personBean.tableColumns['driver_status'].visible}" sortBy="#{item.driver.status.description}">
       <f:facet name="header"><h:outputText value="#{messages.personHeader_driver_status}" /></f:facet>

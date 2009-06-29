@@ -16,6 +16,7 @@ import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
+import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.AggressiveDrivingEvent;
 import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertMessageBuilder;
@@ -42,6 +43,8 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
     private VehicleDAO vehicleDAO;
     private GroupDAO groupDAO;
     private PersonDAO personDAO;
+    
+    private AddressLookup addressLookup;
 
     /*
      * (non-Javadoc)
@@ -199,9 +202,9 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
         case ALERT_TYPE_SPEEDING:
             parameterList.add(String.valueOf(((SpeedingEvent)event).getTopSpeed()));
             parameterList.add(String.valueOf(((SpeedingEvent)event).getSpeedLimit()));
-            parameterList.add(event.getAddressStr());
+            parameterList.add(addressLookup.getAddress(event.getLatitude(),event.getLongitude()));
         default:
-            parameterList.add(alertMessage.getAddress());
+            parameterList.add(addressLookup.getAddress(event.getLatitude(),event.getLongitude()));
         }
         
         alertMessageBuilder.setParamterList(parameterList);
@@ -258,6 +261,16 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
     public void setPersonDAO(PersonDAO personDAO)
     {
         this.personDAO = personDAO;
+    }
+
+    public void setAddressLookup(AddressLookup addressLookup)
+    {
+        this.addressLookup = addressLookup;
+    }
+
+    public AddressLookup getAddressLookup()
+    {
+        return addressLookup;
     }
 
 }

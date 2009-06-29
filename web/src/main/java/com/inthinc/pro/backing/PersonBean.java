@@ -37,6 +37,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Gender;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Role;
 import com.inthinc.pro.model.State;
@@ -89,11 +90,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         AVAILABLE_COLUMNS.add("title");
         AVAILABLE_COLUMNS.add("dob");
         AVAILABLE_COLUMNS.add("gender");
-        AVAILABLE_COLUMNS.add("address_addr1");
-        AVAILABLE_COLUMNS.add("address_addr2");
-        AVAILABLE_COLUMNS.add("address_city");
-        AVAILABLE_COLUMNS.add("address_state");
-        AVAILABLE_COLUMNS.add("address_zip");
+        AVAILABLE_COLUMNS.add("locale");
+        AVAILABLE_COLUMNS.add("measurementType");
         AVAILABLE_COLUMNS.add("user_status");
         AVAILABLE_COLUMNS.add("user_username");
         AVAILABLE_COLUMNS.add("user_groupID");
@@ -298,6 +296,17 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             if (value == null)
                 value = 0L;
             return Long.toHexString(value);
+        }
+        else if (column.equals("locale"))
+        {
+            if(person.getUser() != null && person.getUser().getLocale() != null)
+                return person.getUser().getLocale().getDisplayName();
+            else
+                return null;
+        }
+        else if (column.equals("measurementType"))
+        {
+            return MessageUtil.getMessageString(person.getMeasurementType().toString(),getProUser().getUser().getLocale());
         }
         else
             return super.fieldValue(person, column);
