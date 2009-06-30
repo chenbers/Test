@@ -59,7 +59,10 @@
     </rich:column>
     <rich:column rendered="#{vehiclesBean.tableColumns['weight'].visible}" sortBy="#{item.weight}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_weight}" /></f:facet>
-      <h:outputText value="#{item.weight}"><f:convertNumber /></h:outputText>
+      <h:outputFormat value="#{messages.label_two_parameters}" rendered="#{item.weight ne null}">
+         <a4j:actionparam value="#{item.weight}" converter="LbsToKgConverter"/>
+         <a4j:actionparam value="lbs" converter="MeasurementTextConverter"/>
+      </h:outputFormat>
     </rich:column>
     <rich:column rendered="#{vehiclesBean.tableColumns['license'].visible}" sortBy="#{item.license}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_license}" /></f:facet>

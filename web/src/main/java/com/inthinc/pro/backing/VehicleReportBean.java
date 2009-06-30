@@ -12,15 +12,11 @@ import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.DriverReportItem;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.MeasurementType;
-import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.VehicleReportItem;
 import com.inthinc.pro.reports.ReportCriteria;
-import com.inthinc.pro.util.MessageUtil;
 
 public class VehicleReportBean extends BaseReportBean<VehicleReportItem> implements PersonChangeListener
 {
