@@ -512,7 +512,7 @@
 						<span class="map"><h:outputText value="#{messages.driver_lasttrip}: " />
 						<h:outputText rendered="#{driverPerformanceBean.hasLastTrip eq true}">
 							<h:outputText value="#{driverPerformanceBean.lastTrip.trip.endTime}">
-								<f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{navigationBean.driver.person.timeZone}" />
+								<f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{driverPerformanceBean.lastTrip.timeZone}" />
 							</h:outputText>
 						</h:outputText>
 						</span>
