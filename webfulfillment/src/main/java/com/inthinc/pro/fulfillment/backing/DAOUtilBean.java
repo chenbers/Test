@@ -242,7 +242,7 @@ public class DAOUtilBean {
 		accountList.add(new SelectItem(-1,
 				"--Select a Account--"));
 		for (Integer accountID : getAccountMap().keySet()) {
-			if (!accountID.equals(this.shipAccountID))
+			if (!accountID.equals(this.shipAccountID) && !accountID.equals(this.rmaAccountID))
 				accountList.add(new SelectItem(accountID, getAccountMap().get(
 					accountID)));
 		}
